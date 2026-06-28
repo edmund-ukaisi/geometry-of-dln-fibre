@@ -1,0 +1,190 @@
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+import DLNFibre.DLN.RLCT.Validate.RouteMBoundaryCleanRate
+
+/-!
+# `RouteMSmearedGenChart` — the ∀M-(1,1)-smeared Option-A chart (rate leg)
+
+The generic flat→flat SMEARED chart for the `(1,1)` family (`minAdm = 1`, `r = 1`, deepest column-count
+`c = 1`, `m1 = M_{L-1} ≥ 2`). Architecture (Codex `genm11-chart`, hybrid C): the chart is a SINGLE
+`Function.update` shear at the canonical deepest-`(0,0)` flat coordinate, NOT routed through
+`cleanPhi`/`scaleLayer` (the smeared deepest layer is not a whole-layer scalar multiple). The rate is
+proved DIRECTLY through the landed front fact `prodAux_frontScalarShear_cancel`.
+
+The deepest layer `A^{L-1}` has size `m1 × 1` (a single column). The chart's smear shifts the pivot
+ROW (row 0) of that column by `−smearShift = −∑ᵣ Λ₀ 0 r · S r`, leaving the residual rows free. The
+product telescopes: `P · A^{L-1} = u_p · P₁ + (P₂ − P₁·Λ₀)·S = u_p · P₁` (front fact, off the pole),
+so `routeMCore (phiSm u) = u_p² · ‖P₁‖² = u_p² · U`.
+
+This file is the RATE leg; the MP leg + subBox/divergence assembly are the remaining build.
+-/
+
+open Matrix MeasureTheory
+open scoped BigOperators
+
+namespace DLNFibre.DLN.RLCT
+
+variable {L : ℕ}
+
+/-! ## The front product is unaffected by a change in later layers
+
+`prodAux M A (L-1)` (the front product, layers `0..L-2`) reads only the first `L-1` layers, so changing
+the DEEPEST layer `L-1` does not change it. This is the brick that licenses "smear only the deepest
+layer" — the front coords the routing `Λ₀` reads stay fixed under the chart. -/
+
+/-- **`prodAux` reads only the layers below its index.** If `A` and `B` agree on every layer `s < k`
+(as `Fin L` indices), then `prodAux M A k = prodAux M B k`. Induction on `k`. -/
+theorem prodAux_congr_of_eqOn_prefix (M : Fin (L + 1) → ℕ) (A B : Params M) :
+    ∀ (k : ℕ) (hk : k < L + 1),
+      (∀ (s : Fin L), (s : ℕ) < k → A s = B s) →
+      prodAux M A k hk = prodAux M B k hk := by
+  intro k
+  induction k with
+  | zero => intro hk _; rfl
+  | succ k ih =>
+      intro hk hpre
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have e1 : M (⟨k, Nat.lt_of_succ_lt hk⟩ : Fin (L + 1))
+          = M ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).castSucc) := rfl
+      have e2 : M (⟨k + 1, hk⟩ : Fin (L + 1))
+          = M ((⟨k, Nat.lt_of_succ_lt_succ hk⟩ : Fin L).succ) := rfl
+      rw [prodAux_succ M A k hk e1 e2, prodAux_succ M B k hk e1 e2]
+      rw [ih hk' (fun s hs => hpre s (Nat.lt_succ_of_lt hs))]
+      rw [hpre ⟨k, Nat.lt_of_succ_lt_succ hk⟩ (Nat.lt_succ_self k)]
+
+/-! ## The chart data (the `(1,1)` family: `M_{deepLayer.succ} = M_L = 1`, `m1 = M_{deepLayer.castSucc} ≥ 2`)
+
+For the `(1,1)`-smeared family the deepest layer `A^{L-1}` has size `m1 × 1` (`m1 = M_{L-1} ≥ 2`,
+`c = M_L = 1`). We abbreviate `dl := deepLayer M hL`; the deepest layer's row-type is `Fin (M dl.castSucc) = Fin m1`,
+its column-type `Fin (M dl.succ) = Fin 1`. The front product `P := prodAux M (baseParams u) (L-1)` is
+`M_0 × m1`. Hypotheses `hrow : 2 ≤ M dl.castSucc` (so `m1 ≥ 2`, a nonempty residual), `hcol : M dl.succ = 1`. -/
+
+variable (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+
+/-- The base Params tuple decoded from a flat point. -/
+noncomputable def baseParams (u : Fin (routeMAmbient M) → ℝ) : Params M :=
+  (paramsEquivFlat M).symm u
+
+/-- The front product `P = prodAux M (baseParams u) (L-1)` (layers `0..L-2`), size `M_0 × M_{L-1}`. -/
+noncomputable def frontMat (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin (M ⟨L - 1, by omega⟩)) ℝ :=
+  prodAux M (baseParams M u) (L - 1) (by omega)
+
+/-- The pivot column `P₁ = frontMat[:, 0]` (a single column), `M_0 × 1`. The deepest-layer row-type is
+`Fin (M ⟨L-1,_⟩) = Fin m1`; the pivot is column/row `0`. -/
+noncomputable def pivotCol (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Matrix (Fin (M 0)) (Fin 1) ℝ :=
+  fun i _ => frontMat M hL u i ⟨0, hm1⟩
+
+/-- The residual selector `σ : Fin (m1 − 1) → Fin m1`, `r ↦ r.succ` (rows/cols `1..m1−1`, all except
+the pivot `0`). Built as `Fin.succ` (into `Fin ((m1−1)+1)`) recast to `Fin m1` via `m1 = (m1−1)+1`. -/
+noncomputable def residSel (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Fin (M ⟨L - 1, by omega⟩ - 1) → Fin (M ⟨L - 1, by omega⟩) :=
+  fun r => Fin.cast (by omega) r.succ
+
+/-- The residual block `P₂` of `frontMat`: columns selected by `residSel` (all columns except the
+pivot column `0`), `M_0 × (m1 − 1)`. -/
+noncomputable def residCols (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Matrix (Fin (M 0)) (Fin (M ⟨L - 1, by omega⟩ - 1)) ℝ :=
+  fun i r => frontMat M hL u i (residSel M hL hm1 r)
+
+/-- The scalar-Gram routing `Λ₀ = (P₁ᵀP₁)⁻¹ P₁ᵀ P₂` (a `1 × (m1−1)` matrix). -/
+noncomputable def routing (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Matrix (Fin 1) (Fin (M ⟨L - 1, by omega⟩ - 1)) ℝ :=
+  ((pivotCol M hL u hm1).transpose * pivotCol M hL u hm1)⁻¹
+    * (pivotCol M hL u hm1).transpose * residCols M hL u hm1
+
+/-- The deepest-layer column entries (the base, pre-smear): `S i := (baseParams u)^{L-1} i 0`
+(the single column of the `m1 × 1` deepest layer). -/
+noncomputable def deepCol (u : Fin (routeMAmbient M) → ℝ)
+    (hcol : 0 < M (deepLayer M hL).succ) (i : Fin (M (deepLayer M hL).castSucc)) : ℝ :=
+  (baseParams M u) (deepLayer M hL) i ⟨0, hcol⟩
+
+/-- The smear shift `∑ᵣ Λ₀ 0 r · S(σ r)`: the routing applied to the residual rows of the deepest
+column (`S(σ r)` the residual-row entries `1..m1−1`). The deepest pivot row `0` is shifted by `−` this. -/
+noncomputable def smearShift (u : Fin (routeMAmbient M) → ℝ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) (hcol : 0 < M (deepLayer M hL).succ) : ℝ :=
+  ∑ r : Fin (M ⟨L - 1, by omega⟩ - 1),
+    routing M hL u hm1 0 r * deepCol M hL u hcol (residSel M hL hm1 r)
+
+/-- The smeared deepest layer: `updateRow` of `(baseParams u)^{L-1}` at the pivot row `0`, replacing it
+by `(u_p − smearShift)` (the single-entry row, `M_L = 1`). Residual rows `1..m1−1` are untouched. -/
+noncomputable def smearedDeepLayer (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Matrix (Fin (M (deepLayer M hL).castSucc)) (Fin (M (deepLayer M hL).succ)) ℝ :=
+  Matrix.updateRow ((baseParams M u) (deepLayer M hL)) ⟨0, hrow⟩
+    (fun _ => deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol)
+
+/-- The smeared Params tuple: `baseParams` with the deepest layer replaced by `smearedDeepLayer`. -/
+noncomputable def smParams (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) : Params M :=
+  Function.update (baseParams M u) (deepLayer M hL) (smearedDeepLayer M hL u hrow hcol hm1)
+
+/-! ## The telescope rate (the keystone — consumes the front fact) -/
+
+/-- **The front product is unchanged by the smear.** `smParams` differs from `baseParams` only at the
+deepest layer `L−1`, so the front product `prodAux … (L−1)` (layers `0..L−2`) is unaffected:
+`prodAux M (smParams u) (L−1) = frontMat u`. -/
+theorem prodAux_smParams_front_eq (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    prodAux M (smParams M hL u hrow hcol hm1) (L - 1) (by omega) = frontMat M hL u := by
+  rw [frontMat]
+  refine prodAux_congr_of_eqOn_prefix M (smParams M hL u hrow hcol hm1) (baseParams M u)
+    (L - 1) (by omega) (fun s hs => ?_)
+  -- `s < L−1` ⟹ `s ≠ deepLayer M hL = ⟨L−1,_⟩`, so the `Function.update` does not fire.
+  have hsne : s ≠ deepLayer M hL := by
+    intro h; rw [h, deepLayer] at hs; simp only [Fin.val_mk] at hs; omega
+  rw [smParams, Function.update_of_ne hsne]
+
+/-- **The deepest-layer matrix of `smParams` is `smearedDeepLayer`.** -/
+theorem smParams_deepLayer (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    smParams M hL u hrow hcol hm1 (deepLayer M hL) = smearedDeepLayer M hL u hrow hcol hm1 := by
+  rw [smParams, Function.update_self]
+
+/-- **The telescope (the keystone): the chart product is `u_p`-scaled column 0 of the front product.**
+Off the pole `‖col 0‖² ≠ 0`, the deepest-layer shear cancels via the front fact, leaving
+`prod M (smParams u) i ⟨0,_⟩ = u_p · frontMat u i ⟨0,_⟩` (with `u_p = deepCol u ⟨0,_⟩` the pivot row
+entry). `c = M_L = 1` (the single deepest column), so the product is a single column. -/
+theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hc1 : M (deepLayer M hL).succ = 1)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (hc : (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2) ≠ 0)
+    (i : Fin (M 0)) (jc : Fin (M (Fin.last L))) :
+    prod M (smParams M hL u hrow hcol hm1) i jc
+      = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hm1⟩ := by
+  obtain ⟨m, rfl⟩ : ∃ m, L = m + 1 := ⟨L - 1, by omega⟩
+  set A := smParams M hL u hrow hcol hm1 with hAdef
+  -- Peel the last (deepest) layer via `prodAux_succ`: `prod = prodAux m * reindex(A_m)`.
+  have e1 : M (⟨m, Nat.lt_of_succ_lt (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1 + 1))
+      = M ((⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)).castSucc) := rfl
+  have e2 : M (⟨m + 1, Nat.lt_succ_self (m + 1)⟩ : Fin (m + 1 + 1))
+      = M ((⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1)).succ) := rfl
+  show prodAux M A (m + 1) (Nat.lt_succ_self (m + 1)) i jc = _
+  rw [prodAux_succ M A m (Nat.lt_succ_self (m + 1)) e1 e2]
+  -- Expand the entry FIRST (before any rewrite that mangles the syntactic product form).
+  rw [Matrix.mul_apply]
+  -- The first-`m` product is the front product; the last layer is `smearedDeepLayer` (reindex collapses).
+  have hfront : prodAux M A m (Nat.lt_of_succ_lt (Nat.lt_succ_self (m + 1)))
+      = frontMat M hL u := by
+    have := prodAux_smParams_front_eq M hL u hrow hcol hm1
+    simpa [hAdef, Nat.add_sub_cancel] using this
+  have hlayer : A (⟨m, Nat.lt_of_succ_lt_succ (Nat.lt_succ_self (m + 1))⟩ : Fin (m + 1))
+      = smearedDeepLayer M hL u hrow hcol hm1 := by
+    have h := smParams_deepLayer M hL u hrow hcol hm1
+    rw [hAdef]; exact h
+  -- The reindexed deepest layer at `(t, jc)` is `smearedDeepLayer t jc` (reindex by rfl-true widths).
+  rw [show (finCongr e1.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _]
+  erw [Matrix.reindex_refl_refl]
+  rw [hfront, hlayer]
+  -- REMAINING (the generic-`m1` final-layer split, Codex's flagged wall): split the middle sum at the
+  -- pivot row `0` via `Fin.sum_univ_succAbove`, read off `smearedDeepLayer` (pivot = u_p − shift,
+  -- residual = free), and cancel the shear with `prodAux_frontScalarShear_cancel`.
+  sorry
+
+end DLNFibre.DLN.RLCT
