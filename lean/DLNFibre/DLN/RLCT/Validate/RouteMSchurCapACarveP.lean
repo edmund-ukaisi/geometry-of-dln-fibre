@@ -1124,6 +1124,295 @@ theorem frobSq_capB_inner_two_le (p : ℕ) (hp : 0 < p) (R : Fin 2 → Fin 2 →
           (fun S_bot => frobSq (rmatMul (fun a b => Sc a b) S_bot))
           (fun _ => frobSq_nonneg _) (matBox (2 - 1) (pm + 1) ((2 : ℕ) * T))
 
+/-! ## The `2 ≤ r` reshape primitives (the firing's `RmatGnorm`/`zEG`/`ScCarve` chain, relaxed `3 ≤ r → 2 ≤ r`)
+
+The firing's pivot-normalised angular matrix + carve reshape carry `hr : 3 ≤ r` (artefact of the
+`RmatGnorm`/`slotMatG`/`cellR` definitions), so they do NOT fire at `r = 2`. Each body in fact works at
+`2 ≤ r` (the `omega`s need only `0 < r` / `1 ≤ r` / `0 < r*r`; the `slotFunR_card` `nlinarith` needs only
+`1 ≤ r`). These are `2 ≤ r` copies (suffix `2`), verbatim from `RouteMSchurFiring` with `3 ≤ r → 2 ≤ r`.
+At `r = 2` the carve cube is `Fin 1 × Fin 1` (M22) ⊕ `Fin 1 ⊕ Fin 1` (g,b), `N = 3`. -/
+
+/-- `2 ≤ r` pivot-normalised angular matrix (firing `RmatGnorm`, relaxed). -/
+noncomputable def RmatGnorm2 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) : Fin r → Fin r → ℝ :=
+  fun a b => RmatG r p ((piRatioG r N hN p).symm (0, z))
+    ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a) ((Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)
+
+theorem RmatGnorm2_pivot (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) :
+    RmatGnorm2 r N hN hr p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+  unfold RmatGnorm2
+  rw [Equiv.swap_apply_right, Equiv.swap_apply_right, RmatG_entry, if_pos]
+  rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+
+/-- The matrix index of `(σr a, σc b)` is the pivot `p` iff `(a,b) = (0,0)`. -/
+theorem RmatGnorm2_offpivot_idx (r : ℕ) (hr : 2 ≤ r) (p : Fin (r * r)) (a b : Fin r)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p := by
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hσr0 : σr ⟨0, by omega⟩ = ((eG r).symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc ⟨0, by omega⟩ = ((eG r).symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eG r (((eG r).symm p).1, ((eG r).symm p).2) = p := by
+    rw [show (((eG r).symm p).1, ((eG r).symm p).2) = (eG r).symm p from rfl, Equiv.apply_symm_apply]
+  intro heq
+  rw [← hpe] at heq
+  obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eG r).injective heq
+  rw [← hσr0] at hi; rw [← hσc0] at hj
+  exact hab ⟨σr.injective hi, σc.injective hj⟩
+
+theorem RmatGnorm2_offpivot_le (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    |RmatGnorm2 r N hN hr p z a b| ≤ 1 := by
+  unfold RmatGnorm2
+  rw [RmatG_entry, if_neg (RmatGnorm2_offpivot_idx r hr p a b hab)]
+  exact piRatioG_symm_offpivot_le r N hN p z hz _ (RmatGnorm2_offpivot_idx r hr p a b hab)
+
+/-- `2 ≤ r` `innerSGenP` in pivot-normalised form (firing `innerSGenP_eq_norm`, relaxed). -/
+theorem innerSGenP_eq_norm2 (r N p : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (c' : ℝ) (T : ℝ)
+    (pivot : Fin (r * r)) (z : Fin N → ℝ) :
+    innerSGenP r p c' T pivot ((piRatioG r N hN pivot).symm (0, z))
+      = ∫⁻ S in matBox r p T,
+          ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm2 r N hN hr pivot z) S)) ^ (-c')) := by
+  set y := (piRatioG r N hN pivot).symm (0, z) with hy
+  set σr := Equiv.swap ((eG r).symm pivot).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm pivot).2 (⟨0, by omega⟩ : Fin r) with hσc
+  rw [innerSGenP]
+  rw [matBox_rowperm_lintegralGP T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatGnorm2 r N hN hr pivot z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  exact frobSq_rmatMul_permGP (RmatG r pivot y) S σr σc
+
+/-- The `z`-slot of cell `(a,b) ≠ (0,0)` (firing `slotMatG`, relaxed `2 ≤ r`). -/
+noncomputable def slotMatG2 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (a b : Fin r) : Fin N :=
+  if h : eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p then
+    (Fin.exists_succAbove_eq (show
+      finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b))
+      ≠ finCongr hN p from fun he => h ((finCongr hN).injective he))).choose
+  else ⟨0, by have h4 : 2 * 2 ≤ r * r := Nat.mul_le_mul hr hr; omega⟩
+
+theorem RmatGnorm2_eq_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (a b : Fin r) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    RmatGnorm2 r N hN hr p z a b = z (slotMatG2 r N hN hr p a b) := by
+  set σr := Equiv.swap ((eG r).symm p).1 (⟨0, by omega⟩ : Fin r) with hσr
+  set σc := Equiv.swap ((eG r).symm p).2 (⟨0, by omega⟩ : Fin r) with hσc
+  have hidx : eG r (σr a, σc b) ≠ p := RmatGnorm2_offpivot_idx r hr p a b hab
+  have hentry : RmatGnorm2 r N hN hr p z a b = (piRatioG r N hN p).symm (0, z) (eG r (σr a, σc b)) := by
+    rw [RmatGnorm2, RmatG_entry, if_neg hidx]
+  rw [hentry]
+  have hne : finCongr hN (eG r (σr a, σc b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  have hslot : slotMatG2 r N hN hr p a b = (Fin.exists_succAbove_eq hne).choose := by
+    rw [slotMatG2, dif_pos hidx]
+  have hspec : (finCongr hN p).succAbove (slotMatG2 r N hN hr p a b)
+      = finCongr hN (eG r (σr a, σc b)) := by
+    rw [hslot]; exact (Fin.exists_succAbove_eq hne).choose_spec
+  rw [piRatioG_symm_apply, ← hspec]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+
+theorem slotMatG2_spec (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) (a b : Fin r)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    (finCongr hN p).succAbove (slotMatG2 r N hN hr p a b)
+      = finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+          (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) := by
+  have hidx : eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b) ≠ p :=
+    RmatGnorm2_offpivot_idx r hr p a b hab
+  have hne : finCongr hN (eG r ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  rw [slotMatG2, dif_pos hidx]
+  exact (Fin.exists_succAbove_eq hne).choose_spec
+
+/-- The `Fin r`-native cell enumeration for the carve (firing `cellR`, relaxed `2 ≤ r`). -/
+noncomputable def cellR2 (r : ℕ) (hr : 2 ≤ r) :
+    (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) → Fin r × Fin r
+  | Sum.inl (a, b) => (⟨(a : ℕ) + 1, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+  | Sum.inr (Sum.inl a) => (⟨(a : ℕ) + 1, by omega⟩, ⟨0, by omega⟩)
+  | Sum.inr (Sum.inr b) => (⟨0, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+
+theorem cellR2_ne_zero (r : ℕ) (hr : 2 ≤ r)
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    ¬ ((cellR2 r hr s).1 = ⟨0, by omega⟩ ∧ (cellR2 r hr s).2 = ⟨0, by omega⟩) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellR2, Fin.ext_iff]
+
+theorem cellR2_injective (r : ℕ) (hr : 2 ≤ r) : Function.Injective (cellR2 r hr) := by
+  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
+    simp only [cellR2, Prod.mk.injEq, Fin.ext_iff] at h
+  · obtain ⟨h1, h2⟩ := h
+    have ea : a1 = a2 := Fin.ext (by omega)
+    have eb : b1 = b2 := Fin.ext (by omega)
+    subst ea; subst eb; rfl
+  · omega
+  · omega
+  · omega
+  · have ea : a1 = a2 := Fin.ext (by omega); subst ea; rfl
+  · omega
+  · omega
+  · omega
+  · have eb : b1 = b2 := Fin.ext (by omega); subst eb; rfl
+
+theorem slotFunR2_injective (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) :
+    Function.Injective
+      (fun s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) =>
+        slotMatG2 r N hN hr p (cellR2 r hr s).1 (cellR2 r hr s).2) := by
+  intro s1 s2 hs
+  simp only [] at hs
+  have e1 := slotMatG2_spec r N hN hr p (cellR2 r hr s1).1 (cellR2 r hr s1).2 (cellR2_ne_zero r hr s1)
+  have e2 := slotMatG2_spec r N hN hr p (cellR2 r hr s2).1 (cellR2 r hr s2).2 (cellR2_ne_zero r hr s2)
+  rw [hs, e2] at e1
+  have hcell : ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) (cellR2 r hr s2).1,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) (cellR2 r hr s2).2)
+      = ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) (cellR2 r hr s1).1,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) (cellR2 r hr s1).2) :=
+    (eG r).injective ((finCongr hN).injective e1)
+  rw [Prod.mk.injEq] at hcell
+  obtain ⟨hi, hj⟩ := hcell
+  exact (cellR2_injective r hr
+    (Prod.ext ((Equiv.swap _ _).injective hi) ((Equiv.swap _ _).injective hj))).symm
+
+theorem slotFunR2_card (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) :
+    Fintype.card ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) = N := by
+  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  nlinarith [hN, Nat.sub_add_cancel (show 1 ≤ r by omega)]
+
+theorem slotFunR2_bijective (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) :
+    Function.Bijective
+      (fun s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) =>
+        slotMatG2 r N hN hr p (cellR2 r hr s).1 (cellR2 r hr s).2) := by
+  rw [Fintype.bijective_iff_injective_and_card]
+  refine ⟨slotFunR2_injective r N hN hr p, ?_⟩
+  rw [Fintype.card_fin]; exact slotFunR2_card r N hN hr
+
+/-- The slot equiv `Fin N ≃ (M22 ⊕ g ⊕ b)` (firing `zσG`, relaxed `2 ≤ r`). -/
+noncomputable def zσG2 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) :
+    Fin N ≃ ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :=
+  (Equiv.ofBijective _ (slotFunR2_bijective r N hN hr p)).symm
+
+/-- The reshape `zEG2` splitting ratios into M22-cube + (g,b)-cube (firing `zEG`, relaxed `2 ≤ r`). -/
+noncomputable def zEG2 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) :
+    (Fin N → ℝ) ≃ᵐ (((Fin (r - 1) × Fin (r - 1)) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ)) :=
+  (MeasurableEquiv.piCongrLeft
+    (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) (zσG2 r N hN hr p)).trans
+    (MeasurableEquiv.sumPiEquivProdPi
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ))
+
+theorem measurePreserving_zEG2 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r)) :
+    MeasurePreserving (zEG2 r N hN hr p) (volume : Measure (Fin N → ℝ))
+      (volume : Measure (((Fin (r - 1) × Fin (r - 1)) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ))) :=
+  (volume_measurePreserving_piCongrLeft
+    (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) (zσG2 r N hN hr p)).trans
+    (volume_measurePreserving_sumPiEquivProdPi
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ))
+
+theorem zEG2_symm_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (k : Fin N) :
+    (zEG2 r N hN hr p).symm (M, v) k = Sum.elim M v (zσG2 r N hN hr p k) := by
+  have hdec : (zEG2 r N hN hr p).symm (M, v)
+      = (MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG2 r N hN hr p)).symm (Sum.elim M v) := rfl
+  rw [hdec]
+  set e := zσG2 r N hN hr p
+  have h1 : MeasurableEquiv.piCongrLeft
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) e
+      ((MeasurableEquiv.piCongrLeft
+        (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) e).symm
+        (Sum.elim M v)) (e k) = Sum.elim M v (e k) := by
+    rw [MeasurableEquiv.apply_symm_apply]
+  rw [MeasurableEquiv.piCongrLeft_apply_apply] at h1
+  exact h1
+
+theorem zσG2_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    zσG2 r N hN hr p (slotMatG2 r N hN hr p (cellR2 r hr s).1 (cellR2 r hr s).2) = s :=
+  (Equiv.ofBijective _ (slotFunR2_bijective r N hN hr p)).symm_apply_apply s
+
+theorem RmatGnorm2_carve_M22 (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (a b : Fin (r - 1)) :
+    RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = M (a, b) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm2_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG2 r N hN hr p ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatG2 r N hN hr p (cellR2 r hr (Sum.inl (a, b))).1
+          (cellR2 r hr (Sum.inl (a, b))).2 from rfl,
+    zEG2_symm_apply, zσG2_slot]
+  rfl
+
+theorem RmatGnorm2_carve_g (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (a : Fin (r - 1)) :
+    RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩ = v (Sum.inl a) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨0, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm2_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG2 r N hN hr p ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩
+      = slotMatG2 r N hN hr p (cellR2 r hr (Sum.inr (Sum.inl a))).1
+          (cellR2 r hr (Sum.inr (Sum.inl a))).2 from rfl,
+    zEG2_symm_apply, zσG2_slot]
+  rfl
+
+theorem RmatGnorm2_carve_b (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (b : Fin (r - 1)) :
+    RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+        ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = v (Sum.inr b) := by
+  have hab : ¬ ((⟨0, by omega⟩ : Fin r) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin r) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatGnorm2_eq_slot r N hN hr p _ _ _ hab,
+    show slotMatG2 r N hN hr p ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatG2 r N hN hr p (cellR2 r hr (Sum.inr (Sum.inr b))).1
+          (cellR2 r hr (Sum.inr (Sum.inr b))).2 from rfl,
+    zEG2_symm_apply, zσG2_slot]
+  rfl
+
+theorem ScCarve2_eq (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ)
+    (a b : Fin (r - 1)) :
+    RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v)) ⟨1 + (a : ℕ), by omega⟩ ⟨1 + (b : ℕ), by omega⟩
+      - RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v)) ⟨1 + (a : ℕ), by omega⟩ ⟨0, by omega⟩
+        * RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v)) ⟨0, by omega⟩ ⟨1 + (b : ℕ), by omega⟩
+      = M (a, b) - bgShiftG (r - 1) v a b := by
+  have hia : (⟨1 + (a : ℕ), by omega⟩ : Fin r) = ⟨(a : ℕ) + 1, by omega⟩ := Fin.ext (Nat.add_comm 1 _)
+  have hib : (⟨1 + (b : ℕ), by omega⟩ : Fin r) = ⟨(b : ℕ) + 1, by omega⟩ := Fin.ext (Nat.add_comm 1 _)
+  have hM22 : RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+      ⟨1 + (a : ℕ), by omega⟩ ⟨1 + (b : ℕ), by omega⟩ = M (a, b) := by
+    rw [hia, hib]; exact RmatGnorm2_carve_M22 r N hN hr p M v a b
+  have hg : RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+      ⟨1 + (a : ℕ), by omega⟩ ⟨0, by omega⟩ = v (Sum.inl a) := by
+    rw [hia]; exact RmatGnorm2_carve_g r N hN hr p M v a
+  have hb : RmatGnorm2 r N hN hr p ((zEG2 r N hN hr p).symm (M, v))
+      ⟨0, by omega⟩ ⟨1 + (b : ℕ), by omega⟩ = v (Sum.inr b) := by
+    rw [hib]; exact RmatGnorm2_carve_b r N hN hr p M v b
+  rw [hM22, hg, hb, bgShiftG]
+
+theorem zEG2_fst_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (ik : Fin (r - 1) × Fin (r - 1)) :
+    (zEG2 r N hN hr p z).1 ik = z ((zσG2 r N hN hr p).symm (Sum.inl ik)) := by
+  have : (zEG2 r N hN hr p z).1 ik
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG2 r N hN hr p) z (Sum.inl ik) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσG2 r N hN hr p) (Sum.inl ik),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+theorem zEG2_snd_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 2 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (s : Fin (r - 1) ⊕ Fin (r - 1)) :
+    (zEG2 r N hN hr p z).2 s = z ((zσG2 r N hN hr p).symm (Sum.inr s)) := by
+  have : (zEG2 r N hN hr p z).2 s
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG2 r N hN hr p) z (Sum.inr s) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσG2 r N hN hr p) (Sum.inr s),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
 /-! ## The corank-2 cap-B branch (the `c' < p/2` sub-case, banked bricks wired)
 
 The cap-B half of `schurCoreP_two`: a 4-chart radial cover at `r = 2` (the cover machinery
