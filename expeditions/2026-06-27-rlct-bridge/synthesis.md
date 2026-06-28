@@ -651,3 +651,15 @@ field-generic squeeze, not a from-scratch build. Tasks #4–#11 all complete.
 **PR #13 updated to the well-rounded final** (Phase 1 + 2 complete, ready for operator review/merge —
 operator-gated; controller does NOT merge). Roadmap residuals (future, NOT needed for this result): global
 `Flat π` + the fibre-component/Lemma-4.6 `[IsAlgClosed]` layer; the cross-paper `rlctAt` fold.
+
+### PR #13 review round 2 CLOSED OUT (2026-06-28)
+
+Owner formal review (COMMENTED, no math-fidelity blocker — "the capstone direction is mathematically
+right") → 4 P2/P3 cleanup items, all addressed + replied (merge `704bf06e`, pushed; green 3818, sorry-free,
+axiom-clean; NO proof/signature changes — docstrings + `omit` + status docs only):
+(1) live status files (`brief`/`loop-prompt`[+CLOSED banner]/`priorities`/crux-probe card) → Phase-2-COMPLETE
+[my Phase-2-CLOSE pass had updated only synthesis/threads]; (2) stale `[IsAlgClosed]` docstrings across the
+L7+L8-relaxed chain (16 Core files) → match the relaxed `[CharZero]`/`[CharZero][Infinite]`/`[Infinite]`
+APIs, per-decl signature-checked (genuinely-alg-closed decls left untouched); (3) `OrbitTangentCotangent`
+section-var hygiene (`omit [Infinite k]` on 6 helpers; types unchanged; warnings cleared); (4) trailing
+whitespace stripped. **#13 = the well-rounded final, ready for operator review/merge.**

@@ -84,3 +84,21 @@ The cross-file "projection compatibility — open" framing (stale after R5 close
 ONE (the one it had evidence for, correctly noting it as a class). My first sweep fixed 4 and MISSED `:138`
 — caught only by re-grepping the semantic class to empty. **The re-grep-clean step is non-negotiable;** a
 reviewer flagging one instance of a class means sweep the whole class + re-grep to zero.
+
+## L8 — Relaxing a typeclass leaves stale DOCSTRINGS (a tide deliverable must sweep its own docstrings)
+
+The L7+L8 tide relaxed `[IsAlgClosed]→[CharZero]/[Infinite]` on ~16 codim decls but left their docstrings
+saying `[IsAlgClosed]`/"algebraically closed" — the owner's PR review caught it (name=content: the public
+docstring over-stated the hypotheses the decl actually needs). **Lesson:** a typeclass relaxation is not
+done when the build is green — the docstrings + module headers must be swept to match the new signatures,
+**per-decl** (some decls in the same file genuinely KEEP the strong hypothesis — do NOT blanket-relax; read
+each signature). Mandate this in relaxation-tide briefs. (Also: status/index docs — `brief`/`loop-prompt`/
+`priorities`/cards — read as LIVE; a phase-close must update ALL of them, not just `synthesis`/`threads`.)
+
+## L9 — Build-reaper under load: foreground green-gates, `.lake` persists across kills
+
+Under high box load (other sessions), DETACHED/background `scripts/lb` builds were repeatedly REAPED
+(status `killed`, not OOM — 21 GiB free). The fix that worked: **foreground `scripts/lb` with the long
+timeout**, and `.lake` olean progress PERSISTS across kills, so a killed build resumes on re-run (each run
+converges). Tides + controller green-gate in the foreground; re-run on kill; never trust a single-module
+green (the stale-olean trap masks relaxation gaps — full-aggregator gate every wave).
