@@ -35,5 +35,10 @@
 > - **Route.** Controller-relayed brief (the per-chart assembly wiring) + the reuse insight discovered
 >   in-thread: the genuinely-new JOINT recognition was already banked by the `(3,3,4)` anchor, so the inner
 >   heart is a 1-line reuse rather than a re-derivation via N2b.
-> - **Status.** sorry-free; `#print axioms = [propext, Classical.choice, Quot.sound]` (forced, olean-fresh).
->   Awaiting reviewer fidelity check.
+> - **Status.** sorry-free + **reviewed** (PASS). `#print axioms = [propext, Classical.choice, Quot.sound]`
+>   — independently re-verified by the reviewer under force-recompile (no sorry leak from the imported
+>   `RouteM334Ratiofin` closure). Fidelity confirmed: threshold genuinely `c' < 4` (the JOINT-SUM, not
+>   undershot to 2); non-vacuous; inner-heart defeq reuse kernel-accepted. **Reviewer note (non-blocking):**
+>   the bare name `core_schur3_lt_top` reads as general while corank-2 `core_schur2_lt_top` is general-`T`;
+>   the unit-box scope is front-loaded in the docstring + the signature takes no `T` arg, so the type is
+>   unambiguous — a `_unitBox` rename is optional, deferred to the controller's integration naming.
