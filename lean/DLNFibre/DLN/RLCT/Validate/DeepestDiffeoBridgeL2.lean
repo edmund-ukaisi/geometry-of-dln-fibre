@@ -225,6 +225,65 @@ noncomputable def l2Y1p (H : Fin (L + 1) → ℕ) (r : ℕ)
     + (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
       * (l2T1 H r hr hL q - l2T1p H r hr hL hL2eq q)
 
+/-! ### S4d — the intermediate matrices `K, R, U, W, S1, Br` (Codex route A, the `O(read²)` blocks)
+
+To prove the entrywise strict-`fderiv`-`0` of `T1' − T1` and `Y1' − Y1`, name the joint-action
+intermediates exactly as the `l2T1p`-`let`s (so `l2T1p_eq` is `rfl`): `K = Z1·P00⁻¹·Y0`,
+`R = Z1·A1⁻¹·A0⁻¹·Y0`, `U = Z1·A1⁻¹·Y1`, `W = 1 + R`, `S1 = T1 − U`, `Br = (1−K)·S1 + U + R·T1`. The
+algebra `T1' − T1 = (W⁻¹ − 1)·Br + (Br − T1)`, `Br − T1 = −(K·S1) + R·T1` (purely additive) reduces the
+derivative to the `O(read²)` blocks (`K`, `R`, `W⁻¹ − 1`), each strict-`fderiv`-`0`. -/
+
+/-- `K = Z1·P00⁻¹·Y0` (the `(1,1)`-block Schur correction; `O(read²)`, both outer reads vanish at `0`). -/
+noncomputable def l2K (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+      (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
+  l2Z1 H r hr hL q * (l2P00 H r hr hL hL2eq q)⁻¹ * l2Y0 H r hr hL hL2eq q
+
+/-- `R = Z1·A1⁻¹·A0⁻¹·Y0 = W − 1` (`O(read²)`, both outer reads vanish at `0`). -/
+noncomputable def l2R (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
+  l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹ * (l2A0 H r hr hL q)⁻¹ * l2Y0 H r hr hL hL2eq q
+
+/-- `U = Z1·A1⁻¹·Y1` (`O(read²)`). -/
+noncomputable def l2U (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹ * l2Y1 H r hr hL q
+
+/-- `W = 1 + R` (`W 0 = 1`; the joint-action denominator). -/
+noncomputable def l2W (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
+  1 + l2R H r hr hL hL2eq q
+
+/-- `S1 = T1 − U`. -/
+noncomputable def l2S1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  l2T1 H r hr hL q - l2U H r hr hL q
+
+/-- `Br = (1 − K)·S1 + U + R·T1` (the `W⁻¹`-bracket; `l2T1p = W⁻¹·Br`). -/
+noncomputable def l2Br (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  (1 - l2K H r hr hL hL2eq q) * l2S1 H r hr hL q + l2U H r hr hL q
+    + l2R H r hr hL hL2eq q * l2T1 H r hr hL q
+
+/-- `l2T1p = W⁻¹·Br` (`rfl` — `l2K/l2R/l2U/l2W/l2S1/l2Br` are exactly `l2T1p`'s `let` bodies). -/
+theorem l2T1p_eq_Winv_Br (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2T1p H r hr hL hL2eq q
+      = (l2W H r hr hL hL2eq q)⁻¹ * l2Br H r hr hL hL2eq q := rfl
+
 /-- The edited reg/gauge function `g'` (the last-layer `Y`-tag set to `Y1'`, else `g`). -/
 noncomputable def l2g' (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
@@ -387,6 +446,64 @@ theorem hasStrictFDerivAt_matrix_triple_mul_entry_zero
 
 end MatrixEntryDeriv
 
+/-! ### S4a' — `ContDiffAt` matrix inverse for families whose entries are only `ContDiffAt`
+
+The banked `contDiffAt_matrix_inv_entry_of_det_ne_zero` requires GLOBALLY `ContDiff` entries; that suffices
+for `A0⁻¹/A1⁻¹/P00⁻¹` (their entries are global), but NOT for `W⁻¹` (whose `W = 1 + Z1·A1⁻¹·A0⁻¹·Y0`
+already contains `A1⁻¹/A0⁻¹`, only `ContDiffAt`). The `_at` variants below mirror the global proofs with
+`ContDiffAt`. -/
+
+section EntrywiseInvAt
+variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The determinant of an entrywise-`ContDiffAt` matrix family is `ContDiffAt x`. -/
+theorem contDiffAt_matrix_det_of_entries {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).det) x := by
+  have heq : (fun y => (A y).det)
+      = fun y => ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ i, A y (σ i) i := by
+    funext y; rw [Matrix.det_apply]
+  rw [heq]
+  refine ContDiffAt.sum (fun σ _ => ?_)
+  refine ContDiffAt.const_smul _ ?_
+  exact contDiffAt_prod (fun i _ => hA (σ i) i)
+
+/-- Each adjugate entry of an entrywise-`ContDiffAt` matrix family is `ContDiffAt x`. -/
+theorem contDiffAt_matrix_adjugate_entry_of_entries {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).adjugate i j) x := by
+  have heq : (fun y => (A y).adjugate i j)
+      = fun y => ((A y).updateRow j (Pi.single i 1)).det := by
+    funext y; rw [Matrix.adjugate_apply]
+  rw [heq]
+  refine contDiffAt_matrix_det_of_entries (fun a b => ?_)
+  by_cases hab : a = j
+  · subst hab
+    have : (fun y => ((A y).updateRow a (Pi.single i 1)) a b)
+        = fun _ : X => (Pi.single i (1 : ℝ) : n → ℝ) b := by
+      funext y; rw [Matrix.updateRow_self]
+    rw [this]; exact contDiffAt_const
+  · have : (fun y => ((A y).updateRow j (Pi.single i 1)) a b) = fun y => A y a b := by
+      funext y; rw [Matrix.updateRow_ne hab]
+    rw [this]; exact hA a b
+
+/-- Each entry of `(A y)⁻¹` is `ContDiffAt x` when the entries are `ContDiffAt x` and `det (A x) ≠ 0`. -/
+theorem contDiffAt_matrix_inv_entry_of_det_ne_zero_at {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x)
+    (hdet : (A x).det ≠ 0) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y)⁻¹ i j) x := by
+  have hentry : (fun y => (A y)⁻¹ i j)
+      = fun y => (A y).det⁻¹ * (A y).adjugate i j := by
+    funext y
+    rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]
+  rw [hentry]
+  have hdetinv : ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).det⁻¹) x :=
+    (contDiffAt_matrix_det_of_entries hA).inv hdet
+  exact hdetinv.mul (contDiffAt_matrix_adjugate_entry_of_entries hA i j)
+
+end EntrywiseInvAt
+
 /-- **`paramsEquivFlat.symm` sends the zero flat-core to the zero core tuple.** -/
 theorem paramsEquivFlat_symm_zero (M : Fin (L + 1) → ℕ) :
     (paramsEquivFlat M).symm (0 : Fin (flatDim M) → ℝ) = (fun _ => 0 : Params M) := by
@@ -439,6 +556,431 @@ theorem l2T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) (lastLayer hL) = 0
   rw [show ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) = 0 from rfl,
     paramsEquivFlat_symm_zero]
+
+/-! ### S4c — entrywise `ContDiffAt` of the named matrices as functions of `q` (the partner inputs)
+
+The matrix-entry strict-`fderiv`-`0` helpers (S4a) need the NON-vanishing partner factor to be
+`ContDiffAt` (and the inverse factors `A0⁻¹/A1⁻¹/P00⁻¹/W⁻¹` smooth where their dets are nonzero, which
+holds at `q = 0` where every read vanishes so `A0 = A1 = W = P00 = 1`). The reads (`l2A0/A1/Y0/Z1/Y1`)
+are globally `ContDiff` (gauge reads composed with the `q ↦ (q.1, q.2.2)` projection), and `l2T1`
+(=`coreLast`) is `ContDiff` (`contDiff_coreRead_entry`). The inverses are `ContDiffAt` at `0` by the
+banked `contDiffAt_matrix_inv_entry_of_det_ne_zero`. -/
+
+/-- The gauge-slot projection `q ↦ (q.1, q.2.2)` is `ContDiff` (the reads compose with it). -/
+theorem contDiff_gaugeProj (H : Fin (L + 1) → ℕ) (r : ℕ) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      ((q.1, q.2.2) : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) :=
+  contDiff_fst.prodMk (contDiff_snd.snd)
+
+/-- Each `l2A0` entry is globally `ContDiff` (`1 + readX_0` via the projection). -/
+theorem contDiff_l2A0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A0 H r hr hL q i j) := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2A0 H r hr hL q i j)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
+          + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i j := by
+    funext q; rw [l2A0, Matrix.add_apply]
+  rw [heq]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL (⟨0, by omega⟩ : Fin L) i j).comp
+    (contDiff_gaugeProj H r))
+
+/-- Each `l2A1` entry is globally `ContDiff`. -/
+theorem contDiff_l2A1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A1 H r hr hL q i j) := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2A1 H r hr hL q i j)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
+          + readX H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+    funext q; rw [l2A1, Matrix.add_apply]
+  rw [heq]
+  exact contDiff_const.add ((contDiff_readX_entry H r hr hL (lastLayer hL) i j).comp
+    (contDiff_gaugeProj H r))
+
+/-- Each `l2Y0` entry is globally `ContDiff` (`readY_0` reindexed; a `submatrix` of a `ContDiff` read). -/
+theorem contDiff_l2Y0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y0 H r hr hL hL2eq q i j) := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2Y0 H r hr hL hL2eq q i j)
+      = fun q => readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i
+          ((finCongr (midWidth_eq_of_L2 H r hL hL2eq)).symm j) := by
+    funext q
+    rw [l2Y0, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply]
+  rw [heq]
+  exact (contDiff_readY_entry H r hr hL (⟨0, by omega⟩ : Fin L) i _).comp (contDiff_gaugeProj H r)
+
+/-- Each `l2Z1` entry is globally `ContDiff`. -/
+theorem contDiff_l2Z1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Z1 H r hr hL q i j) :=
+  (contDiff_readZ_entry H r hr hL (lastLayer hL) i j).comp (contDiff_gaugeProj H r)
+
+/-- Each `l2Y1` entry is globally `ContDiff`. -/
+theorem contDiff_l2Y1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y1 H r hr hL q i j) :=
+  (contDiff_readY_entry H r hr hL (lastLayer hL) i j).comp (contDiff_gaugeProj H r)
+
+/-- Each `l2T1` (=`coreLast`) entry is globally `ContDiff` (`contDiff_coreRead_entry`). -/
+theorem contDiff_l2T1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2T1 H r hr hL q i j) :=
+  contDiff_coreRead_entry H r hr hL (lastLayer hL) i j
+
+/-! ### S4e — the intermediate matrices at the split origin (`P00 = W = 1`, `K = R = U = S1 = Br = 0`)
+
+At `q = 0` every read vanishes (S4b), so `A0 = A1 = 1` and `Y0 = Z1 = Y1 = T1 = 0`. Hence the products
+`K = Z1·P00⁻¹·Y0`, `R = Z1·…·Y0`, `U = Z1·A1⁻¹·Y1` all vanish (a vanishing outer read), `P00 = W = 1`,
+`S1 = T1 − U = 0`, `Br = (1−K)·S1 + U + R·T1 = 0`, and `T1' = W⁻¹·Br = 0`. -/
+
+/-- `P00 = 1` at the origin. -/
+theorem l2P00_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2P00 H r hr hL hL2eq 0 = 1 := by
+  rw [l2P00, l2A0_zero, l2A1_zero, l2Y0_zero, l2Z1_zero, Matrix.one_mul,
+    Matrix.mul_zero, add_zero]
+
+/-- `det (P00 0) ≠ 0` (it is `1`). -/
+theorem l2P00_det_zero_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    (l2P00 H r hr hL hL2eq 0).det ≠ 0 := by
+  rw [l2P00_zero, Matrix.det_one]; exact one_ne_zero
+
+/-- `det (A0 0) ≠ 0`. -/
+theorem l2A0_det_zero_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (l2A0 H r hr hL 0).det ≠ 0 := by
+  rw [l2A0_zero, Matrix.det_one]; exact one_ne_zero
+
+/-- `det (A1 0) ≠ 0`. -/
+theorem l2A1_det_zero_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    (l2A1 H r hr hL 0).det ≠ 0 := by
+  rw [l2A1_zero, Matrix.det_one]; exact one_ne_zero
+
+/-- `K = 0` at the origin (`Z1 0 = 0`). -/
+theorem l2K_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2K H r hr hL hL2eq 0 = 0 := by
+  rw [l2K, l2Z1_zero, Matrix.zero_mul, Matrix.zero_mul]
+
+/-- `R = 0` at the origin. -/
+theorem l2R_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2R H r hr hL hL2eq 0 = 0 := by
+  rw [l2R, l2Z1_zero, Matrix.zero_mul, Matrix.zero_mul, Matrix.zero_mul]
+
+/-- `U = 0` at the origin. -/
+theorem l2U_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    l2U H r hr hL 0 = 0 := by
+  rw [l2U, l2Z1_zero, Matrix.zero_mul, Matrix.zero_mul]
+
+/-- `W = 1` at the origin. -/
+theorem l2W_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2W H r hr hL hL2eq 0 = 1 := by
+  rw [l2W, l2R_zero, add_zero]
+
+/-- `det (W 0) ≠ 0`. -/
+theorem l2W_det_zero_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    (l2W H r hr hL hL2eq 0).det ≠ 0 := by
+  rw [l2W_zero, Matrix.det_one]; exact one_ne_zero
+
+/-- `S1 = 0` at the origin. -/
+theorem l2S1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    l2S1 H r hr hL 0 = 0 := by
+  rw [l2S1, l2T1_zero, l2U_zero, sub_zero]
+
+/-- `Br = 0` at the origin (each summand carries a vanishing factor). -/
+theorem l2Br_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2Br H r hr hL hL2eq 0 = 0 := by
+  rw [l2Br, l2S1_zero, l2U_zero, l2R_zero, Matrix.mul_zero, Matrix.zero_mul,
+    add_zero, add_zero]
+
+/-- `T1' = 0` at the origin (`W⁻¹·Br = W⁻¹·0 = 0`). -/
+theorem l2T1p_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2T1p H r hr hL hL2eq 0 = 0 := by
+  rw [l2T1p_eq_Winv_Br, l2Br_zero, Matrix.mul_zero]
+
+/-! ### S4f — entrywise `ContDiffAt` at the origin of the inverse and compound matrices
+
+The non-vanishing partner factors in the entry helpers (S4a) must be `ContDiffAt 0`. The inverses
+`A0⁻¹/A1⁻¹/P00⁻¹/W⁻¹` are `ContDiffAt 0` (det `= 1 ≠ 0` there); the compound matrices `K/R/U/S1/Br`
+are sums/products of those with the globally-`ContDiff` reads. -/
+
+/-- Each `A0⁻¹` entry is `ContDiffAt 0` (det `A0 0 = 1 ≠ 0`). -/
+theorem contDiffAt_l2A0_inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A0 H r hr hL q)⁻¹ i j) 0 :=
+  contDiffAt_matrix_inv_entry_of_det_ne_zero (fun a b => contDiff_l2A0_entry H r hr hL a b)
+    (l2A0_det_zero_ne H r hr hL) i j
+
+/-- Each `A1⁻¹` entry is `ContDiffAt 0`. -/
+theorem contDiffAt_l2A1_inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2A1 H r hr hL q)⁻¹ i j) 0 :=
+  contDiffAt_matrix_inv_entry_of_det_ne_zero (fun a b => contDiff_l2A1_entry H r hr hL a b)
+    (l2A1_det_zero_ne H r hr hL) i j
+
+/-- Each `P00` entry is globally `ContDiff` (`A0·A1 + Y0·Z1`, products of `ContDiff` entries). -/
+theorem contDiff_l2P00_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) (i j : Fin r) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q => l2P00 H r hr hL hL2eq q i j) := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2P00 H r hr hL hL2eq q i j)
+      = fun q => (l2A0 H r hr hL q * l2A1 H r hr hL q) i j
+          + (l2Y0 H r hr hL hL2eq q * l2Z1 H r hr hL q) i j := by
+    funext q; rw [l2P00, Matrix.add_apply]
+  rw [heq]
+  refine ContDiff.add ?_ ?_
+  · rw [contDiff_iff_contDiffAt]; intro x
+    exact contDiffAt_matrix_mul_entry (fun a k => (contDiff_l2A0_entry H r hr hL a k).contDiffAt)
+      (fun k b => (contDiff_l2A1_entry H r hr hL k b).contDiffAt) i j
+  · rw [contDiff_iff_contDiffAt]; intro x
+    exact contDiffAt_matrix_mul_entry
+      (fun a k => (contDiff_l2Y0_entry H r hr hL hL2eq a k).contDiffAt)
+      (fun k b => (contDiff_l2Z1_entry H r hr hL k b).contDiffAt) i j
+
+/-- Each `P00⁻¹` entry is `ContDiffAt 0`. -/
+theorem contDiffAt_l2P00_inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2P00 H r hr hL hL2eq q)⁻¹ i j) 0 :=
+  contDiffAt_matrix_inv_entry_of_det_ne_zero (fun a b => contDiff_l2P00_entry H r hr hL hL2eq a b)
+    (l2P00_det_zero_ne H r hr hL hL2eq) i j
+
+/-- Each `R` entry is `ContDiffAt 0` (`Z1·A1⁻¹·A0⁻¹·Y0`; reads `ContDiff`, inverses `ContDiffAt 0`). -/
+theorem contDiffAt_l2R_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2R H r hr hL hL2eq q i j) 0 := by
+  have hZA1 : ∀ a k, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹) a k) 0 := fun a k =>
+    contDiffAt_matrix_mul_entry (fun a' k' => (contDiff_l2Z1_entry H r hr hL a' k').contDiffAt)
+      (fun k' j' => contDiffAt_l2A1_inv_entry H r hr hL k' j') a k
+  have hZA1A0 : ∀ a k, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹ * (l2A0 H r hr hL q)⁻¹) a k) 0 := fun a k =>
+    contDiffAt_matrix_mul_entry hZA1 (fun k' j' => contDiffAt_l2A0_inv_entry H r hr hL k' j') a k
+  exact contDiffAt_matrix_mul_entry hZA1A0
+    (fun k' j' => (contDiff_l2Y0_entry H r hr hL hL2eq k' j').contDiffAt) i j
+
+/-- Each `U` entry is `ContDiffAt 0` (`Z1·A1⁻¹·Y1`). -/
+theorem contDiffAt_l2U_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2U H r hr hL q i j) 0 := by
+  have hZA1 : ∀ a k, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (l2Z1 H r hr hL q * (l2A1 H r hr hL q)⁻¹) a k) 0 := fun a k =>
+    contDiffAt_matrix_mul_entry (fun a' k' => (contDiff_l2Z1_entry H r hr hL a' k').contDiffAt)
+      (fun k' j' => contDiffAt_l2A1_inv_entry H r hr hL k' j') a k
+  exact contDiffAt_matrix_mul_entry hZA1
+    (fun k' j' => (contDiff_l2Y1_entry H r hr hL k' j').contDiffAt) i j
+
+/-- Each `K` entry is `ContDiffAt 0` (`Z1·P00⁻¹·Y0`). -/
+theorem contDiffAt_l2K_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2K H r hr hL hL2eq q i j) 0 := by
+  have hZP : ∀ a k, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (l2Z1 H r hr hL q * (l2P00 H r hr hL hL2eq q)⁻¹) a k) 0 := fun a k =>
+    contDiffAt_matrix_mul_entry (fun a' k' => (contDiff_l2Z1_entry H r hr hL a' k').contDiffAt)
+      (fun k' j' => contDiffAt_l2P00_inv_entry H r hr hL hL2eq k' j') a k
+  exact contDiffAt_matrix_mul_entry hZP
+    (fun k' j' => (contDiff_l2Y0_entry H r hr hL hL2eq k' j').contDiffAt) i j
+
+/-- Each `S1` entry is `ContDiffAt 0` (`T1 − U`). -/
+theorem contDiffAt_l2S1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2S1 H r hr hL q i j) 0 := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2S1 H r hr hL q i j)
+      = fun q => l2T1 H r hr hL q i j - l2U H r hr hL q i j := by
+    funext q; rw [l2S1, Matrix.sub_apply]
+  rw [heq]
+  exact (contDiff_l2T1_entry H r hr hL i j).contDiffAt.sub (contDiffAt_l2U_entry H r hr hL i j)
+
+/-- Each `(1−K)` entry is `ContDiffAt 0`. -/
+theorem contDiffAt_l2OneSubK_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (a k : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (1 - l2K H r hr hL hL2eq q) a k) 0 := by
+  have hsub : (fun q : DeepestSplit H r (deepestNGauge H r) => (1 - l2K H r hr hL hL2eq q) a k)
+      = fun q => (1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+          (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ) a k - l2K H r hr hL hL2eq q a k := by
+    funext q; rw [Matrix.sub_apply]
+  rw [hsub]
+  exact contDiffAt_const.sub (contDiffAt_l2K_entry H r hr hL hL2eq a k)
+
+/-- Each `(1−K)·S1` entry is `ContDiffAt 0`. -/
+theorem contDiffAt_l2OneSubK_mul_S1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (((1 - l2K H r hr hL hL2eq q) * l2S1 H r hr hL q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j) 0 :=
+  contDiffAt_matrix_mul_entry
+    (A := fun q : DeepestSplit H r (deepestNGauge H r) => 1 - l2K H r hr hL hL2eq q)
+    (B := fun q : DeepestSplit H r (deepestNGauge H r) => l2S1 H r hr hL q)
+    (fun a k => contDiffAt_l2OneSubK_entry H r hr hL hL2eq a k)
+    (fun k b => contDiffAt_l2S1_entry H r hr hL k b) i j
+
+/-- Each `R·T1` entry is `ContDiffAt 0`. -/
+theorem contDiffAt_l2R_mul_T1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        ((l2R H r hr hL hL2eq q * l2T1 H r hr hL q :
+          Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j) 0 :=
+  contDiffAt_matrix_mul_entry
+    (A := fun q : DeepestSplit H r (deepestNGauge H r) => l2R H r hr hL hL2eq q)
+    (B := fun q : DeepestSplit H r (deepestNGauge H r) => l2T1 H r hr hL q)
+    (fun a k => contDiffAt_l2R_entry H r hr hL hL2eq a k)
+    (fun k b => (contDiff_l2T1_entry H r hr hL k b).contDiffAt) i j
+
+/-- Each `Br` entry is `ContDiffAt 0` (`(1−K)·S1 + U + R·T1`). -/
+theorem contDiffAt_l2Br_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => l2Br H r hr hL hL2eq q i j) 0 := by
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2Br H r hr hL hL2eq q i j)
+      = fun q => (((1 - l2K H r hr hL hL2eq q) * l2S1 H r hr hL q :
+            Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+              (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j
+          + l2U H r hr hL q i j
+          + ((l2R H r hr hL hL2eq q * l2T1 H r hr hL q :
+            Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+              (Fin (deepestM H r (lastLayer hL).succ)) ℝ)) i j := by
+    funext q; rw [l2Br, Matrix.add_apply, Matrix.add_apply]
+  rw [heq]
+  exact ((contDiffAt_l2OneSubK_mul_S1_entry H r hr hL hL2eq i j).add
+    (contDiffAt_l2U_entry H r hr hL i j)).add (contDiffAt_l2R_mul_T1_entry H r hr hL hL2eq i j)
+
+/-- Each `W⁻¹` entry is `ContDiffAt 0` (the `_at` inverse variant — `W` carries `A0⁻¹/A1⁻¹`). -/
+theorem contDiffAt_l2W_inv_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2W H r hr hL hL2eq q)⁻¹ i j) 0 := by
+  refine contDiffAt_matrix_inv_entry_of_det_ne_zero_at (fun a b => ?_)
+    (l2W_det_zero_ne H r hr hL hL2eq) i j
+  have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2W H r hr hL hL2eq q a b)
+      = fun q => (1 : Matrix _ _ ℝ) a b + l2R H r hr hL hL2eq q a b := by
+    funext q; rw [l2W, Matrix.add_apply]
+  rw [heq]
+  exact contDiffAt_const.add (contDiffAt_l2R_entry H r hr hL hL2eq a b)
+
+/-! ### S4g — the `O(read²)` strict-`fderiv`-`0` blocks (`K`, `R`, `W⁻¹ − 1`)
+
+The genuine higher-order vanishing: `K = Z1·P00⁻¹·Y0` and `R = Z1·A1⁻¹·A0⁻¹·Y0` are triple products
+with the two outer READS (`Z1`, `Y0`) vanishing at `0`, so each entry has strict-`fderiv`-`0` (the
+triple helper; the inner factors merely `ContDiffAt`). `W⁻¹ − 1 = −(W⁻¹·R)` on `{det W ≠ 0}` (a nbhd of
+`0`), and `R` value+deriv vanish, so `W⁻¹ − 1` is strict-`fderiv`-`0` (right-zero helper + `eventuallyEq`). -/
+
+/-- Each `K` entry has strict-`fderiv`-`0` at `0` (`Z1·(P00⁻¹)·Y0`, outer reads `Z1`,`Y0` vanish). -/
+theorem hasStrictFDerivAt_l2K_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => l2K H r hr hL hL2eq q i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+  hasStrictFDerivAt_matrix_triple_mul_entry_zero
+    (A := fun q => l2Z1 H r hr hL q) (B := fun q => (l2P00 H r hr hL hL2eq q)⁻¹)
+    (C := fun q => l2Y0 H r hr hL hL2eq q) i j
+    (fun a b => (contDiff_l2Z1_entry H r hr hL a b).contDiffAt)
+    (fun a b => contDiffAt_l2P00_inv_entry H r hr hL hL2eq a b)
+    (fun a b => (contDiff_l2Y0_entry H r hr hL hL2eq a b).contDiffAt)
+    (fun a b => by simp only [l2Z1_zero, Matrix.zero_apply])
+    (fun a b => by simp only [l2Y0_zero, Matrix.zero_apply])
+
+/-- Each `R` entry has strict-`fderiv`-`0` at `0` (`Z1·(A1⁻¹·A0⁻¹)·Y0`, outer reads vanish). -/
+theorem hasStrictFDerivAt_l2R_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => l2R H r hr hL hL2eq q i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  -- Regroup `Z1·A1⁻¹·A0⁻¹·Y0 = Z1·(A1⁻¹·A0⁻¹)·Y0` (triple, middle `A1⁻¹·A0⁻¹`).
+  have hmid : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => ((l2A1 H r hr hL q)⁻¹ * (l2A0 H r hr hL q)⁻¹) a b) 0 := fun a b =>
+    contDiffAt_matrix_mul_entry (fun a' k' => contDiffAt_l2A1_inv_entry H r hr hL a' k')
+      (fun k' b' => contDiffAt_l2A0_inv_entry H r hr hL k' b') a b
+  have hbase := hasStrictFDerivAt_matrix_triple_mul_entry_zero
+    (A := fun q => l2Z1 H r hr hL q)
+    (B := fun q => (l2A1 H r hr hL q)⁻¹ * (l2A0 H r hr hL q)⁻¹)
+    (C := fun q => l2Y0 H r hr hL hL2eq q) i j
+    (fun a b => (contDiff_l2Z1_entry H r hr hL a b).contDiffAt) hmid
+    (fun a b => (contDiff_l2Y0_entry H r hr hL hL2eq a b).contDiffAt)
+    (fun a b => by simp only [l2Z1_zero, Matrix.zero_apply])
+    (fun a b => by simp only [l2Y0_zero, Matrix.zero_apply])
+  -- `Z1·(A1⁻¹·A0⁻¹)·Y0 = Z1·A1⁻¹·A0⁻¹·Y0 = R` entrywise (left-assoc associativity).
+  refine hbase.congr_of_eventuallyEq ?_
+  filter_upwards with q
+  show ((l2Z1 H r hr hL q * ((l2A1 H r hr hL q)⁻¹ * (l2A0 H r hr hL q)⁻¹))
+      * l2Y0 H r hr hL hL2eq q) i j = l2R H r hr hL hL2eq q i j
+  rw [l2R, ← Matrix.mul_assoc]
+
+/-- `W⁻¹ − 1 = −(W⁻¹·R)` on `{det W ≠ 0}` (`nonsing_inv_mul`: `W⁻¹·W = 1`, `W = 1 + R`). -/
+theorem l2Winv_sub_one_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hdet : (l2W H r hr hL hL2eq q).det ≠ 0) :
+    (l2W H r hr hL hL2eq q)⁻¹ - 1 = -((l2W H r hr hL hL2eq q)⁻¹ * l2R H r hr hL hL2eq q) := by
+  have hWR : l2R H r hr hL hL2eq q = l2W H r hr hL hL2eq q - 1 := by
+    rw [l2W]; abel
+  have hinvmul : (l2W H r hr hL hL2eq q)⁻¹ * l2W H r hr hL hL2eq q = 1 :=
+    Matrix.nonsing_inv_mul _ (isUnit_iff_ne_zero.mpr hdet)
+  rw [hWR, Matrix.mul_sub, Matrix.mul_one, hinvmul, neg_sub]
+
+/-- Each `W⁻¹ − 1` entry has strict-`fderiv`-`0` at `0` (right-zero helper on `−(W⁻¹·R)`, `R` vanishes
+value+deriv; lifted by `eventuallyEq` on the open `{det W ≠ 0}`). -/
+theorem hasStrictFDerivAt_l2Winv_sub_one_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => ((l2W H r hr hL hL2eq q)⁻¹ - 1) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  -- The `−(W⁻¹·R)` entry has strict-deriv-`0` (right-zero helper: `R` value+deriv `0`, `W⁻¹` partner).
+  have hWR : HasStrictFDerivAt
+      (fun q => (-((l2W H r hr hL hL2eq q)⁻¹ * l2R H r hr hL hL2eq q)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+    have hmul : HasStrictFDerivAt
+        (fun q => ((l2W H r hr hL hL2eq q)⁻¹ * l2R H r hr hL hL2eq q) i j)
+        (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+      hasStrictFDerivAt_matrix_mul_entry_of_right_zero (i := i) (j := j)
+        (fun k => contDiffAt_l2W_inv_entry H r hr hL hL2eq i k)
+        (fun k => hasStrictFDerivAt_l2R_entry_zero H r hr hL hL2eq k j)
+        (fun k => by simp only [l2R_zero, Matrix.zero_apply])
+    have heq : (fun q => (-((l2W H r hr hL hL2eq q)⁻¹ * l2R H r hr hL hL2eq q)) i j)
+        = fun q => -(((l2W H r hr hL hL2eq q)⁻¹ * l2R H r hr hL hL2eq q) i j) := by
+      funext q; rw [Matrix.neg_apply]
+    rw [heq]
+    simpa using hmul.neg
+  -- On `{det W ≠ 0}` (a nbhd of `0` since `det W` is `ContDiffAt 0` and `det W 0 = 1 ≠ 0`),
+  -- `W⁻¹ − 1 = −(W⁻¹·R)`.
+  refine hWR.congr_of_eventuallyEq ?_
+  have hdetCD : ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (l2W H r hr hL hL2eq q).det) 0 := by
+    refine contDiffAt_matrix_det_of_entries (fun a b => ?_)
+    have heq : (fun q : DeepestSplit H r (deepestNGauge H r) => l2W H r hr hL hL2eq q a b)
+        = fun q => (1 : Matrix _ _ ℝ) a b + l2R H r hr hL hL2eq q a b := by
+      funext q; rw [l2W, Matrix.add_apply]
+    rw [heq]
+    exact contDiffAt_const.add (contDiffAt_l2R_entry H r hr hL hL2eq a b)
+  have hne : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      (l2W H r hr hL hL2eq q).det ≠ 0 := by
+    have hca : ContinuousAt (fun q => (l2W H r hr hL hL2eq q).det) 0 :=
+      hdetCD.continuousAt
+    have : (l2W H r hr hL hL2eq (0 : DeepestSplit H r (deepestNGauge H r))).det ≠ 0 :=
+      l2W_det_zero_ne H r hr hL hL2eq
+    exact hca.eventually_ne this
+  filter_upwards [hne] with q hq
+  rw [l2Winv_sub_one_eq H r hr hL hL2eq q hq]
 
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
