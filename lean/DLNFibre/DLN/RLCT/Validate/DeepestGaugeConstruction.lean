@@ -1793,7 +1793,7 @@ private theorem continuous_prod_symm (H : Fin (L + 1) → ℕ) :
 
 /-- `w ↦ reindex e₁ e₂ (P0·(prod((symm) w) − B)·QL)` is continuous (the conjugated residual,
 `continuous_prod_symm` + matrix algebra). The continuity input to the S5b leak smallness. -/
-private theorem continuous_Mw (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem continuous_Mw (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
     (P0 : Matrix (Fin (H 0)) (Fin (H 0)) ℝ)
     (QL : Matrix (Fin (H (Fin.last L))) (Fin (H (Fin.last L))) ℝ)
