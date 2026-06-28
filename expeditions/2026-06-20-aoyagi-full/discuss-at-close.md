@@ -875,3 +875,10 @@ IFT local-diffeo, the `rlctAtOn_diffeo_bridge_of` interface, the Core normalizer
   Watanabe `rlct ≤ ½·codim`** (the upper-bound half; the geometric codim is the new content either way) — but that's a
   citation the brief otherwise avoids, so flag it as the decision point if 3289 doesn't yield. This + N4's 3289-analogue are
   the two research-risk frontiers; everything else is bounded/landed.
+
+**Item 42 RESOLVED (2026-06-28):** genm-c3wire did the systematic deconfliction — 5 (3,3,4)-lineage renames + 1
+false-positive call — and AGGREGATED general-T corank-3 into the full `DLNFibre` build: green 8511 jobs, the
+two lineages co-exist, `core_schur3_lt_top`/`lintegral_matBox_smul` clean-three in the aggregated context.
+Integrated to canonical (`b515a412`). The cross-lineage co-aggregation WORKS — this de-risks the eventual
+final-headline aggregation (the concrete-anchor lineages can co-exist; the remaining aggregation cost is
+mechanical, demonstrated bounded). The mechanical-cost prediction held exactly.
