@@ -1981,6 +1981,75 @@ theorem e2_regPreserve {p1 p2 q1 : Type*} [Fintype p1] [Fintype q1] [DecidableEq
   -- `A0·Y1 + (Y0·T1 − Y0·T1') + Y0·T1' = A0·Y1 + Y0·T1`.
   rw [add_assoc, sub_add_cancel]
 
+/-! ### S6 sub-lemmas (the decomposition; assembly proven, two geometric subs sorried) -/
+
+theorem psiRawL2_split (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (x : Fin (flatDim H) → ℝ) :
+    deepestSplit H r hr hL (wstarL2 H r B hB hr hL) (psiRawL2 H r B hB hr hL J Pf Qf x)
+      = psiSplitRawL2 H r hr hL
+          (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x) := by
+  rw [psiRawL2, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).apply_symm_apply]
+
+theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
+      = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
+  sorry
+
+-- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
+-- inner ball (where coreAbsorb = honest Schur). [HARDEST: LDU + the framed Score dictionary]
+
+theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (Score : (Fin (flatDim H) → ℝ) → ℝ)
+    (hScoreDef : Score = fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+            * endpointQL H hL Qf)).toBlocks₂₂
+        - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+              * endpointQL H hL Qf)).toBlocks₂₁
+          * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+          * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
+    (x : Fin (flatDim H) → ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hq : q = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
+    (hball : psiSplitRawL2 H r hr hL q ∈ Metric.closedBall
+      (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn)) :
+    deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1 = Score x := by
+  sorry
+
+
 /-- **S6 — the eventual composition identity** `Φcore ∘ psiL2 =ᶠ[𝓝 wstar] Φscore`. The genuine
 geometric content of the bridge: near `wstar` the cutoff χ = 1 so `psiL2` is the honest joint Ψ; the
 reg term is fixed by E2 reg-preservation (`P00, P10` are `T1,Y1`-free, `P01' = P01` by the
@@ -2038,7 +2107,61 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
         (∑ i, (regStraighten (split x)).1 i ^ 2)
           + deepestCoreF H r (coreAbsorb (split x)).2.1) ∘ (psiL2 H r B hB hr hL J Pf Qf)
       =ᶠ[nhds wstar] Φscore := by
-  sorry
+
+  have hwstar' : wstarL2 H r B hB hr hL = wstar := by rw [wstarL2, hwstar]
+  -- (i) psiL2 = psiRawL2 near wstar.
+  have hgerm := psiL2_eventuallyEq_psiRawL2 H r B hB hr hL J Pf Qf wstar hwstar
+  -- (ii) the inner-ball germ: psiSplitRawL2 (split x) ∈ closedBall 0 rIn near wstar.
+  --   split (psiL2 x) → split (psiL2 wstar) = split wstar = 0; and on the germ = psiSplitRawL2 (split x).
+  have hcont : Continuous (fun x => deepestSplit H r hr hL (wstarL2 H r B hB hr hL)
+      (psiL2 H r B hB hr hL J Pf Qf x)) :=
+    (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).continuous.comp
+      (psiL2_contDiff H r B hB hr hL J Pf Qf).continuous
+  have hfix : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) (psiL2 H r B hB hr hL J Pf Qf wstar)
+      = 0 := by
+    rw [psiL2_fixpoint H r B hB hr hL J Pf Qf wstar hwstar, hwstar']
+    exact (deepestSplit_mp_basepoint H r hr hL wstar).2
+  have htend : Filter.Tendsto (fun x => deepestSplit H r hr hL (wstarL2 H r B hB hr hL)
+      (psiL2 H r B hB hr hL J Pf Qf x)) (nhds wstar) (nhds 0) := by
+    rw [← hfix]; exact hcont.continuousAt
+  have hballgerm : (fun x => deepestSplit H r hr hL (wstarL2 H r B hB hr hL)
+        (psiL2 H r B hB hr hL J Pf Qf x))
+      ⁻¹' Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn)
+      ∈ nhds wstar :=
+    htend (Metric.closedBall_mem_nhds 0 (cutoffBump H r hr hL).rIn_pos)
+  -- Combine the germs.
+  filter_upwards [hgerm, hballgerm] with x hx hxball
+  -- Reduce ∘ at x; rewrite psiL2 x = psiRawL2 x, split = deepestSplit.
+  show (∑ i, (regStraighten (split (psiL2 H r B hB hr hL J Pf Qf x))).1 i ^ 2)
+      + deepestCoreF H r (coreAbsorb (split (psiL2 H r B hB hr hL J Pf Qf x))).2.1 = Φscore x
+  rw [hx]
+  -- split (psiRawL2 x) = psiSplitRawL2 (split x).
+  have hsp : split (psiRawL2 H r B hB hr hL J Pf Qf x)
+      = psiSplitRawL2 H r hr hL (split x) := by
+    rw [hsplit, hsplit, ← wstarL2, psiRawL2_split H r B hB hr hL J Pf Qf x]
+  rw [hsp, hcoreabs, hΦscore]
+  -- The reg term: invariant under the joint move (sub-lemma 3 via hregval).
+  have hreg : (∑ i, (regStraighten (psiSplitRawL2 H r hr hL (split x))).1 i ^ 2)
+      = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
+    simp only [hregval]
+    exact deepestEFull_sq_sum_psiSplitRawL2_eq H r hr hL hL2eq J Pf Qf hPtri hQtri (split x)
+  -- The core term = Score x (sub-lemma 4 on the inner ball).
+  have hcore : deepestCoreF H r
+      (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x := by
+    have hqeq : split x
+        = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x := by
+      rw [hsplit]
+    have hxball' : psiSplitRawL2 H r hr hL (split x) ∈ Metric.closedBall
+        (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn) := by
+      have h2 := hxball
+      simp only [Set.mem_preimage] at h2
+      rw [hx, psiRawL2_split H r B hB hr hL J Pf Qf x] at h2
+      have hsx : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x = split x := by
+        rw [hsplit, wstarL2]
+      rwa [hsx] at h2
+    exact deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score H r B hB hr hL hL2eq J Pf Qf
+      hPtri hQtri Score hScoreDef x (split x) hqeq hxball'
+  rw [hreg, hcore]
 
 /-- **FINAL — the L=2 diffeo bridge** (the content of `deepest_diffeo_bridge_L2`). Signature is
 `DeepestGaugeConstruction.lean:2853` PLUS the two triangularity hypotheses `hPtri`/`hQtri` (the
