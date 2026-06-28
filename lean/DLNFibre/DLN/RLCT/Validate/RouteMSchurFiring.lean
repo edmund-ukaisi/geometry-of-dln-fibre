@@ -594,6 +594,24 @@ theorem frobSqGenJoint_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) :
   rw [hcomp, flatGenJointEquiv_apply, eval_corePolyGen] at hq
   exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hq)
 
+/-! ### The pivot-(0,0) Schur readback `Sc = M22 − M21·M12` (the carving's algebra, `m`-ambient)
+
+The N2b (`j = 1`) Schur complement at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ` (`R 0 0 = 1`):
+`M11 = [1]` (`1×1`), so `M11⁻¹ = [1]` EXACTLY, and `Sc = M22 − M21·M12` is the entrywise outer-product
+de-shift `Sc a b = R a.succ b.succ − R a.succ 0 · R 0 b.succ`. Parametrising by `m` (ambient `Fin (m+1)`)
+dodges the `Fin r` `0`/`succ` cast-friction (Codex's mitigation). -/
+
+/-- The `1×1` top-left minor of a `(0,0)`-pivot matrix is the identity, so its inverse is the identity. -/
+theorem pivotMinor_inv_one {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ) (h00 : R 0 0 = 1) :
+    (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+  have h1 : (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))
+      = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
+    ext i j; fin_cases i; fin_cases j
+    show R ⟨0, by omega⟩ ⟨0, by omega⟩ = (1 : Matrix (Fin 1) (Fin 1) ℝ) 0 0
+    rw [Matrix.one_apply_eq]; convert h00 using 2
+  rw [h1, inv_one]
+
 /-! ### The carving core — the residual translate-domination into the abstract lower IH
 
 After N2b (`j = 1`) + the shifted `Fin 4` Morse peel, the corank-`r` ratio-residual reduces to the
