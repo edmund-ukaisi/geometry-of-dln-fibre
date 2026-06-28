@@ -391,6 +391,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteM121Smeared
 -- (subBox231 bounded away from det P₁=0 + the pole). Atom `routeM231sm_box_diverges` S2-FREE (|u_p|^{minAdm−1−2c'}
 -- over (0,δ), exp ≤ −1 ⟺ c≥minAdm/2=1, via the 1D abs_rpow first principle). Exercises the radial leg.
 import DLNFibre.DLN.RLCT.Validate.RouteM231Smeared
+-- SMEARED minAdm≥2 validate-small — (1,3,2) (minAdm=2), the THIRD (r,c) family shape (1,2): scalar Gram
+-- (`lam132=[u1/u0,u2/u0]`, NO matrix inverse, the (1,2,1) pattern) + multi-column radial (the (2,3,1) pattern,
+-- `R132=pivotBlowupOn{3,4}`, `|det|=|u3|¹`). Atom `routeM132sm_box_diverges` via the reusable RadialMPChart,
+-- S2-FREE. The 46 smeared M reduce to exactly 3 (r,c) families (all r·c≤2) — (1,1)/(2,1)/(1,2) — now all
+-- templated: RouteM121Smeared/RouteM231Smeared/RouteM132Smeared. ∀M-smeared lift = parametrize each family.
+import DLNFibre.DLN.RLCT.Validate.RouteM132Smeared
 import DLNFibre.DLN.RLCT.Foundations.S1RadialMorse
 import DLNFibre.DLN.RLCT.Validate.MatMulFibre
 import DLNFibre.DLN.RLCT.Validate.RouteM4422Hfin
