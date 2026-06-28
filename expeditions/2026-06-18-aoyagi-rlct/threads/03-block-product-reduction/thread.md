@@ -13957,3 +13957,38 @@ This is fixed-base source-family plumbing only.  It does not transport
 `edgeMatrix` or `sourceReadback`, prove fixed-base realization for transported
 explicit Case 2 data, compare source priors or Jacobians, prove normal
 crossings, pole order, or RLCT.
+
+## 2026-06-28 A2 Case 2 endpoint-transport source-edge-family pre-measure inputs
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+Review:
+`review-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`,
+PASS by xhigh read-only reviewer `Mill`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+Given supplied endpoint equivalences from the displayed Case 2 two-edge
+endpoint family to the fixed-base retained-passive endpoint family, the theorem
+builds the fixed-base source chart from the endpoint-transported explicit Case
+2 retained-passive datum.  It returns local-source membership and the
+source-readback selected-entry residual-factor matrix identity.
+
+The theorem lives in the Case 2 leaf bridge, not in the generic
+`RetainedPassiveLocalMeasure.lean`, so the generic source-family bridge remains
+Case2-free.  It still does not construct the endpoint equivalences, prove
+standalone endpoint transport of `edgeMatrix` or `sourceReadback`, compare
+source priors or Jacobians, prove positivity/integrability, normal crossings,
+pole order, or RLCT.

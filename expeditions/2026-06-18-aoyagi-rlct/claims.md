@@ -140,6 +140,18 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 endpoint-transport source-family
+  pre-measure inputs, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData`
+  in `RetainedPassiveCase2LocalJacobianMeasure.lean`.  Given supplied endpoint
+  equivalences from the displayed Case 2 two-edge endpoint family to the
+  fixed-base retained-passive endpoint family, the theorem builds the
+  source-family chart from the endpoint-transported explicit Case 2 datum and
+  returns local-source membership plus the source-readback selected-entry
+  residual-factor matrix identity.  It does not construct the endpoint
+  equivalences, transport `edgeMatrix` or `sourceReadback` as standalone
+  operations, prove source-prior pushforward, Jacobian density comparison,
+  positivity/integrability, normal crossings, pole order, or RLCT.
 - **Current status addendum, source-edge-family pre-measure specialization,
   2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData`,

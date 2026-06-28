@@ -48,6 +48,53 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Endpoint-Transport Source-Family Pre-Measure Inputs
+
+The endpoint-transported explicit Case 2 retained-passive datum now feeds the
+fixed-base source-family pre-measure bridge:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+This theorem lives in the Case 2 leaf bridge
+`RetainedPassiveCase2LocalJacobianMeasure.lean`, not in the generic
+`RetainedPassiveLocalMeasure.lean`.  It keeps the generic file Case2-free while
+making the Case 2 composition available to downstream local-measure work.
+
+The source chart is
+
+```text
+sourceChart yNext =
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+    W₂ B₂ U₀ hU₀
+    ((case2PostPivotSelectedEntryRetainedPassiveData ... yNext eNext)
+      .endpointTransport e).
+```
+
+The theorem assumes the endpoint equivalences `eNext` and `e`; it does not
+construct them.  The proof applies the generic source-edge-family bridge at
+`M = 1`, with determinant-chart input from
+`case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart` and
+stored-factor input from
+`case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with the
+existing imported warning profile.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`,
+PASS by xhigh `Mill`.
+
+This does not prove endpoint-equivalence construction, arbitrary-depth endpoint
+transport, original source-prior pushforward, Jacobian density comparison,
+positivity, integrability, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Source-Edge-Family Pre-Measure Inputs
 
 The generic fixed-base retained-passive pre-measure input bridge now has the

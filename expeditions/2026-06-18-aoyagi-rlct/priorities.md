@@ -19,6 +19,36 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, Case 2 endpoint-transport source-family pre-measure inputs
+
+The two-edge Case 2 endpoint-transport source-family wrapper is now proved in
+the Case 2 leaf bridge:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+```
+
+Given supplied endpoint equivalences from
+`case2PostPivotTwoEdgeDomain n S J τ` to the fixed-base
+`throughSubspaceEndpointComplementIndex`, the theorem builds the source chart
+from the endpoint-transported explicit Case 2 retained-passive datum and returns
+both local-source membership and the source-readback selected-entry
+residual-factor matrix identity.  The proof specializes the generic
+source-edge-family pre-measure bridge at `M = 1`, using the already-proved
+transported determinant-chart and stored-`C` readout lemmas.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+Xhigh read-only review by `Mill` passed at
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-source-edge-family-premeasure-inputs.md`.
+
+This is not construction of the endpoint equivalences and not standalone
+transport of `edgeMatrix` or `sourceReadback`.  It does not prove original
+source-prior pushforward, Jacobian density comparison, positivity,
+integrability, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, source-edge-family pre-measure specialization
 
 The fixed-base retained-passive pre-measure input bridge now has the canonical
