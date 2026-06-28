@@ -540,9 +540,11 @@ theorem schurResidG_translate_lt_top (r : ℕ) (hr : 3 ≤ r)
     have hmono := lintegral_mono_set (μ := volume) hSsub
       (f := fun S => ENNReal.ofReal ((frobSq (rmatMul (fun i j => Δ i j - Sh i j) S)) ^ (-c'')))
     refine le_trans hmono (le_of_eq ?_)
+    have heqfun : (fun i j => Δ i j - Sh i j) = (Δ + (fun i j => -Sh i j)) := by
+      funext i j; simp [Pi.add_apply, sub_eq_add_neg]
+    rw [hg]
     refine lintegral_congr (fun S => ?_)
-    congr 2
-    funext i j; ring
+    rw [heqfun]
   refine lt_of_le_of_lt (lintegral_mono hle1) ?_
   have hsub : (fun Δ => Δ + (fun i j => -Sh i j)) '' (matBox (r - 1) (r - 1) K)
       ⊆ matBox (r - 1) (r - 1) (K + B) := by
@@ -568,6 +570,21 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
     (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
         innerSGen r c' T p ((piRatioG r N hN p).symm (0, z)))
       < ⊤ := by
+  -- DEFERRED (the sole remaining R1-UPPER input): the per-`z` N2b → Morse-peel → carve assembly.
+  -- The IH-invoking carving CORE `schurResidG_translate_lt_top` is PROVED above; this lemma is the
+  -- per-`z` glue. Codex (xhigh, decorrelated) confirmed the route — ORDER: CARVE-FIRST:
+  --   pivot-WLOG (frobSq_rmatMul_permG + matBox_rowperm_lintegralG, pivot → (0,0))
+  --   → carve `z` = (M22 ⊕ rest) via a generic `zE_G : (Fin N → ℝ) ≃ᵐ
+  --       ((Fin (r-1) × Fin (r-1) → ℝ) × (Fin (2(r-1)) → ℝ))` with readback `Sc = M22 − Sh(rest)`
+  --       (the HARDEST sub-step — the M22/M21/M12 index bijection + the Schur-formula readback)
+  --   → pointwise N2b/split (`schur_minorPivot_split` j=1) + top-row shear
+  --   → Tonelli + a.e. Morse peel over the FREE `(M22, S_bot)` joint core (`radial_morse_residual_power_le`,
+  --       a.e.-positive by the nonzero-`MvPolynomial` argument — peel AFTER carving so positivity is clean)
+  --   → `schurResidG_translate_lt_top` per fixed `rest` at exponent `c' − 2` and residual radius
+  --       `K = max 1 T` (M22 box radius 1, S_bot box radius T — Codex radius fix), `B = 1` (|Sh| ≤ 1)
+  --   → the outer bounded-`rest`-box volume is a finite constant.
+  -- A standalone `resolvedShiftRG_le` (generic analog of `resolvedShiftR2c3_le`) is the recommended next
+  -- brick. ~200 generic-r lines; well-scoped, no design wall (all ingredients PROVED/CONFIRMED).
   sorry
 
 /-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
@@ -587,7 +604,7 @@ theorem schurRatioResidGen (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
   rcases lt_or_ge 2 c' with hc2 | hc2
   · exact schurRatioResidGen_mid r N hN hr hIH c' hc2 hc' p T hT
   · -- c' ≤ 2: dominate the inner integrand by `1 + (·)^{−3}`, reduce to the c'' = 3 mid case
-    set q := (piRatioG r N hN p).symm (0, ·) with hq
+    set q : (Fin N → ℝ) → (Fin (r * r) → ℝ) := fun z => (piRatioG r N hN p).symm (0, z) with hq
     -- per z: innerSGen c' (q z) ≤ vol(matBox r 4 T) + innerSGen 3 (q z)
     have hdom : ∀ z : Fin N → ℝ,
         innerSGen r c' T p (q z)
