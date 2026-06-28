@@ -1325,6 +1325,32 @@ theorem measurePreserving_zEG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p
     (volume_measurePreserving_sumPiEquivProdPi
       (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ))
 
+/-- The `zEG.symm` read-back: `(zEG.symm (M, v)) k = Sum.elim M v (zσG k)` — the carved cube entry at the
+slot `zσG k`. The keystone for the `Sc = matOf M22 − bgShiftG (g,b)` carve readback. -/
+theorem zEG_symm_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (M : (Fin (r - 1) × Fin (r - 1)) → ℝ) (v : (Fin (r - 1) ⊕ Fin (r - 1)) → ℝ) (k : Fin N) :
+    (zEG r N hN hr p).symm (M, v) k = Sum.elim M v (zσG r N hN hr p k) := by
+  have hdec : (zEG r N hN hr p).symm (M, v)
+      = (MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ)
+          (zσG r N hN hr p)).symm (Sum.elim M v) := rfl
+  rw [hdec]
+  set e := zσG r N hN hr p
+  have h1 : MeasurableEquiv.piCongrLeft
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) e
+      ((MeasurableEquiv.piCongrLeft
+        (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) e).symm
+        (Sum.elim M v)) (e k) = Sum.elim M v (e k) := by
+    rw [MeasurableEquiv.apply_symm_apply]
+  rw [MeasurableEquiv.piCongrLeft_apply_apply] at h1
+  exact h1
+
+/-- `zσG` round-trips on the slot of a cell: `zσG (slotMatG p (cellR s).1 (cellR s).2) = s`. -/
+theorem zσG_slot (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    zσG r N hN hr p (slotMatG r N hN hr p (cellR r hr s).1 (cellR r hr s).2) = s :=
+  (Equiv.ofBijective _ (slotFunR_bijective r N hN hr p)).symm_apply_apply s
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
