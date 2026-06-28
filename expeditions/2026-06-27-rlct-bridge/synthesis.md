@@ -294,3 +294,27 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
   axiom); (3) wire the aggregator (single-writer); (4) **convene hardener + a decorrelated reviewer on the
   name=content seam — L4 existential** (no `rlct_…` overclaiming; the 3 cited facts each sourced + caveated;
   T′ visible, no shim); (5) integrate R5 likewise. Re-sleep.
+
+- **tick 11 (04 FOUNDATION INTEGRATED GREEN + review convened, 2026-06-28):** tide 04 finalized
+  (branch `…-04-thin-interface` @ `66102d67`, Lean `c07c5c5d`); controller merged into
+  `expedition/rlct-bridge` (merge `3d92c754`) + swept the stale aggregator comment
+  (`DLNFibre.lean:260`, single-writer) → `ae8f6605` (pushed). **Gates re-verified in controller worktree:
+  full `scripts/lb DLNFibre` GREEN (3815 jobs), `scripts/sorries` clean (0 sorry/axiom/native_decide),
+  04 reported `#print axioms` = `[propext, Classical.choice, Quot.sound]` on all 10 load-bearing theorems
+  (no sorryAx / monomial_rlct / new axiom).** (Long-line linter warnings in `DLNFibre.lean` are
+  pre-existing + endemic to the file's comment convention — non-failing; my comment matches the style.)
+  - **Delivered (3 files RlctPayoff/RlctPayoffGeneral/BundleShiftDischarge):** `codimRealFibre :=
+    codimRepCanonical(k:=ℝ)` (x²+y² discriminator docstring); `RlctRealInterface` = opaque rlct + 2 cited
+    bounds (`cited_watanabe_upper` universal, `cited_aoyagi_lower` 0<N); equality derived; T = standalone
+    named cited hyp threaded through 7 consumers, NO shim; `fibre_zero_nonempty` PROVED;
+    `codimRealFibre_eq_codimRepCanonical_of_dimTransfer` PROVED (atomic dim-transfer ⟹ codim via banked
+    field-generic catenary); trap docstring DELETED; L3 sweep done. **The monolith `cited_aoyagi_dln` is
+    RETIRED** — the compose `rlct=½·codim_ℝ=½·codim_K=½·C` lands on the 3-atomic-cited-fact boundary.
+  - **Tasks:** #4 (foundation) + #5 (T cited-wiring) COMPLETED; #7 (compose+retire) — LANDED via 04, now =
+    the bedrock AUDIT, in-progress.
+  - **Review convened (L4 existential name=content gate, decorrelated):** `fidelity-rev-04` (`a3ed3e41`,
+    reviewer) + `hardener-04` (`af1b0a5d`, hardener) on 04's branch — fidelity (#print axioms, the bounds'
+    asymmetry, codim_ℝ discriminator, T no-shim, no rlct_… overclaim) + bedrock/taste (atomic-citation
+    honesty, name=content, caveats-next-to-claims, non-vacuity, beauty). Loop findings to equilibrium
+    before close.
+  - Holding for the two reviews + R5 (06, bundle, still running).
