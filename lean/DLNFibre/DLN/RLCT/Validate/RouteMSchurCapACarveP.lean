@@ -174,4 +174,73 @@ theorem frobSqShiftGP_ne_zero_ae (m p : ℕ) (hm : 0 < m) (hp : 0 < p) (Sh : Fin
   rw [hΔeq, hSeq] at hq
   exact hq
 
+/-! ## The SHIFTED resolved-form UNIFORM `_le` bound (the JOINT brick, `Fin p` spectator) -/
+
+/-- **The SHIFTED resolved-form UNIFORM `_le` bound at output width `p`** (`Fin p` analog of
+`resolvedShiftRG_le`). For a fixed shift `Sh : Fin (r−1) → Fin (r−1) → ℝ` with `|Sh i j| ≤ B`,
+`p/2 < c'`, every `K > 0`,
+`∫_{Δ}∫_{S}∫_{T∈morseBox p K} (∑_{i:Fin p} T_i² + frobSq((Δ−Sh)·S))^{−c'}` is bounded by
+`ofReal(Cresid p c') · coreSchurGenValP (r−1) p (c'−p/2) (K+B)` — INDEPENDENT of `Sh`. The `Fin p` Morse
+`T`-peel (`core_T_peel_le_aeG`, `m+1 = p`, threshold `p/2`) on the shifted core (`> 0` a.e. by
+`frobSqShiftGP_ne_zero_ae`) leaves the residual at `c'−p/2`, closed by the DONE `schurResidGP_translate_le`. -/
+theorem resolvedShiftRGP_le (r p : ℕ) (hr : 3 ≤ r) (hp : 0 < p)
+    (Sh : Fin (r - 1) → Fin (r - 1) → ℝ) (B : ℝ) (hB : ∀ i j, |Sh i j| ≤ B)
+    (K : ℝ) (hK : 0 < K) (c' : ℝ) (hcp : (p : ℝ) / 2 < c') :
+    (∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) p K, ∫⁻ T in morseBox p K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2
+          + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c')))
+      ≤ ENNReal.ofReal (Cresid p c') * coreSchurGenValP (r - 1) p (c' - (p : ℝ) / 2) (K + B) := by
+  have hm : 0 < r - 1 := by omega
+  -- write `p = pm + 1` so the peel's `morseBox (pm+1)` / `(pm+1)/2` match `morseBox p` / `p/2` literally
+  obtain ⟨pm, rfl⟩ : ∃ pm, p = pm + 1 := ⟨p - 1, by omega⟩
+  set w : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin (pm + 1) → ℝ) → ℝ :=
+    fun q => frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2) with hwdef
+  have hmeasT : Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin (pm + 1) → ℝ))
+      × (Fin (pm + 1) → ℝ) => ENNReal.ofReal ((∑ i, (q.2 i) ^ 2 + w q.1) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    show Measurable (fun q : ((Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin (pm + 1) → ℝ))
+        × (Fin (pm + 1) → ℝ) =>
+        (∑ i, (q.2 i) ^ 2 + frobSq (rmatMul (fun a b => q.1.1 a b - Sh a b) q.1.2)))
+    unfold frobSq rmatMul; fun_prop
+  -- Step 1: Tonelli ∫_Δ∫_S∫_T = ∫_{(Δ,S)}∫_T over the product box
+  have hstep1 : ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) (pm + 1) K,
+        ∫⁻ T in morseBox (pm + 1) K,
+        ENNReal.ofReal ((∑ i, (T i) ^ 2 + frobSq (rmatMul (fun a b => Δ a b - Sh a b) S)) ^ (-c'))
+      = ∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) (pm + 1) K),
+          (∫⁻ T in morseBox (pm + 1) K,
+          ENNReal.ofReal ((∑ i, (T i) ^ 2 + w q) ^ (-c'))) ∂volume := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin (pm + 1) → ℝ),
+      setLIntegral_prod _ (Measurable.lintegral_prod_right hmeasT).aemeasurable]
+  rw [hstep1]
+  -- Step 2: the a.e. T-peel (m = pm): bound by Cresid · ∫_{(Δ,S)} w^{−(c'−(pm+1)/2)}
+  have hwpos : ∀ᵐ z ∂(volume.restrict
+        (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) (pm + 1) K)), 0 < w z :=
+    ae_restrict_of_ae (frobSqShiftGP_ne_zero_ae (r - 1) (pm + 1) hm hp Sh)
+  have hpeel := core_T_peel_le_aeG (m := pm) (volume) c' (by exact_mod_cast hcp) K hK w
+    (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) (pm + 1) K) hwpos
+  refine le_trans hpeel ?_
+  -- Step 3: the residual ∫_{(Δ,S)} w^{−(c'−(pm+1)/2)} = ∫_Δ∫_S frobSq((Δ−Sh)·S)^{−(c'−(pm+1)/2)}
+  refine mul_le_mul_left' ?_ _
+  have hmeasResid : Measurable
+      (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin (pm + 1) → ℝ) =>
+        ENNReal.ofReal ((w q) ^ (-(c' - (pm + 1 : ℝ) / 2)))) := by
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-(c' - (pm + 1 : ℝ) / 2))) (by fun_prop)
+    show Measurable (fun q : (Fin (r - 1) → Fin (r - 1) → ℝ) × (Fin (r - 1) → Fin (pm + 1) → ℝ) =>
+        frobSq (rmatMul (fun a b => q.1 a b - Sh a b) q.2))
+    unfold frobSq rmatMul; fun_prop
+  have hresid : (∫⁻ q in (matBox (r - 1) (r - 1) K ×ˢ matBox (r - 1) (pm + 1) K),
+        ENNReal.ofReal ((w q) ^ (-(c' - (pm + 1 : ℝ) / 2))))
+      = ∫⁻ Δ in matBox (r - 1) (r - 1) K, ∫⁻ S in matBox (r - 1) (pm + 1) K,
+          ENNReal.ofReal ((frobSq (rmatMul (fun a b => Δ a b - Sh a b) S))
+            ^ (-(c' - ((pm : ℝ) + 1) / 2))) := by
+    rw [Measure.volume_eq_prod (Fin (r - 1) → Fin (r - 1) → ℝ) (Fin (r - 1) → Fin (pm + 1) → ℝ),
+      setLIntegral_prod _ hmeasResid.aemeasurable]
+  rw [hresid]
+  -- the residual exponent `c' − (pm+1)/2 = c' − p/2`; close by schurResidGP_translate_le
+  have hcast : (c' - ((pm : ℝ) + 1) / 2) = (c' - ((pm + 1 : ℕ) : ℝ) / 2) := by push_cast; ring
+  rw [hcast]
+  exact schurResidGP_translate_le r (pm + 1) hr Sh B hB (c' - ((pm + 1 : ℕ) : ℝ) / 2) K
+
 end DLNFibre.DLN.RLCT
