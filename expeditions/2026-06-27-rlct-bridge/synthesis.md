@@ -631,3 +631,23 @@ headline; witnesses ℂ/AlgClosure-ℚ are Type 0 — honest, documented in the 
     dependency. (Looser word didn't reach the repo/card.) Keep operator-facing language precise.
   - Holding for fidelity (`a15102e4`), then ONE consolidation pass (the 2 cosmetics + any fidelity findings)
     → finalize → `#13` well-rounded PR.
+
+## PHASE 2 CLOSED — `hT` PROVED; the programme's prize landed (2026-06-28)
+
+**Both capstone re-reviews PASS/SOLID** (decorrelated, each with Codex): fidelity PASS (all 14 load-bearing
+decls axiom-clean, full DLN chain rebuilt 3732 jobs; the chain is alg-closed-FREE over ℝ — no `[IsAlgClosed]`
+instance exists for ℝ, so the clean `#print axioms` over ℝ IS the proof) + hardener SOLID (discharge
+genuine via the git-diff, boundary honestly 2, Type-0 inherited, non-vacuous, bedrock). **Consolidation:**
+the `_via_aoyagi` "nit" was on closer read DELIBERATE (no-suffix = J-discharged destination; `_via_aoyagi` =
+J-explicit; renaming would collide) — fixed the one genuine slop (a misleading "via_aoyagi" mention in the
+no-suffix docstring); left the long comment lines (codebase-pervasive, non-failing lint). Final build green
+3818 jobs, sorry-free, axiom-clean (`68562f2c`).
+
+**THE RESULT:** `rlct(K^DLN_B) = ½·C` rests on **exactly two cited facts — Watanabe `≤` + Aoyagi `≥`,
+both irreducibly analytic** — with EVERY codimension fact, including the real↔complex transfer, PROVED in
+honest Lean. The "build the real-AG library" turned out to be a typeclass relaxation of the repo's own
+field-generic squeeze, not a from-scratch build. Tasks #4–#11 all complete.
+
+**PR #13 updated to the well-rounded final** (Phase 1 + 2 complete, ready for operator review/merge —
+operator-gated; controller does NOT merge). Roadmap residuals (future, NOT needed for this result): global
+`Flat π` + the fibre-component/Lemma-4.6 `[IsAlgClosed]` layer; the cross-paper `rlctAt` fold.
