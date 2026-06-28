@@ -602,15 +602,31 @@ de-shift `Sc a b = R a.succ b.succ − R a.succ 0 · R 0 b.succ`. Parametrising 
 dodges the `Fin r` `0`/`succ` cast-friction (Codex's mitigation). -/
 
 /-- The `1×1` top-left minor of a `(0,0)`-pivot matrix is the identity, so its inverse is the identity. -/
-theorem pivotMinor_inv_one {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ) (h00 : R 0 0 = 1) :
+theorem pivotMinor_inv_one {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) :
     (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
       = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
   have h1 : (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))
       = (1 : Matrix (Fin 1) (Fin 1) ℝ) := by
     ext i j; fin_cases i; fin_cases j
     show R ⟨0, by omega⟩ ⟨0, by omega⟩ = (1 : Matrix (Fin 1) (Fin 1) ℝ) 0 0
-    rw [Matrix.one_apply_eq]; convert h00 using 2
+    rw [Matrix.one_apply_eq]; exact h00
   rw [h1, inv_one]
+
+/-- **The N2b `j = 1` Schur readback** at a `(0,0)`-pivot `R : Fin (m+1) → Fin (m+1) → ℝ`: the genuine
+Schur complement `M22 − M21·M11⁻¹·M12` equals the entrywise outer-product de-shift
+`Sc a b = R ⟨1+a⟩ ⟨1+b⟩ − R ⟨1+a⟩ 0 · R 0 ⟨1+b⟩` (since `M11⁻¹ = [1]`, `pivotMinor_inv_one`). The
+`M22 ↦ Sc` shift is `Sh a b = R ⟨1+a⟩ 0 · R 0 ⟨1+b⟩` (the outer product `M21·M12`). -/
+theorem schurSc_readback {m : ℕ} (R : Fin (m + 1) → Fin (m + 1) → ℝ)
+    (h00 : R ⟨0, by omega⟩ ⟨0, by omega⟩ = 1) (a b : Fin m) :
+    ((Matrix.of (fun a b : Fin m => R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩))
+      - (Matrix.of (fun (a : Fin m) (b : Fin 1) => R ⟨1 + a, by omega⟩ ⟨b, by omega⟩))
+        * (Matrix.of (fun a b : Fin 1 => R ⟨a, by omega⟩ ⟨b, by omega⟩))⁻¹
+        * (Matrix.of (fun (a : Fin 1) (b : Fin m) => R ⟨a, by omega⟩ ⟨1 + b, by omega⟩))) a b
+      = R ⟨1 + a, by omega⟩ ⟨1 + b, by omega⟩
+        - R ⟨1 + a, by omega⟩ ⟨0, by omega⟩ * R ⟨0, by omega⟩ ⟨1 + b, by omega⟩ := by
+  rw [pivotMinor_inv_one R h00, Matrix.mul_one]
+  simp only [Matrix.sub_apply, Matrix.mul_apply, Matrix.of_apply, Fin.sum_univ_one, Fin.val_zero]
 
 /-! ### The carving core — the residual translate-domination into the abstract lower IH
 
