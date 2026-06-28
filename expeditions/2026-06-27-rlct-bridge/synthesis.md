@@ -575,3 +575,23 @@ rungs the recon's chain missed (caught only by the full-aggregator gate — the 
   **detached/background `scripts/lb` builds were REAPED twice** (status `killed`, not OOM — 21 GiB free);
   the foreground build with the 10-min cap completed (incremental, `.lake` progress persists across kills).
   Mandate to tides: foreground green-gates; re-run on kill (progress persists). Task #10 in-progress.
+
+### L7+L8 INTEGRATED (green); CAPSTONE discharge dispatched (2026-06-28)
+
+L7+L8 tide merged (merge `7182d0eb`, pushed; full-aggregator green 3818 jobs, sorry-free, axiom-clean):
+**L7** `Core.DeformationBaseChange` — `finrank_range_deformationδ_baseChange` (orbit-tangent dim same
+integer over k and any extension); **L8** the fibre-codim headline
+`FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift` (= C+δ) relaxed to `[CharZero][Infinite]`
+(holds over ℝ) via a 10-file sweep, + the θ-count/perm-invariance headlines over ℝ. **Kill-condition did
+NOT fire** (the "strong Nullstellensatz" suspect was field-generic — `vanishingIdeal` radical over any
+field — reproved directly).
+- **KEY: the discharge is now DIRECT — no `T′`/varietyDim-transfer needed.** Both sides of `hT` equal the
+  same field-independent `C+δ` via the relaxed headline; the only micro-gap is `(B.map ι).rank = B.rank`
+  (rank base-change). So the realizerD-smooth-point generalization (the recon's `T′` route) is SUPERSEDED
+  — not needed for `hT`. (Recorded the route change; #11 reframed.)
+- **CAPSTONE tide DISPATCHED (thread 11, `discharge-hT`):** prove `(B.map ι).rank=B.rank` → prove `hT` as a
+  named theorem (headline both sides) → DISCHARGE the `hT` hypothesis across the 7 consumers → payoff rests
+  on only `{Watanabe ≤, Aoyagi ≥}`; L3-sweep "T cited" → PROVED + re-grep empty; `#print axioms` stays
+  clean. Then controller convenes the decorrelated fidelity+hardener re-review (cited boundary 3→2).
+- **NOT in scope (roadmap):** the fibre-component/θ-count-AT-fibre layer (~10 files still `[IsAlgClosed]`,
+  the LR Lemma 4.6 bundle content) — NOT needed for `hT`; a separate full-relaxation tide if wanted.

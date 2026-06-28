@@ -25,9 +25,11 @@ Index: status / type / one-line subject. Per-thread notes in `threads/<NN>-<slug
 |----|------|---------|--------|
 | 08 | scout (recon) | **Real-AG route recon** — adjudicate route + lemma ladder for `varietyDim_ℝ ≥ varietyDim_K` (⟹ `hT`) | **closed** — ROUTE 1 (algebraic orbit-dim squeeze); `hT` bounded-provable (~3–4 tides); G2 ladder L1–L10 |
 | 09 | lean-formaliser (tide) | **Crux-probe** — relax `[IsAlgClosed]→[PerfectField]` on the squeeze + pin L7 | **closed** — CRUX SETTLED; L1–L6 landed over ℝ; L7 = packaging; reviewer SOUND; integrated (merge `07691215`) |
-| 10 | lean-formaliser (tide) | **L7 + L8** — base-change finrank invariance (packaging) + chart δ-shift over ℝ (the remaining unknown; probe chart-vs-sigma) | **in-progress** (`realag-l7l8`) |
+| 10 | lean-formaliser (tide) | **L7 + L8** — base-change finrank invariance + chart δ-shift over ℝ | **closed** — both landed (merge `7182d0eb`); fibre-codim headline now over ℝ; kill-condition did not fire. DIRECT discharge route found (no `T′` needed). |
+| 11 | lean-formaliser (tide) | **CAPSTONE: prove + discharge `hT`** — `(B.map ι).rank=B.rank` + `hT` via the relaxed headline (both = C+δ) + remove the `hT` hyp from the 7 consumers + L3 sweep | **in-progress** (`discharge-hT`) |
 
-(Then L9 assemble fibre-level `T′` + L10 discharge `hT` → `#13` becomes the well-rounded PR.)
+(Capstone lands → payoff rests on only {Watanabe ≤, Aoyagi ≥}; then decorrelated re-review → `#13` is the
+well-rounded PR. The fibre-component/Lemma-4.6 layer relaxation = optional future tide, NOT needed for `hT`.)
 
 (Post-close: a small `prose-sweep` follow-up on the PR #13 review — stale "projection compat — open"
 framing + an "IS the comorphism" overclaim softened to the precomposition form; prose/docs only, no proof
