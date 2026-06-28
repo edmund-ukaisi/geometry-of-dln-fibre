@@ -2823,6 +2823,10 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
                 * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
+    -- **Sub-4 per-`x` core=Score** (route-A input; the controller discharges it at the final wiring by
+    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball with the frame-transform hyps).
+    (hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+      deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x)
     (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
     (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
     (wstar : Fin (flatDim H) → ℝ)
@@ -2870,22 +2874,10 @@ theorem comp_identity_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
       = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
     simp only [hregval]
     exact hsub3reg x
-  -- The core term = Score x (sub-lemma 4 on the inner ball).
+  -- The core term = Score x (sub-lemma 4 on the inner ball, threaded as `hsub4core`).
   have hcore : deepestCoreF H r
-      (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x := by
-    have hqeq : split x
-        = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x := by
-      rw [hsplit]
-    have hxball' : psiSplitRawL2 H r hr hL (split x) ∈ Metric.closedBall
-        (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn) := by
-      have h2 := hxball
-      simp only [Set.mem_preimage] at h2
-      rw [hx, psiRawL2_split H r B hB hr hL J Pf Qf x] at h2
-      have hsx : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x = split x := by
-        rw [hsplit, wstarL2]
-      rwa [hsx] at h2
-    exact deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score H r B hB hr hL hL2eq J Pf Qf
-      hPtri hQtri Score hScoreDef x (split x) hqeq hxball'
+      (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x :=
+    hsub4core x
   rw [hreg, hcore]
 
 /-- **FINAL — the L=2 diffeo bridge** (the content of `deepest_diffeo_bridge_L2`). Signature is
@@ -2944,6 +2936,10 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
                 * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2)
+    -- **Sub-4 per-`x` core=Score** (route-A input; the controller discharges it at the final wiring by
+    -- `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score` on the inner ball with the frame-transform hyps).
+    (hsub4core : ∀ x : Fin (flatDim H) → ℝ,
+      deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1 = Score x)
     (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
     (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
     (wstar : Fin (flatDim H) → ℝ)
@@ -2964,7 +2960,7 @@ theorem deepest_diffeo_bridge_L2_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- S6 comp-identity (germ), S2 (ContDiff), S4 (fderiv at the id CLE), S3 (fixpoint).
   have hcomp : (fun x => Φcore (psiL2 H r B hB hr hL J Pf Qf x)) =ᶠ[nhds wstar] Φscore :=
     comp_identity_L2 H r B hB hr hL hL2 hpos J hJfront Pf Qf hPtri hQtri split hsub3reg coreAbsorb
-      regStraighten hsplit hregval hcoreabs Score hScoreDef Φscore hΦscore wstar hwstar hL2eq
+      regStraighten hsplit hregval hcoreabs Score hScoreDef hsub4core Φscore hΦscore wstar hwstar hL2eq
   exact rlctAtOn_diffeo_bridge_of Φscore Φcore wstar (psiL2 H r B hB hr hL J Pf Qf)
     (ContinuousLinearEquiv.refl ℝ (Fin (flatDim H) → ℝ))
     (psiL2_contDiff H r B hB hr hL J Pf Qf)
