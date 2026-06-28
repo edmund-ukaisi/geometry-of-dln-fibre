@@ -557,19 +557,27 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
             (split.symm (psiSplitRawL2 H r hr hL (split x))) s
         -- `hm11/hm12/hm21`: the raw-middle `{11,12,21}` block agreement (the e2/leak-kill, RELATIVE so
-        -- INDEPENDENT of the sub-4 dict falsity). The genuine sub-proof both Codex consults flagged
-        -- thrash-prone; ROUTE MAPPED (a clean fresh pickup — not grinding tired, per the bedrock guardrail):
-        --   1. `Aψ 0 = Aq 0` (layer 0 SHARED): `framedParamsPivot_psiSplitRawL2Core_of_ne` gives
-        --      `framedParamsPivot (ψ q) 0 = framedParamsPivot q 0` (0 ≠ lastLayer at L=2); with hframeψ/hframeq
-        --      ⟹ `Pf 0 · Aψ 0 · Qf 0 = Pf 0 · Aq 0 · Qf 0`, cancel the unit frames (hPunit/hQunit) ⟹ `Aψ 0 = Aq 0`.
-        --   2. Two-factor unfold: `prod H Aψ = reindex(Aψ 0)·reindex(Aψ 1)` (`prod_eq_prodAux_mul_last`, m=1),
-        --      same for Aq; G0 := reindex(Aψ 0) = reindex(Aq 0) (step 1).
-        --   3. Layer-1 X/Z fixed + e2 on {12}: de-frame the last layer (`Pf last = 1` hPfL ⟹
-        --      `Aψ last · Qf last = framedParamsPivot (ψ q) last`), then the S6r readbacks
-        --      (`readX_psiSplitRawL2Core_eq` fixes X₁=A₁−1, `readZ_psiSplitRawL2Core_eq` fixes Z₁;
-        --      `readY_psiSplitRawL2Core_last_eq`→l2Y1p, `coreRead…last`→l2T1p drive the {12} via
-        --      `e2_regPreserve`). Feed `reindex_prod_regBlocks_eq_of_e2 eR eMid eC G0 (Aψ 1) (Aq 1) … h11G h21G he2`.
-        -- Banked foundation: `reindex_decodeDev_eq_fromBlocks_reads` (the per-layer read↔deviation bridge).
+        -- INDEPENDENT of the sub-4 dict falsity).
+        --
+        -- ** RECOMMENDED ROUTE — FRAMED-DIRECT (supersedes the Aψ/Aq route below; sidesteps the
+        --    thrash-prone `split.symm`-decode entirely).** Don't prove hm via the Aψ/Aq de-framing — the
+        --    `split.symm`-decode of `Aψ` is the fiddly part both Codex flagged. Instead, RESTRUCTURE
+        --    hsub3reg to bypass `deepestEFull_sq_sum_psiSplitRawL2_eq` (which forces the unframed Aψ/Aq):
+        --      • `deepestEFull_sq_sum_eq_blocks` on BOTH `ψ(split x)` and `split x` reduces the goal to
+        --        the three reg-block energies of `reindex(prod(framedParamsPivot ·))` AGREEING.
+        --      • Those agree iff `reindex(prod(framedParamsPivot ψq)).toBlocks{11,12,21} =
+        --        reindex(prod(framedParamsPivot q)).toBlocks{11,12,21}` — proven on the FRAMED layers
+        --        DIRECTLY (no de-frame): `framedParamsPivot_psiSplitRawL2Core_of_ne` (layer 0 EQUAL, no
+        --        unit-cancel), two-factor `prod_eq_prodAux_mul_last` (m=1, shared framed G0), then
+        --        `reindex_prod_regBlocks_eq_of_e2` on the framed last layers — h11G/h21G from
+        --        `readX/Z_psiSplitRawL2Core_eq` (X₁/Z₁ fixed), he2 from `readY_psiSplitRawL2Core_last_eq`
+        --        (→l2Y1p) + `coreRead…last` (→l2T1p) + `e2_regPreserve`. The S6r readbacks are ALL about
+        --        `framedParamsPivot`/reads of the moved point — they fit the framed route with NO
+        --        `split.symm` round-trip. This is strictly cleaner than the Aψ/Aq path.
+        --
+        -- (Legacy Aψ/Aq route, kept for reference: 1. Aψ 0=Aq 0 via of_ne + unit-cancel [the unit-cancel
+        --  Lean-mechanics fiddled]; 2. two-factor unfold; 3. layer-1 de-frame + S6r + e2_regPreserve →
+        --  reindex_prod_regBlocks_eq_of_e2. Foundation: reindex_decodeDev_eq_fromBlocks_reads.)
         have hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₁
             = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
