@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedContract
+import DLNFibre.DLN.RLCT.Foundations.CoreSplitMP
 
 /-!
 # `RouteMSmearedPerFamily` — the ∀M (L = 2 first) smeared per-family `ψ_M` / `U` / `subBox` build
@@ -161,5 +162,39 @@ theorem measurable_lamEntry {X : Type*} [MeasurableSpace X] {n r c : ℕ}
   -- the final product (Gram⁻¹·P₁ᵀ)·P₂ — entry (i,j) measurable; defeq to the goal
   have hfin := measurable_matrixMul_entry gp P₂ hgp_meas hP₂ i j
   exact hfin
+
+/-! ### Sub-tide 3 — the general `shearM` is measure-preserving (conjugate of `coreShear` by `splitOfCoreSet`)
+
+`shearM := splitOfCoreSet.symm ∘ coreShear ∘ splitOfCoreSet` — the smeared shear in flat coordinates,
+conjugating the abstract `coreShear` skew-product (which adds `shift(Reg, Spec)` to the Core block) by the
+`coreSet`-driven block split (Reg = ∅, Core = `coreSet`, Spec = `coreSetᶜ`, genm-splitm's
+`CoreSplitMP`). MP for ANY `coreSet` + ANY measurable `shift`, hence a total `MeasurableEquiv` (no pole
+obstruction — the rational `Λ₀` enters only the measurable `shift`). The per-family instance (`shearM_conj`)
+supplies `coreSet` = the kept-row flat-indices + `shift` = `−Λ₀·S_bot` (measurable by `measurable_lamEntry`). -/
+
+/-- **The general smeared shear `shearM` is measure-preserving.** For any `coreSet : Finset (Fin N)` and any
+measurable `shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ)`, the conjugate
+`splitOfCoreSet.symm ∘ coreShear[shift] ∘ splitOfCoreSet` is measure-preserving on `Fin N → ℝ`. The
+composition of `measurePreserving_splitOfCoreSet`, the `coreShear` skew-product brick, and the symm. -/
+theorem measurePreserving_shearM {N : ℕ} (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) :
+    MeasurePreserving
+      (fun u : Fin N → ℝ =>
+        (splitOfCoreSet coreSet).symm
+          (let q := splitOfCoreSet coreSet u; (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2))))
+      (volume : Measure (Fin N → ℝ)) volume := by
+  have hsplit : MeasurePreserving (splitOfCoreSet coreSet)
+      (volume : Measure (Fin N → ℝ)) volume := measurePreserving_splitOfCoreSet coreSet
+  have hcore : MeasurePreserving
+      (fun q : (Fin 0 → ℝ) × ((Fin coreSet.card → ℝ) × (Fin coreSetᶜ.card → ℝ)) =>
+        (q.1, (q.2.1 + shift (q.1, q.2.2), q.2.2)))
+      volume volume :=
+    measurePreserving_coreShear_measurable 0 coreSet.card coreSetᶜ.card shift hshift
+  -- shearM = symm ∘ coreShear ∘ split  (MP composition; symm is MP since splitOfCoreSet is a MeasurableEquiv)
+  have hsymm : MeasurePreserving (splitOfCoreSet coreSet).symm volume
+      (volume : Measure (Fin N → ℝ)) :=
+    hsplit.symm (splitOfCoreSet coreSet)
+  exact hsymm.comp (hcore.comp hsplit)
 
 end DLNFibre.DLN.RLCT
