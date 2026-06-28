@@ -19,6 +19,43 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical chart residual readout
+
+The canonical retained-passive chart-side residual expression has been
+identified pointwise on the determinant chart.  New Lean names in
+`RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualProduct
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+```
+
+For `z ∈ topologyTupleDetChartSet`, the residual expression currently carried
+by the chart-side positivity and finite-integral hypotheses,
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap W B U0 hU0 id
+  (sourceChart (topologyTupleEdgeRawOrder z)),
+```
+
+is the coordinate readout of the deterministic suffix residual product of
+`topologyTupleEdgeMatrix z`.  The stronger theorem rewrites the same
+expression as the residual-factor product of the stored retained-passive
+blocks `(ofTopologyTuple z).C`.
+
+This is source-moving only in the readout sense: it removes the opaque
+continuous source-family/readback layer from the chart-side residual
+expression and makes the next zero-locus/integrability target concrete.
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+and full `DLNFibre` build passed, the latter with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and the touched-file forbidden-marker
+search passed.  Xhigh review by `Zeno the 3rd` passed.
+
+This still does not prove residual zero-locus nullity, chart-side a.e.
+positivity, finite residual negative-power integrability, a monomial lower
+bound, selected-entry signed-box source-density identification, original-prior
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, canonical residual measurability handoff
 
 The canonical retained-passive identity source now discharges source-side

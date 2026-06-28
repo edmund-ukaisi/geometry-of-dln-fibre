@@ -140,7 +140,22 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
-- **Status.** partial algebraic Lean artifacts landed and reviewed: the
+- **Current status addendum, 2026-06-28.** The old target-normaliser
+  determinant frontier has been surpassed.  Lean now has the retained-passive
+  full target normaliser/determinant bridge, formal/product-density
+  change-of-variables, canonical local-source COV, canonical product-density
+  residual and finite-integral handoffs, source-side residual positive-set
+  measurability for the canonical identity source, and the canonical
+  chart-side residual readout as both
+  `residualProduct (topologyTupleEdgeMatrix z)` and
+  `residualFactorProduct (ofTopologyTuple z).C`.  The current A2 frontier is
+  chart-side residual zero-locus/a.e. positivity/finite negative-power
+  integrability or a genuine monomial/normal-crossing construction, plus
+  source-prior/density transport if that route is used.  This addendum
+  supersedes older "positive-tail F3 open", "not full target normalisation",
+  and "construction of target equivalence remains separate" phrases retained
+  below as historical detail.
+- **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed
   zero-tail `F3` component agreement against the formal raw-order Jacobian;

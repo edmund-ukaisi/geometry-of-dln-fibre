@@ -18,6 +18,73 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 canonical retained-passive chart residual readout
+
+Lean now identifies the canonical retained-passive chart-side residual
+expression on the determinant chart:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualProduct
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+```
+
+The first theorem rewrites
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap W B U0 hU0 id
+  (sourceChart (topologyTupleEdgeRawOrder z))
+```
+
+as the coordinate readout of
+`ChartLocalSuffixState.residualProduct (topologyTupleEdgeMatrix z) last 0`.
+The second theorem rewrites it further to the residual-factor product of the
+stored retained-passive chart blocks `(ofTopologyTuple z).C`.
+
+The proof uses the determinant-chart map into the raw-order source-recursive
+chart, the canonical source-chart realisation theorem, raw-order tuple readout,
+the fixed-base residual readout theorem, and determinant-chart source-readback
+recovery.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+and full `DLNFibre` build passed, the latter with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and the touched-file forbidden-marker
+search passed.  Xhigh review by `Zeno the 3rd` passed.
+
+Nonclaims: no residual zero-locus nullity, no chart-side a.e. positivity, no
+finite residual negative-power integrability, no monomial lower bound, no
+source-density/prior transport, no normal crossings, no pole order, and no
+RLCT.
+
+## 2026-06-28 A2 canonical retained-passive local Jacobian measure handoffs
+
+After the retained-passive formal/product-density change of variables, Lean
+landed the canonical local-source COV and product-density residual/finite
+integral chain in `RetainedPassiveLocalJacobianMeasure.lean`.
+
+Key landed names:
+
+```text
+retainedPassiveP13CanonicalSourceChart_realize
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+residualSourceHypotheses_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_of_chartSide
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13CanonicalLocalSource_formalProductAbsDet_continuousAt_pos_density_of_chartSide
+```
+
+The canonical source-measure and product-density transport are now internal to
+these handoffs, and source-side residual positive-set measurability is
+discharged for the identity edge-family source.  Chart-side residual a.e.
+positivity and finite negative-power integrability remain explicit hypotheses.
+
+Focused local builds, full `DLNFibre`, `scripts/sorries`, `git diff --check`,
+forbidden-marker searches, and xhigh reviews passed for the handoffs through
+`81b097a2`.
+
 ## 2026-06-28 A2 retained-passive formal-density change of variables
 
 Lean now has a retained-passive formal/product-density specialization of the

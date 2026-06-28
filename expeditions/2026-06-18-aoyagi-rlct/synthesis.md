@@ -48,6 +48,58 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Canonical Chart Residual Readout
+
+`RetainedPassiveLocalJacobianMeasure.lean` now proves that the canonical
+retained-passive chart-side residual expression is a concrete residual product
+on the determinant chart:
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualProduct
+paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+```
+
+For `z ∈ topologyTupleDetChartSet`, the expression
+
+```text
+paperEndpointFixedBaseResidualBlockCoordinateMap W B U0 hU0 id
+  (sourceChart (topologyTupleEdgeRawOrder z))
+```
+
+first rewrites to the coordinate readout of
+
+```text
+ChartLocalSuffixState.residualProduct (topologyTupleEdgeMatrix z) last 0.
+```
+
+The stronger theorem uses the source-readback residual-factor readout and
+`sourceReadback_edgeMatrix_eq` to rewrite the same expression as
+
+```text
+ChartLocalSuffixState.residualFactorProduct (ofTopologyTuple z).C last 0.
+```
+
+The proof is finite chart bookkeeping: `topologyTupleEdgeRawOrder` maps the
+determinant chart to the raw-order source-recursive determinant chart; the
+canonical source chart realizes `edgeFamilyOfRawOrderTuple`; raw-order readout
+of `topologyTupleEdgeRawOrder z` is `topologyTupleEdgeMatrix z`; and
+determinant-chart source readback recovers `ofTopologyTuple z`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+and full `DLNFibre` build passed, the latter with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, and the touched-file forbidden-marker
+search passed.  Xhigh review by `Zeno the 3rd` passed.
+
+Nonclaims: no residual zero-locus nullity, no chart-side a.e. positivity, no
+residual negative-power integrability, no monomial residual lower bound, no
+selected-entry signed-box source-density identification, no original-prior
+transport, no normal crossings, no pole-order theorem, and no RLCT theorem.
+
+The next source-moving target is to use this concrete
+`residualFactorProduct (ofTopologyTuple z).C` expression for an actual
+zero-locus/integrability/normal-crossing construction, not merely another
+front-end wrapper.
+
 ## Latest A2 Canonical Residual Measurability Handoff
 
 `RetainedPassiveLocalJacobianMeasure.lean` now proves the source-side residual

@@ -647,6 +647,274 @@ private theorem retainedPassiveP13CanonicalSourceChart_realize
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
+/-- On the determinant chart, the canonical retained-passive chart-side residual
+readout is the suffix residual product of the raw edge-matrix tuple.
+
+This is a chart-expression identification only.  It does not prove residual
+zero-locus nullity, a.e. positivity, finite negative-power integrability,
+normal crossings, pole order, or an RLCT statement. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualProduct
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (z :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)
+    (hz :
+      z ∈ topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+        (sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+      AoyagiResidualBlockCoordinateIndex.value
+        (ChartLocalSuffixState.residualProduct
+          (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z)
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+  dsimp only
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun y ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+  let y : TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z
+  have hy :
+      y ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    exact
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') hz
+  have hrealize :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+        edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := by
+    simpa [sourceChart, EFam, y, ρ, κ'] using
+      retainedPassiveP13CanonicalSourceChart_realize
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) y hy
+  have hedge :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+        topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z := by
+    calc
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+          edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := hrealize
+      _ =
+          topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z := by
+        simp [y, ρ, κ',
+          edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+            (K := ℝ) (ρ := ρ) (κ' := κ') z]
+  have hres :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y) =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+              (fun p : Fin (M + 1) ↦
+                ((fun E : EFam ↦ E) (sourceChart y) p :
+                  reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+    simpa [paperEndpointFixedBaseEdgeMatrixOfReverseEdges, EFam] using
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_residualProduct
+        (K := ℝ) (N := M + 1) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y)
+  calc
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+        (sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y) := by
+      rfl
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+              (fun p : Fin (M + 1) ↦
+                ((fun E : EFam ↦ E) (sourceChart y) p :
+                  reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := hres
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualProduct
+            (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z)
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+      rw [hedge]
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- On the determinant chart, the canonical retained-passive chart-side residual
+readout is the residual-factor product of the stored `C` blocks in the
+retained-passive chart datum.
+
+This is the source-readback form of
+`paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualProduct`.
+It removes the continuous source-family/readback layer from the chart-side
+residual expression, but it does not prove residual zero-locus nullity, a.e.
+positivity, finite negative-power integrability, normal crossings, pole order,
+or an RLCT statement. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (z :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)
+    (hz :
+      z ∈ topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+        (sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+      AoyagiResidualBlockCoordinateIndex.value
+        (ChartLocalSuffixState.residualFactorProduct
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+  dsimp only
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun y ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+  let y : TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z
+  have hy :
+      y ∈ topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    exact
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') hz
+  have hreadout :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y) =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (sourceReadback (K := ℝ) (ρ := ρ)
+              (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+                (fun p : Fin (M + 1) ↦
+                  ((fun E : EFam ↦ E) (sourceChart y) p :
+                    reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+    simpa [paperEndpointFixedBaseEdgeMatrixOfReverseEdges, EFam] using
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct
+        (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y)
+  have hrealize :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+        edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := by
+    simpa [sourceChart, EFam, y, ρ, κ'] using
+      retainedPassiveP13CanonicalSourceChart_realize
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) y hy
+  have hedge :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+        topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z := by
+    calc
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            ((fun E : EFam ↦ E) (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+          edgeFamilyOfRawOrderTuple (K := ℝ) (ρ := ρ) (κ' := κ') y := hrealize
+      _ =
+          topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z := by
+        simp [y, ρ, κ',
+          edgeFamilyOfRawOrderTuple_topologyTupleEdgeRawOrder
+            (K := ℝ) (ρ := ρ) (κ' := κ') z]
+  have hdet :
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).detChart := by
+    simpa [topologyTupleDetChartSet, ρ, κ'] using hz
+  have hsource :
+      sourceReadback (K := ℝ) (ρ := ρ)
+          (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z) =
+        ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z := by
+    simpa [topologyTupleEdgeMatrix, ρ, κ'] using
+      sourceReadback_edgeMatrix_eq
+        (K := ℝ) (ρ := ρ)
+        (data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z) hdet
+  calc
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+        (sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E) (sourceChart y) := by
+      rfl
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (sourceReadback (K := ℝ) (ρ := ρ)
+              (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+                (fun p : Fin (M + 1) ↦
+                  ((fun E : EFam ↦ E) (sourceChart y) p :
+                    reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := hreadout
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (sourceReadback (K := ℝ) (ρ := ρ)
+              (topologyTupleEdgeMatrix (K := ℝ) (ρ := ρ) (κ' := κ') z)).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+      rw [hedge]
+    _ =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+      rw [hsource]
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
 /-- Canonical fixed-base retained-passive local-source measure identity with
 the formal raw-order determinant density. -/
 theorem measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet
