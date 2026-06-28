@@ -920,3 +920,18 @@ to a dedicated `genm-carving` tide on genm-firing's branch; genm-firing stood do
 slice undershoots/diverges; the joint free-(M22,S_bot) core is the correct, IH-consuming abstraction. Any future
 Schur-recursion work (the general ∀p lift beyond p=4, etc.) must use the JOINT residual, never a fixed-R inner. Caught
 before sinking, both times — the decorrelated-Codex + reviewer discipline working.
+
+### Item 46 — Controller-miss: recorded "bridge near-done" from trivial-about-placeholder fills (2026-06-28)
+genm-l2 honestly corrected the L2-bridge progress reading: I'd recorded (UPDATE-214/216/217) the bridge as
+"S2-heaviest filled, S6 last / dual near-completion" — propagating genm-l2's task-completions (#125-131) at face value.
+But `psiSplitRawL2` was still the placeholder `id`, so S2/S3/S4 were proven TRIVIALLY-about-id (δ=0, `*_const`) and
+re-open when the real joint action lands. The genuine bridge content (real Ψ + re-proven S2/S3/S4 + S6) is ~2 tides
+UNBUILT; only S5 (the genuine E2 identity) + the scaffold + the wiring are real.
+
+**Lesson (controller skeleton/progress-gate):** "filled"/task-completed ≠ substantively-proven — a sub-lemma can be
+proven trivially about a placeholder def. Before recording a leg as near-done, verify the load-bearing defs are REAL
+(not placeholder `id`) and the heavy sub-lemmas were proven for the REAL map. This is the same family as Item-44
+("typechecks ≠ provable") — both are recording progress without verifying substance. genm-l2's honest re-check + the
+diff-gate caught it before it travelled. The R1-UPPER firing, by contrast, IS genuinely ~1-piece (carving) — its pieces
+are really sorry-free (reviewer-PASS, force-#print-axioms), not trivial-about-placeholder. So the dual-near-completion
+claim was half-right; the L2 bridge is the longer pole (~2 tides). No overstated "done" shipped; corrected in UPDATE-218.
