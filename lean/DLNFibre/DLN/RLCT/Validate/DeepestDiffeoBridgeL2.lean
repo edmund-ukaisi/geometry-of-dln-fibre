@@ -2272,6 +2272,67 @@ theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r :
     readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
     coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
 
+/-! ### S6t — the SHARED endpoint-telescope corner split (the `hRegBlocks` core both subs consume)
+
+For a framed point whose per-layer frame is clean (`hframe : framedParamsPivot … = Pf · A · Qf`, the
+witnessed-telescope hypothesis) and whose interior interfaces are identity (`hinterface`), the reindexed
+framed product corner-splits: `reindex(prod(framedParamsPivot p)) = fromBlocks 1 0 0 0 +
+reindex(endpointP0·(prod A − B)·endpointQL)` (given the B-normalization `hS3b`). This is the producer's
+`hRegBlocks` step (`DeepestGaugeConstruction`), extracted standalone so BOTH S6 subs reuse it: sub-3
+reads the {11,12,21} reg blocks off the split (E2/leak-kill), sub-4 reads the {22}-Schur (frame-transform).
+The telescope/interface/`hS3b` hyps match `endpoint_telescoping_eq`'s inputs EXACTLY (controller's
+final-wiring discharge is then a direct application). -/
+
+/-- **The corner split** (`hRegBlocks` extracted): `reindex(prod(framedParamsPivot p)) = fromBlocks 1 0
+0 0 + reindex(endpointP0·(prod A − B)·endpointQL)`, given the per-layer telescope frame `hframe`, the
+interior-interface identity `hinterface`, and the B-normalization `hS3b`. -/
+theorem framedReindexProd_corner_split (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (p : DeepestSplit H r (deepestNGauge H r)) (A : Params H)
+    (hframe : ∀ s : Fin L, framedParamsPivot H r hr hL J Pf Qf p s = Pf s * A s * Qf s)
+    (hinterface : ∀ (s : Fin L) (hs : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ))
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :
+    Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (prod H (framedParamsPivot H r hr hL J Pf Qf p))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0
+        + Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A - B) * endpointQL H hL Qf) := by
+  -- The witnessed telescope: `prod(framedParamsPivot p) = endpointP0·prod A·endpointQL`.
+  have hS2 : prod H (framedParamsPivot H r hr hL J Pf Qf p)
+      = endpointP0 H hL Pf * prod H A * endpointQL H hL Qf :=
+    endpoint_telescoping_eq H hL A (framedParamsPivot H r hr hL J Pf Qf p) Pf Qf hframe hinterface
+  -- `P0·prod A·QL = P0·B·QL + P0·(prod A − B)·QL`.
+  have hsplitprod : endpointP0 H hL Pf * prod H A * endpointQL H hL Qf
+      = endpointP0 H hL Pf * B * endpointQL H hL Qf
+        + endpointP0 H hL Pf * (prod H A - B) * endpointQL H hL Qf := by
+    rw [Matrix.mul_sub, Matrix.sub_mul, add_sub_cancel]
+  rw [hS2, hsplitprod]
+  -- reindex is additive; the corner summand is `fromBlocks 1 0 0 0` (hS3b).
+  have hadd : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * B * endpointQL H hL Qf
+            + endpointP0 H hL Pf * (prod H A - B) * endpointQL H hL Qf)
+        = Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+          + Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A - B) * endpointQL H hL Qf) := by
+    ext i j
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.add_apply]
+  rw [hadd, hS3b]
+
 /-! ### S6 sub-lemmas (the decomposition; assembly proven, two geometric subs sorried) -/
 
 theorem psiRawL2_split (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -2286,6 +2347,76 @@ theorem psiRawL2_split (H : Fin (L + 1) → ℕ) (r : ℕ)
           (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x) := by
   rw [psiRawL2, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).apply_symm_apply]
 
+/-- **Reg-energy block reduction under the corner split** (the shared plumbing both reg-energy sums
+reuse): once the framed product corner-splits as `fromBlocks 1 0 0 0 + reindex(resid)`, the three
+reg-block sums of `deepestEFull_sq_sum_eq_blocks` read the residual blocks directly (the `+1` corner
+cancels in {11}, contributes `0` to {12}/{21}). So two points with EQUAL residual {11,12,21} blocks
+have equal reg energy. -/
+theorem deepestEFull_sq_sum_eq_of_resid_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q₁ q₂ : DeepestSplit H r (deepestNGauge H r)) (A₁ A₂ : Params H)
+    (hframe₁ : ∀ s : Fin L, framedParamsPivot H r hr hL J Pf Qf q₁ s = Pf s * A₁ s * Qf s)
+    (hframe₂ : ∀ s : Fin L, framedParamsPivot H r hr hL J Pf Qf q₂ s = Pf s * A₂ s * Qf s)
+    (hinterface : ∀ (s : Fin L) (hs : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix _ _ ℝ))
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (h11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₁₁)
+    (h12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₁₂
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₁₂)
+    (h21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf)).toBlocks₂₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf)).toBlocks₂₁) :
+    (∑ i, (deepestEFull H r hr hL J Pf Qf q₁ i) ^ 2)
+      = ∑ i, (deepestEFull H r hr hL J Pf Qf q₂ i) ^ 2 := by
+  rw [deepestEFull_sq_sum_eq_blocks H r hr hL J Pf Qf q₁,
+    deepestEFull_sq_sum_eq_blocks H r hr hL J Pf Qf q₂,
+    framedReindexProd_corner_split H r B hr hL J Pf Qf q₁ A₁ hframe₁ hinterface hS3b,
+    framedReindexProd_corner_split H r B hr hL J Pf Qf q₂ A₂ hframe₂ hinterface hS3b]
+  set R₁ := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+      (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+      (endpointP0 H hL Pf * (prod H A₁ - B) * endpointQL H hL Qf) with hR₁
+  set R₂ := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+      (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+      (endpointP0 H hL Pf * (prod H A₂ - B) * endpointQL H hL Qf) with hR₂
+  -- Block-of-sum extraction (entrywise; `Matrix.toBlocks_add` is absent at this pin).
+  have e11 : ∀ (M : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ),
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + M).toBlocks₁₁ - 1 = M.toBlocks₁₁ := by
+    intro M; ext a b
+    simp only [Matrix.toBlocks₁₁, Matrix.add_apply, Matrix.fromBlocks_apply₁₁, Matrix.of_apply,
+      Matrix.sub_apply, Matrix.one_apply]
+    split <;> ring
+  have e12 : ∀ (M : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ),
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + M).toBlocks₁₂ = M.toBlocks₁₂ := by
+    intro M; ext a b
+    simp only [Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.fromBlocks_apply₁₂, Matrix.of_apply,
+      Matrix.zero_apply, zero_add]
+  have e21 : ∀ (M : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ),
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 + M).toBlocks₂₁ = M.toBlocks₂₁ := by
+    intro M; ext a b
+    simp only [Matrix.toBlocks₂₁, Matrix.add_apply, Matrix.fromBlocks_apply₂₁, Matrix.of_apply,
+      Matrix.zero_apply, zero_add]
+  rw [e11 R₁, e11 R₂, e12 R₁, e12 R₂, e21 R₁, e21 R₂, h11, h12, h21]
+
 theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : L = 2)
     (J : Fin r ↪ Fin (H (Fin.last L)))
@@ -2299,15 +2430,16 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawL2 H r hr hL q) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf q i) ^ 2 := by
-  -- SCOPED RESIDUAL (route A, telescope-dependent). `deepestEFull_sq_sum_eq_blocks` reduces both sides
-  -- to the three reg blocks {₁₁,₁₂,₂₁} of `reindex(prod(framedParamsPivot · q'))`, q' ∈ {ψq, q}. The
-  -- endpoint telescope `endpoint_telescoping_eq` (needs hframe/hinterface — caller-discharged at the
-  -- deepest frames) rewrites each framed product to `endpointP0·prod(rawParams q')·endpointQL`. The raw
-  -- products differ ONLY at the last layer (X,Z fixed; Y→l2Y1p, T→l2T1p — the S6r readbacks). hPtri/hQtri
-  -- kill the moved (2,2)-leak into the reg blocks; P00,P10 are T1,Y1-free hence fixed; P01 fixed by
-  -- `e2_regPreserve` (A0·Y1'+Y0·T1' = A0·Y1+Y0·T1). MISSING: the hframe/hinterface telescope hyps + the
-  -- raw-block reads through `reindex_mul_fromBlocks`. Threaded route-A hyps to be added at the caller's
-  -- wiring (controller single-writer). Frame-transform + keystone (the novel pieces) are banked.
+  -- SCOPED RESIDUAL (route A, telescope-bound). The shared plumbing `deepestEFull_sq_sum_eq_of_resid_blocks`
+  -- (BANKED this tide) reduces this to: equal conjugated-residual {11,12,21} reg blocks for the moved/
+  -- un-moved raw tuples `Aψ`/`Aq` (differ only at the last layer Y→l2Y1p, T→l2T1p). That equality is the
+  -- E2/leak-kill content: via `reindex_mul_fromBlocks`, the raw product's {11} (= A0A1+Y0Z1) and {21}
+  -- (= Z0A1+T0Z1) are T1,Y1-free hence fixed; the {12} (= A0Y1'+Y0T1' = P01) is fixed by `e2_regPreserve`;
+  -- the moved (2,2) leak into the framed reg blocks is killed by hPtri/hQtri. REMAINING: derive `Aψ`/`Aq`
+  -- (the raw decoded tuples) + the telescope frames `hframeψ`/`hframeq` (`endpoint_telescoping_eq` at the
+  -- deepest frames — route-A, controller-discharged) + the per-layer raw-block reads (S6r readbacks +
+  -- `reindex_mul_fromBlocks`) feeding the three block equalities `h11/h12/h21`. The corner-split + block-
+  -- sum plumbing (`framedReindexProd_corner_split`, `deepestEFull_sq_sum_eq_of_resid_blocks`) is banked.
   sorry
 
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
