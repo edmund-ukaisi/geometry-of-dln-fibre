@@ -15,7 +15,8 @@ zero-cite, in `Core.FibreCodimFinal.codimRepCanonical_fibre_eq_cCodim_add_shift`
 **discharge the interface**: build a proved instance `bundleShift_of_core` (a
 `BundleShiftInterface d K ι`) whose
 field is derived from Core, and rewire the rank-`r` RLCT payoff to drop the `J` hypothesis, so the
-payoff `rlct(K^DLN_B) = (cCodim + r(d_0+d_N−r))/2` rests on ONLY the Cited Aoyagi `RlctInterface`.
+payoff `rlct(K^DLN_B) = (cCodim + r(d_0+d_N−r))/2` rests on the analytic `RlctRealInterface` bounds
++ the Cited transfer `hT` (`codim_ℝ = codim_K`) — the shift `J` is no longer carried.
 
 Three reconciliations:
 
@@ -96,45 +97,51 @@ noncomputable def bundleShift_of_core : BundleShiftInterface d K ι where
 
 end Discharge
 
-/-! ## R2-general (rewired) — the payoff with only the Cited Aoyagi interface -/
+/-! ## R2-general (rewired) — the payoff with the Cited analytic bounds + the Cited transfer -/
 
 section R2General
 
 variable {d : Fin (N + 1) → ℕ}
   {K : Type} [Field K] [IsAlgClosed K] [CharZero K] {ι : ℝ →+* K}
 
-/-- **The general-`r` RLCT payoff, through ONLY the Cited Aoyagi rlct interface.** The geometric
-bundle-shift half is now Proved from `Core` (via `bundleShift_of_core`), so the only carried
-dependency is `I : RlctInterface` (the Cited Aoyagi `rlct = ½·codim`). For a genuine deep network
-(`0 < N`) and `B` of rank `r ≤ min d`, the rlct of the DLN square-Frobenius loss `K^DLN_B` equals
-`(cCodim d r + r(d_0+d_N−r))/2`: the combinatorial `C/2` plus the half-shift. `via_aoyagi` names the
-lone Cited source; `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the geometric
-codimension). -/
+/-- **The general-`r` RLCT payoff, through the two Cited analytic bounds + the Cited transfer `hT`.**
+The geometric bundle-shift half is now Proved from `Core` (via `bundleShift_of_core`), so the carried
+dependencies are `I : RlctRealInterface` (the two Cited Watanabe/Aoyagi bounds) and the Cited transfer
+`hT` (`codim_ℝ(real fibre) = codim_K(complex fibre)` — a real-vs-complex fact reducing to the atomic
+real-dim = complex-dim equality). For a genuine deep network (`0 < N`) and `B` of rank `r ≤ min d`, the
+rlct of the DLN square-Frobenius loss `K^DLN_B` equals `(cCodim d r + r(d_0+d_N−r))/2`: `C/2` + shift.
+`via_aoyagi` names the cited source; `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the
+geometric codimension). -/
 theorem rlct_lossDLN_eq_half_cCodim_add_shift
-    (I : RlctInterface d K ι)
+    (I : RlctRealInterface d)
     {B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ} {r : ℕ}
-    (hN : 0 < N) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') (h : (kostantPartitions d r).Nonempty) :
+    (hN : 0 < N) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') (h : (kostantPartitions d r).Nonempty)
+    (hT : codimRealFibre d B = codimRepCanonical (k := K) (fibre (k := K) d (B.map ι))) :
     I.rlct (lossDLN d B)
       = (((cCodim d r h).toNat : ℝ) + (r * (d 0 + d (Fin.last N) - r) : ℕ)) / 2 :=
-  rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi I (bundleShift_of_core d K ι) hN hB hr h
+  rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi (K := K) (ι := ι) I (bundleShift_of_core d K ι)
+    hN hB hr h hT
 
 end R2General
 
-/-! ## Non-vacuity witness — `(2,2,2)`, `r = 1`, through the discharged shift -/
+/-! ## Non-vacuity witness — `(2,2,2)`, `r = 1`, through the discharged shift + the Cited transfer -/
 
 section Witness
 
 /-- **`(2,2,2)`, `r = 1`: the RLCT payoff `rlct(K^DLN_B) = 2`**, over `ℂ`, for `B` of rank `1`,
-through ONLY the Cited Aoyagi interface `I` — the bundle shift is now Proved from `Core`. The
-combinatorial `C = cCodim d222 1 = 1` and the shift `1·(2+2−1) = 3` give `rlct = (1+3)/2 = 2`: the
-`(2,2,2)` rank-`1` DLN is mildly singular. `(2,2,2)` has `N = 2 > 0`. -/
+through the two Cited analytic bounds `I` and the Cited transfer `hT` — the bundle shift is now Proved
+from `Core`. The combinatorial `C = cCodim d222 1 = 1` and the shift `1·(2+2−1) = 3` give
+`rlct = (1+3)/2 = 2`: the `(2,2,2)` rank-`1` DLN is mildly singular. `(2,2,2)` has `N = 2 > 0`. `hT`
+is the Cited real-vs-complex transfer (`codim_ℝ = codim_ℂ` at `(2,2,2)`, the given rank-`1` `B`). -/
 theorem rlct_lossDLN_d222_one_eq_two
-    (I : RlctInterface Core.d222 ℂ Complex.ofRealHom)
-    {B : Matrix (Fin (Core.d222 (Fin.last 2))) (Fin (Core.d222 0)) ℝ} (hB : B.rank = 1) :
+    (I : RlctRealInterface Core.d222)
+    {B : Matrix (Fin (Core.d222 (Fin.last 2))) (Fin (Core.d222 0)) ℝ} (hB : B.rank = 1)
+    (hT : codimRealFibre Core.d222 B
+      = codimRepCanonical (k := ℂ) (fibre (k := ℂ) Core.d222 (B.map Complex.ofRealHom))) :
     I.rlct (lossDLN Core.d222 B) = 2 := by
   have hr : ∀ k', (1 : ℕ) ≤ Core.d222 k' := Core.d222_one_le
-  rw [rlct_lossDLN_eq_half_cCodim_add_shift I (by norm_num) hB hr
-    Core.kostantPartitions_d222_one_nonempty, Core.cCodim_d222_one]
+  rw [rlct_lossDLN_eq_half_cCodim_add_shift (K := ℂ) (ι := Complex.ofRealHom) I (by norm_num) hB hr
+    Core.kostantPartitions_d222_one_nonempty hT, Core.cCodim_d222_one]
   have hshift : (1 : ℕ) * (Core.d222 0 + Core.d222 (Fin.last 2) - 1) = 3 := by decide
   rw [hshift]
   norm_num
