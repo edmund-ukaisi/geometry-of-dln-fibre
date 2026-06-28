@@ -2725,18 +2725,24 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
     (hq : q = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
     (hball : psiSplitRawL2 H r hr hL q ∈ Metric.closedBall
       (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn))
-    -- **The Schur tie** (route-A input, A1 — the sub stays ABSTRACT; the controller discharges this at the
-    -- final wiring).  The absorbed-core product `prod(deepestM) c` (`c s = decode(ψq).2.1 s +
-    -- schurCorrection(ψq) s`) equals the Score `(1,1)`-Schur integrand matrix.  This bundles STEP 1-2
-    -- (`absorbedCore_psiSplitRawL2Core_{last,of_ne}` + `hWdet` + `prod_deepestM_eq_two_of_L2` → `c₀·c₁`)
-    -- and STEP 3-4 (`rcore_schur_factor_of_corner_split` on `hS3b`'s corner-split + the decode-`x` framed-
-    -- layer grouping/units + the readback ties → the Score Schur integrand).  Producer-internal (needs
-    -- `hJfront`, `hWdet`, hPbr/hQbr/hS3b + the decode lemmas — all in scope at the wiring).  The sub's tail
-    -- is the `frobSq`/∑∑ congr (`frobSq M = ∑ᵢ∑ⱼ (M i j)²`), so `frobSq(prod c) = Score x`.
+    -- **The W-pivot unit** (route-A input; controller-discharged at the wiring from `hball` +
+    -- `ball_l2ExtraRadius_subset` + the cutoff-radius coupling + `hq`).  Consumed IN-SUB by STEP 1-2's
+    -- last-layer absorbed core (`absorbedCore_psiSplitRawL2Core_last`).
+    (hWdet : (l2W H r hr hL hL2 q).det ≠ 0)
+    -- **The LDU-Schur readback-tie** (route-A input, STEP 3-4 — producer-internal; the controller
+    -- discharges at the wiring via `rcore_schur_factor_of_corner_split` on `hS3b`'s corner-split + the
+    -- decode-`x` framed-layer grouping/units + the S6r readbacks).  The CLEANED absorbed-core tuple
+    -- `c''` (= the decode/Schur core off the last layer, `(1−K)·S1` at the last — STEP 1-2, identified
+    -- IN-SUB via `hWdet` + the absorbedCore helpers) has reduced product = the Score `(1,1)`-Schur
+    -- integrand.  Stated abstractly over `Fin L` via `Function.update` (NO `Fin 2` cast-wall — the explicit
+    -- `c₀·c₁` form is unstateable in the abstract sig; `Function.update` sidesteps it); STEP 1-2 rewrites
+    -- the raw absorbed core `c` to `c''` (`hc_eq`) before applying it.
     (hSchurTie : prod (deepestM H r)
-        (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
-          + schurCorrection H r hr hL
-              ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)
+        (Function.update
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrection H r hr hL (q.1, q.2.2) s)
+          (lastLayer hL)
+          ((1 - l2K H r hr hL hL2 q) * l2S1 H r hr hL hL2 q))
       = Matrix.of (fun i j => ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
             (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
             (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
@@ -2776,9 +2782,29 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
             + schurCorrection H r hr hL
                 ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
     deepestCoreF_coreAbsorb_eq_prodSchur H r hr hL (psiSplitRawL2 H r hr hL q) hball
-  rw [hstepA, hSchurTie, hScoreDef]
-  -- `Score x = frobSq(integrand)` (`hScoreDef` + `frobSq M = ∑ᵢ∑ⱼ (M i j)²`); `hSchurTie` rewrote the
-  -- absorbed-core product to the integrand, so this is the `frobSq`/∑∑ congr (definitional after `rfl`).
+  rw [hstepA]
+  -- STEP 1-2 (in-sub, genuinely consumes `hWdet`): the absorbed-core tuple `c` equals the CLEANED `c''`
+  -- (`Function.update` form) — `c'' last = (1−K)·S1` (`absorbedCore_psiSplitRawL2Core_last`, needs `hWdet`),
+  -- `c'' s = decode(q)+schurCorr(q)` for `s ≠ last` (`_of_ne`).  `psiSplitRawL2 = psiSplitRawL2Core` at L=2.
+  have hψeq : psiSplitRawL2 H r hr hL q = psiSplitRawL2Core H r hr hL hL2 q := dif_pos hL2
+  have hc_eq : (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
+        + schurCorrection H r hr hL
+            ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)
+      = Function.update
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrection H r hr hL (q.1, q.2.2) s)
+          (lastLayer hL)
+          ((1 - l2K H r hr hL hL2 q) * l2S1 H r hr hL hL2 q) := by
+    funext s
+    by_cases hs : s = lastLayer hL
+    · subst hs
+      rw [Function.update_self]
+      rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_last H r hr hL hL2 q hWdet
+    · rw [Function.update_of_ne hs]
+      rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_of_ne H r hr hL hL2 q s hs
+  -- STEP 3-4 (threaded `hSchurTie`, producer-internal LDU) + the `frobSq`/∑∑ congr:
+  -- `frobSq(prod c) = frobSq(prod c'') [hc_eq] = frobSq(integrand) [hSchurTie] = Score x [hScoreDef]`.
+  rw [hc_eq, hSchurTie, hScoreDef]
   rfl
 
 
