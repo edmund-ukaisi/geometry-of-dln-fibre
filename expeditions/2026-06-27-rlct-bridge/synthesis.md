@@ -488,3 +488,4 @@ inhabitability → the re-guard), L3-recurrence (re-grep the class to empty). Se
 
 ### Status: CLOSE shape — branch `expedition/rlct-bridge` pushed (`9560b0e6`), green. PR
 operator-gated (signal-and-wait): controller signals ready, does NOT open/merge unilaterally.
+**PR #13 opened into `dev` (2026-06-28, operator-authorized) — https://github.com/edmund-ukaisi/geometry-of-dln-fibre/pull/13 — NOT merged (operator merges). Awaiting review.**
