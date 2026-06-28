@@ -1481,18 +1481,22 @@ theorem schurRatioResidGen_mid (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r)
   --       injective via `slotMatG_spec` + `cellRowColG_injective`; bijective by `card_cellSumG` = N).
   --   (2) DONE reshape `zEG : (Fin N→ℝ) ≃ᵐ (M22-cube × (g,b)-cube)` (MP, `zEG_measurePreserving`);
   --       apply lemmas `zEG_fst_apply`/`zEG_snd_apply` (= z at the cell slots `slotCellG`).
-  --   (3) Sc readback `Sc(z) a b = (zEG z).1 (a,b) − (zEG z).2 (inl a)·(zEG z).2 (inr b)` via
-  --       `RmatGnorm_eq_slot` per cell (`cellRowColG`: M22=(succIdx a,succIdx b), g=(succIdx a,0),
-  --       b=(0,succIdx b)) matched to N2b's j=1 `Sc = M22 − M21·M11⁻¹·M12` (M11=[1] ⟹ rank-1 g·bᵀ).
-  --   (4) per-z bound: N2b (`schur_minorPivot_split` 1, complete-pivot from |RmatGnorm|≤1, M11.det=1 via
-  --       `det_fin_one`) + `ofReal_rpow_le_const_mul` (zero-coincidence from N2b upper leg) + the top-row
-  --       shear (`stepShearG` at m=r-1, `finCongr`-bridge `Fin ((r-1)+1) = Fin r` for the `S a.succ` rows)
-  --       → bound innerSGen by c₀^{-c'}·∫_{S_bot}∫_{T'} (∑T'²+frobSq(Sc·S_bot))^{-c'}.
-  --   (5) integrate z; CoV via `zEG` (box `[-1,1]^N` → M22-cube × (g,b)-cube), Tonelli to (g,b)-outer;
-  --       per-(g,b) the M22-integral with `Sc = matOf M22 − bgShiftG(g,b)` feeds `resolvedShiftRG_le`
-  --       (B=1, K=max 1 (r·T)) × finite (g,b)-vol × the c₀^{-c'} const.
-  -- The remaining (3)+(4)+(5) is the `Fin.succ`/`⟨1+a,_⟩` index bridge between N2b's `Sc` blocks and the
-  -- carve cells, + the Tonelli wiring. ~80-100 lines; backbone + all bricks PRESENT, no design wall.
+  --   (3) DONE Sc readback `n2b_Sc_eq_carve`: N2b's j=1 `Sc = M22 − M21·M11⁻¹·M12` (RmatGnorm blocks)
+  --       = `matOf((zEG z).1) − bgShiftG((zEG z).2)`, via `schurProd_fin_one` (M11=[1] rank-1) +
+  --       `RmatGnorm_eq_slot` per cell. DONE top-row recognition `topRow_shear`: (R'·S)⟨0⟩q = S⟨0⟩q +
+  --       ∑_a R'⟨0⟩⟨1+a⟩·S⟨1+a⟩q (j=1 `fin_sum_block_split`).
+  -- REMAINING (only 2 integration lemmas — ALL bricks above PRESENT + green):
+  --   (4) `innerSGenNorm_le` (per-z): obtain N2b (`schur_minorPivot_split` 1, complete-pivot from
+  --       |RmatGnorm|≤1 + M11.det=1 via `det_fin_one`; subst `Sc = n2b_Sc_eq_carve` since S-independent);
+  --       pointwise `ofReal_rpow_le_const_mul` (X=0→F=0 from the N2b UPPER leg) + `topRow_shear`; then
+  --       `stepShearG` (m=r-1) — the ONE remaining cast: bridge `Fin r ≅ Fin ((r-1)+1)` via `finCongr`
+  --       on the S-rows so `S a.succ` (Fin(m+1)) ↔ `S ⟨1+a,_⟩` (Fin r). Yields
+  --       `∫_S frobSq(R'·S)^{-c'} ≤ c₀^{-c'}·∫_{S_bot∈box(r-1)4T}∫_{T'∈morse 4 (r·T)}(∑T'²+frobSq(Sc·S_bot))^{-c'}`.
+  --   (5) assembly: `rw innerSGen_eq_norm`; `lintegral_mono (4)`; pull c₀^{-c'} const; CoV via `zEG`
+  --       (`zEG_box_preimage`) + Tonelli to (g,b)-outer; per-(g,b) enlarge M22/S_bot/T' boxes to K=max 1 (r·T)
+  --       (`lintegral_mono_set`) + recognize `ScCarve = matOf M22 − bgShiftG(g,b)`, feed `resolvedShiftRG_le`
+  --       (B=1) → finite; × finite (g,b)-vol × the const. A WIP `innerSGenNorm_le`/`ScCarve` draft (reverted
+  --       to keep green) had everything but the `stepShearG` finCongr bridge + the box-enlargement Tonelli.
   sorry
 
 /-- **The generic ratio-residual, all `0 < c' < λ_r` (subcritical fold).** Mid case `2 < c'` is
