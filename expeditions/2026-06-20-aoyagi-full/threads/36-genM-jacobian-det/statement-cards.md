@@ -814,3 +814,31 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 > - **Status.** rate leg: 1 sorry (sum-arithmetic). MP leg (`measurePreserving_shearAt` at the pivot,
 >   det 1 — already generic, no promotion needed) + subBox/`routeMCore_box_diverges_of_MPChart` assembly:
 >   not yet started.
+
+---
+
+> **STEP-4 RATE LEG COMPLETE** (the (1,1)-family Option-A chart, rate). `RouteMSmearedGenChart.lean`
+> (`lean/DLNFibre/DLN/RLCT/Validate/`, @ `c48a1f43`) — ZERO sorries, axiom-clean
+> `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`, olean deleted).
+>
+> - **Lean:** `prod_smParams_eq_smul_pivotCol` — the telescope keystone:
+>   `prod M (smParams u) i jc = deepCol⟨0,hrow⟩ · frontMat u i ⟨0,hm1⟩` (the chart product = `u_p`-scaled
+>   column 0 of the front product, off the pole `‖col 0‖² ≠ 0`). Supporting (all sorry-free):
+>   `frontMat_routing_eq_resid` (the front fact entrywise — the shear-cancellation plug-in);
+>   `sum_smearedCol_collapse` + `sum_smearedCol_collapse_opaque` (the sum-arithmetic core);
+>   `prodAux_smParams_front_eq` (front product unchanged by the deepest-layer smear);
+>   `prodAux_congr_of_eqOn_prefix`; the chart data (`baseParams`, `frontMat`, `pivotCol`, `residSel`,
+>   `residCols`, `routing`, `deepCol`, `smearShift`, `smearedDeepLayer`, `smParams`).
+> - **Gloss.** The deepest layer (size `m1 × 1`) is smeared at the pivot row 0 by `−smearShift`
+>   (`= −∑ᵣ Λ₀ 0 r · S(σr)`, the front-coords routing × residual rows). Peeling the last layer
+>   (`prodAux_succ`) + `Matrix.mul_apply` (post-peel ordering cracks the opaque-width `HMul` wall) +
+>   the reindex collapse + the per-row `updateRow_apply` readout reduce the product to a `Fin m1` sum;
+>   `Fin.sum_univ_succAbove` at the pivot + the front fact `frontMat i ⟨0,_⟩ · routing 0 r =
+>   frontMat i (σr)` cancel the shear, leaving `u_p · col 0`.
+> - **Proved.** The off-pole rate identity (the `F ∘ φ = u_p² · U` core, at the product level).
+> - **Cited/Assumed.** `Matrix.updateRow_apply`, `Fin.sum_univ_succAbove`, `Fin.succAbove_zero`
+>   (Mathlib v4.29); the front fact `prodAux_frontScalarShear_cancel` (landed `RouteMFrontBottleneck`);
+>   off-pole `hc`, the width-1 layer `M⟨p,_⟩ = 1`, `M_L = 1` (the (1,1) family).
+> - **Deferred.** The MP/subBox leg (the flat `phiSm` + its MP + measurable embedding + subBox source
+>   cert + `routeMCore_box_diverges_of_MPChart`) → the (1,1) atom. The rate (its load-bearing input) is now in hand.
+> - **Status.** sorry-free (rate leg). The (1,1) atom: gated only on the MP/subBox assembly.
