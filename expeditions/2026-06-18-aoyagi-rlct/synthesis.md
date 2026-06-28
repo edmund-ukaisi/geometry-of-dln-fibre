@@ -48,6 +48,41 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Case 2 All-Pivot Selected-Entry Adapter
+
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now exposes all-pivot
+variants of the retained-passive Case 2 selected-entry bridge:
+
+```text
+exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+```
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` exposes the canonical p.13
+chart-side square-sum form:
+
+```text
+exists_pivot_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_of_ne_zero
+```
+
+The new proofs assume
+`case2DisplayedPostPivotFreeTwoEdgeFactorProduct ... != 0`, use the finite
+selected-entry all-pivot matrix inverse to choose a nonzero displayed entry as
+the selected pivot, and then reuse the existing fixed-pivot/entrywise
+retained-passive Case 2 bridge.  The displayed factor identities `hD` and `hF`
+remain supplied.
+
+Focused builds of both touched modules passed with pre-existing imported
+warning noise.  `scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker search, direct axiom-footprint audit, and xhigh review by
+`Halley` passed.  All three new theorem endpoints depend only on
+`[propext, Classical.choice, Quot.sound]`.
+
+This removes fixed-pivot selection only after displayed-product nonzeroness is
+known.  It does not prove displayed-product nonzeroness, actual
+retained-passive source/readback factor alignment, source/prior transport,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 Raw-Order Source-Chart Composition Identity
 
 `RetainedPassiveLocalSource.lean` now exposes the pointwise identity

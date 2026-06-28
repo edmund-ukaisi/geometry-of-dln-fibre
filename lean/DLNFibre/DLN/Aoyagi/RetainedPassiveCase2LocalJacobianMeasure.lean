@@ -263,6 +263,117 @@ theorem exists_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_se
     aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
       (M := 1) (W := W) (B := B) pivot z hz y residualCoordEquiv hfactor
 
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- In the two-edge retained-passive Case 2 lane, a nonzero displayed
+post-pivot product matrix gives some selected-entry pivot and coordinates whose
+residual is the canonical p.13 chart-side square-sum.
+
+This is the all-pivot finite selected-entry variant of
+`exists_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_pivot_ne_zero`.
+It still assumes nonzeroness of the displayed product and does not construct
+source production. -/
+theorem exists_pivot_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_of_ne_zero
+    (W : Fin (1 + 2) → Type v) [∀ i, AddCommGroup (W i)]
+    [∀ i, TopologicalSpace (W i)] [∀ i, IsTopologicalAddGroup (W i)]
+    [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
+    [∀ i, ContinuousSMul ℝ (W i)]
+    (B : ∀ i : Fin (1 + 1), W i.succ →ₗ[ℝ] W i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι τ : Type*} [DecidableEq ι]
+    {center : Finset ι}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (z :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)
+    (hz :
+      z ∈ topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last 2))
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (1 : Fin 3))
+    (e₀ : τ ≃
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+    (hD :
+      (show Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (1 : Fin 3)) ℝ from
+        by
+          simpa using
+            (ofTopologyTuple
+              (M := 1) (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀) z).C (1 : Fin 2)).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (1 : Fin 3))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0) ℝ from
+        by
+          simpa using
+            (ofTopologyTuple
+              (M := 1) (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀) z).C (0 : Fin 2)).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hprod :
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime ≠ 0) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let EFam := ∀ p : Fin (1 + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    ∃ pivot : center, ∃ y : center → ℝ,
+      aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))) =
+        SelectedEntrySignedBox.CenterCoord.residual pivot y := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  rcases
+    exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+      (ρ := ρ) (τ := τ) (ι := ι) (κ := κ') (center := center)
+      n hS hcont residual Cprime z residualCoordEquiv e₂ e₁ e₀ hD hF hprod with
+    ⟨pivot, y, hfactor⟩
+  refine ⟨pivot, y, ?_⟩
+  exact
+    aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
+      (M := 1) (W := W) (B := B) pivot z hz y residualCoordEquiv hfactor
+
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
 end Aoyagi

@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive Case 2 all-pivot selected-entry adapter
+
+Statement card:
+`statement-card-a2-retained-passive-case2-all-pivot-selected-entry-adapter.md`.
+
+Lean now has all-pivot retained-passive Case 2 adapters:
+
+```text
+exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+exists_pivot_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_of_ne_zero
+```
+
+These replace a supplied selected pivot and `hpivot` by the single hypothesis
+that the displayed post-pivot two-edge product matrix is nonzero.  The proof
+uses the existing finite all-pivot selected-entry inverse
+`SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero`
+to choose a nonzero displayed matrix entry as the pivot, then feeds the
+resulting entrywise chart readout into the already banked Case 2 bridges.
+
+No fresh Aoyagi source reproduction was needed: this is a specialization of
+the already reproduced finite all-pivot selected-entry calculation.  Focused
+builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge`
+and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with
+only pre-existing imported warning noise.  `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker search, direct
+axiom-footprint audit, and xhigh review by `Halley` passed.  Review:
+`review-a2-retained-passive-case2-all-pivot-selected-entry-adapter.md`.
+
+This removes fixed-pivot selection after displayed-product nonzeroness is
+known.  It does not prove displayed-product nonzeroness, actual retained-passive
+source/readback factor alignment, source/prior transport, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-28 A2 retained-passive raw-order source-chart composition
 
 Reproduction:

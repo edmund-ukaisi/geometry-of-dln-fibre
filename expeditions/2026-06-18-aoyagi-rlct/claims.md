@@ -205,6 +205,17 @@ No such claim is formalisation-ready until both fields are filled.
   nonzero production, factor alignment for the displayed post-pivot and
   following factors, original source-rank coverage, measure/prior transport,
   normal crossings, pole order, or RLCT.
+- **Current status addendum, retained-passive Case 2 all-pivot adapter,
+  2026-06-28.** Lean now lifts the finite all-pivot selected-entry inverse into
+  the retained-passive Case 2 two-edge bridges:
+  `exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero`,
+  `exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero`,
+  and
+  `exists_pivot_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_of_ne_zero`.
+  These replace a supplied fixed pivot/nonzero pivot entry by the single
+  hypothesis that the displayed post-pivot product matrix is nonzero.  They do
+  not prove that nonzeroness, actual retained-passive factor alignment,
+  source/prior transport, normal crossings, pole order, or RLCT.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

@@ -240,6 +240,74 @@ theorem exists_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEn
       pivot n hS hcont residual Cprime data y residualCoordEquiv e₂ e₁ e₀ hD hF hentry
 
 set_option linter.style.longLine false in
+/-- A two-edge retained-passive coordinate datum satisfies the selected-entry
+residual-factor matrix identity for some selected pivot once its two `C` factors
+are Aoyagi's displayed Case 2 post-pivot residual block and following factor,
+and the displayed two-edge product matrix is nonzero.
+
+This is the all-pivot finite selected-entry variant.  It still assumes
+nonzeroness of the displayed product and does not prove source production. -/
+theorem exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+    {ρ τ ι : Type*} [DecidableEq ι]
+    {κ : Fin 3 → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {center : Finset ι}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (data :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ≃ center)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ (Fin.last 2))
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ (1 : Fin 3))
+    (e₀ : τ ≃ κ 0)
+    (hD :
+      (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) ℝ from
+        by simpa using data.C (1 : Fin 2)).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ (1 : Fin 3)) (κ 0) ℝ from
+        by simpa using data.C (0 : Fin 2)).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hprod :
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime ≠ 0) :
+    ∃ pivot : center, ∃ y : center → ℝ,
+      ChartLocalSuffixState.residualFactorProduct data.C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := by
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ :=
+    case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime
+  let productCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1)) τ ≃ center :=
+    (Equiv.prodCongr e₂ e₀).trans residualCoordEquiv
+  have hD_nonzero : D ≠ 0 := by
+    simpa [D] using hprod
+  rcases
+    SelectedEntrySignedBox.CenterCoord.exists_pivot_matrix_eq_chartMap_of_ne_zero
+      D productCoordEquiv hD_nonzero with
+    ⟨pivot, y, hDchart⟩
+  have hentry :
+      ∀ i t,
+        case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime i t =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv (e₂ i, e₀ t)) := by
+    intro i t
+    have hmatrix := congrFun (congrFun hDchart i) t
+    simpa [D, productCoordEquiv, AoyagiResidualBlockCoordinateIndex.matrix] using hmatrix
+  refine ⟨pivot, y, ?_⟩
+  exact
+    residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_entrywise
+      (ρ := ρ) (τ := τ) (ι := ι) (κ := κ) (center := center)
+      pivot n hS hcont residual Cprime data y residualCoordEquiv e₂ e₁ e₀ hD hF hentry
+
+set_option linter.style.longLine false in
 /-- The two-edge `ofTopologyTuple` specialization of the retained-passive
 Case 2 selected-entry residual-factor product bridge.
 
@@ -353,6 +421,61 @@ theorem exists_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matr
       (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
         (M := 1) (K := ℝ) (ρ := ρ) (κ' := κ) z)
       residualCoordEquiv e₂ e₁ e₀ hD hF hpivot
+
+set_option linter.style.longLine false in
+/-- The two-edge `ofTopologyTuple` specialization with the selected pivot chosen
+from a nonzero displayed post-pivot product matrix.
+
+This is an all-pivot finite selected-entry adapter.  It still assumes the
+displayed product matrix is nonzero and does not prove source production or
+factor alignment for an actual fixed-base source chart. -/
+theorem exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+    {ρ τ ι : Type*} [DecidableEq ι]
+    {κ : Fin 3 → Type*} [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    {center : Finset ι}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → ℝ)
+    (Cprime :
+      Matrix (Unit ⊕ pivotComplement (case2DisplayedPivotCol n hS hcont)) τ ℝ)
+    (z :
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.TopologyTuple
+        (M := 1) ρ κ ℝ)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ≃ center)
+    (e₂ : Case2ResidualRowIndex n S (J + 1) ≃ κ (Fin.last 2))
+    (e₁ : Case2ResidualColIndex n S (J + 1) ≃ κ (1 : Fin 3))
+    (e₀ : τ ≃ κ 0)
+    (hD :
+      (show Matrix (κ (Fin.last 2)) (κ (1 : Fin 3)) ℝ from
+        by simpa using
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+            (M := 1) (K := ℝ) (ρ := ρ) (κ' := κ) z).C (1 : Fin 2)).submatrix e₂ e₁ =
+      case2DisplayedPostPivotResidualBlock n hS hcont residual)
+    (hF :
+      (show Matrix (κ (1 : Fin 3)) (κ 0) ℝ from
+        by simpa using
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+            (M := 1) (K := ℝ) (ρ := ρ) (κ' := κ) z).C (0 : Fin 2)).submatrix e₁ e₀ =
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont Cprime)
+    (hprod :
+      case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime ≠ 0) :
+    ∃ pivot : center, ∃ y : center → ℝ,
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+            (M := 1) (K := ℝ) (ρ := ρ) (κ' := κ) z).C
+          (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := by
+  exact
+    exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+      (ρ := ρ) (τ := τ) (ι := ι) (κ := κ) (center := center)
+      n hS hcont residual Cprime
+      (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple
+        (M := 1) (K := ℝ) (ρ := ρ) (κ' := κ) z)
+      residualCoordEquiv e₂ e₁ e₀ hD hF hprod
 
 set_option linter.style.longLine false in
 /-- Source-shaped Case 2 specialization for a two-edge retained-passive

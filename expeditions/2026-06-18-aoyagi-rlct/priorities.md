@@ -19,6 +19,34 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive Case 2 all-pivot selected-entry adapter
+
+The finite selected-entry all-pivot inverse has been lifted into the
+retained-passive two-edge Case 2 bridge:
+
+```text
+exists_pivot_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+exists_pivot_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_of_ne_zero
+exists_pivot_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_of_ne_zero
+```
+
+These theorems assume the displayed post-pivot two-edge product matrix is
+nonzero and then choose some selected-entry pivot and coordinates.  They remove
+the need to supply a fixed pivot and fixed-pivot nonzero entry after
+nonzeroness of the displayed product is known.  The displayed factor identities
+`hD` and `hF` remain explicit.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed with
+pre-existing imported warning noise.  `scripts/sorries`, `git diff --check`,
+direct theorem-footprint audit, and xhigh review by `Halley` passed; the three
+new endpoints depend only on `[propext, Classical.choice, Quot.sound]`.
+
+This is a finite selected-entry algebra adapter.  It does not prove displayed
+product nonzeroness, retained-passive source/readback factor alignment, source
+or prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, raw-order source-chart composition identity
 
 The optional non-wrapper source-chart identity has landed in
