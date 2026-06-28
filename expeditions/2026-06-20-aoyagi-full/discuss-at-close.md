@@ -1021,3 +1021,20 @@ the non-stopping tide is producing, not just to re-send the stop. Cheaper still:
 sub-bricks of one lemma — assign disjoint sub-bricks explicitly, or accept ONE builder and truly enforce it. The
 reconcile cost here (~one focused tide) is the price of the split; it's recoverable (no work lost, all bricks banked),
 but a 5-line branch audit two ticks earlier would have prevented the divergence.
+
+### Item 51 — Branch audit must include SORRY-DISTANCE, not just lemma-name presence (2026-06-28)
+Refines Item-50. Last tick I ran a lemma-name branch audit (good). But THIS tick I spawned genm-assemble to re-derive the
+carving coupled-core on genm-firing's base WITHOUT checking which lineage was closest to its FINAL sorry — genm-carving was
+~1 sorry from R1-UPPER done (full machinery + assembly skeleton; only schurRatioResidGen_mid open). genm-firing's read-only
+diligence caught it and halted #137 rather than add a 4th lineage. Had I checked `git show <branch>:<file> | grep -c sorry`
+per carving branch (a 3-line audit), I'd have seen genm-carving at 1 sorry and assigned the finish THERE, not spawned a
+from-scratch coupled-core build on a less-complete base.
+
+**Lesson:** when consolidating duplicate lineages, the audit is two-dimensional — (a) which lemmas each branch has
+(Item-50), AND (b) **sorry-DISTANCE: how many/which sorries remain on each branch.** Assign the finish to the branch CLOSEST
+to its terminal sorry (fewest remaining), not the branch with the "canonical" base or the one I last designated. Closing a
+near-complete branch's last sorry then reconciling its lineage into canonical (cover/names) as a SEPARATE step beats
+re-deriving the whole thing on the canonical base. Concretely, before assigning any "finish the proof" task across
+divergent branches: `for b in <branches>; do echo $b; git show $b:<file> | grep -nc sorry; done` and read the sorry
+identities. Cheap; would have saved this tick's mis-spawn. Credit: genm-firing's unprompted read-only diligence (sorry-count
++ lemma inventory per branch) is exactly the audit discipline — bake it into the controller's consolidation routine.
