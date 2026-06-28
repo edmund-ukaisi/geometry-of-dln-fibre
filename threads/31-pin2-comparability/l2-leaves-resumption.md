@@ -64,13 +64,35 @@ fields + `eventuallyEq_one` + `.contDiff`) → re-keying is LOCAL to the bridge 
 (`contDiffAt_matrix_inv_entry_of_det_ne_zero_at` — same proof as the landed one but with `ContDiffAt`
 determinant/adjugate, since W's entries are only ContDiffAt).
 
-### S6 — `comp_identity_L2` (line ~876), the genuine geometric leaf (deepest, research-grade)
-`Φcore ∘ psiL2 =ᶠ[𝓝 wstar] Φscore`. Near wstar: `psiL2 = psiRawL2` (S5 germ, `psiL2_eventuallyEq_psiRawL2`),
-`deepestCoreF(coreAbsorb …) = frobSq(prod(core+schurCorrection))` (`deepestCoreF_coreAbsorb_eq_prodSchur`,
-inner ball). Core algebra banked in `DeepestCompositionE1.lean` (`prod_absorbed_eq_schur_ldu`: the LDU
-`Rcore = S0(I−K)S1`). Needs: E2 reg-preservation (`e2_regPreserve`, landed) + wiring psiL2's edited
-(T1',Y1') into the LDU energy identity + the framed-product `Score`. Largest remaining; assess for a
-dedicated tide.
+### S6 — `comp_identity_L2` (the genuine geometric leaf, deepest, research-grade) — DEPTH-CHECKPOINTED
+`Φcore ∘ psiL2 =ᶠ[𝓝 wstar] Φscore`. Near wstar: `psiL2 = psiRawL2` (S5 germ, `psiL2_eventuallyEq_psiRawL2`,
+LANDED). Core algebra banked in `DeepestCompositionE1.lean` (`prod_absorbed_eq_schur_ldu`: the LDU
+`Rcore = S0(I−K)S1`, sorry-free + axiom-clean). E2 reg-preservation `e2_regPreserve` LANDED.
+
+**The wall (why this is a dedicated tide, not a leaf-fill):** the existing
+`deepestCoreF_coreAbsorb_eq_prodSchur` (`DeepestGaugeConstruction:1945`) is for the SINGLE Schur shift
+`deepestCoreAbsorb` (`S1 ↦ S1 + schurCorrection`), NOT for the joint `psiL2`'s edited core
+`T1' = W⁻¹·Br`. The S6 goal applies `psiL2` FIRST, then `coreAbsorb (= deepestCoreAbsorb) + deepestCoreF`.
+Closing it needs, all NEW:
+1. tie psiL2's actual edit `T1' = l2W⁻¹·l2Br` to the E1 absorb form `S1' = (1−K)·S1` — a nontrivial
+   matrix identity (W⁻¹·Br = (1−K)·S1 + …? — the cert's E1 constraint must be re-derived against the
+   ACTUAL l2T1p def, not assumed);
+2. expand the framed-product `Score` (the `endpointP0·(prod−B)·endpointQL` block reads through
+   `hPtri`/`hQtri`) and match it to `prod_absorbed_eq_schur_ldu`'s RHS at wstar;
+3. the E2 reg-term: `(regStraighten (split x)).1` (= `deepestEFull`) preserved by the joint move via
+   `e2_regPreserve` through the framed reg read;
+4. assemble the `=ᶠ[nhds wstar]` germ from the inner-ball pieces.
+Each is geometric, not mechanical. **Recommend a fresh dedicated tide** (own context budget) with the
+E1/E2 certs + the framed-product Score expansion as the brief.
+
+## LANDED (genm-l2leaves, this tide)
+- **S4** `hasStrictFDerivAt_psiSplitDeltaL2_zero` (L=2) — sorry-free, #print axioms clean. Committed 48b1ec48.
+- **S2** `contDiffAt_psiSplitDeltaL2_of_mem_tsupport` (L=2) — sorry-free, #print axioms clean. Committed 490136c2.
+  Re-keyed `cutoffBumpSplit` to `jointUnitRadius` (new `jointUnitSet` open + 0∈, in-file).
+- The full S4/S2 building bank: intermediate matrices `l2K/R/U/W/S1/Br`, the entry ContDiffAt/deriv-0
+  facts (at 0 AND at general p with det hyps), the matrix normalizations, the two payload deriv-0/ContDiffAt
+  facts, the `_at` ContDiffAt inverse variants.
 
 ## Codex artefacts
-`codex/s4s2-decomposition-{prompt,answer}.md`, `codex/s4-matrix-deriv-{prompt,answer}.md`.
+`codex/s4s2-decomposition-{prompt,answer}.md`, `codex/s4-matrix-deriv-{prompt,answer}.md`,
+`codex/s2-rekey-{prompt,answer}.md`.
