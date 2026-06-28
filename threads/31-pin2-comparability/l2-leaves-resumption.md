@@ -3,23 +3,21 @@
 Bridge file: `lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeL2.lean`.
 Branch `genm-l2cle` (off `origin/genm-l2-wt`). Build: `scripts/lb DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2` from the worktree `lean/`.
 
-## STATUS (2026-06-28): S4 CLOSED — bridge has 2 sorries (S2 + S6 only)
+## STATUS (2026-06-28): S4 + S2 CLOSED — bridge has 1 sorry (S6 only)
 
-**S4 (`hasStrictFDerivAt_psiSplitDeltaL2_zero`) is DONE** (commit a416c5cc), axiom-clean. The full
-O(read²) chain (S4a–S4e, ~530 LoC) is in the bridge: matrix-entry strict-fderiv-0 helpers, ContDiffAt
-det/adj/inv variants, W⁻¹-1 deriv-0, composites K/R/W/S1/Br + normalizations, the core payload
-(`hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTuple_zero`, flat-codomain descent), the gauge payload
-(`hasStrictFDerivAt_l2GaugeΔ_zero`), and the CLE-reduction (`hasStrictFDerivAt_psiSplitDeltaL2Core_zero`).
+**S4 (`hasStrictFDerivAt_psiSplitDeltaL2_zero`) DONE** (commit a416c5cc), axiom-clean. Full O(read²)
+chain (S4a–S4e): matrix-entry strict-fderiv-0 helpers, ContDiffAt det/adj/inv variants, W⁻¹-1 deriv-0,
+composites K/R/W/S1/Br + normalizations, core payload (flat-codomain descent), gauge payload, CLE-reduction.
 
-**S2** (`contDiffAt_psiSplitDeltaL2_of_mem_tsupport`) — NOW LARGELY IN REACH: reuse the same payload
-decomposition (`psiSplitDeltaL2Core_eq_payload`) + `regGaugeSlotCLE.contDiff`/`paramsEquivFlatCLE.contDiff`
-+ `contDiffAt_pi'`; the ContDiffAt of `l2T1p`/`l2Y1p` entries reuses the landed composite ContDiffAt
-lemmas (S4c/S4d) BUT at a general support point (not 0) — so it needs the `det≠0` conditions there. The
-`cutoffBumpSplit` RADIX re-key (det(1+readX), det l2P00, det l2W all ≠0 on the support) is the one design
-piece; the ContDiffAt-inv `_at` variant is landed. Mirror the S4d composite-ContDiffAt lemmas with the
-hypotheses at the support point `q` instead of `0`.
+**S2 (`contDiffAt_psiSplitDeltaL2_of_mem_tsupport`) DONE** (commit b0d8fc95), axiom-clean. The
+composite-inverse ContDiffAt on the joint unit locus:
+- S2a: re-keyed `cutoffBumpSplit` to `jointUnitRadiusSplit` (= `unitRadius ⊓ l2ExtraRadius` at L=2;
+  `l2ExtraUnitSetSplit = {det P00 ≠ 0 ∧ det W ≠ 0}`, ball-at-0 by continuity). `dite` only in the scalar.
+- S2b: general-point inverse-entry ContDiffAt (`_at` variants of A0/A1/P00/W) + composite ContDiffAt-at-q
+  (S1/Br/T1p/Y1p) + payload ContDiffAt-at-q (`...paramsEquivFlatCLE_l2CoreΔTuple_at`, `contDiffAt_l2GaugeΔ_at`)
+  + the two `tsupport_cutoffBumpSplit_subset_*` (extract the 4 det conditions at the support pt) + the leaf.
 
-**S6** (`comp_identity_L2`) — the genuine geometric leaf, unstarted (LDU energy wiring; see below).
+**S6** (`comp_identity_L2`) — the genuine geometric leaf, the ONLY remaining sorry (LDU energy wiring; see below).
 
 ## LANDED this tide (sorry-free, committed @355515d1)
 
