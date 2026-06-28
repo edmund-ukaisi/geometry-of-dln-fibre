@@ -863,3 +863,21 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 >   `routeMCore_box_diverges_of_MPChart` (landed) → the (1,1) atom.
 > - **Status.** sorry-free (MP leg + rate leg both complete). The (1,1) atom: gated on the connection +
 >   embedding + subBox assembly.
+
+---
+
+> **STEP-4 chart substrate COMPLETE** (rate + MP + connection + embedding + flat-rate). `RouteMSmearedGenChart.lean`
+> (@ `5ad79d8d`) — ZERO sorries; all axiom-clean `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`).
+>
+> - **Connection:** `paramsEquivFlat_symm_phiSm_eq_smParams` — `(paramsEquivFlat).symm (phiSm u) = smParams u`
+>   (the flat single-coord shear decodes to the Params-level deepest-row-0 shear; per-slot, `M_L = 1`).
+> - **Embedding:** `measurableEmbedding_phiSm` via `updateSubME` (the coord-invariant subtractive-shear MeasurableEquiv).
+> - **Flat rate:** `routeMCore_phiSm_offpole` — `routeMCore M (phiSm u) = (u_p)² · (∑ᵢ frontMat u i ⟨0,_⟩²)`
+>   off the pole (compose connection + rate keystone + `M_L = 1` single column).
+> - **MP:** `measurePreserving_phiSm` (the chart is measure-preserving everywhere).
+> - **Deferred (the FINAL atom assembly):** the subBox source certificate (a bounded-away sub-box
+>   `S ⊆ phiSm⁻¹(cubeBox ε)` with the pivot coord `u_p ∈ (0,δ)` the divergence axis and the front coords
+>   bounded-away-from-the-pole so `U > 0` finite; `∫_S |u_p|^{−2c'}·U^{−c'} = ⊤` for `c' ≥ minAdm/2 = ½`)
+>   feeding the landed `routeMCore_box_diverges_of_MPChart` → the (1,1)-family atom ∀M. Mechanical-but-large
+>   (mirrors the validate-small `subBox121_diverges`, ~150 lines), generalized over the opaque widths.
+> - **Status.** chart substrate sorry-free; the atom is gated only on this subBox/divergence assembly.
