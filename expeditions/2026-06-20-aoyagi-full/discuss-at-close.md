@@ -1274,6 +1274,14 @@ done/in-flight. This item is the four-research-gate scope decision — the centr
     recStep template, NO L-layer joint) — separably BOUNDED (→ a real bounded (r,r,p) ∀p-hfin), or does it bleed into the
     depth-≥3 N4 long pole? **Net: the research-scale gates are R1-hfin-N4 (the whole-M cover assembly, spanning depth-≥3 +
     general shape), R1-hdiv-∀M-chart (#3), L2-3289 (#4)** — gate #2 folded into N4, pending the depth-2 boundedness check.
+  - *RESOLVED (genm-assemble depth-2 assessment, 2026-06-28): gate #2 (∀p) IS separably BOUNDED.* The depth-2 `(r,r,p)`
+    lane routes through the **two-matrix-box reduction** (the (3,3,4) live route), NOT the depth-r recStep atlas; since L≥3
+    forms a **≥3-factor** product (the depth-specific wall) and `(r,r,p)` is a clean two-factor split, the `(r,r,p)` lane
+    **never touches the L≥3 pole**. So gate #2 is bounded + separable — COMMISSIONED (genm-assemble): `schurRecStep_p` (the
+    ∀p Schur recStep, generalizing schurRecStep_four) + 4 reshape/arithmetic generalizations → `routeMBoxThresholdFinite
+    (![r,r,p]) ∀r,p`, gated on the schurRecStep_p design diff-gate, reusing the p-invariant carve + the done radial chart.
+    **FINAL research-scale gates: (1) R1-hfin depth-≥3 (the ≥3-factor L-layer joint resolution), (3) R1-hdiv-∀M-chart (#80),
+    (4) L2-3289.** Gate #2 (∀p output-width) is bounded.
 - **The dev-merge is an OPERATOR PROMOTION, not a tide.** genm-firing's 39-module finding: dev lacks the ENTIRE RLCT engine
   (the carve stack's import closure = 39 modules, all missing from dev; ~1189-commit lineage divergence). So the EXPEDITION
   LINEAGE's aggregator IS the canonical line; "integration into canonical DLNFibre.lean" happens on the lineage
