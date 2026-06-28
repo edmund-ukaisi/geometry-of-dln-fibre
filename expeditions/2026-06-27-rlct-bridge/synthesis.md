@@ -517,3 +517,30 @@ to PROVE it, folded into THIS expedition. The payoff then rests on only the two 
   (Phase-2 rung table), `threads.md` (Phase 1 closed / Phase 2 active + thread 08). Backstop cron
   re-established (`f5b4cf8a`, hourly). Tasks #9–#11. Still BLIND to the aoyagi `RLCT/*`.
 - **In flight:** recon 08 (route map) + the `#13` prose-sweep tide (review fixes). Holding for both.
+
+### Phase 2 recon (thread 08) CLOSED — ROUTE DECIDED: the algebraic orbit-dimension squeeze
+
+**`hT` IS bounded-provable at Mathlib v4.29 (~3–4 tides, NO new hard math) — thread 07's "T is cited"
+verdict is SUPERSEDED** (decorrelated: recon 08 + its Codex both converged). The find: the repo already
+banks `varietyDim_k(orbit closure) = finrank_k(range δ⁰_M)` as a **field-generic algebraic squeeze** over
+a fixed 0/1 integer structure matrix (`realizerD`), never touching the real radical. The `≤` half is proved
+over `[CharZero][Infinite]` (holds over ℝ); the `≥` half (`finrank_range_deformationδ_le_varietyDim`,
+`OrbitTangentCotangent:641`) is stated `[IsAlgClosed]` but uses it **only to derive `PerfectField`** — and
+ℝ is `CharZero ⟹ PerfectField`. So `varietyDim_ℝ = varietyDim_K` = the SAME field-independent integer-matrix
+rank ⟹ `T′` by an **algebraic squeeze at the rational point M** — no real-IFT, no density; the `x²+y²` trap
+dissolved by the smooth rational point of full local dim. The brief's IFT-route + unirationality-route are
+both DOMINATED by this (the repo's smooth-point machinery IS the algebraic IFT).
+- **CRUX:** relax `[IsAlgClosed]→[PerfectField]` on the orbit smooth-point squeeze core (the `[IsAlgClosed]`
+  is vestigial — docstrings already assert PerfectField suffices). **Biggest unknown (L7):**
+  `finrank(range deformationδ)` base-change invariance = a `LinearMap`-vs-`Matrix` packaging snag (integer
+  structure matrix ⟹ rank field-independent in char 0), NOT math. Kill-condition (a rung consuming alg-closed
+  beyond PerfectField) stress-tested, did NOT fire.
+- **Ladder (G2 = minimal `T′`, ~3–4 tides):** L1 `dense_smoothLocus`/ℝ → L2 orbit prime `[Infinite]` → L3
+  orbit smooth@M `[PerfectField][Infinite]` → L4 cotangent=dim `[PerfectField]` (CRUX) → L5 reverse → L6
+  orbit-dim EQUALITY/ℝ → L7 δ⁰ base-change rank invariance → L8 chart δ-shift/ℝ → L9 assemble `T′` → L10
+  discharge `hT` via banked `codimRealFibre_eq_codimRepCanonical_of_dimTransfer`. (G1 = full `codim_ℝ=C`/ℝ
+  = the earned bedrock extension that retires `hT` as a theorem — pursue if within reach after G2.)
+- **FIRST MOVE (launching): a 1-tide PROBE** — relax `finrank_range_deformationδ_le_varietyDim` to
+  `[PerfectField k]` + green-build over ℝ; pin the exact L7 base-change lemma shape. Settles the crux + the
+  biggest unknown before the full build commits. Build placement: `DLNFibre.Core` (reusable, upstream
+  candidate). Task #9 done; #10 (build) gated on the probe.
