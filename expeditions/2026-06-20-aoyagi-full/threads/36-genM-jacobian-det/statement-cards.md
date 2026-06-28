@@ -790,3 +790,27 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 
 > The R1-LOWER smeared branch's front fact (the architecture cert §3 residual-1 + the dispatch STEPs 1-3)
 > is banked. STEP 4 (the (1,1) Option-A chart) remains; its load-bearing dependency is now landed.
+
+---
+
+> **STEP-4 progress (the (1,1)-family Option-A chart — rate leg).** `RouteMSmearedGenChart.lean`
+> (`lean/DLNFibre/DLN/RLCT/Validate/`, @ `abf18d13`). Architecture: hybrid C (Codex `genm11-chart`,
+> decorrelated) — the chart is a single `Function.update`/`updateRow` shear at the deepest `(0,0)` coord,
+> the rate proved DIRECTLY through the landed front fact (NOT via `cleanPhi`/`scaleLayer`).
+>
+> - **Banked sorry-free:** `prodAux_congr_of_eqOn_prefix` (front product reads only layers below its
+>   index); the chart data (`baseParams`, `frontMat`, `pivotCol`, `residSel`, `residCols`, `routing`,
+>   `deepCol`, `smearShift`, `smearedDeepLayer`, `smParams`); `prodAux_smParams_front_eq` (the smear
+>   leaves the front product unchanged); `smParams_deepLayer`; **`frontMat_routing_eq_resid`** (the front
+>   fact ENTRYWISE: `frontMat i ⟨0,_⟩ · routing 0 r = frontMat i (residSel r)`, the `(i,r)` entry of
+>   `prodAux_frontScalarShear_cancel` — the load-bearing shear-cancellation plug-in, LANDED).
+> - **Telescope `prod_smParams_eq_smul_pivotCol`:** the keystone. Peel (`prodAux_succ`) + `Matrix.mul_apply`
+>   (the post-peel ORDERING that cracks the opaque-width `HMul` wall Codex flagged) + reindex collapse +
+>   layer-id + `hsdl` (per-row readout of the smeared column via `updateRow_apply`) ALL land. ONE `sorry`
+>   remains = the mechanical sum-arithmetic (split `∑ j` at the pivot row `0`, reindex the residual sum
+>   `{j ≠ 0}` by `residSel`, cancel via `frontMat_routing_eq_resid`). Surface friction only (the opaque-`m1`
+>   `Fin.sum_univ_succAbove` destructure + the `succAbove`/`residSel` reindex bijection); the math is
+>   validated end-to-end.
+> - **Status.** rate leg: 1 sorry (sum-arithmetic). MP leg (`measurePreserving_shearAt` at the pivot,
+>   det 1 — already generic, no promotion needed) + subBox/`routeMCore_box_diverges_of_MPChart` assembly:
+>   not yet started.
