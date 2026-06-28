@@ -46,3 +46,23 @@ Base: capstone @c2777384 + grafted genm-n4 box files (Item-58 green-confirmed, c
 Codex artefacts: `codex/directMorse-{design,assembly}-{prompt,answer}.md`. Design: §9–§13 on genm-assemble-design.
 §12 NOTE TO UPDATE: the cap-B route KEEPS the residual (uses the antitone abs-Z Morse dominator), it does
 NOT "drop residual" as §12 sketched — the drop-residual zero-guard is false (Codex route A).
+
+
+## UPDATE (live) — directMorse down to ONE assembly lemma
+
+LANDED since the last note (all sorry-free, clean-three, pushed to genm-pbuild):
+- `frobSq_capB_inner_le` — the z-UNIFORM composable bound (ofReal(c₀^{−c'})·Kbound·vol, R-free via the
+  W-independent abs-Z dominator `radial_morse_dominates_absZ_le`).
+- `frobSq_rmatMul_permGP` — Fin-p row/col perm of frobSq(R·S) (shared plumbing).
+- `schurRatioResidP_capB_lt_top` — the per-chart cap-B angular residual: per z, innerSGenP = ∫_S
+  frobSq(RmatGnorm·S)^{−c'} (Fin-p row-perm MP + frobSq_rmatMul_permGP); RmatGnorm pivot-1 + bounded →
+  frobSq_capB_inner_le bounds by the z-uniform C; integrate C over the finite ratio box. DONE.
+
+REMAINING in directMorse: ONLY `schurCoreP_directMorse` (the chart-cover assembly). Inputs all landed:
+- the cover `matBoxGen_outer_flat` + `gFlatGen_cover_sum` (DONE (r,p)-general),
+- the radial axis `radial_aAxis_divisor_lt_top` (DONE),
+- the angular residual `schurRatioResidP_capB_lt_top` (just DONE).
+The assembly mirrors `schur_matBoxG_chart_lt_top` (RouteMSchurFiring:1982): per chart, `pivotBlowupOnDeriv_det
+= |y p|^{r²−1}` + `chart_integrand_factorG` (needs the (r,p) gFlatGen analog) + the `piRatioG` Tonelli split
+(a-axis divisor × ratio residual). The intricate per-chart reduction — the one remaining directMorse piece.
+Then cap-A carve-peel + dispatch + routeMBoxThresholdFinite_rrp.
