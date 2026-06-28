@@ -2689,6 +2689,25 @@ theorem deepestEFull_sq_sum_psiSplitRawL2_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
   exact deepestEFull_sq_sum_eq_of_resid_blocks H r B hr hL J Pf Qf
     (psiSplitRawL2 H r hr hL q) q Aψ Aq hframeψ hframeq hinterface hS3b h11 h12 h21
 
+/-! ### S6g — the framed-LDU readback glue (`hLDUtie`'s matrix identity, the producer's named
+"UNBUILT `Rcore ↔ deepestCoreF`" bridge)
+
+The matrix tie sub-4 consumes: the raw two-layer core product `S0·(1−K)·S1` (the LHS of `hLDUtie`,
+which `prod_deepestM_eq_two_of_L2` + the absorbed-core readbacks reduce the abstract `prod (deepestM) C`
+to) equals the Score `(1,1)`-Schur integrand `RC` over the FRAMED reindexed product. The route, all
+banked:
+* `rcore_eq_schur_of_corner_split` (the corner adds `1` to ONLY the `(1,1)`-block, so the producer's
+  `(Mw₁₁+1)⁻¹`-pivot `Rcore` = the honest `(M̂₁₁)⁻¹`-pivot Schur of `M̂ = reindex(endpointP0·prod·QL)`);
+* `schur_frame_transform` (the endpoint frames are the EXPLICIT triangular normalizers
+  `fromBlocks (⅟A11) 0 (−A21⅟A11) 1` / `fromBlocks (⅟A11) (−⅟A11·A12) 0 1`, whose `(2,2)`-block is the
+  IDENTITY — so `DP = DQ = 1` is FORCED, and the framed Schur = the raw Schur `Schur(reindex prod)`);
+* `reindex_mul_schur_factor` (the raw two-factor `reindex(G0·G1)` Schur = the per-layer LDU
+  `Ŝ0·(1−K̂)·Ŝ1`), with the per-factor blocks read off the layers (the `l2*` dictionary).
+
+The per-factor block readback (the `l2A0/Y0/Z1/A1/Y1/T1` reads ARE the `reindex prod`-factor `toBlocks`)
+is the genuinely-new content; it rests on `reindex_fromBlocks_reads_eq_deviation` + the `1+readX`
+deepest-normalization absorbing the threshold corner. -/
+
 -- Sub-lemma 4 (core = Score): the absorbed core energy equals the Schur-complement Score, on the
 -- inner ball (where coreAbsorb = honest Schur). [HARDEST: LDU + the framed Score dictionary]
 
