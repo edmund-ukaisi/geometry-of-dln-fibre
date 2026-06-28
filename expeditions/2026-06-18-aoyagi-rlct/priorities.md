@@ -19,6 +19,46 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, edge-pair then `A1passive` then `Ctop` component bridge
+
+The target-normalizer frontier now has the first top-left component packaged as
+a determinant-one post-`A1passive` raw-tuple shear and composed with the prior
+edge-pair and `A1passive` stages.  New public Lean names:
+
+```text
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_apply
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShear_fderiv_Ctop_eq_formalRawOrderJacobianAt
+```
+
+The `Ctop` shear uses the target-staged first top-left coordinate itself.  It
+does not use the `Tail`-multiplied source recovery coordinate.  On post-`A1`
+data, it decodes the successor `F2` family from the already normalised
+`(F2,C)` fields by the formal inverse, leaves the raw lower-left readout as
+`rawEdgeTupleA3`, and computes the passive-tail derivative from the staged
+`A1passive` field.  The determinant is one by the `Ctop × rest` upper-shear
+calculation.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, code-only forbidden-marker search, and direct
+axiom audit passed; the new public theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.  Xhigh review by `Popper the 2nd`
+passed, checking the `Ctop` shear formula, determinant scope, component bridge,
+and no-overclaim boundary.
+
+This is still not full target normalisation: `F3` agreement remains open.  Do
+not feed this partial bridge into the conditional determinant theorem.  It
+does not prove actual Frechet determinant equality, source-prior transport,
+normal crossings, pole order, or RLCT.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, edge-pair then `A1passive` component bridge
 
 The first two target-side normalisation stages are now composed.  New public

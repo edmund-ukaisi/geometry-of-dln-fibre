@@ -18,6 +18,51 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 edge-pair, `A1passive`, then `Ctop` component bridge
+
+Reproduction:
+`reproduction-a2-retained-passive-post-a1passive-ctop-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-edge-pair-a1passive-ctop-bridge.md`.
+Review:
+`review-a2-retained-passive-edge-pair-a1passive-ctop-bridge.md`,
+PASS by xhigh `Popper the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_apply
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShear_fderiv_Ctop_eq_formalRawOrderJacobianAt
+```
+
+The new post-`A1passive` `Ctop` shear changes only the `Ctop` raw-tuple field.
+It reads the successor `F2` family from the formal inverse of the already
+normalised `(F2,C)` fields, reads `rawEdgeTupleA3` from the unchanged
+lower-left raw tuple, and uses the post-`A1passive` passive-tail derivative
+directly from the staged `A1passive` field.  The determinant is one by
+regrouping the raw tuple as `Ctop × rest` and applying the upper-shear
+determinant calculation.
+
+Composed after the previous edge-pair and `A1passive` stages, the map has
+absolute determinant one and proves `Ctop` component agreement with the formal
+raw-order Jacobian on actual raw-order derivative targets.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+`scripts/sorries`, `git diff --check`, code-only forbidden-marker search, and
+direct axiom audit passed; the new public theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not full target normalisation: `F3` remains open.  It also does not
+prove full raw-tuple equality, actual Frechet determinant equality, measure
+transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 edge-pair then `A1passive` component bridge
 
 Reproduction:

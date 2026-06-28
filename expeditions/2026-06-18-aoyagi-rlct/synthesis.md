@@ -48,6 +48,54 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Edge-Pair Then `A1passive` Then `Ctop` Component Bridge
+
+`RetainedPassiveCoordinatesJacobian.lean` now adds the next target-side
+raw-tuple normalisation stage after the edge-pair and post-edge-pair
+`A1passive` stages.  New public Lean names:
+
+```text
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_apply
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_det_eq_one
+retainedPassivePostA1passiveCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_apply
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShearRawTupleLinearEquivAt_abs_det_eq_one
+retainedPassiveTargetEdgePairThenA1passiveThenCtopShear_fderiv_Ctop_eq_formalRawOrderJacobianAt
+```
+
+The post-`A1passive` `Ctop` shear fixes all fields except `Ctop`.  Its
+correction is the target-staged first top-left coordinate:
+the successor `F2` family is decoded from the already normalised `(F2,C)` pair
+by `(retainedPassiveFormalRawF2CLinearEquivAt hz).symm`, the lower-left readout
+is `rawEdgeTupleA3`, and the passive-tail derivative is read from the staged
+`A1passive` field.  It deliberately uses the target coordinate itself, not the
+`Tail`-multiplied source recovery expression.
+
+The determinant of the `Ctop` shear is one after regrouping the raw tuple as
+`Ctop × rest`.  The composed map through the first three target-side stages has
+absolute determinant one, and on actual raw-order derivative targets its
+`Ctop` component agrees with the formal raw-order Jacobian.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-post-a1passive-ctop-shear.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-edge-pair-a1passive-ctop-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-edge-pair-a1passive-ctop-bridge.md`,
+PASS by xhigh `Popper the 2nd`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+The full `DLNFibre` build passed with pre-existing warning noise.
+The sorry gate, whitespace check, code-only forbidden-marker search, and direct
+axiom audit passed; the new public theorems have axiom footprint
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a full target normalizer: `F3` agreement remains open.  It is not
+full raw-tuple equality, not actual Frechet determinant equality, and not
+source-prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Edge-Pair Then `A1passive` Component Bridge
 
 `RetainedPassiveCoordinatesJacobian.lean` now composes the first two
