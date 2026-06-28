@@ -353,8 +353,9 @@ theorem schurSplitD_lintegral_lt_top (R : Fin 2 → Fin 2 → ℝ) (Sc : Matrix 
 (`R 0 0 = 1`, `|R i k| ≤ 1` — the bounded pivot-`(0,0)` cell), `∫_{S ∈ matBox 2 4 T} frobSq (R·S)^{−c'}`
 is finite for `0 < c' < 2 = λ_{2,4}`. Via N2b (`j = 1`, cell hyps discharged from `R 0 0 = 1` being a
 max-modulus entry) → `schurSplit_lintegral_le` (END 1, the corank-2 → split-form reduction) → the
-split-form `S`-integral, which the next lemma closes by the row-0 shear-peel + the two-radius Morse
-terminal. SKELETON pending the split-form `S`-integral (`schurSplitD_lintegral_lt_top`). -/
+split-form `S`-integral, closed by the row-0 shear-peel + the Morse terminal
+(`schurSplitD_lintegral_lt_top`). PROVED sorry-free. (The uniform-`≤` form is `schurInner_S_bound`, which
+the outer cover `matBox2_chart_lt_top` consumes; this `< ⊤` form is the standalone inner-S statement.) -/
 theorem schurInner_S_le (R : Fin 2 → Fin 2 → ℝ) (h00 : R 0 0 = 1) (hbd : ∀ i k, |R i k| ≤ 1)
     (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 2) (T : ℝ) (hT : 0 < T) :
     ∫⁻ S in matBox 2 4 T, ENNReal.ofReal ((frobSq (rmatMul (fun a b => R a b) S)) ^ (-c')) < ⊤ := by
