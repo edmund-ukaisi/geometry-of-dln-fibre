@@ -464,3 +464,207 @@ recStep), which subsumes/generalizes genm-n4's `schurRecStep_four` gate; if the 
 that lands the `(r,r,p)` family, it is "the ∀p Schur recStep + the four reshape/arithmetic generalizations,
 instantiating `routeMCore_threshold_lt_top` at `M = ![r,r,p]`." This does not require, and is not required by,
 the L≥3 N4 weld.
+
+## 9. `schurRecStep_p` DESIGN/PLAN (2026-06-28, controller-commissioned, for diff-gate BEFORE build)
+
+The controller commissioned the `(r,r,p)` ∀p-hfin bundle (§8) and gated the SUBSTANTIAL piece —
+`schurRecStep_p` (the ∀p Schur recStep, generalizing `schurRecStep_four`) — on a design diff-gate. This is
+that design. It is grounded in the ACTUAL landed proof (`RouteMSchurFiring.lean`, `RouteMSchurGeneral.lean`),
+not a recalled picture; every claim below cites the file/line it audits.
+
+### 9.0 What `schurRecStep_four` actually IS (audited)
+
+`schurRecStep_four : SchurRecStep 4 schurLambda` (`RouteMSchurFiring:2076`) is a 4-way DISPATCH on `r`:
+- `r = 0`: vacuous (`schurLambda 0 = 0`, no `c' > 0` below it);
+- `r = 1`: the Morse leaf `schurCore4_one` (`:141`), threshold `c' < 1/2`;
+- `r = 2`: the base `schurCore4_two` (`:132` in General), threshold `c' < schurLambda 2 = 2`;
+- `r ≥ 3`: the firing `schurCoreGen_firing` (`:2063`), threshold `c' < schurLambda r`.
+
+The ABSTRACT framework `SchurCore p r`, `SchurThreshold p lam`, `SchurLowerIH p lam r`, `SchurRecStep p lam`,
+and the WellFounded wrapper `core_schurGen_lt_top (p lam …)` (`RouteMSchurGeneral:59–120`) are ALREADY
+`∀p`-PARAMETRIC — `p` is the first explicit argument of each. `core_schurGen_lt_top` is axiom-clean and
+`p`-generic AS-IS (the strong-induction-on-corank wrapper has no analytic content; the per-corank work is the
+`hstep` hypothesis). So `schurRecStep_p` is ONLY the `hstep`-supplier; the wrapper consumes it unchanged.
+
+The engine under `r ≥ 3` is (`schurCoreGen_firing`, `:2067`):
+1. `matBoxG_outer_flat r` — flatten the `r²` Δ-cells to `Fin (r²) → ℝ` (MP);
+2. `gFlatG_cover_sum r` — the `r²`-chart radial-Δ cover, `recStep` over `univ : Finset (Fin (r²))`;
+3. `ENNReal.sum_lt_top` over the `r²` charts, each finite by `schur_matBoxG_chart_lt_top` (`:1913`).
+
+The per-chart engine `schur_matBoxG_chart_lt_top` consumes: the cap-B divisor exponent `r²−1` (from
+`pivotBlowupOnDeriv_det = |y p|^{r²−1}`, `:1929`), the cap-B threshold `schurLambda r ≤ r²/2`
+(`schurLambda_le_sq`, `:1924`), the `piRatioG` reshape (radial axis `a` × angular ratios `Fin (r²−1)`), and the
+angular finiteness from the IH `SchurLowerIH 4 schurLambda r` (the carve `schurRatioResidGen_mid` consumes it).
+
+### 9.1 Threshold structure — NUMERICALLY VALIDATED (the load-bearing check, §1b superseded)
+
+`½·minAdm(r,r,p) = min(r²/2, min_{1≤j≤r}(jp/2 + λ_{r−j,p}))` is EXACTLY the greatest solution of the existing
+`SchurThreshold p lam` contract (`lambda0` / `radial_le` = cap B / `peel_le` = cap A). Validated p=1..8, r=0..7
+(`/tmp/minadm_check.py`, ALL MATCH); p=4 reproduces `schurLambda = [0, ½, 2, 4, 6, 8, 10]` exactly. So:
+
+- **The `SchurThreshold p` contract is ALREADY the right ∀p contract** — `radial_le : lam r ≤ r²/2` (cap B,
+  `p`-FREE) and `peel_le : lam r ≤ jp/2 + lam(r−j)` (cap A, `p`-linear). NO change to the contract `structure`.
+- **The leaf is `λ(p,1) = ½` for ALL p≥1** (cap B at r=1: `r²/2 = ½`), NOT `p/2`. This RESOLVES §1b's flagged
+  worry: `schurCore4_one`'s `1/2` is the single Δ₀₀ scalar's radial axis (`schurOne_delta_divisor_lt_top`,
+  `c' < 1/2`), `p`-INDEPENDENT; the `Fin p` S-block is the pure-Morse factor (`schurOne_morse_lt_top`, finite
+  ∀c'>0). So `schurLambdaP p 1 = 1/2` for every p — the leaf does NOT move with p.
+- **The binding cap SHIFTS with (r,p)** (numerics §): cap B (`r²/2`) binds while `p ≥ 2r` (small r / wide
+  output); cap A (the peel) binds for larger r. `t* = argmin_t[(r−t)²+pt]` = the binding rank-drop. This is
+  why §1b's naive `(r−1)p/2+leaf` ladder was WRONG: there is no single arithmetic ladder; it is a genuine
+  `min`. The Lean `schurLambdaP` must be the piecewise-`min` solution, NOT a closed linear form. (The p=4
+  `2r−2` closed form is the coincidence that cap A always binds for r≥2 at p=4.)
+
+### 9.2 The `schurLambdaP p` witness + its three contract lemmas (piece iv of §8)
+
+Replace the p=4 `schurLambda` (`RouteMSchurGeneral:157`) + `schurLambda_satisfies_threshold` (`:201`) with a
+`p`-indexed witness. TWO design options:
+
+- **Option A (closed recursive def):** `schurLambdaP (p) : ℕ → ℝ` by strong recursion
+  `schurLambdaP p r = if r = 0 then 0 else min (r²/2) (min_{1≤j≤r} (jp/2 + schurLambdaP p (r−j)))`. Direct, but
+  the `min over Finset.range` def is friction-heavy to prove the three contract lemmas against.
+- **Option B (RECOMMENDED — reuse genm-n4's `minAdm`):** define `schurLambdaP p r := (minAdm (![r,r,p]) : ℝ)/2`
+  and prove `SchurThreshold p (schurLambdaP p)` directly from `minAdm`'s `minAdmRec` recursion. This REUSES
+  genm-n4's landed arithmetic (`minAdmRec_succ_succ`, `minAdmRec_leaf`, the `inf'` idiom) and makes piece (iv)
+  = piece (the threshold-match) the SAME object — `minAdm_rrp_eq` is then `rfl`-adjacent, no separate ladder.
+  The three contract lemmas become:
+  - `lambda0`: `minAdm(![0,0,p])/2 = 0` — `decide`/`minAdmRec_leaf` (genm-n4 pattern, `:96-99`).
+  - `radial_le`: `minAdm(![r,r,p])/2 ≤ r²/2`, i.e. `minAdm ≤ r²` — the `t=0` witness `(r−0)²+p·0 = r²` in the
+    `inf'` (one `Finset.inf'_le_of_le`, the genm-n4 `:79-82` pattern with witness `t=0` not `t=r−2`).
+  - `peel_le`: `minAdm(![r,r,p])/2 ≤ jp/2 + minAdm(![r−j,r−j,p])/2`. THE one non-mechanical lemma: it says
+    `minAdm(r,r,p) ≤ jp + minAdm(r−j,r−j,p)`, the SUB-ADDITIVITY of the codim along a rank-drop path. Provable
+    from the `inf'` recursion: a binding stratum `t'` for `(r−j)` lifts to a stratum `t'+j` for `r` with
+    `(r−(t'+j))² + p(t'+j) = (r−j−t')² + p t' + pj`. [The generalization of genm-n4's `rr4_term_ge`; MEDIUM.]
+- Drop-in helpers from genm-n4 to generalize: `four_mul_le_sq_add_four (s)` → the per-leaf bound is now the
+  sub-additivity above (no single scalar inequality); `minAdmRec_rr4_ge2` → NOT needed in Option B (we never
+  need the closed VALUE `4r−4`, only the three inequalities — a strict simplification over the p=4 path).
+
+### 9.3 The recStep proof — `p`-lift map (pieces i–iii of §8, the engine)
+
+`schurRecStep_p : ∀ p, SchurRecStep p (schurLambdaP p)` — same 4-way dispatch as `schurRecStep_four`:
+- `r = 0`: vacuous (`schurLambdaP p 0 = 0`), VERBATIM.
+- `r = 1`: the Morse leaf, threshold `c' < 1/2` (`p`-INDEPENDENT, §9.1). `schurCore4_one` (`:141`) generalizes
+  to `schurCoreP_one (p)` by `4 → p`: `frobSq_one_eq` sums over `Fin p` (opaque), `schurOne_morse_lt_top` is
+  the `Fin p` block (any width, finite ∀c'>0), `schurOne_delta_divisor_lt_top` is `p`-FREE (the Δ₀₀ scalar).
+  LOW — the only `4` is the `Fin 4` S-width, summed opaquely.
+- `r = 2`: the base `schurCore4_two` repackages `core_schur2_lt_top`. Needs the `core_schur2` weld at width `p`
+  — this is INSIDE the recStep engine (the r=2 instance of the same firing), so it is NOT a separate hand-built
+  base; with the engine `p`-lifted, `schurCoreP_two` IS `schurCoreGen_firing p 2` (or the explicit r=2 weld
+  lifted). [Audit which: at p=4 r=2 is a hand base `core_schur2_lt_top`, not the firing. If the firing's
+  `hr : 3 ≤ r` is essential, r=2 stays a separate `p`-lift of `core_schur2_lt_top`; MEDIUM.]
+- `r ≥ 3`: `schurCoreGen_firing` (`:2063`) `p`-lifted = `schurCoreGenP_firing (p)`. The engine
+  (`matBoxG_outer_flat`/`gFlatG_cover_sum`/`schur_matBoxG_chart_lt_top`) `p`-lift surface:
+  - `matBoxG_outer_flat r`, `gFlatG_cover_sum r`, the `r²`-chart cover, `pivotBlowupOnDeriv_det = |y p|^{r²−1}`:
+    ALL `p`-FREE (they reshape the `r×r` Δ-block; `p` lives only in `S`). VERBATIM. [§1d confirmed: the carve is
+    over the `r²−1` angular ratios of `R`, `p`-invariant — `cellR`/`zσG`/`zEG`/`RmatGnorm_eq_slot`/
+    `schurSc_carve_eqA` all lift with `N = r²−1` `p`-free.]
+  - `schur_matBoxG_chart_lt_top` (`:1913`): the cap-B threshold `schurLambda r ≤ r²/2` becomes
+    `schurLambdaP p r ≤ r²/2` (= `radial_le`, §9.2). The angular finiteness consumes
+    `hIH : SchurLowerIH p (schurLambdaP p) r` (the carve `schurRatioResidGen_mid` — `RouteMSchurFiring:1677`,
+    closed) which is `∀p` MODULO the `4 → p` width swap in its S-box (`matBox (r−1) 4 → matBox (r−1) p`),
+    `morseBox 4 → morseBox p`, `Fin 4 → Fin p` row indices. §1a/§2: NONE read `4` numerically. LOW-MEDIUM (the
+    carve is large but the lift is a mechanical width-parametrization — the hardest sub-step is ALREADY ∀p in
+    structure). The Tonelli Morse peel `core_T_peel_le_aeG (m)` is `∀m`: instantiate `m = p−1` (threshold
+    `((p−1)+1)/2 = p/2`, the cap-A peel exponent).
+
+### 9.4 Diff-gate confirmations the controller asked for
+
+1. **carve `cellR`/`zEG`/Sc-readback `p`-invariant + lift verbatim:** CONFIRMED (§1d/§2, audited
+   `RouteMSchurFiring`). The carve is over `R`'s `r²−1` angular ratios; `N = r²−1` is `p`-free; `p` enters only
+   `S`, untouched by the reshape. The S-width `4 → p` swaps are mechanical (`Fin 4` summed opaquely everywhere).
+2. **`½·minAdm(r,r,p) = min(capA, capB)` recursion:** CONFIRMED numerically (§9.1, ALL MATCH p=1..8). It IS the
+   existing `SchurThreshold p` contract's greatest solution; cap B = `r²/2`, cap A = `min_j(jp/2+lam(r−j))`.
+3. **cap B = the done radial axis:** CONFIRMED. cap B `r²/2` is the `pivotBlowupOnDeriv_det = |y p|^{r²−1}`
+   radial divisor (`schur_matBoxG_chart_lt_top:1929`), `p`-FREE, = the `radial_aAxis_divisor_lt_top (r)` /
+   `radial_loss_chart_lt_top {r p}` in `RouteMSchur` (§8 finding, already `{r p}`-general, sorry-free).
+
+### 9.5 Build order + risk (line-count estimate, NO wall-clock)
+
+Recommended order (each rebuilds GREEN before the next; reuse — do NOT re-derive carve/STEP-0/radial chart):
+1. `schurLambdaP p := minAdm(![r,r,p])/2` + `lambda0`/`radial_le` (Option B). ~40 LoC, LOW.
+2. `peel_le` (the codim sub-additivity, the one non-mechanical arithmetic). ~50–80 LoC, MEDIUM.
+3. `schurCoreP_one` (leaf, `4→p`). ~30 LoC, LOW.
+4. The carve `p`-lift: `schurRatioResidGen_mid` + its A-suffixed support lemmas, `4→p` in the S-box/morseBox/
+   `Fin 4` indices. The LARGE piece by LoC (the carve is ~600 LoC), but mechanical width-parametrization.
+   MEDIUM (volume, not difficulty — STEP-0-validated reachable).
+5. `schurCoreGenP_firing` + `schur_matBoxG_chartP_lt_top` (`4→p` in the IH type + S-box). ~80 LoC, LOW-MEDIUM.
+6. `schurRecStep_p` dispatch + `minAdm_rrp_eq` (Option B: near-`rfl`). ~40 LoC, LOW.
+7. Instantiate `routeMBoxThresholdFinite_rrp_of_schurRecStep_p` (generalize genm-n4's `eParamsRR4 r` →
+   `eParamsRRP r p`, `routeMLayerBoxIntegral_rrp_eq`) → `routeMCore_threshold_lt_top` at `M=![r,r,p]`. ~120 LoC
+   reusing genm-n4 pattern, LOW-MEDIUM.
+
+NO research wall on any step. The one genuine MEDIUM is `peel_le` (codim sub-additivity); the LARGE-by-volume is
+the carve `4→p` lift (mechanical). Total ~360 LoC new + the carve width-swap. Reuses: the carve, STEP-0, the
+done radial charts (`RouteMSchur`), genm-n4's `minAdm`/`eParamsRR4` arithmetic+reshape. Build gated on
+controller diff-gate of THIS plan + (per §8) the binding-family landing (#143 / genm-n4) for the integration
+base.
+
+## 10. CODEX RED-TEAM (2026-06-28, xhigh, decorrelated) — the [HIGH] exponent-routing confound
+
+Fired a decorrelated Codex consult (`codex/schurRecStep-p-design-{prompt,answer}.md`) on the §9 plan BEFORE
+the diff-gate. Codex confirmed Option B (`schurLambdaP p := minAdm(![r,r,p])/2`) and the `peel_le` lift as
+sound, and the r=2-separate-base call as correct — but found a [HIGH] CONFOUND I had mis-filed as "mechanical
+4→p". I VERIFIED it against the landed proof (it is real) and re-validated numerically. The correction:
+
+### 10.1 The confound (VERIFIED): the firing engine has a HARDCODED exponent split at `2 = p/2`
+
+The carve `schurRatioResidGen_mid` (`RouteMSchurFiring:1678`) has hypothesis **`(hc2 : 2 < c')`** — it
+hardcodes the Morse-peel threshold `2 = p/2|_{p=4}`. The chart radial axis routes `(r²−1) − 2c'` separately
+(`:1973`, the cap-B divisor, p-free). So the p=4 firing genuinely SPLITS on `c'` vs `p/2`:
+- **peel branch `p/2 < c'`:** the carve fires — peel the `Fin p` Morse block (threshold `p/2`), recurse on
+  the corank-lower core via the IH. Window `p/2 < c' < lam r`.
+- **direct-Morse branch `c' ≤ p/2`:** when `lam r ≤ p/2`, the WHOLE window `0 < c' < lam r ≤ p/2` closes by the
+  uniform radial/Morse bound, NO recursion (the carve's `2 < c'` is unavailable and unneeded).
+
+I had folded this into "mechanical width-swap" in §9.3. It is NOT mechanical — it is a p-dependent CASE SPLIT.
+
+### 10.2 Why the p=4 fixed corank dispatch does NOT generalize (numerically pinned)
+
+`branch_check.py` (verified): the peel range `(p/2, lam r)` is EMPTY exactly when `lam r ≤ p/2` (cap-B
+binding, p ≥ 2r-ish), nonempty (carve fires) when `lam r > p/2` (cap-A binding). The boundary is `r ≈ p/2`:
+- p=4: peel-EMPTY for r∈{1,2} (`lam 1=½≤2`, `lam 2=2≤2`), nonempty r≥3. So the LANDED dispatch's
+  "r=1,r=2 direct; r≥3 firing" is EXACTLY this branch boundary AT p=4 — a p=4 COINCIDENCE, not a general cutoff.
+- p=8: peel-EMPTY for r∈{1,2} still (`lam 2=2≤4`), but the band shape differs; for larger p the direct-Morse
+  corank band GROWS (general boundary `lam r ≤ p/2`). The fixed "r<3 ⟹ base" rule is p=4-specific.
+
+So `schurRecStep_p`'s dispatch must branch on **`lam r ≤ p/2` vs `lam r > p/2`** (a p-dependent predicate),
+NOT on a fixed corank `r < 3`. The r=1 leaf and r=2 base are the p=4 INSTANCES of the direct-Morse branch.
+
+### 10.3 Corrected design — the p-dependent exponent-routing API (the REQUIRED pre-build piece)
+
+REVISES §9.3. Before the large carve `4→p` width-swap, build the p-dependent split API:
+1. **`schurCoreP_directMorse (p r)`** — the direct-Morse branch: `SchurCore p r c' T` for `0 < c' < lam r`
+   GIVEN `lam r ≤ p/2` (equivalently the cap-B regime). Closes by the radial axis (`c' < r²/2`, since
+   `lam r ≤ r²/2` always) × the uniform `Fin p` Morse bound — NO carve, NO IH recursion. Generalizes
+   `schurCore4_one` (r=1) AND `schurCore4_two` (r=2) into ONE branch. [MED — new uniform-Morse-over-the-whole-
+   window argument, but no carve; the radial divisor is the done `radial_aAxis_divisor_lt_top`.]
+2. **`schurCoreP_peel (p r)`** — the peel branch: `SchurCore p r c' T` for `p/2 < c' < lam r` (cap-A regime),
+   via the carve (`schurRatioResidGenP_mid` with `hc2 : p/2 < c'`) + the IH. This IS the `4→p` carve lift,
+   now with the threshold `2 → p/2` made explicit. [the LARGE-by-LoC carve swap; the `2 < c'` → `p/2 < c'`.]
+   NOTE the equality/boundary `c' = p/2`: Codex flags choosing a flexible `c★` with `max c' (p/2) < c★ < lam r`
+   when `p/2 < lam r` — i.e. the peel exponent need not be `c'` itself; peel at a `c★` strictly above `p/2`.
+   The p=4 proof's "subcritical fallback exponent 3" (`2 < 3 < schurLambda r` for r≥3) is this `c★` device;
+   at general p it becomes `c★ ∈ (p/2, lam r)`, NOT a fixed `3`. [MED — the c★ existence + routing.]
+3. **`schurRecStep_p` dispatch:** `rcases le_or_lt (lam r) (p/2)` (or `le_or_lt c' (p/2)`) → directMorse vs
+   peel. Plus r=0 vacuous, and p=0 guard (Codex §4: `∀p:ℕ` invokes `Fin p`/`Fin 0` lemmas — either restrict to
+   `1 ≤ p` (the DLN output width is ≥1, so a `hp : 1 ≤ p` hypothesis is honest) or handle `p=0` vacuously).
+
+### 10.4 Net effect on the §8 bundle estimate
+
+- The "carve 4→p is mechanical" claim (§9.3/§9.5 step 4) STANDS for the peel branch's width-swap, but the
+  carve's `2 < c'` must become a threaded `p/2 < c'` AND the firing dispatch must gain the directMorse branch.
+- NEW required piece BEFORE the carve swap: `schurCoreP_directMorse` (the uniform-Morse whole-window bound for
+  the cap-B regime) — this is genuinely new (p=4 only ever needed it at r=1,2 as two hand bases; at general p it
+  is a ∀r-in-the-cap-B-band lemma). [MED, ~80–120 LoC.]
+- Option B / `peel_le` / `schurLambdaP` (§9.2) UNCHANGED — Codex corroborated. r=2 stays a (now subsumed-by-
+  directMorse) base, NOT a loosened `hr`.
+- Revised risk: the bundle is still bounded-and-standard, NO research wall, but the genuine MED pieces are now
+  THREE: `peel_le` sub-additivity (LOW-MED, the lift identity is exact), `schurCoreP_directMorse` (MED, new),
+  the `c★`-routing in the peel branch (MED). Total ~+120 LoC over §9.5's estimate.
+
+### 10.5 Diff-gate recommendation (revised)
+
+GO to diff-gate, with Codex's ONE required change folded in (§10.3): the design now carries the p-dependent
+exponent-routing (directMorse `c'≤p/2` / peel `p/2<c'` with a `c★` device) as a FIRST-CLASS piece, not a
+mechanical swap. The `1 ≤ p` honesty hypothesis (DLN output width ≥ 1) is added. Everything else (Option B
+witness, `peel_le` lift, r=2 base, carve angular p-invariance, cap-B = done radial axis) stands and is
+Codex-corroborated. Build still gated on controller diff-gate of THIS (corrected) plan.
