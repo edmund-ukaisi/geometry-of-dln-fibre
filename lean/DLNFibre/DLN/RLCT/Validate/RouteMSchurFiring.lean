@@ -1307,6 +1307,44 @@ noncomputable def cellEquivG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p 
     ((Fintype.bijective_iff_injective_and_card _).2
       ⟨slotCellG_injective r N hN hr p, by rw [card_cellSumG r hr, Fintype.card_fin]; omega⟩)
 
+theorem cellEquivG_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :
+    cellEquivG r N hN hr p s = slotCellG r N hN hr p s := rfl
+
+/-- The carve reshape `zEG : (Fin N → ℝ) ≃ᵐ ((Fin(r-1)×Fin(r-1) → ℝ) × (Fin(r-1)⊕Fin(r-1) → ℝ))`
+(`piCongrLeft cellEquivG`'s symm to the cell-cube, then `sumPiEquivProdPi` splitting M22 ⊕ (g,b)). MP. -/
+noncomputable def zEG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    (Fin N → ℝ) ≃ᵐ ((Fin (r - 1) × Fin (r - 1) → ℝ) × (Fin (r - 1) ⊕ Fin (r - 1) → ℝ)) :=
+  (MeasurableEquiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm.trans
+    (MeasurableEquiv.sumPiEquivProdPi (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))
+      => ℝ))
+
+theorem zEG_measurePreserving (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    MeasurePreserving (zEG r N hN hr p) volume volume :=
+  ((volume_measurePreserving_piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm _).trans
+    (volume_measurePreserving_sumPiEquivProdPi (fun _ => ℝ))
+
+/-- `(zEG … z).1 (a,b) = z (slotCellG … (inl (a,b)))` and `.2 s = z (slotCellG … (inr s))`. -/
+theorem zEG_fst_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (ab : Fin (r - 1) × Fin (r - 1)) :
+    (zEG r N hN hr p z).1 ab = z (slotCellG r N hN hr p (Sum.inl ab)) := by
+  show (MeasurableEquiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z
+      (Sum.inl ab) = _
+  rw [show (MeasurableEquiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z
+      = (Equiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z from rfl,
+    Equiv.piCongrLeft_symm_apply]
+  rfl
+
+theorem zEG_snd_apply (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r))
+    (z : Fin N → ℝ) (s : Fin (r - 1) ⊕ Fin (r - 1)) :
+    (zEG r N hN hr p z).2 s = z (slotCellG r N hN hr p (Sum.inr s)) := by
+  show (MeasurableEquiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z
+      (Sum.inr s) = _
+  rw [show (MeasurableEquiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z
+      = (Equiv.piCongrLeft (fun _ : Fin N => ℝ) (cellEquivG r N hN hr p)).symm z from rfl,
+    Equiv.piCongrLeft_symm_apply]
+  rfl
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
