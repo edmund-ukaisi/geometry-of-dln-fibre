@@ -690,3 +690,34 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 > - Status: the reusable assembly (the ∀M load-bearing piece) + the (2,3,1) chart + the hard cancellation
 >   are banked. The mechanical entry-telescoping + the Fin-9 MP-factorization are the bounded fresh-tide
 >   finish. Full `lake build DLNFibre` green with both modules temp-imported (8528 jobs).
+
+---
+
+> **(2,3,1) smeared validate-small (minAdm=2) — COMPLETE: rate + MP factorization + atom LANDED.**
+> `RouteM231Smeared.lean` (sorry-free; `#print axioms routeM231sm_box_diverges` force-elaborated =
+> `[propext, Classical.choice, Quot.sound]`, S2-free — verified after deleting the olean). 1125 LoC.
+>
+> **Headline theorem** `routeM231sm_box_diverges (c' : ℝ≥0) (hc' : (minAdm M231 : ℝ≥0∞)/2 ≤ c') (ε : ℝ)
+> (hε : 0 < ε) : ∫⁻ x in cubeBox (routeMAmbient M231) ε, ENNReal.ofReal (|routeMCore M231 x|^(−(c':ℝ)))
+> = ⊤`. The first `minAdm ≥ 2` boundary-SMEARED achiever box-divergence atom, discharged via the banked
+> reusable `routeMCore_box_diverges_of_RadialMPChart` (route b).
+>
+> Pieces (all sorry-free):
+> - **Rate** `routeMCore_phi231sm_offpole : routeMCore M231 (phi231sm u) = (u 6)²·Uval231 u` off
+>   `det P₁ ≠ 0`, via `dlnLoss_chartParams231_offpole` (entry telescoping `prod_chartParams231_entry`
+>   = `z·(a_{i0}+a_{i1}h1)`, the `sb`-shear cancelling through `P1_lam231`).
+> - **MP factorization** `phi231sm_eq_psi_R : phi231sm u = psi231 (R231 u)`: `R231 = pivotBlowupOn {6,7} 6`
+>   (the radial, sole Jacobian carrier, `D231_abs_det : |det (D231 u)| = |u 6|¹`); `psi231 = Q231∘shear231`
+>   measure-preserving (`measurePreserving_psi231`) + measurable embedding (`measurableEmbedding_psi231`).
+>   The `shear231` MP (`measurePreserving_shear231`) via the Codex Option-B single 2-core split
+>   `split231` + `coreShear_measurable 1 2 6` (the `shear231-mp` consult); the rational `lam231` measurable
+>   via the explicit `lam231_explicit` 2×2 `(P₁ᵀP₁)⁻¹P₁ᵀP₂` rational form.
+> - **Weighted source** `subBox231_diverges : ∫_{subBox231 δ} |u6|¹·(|loss∘φ|)^{−c'} = ⊤` (`0<δ≤1`,
+>   `c'≥1`): on the bounded-away box (`u0,u4∈[δ/2,δ]`, smalls in `[−δ/8,δ/8]`, `z=u6∈(0,δ)`) the rate is
+>   `z²·U` (`subBox231_det_ne`, `subBox231_U_pos`), so the integrand is `|u6|^{1−2c'}·U^{−c'}`; the z-axis
+>   `∫_{(0,δ)}|u6|^{1−2c'}=⊤` (`abs_rpow_lintegral_Ioo_eq_top`, `1−2c'≤−1`), the rest `U^{−c'}`
+>   positive-finite. Containment `subBox231 δ ⊆ phi231sm⁻¹(cubeBox 9 (2δ))` (`chartParams231_entry_bound`,
+>   `lam231` bounded `≤9/8` via `subBox231_lam_bound`); atom picks `δ = min(ε/2, 1)`.
+> - This realizes the `(2,3,1)` instance of the reusable `RadialMPChart` assembly — the `minAdm≥2`
+>   companion to the `(1,2,1)` weight-1 atom. NOT yet wired into `DLNFibre.lean` (single-writer); the
+>   controller wires `RouteM231Smeared` when integrating.
