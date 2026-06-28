@@ -745,3 +745,19 @@ Codex "validated, no wall" on hand-picked anchors is insufficient.** Operator le
 (default, in progress); (ii) prefer option B (re-derive the decoder so the last drop is represented — bigger
 blast radius, makes one uniform chart); (iii) re-scope/re-prioritize. I'm charging (i) autonomously per the (A)
 mandate; flagged for a knowing-decision check since it's architecture-level + the 4th design iteration here.
+
+## 38. L2 leg re-scoped (l2-scope, 2026-06-28) — the L2 path is MUCH cleaner than the synthesis implied + one research-risk surfaced.
+A read-only scout (source-verified + Codex-xhigh) corrected the L2 picture: (a) the headline's actual L2 `sorryAx`
+is a SINGLE bare sorry `deepest_regular_core_normal_form` (Skeleton:1131), not the elaborate
+`deepest_gauge_construction` (whose 4 sorries are DISCONNECTED — the producer `deepest_gauge_squeeze_exists`:403 is
+itself a bare sorry and the 3 modules aren't even imported into DLNFibre.lean); (b) the prior "~20 sorries / 3099/3104"
+framing was stale (grep artifact; 4 active sorries); (c) **a clean BOUNDED L=2 headline needs only wiring
+(Skeleton:1131 := the unwired bridge + 3 imports) + the (1a)/2915 `IsDeepLayers` strengthening** — at L=2 the L≥3
+sorries (3118/3123/3289) are vacuous. (A)-PREMISE VERDICT (partly true): the L=2 leg is bounded (no research wall;
+(1a) is invasive-but-localized); 3118/3123 bounded; **3289 (L≥3 grouped recursive diffeo) is a GENUINE RESEARCH-RISK
+— the one place the (A) "no walls" premise is least secure.** Operator awareness: the FULLY-GENERAL (∀L) headline's
+L2 leg has a research-risk at 3289; a clean L=2 instance is bounded + in progress (genm-l2). If 3289 walls, the
+∀L-L2 may need operator-level design (or a scoped L=2 deliverable as an interim). NOT a blocker now — charging the
+bounded L=2 path autonomously; surfaced because 3289 is the genuine general-L wall-candidate. Also a process note: I
+had carried the stale "20 sorries / entangled" L2 read for ~2 ticks (used it to justify holding L2) — the scout's
+source-trace corrected it; lesson = re-derive sorry-counts from `grep -c '^\s*sorry'` + the actual term, not synthesis prose.
