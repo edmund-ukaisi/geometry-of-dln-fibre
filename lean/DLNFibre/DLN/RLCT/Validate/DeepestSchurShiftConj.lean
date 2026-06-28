@@ -103,3 +103,156 @@ theorem continuousAt_schurCorrectionConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (continuousAt_inv_deepBlkA_add_readX H r B hB hr hL s p hdet)) ?_
   · exact (continuous_const.add (continuous_readZ H r hr hL s)).continuousAt.neg
   · exact (continuous_const.add (continuous_readY H r hr hL s)).continuousAt
+
+/-! ## The conjugated unit-set + cutoff + global continuity of `schurCutoffShiftConj`
+
+The conjugated correction is `ContinuousAt` only on the open **conjugated unit-set** `unitSetConj` where
+every conjugated pivot `det(M̄A_s + readX_s) ≠ 0`. It contains the origin WHEN every `M̄A_s = deepBlkA_s`
+is a unit (`hDA`, the foundation discharged at the wire). A `ContDiffBump` with support in `unitSetConj`
+gives a globally continuous cutoff `schurCutoffShiftConj`, `= 1` near `0`, vanishing off the set. -/
+
+/-- The conjugated unit-set: gauge coords where every conjugated pivot `M̄A_s + readX_s` is invertible. -/
+def unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    Set ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :=
+  {p | ∀ s : Fin L, (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0}
+
+theorem isOpen_unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
+    IsOpen (unitSetConj H r B hB hr hL) := by
+  have hrw : unitSetConj H r B hB hr hL
+      = ⋂ s : Fin L, {p | (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0} := by
+    ext p; simp [unitSetConj, Set.mem_iInter]
+  rw [hrw]
+  refine isOpen_iInter_of_finite (fun s => ?_)
+  have hcont : Continuous (fun p => (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det) :=
+    (continuous_const.add (continuous_readX H r hr hL s)).matrix_det
+  exact hcont.isOpen_preimage _ isOpen_ne
+
+/-- The origin lies in the conjugated unit-set when every conjugated pivot base `M̄A_s` is a unit. -/
+theorem mem_unitSetConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ∈ unitSetConj H r B hB hr hL := by
+  intro s
+  rw [readX_zero H r hr hL s, add_zero]
+  exact ((Matrix.isUnit_iff_isUnit_det _).mp (hDA s)).ne_zero
+
+/-- An open ball `ball 0 ε ⊆ unitSetConj` (the origin's conjugated-unit nbhd; needs `hDA`). -/
+theorem exists_ball_subset_unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    ∃ ε > 0, Metric.ball (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ε
+      ⊆ unitSetConj H r B hB hr hL := by
+  obtain ⟨ε, hε, hball⟩ := Metric.isOpen_iff.mp (isOpen_unitSetConj H r B hB hr hL) 0
+    (mem_unitSetConj_zero H r B hB hr hL hDA)
+  exact ⟨ε, hε, hball⟩
+
+/-- The chosen conjugated-unit-ball radius `ε > 0`. -/
+noncomputable def unitRadiusConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) : ℝ :=
+  (exists_ball_subset_unitSetConj H r B hB hr hL hDA).choose
+
+theorem unitRadiusConj_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    0 < unitRadiusConj H r B hB hr hL hDA :=
+  (exists_ball_subset_unitSetConj H r B hB hr hL hDA).choose_spec.1
+
+theorem ball_unitRadiusConj_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    Metric.ball (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+        (unitRadiusConj H r B hB hr hL hDA)
+      ⊆ unitSetConj H r B hB hr hL :=
+  (exists_ball_subset_unitSetConj H r B hB hr hL hDA).choose_spec.2
+
+/-- The conjugated cutoff bump (outer radius `ε/2`, `= 1` on the inner ball `closedBall 0 (ε/4)`). -/
+noncomputable def cutoffBumpConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    ContDiffBump (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) where
+  rIn := unitRadiusConj H r B hB hr hL hDA / 4
+  rOut := unitRadiusConj H r B hB hr hL hDA / 2
+  rIn_pos := by have := unitRadiusConj_pos H r B hB hr hL hDA; linarith
+  rIn_lt_rOut := by have := unitRadiusConj_pos H r B hB hr hL hDA; linarith
+
+theorem tsupport_cutoffBumpConj_subset_unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    tsupport (⇑(cutoffBumpConj H r B hB hr hL hDA)) ⊆ unitSetConj H r B hB hr hL := by
+  rw [(cutoffBumpConj H r B hB hr hL hDA).tsupport_eq]
+  refine subset_trans ?_ (ball_unitRadiusConj_subset H r B hB hr hL hDA)
+  intro x hx
+  rw [Metric.mem_closedBall] at hx
+  rw [Metric.mem_ball]
+  have hpos := unitRadiusConj_pos H r B hB hr hL hDA
+  show dist x 0 < unitRadiusConj H r B hB hr hL hDA
+  have : (cutoffBumpConj H r B hB hr hL hDA).rOut = unitRadiusConj H r B hB hr hL hDA / 2 := rfl
+  rw [this] at hx
+  linarith
+
+/-- The conjugated raw shift is `ContinuousAt p` on `unitSetConj`. -/
+theorem continuousAt_schurShiftRawConj_of_mem_unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+    (hp : p ∈ unitSetConj H r B hB hr hL) :
+    ContinuousAt (schurShiftRawConj H r B hB hr hL) p := by
+  unfold schurShiftRawConj
+  refine (continuous_paramsEquivFlat (deepestM H r)).continuousAt.comp ?_
+  exact continuousAt_pi.mpr (fun s => continuousAt_schurCorrectionConj H r B hB hr hL s p (hp s))
+
+/-- **The conjugated cutoff Schur shift** `χ_conj • schurShiftRawConj` — globally continuous,
+vanishing at the origin, `= raw` on the inner ball. -/
+noncomputable def schurCutoffShiftConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    Fin (flatDim (deepestM H r)) → ℝ :=
+  (cutoffBumpConj H r B hB hr hL hDA p) • schurShiftRawConj H r B hB hr hL p
+
+/-- The conjugated cutoff is globally `Continuous` (via `continuous_of_tsupport`: on `tsupport χ_conj
+⊆ unitSetConj` the raw shift is `ContinuousAt`; off it the bump vanishes). -/
+theorem continuous_schurCutoffShiftConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    Continuous (schurCutoffShiftConj H r B hB hr hL hDA) := by
+  refine continuous_of_tsupport (fun x hx => ?_)
+  have hxsupp : x ∈ tsupport (⇑(cutoffBumpConj H r B hB hr hL hDA)) := by
+    refine (tsupport_smul_subset_left (⇑(cutoffBumpConj H r B hB hr hL hDA))
+      (schurShiftRawConj H r B hB hr hL)) ?_
+    exact hx
+  have hxU : x ∈ unitSetConj H r B hB hr hL :=
+    tsupport_cutoffBumpConj_subset_unitSetConj H r B hB hr hL hDA hxsupp
+  have hχ : ContinuousAt (⇑(cutoffBumpConj H r B hB hr hL hDA)) x :=
+    (cutoffBumpConj H r B hB hr hL hDA).continuous.continuousAt
+  have hraw : ContinuousAt (schurShiftRawConj H r B hB hr hL) x :=
+    continuousAt_schurShiftRawConj_of_mem_unitSetConj H r B hB hr hL x hxU
+  exact hχ.smul hraw
+
+/-- The conjugated cutoff vanishes at the origin (boundary `schurShiftRawConj 0 = 0`). -/
+theorem schurCutoffShiftConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0) :
+    schurCutoffShiftConj H r B hB hr hL hDA 0 = 0 := by
+  have hraw0 : schurShiftRawConj H r B hB hr hL 0 = 0 := by
+    unfold schurShiftRawConj
+    rw [show schurCorrectionConj H r B hB hr hL 0 = (fun _ => 0 : Params (deepestM H r)) from by
+      funext s; exact schurCorrectionConj_zero_boundary H r B hB hr hL s (hbdy s)]
+    funext i; rfl
+  simp only [schurCutoffShiftConj, hraw0, smul_zero]
