@@ -19,6 +19,32 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` suffix comparison bridges
+
+The positive-tail post-`Ctop` bridge now has three additional green private
+comparison lemmas in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+```
+
+For actual raw-order derivative targets `Dzv = (fderiv raw z) v`, after the
+first three target-side stages `T123`, the post-`Ctop` rest-tuple solved-`A1`
+tangent, solved-`A1` suffix derivative, and stored-`C` suffix derivative agree
+with the existing target-staged objects on `Dzv`.  The `C` suffix bridge uses
+the post-`Ctop` source `C` readout comparison to the target-recovered source
+`C`; it does not feed post-`Ctop` data into the pre-edge target-recovery API.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This still does not prove the `Cnext` comparison, lower-left one-step
+comparison, recursive `dEarly_postC` comparison, positive-tail `F3` shear, or
+any determinant/RLCT result.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` first comparison bridges
 
 The positive-tail post-`Ctop` bridge now has a first green comparison slice in

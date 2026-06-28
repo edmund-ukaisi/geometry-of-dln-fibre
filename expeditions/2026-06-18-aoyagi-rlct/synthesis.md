@@ -48,6 +48,33 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` Suffix Comparison Bridges
+
+The next private comparison slice after `Ctop` is now green in
+`RetainedPassiveCoordinatesJacobian.lean`.  New helper lemmas prove that, for
+`Dzv = (fderiv raw z) v` and `u = T123 Dzv`, the post-`Ctop` rest tuple agrees
+with the existing target-staged objects for:
+
+- solved-`A1` tangent;
+- solved-`A1` suffix derivative;
+- stored-`C` suffix derivative.
+
+Lean names:
+
+```text
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+```
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.
+
+The remaining comparison work is the `Cnext` bridge, the lower-left one-step
+bridge, and the recursive `dEarly_postC` bridge.  No positive-tail `F3` shear
+or determinant-one package is claimed here.
+
 ## Latest A2 Post-`Ctop` First Comparison Bridges
 
 `RetainedPassiveCoordinatesJacobian.lean` now has the first private comparison

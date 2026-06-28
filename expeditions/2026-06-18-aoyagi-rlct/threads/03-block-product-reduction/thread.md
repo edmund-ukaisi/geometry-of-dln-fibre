@@ -18,6 +18,30 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` suffix comparison bridges
+
+Lean now has three further private post-`Ctop` comparison lemmas in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_after_T123_eq_targetStaged
+```
+
+These compare the post-`Ctop` rest tuple after `T123 ((fderiv raw z) v)` with
+the existing target-staged solved-`A1` tangent, solved-`A1` suffix derivative,
+and stored-`C` suffix derivative on `(fderiv raw z) v`.
+
+Focused
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no `Cnext` comparison, no lower-left one-step comparison, no
+recursive `dEarly_postC` comparison, no positive-tail `F3` shear, no determinant
+equality, measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` first comparison bridges
 
 Lean now has the first private comparison slice for the post-`Ctop`

@@ -259,6 +259,18 @@ with the existing target-only lower-left product derivative on
 `(fderiv raw z) v`.  Only after that comparison can the positive-tail `F3`
 shear be stated and reduced to the existing target-only `F3` theorem.
 
+The first comparison slice after `T123` is now also implemented: the
+post-`Ctop` solved-`A1` tangent, solved-`A1` suffix derivative, and stored-`C`
+suffix derivative agree with the existing target-staged objects on
+`(fderiv raw z) v`.  The stored-`C` suffix proof is the important bookkeeping
+check: it rewrites the successor derivative by the induction hypothesis and
+the source-`C` readout by the earlier post-`Ctop` source comparison, then closes
+against the target-staged `C` suffix step formula.
+
+The remaining comparison lemmas are therefore the `Cnext` comparison, the
+lower-left one-step comparison, and the recursive lower-left product-tail
+comparison.
+
 ## Nonclaims
 
 This stage is only target-side raw-tuple normalisation.  It does not prove
