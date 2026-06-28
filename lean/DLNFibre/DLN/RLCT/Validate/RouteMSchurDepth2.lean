@@ -126,9 +126,10 @@ integral `∫_z ∫_P (∑ⱼ (P j)² + W z)^{−c'}` is `radial_morse_dominates
 `∫_z ∫_P (∑ⱼ (P j)² + W z)^{−c'}` is finite for `c' < 2 = λ_{2,4}`, with `P : Fin 4` a FREE Morse block
 (modelling the flattened top row `(R·S)_top`, `j·p = 1·4`) and `W ≥ 0` an arbitrary residual (standing
 for the corank-1 Schur core `frobSq (Sc·S_bot)`). This is `radial_morse_dominates_lt_top` at `m+1 = 4`,
-the END of the corank-2 N2b→Morse reduction. It takes the split form as its STARTING point — the core →
-split-form weld (the radial-blow-up CoV, summed over the `r²` charts by `recStep`) is the deferred N4
-step (`RouteMSchur` N4); this lemma does NOT consume `schurSplit_lintegral_le` / `schur_minorPivot_split`.
+the END of the corank-2 N2b→Morse reduction. It takes the split form as its STARTING point — this
+ABSTRACT-end lemma does NOT consume `schurSplit_lintegral_le` / `schur_minorPivot_split`. (The genuinely
+CHAINED inner-S weld is `schurInner_S_le` below, which DOES invoke N2b and reaches the Morse terminal by a
+different route — `schurSplitD_lintegral_lt_top` — not by composing this lemma with `schurSplit_lintegral_le`.)
 The threshold `2 = (m+1)/2` is binding (Codex-confirmed: the certified recursion has no hole at `r=2`). -/
 theorem schurSplit_depth2_lt_top {k : ℕ} (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c' < 2)
     (T : ℝ) (hT : 0 < T) (W : (Fin k → ℝ) → ℝ) (hWnn : ∀ z, 0 ≤ W z) (hWmeas : Measurable W) :
@@ -143,7 +144,7 @@ theorem schurSplit_depth2_lt_top {k : ℕ} (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c'
 /-! ## Two-radius Morse dominance — the END-2 variant the shear-peel needs
 
 The shear `S_0 ↦ S_0 + R_{01}·S_1` that turns the N2b top block `(R·S)_top` into a free Morse block
-enlarges the `P`-box (radius `Tp = 3T` when `|R_{01}·S_1| ≤ 2T`) while the residual parameter `z = S_1`
+enlarges the `P`-box (radius `Tp = 2T` when `|R_{01}·S_1 j| ≤ T`) while the residual parameter `z = S_1`
 stays at radius `T`. `radial_morse_dominates_lt_top` uses a single radius; here is its two-radius variant
 (the inner `P`-bound `Kbound` is `z`-independent at ANY radius, so the generalisation is immediate). -/
 

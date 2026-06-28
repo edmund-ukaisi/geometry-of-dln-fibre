@@ -25,12 +25,13 @@
 > **Scope.** The two ENDS of the corank-2 N2b→Morse reduction (cert §4 N4, `L32a-cover-cert.md`): the
 > smallest binding case (`r = 2`, ONE nested minor-pivot level). (i) the N2b-shaped inverse-power
 > reduction (core `F` two-sided-comparable to a split form `D` ⟹ `F^{−c'} ≤ c₀^{−c'}·D^{−c'}`), and (ii)
-> the finiteness of the `Fin 4` Morse terminal for `c' < 2 = λ_{2,4}`. These are the INGREDIENTS the
-> depth-2 recursion needs — **three separate lemmas, NOT chained end-to-end**. The missing weld is the
-> radial-blow-up change-of-variables that turns the corank-2 core `∫_R frobSq (R·S)^{−c'}` over the matrix
-> box INTO the split form; that stays the deferred N4 long pole (`routeMCore_threshold_lt_top`, skeleton
-> in `RouteMSchur`). This is the leg's FIRST milestone per the dispatch brief — the reduction ends, not
-> the end-to-end recursion.
+> the finiteness of the `Fin 4` Morse terminal for `c' < 2 = λ_{2,4}`. These three ABSTRACT-end lemmas
+> (`schurSplit_integrand_le`/`_lintegral_le`/`schurSplit_depth2_lt_top`) are **NOT chained to each other**.
+> The inner-S weld leg (below) THEN chains N2b ⟶ the Morse terminal end-to-end for the inner `S`-integral
+> via `schurInner_S_le` (reaching the terminal by the `schurSplitD_lintegral_lt_top` route, not by
+> composing the abstract ends). The remaining deferred weld is the OUTER radial-blow-up cover that turns
+> the joint corank-2 core over the `Δ`-box INTO the per-chart form `schurInner_S_le` closes
+> (`routeMCore_threshold_lt_top`, skeleton in `RouteMSchur`).
 
 ## Context — why a separate validator (not re-proving `core334_lt_top`)
 
@@ -78,15 +79,20 @@ Forced-elaboration `#print axioms` (olean force-deleted first) on all three conf
 
 ## English gloss (fidelity — what is and is NOT proven)
 
-The two ENDS of the corank-2 recursion's N2b→Morse step. END 1 (`schurSplit_integrand_le`/`_lintegral_le`):
+**The ABSTRACT ends (not chained to each other).** END 1 (`schurSplit_integrand_le`/`_lintegral_le`):
 GIVEN the N2b comparison `c₀·D ≤ F ≤ c₁·D`, the core integral `∫ F^{−c'}` is dominated by the split-form
 integral `c₀^{−c'}·∫ D^{−c'}`. END 2 (`schurSplit_depth2_lt_top`): the split-form integral over a FREE
-Morse block `P : Fin 4` plus a nonneg residual `W` is finite for `c' < 2 = λ_{2,4}`. **These are NOT
-chained end-to-end**: END 1 takes the comparison as a hypothesis (never invokes N2b to produce it from
-`frobSq(R·S)`); END 2 takes the split form as its starting point (never starts from the core, never
-consumes END 1). The missing WELD — the radial-blow-up change-of-variables turning `∫_R frobSq(R·S)^{−c'}`
-over the matrix box into the split form `(P, z)`, summed over the `r²` charts by `recStep` — is the
-deferred N4 long pole. What IS proven: the two reduction ingredients, each sorry-free, S2-free, and at the
+Morse block `P : Fin 4` plus a nonneg residual `W` is finite for `c' < 2 = λ_{2,4}`. **These two abstract
+ends are NOT chained to each other**: END 1 takes the comparison as a hypothesis (never invokes N2b to
+produce it); END 2 takes the split form as its starting point (never consumes END 1).
+
+**The inner-S weld (`schurInner_S_le`) IS chained end-to-end** (this leg): it invokes N2b to PRODUCE the
+comparison for a fixed angular chart, feeds it through END 1, and reaches the Morse terminal via the
+`schurSplitD_lintegral_lt_top` shear-peel route (NOT by composing END 2). Reviewer-verified at the
+proof-term level. The remaining WELD — the OUTER radial-blow-up CoV turning the joint `∫_Δ frobSq(Δ·S)^{−c'}`
+over the `Δ`-box into the per-chart `∫_a ∫_{R-ang} ∫_S` form `schurInner_S_le` closes, summed over the
+`r²` charts by `recStep` — is the deferred N4 long pole. What IS proven: the abstract ends + the inner-S
+weld, each sorry-free, S2-free, and at the
 binding threshold (cross-checked against `core334_lt_top`'s independent `c'' < 2`).
 
 ## Inner-S weld (PROVED end-to-end, 2026-06-28 — the weld leg)
@@ -160,5 +166,8 @@ reduction ends; this leg added the inner-S weld.
 The abstract ends were `reviewed` (fidelity audit 2026-06-28: math sound, S2-free, threshold-correct; the
 earlier "composition CLOSED/validator" framing was corrected to "reduction ends", and `hF` dropped). With
 this leg the inner-S integral IS now welded end-to-end (N2b ⟶ Morse) via `schurInner_S_le`; the OUTER
-radial-R cover remains the deferred N4 step. The inner-S weld is pending a fidelity review. Pending
+radial-R cover remains the deferred N4 step. The inner-S weld is `reviewed` (fidelity audit 2026-06-28:
+SURVIVED — genuinely chained at the proof-term level, N2b cell-hyp discharge + shear-peel box-enlarge
+sound, threshold-correct; two PROSE defects fixed — the `3T`→`2T` docstring typo and the stale "not
+chained" prose now scoped to the abstract ends with a cross-reference to `schurInner_S_le`). Pending
 controller wire-in of the `RouteMSchurDepth2` import into `DLNFibre.lean`.
