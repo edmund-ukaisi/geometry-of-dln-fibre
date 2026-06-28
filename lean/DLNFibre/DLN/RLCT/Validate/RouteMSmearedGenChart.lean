@@ -395,7 +395,34 @@ measurable everywhere). -/
 theorem smearShiftFlat_measurable (hcol : 0 < M (deepLayer M hL).succ)
     (hm1 : 0 < M ⟨L - 1, by omega⟩) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => smearShift M hL u hm1 hcol) := by
-  sorry
+  -- `baseParams u` is a measurable function of `u` (a measurable equiv); every entry is `measurable_pi_apply`
+  -- composed with it. `frontMat`/`pivotCol`/`residCols`/`deepCol` are finite sums/products of such entries;
+  -- `routing` adds the `1×1` Gram inverse `(·)⁻¹` (measurable everywhere on ℝ).
+  -- `frontMat u i j` and `deepCol u i` are CONTINUOUS in `u` (continuous_prodAux ∘ continuous_symm),
+  -- hence measurable. `routing 0 r` adds the `1×1` Gram inverse — `(‖col0‖²)⁻¹`, measurable on ℝ.
+  have hsymm : Continuous (fun u : Fin (routeMAmbient M) → ℝ => baseParams M u) :=
+    continuous_paramsEquivFlat_symm M
+  have hfront : ∀ (i : Fin (M 0)) (j : Fin (M ⟨L - 1, by omega⟩)),
+      Measurable (fun u : Fin (routeMAmbient M) → ℝ => frontMat M hL u i j) := by
+    intro i j
+    have : Continuous (fun u : Fin (routeMAmbient M) → ℝ => frontMat M hL u i j) :=
+      ((continuous_prodAux M (L - 1) (by omega)).comp hsymm).matrix_elem i j
+    exact this.measurable
+  have hdeep : ∀ (i : Fin (M (deepLayer M hL).castSucc)),
+      Measurable (fun u : Fin (routeMAmbient M) → ℝ => deepCol M hL u hcol i) := by
+    intro i
+    have : Continuous (fun u : Fin (routeMAmbient M) → ℝ => deepCol M hL u hcol i) := by
+      have hc : Continuous (fun u : Fin (routeMAmbient M) → ℝ =>
+          (baseParams M u) (deepLayer M hL) i ⟨0, hcol⟩) :=
+        (((continuous_apply (deepLayer M hL)).comp hsymm).matrix_elem i ⟨0, hcol⟩)
+      exact hc
+    exact this.measurable
+  -- `routing 0 r = (∑ᵢ frontMat i ⟨0⟩²)⁻¹ · (∑ᵢ frontMat i ⟨0⟩ · frontMat i (residSel r))`.
+  have hrouting : ∀ r, Measurable (fun u : Fin (routeMAmbient M) → ℝ => routing M hL u hm1 0 r) := by
+    sorry
+  -- `smearShift = ∑ r, routing 0 r · deepCol (residSel r)`.
+  refine Finset.measurable_sum _ (fun r _ => ?_)
+  exact (hrouting r).mul (hdeep (residSel M hL hm1 r))
 
 /-- **`phiSm` is measure-preserving** — the subtractive shear at `smPivotCoord` by the pivot-coord-
 invariant `smearShift` (the landed `measurePreserving_updateSub_of_coordInvariant`). -/
