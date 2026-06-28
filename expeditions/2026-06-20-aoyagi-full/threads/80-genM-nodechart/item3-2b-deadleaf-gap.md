@@ -56,3 +56,44 @@ uses; building 2b-i's det = u^{minAdm−1} on genBlkFlatStruct would be building
 Option A (switch to the live-leaf B_det decoder, aligning with the cert + the worked (3,3,3,3) monomial), OR a
 focused pen-and-paper adjudication of the dead-leaf budget (Option B) if the dead-leaf is preferred for the
 witness. Confirm the decoder choice before I open 2b-i.
+
+## CODEX-CONFIRMED REFINEMENT (decision A made concrete; the budget is the crux) — 2026-06-28
+Decision (A) = switch the det-route to the LIVE-leaf B_det decoder. Codex xhigh
+(`codex/liveleaf-budget-{prompt,answer}.md`) sharpens it with two DECISIVE findings:
+
+1. **The dead-leaf decoder gives the WRONG threshold.** The dead-leaf's angular directions are the interior
+   E-blocks; their count `q = ∑ (Text k − Text(k+1))(Wext k − Text(k+1))`, which at 3333 is 3, NOT
+   minAdm−1 = 5. The radial mechanism is decoder-agnostic (affine-in-u + unipotent chainA shear, needs only
+   "C linear in u + independent u-scaled free directions"), so the dead-leaf DOES factor as u^q·(u-free) —
+   but with exponent `q` (the E-count), NOT minAdm−1. So Route B (prove radial-sep directly on the dead-leaf)
+   is MATHEMATICALLY WRONG for the cov target (gives the wrong RLCT threshold). The det genuinely NEEDS the
+   live-leaf, whose Rfin-based angular layout supplies the minAdm−1 directions.
+
+2. **`#angular = minAdm−1` for the live layout is a NEW slot-cardinality identity** that does NOT follow from
+   `card ChartIdx = flatDim`. The flatDim budget is entirely consumed by per-boundary schur+lift slots — NO
+   separate Rfin slot. A general-M live-leaf decoder on `Fin N = flatDim` must REROUTE existing ChartIdx slots
+   (the leaf boundary's E/lift slots → free Rfin + fixed interior Rmat pivots), and prove the rerouted layout
+   has exactly minAdm−1 free angular coords + is a square chart. The (3,3,3,3) B_det3333 is square only because
+   it reuses Fin-27 bespoke; it is NOT evidence the genBlkFlatStruct reader layout already has the right homes.
+
+## SCOPE CONSEQUENCE (the rate+witness must ALSO move to the live-leaf — not just the det)
+The contract's `NodeAchieverChart` ties the SAME `phi` to BOTH the rate (`leaf_integrand`) AND the det (`cov`).
+So I CANNOT use dead-leaf for the rate/witness and live-leaf for the det in one bundle — `phi` must be ONE
+chart. Since the det NEEDS the live-leaf (finding 1), the WHOLE interior chart must be the live-leaf decoder:
+the rate (decoder-agnostic, cheap via routeMCore_phiGen — survives), the det (live-leaf, the minAdm−1 budget),
+AND the interior witness (re-derive `exists_achieverUfun_ne_zero_interior` for the live-leaf — Codex/controller
+note this is EASIER on the live leaf: live ⟹ unit ≢ 0 directly, the cert's §2/§5 regime). Sub-tides 1+2a
+(phiFlatLDU/kLDU) are decoder-agnostic so they SURVIVE (re-instantiate with the live decoder + kLDU).
+
+## REVISED PLAN (live-leaf throughout)
+- 2a' : `genBlkFlatLive M t ha` — the general-M live-leaf decoder, rerouting ChartIdx slots (leaf E/lift →
+  free Rfin + fixed interior Rmat pivots); the BUDGET IDENTITY #angular = minAdm−1 + square-chart (the heavy,
+  delicate cardinality piece — the genuine 2b residual the cert+controller flagged).
+- 2b-i : affine-in-u radial extraction on phiFlatLive ∘ kLDU (the cert applies DIRECTLY — live-leaf).
+- 2b-ii/iii/iv : per-layer det_comp → Schur×LDU → assemble.
+- 2e : live-leaf interior witness + the 4 fields + interiorContractLDU.
+
+The budget identity (2a') is the load-bearing delicate piece. Recommend the controller weigh: is the
+general-M live-leaf decoder + its budget identity within this thread's scope, or does it want a pen-and-paper
+`witness` adjudication of the minAdm−1 slot-cardinality FIRST (it's a fresh combinatorial identity over opaque
+widths, decorrelated from the radial-sep cert)?
