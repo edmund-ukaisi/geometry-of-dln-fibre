@@ -1,9 +1,20 @@
 # Handoff brief — the carving (`schurRatioResidGen_mid`), the SOLE remaining R1-UPPER sorry
 
-**Branch:** `genm-firing` (HEAD `0dfd3641`, pushed). **File:**
+**Branch:** `genm-firing` (HEAD `0b6e3066`, pushed). **File:**
 `lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurFiring.lean`. Build green, exactly ONE sorry
 (`schurRatioResidGen_mid`). All prereqs below are PROVED + axiom-clean. Build via `lean/scripts/lb`;
-**force-recompile the olean before trusting green** (two stale-olean-masked errors caught this tide).
+**force-recompile the olean before trusting green** (stale-olean-masked errors caught this tide).
+
+**UPDATE (the ENTIRE carve machinery is now LANDED green — only the final chain remains):** the zEG
+carve + ALL readbacks are proven on `0b6e3066`: `cellR`/`cellR_injective` (Fin-r-native, dodges the
+`Fin((r-1)+1)` cast-grind), `slotMatG_spec`, `slotFunR_injective`/`_card`/`_bijective`, `zσG`, `zEG` +
+`measurePreserving_zEG`, `zEG_symm_apply`, `zσG_slot`, and the 3 cell readbacks
+`RmatGnorm_carve_M22`/`_g`/`_b` (`RmatGnorm` at the carved point = the M22/gb cube entries). Plus
+`pivotMinor_inv_one` + `schurSc_readback` (`Sc = M22 − M21·M12` entrywise). So `schurRatioResidGen_mid` is
+now PURE WIRING: `innerSGen_eq_norm` → carve via `zEG` (MP CoV) → per-`(M,v)` N2b on `RmatGnorm` +
+`ofReal_rpow_le_const_mul` (flip) + `stepShearG` (top-row shear) → `Sc = matOf M − bgShiftG v` (via the 3
+carve readbacks + `schurSc_readback`) → `resolvedShiftRG_le` (`K = max 1 (r·T)`, `B = 1`) → integrate-out
+the bounded `v`-box. Every ingredient banked; the chain is the only remaining work (~80-120 lines).
 
 ## The target (the sorry, statement is CORRECT + reviewed-PASS)
 
