@@ -143,4 +143,99 @@ with the real proof (and `schurThreshold4` below) closes the ∀M N4 finiteness 
 theorem schurRecStep4_stub (lam : ℕ → ℝ) : SchurRecStep 4 lam := by
   sorry
 
+/-! ## The concrete threshold WITNESS (the contract is inhabited in-Lean, `p = 4`)
+
+The wrapper above is threshold-AGNOSTIC (abstract `lam`); this section exhibits the concrete closed
+corank-recursion threshold `λ_{r,4}` and PROVES it satisfies `SchurThreshold 4` — upgrading the
+numeric non-vacuity (Python) to a Lean witness (bedrock: the witness is shown in-file). Kept SEPARATE
+from `core_schurGen_lt_top`, which stays abstract-`lam` and axiom-clean. -/
+
+/-- **The closed corank-recursion threshold `λ_{r,4}`** = `{0; ½; 2r−2 (r ≥ 2)}` — the explicit
+solution of `λ_r = min(r²/2, min_{1≤j≤r}(2j + λ_{r−j}))` at `p = 4` (`λ_{r,4} = [0,½,2,4,6,8,…]`,
+numerically `Vzero_lambda_recursion.py` and the closed-form check here). The genuine threshold, so
+`schurLambda 2 = 2`, `schurLambda 3 = 4` are the corank-2/3 instance thresholds. -/
+noncomputable def schurLambda : ℕ → ℝ
+  | 0 => 0
+  | 1 => 1 / 2
+  | (n + 2) => 2 * ((n : ℝ) + 2) - 2
+
+@[simp] theorem schurLambda_zero : schurLambda 0 = 0 := rfl
+@[simp] theorem schurLambda_one : schurLambda 1 = 1 / 2 := rfl
+
+/-- `schurLambda (n+2) = 2n + 2` (the `r ≥ 2` branch, simplified). -/
+theorem schurLambda_add_two (n : ℕ) : schurLambda (n + 2) = 2 * (n : ℝ) + 2 := by
+  have : schurLambda (n + 2) = 2 * ((n : ℝ) + 2) - 2 := rfl
+  rw [this]; ring
+
+/-- `schurLambda r = 2r − 2` for `r ≥ 2` (the `r ≥ 2` branch in closed `r` form). -/
+theorem schurLambda_eq_of_ge_two {r : ℕ} (hr : 2 ≤ r) : schurLambda r = 2 * (r : ℝ) - 2 := by
+  obtain ⟨n, rfl⟩ : ∃ n, r = n + 2 := ⟨r - 2, by omega⟩
+  rw [schurLambda_add_two]; push_cast; ring
+
+theorem schurLambda_two : schurLambda 2 = 2 := by
+  have := schurLambda_add_two 0; simpa using this
+
+theorem schurLambda_three : schurLambda 3 = 4 := by
+  have := schurLambda_add_two 1; norm_num at this ⊢; linarith [this]
+
+/-- The universal lower bound `2r − 2 ≤ schurLambda r` (`r = 0`: `−2 ≤ 0`; `r = 1`: `0 ≤ ½`;
+`r ≥ 2`: equality). The load-bearing fact for the additive peel bound. -/
+theorem schurLambda_ge (r : ℕ) : 2 * (r : ℝ) - 2 ≤ schurLambda r := by
+  match r with
+  | 0 => norm_num [schurLambda_zero]
+  | 1 => norm_num [schurLambda_one]
+  | (n + 2) => rw [schurLambda_add_two]; push_cast; linarith
+
+/-- The universal cap `schurLambda r ≤ r²/2` (the radial-divisor a-axis bound). -/
+theorem schurLambda_le_sq (r : ℕ) : schurLambda r ≤ (r ^ 2 : ℝ) / 2 := by
+  match r with
+  | 0 => norm_num [schurLambda_zero]
+  | 1 => norm_num [schurLambda_one]
+  | (n + 2) =>
+      rw [schurLambda_add_two]; push_cast
+      nlinarith [sq_nonneg ((n : ℝ)), (Nat.cast_nonneg n : (0 : ℝ) ≤ (n : ℝ))]
+
+/-- **The concrete threshold satisfies the contract.** `schurLambda` is a `SchurThreshold 4` — the
+abstract threshold contract is INHABITED in-Lean, so `core_schurGen_lt_top` (and the deferred
+`SchurRecStep`) are non-vacuous. -/
+theorem schurLambda_satisfies_threshold : SchurThreshold 4 schurLambda where
+  lambda0 := schurLambda_zero
+  radial_le := fun {r} _ => schurLambda_le_sq r
+  peel_le := fun {r j} hj hjr => by
+    -- `schurLambda r ≤ jp/2 + schurLambda (r−j)` with `p = 4`, i.e. `≤ 2j + schurLambda (r−j)`.
+    have hcast : ((4 : ℕ) : ℝ) = 4 := by norm_num
+    rw [hcast]
+    have hsub : (↑(r - j) : ℝ) = (r : ℝ) - (j : ℝ) := Nat.cast_sub hjr
+    -- The residual threshold's universal lower bound, in the shifted variable:
+    have hres : 2 * ((r : ℝ) - (j : ℝ)) - 2 ≤ schurLambda (r - j) := by
+      have := schurLambda_ge (r - j); rwa [hsub] at this
+    have hj1 : (1 : ℝ) ≤ (j : ℝ) := by exact_mod_cast hj
+    have hjr1 : (j : ℝ) ≤ (r : ℝ) := by exact_mod_cast hjr
+    have h2j : (j : ℝ) * 4 / 2 = 2 * (j : ℝ) := by ring
+    rw [h2j]
+    -- `r = 1` (then `j = 1`, residual `schurLambda 0 = 0`) needs the direct value; `r ≥ 2` uses
+    -- `schurLambda r = 2r − 2 ≤ 2j + (2(r−j) − 2)`. (`r = 0` is vacuous: `1 ≤ j ≤ 0`.)
+    rcases Nat.lt_or_ge r 2 with hr | hr
+    · -- `r < 2`, with `1 ≤ j ≤ r`, forces `r = 1` and `j = 1`.
+      have hr1 : r = 1 := by omega
+      have hj_eq : j = 1 := by omega
+      subst hr1; subst hj_eq
+      norm_num [schurLambda_one, schurLambda_zero]
+    · -- `r ≥ 2`: `schurLambda r = 2r − 2 ≤ 2j + (2(r−j) − 2)` by `hres`.
+      rw [schurLambda_eq_of_ge_two hr]
+      linarith
+
+/-! ## What closes once the recStep lands (the honest remaining-input statement) -/
+
+/-- **The ∀-corank `p = 4` finiteness at the concrete threshold, modulo ONLY the recStep.** Feeding
+the proven threshold witness into the wrapper: GIVEN the deferred per-corank `SchurRecStep 4
+schurLambda`, the corank-`r` Schur core is finite below the genuine threshold `schurLambda r` for ALL
+`r` — so `λ_{r,4}` (with `schurLambda 2 = 2`, `schurLambda 3 = 4`) is exactly the closure threshold.
+The ONLY remaining input is `hstep` (the genuine wall); the threshold-contract side is discharged
+here. Takes `hstep` as a hypothesis, so axiom-clean. -/
+theorem schurGen_lt_top_modulo_recStep (hstep : SchurRecStep 4 schurLambda) :
+    ∀ r : ℕ, ∀ c' : ℝ, 0 < c' → c' < schurLambda r →
+      ∀ T : ℝ, 0 < T → SchurCore 4 r c' T :=
+  core_schurGen_lt_top 4 schurLambda schurLambda_satisfies_threshold hstep
+
 end DLNFibre.DLN.RLCT

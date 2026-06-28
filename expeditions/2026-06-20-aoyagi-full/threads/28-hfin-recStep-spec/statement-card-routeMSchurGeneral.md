@@ -21,9 +21,13 @@
 >   friction-free termination plumbing — that an abstract per-corank step composes through corank
 >   recursion to the ∀-corank conclusion. The corank-2 base rung `schurCore4_two` (a literal repackage
 >   of `core_schur2_lt_top` as `SchurCore 4 2`, axiom-clean) confirms the predicate's shape matches the
->   banked instance. The `SchurThreshold 4 lam` contract is non-vacuous: the closed λ_{r,4} =
->   [0, 0.5, 2, 4, 6, 8] (r = 0..5) satisfies all three inequalities (numerically verified), and
->   reproduces λ_{2,4} = 2, λ_{3,4} = 4.
+>   banked instance. **The `SchurThreshold 4` contract is INHABITED in-Lean** (not merely numerically):
+>   `schurLambda := {0; ½; 2r−2 (r≥2)}` (the genuine closed λ_{r,4} = [0,½,2,4,6,8,…]) and
+>   `schurLambda_satisfies_threshold : SchurThreshold 4 schurLambda` (axiom-clean), with value lemmas
+>   `schurLambda_two : schurLambda 2 = 2`, `schurLambda_three : schurLambda 3 = 4`. The capstone
+>   `schurGen_lt_top_modulo_recStep` (axiom-clean) feeds this witness into the wrapper: GIVEN only the
+>   deferred `SchurRecStep 4 schurLambda`, the ∀-corank `p=4` finiteness holds at the genuine threshold
+>   `schurLambda r` — the threshold side is fully discharged, the recStep is the sole remaining input.
 > - **Assumed.** The `SchurThreshold p lam` threshold contract (the corank-recursion inequalities) and
 >   the `SchurRecStep p lam` per-corank analytic step — both are HYPOTHESES of the wrapper, supplied at
 >   instantiation. The wrapper proves the COMPOSITION, not these inputs.
@@ -34,10 +38,9 @@
 >   threshold `jp/2`) + the `M22 ↦ Sc` translation-domination into the free lower core + recursion. It
 >   stands on the validated corank-3 cover (`core_schur3_lt_top`, in flight on genm-c3wire), which it
 >   generalises. A concrete `p = 4` STUB (`schurRecStep4_stub`) marks this `sorry` ON PURPOSE, kept
->   SEPARATE from the wrapper so `#print axioms core_schurGen_lt_top` stays clean. Also deferred: the
->   concrete `SchurThreshold 4 lam` instance with `lam 2 = 2`, `lam 3 = 4` (a `def schurLambda` by
->   strong recursion + its value lemmas) — trivial-but-not-yet-written; the closed λ above is the
->   intended witness.
+>   SEPARATE from the wrapper so `#print axioms core_schurGen_lt_top` stays clean. (The concrete
+>   threshold witness `schurLambda` + `schurLambda_satisfies_threshold` is now PROVED in-Lean — see
+>   Proved; no longer deferred.)
 > - **Route.** (controller-designed, O2-cert grounded) The IH carrier (`SchurLowerIH`) is the JOINT
 >   free-box corank-`(r−j)` core `SchurCore p (r−j) ·` — NOT an `Sc`-only statement: per the O2
 >   adjudication (`n4-o2-pushforward-adjudication.md §3,§4`), the Schur complement `Sc` is structurally
