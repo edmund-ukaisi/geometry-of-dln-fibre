@@ -149,9 +149,9 @@ theorem frontScalarShear_cancel_of_factorsThroughOne
   · intro i j; rw [hP₂ i j, hcol i (σ j)]
 
 /-- **The ∀M-(1,1)-smeared front fact** (the chart consumer): the front product `P = prodAux M A k`
-through `k ≥ p` layers, with a width-1 layer at `p` (`M ⟨p,_⟩ = 1` — the front bottleneck `r = 1`), has
-its scalar-Gram shear cancel `P₁ · Λ₀ = P₂` off the pole, for the pivot column `P₁ = P[:,0:1]` and any
-residual block `P₂` selecting columns of `P`. Combines §3b's `Fin 1` factorization with §3c. -/
+through `k ≥ p` layers, with a width-1 layer at `p` (`M ⟨p,_⟩ = 1` — the front bottleneck `r = 1`),
+has its scalar-Gram shear cancel `P₁ · Λ₀ = P₂` off the pole, for the pivot column `P₁ = P[:,0:1]`
+and any residual block `P₂` selecting columns of `P`. Combines §3b's `Fin 1` factorization with §3c. -/
 theorem prodAux_frontScalarShear_cancel
     (M : Fin (L + 1) → ℕ) (A : Params M)
     (p : ℕ) (hp : p < L + 1) (hp1 : M ⟨p, hp⟩ = 1)
