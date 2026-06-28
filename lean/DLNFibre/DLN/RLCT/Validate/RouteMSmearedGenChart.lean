@@ -550,4 +550,38 @@ theorem measurableEmbedding_phiSm (hrow : 0 < M (deepLayer M hL).castSucc)
   rw [h]
   exact (updateSubME _ _ _ _).measurableEmbedding
 
+/-! ## The rate in flat coordinates + the (1,1) atom -/
+
+/-- **The flat-chart rate** `routeMCore M (phiSm u) = (u_p)² · U` off the pole, where
+`u_p = u (smPivotCoord)` and `U = ∑ᵢ (frontMat u i ⟨0,_⟩)² = ‖P₁‖²`. Composes the connection
+(`routeMCore (phiSm u) = dlnLoss (smParams u)`) with the rate keystone (deepest product `= u_p · P₁`,
+`M_L = 1` single column). -/
+theorem routeMCore_phiSm_offpole (u : Fin (routeMAmbient M) → ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hc1 : M (deepLayer M hL).succ = 1)
+    (p : ℕ) (hp : p < L + 1) (hp1 : M ⟨p, hp⟩ = 1) (hple : p ≤ L - 1)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩)
+    (hc : (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2) ≠ 0) :
+    routeMCore M (phiSm M hL u hrow hcol hm1)
+      = (u (smPivotCoord M hL hrow hcol)) ^ 2 * (∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2) := by
+  rw [routeMCore, paramsEquivFlat_symm_phiSm_eq_smParams M hL u hrow hcol hm1 hc1, dlnLoss]
+  -- `∑ i, ∑ j, (prod (smParams u) i j)²`; `M_L = 1` ⟹ single column `j`; the keystone gives `u_p · frontMat`.
+  have hsucc : (deepLayer M hL).succ = Fin.last L := by
+    rw [deepLayer]; apply Fin.ext; simp only [Fin.succ_mk, Fin.val_last]; omega
+  have hlast1 : M (Fin.last L) = 1 := by rw [← hsucc]; exact hc1
+  have hup : u (smPivotCoord M hL hrow hcol) = deepCol M hL u hcol ⟨0, hrow⟩ :=
+    (paramsEquivFlat_symm_decode M u ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩).symm
+  rw [hup, Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  -- inner sum over `Fin (M (last L))` is a single term (`M_L = 1`), value `(u_p · frontMat i ⟨0⟩)²`.
+  have hcard : ∀ j : Fin (M (Fin.last L)), (prod M (smParams M hL u hrow hcol hm1) - 0) i j
+      = deepCol M hL u hcol ⟨0, hrow⟩ * frontMat M hL u i ⟨0, hm1⟩ := by
+    intro j
+    rw [Matrix.sub_apply, Matrix.zero_apply, sub_zero,
+      prod_smParams_eq_smul_pivotCol M hL u hrow hcol hc1 p hp hp1 hple hm1 hc i j]
+  rw [Finset.sum_congr rfl (fun j _ => by rw [hcard j])]
+  rw [Finset.sum_const, show (Finset.univ : Finset (Fin (M (Fin.last L)))).card = 1 from by
+    rw [Finset.card_univ, Fintype.card_fin, hlast1]]
+  rw [one_smul]; ring
+
 end DLNFibre.DLN.RLCT
