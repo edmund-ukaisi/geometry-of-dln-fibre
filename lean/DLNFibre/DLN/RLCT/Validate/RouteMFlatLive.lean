@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMKLens
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
 
 /-!
 # `RouteMFlatLive` — the LIVE-leaf structured achiever decoder + its decoder-agnostic rate (∀M)
@@ -32,6 +33,22 @@ open scoped BigOperators
 namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
+
+/-! ## The R1 active-center decoder: fixed-1 pivot at `p*` + freed-slot live `Rfin`
+
+The DET-route decoder (R1, controller-confirmed): the structured decoder with the active-center pivot
+boundary `p` (the witness's deepest drop `p*`, `InteriorDrop`) carrying a FIXED `1`-pivot
+`E_{p}(0,0) = 1` (the gauge-fixed radial direction, a literal — not a free `readE`), and the freed
+pivot-slot's budget rerouted to a live leaf `Rfin`. The slot-guard verdict (verified vs `B_det3333`):
+this relocates WHICH slot is the fixed-1 (the pivot E-slot → fixed; its coordinate reroutes to `Rfin`),
+keeping `N = flatDim` (the `chartDim_eq_flatDim` "+1 radial −1 fixed residual" accounting) — NO new
+Fin-N bijection. The identity boundary is unchanged, so the rate holds decoder-agnostically. -/
+
+/-- **The fixed pivot E-indicator** at boundary `s` — `e_{(0,0)}`: `1` at the first residual row/col,
+`0` elsewhere (the gauge-fixed radial direction the `u·Rmat` blow-up targets). -/
+def pivotEIndicator (M t : Fin (L + 1) → ℕ) (s : ℕ) :
+    Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ :=
+  Matrix.of fun i j => if i.val = 0 ∧ j.val = 0 then 1 else 0
 
 /-! ## The live-leaf structured decoder (structured decoder + a free leaf `Rfin`) -/
 
@@ -154,5 +171,158 @@ example (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (hN : 0 < routeMAmbient
     routeMCore M (phiFlatLive M t ha hN (fun _ => 0) x)
       = (x (structPivot M hN)) ^ 2 * UvalLive M t ha hN (fun _ => 0) x :=
   routeMCore_phiFlatLive M t ha hN (fun _ => 0) x
+
+/-! ## The R1 active-center decoder `genBlkFlatLiveR1` -/
+
+/-- **The R1 active-center decoder** `genBlkFlatLiveR1 M t ha p hp rfin x` — the live decoder
+`genBlkFlatLive` with the `Rmat` at the active-center pivot boundary `p` OVERRIDDEN to the fixed
+`1`-pivot `rmatPad (pivotEIndicator)` (the gauge-fixed radial direction), via `Function.update` on the
+`ℕ`-indexed `Rmat` family (no dependent-Fin cast — `p : ℕ`, the updated value is at the exact
+`Matrix (Fin (Text p)) (Fin (Wext p)) ℝ` type). The pivot needs the row/col drops `Text(p+1) ≤ Text p`,
+`Text(p+1) ≤ Wext p` (`hp` — from `InteriorDrop`'s `p*`). All other blocks (incl the identity boundary
+`Rmat 0`, untouched since `p ≥ 1`) and the live leaf `rfin` are as in `genBlkFlatLive`. -/
+noncomputable def genBlkFlatLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) : GenBlk M t where
+  Bmat := (genBlkFlatLive M t ha rfin x).Bmat
+  Nblk := (genBlkFlatLive M t ha rfin x).Nblk
+  Wblk := (genBlkFlatLive M t ha rfin x).Wblk
+  Rmat := Function.update (genBlkFlatLive M t ha rfin x).Rmat p
+    (rmatPad M t p hp1 hp2 (pivotEIndicator M t p))
+  Rfin := (genBlkFlatLive M t ha rfin x).Rfin
+
+/-- The R1 decoder's `Rmat` at the pivot `p` IS the fixed `1`-pivot pad (`Function.update` hit). -/
+theorem genBlkFlatLiveR1_Rmat_pivot (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ) (x : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x).Rmat p
+      = rmatPad M t p hp1 hp2 (pivotEIndicator M t p) :=
+  Function.update_self ..
+
+/-- The R1 decoder's identity boundary `Rmat 0 = 0` (untouched: `Function.update` at `p ≥ 1` misses `0`).
+Needs `p ≠ 0` (the pivot is interior, `1 ≤ p`). -/
+theorem genBlkFlatLiveR1_Rmat0 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ) (hp0 : p ≠ 0)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ) (x : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x).Rmat 0
+      = (0 : Matrix (Fin (Text M t 0)) (Fin (Wext M 0)) ℝ) := by
+  show Function.update (genBlkFlatLive M t ha rfin x).Rmat p _ 0 = _
+  rw [Function.update_of_ne (Ne.symm hp0)]
+  rfl
+
+/-- **The identity boundary `C 0 = 1`** for the R1 decoder — reads only `Bmat 0`/`Rmat 0`, both unchanged
+(`Bmat 0` is the live decoder's; `Rmat 0 = 0` since `p ≥ 1` misses the update). Proof verbatim from
+`C0_eq_one_live` (the `Bmat 0` is identical; `Rmat 0 = 0` via `genBlkFlatLiveR1_Rmat0`). -/
+theorem C0_eq_one_liveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ) (hp0 : p ≠ 0)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (v : ℝ) (x : Fin (routeMAmbient M) → ℝ) :
+    (chainOfMt v M t (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x) (hleStruct M t ha)).toChain.C 0
+      = (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) := by
+  rw [chainOfMt_C_zero v M t _ (hleStruct M t ha) ha.hL,
+    genBlkFlatLiveR1_Rmat0 M t ha p hp0 hp1 hp2 rfin x, smul_zero, add_zero]
+  have hBmat : (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x).Bmat 0
+      = Matrix.reindex (Equiv.refl _) (finCongr (Text0_eq_Text1_struct M t ha.h0))
+          (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) := rfl
+  have h1W : Text M t 1 = Wext M 0 := Wext0_eq_Text1 M t ha
+  rw [hBmat]
+  ext i j
+  rw [Matrix.mul_apply, Finset.sum_eq_single (Fin.cast (Text0_eq_Text1_struct M t ha.h0) i)]
+  · rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+      finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self, Matrix.one_apply_eq, one_mul]
+    have hjcol : (j : Fin (Wext M 0)) = Fin.cast (genWidthEq M t (hleStruct M t ha) 0 ha.hL)
+        (Fin.castAdd (Wext M 0 - Text M t (0 + 1)) (Fin.cast h1W.symm j)) := by
+      apply Fin.ext; simp
+    rw [hjcol, chainQ_apply_castAdd, Matrix.one_apply, Matrix.one_apply]
+    by_cases h : (i : ℕ) = (j : ℕ)
+    · rw [if_pos (by apply Fin.ext; simpa using h), if_pos (by apply Fin.ext; simpa using h)]
+    · rw [if_neg (by intro hc; exact h (by simpa using congrArg Fin.val hc)),
+        if_neg (by intro hc; exact h (by simpa using congrArg Fin.val hc))]
+  · intro b _ hb
+    rw [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+      finCongr_symm, finCongr_apply]
+    rw [show (1 : Matrix (Fin (Text M t 0)) (Fin (Text M t 0)) ℝ) i
+          (Fin.cast (Text0_eq_Text1_struct M t ha.h0).symm b) = 0 from by
+      rw [Matrix.one_apply, if_neg]; intro hc; apply hb; rw [hc]; apply Fin.ext; simp]
+    rw [zero_mul]
+  · intro hi; exact absurd (Finset.mem_univ _) hi
+
+/-- **`hC0` for the R1 decoder** (`C 0 · suffix = suffix` from `C 0 = 1`). -/
+theorem hC0_liveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ) (hp0 : p ≠ 0)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (v : ℝ) (x : Fin (routeMAmbient M) → ℝ) :
+    (chainOfMt v M t (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x) (hleStruct M t ha)).toChain.C 0
+        * (chainOfMt v M t (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x)
+            (hleStruct M t ha)).toChain.suffix 0 (Nat.zero_le L)
+      = (chainOfMt v M t (genBlkFlatLiveR1 M t ha p hp1 hp2 rfin x)
+          (hleStruct M t ha)).toChain.suffix 0 (Nat.zero_le L) := by
+  rw [C0_eq_one_liveR1 M t ha p hp0 hp1 hp2 rfin v x]; exact Matrix.one_mul _
+
+/-- **The R1 active-center chart** `phiFlatLiveR1 … := phiGen (x p₀) M t (genBlkFlatLiveR1 …) hle`
+(`p₀ = structPivot`, the radial scalar). The pivot boundary `p` (active center) carries the fixed
+`1`-pivot; the radial is read from `x` at `p₀`. -/
+noncomputable def phiFlatLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
+  phiGen (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha)
+
+/-- **The R1 unit factor** `UvalLiveR1 … := VvalGen (x p₀) M t (genBlkFlatLiveR1 …) hle`. -/
+noncomputable def UvalLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) : ℝ :=
+  VvalGen (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha)
+
+/-- **The rate transfers to the R1 active-center chart ∀M (NO bridge)**: `routeMCore M (phiFlatLiveR1 …) =
+(x p₀)² · UvalLiveR1 …`. Decoder-agnostic (`routeMCore_phiGen` + the R1 identity boundary `hC0_liveR1`,
+which holds since the active center `p ≥ 1` leaves `Bmat 0`/`Rmat 0` untouched). -/
+theorem routeMCore_phiFlatLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ) (hp0 : p ≠ 0)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    routeMCore M (phiFlatLiveR1 M t ha hN p hp1 hp2 rfin x)
+      = (x (structPivot M hN)) ^ 2 * UvalLiveR1 M t ha hN p hp1 hp2 rfin x :=
+  routeMCore_phiGen (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x)
+    (hleStruct M t ha)
+    (hC0_liveR1 M t ha p hp0 hp1 hp2 (rfin x) (x (structPivot M hN)) x)
+
+/-- **Non-vacuity: the R1 pivot E-block genuinely carries the fixed `1`** at `(0,0)` (the gauge-fixed
+radial direction), given the strict row/col drops at `p` (so the residual block is nonempty). The
+`InteriorDrop` `p*` supplies these strict drops, so the fixed pivot is realised — not vacuous. -/
+theorem pivotEIndicator_apply_zero (M t : Fin (L + 1) → ℕ) (s : ℕ)
+    (hr : 0 < Text M t s - Text M t (s + 1)) (hc : 0 < Wext M s - Text M t (s + 1)) :
+    pivotEIndicator M t s ⟨0, hr⟩ ⟨0, hc⟩ = 1 := by
+  simp [pivotEIndicator]
+
+/-- **`UvalLiveR1 ≥ 0`** — sum of squares (banked `VvalGen_nonneg`). -/
+theorem UvalLiveR1_nonneg (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (hN : 0 < routeMAmbient M)
+    (p : ℕ) (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    0 ≤ UvalLiveR1 M t ha hN p hp1 hp2 rfin x :=
+  VvalGen_nonneg _ M t _ _
+
+/-! ## Wiring the active-center pivot `p*` from `InteriorDrop`
+
+`InteriorDrop M` supplies an interior boundary `p` (`1 ≤ p < L`) with the strict row-drop
+`Text(p+1) < Text(p)` and the tail column-drops `Text(b+1) < Wext(b)` on `[p, L−1]` — in particular at
+`b = p`, `Text(p+1) < Wext(p)`. So the R1 decoder's hypotheses `hp1 : Text(p+1) ≤ Text(p)`,
+`hp2 : Text(p+1) ≤ Wext(p)`, and the nonempty residual block (`pivotEIndicator_apply_zero`) are all
+discharged from `InteriorDrop`'s `p*`. -/
+
+/-- **`InteriorDrop` discharges the R1 pivot hypotheses at its `p*`.** From `InteriorDrop M`, the
+witnessing `p` (`1 ≤ p < L`) has the row-drop `Text(p+1) < Text(p)` (`hp1` strict) and the column-drop
+`Text(p+1) < Wext(p)` (`hp2` strict, the `b = p` tail case) — so the fixed-`1` pivot is placeable. -/
+theorem interiorDrop_pivot_hyps (M : Fin (L + 1) → ℕ) (hInt : InteriorDrop M) :
+    ∃ p, p ≠ 0 ∧ Text M (tach M) (p + 1) < Text M (tach M) p
+      ∧ Text M (tach M) (p + 1) < Wext M p := by
+  obtain ⟨_, p, hp1, hpL, hr, hcd⟩ := hInt
+  exact ⟨p, by omega, hr, hcd p (le_refl p) hpL⟩
 
 end DLNFibre.DLN.RLCT
