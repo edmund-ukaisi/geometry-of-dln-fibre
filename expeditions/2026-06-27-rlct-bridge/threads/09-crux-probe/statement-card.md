@@ -39,9 +39,9 @@
 >   δ-shift over ℝ, next wave). This card is the ORBIT-level squeeze, the crux input to `T′`.
 > - **Status.** sorry-free.
 
-> **L7 (pinned, not yet proved).** `finrank_K (range (deformationδ (M.map ι) (M.map ι))) =
+> **L7 (pinned by this probe; later PROVED in thread 10).** `finrank_K (range (deformationδ (M.map ι) (M.map ι))) =
 > finrank_k (range (deformationδ M M))` for `ι : k →+* K` a field extension.
 > - **Route.** R2 via the banked `DLNFibre.Core.finrank_range_baseChange` (specialized brick at
 >   `deformationδ` is provable sorry-free; one tensor-conjugacy identity remains —
 >   `deformationδ_K (M.map ι) ≅ (deformationδ_k M).baseChange K`). Packaging, not new math.
-> - **Status.** statement pinned; not formalised (the conjugacy step is a future-wave packaging tide).
+> - **Status.** statement pinned; not formalised (the conjugacy step was a future-wave packaging tide). UPDATE (thread 10): PROVED as Core.DeformationBaseChange.finrank_range_deformationδ_baseChange — green, axiom-clean.

@@ -92,35 +92,35 @@ Be concrete and skeptical. If Route 1's "PerfectField suffices" is wrong somewhe
 
 warning: Model metadata for `gpt-5-codex` not found. Defaulting to fallback metadata; this can degrade performance and cause issues.
 codex
-**Q1**  
+**Q1**
 - Yes. The rank equals the size of the largest nonvanishing minor. Those minors are integers, so a nonzero minor stays nonzero in every characteristic‑0 field. Conversely, if all minors vanish over ℝ they already vanish over ℚ, hence over any extension. Thus `finrank_k (range δ⁰_M)` is field-independent for all char‑0 `k`.
 
-**Q2**  
+**Q2**
 - Smoothness over any perfect field forces regular local rings (Stacks 00T2/01V5). In char 0 every field is perfect, so your localization of `ℝ[x]/I(Z_M)` at the maximal ideal of a smooth real point is regular. Regular local ⇒ Krull dimension equals minimal number of generators of the maximal ideal ⇒ equals dimension of the Zariski tangent space, i.e. the Jacobian-nullity you already control. No algebraic-closure hypothesis is used here.
 
-**Q3**  
+**Q3**
 - Because the orbit closure is irreducible over ℚ (closure of an irreducible variety `GL` acting on affine space), its defining ideal is prime over every field. A smooth real point `M` gives a real-analytic chart: by the real implicit function theorem the real locus near `M` is a smooth manifold of dimension `dim_ℂ Z_M`. Such a manifold contains Euclidean-open sets inside some real-linear chart, hence is Zariski dense. Therefore any polynomial vanishing on all real points lies in the prime ideal, so the real vanishing ideal coincides with the scheme-theoretic ideal and the dimensions match. The pathology of `x² + y²` cannot occur because the only real point there is singular.
 
-**Q4**  
+**Q4**
 - `ℝ^δ` is Zariski-dense in affine δ-space, so `I( Z_M(ℝ) × ℝ^δ )` is just the extension of `I(Z_M(ℝ))` to `ℝ[x₁,…,x_n,y₁,…,y_δ]`. Krull dimension, and hence `varietyDim`, adds: `varietyDim_k(orbit × A^δ) = varietyDim_k(orbit) + δ` for both `k = ℝ` and `k = K`. No extra subtlety arises.
 
-**Q5**  
-- Route 1 is sound and the cleaner Lean path. The only spots where algebraic closedness could have crept in were: (a) smooth ⇒ regular (already valid over perfect fields) and (b) irreducibility of the orbit closure (true over any field because `GL` is irreducible). You never need to identify closed points with `k`-rational points, so Nullstellensatz issues stay away. Port the “reverse inequality” lemma to assume `PerfectField` instead of `IsAlgClosed`, and everything collapses to the common integer rank.  
+**Q5**
+- Route 1 is sound and the cleaner Lean path. The only spots where algebraic closedness could have crept in were: (a) smooth ⇒ regular (already valid over perfect fields) and (b) irreducibility of the orbit closure (true over any field because `GL` is irreducible). You never need to identify closed points with `k`-rational points, so Nullstellensatz issues stay away. Port the “reverse inequality” lemma to assume `PerfectField` instead of `IsAlgClosed`, and everything collapses to the common integer rank.
 - Route 2 (density via ℚ-unirationality) is correct, but it would demand new infrastructure about real Zariski density of images of ℚ-dominant maps, real rational parameterizations, etc., none of which is currently streamlined in Mathlib. Route 1 reuses your existing machinery with the minimal generalization.
 tokens used
 20,257
-**Q1**  
+**Q1**
 - Yes. The rank equals the size of the largest nonvanishing minor. Those minors are integers, so a nonzero minor stays nonzero in every characteristic‑0 field. Conversely, if all minors vanish over ℝ they already vanish over ℚ, hence over any extension. Thus `finrank_k (range δ⁰_M)` is field-independent for all char‑0 `k`.
 
-**Q2**  
+**Q2**
 - Smoothness over any perfect field forces regular local rings (Stacks 00T2/01V5). In char 0 every field is perfect, so your localization of `ℝ[x]/I(Z_M)` at the maximal ideal of a smooth real point is regular. Regular local ⇒ Krull dimension equals minimal number of generators of the maximal ideal ⇒ equals dimension of the Zariski tangent space, i.e. the Jacobian-nullity you already control. No algebraic-closure hypothesis is used here.
 
-**Q3**  
+**Q3**
 - Because the orbit closure is irreducible over ℚ (closure of an irreducible variety `GL` acting on affine space), its defining ideal is prime over every field. A smooth real point `M` gives a real-analytic chart: by the real implicit function theorem the real locus near `M` is a smooth manifold of dimension `dim_ℂ Z_M`. Such a manifold contains Euclidean-open sets inside some real-linear chart, hence is Zariski dense. Therefore any polynomial vanishing on all real points lies in the prime ideal, so the real vanishing ideal coincides with the scheme-theoretic ideal and the dimensions match. The pathology of `x² + y²` cannot occur because the only real point there is singular.
 
-**Q4**  
+**Q4**
 - `ℝ^δ` is Zariski-dense in affine δ-space, so `I( Z_M(ℝ) × ℝ^δ )` is just the extension of `I(Z_M(ℝ))` to `ℝ[x₁,…,x_n,y₁,…,y_δ]`. Krull dimension, and hence `varietyDim`, adds: `varietyDim_k(orbit × A^δ) = varietyDim_k(orbit) + δ` for both `k = ℝ` and `k = K`. No extra subtlety arises.
 
-**Q5**  
-- Route 1 is sound and the cleaner Lean path. The only spots where algebraic closedness could have crept in were: (a) smooth ⇒ regular (already valid over perfect fields) and (b) irreducibility of the orbit closure (true over any field because `GL` is irreducible). You never need to identify closed points with `k`-rational points, so Nullstellensatz issues stay away. Port the “reverse inequality” lemma to assume `PerfectField` instead of `IsAlgClosed`, and everything collapses to the common integer rank.  
+**Q5**
+- Route 1 is sound and the cleaner Lean path. The only spots where algebraic closedness could have crept in were: (a) smooth ⇒ regular (already valid over perfect fields) and (b) irreducibility of the orbit closure (true over any field because `GL` is irreducible). You never need to identify closed points with `k`-rational points, so Nullstellensatz issues stay away. Port the “reverse inequality” lemma to assume `PerfectField` instead of `IsAlgClosed`, and everything collapses to the common integer rank.
 - Route 2 (density via ℚ-unirationality) is correct, but it would demand new infrastructure about real Zariski density of images of ℚ-dominant maps, real rational parameterizations, etc., none of which is currently streamlined in Mathlib. Route 1 reuses your existing machinery with the minimal generalization.

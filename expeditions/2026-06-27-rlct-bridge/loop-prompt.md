@@ -1,10 +1,16 @@
 # Controller loop — rlct-bridge
 
+> **⚠ STATUS (2026-06-28): EXPEDITION CLOSED.** Phase 1 + Phase 2 COMPLETE — the transfer `hT` is PROVED
+> + discharged; `rlct = ½·C` rests on only the two analytic citations {Watanabe ≤, Aoyagi ≥}; every
+> geometric fact proved. **PR #13 is the well-rounded final; review & merge are operator-gated.** The
+> "Phase 2 ACTIVE" / "build the real-AG" framing below is HISTORICAL (the real-AG turned out to be a
+> typeclass relaxation of the repo's own squeeze; see `synthesis.md` § PHASE 2 CLOSED).
+
 You are the controller (team lead, adaptive feedback controller) of the `rlct-bridge` expedition.
 **Main quest — the programme's prize:** make `rlct(lossDLN) = ½·C` honest. **Phase 1 (DONE, PR #13):**
 replaced the monolithic Cited axiom `RlctInterface.cited_aoyagi_dln` with a **thin cited analytic
 interface + proved DLN geometry** — the payoff rests on 3 cited facts {Watanabe `≤`, Aoyagi `≥`, transfer
-`hT`} + all-proved geometry. **Phase 2 (ACTIVE):** DISCHARGE the one cited *geometric* fact `hT`
+`hT`} + all-proved geometry. **Phase 2 (COMPLETE):** DISCHARGE the one cited *geometric* fact `hT`
 (`codim_ℝ = codim_K`) by BUILDING the real-AG library Mathlib v4.29 lacks — leaving the payoff on only the
 two genuinely-analytic citations. Run ONE tick per wake.
 
@@ -53,7 +59,7 @@ reduction + `codim_K = C` + projection-compatibility (R5 — closes the prior fi
 aoyagi-paper formalisation throughout (`origin/expedition/aoyagi-full` — never import/copy/depend on its
 `RLCT/*`; the analytic bounds stay CITED, faithful to L&R).
 
-**Phase 2 — ACTIVE: discharge `hT` by building real-AG.** Via the banked field-generic catenary,
+**Phase 2 — COMPLETE (hT proved + discharged): the plan was — discharge `hT` by building real-AG.** Via the banked field-generic catenary,
 `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)`; `≤` is free, so the work is `varietyDim_ℝ ≥
 varietyDim_K` per top component. Two routes: (1) smooth rational point (`realizerD`) + IFT ⟹ real
 `d`-manifold ⟹ `dim ≥ d`; (2) ℚ-unirationality of the GL-orbit closures ⟹ ℝ-points dense + full-dim.
@@ -79,5 +85,5 @@ Teammate reports + operator messages wake you automatically — don't poll. The 
 backstop heartbeat: on an idle wake with nothing new, drift-glance (any tide done + awaiting a
 green-gated merge? hardener/review to convene? operator edit to `priorities.md`? am I holding the vision
 + pushing the load-bearing maths, or drifting into tidy busywork?) and re-sleep. **The expedition is
-ACTIVE (Phase 2 — discharge `hT`); do NOT stop at the Phase-1 close.** Stop only at Phase-2 CLOSE (`hT`
+ACTIVE (Phase 2 — discharge `hT`); [HISTORICAL — see the CLOSED banner at top.]** Stop only at Phase-2 CLOSE (`hT`
 discharged + the well-rounded PR ready), or when the operator pauses.

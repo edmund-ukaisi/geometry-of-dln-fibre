@@ -25,18 +25,20 @@ rlct is CITED, not formalised — fidelity to L&R who cite Aoyagi). Final:
 | R4 (assemble) | compose → retire monolithic `cited_aoyagi_dln` | **DONE** (within tide 04). Cited boundary = exactly {Watanabe ≤, Aoyagi ≥, T}. name=content held (L4), two decorrelated review rounds. |
 | R5 (bundle) | projection compatibility + bundle | **PARTIAL (honest ceiling)** — projection compatibility LANDED (closes the prior fibration-geometry S5/S4b item (i)); global `Flat π` / target-side cocycle = named residuals → roadmap. |
 
-## PHASE 2 — discharge `hT` by building real-AG (ACTIVE, operator 2026-06-28)
+## PHASE 2 — discharge `hT` by building real-AG (COMPLETE, 2026-06-28)
 
-Prove the one cited *geometric* fact: `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)` (banked
-catenary); `≤` free ⟹ the work is `varietyDim_ℝ ≥ varietyDim_K` per top component. Build in
-`DLNFibre.Core` (reusable real-AG, eventual upstream).
+Proved the one cited *geometric* fact `hT`. The route was NOT a from-scratch real-AG build (the recon's
+IFT/unirationality candidates were dominated): the repo's own orbit-dim squeeze is field-generic, so the
+discharge reduced to relaxing a vestigial `[IsAlgClosed]→[CharZero][Infinite]` (ℝ satisfies) + a base-change
+packaging lemma. Both `codim_ℝ(fibre)` and `codim_K(fibre)` = the same field-independent `C+δ` ⟹ `hT`
+DIRECT (no `varietyDim` transfer needed). All landed in `DLNFibre.Core` (reusable real-AG).
 
-| # | item | status | note |
-|---|------|--------|------|
-| P2-recon | **Real-AG route recon** (thread 08) — map Mathlib v4.29 + pick route (smooth-pt/IFT vs ℚ-unirationality) + lemma ladder | **in-progress** | sets the whole build; decorrelated Codex. |
-| P2-build | **The real-AG rungs** (the lemma ladder) — e.g. `pderiv↔fderiv` bridge / IFT-submersion ⟹ real `d`-manifold / manifold-dim ↔ `varietyDim`; OR the unirational-density route | queued (after recon) | decorrelated-reviewed to bedrock; the crux rung flagged by recon. |
-| P2-realizer | **`realizerD` smooth full-dim per top component, all `d,r`** — generalize the `t-route-scout` exact-Jacobian-rank certificate | queued | builds on banked `FibreGenericSmooth`/`CotangentJacobian`/`realizerD`. |
-| P2-discharge | **Discharge `hT`** across the interface + 7 consumers; remove the cited hypothesis | queued (after the build) | the payoff then rests on only Watanabe `≤` + Aoyagi `≥`. |
+| # | item | status | outcome |
+|---|------|--------|---------|
+| P2-recon | Real-AG route recon (thread 08) | **closed** | ROUTE = algebraic orbit-dim squeeze; `hT` bounded-provable (~3–4 tides). |
+| P2-crux | Crux-probe (thread 09) — relax `[IsAlgClosed]→[PerfectField]` | **closed** | crux settled; L1–L6 landed over ℝ. |
+| P2-L7L8 | L7 base-change finrank invariance + L8 fibre-codim headline over ℝ (thread 10) | **closed** | `codimRepCanonical_fibre_eq_cCodim_add_shift` now `[CharZero][Infinite]`; kill-condition didn't fire. |
+| P2-discharge | CAPSTONE (thread 11): prove + discharge `hT` | **closed** | `hT` = the theorem `codimRealFibre_eq_codimRepCanonical_baseChange`; removed from all 8 payoffs; boundary 3→2; fidelity PASS + hardener SOLID. |
 
 ## Roadmap (still future expeditions — NOT Phase 2)
 - **Global `Flat π`** — target-side cocycle (Mathlib `AlgEquiv` gaps) + triple-overlap + local-to-global.

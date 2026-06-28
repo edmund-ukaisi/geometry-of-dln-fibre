@@ -12,22 +12,21 @@ singular-learning-theory.
 
 ## Phase status (updated 2026-06-28)
 
-- **Phase 1 — DONE (PR #13, open).** The monolith `cited_aoyagi_dln` is retired → `RlctRealInterface`
-  (opaque `rlct` + the two cited analytic bounds Watanabe `≤` / Aoyagi `≥`) + the threaded cited transfer
+- **Phase 1 — DONE.** The monolith `cited_aoyagi_dln` is retired → `RlctRealInterface`
+  (opaque `rlct` + the two cited analytic bounds Watanabe `≤` / Aoyagi `≥`) + the (then-cited) transfer
   `hT`; payoff `rlct = ½·codim_ℝ = ½·codim_K = ½·C`; connector + catenary reduction + `codim_K = C` +
   projection-compatibility (R5) all PROVED; twice-decorrelated-reviewed; green/sorry-free/axiom-clean;
   BLIND to the parallel aoyagi-paper formalisation. The Phase-1 spine + recon are recorded historically
   below + in `synthesis.md`.
-- **Phase 2 — ACTIVE (operator, 2026-06-28): discharge `hT` by building the real-AG.** The one cited
-  *geometric* fact, `hT : codim_ℝ(fibre ℝ d B) = codimRepCanonical(k:=K)(fibre K d (B.map ι))`, is TRUE
-  (the `realizerD` is a smooth full-dim rational point per top component — scout-verified) but cited only
-  because Mathlib v4.29 lacks the real-AG. **Phase 2 BUILDS that well-established real-AG** (real
-  dimension via a smooth-rational-point/IFT route, or ℚ-unirationality of the orbit closures — recon
-  thread 08 picks), in `DLNFibre.Core` (reusable, eventual Mathlib-upstream), then discharges the `hT`
-  hypothesis across the interface + the 7 consumers. **Reduction:** via the banked field-generic catenary
-  `hT ⟺ varietyDim_ℝ(fibre ℝ) = varietyDim_K(fibre K)`; `≤` is free, so the work is `varietyDim_ℝ ≥
-  varietyDim_K` per top component. `#13` stays open → the final PR delivers interface + proved geometry +
-  **DISCHARGED `hT`** (only the two analytic bounds cited).
+- **Phase 2 — COMPLETE (2026-06-28): `hT` PROVED + discharged.** The one cited *geometric* fact is now the
+  THEOREM `DLN.codimRealFibre_eq_codimRepCanonical_baseChange` (`codim_ℝ(fibre B) = codim_K(fibre B·ι)`),
+  removed from all 8 payoffs ⟹ the payoff rests on **only {Watanabe `≤`, Aoyagi `≥`}**. The route was NOT
+  a from-scratch real-AG build: the repo's own orbit-dim squeeze is field-generic, so the discharge reduced
+  to relaxing a vestigial `[IsAlgClosed]→[CharZero][Infinite]` (ℝ satisfies) + a base-change packaging
+  lemma — both `codim_ℝ` and `codim_K` = the same field-independent `C+δ` ⟹ `hT` DIRECT (no `varietyDim`
+  transfer needed). Built in `DLNFibre.Core`; fidelity PASS + hardener SOLID; green/axiom-clean. **PR #13**
+  = the well-rounded Phase-1+2 final, ready for operator review/merge. (Threads 08–11; `synthesis.md`
+  § PHASE 2 CLOSED.)
 
 ## The seam (operator decision, 2026-06-27): thin cited interface + prove all DLN geometry
 
