@@ -23,9 +23,11 @@ Index: status / type / one-line subject. Per-thread notes in `threads/<NN>-<slug
 
 | NN | type | subject | status |
 |----|------|---------|--------|
-| 08 | scout (recon) | **Real-AG route recon** — map Mathlib v4.29 + adjudicate route (smooth-pt/IFT vs ℚ-unirationality) + the lemma ladder to prove `varietyDim_ℝ ≥ varietyDim_K` (⟹ `hT`) | **in-progress** (`realag-recon`) |
+| 08 | scout (recon) | **Real-AG route recon** — adjudicate route + lemma ladder for `varietyDim_ℝ ≥ varietyDim_K` (⟹ `hT`) | **closed** — ROUTE 1 (algebraic orbit-dim squeeze); `hT` bounded-provable (~3–4 tides); G2 ladder L1–L10 |
+| 09 | lean-formaliser (tide) | **Crux-probe** — relax `[IsAlgClosed]→[PerfectField]` on the squeeze + pin L7 | **closed** — CRUX SETTLED; L1–L6 landed over ℝ; L7 = packaging; reviewer SOUND; integrated (merge `07691215`) |
+| 10 | lean-formaliser (tide) | **L7 + L8** — base-change finrank invariance (packaging) + chart δ-shift over ℝ (the remaining unknown; probe chart-vs-sigma) | **in-progress** (`realag-l7l8`) |
 
-(Build threads 09+ open after the recon sets the route + rung ladder.)
+(Then L9 assemble fibre-level `T′` + L10 discharge `hT` → `#13` becomes the well-rounded PR.)
 
 (Post-close: a small `prose-sweep` follow-up on the PR #13 review — stale "projection compat — open"
 framing + an "IS the comorphism" overclaim softened to the precomposition form; prose/docs only, no proof

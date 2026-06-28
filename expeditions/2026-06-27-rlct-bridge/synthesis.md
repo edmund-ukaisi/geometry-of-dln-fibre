@@ -557,3 +557,21 @@ form + doc-names fixed; (3) PR-body Watanabe scope corrected (universal-in-sourc
 (via REST — `gh pr edit` choked on a Projects-classic GraphQL deprecation) + marked **NOT-ready-to-merge**
 (Phase 2 growing it); itemized reply posted to the PR. Build green 3817 jobs, sorry-free, axiom-clean.
 **#13 now carries Phase 1 complete + review-addressed; Phase 2 (discharge `T`) crux-probe in flight.**
+
+### Phase 2 — crux-probe INTEGRATED (L1–L6 landed over ℝ); L7+L8 wave dispatched (2026-06-28)
+
+Crux-probe GO + over-delivery merged (merge `07691215`, pushed): **L1–L6 of the G2 ladder LANDED over ℝ**
+— the `[IsAlgClosed]→[PerfectField]/[Infinite]` relaxation across the orbit-dim squeeze; `varietyDim_ℝ(orbit)
+= finrank_ℝ(range deformationδ)` a named theorem at ℝ (axiom-clean); orbit-dim EQUALITY over ℝ; `codimRep =
+orbitLinearCodim` over ℝ (free G1 partial). Reviewer SOUND; crux-probe also fixed 3 extra `[IsAlgClosed]`
+rungs the recon's chain missed (caught only by the full-aggregator gate — the stale-olean lesson).
+**Full-aggregator green-gate re-verified by controller: 3817 jobs, exit 0, sorry-free.**
+- **L7+L8 wave DISPATCHED** (thread 10, `realag-l7l8`): L7 = `deformationδ` base-change finrank invariance
+  (packaging, route R2 via `MatrixKaehler.finrank_range_baseChange` + the tensor-conjugacy square); L8 =
+  chart δ-shift over ℝ (the remaining unknown — probe chart-vs-sigma, relax the lighter layer; report a
+  kill-condition if a genuine non-PerfectField alg-closed dep fires on the fibre layer). Then L9 assemble
+  fibre-level `T′` + L10 discharge `hT`.
+- **BUILD-INFRA NOTE:** box under heavy load (loadavg ~15 on 8 cores; other sessions/the aoyagi line) —
+  **detached/background `scripts/lb` builds were REAPED twice** (status `killed`, not OOM — 21 GiB free);
+  the foreground build with the 10-min cap completed (incremental, `.lake` progress persists across kills).
+  Mandate to tides: foreground green-gates; re-run on kill (progress persists). Task #10 in-progress.
