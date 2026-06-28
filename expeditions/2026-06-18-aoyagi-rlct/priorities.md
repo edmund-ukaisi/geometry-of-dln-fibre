@@ -19,6 +19,65 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive selected-entry determinant-chart residual handoff
+
+The retained-passive p.13 determinant-chart residual hypotheses now have a
+selected-entry signed-box transport theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map
+```
+
+It consumes a selected-entry center/pivot, positive radii, `0 <= t`, the sharp
+selected-entry exponent condition
+
+```text
+2 * t < ((center.erase pivot.1).card : R) + 1,
+```
+
+a.e. measurability of the determinant-chart map on the signed box, a supplied
+pushforward identity
+
+```text
+m.restrict topologyTupleDetChartSet =
+  Measure.map chart
+    (signedBox.withDensity
+      (fun y => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))),
+```
+
+target positive-set measurability, and the residual readout
+
+```text
+residualSquareSum (directChart (chart y)) =
+  SelectedEntrySignedBox.CenterCoord.residual pivot y.
+```
+
+It concludes the two determinant-chart inputs needed by the inverse-Jacobian
+handoffs: a.e. positivity of `residualSquareSum (directChart z)` over
+`m.restrict topologyTupleDetChartSet` and finite lower integral of its negative
+`t`-power.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, direct axiom probe, and xhigh review passed; the new
+declaration reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is a real chart-side residual handoff, but it still assumes the
+selected-entry determinant-chart map, its pushforward identity, target
+positive-set measurability, and the residual readout.  It does not construct
+chart coverage, identify an original external source prior, prove local
+loss/density bounds, prove source-rank coverage, construct normal crossings,
+compute pole order, or extract RLCT.  The next high-value A2 move is to
+specialize this handoff to the existing Case 2 endpoint-transport selected-entry
+data, while keeping the determinant-chart measure comparison explicit unless
+it is proved.
+
 ## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian chart-side measurability wrapper
 
 The raw-order retained-passive inverse-Jacobian residual and finite-integral

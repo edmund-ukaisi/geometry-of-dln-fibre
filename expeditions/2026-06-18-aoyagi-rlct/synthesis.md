@@ -48,6 +48,78 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Selected-Entry Determinant-Chart Residual Handoff
+
+The determinant-chart residual hypotheses used by the retained-passive
+raw-order inverse-Jacobian handoffs now have a selected-entry signed-box
+transport theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_map
+```
+
+The theorem assumes a selected-entry chart
+
+```text
+chart : (center -> R) -> TopologyTuple rho kappa' R
+```
+
+with
+
+```text
+m.restrict S =
+  Measure.map chart
+    (signedBox.withDensity
+      (fun y => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivot y))),
+```
+
+target positive-set measurability, and the residual readout
+
+```text
+residualSquareSum (directChart (chart y)) =
+  SelectedEntrySignedBox.CenterCoord.residual pivot y.
+```
+
+It transports the already formalised selected-entry weighted-box theorem
+
+```text
+SelectedEntrySignedBox.CenterCoord.residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity
+```
+
+through `ae_map_iff` and `lintegral_map_le`, yielding:
+
+```text
+∀ᵐ z ∂ m.restrict S, residualSquareSum (directChart z) > 0
+∫⁻ z, ofReal (residualSquareSum (directChart z)^(-t)) ∂ m.restrict S < ∞
+```
+
+under `0 <= t`, positive radii, and
+
+```text
+2 * t < ((center.erase pivot.1).card : R) + 1.
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-det-chart-residual-handoff.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not a source-production theorem.  It does not construct `chart`, prove
+chart coverage, prove the determinant-chart pushforward identity, identify an
+original external DLN prior, prove local loss or density bounds, prove
+source-rank coverage, construct normal crossings, compute pole order, or
+extract RLCT.  The next A2 target should be a Case 2 specialization that uses
+the existing endpoint-transport selected-entry residual readout and keeps the
+measure-comparison hypothesis explicit unless a correct comparison is proved.
+
 ## Latest A2 Retained-Passive Inverse-Jacobian Chart-Side Measurability Wrapper
 
 The raw-order retained-passive inverse-Jacobian residual-source and
