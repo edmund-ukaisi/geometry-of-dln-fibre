@@ -246,6 +246,19 @@ solved-`A1` suffix derivative linear maps on the same rest tuple.  The suffix
 recursion includes the terminal solved factor, which will supply the future
 `dPsucc` input to the lower-left step core.
 
+The post-`Ctop` `C` suffix, `Cnext`, one-step lower-left core, and recursive
+lower-left product-tail derivative are now also implemented as private linear
+maps on the `F3`-focused rest tuple.  These maps use the decoded post-`Ctop`
+source `C`, staged passive `A3`, post-`Ctop` current solved `A1`, post-`Ctop`
+solved-`A1` suffix, and recursive successor derivative; the product factors
+and inverses in the one-step formula are still evaluated at `z`.
+
+The remaining Lean bridge is to prove that this post-`Ctop` recursive
+derivative, evaluated on the rest part of `T123 ((fderiv raw z) v)`, agrees
+with the existing target-only lower-left product derivative on
+`(fderiv raw z) v`.  Only after that comparison can the positive-tail `F3`
+shear be stated and reduced to the existing target-only `F3` theorem.
+
 ## Nonclaims
 
 This stage is only target-side raw-tuple normalisation.  It does not prove

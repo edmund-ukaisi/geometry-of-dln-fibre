@@ -19,6 +19,42 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` lower-left recursion scaffolding
+
+The positive-tail post-`Ctop` helper frontier now has the `C` suffix,
+`Cnext`, lower-left one-step core, and recursive lower-left product-tail
+linear-map package on the `F3`-focused rest tuple.  New private Lean helpers in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopCSuffixFDerivLinearMapAt
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_self
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_step_apply
+retainedPassivePostCtopCnextFDerivLinearMapAt
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_self
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_step
+```
+
+The `C` suffix recursion reads source `C` by the post-`Ctop` formal inverse of
+the already normalised `(F2,C)` fields.  The lower-left step core uses the same
+Aoyagi product-rule algebra as the existing target-only step, but its variable
+slots are linear maps from the post-`Ctop` rest tuple: decoded source `C`,
+staged passive `A3`, post-`Ctop` current solved `A1`, post-`Ctop` solved-`A1`
+suffix, post-`Ctop` `Cnext`, and recursive successor derivative.  All products
+and inverses remain frozen at `z`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.  Xhigh review of the preceding solved-`A1` suffix checkpoint by
+`Darwin the 2nd` also passed.
+
+This is still scaffolding.  It does not prove the comparison
+`dEarly_postC(T123(Dzv)) = retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv 0`,
+does not define the positive-tail `F3` shear, and does not prove any
+determinant, measure-transport, normal-crossing, pole-order, or RLCT result.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` solved-`A1` suffix scaffolding
 
 The positive-tail post-`Ctop` helper frontier now has a generic solved-`A1`

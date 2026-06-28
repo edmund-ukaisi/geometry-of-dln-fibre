@@ -48,6 +48,45 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` Lower-Left Recursion Scaffolding
+
+`RetainedPassiveCoordinatesJacobian.lean` now has the private post-`Ctop`
+lower-left recursive derivative package on the `F3`-focused rest tuple.  The
+new layer adds a post-`Ctop` stored-`C` suffix derivative, `Cnext` derivative,
+one-step lower-left core linear map, and recursive lower-left product-tail
+linear map:
+
+```text
+retainedPassivePostCtopCSuffixFDerivLinearMapAt
+retainedPassivePostCtopCnextFDerivLinearMapAt
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+```
+
+The `C` suffix recursion decodes source `C` from
+`(retainedPassiveFormalRawF2CLinearEquivAt hz).symm (F2,C)` on the already
+normalised post-`Ctop` rest tuple.  The lower-left one-step core mirrors the
+existing target-only product-rule formula, but all variable inputs are
+post-`Ctop` rest linear maps: source `C`, passive `A3`, current solved `A1`,
+solved-`A1` suffix, `Cnext`, and the recursive successor derivative.  The
+static factors and inverses are still the products at `z`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.  Xhigh review by `Darwin the 2nd` passed for
+the immediately preceding solved-`A1` suffix checkpoint.
+
+This still does not prove the key comparison on
+`u = T123 ((fderiv raw z) v)`:
+
+```text
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt hz 0 (rest u)
+  =
+retainedPassiveLowerLeftProductTailTargetOnlyFDerivAt hz Dzv 0.
+```
+
+The positive-tail `F3` shear and determinant-one package remain open.
+
 ## Latest A2 Post-`Ctop` Solved-`A1` Suffix Scaffolding
 
 `RetainedPassiveCoordinatesJacobian.lean` now has a private post-`Ctop`

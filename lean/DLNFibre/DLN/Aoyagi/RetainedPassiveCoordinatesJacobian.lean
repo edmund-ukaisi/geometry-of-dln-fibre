@@ -6752,6 +6752,102 @@ private theorem retainedPassivePostCtopSourceCAtLinearMapAt_apply
   rfl
 
 set_option linter.style.longLine false in
+private def retainedPassivePostCtopCSuffixFDerivLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (m : ℕ) (hm : m ≤ M + 1) :
+    retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+      Matrix (κ' (Fin.last (M + 1))) (κ' ⟨m, Nat.lt_succ_of_le hm⟩) ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  Nat.decreasingInduction
+    (motive := fun m hm ↦
+      retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last (M + 1))) (κ' ⟨m, Nat.lt_succ_of_le hm⟩) ℝ)
+    (fun n hns acc ↦ by
+      let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let Csucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          data.C (Fin.last (M + 1)) p.succ p.succ.le_last
+      let acc' :
+          retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+            Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ := by
+        simpa [p] using acc
+      let step :
+          retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+            Matrix (κ' (Fin.last (M + 1))) (κ' p.castSucc) ℝ :=
+        (retainedPassiveMatrixMulRightLinearMap (data.C p)).comp acc' +
+          (retainedPassiveMatrixMulLeftLinearMap Csucc).comp
+            (retainedPassivePostCtopSourceCAtLinearMapAt
+              (ρ := ρ) (κ' := κ') hz p)
+      simpa [p] using step)
+    0
+    hm
+
+@[simp]
+private theorem retainedPassivePostCtopCSuffixFDerivLinearMapAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    retainedPassivePostCtopCSuffixFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz (M + 1) le_rfl =
+      (0 : retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last (M + 1))) (κ' (Fin.last (M + 1))) ℝ) := by
+  simp [retainedPassivePostCtopCSuffixFDerivLinearMapAt]
+  rfl
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopCSuffixFDerivLinearMapAt_step_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (r : retainedPassiveRawF3RestFamily (M := M) ρ κ')
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassivePostCtopCSuffixFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz m (Nat.le_of_lt hm) r =
+      let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+      let p : Fin (M + 1) := ⟨m, hm⟩
+      let Csucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ')
+          data.C (Fin.last (M + 1)) p.succ p.succ.le_last
+      let dCsucc :
+          retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+            Matrix (κ' (Fin.last (M + 1))) (κ' p.succ) ℝ := by
+        simpa [p] using
+          retainedPassivePostCtopCSuffixFDerivLinearMapAt
+            (M := M) (ρ := ρ) (κ' := κ') hz (m + 1)
+            (Nat.succ_le_of_lt hm)
+      ((retainedPassiveMatrixMulRightLinearMap (data.C p)).comp dCsucc +
+          (retainedPassiveMatrixMulLeftLinearMap Csucc).comp
+            (retainedPassivePostCtopSourceCAtLinearMapAt
+              (ρ := ρ) (κ' := κ') hz p)) r := by
+  unfold retainedPassivePostCtopCSuffixFDerivLinearMapAt
+  rw [Nat.decreasingInduction_succ_left _ _ (Nat.succ_le_of_lt hm) (Nat.le_of_lt hm)]
+  rfl
+
+set_option linter.style.longLine false in
+private def retainedPassivePostCtopCnextFDerivLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (q : Fin (M + 1)) :
+    retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+      Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' q.succ.succ) ℝ := by
+  let r : Fin ((M + 1) + 1) := q.succ
+  let hm : r.succ.val ≤ (M + 1) + 1 := Fin.val_fin_le.mp r.succ.le_last
+  simpa [r] using
+    retainedPassivePostCtopCSuffixFDerivLinearMapAt
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz r.succ.val hm
+
+set_option linter.style.longLine false in
 private def retainedPassivePostCtopSolvedA1TangentLinearMapAt
     {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
@@ -6949,6 +7045,163 @@ private theorem retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt_succ_ap
   simp [retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt,
     retainedPassiveRawF3RestA1passiveLinearMapAt]
   exact congrArg (fun q : Fin (M + 1) ↦ r.1 q) (by ext; simp)
+
+set_option linter.style.longLine false in
+private def retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (q : Fin (M + 1))
+    (dAcur dPsucc :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ)
+    (dCnext :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' q.succ.succ) ℝ)
+    (dNext :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ) :
+    retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+      Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+  let p : Fin ((M + 1) + 1) := q.castSucc
+  let r : Fin ((M + 1) + 1) := q.succ
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  let Cprod : Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.castSucc) ℝ :=
+    ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') data.C
+      (Fin.last ((M + 1) + 1)) r.castSucc r.castSucc.le_last
+  let Cnext : Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ :=
+    ChartLocalSuffixState.residualFactorProduct (K := ℝ) (κ := κ') data.C
+      (Fin.last ((M + 1) + 1)) r.succ r.succ.le_last
+  let A3p : Matrix (κ' r.castSucc) ρ ℝ := by
+    simpa [p, r] using
+      ChartLocalSuffixState.retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+        data.A3seed p
+  let Pcast : Matrix ρ ρ ℝ :=
+    ChartLocalSuffixState.residualFactorProduct
+      (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+      coord.solvedA1 (Fin.last ((M + 1) + 1)) p.castSucc p.castSucc.le_last
+  let Psucc : Matrix ρ ρ ℝ :=
+    ChartLocalSuffixState.residualFactorProduct
+      (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+      coord.solvedA1 (Fin.last ((M + 1) + 1)) p.succ p.succ.le_last
+  let dCnext' :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.succ) ℝ := by
+    simpa [r] using dCnext
+  let dG :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' r.castSucc) ρ ℝ := by
+    simpa [r] using
+      retainedPassiveRawF3RestA3passiveLinearMapAt
+        (M := M + 1) (ρ := ρ) (κ' := κ') q
+  let dCcur :=
+    retainedPassivePostCtopSourceCAtLinearMapAt
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz r
+  let preC :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) (κ' r.castSucc) ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap (data.C r)).comp dCnext' +
+      (retainedPassiveMatrixMulLeftLinearMap Cnext).comp dCcur
+  let termC :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap Pcast⁻¹).comp
+      ((retainedPassiveMatrixMulRightLinearMap A3p).comp preC)
+  let termG :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap Pcast⁻¹).comp
+      ((retainedPassiveMatrixMulLeftLinearMap Cprod).comp dG)
+  let prefixMat : Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    Cprod * A3p * Pcast⁻¹
+  let mid :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap (coord.solvedA1 p)).comp dPsucc +
+      (retainedPassiveMatrixMulLeftLinearMap Psucc).comp dAcur
+  let termA :
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap Pcast⁻¹).comp
+      ((retainedPassiveMatrixMulLeftLinearMap prefixMat).comp mid)
+  (- termC) - termG + termA + dNext
+
+set_option linter.style.longLine false in
+private def retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (m : ℕ) (hm : m ≤ M + 1) :
+    retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+      Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦
+      retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ)
+    (fun n hns acc ↦
+      let q : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let p : Fin ((M + 1) + 1) := q.castSucc
+      let dPsucc :=
+        retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z
+          p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+      retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q
+        (retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') z n (Nat.lt_of_succ_le hns))
+        dPsucc
+        (retainedPassivePostCtopCnextFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q)
+        acc)
+    0
+    hm
+
+@[simp]
+private theorem retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz (M + 1) le_rfl =
+      (0 : retainedPassiveRawF3RestFamily (M := M + 1) ρ κ' →ₗ[ℝ]
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ) := by
+  simp [retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt]
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_step
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : RetainedPassiveRawTopologyTuple (M := M + 1) ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz m (Nat.le_of_lt hm) =
+      let q : Fin (M + 1) := ⟨m, hm⟩
+      let p : Fin ((M + 1) + 1) := q.castSucc
+      let dPsucc :=
+        retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (M := M + 1) (ρ := ρ) (κ' := κ') z
+          p.succ.val (Fin.val_fin_le.mp p.succ.le_last)
+      retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') hz q
+        (retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') z m hm)
+        dPsucc
+        (retainedPassivePostCtopCnextFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz q)
+        (retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+          (M := M) (ρ := ρ) (κ' := κ') hz (m + 1)
+          (Nat.succ_le_of_lt hm)) := by
+  unfold retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+  rw [Nat.decreasingInduction_succ_left]
 
 set_option linter.style.longLine false in
 private def retainedPassivePostCtopF3ZeroCorrectionLinearMapAt

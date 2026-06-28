@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` lower-left recursion scaffolding
+
+Lean now has the private post-`Ctop` `C` suffix, `Cnext`, lower-left one-step
+core, and recursive lower-left product-tail linear-map package in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopCSuffixFDerivLinearMapAt
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_self
+retainedPassivePostCtopCSuffixFDerivLinearMapAt_step_apply
+retainedPassivePostCtopCnextFDerivLinearMapAt
+retainedPassivePostCtopLowerLeftTailStepCoreLinearMapAt
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_self
+retainedPassivePostCtopLowerLeftProductTailFDerivLinearMapAt_step
+```
+
+This package reads source `C` by formal inverse on post-`Ctop` `(F2,C)` fields
+and uses only post-`Ctop` rest-tuple readers for variable slots.  Static product
+factors are frozen at `z`.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.  Xhigh review of the preceding solved-`A1` suffix checkpoint by
+`Darwin the 2nd` passed.
+
+Nonclaims: no bridge yet from this recursion on `T123(Dzv)` to the existing
+target-only lower-left recursion on `Dzv`; no positive-tail `F3` shear; no
+determinant equality, measure transport, normal crossings, pole order, or
+RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` solved-`A1` suffix scaffolding
 
 Lean now has a private post-`Ctop` solved-`A1` tangent and suffix derivative
