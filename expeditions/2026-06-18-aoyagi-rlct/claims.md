@@ -140,6 +140,22 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive direct source-chart
+  inverse-Jacobian measure, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian`.
+  For the fixed-base retained-passive p.13 chart layer, the direct
+  determinant-chart source-edge-family pushforward of Haar measure equals the
+  public raw-order p.13 source-chart pushforward of the raw-order
+  determinant-chart measure weighted by
+  `topologyTupleEdgeRawOrderInverseJacobianDensity`.  The proof applies the
+  retained-passive raw-order inverse-Jacobian change-of-variables theorem with
+  downstream map equal to the raw-order source chart, then replaces
+  `rawChart (topologyTupleEdgeRawOrder z)` by the direct source chart a.e. on
+  the determinant chart.  This is retained-passive chart-layer
+  source-measure/Jacobian transport only.  It does not identify an original
+  external DLN source prior, prove source-rank coverage, prove selected-entry
+  residual positivity/integrability, prove normal crossings, compute pole
+  order, or extract RLCT.
 - **Current status addendum, retained-passive source-edge-family density
   continuous-at finite integral, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density`.

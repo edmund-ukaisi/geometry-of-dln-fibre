@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive direct source-chart inverse-Jacobian measure
+
+Reproduction:
+`reproduction-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+Statement card:
+`statement-card-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+Review:
+`review-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It proves that the direct fixed-base retained-passive p.13 source-edge-family
+pushforward of determinant-chart Haar measure equals the public raw-order p.13
+source-chart pushforward of the raw-order determinant-chart measure weighted
+by `topologyTupleEdgeRawOrderInverseJacobianDensity`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct theorem
+axiom probe, and xhigh review passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is retained-passive chart-layer source-measure/Jacobian transport only.
+It is not original external DLN-prior identification, source-rank coverage,
+selected-entry residual positivity/integrability, normal crossings, pole
+order, or RLCT extraction.
+
 ## 2026-06-28 A2 retained-passive source-edge-family density continuous-at finite integral
 
 Reproduction:

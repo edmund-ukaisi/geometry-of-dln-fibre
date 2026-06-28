@@ -19,6 +19,39 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive direct source-chart inverse-Jacobian measure
+
+The retained-passive chart-layer direct source measure is now compared with
+the public raw-order source-chart measure:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian
+```
+
+It proves that `Measure.map directChart (m.restrict S)` equals
+`Measure.map rawChart ((m.restrict T).withDensity inverseJacobianDensity)`,
+where `S` is the retained-passive topology-tuple determinant chart and `T` is
+the raw-order source-recursive determinant chart.  The proof applies
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac` with
+`psi := rawChart`, then uses
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData`
+a.e. on `S` and `Measure.map_congr`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, direct axiom probe, and xhigh review passed; the
+declaration reports only `[propext, Classical.choice, Quot.sound]`.  This is a
+retained-passive chart-layer measure comparison, not original external
+DLN-prior transport, source-rank coverage, selected-entry residual
+positivity/integrability, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive source-edge-family density continuous-at finite integral
 
 The generic retained-passive source-edge-family chart-produced finite-integral

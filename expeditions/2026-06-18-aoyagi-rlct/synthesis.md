@@ -124,6 +124,54 @@ original prior or external source measure, compare Jacobians for such a prior,
 prove source-rank coverage, prove normal crossings, compute pole order, or
 extract RLCT.
 
+## Latest A2 Retained-Passive Direct Source-Chart Inverse-Jacobian Measure
+
+The retained-passive chart layer now has the direct-source-chart/raw-order
+inverse-Jacobian measure comparison:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian
+```
+
+Let `S` be the retained-passive topology-tuple determinant chart, `T` the
+raw-order source-recursive determinant chart, `directChart z` the fixed-base
+p.13 source edge-family of `ofTopologyTuple z`, and `rawChart` the public
+raw-order p.13 source chart.  The theorem proves
+
+```text
+Measure.map directChart (m.restrict S)
+  =
+Measure.map rawChart
+  ((m.restrict T).withDensity
+    (fun y => ENNReal.ofReal
+      (topologyTupleEdgeRawOrderInverseJacobianDensity y))).
+```
+
+The proof applies
+`map_comp_topologyTupleEdgeRawOrder_restrict_detChart_eq_map_invJac` with
+`psi := rawChart`; the left side is then rewritten by `Measure.map_congr`
+using the pointwise identity
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData`
+and `ae_restrict_mem₀` for the determinant chart.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-direct-source-chart-inverse-jacobian-measure.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is real retained-passive chart-layer source-measure/Jacobian progress.
+It still does not identify an original external DLN source prior, prove
+source-rank coverage, prove selected-entry residual positivity/integrability,
+prove normal crossings, compute pole order, or extract RLCT.
+
 ## Latest A2 Retained-Passive Source-Edge-Family Density Continuous-At Finite Integral
 
 The generic retained-passive source-edge-family chart-produced finite-integral
