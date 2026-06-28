@@ -326,4 +326,68 @@ theorem prod_deepestM_eq_schur_ldu_readback (H : Fin 3 → ℕ) (r : ℕ)
   rw [hsc]
   exact hld.symm
 
+/-! ## The dict-match keystone (the conjugated producer discharges the readback hyps)
+
+The W-a-true readback `prod_deepestM_eq_schur_ldu_readback` consumes `C` via `hC0`/`hC1` that read the
+conjugated cores off the reindexed decode layers. This keystone shows the B-threaded conjugated producer
+(`schurCorrectionConj`) supplies exactly that: at the deepest-split point, the reindexed decode layer's
+blocks split additively as `deepBlk_s + read_s` (`reindex_fromBlocks_reads_eq_deviation` +
+`reindex(decode w) = reindex(deepest) + reindex(deviation)`), so the absorbed core
+`decode(q).core_s + schurCorrectionConj_s` equals that layer's `(1,1)`-Schur core. -/
+
+/-- **Per-layer additive block-split.** At the deepest-split point `q = deepestSplit w0 w` (`w0 = the
+deepest-point flat image`), the reindexed decode layer `reindex(decode w)_s` has blocks `deepBlk·_s +
+read·_s`: the deepest layer block plus the gauge/core deviation read. (`reindex` is additive;
+`reindex(deviation) = fromBlocks(reads)` is `reindex_fromBlocks_reads_eq_deviation`.) -/
+theorem reindex_decode_blocks_split (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (w : Fin (flatDim H) → ℝ) (s : Fin L) :
+    Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (((paramsEquivFlat H).symm w) s)
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+          (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)
+        + Matrix.fromBlocks
+            (readX H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
+            (readY H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
+            (readZ H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
+            ((paramsEquivFlat (deepestM H r)).symm
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.1 s) := by
+  set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
+  -- `decode w = deepest + decode (w − w0)` (paramsEquivFlat.symm is additive; `decode w0 = deepest`).
+  have hdecode : ((paramsEquivFlat H).symm w) s
+      = (deepestPoint H r B hB hr hL) s + ((paramsEquivFlat H).symm (w - w0)) s := by
+    have hlin : ∀ y, (paramsEquivFlat H).symm y = (paramsEquivFlatLinear H).symm y := fun y => by
+      apply (paramsEquivFlatLinear H).injective
+      rw [(paramsEquivFlatLinear H).apply_symm_apply,
+        show (paramsEquivFlatLinear H) ((paramsEquivFlat H).symm y)
+          = (paramsEquivFlat H) ((paramsEquivFlat H).symm y) from
+          congrFun (paramsEquivFlatLinear_coe H) _, (paramsEquivFlat H).apply_symm_apply]
+    have hw0d : (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL := by
+      rw [hw0, (paramsEquivFlat H).symm_apply_apply]
+    have hsum : (paramsEquivFlat H).symm w
+        = (paramsEquivFlat H).symm w0 + (paramsEquivFlat H).symm (w - w0) := by
+      rw [hlin w, hlin w0, hlin (w - w0), ← map_add]
+      congr 1; abel
+    rw [hsum, hw0d]
+    show (deepestPoint H r B hB hr hL + (paramsEquivFlat H).symm (w - w0)) s
+        = deepestPoint H r B hB hr hL s + (paramsEquivFlat H).symm (w - w0) s
+    rfl
+  -- `reindex (deepest + dev) = reindex deepest + reindex dev` (`submatrix` is additive).
+  rw [hdecode]
+  rw [show Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        ((deepestPoint H r B hB hr hL) s + ((paramsEquivFlat H).symm (w - w0)) s)
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+          (rThresholdSplit r (H s.succ) (hr s.succ)) ((deepestPoint H r B hB hr hL) s)
+        + Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+          (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm (w - w0)) s) from by
+    simp only [Matrix.reindex_apply]; rfl]
+  congr 1
+  rw [← reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w s]
+  rw [← Matrix.reindex_symm, Equiv.apply_symm_apply]
+
 end DLNFibre.DLN.RLCT

@@ -145,6 +145,51 @@ noncomputable def schurShiftRaw (H : Fin (L + 1) → ℕ) (r : ℕ)
     Fin (flatDim (deepestM H r)) → ℝ :=
   paramsEquivFlat (deepestM H r) (schurCorrection H r hr hL p)
 
+/-! ## The W-a CONJUGATED per-layer Schur correction (the dict-match keystone)
+
+The bare `schurCorrection` pivots on `1 + readX_s`, which presumes the deepest layer `(1,1)`-block is the
+identity. It is NOT (deepest boundary `A11 ≠ 1`), so the bare absorbed core ≠ the Score (the W-a falsity).
+The CONJUGATED correction reads the **full reindexed decode layer** `reindex(decode w)_s` — pivot the
+actual `(1,1)`-block `M̄A_s + readX_s` (`M̄A_s := (reindex deepestPoint_s).toBlocks₁₁`), full off-diagonal
+blocks `M̄Z_s + readZ_s` / `M̄Y_s + readY_s`. The absorbed core `decode(q).core_s + conjCorr_s` is then
+exactly the `(1,1)`-Schur core of the reindexed decode layer (`conjCore`), which the standalone
+`prod_deepestM_eq_schur_ldu_readback` ties to the Score. This `schurCorrectionConj` is `B`-dependent
+(through `deepestPoint`). -/
+
+/-- The reindexed deepest-layer `(1,1)`-block `M̄A_s` (the actual pivot base, `≠ 1` at the boundary). -/
+noncomputable def deepBlkA (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) : Matrix (Fin r) (Fin r) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₁₁
+
+/-- The reindexed deepest-layer `(1,2)`-block `M̄Y_s` (deepest off-diagonal Y; `0` at layer-0 boundary). -/
+noncomputable def deepBlkY (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    Matrix (Fin r) (Fin (H s.succ - r)) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₁₂
+
+/-- The reindexed deepest-layer `(2,1)`-block `M̄Z_s` (deepest off-diagonal Z; `0` at layer-(L−1) bdry). -/
+noncomputable def deepBlkZ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    Matrix (Fin (H s.castSucc - r)) (Fin r) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₁
+
+/-- **The W-a conjugated Schur correction** `−(M̄Z_s + readZ_s)·(M̄A_s + readX_s)⁻¹·(M̄Y_s + readY_s)`,
+read off the FULL reindexed decode layer (deepest constants + gauge deviations). -/
+noncomputable def schurCorrectionConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    Params (deepestM H r) :=
+  fun s => -(deepBlkZ H r B hB hr hL s + readZ H r hr hL p s)
+    * (deepBlkA H r B hB hr hL s + readX H r hr hL p s)⁻¹
+    * (deepBlkY H r B hB hr hL s + readY H r hr hL p s)
+
 /-- `ContinuousAt` rectangular matrix multiplication: each output entry is a finite sum of products
 of entries, continuous-at by `ContinuousAt.mul` + `tendsto_finset_sum`. -/
 private theorem continuousAt_matrix_mul {X mm nn pp : Type*} [TopologicalSpace X] [Fintype nn]
