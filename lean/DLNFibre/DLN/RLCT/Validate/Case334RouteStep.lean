@@ -158,7 +158,7 @@ def pivotWitness4422_achiever : PivotWitness M4422route 4 where
   hCodim := by decide
 
 /-- `minAdm(M4422) = 4` (so `lambdaCore(4,4,2,2) = 2`, NOT `7/2` — the certificate's correction). -/
-theorem minAdm_M4422 :
+theorem minAdm_M4422_c334 :
     ((Adm M4422route).inf' (Adm_nonempty M4422route) (Mval M4422route)).toNat = 4 := by decide
 
 /-- The `(4,4,2,2)` binding-path leaf's codim-list `[7, 4]` — the non-binding corank-2 codim `7` and the
@@ -188,9 +188,9 @@ theorem case4422_routeStep_value :
         (MonoData.foldDivisors (codimsOf4422 i)).k (MonoData.foldDivisors (codimsOf4422 i)).h)
       = 2 := by
   have hkey := foldFamily_iInf_eq_half_minAdm M4422route codimsOf4422
-    (by rw [minAdm_M4422]; omega) codimsOf4422_witnessed ()
-    (by rw [minAdm_M4422]; simp only [codimsOf4422, List.mem_cons]; decide)
-  rw [hkey, minAdm_M4422]
+    (by rw [minAdm_M4422_c334]; omega) codimsOf4422_witnessed ()
+    (by rw [minAdm_M4422_c334]; simp only [codimsOf4422, List.mem_cons]; decide)
+  rw [hkey, minAdm_M4422_c334]
   -- `(4 : ℝ≥0∞) / 2 = 2`: `2 * 2 / 2 = 2` via `mul_div_cancel_right`.
   rw [show ((4 : ℕ) : ℝ≥0∞) = (2 : ℝ≥0∞) * 2 by norm_num,
     ENNReal.mul_div_cancel_right (by norm_num) (by norm_num)]

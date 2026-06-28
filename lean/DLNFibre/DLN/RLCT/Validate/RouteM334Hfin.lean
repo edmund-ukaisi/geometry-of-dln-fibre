@@ -660,8 +660,8 @@ layers in the order `(A0, A1)`. This part is decision-independent (the blow-up b
 
 /-- The flat decode `paramsEquivFlat H A (equivFin idx) = A idx.1.1 idx.1.2 idx.2` — a flat coordinate
 reads back the layer matrix entry. (Re-derived locally to avoid importing `RouteM4422Hfin`, which would
-collide on the `minAdm_M4422` dup; the `arrowCongr'`/`piCurry`/`Sigma.uncurry` unfold.) -/
-theorem paramsEquivFlat_decode {L : ℕ} (H : Fin (L + 1) → ℕ) (A : Params H) (idx : FlatIdx H) :
+collide on the `minAdm_M4422_c334` dup; the `arrowCongr'`/`piCurry`/`Sigma.uncurry` unfold.) -/
+theorem paramsEquivFlat_decode_hfin {L : ℕ} (H : Fin (L + 1) → ℕ) (A : Params H) (idx : FlatIdx H) :
     paramsEquivFlat H A (Fintype.equivFin (FlatIdx H) idx) = A idx.1.1 idx.1.2 idx.2 := by
   unfold paramsEquivFlat
   erw [MeasurableEquiv.trans_apply, MeasurableEquiv.trans_apply]
@@ -681,7 +681,7 @@ theorem dlnLoss_M334_eq_frobSq (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
 
 /-- **General `L = 2` layer-product entry form** `(prod M A) i j = ∑ₖ A₀ᵢₖ·A₁ₖⱼ` (re-derived locally;
 the same `prodAux` dependent-`Fin`-cast closer as `Case222Algebra.prod_two_layer`). -/
-theorem prod_two_layer334 (M : Fin 3 → ℕ) (A : Params M) (i : Fin (M 0)) (j : Fin (M 2)) :
+theorem prod_two_layer334_hfin (M : Fin 3 → ℕ) (A : Params M) (i : Fin (M 0)) (j : Fin (M 2)) :
     prod M A i j = ∑ k : Fin (M 1), A 0 i k * A 1 k j := by
   unfold prod
   simp only [prodAux, Matrix.mul_apply, eq_mpr_eq_cast]
@@ -690,12 +690,12 @@ theorem prod_two_layer334 (M : Fin 3 → ℕ) (A : Params M) (i : Fin (M 0)) (j 
   convert congrFun (congrFun (Matrix.one_mul (cast (by rfl) (cast (by rfl) (A 0)))) i) k using 2
 
 /-- The layer product `prod M334 A` as the raw matrix product `rmatMul (A 0) (A 1)` (entrywise, via
-`prod_two_layer334`; `A 0` is `3×3`, `A 1` is `3×4`). -/
+`prod_two_layer334_hfin`; `A 0` is `3×3`, `A 1` is `3×4`). -/
 theorem prod_M334_eq_rmatMul (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
     (fun i j => prod (![3, 3, 4] : Fin 3 → ℕ) A i j)
       = rmatMul (fun i k => A 0 i k) (fun k j => A 1 k j) := by
   funext i j
-  rw [prod_two_layer334 (![3, 3, 4] : Fin 3 → ℕ) A i j]
+  rw [prod_two_layer334_hfin (![3, 3, 4] : Fin 3 → ℕ) A i j]
   rfl
 
 /-- The `Fin 1` tail family after peeling layer `0` (the layer-`1` fiber). -/
@@ -751,10 +751,10 @@ theorem paramsEquivFlat_preimage_box334 :
   constructor
   · intro h s i j
     have := h (Fintype.equivFin (FlatIdx (![3, 3, 4] : Fin 3 → ℕ)) ⟨⟨s, i⟩, j⟩)
-    rwa [paramsEquivFlat_decode (![3, 3, 4] : Fin 3 → ℕ) A ⟨⟨s, i⟩, j⟩] at this
+    rwa [paramsEquivFlat_decode_hfin (![3, 3, 4] : Fin 3 → ℕ) A ⟨⟨s, i⟩, j⟩] at this
   · intro h k
     obtain ⟨idx, rfl⟩ := (Fintype.equivFin (FlatIdx (![3, 3, 4] : Fin 3 → ℕ))).surjective k
-    rw [paramsEquivFlat_decode (![3, 3, 4] : Fin 3 → ℕ) A idx]
+    rw [paramsEquivFlat_decode_hfin (![3, 3, 4] : Fin 3 → ℕ) A idx]
     exact h idx.1.1 idx.1.2 idx.2
 
 theorem measurableSet_paramsBox334 : MeasurableSet paramsBox334 := by

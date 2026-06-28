@@ -505,5 +505,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
 -- (1,1) Option-A chart). `RouteMSmearedGenRate` owns the generic scalar-Gram cancellation it consumes.
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedGenRate
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+-- R1-UPPER corank-3 (the rank-stratified recursion's first real firing): `core_schur3_lt_top`
+-- (general-`T`, `c' < 4 = λ_{3,4}`) + the reusable matrix-box scaling primitive `lintegral_matBox_smul`.
+-- Pulls in the (3,3,4)-anchor lineage (RouteMSchur*/RouteM334*/Case334RouteStep/SchurState/RouteMRecursion);
+-- cross-lineage clashes vs the (4,4,2,2)/(3,3,3,3) lineage deconflicted by renaming the (3,3,4) side
+-- (`e2_22`, `e3_334`, `minAdm_M4422_c334`, `paramsEquivFlat_decode_hfin`, `prod_two_layer334_hfin`).
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
