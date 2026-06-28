@@ -2841,6 +2841,89 @@ theorem deepest_loss_squeeze (H : Fin (L + 1) → ℕ) (r : ℕ)
       _ ≤ Kup * ((δ₁⁻¹ + 1) * (Sreg_E + Sc)) := mul_le_mul_of_nonneg_left hfold hKup_nonneg
       _ = Kup * (δ₁⁻¹ + 1) * (Sreg_E + Sc) := by ring
 
+/-- **§iii — the generic-`w` clean frame decomposition** (standalone restate of `deepest_loss_squeeze`'s
+local `hframe_front`). For the front pivot (`hfront`), with the producer's corner-normal `hNF`, last-layer
+corner `hcorner`, and last-layer-left triviality `hPfL`, the framed reconstruction of the decoded point
+`deepestSplit w0 w` factors per layer as `Pf s · ((symm w) s) · Qf s`. The L2-wiring instantiates this at
+`w := (deepestSplit w0).symm q` (the `Equiv` round-trip) to discharge sub-3's `hframeψ`/`hframeq` for a
+generic `q`. Frame-parametric (holds for any `Pf`/`Qf` satisfying the four producer facts), so it survives
+the block-triangular frame switch. -/
+theorem framedParamsPivot_eq_frame_of_front (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (w : Fin (flatDim H) → ℝ) (s : Fin L) :
+    framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w) s
+      = Pf s * ((paramsEquivFlat H).symm w) s * Qf s := by
+  set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
+  set q := deepestSplit H r hr hL w0 w with hq
+  -- Affine bridge: `(symm (w − w0)) s = (symm w) s − deepest s` (paramsEquivFlat.symm is ℝ-linear).
+  have haffine : ((paramsEquivFlat H).symm (w - w0)) s
+      = ((paramsEquivFlat H).symm w) s - (deepestPoint H r B hB hr hL) s := by
+    have hsymm : ∀ y, (paramsEquivFlat H).symm y = (paramsEquivFlatLinear H).symm y := by
+      intro y
+      apply (paramsEquivFlatLinear H).injective
+      rw [(paramsEquivFlatLinear H).apply_symm_apply,
+        show (paramsEquivFlatLinear H) ((paramsEquivFlat H).symm y)
+          = (paramsEquivFlat H) ((paramsEquivFlat H).symm y) from
+          congrFun (paramsEquivFlatLinear_coe H) _,
+        (paramsEquivFlat H).apply_symm_apply]
+    have hsub : (paramsEquivFlat H).symm (w - w0)
+        = (paramsEquivFlat H).symm w - (paramsEquivFlat H).symm w0 := by
+      rw [hsymm (w - w0), hsymm w, hsymm w0]; exact map_sub (paramsEquivFlatLinear H).symm w w0
+    have hw0symm : (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL := by
+      rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _
+    rw [hsub, hw0symm]; rfl
+  by_cases hs : s = lastLayer hL
+  · -- Last layer (front-pivot collapse): pivot reindex = threshold reindex, reads = raw deviation.
+    subst hs
+    have hsplit_eq : pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J)
+        = rThresholdSplit r (H ((lastLayer hL).succ)) (hr _) := by
+      rw [hfront]; exact pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL
+    rw [framedParamsPivot_last H r hr hL J Pf Qf q, hsplit_eq]
+    -- The raw corner `reindex.symm (fromBlocks 1 0 0 0) = deepest_last · Qf_last` (invert `hcorner`),
+    -- and `Pf_last = 1`, then the reads = raw deviation + the affine bridge.
+    have hcornerInv : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+          (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+        = deepestPoint H r B hB hr hL (lastLayer hL) * Qf (lastLayer hL) := by
+      rw [← hcorner, ← Matrix.reindex_symm, Equiv.symm_apply_apply]
+    rw [hsplit_eq] at hcornerInv
+    rw [hcornerInv, hPfL, Matrix.one_mul, Matrix.one_mul,
+      show ((q.1, q.2.2) : (Fin (deepestNReg H r) → ℝ) × _) = ((deepestSplit H r hr hL w0 w).1,
+        (deepestSplit H r hr hL w0 w).2.2) from by rw [hq],
+      show q.2.1 = (deepestSplit H r hr hL w0 w).2.1 from by rw [hq],
+      reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w (lastLayer hL)]
+    -- `deepest·Qf + (symm(w−w0))·Qf = (symm w)·Qf` via `haffine` + distribute.
+    rw [haffine, Matrix.sub_mul]
+    abel
+  · -- Non-last layer: `framedParamsPivot = framedParams`, the threshold corner is `corM = Pf·deepest·Qf`
+    -- (`hNF`), the reads = raw deviation, then the affine bridge.
+    have hsne : (s : ℕ) + 1 ≠ L := by
+      intro h; exact hs (Fin.ext (by simp only [lastLayer]; omega))
+    rw [framedParamsPivot_of_ne_last H r hr hL J Pf Qf q s hs, framedParams, framedLayer,
+      reindex_fromBlocks_one_eq_corM r (H s.castSucc) (H s.succ) (hr s.castSucc) (hr s.succ),
+      ← hNF s hsne,
+      show ((q.1, q.2.2) : (Fin (deepestNReg H r) → ℝ) × _) = ((deepestSplit H r hr hL w0 w).1,
+        (deepestSplit H r hr hL w0 w).2.2) from by rw [hq],
+      show q.2.1 = (deepestSplit H r hr hL w0 w).2.1 from by rw [hq],
+      reindex_fromBlocks_reads_eq_deviation H r hr hL w0 w s]
+    rw [haffine, Matrix.mul_sub, Matrix.sub_mul]
+    abel
+
 /-- **The L = 2 diffeo bridge** (`hstep2`'s `L = 2` branch): `rlctAtOn Φscore wstar = rlctAtOn Φcore
 wstar` for the joint `(T1, Y1)` Ψ. At `L = 2` the deepest reduced chain is two layers, so the
 two-grouping collapses to the single-layer blocks (`G0 = firstLayer`, `G1 = lastLayer`) and the
