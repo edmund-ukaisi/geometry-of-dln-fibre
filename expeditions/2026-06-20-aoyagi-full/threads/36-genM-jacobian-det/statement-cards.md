@@ -721,3 +721,24 @@ minAdm=1 chart was MeasurePreserving (weight 1); minAdm≥2 needs the radial blo
 > - This realizes the `(2,3,1)` instance of the reusable `RadialMPChart` assembly — the `minAdm≥2`
 >   companion to the `(1,2,1)` weight-1 atom. NOT yet wired into `DLNFibre.lean` (single-writer); the
 >   controller wires `RouteM231Smeared` when integrating.
+
+---
+
+> **(1,3,2) smeared validate-small — COMPLETE: the `(r,c)=(1,2)` shape's atom LANDED.**
+> `RouteM132Smeared.lean` (sorry-free; `#print axioms routeM132sm_box_diverges` force-elaborated =
+> `[propext, Classical.choice, Quot.sound]`, S2-free). The genuinely-NEW third smeared shape (scalar
+> Gram `r=1` like (1,2,1), `1×2` radial `c=2` `minAdm=2` like (2,3,1)). Completes ALL THREE family
+> templates — each smeared (r,c) shape now has a sorry-free validate-small.
+>
+> **Headline** `routeM132sm_box_diverges (c' : ℝ≥0) (hc' : (minAdm M132 : ℝ≥0∞)/2 ≤ c') (ε > 0) :
+> ∫⁻ cubeBox (routeMAmbient M132) ε, ofReal (|routeMCore M132 x|^(−c')) = ⊤`. Via
+> `routeMCore_box_diverges_of_RadialMPChart` (route b), `φ = ψ132 ∘ R132`: `R132 = pivotBlowupOn {3,4} 3`
+> (radial, `|det|=|u3|¹`); `ψ132 = Q132∘shear132` MP + measurable embedding (the SCALAR shear, `lam132 =
+> [u1/u0, u2/u0]` — no matrix inverse; MP via `split132` 2-core {3,4} + `coreShear_measurable 1 2 6`);
+> rate `routeMCore_phi132sm_offpole = (u3)²·U`, `U = u0²·(u4²+1)`; weighted source `subBox132 δ` bounded
+> away from `{u0=0}`. NOT wired (single-writer DLNFibre.lean) — controller wires `RouteM132Smeared`.
+>
+> The three family templates are now all banked sorry-free: (1,1)→RouteM121Smeared (minAdm=1, MPChart);
+> (2,1)→RouteM231Smeared (minAdm=2, 2×2 Gram, RadialMPChart); (1,2)→RouteM132Smeared (minAdm=2, scalar
+> Gram + multi-col radial, RadialMPChart). Next: the family-parametric ∀M lift (each template → ∀ M in
+> its (r,c) family, dispatch by shape).
