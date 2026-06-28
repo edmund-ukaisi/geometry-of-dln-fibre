@@ -309,6 +309,137 @@ theorem psiSplitDeltaL2Core_eq_payload (H : Fin (L + 1) → ℕ) (r : ℕ)
   · rfl
   · rw [Prod.snd_sub, Prod.snd_sub, hgg, Prod.snd_sub]
 
+/-! ### S4a — matrix-entry strict-derivative-`0` helpers (the `O(read²)` building blocks)
+
+Generic entrywise strict-`fderiv`-`0` facts for matrix products at a point `x` where an outer factor
+vanishes (Codex route A): a product `(A·B)_{ij} = ∑_k A_{ik} B_{kj}` has strict derivative `0` at `x`
+when one factor vanishes at `x` (value) and has derivative `0` there (the partner being merely
+`ContDiffAt`). These reduce the `O(read²)` joint-action corrections (`K`, `R`, `W−1`, `Y1'−Y1`,
+`Br−T1`) to the scalar atoms (`hasStrictFDerivAt_triple_mul_zero` &c.). -/
+
+section MatrixEntryDeriv
+variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+
+/-- `(A·B)_{ij}` strict-`fderiv`-`0`: the LEFT factor row `A_{i·}` vanishes (value + derivative). -/
+theorem hasStrictFDerivAt_matrix_mul_entry_of_left_zero
+    {m n p : Type*} [Fintype n]
+    {A : X → Matrix m n ℝ} {B : X → Matrix n p ℝ} {x : X} (i : m) (j : p)
+    (hAd : ∀ k, HasStrictFDerivAt (fun y => A y i k) (0 : X →L[ℝ] ℝ) x)
+    (hA0 : ∀ k, A x i k = 0)
+    (hB : ∀ k, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => B y k j) x) :
+    HasStrictFDerivAt (fun y => (A y * B y) i j) (0 : X →L[ℝ] ℝ) x := by
+  have hterm : ∀ k : n, HasStrictFDerivAt (fun y => A y i k * B y k j) (0 : X →L[ℝ] ℝ) x := by
+    intro k
+    have hBd : HasStrictFDerivAt (fun y => B y k j) (fderiv ℝ (fun y => B y k j) x) x :=
+      (hB k).hasStrictFDerivAt (by simp)
+    have hm := (hAd k).mul hBd
+    rw [hA0 k, zero_smul, smul_zero, add_zero] at hm
+    exact hm
+  have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset n)) (fun k _ => hterm k)
+  rw [show (fun y => (A y * B y) i j) = ∑ k : n, (fun y => A y i k * B y k j) from by
+    funext y; rw [Matrix.mul_apply, Finset.sum_apply]]
+  simpa using hsum
+
+/-- `(A·B)_{ij}` strict-`fderiv`-`0`: the RIGHT factor column `B_{·j}` vanishes (value + derivative). -/
+theorem hasStrictFDerivAt_matrix_mul_entry_of_right_zero
+    {m n p : Type*} [Fintype n]
+    {A : X → Matrix m n ℝ} {B : X → Matrix n p ℝ} {x : X} (i : m) (j : p)
+    (hA : ∀ k, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i k) x)
+    (hBd : ∀ k, HasStrictFDerivAt (fun y => B y k j) (0 : X →L[ℝ] ℝ) x)
+    (hB0 : ∀ k, B x k j = 0) :
+    HasStrictFDerivAt (fun y => (A y * B y) i j) (0 : X →L[ℝ] ℝ) x := by
+  have hterm : ∀ k : n, HasStrictFDerivAt (fun y => A y i k * B y k j) (0 : X →L[ℝ] ℝ) x := by
+    intro k
+    have hAd : HasStrictFDerivAt (fun y => A y i k) (fderiv ℝ (fun y => A y i k) x) x :=
+      (hA k).hasStrictFDerivAt (by simp)
+    have hm := hAd.mul (hBd k)
+    rw [hB0 k, smul_zero, zero_smul, add_zero] at hm
+    exact hm
+  have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset n)) (fun k _ => hterm k)
+  rw [show (fun y => (A y * B y) i j) = ∑ k : n, (fun y => A y i k * B y k j) from by
+    funext y; rw [Matrix.mul_apply, Finset.sum_apply]]
+  simpa using hsum
+
+/-- `(A·B·C)_{ij}` strict-`fderiv`-`0`: the OUTER factors `A`, `C` both vanish (value) at `x`. -/
+theorem hasStrictFDerivAt_matrix_triple_mul_entry_zero
+    {m n p qq : Type*} [Fintype n] [Fintype p]
+    {A : X → Matrix m n ℝ} {B : X → Matrix n p ℝ} {C : X → Matrix p qq ℝ} {x : X}
+    (i : m) (j : qq)
+    (hA : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y a b) x)
+    (hB : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => B y a b) x)
+    (hC : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => C y a b) x)
+    (hA0 : ∀ a b, A x a b = 0) (hC0 : ∀ a b, C x a b = 0) :
+    HasStrictFDerivAt (fun y => (A y * B y * C y) i j) (0 : X →L[ℝ] ℝ) x := by
+  have hterm : ∀ l k, HasStrictFDerivAt (fun y => A y i k * B y k l * C y l j)
+      (0 : X →L[ℝ] ℝ) x := fun l k =>
+    hasStrictFDerivAt_triple_mul_zero (fun y => A y i k) (fun y => B y k l) (fun y => C y l j)
+      (hA i k) (hB k l) (hC l j) (hA0 i k) (hC0 l j)
+  have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset p)) (fun l _ =>
+    HasStrictFDerivAt.sum (u := (Finset.univ : Finset n)) (fun k _ => hterm l k))
+  rw [show (fun y => (A y * B y * C y) i j)
+      = ∑ l : p, ∑ k : n, (fun y => A y i k * B y k l * C y l j) from by
+    funext y
+    rw [Matrix.mul_apply,
+      show (∑ l : p, ∑ k : n, (fun y => A y i k * B y k l * C y l j)) y
+        = ∑ l : p, ∑ k : n, A y i k * B y k l * C y l j from by simp only [Finset.sum_apply]]
+    exact Finset.sum_congr rfl (fun l _ => by rw [Matrix.mul_apply, Finset.sum_mul])]
+  simpa using hsum
+
+end MatrixEntryDeriv
+
+/-- **`paramsEquivFlat.symm` sends the zero flat-core to the zero core tuple.** -/
+theorem paramsEquivFlat_symm_zero (M : Fin (L + 1) → ℕ) :
+    (paramsEquivFlat M).symm (0 : Fin (flatDim M) → ℝ) = (fun _ => 0 : Params M) := by
+  have h0 : (paramsEquivFlat M) (fun _ => 0 : Params M) = (0 : Fin (flatDim M) → ℝ) := by
+    funext i; rfl
+  rw [← h0, (paramsEquivFlat M).symm_apply_apply]
+
+/-! ### S4b — the named matrices at the split origin (all reads vanish there)
+
+At `q = 0` every read vanishes (`readX/Y/Z_zero`), so `A0 = A1 = 1`, `Y0 = Z1 = Y1 = T1 = 0`. These feed
+the `O(read²)` strict-derivative-vanishing of the joint correction (S4). -/
+
+/-- The gauge slot `(q.1, q.2.2)` of the split origin is `0`. -/
+theorem gaugeProj_zero (H : Fin (L + 1) → ℕ) (r : ℕ) :
+    ((0 : DeepestSplit H r (deepestNGauge H r)).1, (0 : DeepestSplit H r (deepestNGauge H r)).2.2)
+      = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) := rfl
+
+/-- `A0 = 1` at the origin. -/
+theorem l2A0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2A0 H r hr hL 0 = 1 := by
+  rw [l2A0, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+
+/-- `A1 = 1` at the origin. -/
+theorem l2A1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2A1 H r hr hL 0 = 1 := by
+  rw [l2A1, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+
+/-- `Y0 = 0` at the origin. -/
+theorem l2Y0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    l2Y0 H r hr hL hL2eq 0 = 0 := by
+  rw [l2Y0, gaugeProj_zero, readY_zero H r hr hL]
+  simp only [Matrix.reindex_apply, Matrix.submatrix_zero, Pi.zero_apply]
+
+/-- `Z1 = 0` at the origin. -/
+theorem l2Z1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2Z1 H r hr hL 0 = 0 := by
+  rw [l2Z1, gaugeProj_zero, readZ_zero H r hr hL]
+
+/-- `Y1 = 0` at the origin. -/
+theorem l2Y1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2Y1 H r hr hL 0 = 0 := by
+  rw [l2Y1, gaugeProj_zero, readY_zero H r hr hL]
+
+/-- `T1 = 0` at the origin (`coreLast 0 = 0`). -/
+theorem l2T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2T1 H r hr hL 0 = 0 := by
+  rw [l2T1, coreLast]
+  show (paramsEquivFlat (deepestM H r)).symm
+    ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) (lastLayer hL) = 0
+  rw [show ((0 : DeepestSplit H r (deepestNGauge H r)).2.1) = 0 from rfl,
+    paramsEquivFlat_symm_zero]
+
 /-- The raw joint `(T1, Y1)` action on `DeepestSplit`. At `L = 2` it is the certified closed form
 `psiSplitRawL2Core`; for `L ≠ 2` it is the identity (the bridge fires only at `L = 2`, the only depth
 where the joint action's mid-interface widths coincide — `midWidth_eq_of_L2`). Keeps the public
@@ -374,13 +505,6 @@ noncomputable def psiL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
     (psiSplitCutL2 H r hr hL (cutoffBumpSplit H r hr hL)
       (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
-
-/-- **`paramsEquivFlat.symm` sends the zero flat-core to the zero core tuple.** -/
-theorem paramsEquivFlat_symm_zero (M : Fin (L + 1) → ℕ) :
-    (paramsEquivFlat M).symm (0 : Fin (flatDim M) → ℝ) = (fun _ => 0 : Params M) := by
-  have h0 : (paramsEquivFlat M) (fun _ => 0 : Params M) = (0 : Fin (flatDim M) → ℝ) := by
-    funext i; rfl
-  rw [← h0, (paramsEquivFlat M).symm_apply_apply]
 
 /-- **The certified joint action fixes the split origin.** At `q = 0` every read vanishes
 (`readX/Y/Z_zero`) and the core slot is `0`, so `Z1 = Y0 = Y1 = T1 = 0`, hence `T1' = 0` (every bracket
