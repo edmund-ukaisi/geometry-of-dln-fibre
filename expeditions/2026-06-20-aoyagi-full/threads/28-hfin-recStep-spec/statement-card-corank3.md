@@ -7,7 +7,7 @@
 > Schur complement is a `2×2` block, not a scalar.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.core_schur3_lt_top` (general-`T`); `…_unitBox` (the `T = 1` base)
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurCorank3.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurCorank3.lean` @ `a827926d`)
 > - **Gloss.** For `c' : ℝ`, `0 < c'`, `c' < 4`, `T : ℝ`, `0 < T`:
 >   `∫⁻ Δ in matBox 3 3 T, ∫⁻ S in matBox 3 4 T, ENNReal.ofReal ((frobSq (rmatMul Δ S)) ^ (-c')) < ⊤`,
 >   where `matBox r n T = [−T,T]^{r×n}`, `rmatMul` is the raw matrix product, `frobSq` the squared
