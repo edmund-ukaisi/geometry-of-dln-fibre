@@ -44,6 +44,27 @@ arbitrary `M`. The honest ∀M deliverable is the box-reduction below + a **name
   `paramsEquivFlat_decodeM`, `paramsEquivFlat_preimage_paramsBoxM`, `measurableSet_paramsBoxM`,
   `routeMCore_nonneg`.
 
+### The hfin premise-reduction (`RouteMHfinPremise.lean`, the cover-glue)
+
+The small ∀M glue bridging `routeMCore_threshold_lt_top_of_box` (needs `c' < ½·minAdm M`) to the R1
+cover assembler `routeMLayerCover_of_atoms`, whose `hfin` field consumes the bound in *premise* shape
+(leaf-sum-finite ⟹ finiteness). Generalises the `(2,2,2)`-specific `routeM222_below_threshold_fin`.
+
+- **`layerCover_leafSum_lt_top_imp_lt_half_minAdm (M) (hpos : 1 ≤ minAdm M) (c')`** — *if the layer
+  leaf-sum is finite then `c' < ½·minAdm M`*. Contrapositive: at `c' ≥ ½·minAdm M` the achiever leaf
+  (`foldDivisors [minAdm M]`, a single binding codim-`minAdm M` divisor, `monomialThreshold =
+  ½·minAdm M ≤ c'`) has `unitBox` box integral `⊤` (`monomialIntegrand_lintegral_box_eq_top`), forcing
+  the sum to `⊤`. Axioms `[propext, Classical.choice, Quot.sound, monomial_rlct]` — the `monomial_rlct`
+  S2 citation is INHERENT to the `monomialIntegrand`/`monomialThreshold` leaf-sum (the same S2 use the
+  cover's value lane already rides; the box-reduction lemmas above stay S2-free).
+- **`layerCover_hfin_of_box (M) (hpos) (hbox : RouteMBoxThresholdFinite M)`** — the `hfin` field in the
+  EXACT shape `routeMLayerCover_of_atoms` consumes: leaf-sum-finite ⟹ `∫_{routeMBaseNbhd M} |routeMCore
+  M|^{−c'} < ⊤`. Composes the premise reduction with `routeMCore_threshold_lt_top_of_box`. Feeds the
+  cover assembler directly, modulo the named `hbox`.
+- supporting (axiom-clean `[propext, Classical.choice, Quot.sound]`): `foldDivisors_singleton_k_binding`
+  (single-divisor fold has a nonzero `k` entry), `layerK_achiever_binding` (the achiever leaf's binding
+  monomial).
+
 ### The `(3,3,4)` witness (bedrock: the gap is inhabited, shown in-file)
 
 - **`routeMLayerBoxIntegral_M334_eq (c')`** — `routeMLayerBoxIntegral M334 c' 1 = ∫_{A0∈matBox 3 3
@@ -65,15 +86,22 @@ arbitrary `M`. The honest ∀M deliverable is the box-reduction below + a **name
   family is downstream of the carve (`schurRatioResidGen_mid`) landing.
 
 ## S2-hygiene
-Pure MP plumbing + the banked `(3,3,4)` chain; no `monomial_rlct`, no new axiom. Both files
-`[propext, Classical.choice, Quot.sound]`.
+The box-reduction + witness files are pure MP plumbing + the banked `(3,3,4)` chain: no `monomial_rlct`,
+no new axiom — `[propext, Classical.choice, Quot.sound]`. The premise-reduction file
+(`RouteMHfinPremise.lean`) carries `monomial_rlct` on its two leaf-sum theorems
+(`layerCover_leafSum_lt_top_imp_lt_half_minAdm`, `layerCover_hfin_of_box`) — INHERENT to the
+`monomialIntegrand`/`monomialThreshold` leaf-sum (the same S2 use the cover's value lane already rides);
+its two combinatorial helpers stay clean. Within the permitted footprint (`monomial_rlct` is the single
+permitted external citation).
 
 ## Status
 - `RouteMBoxReduction.lean` builds green (`scripts/lb`, 2708 jobs); `RouteMBoxReductionWitness.lean`
-  green (8290 jobs).
+  green (8290 jobs); `RouteMHfinPremise.lean` green (2716 jobs).
 - Zero `sorry`/`axiom`/`native_decide`/`#exit` (the only `sorry`/`axiom` string-hits are docstring
-  prose). Forced `#print axioms` (olean-deleted) clean on all named results.
-- Name-clash gate: all 10 new top-level names clash-free vs the `DLNFibre/` tree.
+  prose). Forced `#print axioms` (olean-deleted): box-reduction + witness results
+  `[propext, Classical.choice, Quot.sound]`; premise-reduction leaf-sum results additionally carry the
+  inherent `monomial_rlct` S2 citation (combinatorial helpers stay clean).
+- Name-clash gate: all 14 new top-level names clash-free vs the `DLNFibre/` tree.
 - **FIDELITY REVIEW: SURVIVED** (independent `reviewer` seat, decorrelated-Codex-corroborated). All six
   checks pass: the `routeMCore_le_matBox` inequality faithfully encodes the open-box ⊆ box-integral
   domination and is genuinely ∀M; `RouteMBoxThresholdFinite` is the honest non-circular gap (box
