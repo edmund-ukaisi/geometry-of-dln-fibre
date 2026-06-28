@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive inverse-Jacobian chart-side measurability wrapper
+
+Reproduction:
+`reproduction-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+Statement card:
+`statement-card-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+Review:
+`review-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+```
+
+The wrappers discharge only the source-space residual positive-set
+measurability field by reusing the existing identity-source measurability
+lemma.  The determinant-chart residual positivity and finite residual
+negative-power integral remain explicit, and the finite-integral wrapper keeps
+local loss and density hypotheses explicit.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct theorem
+axiom probes, and xhigh read-only review by Franklin passed.
+
+This is not proof of determinant-chart residual positivity/integrability,
+local loss or density bounds, selected-entry residual integrability,
+source-rank coverage, original external prior transport, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-28 A2 retained-passive inverse-Jacobian finite-integral handoff
 
 Reproduction:

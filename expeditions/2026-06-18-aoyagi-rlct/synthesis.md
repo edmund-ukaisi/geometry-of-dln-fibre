@@ -48,6 +48,59 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Retained-Passive Inverse-Jacobian Chart-Side Measurability Wrapper
+
+The raw-order retained-passive inverse-Jacobian residual-source and
+finite-integral handoffs now have chart-side front ends:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+```
+
+They use
+
+```text
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id
+```
+
+to discharge the source-space residual positive-set measurability field for
+the identity `EFam` source family.  This is the same finite fixed-base
+coordinate measurability argument used by the canonical product-density
+front ends.
+
+The determinant-chart residual hypotheses remain explicit:
+
+```text
+∀ᵐ z ∂ m.restrict S, residualSquareSum (directChart z) > 0
+∫⁻ z, ofReal (residualSquareSum (directChart z)^(-t)) ∂ m.restrict S < ∞
+```
+
+The finite-integral front end also keeps the local loss lower bound and local
+density nonnegativity/upper-bound hypotheses.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed via the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, and direct
+axiom probes passed; both new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Franklin's xhigh read-only review
+passed and checked source-measure orientation, `EFam`/`Cedge` matching,
+retained chart-side hypotheses, and declaration placement after the
+measurability lemma.
+
+This is an API cleanup that removes one formal bookkeeping field.  It does not
+prove determinant-chart residual positivity/integrability, local loss or
+density bounds, selected-entry residual integrability, source-rank coverage,
+original external DLN source-prior transport, normal crossings, pole order, or
+RLCT extraction.
+
 ## Latest A2 Retained-Passive Inverse-Jacobian Finite-Integral Handoff
 
 The raw-order retained-passive p.13 source measure with inverse-Jacobian

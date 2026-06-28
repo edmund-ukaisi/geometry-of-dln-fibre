@@ -19,6 +19,44 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian chart-side measurability wrapper
+
+The raw-order retained-passive inverse-Jacobian residual and finite-integral
+handoffs now have `_of_chartSide` front ends:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualSourceHypotheses_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13RawOrderSourceChart_withDensity_inverseJacobian_of_chartSide
+```
+
+They discharge only the source-space residual positive-set measurability field
+using
+
+```text
+measurableSet_residualSquareSum_pos_retainedPassiveP13Canonical_id.
+```
+
+The direct determinant-chart residual positivity, direct determinant-chart
+finite residual negative-power integral, local loss lower bound, and local
+density bounds remain explicit.  The source measure and orientation are
+unchanged: residual hypotheses are still on `directChart` over `m.restrict S`,
+while the target source measure is the raw-order inverse-Jacobian measure
+`Measure.map rawChart ((m.restrict T).withDensity invJacDensity)`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-inverse-jacobian-chartside-measurability-wrapper.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker search, and direct axiom probes passed; both new declarations
+report only `[propext, Classical.choice, Quot.sound]`.  This is an API
+cleanup, not proof of determinant-chart residual positivity/integrability,
+selected-entry residual integrability, source-rank coverage, original external
+source-prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, retained-passive inverse-Jacobian finite-integral handoff
 
 The raw-order retained-passive p.13 source measure with inverse-Jacobian
