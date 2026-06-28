@@ -253,11 +253,9 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
       = frontMat M hL u i j * (if j = ⟨0, hrow⟩
           then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol else deepCol M hL u hcol j) :=
     fun j => congrArg (frontMat M hL u i j * ·) (by
-      -- WIP (the single residual): the per-row `smearedDeepLayer j jc` readout equals the `if`-form.
-      -- `rw [smearedDeepLayer, Matrix.updateRow_apply, hjc]` exposes the `if`; the branches are
-      -- defeq to the RHS (`deepCol = baseParams · ⟨0,hcol⟩`), but the `ite`-instance + `if x=x` reduction
-      -- resists `if_pos`/`simp only`/`split_ifs` (the recurring `ite` surface nit). Isolated here.
-      sorry)
+      rw [smearedDeepLayer, Matrix.updateRow_apply, hjc]
+      simp only [deepCol]
+      rfl)
   calc (∑ j, frontMat M hL u i j * smearedDeepLayer M hL u hrow hcol hm1 j jc)
       = ∑ j, frontMat M hL u i j * (if j = ⟨0, hrow⟩
           then deepCol M hL u hcol ⟨0, hrow⟩ - smearShift M hL u hm1 hcol else deepCol M hL u hcol j) :=
