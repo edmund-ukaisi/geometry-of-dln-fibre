@@ -337,6 +337,32 @@ S2-free). The architecture correction (cap A = angular part of the SAME blow-up,
 INTERSECTION via the product factorization) is the load-bearing design point — please diff-gate that framing
 before I deep-build. No new geometry beyond the cert; bounded-medium confirmed (2 Codex consults + the cert).
 
+
+## BUILD-TIME FINDING (2026-06-28, during deep-build setup): CAP-B IS ALREADY BUILT; the real gap is N4
+
+Setting up the deep-build, I found the cap-B `{Δ=0}` chart machinery **ALREADY EXISTS, sorry-free, and
+`{r p}`-GENERAL** in `lean/DLNFibre/DLN/RLCT/Validate/RouteMSchur.lean`:
+- `radialDelta_loss_factor {r p}` — the `|a|^{r²−1}·(a²·F)^{−c'} = |a|^{(r²−1)−2c'}·F^{−c'}` factorization (N1).
+- `radial_aAxis_divisor_lt_top (r)` — the `a`-axis `∫|a|^{(r²−1)−2c'} < ⊤ ⟺ c' < r²/2` (cap B, exactly).
+- `radial_loss_chart_lt_top {r p}` — the FULL `Δ=a·R` per-chart blow-up: `∫_a∫_R |a|^{r²−1}·frobSq((a·R)·S)^{−c'}
+  < ⊤` for `c' < r²/2` GIVEN the inner angular finiteness `hSfin`. This IS cap-B ⊗ cap-A (the `hSfin`), the
+  window-intersection — precisely the architecture this design specified. p-general already.
+
+So the cap-B chart is NOT new content to build — it is DONE. **The actual remaining gap for the ∀p (and the
+whole-`M`) hfin is N4**: `routeMCore_threshold_lt_top {L} (M : Fin (L+1)→ℕ) (c' < minAdm M / 2)` (RouteMSchur.lean
+line ~429, `sorry`) — the depth-`r` WellFounded-on-corank cover assembly (cert §4 N4, "the HIGH-risk long pole"):
+cover `routeMBaseNbhd M` by `recStep` over the `r²` radial-`Δ` charts, apply N3 (`radial_loss_chart_lt_top`),
+stratify by the N2 minor-pivot Schur split, peel the Morse block, RECURSE on the corank-`(r−j)` core. This N4
+is stated ∀M (hence ∀p) ALREADY — it is NOT output-width-specific.
+
+**RE-SCOPE (surfaced to controller):** the ∀p firing does NOT need a new cap-B chart (built) nor a separate
+∀p firing file (the carve is the angular `hSfin`, already closed). It needs the N4 recursion assembly — which
+is the SHARED whole-`M` hfin long pole, HIGH-risk, NOT the bounded-medium cap-B task. The two corank-2 ENDS of
+N4 are built in `RouteMSchurDepth2` (`schurSplit_integrand_le`/`schurSplit_lintegral_le` + the Morse terminal
+`schurSplit_depth2_lt_top`); the unbuilt weld is the radial-blow-up c-o-v turning the core-over-the-box into
+the split form, summed over `r²` charts by `recStep`. That is the genuine remaining work, and it is the same
+N4 the immediate-path hfin needs — not a separable ∀p-only deliverable.
+
 ## 6. Open questions for the controller / pen-and-paper (UPDATED)
 
 - Q-A (RESOLVED): `λ(p,r) = (r−1)p/2` is WRONG for p≠4; the true threshold is `½·minAdm(r,r,p)` (quadratic).
