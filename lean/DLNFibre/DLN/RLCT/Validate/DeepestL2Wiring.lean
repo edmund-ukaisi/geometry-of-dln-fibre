@@ -468,6 +468,20 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     · -- **L = 2 branch** (`2 ≤ L < 3`): the collapsed joint Ψ, the R-A `deepest_diffeo_bridge_L2_wired`
       -- (= `_impl`), fed the triangular-bundle frames + hPtri/hQtri + the two per-`x` discharges.
       have hL2eq : L = 2 := by omega
+      -- Transport hPtri/hQtri from the bundle form (`Pf (firstLayer)` / `Qf (lastLayer)` with `Jb`) to the
+      -- `_wired`/sub-4 form (`endpointP0`/`endpointQL` with `J`): endpoint frames are casts of the boundary
+      -- layers, `pivotJSucc J = Jb` bridges the last-layer pivot split.
+      have hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+          (endpointP0 H hL Pf)).toBlocks₁₂ = 0 := by
+        have hfl : (firstLayer hL : Fin L) = ⟨0, by omega⟩ := Fin.ext (by simp [firstLayer])
+        simpa only [endpointP0, hfl] using hPtri
+      have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
+        -- BOUNDED CAST-BRIDGE (cast-only): the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport of
+        -- toBlocks₂₁=0 + `← hpivJ` (Jb = pivotJSucc J) + defeq widths. 5 tactic shapes tried; resists
+        -- one-shot (needs a toBlocks₂₁-transport helper). Left documented.
+        sorry
       -- **hsub3reg** — GERM-LOCAL reg-energy invariance (via sub-3 + §iii + e2; on the inner-ball germ).
       have hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
           nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
@@ -502,31 +516,34 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           psiSplitRawL2 H r hr hL (split x) ∈ Metric.closedBall
             (0 : DeepestSplit H r (deepestNGauge H r)) ((cutoffBump H r hr hL).rIn) :=
         htend (Metric.closedBall_mem_nhds 0 (cutoffBump H r hr hL).rIn_pos)
+      -- **The hWdet germ**: near the basepoint, `split x ∈ ball l2ExtraRadius` (split continuous, split
+      -- basepoint = 0), so `split x ∈ l2ExtraUnitSetSplit` (`ball_l2ExtraRadius_subset`) ⟹ `det l2W ≠ 0`.
+      have hsplit_tend : Filter.Tendsto split
+          (nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))
+          (nhds (0 : DeepestSplit H r (deepestNGauge H r))) := by
+        have h := (split.continuous.continuousAt
+          (x := (paramsEquivFlat H) (deepestPoint H r B hB hr hL))).tendsto
+        rwa [hsplit_base] at h
+      have hWdetgerm : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+          nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+          (l2W H r hr hL hL2eq (split x)).det ≠ 0 := by
+        have hballx : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+            nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+            split x ∈ Metric.ball (0 : DeepestSplit H r (deepestNGauge H r))
+              (l2ExtraRadius H r hr hL hL2eq) :=
+          hsplit_tend.eventually_mem (Metric.ball_mem_nhds 0 (l2ExtraRadius_pos H r hr hL hL2eq))
+        filter_upwards [hballx] with x hx
+        exact (ball_l2ExtraRadius_subset H r hr hL hL2eq hx).2
       -- **hsub4core** — GERM-LOCAL core = Score (Option-2 sub-4 on the inner-ball germ).
       have hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
           nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
           deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL (split x))).2.1
             = Score x := by
-        filter_upwards [hballgerm] with x hball
-        sorry
-      -- Transport hPtri/hQtri from the bundle form (`Pf (firstLayer)` / `Qf (lastLayer)` with `Jb`)
-      -- to the `_wired` form (`endpointP0`/`endpointQL` with `J`): the endpoint frames are casts of the
-      -- boundary layers, and `pivotJSucc J = Jb` bridges the last-layer pivot split.
-      have hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
-          (endpointP0 H hL Pf)).toBlocks₁₂ = 0 := by
-        -- `endpointP0 H hL Pf` is `Pf (firstLayer)` up to the `(firstLayer).castSucc = 0` index cast,
-        -- and `H 0 = H (firstLayer).castSucc` defeq; the bundle's `hPtri` is the same statement.
-        have hfl : (firstLayer hL : Fin L) = ⟨0, by omega⟩ := Fin.ext (by simp [firstLayer])
-        simpa only [endpointP0, hfl] using hPtri
-      have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-          (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
-        -- BOUNDED CAST-BRIDGE (cast-only, no math): bundle `hQtri` (about `Qf (lastLayer)`, `Jb`) →
-        -- `_wired` form (`endpointQL`, `J`). Needs: the `endpointQL = ▸ Qf ⟨L-1,_⟩` index-cast transport
-        -- of `toBlocks₂₁=0` (the `isUnit_endpointQL`/`isUnit_index_cast` pattern, but the `Fin.last L`
-        -- target is rigid so plain `generalize`+`subst` fails — needs a `toBlocks₂₁`-transport helper or
-        -- `Fin.cast` rewrite) + `← hpivJ` (Jb = pivotJSucc J) + the defeq widths. 5 tactic shapes tried
-        -- (convert/simpa/subst); resists one-shot. Left as a precisely-bounded cast sorry.
+        filter_upwards [hballgerm, hWdetgerm] with x hball hWdet
+        -- `q := split x = deepestSplit w0 x` (hsplit); apply Option-2 sub-4 with hball/hWdet/hScoreDef.
+        refine deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score H r B hB hr hL hL2eq J Pf Qf
+          hPtri' hQtri' Score hScoreDef x (split x) (hsplit x) hball hWdet ?_
+        -- hLDUtie: the readback-tie (prod(deepestM) cleaned-tuple = Score (1,1)-Schur integrand).
         sorry
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
