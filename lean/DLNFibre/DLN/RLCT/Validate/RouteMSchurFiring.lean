@@ -352,18 +352,77 @@ theorem flatBoxG_blowup_mem_iff (r : ℕ) (T : ℝ) (p : Fin (r * r)) (y : Fin (
       rw [abs_le] at hbb; exact hbb
 
 /-- **The pivot-axis ↔ ratios reshape** `piRatioG r N hN p : (Fin (r*r) → ℝ) ≃ᵐ ℝ × (Fin N → ℝ)` (the
-`Fin (r*r)`-carrier analogue of `piFinSuccAbove`): reindex `Fin (r*r) ≃ Fin (N+1)` (`finCongr hN`,
-`r*r = N+1`), then split off the pivot axis `p`. Measure-preserving (`measurePreserving_piRatioG`). -/
+`Fin (r*r)`-carrier analogue of `piFinSuccAbove`): reindex `Fin (r*r) ≃ Fin (N+1)` by PRECOMPOSITION
+(`arrowCongr'` along `finCongr hN`, the constant-codomain reshape — clean `eq_rec`-free `.symm`), then
+split off the pivot axis `p`. Measure-preserving (`measurePreserving_piRatioG`). -/
 noncomputable def piRatioG (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) :
     (Fin (r * r) → ℝ) ≃ᵐ ℝ × (Fin N → ℝ) :=
-  (MeasurableEquiv.piCongrLeft (fun _ : Fin (N + 1) => ℝ) (finCongr hN)).trans
+  (MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)).trans
     (MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
 
 theorem measurePreserving_piRatioG (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) :
     MeasurePreserving (piRatioG r N hN p) (volume : Measure (Fin (r * r) → ℝ))
-      (volume : Measure (ℝ × (Fin N → ℝ))) :=
-  (volume_measurePreserving_piCongrLeft (fun _ : Fin (N + 1) => ℝ) (finCongr hN)).trans
+      (volume : Measure (ℝ × (Fin N → ℝ))) := by
+  unfold piRatioG
+  refine MeasurePreserving.trans ?_
     (volume_preserving_piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+  exact volume_preserving_arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _)
+
+/-- `(piRatioG r N hN p).symm (a, z) k = (insertNth (finCongr hN p) a z) (finCongr hN k)` — the explicit
+read-back (precompose `arrowCongr'.symm` = compose with `finCongr hN`; `piFinSuccAbove.symm = insertNth`). -/
+theorem piRatioG_symm_apply (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (a : ℝ) (z : Fin N → ℝ) (k : Fin (r * r)) :
+    (piRatioG r N hN p).symm (a, z) k
+      = Fin.insertNthEquiv (fun _ : Fin (N + 1) => ℝ) (finCongr hN p) (a, z) (finCongr hN k) := by
+  show (MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)).symm
+      ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p)).symm (a, z)) k = _
+  rw [MeasurableEquiv.piFinSuccAbove_symm_apply]
+  rfl
+
+/-- The pivot value of the read-back is `a`. -/
+theorem piRatioG_symm_pivot (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (a : ℝ) (z : Fin N → ℝ) : (piRatioG r N hN p).symm (a, z) p = a := by
+  rw [piRatioG_symm_apply]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_same]
+
+/-- Off the pivot the read-back is `a`-independent: `(piRatioG …).symm (a,z) k = (piRatioG …).symm (a',z) k`
+for `k ≠ p` (the `finCongr` images differ, so `insertNth` reads `z` not the pivot slot). -/
+theorem piRatioG_symm_offpivot (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r))
+    (a a' : ℝ) (z : Fin N → ℝ) (k : Fin (r * r)) (hk : k ≠ p) :
+    (piRatioG r N hN p).symm (a, z) k = (piRatioG r N hN p).symm (a', z) k := by
+  rw [piRatioG_symm_apply, piRatioG_symm_apply]
+  -- finCongr hN k ≠ finCongr hN p, so k decodes via succAbove and insertNth reads z
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hk ((finCongr hN).injective h)
+  obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+  rw [← hj]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+
+/-- The pivot value of the forward map: `(piRatioG r N hN p y).1 = y p`. -/
+theorem piRatioG_apply_fst (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (y : Fin (r * r) → ℝ) :
+    (piRatioG r N hN p y).1 = y p := by
+  show ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+        ((MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)) y)).1 = y p
+  simp only [MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.coe_mk, Fin.insertNthEquiv]
+  rfl
+
+/-- The `j`-th ratio of the forward map: `(piRatioG r N hN p y).2 j = y (the succAbove-decoded index)`. The
+decoded index `(finCongr hN).symm ((finCongr hN p).succAbove j) ≠ p` (the ratios omit the pivot). -/
+theorem piRatioG_apply_snd (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (y : Fin (r * r) → ℝ)
+    (j : Fin N) :
+    (piRatioG r N hN p y).2 j = y ((finCongr hN).symm ((finCongr hN p).succAbove j)) := by
+  show ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+        ((MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)) y)).2 j = _
+  simp only [MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.coe_mk, Fin.insertNthEquiv]
+  rfl
+
+/-- The decoded ratio index is never the pivot: `(finCongr hN).symm ((finCongr hN p).succAbove j) ≠ p`. -/
+theorem piRatioG_ratioIdx_ne (r N : ℕ) (hN : r * r = N + 1) (p : Fin (r * r)) (j : Fin N) :
+    (finCongr hN).symm ((finCongr hN p).succAbove j) ≠ p := by
+  intro h
+  apply Fin.succAbove_ne (finCongr hN p) j
+  have h' : finCongr hN ((finCongr hN).symm ((finCongr hN p).succAbove j)) = finCongr hN p := by
+    rw [h]
+  rwa [(finCongr hN).apply_symm_apply] at h'
 
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
@@ -471,7 +530,25 @@ theorem schur_matBoxG_chart_lt_top (r : ℕ) (hr : 3 ≤ r)
   -- the chart domain pulls back to ({a ≠ 0}) ×ˢ (ratio box over Fin N)
   have hpre : (chartDomOn (Finset.univ : Finset (Fin (r * r))) p \ pivotZeroOn p)
       = e ⁻¹' (({a : ℝ | a ≠ 0}) ×ˢ (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))) := by
-    sorry
+    ext y
+    simp only [chartDomOn, pivotZeroOn, Set.mem_diff, Set.mem_setOf_eq, Set.mem_preimage,
+      Set.mem_prod, Set.mem_pi, Set.mem_univ, true_implies, he]
+    constructor
+    · rintro ⟨h1, h2⟩
+      refine ⟨by rw [piRatioG_apply_fst]; exact h2, fun j => ?_⟩
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd]
+      exact h1 _ (Finset.mem_univ _) (piRatioG_ratioIdx_ne r N hN p j)
+    · rintro ⟨h1, h2⟩
+      rw [piRatioG_apply_fst] at h1
+      refine ⟨fun k _ hk => ?_, h1⟩
+      -- k ≠ p decodes as a ratio index; its value is the corresponding z j ∈ [−1,1]
+      have hne : finCongr hN k ≠ finCongr hN p := fun h => hk ((finCongr hN).injective h)
+      obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+      have hk_eq : k = (finCongr hN).symm ((finCongr hN p).succAbove j) := by
+        rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+      have hj2 := h2 j
+      rw [Set.mem_Icc, ← abs_le, piRatioG_apply_snd r N hN p y j] at hj2
+      rw [hk_eq]; exact hj2
   set g : (Fin (r * r) → ℝ) → ℝ≥0∞ := fun y =>
     (Set.Icc (-T) T).indicator
         (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) (y p)
@@ -508,7 +585,15 @@ theorem schur_matBoxG_chart_lt_top (r : ℕ) (hr : 3 ≤ r)
         = (Set.Icc (-T) T).indicator
             (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) a
           * innerSGen r c' T p (e.symm (0, z)) := by
-    sorry
+    intro a z
+    have hp_eq : (e.symm (a, z)) p = a := by rw [he]; exact piRatioG_symm_pivot r N hN p a z
+    have hoff : innerSGen r c' T p (e.symm (a, z)) = innerSGen r c' T p (e.symm (0, z)) := by
+      refine innerSGen_offpivot r c' T p _ _ (fun i hi => ?_)
+      rw [he]; exact piRatioG_symm_offpivot r N hN p a 0 z i hi
+    show (Set.Icc (-T) T).indicator
+        (fun a => ENNReal.ofReal (|a| ^ (((r * r - 1 : ℕ) : ℝ) - 2 * c'))) ((e.symm (a, z)) p)
+        * innerSGen r c' T p (e.symm (a, z)) = _
+    rw [hp_eq, hoff]
   -- radial-axis factor finite (c' < r²/2 ⟹ exponent (r²−1)−2c' > −1)
   have hN3a : (∫⁻ a in Set.Icc (-T) T,
       ENNReal.ofReal (|a| ^ ((r ^ 2 : ℝ) - 1 - 2 * c'))) < ⊤ :=
