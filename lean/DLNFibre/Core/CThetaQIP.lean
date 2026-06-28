@@ -29,7 +29,7 @@ in `Core.CThetaQIPConverse` (`cCodim_eq_qipMin`).
 
 The **per-orbit** geometric reading (`codimForm` = geometric codimension of the orbit closure `Ō_M`)
 is PROVED in `Core.CThetaGeometric` via the discharged Voigt lemma
-`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim` (`[IsAlgClosed k] [CharZero k]`);
+`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim` (`[CharZero k]`);
 the **aggregate** reading (`cCodim` = geometric codim of the whole *closed* rank-`≤ r` locus `Σ̄^r`)
 is also formalised — `codim Σ̄^r = cCodim d r` (`Core.SigmaCodim`), via the orbit stratification
 (`Core.SigmaStratification`). `cCodim`/`qipMin` here are min-values of ℤ-quadratic forms over finite

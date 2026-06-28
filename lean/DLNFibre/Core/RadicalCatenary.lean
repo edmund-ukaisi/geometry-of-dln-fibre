@@ -25,9 +25,9 @@ The proof is a direct order/chain argument over `PrimeSpectrum`, two inequalitie
   catenary for `p₀` reads `card = height I + dim (R ⧸ p₀) ≤ height I + dim (R ⧸ I)`.
 
 The headline specialises to `codimRepCanonical Z + varietyDim Z = card` for any **nonempty**
-Zariski-closed `Z` (over an algebraically closed field its vanishing ideal is radical and proper),
-discharging the reducible-locus catenary that `Core.RouteCAssembly` carries as the named hypotheses
-`hCatFibre`/`hCatSigma`.
+Zariski-closed `Z` (over any field its vanishing ideal is radical — `vanishingIdeal_isRadical`;
+nonempty makes it proper — `vanishingIdeal_ne_top_of_nonempty`), discharging the reducible-locus
+catenary that `Core.RouteCAssembly` carries as the named hypotheses `hCatFibre`/`hCatSigma`.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

@@ -29,8 +29,9 @@ Two bricks, both reducing to that one combinatorial monotonicity of `cCodim`:
 `≥ cCodim d r`); `hRecover` is the Gabriel bridge plus corner-monotonicity forcing corner `= r` on a
 top-dimensional component.
 
-**Typeclass.** `[Field k]` for the bridge; `[IsAlgClosed k] [CharZero k]` for the geometric reading
-(`codimRepCanonical = codimForm`). **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+**Typeclass.** `[Field k]` for the bridge; `[CharZero k] [Infinite k]` for the geometric reading
+(`codimRepCanonical = codimForm`; no algebraic closedness). **Dependency rule:** `Core` only — never
+import `DLNFibre.DLN`.
 -/
 
 namespace DLNFibre.Core

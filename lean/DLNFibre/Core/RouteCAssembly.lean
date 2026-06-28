@@ -42,7 +42,7 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-! ## The route-c assembly (conditional bank) -/
 
 /-- **Route-c assembly: `codim(fibre d B) = C + δ` (conditional bank).** For a rank-`r` target `B`
-(`N ≥ 1`, alg-closed char 0), the geometric codimension of the fibre `mult⁻¹(B)` is `C = cCodim d r`
+(`N ≥ 1`, char-0 infinite field), the geometric codimension of the fibre `mult⁻¹(B)` is `C = cCodim d r`
 plus the matrix-stratum shift `δ = r·(d_N + d_0 − r)` — carrying the homogeneous-sweep dimension
 identity `hSweep`, the closure bridge `hClosure`, and the two reducible-locus catenary
 relations `hCatFibre`/`hCatSigma` as explicit named hypotheses. The proof is the additive chain
@@ -97,7 +97,7 @@ theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [CharZero k] [Infin
 /-! ## The catenary hypotheses discharged (only the sweep + closure remain) -/
 
 /-- **Route-c assembly with the catenary hypotheses discharged.** For a rank-`r` target `B`
-(`N ≥ 1`, alg-closed char 0), `codimRepCanonical (fibre d B) = C + δ`, carrying ONLY the
+(`N ≥ 1`, char-0 infinite field), `codimRepCanonical (fibre d B) = C + δ`, carrying ONLY the
 homogeneous-sweep dimension identity `hSweep` and the closure bridge `hClosure` as named
 hypotheses — the two reducible-locus catenary relations are now **proved** from
 `codimRepCanonical_add_varietyDim_eq_card_of_nonempty` (`Core.RadicalCatenary`), given that the

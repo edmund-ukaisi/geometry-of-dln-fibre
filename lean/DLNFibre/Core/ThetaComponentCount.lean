@@ -28,8 +28,9 @@ distinct partitions ⟹ distinct rank patterns ⟹ distinct orbit closures ⟹ d
 the pen-and-paper (★) certificate. So the unconditional built content is the realizer infrastructure
 + injectivity; the count headline is gated.
 
-**Typeclass.** `[IsAlgClosed k] [CharZero k]` — inherited from the Voigt codim (the geometric reading
-`codimRepCanonical = codimForm`) + the Nullstellensatz primality. **Dependency rule:** `Core` only.
+**Typeclass.** `[CharZero k] [Infinite k]` — `[CharZero k]` from the Voigt codim (the geometric reading
+`codimRepCanonical = codimForm`; no algebraic closedness), `[Infinite k]` from the orbit-ideal
+primality. **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -435,7 +436,8 @@ section Witness
 
 /-! ## Non-vacuity witness — `(2,2,2)`, `r = 0`, over `AlgebraicClosure ℚ`
 
-The `(2,2,2)` zero-product locus `Σ̄^0` (`[IsAlgClosed] [CharZero]`). The minimiser `mMin`
+The `(2,2,2)` zero-product locus `Σ̄^0` over the witness field `AlgebraicClosure ℚ`
+(`[IsAlgClosed] [CharZero]`; the headline itself needs only `[CharZero] [Infinite]`). The minimiser `mMin`
 (`Core.CTheta`, the `(1,1)`-orbit, `codimForm = 3 = cCodim`) is in `minimisingPartitions`, and its
 `partitionIdeal` is the orbit ideal of the realizer over `d` — a member of the corner-`0` family
 `orbitIdeals d222 0`. The injectivity half of the bijection (unconditional) and the realizer

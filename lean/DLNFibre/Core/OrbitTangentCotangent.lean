@@ -414,21 +414,25 @@ noncomputable def cotFunctional (M : Tuple (k := k) d) (φ : cochain0 (k := k) d
 
 /-! ## R4 — `cotFunctional` is `k`-linear in `φ`; the coordinate test for injectivity -/
 
+omit [Infinite k] in
 /-- `D_v (C r) = 0` (the directional derivative kills constants). -/
 @[simp] theorem dirDeriv_C (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (r : k) :
     dirDeriv M φ (MvPolynomial.C r) = 0 := by
   rw [dirDeriv_apply, MvPolynomial.aeval_C, TrivSqZeroExt.algebraMap_eq_inl, TrivSqZeroExt.snd_inl]
 
+omit [Infinite k] in
 /-- `canonicalCoord` of a sum of edge maps is the sum of `canonicalCoord`s (entrywise). -/
 private theorem canonicalCoord_add (A B : Tuple (k := k) d) (x : RepCoord d) :
     canonicalCoord d (A + B) x = canonicalCoord d A x + canonicalCoord d B x := by
   simp only [canonicalCoord_apply, Pi.add_apply, Matrix.add_apply]
 
+omit [Infinite k] in
 /-- `canonicalCoord` of a scalar multiple of an edge map is the scalar multiple (entrywise). -/
 private theorem canonicalCoord_smul (c : k) (A : Tuple (k := k) d) (x : RepCoord d) :
     canonicalCoord d (c • A) x = c • canonicalCoord d A x := by
   simp only [canonicalCoord_apply, Pi.smul_apply, Matrix.smul_apply]
 
+omit [Infinite k] in
 /-- `D_v` is additive in the direction `φ` (induction on `f`: constants vanish, `X x` gives
 `(δ⁰(φ+φ'))_x = (δ⁰φ)_x + (δ⁰φ')_x` by linearity of `δ⁰`, products by Leibniz `dirDeriv_mul`). -/
 theorem dirDeriv_add (M : Tuple (k := k) d) (φ φ' : cochain0 (k := k) d d)
@@ -443,6 +447,7 @@ theorem dirDeriv_add (M : Tuple (k := k) d) (φ φ' : cochain0 (k := k) d d)
       canonicalCoord_add]
     ring
 
+omit [Infinite k] in
 /-- `D_v` is homogeneous in the direction `φ`. -/
 theorem dirDeriv_smul (M : Tuple (k := k) d) (c : k) (φ : cochain0 (k := k) d d)
     (f : MvPolynomial (RepCoord d) k) :
@@ -459,6 +464,7 @@ theorem dirDeriv_smul (M : Tuple (k := k) d) (c : k) (φ : cochain0 (k := k) d d
 
 /-! ## R4–R5 — the injection `range δ⁰ ↪ Dual k (m_M.Cotangent)` and the finrank bound -/
 
+omit [Infinite k] in
 /-- The coordinate test polynomial `X x − C (a_x)` lies in `m_M` (it evaluates to `0` at `M`). -/
 theorem coordTest_mem_normalFormIdeal (M : Tuple (k := k) d) (x : RepCoord d) :
     Ideal.Quotient.mk (orbitIdeal M)
@@ -514,7 +520,7 @@ theorem ker_cotPairing_le_ker_deformationδ (M : Tuple (k := k) d) :
 /-- The orbit-point cotangent space `m_M.Cotangent` is finite-dimensional over `k`. It is a
 finitely-generated `A`-module (`A = orbitRing M` noetherian, `m_M` f.g.), torsion by `m_M`, hence a
 finite-dimensional `κ = A/m_M`-vector space; and `κ ≃ₐ[k] k` (the orbit point is `k`-rational), so it
-is finite over `k`. -/
+is finite over `k`. Carries `[PerfectField k]` (explicit) `[Infinite k]` (from the section). -/
 instance finiteDimensional_cotangent_normalFormIdeal [PerfectField k] (M : Tuple (k := k) d) :
     FiniteDimensional k ((normalFormIdeal M).Cotangent) := by
   haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
@@ -541,7 +547,8 @@ instance finiteDimensional_cotangent_normalFormIdeal [PerfectField k] (M : Tuple
 /-- **R5 — `finrank (range δ⁰) ≤ finrank (m_M.Cotangent)`.** The injection of the orbit tangent
 image into the Zariski cotangent space, in finrank form: `ker (cotPairing) ⊆ ker δ⁰` (R4) gives
 `finrank (range δ⁰) ≤ finrank (range cotPairing)`, and `range cotPairing ⊆ Dual k (m_M.Cotangent)`
-has `finrank ≤ finrank (m_M.Cotangent)` (`Subspace.dual_finrank_eq`). -/
+has `finrank ≤ finrank (m_M.Cotangent)` (`Subspace.dual_finrank_eq`). Carries `[PerfectField k]`
+(explicit) `[Infinite k]` (from the section). -/
 theorem finrank_range_deformationδ_le_finrank_cotangent [PerfectField k] (M : Tuple (k := k) d) :
     finrank k (LinearMap.range (deformationδ M M))
       ≤ finrank k ((normalFormIdeal M).Cotangent) := by
@@ -567,7 +574,8 @@ theorem finrank_range_deformationδ_le_finrank_cotangent [PerfectField k] (M : T
 
 /-- `ringKrullDim (orbitRing M)` is a finite natural number `n`, equal to `varietyDim Z_M`:
 `A = orbitRing M` is a nontrivial finite-type domain over `k`, with `ringKrullDim` bounded by the
-ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). -/
+ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). Carries
+`[PerfectField k]` (explicit) `[Infinite k]` (from the section). -/
 theorem exists_ringKrullDim_orbitRing_eq [PerfectField k] (M : Tuple (k := k) d) :
     ∃ n : ℕ, ringKrullDim (orbitRing M) = (n : WithBot ℕ∞)
       ∧ varietyDim (canonicalCoord d '' orbitRankLocus M) = (n : ℕ∞) := by
@@ -601,7 +609,8 @@ theorem exists_ringKrullDim_orbitRing_eq [PerfectField k] (M : Tuple (k := k) d)
 dimension: L2a localization collapse (`m_M.Cotangent ≃ CotangentSpace (AtPrime m_M)` in `k`-finrank),
 the κ/k bridge (GAP2), M3 (smooth point: `finrank κ (CotangentSpace) = ringKrullDim (AtPrime m_M)`),
 GAP3 (`ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M)`), and `varietyDim Z_M =
-ringKrullDim (orbitRing M)` (L6.4). -/
+ringKrullDim (orbitRing M)` (L6.4). Carries `[PerfectField k]` (explicit) `[Infinite k]`
+(from the section). -/
 theorem finrank_cotangent_eq_varietyDim [PerfectField k] (M : Tuple (k := k) d) :
     (finrank k ((normalFormIdeal M).Cotangent) : ℕ∞)
       = varietyDim (canonicalCoord d '' orbitRankLocus M) := by

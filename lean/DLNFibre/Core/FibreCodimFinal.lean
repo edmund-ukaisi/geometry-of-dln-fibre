@@ -152,7 +152,8 @@ theorem codimRepCanonical_fibre_normalForm_eq_cCodim_add_shift [CharZero k] [Inf
     (varietyDim_sweepSigma_eq_shift d r hp hq hN h)
 
 /-- **The central result: `codim (fibre d B) = C + δ` for any rank-`r` target (minimal hyps).**
-For a rank-`r` matrix `B` over an algebraically closed char-`0` field, the geometric codimension of
+For a rank-`r` matrix `B` over a characteristic-`0` infinite field (no algebraic closedness; `ℝ`
+qualifies), the geometric codimension of
 the multiplication-map fibre `mult⁻¹(B)` is the combinatorial codimension `C = cCodim d r` plus the
 matrix-stratum shift `δ = r·(d_N + d_0 − r)`:
 
