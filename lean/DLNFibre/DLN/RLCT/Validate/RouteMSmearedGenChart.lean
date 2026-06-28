@@ -584,4 +584,29 @@ theorem routeMCore_phiSm_offpole (u : Fin (routeMAmbient M) → ℝ)
     rw [Finset.card_univ, Fintype.card_fin, hlast1]]
   rw [one_smul]; ring
 
+/-! ## The unit factor `U` and its properties (toward the subBox) -/
+
+/-- The unit factor `U = ‖P₁‖² = ∑ᵢ (frontMat u i ⟨0,_⟩)²` (the `u_p`-free factor of the rate). -/
+noncomputable def frontU (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩) : ℝ :=
+  ∑ i, (frontMat M hL u i ⟨0, hm1⟩) ^ 2
+
+/-- **`frontU` is nonnegative.** -/
+theorem frontU_nonneg (u : Fin (routeMAmbient M) → ℝ) (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    0 ≤ frontU M hL u hm1 :=
+  Finset.sum_nonneg (fun i _ => sq_nonneg _)
+
+/-- **`frontU` is continuous** (a finite sum of squares of `frontMat` entries). -/
+theorem continuous_frontU (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    Continuous (fun u : Fin (routeMAmbient M) → ℝ => frontU M hL u hm1) := by
+  refine continuous_finset_sum _ (fun i _ => ?_)
+  exact ((((continuous_prodAux M (L - 1) (by omega)).comp
+    (continuous_paramsEquivFlat_symm M)).matrix_elem i ⟨0, hm1⟩).pow 2)
+
+/-- **`frontU` is unchanged by the pivot-coord update** (it reads only the front layers). -/
+theorem frontU_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) :
+    frontU M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hm1 = frontU M hL u hm1 := by
+  rw [frontU, frontU, frontMat_update_pivot M hL u a hrow hcol]
+
 end DLNFibre.DLN.RLCT
