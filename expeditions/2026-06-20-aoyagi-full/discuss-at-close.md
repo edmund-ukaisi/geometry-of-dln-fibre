@@ -1075,3 +1075,22 @@ Caveat (keep): a depth-flag is still real — when the remaining is a genuinely-
 already-built bricks), fresh context is the right call (e.g. the zEG carve depth-stop → cleaner Fin-r re-attempt did
 work). The discriminator is construction-vs-wiring + does-the-owner-hold-the-latest. Net: fewer spawns, tighter gates,
 spawn-fresh only on a real wall.
+
+### Item 54 — "Carve = R1-UPPER's last piece" was an overclaim; a teammate's pre-stage audit found the 2nd long pole (2026-06-28)
+I'd been tracking (and writing in synthesis) that closing the carve `schurRatioResidGen_mid` = R1-UPPER done. genm-carving's
+read-only post-capstone-wiring pre-stage — which I'd commissioned precisely to check the chain ready-to-flip — found that
+`routeMCore_threshold_lt_top` (the ∀M R1-UPPER **hfin** headline, RouteMSchur:426, a SKELETON sorry) needs TWO independent
+halves: (i) the matBox inner-finiteness (= `SchurCore`, which the carve provides), AND (ii) a generic `routeMCore_le_matBox`
+(the M-dependent routeMCore→frobSq-box reduction) that exists ONLY for r=3. I VERIFIED before acting: `routeMCore_le_matBox`
+appears in zero files on origin/genm-firing; `routeMCore_threshold_lt_top` is a sorry @429. The gap is real — the carve is
+the hard INNER piece, but R1-UPPER hfin has a 2nd long pole (the N4 M-shape reduction). Commissioned `genm-n4` for it (in
+parallel with the carve).
+
+**Lesson:** the bedrock/precision discipline caught a confident-headline overclaim — and the catch came from a STRUCTURED
+read-only audit ("verify the dependency chain above the target is actually ready-to-flip, name every remaining sorry"), not
+from the build (the carve's branch is green; green ≠ the headline is one step away). Bank the move: **before declaring a
+sorry "the last piece" of a headline, audit the FULL dependency chain from that sorry UP to the headline + grep that every
+consumer lemma exists (not just the ones below it).** A teammate (or the controller) running that audit proactively — as a
+"ready-to-flip" pre-stage — turns a future surprise into a parallel work-item. The cost of NOT catching it: a "R1-UPPER
+done!" headline that travels far while routeMCore_le_matBox is still unbuilt. (Also: scope-name precisely — "R1-UPPER hfin"
+≠ `resolution_charts` Skeleton:1234, the separate higher RLCT layer; conflating them is the same overclaim trap.)
