@@ -1652,10 +1652,10 @@ noncomputable def psiSplitCutL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
   q + (χ q : ℝ) • psiSplitDeltaL2 H r hr hL q
 
-/-- **S1 — the χ-cutoff Ψ on flat coordinates.** `split⁻¹ ∘ psiSplitCutL2 ∘ split`. Since the
-skeleton's `psiSplitRawL2` is the placeholder `id`, the correction is `0` and `psiL2 = id` for now;
-the body shape is fixed so the diffeo-side lemmas (S2/S3/S4) and FINAL wire against the real map once
-`psiSplitRawL2` is filled. -/
+/-- **S1 — the χ-cutoff Ψ on flat coordinates.** `split⁻¹ ∘ psiSplitCutL2 ∘ split`. At `L = 2`,
+`psiSplitRawL2` is the certified `W⁻¹·[…]` joint action (`psiSplitRawL2Core`); the χ-cutoff makes the
+correction globally `ContDiff` and `= 1` near `wstar`. The diffeo-side lemmas (S2/S3/S4) and FINAL wire
+against this real map. -/
 noncomputable def psiL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
@@ -1764,12 +1764,11 @@ theorem psiL2_fixpoint (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [← hbase, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm_apply_apply]
 
 /-- **The joint-action correction is `ContDiffAt ⊤` on the cutoff support.** The raw map's blocks
-`W⁻¹`, `⅟P00`, `A_s⁻¹` are smooth where their determinants are nonzero — and the cutoff support sits
-in that unit locus (`cutoffBumpSplit`'s `tsupport ⊆ {dets ≠ 0}`). So the correction `δ = psiSplitRawL2
-− id` is `ContDiffAt ⊤` on `tsupport (cutoffBumpSplit)`. (Skeleton placeholder `psiSplitRawL2 = id`
-makes `δ = 0`, `ContDiffAt` by `contDiffAt_const`; once the closed form is filled, this consumes the banked
-`contDiffAt_matrix_inv_entry_of_det_ne_zero` + `contDiffAt_matrix_mul_entry` +
-`contDiffAt_inv_one_add_readX_entry` on the composite/product-pivot inverses.) -/
+`W⁻¹`, `P00⁻¹`, `A_s⁻¹` are smooth where their determinants are nonzero — and the cutoff support sits
+in the joint-unit locus (`tsupport (cutoffBumpSplit) ⊆ jointUnitSet`, where all of `1+readX_s`, `P00`,
+`W` are invertible). At `L = 2` the correction `δ = psiSplitRawL2Core − id` is `ContDiffAt ⊤` there: the
+lens decomposition + the general-`p` entry-`ContDiffAt` bank (`contDiffAt_l2{A0,A1,P00,W}_inv_entry_at`
++ `contDiffAt_l2{T1p,Y1p}_entry_at`) assemble the payload triple. At `L ≠ 2` the correction is `0`. -/
 theorem contDiffAt_psiSplitDeltaL2_of_mem_tsupport (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r))
@@ -1932,12 +1931,12 @@ theorem psiL2_contDiff (H : Fin (L + 1) → ℕ) (r : ℕ)
     ((contDiff_psiSplitCutL2 H r hr hL).comp
       (contDiff_deepestSplit H r hr hL (wstarL2 H r B hB hr hL)))
 
-/-- **The joint-action correction has vanishing strict derivative at the split origin.** The
-`(T1,Y1)` correction `psiSplitRawL2 q − q` is `O(read³)` (each delta block is a product with at least
-two vanishing factors — `K = O(read²)`, `S1 = O(read)`, `W − I = O(read²)`), so its strict derivative
-at `0` is `0`. (Skeleton placeholder `psiSplitRawL2 = id` makes the delta `0` with derivative `0`
-directly; once filled, this is the certified higher-order vanishing — proven componentwise by the
-product rule, NOT from the reads (which are linear, derivative ≠ 0).) -/
+/-- **The joint-action correction has vanishing strict derivative at the split origin.** At `L = 2` the
+`(T1,Y1)` correction `psiSplitRawL2Core q − q` is `O(read²)` (each delta block is a product with ≥ 2
+vanishing factors — `K = O(read²)`, `S1 = O(read)`, `W − I = O(read²)`), so its strict derivative at `0`
+is `0`: the certified higher-order vanishing, proven componentwise via the lens decomposition + the
+matrix normalization (NOT from the reads, which are linear, derivative ≠ 0). At `L ≠ 2` the correction
+is `0`. -/
 theorem hasStrictFDerivAt_psiSplitDeltaL2_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     HasStrictFDerivAt (psiSplitDeltaL2 H r hr hL)
