@@ -233,11 +233,13 @@ theorem prod_smParams_eq_smul_pivotCol (u : Fin (routeMAmbient M) → ℝ)
           else deepCol M hL u hcol j) := by
     intro j
     simp only [smearedDeepLayer, Matrix.updateRow_apply, deepCol]
-  -- REMAINING (mechanical sum-arithmetic): with `hsdl`, split `∑ j` at the pivot `0`
-  -- (`Finset.sum_eq_add_sum_diff_singleton`), reindex the residual sum `{j ≠ 0}` by `residSel`, and
-  -- cancel the shear via the landed `frontMat_routing_eq_resid` (the front fact, entrywise). Surface
-  -- friction only: the `if`-readout (`hsdl`'s `updateRow_apply`) + the residual `succAbove`/`residSel`
-  -- reindex bijection; the front-fact cancellation itself is `frontMat_routing_eq_resid` (LANDED).
+  -- REMAINING (mechanical, fully scoped): rewrite the sum body by `hsdl`, then apply the LANDED generic
+  -- `sum_smearedCol_collapse` with `f = frontMat i`, `d = deepCol`, `lam = routing 0`, and the front-fact
+  -- relation `frontMat_routing_eq_resid` (LANDED) for its `hfront` hypothesis. The only friction left is
+  -- the cast plumbing: the deepest-row index type `Fin (M (deepLayer).castSucc)` ↔ `Fin (w+1)` (the
+  -- opaque-`m1` destructure) and the `Fin.last`/`(deepLayer).succ` column-type alignment, plus matching
+  -- `residSel r` to `Fin.succ r`. All the MATH (peel, mul_apply, reindex, the per-row readout `hsdl`, the
+  -- front-fact entry cancellation, the sum collapse) is LANDED sorry-free; this is surface cast friction.
   sorry
 
 end DLNFibre.DLN.RLCT
