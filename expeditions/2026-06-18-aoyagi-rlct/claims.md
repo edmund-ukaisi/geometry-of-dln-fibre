@@ -185,6 +185,16 @@ No such claim is formalisation-ready until both fields are filled.
   post-pivot/following-factor identities for actual retained-passive readback
   data and prove pivot provenance or an all-pivot cover; a wrapper retaining
   `hD`, `hF`, and `hpivot` is not formalisation progress.
+- **Current status addendum, raw-order source-chart composition, 2026-06-28.**
+  Lean now exposes the direct determinant-chart source presentation
+  `paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData`.
+  It proves that the public raw-order source chart after
+  `topologyTupleEdgeRawOrder` is the direct fixed-base source family attached
+  to `ofTopologyTuple z`, for `z ∈ topologyTupleDetChartSet`.  This is useful
+  source-map bookkeeping, but it does not discharge the active selected-entry
+  fields: factor alignment for actual `sourceReadback` data, pivot
+  provenance/all-pivot coverage, original source-rank coverage, measure/prior
+  transport, normal crossings, pole order, and RLCT remain open.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

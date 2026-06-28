@@ -18,13 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive raw-order source-chart composition
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-source-chart-composition.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-source-chart-composition.md`.
+
+Lean now exposes the direct determinant-chart source presentation:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData
+```
+
+For `z ∈ topologyTupleDetChartSet`, the public raw-order source chart applied
+to `topologyTupleEdgeRawOrder z` is exactly the direct fixed-base source family
+realized from `ofTopologyTuple z`.  The proof is the existing inverse theorem
+`topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder` plus unfolding of
+the raw-order source chart.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` passed.
+Xhigh review by `Godel the 3rd` passed:
+`review-a2-retained-passive-raw-order-source-chart-composition.md`.  Direct
+axiom-footprint check reports `[propext, Classical.choice, Quot.sound]`.
+This is not retained-passive-to-selected-entry factor alignment, pivot
+provenance, all-pivot coverage, original source-rank coverage, measure/prior
+transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 post-interruption source-readout frontier
 
 Reproduction:
 `reproduction-a2-retained-passive-to-selected-entry-fixed-pivot-boundary.md`.
 
 The worktree was rechecked after interruption: branch
-`expedition/aoyagi-rlct` is clean at `2b0ff263` and aligned with
+`expedition/aoyagi-rlct` is clean at `86894b6a` and aligned with
 `origin/expedition/aoyagi-rlct`; `origin/dev` is already an ancestor of this
 branch.  `scripts/sorries` reported zero forbidden markers and
 `git diff --check` was clean before new documentation edits.

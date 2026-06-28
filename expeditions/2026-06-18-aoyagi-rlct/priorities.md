@@ -19,10 +19,33 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, raw-order source-chart composition identity
+
+The optional non-wrapper source-chart identity has landed in
+`RetainedPassiveLocalSource.lean`:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData
+```
+
+On the retained-passive determinant chart, applying the public raw-order source
+chart to `topologyTupleEdgeRawOrder z` is exactly the direct fixed-base source
+family obtained from `ofTopologyTuple z`.  The proof exposes the existing
+inverse theorem
+`topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder`; it is pointwise
+source-chart presentation bookkeeping, not a selected-entry wrapper.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` passed.
+Xhigh review by `Godel the 3rd` passed, and direct axiom-footprint check
+reports `[propext, Classical.choice, Quot.sound]`.  The theorem does not prove
+retained-passive-to-selected-entry factor alignment, pivot provenance/all-pivot
+coverage, original source-rank coverage, measure or prior transport, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-28, post-interruption source-readout frontier
 
 After VM recovery the expedition worktree is clean at
-`2b0ff263 Bank Aoyagi raw-order source pushforward` and aligned with
+`86894b6a Record Aoyagi source-readout frontier` and aligned with
 `origin/expedition/aoyagi-rlct`.  Fresh `origin/dev` is already an ancestor of
 the expedition branch.
 

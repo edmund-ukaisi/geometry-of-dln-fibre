@@ -48,10 +48,43 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Raw-Order Source-Chart Composition Identity
+
+`RetainedPassiveLocalSource.lean` now exposes the pointwise identity
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_eq_sourceEdgeFamilyOfData
+```
+
+for `z ∈ topologyTupleDetChartSet`: the public raw-order source chart applied
+to `topologyTupleEdgeRawOrder z` equals the direct fixed-base source family
+attached to `ofTopologyTuple z`.  This turns an internal calculation used by
+the raw-order image/homeomorphism layer into a named source-chart presentation
+identity:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+  (topologyTupleEdgeRawOrder z)
+=
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData (ofTopologyTuple z).
+```
+
+The proof is only the determinant-chart inverse theorem
+`topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder` plus unfolding of
+the raw-order source chart.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` passed.  Xhigh review by
+`Godel the 3rd` passed, and direct axiom-footprint check reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not move the selected-entry boundary by itself.  It proves no
+factor alignment for actual `sourceReadback` data, no pivot provenance or
+all-pivot cover, no original source-rank coverage, no source/prior measure
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## Latest Reorientation: A2 Source-Readout Frontier
 
 After the interruption, the controller rechecked the Aoyagi worktree:
-`expedition/aoyagi-rlct` is clean at `2b0ff263` and aligned with
+`expedition/aoyagi-rlct` is clean at `86894b6a` and aligned with
 `origin/expedition/aoyagi-rlct`; `origin/dev` is already an ancestor of the
 expedition branch.  No live Lean/build processes survived in the sandbox.
 `scripts/sorries` reported zero forbidden markers and `git diff --check` was
