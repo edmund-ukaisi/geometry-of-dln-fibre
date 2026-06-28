@@ -299,4 +299,60 @@ theorem measurePreserving_updateSub_of_coordInvariant {N : ℕ} (p : Fin N)
     rw [hrec, hinv u 0, sub_eq_add_neg]
   rw [← hmap]; exact hsh
 
+/-- The deepest-`(0,0)` flat coordinate: `flatCoordOf` of the `FlatIdx` slot `(deepLayer, row 0, col 0)`.
+The single coord the smear shears. -/
+noncomputable def smPivotCoord (hrow : 0 < M (deepLayer M hL).castSucc)
+    (hcol : 0 < M (deepLayer M hL).succ) : Fin (routeMAmbient M) :=
+  flatCoordOf M ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩
+
+/-- **`flatCoordOf` is injective** (`Fin.cast` ∘ `Fintype.equivFin`, both injective). -/
+theorem flatCoordOf_injective : Function.Injective (flatCoordOf M) := by
+  intro a b hab
+  rw [flatCoordOf, flatCoordOf] at hab
+  exact (Fintype.equivFin (FlatIdx M)).injective (Fin.cast_injective _ hab)
+
+/-- **The base-params decode at a non-pivot slot is unchanged by the pivot-coord update.** For a slot
+`q ≠ (deepLayer, 0, 0)`, `baseParams (Function.update u smPivotCoord a)` agrees with `baseParams u`. -/
+theorem baseParams_update_pivot_apply (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (q : FlatIdx M) (hq : q ≠ ⟨⟨deepLayer M hL, ⟨0, hrow⟩⟩, ⟨0, hcol⟩⟩) :
+    (baseParams M (Function.update u (smPivotCoord M hL hrow hcol) a)) q.1.1 q.1.2 q.2
+      = (baseParams M u) q.1.1 q.1.2 q.2 := by
+  rw [baseParams, baseParams, paramsEquivFlat_symm_decode, paramsEquivFlat_symm_decode,
+    Function.update_of_ne]
+  exact fun h => hq (flatCoordOf_injective M h)
+
+/-- **The front product is unchanged by the pivot-coord update** (it reads only layers `0..L−2`, none
+the deepest). Via `prodAux_congr_of_eqOn_prefix` + `baseParams_update_pivot_apply` (a non-deepest layer
+slot differs from the deepest `(0,0)` slot in its layer index). -/
+theorem frontMat_update_pivot (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ) :
+    frontMat M hL (Function.update u (smPivotCoord M hL hrow hcol) a) = frontMat M hL u := by
+  rw [frontMat, frontMat]
+  refine prodAux_congr_of_eqOn_prefix M _ _ (L - 1) (by omega) (fun s hs => ?_)
+  funext i j
+  refine baseParams_update_pivot_apply M hL u a hrow hcol ⟨⟨s, i⟩, j⟩ (fun h => ?_)
+  -- the slot's layer `s` is `< L−1` so `s ≠ deepLayer = ⟨L−1,_⟩`; the FlatIdx equality forces it.
+  have : (s : Fin L) = deepLayer M hL := congrArg (fun q : FlatIdx M => q.1.1) h
+  rw [this, deepLayer] at hs; simp only [Fin.val_mk] at hs; omega
+
+/-- **The residual deepest-column reads are unchanged by the pivot-coord update** (they read rows
+`1..m1−1`, never the pivot row `0`). -/
+theorem deepCol_update_pivot_resid (u : Fin (routeMAmbient M) → ℝ) (a : ℝ)
+    (hrow : 0 < M (deepLayer M hL).castSucc) (hcol : 0 < M (deepLayer M hL).succ)
+    (hm1 : 0 < M ⟨L - 1, by omega⟩) (r : Fin (M ⟨L - 1, by omega⟩ - 1)) :
+    deepCol M hL (Function.update u (smPivotCoord M hL hrow hcol) a) hcol (residSel M hL hm1 r)
+      = deepCol M hL u hcol (residSel M hL hm1 r) := by
+  rw [deepCol, deepCol]
+  refine baseParams_update_pivot_apply M hL u a hrow hcol
+    ⟨⟨deepLayer M hL, residSel M hL hm1 r⟩, ⟨0, hcol⟩⟩ (fun h => ?_)
+  -- `q = q*` forces the FlatRowIdx parts equal; same layer ⟹ rows equal, but `residSel r`'s val ≥ 1 ≠ 0.
+  have hrow_eq : (⟨deepLayer M hL, residSel M hL hm1 r⟩ : FlatRowIdx M)
+      = ⟨deepLayer M hL, ⟨0, hrow⟩⟩ := congrArg Sigma.fst h
+  have hval : (residSel M hL hm1 r) = (⟨0, hrow⟩ : Fin (M (deepLayer M hL).castSucc)) :=
+    eq_of_heq (Sigma.ext_iff.1 hrow_eq).2
+  rw [residSel] at hval
+  have := congrArg Fin.val hval
+  simp only [Fin.val_cast, Fin.val_succ] at this; omega
+
 end DLNFibre.DLN.RLCT
