@@ -500,7 +500,38 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
             (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
             (endpointP0 H hL Pf * B * endpointQL H hL Qf)
           = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
-          sorry
+          -- `B = prod(deepestPoint)` (fibre membership), and `decode w0 = deepestPoint`.
+          have hBprod : B = prod H (deepestPoint H r B hB hr hL) :=
+            (deepestPoint_isDeep H r B hB hr hL).1.symm
+          have hdecode : (paramsEquivFlat H).symm wstar = deepestPoint H r B hB hr hL := by
+            rw [hwstar]; exact (paramsEquivFlat H).symm_apply_apply _
+          -- §iii at `w := wstar`: `framedParamsPivot (split wstar) s = Pf s · deepest s · Qf s`.
+          have hframe0 : ∀ s : Fin L,
+              framedParamsPivot H r hr hL J Pf Qf (split wstar) s
+                = Pf s * (deepestPoint H r B hB hr hL) s * Qf s := by
+            intro s
+            rw [hsplit wstar, ← hdecode]
+            exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
+              wstar s
+          -- Telescope: `prod(framedParamsPivot (split wstar)) = endpointP0 · prod(deepest) · endpointQL`.
+          have htel : prod H (framedParamsPivot H r hr hL J Pf Qf (split wstar))
+              = endpointP0 H hL Pf * prod H (deepestPoint H r B hB hr hL) * endpointQL H hL Qf :=
+            endpoint_telescoping_eq H hL (deepestPoint H r B hB hr hL)
+              (framedParamsPivot H r hr hL J Pf Qf (split wstar)) Pf Qf hframe0 hinterface
+          -- `split wstar = 0` (basepoint), and `framedParamsPivot 0 = framedParamsRegPivot 0` (core-zero).
+          have hsplit0 : split wstar = (0 : DeepestSplit H r (deepestNGauge H r)) := by
+            rw [hwstar]; exact hsplit_base
+          -- Assemble: `endpointP0·B·endpointQL = prod(framedParamsPivot (split wstar))` (htel + hBprod),
+          -- `= prod(framedParamsPivot 0)` (hsplit0) `= prod(framedParamsRegPivot 0)` (coreZero), then corM.
+          rw [hBprod, ← htel, hsplit0,
+            show (0 : DeepestSplit H r (deepestNGauge H r))
+              = (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (flatDim (deepestM H r)) → ℝ),
+                  (0 : Fin (deepestNGauge H r) → ℝ)) : DeepestSplit H r (deepestNGauge H r)) from rfl,
+            framedParamsPivot_coreZero H r hr hL J Pf Qf 0 0,
+            show (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))
+                : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+              = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl]
+          exact reindex_prodAux_framedParamsRegPivot_zero H r hr hL hL2 J Pf Qf
         apply Filter.Eventually.of_forall
         intro x
         -- The two framed raw params: `Aq = decode x`, `Aψ = decode (split.symm (ψ (split x)))`.
