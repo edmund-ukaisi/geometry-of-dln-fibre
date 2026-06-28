@@ -18,6 +18,32 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 post-`Ctop` solved-`A1` suffix scaffolding
+
+Lean now has a private post-`Ctop` solved-`A1` tangent and suffix derivative
+package in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopSolvedA1TangentLinearMapAt
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_zero_apply
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_succ_apply
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_self
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_step_apply
+```
+
+The zero solved-`A1` tangent reads the post-`Ctop` target coordinate directly,
+and successor tangents read staged passive `A1`.  The suffix recursion includes
+the terminal solved factor for later `dPsucc` use.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.
+
+Nonclaims: no comparison bridge for the suffix package yet; no `Cnext`, one-step
+lower-left core, recursive `dEarly_postC`, positive-tail `F3` shear, determinant
+equality, measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 post-`Ctop` positive-tail readout scaffolding
 
 Lean now has the first private post-`Ctop` positive-tail helper layer in

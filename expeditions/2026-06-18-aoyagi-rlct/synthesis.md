@@ -48,6 +48,31 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Post-`Ctop` Solved-`A1` Suffix Scaffolding
+
+`RetainedPassiveCoordinatesJacobian.lean` now has a private post-`Ctop`
+solved-`A1` tangent and suffix derivative layer on the `F3`-focused rest tuple.
+The new generic tangent map uses
+
+```text
+m = 0:     Ctop - Tail⁻¹ * dTail_postC * Tail⁻¹ * coord.Ctop
+m = s+1:   A1passive(s)
+```
+
+and the suffix derivative is a `Nat.decreasingInduction` linear-map recursion
+over the solved `A1` family at `z`.  This is the package needed later for the
+`dPsucc` argument in the post-`Ctop` lower-left one-step core; the terminal
+case is included.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian`
+passed.  `scripts/sorries`, `git diff --check`, and the code-only
+forbidden-marker search passed.
+
+This does not yet compare the post-`Ctop` suffix package to the existing
+target-staged suffix derivative on `u = T123 ((fderiv raw z) v)`, and it does
+not define `Cnext`, the lower-left step core, recursive `dEarly_postC`, or the
+positive-tail `F3` shear.
+
 ## Latest A2 Post-`Ctop` Positive-Tail Readout Scaffolding
 
 After VM reorientation, `RetainedPassiveCoordinatesJacobian.lean` now has the

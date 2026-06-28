@@ -241,6 +241,11 @@ existing target-staged passive-tail derivative on
 `u = T123 ((fderiv raw z) v)`.  This is still not the recursive
 `dEarly_postC` map or the positive-tail `F3` shear.
 
+The next helper layer also defines the post-`Ctop` solved-`A1` tangent and
+solved-`A1` suffix derivative linear maps on the same rest tuple.  The suffix
+recursion includes the terminal solved factor, which will supply the future
+`dPsucc` input to the lower-left step core.
+
 ## Nonclaims
 
 This stage is only target-side raw-tuple normalisation.  It does not prove

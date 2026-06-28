@@ -19,6 +19,37 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, post-`Ctop` solved-`A1` suffix scaffolding
+
+The positive-tail post-`Ctop` helper frontier now has a generic solved-`A1`
+tangent and solved-`A1` suffix derivative package on the `F3`-focused rest
+tuple.  New private Lean helpers in
+`RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassivePostCtopSolvedA1TangentLinearMapAt
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_zero_apply
+retainedPassivePostCtopSolvedA1TangentLinearMapAt_succ_apply
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_self
+retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_step_apply
+```
+
+The zero solved-`A1` tangent is the post-`Ctop` expression
+`Ctop - Tail⁻¹ * dTail_postC * Tail⁻¹ * coord.Ctop`; successor solved-`A1`
+tangents read the staged passive `A1` field.  The suffix derivative includes
+the terminal solved factor, which is needed later for the `dPsucc` slot in the
+positive-tail lower-left recursion.
+
+Focused `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` build passed.
+`scripts/sorries`, `git diff --check`, and the code-only forbidden-marker
+search passed.
+
+This is still definition/unfold scaffolding.  It does not prove the comparison
+with the existing target-staged solved-`A1` suffix derivative, does not define
+`Cnext` or recursive `dEarly_postC`, and does not prove the positive-tail `F3`
+shear or any determinant/RLCT result.
+
 ## Latest controller decision - 2026-06-28, post-`Ctop` positive-tail readout scaffolding
 
 After VM reorientation, the target-normalizer frontier has a first positive-tail

@@ -6752,6 +6752,139 @@ private theorem retainedPassivePostCtopSourceCAtLinearMapAt_apply
   rfl
 
 set_option linter.style.longLine false in
+private def retainedPassivePostCtopSolvedA1TangentLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+      Matrix ρ ρ ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let Tail :=
+    ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+      data.A1seed
+  let dTail :=
+    retainedPassivePostCtopTailFDerivLinearMapAt
+      (M := M) (ρ := ρ) (κ' := κ') z 0 (Nat.zero_le M)
+  let tailTerm :
+      retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ :=
+    (retainedPassiveMatrixMulRightLinearMap data.Ctop).comp
+      ((retainedPassiveMatrixMulRightLinearMap Tail⁻¹).comp
+        ((retainedPassiveMatrixMulLeftLinearMap Tail⁻¹).comp dTail))
+  if h0 : m = 0 then
+    retainedPassiveRawF3RestCtopLinearMapAt - tailTerm
+  else
+    retainedPassiveRawF3RestA1passiveLinearMapAt
+      (ρ := ρ) (κ' := κ') ⟨m - 1, by omega⟩
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopSolvedA1TangentLinearMapAt_zero_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (r : retainedPassiveRawF3RestFamily (M := M) ρ κ') :
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let Tail :=
+      ChartLocalSuffixState.retainedPassiveA1TailAfterFirst (K := ℝ) (ρ := ρ)
+        data.A1seed
+    let dTail :=
+      retainedPassivePostCtopTailFDerivLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') z 0 (Nat.zero_le M) r
+    retainedPassivePostCtopSolvedA1TangentLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') z 0 (Nat.succ_pos M) r =
+      r.2.2.2.2 - Tail⁻¹ * dTail * Tail⁻¹ * data.Ctop := by
+  simp [retainedPassivePostCtopSolvedA1TangentLinearMapAt,
+    retainedPassiveRawF3RestCtopLinearMapAt,
+    retainedPassiveMatrixMulRightLinearMap,
+    retainedPassiveMatrixMulLeftLinearMap]
+
+set_option linter.flexible false in
+private theorem retainedPassivePostCtopSolvedA1TangentLinearMapAt_succ_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (s : Fin M)
+    (r : retainedPassiveRawF3RestFamily (M := M) ρ κ') :
+    retainedPassivePostCtopSolvedA1TangentLinearMapAt
+        (M := M) (ρ := ρ) (κ' := κ') z (s.val + 1)
+        (Nat.succ_lt_succ s.isLt) r =
+      r.1 s := by
+  simp [retainedPassivePostCtopSolvedA1TangentLinearMapAt,
+    retainedPassiveRawF3RestA1passiveLinearMapAt]
+
+set_option linter.style.longLine false in
+private def retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (m : ℕ) (hm : m ≤ M + 1) :
+    retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+      Matrix ρ ρ ℝ :=
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  Nat.decreasingInduction
+    (motive := fun _ _ ↦
+      retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ)
+    (fun n hns acc ↦
+      let p : Fin (M + 1) := ⟨n, Nat.lt_of_succ_le hns⟩
+      let Psucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          coord.solvedA1 (Fin.last (M + 1)) p.succ p.succ.le_last
+      (retainedPassiveMatrixMulRightLinearMap (coord.solvedA1 p)).comp acc +
+        (retainedPassiveMatrixMulLeftLinearMap Psucc).comp
+          (retainedPassivePostCtopSolvedA1TangentLinearMapAt
+            (M := M) (ρ := ρ) (κ' := κ') z n (Nat.lt_of_succ_le hns)))
+    0
+    hm
+
+@[simp]
+private theorem retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_self
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ) :
+    retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+        (ρ := ρ) (κ' := κ') z (M + 1) le_rfl =
+      (0 : retainedPassiveRawF3RestFamily (M := M) ρ κ' →ₗ[ℝ]
+        Matrix ρ ρ ℝ) := by
+  simp [retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt]
+
+set_option linter.style.longLine false in
+private theorem retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt_step_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)]
+    [∀ j, DecidableEq (κ' j)]
+    (z : RetainedPassiveRawTopologyTuple (M := M) ρ κ' ℝ)
+    (r : retainedPassiveRawF3RestFamily (M := M) ρ κ')
+    (m : ℕ) (hm : m < M + 1) :
+    retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+        (ρ := ρ) (κ' := κ') z m (Nat.le_of_lt hm) r =
+      let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+      let coord := data.toCoordinateData
+      let p : Fin (M + 1) := ⟨m, hm⟩
+      let Psucc :=
+        ChartLocalSuffixState.residualFactorProduct (K := ℝ)
+          (κ := fun _ : Fin (M + 2) ↦ ρ)
+          coord.solvedA1 (Fin.last (M + 1)) p.succ p.succ.le_last
+      retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+          (ρ := ρ) (κ' := κ') z (m + 1) (Nat.succ_le_of_lt hm) r *
+        coord.solvedA1 p +
+          Psucc *
+            retainedPassivePostCtopSolvedA1TangentLinearMapAt
+              (ρ := ρ) (κ' := κ') z m hm r := by
+  unfold retainedPassivePostCtopSolvedA1SuffixFDerivLinearMapAt
+  rw [Nat.decreasingInduction_succ_left _ _ (Nat.succ_le_of_lt hm) (Nat.le_of_lt hm)]
+  simp [retainedPassiveMatrixMulRightLinearMap,
+    retainedPassiveMatrixMulLeftLinearMap]
+
+set_option linter.style.longLine false in
 private def retainedPassivePostCtopCurrentSolvedA1TangentLinearMapAt
     {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ]
