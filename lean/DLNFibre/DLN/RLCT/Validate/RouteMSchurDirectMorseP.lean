@@ -782,6 +782,8 @@ residual (`schurRatioResidP_capB_lt_top`, `c' < p/2`). NO recursion (unlike the 
 theorem schurCoreP_directMorse (p r : ℕ) (hr : 3 ≤ r) (c' : ℝ) (hc0 : 0 < c')
     (hcp : c' < (p : ℝ) / 2) (hcr : c' < (r ^ 2 : ℝ) / 2) (T : ℝ) (hT : 0 < T) :
     SchurCore p r c' T := by
-  sorry
+  rw [SchurCore, matBoxGen_outer_flat r p c' T, gFlatGen_cover_sum r p (by positivity) c' T]
+  exact ENNReal.sum_lt_top.2
+    (fun q _ => schur_matBoxGenP_chart_lt_top r p hr c' hc0 hcp hcr q T hT)
 
 end DLNFibre.DLN.RLCT
