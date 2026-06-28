@@ -44,3 +44,28 @@ the squareness/budget-cardinality = genm-budget's theorem (not mine). Confirming
 - genBlkFlatLive reads Rfin (ρ≥1) or the p*-interior Rmat (ρ=0) as the active-center fixed-pivot block;
   free angular elsewhere. Dispatch on ρ=Text(L) via the witness's p* (handles leaf vs interior uniformly).
 - the rate (decoder-agnostic) is unchanged; the det (2b-i) blows up the p* pivot to u.
+
+## CONTROLLER CONFIRMED: (a) = R1, squareness/budget CONSUMED (not rebuilt). Slot-guard checked → IN (a).
+R1 = decoder-level fixed-1 pivot at the witness's p* (InteriorDrop's `∃ p, 1≤p<L ∧ Text(p+1)<Text(p) ∧ tail
+col-drop`, line 269). Squareness = `chartDim_eq_flatDim` (RouteMChartIdx:85, CONSUME); #angular=minAdm−1 =
+genm-budget's RouteMBudget theorem (CONSUME). Slot-rerouting guard: STOP+spec if it forces a NEW Fin-N
+bijection; keep in (a) if it relocates WHICH slot is the fixed-1.
+
+SLOT-GUARD VERDICT (verified against B_det3333): R1 fits the square structure — IN (a), NO new bijection.
+Evidence: B_det3333 uses coords x1..x26 (26 distinct) DENSELY + x0 = radial u (read separately as
+phiDet3333 u := phiGen u …); total 27 = flatDim. The fixed `1` in `Rmat 1 = e_{33}` is a LITERAL (no x-slot)
+— the boundary-p* E-block is FIXED (not free readE); the freed E-slot's budget REROUTES to the live Rfin.
+So R1 = relocating which slot is fixed (pivot E-slot → fixed-1; its coordinate reroutes to Rfin), keeping
+N=flatDim. `chartDim_eq_flatDim`'s docstring "+1 radial −1 fixed residual" IS this accounting. Bounded.
+
+## (2,2,4) vs p* reconciliation (subtle-wrongness check, CLEARED)
+genm-budget's "(2,2,4) active center = A₀" vs the witness's p* (interior 1≤p<L): for (2,2,4) L=2, the only
+interior p is p=1; the pivot at boundary 1 (Rmat 1) enters C_1, which feeds A_0 = chainA(…C_1) — so the
+pivot's EFFECT appears in layer A₀ while the pivot itself is at boundary p*=1. Consistent, no contradiction.
+
+## R1 DECODER (the (a) build) — genBlkFlatLiveR1 M t ha p x
+At the pivot boundary p (from InteriorDrop): Rmat p = rmatPad of the FIXED pivot indicator e_{(0,0)} (not
+free readE); the OTHER boundaries' E free (rmatPad readE); the freed pivot-E coordinate reroutes to feed a
+live Rfin (ρ≥1) or stays interior (ρ=0, leaf empty — the pivot at p* IS the active center). Identity boundary
+unchanged (Bmat 0 = reindex 1, Rmat 0 = 0) ⟹ rate holds (decoder-agnostic, routeMCore_phiGen + hC0). The
+det (2b-i) blows up x p → u; the fixed-1 pivot × u = the u-front; the minAdm−1 free angular = u-scaled cols.
