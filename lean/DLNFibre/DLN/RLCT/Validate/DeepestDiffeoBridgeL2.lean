@@ -2031,6 +2031,38 @@ theorem l2T1p_sub_Z1A1invY1p_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [Matrix.mul_assoc (Z1 * A1i * A0i) Y0 T1]
   abel
 
+/-! ### S6p — the L=2 reduced-product two-factor unfold (the sub-4 cast wall)
+
+At `L = 2` the reduced layer product `prod (deepestM H r) C` (a left-associated prefix fold over
+`Fin 3`) collapses to `C firstLayer · C lastLayer`, transported to the running widths by the layer
+`finCongr` reindexes. This is the `prod_eq_prodAux_mul_last` (m = 1) front-peel followed by the
+`prodAux 1 = prodAux 0 · layer0 = 1 · layer0` base, with the width-equalities at `L = 2` discharged by
+`rfl` (`deepestM s = H s − r`). It is what turns the absorbed-core energy `frobSq(prod(deepestM) C)`
+into `frobSq(C₀ · C₁)`, the form the `prod_absorbed_eq_schur_ldu` LDU consumes. -/
+
+/-- **The L=2 reduced product is the two-factor product of the layer cores** (running-width reindexes
+from `prod_eq_prodAux_mul_last` at `m = 1`; the prefix `prodAux 1` peels to `1 · reindex(C 0)`). The
+reindexes carry the layer-index width casts `(0:Fin 2).castSucc = 0`, `(0:Fin 2).succ = 1`,
+`(1:Fin 2).castSucc = 1`, `(1:Fin 2).succ = Fin.last 2`. -/
+theorem prod_deepestM_eq_two_of_L2 (H : Fin 3 → ℕ) (r : ℕ)
+    (C : Params (L := 2) (deepestM H r)) :
+    prod (deepestM H r) C
+      = Matrix.reindex
+            (finCongr (rfl : deepestM H r 0 = deepestM H r ((0 : Fin 2)).castSucc))
+            (finCongr (rfl : deepestM H r 1 = deepestM H r ((0 : Fin 2)).succ))
+            (C (0 : Fin 2))
+          * Matrix.reindex
+            (finCongr (rfl : deepestM H r 1 = deepestM H r ((1 : Fin 2)).castSucc))
+            (finCongr (rfl : deepestM H r (Fin.last 2) = deepestM H r ((1 : Fin 2)).succ))
+            (C (1 : Fin 2)) := by
+  -- Front-peel the last layer (`prod_eq_prodAux_mul_last`, m = 1): `prod = prodAux 1 · reindex(C 1)`.
+  rw [prod_eq_prodAux_mul_last (m := 1) (deepestM H r) C rfl rfl]
+  congr 1
+  -- The prefix `prodAux 1 = prodAux 0 · reindex(C 0)`, and `prodAux 0 = 1`.
+  rw [prodAux_succ (deepestM H r) C 0 (by omega) rfl rfl]
+  -- Goal: `prodAux 0 · reindex(C 0) = reindex(C 0)`; `prodAux 0 = 1` is defeq, so `one_mul`.
+  exact Matrix.one_mul _
+
 /-! ### S6r — joint-move readbacks (the shared foundation for both S6 geometric subs)
 
 `psiSplitRawL2Core` edits ONLY the last-layer `readY` (→ `l2Y1p`) and the last-layer core (→ `l2T1p`);
@@ -2148,6 +2180,71 @@ theorem readY_psiSplitRawL2Core_of_ne_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
       = readY H r hr hL (q.1, q.2.2) s := by
   ext i j; exact readY_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs i j
+
+-- readY of the moved gauge at the LAST layer = l2Y1p (matrix-level).
+theorem readY_psiSplitRawL2Core_last_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+        (psiSplitRawL2Core H r hr hL hL2eq q).2.2) (lastLayer hL)
+      = l2Y1p H r hr hL hL2eq q := by
+  ext i j; exact readY_psiSplitRawL2Core_last H r hr hL hL2eq q i j
+
+/-! ### S6c — the absorbed per-layer cores of the moved point (the sub-4 c₀/c₁ identification)
+
+The absorbed core tuple is `c_s = decode(ψq).2.1 s + schurCorrection(ψq) s = T_s − Z_s·A_s⁻¹·Y_s` (the
+Schur-shifted core read off the MOVED gauge). At the last layer the move sends `T ↦ l2T1p`, `Y ↦ l2Y1p`
+(reads `Z, A` fixed), so `c_last = l2T1p − l2Z1·l2A1⁻¹·l2Y1p = (1 − K)·S1` (the banked keystone
+`l2T1p_sub_Z1A1invY1p_eq`, on the inner ball where `det W ≠ 0`). At the first layer everything is fixed,
+so `c_0` is the original layer-0 Schur core. -/
+
+/-- The moved last-layer Schur correction `schurCorrection(ψq) last = −l2Z1·l2A1⁻¹·l2Y1p`: at the last
+layer `readZ(ψq) = l2Z1`, `1 + readX(ψq) = l2A1`, `readY(ψq) = l2Y1p`. -/
+theorem schurCorrection_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    schurCorrection H r hr hL
+        ((psiSplitRawL2Core H r hr hL hL2eq q).1, (psiSplitRawL2Core H r hr hL hL2eq q).2.2)
+        (lastLayer hL)
+      = -(l2Z1 H r hr hL q) * (l2A1 H r hr hL q)⁻¹ * l2Y1p H r hr hL hL2eq q := by
+  rw [schurCorrection, readZ_psiSplitRawL2Core_eq, readX_psiSplitRawL2Core_eq,
+    readY_psiSplitRawL2Core_last_eq]
+  rfl
+
+/-- **The absorbed last-layer core IS `(1 − K)·S1`** (the sub-4 `c₁`): the moved decode-core `l2T1p`
+plus the moved Schur correction `−l2Z1·l2A1⁻¹·l2Y1p` collapses to `(1 − K)·S1` via the banked keystone
+`l2T1p_sub_Z1A1invY1p_eq` (`det W ≠ 0`). -/
+theorem absorbedCore_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (hW : (l2W H r hr hL hL2eq q).det ≠ 0) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 (lastLayer hL)
+        + schurCorrection H r hr hL
+            ((psiSplitRawL2Core H r hr hL hL2eq q).1, (psiSplitRawL2Core H r hr hL hL2eq q).2.2)
+            (lastLayer hL)
+      = (1 - l2K H r hr hL hL2eq q) * l2S1 H r hr hL hL2eq q := by
+  rw [coreRead_psiSplitRawL2Core_last, schurCorrection_psiSplitRawL2Core_last,
+    ← l2T1p_sub_Z1A1invY1p_eq H r hr hL hL2eq q hW]
+  -- `l2T1p + (−Z1)·A1⁻¹·Y1' = l2T1p − Z1·A1⁻¹·Y1'`.
+  rw [sub_eq_add_neg]
+  congr 1
+  rw [Matrix.neg_mul, Matrix.neg_mul]
+
+/-- **The absorbed cores agree off the last layer** (the sub-4 `c₀`): at a non-last layer every read +
+the decode-core is fixed under the move, so `decode(ψq).2.1 s + schurCorr(ψq) s = decode(q).2.1 s +
+schurCorr(q) s`. -/
+theorem absorbedCore_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 s
+        + schurCorrection H r hr hL
+            ((psiSplitRawL2Core H r hr hL hL2eq q).1, (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
+      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+        + schurCorrection H r hr hL (q.1, q.2.2) s := by
+  rw [coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
+  congr 1
+  -- `schurCorrection(ψq) s = schurCorrection(q) s` for `s ≠ last` (reads fixed).
+  rw [schurCorrection, schurCorrection, readZ_psiSplitRawL2Core_eq, readX_psiSplitRawL2Core_eq,
+    readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs]
 
 -- framedParamsPivot of the moved point: per-layer, equals the original EXCEPT last-layer Y/core.
 theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -2273,6 +2370,23 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
                 ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
     deepestCoreF_coreAbsorb_eq_prodSchur H r hr hL (psiSplitRawL2 H r hr hL q) hball
   rw [hstepA]
+  -- SCOPED RESIDUAL (route A, sub-4 tail). The absorbed-core energy is now `frobSq(prod(deepestM) c)`
+  -- with `c s = decode(ψq).2.1 s + schurCorrection(ψq) s` the per-layer Schur-shifted core.
+  -- BANKED THIS TIDE (axiom-clean clean-three; in this file, S6c/S6p sections):
+  --   • `prod_deepestM_eq_two_of_L2` — the L=2 unfold `prod(deepestM) c = c₀ · c₁` (after `subst hL2`).
+  --   • `absorbedCore_psiSplitRawL2Core_last` — `c₁ = (1 − K)·S1` (consumes the keystone
+  --     `l2T1p_sub_Z1A1invY1p_eq`, needs `det (l2W q) ≠ 0`).
+  --   • `absorbedCore_psiSplitRawL2Core_of_ne` — `c₀ = decode(q).2.1 0 + schurCorr(q) 0` (= the
+  --     original layer-0 Schur core S0, layer-0 reads fixed under ψ).
+  -- REMAINING (2 coupled sub-steps, telescope-bound — route A threads the 7 frame hyps at the caller):
+  --   (1) `det (l2W q) ≠ 0` — the keystone's W-pivot unit. NOT immediate from `hball` (`hball`
+  --       constrains `ψq`, the W-pivot reads off `q`); needs the inner-ball ⊆ `l2ExtraUnitSetSplit`
+  --       (`exists_ball_subset_l2ExtraUnitSetSplit`) pulled back along the joint move, OR a cutoff-radius
+  --       coupling `rIn ≤ l2ExtraRadius`. A genuine coupling sub-step (flagged, not bookkeeping).
+  --   (2) `frobSq(c₀·c₁) = Score x` — the frame-transform assembly: `prod_absorbed_eq_schur_ldu`
+  --       (→ the raw-reduced Schur Rcore) + `rcore_eq_schur_of_corner_split` (hS3b) +
+  --       `schur_frame_transform` (hPbr/hQbr, D_P = D_Q = 1) on `M̂ = endpointP0·(prod−B)·endpointQL`.
+  --       Telescope-coupled (same machinery as sub-3); threads hframe/hinterface/hS3b/hPbr/hQbr.
   sorry
 
 
