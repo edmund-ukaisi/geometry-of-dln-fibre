@@ -19,6 +19,34 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart homeomorphism
+
+The reduced fixed-base raw-order retained-passive source chart now has an
+explicit homeomorphism package:
+
+```text
+detChart_topologyTupleDetChartSet_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph_apply
+```
+
+The homeomorphism composes the determinant-data/topology-tuple presentation
+change, the existing raw-order source-recursive determinant-chart
+homeomorphism, and the existing fixed-base source edge-family homeomorphism.
+The apply theorem exposes that its forward map is the already-public
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart`.
+
+This removes/prepares only the reduced raw-order local-inverse/homeomorphism
+field.  It is not original DLN source-rank coverage, rank-stratum coverage,
+original prior/measure transport, a new Jacobian theorem, residual positivity
+or integrability, normal crossings, pole order, or RLCT.
+
+Focused builds of `RetainedPassiveLocalSource` and
+`RetainedPassiveLocalJacobianMeasure` passed.  Full `DLNFibre` build passed
+with pre-existing warning noise.  `scripts/sorries`, `git diff --check`, and
+touched-file forbidden-marker search passed.  Xhigh review by `Raman the 3rd`
+passed.
+
 ## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart image
 
 The canonical retained-passive raw-order source map is now public in

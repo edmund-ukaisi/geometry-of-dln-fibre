@@ -48,6 +48,36 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Raw-Order Source-Chart Homeomorphism
+
+The reduced fixed-base raw-order retained-passive source chart now has a
+homeomorphism package:
+
+```text
+detChart_topologyTupleDetChartSet_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph_apply
+```
+
+`detChart_topologyTupleDetChartSet_homeomorph` records that determinant-chart
+retained-passive data and determinant-chart topology tuples are homeomorphic
+presentations of the same product coordinates.  The raw-order source-edge
+family homeomorphism then composes this presentation change with the existing
+raw-order determinant-chart homeomorphism and the existing fixed-base source
+edge-family homeomorphism.  The apply theorem identifies the forward map with
+the public canonical raw-order source chart.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.  Full
+`DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and touched-file forbidden-marker search passed.  Xhigh
+review by `Raman the 3rd` passed with no findings.
+
+Nonclaims: this is only reduced fixed-base local inverse/continuity data.  It
+does not prove original DLN source-rank coverage, rank-stratum coverage,
+original prior or measure transport, a new Jacobian theorem, residual
+positivity/integrability, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Raw-Order Source-Chart Image
 
 `RetainedPassiveLocalSource.lean` now exposes the canonical retained-passive

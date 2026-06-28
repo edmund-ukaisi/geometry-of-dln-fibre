@@ -847,6 +847,60 @@ theorem image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sou
 
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The canonical raw-order retained-passive source chart as a homeomorphism
+from the raw-order source-recursive determinant chart to the fixed-base
+continuous source edge-family set.
+
+This is a reduced retained-passive local-inverse package.  It is not original
+DLN source-rank coverage, measure transport, a Jacobian theorem, normal
+crossings, pole order, or RLCT extraction. -/
+def paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph
+    [∀ j, FiniteDimensional K (W j)]
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))) :
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ≃ₜ
+      {E : ∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[K] reverseVertex W p.succ //
+        E ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀} :=
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  (topologyTupleDetChartSet_rawOrderSourceRecursiveDetChartSet_homeomorph
+      (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ')).symm.trans
+    ((detChart_topologyTupleDetChartSet_homeomorph
+        (K := K) (ρ := Fin (Module.finrank K U₀)) (κ' := κ')).symm.trans
+      (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph
+        (K := K) W B U₀ hU₀))
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The `toFun` of the raw-order source-family homeomorphism is the public
+canonical raw-order source chart. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph_apply
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (y :
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀)) :
+    (paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph
+        (K := K) W B U₀ hU₀ y).1 =
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W B U₀ hU₀ y.1 := by
+  simp [paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph,
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart,
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph,
+    detChart_topologyTupleDetChartSet_homeomorph,
+    topologyTupleDetChartSet_rawOrderSourceRecursiveDetChartSet_homeomorph,
+    paperEndpointFixedBaseRetainedPassiveP13SourceChart,
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData]
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The fixed-base retained-passive determinant chart as an ambient open
 partial homeomorphism from retained-passive coordinates to continuous source
 edge families.

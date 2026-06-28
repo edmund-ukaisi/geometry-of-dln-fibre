@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive raw-order source-chart homeomorphism
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-source-chart-homeomorph.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-source-chart-homeomorph.md`.
+
+Lean now packages the reduced fixed-base raw-order retained-passive source
+chart as an actual homeomorphism:
+
+```text
+detChart_topologyTupleDetChartSet_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceEdgeFamily_homeomorph_apply
+```
+
+The first helper identifies determinant-chart retained-passive data with
+determinant-chart topology tuples.  The second composes that with the existing
+raw-order chart homeomorphism and the existing fixed-base source-edge-family
+homeomorphism.  The apply theorem exposes the `toFun` as the public canonical
+raw-order source chart.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure` passed.  Full
+`DLNFibre` build passed with pre-existing warning noise.  `scripts/sorries`,
+`git diff --check`, and touched-file forbidden-marker search passed.  Xhigh
+review by `Raman the 3rd` passed:
+`review-a2-retained-passive-raw-order-source-chart-homeomorph.md`.
+
+Nonclaims: no original DLN source-rank coverage, no rank-stratum coverage, no
+original source prior or measure transport, no new Jacobian theorem, no
+residual positivity/integrability, no normal crossings, no pole order, and no
+RLCT.
+
 ## 2026-06-28 A2 retained-passive raw-order source-chart image
 
 Reproduction:

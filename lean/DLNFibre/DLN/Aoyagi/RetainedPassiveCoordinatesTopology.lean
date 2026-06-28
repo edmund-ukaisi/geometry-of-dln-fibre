@@ -709,6 +709,32 @@ theorem continuous_topologyTuple
           TopologyTuple ρ κ' K) := by
   exact continuous_induced_dom
 
+/-- Determinant-chart retained-passive data and determinant-chart topology
+tuples are homeomorphic presentations of the same product coordinates. -/
+def detChart_topologyTupleDetChartSet_homeomorph
+    {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*}
+    [TopologicalSpace K] [CommRing K] [Fintype ρ] [DecidableEq ρ] :
+    {data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ' //
+        data.detChart} ≃ₜ
+      topologyTupleDetChartSet (K := K) (ρ := ρ) (κ' := κ') where
+  toFun data :=
+    ⟨topologyTuple data.1, by
+      simpa using data.2⟩
+  invFun z :=
+    ⟨ofTopologyTuple (K := K) (ρ := ρ) (κ' := κ') z.1, z.2⟩
+  left_inv data := by
+    apply Subtype.ext
+    simp
+  right_inv z := by
+    apply Subtype.ext
+    simp
+  continuous_toFun :=
+    ((continuous_topologyTuple (ρ := ρ) (κ' := κ') (K := K)).comp
+      continuous_subtype_val).subtype_mk _
+  continuous_invFun :=
+    ((continuous_ofTopologyTuple (ρ := ρ) (κ' := κ') (K := K)).comp
+      continuous_subtype_val).subtype_mk _
+
 @[continuity, fun_prop]
 theorem continuous_A1passive
     {M : ℕ} {ρ K : Type*} {κ' : Fin (M + 2) → Type*} [TopologicalSpace K]
