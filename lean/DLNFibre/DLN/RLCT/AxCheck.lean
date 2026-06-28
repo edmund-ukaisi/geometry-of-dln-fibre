@@ -4,6 +4,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 
 /-!
 # Axiom-hygiene check
@@ -63,6 +64,14 @@ open DLNFibre.DLN.RLCT
 -- must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE (literal outer-product cancellation,
 -- no analysis axiom), no `sorryAx`.
 #print axioms prodAux_frontScalarShear_cancel
+
+-- R1-UPPER corank-3 (the rank-stratified recursion's first real firing) — `core_schur3_lt_top`
+-- (general-`T`, `∫_{matBox 3 3 T}∫_{matBox 3 4 T} frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}`)
+-- + the reusable matrix-box scaling primitive `lintegral_matBox_smul`. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: S2-FREE, no `sorryAx` (despite the imported (3,3,4)-lineage
+-- closure carrying unrelated sorries in RouteMRecursion/RouteMSchur — they do not leak here).
+#print axioms core_schur3_lt_top
+#print axioms lintegral_matBox_smul
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
