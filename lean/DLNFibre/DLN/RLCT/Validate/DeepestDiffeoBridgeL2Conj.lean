@@ -788,4 +788,333 @@ theorem contDiffAt_l2BrConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [heq]
   exact (h1.add h2).add h3
 
+/-! ## S4 — the conjugated strict-derivative-`0` chain
+
+Mirror the bare `hasStrictFDerivAt_l2{K,R,Winv_sub_one,T1p_sub_T1,Y1p_sub_Y1}_entry_zero`. Each carries
+a `Z1c`/`Y0c` outer factor that vanishes at the origin (boundary), so the entry strict derivative is
+`0`. The inverse-bearing pieces thread `hDA0`/`hDA1`/`hY`. -/
+
+/-- `Kc` entry strict-deriv `0` at the origin (`Z1c`, `Y0c` outer factors vanish). -/
+theorem hasStrictFDerivAt_l2KConj_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => l2KConj H r B hB hr hL hL2eq q i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => l2KConj H r B hB hr hL hL2eq q i j)
+      = fun q => (l2Z1Conj H r B hB hr hL q * (l2P00Conj H r B hB hr hL hL2eq q)⁻¹
+          * l2Y0Conj H r B hB hr hL hL2eq q) i j := by
+    funext q; rw [l2KConj]
+  rw [heq]
+  refine hasStrictFDerivAt_matrix_triple_mul_entry_zero
+    (A := fun q => l2Z1Conj H r B hB hr hL q)
+    (B := fun q => (l2P00Conj H r B hB hr hL hL2eq q)⁻¹)
+    (C := fun q => l2Y0Conj H r B hB hr hL hL2eq q) i j
+    (fun a b => (contDiff_l2Z1Conj_entry H r B hB hr hL a b).contDiffAt)
+    (fun a b => contDiffAt_l2P00Conjinv_entry H r B hB hr hL hL2eq hDA0 hDA1 hY a b)
+    (fun a b => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq a b).contDiffAt) ?_ ?_
+  · intro a b; simp only [l2Z1Conj_zero H r B hB hr hL hZ, Matrix.zero_apply]
+  · intro a b; simp only [l2Y0Conj_zero H r B hB hr hL hL2eq hY, Matrix.zero_apply]
+
+/-- `Rc` entry strict-deriv `0` at the origin. -/
+theorem hasStrictFDerivAt_l2RConj_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => l2RConj H r B hB hr hL hL2eq q i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => l2RConj H r B hB hr hL hL2eq q i j)
+      = fun q => (l2Z1Conj H r B hB hr hL q
+          * ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)
+          * l2Y0Conj H r B hB hr hL hL2eq q) i j := by
+    funext q
+    have hassoc : l2RConj H r B hB hr hL hL2eq q
+        = l2Z1Conj H r B hB hr hL q
+          * ((l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)
+          * l2Y0Conj H r B hB hr hL hL2eq q := by
+      rw [l2RConj, Matrix.mul_assoc (l2Z1Conj H r B hB hr hL q) (l2A1Conj H r B hB hr hL q)⁻¹
+        (l2A0Conj H r B hB hr hL q)⁻¹]
+    rw [hassoc]
+  rw [heq]
+  refine hasStrictFDerivAt_matrix_triple_mul_entry_zero
+    (A := fun q => l2Z1Conj H r B hB hr hL q)
+    (B := fun q => (l2A1Conj H r B hB hr hL q)⁻¹ * (l2A0Conj H r B hB hr hL q)⁻¹)
+    (C := fun q => l2Y0Conj H r B hB hr hL hL2eq q) i j
+    (fun a b => (contDiff_l2Z1Conj_entry H r B hB hr hL a b).contDiffAt)
+    (fun a b => contDiffAt_l2A1invA0invConj_entry H r B hB hr hL hDA0 hDA1 a b)
+    (fun a b => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq a b).contDiffAt) ?_ ?_
+  · intro a b; simp only [l2Z1Conj_zero H r B hB hr hL hZ, Matrix.zero_apply]
+  · intro a b; simp only [l2Y0Conj_zero H r B hB hr hL hL2eq hY, Matrix.zero_apply]
+
+/-- `(Wc − 1) i j = Rc i j` (pointwise). -/
+theorem l2WConj_sub_one_apply (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    (l2WConj H r B hB hr hL hL2eq q - 1) i j = l2RConj H r B hB hr hL hL2eq q i j := by
+  rw [l2WConj]; simp [Matrix.add_apply, Matrix.sub_apply]
+
+/-- `(Wc⁻¹ − 1) i j = 0` at the origin. -/
+theorem l2WConjinv_sub_one_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ((l2WConj H r B hB hr hL hL2eq 0)⁻¹ - 1) i j = 0 := by
+  rw [l2WConj_zero H r B hB hr hL hL2eq hZ, inv_one]; simp [Matrix.sub_apply]
+
+/-- `(Wc⁻¹ − 1)` entry strict-deriv `0` at the origin (via the generic keystone; `Wc − 1 = Rc`). -/
+theorem hasStrictFDerivAt_l2WConjinv_sub_one_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    HasStrictFDerivAt (fun q => ((l2WConj H r B hB hr hL hL2eq q)⁻¹ - 1) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  refine hasStrictFDerivAt_winv_sub_one_entry_zero (W := l2WConj H r B hB hr hL hL2eq) i j
+    (fun a b => contDiffAt_l2WConj_entry H r B hB hr hL hL2eq hDA0 hDA1 a b) ?_ ?_ ?_
+  · rw [l2WConj_zero H r B hB hr hL hL2eq hZ, Matrix.det_one]; exact one_ne_zero
+  · intro a b
+    refine (hasStrictFDerivAt_l2RConj_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ a b).congr_of_eventuallyEq ?_
+    filter_upwards with q
+    rw [l2WConj_sub_one_apply]
+  · intro a b; rw [l2WConj_sub_one_apply, l2RConj_zero H r B hB hr hL hL2eq hZ]; rfl
+
+/-- `(T1'c − T1c)` entry strict-deriv `0` at the origin. -/
+theorem hasStrictFDerivAt_l2T1pConj_sub_T1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt (fun q => (l2T1pConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => (l2T1pConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q) i j)
+      = fun q => (((l2WConj H r B hB hr hL hL2eq q)⁻¹
+            - (1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+              (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ)) * l2BrConj H r B hB hr hL hL2eq q) i j
+          + (-(l2KConj H r B hB hr hL hL2eq q * l2S1Conj H r B hB hr hL hL2eq q)
+              + l2RConj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q) i j := by
+    funext q
+    rw [l2T1pConj_sub_T1, l2BrConj_sub_T1, Matrix.add_apply]
+  rw [heq]
+  have hP1 : HasStrictFDerivAt
+      (fun q => (((l2WConj H r B hB hr hL hL2eq q)⁻¹
+          - (1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
+            (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ)) * l2BrConj H r B hB hr hL hL2eq q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_mul_entry_of_left_zero i j
+      (fun k => hasStrictFDerivAt_l2WConjinv_sub_one_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i k)
+      (fun k => l2WConjinv_sub_one_zero H r B hB hr hL hL2eq hZ i k)
+      (fun k => contDiffAt_l2BrConj_entry H r B hB hr hL hL2eq hDA0 hDA1 hY k j)
+  have hKS1 : HasStrictFDerivAt
+      (fun q => (l2KConj H r B hB hr hL hL2eq q * l2S1Conj H r B hB hr hL hL2eq q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_mul_entry_of_left_zero i j
+      (fun k => hasStrictFDerivAt_l2KConj_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i k)
+      (fun k => by rw [l2KConj_zero H r B hB hr hL hL2eq hZ]; simp)
+      (fun k => contDiffAt_l2S1Conj_entry H r B hB hr hL hL2eq hDA1 k j)
+  have hRT1 : HasStrictFDerivAt
+      (fun q => (l2RConj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_mul_entry_of_left_zero i j
+      (fun k => hasStrictFDerivAt_l2RConj_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i k)
+      (fun k => by rw [l2RConj_zero H r B hB hr hL hL2eq hZ]; simp)
+      (fun k => (contDiff_l2T1Conj_entry H r hr hL k j).contDiffAt)
+  have hP2 : HasStrictFDerivAt
+      (fun q => (-(l2KConj H r B hB hr hL hL2eq q * l2S1Conj H r B hB hr hL hL2eq q)
+          + l2RConj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+    have hsum := (hKS1.neg).add hRT1
+    rw [neg_zero, add_zero] at hsum
+    refine hsum.congr_of_eventuallyEq ?_
+    filter_upwards with q
+    simp only [Matrix.add_apply, Matrix.neg_apply, Pi.add_apply, Pi.neg_apply]
+  have hadd := hP1.add hP2
+  simpa using hadd
+
+/-! ## S4 — the conjugated reg payload `Y1'c − Y1c` + the encoded core/gauge payloads -/
+
+/-- `(T1c − T1'c)` entry strict-deriv `0` (negation of `T1'c − T1c`). -/
+theorem hasStrictFDerivAt_l2T1Conj_sub_T1p_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt (fun q => (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have hneg := (hasStrictFDerivAt_l2T1pConj_sub_T1_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i j).neg
+  simp only [neg_zero] at hneg
+  refine hneg.congr_of_eventuallyEq ?_
+  filter_upwards with q
+  simp only [Pi.neg_apply, Matrix.sub_apply]; ring
+
+/-- `(T1c − T1'c) i j = 0` at the origin. -/
+theorem l2T1Conj_sub_T1p_zero_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    (l2T1Conj H r hr hL 0 - l2T1pConj H r B hB hr hL hL2eq 0) i j = 0 := by
+  have h0 := l2T1pConj_sub_T1_zero H r B hB hr hL hL2eq hZ
+  have : l2T1Conj H r hr hL 0 - l2T1pConj H r B hB hr hL hL2eq 0 = 0 := by
+    rw [← neg_sub, h0, neg_zero]
+  rw [this]; rfl
+
+/-- `(A0c⁻¹·Y0c)` entries `ContDiffAt` at the origin. -/
+theorem contDiffAt_l2A0invY0Conj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => ((l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q) i j) 0 :=
+  contDiffAt_matrix_mul_entry (fun a k => contDiffAt_l2A0Conjinv_entry H r B hB hr hL hDA0 a k)
+    (fun k b => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq k b).contDiffAt) i j
+
+/-- `Y1'c − Y1c = A0c⁻¹·Y0c·(T1c − T1'c)` (pure algebra). -/
+theorem l2Y1pConj_sub_Y1 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q
+      = (l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q
+          * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q) := by
+  rw [l2Y1pConj]; abel
+
+/-- `(Y1'c − Y1c)` entry strict-deriv `0` (= `A0c⁻¹·Y0c·(T1c − T1'c)`, right factor vanishes). -/
+theorem hasStrictFDerivAt_l2Y1pConj_sub_Y1_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
+    HasStrictFDerivAt (fun q => (l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => (l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q) i j)
+      = fun q => (((l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q)
+          * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q)) i j := by
+    funext q; rw [l2Y1pConj_sub_Y1, Matrix.mul_assoc]
+  rw [heq]
+  exact hasStrictFDerivAt_matrix_mul_entry_of_right_zero i j
+    (fun k => contDiffAt_l2A0invY0Conj_entry H r B hB hr hL hL2eq hDA0 i k)
+    (fun k => hasStrictFDerivAt_l2T1Conj_sub_T1p_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ k j)
+    (fun k => l2T1Conj_sub_T1p_zero_entry H r B hB hr hL hL2eq hZ k j)
+
+/-- The conjugated gauge payload `l2GaugeΔConj` has strict-deriv `0` at the origin
+(only the last-layer `Y`-tags are nonzero, where it is `Y1'c − Y1c`). -/
+theorem hasStrictFDerivAt_l2GaugeΔConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    HasStrictFDerivAt (l2GaugeΔConj H r B hB hr hL hL2eq)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
+  refine hasStrictFDerivAt_pi'.2 (fun idx => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  obtain ⟨s, rest⟩ := idx
+  rcases rest with (rest | rest)
+  · rcases rest with rest | ⟨i, j⟩
+    · have h0 : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q ⟨s, Sum.inl (Sum.inl rest)⟩)
+          = fun _ => (0 : ℝ) := by
+        funext q; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply]; ring
+      rw [h0]; exact hasStrictFDerivAt_const _ _
+    · by_cases h : s = lastLayer hL
+      · subst h
+        -- The gauge read at the last-`Y` tag is `readY_last = l2Y1Conj − deepBlkY_last` (the gauge slot
+        -- carries ONLY the read, not the deepest constant). So the payload is
+        -- `l2Y1'c − readY_last = (l2Y1'c − l2Y1c) + deepBlkY_last` — a deriv-0 term plus a constant.
+        have hY' : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q
+              ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+            = fun q => (l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q) i j
+                + deepBlkY H r B hB hr hL (lastLayer hL) i j := by
+          funext q
+          have hg : regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
+              ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+              = readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := rfl
+          have hY1c : l2Y1Conj H r B hB hr hL q i j
+              = deepBlkY H r B hB hr hL (lastLayer hL) i j
+                + readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+            rw [l2Y1Conj, Matrix.add_apply]
+          simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hg, Matrix.sub_apply]
+          rw [hY1c]; ring
+        rw [hY']
+        have hbase := hasStrictFDerivAt_l2Y1pConj_sub_Y1_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i j
+        have := hbase.add_const (deepBlkY H r B hB hr hL (lastLayer hL) i j)
+        simpa using this
+      · have h0 : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+            = fun _ => (0 : ℝ) := by
+          funext q; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_neg h]; ring
+        rw [h0]; exact hasStrictFDerivAt_const _ _
+  · have h0 : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q ⟨s, Sum.inr rest⟩)
+        = fun _ => (0 : ℝ) := by
+      funext q; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply]; ring
+    rw [h0]; exact hasStrictFDerivAt_const _ _
+
+/-- The conjugated core payload entry `l2CoreΔTupleConj q s i j` has strict-deriv `0` at the origin. -/
+theorem hasStrictFDerivAt_l2CoreΔTupleConj_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (s : Fin L) (i : Fin (deepestM H r s.castSucc)) (j : Fin (deepestM H r s.succ)) :
+    HasStrictFDerivAt (fun q => l2CoreΔTupleConj H r B hB hr hL hL2eq q s i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  rcases eq_or_ne s (lastLayer hL) with hs | hs
+  · subst hs
+    have hentry : (fun q => l2CoreΔTupleConj H r B hB hr hL hL2eq q (lastLayer hL) i j)
+        = fun q => (l2T1pConj H r B hB hr hL hL2eq q - l2T1Conj H r hr hL q) i j := by
+      funext q; rw [l2CoreΔTupleConj, Function.update_self]
+    rw [hentry]
+    exact hasStrictFDerivAt_l2T1pConj_sub_T1_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i j
+  · have hentry : (fun q => l2CoreΔTupleConj H r B hB hr hL hL2eq q s i j) = fun _ => (0 : ℝ) := by
+      funext q; rw [l2CoreΔTupleConj, Function.update_of_ne hs]; rfl
+    rw [hentry]; exact hasStrictFDerivAt_const _ _
+
+/-- The encoded conjugated core payload `paramsEquivFlatCLE (l2CoreΔTupleConj q)` has strict-deriv `0`. -/
+theorem hasStrictFDerivAt_paramsEquivFlatCLE_l2CoreΔTupleConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    HasStrictFDerivAt
+      (fun q => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
+  refine hasStrictFDerivAt_pi'.2 (fun k => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  set d := (Fintype.equivFin (FlatIdx (deepestM H r))).symm k with hd
+  have hcoord : (fun q => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q) k)
+      = fun q => l2CoreΔTupleConj H r B hB hr hL hL2eq q d.1.1 d.1.2 d.2 := by
+    funext q
+    rw [show (⇑(paramsEquivFlatCLE (deepestM H r)) : Params (deepestM H r) → _)
+        = ⇑(paramsEquivFlat (deepestM H r)) from paramsEquivFlatCLE_coe (deepestM H r)]
+    rfl
+  rw [hcoord]
+  exact hasStrictFDerivAt_l2CoreΔTupleConj_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ d.1.1 d.1.2 d.2
+
 end DLNFibre.DLN.RLCT
