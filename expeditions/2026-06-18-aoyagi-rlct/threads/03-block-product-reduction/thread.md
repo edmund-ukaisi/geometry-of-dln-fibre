@@ -18,6 +18,39 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive Case 2 pivot-nonzero selected-entry hardening
+
+Existing reproduction/card updated:
+`reproduction-a2-retained-passive-case2-pivot-nonzero-source-readout.md`,
+`statement-card-a2-retained-passive-case2-pivot-nonzero-source-readout.md`.
+
+Lean now has a matrix-level fixed-pivot selected-entry inverse:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_matrix_eq_chartMap_of_pivot_ne_zero
+```
+
+and retained-passive two-edge Case 2 consumers:
+
+```text
+exists_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+exists_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+exists_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_pivot_ne_zero
+```
+
+These replace a full entrywise selected-entry readout by a single supplied
+nonzero entry of the displayed post-pivot two-edge product, after the explicit
+product-coordinate equivalence.  Focused builds of
+`SelectedEntrySignedBoxMeasure`, `RetainedPassiveCase2SelectedEntryChartBridge`,
+and `RetainedPassiveCase2LocalJacobianMeasure` passed; the full `DLNFibre`
+build, `scripts/sorries`, `git diff --check`, diff-only forbidden-marker
+search, and direct logical-footprint audit also passed.  The new theorem
+endpoints depend only on `[propext, Classical.choice, Quot.sound]`.  This is
+still finite
+selected-entry inverse algebra only: the nonzero pivot, retained-passive source
+production, original measure transport, normal crossings, pole order, and RLCT
+remain unproved.
+
 ## 2026-06-28 A2 selected-entry target-image residual hypotheses
 
 Reproduction:

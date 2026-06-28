@@ -102,3 +102,75 @@ for `case2PostPivotRetainedPassiveData`.
   explicit.
 - The result is finite algebra over the selected-entry chart map, not source
   production or analytic chart coverage.
+
+## 2026-06-28 matrix-level and canonical hardening
+
+The same calculation has a reusable matrix form.  Let
+
+```text
+D : Matrix mu nu R
+e : AoyagiResidualBlockCoordinateIndex mu nu ~= center
+```
+
+and choose a selected pivot `p : center`.  If the corresponding matrix entry is
+nonzero,
+
+```text
+D ((e.symm p).row) ((e.symm p).col) != 0,
+```
+
+then set
+
+```text
+v(c) = D ((e.symm c).row) ((e.symm c).col).
+```
+
+The fixed-pivot inverse applied to `v` gives
+
+```text
+y(p) = v(p),
+y(c) = v(c) / v(p)       for c != p,
+```
+
+and hence
+
+```text
+D = matrix (fun q => chartMap(p,y)(e q)).
+```
+
+For the retained-passive two-edge Case 2 bridge, the product matrix is
+
+```text
+P = case2DisplayedPostPivotFreeTwoEdgeFactorProduct n hS hcont residual Cprime.
+```
+
+The product-to-center equivalence is
+
+```text
+productCoordEquiv =
+  (Equiv.prodCongr e2 e0).trans residualCoordEquiv.
+```
+
+Thus the single hypothesis
+
+```text
+P ((productCoordEquiv.symm pivot).row)
+  ((productCoordEquiv.symm pivot).col) != 0
+```
+
+replaces the old full entrywise selected-entry readout.  The existing
+entrywise bridge then supplies the residual-factor product matrix identity.
+In the canonical `ofTopologyTuple` two-edge lane, this also gives an
+existential selected-entry residual readout for the canonical p.13 chart-side
+square-sum:
+
+```text
+exists y,
+  aoyagiCoordinateSquareSum(canonical residual block at z) =
+    SelectedEntrySignedBox.CenterCoord.residual pivot y.
+```
+
+This still does not prove the product pivot is nonzero.  It only says that, if
+the displayed product is in the chosen nonzero-pivot chart, the retained-
+passive two-edge and canonical square-sum consumers can use the selected-entry
+coordinates produced by the elementary inverse.

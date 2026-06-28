@@ -48,6 +48,44 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Case 2 Pivot-Nonzero Selected-Entry Hardening
+
+`SelectedEntrySignedBoxMeasure.lean` now has a matrix-level form of the
+fixed-pivot selected-entry inverse:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_matrix_eq_chartMap_of_pivot_ne_zero
+```
+
+If the matrix entry corresponding to the chosen pivot is nonzero after a
+residual-coordinate equivalence, the whole matrix is a selected-entry chart
+matrix for that pivot.  `RetainedPassiveCase2SelectedEntryChartBridge.lean`
+uses this to prove retained-passive two-edge Case 2 pivot-nonzero consumers for
+both supplied coordinate data and the exact two-edge `ofTopologyTuple` suffix:
+
+```text
+exists_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+exists_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+```
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` then exposes the canonical
+p.13 chart-side square-sum form:
+
+```text
+exists_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_pivot_ne_zero
+```
+
+Focused builds of the three edited modules passed.  The full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, diff-only forbidden-marker search,
+xhigh review, and direct logical-footprint audit also passed; the new theorem
+endpoints depend only on `[propext, Classical.choice, Quot.sound]`.
+
+This removes a full entrywise selected-entry readout hypothesis in the two-edge
+lane, replacing it with a single supplied nonzero pivot entry of the displayed
+post-pivot product.  It does not prove that pivot is nonzero, construct
+retained-passive source production, identify original source measure transport,
+produce normal crossings, compute pole order, or extract RLCT.
+
 ## Latest A2 Selected-Entry Target-Image Residual Hypotheses
 
 `SelectedEntrySignedBoxMeasure.lean` now pushes the selected-entry weighted

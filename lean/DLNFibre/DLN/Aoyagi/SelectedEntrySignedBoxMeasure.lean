@@ -296,6 +296,35 @@ theorem exists_chartMap_eq_value_of_pivot_ne_zero {center : Finset ι}
   ⟨preimageOfPivotNeZero pivot value,
     chartMap_preimageOfPivotNeZero pivot value hpivot⟩
 
+/-- Matrix form of the fixed-pivot selected-entry inverse: if the matrix entry
+corresponding to the selected pivot is nonzero, then the whole matrix is a
+selected-entry chart matrix for that pivot after the supplied residual-coordinate
+equivalence.
+
+This is finite coordinate algebra only.  It does not prove that a source
+construction lands in the chosen nonzero-pivot chart. -/
+theorem exists_matrix_eq_chartMap_of_pivot_ne_zero {center : Finset ι}
+    (pivot : center) {μ ν : Type*} (D : Matrix μ ν ℝ)
+    (residualCoordEquiv : AoyagiResidualBlockCoordinateIndex μ ν ≃ center)
+    (hpivot :
+      D (residualCoordEquiv.symm pivot).1
+        (residualCoordEquiv.symm pivot).2 ≠ 0) :
+    ∃ y : center → ℝ,
+      D =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c : AoyagiResidualBlockCoordinateIndex μ ν ↦
+            chartMap pivot y (residualCoordEquiv c)) := by
+  let value : center → ℝ :=
+    fun p ↦ D (residualCoordEquiv.symm p).1 (residualCoordEquiv.symm p).2
+  have hpivot_value : value pivot ≠ 0 := by
+    simpa [value] using hpivot
+  rcases exists_chartMap_eq_value_of_pivot_ne_zero pivot value hpivot_value with
+    ⟨y, hy⟩
+  refine ⟨y, ?_⟩
+  ext i j
+  have hcoord := congrFun hy (residualCoordEquiv (i, j))
+  simpa [value, AoyagiResidualBlockCoordinateIndex.matrix] using hcoord.symm
+
 /-- The center-indexed selected-entry chart map is continuous. -/
 theorem continuous_chartMap {center : Finset ι} (pivot : center) :
     Continuous (chartMap pivot) := by

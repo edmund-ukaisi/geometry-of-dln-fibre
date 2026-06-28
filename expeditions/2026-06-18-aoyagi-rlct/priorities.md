@@ -19,6 +19,38 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive Case 2 pivot-nonzero hardening
+
+The finite selected-entry inverse has been lifted from center-coordinate
+vectors to residual matrices:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_matrix_eq_chartMap_of_pivot_ne_zero
+```
+
+The retained-passive two-edge Case 2 bridge now has pivot-nonzero variants for
+generic retained-passive coordinate data, the exact `ofTopologyTuple` whole
+suffix, and the canonical p.13 chart-side square-sum:
+
+```text
+exists_residualFactorProduct_retainedPassiveCoordinateData_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+exists_residualFactorProduct_ofTopologyTuple_eq_selectedEntryCenter_matrix_of_case2PostPivot_pivot_ne_zero
+exists_aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_case2PostPivot_pivot_ne_zero
+```
+
+This is an honest hardening of the Case 2 finite algebra layer: a full
+entrywise selected-entry readout is replaced by the single supplied hypothesis
+that the displayed post-pivot two-edge product is nonzero in the chosen pivot
+entry after the explicit product-coordinate equivalence.  It does not prove
+that nonzero condition or source production.  The active frontier is unchanged:
+construct retained-passive source production/pushforward or a retained-passive
+chart-side monomial/normal-crossing statement.
+
+Focused builds, the full `DLNFibre` build, `scripts/sorries`,
+`git diff --check`, diff-only forbidden-marker search, xhigh review, and direct
+logical-footprint audit passed.  The new theorem endpoints depend only on
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-06-28, selected-entry target-image residual hypotheses
 
 The selected-entry weighted source-box theorem has been pushed through the
