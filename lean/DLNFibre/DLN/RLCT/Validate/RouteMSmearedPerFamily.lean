@@ -111,4 +111,21 @@ theorem measurable_matrixInv_entry {X : Type*} [MeasurableSpace X] {n : ℕ}
   simp only [hentry]
   exact (measurable_matrixDet A hA).inv.mul (measurable_matrixAdjugate A hA i j)
 
+/-- **Matrix-product entrywise measurability.** `(A·B) i j = ∑_k A i k · B k j` (`mul_apply`); a finite
+sum of products of entry-measurable maps. The other reusable `Λ₀`-building block (`Λ₀ = (P₁ᵀP₁)⁻¹·P₁ᵀ·P₂`
+is a chain of these + `measurable_matrixInv_entry`). -/
+theorem measurable_matrixMul_entry {X : Type*} [MeasurableSpace X] {n m k : ℕ}
+    (A : X → Fin n → Fin m → ℝ) (B : X → Fin m → Fin k → ℝ)
+    (hA : ∀ i j, Measurable (fun x => A x i j)) (hB : ∀ i j, Measurable (fun x => B x i j))
+    (i : Fin n) (j : Fin k) :
+    Measurable (fun x => (Matrix.of (A x) * Matrix.of (B x)) i j) := by
+  simp only [Matrix.mul_apply, Matrix.of_apply]
+  exact Finset.measurable_sum _ (fun l _ => (hA i l).mul (hB l j))
+
+/-- **Matrix-transpose entrywise measurability** (`Aᵀ i j = A j i`). -/
+theorem measurable_matrixTranspose_entry {X : Type*} [MeasurableSpace X] {n m : ℕ}
+    (A : X → Fin n → Fin m → ℝ) (hA : ∀ i j, Measurable (fun x => A x i j)) (i : Fin m) (j : Fin n) :
+    Measurable (fun x => (Matrix.of (A x)).transpose i j) := by
+  simp only [Matrix.transpose_apply, Matrix.of_apply]; exact hA j i
+
 end DLNFibre.DLN.RLCT
