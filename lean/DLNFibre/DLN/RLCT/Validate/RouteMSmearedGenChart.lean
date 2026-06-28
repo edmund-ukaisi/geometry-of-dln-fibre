@@ -775,4 +775,55 @@ theorem subBox_pivot_peel_diverges {n : ℕ} (p : Fin (n + 1)) (α : ℝ) (hα :
   rw [Function.mem_support, ne_eq, ENNReal.ofReal_eq_zero, not_le]
   exact Real.rpow_pos_of_pos (hRU y hy) _
 
+/-! ## The rest-box existence helper (the continuity-shrink, abstract) -/
+
+/-- **The rest box exists** (abstract, the sub-crux). Around a witness `y₀` where `F > 0` (off-pole) and
+`G = 0` (no shift), with `F`/`G` continuous at `y₀`, there is a positive-measure measurable cube `R` on
+which `F > 0`, `|G| ≤ ε/4`, and every coordinate is `≤ |y₀ k| + ε`. (`F = frontU`, `G = smearShift` in
+flat rest coords; `y₀` the off-pole witness.) The cube is a `𝓝 y₀` neighbourhood shrunk into
+`{F>0} ∩ {|G| ≤ ε/4}` and into half-width `≤ ε`. -/
+theorem exists_rest_box {n : ℕ} (F G : (Fin n → ℝ) → ℝ) (y₀ : Fin n → ℝ)
+    (hFcont : ContinuousAt F y₀) (hFpos : 0 < F y₀)
+    (hGcont : ContinuousAt G y₀) (hG0 : G y₀ = 0)
+    (ε : ℝ) (hε : 0 < ε) :
+    ∃ R : Set (Fin n → ℝ), MeasurableSet R ∧ 0 < (volume : Measure (Fin n → ℝ)) R ∧
+      (∀ y ∈ R, 0 < F y) ∧ (∀ y ∈ R, |G y| ≤ ε / 4) ∧ (∀ y ∈ R, ∀ k, |y k| ≤ |y₀ k| + ε) := by
+  have hFnhds : {y | 0 < F y} ∈ nhds y₀ := hFcont.preimage_mem_nhds (Ioi_mem_nhds hFpos)
+  have hGnhds : {y | |G y| ≤ ε / 4} ∈ nhds y₀ := by
+    have hIcc : G ⁻¹' (Set.Icc (-(ε / 4)) (ε / 4)) ∈ nhds y₀ :=
+      hGcont.preimage_mem_nhds (by rw [hG0]; exact Icc_mem_nhds (by linarith) (by linarith))
+    have heq : G ⁻¹' (Set.Icc (-(ε / 4)) (ε / 4)) = {y | |G y| ≤ ε / 4} := by ext y; simp [abs_le]
+    rwa [heq] at hIcc
+  have hInter : {y | 0 < F y} ∩ {y | |G y| ≤ ε / 4} ∈ nhds y₀ := Filter.inter_mem hFnhds hGnhds
+  rw [Metric.mem_nhds_iff] at hInter
+  obtain ⟨δ₀, hδ₀, hball⟩ := hInter
+  set δ := min (δ₀ / 2) (ε / 2) with hδdef
+  have hδpos : 0 < δ := lt_min (by linarith) (by linarith)
+  have hδltδ₀ : δ < δ₀ := lt_of_le_of_lt (min_le_left _ _) (by linarith)
+  have hδleε : δ ≤ ε := le_trans (min_le_right _ _) (by linarith)
+  have hcube_sub : ∀ y ∈ Set.univ.pi (fun k => Set.Icc (y₀ k - δ) (y₀ k + δ)),
+      y ∈ {y | 0 < F y} ∩ {y | |G y| ≤ ε / 4} := by
+    intro y hy
+    refine hball ?_
+    rw [Metric.mem_ball]
+    have hd : dist y y₀ ≤ δ := by
+      rw [dist_pi_le_iff (le_of_lt hδpos)]
+      intro k
+      have := hy k (Set.mem_univ k); rw [Set.mem_Icc] at this
+      rw [Real.dist_eq, abs_le]; constructor <;> [linarith [this.1]; linarith [this.2]]
+    linarith
+  refine ⟨Set.univ.pi (fun k => Set.Icc (y₀ k - δ) (y₀ k + δ)), ?_, ?_, ?_, ?_, ?_⟩
+  · exact MeasurableSet.univ_pi (fun k => measurableSet_Icc)
+  · rw [volume_pi_pi]
+    refine CanonicallyOrderedAdd.prod_pos.mpr (fun k _ => ?_)
+    rw [Real.volume_Icc, ENNReal.ofReal_pos]; linarith
+  · exact fun y hy => (hcube_sub y hy).1
+  · exact fun y hy => (hcube_sub y hy).2
+  · intro y hy k
+    have := hy k (Set.mem_univ k); rw [Set.mem_Icc] at this
+    rw [abs_le]
+    have hle : y₀ k ≤ |y₀ k| := le_abs_self _
+    have hge : -|y₀ k| ≤ y₀ k := neg_abs_le _
+    constructor <;> [linarith [this.1]; linarith [this.2]]
+
 end DLNFibre.DLN.RLCT
