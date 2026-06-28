@@ -19,6 +19,35 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive raw-order source-chart product-density pushforward
+
+The public raw-order retained-passive source chart now has explicit
+source-measure support and product-density pushforward endpoints in
+`RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_sourceEdgeFamilySet_eq_self
+measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_restrict_sourceEdgeFamilySet
+```
+
+The first theorem proves that pushing `m.restrict T` through
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart` is already
+supported on the fixed-base retained-passive source edge-family set.  The
+second specializes the solved-`A1` product-determinant raw-order COV to that
+public source chart and displays the target restriction to the source
+edge-family set.
+
+This is genuine reduced fixed-base retained-passive source-production and
+product-density pushforward progress: it connects the public raw-order source
+chart/image theorem with the computed Jacobian measure route.  It does not
+transport an original DLN source prior, prove full source-rank coverage,
+identify a selected-entry signed-box density, prove residual positivity or
+finite negative-power integrability, produce normal crossings, compute pole
+order, or extract RLCT.  The remaining A2 frontier is now the retained-passive
+to selected-entry measure/readout bridge or a retained-passive chart-side
+monomial/normal-crossing construction, plus original prior/source-density
+transport if that route is used.
+
 ## Latest controller decision - 2026-06-28, retained-passive Case 2 pivot-nonzero hardening
 
 The finite selected-entry inverse has been lifted from center-coordinate

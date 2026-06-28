@@ -165,6 +165,15 @@ No such claim is formalisation-ready until both fields are filled.
   older "positive-tail F3 open", "not full target normalisation", and
   "construction of target equivalence remains separate" phrases retained below
   as historical detail.
+- **Current status addendum, raw-order pushforward, 2026-06-28.** The public
+  raw-order source chart now has source-measure support and product-density
+  pushforward theorems to the fixed-base retained-passive source edge-family
+  set.  This removes a hidden-let presentation gap in the canonical
+  local-source measure route, but it is still reduced fixed-base
+  retained-passive measure plumbing.  It does not prove original source-prior
+  transport, full source-rank coverage, retained-passive-to-selected-entry
+  signed-box density identification, residual positivity/integrability,
+  normal crossings, pole order, or RLCT.
 - **Historical status.** partial algebraic Lean artifacts landed and reviewed: the
   post-`Ctop` terminal `F3` zero-tail (`M = 0`) stage is now packaged as a
   determinant-one raw-tuple shear fixing all fields except `F3`, with composed

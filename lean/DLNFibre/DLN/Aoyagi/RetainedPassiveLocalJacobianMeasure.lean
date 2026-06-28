@@ -1275,6 +1275,204 @@ theorem measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_
       (by simpa [EFam] using (continuous_id : Continuous (fun E : EFam ↦ E)))
       hsourceChart hrealize
 
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- The public raw-order retained-passive source chart has target measure
+supported on the fixed-base source edge-family set. -/
+theorem measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_sourceEdgeFamilySet_eq_self
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+    let sourceSet : Set EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀
+    (Measure.map sourceChart (m.restrict T)).restrict sourceSet =
+      Measure.map sourceChart (m.restrict T) := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+  let sourceSet : Set EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀
+  have hsourceChart :
+      AEMeasurable sourceChart (m.restrict T) := by
+    simpa [sourceChart, paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart,
+      T, ρ, κ', EFam] using
+      retainedPassiveP13CanonicalSourceChart_aemeasurable
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+  have hTnull : NullMeasurableSet T m := by
+    simpa [T, ρ, κ'] using
+      nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hchart_mem :
+      ∀ᵐ y ∂ m.restrict T, sourceChart y ∈ sourceSet := by
+    filter_upwards [ae_restrict_mem₀ hTnull] with y hy
+    have hmem :
+        sourceChart y ∈
+          paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀ := by
+      rw [← image_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_sourceEdgeFamilySet
+        (K := ℝ) W B U₀ hU₀]
+      exact ⟨y, by simpa [T, ρ, κ'] using hy, by simp [sourceChart]⟩
+    simpa [sourceSet] using hmem
+  have hsourceSet_meas : MeasurableSet sourceSet := by
+    exact
+      (isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W B U₀ hU₀).measurableSet
+  have hmap_mem :
+      ∀ᵐ E ∂ Measure.map sourceChart (m.restrict T), E ∈ sourceSet :=
+    (ae_map_iff hsourceChart hsourceSet_meas).2 hchart_mem
+  simpa [T, sourceChart, sourceSet, ρ, κ', EFam] using
+    Measure.restrict_eq_self_of_ae_mem hmap_mem
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
+/-- The solved-`A1` product determinant density pushes forward through the
+public raw-order retained-passive source chart to the source-edge-family
+measure restricted to the fixed-base source edge-family set. -/
+theorem measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_restrict_sourceEdgeFamilySet
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure] :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let T : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+    let sourceSet : Set EFam :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+      (Measure.map sourceChart (m.restrict T)).restrict sourceSet := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart (K := ℝ) W B U₀ hU₀
+  let sourceSet : Set EFam :=
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀
+  have hs : NullMeasurableSet S m := by
+    simpa [S, ρ, κ'] using
+      nullMeasurableSet_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hsourceChart :
+      AEMeasurable sourceChart (m.restrict T) := by
+    simpa [sourceChart, paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart,
+      T, ρ, κ', EFam] using
+      retainedPassiveP13CanonicalSourceChart_aemeasurable
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+  have hcov :
+      Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          ((m.restrict S).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := M) (ρ := ρ) (κ' := κ') z))) =
+        Measure.map sourceChart (m.restrict T) := by
+    simpa [S, T, sourceChart, ρ, κ', EFam] using
+      map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_rawSourceChart
+        (M := M) (ρ := ρ) (κ' := κ') (β := EFam)
+        m sourceChart hs hsourceChart
+  have hsupport :
+      (Measure.map sourceChart (m.restrict T)).restrict sourceSet =
+        Measure.map sourceChart (m.restrict T) := by
+    simpa [T, sourceChart, sourceSet, ρ, κ', EFam] using
+      measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_sourceEdgeFamilySet_eq_self
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+  calc
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+        Measure.map sourceChart (m.restrict T) := hcov
+    _ = (Measure.map sourceChart (m.restrict T)).restrict sourceSet := hsupport.symm
+
 private theorem retainedPassiveP13CanonicalSourceChart_comp_topologyTupleEdgeRawOrder_aemeasurable_withDensity_formalProductAbsDet
     [∀ j, FiniteDimensional ℝ (W j)]
     {U₀ : Submodule ℝ (reverseVertex W 0)}

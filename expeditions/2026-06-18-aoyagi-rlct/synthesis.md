@@ -48,6 +48,40 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Raw-Order Source-Chart Product-Density Pushforward
+
+`RetainedPassiveLocalJacobianMeasure.lean` now exposes the public raw-order
+source chart in the product-density measure route:
+
+```text
+measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_sourceEdgeFamilySet_eq_self
+measure_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_restrict_sourceEdgeFamilySet
+```
+
+The support theorem says that
+
+```text
+Measure.map paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+  (m.restrict topologyTupleRawOrderSourceRecursiveDetChartSet)
+```
+
+is unchanged by restriction to
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet`.  The proof uses
+the public source-image theorem and the existing a.e.-measurability of the
+canonical raw source chart.
+
+The product-density theorem specializes
+`map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_rawSourceChart`
+to the public raw-order source chart, giving the determinant-chart
+product-density pushforward directly as the source-chart pushforward restricted
+to the fixed-base source edge-family set.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure`
+passed.  Nonclaims: no original source prior, no full source-rank coverage, no
+retained-passive-to-selected-entry signed-box density identification, no
+residual positivity/integrability, no normal crossings, no pole order, and no
+RLCT.
+
 ## Latest A2 Case 2 Pivot-Nonzero Selected-Entry Hardening
 
 `SelectedEntrySignedBoxMeasure.lean` now has a matrix-level form of the
