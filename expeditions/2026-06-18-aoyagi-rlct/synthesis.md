@@ -70,6 +70,10 @@ New local-source names:
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_of_realization_of_cov
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_of_realization
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_of_realization
+retainedPassiveP13CanonicalSourceChart_aemeasurable
+retainedPassiveP13CanonicalSourceChart_realize
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet
 ```
 
 The proof keeps two layers separate.  First, the coordinate-level wrappers
@@ -80,6 +84,12 @@ restriction is the old abstract weighted pushforward, both the old abstract
 COV and the new formal/product COV push forward to `map sourceChart
 (m.restrict T)`, hence the local restriction is also the formal/product
 weighted pushforward.
+
+The canonical wrappers add the old canonical source chart
+`SourceEdgeFamilyOfData (ofTopologyTuple (topologyTupleEdgeRawOrderInverse y))`.
+The private helper facts prove a.e.-measurability on `T` and the raw-order
+realization identity, then the public canonical theorems call the realized
+formal/product wrappers with `Cedge = id`.
 
 Focused builds of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure` and
@@ -92,9 +102,14 @@ source-side, raw-order composition is correct, `hrealize` still gates
 local-source restriction, and the checkpoint does not claim original prior,
 signed-box density, normal crossings, pole order, or RLCT.
 
-Next frontier: add canonical retained-passive source-chart wrappers if useful,
-then decide whether downstream signed-box/source-density sockets can consume
-the realized product-density theorem without adding external prior claims.
+Xhigh review by `Euclid the 2nd` passed for the canonical extension: the source
+chart shape matches the older canonical theorem, densities remain on the
+determinant-chart source side, and no original-prior, signed-box, or RLCT claim
+is introduced.
+
+Next frontier: decide whether downstream signed-box/source-density sockets can
+consume the canonical product-density theorem without adding external prior
+claims.
 
 ## Latest A2 Formal-Density Change Of Variables
 

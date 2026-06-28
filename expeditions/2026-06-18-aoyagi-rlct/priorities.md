@@ -38,18 +38,24 @@ map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restri
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_of_realization_of_cov
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet_of_realization
 measure_map_restrict_retainedPassiveP13LocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_of_realization
+retainedPassiveP13CanonicalSourceChart_aemeasurable
+retainedPassiveP13CanonicalSourceChart_realize
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet
+measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet
 ```
 
 The proof composes the new raw-order formal/product COV through an arbitrary
 downstream map, then uses the old realized local-source restriction theorem to
 identify the local-source restriction with the same `map sourceChart
-(m.restrict T)`.  This is a realized local-source theorem; the canonical
-source-chart wrappers and signed-box source-density handoffs remain separate.
+(m.restrict T)`.  The canonical source-chart wrappers discharge the realization
+and a.e.-measurability hypotheses internally by reusing the raw-order inverse
+and retained-passive source-chart continuity machinery.  Signed-box
+source-density handoffs remain separate.
 
 Focused builds for the coordinate and local leaf modules passed.  The top-level
 `DLNFibre` build passed with only pre-existing warning noise.  `scripts/sorries`,
 `git diff --check`, and the code-only forbidden-marker search passed.  Xhigh
-review by `Hypatia the 2nd` passed.
+reviews by `Hypatia the 2nd` and `Euclid the 2nd` passed.
 
 This still does not construct an original-source prior, prove signed-box
 source-density identification, normal crossings, pole order, or RLCT.

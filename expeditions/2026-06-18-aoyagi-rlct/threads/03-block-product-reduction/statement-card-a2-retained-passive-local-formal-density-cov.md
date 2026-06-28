@@ -64,5 +64,5 @@ formal/product weighted pushforward.
 
 No original source prior is constructed.  No signed-box source-density
 identification is proved.  No normal-crossing theorem, pole-order theorem, or
-RLCT theorem is claimed.  Canonical retained-passive local-source wrappers are
-not yet added in this checkpoint.
+RLCT theorem is claimed.  The canonical retained-passive local-source wrappers
+are recorded in the follow-up canonical statement card.
