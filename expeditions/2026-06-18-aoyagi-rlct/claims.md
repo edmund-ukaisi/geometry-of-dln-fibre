@@ -140,6 +140,15 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, fixed-base retained-passive pre-measure inputs,
+  2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix`,
+  which packages local-source membership and the source-readback residual-factor
+  matrix identity from supplied `hdet`, `hedge`, and `hdataFactor` hypotheses.
+  This is a consumer-shaped bridge for fixed-base work; it does not prove the
+  edge-matrix realization hypothesis `hedge`, endpoint transport of
+  `edgeMatrix` or `sourceReadback`, source-prior pushforward, Jacobian density
+  comparison, normal crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive endpoint transport,
   2026-06-28.** Lean now exposes
   `ChartLocalSuffixState.residualFactorProduct_endpointTransport`,

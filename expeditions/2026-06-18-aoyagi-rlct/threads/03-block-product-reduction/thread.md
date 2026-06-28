@@ -18,6 +18,31 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 fixed-base retained-passive pre-measure inputs
+
+Reproduction:
+`reproduction-a2-retained-passive-fixed-base-premeasure-inputs.md`.
+Statement card:
+`statement-card-a2-retained-passive-fixed-base-premeasure-inputs.md`.
+
+Lean now packages the fixed-base retained-passive source-side inputs:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+```
+
+From `hdet`, `hedge`, and `hdataFactor`, it returns both local-source
+membership of `sourceChart y` and the source-readback residual-factor matrix
+identity.  This is the consumer-shaped socket for an endpoint-transported Case
+2 fixed-base source theorem.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed with
+the existing imported warning profile.
+
+This does not prove the edge-matrix realization hypothesis `hedge`, endpoint
+transport of `edgeMatrix` or `sourceReadback`, measure transport, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 retained-passive endpoint transport
 
 Reproduction:

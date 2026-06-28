@@ -1487,6 +1487,82 @@ theorem sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordin
   exact hdataFactor y
 
 set_option linter.unusedSectionVars false in
+/-- Realized retained-passive coordinate data give the two source-side inputs
+needed by the chart-produced local-measure handoff.
+
+The theorem packages local-source membership together with the retained-passive
+source-readback residual-factor identity.  The determinant-chart proof, edge
+matrix realization, and stored-data residual-factor identity remain explicit
+hypotheses. -/
+theorem retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    (sourceChart : (center → ℝ) → α)
+    (retainedData :
+      (center → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : ∀ y : center → ℝ, (retainedData y).detChart)
+    (hedge :
+      ∀ y : center → ℝ,
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (Cedge (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)) =
+          (retainedData y).edgeMatrix)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (hdataFactor :
+      ∀ y : center → ℝ,
+        ChartLocalSuffixState.residualFactorProduct (retainedData y).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c))) :
+    (∀ y : center → ℝ,
+      sourceChart y ∈
+        paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge) ∧
+    (∀ y : center → ℝ,
+      let E :=
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+          (fun p : Fin (M + 1) ↦
+            (Cedge (sourceChart y) p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))
+      ChartLocalSuffixState.residualFactorProduct
+          (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) := by
+  constructor
+  · intro y
+    dsimp [paperEndpointFixedBaseRetainedPassiveP13LocalSource]
+    rw [hedge y]
+    exact
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart_edgeMatrix_of_detChart
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (data := retainedData y) (hdet y)
+  · exact
+      sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+        (W := W) (B := B) (pivot := pivot) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) sourceChart retainedData hdet hedge
+        residualCoordEquiv hdataFactor
+
+set_option linter.unusedSectionVars false in
 /-- A retained-passive source-readback residual-factor identity gives the
 selected-entry residual square-sum expected by the local-measure handoff.
 

@@ -48,6 +48,44 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Fixed-Base Retained-Passive Pre-Measure Inputs
+
+The source-facing fixed-base inputs identified by xhigh `Pasteur` are now
+bundled in a generic theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+```
+
+The theorem consumes:
+
+```text
+hdet        : ∀ y, (retainedData y).detChart
+hedge       : ∀ y, fixed-base edge matrix of sourceChart y =
+                    (retainedData y).edgeMatrix
+hdataFactor : ∀ y, residualFactorProduct (retainedData y).C =
+                    selected-entry center-coordinate matrix.
+```
+
+It returns local-source membership for each `sourceChart y` and the
+source-readback residual-factor product identity for the same fixed-base edge
+matrix.  The proof of membership unfolds
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource`, rewrites by `hedge`, and
+uses `sourceRecursiveDetChart_edgeMatrix_of_detChart`; the readback factor
+identity is the existing inverse bridge
+`sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-fixed-base-premeasure-inputs.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-premeasure-inputs.md`.
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed with
+the existing imported warning profile.
+
+This is not source production: `hedge` remains an explicit hypothesis.  The
+next hard fixed-base step is still to construct or transport the relevant
+edge-matrix/source realization.
+
 ## Latest A2 Retained-Passive Endpoint Transport
 
 The first endpoint-transport layer for retained-passive Case 2 work has landed.

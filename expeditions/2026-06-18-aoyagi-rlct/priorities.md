@@ -19,6 +19,37 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, fixed-base retained-passive pre-measure inputs
+
+The fixed-base retained-passive local-measure inputs can now be packaged from
+realized coordinate data:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_retainedPassiveCoordinateData_edgeMatrix
+```
+
+Given a selected-entry source chart, fixed-base coordinate data
+`retainedData y`, determinant-chart proofs `hdet`, fixed-base edge-matrix
+realization `hedge`, and stored-data residual-factor readout `hdataFactor`,
+the theorem returns both:
+
+```text
+sourceChart y ∈ paperEndpointFixedBaseRetainedPassiveP13LocalSource ...
+```
+
+and the source-readback residual-factor matrix identity needed by the
+chart-produced measure handoff.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-fixed-base-premeasure-inputs.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-fixed-base-premeasure-inputs.md`.
+
+This still does not prove `hedge`.  In particular, it does not construct
+endpoint transport of `edgeMatrix`, source-recursive determinant charts,
+`sourceReadback`, or suffix-recursion states.  It is a consumer-shaped bridge
+for future fixed-base work, not a fixed-base source-production theorem.
+
 ## Latest controller decision - 2026-06-28, retained-passive endpoint transport
 
 The expedition now has the first retained-passive endpoint-transport layer:
