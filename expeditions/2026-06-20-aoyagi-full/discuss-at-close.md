@@ -952,3 +952,25 @@ on the shared branch. The underlying friction is message-crossing (teammates ite
 already in use: anchor on each teammate's LATEST substantive state, flag crossings explicitly, resolve collisions decisively.
 No work was lost (all prereqs banked on genm-firing's branch). Operator note: this is process friction, not a math wall —
 the carving itself is bounded (ROUTE-A, prereqs done); only the bespoke generic zEG reshape remains.
+
+### Item 48 — "Approve-continue" acks cross with teammate self-dispatch → duplicate agents on the same work (2026-06-28)
+Third coordination crossing this session, same root cause as Item-47 (message-crossing), new shape. Sequence: I acked
+genm-l2 "path-2-continue approved" (UPDATE-221 tick); that prompted genm-l2 to RESUME its background sub-agent
+`a9db8d3fdc94a478e` on the CLE→S4→S2→S6 work. One tick later genm-l2 depth-checkpointed; I spawned a FRESH tide
+`genm-l2cle` on the *same* work. Result: two agents (a9db8d3 in genm-l2's worktree; genm-l2cle in its own) on identical
+work. genm-l2 flagged it fast + couldn't TaskStop a9db8d3 (didn't own it). I owned a9db8d3 → TaskStop succeeded;
+consolidated on genm-l2cle (fresh context, honors the checkpoint; a9db8d3 was the 1.3M-token-deep one). **Separate
+worktrees ⟹ no file-clobber** — the cost was only duplicate effort. **Silver lining:** a9db8d3 had just cracked the
+single gating brick `regGaugeSlotEquivCLE` (Variant B, coe-by-rfl) before the stop; I harvested it from its result
+snapshot → genm-l2cle, so nothing was lost.
+
+**Lesson + mitigations** (controller-side, since the crossing is intrinsic to fast async teammates):
+1. **An "approve-continue" ack must name the OWNER explicitly** ("genm-l2cle continues X", not a bare "continue
+   approved") — a bare approval invites the teammate to self-dispatch a (possibly background) agent onto the same work.
+2. **A depth-checkpoint acceptance must say "dispatch nothing further; do NOT resume any sub-agent"** — otherwise an
+   earlier "continue" ack + a later "checkpoint" ack both fire, spawning duplicates.
+3. **Track who OWNS each background sub-agent** — the controller could TaskStop a9db8d3 where the spawning teammate
+   couldn't; know your stop-authority before a collision.
+4. **Separate worktrees are the safety net** — even under a full duplicate-dispatch, separate worktrees prevent
+   corruption (only wasted tokens), and a killed agent's result-snapshot can still be harvested. Keep one-tide =
+   one-worktree.
