@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
 import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2
 import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrameTriangular
+import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring` — the L=2 final-wiring top file (R-A home)
@@ -544,18 +545,14 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         -- `q := split x = deepestSplit w0 x` (hsplit); apply Option-2 sub-4 with hball/hWdet/hScoreDef.
         refine deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score H r B hB hr hL hL2eq J Pf Qf
           hPtri' hQtri' Score hScoreDef x (split x) (hsplit x) hball hWdet ?_
-        -- hLDUtie: the readback-tie (prod(deepestM) cleaned-tuple = Score (1,1)-Schur integrand).
-        -- **FIDELITY FINDING (2026-06-28, NUMERICALLY FALSIFIED as the bare-read dictionary closes it).**
-        -- The Score RHS = Schur of the FRAMED reindexed product, which (`framedSchur_eq_unframedSchur_L2`,
-        -- DP=DQ=1) = Schur(reindex(prod(decode x))) — whose layer-0 (1,1) block is `A11 + readX_0` (the
-        -- deepest point's leading block `A11`, a unit ≠ 1), NOT `1 + readX_0`. The `prod(deepestM)` LHS
-        -- via `prod_absorbed_eq_schur_ldu` is `Schur(C0·C1)` with the `l2*` dictionary `l2A_s = 1 + readX_s`.
-        -- These DIFFER at the boundary unless the deepest reindexed boundary layer is pure `corM`
-        -- (`A11 = 1 ∧ A21 = 0`). Numerics (r=1, H=[2,2,2], A11=3,A21=0.9): LHS=0.0942, RHS=0.0741.
-        -- So the `l2*` readback at the boundary needs the FRAME-CONJUGATED read (not the bare gauge read),
-        -- or `coreF` ties to a different product than the framed Score. ESCALATED to controller for a
-        -- pen-and-paper adjudication of the boundary dictionary; NOT a cast / bounded-assembly gap.
-        sorry
+        -- hLDUtie: the readback-tie (prod(deepestM) cleaned-tuple = Score (1,1)-Schur integrand) is
+        -- EXTRACTED to the standalone `prod_deepestM_eq_schur_ldu_readback` (DeepestLDUReadback.lean) for a
+        -- collision-free fill. ⚠ That statement is currently MIS-DICTIONARIED (numerically false for the
+        -- bare-read `l2*` dictionary — the deepest boundary leading block `A11 ≠ 1`; triple-confirmed:
+        -- my numerics + two decorrelated Codex + the Lean defs). The fix (frame-conjugated reads) is
+        -- pending adjudication; until then the standalone carries the `sorry` with the finding documented.
+        exact prod_deepestM_eq_schur_ldu_readback H r B hB hr hL hL2eq J Pf Qf hPtri' hQtri'
+          x (split x) (hsplit x) hWdet
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
         hsub4core Φscore hΦscore wstar hwstar hL2eq
