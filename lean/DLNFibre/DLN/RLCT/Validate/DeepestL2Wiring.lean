@@ -488,9 +488,10 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
           (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
-        -- BOUNDED CAST-BRIDGE (not new math; templates: `hQf22`/`hcorner'` above, same Jb→J via hpivJ +
-        -- the `endpointQL = Qf (lastLayer)` / `(lastLayer).succ = Fin.last L` width casts). The bundle's
-        -- `hQtri` (about `Qf (lastLayer)` with `Jb = pivotJSucc J`) IS this up to those casts.
+        -- BOUNDED CAST-BRIDGE (not new math; the `hQf22`/`hcorner'` templates above bridge the SAME
+        -- Jb→J via `hpivJ`, + the `endpointQL = Qf (lastLayer)` / `(lastLayer).succ = Fin.last L` width
+        -- casts). One-shot `convert`/`simpa` resist the compounded casts; needs the hcorner'-style
+        -- staged `rw [hpivJ]` after re-expressing `endpointQL`. Deferred (cast-only, no math).
         sorry
       exact deepest_diffeo_bridge_L2_wired H r B hB hr hL hL2 hpos J hJfront' Pf Qf hPtri' hQtri'
         split hsub3reg coreAbsorb regStraighten hsplit hra_regval hca_def Score hScoreDef
