@@ -488,6 +488,112 @@ theorem corePolyGen_ne_zero (m : ℕ) (hm : 1 ≤ m) : corePolyGen m ≠ 0 := by
     · intro hi; exact absurd (Finset.mem_univ _) hi
   rw [h0] at hval; simp at hval
 
+/-- The measure-preserving flatten `(Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ≃ᵐ ((Sum type) → ℝ)`,
+matching `flatGenJoint` (Δ-curry to `Fin m × Fin m`, S-curry to `Fin m × Fin 4`, glue by
+`sumPiEquivProdPi.symm`). -/
+noncomputable def flatGenJointEquiv (m : ℕ) :
+    ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) ≃ᵐ (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ) :=
+  (MeasurableEquiv.prodCongr
+    ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
+      (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
+    ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
+      (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4))
+        (MeasurableEquiv.refl ℝ)))).trans
+    (MeasurableEquiv.sumPiEquivProdPi (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ)).symm
+
+theorem measurePreserving_flatGenJointEquiv (m : ℕ) :
+    MeasurePreserving (flatGenJointEquiv m)
+      (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
+      (volume : Measure (((Fin m × Fin m) ⊕ (Fin m × Fin 4)) → ℝ)) := by
+  unfold flatGenJointEquiv
+  -- MP of the two curry factors
+  have hΔ : MeasurePreserving
+      ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
+        (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
+      (volume : Measure (Fin m → Fin m → ℝ)) (volume : Measure (Fin m × Fin m → ℝ)) := by
+    refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+      (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+    exact (measurePreserving_piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)
+      (fun _ _ => (volume : Measure ℝ))).symm (MeasurableEquiv.piCurry _)
+  have hS : MeasurePreserving
+      ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
+        (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ)))
+      (volume : Measure (Fin m → Fin 4 → ℝ)) (volume : Measure (Fin m × Fin 4 → ℝ)) := by
+    refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+      (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ) (MeasurePreserving.id _))
+    exact (measurePreserving_piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)
+      (fun _ _ => (volume : Measure ℝ))).symm (MeasurableEquiv.piCurry _)
+  have hprod : MeasurePreserving
+      (MeasurableEquiv.prodCongr
+        ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin m) => ℝ)).symm.trans
+          (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin m)) (MeasurableEquiv.refl ℝ)))
+        ((MeasurableEquiv.piCurry (fun (_ : Fin m) (_ : Fin 4) => ℝ)).symm.trans
+          (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin m) (Fin 4)) (MeasurableEquiv.refl ℝ))))
+      (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
+      (volume : Measure ((Fin m × Fin m → ℝ) × (Fin m × Fin 4 → ℝ))) := by
+    rw [show (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
+        = volume.prod volume from rfl,
+      show (volume : Measure ((Fin m × Fin m → ℝ) × (Fin m × Fin 4 → ℝ)))
+        = volume.prod volume from rfl]
+    exact hΔ.prod hS
+  exact hprod.trans
+    (volume_measurePreserving_sumPiEquivProdPi_symm (fun _ : (Fin m × Fin m) ⊕ (Fin m × Fin 4) => ℝ))
+
+theorem flatGenJointEquiv_apply (m : ℕ) (q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)) :
+    flatGenJointEquiv m q = flatGenJoint m q := by
+  funext c; cases c with
+  | inl ik => rfl
+  | inr kj => rfl
+
+open MvPolynomial in
+/-- **The generic joint corank-`m` residual core is positive a.e.** `∀ᵐ (Δ,S), 0 < frobSq (Δ·S)` for
+`m ≥ 1` (the Morse-peel's `0 < w` hypothesis). The core is a nonzero polynomial (`corePolyGen_ne_zero`),
+so its zero set is null (`MvPolynomial.ae_eval_ne_zero` — transported to `Fin n` via the Fintype-equiv
+`rename`), pulled back along the measure-preserving `flatGenJointEquiv`. Generic analog of
+`frobSqR2c3_ne_zero_ae`. -/
+theorem frobSqGenJoint_ne_zero_ae (m : ℕ) (hm : 1 ≤ m) :
+    ∀ᵐ q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
+      0 < frobSq (rmatMul q.1 q.2) := by
+  -- transport corePolyGen (Sum-indexed) to Fin n via the Fintype equiv, apply ae_eval_ne_zero
+  set σ : ((Fin m × Fin m) ⊕ (Fin m × Fin 4)) ≃ Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) :=
+    Fintype.equivFin _ with hσ
+  set pFin : MvPolynomial (Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4)))) ℝ :=
+    MvPolynomial.rename σ (corePolyGen m) with hpFin
+  have hpFin_ne : pFin ≠ 0 := by
+    rw [hpFin]
+    simp only [ne_eq, MvPolynomial.rename_eq_zero_iff_of_injective _ σ.injective]
+    exact corePolyGen_ne_zero m hm
+  have hae_fin : ∀ᵐ x : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ,
+      MvPolynomial.eval x pFin ≠ 0 := MvPolynomial.ae_eval_ne_zero pFin hpFin_ne
+  have hmsFin : MeasurableSet {x : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ |
+      MvPolynomial.eval x pFin ≠ 0} :=
+    (MvPolynomial.measurableSet_zeroSet pFin).compl.congr (by ext x; simp)
+  -- the SINGLE composite MP transport `(Δ,S) ≃ᵐ (Fin n → ℝ)`
+  set Φ := (flatGenJointEquiv m).trans
+    (MeasurableEquiv.piCongrLeft
+      (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ) with hΦ
+  have hmpΦ : MeasurePreserving Φ
+      (volume : Measure ((Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ)))
+      (volume : Measure (Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) → ℝ)) :=
+    (measurePreserving_flatGenJointEquiv m).trans
+      (volume_measurePreserving_piCongrLeft
+        (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ)
+  have hpull : ∀ᵐ q : (Fin m → Fin m → ℝ) × (Fin m → Fin 4 → ℝ) ∂(volume),
+      MvPolynomial.eval (Φ q) pFin ≠ 0 :=
+    (ae_map_iff hmpΦ.measurable.aemeasurable hmsFin).1 (by rw [hmpΦ.map_eq]; exact hae_fin)
+  refine hpull.mono (fun q hq => ?_)
+  -- eval (Φ q) pFin = eval ((Φ q) ∘ σ) corePolyGen = eval (flatGenJointEquiv q) corePolyGen = frobSq
+  rw [hpFin, MvPolynomial.eval_rename] at hq
+  have hcomp : (Φ q) ∘ σ = flatGenJointEquiv m q := by
+    funext s
+    have : Φ q = MeasurableEquiv.piCongrLeft
+        (fun _ : Fin (Fintype.card ((Fin m × Fin m) ⊕ (Fin m × Fin 4))) => ℝ) σ
+        (flatGenJointEquiv m q) := rfl
+    show (Φ q) (σ s) = flatGenJointEquiv m q s
+    rw [this, MeasurableEquiv.piCongrLeft_apply_apply]
+  rw [hcomp, flatGenJointEquiv_apply, eval_corePolyGen] at hq
+  exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hq)
+
 /-! ### The carving core — the residual translate-domination into the abstract lower IH
 
 After N2b (`j = 1`) + the shifted `Fin 4` Morse peel, the corank-`r` ratio-residual reduces to the
