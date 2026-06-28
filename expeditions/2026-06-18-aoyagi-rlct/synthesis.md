@@ -48,6 +48,57 @@ checker verdict before Lean work treats it as a stable target. This applies to
 the block/product reductions, deepest-singular-point probe, blow-up recursion,
 arithmetic tail, notation translation, and final assembly.
 
+## Latest A2 Target Edge-Pair Raw-Tuple Determinant
+
+`RetainedPassiveCoordinatesJacobian.lean` now proves determinant one for the
+full raw-tuple target edge-pair shear equivalence.  New public Lean names:
+
+```text
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+`MatrixLinearDeterminant.lean` now also has generic successor-triangular
+determinant infrastructure:
+
+```text
+linearMap_det_finSuccUpperTriangular_eq_prod
+linearMap_det_finSuccUpperUnitriangular_eq_one
+finSuccUpperUnitriangularLinearMap_det_eq_one
+```
+
+The determinant proof uses the inverse raw-tuple shear.  After conjugating by
+the full edge-block regrouping `(A1_q,A3_q,F_q,C_q)`, the inverse is
+successor-upper-triangular in descending edge order.  The diagonal blocks are
+same-edge shears `F_q -= A1_q*H_q` and `C_q -= A3_q*H_q`, proved determinant
+one by lower-triangular product determinant lemmas.  The successor off-diagonal
+block reads only the next edge's `(F,C)` pair through the first component of
+the formal edge-pair inverse.  The forward determinant follows from the inverse
+determinant and `LinearEquiv.det_mul_det_symm`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`,
+PASS by xhigh `Lorentz the 2nd`.
+
+Verification: focused builds of
+`DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed;
+`scripts/sorries` reported zero forbidden Lean constructs; `git diff --check`
+passed; code-only forbidden-marker search was clean.  Lorentz also checked
+the seven determinant theorem axiom footprints:
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not determinant one for the formal separated `(F2,C)` equivalence and
+not determinant equality for the actual raw-order Frechet derivative.  No
+source-prior transport, inverse-density theorem, normal crossings, pole order,
+or RLCT is proved by this checkpoint.
+
 ## Latest A2 Target Edge-Pair Raw-Tuple Linear Equivalence
 
 `RetainedPassiveCoordinatesJacobian.lean` now lifts the target edge-pair shear
@@ -106,11 +157,11 @@ passed; code-only forbidden-marker search was clean; direct `#print axioms`
 audits for the new proof surface reported only
 `[propext, Classical.choice, Quot.sound]`.
 
-This is not yet a determinant-one theorem, raw coordinate Jacobian determinant
-equality, source-prior transport, normal crossings, pole order, or RLCT.  The
-next safe rung is determinant control for this equivalence, using a real
-unitriangular factorization or direct determinant computation rather than the
-nontrivial formal edge-pair determinant.
+At that checkpoint this was not yet a determinant-one theorem, raw coordinate
+Jacobian determinant equality, source-prior transport, normal crossings, pole
+order, or RLCT.  The determinant-one theorem for this full raw-tuple
+equivalence is now recorded in the newer determinant section above; the raw
+coordinate Jacobian determinant equality remains open.
 
 ## Latest A2 Retained-Passive Target Edge-Pair Linear Map
 

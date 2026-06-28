@@ -19,6 +19,47 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, target edge-pair raw-tuple determinant
+
+The target edge-pair branch now proves determinant one for the full raw-tuple
+linear equivalence.  New public Lean names:
+
+```text
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+New generic determinant infrastructure:
+
+```text
+linearMap_det_finSuccUpperTriangular_eq_prod
+linearMap_det_finSuccUpperUnitriangular_eq_one
+finSuccUpperUnitriangularLinearMap_det_eq_one
+```
+
+The proof conjugates the inverse raw-tuple shear by the full edge-block
+regrouping `(A1_q,A3_q,F_q,C_q)`, uses the inverse formula to expose a
+successor-upper-triangular map, and reduces the determinant to same-edge
+diagonal block shears, each with determinant one.  The forward determinant is
+then obtained from the inverse determinant and `LinearEquiv.det_mul_det_symm`;
+the absolute determinant theorem is a wrapper around determinant one over
+`ℝ`.
+
+Focused builds of `DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed.  The sorry
+gate, whitespace check, and code-only forbidden-marker search passed.  Xhigh
+review by `Lorentz the 2nd` passed and checked the seven determinant theorem
+axiom footprints as `[propext, Classical.choice, Quot.sound]`.
+
+This is not a determinant-one theorem for
+`retainedPassiveFormalRawF2CLinearEquivAt`, and it is not determinant equality
+for the actual raw-order Frechet derivative.  It also does not prove
+source-prior transport, normal crossings, pole order, or RLCT.
+
+Previous controller decision:
+
 ## Latest controller decision - 2026-06-28, target edge-pair raw-tuple linear equivalence
 
 The target edge-pair branch now has the full raw-tuple lift packaged as a
@@ -56,10 +97,10 @@ the surgical recurrence-proof route used in the final proof; xhigh final-diff
 review by `Gauss the 2nd` passed the `LinearEquiv` layer and no-determinant
 overclaim boundary.
 
-This is not yet a determinant-one theorem, full target normalizer, determinant
-equality, source-prior transport, normal crossings, pole order, or RLCT.  The
-next frontier is determinant control for this equivalence, but only from a
-real unitriangular factorization or direct determinant computation.
+At that checkpoint this was not yet a determinant-one theorem, full target
+normalizer, determinant equality, source-prior transport, normal crossings,
+pole order, or RLCT.  The determinant-one theorem for this equivalence is now
+recorded in the newer target edge-pair raw-tuple determinant section above.
 
 Previous controller decision:
 

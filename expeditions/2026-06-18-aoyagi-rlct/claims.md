@@ -144,8 +144,13 @@ No such claim is formalisation-ready until both fields are filled.
   target edge-pair branch now has a full raw-tuple linear equivalence fixing
   `A1passive`, `A3passive`, `Ctop`, and `F3`, replacing only `(F2,C)` by the
   target edge-pair shear, and using only the formal inverse's first component
-  as recovered `X` in the inverse map.  This does not yet prove determinant
-  one.  The target-side all-edge
+  as recovered `X` in the inverse map.  The same full raw-tuple equivalence
+  now has determinant one and absolute determinant one, proved by conjugating
+  the inverse map to edge-block coordinates and applying a successor-triangular
+  determinant calculation.  This determinant result is not a determinant-one
+  theorem for the formal separated `(F2,C)` equivalence and not determinant
+  equality for the actual raw-order Frechet derivative; xhigh review by
+  `Lorentz the 2nd` passed.  The target-side all-edge
   `(F2,C)` branch also has a linear-map package:
   the backward target-recovered `F2` recurrence, its successor family, and
   `retainedPassiveTargetEdgePairShearAt z w` are all packaged as `LinearMap`s

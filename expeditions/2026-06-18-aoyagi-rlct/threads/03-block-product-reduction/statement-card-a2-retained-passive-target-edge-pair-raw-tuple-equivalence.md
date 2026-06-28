@@ -48,7 +48,8 @@ retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_apply
 retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_apply
 ```
 
-The determinant-one theorem for this equivalence remains the next frontier.
+A separate determinant card now records the determinant-one theorem for this
+full raw-tuple equivalence.
 
 ## Proof Plan
 

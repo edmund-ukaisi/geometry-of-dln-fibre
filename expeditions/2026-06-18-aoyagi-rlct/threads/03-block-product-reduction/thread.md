@@ -18,6 +18,50 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 target edge-pair raw-tuple determinant
+
+Reproduction:
+`reproduction-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`.
+Statement card:
+`statement-card-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`.
+Review:
+`review-a2-retained-passive-target-edge-pair-raw-tuple-determinant.md`,
+PASS by xhigh `Lorentz the 2nd`.
+
+Lean now proves in `RetainedPassiveCoordinatesJacobian.lean`:
+
+```text
+retainedPassiveTargetEdgePairShearRawTupleInverseLinearMapAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_symm_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_det_eq_one
+retainedPassiveTargetEdgePairShearRawTupleLinearEquivAt_abs_det_eq_one
+```
+
+and in `MatrixLinearDeterminant.lean`:
+
+```text
+linearMap_det_finSuccUpperTriangular_eq_prod
+linearMap_det_finSuccUpperUnitriangular_eq_one
+finSuccUpperUnitriangularLinearMap_det_eq_one
+```
+
+The proof conjugates the inverse full raw-tuple shear by the edge-block
+regrouping `(A1_q,A3_q,F_q,C_q)`, proves the transported map is
+successor-upper-triangular, reduces the determinant to same-edge diagonal
+block shears, and transports the determinant back.  The forward determinant
+and absolute determinant wrappers are consequences of the inverse determinant.
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.MatrixLinearDeterminant` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobian` passed;
+`scripts/sorries`, `git diff --check`, and code-only forbidden-marker search
+passed.  Lorentz also checked the seven determinant theorem axiom footprints:
+`[propext, Classical.choice, Quot.sound]`.
+
+This does not prove determinant one for the formal separated `(F2,C)`
+equivalence, determinant equality for the actual raw-order Frechet derivative,
+measure transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 target edge-pair raw-tuple linear equivalence
 
 Reproduction:

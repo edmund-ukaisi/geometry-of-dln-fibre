@@ -1,4 +1,5 @@
 import Mathlib.Algebra.Order.Ring.Abs
+import Mathlib.Data.Fin.Tuple.Basic
 import Mathlib.Data.Matrix.Bilinear
 import Mathlib.LinearAlgebra.Determinant
 import Mathlib.LinearAlgebra.Matrix.Block
@@ -140,6 +141,236 @@ theorem linearMap_det_piMap_eq_prod
     · simp [B, Matrix.blockDiagonal'_apply, LinearMap.toMatrix_apply',
         LinearMap.pi_apply, h]
   rw [hmat, Matrix.det_blockDiagonal']
+
+/-- Linear equivalence splitting a dependent `Fin (n+1)` family into its last
+coordinate and the preceding `castSucc` family. -/
+def finSnocLinearEquiv
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)] :
+    (M (Fin.last n) × (∀ i : Fin n, M i.castSucc)) ≃ₗ[R]
+      (∀ i : Fin (n + 1), M i) where
+  toFun x := Fin.snoc x.2 x.1
+  invFun x := (x (Fin.last n), Fin.init x)
+  left_inv x := by
+    ext i <;> simp
+  right_inv x := by
+    ext i
+    induction i using Fin.lastCases <;> simp [Fin.init_def]
+  map_add' x y := by
+    ext i
+    induction i using Fin.lastCases <;> simp [Fin.snoc_last, Fin.snoc_castSucc]
+  map_smul' a x := by
+    ext i
+    induction i using Fin.lastCases <;> simp [Fin.snoc_last, Fin.snoc_castSucc]
+
+@[simp]
+theorem finSnocLinearEquiv_apply_last
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (x : M (Fin.last n) × (∀ i : Fin n, M i.castSucc)) :
+    finSnocLinearEquiv (R := R) (M := M) x (Fin.last n) = x.1 := by
+  simp [finSnocLinearEquiv]
+
+@[simp]
+theorem finSnocLinearEquiv_apply_castSucc
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (x : M (Fin.last n) × (∀ i : Fin n, M i.castSucc)) (i : Fin n) :
+    finSnocLinearEquiv (R := R) (M := M) x i.castSucc = x.2 i := by
+  simp [finSnocLinearEquiv]
+
+@[simp]
+theorem finSnocLinearEquiv_symm_apply
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (x : ∀ i : Fin (n + 1), M i) :
+    (finSnocLinearEquiv (R := R) (M := M)).symm x =
+      (x (Fin.last n), Fin.init x) :=
+  rfl
+
+/-- Successor-unitriangular map on a dependent `Fin` family:
+`x_last` is fixed and `x_p` is replaced by `x_p + L_p x_{p+1}`. -/
+def finSuccUpperUnitriangularLinearMap
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc) :
+    (∀ i : Fin (n + 1), M i) →ₗ[R] (∀ i : Fin (n + 1), M i) :=
+  LinearMap.pi fun i =>
+    Fin.lastCases
+      (motive := fun i : Fin (n + 1) =>
+        (∀ j : Fin (n + 1), M j) →ₗ[R] M i)
+      (LinearMap.proj (Fin.last n))
+      (fun p => LinearMap.proj p.castSucc + (L p).comp (LinearMap.proj p.succ))
+      i
+
+@[simp]
+theorem finSuccUpperUnitriangularLinearMap_last
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc)
+    (x : ∀ i : Fin (n + 1), M i) :
+    finSuccUpperUnitriangularLinearMap (R := R) (M := M) L x (Fin.last n) =
+      x (Fin.last n) := by
+  simp [finSuccUpperUnitriangularLinearMap]
+
+@[simp]
+theorem finSuccUpperUnitriangularLinearMap_castSucc
+    {R : Type*} [Semiring R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ i, AddCommMonoid (M i)] [∀ i, Module R (M i)]
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc)
+    (x : ∀ i : Fin (n + 1), M i) (p : Fin n) :
+    finSuccUpperUnitriangularLinearMap (R := R) (M := M) L x p.castSucc =
+      x p.castSucc + L p (x p.succ) := by
+  simp [finSuccUpperUnitriangularLinearMap]
+
+set_option linter.flexible false in
+/-- A successor-upper-triangular endomorphism of a dependent `Fin (n+1)` family
+has determinant equal to the product of its diagonal block determinants. -/
+theorem linearMap_det_finSuccUpperTriangular_eq_prod
+    {R : Type*} [CommRing R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ q, AddCommGroup (M q)] [∀ q, Module R (M q)]
+    [∀ q, Module.Free R (M q)] [∀ q, Module.Finite R (M q)]
+    (T : ((q : Fin (n + 1)) → M q) →ₗ[R] ((q : Fin (n + 1)) → M q))
+    (D : ∀ q : Fin (n + 1), M q →ₗ[R] M q)
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc)
+    (hlast : ∀ x, T x (Fin.last n) = D (Fin.last n) (x (Fin.last n)))
+    (hcastSucc : ∀ (p : Fin n) x,
+      T x p.castSucc = D p.castSucc (x p.castSucc) + L p (x p.succ)) :
+    LinearMap.det T = ∏ q : Fin (n + 1), LinearMap.det (D q) := by
+  classical
+  haveI : Module.Finite R ((q : Fin (n + 1)) → M q) := moduleFinite_pi
+  let b : ∀ q, Module.Basis (Module.Free.ChooseBasisIndex R (M q)) R (M q) :=
+    fun q => Module.Free.chooseBasis R (M q)
+  let B : Module.Basis (Σ q, Module.Free.ChooseBasisIndex R (M q)) R
+      ((q : Fin (n + 1)) → M q) :=
+    Pi.basis b
+  let A := LinearMap.toMatrix B B T
+  have htri : Matrix.BlockTriangular A Sigma.fst := by
+    rintro ⟨i, ai⟩ ⟨j, aj⟩ hji
+    dsimp [A] at hji ⊢
+    induction i using Fin.lastCases with
+    | last =>
+        have h_ne_last : j ≠ Fin.last n := ne_of_lt hji
+        simp [B, b, LinearMap.toMatrix_apply', hlast, h_ne_last]
+    | cast p =>
+        have h_ne_cast : j ≠ p.castSucc := ne_of_lt hji
+        have h_ne_succ : j ≠ p.succ :=
+          ne_of_lt (lt_trans hji p.castSucc_lt_succ)
+        simp [B, b, LinearMap.toMatrix_apply', hcastSucc, h_ne_cast, h_ne_succ]
+  have hdiag_det :
+      ∀ q : Fin (n + 1),
+        (A.toSquareBlock Sigma.fst q).det = LinearMap.det (D q) := by
+    intro q
+    rw [← LinearMap.det_toMatrix (b q)]
+    let e :
+        Module.Free.ChooseBasisIndex R (M q) ≃
+          {a : Sigma fun q => Module.Free.ChooseBasisIndex R (M q) // Sigma.fst a = q} :=
+      { toFun := fun a => ⟨⟨q, a⟩, rfl⟩
+        invFun := fun a => cast (congrArg (fun q => Module.Free.ChooseBasisIndex R (M q))
+          (by simpa using a.2)) a.1.2
+        left_inv := by
+          intro a
+          simp
+        right_inv := by
+          intro a
+          rcases a with ⟨⟨q', a⟩, hq'⟩
+          cases hq'
+          simp }
+    rw [← Matrix.det_reindex_self e (LinearMap.toMatrix (b q) (b q) (D q))]
+    congr 1
+    ext i j
+    rcases i with ⟨⟨qi, ai⟩, hqi⟩
+    rcases j with ⟨⟨qj, aj⟩, hqj⟩
+    dsimp [A] at hqi hqj ⊢
+    cases hqi
+    cases hqj
+    induction q using Fin.lastCases with
+    | last =>
+        simp [Matrix.toSquareBlock_def, e, B, b, LinearMap.toMatrix_apply', hlast]
+    | cast p =>
+        have h_ne : p.succ ≠ p.castSucc := p.castSucc_lt_succ.ne'
+        simp [Matrix.toSquareBlock_def, e, B, b, LinearMap.toMatrix_apply',
+          hcastSucc, h_ne]
+  rw [← LinearMap.det_toMatrix B]
+  change A.det = ∏ q : Fin (n + 1), LinearMap.det (D q)
+  rw [htri.det_fintype]
+  refine Finset.prod_congr rfl ?_
+  intro q _hq
+  rw [hdiag_det q]
+
+set_option linter.flexible false in
+/-- A successor-unitriangular endomorphism of a dependent `Fin (n+1)` family
+has determinant one. -/
+theorem linearMap_det_finSuccUpperUnitriangular_eq_one
+    {R : Type*} [CommRing R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ q, AddCommGroup (M q)] [∀ q, Module R (M q)]
+    [∀ q, Module.Free R (M q)] [∀ q, Module.Finite R (M q)]
+    (T : ((q : Fin (n + 1)) → M q) →ₗ[R] ((q : Fin (n + 1)) → M q))
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc)
+    (hlast : ∀ x, T x (Fin.last n) = x (Fin.last n))
+    (hcastSucc : ∀ (p : Fin n) x,
+      T x p.castSucc = x p.castSucc + L p (x p.succ)) :
+    LinearMap.det T = 1 := by
+  classical
+  haveI : Module.Finite R ((q : Fin (n + 1)) → M q) := moduleFinite_pi
+  let b : ∀ q, Module.Basis (Module.Free.ChooseBasisIndex R (M q)) R (M q) :=
+    fun q => Module.Free.chooseBasis R (M q)
+  let B : Module.Basis (Σ q, Module.Free.ChooseBasisIndex R (M q)) R
+      ((q : Fin (n + 1)) → M q) :=
+    Pi.basis b
+  let A := LinearMap.toMatrix B B T
+  have htri : Matrix.BlockTriangular A Sigma.fst := by
+    rintro ⟨i, ai⟩ ⟨j, aj⟩ hji
+    dsimp [A] at hji ⊢
+    induction i using Fin.lastCases with
+    | last =>
+        have h_ne_last : j ≠ Fin.last n := ne_of_lt hji
+        simp [B, b, LinearMap.toMatrix_apply', hlast, h_ne_last]
+    | cast p =>
+        have h_ne_cast : j ≠ p.castSucc := ne_of_lt hji
+        have h_ne_succ : j ≠ p.succ :=
+          ne_of_lt (lt_trans hji p.castSucc_lt_succ)
+        simp [B, b, LinearMap.toMatrix_apply', hcastSucc, h_ne_cast, h_ne_succ]
+  have hdiag : ∀ q : Fin (n + 1), A.toSquareBlock Sigma.fst q = 1 := by
+    intro q
+    ext i j
+    rcases i with ⟨⟨qi, ai⟩, hqi⟩
+    rcases j with ⟨⟨qj, aj⟩, hqj⟩
+    dsimp [A] at hqi hqj ⊢
+    cases hqi
+    cases hqj
+    induction q using Fin.lastCases with
+    | last =>
+        simp [Matrix.toSquareBlock_def, B, b, LinearMap.toMatrix_apply', hlast,
+          Matrix.one_apply, Subtype.ext_iff]
+        by_cases h : ai = aj
+        · subst aj
+          rw [Finsupp.single_eq_same, if_pos rfl]
+        · rw [Finsupp.single_eq_of_ne h, if_neg h]
+    | cast p =>
+        have h_ne : p.succ ≠ p.castSucc := p.castSucc_lt_succ.ne'
+        simp [Matrix.toSquareBlock_def, B, b, LinearMap.toMatrix_apply', hcastSucc, h_ne,
+          Matrix.one_apply, Subtype.ext_iff]
+        by_cases h : ai = aj
+        · subst aj
+          rw [Finsupp.single_eq_same, if_pos rfl]
+        · rw [Finsupp.single_eq_of_ne h, if_neg h]
+  rw [← LinearMap.det_toMatrix B]
+  change A.det = 1
+  rw [htri.det_fintype]
+  simp [hdiag]
+
+/-- The canonical successor-unitriangular map has determinant one. -/
+theorem finSuccUpperUnitriangularLinearMap_det_eq_one
+    {R : Type*} [CommRing R] {n : ℕ} {M : Fin (n + 1) → Type*}
+    [∀ q, AddCommGroup (M q)] [∀ q, Module R (M q)]
+    [∀ q, Module.Free R (M q)] [∀ q, Module.Finite R (M q)]
+    (L : ∀ p : Fin n, M p.succ →ₗ[R] M p.castSucc) :
+    LinearMap.det (finSuccUpperUnitriangularLinearMap (R := R) (M := M) L) = 1 := by
+  exact linearMap_det_finSuccUpperUnitriangular_eq_one
+    (finSuccUpperUnitriangularLinearMap (R := R) (M := M) L) L
+    (by intro x; simp)
+    (by intro p x; simp)
 
 /-- A lower product shear has determinant equal to the product of its diagonal
 determinants. -/
