@@ -41,6 +41,43 @@ NO new derivative subtlety. Scope: parallel the bare joint-Ψ apparatus (`psiSpl
 ContDiff + strict-fderiv-id + fixpoint + the comp-identity `Φconj ∘ psiL2Conj = Φscore`, the last via the
 keystone `absorbedCoreConj_eq_schurCore` + readback `prod_deepestM_eq_schur_ldu_readback` + banked
 `deepBlkT_{layer0,layerLast}_zero`). Then `hstep2 = Step Θ ∘ Step Ψ_conj`.
+
+### Step Ψ_conj — the EXACT conjugated block dictionary (for the fresh-hand build, self-contained)
+
+The conjugated joint move `psiSplitRawL2CoreConj` IS `psiSplitRawL2Core` (DeepestDiffeoBridgeL2:95) with
+the SAME `W/K/S1/T1'/Y1'/core'/g'` formulas, but the per-layer blocks `l2A0/l2A1/l2Y0/l2Z1` swapped from
+bare `1 + readX_s` / `readX/Y/Z_s` to the CONJUGATED reindexed-decode-layer blocks (= `deepBlk·_s +
+read·_s`, the actual pivot the readback reads). Explicitly (mirror `l2A0..l2Y1p`):
+
+    l2A0c := deepBlkA_0 + readX_0 (= reindex(decode)_0.toBlocks₁₁)   -- bare was `1 + readX_0`
+    l2A1c := deepBlkA_1 + readX_1
+    l2Y0c := deepBlkY_0 + readY_0  (= reindex(decode)_0.toBlocks₁₂; deepBlkY_0 = 0 at the boundary)
+    l2Z1c := deepBlkZ_1 + readZ_1  (deepBlkZ_1 = 0 at the boundary)
+    l2Y1c := deepBlkY_1 + readY_1 ;  l2T1c := coreLast (the core slot read, unchanged)
+    l2P00c := l2A0c*l2A1c + l2Y0c*l2Z1c ;  Kc := l2Z1c*l2P00c⁻¹*l2Y0c
+    Wc := 1 + l2Z1c*l2A1c⁻¹*l2A0c⁻¹*l2Y0c ;  S1c := l2T1c − l2Z1c*l2A1c⁻¹*l2Y1c
+    T1'c := Wc⁻¹*((1−Kc)*S1c + l2Z1c*l2A1c⁻¹*l2Y1c + l2Z1c*l2A1c⁻¹*l2A0c⁻¹*l2Y0c*l2T1c)
+    Y1'c := l2Y1c + l2A0c⁻¹*l2Y0c*(l2T1c − T1'c)
+
+VERIFIED (numpy, r=1, M=1, boundary blocks, near-basepoint): `(decode(Ψ_conj q).core_last +
+schurCorrectionConj(Ψ_conj q)_last) = T1'c − l2Z1c·l2A1c⁻¹·Y1'c = (1−Kc)·S1c` — exactly the keystone's
+conjugated last-layer LDU `hC1`. (The bare l2T1p + conj-correction does NOT — bare-pivot tuning, verified.)
+
+Per-stage notes for the fresh hand:
+* `Wc` invertible near 0: `Wc(0) = 1` (l2Z1c(0) = deepBlkZ_1 + 0 = 0 at the boundary), and the det-≠0
+  germ via `l2ExtraRadius`-style cutoff (mirror `l2W`'s det-≠0 germ; the bare proof's `hWdet` analogue).
+* `D(Ψ_conj)(wstar) = id` (Kc=l2Z1c=0, l2Y0c=0 at the boundary basepoint), so the comp-identity bridge
+  reuses `e = ContinuousLinearEquiv.refl` — NO new derivative work beyond mirroring the bare S2/S4.
+* The S2 (ContDiff) re-derivations: same as bare, but the pivot `l2A0c/l2A1c⁻¹` is ContDiffAt where
+  `det(deepBlkA_s + readX_s) ≠ 0` (the `unitSetConj` neighborhood; `continuousAt_inv_deepBlkA_add_readX`
+  here is the continuity analogue — a ContDiffAt version is the S2 leaf, mirroring `contDiffAt_matrix_inv_…`).
+* Step Ψ_conj's comp-identity discharges via `absorbedCoreConj_eq_schurCore` (layer-0: hT from
+  `deepBlkT_layer0_zero`; layer-1: the joint move gives T1'c so `decode(Ψq).core_1 + schurCorrectionConj_1
+  = (1−Kc)·S1c` directly) + `prod_deepestM_eq_schur_ldu_readback` → Score.
+
+hDA layer-(L−1): try the derivable lemma (deepest last-layer rank r + rows≥r vanish ⟹ top-r-rows full
+rank ⟹ `reindex(deepest_1).toBlocks₁₁` = `deepBlkA_1` invertible); if it needs a threaded hyp, that is
+the row-WLOG seam #154 (coordinate via the controller).
 -/
 
 open MeasureTheory Matrix
