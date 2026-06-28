@@ -101,8 +101,10 @@ The geometric bundle-shift half is Proved from `Core` (via `bundleShift_of_core`
 transfer is Proved (`DLN.RlctPayoff.codimRealFibre_eq_codimRepCanonical_baseChange`), so the ONLY
 carried dependency is `I : RlctRealInterface` (the two Cited Watanabe/Aoyagi bounds). For a genuine deep
 network (`0 < N`) and `B` of rank `r ≤ min d`, the rlct of the DLN square-Frobenius loss `K^DLN_B`
-equals `(cCodim d r + r(d_0+d_N−r))/2`: `C/2` + shift. `via_aoyagi` names the cited source;
-`[IsAlgClosed K] [CharZero K]` (the scope where `C` is the geometric codimension). -/
+equals `(cCodim d r + r(d_0+d_N−r))/2`: `C/2` + shift. The citation is carried by `I` (no `_via_aoyagi`
+suffix here — the `…_via_aoyagi` sibling is the `J`-explicit form; THIS one discharges `J` via
+`bundleShift_of_core`, so only `I` remains). `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the
+geometric codimension). -/
 theorem rlct_lossDLN_eq_half_cCodim_add_shift
     (I : RlctRealInterface d)
     {B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ} {r : ℕ}
