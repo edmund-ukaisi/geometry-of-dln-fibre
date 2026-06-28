@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
+import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormWiring
 
 /-!
