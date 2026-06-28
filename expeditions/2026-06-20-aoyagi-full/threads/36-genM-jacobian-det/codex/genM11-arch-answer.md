@@ -1,0 +1,17 @@
+**Verdict:** yes, use the CLEAN Option-A flat-coordinate architecture. Do not base the ∀M `(r,c)=(1,1)` smeared lift on the validate-small `pack`/`finNEquivFlatIdx`/`splitN` pattern.
+
+The per-M reshape can be made parametric in principle, but the generic version is essentially `paramsEquivFlat`/`FlatIdx` again. The existing clean lift already proves the right pattern: `phi` is a flat self-map, decoded by `paramsEquivFlat.symm`, with coordinate facts reduced to `flatCoordOf` and membership lemmas; see [RouteMBoundaryCleanRate.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a223be0c63e358844/lean/DLNFibre/DLN/RLCT/Validate/RouteMBoundaryCleanRate.lean:8). The validate-small `pack` path requires an explicit `Fin N ≃ FlatIdx M` plus slot equation, as banked in [ParamsReshapeMP.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a223be0c63e358844/lean/DLNFibre/DLN/RLCT/Foundations/ParamsReshapeMP.lean:71), and `(1,2,1)` does it by a hand-coded equivalence in [RouteM121Smeared.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a223be0c63e358844/lean/DLNFibre/DLN/RLCT/Validate/RouteM121Smeared.lean:438). That is scaffolding, not the ∀M substrate.
+
+For the smeared rate: prove cancellation generically over the decoded `Params`, not by expanding the front product polynomial. Let `A := (paramsEquivFlat M).symm x`, let `P := prodAux M A (L-1) ...`, define `P₁`, `P₂`, and scalar-Gram `Λ₀` from that matrix. Then prove `P₁Λ₀ = P₂` from the rank-one front bottleneck plus `P₁ ≠ 0`. This is valid in flat coordinates because `paramsEquivFlat_symm_decode` already gives slot reads generically. Caveat: scalar Gram alone does not imply `P₁Λ₀=P₂`; the rank-one/front-bottleneck hypothesis and off-pole/nonzero condition are load-bearing.
+
+For shear MP: use a generic one-coordinate shear. The repo already has the exact atom:
+`measurePreserving_shearAt` in [Case222Lemma2.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a223be0c63e358844/lean/DLNFibre/DLN/RLCT/Validate/Case222Lemma2.lean:97), based on `piFinSuccAbove` + `skew_product`. Promote/wrap it for arbitrary `p : Fin N`, package a measurable equivalence with inverse shift, and use it for the deepest pivot coordinate. No per-M `splitN` is needed. Since `minAdm=1`, the final assembly should use `routeMCore_box_diverges_of_MPChart`, not the radial sibling; see [RouteM121Smeared.lean](/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a223be0c63e358844/lean/DLNFibre/DLN/RLCT/Validate/RouteM121Smeared.lean:687).
+
+**Biggest risk:** the generic rate cancellation, not measure preservation. If the front rank-one/bottleneck fact is not exposed cleanly, Lean will force you into degree-`L-1` coordinate expansion and dependent-width product casts. Worse, if the theorem forgets `P₂ ∈ span(P₁)`/`P₁ ≠ 0`, the statement is false.
+
+**First sub-target:** prove a small matrix lemma first:
+
+`scalarGram_cancel_of_rankOneColumns`:
+if every non-pivot column of `P : Matrix rows (Fin (s+1)) ℝ` is a scalar multiple of column `0`, and `∑ i (P i 0)^2 ≠ 0`, then the scalar-Gram `Λ₀` satisfies `P₁Λ₀=P₂`.
+
+Then specialize it to `P = frontProd` using the front bottleneck. Once that lands, the flat shear/rate proof is architecture-safe.
