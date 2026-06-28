@@ -6,7 +6,7 @@ import Mathlib.Data.Real.Basic
 import Mathlib.Algebra.Algebra.Rat
 
 /-!
-# `DLNFibre.Core.DeformationBaseChange` — L7: `finrank (range deformationδ)` is base-change invariant
+# `DLNFibre.Core.DeformationBaseChange` — L7: `finrank (range deformationδ)` base-change invariance
 
 The orbit dimension `finrank_k (range (deformationδ M M))` is the rank of a fixed integer-structured
 `k`-linear map (`deformationδ M N φ_i = φ_{i+1} M_i − N_i φ_i`). Under a field extension `K/k`
@@ -78,7 +78,7 @@ noncomputable def matrixTensorEquiv (m n : Type*) [Fintype m] [DecidableEq m] [F
 @[simp] theorem matrixTensorEquiv_tmul (m n : Type*) [Fintype m] [DecidableEq m] [Fintype n]
     [DecidableEq n] (x : K) (A : Matrix m n k) (i : m) (j : n) :
     matrixTensorEquiv K m n (x ⊗ₜ A) i j = x * algebraMap k K (A i j) := by
-  -- `(e₁.trans e₂) z = e₂ (e₁ z)` is `rfl`; `LinearEquiv.trans_apply` is blocked by the semilinear σ
+  -- `(e₁.trans e₂) z = e₂ (e₁ z)` is `rfl`; `LinearEquiv.trans_apply` blocked by the semilinear σ
   rw [show matrixTensorEquiv K m n (x ⊗ₜ A)
       = (LinearEquiv.piCongrRight (fun _ : m ↦ TensorProduct.piScalarRight k K K n))
           ((TensorProduct.piRight k K K (fun _ : m ↦ (n → k))) (x ⊗ₜ A)) from rfl]
@@ -170,7 +170,7 @@ theorem deformationδ_baseChange_square {d e : Fin (N + 1) → ℕ}
 
 /-! ## L7 — `deformationδ` base-change finrank invariance -/
 
-/-- **L7.** The orbit-tangent dimension `finrank (range deformationδ)` is invariant under base change
+/-- **L7.** The orbit-tangent dim `finrank (range deformationδ)` is invariant under base change
 along a field extension `K/k`: `deformationδ` has a fixed integer 0/±1 block structure, so its range
 rank is the same integer over `K` as over `k`. -/
 theorem finrank_range_deformationδ_baseChange {d e : Fin (N + 1) → ℕ}
