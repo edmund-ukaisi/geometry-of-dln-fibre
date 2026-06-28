@@ -1265,6 +1265,66 @@ theorem cellR_injective (r : ℕ) (hr : 3 ≤ r) : Function.Injective (cellR r h
   · omega
   · have eb : b1 = b2 := Fin.ext (by omega); subst eb; rfl
 
+/-- The slot-composition `s ↦ slotMatG p (cellR s).1 (cellR s).2 : (M22 ⊕ g ⊕ b) → Fin N` is injective:
+`slotMatG_spec` decodes the slot to `finCongr hN (eG (σr cell, σc cell))`, injective via
+`eG`/swap/`finCongr` injectivity, then `cellR_injective`. -/
+theorem slotFunR_injective (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    Function.Injective
+      (fun s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) =>
+        slotMatG r N hN hr p (cellR r hr s).1 (cellR r hr s).2) := by
+  intro s1 s2 hs
+  simp only [] at hs
+  have e1 := slotMatG_spec r N hN hr p (cellR r hr s1).1 (cellR r hr s1).2 (cellR_ne_zero r hr s1)
+  have e2 := slotMatG_spec r N hN hr p (cellR r hr s2).1 (cellR r hr s2).2 (cellR_ne_zero r hr s2)
+  rw [hs, e2] at e1
+  have hcell : ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) (cellR r hr s2).1,
+      (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) (cellR r hr s2).2)
+      = ((Equiv.swap ((eG r).symm p).1 ⟨0, by omega⟩) (cellR r hr s1).1,
+        (Equiv.swap ((eG r).symm p).2 ⟨0, by omega⟩) (cellR r hr s1).2) :=
+    (eG r).injective ((finCongr hN).injective e1)
+  rw [Prod.mk.injEq] at hcell
+  obtain ⟨hi, hj⟩ := hcell
+  exact (cellR_injective r hr
+    (Prod.ext ((Equiv.swap _ _).injective hi) ((Equiv.swap _ _).injective hj))).symm
+
+/-- The carve-slot index count `card ((M22) ⊕ (g ⊕ b)) = (r−1)² + 2(r−1) = r²−1 = N`. -/
+theorem slotFunR_card (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) :
+    Fintype.card ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) = N := by
+  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  nlinarith [hN, Nat.sub_add_cancel (show 1 ≤ r by omega)]
+
+/-- **The carve-slot bijection** `(M22 ⊕ g ⊕ b) ≃ Fin N`: the slot-composition is bijective (injective
++ card-matched). -/
+theorem slotFunR_bijective (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    Function.Bijective
+      (fun s : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) =>
+        slotMatG r N hN hr p (cellR r hr s).1 (cellR r hr s).2) := by
+  rw [Fintype.bijective_iff_injective_and_card]
+  refine ⟨slotFunR_injective r N hN hr p, ?_⟩
+  rw [Fintype.card_fin]; exact slotFunR_card r N hN hr
+
+/-- The slot equiv `Fin N ≃ (M22 ⊕ g ⊕ b)` (`σ.symm s = slotMatG p (cellR s)…`). -/
+noncomputable def zσG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    Fin N ≃ ((Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1))) :=
+  (Equiv.ofBijective _ (slotFunR_bijective r N hN hr p)).symm
+
+/-- The reshape `zEG : (Fin N → ℝ) ≃ᵐ ((Fin(r-1)×Fin(r-1) → ℝ) × ((Fin(r-1)⊕Fin(r-1)) → ℝ))`
+splitting the ratios `z` into the `M22`-cube and the `(g,b)`-cube (`piCongrLeft zσG ≫ sumPiEquivProdPi`). -/
+noncomputable def zEG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    (Fin N → ℝ) ≃ᵐ (((Fin (r - 1) × Fin (r - 1)) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ)) :=
+  (MeasurableEquiv.piCongrLeft
+    (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) (zσG r N hN hr p)).trans
+    (MeasurableEquiv.sumPiEquivProdPi
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ))
+
+theorem measurePreserving_zEG (r N : ℕ) (hN : r * r = N + 1) (hr : 3 ≤ r) (p : Fin (r * r)) :
+    MeasurePreserving (zEG r N hN hr p) (volume : Measure (Fin N → ℝ))
+      (volume : Measure (((Fin (r - 1) × Fin (r - 1)) → ℝ) × ((Fin (r - 1) ⊕ Fin (r - 1)) → ℝ))) :=
+  (volume_measurePreserving_piCongrLeft
+    (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ) (zσG r N hN hr p)).trans
+    (volume_measurePreserving_sumPiEquivProdPi
+      (fun _ : (Fin (r - 1) × Fin (r - 1)) ⊕ (Fin (r - 1) ⊕ Fin (r - 1)) => ℝ))
+
 /-- **The generic ratio-residual (the firing heart, mid case `2 < c' < λ_r`).** The JOINT integral over
 the `r²−1` angular ratios `z` (pivot axis set to `0` via `piRatioG`) and `S` is finite for
 `2 < c' < λ_r`, `r ≥ 3`: per `z` the angular `RmatG r p ((piRatioG …).symm (0,z))` has pivot `1`,
