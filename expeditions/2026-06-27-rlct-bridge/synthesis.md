@@ -360,3 +360,21 @@ monomial-extraction (all ≈ banked `monomial_rlct` + proved lower-bracket). PRO
     reviews agree hT-in-type is sufficient).
   - Both reviewers thanked + stood down; will re-review the landed tightening. Holding for 04's tightening +
     R5 (06, bundle).
+
+- **tick 14 (tightening INTEGRATED GREEN + re-review running, 2026-06-28):** tide 04's tightening landed
+  (branch @ `5bc1e7e4`, Lean `a3bd2b5f`); controller merged → `expedition/rlct-bridge` (merge `100559c0`,
+  pushed); my aggregator fix (`ae8f6605`) preserved (04 doesn't touch the single-writer; its repeated
+  flag is stale-from-its-own-branch). **Gates re-verified in controller worktree: `scripts/lb DLNFibre`
+  GREEN (3815 jobs), sorries clean.** Controller spot-checks: re-guard `0<N → B.rank=r → (∀k', r≤d k')`
+  present on BOTH `cited_watanabe_upper` + `cited_aoyagi_lower` (`RlctPayoff.lean:365-376`);
+  `rlctRealInterfaceWitness` present (`:385`); banned words clean (rg, 3 files); no stale "8.6". 04 reported
+  `#print axioms` clean on all 11 decls incl. the witness.
+  - All 5 tightenings in: (1) re-guard [HARDEN-2 soundness — restores intended-inhabitability so the
+    aoyagi-full fold can instantiate with the real rlctAt]; (2) `rlctRealInterfaceWitness` (formal
+    inhabitant, honest docstring); (3) orphan-`hdim` prose → cite codim-level `hT`, lemma docstring "unused
+    by payoffs"; (4) banned-word L3 sweep; (5) citation → "Aoyagi Thm 1 / LR §8 (thm:aoyagi-rlct)".
+  - **Hardener re-review (`af1b0a5d`) RUNNING** — targeted re-confirm of the 5 fixes (re-guard soundness +
+    no consumer dropped it; witness inhabits the re-guarded struct; axioms clean; prose honest; words/cite).
+    Fidelity items spot-verified by controller (lower-value re-review skipped).
+  - Tasks: #8 (tightening) → completes on the re-review confirm; #7 (compose+retire) likewise. Holding for
+    the hardener re-confirm + R5 (06, bundle).
