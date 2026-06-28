@@ -84,6 +84,46 @@ construct a retained-passive p.13 source chart/pushforward field.  Do not add a
 new wrapper that keeps the same supplied endpoint, factor, pivot, coverage,
 Jacobian, normal-crossing, pole-order, or RLCT hypotheses.
 
+## Latest A2 Retained-Passive Source-Edge-Family Chart-Produced Measure
+
+The generic retained-passive p.13 chart-produced finite-integral handoff now
+has a concrete source-edge-family specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure
+```
+
+For retained-passive determinant-chart data `retainedData`, it fixes
+`sourceChart y` to
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀ (retainedData y)`.
+It derives the old chart-produced theorem's `hsourceChart` by composing
+`hretainedData : AEMeasurable (fun y => <retainedData y, hdet y>) signedBox`
+with `continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart`.  It
+derives `hchart_mem` and `hfactor` from
+`retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_sourceEdgeFamilyOfData`
+using `hdet` and the stored-data residual-factor matrix identity
+`hdataFactor`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct axiom
+probe, and xhigh review passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This removes real source-chart/source-image/source-readback plumbing for the
+concrete retained-passive source-edge-family path.  It still does not
+construct endpoint equivalences, prove endpoint provenance, identify an
+original prior or external source measure, compare Jacobians for such a prior,
+prove source-rank coverage, prove normal crossings, compute pole order, or
+extract RLCT.
+
 ## Latest A2 Case 2 Chart-Produced Density Continuous-At Finite Integral
 
 The endpoint-transported explicit Case 2 chart-produced finite-integral handoff

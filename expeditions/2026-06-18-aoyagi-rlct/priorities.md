@@ -19,6 +19,44 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, retained-passive source-edge-family chart-produced measure
+
+The generic retained-passive p.13 chart-produced finite-integral handoff now
+has a concrete source-edge-family theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure
+```
+
+It fixes `EdgeFamily`, `base`, and
+`sourceChart y := paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀ (retainedData y)`.
+It removes separate `hsourceChart`, `hchart_mem`, and `hfactor` assumptions by
+requiring `hretainedData` into the determinant-chart subtype plus `hdet` and
+the stored-data selected-entry residual-factor identity `hdataFactor`.
+The determinant-chart subtype measurable/open-measurable instances remain
+explicit because the proof composes `hretainedData` with the continuous p.13
+source chart.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-chart-produced-measure.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-chart-produced-measure.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+search, and direct axiom probe passed; the declaration reports only
+`[propext, Classical.choice, Quot.sound]`.  This still does not construct
+endpoint equivalences, prove endpoint provenance, identify an original prior
+or external source measure, compare Jacobians for such a prior, prove
+source-rank coverage, prove normal crossings, compute pole order, or extract
+RLCT.
+
+Next A2 choices remain endpoint provenance if labelled endpoint payloads
+appear, or genuine source-prior/Jacobian transport.  The canonical
+product-density residual positivity/integrability path remains blocked on a
+real measure/normal-crossing identification.
+
 ## Earlier post-interruption controller checkpoint - 2026-06-28
 
 An earlier reorientation after the interruption found the controller in the correct

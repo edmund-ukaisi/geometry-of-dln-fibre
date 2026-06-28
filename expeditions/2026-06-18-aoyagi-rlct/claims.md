@@ -140,6 +140,22 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-edge-family
+  chart-produced measure, 2026-06-28.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure`.
+  For a retained-passive determinant-chart data path, the fixed-base p.13
+  source edge-family map supplies the selected-entry chart-produced
+  finite-integral handoff.  The theorem removes separate user-facing
+  `hsourceChart`, `hchart_mem`, and `hfactor` assumptions by using
+  `hretainedData`, `hdet`, and `hdataFactor` for the concrete
+  `paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData` chart.  It
+  still assumes determinant-subtype measurable/open-measurable structure,
+  source data, local loss/density bounds, residual radii, the critical
+  selected-entry inequality, and Haar measure.  This does not construct
+  endpoint equivalences, prove endpoint provenance, identify an original prior
+  or external source measure, compare Jacobians for such a prior, prove
+  source-rank coverage, prove normal crossings, compute pole order, or extract
+  RLCT.
 - **Current status addendum, Case 2 chart-produced density continuous-at
   finite integral, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density`.

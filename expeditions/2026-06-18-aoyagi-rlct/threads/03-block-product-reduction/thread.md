@@ -18,6 +18,39 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-28 A2 retained-passive source-edge-family chart-produced measure
+
+Reproduction:
+`reproduction-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+Review:
+`review-a2-retained-passive-source-edge-family-chart-produced-measure.md`.
+
+Lean now exposes:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure
+```
+
+For a retained-passive determinant-chart data path, the theorem fixes the
+source chart to the concrete fixed-base p.13 source edge-family map
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData`.  It removes
+the separate chart-produced handoff hypotheses `hsourceChart`, `hchart_mem`,
+and `hfactor`: `hsourceChart` comes from `hretainedData` composed with the
+continuous p.13 source chart, while `hchart_mem` and `hfactor` come from
+`hdet` and `hdataFactor` via the source-edge-family helper.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via
+the worktree-local `scripts/lb` command.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker search, direct theorem
+axiom probe, and xhigh review passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is not endpoint-equivalence construction, endpoint provenance, original
+source-prior identification, Jacobian comparison for an external prior,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-28 A2 Case 2 fixed-pivot source-readback readout
 
 Reproduction:
