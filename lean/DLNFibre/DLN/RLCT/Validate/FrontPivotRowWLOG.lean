@@ -21,7 +21,10 @@ Structurally the mirror of `FrontPivotWLOG`, with one simplification **and** one
   first layer is read; step by `Matrix.submatrix_mul_equiv` pulling the left
   row-submatrix through the product).
 
-The four lemmas mirror lemmas 2–4 of `FrontPivotWLOG`:
+The lemmas mirror `FrontPivotWLOG`:
+0. `front_row_pivot_perm_exists` — the row dual of `front_pivot_perm_exists` (via the transpose): a
+   row permutation bringing `r` independent rows to the top, the `htop` datum for the leading-block
+   lemma at the headline.
 1. `prod_paramRowFirst` — `prod (τ_R A) = (prod A).submatrix R id`.
 2. `dlnLoss_rowPerm_eq` — `dlnLoss H B A = dlnLoss H (B.submatrix R id) (τ_R A)`.
 3. `paramRowFirst_measurePreserving` — `τ_R` is measure-preserving.
@@ -44,6 +47,39 @@ private theorem prodAux_step (H : Fin (L + 1) → ℕ) (A : Params H) (k : ℕ) 
     prodAux H A (k + 1) hk = prodAux H A k (Nat.lt_of_succ_lt hk) * Mstep := by
   rw [prodAux]; congr 1; rw [eq_comm]; apply eq_of_heq
   exact hheq.symm.trans (heq_of_eqRec_eq rfl rfl)
+
+/-! ## Lemma 0 — `front_row_pivot_perm_exists` (the row-selector, the `htop` datum) -/
+
+/-- **Front-pivot ROW permutation.** For a rank-`r` matrix `B`, there is a row permutation `R`
+bringing `r` linearly-independent ROWS to the TOP `{0..r-1}`: `B.submatrix R id` keeps rank `r`
+(`R` invertible) and its first `r` rows (the submatrix at the front embedding `Fin.castLE`) have
+rank `r`. The row dual of `front_pivot_perm_exists`, via the transpose (`Bᵀ`'s columns are `B`'s
+rows): apply the column selector to `Bᵀ`, then transport rank across `ᵀ` (`rank_transpose`,
+`transpose_submatrix`). This is the `htop` (top-`r`-rows-full-rank) datum the row-WLOG supplies the
+leading-block lemma (`deepestPoint_leadingBlock_isUnit`) at the headline. -/
+theorem front_row_pivot_perm_exists {H0 n : ℕ} (B : Matrix (Fin H0) (Fin n) ℝ) {r : ℕ}
+    (hB : B.rank = r) :
+    ∃ (R : Equiv.Perm (Fin H0)) (hrH : r ≤ H0),
+      (B.submatrix (R : Fin H0 → Fin H0) id).rank = r ∧
+      ((B.submatrix (R : Fin H0 → Fin H0) id).submatrix
+        (Fin.castLE hrH : Fin r → Fin H0) id).rank = r := by
+  classical
+  -- The transpose has the same rank; its column selector is `B`'s row selector.
+  have hBT : (Bᵀ).rank = r := by rw [Matrix.rank_transpose]; exact hB
+  obtain ⟨R, hrH, hrk1, hrk2⟩ := front_pivot_perm_exists (Bᵀ) hBT
+  refine ⟨R, hrH, ?_, ?_⟩
+  · -- `(B.submatrix R id).rank = (Bᵀ.submatrix id R).rank = r` (rank invariant under transpose).
+    have htr : (B.submatrix (R : Fin H0 → Fin H0) id)ᵀ
+        = Bᵀ.submatrix (id : Fin n → Fin n) (R : Fin H0 → Fin H0) := by
+      rw [Matrix.transpose_submatrix]
+    rw [← Matrix.rank_transpose, htr]; exact hrk1
+  · -- The top-`r` rows transpose to `Bᵀ`'s front-`r` columns — exactly `hrk2`'s matrix.
+    have htr : ((B.submatrix (R : Fin H0 → Fin H0) id).submatrix
+          (Fin.castLE hrH : Fin r → Fin H0) id)ᵀ
+        = (Bᵀ.submatrix (id : Fin n → Fin n) (R : Fin H0 → Fin H0)).submatrix
+            (id : Fin n → Fin n) (Fin.castLE hrH : Fin r → Fin H0) := by
+      rw [Matrix.transpose_submatrix, Matrix.transpose_submatrix]
+    rw [← Matrix.rank_transpose, htr]; exact hrk2
 
 /-- The first layer index `⟨0, _⟩ : Fin L` (`0 < L` from `1 ≤ L`). Its `.castSucc` has `H`-width
 `H 0` syntactically (defeq), so a permutation of `Fin (H 0)` indexes its rows directly. -/
