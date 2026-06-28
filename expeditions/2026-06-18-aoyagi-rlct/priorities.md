@@ -19,6 +19,35 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-28, canonical chart selected-entry square-sum bridge
+
+The canonical retained-passive chart-side residual readout now has a pointwise
+selected-entry square-sum bridge.  New Lean name in
+`RetainedPassiveLocalJacobianMeasure.lean`:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
+```
+
+For `z ∈ topologyTupleDetChartSet`, if the concrete residual-factor product of
+the stored retained-passive blocks `(ofTopologyTuple z).C` is a selected-entry
+chart matrix after a residual-coordinate equivalence, then the canonical
+chart-side residual square-sum is exactly
+`SelectedEntrySignedBox.CenterCoord.residual pivot y`.
+
+This is not the missing product construction.  It keeps the selected-entry
+matrix identity for the full suffix product as an explicit hypothesis, but it
+removes the remaining square-sum readout step once that identity is available.
+Focused build, `scripts/sorries`, `git diff --check`, and Lean touched-file
+forbidden-marker search passed.  Xhigh review by `Dirac the 3rd` passed after a
+statement-card status correction.
+
+The current frontier is still to prove or otherwise construct the selected-entry
+matrix identity for the full canonical suffix residual product, then use the
+selected-entry signed-box/monomial sockets for chart-side a.e. positivity and
+finite negative-power integrability.  No zero-locus nullity, integrability,
+density transport, normal crossings, pole order, or RLCT is proved here.
+
 ## Latest controller decision - 2026-06-28, canonical chart residual readout
 
 The canonical retained-passive chart-side residual expression has been

@@ -100,6 +100,38 @@ The next source-moving target is to use this concrete
 zero-locus/integrability/normal-crossing construction, not merely another
 front-end wrapper.
 
+## Latest A2 Canonical Chart Selected-Entry Square-Sum Bridge
+
+`RetainedPassiveLocalJacobianMeasure.lean` now proves:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
+```
+
+For `z ∈ topologyTupleDetChartSet`, the theorem assumes a selected-entry matrix
+identity for the concrete canonical residual-factor product
+
+```text
+residualFactorProduct (ofTopologyTuple z).C last 0
+```
+
+after a residual-coordinate equivalence.  It then rewrites the canonical
+chart-side residual square-sum to `SelectedEntrySignedBox.CenterCoord.residual
+pivot y`.  The proof is finite readout bookkeeping: use the banked canonical
+residual-factor readout, apply the supplied matrix identity, unfold
+`value (matrix f)`, reindex the square-sum by the finite equivalence, and use
+the selected-entry residual square-sum lemma.
+
+Focused `RetainedPassiveLocalJacobianMeasure` build passed.  `scripts/sorries`,
+`git diff --check`, and Lean touched-file forbidden-marker search passed.
+Xhigh review by `Dirac the 3rd` passed after a statement-card status
+correction.
+
+Nonclaims: this does not prove the selected-entry matrix identity for the full
+canonical suffix product, residual zero-locus nullity, chart-side positivity,
+finite negative-power integrability, density transport, normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Canonical Residual Measurability Handoff
 
 `RetainedPassiveLocalJacobianMeasure.lean` now proves the source-side residual

@@ -55,6 +55,37 @@ finite residual negative-power integrability, no monomial lower bound, no
 source-density/prior transport, no normal crossings, no pole order, and no
 RLCT.
 
+## 2026-06-28 A2 canonical retained-passive chart selected-entry square-sum bridge
+
+Lean now has the pointwise square-sum bridge from the canonical
+retained-passive chart residual readout to the selected-entry center residual:
+
+```text
+aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
+```
+
+The theorem assumes the genuinely missing matrix identity:
+
+```text
+residualFactorProduct (ofTopologyTuple z).C last 0
+  = matrix (fun c => CenterCoord.chartMap pivot y (residualCoordEquiv c)).
+```
+
+Under that hypothesis and `z ∈ topologyTupleDetChartSet`, the canonical
+chart-side residual square-sum equals `CenterCoord.residual pivot y`.  The
+proof combines the banked canonical residual-factor readout with
+`value_matrix`, finite reindexing by `residualCoordEquiv`, and the
+selected-entry residual square-sum lemma.
+
+Focused `RetainedPassiveLocalJacobianMeasure` build passed.  `scripts/sorries`,
+`git diff --check`, and Lean touched-file forbidden-marker search passed.
+Xhigh review by `Dirac the 3rd` passed after a statement-card status
+correction.
+
+Nonclaims: no full suffix selected-entry matrix identity, residual zero-locus
+nullity, chart-side a.e. positivity, finite negative-power integrability,
+source-density/prior transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-28 A2 canonical retained-passive local Jacobian measure handoffs
 
 After the retained-passive formal/product-density change of variables, Lean

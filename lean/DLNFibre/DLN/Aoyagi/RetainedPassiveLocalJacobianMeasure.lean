@@ -915,6 +915,164 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canon
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
+/-- A selected-entry matrix form for the canonical retained-passive residual
+factor product gives the selected-entry residual square-sum on the canonical
+chart.
+
+This is a pointwise readout bridge.  It keeps the residual-factor matrix
+identity as an explicit hypothesis and does not prove zero-locus nullity,
+a.e. positivity, negative-power integrability, normal crossings, pole order, or
+an RLCT statement. -/
+theorem aoyagiCoordinateSquareSum_retainedPassiveP13Canonical_chart_eq_selectedEntryCenter_residual_of_residualFactorProduct_eq_matrix
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (z :
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)
+    (hz :
+      z ∈ topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (y : center → ℝ)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (hfactor :
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ' :=
+        throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀
+      ChartLocalSuffixState.residualFactorProduct
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let EFam := ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+      fun y ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))) =
+      SelectedEntrySignedBox.CenterCoord.residual pivot y := by
+  dsimp only
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let EFam := ∀ p : Fin (M + 1),
+    reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+  let sourceChart : TopologyTuple ρ κ' ℝ → EFam :=
+    fun y ↦
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W B U₀ hU₀
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+          (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y))
+  have hread :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+        AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1)))) := by
+    simpa [ρ, κ', EFam, sourceChart] using
+      paperEndpointFixedBaseResidualBlockCoordinateMap_retainedPassiveP13Canonical_chart_eq_residualFactorProduct
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) z hz
+  have hmatrix :
+      ChartLocalSuffixState.residualFactorProduct
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+          (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+        AoyagiResidualBlockCoordinateIndex.matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c)) := by
+    simpa [ρ, κ'] using hfactor
+  have hcoord :
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) =
+        fun c ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c) := by
+    funext c
+    have hread_c :
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+            (sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)) c =
+          (AoyagiResidualBlockCoordinateIndex.value
+            (ChartLocalSuffixState.residualFactorProduct
+              (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+              (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))))) c :=
+      congrFun hread c
+    have hmatrix_c :
+        (AoyagiResidualBlockCoordinateIndex.value
+          (ChartLocalSuffixState.residualFactorProduct
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))))) c =
+          (AoyagiResidualBlockCoordinateIndex.value
+            (AoyagiResidualBlockCoordinateIndex.matrix
+              (fun c ↦
+                SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                  (residualCoordEquiv c)))) c := by
+      rw [hmatrix]
+    have hvalue_c :
+        (AoyagiResidualBlockCoordinateIndex.value
+          (AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c)))) c =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c) := by
+      simpa using congrFun
+        (AoyagiResidualBlockCoordinateIndex.value_matrix
+          (fun c ↦
+            SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+              (residualCoordEquiv c))) c
+    exact hread_c.trans (hmatrix_c.trans hvalue_c)
+  calc
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ (fun E : EFam ↦ E)
+          (sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))) =
+      aoyagiCoordinateSquareSum
+        (fun c ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+            (residualCoordEquiv c)) := by
+      rw [hcoord]
+    _ =
+        aoyagiCoordinateSquareSum
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivot y) :=
+      aoyagiCoordinateSquareSum_comp_equiv residualCoordEquiv
+        (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)
+    _ = SelectedEntrySignedBox.CenterCoord.residual pivot y :=
+      (SelectedEntrySignedBox.CenterCoord.residual_eq_aoyagiCoordinateSquareSum_chartMap
+        pivot y).symm
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedSectionVars false in
 /-- Canonical fixed-base retained-passive local-source measure identity with
 the formal raw-order determinant density. -/
 theorem measure_map_restrict_retainedPassiveP13CanonicalLocalSource_eq_map_comp_topologyTupleEdgeRawOrder_withDensity_formalRawOrderAbsDet
