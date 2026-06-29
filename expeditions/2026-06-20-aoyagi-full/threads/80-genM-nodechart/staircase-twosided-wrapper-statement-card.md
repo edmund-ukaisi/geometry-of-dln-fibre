@@ -263,6 +263,33 @@ The BFactors/CLE construction (the per-boundary `E`s + the `C_{s+1}` shift) is t
 cast — the deferred item-3 coordinatization, dependent-Fin-heavy. It is large enough to warrant a focused
 tide (and the genm-detradj `C_{s+1}`-reindex adjudication offer).
 
+## BFactors CONSTRUCTION — progress + the pinned `C_{s+1}` (this leg)
+
+**Engine-reshape brick BANKED** (`RouteMEngineReshape.lean`, sorry-free clean-three axiom-clean):
+`schurIncReshapeCLE t r c : SchurInc t r c ≃L (roleIdx → ℝ)` (four `matrixPiCLE`s + `prodCongr` +
+`sumPiEquivProdPi`) and `lduParamReshapeCLE t : LDUParam t ≃L (roleIdx → ℝ)`. These are the per-boundary
+`Block → ℝ ≃L engine-type` bridges: `E_schur_s = flatBlockSplitCLE ρ_schur_s ≪ (schurIncReshapeCLE).symm`
+on the block factor (and similarly `E_ldu_s`). The banked `RouteMRoleCLE.flatBlockSplitCLE ρ` supplies the
+`(Fin N → ℝ) ≃L (Block → ℝ) × (Rest → ℝ)` once the reindex `ρ : ChartIdx ≃ Block ⊕ Rest` is given.
+
+**`C_{s+1}` reindex PINNED** (genm-detradj @260697dc, exact at (3,3,3,3)+(3,3,3,3,3) + Codex) — GOOD NEWS,
+ABSORBED: "C_{s+1}" is PROVENANCE not location. Since `A_s = chainA(N_s,W_s,C_{s+1}) = [C_{s+1}−N_s·W_s ;
+W_s]`, the C-block sits in LAYER-s's KEPT ROWS (first `Text_{s+1}` rows of layer-s's flat block) — NO
+cross-boundary reindex. So `E_chain_s` is FLAT/output-side derived (NOT ChartIdx): FlatIdx layer-s block
+at `off_s = ∑_{j<s} Wext_j·Wext_{j+1}`, `finSplit(Text_{s+1}+c_s = Wext_s)` → C = castAdd kept rows, W =
+natAdd lift rows; discharged by the BANKED `chainA_apply_castAdd`/`_natAdd`. Leaf `s=L-1` folds UNIFORMLY
+(same `rowC_s`; `Text_L>0` = live `u·Rfin` in kept rows; `Text_L=0` ⟹ `Fin 0` C-block, vacuous). The ONE
+genuine obligation: prove PER BOUNDARY from the recursion that the deeper composeFold prefix WRITES
+`C_{s+1}` into layer-s's kept-row coords (do NOT identify the C-region by name) — banked-grain (same as
+`schurFrameProd_block_*`). WATCH: the `Fin.cast` `Text_{s+1}+c_s = Wext_s` over opaque widths (`genWidthEq`
+cast zone) + matching the row-major intra-layer flattening to FlatIdx's `flatDim_eq` packing.
+
+**STILL REMAINING:** (a) the per-boundary reindices `ρ_schur_s`/`ρ_ldu_s : ChartIdx ≃ Block ⊕ Rest`
+(sigma-fiber extraction of boundary-`s`'s frame slot, then `frameSplitEquiv` sub-split for the role); (b)
+assemble `E_{schur,ldu,chain,s}` + the `BFactors` list `(finRange (L-1)).flatMap (s ↦ [schur_s,chain_s,
+ldu_s])`; (c) the map identity (1) `phi_eq_B_comp_pivotBlowupOn`. Then `radialComp_abs_det` (1)(2) +
+`foldDerivList_abs_det_perBoundary` (3) → the unconditional headline.
+
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
   `hasFDerivAt_Cgen_interior`/`_leaf` + `hasFDerivAt_Agen_interior`/`_leaf` (the threaded chain-layer
