@@ -145,8 +145,9 @@ theorem height_coordIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
 
 /-- The **translation automorphism** `X b ↦ X b + C (c b)` of `MvPolynomial σ R`, an `AlgEquiv` with
 inverse `X b ↦ X b − C (c b)`. It carries the coordinate ideal `span (range X)` to `graphIdeal c`
-(used to transport heights: a graph ideal is a translated coordinate ideal). -/
-noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
+(used to transport heights: a graph ideal is a translated coordinate ideal). Local proof helper for
+`height_graphIdeal_localization_eq`; `private`. -/
+private noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
     MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R :=
   AlgEquiv.ofAlgHom (aeval (fun b ↦ X b + C (c b))) (aeval (fun b ↦ X b - C (c b)))
     (by apply MvPolynomial.algHom_ext; intro b; simp)

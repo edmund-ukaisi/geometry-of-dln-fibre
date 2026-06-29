@@ -2,7 +2,7 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.FibreBundleLocallyTrivialFull
-import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.Matrix.RankMinors
 import Mathlib.RingTheory.LocalRing.ResidueField.Ideal
 
 /-!
@@ -25,7 +25,7 @@ This closes the gap the `rankROpen` docstring flags (only the point-set forward 
 - **`≤` direction** (always, over every prime `P`): the `(r+1)`-minors of the universal matrix
   vanish in `sweepSigmaRing` (rank `≤ r` is baked into `Σ̄^r`), hence in `κ(P)`, so `rank ≤ r`
   (`rank_le_iff_forall_submatrix_det_eq_zero`, the banked over-field minor criterion from
-  `Core.RankLocusClosed`). The vanishing is re-proved directly on `sweepSigma` here.
+  `Core.Matrix.RankMinors`). The vanishing is re-proved directly on `sweepSigma` here.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

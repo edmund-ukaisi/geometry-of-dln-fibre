@@ -3,7 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.DLN.RlctPayoffGeneral
 import DLNFibre.Core.FibreCodimFinal
-import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.Matrix.RankMinors
 
 /-!
 # `DLNFibre.DLN.BundleShiftDischarge` — discharging the bundle-shift interface from Core
