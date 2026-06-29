@@ -10,6 +10,81 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive residual finite-mass integrability
+
+The concrete passive product-domain residual marginal now yields an
+integrability consequence under the necessary finite-passive-mass hypothesis:
+
+```text
+residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_finiteMass
+```
+
+It proves residual square-sum positivity a.e. and finite negative-power
+lintegral for the passive chart-produced source measure
+`Measure.map sourceChart (passiveMeasure.prod weightedBox)`, assuming
+`passiveMeasure Set.univ < infinity`, the selected-entry signed-box radius
+positivity hypotheses, and the selected-entry critical exponent inequality.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-finite-mass-integrability.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-finite-mass-integrability.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Aristotle
+the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed.
+
+This remains a global residual-coordinate consequence of the chart-produced
+passive product-domain measure.  Do not localize it through arbitrary open
+sets, drop the passive mass finiteness hypothesis, or treat it as
+determinant-chart Haar transport, raw/source Haar transport, source-prior
+transport, source-image coverage, local inverse/coverage, normal crossings,
+pole order, or RLCT.
+
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian withDensity sandwich
+
+The passive selected-entry frontier now has the measure-sandwich form of the
+local Jacobian bounded-unit statement:
+
+```text
+withDensity_ofReal_sandwich_of_ae_bounds
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure
+```
+
+For the concrete passive product-domain measure `sourceMeasure`, the Case 2
+theorem gives an open neighborhood `U` of the determinant-chart basepoint and
+positive constants `epsilon`, `K` such that
+
+```text
+ofReal epsilon • sourceMeasure.restrict U
+  <= (sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))
+  <= ofReal K • sourceMeasure.restrict U.
+```
+
+The generic helper is pure measure theory: a real density bounded above and
+below a.e. gives the corresponding `withDensity` comparison by
+`withDensity_mono` and the constant-density identity.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-withdensity-sandwich.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-withdensity-sandwich.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Aristotle
+the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probes passed.
+
+This is passive chart-domain bounded-density bookkeeping only.  Do not treat
+it as determinant-chart Haar transport, raw/source Haar transport, external or
+original source-prior comparison, source-image coverage, source-rank coverage,
+local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian product bounded-unit a.e. handoff
 
 The passive selected-entry frontier now has a restricted-open-neighborhood

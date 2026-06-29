@@ -18,6 +18,62 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive residual finite-mass integrability
+
+Reproduction:
+`reproduction-a2-case2-passive-residual-finite-mass-integrability.md`.
+Statement card:
+`statement-card-a2-case2-passive-residual-finite-mass-integrability.md`.
+
+Lean now exposes:
+
+```text
+residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_finiteMass
+```
+
+This theorem transfers residual positivity a.e. and finite negative-power
+lintegral from the selected-entry chart-image measure to the passive
+chart-produced source measure.  It relies on the global residual marginal and
+therefore assumes `passiveMeasure Set.univ < infinity`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Aristotle the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed.
+
+Nonclaims: no determinant-chart Haar pushforward, raw/source Haar transport,
+source-prior comparison, selected-entry image coverage, arbitrary-localized
+residual marginal, local inverse/coverage, normal crossings, pole order, or
+RLCT.
+
+## 2026-06-29 A2 Case 2 passive Jacobian withDensity sandwich
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-withdensity-sandwich.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-withdensity-sandwich.md`.
+
+Lean now exposes:
+
+```text
+withDensity_ofReal_sandwich_of_ae_bounds
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure
+```
+
+The generic helper turns a.e. real lower/upper density bounds into a
+`withDensity` measure sandwich.  The Case 2 theorem applies it to the
+retained-passive solved-`A1` product raw-order Jacobian density on the
+restricted concrete passive product-domain measure.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Aristotle the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probes passed.
+
+Nonclaims: no determinant-chart Haar pushforward, raw/source Haar transport,
+source-prior comparison, selected-entry image coverage, source-rank coverage,
+local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian product bounded-unit a.e. handoff
 
 Reproduction:

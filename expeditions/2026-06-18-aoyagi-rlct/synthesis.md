@@ -3,6 +3,104 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Residual Finite-Mass Integrability - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has a finite-passive-mass
+residual integrability consequence for the passive chart-produced source
+measure:
+
+```text
+residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_finiteMass
+```
+
+The theorem uses the global residual marginal
+
+```text
+Measure.map residualMap mu
+  =
+passiveMeasure Set.univ •
+  ((volume : Measure (center -> R)).restrict
+    (CenterCoord.chartMap pivotNext '' CenterCoord.signedBoxSet Rres))
+```
+
+and the selected-entry chart-image residual theorem.  The passive scalar is
+not harmless for integrability: the theorem explicitly assumes
+`passiveMeasure Set.univ < infinity`.
+
+For the chart-produced measure
+`mu = Measure.map sourceChart (passiveMeasure.prod weightedBox)`, it proves
+residual square-sum positivity a.e. and finite negative-power lintegral below
+the selected-entry threshold.  Positivity transfers by `ae_smul_measure` and
+`ae_map_iff`; finiteness transfers by `lintegral_smul_measure`,
+`ENNReal.mul_lt_top`, and `lintegral_map`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-finite-mass-integrability.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-finite-mass-integrability.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Aristotle
+the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no determinant-chart Haar pushforward, no raw/source Haar theorem,
+no original source-prior transport, no selected-entry source/image equality,
+no source-rank coverage, no local inverse/coverage, no localization through
+arbitrary open sets, no normal crossings, pole order, or RLCT.
+
+## Latest A2 Case 2 Passive Jacobian WithDensity Sandwich - 2026-06-29
+
+`LocalMeasureHandoff.lean` now has the generic sandwich helper
+
+```text
+withDensity_ofReal_sandwich_of_ae_bounds
+```
+
+and `RetainedPassiveCase2LocalJacobianMeasure.lean` specializes it to the
+Case 2 passive product-domain measure:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure
+```
+
+For
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+J z = retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)
+```
+
+the theorem gives `epsilon > 0`, `K > 0`, and an open neighborhood `U` of
+`z0` such that
+
+```text
+ofReal epsilon • sourceMeasure.restrict U
+  <= (sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))
+  <= ofReal K • sourceMeasure.restrict U.
+```
+
+The proof consumes the previous a.e. bounded-unit handoff, projects the
+separate a.e. lower and upper bounds, and applies `withDensity_mono` after
+rewriting constant densities as scalar multiples.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-withdensity-sandwich.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-withdensity-sandwich.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Aristotle
+the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probes passed with
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no determinant-chart Haar pushforward, no raw/source Haar theorem,
+no original source-prior transport, no selected-entry source/image equality,
+no source-rank coverage, no local inverse/coverage, no normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian Product Bounded-Unit A.E. Handoff - 2026-06-29
 
 `LocalMeasureHandoff.lean` now has the generic handoff

@@ -1,5 +1,6 @@
 import Mathlib.MeasureTheory.Measure.Prod
 import Mathlib.MeasureTheory.Measure.Restrict
+import Mathlib.MeasureTheory.Measure.WithDensity
 import Mathlib.Topology.MetricSpace.Pseudo.Basic
 import Mathlib.Topology.NhdsWithin
 
@@ -213,6 +214,27 @@ theorem exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin
     ⟨U, hUopen, hxU,
       (Measure.quasiMeasurePreserving_fst
         (μ := μ.restrict (U ∩ s)) (ν := ν)).ae hpU⟩
+
+/-- A real density bounded above and below a.e. gives a two-sided measure
+sandwich for the corresponding `ENNReal.ofReal` weighted measure. -/
+theorem withDensity_ofReal_sandwich_of_ae_bounds
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → ℝ}
+    {ε K : ℝ}
+    (hlower : ∀ᵐ x ∂μ, ε ≤ f x)
+    (hupper : ∀ᵐ x ∂μ, f x ≤ K) :
+    ENNReal.ofReal ε • μ ≤
+        μ.withDensity (fun x ↦ ENNReal.ofReal (f x)) ∧
+      μ.withDensity (fun x ↦ ENNReal.ofReal (f x)) ≤
+        ENNReal.ofReal K • μ := by
+  constructor
+  · rw [← withDensity_const (μ := μ) (ENNReal.ofReal ε)]
+    exact
+      withDensity_mono
+        (hlower.mono fun _ hx ↦ ENNReal.ofReal_le_ofReal hx)
+  · rw [← withDensity_const (μ := μ) (ENNReal.ofReal K)]
+    exact
+      withDensity_mono
+        (hupper.mono fun _ hx ↦ ENNReal.ofReal_le_ofReal hx)
 
 end Aoyagi
 end DLN

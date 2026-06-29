@@ -140,6 +140,47 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive residual finite-mass integrability,
+  2026-06-29.** Lean now exposes
+  `residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For the passive chart-produced source measure
+  `Measure.map sourceChart (passiveMeasure.prod weightedBox)`, residual
+  square-sum positivity a.e. and finite negative-power lintegral are proved
+  below the selected-entry critical threshold, assuming finite total passive
+  mass `passiveMeasure Set.univ < infinity`.  Reproduction and statement card
+  are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-finite-mass-integrability.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-finite-mass-integrability.md`.
+  Focused build, xhigh review, `git diff --check`, `scripts/sorries`, and
+  direct axiom probe passed.  This is a global residual-coordinate consequence
+  only: no
+  determinant-chart Haar transport, raw/source Haar theorem, source-prior
+  transport, selected-entry image coverage, arbitrary localized residual
+  marginal, local inverse/coverage, normal crossings, pole order, or RLCT.
+- **Current status addendum, Case 2 passive Jacobian withDensity sandwich,
+  2026-06-29.** Lean now exposes
+  `withDensity_ofReal_sandwich_of_ae_bounds` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and
+  `exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For the concrete passive product-domain measure restricted to a small open
+  neighborhood, weighting by the retained-passive solved-`A1` product
+  raw-order Jacobian factor gives a measure bounded above and below by
+  positive scalar multiples of the restricted measure.  Reproduction and
+  statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-withdensity-sandwich.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-withdensity-sandwich.md`.
+  Focused build, xhigh review, `git diff --check`, `scripts/sorries`, and
+  direct axiom probes passed.  This is passive chart-domain bounded-density
+  bookkeeping only: no
+  determinant-chart Haar transport, raw/source Haar theorem, external or
+  original source-prior comparison, selected-entry image coverage, source-rank
+  coverage, local inverse/coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive Jacobian product bounded-unit
   a.e. handoff, 2026-06-29.** Lean now exposes
   `exists_open_ae_restrict_of_eventually_nhds` in
