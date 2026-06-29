@@ -67,4 +67,30 @@ theorem deepestEFull_eq_of_framedProd_regBlocks_eq (H : Fin (L + 1) → ℕ) (r 
   · rw [h12]
   · rw [h21]
 
+/-! ## The boundary deepest-block vanishing (re-derived self-contained; cf. genm-l2psi's copies) -/
+
+/-- `M̄Y_s = deepBlkY_s = 0` at **layer 0** (`L ≥ 2`): `toBlocks₁₂` reads cols `≥ r`, which vanish. -/
+theorem deepBlkY_layer0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hs : (s : ℕ) = 0) :
+    deepBlkY H r B hB hr hL s = 0 := by
+  funext i j
+  change (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inl i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inr j)) = 0
+  rw [rThresholdSplit_symm_inr]
+  exact deepestPoint_layer0_cols_vanish H r B hB hr hL s hL2 hs _ _ (by simp)
+
+/-- `M̄Z_s = deepBlkZ_s = 0` at **layer (L−1)** (`L ≥ 2`): `toBlocks₂₁` reads rows `≥ r`, which vanish. -/
+theorem deepBlkZ_layerLast_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (s : Fin L) (hs : (s : ℕ) + 1 = L) :
+    deepBlkZ H r B hB hr hL s = 0 := by
+  funext i j
+  change (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inl j)) = 0
+  rw [rThresholdSplit_symm_inr]
+  exact deepestPoint_layerLast_rows_vanish H r B hB hr hL s hL2 hs _ _ (by simp)
+
 end DLNFibre.DLN.RLCT
