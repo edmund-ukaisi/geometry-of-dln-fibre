@@ -22,7 +22,8 @@ The deliverables, with `q = d 0` (source dimension) and `p = d (Fin.last N)` (ta
    `Localization.Away (ΔPdeep …)` (the deep analog of `Iad`).
 3. `Sred d r hp hq := Localization.Away (ΔPdeep …) ⧸ IadDeep …` — the deep chart quotient ring, with
    its `CommRing` / `Algebra k` instances inherited, and `isReduced_Sred` : `IsReduced (Sred …)`
-   (over `[IsAlgClosed k]`, justifying the name — this is R2-3a's `hSred`, now discharged).
+   (over any field — `sigmaIdeal` is a vanishing ideal, radical by the field-general
+   `vanishingIdeal_isRadical`, justifying the name — this is R2-3a's `hSred`, now discharged).
 4. The **type bridge** `repStratumEquiv : RepCoord (dStratum q p) ≃ Fin p × Fin q` (the
    single-matrix stratum coords), via `Equiv.uniqueSigma` (the `Sigma` over the `Unique` base
    `Fin 1`), and the deep base comorphism `deepBaseComap d` carrying the `N = 1` base coordinate
@@ -135,16 +136,18 @@ noncomputable abbrev Sred (d : Fin (N + 1) → ℕ) (r : ℕ)
 The name `Sred` asserts reducedness, and that reducedness is precisely R2-3a's second hypothesis
 `hSred : IsReduced S` (`Core.FibreReducedTrivialization.fibreGenIdeal_isRadical_of_trivialization`).
 It is **cheap** here: `IadDeep = (sigmaIdeal d r).map (algebraMap …)` is radical because
-`sigmaIdeal` is radical (`vanishingIdeal_isRadical`, over `[IsAlgClosed k]`) and localization
+`sigmaIdeal` is radical (`vanishingIdeal_isRadical`, a field-general no-nilpotents fact — every
+vanishing ideal is radical over any field, not the strong Nullstellensatz) and localization
 carries radical
 ideals to radical ideals (`IsLocalization.map_radical`); a quotient by a radical ideal is reduced
 (`Ideal.isRadical_iff_quotient_reduced`). No quotient↔localization interchange iso is needed. -/
 
-/-- **`IadDeep` is radical** (`[IsAlgClosed k]`): the localized image of the radical determinantal
-base ideal `sigmaIdeal d r`. Via `IsLocalization.map_radical`
+/-- **`IadDeep` is radical** (over any field — `vanishingIdeal_isRadical` is a field-general
+no-nilpotents fact, not the strong Nullstellensatz, so no `[IsAlgClosed k]`): the localized image of
+the radical determinantal base ideal `sigmaIdeal d r`. Via `IsLocalization.map_radical`
 (`(I.map …).radical = I.radical.map …`) and `sigmaIdeal`'s radicality
 (`vanishingIdeal_isRadical`). -/
-theorem IadDeep_isRadical [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+theorem IadDeep_isRadical (d : Fin (N + 1) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
     (IadDeep (k := k) d r hp hq).IsRadical := by
   have hsig : (sigmaIdeal (k := k) d r).IsRadical := by
@@ -153,12 +156,12 @@ theorem IadDeep_isRadical [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     ← IsLocalization.map_radical (M := Submonoid.powers (ΔPdeep (k := k) d r hp hq)),
     hsig.radical]
 
-/-- **`Sred` is reduced** (`[IsAlgClosed k]`), justifying the name.
+/-- **`Sred` is reduced** (over any field — see `IadDeep_isRadical`), justifying the name.
 `Sred = Localization.Away ΔPdeep ⧸ IadDeep` with `IadDeep` radical (`IadDeep_isRadical`); a quotient
 by a radical ideal is reduced
 (`Ideal.isRadical_iff_quotient_reduced`). This is exactly R2-3a's `hSred : IsReduced S` for
 `S = Sred` — so R2-3b-4 needs to build only `e` itself, not also `IsReduced S`. -/
-theorem isReduced_Sred [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+theorem isReduced_Sred (d : Fin (N + 1) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last N)) (hq : r ≤ d 0) :
     IsReduced (Sred (k := k) d r hp hq) :=
   (Ideal.isRadical_iff_quotient_reduced _).mp (IadDeep_isRadical d r hp hq)
