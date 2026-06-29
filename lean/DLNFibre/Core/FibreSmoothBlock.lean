@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.SmoothPointRegular
+import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.FibreCodimFinal
 import DLNFibre.Core.FibreComponentOrbitTransport
 import DLNFibre.Core.RadicalCatenary
@@ -48,6 +48,7 @@ Codex-vetted fidelity note in the thread.
 namespace DLNFibre.Core
 
 open Algebra MvPolynomial Matrix TensorProduct
+open DLNFibre.Core.Dimension
 
 universe u
 

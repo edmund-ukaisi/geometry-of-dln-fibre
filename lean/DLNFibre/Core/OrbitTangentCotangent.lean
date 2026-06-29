@@ -2,8 +2,8 @@ import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.OrbitDifferential
 import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.CotangentJacobian
-import DLNFibre.Core.SmoothPointRegular
-import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.Dimension.Regular
+import DLNFibre.Core.Dimension.AffineDomain
 import Mathlib.Algebra.MvPolynomial.Derivation
 import Mathlib.Algebra.DualNumber
 import Mathlib.Data.Matrix.DualNumber
@@ -31,7 +31,7 @@ field) / L1 (primeness needs only `[Infinite k]`). Algebraic closedness is not u
 
 namespace DLNFibre.Core
 
-open Matrix Module MvPolynomial DualNumber TrivSqZeroExt
+open Matrix Module MvPolynomial DualNumber TrivSqZeroExt Dimension
 
 universe u
 

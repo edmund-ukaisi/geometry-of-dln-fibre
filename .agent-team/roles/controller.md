@@ -20,7 +20,14 @@ version. **Judges against bedrock** — holds formaliser output to the bedrock t
 necessary, never sufficient — and neither is a relayed result: **re-run cited scripts** to confirm they
 reproduce their headline (not a relayed verdict), and require a **decorrelated counterexample hunt** to have
 attacked any universal/negative/exhaustiveness claim before treating it as established (an empty hunt is
-scoped evidence, not a proof). The controller's judgement against this taste takes precedence. Does not do
+scoped evidence, not a proof). The controller's judgement against this taste takes precedence. **Makes the build-vs-cite call** — the
+team's comparative advantage is getting well-established mathematics done and hardened at scale, so whether a
+needed result is *buildable* (standard maths, detail-at-scale — commit the team to it as a clean library) or
+a *genuine monument* (cite it) is the controller's executive judgment. Make the call and commit the build;
+resist **timidity-disguised-as-rigor** ("not in Mathlib, therefore risky"). Stay informed-bold — name results
+for what they are and cite the monuments ([`../../CLAUDE.md`](../../CLAUDE.md) § Disposition ·
+[`../../docs/policies/library-building.md`](../../docs/policies/library-building.md) ·
+[`../../docs/policies/bedrock.md`](../../docs/policies/bedrock.md)). Does not do
 thread grunt-work in its own context. No agent definition — this is the lead
 session itself. **Surface operator decisions non-blockingly when running an autonomous loop with
 active teammates** — a blocking `AskUserQuestion` freezes the controller's inbox, so teammates cannot

@@ -2,7 +2,7 @@ import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.DeterminantalStratumDim
 import DLNFibre.Core.FibreCodim
 import DLNFibre.Core.FibreHeightDirect
-import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.OrbitTangentCotangent
 
 /-!
@@ -29,7 +29,7 @@ module claims the full identity.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 
