@@ -65,6 +65,34 @@ confirms it builds at general `v`). General-L = #120.
 
 ## §QA. FIDELITY-QA GATE (held by genm-d1producer; binding on the genm-d1prod build)
 
+**VERDICT (2026-06-29, QA holder): PASS — all 5 gates clear. Cleared for cone-merge.** Producer
+`origin/genm-d1prod @6d391d75`, 2 disjoint additive files (S1IFTProducer 234 LoC + D1IFTResidualProducer
+159 LoC), 6 theorems. Re-built green in an isolated throwaway worktree (2759 jobs); forced `#print axioms`
+on all 6 = `[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `monomial_rlct`); `scripts`-grep
+clean of live sorry/admit/native_decide/#exit; temp worktree removed (no leak).
+ - **(1) ★ Denominator fidelity — PASS, re-factored HONESTLY.** The producer built at Altitude A:
+   `hcmp_of_contDiff` proves `hcmp` for ANY `C¹` residual `q` via the UNCONDITIONAL mean-value bound
+   (`L = sup‖fderiv q‖` on the compact ball, finite for any `C¹ q`, D-INDEPENDENT). So the q-specific
+   λ-arc re-run is DISSOLVED (not skipped): the λ-arc killed the SQUEEZE because that was a
+   comparison-object mismatch (Schur core ≠ F's residual); here `Q = ‖q‖²` IS `F`'s own residual by
+   construction, so the structural failure CANNOT recur. The denominator-D concern correctly MIGRATED to
+   `hchart` (`rlctAt f v = rlctAtOn F (0,t0)`), left as an HONEST HYPOTHESIS — the D-vanishing failure mode
+   would make `hchart` unprovable + `q` not-`C¹` at the use site, the use-site's burden, correctly deferred.
+ - **(2) hcmp wiring — PASS.** Exact `∑s²+R≤C·F`, `R=Q(0,·)`/`Q≥0` definitional (sums of squares),
+   genuine `L` from `Convex.norm_image_sub_le_of_norm_fderiv_le` (verified MeanValue.lean:500) +
+   `EuclideanSpace.real_norm_sq_eq` (PiL2.lean:150).
+ - **(3) clean-three + hygiene — PASS** (above; `hDeepest` is a hypothesis, no sorry-route leak).
+ - **(4) statement fidelity — PASS.** `deepest_le_of_optimal_of_iftResidual` concludes the genuine
+   per-point `rlctAt deepest ≤ rlctAt v` MODULO the binder hypotheses `hchart`/`hchart₂` (chart transfers),
+   `hDeepest` (#44), `hDegraded` (R1-at-M' interface) — all named, no closed-rung overclaim.
+ - **(5) no leak — PASS** (2 disjoint additive files, zero edits to existing modules).
+USE-SITE RESIDUAL (carried, honest, NOT a QA fail): `hchart`/`hchart₂` (the bounded-unit chart transfer,
+where D-nonvanishing actually lives), `hDeepest` (#44, the clean `deepest_gauge_construction_L2` route),
+`hDegraded` (R1 resolution at the rectangular M'). The producer removed the chart-DATA (`hF`/`hQ0`/`hcmp`)
+from the hypothesis list — the genuine §SEL win.
+
+---
+
 The producer build (`genm-d1prod`) lands on its own origin branch; this QA gate is what the QA holder
 re-checks BEFORE the controller cone-merges. Pinned here so the criteria are explicit, not reconstructed.
 
