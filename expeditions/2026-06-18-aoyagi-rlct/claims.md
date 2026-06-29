@@ -141,6 +141,33 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, retained-passive chart-produced punctured-sector
+  residual-source socket, 2026-06-29.** Lean now proves
+  `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_marginal`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`,
+  imported by `lean/DLNFibre.lean`.  The theorem works over an arbitrary
+  coordinate-domain measure, calls the punctured-sector readout theorem to
+  choose an open determinant-and-pivot-nonzero sector `V`, and for
+  `mu = Measure.map sourceChart (sourceMeasure.restrict V)` and
+  `marginal = Measure.map Prod.snd (sourceMeasure.restrict V)` proves
+  `mu.restrict localSource = mu` and transfers explicit marginal residual
+  positivity and finite negative-power integrability assumptions to the
+  retained-passive p.13 residual-source hypotheses for `mu`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`,
+  `git diff --check`, the added Lean-line forbidden-marker scan, and direct
+  axiom probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  read-only review by `Harvey the 3rd` returned PASS.  This is only a
+  chart-produced residual-source socket: no marginal positivity/integrability
+  for arbitrary `sourceMeasure`, determinant-chart Haar transport, raw/source
+  Haar theorem, external/original source-prior comparison, passive Jacobian
+  formula, selected-entry source-image equality, source-rank coverage, normal
+  crossings, pole order, or RLCT is claimed.
+- **Current status addendum, retained-passive chart-produced punctured-sector
   measure readout, 2026-06-29.** Lean now proves
   `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_eq_snd`
   in

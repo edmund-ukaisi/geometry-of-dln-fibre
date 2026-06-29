@@ -3,6 +3,67 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Residual-Source Socket - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_marginal
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md
+threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md
+```
+
+The theorem calls the punctured-sector readout theorem to get an open
+determinant-and-pivot-nonzero sector `V`.  For the chart-produced source
+measure
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+and residual-coordinate marginal
+
+```text
+marginal = Measure.map Prod.snd (sourceMeasure.restrict V),
+```
+
+it proves `mu.restrict localSource = mu` and turns explicit marginal
+assumptions
+
+```text
+marginal-a.e. y, 0 < SelectedEntrySignedBox.CenterCoord.residual pivotNext y
+∫⁻ y, ENNReal.ofReal ((SelectedEntrySignedBox.CenterCoord.residual pivotNext y)^(-t)) ∂ marginal < ∞
+```
+
+into retained-passive p.13 residual positivity and
+`residualNegPowerIntegrableOn` for `mu` over the local source.
+
+The proof uses the exact map identity
+`Measure.map inverseReadout mu = marginal`, measurability of the fixed-pivot
+inverse readout, the a.e. pivot-nonzero argument from selected-entry residual
+positivity, `chartMap_preimageOfPivotNeZero`,
+`chartMap_eq_zero_of_pivot_eq_zero`,
+`residual_eq_aoyagiCoordinateSquareSum_chartMap`, finite square-sum reindexing,
+`ae_of_ae_map`, `lintegral_map`, and `lintegral_congr_ae`.
+
+Xhigh read-only review by `Harvey the 3rd` returned PASS.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, the added Lean-line forbidden-marker scan, and direct axiom
+probe passed with `[propext, Classical.choice, Quot.sound]`.
+
+This is a chart-produced residual-source socket only.  It proves no marginal
+positivity/integrability for arbitrary `sourceMeasure`, no determinant-chart
+Haar transport, no raw/source Haar theorem, no external/original source-prior
+comparison, no passive Jacobian formula, no selected-entry source-image
+equality, no source-rank coverage, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Measure Readout - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:

@@ -18,6 +18,42 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced punctured-sector residual-source socket
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`.
+Review:
+`review-a2-retained-passive-chart-produced-punctured-sector-residual-source-socket.md`.
+
+Lean now exposes:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_marginal
+```
+
+The theorem is a chart-produced residual-source socket for the previously
+proved punctured-sector inverse-readout map identity.  It chooses the same kind
+of open determinant-and-pivot-nonzero sector `V`, defines
+`mu = Measure.map sourceChart (sourceMeasure.restrict V)` and
+`marginal = Measure.map Prod.snd (sourceMeasure.restrict V)`, then proves
+`mu.restrict localSource = mu` and transfers explicit marginal residual
+positivity and finite negative-power integrability to the retained-passive
+p.13 source residual hypotheses.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, the added Lean-line forbidden-marker scan, and direct axiom
+probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only
+review by `Harvey the 3rd` returned PASS.
+
+Nonclaims: no marginal positivity/integrability for arbitrary `sourceMeasure`,
+determinant-chart Haar transport, raw/source Haar theorem, external/original
+source-prior comparison, passive Jacobian formula, selected-entry source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced punctured-sector measure readout
 
 Reproduction:
