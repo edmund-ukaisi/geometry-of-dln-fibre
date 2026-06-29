@@ -594,4 +594,131 @@ theorem pbo_reader (x : Fin (routeMAmbient M222) → ℝ) (q : Fin (routeMAmbien
         rw [active222]; simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
         exact ⟨hp, hq0, hq1⟩)]
 
+/-! ## The leaf reader `rfin222` + the faithful boundary factor `B`
+
+`rfin222 x := !![x lf0, x lf1]` reads the two complement leaf slots directly. The faithful boundary
+factor `B y := paramsEquivFlat M222 (Bparams y)`, where `Bparams y` is the EXPLICIT two-layer chart
+reading the pivot as the ORDINARY coordinate `y structPivot` (the `+u` of `Agen0[1,1]`), the Schur
+readers `a/b/n/w0/w1` from `y`, and the leaf from `y lf0 / y lf1`. `B` is radial-free (`det DB = a²`,
+the engine). The map identity `phiFlatLiveR1 = B ∘ pivotBlowupOn active222 structPivot` then follows
+per-layer from `Agen0_Glr_eq`/`Agen1_Glr_eq` + the pbo facts (pivot fixed, leaf scaled, readers fixed). -/
+
+/-- The leaf reader: `rfin222 x = !![x lf0, x lf1]` (`1×2`, reading the two complement leaf slots). -/
+noncomputable def rfin222 (x : Fin (routeMAmbient M222) → ℝ) :
+    Matrix (Fin (Text M222 tach222 2)) (Fin (Wext M222 2)) ℝ :=
+  !![x lf0, x lf1]
+
+/-- **The faithful boundary-factor chart parameters** `Bparams y : Params M222` — the explicit two
+layers reading the pivot as the ordinary coord `y structPivot`, readers `a/b/n/w0/w1` from `y`, leaf
+`y lf0 / y lf1`:
+`A0 = [[a, a·n],[a·b, a·b·n + y_p]]`, `A1 = [[y_lf0 − n·w0, y_lf1 − n·w1],[w0, w1]]`. -/
+noncomputable def Bparams (y : Fin (routeMAmbient M222) → ℝ) : Params M222 :=
+  Fin.cons (!![aRead y, aRead y * nRead y;
+      aRead y * bRead y, aRead y * bRead y * nRead y + y (structPivot M222 hN_M222)]
+        : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ)
+    (Fin.cons (!![y lf0 - nRead y * w0Read y, y lf1 - nRead y * w1Read y;
+        w0Read y, w1Read y] : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ)
+      (fun i => i.elim0))
+
+/-- The faithful boundary factor `B y := paramsEquivFlat M222 (Bparams y)`. -/
+noncomputable def Bchart (y : Fin (routeMAmbient M222) → ℝ) : Fin (routeMAmbient M222) → ℝ :=
+  paramsEquivFlat M222 (Bparams y)
+
+/-! ## The reader values are stable under `pivotBlowupOn` (they sit in `forbiddenSlots`) -/
+
+/-- Each reader is the flat coordinate at its slot (`rfl` — the reader is `x` at the slot). -/
+theorem aRead_eq (x : Fin (routeMAmbient M222) → ℝ) : aRead x = x readerSlotK := rfl
+theorem bRead_eq (x : Fin (routeMAmbient M222) → ℝ) : bRead x = x readerSlotX := rfl
+theorem nRead_eq (x : Fin (routeMAmbient M222) → ℝ) : nRead x = x readerSlotN := rfl
+theorem w0Read_eq (x : Fin (routeMAmbient M222) → ℝ) : w0Read x = x readerSlotW0 := rfl
+theorem w1Read_eq (x : Fin (routeMAmbient M222) → ℝ) : w1Read x = x readerSlotW1 := rfl
+
+/-- A reader slot is in `forbiddenSlots`. -/
+theorem readerSlotK_mem : readerSlotK ∈ forbiddenSlots :=
+  Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
+theorem readerSlotX_mem : readerSlotX ∈ forbiddenSlots :=
+  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
+theorem readerSlotN_mem : readerSlotN ∈ forbiddenSlots :=
+  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+    (Finset.mem_insert_self _ _)))
+theorem readerSlotW0_mem : readerSlotW0 ∈ forbiddenSlots :=
+  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+    (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))))
+theorem readerSlotW1_mem : readerSlotW1 ∈ forbiddenSlots :=
+  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+    (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
+
+/-- The reader values are invariant under `pivotBlowupOn` (the slots lie in `forbiddenSlots`). -/
+theorem aRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
+    aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = aRead x := by
+  rw [aRead_eq, aRead_eq, pbo_reader x readerSlotK readerSlotK_mem]
+theorem bRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
+    bRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = bRead x := by
+  rw [bRead_eq, bRead_eq, pbo_reader x readerSlotX readerSlotX_mem]
+theorem nRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
+    nRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = nRead x := by
+  rw [nRead_eq, nRead_eq, pbo_reader x readerSlotN readerSlotN_mem]
+theorem w0Read_pbo (x : Fin (routeMAmbient M222) → ℝ) :
+    w0Read (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = w0Read x := by
+  rw [w0Read_eq, w0Read_eq, pbo_reader x readerSlotW0 readerSlotW0_mem]
+theorem w1Read_pbo (x : Fin (routeMAmbient M222) → ℝ) :
+    w1Read (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = w1Read x := by
+  rw [w1Read_eq, w1Read_eq, pbo_reader x readerSlotW1 readerSlotW1_mem]
+
+/-! ## The map identity `phiFlatLiveR1 = B ∘ pivotBlowupOn active222 structPivot` (`hmap`) -/
+
+/-- **The chart-parameter identity** `chartParamsGen (x p) (Glr rfin222 x) = Bparams (pbo x)` — the
+genuine content of `hmap`, per-layer: layer 0 is `Agen0_Glr_eq` (the `+u = +x_p` pivot coord, the
+`reindex` value-preserving); layer 1 is `Agen1_Glr_eq` with the leaf `rfin222 x = !![x lf0, x lf1]`
+scaled to `x_p·x_lfᵢ` on the RHS via `pbo_lf0/lf1`, and the readers fixed via `*_pbo`. -/
+theorem chartParamsGen_Glr_eq (x : Fin (routeMAmbient M222) → ℝ) :
+    chartParamsGen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+        (hleStruct M222 tach222 structAdm_tach222)
+      = Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x) := by
+  -- reduce the RHS `Bparams (pbo x)` readers/pivot/leaf via the pbo facts first
+  have hB0 : (Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x)) 0
+      = (!![aRead x, aRead x * nRead x;
+          aRead x * bRead x, aRead x * bRead x * nRead x + x (structPivot M222 hN_M222)]
+          : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) := by
+    show (!![aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x), _; _, _]
+        : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) = _
+    rw [aRead_pbo, bRead_pbo, nRead_pbo, pbo_pivot]
+  have hB1 : (Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x)) 1
+      = (!![x (structPivot M222 hN_M222) * x lf0 - nRead x * w0Read x,
+          x (structPivot M222 hN_M222) * x lf1 - nRead x * w1Read x;
+          w0Read x, w1Read x] : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ) := by
+    show (!![(pivotBlowupOn active222 (structPivot M222 hN_M222) x) lf0 - _, _; _, _]
+        : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ) = _
+    rw [nRead_pbo, w0Read_pbo, w1Read_pbo, pbo_lf0, pbo_lf1]
+  funext s
+  fin_cases s
+  · show Matrix.reindex _ _ (Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+        (hleStruct M222 tach222 structAdm_tach222) 0) = (Bparams _) 0
+    rw [Agen0_Glr_eq, hB0]
+    ext i j
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_symm, finCongr_apply,
+      Fin.cast_eq_self]
+    rfl
+  · show Matrix.reindex _ _ (Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+        (hleStruct M222 tach222 structAdm_tach222) 1) = (Bparams _) 1
+    rw [Agen1_Glr_eq, hB1]
+    ext i j
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_symm, finCongr_apply,
+      Fin.cast_eq_self]
+    -- the leaf `rfin222 x ⟨0⟩ ⟨j⟩ = (!![x lf0, x lf1]) ⟨0⟩ ⟨j⟩ = x lfⱼ` reduces by `rfl`
+    rfl
+
+/-- **`hmap`: `phiFlatLiveR1 M222 … rfin222 = Bchart ∘ pivotBlowupOn active222 structPivot`** — the
+faithful map identity (obligation (1) of the `BData` interface). -/
+theorem hmap_222 :
+    phiFlatLiveR1 M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222
+      = Bchart ∘ pivotBlowupOn active222 (structPivot M222 hN_M222) := by
+  funext x
+  show phiGen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+      (hleStruct M222 tach222 structAdm_tach222) = _
+  show paramsEquivFlat M222 (chartParamsGen (x (structPivot M222 hN_M222)) M222 tach222
+      (Glr rfin222 x) (hleStruct M222 tach222 structAdm_tach222)) = _
+  rw [chartParamsGen_Glr_eq]
+  rfl
+
 end DLNFibre.DLN.RLCT
