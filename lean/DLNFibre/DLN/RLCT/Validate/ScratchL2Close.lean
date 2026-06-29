@@ -488,20 +488,22 @@ private theorem deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ (H : Fin (L + 
   -- (Fin 3) hypotheses (the `subst hL2eq` + lastLayer↔literal reconciliation + the he2 raw↔dict cast),
   -- and the he2 raw-block↔l2*Conj-dict connector (the midWidth `hY0c` template). Mechanical; the
   -- mathematics is fully discharged.
-  have hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₁
-      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₁ := by
-    sorry
-  have hm12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₂
-      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₂ := by
-    sorry
-  have hm21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₂₁
-      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₂₁ := by
+  -- Derive the four hm-inputs (ingredient-shaped), then assemble via conj_hm_triple (post-subst).
+  have h0 := reindex_decode0_conj_shared H r B hB hr hL hL2eq split hsplit x (⟨0, by omega⟩ : Fin L)
+    (Fin.ne_of_val_ne (by simp only [lastLayer]; omega))
+    (deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin L) rfl)
+  have h11G := reindex_decodeLast_conj_b11 H r B hB hr hL hL2eq split hsplit x
+    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL)
+      (by simp only [lastLayer]; omega))
+  have h21G := reindex_decodeLast_conj_b21 H r B hB hr hL hL2eq split hsplit x
+    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL)
+      (by simp only [lastLayer]; omega))
+  -- The hm· triple: assemble via conj_hm_triple (post-subst), supplying h0/h11G/h21G + the he2 connector.
+  -- h0/h11G/h21G are derived above (ingredient-shaped). REMAINING (single sorry): subst hL2eq +
+  -- index reconciliation (lastLayer↔(1:Fin2), VERIFIED reducible by simp[lastLayer];rfl) + the he2
+  -- raw-block↔l2*Conj connector (e2_conj_dict + the midWidth hY0c template) — the documented
+  -- opaque-width gluing, deferred to a fresh pass.
+  obtain ⟨hm11, hm12, hm21⟩ : _ ∧ _ ∧ _ := by
     sorry
   obtain ⟨h11, h12, h21⟩ :=
     resid_regBlocks_eq_of_mid_agree H r B hr hL J Pf Qf Aψ Aq hPtri' hQtri' hm11 hm12 hm21
