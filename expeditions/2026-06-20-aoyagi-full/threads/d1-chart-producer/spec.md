@@ -63,6 +63,43 @@ confirms it builds at general `v`). General-L = #120.
 
 ---
 
+## §QA. FIDELITY-QA GATE (held by genm-d1producer; binding on the genm-d1prod build)
+
+The producer build (`genm-d1prod`) lands on its own origin branch; this QA gate is what the QA holder
+re-checks BEFORE the controller cone-merges. Pinned here so the criteria are explicit, not reconstructed.
+
+1. **★ DENOMINATOR FIDELITY (the promoted caveat — the load-bearing one).** The §SEL hcmp certificate
+   used a SYMPY selected-minor chart with denominator `D = (X2+1)·(1−Y1·Z2)`. The PRODUCER'S OWN IFT
+   chart determines the ACTUAL `D` — they need NOT coincide. QA must:
+   (a) confirm the producer's IFT chart is `C¹` (`ContDiffAt`/`ContDiffOn`) with `det DΦ ≠ 0` (the chart
+       Jacobian) on an open `V ∋ v` — i.e. the IFT genuinely applies at the selected 5 minors;
+   (b) RE-RUN the directed-exact hcmp check against the PRODUCER'S actual `q(s,t)` (its real `D`), NOT the
+       sympy stand-in — specifically re-verify, on the squeeze's failure locus ((3,3,3)/r=1 middle, the
+       λ-arc): `(q_a(s,t) − q_a(0,t))²` is dominated by `L²·∑s²` near `v` with the producer's actual `q`
+       (the numerator divisibility by `s_j` + `D` bounded away from 0). If the producer's `D` vanishes or
+       its `q` violates the Lipschitz-in-s bound on any directed arc, SURFACE (the build is on a wrong
+       chart) — do NOT pass it on the sympy certificate alone.
+2. **hcmp wiring fidelity.** Confirm the producer's `hcmp` instance has the EXACT shape
+   `∃U∈𝓝(0,t0), ∀p∈U, (∑ p.1 i²) + R p.2 ≤ C·F p` with `R = Q(0,·)` (`hR`), `Q ≥ 0` (`hQ0`), and that the
+   `coupled_controls_slice` summation (or the Codex vector-triangle route) is applied per inactive square
+   with a genuine `L` from `Convex.norm_image_sub_le_of_norm_fderiv_le` (NOT an axiom/sorry stand-in).
+3. **CLEAN-THREE + axiom hygiene.** `scripts/sorries` clean on the producer file; forced `#print axioms`
+   on the producer's top theorem(s) = `[propext, Classical.choice, Quot.sound]` (+ `monomial_rlct` only
+   if it transitively uses R1's S2 leaf — it should NOT for the D1 ≥ leg), NO `sorryAx`. In particular the
+   `hDeepest` discharge must route via the CLEAN `deepest_gauge_construction_L2`, NOT the sorry-carrying
+   `deepest_regular_core_reduces` / `deepest_gauge_squeeze_exists` (the soundness forward-discipline).
+4. **Statement fidelity (name = content).** The producer's headline names a per-point D1 `≥` at general
+   optimal `v` (or the `hCore`/`hAtV` it actually delivers) — confirm it claims exactly that, no overclaim
+   (NOT the closed D1 rung if `hDeepest`/#44 or the R1-at-M' interface stay hypotheses; those are honest
+   carried hypotheses, name them as such).
+5. **No leak into the main checkout.** Confirm the build edited ONLY its own worktree (the prior-leg leak
+   discipline); the new file is DISJOINT (additive) from the integrated `D1ChartProducer*.lean`.
+
+On PASS: relay clean-three + the re-run hcmp verdict to the controller for the cone-merge. On FAIL:
+surface the precise residual (denominator vanishing / Lipschitz violation / sorry leak / overclaim).
+
+---
+
 ## ★ RIGHT-SIZING — TWO decisive tests; the SQUEEZE route FAILS at general v (do NOT charge it)
 
 **Test 1 (a4ef57): the exact clean-square chart is WALLED at general v.** The `nReg=5` deepest-aligned
