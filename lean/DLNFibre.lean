@@ -528,5 +528,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+-- D1 (rung 2/5) (★)-deliverer engine: the analytic quasi-split RLCT lower bound `rlct_quasiSplit_ge`
+-- (+ rlct_smooth_block_ge / coupled_controls_slice) — network-free, sidesteps the full Gromoll–Meyer
+-- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
+-- reviewer-PASS. The D1 use-site (the IFT-chart producer for the DLN loss at a general v) consumes it.
+import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

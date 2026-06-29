@@ -8,6 +8,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 
 /-!
 # Axiom-hygiene check
@@ -99,6 +100,16 @@ open DLNFibre.DLN.RLCT
 -- `_L2` witness and carries the #120-tracked L≥3-arm sorries (the grouped recursive diffeo, RESEARCH-RISK
 -- roadmapped). Expected `sorryAx` until #120 closes; tracked here so the day it goes clean is visible.
 #print axioms deepest_gauge_construction
+
+-- D1 (rung 2/5) (★)-deliverer engine — the analytic quasi-split RLCT lower bound (network-free,
+-- reusable; sidesteps the full Gromoll–Meyer Morse lemma via quasi-split-by-constant-comparison). Must be
+-- CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`: rlct_quasiSplit_ge (the abstract
+-- post-chart (★)-deliverer) + rlct_smooth_block_ge (m-fold step_rlct_ge, general residual) +
+-- coupled_controls_slice (the pure Lipschitz-comparison inequality). The D1 use-site (the IFT-chart
+-- producer for the DLN loss at a general v) consumes these; reviewer-PASS, non-vacuity tight.
+#print axioms rlct_quasiSplit_ge
+#print axioms rlct_smooth_block_ge
+#print axioms coupled_controls_slice
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
