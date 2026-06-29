@@ -337,4 +337,59 @@ private theorem e2_conj_dict (H : Fin (L + 1) → ℕ) (r : ℕ)
   exact e2_regPreserve (l2A0Conj H r B hB hr hL q) (l2Y0Conj H r B hB hr hL hL2eq q)
     (l2Y1Conj H r B hB hr hL q) (l2T1Conj H r hr hL q) (l2T1pConj H r B hB hr hL hL2eq q)
 
+/-! ### The conj hm assembly skeleton (Fin 3 / subst) — validate the two-factor + column collapse. -/
+
+-- Skeleton: the three hm in #147's pivotThr-J form, via prodDecode + reindex_prod_regBlocks_eq_of_e2.
+-- Block agreements left as sorry to validate the skeleton/casts first.
+example (H : Fin 3 → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1:ℕ) ≤ 2)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront' : J = frontEmbed H r hr)
+    (Aψ Aq : Params (L := 2) H)
+    (h0 : Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aψ 0)
+        = Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0))
+    (h11G : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aψ 1)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aq 1)).toBlocks₁₁)
+    (h21G : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aψ 1)).toBlocks₂₁
+        = (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aq 1)).toBlocks₂₁)
+    (he2 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0)).toBlocks₁₁
+          * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aψ 1)).toBlocks₁₂
+        + (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0)).toBlocks₁₂
+          * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aψ 1)).toBlocks₂₂
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0)).toBlocks₁₁
+          * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aq 1)).toBlocks₁₂
+        + (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0)).toBlocks₁₂
+          * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aq 1)).toBlocks₂₂) :
+    (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₁₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₁₁
+      ∧ (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₁₂
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₁₂
+      ∧ (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₂₁
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₂₁ := by
+  -- Collapse the pivot column split to rThr (H 2) (J = frontEmbed).
+  rw [hJfront', pivotThresholdSplit_frontEmbed H r hr]
+  -- Two-factor unfold both products.
+  rw [prodDecode_eq_two_of_L2 H Aψ, prodDecode_eq_two_of_L2 H Aq]
+  -- The finCongr width-casts are rfl ⟹ Equiv.refl ⟹ identity reindex; collapse them.
+  simp only [show (finCongr (rfl : H 0 = H ((0 : Fin 2)).castSucc)) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr (rfl : H 1 = H ((0 : Fin 2)).succ)) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr (rfl : H 1 = H ((1 : Fin 2)).castSucc)) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr (rfl : H 2 = H (Fin.last 2))) = Equiv.refl _ from finCongr_refl _]
+  erw [Matrix.reindex_refl_refl, Matrix.reindex_refl_refl, Matrix.reindex_refl_refl,
+    Matrix.reindex_refl_refl]
+  -- `Aψ 0 = Aq 0` (reindex is an Equiv on matrices; use its injectivity).
+  have hAψ0 : Aψ 0 = Aq 0 :=
+    (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))).injective h0
+  rw [hAψ0]
+  -- Apply the e2 engine: G0 = Aq 0, G1ψ' = Aψ 1, G1q' = Aq 1.
+  exact reindex_prod_regBlocks_eq_of_e2 (rThresholdSplit r (H 0) (hr 0))
+    (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+    (Aq 0) (Aq 0) (Aq 0) (Aψ 1) (Aq 1) h11G h21G he2
+
 end DLNFibre.DLN.RLCT
