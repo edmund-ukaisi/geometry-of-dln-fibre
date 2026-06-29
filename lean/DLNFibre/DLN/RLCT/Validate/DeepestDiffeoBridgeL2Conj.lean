@@ -1920,6 +1920,203 @@ theorem psiRawL2Conj_split (H : Fin (L + 1) → ℕ) (r : ℕ)
           (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x) := by
   rw [psiRawL2Conj, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).apply_symm_apply]
 
+/-! ## S6r — the conjugated read-fixing lemmas (the move fixes layer-0 + X/Z reads)
+
+`l2g'Conj` edits ONLY the last-layer `Y`-tag (writing `l2Y1pReadConj`), so every other read is fixed.
+These are the conjugated analogues of `readX/Y/Z_psiSplitRawL2Core_eq` (the move's read-transport). -/
+
+/-- The moved gauge slot `((ψq).1, (ψq).2.2) = regGaugeSlotEquiv.symm (l2g'Conj q)`. -/
+theorem psiSplitRawL2CoreConj_gauge (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2)
+      = (regGaugeSlotEquiv H r hr hL).symm (l2g'Conj H r B hB hr hL hL2eq q) := by
+  rw [psiSplitRawL2CoreConj_eq]
+
+/-- `readX(ψq) = readX(q)` (X-tags untouched). -/
+theorem readX_psiSplitRawL2CoreConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    readX H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s
+      = readX H r hr hL (q.1, q.2.2) s := by
+  ext i j
+  rw [psiSplitRawL2CoreConj_gauge, readX_regGaugeSlotEquiv_symm]; rfl
+
+/-- `readZ(ψq) = readZ(q)` (Z-tags untouched). -/
+theorem readZ_psiSplitRawL2CoreConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    readZ H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s
+      = readZ H r hr hL (q.1, q.2.2) s := by
+  ext i j
+  rw [psiSplitRawL2CoreConj_gauge, readZ_regGaugeSlotEquiv_symm]; rfl
+
+/-- `readY(ψq) = readY(q)` at a NON-last layer (`else` branch of `l2g'Conj`). -/
+theorem readY_psiSplitRawL2CoreConj_of_ne_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    readY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s
+      = readY H r hr hL (q.1, q.2.2) s := by
+  ext i j
+  rw [psiSplitRawL2CoreConj_gauge, readY_regGaugeSlotEquiv_symm]
+  show l2g'Conj H r B hB hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩
+      = readY H r hr hL (q.1, q.2.2) s i j
+  rw [l2g'Conj]; simp only [dif_neg hs]; rfl
+
+/-- `readY(ψq)_last = l2Y1pReadConj` (the moved last-Y read). -/
+theorem readY_psiSplitRawL2CoreConj_last_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    readY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) (lastLayer hL)
+      = l2Y1pReadConj H r B hB hr hL hL2eq q := by
+  ext i j
+  rw [psiSplitRawL2CoreConj_gauge, readY_regGaugeSlotEquiv_symm]
+  show l2g'Conj H r B hB hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
+      = l2Y1pReadConj H r B hB hr hL hL2eq q i j
+  rw [l2g'Conj]; simp only [dif_pos rfl]; rfl
+
+/-- `coreRead(ψq)_s = coreRead(q)_s` at a NON-last layer (core update only at `last`). -/
+theorem coreRead_psiSplitRawL2CoreConj_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1 s
+      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s := by
+  have hcore : (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+            (lastLayer hL) (l2T1pConj H r B hB hr hL hL2eq q)) := by
+    rw [psiSplitRawL2CoreConj_eq]
+  rw [hcore, coreDecode_paramsEquivFlat, Function.update_of_ne hs]
+
+/-- `coreRead(ψq)_last = l2T1pConj` (the moved core block, written literally). -/
+theorem coreRead_psiSplitRawL2CoreConj_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1
+        (lastLayer hL)
+      = l2T1pConj H r B hB hr hL hL2eq q := by
+  have hcore : (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1
+      = paramsEquivFlat (deepestM H r)
+          (Function.update ((paramsEquivFlat (deepestM H r)).symm q.2.1)
+            (lastLayer hL) (l2T1pConj H r B hB hr hL hL2eq q)) := by
+    rw [psiSplitRawL2CoreConj_eq]
+  rw [hcore, coreDecode_paramsEquivFlat, Function.update_self]
+
+/-! ## S6c — the conjugated absorbed per-layer cores of the moved point
+
+The conjugated absorbed core `decode(ψq).core_s + schurCorrectionConj(ψq)_s`. At the last layer the
+deepest blocks combine with the moved reads: the conjugated `Y1c(ψq) = deepBlkY_last + readY_last(ψq) =
+deepBlkY_last + l2Y1pReadConj = l2Y1pConj` (= `Y1'c`), so `c_last = T1'c − Z1c·A1c⁻¹·Y1'c = (1−Kc)·S1c`
+(the conjugated keystone). Off the last layer everything is fixed. -/
+
+/-- The conjugated keystone `T1'c − Z1c·A1c⁻¹·Y1'c = (1−Kc)·S1c` (`det Wc ≠ 0`). Pure algebra over the
+`l2*Conj` defs, mirroring `l2T1p_sub_Z1A1invY1p_eq`. -/
+theorem l2T1pConj_sub_Z1A1invY1pConj_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (hW : (l2WConj H r B hB hr hL hL2eq q).det ≠ 0) :
+    l2T1pConj H r B hB hr hL hL2eq q
+        - l2Z1Conj H r B hB hr hL q * (l2A1Conj H r B hB hr hL q)⁻¹ * l2Y1pConj H r B hB hr hL hL2eq q
+      = (1 - l2KConj H r B hB hr hL hL2eq q) * l2S1Conj H r B hB hr hL hL2eq q := by
+  set Z1 := l2Z1Conj H r B hB hr hL q with hZ1
+  set A1i := (l2A1Conj H r B hB hr hL q)⁻¹ with hA1i
+  set A0i := (l2A0Conj H r B hB hr hL q)⁻¹ with hA0i
+  set Y0 := l2Y0Conj H r B hB hr hL hL2eq q with hY0
+  set Y1 := l2Y1Conj H r B hB hr hL q with hY1
+  set T1 := l2T1Conj H r hr hL q with hT1
+  set T1' := l2T1pConj H r B hB hr hL hL2eq q with hT1'
+  set K := l2KConj H r B hB hr hL hL2eq q with hK
+  set S1 := l2S1Conj H r B hB hr hL hL2eq q with hS1
+  have hRdef : l2RConj H r B hB hr hL hL2eq q = Z1 * A1i * A0i * Y0 := rfl
+  have hY1p : l2Y1pConj H r B hB hr hL hL2eq q = Y1 + A0i * Y0 * (T1 - T1') := rfl
+  have hZAY1p : Z1 * A1i * l2Y1pConj H r B hB hr hL hL2eq q
+      = Z1 * A1i * Y1 + l2RConj H r B hB hr hL hL2eq q * (T1 - T1') := by
+    rw [hY1p, Matrix.mul_add, hRdef]; simp only [Matrix.mul_assoc]
+  have hWWi : l2WConj H r B hB hr hL hL2eq q * (l2WConj H r B hB hr hL hL2eq q)⁻¹ = 1 :=
+    Matrix.mul_nonsing_inv _ (Ne.isUnit hW)
+  have hWT1' : l2WConj H r B hB hr hL hL2eq q * T1' = l2BrConj H r B hB hr hL hL2eq q := by
+    rw [hT1', l2T1pConj_eq, ← Matrix.mul_assoc, hWWi, Matrix.one_mul]
+  rw [hZAY1p, hRdef] at *
+  have hWdef : l2WConj H r B hB hr hL hL2eq q = 1 + Z1 * A1i * A0i * Y0 := rfl
+  have key : T1' - (Z1 * A1i * Y1 + Z1 * A1i * A0i * Y0 * (T1 - T1'))
+      = l2BrConj H r B hB hr hL hL2eq q - Z1 * A1i * Y1 - Z1 * A1i * A0i * Y0 * T1 := by
+    rw [← hWT1', hWdef, Matrix.add_mul, Matrix.one_mul, Matrix.mul_sub]; abel
+  rw [key, l2BrConj]
+  rw [Matrix.mul_assoc (Z1 * A1i * A0i) Y0 T1]
+  abel
+
+/-- The conjugated moved last-layer Schur correction `schurCorrectionConj(ψq)_last = −Z1c·A1c⁻¹·Y1'c`.
+At the last layer `readZ(ψq) = readZ(q)`, `readX(ψq) = readX(q)` (so `A0c/A1c/Z1c` fixed), and `readY(ψq)
+= l2Y1pReadConj`, so the conjugated `Y1c(ψq) = deepBlkY_last + l2Y1pReadConj = l2Y1pConj = Y1'c`. -/
+theorem schurCorrectionConj_psiSplitRawL2CoreConj_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    schurCorrectionConj H r B hB hr hL
+        ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2)
+        (lastLayer hL)
+      = -(l2Z1Conj H r B hB hr hL q) * (l2A1Conj H r B hB hr hL q)⁻¹
+          * l2Y1pConj H r B hB hr hL hL2eq q := by
+  rw [schurCorrectionConj]
+  -- deepBlkZ_last + readZ(ψq)_last = l2Z1Conj q; deepBlkA_last + readX(ψq)_last = l2A1Conj q;
+  -- deepBlkY_last + readY(ψq)_last = deepBlkY_last + l2Y1pReadConj = l2Y1pConj.
+  rw [readZ_psiSplitRawL2CoreConj_eq, readX_psiSplitRawL2CoreConj_eq,
+    readY_psiSplitRawL2CoreConj_last_eq]
+  have hZ1 : deepBlkZ H r B hB hr hL (lastLayer hL) + readZ H r hr hL (q.1, q.2.2) (lastLayer hL)
+      = l2Z1Conj H r B hB hr hL q := rfl
+  have hA1 : deepBlkA H r B hB hr hL (lastLayer hL) + readX H r hr hL (q.1, q.2.2) (lastLayer hL)
+      = l2A1Conj H r B hB hr hL q := rfl
+  have hY1 : deepBlkY H r B hB hr hL (lastLayer hL) + l2Y1pReadConj H r B hB hr hL hL2eq q
+      = l2Y1pConj H r B hB hr hL hL2eq q := by
+    rw [l2Y1pReadConj, l2Y1pConj, l2Y1Conj]; abel
+  rw [hZ1, hA1, hY1, Matrix.neg_mul, Matrix.neg_mul]
+
+/-- **The conjugated absorbed last-layer core IS `(1−Kc)·S1c`** (`det Wc ≠ 0`). -/
+theorem absorbedCoreConj_psiSplitRawL2CoreConj_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (hW : (l2WConj H r B hB hr hL hL2eq q).det ≠ 0) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1
+        (lastLayer hL)
+        + schurCorrectionConj H r B hB hr hL
+            ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+              (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2)
+            (lastLayer hL)
+      = (1 - l2KConj H r B hB hr hL hL2eq q) * l2S1Conj H r B hB hr hL hL2eq q := by
+  rw [coreRead_psiSplitRawL2CoreConj_last, schurCorrectionConj_psiSplitRawL2CoreConj_last,
+    ← l2T1pConj_sub_Z1A1invY1pConj_eq H r B hB hr hL hL2eq q hW, sub_eq_add_neg]
+  congr 1
+  rw [Matrix.neg_mul, Matrix.neg_mul]
+
+/-- **The conjugated absorbed cores agree off the last layer** (reads + decode-core fixed). -/
+theorem absorbedCoreConj_psiSplitRawL2CoreConj_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1 s
+        + schurCorrectionConj H r B hB hr hL
+            ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+              (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s
+      = (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+        + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s := by
+  rw [coreRead_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq q s hs]
+  congr 1
+  rw [schurCorrectionConj, schurCorrectionConj, readZ_psiSplitRawL2CoreConj_eq,
+    readX_psiSplitRawL2CoreConj_eq, readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq q s hs]
+
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
 Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
