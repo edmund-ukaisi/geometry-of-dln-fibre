@@ -10,6 +10,66 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive raw-order two-stage pushforward
+
+The chart-produced punctured-sector source measure now has a two-stage
+raw-order presentation through the intermediate raw-order tuple measure:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean
+```
+
+The theorem uses the same with-passive Case 2 data, the same arbitrary
+coordinate-domain `sourceMeasure`, and the same open punctured sector shape as
+the one-stage raw-order factorization.  For every `z in V`, it keeps raw-order
+source-recursive determinant-chart membership, equality of the public raw-order
+p.13 source chart composite with the direct chart-produced source chart,
+pointwise local-source membership, source-readback recovery of `retainedData z`,
+and `inverseReadout (sourceChart z) = z.2`.
+
+Under Borel measurable structures on the raw-order topology-tuple target and
+the edge-family target, it proves both:
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V)
+  = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+and
+
+```text
+Measure.map rawChart
+    (Measure.map rawMap (sourceMeasure.restrict V))
+  = Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+The new proof obligation is local a.e. measurability: `rawMap` is continuous on
+the returned sector through the determinant-chart subtype, and `rawChart` is
+a.e. measurable after proving that the intermediate raw-order measure is
+supported on the raw-order source-recursive determinant-chart target.  The proof
+uses only public topology and measure APIs, especially
+`ContinuousOn.aemeasurable₀`, `ae_map_iff`,
+`Measure.restrict_eq_self_of_ae_mem`, and
+`AEMeasurable.map_map_of_aemeasurable`.
+
+Focused build and full `DLNFibre` build passed via `scripts/lb`;
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan, and
+direct axiom probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope and Lean/API
+reviews passed.  This is API hardening for future intermediate-measure
+consumers, not a new source frontier removal.
+
+Do not call this theorem determinant-chart Haar transport, raw/source Haar,
+external/original source-prior comparison, passive Jacobian or density formula,
+local domination for arbitrary `sourceMeasure`, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive raw-order composite measure factorization
 
 The chart-produced punctured-sector source measure now has a one-stage

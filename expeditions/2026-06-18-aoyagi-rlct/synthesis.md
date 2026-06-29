@@ -3,6 +3,85 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Raw-Order Two-Stage Pushforward - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-two-stage-pushforward.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-two-stage-pushforward.md
+threads/03-block-product-reduction/review-a2-retained-passive-raw-order-two-stage-pushforward.md
+```
+
+This hardens the previous one-stage raw-order composite presentation into a
+two-stage measure presentation through the intermediate raw-order tuple
+measure.  It is repo-local measure functoriality and local measurability, not a
+new Aoyagi source calculation.
+
+With
+
+```text
+rawMap z = topologyTupleEdgeRawOrder (topologyTuple (retainedData z)),
+rawChart = paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W2 B2 U0 hU0,
+nu = sourceMeasure.restrict V,
+```
+
+the theorem returns an open punctured sector `V` containing `z0` and proves for
+every `z in V`:
+
+```text
+rawMap z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet,
+rawChart (rawMap z) = sourceChart z,
+sourceChart z ∈ retained-passive p.13 localSource,
+sourceReadback(edgeMatrix(sourceChart z)) = retainedData z,
+inverseReadout (sourceChart z) = z.2.
+```
+
+For Borel measurable structures on the raw-order topology-tuple target and the
+edge-family target, it proves:
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) nu
+  = Measure.map sourceChart nu
+```
+
+and
+
+```text
+Measure.map rawChart (Measure.map rawMap nu)
+  = Measure.map sourceChart nu.
+```
+
+The proof reconstructs retained-data continuity, uses the topology-tuple sector
+bridge to build `rawMap` as a continuous-on-sector map through
+`topologyTupleDetChartSet`, pushes raw-order target support through
+`ae_map_iff`, proves `rawChart` a.e. measurable on the raw-order target by the
+public raw-order inverse / `ofTopologyTuple` / direct p.13 source-chart
+continuity chain, rewrites the restricted target measure by
+`Measure.restrict_eq_self_of_ae_mem`, and applies
+`AEMeasurable.map_map_of_aemeasurable`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`; only pre-existing replay
+warnings appeared.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope review by
+`Boyle the 4th` and xhigh Lean/API review by `Carver the 4th` returned PASS.
+
+This proves no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula, density
+identity, local domination for arbitrary `sourceMeasure`, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.  Since no
+downstream intermediate-measure consumer is named yet, treat this as API
+hardening, not as removal of a source-prior or analytic frontier.
+
 ## Latest A2 Retained-Passive Raw-Order Composite Measure Factorization - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:

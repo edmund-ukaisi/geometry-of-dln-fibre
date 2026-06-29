@@ -18,6 +18,70 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive raw-order two-stage pushforward
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-two-stage-pushforward.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-two-stage-pushforward.md`.
+Review:
+`review-a2-retained-passive-raw-order-two-stage-pushforward.md`.
+
+Lean now exposes:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd
+```
+
+The theorem defines
+
+```text
+rawMap z = topologyTupleEdgeRawOrder (topologyTuple (retainedData z))
+```
+
+and `rawChart` as the public raw-order p.13 source chart.  It returns the same
+open punctured-sector shape as the topology-tuple bridge and the one-stage
+measure factorization.  For every `z in V`, it proves raw-order
+source-recursive determinant-chart membership, equality
+`rawChart (rawMap z) = sourceChart z`, pointwise local-source membership,
+source-readback recovery of `retainedData z`, and
+`inverseReadout (sourceChart z) = z.2`.
+
+For arbitrary `sourceMeasure`, and under Borel measurable structures on the
+raw-order topology-tuple target and edge-family target, the measure conclusions
+are:
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V)
+  = Measure.map sourceChart (sourceMeasure.restrict V),
+
+Measure.map rawChart
+    (Measure.map rawMap (sourceMeasure.restrict V))
+  = Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+The proof is local a.e. measurability and measure functoriality.  `rawMap` is
+continuous on the returned sector through the determinant-chart subtype.
+`rawChart` is a.e. measurable after pushing raw-order target support to the
+intermediate measure and restricting to the raw-order source-recursive
+determinant-chart target.  The proof uses `AEMeasurable.map_map_of_aemeasurable`,
+not global `Measure.map_map`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`; only pre-existing replay
+warnings appeared.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope review by
+`Boyle the 4th` and xhigh Lean/API review by `Carver the 4th` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula, density
+identity, local domination for arbitrary `sourceMeasure`, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT.  No
+downstream intermediate-measure consumer is named yet, so treat this as API
+hardening rather than removal of a source-prior or analytic frontier.
+
 ## 2026-06-29 A2 retained-passive raw-order composite measure factorization
 
 Reproduction:

@@ -140,6 +140,37 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive raw-order two-stage pushforward,
+  2026-06-29.** Lean now proves
+  `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean`.
+  This is repo-local measure functoriality and local a.e. measurability around
+  the already banked topology-tuple sector bridge.  It returns an open
+  punctured sector `V`, proves the same pointwise raw-order chart membership,
+  source-chart equality, local-source membership, source-readback recovery, and
+  selected-entry inverse readout as the one-stage theorem, and under Borel
+  measurable structures on the raw-order topology-tuple target and edge-family
+  target proves both
+  `Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V) =
+  Measure.map sourceChart (sourceMeasure.restrict V)` and
+  `Measure.map rawChart (Measure.map rawMap (sourceMeasure.restrict V)) =
+  Measure.map sourceChart (sourceMeasure.restrict V)`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-two-stage-pushforward.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-two-stage-pushforward.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-raw-order-two-stage-pushforward.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+  and direct axiom probe passed with `[propext, Classical.choice, Quot.sound]`.
+  Xhigh source-scope and Lean/API reviews returned PASS.  This is API hardening
+  for future intermediate-measure consumers, not a new Aoyagi source calculation
+  or a source-prior frontier removal.  It proves no determinant-chart Haar
+  transport, raw/source Haar theorem, external/original source-prior comparison,
+  passive Jacobian formula, density identity, local domination for arbitrary
+  `sourceMeasure`, source-image equality, source-rank coverage, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive raw-order composite measure
   factorization, 2026-06-29.** Lean now proves
   `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_comp_eq_sourceChart_inverseReadout_eq_snd`
