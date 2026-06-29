@@ -99,7 +99,11 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
 - **2026-06-29 — RF LANDED → EXPEDITION CONTENT-COMPLETE** (`a0cbcf74`). Final retrofit + cleanup: the DLN
   `codimRep_*` consumers carry only `[Field k]` (the `[IsAlgClosed]` was already shed in R4); `DeepChartRing`
   stale prose fixed + two further dead-weight `[IsAlgClosed]` shed; the aggregator `longLine` 105→0 (the seven
-  `Dimension/` modules already 0). **The DLN headline payoff axioms are UNCHANGED** (`[propext, Classical.choice,
+  `Dimension/` modules already 0). [Hardener (10) then returned **SOLID-with-notes**, no blocker — the
+  assembled stack is bedrock: clean acyclic factoring, zero decorative hypotheses, honest `@[stacks]`/`[PerfectField]`
+  framing, consumers tag to the core. Three in-reach completions dispatched as a polish rung (11): pull
+  `RadicalCatenary`'s any-proper-ideal codim generalization into `Core.Dimension`; add `Regular`'s non-vacuity
+  witness; fix a nested-`Ideal.` namespace wart in `Smooth`.] **The DLN headline payoff axioms are UNCHANGED** (`[propext, Classical.choice,
   Quot.sound]` — the retrofit altered no proof's meaning), re-gate green 3819, sorries 0. (Pre-existing
   library-wide longLine warnings ~763 are out of scope.) **★ THE DIMENSION STACK IS DELIVERED:** 7 Mathlib-grade,
   any-field/`[PerfectField]`, `Tuple`-free modules in `DLNFibre.Core.Dimension.*`
