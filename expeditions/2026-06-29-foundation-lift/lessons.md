@@ -13,3 +13,11 @@ The proven craft from #14 (the dimension stack) carries over — see
   column, not `awk length`.
 
 New lessons specific to this expedition accumulate below.
+
+- **L5 — under sustained box load, re-gate at phase boundaries + crux rungs, not every low-risk re-home.** A
+  full `scripts/lb DLNFibre` re-gate costs minutes when the box is loaded (the parallel aoyagi op). For
+  low-risk *verbatim re-home* rungs, the formaliser's own fresh full-aggregator green + a clean tree is
+  sufficient assurance (it's a real build it ran, not a relayed headline); the **controller's authoritative
+  re-gate lands at the phase boundary** (on the accumulated state, before the phase PR) **and on the flagged
+  crux rungs** (independent verification of the delicate ones). Keeps the gate where it bites without paying a
+  multi-minute build per trivial move. (Distinct from #14, where lighter load made per-rung re-gates cheap.)

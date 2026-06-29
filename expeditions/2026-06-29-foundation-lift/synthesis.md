@@ -19,3 +19,9 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   `[CommRing]→[CommSemiring]` (build-confirmed). Sibling-clash cleared, re-gate green 3820, axiom-clean,
   L3-clean. Review **waived** (low-risk warm-up — review reserved for the three crux rungs). → P1-R2 dispatched
   (localization `≤`-half).
+- **2026-06-29 — P1-R2 LANDED** (`3ad47fe7`). `ringKrullDim_localization_le` re-homed verbatim to
+  `Core/Dimension/Localization.lean` (co-located with #14's `Dimension/` family; R3 lands here too). `@[stacks]`
+  declined (Stacks carries it only as a corollary — name=content). Formaliser green 3820, axiom-clean, L3-clean.
+  **Gate-cadence recalibrated (L5):** under sustained box load, controller re-gates at phase boundaries + crux
+  rungs (not every low-risk re-home); intermediate verbatim re-homes ride the formaliser's fresh green + the
+  boundary re-gate. → P1-R3 dispatched (affine-domain trdeg-sandwich no-drop).

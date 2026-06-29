@@ -8,7 +8,8 @@ Per-thread notes in `threads/<NN>-<slug>/`.
 |----|------|---------|--------|
 | 00 | scout (recon) | coverage recon — validate the 3-phase ladder vs `origin/dev` + Mathlib | **closed** (2026-06-29) — ladder in [`priorities.md`](priorities.md); corrected the audit (P1's general content is `TopDimMinPrimes*`; P3 is one module; `SmoothPointRegular`/`NoetherMonicPositioning`/`rank_map_eq_of_injective`/`minimalPrimes` already done) |
 | 01 | lean-formaliser (P1-R1) | extract `minimalPrimes_sInf_of_finite_of_isPrime` SPIKE → `Core/MinimalPrime/Finite` | **closed** (`2ab2995a`) — `Ideal.minimalPrimes_sInf_of_finite_of_isPrime`, `[CommSemiring]`+finite+prime; sibling-clash cleared; green 3820 / axiom-clean; review waived (not a crux). Card: `threads/01-minimalprimes-spike/statement-card.md` |
-| 02 | lean-formaliser (P1-R2) | re-home localization `≤`-half `ringKrullDim_localization_le` → `Core/.../Localization` | **in flight** |
+| 02 | lean-formaliser (P1-R2) | re-home localization `≤`-half `ringKrullDim_localization_le` → `Core/.../Localization` | **closed** (`3ad47fe7`) — `Core/Dimension/Localization.lean`; verbatim re-home, `@[stacks]` declined (corollary-only); green 3820 / axiom-clean; review waived. Card: `threads/02-localization-le/statement-card.md` |
+| 03 | lean-formaliser (P1-R3) | re-home affine-domain trdeg-sandwich no-drop → `Core/Dimension/Localization` | **in flight** |
 
 ## Roadmap (future — not this expedition)
 mathlib4 upstream PRs (built internal-first); shared-package extraction (ReLU second consumer);
