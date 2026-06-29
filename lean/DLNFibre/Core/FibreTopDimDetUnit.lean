@@ -2,7 +2,7 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.FibreDetUnit
-import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.MinimalPrime.TopDimensional
 
 /-!
 # `DLNFibre.Core.FibreTopDimDetUnit` — inverting `detΔ` keeps the fibre's `TopDimMinPrimes` count
@@ -25,6 +25,9 @@ fibre's top-component count survives the localization the chart `e` requires, un
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
 
 open MvPolynomial Matrix
 

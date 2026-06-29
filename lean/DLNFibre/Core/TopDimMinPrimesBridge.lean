@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.MinimalPrime.TopDimensional
 import DLNFibre.Core.RadicalCatenary
 
 /-!
@@ -26,6 +26,9 @@ module is the generic field-and-ideal algebra. Pure commutative algebra — no D
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
 
 open MvPolynomial
 

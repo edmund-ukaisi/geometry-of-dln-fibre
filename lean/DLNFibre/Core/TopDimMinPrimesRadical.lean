@@ -33,6 +33,9 @@ ringKrullDim (R ⧸ J)` — so the counts coincide.
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 universe u
 
 variable {R : Type u} [CommRing R]

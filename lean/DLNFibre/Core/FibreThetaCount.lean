@@ -43,6 +43,9 @@ unconditional headline `numTop_fibre_eq_cTheta_dminus`).
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial Matrix
 
 universe u

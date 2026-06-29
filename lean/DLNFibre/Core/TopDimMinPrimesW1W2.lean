@@ -43,6 +43,9 @@ presentation to dodge the `MvPolynomial`-over-quotient instance diamond).
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial Matrix Dimension
 
 universe u

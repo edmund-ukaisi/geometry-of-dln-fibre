@@ -38,6 +38,9 @@ This is the entry point of the chart transport on the count side: the next steps
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial
 
 universe u

@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.MinimalPrime.TopDimensional
 import DLNFibre.Core.SchurSideNoDrop
 
 /-!
@@ -31,6 +31,9 @@ adjunction `map C ⊣ comap C`.
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
 
 open MvPolynomial
 

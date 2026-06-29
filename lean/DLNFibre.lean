@@ -281,9 +281,9 @@ import DLNFibre.DLN.Aoyagi.ClosedForm
 -- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
 import DLNFibre.Core.FibreDetUnit
 import DLNFibre.Core.CThetaShiftCount
--- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework + the
--- polynomial-extension minimal-prime descent + the Σ̄^r / fibre count endpoints.
-import DLNFibre.Core.TopDimMinPrimes
+-- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework (core in
+-- `Core.MinimalPrime.TopDimensional`, appended below) + the polynomial-extension minimal-prime
+-- descent + the Σ̄^r / fibre count endpoints.
 import DLNFibre.Core.TopDimMinPrimesPoly
 import DLNFibre.Core.TopDimMinPrimesBridge
 import DLNFibre.Core.TopComponentsTopDim
@@ -475,3 +475,9 @@ import DLNFibre.Core.MinimalPrime.Finite
 -- (ns `DLNFibre.Core.Dimension`, mirrors a would-be `Mathlib.RingTheory.KrullDimension.Localization`);
 -- `DLNFibre.Core.Dimension.ringKrullDim_localization_le`.
 import DLNFibre.Core.Dimension.Localization
+-- foundation-lift P1-R4: the `TopDimMinPrimes` count-engine core (top-dimensional minimal primes
+-- + `comap`-transport along a `RingEquiv` ⟹ `ncard` invariance), re-homed from `TopDimMinPrimes`
+-- into the `Core.MinimalPrime` family (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.TopDimMinPrimes`,
+-- `Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`.
+import DLNFibre.Core.MinimalPrime.TopDimensional

@@ -51,6 +51,9 @@ rather than discharged. (The earlier "constant map at `N = 0`" caveat was inheri
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial Matrix
 
 universe u
