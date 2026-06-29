@@ -39,7 +39,7 @@ Single module (`SmoothPointRegular` subsumed by #14). Already `[Field k]`-genera
 
 | rung | item | source | target (mirror) | status |
 |------|------|--------|------------------|--------|
-| P3-R1 | extract `CotangentJacobian` (cotangent dim = ker of the rectangular point-Jacobian at an arbitrary rational point — more general than Mathlib's smooth-only submersive Jacobian) | `CotangentJacobian.lean` | `Core/.../Smooth/Cotangent` (mirror `RingTheory.Smooth.Cotangent` / `AlgebraicGeometry.Tangent`) | pending — **CRUX: the cokernel-finrank bridge `card σ − rank Jᵀ = finrank ker J` (lines ~272–434) → decorrelated review** (index/transpose bookkeeping) |
+| P3-R1 | extract `CotangentJacobian` (cotangent dim = ker of the rectangular point-Jacobian at an arbitrary rational point — more general than Mathlib's smooth-only submersive Jacobian) | `CotangentJacobian.lean` | `Core/RingTheory/{Ideal/CotangentLocalization, MvPolynomial/CotangentJacobian}.lean` (2-module split) | **done** (`12d25fca`; headline `finrank_cotangentSpace_eq_finrank_ker_jacobian` + B1/B2 bridges; bonus `[Field k]→[CommRing k]` on the localization lemma; bridge bodies verbatim, Codex xhigh red-teamed the transpose orientation SOUND w/ rank-deficient witness; green 3821; **decorrelated crux-review in flight** on B2's `Ψ`-orientation / `coker Jᵀ`) |
 
 **Mathlib:** Kähler/cotangent substrate present (`kerCotangentToTensor_injective_iff`, `tensorCotangentEquiv`, `FormallySmooth.of_perfectField`); the rectangular-point-Jacobian cotangent formula **absent** (Mathlib's is smooth/square only). Build-but-API-sensitive.
 

@@ -1,150 +1,67 @@
 /-
-Zariski cotangent space = cokernel of the Jacobian, at a rational point of an affine variety.
-
-For `R = MvPolynomial σ k` (`σ` a `Fintype`), an ideal `I` with a finite generating family
-`g : ι → R` (`ι` a `Fintype` with `DecidableEq`), and a `k`-rational point `a : σ → k` of `V(I)`
-(`∀ i, eval a (g i) = 0`), let
-`A = R ⧸ I` and `m_A` the maximal ideal at `a` (the kernel of the augmentation `ε : A →ₐ[k] k`
-induced by `eval a`). The headline:
-
-  `finrank k (CotangentSpace (Localization.AtPrime m_A)) = finrank k (ker jacobian)`,
-
-where `jacobian : (σ → k) →ₗ[k] (ι → k)` is `v ↦ fun i ↦ ∑ x, eval a (pderiv x (g i)) • v x`
-(rows = generators, cols = `σ`). The residue field `κ(m_A) = k` since `a` is `k`-rational.
-
-Route: the conormal sequence of the surjection `R ↠ A` (`kerCotangentToTensor k R A`), base-changed to
-`k` over `A`, identifies `k ⊗_A Ω[A⁄k]` with the cokernel of the transpose Jacobian `Jᵀ` on
-`k ⊗_R Ω[R⁄k] ≅ (σ → k)` (the `dx`-basis at `a`, via `mvPolynomialBasis`); the augmentation conormal map
-`kerCotangentToTensor k A k` is bijective because `ε` splits (`a` rational, section `algebraMap k A`),
-identifying `m_A.Cotangent ≅ k ⊗_A Ω[A⁄k]`; and `Ideal.tensorCotangentEquiv` (flat localization)
-identifies `CotangentSpace (Localization.AtPrime m_A)` with `k ⊗_A m_A.Cotangent`. Finrank bookkeeping
-(`finrank(coker Jᵀ) = card σ − rank Jᵀ = card σ − rank J = finrank(ker J)`) closes the equality.
+Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
+import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.RingTheory.Kaehler.Polynomial
 import Mathlib.RingTheory.Smooth.Kaehler
-import Mathlib.RingTheory.Ideal.Cotangent
-import Mathlib.RingTheory.Ideal.CotangentBaseChange
 import Mathlib.RingTheory.LocalRing.ResidueField.Basic
-import Mathlib.RingTheory.LocalRing.ResidueField.Ideal
-import Mathlib.RingTheory.Localization.AtPrime.Basic
-import Mathlib.RingTheory.Flat.Localization
-import Mathlib.RingTheory.Localization.BaseChange
-import Mathlib.LinearAlgebra.Dimension.Constructions
-import Mathlib.LinearAlgebra.FiniteDimensional.Basic
 import Mathlib.LinearAlgebra.Dual.Lemmas
 import Mathlib.LinearAlgebra.Matrix.ToLin
 import Mathlib.LinearAlgebra.Matrix.Rank
 import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 import Mathlib.LinearAlgebra.TensorProduct.Tower
 
+/-!
+# `DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian` — cotangent dim = Jacobian-kernel dim
+
+At a `k`-rational point of an affine variety, the Zariski **cotangent** space is the cokernel of the
+transpose Jacobian `Jᵀ` of any generating family, while the **tangent** space is the kernel of the
+Jacobian `J`; these are two different spaces, but over a field their finite dimensions agree
+(rank–nullity + `rank_transpose`). The headline records that finrank equality:
+`finrank (cotangent space) = finrank (ker J)`. **No smoothness is assumed**, so this is more general
+than Mathlib's smooth/square submersive Jacobian (which produces a single scalar determinant with
+`#relations = #variables`).
+
+For `R = MvPolynomial σ k` (`σ` a `Fintype`), an ideal `I` with a finite generating family
+`g : ι → R` (`ι` a `Fintype` with `DecidableEq`), and a `k`-rational point `a : σ → k` of `V(I)`
+(`∀ i, eval a (g i) = 0`), set `A = R ⧸ I` and let `m_A` be the maximal ideal at `a` (the kernel of
+the augmentation `ε : A →ₐ[k] k` induced by `eval a`). The cotangent space is `coker Jᵀ` and the
+tangent space is `ker J`; over the field `k` their finite dimensions agree. The headline
+(`finrank_cotangentSpace_eq_finrank_ker_jacobian`) records that dimension equality:
+
+  `finrank k (CotangentSpace (Localization.AtPrime m_A)) = finrank k (ker jacobian)`,
+
+where `jacobian : (σ → k) →ₗ[k] (ι → k)` is `v ↦ fun i ↦ ∑ x, eval a (pderiv x (g i)) • v x`
+(rows = generators, cols = `σ`). The residue field `κ(m_A) = k` since `a` is `k`-rational.
+
+Route: the conormal sequence of the surjection `R ↠ A` (`kerCotangentToTensor k R A`), base-changed
+to `k` over `A`, identifies `k ⊗_A Ω[A⁄k]` with the cokernel of the transpose Jacobian `Jᵀ` on
+`k ⊗_R Ω[R⁄k] ≅ (σ → k)` (the `dx`-basis at `a`, via `mvPolynomialBasis`); the augmentation conormal
+map `kerCotangentToTensor k A k` is bijective because `ε` splits (`a` rational, section
+`algebraMap k A`), identifying `m_A.Cotangent ≅ k ⊗_A Ω[A⁄k]`; and
+`Ideal.finrank_cotangentSpace_localization_eq_cotangent` (flat localization) identifies
+`CotangentSpace (Localization.AtPrime m_A)` with `p.Cotangent`. The cokernel–kernel bridge
+(`finrank(coker Jᵀ) = card σ − rank Jᵀ = card σ − rank J = finrank(ker J)`) closes the equality.
+
+Mirrors `Mathlib.RingTheory.Kaehler.Polynomial` /
+`Mathlib.RingTheory.Smooth.StandardSmoothCotangent`; the rectangular point-Jacobian
+cotangent-dimension formula (no smoothness) is absent from Mathlib
+v4.29.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
 open TensorProduct KaehlerDifferential Module IsLocalRing Matrix
 
-namespace DLNFibre.Core
+namespace MvPolynomial
 
 noncomputable section
 
-/-! ### Localization of the cotangent space at a maximal ideal (generic)
-
-For a `k`-algebra `A` and a maximal ideal `p`, the local cotangent space
-`CotangentSpace (Localization.AtPrime p)` has the same `k`-dimension as the global `p.Cotangent`.
-Since `p.Cotangent` is annihilated by `p`, it is already its own localization at `p.primeCompl`, so
-the flat base change `Localization.AtPrime p ⊗[A] p.Cotangent` collapses back to `p.Cotangent`. -/
-
-section Localization
-variable {k : Type*} [Field k] {A : Type*} [CommRing A] [Algebra k A] (p : Ideal A) [p.IsMaximal]
-
-attribute [local instance] Ideal.Quotient.field
-
-/-- `p.Cotangent` is its own localization at `p.primeCompl` (it is a `κ(p)`-module). -/
-theorem cotangent_isLocalizedModule_id :
-    IsLocalizedModule p.primeCompl (LinearMap.id : p.Cotangent →ₗ[A] p.Cotangent) := by
-  refine ⟨?_, ?_, ?_⟩
-  · intro s
-    refine (Module.End.isUnit_iff _).mpr ?_
-    have hs : IsUnit (Ideal.Quotient.mk p (s : A)) := by
-      rw [isUnit_iff_ne_zero]
-      exact fun h ↦ s.2 (Ideal.Quotient.eq_zero_iff_mem.mp h)
-    let u : (A ⧸ p)ˣ := hs.unit
-    have hu : (u : A ⧸ p) = Ideal.Quotient.mk p (s : A) := hs.unit_spec
-    have hsmul : ∀ x : p.Cotangent,
-        ((algebraMap A (Module.End A p.Cotangent) (s : A)) x) = (u : A ⧸ p) • x := fun x ↦ by
-      rw [Module.algebraMap_end_apply,
-        ← Module.IsTorsionBySet.mk_smul (Ideal.isTorsionBySet_cotangent p) (s : A) x, hu]; rfl
-    refine ⟨fun x y hxy ↦ ?_, fun y ↦ ⟨(↑u⁻¹ : A ⧸ p) • y, ?_⟩⟩
-    · have h := congrArg (fun z : p.Cotangent ↦ (↑u⁻¹ : A ⧸ p) • z) hxy
-      rw [hsmul, hsmul] at h; simpa [smul_smul] using h
-    · rw [hsmul]; simp [smul_smul]
-  · intro y; exact ⟨⟨y, 1⟩, by simp⟩
-  · intro x y h; exact ⟨1, by simpa using h⟩
-
-/-- The flat base change of `p.Cotangent` to the localization collapses back to `p.Cotangent`. -/
-def cotangentLocalizationTensorEquiv :
-    Localization.AtPrime p ⊗[A] p.Cotangent ≃ₗ[A] p.Cotangent := by
-  haveI : p.IsPrime := inferInstance
-  let g : p.Cotangent →ₗ[A] Localization.AtPrime p ⊗[A] p.Cotangent :=
-    TensorProduct.mk A (Localization.AtPrime p) p.Cotangent 1
-  haveI : IsLocalizedModule p.primeCompl (LinearMap.id : p.Cotangent →ₗ[A] p.Cotangent) :=
-    cotangent_isLocalizedModule_id p
-  haveI : IsLocalizedModule p.primeCompl g := by dsimp only [g]; infer_instance
-  exact (IsLocalizedModule.linearEquiv p.primeCompl
-    (LinearMap.id : p.Cotangent →ₗ[A] p.Cotangent) g).symm
-
-/-- Collapse the `includeRight` ideal `p.map includeRight` (in `T ⊗[A] A`) to `p.map (algebraMap A T)`
-(in `T = Localization.AtPrime p`) along the right unitor `T ⊗[A] A ≃ₐ[T] T`. -/
-def cotangentTensorRidEquiv :
-    (p.map (Algebra.TensorProduct.includeRight.toRingHom :
-      A →+* Localization.AtPrime p ⊗[A] A)).Cotangent
-      ≃ₗ[Localization.AtPrime p]
-    (p.map (algebraMap A (Localization.AtPrime p))).Cotangent := by
-  set T := Localization.AtPrime p
-  set e : T ⊗[A] A ≃ₐ[T] T := Algebra.TensorProduct.rid A T T
-  have hfwd : (p.map (Algebra.TensorProduct.includeRight.toRingHom : A →+* T ⊗[A] A)) ≤
-      (p.map (algebraMap A T)).comap e.toAlgHom := by
-    rw [Ideal.map_le_iff_le_comap]
-    intro x hx
-    simp only [Ideal.mem_comap, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]
-    rw [show e (Algebra.TensorProduct.includeRight.toRingHom x) = algebraMap A T x from by
-      simp [e, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]]
-    exact Ideal.mem_map_of_mem _ hx
-  have hbwd : (p.map (algebraMap A T)) ≤
-      (p.map (Algebra.TensorProduct.includeRight.toRingHom : A →+* T ⊗[A] A)).comap
-        e.symm.toAlgHom := by
-    rw [Ideal.map_le_iff_le_comap]
-    intro x hx
-    simp only [Ideal.mem_comap, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]
-    rw [show e.symm (algebraMap A T x) = Algebra.TensorProduct.includeRight.toRingHom x from by
-      apply e.injective; simp [e, Algebra.TensorProduct.rid_tmul, Algebra.smul_def]]
-    exact Ideal.mem_map_of_mem _ hx
-  refine LinearEquiv.ofLinear
-    (Ideal.mapCotangent _ _ e.toAlgHom hfwd)
-    (Ideal.mapCotangent _ _ e.symm.toAlgHom hbwd) ?_ ?_
-  · ext x
-    obtain ⟨y, rfl⟩ := Ideal.toCotangent_surjective _ x
-    simp only [LinearMap.comp_apply, Ideal.mapCotangent_toCotangent, LinearMap.id_apply]
-    congr 1; ext; simp [e]
-  · ext x
-    obtain ⟨y, rfl⟩ := Ideal.toCotangent_surjective _ x
-    simp only [LinearMap.comp_apply, Ideal.mapCotangent_toCotangent, LinearMap.id_apply]
-    congr 1; ext; simp [e]
-
-/-- **Localization of the cotangent space.** `CotangentSpace (Localization.AtPrime p)` and the global
-`p.Cotangent` have the same `k`-dimension. -/
-theorem finrank_cotangentSpace_localization_eq_cotangent :
-    finrank k (CotangentSpace (Localization.AtPrime p)) = finrank k (p.Cotangent) := by
-  set T := Localization.AtPrime p
-  let eTensor : T ⊗[A] p.Cotangent ≃ₗ[T] (p.map (algebraMap A T)).Cotangent :=
-    (Ideal.tensorCotangentEquiv A T p).trans (cotangentTensorRidEquiv p)
-  have hmax : p.map (algebraMap A T) = maximalIdeal T :=
-    Localization.AtPrime.map_eq_maximalIdeal
-  let eCot : T ⊗[A] p.Cotangent ≃ₗ[k] CotangentSpace T := (hmax ▸ eTensor).restrictScalars k
-  exact (LinearEquiv.finrank_eq eCot.symm).trans
-    (LinearEquiv.finrank_eq ((cotangentLocalizationTensorEquiv p).restrictScalars k))
-
-end Localization
-
 variable {k : Type*} [Field k] {σ : Type*} [Fintype σ] [DecidableEq σ]
   {ι : Type*} [Fintype ι] [DecidableEq ι] (g : ι → MvPolynomial σ k) (a : σ → k)
+
+/-! ### The point-Jacobian and its transpose -/
 
 /-- The Jacobian matrix of `g` at `a`: rows = generators (indexed by `ι`), columns = `σ`;
 entry `(i, x) = eval a (pderiv x (g i))`. -/
@@ -176,8 +93,9 @@ theorem finrank_range_jacobian_eq :
   have h2 : finrank k (LinearMap.range (jacobianTranspose g a)) = (jacobianMatrix g a)ᵀ.rank := rfl
   rw [h1, h2, Matrix.rank_transpose]
 
-/-- Cokernel form: `finrank (ker jacobian) = finrank ((σ→k) ⧸ range jacobianTranspose)`. Both equal
-`card σ − rank`, using `rank jacobian = rank jacobianTranspose`. -/
+/-- **Cokernel–kernel bridge.**
+`finrank (ker jacobian) = finrank ((σ→k) ⧸ range jacobianTranspose)`. Both equal `card σ − rank`,
+using `rank jacobian = rank jacobianTranspose`. -/
 theorem finrank_ker_jacobian_eq_finrank_coker :
     finrank k (LinearMap.ker (jacobian g a)) =
       finrank k ((σ → k) ⧸ LinearMap.range (jacobianTranspose g a)) := by
@@ -203,46 +121,48 @@ theorem span_range_le_ker_aeval (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
 
 /-- The augmentation `A = R ⧸ I →ₐ[k] k` induced by `eval a = aeval a`, for `I = span (range g)`
 (the generators all vanish at `a`, so `aeval a` descends). -/
-def aug (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+def evalAug (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
     (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) →ₐ[k] k :=
   Ideal.Quotient.liftₐ _ (MvPolynomial.aeval a) fun _ hx ↦ span_range_le_ker_aeval g a hg hx
 
-@[simp] theorem aug_mk (hg : ∀ i, MvPolynomial.eval a (g i) = 0) (x : MvPolynomial σ k) :
-    aug g a hg (Ideal.Quotient.mk _ x) = MvPolynomial.aeval a x := rfl
+@[simp] theorem evalAug_mk (hg : ∀ i, MvPolynomial.eval a (g i) = 0) (x : MvPolynomial σ k) :
+    evalAug g a hg (Ideal.Quotient.mk _ x) = MvPolynomial.aeval a x := rfl
 
 /-- The augmentation is split by `algebraMap k _`, hence surjective. -/
-theorem aug_surjective (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    Function.Surjective (aug g a hg) :=
+theorem evalAug_surjective (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+    Function.Surjective (evalAug g a hg) :=
   fun c ↦ ⟨algebraMap k _ c, by rw [AlgHom.commutes]; simp⟩
 
-/-- The maximal ideal `m_A = ker ε ⊆ A` at the rational point `a`. -/
-def maxIdealAt (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+/-- The maximal ideal `m_A = ker ε` at the rational point `a`, an ideal **of the quotient**
+`A = MvPolynomial σ k ⧸ span (range g)` (not of `MvPolynomial σ k` itself). -/
+def maxIdealAtSpan (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
     Ideal (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) :=
-  RingHom.ker (aug g a hg)
+  RingHom.ker (evalAug g a hg)
 
-instance maxIdealAt_isMaximal (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    (maxIdealAt g a hg).IsMaximal :=
-  RingHom.ker_isMaximal_of_surjective (aug g a hg).toRingHom (aug_surjective g a hg)
+instance maxIdealAtSpan_isMaximal (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+    (maxIdealAtSpan g a hg).IsMaximal :=
+  RingHom.ker_isMaximal_of_surjective (evalAug g a hg).toRingHom (evalAug_surjective g a hg)
 
-instance maxIdealAt_isPrime (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    (maxIdealAt g a hg).IsPrime :=
-  (maxIdealAt_isMaximal g a hg).isPrime
+instance maxIdealAtSpan_isPrime (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+    (maxIdealAtSpan g a hg).IsPrime :=
+  (maxIdealAtSpan_isMaximal g a hg).isPrime
 
 /-! ### Steps 1–2 — the global cotangent finrank is the Jacobian cokernel
 
 For the split augmentation `ε : A →ₐ[k] k` (`A = R ⧸ span (range g)`), the conormal map
 `kerCotangentToTensor k A k : m_A.Cotangent →ₗ[A] k ⊗[A] Ω[A⁄k]` is bijective (surjective since
-`Ω[k⁄k] = 0`; injective since `ε` is split by the rational point — `retractionKerCotangentToTensorEquivSection`).
-And `k ⊗[A] Ω[A⁄k]` is the cokernel of the transpose Jacobian on `k ⊗_R Ω[R⁄k] ≅ (σ → k)`. The
-`Algebra A k` structure (from `aug`) and the conormal machinery live inside the proof; the statement is
-a finrank equality. -/
+`Ω[k⁄k] = 0`; injective since `ε` is split by the rational point —
+`retractionKerCotangentToTensorEquivSection`). And `k ⊗[A] Ω[A⁄k]` is the cokernel of the transpose
+Jacobian on `k ⊗_R Ω[R⁄k] ≅ (σ → k)`. The `Algebra A k` structure (from `evalAug`) and the conormal
+machinery live inside the proof; the statement is a finrank equality. -/
 /-- **Step 1 (the split-augmentation bijection).** For a split augmentation `ε : A →ₐ[k] k` of a
 `k`-algebra `A` (`a`-rational point gives the section), the conormal map
 `kerCotangentToTensor k A k : (ker ε).Cotangent →ₗ[A] k ⊗[A] Ω[A⁄k]` is bijective: surjective since
 `Ω[k⁄k] = 0`; injective since `ε` splits (a retraction comes from a section of `kerSquareLift`,
-`retractionKerCotangentToTensorEquivSection`). Stated for a general `k`-algebra `A` with a surjective
-`ε`, with the `Algebra A k` structure carried by the instance. -/
-theorem kerCotangentToTensor_split_bijective {A : Type*} [CommRing A] [Algebra k A]
+`retractionKerCotangentToTensorEquivSection`). Stated for a general `k`-algebra `A` with a
+surjective `ε`, with the `Algebra A k` structure carried by the instance. Local scaffolding for
+`finrank_cotangent_maxIdealAtSpan_eq_coker`. -/
+private theorem kerCotangentToTensor_split_bijective {A : Type*} [CommRing A] [Algebra k A]
     [Algebra A k] [IsScalarTower k A k] (hsurj : Function.Surjective (algebraMap A k)) :
     Function.Bijective (KaehlerDifferential.kerCotangentToTensor k A k) := by
   constructor
@@ -268,8 +188,9 @@ theorem kerCotangentToTensor_split_bijective {A : Type*} [CommRing A] [Algebra k
 /-- General base-changed conormal scaffold. For a surjection of `k`-algebras `R ↠ B` (in a scalar
 tower with `B` and `R` algebras over `k`), `k ⊗[B] Ω[B⁄k]` is `k`-linearly equivalent to the
 cokernel of the base-changed conormal inclusion: the `B`-submodule `K := ker (mapBaseChange) =
-range (kerCotangentToTensor)` of `B ⊗[R] Ω[R⁄k]`, tensored by `k ⊗[B] -` and restricted to `k`. -/
-theorem tensorKaehler_equiv_quotient_conormal
+range (kerCotangentToTensor)` of `B ⊗[R] Ω[R⁄k]`, tensored by `k ⊗[B] -` and restricted to `k`.
+Local scaffolding for `finrank_tensor_kaehler_eq_coker`. -/
+private theorem tensorKaehler_equiv_quotient_conormal
     {R B : Type*} [CommRing R] [CommRing B] [Algebra k R] [Algebra R B] [Algebra k B]
     [IsScalarTower k R B] [Algebra B k] [IsScalarTower k B k]
     (hsurj : Function.Surjective (algebraMap R B)) :
@@ -294,8 +215,9 @@ theorem tensorKaehler_equiv_quotient_conormal
     LinearMap.lTensor_surjective k hfsurj
   exact ⟨hExactk.linearEquivOfSurjective hfksurj⟩
 
-/-- `I.Cotangent` is `R`-spanned by `toCotangent` of a family generating `I` (`span (range s) = I`). -/
-theorem span_cotangent_eq_top {R : Type*} [CommRing R] {ι : Type*} (s : ι → R) (I : Ideal R)
+/-- `I.Cotangent` is `R`-spanned by `toCotangent` of a family generating `I`
+(`span (range s) = I`). Local scaffolding for `finrank_tensor_kaehler_eq_coker`. -/
+private theorem span_cotangent_eq_top {R : Type*} [CommRing R] {ι : Type*} (s : ι → R) (I : Ideal R)
     (hI : Ideal.span (Set.range s) = I) (hmem : ∀ i, s i ∈ I) :
     Submodule.span R (Set.range (fun i ↦ I.toCotangent ⟨s i, hmem i⟩)) = ⊤ := by
   set T := Submodule.span R (Set.range (fun i ↦ I.toCotangent ⟨s i, hmem i⟩))
@@ -317,30 +239,32 @@ theorem span_cotangent_eq_top {R : Type*} [CommRing R] {ι : Type*} (s : ι → 
         I.toCotangent ⟨p, hI ▸ hp⟩ + I.toCotangent ⟨q, hI ▸ hq⟩ from by rw [← map_add]; rfl]
       exact add_mem (hsp (hI ▸ hp)) (hsq (hI ▸ hq))
     · intro c p hp hsp h
-      rw [show I.toCotangent ⟨c • p, h⟩ = c • I.toCotangent ⟨p, hI ▸ hp⟩ from by rw [← map_smul]; rfl]
+      rw [show I.toCotangent ⟨c • p, h⟩ = c • I.toCotangent ⟨p, hI ▸ hp⟩ from by
+        rw [← map_smul]; rfl]
       exact Submodule.smul_mem _ _ (hsp (hI ▸ hp))
   exact key (hI ▸ hy)
 
 set_option maxHeartbeats 800000 in
+-- the iterated `baseChange` of the `dx`-basis + the range-transport elaboration are heavy.
 /-- **Step 2.** For the augmentation algebra structure on `A = R ⧸ span (range g)`, the conormal
-sequence of `R ↠ A` base-changed to `k` identifies `k ⊗[A] Ω[A⁄k]` with the cokernel of the transpose
-Jacobian on `k ⊗_R Ω[R⁄k] ≅ (σ → k)`. -/
+sequence of `R ↠ A` base-changed to `k` identifies `k ⊗[A] Ω[A⁄k]` with the cokernel of the
+transpose Jacobian on `k ⊗_R Ω[R⁄k] ≅ (σ → k)`. -/
 theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
     haveI : Algebra (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) k :=
-      (aug g a hg).toRingHom.toAlgebra
+      (evalAug g a hg).toRingHom.toAlgebra
     finrank k (k ⊗[MvPolynomial σ k ⧸ Ideal.span (Set.range g)]
         Ω[(MvPolynomial σ k ⧸ Ideal.span (Set.range g))⁄k]) =
       finrank k ((σ → k) ⧸ LinearMap.range (jacobianTranspose g a)) := by
   letI instA : Algebra (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) k :=
-    (aug g a hg).toRingHom.toAlgebra
+    (evalAug g a hg).toRingHom.toAlgebra
   haveI htA : IsScalarTower k (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) k :=
-    IsScalarTower.of_algebraMap_eq fun x ↦ (AlgHom.commutes (aug g a hg) x).symm
+    IsScalarTower.of_algebraMap_eq fun x ↦ (AlgHom.commutes (evalAug g a hg) x).symm
   have hsurj : Function.Surjective
       (algebraMap (MvPolynomial σ k) (MvPolynomial σ k ⧸ Ideal.span (Set.range g))) :=
     Ideal.Quotient.mk_surjective
   obtain ⟨eExact⟩ := tensorKaehler_equiv_quotient_conormal (k := k)
     (R := MvPolynomial σ k) (B := MvPolynomial σ k ⧸ Ideal.span (Set.range g)) hsurj
-  -- coordinate iso `k ⊗[A] (A ⊗[R] Ω[R⁄k]) ≃ₗ[k] (σ → k)` by iterated base-change of the `dx`-basis.
+  -- coordinate iso `k ⊗[A] (A ⊗[R] Ω[R⁄k]) ≃ₗ[k] (σ → k)`, iterated base-change of the `dx`-basis.
   -- Pin `Module A A` to `Semiring.toModule` so both `baseChange` steps use the same self-module.
   letI : Module (MvPolynomial σ k ⧸ Ideal.span (Set.range g))
       (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) :=
@@ -354,7 +278,7 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
   have Ψ_D : ∀ p : MvPolynomial σ k, Ψ ((1 : k) ⊗ₜ[MvPolynomial σ k ⧸ Ideal.span (Set.range g)]
       ((1 : MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗ₜ[MvPolynomial σ k]
         KaehlerDifferential.D k (MvPolynomial σ k) p)) =
-      fun x : σ ↦ (aug g a hg) (algebraMap (MvPolynomial σ k)
+      fun x : σ ↦ (evalAug g a hg) (algebraMap (MvPolynomial σ k)
         (MvPolynomial σ k ⧸ Ideal.span (Set.range g)) (MvPolynomial.pderiv x p)) := by
     intro p
     ext x
@@ -377,7 +301,8 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
       fun i ↦ (1 : MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗ₜ[MvPolynomial σ k]
         KaehlerDifferential.D k (MvPolynomial σ k) (g i) with hsgen
     set tgen : ι → (k ⊗[MvPolynomial σ k ⧸ Ideal.span (Set.range g)]
-        ((MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗[MvPolynomial σ k] Ω[MvPolynomial σ k⁄k])) :=
+        ((MvPolynomial σ k ⧸ Ideal.span (Set.range g)) ⊗[MvPolynomial σ k]
+          Ω[MvPolynomial σ k⁄k])) :=
       fun i ↦ (1 : k) ⊗ₜ[MvPolynomial σ k ⧸ Ideal.span (Set.range g)] sgen i with htgen
     -- `ker(R → B) = span (range g)`
     have hIker : RingHom.ker (algebraMap (MvPolynomial σ k)
@@ -402,8 +327,8 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
         (MvPolynomial σ k ⧸ Ideal.span (Set.range g))
       rw [hK_R, Submodule.restrictScalars_span _ _ hsurj]
     -- LHS range = `K.baseChange k` = `span k (range tgen)`
-    have hLeftRange : LinearMap.range
-        ((LinearMap.lTensor k K.subtype).restrictScalars k) = Submodule.span k (Set.range tgen) := by
+    have hLeftRange : LinearMap.range ((LinearMap.lTensor k K.subtype).restrictScalars k)
+        = Submodule.span k (Set.range tgen) := by
       change K.baseChange k = _
       rw [hKspanB, Submodule.baseChange_span, ← Set.range_comp]
       rfl
@@ -418,13 +343,13 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
     -- `Ψ` sends generator `tgen i` to the `i`-th gradient row `Jᵀ(eᵢ)`
     have hPsi_i : ∀ i : ι, Ψ.toLinearMap (tgen i) = jacobianTranspose g a (Pi.single i 1) := by
       intro i
-      show Ψ (tgen i) = _
+      change Ψ (tgen i) = _
       rw [htgen, hsgen, Ψ_D (g i)]
       ext x
       rw [jacobianTranspose_apply]
-      simp only [aug_mk, Ideal.Quotient.algebraMap_eq, Pi.single_apply, smul_eq_mul]
+      simp only [evalAug_mk, Ideal.Quotient.algebraMap_eq, Pi.single_apply, smul_eq_mul]
       rw [Finset.sum_eq_single i (fun b _ hb ↦ by simp [hb]) (by simp)]
-      simp [MvPolynomial.aeval_def, MvPolynomial.eval₂_id, eq_comm]
+      simp [MvPolynomial.aeval_def, MvPolynomial.eval₂_id]
     rw [hLeftRange, Submodule.map_span, hRhsSpan, ← Set.range_comp]
     congr 1
     exact congrArg Set.range (funext fun i ↦ hPsi_i i)
@@ -432,16 +357,16 @@ theorem finrank_tensor_kaehler_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) =
     (LinearMap.range (jacobianTranspose g a)) Ψ hRange
   exact (eExact.symm.trans eQuot).finrank_eq
 
-theorem finrank_cotangent_maxIdealAt_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    finrank k ((maxIdealAt g a hg).Cotangent) =
+theorem finrank_cotangent_maxIdealAtSpan_eq_coker (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
+    finrank k ((maxIdealAtSpan g a hg).Cotangent) =
       finrank k ((σ → k) ⧸ LinearMap.range (jacobianTranspose g a)) := by
   set A := MvPolynomial σ k ⧸ Ideal.span (Set.range g) with hA
-  letI : Algebra A k := (aug g a hg).toRingHom.toAlgebra
+  letI : Algebra A k := (evalAug g a hg).toRingHom.toAlgebra
   haveI : IsScalarTower k A k := IsScalarTower.of_algebraMap_eq fun x ↦ by
-    rw [RingHom.algebraMap_toAlgebra]; exact (AlgHom.commutes (aug g a hg) x).symm
-  have hsurj_alg : Function.Surjective (algebraMap A k) := aug_surjective g a hg
+    rw [RingHom.algebraMap_toAlgebra]; exact (AlgHom.commutes (evalAug g a hg) x).symm
+  have hsurj_alg : Function.Surjective (algebraMap A k) := evalAug_surjective g a hg
   -- `m_A = ker (algebraMap A k)`
-  have hmA : maxIdealAt g a hg = RingHom.ker (algebraMap A k) := rfl
+  have hmA : maxIdealAtSpan g a hg = RingHom.ker (algebraMap A k) := rfl
   -- Step 1: the conormal map is a `k`-linear equiv, so the finranks agree.
   rw [hmA, ← finrank_tensor_kaehler_eq_coker g a hg]
   exact (LinearEquiv.ofBijective
@@ -451,25 +376,28 @@ theorem finrank_cotangent_maxIdealAt_eq_coker (hg : ∀ i, MvPolynomial.eval a (
 /-! ### Step 3 — the localization identification -/
 
 /-- `m_A.Cotangent` (over `A`), base-changed to `k`, is the global cotangent space; its `k`-finrank
-equals that of `CotangentSpace (Localization.AtPrime m_A)` via `Ideal.tensorCotangentEquiv` (flat
-localization) and the residue-field transport `κ(m_A) = k`. -/
+equals that of `CotangentSpace (Localization.AtPrime m_A)` via
+`Ideal.finrank_cotangentSpace_localization_eq_cotangent` (flat localization). -/
 theorem finrank_cotangentSpace_localization_eq (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    finrank k (CotangentSpace (Localization.AtPrime (maxIdealAt g a hg))) =
-      finrank k ((maxIdealAt g a hg).Cotangent) :=
-  finrank_cotangentSpace_localization_eq_cotangent (k := k) (maxIdealAt g a hg)
+    finrank k (CotangentSpace (Localization.AtPrime (maxIdealAtSpan g a hg))) =
+      finrank k ((maxIdealAtSpan g a hg).Cotangent) :=
+  Ideal.finrank_cotangentSpace_localization_eq_cotangent (k := k) (maxIdealAtSpan g a hg)
 
 /-! ### Headline -/
 
-/-- **Zariski cotangent = Jacobian kernel.** The local cotangent space at the `k`-rational point `a` of
-`V(I)` (`I = span (range g)`) has `k`-dimension equal to the kernel of the Jacobian of the generators. -/
+/-- **Cotangent dimension = Jacobian-kernel dimension.** The local cotangent space at the
+`k`-rational point `a` of `V(I)` (`I = span (range g)`) has `k`-dimension equal to that of the
+kernel of the Jacobian of the generators. (The cotangent space itself is `coker Jᵀ` and the tangent
+space is `ker J`; these are distinct spaces whose finite dimensions agree over the field `k`.)
+**No smoothness is assumed.** -/
 theorem finrank_cotangentSpace_eq_finrank_ker_jacobian
     (hg : ∀ i, MvPolynomial.eval a (g i) = 0) :
-    finrank k (CotangentSpace (Localization.AtPrime (maxIdealAt g a hg))) =
+    finrank k (CotangentSpace (Localization.AtPrime (maxIdealAtSpan g a hg))) =
       finrank k (LinearMap.ker (jacobian g a)) := by
   rw [finrank_cotangentSpace_localization_eq g a hg,
-    finrank_cotangent_maxIdealAt_eq_coker g a hg,
+    finrank_cotangent_maxIdealAtSpan_eq_coker g a hg,
     finrank_ker_jacobian_eq_finrank_coker g a]
 
 end
 
-end DLNFibre.Core
+end MvPolynomial

@@ -74,3 +74,49 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   upstream-ready `GraphIdeal`), min hyps confirmed. **P2-boundary authoritative re-gate green 3820**,
   axiom-clean. The determinantal & elimination library now stands: `Core/Matrix/RankMinors.lean` +
   `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}.lean`. → PR-P2 opened (stacked on P1); rolling into P3.
+- **2026-06-29 — P3-R1 LANDED → PHASE 3 CONTENT-COMPLETE** (`12d25fca`). The cotangent crux: `CotangentJacobian`
+  re-homed as a 2-module split — `Core/RingTheory/Ideal/CotangentLocalization.lean` (network-free, `[CommRing]`)
+  + `Core/RingTheory/MvPolynomial/CotangentJacobian.lean`. Headline `finrank_cotangentSpace_eq_finrank_ker_jacobian`
+  (cotangent dim = ker of the rectangular point-Jacobian, **no smoothness**, arbitrary rational point — more
+  general than Mathlib's smooth/square Jacobian), via bridges B1 (rank-nullity) + B2 (conormal → `Jᵀ`). Bonus
+  `[Field k]→[CommRing k]` weakening on the localization lemma. Bridge bodies verbatim; Codex xhigh red-teamed
+  the transpose orientation SOUND (rank-deficient witness `g₁=x+2y,g₂=3x+6y`). P3-boundary re-gate **green 3821**,
+  axiom-clean, DLN payoffs untouched. Decorrelated crux-review (09r) in flight on B2's `Ψ`-orientation; on PASS →
+  PR-P3 → **expedition close**.
+- **2026-06-29 — PHASE 3 SIGNED OFF → EXPEDITION CLOSE** (`12d25fca`). 09r **PASS**, with model decorrelation:
+  the reviewer re-derived the `Ψ`-orientation, **caught that the builder's witness was square** (non-discriminating
+  for a transpose error), and supplied **rectangular + node (`x²−y²`) examples** that distinguish `coker Jᵀ` from
+  the wrong `coker J` — all matching the geometric tangent dimension. → PR-P3 (#17) opened.
+
+## CLOSE — three foundations delivered
+
+The second **build-the-buildable** expedition is complete: three more reusable, Mathlib-grade libraries lifted
+from project-local `DLNFibre.Core` modules, each its own PR, driven autonomously straight through.
+
+- **P1 (#15) — Components & local dimension:** `Core/MinimalPrime/{Finite,TopDimensional,Localization,Polynomial,Radical,Bridge}`
+  (the `TopDimMinPrimes` count engine + the per-prime no-drop — crux PASS) + `Core/Dimension/Localization` (no-drop dim).
+- **P2 (#16) — Determinantal & elimination algebra:** `Core/Matrix/RankMinors` (the minor-rank `↔` Mathlib lacks —
+  crux PASS) + `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}`.
+- **P3 (#17) — Smooth points & cotangent dimension:** `Core/RingTheory/{Ideal/CotangentLocalization,MvPolynomial/CotangentJacobian}`
+  (the rectangular point-Jacobian cotangent-dim formula, no smoothness — crux PASS).
+
+Every rung green / sorry-free / axiom-clean; each phase re-gated at its boundary (L5); the three crux rungs each
+independently decorrelated-reviewed (PASS) — P3's notably catching + closing a non-discriminating witness. DLN
+consumers retrofitted; DLN payoff axioms unchanged throughout. Operator review on #15 (5 comments) concurred +
+applied; p2/p3 rebased to stay in sync.
+
+**The 3-PR set (operator-gated, merge in order):** #15 (P1→dev) → #16 (P2→P1) → #17 (P3→P2). GitHub retargets each
+to `dev` as its predecessor merges. **Roadmap:** mathlib4 upstream PRs (internal-first, upstream-grade);
+shared-package extraction (ReLU second consumer); the deferred broader `Fintype` index for the minor-rank `↔`;
+`GenericFreeness`/`PrincipalOpenComorphism` (fold opportunistically).
+
+**Status: COMPLETE — 3 PRs open.**
+
+- **2026-06-29 — deep-review polish on all 3 PRs (concurred + applied).** Operator deep-review found **no blocking
+  issues** on any PR. **#15** clean (earlier 5 items already in `165e0954`) — ready. **#16** (`0fdcc2e9`): `translateAux`
+  privatized (local helper); the `Core.Matrix.RankMinors` boundary made honest — 4 consumers given direct imports
+  (incl. an extra transitive-only one), `RlctPayoff` correctly left (uses RankLocusClosed DLN content). **#17**
+  (`e3878e19`): the **name=content** wording fix — "cotangent = Jacobian kernel" → "cotangent **dimension** =
+  Jacobian-kernel dimension" (cotangent = `coker Jᵀ`, tangent = `ker J`, only finite dims agree); 3 local supports
+  privatized; `maxIdealAt → maxIdealAtSpan`. All Lean-only; p3 rebased onto the fixed p2; final p3 re-gate green
+  **3821**, axiom-clean. The 3-PR merge train (#15 → #16 → #17) is ready.

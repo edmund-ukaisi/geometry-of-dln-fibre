@@ -32,7 +32,6 @@ import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
-import DLNFibre.Core.CotangentJacobian
 import DLNFibre.Core.BoxMoveDegeneration
 import DLNFibre.Core.RankLocusClosed
 import DLNFibre.Core.BoxMoveGeneral
@@ -496,3 +495,13 @@ import DLNFibre.Core.MinimalPrime.Bridge
 -- `exists_injective_linearIndependent_rows`, `exists_submatrix_det_ne_zero_of_le_rank`) and the
 -- injective-field-hom rank invariance `Matrix.rank_map_eq_of_injective`.
 import DLNFibre.Core.Matrix.RankMinors
+-- foundation-lift P3-R1: the cotangent-dimension = Jacobian-kernel dimension formula (cotangent =
+-- `coker Jᵀ`, tangent = `ker J`; finite dims agree), extracted from
+-- `Core.CotangentJacobian` into two network-free libraries. The localize-the-cotangent-space
+-- comparison `Ideal.finrank_cotangentSpace_localization_eq_cotangent` (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.Cotangent`; `[CommRing k]`, no `Field`); and the rectangular point-
+-- Jacobian cotangent-dimension headline `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`
+-- (ns `MvPolynomial`, mirrors `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general
+-- than Mathlib's smooth/square submersive Jacobian.
+import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
+import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian

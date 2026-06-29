@@ -1,7 +1,7 @@
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.OrbitDifferential
 import DLNFibre.Core.OrbitLinearCodim
-import DLNFibre.Core.CotangentJacobian
+import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.Dimension.AffineDomain
 import Mathlib.Algebra.MvPolynomial.Derivation
@@ -641,7 +641,7 @@ theorem finrank_cotangent_eq_varietyDim [PerfectField k] (M : Tuple (k := k) d) 
   -- L2a collapse: `finrank k (m_M.Cotangent) = finrank k (CotangentSpace (AtPrime m_M))`
   have hcollapse : finrank k ((normalFormIdeal M).Cotangent)
       = finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) :=
-    (finrank_cotangentSpace_localization_eq_cotangent (k := k) (normalFormIdeal M)).symm
+    (Ideal.finrank_cotangentSpace_localization_eq_cotangent (k := k) (normalFormIdeal M)).symm
   rw [hcollapse, hbridge, hM3, hvar]
 
 /-! ## The A6.1 headline — `finrank (range δ⁰) ≤ varietyDim Z_M` -/
