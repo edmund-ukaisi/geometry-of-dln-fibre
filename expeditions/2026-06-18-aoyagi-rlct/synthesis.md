@@ -20397,3 +20397,46 @@ Nonclaims: no selected-entry source coverage, no source/image equality, no
 exact-rank openness, no successor-rank arithmetic, no source-prior transport,
 no Jacobian comparison, no analytic atlas, no normal crossings, no pole order,
 and no RLCT.
+
+## Latest A2 Case 2 Residual-Coordinate Measure Pushforward
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_eq_restrict_chartMap_image
+```
+
+For the endpoint-transported continuing Case 2 retained-passive p.13 source
+chart, pushing the chart-produced source measure through the fixed-base
+residual-coordinate map gives Lebesgue measure restricted to the finite
+selected-entry chart image:
+
+```text
+Measure.map residualMap (Measure.map sourceChart sourceMeasure)
+= volume.restrict (chartMap pivotNext '' signedBoxSet Rres).
+```
+
+The proof composes the existing pointwise residual-coordinate readout
+`residualMap (sourceChart yNext) = chartMap pivotNext yNext` with
+`SelectedEntrySignedBox.CenterCoord.map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-measure-pushforward.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-coordinate-measure-pushforward.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+
+Nonclaims: no external/original source-prior transport, source-rank coverage,
+source/image equality, analytic Jacobian compatibility, normal crossings,
+pole order, or RLCT.
+
+Review note: an intermediate deterministic fixed-pivot inverse wrapper was
+accepted as mathematically safe but removed before banking because it was an
+unused API wrapper; the existing existential punctured value theorem already
+exposes the same witness when needed.
+
+Controller pivot: the next substantial target should be Aoyagi p.13
+regular-square suspension, including the threshold shift from the regular
+coordinates `(C1 - I, F2, F3)` and the cleaned residual block `D`.

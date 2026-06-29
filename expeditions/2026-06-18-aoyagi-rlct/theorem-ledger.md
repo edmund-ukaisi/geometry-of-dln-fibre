@@ -11895,3 +11895,29 @@ Nonclaims: no selected-entry source coverage, no source/image equality, no
 exact-rank openness, no successor-rank arithmetic, no source-prior transport,
 no Jacobian comparison, no analytic atlas, no normal crossings, no pole order,
 and no RLCT.
+
+Latest A2 Case 2 residual-coordinate measure pushforward:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_eq_restrict_chartMap_image`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-residual-coordinate-measure-pushforward.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-residual-coordinate-measure-pushforward.md`.
+
+Ledger status: chart-produced residual-coordinate measure transport.  The
+source-side measure is `Measure.map sourceChart sourceMeasure`, where
+`sourceMeasure` is the finite selected-entry signed box measure with
+`sourceDensity`.  Reindexing fixed-base residual coordinates by
+`residualCoordEquiv.symm`, its pushforward is Lebesgue measure restricted to
+`chartMap pivotNext '' signedBoxSet Rres`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+
+Nonclaims: no external/original source-prior transport, source-rank coverage,
+source/image equality, analytic Jacobian compatibility, normal crossings,
+pole order, or RLCT.
+
+Review note: an intermediate deterministic fixed-pivot inverse wrapper was
+accepted as safe but removed before banking as an unused API wrapper.

@@ -10,6 +10,33 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 residual-coordinate measure pushforward
+
+The continuing Case 2 chart now has the correct chart-produced residual
+measure transport:
+
+```text
+Measure.map residualMap (Measure.map sourceChart sourceMeasure)
+= volume.restrict (chartMap pivotNext '' signedBoxSet Rres).
+```
+
+Here `sourceMeasure` is the finite selected-entry signed box measure with
+`sourceDensity`, `sourceChart` is the endpoint-transported retained-passive
+p.13 source chart, and `residualMap` is the fixed-base residual-coordinate map
+reindexed by `residualCoordEquiv.symm`.
+
+This is stronger than another readout wrapper: it connects the p.13 source
+chart-produced measure to the finite selected-entry image measure.  It is
+still not external source-prior transport, source-rank coverage, source/image
+equality, analytic Jacobian compatibility, normal crossings, pole order, or
+RLCT.
+
+Next priority: pivot away from additional Case 2 packaging unless a named
+consumer requires it.  The main mathematical frontier is Aoyagi p.13
+regular-square suspension: reproduce and formalise the threshold shift for
+adding the regular coordinates `(C1 - I, F2, F3)` to the residual product
+problem, using ideal/square-sum comparability for `D - F3 F2` versus `D`.
+
 ## Latest controller decision - 2026-06-29, Case 2 pointwise source-rank chart readout
 
 The continuing Case 2 selected-entry chart now has a pointwise reusable
