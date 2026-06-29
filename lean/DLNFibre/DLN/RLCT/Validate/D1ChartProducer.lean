@@ -46,13 +46,35 @@ factorization is FALSE here. BUT the D1 INEQUALITY STILL HOLDS: `rlctAtOn R 0 = 
 EXACT (the `extra = nReg_v−nReg` Morse halves exactly offset the degraded core), via a
 Morse-WITH-PARAMETERS VALUE argument (RLCT-additivity over disjoint groups). So the route is
 NOT killed — the VALUE `hCore` survives — but its general-`v` discharge is VALUE-level, NOT
-the germ factorization. This is the residual gap surfaced to the controller (the general-`v`
-`hCore` obligation; the `_eq` factorization is the deepest-sub-locus special case).
+the germ factorization.
+
+**DESIGN PASS (decorrelated pen-and-paper a9a2cf + Codex, 2026-06-29) — the value-level interface +
+the coupling, RESOLVED.** Across the WHOLE L=2 design space (exhaustive `(m,a,b)`, `m≤8`, 164
+strata, ZERO violations; `m = M_s` reduced width, `a = rank A₁ − r`, `b = rank A₂ − r`):
+
+    rlctAtOn R 0 = extra/2 + lambdaCore(M'),   extra = m(a+b) − ab,   M' = (m−a, m−a−b, m−b),
+
+so `hCore` reduces to `extra/2 + lambdaCore(M') ≥ coreDeepest`. (i) ROBUSTNESS: all flagged-untested
+types (layer-2-extra `A₁=diag(1,0,0),A₂=diag(1,1,0)`; (4,4,4)/r∈{1,2}) give `rlctAtOn R 0 =
+coreDeepest` EXACT. (ii) PROVABLE OBLIGATION: the direct-domination route is DEAD (a dominator must
+vanish on the Schur zero-set `{(P+X)Y=0}` — it already encodes the degraded core; exact CE
+at `m=2,a=1,b=0`). The forced route is the SECOND engine application: `rlctAtOn R 0 = extra/2 +
+rlctAtOn(degraded core) t0'` (`rlct_quasiSplit_ge` + `rlctAtOn_boundedUnit_localHomeomorph` +
+`rlctAtOn_spectator_peel` a SECOND time at the middle stratum), then `rlctAtOn(degraded core) =
+lambdaCore(M')`, then the `≥` arithmetic. (iii) COUPLING: the arithmetic `extra/2 + lambdaCore(M') ≥
+coreDeepest` is SELF-CONTAINED value-free `Mval`/`Adm` algebra (the identity `extra + D_{a,b}(t) =
+F_m(a+t)`, `F_m(s)=(m−s)²+sm`); the analytic step `rlctAtOn(degraded core) = lambdaCore(M')` is
+R1's resolution applied to the RECTANGULAR `M'`, but `resolution_charts`/`resolution_value_of_atlas`
+(Skeleton/ResolutionAtlas) are ALREADY stated for ARBITRARY width `M` (only `hMid : ∀ s, 0<M'_s`)
+— NOT square-only. So D1 needs R1's general resolution CAPABILITY (covering `M'`), NOT R1's VALUE
+(`lambdaCore`/#44 never enter): **Item 86 "decoupled from R1's value" STANDS; D1 sequences
+independently.** This is the residual gap's resolution; the `_eq` factorization remains the deepest-
+sub-locus special case.
 
 Scope L = 2 (general-L = wall #120). This file BANKS the PART (a) reduction + the
-PART (b) `hCore`-interface (factorization form, deepest-type); the remaining D1 obligations are the
-IFT-chart producer (obligation (i)) + its general-`v` value-level `hCore` (the kill residual);
-#44 is the already-tracked Skeleton sorry the deepest side `hDeepest` consumes. -/
+PART (b) `hCore`-interface (factorization form, deepest-type); the remaining D1 obligation is the
+IFT-chart producer (obligation (i)) — which now SUBSUMES the value-level general-`v` `hCore` via the
+second-peel route above; #44 (the deepest `hDeepest`) is the already-tracked Skeleton sorry. -/
 
 open MeasureTheory
 open scoped ENNReal Topology
