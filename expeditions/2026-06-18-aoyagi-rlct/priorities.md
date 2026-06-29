@@ -10,6 +10,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive source-edge-family chart-produced source-stratum two-sided iff
+
+The chart-produced source-stratum selected-entry two-sided iff now has a
+retained-passive source-edge-family-of-data wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure
+```
+
+It constructs the concrete `sourceChart` from retained-passive determinant-
+chart data, derives source-chart a.e. measurability from retained-data
+a.e. measurability and chart continuity, derives local-source landing and the
+source-readback matrix identity from the source-edge-family readback theorem,
+and derives the selected-entry residual readout from the square-sum bridge.
+
+Residual boundedness over the chart-produced measure restricted to
+`localSource`, `[SFinite nu]`, `nu.IsAddHaarMeasure`, and all four
+source-stratum two-sided loss/density bounds remain explicit.  Nonclaims
+remain strict: no selected-entry critical inequality, no positive signed-box
+radius hypothesis, no source-density upper/nonnegativity hypotheses, no
+residual integrability proof, no signed-box source/image equality or
+source-rank coverage proof, no external source-prior/Jacobian/density
+transport, no original-loss identification, no normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-06-29, retained-passive source-stratum chart-produced selected-entry two-sided loss-density iff
 
 The retained-passive source-stratum-bound selected-entry two-sided iff now has

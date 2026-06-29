@@ -140,6 +140,29 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-edge-family
+  chart-produced source-stratum two-sided iff, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure`.
+  For the concrete retained-passive source-edge-family chart produced from
+  determinant-chart retained data, retained-data a.e. measurability and chart
+  continuity give source-chart a.e. measurability; the retained source-edge-
+  family readback theorem gives local-source landing and residual-factor
+  matrix readout; and the square-sum bridge gives the selected-entry residual
+  readout.  The theorem keeps residual boundedness over the chart-produced
+  measure restricted to `localSource`, `[SFinite nu]`, `nu.IsAddHaarMeasure`,
+  and the four source-stratum comparison bounds explicit, and returns the local
+  iff between actual loss-density finiteness over
+  `(mu.restrict (U inter sourceStratum)).prod nu` and
+  `residualNegPowerIntegrableOn (fun E => E) (U inter sourceStratum) mu t`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`.
+  This does not prove residual boundedness, comparison bounds, selected-entry
+  critical integrability, signed-box source/image equality, source-rank
+  coverage, external source-prior or Jacobian/density transport, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive source-stratum chart-produced
   selected-entry two-sided loss-density iff, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure`.

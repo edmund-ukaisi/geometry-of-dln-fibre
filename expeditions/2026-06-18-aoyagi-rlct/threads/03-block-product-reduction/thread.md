@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff
+
+Reproduction:
+`reproduction-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`.
+Review:
+`review-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure
+```
+
+It constructs the concrete retained-passive source-edge-family chart from
+retained data, proves the chart a.e. measurable from retained-data
+a.e. measurability and continuity of the retained-passive p.13 source chart,
+gets local-source landing and source-readback matrix equality from the
+source-edge-family readback theorem, and gets the selected-entry residual
+readout from the square-sum bridge.  Residual boundedness and the four
+source-stratum comparison bounds remain explicit.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+Schrodinger the 2nd xhigh read-only review passed.  Hygiene gates passed:
+`scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+axiom probe with `[propext, Classical.choice, Quot.sound]`.  Nonclaims remain:
+no selected-entry critical inequality, no residual integrability proof, no
+signed-box source/image equality, no source-rank coverage proof, no external
+transport theorem, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive source-stratum chart-produced selected-entry two-sided loss-density iff
 
 Reproduction:
