@@ -289,6 +289,20 @@ theorem chartMap_preimageOfPivotNeZero {center : Finset ι} (pivot : center)
       hpivot_value, hi_value]
     field_simp [hpivot]
 
+/-- On the nonzero-pivot locus, the fixed-pivot center-coordinate inverse is
+also a left inverse to the selected-entry chart. -/
+theorem preimageOfPivotNeZero_chartMap {center : Finset ι} (pivot : center)
+    (y : center → ℝ) (hpivot : y pivot ≠ 0) :
+    preimageOfPivotNeZero pivot (chartMap pivot y) = y := by
+  funext i
+  by_cases hi : i = pivot
+  · subst i
+    simp [preimageOfPivotNeZero]
+  · have hi_chart :
+        chartMap pivot y i = y pivot * y i := by
+      exact chartMap_of_ne pivot y hi
+    simp [preimageOfPivotNeZero, hi, hi_chart, hpivot]
+
 /-- Existence form of the fixed-pivot center-coordinate inverse. -/
 theorem exists_chartMap_eq_value_of_pivot_ne_zero {center : Finset ι}
     (pivot : center) (value : center → ℝ) (hpivot : value pivot ≠ 0) :

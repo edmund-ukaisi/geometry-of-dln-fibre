@@ -3,6 +3,41 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 nonzero-pivot inverse residual readout - 2026-06-29
+
+Landed a punctured-chart inverse readout bridge:
+
+```text
+SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_sourceReadback_residualFactorProduct_eq_matrix_preimageOfPivotNeZero
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_case2EndpointTransport_sourceEdgeFamilyOfData_preimageOfPivotNeZero
+```
+
+The selected-entry chart keeps the pivot coordinate and multiplies nonpivot
+coordinates by the pivot, so it is not idempotent.  The honest inverse bridge
+uses `preimageOfPivotNeZero` on the selected-pivot nonzero locus.  After this
+pullback, the constructed retained-passive Case 2 source chart has fixed-base
+residual coordinates equal to the ambient center coordinates.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-nonzero-pivot-inverse-residual-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-nonzero-pivot-inverse-residual-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-nonzero-pivot-inverse-residual-readout.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+Boundary: punctured-chart algebra only.  Still no continuity at the exceptional
+divisor, source-image equality, source-rank coverage, external/original
+source-prior transport, determinant-chart pushforward theorem, Jacobian
+comparison, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 coordinate residual readout - 2026-06-29
 
 Landed a coordinate-level residual readout bridge:

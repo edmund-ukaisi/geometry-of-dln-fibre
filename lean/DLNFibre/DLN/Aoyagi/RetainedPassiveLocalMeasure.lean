@@ -2016,6 +2016,65 @@ theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_
   exact hread_c.trans (hmatrix_c.trans hvalue_c)
 
 set_option linter.unusedSectionVars false in
+/-- Pulling the retained-passive source chart back by the nonzero-pivot
+selected-entry inverse gives coordinate readout in the target center
+coordinates.
+
+This is only an algebraic inverse-chart readout bridge on the nonzero-pivot
+locus.  It does not assert source-image equality, continuity of the inverse at
+the exceptional divisor, source-prior transport, normal crossings, pole order,
+or RLCT. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_sourceReadback_residualFactorProduct_eq_matrix_preimageOfPivotNeZero
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α ι : Type*} [DecidableEq ι]
+    {center : Finset ι} (pivot : center)
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    (sourceChart : (center → ℝ) → α)
+    (residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last (M + 1)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0) ≃ center)
+    (hfactor :
+      ∀ y : center → ℝ,
+        let E :=
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀
+            (fun p : Fin (M + 1) ↦
+              (Cedge (sourceChart y) p :
+                reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))
+        ChartLocalSuffixState.residualFactorProduct
+            (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+            (Fin.last (M + 1)) 0 (Fin.zero_le (Fin.last (M + 1))) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivot y
+                (residualCoordEquiv c))) :
+    ∀ value : center → ℝ, value pivot ≠ 0 → ∀ c,
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge
+          (sourceChart
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivot value)) c =
+        value (residualCoordEquiv c) := by
+  intro value hpivot c
+  have hcoord :=
+    paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_sourceReadback_residualFactorProduct_eq_matrix
+      (M := M) (W := W) (B := B) (pivot := pivot)
+      (U₀ := U₀) (hU₀ := hU₀) (Cedge := Cedge)
+      sourceChart residualCoordEquiv hfactor
+      (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivot value) c
+  have hchart :=
+    congrFun
+      (SelectedEntrySignedBox.CenterCoord.chartMap_preimageOfPivotNeZero
+        pivot value hpivot)
+      (residualCoordEquiv c)
+  exact hcoord.trans hchart
+
+set_option linter.unusedSectionVars false in
 /-- A retained-passive source-readback residual-factor identity gives the
 selected-entry residual square-sum expected by the local-measure handoff.
 

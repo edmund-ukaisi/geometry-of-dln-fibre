@@ -890,6 +890,89 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Endpoint-transported explicit Case 2 retained-passive data give the
+fixed-base residual coordinate readout after pulling back by the
+nonzero-pivot selected-entry inverse.
+
+This is a punctured-chart algebra bridge: on the locus where the selected
+pivot center coordinate is nonzero, the selected-entry inverse coordinates feed
+the constructed retained-passive Case 2 source chart and recover the target
+center coordinates.  It does not assert source image equality, source-rank
+coverage, source-prior transport, Jacobian compatibility, normal crossings,
+pole order, or RLCT. -/
+theorem paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_case2EndpointTransport_sourceEdgeFamilyOfData_preimageOfPivotNeZero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) ≃ center :=
+      case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+        n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+    ∀ value : center → ℝ, value pivotNext ≠ 0 → ∀ c,
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+          (sourceChart
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+              pivotNext value)) c =
+        value (residualCoordEquiv c) := by
+  intro center pivotNext EdgeFamily retainedData sourceChart residualCoordEquiv value hpivot c
+  have hcoord :=
+    paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_case2EndpointTransport_sourceEdgeFamilyOfData
+      W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+      (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext value) c
+  have hchart :=
+    congrFun
+      (SelectedEntrySignedBox.CenterCoord.chartMap_preimageOfPivotNeZero
+        pivotNext value hpivot)
+      (residualCoordEquiv c)
+  simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart,
+    residualCoordEquiv] using hcoord.trans hchart
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The endpoint-transported explicit Case 2 retained-passive source chart is
 continuous as a finite selected-entry coordinate map.
 
