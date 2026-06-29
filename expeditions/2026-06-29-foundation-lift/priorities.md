@@ -27,7 +27,7 @@ Independent of P1 (depends only on #14's `Codimension` catenary). Both halves al
 
 | rung | item | source | target (mirror) | status |
 |------|------|--------|------------------|--------|
-| P2-R1 | extract the graph-ideal package (`graphIdeal`, `ker_aeval_eq_graphIdeal`, `graphIdealQuotientEquiv`, `graphIdeal_isPrime`) — **lowest-risk warm-up** | `MvPolynomialKerAeval.lean` | `Core/.../MvPolynomial/GraphIdeal` (ns `MvPolynomial`, mirror `RingTheory.MvPolynomial.Ideal`) | pending |
+| P2-R1 | extract the graph-ideal package (`graphIdeal`, `ker_aeval_eq_graphIdeal`, `graphIdealQuotientEquiv`, `graphIdeal_isPrime`) — **lowest-risk warm-up** | `MvPolynomialKerAeval.lean` | `Core/MvPolynomial/GraphIdeal.lean` (ns `MvPolynomial`) | **done** (`c7287232`; verbatim re-home, all general `[CommRing]`; sibling-clash cleared; `@[stacks]` declined; formaliser green 3819 / axiom-clean) |
 | P2-R2 | extract the matrix-rank core (`rank_le_iff_forall_submatrix_det_eq_zero` + supports + `rank_map_eq_of_injective`) | `RankLocusClosed.lean:46–166` | `Core/.../Matrix/RankMinors` (ns `Matrix`, mirror `LinearAlgebra.Matrix.Rank`) | pending — **CRUX: the `←` minor-extraction direction → decorrelated review** (confirm at the stated `Fin`/`ℕ` generality; consider general `Fintype` index). Split DLN remainder (`minorPoly`, `isZariskiClosed_orbitRankLocus`) to stay local |
 | P2-R3 | extract/generalise `GraphIdealHeight` (`height_graphIdeal_eq = Nat.card σ`) onto P2-R1 + #14 `Codimension`; confirm minimal hyps | `GraphIdealHeight.lean` | `Core/.../MvPolynomial/GraphIdeal` | pending |
 

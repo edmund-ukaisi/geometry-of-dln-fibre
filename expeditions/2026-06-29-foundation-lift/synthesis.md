@@ -46,6 +46,12 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   *product* shape, not a bare DVR, is what witnesses it). Transport sound, assembly coherent, no blocker.
   P1-boundary re-gate green 3819. → **Rolling into P2 without pausing**: stacked branch
   `expedition/foundation-lift-p2` off P1's tip; P2-R1 (graph-ideal package, the lowest-risk warm-up) dispatched.
+- **2026-06-29 — P2-R1 LANDED** (`c7287232`). The graph-ideal elimination package → `Core/MvPolynomial/GraphIdeal.lean`
+  (ns `MvPolynomial`): `ker_aeval_eq_graphIdeal` (the multivariate analogue of `Polynomial.ker_evalRingHom`,
+  absent in Mathlib v4.29) + quotient-equiv elimination + primality, all `[CommRing]`-general, verbatim re-home.
+  `MvPolynomialKerAeval.lean` deleted; only `GraphIdealHeight` re-pointed (transitive consumers `open MvPolynomial`).
+  Green 3819, axiom-clean. → P2-R2 dispatched — **the P2 CRUX** (matrix minor-rank `rank_le_iff_forall_submatrix_det_eq_zero`,
+  the `←` extraction direction): full re-gate + decorrelated review on completion.
 - **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
   (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
   unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
