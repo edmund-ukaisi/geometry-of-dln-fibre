@@ -2231,6 +2231,47 @@ theorem reindex_decode_split_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
               (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x).2.1 s) :=
   reindex_decode_blocks_split H r B hB hr hL x s
 
+/-- At a layer where `deepBlk_s.toBlocks₂₂ = 0` (boundary `hT`), the reindexed decode-`x` block reads,
+at the split point `q = deepestSplit w0 x`: `₁₁ = deepBlkA_s + readX(q)_s`, `₂₁ = deepBlkZ_s + readZ(q)_s`,
+`₁₂ = deepBlkY_s + readY(q)_s`, `₂₂ = decode(q).core_s`. Mirrors `absorbedCoreConj_eq_schurCore`'s body. -/
+theorem reindex_decode_split_toBlocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (x : Fin (flatDim H) → ℝ) (s : Fin L)
+    (hT : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
+    let q := deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x
+    let MX := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)
+    MX.toBlocks₁₁ = deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s
+      ∧ MX.toBlocks₂₁ = deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s
+      ∧ MX.toBlocks₁₂ = deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s
+      ∧ MX.toBlocks₂₂ = (paramsEquivFlat (deepestM H r)).symm q.2.1 s := by
+  intro q MX
+  set MD := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s) with hMD
+  set FB := Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s) with hFB
+  have hsplit : MX = MD + FB := reindex_decode_split_blocks H r B hB hr hL x s
+  refine ⟨?_, ?_, ?_, ?_⟩
+  · funext i j
+    rw [hsplit]
+    show MD (Sum.inl i) (Sum.inl j) + FB (Sum.inl i) (Sum.inl j) = _
+    rw [hFB, Matrix.fromBlocks_apply₁₁]; rfl
+  · funext i j
+    rw [hsplit]
+    show MD (Sum.inr i) (Sum.inl j) + FB (Sum.inr i) (Sum.inl j) = _
+    rw [hFB, Matrix.fromBlocks_apply₂₁]; rfl
+  · funext i j
+    rw [hsplit]
+    show MD (Sum.inl i) (Sum.inr j) + FB (Sum.inl i) (Sum.inr j) = _
+    rw [hFB, Matrix.fromBlocks_apply₁₂]; rfl
+  · funext i j
+    rw [hsplit]
+    have hMD22 : MD.toBlocks₂₂ i j = 0 := by rw [hMD] at hT ⊢; rw [hT]; rfl
+    show MD (Sum.inr i) (Sum.inr j) + FB (Sum.inr i) (Sum.inr j) = _
+    have : MD (Sum.inr i) (Sum.inr j) = 0 := hMD22
+    rw [this, zero_add, hFB, Matrix.fromBlocks_apply₂₂]
+
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
 Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
