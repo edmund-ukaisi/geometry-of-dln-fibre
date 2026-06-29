@@ -75,8 +75,36 @@ collect the layers and the couplings absorb the partition mismatch (the `StairFo
 This is the dependent-`Fin` `Matrix.of`/reindex cast zone the CLAUDE.md gotchas + memory notes flag as the
 cost driver — genuinely multi-tide.
 
+## Sub-piece 1 PROGRESS (banked this leg — the per-layer fderiv-VALUE atoms)
+
+`lean/DLNFibre/DLN/RLCT/Validate/RouteMChainFDerivValue.lean` (sorry-free, clean-three, forced
+`#print axioms` `[propext, Classical.choice, Quot.sound]`, zero warnings, non-vacuity in-file):
+- `chainAFDeriv` / `hasFDerivAt_chainA` — the fderiv VALUE of a `chainA` layer (the `[C−N·W ; W]` lift
+  column) over OPAQUE `Fin (Wext)` widths: kept entries the product-rule differential of `C−N·W`
+  (`HasFDerivAt.matMul`'s `precompR`/`precompL`), lift entries `dW`. Per-entry assembly
+  (`hasFDerivAt_pi''` ×2 + `finSplit` kept/lift split + `chainA_apply_castAdd`/`_natAdd`), dodging the
+  Sum-indexed no-norm wall exactly as `diffAt_chainA` does.
+- `chainQFDeriv` / `hasFDerivAt_chainQ` — the fderiv VALUE of a `chainQ` layer (the `[I | N]` chaining
+  row): kept columns the constant `I` (fderiv `0`), lift columns `dN`. Same column-split assembly.
+
+The KEY cast lesson (re-confirmed): get the fderiv VALUE PER-ENTRY (each lands in `ℝ`, always normed) —
+the `reindex`-as-CLE route stalls on the Sum-indexed intermediate (no norm instance), per `diffAt_chainA`'s
+note. `ContinuousLinearMap.proj_pi` is `rfl`, so `(proj j).comp ((proj r).comp (clmPi …))` reduces to the
+per-entry coordinate by `rw [… from rfl]` before the `finSplit` case split.
+
+## NEXT concrete step (sub-piece 1, continued)
+Thread the two atoms up: `Cgen` fderiv-value (`Cgen k = Bmat k · chainQ(Nblk k) + u • Rmat k` interior,
+`u • Rfin` leaf) via `HasFDerivAt.matMul`/`.add`/`.smul` + `hasFDerivAt_chainQ`; then `Agen` fderiv-value
+(`= chainA(Nblk s, Wblk s, Cgen(s+1))`) via `hasFDerivAt_chainA`. This needs the live-decoder block
+fderiv VALUES (`Bmat`/`Nblk`/`Wblk`/`Rmat`/`Rfin` of `genBlkFlatLiveR1`) — reader fderivs are projection
+CLMs; the `Rmat` `Function.update` + `Rfin` `dite` are cased as in `diffAt_liveRmat`/`_Rfin`; the radial
+`u = x p₀` read is `differentiableAt_apply`. Then the ENGINE IDENTIFICATION (recognizing the assembled
+`Agen s` fderiv as `schurFrameDeriv ∘ lduCoreDeriv ⊞ shear`) + the `eIn`/`eOut`/`V`/`f`/`c` assembly
+remain (sub-pieces 2–5).
+
 ## Reusable for the residual (banked this leg + prior)
-- This leg: `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
+- This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
+  `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
   `interiorDet_headline_of_twoStairConj` (the headline wrapper for the rectangular layout).
 - Prior: `stairMap_abs_det_conj` (single-`e`), `interiorDet_phiFlatLiveR1_of_stairConj` (the real-chart
   target), `fderiv_det_one_of_shear` (the `−dN·W` shear is det-1), `finSplit.symm` cast lemmas,
