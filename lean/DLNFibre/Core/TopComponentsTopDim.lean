@@ -13,7 +13,8 @@ import DLNFibre.Core.RadicalCatenary
 
 The DLN wire connecting the LANDED height-based `Σ̄^r` top-component count
 (`Core.ThetaComponentCount.topComponents`, counted by `numTop_eq_ncard_topComponents` and
-`ncard_topComponents_sigma_eq_cTheta_dminus`) to the dimension-based `Core.TopDimMinPrimes` on the
+`ncard_topComponents_sigma_eq_cTheta_dminus`) to the dimension-based `Ideal.TopDimMinPrimes` (see
+`Core.MinimalPrime.TopDimensional`) on the
 **coordinate ring** `O(Σ̄^r) = MvPolynomial (RepCoord d) k ⧸ sigmaIdeal d r`. The quotient
 minimal-prime bijection `comap (Quotient.mk)` carries `TopDimMinPrimes (O(Σ̄^r))` onto
 `topComponents d r h`, because:

@@ -11,8 +11,9 @@ The fibre-side endpoint of the chart count transport (expedition `theta-componen
 The deep pivot minor `detΔ = ΔPdeep d r` is a **unit** on the fibre coordinate ring
 `O(fibre) = MvPolynomial (RepCoord d) k ⧸ fibreGenIdeal d E` (`Core.FibreDetUnit`,
 `fibreLocalizationAwayDetΔ_algEquiv`), so inverting it is an algebra isomorphism — and a ring
-isomorphism preserves the top-dimensional minimal-prime count (`Core.TopDimMinPrimes`,
-`topDimMinPrimes_ncard_eq_of_ringEquiv`). So passing to the pivot chart `{detΔ ≠ 0}` is invisible on
+isomorphism preserves the top-dimensional minimal-prime count
+(`Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`, see `Core.MinimalPrime.TopDimensional`). So passing
+to the pivot chart `{detΔ ≠ 0}` is invisible on
 the fibre's component count:
 
 > **`ncard_topDimMinPrimes_fibre_eq_localization`** — `(TopDimMinPrimes (O(fibre))).ncard =

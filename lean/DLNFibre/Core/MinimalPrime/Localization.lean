@@ -22,8 +22,9 @@ The `hper` input is a **genuine per-prime hypothesis**, NOT inferable from an am
 no-drop: a domain localized at a non-unit can drop dimension (a DVR at a uniformizer). It must be
 invoked **once per surviving top prime** `p`, with the image `Ideal.Quotient.mk p f` of `f` in that
 specific quotient `A ⧸ p`. It is *not* derivable from "`ringKrullDim S = ringKrullDim A` + `f`
-avoids the top primes" — the global no-drop plus avoidance does not fold to it (decorrelated
-reviewer + Codex, recorded). In applications it holds because each `A ⧸ p` is an f.g. `k`-domain
+avoids the top primes": the global no-drop plus avoidance does not fold to the per-prime no-drop —
+localizing a domain at a nonunit can drop dimension (e.g. a DVR at a uniformizer). In applications it
+holds because each `A ⧸ p` is an f.g. `k`-domain
 and `f̄ ≠ 0`, via `Core.Dimension.ringKrullDim_localizationAway_eq_of_fg_domain` (per top prime).
 
 The bridge between `hper` (`A`-side) and the localized ring `S`-side quotient dimension is

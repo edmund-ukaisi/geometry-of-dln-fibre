@@ -15,8 +15,12 @@ realises the full Krull dimension of `A`:
 
 > `Ideal.TopDimMinPrimes A := {p ∈ minimalPrimes A | ringKrullDim (A ⧸ p) = ringKrullDim A}`.
 
-These are the irreducible components of `Spec A` of maximal dimension — equivalently, of minimal
-codimension, since the codimension of `V(p)` is minimal exactly when `dim (A ⧸ p)` is maximal.
+These are the irreducible components of `Spec A` of maximal dimension. In a catenary/affine setting
+(where `codim = height`) this is equivalently the minimal-codimension condition — the codimension of
+`V(p)` is minimal exactly when `dim (A ⧸ p)` is maximal; that codim = height identification needs
+catenarity and is supplied under polynomial/catenary hypotheses by `Core.MinimalPrime.Bridge`. The
+definition here is the **dimension-only** condition `ringKrullDim (A ⧸ p) = ringKrullDim A`, which
+makes no catenary assumption.
 
 It is the **transport-clean** reading of "top-dimensional component": a ring isomorphism
 `e : A ≃+* B` carries `TopDimMinPrimes` bijectively by `Ideal.comap e` (minimal-prime membership
@@ -39,7 +43,8 @@ variable {A : Type*} [CommRing A] {B : Type*} [CommRing B]
 
 /-- **Top-dimensional minimal primes.** The minimal primes `p` of `A` whose quotient `A ⧸ p`
 realises the full Krull dimension `ringKrullDim A` — the irreducible components of `Spec A` of
-maximal dimension (equivalently minimal codimension). -/
+maximal dimension. The dimension-only condition (no catenary assumption); in a catenary/affine
+setting it coincides with minimal codimension via `codim = height` (`Core.MinimalPrime.Bridge`). -/
 def TopDimMinPrimes (A : Type*) [CommRing A] : Set (Ideal A) :=
   {p | p ∈ minimalPrimes A ∧ ringKrullDim (A ⧸ p) = ringKrullDim A}
 

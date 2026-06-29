@@ -30,7 +30,7 @@ ringKrullDim (R ⧸ J)` — so the counts coincide.
 > **`topDimMinPrimes_quotient_radical_ncard_eq`** — the `J` / `radical J` instance.
 
 Also re-homed here is the general third-isomorphism-theorem dimension identity
-`ringKrullDim_doubleQuot_eq` (any `[CommRing R]`, any ideal `I`, any prime `P` of `R ⧸ I`), the
+`ringKrullDim_doubleQuot_eq` (any `[CommRing R]`, any ideal `I`, any ideal `P` of `R ⧸ I`), the
 double-quotient transport this radical-insensitivity rides on. Pure commutative algebra — no DLN
 content. It lives in namespace `Ideal` and mirrors the Mathlib home
 `Mathlib.RingTheory.Ideal.MinimalPrime`, so an upstream move is a file-move with no namespace
@@ -47,7 +47,7 @@ variable {R : Type u} [CommRing R]
 
 /-! ## The double-quotient dimension transport (third isomorphism theorem) -/
 
-/-- **The third isomorphism theorem at `ringKrullDim`.** For a prime `P` of `R ⧸ I`,
+/-- **The third isomorphism theorem at `ringKrullDim`.** For an arbitrary ideal `P` of `R ⧸ I`,
 `ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ Ideal.comap (Quotient.mk I) P)` via
 `DoubleQuot.quotQuotEquivQuotOfLE` (`P = (comap P).map (mk I)`, `I ≤ comap P`). -/
 theorem ringKrullDim_doubleQuot_eq (I : Ideal R) (P : Ideal (R ⧸ I)) :

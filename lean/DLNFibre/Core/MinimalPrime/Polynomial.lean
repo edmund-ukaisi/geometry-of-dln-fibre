@@ -54,12 +54,12 @@ theorem isPrime_map_mvPolynomial_C (q : Ideal A) [q.IsPrime] :
 
 /-! ## The contraction `comap C (map C q) = q` -/
 
-/-- **The constant-coefficient contraction.** For a prime `q` of `A`, the extension `Ideal.map C q`
+/-- **The constant-coefficient contraction.** For an ideal `q` of `A`, the extension `Ideal.map C q`
 contracts back to `q`: `Ideal.comap C (Ideal.map C q) = q`. The reduction
 `map (mk q) : MvPolynomial ι A → MvPolynomial ι (A ⧸ q)` kills `map C q` (each `C a`, `a ∈ q`,
-maps to `C (mk q a) = 0`), so `C a ∈ map C q` forces `mk q a = 0` (`C` injective into the domain),
+maps to `C (mk q a) = 0`), so `C a ∈ map C q` forces `mk q a = 0` (`C` injective into `A ⧸ q`),
 i.e. `a ∈ q`; the reverse inclusion is `Ideal.le_comap_map`. -/
-theorem comap_map_C_eq (q : Ideal A) [q.IsPrime] :
+theorem comap_map_C_eq (q : Ideal A) :
     (Ideal.map (C : A →+* MvPolynomial ι A) q).comap (C : A →+* MvPolynomial ι A) = q := by
   apply le_antisymm
   · intro a ha
@@ -134,10 +134,11 @@ theorem map_comap_C_of_mem_minimalPrimes (P : Ideal (MvPolynomial ι A))
 
 /-! ## The dimension shift on quotients -/
 
-/-- **The quotient by `map C q` adds `card ι` to the Krull dimension.** Via the algebra equivalence
-`MvPolynomial ι (A ⧸ q) ≃ (MvPolynomial ι A) ⧸ map C q` (`quotientEquivQuotientMvPolynomial`) and
-`MvPolynomial.ringKrullDim_of_isNoetherianRing`. Needs `A ⧸ q` Noetherian (from `A` Noetherian). -/
-theorem ringKrullDim_quotient_map_C [IsNoetherianRing A] [Finite ι] (q : Ideal A) [q.IsPrime] :
+/-- **The quotient by `map C q` adds `card ι` to the Krull dimension.** For an ideal `q` of `A`, via
+the algebra equivalence `MvPolynomial ι (A ⧸ q) ≃ (MvPolynomial ι A) ⧸ map C q`
+(`quotientEquivQuotientMvPolynomial`) and `MvPolynomial.ringKrullDim_of_isNoetherianRing`. Needs
+`A ⧸ q` Noetherian (from `A` Noetherian). -/
+theorem ringKrullDim_quotient_map_C [IsNoetherianRing A] [Finite ι] (q : Ideal A) :
     ringKrullDim (MvPolynomial ι A ⧸ Ideal.map (C : A →+* MvPolynomial ι A) q)
       = ringKrullDim (A ⧸ q) + Nat.card ι := by
   haveI : IsNoetherianRing (A ⧸ q) := inferInstance
