@@ -18,6 +18,48 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian-weighted source-stratum bounds finite integral
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds
+```
+
+The theorem is the source-stratum-bound analogue of the banked passive
+Jacobian-weighted local-source finite-integral handoff.  It constructs the
+same source-domain determinant neighborhood `Udom`, forms the same
+chart-produced Jacobian-weighted pushforward `muJ`, and proves a finite
+regular-coordinate integral over
+`(muJ.restrict (U ∩ sourceStratum)).prod ν`.  The three loss/density
+comparison hypotheses now live on `nhdsWithin base sourceStratum`; residual
+positivity and negative-power integrability remain supplied on the
+retained-passive local source.
+
+The proof consumes the residual-source theorem, derives `SFinite muJ` from
+finite passive mass, gets the retained-passive local-source coverage open at
+the fixed base, and applies the generic
+source-stratum-bounds/local-source finite-integral consumer.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Bernoulli the 3rd` and `Kant the 3rd` returned PASS after a docstring
+nonclaim-boundary repair.  Review:
+`review-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`.
+
+Nonclaims: no exact localized residual marginal, determinant-chart Haar
+pushforward, raw/source Haar theorem, original source-prior transport,
+source-prior Jacobian formula, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian-weighted local-source finite integral
 
 Reproduction:

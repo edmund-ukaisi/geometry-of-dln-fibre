@@ -140,6 +140,37 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive Jacobian-weighted source-stratum
+  bounds finite integral, 2026-06-29.** Lean now exposes
+  `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  This is the source-stratum-bound analogue of the passive Jacobian-weighted
+  local-source finite-integral handoff: it constructs the source-domain
+  determinant neighborhood `Udom`, forms the chart-produced
+  Jacobian-weighted measure
+  `(sourceMeasure.restrict Udom).withDensity (fun z => ofReal (J z))`,
+  pushes it forward by the p.13 source chart to `muJ`, and proves a finite
+  regular-coordinate integral over
+  `(muJ.restrict (U ∩ sourceStratum)).prod ν`.  The regular-coordinate loss
+  lower bound and density bounds are assumed on `nhdsWithin base sourceStratum`;
+  residual positivity and residual negative-power integrability still come
+  from the retained-passive local-source residual package, plus the local
+  coverage open around the fixed base.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`.
+  Focused build passed for
+  `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Full
+  `DLNFibre` aggregator build, `git diff --check`, `scripts/sorries`, and
+  direct axiom probe passed.  Xhigh reviews by `Bernoulli the 3rd` and
+  `Kant the 3rd` returned PASS after a docstring nonclaim-boundary repair.
+  This is only a
+  chart-produced passive product-domain finite-integral handoff with
+  source-stratum comparison hypotheses: no exact localized residual marginal,
+  determinant-chart/raw Haar transport, original source-prior transport,
+  source-prior Jacobian formula, source-image equality or source-rank
+  coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive Jacobian-weighted local-source
   finite integral, 2026-06-29.** Lean now exposes
   `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass`

@@ -3,6 +3,57 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian-Weighted Source-Stratum Bounds Finite Integral - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds
+```
+
+This theorem keeps the passive Jacobian-weighted chart-produced source measure
+from the local-source theorem, but it weakens the regular-coordinate comparison
+inputs to source-rank-stratum filter hypotheses:
+
+```text
+nhdsWithin base sourceStratum
+```
+
+instead of `nhdsWithin base localSource`.  Residual positivity and
+negative-power integrability are still supplied on the retained-passive p.13
+local source by the residual-source theorem.
+
+The proof constructs `Udom`, defines
+
+```text
+jacobianWeightedMeasure =
+  (sourceMeasure.restrict Udom).withDensity (fun z => ofReal (J z))
+muJ = Measure.map sourceChart jacobianWeightedMeasure
+```
+
+installs `IsFiniteMeasure passiveMeasure` to infer `SFinite muJ`, proves the
+source stratum is measurable for `Cedge E = E`, obtains the retained-passive
+local-source coverage neighborhood at the fixed base, and applies
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_bounds_locally_subset_localSource`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Bernoulli the 3rd` and `Kant the 3rd` returned PASS after a docstring
+nonclaim-boundary repair.
+
+Nonclaims: no exact localized residual marginal, no determinant-chart Haar
+pushforward, no raw/source Haar theorem, no original source-prior transport,
+no source-prior Jacobian formula, no source-image equality or source-rank
+coverage, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian-Weighted Local-Source Finite Integral - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has:

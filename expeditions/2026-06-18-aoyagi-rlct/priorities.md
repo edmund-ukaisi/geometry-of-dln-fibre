@@ -10,6 +10,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted source-stratum bounds finite integral
+
+The passive selected-entry frontier now has the source-stratum-bound analogue
+of the Jacobian-weighted finite-integral consumer:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds
+```
+
+It uses the same chart-produced measure as the local-source theorem:
+
+```text
+jacobianWeightedMeasure =
+  (sourceMeasure.restrict Udom).withDensity (fun z => ofReal (J z))
+
+μJ = Measure.map sourceChart jacobianWeightedMeasure
+```
+
+but the regular-coordinate loss and density bounds are required only on
+`nhdsWithin base sourceStratum`.  Residual positivity and negative-power
+integrability still come from the retained-passive local-source residual
+package.  The proof gets the retained-passive local-source coverage open
+neighborhood at the fixed base and applies the generic
+source-stratum-bounds/local-source finite-integral consumer.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-source-stratum-bounds-finite-integral.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Bernoulli the 3rd` and `Kant the 3rd` returned PASS after a docstring
+nonclaim-boundary repair.
+
+This is a chart-produced passive product-domain finite-integral handoff with
+source-stratum comparison hypotheses.  Do not treat it as an exact localized
+residual marginal, determinant-chart Haar pushforward, raw/source Haar theorem,
+original source-prior transport, source-prior Jacobian formula, source-image
+equality or source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted local-source finite integral
 
 The passive selected-entry frontier now has the finite-integral consumer for
