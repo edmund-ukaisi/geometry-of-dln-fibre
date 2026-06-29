@@ -418,6 +418,70 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceE
 
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- If a retained-passive datum's realised p.13 source edge family lies in
+Aoyagi's source-shaped rank stratum, then its stored residual blocks have ranks
+`rEdge p - r`.
+
+This theorem consumes source-rank membership; it does not prove source-rank
+coverage for retained-passive coordinates or for the Case 2 selected-entry
+chart. -/
+theorem rank_C_of_retainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart)
+    {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (hsrc :
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W B U₀ hU₀ data ∈
+        paperEndpointFixedBaseSourceRankStratum
+          (K := K) (N := M + 1) W B
+          (fun E : ∀ p : Fin (M + 1),
+              reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦ E)
+          r rEdge)
+    (p : Fin (M + 1)) :
+    (data.C p).rank = rEdge p - r := by
+  classical
+  let Eclm : ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+      W B U₀ hU₀ data
+  let Elin : ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦ (Eclm p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  have hmat :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data
+  have hedgeRank : (data.edgeMatrix p).rank = rEdge p := by
+    calc
+      (data.edgeMatrix p).rank =
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ Elin p).rank := by
+        exact (congrFun hmat p).symm ▸ rfl
+      _ = Module.finrank K (LinearMap.range (Elin p)) := by
+        exact
+          rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+            (K := K) (W := W) (B := B) U₀ hU₀ Elin p
+      _ = rEdge p := by
+        simpa [Eclm, Elin] using hsrc.2.1 p
+  have hEdgeFormula :
+      (data.edgeMatrix p).rank =
+        Fintype.card (Fin (Module.finrank K U₀)) + (data.C p).rank :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_edgeMatrix
+      (K := K) (ρ := Fin (Module.finrank K U₀)) data hdet p
+  have hUrank : Module.finrank K U₀ = r :=
+    (paperEndpointBasepointCertificate_of_isCompl W B U₀ hU₀).finrank_eq_range.trans hsrc.1
+  have hsum : r + (data.C p).rank = rEdge p := by
+    have h := hEdgeFormula.symm.trans hedgeRank
+    simpa [Fintype.card_fin, hUrank] using h
+  omega
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- On the raw-order source-recursive determinant chart, the canonical
 raw-order retained-passive source chart has exactly the raw-order tuple's edge
 matrices. -/

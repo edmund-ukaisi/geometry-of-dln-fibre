@@ -324,6 +324,103 @@ theorem case2PostPivotSelectedEntrySourceEdgeFamily_sourceRecursiveDetChart
       (K := ℝ) (ρ := ρ) data hdet
 
 set_option linter.style.longLine false in
+/-- The first edge of the explicit continuing Case 2 selected-entry source
+family has rank `card rho + card tau`.
+
+This is a finite edge-rank computation for the constructed source family.  It
+does not assert membership in a fixed source-rank stratum, choose `rEdge`, or
+prove source coverage. -/
+theorem rank_case2PostPivotSelectedEntrySourceEdgeFamily_zero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    (case2PostPivotSelectedEntrySourceEdgeFamily
+        (ρ := ρ) n hS hcont hnext yNext eNext 0).rank =
+      Fintype.card ρ + Fintype.card τ := by
+  let data :=
+    case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hdet : data.detChart :=
+    case2PostPivotSelectedEntryRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hedge :
+      (data.edgeMatrix (0 : Fin 2)).rank =
+        Fintype.card ρ + (data.C (0 : Fin 2)).rank :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_edgeMatrix
+      (K := ℝ) (ρ := ρ) data hdet (0 : Fin 2)
+  have hC :
+      (data.C (0 : Fin 2)).rank = Fintype.card τ := by
+    simpa [data, case2PostPivotSelectedEntryRetainedPassiveData,
+      case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+      case2SuccessorSelectedEntrySourceCprime] using
+      rank_case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfMatrix
+        n hS hcont
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+  calc
+    (case2PostPivotSelectedEntrySourceEdgeFamily
+        (ρ := ρ) n hS hcont hnext yNext eNext 0).rank =
+        (data.edgeMatrix (0 : Fin 2)).rank := by
+      rfl
+    _ = Fintype.card ρ + (data.C (0 : Fin 2)).rank := hedge
+    _ = Fintype.card ρ + Fintype.card τ := by rw [hC]
+
+set_option linter.style.longLine false in
+/-- The second edge of the explicit continuing Case 2 selected-entry source
+family has rank `card rho` plus the rank of the successor selected-entry
+matrix.
+
+This is a finite edge-rank computation for the constructed source family.  It
+does not assert a numerical successor residual rank unless a separate exact
+rank hypothesis for the successor matrix is supplied. -/
+theorem rank_case2PostPivotSelectedEntrySourceEdgeFamily_one
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    (case2PostPivotSelectedEntrySourceEdgeFamily
+        (ρ := ρ) n hS hcont hnext yNext eNext 1).rank =
+      Fintype.card ρ +
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+  let data :=
+    case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hdet : data.detChart :=
+    case2PostPivotSelectedEntryRetainedPassiveData_detChart
+      (ρ := ρ) n hS hcont hnext yNext eNext
+  have hedge :
+      (data.edgeMatrix (1 : Fin 2)).rank =
+        Fintype.card ρ + (data.C (1 : Fin 2)).rank :=
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_edgeMatrix
+      (K := ℝ) (ρ := ρ) data hdet (1 : Fin 2)
+  have hC :
+      (data.C (1 : Fin 2)).rank =
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+    simpa [data, case2PostPivotSelectedEntryRetainedPassiveData,
+      case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+      case2SuccessorSelectedEntrySourceResidual] using
+      rank_case2DisplayedPostPivotResidualBlock_sourceResidualOfMatrix
+        n hS hcont
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+  calc
+    (case2PostPivotSelectedEntrySourceEdgeFamily
+        (ρ := ρ) n hS hcont hnext yNext eNext 1).rank =
+        (data.edgeMatrix (1 : Fin 2)).rank := by
+      rfl
+    _ = Fintype.card ρ + (data.C (1 : Fin 2)).rank := hedge
+    _ = Fintype.card ρ +
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+      rw [hC]
+
+set_option linter.style.longLine false in
 /-- Readback of the explicit selected-entry source edge family recovers the
 explicit selected-entry retained-passive datum. -/
 theorem case2PostPivotSelectedEntrySourceReadback_eq_retainedPassiveData

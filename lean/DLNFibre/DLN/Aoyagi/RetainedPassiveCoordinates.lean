@@ -3562,6 +3562,94 @@ end RetainedPassiveNonredundantCoordinateData
 
 end RetainedPassive
 
+section RetainedPassiveRank
+
+variable {K : Type*} [Field K]
+variable {N : ℕ} {ρ : Type*} {κ : Fin (N + 1) → Type*}
+variable [Fintype ρ] [DecidableEq ρ]
+variable [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+
+set_option linter.unusedDecidableInType false in
+/-- The retained-passive transformed edge has rank equal to the regular corner
+size plus the rank of its stored residual block. -/
+theorem rank_retainedPassiveTransformedEdge
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N)
+    (hA1 : IsUnit (A1 p).det) :
+    (retainedPassiveTransformedEdge A1 F2 A3 C p).rank =
+      Fintype.card ρ + (C p).rank := by
+  have hschur :
+      (C p - A3 p * F2 p.castSucc) -
+          A3 p * (A1 p)⁻¹ * (-(A1 p * F2 p.castSucc)) =
+        C p := by
+    simpa [schurResidualBlock, retainedPassiveTransformedEdge] using
+      schurResidualBlock_retainedPassiveTransformedEdge A1 F2 A3 C p hA1
+  calc
+    (retainedPassiveTransformedEdge A1 F2 A3 C p).rank =
+        Fintype.card ρ +
+          ((C p - A3 p * F2 p.castSucc) -
+            A3 p * (A1 p)⁻¹ * (-(A1 p * F2 p.castSucc))).rank := by
+      simpa [retainedPassiveTransformedEdge] using
+        rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det_indexed
+          (K := K) (A1 p) (-(A1 p * F2 p.castSucc)) (A3 p)
+          (C p - A3 p * F2 p.castSucc) hA1
+    _ = Fintype.card ρ + (C p).rank := by
+      rw [hschur]
+
+set_option linter.unusedDecidableInType false in
+/-- The retained-passive fixed-base edge has rank equal to the regular corner
+size plus the rank of its stored residual block. -/
+theorem rank_retainedPassiveFixedBaseEdgeMatrix
+    (A1 : Fin N → Matrix ρ ρ K)
+    (F2 : ∀ i : Fin (N + 1), Matrix ρ (κ i) K)
+    (A3 : ∀ p : Fin N, Matrix (κ p.succ) ρ K)
+    (C : ∀ p : Fin N, Matrix (κ p.succ) (κ p.castSucc) K)
+    (p : Fin N)
+    (hA1 : IsUnit (A1 p).det) :
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).rank =
+      Fintype.card ρ + (C p).rank := by
+  let U : Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.succ) K :=
+    fromBlocks (1 : Matrix ρ ρ K) (F2 p.succ) 0
+      (1 : Matrix (κ p.succ) (κ p.succ) K)
+  have hUdet : IsUnit U.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := U)).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2
+        ⟨(isUnit_one : IsUnit (1 : Matrix ρ ρ K)),
+          (isUnit_one : IsUnit (1 : Matrix (κ p.succ) (κ p.succ) K))⟩)
+  calc
+    (retainedPassiveFixedBaseEdgeMatrix A1 F2 A3 C p).rank =
+        (retainedPassiveTransformedEdge A1 F2 A3 C p).rank := by
+      simp [retainedPassiveFixedBaseEdgeMatrix, U,
+        Matrix.rank_mul_eq_right_of_isUnit_det U
+          (retainedPassiveTransformedEdge A1 F2 A3 C p) hUdet]
+    _ = Fintype.card ρ + (C p).rank :=
+      rank_retainedPassiveTransformedEdge A1 F2 A3 C p hA1
+
+namespace RetainedPassiveNonredundantCoordinateData
+
+set_option linter.unusedDecidableInType false in
+/-- The fixed-base edge associated to nonredundant retained-passive data has
+rank equal to the regular corner size plus the rank of the stored residual
+block at that edge. -/
+theorem rank_edgeMatrix
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (hdet : data.detChart) (p : Fin (M + 1)) :
+    (data.edgeMatrix p).rank = Fintype.card ρ + (data.C p).rank := by
+  simpa [edgeMatrix, RetainedPassiveCoordinateData.edgeMatrix] using
+    rank_retainedPassiveFixedBaseEdgeMatrix
+      (K := K) (ρ := ρ) (κ := κ') (N := M + 1)
+      (data.toCoordinateData.solvedA1) data.F2full data.toCoordinateData.solvedA3
+      data.C p (solvedA1_det_isUnit_of_detChart (K := K) (ρ := ρ) data hdet p)
+
+end RetainedPassiveNonredundantCoordinateData
+
+end RetainedPassiveRank
+
 end ChartLocalSuffixState
 end Aoyagi
 end DLN

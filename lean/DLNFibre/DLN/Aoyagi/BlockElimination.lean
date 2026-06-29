@@ -169,6 +169,43 @@ theorem rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det {r p q : 
       rw [Matrix.rank_of_isUnit A1 ((Matrix.isUnit_iff_isUnit_det (A := A1)).mpr hA1),
         Fintype.card_fin]
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+/-- Indexed form of the Schur-complement rank formula. -/
+theorem rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det_indexed
+    {ρ μ ν : Type*} [Fintype ρ] [DecidableEq ρ] [Fintype μ] [DecidableEq μ]
+    [Fintype ν] [DecidableEq ν]
+    (A1 : Matrix ρ ρ K) (A2 : Matrix ρ ν K)
+    (A3 : Matrix μ ρ K) (A4 : Matrix μ ν K)
+    (hA1 : IsUnit A1.det) :
+    (fromBlocks A1 A2 A3 A4).rank =
+      Fintype.card ρ + (A4 - A3 * A1⁻¹ * A2).rank := by
+  let Q1 : Matrix (ρ ⊕ μ) (ρ ⊕ μ) K :=
+    fromBlocks (1 : Matrix ρ ρ K) 0 (-(A3 * A1⁻¹)) 1
+  let Q2 : Matrix (ρ ⊕ ν) (ρ ⊕ ν) K :=
+    fromBlocks (1 : Matrix ρ ρ K) (-(A1⁻¹ * A2)) 0 1
+  let M : Matrix (ρ ⊕ μ) (ρ ⊕ ν) K := fromBlocks A1 A2 A3 A4
+  let C : Matrix μ ν K := A4 - A3 * A1⁻¹ * A2
+  have hQ1det : IsUnit Q1.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := Q1)).mp
+      ((Matrix.isUnit_fromBlocks_zero₁₂).2 ⟨isUnit_one, isUnit_one⟩)
+  have hQ2det : IsUnit Q2.det := by
+    exact (Matrix.isUnit_iff_isUnit_det (A := Q2)).mp
+      ((Matrix.isUnit_fromBlocks_zero₂₁).2 ⟨isUnit_one, isUnit_one⟩)
+  have hMrank : (Q1 * M * Q2).rank = M.rank := by
+    rw [Matrix.rank_mul_eq_left_of_isUnit_det Q2 (Q1 * M) hQ2det,
+      Matrix.rank_mul_eq_right_of_isUnit_det Q1 M hQ1det]
+  have hblock : Q1 * M * Q2 = fromBlocks A1 0 0 C := by
+    simpa [Q1, Q2, M, C] using
+      schurComplement_blockElim_fromBlocks_indexed A1 A2 A3 A4 hA1
+  calc
+    (fromBlocks A1 A2 A3 A4).rank = (Q1 * M * Q2).rank := by
+      rw [hMrank]
+    _ = (fromBlocks A1 0 0 C).rank := by rw [hblock]
+    _ = A1.rank + C.rank := rank_fromBlocks_zero_zero A1 C
+    _ = Fintype.card ρ + C.rank := by
+      rw [Matrix.rank_of_isUnit A1 ((Matrix.isUnit_iff_isUnit_det (A := A1)).mpr hA1)]
+
 /-- Subtraction form of the Schur-complement rank formula. -/
 theorem rank_schurComplement_eq_sub_rank_fromBlocks {r p q rs : ℕ}
     (A1 : Matrix (Fin r) (Fin r) K) (A2 : Matrix (Fin r) (Fin q) K)

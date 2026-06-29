@@ -10,6 +10,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive Case 2 edge-rank bridge
+
+The useful next bridge is now banked: retained-passive determinant-chart source
+edges have rank `card rho + rank(C_p)`, and the explicit continuing Case 2
+selected-entry family has edge ranks
+
+```text
+rank(E 0) = card rho + card tau,
+rank(E 1) = card rho + rank(successor selected-entry matrix).
+```
+
+This is the right amount of rank information to feed a future
+source-stratum-membership proof, but it is not that proof.  The new local-source
+consumer deliberately assumes membership in
+`paperEndpointFixedBaseSourceRankStratum` and only derives
+`rank(data.C p) = rEdge p - r`.
+
+Next work should use these rank formulas only where a concrete
+source-production or source-stratum membership argument supplies the missing
+membership and successor-rank data.  Do not reinterpret this bridge as
+source-rank coverage, exact-rank openness, selected-entry image equality,
+source-prior/Jacobian transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, finite-cover source-stratum restriction
 
 The selected-entry finite-cover lane now has the right conditional restriction

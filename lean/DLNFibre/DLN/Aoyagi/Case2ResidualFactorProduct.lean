@@ -629,6 +629,48 @@ noncomputable def case2DisplayedPostPivotFreeCprimeOfMatrix
       (Case2ResidualColIndex n S (J + 1)) R).submatrix id eNext
   case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont F
 
+set_option linter.unusedDecidableInType false in
+/-- The zero-extended successor residual data preserve the rank of the target
+successor matrix after the right-endpoint reindexing. -/
+theorem rank_case2DisplayedPostPivotResidualBlock_sourceResidualOfMatrix
+    {τ R : Type*} [Field R] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    (case2DisplayedPostPivotResidualBlock n hS hcont
+        (case2DisplayedPostPivotSourceResidualOfMatrix n M eNext)).rank =
+      M.rank := by
+  rw [case2DisplayedPostPivotSourceResidualOfMatrix]
+  rw [case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+  exact Matrix.rank_submatrix M (Equiv.refl _) eNext.symm
+
+set_option linter.unusedDecidableInType false in
+/-- The free `Cprime` constructor used for a successor matrix has a full-rank
+post-pivot following factor: it is the identity reindexed on the right by
+`eNext`. -/
+theorem rank_case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfMatrix
+    {τ R : Type*} [Field R] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (M : Matrix (Case2ResidualRowIndex n S (J + 1)) τ R)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    (case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+        (case2DisplayedPostPivotFreeCprimeOfMatrix n hS hcont M eNext)).rank =
+      Fintype.card τ := by
+  rw [case2DisplayedPostPivotFreeCprimeOfMatrix]
+  rw [case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor]
+  calc
+    ((1 : Matrix (Case2ResidualColIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) R).submatrix id eNext).rank =
+        (1 : Matrix (Case2ResidualColIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) R).rank := by
+      exact Matrix.rank_submatrix _ (Equiv.refl _) eNext
+    _ = Fintype.card (Case2ResidualColIndex n S (J + 1)) := by
+      rw [Matrix.rank_one]
+    _ = Fintype.card τ := by
+      exact (Fintype.card_congr eNext).symm
+
 set_option linter.style.longLine false in
 /-- The explicit zero-extension residual and reindexed-identity `Cprime`
 realize the prescribed successor matrix as the displayed Case 2 post-pivot

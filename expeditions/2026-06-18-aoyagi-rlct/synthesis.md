@@ -3,6 +3,72 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 retained-passive Case 2 edge-rank bridge - 2026-06-29
+
+Landed the retained-passive edge-rank bridge:
+
+```text
+rank_fromBlocks_eq_card_add_rank_schurComplement_of_isUnit_det_indexed
+ChartLocalSuffixState.rank_retainedPassiveTransformedEdge
+ChartLocalSuffixState.rank_retainedPassiveFixedBaseEdgeMatrix
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_edgeMatrix
+rank_case2DisplayedPostPivotResidualBlock_sourceResidualOfMatrix
+rank_case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfMatrix
+rank_case2PostPivotSelectedEntrySourceEdgeFamily_zero
+rank_case2PostPivotSelectedEntrySourceEdgeFamily_one
+rank_C_of_retainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum
+```
+
+The generic calculation proves that a retained-passive fixed-base edge in the
+determinant chart has rank
+
+```text
+card rho + rank(stored residual block C_p).
+```
+
+For the explicit continuing Case 2 selected-entry source family this gives
+
+```text
+rank(E 0) = card rho + card tau,
+rank(E 1) = card rho + rank(successor selected-entry matrix).
+```
+
+The local-source theorem then consumes an explicit
+`paperEndpointFixedBaseSourceRankStratum` membership hypothesis and derives
+`rank(data.C p) = rEdge p - r`.  Source-stratum membership itself remains a
+separate obligation.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-case2-edge-rank-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-case2-edge-rank-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-case2-edge-rank-bridge.md`
+passed by xhigh `Hegel the 2nd`.
+
+Focused builds passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+Final hygiene on the recovered controller session passed: dependent build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probes for the new public theorem names.  The axiom footprints
+are the expected `[propext, Classical.choice, Quot.sound]`.  The dependent
+build replayed only pre-existing flexible-tactic warnings in
+`ProductReductionStepRegularDensity.lean`.
+
+Nonclaims: no source-rank coverage or membership proof, no exact successor
+selected-entry matrix rank, no selected-entry image equality, no exact-rank
+openness, no source-prior or Jacobian transport, no analytic atlas, no normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 selected-entry finite-cover source-stratum restriction - 2026-06-29
 
 `SelectedEntryOriginalLossLocalMeasure.lean` now proves:
