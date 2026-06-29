@@ -3,6 +3,43 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Product-Measure Support - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has the concrete passive
+product-measure support package:
+
+```text
+case2PassiveDomainProductMeasure_eq_prod_withDensity_sourceDensity
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_sourceRankStratum_eq_self
+```
+
+The source measure is
+`passiveMeasure.prod (signedBox.withDensity selectedEntrySourceDensity)` on
+`eta x (center -> R)`.  Continuity of the passive fields supplies
+`AEMeasurable sourceChart sourceMeasure` via the banked passive source-chart
+continuity theorem, and the local-source/source-rank conclusions are obtained
+from the arbitrary passive chart-produced support theorems.  Source-rank
+support keeps `hprod`, `hr0`, and the successor-rank equation explicit as an
+a.e. hypothesis on the concrete product measure.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-product-measure-support.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-product-measure-support.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-product-measure-support.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check` passed.  `scripts/sorries` reports
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+Direct axiom probes for all three theorem names report
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no source-image equality, no determinant-
+chart pushforward, no passive Jacobian/source-density accounting, no original
+source-prior transport, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Source-Chart Continuity - 2026-06-29
 
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` and

@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive product-measure support
+
+The concrete passive-domain product measure is now named and connected to the
+passive support wrappers:
+
+```text
+case2PassiveDomainProductMeasure_eq_prod_withDensity_sourceDensity
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_sourceRankStratum_eq_self
+```
+
+The local-source theorem uses continuity of the passive fields to discharge
+source-chart a.e. measurability.  The source-rank theorem is a separate sibling
+and keeps the successor-rank equation explicit as an a.e. hypothesis on the
+concrete product measure.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-product-measure-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-product-measure-support.md
+threads/03-block-product-reduction/review-a2-case2-passive-product-measure-support.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+
+Next priority moves beyond support wrappers: either prove useful hypotheses
+for the concrete product measure, such as source-rank a.e. support in a
+specific chart region, or start the larger passive-selected-entry/full
+retained-passive chart with local inverse, image, and Jacobian accounting.
+Do not treat this product-measure support theorem as source-prior transport or
+determinant-chart Haar pushforward.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive source-chart continuity
 
 The passive-sector frontier now has the continuity infrastructure needed by

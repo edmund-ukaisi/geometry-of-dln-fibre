@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive product-measure support
+
+Reproduction:
+`reproduction-a2-case2-passive-product-measure-support.md`.
+Statement card:
+`statement-card-a2-case2-passive-product-measure-support.md`.
+Review:
+`review-a2-case2-passive-product-measure-support.md`.
+
+Lean now exposes:
+
+```text
+case2PassiveDomainProductMeasure_eq_prod_withDensity_sourceDensity
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_sourceRankStratum_eq_self
+```
+
+These theorems name the concrete passive-domain product measure
+`passiveMeasure.prod weightedBox`, derive source-chart a.e. measurability from
+the passive source-chart continuity theorem, and specialize the arbitrary
+passive chart-produced support wrappers to that concrete measure.  The
+source-rank sibling keeps the successor-rank equation explicit as an a.e.
+hypothesis.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+
+Nonclaims: no source-rank coverage, source-image equality, determinant-chart
+pushforward, source-prior transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive source-chart continuity
 
 Reproduction:

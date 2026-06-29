@@ -140,6 +140,30 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive product-measure support,
+  2026-06-29.** Lean now exposes
+  `case2PassiveDomainProductMeasure_eq_prod_withDensity_sourceDensity`,
+  `measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_retainedPassiveP13LocalSource_eq_self`,
+  and
+  `measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_restrict_sourceRankStratum_eq_self`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  The source measure is
+  `passiveMeasure.prod (signedBox.withDensity selectedEntrySourceDensity)`.
+  Continuity of the passive fields supplies a.e. measurability of the source
+  chart, and the arbitrary passive chart-produced support wrappers give
+  retained-passive local-source support and, under explicit a.e. rank
+  hypotheses, source-rank support.  Reproduction, statement card, and review
+  are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-product-measure-support.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-product-measure-support.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-product-measure-support.md`.
+  Focused build, `git diff --check`, `scripts/sorries`, direct axiom probes,
+  and xhigh review passed.  This is concrete
+  chart-produced support only: no source-rank coverage, source-image equality,
+  determinant-chart pushforward, source-prior transport, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, Case 2 passive source-chart continuity,
   2026-06-29.** Lean now exposes
   `continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive` in
