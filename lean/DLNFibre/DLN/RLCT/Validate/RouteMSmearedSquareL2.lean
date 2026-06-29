@@ -375,6 +375,190 @@ theorem Lam0u_entry_bound_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : 
   rw [hLamEq]
   exact hdd.inv_mul_entry_bound (P2u M hrs u) b (Mj := η) hP2col a
 
+/-! ## Field A (the per-entry decode bound `≤ 2δ`) — the opaque-width analogue of the `(2,3,1)` bound
+
+Every flat coord of `phiL2 M hrs (A0u)(zu)(HbarUnit)(Sbotu)(Lam0u)` is a matrix entry of
+`chartL2Params`. The three entry families: front `A0u` (box: `≤ δ`); deep-top `(z·H̄ − Λ₀·S_bot)`
+(`|z|·|H̄| + ‖Λ₀‖·‖S_bot‖`, the Varah `Λ₀` bound bites here); deep-bottom `S_bot` (`≤ η`). Bounded by
+`2δ` on `condBox` under the field-A margins `η ≤ δ` and `(s)·((1/γ)·η)·η ≤ δ`. -/
+
+/-- Front entry bound: `|A0u u i j| ≤ δ` on the box (diagonal `[δ/2,δ]`, off-diagonal `[−η,η]`, `η ≤ δ`). -/
+theorem A0u_entry_le_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) (hη : η ≤ δ) (hδ : 0 < δ) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
+    (i : Fin (M 0)) (j : Fin (M 1)) :
+    |A0u M u i j| ≤ δ := by
+  have hval := hrest (coordOf M (frontSlot M i j)) (coordOf_frontSlot_ne_pivot M hrs hr hc i j)
+  rw [condBoxWidth_coordOf, slotBox] at hval
+  have hA0 : A0u M u i j = u (coordOf M (frontSlot M i j)) := rfl
+  rw [hA0]
+  split at hval
+  · rw [Set.mem_Icc] at hval; rw [abs_le]; constructor <;> linarith [hval.1, hval.2]
+  · rw [Set.mem_Icc] at hval; rw [abs_le]; constructor <;> linarith [hval.1, hval.2]
+
+/-- Bottom (residual) entry bound: `|Sbotu u b j| ≤ η` on the box (a non-diagonal residual front slot). -/
+theorem Sbotu_entry_le_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
+    (b : Fin s) (j : Fin (M 2)) :
+    |Sbotu M hrs u b j| ≤ η := by
+  -- `Sbotu b j = u (coordOf (botSlot b j))`; a bottom slot is not a front slot, so not a diag slot
+  have hnotdiag : ∀ (q : FlatIdx M), q = botSlot M hrs b j → q ∉ p1DiagSlots M hrs hr0 := by
+    rintro q rfl hmem
+    rw [p1DiagSlots, Finset.mem_image] at hmem
+    obtain ⟨i', _, h⟩ := hmem
+    exact frontSlot_ne_topSlot M hrs i' (deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i')))
+      ⟨0, hr⟩ ⟨0, hc⟩ (by
+        -- `frontSlot … = botSlot …` is impossible: a front slot is layer 0, a bot slot is layer 1
+        exfalso
+        have hlayer : (0 : Fin 2) = (1 : Fin 2) := congrArg (·.1.1) h
+        exact absurd hlayer (by decide))
+  have hne : coordOf M (botSlot M hrs b j) ≠ pivotCoord M hrs hr hc := by
+    intro h
+    -- `pivotCoord = coordOf (topSlot ⟨0⟩ ⟨0⟩)`, so `coordOf (botSlot) = coordOf (topSlot)`
+    exact topSlot_ne_botSlot M hrs ⟨0, hr⟩ ⟨0, hc⟩ b j (coordOf_injective M h.symm)
+  have hval := hrest (coordOf M (botSlot M hrs b j)) hne
+  rw [condBoxWidth_coordOf, slotBox, if_neg (hnotdiag _ rfl)] at hval
+  have hSb : Sbotu M hrs u b j = u (coordOf M (botSlot M hrs b j)) := rfl
+  rw [hSb, abs_le]; rwa [Set.mem_Icc] at hval
+
+/-- The angular-unit entry bound `|HbarUnit a j| ≤ 1` on the box, when `η ≤ 1`: the pivot entry is `1`,
+the other top coords are non-pivot (`∈ [−η,η]`, `|·| ≤ η ≤ 1`). -/
+theorem HbarUnit_entry_le_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) (hη1 : η ≤ 1) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
+    (a : Fin r) (j : Fin (M 2)) :
+    |HbarUnit M hrs hr hc u a j| ≤ 1 := by
+  rw [HbarUnit]
+  by_cases hpiv : coordOf M (topSlot M hrs a j) = pivotCoord M hrs hr hc
+  · rw [if_pos hpiv]; norm_num
+  · rw [if_neg hpiv]
+    -- a non-pivot top coord. It is not a front diagonal slot (it is a top slot, layer 1), so `∈ [−η,η]`.
+    have hnotdiag : topSlot M hrs a j ∉ p1DiagSlots M hrs hr0 := by
+      rw [p1DiagSlots, Finset.mem_image]
+      rintro ⟨i', _, h⟩
+      exact frontSlot_ne_topSlot M hrs i' (deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i'))) a j h
+    have hval := hrest (coordOf M (topSlot M hrs a j)) hpiv
+    rw [condBoxWidth_coordOf, slotBox, if_neg hnotdiag, Set.mem_Icc] at hval
+    rw [abs_le]; constructor <;> [linarith [hval.1]; linarith [hval.2]]
+
+/-- The pivot value bound `|zu u| ≤ δ` on the box (`zu = u pivot ∈ Ioo 0 δ`). -/
+theorem zu_abs_le_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) :
+    |zu M hrs hr hc u| ≤ δ := by
+  obtain ⟨hpiv, _⟩ := hu
+  rw [Set.mem_Ioo] at hpiv
+  rw [zu, abs_le]; constructor <;> linarith [hpiv.1, hpiv.2]
+
+/-- The deep-top entry bound `|(z•H̄ − Λ₀·S_bot) a j| ≤ δ + (s)·((1/γ)·η)·η` on the box: the radial term
+`|z·H̄| ≤ δ·1` and the shear term `|(Λ₀·S_bot) a j| ≤ ∑_b |Λ₀ a b|·|S_bot b j| ≤ s·((1/γ)·η)·η` (the
+Varah `Λ₀` bound + the residual bound). -/
+theorem deepTop_entry_le_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ)
+    (a : Fin r) (j : Fin (M 2)) :
+    |((zu M hrs hr hc u) • HbarUnit M hrs hr hc u - Lam0u M hrs u * Sbotu M hrs u) a j|
+      ≤ δ + (s : ℝ) * ((1 / γ) * η) * η := by
+  have hrest := rest_of_condBox M hrs hr0 hr hc δ η hu
+  -- radial term `|z·H̄| ≤ δ·1 = δ`
+  have hz := zu_abs_le_of_box M hrs hr0 hr hc δ η hu
+  have hH := HbarUnit_entry_le_of_box M hrs hr0 hr hc δ η hη1 hrest a j
+  have hrad : |(zu M hrs hr hc u) * HbarUnit M hrs hr hc u a j| ≤ δ := by
+    rw [abs_mul]
+    calc |zu M hrs hr hc u| * |HbarUnit M hrs hr hc u a j|
+        ≤ δ * 1 := mul_le_mul hz hH (abs_nonneg _) hδ.le
+      _ = δ := by ring
+  -- shear term `|(Λ₀·S_bot) a j| ≤ ∑_b |Λ₀ a b||S_bot b j| ≤ s·((1/γ)η)·η`
+  have hshear : |(Lam0u M hrs u * Sbotu M hrs u) a j| ≤ (s : ℝ) * ((1 / γ) * η) * η := by
+    rw [Matrix.mul_apply]
+    calc |∑ b, Lam0u M hrs u a b * Sbotu M hrs u b j|
+        ≤ ∑ b, |Lam0u M hrs u a b * Sbotu M hrs u b j| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _b : Fin s, ((1 / γ) * η) * η := by
+          refine Finset.sum_le_sum (fun b _ => ?_)
+          rw [abs_mul]
+          refine mul_le_mul
+            (Lam0u_entry_bound_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin hrest a b)
+            (Sbotu_entry_le_of_box M hrs hr0 hr hc δ η hrest b j) (abs_nonneg _) ?_
+          positivity
+      _ = (s : ℝ) * ((1 / γ) * η) * η := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
+  -- combine via the triangle inequality
+  rw [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
+  calc |zu M hrs hr hc u * HbarUnit M hrs hr hc u a j - (Lam0u M hrs u * Sbotu M hrs u) a j|
+      ≤ |zu M hrs hr hc u * HbarUnit M hrs hr hc u a j|
+          + |(Lam0u M hrs u * Sbotu M hrs u) a j| := abs_sub _ _
+    _ ≤ δ + (s : ℝ) * ((1 / γ) * η) * η := by linarith [hrad, hshear]
+
+/-- **Every entry of `chartL2Params` is `≤ 2δ` on the box.** Layer 0 = `A0u` (`≤ δ ≤ 2δ`); layer 1 =
+`chartL2Deep`: top rows `(z•H̄ − Λ₀·S_bot)` (`≤ δ + s·((1/γ)η)·η ≤ 2δ` under the field-A margin), bottom
+rows `S_bot` (`≤ η ≤ δ ≤ 2δ`). The opaque-width analogue of `chartParams231_entry_bound`. -/
+theorem chartL2Params_entry_bound (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    (hfieldA : (s : ℝ) * ((1 / γ) * η) * η ≤ δ)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ)
+    (layer : Fin 2) (i : Fin (M layer.castSucc)) (j : Fin (M layer.succ)) :
+    |(chartL2Params M hrs (A0u M u) (zu M hrs hr hc u) (HbarUnit M hrs hr hc u)
+        (Sbotu M hrs u) (Lam0u M hrs u)) layer i j| ≤ 2 * δ := by
+  have hrest := rest_of_condBox M hrs hr0 hr hc δ η hu
+  fin_cases layer
+  · -- LAYER 0 (front): `A0u`, `≤ δ ≤ 2δ`
+    show |A0u M u i j| ≤ 2 * δ
+    have := A0u_entry_le_of_box M hrs hr0 hr hc δ η hη hδ hrest i j
+    linarith
+  · -- LAYER 1 (deep): split into top (radial − shear) and bottom (residual)
+    show |chartL2Deep hrs (zu M hrs hr hc u) (HbarUnit M hrs hr hc u) (Sbotu M hrs u)
+        (Lam0u M hrs u) i j| ≤ 2 * δ
+    rw [chartL2Deep]
+    rcases hsplit : (deepWidthEquiv hrs).symm i with a | b
+    · -- TOP row: `deepBlock (inl a) = (z•H̄ − Λ₀·S_bot) a`
+      rw [deepBlock, Sum.elim_inl]
+      have := deepTop_entry_le_of_box M hrs hr0 hr hc δ η γ hδ hγ hη1 hηpos hmargin hu a j
+      -- `≤ δ + s·((1/γ)η)·η ≤ δ + δ = 2δ`
+      calc |((zu M hrs hr hc u) • HbarUnit M hrs hr hc u - Lam0u M hrs u * Sbotu M hrs u) a j|
+          ≤ δ + (s : ℝ) * ((1 / γ) * η) * η := this
+        _ ≤ 2 * δ := by linarith [hfieldA]
+    · -- BOTTOM row: `deepBlock (inr b) = S_bot b`
+      rw [deepBlock, Sum.elim_inr]
+      have := Sbotu_entry_le_of_box M hrs hr0 hr hc δ η hrest b j
+      -- `|S_bot b j| ≤ η ≤ δ ≤ 2δ`
+      calc |Sbotu M hrs u b j| ≤ η := this
+        _ ≤ 2 * δ := by linarith
+
+/-- **Each flat coord of `phiL2 …` is a `chartL2Params` entry** (`rfl` — the `paramsEquivFlat` /
+`equivFin` slot readout, the opaque-width analogue of `phi231sm_entry`). -/
+theorem phiL2_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (A0 : Matrix (Fin (M 0)) (Fin (M 1)) ℝ) (z : ℝ) (Hbar : Matrix (Fin r) (Fin (M 2)) ℝ)
+    (Sbot : Matrix (Fin s) (Fin (M 2)) ℝ) (Λ₀ : Matrix (Fin r) (Fin s) ℝ)
+    (i : Fin (routeMAmbient M)) :
+    phiL2 M hrs A0 z Hbar Sbot Λ₀ i
+      = (chartL2Params M hrs A0 z Hbar Sbot Λ₀)
+          ((Fintype.equivFin (FlatIdx M)).symm i).1.1
+          ((Fintype.equivFin (FlatIdx M)).symm i).1.2
+          ((Fintype.equivFin (FlatIdx M)).symm i).2 := rfl
+
+/-- **Field A on `condBox`** (`ε = 2δ`): `condBox ⊆ (psiMap ∘ Rmap)⁻¹(cubeBox 2δ)`. Every flat coord of
+`psiMap (Rmap u) = phiL2 …` is a `chartL2Params` entry, `≤ 2δ` on the box (`chartL2Params_entry_bound`).
+The opaque-width analogue of `subBox231_subset_preimage`; discharges the headline's field-A hypothesis. -/
+theorem condBox_subset_preimage (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    (hfieldA : (s : ℝ) * ((1 / γ) * η) * η ≤ δ) :
+    condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) (2 * δ)) := by
+  intro u hu
+  rw [Set.mem_preimage]
+  -- `psiMap (Rmap u) = phiL2 …`
+  rw [psiMap_Rmap_eq_phiL2 M hrs hr hc u]
+  rw [cubeBox, Set.mem_pi]
+  intro i _
+  rw [Set.mem_Icc, ← abs_le, phiL2_entry]
+  exact chartL2Params_entry_bound M hrs hr0 hr hc δ η γ hδ hγ hη hη1 hηpos hmargin hfieldA hu _ _ _
+
 /-! ## The wired headline (the two named hypotheses discharged from box membership)
 
 `routeMCore_smearedL2` takes three per-family inputs over peeled points: the off-pole cancellation
@@ -517,5 +701,32 @@ theorem routeMCore_smearedL2_square_condBox {n : ℕ} (M : Fin 3 → ℕ) (hrs :
   intro z hz y hy
   refine insertNth_mem_condBox M hrs hr0 hr hc δ η hN p hp hz (fun k => ?_)
   simpa only [Set.mem_pi, Set.mem_univ, true_implies] using hy k
+
+/-- **The FULLY-UNCONDITIONAL smeared L=2 box-divergence on the square stratum** (`ε = 2δ`). All three
+per-family analytic inputs of `routeMCore_smearedL2` are now discharged: `hcancel` and `hUpos` from the
+diagonal-dominance Gram det, the peeled-point membership `hmem` from `insertNth_mem_condBox`, and the
+field-A containment `hSpre` from `condBox_subset_preimage` (every decoded coord `≤ 2δ`, the Varah `Λ₀`
+bound feeding the deep-top entry). What remains are NON-analytic standard inputs only: the conditioned
+box's positive measure `hboxpos` and the binding-axis exponent arithmetic `hexp`. The box widths obey
+the dominance margin `(r−1)·η + γ ≤ δ/2` (Levy–Desplanques) and the field-A margins `η ≤ δ`, `η ≤ 1`,
+`s·((1/γ)η)·η ≤ δ` — all satisfiable per `r` (e.g. `γ = δ/4`, `η = δ/(4(r−1))`, `δ` small). -/
+theorem routeMCore_smearedL2_square_uncond {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (hr0 : r = M 0) (hr : 0 < r) (hc : 0 < M 2) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (c' δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    (hfieldA : (s : ℝ) * ((1 / γ) * η) * η ≤ δ)
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    (hboxpos : 0 < (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n =>
+        condBoxWidth M hrs hr0 δ η (hN ▸ (p.succAbove k) : Fin (routeMAmbient M)))))
+    (hexp : ((r * M 2 - 1 : ℕ) : ℝ) - 2 * c' ≤ -1) :
+    ∫⁻ x in cubeBox (routeMAmbient M) (2 * δ),
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  refine routeMCore_smearedL2_square_condBox M hrs hr0 hr hc hN p c' (2 * δ) δ η γ hδ hγ hmargin hp
+    ?_ hboxpos hexp
+  -- field A: `condBox ⊆ (ψ∘R)⁻¹(cubeBox 2δ)`, with the pivot rewritten to `hN ▸ p`
+  rw [hp]
+  exact condBox_subset_preimage M hrs hr0 hr hc δ η γ hδ hγ hη hη1 hηpos hmargin hfieldA
 
 end DLNFibre.DLN.RLCT
