@@ -28,10 +28,15 @@ adjudication certificate is
 > - **Deferred.** none for Fact 1.
 > - **Scope (load-bearing).** Fact 1 is FALSE for a free tall front `A0u` at `r < M 0` (the cancellation
 >   needs `col(P₂) ⊆ col(P₁)`, which a free tall `P₁` does not give — certificate witness `M0=3,M1=3,r=2`).
->   The square slice `r = M 0` is the ENTIRE genuine smeared L=2 stratum (`deepRank = min(M0,M1) = M0 < M1`
->   forces `r = M0`, square `P₁`); there is no smeared L=2 config with `s > 0` and a tall `P₁`. So the
->   restriction to `r = M 0` is not a loss of generality within the stratum.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+>   The square slice `r = M 0` is the ENTIRE genuine smeared L=2 stratum, so the restriction to `r = M 0`
+>   is not a loss of generality within it. **Precise mechanism (corrected — reviewer NOTE 1):** the
+>   stratum-forcing is the `¬InteriorDrop` clause of `BoundarySmeared` (`deepRank < deepRows = M1` together
+>   with no interior drop forces `M0 ≤ r`, hence `r = M0`, square `P₁`), NOT a bare `deepRank = min(M0,M1)`
+>   identity — that identity is FALSE in general at L=2 (e.g. `M=(3,4,5)` minimizes the deep-rank objective
+>   at `t = 1`, giving `deepRank = 1 < min(3,4)`, an interior-drop case, hence not smeared). The certificate's
+>   conclusion (`r = M0` on the stratum) is correct; only its stated reasoning was loose. The Lean takes
+>   `hr0 : r = M 0` as a caller obligation and never relies on the `min` identity, so fidelity is unaffected.
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
 
 ## det(P₁ᵀP₁) ≠ 0 from strict row diagonal dominance, unconditional on the box
 
@@ -53,7 +58,7 @@ adjudication certificate is
 >   condition, NOT a hard-coded `δ/8`. A fixed `δ/8` is diagonally dominant only for `r ≤ 4` (the certificate
 >   / Codex give a singular witness inside the `δ/8` box at `r ≥ 5`). The per-`r` choice `η = δ/(4(r−1))`,
 >   `γ = δ/4` satisfies the margin for all `r ≥ 1` (and the `(r−1)·η` form is robust to `r = 1`: empty sum).
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
 
 ## Brick — `hUpos` (the `z`-free unit `U = ‖P₁·H̄_unit‖² > 0`)
 
@@ -69,7 +74,7 @@ adjudication certificate is
 >   not the pivot.)
 > - **Assumed.** `r = M 0`; `det(P₁ᵀP₁) ≠ 0` (discharged on the box).
 > - **Cited / Deferred.** none.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
 
 ## Brick (b) — the Varah `Λ₀`-entry bound (the analytic core of field A)
 
@@ -88,7 +93,7 @@ adjudication certificate is
 >   brick (no Mathlib operator-norm machinery).
 > - **Assumed.** box membership; `r = M 0`; the margin condition.
 > - **Cited / Deferred.** none for the bound itself.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
 
 ---
 
@@ -124,7 +129,7 @@ adjudication certificate is
 >   GIVEN field-A containment — NOT yet "fully unconditional". The two genuinely-analytic facts the
 >   certificate adjudicated (`hcancel`, `hUpos`) ARE unconditional on the box; the remaining `hSpre` is a
 >   containment whose analytic input (the `Λ₀` bound) is landed.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
 
 ---
 
