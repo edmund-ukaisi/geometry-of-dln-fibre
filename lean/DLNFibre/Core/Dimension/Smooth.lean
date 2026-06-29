@@ -21,7 +21,7 @@ This file collects the two reusable commutative-algebra facts on the étale rout
 to **regular local ring** — the height-preservation brick and the local Krull-dimension bridge —
 both at the weakest hypotheses that suffice and **without** the cotangent/tangent identity, so that
 the bridge is available to *prove* "smooth ⟹ regular" non-circularly (the smooth ⟹ regular headline
-itself lives in `DLNFibre.Core.SmoothPointRegular`, the entry-2 consumer).
+itself lives in `DLNFibre.Core.Dimension.Regular`, the entry-2 capstone).
 
 ## Contents
 

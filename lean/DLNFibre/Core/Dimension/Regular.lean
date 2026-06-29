@@ -1,25 +1,5 @@
 /-
-Smooth point ⟹ regular local ring (the M3 cotangent comparison + packaging).
-
-For `A` a finite-type algebra over a perfect field `k`, and `m` a maximal ideal at which
-`A` is smooth, the local ring `R = Localization.AtPrime m` is regular. The dimension is supplied by the M2
-dimension bridge (`ringKrullDim R = n` via the étale-over-affine route, *non-circular*); the cotangent
-comparison `finrank κ(m) (CotangentSpace R) = n` is proved here via the conormal sequence of the residue
-surjection `R ↠ κ`:
-
-* the conormal map `m/m² → κ ⊗_R Ω[R⁄k]` is `KaehlerDifferential.kerCotangentToTensor k R κ` (its source
-  `(ker (R → κ)).Cotangent` is `(maximalIdeal R).Cotangent = CotangentSpace R`);
-* it is **injective** because `R` is formally smooth over `k` (this *is* `IsSmoothAt`) and the residue field
-  `κ` is formally smooth over `k` (perfect base field), so `Algebra.H1Cotangent k κ` is subsingleton
-  (`FormallySmooth.kerCotangentToTensor_injective_iff`);
-* hence `finrank κ (m/m²) ≤ finrank κ (κ ⊗_R Ω[R⁄k]) = finrank R Ω[R⁄k] = n`, with `Ω[R⁄k]` free of rank `n`
-  (the localization of the standard-smooth chart's free `Ω[S⁄k]`, transported by
-  `Module.finrank_of_isLocalizedModule_of_free`);
-* combined with `ringKrullDim R = n` (M2) and the universal Krull bound `dim ≤ spanFinrank = finrank
-  cotangent`, equality holds and `R` is regular (`IsRegularLocalRing.of_spanFinrank_maximalIdeal_le`).
-
-The base field needs only `[PerfectField k]` (so the residue field is formally smooth over `k`, via
-`Algebra.FormallySmooth.of_perfectField`); algebraic closedness is not used. `ℝ` qualifies.
+Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.Smooth.Basic
@@ -35,20 +15,65 @@ import Mathlib.RingTheory.Etale.Kaehler
 import Mathlib.RingTheory.Jacobson.Ring
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.Algebra.Module.SpanRankOperations
-import Mathlib.FieldTheory.IsAlgClosed.Basic
 import DLNFibre.Core.Dimension.Smooth
 
-open Algebra IsLocalRing TensorProduct
-open DLNFibre.Core.Dimension
+/-!
+# `Dimension.Regular` — smooth point ⟹ regular local ring (entry-2 capstone)
 
-namespace DLNFibre.Core
+For `A` a finite-type algebra over a **perfect** field `k` and `m` a maximal ideal at which `A` is
+smooth, the local ring `R = Localization.AtPrime m` is a regular local ring
+(`smooth_point_isRegularLocalRing`, `@[stacks 00TV]` — the smooth ⟹ regular direction). This is the
+entry-2 capstone of the affine dimension stack: it sits on the non-circular local Krull-dimension
+bridge `ringKrullDim_localizationAtPrime_eq_of_isSmoothAt` (`Core.Dimension.Smooth`), so the
+regularity is *derived*, not assumed.
+
+## The cotangent comparison
+
+The local Krull dimension `dim R = n` is supplied by the dimension bridge (the
+étale-over-affine-space route, **not** the cotangent/tangent identity — this is what keeps the
+capstone non-circular). The cotangent space is then squeezed against it:
+
+* the conormal map `m/m² → κ(m) ⊗_R Ω[R⁄k]` is `KaehlerDifferential.kerCotangentToTensor k R κ` (its
+  source `(ker (R → κ)).Cotangent` is `(maximalIdeal R).Cotangent = CotangentSpace R`);
+* it is **injective** because `R` is formally smooth over `k` (this *is* `IsSmoothAt`) and the
+  residue field `κ` is formally smooth over `k` (perfect base field, via
+  `Algebra.FormallySmooth.of_perfectField`), so `Algebra.H1Cotangent k κ` is subsingleton
+  (`FormallySmooth.kerCotangentToTensor_injective_iff`);
+* hence `finrank κ (m/m²) ≤ finrank κ (κ ⊗_R Ω[R⁄k]) = finrank R Ω[R⁄k] = n`, with `Ω[R⁄k]` free of
+  rank `n` (the localization of the standard-smooth chart's free `Ω[S⁄k]`, transported by
+  `Module.finrank_of_isLocalizedModule_of_free`);
+* combined with `dim R = n` (the bridge) and the universal Krull bound `dim ≤ spanFinrank =
+  finrank cotangent`, equality holds and `R` is regular
+  (`IsRegularLocalRing.of_spanFinrank_maximalIdeal_le`).
+
+## Hypotheses
+
+The base field needs only **`[PerfectField k]`** — algebraic closedness is **not** used. The single
+field-theoretic input is the residue field's formal smoothness over `k`
+(`Algebra.FormallySmooth.of_perfectField`, which needs `[PerfectField k]` + essential finite type),
+not the residue-field-is-`k` form of the Nullstellensatz; every other step is pure
+commutative/local-ring algebra. `ℝ` (and any field of characteristic zero) qualifies, since
+`CharZero ⟹ PerfectField`. The smoothness *hypothesis* `[IsSmoothAt k m]` is consumed, not produced,
+so the smooth-locus density (`dense_smoothLocus_of_perfectField`, used by callers to *establish*
+smoothness) never enters this chain.
+
+This file mirrors the eventual Mathlib home `Mathlib.RingTheory.Smooth.Regular` / the regular-local-
+ring namespace `Mathlib.RingTheory.RegularLocalRing.*`. It builds on entry 1–E1
+(`Core.Dimension.Smooth`, the local-dimension bridge) as a black box.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
+open Algebra IsLocalRing TensorProduct
+
+namespace DLNFibre.Core.Dimension
 
 variable {k : Type*} [Field k] {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A]
 
 /-! ### Injectivity transport for cotangent spaces of equal ideals -/
 
 /-- Injectivity of a conormal map transports along an equality of the defining ideal: if `I = J`
-then a `J.Cotangent`-domain map from an injective `I.Cotangent`-domain map stays injective. -/
+then a `J.Cotangent`-domain map cast from an injective `I.Cotangent`-domain map stays injective. -/
 theorem injective_cotangent_cast {R : Type*} [CommRing R] {I J : Ideal R} (h : I = J)
     {X : Type*} [AddCommGroup X] [Module R X]
     (f : I.Cotangent →ₗ[R] X) (hf : Function.Injective f) :
@@ -163,8 +188,12 @@ theorem finrank_kaehler_localizationAtPrime_eq
 
 /-! ### Smooth point ⟹ regular local ring -/
 
-/-- **Smooth point ⟹ regular local ring.** For `A` finite type over a perfect field
-`k` and `m` maximal at which `A` is smooth, `Localization.AtPrime m` is a regular local ring. -/
+/-- **Smooth point ⟹ regular local ring** (`@[stacks 00TV]`, the smooth ⟹ regular direction). For
+`A` finite type over a perfect field `k` and `m` maximal at which `A` is smooth,
+`Localization.AtPrime m` is a regular local ring. The local Krull dimension is supplied by the
+non-circular dimension bridge (`Core.Dimension.Smooth`), and the cotangent space is squeezed against
+it via the conormal sequence (residue-field formal smoothness over the perfect base field). -/
+@[stacks 00TV "the smooth ⟹ regular direction (perfect base field gives separable residue fields)"]
 theorem smooth_point_isRegularLocalRing [PerfectField k]
     (m : Ideal A) [hm : m.IsMaximal] [IsSmoothAt k m] :
     IsRegularLocalRing (Localization.AtPrime m) := by
@@ -206,4 +235,4 @@ theorem finrank_cotangentSpace_eq_of_isSmoothAt [PerfectField k]
   rw [hdim] at h
   exact_mod_cast h
 
-end DLNFibre.Core
+end DLNFibre.Core.Dimension

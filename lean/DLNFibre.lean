@@ -28,9 +28,9 @@ import DLNFibre.Core.Dimension.Catenary
 import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.Dimension.Codimension
 import DLNFibre.Core.Dimension.Smooth
+import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.SmoothPointRegular
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.CotangentJacobian

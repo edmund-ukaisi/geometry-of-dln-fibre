@@ -2,7 +2,7 @@ import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.OrbitDifferential
 import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.CotangentJacobian
-import DLNFibre.Core.SmoothPointRegular
+import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.Dimension.AffineDomain
 import Mathlib.Algebra.MvPolynomial.Derivation
 import Mathlib.Algebra.DualNumber
