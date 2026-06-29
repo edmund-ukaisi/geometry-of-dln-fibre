@@ -446,4 +446,78 @@ theorem deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ (H : Fin (L + 1) → �
     (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)) (split x) Aψ Aq
     hframeψ hframeq hinterface hS3b h11 h12 h21
 
+/-- **LINK-1 input — the conjugated `hsub3reg` germ in `∀ᶠ` form** (the shape
+`deepest_diffeo_bridge_L2_conj_impl` consumes). Wraps the per-`x` germ
+(`deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ`) over the neighborhood of `wstar` where
+`det (l2A0Conj (split x)) ≠ 0`. That neighborhood exists: `det ∘ l2A0Conj ∘ split` is continuous, and at
+`wstar` (`split wstar = 0`) it is `det (l2A0Conj 0) ≠ 0` (`l2A0Conj_det_ne_zero` from the pivot-base unit
+`hDA0`). The `∀ᶠ` is exactly LINK-1's `hsub3reg`; LINK-1 is then `deepest_diffeo_bridge_L2_conj_impl`
+applied with this + the conjugated `hsub4core` + `regStraighten`/`Score`/etc. -/
+theorem hsub3reg_conj_germ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hsplit_base : split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))
+      = (0 : DeepestSplit H r (deepestNGauge H r)))
+    (hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ))
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :
+    ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, (deepestEFull H r hr hL J Pf Qf
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
+  -- `split → 0` at the basepoint (split continuous, `split basepoint = 0`).
+  have hsplit_tend : Filter.Tendsto split
+      (nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))
+      (nhds (0 : DeepestSplit H r (deepestNGauge H r))) := by
+    have h := (split.continuous.continuousAt
+      (x := (paramsEquivFlat H) (deepestPoint H r B hB hr hL))).tendsto
+    rwa [hsplit_base] at h
+  -- `det (l2A0Conj ·)` is continuous and nonzero at `0` (the pivot-base unit) ⟹ `∀ᶠ` nonzero near `0`.
+  have hA0c : ContinuousAt (fun q => (l2A0Conj H r B hB hr hL q).det)
+      (0 : DeepestSplit H r (deepestNGauge H r)) :=
+    (contDiffAt_matrix_det_of_entries
+      (fun a b => (contDiff_l2A0Conj_entry H r B hB hr hL a b).contDiffAt)).continuousAt
+  have hdet0_ne : (l2A0Conj H r B hB hr hL (0 : DeepestSplit H r (deepestNGauge H r))).det ≠ 0 :=
+    l2A0Conj_det_ne_zero H r B hB hr hL hDA0
+  have hdetnhds : ∀ᶠ q : DeepestSplit H r (deepestNGauge H r) in nhds 0,
+      (l2A0Conj H r B hB hr hL q).det ≠ 0 :=
+    hA0c.eventually_ne hdet0_ne
+  -- Pull back along `split` to a neighborhood of the basepoint.
+  have hdetgerm : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+      nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (l2A0Conj H r B hB hr hL (split x)).det ≠ 0 :=
+    hsplit_tend.eventually hdetnhds
+  -- Apply the per-`x` germ on the det-nonzero neighborhood.
+  filter_upwards [hdetgerm] with x hdet0
+  exact deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ H r B hB hr hL hL2eq J hJfront' Pf Qf
+    hPtri' hQtri' hNF hPfL hcorner' split hsplit hinterface hS3b x hdet0
+
 end DLNFibre.DLN.RLCT
