@@ -140,6 +140,34 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive selected-entry local source support
+  after open restriction, 2026-06-29.** Lean now exposes
+  `exists_open_measure_map_case2EndpointTransport_withPassive_restrict_retainedPassiveP13LocalSource_eq_self`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean`.
+  For passive selected-entry coordinates, continuity of the passive fields and
+  determinant-unit hypotheses at one base point produce an open determinant
+  domain `U`; for any source-domain measure, the pushforward of
+  `sourceMeasure.restrict U` along the fixed-base p.13 source chart is
+  supported on the retained-passive local source.  A.e. measurability of the
+  source chart on the restricted measure is derived internally from
+  determinant-chart subtype continuity.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+  Focused build passed for
+  `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`.
+  Full `DLNFibre` aggregator build, `git diff --check`, `scripts/sorries`,
+  and direct axiom probe passed.  Xhigh reviews by `Singer the 3rd` and
+  `Descartes the 3rd` returned PASS after one stale reproduction-note wording
+  repair; review is at
+  `threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+  This is support only after restricting the source-domain measure to the
+  constructed open determinant domain: no global determinant-chart membership,
+  source-image equality, local coverage, source-rank support or coverage,
+  determinant-chart/raw Haar transport, source-prior transport, Jacobian
+  transport, exact localized residual marginal, normal crossings, pole order,
+  or RLCT.
 - **Current status addendum, Case 2 passive selected-entry local
   source-readback domain, 2026-06-29.** Lean now exposes
   `exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq`

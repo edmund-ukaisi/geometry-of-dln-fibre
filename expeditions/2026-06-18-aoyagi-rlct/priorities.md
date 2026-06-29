@@ -10,6 +10,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive selected-entry local source support after open restriction
+
+The passive selected-entry frontier now has a local restricted-source-measure
+support theorem:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+From passive-field continuity and determinant-unit hypotheses at one base
+point, the theorem reuses the open determinant-domain source/readback package.
+For any source-domain measure, the pushforward of `sourceMeasure.restrict U`
+along the fixed-base p.13 source chart restricts to the retained-passive p.13
+local source as itself.  The source chart's a.e. measurability on the
+restricted domain is derived internally from continuity on `U`, not assumed.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Singer the 3rd`
+and `Descartes the 3rd` returned PASS after one stale reproduction-note
+wording repair.
+
+This is support only after restricting the source-domain measure to the
+constructed open determinant domain.  Do not treat it as global determinant
+chart membership, selected-entry source-image equality, local coverage,
+source-rank support or coverage, determinant-chart Haar transport, raw/source
+Haar transport, source-prior transport, Jacobian transport, exact localized
+residual marginal, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive selected-entry local source-readback domain
 
 The passive selected-entry frontier now has a local determinant-domain

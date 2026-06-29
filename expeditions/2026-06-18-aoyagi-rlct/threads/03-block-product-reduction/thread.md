@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive selected-entry local source support after open restriction
+
+Reproduction:
+`reproduction-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+Statement card:
+`statement-card-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+
+Lean now exposes:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+The theorem reuses the open determinant-domain source/readback package.  For
+any source-domain measure, after restricting the measure to the constructed
+open neighborhood `U`, the fixed-base p.13 source-chart pushforward is
+supported on the retained-passive p.13 local source.  The proof derives
+a.e. measurability of the source chart on `sourceMeasure.restrict U` via
+`ContinuousOn` on the determinant-domain subtype; it is not assumed.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+passed.  Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed.  Xhigh reviews by
+`Singer the 3rd` and `Descartes the 3rd` returned PASS after one stale
+reproduction-note wording repair.  Review:
+`review-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+
+Nonclaims: no global determinant-chart membership, selected-entry source-image
+equality, local coverage, source-rank support or coverage, determinant-chart
+Haar pushforward, raw/source Haar transport, source-prior comparison, Jacobian
+transport, exact localized residual marginal, normal crossings, pole order, or
+RLCT.
+
 ## 2026-06-29 A2 Case 2 passive selected-entry local source-readback domain
 
 Reproduction:

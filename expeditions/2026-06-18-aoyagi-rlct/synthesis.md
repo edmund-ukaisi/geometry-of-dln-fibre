@@ -3,6 +3,52 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Selected-Entry Local Source Support After Open Restriction - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now has:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+It consumes the already banked open determinant-domain source/readback theorem.
+For passive selected-entry coordinates, basepoint determinant units and
+passive-field continuity give an open neighborhood `U` of `z0`.  For any
+source-domain measure, the source-chart pushforward of `sourceMeasure.restrict
+U` is supported on the retained-passive p.13 local source:
+
+```text
+(Measure.map sourceChart (sourceMeasure.restrict U)).restrict localSource
+  =
+Measure.map sourceChart (sourceMeasure.restrict U).
+```
+
+The proof does not leave source-chart a.e. measurability as a hypothesis.
+Instead, on `U` the readback theorem gives determinant-chart data; the proof
+packages `retainedData z` as determinant-chart subtype data, composes with
+`continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart`, and applies
+`ContinuousOn.aemeasurable₀` for `sourceMeasure.restrict U`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Singer the 3rd`
+and `Descartes the 3rd` returned PASS after one stale reproduction-note
+wording repair; review artifact:
+`threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-local-source-support-after-open-restriction.md`.
+
+Nonclaims: no global determinant-chart membership, no selected-entry
+source-image equality, no local coverage, no source-rank support or coverage,
+no determinant-chart Haar pushforward, no raw/source Haar theorem, no original
+source-prior transport, no Jacobian transport, no exact localized residual
+marginal, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Selected-Entry Local Source-Readback Domain - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySource.lean` now has:

@@ -535,3 +535,4 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
 import DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure
