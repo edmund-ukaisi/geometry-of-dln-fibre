@@ -83,13 +83,20 @@ theorem link2_thetaPeel_half (H : Fin (L + 1) → ℕ) (r : ℕ)
   funext q
   rw [bareAbsorb_thetaConj_eq_conjAbsorb H r B hB hr hL hDA q]
 
-/-- **The ε-bound for the comparability close (HELD — the genuine analytic residual).** On a nbhd of `0`,
-the two integrands `Φ = ∑R'(q)² + C` and `F = ∑R'(Θq)² + C` (`C = coreF∘conjAbsorb`, `R' = regStraighten·`)
-satisfy the Watanabe two-sided bound with `c₁ = 1/2`, `c₂ = 3/2`. The load-bearing triple: the atom
-`deepestEFull_coreConstant` (`ΔR = R'(Θq)−R'(q)` carries a reg factor), `Θ0=0` (the core shift →0), and
-PIN-1 `dE(0)` invertible (`∑R'² ≳ ‖reg‖²` dominates) ⟹ `|F − Φ| ≤ (1/2)·∑R'² ≤ (1/2)·Φ`. The `regStraighten`
-is the wire's `regStraightenOf2 (deepestEFull ∘ coreAbsorb.symm)`; `hregcont` carries its continuity (for
-measurability). Held: the ε-estimate over the actual objects (a bounded analytic tide-leg). -/
+/-- **DEAD — do NOT build (comparability REFUTED, 2026-06-29).** The two-sided bound `c₁·Φ ≤ F ≤ c₂·Φ`
+this lemma asserts is FALSE: `F = ∑R'(Θq)²+C` and `Φ = ∑R'(q)²+C` have DIFFERENT zero sets (exact-rational
+witnesses, a44dd7e4 + here-verified, `docs/decorrelated-records/link2-fork/codex_fix_witnesses.py`: W1 `F=0,
+Φ>0`; W2 `Φ=0, F>0`; W3 `F/Φ→∞`). So `rho_residual_epsBound` is UNBUILDABLE and the comparability route to
+`link2_rho_residual` is dead. All three candidate fixes (atom+, δ-reg-factor, spec-PIN) fail by exact algebra.
+
+**The LIVE replacement route** (does NOT use this lemma): drop the reg level from `deepestEFull` (where `Θ`
+DRAGS) to the GAUGE reg `∑q.1²` (where `Θ` FIXES `q.1`), apply the BANKED Θ-peel
+`rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb` (DeepestSchurShiftConj:439, sorry-free, gauge-reg level, NO drag),
+then lift back — via the `rlctAtOn_regAbsorb_reduce2` (π̃ option-D) LOCAL-DIFFEO reg-absorb for both bare and
+conj `coreAbsorb`. Local diffeos preserve zero sets, so the comparability obstruction does not re-appear.
+Cost: the wire's `hTilde` reg-absorb strict-deriv (bare, in-flight) + a conj twin. This `sorry` is a DEAD
+MARKER, retained only so `link2_rho_residual`/`link2_at_zero` below still typecheck as the OLD (dead) shape;
+they are superseded by the gauge-reg sandwich and must NOT be wired to canonical. -/
 theorem rho_residual_epsBound (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
@@ -109,9 +116,11 @@ theorem rho_residual_epsBound (H : Fin (L + 1) → ℕ) (r : ℕ)
               + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1) := by
   sorry
 
-/-- **The single residual — the reg-argument swap `Θ q ↦ q` under `rlctAtOn`, core `C` fixed both sides.**
-Closes by Watanabe two-sided comparability (`rlctAtOn_squeeze`) — NOT a diffeo. `F, Φ ≥ 0` + measurable
-(`regStraighten`/`Θ`/`deepestCoreF`/`conjAbsorb` continuous) + the ε-bound `rho_residual_epsBound`. -/
+/-- **DEAD (depends on the refuted `rho_residual_epsBound`) — superseded by the gauge-reg Θ-peel sandwich.**
+The reg-argument swap `Θ q ↦ q` (core `C` fixed) does NOT hold by comparability — `F`,`Φ` have different
+zero sets (see `rho_residual_epsBound`). Retained only so the (dead) `link2_at_zero` shape typechecks; the
+live close-path uses `rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb` at the GAUGE-reg level + `rlctAtOn_regAbsorb_reduce2`,
+NOT this. Do NOT wire to canonical. -/
 theorem link2_rho_residual (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
