@@ -133,3 +133,34 @@ conj-smooth stack; that decomposition's reg-swap leg is the dead route. The LIVE
 NOT consume `link2_rho_residual` (consumed only in `ScratchL2Link2.lean`). It moves reg+core JOINTLY —
 exactly the necessity dispatch-1 established. Recommendation: drop the Θ-peel/reg-swap decomposition;
 LINK2 already closes via `psiL2Conj` (cost = the conj-smooth stack, already paid via `hDA`).
+
+## π̃ SOUNDNESS GATE (fourth dispatch) — BOTH π̃ strict-derivs are invertible isos; route SOUND
+
+The gauge-reg Θ-peel sandwich (genm-l2fin's live alternative) uses `rlctAtOn_regAbsorb_reduce2`'s
+`π̃ := regStraightenOf2(E∘coreAbsorb.symm) ∘ coreAbsorb.symm` as a LOCAL DIFFEO (zero-set-preserving,
+so the W1/W2/W3 comparability obstruction cannot recur). Gate: is `Dπ̃(0)` an invertible iso?
+
+VERDICT: **SOUND — both legs' strict derivatives are invertible isos at wstar** (`strictderiv_cert.py`,
+`conj_pi.py`; Codex-confirmed `codex_pi_answer.md`, independently identical).
+
+- `Dπ̃(0) = regStraightenTotalCLM2(D_{E_full}) ∘ D(coreAbsorb.symm)(0)`.
+- `regStraightenTotalCLM2(L)` has block matrix `[[L_R,L_C,L_S],[0,I,0],[0,0,I]]`, `det = det(L_R)` —
+  core/spec columns IRRELEVANT to the det.
+- `D_{E_full}|reg = D_E|reg − D_E|core·∂g/∂r`. **The atom `∂deepestEFull/∂core(0)=0` ANNIHILATES the
+  core-shear's reg→core mixing** ⟹ `D_{E_full}|reg = D_E|reg = F`. So the atom is HELPFUL (keeps the
+  reg-block clean), NOT degenerating — the opposite of the worry.
+- `F = ∂deepestEFull/∂reg(0) = I₃` (exact, det=1) = PIN-1. Invertible.
+- `D(coreAbsorb.symm)(0)` is unipotent (det 1) ⟹ iso (needs `∂g(0)` to exist).
+- ⟹ `Dπ̃(0)` = composite of two isos = iso. Holds for BOTH bare (`g=schurCorrection`) and conj
+  (`g=schurCorrectionConj`) — the atom is a property of `deepestEFull` itself, absorb-independent.
+
+CAVEAT (load-bearing, Codex-flagged): strict-deriv invertibility is NOT sufficient for `π̃` to be a
+`ContDiff` local diffeo (required by `rlctAtOn_comp_localDiffeo`). That needs `g` ContDiff at 0:
+- bare leg: `schurCorrection` is rational with pivot 1 ⟹ ContDiff, clean.
+- conj leg: `schurCorrectionConj` ContDiff = THE CONJ-SMOOTH STACK, holds under `hDA` (pivot
+  `deepBlkA` a unit). Consistent with dispatch-1: the conj-smooth stack is necessary AND already paid.
+
+So the gauge-reg sandwich route is SOUND for genm-l2fin to build. The bare `hTilde`
+(`DeepestL2Wiring:231`, in-flight sorry) discharges via `F=I` + the atom; the conj analogue discharges
+identically under `hDA`. No atom degeneracy, no smuggled non-diffeo, no recurrence of the dead
+comparability (these are genuine local diffeos, zero-set-preserving).

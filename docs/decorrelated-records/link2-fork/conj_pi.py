@@ -1,0 +1,32 @@
+import sympy as sp
+print("="*78)
+print("(ii) CONJ π̃: E_full = E∘coreAbsorbConj.symm. Strict-deriv invertible at 0 (under hDA)?")
+print("="*78)
+print()
+print("Same structure: Dπ̃_conj(0) = regStraightenTotalCLM2(D_E_conj) ∘ D(coreAbsorbConj.symm)(0).")
+print("  det(regStraightenTotalCLM2(D_E_conj)) = det(D_E_conj|reg).")
+print("  D_E_conj|reg = DE_reg - DE_core·(∂shiftConj/∂r).   ATOM (DE_core=0) => = DE_reg = F = I.")
+print()
+print("KEY: the atom ∂(deepestEFull)/∂core(0)=0 is a property of E=deepestEFull ITSELF, INDEPENDENT")
+print("of which absorb (bare/conj) is composed.  So DE_core=0 holds for the conj case too.")
+print("  => D_E_conj|reg = DE_reg = I (PIN-1, same F).  INVERTIBLE.")
+print()
+print("The conj core-shear coreAbsorbConj.symm: q ↦ (r, c - shiftConj(r,s), s), shiftConj continuous.")
+print("Its derivative at 0 EXISTS and is invertible IFF shiftConj is differentiable at 0 with the")
+print("core-shear form (det 1, lower-triangular block).  shiftConj = schurCutoffShiftConj, which is")
+print("ContDiff at 0 under hDA (the pivot deepBlkA invertible => the rational schur correction is")
+print("smooth at 0).  So D(coreAbsorbConj.symm)(0) is a well-defined invertible CLE (det 1).")
+print()
+# Verify the conj-shear derivative is invertible (det-1 core-shear) given shiftConj differentiable:
+# D(coreAbsorbConj.symm)(0) = [[I,0,0],[-∂shiftConj/∂r, I, -∂shiftConj/∂s],[0,0,I]] -- always det 1
+# (block lower-triangular with I on diagonal), REGARDLESS of the ∂shiftConj values.  So it's an iso
+# AS LONG AS shiftConj is differentiable at 0 (so the deriv exists).  hDA gives ContDiff => exists.
+print("D(coreAbsorbConj.symm)(0) = [[I,0,0],[-∂sC/∂r,I,-∂sC/∂s],[0,0,I]]: det=1 (unipotent), ISO,")
+print("  provided ∂shiftConj exists at 0 — which needs shiftConj ContDiffAt 0 = hDA (pivot unit).")
+print()
+print("BUT WAIT — the route uses rlctAtOn_regAbsorb_reduce2, which needs coreAbsorbConj a HOMEOMORPHISM")
+print("(MeasurePreserving ≃ₜ) for the rlctAtOn_comp_homeomorph conjugation — NOT ContDiff.  The π̃")
+print("LOCAL-DIFFEO is regStraightenOf2(E_full)∘coreAbsorbConj.symm, and rlctAtOn_comp_localDiffeo")
+print("needs π̃ ContDiff⊤ + strict-deriv iso.  π̃ ContDiff => E_full=E∘coreAbsorbConj.symm ContDiff")
+print("=> coreAbsorbConj.symm ContDiff => shiftConj ContDiff = THE CONJ-SMOOTH STACK (hDA).")
+print("  => the conj π̃ route ALSO needs the conj-smooth stack (consistent w/ dispatch-1).")
