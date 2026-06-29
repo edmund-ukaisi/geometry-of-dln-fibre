@@ -31,9 +31,9 @@ so an upstream extraction is a file-move.
 |--------|----------|------------|--------|
 | `Integral` | `ringKrullDim S = ringKrullDim A` for an integral injective ring map `A → S` | `CommRing` only | `00OK` / `00OJ` (≤-half) |
 | `Basic` | polynomial-over-field dimension + quotient/coheight foundations | `[Field k]` | — |
-| `Catenary` | `height p + dim(R/p) = n` for `R = k[Fin n]` (+ the re-derived monic-positioning) | `[Field k]` | `00OS` / `00OX` |
+| `Catenary` | `height p + dim(R/p) = n` for `R = k[Fin n]` (+ the re-derived monic-positioning) | `[Field k]` | `00OS` (00OX prose-cited) |
 | `AffineDomain` | `height p + dim(A/p) = dim A` for any finite-type **domain** `A = k[Fin n]/I` + closed-point corollaries + integral height transport | `[Field k]`, domain | `00OS`, `00H8` |
-| `Codimension` | the height↔dim bridge: `height(vanishingIdeal Z) + varietyDim Z = #σ`, at **any proper ideal** | `[Field k] [Finite σ]` | — |
+| `Codimension` | the geometric height↔dim bridge `height(vanishingIdeal Z) + varietyDim Z = #σ` (irreducible `Z` / prime vanishing ideal), **plus** the ideal form `height I + dim(R/I) = #σ` for any proper ideal `I ≠ ⊤` | `[Field k] [Finite σ]` | — |
 | `Smooth` | étale preserves height; the non-circular smooth-point local-dimension bridge | `[Field k]` | — |
 | `Regular` | a smooth point of a finite-type algebra ⟹ `Aₘ` is a regular local ring | `[PerfectField k]` | `00TV` (forward) |
 
@@ -50,7 +50,9 @@ The module dependency graph is a clean acyclic DAG: `Basic`/`Integral` are roots
 - **Codimension bridge.** For a Zariski-closed $Z$ with prime vanishing ideal over a field on a finite
   index set $\sigma$, $\operatorname{height}(\mathcal I(Z)) + \operatorname{varietyDim} Z = \#\sigma$ — the
   field-general core, with the `[IsAlgClosed]` geometric (Nullstellensatz) reading kept as a thin separate
-  layer. A strengthening drops primality to **any proper ideal**.
+  layer. A separate, purely ideal-theoretic form needs no irreducibility — for **any proper ideal**
+  $I \ne \top$, $\operatorname{height} I + \dim(R/I) = \#\sigma$ — though the geometric $\operatorname{varietyDim}$
+  reading itself still requires $Z$ irreducible (a prime vanishing ideal).
 
 - **Smooth ⟹ regular.** Over a perfect field, a maximal ideal at which a finite-type algebra is smooth has
   regular local localization. The local Krull dimension is computed via an étale-over-affine-space route

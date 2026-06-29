@@ -33,7 +33,8 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
 - **2026-06-29 — R2 LANDED** (`574a9056`). Polynomial-ring catenary re-homed to `Core/Dimension/Catenary.lean`
   (482 lines): headline `height_add_ringKrullDim_quotient_eq` (`height p + dim(R/p) = n` for `R = k[Fin n]`,
   any field; `@[stacks 00OS]`) + `primeHeight`/coheight forms + the monic-positioning crux
-  `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit` (`@[stacks 00OX]`). **Crux handled:** Mathlib's `private`
+  `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit` (Stacks 00OX, **prose-cited**; the machine `@[stacks]`
+  tags in `Catenary` are the 00OS forms). **Crux handled:** Mathlib's `private`
   Noether-normalization substitution re-derived in-repo (visibility-only verbatim copy, Provenance-documented;
   no public v4.29 route — Codex xhigh confirmed the call + the any-field generality, char/cardinality-free,
   no `IsAlgClosed`). `NoetherMonicPositioning` deleted, `PolynomialDimension` trimmed to its non-catenary
@@ -111,9 +112,10 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   decorrelated Codex), with the DLN consumers retrofitted to tag to them. → Final **hardener** pass (10) on the
   assembled stack, then exposition + this synthesis's close + PR against `dev` (operator-gated).**
 - **2026-06-29 — POLISH LANDED → EXPEDITION COMPLETE** (`abdaeb9d`). Hardener's three in-reach completions
-  done: the **any-proper-ideal** codim generalization `height_add_ringKrullDim_quotient_eq_card_of_ne_top`
-  pulled into `Core/Dimension/Codimension.lean` (the prime headline is now its corollary — strictly stronger,
-  no closure); `Regular.lean`'s non-vacuity witness on `MvPolynomial (Fin 1) ℚ`; the nested-`Ideal.` namespace
+  done: the **any-proper-ideal** ideal form `height I + dim(R/I) = #σ`
+  (`height_add_ringKrullDim_quotient_eq_card_of_ne_top`, `I ≠ ⊤`, no irreducibility) pulled into
+  `Core/Dimension/Codimension.lean`, generalizing the ideal-prime form — the geometric `varietyDim`/
+  vanishing-ideal bridge stays the prime/irreducible reading; strictly stronger, no closure; `Regular.lean`'s non-vacuity witness on `MvPolynomial (Fin 1) ℚ`; the nested-`Ideal.` namespace
   fix in `Smooth.lean` (shipped as plain names). Task 4 (a `00P2` tag swap) deliberately skipped — unverifiable
   fidelity risk. Final controller re-gate green **3819**, sorries 0, **DLN payoffs axiom-unchanged**.
 
