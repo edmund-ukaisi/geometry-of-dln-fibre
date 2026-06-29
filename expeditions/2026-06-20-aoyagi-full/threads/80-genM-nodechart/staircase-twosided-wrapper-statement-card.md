@@ -223,6 +223,46 @@ The lynchpin `G` (= the modified-chart Jacobian) is the shared API both (P) and 
 clean parallel delegation. (P) is the harder cast piece (the fderiv-VALUE factorization over opaque widths);
 (B) reuses the banked locality + `schurFrameProd_block_*` + the engine dets.
 
+## SUPERSEDED → FINAL ARCHITECTURE (route #1: `B ∘ pivotBlowupOn`, 2nd-eye-cleared)
+The scaled-columns `G` above is REFUTED (my sympy finding + 2× decorrelated Codex + genm-detradj):
+`G = Jacobian(radial=1 chart)` gives `det = 0` at (3,3,3,3); the pivot column carries the `r_i`. The
+faithful, least-cast spine is the radial ARROW via the MAP factorization `φ = B ∘ pivotBlowupOn(active,p)`
++ ONE `LinearMap.det_comp`. The `genm-detradj` B-spec is PINNED (exact at (3,3,3,3) + Codex):
+
+**`B = composeFold BFactors`**, `BFactors = (finRange (L-1)).flatMap (fun s => [schur_s, chain_s, ldu_s])`
+(genuine boundaries `s=1..L-1`; identity boundary `s=0` contributes det 1). Outermost-first; within a
+boundary evaluates ldu→chain→schur (`ldu` builds `K_s`; `chain` does `(W,C)↦(W,C−N_s·W)`; `schur` builds
+`[[K,KN],[XK,XKN+E]]`). WATCH: `chain_s` must read raw `N_s` BEFORE `schur_s` overwrites the N-slot with
+`K·N` — so the triple is `[schur, chain, ldu]` (schur outermost). Per-boundary CLE `E`: REUSE the banked
+`chartIdxEquiv` + `frameSplitEquiv` (NOT bespoke). `E_chain_s`'s `C`-block is `C_{s+1}` (the ONE
+index-shift; leaf slot = live `Rfin` at `s=L-1`).
+
+**BANKED this leg (route #1):**
+- `RouteMRadialComp.radialComp_abs_det` — the WIRING: `φ = B ∘ pivotBlowupOn active p` + `HasFDerivAt B DB`
+  + `p∈active` + `active.card=minAdm` ⟹ `|det (fderiv φ u)| = |u_p|^{minAdm−1}·|det DB|`. `det_comp`,
+  division-free, no `u_p=0` split. Abstract in `B`/`DB`.
+- `RouteMBFactorsDet.foldDerivList_abs_det_perBoundary` — obligation **(3)** `|det DB| = ∏ engine`
+  (`composeFold_abs_det` + `tripleDetList_prod_chain_one`: chain-1s drop, schur·ldu group per boundary).
+  DELEGATED to a lean-formaliser, order-independent. DONE.
+- `radialRcols_card` (the count) still load-bearing; `RouteMColumnFactor` kept as a general matrix lemma
+  (the scaled-columns chart-spine is OFF the build path).
+
+**REMAINING (the last pieces, then `radialComp_abs_det` wires the headline):**
+- Define `BFactors`/`B` over opaque widths — the per-boundary CLEs `E_{schur,chain,ldu,s}` from
+  `chartIdxEquiv`+`frameSplitEquiv` (the deferred "item-3" coordinatization; the `C_{s+1}` index-shift is
+  the dependent-Fin cast; genm-detradj OFFERS to adjudicate that reindex over opaque widths).
+- **(2) `HasFDerivAt B DB`** — FREE once `BFactors` set: `composeFold_hasFDerivAt` gives
+  `DB = (foldDerivList BFactors u).prod`.
+- **(1) the MAP identity** `phi_eq_B_comp_pivotBlowupOn : ∀ y, phiFlatLiveR1 … y = B (pivotBlowupOn active
+  structPivot y)` — shallow extensional packaging (`ext`/`chartIdxEquiv` cases + per-block rewrites via the
+  banked `schurFrameProd_block_*` + `pivotBlowupOn_apply`); NOT a new algebraic lemma.
+- Wire: `radialComp_abs_det` (1)(2) + `foldDerivList_abs_det_perBoundary` (3) → the unconditional headline,
+  fed via `interiorDet_phiFlatLiveR1_of_stairConj`-analogue (or directly stated on `fderiv phiFlatLiveR1`).
+
+The BFactors/CLE construction (the per-boundary `E`s + the `C_{s+1}` shift) is the LAST genuinely-hard ∀M
+cast — the deferred item-3 coordinatization, dependent-Fin-heavy. It is large enough to warrant a focused
+tide (and the genm-detradj `C_{s+1}`-reindex adjudication offer).
+
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
   `hasFDerivAt_Cgen_interior`/`_leaf` + `hasFDerivAt_Agen_interior`/`_leaf` (the threaded chain-layer
