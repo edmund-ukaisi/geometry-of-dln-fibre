@@ -93,6 +93,30 @@ theorem shearMBody_apply_of_not_mem (coreSet : Finset (Fin N))
   rw [Equiv.symm_apply_apply] at hspec
   exact hspec
 
+/-- **`splitOfCoreSet.symm` reconstructs the Spec block at the `coreSetᶜ` coords.** At a complement coord
+`coreSetᶜ.equivFin.symm k`, the reconstruction reads the supplied spec value `spec k` (regardless of the
+reg/core blocks). The bridge for the shear-shift reconstruction. -/
+theorem splitOfCoreSet_symm_spec (coreSet : Finset (Fin N))
+    (reg : Fin 0 → ℝ) (core : Fin coreSet.card → ℝ) (spec : Fin coreSetᶜ.card → ℝ)
+    (k : Fin coreSetᶜ.card) :
+    (splitOfCoreSet coreSet).symm (reg, (core, spec)) (coreSetᶜ.equivFin.symm k) = spec k := by
+  rw [show ((coreSetᶜ.equivFin.symm k : Fin N))
+      = coreSetEquiv coreSet (Sum.inr (Sum.inr k)) from (coreSetEquiv_inr_inr coreSet k).symm]
+  rw [splitOfCoreSet, splitOfPartition_symm_apply]
+  rfl
+
+/-- **The Spec coords of the `splitOfCoreSet` reconstruction recover the original off `coreSet`.** For any
+`m ∉ coreSet`, `splitOfCoreSet.symm (reg, (core, (split u).2.2)) m = u m` — the reconstruction with the
+ORIGINAL spec block agrees with `u` on the complement. -/
+theorem splitOfCoreSet_symm_specBlock_eq (coreSet : Finset (Fin N))
+    (reg : Fin 0 → ℝ) (core : Fin coreSet.card → ℝ) (u : Fin N → ℝ)
+    {m : Fin N} (hm : m ∉ coreSet) :
+    (splitOfCoreSet coreSet).symm (reg, (core, (splitOfCoreSet coreSet u).2.2)) m = u m := by
+  have hmc : m ∈ coreSetᶜ := Finset.mem_compl.mpr hm
+  have hk : (coreSetᶜ.equivFin.symm (coreSetᶜ.equivFin ⟨m, hmc⟩) : Fin N) = m := by
+    rw [Equiv.symm_apply_apply]
+  rw [← hk, splitOfCoreSet_symm_spec, splitOfCoreSet_spec]
+
 /-- **The membership-form Core readback.** On `coreSet`, `shearMBody u m = u m + (the shift entry at the
 `coreSet.equivFin` index of `m`)`. -/
 theorem shearMBody_apply_of_mem (coreSet : Finset (Fin N))
