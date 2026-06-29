@@ -388,6 +388,51 @@ The honest scope (decorrelated Codex Q3): this is the smeared L=2 box-divergence
 `r = M 0` GIVEN field-A containment — the two analytic hypotheses `hcancel`/`hUpos` are no longer
 assumed. A fully unconditional headline additionally discharges `hSpre`. -/
 
+/-- **The peeled-index decomposition (cast-clean).** A non-pivot ambient coord `m ≠ hN ▸ p` is the cast
+of some `p.succAbove k`. Pure `Fin` index fact (no `insertNth`/ℝ inside the generalize/`subst`). -/
+theorem exists_succAbove_index {n : ℕ} (M : Fin 3 → ℕ) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (m : Fin (routeMAmbient M)) (hm : m ≠ (hN ▸ p : Fin (routeMAmbient M))) :
+    ∃ k : Fin n, m = (hN ▸ (p.succAbove k) : Fin (routeMAmbient M)) := by
+  have key : ∀ (N : ℕ) (h : N = n + 1) (m' : Fin N), m' ≠ (h ▸ p : Fin N) →
+      ∃ k : Fin n, m' = (h ▸ (p.succAbove k) : Fin N) := by
+    intro N h m' hm'
+    subst h
+    rcases Fin.eq_self_or_eq_succAbove p m' with rfl | ⟨k, rfl⟩
+    · exact absurd rfl hm'
+    · exact ⟨k, rfl⟩
+  exact key (routeMAmbient M) hN m hm
+
+/-- **The peeled-coordinate readoff.** For `m = hN ▸ (p.succAbove k)`, the peeled point reads `y k`
+(the banked cast-cancellation `hN_cast_apply` + `insertNth_apply_succAbove`). -/
+theorem succAbove_readoff_value {n : ℕ} (M : Fin 3 → ℕ) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (z : ℝ) (y : Fin n → ℝ) (k : Fin n) :
+    (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ)
+        (hN ▸ (p.succAbove k) : Fin (routeMAmbient M)) = y k := by
+  rw [hN_cast_apply M hN (Fin.insertNth p z y) (p.succAbove k), Fin.insertNth_apply_succAbove]
+
+/-- **The peeled-point membership (generic).** With `box k := condBoxWidth M hrs hr0 δ η (hN ▸ k)` and
+`hN ▸ p = pivotCoord`, a peeled point `hN ▸ (insertNth p z y)` (pivot `z ∈ Ioo 0 δ`, `y` in the rest box)
+lies in the ambient `condBox (pivotCoord) (condBoxWidth) δ`. The cast-thrash is contained in
+`exists_succAbove_readoff` (pure index/value, no box), then the box index is rewritten. -/
+theorem insertNth_mem_condBox {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    {z : ℝ} (hz : z ∈ Set.Ioo (0:ℝ) δ) {y : Fin n → ℝ}
+    (hy : ∀ k : Fin n,
+      y k ∈ condBoxWidth M hrs hr0 δ η (hN ▸ (p.succAbove k) : Fin (routeMAmbient M))) :
+    (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ)
+      ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ := by
+  refine ⟨?_, ?_⟩
+  · -- pivot reads `z ∈ Ioo 0 δ`
+    rw [← hp, hN_cast_apply M hN (Fin.insertNth p z y) p, Fin.insertNth_apply_same]
+    exact hz
+  · -- non-pivot coord `m`: decompose `m = hN ▸ p.succAbove k`, read off `y k`, use `hy k`
+    intro m hm
+    have hmp : m ≠ (hN ▸ p : Fin (routeMAmbient M)) := hp ▸ hm
+    obtain ⟨k, hmeq⟩ := exists_succAbove_index M hN p m hmp
+    rw [hmeq, succAbove_readoff_value M hN p z y k]
+    exact hy k
+
 /-- **The smeared L=2 box-divergence on the square stratum, with `hcancel`/`hUpos` discharged.** For
 `r = M 0` (the entire genuine smeared L=2 stratum), the conditioned box `condBoxWidth` makes the off-pole
 cancellation and `U`-positivity UNCONDITIONAL (via the diagonal-dominance Gram det); the box-divergence
@@ -426,5 +471,51 @@ theorem routeMCore_smearedL2_square {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s =
     refine Uunit_pos_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin (fun k hk => ?_)
     rw [← hagree k hk]
     exact hrest2 k hk
+
+/-- The box-function double-cast collapse: `(fun k => condBoxWidth (hN ▸ k)) ∘ (hN ▸ ·) = condBoxWidth`
+on `Fin (routeMAmbient M)` (the `hN ▸ (hN ▸ ·) = id` round trip). Lets the `condBox`-headline state
+field A directly over `condBoxWidth`, not a double-cast. -/
+theorem condBoxWidth_double_cast {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0)
+    (δ η : ℝ) (hN : routeMAmbient M = n + 1) (k : Fin (routeMAmbient M)) :
+    condBoxWidth M hrs hr0 δ η (hN ▸ (hN ▸ k : Fin (n + 1)) : Fin (routeMAmbient M))
+      = condBoxWidth M hrs hr0 δ η k := by
+  have key : ∀ (N : ℕ) (h : N = n + 1) (z : Fin N),
+      (h ▸ (h ▸ z : Fin (n + 1)) : Fin N) = z := fun N h z => by subst h; rfl
+  rw [key (routeMAmbient M) hN k]
+
+/-- **The smeared L=2 box-divergence on the square stratum — `hcancel`/`hUpos`/`hmem` all discharged.**
+The box is fixed to the conditioned `condBoxWidth`; the peeled-point membership `hmem` is then discharged
+generically by `insertNth_mem_condBox`. Only the field-A containment `hSpre` and the standard chart-fact
+positivity remain as inputs — so the honest residual to a fully unconditional headline is now just
+`hSpre` (field A). -/
+theorem routeMCore_smearedL2_square_condBox {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (hr0 : r = M 0) (hr : 0 < r) (hc : 0 < M 2) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (c' ε δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    (hSpre : condBox (hN ▸ p) (condBoxWidth M hrs hr0 δ η) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε))
+    (hboxpos : 0 < (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n =>
+        condBoxWidth M hrs hr0 δ η (hN ▸ (p.succAbove k) : Fin (routeMAmbient M)))))
+    (hexp : ((r * M 2 - 1 : ℕ) : ℝ) - 2 * c' ≤ -1) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  -- restate field A through the double-cast collapse, then feed `routeMCore_smearedL2_square`
+  have hSpre' : condBox (hN ▸ p)
+      (fun k => condBoxWidth M hrs hr0 δ η (hN ▸ (hN ▸ k : Fin (n + 1)) : Fin (routeMAmbient M))) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε) := by
+    have hfun : (fun k => condBoxWidth M hrs hr0 δ η (hN ▸ (hN ▸ k : Fin (n + 1))
+        : Fin (routeMAmbient M))) = condBoxWidth M hrs hr0 δ η :=
+      funext (fun k => condBoxWidth_double_cast M hrs hr0 δ η hN k)
+    rw [hfun]; exact hSpre
+  refine routeMCore_smearedL2_square (M := M) (n := n) hrs hr0 hr hc hN p
+    (fun k => condBoxWidth M hrs hr0 δ η (hN ▸ k)) c' ε δ η γ hδ hγ hmargin hp hSpre'
+    (fun k => measurableSet_condBoxWidth M hrs hr0 δ η _)
+    (fun k => measurableSet_condBoxWidth M hrs hr0 δ η _) hboxpos hexp ?_
+  -- `hmem` discharged generically: every peeled point lands in the ambient `condBox`
+  intro z hz y hy
+  refine insertNth_mem_condBox M hrs hr0 hr hc δ η hN p hp hz (fun k => ?_)
+  simpa only [Set.mem_pi, Set.mem_univ, true_implies] using hy k
 
 end DLNFibre.DLN.RLCT
