@@ -122,6 +122,11 @@ open DLNFibre.DLN.RLCT
 -- the day (i)/(ii)/(iii) discharge, D1 (Skeleton rung 2/5) closes.
 #print axioms rlctAt_ge_nReg_add_slice
 #print axioms deepest_le_of_optimal_chart
+-- D1 PART (b) interface (the `hCore` discharge): `hCore_slice_residual_eq` — the slice residual `R`
+-- equals the reduced core pulled back along a bounded-unit local diffeo `Φ` (the G1 `I+G` inner
+-- factor) ⟹ `rlctAtOn R = rlctAtOn core₀` (diffeo transfer + spectator peel). Conditional on the
+-- producer's diffeo data; must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`.
+#print axioms hCore_slice_residual_eq
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
