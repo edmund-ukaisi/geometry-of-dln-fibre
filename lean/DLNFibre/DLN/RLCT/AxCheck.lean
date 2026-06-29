@@ -12,6 +12,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
+import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 
@@ -170,6 +171,13 @@ open DLNFibre.DLN.RLCT
 #print axioms extra_half_add_lambdaCore_Mprime_ge_square
 #print axioms hCore_middle_stratum_of_interface
 #print axioms deepest_le_of_optimal_middle_stratum
+
+-- R1 interior-det headline at the (2,2,2) node — must be CLEAN-THREE [propext, Classical.choice,
+-- Quot.sound], no `sorryAx`: `interiorDet_headline_222` is the FIRST end-to-end faithful-route
+-- interior-det Jacobian (|det Dφ| = |u_pRad|^{minAdm−1}·|aRead(pbo u)|²) on a concrete node,
+-- UNCONDITIONAL (PivotNotReader discharged via route-D, pRad ∉ readerSet by membership). The (2,2,2)
+-- VALIDATION milestone; the ∀M-L2 generalization reuses its pivot-generic lemmas.
+#print axioms interiorDet_headline_222
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

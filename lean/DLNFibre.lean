@@ -568,5 +568,12 @@ import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 -- it needs the Morse/constant-rank split Mathlib lacks + the open `deepest_gauge_squeeze_exists`. Scope:
 -- square-deepest (m,m,m); non-square H at L=2 is beyond the banked adjudication (both surfaced, not ground).
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
+-- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
+-- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
+-- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
+-- parameterization: BDataAt/phiFlatLiveR1At/radialComp_abs_det_at + pRad chosen from univ\readerSet,
+-- ∉readerSet by membership). Cone-scoped (13 files); the entry-Jacobian bijection renamed bdataSlotEquiv
+-- (deconflicted vs the smeared RouteMSmearedDecodeL2.slotEquiv — genuinely different defs). ∀M-ready.
+import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
