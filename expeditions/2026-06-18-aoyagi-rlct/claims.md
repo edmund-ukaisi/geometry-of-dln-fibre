@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive local-source selected-entry
+  two-sided loss-density iff, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.
+  For the retained-passive p.13 local source, continuity of `Cedge` supplies
+  the source measurability and fixed-basis edge-matrix measurability needed by
+  the selected-entry local-source two-sided iff.  The selected-entry signed-box
+  pushforward, residual readout, residual boundedness, and four two-sided
+  loss/density comparison bounds remain explicit.  The theorem returns a local
+  iff between actual loss-density finiteness over
+  `(mu.restrict (U inter localSource)).prod nu` and
+  `residualNegPowerIntegrableOn Cedge (U inter localSource) mu t`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-local-source-selected-entry-two-sided-loss-density-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-local-source-selected-entry-two-sided-loss-density-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-local-source-selected-entry-two-sided-loss-density-iff.md`.
+  This does not prove the signed-box pushforward or residual readout,
+  comparison bounds, residual boundedness, selected-entry critical
+  integrability, retained-passive source coverage, source-rank coverage,
+  source/image equality, source-prior/Jacobian/density transport, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, generic selected-entry chart-produced determinant
   residual, 2026-06-28.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.retainedPassiveP13Canonical_detChart_residual_pos_ae_and_lintegral_rpow_neg_of_selectedEntrySignedBox_chartProducedMeasure`.

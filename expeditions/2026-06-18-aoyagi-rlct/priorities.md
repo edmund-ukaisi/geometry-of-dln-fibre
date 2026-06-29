@@ -10,6 +10,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive local-source selected-entry two-sided loss-density iff
+
+The retained-passive p.13 local source now has the selected-entry signed-box
+two-sided iff wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity
+```
+
+It specializes the selected-entry local-source two-sided iff to
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource`.  The retained-passive
+layer proves only source measurability and fixed-basis edge-matrix
+measurability from `Continuous Cedge`.  The selected-entry signed-box
+pushforward, residual readout, residual boundedness on the local source, and
+all four two-sided loss/density bounds remain explicit.
+
+Nonclaims remain strict: no selected-entry critical inequality, no positive
+signed-box radius hypothesis, no source-density upper/nonnegativity
+hypotheses, no residual integrability proof, no source coverage or source-rank
+coverage, no source/image equality, no source-prior/Jacobian/density or
+product-measure transport, no original-loss identification, no normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, local-source selected-entry signed-box two-sided loss-density iff
 
 The selected-entry signed-box local-source socket now has a two-sided iff:
