@@ -71,4 +71,40 @@ theorem smeared_rate_of_cancel
 theorem frobeniusSq_nonneg (X : Matrix m0 c ℝ) : (0 : ℝ) ≤ ∑ i, ∑ j, (X i j) ^ 2 :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
+/-! ## The block-indexed deep-product collapse (the `Fin r ⊕ Fin s` chart-eval heart)
+
+The smeared chart's deepest factor is row-split: rows `r ⊕ s`, the TOP `r` rows the radial-minus-shear
+`z·H̄ − Λ₀·S_bot`, the BOTTOM `s` rows the residual `S_bot`. Working at the `r ⊕ s` index level (NOT the
+opaque `Fin (M ⟨L−1⟩)`) keeps the product collapse cast-free; the flat chart instantiates this via ONE
+`finSumFinEquiv`/`finCongr` reindex of the deepest-width axis. -/
+
+/-- **The block deepest factor** `deepBlock z H̄ S_bot Λ₀ : Matrix (r ⊕ s) c`: `Sum.inl k ↦
+(z·H̄ − Λ₀·S_bot) k`, `Sum.inr k ↦ S_bot k`. The `r ⊕ s`-indexed deepest factor `A^{L−1}`. -/
+def deepBlock (z : ℝ) (Hbar : Matrix r c ℝ) (Sbot : Matrix s c ℝ) (Λ₀ : Matrix r s ℝ) :
+    Matrix (r ⊕ s) c ℝ :=
+  Sum.elim (z • Hbar - Λ₀ * Sbot) Sbot
+
+/-- **The block deep-product collapse** `Pfront · deepBlock = z • (P₁·H̄)`. The front factor
+`Pfront : Matrix m0 (r ⊕ s)` column-splits as `P₁ = Pfront∘inl` (rank block) and `P₂ = Pfront∘inr`
+(residual); off the shear cancellation `P₁·Λ₀ = P₂`, the product over `r ⊕ s` collapses to the pure
+radial. Combines `Fintype.sum_sum_type` (the `r ⊕ s` sum split) with `telescope_collapse`. The cast-free
+`Fin r ⊕ Fin s`-level chart-eval; the consumer of `frontShear_cancel_general`. -/
+theorem deepBlock_collapse
+    (z : ℝ) (Pfront : Matrix m0 (r ⊕ s) ℝ)
+    (Hbar : Matrix r c ℝ) (Sbot : Matrix s c ℝ) (Λ₀ : Matrix r s ℝ)
+    (P₁ : Matrix m0 r ℝ) (P₂ : Matrix m0 s ℝ)
+    (hP₁ : ∀ i k, P₁ i k = Pfront i (Sum.inl k)) (hP₂ : ∀ i k, P₂ i k = Pfront i (Sum.inr k))
+    (hcancel : P₁ * Λ₀ = P₂) :
+    Pfront * deepBlock z Hbar Sbot Λ₀ = z • (P₁ * Hbar) := by
+  -- `Pfront = fromCols P₁ P₂` (column split), so `Pfront · deepBlock = P₁·(top) + P₂·(bottom)`
+  have hsplit : Pfront * deepBlock z Hbar Sbot Λ₀
+      = P₁ * (z • Hbar - Λ₀ * Sbot) + P₂ * Sbot := by
+    funext i j
+    rw [Matrix.mul_apply, Fintype.sum_sum_type]
+    simp only [deepBlock, Sum.elim_inl, Sum.elim_inr, Matrix.add_apply, Matrix.mul_apply]
+    refine congrArg₂ (· + ·) ?_ ?_
+    · exact Finset.sum_congr rfl (fun k _ => by rw [hP₁ i k])
+    · exact Finset.sum_congr rfl (fun k _ => by rw [hP₂ i k])
+  rw [hsplit, telescope_collapse z P₁ P₂ Hbar Sbot Λ₀ hcancel]
+
 end DLNFibre.DLN.RLCT
