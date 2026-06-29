@@ -11,6 +11,7 @@ work.
 - [`review.md`](review.md) — reviewer functions (fidelity, simplification, claim-soundness, precision, synthesis-coherence, wording) and the object-level wording rule.
 - [`precision.md`](precision.md) — name and state a result at exactly what is proven (Proved/Assumed/Cited/Deferred); the completeness corollary.
 - [`bedrock.md`](bedrock.md) — the bar above the sorry-gate: building results worth standing on (non-vacuity, hygiene, characterization, fenced interfaces); defeats *conceptual* slop, not just technical; the controller judges against this taste.
+- [`library-building.md`](library-building.md) — when to build a well-established-maths library vs cite a monument (the build-vs-cite test), Mathlib-grade API discipline, foundation-first execution, and the extraction trigger.
 - [`codex-consultation.md`](codex-consultation.md) — when and how to consult Codex as the independent second model.
 - [`statement-cards.md`](statement-cards.md) — linking a formalised claim to its Lean theorem in markdown.
 - [`writing-style.md`](writing-style.md) — the umbrella research-writing discipline: object-level focus + the banned-wording list, elementary build-up, layered detail (footnotes / collapsibles), and the scholium renderer's rendering rules.

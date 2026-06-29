@@ -31,6 +31,18 @@ The stance:
   **Just do it!** Don't file it as a "chore" (an *unprobed* difficulty claim, not a defer). Surface to move the
   *boundary* — but an **earned** taste-judgment that a gap is the *right* extension is itself direction:
   **Just Do It** if within reach, else **roadmap** it; only a *bare, unargued* extension waits for the operator.
+- **Build the buildable — Mathlib-absence is not a wall.** The team's strength is getting *well-established
+  mathematics* done and hardened *at scale*: the labour is *abundant*, so the scarce thing is the
+  **discrimination** — *detail-at-scale* (standard material whose proof is patient and decomposable: **build
+  it**, as a clean reusable Mathlib-grade library, letting the sea rise over a whole foundation) versus
+  *genuine monument* (a single deep insight that is itself a research achievement — resolution of
+  singularities, the analytic SLT core: **cite it**). The discriminator is detail-at-scale vs monument, never
+  in-Mathlib-vs-not; the failure mode is **timidity disguised as rigor** ("not in Mathlib, therefore risky").
+  The guardrail is the rest of this disposition — name results for what they are, separate Proved/Cited, cite
+  the monuments: bold to build the buildable, humble before the genuine mountain. Committing the team to a
+  build is the **controller's** executive call ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md));
+  the build-vs-cite test and the Mathlib-grade API discipline live in
+  [`docs/policies/library-building.md`](docs/policies/library-building.md).
 - **Name results for what they are.** A result's name and statement denote exactly what is proven — no more;
   reaching for an impressive name (or "done") is the visible-progress instinct in disguise. Separate Proved /
   Assumed / Cited / Deferred. See [`docs/policies/precision.md`](docs/policies/precision.md). (Here the
