@@ -195,4 +195,44 @@ theorem deepest_le_of_optimal_via_L2 {L : ℕ} (H : Fin (L + 1) → ℕ) (r : �
   rw [hDeepest, hAtV]
   gcongr
 
+/-- **D1 ≥-leg full-B bridge — the ONE-SIDED form** (the verdict's route, 2026-06-29). Identical
+conclusion to `deepest_le_of_optimal_via_L2`, but it consumes L2-at-`v` as a **one-sided LOWER bound**
+`hAtV : nReg/2 + coreV ≤ Lv` (★) rather than the equality `Lv = nReg/2 + coreV`. This is what (★)
+actually delivers: at a general (NON-rank-exact) optimal `v`, the loss has at LEAST `nReg` independent
+nondegenerate-quadratic directions, so its local RLCT is `≥` the regular shift `nReg/2` plus the
+residual-core RLCT — an inequality, NOT an equality (extra smooth directions at a less-singular `v`
+only RAISE the RLCT; the soundness margin `nReg_v ≥ nReg`, equality iff `v` is deepest, is the
+pen-and-paper kill-condition that was DISARMED). The deepest side stays an EQUALITY (`hDeepest`,
+banked via `deepest_regular_core_reduces`); the CORE-P1 comparison `coreDeepest ≤ coreV` is
+`deepest_le_of_homogeneous_core`. The `gcongr` chain
+`Ldeepest = nReg/2 + coreDeepest ≤ nReg/2 + coreV ≤ Lv` closes it. This is the skeleton that
+`rlctAt_deepest_le_of_optimal` (Skeleton) consumes once (★) lands — reducing the remaining work to
+EXACTLY delivering (★).
+
+**VERIFY-FIRST FINDING (2026-06-29, decorrelated Codex xhigh CONFIRMED).** (★)'s analytic content is
+the **constant-rank quadratic split** (splitting / Morse–Bott / Gromoll–Meyer lemma): a local diffeo
+`φ` at `v` with `loss ∘ φ⁻¹(u) = u₁² + … + u_{nReg}² + R(u_{nReg+1}, …)`, `R` GENUINELY independent of
+the split coords, after which `step_rlct_ge` (S1Fubini) iterates to (★). Mathlib v4.29 has **NO** such
+lemma (no Morse / Morse-Bott / Gromoll-Meyer / splitting / constant-rank quadratic decomposition; the
+only "Morse" hits are Morse polynomials in Galois theory + Morse-Sard in comments). The explicit
+deepest-point chart does NOT transfer (it rides the rank-`r`-EXACT pivot structure, gone at a general
+`v`). Codex ruled out every lighter route: (a) per-stratum charts = "re-proving the splitting lemma in
+disguise, case-by-case, not lighter"; (b) the full loss (`B ≠ 0`) is NOT homogeneous, no ray argument;
+(c) Hessian-rank `≥ nReg` alone gives only a quadratic bound, NOT the independence needed to ADD
+`nReg/2`; (d) Watanabe-style `rlct ≥ rank/2 + rlct(kernel)` itself rests on a local normal form
+(recreates the splitting lemma). So (★) gates on a SCOPED analytic splitting lemma — its own focused
+sub-piece (Codex: hundreds of lines from Mathlib's IFT, a self-contained tide), NOT something to grind
+blind inside this leg. This banked skeleton is the clean hand-off: the leg closes the moment (★) is a
+theorem. -/
+theorem deepest_le_of_optimal_via_L2_ge {L : ℕ} (H : Fin (L + 1) → ℕ) (r : ℕ)
+    {B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ}
+    (Ldeepest Lv : ℝ≥0∞) (nReg : ℕ) (coreDeepest coreV : ℝ≥0∞)
+    (hDeepest : Ldeepest = (nReg : ℝ≥0∞) / 2 + coreDeepest)
+    (hAtV : (nReg : ℝ≥0∞) / 2 + coreV ≤ Lv)
+    (hCore : coreDeepest ≤ coreV) :
+    Ldeepest ≤ Lv := by
+  rw [hDeepest]
+  refine le_trans ?_ hAtV
+  gcongr
+
 end DLNFibre.DLN.RLCT
