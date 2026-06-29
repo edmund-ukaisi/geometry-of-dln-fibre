@@ -264,8 +264,8 @@ data `a + b ≤ m`: given the second-peel chart transfer (`hchart₂ : rlctAtOn 
 (0,t0₂)`), the post-(second-)chart sum-of-squares form `F₂ = ∑_{extra} s² + Q₂` with its slice
 residual `R₂ = Q₂(0,·)` (measurable a.e.-nonzero) and quasi-split comparison `hcmp₂`, the
 degraded-core value `hDegraded : rlctAtOn R₂ t0₂ = ofReal(lambdaCore M')` (the §5 interface
-specialized — R1's
-general resolution at the rectangular `M'`), and `coreDeepest = ofReal(lambdaCore (square m))`,
+specialized — R1's general resolution at the rectangular `M'`), and
+`coreDeepest = ofReal(lambdaCore (square m))`,
 the D1 `hCore` holds: `coreDeepest ≤ rlctAtOn R t0`. The `extra` Morse squares peeled in the SECOND
 engine pass are `extraCount m a b = m(a+b) − ab`. -/
 theorem hCore_middle_stratum_of_interface {Y₂ : Type*}
