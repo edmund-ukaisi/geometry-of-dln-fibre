@@ -141,4 +141,35 @@ noncomputable def Lam0u (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeM
     Matrix (Fin r) (Fin s) ℝ :=
   ((P1u M hrs u).transpose * P1u M hrs u)⁻¹ * (P1u M hrs u).transpose * P2u M hrs u
 
+/-- The `z`-free unit `U = ‖P₁·H̄_unit‖²_F` (the polynomial factor of the rate `F = z²·U`). -/
+noncomputable def Uunit (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) : ℝ :=
+  ∑ i, ∑ j, ((P1u M hrs u * HbarUnit M hrs hr hc u) i j) ^ 2
+
+/-- `Uunit ≥ 0` (a sum of squares). -/
+theorem Uunit_nonneg (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) : (0 : ℝ) ≤ Uunit M hrs hr hc u :=
+  frobeniusSq_nonneg _
+
+/-! ## The rate wrapper: `routeMCore M (ψ (R u)) = (zu u)²·Uunit` from the DECODE + cancellation
+
+The reusable bridge from the opaque-width DECODE `ψ(R u) = phiL2 M hrs (A0u u) …` (with `Hbar := HbarUnit`)
+to the headline's peeled-rate, via the banked rate core `routeMCore_phiL2`. The decode + the off-pole
+cancellation `P₁·Λ₀ = P₂` are the per-`u` inputs (the cancellation holds on the conditioned box where
+`det P₁ ≠ 0`). -/
+
+/-- **The rate from the decode.** Given the decode `ψ(R u) = phiL2 M hrs (A0u u)(zu u)(HbarUnit u)(Sbotu u)
+(Lam0u u)` and the shear cancellation `P₁·Λ₀ = P₂` (off the pole), the loss factorizes:
+`routeMCore M (ψ(R u)) = (zu u)²·Uunit u`. The banked `routeMCore_phiL2` with `Hbar := HbarUnit`. -/
+theorem routeMCore_rate_of_decode (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (ψ R : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ)) (u : Fin (routeMAmbient M) → ℝ)
+    (hDecode : ψ (R u) = phiL2 M hrs (A0u M u) (zu M hrs hr hc u) (HbarUnit M hrs hr hc u)
+      (Sbotu M hrs u) (Lam0u M hrs u))
+    (hcancel : P1u M hrs u * Lam0u M hrs u = P2u M hrs u) :
+    routeMCore M (ψ (R u)) = (zu M hrs hr hc u) ^ 2 * Uunit M hrs hr hc u := by
+  rw [hDecode, Uunit]
+  exact routeMCore_phiL2 M hrs (A0u M u) (zu M hrs hr hc u) (HbarUnit M hrs hr hc u)
+    (Sbotu M hrs u) (Lam0u M hrs u) (P1u M hrs u) (P2u M hrs u)
+    (fun i a => rfl) (fun i b => rfl) hcancel
+
 end DLNFibre.DLN.RLCT
