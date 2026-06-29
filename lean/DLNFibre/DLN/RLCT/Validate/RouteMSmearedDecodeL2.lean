@@ -505,4 +505,44 @@ theorem measurableEmbedding_psiMap (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
   rw [hpsi]
   exact (h3.comp h2).comp h1
 
+/-! ## The radial blow-up `R = Rmap` certificates (fderiv / injOn / |det| = |u p|^h) -/
+
+/-- `topCoords.card = r·(M 2)` (the injective image of `Fin r × Fin (M 2)`). -/
+theorem topCoords_card (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    (topCoords M hrs).card = r * M 2 := by
+  rw [topCoords, Finset.card_image_of_injective _ ?_, Finset.card_univ, Fintype.card_prod,
+    Fintype.card_fin, Fintype.card_fin]
+  · -- the map `(a,j) ↦ coordOf (topSlot a j)` is injective
+    rintro ⟨a, j⟩ ⟨a', j'⟩ h
+    have hslot : topSlot M hrs a j = topSlot M hrs a' j' := coordOf_injective M h
+    have hj : j = j' := Fin.ext (congrArg (fun q : FlatIdx M => (q.2.val : ℕ)) hslot)
+    have hrow : (deepWidthEquiv hrs (Sum.inl a) : Fin (M 1)) = deepWidthEquiv hrs (Sum.inl a') :=
+      Fin.ext (congrArg (fun q : FlatIdx M => (q.1.2.val : ℕ)) hslot)
+    have ha : a = a' := Sum.inl_injective ((deepWidthEquiv hrs).injective hrow)
+    rw [ha, hj]
+
+/-- The fderiv carrier `Dmap u := pivotBlowupOnDeriv topCoords pivotCoord u`. -/
+noncomputable def Dmap (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    (Fin (routeMAmbient M) → ℝ) →L[ℝ] (Fin (routeMAmbient M) → ℝ) :=
+  pivotBlowupOnDeriv (topCoords M hrs) (pivotCoord M hrs hr hc) u
+
+/-- `Rmap` has fderiv `Dmap` on any set (the banked `pivotBlowupOn_hasFDerivWithinAt`). -/
+theorem Rmap_hasFDerivWithinAt (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (S : Set (Fin (routeMAmbient M) → ℝ)) (u : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivWithinAt (Rmap M hrs hr hc) (Dmap M hrs hr hc u) S u :=
+  pivotBlowupOn_hasFDerivWithinAt _ _ S u
+
+/-- `Rmap` is injective off `{u pivot = 0}` (the banked `pivotBlowupOn_injOn`). -/
+theorem Rmap_injOn (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (S : Set (Fin (routeMAmbient M) → ℝ)) :
+    Set.InjOn (Rmap M hrs hr hc) (S \ {x | x (pivotCoord M hrs hr hc) = 0}) :=
+  pivotBlowupOn_injOn _ _ S
+
+/-- `|det (Dmap u)| = |u pivot|^(r·(M 2) − 1)` (the banked `pivotBlowupOnDeriv_det`, `card = r·c`). -/
+theorem Dmap_abs_det (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    |(Dmap M hrs hr hc u).det| = |u (pivotCoord M hrs hr hc)| ^ (r * M 2 - 1) := by
+  rw [Dmap, pivotBlowupOnDeriv_det _ _ (pivotCoord_mem M hrs hr hc), topCoords_card, abs_pow]
+
 end DLNFibre.DLN.RLCT
