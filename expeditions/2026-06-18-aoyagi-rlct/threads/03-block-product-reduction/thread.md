@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive-parameter pointwise support readout
+
+Reproduction:
+`reproduction-a2-case2-passive-parameter-pointwise-support-readout.md`.
+Statement card:
+`statement-card-a2-case2-passive-parameter-pointwise-support-readout.md`.
+
+Lean now exposes:
+
+```text
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_chartMap
+```
+
+These theorems certify constructed passive-sector source points pointwise:
+under explicit `Ctop`/`A1passive` determinant-unit hypotheses and supplied
+rank equations `hprod`, `hr0`, and `hr1`, the source point lies in the named
+source-rank stratum and retained-passive p.13 local source, and its residual
+coordinate map is the selected-entry chart map.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+Kuhn the 3rd xhigh read-only review returned PASS:
+`review-a2-case2-passive-parameter-pointwise-support-readout.md`.
+
+Nonclaims: no source-rank coverage, arbitrary-source local coverage,
+source-image equality, measure pushforward, source-prior transport, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive-parameter fixed-base source readback
 
 Reproduction:

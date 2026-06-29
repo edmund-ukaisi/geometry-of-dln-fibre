@@ -161,6 +161,28 @@ No such claim is formalisation-ready until both fields are filled.
   This is source-map/readback bookkeeping only: no source-image equality,
   local coverage of arbitrary source points, measure pushforward,
   source-prior transport, normal crossings, pole order, or RLCT.
+- **Current status addendum, Case 2 passive-parameter pointwise support
+  readout, 2026-06-29.** Lean now exposes
+  `case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum`,
+  `paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive`,
+  and
+  `case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_chartMap`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  The combined theorem says each constructed passive-sector point lies in the
+  specified source-rank stratum and retained-passive p.13 local source, and its
+  residual coordinate map is the selected-entry chart map, under explicit
+  determinant-unit and pointwise rank hypotheses.  Reproduction and statement
+  card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-pointwise-support-readout.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-pointwise-support-readout.md`.
+  Xhigh review passed with no findings in
+  `threads/03-block-product-reduction/review-a2-case2-passive-parameter-pointwise-support-readout.md`;
+  direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+  This is pointwise support/readout only: no source-rank coverage, no
+  source-image equality, no measure pushforward, no source-prior transport,
+  no normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 selected-entry passive-parameter datum,
   2026-06-29.** Lean now exposes
   `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive`,

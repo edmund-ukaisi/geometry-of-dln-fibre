@@ -3,6 +3,40 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive-Parameter Pointwise Support Readout - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has a passive-sector
+pointwise source-rank/local-source/residual-readout package:
+
+```text
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_chartMap
+```
+
+For `z = (theta,y)`, the source point is produced from the passive datum
+banked in the previous step.  Under `Ctop` and `A1passive` determinant-unit
+hypotheses and supplied rank equations `hprod`, `hr0`, and pointwise `hr1`,
+the source point lies in the named source-rank stratum and the retained-passive
+p.13 local source, and its residual coordinate map is
+`SelectedEntrySignedBox.CenterCoord.chartMap pivotNext y`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-pointwise-support-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-pointwise-support-readout.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only review by `Kuhn the 3rd` passed with no findings; see
+`threads/03-block-product-reduction/review-a2-case2-passive-parameter-pointwise-support-readout.md`.
+
+Nonclaims: no source-rank coverage, no source-image equality, no local
+coverage of arbitrary source points, no measure pushforward, no passive
+Jacobian/source-density accounting, no source-prior transport, no normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive-Parameter Fixed-Base Source Readback - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has the first

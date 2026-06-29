@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive-parameter pointwise support readout
+
+The passive-selected-entry source-map frontier now has a pointwise
+support/readout package:
+
+```text
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum
+paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_chartMap_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_chartMap
+```
+
+The theorem keeps all support hypotheses explicit: determinant units for
+`Ctop` and `A1passive`, base-product rank `hprod`, first-edge rank equation
+`hr0`, and pointwise successor-rank equation `hr1`.  It proves source-rank
+membership and local-source membership only for constructed passive-sector
+points, plus the residual-coordinate readout
+`CenterCoord.chartMap pivotNext y`.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-pointwise-support-readout.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-pointwise-support-readout.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`, and
+xhigh read-only review by `Kuhn the 3rd` passed with no findings.
+
+Next priority is a passive-sector chart-produced measure support theorem or a
+concrete passive-coordinate continuity/product-measure package.  Do not treat
+this pointwise package as source-rank coverage, image equality, raw-Haar
+transport, or original source-prior transport.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive-parameter fixed-base source readback
 
 The passive-selected-entry source-map frontier has moved one step beyond the
