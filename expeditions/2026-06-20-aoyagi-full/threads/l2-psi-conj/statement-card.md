@@ -34,18 +34,28 @@ RLCT-side half of the atom-free L2 bridge `hstep2 = Step Θ (banked) ∘ Step Ψ
 >   - The boundary vanishing `deepBlkY_layer0_zero` / `deepBlkZ_layerLast_zero` / `deepBlk_boundary_of_L2`.
 > - **Assumed (parametric inputs, the bare's contract).**
 >   - `hsub3reg` — the `deepestEFull²`-sum reg-energy invariance under the conjugated move
->     `psiSplitRawL2CoreConj` (germ-local). [The bare's analogue needed the `hm11/hm12/hm21` wire-tie;
->     whether the frame-correct conjugated move dissolves it is an open optimization — genm-l2thread.]
->   - `hsub4core` — the core = Score (germ-local). TRUE via the conjugated route (vs the FALSE bare
->     dictionary); the in-file discharge via the banked keystones is a pending optimization (alignment
->     of the moved-point Schur cores to the readback's decode-`x` integrand — routed to genm-l2thread).
+>     `psiSplitRawL2CoreConj` (germ-local). The module-level reg-INPUTS are banked
+>     (`readX/Y/Z_psiSplitRawL2CoreConj_eq`, `framedParamsPivot_psiSplitRawL2CoreConj_of_ne`); the wire
+>     assembles them via `e2_regPreserve` (with the conjugated `l2A0c`, needs only hDA0) +
+>     `reindex_prod_regBlocks_eq_of_e2`. **The bare's `hm11/hm12/hm21` wire-tie DISSOLVES** for the
+>     conjugated (frame-correct) move (genm-l2thread, defs + 4 numerics) — the conjugated route removes
+>     the bare's OTHER blocker.
+>   - `hsub4core` — the core = Score (germ-local). The keystones are PROVEN
+>     (`absorbedCoreConj_psiSplitRawL2CoreConj_last = (1−Kc)·S1c`, `_of_ne`,
+>     `l2T1pConj_sub_Z1A1invY1pConj_eq`); the in-file discharge
+>     `deepestCoreF_coreAbsorbConj_psiSplitRawL2CoreConj_eq_score` is PROVEN modulo the single conjugated
+>     readback-tie `hLDUtieConj` (`frobSq(prod(deepestM) C) = Score`), which is TRUE here (vs the bare's
+>     permanent W-a-FALSE sorry at `DeepestL2Wiring:679`) — the conjugated route closes what the bare
+>     never could. The `hLDUtieConj` full discharge (via `prod_deepestM_eq_schur_ldu_readback` +
+>     `absorbedCoreConj_eq_schurCore`, with the chart-point block-alignment + the `subst hL2eq`
+>     late+local Fin-3 application) is the remaining follow-on.
 >   - `hDA : ∀ s, IsUnit (deepBlkA_s)`. Layer-0 = `deepestPoint_leadingBlock_isUnit`/htop at the wire;
 >     layer-(L−1) = the row-WLOG dual, the staged #154 seam (controller coordinates the ⨅-discharge).
 > - **Cited.** none new (reuses banked Step Θ keystones `absorbedCoreConj_eq_schurCore`,
 >   `prod_deepestM_eq_schur_ldu_readback`, `deepBlkT_{layer0,layerLast}_zero`,
 >   `deepestCoreF_coreAbsorbConj_eq_prodSchur`, and the abstract `rlctAtOn_diffeo_bridge_of`).
 > - **Deferred.** The wire rewire `hstep2 = Step Θ ∘ Step Ψ_conj` (single-writer `DeepestL2Wiring.lean`,
->   the controller's). The in-file discharge of `hsub3reg`/`hsub4core` (optimizations, see Assumed).
+>   the controller's). The `hLDUtieConj` full discharge (chart-alignment + Fin-3 subst, follow-on).
 > - **Correctness catch (banked).** The gauge re-encode read↔block OFFSET: the conjugated last-Y tag
 >   stores the READ `Y1'c − deepBlkY_last`, NOT the block `Y1'c` (literal `Y1'c` breaks the basepoint —
 >   `deepBlkY_last ≠ 0` at the L=2 boundary). genm-l2thread verified (defs + 2 numeric tests). The CORE
