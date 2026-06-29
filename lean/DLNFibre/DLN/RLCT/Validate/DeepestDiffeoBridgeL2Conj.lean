@@ -2439,11 +2439,109 @@ theorem frobSq_prod_deepestM_hLDUtieConjC_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
                   (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₁)⁻¹
               * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
                   (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₂) := by
-    sorry
+    -- Collapse the trivial `finCongr` reindexes; `C 1 = (1−Kc)·S1c` (`1 = lastLayer`, defeq).
+    rw [finCongr_refl, finCongr_refl]
+    erw [Matrix.reindex_refl_refl]
+    have hCval : hLDUtieConjC H r B hB hr hL rfl x (1 : Fin 2)
+        = (1 - l2KConj H r B hB hr hL rfl q) * l2S1Conj H r B hB hr hL rfl q := by
+      rw [hLDUtieConjC]; exact Function.update_self _ _ _
+    rw [hCval]
+    -- Step A block reads at the two layers.
+    have hT0 := deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin 2) (by rfl)
+    have hT1 := deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL) (by rfl)
+    obtain ⟨hA0, _hZ0, hY0, _⟩ :=
+      reindex_decode_split_toBlocks H r B hB hr hL x (⟨0, by omega⟩ : Fin 2) hT0
+    obtain ⟨hA1, hZ1, hY1, hT1c⟩ :=
+      reindex_decode_split_toBlocks H r B hB hr hL x (lastLayer hL) hT1
+    -- `Kc = Z1c·P00c⁻¹·Y0c`; `S1c = T1c − Z1c·A1c⁻¹·Y1c` — match block-by-block.
+    rw [l2KConj, l2S1Conj, hP00, l2Z1Conj, l2A1Conj, l2Y1Conj, l2T1Conj, coreLast]
+    -- `Y0c`'s mid-cast collapses to `MX_0.toBlocks₁₂` (= the `Y0` decode read).
+    have hY0c : l2Y0Conj H r B hB hr hL rfl q
+        = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+            (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂ := by
+      rw [l2Y0Conj, ← hY0,
+        show finCongr (midWidth_eq_of_L2 H r hL rfl) = Equiv.refl _ from finCongr_refl _]
+      erw [Matrix.reindex_refl_refl]
+      rfl
+    rw [hY0c, ← hZ1, ← hA1, ← hY1, ← hT1c]
+    -- Reconcile the product-pivot column equiv `pivotThr J` (from hP00) with `rThr (H 2)` (hJfront).
+    rw [hJfront, pivotThresholdSplit_frontEmbed]
+    congr 1
   -- Apply the Fin-3 readback.
   exact prod_deepestM_eq_schur_ldu_readback H r B hB hr hL J hJfront Pf Qf
     hPtri hQtri hP22 hQ22 x hS3b hP11inv hQ11inv hMid11inv hA0inv hA1inv
     (hLDUtieConjC H r B hB hr hL rfl x) hC0 hC1
+
+/-- **The conjugated core = Score at the chart point — `hLDUtieConj` DISCHARGED in-file.** The conjugated
+absorbed-core energy of the moved chart point `q = deepestSplit w0 x` equals the Score-Schur frobenius
+energy, with the readback-tie `hLDUtieConj` discharged via `frobSq_prod_deepestM_hLDUtieConjC_eq` (Steps
+B-E) — no `hLDUtieConj` hypothesis remains. This is what the conjugated wire's `hsub4core` consumes (the
+bare's `hsub4core` is a permanent W-a-false gap; the conjugated route closes it). -/
+theorem deepestCoreF_coreAbsorbConj_psiSplitRawL2CoreConj_eq_score_at_chart (H : Fin (L + 1) → ℕ)
+    (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₂₂ = 1)
+    (hQ22 : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₂ = 1)
+    (x : Fin (flatDim H) → ℝ)
+    (hq : psiSplitRawL2CoreConj H r B hB hr hL hL2eq
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
+      ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
+        ((cutoffBumpConj H r B hB hr hL hDA).rIn))
+    (hW : (l2WConj H r B hB hr hL hL2eq
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).det ≠ 0)
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hP11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf)).toBlocks₁₁)
+    (hQ11inv : Invertible (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (endpointQL H hL Qf)).toBlocks₁₁)
+    (hMid11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (prod H ((paramsEquivFlat H).symm x))).toBlocks₁₁)
+    (hA0inv : Invertible (Matrix.reindex
+          (rThresholdSplit r (H (⟨0, by omega⟩ : Fin L).castSucc) (hr (⟨0, by omega⟩ : Fin L).castSucc))
+          (rThresholdSplit r (H (⟨0, by omega⟩ : Fin L).succ) (hr (⟨0, by omega⟩ : Fin L).succ))
+        (((paramsEquivFlat H).symm x) (⟨0, by omega⟩ : Fin L))).toBlocks₁₁)
+    (hA1inv : Invertible (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc)
+          (hr (lastLayer hL).castSucc)) (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (((paramsEquivFlat H).symm x) (lastLayer hL))).toBlocks₁₁) :
+    deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq
+          (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))).2.1
+      = frobSq ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂) :=
+  deepestCoreF_coreAbsorbConj_psiSplitRawL2CoreConj_eq_score H r B hB hr hL hL2eq hDA
+    (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x) hq hW _
+    (frobSq_prod_deepestM_hLDUtieConjC_eq H r B hB hr hL hL2eq J hJfront Pf Qf
+      hPtri hQtri hP22 hQ22 x hS3b hP11inv hQ11inv hMid11inv hA0inv hA1inv)
 
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
