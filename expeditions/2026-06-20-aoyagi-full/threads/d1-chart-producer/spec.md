@@ -63,6 +63,55 @@ confirms it builds at general `v`). General-L = #120.
 
 ---
 
+## §QA-B. ALTITUDE-B `hchart` QA GATE (held by genm-d1producer; binding on the next genm-d1prod build)
+
+The §SEL producer (Altitude A) is MERGED to canonical @81992c38 (controller green-gated, 8600 jobs, AxCheck
+added). The NEXT build (commissioned 2026-06-29) is the concrete DLN selected-minor IFT chart + the
+chart-transfer `hchart : rlctAt H (dlnLoss H B) v = rlctAtOn F ((0:Fin m→ℝ), t0)` (Altitude B — where the
+D-nonvanishing burden ACTUALLY lives). Pinned here so the load-bearing criteria are explicit, not
+reconstructed when it lands.
+
+1. **★ D-NONVANISHING of the CONCRETE chart (THE load-bearing gate).** The Altitude-A QA established the
+   D-concern migrated to `hchart`; this is where it must be discharged for real. The build constructs an
+   IFT chart `Ψ` on `Params H` (or its flat slice) at a general optimal `v`, straightening the selected
+   `nReg` gradient minors. QA must confirm:
+   (a) the chart's Jacobian `det DΨ ≠ 0` on an open `V ∋ v` — i.e. the `nReg` selected minors are GENUINELY
+       INDEPENDENT at `v` (the IFT premise), and the bounded-unit `0 < a ≤ |det| ≤ b` near `v` (what
+       `rlctAtOn_boundedUnit_localHomeomorph` consumes). The Gauss–Newton fact (§MB.4) — `Dg(v)` has rank
+       `nReg_v ≥ nReg`, so SOME `nReg` minors are independent — is the existence anchor; QA confirms the
+       build SELECTS an independent set (not an arbitrary `nReg`, which could be rank-deficient) and proves
+       `det ≠ 0`, NOT posits it.
+   (b) the residual `q` (the inactive `g`'s ∘ `Ψ.symm`) is genuinely `C¹` on `V` (so `hcmp_of_contDiff`
+       applies) — follows from `Ψ` a `C^r` diffeo + `dlnLoss` polynomial, but confirm the build PROVES it.
+2. **CHART-TRANSFER FIDELITY (`hchart` is the genuine RLCT equality, not a cheat).** Confirm `hchart` is
+   discharged via the banked `rlctAtOn_boundedUnit_localHomeomorph` (raw-data form) applied to the ACTUAL
+   `Ψ` — with `Ψ v = `(flat origin)`, `Ψsymm`, both `C¹` on `V`, the inverse identities, and the
+   bounded-unit det from (1a). Confirm the `F` in `hchart` is EXACTLY the post-chart `∑s² + ‖q‖²` the merged
+   `rlctAt_ge_nReg_add_slice_of_residual` / `deepest_le_of_optimal_of_iftResidual` consume (same `q`, same
+   `m = nReg`) — NOT a re-defined `F` that silently drops a term. The `Params H ↔ flat` bridge
+   (`paramsEquivFlat`, measure-preserving) must be threaded if the chart lives on `Params H`.
+3. **CLEAN-THREE + axiom hygiene.** Forced `#print axioms` on the chart-transfer theorem(s) =
+   `[propext, Classical.choice, Quot.sound]`, no `sorryAx`. In particular `hchart` must NOT be discharged
+   via any sorry-carrying deepest-route helper; it is a fresh IFT-chart construction at the general `v`.
+4. **NON-VACUITY.** Confirm the chart construction is non-vacuous: the `nReg`-independent-minor selection +
+   `det ≠ 0` + `C¹` `q` are JOINTLY satisfiable at the test optimal `v` (e.g. (3,3,3)/r=1 middle, where
+   `nReg_v=7 > nReg=5`, so an independent 5-subset exists — the Gauss–Newton Gram has rank 7, pick any 5
+   independent gradient rows). If the build can only construct the chart at the DEEPEST point (rank-exact),
+   that is a SCOPE GAP (D1 needs general `v`) — surface it.
+5. **DENOMINATOR RECONCILIATION (the directed-exact tie-in).** The §SEL sympy check used
+   `D = (X2+1)·(1−Y1·Z2)`. Confirm the build's ACTUAL chart denominator (whatever its IFT produces) is the
+   one proven nonvanishing in (1a) — and that it matches the structure the directed-exact `hcmp` certificate
+   assumed (or that the Altitude-A `hcmp_of_contDiff` makes the specific `D` irrelevant, which it does for
+   `hcmp` — but `hchart` needs the REAL `D ≠ 0`). No sympy-vs-Lean conflation (the hslot trap).
+
+On PASS: relay clean-three + the D-nonvanishing confirmation to the controller for the cone-merge → this
+closes the last DLN-specific D1 obligation (the `≥` leg, modulo #44 `hDeepest` + the R1-at-`M'`
+`hDegraded`). On FAIL (det vanishes / `q` not `C¹` / scope-gap to deepest-only / `F` mismatch): surface the
+precise residual. The OTHER two obligations (`hDeepest` #44 via the clean `deepest_gauge_construction_L2`;
+`hDegraded` R1-at-`M'`) get their own QA as discharged.
+
+---
+
 ## §QA. FIDELITY-QA GATE (held by genm-d1producer; binding on the genm-d1prod build)
 
 **VERDICT (2026-06-29, QA holder): PASS — all 5 gates clear. Cleared for cone-merge.** Producer
