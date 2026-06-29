@@ -172,4 +172,40 @@ theorem routeMCore_rate_of_decode (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 
     (Sbotu M hrs u) (Lam0u M hrs u) (P1u M hrs u) (P2u M hrs u)
     (fun i a => rfl) (fun i b => rfl) hcancel
 
+/-! ## `topCoords` membership + the radial blow-up `R` -/
+
+/-- `coordOf (topSlot a j) ∈ topCoords` (the deepest-top coords are exactly these images). -/
+theorem coordOf_topSlot_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (a : Fin r) (j : Fin (M 2)) :
+    coordOf M (topSlot M hrs a j) ∈ topCoords M hrs := by
+  rw [topCoords, Finset.mem_image]
+  exact ⟨(a, j), Finset.mem_univ _, rfl⟩
+
+/-- Membership in `topCoords` is exactly "is the `coordOf` of some top slot". -/
+theorem mem_topCoords_iff (M : Fin 3 → ℕ) (hrs : r + s = M 1) (m : Fin (routeMAmbient M)) :
+    m ∈ topCoords M hrs ↔ ∃ a : Fin r, ∃ j : Fin (M 2), coordOf M (topSlot M hrs a j) = m := by
+  rw [topCoords, Finset.mem_image]
+  constructor
+  · rintro ⟨⟨a, j⟩, _, h⟩; exact ⟨a, j, h⟩
+  · rintro ⟨a, j, h⟩; exact ⟨(a, j), Finset.mem_univ _, h⟩
+
+/-- `coordOf (frontSlot i jf) ∉ topCoords` (a front slot is not a top slot). -/
+theorem coordOf_frontSlot_not_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (i : Fin (M 0)) (jf : Fin (M 1)) : coordOf M (frontSlot M i jf) ∉ topCoords M hrs := by
+  rw [mem_topCoords_iff]
+  rintro ⟨a, j, h⟩
+  exact frontSlot_ne_topSlot M hrs i jf a j (coordOf_injective M h.symm)
+
+/-- `coordOf (botSlot b j) ∉ topCoords` (a bottom slot is not a top slot). -/
+theorem coordOf_botSlot_not_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (b : Fin s) (j : Fin (M 2)) : coordOf M (botSlot M hrs b j) ∉ topCoords M hrs := by
+  rw [mem_topCoords_iff]
+  rintro ⟨a, j', h⟩
+  exact topSlot_ne_botSlot M hrs a j' b j (coordOf_injective M h)
+
+/-- The radial blow-up `R := pivotBlowupOn (topCoords) pivotCoord`: fixes the pivot, scales the other
+top coords by the pivot, fixes the spectators (front + bottom). The sole Jacobian carrier. -/
+noncomputable def Rmap (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  pivotBlowupOn (topCoords M hrs) (pivotCoord M hrs hr hc)
+
 end DLNFibre.DLN.RLCT
