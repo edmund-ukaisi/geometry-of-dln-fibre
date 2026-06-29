@@ -6,7 +6,7 @@ import DLNFibre.Core.TopDimMinPrimesPoly
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 import DLNFibre.Core.SchurSideNoDrop
 import DLNFibre.Core.FibreCodimFinal
-import DLNFibre.Core.AffineLocalizationNoDrop
+import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.SourceNoDrop
 import DLNFibre.Core.TopDimMinPrimesW0
 import DLNFibre.Core.TopDimMinPrimesRadical
@@ -43,7 +43,7 @@ presentation to dodge the `MvPolynomial`-over-quotient instance diamond).
 
 namespace DLNFibre.Core
 
-open MvPolynomial Matrix
+open MvPolynomial Matrix Dimension
 
 universe u
 

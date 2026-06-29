@@ -22,7 +22,7 @@ preserves the **top-dimensional minimal-prime count**, given two inputs phrased 
 The `hper` input is a **required lemma**, NOT inferable from an ambient no-drop: a domain localized
 at a non-unit can drop dimension (a DVR at a uniformizer). It must be invoked **per top prime**; it
 holds in the applications because `A ⧸ p` is an f.g. `k`-domain and `f̄ ≠ 0`, via
-`Core.AffineLocalizationNoDrop.ringKrullDim_localizationAway_eq_of_fg_domain`. (Reviewer + Codex,
+`Core.Dimension.ringKrullDim_localizationAway_eq_of_fg_domain`. (Reviewer + Codex,
 decorrelated: the per-prime / *componentwise* no-drop does NOT fold out of the global no-drop +
 avoidance.)
 

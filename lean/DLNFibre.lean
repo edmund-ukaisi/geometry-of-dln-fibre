@@ -217,9 +217,9 @@ import DLNFibre.Core.ChartBijection
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
--- no-drop machinery (shared by step-4/5): affine-domain dim(D[1/g])=dim D + the abstract no-drop
--- dim(R[1/g])=dim R when g avoids a top prime of a reducible Noetherian R.
-import DLNFibre.Core.AffineLocalizationNoDrop
+-- no-drop machinery (shared by step-4/5) re-homed to Core.Dimension.Localization (P1-R3):
+-- affine-domain dim(D[1/g])=dim D + the abstract no-drop dim(R[1/g])=dim R when g avoids a top
+-- prime of a reducible Noetherian R.
 -- route-3 dimension-arithmetic wrapper (localized chart AlgEquiv + the two no-drops).
 import DLNFibre.Core.ChartLocalizedPolyDim
 -- schur-side no-drop input (dim(P[1/gfib]) = dim P for P a polynomial extension of O(F)).

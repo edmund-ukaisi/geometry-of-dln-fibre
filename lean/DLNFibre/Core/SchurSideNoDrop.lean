@@ -1,4 +1,4 @@
-import DLNFibre.Core.AffineLocalizationNoDrop
+import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.RadicalCatenary
 import Mathlib.RingTheory.Polynomial.Quotient
 
@@ -22,7 +22,7 @@ schur side, given a top-dimensional prime of the fibre ring and the unit-`k`-coe
 
 namespace DLNFibre.Core
 
-open MvPolynomial
+open MvPolynomial Dimension
 
 universe u
 
