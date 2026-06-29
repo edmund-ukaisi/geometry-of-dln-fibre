@@ -278,4 +278,48 @@ theorem Rmap_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 
     have hmem := coordOf_topSlot_mem M hrs a j
     rw [if_neg hpiv, if_pos hmem, if_neg hpiv]
 
+/-! ## `A0u`/`Sbotu`/`Lam0u` read only the complement `topCoordsᶜ` (the shear's spectator coords)
+
+`A0u` reads front slots, `Sbotu` reads bottom slots — both `∉ topCoords`. So they (and `Λ₀` built from
+them) are invariant under any change confined to `topCoords`. Lets the shear-shift reconstruct `u` off
+`topCoords` (where it agrees) and recover the same `Λ₀`/`S_bot`. -/
+
+/-- `A0u v = A0u w` if `v`, `w` agree off `topCoords` (A⁰ reads front slots, all `∉ topCoords`). -/
+theorem A0u_congr (M : Fin 3 → ℕ) (hrs : r + s = M 1) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoords M hrs → v m = w m) : A0u M v = A0u M w := by
+  funext i jf
+  exact h _ (coordOf_frontSlot_not_mem M hrs i jf)
+
+/-- `Sbotu v = Sbotu w` if `v`, `w` agree off `topCoords` (S_bot reads bottom slots, all `∉ topCoords`). -/
+theorem Sbotu_congr (M : Fin 3 → ℕ) (hrs : r + s = M 1) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoords M hrs → v m = w m) : Sbotu M hrs v = Sbotu M hrs w := by
+  funext b j
+  exact h _ (coordOf_botSlot_not_mem M hrs b j)
+
+/-- `Lam0u v = Lam0u w` if `v`, `w` agree off `topCoords` (`Λ₀` is built from `A0u` via `P₁`/`P₂`). -/
+theorem Lam0u_congr (M : Fin 3 → ℕ) (hrs : r + s = M 1) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoords M hrs → v m = w m) : Lam0u M hrs v = Lam0u M hrs w := by
+  have hA : A0u M v = A0u M w := A0u_congr M hrs h
+  have hP1 : P1u M hrs v = P1u M hrs w := by funext i a; simp only [P1u, hA]
+  have hP2 : P2u M hrs v = P2u M hrs w := by funext i b; simp only [P2u, hA]
+  rw [Lam0u, Lam0u, hP1, hP2]
+
+/-! ## The smeared shear `shiftCore` + the flat map `ψ`, and the DECODE -/
+
+/-- The shear shift (the `(reg, spec) → core` form `shearMBody` consumes): reconstruct the full vector
+from the spec block (zero core), then read `shiftFull` at the `coreSet.equivFin.symm`-indexed coord. The
+`equivFin.symm`/`equivFin` round-trip (in `shearMBody_apply_of_mem`) then collapses to `shiftFull` at the
+coord directly. -/
+noncomputable def shiftCore (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (q : (Fin 0 → ℝ) × (Fin (topCoords M hrs)ᶜ.card → ℝ)) : Fin (topCoords M hrs).card → ℝ :=
+  fun jc => shiftFull M hrs
+    ((splitOfCoreSet (topCoords M hrs)).symm (q.1, ((0 : Fin (topCoords M hrs).card → ℝ), q.2)))
+    ((topCoords M hrs).equivFin.symm jc)
+
+/-- The flat smeared map `ψ = paramsEquivFlat ∘ packM ∘ shearMBody`, `packM := (flatEquivOf (slotEquiv)).symm`. -/
+noncomputable def psiMap (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  fun w => paramsEquivFlat M
+    ((flatEquivOf M (slotEquiv M)).symm (shearMBody (topCoords M hrs) (shiftCore M hrs) w))
+
 end DLNFibre.DLN.RLCT
