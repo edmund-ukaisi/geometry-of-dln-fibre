@@ -67,3 +67,10 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   `Radical` doc prime→ideal, stripped process-provenance from `Localization` header — applied Lean-only on p1
   (`165e0954`, #15 updated), and **p2 rebased onto p1'** (`09c5cb79`, clean — disjoint files). → P2-R2 crux-review
   (07r) routed + **P2-R3 dispatched** (`GraphIdealHeight`), concurrently. After R3 + 07r: P2 boundary → PR-P2.
+- **2026-06-29 — PHASE 2 CONTENT-COMPLETE → PR-P2.** P2-R2 crux-review (07r) **PASS** (the `←` minor-extraction
+  sound at `Fin`/`ℕ` generality, Codex xhigh corroborated; honest `[Field k]`; faithful split; the deferred
+  broader `Fintype` index an honest non-extension → roadmap). P2-R3 (`12fb9faa`): `height_graphIdeal_eq`
+  re-homed to a sibling `Core/MvPolynomial/GraphIdealHeight.lean` (dimension-dep quarantined from the
+  upstream-ready `GraphIdeal`), min hyps confirmed. **P2-boundary authoritative re-gate green 3820**,
+  axiom-clean. The determinantal & elimination library now stands: `Core/Matrix/RankMinors.lean` +
+  `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}.lean`. → PR-P2 opened (stacked on P1); rolling into P3.
