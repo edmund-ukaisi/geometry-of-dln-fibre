@@ -11,6 +11,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 
@@ -159,6 +160,16 @@ open DLNFibre.DLN.RLCT
 #print axioms hSmeared_squareSmeared_L2
 #print axioms smeared_deepRank_eq_M0
 #print axioms smearedChart_of_square
+
+-- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is
+-- the UNCONDITIONAL §6 arithmetic (lambdaCore(square m) ≤ extra/2 + lambdaCore(M')); `hCore_middle_stratum_
+-- of_interface` + `deepest_le_of_optimal_middle_stratum` are CONDITIONAL clean-three reductions (chart DATA
+-- + the §5 R1-resolution interface + #44 as named hypotheses — the chart instance is unbuilt, the genuine
+-- residual). They bank the case-B (middle-stratum) reduction-chain; the chart construction is the open piece.
+#print axioms extra_half_add_lambdaCore_Mprime_ge_square
+#print axioms hCore_middle_stratum_of_interface
+#print axioms deepest_le_of_optimal_middle_stratum
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

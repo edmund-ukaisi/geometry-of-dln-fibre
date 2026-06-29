@@ -560,5 +560,13 @@ import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 -- CONDITIONAL reduction: it REDUCES D1 to {a GeneralVChartL2 instance at the real DLN loss (the
 -- general-v Morse-Bott constant-rank split — a major multi-tide build) + #44}, NOT a D1 closure.
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
+-- D1 obligation (i) middle-stratum producer (the SECOND-PEEL route, square-deepest scope): the §6
+-- arithmetic lemma `extra_half_add_lambdaCore_Mprime_ge_square` (UNCONDITIONAL, pure ℚ/Mval/Adm) +
+-- `hCore_middle_stratum_of_interface` / `deepest_le_of_optimal_middle_stratum` (CONDITIONAL clean-three
+-- reductions: take the chart DATA + the §5 R1-resolution interface `hResolveM'` + #44 as named
+-- hypotheses). The GeneralVChartL2 INSTANCE (the constant-nReg IFT chart at general v) is NOT built —
+-- it needs the Morse/constant-rank split Mathlib lacks + the open `deepest_gauge_squeeze_exists`. Scope:
+-- square-deepest (m,m,m); non-square H at L=2 is beyond the banked adjudication (both surfaced, not ground).
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
