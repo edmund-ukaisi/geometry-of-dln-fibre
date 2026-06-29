@@ -141,6 +141,32 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, retained-passive chart-produced punctured-sector
+  local-domination residual source, 2026-06-29.** Lean now proves
+  `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_restrict_le_smul_passiveProductMeasure_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`.
+  The theorem keeps `sourceMeasure` arbitrary.  After the residual-source
+  socket chooses an open determinant-and-pivot-nonzero sector `V`, support of
+  `mu = Measure.map sourceChart (sourceMeasure.restrict V)` on the
+  retained-passive p.13 local source is unconditional, and residual positivity
+  plus `residualNegPowerIntegrableOn` follow under the explicit local
+  domination field
+  `sourceMeasure.restrict V <= c • (passiveMeasure.prod weightedBox)` with
+  finite `c`.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+  scan, and direct axiom probe passed with
+  `[propext, Classical.choice, Quot.sound]`.  Xhigh post-implementation
+  review by `Einstein the 3rd` returned PASS.  This is only a conditional
+  local-domination wrapper: no external/original source-prior domination,
+  determinant-chart Haar transport, raw/source Haar theorem, passive Jacobian
+  formula, source-image equality, source-rank coverage, normal crossings,
+  pole order, or RLCT is claimed.
+- **Current status addendum, retained-passive chart-produced punctured-sector
   passive-product residual source, 2026-06-29.** Lean now proves
   `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_passiveProductMeasure_finiteMass`
   in

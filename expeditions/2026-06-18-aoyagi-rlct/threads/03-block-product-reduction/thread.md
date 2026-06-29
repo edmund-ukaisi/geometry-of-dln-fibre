@@ -18,6 +18,48 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced punctured-sector local-domination residual source
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`.
+Review:
+`review-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md`.
+
+Lean now exposes:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+The theorem keeps `sourceMeasure` arbitrary.  It calls the residual-source
+socket to choose the open punctured sector `V`.  For
+`mu = Measure.map sourceChart (sourceMeasure.restrict V)`, it proves
+`mu.restrict localSource = mu` without the local domination assumption.  Under
+`sourceMeasure.restrict V <= c • (passiveMeasure.prod weightedBox)` and
+`c < infinity`, it transfers raw selected-entry residual positivity and
+negative-power integrability to the residual marginal and then feeds those
+facts to the socket.
+
+The proof uses two domination transfers: finite passive mass transfers the raw
+selected-entry facts from `weightedBox` to
+`Measure.map Prod.snd (passiveMeasure.prod weightedBox)`, and the local
+source-domain domination maps through `Prod.snd` to transfer those facts to
+`Measure.map Prod.snd (sourceMeasure.restrict V)`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+post-implementation review by `Einstein the 3rd` returned PASS.
+
+Nonclaims: no proof that an external/original source prior satisfies the local
+domination field, no determinant-chart Haar transport, raw/source Haar theorem,
+passive Jacobian formula, source-image equality, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced punctured-sector passive-product residual source
 
 Reproduction:

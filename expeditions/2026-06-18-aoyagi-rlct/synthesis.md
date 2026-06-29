@@ -3,6 +3,67 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Local-Domination Residual Source - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md
+threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-local-domination-residual-source.md
+```
+
+The theorem keeps `sourceMeasure` arbitrary.  It calls the punctured-sector
+residual-source socket to choose an open determinant-and-pivot-nonzero sector
+`V`.  For
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+it proves `mu.restrict localSource = mu` unconditionally.  Then, for any
+finite scalar `c : ENNReal`, the local domination assumption
+
+```text
+sourceMeasure.restrict V <= c • (passiveMeasure.prod weightedBox)
+```
+
+implies retained-passive residual positivity a.e. over
+`mu.restrict localSource` and `residualNegPowerIntegrableOn localSource mu t`.
+
+The proof first identifies the passive product residual marginal as
+
+```text
+Measure.map Prod.snd (passiveMeasure.prod weightedBox)
+  = passiveMeasure Set.univ • weightedBox.
+```
+
+Finite passive mass transfers the raw selected-entry residual positivity and
+finite negative-power integral from `weightedBox` to this passive marginal.
+The local domination hypothesis is then mapped through `Prod.snd` by
+`map_le_smul_map_of_le_smul measurable_snd`; finite `c` transfers the same
+facts to `Measure.map Prod.snd (sourceMeasure.restrict V)`, which discharges
+the socket.
+
+Xhigh post-implementation review by `Einstein the 3rd` returned PASS.  Focused
+build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This is a conditional local-domination wrapper.  It proves no
+external/original source-prior domination, determinant-chart Haar transport,
+raw/source Haar theorem, passive Jacobian formula, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Passive-Product Residual Source - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:

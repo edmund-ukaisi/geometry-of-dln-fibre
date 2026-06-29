@@ -10,6 +10,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector local-domination residual source
+
+The residual-source socket now has a generic local-domination wrapper:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean
+```
+
+The theorem keeps `sourceMeasure` arbitrary.  The socket chooses the open
+determinant-and-pivot-nonzero sector `V`; support of the chart-produced source
+measure on the retained-passive p.13 local source is unconditional.  Residual
+positivity and negative-power integrability are then conditional on an explicit
+local domination field:
+
+```text
+sourceMeasure.restrict V <= c • (passiveMeasure.prod weightedBox)
+```
+
+with `c < infinity`.  The proof uses the passive-product marginal equality
+`Measure.map Prod.snd (passiveMeasure.prod weightedBox) =
+passiveMeasure Set.univ • weightedBox`, finite passive mass, and the local
+measure-domination helpers to transfer the raw selected-entry facts in two
+steps.
+
+This closes the generic finite-scalar local-domination wrapper subfrontier for
+the chart-produced punctured sector.  The remaining source-measure frontier is
+now to prove that an external/original source prior satisfies a precise local
+domination or mutual-absolute-continuity comparison, or to lift the
+chart-produced sector transport to a topology-tuple target without Haar
+claims.
+
+Do not call this theorem determinant-chart Haar transport, raw/source Haar,
+original source-prior transport, passive Jacobian transport, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector passive-product residual source
 
 The residual-source socket now has a concrete passive-product specialization:
