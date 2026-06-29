@@ -408,4 +408,57 @@ theorem decode_params (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc :
         Rmap_spectator M hrs hr hc u (coordOf_botSlot_not_mem M hrs b j)]
       rfl
 
+/-- **The flat DECODE** `psiMap (Rmap u) = phiL2 …` (apply `paramsEquivFlat` to `decode_params`). The
+headline's peeled-rate input, exactly. -/
+theorem psiMap_Rmap_eq_phiL2 (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    psiMap M hrs (Rmap M hrs hr hc u)
+      = phiL2 M hrs (A0u M u) (zu M hrs hr hc u) (HbarUnit M hrs hr hc u)
+          (Sbotu M hrs u) (Lam0u M hrs u) := by
+  rw [psiMap, phiL2, decode_params M hrs hr hc u]
+
+/-- **The opaque-width L=2 smeared rate** `routeMCore M (psiMap (Rmap u)) = (zu u)²·Uunit u`, off the
+shear pole (`P₁·Λ₀ = P₂`). The decode `psiMap (Rmap u) = phiL2 …` fed through `routeMCore_rate_of_decode`. -/
+theorem routeMCore_psiMap_Rmap (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ)
+    (hcancel : P1u M hrs u * Lam0u M hrs u = P2u M hrs u) :
+    routeMCore M (psiMap M hrs (Rmap M hrs hr hc u)) = (zu M hrs hr hc u) ^ 2 * Uunit M hrs hr hc u :=
+  routeMCore_rate_of_decode M hrs hr hc (psiMap M hrs) (Rmap M hrs hr hc) u
+    (psiMap_Rmap_eq_phiL2 M hrs hr hc u) hcancel
+
+/-! ## `ψ` measure-preserving + a measurable embedding
+
+`ψ = paramsEquivFlat ∘ packM ∘ shearMBody` with `packM := (flatEquivOf (slotEquiv)).symm`. The two outer
+factors are banked measure-preserving `MeasurableEquiv`s; `shearMBody` is MP for any measurable shift
+(`measurePreserving_shearMBody`). The shift `shiftCore` is measurable via the banked matrix-inverse /
+`Λ₀`-entry toolkit. -/
+
+/-- Each entry `A0u v i j` is measurable in `v` (a coordinate projection). -/
+theorem measurable_A0u_entry (M : Fin 3 → ℕ) (i : Fin (M 0)) (j : Fin (M 1)) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => A0u M v i j) :=
+  measurable_pi_apply _
+
+/-- Each entry `Sbotu v b j` is measurable in `v`. -/
+theorem measurable_Sbotu_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (b : Fin s) (j : Fin (M 2)) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => Sbotu M hrs v b j) :=
+  measurable_pi_apply _
+
+/-- Each entry `Lam0u v a b` is measurable in `v` (the `(P₁ᵀP₁)⁻¹P₁ᵀP₂` chain via `measurable_lamEntry`,
+with `P₁`/`P₂` entrywise the coordinate-projections `A0u`). -/
+theorem measurable_Lam0u_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (a : Fin r) (b : Fin s) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => Lam0u M hrs v a b) :=
+  measurable_lamEntry (fun v => P1u M hrs v) (fun v => P2u M hrs v)
+    (fun i a => measurable_pi_apply _) (fun i b => measurable_pi_apply _) a b
+
+/-- `v' ↦ shiftFull M hrs v' m` is measurable (a finite signed sum of products of `Λ₀`/`S_bot` entries). -/
+theorem measurable_shiftFull_coord (M : Fin 3 → ℕ) (hrs : r + s = M 1) (m : Fin (routeMAmbient M)) :
+    Measurable (fun v' : Fin (routeMAmbient M) → ℝ => shiftFull M hrs v' m) := by
+  unfold shiftFull
+  refine (Finset.measurable_sum _ (fun a _ => Finset.measurable_sum _ (fun j _ => ?_))).neg
+  by_cases h : coordOf M (topSlot M hrs a j) = m
+  · simp only [if_pos h, Matrix.mul_apply]
+    exact Finset.measurable_sum _ (fun b _ =>
+      (measurable_Lam0u_entry M hrs a b).mul (measurable_Sbotu_entry M hrs b j))
+  · simp only [if_neg h]; exact measurable_const
+
 end DLNFibre.DLN.RLCT
