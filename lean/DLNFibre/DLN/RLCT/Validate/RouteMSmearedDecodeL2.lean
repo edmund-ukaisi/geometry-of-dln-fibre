@@ -142,6 +142,17 @@ noncomputable def Lam0u (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeM
     Matrix (Fin r) (Fin s) ℝ :=
   ((P1u M hrs u).transpose * P1u M hrs u)⁻¹ * (P1u M hrs u).transpose * P2u M hrs u
 
+/-- **The shear cancellation from a column factoring.** `P₁·Λ₀ = P₂` when `col(P₂) ⊆ col(P₁)` (i.e.
+`P₂ = P₁·K`) and the Gram `P₁ᵀP₁` is invertible (`det ≠ 0`) — the banked `proj_cancel_of_factorsThrough`,
+specialized to the chart's `P1u`/`P2u`/`Lam0u`. The off-pole hypothesis `hcancel` reduces to the structural
+factoring `P₂ = P₁·K` (full column rank of `P₁`). -/
+theorem Lam0u_cancel_of_factoring (M : Fin 3 → ℕ) (hrs : r + s = M 1)
+    (u : Fin (routeMAmbient M) → ℝ) (K : Matrix (Fin r) (Fin s) ℝ)
+    (hfac : P2u M hrs u = P1u M hrs u * K)
+    (hdet : ((P1u M hrs u).transpose * P1u M hrs u).det ≠ 0) :
+    P1u M hrs u * Lam0u M hrs u = P2u M hrs u :=
+  proj_cancel_of_factorsThrough (P1u M hrs u) (P2u M hrs u) K hfac hdet
+
 /-- The `z`-free unit `U = ‖P₁·H̄_unit‖²_F` (the polynomial factor of the rate `F = z²·U`). -/
 noncomputable def Uunit (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
     (u : Fin (routeMAmbient M) → ℝ) : ℝ :=
@@ -451,6 +462,30 @@ theorem measurable_Lam0u_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (a : Fin 
   measurable_lamEntry (fun v => P1u M hrs v) (fun v => P2u M hrs v)
     (fun i a => measurable_pi_apply _) (fun i b => measurable_pi_apply _) a b
 
+/-- Each entry `HbarUnit v a j` is measurable in `v` (a coordinate projection or the constant `1`). -/
+theorem measurable_HbarUnit_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (a : Fin r) (j : Fin (M 2)) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => HbarUnit M hrs hr hc v a j) := by
+  unfold HbarUnit
+  by_cases hpiv : coordOf M (topSlot M hrs a j) = pivotCoord M hrs hr hc
+  · simp only [if_pos hpiv]; exact measurable_const
+  · simp only [if_neg hpiv]; exact measurable_pi_apply _
+
+/-- Each entry `P1u v i a` is measurable in `v` (a coordinate projection: `A0u` of a front slot). -/
+theorem measurable_P1u_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (i : Fin (M 0)) (a : Fin r) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => P1u M hrs v i a) :=
+  measurable_pi_apply _
+
+/-- `v ↦ Uunit M hrs hr hc v` is measurable (a finite sum of squares of `P₁·H̄_unit` entries). -/
+theorem measurable_Uunit (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2) :
+    Measurable (fun v : Fin (routeMAmbient M) → ℝ => Uunit M hrs hr hc v) := by
+  unfold Uunit
+  refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+  refine Measurable.pow_const ?_ 2
+  simp only [Matrix.mul_apply]
+  exact Finset.measurable_sum _ (fun a _ =>
+    (measurable_P1u_entry M hrs i a).mul (measurable_HbarUnit_entry M hrs hr hc a j))
+
 /-- `v' ↦ shiftFull M hrs v' m` is measurable (a finite signed sum of products of `Λ₀`/`S_bot` entries). -/
 theorem measurable_shiftFull_coord (M : Fin 3 → ℕ) (hrs : r + s = M 1) (m : Fin (routeMAmbient M)) :
     Measurable (fun v' : Fin (routeMAmbient M) → ℝ => shiftFull M hrs v' m) := by
@@ -683,5 +718,46 @@ theorem routeMCore_smearedL2_chart {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = 
   · -- the PEELED RATE: `routeMCore M (psiMap (Rmap (hN ▸ insertNth p z y))) = z²·Uy y`
     intro z hz y hy
     rw [routeMCore_psiMap_Rmap M hrs hr hc _ (hcancel z hz y hy), hzeq z hz y hy, hUeq z hz y hy]
+
+/-- **The opaque-width L=2 smeared box-divergence (tightened).** The mechanical `z`/`U` peel (`zu = z`,
+`Uy y := Uunit (hN ▸ insertNth p 0 y)` z-free) is FOLDED in, so only the genuinely-analytic per-family
+inputs remain: the shear cancellation on each peeled point, FIELD-A containment, and `U`-positivity. The
+chart facts (MP/embedding/radial det/the peeled rate's `z²·Uunit` form) are discharged generically. -/
+theorem routeMCore_smearedL2 {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r)
+    (hc : 0 < M 2) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (box : Fin (n + 1) → Set ℝ) (c' ε δ : ℝ) (hδ : 0 < δ)
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    (hSpre : condBox (hN ▸ p) (fun k => box (hN ▸ k)) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε))
+    (hboxmeas : ∀ k, MeasurableSet (box (p.succAbove k)))
+    (hboxmeasAll : ∀ k : Fin (routeMAmbient M), MeasurableSet ((fun k => box (hN ▸ k)) k))
+    (hboxpos : 0 < (volume : Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n => box (p.succAbove k))))
+    (hexp : ((r * M 2 - 1 : ℕ) : ℝ) - 2 * c' ≤ -1)
+    (hcancel : ∀ z ∈ Set.Ioo (0:ℝ) δ, ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+      P1u M hrs (hN ▸ (Fin.insertNth p z y)) * Lam0u M hrs (hN ▸ (Fin.insertNth p z y))
+        = P2u M hrs (hN ▸ (Fin.insertNth p z y)))
+    (hUpos : ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+      0 < Uunit M hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  refine routeMCore_smearedL2_chart M hrs hr hc hN p box c' ε δ hδ hp hSpre hboxmeas hboxmeasAll
+    hboxpos hexp (fun y => Uunit M hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))) ?_ ?_ hcancel ?_ hUpos
+  · -- `Uy` measurable: `y ↦ Uunit (hN ▸ insertNth p 0 y)` (Uunit a polynomial in the coords)
+    have hins : Measurable
+        (fun y : Fin n → ℝ => (hN ▸ (Fin.insertNth p (0:ℝ) y) : Fin (routeMAmbient M) → ℝ)) := by
+      have key : ∀ (N : ℕ) (h : N = n + 1),
+          Measurable (fun y : Fin n → ℝ => (h ▸ (Fin.insertNth p (0:ℝ) y) : Fin N → ℝ)) := by
+        intro N h; subst h
+        exact measurable_pi_iff.2 (fun i => by
+          rcases Fin.eq_self_or_eq_succAbove p i with rfl | ⟨k, rfl⟩
+          · simp only [Fin.insertNth_apply_same]; exact measurable_const
+          · simp only [Fin.insertNth_apply_succAbove]; exact measurable_pi_apply k)
+      exact key _ hN
+    exact (measurable_Uunit M hrs hr hc).comp hins
+  · -- `hUeq`: `Uunit (hN ▸ insertNth p z y) = Uunit (hN ▸ insertNth p 0 y)` (z-free)
+    exact fun z _ y _ => Uunit_hN_insertNth M hrs hr hc hN p hp z y
+  · -- `hzeq`: `zu (hN ▸ insertNth p z y) = z`
+    exact fun z _ y _ => zu_hN_insertNth M hrs hr hc hN p hp z y
 
 end DLNFibre.DLN.RLCT
