@@ -3,6 +3,39 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Source-Measure Frontier Reorientation - 2026-06-29
+
+Post-interruption reorientation and three xhigh read-only scouts confirm that
+the next A2 work is not another finite-integral wrapper.  The retained-passive
+local `hcoverage` field used by the local-measure sockets is already discharged
+by `exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase`,
+and the chart-layer raw-order inverse-Jacobian measure identity is already
+available as
+`measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_restrict_detChart_eq_map_rawOrderSourceChart_withDensity_inverseJacobian`.
+
+The remaining real source-measure blockers are the explicit Case 2
+determinant-chart pushforward
+`m.restrict Sdet = Measure.map chart weightedBox` and the absence of an
+original/external source-prior transport theorem.  Aoyagi pp. 10-13 support
+the Schur/block substitutions, inductive product diagonalisation, p.13
+product-difference display, and regular-variable count; they do not state
+selected-entry coverage of the determinant chart, source-rank image equality,
+raw/source Haar pushforward, or source-prior density transport.
+
+New artifacts:
+`threads/03-block-product-reduction/reorientation-a2-source-frontier-2026-06-29.md`,
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-passive-variable-frontier.md`,
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-prior-passive-variable-frontier.md`.
+
+Controller decision: the next meaningful A2 Lean payoff must introduce a
+retained-passive/full or passive-selected-entry coordinate package with named
+passive variables, source map, local inverse, image/coverage theorem, and
+Jacobian/passive-unit accounting.  The reduced selected-entry signed-box
+section is chart-produced and lower-dimensional in the missing passive
+directions; do not use it to claim full raw-Haar or original source-prior
+transport.
+
 ## Latest A2 Case 2 Source-Rank-Supported Endpoint-Basis Original-Loss Finite-Integral Bridge - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

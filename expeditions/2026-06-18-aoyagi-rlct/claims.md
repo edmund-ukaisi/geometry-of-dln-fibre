@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, source-measure frontier after scout round,
+  2026-06-29.** Post-interruption reorientation and three xhigh read-only
+  scouts confirm that the next A2 work is a retained-passive source-measure
+  construction package, not another finite-integral wrapper.  The local
+  retained-passive `hcoverage` field used by the local-measure sockets is
+  already discharged by an open subset of the determinant-chart preimage, and
+  the retained-passive chart-layer raw-order inverse-Jacobian measure identity
+  is already proved.  The remaining real blockers are the explicit Case 2
+  determinant-chart pushforward
+  `m.restrict Sdet = Measure.map chart weightedBox` and any original/external
+  source-prior transport theorem.  Reorientation, reproduction, and statement
+  card are at
+  `threads/03-block-product-reduction/reorientation-a2-source-frontier-2026-06-29.md`,
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-passive-variable-frontier.md`,
+  and
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-source-prior-passive-variable-frontier.md`.
+  This addendum claims no new Lean theorem.  It records the kill condition
+  that the reduced selected-entry signed-box section must not be used to claim
+  full determinant-chart/raw Haar or original source-prior transport; passive
+  variables need a named coordinate domain, source map, local inverse,
+  image/coverage theorem, and Jacobian/passive-unit accounting.
 - **Current status addendum, Case 2 source-rank-supported endpoint-basis
   original-loss finite-integral bridge, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_restrict_open_of_sourceRankSupport`.

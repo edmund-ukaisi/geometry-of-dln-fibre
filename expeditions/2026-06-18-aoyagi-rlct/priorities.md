@@ -10,6 +10,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 source-measure frontier after scout round
+
+The wrapper search at the retained-passive Case 2 source-measure boundary is
+closed.  Three xhigh scouts and a controller reproduction agree that:
+
+- local retained-passive `hcoverage` is already discharged by an open subset of
+  the determinant-chart preimage;
+- the retained-passive chart-layer raw-order inverse-Jacobian measure identity
+  is already proved;
+- the remaining meaningful blockers are the explicit Case 2
+  determinant-chart pushforward `m.restrict Sdet = Measure.map chart
+  weightedBox` and any original/external source-prior transport theorem;
+- Aoyagi pp. 10-13 support the elementary block/product algebra, but not
+  selected-entry determinant-chart coverage, raw/source Haar pushforward, or
+  source-prior density transport.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-passive-variable-frontier.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-source-prior-passive-variable-frontier.md
+```
+
+Next priority: construct a retained-passive full-coordinate or
+passive-selected-entry source chart with passive variables included, then prove
+its local inverse, image/coverage theorem, and Jacobian/passive-unit measure
+accounting.  Do not claim full raw-Haar or original source-prior transport from
+the current reduced selected-entry signed-box measure.
+
 ## Latest controller decision - 2026-06-29, Case 2 source-rank-supported endpoint-basis original-loss finite-integral bridge
 
 The endpoint-transported continuing Case 2 chart now has a source-rank-
