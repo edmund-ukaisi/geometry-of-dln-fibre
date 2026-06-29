@@ -103,7 +103,19 @@ mean-value bound on `q` (`Convex.norm_image_sub_le_of_norm_fderiv_le`). -/
 theorem coupled_controls_slice {m : ℕ} (a b L : ℝ) (s : Fin m → ℝ) (hL : 0 ≤ L)
     (hlip : (a - b) ^ 2 ≤ L ^ 2 * (∑ i, s i ^ 2)) :
     (∑ i, s i ^ 2) + b ^ 2 ≤ (2 * L ^ 2 + 2) * ((∑ i, s i ^ 2) + a ^ 2) := by
-  sorry
+  set ssq := ∑ i, s i ^ 2 with hssq
+  have hssq0 : 0 ≤ ssq := Finset.sum_nonneg fun i _ => sq_nonneg _
+  have hL2 : 0 ≤ L ^ 2 := sq_nonneg _
+  -- `b² ≤ 2(a−b)² + 2a²`, so `b² ≤ 2 L² ssq + 2 a²`.
+  -- `2(a−b)² + 2a² − b² = (2a − b)² ≥ 0`, and `(a−b)² ≤ L² ssq`.
+  have hb2 : b ^ 2 ≤ 2 * L ^ 2 * ssq + 2 * a ^ 2 := by nlinarith [hlip, sq_nonneg (2 * a - b)]
+  -- RHS − (ssq + b²) ≥ ssq + 2 L² a² ≥ 0, using `hb2`. Expand the product explicitly.
+  have hexp : (2 * L ^ 2 + 2) * (ssq + a ^ 2)
+      = 2 * L ^ 2 * ssq + 2 * a ^ 2 + (ssq + 2 * L ^ 2 * a ^ 2) + ssq := by ring
+  rw [hexp]
+  have h1 : 0 ≤ ssq + 2 * L ^ 2 * a ^ 2 :=
+    add_nonneg hssq0 (by positivity)
+  linarith [hb2, hssq0, h1]
 
 /-! ## The abstract post-chart quasi-split lower bound
 
