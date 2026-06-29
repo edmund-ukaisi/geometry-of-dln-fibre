@@ -461,4 +461,48 @@ theorem measurable_shiftFull_coord (M : Fin 3 → ℕ) (hrs : r + s = M 1) (m : 
       (measurable_Lam0u_entry M hrs a b).mul (measurable_Sbotu_entry M hrs b j))
   · simp only [if_neg h]; exact measurable_const
 
+/-- `shiftCore` is measurable (reconstruct via the `splitOfCoreSet.symm` ME, then `shiftFull`). -/
+theorem measurable_shiftCore (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    Measurable (shiftCore M hrs) := by
+  apply measurable_pi_iff.2
+  intro jc
+  unfold shiftCore
+  -- the reconstruction `q ↦ splitOfCoreSet.symm (q.1, (0, q.2))` is measurable
+  have hrecon : Measurable (fun q : (Fin 0 → ℝ) × (Fin (topCoords M hrs)ᶜ.card → ℝ) =>
+      (splitOfCoreSet (topCoords M hrs)).symm
+        (q.1, ((0 : Fin (topCoords M hrs).card → ℝ), q.2))) :=
+    (splitOfCoreSet (topCoords M hrs)).symm.measurable.comp
+      (measurable_fst.prodMk (measurable_const.prodMk measurable_snd))
+  exact (measurable_shiftFull_coord M hrs _).comp hrecon
+
+/-- `psiMap` as an explicit `Function.comp` triple (`rfl`). -/
+theorem psiMap_eq_comp (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    psiMap M hrs = ⇑(paramsEquivFlat M) ∘ ⇑(flatEquivOf M (slotEquiv M)).symm
+      ∘ shearMBody (topCoords M hrs) (shiftCore M hrs) := rfl
+
+/-- **`ψ = psiMap` is measure-preserving** (the three banked MP factors composed). -/
+theorem measurePreserving_psiMap (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    MeasurePreserving (psiMap M hrs) (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume := by
+  rw [psiMap_eq_comp]
+  have hshear : MeasurePreserving (shearMBody (topCoords M hrs) (shiftCore M hrs))
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume :=
+    measurePreserving_shearMBody (topCoords M hrs) (shiftCore M hrs) (measurable_shiftCore M hrs)
+  have hpack : MeasurePreserving (⇑(flatEquivOf M (slotEquiv M)).symm)
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) (volume : Measure (Params M)) :=
+    (measurePreserving_flatEquivOf M (slotEquiv M)).symm _
+  exact (measurePreserving_paramsEquivFlat M).comp (hpack.comp hshear)
+
+/-- **`ψ = psiMap` is a measurable embedding** (a composition of measurable equivalences). -/
+theorem measurableEmbedding_psiMap (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
+    MeasurableEmbedding (psiMap M hrs) := by
+  have h1 : MeasurableEmbedding (shearMBody (topCoords M hrs) (shiftCore M hrs)) :=
+    measurableEmbedding_shearMBody (topCoords M hrs) (shiftCore M hrs) (measurable_shiftCore M hrs)
+  have h2 : MeasurableEmbedding (⇑(flatEquivOf M (slotEquiv M)).symm) :=
+    (flatEquivOf M (slotEquiv M)).symm.measurableEmbedding
+  have h3 : MeasurableEmbedding (⇑(paramsEquivFlat M)) := (paramsEquivFlat M).measurableEmbedding
+  have hpsi : psiMap M hrs = (⇑(paramsEquivFlat M) ∘ ⇑(flatEquivOf M (slotEquiv M)).symm)
+      ∘ shearMBody (topCoords M hrs) (shiftCore M hrs) := rfl
+  rw [hpsi]
+  exact (h3.comp h2).comp h1
+
 end DLNFibre.DLN.RLCT
