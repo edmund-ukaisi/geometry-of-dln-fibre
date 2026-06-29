@@ -1,6 +1,6 @@
 # Statement card — D1 chart-producer build (L = 2)
 
-Module: `lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ `bb76d5bc`
+Module: `lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ branch `d1-chart-producer-l2build` head (controller pins the integration SHA)
 (branch `d1-chart-producer-l2build`, off `origin/expedition/aoyagi-full`).
 Status: **sorry-free**, all theorems clean-three `[propext, Classical.choice, Quot.sound]`
 (verified by `#print axioms`; no `monomial_rlct`, no `sorryAx`, no `native_decide`).
@@ -19,7 +19,7 @@ wall, NOT built here.
 > over `ℚ`, where `extra = m(a+b) − ab`, `M' = (m−a, m−a−b, m−b)`, `square m = (m,m,m)`.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.extra_half_add_lambdaCore_Mprime_ge_square`
->   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ `bb76d5bc`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ branch `d1-chart-producer-l2build` head (controller pins the integration SHA))
 > - **Gloss.** `lambdaCore (squareWidths m) ≤ (extraCount m a b : ℚ)/2 + lambdaCore (MprimeWidths m a b)`,
 >   under `hab : a + b ≤ m`. `lambdaCore = ½·min_{T∈Adm} Mval`.
 > - **Proved.** Unconditionally over `ℚ`. The `M'`-minimiser `T*` (with `T* 1 = 0` by the L = 2 Adm
@@ -37,7 +37,7 @@ wall, NOT built here.
 > - **Deferred.** none (this piece is complete).
 > - **Structure & ideas observed (pen-and-paper a97332/a9a2cf, decorrelated).** The unifying value
 >   `rlctAtOn R 0 = extra/2 + lambdaCore(M')` across the whole L = 2 (m,a,b) design space (164-strata
->   sweep `m ≤ 8`, ZERO violations); the load-bearing symbolic identity `extra + D_{a,b}(t) =
+>   sweep `1 ≤ m ≤ 8`, ZERO violations); the load-bearing symbolic identity `extra + D_{a,b}(t) =
 >   F_m(a+t)`, `F_m(s) = (m−s)² + sm` (104 equality / 60 strict; D1 needs only `≥`). `m` is a SINGLE
 >   reduced width (square deepest).
 > - **Route (controller spec §6).** Land first (cleanest; no chart, no analysis). At L = 2 `Adm` is
@@ -55,7 +55,7 @@ wall, NOT built here.
 > M')`, the D1 `hCore` holds: `coreDeepest ≤ rlctAtOn R t0`.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.hCore_middle_stratum_of_interface`
->   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ `bb76d5bc`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ branch `d1-chart-producer-l2build` head (controller pins the integration SHA))
 > - **Gloss.** Applies the SECOND `rlct_quasiSplit_ge` to `R` (post-second-chart form `F₂`), giving
 >   `extra/2 + rlctAtOn R₂ t0₂ ≤ rlctAtOn F₂ (0,t0₂) = rlctAtOn R t0`; then `hDegraded` +
 >   `coreDeepest_le_extra_half_add_lambdaCore_Mprime` close `coreDeepest ≤ rlctAtOn R t0`.
@@ -86,7 +86,7 @@ wall, NOT built here.
 > rlctAt v` (the case-(B) per-point D1 `≥`).
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.deepest_le_of_optimal_middle_stratum`
->   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ `bb76d5bc`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/D1ChartProducerL2Build.lean` @ branch `d1-chart-producer-l2build` head (controller pins the integration SHA))
 > - **Gloss.** Discharges `hCore` from `hCore_middle_stratum_of_interface` (NOT a bare hypothesis),
 >   then wires the banked `deepest_le_of_optimal_chart` (FIRST peel `hAtV` via
 >   `rlctAt_ge_nReg_add_slice` + `hDeepest` + `hCore`). `nReg = nRegL2 H r`, `extra = extraCount m a b`.

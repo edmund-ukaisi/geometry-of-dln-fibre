@@ -16,8 +16,8 @@ This module builds, ON TOP of the banked reduction `deepest_le_of_optimal_of_cha
 
 The middle-stratum `hCore` (case (B), spec §4B) is the **second-peel arithmetic** that the slice
 residual at a middle-stratum optimal `v` satisfies. The decorrelated pen-and-paper adjudication
-(a97332 / a9a2cf, EXACT, 164-strata exhaustive sweep `m ≤ 8`, ZERO violations) banked the unifying
-value
+(a97332 / a9a2cf, EXACT, 164-strata exhaustive sweep `1 ≤ m ≤ 8`, ZERO violations) banked the
+unifying value
 
     rlctAtOn R 0 = extra/2 + lambdaCore(M'),   extra = m(a+b) − ab,  M' = (m−a, m−a−b, m−b),
 
@@ -87,8 +87,8 @@ theorem Mval_L2 (M : Fin 3 → ℕ) (T : Fin 2 → ℕ) :
 
 /-- **The banked symbolic identity** `extra + Mval(M', T) = Mval(square m, ![T 0 + a, 0])` (the
 `extra + D_{a,b}(t) = F_m(a+t)` of spec §6, at `t = T 0`, `T 1 = 0`). Over `ℤ` and verified exact by
-the design-pass (sympy + 164-strata sweep). Requires `a + b ≤ m` (the middle-stratum admissibility
-ensuring the `ℕ`-subtractions in `M'` are honest). -/
+the design-pass (sympy + the 164-strata sweep `1 ≤ m ≤ 8`). Requires `a + b ≤ m` (the
+middle-stratum admissibility ensuring the `ℕ`-subtractions in `M'` are honest). -/
 theorem Mval_Mprime_add_extra_eq_square (m a b : ℕ) (T : Fin 2 → ℕ)
     (hab : a + b ≤ m) (hT1 : T 1 = 0) :
     (extraCount m a b : ℤ) + Mval (MprimeWidths m a b) T
@@ -174,7 +174,7 @@ over `ℚ`, for the middle-stratum data `a + b ≤ m`. The deepest reduced width
 square `(m, m, m)`, so `coreDeepest = lambdaCore (square m)`. Pure `Mval`/`Adm`/`Finset.inf'`
 algebra: the `M'`-minimiser `T*` (Adm-last `T* 1 = 0`) maps under the banked identity
 `Mval_Mprime_add_extra_eq_square` to an admissible square exponent `![T* 0 + a, 0]`, dominating the
-square infimum. Verified ZERO violations across the 164 L = 2 strata (`m ≤ 8`). -/
+square infimum. Verified ZERO violations across the 164 L = 2 middle strata (`1 ≤ m ≤ 8`). -/
 theorem extra_half_add_lambdaCore_Mprime_ge_square (m a b : ℕ) (hab : a + b ≤ m) :
     lambdaCore (squareWidths m)
       ≤ (extraCount m a b : ℚ) / 2 + lambdaCore (MprimeWidths m a b) := by
