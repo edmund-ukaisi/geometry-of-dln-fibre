@@ -464,35 +464,97 @@ private theorem conj_he2_raw (H : Fin 3 → ℕ) (r : ℕ)
         + (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1)) (Aq 0)).toBlocks₁₂
           * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2)) (Aq 1)).toBlocks₂₂ := by
   intro Aq Aψ
-  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)) with hw
-  have hsw : split w = psiSplitRawL2CoreConj H r B hB hr hL rfl (split x) := by
+  set q := split x with hq
+  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl q) with hw
+  have hsw : split w = psiSplitRawL2CoreConj H r B hB hr hL rfl q := by
     rw [hw, split.apply_symm_apply]
-  -- The boundary deepBlkT facts (both layers, L=2).
-  have hT0 : (Matrix.reindex (rThresholdSplit r (H (⟨0, by omega⟩ : Fin 2).castSucc) (hr _))
-      (rThresholdSplit r (H (⟨0, by omega⟩ : Fin 2).succ) (hr _))
-      (deepestPoint H r B hB hr hL (⟨0, by omega⟩ : Fin 2))).toBlocks₂₂ = 0 :=
-    deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin 2) rfl
-  have hTlast : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
-      (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
-      (deepestPoint H r B hB hr hL (lastLayer hL))).toBlocks₂₂ = 0 :=
-    deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL) (by simp [lastLayer])
-  -- Chart-point block dictionaries: Aq 0, Aq 1 (= split x), and Aψ 1 (= ψ(split x), moved).
+  -- Unfold the let-bound Aq/Aψ; the goal is now in explicit `(paramsEquivFlat H).symm …` form (literal
+  -- indices `0`/`1`, widths `H 0`/`H 1`/`H 2`).
+  show (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁
+        * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+            (((paramsEquivFlat H).symm w) (1 : Fin 2))).toBlocks₁₂
+      + (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂
+        * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+            (((paramsEquivFlat H).symm w) (1 : Fin 2))).toBlocks₂₂
+    = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁
+        * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+            (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₂
+      + (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂
+        * (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+            (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₂₂
+  -- The boundary deepBlkT facts (both layers, L=2), at literal indices.
+  have hT0 : (Matrix.reindex (rThresholdSplit r (H ((0 : Fin 2)).castSucc) (hr _))
+      (rThresholdSplit r (H ((0 : Fin 2)).succ) (hr _))
+      (deepestPoint H r B hB hr hL ((0 : Fin 2)))).toBlocks₂₂ = 0 :=
+    deepBlkT_layer0_zero H r B hB hr hL (by omega) ((0 : Fin 2)) rfl
+  have hTlast : (Matrix.reindex (rThresholdSplit r (H ((1 : Fin 2)).castSucc) (hr _))
+      (rThresholdSplit r (H ((1 : Fin 2)).succ) (hr _))
+      (deepestPoint H r B hB hr hL ((1 : Fin 2)))).toBlocks₂₂ = 0 :=
+    deepBlkT_layerLast_zero H r B hB hr hL (by omega) ((1 : Fin 2)) rfl
+  -- Chart/moved-point block dictionaries at literal indices (widths come out `H 0`/`H 1`/`H 2`).
   obtain ⟨hAq0_11, _, hAq0_12, _⟩ :=
-    reindex_decode_blocks_at H r B hB hr hL split hsplit x (⟨0, by omega⟩ : Fin 2) hT0
+    reindex_decode_blocks_at H r B hB hr hL split hsplit x ((0 : Fin 2)) hT0
   obtain ⟨_, _, hAq1_12, hAq1_22⟩ :=
-    reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hTlast
+    reindex_decode_blocks_at H r B hB hr hL split hsplit x ((1 : Fin 2)) hTlast
   obtain ⟨_, _, hAψ1_12, hAψ1_22⟩ :=
-    reindex_decode_blocks_at H r B hB hr hL split hsplit w (lastLayer hL) hTlast
-  -- Rewrite the moved-layer Aψ 1 blocks via the conj readbacks (sw round-trip).
-  rw [hsw, readY_psiSplitRawL2CoreConj_last_eq] at hAψ1_12
-  rw [hsw, coreRead_psiSplitRawL2CoreConj_last] at hAψ1_22
-  -- The six dictionary haves (hAq0_11/12, hAq1_12/22, hAψ1_12/22) give the raw blocks as deepBlk·+read·
-  -- forms; e2_conj_dict (H r B … rfl (split x) hdet0) gives the e2 relation in l2*Conj terms (= the same
-  -- deepBlk·+read· up to the l2Y0Conj midWidth `finCongr_refl` collapse, the hY0c template @DeepestDiffeo-
-  -- BridgeL2Conj:2459). REMAINING: the let-unfold (Aq/Aψ) + defeq-index (⟨0,_⟩↔0) + midWidth alignment to
-  -- discharge — the documented opaque-width gluing.
-  have he2 := e2_conj_dict H r B hB hr hL rfl (split x) hdet0
-  sorry
+    reindex_decode_blocks_at H r B hB hr hL split hsplit w ((1 : Fin 2)) hTlast
+  -- Collapse the `Fin.castSucc/.succ` width-indices to the literal `H 0`/`H 1`/`H 2` the goal uses.
+  simp only [Fin.castSucc_zero, Fin.succ_zero_eq_one, Fin.castSucc_one, Fin.succ_one_eq_two]
+    at hAq0_11 hAq0_12 hAq1_12 hAq1_22 hAψ1_12 hAψ1_22
+  -- Literal-`1` forms of the two conj readbacks: `exact`-transport handles `lastLayer hL ≡ 1` (defeq),
+  -- where `▸`/`rw` fail on the dependent codomain width.
+  have hRY : readY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL rfl q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL rfl q).2.2) (1 : Fin 2)
+      = l2Y1pReadConj H r B hB hr hL rfl q :=
+    readY_psiSplitRawL2CoreConj_last_eq H r B hB hr hL rfl q
+  have hRT : (paramsEquivFlat (deepestM H r)).symm
+        (psiSplitRawL2CoreConj H r B hB hr hL rfl q).2.1 (1 : Fin 2)
+      = l2T1pConj H r B hB hr hL rfl q :=
+    coreRead_psiSplitRawL2CoreConj_last H r B hB hr hL rfl q
+  -- Rewrite the moved-layer last blocks via the conj readbacks (sw round-trip).
+  rw [hsw, hRY] at hAψ1_12
+  rw [hsw, hRT] at hAψ1_22
+  -- Collapse the chart-point `split x` to `q`.
+  rw [← hq] at hAq0_11 hAq0_12 hAq1_12 hAq1_22
+  -- Translate the six raw block-haves into `l2*Conj` dictionary terms.
+  --  Last-layer dict terms (`l2Y1Conj`/`l2T1Conj`) are typed at `lastLayer hL`; the literal-`1` block
+  --  matches them by defeq, so `exact` closes each (`rw` then `rfl` would mismatch the index syntactically).
+  -- `lastLayer hL = (1 : Fin 2)` (defeq) — bridge the literal-`1` block indices to the `l2*Conj` defs'.
+  have hlast : lastLayer hL = (1 : Fin 2) := by simp only [lastLayer]; rfl
+  have hY0c : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂
+      = l2Y0Conj H r B hB hr hL rfl q :=
+    hAq0_12.trans (by
+      rw [l2Y0Conj, show finCongr (midWidth_eq_of_L2 H r hL rfl) = Equiv.refl _ from finCongr_refl _]
+      erw [Matrix.reindex_refl_refl]
+      rfl)
+  have hA0c : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+          (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁
+      = l2A0Conj H r B hB hr hL q := hAq0_11.trans rfl
+  have hY1pc : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+          (((paramsEquivFlat H).symm w) (1 : Fin 2))).toBlocks₁₂
+      = l2Y1pConj H r B hB hr hL rfl q :=
+    hAψ1_12.trans (by
+      -- `deepBlkY 1` is defeq `deepBlkY (lastLayer hL)`; `show` aligns the index so the unfold + abel fire.
+      show deepBlkY H r B hB hr hL (lastLayer hL) + l2Y1pReadConj H r B hB hr hL rfl q
+          = l2Y1pConj H r B hB hr hL rfl q
+      rw [l2Y1pConj, l2Y1pReadConj, l2Y1Conj]; abel)
+  have hT1pc : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+          (((paramsEquivFlat H).symm w) (1 : Fin 2))).toBlocks₂₂
+      = l2T1pConj H r B hB hr hL rfl q := hAψ1_22.trans rfl
+  have hY1c : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+          (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₁₂
+      = l2Y1Conj H r B hB hr hL q := hAq1_12.trans rfl
+  have hT1c : (Matrix.reindex (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
+          (((paramsEquivFlat H).symm x) (1 : Fin 2))).toBlocks₂₂
+      = l2T1Conj H r hr hL q := hAq1_22.trans rfl
+  -- Rewrite the goal into the `l2*Conj` dictionary form and apply e2_conj_dict.
+  rw [hA0c, hY0c, hY1pc, hT1pc, hY1c, hT1c]
+  exact e2_conj_dict H r B hB hr hL rfl q hdet0
 
 /-- **The conjugated reg-energy invariance `hsub3reg`** (the long pole) — germ-local. Mirrors #147,
 with `psiSplitRawL2CoreConj` as the moved point. Per-x on the germ (where `l2A0Conj (split x)` is a
