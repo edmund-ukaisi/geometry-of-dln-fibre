@@ -6,8 +6,8 @@ import DLNFibre.Core.TopDimMinPrimesW0
 import DLNFibre.Core.TopDimMinPrimesW1W2
 import DLNFibre.Core.TopDimMinPrimesW2
 import DLNFibre.Core.TopDimMinPrimesChartE
-import DLNFibre.Core.TopDimMinPrimesPoly
-import DLNFibre.Core.TopDimMinPrimesRadical
+import DLNFibre.Core.MinimalPrime.Polynomial
+import DLNFibre.Core.MinimalPrime.Radical
 import DLNFibre.Core.MultComorphism
 
 /-!
@@ -25,8 +25,8 @@ cTheta (d − r)
   =[W1]      (TopDimMinPrimes (O(Σ^r)[1/dsig])).ncard   -- TopDimMinPrimesW1W2 (keystone)
   =[chart e] (TopDimMinPrimes ((O(F)[Schur])[1/gF])).ncard  -- TopDimMinPrimesChartE
   =[W2]      (TopDimMinPrimes (O(F)[Schur])).ncard      -- TopDimMinPrimesW2 (keystone, flat route)
-  =[poly]    (TopDimMinPrimes (O(F))).ncard             -- TopDimMinPrimesPoly
-  =[W3]      (TopDimMinPrimes (O(fibre))).ncard         -- TopDimMinPrimesRadical + Nullstellensatz
+  =[poly]    (TopDimMinPrimes (O(F))).ncard             -- MinimalPrime.Polynomial
+  =[W3]      (TopDimMinPrimes (O(fibre))).ncard         -- MinimalPrime.Radical + Nullstellensatz
 ```
 
 `O(fibre) = MvPolynomial (RepCoord d) k ⧸ fibreGenIdeal d E_r` is the fibre coordinate ring (the
@@ -44,7 +44,8 @@ unconditional headline `numTop_fibre_eq_cTheta_dminus`).
 namespace DLNFibre.Core
 
 open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
-  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv
+  topDimMinPrimes_mvPolynomial_ncard_eq topDimMinPrimes_quotient_radical_ncard_eq)
 
 open MvPolynomial Matrix
 

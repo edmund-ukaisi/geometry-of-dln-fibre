@@ -2,35 +2,35 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.MinimalPrime.TopDimensional
-import DLNFibre.Core.RadicalCatenary
+import DLNFibre.Core.Dimension.Codimension
 
 /-!
-# `DLNFibre.Core.TopDimMinPrimesBridge` — height-`= I.height` ↔ `TopDimMinPrimes` (polynomial ring)
+# `DLNFibre.Core.MinimalPrime.Bridge` — height-`= I.height` ↔ `TopDimMinPrimes` (polynomial ring)
 
-Connects the height-based "top-dimensional component" reading used on the `Σ̄^r` side
-(`Core.ThetaComponentCount.topComponents`, `{p ∈ minimalPrimes | p.height = (cCodim).toNat}`) to the
-dimension-based `Core.TopDimMinPrimes` used for the count transport. On a polynomial ring
-`R = MvPolynomial σ k` (`σ` finite) the two notions select the **same** minimal primes, because the
-ring is catenary: for a minimal prime `p ⊇ I` of a proper ideal `I`,
+Connects the **height-based** "top-dimensional component" reading of a minimal prime
+(`p.height = I.height`) to the **dimension-based** `Ideal.TopDimMinPrimes` (see
+`…/MinimalPrime/TopDimensional`) used for the count transport. On a polynomial ring
+`R = MvPolynomial σ k` (`k` a field, `σ` finite) the two notions select the **same** minimal primes,
+because the ring is catenary: for a minimal prime `p ⊇ I` of a proper ideal `I`,
 
 > `ringKrullDim (R ⧸ p) = ringKrullDim (R ⧸ I)  ↔  p.height = I.height`
 
 (both `dim (R ⧸ ·) = card − height ·`, and `I.height` is the minimal component height). With the
 quotient minimal-prime bijection `Ideal.minimalPrimes_eq_comap`, this gives a bijection between
-`{p ∈ I.minimalPrimes | p.height = I.height}` and `TopDimMinPrimes (R ⧸ I)`, hence equal counts.
+`{p ∈ I.minimalPrimes | p.height = I.height}` and `TopDimMinPrimes (R ⧸ I)`, hence equal counts
+(the count consequence is a downstream wire; this module proves the per-prime biconditional and the
+`card − height` quotient-dimension identities it rides on).
 
-The DLN consumer (`Σ̄^r` count → `TopDimMinPrimes (O(Σ̄^r))`) is a separate downstream wire; this
-module is the generic field-and-ideal algebra. Pure commutative algebra — no DLN content.
+Pure commutative algebra over a field — no DLN content. It lives in namespace `Ideal` and mirrors
+the Mathlib home `Mathlib.RingTheory.Ideal.MinimalPrime`, so an upstream move is a file-move with no
+namespace surgery.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+namespace Ideal
 
-open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
-  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
-
-open MvPolynomial
+open MvPolynomial DLNFibre.Core.Dimension
 
 variable {k : Type*} [Field k] {σ : Type*} [Finite σ]
 
@@ -50,7 +50,7 @@ theorem height_prime_ne_top (p : Ideal (MvPolynomial σ k)) [p.IsPrime] : p.heig
 
 /-- **The quotient dimension of a prime is `card − height` (`ℕ∞`).** For `R = MvPolynomial σ k` and
 a prime `p`, `ringKrullDim (R ⧸ p) = Nat.card σ − p.height`. From the per-prime catenary
-`height p + dim (R ⧸ p) = card` (`Core.NullstellensatzCodim`) by `ℕ∞`-subtraction (lossless,
+`height p + dim (R ⧸ p) = card` (`Core.Dimension.Codimension`) by `ℕ∞`-subtraction (lossless,
 `height p ≤ card`). -/
 theorem ringKrullDim_quotient_prime_eq (p : Ideal (MvPolynomial σ k)) [p.IsPrime] :
     ringKrullDim (MvPolynomial σ k ⧸ p) = ((Nat.card σ : ℕ∞) - p.height : ℕ∞) := by
@@ -65,8 +65,8 @@ theorem ringKrullDim_quotient_prime_eq (p : Ideal (MvPolynomial σ k)) [p.IsPrim
   rw [WithBot.coe_eq_coe]
   exact (ENat.addLECancellable_of_ne_top (height_prime_ne_top p)).eq_tsub_of_add_eq hcat'
 
-/-- **The quotient dimension of a proper ideal is `card − height` (`ℕ∞`).** The reducible-locus
-catenary `height I + dim (R ⧸ I) = card` (`Core.RadicalCatenary`) in subtraction form. -/
+/-- **The quotient dimension of a proper ideal is `card − height` (`ℕ∞`).** The any-proper-ideal
+catenary `height I + dim (R ⧸ I) = card` (`Core.Dimension.Codimension`) in subtraction form. -/
 theorem ringKrullDim_quotient_eq_of_ne_top (I : Ideal (MvPolynomial σ k)) (hIne : I ≠ ⊤) :
     ringKrullDim (MvPolynomial σ k ⧸ I) = ((Nat.card σ : ℕ∞) - I.height : ℕ∞) := by
   have hcat := height_add_ringKrullDim_quotient_eq_card_of_ne_top (k := k) (σ := σ) I hIne
@@ -110,4 +110,4 @@ theorem ringKrullDim_quotient_eq_iff_height_eq (I : Ideal (MvPolynomial σ k)) (
   exact enat_sub_left_cancel (height_prime_le_card p)
     (hIle.trans (height_prime_le_card p)) (ENat.coe_ne_top _) hpne hIne'
 
-end DLNFibre.Core
+end Ideal

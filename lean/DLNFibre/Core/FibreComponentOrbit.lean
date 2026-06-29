@@ -40,7 +40,8 @@ two `…_of_component_*` consumers are kept only for the honest record.
 namespace DLNFibre.Core
 
 open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
-  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv
+  quotTopDimSet bijOn_comap_quotTopDimSet)
 
 open MvPolynomial Matrix Algebra
 open scoped TensorProduct
