@@ -19710,3 +19710,33 @@ passed by xhigh `Bernoulli`.
 Nonclaims: no full derivative/formal-Jacobian equality, determinant equality,
 target-side linear equivalence, measure transport, normal crossings, pole
 order, or RLCT.
+
+## Latest A2 Case 2 Cardinality Endpoint Finite-Integral Handoff
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_card_eq
+```
+
+This is the endpoint-cardinality entry point for the existing
+endpoint-transported Case 2 chart-produced finite-integral theorem.  It
+replaces supplied endpoint equivalences with finite cardinality hypotheses
+`hNext` and `hEndpoints`, constructs the noncanonical finite equivalences by
+`case2EndpointTransportEquivs_of_card_eq`, and calls the prior theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-cardinality-endpoint-finite-integral.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-cardinality-endpoint-finite-integral.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-cardinality-endpoint-finite-integral.md`.
+Review passed by xhigh read-only checker `Newton the 2nd`.
+
+Focused build, full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+and direct theorem axiom audit passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+This is useful API hardening, not a new analytic frontier.  It proves no
+cardinality provenance, label-preserving transport, source-rank coverage,
+original source-prior transport, external-prior Jacobian comparison, normal
+crossings, pole order, or RLCT.

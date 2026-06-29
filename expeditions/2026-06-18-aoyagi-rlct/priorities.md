@@ -10796,3 +10796,27 @@ local inverse/readback, endpoint recovery, and image/coverage statement
 supported by Aoyagi before adding more Lean wrappers.  Do not claim determinant
 equality, target-side linear equivalence, measure transport, normal crossings,
 pole order, or RLCT from this substitution.
+
+A2 Case 2 cardinality endpoint finite-integral handoff has landed locally:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves the `_card_eq` variant
+of the endpoint-transported chart-produced finite-integral theorem.  It
+constructs noncanonical endpoint equivalences from `hNext` and `hEndpoints`
+using `case2EndpointTransportEquivs_of_card_eq`, then applies the existing
+endpoint-equivalence theorem.  This removes explicit equivalence data from one
+downstream finite-integral handoff when cardinalities are available.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-cardinality-endpoint-finite-integral.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-cardinality-endpoint-finite-integral.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-cardinality-endpoint-finite-integral.md`.
+Focused build, full `DLNFibre` build, `scripts/sorries`, `git diff --check`,
+direct theorem axiom audit, and xhigh review passed.
+
+Next priority: do not continue adding endpoint/cardinality wrappers unless a
+specific consumer needs them.  The real p.13 frontier remains a source-data
+package, source-rank/image coverage, external source-measure pushforward, or
+the regular-suspension bridge from residual `prod C^(s)` to the full product
+difference with regular coordinates.  Do not claim cardinality provenance,
+label-preserving endpoint transport, original prior transport, normal
+crossings, pole order, or RLCT from this handoff.
