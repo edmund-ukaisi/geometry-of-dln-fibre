@@ -10,6 +10,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, dev dimension-stack integration
+
+The expedition branch now includes the current `origin/dev` dimension-stack
+merge (`00fb7238`, PR #14) via merge commit `7459252a`.  This re-homes the
+dimension infrastructure under `DLNFibre.Core.Dimension.*` and adds the
+dimension-stack expedition records, while preserving the Aoyagi-only proof
+boundary for this branch.
+
+Integration discipline:
+
+```text
+probe branch: probe/aoyagi-rlct-dimstack
+actual branch: expedition/aoyagi-rlct
+actual worktree: .claude/worktrees/aoyagi-rlct
+```
+
+The probe merge built the full `DLNFibre` target, then the actual expedition
+worktree was fast-forwarded to the tested merge commit and rebuilt.  In the
+actual worktree, `scripts/lb DLNFibre`, `scripts/sorries`, `git diff --check
+HEAD^ HEAD`, and the direct axiom probe for the latest passive
+source-stratum Jacobian finite-integral theorem all passed.  The direct axiom
+probe still reports only `[propext, Classical.choice, Quot.sound]`.
+
+This is infrastructure integration only.  It does not add Aoyagi mathematical
+claims, does not license quiver-paper arguments inside this expedition, and
+does not change the current mathematical frontier: the next substantive Aoyagi
+target remains the p.13 retained-passive source-chart/source-prior transport
+and regular-square suspension line, with pen-and-paper reproduction before
+substantial Lean.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted source-stratum bounds finite integral
 
 The passive selected-entry frontier now has the source-stratum-bound analogue

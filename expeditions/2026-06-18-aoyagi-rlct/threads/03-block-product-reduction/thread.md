@@ -16197,3 +16197,33 @@ Nonclaims: no proof of the cardinality equalities, no label-preserving
 endpoint transport, no source-rank coverage, no original prior/source measure
 identification, no external-prior Jacobian comparison, no normal crossings, no
 pole order, and no RLCT.
+
+## 2026-06-29 branch integration note - dev dimension-stack merge
+
+The Aoyagi expedition branch was updated to include the current `origin/dev`
+dimension-stack merge (`00fb7238`, PR #14).  Integration was probed first in
+`.claude/worktrees/aoyagi-rlct-dimprobe` on
+`probe/aoyagi-rlct-dimstack`; the merge was clean, including the auto-merge of
+`lean/DLNFibre.lean`.
+
+Probe gates passed:
+
+```text
+cd lean
+scripts/lb DLNFibre
+scripts/sorries
+git diff --check HEAD^ HEAD
+direct #print axioms probe for the latest passive source-stratum theorem
+```
+
+The actual branch `expedition/aoyagi-rlct` was then fast-forwarded to the
+tested merge commit `7459252a`.  The same actual-worktree gates passed:
+full `DLNFibre` build, zero-sorry scan, merge-diff whitespace check, and the
+direct axiom probe for
+`PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds`,
+which reported only `[propext, Classical.choice, Quot.sound]`.
+
+This note changes no mathematical claim.  The active A2 frontier remains the
+p.13 retained-passive source-chart/source-prior transport and
+regular-square-suspension line, with pen-and-paper reproduction required before
+substantial Lean.

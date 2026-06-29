@@ -22684,3 +22684,37 @@ exposes the same witness when needed.
 Controller pivot: the next substantial target should be Aoyagi p.13
 regular-square suspension, including the threshold shift from the regular
 coordinates `(C1 - I, F2, F3)` and the cleaned residual block `D`.
+
+## 2026-06-29 dev dimension-stack integration
+
+After the passive source-stratum Jacobian handoff was banked, the expedition
+branch was brought up to the current `origin/dev` dimension-stack merge
+(`00fb7238`, PR #14).  The controller created the isolated probe worktree
+`.claude/worktrees/aoyagi-rlct-dimprobe` on branch
+`probe/aoyagi-rlct-dimstack`, merged `origin/dev` there, and ran:
+
+```text
+cd lean
+scripts/lb DLNFibre
+scripts/sorries
+git diff --check HEAD^ HEAD
+direct #print axioms probe for the latest passive source-stratum theorem
+```
+
+The probe passed: full `DLNFibre` build green; `scripts/sorries` reported
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`; whitespace check clean; the
+direct axiom probe reported `[propext, Classical.choice, Quot.sound]`.
+
+The actual expedition worktree
+`.claude/worktrees/aoyagi-rlct` was then fast-forwarded to the tested merge
+commit `7459252a`.  The same actual-worktree gates passed: full `DLNFibre`
+build green, `scripts/sorries` clean, `git diff --check HEAD^ HEAD` clean,
+and the direct axiom probe still `[propext, Classical.choice, Quot.sound]`.
+
+Consequence: the Aoyagi branch now uses the new dimension infrastructure
+layout (`DLNFibre.Core.Dimension.*`) and the `scripts/lb` shared-build
+workflow.  This was infrastructure integration only: no Aoyagi-specific
+mathematical claim changed, and the Aoyagi-only source boundary remains in
+force.  The next mathematical work should continue from the p.13
+retained-passive source-chart/source-prior transport and regular-square
+suspension frontier, with pen-and-paper reproduction before substantial Lean.
