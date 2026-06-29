@@ -3,6 +3,74 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 two-sided loss-density supplied comparison iff - 2026-06-29
+
+`RegularSuspensionSquareSumIntegrability.lean` now has a supplied two-sided
+comparison layer connecting actual loss-density integrability to the
+regular-suspension square model.  The new public theorems are:
+
+```text
+lintegral_ofReal_residual_power_lt_top_of_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_loss_pos_of_loss_le_const_mul_of_const_le_density
+lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+```
+
+For the coordinate model
+
+```text
+q(x,u) = aoyagiCoordinateSquareSum (b x) + ||u||^2,
+s = t + finrank(E)/2,
+```
+
+the theorem assumes the model-iff hypotheses and supplied local bounds on the
+regular ball:
+
+```text
+cL * q <= loss <= CL * q,
+dρ <= density <= Dρ,
+0 < cL, 0 < CL, 0 < dρ, 0 <= Dρ.
+```
+
+The finite direction uses the existing lower-loss/upper-density estimate.  The
+reverse direction uses supplied loss positivity plus `loss <= CL*q` and
+`dρ <= density` to prove
+
+```text
+dρ * CL^(-s) * q^(-s) <= loss^(-s) * density,
+```
+
+then cancels the positive constant and invokes the model iff.  The public iff
+derives loss positivity from `cL*q <= loss` and residual positivity.
+
+The p.13 theorem is only a notation/count wrapper.  It rewrites
+`finrank(E)` to `aoyagiTheorem2RegularVariableCount N H r` and
+`||u||^2` to the regular-coordinate square-sum.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-two-sided-loss-density-supplied-comparison-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-two-sided-loss-density-supplied-comparison-iff.md`.
+Review passed after precision fixes in
+`threads/03-block-product-reduction/review-a2-two-sided-loss-density-supplied-comparison-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes for the four new public theorem
+names.  The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the comparison hypotheses, no p.13 analytic chart
+coverage, no source-prior/Jacobian/density/product-measure transport, no proof
+of residual measurability or integrability, no normal crossings, no pole order,
+and no RLCT.
+
 ## Latest A2 p.13 regular-coordinate model iff - 2026-06-29
 
 `RegularSuspensionSquareSumIntegrability.lean` now has the fixed-base p.13

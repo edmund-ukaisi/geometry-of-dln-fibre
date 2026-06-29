@@ -10,6 +10,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, two-sided loss-density supplied comparison iff
+
+The regular-suspension square-model threshold iff now has a supplied
+actual-loss/density comparison layer.  Under explicit local hypotheses
+
+```text
+cL * model <= loss <= CL * model,
+density between dρ and Dρ,
+0 < cL, 0 < CL, 0 < dρ, 0 <= Dρ,
+```
+
+and the model-iff hypotheses (`AEMeasurable` residual square-sum, `0<R`,
+residual positivity, residual bounded by `R^2`, `0<t`, Haar/SFinite regular
+measure), Lean proves actual loss-density integrability iff residual
+square-sum `t`-power integrability.
+
+This is still a supplied-bound theorem.  It does not prove the p.13 analytic
+chart, the loss comparison, density/Jacobian/source-prior transport,
+product-measure compatibility, residual integrability, normal crossings, pole
+order, or RLCT.  The p.13 wrapper is only the regular-count and
+regular-square-sum notation adaptation.
+
 ## Latest controller decision - 2026-06-29, p.13 regular-coordinate model iff
 
 The p.13 fixed-base regular-coordinate square model now has the intended iff

@@ -439,6 +439,204 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_
   rw [hscale]
   exact ENNReal.mul_lt_top ENNReal.ofReal_lt_top hmodelFin
 
+/-- Reverse supplied-bound comparison for coordinate-square-sum regular
+suspensions.  If the actual loss is positive and bounded above by a positive
+constant times the square model, and the transported density is bounded below
+by a positive constant on the regular ball, then finite actual loss-density
+integrability forces finite residual negative-power integrability.
+
+This is a supplied-bound theorem.  It does not construct Aoyagi's p. 13 chart,
+prove either loss/density bound, prove measure transport, or establish
+pole-order/RLCT. -/
+theorem lintegral_ofReal_residual_power_lt_top_of_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_loss_pos_of_loss_le_const_mul_of_const_le_density
+    {α η E : Type*} [MeasurableSpace α] [Fintype η]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {b : α → η → ℝ} {loss density : α × E → ℝ} {t R C d : ℝ}
+    (hmeas : AEMeasurable (fun x : α => aoyagiCoordinateSquareSum (b x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ, 0 < aoyagiCoordinateSquareSum (b x))
+    (hle_base : ∀ᵐ x ∂μ, aoyagiCoordinateSquareSum (b x) ≤ R ^ 2)
+    (hC : 0 < C) (hd : 0 < d) (ht : 0 < t)
+    (hloss_pos : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → 0 < loss z)
+    (hloss_le : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R →
+        loss z ≤ C * (aoyagiCoordinateSquareSum (b z.1) + ‖z.2‖ ^ 2))
+    (hdensity_ge : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → d ≤ density z)
+    (hactual :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E =>
+            (loss (z.1, u)) ^ (-(t + (Module.finrank ℝ E : ℝ) / 2)) *
+              density (z.1, u)) z.2) ∂μ.prod ν) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum (b x)) ^ (-t)) ∂μ) < ∞ := by
+  let s : ℝ := t + (Module.finrank ℝ E : ℝ) / 2
+  let K : ℝ := d * C ^ (-s)
+  let model : α × E → ℝ := fun z =>
+    (Metric.ball (0 : E) R).indicator
+      (fun u : E =>
+        (aoyagiCoordinateSquareSum (b z.1) + ‖u‖ ^ 2) ^ (-s)) z.2
+  have hs_nonneg : 0 ≤ s := by
+    dsimp [s]
+    have hdim : 0 ≤ (Module.finrank ℝ E : ℝ) / 2 := by positivity
+    linarith
+  have hK_pos : 0 < K := by
+    dsimp [K]
+    exact mul_pos hd (Real.rpow_pos_of_pos hC _)
+  have hK_nonneg : 0 ≤ K := hK_pos.le
+  have hmono :
+      (∫⁻ z : α × E, ENNReal.ofReal (K * model z) ∂μ.prod ν) ≤
+        (∫⁻ z : α × E, ENNReal.ofReal
+          ((Metric.ball (0 : E) R).indicator
+            (fun u : E =>
+              (loss (z.1, u)) ^ (-s) * density (z.1, u)) z.2) ∂μ.prod ν) := by
+    apply lintegral_mono_ae
+    have hpos_prod : ∀ᵐ z : α × E ∂μ.prod ν,
+        0 < aoyagiCoordinateSquareSum (b z.1) :=
+      (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hpos
+    filter_upwards [hpos_prod, hloss_pos, hloss_le, hdensity_ge] with
+      z hzpos hzloss_pos hzloss_le hzdensity_ge
+    by_cases hzball : z.2 ∈ Metric.ball (0 : E) R
+    · simp only [Set.indicator_of_mem hzball]
+      apply ENNReal.ofReal_le_ofReal
+      let q : ℝ := aoyagiCoordinateSquareSum (b z.1) + ‖z.2‖ ^ 2
+      have hqpos : 0 < q := by
+        dsimp [q]
+        nlinarith [sq_nonneg ‖z.2‖]
+      have hmodel_eq : model z = q ^ (-s) := by
+        simp [model, hzball, q]
+      have hCqpos : 0 < C * q := mul_pos hC hqpos
+      have hpow_le : C ^ (-s) * q ^ (-s) ≤ (loss z) ^ (-s) := by
+        have hle : (C * q) ^ (-s) ≤ (loss z) ^ (-s) :=
+          Real.rpow_le_rpow_of_nonpos (hzloss_pos hzball)
+            (by simpa [q] using hzloss_le hzball) (by linarith [hs_nonneg])
+        have hmul : (C * q) ^ (-s) = C ^ (-s) * q ^ (-s) := by
+          rw [Real.mul_rpow hC.le hqpos.le]
+        rwa [← hmul]
+      have hloss_pow_nonneg : 0 ≤ (loss z) ^ (-s) :=
+        Real.rpow_nonneg (hzloss_pos hzball).le _
+      calc
+        K * model z = K * q ^ (-s) := by
+          rw [hmodel_eq]
+        _ = d * (C ^ (-s) * q ^ (-s)) := by
+          dsimp [K]
+          ring
+        _ ≤ d * (loss z) ^ (-s) :=
+          mul_le_mul_of_nonneg_left hpow_le hd.le
+        _ ≤ density z * (loss z) ^ (-s) :=
+          mul_le_mul_of_nonneg_right (hzdensity_ge hzball) hloss_pow_nonneg
+        _ = (loss z) ^ (-s) * density z := by
+          ring
+    · simp [model, hzball]
+  have hmodelFin :
+      (∫⁻ z : α × E, ENNReal.ofReal (model z) ∂μ.prod ν) < ∞ := by
+    have hscale :
+        (∫⁻ z : α × E, ENNReal.ofReal (K * model z) ∂μ.prod ν) =
+          ENNReal.ofReal K * ∫⁻ z : α × E, ENNReal.ofReal (model z) ∂μ.prod ν := by
+      calc
+        (∫⁻ z : α × E, ENNReal.ofReal (K * model z) ∂μ.prod ν) =
+            ∫⁻ z : α × E, ENNReal.ofReal K * ENNReal.ofReal (model z) ∂μ.prod ν := by
+          apply lintegral_congr
+          intro z
+          rw [ENNReal.ofReal_mul hK_nonneg]
+        _ = ENNReal.ofReal K * ∫⁻ z : α × E, ENNReal.ofReal (model z) ∂μ.prod ν := by
+          rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+    have hmul_lt :
+        ENNReal.ofReal K * ∫⁻ z : α × E,
+          ENNReal.ofReal (model z) ∂μ.prod ν < ∞ := by
+      rw [← hscale]
+      exact lt_of_le_of_lt hmono hactual
+    have hK_ne_zero : ENNReal.ofReal K ≠ 0 :=
+      ENNReal.ofReal_ne_zero_iff.mpr hK_pos
+    have hmul_lt' :
+        (∫⁻ z : α × E, ENNReal.ofReal (model z) ∂μ.prod ν) *
+            ENNReal.ofReal K < ∞ := by
+      simpa [mul_comm] using hmul_lt
+    exact ENNReal.lt_top_of_mul_ne_top_left hmul_lt'.ne hK_ne_zero
+  have hiff :=
+    lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+      (E := E) (μ := μ) (ν := ν) (b := b) (t := t) (R := R)
+      hmeas hR hpos hle_base ht
+  exact hiff.mp (by simpa [model, s] using hmodelFin)
+
+/-- Two-sided supplied-bound comparison for coordinate-square-sum regular
+suspensions.  If an actual transported loss and density are uniformly
+comparable to the square model on the regular ball, then actual
+loss-density integrability is equivalent to residual negative-power
+integrability.
+
+This is still a supplied-bound theorem: it does not construct Aoyagi's p. 13
+chart, prove the comparison hypotheses, prove measure transport, or establish
+pole-order/RLCT. -/
+theorem lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+    {α η E : Type*} [MeasurableSpace α] [Fintype η]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {b : α → η → ℝ} {loss density : α × E → ℝ}
+    {t R cL CL dρ Dρ : ℝ}
+    (hmeas : AEMeasurable (fun x : α => aoyagiCoordinateSquareSum (b x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ, 0 < aoyagiCoordinateSquareSum (b x))
+    (hle_base : ∀ᵐ x ∂μ, aoyagiCoordinateSquareSum (b x) ≤ R ^ 2)
+    (hcL : 0 < cL) (hCL : 0 < CL) (hdρ : 0 < dρ) (hDρ : 0 ≤ Dρ)
+    (ht : 0 < t)
+    (hloss_lower : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R →
+        cL * (aoyagiCoordinateSquareSum (b z.1) + ‖z.2‖ ^ 2) ≤ loss z)
+    (hloss_upper : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R →
+        loss z ≤ CL * (aoyagiCoordinateSquareSum (b z.1) + ‖z.2‖ ^ 2))
+    (hdensity_lower : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → dρ ≤ density z)
+    (hdensity_upper : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → density z ≤ Dρ) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (loss (z.1, u)) ^ (-(t + (Module.finrank ℝ E : ℝ) / 2)) *
+            density (z.1, u)) z.2) ∂μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum (b x)) ^ (-t)) ∂μ) < ∞ := by
+  constructor
+  · intro hactual
+    have hloss_pos : ∀ᵐ z : α × E ∂μ.prod ν,
+        z.2 ∈ Metric.ball (0 : E) R → 0 < loss z := by
+      have hpos_prod : ∀ᵐ z : α × E ∂μ.prod ν,
+          0 < aoyagiCoordinateSquareSum (b z.1) :=
+        (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := ν)).ae hpos
+      filter_upwards [hpos_prod, hloss_lower] with z hzpos hzloss_lower
+      intro hzball
+      let q : ℝ := aoyagiCoordinateSquareSum (b z.1) + ‖z.2‖ ^ 2
+      have hqpos : 0 < q := by
+        dsimp [q]
+        nlinarith [sq_nonneg ‖z.2‖]
+      exact lt_of_lt_of_le (mul_pos hcL hqpos) (hzloss_lower hzball)
+    exact
+      lintegral_ofReal_residual_power_lt_top_of_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_loss_pos_of_loss_le_const_mul_of_const_le_density
+        (E := E) (μ := μ) (ν := ν) (b := b)
+        (loss := loss) (density := density) (t := t) (R := R)
+        (C := CL) (d := dρ)
+        hmeas hR hpos hle_base hCL hdρ ht hloss_pos hloss_upper
+        hdensity_lower hactual
+  · intro hbase
+    have hdensity_nonneg : ∀ᵐ z : α × E ∂μ.prod ν,
+        z.2 ∈ Metric.ball (0 : E) R → 0 ≤ density z := by
+      filter_upwards [hdensity_lower] with z hzdensity_lower
+      intro hzball
+      exact le_trans hdρ.le (hzdensity_lower hzball)
+    exact
+      lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top
+        (E := E) (μ := μ) (ν := ν) (b := b)
+        (loss := loss) (density := density) (t := t) (R := R)
+        (c := cL) (C := Dρ)
+        hcL hDρ ht hpos hbase hloss_lower hdensity_nonneg hdensity_upper
+
 /-- Residual-block square-sum regular-suspension comparison with bounded
 density.  This is the matrix-residual specialisation of
 `lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_of_residual_power_lt_top`. -/
@@ -476,6 +674,58 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_no
       (b := fun x => AoyagiResidualBlockCoordinateIndex.value (D x))
       (loss := loss) (density := density) (t := t) (R := R)
       (c := c) (C := C) hc hC ht hpos hbase hloss hdensity_nonneg hdensity_le
+
+/-- Residual-block square-sum two-sided supplied-bound comparison. -/
+theorem lintegral_ofReal_loss_rpow_neg_mul_density_residualBlockSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+    {α ι κ E : Type*} [MeasurableSpace α] [Fintype ι] [Fintype κ]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {D : α → Matrix ι κ ℝ} {loss density : α × E → ℝ}
+    {t R cL CL dρ Dρ : ℝ}
+    (hmeas : AEMeasurable
+      (fun x : α => aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)))
+    (hle_base : ∀ᵐ x ∂μ,
+      aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)) ≤ R ^ 2)
+    (hcL : 0 < cL) (hCL : 0 < CL) (hdρ : 0 < dρ) (hDρ : 0 ≤ Dρ)
+    (ht : 0 < t)
+    (hloss_lower : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R →
+        cL * (aoyagiCoordinateSquareSum
+            (AoyagiResidualBlockCoordinateIndex.value (D z.1)) +
+          ‖z.2‖ ^ 2) ≤ loss z)
+    (hloss_upper : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R →
+        loss z ≤ CL * (aoyagiCoordinateSquareSum
+            (AoyagiResidualBlockCoordinateIndex.value (D z.1)) +
+          ‖z.2‖ ^ 2))
+    (hdensity_lower : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → dρ ≤ density z)
+    (hdensity_upper : ∀ᵐ z : α × E ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : E) R → density z ≤ Dρ) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (loss (z.1, u)) ^ (-(t + (Module.finrank ℝ E : ℝ) / 2)) *
+            density (z.1, u)) z.2) ∂μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) ^ (-t)) ∂μ) < ∞ := by
+  exact
+    lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+      (E := E) (μ := μ) (ν := ν)
+      (b := fun x => AoyagiResidualBlockCoordinateIndex.value (D x))
+      (loss := loss) (density := density) (t := t) (R := R)
+      (cL := cL) (CL := CL) (dρ := dρ) (Dρ := Dρ)
+      hmeas hR hpos hle_base hcL hCL hdρ hDρ ht
+      hloss_lower hloss_upper hdensity_lower hdensity_upper
 
 section FixedBaseP13EuclideanRegularCoordinates
 
@@ -752,6 +1002,179 @@ theorem lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_
       (c := c) (C := C) hc hC ht hpos hbase hloss_norm hdensity_nonneg hdensity_le
   rw [hfinrank] at hfin
   simpa [ρ] using hfin
+
+set_option linter.unusedSectionVars false in
+/-- p. 13 fixed-base regular-coordinate specialisation of the two-sided
+supplied-bound threshold iff for an actual loss-density integrand.
+
+The loss and density comparisons are hypotheses.  This theorem does not
+construct Aoyagi's p. 13 analytic chart, prove source-prior/Jacobian transport,
+or establish pole-order/RLCT. -/
+theorem lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [SFinite ν] [ν.IsAddHaarMeasure]
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t R cL CL dρ Dρ : ℝ}
+    (hmeas : AEMeasurable
+      (fun x : α =>
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x))
+    (hle_base : ∀ᵐ x ∂μ,
+      aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) ≤ R ^ 2)
+    (hcL : 0 < cL) (hCL : 0 < CL) (hdρ : 0 < dρ) (hDρ : 0 ≤ Dρ)
+    (ht : 0 < t)
+    (hloss_lower : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        cL * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          aoyagiCoordinateSquareSum (fun i => z.2 i)) ≤ loss z)
+    (hloss_upper : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        loss z ≤ CL * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          aoyagiCoordinateSquareSum (fun i => z.2 i)))
+    (hdensity_lower : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        dρ ≤ density z)
+    (hdensity_upper : ∀ᵐ z ∂μ.prod ν,
+      z.2 ∈ Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+        density z ≤ Dρ) :
+    (∫⁻ z : α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)),
+      ENNReal.ofReal
+        ((Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R).indicator
+          (fun u =>
+            (loss (z.1, u)) ^
+              (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2)) *
+              density (z.1, u)) z.2) ∂μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t)) ∂μ) < ∞ := by
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+  have hfinrank_nat :
+      Module.finrank ℝ (EuclideanSpace ℝ ρ) =
+        aoyagiTheorem2RegularVariableCount N H r := by
+    simpa [ρ] using
+      sourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount
+  have hfinrank :
+      (Module.finrank ℝ (EuclideanSpace ℝ ρ) : ℝ) =
+        (aoyagiTheorem2RegularVariableCount N H r : ℝ) := by
+    exact_mod_cast hfinrank_nat
+  have hloss_lower_norm : ∀ᵐ z : α × EuclideanSpace ℝ ρ ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : EuclideanSpace ℝ ρ) R →
+        cL * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          ‖z.2‖ ^ 2) ≤ loss z := by
+    filter_upwards [hloss_lower] with z hzloss
+    intro hzball
+    simpa [ρ, aoyagiCoordinateSquareSum, EuclideanSpace.real_norm_sq_eq] using
+      hzloss hzball
+  have hloss_upper_norm : ∀ᵐ z : α × EuclideanSpace ℝ ρ ∂μ.prod ν,
+      z.2 ∈ Metric.ball (0 : EuclideanSpace ℝ ρ) R →
+        loss z ≤ CL * (aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+          ‖z.2‖ ^ 2) := by
+    filter_upwards [hloss_upper] with z hzloss
+    intro hzball
+    simpa [ρ, aoyagiCoordinateSquareSum, EuclideanSpace.real_norm_sq_eq] using
+      hzloss hzball
+  have hiff :=
+    lintegral_ofReal_loss_rpow_neg_mul_density_coordinateSquareSum_add_norm_sq_indicator_ball_prod_lt_top_iff_residual_power_lt_top_of_two_sided_bounds
+      (E := EuclideanSpace ℝ ρ) (μ := μ) (ν := ν)
+      (b := fun x =>
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)
+      (loss := loss) (density := density) (t := t) (R := R)
+      (cL := cL) (CL := CL) (dρ := dρ) (Dρ := Dρ)
+      hmeas hR hpos hle_base hcL hCL hdρ hDρ ht
+      hloss_lower_norm hloss_upper_norm hdensity_lower hdensity_upper
+  rw [hfinrank] at hiff
+  simpa [ρ] using hiff
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
