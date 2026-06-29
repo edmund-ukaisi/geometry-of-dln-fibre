@@ -80,7 +80,7 @@ Structurally: `(1)` would need `bareAbsorb(ψq)=Score` (the FALSE W-a hLDUtie) A
 false links, and the witness confirms no cancellation. ⟹ **The Θ-peel route is NECESSARY**, not
 scaffolding. Deliverable is (2).
 
-### (2) Does `link2_rho_residual` close, and by what mechanism? — by **DOMINATION**, not first-order, not a diffeo
+### (2) Does `link2_rho_residual` close, and by what mechanism? — [SUPERSEDED by the third-dispatch CORRECTION below: the model here OMITTED the spec slot; comparability is FALSE]
 
 `link2_rho_residual : rlctAtOn(∑R'(q)² + C) 0 = rlctAtOn(∑R'(Θq)² + C) 0`, `C = coreF∘conjAbsorb`
 FIXED both sides, `Θ = thetaConj`, `R' = regStraighten.1 = deepestEFull`.
@@ -101,3 +101,35 @@ The honest residual for the formaliser: this is an `rlctAtOn`-comparability lemm
 `c1·H ≤ H' ≤ c2·H ⟹ equal rlctAtOn` interface + the explicit ε-bound from the three inputs above),
 NOT a `rlctAtOn_comp_localDiffeo`/`_homeomorph` application. If that comparability interface is not
 yet banked, it is the new piece (Watanabe-standard; integrability-threshold sandwich).
+
+## CORRECTION (third dispatch) — the comparability route for `link2_rho_residual` is DEAD
+
+The dispatch-2 (2) analysis above had a hole: it modeled `ΔR` with only reg coordinates and OMITTED
+the spec slot. The red-team (`codex_epsbound_answer.txt`) flagged it; adjudicated by exact algebra
+against the REAL index routing (`DeepestSplitReindex.regBoundaryToRegGauge`): the reg slot routes onto
+only `{X_first, Y_last, Z_first}`; everything else (incl. `Y_first`, `Z_last`) is SPEC. The core leak
+rides `Y_first` (=Y0) and `Z_last` (=Z1) — both SPEC. So:
+
+- **FIX 1 (atom on full {reg=0}) — FALSE** (`fix1_verify.py`): `deepestEFull(0,c,s)` depends on `c`
+  for `s≠0` (`P12 ⊃ T1·p`, `P21 ⊃ T0·q`, `p,q` spec).
+- **FIX 2 (Θ-shift carries reg factor) — FALSE** (`fix2_real.py`): `delta_0=−Zbar0·p/(1+u)`,
+  `delta_1=−Ybar_last·q/(1+x)`; at reg=0 these ride spec `p,q` ≠ 0.
+- **FIX 3 (R' dominates spec) — FALSE** (`fix23_check.py`): spec is a gauge/spectator direction;
+  `∑R'²` is spec-degenerate (`R'_11 ⊃ p·q`).
+- **The comparability statement itself — FALSE on every small ball** (`codex_fix_witnesses.py`,
+  Codex-found + here-verified exact; `A=deepBlkY_last`, `B=deepBlkZ_0`):
+  - W1 `u=−t²,x=0,p=q=t,v=w=0,T0=Bt/(1−t²),T1=At`: `F=0`, `Φ>0` ⟹ no `c₁>0`.
+  - W2 `…,w=−Bt²,T0=Bt,T1=0`: `Φ=0`, `F>0` ⟹ no finite `c₂`.
+  - W3 `u=−t²+t³,…`: `F/Φ ~ (A²+B²)t⁻² → ∞`.
+
+`F` and `Φ` have DIFFERENT zero sets, so `rlctAtOn_squeeze` does NOT apply. The team's `c₁=1/2,c₂=3/2`
+are not just wrong constants — no fixed constants exist. (The dispatch-2 random sample `F/Φ∈[0.69,1.26]`
+was a mirage: integer rays miss the fine-tuned cancellation locus. MC never certifies comparability.)
+
+**Critical-path impact: NONE.** `link2_rho_residual` is TRUE (equivalent to LINK2) but unprovable by
+integrand comparability. It was an ALTERNATIVE decomposition (Θ-peel + reg-swap) to avoid the
+conj-smooth stack; that decomposition's reg-swap leg is the dead route. The LIVE route,
+`deepest_diffeo_bridge_L2_conj_impl` (the `psiL2Conj` full ContDiff bridge), is **sorry-free** and does
+NOT consume `link2_rho_residual` (consumed only in `ScratchL2Link2.lean`). It moves reg+core JOINTLY —
+exactly the necessity dispatch-1 established. Recommendation: drop the Θ-peel/reg-swap decomposition;
+LINK2 already closes via `psiL2Conj` (cost = the conj-smooth stack, already paid via `hDA`).
