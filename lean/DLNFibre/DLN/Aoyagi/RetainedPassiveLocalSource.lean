@@ -418,6 +418,163 @@ theorem paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceE
 
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The retained-passive realised p.13 source edge family belongs to Aoyagi's
+source-shaped rank stratum when the base-product rank, realised edge-matrix
+ranks, and source inequalities are supplied explicitly.
+
+This is a membership constructor only.  It does not prove source-rank coverage,
+exact-rank openness, or any numerical edge-rank formula. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_edgeMatrix_rank
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (hprod : Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge : ∀ p : Fin (M + 1), (data.edgeMatrix p).rank = rEdge p)
+    (hle : ∀ p : Fin (M + 1), r ≤ rEdge p) :
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        W B U₀ hU₀ data ∈
+      paperEndpointFixedBaseSourceRankStratum
+        (K := K) (N := M + 1) W B
+        (fun E : ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦ E)
+        r rEdge := by
+  classical
+  let Eclm : ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ :=
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+      W B U₀ hU₀ data
+  let Elin : ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ :=
+    fun p ↦ (Eclm p : reverseVertex W p.castSucc →ₗ[K] reverseVertex W p.succ)
+  have hmat :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data
+  refine ⟨hprod, ?_, hle⟩
+  intro p
+  have hedgeMatrix :
+      (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ Elin p).rank =
+        rEdge p := by
+    calc
+      (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ Elin p).rank =
+          (data.edgeMatrix p).rank := by
+        rw [congrFun hmat p]
+      _ = rEdge p := hedge p
+  have hedgeRange :
+      Module.finrank K (LinearMap.range (Elin p)) = rEdge p := by
+    calc
+      Module.finrank K (LinearMap.range (Elin p)) =
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W B U₀ hU₀ Elin p).rank := by
+        exact
+          (rank_paperEndpointFixedBaseEdgeMatrixOfReverseEdges_eq_finrank_range
+            (K := K) (W := W) (B := B) U₀ hU₀ Elin p).symm
+      _ = rEdge p := hedgeMatrix
+  simpa [Eclm, Elin] using hedgeRange
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A determinant-chart retained-passive datum belongs to Aoyagi's source-shaped
+rank stratum when its residual block ranks realise the supplied source-edge
+rank differences.
+
+This theorem uses the retained-passive edge-rank formula to turn
+`rank(C_p) = rEdge p - r` into exact source-edge ranks.  It still assumes the
+base-product rank equality and the source inequalities explicitly. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart)
+    {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (hprod : Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hC : ∀ p : Fin (M + 1), (data.C p).rank = rEdge p - r)
+    (hle : ∀ p : Fin (M + 1), r ≤ rEdge p) :
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        W B U₀ hU₀ data ∈
+      paperEndpointFixedBaseSourceRankStratum
+        (K := K) (N := M + 1) W B
+        (fun E : ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦ E)
+        r rEdge := by
+  classical
+  have hUrank : Fintype.card (Fin (Module.finrank K U₀)) = r := by
+    have hfin :
+        Module.finrank K U₀ = r :=
+      (paperEndpointBasepointCertificate_of_isCompl W B U₀ hU₀).finrank_eq_range.trans hprod
+    simpa [Fintype.card_fin] using hfin
+  have hedge : ∀ p : Fin (M + 1), (data.edgeMatrix p).rank = rEdge p := by
+    intro p
+    have hEdgeFormula :
+        (data.edgeMatrix p).rank =
+          Fintype.card (Fin (Module.finrank K U₀)) + (data.C p).rank :=
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_edgeMatrix
+        (K := K) (ρ := Fin (Module.finrank K U₀)) data hdet p
+    have hsum : r + (data.C p).rank = rEdge p := by
+      have hp := hC p
+      have hle' := hle p
+      omega
+    calc
+      (data.edgeMatrix p).rank =
+          Fintype.card (Fin (Module.finrank K U₀)) + (data.C p).rank := hEdgeFormula
+      _ = r + (data.C p).rank := by rw [hUrank]
+      _ = rEdge p := hsum
+  exact
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_edgeMatrix_rank
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data hprod hedge hle
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A determinant-chart retained-passive datum belongs to Aoyagi's source-shaped
+rank stratum when the supplied edge ranks are exactly `r + rank(C_p)`.
+
+This is the same conditional membership bridge as
+`..._of_C_rank`, but avoids exposing truncated natural subtraction to callers.
+It does not prove source-rank coverage or exact-rank openness. -/
+theorem paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank_add_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {U₀ : Submodule K (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    (data :
+      RetainedPassiveNonredundantCoordinateData
+        (K := K) (ρ := Fin (Module.finrank K U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀))
+    (hdet : data.detChart)
+    {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    (hprod : Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hrEdge : ∀ p : Fin (M + 1), r + (data.C p).rank = rEdge p) :
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        W B U₀ hU₀ data ∈
+      paperEndpointFixedBaseSourceRankStratum
+        (K := K) (N := M + 1) W B
+        (fun E : ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[K] reverseVertex W p.succ ↦ E)
+        r rEdge := by
+  classical
+  have hC : ∀ p : Fin (M + 1), (data.C p).rank = rEdge p - r := by
+    intro p
+    have hp := hrEdge p
+    omega
+  have hle : ∀ p : Fin (M + 1), r ≤ rEdge p := by
+    intro p
+    have hp := hrEdge p
+    omega
+  exact
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank
+      (K := K) W B (U₀ := U₀) (hU₀ := hU₀) data hdet hprod hC hle
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- If a retained-passive datum's realised p.13 source edge family lies in
 Aoyagi's source-shaped rank stratum, then its stored residual blocks have ranks
 `rEdge p - r`.

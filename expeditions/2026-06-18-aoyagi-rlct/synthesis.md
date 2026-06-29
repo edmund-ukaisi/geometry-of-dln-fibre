@@ -3,6 +3,65 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 retained-passive source-stratum membership - 2026-06-29
+
+Landed pointwise source-stratum membership constructors:
+
+```text
+ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_endpointTransport_C
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_edgeMatrix_rank
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank
+paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank_add_eq
+PaperEndpointFixedBaseRegularCoordinateSourceData.case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum
+```
+
+The generic retained-passive constructors prove membership in
+`paperEndpointFixedBaseSourceRankStratum` from explicit product-rank, edge-rank,
+and inequality data.  On the determinant chart, the retained-passive edge-rank
+formula converts residual-block rank data into source edge ranks.  The
+`_add_eq` variant lets callers state the intended edge ranks as
+`r + rank(C p) = rEdge p`, avoiding Nat-subtraction exposure.
+
+The Case 2 endpoint-transport wrapper uses endpoint-transport rank preservation
+for `C`, the free-following identity rank, and the successor residual-block
+rank to prove membership when the caller supplies
+
+```text
+r + card tau = rEdge 0,
+r + rank(case2SuccessorSelectedEntryMatrix ...) = rEdge 1.
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-stratum-membership.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-stratum-membership.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-source-stratum-membership.md`
+passed by xhigh `Einstein the 2nd`.
+
+Focused builds passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+xhigh reviewer also ran
+`lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`
+successfully.
+
+Final hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes for the new public theorem names
+were clean.  The axiom footprints are the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no local source-rank coverage, no selected-entry image equality, no
+exact-rank openness, no source-prior or Jacobian transport, no analytic atlas,
+no normal crossings, pole order, or RLCT.  The Case 2 wrapper does not prove a
+numerical rank for the successor selected-entry matrix.
+
 ## Latest A2 retained-passive Case 2 edge-rank bridge - 2026-06-29
 
 Landed the retained-passive edge-rank bridge:

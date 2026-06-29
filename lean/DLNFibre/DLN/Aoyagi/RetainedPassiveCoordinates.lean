@@ -3646,6 +3646,21 @@ theorem rank_edgeMatrix
       (data.toCoordinateData.solvedA1) data.F2full data.toCoordinateData.solvedA3
       data.C p (solvedA1_det_isUnit_of_detChart (K := K) (ρ := ρ) data hdet p)
 
+omit [Fintype ρ] [DecidableEq ρ] in
+set_option linter.unusedDecidableInType false in
+/-- Endpoint transport preserves the rank of each retained-passive residual
+block `C p`. -/
+theorem rank_endpointTransport_C
+    {M : ℕ} {κ' κ'' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [∀ j, Fintype (κ'' j)] [∀ j, DecidableEq (κ'' j)]
+    (e : ∀ j, κ' j ≃ κ'' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ')
+    (p : Fin (M + 1)) :
+    ((data.endpointTransport e).C p).rank = (data.C p).rank := by
+  rw [endpointTransport_C]
+  exact Matrix.rank_submatrix (data.C p) (e p.succ).symm (e p.castSucc).symm
+
 end RetainedPassiveNonredundantCoordinateData
 
 end RetainedPassiveRank

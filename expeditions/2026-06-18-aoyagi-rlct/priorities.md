@@ -10,6 +10,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive source-stratum membership
+
+The retained-passive rank bridge now has the correct pointwise
+source-stratum-membership consumer.  Use it when a constructed source family
+has explicit product-rank data and exact edge-rank choices; for
+retained-passive determinant-chart data, prefer the non-truncated hypothesis
+
+```text
+r + rank(C_p) = rEdge p.
+```
+
+The continuing Case 2 endpoint-transport wrapper packages the two intended
+edge ranks as
+
+```text
+r + card tau = rEdge 0,
+r + rank(successor selected-entry matrix) = rEdge 1.
+```
+
+This moves one boundary from "edge ranks only" to "pointwise membership under
+explicit rank choices."  It still does not move the local coverage/source-image
+boundary.  Next work should use this membership bridge inside a local
+source-production argument only when the remaining selected-entry image and
+coverage hypotheses are supplied or proved.
+
 ## Latest controller decision - 2026-06-29, retained-passive Case 2 edge-rank bridge
 
 The useful next bridge is now banked: retained-passive determinant-chart source

@@ -152,6 +152,114 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The endpoint-transported explicit continuing Case 2 selected-entry source
+family lies in Aoyagi's source-shaped rank stratum when the base-product rank
+and the two intended edge-rank values are supplied explicitly.
+
+The first edge rank is `r + card tau`; the second is `r` plus the rank of the
+successor selected-entry matrix.  This is pointwise source-stratum membership,
+not source-rank coverage, exact-rank openness, or a numerical successor-rank
+theorem. -/
+theorem case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hprod : Module.finrank ℝ (LinearMap.range (paperTotalMap W₂ B₂)) = r)
+    (hr0 : r + Fintype.card τ = rEdge 0)
+    (hr1 :
+      r + (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank =
+        rEdge 1) :
+    let data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      (case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := Fin (Module.finrank ℝ U₀))
+        n hS hcont hnext yNext eNext).endpointTransport e
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
+        data ∈
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := 2) W₂ B₂
+        (fun E : ∀ p : Fin 2,
+            reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ ↦ E)
+        r rEdge := by
+  intro data
+  let rawData :=
+    case2PostPivotSelectedEntryRetainedPassiveData
+      (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext yNext eNext
+  have hdet : data.detChart := by
+    simpa [data, rawData] using
+      case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext yNext eNext e
+  have hC0raw : (rawData.C (0 : Fin 2)).rank = Fintype.card τ := by
+    simpa [rawData, case2PostPivotSelectedEntryRetainedPassiveData,
+      case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+      case2SuccessorSelectedEntrySourceCprime] using
+      rank_case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfMatrix
+        n hS hcont
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+  have hC1raw :
+      (rawData.C (1 : Fin 2)).rank =
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+    simpa [rawData, case2PostPivotSelectedEntryRetainedPassiveData,
+      case2PostPivotRetainedPassiveData, case2PostPivotFreeTwoEdgeFactorFamily,
+      case2SuccessorSelectedEntrySourceResidual] using
+      rank_case2DisplayedPostPivotResidualBlock_sourceResidualOfMatrix
+        n hS hcont
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext) eNext
+  have hC0 : (data.C (0 : Fin 2)).rank = Fintype.card τ := by
+    calc
+      (data.C (0 : Fin 2)).rank = (rawData.C (0 : Fin 2)).rank := by
+        simpa [data, rawData] using
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_endpointTransport_C
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) e rawData (0 : Fin 2)
+      _ = Fintype.card τ := hC0raw
+  have hC1 :
+      (data.C (1 : Fin 2)).rank =
+        (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+    calc
+      (data.C (1 : Fin 2)).rank = (rawData.C (1 : Fin 2)).rank := by
+        simpa [data, rawData] using
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_endpointTransport_C
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) e rawData (1 : Fin 2)
+      _ = (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := hC1raw
+  refine
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum_of_C_rank_add_eq
+      (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) data hdet hprod ?_
+  intro p
+  fin_cases p
+  · calc
+      r + (data.C (0 : Fin 2)).rank = r + Fintype.card τ := by rw [hC0]
+      _ = rEdge 0 := hr0
+  · calc
+      r + (data.C (1 : Fin 2)).rank =
+          r + (case2SuccessorSelectedEntryMatrix n hS hnext yNext eNext).rank := by
+        rw [hC1]
+      _ = rEdge 1 := hr1
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The `C 1` factor of the fixed-base source readback for the
 endpoint-transported explicit Case 2 source edge family is the displayed
 post-pivot residual block after reindexing by the forward endpoint
