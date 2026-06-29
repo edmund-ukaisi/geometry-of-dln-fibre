@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedChartOpaque
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHeadlineL2
 import DLNFibre.DLN.RLCT.Foundations.S1G5Charts
 import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
 
@@ -578,5 +579,109 @@ theorem Uunit_congr_off_pivot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < 
   have hHbar : HbarUnit M hrs hr hc v = HbarUnit M hrs hr hc w :=
     HbarUnit_congr_off_pivot M hrs hr hc h
   rw [Uunit, Uunit, hP1, hHbar]
+
+/-- The cast-cancellation `(hN ▸ f) (hN ▸ x) = f x` for a `Fin`-vector under `routeMAmbient M = n+1`
+(generalize the non-free `routeMAmbient M` to a fresh `N`, then `subst`). -/
+theorem hN_cast_apply {n : ℕ} (M : Fin 3 → ℕ) (hN : routeMAmbient M = n + 1)
+    (f : Fin (n + 1) → ℝ) (x : Fin (n + 1)) :
+    (hN ▸ f : Fin (routeMAmbient M) → ℝ) (hN ▸ x : Fin (routeMAmbient M)) = f x := by
+  have key : ∀ (N : ℕ) (h : N = n + 1) (g : Fin (n + 1) → ℝ) (z : Fin (n + 1)),
+      (h ▸ g : Fin N → ℝ) (h ▸ z : Fin N) = g z := fun N h g z => by subst h; rfl
+  exact key _ hN f x
+
+/-- **The `z`-readoff under the peel.** `zu (hN ▸ insertNth p z y) = z` when `hN ▸ p = pivotCoord` (the
+pivot reads the inserted `z`). Mechanical (the cast-cancellation + `insertNth_apply_same`). -/
+theorem zu_hN_insertNth {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
+    zu M hrs hr hc (hN ▸ (Fin.insertNth p z y)) = z := by
+  rw [zu, ← hp, hN_cast_apply M hN (Fin.insertNth p z y) p, Fin.insertNth_apply_same]
+
+/-- The two peeled points `hN ▸ insertNth p z y` and `hN ▸ insertNth p 0 y` agree off `pivotCoord`
+(`= hN ▸ p`): both insert at `p`, differing only there. The cast bridge for the `z`-free unit. -/
+theorem hN_insertNth_agree_off_pivot {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r)
+    (hc : 0 < M 2) (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
+    ∀ m, m ≠ pivotCoord M hrs hr hc →
+      (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ) m
+        = (hN ▸ (Fin.insertNth p (0:ℝ) y) : Fin (routeMAmbient M) → ℝ) m := by
+  -- generalize `routeMAmbient M` so the cast collapses by `subst`
+  have key : ∀ (N : ℕ) (h : N = n + 1) (m : Fin N),
+      (h ▸ p : Fin N) ≠ m →
+        (h ▸ (Fin.insertNth p z y) : Fin N → ℝ) m = (h ▸ (Fin.insertNth p (0:ℝ) y) : Fin N → ℝ) m := by
+    intro N h m hm; subst h
+    rcases Fin.eq_self_or_eq_succAbove p m with rfl | ⟨k, rfl⟩
+    · exact absurd rfl hm
+    · simp only [Fin.insertNth_apply_succAbove]
+  intro m hm
+  exact key _ hN m (fun he => hm ((hp ▸ he).symm))
+
+/-- **The `z`-free peeled unit** `Uunit (hN ▸ insertNth p z y) = Uunit (hN ▸ insertNth p 0 y)`. The
+peeled unit `Uy y := Uunit (hN ▸ insertNth p 0 y)` is independent of `z` (`Uunit` z-free). -/
+theorem Uunit_hN_insertNth {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
+    Uunit M hrs hr hc (hN ▸ (Fin.insertNth p z y))
+      = Uunit M hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y)) :=
+  Uunit_congr_off_pivot M hrs hr hc
+    (hN_insertNth_agree_off_pivot M hrs hr hc hN p hp z y)
+
+/-! ## The opaque-width L=2 headline assembly (the chart fed into `routeMCore_box_diverges_smearedL2`)
+
+The complete opaque-width chart (`psiMap` MP+embedding, `Rmap` fderiv/injOn/det, the DECODE → rate)
+discharges the headline's chart facts. What remains per family are the genuinely-analytic conditioned
+inputs — the shear cancellation `P₁·Λ₀ = P₂` (off the `det P₁ᵀP₁ = 0` pole; holds for `M 0 ≤ r` on the
+conditioned box) and FIELD A (the containment `condBox ⊆ (ψ∘R)⁻¹(cubeBox ε)` + `U`-positivity), supplied
+as named hypotheses here. -/
+
+/-- **The opaque-width L=2 smeared box-divergence (the chart assembly).** For L=2 widths `M` with
+`r + s = M 1`, `0 < r`, `0 < M 2`, and `routeMAmbient M = n + 1`: feeding the GENERIC chart
+(`psiMap`/`Rmap`/`Dmap`) into `routeMCore_box_diverges_smearedL2`, the box integral diverges, GIVEN the
+per-family conditioned analytic inputs (the cancellation on each peeled point, field-A containment, the
+`U`-positivity, the box measurability/positivity, and the exponent `(r·M2−1) − 2c' ≤ −1`). The chart
+facts (MP/embedding/radial det/the peeled rate) are DISCHARGED from the banked generic chart. -/
+theorem routeMCore_smearedL2_chart {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r)
+    (hc : 0 < M 2) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (box : Fin (n + 1) → Set ℝ) (c' ε δ : ℝ) (hδ : 0 < δ)
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    (hSpre : condBox (hN ▸ p) (fun k => box (hN ▸ k)) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε))
+    (hboxmeas : ∀ k, MeasurableSet (box (p.succAbove k)))
+    (hboxmeasAll : ∀ k : Fin (routeMAmbient M), MeasurableSet ((fun k => box (hN ▸ k)) k))
+    (hboxpos : 0 < (volume : Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n => box (p.succAbove k))))
+    (hexp : ((r * M 2 - 1 : ℕ) : ℝ) - 2 * c' ≤ -1)
+    (Uy : (Fin n → ℝ) → ℝ) (hUmeas : Measurable Uy)
+    (hUeq : ∀ z ∈ Set.Ioo (0:ℝ) δ, ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+      Uunit M hrs hr hc (hN ▸ (Fin.insertNth p z y)) = Uy y)
+    (hcancel : ∀ z ∈ Set.Ioo (0:ℝ) δ, ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+      P1u M hrs (hN ▸ (Fin.insertNth p z y)) * Lam0u M hrs (hN ▸ (Fin.insertNth p z y))
+        = P2u M hrs (hN ▸ (Fin.insertNth p z y)))
+    (hzeq : ∀ z ∈ Set.Ioo (0:ℝ) δ, ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+      zu M hrs hr hc (hN ▸ (Fin.insertNth p z y)) = z)
+    (hUpos : ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)), 0 < Uy y) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  refine routeMCore_box_diverges_smearedL2 (M := M) (n := n) hN (psiMap M hrs) (Rmap M hrs hr hc)
+    (Dmap M hrs hr hc) p box (r * M 2 - 1) c' ε δ Uy hδ
+    (measurePreserving_psiMap M hrs) (measurableEmbedding_psiMap M hrs) hSpre ?_ ?_ ?_
+    hboxmeas hboxmeasAll hboxpos hUmeas hexp ?_ hUpos
+  · -- `Rmap` fderiv on the box
+    exact fun u _ => Rmap_hasFDerivWithinAt M hrs hr hc _ u
+  · -- `Rmap` injective on the box (`u pivot ∈ Ioo 0 δ` so `≠ 0`)
+    have hsub : condBox (hN ▸ p) (fun k => box (hN ▸ k)) δ
+        ⊆ Set.univ \ {x | x (pivotCoord M hrs hr hc) = 0} := by
+      intro u hu
+      refine ⟨Set.mem_univ u, ?_⟩
+      obtain ⟨hpiv, _⟩ := hu
+      simp only [Set.mem_setOf_eq, ← hp]
+      exact ne_of_gt (Set.mem_Ioo.mp hpiv).1
+    exact (Rmap_injOn M hrs hr hc Set.univ).mono (by rw [hp] at hsub ⊢; exact hsub)
+  · -- `|det (Dmap u)| = |u (hN ▸ p)|^(r·M2−1)`
+    intro u _
+    rw [Dmap_abs_det M hrs hr hc, hp]
+  · -- the PEELED RATE: `routeMCore M (psiMap (Rmap (hN ▸ insertNth p z y))) = z²·Uy y`
+    intro z hz y hy
+    rw [routeMCore_psiMap_Rmap M hrs hr hc _ (hcancel z hz y hy), hzeq z hz y hy, hUeq z hz y hy]
 
 end DLNFibre.DLN.RLCT
