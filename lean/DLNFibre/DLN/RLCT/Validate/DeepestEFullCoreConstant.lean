@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
+import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestEFullCoreConstant` — the "value-fold atom" ∂E/∂core(0)=0
@@ -123,6 +124,18 @@ theorem blockLowerUpper_conj_pureT {r m n : Type*} [Fintype r] [Fintype m] [Fint
     simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
   rw [h1, Matrix.fromBlocks_multiply]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc]
+
+/-- **The block-corner product**: `fromBlocks 1 0 0 P · fromBlocks 1 0 0 Q = fromBlocks 1 0 0 (P·Q)`
+(`fromBlocks_multiply` + matrix arithmetic). Cast-free over arbitrary middle dims — applied to the two
+framed layers it collapses the reindexed product's `{11,12,21}` to `(1,0,0)` while sidestepping the
+`Fin.succ 0` vs `Fin.castSucc 1` middle-index friction (the lemma's `n` defeq-unifies with both). -/
+theorem fromBlocks_one_corner_mul {r m n p : Type*} [Fintype r] [Fintype m] [Fintype n]
+    [DecidableEq r] [DecidableEq m] [DecidableEq n]
+    (P : Matrix m n ℝ) (Q : Matrix n p ℝ) :
+    Matrix.fromBlocks (1 : Matrix r r ℝ) 0 0 P * Matrix.fromBlocks (1 : Matrix r r ℝ) 0 0 Q
+      = Matrix.fromBlocks 1 0 0 (P * Q) := by
+  rw [Matrix.fromBlocks_multiply]
+  simp only [Matrix.mul_zero, Matrix.zero_mul, Matrix.one_mul, Matrix.mul_one, add_zero, zero_add]
 
 /-! ## Per-layer normalization: `reindex(framedLayer at zero reads) = fromBlocks 1 0 0 (junk)` -/
 
@@ -261,5 +274,149 @@ theorem framedParamsPivot_zeroReg_last (H : Fin (L + 1) → ℕ) (r : ℕ)
       = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
     readX_zero H r hr hL (lastLayer hL), readY_zero H r hr hL (lastLayer hL),
     readZ_zero H r hr hL (lastLayer hL)]
+
+/-! ## The two-factor assembly: `reindex(prod(framedParamsPivot(0,c,0))) = fromBlocks 1 0 0 (junk)`
+
+At `L = 2`, `prod(framedParamsPivot(0,c,0)) = layer0 · layer1`; each reindexes (the per-layer norm) to
+`fromBlocks 1 0 0 T_s'`; `reindex_mul_fromBlocks` then gives the product reindexed to a `fromBlocks` whose
+`{11,12,21}` are the corner blocks `(1,0,0)` — INDEPENDENT of the core `c`. The outer pivot-column split
+collapses to the threshold split under `J = frontEmbed` (`hJfront'`). -/
+
+/-- **The framed product at zero reg/spec reindexes to `fromBlocks 1 0 0 (junk)`** (so its `{11,12,21}`
+blocks are the corner `(1,0,0)`, INDEPENDENT of the core `c`). The two-factor assembly, `L = 2`. -/
+theorem prod_framedParamsPivot_zeroReg_eq_corner (H : Fin 3 → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1 : ℕ) ≤ 2)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin 2) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin 2) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
+    (c : Fin (flatDim (deepestM H r)) → ℝ) :
+    ∃ junk : Matrix (Fin (H 0 - r)) (Fin (H (Fin.last 2) - r)) ℝ,
+      Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
+          (prod H (framedParamsPivot H r hr hL J Pf Qf
+            ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ))))
+        = Matrix.fromBlocks 1 0 0 junk := by
+  -- Index facts (Codex: `Fin.ext`, NOT `decide` on a prop with `lastLayer hL` free).
+  have hlast1 : lastLayer hL = (1 : Fin 2) := by apply Fin.ext; simp only [lastLayer]; omega
+  have h0ne : (0 : Fin 2) ≠ lastLayer hL := by rw [hlast1]; decide
+  -- Collapse the outer pivot col split to the threshold split (`J = frontEmbed`).
+  have hpivOuter : pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J
+      = rThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) := by
+    rw [hJfront]; exact pivotThresholdSplit_frontEmbed H r hr
+  have hpivLast : pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J)
+      = rThresholdSplit r (H ((lastLayer hL).succ)) (hr _) := by
+    rw [hJfront]; exact pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL
+  -- Bridge each framed-pivot layer at zero reads to `framedLayer ... 0 0 0 (core)` (defeq for last
+  -- after `hpivLast` collapses the pivot split to the threshold split).
+  have hbridge0 : framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (0 : Fin 2)
+      = framedLayer H r hr 0 (Pf 0) (Qf 0) 0 0 0 ((paramsEquivFlat (deepestM H r)).symm c 0) :=
+    framedParamsPivot_zeroReg_of_ne H r hr hL J Pf Qf c 0 h0ne
+  have hbridge1 : framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (lastLayer hL)
+      = framedLayer H r hr (lastLayer hL) (Pf (lastLayer hL)) (Qf (lastLayer hL)) 0 0 0
+          ((paramsEquivFlat (deepestM H r)).symm c (lastLayer hL)) := by
+    rw [framedParamsPivot_zeroReg_last H r hr hL J Pf Qf c, hpivLast]; rfl
+  -- The per-layer norm at each layer, then bridge the source into the assembly's index form via `show`.
+  have hnorm0 := reindex_framedLayer_zeroReads_eq_corner H r hr 0 (Pf 0) (Qf 0)
+    ((paramsEquivFlat (deepestM H r)).symm c 0) (hPtri 0) (hQtri 0)
+  have hnorm1 := reindex_framedLayer_zeroReads_eq_corner H r hr (lastLayer hL) (Pf (lastLayer hL))
+    (Qf (lastLayer hL)) ((paramsEquivFlat (deepestM H r)).symm c (lastLayer hL))
+    (hPtri (lastLayer hL)) (hQtri (lastLayer hL))
+  rw [← hbridge0] at hnorm0
+  rw [← hbridge1] at hnorm1
+  rw [hlast1] at hnorm1
+  -- Assemble via `reindex_mul_split` (factor the reindexed product into the two reindexed layers, with the
+  -- middle split `rThr (H 1)`), substitute each layer's per-layer norm `= fromBlocks 1 0 0 Jₛ` (hnorm0/1),
+  -- then `fromBlocks_multiply` — which yields the block product with the CANONICAL `*` instance, so the
+  -- `{11,12,21}` blocks reduce by `simp [zero_mul, mul_zero, one_mul, …]`. `{22}` is the witness.
+  have hsplit := reindex_mul_split (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+      (rThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)))
+      (framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (0 : Fin 2))
+      (framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (1 : Fin 2))
+  rw [show Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
+        (framedParamsPivot H r hr hL J Pf Qf
+          ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (0 : Fin 2))
+      = _ from hnorm0,
+    show Matrix.reindex (rThresholdSplit r (H 1) (hr 1))
+          (rThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)))
+        (framedParamsPivot H r hr hL J Pf Qf
+          ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (1 : Fin 2))
+      = _ from hnorm1] at hsplit
+  -- Collapse the `fromBlocks · fromBlocks` by the corner-product helper via `.trans` (term application
+  -- defeq-unifies the `Fin.succ 0` / `Fin.castSucc 1` middle; a syntactic `rw` cannot).
+  have hmul := hsplit.trans (fromBlocks_one_corner_mul _ _)
+  -- Name the whole reindexed product `M` (collapse the outer pivot split first). Witness = `M.toBlocks₂₂`;
+  -- the {11,12,21} blocks come out `(1,0,0)`, read OFF `hmul` via `simpa … using congrArg toBlocksᵢⱼ hmul`
+  -- (which carries `hmul`'s defeq through `congrArg`, sidestepping the `rw`-find + `*`-instance friction).
+  rw [hpivOuter]
+  set M : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last 2) - r)) ℝ :=
+    Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+      (rThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)))
+      (prod H (framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)))) with hM
+  change ∃ junk : Matrix (Fin (H 0 - r)) (Fin (H (Fin.last 2) - r)) ℝ,
+    M = Matrix.fromBlocks 1 0 0 junk
+  rw [prodDecode_eq_two_of_L2 H (framedParamsPivot H r hr hL J Pf Qf
+    ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)))] at hM
+  simp only [finCongr_refl, Matrix.reindex_refl_refl] at hM
+  -- Each block fact: `(prod).toBlocksᵢⱼ` is DEFEQ to `(hmul.LHS).toBlocksᵢⱼ` (`hM ▸` + the product's `*`
+  -- differs only by instance), so `(congrArg toBlocksᵢⱼ hmul).trans (toBlocks_fromBlocksᵢⱼ …)` matches the
+  -- goal up to defeq (no syntactic `rw`). hmul's RHS is now `fromBlocks 1 0 0 (J0·J1)`, so the blocks are
+  -- `(1,0,0)` by the corresponding `toBlocks_fromBlocks` rfl-lemma.
+  have h11 : M.toBlocks₁₁ = (1 : Matrix (Fin r) (Fin r) ℝ) :=
+    hM ▸ (congrArg Matrix.toBlocks₁₁ hmul).trans (Matrix.toBlocks_fromBlocks₁₁ _ _ _ _)
+  have h12 : M.toBlocks₁₂ = (0 : Matrix (Fin r) (Fin (H (Fin.last 2) - r)) ℝ) :=
+    hM ▸ (congrArg Matrix.toBlocks₁₂ hmul).trans (Matrix.toBlocks_fromBlocks₁₂ _ _ _ _)
+  have h21 : M.toBlocks₂₁ = (0 : Matrix (Fin (H 0 - r)) (Fin r) ℝ) :=
+    hM ▸ (congrArg Matrix.toBlocks₂₁ hmul).trans (Matrix.toBlocks_fromBlocks₂₁ _ _ _ _)
+  refine ⟨M.toBlocks₂₂, ?_⟩
+  calc
+    M = Matrix.fromBlocks M.toBlocks₁₁ M.toBlocks₁₂ M.toBlocks₂₁ M.toBlocks₂₂ :=
+        (Matrix.fromBlocks_toBlocks M).symm
+    _ = Matrix.fromBlocks 1 0 0 M.toBlocks₂₂ := by rw [h11, h12, h21]
+
+/-! ## The atom: `deepestEFull` is constant in the core at the reg=spec=0 slice (`L = 2`) -/
+
+/-- **The value-fold atom** (`L = 2`): at the regular-and-spectator-zero slice, `deepestEFull` is
+INDEPENDENT of the core slot —
+
+    deepestEFull (0, c, 0) = deepestEFull (0, 0, 0)   (∀ c)
+
+so `D(fun c => deepestEFull (0,c,0))(0) = 0`. Proof: by `prod_framedParamsPivot_zeroReg_eq_corner`, the
+reindexed framed product at `(0,c,0)` is `fromBlocks 1 0 0 (junk c)` — its `{11,12,21}` blocks are the
+core-INDEPENDENT corner `(1,0,0)`. So both `(0,c,0)` and `(0,0,0)` have the SAME `{11,12,21}` blocks, and
+`deepestEFull_eq_of_framedProd_regBlocks_eq` concludes equal `deepestEFull`. -/
+theorem deepestEFull_coreConstant (H : Fin 3 → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1 : ℕ) ≤ 2)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin 2) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin 2) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
+    (c : Fin (flatDim (deepestM H r)) → ℝ) :
+    deepestEFull H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ))
+      = deepestEFull H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ),
+          (0 : Fin (flatDim (deepestM H r)) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ)) := by
+  -- The reindexed framed product is `fromBlocks 1 0 0 (junk)` at BOTH core values.
+  obtain ⟨junkc, hjunkc⟩ :=
+    prod_framedParamsPivot_zeroReg_eq_corner H r hr hL J hJfront Pf Qf hPtri hQtri c
+  obtain ⟨junk0, hjunk0⟩ :=
+    prod_framedParamsPivot_zeroReg_eq_corner H r hr hL J hJfront Pf Qf hPtri hQtri 0
+  -- Apply the readback reduction; each `{11,12,21}` block of both equals the corner block (1,0,0).
+  refine deepestEFull_eq_of_framedProd_regBlocks_eq H r hr hL J Pf Qf _ _ ?_ ?_ ?_
+  · rw [hjunkc, hjunk0, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₁]
+  · rw [hjunkc, hjunk0, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₁₂]
+  · rw [hjunkc, hjunk0, Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₁]
 
 end DLNFibre.DLN.RLCT
