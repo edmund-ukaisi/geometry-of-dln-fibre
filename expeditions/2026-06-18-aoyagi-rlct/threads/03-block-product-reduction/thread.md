@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 source-stratum two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-source-stratum-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-source-stratum-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-source-stratum-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_sourceStratum_two_sided_bounds
+```
+
+It specializes the local-source two-sided loss-density iff to
+`paperEndpointFixedBaseSourceRankStratum`.  Under explicit residual hypotheses
+on the source stratum, constant positivity, Haar/SFinite regular measure, and
+four supplied source-stratum-filter comparison bounds, it returns an open `U`
+where actual loss-density finiteness over
+`(mu.restrict (U inter sourceStratum)).prod nu` is equivalent to
+`residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t`.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe passed.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only scouts Bohr and
+Dirac accepted the statement scope and proof shape.  Nonclaims remain: no
+comparison or residual-hypothesis proof, no chart construction/coverage, no
+transport theorem, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 local-source two-sided loss-density iff
 
 Reproduction:

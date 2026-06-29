@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, source-stratum two-sided loss-density iff
+
+The local-source two-sided loss-density iff now has the source-rank-stratum
+wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_sourceStratum_two_sided_bounds
+```
+
+Under explicit residual hypotheses on `paperEndpointFixedBaseSourceRankStratum`,
+constant positivity, Haar/SFinite regular measure, and the four supplied
+source-stratum-filter bounds, Lean produces an open `U` with
+
+```text
+actual loss-density finite over (mu.restrict (U inter sourceStratum)).prod nu
+iff
+residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t.
+```
+
+This is still a supplied-bound local theorem.  It proves no comparison bounds,
+no residual hypotheses, no chart construction or coverage, no source-prior or
+Jacobian/density/product-measure transport, no original-loss identification,
+no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-29, local-source two-sided loss-density iff
 
 The local-source two-sided comparison handoff is now composed with the p.13
