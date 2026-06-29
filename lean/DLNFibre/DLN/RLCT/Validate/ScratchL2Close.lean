@@ -288,4 +288,30 @@ private theorem reindex_decode0_conj_shared (H : Fin (L + 1) → ℕ) (r : ℕ)
         (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)).toBlocks₂₂
       from by rw [hψ22, hq22]]
 
+/-- **Last-layer ₁₁ agreement** under the conjugated move (`reindex(Aψ last)₁₁ = reindex(Aq last)₁₁`),
+at the `rThr (H last.succ)` split (readX fixed). -/
+private theorem reindex_decodeLast_conj_b11 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (x : Fin (flatDim H) → ℝ)
+    (hT : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (deepestPoint H r B hB hr hL (lastLayer hL))).toBlocks₂₂ = 0) :
+    (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (((paramsEquivFlat H).symm (split.symm
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))) (lastLayer hL))).toBlocks₁₁
+      = (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (((paramsEquivFlat H).symm x) (lastLayer hL))).toBlocks₁₁ := by
+  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) with hw
+  have hsw : split w = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
+    rw [hw, split.apply_symm_apply]
+  obtain ⟨hψ11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit w (lastLayer hL) hT
+  obtain ⟨hq11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
+  rw [hψ11, hsw, readX_psiSplitRawL2CoreConj_eq, hq11]
+
 end DLNFibre.DLN.RLCT
