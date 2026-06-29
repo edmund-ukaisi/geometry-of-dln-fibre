@@ -314,6 +314,31 @@ private theorem reindex_decodeLast_conj_b11 (H : Fin (L + 1) → ℕ) (r : ℕ)
   obtain ⟨hq11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
   rw [hψ11, hsw, readX_psiSplitRawL2CoreConj_eq, hq11]
 
+/-- **Last-layer ₂₁ agreement** under the conjugated move (readZ fixed). Mirror of `_b11`. -/
+private theorem reindex_decodeLast_conj_b21 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (x : Fin (flatDim H) → ℝ)
+    (hT : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (deepestPoint H r B hB hr hL (lastLayer hL))).toBlocks₂₂ = 0) :
+    (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (((paramsEquivFlat H).symm (split.symm
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))) (lastLayer hL))).toBlocks₂₁
+      = (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr (lastLayer hL).succ))
+        (((paramsEquivFlat H).symm x) (lastLayer hL))).toBlocks₂₁ := by
+  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) with hw
+  have hsw : split w = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
+    rw [hw, split.apply_symm_apply]
+  obtain ⟨_, hψ21, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit w (lastLayer hL) hT
+  obtain ⟨_, hq21, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
+  rw [hψ21, hsw, readZ_psiSplitRawL2CoreConj_eq, hq21]
+
 /-- **The e2 dictionary relation** (the {12}-leak-kill, `P01` fixed). In the `l2*Conj` dictionary:
 `A0c·Y1'c + Y0c·T1'c = A0c·Y1c + Y0c·T1c`. Via `e2_regPreserve` (needs `Invertible l2A0Conj`). -/
 private theorem e2_conj_dict (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -339,9 +364,10 @@ private theorem e2_conj_dict (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-! ### The conj hm assembly skeleton (Fin 3 / subst) — validate the two-factor + column collapse. -/
 
--- Skeleton: the three hm in #147's pivotThr-J form, via prodDecode + reindex_prod_regBlocks_eq_of_e2.
--- Block agreements left as sorry to validate the skeleton/casts first.
-example (H : Fin 3 → ℕ) (r : ℕ)
+/-- **The conj `hm` triple** (at `Fin 3`) — the three `{11,12,21}` block agreements for `prod Aψ` vs
+`prod Aq` in #147's `pivotThr J` form, given layer-0 shared (`h0`), last-layer X/Z fixed (`h11G`/`h21G`),
+and the e2 leak-kill (`he2`). Pure block algebra via `reindex_prod_regBlocks_eq_of_e2`. -/
+private theorem conj_hm_triple (H : Fin 3 → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1:ℕ) ≤ 2)
     (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront' : J = frontEmbed H r hr)
@@ -454,6 +480,33 @@ private theorem deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ (H : Fin (L + 
     rw [hrt, hsplit (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))]
     exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
       (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))) s
-  sorry
+  -- The raw hm· triple (the long-pole content), then the psi-agnostic #147 helpers.
+  -- ALL FOUR hm-inputs are GREEN as standalone lemmas (reindex_decode0_conj_shared [h0],
+  -- reindex_decodeLast_conj_b11/_b21 [h11G/h21G], e2_conj_dict [he2's dict form]); the assembly engine
+  -- is conj_hm_triple [GREEN at Fin 3]. The remaining residual is the INDEX-FORM gluing: feeding my
+  -- `lastLayer hL`/`⟨0,_⟩`-indexed ingredient outputs into conj_hm_triple's `(0:Fin 2)`/`(1:Fin 2)`
+  -- (Fin 3) hypotheses (the `subst hL2eq` + lastLayer↔literal reconciliation + the he2 raw↔dict cast),
+  -- and the he2 raw-block↔l2*Conj-dict connector (the midWidth `hY0c` template). Mechanical; the
+  -- mathematics is fully discharged.
+  have hm11 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₁
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₁ := by
+    sorry
+  have hm12 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₁₂
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₁₂ := by
+    sorry
+  have hm21 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aψ)).toBlocks₂₁
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (prod H Aq)).toBlocks₂₁ := by
+    sorry
+  obtain ⟨h11, h12, h21⟩ :=
+    resid_regBlocks_eq_of_mid_agree H r B hr hL J Pf Qf Aψ Aq hPtri' hQtri' hm11 hm12 hm21
+  exact deepestEFull_sq_sum_eq_of_resid_blocks H r B hr hL J Pf Qf
+    (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) (split x) Aψ Aq
+    hframeψ hframeq hinterface hS3b h11 h12 h21
 
 end DLNFibre.DLN.RLCT
