@@ -18,6 +18,52 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced punctured-sector bounded-density residual source
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`.
+Review:
+`review-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`.
+
+Lean now exposes the reusable measure helper:
+
+```text
+restrict_withDensity_le_smul_of_ae_le
+```
+
+and the Aoyagi wrapper:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+The theorem sets `sourceMeasure = passiveSource.withDensity sourceDensity`,
+where `passiveSource = passiveMeasure.prod weightedBox`.  It calls the banked
+local-domination socket to choose the open punctured sector `V`.  For
+`mu = Measure.map sourceChart ((passiveSource.withDensity sourceDensity).restrict V)`,
+it proves `mu.restrict localSource = mu` without any density bound.  Under
+`c < infinity` and
+`sourceDensity <= c` a.e. with respect to `passiveSource.restrict V`, it
+derives the local domination
+`(passiveSource.withDensity sourceDensity).restrict V <= c • passiveSource`
+and transfers retained-passive residual positivity and negative-power
+integrability from the socket.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probes passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh route
+review by `McClintock the 4th` and xhigh post-implementation review by
+`Kierkegaard the 4th` returned PASS.
+
+Nonclaims: no proof that an external/original source prior admits the supplied
+density or local bound, no determinant-chart Haar transport, raw/source Haar
+theorem, passive Jacobian formula, source-image equality, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced punctured-sector local-domination residual source
 
 Reproduction:

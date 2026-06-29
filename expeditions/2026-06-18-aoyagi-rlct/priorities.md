@@ -10,6 +10,78 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector bounded-density residual source
+
+The local-domination residual-source socket now has a bounded-density
+specialization:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean
+```
+
+with the reusable helper
+
+```text
+restrict_withDensity_le_smul_of_ae_le
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+The theorem sets
+
+```text
+sourceMeasure = passiveSource.withDensity sourceDensity
+```
+
+and calls the banked local-domination socket to choose the open
+determinant-and-pivot-nonzero sector `V`.  Support of the chart-produced
+source measure on the retained-passive p.13 local source is unconditional.
+Residual positivity and negative-power integrability are then conditional on a
+finite scalar `c` and the explicit local a.e. density bound
+
+```text
+forall a.e. z with respect to passiveSource.restrict V,
+  sourceDensity z <= c.
+```
+
+The helper proves
+
+```text
+(passiveSource.withDensity sourceDensity).restrict V <= c • passiveSource
+```
+
+from that local a.e. bound, using `restrict_withDensity`, `withDensity_mono`,
+`withDensity_const`, and the existing restriction-to-unrestricted scalar
+domination helper.  The helper itself does not require `c < infinity`;
+finiteness belongs only to the downstream residual-source transfer.
+
+Focused handoff build, full `DLNFibre` build, `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probes passed.  Both new declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh route review and xhigh
+post-implementation review passed.
+
+This closes the locally bounded density adapter for the chart-produced
+punctured-sector passive product measure.  The next higher-value source/chart
+frontier is topology-tuple transport of the same sector/readout/map identity,
+not another source-prior wrapper, unless a concrete external-prior domination
+theorem is specified.
+
+Do not call this theorem external/original source-prior transport,
+determinant-chart Haar transport, raw/source Haar, passive Jacobian transport,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector local-domination residual source
 
 The residual-source socket now has a generic local-domination wrapper:

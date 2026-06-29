@@ -141,6 +141,36 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, retained-passive chart-produced punctured-sector
+  bounded-density residual source, 2026-06-29.** Lean now proves the helper
+  `restrict_withDensity_le_smul_of_ae_le` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`, and proves
+  `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`.
+  The theorem sets `sourceMeasure = passiveSource.withDensity sourceDensity`.
+  After the local-domination socket chooses an open determinant-and-pivot-
+  nonzero sector `V`, support of
+  `mu = Measure.map sourceChart ((passiveSource.withDensity sourceDensity).restrict V)`
+  on the retained-passive p.13 local source is unconditional, and residual
+  positivity plus `residualNegPowerIntegrableOn` follow under a finite scalar
+  `c` and the explicit local a.e. bound `sourceDensity <= c` with respect to
+  `passiveSource.restrict V`.  Reproduction, statement card, and review are
+  at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+  scan, and direct axiom probes passed with
+  `[propext, Classical.choice, Quot.sound]`.  Xhigh route review by
+  `McClintock the 4th` and xhigh post-implementation review by
+  `Kierkegaard the 4th` returned PASS.  This is only a bounded-density adapter
+  over the chart-produced passive product measure: no external/original
+  source-prior density or bound, determinant-chart Haar transport, raw/source
+  Haar theorem, passive Jacobian formula, source-image equality, source-rank
+  coverage, normal crossings, pole order, or RLCT is claimed.
+- **Current status addendum, retained-passive chart-produced punctured-sector
   local-domination residual source, 2026-06-29.** Lean now proves
   `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_restrict_le_smul_passiveProductMeasure_finiteMass`
   in

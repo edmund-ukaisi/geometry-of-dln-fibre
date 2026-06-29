@@ -3,6 +3,79 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Bounded-Density Residual Source - 2026-06-29
+
+`LocalMeasureHandoff.lean` now proves:
+
+```text
+restrict_withDensity_le_smul_of_ae_le
+```
+
+If `s` is measurable and `f <= c` a.e. with respect to `mu.restrict s`, then
+
+```text
+(mu.withDensity f).restrict s <= c • mu.
+```
+
+The proof uses `restrict_withDensity`, `withDensity_mono`,
+`withDensity_const`, and the existing helper
+`measure_le_smul_of_le_smul_restrict`.  The helper does not assume
+`c < infinity`.
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md
+threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-bounded-density-residual-source.md
+```
+
+The theorem sets
+
+```text
+sourceMeasure = passiveSource.withDensity sourceDensity
+```
+
+where `passiveSource = passiveMeasure.prod weightedBox`.  It reuses the
+banked local-domination residual-source theorem to choose an open
+determinant-and-pivot-nonzero sector `V`.  For
+
+```text
+mu = Measure.map sourceChart ((passiveSource.withDensity sourceDensity).restrict V)
+```
+
+it proves `mu.restrict localSource = mu` unconditionally.  Then, for any finite
+scalar `c : ENNReal`, the local density bound
+
+```text
+forall a.e. z with respect to passiveSource.restrict V,
+  sourceDensity z <= c
+```
+
+implies retained-passive residual positivity a.e. over
+`mu.restrict localSource` and `residualNegPowerIntegrableOn localSource mu t`.
+
+Xhigh route review by `McClintock the 4th` and xhigh post-implementation
+review by `Kierkegaard the 4th` returned PASS.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probes passed.  Both new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+This is a bounded-density adapter over the chart-produced passive product
+measure.  It proves no external/original source-prior density or bound, no
+determinant-chart Haar transport, no raw/source Haar theorem, no passive
+Jacobian formula, no source-image equality, no source-rank coverage, no normal
+crossings, pole order, or RLCT.  The next preferred frontier is
+topology-tuple transport of the same punctured-sector chart/readout identity.
+
 ## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Local-Domination Residual Source - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:
