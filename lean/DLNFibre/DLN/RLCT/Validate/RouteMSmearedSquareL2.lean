@@ -92,6 +92,150 @@ theorem gram_det_ne_of_diagDominant (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0
   rw [Matrix.det_mul, Matrix.det_transpose]
   exact mul_ne_zero hdet hdet
 
+/-! ## The conditioned box (slot-classified) and the `P₁` diagonal-dominance readoff
+
+Per the `(2,3,1)` shape generalized to opaque widths: the rank-block diagonal front coords pinned in
+`[δ/2, δ]`, every other (non-pivot) coord in `[−η, η]`. Following the cleanest design (decorrelated
+Codex), the classification is on `FlatIdx M` (the slot), precomposed with `slotEquiv` — so the readoff
+is slot-level (`coordOf q ↦ slotBox q`), avoiding repeated `coordOf`-injectivity work. The box is
+parameterized by an arbitrary width `η > 0` and the dominance is gated by a margin hypothesis
+`(↑(r−1))·η + γ ≤ δ/2`, robust for all `r ≥ 1` (no `δ/(4(r−1))` divide-by-zero). -/
+
+/-- The diagonal front slots `frontSlot i (deepWidthEquiv (inl i))` (`r = M 0`, so `i : Fin (M 0)`
+indexes both the row and the rank-block column via the `Fin.cast hr0.symm`). -/
+noncomputable def p1DiagSlots (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) :
+    Finset (FlatIdx M) :=
+  Finset.image
+    (fun i : Fin (M 0) => frontSlot M i (deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i))))
+    Finset.univ
+
+/-- The slot-level box: `[δ/2, δ]` on a rank-block diagonal front slot, `[−η, η]` elsewhere. -/
+noncomputable def slotBox (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (δ η : ℝ)
+    (q : FlatIdx M) : Set ℝ :=
+  if q ∈ p1DiagSlots M hrs hr0 then Set.Icc (δ / 2) δ else Set.Icc (-η) η
+
+/-- The ambient conditioned box width: `slotBox` precomposed with `slotEquiv`. -/
+noncomputable def condBoxWidth (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (δ η : ℝ) :
+    Fin (routeMAmbient M) → Set ℝ :=
+  fun m => slotBox M hrs hr0 δ η (slotEquiv M m)
+
+/-- The slot-level readoff: `condBoxWidth (coordOf q) = slotBox q` (the `slotEquiv (coordOf q) = q`
+round-trip). -/
+theorem condBoxWidth_coordOf (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (δ η : ℝ)
+    (q : FlatIdx M) :
+    condBoxWidth M hrs hr0 δ η (coordOf M q) = slotBox M hrs hr0 δ η q := by
+  unfold condBoxWidth coordOf
+  rw [Equiv.apply_symm_apply]
+
+/-- Each box width is measurable (both branches `Icc`). -/
+theorem measurableSet_condBoxWidth (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (δ η : ℝ)
+    (m : Fin (routeMAmbient M)) : MeasurableSet (condBoxWidth M hrs hr0 δ η m) := by
+  unfold condBoxWidth slotBox
+  split <;> exact measurableSet_Icc
+
+/-! ### Slot classification: which front slots are diagonal -/
+
+/-- A front slot is a `p1DiagSlot` iff its column is the rank-block diagonal of its row. Concretely
+`frontSlot i k ∈ p1DiagSlots ↔ k = deepWidthEquiv (inl (Fin.cast hr0.symm i))`. -/
+theorem frontSlot_mem_p1DiagSlots_iff (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0)
+    (i : Fin (M 0)) (k : Fin (M 1)) :
+    frontSlot M i k ∈ p1DiagSlots M hrs hr0
+      ↔ k = deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i)) := by
+  unfold p1DiagSlots
+  rw [Finset.mem_image]
+  constructor
+  · rintro ⟨i', _, h⟩
+    -- `frontSlot i' (…) = frontSlot i k` ⟹ rows equal (`i' = i`) and cols equal (`k = …`)
+    have hrow : i' = i := by
+      have := congrArg (fun q : FlatIdx M => (q.1.2.val : ℕ)) h
+      exact Fin.ext this
+    have hcol : (deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i')) : Fin (M 1)) = k := by
+      have := congrArg (fun q : FlatIdx M => (q.2.val : ℕ)) h
+      exact (Fin.ext this)
+    rw [← hcol, hrow]
+  · rintro rfl
+    exact ⟨i, Finset.mem_univ _, rfl⟩
+
+/-- A front coord is never the pivot (the pivot is a deep-layer top slot). -/
+theorem coordOf_frontSlot_ne_pivot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (i : Fin (M 0)) (k : Fin (M 1)) :
+    coordOf M (frontSlot M i k) ≠ pivotCoord M hrs hr hc := by
+  intro h
+  exact frontSlot_ne_topSlot M hrs i k ⟨0, hr⟩ ⟨0, hc⟩ (coordOf_injective M h)
+
+/-- **The diagonal front entry bound.** On the box, the rank-block diagonal entry
+`P1u i (cast i) = u (coordOf (frontSlot i (deepWidthEquiv (inl (cast i)))))` is in `[δ/2, δ]`, so
+`δ/2 ≤ |P1u i (cast i)|`. -/
+theorem P1u_diag_ge_of_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) (hδ : 0 < δ) {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) (i : Fin (M 0)) :
+    δ / 2 ≤ |P1u M hrs u i (Fin.cast hr0.symm i)| := by
+  obtain ⟨_, hrest⟩ := hu
+  set k := deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i)) with hk
+  have hslot : frontSlot M i k ∈ p1DiagSlots M hrs hr0 :=
+    (frontSlot_mem_p1DiagSlots_iff M hrs hr0 i k).mpr rfl
+  have hval : u (coordOf M (frontSlot M i k)) ∈ Set.Icc (δ / 2) δ := by
+    have hne := coordOf_frontSlot_ne_pivot M hrs hr hc i k
+    have := hrest _ hne
+    rwa [condBoxWidth_coordOf, slotBox, if_pos hslot] at this
+  have hP1eq : P1u M hrs u i (Fin.cast hr0.symm i) = u (coordOf M (frontSlot M i k)) := rfl
+  rw [hP1eq]
+  rw [Set.mem_Icc] at hval
+  rw [abs_of_nonneg (by linarith [hval.1])]
+  exact hval.1
+
+/-- **The off-diagonal front entry bound.** For a column `a ≠ cast i`, the slot is NOT a diagonal
+slot (same row, different rank-block column), so `P1u i a ∈ [−η, η]`, i.e. `|P1u i a| ≤ η`. -/
+theorem P1u_offdiag_le_of_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ)
+    (i : Fin (M 0)) (a : Fin r) (ha : a ≠ Fin.cast hr0.symm i) :
+    |P1u M hrs u i a| ≤ η := by
+  obtain ⟨_, hrest⟩ := hu
+  set k := deepWidthEquiv hrs (Sum.inl a) with hk
+  -- `frontSlot i k` is NOT diagonal: its column `k ≠ deepWidthEquiv (inl (cast i))`
+  have hnotdiag : frontSlot M i k ∉ p1DiagSlots M hrs hr0 := by
+    rw [frontSlot_mem_p1DiagSlots_iff]
+    intro hcoleq
+    -- `deepWidthEquiv (inl a) = deepWidthEquiv (inl (cast i))` ⟹ `a = cast i` (injective)
+    have : (Sum.inl a : Fin r ⊕ Fin s) = Sum.inl (Fin.cast hr0.symm i) :=
+      (deepWidthEquiv hrs).injective hcoleq
+    exact ha (Sum.inl_injective this)
+  have hval : u (coordOf M (frontSlot M i k)) ∈ Set.Icc (-η) η := by
+    have hne := coordOf_frontSlot_ne_pivot M hrs hr hc i k
+    have := hrest _ hne
+    rwa [condBoxWidth_coordOf, slotBox, if_neg hnotdiag] at this
+  have hP1eq : P1u M hrs u i a = u (coordOf M (frontSlot M i k)) := rfl
+  rw [hP1eq, abs_le]
+  rw [Set.mem_Icc] at hval
+  exact hval
+
+/-- **The box ⟹ Gram det `≠ 0`.** On the conditioned box (diagonal front coords in `[δ/2,δ]`, the rest
+in `[−η,η]`), with the margin condition `(↑(r−1))·η + γ ≤ δ/2` and `γ > 0`, `P₁` is strictly row
+diagonally dominant, so `det(P₁ᵀP₁) ≠ 0`. The off-diagonal sum has `r−1` terms each `≤ η`. -/
+theorem gram_det_ne_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) :
+    ((P1u M hrs u).transpose * P1u M hrs u).det ≠ 0 := by
+  refine gram_det_ne_of_diagDominant M hrs hr0 u γ hγ (fun i => ?_)
+  -- the off-diagonal sum: `r−1` terms each `≤ η`
+  have hsum : (∑ a ∈ Finset.univ.erase (Fin.cast hr0.symm i), |P1u M hrs u i a|)
+      ≤ ((r - 1 : ℕ) : ℝ) * η := by
+    calc (∑ a ∈ Finset.univ.erase (Fin.cast hr0.symm i), |P1u M hrs u i a|)
+        ≤ ∑ _a ∈ Finset.univ.erase (Fin.cast hr0.symm i), η :=
+          Finset.sum_le_sum (fun a ha => P1u_offdiag_le_of_mem M hrs hr0 hr hc δ η hu i a
+            (Finset.ne_of_mem_erase ha))
+      _ = ((Finset.univ.erase (Fin.cast hr0.symm i)).card : ℝ) * η := by
+          rw [Finset.sum_const, nsmul_eq_mul]
+      _ = ((r - 1 : ℕ) : ℝ) * η := by
+          rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
+  -- the diagonal: `≥ δ/2`
+  have hdiag := P1u_diag_ge_of_mem M hrs hr0 hr hc δ η hδ hu i
+  -- combine: `∑ + γ ≤ (r−1)η + γ ≤ δ/2 ≤ |diag|`
+  linarith [hsum, hdiag, hmargin]
+
 /-! ## `hUpos`: the `z`-free unit `U = ‖P₁·H̄_unit‖²` is positive (stratum `r = M 0`)
 
 `Uunit = ∑ᵢⱼ ((P₁·H̄_unit) i j)²` is `> 0` iff the matrix `P₁·H̄_unit ≠ 0`. The angular unit `H̄_unit`
