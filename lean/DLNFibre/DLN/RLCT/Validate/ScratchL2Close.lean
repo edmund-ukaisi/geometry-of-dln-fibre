@@ -19,9 +19,32 @@ L=2 branch):
 - conj spectator: `(conjAbsorb q).2.2 = q.2.2` via `coreShearHomeo_spectator`.
 - `psiSplitRawL2CoreConj` continuous-at-0 (for the `hsub4core` closedBall germ).
 
-REMAINING (NOT here): LINK 2 (the split-generic Step Θ on the core term — the reg-term seam under
-genm-l2thread review), the conj `hsub3reg` (reuses #147 + the new conj `hm11/hm12/hm21`), the conj
-`hsub4core` full wire, and `hstep2 = LINK1 ∘ LINK2`. -/
+## Conj `hsub3reg` (the long pole) — ALL MATH GREEN; 2 isolated opaque-width sorries remain.
+
+GREEN ingredient lemmas (sorry-free): `reindex_decode_blocks_at` (decode↔read bridge),
+`reindex_decode0_conj_shared` (h0/layer-0 shared), `reindex_decodeLast_conj_b11`/`_b21` (h11G/h21G),
+`e2_conj_dict` (the e2 leak-kill, `l2*Conj` dict form via `e2_regPreserve`), `conj_hm_triple` (the
+`reindex_prod_regBlocks_eq_of_e2` assembly engine, at `Fin 3`). The `hsub3reg` scaffold itself (frame
+ids + the psi-AGNOSTIC #147 helpers `resid_regBlocks_eq_of_mid_agree` + `deepestEFull_sq_sum_eq_of_resid_blocks`)
+composes GREEN.
+
+THE 2 REMAINING SORRIES (pure Lean opaque-width gluing — NOT math; the documented friction class,
+lean/CLAUDE.md "have+exact opaque-width"):
+1. `conj_he2_raw` final step: the dictionary haves + `he2 := e2_conj_dict` are assembled; need the
+   let-unfold (`Aq`/`Aψ` are `let`-bound — `simp only [hAq…]` makes no progress because the goal's
+   `Aq 0` ≠ syntactic `(paramsEquivFlat H).symm x ⟨0,_⟩`) + defeq-index (`⟨0,_⟩.castSucc`↔`0`,
+   `⟨0,_⟩.succ`↔`1`) + the `l2Y0Conj` midWidth `finCongr_refl` collapse (hY0c @DeepestDiffeoBridgeL2Conj:2459).
+   ROUTE: `change`/`show` the goal to the `(paramsEquivFlat H).symm x`-index form first, OR state
+   `reindex_decode_blocks_at` calls with literal `(0:Fin 2)`/`(1:Fin 2)` so widths are `H 0/1/2`.
+2. `…_eq_germ` hm-triple assembly: `subst hL2eq` (FAILS on the `set Aψ/Aq` let-bindings — use plain
+   `have`/avoid `set`, or `clear_value`), then `conj_hm_triple` (Fin 3) applies with `h0`/`h11G`/`h21G`
+   (derived in-proof) + `conj_he2_raw` for `he2`. Index reconcile: `lastLayer hL = (1:Fin 2)` by
+   `simp[lastLayer];rfl` (VERIFIED).
+
+THEN: LINK 2 = clean wire on two banked primitives (`rlctAtOn_comp_homeomorph` @S1Fubini:54 [the @439
+Θ-peel template] + `rlctAtOn_comp_localDiffeo`/`rlctAtOn_diffeo_bridge_of` [the in-file Ψ_conj use is the
+template]); `hstep2 = LINK1∘LINK2` → close `deepest_diffeo_bridge_L2` (the wire is `deepest_gauge_construction`
+L=2 branch, DeepestL2Wiring.lean:485-689 — `hstep2`'s sorry @694 / the hm·/hsub4core sorries @611-686). -/
 
 open MeasureTheory Topology Matrix
 open scoped ENNReal BigOperators
