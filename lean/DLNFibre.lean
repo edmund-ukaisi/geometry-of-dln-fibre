@@ -497,5 +497,32 @@ import DLNFibre.DLN.RLCT.Validate.RouteM4422Bridge
 import DLNFibre.DLN.RLCT.Validate.RouteM222StructAdm
 import DLNFibre.DLN.RLCT.Validate.RouteMBridgeCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+-- R1-LOWER ∀M-(1,1)-smeared FRONT FACT (the architecture cert's flagged biggest risk, now in hand):
+-- §3a `rankOneColumns_of_factorsThroughOne` (P=U·V through Fin 1 ⟹ rank-one columns off the pole,
+-- literal outer product not rank theory) + §3b `prodAux_factorsThroughOne` (the cast-heavy prefix
+-- split, existential-right-factor form, any k≥p) + §3c `prodAux_frontScalarShear_cancel` (wired into
+-- `scalarGram_cancel_of_rankOneColumns`: P₁·Λ₀=P₂). All S2-FREE, fidelity-reviewed. Feeds STEP 4 (the
+-- (1,1) Option-A chart). `RouteMSmearedGenRate` owns the generic scalar-Gram cancellation it consumes.
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedGenRate
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+-- R1-UPPER corank-3 (the rank-stratified recursion's first real firing): `core_schur3_lt_top`
+-- (general-`T`, `c' < 4 = λ_{3,4}`) + the reusable matrix-box scaling primitive `lintegral_matBox_smul`.
+-- Pulls in the (3,3,4)-anchor lineage (RouteMSchur*/RouteM334*/Case334RouteStep/SchurState/RouteMRecursion);
+-- cross-lineage clashes vs the (4,4,2,2)/(3,3,3,3) lineage deconflicted by renaming the (3,3,4) side
+-- (`e2_22`, `e3_334`, `minAdm_M4422_c334`, `paramsEquivFlat_decode_hfin`, `prod_two_layer334_hfin`).
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
+-- R1-UPPER ∀p leg (the rank-stratified radial-Schur recursion, every corank): the clean-three
+-- `routeMBoxThresholdFinite_rrp` (`∫_{matBox r (r+p) T} frobSq(R·S)^{−c'} < ⊤` for `0 < c' < ½·minAdm`,
+-- all `r, p`). Chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`
+-- (RouteMBoxThresholdRRP imports RouteMBoxReduction + RouteMSchurRecStepP, transitively pulling the whole
+-- P-chain: RouteMSchurCapACarveP/CapAP/DirectMorseP/ThresholdP/GenCover/Firing/General). S2-FREE, clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+-- R1-LOWER ∀M smeared-square achiever: the clean-three `routeMCore_smearedL2_square_uncond`
+-- (`∫⁻_{cubeBox 2δ} |routeMCore M|^{−c'} = ⊤` box-divergence, ARBITRARY M, scoped `r = M 0` — the
+-- smeared-stratum L=2 square case `M0 < M1 & r = M0`). The three analytic per-family facts (hcancel /
+-- hUpos / hSpre) are discharged; remaining hyps are structural + non-analytic box inputs (diag-dominance
+-- Varah field-A margins, hboxpos, hexp). Built on the Core Varah brick `Core.Matrix.DiagDominance`
+-- (`StrictRowDominant.det_ne_zero`). Cone sorry-free, S2-FREE. Reviewer PASS (5-point + decorrelated Codex).
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

@@ -3,6 +3,10 @@ import DLNFibre.DLN.RLCT.Validate.Case212
 import DLNFibre.DLN.RLCT.Foundations.S1ProductMin
 import DLNFibre.DLN.RLCT.Validate.Case222Algebra
 import DLNFibre.DLN.RLCT.Validate.Case222Rlct
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
+import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 
 /-!
 # Axiom-hygiene check
@@ -57,6 +61,32 @@ open DLNFibre.DLN.RLCT
 -- m.p. transport ∘ the loss-identity seam ∘ the `=` value. Same axiom profile as `_eq`:
 -- [propext, Classical.choice, Quot.sound, monomial_rlct], NO `sorryAx`.
 #print axioms case222_rlct
+
+-- R1-LOWER ∀M-(1,1)-smeared front fact (`prodAux_frontScalarShear_cancel`, the cert's biggest-risk piece) —
+-- must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE (literal outer-product cancellation,
+-- no analysis axiom), no `sorryAx`.
+#print axioms prodAux_frontScalarShear_cancel
+
+-- R1-LOWER ∀M smeared-square achiever (`routeMCore_smearedL2_square_uncond`, the box-divergence for the
+-- smeared L=2 square stratum `M0<M1 & r=M0`, ARBITRARY M) — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: S2-FREE (the divergence rests on the diag-dominance Varah
+-- field-A bound + the 1D `abs_rpow` first principle, NOT on `monomial_rlct`), no `sorryAx`. Its compile
+-- cone is sorry-free; the three analytic per-family facts (hcancel/hUpos/hSpre) are discharged.
+#print axioms routeMCore_smearedL2_square_uncond
+
+-- R1-UPPER corank-3 (the rank-stratified recursion's first real firing) — `core_schur3_lt_top`
+-- (general-`T`, `∫_{matBox 3 3 T}∫_{matBox 3 4 T} frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}`)
+-- + the reusable matrix-box scaling primitive `lintegral_matBox_smul`. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: S2-FREE, no `sorryAx` (despite the imported (3,3,4)-lineage
+-- closure carrying unrelated sorries in RouteMRecursion/RouteMSchur — they do not leak here).
+#print axioms core_schur3_lt_top
+#print axioms lintegral_matBox_smul
+
+-- R1-UPPER ∀p leg (the rank-stratified radial-Schur recursion at every corank) — `routeMBoxThresholdFinite_rrp`
+-- (`∫_{matBox r (r+p) T} frobSq(R·S)^{−c'} < ⊤` for `0 < c' < ½·minAdm r (r+p)`, all `r, p`), via the
+-- clean-three chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`.
+-- Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE, no `monomial_rlct`, no `sorryAx`.
+#print axioms routeMBoxThresholdFinite_rrp
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

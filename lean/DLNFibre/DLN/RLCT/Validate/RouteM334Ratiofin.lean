@@ -7,12 +7,12 @@ The last gap of the `(3,3,4)` per-chart finiteness `matBox334_chart_lt_top`: the
 `∫_{z∈[−1,1]^8} angA1Int c' p (e.symm (0,z)) < ⊤`, where (banked in `RouteM334Hfin`)
 
     angA1Int c' p y = ∫_{A1∈matBox 3 4 1} ofReal (frobSq (rmatMul (Rmat334 p y) A1) ^ (−c')),
-    Rmat334 p y r c = (if e3 (r,c) = p then 1 else y (e3 (r,c)))  (e3 = finProdFinEquiv : Fin 3×Fin 3 ≃ Fin 9).
+    Rmat334 p y r c = (if e3_334 (r,c) = p then 1 else y (e3_334 (r,c)))  (e3_334 = finProdFinEquiv : Fin 3×Fin 3 ≃ Fin 9).
 
 The route (pp-r1-genM-2 design; Codex `xhigh` VET, thread 29 `hratiofin-plan-answer.md`):
 
 * **STEP 1 — per-pivot row/col permutation to the `(0,0)` normal form.** For pivot `p ↔ (r₀,c₀)`
-  (`e3.symm p`), the row-swap `σr = swap r₀ 0` and col-swap `σc = swap c₀ 0` reorder `Rmat334 p y` to
+  (`e3_334.symm p`), the row-swap `σr = swap r₀ 0` and col-swap `σc = swap c₀ 0` reorder `Rmat334 p y` to
   `R' r c = Rmat334 p y (σr r) (σc c)` with the pivot `1` at `(0,0)`. The induced A1-row permute is
   measure-preserving on the symmetric box (`matBox34_rowperm_lintegral`), and `frobSq` is invariant under
   the residual output row-perm (`frobSq_rmatMul_perm`, the `A1 ↦ Q⁻¹A1` orientation): so
@@ -46,12 +46,12 @@ open MeasureTheory Set
 namespace DLNFibre.DLN.RLCT
 
 /-- The `Fin 3 × Fin 3 ≃ Fin 9` flat reindex that `Rmat334`/`matToFlatEquiv 3 3` use entrywise
-(`matToFlatEquiv 3 3 A i = A (e3.symm i).1 (e3.symm i).2`; `Rmat334 p y r c` reads `e3 (r,c)`). -/
-noncomputable def e3 : Fin 3 × Fin 3 ≃ Fin 9 := finProdFinEquiv
+(`matToFlatEquiv 3 3 A i = A (e3_334.symm i).1 (e3_334.symm i).2`; `Rmat334 p y r c` reads `e3_334 (r,c)`). -/
+noncomputable def e3_334 : Fin 3 × Fin 3 ≃ Fin 9 := finProdFinEquiv
 
-/-- `Rmat334 p y r c` is the `e3`-indexed select: `1` at the pivot flat-index `p`, else `y (e3 (r,c))`. -/
+/-- `Rmat334 p y r c` is the `e3_334`-indexed select: `1` at the pivot flat-index `p`, else `y (e3_334 (r,c))`. -/
 theorem Rmat334_entry (p : Fin 9) (y : Fin 9 → ℝ) (r c : Fin 3) :
-    Rmat334 p y r c = (if e3 (r, c) = p then (1 : ℝ) else y (e3 (r, c))) := rfl
+    Rmat334 p y r c = (if e3_334 (r, c) = p then (1 : ℝ) else y (e3_334 (r, c))) := rfl
 
 /-! ## STEP 1 — the permutation atoms -/
 
@@ -117,42 +117,42 @@ theorem angularR_reconstruct (R' : Fin 3 → Fin 3 → ℝ) (h00 : R' 0 0 = 1) :
       | ring
 
 /-- The pivot-normalized angular matrix on chart `p`, ratios `z`: `R' r c = Rmat334 p (e.symm (0,z))
-(σr r) (σc c)` with `σr = swap r₀ 0`, `σc = swap c₀ 0` and `(r₀,c₀) = e3.symm p`. Pivot `1` at `(0,0)`. -/
+(σr r) (σc c)` with `σr = swap r₀ 0`, `σc = swap c₀ 0` and `(r₀,c₀) = e3_334.symm p`. Pivot `1` at `(0,0)`. -/
 noncomputable def Rmat334norm (p : Fin 9) (z : Fin 8 → ℝ) : Fin 3 → Fin 3 → ℝ :=
   fun r c => Rmat334 p ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z))
-    ((Equiv.swap (e3.symm p).1 0) r) ((Equiv.swap (e3.symm p).2 0) c)
+    ((Equiv.swap (e3_334.symm p).1 0) r) ((Equiv.swap (e3_334.symm p).2 0) c)
 
 /-- `Rmat334norm p z 0 0 = 1`: the `(0,0)` entry is the pivot (`σr 0 = r₀`, `σc 0 = c₀`, and
-`e3 (r₀,c₀) = p`). -/
+`e3_334 (r₀,c₀) = p`). -/
 theorem Rmat334norm_pivot (p : Fin 9) (z : Fin 8 → ℝ) : Rmat334norm p z 0 0 = 1 := by
   unfold Rmat334norm
   rw [Equiv.swap_apply_right, Equiv.swap_apply_right, Rmat334_entry]
   rw [if_pos]
-  change e3 ((e3.symm p).1, (e3.symm p).2) = p
-  rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
+  change e3_334 ((e3_334.symm p).1, (e3_334.symm p).2) = p
+  rw [show ((e3_334.symm p).1, (e3_334.symm p).2) = e3_334.symm p from rfl, Equiv.apply_symm_apply]
 
 /-- Off-`(0,0)` entries of `Rmat334norm p z` are `z`-components, hence `|·| ≤ 1` on the box `[−1,1]^8`.
-(For `(i,j) ≠ (0,0)`, the index `e3 (σr i, σc j) ≠ p` by swap-injectivity, so the entry is `y`-read at a
+(For `(i,j) ≠ (0,0)`, the index `e3_334 (σr i, σc j) ≠ p` by swap-injectivity, so the entry is `y`-read at a
 non-pivot flat-index, which is exactly some `z j` since `y = e.symm (0,z)`.) -/
 theorem Rmat334norm_offpivot_le (p : Fin 9) (z : Fin 8 → ℝ)
     (hz : z ∈ Set.univ.pi (fun _ : Fin 8 => Set.Icc (-1 : ℝ) 1))
     (i j : Fin 3) (hij : ¬ (i = 0 ∧ j = 0)) :
     |Rmat334norm p z i j| ≤ 1 := by
   unfold Rmat334norm
-  set r0 := (e3.symm p).1 with hr0
-  set c0 := (e3.symm p).2 with hc0
+  set r0 := (e3_334.symm p).1 with hr0
+  set c0 := (e3_334.symm p).2 with hc0
   set σr := Equiv.swap r0 0 with hσr
   set σc := Equiv.swap c0 0 with hσc
   set y := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z) with hy
   have hσr0 : σr 0 = r0 := by rw [hσr, Equiv.swap_apply_right]
   have hσc0 : σc 0 = c0 := by rw [hσc, Equiv.swap_apply_right]
-  have hpe : e3 (r0, c0) = p := by
-    change e3 ((e3.symm p).1, (e3.symm p).2) = p
-    rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
-  have hidx : e3 (σr i, σc j) ≠ p := by
+  have hpe : e3_334 (r0, c0) = p := by
+    change e3_334 ((e3_334.symm p).1, (e3_334.symm p).2) = p
+    rw [show ((e3_334.symm p).1, (e3_334.symm p).2) = e3_334.symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : e3_334 (σr i, σc j) ≠ p := by
     intro heq
     rw [← hpe] at heq
-    have hpair := e3.injective heq
+    have hpair := e3_334.injective heq
     rw [Prod.mk.injEq] at hpair
     obtain ⟨hi, hj⟩ := hpair
     rw [← hσr0] at hi; rw [← hσc0] at hj
@@ -173,8 +173,8 @@ theorem angA1Int_eq_norm (c' : ℝ) (p : Fin 9) (z : Fin 8 → ℝ) :
       = ∫⁻ A1 in matBox 3 4 1,
           ENNReal.ofReal ((frobSq (rmatMul (Rmat334norm p z) A1)) ^ (-c')) := by
   set y := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z) with hy
-  set σr := Equiv.swap (e3.symm p).1 0 with hσr
-  set σc := Equiv.swap (e3.symm p).2 0 with hσc
+  set σr := Equiv.swap (e3_334.symm p).1 0 with hσr
+  set σc := Equiv.swap (e3_334.symm p).2 0 with hσc
   unfold angA1Int
   -- rewrite the RHS (the normalized integral) by the A1-row-permute CoV, matching the LHS pointwise.
   rw [matBox34_rowperm_lintegral σc
@@ -480,9 +480,9 @@ theorem Jint_le_Ginner (c' : ℝ) (p : Fin 9) (z : Fin 8 → ℝ)
     (Rmat334norm_offpivot_le p z hz 0 1 (by simp)) (Rmat334norm_offpivot_le p z hz 0 2 (by simp)) _
 
 /-- The `z`-slot of a non-`(0,0)` cell `c`: the `Fin 8` index `jj` with
-`p.succAbove jj = e3 (σr c.1, σc c.2)` (σr = swap r0 0, σc = swap c0 0). -/
+`p.succAbove jj = e3_334 (σr c.1, σc c.2)` (σr = swap r0 0, σc = swap c0 0). -/
 noncomputable def zslot (p : Fin 9) (c : Fin 3 × Fin 3) : Fin 8 :=
-  if h : e3 ((Equiv.swap (e3.symm p).1 0) c.1, (Equiv.swap (e3.symm p).2 0) c.2) ≠ p then
+  if h : e3_334 ((Equiv.swap (e3_334.symm p).1 0) c.1, (Equiv.swap (e3_334.symm p).2 0) c.2) ≠ p then
     (Fin.exists_succAbove_eq h).choose
   else 0
 
@@ -492,48 +492,48 @@ theorem Rmat334norm_eq_zslot (p : Fin 9) (z : Fin 8 → ℝ) (c : Fin 3 × Fin 3
     (hc : ¬ (c.1 = 0 ∧ c.2 = 0)) :
     Rmat334norm p z c.1 c.2 = z (zslot p c) := by
   unfold Rmat334norm
-  set r0 := (e3.symm p).1 with hr0
-  set c0 := (e3.symm p).2 with hc0
+  set r0 := (e3_334.symm p).1 with hr0
+  set c0 := (e3_334.symm p).2 with hc0
   set σr := Equiv.swap r0 0 with hσr
   set σc := Equiv.swap c0 0 with hσc
   set y := (MeasurableEquiv.piFinSuccAbove (fun _ : Fin 9 => ℝ) p).symm (0, z) with hy
   have hσr0 : σr 0 = r0 := by rw [hσr, Equiv.swap_apply_right]
   have hσc0 : σc 0 = c0 := by rw [hσc, Equiv.swap_apply_right]
-  have hpe : e3 (r0, c0) = p := by
-    change e3 ((e3.symm p).1, (e3.symm p).2) = p
-    rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
-  have hidx : e3 (σr c.1, σc c.2) ≠ p := by
+  have hpe : e3_334 (r0, c0) = p := by
+    change e3_334 ((e3_334.symm p).1, (e3_334.symm p).2) = p
+    rw [show ((e3_334.symm p).1, (e3_334.symm p).2) = e3_334.symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : e3_334 (σr c.1, σc c.2) ≠ p := by
     intro heq
     rw [← hpe] at heq
-    have hpair := e3.injective heq
+    have hpair := e3_334.injective heq
     rw [Prod.mk.injEq] at hpair
     obtain ⟨hi, hj⟩ := hpair
     rw [← hσr0] at hi; rw [← hσc0] at hj
     exact hc ⟨σr.injective hi, σc.injective hj⟩
   rw [Rmat334_entry, if_neg hidx]
-  -- zslot p c = (exists_succAbove_eq hidx).choose; spec: p.succAbove (zslot) = e3 (σr,σc).
+  -- zslot p c = (exists_succAbove_eq hidx).choose; spec: p.succAbove (zslot) = e3_334 (σr,σc).
   have hslot : zslot p c = (Fin.exists_succAbove_eq hidx).choose := by
     unfold zslot; rw [dif_pos hidx]
-  have hspec : p.succAbove (zslot p c) = e3 (σr c.1, σc c.2) := by
+  have hspec : p.succAbove (zslot p c) = e3_334 (σr c.1, σc c.2) := by
     rw [hslot]; exact (Fin.exists_succAbove_eq hidx).choose_spec
   rw [← hspec]
   rw [show y (p.succAbove (zslot p c)) = z (zslot p c) from by
     rw [hy]; simp [MeasurableEquiv.piFinSuccAbove]]
 
-/-- The defining spec of `zslot`: `p.succAbove (zslot p c) = e3 (σr c.1, σc c.2)` for `c ≠ (0,0)`. -/
+/-- The defining spec of `zslot`: `p.succAbove (zslot p c) = e3_334 (σr c.1, σc c.2)` for `c ≠ (0,0)`. -/
 theorem zslot_spec (p : Fin 9) (c : Fin 3 × Fin 3) (hc : ¬ (c.1 = 0 ∧ c.2 = 0)) :
     p.succAbove (zslot p c)
-      = e3 ((Equiv.swap (e3.symm p).1 0) c.1, (Equiv.swap (e3.symm p).2 0) c.2) := by
-  set σr := Equiv.swap (e3.symm p).1 0 with hσr
-  set σc := Equiv.swap (e3.symm p).2 0 with hσc
-  have hσr0 : σr 0 = (e3.symm p).1 := by rw [hσr, Equiv.swap_apply_right]
-  have hσc0 : σc 0 = (e3.symm p).2 := by rw [hσc, Equiv.swap_apply_right]
-  have hpe : e3 ((e3.symm p).1, (e3.symm p).2) = p := by
-    rw [show ((e3.symm p).1, (e3.symm p).2) = e3.symm p from rfl, Equiv.apply_symm_apply]
-  have hidx : e3 (σr c.1, σc c.2) ≠ p := by
+      = e3_334 ((Equiv.swap (e3_334.symm p).1 0) c.1, (Equiv.swap (e3_334.symm p).2 0) c.2) := by
+  set σr := Equiv.swap (e3_334.symm p).1 0 with hσr
+  set σc := Equiv.swap (e3_334.symm p).2 0 with hσc
+  have hσr0 : σr 0 = (e3_334.symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc 0 = (e3_334.symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : e3_334 ((e3_334.symm p).1, (e3_334.symm p).2) = p := by
+    rw [show ((e3_334.symm p).1, (e3_334.symm p).2) = e3_334.symm p from rfl, Equiv.apply_symm_apply]
+  have hidx : e3_334 (σr c.1, σc c.2) ≠ p := by
     intro heq
     rw [← hpe] at heq
-    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ e3.injective heq
+    obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ e3_334.injective heq
     rw [← hσr0] at hi; rw [← hσc0] at hj
     exact hc ⟨σr.injective hi, σc.injective hj⟩
   have hslot : zslot p c = (Fin.exists_succAbove_eq hidx).choose := by
@@ -569,7 +569,7 @@ theorem cellOf_injective : Function.Injective cellOf := by
     revert h
     fin_cases j1 <;> fin_cases j2 <;> decide
 
-/-- `zslot p` is injective on non-`(0,0)` cells (via its spec `p.succAbove ∘ zslot = e3 ∘ (σr,σc)`,
+/-- `zslot p` is injective on non-`(0,0)` cells (via its spec `p.succAbove ∘ zslot = e3_334 ∘ (σr,σc)`,
 all the constituents injective). -/
 theorem zslot_injOn (p : Fin 9) {c1 c2 : Fin 3 × Fin 3}
     (h1 : ¬ (c1.1 = 0 ∧ c1.2 = 0)) (h2 : ¬ (c2.1 = 0 ∧ c2.2 = 0))
@@ -577,14 +577,14 @@ theorem zslot_injOn (p : Fin 9) {c1 c2 : Fin 3 × Fin 3}
   have hs1 := zslot_spec p c1 h1
   have hs2 := zslot_spec p c2 h2
   rw [heq, hs2] at hs1
-  -- hs1 : e3 (σr c2.1, σc c2.2) = e3 (σr c1.1, σc c1.2)  -- wait, orientation
-  have he : e3 ((Equiv.swap (e3.symm p).1 0) c2.1, (Equiv.swap (e3.symm p).2 0) c2.2)
-      = e3 ((Equiv.swap (e3.symm p).1 0) c1.1, (Equiv.swap (e3.symm p).2 0) c1.2) := hs1
-  have hpair := e3.injective he
+  -- hs1 : e3_334 (σr c2.1, σc c2.2) = e3_334 (σr c1.1, σc c1.2)  -- wait, orientation
+  have he : e3_334 ((Equiv.swap (e3_334.symm p).1 0) c2.1, (Equiv.swap (e3_334.symm p).2 0) c2.2)
+      = e3_334 ((Equiv.swap (e3_334.symm p).1 0) c1.1, (Equiv.swap (e3_334.symm p).2 0) c1.2) := hs1
+  have hpair := e3_334.injective he
   rw [Prod.mk.injEq] at hpair
   obtain ⟨hi, hk⟩ := hpair
-  have hi' := (Equiv.swap (e3.symm p).1 0).injective hi
-  have hk' := (Equiv.swap (e3.symm p).2 0).injective hk
+  have hi' := (Equiv.swap (e3_334.symm p).1 0).injective hi
+  have hk' := (Equiv.swap (e3_334.symm p).2 0).injective hk
   exact Prod.ext hi'.symm hk'.symm
 
 /-- `zslot p ∘ cellOf : (Fin 2 × Fin 2) ⊕ Fin 4 → Fin 8` is bijective (8 distinct slots). -/

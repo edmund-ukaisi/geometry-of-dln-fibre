@@ -579,29 +579,29 @@ theorem schurInner_S_le_pivot (R : Fin 2 → Fin 2 → ℝ) (i₀ j₀ : Fin 2) 
 
 /-! ### The per-chart finiteness + the assembly -/
 
-/-- The matrix↔flat index equiv `e2 : Fin 2 × Fin 2 ≃ Fin 4`, `e2 (i,j) = matToFlat2-index`. -/
-noncomputable def e2 : Fin 2 × Fin 2 ≃ Fin (2 * 2) :=
+/-- The matrix↔flat index equiv `e2_22 : Fin 2 × Fin 2 ≃ Fin 4`, `e2_22 (i,j) = matToFlat2-index`. -/
+noncomputable def e2_22 : Fin 2 × Fin 2 ≃ Fin (2 * 2) :=
   ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).symm).trans
     ((Equiv.sigmaEquivProd (Fin 2) (Fin 2)).trans finProdFinEquiv)
 
-/-- `Rmat2 p y i j = if e2 (i,j) = p then 1 else y (e2 (i,j))` — the unflattened "1 at the pivot, `y`
+/-- `Rmat2 p y i j = if e2_22 (i,j) = p then 1 else y (e2_22 (i,j))` — the unflattened "1 at the pivot, `y`
 elsewhere" angular matrix entrywise. -/
 theorem Rmat2_entry (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) (i j : Fin 2) :
-    Rmat2 p y i j = if e2 (i, j) = p then 1 else y (e2 (i, j)) := rfl
+    Rmat2 p y i j = if e2_22 (i, j) = p then 1 else y (e2_22 (i, j)) := rfl
 
-/-- The pivot entry of `Rmat2 p y` is `1` (at the matrix index `e2.symm p`). -/
+/-- The pivot entry of `Rmat2 p y` is `1` (at the matrix index `e2_22.symm p`). -/
 theorem Rmat2_pivot (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ) :
-    Rmat2 p y (e2.symm p).1 (e2.symm p).2 = 1 := by
+    Rmat2 p y (e2_22.symm p).1 (e2_22.symm p).2 = 1 := by
   rw [Rmat2_entry]
   rw [if_pos]
-  rw [show ((e2.symm p).1, (e2.symm p).2) = e2.symm p from rfl, Equiv.apply_symm_apply]
+  rw [show ((e2_22.symm p).1, (e2_22.symm p).2) = e2_22.symm p from rfl, Equiv.apply_symm_apply]
 
 /-- Off-pivot entries of `Rmat2 p y` are `y`-components, hence `|·| ≤ 1` on the ratio chart `|y_k| ≤ 1`
 (`k ≠ p`); the pivot entry is `1`. So `|Rmat2 p y i j| ≤ 1` everywhere on the chart. -/
 theorem Rmat2_entry_le (p : Fin (2 * 2)) (y : Fin (2 * 2) → ℝ)
     (hy : ∀ k, k ≠ p → |y k| ≤ 1) (i j : Fin 2) : |Rmat2 p y i j| ≤ 1 := by
   rw [Rmat2_entry]
-  by_cases h : e2 (i, j) = p
+  by_cases h : e2_22 (i, j) = p
   · rw [if_pos h]; norm_num
   · rw [if_neg h]; exact hy _ h
 
@@ -615,7 +615,7 @@ theorem innerS2_offpivot (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) (y y' : Fin (2 *
     (h : ∀ i, i ≠ p → y i = y' i) : innerS2 c' T p y = innerS2 c' T p y' := by
   have hR : Rmat2 p y = Rmat2 p y' := by
     funext i j; rw [Rmat2_entry, Rmat2_entry]
-    by_cases hij : e2 (i, j) = p
+    by_cases hij : e2_22 (i, j) = p
     · rw [if_pos hij, if_pos hij]
     · rw [if_neg hij, if_neg hij]; exact h _ hij
   rw [innerS2, innerS2, hR]
@@ -633,10 +633,10 @@ theorem measurable_innerS2 (c' : ℝ) (T : ℝ) (p : Fin (2 * 2)) : Measurable (
   apply Measurable.pow_const
   apply Finset.measurable_sum; intro k _
   apply Measurable.mul
-  · -- Rmat2 p y i k is measurable in y (it is `if … then 1 else y (e2 (i,k))`)
+  · -- Rmat2 p y i k is measurable in y (it is `if … then 1 else y (e2_22 (i,k))`)
     have hy : Measurable (fun y : Fin (2 * 2) → ℝ => Rmat2 p y i k) := by
       simp only [Rmat2_entry]
-      by_cases h : e2 (i, k) = p
+      by_cases h : e2_22 (i, k) = p
       · simp only [if_pos h]; exact measurable_const
       · simp only [if_neg h]; exact measurable_pi_apply _
     exact hy.comp measurable_fst
@@ -1030,7 +1030,7 @@ theorem matBox2_chart_lt_top (c' : ℝ) (hc0 : 0 < c') (hc' : c' < 2) (T : ℝ) 
     · -- per z ∈ box: innerS2(e.symm(0,z)) ≤ schurInnerBnd2 via schurInner_S_bound_pivot
       simp only [Set.mem_pi, Set.mem_univ, true_implies] at hz
       rw [innerS2]
-      refine schurInner_S_bound_pivot (Rmat2 p (e.symm (0, z))) (e2.symm p).1 (e2.symm p).2
+      refine schurInner_S_bound_pivot (Rmat2 p (e.symm (0, z))) (e2_22.symm p).1 (e2_22.symm p).2
         (Rmat2_pivot p (e.symm (0, z)))
         (fun i k => Rmat2_entry_le p (e.symm (0, z)) (fun kk hkk => ?_) i k) c' hc0 hc' T hT
       -- |e.symm(0,z) kk| ≤ 1 for kk ≠ p: kk = p.succAbove j, value is z j ∈ [−1,1]
