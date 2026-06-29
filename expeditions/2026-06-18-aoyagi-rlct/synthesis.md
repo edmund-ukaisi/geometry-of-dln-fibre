@@ -19944,3 +19944,50 @@ This is useful API hardening, not a new analytic frontier.  It proves no
 cardinality provenance, label-preserving transport, source-rank coverage,
 original source-prior transport, external-prior Jacobian comparison, normal
 crossings, pole order, or RLCT.
+
+## Latest A2 Retained-Passive Chart-Produced Source-Stratum Bounds
+
+`RetainedPassiveLocalMeasure.lean` now proves the chart-produced
+source-stratum-bound selected-entry handoff:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+```
+
+and the retained-data wrappers:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves the corresponding
+endpoint-transported Case 2 wrappers:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+```
+
+The source measure remains the selected-entry chart-produced pushforward.  The
+new generic wrapper derives the retained-passive local-source restriction from
+pointwise chart landing, while the final loss and density estimates are taken
+on the source-rank stratum.  The Case 2 wrappers route through the existing
+support/readout bridge before invoking the generic theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-source-stratum-bounds.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-source-stratum-bounds.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-source-stratum-bounds.md`
+passed by xhigh `Bacon the 2nd`.
+
+Focused builds and the full `DLNFibre` build passed for this slice.
+`lean/scripts/sorries`, `git diff --check`, and a touched-Lean-file
+forbidden-marker scan were clean.  Focused builds covered
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Nonclaims:
+no selected-entry source/image equality, source-rank coverage,
+external/original source-prior transport, Jacobian comparison, analytic atlas,
+normal crossings, pole order, or RLCT.

@@ -11786,3 +11786,35 @@ passed by xhigh `Bernoulli`.
 No full derivative/formal-Jacobian equality, determinant equality,
 target-side linear equivalence, measure transport, normal crossings, pole
 order, or RLCT is proved.
+
+Latest A2 retained-passive chart-produced source-stratum bounds:
+`RetainedPassiveLocalMeasure.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure`,
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure`,
+and
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density`.
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure`
+and
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-source-stratum-bounds.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-source-stratum-bounds.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-source-stratum-bounds.md`
+passed by xhigh `Bacon the 2nd`.
+
+The generic wrapper derives the retained-passive local-source pushforward
+restriction from pointwise chart landing and lets the regular-coordinate loss
+and density bounds live on the source-rank stratum.  The retained-data and
+Case 2 wrappers use chart-produced selected-entry pushforwards only; the Case
+2 specializations route through the existing support/readout bridge.  Focused
+builds passed for `RetainedPassiveLocalMeasure` and
+`RetainedPassiveCase2LocalJacobianMeasure`; the full `DLNFibre` build and
+local hygiene checks also passed.
+
+Nonclaims: no selected-entry source/image equality, no source-rank coverage,
+no external/original source-prior transport, no Jacobian comparison, no
+analytic atlas construction, no normal crossings, no pole order, and no RLCT.
