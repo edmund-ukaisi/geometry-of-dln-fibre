@@ -74,3 +74,12 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   upstream-ready `GraphIdeal`), min hyps confirmed. **P2-boundary authoritative re-gate green 3820**,
   axiom-clean. The determinantal & elimination library now stands: `Core/Matrix/RankMinors.lean` +
   `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}.lean`. → PR-P2 opened (stacked on P1); rolling into P3.
+- **2026-06-29 — P3-R1 LANDED → PHASE 3 CONTENT-COMPLETE** (`12d25fca`). The cotangent crux: `CotangentJacobian`
+  re-homed as a 2-module split — `Core/RingTheory/Ideal/CotangentLocalization.lean` (network-free, `[CommRing]`)
+  + `Core/RingTheory/MvPolynomial/CotangentJacobian.lean`. Headline `finrank_cotangentSpace_eq_finrank_ker_jacobian`
+  (cotangent dim = ker of the rectangular point-Jacobian, **no smoothness**, arbitrary rational point — more
+  general than Mathlib's smooth/square Jacobian), via bridges B1 (rank-nullity) + B2 (conormal → `Jᵀ`). Bonus
+  `[Field k]→[CommRing k]` weakening on the localization lemma. Bridge bodies verbatim; Codex xhigh red-teamed
+  the transpose orientation SOUND (rank-deficient witness `g₁=x+2y,g₂=3x+6y`). P3-boundary re-gate **green 3821**,
+  axiom-clean, DLN payoffs untouched. Decorrelated crux-review (09r) in flight on B2's `Ψ`-orientation; on PASS →
+  PR-P3 → **expedition close**.

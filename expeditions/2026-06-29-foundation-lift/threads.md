@@ -18,6 +18,8 @@ Per-thread notes in `threads/<NN>-<slug>/`.
 | 07r | reviewer (crux audit) | P2-R2 minor-rank `←` direction + faithful split | **closed** — **PASS** (`←` sound at `Fin`/`ℕ` generality, all supports present, the 3 `card_fin` steps + the column identity correct, Codex xhigh "sound"; `↔` honest `[Field k]`; faithful split; deferred `Fintype` index = honest non-extension → roadmap). Verdict: `threads/07-matrix-rank/review.md` |
 | 08 | lean-formaliser (P2-R3) | extract/generalise `GraphIdealHeight` (`height_graphIdeal_eq = card σ`) onto P2-R1 + #14 `Codimension` | **closed** (`12fb9faa`) — `Core/MvPolynomial/GraphIdealHeight.lean` (sibling, ns `MvPolynomial`); verbatim re-home, min hyps confirmed; green 3820 / axiom-clean. Card: `threads/08-graph-ideal-height/statement-card.md`. **PHASE 2 content-complete + boundary re-gate green 3820.** |
 | — | (PR #15) | operator review (5 comments) — all concurred + fixed | **applied** (`165e0954`, Lean-only); p2 rebased onto it (`09c5cb79`) |
+| 09 | lean-formaliser (P3-R1, **CRUX**) | extract `CotangentJacobian` → `Core/RingTheory/{Ideal/CotangentLocalization, MvPolynomial/CotangentJacobian}` | **closed** (`12d25fca`) — 2-module split; headline `finrank_cotangentSpace_eq_finrank_ker_jacobian` + B1/B2 bridges; `[Field k]→[CommRing k]` weakening; green 3821 / axiom-clean. Card: `threads/09-cotangent-jacobian/statement-card.md`. **Pending crux-review (09r).** |
+| 09r | reviewer (crux audit) | P3-R1 cokernel-finrank bridge / B2 `Ψ`-orientation (`coker Jᵀ`) | **in flight** |
 
 ## Roadmap (future — not this expedition)
 mathlib4 upstream PRs (built internal-first); shared-package extraction (ReLU second consumer);
