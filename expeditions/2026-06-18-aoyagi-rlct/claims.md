@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive source-chart continuity,
+  2026-06-29.** Lean now exposes
+  `continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive` in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`
+  and
+  `continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  These theorems prove continuity of the passive selected-entry finite datum
+  and continuity of the endpoint-transported fixed-base source edge-family
+  chart under continuity of the passive fields.  The source-chart theorem uses
+  pointwise determinant-unit hypotheses to enter the determinant-chart subtype
+  and has no measure or rank hypotheses.  Reproduction and statement card are
+  at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-source-chart-continuity.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-source-chart-continuity.md`.
+  Focused build, `git diff --check`, `scripts/sorries`, direct axiom probes,
+  and xhigh review passed.  This is
+  regularity infrastructure only: no concrete passive product measure,
+  source-rank coverage, source-image equality, determinant-chart pushforward,
+  source-prior transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive chart-produced support,
   2026-06-29.** Lean now exposes
   `measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self`

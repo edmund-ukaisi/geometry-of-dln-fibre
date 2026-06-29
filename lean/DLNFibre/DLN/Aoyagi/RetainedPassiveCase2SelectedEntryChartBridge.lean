@@ -305,6 +305,84 @@ theorem continuous_case2PostPivotSelectedEntryRetainedPassiveData
       (K := ℝ) (ρ := ρ) (κ' := kappa)).comp htuple
 
 set_option linter.style.longLine false in
+/-- Passive-parameter selected-entry retained-passive data are continuous when
+the passive fields are continuous in the passive parameter and the selected
+entry coordinates vary in the second component.
+
+This is coordinatewise/product-topology regularity only.  It does not prove
+determinant membership, source-image coverage, a measure pushforward, a
+Jacobian formula, normal crossings, pole order, or RLCT. -/
+theorem continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+    {η ρ : Type*} [TopologicalSpace η] {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : η → Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : η → Matrix ρ ρ ℝ)
+    (F3 : η → Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3) :
+    Continuous
+      (fun z :
+          η ×
+            ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ) ↦
+        case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := ρ) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext) := by
+  let kappa : Fin 3 → Type := case2PostPivotTwoEdgeDomain n S J τ
+  let selectedData :
+      ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) kappa :=
+    fun yNext ↦
+      case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext yNext eNext
+  have hselected : Continuous selectedData := by
+    simpa [selectedData, kappa] using
+      continuous_case2PostPivotSelectedEntryRetainedPassiveData
+        (ρ := ρ) n hS hcont hnext eNext
+  have hC :
+      Continuous
+        (fun z :
+            η ×
+              ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ) ↦
+          (selectedData z.2).C) := by
+    refine continuous_pi ?_
+    intro p
+    exact (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_C
+      (K := ℝ) (ρ := ρ) (κ' := kappa) p).comp (hselected.comp continuous_snd)
+  have htuple :
+      Continuous
+        (fun z :
+            η ×
+              ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ) ↦
+          (A1passive z.1,
+            (F2 z.1,
+              (A3passive z.1,
+                ((selectedData z.2).C,
+                  (Ctop z.1, F3 z.1)))))) := by
+    exact
+      (hA1passive_cont.comp continuous_fst).prodMk
+        ((hF2_cont.comp continuous_fst).prodMk
+          ((hA3passive_cont.comp continuous_fst).prodMk
+            (hC.prodMk
+              ((hCtop_cont.comp continuous_fst).prodMk
+                (hF3_cont.comp continuous_fst)))))
+  simpa [ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple,
+    case2PostPivotSelectedEntryRetainedPassiveDataWithPassive, selectedData, kappa] using
+    (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_ofTopologyTuple
+      (K := ℝ) (ρ := ρ) (κ' := kappa)).comp htuple
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry retained-passive datum is continuous as a map
 into the retained-passive determinant-chart subtype. -/
 theorem continuous_case2PostPivotSelectedEntryRetainedPassiveData_detChart_subtype

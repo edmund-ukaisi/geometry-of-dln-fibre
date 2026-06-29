@@ -3,6 +3,47 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Source-Chart Continuity - 2026-06-29
+
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` and
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now have passive-coordinate
+continuity lemmas:
+
+```text
+continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive
+```
+
+The first theorem proves that the passive selected-entry retained-passive
+datum is continuous in `(theta,y)` when the passive fields
+`A1passive`, `F2`, `A3passive`, `Ctop`, and `F3` are continuous in `theta`.
+The second composes that datum with determinant-chart subtype packaging,
+endpoint transport, and the fixed-base retained-passive source chart to prove
+continuity of the source edge-family map.  The source-chart theorem needs only
+pointwise determinant-unit hypotheses on `Ctop` and `A1passive` to enter the
+determinant-chart subtype; it has no measure or rank hypotheses.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-source-chart-continuity.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-source-chart-continuity.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check` passed.  `scripts/sorries` reports
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+Direct axiom probes for both theorem names report
+`[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only review by `Nash the 3rd` passed after two docstring wording
+fixes; see
+`threads/03-block-product-reduction/review-a2-case2-passive-source-chart-continuity.md`.
+
+Nonclaims: no concrete passive product measure, no support theorem for a
+concrete product measure, no source-rank coverage, no source-image equality,
+no determinant-chart pushforward, no passive Jacobian/source-density
+accounting, no original source-prior transport, no normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Case 2 Passive Chart-Produced Support - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has passive-domain

@@ -1187,6 +1187,156 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The endpoint-transported passive-parameter Case 2 source chart is
+continuous when the passive fields are continuous and the determinant-chart
+unit hypotheses hold pointwise.
+
+This proves regularity of the chart-produced fixed-base source family only. It
+does not construct a product measure, source-image theorem, source-prior
+transport, Jacobian formula, normal crossings, pole order, or RLCT. -/
+theorem continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type} [TopologicalSpace η] [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3)
+    (hCtop : ∀ θ : η, IsUnit ((Ctop θ).det))
+    (hA1passive : ∀ θ : η, ∀ p : Fin 1, IsUnit ((A1passive θ p).det)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let sourceChart : η × (center → ℝ) → EdgeFamily :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData z)
+    Continuous sourceChart := by
+  intro center EdgeFamily retainedData sourceChart
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ : Fin 3 → Type := case2PostPivotTwoEdgeDomain n S J τ
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let rawData :
+      η × (center → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ :=
+    fun z ↦
+      case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+        (ρ := ρ) n hS hcont hnext
+        (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+        (F3 z.1) z.2 eNext
+  let rawDetData :
+      η × (center → ℝ) →
+        {data :
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ // data.detChart} :=
+    fun z ↦
+      ⟨rawData z, by
+        simpa [rawData, center, ρ, κ] using
+          case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+            (ρ := ρ) n hS hcont hnext
+            (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+            (F3 z.1) z.2 eNext (hCtop z.1) (hA1passive z.1)⟩
+  let transportedData :
+      η × (center → ℝ) →
+        {data :
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := ρ) κ' // data.detChart} :=
+    fun z ↦
+      ⟨retainedData z, by
+        simpa [retainedData, rawData, center, ρ, κ'] using
+          case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+            (ρ := ρ) n hS hcont hnext
+            (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+            (F3 z.1) z.2 eNext e (hCtop z.1) (hA1passive z.1)⟩
+  have hraw : Continuous rawData := by
+    simpa [rawData, center, ρ, κ] using
+      continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+        (ρ := ρ) n hS hcont hnext
+        A1passive F2 A3passive Ctop F3 eNext
+        hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+  have hrawDet : Continuous rawDetData := by
+    exact hraw.subtype_mk _
+  have htransport :
+      Continuous
+        (fun data :
+            {data :
+              ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ // data.detChart} ↦
+          (⟨data.1.endpointTransport e,
+            (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart
+              (K := ℝ) (ρ := ρ) e data.1).2 data.2⟩ :
+            {data :
+              ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' // data.detChart})) := by
+    simpa [κ, κ'] using
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype
+        (K := ℝ) (ρ := ρ) e
+  have htransported : Continuous transportedData := by
+    simpa [transportedData, retainedData, rawDetData, rawData, ρ, κ, κ'] using
+      htransport.comp hrawDet
+  have hsource :
+      Continuous
+        (fun data :
+            {data :
+              ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                (K := ℝ) (ρ := ρ) κ' // data.detChart} ↦
+          paperEndpointFixedBaseRetainedPassiveP13SourceChart W₂ B₂ U₀ hU₀ data) :=
+    continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart
+      (K := ℝ) W₂ B₂ U₀ hU₀
+  simpa [sourceChart, retainedData, transportedData,
+    paperEndpointFixedBaseRetainedPassiveP13SourceChart,
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData, ρ, κ'] using
+    hsource.comp htransported
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- A passive-parameter Case 2 chart-produced source measure is supported on
 the retained-passive p.13 local source when the passive chart is a.e.
 measurable.

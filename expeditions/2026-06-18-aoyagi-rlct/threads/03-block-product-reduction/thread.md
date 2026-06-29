@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive source-chart continuity
+
+Reproduction:
+`reproduction-a2-case2-passive-source-chart-continuity.md`.
+Statement card:
+`statement-card-a2-case2-passive-source-chart-continuity.md`.
+
+Lean now exposes:
+
+```text
+continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive
+```
+
+These theorems prove continuity of the passive selected-entry finite datum and
+of the endpoint-transported fixed-base source edge-family chart.  The passive
+field families are required to be continuous in `theta`; the source-chart
+theorem additionally needs pointwise determinant-unit hypotheses on `Ctop` and
+`A1passive` to package values in the determinant-chart subtype.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+Nash the 3rd xhigh read-only review returned PASS after two docstring wording
+fixes:
+`review-a2-case2-passive-source-chart-continuity.md`.
+
+Nonclaims: no concrete passive product measure, source-rank coverage,
+source-image equality, determinant-chart pushforward, source-prior transport,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive chart-produced support
 
 Reproduction:

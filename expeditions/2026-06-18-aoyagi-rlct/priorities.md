@@ -10,6 +10,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive source-chart continuity
+
+The passive-sector frontier now has the continuity infrastructure needed by
+the next concrete product-measure step:
+
+```text
+continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive
+```
+
+This proves finite-coordinate continuity of the passive selected-entry datum
+and continuity of the endpoint-transported fixed-base source chart under
+continuity of the passive field families.  The source-chart theorem keeps
+determinant-unit hypotheses pointwise and has no measure or rank hypotheses.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-source-chart-continuity.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-source-chart-continuity.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+Nash the 3rd xhigh read-only review passed after two docstring wording fixes.
+
+Next priority is the concrete passive product-measure package: build the
+passive-domain product measure, use this continuity for a.e. measurability,
+and compose with the already-banked passive chart-produced support theorem.
+Do not treat continuity as source-prior transport, determinant-chart Haar
+pushforward, or Jacobian accounting.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive chart-produced support
 
 The passive-sector support wrapper has moved from pointwise support to
