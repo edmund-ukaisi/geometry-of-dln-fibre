@@ -185,8 +185,43 @@ Cert scripts: `origin/worktree-agent-a29183139e1c0384f`, `pnp-radial-adjudicatio
   holds because `C_{k+1}` enters `A_k` only ADDITIVELY via `C_{k+1} − N_k·W_k` (`pnp_u_linear.py`:
   max u-degree 1, no `u·(2+ free coords)`).
 
-HOLD: one final backstop pending (genm-detradj's 4th tuple, wide interior both-drop e.g. (3,4,3,3),
-confirming `structPivot` is never inside a K-core — would reshape the `eIn` routing if it breaks).
+Backstops PASSED (genm-detradj, (4,3,3,2) det=c·u⁴, (3,4,3,3) det=c·u⁶, pivot a separate radial coord
+anchored in the LEAF not a K-core). Released to build.
+
+## ARCHITECTURE PIVOT — Route A (column-factor det), NOT route B (stairMap conjugacy)
+Decorrelated Codex (xhigh, `codex/assembly-arch-{prompt,answer}.md`) chose **Route A** over the banked
+`twoStairConj` wrapper: route B forces a full linear-map equality `eOut ∘ Dφ ∘ eIn.symm = stairMap`
+(exact agreement of every tail/coupling/regrouping); route A only needs column-scaling + block-triangularity
++ diagonal-block dets. The `twoStairConj` wrapper stays banked (a valid alternative) but is NOT the build
+path. Route A also REVIVES the locality route (`fderiv_abs_det_eq_prod_diagBlocks`) — refuted only for the
+FULL chart's row/col mismatch, but `G` (the chart with the `u`-columns factored out) IS block-triangular by
+value-locality, and the column-factoring handles the radial separately.
+
+**Route A spine BANKED** (`RouteMColumnFactor.lean`, sorry-free clean-three axiom-clean):
+- `abs_det_scaledColumns_finset`: `|det (of fun i j => (if j∈S then u else 1)·G i j)| = |u|^{S.card}·|det G|`
+  (`Matrix.det_mul_row` + `Finset.prod_ite_mem`; no division by `u`, valid at `u=0`).
+- `interior_abs_det_of_columnFactorization`: `J = scaledColumns Rcols up G` + `Rcols.card = minAdm−1` +
+  `|det G| = ∏ engine` ⟹ `|det D| = |up|^{minAdm−1}·∏ engine` — the headline shape.
+- `radialRcols` (`= active.erase structPivot`) + `radialRcols_card` (`= minAdm−1`) — the COUNT obligation
+  DONE (from `radialActive_exists` + `card_erase_of_mem`).
+
+**TWO REMAINING obligations** (then feed `interior_abs_det_of_columnFactorization` → the headline):
+- **(P) `phiFlatLiveR1_jacobian_scaledColumns`**: `toMatrix' (fderiv phiFlatLiveR1 u) = of fun i j =>
+  (if j ∈ Rcols then x_{p₀} else 1) · G i j`. The LYNCHPIN is DEFINING `G` (non-dividing): `G` = the
+  Jacobian matrix of the MODIFIED chart `φ̃` = `phiFlatLiveR1` with `u•Rmat`/`u•Rfin` replaced by
+  `Rmat`/`Rfin` (i.e. the radial `u`-scaling stripped from the R-blocks ONLY). Then `∂φ/∂r_i = u·∂φ̃/∂r_i`
+  (R-cols), `∂φ/∂other = ∂φ̃/∂other` (the cert's u-linearity: `u` only multiplies R). Built from the banked
+  per-layer fderiv-VALUE chain (`hasFDerivAt_Agen_interior` etc.) + the live-decoder block fderivs.
+- **(B) `boundary_diagBlock_abs_det_engine`**: `|det G| = ∏_s engine s`. `G` block-lower-triangular under
+  the layer grading `bLayer` (the banked value-locality `Agen_..._reads_le` lifted to `φ̃`, via
+  `toMatrix_blockTriangular_of_locality`), then `fderiv_abs_det_eq_prod_diagBlocks` gives `|det G| = ∏
+  diag-block dets`; per-boundary diag block det = `|K_s|^{r_s+c_s}·∏|q|^{...}` via `schurFrameProd_block_*`
+  (the value identity) + a per-boundary `toSquareBlock ≃ SchurInc` reindex + `schurFrame_abs_det` ×
+  `lduCoreDeriv_abs_det`. Codex: per-boundary LOCAL equivs, not a global StairProd.
+
+The lynchpin `G` (= the modified-chart Jacobian) is the shared API both (P) and (B) need frozen before
+clean parallel delegation. (P) is the harder cast piece (the fderiv-VALUE factorization over opaque widths);
+(B) reuses the banked locality + `schurFrameProd_block_*` + the engine dets.
 
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
