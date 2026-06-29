@@ -58,3 +58,12 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   to avoid `map`/`comap`/`height` shadowing). Green 3819, axiom-clean. The per-prime no-drop is NOT here
   (R5's). → **P1-R5 dispatched — the CRUX** (transport rungs; the per-prime no-drop count survival): full
   controller re-gate + decorrelated review on completion.
+- **2026-06-29 — P2-R2 LANDED + PR #15 review fixes applied** (`eff28654` rebased / `165e0954`). P2-R2 (the P2
+  crux): matrix minor-rank core → `Core/Matrix/RankMinors.lean` — `rank_le_iff_forall_submatrix_det_eq_zero`
+  (the `↔` Mathlib lacks) + `rank_map_eq_of_injective`; the `←` minor-extraction kept verbatim at `Fin`/`ℕ`
+  generality (broader `Fintype` index = clean follow-up); DLN remainder stays local; green 3820, axiom-clean.
+  **Meanwhile, operator review on PR #15** (5 comments — all concurred): dropped 2 unused `[q.IsPrime]`
+  (verified), repointed stale `Core.TopDimMinPrimes` prose, softened `TopDimensional` doc to dimension-only,
+  `Radical` doc prime→ideal, stripped process-provenance from `Localization` header — applied Lean-only on p1
+  (`165e0954`, #15 updated), and **p2 rebased onto p1'** (`09c5cb79`, clean — disjoint files). → P2-R2 crux-review
+  (07r) routed + **P2-R3 dispatched** (`GraphIdealHeight`), concurrently. After R3 + 07r: P2 boundary → PR-P2.
