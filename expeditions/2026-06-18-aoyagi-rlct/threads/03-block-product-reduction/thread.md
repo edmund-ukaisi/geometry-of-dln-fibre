@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 continuous-density small-box residual discharge
+
+Reproduction:
+`reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Statement card:
+`statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Review:
+`review-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+
+Lean now exposes:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+The theorem wraps the existing positive continuous-density two-sided theorem
+and discharges its residual boundedness premise using the small-box residual
+bound.  It returns `R dρ Dρ` with `0 < R` and `R <= Rmax`, then quantifies
+`delta` and requires the selected-entry scalar smallness inequality at `R^2`.
+This preserves the fixed-radius discipline: a bound at `Rmax` is not used as a
+bound at the produced radius.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+Huygens the 3rd xhigh read-only review returned PASS.  `scripts/sorries`,
+`git diff --check`, touched-file marker scan, and direct axiom probe passed;
+the theorem reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no choice of `Rres` or `delta`, no loss comparison proof, no
+source-rank coverage, no source/image equality, no external transport theorem,
+no original-loss identification, no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 selected-entry residual upper bound on small signed boxes
 
 Reproduction:

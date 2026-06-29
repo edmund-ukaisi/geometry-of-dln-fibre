@@ -3,6 +3,51 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Continuous-Density Small-Box Residual Discharge - 2026-06-29
+
+`RetainedPassiveLocalMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+This wraps the positive continuous-density source-stratum two-sided theorem
+with the retained-passive selected-entry small-box residual bound.  The
+regular-coordinate radius is produced first:
+
+```text
+exists R dρ Dρ, 0 < R and R <= Rmax ...
+```
+
+The final payload then quantifies `delta` and requires
+
+```text
+0 <= delta,
+forall i, Rres i <= delta,
+delta^2 * (1 + #(center.erase pivot) * delta^2) <= R^2.
+```
+
+The proof therefore avoids the unsound move from a residual bound at `Rmax` to
+a bound at a smaller produced radius.  The small-box scalar inequality is at
+the exact radius used in the finite-integral theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+
+Huygens the 3rd xhigh read-only review passed.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure`, `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe passed.  The new theorem reports only `[propext, Classical.choice,
+Quot.sound]`.
+
+Nonclaims: no choice of signed-box radii or `delta`, no residual bound
+transported from `Rmax`, no source-rank coverage, source/image equality,
+external source-prior or Jacobian transport, original-loss identification,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 selected-entry residual upper bound on small signed boxes - 2026-06-29
 
 `SelectedEntrySignedBoxMeasure.lean` now proves:

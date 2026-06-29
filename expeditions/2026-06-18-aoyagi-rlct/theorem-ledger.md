@@ -11764,6 +11764,32 @@ Nonclaims: no choice of `Rres` or `delta`, no loss/density comparison proof,
 no source-rank coverage, no source/image equality, no external source-prior or
 Jacobian transport, no normal crossings, pole order, or RLCT.
 
+Latest A2 continuous-density small-box residual discharge:
+`RetainedPassiveLocalMeasure.lean` proves
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox`.
+
+Ledger status: positive continuous-density radius-shrinking wrapper with the
+retained-passive selected-entry small-box residual bound built in.  The theorem
+first obtains `R dρ Dρ` with `0 < R` and `R <= Rmax`, then quantifies `delta`
+and requires the scalar small-box inequality at `R^2`.  Thus it avoids any
+transport of residual boundedness from `Rmax` to the produced smaller radius.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+passed by xhigh `Huygens the 3rd`.
+
+Focused build of `DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure`,
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom audit passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+Nonclaims: no choice of `Rres` or `delta`, no source-rank coverage, no
+source/image equality, no external source-prior or Jacobian transport, no
+normal crossings, pole order, or RLCT.
+
 Latest A4 selected-entry analytic-atlas/source-production frontier recheck:
 no Lean theorem.  Source: Aoyagi pp. 19-22.  Expedition artifacts:
 `threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`

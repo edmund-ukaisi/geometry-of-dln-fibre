@@ -8476,7 +8476,7 @@ and
 ## A2 retained-passive small-box chart-produced residual bound
 
 Status: Proved in Lean locally; focused build passed; independent xhigh review
-passed.
+passed for the fixed-radius and continuous-density small-box wrappers.
 
 Claim: for the concrete selected-entry chart-produced retained-passive source
 measure, the residual square-sum is bounded by `Rreg^2` a.e. on the
@@ -8493,7 +8493,12 @@ Lean declarations:
 residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_of_residual_eq_of_smallBox
 residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
 exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox
 ```
+
+The last theorem is the positive continuous-density version.  It chooses
+`R <= Rmax` first, then requires the selected-entry small-box scalar inequality
+at `R^2`, with `delta` quantified after the produced `R`.
 
 Kill condition: reject any use that treats a bound at `Rmax` as a bound at a
 smaller produced radius, or that applies the theorem to an arbitrary source
@@ -8509,7 +8514,8 @@ and
 `threads/03-block-product-reduction/statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
 Review:
 `threads/03-block-product-reduction/review-a2-retained-passive-small-box-chart-produced-residual-bound.md`
-passed by xhigh `Carson the 2nd`.
+passed by xhigh `Carson the 2nd` for the fixed-radius slice and xhigh
+`Huygens the 3rd` for the continuous-density small-box wrapper.
 
 ## A2 retained-passive Ctop tail endpoint substitution
 

@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, continuous-density small-box residual discharge
+
+The retained-passive chart-produced source-stratum two-sided iff now has a
+positive continuous-density small-box wrapper:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+The theorem composes the existing positive continuous-density wrapper with the
+small-box residual boundedness theorem.  It first obtains
+`R dρ Dρ` with `0 < R` and `R <= Rmax`; then the final implication quantifies
+`delta` and requires
+
+```text
+0 <= delta,
+forall i, Rres i <= delta,
+delta^2 * (1 + #(center.erase pivot) * delta^2) <= R^2.
+```
+
+This is the correct fixed-radius discipline for a radius-shrinking theorem:
+loss and density comparison hypotheses are supplied at `Rmax` and restricted
+to the produced `R`, while the selected-entry residual bound is checked at
+the produced `R` itself.
+
+Nonclaims remain strict: no choice of `Rres` or `delta`, no residual bound at
+`Rmax` transported to a smaller radius, no loss comparison proof, no
+source-rank coverage, no source/image equality, no external source-prior or
+Jacobian transport, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
+Focused build, sorry gate, whitespace check, code-only forbidden-marker scan,
+direct axiom audit, and xhigh review by `Huygens the 3rd` passed.  The axiom
+footprint is `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-06-29, retained-passive small-box chart-produced residual bound
 
 The source-side selected-entry residual upper bound has now been pushed
