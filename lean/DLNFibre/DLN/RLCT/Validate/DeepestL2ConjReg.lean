@@ -520,4 +520,94 @@ theorem hsub3reg_conj_germ (H : Fin (L + 1) → ℕ) (r : ℕ)
   exact deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ H r B hB hr hL hL2eq J hJfront' Pf Qf
     hPtri' hQtri' hNF hPfL hcorner' split hsplit hinterface hS3b x hdet0
 
+/-! ### The pivot-base unit discharges `hDA = IsUnit (deepBlkA s)` at the deepest point (L=2 seam).
+
+These promote the `ScratchL2Close` step-(c) `example` contracts to named lemmas the wire can call, so the
+conj diffeo's `hDA` hypothesis is DISCHARGED at the deepest point from the wire's own data (`htop` +
+the block-triangular pivot bundle) — NOT a foundation gap for `L = 2`. -/
+
+/-- **Layer-0 pivot base is a unit** (`deepBlkA 0` is the leading `r×r` block, a unit by the row-WLOG
+rank `htop`). -/
+theorem deepBlkA0_isUnit_of_htop (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
+    IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)) := by
+  have hlead := deepestPoint_leadingBlock_isUnit H r B hB hr hL hL2 htop
+  have heq : deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)
+      = (deepestPoint H r B hB hr hL (⟨0, by omega⟩ : Fin L)).submatrix
+        (Fin.castLE (hr (⟨0, by omega⟩ : Fin L).castSucc) : Fin r → Fin (H (⟨0, by omega⟩ : Fin L).castSucc))
+        (Fin.castLE (hr (⟨0, by omega⟩ : Fin L).succ) : Fin r → Fin (H (⟨0, by omega⟩ : Fin L).succ)) := by
+    apply Matrix.ext
+    intro i j
+    show (Matrix.reindex (rThresholdSplit r (H (⟨0, by omega⟩ : Fin L).castSucc) (hr _))
+        (rThresholdSplit r (H (⟨0, by omega⟩ : Fin L).succ) (hr _))
+        (deepestPoint H r B hB hr hL (⟨0, by omega⟩ : Fin L))).toBlocks₁₁ i j = _
+    simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+      rThresholdSplit_symm_inl]
+  rw [heq]; exact hlead
+
+/-- **Last-layer pivot base is a unit**, via the corner identity `(reindex(dP·Qf))₁₁ = 1` + the
+block-upper `Qf` (`hQUpper : Qf₂₁ = 0`) ⟹ `deepBlkA_last · M = 1` ⟹ `det` a unit. Supplied at the wire
+by the block-triangular pivot bundle (`hJfront'`/`hcorner`/`hQtri`). -/
+theorem deepBlkA_last_isUnit_of_bundle (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hQUpper : (Matrix.reindex
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (Qf (lastLayer hL))).toBlocks₂₁ = 0) :
+    IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)) := by
+  set eR := rThresholdSplit r (H (lastLayer hL).castSucc) (hr (lastLayer hL).castSucc) with heR
+  set eMid := pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J) with heMid
+  have hblk := reindex_mul_fromBlocks eR eMid eMid
+    (deepestPoint H r B hB hr hL (lastLayer hL)) (Qf (lastLayer hL))
+  have hc11 : (Matrix.reindex eR eMid
+      ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))).toBlocks₁₁
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+    rw [show Matrix.reindex eR eMid
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 from hcorner,
+      Matrix.toBlocks_fromBlocks₁₁]
+  have hkey : (Matrix.reindex eR eMid (deepestPoint H r B hB hr hL (lastLayer hL))).toBlocks₁₁
+      * (Matrix.reindex eMid eMid (Qf (lastLayer hL))).toBlocks₁₁ = 1 := by
+    have h := hc11
+    rw [hblk, Matrix.toBlocks_fromBlocks₁₁, hQUpper, Matrix.mul_zero, add_zero] at h
+    exact h
+  have hAeq : (Matrix.reindex eR eMid (deepestPoint H r B hB hr hL (lastLayer hL))).toBlocks₁₁
+      = deepBlkA H r B hB hr hL (lastLayer hL) := by
+    have hpiv : eMid = rThresholdSplit r (H ((lastLayer hL).succ)) (hr ((lastLayer hL).succ)) := by
+      rw [heMid, hJfront', pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL]
+    rw [hpiv]; rfl
+  rw [hAeq] at hkey
+  rw [Matrix.isUnit_iff_isUnit_det]
+  have hdet : (deepBlkA H r B hB hr hL (lastLayer hL)).det
+      * (Matrix.reindex eMid eMid (Qf (lastLayer hL))).toBlocks₁₁.det = 1 := by
+    rw [← Matrix.det_mul, hkey, Matrix.det_one]
+  exact IsUnit.of_mul_eq_one _ hdet
+
+/-- **`hDA = ∀ s, IsUnit (deepBlkA s)` at `L = 2`** — assembled from the two boundary units (`s = 0` and
+`s = lastLayer`, the only two layers). -/
+theorem deepBlkA_isUnit_of_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDAlast : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL))) :
+    ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s) := by
+  intro s
+  rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+  · have : s = (⟨0, by omega⟩ : Fin L) := Fin.ext hs0
+    rw [this]; exact hDA0
+  · have : s = lastLayer hL := by
+      apply Fin.ext; simp only [lastLayer]
+      have := s.isLt; omega
+    rw [this]; exact hDAlast
+
 end DLNFibre.DLN.RLCT
