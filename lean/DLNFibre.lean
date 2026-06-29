@@ -531,6 +531,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 -- the (2,3,1) non-vacuity witness. CLEAN-THREE, S2-FREE. REDUCES the smeared branch ∀M to "construct
 -- one chart-builder `BoundarySmeared M → SmearedAchieverChart M`" (the remaining ∀M geometric build).
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
+-- R1-LOWER BOUNDARY-SMEARED branch CLOSED ∀M at L=2 (the SCOPE-COLLAPSE square reduction): the opaque-
+-- width decode chart `RouteMSmearedDecodeL2` + `RouteMSmearedSquareReduce` — `smeared_deepRank_eq_M0`
+-- (Lean-proved: 1≤minAdm ∧ BoundarySmeared ⟹ deepRank=M0, the square case) + `smearedChart_of_square`
+-- (assembles the banked square box-divergence into a `SmearedAchieverChart M`) + the closer
+-- `hSmeared_squareSmeared_L2` (feeds the dispatch spine's `hSmeared` slot ∀M, defeq-checked). CLEAN-THREE,
+-- S2-FREE. CLOSES `hSmeared` OUTRIGHT (not reduced); the non-square case is skipped (L=2-square always).
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedDecodeL2
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 -- L2 Skeleton rung 1/5 (`product_reduction`) at L=2: the deepest-point diffeo bridge wired into the
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.

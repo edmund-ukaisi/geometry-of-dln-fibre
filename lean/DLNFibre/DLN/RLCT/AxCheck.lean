@@ -12,6 +12,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 
 /-!
 # Axiom-hygiene check
@@ -148,6 +149,16 @@ open DLNFibre.DLN.RLCT
 -- is the (degenerate) non-vacuity witness (the real nReg>0 instance is the unbuilt analytic existence).
 #print axioms deepest_le_of_optimal_of_chart_certificate
 #print axioms GeneralVChartL2.ofExactGerm
+
+-- R1-LOWER BOUNDARY-SMEARED branch CLOSED ∀M at L=2 — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], S2-FREE, no `sorryAx`: `hSmeared_squareSmeared_L2` is the
+-- spine-feeding closer (box-divergence ∀M for `1≤minAdm ∧ BoundarySmeared`), `smeared_deepRank_eq_M0`
+-- the Lean-proved square reduction (the scope collapse — the smeared regime at L=2 is ALWAYS square),
+-- `smearedChart_of_square` the chart assembly. These CLOSE the smeared atom OUTRIGHT (not reduced); the
+-- R1-LOWER generic achiever then needs only `hInterior` (the interior-det atom) + the spine wiring.
+#print axioms hSmeared_squareSmeared_L2
+#print axioms smeared_deepRank_eq_M0
+#print axioms smearedChart_of_square
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
