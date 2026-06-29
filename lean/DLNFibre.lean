@@ -468,3 +468,7 @@ import DLNFibre.Core.FibreTargetOverlap
 -- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
 -- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
 import DLNFibre.Core.DeformationBaseChange
+-- foundation-lift P1-R1: the minimal-primes-of-`sInf`-of-a-finite-prime-family SPIKE, extracted
+-- from SigmaComponents to a clean Mathlib-grade home (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.minimalPrimes_sInf_of_finite_of_isPrime`.
+import DLNFibre.Core.MinimalPrime.Finite

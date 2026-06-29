@@ -1,6 +1,7 @@
 import DLNFibre.Core.SigmaStratification
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.CThetaGeometric
+import DLNFibre.Core.MinimalPrime.Finite
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 
 /-!
@@ -40,37 +41,6 @@ open Matrix MvPolynomial Ideal
 universe u
 
 variable {k : Type u} [Field k] {N : ℕ}
-
-/-! ## General algebra — minimal primes of `sInf` of a finite family of primes (the SPIKE) -/
-
-/-- **SPIKE.** For a finite family `s` of prime ideals, the minimal primes of `sInf s` are exactly
-the inclusion-minimal members of `s`. The `⊆` direction is prime avoidance (`IsPrime.inf_le'`):
-a minimal prime `q ⊇ sInf s` contains some `p ∈ s`, and minimality forces `q = p`; the `⊇`
-direction is the same avoidance for any prime below a minimal member. -/
-theorem minimalPrimes_sInf_of_finite_of_isPrime {R : Type*} [CommRing R]
-    (s : Set (Ideal R)) (hfin : s.Finite) (hs : ∀ p ∈ s, p.IsPrime) :
-    (sInf s).minimalPrimes = {p | p ∈ s ∧ ∀ q ∈ s, q ≤ p → p ≤ q} := by
-  classical
-  -- avoidance: a prime `P ⊇ sInf s` contains some member of `s`.
-  have avoid : ∀ {P : Ideal R}, P.IsPrime → sInf s ≤ P → ∃ p ∈ s, p ≤ P := by
-    intro P hP hle
-    rw [← hfin.coe_toFinset, ← Finset.inf_id_eq_sInf, hP.inf_le'] at hle
-    obtain ⟨p, hp, hpP⟩ := hle
-    exact ⟨p, hfin.mem_toFinset.mp hp, by simpa using hpP⟩
-  ext q
-  constructor
-  · rintro ⟨⟨hqp, hle⟩, hmin⟩
-    obtain ⟨p, hps, hpq⟩ := avoid hqp hle
-    have hp_le : sInf s ≤ p := sInf_le hps
-    have : q ≤ p := hmin ⟨hs p hps, hp_le⟩ hpq
-    have hqeqp : q = p := le_antisymm this hpq
-    subst hqeqp
-    exact ⟨hps, fun r hrs hrq ↦ hmin ⟨hs r hrs, sInf_le hrs⟩ hrq⟩
-  · rintro ⟨hqs, hqmin⟩
-    refine ⟨⟨hs q hqs, sInf_le hqs⟩, ?_⟩
-    rintro r ⟨hr_prime, hr_le⟩ hrq
-    obtain ⟨p, hps, hpr⟩ := avoid hr_prime hr_le
-    exact (hqmin p hps (hpr.trans hrq)).trans hpr
 
 /-! ## The aggregate vanishing ideal of `Σ̄^r` and its orbit-ideal family -/
 
@@ -196,8 +166,10 @@ corner-`≤ r` family. Since `vanishingIdeal` is order-reversing
 (`vanishingIdeal_orbitRankLocus_le_iff`), "inclusion-minimal orbit ideal" = "maximal orbit closure
 `Ō_M`" (orbit-closure / rank-pattern order, Thm 3.8 `O_s ⊆ Ō_r ⟺ s ≤ r`): the irreducible components
 of `Σ̄^r` are the maximal `Ō_M`.
-From the bridge `sigmaIdeal = sInf orbitIdeals` + the SPIKE (`minimalPrimes` of `sInf` of a finite
-family of primes = its inclusion-minimal members). `[Infinite k]` (for primality).
+From the bridge `sigmaIdeal = sInf orbitIdeals` + the general finite-family fact
+`Ideal.minimalPrimes_sInf_of_finite_of_isPrime` (`Core.MinimalPrime.Finite`): the `minimalPrimes`
+of the `sInf` of a finite family of primes are its inclusion-minimal members. `[Infinite k]`
+(for primality).
 **Caveat (paper transcription).** Le Halleur–Rimányi Cor 4.4(b) as printed reads "the **minimal**
 elements of `R^{≤r}`"; the geometrically-correct object is the inclusion-**maximal** orbit closures =
 inclusion-**minimal** vanishing ideals (the all-zero pattern is the order-minimal one and sits inside
@@ -207,7 +179,7 @@ theorem minimalPrimes_sigmaIdeal_eq [Infinite k] (d : Fin (N + 1) → ℕ) (r : 
     (sigmaIdeal (k := k) d r).minimalPrimes
       = {p | p ∈ orbitIdeals (k := k) d r ∧ ∀ q ∈ orbitIdeals (k := k) d r, q ≤ p → p ≤ q} := by
   rw [sigmaIdeal_eq_sInf_orbitIdeals]
-  exact minimalPrimes_sInf_of_finite_of_isPrime (orbitIdeals d r) (orbitIdeals_finite d r)
+  exact Ideal.minimalPrimes_sInf_of_finite_of_isPrime (orbitIdeals d r) (orbitIdeals_finite d r)
     (fun _ hp ↦ orbitIdeals_isPrime d r hp)
 
 /-- **G3 (irreducible-components form).** The irreducible components of (the prime-spectrum
