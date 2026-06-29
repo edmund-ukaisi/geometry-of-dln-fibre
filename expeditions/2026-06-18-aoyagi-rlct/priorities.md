@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive open punctured-sector readout
+
+The first passive-variable sector subtarget has landed:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq_preimageOfPivotNeZero_residualReadout_eq
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySource.lean
+```
+
+It proves the open source-readback plus nonzero-pivot selected-entry inverse
+readout package.  Xhigh read-only review by `Anscombe the 3rd` returned PASS,
+and the focused module build passed via `scripts/lb`.
+
+Next priority in this lane is no longer the pointwise punctured-sector readout.
+The remaining source-measure fork is to choose and state a precise measure
+target: chart-produced passive sector measure, determinant-chart Haar on a
+sector image, or external/original source-prior comparison.  Do not use this
+pointwise readout theorem as a measure transport or coverage theorem.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive passive-variable sector transport frontier
 
 The passive-variable source-measure frontier has a reviewed specification:

@@ -3,6 +3,44 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Open Punctured-Sector Readout - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySource.lean` now proves:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq_preimageOfPivotNeZero_residualReadout_eq
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-open-punctured-sector-readout.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-open-punctured-sector-readout.md
+threads/03-block-product-reduction/review-a2-retained-passive-open-punctured-sector-readout.md
+```
+
+The theorem packages the first Lean subtarget from the passive-variable sector
+frontier.  It uses the open determinant-domain source-readback theorem to get
+an open `U`, local-source membership, and `sourceReadback E = retainedData z`;
+then it rewrites the residual-factor product of that readback with the
+with-passive endpoint chart-map identity, reindexes by `residualCoordEquiv`,
+and applies `SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap`
+under `z.2 pivotNext != 0`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource` passed via
+`scripts/lb`, and the full `DLNFibre` aggregator build also passed.  Only
+pre-existing replay warnings from unrelated modules appeared.  Xhigh read-only
+review by `Anscombe the 3rd` returned PASS.  `git diff --check`,
+`scripts/sorries`, the touched Lean-file forbidden-marker scan, and the direct
+axiom probe passed; the new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This is still pointwise open-sector readout only.  It proves no measure
+equality, determinant-chart Haar transport, source-prior comparison,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Retained-Passive Passive-Variable Sector Transport Frontier - 2026-06-29
 
 The passive-variable source-measure frontier is now reviewed in:

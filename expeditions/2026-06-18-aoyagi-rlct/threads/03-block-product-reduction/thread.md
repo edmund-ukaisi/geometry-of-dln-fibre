@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive open punctured-sector readout
+
+Reproduction:
+`reproduction-a2-retained-passive-open-punctured-sector-readout.md`.
+Statement card:
+`statement-card-a2-retained-passive-open-punctured-sector-readout.md`.
+Review:
+`review-a2-retained-passive-open-punctured-sector-readout.md`.
+
+Lean now exposes:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq_preimageOfPivotNeZero_residualReadout_eq
+```
+
+The theorem is the first Lean subtarget identified by the passive-variable
+sector frontier.  It reuses the open determinant-domain source-readback
+package, then proves that on the nonzero selected-pivot sector the
+selected-entry inverse of the residual readout of `sourceReadback E` recovers
+the original selected-entry residual coordinate vector `z.2`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource` passed via
+`scripts/lb`, and the full `DLNFibre` aggregator build also passed.  Only
+pre-existing replay warnings from unrelated modules appeared.  Xhigh read-only
+review by `Anscombe the 3rd` returned PASS.  `git diff --check`,
+`scripts/sorries`, the touched Lean-file forbidden-marker scan, and the direct
+axiom probe passed; the new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no measure equality, determinant-chart Haar transport,
+external/original source-prior comparison, selected-entry source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive passive-variable sector transport frontier
 
 Reproduction:

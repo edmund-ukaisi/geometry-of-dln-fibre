@@ -176,6 +176,28 @@ No such claim is formalisation-ready until both fields are filled.
   Haar transport, external/original source-prior comparison, selected-entry
   source-image equality, source-rank coverage, normal crossings, pole order, or
   RLCT is claimed.
+- **Current status addendum, retained-passive open punctured-sector readout,
+  2026-06-29.** Lean now proves
+  `exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq_preimageOfPivotNeZero_residualReadout_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySource.lean`.
+  This is the first subtarget from the passive-variable sector frontier: on
+  the open determinant-domain source-readback neighborhood, and under the
+  pointwise hypothesis `z.2 pivotNext != 0`, the selected-entry inverse of the
+  residual readout from `sourceReadback E` recovers the original selected-entry
+  residual vector.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-open-punctured-sector-readout.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-open-punctured-sector-readout.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-open-punctured-sector-readout.md`.
+  Focused build and full `DLNFibre` aggregator build passed via `scripts/lb`;
+  xhigh read-only review by `Anscombe the 3rd` returned PASS.
+  `git diff --check`, `scripts/sorries`, the touched Lean-file
+  forbidden-marker scan, and the direct axiom probe passed; the new theorem
+  reports `[propext, Classical.choice, Quot.sound]`.  This is pointwise
+  readout only: no measure equality, determinant-chart Haar transport,
+  source-prior comparison, selected-entry source-image equality, source-rank
+  coverage, normal crossings, pole order, or RLCT is claimed.
 - **Current status addendum, Case 2 passive Jacobian-weighted source-stratum
   bounds finite integral, 2026-06-29.** Lean now exposes
   `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds`

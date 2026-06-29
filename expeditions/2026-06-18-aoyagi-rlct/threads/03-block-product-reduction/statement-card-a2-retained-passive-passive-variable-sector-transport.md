@@ -1,6 +1,6 @@
 # Statement Card - A2 Retained-Passive Passive-Variable Sector Transport
 
-Status: reviewed specification; no Lean theorem yet; xhigh review passed.
+Status: reviewed specification; first Lean readout subtarget landed separately.
 
 Reproduction:
 
@@ -63,7 +63,7 @@ exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProduc
 
 ## Next Lean Subtarget
 
-The first Lean-ready subtarget is not a measure equality.  It is the combined
+The first Lean-ready subtarget was not a measure equality.  It was the combined
 with-passive open punctured-sector inverse/readout package:
 
 ```text
@@ -79,6 +79,12 @@ existing passive pointwise chart-map readout theorem or its residual-factor
 identity as the implementation bridge.  The non-passive punctured readout
 package already exists; the missing piece is the passive-variable open-sector
 version.
+
+This subtarget is now tracked separately at:
+
+```text
+statement-card-a2-retained-passive-open-punctured-sector-readout.md
+```
 
 ## Later Measure Targets
 
