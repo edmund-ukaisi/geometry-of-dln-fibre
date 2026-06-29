@@ -13,13 +13,16 @@ almost everywhere after restricting any measure to a sufficiently small
 measurable source neighborhood.  It also records the elementary topological
 boundedness fact for a supplied positive continuous density factor.
 
-It does not construct Aoyagi's p. 13 product chart, compare losses, transport
-Jacobian/density factors, or prove any integrability theorem.
+It does not construct Aoyagi's p. 13 product chart, compare losses, or
+transport Jacobian/density factors.  The finite-lintegral lemmas here are
+measure-theoretic domination handoffs, not Aoyagi-specific integrability
+theorems.
 -/
 
 noncomputable section
 
 open MeasureTheory
+open scoped ENNReal
 
 namespace DLNFibre
 namespace DLN
@@ -235,6 +238,59 @@ theorem withDensity_ofReal_sandwich_of_ae_bounds
     exact
       withDensity_mono
         (hupper.mono fun _ hx ↦ ENNReal.ofReal_le_ofReal hx)
+
+/-- A property that holds a.e. for `μ` also holds a.e. for any measure
+dominated by a scalar multiple of `μ`. -/
+theorem ae_of_measure_le_smul
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {p : α → Prop}
+    (hν : ν ≤ c • μ)
+    (hp : ∀ᵐ x ∂μ, p x) :
+    ∀ᵐ x ∂ν, p x :=
+  (Measure.absolutelyContinuous_of_le_smul hν).ae_le hp
+
+/-- Finite lower integral transfers to any measure dominated by a finite scalar
+multiple of the original measure. -/
+theorem lintegral_lt_top_of_measure_le_smul
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {f : α → ℝ≥0∞}
+    (hν : ν ≤ c • μ)
+    (hc : c < ∞)
+    (hfinite : (∫⁻ x, f x ∂μ) < ∞) :
+    (∫⁻ x, f x ∂ν) < ∞ := by
+  have hmono :
+      (∫⁻ x, f x ∂ν) ≤ (∫⁻ x, f x ∂(c • μ)) :=
+    lintegral_mono' hν (le_refl f)
+  have htarget : (∫⁻ x, f x ∂(c • μ)) < ∞ := by
+    rw [lintegral_smul_measure]
+    exact ENNReal.mul_lt_top hc hfinite
+  exact hmono.trans_lt htarget
+
+/-- A measure domination by a scalar multiple remains true after mapping by a
+measurable function. -/
+theorem map_le_smul_map_of_le_smul
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ ν : Measure α} {c : ℝ≥0∞} {f : α → β}
+    (hf : Measurable f)
+    (hν : ν ≤ c • μ) :
+    Measure.map f ν ≤ c • Measure.map f μ := by
+  calc
+    Measure.map f ν ≤ Measure.map f (c • μ) :=
+      Measure.map_mono hν hf
+    _ = c • Measure.map f μ := by
+      rw [Measure.map_smul]
+
+/-- If a measure is dominated by a scalar multiple of a restricted measure,
+then it is dominated by the same scalar multiple of the original measure. -/
+theorem measure_le_smul_of_le_smul_restrict
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {U : Set α}
+    (hν : ν ≤ c • μ.restrict U) :
+    ν ≤ c • μ := by
+  refine hν.trans ?_
+  exact Measure.le_iff.2 fun s hs ↦ by
+    rw [Measure.smul_apply, Measure.smul_apply]
+    exact mul_le_mul_right (Measure.restrict_le_self s) c
 
 end Aoyagi
 end DLN

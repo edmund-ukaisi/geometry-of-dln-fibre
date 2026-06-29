@@ -10,6 +10,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted residual integrability
+
+The passive selected-entry frontier now has a local domination handoff from
+the unweighted passive chart-produced source measure to the Jacobian-weighted
+restricted passive-domain measure:
+
+```text
+exists_open_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+For a small open neighborhood `U` of the determinant-chart basepoint, the
+theorem proves residual square-sum positivity a.e. and finite negative-power
+lintegral for
+
+```text
+Measure.map sourceChart
+  ((sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))).
+```
+
+The proof uses the local Jacobian `withDensity` upper sandwich, restriction
+monotonicity, map preservation of scalar domination, and the finite-passive-
+mass residual theorem for `Measure.map sourceChart sourceMeasure`.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-integrability.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-integrability.md
+threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-integrability.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+Archimedes the 3rd xhigh read-only review found only two stale module-doc
+boundary comments; both were fixed.
+
+This is domination-based local measure comparison only.  Do not treat it as an
+exact localized residual marginal, determinant-chart Haar transport,
+raw/source Haar transport, source-prior comparison, source-image coverage,
+local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive residual finite-mass integrability
 
 The concrete passive product-domain residual marginal now yields an

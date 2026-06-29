@@ -140,6 +140,31 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive Jacobian-weighted residual
+  integrability, 2026-06-29.** Lean now exposes
+  `ae_of_measure_le_smul`, `lintegral_lt_top_of_measure_le_smul`,
+  `map_le_smul_map_of_le_smul`, and
+  `measure_le_smul_of_le_smul_restrict` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`, plus
+  `exists_open_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For a small open neighborhood `U`, residual square-sum positivity a.e. and
+  finite negative-power lintegral are proved for
+  `Measure.map sourceChart ((sourceMeasure.restrict U).withDensity (fun z => ofReal (J z)))`,
+  assuming finite total passive mass and the selected-entry critical
+  hypotheses.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-integrability.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+  Focused build, `git diff --check`, `scripts/sorries`, direct axiom probes,
+  and xhigh review passed after two stale module-doc boundary fixes.
+  This is local domination transfer only: no exact localized residual
+  marginal, determinant-chart Haar transport, raw/source Haar theorem,
+  source-prior transport, selected-entry image coverage, local inverse/coverage,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive residual finite-mass integrability,
   2026-06-29.** Lean now exposes
   `residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_finiteMass`

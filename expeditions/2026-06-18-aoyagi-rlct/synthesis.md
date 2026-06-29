@@ -3,6 +3,57 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian-Weighted Residual Integrability - 2026-06-29
+
+`LocalMeasureHandoff.lean` now has scalar-domination transfer helpers:
+
+```text
+ae_of_measure_le_smul
+lintegral_lt_top_of_measure_le_smul
+map_le_smul_map_of_le_smul
+measure_le_smul_of_le_smul_restrict
+```
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` specializes them to the Case 2
+passive chart:
+
+```text
+exists_open_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+For
+
+```text
+weighted =
+  (sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))
+muJ    = Measure.map sourceChart weighted
+muBase = Measure.map sourceChart sourceMeasure
+```
+
+the theorem proves residual square-sum positivity a.e. and finite
+negative-power lintegral for `muJ`, using the domination
+`muJ <= ofReal K • muBase` and the already proved passive finite-mass
+residual theorem for `muBase`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-integrability.md`
+,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-integrability.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed with
+`[propext, Classical.choice, Quot.sound]`.  Archimedes the 3rd xhigh
+read-only review found only two stale module-doc boundary comments; both were
+fixed.
+
+Nonclaims: no exact localized residual marginal, no determinant-chart Haar
+pushforward, no raw/source Haar theorem, no original source-prior transport,
+no selected-entry source/image equality, no local inverse/coverage, no normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Residual Finite-Mass Integrability - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has a finite-passive-mass

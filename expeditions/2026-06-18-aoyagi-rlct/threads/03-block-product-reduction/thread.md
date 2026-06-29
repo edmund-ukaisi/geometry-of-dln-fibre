@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian-weighted residual integrability
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+Review:
+`review-a2-case2-passive-jacobian-weighted-residual-integrability.md`.
+
+Lean now exposes:
+
+```text
+ae_of_measure_le_smul
+lintegral_lt_top_of_measure_le_smul
+map_le_smul_map_of_le_smul
+measure_le_smul_of_le_smul_restrict
+exists_open_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+The Case 2 theorem combines the local Jacobian `withDensity` upper sandwich
+with the global passive finite-mass residual theorem.  It proves residual
+square-sum positivity a.e. and finite negative-power lintegral for
+
+```text
+Measure.map sourceChart
+  ((sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))).
+```
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`git diff --check`, `scripts/sorries`, and direct axiom probes passed.
+Archimedes the 3rd xhigh read-only review found only two stale module-doc
+boundary comments; both were fixed.
+
+Nonclaims: no exact localized residual marginal, determinant-chart Haar
+pushforward, raw/source Haar transport, source-prior comparison,
+source-image coverage, local inverse/coverage, normal crossings, pole order,
+or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive residual finite-mass integrability
 
 Reproduction:
