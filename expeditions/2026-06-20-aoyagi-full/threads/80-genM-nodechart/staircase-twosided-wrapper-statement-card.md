@@ -127,9 +127,36 @@ Decorrelated design for recognizing `Agen s`'s fderiv as the engine block:
    spine (`paramsEquivFlatCLE`, `chartIdxEquiv`, `frameSplitEquiv`, local matrix/tuple split CLEs).
 2. Output-side `Agen`→staircase wiring (chain shears + the `s`/`s+1` shift).
 3. K-slot raw-matrix vs `LDUParam` coordination (solved by the `FrameParam` adapter above).
-4. `Cgen = Schur frame` value identity over opaque widths ← **DO THIS NEXT**.
-5. Boundary fderiv identification after the value identity.
+4. `Cgen = Schur frame` value identity over opaque widths ← **DONE** (`RouteMSchurValue.lean`).
+5. Boundary fderiv identification after the value identity — ENTANGLED with the radial separation (see
+   the `u`-factoring finding below); needs the #1 `eIn`/`eOut` design first.
 6. Determinant computations once the maps type.
+
+## Sub-piece #4 BANKED (this leg) — `Cgen s = Schur frame` matrix VALUE identity
+`lean/DLNFibre/DLN/RLCT/Validate/RouteMSchurValue.lean` (sorry-free, clean-three, axiom-clean, zero
+warnings): `schurFrameProd` (the abstract `bmatStack(K,X)·chainQ(N) + u•rmatPad(E)`) + the four block
+lemmas `schurFrameProd_block_K`/`_KN`/`_XK`/`_XKNuE` (`= K`, `K·N`, `X·K`, `X·K·N + u·E`). Per-block
+statements, per-entry proofs via `bmatStack_top`/`_bot` + `chainQ_apply_castAdd`/`_natAdd` (wrapped as
+private `chainQ_left`/`_right`, threading `h2`) + `rmatPad_*_*` + `Matrix.mul_apply` / `Finset.sum_eq_single`
+to collapse the `1`-boole chaining sum. No global `ext` over opaque widths.
+
+## STRUCTURAL FINDING (verified vs the banked `(2,2,2)` det) — the `u`-factoring, before #5/#1
+Comparing `schurFrameProd`'s differential (blocks `K`,`KN`,`XK`,`XKN+u·E`) to the engine
+`schurFrameDeriv X K N (dK,dN,dX,dE) = (dK, K·dN+dK·N, dX·K+X·dK, dE + X·dK·N + X·K·dN + dX·K·N)`: the
+first three blocks MATCH, but the chart's bottom-right E-term is `u·dE` vs the engine's `dE`. Naively this
+would add a per-boundary `u^{r_s·c_s}` to the det. **It does NOT** — verified against the banked `(2,2,2)`:
+`phi222_abs_det = |u0|²·|u4|` with `minAdm=3` so radial `=|u0|^{minAdm−1}=|u0|²`, boundary `=|u4|=|K|^{r+c}`
+(`r=c=1`), and NO extra `|u0|^{r·c}=|u0|¹` factor. The reason (read off `T222Deriv`): the chart factors as
+`(single multi-coord radial pivot-blowup, det u^{minAdm−1} = u^{card−1} over `minAdm` activated coords)
+∘ shear (det 1) ∘ (per-boundary Schur frames, det |K|^{r+c}, u-FREE)`. The radial `u` is a SINGLE blow-up
+direction (`pivotBlowupOnDeriv_det = (x p)^{card−1}`), NOT distributed as `u·E` per boundary in the
+det-relevant way; the `u·E` in `Cgen` is reparametrized into the radial layer.
+
+**Consequence for the staircase `V`/`f`:** the radial layer `f 0` (det `|u|^{minAdm−1}`) and the boundary
+layers `f (s+1) = schurFrameDeriv ∘ (LDU on K)` (det `|K_s|^{r_s+c_s}·∏|q|^{…}`, u-FREE) are SEPARATED by
+the `eIn`/`eOut` regrouping. So #5 (boundary fderiv id) is ENTANGLED with the radial separation that #1
+(global `eIn`/`eOut`) provides — the `u·E` must land in the radial layer, not the boundary block. This is
+why #1 must be designed before #5 can be stated cleanly (matches the coordinator's "eyes on #1 first").
 
 Staircase two-sided conjugacy CONFIRMED (again) as the sound assembly; the `det_comp` bypass is not easier
 (it needs value equality of the whole nonlinear map — the same/worse cast cost).
@@ -137,7 +164,8 @@ Staircase two-sided conjugacy CONFIRMED (again) as the sound assembly; the `det_
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
   `hasFDerivAt_Cgen_interior`/`_leaf` + `hasFDerivAt_Agen_interior`/`_leaf` (the threaded chain-layer
-  fderiv values), `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
+  fderiv values), `schurFrameProd_block_K`/`_KN`/`_XK`/`_XKNuE` (the `Cgen = Schur frame` value blocks),
+  `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
   `interiorDet_headline_of_twoStairConj` (the headline wrapper for the rectangular layout).
 - Prior: `stairMap_abs_det_conj` (single-`e`), `interiorDet_phiFlatLiveR1_of_stairConj` (the real-chart
   target), `fderiv_det_one_of_shear` (the `−dN·W` shear is det-1), `finSplit.symm` cast lemmas,
