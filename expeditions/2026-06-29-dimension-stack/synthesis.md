@@ -67,4 +67,12 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   caught benign** (see L3): the R3 formaliser returned post-push for a follow-up + `git reset` while R4 ran in
   the same worktree; committed history stayed clean (per-rung push) and R4's build-gate caught the race (green
   3820 — Lean won't compile a tangled file). → **Entry-2** next: E1 (étale local-dim bridge) → E2 (smooth ⟹
-  regular, the `[IsAlgClosed]→[PerfectField]` win), then RF (consumer retrofit).**
+  regular, the `[IsAlgClosed]→[PerfectField]` win), then RF (consumer retrofit).
+- **2026-06-29 — E1 LANDED** (`614b8838`). Entry-2 foundation: `Core/Dimension/Smooth.lean` (Mathlib mirror
+  `RingTheory.Smooth.Regular`) — `Ideal.height_eq_under_of_etale` (étale preserves height) +
+  `ringKrullDim_localizationAtPrime_eq_of_isSmoothAt` (smooth-point local Krull dim via the
+  étale-over-affine-space route, **non-circularity preserved** — no cotangent identity). Verbatim re-home,
+  **no closure hypothesis at E1** (the `[IsAlgClosed]→[PerfectField]` framing belongs to E2's
+  `SmoothPointRegular`). L2 sweep caught the `FibreSmoothBlock` transitive bite. Re-gate green 3819,
+  axiom-clean; E1 was **L3-clean** (committed, pushed, stopped). → E2 dispatched (the entry-2 capstone +
+  `[IsAlgClosed]→[PerfectField]` generalisation — flagged crux, will get a decorrelated review).**
