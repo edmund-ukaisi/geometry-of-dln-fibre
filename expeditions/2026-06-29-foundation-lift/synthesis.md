@@ -25,3 +25,10 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   **Gate-cadence recalibrated (L5):** under sustained box load, controller re-gates at phase boundaries + crux
   rungs (not every low-risk re-home); intermediate verbatim re-homes ride the formaliser's fresh green + the
   boundary re-gate. → P1-R3 dispatched (affine-domain trdeg-sandwich no-drop).
+- **2026-06-29 — P1-R3 LANDED** (`16cd40f2`). The four affine-domain no-drop lemmas
+  (`ringKrullDim_eq_trdeg_of_fg_domain`, `trdeg_localization_eq`, `ringKrullDim_localizationAway_eq_of_{fg_domain,avoids_top_prime}`)
+  folded into `Core/Dimension/Localization.lean` beside R2's `≤`-half; `AffineLocalizationNoDrop.lean` deleted;
+  5 consumers re-pointed. Green 3819, axiom-clean. **R5 crux detail captured:** the per-prime `hper` is a
+  hypothesis discharged once-per-top-prime via R3's `ringKrullDim_localizationAway_eq_of_fg_domain` (NOT from
+  global no-drop + avoidance — DVR-at-uniformizer); R5 must carry the per-prime shape. → P1-R4 dispatched
+  (`TopDimMinPrimes` core).
