@@ -140,6 +140,31 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive topology-tuple punctured-sector
+  transport, 2026-06-29.** Lean now proves
+  `exists_open_case2EndpointTransport_withPassive_topologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySource.lean`.
+  This is repo-local topology/raw-order source-chart packaging around already
+  reproduced Aoyagi p.13 and Case 2 selected-entry formulas.  It returns an
+  open determinant-and-pivot-nonzero sector `V` and proves topology tuple
+  determinant membership, raw-order source-recursive determinant membership,
+  equality of the raw-order p.13 source chart with the direct chart-produced
+  source family, source-readback recovery of `retainedData z`, and
+  `inverseReadout (sourceChart z) = z.2` on `V`.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-topology-tuple-punctured-sector-transport.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-topology-tuple-punctured-sector-transport.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-topology-tuple-punctured-sector-transport.md`.
+  Focused build passed via `scripts/lb`; `scripts/sorries`,
+  `git diff --check`, touched Lean-file forbidden-marker scan, and direct
+  axiom probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  source-scope, Lean/API, and implementation reviews returned PASS.  This
+  proves no source-image equality, source-rank coverage, determinant-chart
+  Haar transport, raw/source Haar theorem, external/original source-prior
+  comparison, measure pushforward theorem, Jacobian formula, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, retained-passive chart-produced punctured-sector
   bounded-density residual source, 2026-06-29.** Lean now proves the helper
   `restrict_withDensity_le_smul_of_ae_le` in

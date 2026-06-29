@@ -10,6 +10,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive topology-tuple punctured-sector transport
+
+The chart-produced punctured-sector source/readout lane now has a topology
+tuple raw-order bridge:
+
+```text
+exists_open_case2EndpointTransport_withPassive_topologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySource.lean
+```
+
+The theorem returns an open determinant-and-pivot-nonzero sector `V`.  For
+each `z in V`, it proves:
+
+```text
+topologyTuple (retainedData z) in topologyTupleDetChartSet,
+topologyTupleEdgeRawOrder (topologyTuple (retainedData z))
+  in topologyTupleRawOrderSourceRecursiveDetChartSet,
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart raw = sourceChart z,
+sourceReadback(edgeMatrix(sourceChart z)) = retainedData z,
+inverseReadout (sourceChart z) = z.2.
+```
+
+This is repo-local topology/raw-order source-chart packaging around the
+already reproduced Aoyagi p.13 and Case 2 selected-entry formulas.  It is not
+a new Aoyagi source calculation.  The proof reconstructs determinant-chart
+membership from local-source membership and source readback, pushes it through
+the raw-order maps-to theorem, applies the generic raw-order source-chart
+identity, and reuses the existing punctured-sector inverse readout.
+
+Focused build, `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope, Lean/API, and
+implementation reviews passed.
+
+Do not call this theorem source-image equality, source-rank coverage,
+determinant-chart Haar transport, raw/source Haar, external/original
+source-prior transport, a measure pushforward theorem, a Jacobian formula,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector bounded-density residual source
 
 The local-domination residual-source socket now has a bounded-density

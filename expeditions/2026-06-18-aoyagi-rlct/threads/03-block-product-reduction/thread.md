@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive topology-tuple punctured-sector transport
+
+Reproduction:
+`reproduction-a2-retained-passive-topology-tuple-punctured-sector-transport.md`.
+Statement card:
+`statement-card-a2-retained-passive-topology-tuple-punctured-sector-transport.md`.
+Review:
+`review-a2-retained-passive-topology-tuple-punctured-sector-transport.md`.
+
+Lean now exposes:
+
+```text
+exists_open_case2EndpointTransport_withPassive_topologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq
+```
+
+The theorem returns an open punctured determinant sector `V` containing the
+basepoint.  For every `z in V`, it proves topology-tuple determinant-chart
+membership for `topologyTuple (retainedData z)`, raw-order source-recursive
+determinant-chart membership for its `topologyTupleEdgeRawOrder` image,
+equality of the raw-order p.13 source chart with the direct chart-produced
+source family, source-readback recovery of `retainedData z`, and
+`inverseReadout (sourceChart z) = z.2`.
+
+This is repo-local topology/raw-order source-chart packaging around already
+reproduced Aoyagi p.13 and Case 2 selected-entry formulas.  Xhigh source-scope
+review by `Laplace the 4th`, xhigh Lean/API review by `Locke the 4th`, and
+xhigh implementation review by `Singer the 4th` returned PASS.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource` passed via
+`scripts/lb`.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-image equality, source-rank coverage, determinant-chart
+Haar transport, raw/source Haar theorem, external/original source-prior
+comparison, measure pushforward theorem, Jacobian formula, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced punctured-sector bounded-density residual source
 
 Reproduction:

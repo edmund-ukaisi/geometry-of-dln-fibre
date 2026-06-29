@@ -3,6 +3,58 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Topology-Tuple Punctured-Sector Transport - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySource.lean` now proves:
+
+```text
+exists_open_case2EndpointTransport_withPassive_topologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-topology-tuple-punctured-sector-transport.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-topology-tuple-punctured-sector-transport.md
+threads/03-block-product-reduction/review-a2-retained-passive-topology-tuple-punctured-sector-transport.md
+```
+
+This is the topology/raw-order presentation bridge recommended after the
+bounded-density socket.  It is repo-local topology/chart packaging around
+already reproduced Aoyagi p.13 and Case 2 selected-entry formulas.  For the
+with-passive endpoint-transported datum `retainedData z`, the theorem returns
+an open punctured determinant sector `V` containing `z0` and proves for every
+`z in V`:
+
+```text
+topologyTuple (retainedData z) ∈ topologyTupleDetChartSet,
+raw z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet,
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart raw z = sourceChart z,
+sourceReadback(edgeMatrix(sourceChart z)) = retainedData z,
+inverseReadout (sourceChart z) = z.2.
+```
+
+The determinant-chart witness is reconstructed from local-source membership
+and source readback via `sourceReadback_detChart_of_sourceRecursiveDetChart`.
+Raw-order membership uses
+`mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet`.
+The source-chart equality uses the generic
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData`.
+The inverse readout equality remains tied to the pivot-nonzero sector.
+
+Xhigh source-scope scout `Laplace the 4th`, xhigh Lean/API scout `Locke the
+4th`, and xhigh implementation reviewer `Singer the 4th` returned PASS.
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource` passed via
+`scripts/lb`; `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This proves no source-image equality, source-rank coverage, determinant-chart
+Haar transport, raw/source Haar theorem, external/original source-prior
+comparison, measure pushforward theorem, Jacobian formula, normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Bounded-Density Residual Source - 2026-06-29
 
 `LocalMeasureHandoff.lean` now proves:
