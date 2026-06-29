@@ -10,6 +10,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 endpoint-basis original-loss finite-integral bridge
+
+The endpoint-transported continuing Case 2 chart now has a source-stratum
+finite-integral bridge for original endpoint square-Frobenius `lossDLN` in
+supplied endpoint bases:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+```
+
+This composes the self-base adapted p.13 product-difference lower-bound
+theorem with the finite endpoint-basis comparison
+`exists_pos_const_forall_adaptedProductDifferenceFrobeniusLoss_le_lossDLN_chainMapMatrixTuple`,
+rewriting adapted Frobenius loss to the adapted square-sum before feeding the
+generic Case 2 source-stratum finite-integral socket.  Radius discipline is
+unchanged from the adapted bridge: density first gives `Rden <= Rmax`, the
+adapted lower-bound theorem then produces the final `R <= Rden`, and the
+finite-integral socket uses that final `R`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker scan, and direct axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Wegener the 3rd xhigh review
+passed after a stale statement-card status line was fixed.
+
+Nonclaims remain strict: no reverse finite-integral implication, source-rank
+support rewrite, selected-entry source/image equality, external source-prior
+transport, Jacobian comparison for such a prior, normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 adapted product-difference finite-integral bridge
 
 The endpoint-transported continuing Case 2 chart now has a source-stratum

@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 endpoint-basis original-loss finite-integral bridge
+
+Reproduction:
+`reproduction-a2-case2-original-loss-finite-integral-bridge.md`.
+Statement card:
+`statement-card-a2-case2-original-loss-finite-integral-bridge.md`.
+Review:
+`review-a2-case2-original-loss-finite-integral-bridge.md`.
+
+Lean now exposes:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+```
+
+This is the source-stratum finite-integral bridge for endpoint-basis original
+square-Frobenius `lossDLN` in the endpoint-transported continuing Case 2 chart.
+It first shrinks the radius using positive continuous density, then applies
+the self-base product-coordinate theorem to derive the adapted p.13 lower
+bound, and composes that bound with the endpoint-basis comparison
+`adapted Frobenius <= lossDLN` after rewriting adapted Frobenius loss to the
+adapted square-sum.  The resulting lower constant is `c0 * cprod`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe passed; the theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Wegener the 3rd xhigh read-only review
+returned PASS after a stale statement-card status line was fixed.
+
+Nonclaims: no reverse finite-integral implication, source-rank support
+rewrite, selected-entry source/image equality, external source-prior
+transport, Jacobian comparison for such a prior, normal crossings, pole order,
+or RLCT.
+
 ## 2026-06-29 A2 Case 2 adapted product-difference finite-integral bridge
 
 Reproduction:

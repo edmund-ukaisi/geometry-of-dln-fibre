@@ -3,6 +3,47 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Endpoint-Basis Original-Loss Finite-Integral Bridge - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+```
+
+This specialises the endpoint-transported continuing Case 2 source-stratum
+finite-integral handoff to original endpoint square-Frobenius `lossDLN` in
+supplied endpoint bases.  The theorem derives
+
+```text
+(c0 * cprod) * (residualSq + regularSq) <= originalLoss
+```
+
+by composing the self-base adapted p.13 product-difference lower-bound theorem
+with the finite endpoint-basis comparison from adapted Frobenius loss to
+`lossDLN`, using
+`paperEndpointFixedBaseAdaptedProductDifferenceFrobeniusLoss_eq_squareSum` to
+connect the two forms.  The source measure remains the selected-entry
+chart-produced pushforward and the integral remains over
+`(mu.restrict (U inter sourceStratum)).prod nu`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-original-loss-finite-integral-bridge.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-original-loss-finite-integral-bridge.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-original-loss-finite-integral-bridge.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Wegener the 3rd xhigh read-only review passed
+after a stale statement-card status line was fixed.
+
+Nonclaims: no reverse finite-integral implication, source-rank support rewrite,
+selected-entry source/image equality, external source-prior transport,
+Jacobian comparison for such a prior, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Adapted Product-Difference Finite-Integral Bridge - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

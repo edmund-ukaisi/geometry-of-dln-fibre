@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 endpoint-basis original-loss
+  finite-integral bridge, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.
+  For the endpoint-transported continuing Case 2 chart-produced selected-entry
+  source measure, positive continuity of the regular-coordinate density gives
+  a preliminary radius and upper density bound; the self-base multi-edge
+  product-coordinate theorem gives the adapted p.13 product-difference lower
+  bound at the final radius; and the finite endpoint-basis comparison turns
+  that adapted lower bound into a lower bound for original endpoint
+  square-Frobenius `lossDLN` in supplied endpoint bases.  The theorem returns
+  finite integrability over
+  `(mu.restrict (U inter sourceStratum)).prod nu`.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-original-loss-finite-integral-bridge.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-original-loss-finite-integral-bridge.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-original-loss-finite-integral-bridge.md`.
+  This removes the adapted-loss-only limitation for this chart-produced
+  finite-integral direction, but it does not prove a reverse implication,
+  source-rank support rewrite, selected-entry source/image equality, external
+  source-prior transport, Jacobian comparison for such a prior, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 adapted product-difference finite-integral
   bridge, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_adaptedProductDifferenceSquareSum_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.
