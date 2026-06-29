@@ -45,4 +45,13 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   stay private), the any-field generality is sound (zero closure/char/cardinality hypotheses anywhere). Two
   non-blocking cosmetics (statement-card tag-claim overstates `@[stacks]` attributes that are prose in code;
   two dangling `§` cross-refs in `Catenary.lean`) folded into R3. **Catenary rung stands.** → R3 dispatched
-  (finite-type-domain catenary L4d + closed-point corollaries).**
+  (finite-type-domain catenary L4d + closed-point corollaries).
+- **2026-06-29 — R3 LANDED + PASS** (`f3670561`). New `Core/Dimension/AffineDomain.lean` (a deliberate split
+  from `Catenary` — distinct Mathlib home for f.g.-algebra dimension theory): headline
+  `affine_domain_height_add_ringKrullDim_quotient_eq` (`height p + dim(A/p) = dim A`, any finite-type domain,
+  **any field** — no closure/char/cardinality; `@[stacks 00OS]`) + closed-point corollaries + the new general
+  brick `height_under_eq_of_isIntegral` (integral height transport). Reuses R2 catenary as a black box (no
+  re-induction). Peer crux-audit (separate session) **PASS-with-notes** (6/6, no hole; minor: 00OS headline is
+  a restatement, 5 longLines → folded into R4). **Three catenary rungs stand.** Resource-aware: R3's
+  full-aggregator re-gate is **bundled into R4's green-gate** (R4 edits `AffineDomain` for the cosmetics +
+  imports the whole library). → R4 dispatched (the R0-pinned field-general codim bridge).**
