@@ -54,4 +54,17 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   re-induction). Peer crux-audit (separate session) **PASS-with-notes** (6/6, no hole; minor: 00OS headline is
   a restatement, 5 longLines → folded into R4). **Three catenary rungs stand.** Resource-aware: R3's
   full-aggregator re-gate is **bundled into R4's green-gate** (R4 edits `AffineDomain` for the cosmetics +
-  imports the whole library). → R4 dispatched (the R0-pinned field-general codim bridge).**
+  imports the whole library). → R4 dispatched (the R0-pinned field-general codim bridge).
+- **2026-06-29 — R4 LANDED + ENTRY-1 COMPLETE** (`2a610f8f`). Field-general codimension bridge extracted to
+  `Core/Dimension/Codimension.lean` at `[Field k][Finite σ]` (no closure — R0's split realised): `varietyDim`,
+  `height(vanishingIdeal Z) + varietyDim Z = card`, the Zariski-irreducible↔prime characterisation,
+  `vanishingIdeal_isRadical` (docstring fixed: no-nilpotents, not strong-Nullstellensatz). The `[IsAlgClosed]`
+  non-vacuity layer + DLN `codimRep_*` consumers stay in `NullstellensatzCodim` (re-`export`); `vanishingIdeal_univ_eq_bot`
+  weakened `[IsAlgClosed]→[Infinite k]`. Reviewer PASS 6/6 + Codex CLEAN; controller re-gate green **3820**,
+  axiom-clean. **★ The affine dimension stack is COMPLETE** — `DLNFibre.Core.Dimension.{Integral,Basic,Catenary,AffineDomain,Codimension}`,
+  the any-field Mathlib-grade headline (integral-dim invariance + catenary equality + f.t.-domain dimension
+  formula + height↔dim codim bridge), all Mathlib-absent at v4.29. **A coordination hazard surfaced + was
+  caught benign** (see L3): the R3 formaliser returned post-push for a follow-up + `git reset` while R4 ran in
+  the same worktree; committed history stayed clean (per-rung push) and R4's build-gate caught the race (green
+  3820 — Lean won't compile a tangled file). → **Entry-2** next: E1 (étale local-dim bridge) → E2 (smooth ⟹
+  regular, the `[IsAlgClosed]→[PerfectField]` win), then RF (consumer retrofit).**

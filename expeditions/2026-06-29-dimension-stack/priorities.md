@@ -20,7 +20,7 @@ calling them "general" today would overclaim. Build-vs-cite line: entries 1–2 
 | R1 | integral-extension dimension invariance (`ringKrullDim_eq_of_integral_injective` + going-up chain-lift) | `IntegralDimension` | `Core.Dimension.Integral` (+ `Dimension.Basic`) | **done** (`f447c0ce`; reviewed PASS; re-gate PASS 3819 green) |
 | R2 | polynomial-ring catenary (L5) + monic positioning — handle the `private` Mathlib Noether-normalization substitution **in-repo** (re-derive / use the public `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit`); do **not** block on an upstream de-privatise PR | `NoetherMonicPositioning`, `PolynomialDimension` | `Core.Dimension.Catenary` | **DONE + SIGNED OFF** (`574a9056`; private-substitution re-derived in-repo, Codex-confirmed; re-gate PASS 3819 green; crux-review **PASS** — verbatim copy byte-faithful, any-field generality sound; 2 cosmetic fixes folded into R3) |
 | R3 | finite-type-domain catenary (L4d) + closed-point corollaries (`height_eq_ringKrullDim_of_isMaximal`, local↔global) | `AffineDomainDimension` | `Core.Dimension.AffineDomain` (new file — distinct Mathlib home) | **DONE + PASS** (`f3670561`; headline `affine_domain_height_add_ringKrullDim_quotient_eq` any-field + closed-point corollaries + integral-height-transport brick; peer crux-audit **PASS-with-notes**; 2 wording cosmetics [00OS "exactly"→"restatement"; 5 longLines] + aggregator re-gate folded into R4) |
-| R4 | codim bridge (L0): `varietyDim`, `height(vanishingIdeal Z) + varietyDim Z = card` — **split** the field-general catenary/codim core from the `[IsAlgClosed]` geometric `varietyDim` reading | `NullstellensatzCodim` | `Core.Dimension.Codimension` | pending |
+| R4 | codim bridge (L0): `varietyDim`, `height(vanishingIdeal Z) + varietyDim Z = card` — **split** the field-general catenary/codim core from the `[IsAlgClosed]` geometric `varietyDim` reading | `NullstellensatzCodim` | `Core.Dimension.Codimension` | **DONE + PASS** (`2a610f8f`; field-general core extracted at `[Field k][Finite σ]`, no closure; `vanishingIdeal_isRadical` docstring fixed; `vanishingIdeal_univ_eq_bot` weakened `[IsAlgClosed]→[Infinite k]`; reviewer PASS 6/6 + Codex CLEAN; controller re-gate PASS 3820) |
 | E1 | étale local-dimension bridge + `Ideal.height_eq_under_of_etale` | `FlatQuasiFiniteHeight`, `SmoothLocalRelativeDimension` | `Core.Dimension.Smooth` | pending |
 | E2 | smooth point ⟹ regular local ring, with the **`[IsAlgClosed] → [PerfectField]`** generalisation | `SmoothPointRegular` | `Core.Dimension.Smooth` | pending |
 | RF | retrofit DLN consumers (`codimRep`/`codimRepCanonical`/orbit-dim/fibre-codim) to tag to the general core; delete bespoke; green-gate | (consumers) | — | pending |
@@ -52,6 +52,16 @@ Plan corrections from R0:
   (`Core.NoetherMonicPositioning`) is `(k : Type*) [Field k]` — R2/R3 inherit.
 
 **Gate PASSED → the ladder commits.**
+
+## ENTRY-1 COMPLETE (2026-06-29) — the affine dimension stack stands
+
+R1–R4 done + reviewed + controller-re-gated green (3820, axiom-clean). The Mathlib-grade, **any-field**,
+`Tuple`-free affine dimension library now lives in `DLNFibre.Core.Dimension.*` (5 modules: `Integral`,
+`Basic`, `Catenary`, `AffineDomain`, `Codimension`) — the upstream-worthy headline (integral-extension dim
+invariance + catenary equality + finite-type-domain dimension formula + the height↔dim codimension bridge),
+all Mathlib-absent at `v4.29`. Remaining: **entry-2** (E1 étale local-dim bridge → E2 smooth ⟹ regular,
+with the `[IsAlgClosed]→[PerfectField]` win) and **RF** (retrofit DLN consumers — drop the dead-weight
+`[IsAlgClosed]`; fix the `DeepChartRing.lean:138` stale prose flagged by R4; the `DLNFibre.lean:430` longLine).
 
 ## Highest-suspicion (decorrelated-review the crux)
 

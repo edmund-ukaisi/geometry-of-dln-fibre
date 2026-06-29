@@ -16,3 +16,12 @@
   decl *unqualified* without importing the old file — relying on the `DLNFibre.Core` namespace — and broke
   only in the **full-aggregator** build, not the direct-importer set. After a namespace move, grep every moved
   identifier across the whole library and full-build to catch these; fix with `open Dimension` (or qualify).
+- **L3 — gate next-rung dispatch on the prior formaliser's COMPLETION notification, not a clean-tree
+  snapshot.** R4 was dispatched into the shared worktree on a clean-`git status` read while the R3 formaliser
+  was still alive; R3 then returned for a review-driven follow-up commit + a `git reset --mixed`, racing R4's
+  git/working-tree state. **No damage resulted** — the committed history stayed clean (every rung is pushed
+  immediately) and R4's strict build-gate caught the race as benign (green 3820; Lean won't compile a tangled
+  file) — but the safe rule is to wait for the prior agent's completion notification before dispatching the
+  next into the same shared worktree. The safety net that made it recoverable: **per-rung push + a strict
+  build-gate + a clean committed base to fall back to.** (Root cause: the Uplift-B worktree-collapse — a
+  worktree-based controller's teammates share one tree and must be strictly serialised.)
