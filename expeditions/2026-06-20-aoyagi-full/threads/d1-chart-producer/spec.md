@@ -80,6 +80,99 @@ worktree; edit ONLY your worktree (a prior leg leaked into the main checkout —
 
 ---
 
+## §MB. The parametrized Morse–Bott (inter-layer-straightening) lemma — DESIGN (af6bf2, 2026-06-29)
+
+The SETTLED chart route. Decorrelated design pass (DIRECTED-EXACT + Codex xhigh), all Mathlib anchors
+NAME-VERIFIED in the shared store. This is a STANDALONE network-free real-analysis lemma (its own file,
+e.g. `Foundations/MorseBottSplit.lean`); the DLN chart instantiates it (§MB.4).
+
+### §MB.1 The statement (cleanest Lean-v4.29 form)
+
+`F : E × P → ℝ` (`E` = split directions, `[InnerProductSpace ℝ E] [FiniteDimensional]`; `P` = parameters,
+`[NormedSpace ℝ P] [FiniteDimensional]`), `ContDiff ℝ n F` (`2 ≤ n`; `∞` free for the polynomial `dlnLoss`),
+with (H1) `fderiv ℝ (fun e => F (e,0)) 0 = 0` and (H2) the E-Hessian STRICTLY positive-definite in the
+**minimal-cast coercivity form** (NOT `ContinuousLinearMap.IsPositive` — VERIFIED PSD-only,
+`Positive.lean:60` `IsSymmetric ∧ ∀x, 0 ≤ re⟪Tx,x⟫`; the wrong tool):
+
+    hPD : ∃ c > 0, ∀ e : E, c * ‖e‖^2 ≤ (iteratedFDeriv ℝ 2 (fun e => F (e, 0)) 0) ![e, e]
+
+CONCLUSION: a parameter-PRESERVING local diffeo `Φ` (raw-data form: `Φ, Φsymm, DΦ, DΦsymm, V` + the
+inverse identities + `HasFDerivAt` + bounded-unit `|det|` bounds — a SUPERSET of exactly what
+`rlctAtOn_boundedUnit_localHomeomorph` consumes), with `(Φ w).2 = w.2`,
+`F (Φ w) = ‖(Φ w).1‖² + R w.2`, and `R t = F (σ t, t)` (`σ` the critical E-graph). After an orthonormal
+`E ≃L (Fin m → ℝ)` flattening (`‖e‖² = ∑ sᵢ²` exact, `m = finrank ℝ E`), this IS the `rlct_quasiSplit_ge`
+`hF : F = ∑ s² + Q` form with `Q = R ∘ snd`.
+
+### §MB.2 Proof skeleton (6 sub-lemmas; 5/6 banked-PRESENT, names verified)
+
+- **S1 `criticalGraph_exists`** — `σ : P → E`, `σ(0)=0`, `∂_E F(σ t,t)=0`, by the C^r IFT on
+  `g(e,t) := fderiv_E F (e,t)` (E-derivative at 0 = `D²_EE F(0,0)`, coercive ⟹ `≃L`). Anchor:
+  `ContDiffAt.toOpenPartialHomeomorph`/`.localInverse`/`.to_localInverse` (ContDiff.lean:31/55/66). BANKED.
+- **S2 `recenter`** — `G(u,t) := F(u+σ t, t)`, so `∂_E G(0,t)=0`, `G(0,t)=R(t)`. Chain rule. BANKED.
+- **S3 `hadamard_secondOrder`** — `G(u,t) − R(t) = ⟨u, A(u,t)·u⟩`, `A` symmetric ContDiff, `A(0,0) =
+  ½ D²_EE F(0,0)` coercive. For the POLYNOMIAL `dlnLoss`, `A` is the EXACT polynomial s-integral computed
+  coefficient-wise (do NOT route through `ParametricIntegral` — that's the general-smooth trap). Symmetry:
+  `ContDiffAt.isSymmSndFDerivAt` (Symmetric.lean:544) + `isSymmSndFDerivAt_iff_iteratedFDeriv` (:170),
+  both BANKED. The `A`-construction is HAND-ROLL (polynomial, cheap).
+- **S4 ⚑ `morse_changeOfVars`** — `u ↦ u'(u,t)` with `‖u'‖² = ⟨u,A u⟩`, a parameter-preserving in-u local
+  diffeo. **The operator-√ gap is ELIMINATED** (§MB.3): recursive completing-the-squares — pivot on
+  `A₀₀(u,t) > 0`, peel `A₀₀·(u₀ + (row/A₀₀)·u_rest)²`, recurse on the SPD `(n−1)`-Schur complement. ONE
+  scalar `Real.sqrt` per pivot via `contDiffAt_sqrt (hx : x ≠ 0)` (Sqrt.lean:65, BANKED). No operator √.
+- **S5 `assemble_Φ`** — `Φ := recenter⁻¹ ∘ changeOfVars⁻¹`, extract raw fields from the
+  `OpenPartialHomeomorph`. BANKED API.
+- **S6 `boundedUnit_det`** — `|det DΦ|` bounded above + below by positives on a shrunk `V`
+  (`ContinuousAt.eventually_ne` + `eventually_gt_nhds`; `(DΦ w).det` is the consumer's own
+  `ContinuousLinearMap.det`). BANKED.
+
+THE ONE HARDEST = S4; the design pass RETIRED its feared operator-√ via §MB.3. Secondary risk: the S3
+`iteratedFDeriv 2` ↔ polynomial-coefficient cast for `A(0,0)`.
+
+### §MB.3 √-avoidance (DIRECTED-EXACT confirmed) — use recursive completing-the-squares, NOT an LDL library
+
+`A = LDLᵀ` has `L,D` RATIONAL in `A`'s entries (denominators = leading principal minors, `>0` on the SPD
+cone). `⟨u,Au⟩ = ∑_k D_kk·(Lᵀu)_k²`; set `u'_k := √(D_kk)·(Lᵀu)_k` — the ONLY √ is the scalar `Real.sqrt`
+of one positive function. Mathlib v4.29 has NO `PosSemidef.sqrt`/Cholesky/Sylvester API (`LDL.lean`
+deprecated-empty), so realize S4 as the FIXED-`m` recursive normal-form proof (per-pivot scalar √), NOT a
+reusable LDL theorem. Directed-exact: the in-u Jacobian at 0 is `diag(√D_kk)·L₀ᵀ`, `det = √(det A₀) > 0`
+⟹ local diffeo.
+
+### §MB.4 DLN instantiation (L=2) — Gauss–Newton makes hPD automatic at EVERY optimal v
+
+The E/P partition is FORCED by the optimal point: `E := (ker Dg(v))⊥` (dim = `nReg_v = rank Dg(v)`),
+`P := ker Dg(v)`, `g(A) := prod A − B`. **hPD is automatic** (Gauss–Newton): at an optimum `g(v)=0`, the
+`g·D²g` term of `D²F` VANISHES, leaving `D²F(v) = 2(Dg(v))ᵀ(Dg(v))` — PSD with kernel exactly `ker Dg(v)`,
+hence strictly PD on `E`. Verified DIRECTED-EXACT (sympy rational, NOT sampling) at 5 strata: (3,3,3)/r=1
+middle (`nReg_v=7`), (3,3,3)/r=1 deepest (`nReg_v=5`), (4,4,4)/r=2 middle, (3,4,3)/r=1 rectangular, and a
+GAUGED (non-diagonal) v. `R(t) = F(σ t, t)` is the degraded core the D1 second-peel consumes; the
+inter-layer coupling `(T₂)₂₁·Y1·Z1` that killed the squeeze is ABSORBED into `A(u,t)` and straightened
+away (directed-exact: a planted analogous coupling lands as higher-order-in-`u`, leaving `A(0,t)` clean).
+
+### §MB.5 ★ TWO REFINEMENTS for the CONTROLLER (consume-path + a lighter alternative) — decide before build
+
+1. **SINGLE-PASS vs TWO-PEEL + the `nReg_v` citation-tension.** Morse–Bott naturally outputs `m = nReg_v`
+   (stratum-dependent). The design pass proposes wiring DIRECTLY through `rlct_quasiSplit_ge` (free `{m}`):
+   `nReg_v/2 + rlctAtOn R t0 ≤ rlctAt … v`, then the banked arithmetic with `extra = nReg_v − nReg` closes
+   `hCore` — REPLACING the current two-peel (`nReg`-peel + `extra`-Morse-peel). Fewer moving parts, same
+   arithmetic identity. ★ BUT: the controller earlier flagged peeling `nReg_v` (the maximal/stratum count)
+   as the FORBIDDEN Aoyagi-Thm-2 maximal Morse split (the hero-constraint citation concern). RESOLUTION
+   (controller to confirm): the Morse–Bott lemma is a CLASSICAL splitting lemma we BUILD ourselves (not a
+   citation of Aoyagi Thm 2), so peeling `nReg_v` of OUR-built clean quadratic directions is citation-safe
+   — the "forbidden" concern was about CITING Aoyagi's maximal-split RESULT, not about a self-built chart
+   that happens to peel `nReg_v`. If the controller concurs, single-pass is cleaner; else keep the
+   two-peel (constant `nReg` + `extra`), which the banked reductions already encode.
+2. **A LIGHTER ALTERNATIVE (INFERENCE, flag).** The SELECTED-MINOR IFT quasi-split `F∘Ψ⁻¹ = ‖s‖² +
+   ‖q(s,t)‖²` (which `rlct_quasiSplit_ge` ALREADY accepts — it does NOT require clean squares, only the
+   `∑s²+Q` shape with `Q≥0`) MIGHT avoid the full Morse–Bott S4 recursion: pick the `nReg` independent
+   gradient minors, IFT-straighten them to `s`, leave the rest as `q(s,t)` (the residual, NOT decoupled),
+   and let `rlct_quasiSplit_ge`'s constant-comparison `hcmp` absorb the coupling. The earlier kill-condition
+   showed the per-layer SCHUR `Φ` fails — but the selected-minor `‖q(s,t)‖²` residual is the FULL coupled
+   residual, NOT the per-layer Schur, so it may dodge the inter-layer-drop that killed the squeeze. Worth a
+   DIRECTED-EXACT check (does `hcmp : ∑s² + ‖q(0,t)‖² ≤ C·(∑s² + ‖q(s,t)‖²)` hold at the (3,3,3) middle
+   stratum with the SELECTED-MINOR `q`, not the Schur core?) BEFORE committing the full Morse–Bott build —
+   it could be materially cheaper. (This is the af6bf2 closing flag; INFERENCE, unverified.)
+
+---
+
 ## 0. The target
 
 `rlctAt_deepest_le_of_optimal` (Skeleton:1172) concludes, for any `v ∈ optimalSet H B`:
