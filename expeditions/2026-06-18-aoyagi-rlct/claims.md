@@ -140,6 +140,33 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive Jacobian-weighted residual source
+  hypotheses, 2026-06-29.** Lean now exposes
+  `exists_open_residualSourceHypotheses_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  The theorem packages the previously proved whole-measure
+  Jacobian-weighted passive residual integrability theorem over the retained-
+  passive p.13 local source.  The proof reindexes the selected-entry `center`
+  residual coordinate square sum to the native fixed-base residual-coordinate
+  square sum by `aoyagiCoordinateSquareSum_comp_equiv`, then uses
+  chart-produced support to rewrite `muJ.restrict localSource = muJ`.
+  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+  Focused build passed for
+  `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Full
+  `DLNFibre` aggregator build, `git diff --check`, `scripts/sorries`, and
+  direct axiom probe passed.  Xhigh reviews by `Dirac the 3rd` and
+  `Hegel the 3rd` returned PASS.  This is only
+  residual-source packaging for the same chart-produced passive
+  Jacobian-weighted measure: no exact localized residual marginal,
+  determinant-chart/raw Haar transport, original source-prior transport,
+  source-prior Jacobian formula, source-image equality or local coverage,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive selected-entry weighted local
   source support after open restriction, 2026-06-29.** Lean now exposes
   `exists_open_measure_map_case2EndpointTransport_withPassive_withDensity_restrict_retainedPassiveP13LocalSource_eq_self`

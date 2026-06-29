@@ -3,6 +3,55 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian-Weighted Residual Source Hypotheses - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+This theorem packages the already proved Jacobian-weighted passive residual
+integrability result into the reusable residual-source shape.  For the open
+determinant neighborhood `U` and
+
+```text
+weighted =
+  (sourceMeasure.restrict U).withDensity (fun z => ofReal (J z))
+muJ = Measure.map sourceChart weighted
+localSource = retained-passive p.13 local source
+```
+
+it proves residual square-sum positivity a.e. over
+`muJ.restrict localSource` and
+`residualNegPowerIntegrableOn ... localSource muJ t`.
+
+The proof does not redo the Jacobian domination argument.  It invokes the
+whole-measure theorem, rewrites the selected-entry `center` residual
+coordinate family to the native residual-coordinate family using
+`aoyagiCoordinateSquareSum_comp_equiv`, and applies the arbitrary-measure
+chart-produced local-source support theorem to `weighted`, giving
+`muJ.restrict localSource = muJ`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`;
+review:
+`threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Dirac the 3rd`
+and `Hegel the 3rd` returned PASS.
+
+Nonclaims: no exact localized residual marginal, no determinant-chart Haar
+pushforward, no raw/source Haar theorem, no original source-prior transport,
+no source-prior Jacobian formula, no source-image equality or local coverage,
+no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Selected-Entry Weighted Local Source Support After Open Restriction - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now has:

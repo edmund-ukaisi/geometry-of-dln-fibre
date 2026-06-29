@@ -10,6 +10,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted residual source hypotheses
+
+The passive selected-entry frontier now has the residual-source socket
+packaging theorem:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+It reuses the already banked whole-measure Jacobian-weighted residual theorem
+and rewrites its conclusion over the retained-passive p.13 local source.  The
+selected-entry `center` residual-coordinate square sum is identified with the
+native fixed-base residual-coordinate square sum by finite reindexing via
+`aoyagiCoordinateSquareSum_comp_equiv`; support of the chart-produced weighted
+measure on the retained-passive local source rewrites
+`μJ.restrict localSource = μJ`.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md
+threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Dirac the 3rd`
+and `Hegel the 3rd` returned PASS.
+
+This is residual-source packaging for the same chart-produced passive
+Jacobian-weighted measure.  Do not treat it as an exact localized residual
+marginal, determinant-chart Haar transport, raw/source Haar transport,
+source-prior comparison, source-prior Jacobian formula, source-image coverage,
+local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive selected-entry weighted local source support after open restriction
 
 The passive selected-entry frontier now has the arbitrary-density weighted

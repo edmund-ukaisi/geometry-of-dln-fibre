@@ -2806,6 +2806,218 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Residual-source packaging of the passive Jacobian-weighted Case 2 residual
+integrability theorem.
+
+The measure is still the chart-produced passive product-domain measure
+restricted to the open determinant neighborhood and weighted by the formal
+raw-order Jacobian factor.  This theorem only rewrites the whole-measure
+residual positivity and finite lintegral as hypotheses over the retained-passive
+p.13 local source; it does not identify an external source prior, prove an
+exact localized residual marginal, construct normal crossings, compute pole
+order, or extract RLCT. -/
+theorem exists_open_residualSourceHypotheses_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type} [Fintype τ] [DecidableEq τ]
+    [TopologicalSpace η] [MeasurableSpace η] [OpensMeasurableSpace η]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3)
+    (hCtop : ∀ θ : η, IsUnit ((Ctop θ).det))
+    (hA1passive : ∀ θ : η, ∀ p : Fin 1, IsUnit ((A1passive θ p).det))
+    (passiveMeasure : Measure η)
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    {t : ℝ}
+    (Rres : case2ResidualBlockPivotEntries n S (J + 1) → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (z₀ : η × (case2ResidualBlockPivotEntries n S (J + 1) → ℝ)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let signedBox : Measure (center → ℝ) :=
+      Measure.pi (fun i : center ↦ volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (center → ℝ) :=
+      signedBox.withDensity
+        (fun y : center → ℝ ↦
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure : Measure (η × (center → ℝ)) :=
+      passiveMeasure.prod weightedBox
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let Y :
+        η × (center → ℝ) →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦ topologyTuple (retainedData z)
+    let sourceChart : η × (center → ℝ) → EdgeFamily :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData z)
+    ∃ U : Set (η × (center → ℝ)), IsOpen U ∧ z₀ ∈ U ∧
+      ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily]
+        [BorelSpace EdgeFamily],
+        let jacobianWeightedMeasure : Measure (η × (center → ℝ)) :=
+          (sourceMeasure.restrict U).withDensity
+            (fun z ↦
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                  (κ' := throughSubspaceEndpointComplementIndex
+                    (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z)))
+        let μJ := Measure.map sourceChart jacobianWeightedMeasure
+        let localSource :=
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+            (fun E : EdgeFamily ↦ E)
+        (∀ᵐ E ∂ μJ.restrict localSource,
+            0 < aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) E)) ∧
+          residualNegPowerIntegrableOn
+            (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+            (fun E : EdgeFamily ↦ E) localSource μJ t := by
+  intro center pivotNext signedBox weightedBox sourceMeasure EdgeFamily
+    retainedData Y sourceChart
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ≃ center :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+  rcases
+      (by
+        simpa [center, pivotNext, signedBox, weightedBox, sourceMeasure,
+          EdgeFamily, retainedData, Y, sourceChart, residualCoordEquiv, ρ, κ'] using
+          exists_open_residual_pos_ae_and_lintegral_rpow_neg_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            A1passive F2 A3passive Ctop F3
+            hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+            hCtop hA1passive passiveMeasure hpassive_lt_top
+            Rres ht hRres hcrit z₀) with
+    ⟨U, hUopen, hz₀U, hmain⟩
+  refine ⟨U, hUopen, hz₀U, ?_⟩
+  intro _ _ _ jacobianWeightedMeasure μJ localSource
+  let residualMap : EdgeFamily → center → ℝ :=
+    fun E c ↦
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) E
+        (residualCoordEquiv.symm c)
+  have hcenter :
+      (∀ᵐ E ∂ μJ, 0 < aoyagiCoordinateSquareSum (residualMap E)) ∧
+        (∫⁻ E : EdgeFamily,
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualMap E)) ^ (-t))
+            ∂ μJ) < ∞ := by
+    simpa [center, pivotNext, signedBox, weightedBox, sourceMeasure, EdgeFamily,
+      retainedData, Y, sourceChart, residualCoordEquiv, jacobianWeightedMeasure,
+      μJ, residualMap, ρ, κ'] using hmain
+  let residualBase :
+      EdgeFamily →
+        AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) → ℝ :=
+    fun E ↦
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) E
+  have hsq : ∀ E : EdgeFamily,
+      aoyagiCoordinateSquareSum (residualMap E) =
+        aoyagiCoordinateSquareSum (residualBase E) := by
+    intro E
+    simpa [residualMap, residualBase] using
+      aoyagiCoordinateSquareSum_comp_equiv residualCoordEquiv.symm (residualBase E)
+  have hpos_global :
+      ∀ᵐ E ∂ μJ,
+        0 < aoyagiCoordinateSquareSum (residualBase E) :=
+    hcenter.1.mono (fun E hE ↦ by simpa [hsq E] using hE)
+  have hfinite_global :
+      (∫⁻ E : EdgeFamily,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualBase E)) ^ (-t))
+          ∂ μJ) < ∞ := by
+    have hlintegral :
+        (∫⁻ E : EdgeFamily,
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualBase E)) ^ (-t))
+            ∂ μJ) =
+          (∫⁻ E : EdgeFamily,
+            ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualMap E)) ^ (-t))
+              ∂ μJ) := by
+      apply lintegral_congr_ae
+      exact Filter.Eventually.of_forall (fun E ↦ by
+        change
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualBase E)) ^ (-t)) =
+            ENNReal.ofReal ((aoyagiCoordinateSquareSum (residualMap E)) ^ (-t))
+        rw [← hsq E])
+    exact hlintegral.trans_lt hcenter.2
+  have hsourceChart_meas : Measurable sourceChart := by
+    simpa [center, EdgeFamily, retainedData, sourceChart] using
+      (continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport_withPassive
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        A1passive F2 A3passive Ctop F3
+        hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+        hCtop hA1passive).measurable
+  have hsupport : μJ.restrict localSource = μJ := by
+    simpa [center, EdgeFamily, retainedData, sourceChart, jacobianWeightedMeasure,
+      μJ, localSource] using
+      (measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        A1passive F2 A3passive Ctop F3 hCtop hA1passive
+        jacobianWeightedMeasure hsourceChart_meas.aemeasurable)
+  exact ⟨by simpa [residualBase, hsupport] using hpos_global,
+    by simpa [residualNegPowerIntegrableOn, residualBase, hsupport] using hfinite_global⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Self-endpoint specialization of the Case 2 endpoint-transported fixed-base
 source-family inputs.
 

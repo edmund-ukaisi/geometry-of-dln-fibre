@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian-weighted residual source hypotheses
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+Review:
+`review-a2-case2-passive-jacobian-weighted-residual-source-hypotheses.md`.
+
+Lean now exposes:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+The theorem packages the already proved Jacobian-weighted passive residual
+positivity and finite lintegral result into the retained-passive local-source
+socket.  It reindexes the selected-entry `center` residual coordinate square
+sum to the native fixed-base residual-coordinate square sum and rewrites
+`muJ.restrict localSource = muJ` using chart-produced support.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed.  Xhigh reviews by `Dirac the 3rd` and
+`Hegel the 3rd` returned PASS.
+
+Nonclaims: no exact localized residual marginal, determinant-chart Haar
+pushforward, raw/source Haar theorem, original source-prior transport,
+source-prior Jacobian formula, source-image equality, local coverage, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive selected-entry weighted local source support after open restriction
 
 Reproduction:
