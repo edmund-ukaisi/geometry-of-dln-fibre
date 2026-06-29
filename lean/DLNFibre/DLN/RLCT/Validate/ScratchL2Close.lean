@@ -178,4 +178,114 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
       have := s.isLt; omega
     rw [this]; exact hDAlast
 
+/-! ### The conjugated `hm11/hm12/hm21` (the long pole) — Codex-mapped route.
+
+Build the three block agreements for `prod H Aψ` vs `prod H Aq` where `Aq = decode x`,
+`Aψ = decode (split.symm (psiSplitRawL2CoreConj (split x)))`, then `hsub3reg` = #147 verbatim. -/
+
+-- Per-layer block dictionary at the MOVED point (reindex(Aψ s)₁₁) via the chart-point readback +
+-- the conj readX-transport + the split round-trip. Layer s, boundary (deepBlkT_s = 0).
+example (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (x : Fin (flatDim H) → ℝ) (s : Fin L)
+    (hT : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
+    (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (((paramsEquivFlat H).symm (split.symm
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))) s)).toBlocks₁₁
+      = deepBlkA H r B hB hr hL s
+        + readX H r hr hL ((split x).1, (split x).2.2) s := by
+  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) with hw
+  have hrt : deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w
+      = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
+    rw [← hsplit w, hw, split.apply_symm_apply]
+  obtain ⟨h11, _, _, _⟩ := reindex_decode_split_toBlocks H r B hB hr hL w s hT
+  rw [h11, hrt, readX_psiSplitRawL2CoreConj_eq]
+
+/-- **A clean per-layer block dictionary at the chart/moved point** (helper). For any flat point `w`,
+the four blocks of `reindex (rThr s.castSucc) (rThr s.succ) (decode w)_s` are
+`deepBlk· + read·(split w)` and the core, at a boundary layer (`hT`). Just `reindex_decode_split_toBlocks`
+with the round-trip `deepestSplit w0 w = split w`. -/
+private theorem reindex_decode_blocks_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (w : Fin (flatDim H) → ℝ) (s : Fin L)
+    (hT : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
+    let MX := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)
+    MX.toBlocks₁₁ = deepBlkA H r B hB hr hL s + readX H r hr hL ((split w).1, (split w).2.2) s
+      ∧ MX.toBlocks₂₁ = deepBlkZ H r B hB hr hL s + readZ H r hr hL ((split w).1, (split w).2.2) s
+      ∧ MX.toBlocks₁₂ = deepBlkY H r B hB hr hL s + readY H r hr hL ((split w).1, (split w).2.2) s
+      ∧ MX.toBlocks₂₂ = (paramsEquivFlat (deepestM H r)).symm (split w).2.1 s := by
+  intro MX
+  obtain ⟨h11, h21, h12, h22⟩ := reindex_decode_split_toBlocks H r B hB hr hL w s hT
+  rw [hsplit w] at *
+  exact ⟨h11, h21, h12, h22⟩
+
+/-- **Layer-0 SHARED under the conjugated move** (`reindex(Aψ 0) = reindex(Aq 0)`). At layer 0 (≠ last,
+boundary) the conjugated move fixes every read + the core, so the reindexed decoded layer-0 is unchanged.
+Stated at the `rThr`/`rThr` split (s.castSucc / s.succ). -/
+private theorem reindex_decode0_conj_shared (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (x : Fin (flatDim H) → ℝ) (s : Fin L) (hs : s ≠ lastLayer hL)
+    (hT : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
+    Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (((paramsEquivFlat H).symm (split.symm
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))) s)
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s) := by
+  set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) with hw
+  have hsw : split w = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
+    rw [hw, split.apply_symm_apply]
+  -- Blocks at the moved point (split w = ψ(split x)) and the chart point (split x).
+  obtain ⟨hψ11, hψ21, hψ12, hψ22⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit w s hT
+  obtain ⟨hq11, hq21, hq12, hq22⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x s hT
+  -- All four reads are fixed at a non-last layer.
+  rw [hsw] at hψ11 hψ21 hψ12 hψ22
+  rw [readX_psiSplitRawL2CoreConj_eq] at hψ11
+  rw [readZ_psiSplitRawL2CoreConj_eq] at hψ21
+  rw [readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq (split x) s hs] at hψ12
+  rw [coreRead_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq (split x) s hs] at hψ22
+  -- Reassemble via fromBlocks of the four (now-equal) blocks.
+  rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (((paramsEquivFlat H).symm w) s)),
+    ← Matrix.fromBlocks_toBlocks (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s))]
+  rw [show (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₁₁
+      = (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)).toBlocks₁₁
+      from by rw [hψ11, hq11]]
+  rw [show (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₁₂
+      = (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)).toBlocks₁₂
+      from by rw [hψ12, hq12]]
+  rw [show (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₂₁
+      = (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)).toBlocks₂₁
+      from by rw [hψ21, hq21]]
+  rw [show (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)).toBlocks₂₂
+      = (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)).toBlocks₂₂
+      from by rw [hψ22, hq22]]
+
 end DLNFibre.DLN.RLCT
