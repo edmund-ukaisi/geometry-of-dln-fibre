@@ -7,35 +7,38 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurValue
 /-!
 # `RouteMBData222` — the FAITHFUL `BData M222` term for the concrete (2,2,2) node
 
-Constructs a `BData M222 tach222 ha hN 1 hp1 hp2 rfin u` term (the frozen B-interface,
-`RouteMBInterface`) for the CONCRETE fixed-pivot/live-leaf decoder `genBlkFlatLiveR1 M222`, feeding
-`interiorDet_headline_of_BData` to obtain the unconditional interior-det headline for
-`phiFlatLiveR1 M222`. This is the FAITHFUL route end-to-end on the concrete node (the validate-small the
-`∀M` `L = 2` generalization follows).
+Constructs a `BDataAt M222 tach222 ha 1 hp1 hp2 pRad rfin u` term (the pivot-generic frozen
+B-interface, `RouteMBInterface`) for the CONCRETE fixed-pivot/live-leaf decoder
+`genBlkFlatLiveR1 M222`, feeding `interiorDet_headline_of_BDataAt` to obtain the UNCONDITIONAL
+interior-det headline for the `pRad`-radial chart `phiFlatLiveR1At M222 … pRad`. This is the
+FAITHFUL route on the concrete node (validate-small; the `∀M` `L = 2` case follows it).
 
-The faithful decomposition (Codex-verified, sympy-exact; `route-i-bridge-resolved.md`): on the actual
-`genBlkFlatLiveR1 M222` blocks, with coords `(u, a, b, n, w0, w1, lf0, lf1)`
-(`u = x (structPivot)` radial; `a = readK`, `b = readX`, `n = readN`, `w0,w1 = readW`; `lf0,lf1` the
+The faithful decomposition (Codex-verified, sympy-exact; `route-i-bridge-resolved.md`): on the
+actual `genBlkFlatLiveR1 M222` blocks, with coords `(u, a, b, n, w0, w1, lf0, lf1)`
+(`u = x pRad` radial; `a = readK`, `b = readX`, `n = readN`, `w0,w1 = readW`; `lf0,lf1` the
 free leaf coords),
 
   `Agen0 = [[a, a·n],[a·b, a·b·n + u]]`, `Agen1 = [[u·lf0 − n·w0, u·lf1 − n·w1],[w0,w1]]`,
 
-`φ = B ∘ pivotBlowupOn active u` with `active = {structPivot} ∪ {lf0, lf1}` (`card 3 = minAdm(2,2,2)`,
-the FIXED `E(0,0) = 1` is NOT in active), `det Dπ = u²`; `B` reads the pivot as an ORDINARY coord (the
+`φ = B ∘ pivotBlowupOn active u` with `active = {pRad, lf0, lf1}` (`card 3 = minAdm(2,2,2)`, the
+FIXED `E(0,0) = 1` is NOT in active), `det Dπ = u²`; `B` reads the pivot as an ORDINARY coord (the
 Schur frame isolates it: `p = A0_11 − A0_10·A0_01/A0_00 = u`), `det DB = a²` = the engine
 (`|K|^{r+c}`, `r = c = 1`). The additive `+u` at `Agen0[1,1]` is the pivot COORDINATE, NOT an affine
 layer.
 
-The SLOT WALL (the opaque `chartIdxEquiv = (finCongr).trans (Fintype.equivFin).symm`): the reader slots
-`a,b,n,w0,w1` are images of `chartIdxEquiv.symm` at specific `ChartIdx` tags — but `chartIdxEquiv.symm`
-does NOT reduce by `decide`, and `structPivot = ⟨0,_⟩` is NOT a `ChartIdx` tag, so
-`leaf-slot ≠ structPivot` is unreachable by tag injectivity. RESOLVED (R2, decorrelated Codex): choose
-the two leaf slots `lf0, lf1` from the FINITE COMPLEMENT `univ \ (insert structPivot readerSet)`
-(`readerSet.card ≤ 5`, so the complement has `≥ 2` slots); membership then GIVES `lf ≠ structPivot` and
-`lf ∉ readerSet` for free, no opaque comparison.
+The SLOT WALL (the opaque `chartIdxEquiv = (finCongr).trans (Fintype.equivFin).symm`): the readers
+`a,b,n,w0,w1` are `chartIdxEquiv.symm`-images at specific `ChartIdx` tags — and `chartIdxEquiv.symm`
+does NOT reduce by `decide`, so the hard-wired `structPivot = ⟨0,_⟩` could NOT be shown a non-reader
+(the old `PivotNotReader` hypothesis was fragile/possibly-false — a tight count alone does not place
+slot-0 in the complement). RESOLVED (route ii / pivot-generic, decorrelated Codex + pen-and-paper):
+choose the radial pivot `pRad` AND the two leaf slots `lf0, lf1` ALL from the FINITE COMPLEMENT
+`univ \ readerSet` (`readerSet.card ≤ 5`, complement `≥ 3`); membership GIVES `pRad ∉ readerSet`,
+`pRad ≠ lf_i`, `lf_i ∉ readerSet` for free, NO opaque comparison. The chart's radial axis lives at
+`pRad` (the additive-only `phiFlatLiveR1At` reads `x pRad`); the rate/det/headline are all
+SCALAR-PARAMETRIC in the pivot, so re-pointing is sound and `PivotNotReader` is dissolved.
 
-Axiom-clean `[propext, Classical.choice, Quot.sound]` (the banked wiring + matrix algebra; the leaf-pair
-choice is `Classical.choice`).
+Axiom-clean `[propext, Classical.choice, Quot.sound]` (the banked wiring + matrix algebra; the
+pivot/leaf triple is `Classical.choice`).
 -/
 
 open Matrix
@@ -174,25 +177,25 @@ theorem Glr_Rmat1 (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin (Te
 `Bmat 1 · chainQ(N1) + u·Rmat 1 = schurFrameProd … (readK) (readX) (readN) (pivotEIndicator)`. The
 fixed-pivot `Rmat 1 = rmatPad pivotEIndicator` is the `u`-carrier `E`-block. -/
 theorem Cgen1_Glr (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin (Text M222 tach222 2))
-    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) :
-    Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x) (hleStruct M222 tach222 structAdm_tach222) 1
-      = schurFrameProd M222 tach222 1 hp1_222 hp2_222 (x (structPivot M222 hN_M222))
+    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) (v : ℝ) :
+    Cgen (v) M222 tach222 (Glr rfin x) (hleStruct M222 tach222 structAdm_tach222) 1
+      = schurFrameProd M222 tach222 1 hp1_222 hp2_222 (v)
           (readK M222 tach222 structAdm_tach222 x ⟨0, by decide⟩)
           (readX M222 tach222 structAdm_tach222 x ⟨0, by decide⟩)
           (readN M222 tach222 structAdm_tach222 x ⟨0, by decide⟩)
           (pivotEIndicator M222 tach222 1) := by
   show (if hk : (1 : ℕ) < 2 then (Glr rfin x).Bmat 1 *
       chainQ (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 hk) ((Glr rfin x).Nblk 1)
-      + (x (structPivot M222 hN_M222)) • (Glr rfin x).Rmat 1 else _) = _
+      + (v) • (Glr rfin x).Rmat 1 else _) = _
   rw [dif_pos (by decide), Glr_Bmat1, Glr_Nblk1, Glr_Rmat1]
   rfl
 
 /-- **The leaf transition `C 2 = u • rfin x`** (`dif_neg`; the leaf residual `Rfin 2 = rfin x`). -/
 theorem Cgen2_Glr (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin (Text M222 tach222 2))
-    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) :
-    Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x) (hleStruct M222 tach222 structAdm_tach222) 2
-      = (x (structPivot M222 hN_M222)) • (rfin x) := by
-  show (if hk : (2 : ℕ) < 2 then _ else (x (structPivot M222 hN_M222)) • (Glr rfin x).Rfin 2) = _
+    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) (v : ℝ) :
+    Cgen (v) M222 tach222 (Glr rfin x) (hleStruct M222 tach222 structAdm_tach222) 2
+      = (v) • (rfin x) := by
+  show (if hk : (2 : ℕ) < 2 then _ else (v) • (Glr rfin x).Rfin 2) = _
   rw [dif_neg (by decide)]
   rfl
 
@@ -209,17 +212,17 @@ The additive `+u` at `Agen0[1,1]` is the FIXED pivot's `u·E(0,0) = u·1` — th
 /-- **Layer 1 of the chain** `Agen 1 = [[u·lf0 − n·w0, u·lf1 − n·w1],[w0,w1]]` (kept row `C2 − N1·W1`
 over lift row `W1`; `C2 = u·rfin x`, `N1 = [n]`, `W1 = [w0,w1]`). -/
 theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin (Text M222 tach222 2))
-    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) :
-    Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) (v : ℝ) :
+    Agen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 1
-      = (!![x (structPivot M222 hN_M222) * rfin x ⟨0, by decide⟩ ⟨0, by decide⟩ - nRead x * w0Read x,
-            x (structPivot M222 hN_M222) * rfin x ⟨0, by decide⟩ ⟨1, by decide⟩ - nRead x * w1Read x;
+      = (!![v * rfin x ⟨0, by decide⟩ ⟨0, by decide⟩ - nRead x * w0Read x,
+            v * rfin x ⟨0, by decide⟩ ⟨1, by decide⟩ - nRead x * w1Read x;
             w0Read x, w1Read x] : Matrix (Fin (Wext M222 1)) (Fin (Wext M222 2)) ℝ) := by
-  have hA : Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+  have hA : Agen (v) M222 tach222 (Glr rfin x)
       (hleStruct M222 tach222 structAdm_tach222) 1
       = chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
           ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-          (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+          (Cgen (v) M222 tach222 (Glr rfin x)
             (hleStruct M222 tach222 structAdm_tach222) 2) := by
     show (if hk : (1 : ℕ) < 2 then chainA _ _ _ _ else 0) = _
     rw [dif_pos (by decide)]
@@ -227,10 +230,10 @@ theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
   have kept : ∀ j : Fin (Wext M222 2),
       chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
           ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-          (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+          (Cgen (v) M222 tach222 (Glr rfin x)
             (hleStruct M222 tach222 structAdm_tach222) 2)
           (⟨0, by decide⟩ : Fin (Wext M222 1)) j
-        = (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+        = (Cgen (v) M222 tach222 (Glr rfin x)
               (hleStruct M222 tach222 structAdm_tach222) 2
             - (Glr rfin x).Nblk 1 * (Glr rfin x).Wblk 1)
             (⟨0, by decide⟩ : Fin (Text M222 tach222 2)) j := by
@@ -243,7 +246,7 @@ theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
   have lift : ∀ j : Fin (Wext M222 2),
       chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
           ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-          (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+          (Cgen (v) M222 tach222 (Glr rfin x)
             (hleStruct M222 tach222 structAdm_tach222) 2)
           (⟨1, by decide⟩ : Fin (Wext M222 1)) j
         = (Glr rfin x).Wblk 1 (⟨0, by decide⟩ : Fin (Wext M222 1 - Text M222 tach222 2)) j := by
@@ -256,10 +259,10 @@ theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
   -- the four entries at explicit `⟨_, by decide⟩` indices
   have h00 : chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
       ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-      (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+      (Cgen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 2)
       (⟨0, by decide⟩ : Fin (Wext M222 1)) (⟨0, by decide⟩ : Fin (Wext M222 2))
-        = x (structPivot M222 hN_M222) * rfin x ⟨0, by decide⟩ ⟨0, by decide⟩
+        = v * rfin x ⟨0, by decide⟩ ⟨0, by decide⟩
           - nRead x * w0Read x := by
     rw [kept, Cgen2_Glr, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply,
       Finset.sum_eq_single (⟨0, by decide⟩ : Fin (Wext M222 1 - Text M222 tach222 2))]
@@ -272,10 +275,10 @@ theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
     · intro h; exact absurd (Finset.mem_univ _) h
   have h01 : chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
       ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-      (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+      (Cgen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 2)
       (⟨0, by decide⟩ : Fin (Wext M222 1)) (⟨1, by decide⟩ : Fin (Wext M222 2))
-        = x (structPivot M222 hN_M222) * rfin x ⟨0, by decide⟩ ⟨1, by decide⟩
+        = v * rfin x ⟨0, by decide⟩ ⟨1, by decide⟩
           - nRead x * w1Read x := by
     rw [kept, Cgen2_Glr, Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul, Matrix.mul_apply,
       Finset.sum_eq_single (⟨0, by decide⟩ : Fin (Wext M222 1 - Text M222 tach222 2))]
@@ -288,13 +291,13 @@ theorem Agen1_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
     · intro h; exact absurd (Finset.mem_univ _) h
   have h10 : chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
       ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-      (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+      (Cgen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 2)
       (⟨1, by decide⟩ : Fin (Wext M222 1)) (⟨0, by decide⟩ : Fin (Wext M222 2)) = w0Read x := by
     rw [lift, Glr_Wblk1_lit]; rfl
   have h11 : chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 1 (by decide))
       ((Glr rfin x).Nblk 1) ((Glr rfin x).Wblk 1)
-      (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+      (Cgen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 2)
       (⟨1, by decide⟩ : Fin (Wext M222 1)) (⟨1, by decide⟩ : Fin (Wext M222 2)) = w1Read x := by
     rw [lift, Glr_Wblk1_lit]; rfl
@@ -320,17 +323,17 @@ theorem mul_text2_entry {n : ℕ} (A : Matrix (Fin (Text M222 tach222 2)) (Fin (
 the `chainA` lift block is empty so `Agen 0 = C 1`). The four entries are the `schurFrameProd` blocks
 `K`, `K·N`, `X·K`, `X·K·N + u·E` with `K = a`, `X = b`, `N = n`, `E(0,0) = 1` (the fixed pivot). -/
 theorem Agen0_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin (Text M222 tach222 2))
-    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) :
-    Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+    (Fin (Wext M222 2)) ℝ) (x : Fin (routeMAmbient M222) → ℝ) (v : ℝ) :
+    Agen (v) M222 tach222 (Glr rfin x)
         (hleStruct M222 tach222 structAdm_tach222) 0
       = (!![aRead x, aRead x * nRead x;
-            aRead x * bRead x, aRead x * bRead x * nRead x + x (structPivot M222 hN_M222)]
+            aRead x * bRead x, aRead x * bRead x * nRead x + v]
           : Matrix (Fin (Wext M222 0)) (Fin (Wext M222 1)) ℝ) := by
-  have hA : Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+  have hA : Agen (v) M222 tach222 (Glr rfin x)
       (hleStruct M222 tach222 structAdm_tach222) 0
       = chainA (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 0 (by decide))
           ((Glr rfin x).Nblk 0) ((Glr rfin x).Wblk 0)
-          (Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+          (Cgen (v) M222 tach222 (Glr rfin x)
             (hleStruct M222 tach222 structAdm_tach222) 1) := by
     show (if hk : (0 : ℕ) < 2 then chainA _ _ _ _ else 0) = _
     rw [dif_pos (by decide)]
@@ -341,11 +344,11 @@ theorem Agen0_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
     refine Finset.sum_eq_zero (fun k _ => ?_)
     exact (k.cast (show Wext M222 0 - Text M222 tach222 1 = 0 from by decide)).elim0
   have e : ∀ (r : Fin (Text M222 tach222 1)) (j : Fin (Wext M222 1)),
-      Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+      Agen (v) M222 tach222 (Glr rfin x)
           (hleStruct M222 tach222 structAdm_tach222) 0
           (Fin.cast (genWidthEq M222 tach222 (hleStruct M222 tach222 structAdm_tach222) 0 (by decide))
             (Fin.castAdd (Wext M222 0 - Text M222 tach222 1) r)) j
-        = Cgen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin x)
+        = Cgen (v) M222 tach222 (Glr rfin x)
             (hleStruct M222 tach222 structAdm_tach222) 1 r j := by
     intro r j
     rw [hA, chainA_apply_castAdd, hN0W0, Matrix.sub_apply, Matrix.zero_apply, sub_zero]
@@ -360,7 +363,7 @@ theorem Agen0_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
   set hTr : Text M222 tach222 2 + (Text M222 tach222 1 - Text M222 tach222 2) = Text M222 tach222 1 :=
     by decide
   set hWc : Text M222 tach222 2 + (Wext M222 1 - Text M222 tach222 2) = Wext M222 1 := by decide
-  set sfp := schurFrameProd M222 tach222 1 hp1_222 hp2_222 (x (structPivot M222 hN_M222))
+  set sfp := schurFrameProd M222 tach222 1 hp1_222 hp2_222 (v)
     (readK M222 tach222 structAdm_tach222 x ⟨0, by decide⟩)
     (readX M222 tach222 structAdm_tach222 x ⟨0, by decide⟩)
     (readN M222 tach222 structAdm_tach222 x ⟨0, by decide⟩) (pivotEIndicator M222 tach222 1) with hsfp
@@ -395,7 +398,7 @@ theorem Agen0_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
   -- block X·K·N + u·E (bottom-right): (X·K·N) 0 0 + u·E 0 0 = a·b·n + u
   have b11 : sfp (⟨1, by decide⟩ : Fin (Text M222 tach222 1))
       (⟨1, by decide⟩ : Fin (Wext M222 1))
-        = aRead x * bRead x * nRead x + x (structPivot M222 hN_M222) := by
+        = aRead x * bRead x * nRead x + v := by
     rw [hsfp, row1, col1, schurFrameProd_block_XKNuE]
     have hE : pivotEIndicator M222 tach222 1 (⟨0, by decide⟩ :
         Fin (Text M222 tach222 1 - Text M222 tach222 2))
@@ -466,16 +469,14 @@ noncomputable def readerSlotW1 : Fin (routeMAmbient M222) :=
     structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inr ((liftSlotEquiv M222 (tDesc M222 tach222) 0
       (by decide)).symm (⟨0, by decide⟩, ⟨1, by decide⟩))⟩
 
-/-- The set of slots `pivotBlowupOn` must leave fixed: the pivot + the five reader slots (card ≤ 6). -/
+/-- The set of slots `pivotBlowupOn` must leave fixed: the five reader slots (card ≤ 5). The radial
+pivot `pRad` is now CHOSEN from the complement (rather than hard-wired to `structPivot = ⟨0,_⟩`), so
+`pRad ∉ readerSet` holds BY MEMBERSHIP — dissolving the old `PivotNotReader` hypothesis. -/
 noncomputable def forbiddenSlots : Finset (Fin (routeMAmbient M222)) :=
-  insert (structPivot M222 hN_M222)
-    {readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+  {readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
 
-/-- `forbiddenSlots.card ≤ 6` (one pivot + five reader slots). -/
-theorem forbiddenSlots_card_le : forbiddenSlots.card ≤ 6 := by
-  have c1 := Finset.card_insert_le (structPivot M222 hN_M222)
-    ({readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
-      : Finset (Fin (routeMAmbient M222)))
+/-- `forbiddenSlots.card ≤ 5` (the five reader slots). -/
+theorem forbiddenSlots_card_le : forbiddenSlots.card ≤ 5 := by
   have c2 := Finset.card_insert_le readerSlotK
     ({readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
       : Finset (Fin (routeMAmbient M222)))
@@ -489,63 +490,84 @@ theorem forbiddenSlots_card_le : forbiddenSlots.card ≤ 6 := by
   simp only [forbiddenSlots] at *
   omega
 
-/-- The complement of `forbiddenSlots` has at least 2 slots (`8 − 6`). -/
-theorem free_card_ge_two :
-    2 ≤ ((Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots).card := by
+/-- The complement of `forbiddenSlots` has at least 3 slots (`8 − 5`) — room for the radial pivot
+`pRad` plus the two leaf slots, all distinct and reader-free. -/
+theorem free_card_ge_three :
+    3 ≤ ((Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots).card := by
   have hle := Finset.le_card_sdiff forbiddenSlots (Finset.univ : Finset (Fin (routeMAmbient M222)))
   have huniv : (Finset.univ : Finset (Fin (routeMAmbient M222))).card = 8 := by
     rw [Finset.card_univ, Fintype.card_fin, routeMAmbient_M222]
   have := forbiddenSlots_card_le
   omega
 
-/-- Two distinct slots in the complement of `forbiddenSlots` (the leaf coords). -/
-theorem exists_leaf_pair :
-    ∃ lf0 lf1 : Fin (routeMAmbient M222),
-      lf0 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
+/-- Three distinct slots in the complement of `forbiddenSlots` (the radial pivot + the two leaf
+coords). -/
+theorem exists_pivot_leaf_triple :
+    ∃ pRad lf0 lf1 : Fin (routeMAmbient M222),
+      pRad ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
+      ∧ lf0 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
       ∧ lf1 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
-      ∧ lf0 ≠ lf1 := by
-  obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp free_card_ge_two
-  exact ⟨a, b, ha, hb, hab⟩
+      ∧ pRad ≠ lf0 ∧ pRad ≠ lf1 ∧ lf0 ≠ lf1 := by
+  obtain ⟨s, hs, hcard⟩ := Finset.exists_subset_card_eq free_card_ge_three
+  obtain ⟨pRad, lf0, lf1, hne01, hne02, hne12, hseq⟩ := Finset.card_eq_three.mp hcard
+  have hmem : ∀ q ∈ s, q ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
+    fun q hq => hs hq
+  refine ⟨pRad, lf0, lf1, ?_, ?_, ?_, hne01, hne02, hne12⟩
+  · exact hmem pRad (hseq ▸ Finset.mem_insert_self _ _)
+  · exact hmem lf0 (hseq ▸ Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
+  · exact hmem lf1 (hseq ▸ Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_singleton_self _)))
 
-/-- The first leaf slot (`Classical.choose`; in the complement, so `≠ structPivot`, `∉ readerSet`). -/
-noncomputable def lf0 : Fin (routeMAmbient M222) := (exists_leaf_pair).choose
+/-- The radial pivot slot (`Classical.choose`; in the complement, so `∉ readerSet`, `≠ lf0`, `≠ lf1`). -/
+noncomputable def pRad : Fin (routeMAmbient M222) := (exists_pivot_leaf_triple).choose
+
+/-- The first leaf slot. -/
+noncomputable def lf0 : Fin (routeMAmbient M222) :=
+  (exists_pivot_leaf_triple).choose_spec.choose
 
 /-- The second leaf slot. -/
-noncomputable def lf1 : Fin (routeMAmbient M222) := (exists_leaf_pair).choose_spec.choose
+noncomputable def lf1 : Fin (routeMAmbient M222) :=
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose
+
+theorem pRad_mem : pRad ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.1
 
 theorem lf0_mem : lf0 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
-  (exists_leaf_pair).choose_spec.choose_spec.1
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.2.1
 
 theorem lf1_mem : lf1 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
-  (exists_leaf_pair).choose_spec.choose_spec.2.1
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.2.2.1
 
-theorem lf0_ne_lf1 : lf0 ≠ lf1 := (exists_leaf_pair).choose_spec.choose_spec.2.2
+theorem pRad_ne_lf0 : pRad ≠ lf0 :=
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.2.2.2.1
 
-/-- `lf0 ≠ structPivot` (the leaf slot avoids the pivot — from the complement). -/
-theorem lf0_ne_pivot : lf0 ≠ structPivot M222 hN_M222 := by
-  intro h
-  have := lf0_mem
-  rw [Finset.mem_sdiff] at this
-  exact this.2 (h ▸ Finset.mem_insert_self _ _)
+theorem pRad_ne_lf1 : pRad ≠ lf1 :=
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.2.2.2.2.1
 
-theorem lf1_ne_pivot : lf1 ≠ structPivot M222 hN_M222 := by
-  intro h
-  have := lf1_mem
-  rw [Finset.mem_sdiff] at this
-  exact this.2 (h ▸ Finset.mem_insert_self _ _)
+theorem lf0_ne_lf1 : lf0 ≠ lf1 :=
+  (exists_pivot_leaf_triple).choose_spec.choose_spec.choose_spec.2.2.2.2.2
+
+/-- `pRad ∉ readerSet` (the radial pivot avoids every reader — BY MEMBERSHIP in the complement). This
+is the unconditional replacement for the old `PivotNotReader` hypothesis. -/
+theorem pRad_not_reader : pRad ∉ forbiddenSlots := (Finset.mem_sdiff.mp pRad_mem).2
+
+/-- `lf0 ≠ pRad` (the leaf slot avoids the pivot — from the triple distinctness). -/
+theorem lf0_ne_pivot : lf0 ≠ pRad := fun h => pRad_ne_lf0 h.symm
+
+theorem lf1_ne_pivot : lf1 ≠ pRad := fun h => pRad_ne_lf1 h.symm
 
 /-- The R2 active set `{structPivot, lf0, lf1}` (card 3 = minAdm; pbo scales the two leaf slots). -/
 noncomputable def active222 : Finset (Fin (routeMAmbient M222)) :=
-  {structPivot M222 hN_M222, lf0, lf1}
+  {pRad, lf0, lf1}
 
 /-- `structPivot ∈ active222`. -/
-theorem structPivot_mem_active222 : structPivot M222 hN_M222 ∈ active222 :=
+theorem structPivot_mem_active222 : pRad ∈ active222 :=
   Finset.mem_insert_self _ _
 
 /-- `active222.card = 3 = minAdm M222` (pivot + two distinct leaf slots). -/
 theorem active222_card : active222.card = minAdm M222 := by
-  have hp0 : structPivot M222 hN_M222 ≠ lf0 := fun h => lf0_ne_pivot h.symm
-  have hp1 : structPivot M222 hN_M222 ≠ lf1 := fun h => lf1_ne_pivot h.symm
+  have hp0 : pRad ≠ lf0 := fun h => lf0_ne_pivot h.symm
+  have hp1 : pRad ≠ lf1 := fun h => lf1_ne_pivot h.symm
   rw [active222, Finset.card_insert_of_notMem (by
     simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨hp0, hp1⟩),
     Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact lf0_ne_lf1),
@@ -561,22 +583,22 @@ theorem readerSlot_ne_leaf (q : Fin (routeMAmbient M222)) (hq : q ∈ forbiddenS
 
 /-- `pivotBlowupOn active222 structPivot x` at the pivot is `x structPivot`. -/
 theorem pbo_pivot (x : Fin (routeMAmbient M222) → ℝ) :
-    pivotBlowupOn active222 (structPivot M222 hN_M222) x (structPivot M222 hN_M222)
-      = x (structPivot M222 hN_M222) := by
+    pivotBlowupOn active222 (pRad) x (pRad)
+      = x (pRad) := by
   unfold pivotBlowupOn; rw [if_pos rfl]
 
 /-- `pivotBlowupOn` at `lf0` scales by the pivot: `= x structPivot · x lf0`. -/
 theorem pbo_lf0 (x : Fin (routeMAmbient M222) → ℝ) :
-    pivotBlowupOn active222 (structPivot M222 hN_M222) x lf0
-      = x (structPivot M222 hN_M222) * x lf0 := by
+    pivotBlowupOn active222 (pRad) x lf0
+      = x (pRad) * x lf0 := by
   unfold pivotBlowupOn
   rw [if_neg lf0_ne_pivot, if_pos (show lf0 ∈ active222 from by
     rw [active222]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))]
 
 /-- `pivotBlowupOn` at `lf1` scales by the pivot: `= x structPivot · x lf1`. -/
 theorem pbo_lf1 (x : Fin (routeMAmbient M222) → ℝ) :
-    pivotBlowupOn active222 (structPivot M222 hN_M222) x lf1
-      = x (structPivot M222 hN_M222) * x lf1 := by
+    pivotBlowupOn active222 (pRad) x lf1
+      = x (pRad) * x lf1 := by
   unfold pivotBlowupOn
   rw [if_neg lf1_ne_pivot, if_pos (show lf1 ∈ active222 from by
     rw [active222]; exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
@@ -585,9 +607,9 @@ theorem pbo_lf1 (x : Fin (routeMAmbient M222) → ℝ) :
 /-- `pivotBlowupOn` fixes any reader slot (`∉ {lf0, lf1}`; the pivot branch fixes it too). -/
 theorem pbo_reader (x : Fin (routeMAmbient M222) → ℝ) (q : Fin (routeMAmbient M222))
     (hq : q ∈ forbiddenSlots) :
-    pivotBlowupOn active222 (structPivot M222 hN_M222) x q = x q := by
+    pivotBlowupOn active222 (pRad) x q = x q := by
   obtain ⟨hq0, hq1⟩ := readerSlot_ne_leaf q hq
-  by_cases hp : q = structPivot M222 hN_M222
+  by_cases hp : q = pRad
   · rw [hp]; exact pbo_pivot x
   · simp only [pivotBlowupOn, if_neg hp,
       if_neg (show q ∉ active222 from by
@@ -614,7 +636,7 @@ layers reading the pivot as the ordinary coord `y structPivot`, readers `a/b/n/w
 `A0 = [[a, a·n],[a·b, a·b·n + y_p]]`, `A1 = [[y_lf0 − n·w0, y_lf1 − n·w1],[w0, w1]]`. -/
 noncomputable def Bparams (y : Fin (routeMAmbient M222) → ℝ) : Params M222 :=
   Fin.cons (!![aRead y, aRead y * nRead y;
-      aRead y * bRead y, aRead y * bRead y * nRead y + y (structPivot M222 hN_M222)]
+      aRead y * bRead y, aRead y * bRead y * nRead y + y (pRad)]
         : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ)
     (Fin.cons (!![y lf0 - nRead y * w0Read y, y lf1 - nRead y * w1Read y;
         w0Read y, w1Read y] : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ)
@@ -633,36 +655,35 @@ theorem nRead_eq (x : Fin (routeMAmbient M222) → ℝ) : nRead x = x readerSlot
 theorem w0Read_eq (x : Fin (routeMAmbient M222) → ℝ) : w0Read x = x readerSlotW0 := rfl
 theorem w1Read_eq (x : Fin (routeMAmbient M222) → ℝ) : w1Read x = x readerSlotW1 := rfl
 
-/-- A reader slot is in `forbiddenSlots`. -/
+/-- A reader slot is in `forbiddenSlots` (`= {K, X, N, W0, W1}`). -/
 theorem readerSlotK_mem : readerSlotK ∈ forbiddenSlots :=
-  Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
+  Finset.mem_insert_self _ _
 theorem readerSlotX_mem : readerSlotX ∈ forbiddenSlots :=
-  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
+  Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)
 theorem readerSlotN_mem : readerSlotN ∈ forbiddenSlots :=
-  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-    (Finset.mem_insert_self _ _)))
+  Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
 theorem readerSlotW0_mem : readerSlotW0 ∈ forbiddenSlots :=
   Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-    (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))))
+    (Finset.mem_insert_self _ _)))
 theorem readerSlotW1_mem : readerSlotW1 ∈ forbiddenSlots :=
   Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-    (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
+    (Finset.mem_insert_of_mem (Finset.mem_singleton_self _))))
 
 /-- The reader values are invariant under `pivotBlowupOn` (the slots lie in `forbiddenSlots`). -/
 theorem aRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
-    aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = aRead x := by
+    aRead (pivotBlowupOn active222 (pRad) x) = aRead x := by
   rw [aRead_eq, aRead_eq, pbo_reader x readerSlotK readerSlotK_mem]
 theorem bRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
-    bRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = bRead x := by
+    bRead (pivotBlowupOn active222 (pRad) x) = bRead x := by
   rw [bRead_eq, bRead_eq, pbo_reader x readerSlotX readerSlotX_mem]
 theorem nRead_pbo (x : Fin (routeMAmbient M222) → ℝ) :
-    nRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = nRead x := by
+    nRead (pivotBlowupOn active222 (pRad) x) = nRead x := by
   rw [nRead_eq, nRead_eq, pbo_reader x readerSlotN readerSlotN_mem]
 theorem w0Read_pbo (x : Fin (routeMAmbient M222) → ℝ) :
-    w0Read (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = w0Read x := by
+    w0Read (pivotBlowupOn active222 (pRad) x) = w0Read x := by
   rw [w0Read_eq, w0Read_eq, pbo_reader x readerSlotW0 readerSlotW0_mem]
 theorem w1Read_pbo (x : Fin (routeMAmbient M222) → ℝ) :
-    w1Read (pivotBlowupOn active222 (structPivot M222 hN_M222) x) = w1Read x := by
+    w1Read (pivotBlowupOn active222 (pRad) x) = w1Read x := by
   rw [w1Read_eq, w1Read_eq, pbo_reader x readerSlotW1 readerSlotW1_mem]
 
 /-! ## The map identity `phiFlatLiveR1 = B ∘ pivotBlowupOn active222 structPivot` (`hmap`) -/
@@ -672,34 +693,34 @@ genuine content of `hmap`, per-layer: layer 0 is `Agen0_Glr_eq` (the `+u = +x_p`
 `reindex` value-preserving); layer 1 is `Agen1_Glr_eq` with the leaf `rfin222 x = !![x lf0, x lf1]`
 scaled to `x_p·x_lfᵢ` on the RHS via `pbo_lf0/lf1`, and the readers fixed via `*_pbo`. -/
 theorem chartParamsGen_Glr_eq (x : Fin (routeMAmbient M222) → ℝ) :
-    chartParamsGen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+    chartParamsGen (x (pRad)) M222 tach222 (Glr rfin222 x)
         (hleStruct M222 tach222 structAdm_tach222)
-      = Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x) := by
+      = Bparams (pivotBlowupOn active222 (pRad) x) := by
   -- reduce the RHS `Bparams (pbo x)` readers/pivot/leaf via the pbo facts first
-  have hB0 : (Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x)) 0
+  have hB0 : (Bparams (pivotBlowupOn active222 (pRad) x)) 0
       = (!![aRead x, aRead x * nRead x;
-          aRead x * bRead x, aRead x * bRead x * nRead x + x (structPivot M222 hN_M222)]
+          aRead x * bRead x, aRead x * bRead x * nRead x + x (pRad)]
           : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) := by
-    show (!![aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) x), _; _, _]
+    show (!![aRead (pivotBlowupOn active222 (pRad) x), _; _, _]
         : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) = _
     rw [aRead_pbo, bRead_pbo, nRead_pbo, pbo_pivot]
-  have hB1 : (Bparams (pivotBlowupOn active222 (structPivot M222 hN_M222) x)) 1
-      = (!![x (structPivot M222 hN_M222) * x lf0 - nRead x * w0Read x,
-          x (structPivot M222 hN_M222) * x lf1 - nRead x * w1Read x;
+  have hB1 : (Bparams (pivotBlowupOn active222 (pRad) x)) 1
+      = (!![x (pRad) * x lf0 - nRead x * w0Read x,
+          x (pRad) * x lf1 - nRead x * w1Read x;
           w0Read x, w1Read x] : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ) := by
-    show (!![(pivotBlowupOn active222 (structPivot M222 hN_M222) x) lf0 - _, _; _, _]
+    show (!![(pivotBlowupOn active222 (pRad) x) lf0 - _, _; _, _]
         : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ) = _
     rw [nRead_pbo, w0Read_pbo, w1Read_pbo, pbo_lf0, pbo_lf1]
   funext s
   fin_cases s
-  · show Matrix.reindex _ _ (Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+  · show Matrix.reindex _ _ (Agen (x (pRad)) M222 tach222 (Glr rfin222 x)
         (hleStruct M222 tach222 structAdm_tach222) 0) = (Bparams _) 0
     rw [Agen0_Glr_eq, hB0]
     ext i j
     simp only [Matrix.reindex_apply, Matrix.submatrix_apply, finCongr_symm, finCongr_apply,
       Fin.cast_eq_self]
     rfl
-  · show Matrix.reindex _ _ (Agen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+  · show Matrix.reindex _ _ (Agen (x (pRad)) M222 tach222 (Glr rfin222 x)
         (hleStruct M222 tach222 structAdm_tach222) 1) = (Bparams _) 1
     rw [Agen1_Glr_eq, hB1]
     ext i j
@@ -708,15 +729,16 @@ theorem chartParamsGen_Glr_eq (x : Fin (routeMAmbient M222) → ℝ) :
     -- the leaf `rfin222 x ⟨0⟩ ⟨j⟩ = (!![x lf0, x lf1]) ⟨0⟩ ⟨j⟩ = x lfⱼ` reduces by `rfl`
     rfl
 
-/-- **`hmap`: `phiFlatLiveR1 M222 … rfin222 = Bchart ∘ pivotBlowupOn active222 structPivot`** — the
-faithful map identity (obligation (1) of the `BData` interface). -/
+/-- **`hmap`: `phiFlatLiveR1At M222 … pRad rfin222 = Bchart ∘ pivotBlowupOn active222 pRad`** — the
+faithful map identity (obligation (1) of the `BDataAt` interface), against the `pRad`-radial chart
+`phiFlatLiveR1At` (radial axis at the reader-complement slot `pRad`). -/
 theorem hmap_222 :
-    phiFlatLiveR1 M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222
-      = Bchart ∘ pivotBlowupOn active222 (structPivot M222 hN_M222) := by
+    phiFlatLiveR1At M222 tach222 structAdm_tach222 1 hp1_222 hp2_222 pRad rfin222
+      = Bchart ∘ pivotBlowupOn active222 (pRad) := by
   funext x
-  show phiGen (x (structPivot M222 hN_M222)) M222 tach222 (Glr rfin222 x)
+  show phiGen (x (pRad)) M222 tach222 (Glr rfin222 x)
       (hleStruct M222 tach222 structAdm_tach222) = _
-  show paramsEquivFlat M222 (chartParamsGen (x (structPivot M222 hN_M222)) M222 tach222
+  show paramsEquivFlat M222 (chartParamsGen (x (pRad)) M222 tach222
       (Glr rfin222 x) (hleStruct M222 tach222 structAdm_tach222)) = _
   rw [chartParamsGen_Glr_eq]
   rfl
@@ -802,33 +824,31 @@ theorem readerSlotW0_ne_W1 : readerSlotW0 ≠ readerSlotW1 := by
 
 /-! ### The slot list + its `Fin 8 ≃ Fin (routeMAmbient M222)` bijection
 
-The radial/pivot slot is `structPivot M222 hN_M222 = ⟨0,_⟩` (the radial scalar coordinate axis,
-`RouteMFlatStructV.structPivot`). The five reader slots are `chartIdxEquiv.symm`-tag images. That
-the radial axis `⟨0,_⟩` is DISTINCT from the five Schur/lift reader slots is the one fact NOT
-reachable by tag-injectivity (`⟨0,_⟩` is not a `ChartIdx` tag image we can compare) nor by `decide`
-(`chartIdxEquiv.symm = (Fintype.equivFin _).symm ∘ finCongr` does not kernel-reduce); it is the
-geometric non-degeneracy of the chart (the radial axis is a genuinely separate coordinate). It is
-carried as the explicit hypothesis `pivotNotReader` and threaded to the det headline. -/
+The radial/pivot slot is `pRad` — CHOSEN from the reader-complement `univ \ forbiddenSlots` (rather
+than the hard-wired `structPivot = ⟨0,_⟩`), so `pRad ∉ readerSet` holds BY MEMBERSHIP
+(`pRad_not_reader`). The five reader slots are `chartIdxEquiv.symm`-tag images; the radial axis is a
+genuinely separate coordinate, and now that separation is structural (membership in the complement)
+rather than an opaque tag-comparison. The old `PivotNotReader` hypothesis is thereby DISSOLVED. -/
 
-/-- The reader-slot finset (the five Schur/lift coordinate slots `a, b, n, w0, w1`). -/
-noncomputable def readerSet : Finset (Fin (routeMAmbient M222)) :=
-  {readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+/-- The reader-slot finset (the five Schur/lift coordinate slots `a, b, n, w0, w1`) — identical to
+`forbiddenSlots`, so `pRad_not_reader : pRad ∉ readerSet` is available unconditionally. -/
+noncomputable def readerSet : Finset (Fin (routeMAmbient M222)) := forbiddenSlots
 
-/-- **The chart non-degeneracy hypothesis**: the radial axis `structPivot = ⟨0,_⟩` is distinct from
-each of the five Schur/lift reader slots. (Geometrically true — the radial scalar is a separate
-coordinate from the block readers — but not reachable by `decide`/tag-injectivity at this pin.) -/
-def PivotNotReader : Prop := structPivot M222 hN_M222 ∉ readerSet
+/-- `pRad ∉ readerSet` — the unconditional discharge of the old `PivotNotReader` hypothesis (the
+radial pivot is chosen from the reader-complement). -/
+theorem pRad_not_readerSet : pRad ∉ readerSet := pRad_not_reader
 
 /-- The 8 slots in column order `[a, b, n, w0, w1, p, lf0, lf1]` (the variable order of the entry
-Jacobian). Pairwise distinct (under `PivotNotReader`), hence — on `Fin 8` — bijective. -/
+Jacobian). Pairwise distinct (the radial pivot `pRad` is reader-free by construction), hence — on
+`Fin 8` — bijective. -/
 noncomputable def slotList : Fin 8 → Fin (routeMAmbient M222) :=
   ![readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1,
-    structPivot M222 hN_M222, lf0, lf1]
+    pRad, lf0, lf1]
 
 set_option linter.unusedSimpArgs false in
-/-- `slotList` is injective (the 8 slots are pairwise distinct), given the radial-axis
-non-degeneracy `PivotNotReader`. -/
-theorem slotList_injective (hpiv : PivotNotReader) : Function.Injective slotList := by
+/-- `slotList` is injective (the 8 slots are pairwise distinct), unconditionally — the radial pivot
+`pRad` is reader-free by construction (`pRad_not_reader`). -/
+theorem slotList_injective : Function.Injective slotList := by
   have hKlf0 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).1
   have hKlf1 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).2
   have hXlf0 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).1
@@ -839,22 +859,12 @@ theorem slotList_injective (hpiv : PivotNotReader) : Function.Injective slotList
   have hW0lf1 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).2
   have hW1lf0 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).1
   have hW1lf1 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).2
-  -- the pivot avoids each reader, from `PivotNotReader`
-  have hpK : structPivot M222 hN_M222 ≠ readerSlotK := fun h => hpiv (by
-    rw [readerSet, h]; exact Finset.mem_insert_self _ _)
-  have hpX : structPivot M222 hN_M222 ≠ readerSlotX := fun h => hpiv (by
-    rw [readerSet, h]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
-  have hpN : structPivot M222 hN_M222 ≠ readerSlotN := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))
-  have hpW0 : structPivot M222 hN_M222 ≠ readerSlotW0 := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-      (Finset.mem_insert_self _ _))))
-  have hpW1 : structPivot M222 hN_M222 ≠ readerSlotW1 := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-      (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
+  -- the pivot avoids each reader — BY MEMBERSHIP (`pRad_not_reader`), no opaque comparison
+  have hpK : pRad ≠ readerSlotK := fun h => pRad_not_reader (h ▸ readerSlotK_mem)
+  have hpX : pRad ≠ readerSlotX := fun h => pRad_not_reader (h ▸ readerSlotX_mem)
+  have hpN : pRad ≠ readerSlotN := fun h => pRad_not_reader (h ▸ readerSlotN_mem)
+  have hpW0 : pRad ≠ readerSlotW0 := fun h => pRad_not_reader (h ▸ readerSlotW0_mem)
+  have hpW1 : pRad ≠ readerSlotW1 := fun h => pRad_not_reader (h ▸ readerSlotW1_mem)
   intro i j hij
   fin_cases i <;> fin_cases j <;>
     simp_all only [slotList, Matrix.cons_val] <;>
@@ -885,11 +895,11 @@ theorem slotList_injective (hpiv : PivotNotReader) : Function.Injective slotList
 
 /-- The slot bijection `Fin 8 ≃ Fin (routeMAmbient M222)` (injective `slotList`, equal
 cardinalities), given the radial-axis non-degeneracy `PivotNotReader`. -/
-noncomputable def slotEquiv (hpiv : PivotNotReader) : Fin 8 ≃ Fin (routeMAmbient M222) :=
+noncomputable def slotEquiv : Fin 8 ≃ Fin (routeMAmbient M222) :=
   Equiv.ofBijective slotList ((Fintype.bijective_iff_injective_and_card slotList).mpr
-    ⟨slotList_injective hpiv, by rw [routeMAmbient_M222]⟩)
+    ⟨slotList_injective, by rw [routeMAmbient_M222]⟩)
 
-theorem slotEquiv_apply (hpiv : PivotNotReader) (i : Fin 8) : slotEquiv hpiv i = slotList i := rfl
+theorem slotEquiv_apply (i : Fin 8) : slotEquiv i = slotList i := rfl
 
 /-! ### `Tb` (the entry-readout) + the factorization `Bparams = pack222 ∘ Tb` -/
 
@@ -904,7 +914,7 @@ noncomputable def Tb (y : Fin (routeMAmbient M222) → ℝ) : Fin 8 → ℝ :=
     y readerSlotW1,
     y readerSlotK,
     y readerSlotK * y readerSlotX,
-    y readerSlotK * y readerSlotX * y readerSlotN + y (structPivot M222 hN_M222),
+    y readerSlotK * y readerSlotX * y readerSlotN + y (pRad),
     y lf1 - y readerSlotN * y readerSlotW1]
 
 /-- **The factorization** `pack222 (Tb y) = Bparams y`. -/
@@ -916,7 +926,7 @@ theorem pack222_Tb_eq (y : Fin (routeMAmbient M222) → ℝ) : pack222 (Tb y) = 
         = (!![(Tb y) 4, (Tb y) 1; (Tb y) 5, (Tb y) 6] : Matrix (Fin 2) (Fin 2) ℝ) := rfl
     have hB : (Bparams y) 0
         = (!![aRead y, aRead y * nRead y;
-            aRead y * bRead y, aRead y * bRead y * nRead y + y (structPivot M222 hN_M222)]
+            aRead y * bRead y, aRead y * bRead y * nRead y + y (pRad)]
           : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) := rfl
     rw [hp, hB]
     funext i j
@@ -963,7 +973,7 @@ noncomputable def TbCLM (u : Fin (routeMAmbient M222) → ℝ) :
         ((u readerSlotX * u readerSlotN) • bprj readerSlotK
           + (u readerSlotK * u readerSlotN) • bprj readerSlotX
           + (u readerSlotK * u readerSlotX) • bprj readerSlotN)
-          + bprj (structPivot M222 hN_M222),
+          + bprj (pRad),
         bprj lf1 - ((u readerSlotN) • bprj readerSlotW1 + (u readerSlotW1) • bprj readerSlotN)]
       : Fin 8 → ((Fin (routeMAmbient M222) → ℝ) →L[ℝ] ℝ))
 
@@ -992,7 +1002,7 @@ theorem Tb_hasFDerivAt (u : Fin (routeMAmbient M222) → ℝ) :
   · -- output 5: `y readerSlotK * y readerSlotX`
     exact (hap readerSlotK).mul (hap readerSlotX)
   · -- output 6: `y readerSlotK * y readerSlotX * y readerSlotN + y (structPivot)`
-    refine HasFDerivAt.add ?_ (hap (structPivot M222 hN_M222))
+    refine HasFDerivAt.add ?_ (hap (pRad))
     have := ((hap readerSlotK).mul (hap readerSlotX)).mul (hap readerSlotN)
     refine this.congr_fderiv ?_
     ext v; simp [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
@@ -1027,12 +1037,13 @@ out0, out7]` (`rowPerm`). -/
 
 /-- The column slot list in the lower-triangular order `[a, b, n, p, w0, w1, lf0, lf1]`. -/
 noncomputable def slotListC : Fin 8 → Fin (routeMAmbient M222) :=
-  ![readerSlotK, readerSlotX, readerSlotN, structPivot M222 hN_M222,
+  ![readerSlotK, readerSlotX, readerSlotN, pRad,
     readerSlotW0, readerSlotW1, lf0, lf1]
 
 set_option linter.unusedSimpArgs false in
-/-- `slotListC` is injective (a reordering of `slotList`), under `PivotNotReader`. -/
-theorem slotListC_injective (hpiv : PivotNotReader) : Function.Injective slotListC := by
+/-- `slotListC` is injective (a reordering of `slotList`), unconditionally — `pRad` is reader-free
+by construction (`pRad_not_reader`). -/
+theorem slotListC_injective : Function.Injective slotListC := by
   have hKlf0 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).1
   have hKlf1 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).2
   have hXlf0 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).1
@@ -1043,23 +1054,13 @@ theorem slotListC_injective (hpiv : PivotNotReader) : Function.Injective slotLis
   have hW0lf1 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).2
   have hW1lf0 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).1
   have hW1lf1 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).2
-  have hpK : structPivot M222 hN_M222 ≠ readerSlotK := fun h => hpiv (by
-    rw [readerSet, h]; exact Finset.mem_insert_self _ _)
-  have hpX : structPivot M222 hN_M222 ≠ readerSlotX := fun h => hpiv (by
-    rw [readerSet, h]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
-  have hpN : structPivot M222 hN_M222 ≠ readerSlotN := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))
-  have hpW0 : structPivot M222 hN_M222 ≠ readerSlotW0 := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-      (Finset.mem_insert_self _ _))))
-  have hpW1 : structPivot M222 hN_M222 ≠ readerSlotW1 := fun h => hpiv (by
-    rw [readerSet, h]
-    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
-      (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
-  have hplf0 : structPivot M222 hN_M222 ≠ lf0 := fun h => lf0_ne_pivot h.symm
-  have hplf1 : structPivot M222 hN_M222 ≠ lf1 := fun h => lf1_ne_pivot h.symm
+  have hpK : pRad ≠ readerSlotK := fun h => pRad_not_reader (h ▸ readerSlotK_mem)
+  have hpX : pRad ≠ readerSlotX := fun h => pRad_not_reader (h ▸ readerSlotX_mem)
+  have hpN : pRad ≠ readerSlotN := fun h => pRad_not_reader (h ▸ readerSlotN_mem)
+  have hpW0 : pRad ≠ readerSlotW0 := fun h => pRad_not_reader (h ▸ readerSlotW0_mem)
+  have hpW1 : pRad ≠ readerSlotW1 := fun h => pRad_not_reader (h ▸ readerSlotW1_mem)
+  have hplf0 : pRad ≠ lf0 := fun h => lf0_ne_pivot h.symm
+  have hplf1 : pRad ≠ lf1 := fun h => lf1_ne_pivot h.symm
   intro i j hij
   fin_cases i <;> fin_cases j <;>
     simp_all only [slotListC, Matrix.cons_val] <;>
@@ -1088,9 +1089,9 @@ theorem slotListC_injective (hpiv : PivotNotReader) : Function.Injective slotLis
           | exact hW1lf0 hij | exact hW1lf0 hij.symm | exact hW1lf1 hij | exact hW1lf1 hij.symm)
 
 /-- The column reindex bijection (lower-triangular column order). -/
-noncomputable def colEquivT (hpiv : PivotNotReader) : Fin 8 ≃ Fin (routeMAmbient M222) :=
+noncomputable def colEquivT : Fin 8 ≃ Fin (routeMAmbient M222) :=
   Equiv.ofBijective slotListC ((Fintype.bijective_iff_injective_and_card slotListC).mpr
-    ⟨slotListC_injective hpiv, by rw [routeMAmbient_M222]⟩)
+    ⟨slotListC_injective, by rw [routeMAmbient_M222]⟩)
 
 /-- The row reindex permutation `[out4, out5, out1, out6, out2, out3, out0, out7]` (output-coord
 order making `toMatrix'` lower-triangular). -/
@@ -1132,59 +1133,59 @@ theorem litMatLT_det (u : Fin (routeMAmbient M222) → ℝ) : (litMatLT u).det =
 
 /-- `Pi.single (slotListC j) 1` evaluated at `slotListC k` collapses to `if j = k then 1 else 0`
 (via `slotListC_injective`). -/
-theorem single_slotListC (hpiv : PivotNotReader) (j k : Fin 8) :
+theorem single_slotListC (j k : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) (slotListC k)
       = if j = k then 1 else 0 := by
   rw [Pi.single_apply]
   by_cases h : slotListC k = slotListC j
-  · rw [if_pos h, if_pos (slotListC_injective hpiv h).symm]
+  · rw [if_pos h, if_pos (slotListC_injective h).symm]
   · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
 
 /-- `Pi.single (slotListC j) 1` read at a named slot `s = slotListC k`, collapsed via
 `single_slotListC`. The named-slot wrappers below specialize this (keeping the reader names so
 litMatLT's `aRead/bRead/…` coefficients match). -/
-theorem single_at_eq (hpiv : PivotNotReader) (j k : Fin 8) (s : Fin (routeMAmbient M222))
+theorem single_at_eq (j k : Fin 8) (s : Fin (routeMAmbient M222))
     (hs : s = slotListC k) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) s
       = if j = k then 1 else 0 := by
-  rw [hs]; exact single_slotListC hpiv j k
+  rw [hs]; exact single_slotListC j k
 
-theorem single_at_readerK (hpiv : PivotNotReader) (j : Fin 8) :
+theorem single_at_readerK (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotK
-      = if j = ⟨0, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_readerX (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨0, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_readerX (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotX
-      = if j = ⟨1, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_readerN (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨1, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_readerN (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotN
-      = if j = ⟨2, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_pivot (hpiv : PivotNotReader) (j : Fin 8) :
-    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) (structPivot M222 hN_M222)
-      = if j = ⟨3, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_readerW0 (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨2, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_pivot (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) (pRad)
+      = if j = ⟨3, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_readerW0 (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotW0
-      = if j = ⟨4, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_readerW1 (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨4, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_readerW1 (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotW1
-      = if j = ⟨5, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_lf0 (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨5, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_lf0 (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) lf0
-      = if j = ⟨6, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
-theorem single_at_lf1 (hpiv : PivotNotReader) (j : Fin 8) :
+      = if j = ⟨6, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
+theorem single_at_lf1 (j : Fin 8) :
     (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) lf1
-      = if j = ⟨7, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+      = if j = ⟨7, by decide⟩ then 1 else 0 := single_at_eq j _ _ rfl
 
 set_option linter.unusedSimpArgs false in
-/-- **The reindexed entry Jacobian** `(toMatrix' (TbCLM u)).submatrix rowPerm (colEquivT hpiv) =
+/-- **The reindexed entry Jacobian** `(toMatrix' (TbCLM u)).submatrix rowPerm (colEquivT) =
 litMatLT u` — the explicit lower-triangular matrix (per-entry via the `Pi.single` slot collapse). -/
-theorem TbCLM_toMatrix_reindex (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
-    (LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT hpiv)
+theorem TbCLM_toMatrix_reindex (u : Fin (routeMAmbient M222) → ℝ) :
+    (LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT)
       = litMatLT u := by
-  have hcol : ∀ k : Fin 8, (colEquivT hpiv k : Fin (routeMAmbient M222)) = slotListC k :=
+  have hcol : ∀ k : Fin 8, (colEquivT k : Fin (routeMAmbient M222)) = slotListC k :=
     fun k => rfl
   ext i j
   rw [Matrix.submatrix_apply, LinearMap.toMatrix'_apply]
-  change (TbCLM u) (Pi.single (colEquivT hpiv j) 1) (rowEquiv i) = litMatLT u i j
+  change (TbCLM u) (Pi.single (colEquivT j) 1) (rowEquiv i) = litMatLT u i j
   have hri : (rowEquiv i : Fin (routeMAmbient M222)) = (rowPerm i : Fin 8) := rfl
   rw [hri, TbCLM, ContinuousLinearMap.pi_apply]
   -- full `simp` (with `Matrix.cons_val`) reduces the row-vector selection `![CLMs] (rowPerm ⟨i⟩)`
@@ -1196,35 +1197,35 @@ theorem TbCLM_toMatrix_reindex (hpiv : PivotNotReader) (u : Fin (routeMAmbient M
     simp +arith [rowPerm, Equiv.coe_fn_mk, Matrix.cons_val, hcol, ContinuousLinearMap.sub_apply,
       ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
       ContinuousLinearMap.proj_apply, smul_eq_mul,
-      single_at_readerK hpiv, single_at_readerX hpiv, single_at_readerN hpiv,
-      single_at_pivot hpiv, single_at_readerW0 hpiv, single_at_readerW1 hpiv,
-      single_at_lf0 hpiv, single_at_lf1 hpiv,
+      single_at_readerK, single_at_readerX, single_at_readerN,
+      single_at_pivot, single_at_readerW0, single_at_readerW1,
+      single_at_lf0, single_at_lf1,
       litMatLT, aRead_eq, bRead_eq, nRead_eq, w0Read_eq, w1Read_eq]
 
 /-- **`|det (TbCLM u)| = |aRead u|²`** — the entry-Jacobian determinant (`-aRead u²` up to sign),
 via the reindex to the explicit lower-triangular `litMatLT u`. -/
-theorem TbCLM_abs_det (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+theorem TbCLM_abs_det (u : Fin (routeMAmbient M222) → ℝ) :
     |LinearMap.det (TbCLM u).toLinearMap| = |aRead u| ^ 2 := by
   have hdetTo : LinearMap.det (TbCLM u).toLinearMap
       = Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap) :=
     (LinearMap.det_toMatrix' (TbCLM u).toLinearMap).symm
   have hsub : |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix
-        rowEquiv (colEquivT hpiv)).det|
+        rowEquiv (colEquivT)).det|
       = |Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap)| :=
-    abs_det_submatrix_equiv_equiv rowEquiv (colEquivT hpiv) _
+    abs_det_submatrix_equiv_equiv rowEquiv (colEquivT) _
   have ereindex :
-      |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT hpiv)).det|
-        = |(litMatLT u).det| := by rw [TbCLM_toMatrix_reindex hpiv u]
+      |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT)).det|
+        = |(litMatLT u).det| := by rw [TbCLM_toMatrix_reindex u]
   calc |LinearMap.det (TbCLM u).toLinearMap|
       = |Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap)| := by rw [hdetTo]
     _ = |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix
-          rowEquiv (colEquivT hpiv)).det| := hsub.symm
+          rowEquiv (colEquivT)).det| := hsub.symm
     _ = |(litMatLT u).det| := ereindex
     _ = |aRead u| ^ 2 := by rw [litMatLT_det, abs_pow]
 
 /-- **`|det DB u| = |aRead u|²`** — the boundary-factor det (`DB = Q222CLM ∘ TbCLM`, `Q222CLM`
 measure-preserving so `|det| = 1`). -/
-theorem DB_abs_det (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+theorem DB_abs_det (u : Fin (routeMAmbient M222) → ℝ) :
     |LinearMap.det (DB u).toLinearMap| = |aRead u| ^ 2 := by
   have hdet : LinearMap.det (DB u).toLinearMap
       = LinearMap.det (Q222CLM : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ))
@@ -1234,45 +1235,48 @@ theorem DB_abs_det (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ
       rw [DB, ContinuousLinearMap.coe_comp]
     rw [hcoe]
     exact LinearMap.det_comp (Q222CLM : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (TbCLM u).toLinearMap
-  rw [hdet, abs_mul, Q222CLM_abs_det, one_mul, TbCLM_abs_det hpiv u]
+  rw [hdet, abs_mul, Q222CLM_abs_det, one_mul, TbCLM_abs_det u]
 
 /-! ## The `BData M222` instance + the concrete (2,2,2) interior-det headline -/
 
 /-- The per-boundary engine values for the (2,2,2) faithful factor: `|aRead (pbo u)|²` at `s = 0`,
 `1` at `s = 1` (so `∏ = |aRead (pbo u)|² = |det DB|`). -/
 noncomputable def engine222 (u : Fin (routeMAmbient M222) → ℝ) : Fin 2 → ℝ :=
-  fun s => if s = 0 then |aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) u)| ^ 2 else 1
+  fun s => if s = 0 then |aRead (pivotBlowupOn active222 (pRad) u)| ^ 2 else 1
 
 theorem engine222_prod (u : Fin (routeMAmbient M222) → ℝ) :
     ∏ s : Fin 2, engine222 u s
-      = |aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) u)| ^ 2 := by
+      = |aRead (pivotBlowupOn active222 (pRad) u)| ^ 2 := by
   rw [Fin.prod_univ_two]; simp [engine222]
 
-/-- **The faithful `BData M222`** for the concrete (2,2,2) node, given the chart non-degeneracy
-`PivotNotReader` (the radial axis distinct from the Schur readers). All fields landed:
-`hmap` (faithful map identity), `hcard` (the `minAdm = 3` count), `hdet` (`|det DB| = |aRead|²`). -/
-noncomputable def bData222 (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
-    BData M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222 u where
+/-- **The faithful `BDataAt M222`** for the concrete (2,2,2) node at the reader-complement radial
+slot `pRad` — UNCONDITIONAL (no `PivotNotReader`: `pRad ∉ readerSet` holds by construction). All
+fields landed: `hmap` (faithful map identity for `phiFlatLiveR1At … pRad`), `hcard` (the
+`minAdm = 3` count), `hdet` (`|det DB| = |aRead|²`). -/
+noncomputable def bData222 (u : Fin (routeMAmbient M222) → ℝ) :
+    BDataAt M222 tach222 structAdm_tach222 1 hp1_222 hp2_222 pRad rfin222 u where
   active := active222
   hp_mem := structPivot_mem_active222
   hcard := active222_card
   B := Bchart
-  DB := DB (pivotBlowupOn active222 (structPivot M222 hN_M222) u)
-  hasDB := Bchart_hasFDerivAt (pivotBlowupOn active222 (structPivot M222 hN_M222) u)
+  DB := DB (pivotBlowupOn active222 (pRad) u)
+  hasDB := Bchart_hasFDerivAt (pivotBlowupOn active222 (pRad) u)
   hmap := hmap_222
   engine := engine222 u
   hdet := by
-    rw [DB_abs_det hpiv (pivotBlowupOn active222 (structPivot M222 hN_M222) u), engine222_prod]
+    rw [DB_abs_det (pivotBlowupOn active222 (pRad) u), engine222_prod]
 
-/-- **The unconditional-modulo-`PivotNotReader` interior-det headline for `phiFlatLiveR1 M222`**:
-`|det D(phiFlatLiveR1 M222 …)| = |u_p|^{minAdm−1} · |aRead (pbo u)|²`. Reads off
-`interiorDet_headline_of_BData` applied to `bData222`. -/
-theorem interiorDet_headline_222 (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
-    |LinearMap.det (fderiv ℝ (phiFlatLiveR1 M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222
+/-- **The UNCONDITIONAL interior-det headline for the (2,2,2) achiever chart**
+`phiFlatLiveR1At M222 … pRad`: `|det Dφ| = |u_pRad|^{minAdm−1} · |aRead (pbo u)|²`. The radial axis
+lives at the reader-complement slot `pRad` (so `pRad ∉ readerSet` is structural — the old
+`PivotNotReader` hypothesis is dissolved). Reads off `interiorDet_headline_of_BDataAt` applied to
+`bData222`. -/
+theorem interiorDet_headline_222 (u : Fin (routeMAmbient M222) → ℝ) :
+    |LinearMap.det (fderiv ℝ (phiFlatLiveR1At M222 tach222 structAdm_tach222 1 hp1_222 hp2_222 pRad
         rfin222) u).toLinearMap|
-      = |u (structPivot M222 hN_M222)| ^ (minAdm M222 - 1)
-        * ∏ s : Fin 2, (bData222 hpiv u).engine s :=
-  interiorDet_headline_of_BData M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222 u
-    (bData222 hpiv u)
+      = |u (pRad)| ^ (minAdm M222 - 1)
+        * ∏ s : Fin 2, (bData222 u).engine s :=
+  interiorDet_headline_of_BDataAt M222 tach222 structAdm_tach222 1 hp1_222 hp2_222 pRad rfin222 u
+    (bData222 u)
 
 end DLNFibre.DLN.RLCT

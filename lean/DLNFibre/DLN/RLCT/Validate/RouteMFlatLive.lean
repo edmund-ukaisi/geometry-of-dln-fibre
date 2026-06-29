@@ -270,6 +270,28 @@ noncomputable def phiFlatLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (x : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
   phiGen (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha)
 
+/-- **The R1 active-center chart at an ARBITRARY radial slot `p₀`**
+`phiFlatLiveR1At … p₀ … := phiGen (x p₀) M t (genBlkFlatLiveR1 …) hle`. Identical to
+`phiFlatLiveR1` but reads the radial scalar at the supplied slot `p₀` rather than the hard-wired
+`structPivot M hN = ⟨0,_⟩`. Frees the achiever node to put the radial axis on a reader-complement
+slot (the `PivotNotReader`-free chart construction): `phiFlatLiveR1 = phiFlatLiveR1At (structPivot)`
+(`phiFlatLiveR1At_structPivot`). The pivot boundary `p` (active center) carries the fixed `1`-pivot
+exactly as before — only the radial *read slot* moves. -/
+noncomputable def phiFlatLiveR1At (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (p : ℕ) (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (p₀ : Fin (routeMAmbient M))
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (x : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
+  phiGen (x p₀) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha)
+
+/-- `phiFlatLiveR1` is `phiFlatLiveR1At` at the default radial slot `structPivot M hN`. -/
+theorem phiFlatLiveR1At_structPivot (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ) :
+    phiFlatLiveR1 M t ha hN p hp1 hp2 rfin
+      = phiFlatLiveR1At M t ha p hp1 hp2 (structPivot M hN) rfin := rfl
+
 /-- **The R1 unit factor** `UvalLiveR1 … := VvalGen (x p₀) M t (genBlkFlatLiveR1 …) hle`. -/
 noncomputable def UvalLiveR1 (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (hN : 0 < routeMAmbient M) (p : ℕ)

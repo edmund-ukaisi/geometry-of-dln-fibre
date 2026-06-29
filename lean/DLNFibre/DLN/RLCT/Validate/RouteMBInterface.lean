@@ -83,6 +83,50 @@ theorem interiorDet_headline_of_BData (M t : Fin (L + 1) → ℕ) (ha : StructAd
   rw [radialComp_abs_det M hN d.active d.hp_mem d.hcard d.B
       (phiFlatLiveR1 M t ha hN p hp1 hp2 rfin) u d.DB d.hmap d.hasDB, d.hdet]
 
+/-- **The pivot-generic frozen B-interface** (`BData` at an ARBITRARY radial slot `p₀ ∈ active`).
+Identical to `BData` but the radial axis lives at the supplied `p₀ : Fin (routeMAmbient M)` (rather
+than the hard-wired `structPivot M hN`), and the map identity is against the `p₀`-radial chart
+`phiFlatLiveR1At … p₀`. Frees the achiever node to put the radial axis on a reader-complement slot,
+dissolving `PivotNotReader` by membership. The headline reads `|u p₀|^{minAdm−1}·∏engine`. -/
+structure BDataAt (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (p₀ : Fin (routeMAmbient M))
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (u : Fin (routeMAmbient M) → ℝ) where
+  /-- The radial active set (the pivot `p₀` + the `u`-scaled free coords). -/
+  active : Finset (Fin (routeMAmbient M))
+  /-- The radial pivot `p₀` is in the active set. -/
+  hp_mem : p₀ ∈ active
+  /-- The active set has cardinality `minAdm` (the banked count). -/
+  hcard : active.card = minAdm M
+  /-- The boundary factor map `B = composeFold BFactors`. -/
+  B : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ)
+  /-- `B`'s fderiv at the blown-up point. -/
+  DB : (Fin (routeMAmbient M) → ℝ) →L[ℝ] (Fin (routeMAmbient M) → ℝ)
+  /-- Obligation (2): `B` has fderiv `DB` at the blown-up point. -/
+  hasDB : HasFDerivAt B DB (pivotBlowupOn active p₀ u)
+  /-- Obligation (1): the MAP identity `φ = B ∘ pivotBlowupOn active p₀`. -/
+  hmap : phiFlatLiveR1At M t ha p hp1 hp2 p₀ rfin
+    = B ∘ pivotBlowupOn active p₀
+  /-- The per-boundary engine values `|det K_s|^{r_s+c_s}·∏_i|q_{s,i}|^{2(t_s−1−i)}`. -/
+  engine : Fin L → ℝ
+  /-- Obligation (3): the boundary factor's det is the engine product. -/
+  hdet : |LinearMap.det DB.toLinearMap| = ∏ s : Fin L, engine s
+
+/-- **The unconditional interior-det headline from a `BDataAt`** (pivot-generic wiring). Given a
+frozen `BDataAt` at radial slot `p₀`, the `p₀`-radial chart's Jacobian abs-det factorizes as
+`|u p₀|^{minAdm−1} · ∏_s engine s`. Reads off `radialComp_abs_det_at` (pivot-generic wiring) + the
+bundled obligations. -/
+theorem interiorDet_headline_of_BDataAt (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (p : ℕ) (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (p₀ : Fin (routeMAmbient M))
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (u : Fin (routeMAmbient M) → ℝ) (d : BDataAt M t ha p hp1 hp2 p₀ rfin u) :
+    |LinearMap.det (fderiv ℝ (phiFlatLiveR1At M t ha p hp1 hp2 p₀ rfin) u).toLinearMap|
+      = |u p₀| ^ (minAdm M - 1) * ∏ s : Fin L, d.engine s := by
+  rw [radialComp_abs_det_at M d.active p₀ d.hp_mem d.hcard d.B
+      (phiFlatLiveR1At M t ha p hp1 hp2 p₀ rfin) u d.DB d.hmap d.hasDB, d.hdet]
+
 end DLNFibre.DLN.RLCT
 
 end

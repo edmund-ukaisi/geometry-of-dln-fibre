@@ -110,6 +110,18 @@ theorem radial_abs_det_minAdm (M : Fin (L + 1) → ℕ) (hN : 0 < routeMAmbient 
       = |u (structPivot M hN)| ^ (minAdm M - 1) := by
   rw [radialFactor_abs_det active (structPivot M hN) hp u, hcard]
 
+/-- **Pivot-generic radial det**: at ANY pivot `p₀ ∈ active` (not only `structPivot`), the radial
+blow-up det at `active.card = minAdm` is `|u p₀|^{minAdm−1}`. The radial calculus
+(`radialFactor_abs_det`) is generic in the pivot — `structPivot` was only the chosen symbol — so the
+pivot threads as a parameter. This frees the achiever node to put the radial axis on a
+reader-complement slot (the `PivotNotReader`-free chart construction). -/
+theorem radial_abs_det_minAdm_at (M : Fin (L + 1) → ℕ)
+    (active : Finset (Fin (routeMAmbient M))) (p₀ : Fin (routeMAmbient M)) (hp : p₀ ∈ active)
+    (hcard : active.card = minAdm M) (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det ((radialFactor active p₀).D u).toLinearMap|
+      = |u p₀| ^ (minAdm M - 1) := by
+  rw [radialFactor_abs_det active p₀ hp u, hcard]
+
 /-- **The −1 lemma (abstract radial form)**: the radial exponent vector
 `leafH j := if j = structPivot then active.card − 1 else 0`, at `active.card = minAdm M`, has
 `leafH (structPivot) = minAdm M − 1` — the `NodeAchieverChart.leafH_pivot` field. (The spectator

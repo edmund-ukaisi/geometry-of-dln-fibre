@@ -65,6 +65,34 @@ theorem radialComp_abs_det (M : Fin (L + 1) → ℕ) (hN : 0 < routeMAmbient M)
   congr 1
   exact radial_abs_det_minAdm M hN active hp hcard u
 
+/-- **Pivot-generic route-#1 wiring** (`radialComp_abs_det` at ANY pivot `p₀ ∈ active`, not only
+`structPivot`). Let `φ = B ∘ pivotBlowupOn active p₀`, `B` with fderiv `DB` at the blown-up point,
+`p₀ ∈ active`, `active.card = minAdm`. Then `|det Dφ| = |u p₀|^{minAdm−1} · |det DB|`. Same chain
+rule + `det_comp` proof; the radial calculus is pivot-generic (`radial_abs_det_minAdm_at`), so the
+pivot threads as a parameter — the achiever node may put the radial axis on a reader-complement slot
+(dissolving `PivotNotReader` by membership). -/
+theorem radialComp_abs_det_at (M : Fin (L + 1) → ℕ)
+    (active : Finset (Fin (routeMAmbient M))) (p₀ : Fin (routeMAmbient M)) (hp : p₀ ∈ active)
+    (hcard : active.card = minAdm M)
+    (B : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ))
+    (φ : (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (DB : (Fin (routeMAmbient M) → ℝ) →L[ℝ] (Fin (routeMAmbient M) → ℝ))
+    (hφ : φ = B ∘ pivotBlowupOn active p₀)
+    (hB : HasFDerivAt B DB (pivotBlowupOn active p₀ u)) :
+    |LinearMap.det (fderiv ℝ φ u).toLinearMap|
+      = |u p₀| ^ (minAdm M - 1) * |LinearMap.det DB.toLinearMap| := by
+  have hrad : HasFDerivAt (pivotBlowupOn active p₀)
+      (pivotBlowupOnDeriv active p₀ u) u :=
+    hasFDerivWithinAt_univ.mp
+      (pivotBlowupOn_hasFDerivWithinAt active p₀ Set.univ u)
+  have hcomp : HasFDerivAt φ (DB.comp (pivotBlowupOnDeriv active p₀ u)) u := by
+    rw [hφ]; exact hB.comp u hrad
+  rw [hcomp.fderiv]
+  rw [ContinuousLinearMap.coe_comp, LinearMap.det_comp, abs_mul, mul_comm]
+  congr 1
+  exact radial_abs_det_minAdm_at M active p₀ hp hcard u
+
 /-! ## Non-vacuity: the wiring fires on a concrete factorization
 
 On the identity boundary `B = id`, `φ = pivotBlowupOn active p`, the wiring gives `|det Dφ| =
