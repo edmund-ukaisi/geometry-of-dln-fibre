@@ -303,6 +303,23 @@ theorem preimageOfPivotNeZero_chartMap {center : Finset ι} (pivot : center)
       exact chartMap_of_ne pivot y hi
     simp [preimageOfPivotNeZero, hi, hi_chart, hpivot]
 
+/-- The fixed-pivot center-coordinate inverse is measurable. -/
+theorem measurable_preimageOfPivotNeZero {center : Finset ι} (pivot : center) :
+    Measurable (preimageOfPivotNeZero pivot) := by
+  refine measurable_pi_lambda _ ?_
+  intro i
+  by_cases hi : i = pivot
+  · subst i
+    simpa [preimageOfPivotNeZero] using
+      (measurable_pi_apply pivot : Measurable fun value : center → ℝ => value pivot)
+  · have hfun :
+        (fun value : center → ℝ => preimageOfPivotNeZero pivot value i) =
+          fun value : center → ℝ => value i / value pivot := by
+      funext value
+      simp [preimageOfPivotNeZero, hi]
+    rw [hfun]
+    exact (measurable_pi_apply i).div (measurable_pi_apply pivot)
+
 /-- Existence form of the fixed-pivot center-coordinate inverse. -/
 theorem exists_chartMap_eq_value_of_pivot_ne_zero {center : Finset ι}
     (pivot : center) (value : center → ℝ) (hpivot : value pivot ≠ 0) :

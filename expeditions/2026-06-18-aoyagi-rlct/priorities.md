@@ -10,6 +10,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector measure readout
+
+The passive-variable sector measure lane now has a chart-produced
+punctured-sector readout theorem:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_eq_snd
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean
+```
+
+It works over an arbitrary coordinate-domain measure on
+`eta x (center -> R)`, restricted to the open determinant-and-pivot-nonzero
+sector.  The chart-produced source pushforward is supported on the
+retained-passive p.13 local source, and the inverse residual readout
+pushes it back to the residual-coordinate marginal `Measure.map Prod.snd`.
+
+This removes no determinant-chart Haar or source-prior field.  It is useful
+because it is the honest measure-level consequence of the pointwise
+punctured-sector readout and makes the chart-produced target explicit.  The
+next source-measure frontier remains one of:
+
+```text
+concrete passive-sector Haar/Jacobian transport,
+external/original source-prior comparison by explicit density or mutual AC,
+or a downstream consumer genuinely stated over this chart-produced sector measure.
+```
+
+Do not call this theorem determinant-chart Haar transport, raw/source Haar,
+original source-prior transport, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive open punctured-sector readout
 
 The first passive-variable sector subtarget has landed:

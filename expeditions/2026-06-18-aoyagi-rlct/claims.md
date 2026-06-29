@@ -140,6 +140,32 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive chart-produced punctured-sector
+  measure readout, 2026-06-29.** Lean now proves
+  `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_eq_snd`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean`,
+  plus the helper
+  `SelectedEntrySignedBox.CenterCoord.measurable_preimageOfPivotNeZero` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean`.  The theorem
+  works over an arbitrary coordinate-domain measure on `eta x (center -> R)`,
+  restricted to the open determinant-and-pivot-nonzero sector.  Its
+  chart-produced source pushforward is supported on the retained-passive p.13
+  local source, and the source-side inverse residual readout pushes that
+  measure back to `Measure.map Prod.snd` of the restricted coordinate-domain
+  measure.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`,
+  `git diff --check`, the touched Lean-file forbidden-marker scan, and direct
+  axiom probes passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  read-only review by `Hubble the 3rd` returned PASS.  This is only a chart-produced
+  sector-measure theorem: no determinant-chart Haar transport, raw/source
+  Haar theorem, external/original source-prior comparison, passive Jacobian
+  formula, selected-entry source-image equality, source-rank coverage, normal
+  crossings, pole order, or RLCT is claimed.
 - **Current status addendum, retained-passive source-prior coordinate-domain
   frontier, 2026-06-29.** A controller reproduction and xhigh read-only review
   now sharpen the source-measure boundary at

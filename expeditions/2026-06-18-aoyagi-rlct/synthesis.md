@@ -3,6 +3,54 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Measure Readout - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_eq_snd
+```
+
+`SelectedEntrySignedBoxMeasure.lean` also now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.measurable_preimageOfPivotNeZero
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md
+threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md
+```
+
+The theorem restricts an arbitrary coordinate-domain measure on
+`eta x (center -> R)` to the open determinant-and-pivot-nonzero sector
+`V = Udet inter {z | z.2 pivotNext != 0}`.  The chart-produced source
+pushforward `Measure.map sourceChart (sourceMeasure.restrict V)` is supported
+on the retained-passive p.13 local source, and pushing it further by the
+selected-entry inverse residual readout gives exactly
+`Measure.map Prod.snd (sourceMeasure.restrict V)`.
+
+The proof uses the banked pointwise open punctured-sector readout theorem, the
+generic local-source support lemma over the smaller open sector, the existing
+fixed-base residual-coordinate measurability lemma, and
+`paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct`
+to avoid unfolding the suffix recursion.
+
+Xhigh read-only review by `Hubble the 3rd` returned PASS.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, the touched Lean-file forbidden-marker scan, and direct
+axiom probes passed with `[propext, Classical.choice, Quot.sound]`.
+
+This is a chart-produced sector-measure theorem only.  It proves no
+determinant-chart Haar transport, raw/source Haar theorem, external/original
+source-prior comparison, passive Jacobian formula, selected-entry
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Retained-Passive Open Punctured-Sector Readout - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySource.lean` now proves:

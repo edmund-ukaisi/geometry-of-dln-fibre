@@ -18,6 +18,46 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced punctured-sector measure readout
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`.
+Review:
+`review-a2-retained-passive-chart-produced-punctured-sector-measure-readout.md`.
+
+Lean now exposes:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_eq_snd
+```
+
+and the selected-entry helper:
+
+```text
+SelectedEntrySignedBox.CenterCoord.measurable_preimageOfPivotNeZero
+```
+
+The theorem restricts an arbitrary coordinate-domain measure to the open
+determinant-and-pivot-nonzero sector, pushes it forward by the retained-
+passive source chart, and proves that the source-side inverse residual
+readout pushes the resulting chart-produced measure back to the residual
+coordinate marginal.  The same chart-produced pushforward is supported on the
+retained-passive p.13 local source.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, the touched Lean-file forbidden-marker scan, and direct
+axiom probes passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+read-only review by `Hubble the 3rd` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula,
+selected-entry source-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive open punctured-sector readout
 
 Reproduction:
