@@ -10,6 +10,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive source-edge-family chart-produced source-stratum two-sided iff with continuous density
+
+The source-edge-family chart-produced source-stratum two-sided iff now has a
+positive-continuous-density radius-shrinking wrapper:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+It uses the new elementary helper
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_density_two_sided_bounds_of_continuousAt_pos
+```
+
+to shrink `Rmax` to a positive `R <= Rmax` and produce constants
+`0 < dρ`, `0 <= Dρ` with eventual source-stratum bounds
+`dρ <= density (x,u)` and `density (x,u) <= Dρ` for
+`u in Metric.ball 0 R`.  The two loss comparison bounds may be supplied at
+`Rmax` and are restricted to `R`.
+
+The residual boundedness premise is intentionally not discharged from a bound
+at `Rmax`: the theorem produces `R` first and then keeps residual boundedness
+over the chart-produced measure restricted to `localSource` explicit at that
+same `R`.  Nonclaims remain strict: no residual boundedness proof, no loss
+comparison proof, no selected-entry critical integrability, no signed-box
+source/image equality, no source-rank coverage proof, no external
+source-prior/Jacobian/density transport, no original-loss identification, no
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, retained-passive source-edge-family chart-produced source-stratum two-sided iff
 
 The chart-produced source-stratum selected-entry two-sided iff now has a

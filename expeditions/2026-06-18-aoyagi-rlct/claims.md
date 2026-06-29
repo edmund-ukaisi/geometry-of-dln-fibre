@@ -141,6 +141,28 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, retained-passive source-edge-family
+  chart-produced source-stratum two-sided continuous-density iff,
+  2026-06-29.** Lean now exposes
+  `exists_pos_radius_le_eventually_nhdsWithin_density_two_sided_bounds_of_continuousAt_pos`
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density`.
+  Positive continuity of the transported density at `(base,0)` produces
+  `R <= Rmax` and constants `0 < dρ`, `0 <= Dρ` with eventual source-stratum
+  density bounds at radius `R`.  The two source-stratum loss comparison bounds
+  are supplied at `Rmax` and restricted to `R`.  Residual boundedness is not
+  inferred from `Rmax`; after `R` is produced, residual boundedness over the
+  chart-produced measure restricted to `localSource` remains an explicit
+  premise at `R^2` before the local iff is returned.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-continuous-density-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`.
+  This does not prove residual boundedness, loss comparison bounds,
+  selected-entry critical integrability, signed-box source/image equality,
+  source-rank coverage, external source-prior or Jacobian/density transport,
+  normal crossings, pole order, or RLCT.
+- **Current status addendum, retained-passive source-edge-family
   chart-produced source-stratum two-sided iff, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure`.
   For the concrete retained-passive source-edge-family chart produced from

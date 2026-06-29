@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive source-edge-family chart-produced source-stratum continuous-density two-sided iff
+
+Reproduction:
+`reproduction-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-continuous-density-iff.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`.
+Review:
+`review-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_density_two_sided_bounds_of_continuousAt_pos
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+The helper proves positive lower and finite upper local bounds for a positive
+continuous density after shrinking the regular-coordinate radius.  The
+retained-passive wrapper uses those bounds to call the banked source-edge-
+family chart-produced source-stratum two-sided iff.  It keeps residual
+boundedness explicit at the produced radius `R`; the two source-stratum loss
+bounds are supplied at `Rmax` and restricted to `R`.
+
+Focused builds passed for
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure`.  Goodall the 2nd xhigh
+read-only review passed.  Hygiene gates passed: `scripts/sorries`,
+`git diff --check`, touched-file marker scan, and direct axiom probe with
+`[propext, Classical.choice, Quot.sound]`.
+Nonclaims remain: no residual boundedness or loss comparison proof, no
+selected-entry critical integrability, no signed-box source/image equality, no
+source-rank coverage proof, no external transport theorem, no original-loss
+identification, no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff
 
 Reproduction:

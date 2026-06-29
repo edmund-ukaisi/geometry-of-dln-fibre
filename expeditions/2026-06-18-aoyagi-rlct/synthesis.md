@@ -3,6 +3,59 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff with continuous density - 2026-06-29
+
+`LocalMeasureHandoff.lean` now proves the elementary positive-continuous-
+density shrink:
+
+```text
+exists_pos_radius_le_eventually_density_two_sided_bounds_of_continuousAt_pos
+exists_pos_radius_le_eventually_nhdsWithin_density_two_sided_bounds_of_continuousAt_pos
+```
+
+From `ContinuousAt density (x0,0)`, `0 < density (x0,0)`, and `0 < Rmax`,
+the relative helper returns `R dρ Dρ` with `0 < R`, `R <= Rmax`, `0 < dρ`,
+`0 <= Dρ`, and eventual lower/upper density bounds on `nhdsWithin x0 s` for
+regular coordinates in `Metric.ball 0 R`.
+
+`RetainedPassiveLocalMeasure.lean` now uses this helper in:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density
+```
+
+The theorem produces `R dρ Dρ`; the two source-stratum loss bounds supplied at
+`Rmax` are restricted to `R`, and the banked retained-passive source-edge-
+family source-stratum two-sided iff is called at that produced radius.  The
+residual bound is not inferred from `Rmax`: after `R` is produced, the theorem
+requires residual boundedness over the chart-produced measure restricted to
+`localSource` at `R^2` before returning the local `iff`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-edge-family-chart-produced-source-stratum-two-sided-continuous-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-edge-family-chart-produced-source-stratum-continuous-density-two-sided-iff.md`.
+
+Focused builds passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure
+```
+
+Goodall the 2nd xhigh read-only review passed.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe for the new helper and theorem.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no residual boundedness proof, no loss comparison proof, no
+selected-entry critical integrability theorem, no signed-box source/image
+equality, source-rank coverage proof, external source-prior/Jacobian/density
+transport, original-loss identification, normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff - 2026-06-29
 
 `RetainedPassiveLocalMeasure.lean` now proves:
