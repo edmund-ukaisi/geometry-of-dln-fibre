@@ -119,6 +119,39 @@ theorem stairMap_det (V : ℕ → Type u) [∀ k, AddCommGroup (V k)] [∀ k, Mo
 The general det specializes to the banked `lowerTri3_det` shape and discards genuine nonzero couplings —
 the `n`-fold spine is not a hollow generalization. -/
 
+/-! ## The conjugation bridge: the staircase det on ANY endomorphism via a `LinearEquiv`
+
+The assembly works on the REAL flat space `Fin N → ℝ`, not the abstract `StairProd`. The bridge: if a flat
+endomorphism `D` is CONJUGATE to a `stairMap` through a layer-collecting `LinearEquiv e`
+(`D = e.symm ∘ stairMap ∘ e`), then `det D = ∏_s (f s).det` (conjugation det-invariance). This is the
+`prodEquivOfIsCompl`-gluing escape the `coarse-route-grading-obstruction.md` names: the det is taken at
+the linear-map level, NO single-grading `Matrix.BlockTriangular` required. The caller supplies the
+conjugacy (the flat-space ≃ staircase-product reindex) and the diagonal-block identifications. -/
+
+/-- **The staircase det on a conjugate endomorphism (plain).** If `E` is any f.d. real space, `e : E ≃ₗ
+StairProd V n` a layer-collecting equiv, and `D : E →ₗ E` conjugate to the staircase
+(`D = e.symm ∘ stairMap V n f c ∘ e`), then `det D = ∏_{s : Fin n} (f s).det`. The couplings are
+det-irrelevant; the det is read at the linear-map level. -/
+theorem stairMap_det_conj {E : Type u} [AddCommGroup E] [Module ℝ E] [FiniteDimensional ℝ E]
+    (V : ℕ → Type u) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    [∀ k, FiniteDimensional ℝ (V k)] (n : ℕ) (f : (s : ℕ) → V s →ₗ[ℝ] V s) (c : StairCoupling V n)
+    (e : E ≃ₗ[ℝ] StairProd V n) (D : E →ₗ[ℝ] E)
+    (hD : D = (e.symm : StairProd V n →ₗ[ℝ] E) ∘ₗ stairMap V n f c ∘ₗ (e : E →ₗ[ℝ] StairProd V n)) :
+    LinearMap.det D = ∏ s : Fin n, (f s).det := by
+  have hconj := LinearMap.det_conj (stairMap V n f c) e.symm
+  rw [LinearEquiv.symm_symm] at hconj
+  rw [hD, hconj, stairMap_det]
+
+/-- **The staircase abs-det on a conjugate endomorphism.** The `|·|` form, the shape the interior-det
+headline consumes (`|det Dφ| = ∏_s |engine block det|`). -/
+theorem stairMap_abs_det_conj {E : Type u} [AddCommGroup E] [Module ℝ E] [FiniteDimensional ℝ E]
+    (V : ℕ → Type u) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    [∀ k, FiniteDimensional ℝ (V k)] (n : ℕ) (f : (s : ℕ) → V s →ₗ[ℝ] V s) (c : StairCoupling V n)
+    (e : E ≃ₗ[ℝ] StairProd V n) (D : E →ₗ[ℝ] E)
+    (hD : D = (e.symm : StairProd V n →ₗ[ℝ] E) ∘ₗ stairMap V n f c ∘ₗ (e : E →ₗ[ℝ] StairProd V n)) :
+    |LinearMap.det D| = ∏ s : Fin n, |(f s).det| := by
+  rw [stairMap_det_conj V n f c e D hD, Finset.abs_prod]
+
 /-- **Non-vacuity (`n = 3`, scalar layers, genuine couplings).** On `V s = ℝ` with diagonal scalars
 `a, b, c` (as `mulRight`) and arbitrary nonzero couplings, the 3-fold staircase det is `a·b·c` — the
 couplings drop out, matching `lowerTri3_det`'s shape at general length. -/
