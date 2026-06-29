@@ -140,6 +140,25 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 source-rank-supported endpoint-basis
+  original-loss finite-integral bridge, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_restrict_open_of_sourceRankSupport`.
+  This wraps the endpoint-basis original-loss source-stratum theorem with the
+  existing Case 2 chart-produced source-rank support theorem.  Under explicit
+  rank equations `hprod`, `hr0`, and `hr1`, the chart-produced measure
+  satisfies `mu.restrict sourceStratum = mu`, so the final finite-integral
+  conclusion is over `(mu.restrict U).prod nu` instead of
+  `(mu.restrict (U inter sourceStratum)).prod nu`.  Reproduction and statement
+  card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`;
+  review is at
+  `threads/03-block-product-reduction/review-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`.
+  This is only support bookkeeping: the rank equations are
+  hypotheses, not source-rank coverage; it does not prove selected-entry
+  source/image equality, external source-prior transport, Jacobian comparison
+  for such a prior, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 endpoint-basis original-loss
   finite-integral bridge, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.

@@ -10,6 +10,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 source-rank-supported endpoint-basis original-loss finite-integral bridge
+
+The endpoint-transported continuing Case 2 chart now has a source-rank-
+supported finite-integral wrapper for endpoint-basis original `lossDLN`:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_restrict_open_of_sourceRankSupport
+```
+
+It composes the endpoint-basis original-loss source-stratum theorem with the
+existing Case 2 support theorem
+`measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_restrict_sourceRankStratum_eq_self`.
+Under explicit rank equations `hprod`, `hr0`, and `hr1`, the final product
+measure is rewritten from `(mu.restrict (U inter sourceStratum)).prod nu` to
+`(mu.restrict U).prod nu`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker scan, and direct axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Locke the 3rd xhigh review
+passed.
+
+Nonclaims remain strict: the rank equations are hypotheses, not source-rank
+coverage; no selected-entry source/image equality, external source-prior
+transport, Jacobian comparison for such a prior, normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 endpoint-basis original-loss finite-integral bridge
 
 The endpoint-transported continuing Case 2 chart now has a source-stratum

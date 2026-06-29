@@ -3,6 +3,51 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Source-Rank-Supported Endpoint-Basis Original-Loss Finite-Integral Bridge - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_restrict_open_of_sourceRankSupport
+```
+
+This is a support restatement of the endpoint-basis original-loss
+source-stratum theorem.  Under explicit Case 2 rank equations, the existing
+support theorem gives
+
+```text
+mu.restrict sourceStratum = mu.
+```
+
+For the open set `U` returned by the source-stratum theorem, this rewrites
+
+```text
+mu.restrict (U inter sourceStratum) = mu.restrict U.
+```
+
+The theorem keeps the same target matrix, endpoint bases, chart-produced edge
+family, density, exponent, and radius witnesses as the source-stratum theorem;
+only the final product measure is restated over `(mu.restrict U).prod nu`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`
+passed by xhigh `Locke the 3rd`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: the rank equations are supplied support hypotheses, not source-rank
+coverage; no selected-entry source/image equality, external source-prior
+transport, Jacobian comparison for such a prior, normal crossings, pole order,
+or RLCT.
+
 ## Latest A2 Case 2 Endpoint-Basis Original-Loss Finite-Integral Bridge - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

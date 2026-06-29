@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 source-rank-supported endpoint-basis original-loss finite-integral bridge
+
+Reproduction:
+`reproduction-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`.
+Statement card:
+`statement-card-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`.
+Review:
+`review-a2-case2-original-loss-source-rank-supported-finite-integral-bridge.md`.
+
+Lean now exposes:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_restrict_open_of_sourceRankSupport
+```
+
+This wrapper uses the existing Case 2 source-rank support theorem to rewrite
+the final measure restriction in the endpoint-basis original-loss finite-
+integral bridge from `mu.restrict (U inter sourceStratum)` to `mu.restrict U`.
+The support depends on explicit rank equations `hprod`, `hr0`, and `hr1`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe passed; the theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Locke the 3rd xhigh read-only review
+returned PASS.
+
+Nonclaims: the rank equations are hypotheses, not source-rank coverage; no
+selected-entry source/image equality, external source-prior transport,
+Jacobian comparison for such a prior, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 endpoint-basis original-loss finite-integral bridge
 
 Reproduction:
