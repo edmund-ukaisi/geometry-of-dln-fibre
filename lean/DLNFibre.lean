@@ -112,7 +112,7 @@ import DLNFibre.Core.DeterminantalChart
 import DLNFibre.Core.DeterminantalChartRing
 -- ker of a multivariate aeval = the graph ideal (reusable, arbitrary index type), + the elimination
 -- quotient equiv + graph-ideal primality. The generator-free elimination engine (G2-2).
-import DLNFibre.Core.MvPolynomialKerAeval
+import DLNFibre.Core.MvPolynomial.GraphIdeal
 -- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C`
 -- engine (G2-2).
 import DLNFibre.Core.GraphIdealHeight

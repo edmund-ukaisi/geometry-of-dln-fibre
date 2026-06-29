@@ -1,4 +1,4 @@
-import DLNFibre.Core.MvPolynomialKerAeval
+import DLNFibre.Core.MvPolynomial.GraphIdeal
 import DLNFibre.Core.NullstellensatzCodim
 import Mathlib.RingTheory.MvPolynomial.Localization
 
@@ -17,7 +17,7 @@ This is the lower-bound engine for the localized determinantal base presentation
 graph ideal `J` eliminates the `B22` block, so `height J = #B22block = (p−r)(q−r) = C` — the
 direction the `Iad = J` height-squeeze genuinely needs (the inclusion `J ⊆ Iad` only gives `≤ C`).
 
-Reuses `Core.MvPolynomialKerAeval` (the graph-ideal / quotient package) and
+Reuses `Core.MvPolynomial.GraphIdeal` (the graph-ideal / quotient package) and
 `Core.NullstellensatzCodim` (the field catenary `height_add_ringKrullDim_quotient_eq_card`).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
