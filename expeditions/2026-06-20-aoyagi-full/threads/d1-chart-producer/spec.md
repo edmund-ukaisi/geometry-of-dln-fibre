@@ -6,10 +6,60 @@ adjudications) is BANKED clean-three. Your job: construct the constant-`nReg` ch
 optimal `v` and supply its outputs to the banked consumers, landing the D1 per-point `≥` leg
 `rlctAt_deepest_le_of_optimal` (Skeleton:1172) at L = 2.
 
-**★ READ §★ FIRST — the chart is the INTER-LAYER-STRAIGHTENING (partial Morse-Bott) reduction, NOT the
-cheap per-layer squeeze (KILL-CONDITION fired) and NOT an exact clean-square chart (walled).** The
-banked-consumer routing (§2) and the reductions (§4–6) stand; the CHART CONSTRUCTION (§3) is the heavy
-piece. Do NOT charge a build until the controller scopes the inter-layer-straightening lemma.
+**★ READ §SEL FIRST — the CHOSEN ROUTE is the SELECTED-MINOR IFT quasi-split (the LIGHTER existing-engine
+path; `hcmp` HOLDS, directed-exact verified, NO new Mathlib lemma, NO Morse-Bott S4).** Route history (do
+NOT re-explore): the exact clean-square chart is WALLED (§★ Test 1) and the per-layer-Schur squeeze FAILED
+the kill-condition (§★ Test 2) — but the SELECTED-MINOR quasi-split (full coupled residual, NOT per-layer
+Schur) PASSES because `R=Q(0,·)` is definitionally `F`'s own residual slice (§SEL). The Morse-Bott design
+(§MB) is the FALLBACK, kept build-ready but NOT needed. The banked-consumer routing (§2) + reductions
+(§4–6) stand.
+
+---
+
+## §SEL. ★ CHOSEN ROUTE — selected-minor IFT quasi-split (the LIGHTER path; hcmp HOLDS, directed-exact)
+
+The verify-first-the-cheaper-route check (aa5395, DIRECTED-EXACT on the squeeze's exact failure locus +
+decorrelated Codex hypothesis-withheld) came back **hcmp HOLDS** — D1's chart is the existing
+`rlct_quasiSplit_ge` path, NO new Mathlib lemma, NO Morse-Bott operator recursion.
+
+**The chart:** pick the `nReg` independent gradient minors of `F = dlnLoss` at `v` (the 5 regular
+directions at L=2), IFT-straighten them to coords `s` (so the 5 selected residuals `g_E = s` exactly),
+and set `Q(s,t) := ∑_{remaining ij} g_ij(chart(s,t))²` — the FULL coupled residual (NOT the per-layer
+Schur). Then `F = ∑ s² + Q`, `R(t) := Q(0,t)`.
+
+**Why it beats the squeeze (the structural reason, not coincidence):** `R(t) = Q(0,t)` is DEFINITIONALLY
+the slice of `Q` (the Lean `hR : ∀ t, R t = Q(0,t)`), and `Q` KEEPS the inter-layer coupling
+`(T₂)₂₁·Y₁·Z₁` the per-layer Schur DROPPED. So as `s→0`, `Q(s,t) → Q(0,t) = R(t)` by continuity ⟹
+`R/(∑s²+Q) → 1`, NOT ∞. The Schur-vs-full-quartic zero-set mismatch that killed the squeeze
+STRUCTURALLY CANNOT recur (the comparison object IS `F`'s own residual, same quartic).
+
+**hcmp certificate (directed-exact at (3,3,3)/r=1 MIDDLE stratum, the squeeze's failure locus):**
+- On `{E=0}` (the old λ-arc): `hcmp` is `R ≤ C·R` — TRIVIAL (the Schur's λ=1/λ=2 blow-up cannot recur).
+- OFF `{E=0}`: every numerator monomial of `q(s,t) − q(0,t)` is divisible by some `s_j` (verified
+  `(q−q(0,t))|_{s=0}=0`), `D(0)=1` bounded away from 0 ⟹ `(q_a(s,t)−q_a(0,t))² ≤ L²·∑s²` — exactly
+  `coupled_controls_slice`'s `hlip` shape. Explicit on the `1/10` box: `L ≤ 0.425`, `C = 2L²+2 ≤ 2.36`.
+- WORST-CASE ARC (constructed DIRECTLY, not sampled): full cancellation `q(s,t)=0` forces `s0 → −1` —
+  i.e. `‖s‖ ~ 1` (ORDER ONE), OUTSIDE any small nbhd of `v`. No arc drives `Q(s,t)→0` by nonzero SMALL
+  `s` while `Q(0,t)` stays positive. Codex (hypothesis-withheld) confirmed via the cleaner vector
+  triangle `‖q(0,t)‖ ≤ ‖q(s,t)‖ + L‖s‖ ⟹ R ≤ 2Q + 2L²∑s² ⟹ (∑s²)+R ≤ max(2,1+2L²)(∑s²+Q)`.
+
+**Producer obligation (the build):** build the selected-minor IFT chart (5 minors straightened via the
+C^r IFT `ContDiffAt.toOpenPartialHomeomorph`), supply `hcmp` via `coupled_controls_slice` per inactive
+square (or Codex's cleaner vector-triangle route); the Lipschitz `L` from
+`Convex.norm_image_sub_le_of_norm_fderiv_le` on the box where `D` is bounded away from 0 (`q` is `C^∞`,
+rational with nonvanishing denominator). Then `rlct_quasiSplit_ge` + the banked reductions (§4–6) close.
+
+**FIDELITY CAVEAT for the formaliser (verify-first):** the directed check used a sympy selected-minor
+chart with denominator `D = (X2+1)·(1−Y1·Z2)`. Confirm the ACTUAL Lean chart's denominator matches (or
+that the producer's own IFT chart has `D` bounded away from 0 near `v`) — a mismatch between this sympy
+chart and the Lean `regStraighten`/`coreAbsorb` (if reused) is the one place it could bite. The cleaner
+build is the producer's OWN selected-minor IFT chart (not reusing the gauge-slice `regStraighten`), so
+the denominator is whatever that IFT produces — verify it's `C¹` with nonvanishing det near `v`.
+
+**SCOPE:** L=2, (3,3,3)/r=1 middle (the squeeze's failure locus) certified. The structural reason
+(`R=Q(0,·)` is the slice ⟹ continuity ⟹ ratio→1) is stratum- and dimension-INDEPENDENT, so it should
+extend to the general L=2 optimal `v` — that generalization is NOT certified here (the formaliser
+confirms it builds at general `v`). General-L = #120.
 
 ---
 
