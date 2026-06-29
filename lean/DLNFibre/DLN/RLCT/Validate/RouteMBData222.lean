@@ -1,5 +1,4 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMBInterface
-import DLNFibre.DLN.RLCT.Validate.RouteMBData
 import DLNFibre.DLN.RLCT.Validate.RouteM222Det
 import DLNFibre.DLN.RLCT.Validate.RouteMCardBridge
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurValue
