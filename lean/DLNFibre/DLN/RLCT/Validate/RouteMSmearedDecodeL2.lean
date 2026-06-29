@@ -252,4 +252,30 @@ theorem shiftFull_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (v' : Fin (rou
     exact hrow a j (coordOf_injective M hcoord)
   · intro ha0; exact absurd (Finset.mem_univ a₀) ha0
 
+/-! ## `Rmap` apply forms (the radial blow-up at the three slot types) -/
+
+/-- The pivot coord is in `topCoords` (it is `coordOf (topSlot ⟨0⟩ ⟨0⟩)`). -/
+theorem pivotCoord_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2) :
+    pivotCoord M hrs hr hc ∈ topCoords M hrs := coordOf_topSlot_mem M hrs ⟨0, hr⟩ ⟨0, hc⟩
+
+/-- `Rmap u m = u m` off `topCoords` (spectators: front + bottom; `pivot ∈ topCoords` so `m ≠ pivot`). -/
+theorem Rmap_spectator (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) {m : Fin (routeMAmbient M)} (hm : m ∉ topCoords M hrs) :
+    Rmap M hrs hr hc u m = u m := by
+  have hmp : m ≠ pivotCoord M hrs hr hc := fun h => hm (h ▸ pivotCoord_mem M hrs hr hc)
+  simp only [Rmap, pivotBlowupOn, if_neg hmp, if_neg hm]
+
+/-- `Rmap u (coordOf (topSlot a j)) = zu · HbarUnit a j` (pivot ↦ `z`=`z·1`; else `z·u m`=`z·HbarUnit`). -/
+theorem Rmap_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M 2)) :
+    Rmap M hrs hr hc u (coordOf M (topSlot M hrs a j))
+      = zu M hrs hr hc u * HbarUnit M hrs hr hc u a j := by
+  rw [Rmap, HbarUnit, zu, pivotBlowupOn]
+  by_cases hpiv : coordOf M (topSlot M hrs a j) = pivotCoord M hrs hr hc
+  · -- the pivot entry: `R u (pivot) = u pivot = z`, and `HbarUnit = 1`, so RHS `= u pivot · 1`
+    rw [if_pos hpiv, if_pos hpiv, mul_one]
+  · -- a non-pivot top coord: `R u m = u pivot · u m = z · HbarUnit`
+    have hmem := coordOf_topSlot_mem M hrs a j
+    rw [if_neg hpiv, if_pos hmem, if_neg hpiv]
+
 end DLNFibre.DLN.RLCT
