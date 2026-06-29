@@ -4,31 +4,122 @@ import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.Ideal.GoingDown
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.Algebra.MvPolynomial.Division
-import DLNFibre.Core.IntegralDimension
-import DLNFibre.Core.PolynomialDimension
+import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Basic
 
 /-!
-# Monic-coordinate positioning for a nonzero polynomial (network-free engine)
+# Catenary dimension formula for polynomial rings over a field
 
-The catenary `≥` direction for `MvPolynomial (Fin n) k` (`k` any field) needs a
-**monic-coordinate-positioning** lemma: a nonzero `f` becomes monic in one variable after a
-`k`-algebra coordinate change. Mathlib proves exactly this inside its Noether-normalization file via
-the substitution `T : Xᵢ ↦ Xᵢ + X₀ ^ (N ^ i)` (`i ≠ 0`, `X₀ ↦ X₀`) with `N = 2 + f.totalDegree`,
-but the construction (`T`, `T_leadingcoeff_isUnit`) is **`private`**. This module re-derives the one
-public consequence we need — `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit` — by re-exposing the
-private machinery, valid over **any field** (the substitution uses `X₀` powers, not generic linear
-combinations, so finite fields are fine; no `Infinite k` / `IsAlgClosed`).
+This file proves the **catenary equality** for the polynomial ring `R = k[x₁,…,xₙ]` over any field
+`k`: for a prime `p`,
+$$\operatorname{height} p + \dim (R / p) = n.$$
+Equivalently, on the spectrum, `height p + coheight p = n` — affine space is *equidimensional*, so
+height and coheight are exactly complementary ([Stacks, Tag 00OS]). Mathlib v4.29 has only the `≤`
+half of this (assembled here as `height_add_coheight_le` from
+`Order.krullDim_eq_iSup_height_add_coheight_of_nonempty` and the polynomial dimension
+`dim k[x₁,…,xₙ] = n`); the `≥` half — the content — is proved here by induction on `n`.
 
-The substitution and its degree bookkeeping are copied from
-`Mathlib.RingTheory.NoetherNormalization` (Brasca–Su–Lin–Su, `@[stacks 00OW]`); only the visibility
-changes (the originals are `private`). Everything is over `MvPolynomial (Fin (n+1)) k` and uses
-`finSuccEquiv k n : MvPolynomial (Fin (n+1)) k ≃ₐ[k] (MvPolynomial (Fin n) k)[X]` to read off the
-degree in `X₀`.
+This file mirrors the eventual Mathlib home `Mathlib.RingTheory.KrullDimension.Catenary` and builds
+on `DLNFibre.Core.Dimension.Integral` (integral-extension dimension invariance) and
+`DLNFibre.Core.Dimension.Basic` (`dim k[x₁,…,xₙ] = n`, `dim (R ⧸ p) = coheight p`).
+
+## The `≥` direction, in three pieces
+
+* **Monic positioning** ([Stacks, Tag 00OX], `§ Provenance of the monic-positioning substitution`).
+  For a nonzero
+  `f : k[x₀,…,xₙ]`, a `k`-algebra automorphism `ψ` makes `ψ f` *monic up to a unit* in `x₀` over
+  `k[x₁,…,xₙ]`: `IsUnit (finSuccEquiv k n (ψ f)).leadingCoeff`. Mathlib proves exactly this inside
+  its Noether-normalization file via the substitution `T : xᵢ ↦ xᵢ + x₀^(N^i)` (`i ≠ 0`, `x₀ ↦ x₀`),
+  `N = 2 + f.totalDegree`, but the construction (`T`, `T_leadingcoeff_isUnit`) is **`private`**. We
+  re-expose that machinery in the `MonicPositioning` namespace below — verbatim degree bookkeeping,
+  visibility the only change — and read off the one public consequence
+  `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit`. The substitution uses `x₀`-powers, not generic
+  linear combinations, so it is **characteristic- and field-cardinality-free** (finite fields are
+  fine; no `Infinite k` / `IsAlgClosed`). See `§ Provenance of the monic-positioning substitution`.
+
+* **The one-variable tower** ([Stacks, Tag 00ON],
+  `§ The catenary ≤ direction and the one-variable polynomial tower`). For `A` Noetherian and a
+  prime `P` of `A[X]` over `q = P.under A`,
+  `height P = height q + height (image of P in (A ⧸ q)[X])`. The extension `A → A[X]` is free hence
+  flat, so it satisfies going-down, and this is
+  `Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`. After positioning, the peeled fiber has
+  height `≥ 1` (`one_le_height_map_quotient_of_monic`), and the monic peel preserves the quotient
+  dimension (`ringKrullDim_quotient_eq_under_of_monic`).
+
+* **The induction** (`nat_le_height_add_coheight`). Peels variable `0` at each step, transferring
+  height and quotient dimension across the positioning automorphism.
+
+All statements are at the natural generality (`k : Type*` any field). `IsAlgClosed` is **not**
+needed anywhere — these are pure dimension facts.
 -/
 
 open Polynomial MvPolynomial Ideal Nat RingHom List
+open Order PrimeSpectrum
 
-namespace DLNFibre.Core
+namespace DLNFibre.Core.Dimension
+
+/-! ## The catenary `≤` direction and the one-variable polynomial tower -/
+
+/-- **Catenary `≤` half.** For a prime point `p` of `Spec k[x₁,…,xₙ]`,
+`height p + coheight p ≤ n`: a chain below `p` spliced with a chain above `p` is a chain in
+`Spec R`, whose dimension is `n`. (Order level, on the spectrum point.) -/
+theorem height_add_coheight_le
+    (k : Type*) [Field k] (n : ℕ) (p : PrimeSpectrum (MvPolynomial (Fin n) k)) :
+    (Order.height p : ℕ∞) + Order.coheight p ≤ (n : ℕ∞) := by
+  have hk : Order.krullDim (PrimeSpectrum (MvPolynomial (Fin n) k)) = (n : WithBot ℕ∞) :=
+    ringKrullDim_mvPolynomial_fin_field k n
+  have hsup : Order.krullDim (PrimeSpectrum (MvPolynomial (Fin n) k))
+      = ((⨆ a : PrimeSpectrum (MvPolynomial (Fin n) k),
+          Order.height a + Order.coheight a : ℕ∞) : WithBot ℕ∞) :=
+    Order.krullDim_eq_iSup_height_add_coheight_of_nonempty
+  have hmem : (Order.height p + Order.coheight p : ℕ∞)
+      ≤ ⨆ a : PrimeSpectrum (MvPolynomial (Fin n) k), Order.height a + Order.coheight a :=
+    le_iSup (fun a ↦ Order.height a + Order.coheight a) p
+  have hcoe : ((⨆ a : PrimeSpectrum (MvPolynomial (Fin n) k),
+        Order.height a + Order.coheight a : ℕ∞) : WithBot ℕ∞) = (n : WithBot ℕ∞) :=
+    hsup ▸ hk
+  calc (Order.height p + Order.coheight p : ℕ∞)
+      ≤ ⨆ a : PrimeSpectrum (MvPolynomial (Fin n) k), Order.height a + Order.coheight a := hmem
+    _ = (n : ℕ∞) := by exact_mod_cast hcoe
+
+/-- **Catenary `≤` half, ideal form.** For a prime `p` of `R = k[x₁,…,xₙ]`,
+`Ideal.primeHeight p + dim (R ⧸ p) ≤ n`. -/
+theorem primeHeight_add_ringKrullDim_quotient_le
+    (k : Type*) [Field k] (n : ℕ) (p : Ideal (MvPolynomial (Fin n) k)) [p.IsPrime] :
+    (Ideal.primeHeight p : WithBot ℕ∞) + ringKrullDim ((MvPolynomial (Fin n) k) ⧸ p)
+      ≤ (n : WithBot ℕ∞) := by
+  rw [ringKrullDim_quotient_eq_coheight ⟨p, ‹_›⟩]
+  have h := height_add_coheight_le k n ⟨p, ‹_›⟩
+  rw [Ideal.primeHeight]
+  exact_mod_cast h
+
+/-- **Additive height law on the one-variable tower** ([Stacks, Tag 00ON]). For `A` Noetherian and a
+prime `P` of `A[X]` lying over `q = P.under A`,
+`height P = height q + height (image of P in (A ⧸ q)[X])`. The extension `A → A[X]` is free hence
+flat, so it satisfies going-down (`Algebra.HasGoingDown.of_flat`), and the equality is
+`Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown`. This is the load-bearing additive half of
+the catenary content for polynomial rings — the brick the peel step uses. It is more general than
+the field theorem (any Noetherian `A`), but it is exactly the catenary infrastructure the `≥`
+induction consumes. -/
+theorem height_eq_height_under_add_height_map_quotient
+    {A : Type*} [CommRing A] [IsNoetherianRing A]
+    (P : Ideal (Polynomial A)) [P.IsPrime] :
+    P.height = (P.under A).height +
+      (P.map (Ideal.Quotient.mk ((P.under A).map (algebraMap A (Polynomial A))))).height :=
+  Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (P.under A) P
+
+/-! ## Provenance of the monic-positioning substitution
+
+The construction in this section is **copied verbatim** from
+`Mathlib.RingTheory.NoetherNormalization` (`@[stacks 00OW]`, Brasca–Su–Lin–Su): the substitution
+`T1`/`T` and its degree bookkeeping
+(`lt_up`, `sum_r_mul_ne`, `degreeOf_zero_t`, `degreeOf_t_ne_of_ne`, `leadingCoeff_finSuccEquiv_t`,
+`T_leadingcoeff_isUnit`). The **only** change is visibility: the Mathlib originals are `private`, so
+they are not importable, and the public Noether-normalization API
+(`exists_integral_inj_algHom_of_quotient`) exposes the *quotient* normalization but **not** the
+one-variable monic-positioning automorphism that the catenary `≥`-induction needs. We re-expose the
+machinery here (in the `MonicPositioning` namespace) and read off the single public consequence
+`exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit`. -/
 
 variable {k : Type*} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k)
 variable (v w : Fin (n + 1) →₀ ℕ)
@@ -141,16 +232,17 @@ private lemma T_leadingcoeff_isUnit (fne : f ≠ 0) :
 
 end MonicPositioning
 
-/-- **Monic-coordinate positioning.** For a nonzero `f : MvPolynomial (Fin (n+1)) k` over any field
-`k`, there is a `k`-algebra automorphism `φ` of `MvPolynomial (Fin (n+1)) k` such that the image of
-`φ f` under `finSuccEquiv k n` (the isomorphism isolating variable `0`) has a **unit leading
-coefficient** in `X₀` — i.e. up to a unit scalar, `φ f` is monic in `X₀` over `k[x₁,…,xₙ]`. -/
+/-- **Monic-coordinate positioning** ([Stacks, Tag 00OX]). For a nonzero
+`f : MvPolynomial (Fin (n+1)) k` over any field `k`, there is a `k`-algebra automorphism `ψ` of
+`MvPolynomial (Fin (n+1)) k` such that the image of `ψ f` under `finSuccEquiv k n` (the isomorphism
+isolating variable `0`) has a **unit leading coefficient** in `X₀` — i.e. up to a unit scalar, `ψ f`
+is monic in `X₀` over `k[x₁,…,xₙ]`. Characteristic- and field-cardinality-free. -/
 theorem exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit (fne : f ≠ 0) :
     ∃ ψ : MvPolynomial (Fin (n + 1)) k ≃ₐ[k] MvPolynomial (Fin (n + 1)) k,
       IsUnit (finSuccEquiv k n (ψ f)).leadingCoeff :=
   ⟨MonicPositioning.T f, MonicPositioning.T_leadingcoeff_isUnit f fne⟩
 
-/-! ### Dimension preservation under a monic peel -/
+/-! ## Dimension preservation under a monic peel -/
 
 /-- An ideal of `A[X]` containing an element with unit leading coefficient contains a monic. -/
 theorem exists_monic_mem_of_isUnit_leadingCoeff_mem {A : Type*} [CommRing A]
@@ -169,7 +261,7 @@ theorem ringKrullDim_quotient_eq_under_of_monic {A : Type*} [CommRing A]
     exact mon.quotient_isIntegral hg
   exact ringKrullDim_eq_of_integral_injective hint Ideal.quotientMap_injective
 
-/-! ### The fiber over the contracted prime has height at least one -/
+/-! ## The fiber over the contracted prime has height at least one -/
 
 /-- **Fiber height at least one.** If a prime `P` of `A[X]` (`q = P.under A`) contains a monic
 polynomial `g`, then the fiber ideal in `A[X] ⧸ (q · A[X])` is a nonzero prime, hence has height
@@ -219,7 +311,7 @@ theorem one_le_height_map_quotient_of_monic {A : Type*} [CommRing A]
   rw [hb0, zero_add] at hone
   exact hone
 
-/-! ### Transfer height and quotient dimension across a `k`-algebra equivalence -/
+/-! ## Transfer height and quotient dimension across a `k`-algebra equivalence -/
 
 /-- A `k`-algebra equivalence preserves the height of a prime. -/
 theorem height_map_algEquiv {R S : Type*} [CommRing R] [CommRing S] {k : Type*} [CommRing k]
@@ -235,7 +327,7 @@ theorem ringKrullDim_quotient_map_algEquiv {R S : Type*} [CommRing R] [CommRing 
   ringKrullDim_eq_of_ringEquiv
     (Ideal.quotientEquivAlg p (p.map (e : R →+* S)) e rfl).symm.toRingEquiv
 
-/-! ### The catenary `≥` direction and the full L5.7 equality -/
+/-! ## The catenary `≥` direction and the full equality -/
 
 open scoped Polynomial in
 /-- Induction core for the catenary `≥` direction: for every prime `p` of `k[x₁,…,xₙ]`,
@@ -314,7 +406,7 @@ theorem nat_le_height_add_coheight (k : Type*) [Field k] (n : ℕ)
         _ ≤ P.height + Order.coheight (⟨q, ‹_›⟩ :
             PrimeSpectrum (MvPolynomial (Fin d) k)) := by gcongr
 
-/-- **L5.7 (`≥` direction), order form.** For a prime point `p` of `Spec k[x₁,…,xₙ]`,
+/-- **Catenary `≥` half, order form.** For a prime point `p` of `Spec k[x₁,…,xₙ]`,
 `n ≤ height p + coheight p`. -/
 theorem nat_le_height_add_coheight_spectrum (k : Type*) [Field k] (n : ℕ)
     (p : PrimeSpectrum (MvPolynomial (Fin n) k)) :
@@ -323,17 +415,19 @@ theorem nat_le_height_add_coheight_spectrum (k : Type*) [Field k] (n : ℕ)
   have h := nat_le_height_add_coheight k n p.asIdeal
   rwa [Ideal.height_eq_primeHeight, Ideal.primeHeight] at h
 
-/-- **L5.7 equality, order form.** For a prime point `p` of `Spec k[x₁,…,xₙ]`,
-`height p + coheight p = n`. -/
+/-- **Catenary equality, order form** ([Stacks, Tag 00OS]). For a prime point `p` of
+`Spec k[x₁,…,xₙ]`, `height p + coheight p = n`. -/
+@[stacks 00OS "the order form: `height p + coheight p = n` for `Spec k[x₁,…,xₙ]`"]
 theorem height_add_coheight_eq (k : Type*) [Field k] (n : ℕ)
     (p : PrimeSpectrum (MvPolynomial (Fin n) k)) :
     (Order.height p : ℕ∞) + Order.coheight p = (n : ℕ∞) :=
   le_antisymm (height_add_coheight_le k n p) (nat_le_height_add_coheight_spectrum k n p)
 
-/-- **L5.7 equality (headline, ideal form).** For a prime `p` of `R = k[x₁,…,xₙ]` (`k` any field),
-the height of `p` plus the Krull dimension of `R ⧸ p` equals `n`:
+/-- **Catenary equality (headline, ideal form)** ([Stacks, Tag 00OS]). For a prime `p` of
+`R = k[x₁,…,xₙ]` (`k` any field), the height of `p` plus the Krull dimension of `R ⧸ p` equals `n`:
 `Ideal.height p + ringKrullDim (R ⧸ p) = n`. The catenary identity for affine space — `R` is
 equidimensional, so height and coheight are exactly complementary. -/
+@[stacks 00OS]
 theorem height_add_ringKrullDim_quotient_eq
     (k : Type*) [Field k] (n : ℕ) (p : Ideal (MvPolynomial (Fin n) k)) [p.IsPrime] :
     (p.height : WithBot ℕ∞) + ringKrullDim ((MvPolynomial (Fin n) k) ⧸ p)
@@ -342,9 +436,10 @@ theorem height_add_ringKrullDim_quotient_eq
   have h := height_add_coheight_eq k n ⟨p, ‹_›⟩
   exact_mod_cast h
 
-/-- **L5.7 equality (headline, `primeHeight` form).** The companion equality to the landed `≤` half
-`primeHeight_add_ringKrullDim_quotient_le`: for a prime `p` of `R = k[x₁,…,xₙ]`,
+/-- **Catenary equality (headline, `primeHeight` form)** ([Stacks, Tag 00OS]). The companion to the
+`≤` half `primeHeight_add_ringKrullDim_quotient_le`: for a prime `p` of `R = k[x₁,…,xₙ]`,
 `Ideal.primeHeight p + ringKrullDim (R ⧸ p) = n`. -/
+@[stacks 00OS]
 theorem primeHeight_add_ringKrullDim_quotient_eq
     (k : Type*) [Field k] (n : ℕ) (p : Ideal (MvPolynomial (Fin n) k)) [p.IsPrime] :
     (Ideal.primeHeight p : WithBot ℕ∞) + ringKrullDim ((MvPolynomial (Fin n) k) ⧸ p)
@@ -352,7 +447,7 @@ theorem primeHeight_add_ringKrullDim_quotient_eq
   rw [← Ideal.height_eq_primeHeight]
   exact height_add_ringKrullDim_quotient_eq k n p
 
-/-! ### Non-vacuity witnesses -/
+/-! ## Non-vacuity witnesses -/
 
 /-- Witness for the headline at the bottom prime of `ℚ[x,y]`: `height ⊥ + dim (R ⧸ ⊥) = 0 + 2 = 2`,
 so the equality holds with a concrete nonzero target (`n = 2`), the dimension term carrying it. -/
@@ -386,4 +481,4 @@ height computation is not carried out here.) -/
 example : (Ideal.span {MvPolynomial.X 0} : Ideal (MvPolynomial (Fin 2) ℚ)).IsPrime := by
   rw [Ideal.span_singleton_prime (MvPolynomial.X_ne_zero 0)]; exact MvPolynomial.X_prime
 
-end DLNFibre.Core
+end DLNFibre.Core.Dimension

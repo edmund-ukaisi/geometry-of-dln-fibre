@@ -1,5 +1,6 @@
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.LocalizationKrullDim
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.Localization.Away.AdjoinRoot
@@ -26,7 +27,7 @@ fraction field's base, so `trdeg_add_eq` collapses the relative degree to `0`). 
 
 namespace DLNFibre.Core
 
-open Algebra
+open Algebra Dimension
 
 universe u
 

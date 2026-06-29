@@ -23,7 +23,7 @@ With `v = C + δ = (cCodim d r).toNat + r(d_N + d_0 − r)`
 this is the Lemma-4.6 fibre codimension. When the route-B tide (off thread 27's certificate) supplies
 `rank(fibreJacobian) ≥ C+δ` generically on every component, those hypotheses discharge — via
 `FibreJacobian` H3a (`finrank ker + rank = card`) + generic smoothness
-(`SmoothLocalRelativeDimension`) + the catenary `height P + dim(R⧸P) = card` — and the full identity
+(`Core.Dimension.Smooth`) + the catenary `height P + dim(R⧸P) = card` — and the full identity
 `codim = C+δ` closes with **no re-work here**. Nothing in this module claims `hge`/`hle`.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.

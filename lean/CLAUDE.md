@@ -67,7 +67,8 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
 - **`φ` (U+03C6) as a binder name can hit a lexer reject** (`unexpected token 'φ'; expected identifier`)
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
-  shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
+  shown the problem. Cost two build cycles on the monic-positioning module (now
+  `Core/Dimension/Catenary.lean`).
 - **No off-the-shelf rank-normal-form / "equal rank ⟹ equivalent matrices" in v4.29.** Built at the
   linear-map level in `Core.FibreNormalForm` (`exists_conj`, `exists_baseChange_of_rank_eq`): for a
   rank-`r` `f : (Fin n → k) →ₗ (Fin m → k)`, restrict to `fU : U ≃ range f` (`U` a `ker`-complement,
