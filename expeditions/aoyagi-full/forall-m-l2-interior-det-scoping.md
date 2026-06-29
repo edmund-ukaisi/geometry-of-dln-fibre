@@ -51,3 +51,29 @@ Built by constructing a `BDataAt M t ha p hp1 hp2 p₀ rfin u` term + `interiorD
 ## Level caveat
 This is the interior-det headline (chart-Jacobian level) ONLY. Does NOT transfer to `rlct = ½·codim`
 (needs the cited Aoyagi equality) nor close the lower-leg `rlctAtOn` divergence (where extraCount lives).
+
+## NAMED GAP (2026-06-29, during (b-rest) assembly): the (2,2,2) decoder is E-block-1×1-special
+
+Driving (b-rest) surfaced a genuine scope gap. The (2,2,2) headline uses `genBlkFlatLiveR1`, whose
+`Rmat p = rmatPad (pivotEIndicator)` with `pivotEIndicator = single 1 at (0,0)` — so the ENTIRE
+interior E-block at the pivot boundary is the fixed-1 (zeros elsewhere). At (2,2,2) the interior
+E-block is `(Text1−Text2)×(Wext1−Text2) = 1×1`, so single-pivot = the full E-block, and
+`active = {pivot} ∪ {leaf}` with `card = 1 + Text(L)·Wext(L) = 1 + 2 = 3 = minAdm`.
+
+For M with interior E-block > 1×1 at L=2 (e.g. (3,3,4): E-block `2×2 = 4`, leaf `1×4 = 4`,
+minAdm `8`), `genBlkFlatLiveR1` ZEROES the 3 non-pivot E-block angular coords, so its
+`active = {pivot} ∪ {leaf}` has `card = 1 + 4 = 5 ≠ 8 = minAdm`. The HONEST (3,3,4) chart
+(`RouteMLayerCoverGEL2.leafH334`) confirms the true radial exponent is `minAdm−1 = 7`, with the 7
+active coords spread over the interior E-block angular (`τ`, `Δ`) + leaf — NOT a {pivot}∪{leaf}.
+
+So the ∀M-L2 headline needs the CERT's decoder (`certificate-genM-Bdet.md` §2): the interior E-block
+angular entries READ from x (active, `x_p · angular`) EXCEPT one fixed-1 pivot, + the live leaf. This
+is a NEW decoder (the cert's `B_det M`), NOT a lift of (2,2,2)'s `genBlkFlatLiveR1`. The banked bricks
+(1 cardinality, 2a per-boundary Cgen=schurFrameProd, 3-atom E-block embedding) are decoder-agnostic
+and remain valid/reusable; the gap is the achiever-chart decoder for the headline.
+
+CONSEQUENCE: (c)/(d) cannot proceed on `genBlkFlatLiveR1`. Options: (i) build the cert's `B_det M`
+decoder (the E-block-angular-active + leaf, the genuine ∀M achiever) — substantial new construction,
+touches the achiever chart; (ii) restrict the ∀M-L2 headline to the 1×1-interior-E-block sub-family
+(where `genBlkFlatLiveR1` suffices) — narrower, but `genBlkFlatLiveR1`-faithful. Coordinator call:
+this touches the achiever-chart construction (a coordination point per the standing instruction).
