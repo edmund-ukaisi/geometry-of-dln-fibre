@@ -10,6 +10,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 pointwise source-rank chart readout
+
+The continuing Case 2 selected-entry chart now has a pointwise reusable
+source-image support/readout package.  For an arbitrary selected-entry
+coordinate `yNext`, explicit rank equations
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+r + rank(case2SuccessorSelectedEntryMatrix ... yNext ...) = rEdge 1
+```
+
+give, for the endpoint-transported retained-passive p.13 source edge family,
+membership in both
+
+```text
+paperEndpointFixedBaseSourceRankStratum
+paperEndpointFixedBaseRetainedPassiveP13LocalSource
+```
+
+and fixed-base residual-coordinate readout equal to the selected-entry
+chart-map coordinates through `residualCoordEquiv`.
+
+This packages existing pointwise sockets into the source-image interface used
+by later point-production and finite-integral work.  It is not source-rank
+coverage, selected-entry image equality, exact-rank openness, source-prior or
+Jacobian transport, analytic atlas data, normal crossings, pole order, or
+RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 produced source-rank point readout
 
 The continuing Case 2 point-production theorem now has the intended

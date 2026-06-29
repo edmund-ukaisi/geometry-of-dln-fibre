@@ -11871,3 +11871,27 @@ Nonclaims: no source-rank coverage, no selected-entry source/image equality,
 no exact-rank openness, no successor-rank arithmetic, no source-prior
 transport, no Jacobian comparison, no analytic atlas, no normal crossings, no
 pole order, and no RLCT.
+
+Latest A2 Case 2 pointwise source-rank chart readout:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_chartMap`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-pointwise-source-rank-chart-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-pointwise-source-rank-chart-readout.md`.
+
+Ledger status: pointwise source-image support/readout package.  For an
+arbitrary continuing Case 2 selected-entry chart coordinate `yNext`, it
+packages source-rank-stratum membership under supplied pointwise edge-rank
+equations, retained-passive p.13 local-source membership, and fixed-base
+residual-coordinate readout equal to the selected-entry chart map through
+`residualCoordEquiv`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+
+Nonclaims: no selected-entry source coverage, no source/image equality, no
+exact-rank openness, no successor-rank arithmetic, no source-prior transport,
+no Jacobian comparison, no analytic atlas, no normal crossings, no pole order,
+and no RLCT.
