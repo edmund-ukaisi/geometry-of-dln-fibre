@@ -75,4 +75,15 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   **no closure hypothesis at E1** (the `[IsAlgClosed]→[PerfectField]` framing belongs to E2's
   `SmoothPointRegular`). L2 sweep caught the `FibreSmoothBlock` transitive bite. Re-gate green 3819,
   axiom-clean; E1 was **L3-clean** (committed, pushed, stopped). → E2 dispatched (the entry-2 capstone +
-  `[IsAlgClosed]→[PerfectField]` generalisation — flagged crux, will get a decorrelated review).**
+  `[IsAlgClosed]→[PerfectField]` generalisation — flagged crux, will get a decorrelated review).
+- **2026-06-29 — E2 LANDED → ENTRY-2 CONTENT-COMPLETE** (`b9affa4a`). The capstone
+  `smooth_point_isRegularLocalRing [PerfectField k]` (`@[stacks 00TV]`) + cotangent-finrank companion →
+  new `Core/Dimension/Regular.lean`; local Krull dim from E1's non-circular bridge (no cotangent identity).
+  **Honest surprise on the "crux":** the `[IsAlgClosed]→[PerfectField]` weakening was **already banked** in a
+  prior rlct-bridge commit (`0084b645`) — the source already carried `[PerfectField]`. So E2 = independent
+  verification (per-lemma trace: the lone field-theoretic input is `FormallySmooth.of_perfectField`,
+  `[PerfectField]`-only) + clean re-home + dropping the vestigial `IsAlgClosed.Basic` import (green build
+  confirms). A Bayesian update: the anticipated work was already done; the value was confirming + cleaning it.
+  Re-gate green 3819, axiom-clean; E2 L3-clean. **The dimension stack (entry-1 + entry-2) now stands: 7
+  Mathlib-grade modules `Core.Dimension.{Integral,Basic,Catenary,AffineDomain,Codimension,Smooth,Regular}`.**
+  Capstone audit (08r) in flight; on PASS → RF (consumer retrofit + all cosmetics) → close.**
