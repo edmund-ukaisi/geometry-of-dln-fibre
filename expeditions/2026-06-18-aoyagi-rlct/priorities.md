@@ -10,6 +10,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, local-source selected-entry signed-box two-sided loss-density iff
+
+The selected-entry signed-box local-source socket now has a two-sided iff:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_selectedEntryCenter_signedBox_withDensity_edgeMatrix
+```
+
+It specializes the local-source signed-box two-sided theorem.  The
+selected-entry unit calculation supplies only the monomial lower bound
+needed for residual positivity, using `residual = residualUnit * monomial` and
+`1 <= residualUnit`, then rewriting through the supplied residual readout.  It
+does not assume selected-entry critical inequalities, source-density
+nonnegativity, source-density upper bounds, or positive signed-box radii.
+
+Residual local boundedness and the four two-sided p.13 loss/density bounds
+remain explicit.  Nonclaims remain strict: no selected-entry chart
+construction, no source coverage or source/image equality, no pushforward
+proof, no comparison-bound or residual-boundedness proof, no
+source-prior/Jacobian/density/product-measure transport, no original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, open-source-stratum signed-box two-sided loss-density iff
 
 The source-stratum signed-box socket now has a local open-piece version:

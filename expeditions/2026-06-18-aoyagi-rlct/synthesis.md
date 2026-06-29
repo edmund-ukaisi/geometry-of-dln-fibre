@@ -3,6 +3,59 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 local-source selected-entry signed-box two-sided loss-density iff - 2026-06-29
+
+`SelectedEntrySignedBoxLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_selectedEntryCenter_signedBox_withDensity_edgeMatrix
+```
+
+This is the selected-entry specialization of the local-source signed-box
+two-sided iff.  From
+`SelectedEntrySignedBox.CenterCoord.monomialLower_sourceDensityBounds` and the
+supplied residual readout it obtains
+
+```text
+1 * product_i |y_i|^(2 * lossExp pivot i)
+  <= residualSquareSum(sourceChart y).
+```
+
+It then applies the local-source signed-box two-sided theorem with
+`cres := 1` and `kres := SelectedEntrySignedBox.CenterCoord.lossExp pivot`.
+
+The theorem returns an open `U` with
+
+```text
+actual loss-density integral over (mu.restrict (U ∩ source)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U ∩ source) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-local-source-selected-entry-signed-box-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-local-source-selected-entry-signed-box-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-local-source-selected-entry-signed-box-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxLocalMeasure
+```
+
+Boole xhigh read-only review passed the theorem surface.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe for the new theorem name.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no selected-entry chart construction, source coverage, source/image
+equality, pushforward proof, comparison-bound proof, residual-boundedness
+proof, selected-entry critical-integrability proof, source-prior/Jacobian or
+density transport, product-measure transport, original-loss identification,
+normal crossings, pole order, or RLCT.
+
 ## Latest A2 open-source-stratum signed-box two-sided loss-density iff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:
