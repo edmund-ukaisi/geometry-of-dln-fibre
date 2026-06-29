@@ -3,6 +3,61 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 retained-passive source-stratum chart-produced selected-entry two-sided loss-density iff - 2026-06-29
+
+`RetainedPassiveLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+```
+
+This is the chart-produced specialization of the retained-passive
+source-stratum-bound selected-entry two-sided iff.  It defines
+
+```text
+sourceMeasure := signedBox.withDensity selectedEntrySourceDensity
+mu := Measure.map sourceChart sourceMeasure
+localSource := paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U0 hU0 Cedge
+sourceStratum := paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge
+```
+
+and proves the local-source restriction equality from pointwise chart landing
+in `localSource` plus absolute continuity of `sourceMeasure` with respect to
+the unweighted signed box.  It then applies the retained-passive
+source-stratum-bound selected-entry two-sided theorem.
+
+The theorem returns an open `U` with
+
+```text
+actual loss-density integral over (mu.restrict (U inter sourceStratum)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure
+```
+
+Helmholtz the 2nd xhigh read-only review passed.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe for the new theorem name.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of chart landing, residual readout, residual boundedness,
+or source-stratum comparison bounds; no selected-entry critical inequality or
+residual integrability theorem; no signed-box source/image equality,
+source-rank coverage proof, external transport theorem, original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest A2 retained-passive source-stratum selected-entry two-sided loss-density iff - 2026-06-29
 
 `RetainedPassiveLocalMeasure.lean` now proves:

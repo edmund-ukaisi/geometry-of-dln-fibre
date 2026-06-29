@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-stratum chart-produced
+  selected-entry two-sided loss-density iff, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure`.
+  For the selected-entry weighted signed-box chart-produced measure, pointwise
+  chart landing in the retained-passive p.13 local source derives the
+  local-source restriction equality required by the retained-passive
+  source-stratum-bound selected-entry two-sided iff.  The theorem keeps
+  residual readout, residual boundedness over the chart-produced measure
+  restricted to `localSource`, and the four source-stratum comparison bounds
+  explicit, and returns the local iff between actual loss-density finiteness
+  over `(mu.restrict (U inter sourceStratum)).prod nu` and
+  `residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-source-stratum-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+  This does not prove chart landing, residual readout, comparison bounds,
+  residual boundedness, selected-entry critical integrability, signed-box
+  source/image equality, source-rank coverage, external source-prior or
+  Jacobian/density transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive source-stratum selected-entry
   two-sided loss-density iff, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds`.
