@@ -63,6 +63,20 @@ VERIFIED (numpy, r=1, M=1, boundary blocks, near-basepoint): `(decode(Ψ_conj q)
 schurCorrectionConj(Ψ_conj q)_last) = T1'c − l2Z1c·l2A1c⁻¹·Y1'c = (1−Kc)·S1c` — exactly the keystone's
 conjugated last-layer LDU `hC1`. (The bare l2T1p + conj-correction does NOT — bare-pivot tuning, verified.)
 
+**GAUGE RE-ENCODE — the read↔block OFFSET (genm-l2psi's catch, CONFIRMED, load-bearing).** The gauge tag
+stores the READ, but the conjugated blocks carry a deepest-constant: `l2Y1c = deepBlkY_last + readY_last`.
+So the post-move Y read-TAG is NOT `Y1'c` (the new block) but `readY_last' = Y1'c − deepBlkY_last`. With
+the literal `Y1'c`: (i) the keystone reads `deepBlkY_last + Y1'c ≠ Y1'c` (wrong block), and (ii)
+`psiSplitRawL2CoreConj 0 ≠ 0` — at `q = 0` the tag is `Y1'c(0) = deepBlkY_last ≠ 0` (basepoint BROKEN).
+`deepBlkY_last` need NOT vanish at the L=2 boundary: layer-last `rows ≥ r` vanish ⟹ `deepBlkZ_last =
+deepBlkT_last = 0`, but `deepBlkY_last = toBlocks₁₂` reads `rows < r`, so it survives. VERIFIED:
+`Y1'c(0) = deepBlkY_last` (since `l2Y0c(0) = deepBlkY_0 + 0 = 0`, the correction vanishes at 0), so
+`Y1'c(0) − deepBlkY_last = 0` — basepoint fixed ONLY with the subtraction. The BARE case has NO offset
+(`l2Y1 = readY_last` directly), which is why the literal-block encode is right there but WRONG here.
+ASYMMETRY: the CORE encode IS literal `T1'c` (no subtraction) because `deepBlkT_last = 0` (banked
+`deepBlkT_layerLast_zero`), so `core block = deepBlkT_last + coreLast = coreLast`. ONLY the Y-tag carries
+the `− deepBlkY_last` offset (the move edits only the last-layer Y + core).
+
 Per-stage notes for the fresh hand:
 * `Wc` invertible near 0: `Wc(0) = 1` (l2Z1c(0) = deepBlkZ_1 + 0 = 0 at the boundary), and the det-≠0
   germ via `l2ExtraRadius`-style cutoff (mirror `l2W`'s det-≠0 germ; the bare proof's `hWdet` analogue).
