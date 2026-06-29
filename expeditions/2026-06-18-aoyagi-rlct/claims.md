@@ -8473,6 +8473,46 @@ Lean names:
 and
 `paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center`.
 
+## A2 retained-passive small-box chart-produced residual bound
+
+Status: Proved in Lean locally; focused build passed; independent xhigh review
+passed.
+
+Claim: for the concrete selected-entry chart-produced retained-passive source
+measure, the residual square-sum is bounded by `Rreg^2` a.e. on the
+retained-passive p.13 local-source restriction whenever the signed-box radii
+are bounded by `delta` and
+
+```text
+delta^2 * (1 + #(center.erase pivot) * delta^2) <= Rreg^2.
+```
+
+Lean declarations:
+
+```text
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_of_residual_eq_of_smallBox
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+```
+
+Kill condition: reject any use that treats a bound at `Rmax` as a bound at a
+smaller produced radius, or that applies the theorem to an arbitrary source
+measure rather than the selected-entry chart-produced measure.
+
+Nonclaims: no radius choice, no source-rank coverage, no loss/density
+comparison proof, no external source-prior/Jacobian transport, no normal
+crossings, pole order, or RLCT.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+passed by xhigh `Carson the 2nd`.
+
+## A2 retained-passive Ctop tail endpoint substitution
+
 Reproduction and statement card:
 `threads/03-block-product-reduction/reproduction-a2-product-step-regular-coordinate-inverse-density.md`
 and

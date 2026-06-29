@@ -10,6 +10,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive small-box chart-produced residual bound
+
+The source-side selected-entry residual upper bound has now been pushed
+through the retained-passive chart-produced measure:
+
+```text
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_of_residual_eq_of_smallBox
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+```
+
+The first theorem pushes the selected-entry weighted signed-box a.e. residual
+bound through a supplied source chart and retained-passive residual readout.
+The second derives chart landing and readout from retained-passive
+source-edge-family data.  The third is the fixed-radius source-stratum two-
+sided handoff with the former residual boundedness premise discharged by
+small-box hypotheses.
+
+Radius discipline is strict: the scalar smallness condition is at the same
+`Rreg` used in the local-measure theorem.  This does not prove a bound at a
+post-shrink radius from a bound at `Rmax`; when a continuous-density wrapper
+produces `R <= Rmax`, the small-box inequality must be checked at that
+produced `R`.
+
+Nonclaims remain strict: no choice of `Rres` or `delta`, no loss/density
+comparison proof, no source-rank coverage, no source/image equality, no
+external source-prior/Jacobian transport, no original-loss identification, no
+normal crossings, pole order, or RLCT.
+
+Focused build, sorry gate, whitespace check, code-only forbidden-marker scan,
+direct axiom audit, and xhigh review by `Carson the 2nd` passed.
+
 ## Latest controller decision - 2026-06-29, selected-entry residual upper bound on small signed boxes
 
 The center-indexed selected-entry signed-box model now has a residual

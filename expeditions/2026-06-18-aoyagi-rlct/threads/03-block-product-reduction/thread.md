@@ -15192,6 +15192,48 @@ Review:
 `review-a2-case2-det-chart-selected-entry-chart-produced-residual.md`, PASS by
 xhigh read-only checker `Volta`.
 
+## 2026-06-29 A2 retained-passive small-box chart-produced residual bound
+
+Reproduction:
+`reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Statement card:
+`statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Review:
+`review-a2-retained-passive-small-box-chart-produced-residual-bound.md`,
+PASS by xhigh `Carson the 2nd`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalMeasure.lean
+```
+
+Lean now proves three fixed-radius residual boundedness handoffs:
+
+```text
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_of_residual_eq_of_smallBox
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+```
+
+The generic theorem pushes the selected-entry weighted signed-box residual
+upper bound through a supplied source chart and residual readout.  The
+retained-passive source-edge-family theorem derives the chart landing and
+readout from retained-data fields.  The final theorem feeds this bound to the
+existing source-stratum two-sided handoff, replacing the explicit residual
+boundedness premise by small-box hypotheses at the same `Rreg`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed via `scripts/lb`.
+`scripts/sorries` reported `0 sorry`, `0 #exit`, `0 native_decide`, and
+`0 axiom`; `git diff --check` passed.  Axiom audits for all three new theorem
+names reported only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no choice of signed-box radii or `delta`, no transfer from `Rmax`
+to a smaller produced radius, no source-rank coverage, no source/image
+equality, no external source-prior or Jacobian transport, no normal crossings,
+pole order, or RLCT.
+
 Lean file:
 
 ```text

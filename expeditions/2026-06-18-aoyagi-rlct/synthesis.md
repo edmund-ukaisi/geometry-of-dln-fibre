@@ -57,6 +57,41 @@ box radii, no residual negative-power integrability theorem, no source-prior/
 Jacobian/density transport, no original-loss identification, no normal
 crossings, pole order, or RLCT.
 
+## Latest A2 Retained-Passive Small-Box Chart-Produced Residual Bound
+
+`RetainedPassiveLocalMeasure.lean` now proves the chart-produced residual
+boundedness layer:
+
+```text
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_of_residual_eq_of_smallBox
+residualSquareSum_le_sq_ae_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_of_smallBox
+```
+
+The proof composes the source-side selected-entry weighted signed-box residual
+upper bound with the retained-passive residual readout, pushes the resulting
+a.e. statement through the chart-produced measure, and restricts to the
+retained-passive p.13 local source using chart landing.  The final theorem is
+a fixed-radius version of the source-edge-family source-stratum two-sided
+handoff whose residual boundedness premise is replaced by the small-box
+hypotheses at that same radius.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-small-box-chart-produced-residual-bound.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-small-box-chart-produced-residual-bound.md`
+passed by xhigh `Carson the 2nd`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure`.
+
+Nonclaims: no choice of signed-box radii or `delta`, no transfer from `Rmax`
+to a smaller radius, no source-rank coverage, source/image equality, external
+source-prior or Jacobian transport, original-loss identification, normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff with continuous density - 2026-06-29
 
 `LocalMeasureHandoff.lean` now proves the elementary positive-continuous-
