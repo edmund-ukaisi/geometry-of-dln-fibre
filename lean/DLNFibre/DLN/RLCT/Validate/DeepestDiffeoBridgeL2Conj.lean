@@ -1793,4 +1793,121 @@ theorem hasStrictFDerivAt_psiSplitCutL2Conj_zero (H : Fin (L + 1) → ℕ) (r : 
   rw [add_zero] at hsum
   exact hsum.congr_of_eventuallyEq (by filter_upwards with q; rfl)
 
+/-! ## S1 — the flat conjugate `psiL2Conj = split⁻¹ ∘ psiSplitCutL2Conj ∘ split` + S2/S3/S4 -/
+
+/-- **The conjugated raw flat joint move** `split⁻¹ ∘ psiSplitRawL2CoreConj ∘ split` (the honest map,
+no cutoff — used in the germ where `χc = 1`). -/
+noncomputable def psiRawL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) :=
+  fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
+    (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
+
+/-- **The conjugated χ-cutoff flat joint move** `split⁻¹ ∘ psiSplitCutL2Conj χc ∘ split`. -/
+noncomputable def psiL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) :=
+  fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
+    (psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
+
+/-- **S2 — `psiL2Conj` is `ContDiff ⊤`** (`split⁻¹ ∘ cutoff ∘ split`, all three `ContDiff`). -/
+theorem psiL2Conj_contDiff (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    ContDiff ℝ (⊤ : ℕ∞) (psiL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY) := by
+  have heq : psiL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY
+      = fun w => (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm
+          (psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+            (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w)) := rfl
+  rw [heq]
+  exact (contDiff_deepestSplit_symm H r hr hL (wstarL2 H r B hB hr hL)).comp
+    ((contDiff_psiSplitCutL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY).comp
+      (contDiff_deepestSplit H r hr hL (wstarL2 H r B hB hr hL)))
+
+/-- **S3 — fixpoint** `psiL2Conj wstar = wstar` (`split wstar = 0`, `χc • δc 0 = 0`). -/
+theorem psiL2Conj_fixpoint (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    psiL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY wstar = wstar := by
+  have hwstar' : wstarL2 H r B hB hr hL = wstar := by rw [wstarL2, hwstar]
+  have hbase : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar = 0 := by
+    rw [hwstar']; exact (deepestSplit_mp_basepoint H r hr hL wstar).2
+  simp only [psiL2Conj, hbase, psiSplitCutL2Conj_zero H r B hB hr hL hL2eq hY hZ]
+  rw [← hbase, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).symm_apply_apply]
+
+/-- **S4 — `psiL2Conj` has strict derivative `id` at `wstar`** (chain rule: `split` CLE at `wstar`,
+`id` at the origin via `hasStrictFDerivAt_psiSplitCutL2Conj_zero`, `split⁻¹` CLE; `e = refl`). -/
+theorem psiL2Conj_hasStrictFDerivAt (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    HasStrictFDerivAt (psiL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (ContinuousLinearMap.id ℝ (Fin (flatDim H) → ℝ)) wstar := by
+  have hwstar' : wstarL2 H r B hB hr hL = wstar := by rw [wstarL2, hwstar]
+  have hbase : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar = 0 := by
+    rw [hwstar']; exact (deepestSplit_mp_basepoint H r hr hL wstar).2
+  have hsplit := hasStrictFDerivAt_deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar
+  have hcut0 := hasStrictFDerivAt_psiSplitCutL2Conj_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ
+    (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+  have hcut : HasStrictFDerivAt
+      (psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY))
+      (ContinuousLinearMap.id ℝ (DeepestSplit H r (deepestNGauge H r)))
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar) := by rw [hbase]; exact hcut0
+  have hsymm := hasStrictFDerivAt_deepestSplit_symm H r hr hL (wstarL2 H r B hB hr hL)
+    (psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar))
+  have hcomp := (hsymm.comp wstar (hcut.comp wstar hsplit))
+  refine hcomp.congr_fderiv ?_
+  apply ContinuousLinearMap.ext
+  intro w
+  simp only [ContinuousLinearMap.comp_apply, ContinuousLinearMap.id_apply]
+  exact (deepestSplitCLE H r hr hL).symm_apply_apply w
+
+/-- **Near `wstar` the conjugated cutoff move equals the honest raw move** (`χc = 1` germ). -/
+theorem psiL2Conj_eventuallyEq_psiRawL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    psiL2Conj H r B hB hr hL hL2eq hDA0 hDA1 hY
+      =ᶠ[nhds wstar] psiRawL2Conj H r B hB hr hL hL2eq := by
+  have hwstar' : wstarL2 H r B hB hr hL = wstar := by rw [wstarL2, hwstar]
+  have hbase : deepestSplit H r hr hL (wstarL2 H r B hB hr hL) wstar = 0 := by
+    rw [hwstar']; exact (deepestSplit_mp_basepoint H r hr hL wstar).2
+  have hχ1 : (fun w => ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w) : ℝ)) =ᶠ[nhds wstar] 1 := by
+    have hcont : ContinuousAt (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)) wstar :=
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).continuous.continuousAt
+    have htend : Filter.Tendsto (deepestSplit H r hr hL (wstarL2 H r B hB hr hL))
+        (nhds wstar) (nhds 0) := by rw [← hbase]; exact hcont
+    exact htend.eventually ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY).eventuallyEq_one)
+  filter_upwards [hχ1] with w hw
+  simp only [psiL2Conj, psiRawL2Conj, psiSplitCutL2Conj, psiSplitDeltaL2Conj]
+  have hw' : ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w) : ℝ) = 1 := hw
+  rw [hw', one_smul, add_sub_cancel]
+
 end DLNFibre.DLN.RLCT
