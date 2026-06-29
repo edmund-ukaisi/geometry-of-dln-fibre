@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive residual-coordinate product-measure pushforward
+
+Reproduction:
+`reproduction-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`.
+Statement card:
+`statement-card-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`.
+Review:
+`review-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`.
+
+Lean now exposes:
+
+```text
+measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_eq_smul_restrict_chartMap_image
+```
+
+This theorem maps the concrete passive product-domain chart-produced source
+measure through the fixed-base residual-coordinate map.  The result is the
+selected-entry chart-image measure scaled by `passiveMeasure Set.univ`.  The
+scalar is required for arbitrary passive measures.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`git diff --check`, `scripts/sorries`, and direct axiom probe passed.
+Faraday the 3rd and Dalton the 3rd xhigh read-only scouts returned PASS on
+Lean feasibility and mathematical scope.
+
+Nonclaims: no determinant-chart Haar pushforward, source-prior transport,
+passive Jacobian/source-density accounting, source-rank coverage,
+source-image equality, local inverse/coverage, normal crossings, pole order,
+or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive product-measure support
 
 Reproduction:

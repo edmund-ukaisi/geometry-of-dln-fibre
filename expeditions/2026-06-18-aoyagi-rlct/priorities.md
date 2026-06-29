@@ -10,6 +10,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive residual-coordinate product-measure pushforward
+
+The concrete passive product-domain measure now has its residual-coordinate
+marginal identified:
+
+```text
+measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_eq_smul_restrict_chartMap_image
+```
+
+The theorem proves
+
+```text
+Measure.map residualMap (Measure.map sourceChart (passiveMeasure.prod weightedBox))
+  =
+passiveMeasure Set.univ •
+  ((volume : Measure (center -> R)).restrict
+    (CenterCoord.chartMap pivotNext '' CenterCoord.signedBoxSet Rres)).
+```
+
+The scalar `passiveMeasure Set.univ` is essential for arbitrary passive
+measures; dropping it would require a mass-one/probability hypothesis.  The
+proof uses passive source-chart continuity for map composition, the pointwise
+passive residual readout, `Measure.map_snd_prod`, `Measure.map_smul`, and the
+selected-entry chart-map pushforward theorem.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-coordinate-product-measure-pushforward.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-coordinate-product-measure-pushforward.md
+threads/03-block-product-reduction/review-a2-case2-passive-residual-coordinate-product-measure-pushforward.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  `git diff
+--check`, `scripts/sorries`, and direct axiom probe passed.  Xhigh scouts
+`Faraday the 3rd` and `Dalton the 3rd` passed on feasibility and scope.
+
+Next priority remains the harder source-measure frontier: determinant-chart
+pushforward/full passive chart image/local inverse and source-prior/Jacobian
+accounting.  Do not treat this residual marginal as determinant-chart Haar
+transport, original source-prior transport, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive product-measure support
 
 The concrete passive-domain product measure is now named and connected to the

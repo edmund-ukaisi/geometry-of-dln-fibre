@@ -3,6 +3,61 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Residual-Coordinate Product-Measure Pushforward - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now identifies the
+residual-coordinate marginal of the concrete passive product-domain
+chart-produced source measure:
+
+```text
+measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_eq_smul_restrict_chartMap_image
+```
+
+For
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+mu = Measure.map sourceChart sourceMeasure
+```
+
+the theorem proves
+
+```text
+Measure.map residualMap mu
+  =
+passiveMeasure Set.univ •
+  ((volume : Measure (center -> R)).restrict
+    (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+      SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres)).
+```
+
+The passive mass scalar is the key mathematical point: the theorem keeps
+`passiveMeasure` arbitrary, so second-coordinate projection of the product
+measure yields `passiveMeasure Set.univ • weightedBox`.  The proof composes
+the chart-produced source map with the residual coordinate map, rewrites the
+composition pointwise by the passive residual readout, factors through
+`Prod.snd`, applies `Measure.map_snd_prod` and `Measure.map_smul`, and then
+uses the selected-entry chart-map pushforward theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check` passed.  `scripts/sorries` reports
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh feasibility/scope scouts `Faraday the 3rd` and `Dalton the 3rd` passed.
+
+Nonclaims: no determinant-chart Haar pushforward, no raw/source Haar theorem,
+no original source-prior transport, no passive Jacobian/source-density
+accounting for an ambient prior, no source-rank coverage, no source-image
+equality, no local inverse/coverage, no normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Case 2 Passive Product-Measure Support - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has the concrete passive

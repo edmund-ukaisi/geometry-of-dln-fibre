@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive residual-coordinate product-measure
+  pushforward, 2026-06-29.** Lean now exposes
+  `measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_eq_smul_restrict_chartMap_image`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For the concrete passive product-domain source measure
+  `passiveMeasure.prod weightedBox`, the residual-coordinate pushforward of
+  the chart-produced source measure is
+  `passiveMeasure Set.univ` times the selected-entry chart-image measure.  The
+  scalar is essential because `passiveMeasure` is arbitrary.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-residual-coordinate-product-measure-pushforward.md`.
+  Focused build and xhigh feasibility/scope reviews passed.  This is a
+  residual-coordinate marginal for a chart-produced product-domain measure
+  only: no determinant-chart Haar pushforward, raw/source Haar theorem,
+  original source-prior transport, passive Jacobian/source-density accounting
+  for an ambient prior, source-rank coverage, source-image equality, local
+  inverse/coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive product-measure support,
   2026-06-29.** Lean now exposes
   `case2PassiveDomainProductMeasure_eq_prod_withDensity_sourceDensity`,
