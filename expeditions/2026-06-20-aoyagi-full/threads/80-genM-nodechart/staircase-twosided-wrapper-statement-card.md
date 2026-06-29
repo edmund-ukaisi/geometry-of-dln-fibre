@@ -161,6 +161,33 @@ why #1 must be designed before #5 can be stated cleanly (matches the coordinator
 Staircase two-sided conjugacy CONFIRMED (again) as the sound assembly; the `det_comp` bypass is not easier
 (it needs value equality of the whole nonlinear map — the same/worse cast cost).
 
+## BUILD-READY #1 SPEC (genm-detradj radial-model cert, exact at (2,2,2)/(3,3,3,3)/(2,3,2) + Codex)
+Cert scripts: `origin/worktree-agent-a29183139e1c0384f`, `pnp-radial-adjudication/` (`pnp_final_cert.py`,
+`pnp_branch_distinction.py`, `pnp_u_linear.py`). The radial model is PINNED — corrects my earlier sketch:
+
+- **`V 0 = ℝ^minAdm`** (NOT `ℝ`). `active = {structPivot} ∪ {ALL free entries of the u-scaled Rmat_k
+  (k≥1) + Rfin_L}` — the E-block + leaf DOF, SPREAD across boundaries. `f 0 = pivotBlowupOn(active,
+  structPivot)`, `|det f 0| = |u|^{minAdm−1}` via `radial_abs_det_minAdm` + `active.card = minAdm` (the
+  count is the BANKED `leafH = minAdm−1`, NOT re-derived per-M). The radial-blowup model is
+  `pbon(active,p,vec) i = vec[p]` (i=p) / `vec[p]·vec[i]` (i∈active) / `vec[i]` (else).
+- **CRITICAL: `active ≠ deepestCoords`** (that's the CLEAN branch). INTERIOR branch they DIFFER:
+  (2,2,2) active `{0,6,7}` card 3 ≠ deepest A_1 dim 4; (3,3,3,3) active `{0,13,14,24,25,26}` card 6 ≠
+  deepest A_2 dim 9. Build `active = {pivot} ∪ {R/Rfin free DOF}`, NOT a single layer's coords.
+- **`eIn` (input, from `chartIdx`):** regroup `ChartIdx → V 0 = radial DOF (pivot + R/Rfin free, INCLUDING
+  the E-entries)`, `V(s+1) = K/X/N only` (u-FREE). NOTE the E-DOF routes into `V 0`, NOT `V(s+1)` — so
+  `V(s+1)` is `K/X/N`, NOT the full `FrameParam`-with-E my earlier sketch had.
+- **`eOut` (output, from `paramsFlat`):** regroup `FlatIdx`; `|det(eOut.symm∘eIn)| = 1` (two-sided,
+  partitions differ); the shear `c` absorbs the mismatch (the `−dN·W` + the additive `C_{k+1}`).
+- **`f(s+1) = schurFrameDeriv ∘ lduCore`, u-FREE**, `|det K_s|^{r_s+c_s}·∏_i|q_{s,i}|^{2(t_s−1−i)}`.
+  `∏_s` = the headline ∀M.
+- **LOAD-BEARING hypotheses to SUPPLY** (all machine-verified in the cert): (i) `Bmat`/`Nblk`/`Wblk`/K-core
+  u-independent; (ii) `R`/`Rfin` DOF disjoint from the other coords; (iii) `u` linear (no `u·x_j·x_k`) —
+  holds because `C_{k+1}` enters `A_k` only ADDITIVELY via `C_{k+1} − N_k·W_k` (`pnp_u_linear.py`:
+  max u-degree 1, no `u·(2+ free coords)`).
+
+HOLD: one final backstop pending (genm-detradj's 4th tuple, wide interior both-drop e.g. (3,4,3,3),
+confirming `structPivot` is never inside a K-core — would reshape the `eIn` routing if it breaks).
+
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
   `hasFDerivAt_Cgen_interior`/`_leaf` + `hasFDerivAt_Agen_interior`/`_leaf` (the threaded chain-layer
