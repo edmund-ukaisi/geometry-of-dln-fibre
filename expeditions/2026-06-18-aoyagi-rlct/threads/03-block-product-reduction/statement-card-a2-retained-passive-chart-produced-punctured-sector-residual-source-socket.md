@@ -9,7 +9,7 @@
 >
 > - **Lean:** target
 >   `DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_marginal`
->   (`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` @ `6ccf0331`)
+>   (`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` @ `f82c8076`)
 > - **Gloss.** The theorem calls the existing punctured-sector readout theorem
 >   to get an open sector `V`.  For
 >   `mu = Measure.map sourceChart (sourceMeasure.restrict V)` and
