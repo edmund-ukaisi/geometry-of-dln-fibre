@@ -13,3 +13,12 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   reused. Disposition docs folded in (`docs/policies/library-building.md`; CLAUDE.md "Build the buildable"
   bullet; controller.md "Makes the build-vs-cite call"; README/bedrock kin). Rung-0 de-risk launched +
   Mathlib in-flight check. Hourly controller-loop cron set.
+- **2026-06-29 — R0 (gate) PASSED.** De-risk probe confirmed `NullstellensatzCodim`'s catenary/codimension
+  core is field-general (exact minimal hyps `[Field k] [Finite σ]`; `[CharZero]` absent; axiom-clean). Clean
+  **3-band split** pins R4 (field-general core → `Core.Dimension.Codimension`; a thin `[IsAlgClosed]`
+  geometric/non-vacuity layer that feeds no core theorem; DLN consumers retrofit). Two findings: the DLN
+  consumers' `[IsAlgClosed]` is **provably dead weight** (RF generalisation win), and the
+  `[IsAlgClosed]→[PerfectField]` win is an **E2-only** concern (the codim bridge never carries it). Mathlib
+  in-flight check: `IsCatenary` absent + community-planned (build-worthy/upstream-worthy); regular local
+  rings recently landed (entry-2 foundation). Ladder commits → **R1 dispatched** (integral-extension
+  dimension invariance → `Core.Dimension.Integral`).

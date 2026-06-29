@@ -16,7 +16,7 @@ calling them "general" today would overclaim. Build-vs-cite line: entries 1–2 
 
 | rung | item | source module(s) | target namespace | status |
 |------|------|------------------|------------------|--------|
-| **R0** | **gate** — throwaway generalisation pass on `NullstellensatzCodim` (strip `RepCoord d`, `σ : Type*`, general `k`, comment out the `[IsAlgClosed]` geometric reading) → confirm the field-general core's *exact* minimal hyps; **revert** (finding is the deliverable). + Mathlib master/PR in-flight check for `IsCatenary` / the catenary equality. | `NullstellensatzCodim` | — | **in flight** |
+| **R0** | **gate** — throwaway generalisation pass on `NullstellensatzCodim` (strip `RepCoord d`, `σ : Type*`, general `k`, comment out the `[IsAlgClosed]` geometric reading) → confirm the field-general core's *exact* minimal hyps; **revert** (finding is the deliverable). + Mathlib master/PR in-flight check for `IsCatenary` / the catenary equality. | `NullstellensatzCodim` | — | **closed — CONFIRMED (2026-06-29); see R0 outcome below** |
 | R1 | integral-extension dimension invariance (`ringKrullDim_eq_of_integral_injective` + going-up chain-lift) | `IntegralDimension` | `Core.Dimension.Integral` (↔ `Mathlib.RingTheory.KrullDimension.Integral`) | pending |
 | R2 | polynomial-ring catenary (L5) + monic positioning — handle the `private` Mathlib Noether-normalization substitution **in-repo** (re-derive / use the public `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit`); do **not** block on an upstream de-privatise PR | `NoetherMonicPositioning`, `PolynomialDimension` | `Core.Dimension.Catenary` | pending |
 | R3 | finite-type-domain catenary (L4d) + closed-point corollaries (`height_eq_ringKrullDim_of_isMaximal`, local↔global) | `AffineDomainDimension` | `Core.Dimension.Catenary` | pending |
@@ -24,6 +24,34 @@ calling them "general" today would overclaim. Build-vs-cite line: entries 1–2 
 | E1 | étale local-dimension bridge + `Ideal.height_eq_under_of_etale` | `FlatQuasiFiniteHeight`, `SmoothLocalRelativeDimension` | `Core.Dimension.Smooth` | pending |
 | E2 | smooth point ⟹ regular local ring, with the **`[IsAlgClosed] → [PerfectField]`** generalisation | `SmoothPointRegular` | `Core.Dimension.Smooth` | pending |
 | RF | retrofit DLN consumers (`codimRep`/`codimRepCanonical`/orbit-dim/fibre-codim) to tag to the general core; delete bespoke; green-gate | (consumers) | — | pending |
+
+## R0 outcome — CONFIRMED, boundary pinned (2026-06-29)
+
+The de-risk probe confirmed (stronger than the recon): `NullstellensatzCodim`'s catenary/codimension **core**
+is field-general — exact minimal hyps **`[Field k] [Finite σ]`** (the index `σ` is already `Type*`;
+`[CharZero]` is absent; trial build green + axiom-clean `[propext, Classical.choice, Quot.sound]`). Clean
+**3-band split** (a clean cut, not a tangle — the geometric band feeds no core theorem):
+
+- **field-general core** → extract to `Core.Dimension.Codimension` (R4): `IsZariskiClosed`/`IsZariskiIrreducible`,
+  `isZariskiIrreducible_iff_isPrime_vanishingIdeal`, `vanishingIdeal_isRadical` (already general —
+  no-nilpotents, not Nullstellensatz), `ringKrullDim_mvPolynomial_finite`,
+  `height_add_ringKrullDim_quotient_eq_card`, `varietyDim`, `height_vanishingIdeal_add_varietyDim_eq_card`,
+  `height_vanishingIdeal_eq_card_sub_varietyDim`.
+- **`[IsAlgClosed]` geometric/non-vacuity layer** (stays): `nonempty_of_isZariskiClosed_of_isPrime_vanishingIdeal`,
+  `vanishingIdeal_univ_eq_bot` (true need is `[Infinite k]`), the non-vacuity `example`.
+- **DLN consumers** → retrofit (RF): `codimRep_*` — their `[IsAlgClosed]` is **dead weight** (proved removable
+  via `_NOALG` variants); RF drops it. A free generalisation win.
+
+Plan corrections from R0:
+- The **`[IsAlgClosed] → [PerfectField]` win is E2-only** (smooth/étale stack), NOT the codim bridge: the
+  geometric layer's `[IsAlgClosed]` routes through Mathlib's `vanishingIdeal_zeroLocus_eq_radical` (no
+  `PerfectField` path). R4 unaffected (its core never touches it).
+- **name=content fix for R4:** `vanishingIdeal_isRadical`'s docstring is stale ("over an algebraically closed
+  field / strong Nullstellensatz") — the proof is field-general; fix on extract.
+- Source already general: the underlying L5 catenary `height_add_ringKrullDim_quotient_eq`
+  (`Core.NoetherMonicPositioning`) is `(k : Type*) [Field k]` — R2/R3 inherit.
+
+**Gate PASSED → the ladder commits.**
 
 ## Highest-suspicion (decorrelated-review the crux)
 
