@@ -25,9 +25,9 @@ import DLNFibre.Core.CThetaThetaBridge
 import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Catenary
+import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.AffineDomainDimension
 import DLNFibre.Core.FlatQuasiFiniteHeight
 import DLNFibre.Core.SmoothLocalRelativeDimension
 import DLNFibre.Core.SmoothPointRegular

@@ -25,7 +25,8 @@ on `DLNFibre.Core.Dimension.Integral` (integral-extension dimension invariance) 
 
 ## The `≥` direction, in three pieces
 
-* **Monic positioning** ([Stacks, Tag 00OX], `§ Monic positioning`). For a nonzero
+* **Monic positioning** ([Stacks, Tag 00OX], `§ Provenance of the monic-positioning substitution`).
+  For a nonzero
   `f : k[x₀,…,xₙ]`, a `k`-algebra automorphism `ψ` makes `ψ f` *monic up to a unit* in `x₀` over
   `k[x₁,…,xₙ]`: `IsUnit (finSuccEquiv k n (ψ f)).leadingCoeff`. Mathlib proves exactly this inside
   its Noether-normalization file via the substitution `T : xᵢ ↦ xᵢ + x₀^(N^i)` (`i ≠ 0`, `x₀ ↦ x₀`),
@@ -36,7 +37,8 @@ on `DLNFibre.Core.Dimension.Integral` (integral-extension dimension invariance) 
   linear combinations, so it is **characteristic- and field-cardinality-free** (finite fields are
   fine; no `Infinite k` / `IsAlgClosed`). See `§ Provenance of the monic-positioning substitution`.
 
-* **The one-variable tower** ([Stacks, Tag 00ON], `§ Polynomial tower`). For `A` Noetherian and a
+* **The one-variable tower** ([Stacks, Tag 00ON],
+  `§ The catenary ≤ direction and the one-variable polynomial tower`). For `A` Noetherian and a
   prime `P` of `A[X]` over `q = P.under A`,
   `height P = height q + height (image of P in (A ⧸ q)[X])`. The extension `A → A[X]` is free hence
   flat, so it satisfies going-down, and this is

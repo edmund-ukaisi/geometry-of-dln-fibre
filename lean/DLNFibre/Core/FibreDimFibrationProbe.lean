@@ -3,7 +3,7 @@ import DLNFibre.Core.DeterminantalStratumDim
 import DLNFibre.Core.FibreCodim
 import DLNFibre.Core.FibreHeightDirect
 import DLNFibre.Core.DeepChartRing
-import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.AffineNoetherRank
 import DLNFibre.Core.SmoothLocalRelativeDimension
 
@@ -20,7 +20,7 @@ contract.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 

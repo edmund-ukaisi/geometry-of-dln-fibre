@@ -10,54 +10,67 @@ import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.Dimension.Catenary
 
 /-!
-# Affine-domain dimension formula / equidimensionality (network-free engine)
+# Dimension formula / equidimensionality for finite-type domains over a field
 
-The **L4d** layer: lift the polynomial-ring catenary equality
-`height_add_ringKrullDim_quotient_eq` (L5, `Core.Dimension.Catenary`) to a finite-type domain
-`A = R ⧸ I` over a field (`R = MvPolynomial (Fin n) k`, `I` prime). For a prime `p` of `A`:
+This file lifts the polynomial-ring catenary equality
+`DLNFibre.Core.Dimension.height_add_ringKrullDim_quotient_eq` (`Core.Dimension.Catenary`) to an
+arbitrary **finite-type domain** `A = k[x₁,…,xₙ] ⧸ I` over a field `k` (`I` prime). For a prime `p`
+of `A`:
 
 * `affine_domain_height_add_ringKrullDim_quotient_eq` :
-    `Ideal.height p + ringKrullDim (A ⧸ p) = ringKrullDim A`  (equidimensionality).
+    `Ideal.height p + ringKrullDim (A ⧸ p) = ringKrullDim A` (the dimension formula —
+    equidimensionality, [Stacks, Tag 00OS]).
 
 * `height_eq_ringKrullDim_of_isMaximal` : for `m` maximal, `Ideal.height m = ringKrullDim A`
-  (equidimensionality at closed points).
+  (every maximal ideal has height `dim A` — equidimensionality at closed points, [Stacks, Tag 00OS]).
 
 * `ringKrullDim_localizationAtPrime_isMaximal_eq` : for `m` maximal,
   `ringKrullDim (Localization.AtPrime m) = ringKrullDim A` (local ↔ global dimension at a closed
-  point) — the feed-in to the smooth ⟹ regular bridge.
+  point, [Stacks, Tag 00OS] — `dim A = dim Aₘ`). This is the feed-in to the smooth ⟹ regular-local
+  bridge.
 
-## Route — Noether normalization + integral height transport (reusing L5, no catenary re-induction)
+[Stacks, Tag 00OS] (Lemma 10.114.4) is exactly the equidimensionality statement for a finite-type
+domain over a field: every maximal chain of primes has length `dim S`, equivalently `dim S = dim Sₘ`
+for every maximal `m`. The dimension formula `height p + dim (A ⧸ p) = dim A` is its restatement at
+an arbitrary prime; the closed-point corollaries (`m` maximal, `dim (A ⧸ m) = 0`) are the verbatim
+`dim S = dim Sₘ`.
 
-The single new ingredient is the **integral height-transport** lemma
-`height_under_eq_of_isIntegral`: for an integral injective extension `R → S` with `R` an
-integrally-closed Noetherian domain and `S` a domain, a prime `P` of `S` and its contraction
-`p = P.under R` have equal height. The `≤` direction is going-up (`comap` is strictly monotone on
-the spectrum, `strictMono_comap_of_isIntegral`); the `≥` direction is going-down, supplied by
-Mathlib's classical theorem `Algebra.HasGoingDown` for integral extensions of an integrally closed
-domain (`@[stacks 00H8]`) via `Ideal.exists_ltSeries_of_hasGoingDown`. No new catenary induction is
-needed — the polynomial-ring catenary content is L5, reused as a black box.
+This file mirrors the eventual Mathlib home for the dimension theory of finitely generated algebras
+(distinct from `Mathlib.RingTheory.KrullDimension.Catenary`, the polynomial-ring identity), and builds
+on `Core.Dimension.Catenary` (the polynomial-ring catenary equality, reused as a black box — no
+catenary re-induction), `Core.Dimension.Integral` (integral-extension dimension invariance), and
+`Core.Dimension.Basic` (`dim k[x₁,…,xₙ] = n`).
+
+## Route — Noether normalization + integral height transport
+
+The single new ingredient is the **integral height-transport** lemma `height_under_eq_of_isIntegral`:
+for an integral injective extension `R → S` with `R` an integrally-closed Noetherian domain and `S` a
+domain, a prime `P` of `S` and its contraction `p = P.under R` have equal height. The `≤` direction is
+going-up (`comap` is strictly monotone on the spectrum, `strictMono_comap_of_isIntegral`); the `≥`
+direction is going-down, supplied by Mathlib's classical `Algebra.HasGoingDown` for integral
+extensions of an integrally closed domain ([Stacks, Tag 00H8]) via
+`Ideal.exists_ltSeries_of_hasGoingDown`.
 
 Given `A = R ⧸ I`, Noether-normalize (`exists_integral_inj_algHom_of_quotient`) to an integral
 injective `g : B = MvPolynomial (Fin s) k →ₐ[k] A`. The base `B` is a polynomial ring over a field,
 hence an integrally-closed (UFD) Noetherian domain. With `q = p.comap g`, height-transport gives
 `height_A p = height_B q`; the induced quotient map `B ⧸ q ↪ A ⧸ p` is integral injective so
-`dim (A ⧸ p) = dim (B ⧸ q)` (L5.4); and `dim A = dim B = s` (L5.4 + L5.0). Then L5 on `B` at the
-prime `q` (`height_B q + dim (B ⧸ q) = s`) assembles the equality additively, no `ℕ∞` subtraction.
+`dim (A ⧸ p) = dim (B ⧸ q)`; and `dim A = dim B = s`. Then the polynomial-ring catenary equality on
+`B` at the prime `q` (`height_B q + dim (B ⧸ q) = s`) assembles the formula additively — no `ℕ∞`
+subtraction.
 -/
 
 open PrimeSpectrum
 
-namespace DLNFibre.Core
-
-open Dimension
+namespace DLNFibre.Core.Dimension
 
 /-! ### Integral height transport (the one new general brick) -/
 
 /-- **Integral height transport.** For an integral injective extension `R → S` with `R` an
 integrally-closed Noetherian domain and `S` a domain, a prime `P` of `S` and its contraction
 `P.under R` have equal height. The `≤` direction is going-up (`comap` strictly monotone); the `≥`
-direction is going-down (`Algebra.HasGoingDown`, present for integral extensions of an integrally
-closed domain). -/
+direction is going-down ([Stacks, Tag 00H8], `Algebra.HasGoingDown`, present for integral extensions
+of an integrally closed domain). -/
 theorem height_under_eq_of_isIntegral {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
     [IsDomain R] [IsDomain S] [IsIntegrallyClosed R] [IsNoetherianRing R]
     [Algebra.IsIntegral R S] (hinj : Function.Injective (algebraMap R S))
@@ -107,11 +120,12 @@ theorem quotientMap_under_isIntegral_injective {B A : Type*} [CommRing B] [CommR
 
 /-! ### The affine-domain dimension formula -/
 
-/-- **Affine-domain dimension formula (equidimensionality).** For `R = MvPolynomial (Fin n) k`
-(`k` a field), a prime `I`, the domain `A = R ⧸ I`, and a prime `p` of `A`:
-`Ideal.height p + ringKrullDim (A ⧸ p) = ringKrullDim A`. Proved by Noether-normalizing `A`,
-transporting the height of `p` to its contraction in the polynomial base, and reusing the L5
-polynomial-ring catenary equality on the base. -/
+/-- **Affine-domain dimension formula (equidimensionality)** ([Stacks, Tag 00OS]). For
+`R = MvPolynomial (Fin n) k` (`k` a field), a prime `I`, the finite-type domain `A = R ⧸ I`, and a
+prime `p` of `A`: `Ideal.height p + ringKrullDim (A ⧸ p) = ringKrullDim A`. Proved by
+Noether-normalizing `A`, transporting the height of `p` to its contraction in the polynomial base,
+and reusing the polynomial-ring catenary equality on the base. -/
+@[stacks 00OS "the dimension formula `height p + dim (A ⧸ p) = dim A` for a finite-type domain"]
 theorem affine_domain_height_add_ringKrullDim_quotient_eq
     (k : Type*) [Field k] (n : ℕ) (I : Ideal (MvPolynomial (Fin n) k)) [I.IsPrime]
     (p : Ideal ((MvPolynomial (Fin n) k) ⧸ I)) [p.IsPrime] :
@@ -147,16 +161,18 @@ theorem affine_domain_height_add_ringKrullDim_quotient_eq
       (f := Ideal.quotientMap p g.toRingHom le_rfl) hbar_int hbar_inj
     -- `quotientMap p g le_rfl : (B ⧸ p.comap g) →+* (A ⧸ p)`, and `q = p.comap g`.
     rwa [← hq] at h
-  -- L5 on the polynomial base `B` at the prime `q`.
-  have hL5 : (q.height : WithBot ℕ∞) + ringKrullDim (B ⧸ q) = (s : WithBot ℕ∞) :=
+  -- The polynomial-ring catenary equality on the base `B` at the prime `q`.
+  have hcat : (q.height : WithBot ℕ∞) + ringKrullDim (B ⧸ q) = (s : WithBot ℕ∞) :=
     height_add_ringKrullDim_quotient_eq k s q
   -- Assemble additively.
-  rw [hdimA, ← hL5, htrans, hdimQuot]
+  rw [hdimA, ← hcat, htrans, hdimQuot]
 
-/-! ### The maximal-ideal corollary (equidimensionality at closed points) -/
+/-! ### The maximal-ideal corollaries (equidimensionality at closed points) -/
 
-/-- **Equidimensionality at a closed point.** For `A = R ⧸ I` a finite-type domain over a field and
-`m` a maximal ideal of `A`, `Ideal.height m = ringKrullDim A` (`A ⧸ m` a field, dimension `0`). -/
+/-- **Equidimensionality at a closed point** ([Stacks, Tag 00OS]). For `A = R ⧸ I` a finite-type
+domain over a field and `m` a maximal ideal of `A`, `Ideal.height m = ringKrullDim A` (`A ⧸ m` is a
+field, dimension `0`). -/
+@[stacks 00OS "every maximal ideal of a finite-type domain has height `dim A`"]
 theorem height_eq_ringKrullDim_of_isMaximal
     (k : Type*) [Field k] (n : ℕ) (I : Ideal (MvPolynomial (Fin n) k)) [I.IsPrime]
     (m : Ideal ((MvPolynomial (Fin n) k) ⧸ I)) [m.IsMaximal] :
@@ -168,9 +184,11 @@ theorem height_eq_ringKrullDim_of_isMaximal
   rw [ringKrullDim_eq_zero_of_isField hfield, add_zero] at h
   exact h
 
-/-- **Local ↔ global dimension at a closed point.** For `A = R ⧸ I` a finite-type domain over a
-field and `m` a maximal ideal, the local ring `Localization.AtPrime m` has Krull dimension equal to
-`ringKrullDim A`. Feeds the smooth ⟹ regular bridge (L4a). -/
+/-- **Local ↔ global dimension at a closed point** ([Stacks, Tag 00OS], `dim A = dim Aₘ`). For
+`A = R ⧸ I` a finite-type domain over a field and `m` a maximal ideal, the local ring
+`Localization.AtPrime m` has Krull dimension equal to `ringKrullDim A`. Feeds the smooth ⟹ regular
+bridge. -/
+@[stacks 00OS "`dim A = dim Aₘ` for a finite-type domain and a maximal ideal `m`"]
 theorem ringKrullDim_localizationAtPrime_isMaximal_eq
     (k : Type*) [Field k] (n : ℕ) (I : Ideal (MvPolynomial (Fin n) k)) [I.IsPrime]
     (m : Ideal ((MvPolynomial (Fin n) k) ⧸ I)) [m.IsMaximal] :
@@ -212,4 +230,4 @@ example : ∃ m : Ideal ((MvPolynomial (Fin 1) ℚ) ⧸ (⊥ : Ideal (MvPolynomi
     m.IsMaximal :=
   Ideal.exists_maximal _
 
-end DLNFibre.Core
+end DLNFibre.Core.Dimension

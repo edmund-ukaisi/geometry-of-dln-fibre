@@ -29,7 +29,8 @@ theorem height_add_coheight_eq (k : Type*) [Field k] (n : ℕ)
 Hypotheses: just `[Field k]` (+ `[p.IsPrime]` for the ideal forms). **No** `IsAlgClosed`, **no**
 `CharZero`, **no** field-cardinality constraint. `n` is the number of variables.
 
-**The monic-positioning crux** (`@[stacks 00OX]`), the flagged rung:
+**The monic-positioning crux** (Stacks Tag 00OX, prose-cited in the docstring — not a machine
+`@[stacks]` attribute), the flagged rung:
 
 ```
 theorem exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit
@@ -40,7 +41,8 @@ theorem exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit
 
 Supporting public decls (all moved into this module): `height_add_coheight_le`,
 `primeHeight_add_ringKrullDim_quotient_le` (the `≤` half), `height_eq_height_under_add_height_map_quotient`
-(the `@[stacks 00ON]` one-variable tower brick, `A` any Noetherian ring), `exists_monic_mem_of_isUnit_leadingCoeff_mem`,
+(the one-variable tower brick, `A` any Noetherian ring; Stacks Tag 00ON prose-cited, not a machine
+attribute), `exists_monic_mem_of_isUnit_leadingCoeff_mem`,
 `ringKrullDim_quotient_eq_under_of_monic`, `one_le_height_map_quotient_of_monic`, `height_map_algEquiv`,
 `ringKrullDim_quotient_map_algEquiv`, `nat_le_height_add_coheight`(_spectrum). Four non-vacuity `example`
 witnesses (bottom prime of ℚ[x,y]; the height-1 case; `(x)` is prime).
@@ -82,9 +84,11 @@ witnesses (bottom prime of ℚ[x,y]; the height-1 case; `(x)` is prime).
   (L5.5, the Noether-*rank* dimension fact) + its witness — **not** catenary content, consumed only by the
   finite-type-domain trdeg bridge `AffineNoetherRank`. Docstring rewritten to scope it as the Noether-rank
   fact.
-- **Stacks tags pinned by source lookup:** positioning `00OX`; tower brick `00ON` (going-down dim formula);
-  headline equality `00OS` (equidimensionality of affine space — its proof *is* the height+coheight=n
-  computation).
+- **Stacks tags pinned by source lookup:** only the headline equality forms carry a machine
+  `@[stacks 00OS]` attribute (equidimensionality of affine space — its proof *is* the height+coheight=n
+  computation). Positioning `00OX` and the tower brick `00ON` (going-down dim formula) are
+  **prose-cited only** (`[Stacks, Tag …]` in the docstrings), not machine attributes — the code is the
+  more conservative of card-vs-code.
 
 ## Transitive-consumer sweep (L2)
 Direct importers of the deleted/changed modules **plus** transitive unqualified consumers were swept by

@@ -2,7 +2,7 @@ import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.DeterminantalStratumDim
 import DLNFibre.Core.FibreCodim
 import DLNFibre.Core.FibreHeightDirect
-import DLNFibre.Core.AffineDomainDimension
+import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.OrbitTangentCotangent
 
 /-!
