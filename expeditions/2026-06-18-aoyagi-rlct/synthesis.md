@@ -3,6 +3,58 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 source-stratum two-sided loss-density handoff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_ae_restrict_source_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+```
+
+This is the source-rank-stratum specialization of the local-source two-sided
+handoff.  Four supplied `nhdsWithin x0 sourceStratum` bounds,
+
+```text
+cL * model(x,u) <= loss(x,u),
+loss(x,u) <= CL * model(x,u),
+dRho <= density(x,u),
+density(x,u) <= DRho,
+```
+
+are transported to four a.e. facts over
+`(mu.restrict (U inter sourceStratum)).prod nu` after shrinking to an open
+base neighborhood `U`.
+
+The proof sets `sourceStratum :=
+paperEndpointFixedBaseSourceRankStratum ...`, calls the local-source theorem
+with `source := sourceStratum`, and rewrites the witness back.  It intentionally
+does not duplicate the filter-to-measure proof.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-two-sided-loss-density-handoff.md`,
+`threads/03-block-product-reduction/statement-card-a2-source-stratum-two-sided-loss-density-handoff.md`,
+and
+`threads/03-block-product-reduction/review-a2-source-stratum-two-sided-loss-density-handoff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, direct axiom probe for the new public theorem name, and
+xhigh final review.  The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the supplied comparison hypotheses, no positivity
+assumptions for constants, no proof that the source-rank stratum is open, a
+neighborhood, chart-covered, or a chart image, no source-prior/Jacobian/density
+or product-measure transport, no residual positivity or integrability, no
+finite integral or integrability iff, no normal crossings, no pole order, and
+no RLCT.
+
 ## Latest A2 local-source two-sided loss-density handoff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:

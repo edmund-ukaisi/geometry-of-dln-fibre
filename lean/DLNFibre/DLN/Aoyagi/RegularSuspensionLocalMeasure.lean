@@ -1133,6 +1133,234 @@ theorem exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided
     exact hz.2.2.2 z.2 hzball
 
 set_option linter.unusedSectionVars false in
+/-- Source-rank-stratum version of
+`exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided_loss_density_bounds`.
+
+The four comparison bounds are supplied on the source-rank stratum filter. This
+theorem only specializes the local-source handoff to that source set; it does
+not prove the bounds, chart transport, or any integrability statement. -/
+theorem exists_open_ae_restrict_source_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin N → ℕ}
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    {loss density :
+      α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {R cL CL dρ Dρ : ℝ}
+    (hsource_meas :
+      MeasurableSet (paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B Cedge r rEdge))
+    (hloss_lower :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+            cL * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u))
+    (hloss_upper :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+            loss (x, u) ≤ CL * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge x) +
+              aoyagiCoordinateSquareSum (fun i => u i)))
+    (hdensity_lower :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+            dρ ≤ density (x, u))
+    (hdensity_upper :
+      ∀ᶠ x in
+        nhdsWithin x₀ (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W B Cedge r rEdge),
+        ∀ u : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0)),
+          u ∈ Metric.ball
+              (0 : EuclideanSpace ℝ
+                (AoyagiRegularBlockCoordinateIndex
+                  (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+            density (x, u) ≤ Dρ) :
+    ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+      (∀ᵐ z : α × EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) ∂
+          (μ.restrict
+            (U ∩ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge)).prod ν,
+        z.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+          cL * (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+            aoyagiCoordinateSquareSum (fun i => z.2 i)) ≤ loss z) ∧
+      (∀ᵐ z : α × EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) ∂
+          (μ.restrict
+            (U ∩ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge)).prod ν,
+        z.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+          loss z ≤ CL * (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+            aoyagiCoordinateSquareSum (fun i => z.2 i))) ∧
+      (∀ᵐ z : α × EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) ∂
+          (μ.restrict
+            (U ∩ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge)).prod ν,
+        z.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+          dρ ≤ density z) ∧
+      (∀ᵐ z : α × EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀ 0)) ∂
+          (μ.restrict
+            (U ∩ paperEndpointFixedBaseSourceRankStratum
+              (K := ℝ) W B Cedge r rEdge)).prod ν,
+        z.2 ∈ Metric.ball
+            (0 : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0))) R →
+          density z ≤ Dρ) := by
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B Cedge r rEdge
+  rcases
+      exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+        (W := W) (B := B) (x₀ := x₀) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := Cedge) (source := sourceStratum) (μ := μ) (ν := ν)
+        (loss := loss) (density := density) (R := R)
+        (cL := cL) (CL := CL) (dρ := dρ) (Dρ := Dρ)
+        (by simpa [sourceStratum] using hsource_meas)
+        (by simpa [sourceStratum] using hloss_lower)
+        (by simpa [sourceStratum] using hloss_upper)
+        (by simpa [sourceStratum] using hdensity_lower)
+        (by simpa [sourceStratum] using hdensity_upper) with
+    ⟨U, hUopen, hxU, hloss_lower_ae, hloss_upper_ae, hdensity_lower_ae,
+      hdensity_upper_ae⟩
+  exact ⟨U, hUopen, hxU,
+    by simpa [sourceStratum] using hloss_lower_ae,
+    by simpa [sourceStratum] using hloss_upper_ae,
+    by simpa [sourceStratum] using hdensity_lower_ae,
+    by simpa [sourceStratum] using hdensity_upper_ae⟩
+
+set_option linter.unusedSectionVars false in
 /-- Finite residual negative-power integral over a supplied base set.  This is
 only a notation wrapper for the base-side integrability hypothesis consumed by
 the p. 13 regular-coordinate finite-side adapter. -/

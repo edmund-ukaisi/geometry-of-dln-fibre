@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 source-stratum two-sided loss-density handoff
+
+Reproduction:
+`reproduction-a2-source-stratum-two-sided-loss-density-handoff.md`.
+Statement card:
+`statement-card-a2-source-stratum-two-sided-loss-density-handoff.md`.
+Review:
+`review-a2-source-stratum-two-sided-loss-density-handoff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_ae_restrict_source_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+```
+
+It specializes the local-source two-sided handoff to
+`paperEndpointFixedBaseSourceRankStratum`, giving four a.e. bounds over
+`(mu.restrict (U inter sourceStratum)).prod nu`.  The proof calls the
+local-source theorem with `source := sourceStratum` and rewrites back by the
+local abbreviation.  It proves no comparison bounds, constant positivity,
+source-rank-stratum openness/coverage/image statement, transport theorem,
+residual hypotheses, finite integral, integrability iff, normal crossings,
+pole order, or RLCT.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure`,
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only scouts Darwin and
+Peirce accepted the wrapper scope and proof shape; xhigh reviewer Singer
+passed the final diff.
+
 ## 2026-06-29 A2 local-source two-sided loss-density handoff
 
 Reproduction:

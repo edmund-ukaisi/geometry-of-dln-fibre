@@ -10,6 +10,27 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, source-stratum two-sided loss-density handoff
+
+The local-source two-sided handoff now has the parallel source-rank-stratum
+wrapper:
+
+```text
+exists_open_ae_restrict_source_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+```
+
+It is just the specialization of the local-source theorem to
+`paperEndpointFixedBaseSourceRankStratum`, returning four a.e. bounds over
+`(mu.restrict (U inter sourceStratum)).prod nu`.  This gives later
+source-stratum consumers a theorem surface matching the older one-sided
+source-stratum handoff.
+
+Nonclaims stay strict: no proof of the four comparison bounds, no positivity
+for constants, no source-rank-stratum openness/neighborhood/coverage/image
+claim, no source-prior/Jacobian/density/product-measure transport, no residual
+hypotheses, no finite integral or iff, no normal crossings, pole order, or
+RLCT.
+
 ## Latest controller decision - 2026-06-29, local-source two-sided loss-density handoff
 
 `RegularSuspensionLocalMeasure.lean` now has the local-source handoff that the
