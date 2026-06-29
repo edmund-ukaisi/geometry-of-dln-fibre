@@ -111,3 +111,12 @@ shared-package extraction (ReLU second consumer); the deferred broader `Fintype`
 `GenericFreeness`/`PrincipalOpenComorphism` (fold opportunistically).
 
 **Status: COMPLETE — 3 PRs open.**
+
+- **2026-06-29 — deep-review polish on all 3 PRs (concurred + applied).** Operator deep-review found **no blocking
+  issues** on any PR. **#15** clean (earlier 5 items already in `165e0954`) — ready. **#16** (`0fdcc2e9`): `translateAux`
+  privatized (local helper); the `Core.Matrix.RankMinors` boundary made honest — 4 consumers given direct imports
+  (incl. an extra transitive-only one), `RlctPayoff` correctly left (uses RankLocusClosed DLN content). **#17**
+  (`e3878e19`): the **name=content** wording fix — "cotangent = Jacobian kernel" → "cotangent **dimension** =
+  Jacobian-kernel dimension" (cotangent = `coker Jᵀ`, tangent = `ker J`, only finite dims agree); 3 local supports
+  privatized; `maxIdealAt → maxIdealAtSpan`. All Lean-only; p3 rebased onto the fixed p2; final p3 re-gate green
+  **3821**, axiom-clean. The 3-PR merge train (#15 → #16 → #17) is ready.
