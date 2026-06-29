@@ -79,4 +79,26 @@ theorem rlctAt_eq_rlctAtOn_lossFlatShift (H : Fin (L + 1) → ℕ)
   rw [← hstep2]
   rfl
 
+/-- **The flat-space D1 `hchart`** — flatten bridge + abstract chart-transfer, composed. For a
+`ContDiff ℝ 2` self-map `Φ` of the flat space fixing the origin with invertible derivative `f'` at
+`0`, if the flat origin-centred loss `lossFlatShift H B v` equals the post-chart `F ∘ Φ` near `0`
+(`hgerm`), then `rlctAt H (dlnLoss H B) v = rlctAtOn F 0`. Chains
+`rlctAt_eq_rlctAtOn_lossFlatShift` (the MP flatten+translate) with the banked
+`rlctAtOn_eq_of_contDiff_chart` (the IFT chart-transfer, `det ≠ 0` proven from `f'`). `F` is the
+post-chart loss `∑s² + ∑q²` (read on the flat space; the `(Fin nReg → ℝ) × Y` product split is a
+separate MP reindex at the engine use-site). -/
+theorem dln_hchart_flat (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (v : Params H)
+    (F : (Fin (flatDim H) → ℝ) → ℝ) (Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+    (f' : (Fin (flatDim H) → ℝ) ≃L[ℝ] (Fin (flatDim H) → ℝ))
+    (hΦ : ContDiff ℝ 2 Φ)
+    (hΦ' : HasFDerivAt Φ (f' : (Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ))
+      (0 : Fin (flatDim H) → ℝ))
+    (hfix : Φ (0 : Fin (flatDim H) → ℝ) = 0)
+    (hgerm : lossFlatShift H B v =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)] fun w => F (Φ w)) :
+    rlctAt H (dlnLoss H B) v = rlctAtOn F (0 : Fin (flatDim H) → ℝ) := by
+  rw [rlctAt_eq_rlctAtOn_lossFlatShift H B v]
+  exact rlctAtOn_eq_of_contDiff_chart (lossFlatShift H B v) F Φ
+    (0 : Fin (flatDim H) → ℝ) f' hΦ hΦ' hfix hgerm
+
 end DLNFibre.DLN.RLCT
