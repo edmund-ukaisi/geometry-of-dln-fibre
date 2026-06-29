@@ -47,7 +47,9 @@ gives the `hAtV` shape:
     (m : ℝ≥0∞)/2 + rlctAtOn R t0 ≤ rlctAt H (dlnLoss H B) v.
 
 `hF`/`hQ0`/`hR`/`hcmp` are NOT hypotheses here — they are built from `q`'s smoothness by the
-network-free `rlctAtOn_quasiSplit_ge_of_contDiff_residual`. -/
+network-free `rlctAtOn_quasiSplit_ge_of_contDiff_residual`. (The regular-block count `m` is FREE in
+this statement; the `nReg` in the name is the use-site instantiation `m = nRegL2 H r` — the name
+parallels the banked `rlctAt_ge_nReg_add_slice` it generalizes off the bare chart data.) -/
 theorem rlctAt_ge_nReg_add_slice_of_residual {L m n : ℕ} {Y : Type*}
     [NormedAddCommGroup Y] [NormedSpace ℝ Y] [MeasureSpace Y] [BorelSpace Y]
     [FiniteDimensional ℝ Y] [ProperSpace Y]
