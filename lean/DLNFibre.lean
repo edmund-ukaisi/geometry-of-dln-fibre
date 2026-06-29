@@ -24,8 +24,8 @@ import DLNFibre.Core.CThetaValue
 import DLNFibre.Core.CThetaThetaBridge
 import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Catenary
 import DLNFibre.Core.PolynomialDimension
-import DLNFibre.Core.NoetherMonicPositioning
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.AffineDomainDimension
 import DLNFibre.Core.FlatQuasiFiniteHeight

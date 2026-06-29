@@ -7,14 +7,13 @@ import Mathlib.RingTheory.Polynomial.RationalRoot
 import Mathlib.RingTheory.NoetherNormalization
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Basic
-import DLNFibre.Core.PolynomialDimension
-import DLNFibre.Core.NoetherMonicPositioning
+import DLNFibre.Core.Dimension.Catenary
 
 /-!
 # Affine-domain dimension formula / equidimensionality (network-free engine)
 
 The **L4d** layer: lift the polynomial-ring catenary equality
-`height_add_ringKrullDim_quotient_eq` (L5, `Core.NoetherMonicPositioning`) to a finite-type domain
+`height_add_ringKrullDim_quotient_eq` (L5, `Core.Dimension.Catenary`) to a finite-type domain
 `A = R ⧸ I` over a field (`R = MvPolynomial (Fin n) k`, `I` prime). For a prime `p` of `A`:
 
 * `affine_domain_height_add_ringKrullDim_quotient_eq` :

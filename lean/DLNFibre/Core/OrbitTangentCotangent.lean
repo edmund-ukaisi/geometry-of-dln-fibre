@@ -31,7 +31,7 @@ field) / L1 (primeness needs only `[Infinite k]`). Algebraic closedness is not u
 
 namespace DLNFibre.Core
 
-open Matrix Module MvPolynomial DualNumber TrivSqZeroExt
+open Matrix Module MvPolynomial DualNumber TrivSqZeroExt Dimension
 
 universe u
 

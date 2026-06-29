@@ -25,7 +25,7 @@ Reuses `Core.MvPolynomialKerAeval` (the graph-ideal / quotient package) and
 
 namespace DLNFibre.Core
 
-open MvPolynomial
+open MvPolynomial Dimension
 
 universe u v w
 

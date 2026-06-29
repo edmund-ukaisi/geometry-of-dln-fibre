@@ -1,4 +1,4 @@
-import DLNFibre.Core.NoetherMonicPositioning
+import DLNFibre.Core.Dimension.Catenary
 import DLNFibre.Core.OrbitCodim
 import Mathlib.RingTheory.Nullstellensatz
 import Mathlib.RingTheory.Spectrum.Prime.Topology
@@ -13,7 +13,7 @@ module connects the **geometric** codimension of a Zariski-closed subset `Z ⊆ 
 of `Z` (the Krull dimension of its coordinate ring) via the catenary identity for affine space.
 
 The catenary dimension formula `Ideal.height p + ringKrullDim (R ⧸ p) = n` for `R = MvPolynomial
-(Fin n) k` (any field) is **proved** in `Core.NoetherMonicPositioning`
+(Fin n) k` (any field) is **proved** in `Core.Dimension.Catenary`
 (`height_add_ringKrullDim_quotient_eq`, "L5"). Here we:
 
 1. **Nullstellensatz pieces** (Mathlib's `MvPolynomial.vanishingIdeal`/`zeroLocus`, strong
@@ -44,6 +44,8 @@ coordinate ring of `Z`'s Zariski closure — it is the variety dimension of `Z` 
 open MvPolynomial Ideal
 
 namespace DLNFibre.Core
+
+open Dimension
 
 universe u
 

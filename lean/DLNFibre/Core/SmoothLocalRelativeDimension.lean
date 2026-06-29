@@ -32,7 +32,7 @@ import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import DLNFibre.Core.FlatQuasiFiniteHeight
 import DLNFibre.Core.Dimension.Integral
-import DLNFibre.Core.NoetherMonicPositioning
+import DLNFibre.Core.Dimension.Catenary
 
 open Algebra
 

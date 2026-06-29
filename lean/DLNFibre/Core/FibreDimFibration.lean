@@ -29,7 +29,7 @@ module claims the full identity.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 
