@@ -65,3 +65,42 @@ vanishing of the fused frame over opaque Fin (Wext k)) + b-1 (the opaque-width t
 b-0 is the kill-check — DO IT FIRST (if a diagonal block leaks later-layer vars, (b) fails; report + re-route).
 This is a genuine multi-tide build (the long pole, now SOUND vs F1's dead disjointness). Recommend genm-mapeq
 (primed as the (b) builder) opens b-0 first as the kill-check, then b-1→b-3. Gate this build-level spec.
+
+## CROSS-CHECK of genm-mapeq's b-0 refinement (spec-author + reviewer pass, 2026-06-29) — CONFIRMED SOUND
+genm-mapeq's two refinements are BOTH correct improvements; I cross-checked the reader-boundary framing
+against the banked decoder algebra (RouteMGenChain Cgen/Agen + RouteMChainBlock chainA/chainQ):
+
+1. UNDER-SCOPING (correct catch): the general fused Frame_M/DFrame_M does NOT exist (only the concrete
+   Frame3333Deriv). My build-spec's b-1..b-3 ASSUMED DFrame_M; it must be CONSTRUCTED first (Frame_M over
+   opaque Fin(Wext M k) + HasFDerivAt + the fderiv DFrame_M). Genuine gap — the (b) build includes this.
+
+2. b-0 → the CHEAP decoder-level kill-check (CONFIRMED the right move): prove the off-block-vanishing on
+   the EXISTING chartParamsGen/Agen/readers (no Frame_M build) = the SAME soundness crux, cheaper. SOUND.
+
+3. genm-mapeq's nearest-neighbor trace is CORRECT + SHARPER than my/Codex's "tail ≥ k+1":
+   - Cgen k = Bmat k·chainQ(N_k) + u·Rmat k (interior), u·Rfin (leaf) — reads ONLY boundary-k blocks;
+     **NON-RECURSIVE** (Cgen k does NOT call Cgen(k+1)). [RouteMGenChain:89]
+   - Agen k = chainA(N_k, W_k, Cgen(k+1)) — reads {N_k,W_k} (boundary k) ∪ Cgen(k+1)-blocks (boundary k+1).
+     chainA reads ONLY its args (kept = C−N·W, lift = W; no hidden reads). [RouteMChainBlock:53]
+   - ⟹ Agen k reads boundaries {k, k+1} ONLY (NEAREST-NEIGHBOR-UP), NOT the whole tail {k..L}. The
+     non-recursivity of Cgen is why it's nearest-neighbor, not tail. Either way the off-block-vanishing
+     ∂A_k/∂(boundary j) = 0 for j < k HOLDS — the layer-grading upper-block-tri crux. CORROBORATES VERIFY-1.
+   - VERIFY-2 refined: A_k reads boundary k+1 (via C(k+1)), so with bLayer = slot's boundary index, the
+     boundary-(k+1) contribution to A_k is a (row layer k, col layer k+1) entry = OFF-diagonal (upper) =
+     det-irrelevant. The DIAGONAL block (row&col layer k) = ∂A_k/∂(boundary k) with C(k+1) FROZEN = the
+     local Schur/K frame. ✓ K_k single-boundary (the K-core is read at boundary k's frame slot only).
+
+## THE READER-BOUNDARY LEMMA (the b-0(i) kill-check statement, for genm-mapeq)
+Target: `∀ k j, j < k → (the layer-k output A_k / chartParamsGen ⟨k,_⟩ does not depend on boundary-j coords)`.
+Cleanest decoder-level form: prove `Agen u M t B hle k` is INVARIANT under changing B's boundary-j blocks
+(Bmat j / Nblk j / Wblk j / Rmat j / Rfin) for j < k — i.e. Agen k factors through (the boundary-≥k blocks).
+Since Agen k = chainA(N_k, W_k, Cgen(k+1)) and Cgen(k+1) = Bmat(k+1)·chainQ(N_{k+1}) + u·Rmat(k+1) read
+only boundaries {k, k+1} ≥ k, this is immediate by unfolding (no induction). The off-block-vanishing of
+DFrame_M then follows (the derivative w.r.t. a boundary-j coord, j<k, of an A_k-output is 0). This is the
+decorrelated 3rd confirmation genm-mapeq's trace already gives — the lemma just commits it.
+
+## NEXT (after b-0(i) passes): the Frame_M CONSTRUCTION scope (I'll spec-first with genm-mapeq)
+Frame_M = the fused bilinear assembly of (chartParamsGen ∘ Kparam-lens) as a single (Fin N → ℝ) → (Fin N → ℝ)
+map (the opaque-width generalization of Frame3333), + HasFDerivAt + DFrame_M (the per-output gradient CLM,
+the opaque generalization of Frame3333Deriv). This is the substantial under-scoped piece; spec-first
+(the kill-check b-0(i) de-risks it FIRST — if the off-block-vanishing fails, no Frame_M build wasted).
