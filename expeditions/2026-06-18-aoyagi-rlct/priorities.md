@@ -10,6 +10,56 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 selected-entry chart-point measure bridge
+
+The selected-entry signed-box measure calculation now has a finite
+normal-crossing chart-point bridge in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean
+```
+
+The bridge defines `chartPointAdapter pivot y = (y pivot, y|center.erase
+pivot)` and exposes the one-chart certificate map as `formalChartMap pivot`.
+It proves:
+
+```text
+formalChartMap pivot (chartPointAdapter pivot y)
+  = SelectedEntrySignedBox.CenterCoord.chartMap pivot y,
+```
+
+as well as coordinate, loss-unit, and absolute Jacobian/prior density
+compatibility:
+
+```text
+coord_chartPointAdapter_eq
+lossUnit_chartPointAdapter_eq_residualUnit
+abs_jacobianPrior_chartPointAdapter_eq_sourceDensity
+```
+
+The measure restatements are:
+
+```text
+map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image
+```
+
+These transport the already-proved center-coordinate signed-box weighted
+pushforward through the chart-point adapter.  The two-stage theorem uses
+global measurability and `Measure.map_map`.
+
+Focused build and full `DLNFibre` build passed via `scripts/lb`; `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probes passed with `[propext, Classical.choice, Quot.sound]`; xhigh
+source-scope, Lean/API, and implementation reviews passed.
+
+Do not call this an analytic atlas construction,
+`SelectedEntryAnalyticJacobianVolumeData`, a natural product-measure theorem
+on chart-point space, original source-prior transport, determinant-chart Haar,
+raw/source Haar, retained-passive passive Jacobian, source-image or source-rank
+coverage, transition regularity, source production, branch termination,
+normal-crossing extraction, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive raw-order two-stage pushforward
 
 The chart-produced punctured-sector source measure now has a two-stage

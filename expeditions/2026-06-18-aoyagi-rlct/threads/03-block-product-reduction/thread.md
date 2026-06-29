@@ -18,6 +18,76 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 selected-entry chart-point measure bridge
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-point-measure-bridge.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-point-measure-bridge.md`.
+Review:
+`review-a2-selected-entry-chart-point-measure-bridge.md`.
+
+Lean now exposes a small leaf module:
+
+```text
+DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge
+```
+
+It defines the syntactic one-chart normal-crossing chart-point type
+
+```text
+FormalChartPoint pivot = R x (center.erase pivot -> R)
+```
+
+and the adapter
+
+```text
+chartPointAdapter pivot y = (y pivot, y restricted to center.erase pivot).
+```
+
+It proves continuity and measurability of the adapter and exposed certificate
+chart map, the pointwise bridge
+
+```text
+formalChartMap pivot (chartPointAdapter pivot y)
+  = SelectedEntrySignedBox.CenterCoord.chartMap pivot y,
+```
+
+and the compatibility facts
+
+```text
+coord_chartPointAdapter_eq,
+lossUnit_chartPointAdapter_eq_residualUnit,
+abs_jacobianPrior_chartPointAdapter_eq_sourceDensity.
+```
+
+The measure theorems
+
+```text
+map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image
+```
+
+restate the existing signed-box weighted pushforward through the chart-point
+adapter.  The two-stage equality uses `Measure.map_map` because both maps are
+globally measurable.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` and full
+`DLNFibre` build passed via `scripts/lb`; only pre-existing replay warnings
+appeared.  Xhigh source-scope scout `Euler the 4th` and xhigh Lean/API scout
+`Halley the 4th` returned PASS.  Xhigh implementation reviewer
+`Ptolemy the 4th` returned PASS after two process fixes, both addressed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probes passed with `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no original source-prior transport,
+no determinant-chart Haar theorem, no raw/source Haar theorem, no retained-
+passive passive Jacobian, no source-image or source-rank coverage, no
+transition regularity, no source production, no branch termination, no
+normal-crossing extraction, no pole order, and no RLCT.
+
 ## 2026-06-29 A2 retained-passive raw-order two-stage pushforward
 
 Reproduction:

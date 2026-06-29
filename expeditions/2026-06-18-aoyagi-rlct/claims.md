@@ -140,6 +140,44 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, selected-entry chart-point measure bridge,
+  2026-06-29.** Lean now proves the selected-entry finite chart-point bridge in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.  The
+  module defines `FormalChartPoint pivot = ℝ × (center.erase pivot → ℝ)`,
+  `chartPointAdapter pivot y = (y pivot, y|center.erase pivot)`, and
+  `formalChartMap pivot`, the one-chart normal-crossing certificate chart map
+  with product chart-point type exposed.  It proves continuity/measurability
+  of the adapter and chart map, the pointwise equality
+  `formalChartMap pivot (chartPointAdapter pivot y) =
+  SelectedEntrySignedBox.CenterCoord.chartMap pivot y`, and adapter
+  compatibility for the certificate coordinate, loss unit, and absolute
+  Jacobian/prior density:
+  `coord_chartPointAdapter_eq`,
+  `lossUnit_chartPointAdapter_eq_residualUnit`, and
+  `abs_jacobianPrior_chartPointAdapter_eq_sourceDensity`.  The measure
+  theorems
+  `map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image`
+  and
+  `map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image`
+  restate the existing signed-box weighted pushforward through the adapter;
+  the two-stage version uses global measurability and `Measure.map_map`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-point-measure-bridge.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-point-measure-bridge.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-chart-point-measure-bridge.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+  scan, and direct axiom probes passed with
+  `[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope, Lean/API,
+  and implementation reviews returned PASS.  This proves no analytic atlas
+  construction,
+  `SelectedEntryAnalyticJacobianVolumeData`, natural product-measure theorem
+  on chart-point space, original source-prior transport, determinant-chart
+  Haar theorem, raw/source Haar theorem, retained-passive passive Jacobian,
+  source-image or source-rank coverage, transition regularity, source
+  production, branch termination, normal-crossing extraction, pole order, or
+  RLCT.
 - **Current status addendum, retained-passive raw-order two-stage pushforward,
   2026-06-29.** Lean now proves
   `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd`

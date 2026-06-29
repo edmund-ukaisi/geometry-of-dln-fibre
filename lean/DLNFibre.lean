@@ -566,3 +566,4 @@ import DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff
+import DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge

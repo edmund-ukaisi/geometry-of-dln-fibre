@@ -3,6 +3,78 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Selected-Entry Chart-Point Measure Bridge - 2026-06-29
+
+`SelectedEntryChartPointMeasureBridge.lean` now exposes the finite coordinate
+bridge between the center-indexed selected-entry signed-box chart and the
+one-chart normal-crossing microcertificate chart point.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-point-measure-bridge.md
+threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-point-measure-bridge.md
+threads/03-block-product-reduction/review-a2-selected-entry-chart-point-measure-bridge.md
+```
+
+The bridge defines:
+
+```text
+FormalChartPoint pivot = R x (center.erase pivot -> R),
+chartPointAdapter pivot y = (y pivot, y restricted to center.erase pivot),
+formalChartMap pivot = the selected-entry normal-crossing certificate chart map
+  with the product chart-point type exposed.
+```
+
+It proves continuity and measurability of `chartPointAdapter` and
+`formalChartMap`, and the pointwise identity:
+
+```text
+formalChartMap pivot (chartPointAdapter pivot y)
+  = SelectedEntrySignedBox.CenterCoord.chartMap pivot y.
+```
+
+It also proves the adapter-level compatibility facts:
+
+```text
+coord_chartPointAdapter_eq,
+lossUnit_chartPointAdapter_eq_residualUnit,
+abs_jacobianPrior_chartPointAdapter_eq_sourceDensity.
+```
+
+The measure content is a restatement of the existing signed-box weighted
+pushforward theorem through the chart-point adapter:
+
+```text
+map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image
+```
+
+The second theorem uses global measurability/continuity and `Measure.map_map`;
+it is not an a.e.-only raw-order reassociation theorem.  The target measure
+remains:
+
+```text
+volume.restrict (SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+  SelectedEntrySignedBox.CenterCoord.signedBoxSet R).
+```
+
+Focused build of `DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge`
+and full `DLNFibre` build passed via `scripts/lb`; only pre-existing replay
+warnings appeared.  Xhigh source-scope scout `Euler the 4th`, xhigh Lean/API
+scout `Halley the 4th`, and xhigh implementation reviewer `Ptolemy the 4th`
+gave PASS.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes passed; the probed theorems
+report `[propext, Classical.choice, Quot.sound]`.
+
+This proves no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no natural chart-point product
+measure identification, no original source-prior transport, no determinant-
+chart Haar theorem, no raw/source Haar theorem, no retained-passive passive
+Jacobian, no source-image or source-rank coverage, no transition regularity,
+no source production, no branch termination, no normal-crossing extraction, no
+pole order, and no RLCT.
+
 ## Latest A2 Retained-Passive Raw-Order Two-Stage Pushforward - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:
