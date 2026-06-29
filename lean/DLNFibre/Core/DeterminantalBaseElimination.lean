@@ -1,5 +1,5 @@
 import DLNFibre.Core.DeterminantalChartRing
-import DLNFibre.Core.GraphIdealHeight
+import DLNFibre.Core.MvPolynomial.GraphIdealHeight
 import Mathlib.RingTheory.MvPolynomial.Localization
 
 /-!
@@ -13,7 +13,8 @@ This module reindexes the engine coordinate ring `A_eng = MvPolynomial (RepCoord
 along the block split `RepCoord ≃ B22block ⊕ SchurVar` (`B22block = Fin (p−r) × Fin (q−r)`,
 `#B22block = (p−r)(q−r) = C`; `SchurVar = Δ ⊕ B12 ⊕ B21`, `#SchurVar = r(p+q−r) = δ`), so the pivot
 minor `detΔ` lives in the `SchurVar` block. The forced-block graph ideal then has height `C`
-(`Core.GraphIdealHeight`), which — with the LANDED `height Iad = C` and `J ⊆ Iad` — squeezes
+(`Core.MvPolynomial.GraphIdealHeight`), which — with the LANDED `height Iad = C` and `J ⊆ Iad` —
+squeezes
 `Iad = J` and exhibits `A_loc ⧸ Iad` as the free Schur localization (regular of dimension `δ`).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.

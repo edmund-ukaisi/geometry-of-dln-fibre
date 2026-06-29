@@ -115,7 +115,7 @@ import DLNFibre.Core.DeterminantalChartRing
 import DLNFibre.Core.MvPolynomial.GraphIdeal
 -- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C`
 -- engine (G2-2).
-import DLNFibre.Core.GraphIdealHeight
+import DLNFibre.Core.MvPolynomial.GraphIdealHeight
 -- Reindex + detΔ-localization bridge for the determinantal base: repCoordReindex, blockAlgEquiv
 -- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C
 -- detSchurS). The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
