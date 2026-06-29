@@ -3,6 +3,53 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian-Weighted Local-Source Finite Integral - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+This theorem consumes the passive Jacobian-weighted residual-source package
+and the generic retained-passive local-source finite-integral handoff.  It
+first constructs a source-domain determinant neighborhood `Udom` of `z0`, then
+defines
+
+```text
+jacobianWeightedMeasure =
+  (sourceMeasure.restrict Udom).withDensity (fun z => ofReal (J z))
+muJ = Measure.map sourceChart jacobianWeightedMeasure
+```
+
+and proves the existence of an edge-family open neighborhood `U` of the fixed
+base edge family such that the regular-coordinate p.13 loss-density integral
+over `(muJ.restrict (U ∩ sourceStratum)).prod ν` is finite.
+
+The proof does not use the older raw-order inverse-Jacobian determinant-chart
+pushforward equality.  It calls the residual-source theorem, derives the
+needed `SFinite muJ` instance from finite passive mass, and applies
+`exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource`
+with `Cedge E = E`, `continuous_id`, and `rfl`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Erdos the 3rd` and `Lovelace the 3rd` returned PASS.
+
+Nonclaims: no exact localized residual marginal, no determinant-chart Haar
+pushforward, no raw/source Haar theorem, no original source-prior transport,
+no source-prior Jacobian formula, no source-image equality or local coverage,
+no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian-Weighted Residual Source Hypotheses - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has:

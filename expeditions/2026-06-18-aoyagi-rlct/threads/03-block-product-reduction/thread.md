@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian-weighted local-source finite integral
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`.
+Review:
+`review-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+The theorem consumes the Jacobian-weighted residual-source theorem and the
+generic retained-passive local-source finite-integral handoff.  It constructs
+a source-domain determinant neighborhood `Udom`, defines the chart-produced
+Jacobian-weighted pushforward `muJ`, and then obtains an edge-family open
+neighborhood `U` with finite regular-coordinate integral over
+`(muJ.restrict (U ∩ sourceStratum)).prod ν`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Erdos the 3rd`
+and `Lovelace the 3rd` returned PASS.
+
+Nonclaims: no exact localized residual marginal, determinant-chart Haar
+pushforward, raw/source Haar theorem, original source-prior transport,
+source-prior Jacobian formula, source-image equality, local coverage, normal
+crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian-weighted residual source hypotheses
 
 Reproduction:

@@ -10,6 +10,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted local-source finite integral
+
+The passive selected-entry frontier now has the finite-integral consumer for
+the Jacobian-weighted local-source residual package:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+It constructs a source-domain determinant neighborhood `Udom`, forms
+
+```text
+jacobianWeightedMeasure =
+  (sourceMeasure.restrict Udom).withDensity (fun z => ofReal (J z))
+
+μJ = Measure.map sourceChart jacobianWeightedMeasure
+```
+
+and then applies the generic retained-passive local-source finite-integral
+handoff to produce an edge-family open neighborhood `U` with finite
+regular-coordinate integral over `(μJ.restrict (U ∩ sourceStratum)).prod ν`.
+The proof uses the just-banked residual-source theorem, installs
+`IsFiniteMeasure passiveMeasure` from the finite passive mass hypothesis to
+infer `SFinite μJ`, and calls the local-source consumer with identity
+`Cedge`, `continuous_id`, and `rfl`.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md
+threads/03-block-product-reduction/review-a2-case2-passive-jacobian-weighted-local-source-finite-integral.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by `Erdos the 3rd`
+and `Lovelace the 3rd` returned PASS.
+
+This is a chart-produced passive product-domain finite-integral handoff only.
+Do not treat it as an exact localized residual marginal, determinant-chart
+Haar pushforward, raw/source Haar theorem, original source-prior transport,
+source-prior Jacobian formula, source-image equality or local coverage,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted residual source hypotheses
 
 The passive selected-entry frontier now has the residual-source socket
