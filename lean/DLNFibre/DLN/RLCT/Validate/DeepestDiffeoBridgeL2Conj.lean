@@ -2171,6 +2171,35 @@ theorem deepestCoreF_coreAbsorbConj_psiSplitRawL2CoreConj_eq_score (H : Fin (L +
     (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q) hq,
     absorbedCoreConj_psiSplitRawL2CoreConj_eq_clean H r B hB hr hL hL2eq q hW, hLDUtieConj]
 
+/-- **`framedParamsPivot` of the moved point agrees off the last layer** (the `hsub3reg` reg-input the
+wire consumes): at a non-last layer the conjugated move fixes every read + the decode-core, so the
+framed layer is unchanged. Conjugated mirror of `framedParamsPivot_psiSplitRawL2Core_of_ne`. -/
+theorem framedParamsPivot_psiSplitRawL2CoreConj_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    framedParamsPivot H r hr hL J P Q (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q) s
+      = framedParamsPivot H r hr hL J P Q q s := by
+  rw [framedParamsPivot_of_ne_last H r hr hL J P Q (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q) s hs,
+    framedParamsPivot_of_ne_last H r hr hL J P Q q s hs]
+  show framedLayer H r hr s (P s) (Q s)
+      (readX H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s)
+      (readY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s)
+      (readZ H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s)
+      ((paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1 s)
+    = framedLayer H r hr s (P s) (Q s)
+      (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
+      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
+  rw [readX_psiSplitRawL2CoreConj_eq, readZ_psiSplitRawL2CoreConj_eq,
+    readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq q s hs,
+    coreRead_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq q s hs]
+
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
 Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
