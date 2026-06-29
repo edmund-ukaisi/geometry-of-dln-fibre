@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive selected-entry local source-readback domain
+
+The passive selected-entry frontier now has a local determinant-domain
+source/readback package:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq
+```
+
+From continuity of the five passive fields and determinant-unit hypotheses at
+one base point, the theorem constructs an open neighborhood `U` of that point.
+For every `z in U`, the fixed-base p.13 source chart attached to the
+endpoint-transported passive selected-entry datum lies in the retained-passive
+local source, and source readback of its extracted edge matrices recovers the
+full transported retained-passive datum.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-readback-domain.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-readback-domain.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource`, and the
+full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and a direct axiom probe passed.  Xhigh reviews by
+`McClintock the 3rd` and `Galileo the 3rd` returned PASS.
+
+This is local source-coordinate inverse/readback only.  Do not treat it as
+selected-entry source-image equality, local coverage, source-rank coverage,
+determinant-chart Haar transport, raw/source Haar transport, source-prior
+transport, Jacobian transport, exact localized residual marginal, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian-weighted residual integrability
 
 The passive selected-entry frontier now has a local domination handoff from

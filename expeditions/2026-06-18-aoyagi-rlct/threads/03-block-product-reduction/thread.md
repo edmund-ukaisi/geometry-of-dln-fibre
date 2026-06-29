@@ -18,6 +18,37 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive selected-entry local source-readback domain
+
+Reproduction:
+`reproduction-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+Statement card:
+`statement-card-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+
+Lean now exposes:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq
+```
+
+The theorem constructs an open neighborhood of a passive selected-entry
+basepoint by pulling back the retained-passive topology-tuple determinant
+chart.  On this neighborhood, the endpoint-transported fixed-base p.13 source
+chart lies in the retained-passive local source and source readback recovers
+the full transported retained-passive datum.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource` passed.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed.  Xhigh reviews by
+`McClintock the 3rd` and `Galileo the 3rd` returned PASS.  Review:
+`review-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+
+Nonclaims: no selected-entry source-image equality, local coverage,
+source-rank coverage, determinant-chart Haar pushforward, raw/source Haar
+transport, source-prior comparison, Jacobian transport, exact localized
+residual marginal, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian-weighted residual integrability
 
 Reproduction:

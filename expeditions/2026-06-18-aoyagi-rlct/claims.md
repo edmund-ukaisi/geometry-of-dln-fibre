@@ -140,6 +140,29 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive selected-entry local
+  source-readback domain, 2026-06-29.** Lean now exposes
+  `exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySource.lean`.
+  For passive selected-entry coordinates, continuity of the passive fields and
+  determinant-unit hypotheses at one base point produce an open neighborhood
+  on which the fixed-base p.13 source chart lies in the retained-passive local
+  source, and source readback of its extracted edge matrices recovers the full
+  endpoint-transported retained-passive datum.  Reproduction and statement
+  card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-readback-domain.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+  Focused build, full aggregator build, `git diff --check`, `scripts/sorries`,
+  and direct axiom probe passed.  Xhigh reviews by `McClintock the 3rd` and
+  `Galileo the 3rd` returned PASS; review is at
+  `threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+  This is local source-coordinate inverse/readback only: no selected-entry source-image
+  equality, local coverage, source-rank coverage, determinant-chart Haar
+  transport, raw/source Haar theorem, source-prior transport, Jacobian
+  transport, exact localized residual marginal, normal crossings, pole order,
+  or RLCT.
 - **Current status addendum, Case 2 passive Jacobian-weighted residual
   integrability, 2026-06-29.** Lean now exposes
   `ae_of_measure_le_smul`, `lintegral_lt_top_of_measure_le_smul`,

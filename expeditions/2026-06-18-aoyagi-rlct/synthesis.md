@@ -3,6 +3,57 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Selected-Entry Local Source-Readback Domain - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySource.lean` now has:
+
+```text
+exists_open_case2EndpointTransport_withPassive_detChart_sourceReadback_eq
+```
+
+For passive selected-entry coordinates
+
+```text
+rawData z =
+  case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+    (A1passive z.1) (F2 z.1) (A3passive z.1)
+    (Ctop z.1) (F3 z.1) z.2 eNext
+retainedData z = (rawData z).endpointTransport e
+sourceChart z =
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+    W2 B2 U0 hU0 (retainedData z)
+Y z = topologyTuple (retainedData z)
+```
+
+the theorem sets `U = Y^{-1}(topologyTupleDetChartSet)`.  Continuity of the
+passive fields makes `Y` continuous, and the basepoint determinant-unit
+hypotheses for `Ctop z0.1` and `A1passive z0.1` put `z0` in `U`.  For every
+`z in U`, determinant-chart membership gives local-source membership for
+`sourceChart z`, and the fixed-base edge-extraction identity plus
+`sourceReadback_edgeMatrix_eq` gives full readback:
+
+```text
+sourceReadback (edge matrices extracted from sourceChart z) = retainedData z.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-local-source-readback-domain.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySource`; full
+`DLNFibre` aggregator build passed.  `git diff --check`, `scripts/sorries`,
+and direct axiom probe passed with `[propext, Classical.choice, Quot.sound]`.
+Xhigh reviews by `McClintock the 3rd` and `Galileo the 3rd` returned PASS;
+review artifact:
+`threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-local-source-readback-domain.md`.
+
+Nonclaims: no selected-entry source-image equality, no local coverage, no
+source-rank coverage, no determinant-chart Haar pushforward, no raw/source
+Haar theorem, no original source-prior transport, no Jacobian transport, no
+exact localized residual marginal, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian-Weighted Residual Integrability - 2026-06-29
 
 `LocalMeasureHandoff.lean` now has scalar-domination transfer helpers:
