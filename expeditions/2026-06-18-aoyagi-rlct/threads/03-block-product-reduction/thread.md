@@ -18,6 +18,33 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 selected-entry chart-point product measure
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-point-product-measure.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-point-product-measure.md`.
+Review:
+`review-a2-selected-entry-chart-point-product-measure.md`.
+
+Lean now proves the natural finite product-measure split for the
+selected-entry chart-point adapter:
+
+```text
+map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+```
+
+The new chart-point product measure is the pivot restricted interval measure
+times the erased-center residual product measure.  The proof builds the
+measurable split equivalence `chartPointSplitEquiv`, proves it is equal to
+`chartPointAdapter`, and uses Mathlib product-measure-preserving equivalences.
+
+Nonclaims: no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no source-prior transport, no
+determinant-chart Haar theorem, no source coverage/source-rank coverage, no
+transition regularity, no source production, no normal-crossing extraction, no
+pole order, and no RLCT.
+
 ## 2026-06-29 A2 selected-entry chart-target nonzero measure
 
 Reproduction:

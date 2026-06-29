@@ -178,6 +178,22 @@ No such claim is formalisation-ready until both fields are filled.
   transport, raw/source Haar theorem, source coverage, source-rank coverage,
   transition regularity, source production, branch termination,
   normal-crossing extraction, pole order, or RLCT.
+- **Current status addendum, selected-entry chart-point product measure,
+  2026-06-29.** Lean now proves the natural finite product-measure split for
+  the selected-entry `chartPointAdapter` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.
+  It defines `erasePivotEquivCompl`, `chartPointProductMeasure`, and
+  `chartPointSplitEquiv`; proves the split equivalence has coordinates
+  `(y pivot, y|center.erase pivot.1)` and is equal to `chartPointAdapter`;
+  and proves
+  `measurePreserving_chartPointSplitEquiv_signedBoxMeasure` plus
+  `map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure`.
+  This theorem has no positivity hypothesis on the radii.  It is finite
+  product-measure bookkeeping for the adapter only.  It proves no analytic
+  atlas construction, no `SelectedEntryAnalyticJacobianVolumeData`, no
+  original/source-prior transport, no determinant-chart Haar transport, no
+  source coverage, no source-rank coverage, no transition regularity, no
+  normal-crossing extraction, no pole order, and no RLCT.
 - **Current status addendum, selected-entry chart-point measure bridge,
   2026-06-29.** Lean now proves the selected-entry finite chart-point bridge in
   `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.  The

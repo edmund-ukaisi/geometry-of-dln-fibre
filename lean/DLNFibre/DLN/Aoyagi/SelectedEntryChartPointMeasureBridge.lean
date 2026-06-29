@@ -104,6 +104,156 @@ theorem measurable_chartPointAdapter {center : Finset ι} (pivot : center) :
     Measurable (chartPointAdapter pivot) :=
   (continuous_chartPointAdapter pivot).measurable
 
+/-- The erased-center index type is equivalent to the non-pivot center subtype. -/
+def erasePivotEquivCompl {center : Finset ι} (pivot : center) :
+    (center.erase pivot.1 : Finset ι) ≃ {i : center // ¬ i = pivot} where
+  toFun j :=
+    ⟨⟨j.1, (Finset.mem_erase.mp j.2).2⟩, by
+      intro h
+      exact (Finset.mem_erase.mp j.2).1 (Subtype.ext_iff.mp h)⟩
+  invFun i :=
+    ⟨i.1.1, by
+      rw [Finset.mem_erase]
+      exact ⟨by
+        intro h
+        exact i.2 (Subtype.ext h), i.1.2⟩⟩
+  left_inv j := by
+    ext
+    rfl
+  right_inv i := by
+    ext
+    rfl
+
+/-- Product box measure in chart-point coordinates. -/
+def chartPointProductMeasure {center : Finset ι} (pivot : center)
+    (R : center → ℝ) : Measure (FormalChartPoint pivot) :=
+  (volume.restrict (Set.Ioo (-(R pivot)) (R pivot))).prod
+    (Measure.pi fun i : (center.erase pivot.1 : Finset ι) =>
+      volume.restrict
+        (Set.Ioo (-(R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩))
+          (R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩)))
+
+/-- The measurable equivalence exposing `chartPointAdapter` as a finite product split. -/
+def chartPointSplitEquiv {center : Finset ι} (pivot : center) :
+    (center → ℝ) ≃ᵐ FormalChartPoint pivot :=
+  (MeasurableEquiv.piEquivPiSubtypeProd (fun _ : center => ℝ)
+      (fun i : center => i = pivot)).trans
+    (MeasurableEquiv.prodCongr
+      (MeasurableEquiv.piUnique (fun _ : {i : center // i = pivot} => ℝ))
+      (MeasurableEquiv.piCongrLeft
+        (fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+        (erasePivotEquivCompl pivot).symm))
+
+/-- The first coordinate of the product-split equivalence is the pivot coordinate. -/
+theorem chartPointSplitEquiv_fst {center : Finset ι} (pivot : center)
+    (y : center → ℝ) :
+    (chartPointSplitEquiv pivot y).1 = y pivot := by
+  change
+    (MeasurableEquiv.piUnique (fun _ : {i : center // i = pivot} => ℝ))
+      (fun x : {i : center // i = pivot} => y x.1) =
+      y pivot
+  have hdef : ((default : {i : center // i = pivot}).1 : center) = pivot :=
+    (default : {i : center // i = pivot}).2
+  simp [MeasurableEquiv.piUnique, hdef]
+
+/-- The residual coordinates of the product-split equivalence are the erased
+non-pivot coordinates. -/
+theorem chartPointSplitEquiv_snd {center : Finset ι} (pivot : center)
+    (y : center → ℝ) (x : (center.erase pivot.1 : Finset ι)) :
+    (chartPointSplitEquiv pivot y).2 x =
+      y ⟨x.1, (Finset.mem_erase.mp x.2).2⟩ := by
+  change
+    (MeasurableEquiv.piCongrLeft
+        (fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+        (erasePivotEquivCompl pivot).symm)
+      (fun z : {i : center // ¬i = pivot} => y z.1) x =
+      y ⟨x.1, (Finset.mem_erase.mp x.2).2⟩
+  have h :=
+    MeasurableEquiv.piCongrLeft_apply_apply
+      (e := (erasePivotEquivCompl pivot).symm)
+      (β := fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+      (fun z : {i : center // ¬i = pivot} => y z.1)
+      ((erasePivotEquivCompl pivot) x)
+  simpa [erasePivotEquivCompl] using h
+
+/-- The finite product-split equivalence is the chart-point adapter. -/
+theorem chartPointSplitEquiv_eq_chartPointAdapter {center : Finset ι}
+    (pivot : center) :
+    (chartPointSplitEquiv pivot : (center → ℝ) → FormalChartPoint pivot) =
+      chartPointAdapter pivot := by
+  funext y
+  ext
+  · exact chartPointSplitEquiv_fst pivot y
+  · rename_i x
+    rw [chartPointSplitEquiv_snd pivot y x]
+    simp [chartPointAdapter,
+      selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint,
+      sourceResidual, (Finset.mem_erase.mp x.2).2]
+
+/-- The product-split equivalence preserves the signed-box product measure. -/
+theorem measurePreserving_chartPointSplitEquiv_signedBoxMeasure
+    {center : Finset ι} (pivot : center) (R : center → ℝ) :
+    MeasurePreserving (chartPointSplitEquiv pivot)
+      (Measure.pi fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+      (chartPointProductMeasure pivot R) := by
+  letI : Fintype {i : center // i = pivot} :=
+    Subtype.fintype (p := fun i : center => i = pivot)
+  letI : Unique {i : center // i = pivot} := Unique.subtypeEq pivot
+  let μ : center → Measure ℝ := fun i =>
+    volume.restrict (Set.Ioo (-(R i)) (R i))
+  let μerase : (center.erase pivot.1 : Finset ι) → Measure ℝ := fun i =>
+    volume.restrict
+      (Set.Ioo (-(R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩))
+        (R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩))
+  have hsplit :=
+    measurePreserving_piEquivPiSubtypeProd μ (fun i : center => i = pivot)
+  have hpivot :
+      MeasurePreserving
+        (MeasurableEquiv.piUnique (fun _ : {i : center // i = pivot} => ℝ))
+        (Measure.pi fun i : {i : center // i = pivot} => μ i)
+        (volume.restrict (Set.Ioo (-(R pivot)) (R pivot))) := by
+    have h :=
+      measurePreserving_piUnique
+        (μ := fun i : {i : center // i = pivot} => μ i)
+        (X := fun _ : {i : center // i = pivot} => ℝ)
+    simpa [μ] using h
+  have hcompl :
+      MeasurePreserving
+        (MeasurableEquiv.piCongrLeft
+          (fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+          (erasePivotEquivCompl pivot).symm)
+        (Measure.pi fun i : {i : center // ¬ i = pivot} => μ i)
+        (Measure.pi μerase) := by
+    have h :=
+      measurePreserving_piCongrLeft
+        (α := fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+        (μ := μerase)
+        (f := (erasePivotEquivCompl pivot).symm)
+    simpa [μ, μerase, erasePivotEquivCompl] using h
+  have hprod :
+      MeasurePreserving
+        (MeasurableEquiv.prodCongr
+          (MeasurableEquiv.piUnique (fun _ : {i : center // i = pivot} => ℝ))
+          (MeasurableEquiv.piCongrLeft
+            (fun _ : (center.erase pivot.1 : Finset ι) => ℝ)
+            (erasePivotEquivCompl pivot).symm))
+        ((Measure.pi fun i : {i : center // i = pivot} => μ i).prod
+          (Measure.pi fun i : {i : center // ¬ i = pivot} => μ i))
+        (chartPointProductMeasure pivot R) := by
+    simpa [chartPointProductMeasure, μerase] using hpivot.prod hcompl
+  simpa [chartPointSplitEquiv, μ] using hsplit.trans hprod
+
+/-- The chart-point adapter sends the center signed-box product measure to
+the natural chart-point product box measure. -/
+theorem map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+    {center : Finset ι} (pivot : center) (R : center → ℝ) :
+    Measure.map (chartPointAdapter pivot)
+        (Measure.pi fun i : center =>
+          volume.restrict (Set.Ioo (-(R i)) (R i))) =
+      chartPointProductMeasure pivot R := by
+  rw [← chartPointSplitEquiv_eq_chartPointAdapter pivot]
+  exact (measurePreserving_chartPointSplitEquiv_signedBoxMeasure pivot R).map_eq
+
 /-- The one-chart selected-entry normal-crossing certificate chart map is
 continuous as a map from chart-point coordinates to ambient center
 coordinates. -/

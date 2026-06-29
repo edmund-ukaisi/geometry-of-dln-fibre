@@ -10,6 +10,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 chart-point product measure
+
+The selected-entry chart-point adapter now has the natural finite product
+measure bridge in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean
+```
+
+The new measure is:
+
+```text
+chartPointProductMeasure pivot R
+```
+
+It is the product of `volume.restrict (-R pivot, R pivot)` on the pivot
+coordinate and the erased-center product of restricted interval measures on
+`center.erase pivot.1`.  Lean proves the adapter is the measurable product
+split:
+
+```text
+chartPointSplitEquiv_eq_chartPointAdapter
+```
+
+and proves the measure-preserving bridge:
+
+```text
+measurePreserving_chartPointSplitEquiv_signedBoxMeasure
+map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+```
+
+No positivity hypothesis on `R` is needed.  This removes the previous
+finite-coordinate product-measure blocker for the adapter only.  It does not
+construct `SelectedEntryAnalyticJacobianVolumeData`, and it proves no
+original/source-prior transport, determinant-chart Haar transport, source
+coverage, source-rank coverage, transition regularity, normal-crossing
+extraction, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 selected-entry chart-target nonzero measure
 
 The selected-entry signed-box chart now has an explicit nonzero target measure

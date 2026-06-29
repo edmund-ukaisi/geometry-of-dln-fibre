@@ -3,6 +3,69 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Selected-Entry Chart-Point Product Measure - 2026-06-29
+
+`SelectedEntryChartPointMeasureBridge.lean` now proves the natural finite
+product-measure split for the selected-entry chart-point adapter.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-point-product-measure.md
+threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-point-product-measure.md
+threads/03-block-product-reduction/review-a2-selected-entry-chart-point-product-measure.md
+```
+
+The pen-and-paper calculation is the coordinate split:
+
+```text
+y |-> (y_p, y|_{E \ {p}}).
+```
+
+The inverse sends `(u, r)` to `y_p = u` and `y_i = r_i` for `i != p`.
+Therefore the center signed-box product measure
+
+```text
+prod_i volume|(-R_i, R_i)
+```
+
+pushes forward to
+
+```text
+volume|(-R_p, R_p) x prod_{i != p} volume|(-R_i, R_i).
+```
+
+Lean packages this as:
+
+```text
+erasePivotEquivCompl
+chartPointProductMeasure
+chartPointSplitEquiv
+chartPointSplitEquiv_fst
+chartPointSplitEquiv_snd
+chartPointSplitEquiv_eq_chartPointAdapter
+measurePreserving_chartPointSplitEquiv_signedBoxMeasure
+map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+```
+
+The proof uses Mathlib's `measurePreserving_piEquivPiSubtypeProd`,
+`measurePreserving_piUnique`, `measurePreserving_piCongrLeft`, and
+`MeasurePreserving.prod`.  A local `Subtype.fintype` instance is used so the
+singleton pivot subtype agrees with the generic subtype measure produced by
+`piEquivPiSubtypeProd`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` passed via
+`lean/scripts/lb`; only pre-existing replay warnings appeared.  Xhigh
+source-scope scout `Newton the 4th` and xhigh Lean/API scout `Hume the 4th`
+gave PASS.  Xhigh implementation reviewer `Kant the 4th` gave PASS.
+
+This proves no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no original/source-prior
+transport, no determinant-chart Haar theorem, no source coverage, no
+source-rank coverage, no transition regularity, no source production, no
+normal-crossing extraction, no pole order, and no RLCT.
+
 ## Latest A2 Selected-Entry Chart-Target Nonzero Measure - 2026-06-29
 
 `SelectedEntrySignedBoxMeasure.lean` now proves a fixed-pivot nonzero target
