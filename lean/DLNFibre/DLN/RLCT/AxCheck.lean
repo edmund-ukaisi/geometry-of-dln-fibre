@@ -9,6 +9,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
+import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
+import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
@@ -171,6 +173,17 @@ open DLNFibre.DLN.RLCT
 #print axioms extra_half_add_lambdaCore_Mprime_ge_square
 #print axioms hCore_middle_stratum_of_interface
 #print axioms deepest_le_of_optimal_middle_stratum
+
+-- D1 §SEL producer (Altitude A, network-free) — must be CLEAN-THREE [propext, Classical.choice,
+-- Quot.sound], no `sorryAx`: `rlctAtOn_quasiSplit_ge_of_contDiff_residual` CONSTRUCTS the engine's hcmp
+-- from ANY C¹ residual `q` (the §SEL collapse to `rlct_quasiSplit_ge`, D-INDEPENDENT — no new Mathlib
+-- lemma / Morse-Bott / operator-√); `deepest_le_of_optimal_of_iftResidual` wires it through the banked
+-- two-peel to the per-point `rlctAt deepest ≤ rlctAt v`. CONDITIONAL reductions: carry hchart/hchart₂
+-- (the Altitude-B DLN IFT chart-transfer — where D-nonvanishing lives), hDeepest (#44), hDegraded
+-- (R1-at-M') as NAMED hyps; they do NOT close the D1 rung. Double-decorrelated PASS (genm-d1prod
+-- reviewer + lean-formaliser §QA). The §SEL win: chart-DATA (hF/hQ0/hcmp) removed from the hyp list.
+#print axioms rlctAtOn_quasiSplit_ge_of_contDiff_residual
+#print axioms deepest_le_of_optimal_of_iftResidual
 
 -- R1 interior-det headline at the (2,2,2) node — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `interiorDet_headline_222` is the FIRST end-to-end faithful-route

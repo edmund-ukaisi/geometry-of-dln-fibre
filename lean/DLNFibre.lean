@@ -548,6 +548,12 @@ import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 -- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
 -- reviewer-PASS. The D1 use-site (the IFT-chart producer for the DLN loss at a general v) consumes it.
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
+-- D1 §SEL producer (Altitude A, network-free real analysis): `rlctAtOn_quasiSplit_ge_of_contDiff_residual`
+-- CONSTRUCTS the engine's `hcmp` from ANY C¹ residual `q` (Q=‖q‖² is F's own residual by construction;
+-- L = sup‖fderiv q‖ on the compact ball via Convex.norm_image_sub_le_of_norm_fderiv_le — genuinely
+-- D-INDEPENDENT, so the §SEL collapse to `rlct_quasiSplit_ge` needs NO new Mathlib lemma / Morse-Bott /
+-- operator-√). Clean-three; double-decorrelated review (genm-d1prod reviewer + lean-formaliser §QA PASS).
+import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
 -- D1 (rung 2/5) (★) chart-producer skeleton (L=2): `rlctAt_ge_nReg_add_slice` (the (★)-as-`hAtV`
 -- reduction, pure delegation to the banked engine) + `deepest_le_of_optimal_chart` (wires `hAtV`
 -- through `deepest_le_of_optimal_via_L2_ge` to the `rlctAt_deepest_le_of_optimal` per-point conclusion,
@@ -568,6 +574,14 @@ import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 -- it needs the Morse/constant-rank split Mathlib lacks + the open `deepest_gauge_squeeze_exists`. Scope:
 -- square-deepest (m,m,m); non-square H at L=2 is beyond the banked adjudication (both surfaced, not ground).
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
+-- D1 §SEL residual-producer wiring (Altitude A): `rlctAt_ge_nReg_add_slice_of_residual` (the hAtV half,
+-- m FREE) + `deepest_le_of_optimal_of_iftResidual` (full per-point ≥, wired through the banked two-peel
+-- `deepest_le_of_optimal_middle_stratum`). REMOVES the chart-DATA (hF/hQ0/hcmp) from the bare-hypothesis
+-- list, replacing it with the single C¹-residual premise §SEL certified. CONDITIONAL reduction — carries
+-- hchart/hchart₂ (the Altitude-B DLN IFT chart-transfer, where D-nonvanishing actually lives), hDeepest
+-- (#44, route the CLEAN deepest_gauge_construction_L2), hDegraded (R1-at-M') as NAMED hyps; does NOT
+-- close the D1 rung. The Altitude-B chart `hchart` is the named D1 residual on this route.
+import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 -- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
