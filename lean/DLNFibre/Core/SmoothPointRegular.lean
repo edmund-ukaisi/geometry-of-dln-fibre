@@ -36,9 +36,10 @@ import Mathlib.RingTheory.Jacobson.Ring
 import Mathlib.LinearAlgebra.Dimension.Constructions
 import Mathlib.Algebra.Module.SpanRankOperations
 import Mathlib.FieldTheory.IsAlgClosed.Basic
-import DLNFibre.Core.SmoothLocalRelativeDimension
+import DLNFibre.Core.Dimension.Smooth
 
 open Algebra IsLocalRing TensorProduct
+open DLNFibre.Core.Dimension
 
 namespace DLNFibre.Core
 

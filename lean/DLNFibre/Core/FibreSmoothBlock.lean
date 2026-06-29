@@ -48,6 +48,7 @@ Codex-vetted fidelity note in the thread.
 namespace DLNFibre.Core
 
 open Algebra MvPolynomial Matrix TensorProduct
+open DLNFibre.Core.Dimension
 
 universe u
 

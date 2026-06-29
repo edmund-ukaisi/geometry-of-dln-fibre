@@ -27,10 +27,9 @@ import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Catenary
 import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.Dimension.Codimension
+import DLNFibre.Core.Dimension.Smooth
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.FlatQuasiFiniteHeight
-import DLNFibre.Core.SmoothLocalRelativeDimension
 import DLNFibre.Core.SmoothPointRegular
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
@@ -425,11 +424,11 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
 -- pullback) — CLOSED by R5 in FibreProjectionCompat (below); global Flat π / FiberBundle still R1.
 import DLNFibre.Core.FibreBundleHeadline
--- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt AGREES with
--- mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
--- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat + over-base
--- triv + flatness). Closes the S5/S4b "projection compatibility" item; global Flat π / target-side
--- cocycle still residual (R1).
+-- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt
+-- AGREES with mult's comorphism multComap after precomposition with localizeSchur (on Schur
+-- generators) — schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart
+-- (projection-compat + over-base triv + flatness). Closes the S5/S4b "projection compatibility"
+-- item; global Flat π / target-side cocycle still residual (R1).
 import DLNFibre.Core.FibreProjectionCompat
 -- R5 target-side overlap (R1 partial): awayCongr' (generalized localization transport) +
 -- targetProductOverlapTransition (the double-localized pairwise transition OBJECT). The cocycle

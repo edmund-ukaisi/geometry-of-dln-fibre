@@ -1,26 +1,7 @@
-/-
-The dimension bridge: at a closed point where a finite-type algebra over a field is smooth,
-the local Krull dimension equals the local relative dimension (the rank of Kähler differentials
-on a standard-smooth chart), computed by the étale-over-affine-space route.
-
-For `A` a finite-type `k`-algebra (`k` a field) and `m` a maximal ideal at which `A` is smooth,
-there is a basic-open chart `S = A[1/f]` (`f ∉ m`) on which `A` is standard smooth of some relative
-dimension `n`, with `Ω[S⁄k]` free of rank `n`, and the local ring `Localization.AtPrime m` has
-Krull dimension `n`. The dimension is computed **without** the cotangent/tangent identity (so the
-result is available to *prove* smooth ⟹ regular non-circularly):
-
-* the standard-smooth chart `S` is étale over `B = k[x₁,…,xₙ]` (Mathlib's
-  `exists_etale_mvPolynomial`); étale preserves height (M1 `height_eq_under_of_etale`);
-* the contracted prime `p = q.under B` has `B/p` of dimension `0` (it embeds, finitely, into the
-  field `S/q` — Zariski's lemma), so `p.height = n` by the affine-space catenary equality
-  (L5 `height_add_ringKrullDim_quotient_eq`);
-* heights transport down the localization `A → A[1/f]` (`IsLocalization.height_map_of_disjoint`) and
-  `ringKrullDim` of a localization at a prime is that prime's height
-  (`IsLocalization.AtPrime.ringKrullDim_eq_height`).
-
-`k` need only be a field — algebraic closedness is not used (the closed-point maximality goes through
-Zariski's lemma, not the residue-field-is-`k` form of the Nullstellensatz).
--/
+import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
+import Mathlib.RingTheory.QuasiFinite.Basic
+import Mathlib.RingTheory.Etale.Basic
+import Mathlib.RingTheory.Unramified.LocalStructure
 import Mathlib.RingTheory.Smooth.StandardSmoothOfFree
 import Mathlib.RingTheory.Smooth.StandardSmoothCotangent
 import Mathlib.RingTheory.RingHom.StandardSmooth
@@ -30,19 +11,141 @@ import Mathlib.RingTheory.Ideal.Height
 import Mathlib.RingTheory.Smooth.Locus
 import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
-import DLNFibre.Core.FlatQuasiFiniteHeight
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Catenary
 
+/-!
+# `Dimension.Smooth` — étale height-preservation + the smooth-point local-dimension bridge
+
+This file collects the two reusable commutative-algebra facts on the étale route from **smoothness**
+to **regular local ring** — the height-preservation brick and the local Krull-dimension bridge —
+both at the weakest hypotheses that suffice and **without** the cotangent/tangent identity, so that
+the bridge is available to *prove* "smooth ⟹ regular" non-circularly (the smooth ⟹ regular headline
+itself lives in `DLNFibre.Core.SmoothPointRegular`, the entry-2 consumer).
+
+## Contents
+
+1. **Étale (more generally flat + quasi-finite) preserves height.** For a flat, Noetherian
+   `R`-algebra `S` that is `R`-quasi-finite at a prime `Q`, the height of `Q` equals the height of
+   the prime `Q.under R` it lies over (`Ideal.height_eq_under_of_flat_quasiFiniteAt`); étale ⟹ flat
+   and quasi-finite, so an étale Noetherian `R`-algebra preserves the height of *every* prime
+   (`Ideal.height_eq_under_of_etale`). The fibre contributes nothing because quasi-finiteness forces
+   `Q` to be minimal in its fibre (`fibre_height_eq_zero_of_quasiFiniteAt`).
+
+2. **The smooth-point local-dimension bridge.** For `A` a finite-type algebra over a field `k` and
+   `m` a maximal ideal at which `A` is smooth, the local ring `Localization.AtPrime m` has Krull
+   dimension `n := finrank S Ω[S⁄k]` on a basic-open chart `S = A[1/f]`
+   (`ringKrullDim_localizationAtPrime_eq_of_isSmoothAt`). The dimension is computed via the
+   **étale-over-affine-space** route — the chart `S` is étale over `B = k[x₁,…,xₙ]`, height is
+   preserved down to `B` by (1), and the affine-space catenary equality (entry 1,
+   `Core.Dimension.Catenary`) reads off `n` from the zero-dimensional closed-point fibre — *not* via
+   the cotangent/tangent identity, keeping the result available to prove smooth ⟹ regular without
+   circularity.
+
+## Hypotheses
+
+The height-preservation brick is at `RingHom`/`Algebra` generality over Noetherian rings.
+The dimension bridge needs only **`[Field k]`** — algebraic closedness is **not** used: the
+closed-point maximality goes through Zariski's lemma, not the residue-field-is-`k` form of the
+Nullstellensatz. (The `[IsAlgClosed] → [PerfectField]` generalisation is exclusively an entry-2
+concern — the smooth ⟹ regular headline's residue-field formal-smoothness step — and never touches
+this file, which is already field-general.) `Algebra.QuasiFiniteAt R Q` is Mathlib's finite-fibre-
+dimension condition (`κ(p) ⊗ S` finite over `κ(p)`), *weaker* than the Stacks 00PL "finite type +
+isolated in its fibre" notion; the two coincide for finite-type `S` and the height brick holds in
+this weaker generality.
+
+This file mirrors the eventual Mathlib home `Mathlib.RingTheory.Smooth.Regular` (the regular-local-
+ring consequence of smoothness); the standalone étale height-preservation brick would naturally sit
+near `Mathlib.RingTheory.Etale.QuasiFinite` / a `Mathlib.RingTheory.Etale.Height`. It builds on
+entry 1 — `Core.Dimension.Integral` (integral-extension dimension invariance) and
+`Core.Dimension.Catenary` (the polynomial-ring catenary equality) — as black boxes.
+
+**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+-/
+
 open Algebra
 
-namespace DLNFibre.Core
+namespace DLNFibre.Core.Dimension
 
-open Dimension
+/-! ### Étale (flat + quasi-finite) preserves height -/
 
-variable {k : Type*} [Field k] {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A]
+section HeightPreservation
+
+variable {R S : Type*} [CommRing R] [CommRing S] [Algebra R S]
+
+/-- The image of `Q` in the fibre `S ⧸ (Q.under R)S` has height `0` when `S` is `R`-quasi-finite
+at `Q`: any prime below it pulls back to a prime of `S` with the same contraction to `R`, hence
+equal to `Q` by quasi-finiteness. -/
+theorem fibre_height_eq_zero_of_quasiFiniteAt (Q : Ideal S) [Q.IsPrime]
+    [Algebra.QuasiFiniteAt R Q] :
+    (Q.map (Ideal.Quotient.mk ((Q.under R).map (algebraMap R S)))).height = 0 := by
+  -- Abbreviations: `pS = (Q.under R) S`, `f = quotient map onto the fibre`.
+  set pS : Ideal S := (Q.under R).map (algebraMap R S) with hpS
+  set f : S →+* S ⧸ pS := Ideal.Quotient.mk pS with hf
+  have hsurj : Function.Surjective f := Ideal.Quotient.mk_surjective
+  have hkerf : RingHom.ker f = pS := Ideal.mk_ker
+  -- `comap f ⊥ = pS` (the kernel of the quotient map), in usable form.
+  have hbot : (⊥ : Ideal (S ⧸ pS)).comap f = pS := by
+    rw [← RingHom.ker_eq_comap_bot]; exact hkerf
+  -- `pS ≤ Q`, since `Q` lies over `Q.under R`.
+  have hpSQ : pS ≤ Q := hpS.trans_le Ideal.map_comap_le
+  -- `J := Q.map f` is prime and pulls back to `Q`.
+  have hJprime : (Q.map f).IsPrime :=
+    Ideal.map_isPrime_of_surjective hsurj (hkerf.trans_le hpSQ)
+  have hJcomap : (Q.map f).comap f = Q := by
+    rw [Ideal.comap_map_of_surjective f hsurj, hbot, sup_eq_left.mpr hpSQ]
+  -- height = primeHeight = 0 ⟺ minimal prime.
+  rw [Ideal.height_eq_primeHeight, Ideal.primeHeight_eq_zero_iff]
+  refine ⟨⟨hJprime, bot_le⟩, ?_⟩
+  -- Minimality: any prime `K ≤ J` equals `J`.
+  rintro K ⟨hKprime, -⟩ hKJ
+  -- `K' := K.comap f`, with `pS ≤ K' ≤ Q`.
+  have hK'prime : (K.comap f).IsPrime := hKprime.comap f
+  have hpSK' : pS ≤ K.comap f := (le_of_eq hkerf.symm).trans (Ideal.ker_le_comap f)
+  have hK'Q : K.comap f ≤ Q := by rw [← hJcomap]; exact Ideal.comap_mono hKJ
+  -- `K'.under R = Q.under R`: both equal `Q.under R`.
+  have hunder : (K.comap f).under R = Q.under R := by
+    refine le_antisymm (Ideal.comap_mono hK'Q) ?_
+    have h1 : Q.under R ≤ pS.comap (algebraMap R S) := hpS.symm ▸ Ideal.le_comap_map
+    exact h1.trans (Ideal.comap_mono hpSK')
+  -- Quasi-finiteness: `K' = Q`, hence `K = K'.map f = Q.map f = J`, so `J ≤ K`.
+  have hK'Q' : K.comap f = Q := QuasiFiniteAt.eq_of_le_of_under_eq hK'Q hunder
+  have hKJ' : K = Q.map f :=
+    calc K = (K.comap f).map f := (Ideal.map_comap_of_surjective f hsurj K).symm
+      _ = Q.map f := by rw [hK'Q']
+  exact hKJ'.ge
+
+/-- For a flat, Noetherian `R`-algebra `S` quasi-finite at a prime `Q`, the height of `Q`
+equals the height of the prime `Q.under R` it lies over. -/
+theorem Ideal.height_eq_under_of_flat_quasiFiniteAt
+    [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S]
+    (Q : Ideal S) [Q.IsPrime] [Algebra.QuasiFiniteAt R Q] :
+    Q.height = (Q.under R).height := by
+  have := Ideal.height_eq_height_add_of_liesOver_of_hasGoingDown (Q.under R) Q
+  rw [fibre_height_eq_zero_of_quasiFiniteAt Q, add_zero] at this
+  exact this
+
+/-- Étale algebras are flat and quasi-finite, so an étale Noetherian `R`-algebra `S` preserves
+the height of every prime: `Q.height = (Q.under R).height`. -/
+theorem Ideal.height_eq_under_of_etale
+    [IsNoetherianRing R] [IsNoetherianRing S] [Algebra.Etale R S]
+    (Q : Ideal S) [Q.IsPrime] :
+    Q.height = (Q.under R).height :=
+  Ideal.height_eq_under_of_flat_quasiFiniteAt Q
+
+/-- Non-vacuity: the hypotheses hold for the identity algebra `R = S` (flat and module-finite over
+itself), where the statement reduces to `Q.height = Q.height`. -/
+example [IsNoetherianRing R] (Q : Ideal R) [Q.IsPrime] :
+    Q.height = (Q.under R).height :=
+  Ideal.height_eq_under_of_flat_quasiFiniteAt (R := R) (S := R) Q
+
+end HeightPreservation
 
 /-! ### The relative-dimension rank of a standard-smooth chart -/
+
+section DimensionBridge
+
+variable {k : Type*} [Field k] {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A]
 
 /-- On a standard-smooth chart `S`, `Ω[S⁄k]` is free of finite rank, so its `Module.rank` is the
 natural number `Module.finrank S Ω[S⁄k]`. -/
@@ -94,7 +197,7 @@ theorem ringKrullDim_quotient_comap_etale_eq_zero {n : ℕ} {S : Type*} [CommRin
 
 /-- The contracted prime `q.comap g` of a maximal ideal under an étale map `g : k[x₁,…,xₙ] → S` has
 height exactly `n`: `B/(q.comap g)` is zero-dimensional, so the affine-space catenary equality
-(L5) gives `(q.comap g).height = n`. -/
+gives `(q.comap g).height = n`. -/
 theorem height_comap_etale_eq {n : ℕ} {S : Type*} [CommRing S] [Algebra k S]
     (g : MvPolynomial (Fin n) k →+* S) (hg : g.Etale) (q : Ideal S) [hq : q.IsMaximal] :
     (q.comap g).height = (n : ℕ∞) := by
@@ -142,7 +245,8 @@ theorem ringKrullDim_localizationAtPrime_eq_of_isSmoothAt
   refine ⟨n, f, hf, hssrd, rank_kaehler_eq_finrank S, ?_⟩
   -- Step D: an étale presentation `g : B = k[x₁,…,xₙ] → S`.
   obtain ⟨g, hg⟩ := IsStandardSmoothOfRelativeDimension.exists_etale_mvPolynomial n k S
-  -- Step E/F: `(q.comap g).height = n`; Step G via M1 `q.height = (q.under B).height`.
+  -- Step E/F: `(q.comap g).height = n`; Step G via the étale height-preservation brick
+  -- `q.height = (q.under B).height`.
   letI := (g : MvPolynomial (Fin n) k →+* S).toAlgebra
   haveI : Algebra.Etale (MvPolynomial (Fin n) k) S := RingHom.etale_algebraMap.mp hg
   haveI : IsNoetherianRing (MvPolynomial (Fin n) k) := inferInstance
@@ -150,7 +254,7 @@ theorem ringKrullDim_localizationAtPrime_eq_of_isSmoothAt
   -- `q.under B = q.comap g` (definitionally `g`).
   have hunder : q.under (MvPolynomial (Fin n) k) = q.comap (g : MvPolynomial (Fin n) k →+* S) := by
     rw [Ideal.under_def]; rfl
-  -- M1: étale ⟹ `q.height = (q.under B).height`; combine with `(q.comap g).height = n`.
+  -- Étale ⟹ `q.height = (q.under B).height`; combine with `(q.comap g).height = n`.
   have hM1 : q.height = (q.under (MvPolynomial (Fin n) k)).height :=
     Ideal.height_eq_under_of_etale q
   have hpheight : (q.comap (g : MvPolynomial (Fin n) k →+* S)).height = (n : ℕ∞) :=
@@ -204,4 +308,6 @@ example (m : Ideal (MvPolynomial (Fin 1) ℚ)) [m.IsMaximal] :
     exact this
   exact ringKrullDim_localizationAtPrime_eq_of_isSmoothAt m
 
-end DLNFibre.Core
+end DimensionBridge
+
+end DLNFibre.Core.Dimension
