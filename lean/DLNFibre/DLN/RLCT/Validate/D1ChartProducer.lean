@@ -28,20 +28,31 @@ rlctAt (dlnLoss H B) v` — the `hAtV` shape `deepest_le_of_optimal_via_L2_ge` c
 **PART (b) — the residual-core comparison (VERIFY-FIRST, decorrelated pen-and-paper, 2026-06-29).**
 Setting `coreV := rlctAtOn R t0` (NOT a separate `v−core` map) makes `hAtV` the engine output; the
 SOLE remaining obligation is `hCore : coreDeepest ≤ rlctAtOn R t0`, i.e. `rlctAtOn R 0 ≥
-rlctAtOn (core) 0`. G1 verify-first (exact algebra, L=2, r∈{1,2,3}, M ranging over the small
-reduced widths + Codex xhigh) found `R = ‖T₁·(I_{M₁}+G)·T₂‖²_F` (`G` gauge-only, `G(0)=0`,
-min-degree 2), so `R = (core ∘ fst) ∘ Φ` for the LOCAL DIFFEO `Φ : (T,g) ↦ ((T₁,(I+G(g))·T₂),g)`
-fixing the origin (`det DΦ(0) = (det(I+G(0)))^{M₂} = 1`, bounded-unit). `hCore` is DISCHARGED WITH
-EQUALITY and is **NOT** the R1-resolution leading-form lemma first feared: the r≥2 coupling `Z₁·Y₂`
-is ABSORBED into the invertible inner factor `I+G` (multiplicative reparametrization, NOT additive
-Newton-lowering perturbation), so it routes through the SAME banked machinery #44 uses
-(`rlctAtOn_boundedUnit_localHomeomorph` + `rlctAtOn_spectator_peel`), DECOUPLED from R1. This is
-`hCore_slice_residual_eq` below, banked CONDITIONAL on the producer's diffeo data.
+rlctAtOn (core) 0`.
 
-Scope L = 2 (general-L = the named wall #120). This file does NOT close (★): it BANKS the mechanical
-PART (a) reduction + PART (b) `hCore`-interface, leaving the single remaining D1 obligation: the
-IFT-chart producer (obligation (i), `deepest_gauge_construction` at a general `v`; #44 is the
-already-tracked Skeleton sorry the deepest side `hDeepest` consumes). -/
+**DEEPEST-TYPE points (`nReg_v = nReg`).** G1 verify-first (exact algebra, L=2, r∈{1,2,3}) found
+`R = ‖T₁·(I_{M₁}+G)·T₂‖²_F` (`G` gauge-only, `G(0)=0`, min-degree 2), so `R = (core∘fst)∘Φ` for the
+LOCAL DIFFEO `Φ : (T,g) ↦ ((T₁,(I+G(g))·T₂),g)` fixing the origin (`det DΦ(0)=(det(I+G(0)))^{M₂}=1`,
+bounded-unit). The r≥2 coupling `Z₁·Y₂` is ABSORBED into the invertible inner factor `I+G`. `hCore`
+is discharged WITH EQUALITY by `hCore_slice_residual_eq` below, routing through the SAME banked
+machinery #44 uses — DECOUPLED from R1.
+
+**MIDDLE-STRATUM points (`nReg_v > nReg`), the KILL-CONDITION (adjudication a97332/a591012b).** At a
+genuinely-NON-trivial-core middle-stratum `v` — `(3,3,3)/r=1`, `A₁=diag(1,1,0)`, `A₂=diag(1,0,0)`,
+`nReg_v=7 > nReg=5`, deg-4 core `dlnLoss(2,2,2)0` NONTRIVIAL — peeling exactly the CONSTANT `nReg=5`
+(NOT the maximal `nReg_v=7`; peeling `nReg_v` = the FORBIDDEN Aoyagi-Thm-2 maximal Morse split)
+leaves `R` with a degree-2 Morse part (`det DΦ(0) ≠ 1`, a DIFFERENT germ) — so the `_eq` form's
+factorization is FALSE here. BUT the D1 INEQUALITY STILL HOLDS: `rlctAtOn R 0 = coreDeepest = 3/2`
+EXACT (the `extra = nReg_v−nReg` Morse halves exactly offset the degraded core), via a
+Morse-WITH-PARAMETERS VALUE argument (RLCT-additivity over disjoint groups). So the route is
+NOT killed — the VALUE `hCore` survives — but its general-`v` discharge is VALUE-level, NOT
+the germ factorization. This is the residual gap surfaced to the controller (the general-`v`
+`hCore` obligation; the `_eq` factorization is the deepest-sub-locus special case).
+
+Scope L = 2 (general-L = wall #120). This file BANKS the PART (a) reduction + the
+PART (b) `hCore`-interface (factorization form, deepest-type); the remaining D1 obligations are the
+IFT-chart producer (obligation (i)) + its general-`v` value-level `hCore` (the kill residual);
+#44 is the already-tracked Skeleton sorry the deepest side `hDeepest` consumes. -/
 
 open MeasureTheory
 open scoped ENNReal Topology
@@ -138,7 +149,21 @@ discharges the D1 `hCore : coreDeepest ≤ rlctAtOn R (t0,g0)` with EQUALITY (th
 The hypotheses are EXACTLY the producer's outputs: the diffeo `Φ`/`Φsymm`/derivatives + bounded-unit
 Jacobian on an open `V ∋ (t0,g0)` (the raw-data `rlctAtOn_boundedUnit_localHomeomorph` form —
 the `Φ` of G1), the form identity `hRform`, and a positive-finite gauge
-nbhd `hG` (the spectator box). `core₀` is the reduced loss `dlnLoss M 0` at the producer. -/
+nbhd `hG` (the spectator box). `core₀` is the reduced loss `dlnLoss M 0` at the producer.
+
+**SCOPE LIMIT (kill-condition adjudication a97332/a591012b, 2026-06-29 — do not over-read).**
+The germ-factorization `hRform` (`R = (core₀∘fst)∘Φ`, `Φ` bounded-unit, `det DΦ(0) =
+1`) is dischargeable by the producer ONLY at DEEPEST-TYPE optimal points (where the extra Morse rank
+`nReg_v − nReg = 0`, so `R` IS the deepest core up to the inner factor — the G1 finding). At a
+MIDDLE-STRATUM optimal `v` (`nReg_v > nReg`, e.g. `(3,3,3)/r=1`, `A₁=diag(1,1,0)`, `A₂=diag(1,0,0)`,
+`nReg_v=7 > nReg=5`), the EXACT slice residual after the constant-`nReg` peel has a degree-2 Morse
+part (`det DΦ(0) ≠ 1`, a genuinely DIFFERENT germ) — so `hRform` is FALSE there and this does NOT
+fire. `hCore : coreDeepest ≤ rlctAtOn R t0` STILL HOLDS at such `v` (verified EXACT:
+`rlctAtOn R 0 = coreDeepest = 3/2` at that point — the `extra = nReg_v − nReg` Morse halves exactly
+offset the degraded core), via a Morse-WITH-PARAMETERS VALUE argument, NOT this factorization. So at
+GENERAL `v`, `hCore` is discharged at the VALUE level (`rlctAtOn R 0 ≥ coreDeepest`), an open
+producer obligation NOT reducible to `hRform` — surfaced to the controller (the kill residual
+gap). THIS lemma remains the lightest discharge on the DEEPEST sub-locus (where `nReg_v = nReg`). -/
 theorem hCore_slice_residual_eq
     {Reduced Gauge : Type*}
     [NormedAddCommGroup Reduced] [NormedSpace ℝ Reduced] [MeasureSpace Reduced]
