@@ -545,4 +545,38 @@ theorem Dmap_abs_det (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 
     |(Dmap M hrs hr hc u).det| = |u (pivotCoord M hrs hr hc)| ^ (r * M 2 - 1) := by
   rw [Dmap, pivotBlowupOnDeriv_det _ _ (pivotCoord_mem M hrs hr hc), topCoords_card, abs_pow]
 
+/-! ## `Uunit` is `z`-free (does not read the radial pivot)
+
+`Uunit = ‖P₁·H̄_unit‖²` reads `A⁰` (front) and `H̄_unit`; the pivot entry of `H̄_unit` is FIXED `= 1`, the
+other top coords are non-pivot. So `Uunit` never reads the pivot value — the `z`-free unit the peeled rate
+needs. -/
+
+/-- `HbarUnit` does not read the pivot coord: changing `u` at `pivotCoord` leaves `HbarUnit` fixed (the
+pivot entry is the constant `1`; the others are non-pivot coords). -/
+theorem HbarUnit_congr_off_pivot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ≠ pivotCoord M hrs hr hc → v m = w m) :
+    HbarUnit M hrs hr hc v = HbarUnit M hrs hr hc w := by
+  funext a j
+  simp only [HbarUnit]
+  by_cases hpiv : coordOf M (topSlot M hrs a j) = pivotCoord M hrs hr hc
+  · rw [if_pos hpiv, if_pos hpiv]
+  · rw [if_neg hpiv, if_neg hpiv, h _ hpiv]
+
+/-- `Uunit` does not read the pivot coord (`z`-free): it is built from `A⁰` (front, `∉ {pivot}`) and
+`HbarUnit` (pivot entry fixed). -/
+theorem Uunit_congr_off_pivot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ≠ pivotCoord M hrs hr hc → v m = w m) :
+    Uunit M hrs hr hc v = Uunit M hrs hr hc w := by
+  have hA : A0u M v = A0u M w := by
+    funext i jf
+    refine h _ (fun hcoord => ?_)
+    -- `coordOf (frontSlot i jf) = pivotCoord = coordOf (topSlot ⟨0⟩ ⟨0⟩)` ⟹ `frontSlot = topSlot` (✗)
+    exact frontSlot_ne_topSlot M hrs i jf ⟨0, hr⟩ ⟨0, hc⟩ (coordOf_injective M hcoord)
+  have hP1 : P1u M hrs v = P1u M hrs w := by funext i a; simp only [P1u, hA]
+  have hHbar : HbarUnit M hrs hr hc v = HbarUnit M hrs hr hc w :=
+    HbarUnit_congr_off_pivot M hrs hr hc h
+  rw [Uunit, Uunit, hP1, hHbar]
+
 end DLNFibre.DLN.RLCT
