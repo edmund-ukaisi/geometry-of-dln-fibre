@@ -10,6 +10,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 
 /-!
 # Axiom-hygiene check
@@ -127,6 +128,16 @@ open DLNFibre.DLN.RLCT
 -- factor) ⟹ `rlctAtOn R = rlctAtOn core₀` (diffeo transfer + spectator peel). Conditional on the
 -- producer's diffeo data; must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`.
 #print axioms hCore_slice_residual_eq
+
+-- R1-LOWER generic achiever, BOUNDARY-SMEARED branch ASSEMBLY — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], S2-FREE, no `sorryAx`: `routeMCore_box_diverges_of_smearedChart`
+-- (box divergence from a `SmearedAchieverChart M` bundle) + `hSmeared_of_smearedChart` (the spine's
+-- `hSmeared` slot from a chart-builder — a CONDITIONAL reduction, NOT a closure). They REDUCE the smeared
+-- branch ∀M to "construct one chart-builder `BoundarySmeared M → SmearedAchieverChart M`"; the (2,3,1)
+-- witness `routeM231sm_box_diverges_via_smearedChart` confirms the structure is non-vacuous.
+#print axioms routeMCore_box_diverges_of_smearedChart
+#print axioms hSmeared_of_smearedChart
+#print axioms routeM231sm_box_diverges_via_smearedChart
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

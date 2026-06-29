@@ -524,6 +524,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 -- Varah field-A margins, hboxpos, hexp). Built on the Core Varah brick `Core.Matrix.DiagDominance`
 -- (`StrictRowDominant.det_ne_zero`). Cone sorry-free, S2-FREE. Reviewer PASS (5-point + decorrelated Codex).
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
+-- R1-LOWER generic achiever, the BOUNDARY-SMEARED branch ASSEMBLY (`deepRank < deepRows`): the chart
+-- structure `SmearedAchieverChart M` + the M-agnostic `routeMCore_box_diverges_of_smearedChart` (box
+-- divergence from a chart bundle, thin repackaging of the banked `routeMCore_box_diverges_smearedL2`)
+-- + `hSmeared_of_smearedChart` (feeds the dispatch spine's `hSmeared` slot exactly, defeq-checked) +
+-- the (2,3,1) non-vacuity witness. CLEAN-THREE, S2-FREE. REDUCES the smeared branch ∀M to "construct
+-- one chart-builder `BoundarySmeared M → SmearedAchieverChart M`" (the remaining ∀M geometric build).
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 -- L2 Skeleton rung 1/5 (`product_reduction`) at L=2: the deepest-point diffeo bridge wired into the
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
