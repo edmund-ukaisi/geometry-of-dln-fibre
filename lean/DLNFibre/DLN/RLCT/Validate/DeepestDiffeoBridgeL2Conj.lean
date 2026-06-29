@@ -2117,6 +2117,60 @@ theorem absorbedCoreConj_psiSplitRawL2CoreConj_of_ne (H : Fin (L + 1) → ℕ) (
   rw [schurCorrectionConj, schurCorrectionConj, readZ_psiSplitRawL2CoreConj_eq,
     readX_psiSplitRawL2CoreConj_eq, readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq q s hs]
 
+/-- **The conjugated absorbed-core tuple cleans to `C`** (the `hc_eq` step): the per-layer absorbed core
+`decode(ψq).core_s + schurCorrectionConj(ψq)_s` equals the cleaned tuple `update (decode q + corrConj q)
+last ((1−Kc)·S1c)` — last via `absorbedCoreConj_psiSplitRawL2CoreConj_last` (`det Wc ≠ 0`), off-last via
+`_of_ne`. The conjugated analogue of the bare `hc_eq`. -/
+theorem absorbedCoreConj_psiSplitRawL2CoreConj_eq_clean (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) (hW : (l2WConj H r B hB hr hL hL2eq q).det ≠ 0) :
+    (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.1 s
+        + schurCorrectionConj H r B hB hr hL
+            ((psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).1,
+              (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q).2.2) s)
+      = Function.update
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s)
+          (lastLayer hL)
+          ((1 - l2KConj H r B hB hr hL hL2eq q) * l2S1Conj H r B hB hr hL hL2eq q) := by
+  funext s
+  by_cases hs : s = lastLayer hL
+  · subst hs
+    rw [Function.update_self]
+    exact absorbedCoreConj_psiSplitRawL2CoreConj_last H r B hB hr hL hL2eq q hW
+  · rw [Function.update_of_ne hs]
+    exact absorbedCoreConj_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq q s hs
+
+/-- **Step Ψ_conj sub-4 (in-file, modulo the conjugated LDU readback-tie).** On the inner ball, the
+conjugated absorbed-core energy of the moved point equals the Score: by stage-5
+`deepestCoreF_coreAbsorbConj_eq_prodSchur` + the tuple-clean (above) + the conjugated readback-tie
+`hLDUtieConj` (`prod(deepestM) C = Score integrand`, TRUE here — discharged via
+`prod_deepestM_eq_schur_ldu_readback` + `absorbedCoreConj_eq_schurCore` after the `Fin 3` subst at the
+wire/below). The conjugated analogue of the bare `deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score`, with
+the now-TRUE conjugated dictionary in place of the bare-false one. -/
+theorem deepestCoreF_coreAbsorbConj_psiSplitRawL2CoreConj_eq_score (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hq : psiSplitRawL2CoreConj H r B hB hr hL hL2eq q
+      ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
+        ((cutoffBumpConj H r B hB hr hL hDA).rIn))
+    (hW : (l2WConj H r B hB hr hL hL2eq q).det ≠ 0)
+    (Score : ℝ)
+    (hLDUtieConj : frobSq (prod (deepestM H r)
+        (Function.update
+          (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
+            + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s)
+          (lastLayer hL)
+          ((1 - l2KConj H r B hB hr hL hL2eq q) * l2S1Conj H r B hB hr hL hL2eq q))) = Score) :
+    deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q)).2.1 = Score := by
+  rw [deepestCoreF_coreAbsorbConj_eq_prodSchur H r B hB hr hL hDA
+    (psiSplitRawL2CoreConj H r B hB hr hL hL2eq q) hq,
+    absorbedCoreConj_psiSplitRawL2CoreConj_eq_clean H r B hB hr hL hL2eq q hW, hLDUtieConj]
+
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
 Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
