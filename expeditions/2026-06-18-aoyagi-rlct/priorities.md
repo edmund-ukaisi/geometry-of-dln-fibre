@@ -10,6 +10,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, p.13 regular-coordinate model iff
+
+The p.13 fixed-base regular-coordinate square model now has the intended iff
+wrapper.  The model is
+
+```text
+residualSquareSum(base) + regularCoordinateSquareSum(regular)
+```
+
+at exponent
+
+```text
+t + aoyagiTheorem2RegularVariableCount N H r / 2.
+```
+
+The wrapper uses the existing coordinate-square-sum model iff and the
+source-data regular-variable count.  The `sourceData` package is not evidence
+for chart coverage, loss comparison, density/Jacobian transport, or residual
+integrability here; in this theorem it supplies the count rewrite.
+
+Nonclaims: no p.13 analytic chart coverage, no original-loss theorem, no
+density/Jacobian/source-prior transport, no proof of residual measurability,
+positivity, boundedness, or integrability, no pole order, no normal crossings,
+and no RLCT.  This is the right endpoint for the model threshold-shift layer.
+Further consumers should either prove/supply the missing loss-density
+comparability and measure-transport hypotheses explicitly, or stay at the
+model level.
+
 ## Latest controller decision - 2026-06-29, coordinate-square-sum regular-suspension iff
 
 The generic local model iff has now been connected to the Aoyagi

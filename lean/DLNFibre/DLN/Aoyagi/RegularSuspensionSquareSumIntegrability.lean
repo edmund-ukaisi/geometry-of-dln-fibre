@@ -515,6 +515,106 @@ theorem regularCoordinateEuclidean_finrank_eq_regularVariableCount
   exact sourceData.regularCoordinateIndex_card_eq_regularVariableCount
 
 set_option linter.unusedSectionVars false in
+/-- p. 13 fixed-base regular-coordinate model threshold-shift iff.
+
+This is only the square model
+`residualSquareSum + regularSquareSum`.  It does not include an actual loss,
+density, Jacobian, chart-coverage, pole-order, or RLCT assertion. -/
+theorem lintegral_ofReal_p13RegularCoordinates_model_lt_top_iff_residual_power_lt_top
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] {x₀ : α}
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ x₀ Cedge H r rEdge)
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [SFinite ν] [ν.IsAddHaarMeasure]
+    {t R : ℝ}
+    (hmeas : AEMeasurable
+      (fun x : α =>
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W B U₀ hU₀ Cedge x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x))
+    (hle : ∀ᵐ x ∂μ,
+      aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x) ≤ R ^ 2)
+    (ht : 0 < t) :
+    (∫⁻ z : α × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)),
+      ENNReal.ofReal
+        ((Metric.ball
+          (0 : EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀ 0))) R).indicator
+          (fun u =>
+            (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W B U₀ hU₀ Cedge z.1) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ^
+              (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2))) z.2)
+      ∂ μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t)) ∂μ) < ∞ := by
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+  have hfinrank_nat :
+      Module.finrank ℝ (EuclideanSpace ℝ ρ) =
+        aoyagiTheorem2RegularVariableCount N H r := by
+    simpa [ρ] using
+      sourceData.regularCoordinateEuclidean_finrank_eq_regularVariableCount
+  have hfinrank :
+      (Module.finrank ℝ (EuclideanSpace ℝ ρ) : ℝ) =
+        (aoyagiTheorem2RegularVariableCount N H r : ℝ) := by
+    exact_mod_cast hfinrank_nat
+  have hiff :=
+    lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+      (E := EuclideanSpace ℝ ρ) (μ := μ) (ν := ν)
+      (b := fun x =>
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W B U₀ hU₀ Cedge x)
+      (t := t) (R := R) hmeas hR hpos hle ht
+  rw [hfinrank] at hiff
+  have hregular_sq (u : EuclideanSpace ℝ ρ) :
+      aoyagiCoordinateSquareSum (fun i : ρ => u i) = ‖u‖ ^ 2 := by
+    simpa [aoyagiCoordinateSquareSum] using (EuclideanSpace.real_norm_sq_eq u).symm
+  simpa [ρ, hregular_sq] using hiff
+
+set_option linter.unusedSectionVars false in
 /-- p. 13 fixed-base regular-coordinate-space specialisation of the
 bounded-density finite-side square-suspension theorem.
 

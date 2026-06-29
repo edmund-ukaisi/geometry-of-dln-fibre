@@ -3,6 +3,59 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 p.13 regular-coordinate model iff - 2026-06-29
+
+`RegularSuspensionSquareSumIntegrability.lean` now has the fixed-base p.13
+regular-coordinate model iff:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.lintegral_ofReal_p13RegularCoordinates_model_lt_top_iff_residual_power_lt_top
+```
+
+It states the square model
+
+```text
+residualSquareSum(x) + regularCoordinateSquareSum(u)
+```
+
+on the p.13 regular coordinate ball, at exponent
+
+```text
+t + aoyagiTheorem2RegularVariableCount N H r / 2,
+```
+
+is finite iff the residual square-sum `t`-power integral is finite.  The
+theorem assumes a.e. measurability, a.e. positivity, the local bound
+`residualSquareSum <= R^2`, `0<R`, `0<t`, and
+`[SFinite nu] [nu.IsAddHaarMeasure]`.
+
+The proof uses `sourceData` only to rewrite the Euclidean regular-coordinate
+finrank to `aoyagiTheorem2RegularVariableCount`; it then rewrites
+`||u||^2` to the finite regular-coordinate square-sum and calls the
+coordinate-square-sum model iff.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-p13-regular-coordinate-model-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-regular-coordinate-model-iff.md`.
+Review passed in
+`threads/03-block-product-reduction/review-a2-p13-regular-coordinate-model-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe for the new public theorem name.
+The axiom footprint is the expected `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no p.13 analytic chart coverage, no actual loss comparison, no
+density/Jacobian/source-prior transport, no proof of residual measurability or
+integrability, no pole order, no normal crossings, and no RLCT.
+
 ## Latest A2 coordinate-square-sum regular-suspension iff - 2026-06-29
 
 `RegularSuspensionSquareSumIntegrability.lean` now exposes the generic
