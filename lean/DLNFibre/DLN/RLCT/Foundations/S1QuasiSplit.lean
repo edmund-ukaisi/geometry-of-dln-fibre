@@ -48,7 +48,8 @@ giving (★): `m/2 + rlctAtOn R 0 ≤ rlctAtOn f v`. The residual core `R = ∑ 
 All three are network-free real analysis (high value beyond D1); the IFT-chart producer (the
 `g_k`→chart step, application-specific) lives at the D1 use site.
 
-STATUS: SKELETON (signatures validated; sub-lemmas `sorry`). Built incrementally below.
+STATUS: all three sub-lemmas PROVEN sorry-free (axiom-clean `[propext, Classical.choice,
+Quot.sound]`).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -67,14 +68,18 @@ section Iterate
 variable {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
     [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
 
-/-- `(chartN m Y).symm (a, (f, y)) = (Fin.cons a f, y)` (re-derived; the S1Fubini twin is private). -/
+omit [ProperSpace Y] [IsFiniteMeasureOnCompacts (volume : Measure Y)]
+  [BorelSpace Y] in
+/-- `(chartN m Y).symm (a, (f, y)) = (Fin.cons a f, y)` (re-derived; S1Fubini's twin is private). -/
 private theorem qs_chartN_symm_app (m : ℕ) (a : ℝ) (f : Fin m → ℝ) (y : Y) :
     (chartN m Y).symm (a, (f, y)) = (Fin.cons a f, y) := by
   have h : (chartN m Y).symm (a, (f, y)) = ((finPeel m).symm (a, f), y) := rfl
   rw [h]; congr 1
-  show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (m + 1))).symm (a, f) = Fin.cons a f
+  change (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (m + 1))).symm (a, f) = Fin.cons a f
   rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' a f
 
+omit [ProperSpace Y] [IsFiniteMeasureOnCompacts (volume : Measure Y)]
+  [BorelSpace Y] in
 /-- `(chartN m Y) (0, y0) = (0, (0, y0))` (re-derived; the S1Fubini twin is private). -/
 private theorem qs_chartN_at_zero (m : ℕ) (y0 : Y) : (chartN m Y) (0, y0) = (0, (0, y0)) := by
   apply (chartN m Y).symm.injective
@@ -117,7 +122,7 @@ theorem rlct_smooth_block_ge (R : Y → ℝ) (y0 : Y) (hR : ∀ z, 0 ≤ R z) (h
       ≤ rlctAtOn (fun p : (Fin m → ℝ) × Y => (∑ i, p.1 i ^ 2) + R p.2) (0, y0) := by
   induction m with
   | zero =>
-    -- `0/2 + λ R = λ R`, and `(fun p:(Fin 0→ℝ)×Y => 0 + R p.2)` transports to `R` by the singleton chart.
+    -- `0/2 + λ R = λ R`; the empty-block core `0 + R p.2` transports to `R` by the singleton chart.
     have hrhs : (↑(0 : ℕ) : ℝ≥0∞) / 2 + rlctAtOn R y0 = rlctAtOn R y0 := by simp
     rw [hrhs]
     set e : Y ≃ₜ ((Fin 0 → ℝ) × Y) := (Homeomorph.uniqueProd (Fin 0 → ℝ) Y).symm with he
@@ -183,7 +188,7 @@ constant multiple of the coupled energy:
 (`b² ≤ 2(a−b)² + 2a² ≤ 2L²·(∑s²) + 2a²`, then `(∑s²) + b² ≤ (2L²+1)(∑s²) + 2a² ≤ (2L²+2)(∑s²+a²)`.)
 Single-square form; the producer sums it over the inactive index set and supplies `L` from the
 mean-value bound on `q` (`Convex.norm_image_sub_le_of_norm_fderiv_le`). -/
-theorem coupled_controls_slice {m : ℕ} (a b L : ℝ) (s : Fin m → ℝ) (hL : 0 ≤ L)
+theorem coupled_controls_slice {m : ℕ} (a b L : ℝ) (s : Fin m → ℝ)
     (hlip : (a - b) ^ 2 ≤ L ^ 2 * (∑ i, s i ^ 2)) :
     (∑ i, s i ^ 2) + b ^ 2 ≤ (2 * L ^ 2 + 2) * ((∑ i, s i ^ 2) + a ^ 2) := by
   set ssq := ∑ i, s i ^ 2 with hssq
@@ -218,13 +223,72 @@ theorem rlct_quasiSplit_ge {m : ℕ} {Y : Type*}
     [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
     (F : (Fin m → ℝ) × Y → ℝ) (Q : (Fin m → ℝ) × Y → ℝ) (R : Y → ℝ) (t0 : Y)
     (hF : ∀ p, F p = (∑ i, p.1 i ^ 2) + Q p)
-    (hQ0 : ∀ p, 0 ≤ Q p) (hQmeas : Measurable Q) (hFmeas : Measurable F)
+    (hQ0 : ∀ p, 0 ≤ Q p) (hFmeas : Measurable F)
     (hR : ∀ t, R t = Q (0, t)) (hRmeas : Measurable R)
     (hRne : ∃ U ∈ 𝓝 t0, ∀ᵐ z ∂(volume.restrict U), R z ≠ 0)
     (C : ℝ) (hC : 0 < C)
     (hcmp : ∃ U ∈ 𝓝 ((0 : Fin m → ℝ), t0), ∀ p ∈ U,
         (∑ i, p.1 i ^ 2) + R p.2 ≤ C * F p) :
     (m : ℝ≥0∞) / 2 + rlctAtOn R t0 ≤ rlctAtOn F ((0 : Fin m → ℝ), t0) := by
-  sorry
+  haveI : OpensMeasurableSpace ((Fin m → ℝ) × Y) := inferInstance
+  -- `R ≥ 0` (`R t = Q(0,t) ≥ 0`).
+  have hR0 : ∀ z, 0 ≤ R z := fun z => by rw [hR]; exact hQ0 _
+  -- the decoupled block `G = ∑s² + R`, nonneg + measurable.
+  set G : (Fin m → ℝ) × Y → ℝ := fun p => (∑ i, p.1 i ^ 2) + R p.2 with hG
+  have hG0 : ∀ p, 0 ≤ G p := fun p => by
+    have := hR0 p.2; simp only [hG]; positivity
+  have hGmeas : Measurable G := by fun_prop
+  -- (1) the iterated regular-block lower bound on `G`.
+  have hblock : (m : ℝ≥0∞) / 2 + rlctAtOn R t0 ≤ rlctAtOn G ((0 : Fin m → ℝ), t0) :=
+    rlct_smooth_block_ge R t0 hR0 hRmeas hRne m
+  -- (2) `rlctAtOn G ≤ rlctAtOn F`: scale `G` by `1/C`, then dominate `(1/C)·G ≤ F`.
+  refine le_trans hblock ?_
+  -- constant-scale invariance: `rlctAtOn G = rlctAtOn ((1/C)·G)`.
+  have hscale : rlctAtOn G ((0 : Fin m → ℝ), t0)
+      = rlctAtOn (fun p => (1 / C) * G p) ((0 : Fin m → ℝ), t0) :=
+    (rlctAtOn_unit_invariant_aux G (fun _ => 1 / C) ((0 : Fin m → ℝ), t0) (1 / C) (1 / C)
+      (by positivity) (by fun_prop)
+      ⟨Set.univ, Filter.univ_mem, fun _ _ => by
+        rw [abs_of_pos (by positivity : (0:ℝ) < 1 / C)]; exact ⟨le_refl _, le_refl _⟩⟩).symm
+  rw [hscale]
+  -- domination: `(1/C)·G ≤ F` near `(0,t0)` (from `hcmp`), and `(1/C)·G = 0 → F = 0`.
+  obtain ⟨U, hU, hUcmp⟩ := hcmp
+  refine rlctAtOn_mono F (fun p => (1 / C) * G p) ((0 : Fin m → ℝ), t0) hFmeas
+    ⟨U, hU, fun p hp => ?_⟩
+  have hGFp : (1 / C) * G p ≤ F p := by
+    -- `hUcmp p hp : ∑s² + R p.2 ≤ C * F p`, i.e. `G p ≤ C * F p`; divide by `C > 0`.
+    have hcmpp : G p ≤ C * F p := hUcmp p hp
+    rw [one_div, inv_mul_le_iff₀ hC]
+    linarith [hcmpp]
+  have hFp0 : 0 ≤ F p := by rw [hF]; have := hQ0 p; positivity
+  have hGp0 : 0 ≤ (1 / C) * G p := by have := hG0 p; positivity
+  refine ⟨?_, fun hz => ?_⟩
+  · rw [abs_of_nonneg hGp0, abs_of_nonneg hFp0]; exact hGFp
+  · -- `(1/C)·G p = 0` ⟹ `s = 0` and `R p.2 = 0` ⟹ `F p = Q(0,p.2) = R p.2 = 0`.
+    have hGz : G p = 0 := by
+      have hCne : (1 / C) ≠ 0 := by positivity
+      rcases mul_eq_zero.1 hz with h | h
+      · exact absurd h hCne
+      · exact h
+    have hssq0 : (∑ i, p.1 i ^ 2) = 0 := by
+      have hRz : 0 ≤ R p.2 := hR0 p.2
+      have hsum0 : 0 ≤ ∑ i, p.1 i ^ 2 := Finset.sum_nonneg fun i _ => sq_nonneg _
+      simp only [hG] at hGz; linarith
+    have hRz0 : R p.2 = 0 := by
+      have hsum0 : 0 ≤ ∑ i, p.1 i ^ 2 := Finset.sum_nonneg fun i _ => sq_nonneg _
+      simp only [hG] at hGz; linarith
+    -- each `p.1 i = 0`, so `p.1 = 0`; then `F p = Q (0, p.2) = R p.2 = 0`.
+    have hp10 : p.1 = 0 := by
+      funext i
+      have hi : p.1 i ^ 2 = 0 :=
+        (Finset.sum_eq_zero_iff_of_nonneg (fun i _ => sq_nonneg _)).1 hssq0 i (Finset.mem_univ i)
+      exact pow_eq_zero_iff (by norm_num) |>.1 hi
+    rw [hF]
+    have hp1sq0 : (∑ i, p.1 i ^ 2) = 0 := hssq0
+    rw [hp1sq0, zero_add]
+    -- `Q p = Q (p.1, p.2) = Q (0, p.2) = R p.2 = 0` (via `hp10` then `hR`).
+    have : Q p = Q ((0 : Fin m → ℝ), p.2) := by
+      conv_lhs => rw [show p = (p.1, p.2) from rfl, hp10]
+    rw [this, ← hR]; exact hRz0
 
 end DLNFibre.DLN.RLCT
