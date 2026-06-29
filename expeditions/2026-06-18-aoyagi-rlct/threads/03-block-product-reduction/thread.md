@@ -18,6 +18,33 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive-parameter fixed-base source readback
+
+Reproduction:
+`reproduction-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+Statement card:
+`statement-card-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+
+Lean now exposes:
+
+```text
+retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+```
+
+This theorem turns passive parameters and selected-entry coordinates into a
+fixed-base p.13 source edge family on `eta x (center -> R)`.  It proves
+local-source landing and source-readback residual matrix equality under
+explicit `Ctop` and `A1passive` determinant-unit hypotheses.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+Controller review and xhigh `Ampere the 3rd` review passed with no findings:
+`review-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+
+Nonclaims: no source-image equality, arbitrary-source local coverage, measure
+pushforward, source-prior transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 selected-entry passive-parameter datum
 
 Reproduction:

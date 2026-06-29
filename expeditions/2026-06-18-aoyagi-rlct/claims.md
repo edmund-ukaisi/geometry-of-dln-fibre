@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive-parameter fixed-base source
+  readback, 2026-06-29.** Lean now exposes
+  `retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  The theorem defines a fixed-base p.13 source family on
+  `eta x (center -> R)` from passive field families and selected-entry
+  residual coordinates.  Under explicit determinant-unit hypotheses on
+  `Ctop` and `A1passive`, every produced source family lands in the
+  retained-passive local source, and source readback recovers a residual factor
+  product equal to the selected-entry center-coordinate matrix.  Reproduction
+  and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-fixed-base-source-readback.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+  Controller review and xhigh review passed with no findings in
+  `threads/03-block-product-reduction/review-a2-case2-passive-parameter-fixed-base-source-readback.md`;
+  direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+  This is source-map/readback bookkeeping only: no source-image equality,
+  local coverage of arbitrary source points, measure pushforward,
+  source-prior transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 selected-entry passive-parameter datum,
   2026-06-29.** Lean now exposes
   `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive`,

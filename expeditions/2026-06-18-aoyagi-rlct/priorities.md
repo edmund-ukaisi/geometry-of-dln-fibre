@@ -10,6 +10,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive-parameter fixed-base source readback
+
+The passive-selected-entry source-map frontier has moved one step beyond the
+finite datum.  Lean now exposes:
+
+```text
+retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+```
+
+This theorem uses a source-chart domain `eta x (center -> R)`.  It realizes
+the endpoint-transported passive-parameter retained-passive datum as a
+fixed-base p.13 source edge family, proves local-source landing under explicit
+`Ctop` and `A1passive` determinant-unit hypotheses, and proves the fixed-base
+source-readback residual factor product is the selected-entry center matrix.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-fixed-base-source-readback.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-fixed-base-source-readback.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`, and
+controller plus xhigh review passed with no findings.
+
+Next priority is still source-measure construction: image/local coverage for
+the passive-selected-entry source sector and passive Jacobian/source-density
+accounting.  Do not treat this source-map/readback theorem as measure
+transport or source-prior transport.
+
 ## Latest controller decision - 2026-06-29, Case 2 selected-entry passive-parameter datum
 
 The first finite passive-parameter bridge at the Case 2 selected-entry

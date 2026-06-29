@@ -3,6 +3,39 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive-Parameter Fixed-Base Source Readback - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has the first
+passive-domain fixed-base source-map/readback theorem:
+
+```text
+retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+```
+
+The source-chart domain is `eta x (center -> R)`.  The passive parameter
+supplies `A1passive`, `F2`, `A3passive`, `Ctop`, and `F3`; the selected-entry
+coordinate supplies the residual `C` family.  Under explicit unit hypotheses
+on `Ctop` and `A1passive`, the fixed-base source family produced by
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData` lands in the
+retained-passive p.13 local source, and source readback recovers a residual
+factor product equal to the selected-entry center-coordinate matrix.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-parameter-fixed-base-source-readback.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]`.
+Controller review and xhigh `Ampere the 3rd` review passed with no findings;
+see
+`threads/03-block-product-reduction/review-a2-case2-passive-parameter-fixed-base-source-readback.md`.
+
+Nonclaims: no source-image equality, no local coverage of arbitrary source
+points, no measure pushforward, no passive Jacobian/source-density accounting,
+no source-prior transport, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Selected-Entry Passive-Parameter Datum - 2026-06-29
 
 `RetainedPassiveCase2SelectedEntryChartBridge.lean` now has a finite
