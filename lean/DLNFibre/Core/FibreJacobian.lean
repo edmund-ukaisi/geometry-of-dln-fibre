@@ -109,13 +109,13 @@ theorem fibreJacobianMatrix_apply (d : Fin (N + 1) → ℕ)
 space of the fibre coordinate ring at the rational point `canonicalCoord d A` has `k`-dimension
 equal to `finrank (ker (fibreJacobian d B A))`. Unconditional (no smoothness, no genericity),
 reusing `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`. The localised
-ideal is `maxIdealAt (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the
+ideal is `maxIdealAtSpan (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the
 localisation of `fibreGenIdeal d B` (`span (range (fibreGen d B)) = fibreGenIdeal d B`) at `A`. -/
 theorem finrank_cotangentSpace_fibre_eq_finrank_ker (d : Fin (N + 1) → ℕ)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (A : Tuple (k := k) d)
     (hA : mult d A = B) :
     finrank k (CotangentSpace (Localization.AtPrime
-        (maxIdealAt (fibreGen d B) (canonicalCoord d A) (eval_fibreGen_eq_zero d B A hA))))
+        (maxIdealAtSpan (fibreGen d B) (canonicalCoord d A) (eval_fibreGen_eq_zero d B A hA))))
       = finrank k (LinearMap.ker (fibreJacobian d B A)) :=
   finrank_cotangentSpace_eq_finrank_ker_jacobian (fibreGen d B) (canonicalCoord d A)
     (eval_fibreGen_eq_zero d B A hA)
