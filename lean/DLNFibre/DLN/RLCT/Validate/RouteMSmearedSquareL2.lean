@@ -314,6 +314,67 @@ theorem Uunit_pos_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0)
   Uunit_pos_of_det_ne M hrs hr hc hr0 u
     (gram_det_ne_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin hrest)
 
+/-! ## Field A (brick b): the Varah `Λ₀`-entry bound
+
+`Λ₀ = (P₁ᵀP₁)⁻¹P₁ᵀP₂` collapses to `P₁⁻¹P₂` on the square slice (`(P₁ᵀP₁)⁻¹P₁ᵀ = P₁⁻¹` since
+`P₁ᵀ⁻¹P₁ᵀ = 1`). The Core Varah bound `inv_mul_entry_bound` then bounds each entry of `Λ₀` by
+`(1/γ)·η` (δ-free with `γ = δ/4`, `η = δ/(4(r−1))`). -/
+
+/-- **The Varah `Λ₀`-entry bound on the box.** On the square slice `Λ₀ = P₁⁻¹P₂`, and the residual
+front cols satisfy `|P₂ i b| ≤ η` (non-diagonal); the Core Varah inverse-entry bound gives
+`|Λ₀ a b| ≤ (1/γ)·η`. -/
+theorem Lam0u_entry_bound_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
+    (a : Fin r) (b : Fin s) :
+    |Lam0u M hrs u a b| ≤ (1 / γ) * η := by
+  have hgram := gram_det_ne_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin hrest
+  -- the column bound on `P₂`: each residual front entry `≤ η`
+  have hP2col : ∀ i : Fin (M 0), |P2u M hrs u i b| ≤ η := by
+    intro i
+    -- `P2u i b = u (coordOf (frontSlot i (deepWidthEquiv (inr b))))`, a non-diagonal front slot
+    set k := deepWidthEquiv hrs (Sum.inr b) with hk
+    have hnotdiag : frontSlot M i k ∉ p1DiagSlots M hrs hr0 := by
+      rw [frontSlot_mem_p1DiagSlots_iff]
+      intro hcoleq
+      exact Sum.inr_ne_inl ((deepWidthEquiv hrs).injective hcoleq)
+    have hval : u (coordOf M (frontSlot M i k)) ∈ Set.Icc (-η) η := by
+      have hne := coordOf_frontSlot_ne_pivot M hrs hr hc i k
+      have := hrest _ hne
+      rwa [condBoxWidth_coordOf, slotBox, if_neg hnotdiag] at this
+    have hP2eq : P2u M hrs u i b = u (coordOf M (frontSlot M i k)) := rfl
+    rw [hP2eq, abs_le]; rwa [Set.mem_Icc] at hval
+  -- subst to the square slice, where `Λ₀ = P₁⁻¹P₂` and the Core Varah bound applies
+  subst hr0
+  haveI : Nonempty (Fin (M 0)) := ⟨⟨0, hr⟩⟩
+  have hdetP1 : (P1u M hrs u).det ≠ 0 := by
+    intro h0; apply hgram; rw [Matrix.det_mul, Matrix.det_transpose, h0, mul_zero]
+  have hunit : IsUnit (P1u M hrs u).det := isUnit_iff_ne_zero.mpr hdetP1
+  have hunitT : IsUnit ((P1u M hrs u).transpose).det := Matrix.isUnit_det_transpose _ hunit
+  -- `Λ₀ = P₁⁻¹ P₂`
+  have hLamEq : Lam0u M hrs u = (P1u M hrs u)⁻¹ * P2u M hrs u := by
+    rw [Lam0u, Matrix.mul_inv_rev,
+      Matrix.mul_assoc ((P1u M hrs u)⁻¹) ((P1u M hrs u).transpose)⁻¹ ((P1u M hrs u).transpose),
+      Matrix.nonsing_inv_mul _ hunitT, Matrix.mul_one]
+  -- the diagonal dominance of the (now square) `P₁`
+  have hdd : DLNFibre.Core.Matrix.StrictRowDominant (P1u M hrs u) γ := by
+    refine ⟨hγ, fun i => ?_⟩
+    have hsum : (∑ a ∈ Finset.univ.erase i, |P1u M hrs u i a|) ≤ ((M 0 - 1 : ℕ) : ℝ) * η := by
+      calc (∑ a ∈ Finset.univ.erase i, |P1u M hrs u i a|)
+          ≤ ∑ _a ∈ Finset.univ.erase i, η :=
+            Finset.sum_le_sum (fun a ha => P1u_offdiag_le_of_mem M hrs rfl hr hc δ η hrest i a
+              (by simpa using Finset.ne_of_mem_erase ha))
+        _ = ((Finset.univ.erase i).card : ℝ) * η := by rw [Finset.sum_const, nsmul_eq_mul]
+        _ = ((M 0 - 1 : ℕ) : ℝ) * η := by
+            rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
+    have hdiag := P1u_diag_ge_of_mem M hrs rfl hr hc δ η hδ hrest i
+    simp only [Fin.cast_eq_self] at hdiag
+    linarith [hsum, hdiag, hmargin]
+  rw [hLamEq]
+  exact hdd.inv_mul_entry_bound (P2u M hrs u) b (Mj := η) hP2col a
+
 /-! ## The wired headline (the two named hypotheses discharged from box membership)
 
 `routeMCore_smearedL2` takes three per-family inputs over peeled points: the off-pole cancellation
