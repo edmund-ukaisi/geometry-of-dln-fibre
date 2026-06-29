@@ -33,8 +33,9 @@ is `RankLocusClosed.vanishingIdeal_orbitRankLocus_le_orbitSet`). Architecture (C
    orbitRankLocus M) = vanishingIdeal (orbitSet M)`.
 5. **Primeness** (`isPrime_vanishingIdeal_orbitRankLocus`): the headline + L1.
 
-**Typeclass.** `[Field k] [Infinite k]` for the degeneration engine; `[IsAlgClosed k]` only for the
-primeness corollary (which inherits L1's hypothesis). **Dependency rule:** `Core` only.
+**Typeclass.** `[Field k] [Infinite k]` for the degeneration engine; the primeness corollary
+`isPrime_vanishingIdeal_orbitRankLocus` needs only `[Infinite k]` too (inherits L1's hypothesis —
+no algebraic closedness). **Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -1003,8 +1004,8 @@ theorem image_orbitRankLocus_eq_repClosure_orbitSet [Infinite k] {d : Fin (N + 1
 (canonicalCoord '' orbitRankLocus M)` is prime: it equals `vanishingIdeal (orbitSet M)`
 (`vanishingIdeal_orbitRankLocus_eq_orbitSet`), which is prime because `O_M` is irreducible
 (`isPrime_vanishingIdeal_orbitSet`, L1). So the determinantal rank locus `Ō_M = orbitRankLocus M` is
-an irreducible variety. Needs `[IsAlgClosed k]` (inherited from L1). -/
-theorem isPrime_vanishingIdeal_orbitRankLocus [IsAlgClosed k] {d : Fin (N + 1) → ℕ}
+an irreducible variety. Needs `[Infinite k]` (inherited from L1). -/
+theorem isPrime_vanishingIdeal_orbitRankLocus [Infinite k] {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     (MvPolynomial.vanishingIdeal (σ := RepCoord d) (K := k) k
       (canonicalCoord d '' orbitRankLocus M)).IsPrime := by

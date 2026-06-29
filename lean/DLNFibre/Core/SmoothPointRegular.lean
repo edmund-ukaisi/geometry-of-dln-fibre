@@ -1,7 +1,7 @@
 /-
 Smooth point ⟹ regular local ring (the M3 cotangent comparison + packaging).
 
-For `A` a finite-type algebra over an algebraically closed field `k`, and `m` a maximal ideal at which
+For `A` a finite-type algebra over a perfect field `k`, and `m` a maximal ideal at which
 `A` is smooth, the local ring `R = Localization.AtPrime m` is regular. The dimension is supplied by the M2
 dimension bridge (`ringKrullDim R = n` via the étale-over-affine route, *non-circular*); the cotangent
 comparison `finrank κ(m) (CotangentSpace R) = n` is proved here via the conormal sequence of the residue
@@ -18,8 +18,8 @@ surjection `R ↠ κ`:
 * combined with `ringKrullDim R = n` (M2) and the universal Krull bound `dim ≤ spanFinrank = finrank
   cotangent`, equality holds and `R` is regular (`IsRegularLocalRing.of_spanFinrank_maximalIdeal_le`).
 
-`[IsAlgClosed k]` is used only to get `PerfectField k` (so the residue field is formally smooth over `k`);
-the argument needs nothing stronger than a perfect base field.
+The base field needs only `[PerfectField k]` (so the residue field is formally smooth over `k`, via
+`Algebra.FormallySmooth.of_perfectField`); algebraic closedness is not used. `ℝ` qualifies.
 -/
 import Mathlib.RingTheory.RegularLocalRing.Defs
 import Mathlib.RingTheory.Smooth.Basic
@@ -68,11 +68,11 @@ theorem finrank_kaehler_chart_eq {S : Type*} [CommRing S] [Algebra k S] [Nontriv
 
 /-! ### The cotangent comparison -/
 
-/-- At a smooth closed point of a finite-type algebra over a perfect (here algebraically closed)
+/-- At a smooth closed point of a finite-type algebra over a perfect
 field, the cotangent space `m/m²` has `κ(m)`-dimension at most the local relative dimension `n`: the
 conormal map `m/m² → κ(m) ⊗ Ω[R⁄k]` is injective (formal smoothness of `R` and of `κ(m)`), and the
 target has `κ(m)`-dimension `n` (base change of the rank-`n` free module `Ω[R⁄k]`). -/
-theorem finrank_cotangentSpace_le_of_isSmoothAt [IsAlgClosed k]
+theorem finrank_cotangentSpace_le_of_isSmoothAt [PerfectField k]
     (m : Ideal A) [hm : m.IsMaximal] [IsSmoothAt k m] {n : ℕ}
     (hΩ : Module.finrank (Localization.AtPrime m) (Ω[Localization.AtPrime m⁄k]) = n) :
     Module.finrank (ResidueField (Localization.AtPrime m))
@@ -162,9 +162,9 @@ theorem finrank_kaehler_localizationAtPrime_eq
 
 /-! ### Smooth point ⟹ regular local ring -/
 
-/-- **Smooth point ⟹ regular local ring.** For `A` finite type over an algebraically closed field
+/-- **Smooth point ⟹ regular local ring.** For `A` finite type over a perfect field
 `k` and `m` maximal at which `A` is smooth, `Localization.AtPrime m` is a regular local ring. -/
-theorem smooth_point_isRegularLocalRing [IsAlgClosed k]
+theorem smooth_point_isRegularLocalRing [PerfectField k]
     (m : Ideal A) [hm : m.IsMaximal] [IsSmoothAt k m] :
     IsRegularLocalRing (Localization.AtPrime m) := by
   haveI : m.IsPrime := hm.isPrime
@@ -195,7 +195,7 @@ theorem smooth_point_isRegularLocalRing [IsAlgClosed k]
 
 /-- The companion equality: at a smooth closed point, `finrank κ(m) (m/m²)` equals the local
 relative dimension `n = ringKrullDim (AtPrime m)`. -/
-theorem finrank_cotangentSpace_eq_of_isSmoothAt [IsAlgClosed k]
+theorem finrank_cotangentSpace_eq_of_isSmoothAt [PerfectField k]
     (m : Ideal A) [m.IsMaximal] [IsSmoothAt k m] {n : ℕ}
     (hdim : ringKrullDim (Localization.AtPrime m) = (n : WithBot ℕ∞)) :
     Module.finrank (ResidueField (Localization.AtPrime m))

@@ -42,12 +42,12 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-! ## The route-c assembly (conditional bank) -/
 
 /-- **Route-c assembly: `codim(fibre d B) = C + δ` (conditional bank).** For a rank-`r` target `B`
-(`N ≥ 1`, alg-closed char 0), the geometric codimension of the fibre `mult⁻¹(B)` is `C = cCodim d r`
+(`N ≥ 1`, char-0 infinite field), the geometric codimension of the fibre `mult⁻¹(B)` is `C = cCodim d r`
 plus the matrix-stratum shift `δ = r·(d_N + d_0 − r)` — carrying the homogeneous-sweep dimension
 identity `hSweep`, the closure bridge `hClosure`, and the two reducible-locus catenary
 relations `hCatFibre`/`hCatSigma` as explicit named hypotheses. The proof is the additive chain
 `C + δ + dim F = C + dim Σ̄^r = card = codim F + dim F`, cancelling the finite `dim F`. -/
-theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (hB : B.rank = r)
     (hSweep : varietyDim (canonicalCoord d '' productRankLocus (k := k) d r)
@@ -97,12 +97,12 @@ theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep [IsAlgClosed k] [Ch
 /-! ## The catenary hypotheses discharged (only the sweep + closure remain) -/
 
 /-- **Route-c assembly with the catenary hypotheses discharged.** For a rank-`r` target `B`
-(`N ≥ 1`, alg-closed char 0), `codimRepCanonical (fibre d B) = C + δ`, carrying ONLY the
+(`N ≥ 1`, char-0 infinite field), `codimRepCanonical (fibre d B) = C + δ`, carrying ONLY the
 homogeneous-sweep dimension identity `hSweep` and the closure bridge `hClosure` as named
 hypotheses — the two reducible-locus catenary relations are now **proved** from
 `codimRepCanonical_add_varietyDim_eq_card_of_nonempty` (`Core.RadicalCatenary`), given that the
 fibre and `Σ̄^r` are nonempty (their canonical flattenings have a point). -/
-theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep' [IsAlgClosed k] [CharZero k]
+theorem codimRepCanonical_fibre_eq_cCodim_add_shift_of_sweep' [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (hB : B.rank = r)
     (hFne : (canonicalCoord d '' fibre d B).Nonempty)

@@ -53,10 +53,10 @@ theorem codimRepCanonical_productRankLocusLE_eq_height_sigmaIdeal (d : Fin (N + 
 codimension of `Σ̄^r = productRankLocusLE d r` equals the infimum, over the corner-`≤ r` orbit
 closures `Ō_M`, of their geometric codimensions — "codimension of a finite union is the minimum
 codimension of its irreducible components". General in `r`: `sigmaIdeal d r = sInf (orbitIdeals d r)`
-and `minimalPrimes_sigmaIdeal_eq` are both general in `r` (`Core.SigmaComponents`). `[IsAlgClosed k]`
+and `minimalPrimes_sigmaIdeal_eq` are both general in `r` (`Core.SigmaComponents`). `[Infinite k]`
 (orbit-ideal primality). -/
 theorem codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim
-    [IsAlgClosed k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
+    [Infinite k] (d : Fin (N + 1) → ℕ) (r : ℕ) :
     codimRepCanonical (productRankLocusLE (k := k) d r)
       = ⨅ M ∈ {M : Tuple (k := k) d | (mult d M).rank ≤ r},
           codimRepCanonical (orbitRankLocus M) := by
@@ -96,9 +96,9 @@ theorem codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim
 /-- **Brick A (`ℕ∞` form): `codim Σ̄^r = C`.** The geometric codimension of `Σ̄^r` as an `ℕ∞` equals
 the combinatorial `C = cCodim d r`. Both inequalities come from bridge (a): the per-orbit lower bound
 (`cCodim_le_codimRepCanonical_of cCodim_zero_mono` — uses only the **weak** monotonicity) and the
-realizer of a minimising Kostant partition attaining the minimum. `[IsAlgClosed k] [CharZero k]`
-(the Voigt-discharge scope where `C` is the geometric codimension). -/
-theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [IsAlgClosed k] [CharZero k]
+realizer of a minimising Kostant partition attaining the minimum. `[CharZero k] [Infinite k]`
+(the Voigt-discharge scope where `C` is the geometric codimension; no algebraic closedness). -/
+theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     codimRepCanonical (productRankLocusLE (k := k) d r) = ((cCodim d r h).toNat : ℕ∞) := by
   rw [codimRepCanonical_productRankLocusLE_eq_iInf_orbitCodim]
@@ -132,8 +132,8 @@ theorem codimRepCanonical_productRankLocusLE_eq_cCodim_enat [IsAlgClosed k] [Cha
 `Σ̄^r = productRankLocusLE d r` equals the combinatorial codimension `cCodim d r = C`
 (Lehalleur–Rimányi's `C`). The same orbit-closure machinery that proved the `r = 0` case, general in
 `r`; the per-orbit lower bound uses only the **weak** dimension-monotonicity (`cCodim_zero_mono` — not
-the strict version). `[IsAlgClosed k] [CharZero k]`. -/
-theorem codimRepCanonical_productRankLocusLE_eq_cCodim [IsAlgClosed k] [CharZero k]
+the strict version). `[CharZero k] [Infinite k]`. -/
+theorem codimRepCanonical_productRankLocusLE_eq_cCodim [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (h : (kostantPartitions d r).Nonempty) :
     ((codimRepCanonical (productRankLocusLE (k := k) d r)).toNat : ℤ) = cCodim d r h := by
   rw [codimRepCanonical_productRankLocusLE_eq_cCodim_enat d r h, ENat.toNat_coe]

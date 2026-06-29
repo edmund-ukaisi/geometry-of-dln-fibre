@@ -13,13 +13,15 @@ The orbit-closure variety `Z_M = orbitRankLocus M = Ō_M` is smooth at the orbit
 is formally smooth over `k` at the maximal ideal `m_M = ker(eval at canonicalCoord M)`.
 
 The proof is **homogeneity + Route DENSE** (thread 34/18): the `G_d`-action acts on `Z_M` with a
-dense orbit `O_M`; generic smoothness over the perfect (algebraically closed) field `k` produces a
-smooth closed point, and the dense orbit guarantees one such smooth point is an orbit point;
-transporting it along the `G_d`-action (a `k`-algebra automorphism of `A`) to the normal-form point
-`M` gives `IsSmoothAt k m_M`.
+dense orbit `O_M`; generic smoothness over the perfect field `k` produces a smooth closed point, and
+the dense orbit guarantees one such smooth point is an orbit point; transporting it along the
+`G_d`-action (a `k`-algebra automorphism of `A`) to the normal-form point `M` gives
+`IsSmoothAt k m_M`.
 
-**Typeclass.** `[Field k] [IsAlgClosed k]` (⟹ `PerfectField k`, Jacobson, `k`-points = closed
-points). **Dependency rule:** `Core` only.
+**Typeclass.** `[Field k] [PerfectField k] [Infinite k]` — the smooth-locus density needs only a
+perfect base field (`dense_smoothLocus_of_perfectField`), and the orbit-ring domain/primeness needs
+only `[Infinite k]`; algebraic closedness is not used. `ℝ` qualifies (`CharZero ⟹ PerfectField`).
+**Dependency rule:** `Core` only.
 -/
 
 namespace DLNFibre.Core
@@ -94,7 +96,7 @@ abbrev orbitRing {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) : Type u :=
   MvPolynomial (RepCoord d) k ⧸ orbitIdeal M
 
 /-- `A` is a **domain**: `I = vanishingIdeal (orbitSet M)` is prime (L1, orbit irreducible). -/
-instance orbitRing_isDomain [IsAlgClosed k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+instance orbitRing_isDomain [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     IsDomain (orbitRing M) :=
   haveI : (orbitIdeal M).IsPrime := isPrime_vanishingIdeal_orbitSet M
   Ideal.Quotient.isDomain (orbitIdeal M)
@@ -338,7 +340,7 @@ theorem vanishingIdeal_orbitSpecSet_eq_bot [Infinite k] {d : Fin (N + 1) → ℕ
 
 /-- **L3.3 — the orbit closed points are dense in `Spec A`.** Their vanishing ideal is `⊥`
 (`vanishingIdeal_orbitSpecSet_eq_bot`) and `A` is reduced (a domain), so the closure is `univ`. -/
-theorem dense_orbitSpecSet [IsAlgClosed k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
+theorem dense_orbitSpecSet [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     Dense (orbitSpecSet M) := by
   rw [dense_iff_closure_eq, ← PrimeSpectrum.zeroLocus_vanishingIdeal_eq_closure,
     vanishingIdeal_orbitSpecSet_eq_bot M, PrimeSpectrum.zeroLocus_bot]
@@ -366,7 +368,7 @@ instance orbitRing_isJacobsonRing {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) 
 
 section SpecModel
 
-variable [IsAlgClosed k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
+variable [PerfectField k] [Infinite k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d)
 
 open AlgebraicGeometry CategoryTheory
 
@@ -409,7 +411,7 @@ and open; the orbit closed points are dense (`dense_orbitSpecSet`); their inters
 (`orbitScheme_mem_smoothLocus_iff_isSmoothAt`) makes it `IsSmoothAt k (orbitPointIdeal M P)`;
 the `G_d`-transport (`isSmoothAt_orbitPointIdeal_iff`) carries it to `m_M`. -/
 
-omit [IsAlgClosed k] in
+omit [PerfectField k] [Infinite k] in
 /-- The prime of `k` under the structure map is `⊥` (`k` is a field). -/
 theorem comap_algebraMap_eq_bot (p : PrimeSpectrum (orbitRing M)) :
     (PrimeSpectrum.comap (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).asIdeal = ⊥ := by
@@ -419,7 +421,7 @@ theorem comap_algebraMap_eq_bot (p : PrimeSpectrum (orbitRing M)) :
   · exact absurd h
       (PrimeSpectrum.comap (CommRingCat.ofHom (algebraMap k (orbitRing M))).hom p).2.ne_top
 
-omit [IsAlgClosed k] in
+omit [PerfectField k] [Infinite k] in
 /-- The localized structure map `localRingHom (comap p) p (algebraMap k A)` is formally smooth iff
 `A` is formally smooth at `p`. Its source `AtPrime (comap p)` is `k` (the prime is `⊥`, `k` a field;
 `IsLocalization.atUnits`), so the localized map is `algebraMap k (AtPrime p)` up to a source iso,
@@ -464,7 +466,7 @@ theorem localRingHom_formallySmooth_iff (p : PrimeSpectrum (orbitRing M)) :
   simp only [CommRingCat.hom_ofHom] at hbridge ⊢
   rw [hbridge, RingHom.formallySmooth_algebraMap]
 
-omit [IsAlgClosed k] in
+omit [PerfectField k] [Infinite k] in
 /-- **The scheme↔ring smooth-point dictionary** (affine bridge via the stalk-map ↔ localized-map
 iso). A point `p` of `Spec A` is in the scheme smooth locus of the structure morphism iff `A` is
 formally smooth at `p` over `k`. The stalk map of `Spec.map (algebraMap k A)` at `p` is arrow-iso
@@ -521,9 +523,11 @@ section Witness
 
 /-! ## Non-vacuity witness
 
-The `G_d`-action objects (L3.0/L3.1, needing only `[Infinite k]`) are exercised on the concrete
-`(2,2,2)/ℚ` tuple `tupleWitnessQ` (`ℚ` is infinite). The smoothness headline itself needs
-`[IsAlgClosed k]`, not instantiable at `ℚ`; the algebraic objects it transports along are. -/
+The `G_d`-action objects (L3.0/L3.1, needing only `[Infinite k]`) and the **smoothness headline** are
+exercised on the concrete `(2,2,2)/ℚ` tuple `tupleWitnessQ`. `ℚ` is `PerfectField` (`CharZero`) and
+`Infinite`, so the headline now fires here — the relaxation from `[IsAlgClosed k]` to
+`[PerfectField k] [Infinite k]` makes the smoothness statement non-vacuous over a
+non-algebraically-closed field, witnessed in-file. -/
 
 /-- The `G_d`-automorphism `α_1 = id` on the orbit ring of the `(2,2,2)/ℚ` witness: the normal-form
 evaluation is `G_d`-invariant under the identity base change (`orbitEval_comp_orbitRingAlgEquiv` at
@@ -536,6 +540,12 @@ example : (orbitEval (k := ℚ) tupleWitnessQ 1).comp
 construction is non-vacuous on a concrete tuple. -/
 example : (normalFormIdeal (k := ℚ) tupleWitnessQ).IsMaximal :=
   orbitPointIdeal_isMaximal tupleWitnessQ 1
+
+/-- **The smoothness headline fires at `ℚ`** (a perfect, infinite, non-algebraically-closed field):
+the orbit closure of the `(2,2,2)/ℚ` witness is smooth at its normal-form point. The relaxed
+`[PerfectField k] [Infinite k]` hypothesis is non-vacuous off the algebraically-closed locus. -/
+example : Algebra.IsSmoothAt ℚ (normalFormIdeal (k := ℚ) tupleWitnessQ) :=
+  isSmoothAt_normalFormIdeal tupleWitnessQ
 
 end Witness
 

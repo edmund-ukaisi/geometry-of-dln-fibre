@@ -886,7 +886,7 @@ theorem cCodim_zero_strict {e e' : Fin (N + 1) → ℕ}
 /-- **θ-count headline, UNCONDITIONAL.** `numTop d r = #{top-dimensional irreducible components of
 `Σ̄^r`}`. Both gating monotonicities of `Core.CCodimCornerMono` are now discharged: the weak one by
 `Core.CCodimZeroMono.cCodim_zero_mono`, the strict all-vertex one by `cCodim_zero_strict`. -/
-theorem numTop_eq_ncard_topComponents {k : Type u} [Field k] [IsAlgClosed k] [CharZero k]
+theorem numTop_eq_ncard_topComponents {k : Type u} [Field k] [CharZero k] [Infinite k]
     (d : Fin (N + 1) → ℕ) (r : ℕ) (hr : (kostantPartitions d r).Nonempty) :
     numTop d r hr = (topComponents (k := k) d r hr).ncard :=
   numTop_eq_ncard_topComponents_of_strict

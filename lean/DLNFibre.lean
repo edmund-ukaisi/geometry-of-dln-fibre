@@ -331,8 +331,10 @@ import DLNFibre.Core.ChartLocalizedAlgEquiv
 import DLNFibre.Core.SourceNoDrop
 -- THE CENTRAL RESULT: codim(fibre d B) = C + δ = cCodim + r·(d_N+d_0−r), unconditional (k : Type 0).
 import DLNFibre.Core.FibreCodimFinal
--- THE PAYOFF (destination): BundleShiftInterface discharged from Core — rlct(K^DLN_B)=(C+δ)/2 rests
--- on ONLY the Cited Aoyagi RlctInterface; the geometric half is Proved (k : Type 0). [#52/G4]
+-- THE PAYOFF (destination): BundleShiftInterface discharged from Core — rlct(K^DLN_B)=(C+δ)/2 rests on
+-- the thin honest RlctRealInterface: 2 named atomic Cited facts (Watanabe ≤, Aoyagi ≥); the real↔complex
+-- transfer T is now PROVED (codimRealFibre_eq_codimRepCanonical_baseChange — both sides = field-indep
+-- C+δ), as are the connector, the catenary reduction, and codim_K=C (k : Type 0). [#52/G4, capstone]
 import DLNFibre.DLN.BundleShiftDischarge
 -- Source-shaped Aoyagi formula surface: her λ formula, with cValue/codim bridge stubs.
 import DLNFibre.DLN.Aoyagi.ClosedForm
@@ -481,7 +483,8 @@ import DLNFibre.Core.FibreSmoothBlock
 -- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a k-algebra
 -- product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`: per-chart/UNCOCYCLED (overlap
 -- gluing = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization = S4b, LANDED below; it
--- is over SchurLoc, NOT yet projection-compatible with mult — that, plus R1, remain open).
+-- is over SchurLoc; projection-compatibility with mult is CLOSED (R5, FibreProjectionCompat), the
+-- overlap-gluing R1 is the remaining residual).
 import DLNFibre.Core.FibreLocallyTrivial
 -- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial Noetherian
 -- ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the smooth-block
@@ -490,16 +493,16 @@ import DLNFibre.Core.FibreSmoothBlockExists
 -- S3: flatness facts around the atlas (HONEST scope — NOT the `Flat π` payoff). `chartInclusion_flat`
 -- (localization), `standardFibreModel_free`/`_flat` over the auxiliary SchurLoc (generic base change),
 -- scheme-level `flat_specMap_…` + `universallyOpen_specMap_…`. NB S4b (below) DELIVERS the chartwise
--- `Module.Flat SchurLoc (Away(chartDsigAt …))`; what stays open is projection compatibility
--- (schurToDsigAt = mult's projection pullback) + R1/global gluing — NOT S4b itself.
+-- `Module.Flat SchurLoc (Away(chartDsigAt …))`; projection compatibility (schurToDsigAt vs mult's
+-- projection) is now CLOSED (R5, FibreProjectionCompat); what stays open is R1/global gluing — NOT S4b.
 import DLNFibre.Core.FibreFlatness
 -- S4b (the convergent keystone): the SchurLoc-linear (over-base) trivialization
 -- `chartDsigAt_schurLocTensorEquiv : Away (chartDsigAt s t) ≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing`
 -- (SchurLoc acting via the HONEST banked structure map schurToDsig, not by pullback) ⟹ chartwise
 -- flatness over the in-chart base direction SchurLoc `chartDsigAt_flat_over_schurLoc` AND the genuine
--- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc, NOT yet
--- projection-compatible with the geometric `mult` projection (that, plus R1's global overlap gluing,
--- are the open items toward a single GLOBAL Flat π / FiberBundle over rankROpen).
+-- over-base local triviality (S4's load-bearing completion). NB this is over SchurLoc;
+-- projection-compatibility with the geometric `mult` projection is CLOSED (R5, FibreProjectionCompat),
+-- so R1's global overlap gluing is the remaining open item toward a single GLOBAL Flat π / FiberBundle.
 import DLNFibre.Core.FibreOverBaseTriv
 -- S5 (capstone): the over-base local-product-with-flatness headline. `RankROpenOverBaseLocalProduct`
 -- (S1 rank-locus + cover + per-pivot OverBaseChartDatum) + the pointwise headline
@@ -509,8 +512,24 @@ import DLNFibre.Core.FibreOverBaseTriv
 -- `≃ₐ[SchurLoc] SchurLoc ⊗ sweepFibreRing` AND flat over SchurLoc. Base = SchurLoc, the in-chart base
 -- DIRECTION (Spec(sweepSigmaRing) is the SOURCE/TOTAL, NOT the base); reading this as fibre-family
 -- flatness over the genuine base needs projection compatibility (schurToDsigAt = mult's projection
--- pullback) — open. Chartwise (global Flat π / FiberBundle = R1).
+-- pullback) — CLOSED by R5 in FibreProjectionCompat (below); global Flat π / FiberBundle still R1.
 import DLNFibre.Core.FibreBundleHeadline
+-- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt AGREES with
+-- mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
+-- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat + over-base
+-- triv + flatness). Closes the S5/S4b "projection compatibility" item; global Flat π / target-side
+-- cocycle still residual (R1).
+import DLNFibre.Core.FibreProjectionCompat
+-- R5 target-side overlap (R1 partial): awayCongr' (generalized localization transport) +
+-- targetProductOverlapTransition (the double-localized pairwise transition OBJECT). The cocycle
+-- ROUND-TRIP proof is infra-blocked (kernel-cost on reducible double-localized type + missing
+-- AlgEquiv.trans_assoc/refl_trans in v4.29) — named residual, NOT claimed; global Flat π unbuilt.
+import DLNFibre.Core.FibreTargetOverlap
+-- L7 (rlct-bridge): finrank (range deformationδ) is base-change invariant along a field extension
+-- K/k — the orbit-tangent dimension is the SAME integer over ℝ and K. General conjugacy lemma
+-- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
+-- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
+import DLNFibre.Core.DeformationBaseChange
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure

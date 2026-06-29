@@ -14,7 +14,7 @@ top-dimensional component count of `Σ̄^r`, in terms of the **shifted** dimensi
 * `CThetaThetaBridge.numTop_zero_eq_cTheta` — `numTop e 0 = cTheta e = C(m, |δ|)` (Thm 7.10,
   `r = 0`), for weakly-increasing `e`;
 * `CCodimZeroStrict.numTop_eq_ncard_topComponents` — `numTop d r = #{top-dim components of Σ̄^r}`
-  (unconditional, over `[IsAlgClosed][CharZero]`).
+  (unconditional, over `[CharZero][Infinite]`).
 
 The combinatorial conclusion `cTheta (d − r) = numTop d r` needs only `Monotone (d − r)` (which
 follows from `Monotone d`) and `r ≤ d k` everywhere; it is field-free. Stacking the geometric
@@ -57,8 +57,7 @@ closed field of characteristic `0`, for weakly-increasing `d` with `r ≤ d k` e
 of top-dimensional irreducible components of the closed rank-`≤ r` product locus `Σ̄^r` equals
 `cTheta (d − r) = C(m, |δ|)`. Stacks the unconditional geometric headline
 `numTop_eq_ncard_topComponents` onto the combinatorial closed form `numTop_eq_cTheta_dminus`. -/
-theorem ncard_topComponents_sigma_eq_cTheta_dminus {k : Type*} [Field k] [IsAlgClosed k]
-    [CharZero k]
+theorem ncard_topComponents_sigma_eq_cTheta_dminus {k : Type*} [Field k] [CharZero k] [Infinite k]
     {d : Fin (N + 1) → ℕ} {r : ℕ} (hd : Monotone d) (hr : ∀ k, r ≤ d k)
     (h₀ : (kostantPartitions (dminus d r) 0).Nonempty)
     (hr' : (kostantPartitions d r).Nonempty) :

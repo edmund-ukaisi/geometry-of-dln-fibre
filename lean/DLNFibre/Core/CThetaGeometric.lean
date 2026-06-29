@@ -7,7 +7,7 @@ import DLNFibre.Core.VoigtDischarge
 The combinatorial codimension form `codimForm` (`Core.CTheta`) was defined as a ℤ-quadratic form
 over Kostant partitions; its docstrings noted that identifying it with the **geometric** codimension
 of the orbit closure `Ō_M` "rides on the deferred `hVoigt`". `hVoigt` is now PROVED
-(`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`),
+(`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[CharZero k]`),
 so this module records the geometric reading **without any deferral**:
 
 1. **Per-orbit geometric reading (UNCONDITIONAL).** For a Kostant partition / interval list `L`, the
@@ -41,8 +41,8 @@ minimum-over-components, giving `codim Σ̄^r = cCodim d r`
 separately carved out as a variety, but `codim Σ̄^r = codim Σ^r` (the closure preserves codimension,
 LR Cor. 4.4 + Lemma 4.5), so the closed `Σ̄^r` carries the aggregate codimension content.
 
-**Name = content.** Every headline carries `[IsAlgClosed k] [CharZero k]` (the scope of the
-discharged `hVoigt`). These are geometric **codimension** statements — not RLCT, not `½·codim`; the
+**Name = content.** Every headline carries `[CharZero k]` (the scope of the discharged `hVoigt` — no
+algebraic closedness; `ℝ` qualifies). These are geometric **codimension** statements — not RLCT, not `½·codim`; the
 RLCT payoff is a separate, `DLN`-side reading (Cited Aoyagi/Watanabe). **Dependency rule:** `Core`
 only — never import `DLNFibre.DLN`.
 -/
@@ -70,7 +70,7 @@ the combinatorial codimension form IS the geometric orbit-closure codimension, n
 `hVoigt`. From the discharged Voigt lemma + `codimRepCanonical_orbitRankLocus_eq_multSum` +
 `codimForm_multiplicityArray`. -/
 theorem codimRepCanonical_orbitRankLocus_eq_codimForm
-    [IsAlgClosed k] [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
+    [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
     ((codimRepCanonical (orbitRankLocus (intervalDirectSum (k := k) L))).toNat : ℤ)
       = codimForm N (multiplicityArray L) := by
   rw [codimForm_multiplicityArray]
@@ -82,7 +82,7 @@ theorem codimRepCanonical_orbitRankLocus_eq_codimForm
 `ℕ∞`. This is the discharged `hVoigt` at `M = intervalDirectSum L`; the `codimForm` reading is the
 ℤ-cast `codimRepCanonical_orbitRankLocus_eq_codimForm`. -/
 theorem codimRepCanonical_orbitRankLocus_eq_orbitLinearCodim
-    [IsAlgClosed k] [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
+    [CharZero k] (L : List (Fin (N + 1) × Fin (N + 1))) :
     codimRepCanonical (orbitRankLocus (intervalDirectSum (k := k) L))
       = (orbitLinearCodim (intervalDirectSum (k := k) L) : ℕ∞) :=
   codimRep_orbitRankLocus_eq_orbitLinearCodim (intervalDirectSum (k := k) L)
@@ -152,7 +152,7 @@ form `codimForm N (extendℤ m)` is the genuine geometric codimension of the orb
 `⊕_{(a,b)} M_{ab}^{m}` (over `listOfPartition m`), read at the canonical flattening. The summand of
 deliverable 2; deliverable 1 specialised through `multiplicityArray_listOfPartition`. -/
 theorem codimForm_extendℤ_eq_geomCodim
-    [IsAlgClosed k] [CharZero k] (m : Fin (N + 1) × Fin (N + 1) → ℕ) :
+    [CharZero k] (m : Fin (N + 1) × Fin (N + 1) → ℕ) :
     codimForm N (extendℤ m)
       = ((codimRepCanonical
           (orbitRankLocus (intervalDirectSum (k := k) (listOfPartition m)))).toNat : ℤ) := by
@@ -167,7 +167,7 @@ smallest orbit-closure
 codimension among the rank-`r` orbits — no longer modulo `hVoigt`. From `cCodim`'s definition +
 `codimForm_extendℤ_eq_geomCodim` by `Finset.inf'_congr`. -/
 theorem cCodim_eq_inf_geomCodim
-    [IsAlgClosed k] [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
+    [CharZero k] (d : Fin (N + 1) → ℕ) (r : ℕ)
     (h : (kostantPartitions d r).Nonempty) :
     cCodim d r h
       = (kostantPartitions d r).inf' h (fun m ↦

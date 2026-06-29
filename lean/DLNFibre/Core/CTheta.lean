@@ -27,7 +27,7 @@ The form `codimForm N m` is **literally** the right-hand side of the committed h
 `M = ⊕ M_{(a,b)}^{m_{ab}}`. Its identification with the **geometric** codimension of the orbit
 closure `Ō_M` is now **PROVED** in `Core.CThetaGeometric` (`codimForm` = geometric
 `codimRepCanonical (orbitRankLocus (⊕L))`, via the discharged Voigt lemma
-`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[IsAlgClosed k] [CharZero k]`) —
+`Core.VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`, `[CharZero k]`) —
 no longer deferred. The **aggregate** reading — that `cCodim`/`numTop` are the geometric codimension /
 top-component count of the whole *closed* rank-`≤ r` locus `Σ̄^r = productRankLocusLE d r` (the
 genuine Zariski closure of the exact-rank locus `Σ^r`, equal to the union of the corner-`≤ r` orbit

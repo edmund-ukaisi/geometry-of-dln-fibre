@@ -51,10 +51,10 @@ The `SchurLoc`-linear trivialization rung **is now built downstream** in
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
 giving chartwise flatness over the in-chart base direction `SchurLoc`. (`FibreFlatness` cannot
 forward-import it — `FibreOverBaseTriv` imports this module.) That still does **not** close the `Flat π`
-target: the remaining open items are (i) **projection compatibility** — that the in-chart structure map
-`schurToDsigAt` is the pullback of `mult`'s projection from the target/base rank-chart — and (ii)
-R1/global gluing. This module records the two cheap true facts + the cheap-flatness verdict, not the
-payoff.
+target: the remaining open item is (ii) R1/global gluing. (i) **projection compatibility** — that the
+in-chart structure map `schurToDsigAt` agrees with `mult`'s projection pullback from the target/base
+rank-chart (after precomposition with `localizeSchur`) — is now CLOSED (R5, `Core.FibreProjectionCompat`).
+This module records the two cheap true facts + the cheap-flatness verdict, not the payoff.
 
 **Forward pointer (S4b, downstream).** The `SchurLoc`-linear upgrade IS delivered downstream in
 `DLNFibre.Core.FibreOverBaseTriv` (`chartDsigAt_schurLocTensorEquiv` + `chartDsigAt_flat_over_schurLoc`),
@@ -62,10 +62,11 @@ giving chartwise fibre-family flatness **over the in-chart Schur ring `SchurLoc`
 cannot forward-import it: `FibreOverBaseTriv` imports this module.) NB this is flatness over `SchurLoc`,
 which is NOT yet literally `Flat π` over the geometric base. `SchurLoc` is the in-chart base DIRECTION;
 `Away (chartDsigAt …)` is the source/total chart (a localization of `sweepSigmaRing`, already
-`≅ SchurLoc ⊗ sweepFibreRing`). Reading this as fibre-family flatness over the genuine base needs
+`≅ SchurLoc ⊗ sweepFibreRing`). Reading this as fibre-family flatness over the genuine base needed
 (i) **projection compatibility** — that `schurToDsigAt : SchurLoc → Away (chartDsigAt …)` is the pullback
 of `mult`'s projection from the target/base rank-chart — and (ii) R1 (`targetOverlapTransition`) to glue
-a single global morphism; both roadmapped, projection compatibility ahead of R1.
+a single global morphism. (i) is now CLOSED (R5, `Core.FibreProjectionCompat`); the only remaining
+bundle residual is (ii) the target-side cocycle / global `Flat π` gluing.
 
 ## Main results (what is actually proved)
 
@@ -246,10 +247,11 @@ end AtlasConnection
   `chartDsigAt_tensorEquiv` is only `k`-linear (`≃ₐ[k]`), so `standardFibreModel_flat` (flatness over
   the *auxiliary* `SchurLoc`, generic base change) does NOT transport here. The `SchurLoc`-linear
   trivialization rung is built **downstream** (`FibreOverBaseTriv`: `chartDsigAt_schurLocTensorEquiv` /
-  `chartDsigAt_flat_over_schurLoc`), giving chartwise flatness over `SchurLoc`; the `Flat π` target then
-  remains open on (i) **projection compatibility** (the in-chart structure map = `mult`'s projection
-  pullback) and (ii) R1/global gluing — see those modules. This module delivers the cheap-flatness
-  verdict + two true side-facts, not the payoff.
+  `chartDsigAt_flat_over_schurLoc`), giving chartwise flatness over `SchurLoc`. (i) **projection
+  compatibility** (the in-chart structure map agrees with `mult`'s projection pullback after
+  precomposition with `localizeSchur`) is now CLOSED (R5, `Core.FibreProjectionCompat`); the `Flat π`
+  target then remains open only on (ii) the target-side cocycle / R1 global gluing — see those modules.
+  This module delivers the cheap-flatness verdict + two true side-facts, not the payoff.
 * **Global (single-morphism) flatness over all of `rankROpen`.** Even granting a per-chart
   fibre-family flatness, a single *global* `AlgebraicGeometry.Flat` for one morphism over the whole
   `rankROpen ⊆ Spec(sweepSigmaRing)` would additionally need the target-overlap gluing data
