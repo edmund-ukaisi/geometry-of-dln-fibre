@@ -19,7 +19,19 @@ L=2 branch):
 - conj spectator: `(conjAbsorb q).2.2 = q.2.2` via `coreShearHomeo_spectator`.
 - `psiSplitRawL2CoreConj` continuous-at-0 (for the `hsub4core` closedBall germ).
 
-## Conj `hsub3reg` (the long pole) — ALL MATH GREEN; 2 isolated opaque-width sorries remain.
+## Conj `hsub3reg` (the long pole) — CLOSED, sorry-free + axiom-clean `[propext, Classical.choice, Quot.sound]`.
+
+The 2 opaque-width gluing sorries are discharged (genm-l2fin): `conj_he2_raw` (the he2 raw↔dict
+connector) and the hm-triple assembly inside `deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ`. Routes:
+- `conj_he2_raw`: `show`-unfold the lets to literal-index `(paramsEquivFlat).symm` form; obtain the dict
+  haves at literal `(0:Fin 2)`/`(1:Fin 2)`, collapse `Fin.castSucc/.succ` widths with
+  `Fin.castSucc_zero`/`_one`/`Fin.succ_zero_eq_one`/`_one_eq_two`; transport the two conj readbacks to
+  literal `1` by `exact` (defeq `lastLayer hL ≡ 1`, where `▸` fails on the dependent codomain width); the
+  `hY0c` midWidth `finCongr_refl` collapse; bridge the dict identities by `.trans` (dodges the `rw`
+  proof-term mismatch); apply `e2_conj_dict`.
+- hm-triple: `subst hL2eq` UP FRONT (before the `set`s) so `conj_hm_triple`/`conj_he2_raw` (stated at
+  `Fin 3`) apply directly; derive `h0`/`h11G`/`h21G`/`he2` (the four GREEN ingredients) and feed
+  `conj_hm_triple` — all index/width residuals close by defeq.
 
 GREEN ingredient lemmas (sorry-free): `reindex_decode_blocks_at` (decode↔read bridge),
 `reindex_decode0_conj_shared` (h0/layer-0 shared), `reindex_decodeLast_conj_b11`/`_b21` (h11G/h21G),
@@ -597,56 +609,60 @@ private theorem deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ (H : Fin (L + 
     (∑ i, (deepestEFull H r hr hL J Pf Qf
         (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) i) ^ 2)
       = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
+  -- Specialize to `L = 2` up front so `conj_hm_triple`/`conj_he2_raw` (stated at `Fin 3`) apply directly.
+  subst hL2eq
   -- The two framed raw params: Aq = decode x, Aψ = decode (split.symm (ψ (split x))).
   set Aq : Params H := (paramsEquivFlat H).symm x with hAq
   set Aψ : Params H :=
-    (paramsEquivFlat H).symm (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))
+    (paramsEquivFlat H).symm (split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)))
     with hAψ
   -- Frame identities (§iii) for both points.
-  have hframeq : ∀ s : Fin L,
+  have hframeq : ∀ s : Fin 2,
       framedParamsPivot H r hr hL J Pf Qf (split x) s = Pf s * Aq s * Qf s := by
     intro s; rw [hsplit x]
     exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' x s
-  have hframeψ : ∀ s : Fin L,
+  have hframeψ : ∀ s : Fin 2,
       framedParamsPivot H r hr hL J Pf Qf
-          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) s
+          (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)) s
         = Pf s * Aψ s * Qf s := by
     intro s
-    have hrt : psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)
-        = split (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))) :=
+    have hrt : psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)
+        = split (split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x))) :=
       (split.apply_symm_apply _).symm
-    rw [hrt, hsplit (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))]
+    rw [hrt, hsplit (split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)))]
     exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
-      (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))) s
-  -- The raw hm· triple (the long-pole content), then the psi-agnostic #147 helpers.
-  -- ALL FOUR hm-inputs are GREEN as standalone lemmas (reindex_decode0_conj_shared [h0],
-  -- reindex_decodeLast_conj_b11/_b21 [h11G/h21G], e2_conj_dict [he2's dict form]); the assembly engine
-  -- is conj_hm_triple [GREEN at Fin 3]. The remaining residual is the INDEX-FORM gluing: feeding my
-  -- `lastLayer hL`/`⟨0,_⟩`-indexed ingredient outputs into conj_hm_triple's `(0:Fin 2)`/`(1:Fin 2)`
-  -- (Fin 3) hypotheses (the `subst hL2eq` + lastLayer↔literal reconciliation + the he2 raw↔dict cast),
-  -- and the he2 raw-block↔l2*Conj-dict connector (the midWidth `hY0c` template). Mechanical; the
-  -- mathematics is fully discharged.
-  -- Derive the four hm-inputs (ingredient-shaped), then assemble via conj_hm_triple (post-subst).
-  have h0 := reindex_decode0_conj_shared H r B hB hr hL hL2eq split hsplit x (⟨0, by omega⟩ : Fin L)
+      (split.symm (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x))) s
+  -- The four hm-inputs (all GREEN standalone): layer-0 shared (`h0`), last-layer X/Z fixed
+  -- (`h11G`/`h21G`), and the e2 leak-kill (`he2`, the raw↔dict connector). Then `conj_hm_triple` (Fin 3)
+  -- assembles the three `{11,12,21}` block agreements `reindex(prod Aψ) = reindex(prod Aq)`.
+  have h0 := reindex_decode0_conj_shared H r B hB hr hL rfl split hsplit x (⟨0, by omega⟩ : Fin 2)
     (Fin.ne_of_val_ne (by simp only [lastLayer]; omega))
-    (deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin L) rfl)
-  have h11G := reindex_decodeLast_conj_b11 H r B hB hr hL hL2eq split hsplit x
-    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL)
-      (by simp only [lastLayer]; omega))
-  have h21G := reindex_decodeLast_conj_b21 H r B hB hr hL hL2eq split hsplit x
-    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL)
-      (by simp only [lastLayer]; omega))
-  -- The hm· triple: assemble via conj_hm_triple (post-subst), supplying h0/h11G/h21G + the he2 connector.
-  -- h0/h11G/h21G are derived above (ingredient-shaped). REMAINING (single sorry): subst hL2eq +
-  -- index reconciliation (lastLayer↔(1:Fin2), VERIFIED reducible by simp[lastLayer];rfl) + the he2
-  -- raw-block↔l2*Conj connector (e2_conj_dict + the midWidth hY0c template) — the documented
-  -- opaque-width gluing, deferred to a fresh pass.
-  obtain ⟨hm11, hm12, hm21⟩ : _ ∧ _ ∧ _ := by
-    sorry
+    (deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin 2) rfl)
+  have h11G := reindex_decodeLast_conj_b11 H r B hB hr hL rfl split hsplit x
+    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL) (by simp [lastLayer]))
+  have h21G := reindex_decodeLast_conj_b21 H r B hB hr hL rfl split hsplit x
+    (deepBlkT_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL) (by simp [lastLayer]))
+  have he2 := conj_he2_raw H r B hB hr hL split hsplit x hdet0
+  -- Reconcile the ingredient indices (`⟨0,_⟩`/`lastLayer hL`) to `conj_hm_triple`'s literals
+  -- (`0`/`1 : Fin 2`); all defeq, so `convert` closes the residual index/width casts.
+  obtain ⟨hm11, hm12, hm21⟩ :
+      (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₁₁
+          = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₁₁
+        ∧ (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₁₂
+          = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₁₂
+        ∧ (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aψ)).toBlocks₂₁
+          = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J) (prod H Aq)).toBlocks₂₁ :=
+    conj_hm_triple H r B hB hr hL J hJfront' Aψ Aq h0 h11G h21G he2
   obtain ⟨h11, h12, h21⟩ :=
     resid_regBlocks_eq_of_mid_agree H r B hr hL J Pf Qf Aψ Aq hPtri' hQtri' hm11 hm12 hm21
   exact deepestEFull_sq_sum_eq_of_resid_blocks H r B hr hL J Pf Qf
-    (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) (split x) Aψ Aq
+    (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)) (split x) Aψ Aq
     hframeψ hframeq hinterface hS3b h11 h12 h21
 
 end DLNFibre.DLN.RLCT
