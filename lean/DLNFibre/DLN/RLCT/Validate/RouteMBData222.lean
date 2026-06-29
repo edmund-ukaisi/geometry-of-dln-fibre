@@ -721,4 +721,558 @@ theorem hmap_222 :
   rw [chartParamsGen_Glr_eq]
   rfl
 
+/-! ## The residual det leg: `DB`/`hasDB`/`hdet` (the `BData` interface fields)
+
+`Bchart = paramsEquivFlat ∘ Bparams`. We factor `Bparams = pack222 ∘ Tb`, where `Tb` produces the 8
+entry values in the `pack222` flat-coordinate order (`A0 = !![w4,w1;w5,w6]`, `A1 = !![w0,w7;w2,w3]`)
+by reading the 8 distinct slots of `y`. Then `Bchart = Q222CLM ∘ Tb` (`Q222CLM = paramsEquivFlat ∘
+pack222`, measure-preserving, `|det| = 1`), so `DB = Q222CLM.comp (TbCLM u)` with
+`|det DB| = |det Q222CLM| · |det (TbCLM u)| = 1 · |aRead u|²`.
+
+`TbCLM u` (the fderiv of `Tb` at `u`) is the explicit per-output product/sum CLM. Its determinant is
+computed by reindexing the 8 OPAQUE input slots to the literal coordinate order via the bijection
+`slotEquiv` (the 8 slots `a,b,n,w0,w1,p,lf0,lf1` are pairwise distinct), turning `toMatrix'` into an
+explicit lower-triangular matrix with diagonal `[1, a, a, 1, 1, 1, 1, 1]`, det `= a²`. -/
+
+/-! ### The 8 slots are pairwise distinct (reader/reader via `chartIdxEquiv.symm` injectivity) -/
+
+theorem readerSlotK_ne_X : readerSlotK ≠ readerSlotX := by
+  unfold readerSlotK readerSlotX
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, Sum.inl.injEq, heq_eq_eq, true_and] at h2
+  exact absurd ((Equiv.injective _) h2) (by decide)
+
+theorem readerSlotK_ne_N : readerSlotK ≠ readerSlotN := by
+  unfold readerSlotK readerSlotN
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, Sum.inl.injEq, heq_eq_eq, true_and] at h2
+  exact absurd ((Equiv.injective _) h2) (by decide)
+
+theorem readerSlotX_ne_N : readerSlotX ≠ readerSlotN := by
+  unfold readerSlotX readerSlotN
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, Sum.inl.injEq, heq_eq_eq, true_and] at h2
+  exact absurd ((Equiv.injective _) h2) (by decide)
+
+theorem readerSlotK_ne_W0 : readerSlotK ≠ readerSlotW0 := by
+  unfold readerSlotK readerSlotW0
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotK_ne_W1 : readerSlotK ≠ readerSlotW1 := by
+  unfold readerSlotK readerSlotW1
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotX_ne_W0 : readerSlotX ≠ readerSlotW0 := by
+  unfold readerSlotX readerSlotW0
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotX_ne_W1 : readerSlotX ≠ readerSlotW1 := by
+  unfold readerSlotX readerSlotW1
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotN_ne_W0 : readerSlotN ≠ readerSlotW0 := by
+  unfold readerSlotN readerSlotW0
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotN_ne_W1 : readerSlotN ≠ readerSlotW1 := by
+  unfold readerSlotN readerSlotW1
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, heq_eq_eq, true_and, reduceCtorEq] at h2
+
+theorem readerSlotW0_ne_W1 : readerSlotW0 ≠ readerSlotW1 := by
+  unfold readerSlotW0 readerSlotW1
+  intro h
+  have h2 := (Equiv.injective _) h
+  simp only [Sigma.mk.injEq, Sum.inr.injEq, heq_eq_eq, true_and] at h2
+  exact absurd ((Equiv.injective _) h2) (by decide)
+
+/-! ### The slot list + its `Fin 8 ≃ Fin (routeMAmbient M222)` bijection
+
+The radial/pivot slot is `structPivot M222 hN_M222 = ⟨0,_⟩` (the radial scalar coordinate axis,
+`RouteMFlatStructV.structPivot`). The five reader slots are `chartIdxEquiv.symm`-tag images. That
+the radial axis `⟨0,_⟩` is DISTINCT from the five Schur/lift reader slots is the one fact NOT
+reachable by tag-injectivity (`⟨0,_⟩` is not a `ChartIdx` tag image we can compare) nor by `decide`
+(`chartIdxEquiv.symm = (Fintype.equivFin _).symm ∘ finCongr` does not kernel-reduce); it is the
+geometric non-degeneracy of the chart (the radial axis is a genuinely separate coordinate). It is
+carried as the explicit hypothesis `pivotNotReader` and threaded to the det headline. -/
+
+/-- The reader-slot finset (the five Schur/lift coordinate slots `a, b, n, w0, w1`). -/
+noncomputable def readerSet : Finset (Fin (routeMAmbient M222)) :=
+  {readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+
+/-- **The chart non-degeneracy hypothesis**: the radial axis `structPivot = ⟨0,_⟩` is distinct from
+each of the five Schur/lift reader slots. (Geometrically true — the radial scalar is a separate
+coordinate from the block readers — but not reachable by `decide`/tag-injectivity at this pin.) -/
+def PivotNotReader : Prop := structPivot M222 hN_M222 ∉ readerSet
+
+/-- The 8 slots in column order `[a, b, n, w0, w1, p, lf0, lf1]` (the variable order of the entry
+Jacobian). Pairwise distinct (under `PivotNotReader`), hence — on `Fin 8` — bijective. -/
+noncomputable def slotList : Fin 8 → Fin (routeMAmbient M222) :=
+  ![readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1,
+    structPivot M222 hN_M222, lf0, lf1]
+
+set_option linter.unusedSimpArgs false in
+/-- `slotList` is injective (the 8 slots are pairwise distinct), given the radial-axis
+non-degeneracy `PivotNotReader`. -/
+theorem slotList_injective (hpiv : PivotNotReader) : Function.Injective slotList := by
+  have hKlf0 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).1
+  have hKlf1 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).2
+  have hXlf0 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).1
+  have hXlf1 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).2
+  have hNlf0 := (readerSlot_ne_leaf readerSlotN readerSlotN_mem).1
+  have hNlf1 := (readerSlot_ne_leaf readerSlotN readerSlotN_mem).2
+  have hW0lf0 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).1
+  have hW0lf1 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).2
+  have hW1lf0 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).1
+  have hW1lf1 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).2
+  -- the pivot avoids each reader, from `PivotNotReader`
+  have hpK : structPivot M222 hN_M222 ≠ readerSlotK := fun h => hpiv (by
+    rw [readerSet, h]; exact Finset.mem_insert_self _ _)
+  have hpX : structPivot M222 hN_M222 ≠ readerSlotX := fun h => hpiv (by
+    rw [readerSet, h]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
+  have hpN : structPivot M222 hN_M222 ≠ readerSlotN := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))
+  have hpW0 : structPivot M222 hN_M222 ≠ readerSlotW0 := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_insert_self _ _))))
+  have hpW1 : structPivot M222 hN_M222 ≠ readerSlotW1 := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    simp_all only [slotList, Matrix.cons_val] <;>
+    first
+      | rfl
+      | (exfalso; first
+          | exact readerSlotK_ne_X hij | exact readerSlotK_ne_X hij.symm
+          | exact readerSlotK_ne_N hij | exact readerSlotK_ne_N hij.symm
+          | exact readerSlotX_ne_N hij | exact readerSlotX_ne_N hij.symm
+          | exact readerSlotK_ne_W0 hij | exact readerSlotK_ne_W0 hij.symm
+          | exact readerSlotK_ne_W1 hij | exact readerSlotK_ne_W1 hij.symm
+          | exact readerSlotX_ne_W0 hij | exact readerSlotX_ne_W0 hij.symm
+          | exact readerSlotX_ne_W1 hij | exact readerSlotX_ne_W1 hij.symm
+          | exact readerSlotN_ne_W0 hij | exact readerSlotN_ne_W0 hij.symm
+          | exact readerSlotN_ne_W1 hij | exact readerSlotN_ne_W1 hij.symm
+          | exact readerSlotW0_ne_W1 hij | exact readerSlotW0_ne_W1 hij.symm
+          | exact lf0_ne_lf1 hij | exact lf0_ne_lf1 hij.symm
+          | exact lf0_ne_pivot hij | exact lf0_ne_pivot hij.symm
+          | exact lf1_ne_pivot hij | exact lf1_ne_pivot hij.symm
+          | exact hpK hij | exact hpK hij.symm | exact hpX hij | exact hpX hij.symm
+          | exact hpN hij | exact hpN hij.symm | exact hpW0 hij | exact hpW0 hij.symm
+          | exact hpW1 hij | exact hpW1 hij.symm
+          | exact hKlf0 hij | exact hKlf0 hij.symm | exact hKlf1 hij | exact hKlf1 hij.symm
+          | exact hXlf0 hij | exact hXlf0 hij.symm | exact hXlf1 hij | exact hXlf1 hij.symm
+          | exact hNlf0 hij | exact hNlf0 hij.symm | exact hNlf1 hij | exact hNlf1 hij.symm
+          | exact hW0lf0 hij | exact hW0lf0 hij.symm | exact hW0lf1 hij | exact hW0lf1 hij.symm
+          | exact hW1lf0 hij | exact hW1lf0 hij.symm | exact hW1lf1 hij | exact hW1lf1 hij.symm)
+
+/-- The slot bijection `Fin 8 ≃ Fin (routeMAmbient M222)` (injective `slotList`, equal
+cardinalities), given the radial-axis non-degeneracy `PivotNotReader`. -/
+noncomputable def slotEquiv (hpiv : PivotNotReader) : Fin 8 ≃ Fin (routeMAmbient M222) :=
+  Equiv.ofBijective slotList ((Fintype.bijective_iff_injective_and_card slotList).mpr
+    ⟨slotList_injective hpiv, by rw [routeMAmbient_M222]⟩)
+
+theorem slotEquiv_apply (hpiv : PivotNotReader) (i : Fin 8) : slotEquiv hpiv i = slotList i := rfl
+
+/-! ### `Tb` (the entry-readout) + the factorization `Bparams = pack222 ∘ Tb` -/
+
+/-- **`Tb`** — the 8 entry values of `Bparams` in the `pack222` flat-coordinate order
+(`A0 = !![w4,w1;w5,w6]`, `A1 = !![w0,w7;w2,w3]`): coords `0 = y_lf0 − n·w0`, `1 = a·n`, `2 = w0`,
+`3 = w1`, `4 = a`, `5 = a·b`, `6 = a·b·n + y_p`, `7 = y_lf1 − n·w1` (`a = y_K`, `b = y_X`,
+`n = y_N`, `w0 = y_{W0}`, `w1 = y_{W1}`, `y_p = y_{pivot}`). Then `pack222 (Tb y) = Bparams y`. -/
+noncomputable def Tb (y : Fin (routeMAmbient M222) → ℝ) : Fin 8 → ℝ :=
+  ![y lf0 - y readerSlotN * y readerSlotW0,
+    y readerSlotK * y readerSlotN,
+    y readerSlotW0,
+    y readerSlotW1,
+    y readerSlotK,
+    y readerSlotK * y readerSlotX,
+    y readerSlotK * y readerSlotX * y readerSlotN + y (structPivot M222 hN_M222),
+    y lf1 - y readerSlotN * y readerSlotW1]
+
+/-- **The factorization** `pack222 (Tb y) = Bparams y`. -/
+theorem pack222_Tb_eq (y : Fin (routeMAmbient M222) → ℝ) : pack222 (Tb y) = Bparams y := by
+  funext s
+  fin_cases s
+  · change (pack222 (Tb y)) 0 = (Bparams y) 0
+    have hp : (pack222 (Tb y)) 0
+        = (!![(Tb y) 4, (Tb y) 1; (Tb y) 5, (Tb y) 6] : Matrix (Fin 2) (Fin 2) ℝ) := rfl
+    have hB : (Bparams y) 0
+        = (!![aRead y, aRead y * nRead y;
+            aRead y * bRead y, aRead y * bRead y * nRead y + y (structPivot M222 hN_M222)]
+          : Matrix (Fin (M222 0)) (Fin (M222 1)) ℝ) := rfl
+    rw [hp, hB]
+    funext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Tb, aRead_eq, bRead_eq, nRead_eq]
+  · change (pack222 (Tb y)) 1 = (Bparams y) 1
+    have hp : (pack222 (Tb y)) 1
+        = (!![(Tb y) 0, (Tb y) 7; (Tb y) 2, (Tb y) 3] : Matrix (Fin 2) (Fin 2) ℝ) := rfl
+    have hB : (Bparams y) 1
+        = (!![y lf0 - nRead y * w0Read y, y lf1 - nRead y * w1Read y;
+            w0Read y, w1Read y] : Matrix (Fin (M222 1)) (Fin (M222 2)) ℝ) := rfl
+    rw [hp, hB]
+    funext i j
+    fin_cases i <;> fin_cases j <;>
+      simp [Tb, nRead_eq, w0Read_eq, w1Read_eq]
+
+/-- **`Bchart = Q222CLM ∘ Tb`** (as functions): `Bchart y = paramsEquivFlat (Bparams y)
+= paramsEquivFlat (pack222 (Tb y)) = Q222CLM (Tb y)`. -/
+theorem Bchart_eq_Q222CLM_Tb (y : Fin (routeMAmbient M222) → ℝ) :
+    Bchart y = Q222CLM (Tb y) := by
+  rw [Bchart, ← pack222_Tb_eq]
+  change paramsEquivFlat M222 (pack222 (Tb y)) = Q222CLM (Tb y)
+  rw [show Q222CLM (Tb y) = paramsEquivFlatCLE M222 (pack222CLM (Tb y)) from rfl,
+    paramsEquivFlatCLE_coe, pack222CLM_coe]
+
+/-! ### `TbCLM` (the fderiv of `Tb`) + `HasFDerivAt Tb (TbCLM u) u` -/
+
+/-- The coordinate projection CLM `proj s : (Fin (routeMAmbient M222) → ℝ) →L[ℝ] ℝ`. -/
+noncomputable abbrev bprj (s : Fin (routeMAmbient M222)) :
+    (Fin (routeMAmbient M222) → ℝ) →L[ℝ] ℝ :=
+  ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (routeMAmbient M222) => ℝ) s
+
+/-- **`TbCLM u`** — the fderiv of `Tb` at `u`, the explicit per-output product/sum CLM (in the
+`pack222` flat-coordinate output order). -/
+noncomputable def TbCLM (u : Fin (routeMAmbient M222) → ℝ) :
+    (Fin (routeMAmbient M222) → ℝ) →L[ℝ] (Fin 8 → ℝ) :=
+  ContinuousLinearMap.pi
+    (![ bprj lf0 - ((u readerSlotN) • bprj readerSlotW0 + (u readerSlotW0) • bprj readerSlotN),
+        (u readerSlotK) • bprj readerSlotN + (u readerSlotN) • bprj readerSlotK,
+        bprj readerSlotW0,
+        bprj readerSlotW1,
+        bprj readerSlotK,
+        (u readerSlotK) • bprj readerSlotX + (u readerSlotX) • bprj readerSlotK,
+        ((u readerSlotX * u readerSlotN) • bprj readerSlotK
+          + (u readerSlotK * u readerSlotN) • bprj readerSlotX
+          + (u readerSlotK * u readerSlotX) • bprj readerSlotN)
+          + bprj (structPivot M222 hN_M222),
+        bprj lf1 - ((u readerSlotN) • bprj readerSlotW1 + (u readerSlotW1) • bprj readerSlotN)]
+      : Fin 8 → ((Fin (routeMAmbient M222) → ℝ) →L[ℝ] ℝ))
+
+set_option linter.unusedSimpArgs false in
+/-- **`Tb` has fderiv `TbCLM u`** at `u` (product/sum/sub rule on each of the 8 outputs). -/
+theorem Tb_hasFDerivAt (u : Fin (routeMAmbient M222) → ℝ) :
+    HasFDerivAt Tb (TbCLM u) u := by
+  apply hasFDerivAt_pi''
+  intro i
+  rw [TbCLM, ContinuousLinearMap.proj_pi]
+  have hap : ∀ s : Fin (routeMAmbient M222),
+      HasFDerivAt (fun y : Fin (routeMAmbient M222) → ℝ => y s) (bprj s) u :=
+    fun s => hasFDerivAt_apply (𝕜 := ℝ) s u
+  fin_cases i <;> simp only [Tb, Matrix.cons_val]
+  · -- output 0: `y lf0 - y readerSlotN * y readerSlotW0`
+    refine (hap lf0).sub ?_
+    have := (hap readerSlotN).mul (hap readerSlotW0)
+    refine this.congr_fderiv ?_
+    ext v; simp [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.proj_apply, mul_comm]
+  · -- output 1: `y readerSlotK * y readerSlotN`
+    exact (hap readerSlotK).mul (hap readerSlotN)
+  · exact hap readerSlotW0
+  · exact hap readerSlotW1
+  · exact hap readerSlotK
+  · -- output 5: `y readerSlotK * y readerSlotX`
+    exact (hap readerSlotK).mul (hap readerSlotX)
+  · -- output 6: `y readerSlotK * y readerSlotX * y readerSlotN + y (structPivot)`
+    refine HasFDerivAt.add ?_ (hap (structPivot M222 hN_M222))
+    have := ((hap readerSlotK).mul (hap readerSlotX)).mul (hap readerSlotN)
+    refine this.congr_fderiv ?_
+    ext v; simp [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.proj_apply]; ring
+  · -- output 7: `y lf1 - y readerSlotN * y readerSlotW1`
+    refine (hap lf1).sub ?_
+    have := (hap readerSlotN).mul (hap readerSlotW1)
+    refine this.congr_fderiv ?_
+    ext v; simp [ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.proj_apply, mul_comm]
+
+/-! ### `DB` (the `Bchart` fderiv) + `hasDB` -/
+
+/-- **`DB u`** — `Bchart`'s fderiv `Q222CLM ∘L TbCLM u` (`Bchart = Q222CLM ∘ Tb`). -/
+noncomputable def DB (u : Fin (routeMAmbient M222) → ℝ) :
+    (Fin (routeMAmbient M222) → ℝ) →L[ℝ] (Fin (routeMAmbient M222) → ℝ) :=
+  Q222CLM.comp (TbCLM u)
+
+/-- **`Bchart` has fderiv `DB u`** at `u` (chain rule: `Q222CLM` linear ∘ `Tb`). -/
+theorem Bchart_hasFDerivAt (u : Fin (routeMAmbient M222) → ℝ) :
+    HasFDerivAt Bchart (DB u) u := by
+  have hcomp : HasFDerivAt (fun v => Q222CLM (Tb v)) (Q222CLM.comp (TbCLM u)) u :=
+    (Q222CLM.hasFDerivAt).comp u (Tb_hasFDerivAt u)
+  exact hcomp.congr_of_eventuallyEq (by filter_upwards with v; rw [Bchart_eq_Q222CLM_Tb])
+
+/-! ### `|det (TbCLM u)| = |aRead u|²` (the entry Jacobian det, via slot reindex to lower-tri)
+
+The slot/row reindex turns `toMatrix' (TbCLM u)` into the explicit lower-triangular `litMatLT u`
+(diagonal `[1, a, a, 1, 1, 1, 1, 1]`, `a = aRead u`), det `= a²`. Column order
+`[a, b, n, p, w0, w1, lf0, lf1]` (`slotListC`), row order `[out4, out5, out1, out6, out2, out3,
+out0, out7]` (`rowPerm`). -/
+
+/-- The column slot list in the lower-triangular order `[a, b, n, p, w0, w1, lf0, lf1]`. -/
+noncomputable def slotListC : Fin 8 → Fin (routeMAmbient M222) :=
+  ![readerSlotK, readerSlotX, readerSlotN, structPivot M222 hN_M222,
+    readerSlotW0, readerSlotW1, lf0, lf1]
+
+set_option linter.unusedSimpArgs false in
+/-- `slotListC` is injective (a reordering of `slotList`), under `PivotNotReader`. -/
+theorem slotListC_injective (hpiv : PivotNotReader) : Function.Injective slotListC := by
+  have hKlf0 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).1
+  have hKlf1 := (readerSlot_ne_leaf readerSlotK readerSlotK_mem).2
+  have hXlf0 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).1
+  have hXlf1 := (readerSlot_ne_leaf readerSlotX readerSlotX_mem).2
+  have hNlf0 := (readerSlot_ne_leaf readerSlotN readerSlotN_mem).1
+  have hNlf1 := (readerSlot_ne_leaf readerSlotN readerSlotN_mem).2
+  have hW0lf0 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).1
+  have hW0lf1 := (readerSlot_ne_leaf readerSlotW0 readerSlotW0_mem).2
+  have hW1lf0 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).1
+  have hW1lf1 := (readerSlot_ne_leaf readerSlotW1 readerSlotW1_mem).2
+  have hpK : structPivot M222 hN_M222 ≠ readerSlotK := fun h => hpiv (by
+    rw [readerSet, h]; exact Finset.mem_insert_self _ _)
+  have hpX : structPivot M222 hN_M222 ≠ readerSlotX := fun h => hpiv (by
+    rw [readerSet, h]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))
+  have hpN : structPivot M222 hN_M222 ≠ readerSlotN := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_self _ _)))
+  have hpW0 : structPivot M222 hN_M222 ≠ readerSlotW0 := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_insert_self _ _))))
+  have hpW1 : structPivot M222 hN_M222 ≠ readerSlotW1 := fun h => hpiv (by
+    rw [readerSet, h]
+    exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_insert_of_mem (Finset.mem_singleton_self _)))))
+  have hplf0 : structPivot M222 hN_M222 ≠ lf0 := fun h => lf0_ne_pivot h.symm
+  have hplf1 : structPivot M222 hN_M222 ≠ lf1 := fun h => lf1_ne_pivot h.symm
+  intro i j hij
+  fin_cases i <;> fin_cases j <;>
+    simp_all only [slotListC, Matrix.cons_val] <;>
+    first
+      | rfl
+      | (exfalso; first
+          | exact readerSlotK_ne_X hij | exact readerSlotK_ne_X hij.symm
+          | exact readerSlotK_ne_N hij | exact readerSlotK_ne_N hij.symm
+          | exact readerSlotX_ne_N hij | exact readerSlotX_ne_N hij.symm
+          | exact readerSlotK_ne_W0 hij | exact readerSlotK_ne_W0 hij.symm
+          | exact readerSlotK_ne_W1 hij | exact readerSlotK_ne_W1 hij.symm
+          | exact readerSlotX_ne_W0 hij | exact readerSlotX_ne_W0 hij.symm
+          | exact readerSlotX_ne_W1 hij | exact readerSlotX_ne_W1 hij.symm
+          | exact readerSlotN_ne_W0 hij | exact readerSlotN_ne_W0 hij.symm
+          | exact readerSlotN_ne_W1 hij | exact readerSlotN_ne_W1 hij.symm
+          | exact readerSlotW0_ne_W1 hij | exact readerSlotW0_ne_W1 hij.symm
+          | exact lf0_ne_lf1 hij | exact lf0_ne_lf1 hij.symm
+          | exact hplf0 hij | exact hplf0 hij.symm | exact hplf1 hij | exact hplf1 hij.symm
+          | exact hpK hij | exact hpK hij.symm | exact hpX hij | exact hpX hij.symm
+          | exact hpN hij | exact hpN hij.symm | exact hpW0 hij | exact hpW0 hij.symm
+          | exact hpW1 hij | exact hpW1 hij.symm
+          | exact hKlf0 hij | exact hKlf0 hij.symm | exact hKlf1 hij | exact hKlf1 hij.symm
+          | exact hXlf0 hij | exact hXlf0 hij.symm | exact hXlf1 hij | exact hXlf1 hij.symm
+          | exact hNlf0 hij | exact hNlf0 hij.symm | exact hNlf1 hij | exact hNlf1 hij.symm
+          | exact hW0lf0 hij | exact hW0lf0 hij.symm | exact hW0lf1 hij | exact hW0lf1 hij.symm
+          | exact hW1lf0 hij | exact hW1lf0 hij.symm | exact hW1lf1 hij | exact hW1lf1 hij.symm)
+
+/-- The column reindex bijection (lower-triangular column order). -/
+noncomputable def colEquivT (hpiv : PivotNotReader) : Fin 8 ≃ Fin (routeMAmbient M222) :=
+  Equiv.ofBijective slotListC ((Fintype.bijective_iff_injective_and_card slotListC).mpr
+    ⟨slotListC_injective hpiv, by rw [routeMAmbient_M222]⟩)
+
+/-- The row reindex permutation `[out4, out5, out1, out6, out2, out3, out0, out7]` (output-coord
+order making `toMatrix'` lower-triangular). -/
+def rowPerm : Fin 8 ≃ Fin 8 where
+  toFun := ![4, 5, 1, 6, 2, 3, 0, 7]
+  invFun := ![6, 2, 4, 5, 0, 1, 3, 7]
+  left_inv := by decide
+  right_inv := by decide
+
+/-- The row reindex as a `Fin 8 ≃ Fin (routeMAmbient M222)` (matching `colEquivT`'s target, so
+`abs_det_submatrix_equiv_equiv` applies to the `Fin (routeMAmbient M222)`-indexed `toMatrix'`). -/
+def rowEquiv : Fin 8 ≃ Fin (routeMAmbient M222) :=
+  rowPerm.trans (finCongr routeMAmbient_M222.symm)
+
+/-- The explicit lower-triangular literal matrix (`a = aRead u`, `b = bRead u`, `n = nRead u`,
+`w0 = w0Read u`, `w1 = w1Read u`), diagonal `[1, a, a, 1, 1, 1, 1, 1]`, det `= a²`. -/
+noncomputable def litMatLT (u : Fin (routeMAmbient M222) → ℝ) : Matrix (Fin 8) (Fin 8) ℝ :=
+  !![1, 0, 0, 0, 0, 0, 0, 0;
+     bRead u, aRead u, 0, 0, 0, 0, 0, 0;
+     nRead u, 0, aRead u, 0, 0, 0, 0, 0;
+     bRead u * nRead u, aRead u * nRead u, aRead u * bRead u, 1, 0, 0, 0, 0;
+     0, 0, 0, 0, 1, 0, 0, 0;
+     0, 0, 0, 0, 0, 1, 0, 0;
+     0, 0, -w0Read u, 0, -nRead u, 0, 1, 0;
+     0, 0, -w1Read u, 0, 0, -nRead u, 0, 1]
+
+/-- `det (litMatLT u) = aRead u ^ 2` (lower-triangular, diagonal `[1, a, a, 1, 1, 1, 1, 1]`). -/
+theorem litMatLT_det (u : Fin (routeMAmbient M222) → ℝ) : (litMatLT u).det = aRead u ^ 2 := by
+  have htri : (litMatLT u).BlockTriangular OrderDual.toDual := by
+    intro i j hij
+    rw [OrderDual.toDual_lt_toDual, Fin.lt_def] at hij
+    fin_cases i <;> fin_cases j <;>
+      first
+        | (exact absurd hij (by decide))
+        | (simp [litMatLT])
+  rw [Matrix.det_of_lowerTriangular _ htri]
+  simp [litMatLT, Fin.prod_univ_succ]
+  ring
+
+/-- `Pi.single (slotListC j) 1` evaluated at `slotListC k` collapses to `if j = k then 1 else 0`
+(via `slotListC_injective`). -/
+theorem single_slotListC (hpiv : PivotNotReader) (j k : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) (slotListC k)
+      = if j = k then 1 else 0 := by
+  rw [Pi.single_apply]
+  by_cases h : slotListC k = slotListC j
+  · rw [if_pos h, if_pos (slotListC_injective hpiv h).symm]
+  · rw [if_neg h, if_neg (fun he => h (by rw [he]))]
+
+/-- `Pi.single (slotListC j) 1` read at a named slot `s = slotListC k`, collapsed via
+`single_slotListC`. The named-slot wrappers below specialize this (keeping the reader names so
+litMatLT's `aRead/bRead/…` coefficients match). -/
+theorem single_at_eq (hpiv : PivotNotReader) (j k : Fin 8) (s : Fin (routeMAmbient M222))
+    (hs : s = slotListC k) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) s
+      = if j = k then 1 else 0 := by
+  rw [hs]; exact single_slotListC hpiv j k
+
+theorem single_at_readerK (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotK
+      = if j = ⟨0, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_readerX (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotX
+      = if j = ⟨1, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_readerN (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotN
+      = if j = ⟨2, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_pivot (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) (structPivot M222 hN_M222)
+      = if j = ⟨3, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_readerW0 (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotW0
+      = if j = ⟨4, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_readerW1 (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) readerSlotW1
+      = if j = ⟨5, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_lf0 (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) lf0
+      = if j = ⟨6, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+theorem single_at_lf1 (hpiv : PivotNotReader) (j : Fin 8) :
+    (Pi.single (slotListC j) (1 : ℝ) : Fin (routeMAmbient M222) → ℝ) lf1
+      = if j = ⟨7, by decide⟩ then 1 else 0 := single_at_eq hpiv j _ _ rfl
+
+set_option linter.unusedSimpArgs false in
+/-- **The reindexed entry Jacobian** `(toMatrix' (TbCLM u)).submatrix rowPerm (colEquivT hpiv) =
+litMatLT u` — the explicit lower-triangular matrix (per-entry via the `Pi.single` slot collapse). -/
+theorem TbCLM_toMatrix_reindex (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+    (LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT hpiv)
+      = litMatLT u := by
+  have hcol : ∀ k : Fin 8, (colEquivT hpiv k : Fin (routeMAmbient M222)) = slotListC k :=
+    fun k => rfl
+  ext i j
+  rw [Matrix.submatrix_apply, LinearMap.toMatrix'_apply]
+  change (TbCLM u) (Pi.single (colEquivT hpiv j) 1) (rowEquiv i) = litMatLT u i j
+  have hri : (rowEquiv i : Fin (routeMAmbient M222)) = (rowPerm i : Fin 8) := rfl
+  rw [hri, TbCLM, ContinuousLinearMap.pi_apply]
+  -- full `simp` (with `Matrix.cons_val`) reduces the row-vector selection `![CLMs] (rowPerm ⟨i⟩)`
+  -- to its CLM; the `single_at_*` lemmas collapse the `Pi.single` reads (keeping reader names, so
+  -- litMatLT's `aRead/bRead/…` coefficients match), then `norm_num` finishes the arithmetic.
+  -- (The `simp` lemma list and `single_at_*` cover all 64 (i,j) cases jointly; per-case the linter
+  -- may see some as unused — they are needed across the other cases.)
+  fin_cases i <;> fin_cases j <;>
+    simp +arith [rowPerm, Equiv.coe_fn_mk, Matrix.cons_val, hcol, ContinuousLinearMap.sub_apply,
+      ContinuousLinearMap.add_apply, ContinuousLinearMap.smul_apply,
+      ContinuousLinearMap.proj_apply, smul_eq_mul,
+      single_at_readerK hpiv, single_at_readerX hpiv, single_at_readerN hpiv,
+      single_at_pivot hpiv, single_at_readerW0 hpiv, single_at_readerW1 hpiv,
+      single_at_lf0 hpiv, single_at_lf1 hpiv,
+      litMatLT, aRead_eq, bRead_eq, nRead_eq, w0Read_eq, w1Read_eq]
+
+/-- **`|det (TbCLM u)| = |aRead u|²`** — the entry-Jacobian determinant (`-aRead u²` up to sign),
+via the reindex to the explicit lower-triangular `litMatLT u`. -/
+theorem TbCLM_abs_det (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+    |LinearMap.det (TbCLM u).toLinearMap| = |aRead u| ^ 2 := by
+  have hdetTo : LinearMap.det (TbCLM u).toLinearMap
+      = Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap) :=
+    (LinearMap.det_toMatrix' (TbCLM u).toLinearMap).symm
+  have hsub : |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix
+        rowEquiv (colEquivT hpiv)).det|
+      = |Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap)| :=
+    abs_det_submatrix_equiv_equiv rowEquiv (colEquivT hpiv) _
+  have ereindex :
+      |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix rowEquiv (colEquivT hpiv)).det|
+        = |(litMatLT u).det| := by rw [TbCLM_toMatrix_reindex hpiv u]
+  calc |LinearMap.det (TbCLM u).toLinearMap|
+      = |Matrix.det (LinearMap.toMatrix' (TbCLM u).toLinearMap)| := by rw [hdetTo]
+    _ = |((LinearMap.toMatrix' (TbCLM u).toLinearMap).submatrix
+          rowEquiv (colEquivT hpiv)).det| := hsub.symm
+    _ = |(litMatLT u).det| := ereindex
+    _ = |aRead u| ^ 2 := by rw [litMatLT_det, abs_pow]
+
+/-- **`|det DB u| = |aRead u|²`** — the boundary-factor det (`DB = Q222CLM ∘ TbCLM`, `Q222CLM`
+measure-preserving so `|det| = 1`). -/
+theorem DB_abs_det (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+    |LinearMap.det (DB u).toLinearMap| = |aRead u| ^ 2 := by
+  have hdet : LinearMap.det (DB u).toLinearMap
+      = LinearMap.det (Q222CLM : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ))
+        * LinearMap.det (TbCLM u).toLinearMap := by
+    have hcoe : (DB u).toLinearMap
+        = (Q222CLM : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)).comp (TbCLM u).toLinearMap := by
+      rw [DB, ContinuousLinearMap.coe_comp]
+    rw [hcoe]
+    exact LinearMap.det_comp (Q222CLM : (Fin 8 → ℝ) →ₗ[ℝ] (Fin 8 → ℝ)) (TbCLM u).toLinearMap
+  rw [hdet, abs_mul, Q222CLM_abs_det, one_mul, TbCLM_abs_det hpiv u]
+
+/-! ## The `BData M222` instance + the concrete (2,2,2) interior-det headline -/
+
+/-- The per-boundary engine values for the (2,2,2) faithful factor: `|aRead (pbo u)|²` at `s = 0`,
+`1` at `s = 1` (so `∏ = |aRead (pbo u)|² = |det DB|`). -/
+noncomputable def engine222 (u : Fin (routeMAmbient M222) → ℝ) : Fin 2 → ℝ :=
+  fun s => if s = 0 then |aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) u)| ^ 2 else 1
+
+theorem engine222_prod (u : Fin (routeMAmbient M222) → ℝ) :
+    ∏ s : Fin 2, engine222 u s
+      = |aRead (pivotBlowupOn active222 (structPivot M222 hN_M222) u)| ^ 2 := by
+  rw [Fin.prod_univ_two]; simp [engine222]
+
+/-- **The faithful `BData M222`** for the concrete (2,2,2) node, given the chart non-degeneracy
+`PivotNotReader` (the radial axis distinct from the Schur readers). All fields landed:
+`hmap` (faithful map identity), `hcard` (the `minAdm = 3` count), `hdet` (`|det DB| = |aRead|²`). -/
+noncomputable def bData222 (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+    BData M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222 u where
+  active := active222
+  hp_mem := structPivot_mem_active222
+  hcard := active222_card
+  B := Bchart
+  DB := DB (pivotBlowupOn active222 (structPivot M222 hN_M222) u)
+  hasDB := Bchart_hasFDerivAt (pivotBlowupOn active222 (structPivot M222 hN_M222) u)
+  hmap := hmap_222
+  engine := engine222 u
+  hdet := by
+    rw [DB_abs_det hpiv (pivotBlowupOn active222 (structPivot M222 hN_M222) u), engine222_prod]
+
+/-- **The unconditional-modulo-`PivotNotReader` interior-det headline for `phiFlatLiveR1 M222`**:
+`|det D(phiFlatLiveR1 M222 …)| = |u_p|^{minAdm−1} · |aRead (pbo u)|²`. Reads off
+`interiorDet_headline_of_BData` applied to `bData222`. -/
+theorem interiorDet_headline_222 (hpiv : PivotNotReader) (u : Fin (routeMAmbient M222) → ℝ) :
+    |LinearMap.det (fderiv ℝ (phiFlatLiveR1 M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222
+        rfin222) u).toLinearMap|
+      = |u (structPivot M222 hN_M222)| ^ (minAdm M222 - 1)
+        * ∏ s : Fin 2, (bData222 hpiv u).engine s :=
+  interiorDet_headline_of_BData M222 tach222 structAdm_tach222 hN_M222 1 hp1_222 hp2_222 rfin222 u
+    (bData222 hpiv u)
+
 end DLNFibre.DLN.RLCT
