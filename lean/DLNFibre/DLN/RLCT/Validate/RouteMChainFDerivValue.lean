@@ -119,6 +119,72 @@ theorem hasFDerivAt_chainA {Nn M' t c m' : ℕ} (h : t + c = M')
       ((ContinuousLinearMap.proj (Fin.cast (by omega : M' - t = c) a)
         : (Fin c → (Fin m' → ℝ)) →L[ℝ] (Fin m' → ℝ)).hasFDerivAt.comp u hW)
 
+/-! ## The fderiv VALUE of a `chainQ` layer (the chaining row `[I | N]`) -/
+
+/-- **The fderiv CLM of a `chainQ` layer.** The chaining row `chainQ h N = [I | N]`; its `(i, col)`
+entry, read through the kept/lift split `finSplit col`, is `0` on the kept block (the constant `I`)
+and `dN` on the lift block (`Sum.inr a`). The fderiv VALUE shadow of `diffAt_chainQ`. -/
+noncomputable def chainQFDeriv {Nn M' t c : ℕ} (h : t + c = M')
+    (dN : (Fin Nn → ℝ) →L[ℝ] Matrix (Fin t) (Fin c) ℝ) :
+    (Fin Nn → ℝ) →L[ℝ] Matrix (Fin t) (Fin M') ℝ :=
+  ContinuousLinearMap.pi (fun i : Fin t =>
+    ContinuousLinearMap.pi (fun col : Fin M' =>
+      Sum.elim
+        (fun _ : Fin t => (0 : (Fin Nn → ℝ) →L[ℝ] ℝ))
+        (fun a : Fin (M' - t) =>
+          (ContinuousLinearMap.proj (Fin.cast (by omega : M' - t = c) a)).comp
+            ((ContinuousLinearMap.proj i).comp dN))
+        (finSplit (show t ≤ M' by omega) col)))
+
+/-- **The fderiv VALUE of a `chainQ` layer.** If `Nf` has fderiv `dN` at `u`, then
+`fun x => chainQ h (Nf x)` has fderiv `chainQFDeriv h dN`. Per entry (`hasFDerivAt_pi''` twice, the
+`finSplit` column split + `chainQ_apply_castAdd`/`_natAdd`): the kept columns are the constant `I`
+(fderiv `0`), the lift columns are `dN`. -/
+theorem hasFDerivAt_chainQ {Nn M' t c : ℕ} (h : t + c = M')
+    (Nf : (Fin Nn → ℝ) → Matrix (Fin t) (Fin c) ℝ)
+    (dN : (Fin Nn → ℝ) →L[ℝ] Matrix (Fin t) (Fin c) ℝ) (u : Fin Nn → ℝ)
+    (hN : HasFDerivAt Nf dN u) :
+    HasFDerivAt (fun x => chainQ h (Nf x)) (chainQFDeriv h dN) u := by
+  apply hasFDerivAt_pi''
+  intro i
+  apply hasFDerivAt_pi''
+  intro col
+  rw [show (ContinuousLinearMap.proj col).comp
+      ((ContinuousLinearMap.proj i).comp (chainQFDeriv h dN))
+      = Sum.elim
+        (fun _ : Fin t => (0 : (Fin Nn → ℝ) →L[ℝ] ℝ))
+        (fun a : Fin (M' - t) =>
+          (ContinuousLinearMap.proj (Fin.cast (by omega : M' - t = c) a)).comp
+            ((ContinuousLinearMap.proj i).comp dN))
+        (finSplit (show t ≤ M' by omega) col) from rfl]
+  set s := (finSplit (show t ≤ M' by omega)) col with hs
+  have hcol : col = (finSplit (show t ≤ M' by omega)).symm s := by rw [hs, Equiv.symm_apply_apply]
+  clear_value s
+  subst hcol
+  cases s with
+  | inl jj =>
+    have hidx : (finSplit (show t ≤ M' by omega)).symm (Sum.inl jj)
+        = Fin.cast h (Fin.castAdd c jj) := by
+      simp only [finSplit, Equiv.symm_trans_apply, Equiv.symm_symm, finCongr_symm,
+        finSumFinEquiv_apply_left, finCongr_apply]; apply Fin.ext; simp
+    rw [Sum.elim_inl,
+      show (fun x => chainQ h (Nf x) i ((finSplit (show t ≤ M' by omega)).symm (Sum.inl jj)))
+        = fun _ => (1 : Matrix (Fin t) (Fin t) ℝ) i jj from by
+        funext x; rw [hidx, chainQ_apply_castAdd]]
+    exact hasFDerivAt_const _ _
+  | inr a =>
+    have hidx : (finSplit (show t ≤ M' by omega)).symm (Sum.inr a)
+        = Fin.cast h (Fin.natAdd t (Fin.cast (by omega : M' - t = c) a)) := by
+      simp only [finSplit, Equiv.symm_trans_apply, Equiv.symm_symm, finCongr_symm,
+        finSumFinEquiv_apply_right, finCongr_apply]; apply Fin.ext; simp
+    rw [Sum.elim_inr,
+      show (fun x => chainQ h (Nf x) i ((finSplit (show t ≤ M' by omega)).symm (Sum.inr a)))
+        = fun x => Nf x i (Fin.cast (by omega : M' - t = c) a) from by
+      funext x; rw [hidx, chainQ_apply_natAdd]]
+    exact (ContinuousLinearMap.proj (Fin.cast (by omega : M' - t = c) a)
+        : (Fin c → ℝ) →L[ℝ] ℝ).hasFDerivAt.comp u
+      ((ContinuousLinearMap.proj i : (Fin t → (Fin c → ℝ)) →L[ℝ] (Fin c → ℝ)).hasFDerivAt.comp u hN)
+
 /-! ## Non-vacuity: the fderiv-value lemma fires on a genuine linear-reader layer
 
 The atom is usable: feeding genuine differentiable readers (here the identity map on `Fin Nn → ℝ`
