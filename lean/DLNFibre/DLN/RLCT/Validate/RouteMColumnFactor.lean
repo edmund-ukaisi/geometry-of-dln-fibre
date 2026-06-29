@@ -65,6 +65,26 @@ theorem interior_abs_det_of_columnFactorization {L N : ℕ} (M : Fin (L + 1) →
     |LinearMap.det D| = |up| ^ (minAdm M - 1) * ∏ s : Fin L, engine s := by
   rw [← LinearMap.det_toMatrix' D, hJ, abs_det_scaledColumns_finset Rcols up G, hcard, hG]
 
+/-! ## The radial `Rcols` and its cardinality (`= minAdm − 1`)
+
+`Rcols` is the radial active set minus the pivot — the `u`-scaled `R`-columns. Its cardinality is
+`minAdm − 1` (the spine's `hcard`), from `radialActive_exists` (`active.card = minAdm`,
+`structPivot ∈ active`) + `Finset.card_erase_of_mem`. Decouples the COUNT obligation from the
+Jacobian-factorization (P) and the `G`-det (B). -/
+
+/-- **The radial `R`-column set** `active.erase structPivot` — the `u`-scaled non-pivot coords. -/
+noncomputable def radialRcols {L : ℕ} (M : Fin (L + 1) → ℕ) (hN : 0 < routeMAmbient M)
+    (active : Finset (Fin (routeMAmbient M))) : Finset (Fin (routeMAmbient M)) :=
+  active.erase (structPivot M hN)
+
+/-- **`radialRcols.card = minAdm − 1`** — the spine's `hcard`, from `active.card = minAdm` (radial
+active set, `radialActive_exists`) + `Finset.card_erase_of_mem` (the pivot is in `active`). -/
+theorem radialRcols_card {L : ℕ} (M : Fin (L + 1) → ℕ) (hN : 0 < routeMAmbient M)
+    (active : Finset (Fin (routeMAmbient M))) (hp : structPivot M hN ∈ active)
+    (hcard : active.card = minAdm M) :
+    (radialRcols M hN active).card = minAdm M - 1 := by
+  rw [radialRcols, Finset.card_erase_of_mem hp, hcard]
+
 /-! ## Non-vacuity: the column-factor spine fires on a concrete factorization
 
 The spine is a genuine conditional: on a `1×1` Jacobian the headline shape fires. -/
