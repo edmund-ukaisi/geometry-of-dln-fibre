@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 source-rank-supported continuous-density small-box iff
+
+The source-rank-supported Case 2 wrapper now states the continuous-density
+small-box two-sided iff over the open restriction `mu.restrict U`:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_of_smallBox_restrict_open_of_sourceRankSupport
+```
+
+This is only a support restatement.  It keeps the uniform Case 2 rank
+equations explicit and rewrites both the product integral and
+`residualNegPowerIntegrableOn` sides from `U ∩ sourceStratum` to `U`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims remain strict: no source-rank coverage, no selected-entry
+source/image equality, no exact-rank openness, no external source-prior or
+Jacobian transport, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 endpoint-transport continuous-density small-box iff
 
 The explicit continuing Case 2 endpoint-transport chart now has a

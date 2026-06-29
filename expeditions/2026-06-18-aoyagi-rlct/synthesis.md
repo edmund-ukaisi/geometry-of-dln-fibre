@@ -3,6 +3,36 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Source-Rank-Supported Continuous-Density Small-Box Iff - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_of_smallBox_restrict_open_of_sourceRankSupport
+```
+
+This is a support restatement of the Case 2 continuous-density small-box iff.
+It assumes the same explicit uniform source-rank equations used by the earlier
+finite-integral support wrapper, obtains `mu.restrict sourceStratum = mu`, and
+rewrites both the product-integral side and the residual negative-power side
+from `U ∩ sourceStratum` to `U`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: the rank equations are hypotheses, not coverage; no source/image
+equality, original source-prior or Jacobian transport, normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Case 2 Continuous-Density Small-Box Iff - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

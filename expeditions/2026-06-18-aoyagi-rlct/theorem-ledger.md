@@ -11821,6 +11821,33 @@ critical inequality, no source-rank coverage, no source/image equality, no
 external source-prior or Jacobian transport, no normal crossings, pole order,
 or RLCT.
 
+Latest A2 Case 2 source-stratum-supported continuous-density small-box two-sided iff:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_of_smallBox_restrict_open_of_sourceRankSupport`.
+
+Ledger status: support restatement of the Case 2 continuous-density small-box
+iff.  The theorem assumes the same explicit uniform source-rank equations as
+the earlier finite-integral support wrapper, uses them to prove
+`mu.restrict sourceStratum = mu`, and rewrites both the product-integral side
+and the residual negative-power integrability side from `U ∩ sourceStratum` to
+`U`.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: the rank equations are hypotheses, not coverage; no
+selected-entry source/image equality, exact-rank openness, external
+source-prior or Jacobian transport, normal crossings, pole order, or RLCT.
+
 Latest A4 selected-entry analytic-atlas/source-production frontier recheck:
 no Lean theorem.  Source: Aoyagi pp. 19-22.  Expedition artifacts:
 `threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`

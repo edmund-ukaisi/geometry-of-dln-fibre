@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 source-stratum-supported continuous-density small-box two-sided iff
+
+Reproduction:
+`reproduction-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+Statement card:
+`statement-card-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+Review:
+`review-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_of_smallBox_restrict_open_of_sourceRankSupport
+```
+
+This composes the new Case 2 continuous-density small-box source-stratum iff
+with the existing Case 2 source-stratum support theorem.  Under the explicit
+rank equations `hprod`, `hr0`, and uniform `hr1`, the chart-produced measure
+is supported on the source-rank stratum, so the returned iff is stated over
+`mu.restrict U` and `residualNegPowerIntegrableOn ... U mu t`.
+
+The source-stratum loss comparison hypotheses remain on `nhdsWithin base
+sourceStratum`; support is used only to rewrite the final measure
+restriction.  The theorem keeps the radius discipline from the small-box iff.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed; the theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no selected-entry source/image equality,
+no exact-rank openness, no external source-prior or Jacobian transport, no
+original-loss identification, no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 endpoint-transport continuous-density small-box two-sided iff
 
 Reproduction:

@@ -8553,6 +8553,35 @@ Focused build, `scripts/sorries`, `git diff --check`, touched Lean-file
 forbidden-marker scan, and direct axiom probe passed; the theorem reports only
 `[propext, Classical.choice, Quot.sound]`.
 
+## A2 Case 2 source-stratum-supported continuous-density small-box two-sided iff
+
+Status: Proved in Lean locally; focused build passed.
+
+Claim: under the explicit uniform Case 2 rank equations, the
+endpoint-transported chart-produced source measure is supported on the
+source-rank stratum, so the Case 2 continuous-density small-box iff can be
+restated over `mu.restrict U` and `residualNegPowerIntegrableOn ... U mu t`.
+
+Lean declaration:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_continuousAt_pos_density_of_smallBox_restrict_open_of_sourceRankSupport
+```
+
+Kill condition: reject any downstream use that treats the explicit rank
+equations as proved coverage, source/image equality, exact-rank openness,
+original source-prior transport, Jacobian comparison, normal crossings, pole
+order, or RLCT.
+
+Reproduction, statement card, and review:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-source-stratum-supported-continuous-density-small-box-two-sided-iff.md`.
+Focused build, `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 retained-passive Ctop tail endpoint substitution
 
 Reproduction and statement card:
