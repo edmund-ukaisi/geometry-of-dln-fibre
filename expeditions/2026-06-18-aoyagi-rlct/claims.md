@@ -8517,6 +8517,42 @@ Review:
 passed by xhigh `Carson the 2nd` for the fixed-radius slice and xhigh
 `Huygens the 3rd` for the continuous-density small-box wrapper.
 
+## A2 Case 2 endpoint-transport continuous-density small-box two-sided iff
+
+Status: Proved in Lean locally; focused build passed.
+
+Claim: for the explicit endpoint-transported continuing Case 2 selected-entry
+source chart, the generic retained-passive positive-continuous-density
+small-box source-stratum iff applies with all abstract retained-passive inputs
+discharged by the concrete Case 2 construction.
+
+Lean declaration:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+The theorem keeps endpoint equivalences, fixed-base source data, `[SFinite nu]`,
+`nu.IsAddHaarMeasure`, positive `Rmax/cLreg/CLreg/t`, positive continuity of
+the density at `(base,0)`, and both source-stratum loss comparison bounds at
+`Rmax` explicit.  It returns `R dρ Dρ` and only then quantifies `delta`,
+checking the selected-entry small-box scalar inequality at `R^2`.
+
+Kill condition: reject any downstream use that treats this as source-rank
+coverage, source/image equality, original source-prior transport, Jacobian
+comparison, normal crossings, pole order, or RLCT.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+passed by xhigh `Poincare the 3rd`.
+Focused build, `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 retained-passive Ctop tail endpoint substitution
 
 Reproduction and statement card:

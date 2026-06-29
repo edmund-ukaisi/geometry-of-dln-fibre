@@ -3,6 +3,44 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Continuous-Density Small-Box Iff - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+This is a concrete endpoint-transported Case 2 wrapper for the generic
+retained-passive continuous-density small-box two-sided iff.  The proof
+constructs the endpoint-transported retained-passive datum from `eNext` and
+`e`, supplies `detChart`, the residual-coordinate equivalence, and the
+selected-entry center-matrix residual-factor readout, and derives the required
+determinant-chart a.e. measurability from the existing determinant-chart
+continuity theorem.
+
+The statement deliberately has no `forall i, 0 < Rres i` and no
+selected-entry critical inequality.  It produces `R dρ Dρ` first and then
+requires `delta` to satisfy the small-box scalar inequality at `R^2`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+passed by xhigh `Poincare the 3rd`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, source/image equality, external
+source-prior or Jacobian transport, original-loss identification, normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 Continuous-Density Small-Box Residual Discharge - 2026-06-29
 
 `RetainedPassiveLocalMeasure.lean` now proves:

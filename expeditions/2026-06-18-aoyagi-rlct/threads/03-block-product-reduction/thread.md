@@ -18,6 +18,45 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 endpoint-transport continuous-density small-box two-sided iff
+
+Reproduction:
+`reproduction-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+Statement card:
+`statement-card-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+Review:
+`review-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+This is the explicit endpoint-transported continuing Case 2 wrapper around
+the generic retained-passive continuous-density small-box two-sided iff.  It
+builds the concrete retained-passive datum, determinant-chart proof,
+residual-coordinate equivalence, residual-factor readout, and determinant-
+chart a.e. measurability internally, then calls the generic theorem.
+
+The statement keeps `[SFinite nu]`, `nu.IsAddHaarMeasure`, positive
+`Rmax/cLreg/CLreg/t`, positive continuity of the density at `(base,0)`, and
+both source-stratum loss comparison bounds at `Rmax` explicit.  It returns
+`R dρ Dρ`, then quantifies `delta` and checks the selected-entry small-box
+inequality at `R^2`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Poincare the 3rd xhigh read-only review returned PASS.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed; the theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: no positive signed-box radius hypothesis, no selected-entry
+critical inequality, no source-rank coverage, no source/image equality, no
+external source-prior or Jacobian transport, no original-loss identification,
+no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 continuous-density small-box residual discharge
 
 Reproduction:

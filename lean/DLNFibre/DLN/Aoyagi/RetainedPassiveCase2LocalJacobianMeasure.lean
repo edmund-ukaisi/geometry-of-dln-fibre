@@ -2774,6 +2774,226 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Endpoint-transported explicit Case 2 chart-produced source-stratum
+two-sided handoff for a positive continuous density factor, with the residual
+boundedness premise discharged by small selected-entry signed-box radii at the
+produced radius.
+
+The theorem supplies the concrete endpoint-transported Case 2 retained-passive
+datum, determinant-chart proof, residual-coordinate equivalence, and
+determinant-chart a.e. measurability required by the generic retained-passive
+small-box theorem.  It does not choose signed-box radii or `delta`, prove
+source-rank coverage or source/image equality, identify an external/original
+source prior, compare Jacobians for such a prior, construct normal crossings,
+compute pole order, or extract RLCT. -/
+theorem exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let base : EdgeFamily :=
+      fun p ↦ LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p)
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    let rhoReg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+    let DetData :=
+      {data :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) // data.detChart}
+    ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily]
+      [BorelSpace EdgeFamily] [MeasurableSpace DetData]
+      [OpensMeasurableSpace DetData] [BorelSpace DetData],
+    ∀ {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ},
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W₂ B₂ U₀ hU₀ base (fun E : EdgeFamily ↦ E) H r rEdge →
+    ∀ {ν : Measure (EuclideanSpace ℝ rhoReg)} [SFinite ν],
+      ν.IsAddHaarMeasure →
+    ∀ {loss density : EdgeFamily × EuclideanSpace ℝ rhoReg → ℝ}
+      {t Rmax cLreg CLreg : ℝ} {Rres : center → ℝ},
+      0 < Rmax → 0 < cLreg → 0 < CLreg → 0 < t →
+      ContinuousAt density (base, (0 : EuclideanSpace ℝ rhoReg)) →
+      0 < density (base, (0 : EuclideanSpace ℝ rhoReg)) →
+      (∀ᶠ x in nhdsWithin base
+          (paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge),
+        ∀ u : EuclideanSpace ℝ rhoReg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ rhoReg) Rmax →
+            cLreg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤ loss (x, u)) →
+      (∀ᶠ x in nhdsWithin base
+          (paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge),
+        ∀ u : EuclideanSpace ℝ rhoReg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ rhoReg) Rmax →
+            loss (x, u) ≤ CLreg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) x) +
+              aoyagiCoordinateSquareSum (fun i => u i))) →
+      let sourceMeasure :=
+        (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+          (fun y : center → ℝ =>
+            ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+      let μ := Measure.map sourceChart sourceMeasure
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+      ∃ R dρ Dρ : ℝ,
+        0 < R ∧ R ≤ Rmax ∧ 0 < dρ ∧ 0 ≤ Dρ ∧
+        (∀ δ : ℝ,
+          0 ≤ δ →
+          (∀ i : center, Rres i ≤ δ) →
+          δ ^ 2 * (1 + ((center.erase pivotNext.1).card : ℝ) * δ ^ 2) ≤ R ^ 2 →
+          ∃ U : Set EdgeFamily, IsOpen U ∧ base ∈ U ∧
+            ((∫⁻ z : EdgeFamily × EuclideanSpace ℝ rhoReg,
+              ENNReal.ofReal
+                ((Metric.ball (0 : EuclideanSpace ℝ rhoReg) R).indicator
+                  (fun u =>
+                    (loss (z.1, u)) ^
+                        (-(t + (aoyagiTheorem2RegularVariableCount 2 H r : ℝ) / 2)) *
+                      density (z.1, u)) z.2) ∂
+                (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ ↔
+              residualNegPowerIntegrableOn
+                (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+                (fun E : EdgeFamily ↦ E) (U ∩ sourceStratum) μ t)) := by
+  intro center pivotNext EdgeFamily base retainedData sourceChart rhoReg DetData
+    _ _ _ _ _ _ H r rEdge sourceData ν _ hν loss density t Rmax cLreg CLreg Rres
+    hRmax hcLreg hCLreg ht hdensity_cont hdensity_pos hloss_lower hloss_upper
+    sourceMeasure μ sourceStratum
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) ≃ center :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+  have hdet : ∀ yNext : center → ℝ, (retainedData yNext).detChart := by
+    intro yNext
+    simpa [retainedData] using
+      case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
+        (ρ := Fin (Module.finrank ℝ U₀))
+        n hS hcont hnext yNext eNext e
+  have hdataFactor :
+      ∀ yNext : center → ℝ,
+        ChartLocalSuffixState.residualFactorProduct (retainedData yNext).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+                (residualCoordEquiv c)) := by
+    intro yNext
+    simpa [retainedData, residualCoordEquiv] using
+      case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+        (ρ := Fin (Module.finrank ℝ U₀))
+        n hS hcont hnext yNext eNext e
+  have hretainedData :
+      AEMeasurable
+        (fun yNext : center → ℝ ↦
+          (⟨retainedData yNext, hdet yNext⟩ : DetData))
+        (Measure.pi (fun i : center =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))) := by
+    have hcontData :
+        Continuous
+          (fun yNext : center → ℝ ↦
+            (⟨retainedData yNext, hdet yNext⟩ : DetData)) := by
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ : Fin 3 → Type := case2PostPivotTwoEdgeDomain n S J τ
+      let κ' : Fin 3 → Type :=
+        throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+      have hselected :
+          Continuous
+            (fun yNext : center → ℝ ↦
+              (⟨case2PostPivotSelectedEntryRetainedPassiveData
+                  (ρ := ρ) n hS hcont hnext yNext eNext,
+                case2PostPivotSelectedEntryRetainedPassiveData_detChart
+                  (ρ := ρ) n hS hcont hnext yNext eNext⟩ :
+                {data :
+                  ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                    (K := ℝ) (ρ := ρ) κ // data.detChart})) := by
+        simpa [center, ρ, κ] using
+          continuous_case2PostPivotSelectedEntryRetainedPassiveData_detChart_subtype
+            (ρ := ρ) n hS hcont hnext eNext
+      have htransport :
+          Continuous
+            (fun data :
+                {data :
+                  ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                    (K := ℝ) (ρ := ρ) κ // data.detChart} ↦
+              (⟨data.1.endpointTransport e,
+                (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.endpointTransport_detChart
+                  (K := ℝ) (ρ := ρ) e data.1).2 data.2⟩ :
+                {data :
+                  ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+                    (K := ℝ) (ρ := ρ) κ' // data.detChart})) := by
+        simpa [ρ, κ, κ'] using
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport_detChart_subtype
+            (K := ℝ) (ρ := ρ) e
+      simpa [center, retainedData, hdet, DetData, ρ, κ, κ'] using
+        htransport.comp hselected
+    exact hcontData.aemeasurable
+  exact
+    exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_of_sourceEdgeFamilyOfData_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+      (M := 1) (W := W₂) (B := B₂) (pivot := pivotNext)
+      (U₀ := U₀) (hU₀ := hU₀)
+      (retainedData := retainedData) (hdet := hdet)
+      (residualCoordEquiv := residualCoordEquiv) (hdataFactor := hdataFactor)
+      (H := H) (r := r) (rEdge := rEdge)
+      sourceData (ν := ν) hν
+      (loss := loss) (density := density)
+      (t := t) (Rmax := Rmax) (cLreg := cLreg) (CLreg := CLreg)
+      (Rres := Rres)
+      hretainedData hRmax hcLreg hCLreg ht hdensity_cont hdensity_pos
+      hloss_lower hloss_upper
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Endpoint-transported explicit Case 2 retained-passive data give the
 chart-produced selected-entry local finite-integral handoff.
 

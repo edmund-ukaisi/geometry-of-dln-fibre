@@ -10,6 +10,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 endpoint-transport continuous-density small-box iff
+
+The explicit continuing Case 2 endpoint-transport chart now has a
+source-stratum two-sided iff wrapper with positive continuous density and the
+small-box residual discharge:
+
+```text
+exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox
+```
+
+This consumes the generic retained-passive theorem and discharges only the
+Case 2 bookkeeping: concrete retained-passive datum, determinant-chart proof,
+residual-coordinate equivalence, residual-factor readout, and determinant-
+chart a.e. measurability.  It intentionally does not expose or require
+positive signed-box radii or the selected-entry critical inequality.  The
+radius discipline is unchanged: `R dρ Dρ` are produced first, and `delta` is
+checked against `R^2`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Poincare the 3rd xhigh read-only review passed.
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims remain strict: no source-rank coverage, no source/image equality,
+no external source-prior or Jacobian transport, no original-loss
+identification, no normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, continuous-density small-box residual discharge
 
 The retained-passive chart-produced source-stratum two-sided iff now has a

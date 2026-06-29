@@ -11790,6 +11790,37 @@ Nonclaims: no choice of `Rres` or `delta`, no source-rank coverage, no
 source/image equality, no external source-prior or Jacobian transport, no
 normal crossings, pole order, or RLCT.
 
+Latest A2 Case 2 endpoint-transport continuous-density small-box two-sided iff:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`exists_radius_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density_of_smallBox`.
+
+Ledger status: explicit continuing Case 2 specialization of the generic
+retained-passive positive-continuous-density small-box source-stratum iff.
+The theorem constructs the endpoint-transported retained-passive datum from
+`eNext` and `e`, proves its determinant-chart condition, supplies the Case 2
+residual-coordinate equivalence and center-matrix residual-factor readout, and
+gets determinant-chart a.e. measurability from continuity.  It then calls the
+generic retained-passive theorem at `M = 1`.
+
+Reproduction and statement card:
+`threads/03-block-product-reduction/reproduction-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-endpoint-transport-continuous-density-small-box-two-sided-iff.md`
+passed by xhigh `Poincare the 3rd`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.
+
+Nonclaims: no positive signed-box radius hypothesis, no selected-entry
+critical inequality, no source-rank coverage, no source/image equality, no
+external source-prior or Jacobian transport, no normal crossings, pole order,
+or RLCT.
+
 Latest A4 selected-entry analytic-atlas/source-production frontier recheck:
 no Lean theorem.  Source: Aoyagi pp. 19-22.  Expedition artifacts:
 `threads/04-blow-up-certificate/reproduction-selected-entry-analytic-atlas-source-production-frontier-a4.md`
