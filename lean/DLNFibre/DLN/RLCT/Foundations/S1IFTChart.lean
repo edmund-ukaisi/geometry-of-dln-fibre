@@ -205,4 +205,36 @@ theorem exists_boundedUnit_chart_of_contDiffAt {E : Type*}
     rw [hdeq]; exact hbndS w hw.2
   · intro w _; rw [hcoe]
 
+/-! ## The abstract `hchart` — chart-transfer from a `ContDiff` map with invertible derivative
+
+Chains the IFT-chart constructor with the banked chart-transfer atom: a `ContDiff ℝ 2` map `Φ`
+fixing `wstar` with invertible derivative, plus the post-chart germ identity `f =ᶠ F∘Φ`, gives the
+RLCT transfer `rlctAtOn f wstar = rlctAtOn F wstar`. This is the network-free `hchart` the DLN
+use-site instantiates with `Φ = (selected gradient minors − minors(v), complement projection)` (the
+§SEL selected-minor map) and `F = ∑s² + ∑q²` (the post-chart loss). -/
+
+/-- **The abstract `hchart`.** For a `ContDiff ℝ 2` self-map `Φ : E → E` (`E` finite-dim real
+normed) fixing `wstar` with an invertible derivative `f' : E ≃L[ℝ] E` there, if the loss `f` equals
+the post-chart form `F ∘ Φ` on a neighbourhood of `wstar` (`hgerm`), then `rlctAtOn f wstar =
+rlctAtOn F wstar`. The IFT chart `Ψ` (= `Φ` on its source) is a bounded-unit local diffeo (`det ≠ 0`
+proven from `f'`); the germ `f =ᶠ F∘Φ =ᶠ F∘Ψ` (since `Ψ = Φ` on the open source) feeds the
+transport. -/
+theorem rlctAtOn_eq_of_contDiff_chart {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasureSpace E] [BorelSpace E]
+    [FiniteDimensional ℝ E] [(volume : Measure E).IsAddHaarMeasure]
+    (f F : E → ℝ) (Φ : E → E) (wstar : E) (f' : E ≃L[ℝ] E)
+    (hΦ : ContDiff ℝ 2 Φ) (hΦ' : HasFDerivAt Φ (f' : E →L[ℝ] E) wstar)
+    (hfix : Φ wstar = wstar)
+    (hgerm : f =ᶠ[𝓝 wstar] fun w => F (Φ w)) :
+    rlctAtOn f wstar = rlctAtOn F wstar := by
+  obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ⟩ :=
+    exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
+  -- the germ `f =ᶠ F∘Ψ`: on the open `V ∋ wstar`, `Ψ = Φ`, and `f =ᶠ F∘Φ` (hgerm).
+  have hgermΨ : f =ᶠ[𝓝 wstar] fun w => F (Ψ w) := by
+    filter_upwards [hgerm, hVopen.mem_nhds hwV] with w hw hwV'
+    rw [hw, hΨΦ w hwV']
+  exact rlctAtOn_eq_of_boundedUnit_chart f F wstar Ψ Ψsymm DΨ DΨsymm V hVopen hwV hΨfix
+    hleft hright hΨcont hsymmcont hderiv hderivsymm hdetmeas hdetmeassymm hbdd hbddsymm hgermΨ
+
 end DLNFibre.DLN.RLCT
