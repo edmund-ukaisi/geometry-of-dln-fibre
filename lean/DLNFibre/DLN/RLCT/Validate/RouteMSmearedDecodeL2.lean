@@ -343,4 +343,69 @@ theorem shiftCore_at_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r
     rw [hv, splitOfCoreSet_symm_specBlock_eq _ _ _ _ hm, Rmap_spectator M hrs hr hc u hm]
   rw [shiftFull_topSlot, Lam0u_congr M hrs hagree, Sbotu_congr M hrs hagree]
 
+/-! ## The DECODE `packM (shearMBody (R u)) = chartL2Params …`
+
+The Params-level decode (the headline's peeled-rate input, modulo `paramsEquivFlat`). Proved layerwise
+(`fin_cases` over the `Fin 2` layers — never the opaque `i`/`j`), each layer through the readback bricks. -/
+
+/-- **The packM readback.** `packM (shearMBody … w) layer i j = shearMBody … w (coordOf ⟨⟨layer,i⟩,j⟩)`
+(the `flatEquivOf_symm_coord` extraction at `e := slotEquiv M`). -/
+theorem packM_shear_entry (M : Fin 3 → ℕ) (hrs : r + s = M 1) (w : Fin (routeMAmbient M) → ℝ)
+    (q : FlatIdx M) :
+    ((flatEquivOf M (slotEquiv M)).symm (shearMBody (topCoords M hrs) (shiftCore M hrs) w))
+        q.1.1 q.1.2 q.2
+      = shearMBody (topCoords M hrs) (shiftCore M hrs) w (coordOf M q) := by
+  rw [flatEquivOf_symm_coord]; rfl
+
+/-- **The Params-level DECODE.** `packM (shearMBody (R u)) = chartL2Params M hrs (A0u u)(zu u)(HbarUnit u)
+(Sbotu u)(Lam0u u)`. The front layer is the identity readoff; the deep top layer is the radial `z·H̄_unit`
+minus the shear `Λ₀·S_bot`; the deep bottom layer is the free residual `S_bot`. -/
+theorem decode_params (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    (flatEquivOf M (slotEquiv M)).symm
+        (shearMBody (topCoords M hrs) (shiftCore M hrs) (Rmap M hrs hr hc u))
+      = chartL2Params M hrs (A0u M u) (zu M hrs hr hc u) (HbarUnit M hrs hr hc u)
+          (Sbotu M hrs u) (Lam0u M hrs u) := by
+  funext layer i j
+  -- read the LHS entry off the slot `q := ⟨⟨layer, i⟩, j⟩`
+  rw [packM_shear_entry M hrs (Rmap M hrs hr hc u) ⟨⟨layer, i⟩, j⟩]
+  -- dispatch on the layer (`Fin 2`); never `fin_cases` the opaque `i`/`j`
+  fin_cases layer
+  · -- LAYER 0 (front): the identity readoff `A0u`
+    show shearMBody (topCoords M hrs) (shiftCore M hrs) (Rmap M hrs hr hc u)
+        (coordOf M (frontSlot M i j)) = A0u M u i j
+    rw [shearMBody_apply_of_not_mem _ _ _ (coordOf_frontSlot_not_mem M hrs i j),
+      Rmap_spectator M hrs hr hc u (coordOf_frontSlot_not_mem M hrs i j)]
+    rfl
+  · -- LAYER 1 (deep): split the row into the top `r` block (radial − shear) and bottom `s` block (S_bot)
+    show shearMBody (topCoords M hrs) (shiftCore M hrs) (Rmap M hrs hr hc u)
+        (coordOf M ⟨⟨(1 : Fin 2), i⟩, j⟩)
+      = chartL2Deep hrs (zu M hrs hr hc u) (HbarUnit M hrs hr hc u) (Sbotu M hrs u)
+          (Lam0u M hrs u) i j
+    rw [chartL2Deep]
+    rcases hsplit : (deepWidthEquiv hrs).symm i with a | b
+    · -- TOP row `i = deepWidthEquiv (inl a)`: the slot is `topSlot a j`
+      have hi : i = deepWidthEquiv hrs (Sum.inl a) := by
+        rw [← hsplit, Equiv.apply_symm_apply]
+      have hslot : (⟨⟨(1 : Fin 2), i⟩, j⟩ : FlatIdx M) = topSlot M hrs a j := by
+        rw [topSlot, hi]
+      rw [hslot, deepBlock, Sum.elim_inl]
+      have hmem := coordOf_topSlot_mem M hrs a j
+      rw [shearMBody_apply_of_mem _ _ _ hmem]
+      rw [show (topCoords M hrs).equivFin
+          ⟨coordOf M (topSlot M hrs a j), hmem⟩
+          = (topCoords M hrs).equivFin ⟨coordOf M (topSlot M hrs a j), hmem⟩ from rfl]
+      rw [shiftCore_at_topSlot M hrs hr hc u a j hmem, Rmap_topSlot M hrs hr hc u a j]
+      -- `z·H̄ + (−(Λ₀·S_bot)) = (z•H̄ − Λ₀·S_bot) a j`
+      rw [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]; ring
+    · -- BOTTOM row `i = deepWidthEquiv (inr b)`: the slot is `botSlot b j`, the free residual `S_bot`
+      have hi : i = deepWidthEquiv hrs (Sum.inr b) := by
+        rw [← hsplit, Equiv.apply_symm_apply]
+      have hslot : (⟨⟨(1 : Fin 2), i⟩, j⟩ : FlatIdx M) = botSlot M hrs b j := by
+        rw [botSlot, hi]
+      rw [hslot, deepBlock, Sum.elim_inr]
+      rw [shearMBody_apply_of_not_mem _ _ _ (coordOf_botSlot_not_mem M hrs b j),
+        Rmap_spectator M hrs hr hc u (coordOf_botSlot_not_mem M hrs b j)]
+      rfl
+
 end DLNFibre.DLN.RLCT
