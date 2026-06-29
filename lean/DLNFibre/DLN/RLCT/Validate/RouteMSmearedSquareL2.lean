@@ -168,9 +168,9 @@ theorem coordOf_frontSlot_ne_pivot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr :
 `δ/2 ≤ |P1u i (cast i)|`. -/
 theorem P1u_diag_ge_of_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
     (hc : 0 < M 2) (δ η : ℝ) (hδ : 0 < δ) {u : Fin (routeMAmbient M) → ℝ}
-    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) (i : Fin (M 0)) :
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
+    (i : Fin (M 0)) :
     δ / 2 ≤ |P1u M hrs u i (Fin.cast hr0.symm i)| := by
-  obtain ⟨_, hrest⟩ := hu
   set k := deepWidthEquiv hrs (Sum.inl (Fin.cast hr0.symm i)) with hk
   have hslot : frontSlot M i k ∈ p1DiagSlots M hrs hr0 :=
     (frontSlot_mem_p1DiagSlots_iff M hrs hr0 i k).mpr rfl
@@ -188,10 +188,9 @@ theorem P1u_diag_ge_of_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 
 slot (same row, different rank-block column), so `P1u i a ∈ [−η, η]`, i.e. `|P1u i a| ≤ η`. -/
 theorem P1u_offdiag_le_of_mem (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
     (hc : 0 < M 2) (δ η : ℝ) {u : Fin (routeMAmbient M) → ℝ}
-    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ)
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k)
     (i : Fin (M 0)) (a : Fin r) (ha : a ≠ Fin.cast hr0.symm i) :
     |P1u M hrs u i a| ≤ η := by
-  obtain ⟨_, hrest⟩ := hu
   set k := deepWidthEquiv hrs (Sum.inl a) with hk
   -- `frontSlot i k` is NOT diagonal: its column `k ≠ deepWidthEquiv (inl (cast i))`
   have hnotdiag : frontSlot M i k ∉ p1DiagSlots M hrs hr0 := by
@@ -217,7 +216,7 @@ theorem gram_det_ne_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 
     (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
     (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
     {u : Fin (routeMAmbient M) → ℝ}
-    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) :
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k) :
     ((P1u M hrs u).transpose * P1u M hrs u).det ≠ 0 := by
   refine gram_det_ne_of_diagDominant M hrs hr0 u γ hγ (fun i => ?_)
   -- the off-diagonal sum: `r−1` terms each `≤ η`
@@ -225,14 +224,14 @@ theorem gram_det_ne_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 
       ≤ ((r - 1 : ℕ) : ℝ) * η := by
     calc (∑ a ∈ Finset.univ.erase (Fin.cast hr0.symm i), |P1u M hrs u i a|)
         ≤ ∑ _a ∈ Finset.univ.erase (Fin.cast hr0.symm i), η :=
-          Finset.sum_le_sum (fun a ha => P1u_offdiag_le_of_mem M hrs hr0 hr hc δ η hu i a
+          Finset.sum_le_sum (fun a ha => P1u_offdiag_le_of_mem M hrs hr0 hr hc δ η hrest i a
             (Finset.ne_of_mem_erase ha))
       _ = ((Finset.univ.erase (Fin.cast hr0.symm i)).card : ℝ) * η := by
           rw [Finset.sum_const, nsmul_eq_mul]
       _ = ((r - 1 : ℕ) : ℝ) * η := by
           rw [Finset.card_erase_of_mem (Finset.mem_univ _), Finset.card_univ, Fintype.card_fin]
   -- the diagonal: `≥ δ/2`
-  have hdiag := P1u_diag_ge_of_mem M hrs hr0 hr hc δ η hδ hu i
+  have hdiag := P1u_diag_ge_of_mem M hrs hr0 hr hc δ η hδ hrest i
   -- combine: `∑ + γ ≤ (r−1)η + γ ≤ δ/2 ≤ |diag|`
   linarith [hsum, hdiag, hmargin]
 
@@ -285,5 +284,86 @@ theorem Uunit_pos_of_det_ne (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r)
   obtain ⟨j, hj⟩ := Function.ne_iff.mp hi
   rw [Uunit]
   exact frobeniusSq_pos_of_entry_ne _ (by simpa using hj)
+
+/-! ## The two named hypotheses, discharged from box membership (the directly-pluggable forms)
+
+`gram_det_ne_of_box` makes `det(P1uᵀP1u) ≠ 0` unconditional on the box; the two named analytic
+hypotheses of `routeMCore_smearedL2` then close. These are the forms a headline plugs in. -/
+
+/-- The rest-box membership extracted from full `condBox` membership (drop the pivot constraint). -/
+theorem rest_of_condBox (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η : ℝ) {u : Fin (routeMAmbient M) → ℝ}
+    (hu : u ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) :
+    ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k := hu.2
+
+/-- **`hcancel` from box membership** (the off-pole cancellation `P₁·Λ₀ = P₂`). -/
+theorem Lam0u_cancel_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k) :
+    P1u M hrs u * Lam0u M hrs u = P2u M hrs u :=
+  Lam0u_cancel_of_gram_square M hrs hr0 u
+    (gram_det_ne_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin hrest)
+
+/-- **`hUpos` from box membership** (the `z`-free unit `U > 0`). -/
+theorem Uunit_pos_of_box (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0) (hr : 0 < r)
+    (hc : 0 < M 2) (δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoord M hrs hr hc → u k ∈ condBoxWidth M hrs hr0 δ η k) :
+    0 < Uunit M hrs hr hc u :=
+  Uunit_pos_of_det_ne M hrs hr hc hr0 u
+    (gram_det_ne_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin hrest)
+
+/-! ## The wired headline (the two named hypotheses discharged from box membership)
+
+`routeMCore_smearedL2` takes three per-family inputs over peeled points: the off-pole cancellation
+`hcancel`, `U`-positivity `hUpos`, and the field-A containment `hSpre`. The first two are the
+genuinely-analytic NAMED facts the certificate adjudicated; this headline discharges BOTH from box
+membership (`gram_det_ne_of_box` ⟹ both, on the conditioned box), leaving the field-A containment
+`hSpre` and the per-point box membership `hmem` of the peeled points as the residual per-family inputs
+(both readoff-level: `hmem` is the membership bridge, proved cheaply at a concrete `M`).
+
+The honest scope (decorrelated Codex Q3): this is the smeared L=2 box-divergence on the square stratum
+`r = M 0` GIVEN field-A containment — the two analytic hypotheses `hcancel`/`hUpos` are no longer
+assumed. A fully unconditional headline additionally discharges `hSpre`. -/
+
+/-- **The smeared L=2 box-divergence on the square stratum, with `hcancel`/`hUpos` discharged.** For
+`r = M 0` (the entire genuine smeared L=2 stratum), the conditioned box `condBoxWidth` makes the off-pole
+cancellation and `U`-positivity UNCONDITIONAL (via the diagonal-dominance Gram det); the box-divergence
+then follows from the chart facts + field-A containment `hSpre` + the peeled-point membership `hmem`. -/
+theorem routeMCore_smearedL2_square {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr0 : r = M 0)
+    (hr : 0 < r) (hc : 0 < M 2) (hN : routeMAmbient M = n + 1)
+    (p : Fin (n + 1)) (box : Fin (n + 1) → Set ℝ) (c' ε δ η γ : ℝ) (hδ : 0 < δ) (hγ : 0 < γ)
+    (hmargin : ((r - 1 : ℕ) : ℝ) * η + γ ≤ δ / 2)
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoord M hrs hr hc)
+    (hSpre : condBox (hN ▸ p) (fun k => box (hN ▸ k)) δ
+      ⊆ (fun u => psiMap M hrs (Rmap M hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε))
+    (hboxmeas : ∀ k, MeasurableSet (box (p.succAbove k)))
+    (hboxmeasAll : ∀ k : Fin (routeMAmbient M), MeasurableSet ((fun k => box (hN ▸ k)) k))
+    (hboxpos : 0 < (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n => box (p.succAbove k))))
+    (hexp : ((r * M 2 - 1 : ℕ) : ℝ) - 2 * c' ≤ -1)
+    (hmem : ∀ z ∈ Set.Ioo (0:ℝ) δ,
+      ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
+        (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ)
+          ∈ condBox (pivotCoord M hrs hr hc) (condBoxWidth M hrs hr0 δ η) δ) :
+    ∫⁻ x in cubeBox (routeMAmbient M) ε,
+      ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
+  refine routeMCore_smearedL2 (M := M) (n := n) hrs hr hc hN p
+    box c' ε δ hδ hp hSpre hboxmeas hboxmeasAll hboxpos hexp ?_ ?_
+  · -- `hcancel` on each peeled point (off the pole, unconditional on the box)
+    intro z hz y hy
+    exact Lam0u_cancel_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin
+      (rest_of_condBox M hrs hr0 hr hc δ η (hmem z hz y hy))
+  · -- `hUpos` at the `z = 0` point. The rest coords are `z`-free, so reuse the rest membership of the
+    -- `z = δ/2` peeled point (`hN_insertNth_agree_off_pivot`).
+    intro y hy
+    have hδ2 : (δ / 2) ∈ Set.Ioo (0:ℝ) δ := Set.mem_Ioo.mpr ⟨by linarith, by linarith⟩
+    have hrest2 := rest_of_condBox M hrs hr0 hr hc δ η (hmem (δ / 2) hδ2 y hy)
+    -- transfer the rest membership from `insertNth p (δ/2) y` to `insertNth p 0 y` (z-free off pivot)
+    have hagree := hN_insertNth_agree_off_pivot M hrs hr hc hN p hp (δ / 2) y
+    refine Uunit_pos_of_box M hrs hr0 hr hc δ η γ hδ hγ hmargin (fun k hk => ?_)
+    rw [← hagree k hk]
+    exact hrest2 k hk
 
 end DLNFibre.DLN.RLCT
