@@ -1987,4 +1987,59 @@ theorem comp_identity_L2_conj (H : Fin (L + 1) → ℕ) (r : ℕ)
     simp only [hregval]; exact hsub3x
   rw [hreg, hsub4x]
 
+/-- **Step Ψ_conj — the L=2 CONJUGATED diffeo bridge** (`rlctAtOn Φscore = rlctAtOn Φcore_conj`).
+The conjugated analogue of `deepest_diffeo_bridge_L2_impl`: assembles via the banked abstract
+`rlctAtOn_diffeo_bridge_of` from S6 (`comp_identity_L2_conj`, germ) + S2 (`psiL2Conj_contDiff`) + S4
+(`psiL2Conj_hasStrictFDerivAt`, the `e = refl`) + S3 (`psiL2Conj_fixpoint`). Composing with the banked
+Step Θ (`rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb`) closes the atom-free `hstep2 = Θ ∘ Ψ_conj`. -/
+theorem deepest_diffeo_bridge_L2_conj_impl (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, (deepestEFull H r hr hL J Pf Qf
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
+      (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
+    (Score : (Fin (flatDim H) → ℝ) → ℝ)
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))).2.1 = Score x)
+    (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
+    (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    rlctAtOn Φscore wstar
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA (split x)).2.1)
+          wstar := by
+  set Φcore : (Fin (flatDim H) → ℝ) → ℝ :=
+    fun x => (∑ i, (regStraighten (split x)).1 i ^ 2)
+      + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA (split x)).2.1 with hΦcore
+  have hcomp : (fun x => Φcore (psiL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY x))
+      =ᶠ[nhds wstar] Φscore :=
+    comp_identity_L2_conj H r B hB hr hL hL2eq hDA hY hZ J Pf Qf split hsub3reg regStraighten
+      hsplit hregval Score hsub4core Φscore hΦscore wstar hwstar
+  exact rlctAtOn_diffeo_bridge_of Φscore Φcore wstar
+    (psiL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY)
+    (ContinuousLinearEquiv.refl ℝ (Fin (flatDim H) → ℝ))
+    (psiL2Conj_contDiff H r B hB hr hL hL2eq (hDA _) (hDA _) hY)
+    (psiL2Conj_hasStrictFDerivAt H r B hB hr hL hL2eq (hDA _) (hDA _) hY hZ wstar hwstar)
+    (psiL2Conj_fixpoint H r B hB hr hL hL2eq (hDA _) (hDA _) hY hZ wstar hwstar)
+    hcomp
+
 end DLNFibre.DLN.RLCT
