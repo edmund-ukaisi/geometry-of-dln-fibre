@@ -3,6 +3,63 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 source-stratum-supported chart-produced measure - 2026-06-29
+
+Landed support of chart-produced source measures on Aoyagi's source-shaped rank
+stratum:
+
+```text
+measure_map_restrict_sourceRankStratum_eq_self_of_ae_mem
+PaperEndpointFixedBaseRegularCoordinateSourceData.measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_restrict_sourceRankStratum_eq_self
+```
+
+The generic theorem says that if `sourceChart` is a.e. measurable and lands
+a.e. in `paperEndpointFixedBaseSourceRankStratum`, then the mapped measure is
+unchanged by restriction to that source stratum.  It uses the source-stratum
+measurability theorem, `ae_map_iff`, and `Measure.restrict_eq_self_of_ae_mem`.
+
+The Case 2 specialization applies this to the endpoint-transported continuing
+selected-entry source chart with the weighted signed-box measure.  Continuity
+of the chart gives a.e. measurability for the unsigned box measure, and
+`withDensity_absolutelyContinuous` transfers it to the weighted measure.
+Pointwise membership is supplied by the previous source-stratum membership
+bridge under
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+forall yNext,
+  r + rank(case2SuccessorSelectedEntryMatrix ... yNext ...) = rEdge 1.
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-stratum-supported-chart-produced-measure.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-source-stratum-supported-chart-produced-measure.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-source-stratum-supported-chart-produced-measure.md`
+passed by xhigh `Banach the 2nd`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+The build replayed only the pre-existing flexible-tactic warnings from
+`ProductReductionStepRegularDensity.lean`.
+
+Final hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes for both new public theorem
+names.  The axiom footprints are the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no local source-rank coverage, no selected-entry image equality, no
+exact-rank openness, no source-prior or Jacobian transport, no analytic atlas,
+no normal crossings, pole order, RLCT, or numerical successor selected-entry
+matrix rank.
+
 ## Latest A2 retained-passive source-stratum membership - 2026-06-29
 
 Landed pointwise source-stratum membership constructors:

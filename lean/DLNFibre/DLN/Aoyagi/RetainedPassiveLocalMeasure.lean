@@ -80,6 +80,44 @@ theorem measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
       (by simpa [localSource] using hchart_mem)
   simpa [localSource] using Measure.restrict_eq_self_of_ae_mem hmap_mem
 
+set_option linter.unusedSectionVars false in
+/-- A chart-produced source measure restricts to Aoyagi's source-shaped rank
+stratum when the chart lands there a.e.
+
+This is source-support bookkeeping.  It does not prove local source-rank
+coverage or construct an inverse/source image theorem. -/
+theorem measure_map_restrict_sourceRankStratum_eq_self_of_ae_mem
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {α β : Type*} [TopologicalSpace α] [MeasurableSpace α]
+    [OpensMeasurableSpace α] [MeasurableSpace β]
+    {Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {r : ℕ} {rEdge : Fin (M + 1) → ℕ}
+    {η : Measure β} {sourceChart : β → α}
+    (hCedge : Continuous Cedge)
+    (hsourceChart : AEMeasurable sourceChart η)
+    (hchart_mem :
+      ∀ᵐ y ∂ η,
+        sourceChart y ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) :
+    (Measure.map sourceChart η).restrict
+        (paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge) =
+      Measure.map sourceChart η := by
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge
+  have hsource_meas : MeasurableSet sourceStratum := by
+    simpa [sourceStratum] using
+      measurableSet_paperEndpointFixedBaseSourceRankStratum_of_continuous
+        (K := ℝ) (W := W) (B := B) (Cedge := Cedge)
+        (r := r) (rEdge := rEdge) hCedge
+  have hmap_mem : ∀ᵐ x ∂ Measure.map sourceChart η, x ∈ sourceStratum := by
+    have hchart_mem' : ∀ᵐ y ∂ η, sourceChart y ∈ sourceStratum := by
+      change
+        ∀ᵐ y ∂ η,
+          sourceChart y ∈ paperEndpointFixedBaseSourceRankStratum W B Cedge r rEdge
+      exact hchart_mem
+    exact (ae_map_iff hsourceChart hsource_meas).2 hchart_mem'
+  simpa [sourceStratum] using Measure.restrict_eq_self_of_ae_mem hmap_mem
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedSectionVars false in
 /-- A realized raw-order retained-passive change of variables produces a

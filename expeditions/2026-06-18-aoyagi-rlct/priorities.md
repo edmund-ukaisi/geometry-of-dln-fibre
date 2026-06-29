@@ -10,6 +10,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 source-stratum-supported chart-produced measure
+
+The continuing Case 2 selected-entry chart-produced source measure now has the
+right support theorem:
+
+```text
+(Measure.map sourceChart sourceMeasure).restrict sourceStratum =
+  Measure.map sourceChart sourceMeasure
+```
+
+under explicit rank choices
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+forall yNext,
+  r + rank(case2SuccessorSelectedEntryMatrix ... yNext ...) = rEdge 1.
+```
+
+This is the correct consumer of the pointwise source-stratum membership bridge:
+it removes a spurious source-stratum restriction for this constructed
+chart-produced measure, but it still does not prove source-rank coverage,
+selected-entry image equality, exact-rank openness, original source-prior or
+Jacobian transport, analytic atlas data, normal crossings, pole order, or
+RLCT.
+
+Next work should use this support theorem only where a downstream local
+measure statement has exactly this chart-produced measure and these rank
+hypotheses.  Do not add more support wrappers unless they discharge a named
+mismatch in a finite-integral or source-production theorem.
+
 ## Latest controller decision - 2026-06-29, retained-passive source-stratum membership
 
 The retained-passive rank bridge now has the correct pointwise
