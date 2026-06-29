@@ -3,6 +3,61 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 source-stratum/local-source two-sided loss-density iff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_sourceStratum_bounds_locally_subset_localSource_two_sided_bounds
+```
+
+This theorem is the local-coverage version of the source-stratum supplied-bound
+iff.  Residual measurability, positivity, and `<= R^2` are supplied on
+`localSource`, not on the whole source-rank stratum.  The theorem assumes an
+open `Ulocal` with `x0 in Ulocal` and the explicit inclusion
+
+```text
+Ulocal inter sourceStratum subset Ulocal inter localSource.
+```
+
+It applies the local-source iff to `source := Ulocal inter sourceStratum`.  The
+comparison bounds transfer from `sourceStratum` because `Ulocal` is a
+neighborhood of `x0`; residual hypotheses restrict from `localSource` by the
+coverage inclusion.  If the local theorem returns `Uchart`, the final witness is
+`Uchart inter Ulocal`, so the conclusion is over
+
+```text
+(mu.restrict (U inter sourceStratum)).prod nu
+```
+
+with right side
+
+```text
+residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-local-source-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-source-stratum-local-source-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-source-stratum-local-source-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe for the new public theorem name.
+The axiom footprint is `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of comparison bounds, residual hypotheses, the local
+coverage inclusion, p.13 chart construction/image/coverage,
+source-prior/Jacobian/density/product-measure transport, original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest A2 source-stratum two-sided loss-density iff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:

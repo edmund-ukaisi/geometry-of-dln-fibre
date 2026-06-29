@@ -10,6 +10,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, source-stratum/local-source two-sided loss-density iff
+
+The source-stratum two-sided iff now has the boundary-explicit local-source
+coverage wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_sourceStratum_bounds_locally_subset_localSource_two_sided_bounds
+```
+
+Residual hypotheses live on a supplied `localSource`; the theorem assumes an
+open `Ulocal` around `x0` and the explicit local coverage inclusion
+
+```text
+Ulocal inter sourceStratum subset Ulocal inter localSource.
+```
+
+The source-stratum comparison bounds transfer to `Ulocal inter sourceStratum`
+because `nhdsWithin x0 (Ulocal inter sourceStratum) = nhdsWithin x0
+sourceStratum`.  The residual hypotheses restrict through the coverage
+inclusion.  Lean returns an open `U` with the actual loss-density finiteness
+over `(mu.restrict (U inter sourceStratum)).prod nu` iff
+`residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t`.
+
+Nonclaims remain strict: no comparison-bound proof, residual-hypothesis proof,
+coverage proof, chart construction/image theorem, source-prior or
+Jacobian/density/product-measure transport, original-loss identification,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, source-stratum two-sided loss-density iff
 
 The local-source two-sided loss-density iff now has the source-rank-stratum
