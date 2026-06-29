@@ -105,4 +105,33 @@ example (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
     phiGen 1 M t B hle = phiGen 1 M t (smulRmatRfin 1 M t B) hle :=
   phiGen_smul_radial 1 M t B hle
 
+/-! ## The `φ = B ∘ pivotBlowupOn` reduction (the map-identity half, modulo the slot-identification)
+
+The radial split `φ = B ∘ pivotBlowupOn active p₀` of route (i): `B` the radial-`1` boundary chart
+`B y := phiGen 1 M t (genBlkFlatLiveR1 … (rfin y) y) hle`. Holds iff the achiever radial
+scalar `x p₀` equals the `pivotBlowupOn`-scaling of the residual coords — the `GenBlk`-level
+SLOT-IDENTIFICATION `smulRmatRfin (x p₀) (B₀ x) = B₀ (pivotBlowupOn active p₀ x)` (the R/Rfin free
+coords ARE the active set, scaled by `x p₀`; the genm-detradj budget/squareness piece). This BANKS
+the reduction: given that `GenBlk` identity (`hslot`), `φ = B ∘ pivotBlowupOn`. Via
+`phiGen_smul_radial` (radial absorbs into `smulRmatRfin`) + `hslot` (= read the blown-up coords). -/
+theorem phiFlatLiveR1_eq_B_comp_pivotBlowupOn (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (active : Finset (Fin (routeMAmbient M)))
+    (hslot : ∀ x : Fin (routeMAmbient M) → ℝ,
+      smulRmatRfin (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x)
+        = genBlkFlatLiveR1 M t ha p hp1 hp2
+            (rfin (pivotBlowupOn active (structPivot M hN) x))
+            (pivotBlowupOn active (structPivot M hN) x)) :
+    phiFlatLiveR1 M t ha hN p hp1 hp2 rfin
+      = (fun y => phiGen 1 M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin y) y) (hleStruct M t ha))
+        ∘ pivotBlowupOn active (structPivot M hN) := by
+  funext x
+  show phiGen (x (structPivot M hN)) M t (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x)
+      (hleStruct M t ha) = _
+  rw [phiGen_smul_radial (x (structPivot M hN)) M t
+    (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha), hslot x]
+  rfl
+
 end DLNFibre.DLN.RLCT
