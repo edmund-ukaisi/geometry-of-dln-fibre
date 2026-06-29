@@ -146,22 +146,24 @@ theorem phiFlatLiveR1_eq_B_comp_pivotBlowupOn (M t : Fin (L + 1) → ℕ) (ha : 
     (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha), hslot x]
   rfl
 
-/-! ## The CORRECTED (Fix B) `φ = B ∘ pivotBlowupOn` reduction — CHART-level (not the false GenBlk)
+/-! ## The Fix-B `φ = B ∘ pivotBlowupOn` reduction — CHART-level (not the false GenBlk `hslot`)
 
-genm-detradj's Fix-B verdict (decided on the ACTUAL fixed-pivot decoder, banked @bcc2fabe, exact
-(2,2,2)/(3,3,3) + Codex; the earlier E-block-in-active live-pivot claim WITHDRAWN). The obstruction
-DISSOLVES with NO affine reshape, via the CHART-level contract (weaker than, and TRUE unlike, the
-false GenBlk `hslot`): the de-radialized chart `B := phiGen 1 (genBlkFlatLiveR1 …)` reads the pivot
-`E(0,0)` ADDITIVELY from the pivot coord, so `B (pbo x)` reproduces `φ`'s `… + u·1` at that output —
-the E(0,0) anchor is ABSORBED into `B`, NOT placed in `active` (corrected `active = {structPivot} ∪
-{E-FREE slots excl. (0,0)} ∪ {leaf}`). The radial layer is UNCHANGED (pure `pivotBlowupOn`, det
-`u^{minAdm−1}`), so `radialComp_abs_det` fires verbatim. Confirmed exact (sympy
-`route-i-l2/fixb_corrected_contract_verify.py`): `φ = B ∘ pivotBlowupOn` @(2,2,2), E(0,0) excluded.
+⚠ **`hchart` is UNDISCHARGEABLE for `B := phiGen 1 (genBlkFlatLiveR1 …)`** (verify-first, sympy
+`route-i-l2/actual_B_check.py` + `agen_layer_check.py`): `genBlkFlatLiveR1`'s pivot `Rmat p` is the
+FIXED `pivotEIndicator` — a CONSTANT (literal 1), x-free. So `phiGen 1 (genBlkFlatLiveR1 …(pbo x))`
+reads `E(0,0)` as the constant `1`, NOT additively from the pivot coord — `φ = B ∘ pbo` FAILS at the
+anchor (`φ_E00 = … + x_p` vs `B(pbo)_E00 = … + 1`). Equivalently the per-layer `chartParamsGen`
+(`hcp` in `hchart_of_chartParamsGen`) is FALSE at the anchor (`x_p` vs `1`). The genm-detradj Fix-B
+contract's `B` ("de-radialized chart reading `E(0,0)` ADDITIVELY from the pivot") is NOT
+`phiGen 1 (genBlkFlatLiveR1 …)` — they DIFFER at the fixed pivot. My earlier
+`fixb_corrected_contract_verify.py` used a HAND-MODELED additive-`B`, not the concrete decoder — a
+conflation, caught before building the per-layer proof. Fix B as instantiated below (with `B` the
+radial-1 `genBlkFlatLiveR1` chart) is OFF the build path; the contract needs a `B` whose pivot-E00
+is an ADDITIVE pivot-coord read — genm-detradj's residual.
 
-The reduction now rests on the CHART-level `hchart` (the two radial-`1` charts agree as MAPS:
-`phiGen` reads only via `Cgen`/`Agen`, where E(0,0)'s `u·1` and `B`'s additive read coincide) —
-NOT the GenBlk `hslot` (false). `hchart` is the per-boundary additive/multiplicative `Agen`-split
-(genm-detradj's ∀M residual; verified exact at L=2 = single boundary). -/
+The reduction stays a VALID CONDITIONAL (on the CHART-level `hchart`); `phiGen_smul_radial` +
+`hchart_of_chartParamsGen` are sound + reusable. But `hchart` for this `B` is the (false-here)
+per-boundary additive/multiplicative `Agen`-split — the open piece, not dischargeable here. -/
 theorem phiFlatLiveR1_eq_B_comp_pivotBlowupOn_chart (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (hN : 0 < routeMAmbient M) (p : ℕ)
     (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
@@ -182,5 +184,35 @@ theorem phiFlatLiveR1_eq_B_comp_pivotBlowupOn_chart (M t : Fin (L + 1) → ℕ) 
   rw [phiGen_smul_radial (x (structPivot M hN)) M t
     (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha), hchart x]
   rfl
+
+/-! ## `hchart` from the per-layer `Agen` equality (the genuine map-identity content)
+
+`hchart` (the CHART-level `phiGen 1 (smulRmatRfin (x_p) GBx) = phiGen 1 (GB(pbo x))`) reduces — via
+`phiGen = paramsEquivFlat ∘ chartParamsGen` + the banked `chartParamsGen_smulRmatRfin`
+(`chartParamsGen 1 (smulRmatRfin u B) = chartParamsGen u B`) — to the `chartParamsGen` equality
+`chartParamsGen (x_p) GBx = chartParamsGen 1 (GB(pbo x))`, i.e. PER-LAYER (`reindex` injective)
+`Agen (x_p) GBx s = Agen 1 (GB(pbo x)) s`. The per-layer split (K/X/N/W non-active ⟹ unchanged under
+`pbo`; free E/leaf active ⟹ scaled by `x_p` (matches `Agen (x_p)`); fixed E00 the additive-anchor)
+is the genuine content (genm-detradj's ∀M residual; exact at L=2 single bdy). This lemma BANKS the
+clean structural reduction `hchart ⟸ the chartParamsGen equality`, isolating that content. -/
+theorem hchart_of_chartParamsGen (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (hN : 0 < routeMAmbient M) (p : ℕ)
+    (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
+    (rfin : (Fin (routeMAmbient M) → ℝ) → Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ)
+    (active : Finset (Fin (routeMAmbient M))) (x : Fin (routeMAmbient M) → ℝ)
+    (hcp : chartParamsGen (x (structPivot M hN)) M t
+        (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha)
+      = chartParamsGen 1 M t
+        (genBlkFlatLiveR1 M t ha p hp1 hp2
+          (rfin (pivotBlowupOn active (structPivot M hN) x))
+          (pivotBlowupOn active (structPivot M hN) x)) (hleStruct M t ha)) :
+    phiGen 1 M t (smulRmatRfin (x (structPivot M hN)) M t
+        (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x)) (hleStruct M t ha)
+      = phiGen 1 M t (genBlkFlatLiveR1 M t ha p hp1 hp2
+          (rfin (pivotBlowupOn active (structPivot M hN) x))
+          (pivotBlowupOn active (structPivot M hN) x)) (hleStruct M t ha) := by
+  unfold phiGen
+  rw [chartParamsGen_smulRmatRfin (x (structPivot M hN)) M t
+    (genBlkFlatLiveR1 M t ha p hp1 hp2 (rfin x) x) (hleStruct M t ha), hcp]
 
 end DLNFibre.DLN.RLCT
