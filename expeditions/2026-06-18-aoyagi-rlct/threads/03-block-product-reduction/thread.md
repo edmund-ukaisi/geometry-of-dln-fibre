@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 open-source-stratum signed-box two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_openSourceStratum_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+It applies the local-source signed-box two-sided theorem to the exact local
+piece `Ulocal inter sourceStratum`, assuming the weighted signed-box
+pushforward identity for `mu.restrict (Ulocal inter sourceStratum)`.  The
+comparison bounds remain stated on `nhdsWithin x0 sourceStratum` and are
+transported to the local piece using `Ulocal` open and `x0 in Ulocal`.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` passed.
+Volta xhigh read-only review passed.  Hygiene gates passed:
+`scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+axiom probe with `[propext, Classical.choice, Quot.sound]`.  Nonclaims remain:
+no signed-box chart construction, no restriction theorem for larger
+pushforwards, no source-stratum coverage theorem, no comparison-bound or
+residual-boundedness proof, no transport theorem, no original-loss
+identification, no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 source-stratum signed-box two-sided loss-density iff
 
 Reproduction:

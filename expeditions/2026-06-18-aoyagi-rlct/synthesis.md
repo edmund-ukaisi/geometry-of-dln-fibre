@@ -3,6 +3,65 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 open-source-stratum signed-box two-sided loss-density iff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_openSourceStratum_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+This is the local open-piece version of the signed-box source-stratum two-sided
+iff.  It sets
+
+```text
+source := Ulocal ∩ paperEndpointFixedBaseSourceRankStratum
+```
+
+and assumes the signed-box pushforward identity for exactly that restricted
+measure:
+
+```text
+mu.restrict (Ulocal ∩ sourceStratum) =
+  Measure.map sourceChart (signedBox.withDensity sourceDensity).
+```
+
+The proof uses `Ulocal` open and `x0 in Ulocal` to identify
+`nhdsWithin x0 source` with `nhdsWithin x0 sourceStratum`, applies the
+local-source signed-box two-sided iff, then returns `U := Uchart ∩ Ulocal`.
+The result is an open `U` with
+
+```text
+actual loss-density integral over (mu.restrict (U ∩ sourceStratum)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U ∩ sourceStratum) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-open-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Volta xhigh read-only review passed the theorem surface and confirmed that the
+local-piece pushforward boundary is necessary.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe for the new theorem name.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of signed-box chart construction, no proof that a
+larger-source pushforward restricts to this open piece, no source-stratum
+coverage theorem, no comparison-bound or residual-boundedness proof, no
+source-prior/Jacobian/density/product-measure transport, no original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest A2 source-stratum signed-box two-sided loss-density iff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:
