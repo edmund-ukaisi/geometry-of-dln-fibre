@@ -115,7 +115,7 @@ measure-positivity / exponent / box-width inputs. The adjudication certificate i
 >   `chartParams231_entry_bound` / `subBox231_subset_preimage`.
 > - **Assumed.** box membership; `r = M 0`; the dominance + field-A margins.
 > - **Cited / Deferred.** none.
-> - **Status.** sorry-free + reviewed (initial pair; field-A landed after review — re-review welcome).
+> - **Status.** sorry-free + reviewed (field-A fidelity PASS, 2026-06-29).
 
 ## Brick — the generic peeled-point membership (the `hmem` discharge)
 
@@ -161,7 +161,7 @@ measure-positivity / exponent / box-width inputs. The adjudication certificate i
 > - **Honest scope.** This IS the fully-unconditional smeared L=2 box-divergence on the square stratum
 >   `r = M 0` (the entire genuine smeared L=2 regime) — no analytic per-family hypothesis assumed. The only
 >   inputs are the standard measure-positivity / exponent / box-width choices.
-> - **Status.** sorry-free (awaiting reviewer fidelity check on the field-A + uncond pieces).
+> - **Status.** sorry-free + reviewed (fidelity PASS — all 5 questions, 2026-06-29).
 
 ---
 
