@@ -6,6 +6,53 @@ adjudications) is BANKED clean-three. Your job: construct the constant-`nReg` IF
 optimal `v` and supply its outputs to the banked consumers, landing the D1 per-point `≥` leg
 `rlctAt_deepest_le_of_optimal` (Skeleton:1172) at L = 2.
 
+---
+
+## ★ RIGHT-SIZING (decisive-test adjudication a4ef57, 2026-06-29) — TAKE THE SQUEEZE ROUTE, NOT clean squares
+
+The decisive (3,3,3)/r=1 middle-stratum gauge-frame SOS computation (EXACT + Codex) found: the `nReg=5`
+deepest-aligned directions are **NOT literal clean squares** of `F`. There is a rank-1 regular×regular
+coupling `p20·q01 = L20·L01` sitting inside the purely-quadratic core residuals `g21, g22`, which forces
+a t-DEPENDENT (nonlinear) shift to straighten — the parametrized Morse–Bott completion, which a
+constant-linear relabel CANNOT achieve. So an **exact clean-square chart (`hF : F = ∑s² + Q` with the
+`s` literally the chart coords; the `ofExactGerm` route) is IMPOSSIBLE at a general middle-stratum `v`.**
+
+**BUT this does NOT force the (~1k-line) Mathlib partial-Morse–Bott lemma.** The cheaper standing route
+is the SQUEEZE the existing `DeepestGaugeChart.loss_squeeze` already encodes: a two-sided constant
+comparison `c₁·Φ ≤ F ≤ c₂·Φ` (`0 < c₁ < c₂`) where `Φ = ∑E² + core` (`E` = the `P₁₁−I_r, P₁₂, P₂₁`
+regular residual blocks). The regular×regular leak (the `p20·q01`-type terms) is CHARGED to the regular
+block `∑E²` (the `core_comparability_squeeze` #54 leak bound `regular×regular ≤ t²·∑E²`, `t = ‖pivot‖`).
+Then:
+  1. `rlctAtOn F v = rlctAtOn Φ v`        [`rlctAtOn_squeeze` (S1NonMPTransport:119), the BANKED two-sided
+     constant comparison — NO clean squares, NO Morse–Bott, NO Mathlib gap];
+  2. `Φ = ∑E² + core` IS the `∑s² + Q` clean-square form (the `E` ARE the clean square coords of `Φ`),
+     so `Φ` feeds the banked `rlct_quasiSplit_ge` engine directly.
+
+So the producer's chart is the SQUEEZE chart (route b), NOT an exact clean-square chart (route a). This
+is rung-1-comparable and reuses the SAME `loss_squeeze`/`rlctAtOn_squeeze` machinery the deepest L=2
+construction (`deepest_gauge_construction_L2`, clean-three) already uses — generalized off `deepestPoint`
+to a general optimal `v`. **The binding finite check (NOT a new Mathlib lemma):** confirm
+`core_comparability_squeeze` (#54) closes with the explicit two-sided constants
+`(2(1+t²))⁻¹ ≤ F/Φ ≤ 2+2t²` against the general-`v` residual (the `p20·q01`-type regular×regular leak ≤
+`t²·∑E²`) — a finite exact-algebra check. The adjudication did not find this fails.
+
+**SOUNDNESS NOTE (verified 2026-06-29, forced `#print axioms`):** the D1 producer reductions
+(`deepest_le_of_optimal_middle_stratum`, `hCore_middle_stratum_of_interface`,
+`extra_half_add_lambdaCore_Mprime_ge_square`, `deepest_le_of_optimal_of_chart_certificate`) take
+`hDeepest`/`hcoreDeepest`/the chart data ALL as HYPOTHESES — so they do NOT transitively carry the
+vestigial `deepest_gauge_squeeze_exists` sorry (DeepestGaugeChart:357, consumed only by
+`deepest_regular_core_reduces`, which the D1 chain does NOT use). The live L=2 deepest constant is the
+clean-three `deepest_gauge_construction_L2` (`[propext, Classical.choice, Quot.sound]`, AxCheck-guarded).
+The producer must discharge `hDeepest` via the CLEAN L=2 route (`deepest_gauge_construction_L2` /
+`deepest_regular_core_reduces_frontPivot` — front-pivot, sorry modulo the threaded `hJfront`/`htop`),
+NOT via the vestigial `deepest_regular_core_reduces`.
+
+**CORRECTNESS (general-H extension):** the banked `extraCount m a b = m(a+b)−ab` (D1ChartProducerL2Build:72)
+is SQUARE-ONLY (231 violations off-square); the case-B reductions are correctly scoped to `squareWidths`
+(no live bug). The CORRECT general-H formula is `extra = a·M₂ + b·M₀ − ab` (zero violations,
+chain-symmetric, from `nReg_v = q·H₀ + p·H₂ − p·q`). Use it for the general-H leg; the producer's
+identity lifts verbatim with it.
+
 Scope **L = 2 only** (`H : Fin 3 → ℕ`, `prod = A⁽¹⁾·A⁽²⁾`). General-L is the named wall **#120** — do NOT
 attempt. Branch off `origin/expedition/aoyagi-full`. Commit + push your OWN feature branch; isolation:
 worktree; edit ONLY your worktree (a prior leg leaked into the main checkout — be strict).
