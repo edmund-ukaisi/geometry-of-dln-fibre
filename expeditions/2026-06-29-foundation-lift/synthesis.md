@@ -32,6 +32,14 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   hypothesis discharged once-per-top-prime via R3's `ringKrullDim_localizationAway_eq_of_fg_domain` (NOT from
   global no-drop + avoidance — DVR-at-uniformizer); R5 must carry the per-prime shape. → P1-R4 dispatched
   (`TopDimMinPrimes` core).
+- **2026-06-29 — P1-R5 LANDED → PHASE-1 CONTENT-COMPLETE** (`9b66a95f`). The four transport rungs →
+  `Core/MinimalPrime/{Localization,Polynomial,Radical,Bridge}.lean`. **The crux held:** the per-prime `hper`
+  on `topDimMinPrimes_ncard_away_eq` is preserved **verbatim** (`∀ p ∈ TopDimMinPrimes A, dim(Away (mk p f)) =
+  dim(A⧸p)`), separate from the global `hdim`, not derivable from `hdim + havoid` (DVR-at-uniformizer); the
+  discharge stays local in `TopDimMinPrimesW1W2` via R3's lemma. **P1-boundary re-gate green 3819**,
+  axiom-clean. The `Ideal.MinimalPrime`-mirroring family now stands: `Finite · TopDimensional · Localization ·
+  Polynomial · Radical · Bridge`. Decorrelated crux-review (05r) in flight; on PASS → **PR-P1 opens** (async
+  review) and P2 begins.
 - **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
   (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
   unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
