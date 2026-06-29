@@ -124,4 +124,92 @@ theorem blockLowerUpper_conj_pureT {r m n : Type*} [Fintype r] [Fintype m] [Fint
   rw [h1, Matrix.fromBlocks_multiply]
   simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc]
 
+/-! ## Per-layer normalization: `reindex(framedLayer at zero reads) = fromBlocks 1 0 0 (junk)` -/
+
+/-- **The reindexed framed layer at zero reads is `fromBlocks 1 0 0 (junk)`** (so its `{11,12,21}` blocks
+are the corner blocks, INDEPENDENT of the core `T`), given `reindex P` block-lower (`hP12`) and
+`reindex Q` block-upper (`hQ21`). At zero reads `framedLayer = Rsym(corner) + P·Rsym(fromBlocks 0 0 0
+T)·Q`; the corner round-trips, and the core term lands in `{22}` via `blockLowerUpper_conj_pureT`. -/
+theorem reindex_framedLayer_zeroReads_eq_corner (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (s : Fin L)
+    (P : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (T : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+    (hP12 : (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) P).toBlocks₁₂ = 0)
+    (hQ21 : (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) Q).toBlocks₂₁ = 0) :
+    Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (framedLayer H r hr s P Q 0 0 0 T)
+      = Matrix.fromBlocks 1 0 0
+          ((Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+              (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) P).toBlocks₂₂
+            * T
+            * (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+              (rThresholdSplit r (H s.succ) (hr s.succ)) Q).toBlocks₂₂) := by
+  set eC := rThresholdSplit r (H s.castSucc) (hr s.castSucc) with heC
+  set eS := rThresholdSplit r (H s.succ) (hr s.succ) with heS
+  -- `framedLayer` at zero reads = `Rsym(corner) + P·Rsym(fromBlocks 0 0 0 T)·Q`; reindex is additive.
+  rw [framedLayer]
+  rw [show Matrix.reindex eC eS
+        (Matrix.reindex eC.symm eS.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + P * Matrix.reindex eC.symm eS.symm
+              (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T) * Q)
+      = (Matrix.reindex eC.symm eS.symm (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)).submatrix
+          eC.symm eS.symm
+        + (P * Matrix.reindex eC.symm eS.symm
+              (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T) * Q).submatrix eC.symm eS.symm from by
+    rw [Matrix.reindex_apply]; rfl]
+  -- The corner round-trips (Codex: `reindex e.symm e'.symm` then `.submatrix e.symm e'.symm`).
+  have hcorner : (Matrix.reindex eC.symm eS.symm
+      (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)).submatrix eC.symm eS.symm
+      = Matrix.fromBlocks 1 0 0 0 := by
+    simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_symm,
+      Equiv.self_comp_symm, Matrix.submatrix_id_id]
+  -- The frame term: push the read through the triple product, then the kernel lands it in {22}.
+  have hsplit : (P * Matrix.reindex eC.symm eS.symm
+        (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T) * Q).submatrix eC.symm eS.symm
+      = Matrix.reindex eC eC P
+          * Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T
+          * Matrix.reindex eS eS Q := by
+    have hP : P = (Matrix.reindex eC eC P).submatrix eC eC := by
+      simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+        Matrix.submatrix_id_id]
+    have hQ : Q = (Matrix.reindex eS eS Q).submatrix eS eS := by
+      simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix, Equiv.symm_comp_self,
+        Matrix.submatrix_id_id]
+    simp only [Matrix.reindex_apply, Equiv.symm_symm]
+    conv_lhs => rw [hP, hQ]
+    rw [Matrix.submatrix_mul_equiv (Matrix.reindex eC eC P)
+        (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T) eC eC eS,
+      Matrix.submatrix_mul_equiv (Matrix.reindex eC eC P
+        * Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T) (Matrix.reindex eS eS Q) eC eS eS]
+    simp only [Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id,
+      Matrix.reindex_apply]
+  -- Manufacture block-lower P / block-upper Q via `fromBlocks_toBlocks` + hP12/hQ21.
+  have hPblk : Matrix.reindex eC eC P
+      = Matrix.fromBlocks (Matrix.reindex eC eC P).toBlocks₁₁ (0 : Matrix (Fin r) (Fin (H s.castSucc - r)) ℝ)
+          (Matrix.reindex eC eC P).toBlocks₂₁ (Matrix.reindex eC eC P).toBlocks₂₂ := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eC eC P)]
+    rw [hP12]
+  have hQblk : Matrix.reindex eS eS Q
+      = Matrix.fromBlocks (Matrix.reindex eS eS Q).toBlocks₁₁ (Matrix.reindex eS eS Q).toBlocks₁₂
+          (0 : Matrix (Fin (H s.succ - r)) (Fin r) ℝ) (Matrix.reindex eS eS Q).toBlocks₂₂ := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex eS eS Q)]
+    rw [hQ21]
+  rw [hcorner, hsplit]
+  rw [show (Matrix.reindex eC eC P) * Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 T
+        * (Matrix.reindex eS eS Q)
+      = Matrix.fromBlocks 0 0 0
+          ((Matrix.reindex eC eC P).toBlocks₂₂ * T * (Matrix.reindex eS eS Q).toBlocks₂₂) from by
+    conv_lhs => rw [hPblk, hQblk]
+    rw [blockLowerUpper_conj_pureT (Matrix.reindex eC eC P).toBlocks₁₁
+      (Matrix.reindex eC eC P).toBlocks₂₁ (Matrix.reindex eC eC P).toBlocks₂₂
+      (Matrix.reindex eS eS Q).toBlocks₁₁ (Matrix.reindex eS eS Q).toBlocks₁₂
+      (Matrix.reindex eS eS Q).toBlocks₂₂ T]]
+  -- `fromBlocks 1 0 0 0 + fromBlocks 0 0 0 J = fromBlocks 1 0 0 J`.
+  rw [Matrix.fromBlocks_add]
+  simp only [add_zero, zero_add]
+
 end DLNFibre.DLN.RLCT
