@@ -13,3 +13,9 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   `SigmaComponents`/`ThetaComponentCount`; P3 one module; `SmoothPointRegular`/`NoetherMonicPositioning`/
   `rank_map_eq_of_injective`/`minimalPrimes` already done in #14). Worktree on `expedition/foundation-lift-p1`
   off `origin/dev`, build warmed (430M, trees identical). Scaffold + cron set. P1-R1 dispatched.
+- **2026-06-29 — P1-R1 LANDED** (`2ab2995a`). The minimal-primes SPIKE re-homed to
+  `Core/MinimalPrime/Finite.lean`: `Ideal.minimalPrimes_sInf_of_finite_of_isPrime` (minimal primes of a
+  finite prime-family `sInf` = inclusion-minimal members), with a bonus hypothesis-weakening
+  `[CommRing]→[CommSemiring]` (build-confirmed). Sibling-clash cleared, re-gate green 3820, axiom-clean,
+  L3-clean. Review **waived** (low-risk warm-up — review reserved for the three crux rungs). → P1-R2 dispatched
+  (localization `≤`-half).

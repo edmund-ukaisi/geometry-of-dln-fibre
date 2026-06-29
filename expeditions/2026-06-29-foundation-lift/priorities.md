@@ -12,7 +12,7 @@ already there). All already-green; the work is re-home + Mathlib-grade hygiene.
 
 | rung | item | source | target (mirror) | status |
 |------|------|--------|------------------|--------|
-| P1-R1 | extract the SPIKE `minimalPrimes_sInf_of_finite_of_isPrime` (minimal primes of a finite prime-family `sInf` = inclusion-minimal members; Mathlib has only the radical-intersection form) | `SigmaComponents.lean:50–78` | `Core/MinimalPrime/Finite.lean` (ns `Ideal`, mirror `Mathlib.RingTheory.Ideal.MinimalPrime`) | pending |
+| P1-R1 | extract the SPIKE `minimalPrimes_sInf_of_finite_of_isPrime` (minimal primes of a finite prime-family `sInf` = inclusion-minimal members; Mathlib has only the radical-intersection form) | `SigmaComponents.lean:50–78` | `Core/MinimalPrime/Finite.lean` (ns `Ideal`, mirror `Mathlib.RingTheory.Ideal.MinimalPrime`) | **done** (`2ab2995a`; bonus `[CommRing]→[CommSemiring]` weakening; sibling-clash cleared; re-gate green 3820; review waived — not a crux) |
 | P1-R2 | re-home the localization `≤`-half `ringKrullDim_localization_le` | `LocalizationKrullDim.lean` | `Core/.../Localization` (mirror `KrullDimension.Localization`) | pending |
 | P1-R3 | re-home the affine-domain trdeg-sandwich no-drop (`ringKrullDim_eq_trdeg_of_fg_domain`, `trdeg_localization_eq`, `..._localizationAway_eq_of_{fg_domain,avoids_top_prime}`) | `AffineLocalizationNoDrop.lean` | `Core/.../Localization` | pending |
 | P1-R4 | extract the `TopDimMinPrimes` core (`TopDimMinPrimes`, `bijOn_comap`, `topDimMinPrimes_ncard_eq_of_ringEquiv`) — **a best-warm-up, low-risk, high-reuse** | `TopDimMinPrimes.lean` | `Core/MinimalPrime/TopDimensional.lean` (ns `Ideal`) | pending |
