@@ -322,4 +322,25 @@ noncomputable def psiMap (M : Fin 3 → ℕ) (hrs : r + s = M 1) :
   fun w => paramsEquivFlat M
     ((flatEquivOf M (slotEquiv M)).symm (shearMBody (topCoords M hrs) (shiftCore M hrs) w))
 
+/-- **The shear-shift value at a deepest-top coord** (the `shiftCore` collapse): `shiftCore` evaluated at
+the `equivFin` index of `coordOf (topSlot a j)` is `−(Λ₀·S_bot) a j`. The `equivFin.symm/equivFin`
+round-trip + `shiftFull_topSlot` + the reconstruction's `topCoordsᶜ`-agreement with `Rmap u` (= `u`). -/
+theorem shiftCore_at_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M 2))
+    (hmem : coordOf M (topSlot M hrs a j) ∈ topCoords M hrs) :
+    shiftCore M hrs ((splitOfCoreSet (topCoords M hrs) (Rmap M hrs hr hc u)).1,
+        (splitOfCoreSet (topCoords M hrs) (Rmap M hrs hr hc u)).2.2)
+        ((topCoords M hrs).equivFin ⟨coordOf M (topSlot M hrs a j), hmem⟩)
+      = -(Lam0u M hrs u * Sbotu M hrs u) a j := by
+  rw [shiftCore, Equiv.symm_apply_apply]
+  -- the reconstruction agrees with `Rmap u` (hence `u`) off `topCoords`, so `Λ₀`/`S_bot` are unchanged
+  set v := (splitOfCoreSet (topCoords M hrs)).symm
+    ((splitOfCoreSet (topCoords M hrs) (Rmap M hrs hr hc u)).1,
+      ((0 : Fin (topCoords M hrs).card → ℝ),
+        (splitOfCoreSet (topCoords M hrs) (Rmap M hrs hr hc u)).2.2)) with hv
+  have hagree : ∀ m, m ∉ topCoords M hrs → v m = u m := by
+    intro m hm
+    rw [hv, splitOfCoreSet_symm_specBlock_eq _ _ _ _ hm, Rmap_spectator M hrs hr hc u hm]
+  rw [shiftFull_topSlot, Lam0u_congr M hrs hagree, Sbotu_congr M hrs hagree]
+
 end DLNFibre.DLN.RLCT
