@@ -3,6 +3,50 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 coordinate-square-sum regular-suspension iff - 2026-06-29
+
+`RegularSuspensionSquareSumIntegrability.lean` now exposes the generic
+regular-suspension model iff at the coordinate-square-sum sockets.  The new
+public wrappers are:
+
+```text
+lintegral_ofReal_residual_power_lt_top_of_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+lintegral_ofReal_residual_power_lt_top_of_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+```
+
+They are direct substitutions into the generic model theorem with
+`a x = aoyagiCoordinateSquareSum (b x)`, and then with
+`b x = AoyagiResidualBlockCoordinateIndex.value (D x)`.  The iff requires the
+reverse-side hypotheses explicitly: `AEMeasurable` square-sum, `0<R`,
+positive residual square-sum a.e., residual square-sum `<= R^2` a.e., `0<t`,
+and `[SFinite nu] [nu.IsAddHaarMeasure]` on the regular coordinate measure.
+
+This is a model-square theorem only.  It does not prove p.13 chart coverage,
+actual loss comparison, density/Jacobian/source-prior transport, residual
+integrability for Aoyagi's reduced chart, pole order, normal crossings, or
+RLCT.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-coordinate-square-sum-regular-suspension-iff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-coordinate-square-sum-regular-suspension-iff.md`.
+Review passed in
+`threads/03-block-product-reduction/review-a2-coordinate-square-sum-regular-suspension-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionSquareSumIntegrability
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes for all four new public theorem
+names.  The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 regular-suspension reverse threshold shift - 2026-06-29
 
 `RegularSuspensionIntegrability.lean` now proves the reverse local

@@ -10,6 +10,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, coordinate-square-sum regular-suspension iff
+
+The generic local model iff has now been connected to the Aoyagi
+coordinate-square-sum sockets.  Lean proves the coordinate-square-sum and
+residual-block-square-sum versions under the reverse-side hypotheses
+
+```text
+AEMeasurable square-sum,
+0 < R,
+square-sum > 0 a.e.,
+square-sum <= R^2 a.e.,
+0 < t,
+[SFinite nu],
+[nu.IsAddHaarMeasure].
+```
+
+This is intentionally only the model statement
+
+```text
+coordinateSquareSum(base) + ||regular||^2
+```
+
+at exponent `t + finrank(E)/2`.  It gives finite product integrability iff
+finite residual `t`-power integrability for the square-sum model.  The
+residual-block wrapper is just the substitution through
+`AoyagiResidualBlockCoordinateIndex.value`.
+
+Nonclaims: no p.13 analytic chart coverage, no original-loss comparison, no
+density/Jacobian/source-prior transport, no proof of the residual integrability
+input, no pole order, no normal crossings, and no RLCT.  The next useful
+consumer should be a model-level p.13 fixed-base regular-coordinate wrapper or
+a carefully supplied actual-loss theorem only when the relevant loss/density
+comparability hypotheses are already present.
+
 ## Latest controller decision - 2026-06-29, regular-suspension reverse threshold shift
 
 The p.13 regular-square suspension now has the reverse local model-integral

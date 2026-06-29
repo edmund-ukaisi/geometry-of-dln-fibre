@@ -182,6 +182,58 @@ theorem lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball
       (a := fun x => aoyagiCoordinateSquareSum (b x))
       (t := t) (R := R) hpos ht hbase
 
+/-- Coordinate-square-sum reverse finite-side threshold shift. -/
+theorem lintegral_ofReal_residual_power_lt_top_of_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+    {α η E : Type*} [MeasurableSpace α] [Fintype η]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {b : α → η → ℝ} {t R : ℝ}
+    (hmeas : AEMeasurable (fun x : α => aoyagiCoordinateSquareSum (b x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ, 0 < aoyagiCoordinateSquareSum (b x))
+    (hle : ∀ᵐ x ∂μ, aoyagiCoordinateSquareSum (b x) ≤ R ^ 2)
+    (ht : 0 < t)
+    (hprod :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E =>
+            (aoyagiCoordinateSquareSum (b z.1) + ‖u‖ ^ 2) ^
+              (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum (b x)) ^ (-t)) ∂μ) < ∞ := by
+  exact
+    lintegral_ofReal_residual_power_lt_top_of_product_lt_top
+      (E := E) (μ := μ) (ν := ν)
+      (a := fun x : α => aoyagiCoordinateSquareSum (b x))
+      (t := t) (R := R) hmeas hR hpos hle ht hprod
+
+/-- Coordinate-square-sum local threshold-shift iff for the square model. -/
+theorem lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+    {α η E : Type*} [MeasurableSpace α] [Fintype η]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {b : α → η → ℝ} {t R : ℝ}
+    (hmeas : AEMeasurable (fun x : α => aoyagiCoordinateSquareSum (b x)) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ, 0 < aoyagiCoordinateSquareSum (b x))
+    (hle : ∀ᵐ x ∂μ, aoyagiCoordinateSquareSum (b x) ≤ R ^ 2)
+    (ht : 0 < t) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (aoyagiCoordinateSquareSum (b z.1) + ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum (b x)) ^ (-t)) ∂μ) < ∞ := by
+  exact
+    lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+      (E := E) (μ := μ) (ν := ν)
+      (a := fun x : α => aoyagiCoordinateSquareSum (b x))
+      (t := t) (R := R) hmeas hR hpos hle ht
+
 /-- Residual-block square-sum finite-side threshold-shift corollary. -/
 theorem lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
     {α ι κ E : Type*} [MeasurableSpace α] [Fintype ι] [Fintype κ]
@@ -209,6 +261,76 @@ theorem lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_b
       (E := E) (μ := μ) (ν := ν)
       (b := fun x => AoyagiResidualBlockCoordinateIndex.value (D x))
       (t := t) (R := R) hpos ht hbase
+
+/-- Residual-block square-sum reverse finite-side threshold shift. -/
+theorem lintegral_ofReal_residual_power_lt_top_of_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+    {α ι κ E : Type*} [MeasurableSpace α] [Fintype ι] [Fintype κ]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {D : α → Matrix ι κ ℝ} {t R : ℝ}
+    (hmeas : AEMeasurable
+      (fun x : α => aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)))
+    (hle : ∀ᵐ x ∂μ,
+      aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)) ≤ R ^ 2)
+    (ht : 0 < t)
+    (hprod :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E =>
+            (aoyagiCoordinateSquareSum
+                (AoyagiResidualBlockCoordinateIndex.value (D z.1)) +
+              ‖u‖ ^ 2) ^
+              (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) ^ (-t)) ∂μ) < ∞ := by
+  exact
+    lintegral_ofReal_residual_power_lt_top_of_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top
+      (E := E) (μ := μ) (ν := ν)
+      (b := fun x => AoyagiResidualBlockCoordinateIndex.value (D x))
+      (t := t) (R := R) hmeas hR hpos hle ht hprod
+
+/-- Residual-block square-sum local threshold-shift iff for the square model. -/
+theorem lintegral_ofReal_residualBlockSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+    {α ι κ E : Type*} [MeasurableSpace α] [Fintype ι] [Fintype κ]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {D : α → Matrix ι κ ℝ} {t R : ℝ}
+    (hmeas : AEMeasurable
+      (fun x : α => aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) μ)
+    (hR : 0 < R)
+    (hpos : ∀ᵐ x ∂μ,
+      0 < aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)))
+    (hle : ∀ᵐ x ∂μ,
+      aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x)) ≤ R ^ 2)
+    (ht : 0 < t) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (aoyagiCoordinateSquareSum
+              (AoyagiResidualBlockCoordinateIndex.value (D z.1)) +
+            ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal
+      ((aoyagiCoordinateSquareSum
+        (AoyagiResidualBlockCoordinateIndex.value (D x))) ^ (-t)) ∂μ) < ∞ := by
+  exact
+    lintegral_ofReal_coordinateSquareSum_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+      (E := E) (μ := μ) (ν := ν)
+      (b := fun x => AoyagiResidualBlockCoordinateIndex.value (D x))
+      (t := t) (R := R) hmeas hR hpos hle ht
 
 /-- Coordinate-square-sum regular-suspension comparison with bounded density.
 If an actual loss is bounded below on the regular ball by a positive constant
