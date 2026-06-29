@@ -19,6 +19,52 @@ main checkout, it should move to this worktree before doing expedition work.
 Use absolute paths or explicit `workdir` settings for tool calls; do not rely
 on the session's original cwd.
 
+## Latest controller decision - 2026-06-29, source-stratum-bound local-source handoff
+
+The next narrow Lean target after reorientation was the source-stratum-bound
+local-source finite-integral handoff, because it removes a genuine mismatch:
+the p. 13 loss/density estimates live on the source-rank stratum, while the
+retained-passive determinant-chart residual hypotheses live on a local source.
+
+The landed theorem is:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_bounds_locally_subset_localSource
+```
+
+It is acceptable boundary hardening, not wrapper churn: it changes where the
+loss/density hypotheses are allowed to live, and still requires the local
+coverage inclusion explicitly.  After banking this theorem, return to the
+source-production/image-equality frontier rather than adding endpoint or
+cardinality wrappers without a named downstream consumer.
+
+## Resume priority after interruption - 2026-06-28
+
+Post-interruption reorientation found the expedition branch clean, pushed, and
+already containing current `origin/dev`.  The recovered VM can build the
+current original-loss layer through the worktree-local Lake route:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure
+```
+
+Next work should target one of the remaining source-production/image-equality
+gaps, not more wrapper hardening:
+
+- local equality or coverage between the source-rank stratum and a
+  selected-entry chart image;
+- residual coordinate readout along such a selected-entry chart, preferably
+  from compatible residual factors rather than an arbitrary terminal matrix;
+- a genuine source-measure pushforward for the original source prior, if the
+  underlying chart and local image equality are proved.
+
+Do not turn the existing selected-entry or regular-suspension handoffs into
+claims of source coverage, analytic atlas construction, Jacobian/prior
+transport, normal crossings, pole order, or RLCT.  The current original-loss
+finite-integral theorems are powerful conditional sockets; their explicit
+source-image and residual-readout hypotheses are still mathematical work.
+
 ## Latest controller decision - 2026-06-28, A4 analytic-atlas/source-production frontier recheck
 
 The corrected next A4 target is not a Lean constructor from the finite

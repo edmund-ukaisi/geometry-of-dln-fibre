@@ -3,6 +3,99 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 source-stratum-bound local-source handoff - 2026-06-29
+
+Landed a narrow regular-suspension local-measure theorem:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_bounds_locally_subset_localSource
+```
+
+The theorem is in `RegularSuspensionLocalMeasure.lean`.  It accepts
+loss/density bounds on `nhdsWithin x₀ sourceStratum`, residual positivity and
+residual negative-power integrability on `localSource`, and an explicit open
+coverage inclusion
+
+```text
+Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource.
+```
+
+It shrinks to `Ubounds ∩ Ulocal`, restricts residual hypotheses from
+`localSource` to the final source-stratum set, restricts the a.e. product
+loss/density bounds by product-measure monotonicity, and calls the finite-side
+p. 13 regular-coordinate integrability adapter.  This removes a real mismatch
+between source-rank p. 13 estimates and retained-passive determinant-chart
+local residual hypotheses.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-bounds-local-source-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-source-stratum-bounds-local-source-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-stratum-bounds-local-source-finite-integral.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+`scripts/sorries` reports `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check` is clean.  The xhigh review passed with no findings.
+
+Boundary: this is not source-rank coverage, selected-entry image equality,
+source-prior/Jacobian transport, analytic atlas construction, normal crossings,
+pole order, or RLCT.
+
+## Resume checkpoint after VM interruption - 2026-06-28
+
+Reorientation state:
+
+- active worktree:
+  `/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct`;
+- branch: `expedition/aoyagi-rlct`;
+- checkpoint: `c214ce1f Bank Case 2 cardinality endpoint finite integral`;
+- `HEAD` is aligned with `origin/expedition/aoyagi-rlct`;
+- after `git fetch origin`, `HEAD...origin/dev` reported `973 0`, so current
+  `origin/dev` is already contained in the expedition branch.
+
+Focused build on the recovered VM passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure
+```
+
+`scripts/sorries` reports `0 sorry, 0 #exit, 0 native_decide, 0 axiom`, and
+`git diff --check` is clean.  The local build directory
+`lean/.lake-local-shared/` is ignored.
+
+Current p. 13 regular-suspension state is stronger than the earlier
+post-`c214ce1f` memory summary: the explicit multi-edge product-coordinate
+family, its coordinate readout, source-rank preservation, product-reduction
+certificate, triangular-multiplier boundedness, local adapted-loss lower bound,
+and original `lossDLN` finite-integral handoffs are already in Lean.  The main
+files are:
+
+- `RegularSuspensionCoordinates.lean` for the product-coordinate family and
+  adapted fixed-base loss lower bound;
+- `RegularSuspensionLocalMeasure.lean` for measurable local-source and
+  finite-integral sockets;
+- `OriginalLossLocalMeasure.lean` for the original `lossDLN` handoffs;
+- `SelectedEntryOriginalLossLocalMeasure.lean` for selected-entry signed-box
+  handoffs.
+
+The still-live boundary is not another endpoint/cardinality wrapper.  The
+selected-entry original-loss theorem still assumes local equality between the
+source-rank stratum and the selected-entry chart image, and assumes the residual
+coordinate readout along that chart.  The signed-box/source-density pushforward
+is available only once that chart/image equality is supplied.  Separately, the
+regular-suspension normal-crossing bridge still must not be asserted as a
+constructor from source data: analytic chart coverage, analytic ideal transport,
+Jacobian/prior compatibility, full normal-crossing certificate construction,
+and the single allowed extraction citation remain the boundary.
+
 ## Initial read
 
 This expedition treats Aoyagi 2023 as its own formalisation target, independent
