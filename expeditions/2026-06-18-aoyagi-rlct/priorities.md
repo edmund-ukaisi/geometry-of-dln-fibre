@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, selected-entry residual upper bound on small signed boxes
+
+The center-indexed selected-entry signed-box model now has a residual
+upper-bound layer:
+
+```text
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_abs_le
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_mem_signedBoxSet
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_signedBox_of_smallBox
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_withDensity_sourceDensity_of_smallBox
+```
+
+These prove that if center coordinates are uniformly bounded by `δ` and
+`δ^2 * (1 + #(center.erase pivot) * δ^2) <= R^2`, then the selected-entry
+residual is at most `R^2`; the same bound holds on a signed box whose radii
+are all `<= δ`, and a.e. for both the unweighted and selected-entry weighted
+source-box measures.
+
+This is intentionally source-side finite selected-entry control only.  It
+does not push the bound through a retained-passive source chart, choose signed-
+box radii, prove residual integrability, compare an original prior/Jacobian,
+identify the original loss, construct normal crossings, compute pole order, or
+extract RLCT.
+
 ## Latest controller decision - 2026-06-29, retained-passive source-edge-family chart-produced source-stratum two-sided iff with continuous density
 
 The source-edge-family chart-produced source-stratum two-sided iff now has a

@@ -18,6 +18,33 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 selected-entry residual upper bound on small signed boxes
+
+Reproduction:
+`reproduction-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`.
+Statement card:
+`statement-card-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`.
+Review:
+`review-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`.
+
+Lean now exposes:
+
+```text
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_abs_le
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_mem_signedBoxSet
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_signedBox_of_smallBox
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_withDensity_sourceDensity_of_smallBox
+```
+
+These prove the finite selected-entry residual upper bound on small center
+signed boxes and its unweighted/weighted signed-box a.e. forms.  The layer is
+source-side only: it does not yet push the a.e. bound through a retained-
+passive chart-produced measure.  Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` passed.  Euclid the 2nd
+xhigh read-only review passed.  Hygiene gates passed: `scripts/sorries`,
+`git diff --check`, touched-file marker scan, and direct axiom probe with
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-06-29 A2 retained-passive source-edge-family chart-produced source-stratum continuous-density two-sided iff
 
 Reproduction:

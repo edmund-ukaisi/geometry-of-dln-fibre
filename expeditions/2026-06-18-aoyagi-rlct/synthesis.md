@@ -3,6 +3,60 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 selected-entry residual upper bound on small signed boxes - 2026-06-29
+
+`SelectedEntrySignedBoxMeasure.lean` now proves:
+
+```text
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_abs_le
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_mem_signedBoxSet
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_signedBox_of_smallBox
+SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_withDensity_sourceDensity_of_smallBox
+```
+
+The pointwise theorem uses
+`selectedEntryCenterSq_selectedEntryChartMap` to write
+
+```text
+residual(y) = y_pivot^2 *
+  (1 + selectedEntryCenterSq (center.erase pivot) (sourceResidual y)).
+```
+
+If all center coordinates have absolute value at most `δ`, the residual is at
+most
+
+```text
+δ^2 * (1 + #(center.erase pivot) * δ^2).
+```
+
+The signed-box theorem turns `y in signedBoxSet Rres` plus `Rres_i <= δ` into
+those coordinate bounds.  The unweighted a.e. theorem uses the signed-box
+measure as `volume.restrict signedBoxSet`; the weighted a.e. theorem uses
+absolute continuity of `withDensity`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`,
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`,
+and
+`threads/03-block-product-reduction/review-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure
+```
+
+Euclid the 2nd xhigh read-only review passed.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker scan,
+and direct axiom probe for the new selected-entry residual upper-bound lemmas.
+The axiom footprint is `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no retained-passive measure-map discharge yet, no choice of signed-
+box radii, no residual negative-power integrability theorem, no source-prior/
+Jacobian/density transport, no original-loss identification, no normal
+crossings, pole order, or RLCT.
+
 ## Latest A2 retained-passive source-edge-family chart-produced source-stratum two-sided iff with continuous density - 2026-06-29
 
 `LocalMeasureHandoff.lean` now proves the elementary positive-continuous-

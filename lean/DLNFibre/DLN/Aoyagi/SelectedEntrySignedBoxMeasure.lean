@@ -1019,6 +1019,104 @@ theorem sourceDensity_eq_unit_mul_abs_monomial {center : Finset ι}
       densityUnit pivot y * ∏ i : center, |y i| ^ (densityExp pivot i : ℝ) := by
   simp [sourceDensity, densityUnit, densityExp]
 
+/-- A center-indexed selected-entry residual is bounded above when all center
+coordinates are uniformly small. -/
+theorem residual_le_sq_of_abs_le {center : Finset ι} (pivot : center)
+    {y : center → ℝ} {δ R : ℝ}
+    (hδ : 0 ≤ δ) (hyδ : ∀ i : center, |y i| ≤ δ)
+    (hsmall :
+      δ ^ 2 * (1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2) ≤ R ^ 2) :
+    residual pivot y ≤ R ^ 2 := by
+  have hpivot_sq : y pivot ^ 2 ≤ δ ^ 2 := by
+    exact sq_le_sq.mpr (by simpa [abs_of_nonneg hδ] using hyδ pivot)
+  have hsum_le :
+      selectedEntryCenterSq (center.erase pivot.1) (sourceResidual y) ≤
+        ((center.erase pivot.1).card : ℝ) * δ ^ 2 := by
+    rw [selectedEntryCenterSq]
+    calc
+      ∑ i ∈ center.erase pivot.1, sourceResidual y i ^ 2 ≤
+          ∑ _i ∈ center.erase pivot.1, δ ^ 2 := by
+        refine Finset.sum_le_sum ?_
+        intro i hi
+        have hicenter : i ∈ center := (Finset.mem_erase.mp hi).2
+        have hcoord : |sourceResidual y i| ≤ δ := by
+          simpa [sourceResidual, hicenter] using hyδ ⟨i, hicenter⟩
+        exact sq_le_sq.mpr (by simpa [abs_of_nonneg hδ] using hcoord)
+      _ = ((center.erase pivot.1).card : ℝ) * δ ^ 2 := by
+        simp
+  have hunit_le :
+      1 + selectedEntryCenterSq (center.erase pivot.1) (sourceResidual y) ≤
+        1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2 := by
+    linarith
+  have hunit_nonneg :
+      0 ≤ 1 + selectedEntryCenterSq (center.erase pivot.1) (sourceResidual y) := by
+    exact add_nonneg zero_le_one
+      (selectedEntryCenterSq_nonneg (center.erase pivot.1) (sourceResidual y))
+  calc
+    residual pivot y =
+        y pivot ^ 2 *
+          (1 + selectedEntryCenterSq (center.erase pivot.1) (sourceResidual y)) := by
+      rw [residual, selectedEntryCenterSq_selectedEntryChartMap pivot.2]
+    _ ≤ δ ^ 2 * (1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2) := by
+      exact mul_le_mul hpivot_sq hunit_le hunit_nonneg (sq_nonneg δ)
+    _ ≤ R ^ 2 := hsmall
+
+/-- A center-indexed selected-entry residual is bounded above on a signed box
+whose radii are uniformly small enough. -/
+theorem residual_le_sq_of_mem_signedBoxSet {center : Finset ι} (pivot : center)
+    {y : center → ℝ} {Rres : center → ℝ} {δ R : ℝ}
+    (hδ : 0 ≤ δ) (hRres_le : ∀ i : center, Rres i ≤ δ)
+    (hsmall :
+      δ ^ 2 * (1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2) ≤ R ^ 2)
+    (hy : y ∈ signedBoxSet Rres) :
+    residual pivot y ≤ R ^ 2 := by
+  refine residual_le_sq_of_abs_le pivot hδ ?_ hsmall
+  intro i
+  have hi : y i ∈ Set.Ioo (-(Rres i)) (Rres i) := hy i (Set.mem_univ i)
+  exact (le_of_lt (abs_lt.mpr hi)).trans (hRres_le i)
+
+/-- The center-indexed selected-entry residual is bounded a.e. on a sufficiently
+small signed box. -/
+theorem residual_le_sq_ae_signedBox_of_smallBox {center : Finset ι} (pivot : center)
+    {Rres : center → ℝ} {δ R : ℝ}
+    (hδ : 0 ≤ δ) (hRres_le : ∀ i : center, Rres i ≤ δ)
+    (hsmall :
+      δ ^ 2 * (1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2) ≤ R ^ 2) :
+    ∀ᵐ y : center → ℝ
+      ∂Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      residual pivot y ≤ R ^ 2 := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+  have hmem : ∀ᵐ y : center → ℝ ∂ signedBox, y ∈ signedBoxSet Rres := by
+    change ∀ᵐ y : center → ℝ
+      ∂Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      y ∈ signedBoxSet Rres
+    rw [signedBoxMeasure_eq_volume_restrict Rres]
+    exact ae_restrict_mem (measurableSet_signedBoxSet Rres)
+  filter_upwards [hmem] with y hy
+  exact residual_le_sq_of_mem_signedBoxSet pivot hδ hRres_le hsmall hy
+
+/-- The center-indexed selected-entry residual is bounded a.e. for the weighted
+signed-box source measure when the signed-box radii are sufficiently small. -/
+theorem residual_le_sq_ae_withDensity_sourceDensity_of_smallBox
+    {center : Finset ι} (pivot : center)
+    {Rres : center → ℝ} {δ R : ℝ}
+    (hδ : 0 ≤ δ) (hRres_le : ∀ i : center, Rres i ≤ δ)
+    (hsmall :
+      δ ^ 2 * (1 + ((center.erase pivot.1).card : ℝ) * δ ^ 2) ≤ R ^ 2) :
+    ∀ᵐ y : center → ℝ
+      ∂(Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+        (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)),
+      residual pivot y ≤ R ^ 2 := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+  exact
+    (withDensity_absolutelyContinuous signedBox
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).ae_le
+      (residual_le_sq_ae_signedBox_of_smallBox
+        (pivot := pivot) (Rres := Rres) (δ := δ) (R := R)
+        hδ hRres_le hsmall)
+
 /-- The center-indexed selected-entry residual unit is bounded below by `1`. -/
 theorem one_le_residualUnit {center : Finset ι} (pivot : center)
     (y : center → ℝ) :

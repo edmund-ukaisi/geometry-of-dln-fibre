@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, selected-entry center residual upper bound on
+  small signed boxes, 2026-06-29.** Lean now exposes
+  `SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_abs_le`,
+  `SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_mem_signedBoxSet`,
+  `SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_signedBox_of_smallBox`,
+  and
+  `SelectedEntrySignedBox.CenterCoord.residual_le_sq_ae_withDensity_sourceDensity_of_smallBox`.
+  If all center coordinates are bounded by `δ` and
+  `δ^2 * (1 + #(center.erase pivot) * δ^2) <= R^2`, then the
+  center-indexed selected-entry residual is at most `R^2`; the same bound
+  holds on a signed box with radii `<= δ`, and a.e. for the unweighted and
+  selected-entry weighted signed-box source measures.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-center-residual-upper-bound-small-signed-box.md`.
+  This does not yet push the bound through a retained-passive chart-produced
+  measure, choose signed-box radii, prove selected-entry critical
+  integrability, identify an original source prior/Jacobian/density, construct
+  normal crossings, compute pole order, or extract RLCT.
 - **Current status addendum, retained-passive source-edge-family
   chart-produced source-stratum two-sided continuous-density iff,
   2026-06-29.** Lean now exposes
