@@ -86,4 +86,13 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   confirms). A Bayesian update: the anticipated work was already done; the value was confirming + cleaning it.
   Re-gate green 3819, axiom-clean; E2 L3-clean. **The dimension stack (entry-1 + entry-2) now stands: 7
   Mathlib-grade modules `Core.Dimension.{Integral,Basic,Catenary,AffineDomain,Codimension,Smooth,Regular}`.**
-  Capstone audit (08r) in flight; on PASS → RF (consumer retrofit + all cosmetics) → close.**
+  Capstone audit (08r) in flight; on PASS → RF (consumer retrofit + all cosmetics) → close.
+- **2026-06-29 — E2 SIGNED OFF (capstone audit PASS 3/3).** `[PerfectField]` soundness confirmed by per-lemma
+  trace + Codex xhigh (lone field input `FormallySmooth.of_perfectField`; `[IsSmoothAt]` consumed-not-produced
+  so smooth-locus density never enters; no κ(m)=k assumption); `@[stacks 00TV]` forward-only tag honest with
+  in-repo precedent; re-home a faithful git-rename (zero signature/proof drift). Precision note (non-blocking):
+  `[PerfectField]` is the clean-sufficient hyp, not the absolute pointwise minimum (per-residue-field
+  separability) — card doesn't overclaim. → **RF dispatched** (the final rung: drop the dead-weight
+  `[IsAlgClosed]` on the DLN `codimRep_*` consumers per bedrock weakest-hypotheses; fix `DeepChartRing:138`
+  stale prose + all aggregator/Dimension `longLine` warnings for upstream-grade). After RF: exposition +
+  final synthesis + PR against `dev` (operator-gated).**
