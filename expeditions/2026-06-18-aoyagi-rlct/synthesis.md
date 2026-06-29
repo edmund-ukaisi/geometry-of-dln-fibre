@@ -3,6 +3,62 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 source-stratum-supported open restriction - 2026-06-29
+
+Landed the downstream finite-integral consumer of the source-stratum support
+theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_restrict_open_of_sourceRankSupport
+```
+
+The theorem calls the existing source-stratum-bound chart-produced finite
+integral theorem, obtaining finiteness over
+`mu.restrict (U ∩ sourceStratum)`.  It then uses the support theorem
+
+```text
+mu.restrict sourceStratum = mu
+```
+
+under explicit rank hypotheses
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+forall yNext,
+  r + rank(case2SuccessorSelectedEntryMatrix ... yNext ...) = rEdge 1.
+```
+
+For the open set `U`, `Measure.restrict_restrict` gives
+`(mu.restrict sourceStratum).restrict U = mu.restrict (U ∩ sourceStratum)`.
+Together these rewrite the finite-integral conclusion to use
+`mu.restrict U`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-source-stratum-supported-open-restriction-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-source-stratum-supported-open-restriction-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-source-stratum-supported-open-restriction-finite-integral.md`
+passed by xhigh `Ramanujan the 2nd`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+Final hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe for the new public theorem name.
+The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no selected-entry image equality, no
+exact-rank openness, no source-prior or Jacobian transport, no analytic atlas,
+no normal crossings, pole order, RLCT, or numerical successor selected-entry
+matrix rank.
+
 ## Latest A2 Case 2 source-stratum-supported chart-produced measure - 2026-06-29
 
 Landed support of chart-produced source measures on Aoyagi's source-shaped rank

@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 supported open restriction
+
+The support theorem now has a downstream finite-integral consumer.  For the
+same endpoint-transported continuing Case 2 selected-entry chart-produced
+measure, explicit source-rank support
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+forall yNext,
+  r + rank(case2SuccessorSelectedEntryMatrix ... yNext ...) = rEdge 1
+```
+
+lets the source-stratum-bound finite-integral theorem be restated over
+`mu.restrict U` rather than `mu.restrict (U ∩ sourceStratum)`.
+
+This is the intended use of the support theorem: a measure-restriction
+mismatch is removed for one chart-produced measure.  It still does not prove
+source-rank coverage, selected-entry image equality, exact-rank openness,
+original source-prior/Jacobian transport, analytic atlas data, normal
+crossings, pole order, or RLCT.  The next step should move back toward
+source-production/image/transport data unless another downstream theorem has
+this exact restriction mismatch.
+
 ## Latest controller decision - 2026-06-29, Case 2 source-stratum-supported chart-produced measure
 
 The continuing Case 2 selected-entry chart-produced source measure now has the
