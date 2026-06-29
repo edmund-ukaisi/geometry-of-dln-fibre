@@ -1910,4 +1910,81 @@ theorem psiL2Conj_eventuallyEq_psiRawL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
       (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w) : ℝ) = 1 := hw
   rw [hw', one_smul, add_sub_cancel]
 
+/-- `split ∘ psiRawL2Conj = psiSplitRawL2CoreConj ∘ split` (the conjugate's split-conjugacy `rfl`). -/
+theorem psiRawL2Conj_split (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (x : Fin (flatDim H) → ℝ) :
+    deepestSplit H r hr hL (wstarL2 H r B hB hr hL) (psiRawL2Conj H r B hB hr hL hL2eq x)
+      = psiSplitRawL2CoreConj H r B hB hr hL hL2eq
+          (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) x) := by
+  rw [psiRawL2Conj, (deepestSplit H r hr hL (wstarL2 H r B hB hr hL)).apply_symm_apply]
+
+/-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
+
+Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
+germ-local sub-hypotheses as inputs (the bare's contract): `hsub3reg` (the `deepestEFull²`-sum invariance
+under the conjugated joint move — the reg term) and `hsub4core` (the core = Score — now TRUE via the
+conjugated keystones, discharged at the wire by `deepestCoreF_coreAbsorbConj_eq_prodSchur` +
+`absorbedCoreConj_eq_schurCore` + `prod_deepestM_eq_schur_ldu_readback`). The single `hDA : ∀ s`
+hypothesis (for `deepestCoreAbsorbConj`) supplies `hDA0`/`hDA1` to the cutoff/`psiL2Conj` layer. -/
+theorem comp_identity_L2_conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, (deepestEFull H r hr hL J Pf Qf
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hregval : ∀ q : DeepestSplit H r (deepestNGauge H r),
+      (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
+    (Score : (Fin (flatDim H) → ℝ) → ℝ)
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))).2.1 = Score x)
+    (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
+    (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    (fun x : Fin (flatDim H) → ℝ =>
+        (∑ i, (regStraighten (split x)).1 i ^ 2)
+          + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA (split x)).2.1)
+        ∘ (psiL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY)
+      =ᶠ[nhds wstar] Φscore := by
+  have hwstar' : wstarL2 H r B hB hr hL = wstar := by rw [wstarL2, hwstar]
+  -- The body's `split` is the concrete `deepestSplit ... wstar` (matching `psiL2Conj`'s internal split).
+  have hsplit_eq : split = deepestSplit H r hr hL (wstarL2 H r B hB hr hL) := by
+    apply Homeomorph.ext; intro w; rw [hsplit, ← wstarL2]
+  -- (i) psiL2Conj = psiRawL2Conj near wstar (χc = 1 germ).
+  have hgerm := psiL2Conj_eventuallyEq_psiRawL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY wstar hwstar
+  -- The germ-local sub hyps live in `nhds (basepoint) = nhds wstar`.
+  have hsub3germ := hwstar ▸ hsub3reg
+  have hsub4germ := hwstar ▸ hsub4core
+  filter_upwards [hgerm, hsub3germ, hsub4germ] with x hx hsub3x hsub4x
+  show (∑ i, (regStraighten (split (psiL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY x))).1 i ^ 2)
+      + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+          (split (psiL2Conj H r B hB hr hL hL2eq (hDA _) (hDA _) hY x))).2.1 = Φscore x
+  rw [hx]
+  -- split (psiRawL2Conj x) = psiSplitRawL2CoreConj (split x).
+  have hsp : split (psiRawL2Conj H r B hB hr hL hL2eq x)
+      = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
+    rw [hsplit_eq, psiRawL2Conj_split H r B hB hr hL hL2eq x]
+  rw [hsp, hΦscore]
+  -- The reg term: invariant under the conjugated joint move (hregval + hsub3x).
+  have hreg : (∑ i, (regStraighten (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))).1 i ^ 2)
+      = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
+    simp only [hregval]; exact hsub3x
+  rw [hreg, hsub4x]
+
 end DLNFibre.DLN.RLCT
