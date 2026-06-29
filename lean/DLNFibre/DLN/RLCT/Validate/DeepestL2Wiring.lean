@@ -308,185 +308,170 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- For L ≥ 3 the strict-interior frames are likewise trivial (the interior deepest layer IS the corner),
   -- but the bundle `deepestPoint_frame_pivot_exists` supplies the GENERIC rank-normal-form frame there
   -- (not committed to the identity), so that arm is a scoped gap (`hinterface_interior` below).
-  have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
-      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
-        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
-          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ) := by
-    intro s hs
-    refine ⟨?_, ?_⟩
-    · -- `Qf s = 1`: the left endpoint (`s.val = 0 = firstLayer`) via `hQf0`; interior `1 ≤ s.val` scoped.
-      rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
-      · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
-        rw [hsf]; exact hQf0
-      · -- **SCOPED GAP (L ≥ 3 interior `Qf s`).** Vacuous for the L = 2 headline (`1 ≤ s.val ∧ s+1 < 2`
-        -- is empty). For L ≥ 3 the interior deepest layer is the corner (`deepestPoint_interior_eq_corM`)
-        -- but the bundle's frame there is the GENERIC rank-normal-form, not committed to the identity —
-        -- closing this needs the bundle to choose identity interior frames (`DeepestPivotFrame`, off-tide).
-        sorry
-    · -- `Pf (s+1) = 1`: the right endpoint (`s+1 = L-1 = lastLayer`) via `hPfL`; interior scoped.
-      rcases Nat.lt_or_ge ((s : ℕ) + 1) (L - 1) with hint | hbdy
-      · -- **SCOPED GAP (L ≥ 3 interior `Pf (s+1)`).** Vacuous for L = 2 (`s+1 < L-1 = 1` is empty). Same
-        -- bundle-choice obstruction as the interior `Qf s` arm.
-        sorry
-      · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
-          Fin.ext (by simp only [lastLayer]; omega)
-        rw [hsf]; exact hPfL
   -- Assemble the bundle: all data (`split`, `coreAbsorb`, `regStraighten` + their facts) is in scope;
   -- the final `?_` is the migrated `loss_squeeze` RLCT-equality (the route-B close below).
   refine ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base,
     hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, ?_⟩
-  -- PIN 2: the loss squeeze (ROUTE-B close, `coreΦ → Score`, 2026-06-25). The migrated `loss_squeeze`
-  -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
-  -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
-  -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
-  -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
-  -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
-  set Score : (Fin (flatDim H) → ℝ) → ℝ :=
-    fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-          (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
-            * endpointQL H hL Qf)).toBlocks₂₂
-        - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+  -- **L-SPLIT** (confine the L ≥ 3 interior + grouped-diffeo sorries to the `hL3` arm; the L = 2
+  -- `hLlt` arm is sorry-free — its `hinterface` interior branches are vacuous, its `hstep2` is the
+  -- banked assembled bridge). `#print axioms` on the L = 2 path is then clean-three.
+  rcases Nat.lt_or_ge L 3 with hLlt | hL3
+  · -- ===== L = 2 ARM (sorry-free) =====
+    -- **hinterface (L = 2, SORRY-FREE).** Interior branches are vacuous: `(s:ℕ)+1 < L` with `L = 2`
+    -- forces `s = 0`, so the `hspos` (`1 ≤ s`) and `hint` (`s+1 < L-1 = 1`) arms close by `omega`.
+    have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+        Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+          Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+            (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ) := by
+      intro s hs
+      refine ⟨?_, ?_⟩
+      · rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+        · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
+          rw [hsf]; exact hQf0
+        · exfalso; omega
+      · rcases Nat.lt_or_ge ((s : ℕ) + 1) (L - 1) with hint | hbdy
+        · exfalso; omega
+        · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
+            Fin.ext (by simp only [lastLayer]; omega)
+          rw [hsf]; exact hPfL
+    -- PIN 2: the loss squeeze (ROUTE-B close, `coreΦ → Score`, 2026-06-25). The migrated `loss_squeeze`
+    -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
+    -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
+    -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
+    -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
+    -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
+    set Score : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
             (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
             (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
-              * endpointQL H hL Qf)).toBlocks₂₁
-          * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
               (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
-                * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
-          * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2 with hScoreDef
+    obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
+      deepest_loss_squeeze H r B hB hr hL hL2 hpos J hJfront' Pf Qf split coreAbsorb regStraighten
+        hsplit_base hsplit hra_regval hca_def Score (fun _ => rfl)
+        hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
+    -- **ROUTE-B CLOSE (2026-06-25).** Target: `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)` (the migrated
+    -- field). TWO steps: (1) `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + Score)` — the TRUE Score-sandwich `hsq`
+    -- fed to `rlctAtOn_squeeze` after the Params→flat MP transport; (2) the diffeo bridge
+    -- `rlctAtOn(Sreg_E + Score) = rlctAtOn(Sreg_E + coreΦ)` via `Ψ : S1 ↦ (I−K)·S1` (`rlctAtOn_comp_localDiffeo`).
+    set Φscore : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x with hΦscore
+    set Φcore : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun x => (∑ i, (regStraighten (split x)).1 i ^ 2)
+        + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦcore
+    set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+    -- **Step 1: `rlctAt(dlnLoss) = rlctAtOn Φscore wstar`** (Params→flat MP transport + `rlctAtOn_squeeze`
+    -- on the TRUE Score-sandwich `hsq`).
+    have hstep1 : rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+        = rlctAtOn Φscore wstar := by
+      rw [← rlctAtOn_eq_rlctAt]
+      set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
+        ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
+        with he
+      have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
+        measurePreserving_paramsEquivFlat H
+      have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
+      have htrans := rlctAtOn_comp_homeomorph e hmp hemb
+        (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
+        (deepestPoint H r B hB hr hL)
+      have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
+          = fun A : Params H => dlnLoss H B A := by
+        funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
+      rw [hcomp] at htrans
+      have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
+      rw [he_deepest] at htrans
+      rw [htrans]
+      refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
+        ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
+        c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
+      · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
+        rw [hΦscore, hScoreDef]
+        apply Measurable.add
+        · exact (Finset.measurable_sum _ (fun i _ =>
+            ((measurable_pi_apply i).comp
+              (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
+        · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
+          -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
+          -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
+          -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
+          -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
+          -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
+          set Mw : (Fin (flatDim H) → ℝ) →
+              Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
+            fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
               (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
-                * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2 with hScoreDef
-  obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
-    deepest_loss_squeeze H r B hB hr hL hL2 hpos J hJfront' Pf Qf split coreAbsorb regStraighten
-      hsplit_base hsplit hra_regval hca_def Score (fun _ => rfl)
-      hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
-  -- **ROUTE-B CLOSE (2026-06-25).** Target: `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)` (the migrated
-  -- field). TWO steps: (1) `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + Score)` — the TRUE Score-sandwich `hsq`
-  -- fed to `rlctAtOn_squeeze` after the Params→flat MP transport; (2) the diffeo bridge
-  -- `rlctAtOn(Sreg_E + Score) = rlctAtOn(Sreg_E + coreΦ)` via `Ψ : S1 ↦ (I−K)·S1` (`rlctAtOn_comp_localDiffeo`).
-  set Φscore : (Fin (flatDim H) → ℝ) → ℝ :=
-    fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x with hΦscore
-  set Φcore : (Fin (flatDim H) → ℝ) → ℝ :=
-    fun x => (∑ i, (regStraighten (split x)).1 i ^ 2)
-      + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦcore
-  set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
-  -- **Step 1: `rlctAt(dlnLoss) = rlctAtOn Φscore wstar`** (Params→flat MP transport + `rlctAtOn_squeeze`
-  -- on the TRUE Score-sandwich `hsq`).
-  have hstep1 : rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
-      = rlctAtOn Φscore wstar := by
-    rw [← rlctAtOn_eq_rlctAt]
-    set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
-      ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
-      with he
-    have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
-      measurePreserving_paramsEquivFlat H
-    have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
-    have htrans := rlctAtOn_comp_homeomorph e hmp hemb
-      (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
-      (deepestPoint H r B hB hr hL)
-    have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
-        = fun A : Params H => dlnLoss H B A := by
-      funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
-    rw [hcomp] at htrans
-    have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
-    rw [he_deepest] at htrans
-    rw [htrans]
-    refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
-      ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
-      c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
-    · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
-      rw [hΦscore, hScoreDef]
-      apply Measurable.add
-      · exact (Finset.measurable_sum _ (fun i _ =>
-          ((measurable_pi_apply i).comp
-            (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
-      · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
-        -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
-        -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
-        -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
-        -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
-        -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
-        set Mw : (Fin (flatDim H) → ℝ) →
-            Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
-          fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
-            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B) * endpointQL H hL Qf)
-          with hMw_def
-        have hMw_cont : Continuous Mw :=
-          continuous_Mw H r B (endpointP0 H hL Pf) (endpointQL H hL Qf)
-            (rThresholdSplit r (H 0) (hr 0))
-            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
-        -- entrywise measurability bricks (all from `continuous_Mw` + `inv_def`).
-        have hElem : ∀ p q, Measurable (fun w => (Mw w) p q) :=
-          fun p q => (hMw_cont.matrix_elem p q).measurable
-        have hb22 : ∀ (i : Fin (H 0 - r)) (j : Fin (H (Fin.last L) - r)),
-            Measurable (fun w => (Mw w).toBlocks₂₂ i j) := by
-          intro i j; simpa [Matrix.toBlocks₂₂] using hElem (Sum.inr i) (Sum.inr j)
-        have hb21 : ∀ (i : Fin (H 0 - r)) (k : Fin r),
-            Measurable (fun w => (Mw w).toBlocks₂₁ i k) := by
-          intro i k; simpa [Matrix.toBlocks₂₁] using hElem (Sum.inr i) (Sum.inl k)
-        have hb12 : ∀ (l : Fin r) (j : Fin (H (Fin.last L) - r)),
-            Measurable (fun w => (Mw w).toBlocks₁₂ l j) := by
-          intro l j; simpa [Matrix.toBlocks₁₂] using hElem (Sum.inl l) (Sum.inr j)
-        have hb11cont : Continuous (fun w => (Mw w).toBlocks₁₁ + 1) := by
-          apply Continuous.add _ continuous_const
-          exact continuous_matrix fun p q => hMw_cont.matrix_elem (Sum.inl p) (Sum.inl q)
-        have hInv : ∀ (k l : Fin r), Measurable (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l) := by
-          intro k l
-          have h2 : (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l)
-              = fun w => Ring.inverse ((Mw w).toBlocks₁₁ + 1).det
-                  * ((Mw w).toBlocks₁₁ + 1).adjugate k l := by
-            funext w; rw [Matrix.inv_def]; simp [Matrix.smul_apply, smul_eq_mul]
-          rw [h2]
-          refine Measurable.mul ?_ (hb11cont.matrix_adjugate.matrix_elem k l).measurable
-          have hri : Measurable (Ring.inverse : ℝ → ℝ) := by
-            rw [Ring.inverse_eq_inv']; exact measurable_inv
-          exact hri.comp hb11cont.matrix_det.measurable
-        -- assemble: ∑ i ∑ j (Schur-leak entry)².
-        change Measurable fun w => ∑ i, ∑ j,
-          ((Mw w).toBlocks₂₂ - (Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
-            * (Mw w).toBlocks₁₂) i j ^ 2
-        refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
-        refine Measurable.pow_const ?_ _
-        simp only [Matrix.sub_apply]
-        refine Measurable.sub (hb22 i j) ?_
-        have hentry : (fun w => ((Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
-              * (Mw w).toBlocks₁₂) i j)
-            = fun w => ∑ k, ∑ l, (Mw w).toBlocks₂₁ i k * ((Mw w).toBlocks₁₁ + 1)⁻¹ k l
-                * (Mw w).toBlocks₁₂ l j := by
-          funext w
-          rw [Matrix.mul_apply]
-          simp_rw [Matrix.mul_apply, Finset.sum_mul]
-          rw [Finset.sum_comm]
-        rw [hentry]
-        refine Finset.measurable_sum _ (fun k _ => Finset.measurable_sum _ (fun l _ => ?_))
-        exact ((hb21 i k).mul (hInv k l)).mul (hb12 l j)
-    · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
-      simpa only [hΦscore] using hsq w hw
-  -- **Step 2: the diffeo bridge** `rlctAtOn Φscore wstar = rlctAtOn Φcore wstar` via `Ψ : S1 ↦ (I−K)·S1`
-  -- (`rlctAtOn_comp_localDiffeo`: `Ψ` ContDiff ⊤, `HasStrictFDerivAt Ψ (≃L) wstar` with `Ψ'(wstar) =
-  -- I − K(wstar) = I`, `Ψ wstar = wstar`; and `Φcore ∘ Ψ = Φscore` since `coreΦ ∘ Ψ = Score` (the LDU
-  -- `Rcore = S0·(1−K)·S1`, `coreΦ = frobSq(S0·S1)`) and `Ψ` fixes the reg slot). The genuine remaining
-  -- geometric content; the field migration + re-wiring (DeepestGaugeChart.lean) are DONE.
-  -- **Step 2: the diffeo bridge, CASE-SPLIT on `L` (8th-catch pattern, like the `hinterface`
-  -- 3041/3046 L≥3 guards).** At `L = 2` the deepest reduced chain `deepestM` has two layers, so the
-  -- two-grouping collapses to single-layer blocks (`G0 = firstLayer`, `G1 = lastLayer`) and the joint
-  -- `(T1, Y1)` Ψ (the verified-exact cert closed form) applies verbatim — closed by the separate
-  -- axiom-clean `deepest_diffeo_bridge_L2`. For `L ≥ 3` the bridge needs the general-`L` grouped-`G0`
-  -- diffeo (`W := I + Z1·A1⁻¹·A0⁻¹·Y0` on the `prodAux (L−1)`-grouped blocks + the grouped pivot `A0⁻¹`),
-  -- the recursive multi-factor reparametrization — the general-`L` gap, joining 3041/3046 (Item 24).
-  have hstep2 : rlctAtOn Φscore wstar
-      = rlctAtOn
-          (fun x : Fin (flatDim H) → ℝ =>
-            (∑ i, (regStraighten (split x)).1 i ^ 2)
-              + deepestCoreF H r (coreAbsorb (split x)).2.1)
-          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
-    rcases Nat.lt_or_ge L 3 with hLlt | hL3
-    · -- **L = 2 branch** (`2 ≤ L < 3`): the BANKED CONJ assembled bridge
-      -- `deepest_diffeo_bridge_L2_assembled` (route-b, atom-free), fed the triangular-bundle frames +
-      -- per-layer hPtri/hQtri + the CONJ hsub3reg/hsub4core germs. `subst hL2eq` aligns `H : Fin 3`.
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B) * endpointQL H hL Qf)
+            with hMw_def
+          have hMw_cont : Continuous Mw :=
+            continuous_Mw H r B (endpointP0 H hL Pf) (endpointQL H hL Qf)
+              (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          -- entrywise measurability bricks (all from `continuous_Mw` + `inv_def`).
+          have hElem : ∀ p q, Measurable (fun w => (Mw w) p q) :=
+            fun p q => (hMw_cont.matrix_elem p q).measurable
+          have hb22 : ∀ (i : Fin (H 0 - r)) (j : Fin (H (Fin.last L) - r)),
+              Measurable (fun w => (Mw w).toBlocks₂₂ i j) := by
+            intro i j; simpa [Matrix.toBlocks₂₂] using hElem (Sum.inr i) (Sum.inr j)
+          have hb21 : ∀ (i : Fin (H 0 - r)) (k : Fin r),
+              Measurable (fun w => (Mw w).toBlocks₂₁ i k) := by
+            intro i k; simpa [Matrix.toBlocks₂₁] using hElem (Sum.inr i) (Sum.inl k)
+          have hb12 : ∀ (l : Fin r) (j : Fin (H (Fin.last L) - r)),
+              Measurable (fun w => (Mw w).toBlocks₁₂ l j) := by
+            intro l j; simpa [Matrix.toBlocks₁₂] using hElem (Sum.inl l) (Sum.inr j)
+          have hb11cont : Continuous (fun w => (Mw w).toBlocks₁₁ + 1) := by
+            apply Continuous.add _ continuous_const
+            exact continuous_matrix fun p q => hMw_cont.matrix_elem (Sum.inl p) (Sum.inl q)
+          have hInv : ∀ (k l : Fin r), Measurable (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l) := by
+            intro k l
+            have h2 : (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l)
+                = fun w => Ring.inverse ((Mw w).toBlocks₁₁ + 1).det
+                    * ((Mw w).toBlocks₁₁ + 1).adjugate k l := by
+              funext w; rw [Matrix.inv_def]; simp [Matrix.smul_apply, smul_eq_mul]
+            rw [h2]
+            refine Measurable.mul ?_ (hb11cont.matrix_adjugate.matrix_elem k l).measurable
+            have hri : Measurable (Ring.inverse : ℝ → ℝ) := by
+              rw [Ring.inverse_eq_inv']; exact measurable_inv
+            exact hri.comp hb11cont.matrix_det.measurable
+          -- assemble: ∑ i ∑ j (Schur-leak entry)².
+          change Measurable fun w => ∑ i, ∑ j,
+            ((Mw w).toBlocks₂₂ - (Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+              * (Mw w).toBlocks₁₂) i j ^ 2
+          refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+          refine Measurable.pow_const ?_ _
+          simp only [Matrix.sub_apply]
+          refine Measurable.sub (hb22 i j) ?_
+          have hentry : (fun w => ((Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+                * (Mw w).toBlocks₁₂) i j)
+              = fun w => ∑ k, ∑ l, (Mw w).toBlocks₂₁ i k * ((Mw w).toBlocks₁₁ + 1)⁻¹ k l
+                  * (Mw w).toBlocks₁₂ l j := by
+            funext w
+            rw [Matrix.mul_apply]
+            simp_rw [Matrix.mul_apply, Finset.sum_mul]
+            rw [Finset.sum_comm]
+          rw [hentry]
+          refine Finset.measurable_sum _ (fun k _ => Finset.measurable_sum _ (fun l _ => ?_))
+          exact ((hb21 i k).mul (hInv k l)).mul (hb12 l j)
+      · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
+        simpa only [hΦscore] using hsq w hw
+    -- **Step 2 (L = 2): the diffeo bridge** via the banked `deepest_diffeo_bridge_L2_assembled`
+    -- (route-b, atom-free). `subst hL2eq` aligns `H : Fin 3`.
+    have hstep2 : rlctAtOn Φscore wstar
+        = rlctAtOn
+            (fun x : Fin (flatDim H) → ℝ =>
+              (∑ i, (regStraighten (split x)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split x)).2.1)
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
       have hL2eq : L = 2 := by omega
       subst hL2eq
       -- **Boundary block facts** (`hDA`/`hY`/`hZ`/`hbdy`) from the banked L=2 helpers + the bundle units.
@@ -648,12 +633,167 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       exact deepest_diffeo_bridge_L2_assembled H r B hB hr hL hDA hY hZ hbdy J hJfront' Pf Qf
         hPf hQf hQf0 hPfL hQf22 hPtri2 hQtri2 split hsplit_mp hsub3reg regStraighten hsplit
         hra_regval Score hsub4core Φscore hΦscore wstar hwstar
-    · -- **L ≥ 3 branch (general-`L` grouped-`G0` diffeo GAP).** The cert's `(T1, Y1)` Ψ generalises to
-      -- the two-grouping `G0 = prodAux (L−1)` (first `L−1` layers), `G1 = last layer`: `A0, Y0, Z0, T0`
-      -- become the grouped-product blocks and `W`/`⅟P00` carry the grouped pivot `A0⁻¹`. The recursive
-      -- multi-factor reparametrization — the general-`L` frontier, joining the 3041/3046 L≥3 interior gaps.
+    rw [hstep1, hstep2]
+  · -- ===== L ≥ 3 ARM (roadmapped #120 sorries) =====
+    -- **hinterface (L ≥ 3).** The two interior branches stay scoped gaps (roadmapped #120): the bundle
+    -- supplies a generic rank-normal-form interior frame, not committed to the identity.
+    have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+        Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+          Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+            (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ) := by
+      intro s hs
+      refine ⟨?_, ?_⟩
+      · rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+        · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
+          rw [hsf]; exact hQf0
+        · -- SCOPED GAP (L ≥ 3 interior `Qf s`), roadmapped #120.
+          sorry
+      · rcases Nat.lt_or_ge ((s : ℕ) + 1) (L - 1) with hint | hbdy
+        · -- SCOPED GAP (L ≥ 3 interior `Pf (s+1)`), roadmapped #120.
+          sorry
+        · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
+            Fin.ext (by simp only [lastLayer]; omega)
+          rw [hsf]; exact hPfL
+    -- PIN 2: the loss squeeze (ROUTE-B close, `coreΦ → Score`, 2026-06-25). The migrated `loss_squeeze`
+    -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
+    -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
+    -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
+    -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
+    -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
+    set Score : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂) i j) ^ 2 with hScoreDef
+    obtain ⟨c₁, c₂, hc₁, hc₂, U, hU, hsq⟩ :=
+      deepest_loss_squeeze H r B hB hr hL hL2 hpos J hJfront' Pf Qf split coreAbsorb regStraighten
+        hsplit_base hsplit hra_regval hca_def Score (fun _ => rfl)
+        hPunit hQunit hQf0 hPfL hNF hcorner' hinterface
+    -- **ROUTE-B CLOSE (2026-06-25).** Target: `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)` (the migrated
+    -- field). TWO steps: (1) `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + Score)` — the TRUE Score-sandwich `hsq`
+    -- fed to `rlctAtOn_squeeze` after the Params→flat MP transport; (2) the diffeo bridge
+    -- `rlctAtOn(Sreg_E + Score) = rlctAtOn(Sreg_E + coreΦ)` via `Ψ : S1 ↦ (I−K)·S1` (`rlctAtOn_comp_localDiffeo`).
+    set Φscore : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x with hΦscore
+    set Φcore : (Fin (flatDim H) → ℝ) → ℝ :=
+      fun x => (∑ i, (regStraighten (split x)).1 i ^ 2)
+        + deepestCoreF H r (coreAbsorb (split x)).2.1 with hΦcore
+    set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+    -- **Step 1: `rlctAt(dlnLoss) = rlctAtOn Φscore wstar`** (Params→flat MP transport + `rlctAtOn_squeeze`
+    -- on the TRUE Score-sandwich `hsq`).
+    have hstep1 : rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+        = rlctAtOn Φscore wstar := by
+      rw [← rlctAtOn_eq_rlctAt]
+      set e : Params H ≃ₜ (Fin (flatDim H) → ℝ) :=
+        ⟨(paramsEquivFlat H).toEquiv, continuous_paramsEquivFlat H, continuous_paramsEquivFlat_symm H⟩
+        with he
+      have hmp : MeasurePreserving e (volume : Measure (Params H)) volume :=
+        measurePreserving_paramsEquivFlat H
+      have hemb : MeasurableEmbedding e := (paramsEquivFlat H).measurableEmbedding
+      have htrans := rlctAtOn_comp_homeomorph e hmp hemb
+        (fun x : Fin (flatDim H) → ℝ => dlnLoss H B ((paramsEquivFlat H).symm x))
+        (deepestPoint H r B hB hr hL)
+      have hcomp : (fun A : Params H => dlnLoss H B ((paramsEquivFlat H).symm (e A)))
+          = fun A : Params H => dlnLoss H B A := by
+        funext A; congr 1; exact (paramsEquivFlat H).symm_apply_apply A
+      rw [hcomp] at htrans
+      have he_deepest : e (deepestPoint H r B hB hr hL) = wstar := rfl
+      rw [he_deepest] at htrans
+      rw [htrans]
+      refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
+        ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
+        c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
+      · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
+        rw [hΦscore, hScoreDef]
+        apply Measurable.add
+        · exact (Finset.measurable_sum _ (fun i _ =>
+            ((measurable_pi_apply i).comp
+              (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
+        · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
+          -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
+          -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
+          -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
+          -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
+          -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
+          set Mw : (Fin (flatDim H) → ℝ) →
+              Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
+            fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B) * endpointQL H hL Qf)
+            with hMw_def
+          have hMw_cont : Continuous Mw :=
+            continuous_Mw H r B (endpointP0 H hL Pf) (endpointQL H hL Qf)
+              (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          -- entrywise measurability bricks (all from `continuous_Mw` + `inv_def`).
+          have hElem : ∀ p q, Measurable (fun w => (Mw w) p q) :=
+            fun p q => (hMw_cont.matrix_elem p q).measurable
+          have hb22 : ∀ (i : Fin (H 0 - r)) (j : Fin (H (Fin.last L) - r)),
+              Measurable (fun w => (Mw w).toBlocks₂₂ i j) := by
+            intro i j; simpa [Matrix.toBlocks₂₂] using hElem (Sum.inr i) (Sum.inr j)
+          have hb21 : ∀ (i : Fin (H 0 - r)) (k : Fin r),
+              Measurable (fun w => (Mw w).toBlocks₂₁ i k) := by
+            intro i k; simpa [Matrix.toBlocks₂₁] using hElem (Sum.inr i) (Sum.inl k)
+          have hb12 : ∀ (l : Fin r) (j : Fin (H (Fin.last L) - r)),
+              Measurable (fun w => (Mw w).toBlocks₁₂ l j) := by
+            intro l j; simpa [Matrix.toBlocks₁₂] using hElem (Sum.inl l) (Sum.inr j)
+          have hb11cont : Continuous (fun w => (Mw w).toBlocks₁₁ + 1) := by
+            apply Continuous.add _ continuous_const
+            exact continuous_matrix fun p q => hMw_cont.matrix_elem (Sum.inl p) (Sum.inl q)
+          have hInv : ∀ (k l : Fin r), Measurable (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l) := by
+            intro k l
+            have h2 : (fun w => ((Mw w).toBlocks₁₁ + 1)⁻¹ k l)
+                = fun w => Ring.inverse ((Mw w).toBlocks₁₁ + 1).det
+                    * ((Mw w).toBlocks₁₁ + 1).adjugate k l := by
+              funext w; rw [Matrix.inv_def]; simp [Matrix.smul_apply, smul_eq_mul]
+            rw [h2]
+            refine Measurable.mul ?_ (hb11cont.matrix_adjugate.matrix_elem k l).measurable
+            have hri : Measurable (Ring.inverse : ℝ → ℝ) := by
+              rw [Ring.inverse_eq_inv']; exact measurable_inv
+            exact hri.comp hb11cont.matrix_det.measurable
+          -- assemble: ∑ i ∑ j (Schur-leak entry)².
+          change Measurable fun w => ∑ i, ∑ j,
+            ((Mw w).toBlocks₂₂ - (Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+              * (Mw w).toBlocks₁₂) i j ^ 2
+          refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+          refine Measurable.pow_const ?_ _
+          simp only [Matrix.sub_apply]
+          refine Measurable.sub (hb22 i j) ?_
+          have hentry : (fun w => ((Mw w).toBlocks₂₁ * ((Mw w).toBlocks₁₁ + 1)⁻¹
+                * (Mw w).toBlocks₁₂) i j)
+              = fun w => ∑ k, ∑ l, (Mw w).toBlocks₂₁ i k * ((Mw w).toBlocks₁₁ + 1)⁻¹ k l
+                  * (Mw w).toBlocks₁₂ l j := by
+            funext w
+            rw [Matrix.mul_apply]
+            simp_rw [Matrix.mul_apply, Finset.sum_mul]
+            rw [Finset.sum_comm]
+          rw [hentry]
+          refine Finset.measurable_sum _ (fun k _ => Finset.measurable_sum _ (fun l _ => ?_))
+          exact ((hb21 i k).mul (hInv k l)).mul (hb12 l j)
+      · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
+        simpa only [hΦscore] using hsq w hw
+    -- **Step 2 (L ≥ 3): grouped-`G0` diffeo GAP** (roadmapped #120). The cert's `(T1, Y1)` Ψ generalises
+    -- to the two-grouping `G0 = prodAux (L−1)`, `G1 = last layer`; the recursive multi-factor reparam.
+    have hstep2 : rlctAtOn Φscore wstar
+        = rlctAtOn
+            (fun x : Fin (flatDim H) → ℝ =>
+              (∑ i, (regStraighten (split x)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split x)).2.1)
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
       sorry
-  rw [hstep1, hstep2]
+    rw [hstep1, hstep2]
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
 Destructures the bundled construction into the structure. The `2 ≤ L` hypothesis (distinct boundary
