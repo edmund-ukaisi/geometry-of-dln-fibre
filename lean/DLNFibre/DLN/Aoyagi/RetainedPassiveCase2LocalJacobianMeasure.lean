@@ -1189,6 +1189,149 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- A nonzero selected-entry residual value produces an endpoint-transported
+Case 2 retained-passive point in both the source-rank stratum and the p.13
+local source, with exact residual-coordinate readout.
+
+The source-rank membership uses the explicit base-product rank, first-edge
+rank, and a successor-rank hypothesis for the produced fixed-pivot inverse
+coordinate.  This is still point production for one punctured selected-entry
+chart value; it does not assert source-rank coverage, source/image equality,
+successor-rank arithmetic, source-prior transport, Jacobian compatibility,
+normal crossings, pole order, or RLCT. -/
+theorem exists_case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_value_of_pivot_ne_zero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hprod : Module.finrank ℝ (LinearMap.range (paperTotalMap W₂ B₂)) = r)
+    (hr0 : r + Fintype.card τ = rEdge 0) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) ≃ center :=
+      case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+        n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+    ∀ value : center → ℝ, value pivotNext ≠ 0 →
+      r +
+          (case2SuccessorSelectedEntryMatrix n hS hnext
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+              pivotNext value)
+            eNext).rank =
+        rEdge 1 →
+      ∃ yNext : center → ℝ,
+        yNext pivotNext ≠ 0 ∧
+        sourceChart yNext ∈
+          paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) (N := 2) W₂ B₂ (fun E : EdgeFamily ↦ E)
+            r rEdge ∧
+        sourceChart yNext ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+            (fun E : EdgeFamily ↦ E) ∧
+        (∀ c,
+          paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+              (sourceChart yNext) c =
+            value (residualCoordEquiv c)) := by
+  intro center pivotNext EdgeFamily retainedData sourceChart residualCoordEquiv value hpivot hr1
+  let yNext :=
+    SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext value
+  have hpre :
+      (∀ yNext : center → ℝ,
+        sourceChart yNext ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+            (fun E : EdgeFamily ↦ E)) ∧
+      (∀ yNext : center → ℝ,
+        let E :=
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun p : Fin 2 ↦
+              (sourceChart yNext p :
+                reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+        ChartLocalSuffixState.residualFactorProduct
+            (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦
+              SelectedEntrySignedBox.CenterCoord.chartMap pivotNext yNext
+                (residualCoordEquiv c))) := by
+    simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart,
+      residualCoordEquiv] using
+      retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+  have hyPivot : yNext pivotNext ≠ 0 := by
+    simpa [yNext, SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero] using hpivot
+  have hlocal :
+      sourceChart yNext ∈
+        paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+          (fun E : EdgeFamily ↦ E) :=
+    hpre.1 yNext
+  have hreadout :
+      ∀ c,
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+            (sourceChart yNext) c =
+          value (residualCoordEquiv c) := by
+    intro c
+    have hcoord :=
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_case2EndpointTransport_sourceEdgeFamilyOfData_preimageOfPivotNeZero
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        value hpivot c
+    simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart,
+      residualCoordEquiv, yNext] using hcoord
+  have hstratum :
+      sourceChart yNext ∈
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := 2) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge := by
+    simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart] using
+      case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        yNext hprod hr0 (by simpa [yNext] using hr1)
+  exact ⟨yNext, hyPivot, hstratum, hlocal, hreadout⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The endpoint-transported explicit Case 2 retained-passive source chart is
 continuous as a finite selected-entry coordinate map.
 

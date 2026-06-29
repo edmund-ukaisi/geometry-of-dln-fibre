@@ -20305,3 +20305,53 @@ forbidden-marker scan were clean.  Nonclaims: no source-rank-stratum
 membership of the produced point, selected-entry source-rank coverage,
 source/image equality, source-prior transport, Jacobian comparison, analytic
 atlas, normal crossings, pole order, or RLCT.
+
+## Latest A2 Case 2 Produced Source-Rank Point Readout
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_value_of_pivot_ne_zero
+```
+
+Given an endpoint-transported explicit continuing Case 2 setup and a
+selected-entry residual center value whose selected pivot is nonzero, the
+theorem produces fixed-pivot selected-entry coordinates `yNext`.  The
+corresponding retained-passive p.13 source edge family lies in both
+`paperEndpointFixedBaseSourceRankStratum` and
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource`, and its fixed-base
+residual-coordinate map is the supplied target value.
+
+The source-rank membership uses explicit rank hypotheses at the produced
+point:
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+r + rank(case2SuccessorSelectedEntryMatrix
+    ... (preimageOfPivotNeZero pivotNext value) ...) = rEdge 1.
+```
+
+The edge-1 rank hypothesis is pointwise at the fixed-pivot inverse coordinate,
+not uniform over all selected-entry coordinates.  The proof uses the
+local-source/readout bridge for that coordinate and
+`case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-produced-source-rank-point-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-produced-source-rank-point-readout.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+
+Reorientation note: the broader p.13 determinant-chart image equality for
+retained-passive coordinates was already present as
+`image_topologyTupleEdgeMatrix_detChartSet` in
+`RetainedPassiveCoordinatesTopology.lean`, together with the raw-order image
+equality and partial-homeomorphism layer.
+
+Nonclaims: no source-rank coverage, no selected-entry source/image equality,
+no exact-rank openness, no successor-rank arithmetic, no source-prior
+transport, no Jacobian comparison, no analytic atlas, no normal crossings, no
+pole order, and no RLCT.

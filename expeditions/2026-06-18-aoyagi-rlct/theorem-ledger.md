@@ -11846,3 +11846,28 @@ Nonclaims: no source-rank-stratum membership for the produced source point,
 no selected-entry source-rank coverage, no source/image equality, no
 source-prior transport, no Jacobian comparison, no analytic atlas, no normal
 crossings, no pole order, and no RLCT.
+
+Latest A2 Case 2 produced source-rank point readout:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`exists_case2EndpointTransport_sourceEdgeFamilyOfData_mem_sourceRankStratum_and_localSource_and_residualBlockCoordinateMap_eq_value_of_pivot_ne_zero`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-produced-source-rank-point-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-produced-source-rank-point-readout.md`.
+
+Ledger status: point-production/source-image support package.  The theorem
+chooses the fixed-pivot selected-entry inverse coordinate, uses the
+local-source/readout bridge for that coordinate, and applies the existing Case
+2 source-rank membership theorem.  It assumes base-product rank `r`, first
+edge rank `r + card tau`, and the successor selected-entry matrix rank for
+edge `1` at the produced inverse coordinate only.  The edge-1 rank hypothesis
+is not uniform over all selected-entry coordinates.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+
+Nonclaims: no source-rank coverage, no selected-entry source/image equality,
+no exact-rank openness, no successor-rank arithmetic, no source-prior
+transport, no Jacobian comparison, no analytic atlas, no normal crossings, no
+pole order, and no RLCT.

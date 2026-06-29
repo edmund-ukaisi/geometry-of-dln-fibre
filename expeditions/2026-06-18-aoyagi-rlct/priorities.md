@@ -10,6 +10,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 produced source-rank point readout
+
+The continuing Case 2 point-production theorem now has the intended
+source-rank-strengthened package.  Given a selected-entry center value with
+nonzero selected pivot, the produced endpoint-transported retained-passive
+p.13 source edge family lies in both
+
+```text
+paperEndpointFixedBaseSourceRankStratum
+paperEndpointFixedBaseRetainedPassiveP13LocalSource
+```
+
+and its fixed-base residual-coordinate map is the prescribed center value.
+The new source-rank part uses explicit rank hypotheses for the produced
+point:
+
+```text
+finrank range(paperTotalMap W2 B2) = r,
+r + card tau = rEdge 0,
+r + rank(case2SuccessorSelectedEntryMatrix
+    ... (preimageOfPivotNeZero pivotNext value) ...) = rEdge 1.
+```
+
+The edge-1 rank hypothesis is pointwise at the produced fixed-pivot inverse
+coordinate.  This is intentionally weaker than the uniform successor-rank
+hypothesis needed for chart-produced measure support.
+
+This is a point-production/source-image support datum.  It still does not
+prove source-rank coverage, selected-entry image equality, exact-rank
+openness, successor-rank arithmetic, original source-prior/Jacobian transport,
+analytic atlas data, normal crossings, pole order, or RLCT.
+
+The p.13 retained-passive determinant-chart image equality suggested during
+reorientation was already present as
+`image_topologyTupleEdgeMatrix_detChartSet` in
+`RetainedPassiveCoordinatesTopology.lean`; do not duplicate that layer.
+
 ## Latest controller decision - 2026-06-29, Case 2 supported open restriction
 
 The support theorem now has a downstream finite-integral consumer.  For the
