@@ -10,6 +10,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, regular-suspension reverse threshold shift
+
+The p.13 regular-square suspension now has the reverse local model-integral
+direction in Lean.  Under explicit local hypotheses
+
+```text
+AEMeasurable a mu,
+0 < R,
+a > 0 a.e.,
+a <= R^2 a.e.,
+0 < t,
+```
+
+Lean proves that product integrability of
+
+```text
+(a x + ||u||^2)^(-(t + finrank(E)/2))
+```
+
+over `u in ball(0,R)` is equivalent to residual integrability of
+`(a x)^(-t)`.  The reverse implication uses the elementary lower bound on
+`ball(0,sqrt(a x))`, Haar scaling of that ball, Tonelli, and cancellation of
+the positive finite constant
+`ofReal(2^(-(t+finrank/2))) * nu(ball(0,1))`.
+
+This is a genuine strengthening of the earlier one-sided finite theorem and
+matches the p.13 threshold-shift calculation at the model-integral level.  The
+extra `AEMeasurable a mu` hypothesis is necessary for Tonelli equality; the
+local upper bound `a <= R^2` is necessary unless a separate finite-measure
+large-`a` split is added.
+
+Nonclaims: no p.13 analytic chart coverage, no source-prior/Jacobian transport,
+no proof that Aoyagi's reduced residual coordinates satisfy the residual
+integrability input, no pole order, no normal crossings, and no RLCT.
+
+Next priority: connect this iff to the already formalised square-sum sockets
+and p.13 regular-variable count only where a downstream theorem needs the
+two-sided threshold statement.  Do not overstate it as an RLCT or pole-order
+theorem.
+
 ## Latest controller decision - 2026-06-29, Case 2 residual-coordinate measure pushforward
 
 The continuing Case 2 chart now has the correct chart-produced residual

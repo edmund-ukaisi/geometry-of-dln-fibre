@@ -3,6 +3,64 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 regular-suspension reverse threshold shift - 2026-06-29
+
+`RegularSuspensionIntegrability.lean` now proves the reverse local
+threshold-shift direction for the square model.  The key new public theorems
+are:
+
+```text
+base_power_scale_le_lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod
+lintegral_ofReal_base_power_lt_top_of_product_lt_top
+lintegral_ofReal_residual_power_lt_top_of_product_lt_top
+lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+```
+
+The proof is the elementary p.13 regular-coordinate Fubini calculation.  For a
+good base point with `0 < a x` and `a x <= R^2`, integrate over the smaller
+regular ball `ball(0,sqrt(a x))`.  On this ball,
+`a x + ||u||^2 <= 2*a x`, so negative-power monotonicity gives a pointwise
+lower bound by `(2*a x)^(-s)`.  Haar scaling converts
+`nu(ball(0,sqrt(a x)))` into
+`ofReal((sqrt(a x))^finrank) * nu(ball(0,1))`, and the real-power identity
+rewrites the fiber lower bound as a positive constant times
+`ofReal((a x)^(finrank/2-s))`.
+
+The product-level lower bound uses `lintegral_prod`, so the reverse theorem
+explicitly assumes `AEMeasurable a mu`.  This is not needed by the earlier
+forward finite theorem, which used only `lintegral_prod_le`.  The local
+hypothesis `a <= R^2` is also real: without it, over an infinite base, a
+fixed-radius fiber can behave like `a^(-(t+finrank/2))` for large `a` while
+`a^(-t)` fails to be integrable.
+
+Specialising `s = t + finrank/2` gives finite residual `a^(-t)` integrability
+from finite product integrability; combined with the earlier forward theorem,
+Lean proves the local model-integral iff under `AEMeasurable a`, `0<R`,
+`a>0` a.e., `a<=R^2` a.e., and `0<t`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-regular-suspension-reverse-threshold-shift.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-regular-suspension-reverse-threshold-shift.md`.
+Review passed in
+`threads/03-block-product-reduction/review-a2-regular-suspension-reverse-threshold-shift.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionIntegrability
+```
+
+Final hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes for the new public theorem
+names.  The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no p.13 analytic chart coverage, source-prior/Jacobian transport,
+residual-coordinate integrability input, pole order, normal crossings, or
+RLCT.
+
 ## Latest A2 Case 2 source-stratum-supported open restriction - 2026-06-29
 
 Landed the downstream finite-integral consumer of the source-stratum support

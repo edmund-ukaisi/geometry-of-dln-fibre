@@ -774,6 +774,303 @@ theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_resi
       ha_pos hs hbase'
   simpa [s] using hfin
 
+/-- Pointwise lower bound on the small regular ball used for the reverse
+regular-square estimate. -/
+theorem ofReal_two_mul_base_rpow_neg_le_ofReal_add_norm_sq_rpow_neg_of_mem_ball_sqrt
+    {E : Type*} [NormedAddCommGroup E] {a s : ℝ}
+    (ha : 0 < a) (hs : 0 ≤ s) {u : E}
+    (hu : u ∈ Metric.ball (0 : E) (Real.sqrt a)) :
+    ENNReal.ofReal ((2 * a) ^ (-s)) ≤
+      ENNReal.ofReal ((a + ‖u‖ ^ 2) ^ (-s)) := by
+  apply ENNReal.ofReal_le_ofReal
+  have hsqrt_pos : 0 < Real.sqrt a := Real.sqrt_pos.2 ha
+  have hu_norm : ‖u‖ < Real.sqrt a := by
+    simpa [Metric.mem_ball, dist_zero_right] using hu
+  have hu_sq_le : ‖u‖ ^ 2 ≤ a := by
+    have hsq_lt : ‖u‖ ^ 2 < (Real.sqrt a) ^ 2 := by
+      nlinarith [norm_nonneg u, hu_norm, hsqrt_pos]
+    have hsqrt_sq : (Real.sqrt a) ^ 2 = a := by
+      rw [Real.sq_sqrt ha.le]
+    exact le_of_lt (by simpa [hsqrt_sq] using hsq_lt)
+  have hq_pos : 0 < a + ‖u‖ ^ 2 := by positivity
+  have hle : a + ‖u‖ ^ 2 ≤ 2 * a := by
+    nlinarith [sq_nonneg ‖u‖, hu_sq_le]
+  exact Real.rpow_le_rpow_of_nonpos hq_pos hle (by linarith)
+
+/-- Fiberwise lower bound obtained by integrating over the ball of radius
+`sqrt a`. -/
+theorem fiber_sqrt_ball_lower_le_lintegral_add_norm_sq_pos
+    {E : Type*} [NormedAddCommGroup E] [MeasurableSpace E] [OpensMeasurableSpace E]
+    {ν : Measure E} {a s R : ℝ}
+    (ha : 0 < a) (hs : 0 ≤ s) (hsqrt_le_R : Real.sqrt a ≤ R) :
+    ENNReal.ofReal ((2 * a) ^ (-s)) *
+        ν (Metric.ball (0 : E) (Real.sqrt a)) ≤
+      (∫⁻ u : E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a + ‖u‖ ^ 2) ^ (-s)) u) ∂ν) := by
+  rw [← lintegral_indicator_const Metric.isOpen_ball.measurableSet]
+  apply lintegral_mono
+  intro u
+  by_cases hu : u ∈ Metric.ball (0 : E) (Real.sqrt a)
+  · have huR : u ∈ Metric.ball (0 : E) R := Metric.ball_subset_ball hsqrt_le_R hu
+    simp only [Set.indicator_of_mem hu, Set.indicator_of_mem huR]
+    exact ofReal_two_mul_base_rpow_neg_le_ofReal_add_norm_sq_rpow_neg_of_mem_ball_sqrt
+      (a := a) (s := s) ha hs hu
+  · simp [hu]
+
+/-- Fixed-fiber lower bound with the Haar scaling of the small ball written as
+a residual power times a positive regular-ball constant. -/
+theorem base_power_scale_le_lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball
+    {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {ν : Measure E} [ν.IsAddHaarMeasure] {a s R : ℝ}
+    (hR : 0 < R) (ha : 0 < a) (ha_le : a ≤ R ^ 2) (hs : 0 ≤ s) :
+    ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+        (ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1)) ≤
+      (∫⁻ u : E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a + ‖u‖ ^ 2) ^ (-s)) u) ∂ν) := by
+  have hsqrt_pos : 0 < Real.sqrt a := Real.sqrt_pos.2 ha
+  have hsqrt_le_R : Real.sqrt a ≤ R :=
+    (Real.sqrt_le_iff).2 ⟨hR.le, ha_le⟩
+  have hsmall :=
+    fiber_sqrt_ball_lower_le_lintegral_add_norm_sq_pos
+      (ν := ν) (a := a) (s := s) (R := R) ha hs hsqrt_le_R
+  have hball :
+      ν (Metric.ball (0 : E) (Real.sqrt a)) =
+        ENNReal.ofReal ((Real.sqrt a) ^ Module.finrank ℝ E) *
+          ν (Metric.ball (0 : E) 1) := by
+    simpa using ν.addHaar_ball_of_pos (0 : E) hsqrt_pos
+  have hreal :
+      a ^ ((Module.finrank ℝ E : ℝ) / 2 - s) * (2 : ℝ) ^ (-s) =
+        (2 * a) ^ (-s) * (Real.sqrt a) ^ Module.finrank ℝ E := by
+    have hsqrtpow :
+        (Real.sqrt a) ^ Module.finrank ℝ E =
+          a ^ ((Module.finrank ℝ E : ℝ) / 2) := by
+      rw [Real.sqrt_eq_rpow]
+      rw [← Real.rpow_natCast]
+      rw [← Real.rpow_mul ha.le]
+      congr 1
+      ring
+    have hpow :
+        a ^ (-s) * a ^ ((Module.finrank ℝ E : ℝ) / 2) =
+          a ^ ((Module.finrank ℝ E : ℝ) / 2 - s) := by
+      rw [← Real.rpow_add ha]
+      congr 1
+      ring
+    calc
+      a ^ ((Module.finrank ℝ E : ℝ) / 2 - s) * (2 : ℝ) ^ (-s)
+          = (2 : ℝ) ^ (-s) *
+              a ^ ((Module.finrank ℝ E : ℝ) / 2 - s) := by ring
+      _ = (2 : ℝ) ^ (-s) *
+              (a ^ (-s) * a ^ ((Module.finrank ℝ E : ℝ) / 2)) := by
+        rw [hpow]
+      _ = ((2 : ℝ) ^ (-s) * a ^ (-s)) *
+              a ^ ((Module.finrank ℝ E : ℝ) / 2) := by ring
+      _ = (2 * a) ^ (-s) *
+              a ^ ((Module.finrank ℝ E : ℝ) / 2) := by
+        rw [Real.mul_rpow (by norm_num : 0 ≤ (2 : ℝ)) ha.le]
+      _ = (2 * a) ^ (-s) * (Real.sqrt a) ^ Module.finrank ℝ E := by
+        rw [hsqrtpow]
+  calc
+    ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+        (ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1))
+        = (ENNReal.ofReal (a ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) *
+            ENNReal.ofReal ((2 : ℝ) ^ (-s))) *
+            ν (Metric.ball (0 : E) 1) := by
+      rw [mul_assoc]
+    _ = (ENNReal.ofReal ((2 * a) ^ (-s)) *
+            ENNReal.ofReal ((Real.sqrt a) ^ Module.finrank ℝ E)) *
+            ν (Metric.ball (0 : E) 1) := by
+      congr 1
+      have hp_nonneg :
+          0 ≤ a ^ ((Module.finrank ℝ E : ℝ) / 2 - s) :=
+        Real.rpow_nonneg ha.le _
+      have htwomul_nonneg : 0 ≤ (2 * a) ^ (-s) :=
+        Real.rpow_nonneg (mul_nonneg (by norm_num) ha.le) _
+      rw [← ENNReal.ofReal_mul hp_nonneg]
+      rw [← ENNReal.ofReal_mul htwomul_nonneg]
+      rw [hreal]
+    _ = ENNReal.ofReal ((2 * a) ^ (-s)) *
+          (ENNReal.ofReal ((Real.sqrt a) ^ Module.finrank ℝ E) *
+            ν (Metric.ball (0 : E) 1)) := by
+      rw [mul_assoc]
+    _ = ENNReal.ofReal ((2 * a) ^ (-s)) *
+          ν (Metric.ball (0 : E) (Real.sqrt a)) := by
+      rw [hball]
+    _ ≤ (∫⁻ u : E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a + ‖u‖ ^ 2) ^ (-s)) u) ∂ν) := hsmall
+
+/-- Product lower bound for the regular-square model.  This is the reverse
+side of the local threshold-shift comparison, under the local bound
+`a <= R^2` needed to fit the `sqrt a` ball inside the chosen regular ball. -/
+theorem base_power_scale_le_lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {s R : ℝ}
+    (ha_meas : AEMeasurable a μ) (hR : 0 < R)
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ha_le : ∀ᵐ x ∂μ, a x ≤ R ^ 2)
+    (hs : 0 ≤ s) :
+    (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) *
+        (ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1)) ≤
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) := by
+  let p : ℝ := (Module.finrank ℝ E : ℝ) / 2 - s
+  let K : ℝ≥0∞ := ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1)
+  let F : α × E → ℝ≥0∞ := fun z =>
+    ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2)
+  have hK_ne_top : K ≠ ∞ := by
+    dsimp [K]
+    exact ENNReal.mul_ne_top ENNReal.ofReal_ne_top measure_ball_lt_top.ne
+  have hreal :
+      AEMeasurable (fun z : α × E => (a z.1 + ‖z.2‖ ^ 2) ^ (-s))
+        (μ.prod ν) := by
+    have ha_prod : AEMeasurable (fun z : α × E => a z.1) (μ.prod ν) :=
+      ha_meas.comp_fst
+    have hnorm : AEMeasurable (fun z : α × E => ‖z.2‖ ^ 2) (μ.prod ν) :=
+      ((continuous_norm.measurable.comp measurable_snd).pow_const (2 : ℕ)).aemeasurable
+    exact (ha_prod.add hnorm).pow_const (-s)
+  have hset : MeasurableSet {z : α × E | z.2 ∈ Metric.ball (0 : E) R} :=
+    Metric.isOpen_ball.measurableSet.preimage measurable_snd
+  have hF_indicator :
+      AEMeasurable
+        (({z : α × E | z.2 ∈ Metric.ball (0 : E) R}).indicator
+          (fun z : α × E =>
+            ENNReal.ofReal ((a z.1 + ‖z.2‖ ^ 2) ^ (-s))))
+        (μ.prod ν) :=
+    (AEMeasurable.ennreal_ofReal hreal).indicator hset
+  have hF : AEMeasurable F (μ.prod ν) := by
+    refine hF_indicator.congr (Filter.Eventually.of_forall fun z => ?_)
+    dsimp [F]
+    by_cases hz : z.2 ∈ Metric.ball (0 : E) R
+    · have hzset : z ∈ {z : α × E | z.2 ∈ Metric.ball (0 : E) R} := hz
+      rw [Set.indicator_of_mem hzset, Set.indicator_of_mem hz]
+    · have hzset : z ∉ {z : α × E | z.2 ∈ Metric.ball (0 : E) R} := hz
+      rw [Set.indicator_of_notMem hzset, Set.indicator_of_notMem hz]
+      simp
+  have hfiber : ∀ᵐ x ∂μ,
+      ENNReal.ofReal ((a x) ^ p) * K ≤ ∫⁻ u : E, F (x, u) ∂ν := by
+    filter_upwards [ha_pos, ha_le] with x hax haxle
+    dsimp [F, K, p]
+    exact base_power_scale_le_lintegral_ofReal_add_norm_sq_pos_rpow_neg_indicator_ball
+      (ν := ν) (a := a x) (s := s) (R := R) hR hax haxle hs
+  calc
+    (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) *
+        (ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1))
+        = ∫⁻ x : α, ENNReal.ofReal ((a x) ^ p) * K ∂μ := by
+      rw [lintegral_mul_const' K _ hK_ne_top]
+    _ ≤ ∫⁻ x : α, ∫⁻ u : E, F (x, u) ∂ν ∂μ :=
+      lintegral_mono_ae hfiber
+    _ = ∫⁻ z : α × E, F z ∂ μ.prod ν := by
+      exact (lintegral_prod F hF).symm
+    _ = (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) := rfl
+
+/-- Reverse finite-side estimate for the regular-square model.  If the product
+integral is finite locally and `a <= R^2` a.e., then the residual base-power
+integral is finite. -/
+theorem lintegral_ofReal_base_power_lt_top_of_product_lt_top
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {s R : ℝ}
+    (ha_meas : AEMeasurable a μ) (hR : 0 < R)
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ha_le : ∀ᵐ x ∂μ, a x ≤ R ^ 2)
+    (hs : (Module.finrank ℝ E : ℝ) / 2 < s)
+    (hprod :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E => (a z.1 + ‖u‖ ^ 2) ^ (-s)) z.2) ∂ μ.prod ν) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal
+      ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) < ∞ := by
+  let K : ℝ≥0∞ := ENNReal.ofReal ((2 : ℝ) ^ (-s)) * ν (Metric.ball (0 : E) 1)
+  have hs_nonneg : 0 ≤ s := by
+    have hdim_nonneg : 0 ≤ (Module.finrank ℝ E : ℝ) / 2 := by positivity
+    linarith
+  have hK_ne_zero : K ≠ 0 := by
+    dsimp [K]
+    exact mul_ne_zero
+      (ne_of_gt (by simpa [ENNReal.ofReal_pos] using
+        (Real.rpow_pos_of_pos (by norm_num : (0 : ℝ) < 2) (-s))))
+      (ne_of_gt (Metric.measure_ball_pos ν (0 : E) zero_lt_one))
+  have hle :=
+    base_power_scale_le_lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod
+      (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R)
+      ha_meas hR ha_pos ha_le hs_nonneg
+  have hmul_lt :
+      (∫⁻ x : α, ENNReal.ofReal
+        ((a x) ^ ((Module.finrank ℝ E : ℝ) / 2 - s)) ∂μ) * K < ∞ :=
+    lt_of_le_of_lt hle hprod
+  exact ENNReal.lt_top_of_mul_ne_top_left hmul_lt.ne hK_ne_zero
+
+/-- Reverse threshold-shift corollary with exponent `t + finrank / 2`. -/
+theorem lintegral_ofReal_residual_power_lt_top_of_product_lt_top
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {t R : ℝ}
+    (ha_meas : AEMeasurable a μ) (hR : 0 < R)
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ha_le : ∀ᵐ x ∂μ, a x ≤ R ^ 2)
+    (ht : 0 < t)
+    (hprod :
+      (∫⁻ z : α × E, ENNReal.ofReal
+        ((Metric.ball (0 : E) R).indicator
+          (fun u : E =>
+            (a z.1 + ‖u‖ ^ 2) ^
+              (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞) :
+    (∫⁻ x : α, ENNReal.ofReal ((a x) ^ (-t)) ∂μ) < ∞ := by
+  let s : ℝ := t + (Module.finrank ℝ E : ℝ) / 2
+  have hs : (Module.finrank ℝ E : ℝ) / 2 < s := by
+    dsimp [s]
+    linarith
+  have hexp : (Module.finrank ℝ E : ℝ) / 2 - s = -t := by
+    dsimp [s]
+    ring
+  have hbase :=
+    lintegral_ofReal_base_power_lt_top_of_product_lt_top
+      (E := E) (μ := μ) (ν := ν) (a := a) (s := s) (R := R)
+      ha_meas hR ha_pos ha_le hs hprod
+  simpa [s, hexp] using hbase
+
+/-- Local threshold-shift iff for the square model, under the upper bound
+`a <= R^2` needed by the reverse implication. -/
+theorem lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_iff_residual_power_lt_top
+    {α E : Type*} [MeasurableSpace α]
+    [NormedAddCommGroup E] [NormedSpace ℝ E]
+    [MeasurableSpace E] [BorelSpace E] [FiniteDimensional ℝ E]
+    {μ : Measure α} {ν : Measure E} [SFinite ν] [ν.IsAddHaarMeasure]
+    {a : α → ℝ} {t R : ℝ}
+    (ha_meas : AEMeasurable a μ) (hR : 0 < R)
+    (ha_pos : ∀ᵐ x ∂μ, 0 < a x) (ha_le : ∀ᵐ x ∂μ, a x ≤ R ^ 2)
+    (ht : 0 < t) :
+    (∫⁻ z : α × E, ENNReal.ofReal
+      ((Metric.ball (0 : E) R).indicator
+        (fun u : E =>
+          (a z.1 + ‖u‖ ^ 2) ^
+            (-(t + (Module.finrank ℝ E : ℝ) / 2))) z.2) ∂ μ.prod ν) < ∞
+      ↔
+    (∫⁻ x : α, ENNReal.ofReal ((a x) ^ (-t)) ∂μ) < ∞ := by
+  constructor
+  · exact
+      lintegral_ofReal_residual_power_lt_top_of_product_lt_top
+        (E := E) (μ := μ) (ν := ν) (a := a) (t := t) (R := R)
+        ha_meas hR ha_pos ha_le ht
+  · exact
+      lintegral_ofReal_add_norm_sq_rpow_neg_indicator_ball_prod_lt_top_of_residual_power_lt_top
+        (E := E) (μ := μ) (ν := ν) (a := a) (t := t) (R := R)
+        ha_pos ht
+
 /-- Positive-parameter global finite-side estimate in the supercritical
 regime.  This comparison proof gives finiteness for each fixed `a > 0`; the
 sharper dependence on `a` is supplied by the scaling equality above. -/
