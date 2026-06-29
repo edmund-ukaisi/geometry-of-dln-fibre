@@ -10,6 +10,61 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 selected-entry chart-target nonzero measure
+
+The selected-entry signed-box chart now has an explicit nonzero target measure
+brick in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean
+```
+
+For positive radii `forall i, 0 < R i`, Lean defines the concrete inner target
+box
+
+```text
+chartMapTargetInnerBox pivot R
+```
+
+with pivot interval `(R pivot / 2, R pivot)` and non-pivot intervals
+`(-(R pivot * R i / 4), R pivot * R i / 4)`.  It proves this box is open,
+nonempty, and contained in `chartMap pivot '' signedBoxSet R`, hence:
+
+```text
+volume_chartMap_image_signedBoxSet_ne_zero
+volume_restrict_chartMap_image_signedBoxSet_ne_zero
+```
+
+The punctured-source image inherits the same nonzero restricted target measure
+from the existing a.e. equality with the full image:
+
+```text
+volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+```
+
+The existing Jacobian pushforward equalities then give nonzero weighted source
+measures:
+
+```text
+signedBoxMeasure_withDensity_sourceDensity_ne_zero
+restrict_nonzeroSignedBox_withDensity_sourceDensity_ne_zero
+```
+
+and the chart-point bridge exposes:
+
+```text
+map_chartPointAdapter_weightedSignedBox_ne_zero
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_ne_zero
+```
+
+This is finite selected-entry target/source-measure bookkeeping.  Do not call
+it `SelectedEntryAnalyticJacobianVolumeData`, analytic atlas construction, a
+natural chart-point product-measure theorem, original/source-prior transport,
+determinant-chart Haar transport, source coverage, source-rank coverage,
+normal-crossing extraction, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 selected-entry chart-point measure bridge
 
 The selected-entry signed-box measure calculation now has a finite

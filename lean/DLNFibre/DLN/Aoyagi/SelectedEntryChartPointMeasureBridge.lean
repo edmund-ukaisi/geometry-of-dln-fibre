@@ -235,6 +235,34 @@ theorem map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_i
     map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image
       pivot R
 
+/-- The chart-point adapter pushforward of the weighted signed-box measure is
+nonzero when all source radii are positive. -/
+theorem map_chartPointAdapter_weightedSignedBox_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    Measure.map (chartPointAdapter pivot)
+        ((Measure.pi
+          (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))) ≠ 0 := by
+  exact
+    (Measure.map_ne_zero_iff
+      ((measurable_chartPointAdapter pivot).aemeasurable)).2
+      (signedBoxMeasure_withDensity_sourceDensity_ne_zero pivot hR)
+
+/-- The two-stage chart-point selected-entry pushforward is nonzero when all
+source radii are positive. -/
+theorem map_formalChartMap_map_chartPointAdapter_weightedSignedBox_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    Measure.map (formalChartMap pivot)
+        (Measure.map (chartPointAdapter pivot)
+          ((Measure.pi
+            (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+            (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)))) ≠ 0 := by
+  rw [map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image
+    pivot R]
+  exact volume_restrict_chartMap_image_signedBoxSet_ne_zero pivot hR
+
 end CenterCoord
 end SelectedEntrySignedBox
 

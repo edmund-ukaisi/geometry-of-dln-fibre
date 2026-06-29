@@ -140,6 +140,44 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, selected-entry chart-target nonzero measure,
+  2026-06-29.** Lean now proves a finite fixed-pivot nonzero target/source
+  measure brick for selected-entry signed-box charts in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean` and
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.
+  Under positive radii `forall i, 0 < R i`, the proof defines the concrete
+  inner target box `chartMapTargetInnerBox pivot R` with pivot interval
+  `(R pivot / 2, R pivot)` and non-pivot intervals
+  `(-(R pivot * R i / 4), R pivot * R i / 4)`.  It proves this box is open,
+  nonempty, and contained in `chartMap pivot '' signedBoxSet R`, using the
+  existing horn membership criterion for the substitution `x_p = u`,
+  `x_i = u r_i`.  Hence it proves
+  `volume_chartMap_image_signedBoxSet_ne_zero` and
+  `volume_restrict_chartMap_image_signedBoxSet_ne_zero`, plus the punctured
+  target variants
+  `volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero` and
+  `volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero`.
+  The existing Jacobian pushforward theorem then gives
+  `signedBoxMeasure_withDensity_sourceDensity_ne_zero` and
+  `restrict_nonzeroSignedBox_withDensity_sourceDensity_ne_zero`.  The
+  chart-point bridge adds `map_chartPointAdapter_weightedSignedBox_ne_zero`
+  and
+  `map_formalChartMap_map_chartPointAdapter_weightedSignedBox_ne_zero`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-target-nonzero.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-target-nonzero.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-chart-target-nonzero.md`.
+  Focused builds of both touched modules passed via `scripts/lb`; xhigh
+  source-scope, Lean/API, and implementation reviews returned PASS; full
+  `DLNFibre` build, `scripts/sorries`, `git diff --check`, touched Lean-file
+  marker scan, and direct axiom probes passed with
+  `[propext, Classical.choice, Quot.sound]`.  This proves no analytic atlas construction,
+  `SelectedEntryAnalyticJacobianVolumeData`, natural chart-point product
+  measure theorem, original/source-prior transport, determinant-chart Haar
+  transport, raw/source Haar theorem, source coverage, source-rank coverage,
+  transition regularity, source production, branch termination,
+  normal-crossing extraction, pole order, or RLCT.
 - **Current status addendum, selected-entry chart-point measure bridge,
   2026-06-29.** Lean now proves the selected-entry finite chart-point bridge in
   `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.  The

@@ -3,6 +3,78 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Selected-Entry Chart-Target Nonzero Measure - 2026-06-29
+
+`SelectedEntrySignedBoxMeasure.lean` now proves a fixed-pivot nonzero target
+measure brick for the selected-entry signed-box chart under positive radii
+`forall i, 0 < R i`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-target-nonzero.md
+threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-target-nonzero.md
+threads/03-block-product-reduction/review-a2-selected-entry-chart-target-nonzero.md
+```
+
+The pen-and-paper calculation chooses the concrete inner target box
+
+```text
+R_p/2 < x_p < R_p,
+|x_i| < R_p R_i / 4  for i != p.
+```
+
+This box is nonempty open.  Since `x_p > R_p/2 > 0`, the quotient estimate
+
+```text
+|x_i / x_p| < (R_p R_i / 4) / (R_p / 2) = R_i / 2 < R_i
+```
+
+puts the box inside the selected-entry horn described by
+`mem_chartMap_image_signedBoxSet_iff`.  Therefore the selected-entry chart
+image has nonzero Lebesgue measure, and the restricted target measure is
+nonzero.
+
+New signed-box theorems:
+
+```text
+chartMapTargetInnerBox
+isOpen_chartMapTargetInnerBox
+chartMapTargetInnerBox_nonempty
+chartMapTargetInnerBox_subset_chartMap_image_signedBoxSet
+volume_chartMap_image_signedBoxSet_ne_zero
+volume_restrict_chartMap_image_signedBoxSet_ne_zero
+volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+signedBoxMeasure_withDensity_sourceDensity_ne_zero
+restrict_nonzeroSignedBox_withDensity_sourceDensity_ne_zero
+```
+
+`SelectedEntryChartPointMeasureBridge.lean` adds:
+
+```text
+map_chartPointAdapter_weightedSignedBox_ne_zero
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_ne_zero
+```
+
+Focused builds of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` passed via
+`scripts/lb`; only pre-existing replay warnings appeared.  Xhigh source-scope
+scout `Einstein the 4th` and xhigh Lean/API scout `Beauvoir the 4th` gave
+PASS.  Xhigh implementation reviewer `Kuhn the 4th` gave PASS.  Full
+`DLNFibre` build, `scripts/sorries`, `git diff --check`, touched Lean-file
+marker scan, and direct axiom probes passed; the new headline theorems report
+`[propext, Classical.choice, Quot.sound]`.
+
+This proves no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no natural chart-point product
+measure theorem, no original/source-prior transport, no determinant-chart Haar
+transport, no raw/source Haar theorem, no retained-passive passive Jacobian,
+no source coverage, no source-rank coverage, no transition regularity, no
+source production, no branch termination, no normal-crossing extraction, no
+pole order, and no RLCT.
+
 ## Latest A2 Selected-Entry Chart-Point Measure Bridge - 2026-06-29
 
 `SelectedEntryChartPointMeasureBridge.lean` now exposes the finite coordinate

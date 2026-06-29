@@ -18,6 +18,63 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 selected-entry chart-target nonzero measure
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-target-nonzero.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-target-nonzero.md`.
+Review:
+`review-a2-selected-entry-chart-target-nonzero.md`.
+
+Lean now proves fixed-pivot nonzero target/source measure facts for the
+selected-entry signed-box chart under positive radii `forall i, 0 < R i`.
+
+In `DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure`, the new inner target
+box is:
+
+```text
+chartMapTargetInnerBox pivot R
+```
+
+with pivot interval `(R pivot / 2, R pivot)` and non-pivot intervals
+`(-(R pivot * R i / 4), R pivot * R i / 4)`.  Lean proves:
+
+```text
+isOpen_chartMapTargetInnerBox,
+chartMapTargetInnerBox_nonempty,
+chartMapTargetInnerBox_subset_chartMap_image_signedBoxSet,
+volume_chartMap_image_signedBoxSet_ne_zero,
+volume_restrict_chartMap_image_signedBoxSet_ne_zero,
+volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero,
+volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero,
+signedBoxMeasure_withDensity_sourceDensity_ne_zero,
+restrict_nonzeroSignedBox_withDensity_sourceDensity_ne_zero.
+```
+
+In `DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge`, Lean proves:
+
+```text
+map_chartPointAdapter_weightedSignedBox_ne_zero,
+map_formalChartMap_map_chartPointAdapter_weightedSignedBox_ne_zero.
+```
+
+The proof is finite coordinate geometry plus the already-proved selected-entry
+Jacobian pushforward theorem.  Focused builds of both touched modules passed
+via `scripts/lb`; only pre-existing replay warnings appeared.  Xhigh
+source-scope scout `Einstein the 4th` and xhigh Lean/API scout `Beauvoir the
+4th` returned PASS.  Xhigh implementation reviewer `Kuhn the 4th` returned
+PASS.  Full `DLNFibre` build, `scripts/sorries`, `git diff --check`, touched
+Lean-file marker scan, and direct axiom probes passed; the new headline
+theorems report `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no natural chart-point product
+measure, no source-prior transport, no determinant-chart Haar theorem, no
+raw/source Haar theorem, no source coverage, no source-rank coverage, no
+transition regularity, no source production, no branch termination, no
+normal-crossing extraction, no pole order, and no RLCT.
+
 ## 2026-06-29 A2 selected-entry chart-point measure bridge
 
 Reproduction:

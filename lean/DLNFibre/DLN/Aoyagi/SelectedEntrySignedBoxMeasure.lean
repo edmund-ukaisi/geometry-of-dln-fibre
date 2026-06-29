@@ -953,6 +953,100 @@ theorem measurableSet_chartMap_image_signedBoxSet {center : Finset ι}
   rw [hsplit, Set.image_union]
   exact hnonzero.union hzero
 
+/-- A concrete open product box inside the nonzero horn of the selected-entry
+chart image. -/
+def chartMapTargetInnerBox {center : Finset ι} (pivot : center)
+    (R : center → ℝ) : Set (center → ℝ) :=
+  Set.univ.pi fun i : center =>
+    if i = pivot then
+      Set.Ioo (R pivot / 2) (R pivot)
+    else
+      Set.Ioo (-(R pivot * R i / 4)) (R pivot * R i / 4)
+
+/-- The concrete inner target box is open. -/
+theorem isOpen_chartMapTargetInnerBox {center : Finset ι} (pivot : center)
+    (R : center → ℝ) :
+    IsOpen (chartMapTargetInnerBox pivot R) := by
+  rw [chartMapTargetInnerBox]
+  refine isOpen_set_pi Set.finite_univ ?_
+  intro i _hi
+  by_cases hi : i = pivot
+  · simpa [hi] using
+      (isOpen_Ioo : IsOpen (Set.Ioo (R pivot / 2) (R pivot)))
+  · simpa [hi] using
+      (isOpen_Ioo :
+        IsOpen (Set.Ioo (-(R pivot * R i / 4)) (R pivot * R i / 4)))
+
+/-- Positive radii make the concrete inner target box nonempty. -/
+theorem chartMapTargetInnerBox_nonempty {center : Finset ι} (pivot : center)
+    {R : center → ℝ} (hR : ∀ i, 0 < R i) :
+    (chartMapTargetInnerBox pivot R).Nonempty := by
+  rw [chartMapTargetInnerBox, Set.univ_pi_nonempty_iff]
+  intro i
+  by_cases hi : i = pivot
+  · have hlt : R pivot / 2 < R pivot := by linarith [hR pivot]
+    simpa [hi] using (Set.nonempty_Ioo.2 hlt)
+  · have hlt : -(R pivot * R i / 4) < R pivot * R i / 4 := by
+      have hmul : 0 < R pivot * R i := mul_pos (hR pivot) (hR i)
+      linarith
+    simpa [hi] using (Set.nonempty_Ioo.2 hlt)
+
+/-- The concrete inner target box lies in the selected-entry signed-box chart
+image. -/
+theorem chartMapTargetInnerBox_subset_chartMap_image_signedBoxSet
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    chartMapTargetInnerBox pivot R ⊆ chartMap pivot '' signedBoxSet R := by
+  intro x hx
+  rw [mem_chartMap_image_signedBoxSet_iff pivot hR]
+  right
+  have hxp : x pivot ∈ Set.Ioo (R pivot / 2) (R pivot) := by
+    simpa [chartMapTargetInnerBox] using hx pivot (Set.mem_univ pivot)
+  have hxp_pos : 0 < x pivot := by
+    linarith [hR pivot, hxp.1]
+  refine ⟨ne_of_gt hxp_pos, ?_, ?_⟩
+  · simpa [abs_of_pos hxp_pos] using hxp.2
+  · intro i hi
+    have hxi :
+        x i ∈ Set.Ioo (-(R pivot * R i / 4)) (R pivot * R i / 4) := by
+      simpa [chartMapTargetInnerBox, hi] using hx i (Set.mem_univ i)
+    have hxi_abs : |x i| < R pivot * R i / 4 := abs_lt.mpr hxi
+    rw [abs_div, abs_of_pos hxp_pos, div_lt_iff₀ hxp_pos]
+    have hquarter :
+        R pivot * R i / 4 < R i * (R pivot / 2) := by
+      have hmul : 0 < R pivot * R i := mul_pos (hR pivot) (hR i)
+      nlinarith
+    have hhalf : R i * (R pivot / 2) < R i * x pivot :=
+      mul_lt_mul_of_pos_left hxp.1 (hR i)
+    linarith [hxi_abs, hquarter, hhalf]
+
+/-- The selected-entry signed-box chart image has nonzero Lebesgue measure
+when all source radii are positive. -/
+theorem volume_chartMap_image_signedBoxSet_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    (volume : Measure (center → ℝ)) (chartMap pivot '' signedBoxSet R) ≠ 0 := by
+  have hinner_ne :
+      (volume : Measure (center → ℝ)) (chartMapTargetInnerBox pivot R) ≠ 0 :=
+    (isOpen_chartMapTargetInnerBox pivot R).measure_ne_zero
+      (volume : Measure (center → ℝ))
+      (chartMapTargetInnerBox_nonempty pivot hR)
+  intro hzero
+  exact hinner_ne
+    (measure_mono_null
+      (chartMapTargetInnerBox_subset_chartMap_image_signedBoxSet pivot hR) hzero)
+
+/-- The Lebesgue measure restricted to the selected-entry signed-box chart
+image is nonzero when all source radii are positive. -/
+theorem volume_restrict_chartMap_image_signedBoxSet_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    (volume : Measure (center → ℝ)).restrict
+      (chartMap pivot '' signedBoxSet R) ≠ 0 := by
+  intro hzero
+  exact volume_chartMap_image_signedBoxSet_ne_zero pivot hR
+    (Measure.restrict_eq_zero.mp hzero)
+
 /-- The image of a signed box under the center-indexed selected-entry chart is
 unchanged up to Lebesgue-a.e. equality after removing the pivot hyperplane from
 the source. -/
@@ -979,6 +1073,30 @@ theorem chartMap_image_signedBoxSet_ae_eq_inter_pivot_ne_zero {center : Finset �
       rcases hx.1 with ⟨y, hy, rfl⟩
       exact False.elim (hx.2 ⟨y, hy.1, rfl⟩)
     exact measure_mono_null hsub (by simp)
+
+/-- Removing the pivot-zero source hyperplane leaves a chart image with
+nonzero Lebesgue measure when all source radii are positive. -/
+theorem volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    (volume : Measure (center → ℝ))
+      (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})) ≠ 0 := by
+  have hfull := volume_chartMap_image_signedBoxSet_ne_zero pivot hR
+  intro hzero
+  exact hfull
+    ((measure_congr (chartMap_image_signedBoxSet_ae_eq_inter_pivot_ne_zero pivot R)).trans
+      hzero)
+
+/-- The Lebesgue measure restricted to the nonzero-pivot signed-box chart
+image is nonzero when all source radii are positive. -/
+theorem volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    (volume : Measure (center → ℝ)).restrict
+      (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})) ≠ 0 := by
+  intro hzero
+  exact volume_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero pivot hR
+    (Measure.restrict_eq_zero.mp hzero)
 
 /-- The center-indexed selected-entry chart pushes forward the weighted
 signed-box source measure with density `sourceDensity` to Lebesgue measure
@@ -1009,6 +1127,39 @@ theorem map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_imag
     _ = (volume : Measure (center → ℝ)).restrict (chartMap pivot '' signedBoxSet R) := by
           exact Measure.restrict_congr_set
             (chartMap_image_signedBoxSet_ae_eq_inter_pivot_ne_zero pivot R).symm
+
+/-- The weighted selected-entry signed-box source measure is nonzero when all
+source radii are positive. -/
+theorem signedBoxMeasure_withDensity_sourceDensity_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    ((Measure.pi
+      (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))) ≠ 0 := by
+  intro hzero
+  have htarget := volume_restrict_chartMap_image_signedBoxSet_ne_zero pivot hR
+  have hmap :=
+    map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image
+      pivot R
+  rw [hzero, Measure.map_zero] at hmap
+  exact htarget hmap.symm
+
+/-- The weighted selected-entry source measure on the nonzero-pivot signed
+box is nonzero when all source radii are positive. -/
+theorem restrict_nonzeroSignedBox_withDensity_sourceDensity_ne_zero
+    {center : Finset ι} (pivot : center) {R : center → ℝ}
+    (hR : ∀ i, 0 < R i) :
+    (((volume : Measure (center → ℝ)).restrict
+        (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))) ≠ 0 := by
+  intro hzero
+  have htarget :=
+    volume_restrict_chartMap_image_signedBoxSet_inter_pivot_ne_zero_ne_zero pivot hR
+  have hmap :=
+    map_chartMap_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image
+      pivot R
+  rw [hzero, Measure.map_zero] at hmap
+  exact htarget hmap.symm
 
 /-- Center-indexed loss exponents: only the selected pivot has exponent `1`. -/
 def lossExp {center : Finset ι} (pivot : center) (i : center) : ℕ :=
