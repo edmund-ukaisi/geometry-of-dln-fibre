@@ -40,6 +40,12 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   axiom-clean. The `Ideal.MinimalPrime`-mirroring family now stands: `Finite · TopDimensional · Localization ·
   Polynomial · Radical · Bridge`. Decorrelated crux-review (05r) in flight; on PASS → **PR-P1 opens** (async
   review) and P2 begins.
+- **2026-06-29 — PHASE 1 SIGNED OFF → PR #15** (`expedition/foundation-lift-p1 → dev`). Crux-review **PASS**:
+  the per-prime `hper` is genuine + byte-faithful, and the non-foldability was Codex-corroborated with the
+  explicit counterexample `A = k[t]₍ₜ₎ × k[u]`, `f=(t,1)` (sharpening the per-prime-no-drop memory — the
+  *product* shape, not a bare DVR, is what witnesses it). Transport sound, assembly coherent, no blocker.
+  P1-boundary re-gate green 3819. → **Rolling into P2 without pausing**: stacked branch
+  `expedition/foundation-lift-p2` off P1's tip; P2-R1 (graph-ideal package, the lowest-risk warm-up) dispatched.
 - **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
   (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
   unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
