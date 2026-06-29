@@ -495,7 +495,8 @@ import DLNFibre.Core.MinimalPrime.Bridge
 -- `exists_injective_linearIndependent_rows`, `exists_submatrix_det_ne_zero_of_le_rank`) and the
 -- injective-field-hom rank invariance `Matrix.rank_map_eq_of_injective`.
 import DLNFibre.Core.Matrix.RankMinors
--- foundation-lift P3-R1: the Zariski-cotangent = Jacobian-kernel formula, extracted from
+-- foundation-lift P3-R1: the cotangent-dimension = Jacobian-kernel dimension formula (cotangent =
+-- `coker Jᵀ`, tangent = `ker J`; finite dims agree), extracted from
 -- `Core.CotangentJacobian` into two network-free libraries. The localize-the-cotangent-space
 -- comparison `Ideal.finrank_cotangentSpace_localization_eq_cotangent` (ns `Ideal`, mirrors
 -- `Mathlib.RingTheory.Ideal.Cotangent`; `[CommRing k]`, no `Field`); and the rectangular point-
