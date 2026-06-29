@@ -1,5 +1,6 @@
-import DLNFibre.Core.AffineLocalizationNoDrop
+import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.RadicalCatenary
+import DLNFibre.Core.MinimalPrime.Polynomial
 import Mathlib.RingTheory.Polynomial.Quotient
 
 /-!
@@ -22,22 +23,11 @@ schur side, given a top-dimensional prime of the fibre ring and the unit-`k`-coe
 
 namespace DLNFibre.Core
 
-open MvPolynomial
+open MvPolynomial Dimension
 
 universe u
 
 variable {k : Type u} [Field k]
-
-/-- **`Ideal.map C q` is prime when `q` is.** For an `MvPolynomial ι A` over a commutative ring `A`
-and a prime `q` of `A`, the extension `Ideal.map C q` is prime: the quotient
-`MvPolynomial ι A ⧸ map C q ≅ MvPolynomial ι (A ⧸ q)` (`quotientEquivQuotientMvPolynomial`) is a
-domain (a polynomial ring over the domain `A ⧸ q`). -/
-theorem isPrime_map_C_of_isPrime {ι : Type*} {A : Type u} [CommRing A] (q : Ideal A) [q.IsPrime] :
-    (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := by
-  haveI : IsDomain (A ⧸ q) := Ideal.Quotient.isDomain q
-  haveI : IsDomain (MvPolynomial ι (A ⧸ q)) := inferInstance
-  rw [← Ideal.Quotient.isDomain_iff_prime]
-  exact (MvPolynomial.quotientEquivQuotientMvPolynomial (σ := ι) q).symm.toRingEquiv.isDomain _
 
 /-- **The schur-side no-drop.** For `P = MvPolynomial ι A` over a finitely-generated `k`-algebra `A`
 (`ι` finite, Noetherian), a top-dimensional prime `q₀` of `A`
@@ -47,7 +37,8 @@ dimension:
 
 > `ringKrullDim (Localization.Away gfib) = ringKrullDim (MvPolynomial ι A)`.
 
-The avoidance witness is `p₀ = Ideal.map C q₀`: prime (`isPrime_map_C_of_isPrime`), top-dimensional
+The avoidance witness is `p₀ = Ideal.map C q₀`: prime (`Ideal.isPrime_map_mvPolynomial_C`),
+top-dimensional
 (the quotient equiv adds `card ι` to both `A ⧸ q₀` and `A`, so `dim (P ⧸ p₀) = dim (A ⧸ q₀) + card ι
 = dim A + card ι = dim P`), and `gfib ∉ p₀` because `gfib`'s image in the domain
 `MvPolynomial ι (A ⧸ q₀)` is `map (algebraMap k (A ⧸ q₀)) g₀`, nonzero (the `k`-coefficient
@@ -60,7 +51,7 @@ theorem ringKrullDim_localizationAway_eq_of_schurSide {ι : Type u} [Finite ι] 
       = ringKrullDim (MvPolynomial ι A) := by
   set gfib : MvPolynomial ι A := MvPolynomial.map (algebraMap k A) g₀ with hgfib
   set p₀ : Ideal (MvPolynomial ι A) := Ideal.map (C : A →+* _) q₀ with hp₀
-  haveI : p₀.IsPrime := isPrime_map_C_of_isPrime q₀
+  haveI : p₀.IsPrime := Ideal.isPrime_map_mvPolynomial_C q₀
   -- the quotient equiv `MvPolynomial ι (A ⧸ q₀) ≃ₐ[A] (MvPolynomial ι A) ⧸ p₀`
   let e := MvPolynomial.quotientEquivQuotientMvPolynomial (σ := ι) (R := A) q₀
   -- (2) top-dimensionality of `p₀`: `dim (P ⧸ p₀) = dim P`.

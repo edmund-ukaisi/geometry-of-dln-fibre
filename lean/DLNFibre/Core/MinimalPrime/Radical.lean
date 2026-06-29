@@ -1,16 +1,17 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopComponentsTopDim
+import DLNFibre.Core.MinimalPrime.TopDimensional
+import Mathlib.RingTheory.KrullDimension.NonZeroDivisors
+import Mathlib.RingTheory.Ideal.Quotient.Operations
 
 /-!
-# `DLNFibre.Core.TopDimMinPrimesRadical` — `TopDimMinPrimes` count is radical-insensitive (W3)
+# `DLNFibre.Core.MinimalPrime.Radical` — `TopDimMinPrimes` count is radical-insensitive
 
-The W3 rung of the fibre-`θ` count transport (expedition `theta-components`, thread 08): the
-top-dimensional minimal-prime count of a quotient `R ⧸ J` depends only on the **radical** of `J`. So
-the fibre's two coordinate rings — `O(F) = R ⧸ vanishingIdeal(fibre) = R ⧸ radical(fibreGenIdeal)`
-(reduced) and `O(fibre) = R ⧸ fibreGenIdeal` (the explicit generator ideal) — carry the **same**
-count, with no radicality of `fibreGenIdeal` needed.
+The top-dimensional minimal-prime count (`Ideal.TopDimMinPrimes`, see
+`…/MinimalPrime/TopDimensional`) of a quotient `R ⧸ J` depends only on the **radical** of `J`. So
+two ideals with the same radical
+carry the **same** count, with no radicality of the smaller ideal needed.
 
 The mechanism (pure commutative algebra, two facts):
 
@@ -28,14 +29,40 @@ ringKrullDim (R ⧸ J)` — so the counts coincide.
 > equal quotient dim ⟹ equal count.
 > **`topDimMinPrimes_quotient_radical_ncard_eq`** — the `J` / `radical J` instance.
 
+Also re-homed here is the general third-isomorphism-theorem dimension identity
+`ringKrullDim_doubleQuot_eq` (any `[CommRing R]`, any ideal `I`, any ideal `P` of `R ⧸ I`), the
+double-quotient transport this radical-insensitivity rides on. Pure commutative algebra — no DLN
+content. It lives in namespace `Ideal` and mirrors the Mathlib home
+`Mathlib.RingTheory.Ideal.MinimalPrime`, so an upstream move is a file-move with no namespace
+surgery.
+
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+namespace Ideal
 
 universe u
 
 variable {R : Type u} [CommRing R]
+
+/-! ## The double-quotient dimension transport (third isomorphism theorem) -/
+
+/-- **The third isomorphism theorem at `ringKrullDim`.** For an arbitrary ideal `P` of `R ⧸ I`,
+`ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ Ideal.comap (Quotient.mk I) P)` via
+`DoubleQuot.quotQuotEquivQuotOfLE` (`P = (comap P).map (mk I)`, `I ≤ comap P`). -/
+theorem ringKrullDim_doubleQuot_eq (I : Ideal R) (P : Ideal (R ⧸ I)) :
+    ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ (P.comap (Ideal.Quotient.mk I))) := by
+  have hle : I ≤ P.comap (Ideal.Quotient.mk I) := by
+    intro x hx
+    rw [Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]
+    exact zero_mem P
+  have hmapeq : (P.comap (Ideal.Quotient.mk I)).map (Ideal.Quotient.mk I) = P :=
+    Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective P
+  have key := ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hle)
+  rw [hmapeq] at key
+  exact key
+
+/-! ## The `R`-side top-dimensional minimal-prime set of a quotient -/
 
 /-- **The `R`-side top-dimensional minimal-prime set of a quotient.** `{q ∈ I.minimalPrimes |
 ringKrullDim (R ⧸ q) = ringKrullDim (R ⧸ I)}` — the comap-image of `TopDimMinPrimes (R ⧸ I)` under
@@ -45,8 +72,7 @@ def quotTopDimSet (I : Ideal R) : Set (Ideal R) :=
 
 /-- **`comap (Quotient.mk I)` is a `Set.BijOn` `TopDimMinPrimes (R ⧸ I) → quotTopDimSet I`.**
 Minimality transports through `Ideal.minimalPrimes_eq_comap`; the dimension equality through the
-third isomorphism theorem `ringKrullDim_doubleQuot_eq`. The same `R`-side description used in
-`Core.TopComponentsTopDim`, abstracted from the `sigmaIdeal` instance. -/
+third isomorphism theorem `ringKrullDim_doubleQuot_eq`. -/
 theorem bijOn_comap_quotTopDimSet (I : Ideal R) :
     Set.BijOn (Ideal.comap (Ideal.Quotient.mk I)) (TopDimMinPrimes (R ⧸ I)) (quotTopDimSet I) := by
   refine ⟨?_, ?_, ?_⟩
@@ -71,6 +97,8 @@ theorem ncard_topDimMinPrimes_quotient_eq (I : Ideal R) :
     (TopDimMinPrimes (R ⧸ I)).ncard = (quotTopDimSet I).ncard :=
   (bijOn_comap_quotTopDimSet I).ncard_eq
 
+/-! ## The count from equal minimal primes / radical-insensitivity -/
+
 /-- **Equal minimal primes + equal quotient dimension ⟹ equal top-dimensional count.** Both
 quotients' counts equal `(quotTopDimSet ·).ncard`, and `quotTopDimSet I = quotTopDimSet J` when
 `I.minimalPrimes = J.minimalPrimes` and `ringKrullDim (R ⧸ I) = ringKrullDim (R ⧸ J)`. -/
@@ -88,12 +116,12 @@ theorem topDimMinPrimes_quotient_ncard_eq_of_minimalPrimes_eq (I J : Ideal R)
 /-- **The count is radical-insensitive.** `(TopDimMinPrimes (R ⧸ J)).ncard = (TopDimMinPrimes (R ⧸
 radical J)).ncard`: `J` and `radical J` share their minimal primes (`Ideal.radical_minimalPrimes`)
 and their quotient Krull dimension (`ringKrullDim_quotient` + `PrimeSpectrum.zeroLocus_radical`).
-The W3 rung: passing between the explicit fibre generator ideal `fibreGenIdeal` and its radical
-`vanishingIdeal(fibre)` does not change the top-dimensional component count. -/
+Passing between an explicit generator ideal and its radical does not change the top-dimensional
+component count. -/
 theorem topDimMinPrimes_quotient_radical_ncard_eq (J : Ideal R) :
     (TopDimMinPrimes (R ⧸ J)).ncard = (TopDimMinPrimes (R ⧸ J.radical)).ncard := by
   refine topDimMinPrimes_quotient_ncard_eq_of_minimalPrimes_eq J J.radical ?_ ?_
   · exact (Ideal.radical_minimalPrimes (I := J)).symm
   · rw [ringKrullDim_quotient, ringKrullDim_quotient, PrimeSpectrum.zeroLocus_radical]
 
-end DLNFibre.Core
+end Ideal

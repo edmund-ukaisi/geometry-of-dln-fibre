@@ -43,6 +43,9 @@ applies to the domain directly.
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial Matrix Algebra AlgebraicGeometry CategoryTheory
 
 universe u

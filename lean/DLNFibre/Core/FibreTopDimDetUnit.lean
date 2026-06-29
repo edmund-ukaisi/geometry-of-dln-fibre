@@ -2,7 +2,7 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.FibreDetUnit
-import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.MinimalPrime.TopDimensional
 
 /-!
 # `DLNFibre.Core.FibreTopDimDetUnit` — inverting `detΔ` keeps the fibre's `TopDimMinPrimes` count
@@ -11,8 +11,9 @@ The fibre-side endpoint of the chart count transport (expedition `theta-componen
 The deep pivot minor `detΔ = ΔPdeep d r` is a **unit** on the fibre coordinate ring
 `O(fibre) = MvPolynomial (RepCoord d) k ⧸ fibreGenIdeal d E` (`Core.FibreDetUnit`,
 `fibreLocalizationAwayDetΔ_algEquiv`), so inverting it is an algebra isomorphism — and a ring
-isomorphism preserves the top-dimensional minimal-prime count (`Core.TopDimMinPrimes`,
-`topDimMinPrimes_ncard_eq_of_ringEquiv`). So passing to the pivot chart `{detΔ ≠ 0}` is invisible on
+isomorphism preserves the top-dimensional minimal-prime count
+(`Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`, see `Core.MinimalPrime.TopDimensional`). So passing
+to the pivot chart `{detΔ ≠ 0}` is invisible on
 the fibre's component count:
 
 > **`ncard_topDimMinPrimes_fibre_eq_localization`** — `(TopDimMinPrimes (O(fibre))).ncard =
@@ -25,6 +26,9 @@ fibre's top-component count survives the localization the chart `e` requires, un
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
 
 open MvPolynomial Matrix
 

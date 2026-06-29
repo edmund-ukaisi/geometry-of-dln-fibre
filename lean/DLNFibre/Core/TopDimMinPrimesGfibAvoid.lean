@@ -14,9 +14,9 @@ SchurVar (sweepFibreRing k d r)` (for `q` any prime of `O(F)`):
 
 > **`chartGfib_not_mem_map_C`** — `chartGfib ∉ Ideal.map C q`, any prime `q`.
 
-After the polynomial descent (`Core.TopDimMinPrimesPoly`), every top-dimensional minimal prime of
+After the polynomial descent (`Core.MinimalPrime.Polynomial`), every top-dimensional minimal prime of
 `O(F)[SchurVar]` is `Ideal.map C q` for a top prime `q` of `O(F)`; so this lemma is exactly the
-`havoid` input of the reusable survival lemma `Core.TopDimMinPrimesLocalization` for the W2 step.
+`havoid` input of the reusable survival lemma `Core.MinimalPrime.Localization` for the W2 step.
 
 The argument (the standalone form of the avoidance buried inside
 `Core.SchurSideNoDrop.ringKrullDim_localizationAway_eq_of_schurSide`): the reduction `map (mk q) :

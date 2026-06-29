@@ -1,49 +1,65 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimes
-import DLNFibre.Core.SchurSideNoDrop
+import DLNFibre.Core.MinimalPrime.TopDimensional
+import Mathlib.RingTheory.Polynomial.Quotient
+import Mathlib.RingTheory.KrullDimension.Polynomial
+import Mathlib.Data.ENat.Basic
 
 /-!
-# `DLNFibre.Core.TopDimMinPrimesPoly` — `TopDimMinPrimes` descends a polynomial extension
+# `DLNFibre.Core.MinimalPrime.Polynomial` — `TopDimMinPrimes` descends a polynomial extension
 
-The polynomial-extension descent for the fibre-`θ` count transport (expedition
-`theta-components`, thread 06). For a Noetherian ring `A` and a *finite* index set `ι`, the
-constant-embedding `C : A → MvPolynomial ι A` induces a bijection of **minimal primes** —
-`q ↦ Ideal.map C q`, with inverse `P ↦ Ideal.comap C P` — and it carries **top-dimensional**
-minimal primes to top-dimensional minimal primes (both `ringKrullDim A` and `ringKrullDim (A ⧸ q)`
-gain `Nat.card ι`). So the count is preserved:
+For a Noetherian ring `A` and a *finite* index set `ι`, the constant-embedding
+`C : A → MvPolynomial ι A` induces a bijection of **minimal primes** — `q ↦ Ideal.map C q`, with
+inverse `P ↦ Ideal.comap C P` — and it carries **top-dimensional** minimal primes
+(`Ideal.TopDimMinPrimes`, see `…/MinimalPrime/TopDimensional`) to top-dimensional minimal primes
+(both `ringKrullDim A` and `ringKrullDim (A ⧸ q)` gain `Nat.card ι`). So the count is preserved:
 
 > **`topDimMinPrimes_mvPolynomial_ncard_eq`** — `(TopDimMinPrimes (MvPolynomial ι A)).ncard =
 > (TopDimMinPrimes A).ncard`.
 
-This is the cleanest isolated, reusable rung of the chart transport: the fibre side of the chart
-`e` carries an extra `|δ| = card SchurVar`-variable polynomial extension, and this descent strips
-it off without touching the count. Pure commutative algebra — no DLN content.
-
 The minimal-prime correspondence is hand-built (no packaged Mathlib lemma): `Ideal.map C q` is
-prime (`Core.SchurSideNoDrop.isPrime_map_C_of_isPrime`), the contraction
-`Ideal.comap C (Ideal.map C q) = q` holds (the reduction `map (mk q)` kills `map C q` and `C` is
-injective into the domain `A ⧸ q`), and minimality transports both ways through the order-reversing
-adjunction `map C ⊣ comap C`.
+prime (`isPrime_map_mvPolynomial_C`), the contraction `Ideal.comap C (Ideal.map C q) = q` holds (the
+reduction `map (mk q)` kills `map C q` and `C` is injective into the domain `A ⧸ q`), and minimality
+transports both ways through the order-reversing adjunction `map C ⊣ comap C`.
+
+The prime-lift `isPrime_map_mvPolynomial_C` is the *multivariate* analogue of Mathlib's univariate
+`Ideal.isPrime_map_C_of_isPrime` (which is about `R[X]`); the distinct name is required by name =
+content and to avoid the clash. Pure commutative algebra — no DLN content. It lives in namespace
+`Ideal` and mirrors the Mathlib home `Mathlib.RingTheory.Ideal.MinimalPrime`, so an upstream move is
+a file-move with no namespace surgery.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+namespace Ideal
 
 open MvPolynomial
 
 variable {A : Type*} [CommRing A] {ι : Type*}
 
+/-! ## The prime lift along the constant embedding -/
+
+/-- **`Ideal.map C q` is prime when `q` is** (multivariate). For `MvPolynomial ι A` over a
+commutative ring `A` and a prime `q` of `A`, the extension `Ideal.map C q` is prime: the quotient
+`MvPolynomial ι A ⧸ map C q ≅ MvPolynomial ι (A ⧸ q)` (`quotientEquivQuotientMvPolynomial`) is a
+domain (a polynomial ring over the domain `A ⧸ q`). The multivariate analogue of Mathlib's
+univariate `Ideal.isPrime_map_C_of_isPrime`. -/
+theorem isPrime_map_mvPolynomial_C (q : Ideal A) [q.IsPrime] :
+    (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := by
+  haveI : IsDomain (A ⧸ q) := Ideal.Quotient.isDomain q
+  haveI : IsDomain (MvPolynomial ι (A ⧸ q)) := inferInstance
+  rw [← Ideal.Quotient.isDomain_iff_prime]
+  exact (MvPolynomial.quotientEquivQuotientMvPolynomial (σ := ι) q).symm.toRingEquiv.isDomain _
+
 /-! ## The contraction `comap C (map C q) = q` -/
 
-/-- **The constant-coefficient contraction.** For a prime `q` of `A`, the extension `Ideal.map C q`
+/-- **The constant-coefficient contraction.** For an ideal `q` of `A`, the extension `Ideal.map C q`
 contracts back to `q`: `Ideal.comap C (Ideal.map C q) = q`. The reduction
 `map (mk q) : MvPolynomial ι A → MvPolynomial ι (A ⧸ q)` kills `map C q` (each `C a`, `a ∈ q`,
-maps to `C (mk q a) = 0`), so `C a ∈ map C q` forces `mk q a = 0` (`C` injective into the domain),
+maps to `C (mk q a) = 0`), so `C a ∈ map C q` forces `mk q a = 0` (`C` injective into `A ⧸ q`),
 i.e. `a ∈ q`; the reverse inclusion is `Ideal.le_comap_map`. -/
-theorem comap_map_C_eq (q : Ideal A) [q.IsPrime] :
+theorem comap_map_C_eq (q : Ideal A) :
     (Ideal.map (C : A →+* MvPolynomial ι A) q).comap (C : A →+* MvPolynomial ι A) = q := by
   apply le_antisymm
   · intro a ha
@@ -64,12 +80,12 @@ theorem comap_map_C_eq (q : Ideal A) [q.IsPrime] :
 
 /-- **`map C` carries minimal primes to minimal primes.** For `q ∈ minimalPrimes A`, the extension
 `Ideal.map C q` is a minimal prime of `MvPolynomial ι A`: it is prime
-(`isPrime_map_C_of_isPrime`), and any prime `P ≤ map C q` contracts to `comap C P ≤ q`, so by
+(`isPrime_map_mvPolynomial_C`), and any prime `P ≤ map C q` contracts to `comap C P ≤ q`, so by
 minimality of `q` we get `q ≤ comap C P`, hence `map C q ≤ map C (comap C P) ≤ P`. -/
 theorem map_C_mem_minimalPrimes (q : Ideal A) (hq : q ∈ minimalPrimes A) :
     Ideal.map (C : A →+* MvPolynomial ι A) q ∈ minimalPrimes (MvPolynomial ι A) := by
   haveI : q.IsPrime := hq.1.1
-  haveI : (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := isPrime_map_C_of_isPrime q
+  haveI : (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := isPrime_map_mvPolynomial_C q
   refine ⟨⟨inferInstance, bot_le⟩, ?_⟩
   rintro P ⟨hPp, -⟩ hPle
   haveI := hPp
@@ -94,7 +110,7 @@ theorem comap_C_mem_minimalPrimes (P : Ideal (MvPolynomial ι A))
   haveI := hqp
   have hmaple : Ideal.map (C : A →+* MvPolynomial ι A) q ≤ P :=
     (Ideal.map_mono hqle).trans Ideal.map_comap_le
-  haveI : (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := isPrime_map_C_of_isPrime q
+  haveI : (Ideal.map (C : A →+* MvPolynomial ι A) q).IsPrime := isPrime_map_mvPolynomial_C q
   have hPeq : P ≤ Ideal.map (C : A →+* MvPolynomial ι A) q := hP.2 ⟨inferInstance, bot_le⟩ hmaple
   have hcomple : P.comap (C : A →+* MvPolynomial ι A)
       ≤ (Ideal.map (C : A →+* MvPolynomial ι A) q).comap (C : A →+* MvPolynomial ι A) :=
@@ -118,10 +134,11 @@ theorem map_comap_C_of_mem_minimalPrimes (P : Ideal (MvPolynomial ι A))
 
 /-! ## The dimension shift on quotients -/
 
-/-- **The quotient by `map C q` adds `card ι` to the Krull dimension.** Via the algebra equivalence
-`MvPolynomial ι (A ⧸ q) ≃ (MvPolynomial ι A) ⧸ map C q` (`quotientEquivQuotientMvPolynomial`) and
-`MvPolynomial.ringKrullDim_of_isNoetherianRing`. Needs `A ⧸ q` Noetherian (from `A` Noetherian). -/
-theorem ringKrullDim_quotient_map_C [IsNoetherianRing A] [Finite ι] (q : Ideal A) [q.IsPrime] :
+/-- **The quotient by `map C q` adds `card ι` to the Krull dimension.** For an ideal `q` of `A`, via
+the algebra equivalence `MvPolynomial ι (A ⧸ q) ≃ (MvPolynomial ι A) ⧸ map C q`
+(`quotientEquivQuotientMvPolynomial`) and `MvPolynomial.ringKrullDim_of_isNoetherianRing`. Needs
+`A ⧸ q` Noetherian (from `A` Noetherian). -/
+theorem ringKrullDim_quotient_map_C [IsNoetherianRing A] [Finite ι] (q : Ideal A) :
     ringKrullDim (MvPolynomial ι A ⧸ Ideal.map (C : A →+* MvPolynomial ι A) q)
       = ringKrullDim (A ⧸ q) + Nat.card ι := by
   haveI : IsNoetherianRing (A ⧸ q) := inferInstance
@@ -185,11 +202,10 @@ theorem bijOn_comap_C_topDimMinPrimes [IsNoetherianRing A] [Finite ι] :
 
 /-- **The polynomial extension preserves the top-dimensional minimal-prime count.** For a
 Noetherian ring `A` and finite `ι`,
-`(TopDimMinPrimes (MvPolynomial ι A)).ncard = (TopDimMinPrimes A).ncard`. The cleanest isolated
-rung of the fibre-`θ` chart transport: it strips the `|δ|`-variable Schur polynomial extension off
-the count. -/
+`(TopDimMinPrimes (MvPolynomial ι A)).ncard = (TopDimMinPrimes A).ncard`. Strips off any finite
+polynomial extension without touching the count. -/
 theorem topDimMinPrimes_mvPolynomial_ncard_eq [IsNoetherianRing A] [Finite ι] :
     (TopDimMinPrimes (MvPolynomial ι A)).ncard = (TopDimMinPrimes A).ncard :=
   (bijOn_comap_C_topDimMinPrimes (A := A) (ι := ι)).ncard_eq
 
-end DLNFibre.Core
+end Ideal

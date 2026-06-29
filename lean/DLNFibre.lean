@@ -214,14 +214,12 @@ import DLNFibre.Core.ChartSection
 import DLNFibre.Core.ChartRetraction
 -- rung-2 set-level chart bijection Σ^r∩U_Δ ≅ base × F, both directions (round-trip).
 import DLNFibre.Core.ChartBijection
--- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
-import DLNFibre.Core.LocalizationKrullDim
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
--- no-drop machinery (shared by step-4/5): affine-domain dim(D[1/g])=dim D + the abstract no-drop
--- dim(R[1/g])=dim R when g avoids a top prime of a reducible Noetherian R.
-import DLNFibre.Core.AffineLocalizationNoDrop
+-- no-drop machinery (shared by step-4/5) re-homed to Core.Dimension.Localization (P1-R3):
+-- affine-domain dim(D[1/g])=dim D + the abstract no-drop dim(R[1/g])=dim R when g avoids a top
+-- prime of a reducible Noetherian R.
 -- route-3 dimension-arithmetic wrapper (localized chart AlgEquiv + the two no-drops).
 import DLNFibre.Core.ChartLocalizedPolyDim
 -- schur-side no-drop input (dim(P[1/gfib]) = dim P for P a polynomial extension of O(F)).
@@ -283,17 +281,13 @@ import DLNFibre.DLN.Aoyagi.ClosedForm
 -- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
 import DLNFibre.Core.FibreDetUnit
 import DLNFibre.Core.CThetaShiftCount
--- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework + the
--- polynomial-extension minimal-prime descent + the Σ̄^r / fibre count endpoints.
-import DLNFibre.Core.TopDimMinPrimes
-import DLNFibre.Core.TopDimMinPrimesPoly
-import DLNFibre.Core.TopDimMinPrimesBridge
+-- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework (core +
+-- general transport rungs in `Core.MinimalPrime.*`, appended below) + the Σ̄^r / fibre count
+-- endpoints.
 import DLNFibre.Core.TopComponentsTopDim
 import DLNFibre.Core.FibreTopDimDetUnit
--- θ-components (fibre-count wiring, thread 08): the keystone localization-survival of the top-dim
--- minimal-prime count, + radical-insensitivity (W3), the chart-e count carry, and the W2 avoidance.
-import DLNFibre.Core.TopDimMinPrimesLocalization
-import DLNFibre.Core.TopDimMinPrimesRadical
+-- θ-components (fibre-count wiring, thread 08): the chart-e count carry and the W2 avoidance (the
+-- general localization-survival / radical-insensitivity rungs live in `Core.MinimalPrime.*`).
 import DLNFibre.Core.TopDimMinPrimesChartE
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 -- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r
@@ -468,3 +462,29 @@ import DLNFibre.Core.FibreTargetOverlap
 -- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
 -- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
 import DLNFibre.Core.DeformationBaseChange
+-- foundation-lift P1-R1: the minimal-primes-of-`sInf`-of-a-finite-prime-family SPIKE, extracted
+-- from SigmaComponents to a clean Mathlib-grade home (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.minimalPrimes_sInf_of_finite_of_isPrime`.
+import DLNFibre.Core.MinimalPrime.Finite
+-- foundation-lift P1-R2: the localization `≤`-half `ringKrullDim S ≤ ringKrullDim R` for any
+-- localization `S = M⁻¹R`, re-homed from `LocalizationKrullDim` into the `Core.Dimension` family
+-- (ns `DLNFibre.Core.Dimension`, mirrors a would-be `Mathlib.RingTheory.KrullDimension.Localization`);
+-- `DLNFibre.Core.Dimension.ringKrullDim_localization_le`.
+import DLNFibre.Core.Dimension.Localization
+-- foundation-lift P1-R4: the `TopDimMinPrimes` count-engine core (top-dimensional minimal primes
+-- + `comap`-transport along a `RingEquiv` ⟹ `ncard` invariance), re-homed from `TopDimMinPrimes`
+-- into the `Core.MinimalPrime` family (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.TopDimMinPrimes`,
+-- `Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`.
+import DLNFibre.Core.MinimalPrime.TopDimensional
+-- foundation-lift P1-R5: the four general count-transport rungs built on the R4 core, re-homed from
+-- `TopDimMinPrimes{Localization,Poly,Radical,Bridge}` into the `Core.MinimalPrime` family (ns
+-- `Ideal`, mirrors `Mathlib.RingTheory.Ideal.MinimalPrime`): away-localization survival
+-- (`Ideal.topDimMinPrimes_ncard_away_eq`, the per-prime no-drop keystone), polynomial-extension
+-- descent (`Ideal.topDimMinPrimes_mvPolynomial_ncard_eq`), radical-insensitivity
+-- (`Ideal.topDimMinPrimes_quotient_radical_ncard_eq`), and the height ↔ dimension bridge
+-- (`Ideal.ringKrullDim_quotient_eq_iff_height_eq`).
+import DLNFibre.Core.MinimalPrime.Localization
+import DLNFibre.Core.MinimalPrime.Polynomial
+import DLNFibre.Core.MinimalPrime.Radical
+import DLNFibre.Core.MinimalPrime.Bridge

@@ -41,6 +41,9 @@ The wrapper on the flat `B` then gives the `Away`-count = `B`-count, and the cha
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
+
 open MvPolynomial
 
 variable {k : Type} [Field k] {N : ℕ}

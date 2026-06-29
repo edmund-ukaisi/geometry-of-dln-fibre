@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimes
+import DLNFibre.Core.MinimalPrime.TopDimensional
 import DLNFibre.Core.ChartLocalizedAlgEquiv
 import DLNFibre.Core.ChartLocalizedCoordinates
 
@@ -11,8 +11,8 @@ import DLNFibre.Core.ChartLocalizedCoordinates
 The middle rung of the fibre-`θ` count transport (expedition `theta-components`, thread 08): the
 localized chart `AlgEquiv` `e : Localization.Away dsig ≃ₐ[k] Localization.Away gF`
 (`Core.ChartLocalizedAlgEquiv.chartLocalizedAlgEquiv`) is a ring isomorphism, so it carries the
-top-dimensional minimal-prime count across (`Core.TopDimMinPrimes.topDimMinPrimes_ncard_eq_of_ring
-Equiv`):
+top-dimensional minimal-prime count across (`Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`, see
+`Core.MinimalPrime.TopDimensional`):
 
 > **`ncard_topDimMinPrimes_chartE_eq`** — `(TopDimMinPrimes (O(Σ^r)[1/dsig])).ncard =
 > (TopDimMinPrimes ((O(F)[SchurVar])[1/gF])).ncard`.
@@ -29,6 +29,9 @@ top-dimensional-minimal-prime set on the codomain elaborates; the proof rebinds 
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv)
 
 open MvPolynomial
 

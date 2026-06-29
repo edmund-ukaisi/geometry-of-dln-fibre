@@ -1,4 +1,4 @@
-import DLNFibre.Core.AffineLocalizationNoDrop
+import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.VarietyDimPolyExtension
 
 /-!

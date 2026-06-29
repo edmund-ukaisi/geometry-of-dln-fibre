@@ -1,17 +1,16 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimes
-import DLNFibre.Core.LocalizationKrullDim
+import DLNFibre.Core.MinimalPrime.TopDimensional
+import DLNFibre.Core.Dimension.Localization
 import Mathlib.RingTheory.Localization.Away.Basic
 
 /-!
-# `DLNFibre.Core.TopDimMinPrimesLocalization` — `TopDimMinPrimes` survives an away-localization
+# `DLNFibre.Core.MinimalPrime.Localization` — `TopDimMinPrimes` survives an away-localization
 
-The **reusable** localization-survival rung of the fibre-`θ` count transport (expedition
-`theta-components`, thread 08). The keystone for the two non-unit localization steps W1 (`detΔ` on
-`O(Σ^r)`) and W2 (`detSchurS` on `O(F)[SchurVar]`): inverting a *single* element `f` of a ring `A`
-preserves the **top-dimensional minimal-prime count**, given two inputs phrased entirely on `A`:
+Inverting a *single* element `f` of a commutative ring `A` preserves the **top-dimensional
+minimal-prime count** (`Ideal.TopDimMinPrimes`, see `…/MinimalPrime/TopDimensional`), given two
+inputs phrased entirely on `A`:
 
 * **avoidance** `havoid : ∀ p ∈ TopDimMinPrimes A, f ∉ p` — every top-dimensional component survives
   the localization (a component carried by a prime containing `f` would disappear);
@@ -19,31 +18,35 @@ preserves the **top-dimensional minimal-prime count**, given two inputs phrased 
   ringKrullDim (Localization.Away (Ideal.Quotient.mk p f)) = ringKrullDim (A ⧸ p)` — localizing
   each surviving top component's domain `A ⧸ p` at the image of `f` does not drop its dimension.
 
-The `hper` input is a **required lemma**, NOT inferable from an ambient no-drop: a domain localized
-at a non-unit can drop dimension (a DVR at a uniformizer). It must be invoked **per top prime**; it
-holds in the applications because `A ⧸ p` is an f.g. `k`-domain and `f̄ ≠ 0`, via
-`Core.AffineLocalizationNoDrop.ringKrullDim_localizationAway_eq_of_fg_domain`. (Reviewer + Codex,
-decorrelated: the per-prime / *componentwise* no-drop does NOT fold out of the global no-drop +
-avoidance.)
+The `hper` input is a **genuine per-prime hypothesis**, NOT inferable from an ambient global
+no-drop: a domain localized at a non-unit can drop dimension (a DVR at a uniformizer). It must be
+invoked **once per surviving top prime** `p`, with the image `Ideal.Quotient.mk p f` of `f` in that
+specific quotient `A ⧸ p`. It is *not* derivable from "`ringKrullDim S = ringKrullDim A` + `f`
+avoids the top primes": the global no-drop plus avoidance does not fold to the per-prime no-drop —
+localizing a domain at a nonunit can drop dimension (e.g. a DVR at a uniformizer). In applications it
+holds because each `A ⧸ p` is an f.g. `k`-domain
+and `f̄ ≠ 0`, via `Core.Dimension.ringKrullDim_localizationAway_eq_of_fg_domain` (per top prime).
 
-The bridge between `hper` (A-side) and the `S`-side quotient dimension is the helper
+The bridge between `hper` (`A`-side) and the localized ring `S`-side quotient dimension is
 `ringKrullDim_quotient_map_localizationAway_eq`: `S ⧸ map φ p ≅ Localization.Away (mk p f)` over
-`A ⧸ p` (the away-localization of the quotient is the quotient of the away-localization), built by
-hand from `Localization.awayMap (Ideal.Quotient.mk p) f` (surjective) and its kernel
+`A ⧸ p` (the away-localization of the quotient is the quotient of the away-localization), built from
+`IsLocalization.Away.map (Ideal.Quotient.mk p) f` (surjective) and its kernel
 (`IsLocalization.ker_map` + `Submonoid.map_powers`).
 
 > **`bijOn_comap_topDimMinPrimes_away`** — `comap (algebraMap A S)` is a `Set.BijOn` from
 > `TopDimMinPrimes S` onto `TopDimMinPrimes A`;
 > **`topDimMinPrimes_ncard_away_eq`** — `(TopDimMinPrimes S).ncard = (TopDimMinPrimes A).ncard`.
 
-Pure commutative algebra — no DLN content; reusable for any single-element localization survival.
+Pure commutative algebra — reusable for any single-element localization survival. It lives in
+namespace `Ideal` and mirrors the Mathlib home `Mathlib.RingTheory.Ideal.MinimalPrime` (a plausible
+`…/MinimalPrime/Localization.lean`), so an upstream move is a file-move with no namespace surgery.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+namespace Ideal
 
-open IsLocalization Localization
+open IsLocalization Localization DLNFibre.Core.Dimension
 
 universe u
 
@@ -54,9 +57,10 @@ variable {A : Type u} [CommRing A]
 /-- **The quotient of the away-localization by `map φ p` is the away-localization of the quotient by
 `p`.** `ringKrullDim (S ⧸ Ideal.map (algebraMap A S) p) = ringKrullDim (Away (mk p f))`,
 for `S = Localization.Away f`. Built from the ring iso `S ⧸ map φ p ≃+* Localization.Away (mk p f)`:
-the away-map `Localization.awayMap (mk p) f : S → Localization.Away (mk p f)` is surjective (the
-quotient map `mk p` is) with kernel `map φ p` (`IsLocalization.ker_map` + `Submonoid.map_powers`,
-`Ideal.mk_ker`), so `RingHom.quotientKerEquivOfSurjective` gives the iso. The A-side / S-side dim
+the away-map `IsLocalization.Away.map S _ (mk p) f : S → Localization.Away (mk p f)` is surjective
+(the quotient map `mk p` is) with kernel `map φ p` (`IsLocalization.ker_map` +
+`Submonoid.map_powers`, `Ideal.mk_ker`), so `RingHom.quotientKerEquivOfSurjective` gives the iso.
+The A-side / S-side dim
 bridge feeding the count survival. -/
 theorem ringKrullDim_quotient_map_localizationAway_eq (f : A) (S : Type u) [CommRing S]
     [Algebra A S] [IsLocalization.Away f S] (p : Ideal A) :
@@ -174,7 +178,8 @@ theorem map_mem_minimalPrimes_of_avoid (f : A) (S : Type u) [CommRing S] [Algebr
 
 /-- **`map` of an `f`-avoiding top-dim minimal prime of `A` is one of `S`.** Minimality is
 `map_mem_minimalPrimes_of_avoid`; the dimension equality is `dim (S ⧸ map φ p) = dim (Away (mk p f))
-= dim (A ⧸ p) = dim A = dim S` (the helper, then `hper`, then `hp.2`, then `hdim`). -/
+= dim (A ⧸ p) = dim A = dim S` (the helper, then `hper`, then `hp.2`, then `hdim`). This is the one
+direction that consumes the per-prime no-drop `hper`. -/
 theorem map_mem_topDimMinPrimes_of_avoid (f : A) (S : Type u) [CommRing S] [Algebra A S]
     [IsLocalization.Away f S] (hdim : ringKrullDim S = ringKrullDim A)
     (hper : ∀ p ∈ TopDimMinPrimes A,
@@ -209,8 +214,8 @@ theorem bijOn_comap_topDimMinPrimes_away (f : A) (S : Type u) [CommRing S] [Alge
 
 /-- **Away-localization preserves the top-dimensional minimal-prime count.** The headline reusable
 survival lemma: inverting a single element `f` of `A` keeps `(TopDimMinPrimes ·).ncard` fixed, given
-avoidance `havoid` and the componentwise no-drop `hper`. The two non-unit localization steps W1
-(`detΔ`) and W2 (`detSchurS`) of the fibre-`θ` chart transport are instances. -/
+avoidance `havoid` and the **per-prime** no-drop `hper` (the latter discharged once per surviving
+top prime — not from a global no-drop, see the module header). -/
 theorem topDimMinPrimes_ncard_away_eq (f : A) (S : Type u) [CommRing S] [Algebra A S]
     [IsLocalization.Away f S] (hdim : ringKrullDim S = ringKrullDim A)
     (havoid : ∀ p ∈ TopDimMinPrimes A, f ∉ p)
@@ -219,4 +224,4 @@ theorem topDimMinPrimes_ncard_away_eq (f : A) (S : Type u) [CommRing S] [Algebra
     (TopDimMinPrimes S).ncard = (TopDimMinPrimes A).ncard :=
   (bijOn_comap_topDimMinPrimes_away f S hdim havoid hper).ncard_eq
 
-end DLNFibre.Core
+end Ideal

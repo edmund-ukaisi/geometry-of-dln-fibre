@@ -1,7 +1,12 @@
+/-
+Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
+-/
 import DLNFibre.Core.AffineNoetherRank
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Basic
-import DLNFibre.Core.LocalizationKrullDim
+import Mathlib.RingTheory.Localization.Ideal
+import Mathlib.RingTheory.KrullDimension.Basic
+import Mathlib.RingTheory.Spectrum.Prime.Topology
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.Localization.Away.AdjoinRoot
 import Mathlib.RingTheory.Localization.FractionRing
@@ -9,31 +14,97 @@ import Mathlib.RingTheory.Localization.LocalizationLocalization
 import Mathlib.RingTheory.Localization.Integral
 
 /-!
-# `DLNFibre.Core.AffineLocalizationNoDrop` — localization preserves dim for an affine domain
+# Krull dimension under localization
 
-The one genuinely-new sub-lemma shared by the route-(c) step-4 (source) and step-5 (poly-extension)
-no-drops: inverting a **nonzero** element of a finitely-generated `k`-domain `D` does not change the
-Krull dimension.
+Two complementary facts about how Krull dimension behaves under localization, gathered in one brick.
 
-> `ringKrullDim (Localization.Away g D) = ringKrullDim D`  for `D` an f.g. `k`-domain, `g ≠ 0`.
+## The always-true `≤` half (any ring, any localization)
 
-Route (validated update-7): `dim = trdeg` for affine domains (`ringKrullDim_eq_trdeg_of_fg_domain`,
-via Noether normalization + `trdeg_eq_of_integral_injective`), and `trdeg` is invariant under
-localization because `D` and `D[1/g]` share the fraction field `Frac D` (both are algebraic over the
-fraction field's base, so `trdeg_add_eq` collapses the relative degree to `0`). Char-free.
+Localization never increases Krull dimension: for any localization `S = M⁻¹R` of a commutative ring
+`R` at a submonoid `M`,
+
+  `ringKrullDim S ≤ ringKrullDim R`.
+
+The primes of `S` correspond order-isomorphically to the primes of `R` disjoint from `M`
+(`IsLocalization.orderIsoOfPrime`), so `PrimeSpectrum.comap (algebraMap R S)` is a strict-monotone
+injection of prime spectra (monotone as the `comap` of a ring hom, injective by
+`PrimeSpectrum.localization_comap_injective`), and Krull dimension is monotone under strict-monotone
+maps (`Order.krullDim_le_of_strictMono`).
+
+No `@[stacks ...]` tag is attached to the `≤` half: the Stacks Project carries this fact only
+through the prime-bijection of a localization (tag `00KD`), not as a standalone dimension
+inequality, so a `@[stacks ...]` reference would overstate the match.
+
+## The matching `≥` — the *no-drop* for an affine domain (`[Field k]`, f.g.)
+
+The harder direction: inverting a **nonzero** element of a finitely-generated `k`-domain does not
+*drop* the Krull dimension,
+
+  `ringKrullDim (Localization.Away g D) = ringKrullDim D`  for `D` an f.g. `k`-domain, `g ≠ 0`,
+
+and its consequence for a (possibly reducible) f.g. `k`-algebra — inverting an element that avoids a
+top-dimensional prime preserves the dimension. The route: `dim = trdeg` for affine domains
+(`ringKrullDim_eq_trdeg_of_fg_domain`, via Noether normalization +
+`trdeg_eq_of_integral_injective`), and `trdeg` is invariant under localization because `D` and
+`D[1/g]` share the fraction field `Frac D` (both are algebraic over the fraction field's base, so
+`trdeg_add_eq` collapses the relative degree to `0`). Char-free.
+
+This file mirrors the eventual Mathlib home `Mathlib.RingTheory.KrullDimension.Localization` (there
+is no such file upstream at this pin — `RingTheory/KrullDimension/` has
+`{Basic,Field,LocalRing,Module,NonZeroDivisors,PID,Polynomial,Regular,Zero}` but no `Localization`),
+placed in the project's `DLNFibre.Core.Dimension` family beside the other Krull-dimension bricks so
+an upstream move is a file-move with no namespace surgery.
+
+## Main results
+- `ringKrullDim_localization_le` — `ringKrullDim S ≤ ringKrullDim R` for any localization
+  `S = M⁻¹R`.
+- `ringKrullDim_eq_trdeg_of_fg_domain` — `dim = trdeg` for an f.g. affine domain.
+- `trdeg_localization_eq` — `trdeg` is invariant under a localization at non-zero-divisors of a
+  domain.
+- `ringKrullDim_localizationAway_eq_of_fg_domain` — inverting `g ≠ 0` preserves `dim`, for an f.g.
+  affine domain.
+- `ringKrullDim_localizationAway_eq_of_avoids_top_prime` — inverting an element avoiding a
+  top-dimensional prime preserves `dim`, for an f.g. affine algebra.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+open IsLocalization Algebra
 
-open Algebra Dimension
+namespace DLNFibre.Core.Dimension
 
 universe u
 
+variable {R : Type u} [CommRing R]
+
+/-! ## The always-true `≤` half -/
+
+/-- **Localization does not increase Krull dimension.** For a localization `S = M⁻¹R`, the prime
+spectrum of `S` order-embeds into that of `R` via `comap (algebraMap R S)`: this map is monotone (it
+is the `comap` of a ring hom) and injective for a localization
+(`PrimeSpectrum.localization_comap_injective`), hence strict-monotone, and Krull dimension is
+monotone under strict-monotone maps (`Order.krullDim_le_of_strictMono`). So
+`ringKrullDim S ≤ ringKrullDim R`. -/
+theorem ringKrullDim_localization_le (M : Submonoid R) (S : Type u) [CommRing S] [Algebra R S]
+    [IsLocalization M S] :
+    ringKrullDim S ≤ ringKrullDim R := by
+  refine Order.krullDim_le_of_strictMono (PrimeSpectrum.comap (algebraMap R S)) ?_
+  refine Monotone.strictMono_of_injective ?_ (PrimeSpectrum.localization_comap_injective S M)
+  intro a b hab
+  exact Ideal.comap_mono hab
+
+/-- Non-vacuity witness: the fraction field `ℚ` of `ℤ` (a localization at the non-zero-divisors) has
+Krull dimension `0 ≤ 1 = ringKrullDim ℤ`. -/
+example : ringKrullDim (Localization (nonZeroDivisors ℤ)) ≤ ringKrullDim ℤ :=
+  ringKrullDim_localization_le (nonZeroDivisors ℤ) (Localization (nonZeroDivisors ℤ))
+
+/-! ## The no-drop `≥` half for an affine domain (`[Field k]`) -/
+
+section AffineDomainNoDrop
+
 variable {k : Type u} [Field k]
 
-/-! ## `dim = trdeg` for a finitely-generated affine domain -/
+/-! ### `dim = trdeg` for a finitely-generated affine domain -/
 
 /-- **`dim = trdeg` for an f.g. affine domain.** For a finitely-generated `k`-domain `A`,
 `ringKrullDim A = (Algebra.trdeg k A).toNat`. Noether-normalize to an integral injective
@@ -50,14 +121,15 @@ theorem ringKrullDim_eq_trdeg_of_fg_domain (A : Type u) [CommRing A] [IsDomain A
     trdeg_eq_of_integral_injective g hg_inj hg_int
   rw [hdim, htr, Cardinal.toNat_natCast]
 
-/-! ## trdeg is invariant under localization (sandwiched in the fraction field) -/
+/-! ### trdeg is invariant under localization (sandwiched in the fraction field) -/
 
 /-- **`trdeg k S = trdeg k D` for a localization of a domain at nonzero elements.** For a `k`-domain
 `D` and a `k`-algebra localization `S = M⁻¹D` at `M ≤ D∖0` (so the structure map `D → S` makes `S`
-sit between `D` and `Frac D`), the transcendence degrees over `k` agree. `S` is **algebraic over `D` in
-the fraction-field sense** — `S ↪ Frac D` and `Frac D` is algebraic over `D` (NOT integral/finite; the
-`Algebra.IsAlgebraic` proof goes through `IsAlgebraic.tower_bot_of_injective`) — so `trdeg D S = 0` and
-the tower additivity `trdeg_add_eq` over `k ⊆ D ⊆ S` collapses to `trdeg k D`. -/
+sit between `D` and `Frac D`), the transcendence degrees over `k` agree. `S` is **algebraic over `D`
+in the fraction-field sense** — `S ↪ Frac D` and `Frac D` is algebraic over `D` (NOT
+integral/finite; the `Algebra.IsAlgebraic` proof goes through `IsAlgebraic.tower_bot_of_injective`)
+— so `trdeg D S = 0` and the tower additivity `trdeg_add_eq` over `k ⊆ D ⊆ S` collapses to
+`trdeg k D`. -/
 theorem trdeg_localization_eq (D : Type u) [CommRing D] [IsDomain D] [Algebra k D]
     (M : Submonoid D) (hM : M ≤ nonZeroDivisors D)
     (S : Type u) [CommRing S] [Algebra k S] [Algebra D S] [IsScalarTower k D S]
@@ -89,7 +161,7 @@ theorem trdeg_localization_eq (D : Type u) [CommRing D] [IsDomain D] [Algebra k 
   rw [trdeg_eq_zero (R := D) (A := S), add_zero] at h
   exact h.symm
 
-/-! ## The headline no-drop -/
+/-! ### The headline no-drop -/
 
 /-- **Localization at a nonzero element preserves dim, for an f.g. affine domain.** For a
 finitely-generated `k`-domain `D` and `0 ≠ g`,
@@ -108,7 +180,7 @@ theorem ringKrullDim_localizationAway_eq_of_fg_domain (D : Type u) [CommRing D] 
   rw [ringKrullDim_eq_trdeg_of_fg_domain (k := k) S, ringKrullDim_eq_trdeg_of_fg_domain (k := k) D,
     trdeg_localization_eq (k := k) D (Submonoid.powers g) hpow S]
 
-/-! ## The shared abstract no-drop over a (possibly reducible) f.g. `k`-algebra -/
+/-! ### The shared abstract no-drop over a (possibly reducible) f.g. `k`-algebra -/
 
 /-- **Inverting an element that avoids a top-dimensional component does not drop the dimension.**
 For a finitely-generated `k`-algebra `R` (Noetherian) and `g : R`, if `g` avoids a *top-dimensional*
@@ -149,4 +221,6 @@ theorem ringKrullDim_localizationAway_eq_of_avoids_top_prime (R : Type u) [CommR
     _ ≤ ringKrullDim (Localization.Away g) :=
         ringKrullDim_le_of_surjective _ hsurj
 
-end DLNFibre.Core
+end AffineDomainNoDrop
+
+end DLNFibre.Core.Dimension

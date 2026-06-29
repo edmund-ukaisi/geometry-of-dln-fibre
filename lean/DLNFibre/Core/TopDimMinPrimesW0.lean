@@ -1,7 +1,8 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimesRadical
+import DLNFibre.Core.MinimalPrime.Radical
+import DLNFibre.Core.TopComponentsTopDim
 import DLNFibre.Core.ClosureBridge
 import DLNFibre.Core.CCodimCornerMono
 import DLNFibre.Core.CCodimZeroStrict
@@ -14,7 +15,7 @@ The W0 rung of the fibre-`θ` count transport (expedition `theta-components`, th
 `vanishingIdeal (canonicalCoord d '' productRankLocus d r)` carry the **same** top-dimensional
 minimal-prime count.
 
-The mechanism is a `quotTopDimSet` set-equality (`Core.TopDimMinPrimesRadical`): both quotient
+The mechanism is a `quotTopDimSet` set-equality (`Core.MinimalPrime.Radical`): both quotient
 counts equal `(quotTopDimSet ·).ncard`, so it suffices to show the two ideals select the same
 top-dimensional minimal primes. Write `Ile := sigmaIdeal d r` (closed, `rank ≤ r`) and
 `Ieq := vanishingIdeal (canonicalCoord d '' productRankLocus d r)` (exact, `rank = r`). Both have
@@ -40,6 +41,11 @@ predicate is `height = C` (`ringKrullDim_quotient_eq_iff_height_eq`), so:
 -/
 
 namespace DLNFibre.Core
+
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv
+  quotTopDimSet bijOn_comap_quotTopDimSet ncard_topDimMinPrimes_quotient_eq
+  ringKrullDim_quotient_eq_iff_height_eq)
 
 open MvPolynomial
 
