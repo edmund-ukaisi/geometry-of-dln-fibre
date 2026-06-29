@@ -93,4 +93,35 @@ theorem deepBlkZ_layerLast_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [rThresholdSplit_symm_inr]
   exact deepestPoint_layerLast_rows_vanish H r B hB hr hL s hL2 hs _ _ (by simp)
 
+/-! ## The pure-`{22}` conjugation kernel (cast-free `fromBlocks` algebra)
+
+The geometric heart of the atom's block-constancy, isolated as cast-free `fromBlocks_multiply` facts:
+a pure-`{22}` block `fromBlocks 0 0 0 T`, left-multiplied by a block-LOWER `fromBlocks a 0 c d` and
+right-multiplied by a block-UPPER `fromBlocks e f 0 g`, stays pure-`{22}` (`= fromBlocks 0 0 0 (d·T·g)`).
+This is why the core (which sits in each framed layer's `{22}` at reg=spec=0) never reaches the framed
+product's `{11,12,21}` — the boundary frames are block-lower (Pf_0, hPtri) / block-upper (Qf_1, hQtri),
+and the boundary-inner ones are the identity (Qf_0, Pf_1). -/
+
+/-- **The pure-`{22}` conjugation**: block-LOWER `P = fromBlocks a 0 c d` (rows/cols `r ⊕ m`) · pure-`{22}`
+`fromBlocks 0 0 0 T` (`T : m × n`) · block-UPPER `Q = fromBlocks e f 0 g` (rows/cols `r ⊕ n`) = pure-`{22}`
+`fromBlocks 0 0 0 (d·T·g)`. So the `{11,12,21}` blocks are `0` — INDEPENDENT of the core `T`. (Two
+cast-free `fromBlocks_multiply` collapses: `P · pure = fromBlocks 0 0 0 (d·T)`, then `· Q = fromBlocks 0
+0 0 (d·T·g)`.) -/
+theorem blockLowerUpper_conj_pureT {r m n : Type*} [Fintype r] [Fintype m] [Fintype n]
+    [DecidableEq r] [DecidableEq m] [DecidableEq n]
+    (a : Matrix r r ℝ) (c : Matrix m r ℝ) (d : Matrix m m ℝ)
+    (e : Matrix r r ℝ) (f : Matrix r n ℝ) (g : Matrix n n ℝ)
+    (T : Matrix m n ℝ) :
+    Matrix.fromBlocks a 0 c d
+        * Matrix.fromBlocks (0 : Matrix r r ℝ) (0 : Matrix r n ℝ) (0 : Matrix m r ℝ) T
+        * Matrix.fromBlocks e f 0 g
+      = Matrix.fromBlocks 0 0 0 (d * T * g) := by
+  have h1 : Matrix.fromBlocks a (0 : Matrix r m ℝ) c d
+        * Matrix.fromBlocks (0 : Matrix r r ℝ) (0 : Matrix r n ℝ) (0 : Matrix m r ℝ) T
+      = Matrix.fromBlocks (0 : Matrix r r ℝ) (0 : Matrix r n ℝ) (0 : Matrix m r ℝ) (d * T) := by
+    rw [Matrix.fromBlocks_multiply]
+    simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add]
+  rw [h1, Matrix.fromBlocks_multiply]
+  simp only [Matrix.mul_zero, Matrix.zero_mul, add_zero, zero_add, Matrix.mul_assoc]
+
 end DLNFibre.DLN.RLCT
