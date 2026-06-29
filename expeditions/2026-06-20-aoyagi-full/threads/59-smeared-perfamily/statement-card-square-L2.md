@@ -1,9 +1,11 @@
-# Statement card — the smeared L=2 two analytic hypotheses, discharged on the square stratum
+# Statement card — the FULLY-UNCONDITIONAL smeared L=2 box-divergence on the square stratum
 
-The two genuinely-analytic NAMED hypotheses of `routeMCore_smearedL2` (`hcancel`, `hUpos`) discharged
-UNCONDITIONALLY on a conditioned box, via strict row diagonal dominance of the front rank block `P₁`,
-on the smeared L=2 stratum `r = M0` (the entire genuine smeared L=2 regime, `M0 < M1`). The
-adjudication certificate is
+ALL THREE per-family analytic hypotheses of `routeMCore_smearedL2` (`hcancel`, `hUpos`, `hSpre`) and the
+peeled-point membership (`hmem`) discharged on a conditioned box, via strict row diagonal dominance of the
+front rank block `P₁` (`det(P₁ᵀP₁) ≠ 0` everywhere on the box) + the Varah `Λ₀` bound, on the smeared L=2
+stratum `r = M0` (the entire genuine smeared L=2 regime, `M0 < M1`). The headline
+`routeMCore_smearedL2_square_uncond` carries NO analytic per-family hypothesis — only standard
+measure-positivity / exponent / box-width inputs. The adjudication certificate is
 `expeditions/2026-06-20-aoyagi-full/threads/59-smeared-perfamily/pnp-adjudicate/certificate-smeared-l2-two-facts.md`
 (branch `origin/pnp/smeared-l2-adjudicate`).
 
@@ -97,39 +99,69 @@ adjudication certificate is
 
 ---
 
-## The wired headline (the two named analytic hypotheses discharged)
+## Brick — field A (the per-entry decode bound `≤ 2δ`, the `hSpre` discharge)
+
+> **Claim.** On the conditioned box, `condBox ⊆ (ψ∘R)⁻¹(cubeBox 2δ)`: every decoded flat coord is `≤ 2δ`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.condBox_subset_preimage` (with `chartL2Params_entry_bound`,
+>   `A0u_entry_le_of_box`, `Sbotu_entry_le_of_box`, `HbarUnit_entry_le_of_box`, `zu_abs_le_of_box`,
+>   `deepTop_entry_le_of_box`, `phiL2_entry`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSmearedSquareL2.lean` @ `a0b99639`)
+> - **Gloss.** `psiMap (Rmap u) = phiL2 …`; each flat coord = a `chartL2Params` entry (`phiL2_entry`, rfl).
+>   Front `A0u ≤ δ`; deep-bottom `S_bot ≤ η`; deep-top `|z·H̄ − Λ₀·S_bot| ≤ |z|·|H̄| + ∑_b|Λ₀||S_bot|
+>   ≤ δ·1 + s·((1/γ)η)·η` (the Varah `Λ₀` bound bites the shear term). Under the field-A margins
+>   `η ≤ δ`, `η ≤ 1`, `s·((1/γ)η)·η ≤ δ`, every entry `≤ 2δ`.
+> - **Proved.** Field A on the box, sorry-free, axiom-clean. The opaque-width analogue of the `(2,3,1)`
+>   `chartParams231_entry_bound` / `subBox231_subset_preimage`.
+> - **Assumed.** box membership; `r = M 0`; the dominance + field-A margins.
+> - **Cited / Deferred.** none.
+> - **Status.** sorry-free + reviewed (initial pair; field-A landed after review — re-review welcome).
+
+## Brick — the generic peeled-point membership (the `hmem` discharge)
+
+> **Claim.** `box k := condBoxWidth (hN ▸ k)` ⟹ every peeled point `hN ▸ (insertNth p z y)` lies in the
+> ambient `condBox (pivotCoord) (condBoxWidth) δ`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.insertNth_mem_condBox` (with `exists_succAbove_index`,
+>   `succAbove_readoff_value`, `condBoxWidth_double_cast`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSmearedSquareL2.lean` @ `a0b99639`)
+> - **Gloss.** The cast bridge that walled the first pass, landed by SPLITTING the
+>   `Fin (n+1)`↔`Fin (routeMAmbient M)` index decomposition (`exists_succAbove_index`, pure `Fin`) from the
+>   value readoff (`succAbove_readoff_value`, via the banked `hN_cast_apply`) — keeping `condBoxWidth`
+>   entirely outside the generalize/`subst`, which was the prior thrash. The opaque-width analogue of
+>   `(2,3,1)`'s `insertNth6_mem_subBox231`.
+> - **Proved.** The generic membership, sorry-free, axiom-clean.
+> - **Status.** sorry-free.
+
+## The FULLY-UNCONDITIONAL headline (all three analytic hypotheses discharged)
 
 > **Claim.** For the smeared L=2 stratum `r = M 0`, the achiever box integral
-> `∫⁻_{cubeBox N ε} |routeMCore M|^{−c'} = ⊤` follows from the chart facts + field-A containment `hSpre`
-> + the (cheap) peeled-point box-membership `hmem` — with the two genuinely-analytic NAMED hypotheses of
-> `routeMCore_smearedL2` (`hcancel`, `hUpos`) DISCHARGED, not assumed.
+> `∫⁻_{cubeBox N 2δ} |routeMCore M|^{−c'} = ⊤` — with ALL THREE per-family analytic hypotheses of
+> `routeMCore_smearedL2` (`hcancel`, `hUpos`, `hSpre`) and the peeled-point membership `hmem` DISCHARGED.
 >
-> - **Lean:** `DLNFibre.DLN.RLCT.routeMCore_smearedL2_square`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSmearedSquareL2.lean` @ `846f0d06`)
-> - **Gloss.** Wires the banked `routeMCore_smearedL2` with the conditioned box `condBoxWidth`: `hcancel`
->   discharged by `Lam0u_cancel_of_box`, `hUpos` by `Uunit_pos_of_box` (the `z = 0` point via the
->   rest-membership transfer `hN_insertNth_agree_off_pivot`), both from `gram_det_ne_of_box`.
-> - **Proved.** The reduction with `hcancel` + `hUpos` discharged unconditionally on the box, sorry-free,
->   axiom-clean `[propext, Classical.choice, Quot.sound]`.
-> - **Assumed.** the chart facts (banked generic chart: MP/embedding/radial det/peeled rate — these are the
->   `routeMCore_smearedL2` interface, already proved in `RouteMSmearedDecodeL2`), the field-A containment
->   `hSpre`, and the peeled-point box-membership `hmem`. `hmem` is a readoff-level membership bridge
->   (the `subst`-clean analogue of `(2,3,1)`'s `insertNth6_mem_subBox231`).
-> - **Cited.** none new.
-> - **Deferred (the honest residual to a FULLY unconditional headline).**
->   1. **Field-A containment `hSpre`** — the per-slot decode case analysis bounding every decoded flat
->      coord by `2δ`. The genuinely-analytic core (the `Λ₀` bound) is DONE (`Lam0u_entry_bound_of_box`);
->      what remains is the mechanical per-entry assembly (front coords `≤ δ`; deep-bottom `S_bot ≤ η`;
->      deep-top `|z·H̄ − Λ₀·S_bot| ≤ |z|·|H̄| + ‖Λ₀‖·(M2·η)`), the opaque-width analogue of
->      `chartParams231_entry_bound` / `subBox231_subset_preimage`.
->   2. **The generic peeled-point membership `hmem`** — a `Fin (n+1)`↔`Fin (routeMAmbient M)` cast bridge
->      (the analogue of `insertNth6_mem_subBox231`), left as a hypothesis here (cast bookkeeping; cheap at
->      a concrete `M`).
-> - **Honest scope (decorrelated Codex Q3).** This is the smeared L=2 box-divergence on the square stratum
->   GIVEN field-A containment — NOT yet "fully unconditional". The two genuinely-analytic facts the
->   certificate adjudicated (`hcancel`, `hUpos`) ARE unconditional on the box; the remaining `hSpre` is a
->   containment whose analytic input (the `Λ₀` bound) is landed.
-> - **Status.** sorry-free + reviewed (reviewer fidelity PASS-WITH-NOTES, 2026-06-29).
+> - **Lean:** `DLNFibre.DLN.RLCT.routeMCore_smearedL2_square_uncond`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSmearedSquareL2.lean` @ `a0b99639`)
+>   (intermediate forms: `routeMCore_smearedL2_square` takes `hSpre`+`hmem`;
+>   `routeMCore_smearedL2_square_condBox` takes `hSpre` only.)
+> - **Gloss.** `hcancel` ⟵ `Lam0u_cancel_of_box`, `hUpos` ⟵ `Uunit_pos_of_box`, `hmem` ⟵
+>   `insertNth_mem_condBox`, `hSpre` ⟵ `condBox_subset_preimage` (at `ε = 2δ`), all on the conditioned
+>   `condBoxWidth`. The chart facts (MP/embedding/radial det/peeled rate) are the banked
+>   `routeMCore_smearedL2` interface.
+> - **Proved.** The box-divergence with NO analytic per-family hypothesis remaining, sorry-free, axiom-clean
+>   `[propext, Classical.choice, Quot.sound]` (forced recompile + `#print axioms`).
+> - **Assumed (NON-analytic standard inputs only).** the conditioned box's positive measure `hboxpos`; the
+>   binding-axis exponent arithmetic `hexp : (r·M2 − 1) − 2c' ≤ −1` (from `c' ≥ ½·minAdm`); and the box
+>   margins (dominance `(r−1)η + γ ≤ δ/2`; field A `η ≤ δ`, `η ≤ 1`, `s·((1/γ)η)·η ≤ δ`). The chart-fact
+>   interface (banked, proved in `RouteMSmearedDecodeL2`).
+> - **Non-vacuity (margins jointly satisfiable ∀ r ≥ 1, s).** Pick `γ = δ/4` and
+>   `η = min(δ/(4(r−1)), δ/(2√s))` (`η = δ/4` at `r = 1`): dominance `(r−1)η + γ ≤ δ/4 + δ/4 = δ/2` ✓;
+>   `η ≤ δ`, `η ≤ 1` for `δ ≤ 1` ✓; field A `s·((1/γ)η)·η = 4s·η²/δ ≤ 4s·(δ²/(4s))/δ = δ` ✓. So the box
+>   exists for every stratum config.
+> - **Cited / Deferred.** none.
+> - **Honest scope.** This IS the fully-unconditional smeared L=2 box-divergence on the square stratum
+>   `r = M 0` (the entire genuine smeared L=2 regime) — no analytic per-family hypothesis assumed. The only
+>   inputs are the standard measure-positivity / exponent / box-width choices.
+> - **Status.** sorry-free (awaiting reviewer fidelity check on the field-A + uncond pieces).
 
 ---
 
