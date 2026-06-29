@@ -212,4 +212,54 @@ theorem reindex_framedLayer_zeroReads_eq_corner (H : Fin (L + 1) → ℕ) (r : �
   rw [Matrix.fromBlocks_add]
   simp only [add_zero, zero_add]
 
+/-! ## `framedParamsPivot(0,c,0)` per-layer at zero reg/spec = `framedLayer ... 0 0 0 (core)` -/
+
+/-- At reg=spec=0, a NON-last framed layer is `framedLayer s (Pf s)(Qf s) 0 0 0 (core read)` (reads
+vanish). -/
+theorem framedParamsPivot_zeroReg_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (c : Fin (flatDim (deepestM H r)) → ℝ) (s : Fin L) (hs : s ≠ lastLayer hL) :
+    framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) s
+      = framedLayer H r hr s (Pf s) (Qf s) 0 0 0 ((paramsEquivFlat (deepestM H r)).symm c s) := by
+  rw [framedParamsPivot_of_ne_last H r hr hL J Pf Qf _ s hs]
+  show framedLayer H r hr s (Pf s) (Qf s)
+      (readX H r hr hL (((0 : Fin (deepestNReg H r) → ℝ), c,
+        (0 : Fin (deepestNGauge H r) → ℝ)).1, (_, c, _).2.2) s) _ _ _
+    = _
+  rw [show (((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).1,
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).2.2)
+      = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
+    readX_zero H r hr hL s, readY_zero H r hr hL s, readZ_zero H r hr hL s]
+
+/-- At reg=spec=0, the LAST framed layer (pivot col split) is `corner + Pf_last · pivotRsym(fromBlocks 0
+0 0 (core read)) · Qf_last` (reads vanish; the pivot column split `pivotJSucc J`). -/
+theorem framedParamsPivot_zeroReg_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (c : Fin (flatDim (deepestM H r)) → ℝ) :
+    framedParamsPivot H r hr hL J Pf Qf
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)) (lastLayer hL)
+      = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+          + Pf (lastLayer hL)
+            * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+                (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+                (Matrix.fromBlocks 0 0 0
+                  ((paramsEquivFlat (deepestM H r)).symm c (lastLayer hL)))
+            * Qf (lastLayer hL) := by
+  rw [framedParamsPivot_last H r hr hL J Pf Qf
+    ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ))]
+  rw [show (((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).1,
+        ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).2.2)
+      = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
+    readX_zero H r hr hL (lastLayer hL), readY_zero H r hr hL (lastLayer hL),
+    readZ_zero H r hr hL (lastLayer hL)]
+
 end DLNFibre.DLN.RLCT
