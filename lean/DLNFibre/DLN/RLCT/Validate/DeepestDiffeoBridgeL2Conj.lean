@@ -1478,4 +1478,150 @@ theorem contDiffAt_l2GaugeΔConj_at (H : Fin (L + 1) → ℕ) (r : ℕ)
       funext q'; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply]; ring
     rw [h0]; exact contDiffAt_const
 
+/-! ## S2a — the conjugated joint unit set + cutoff bump
+
+The cutoff χ support must sit where all four conjugated dets `A0c, A1c, P00c, Wc` are `≠ 0`. At the
+origin those are `det(deepBlkA_0), det(deepBlkA_last), det(deepBlkA_0·deepBlkA_last), 1` — all `≠ 0`
+given the pivot-base units `hDA0`/`hDA1` (and `hY` for `P00c(0)`). All four dets are continuous, so a
+ball at `0` sits inside the joint unit set. -/
+
+/-- The conjugated joint unit set: all four pivots/composites invertible. -/
+def jointUnitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
+    Set (DeepestSplit H r (deepestNGauge H r)) :=
+  {q | (l2A0Conj H r B hB hr hL q).det ≠ 0 ∧ (l2A1Conj H r B hB hr hL q).det ≠ 0
+    ∧ (l2P00Conj H r B hB hr hL hL2eq q).det ≠ 0 ∧ (l2WConj H r B hB hr hL hL2eq q).det ≠ 0}
+
+/-- A ball at `0` inside the conjugated joint unit set (the four dets continuous, `≠ 0` at `0`). -/
+theorem exists_ball_subset_jointUnitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    ∃ ε > 0, Metric.ball (0 : DeepestSplit H r (deepestNGauge H r)) ε
+      ⊆ jointUnitSetConj H r B hB hr hL hL2eq := by
+  have hA0c : ContinuousAt (fun q => (l2A0Conj H r B hB hr hL q).det) 0 :=
+    (contDiffAt_matrix_det_of_entries
+      (fun a b => (contDiff_l2A0Conj_entry H r B hB hr hL a b).contDiffAt)).continuousAt
+  have hA1c : ContinuousAt (fun q => (l2A1Conj H r B hB hr hL q).det) 0 :=
+    (contDiffAt_matrix_det_of_entries
+      (fun a b => (contDiff_l2A1Conj_entry H r B hB hr hL a b).contDiffAt)).continuousAt
+  have hP00c : ContinuousAt (fun q => (l2P00Conj H r B hB hr hL hL2eq q).det) 0 := by
+    refine (contDiffAt_matrix_det_of_entries (fun a b => ?_)).continuousAt
+    have hpe : (fun q => l2P00Conj H r B hB hr hL hL2eq q a b)
+        = fun q => (l2A0Conj H r B hB hr hL q * l2A1Conj H r B hB hr hL q) a b
+          + (l2Y0Conj H r B hB hr hL hL2eq q * l2Z1Conj H r B hB hr hL q) a b := by
+      funext q; rw [l2P00Conj, Matrix.add_apply]
+    rw [hpe]
+    exact (contDiffAt_matrix_mul_entry
+        (fun a' k => (contDiff_l2A0Conj_entry H r B hB hr hL a' k).contDiffAt)
+        (fun k b' => (contDiff_l2A1Conj_entry H r B hB hr hL k b').contDiffAt) a b).add
+      (contDiffAt_matrix_mul_entry
+        (fun a' k => (contDiff_l2Y0Conj_entry H r B hB hr hL hL2eq a' k).contDiffAt)
+        (fun k b' => (contDiff_l2Z1Conj_entry H r B hB hr hL k b').contDiffAt) a b)
+  have hWc : ContinuousAt (fun q => (l2WConj H r B hB hr hL hL2eq q).det) 0 := by
+    refine (contDiffAt_matrix_det_of_entries (fun a b => ?_)).continuousAt
+    exact contDiffAt_l2WConj_entry_at H r B hB hr hL hL2eq 0
+      (l2A0Conj_det_ne_zero H r B hB hr hL hDA0) (l2A1Conj_det_ne_zero H r B hB hr hL hDA1) a b
+  have hnbhd : jointUnitSetConj H r B hB hr hL hL2eq ∈ nhds (0 : DeepestSplit H r (deepestNGauge H r)) := by
+    refine Filter.inter_mem (hA0c.preimage_mem_nhds (isOpen_ne.mem_nhds ?_))
+      (Filter.inter_mem (hA1c.preimage_mem_nhds (isOpen_ne.mem_nhds ?_))
+        (Filter.inter_mem (hP00c.preimage_mem_nhds (isOpen_ne.mem_nhds ?_))
+          (hWc.preimage_mem_nhds (isOpen_ne.mem_nhds ?_))))
+    · exact l2A0Conj_det_ne_zero H r B hB hr hL hDA0
+    · exact l2A1Conj_det_ne_zero H r B hB hr hL hDA1
+    · exact l2P00Conj_det_ne_zero H r B hB hr hL hL2eq hDA0 hDA1 hY
+    · rw [l2WConj_zero H r B hB hr hL hL2eq (by
+        -- need deepBlkZ_last = 0; supplied below via the boundary at last layer
+        exact deepBlkZ_layerLast_zero H r B hB hr hL (by omega) (lastLayer hL) (by
+          simp only [lastLayer]; omega)), Matrix.det_one]
+      exact one_ne_zero
+  obtain ⟨ε, hε, hball⟩ := Metric.mem_nhds_iff.mp hnbhd
+  exact ⟨ε, hε, hball⟩
+
+/-- The chosen conjugated joint-unit radius. -/
+noncomputable def jointRadiusConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) : ℝ :=
+  (exists_ball_subset_jointUnitSetConj H r B hB hr hL hL2eq hDA0 hDA1 hY).choose
+
+theorem jointRadiusConj_pos (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    0 < jointRadiusConj H r B hB hr hL hL2eq hDA0 hDA1 hY :=
+  (exists_ball_subset_jointUnitSetConj H r B hB hr hL hL2eq hDA0 hDA1 hY).choose_spec.1
+
+theorem ball_jointRadiusConj_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    Metric.ball (0 : DeepestSplit H r (deepestNGauge H r))
+        (jointRadiusConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      ⊆ jointUnitSetConj H r B hB hr hL hL2eq :=
+  (exists_ball_subset_jointUnitSetConj H r B hB hr hL hL2eq hDA0 hDA1 hY).choose_spec.2
+
+/-- The conjugated cutoff bump (`jointRadiusConj/4`, `/2`), support in the joint unit set. -/
+noncomputable def cutoffBumpSplitConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)) where
+  rIn := jointRadiusConj H r B hB hr hL hL2eq hDA0 hDA1 hY / 4
+  rOut := jointRadiusConj H r B hB hr hL hL2eq hDA0 hDA1 hY / 2
+  rIn_pos := by have := jointRadiusConj_pos H r B hB hr hL hL2eq hDA0 hDA1 hY; linarith
+  rIn_lt_rOut := by have := jointRadiusConj_pos H r B hB hr hL hL2eq hDA0 hDA1 hY; linarith
+
+/-- The conjugated bump's tsupport sits in the joint unit set. -/
+theorem tsupport_cutoffBumpSplitConj_subset (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    tsupport (fun q => ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY) q : ℝ))
+      ⊆ jointUnitSetConj H r B hB hr hL hL2eq := by
+  rw [(cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY).tsupport_eq]
+  intro q hq
+  rw [Metric.mem_closedBall, dist_zero_right] at hq
+  have hpos := jointRadiusConj_pos H r B hB hr hL hL2eq hDA0 hDA1 hY
+  have hrOut : (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY).rOut
+      = jointRadiusConj H r B hB hr hL hL2eq hDA0 hDA1 hY / 2 := rfl
+  rw [hrOut] at hq
+  apply ball_jointRadiusConj_subset H r B hB hr hL hL2eq hDA0 hDA1 hY
+  rw [Metric.mem_ball, dist_zero_right]; linarith
+
+/-! ## S0/S1 — the public conjugated maps + S2/S3/S4
+
+`psiSplitRawL2Conj := psiSplitRawL2CoreConj` (we only fire at `L = 2`). The cutoff `psiSplitCutL2Conj χ
+q = q + χ q • (raw q − q)`, globally `ContDiff` (raw `ContDiffAt` on the joint-unit tsupport), fixes the
+origin, has strict derivative `id` there (`D(raw − id)(0) = 0` + `δ(0) = 0`). `psiL2Conj` is the flat
+conjugate `split⁻¹ ∘ psiSplitCutL2Conj ∘ split`. -/
+
+/-- The conjugated raw joint correction `psiSplitRawL2CoreConj q − q`. -/
+noncomputable def psiSplitDeltaL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
+  psiSplitRawL2CoreConj H r B hB hr hL hL2eq q - q
+
+/-- The conjugated χ-cutoff joint action `q + χ q • δc q`. -/
+noncomputable def psiSplitCutL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)))
+    (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
+  q + (χ q : ℝ) • psiSplitDeltaL2Conj H r B hB hr hL hL2eq q
+
 end DLNFibre.DLN.RLCT
