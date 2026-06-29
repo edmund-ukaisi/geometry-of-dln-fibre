@@ -3,6 +3,40 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Chart-Produced Support - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has passive-domain
+chart-produced support wrappers:
+
+```text
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_sourceRankStratum_eq_self
+```
+
+The source measure is arbitrary on `eta x (center -> R)`.  The theorems assume
+`AEMeasurable sourceChart sourceMeasure`; the source-rank theorem additionally
+assumes `hprod`, `hr0`, and the successor rank equation a.e.  They prove only
+that the pushforward chart-produced source measure restricts to the
+retained-passive p.13 local source, respectively to the source-rank stratum,
+as itself.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-chart-produced-support.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-chart-produced-support.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+Direct axiom probes for both theorem names report
+`[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only review by `Peirce the 3rd` passed with no findings; see
+`threads/03-block-product-reduction/review-a2-case2-passive-chart-produced-support.md`.
+
+Nonclaims: no concrete passive product measure, no passive source-chart
+continuity theorem, no source-rank coverage, no source-image equality, no
+determinant-chart pushforward, no passive Jacobian/source-density accounting,
+no original source-prior transport, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive-Parameter Pointwise Support Readout - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has a passive-sector

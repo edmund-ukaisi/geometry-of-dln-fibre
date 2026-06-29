@@ -10,6 +10,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive chart-produced support
+
+The passive-sector support wrapper has moved from pointwise support to
+chart-produced measure support, while keeping the source measure arbitrary:
+
+```text
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_sourceRankStratum_eq_self
+```
+
+The theorems assume a.e. measurability of the passive source chart.  The
+source-rank theorem also assumes the successor rank equation a.e. on the
+passive-domain measure.  This is support bookkeeping for a pushforward
+measure, not a passive product-measure construction or source-prior transport.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-chart-produced-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-chart-produced-support.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`, and direct
+axiom probes for both theorem names report
+`[propext, Classical.choice, Quot.sound]`.
+Peirce the 3rd xhigh read-only review passed with no findings.
+
+Next priority is a concrete passive product-measure/continuity package, or
+the larger passive-selected-entry chart construction with local inverse,
+image, and Jacobian accounting.  Do not treat this support wrapper as
+determinant-chart Haar transport or original source-prior transport.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive-parameter pointwise support readout
 
 The passive-selected-entry source-map frontier now has a pointwise

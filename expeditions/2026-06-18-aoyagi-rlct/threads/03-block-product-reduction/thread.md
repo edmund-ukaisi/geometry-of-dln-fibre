@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive chart-produced support
+
+Reproduction:
+`reproduction-a2-case2-passive-chart-produced-support.md`.
+Statement card:
+`statement-card-a2-case2-passive-chart-produced-support.md`.
+
+Lean now exposes:
+
+```text
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_sourceRankStratum_eq_self
+```
+
+These theorems lift the passive pointwise support lemmas to arbitrary
+chart-produced measures on `eta x (center -> R)`, under an explicit
+`AEMeasurable sourceChart sourceMeasure` hypothesis.  Source-rank support also
+requires the successor rank equation a.e.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Direct axiom probes for both theorem names report
+`[propext, Classical.choice, Quot.sound]`.
+Peirce the 3rd xhigh read-only review returned PASS:
+`review-a2-case2-passive-chart-produced-support.md`.
+
+Nonclaims: no concrete passive product measure, source-rank coverage,
+source-image equality, determinant-chart pushforward, source-prior transport,
+normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive-parameter pointwise support readout
 
 Reproduction:

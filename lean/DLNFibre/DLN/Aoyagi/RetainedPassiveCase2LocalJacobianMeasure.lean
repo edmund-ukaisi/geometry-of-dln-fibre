@@ -1187,6 +1187,201 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- A passive-parameter Case 2 chart-produced source measure is supported on
+the retained-passive p.13 local source when the passive chart is a.e.
+measurable.
+
+The measure on the passive domain is arbitrary.  This theorem is only support
+bookkeeping for a chart pushforward; it is not a product-measure construction,
+source-prior transport, Jacobian formula, normal-crossing statement, pole
+order, or RLCT extraction. -/
+theorem measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type} [Fintype τ] [DecidableEq τ] [MeasurableSpace η]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hCtop : ∀ θ : η, IsUnit ((Ctop θ).det))
+    (hA1passive : ∀ θ : η, ∀ p : Fin 1, IsUnit ((A1passive θ p).det))
+    (sourceMeasure :
+      Measure
+        (η ×
+          ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ))) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let sourceChart : η × (center → ℝ) → EdgeFamily :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData z)
+    ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily],
+      AEMeasurable sourceChart sourceMeasure →
+      let μ := Measure.map sourceChart sourceMeasure
+      let localSource :=
+        paperEndpointFixedBaseRetainedPassiveP13LocalSource W₂ B₂ U₀ hU₀
+          (fun E : EdgeFamily ↦ E)
+      μ.restrict localSource = μ := by
+  intro center EdgeFamily retainedData sourceChart _ _ hsourceChart μ localSource
+  have hchart_mem :
+      ∀ᵐ z ∂ sourceMeasure, sourceChart z ∈ localSource := by
+    refine Filter.Eventually.of_forall ?_
+    intro z
+    have hpre :=
+      retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        A1passive F2 A3passive Ctop F3 hCtop hA1passive
+    simpa [center, EdgeFamily, retainedData, sourceChart, localSource] using
+      hpre.1 z
+  simpa [μ, localSource] using
+    measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+      (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+      (Cedge := fun E : EdgeFamily ↦ E)
+      (η := sourceMeasure) (sourceChart := sourceChart)
+      (by simpa [EdgeFamily] using (continuous_id : Continuous (fun E : EdgeFamily ↦ E)))
+      hsourceChart hchart_mem
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A passive-parameter Case 2 chart-produced source measure is supported on
+the named source-rank stratum when the successor rank equation holds a.e. on
+the passive chart domain.
+
+The measure on the passive domain is arbitrary, and measurability of the
+passive source chart is an explicit hypothesis.  This is support bookkeeping
+only; it is not source-rank coverage, source-image equality, source-prior
+transport, a Jacobian formula, normal crossings, pole order, or RLCT. -/
+theorem measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_sourceRankStratum_eq_self
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type} [Fintype τ] [DecidableEq τ] [MeasurableSpace η]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hCtop : ∀ θ : η, IsUnit ((Ctop θ).det))
+    (hA1passive : ∀ θ : η, ∀ p : Fin 1, IsUnit ((A1passive θ p).det))
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hprod : Module.finrank ℝ (LinearMap.range (paperTotalMap W₂ B₂)) = r)
+    (hr0 : r + Fintype.card τ = rEdge 0)
+    (sourceMeasure :
+      Measure
+        (η ×
+          ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ))) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let sourceChart : η × (center → ℝ) → EdgeFamily :=
+      fun z ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData z)
+    ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily],
+      AEMeasurable sourceChart sourceMeasure →
+      (∀ᵐ z ∂ sourceMeasure,
+        r + (case2SuccessorSelectedEntryMatrix n hS hnext z.2 eNext).rank =
+          rEdge 1) →
+      let μ := Measure.map sourceChart sourceMeasure
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+      μ.restrict sourceStratum = μ := by
+  intro center EdgeFamily retainedData sourceChart _ _ hsourceChart hr1_ae μ sourceStratum
+  have hchart_mem :
+      ∀ᵐ z ∂ sourceMeasure, sourceChart z ∈ sourceStratum := by
+    filter_upwards [hr1_ae] with z hz
+    simpa [center, EdgeFamily, retainedData, sourceChart, sourceStratum] using
+      case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_mem_sourceRankStratum
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        A1passive F2 A3passive Ctop F3 hCtop hA1passive hprod hr0 z hz
+  simpa [μ, sourceStratum] using
+    measure_map_restrict_sourceRankStratum_eq_self_of_ae_mem
+      (W := W₂) (B := B₂)
+      (Cedge := fun E : EdgeFamily ↦ E) (r := r) (rEdge := rEdge)
+      (η := sourceMeasure) (sourceChart := sourceChart)
+      (by simpa [EdgeFamily] using (continuous_id : Continuous (fun E : EdgeFamily ↦ E)))
+      hsourceChart hchart_mem
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Self-endpoint specialization of the Case 2 endpoint-transported fixed-base
 source-family inputs.
 

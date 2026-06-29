@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive chart-produced support,
+  2026-06-29.** Lean now exposes
+  `measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_retainedPassiveP13LocalSource_eq_self`
+  and
+  `measure_map_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_restrict_sourceRankStratum_eq_self`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  These theorems lift the passive pointwise local-source/source-rank support
+  lemmas to arbitrary chart-produced measures on `eta x (center -> R)`, with
+  `AEMeasurable sourceChart sourceMeasure` explicit and the successor rank
+  equation assumed a.e. for source-rank support.  Reproduction and statement
+  card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-chart-produced-support.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-chart-produced-support.md`.
+  Focused build passed, and direct axiom probes for both theorem names report
+  `[propext, Classical.choice, Quot.sound]`.
+  Xhigh review passed with no findings in
+  `threads/03-block-product-reduction/review-a2-case2-passive-chart-produced-support.md`.
+  This is chart-produced support bookkeeping only: no concrete passive product
+  measure, source-rank coverage, source-image equality, determinant-chart
+  pushforward, source-prior transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive-parameter fixed-base source
   readback, 2026-06-29.** Lean now exposes
   `retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive`
