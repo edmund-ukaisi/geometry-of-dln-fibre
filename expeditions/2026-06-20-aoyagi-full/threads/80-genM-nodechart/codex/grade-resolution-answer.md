@@ -74,3 +74,19 @@ Also print block sizes:
 ```
 
 The first check is the decisive one. Alignment tables with `[12,12,3]` and `[9,9,9]` are diagnostic; vanishing above `frameB` is the proof target.
+---
+
+## SUPERSEDED (2026-06-29): single-global-frameB is M-NON-UNIFORM
+
+genm-interior's deeper check WALLS the single-global-frameB-SCC resolution above: the SCC block
+STRUCTURE is M-DEPENDENT. sympy on T3333's actual SCC = 11 blocks [1×6, 3×4, 9] ≠ frameB's hand-tuned
+13; the K-coupling block size depends on the per-boundary K-core dim t_s, which varies with M. The
+(3,3,3,3) #eval validated frameB for THAT ONE M — but there is NO uniform opaque-width frameB. LESSON:
+validate a candidate grading across MULTIPLE M (the #eval-at-one-M caught the layer mismatch but missed
+M-uniformity).
+
+TRACTABLE ROUTE (genm-interior re-speccing, gated): det_comp PER-PIECE — DFrame_M = ∏ non-disjoint
+TRIANGULAR pieces via listProd_clm_abs_det + LOCAL uniform per-piece det lemmas, ordered by b-0's
+one-sided locality. NOT a global grading (sidesteps M-dependence). b-0 capstone + reader/block-locality
+feed it. Validate per-piece det uniformity at a 2nd M (2,3,2): flatDim 12, L=2, distinct K-core dims —
+a good decorrelated second node from (3,3,3,3)'s L=3.
