@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive passive-variable sector transport frontier
+
+Reproduction:
+`reproduction-a2-retained-passive-passive-variable-sector-transport.md`.
+Statement card:
+`statement-card-a2-retained-passive-passive-variable-sector-transport.md`.
+Review:
+`review-a2-retained-passive-passive-variable-sector-transport.md`.
+
+This is a reviewed frontier specification, not a new Lean theorem.  It
+separates the passive-variable-explicit source-measure problem from the
+reduced selected-entry chart-produced finite-integral lane.  The correct
+coordinate domain is a product of retained passive variables and selected-entry
+residual coordinates; the raw passive variables are typed over
+`case2PostPivotTwoEdgeDomain ...` and are transported by endpoint equivalences
+to the fixed-base endpoint complement indices.
+
+The source check confirmed the Aoyagi pp. 10-13 formulas: Lemma 2 has
+`F2 = -A1^{-1} A2`, `F3 = -A3 A1^{-1}`, and
+`C4 = -A3 A1^{-1} A2 + A4`; Theorem 3 has the displayed induction formulas;
+and the p.13 lower-right block is `prod_s C^(s) - F3 F2`.  The Lean/API check
+confirmed the current inputs and sharpened the next subtarget: a combined
+with-passive open punctured-sector inverse/readout package, using the open
+source-readback theorem, the with-passive endpoint residual-factor chart-map
+identity, the existing passive pointwise residual readout theorem, and
+`SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap`.
+
+Nonclaims: no passive-sector Haar transport, determinant-chart Haar
+comparison for the reduced selected-entry section, external/original
+source-prior comparison, selected-entry source-image equality, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive source-prior coordinate-domain frontier
 
 Reproduction:

@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive passive-variable sector transport frontier
+
+The passive-variable source-measure frontier has a reviewed specification:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-variable-sector-transport.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-variable-sector-transport.md
+threads/03-block-product-reduction/review-a2-retained-passive-passive-variable-sector-transport.md
+```
+
+Xhigh read-only reviews by `Linnaeus the 3rd` and `Halley the 3rd` returned
+PASS after minor precision repairs.  The controlling next target is not
+another finite-integral wrapper.  It is a combined with-passive open
+punctured-sector inverse/readout package over the passive variables and
+selected-entry residual coordinates.  The proof should package the open
+source-readback theorem, the with-passive residual-factor chart-map identity,
+the existing passive pointwise readout theorem, and
+`SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap`.
+
+This step does not decide a measure target.  A later measure theorem must still
+choose among chart-produced passive sector measure, determinant-chart Haar on
+a sector image, or external/original source-prior comparison, with the domain,
+sector image, target measure, and Jacobian fields explicit.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive source-prior coordinate-domain frontier
 
 The source-measure frontier has been sharpened by:

@@ -158,6 +158,24 @@ No such claim is formalisation-ready until both fields are filled.
   selected-entry image coverage, determinant-chart Haar theorem for the
   reduced section, source-rank coverage, normal crossings, pole order, or RLCT
   is claimed.
+- **Current status addendum, retained-passive passive-variable sector transport
+  frontier, 2026-06-29.** A reviewed controller specification now records the
+  passive-variable-explicit sector needed before the source-measure lane can
+  honestly remove determinant-chart `hmap` fields or compare with an external
+  source prior:
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-variable-sector-transport.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-variable-sector-transport.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-passive-variable-sector-transport.md`.
+  Xhigh read-only reviews by `Linnaeus the 3rd` and `Halley the 3rd` returned
+  PASS after minor wording repairs.  The raw passive variables are typed over
+  `case2PostPivotTwoEdgeDomain ...`; endpoint equivalences move them to the
+  fixed-base endpoint complement indices.  The next Lean target should be a
+  combined with-passive open punctured-sector inverse/readout package, not a
+  measure theorem and not another finite-integral wrapper.  No passive-sector
+  Haar transport, external/original source-prior comparison, selected-entry
+  source-image equality, source-rank coverage, normal crossings, pole order, or
+  RLCT is claimed.
 - **Current status addendum, Case 2 passive Jacobian-weighted source-stratum
   bounds finite integral, 2026-06-29.** Lean now exposes
   `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds`
@@ -12720,7 +12738,7 @@ branch termination, normal crossings, pole order, or RLCT extraction.
 
 ## A2 retained-passive F3 target-staged shear
 
-Status: Proved in Lean; focused module build passed; xhigh review pending.
+Status: Proved in Lean; focused module build passed; xhigh review passed.
 
 Claim: in positive retained-passive tail length, the terminal `F3` shear can
 be stated with the earlier-tail derivative replaced by the recursive
@@ -12734,6 +12752,10 @@ fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply
 
 Artifact:
 `threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-target-staged-shear.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-target-staged-shear.md`
+passed by xhigh `Bernoulli`.
 
 Kill condition: this theorem is only a positive-tail substitution wrapper.  It
 must not be cited as the full derivative/formal-Jacobian equality, determinant

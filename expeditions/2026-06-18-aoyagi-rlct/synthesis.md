@@ -3,6 +3,37 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Passive-Variable Sector Transport Frontier - 2026-06-29
+
+The passive-variable source-measure frontier is now reviewed in:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-variable-sector-transport.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-variable-sector-transport.md
+threads/03-block-product-reduction/review-a2-retained-passive-passive-variable-sector-transport.md
+```
+
+Xhigh read-only reviews by `Linnaeus the 3rd` and `Halley the 3rd` returned
+PASS after minor wording repairs.  The source review checked Aoyagi pp. 10-13:
+Lemma 2 has `F2 = -A1^{-1} A2`, `F3 = -A3 A1^{-1}`, and
+`C4 = -A3 A1^{-1} A2 + A4`; Theorem 3 has the expected induction formulas;
+and the p.13 lower-right block is `prod_s C^(s) - F3 F2`.
+
+The Lean/API review confirmed the named inputs and corrected the next-target
+description.  The raw constructor variables live over
+`case2PostPivotTwoEdgeDomain ...` and endpoint transport moves them to the
+fixed-base endpoint complement indices.  The next Lean theorem should be a
+combined with-passive open punctured-sector inverse/readout package, using the
+open source-readback theorem, the with-passive residual-factor chart-map
+identity, the existing passive pointwise readout theorem, and
+`SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap`.
+
+This remains a frontier/specification, not a Lean theorem.  It proves no
+passive-sector Haar transport, determinant-chart Haar comparison for the
+reduced selected-entry section, external/original source-prior comparison,
+selected-entry source-image equality, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
 ## Latest A2 Retained-Passive Source-Prior Coordinate-Domain Frontier - 2026-06-29
 
 The post-interruption source-measure frontier has been sharpened in:
