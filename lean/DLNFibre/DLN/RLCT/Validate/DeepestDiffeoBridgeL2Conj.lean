@@ -2200,6 +2200,37 @@ theorem framedParamsPivot_psiSplitRawL2CoreConj_of_ne (H : Fin (L + 1) → ℕ) 
     readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq q s hs,
     coreRead_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq q s hs]
 
+/-! ## S6t — the chart-point block-read identities (`l2*Conj(split x) = reindex(decode x) blocks`)
+
+At the deepest-split chart point `q = deepestSplit w0 x`, the conjugated named blocks ARE the reindexed
+decode-`x` layer blocks: `l2A·Conj = .toBlocks₁₁`, off-diagonals `= .toBlocks₁₂/₂₁`, `l2T1Conj =
+.toBlocks₂₂` (deepBlkT_last = 0). These convert the readback's reindexed-decode-`x` Schur shapes
+(`hC0`/`hC1`) to the apparatus `l2KConj`/`l2S1Conj`. Derived from `reindex_decode_blocks_split`. -/
+
+/-- The reindexed decode-`x` layer-`s` block decomposition at the split point: `reindex(decode x)_s =
+reindex(deepest)_s + fromBlocks (readX/Y/Z, core)(split x)_s` — the four blocks read as `deepBlk· +
+read·` (`toBlocks₁₁/₁₂/₂₁`) and `core` (`toBlocks₂₂`, `deepBlk_s.toBlocks₂₂ = 0` at boundary). -/
+theorem reindex_decode_split_blocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (x : Fin (flatDim H) → ℝ) (s : Fin L) :
+    Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm x) s)
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+          (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)
+        + Matrix.fromBlocks
+            (readX H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H)
+              (deepestPoint H r B hB hr hL)) x).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x).2.2) s)
+            (readY H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H)
+              (deepestPoint H r B hB hr hL)) x).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x).2.2) s)
+            (readZ H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H)
+              (deepestPoint H r B hB hr hL)) x).1,
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x).2.2) s)
+            ((paramsEquivFlat (deepestM H r)).symm
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x).2.1 s) :=
+  reindex_decode_blocks_split H r B hB hr hL x s
+
 /-! ## S6 — the conjugated eventual composition identity `Φcore_conj ∘ psiL2Conj =ᶠ Φscore`
 
 Mirrors the bare `comp_identity_L2`, with `deepestCoreAbsorbConj`/`psiSplitRawL2CoreConj`. Takes the two
