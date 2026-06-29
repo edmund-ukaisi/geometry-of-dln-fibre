@@ -10,6 +10,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive chart-produced selected-entry two-sided loss-density iff
+
+The retained-passive local-source selected-entry two-sided iff now has a
+chart-produced measure wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+```
+
+It sets `mu := Measure.map sourceChart signedBoxWithDensity` and derives
+`mu.restrict localSource = Measure.map sourceChart signedBoxWithDensity` from
+pointwise chart landing in the retained-passive p.13 local source.  It does not
+derive chart landing.  Residual readout, residual boundedness on the
+chart-produced restricted measure, and all four two-sided loss/density bounds
+remain explicit.
+
+Nonclaims remain strict: no selected-entry critical inequality, no positive
+signed-box radius hypothesis, no source-density upper/nonnegativity
+hypotheses, no residual integrability proof, no source coverage or source-rank
+coverage, no source/image equality, no external source-prior/Jacobian/density
+transport, no original-loss identification, no normal crossings, pole order, or
+RLCT.
+
 ## Latest controller decision - 2026-06-29, retained-passive local-source selected-entry two-sided loss-density iff
 
 The retained-passive p.13 local source now has the selected-entry signed-box

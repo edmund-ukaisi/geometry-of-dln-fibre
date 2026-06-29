@@ -18,6 +18,35 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced selected-entry two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure
+```
+
+It defines `mu` as the selected-entry weighted signed-box pushforward and
+derives the retained-passive local-source restriction equality from pointwise
+chart landing.  Residual readout, residual boundedness, and four two-sided
+p.13 loss/density comparisons remain explicit.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+Carver the 2nd xhigh read-only review passed.  Hygiene gates passed:
+`scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+axiom probe with `[propext, Classical.choice, Quot.sound]`.  Nonclaims remain:
+no proof of chart landing, no selected-entry critical inequality, no residual
+integrability proof, no source coverage or source/image equality, no external
+transport theorem, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive local-source selected-entry two-sided loss-density iff
 
 Reproduction:

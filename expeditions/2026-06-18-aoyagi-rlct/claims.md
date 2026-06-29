@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive chart-produced selected-entry
+  two-sided loss-density iff, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure`.
+  For the selected-entry weighted signed-box chart-produced measure, pointwise
+  chart landing in the retained-passive p.13 local source derives the
+  local-source restriction equality required by the retained-passive
+  local-source selected-entry two-sided iff.  The theorem keeps residual
+  readout, residual boundedness, and the four two-sided comparison bounds
+  explicit, and returns the local iff between actual loss-density finiteness
+  over `(mu.restrict (U inter localSource)).prod nu` and
+  `residualNegPowerIntegrableOn Cedge (U inter localSource) mu t`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-selected-entry-two-sided-loss-density-iff.md`.
+  This does not prove chart landing, residual readout, comparison bounds,
+  residual boundedness, selected-entry critical integrability,
+  retained-passive source coverage, source-rank coverage, source/image
+  equality, external source-prior/Jacobian/density transport, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive local-source selected-entry
   two-sided loss-density iff, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity`.
