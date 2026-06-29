@@ -133,12 +133,27 @@ reconstructed when it lands.
    one proven nonvanishing in (1a) — and that it matches the structure the directed-exact `hcmp` certificate
    assumed (or that the Altitude-A `hcmp_of_contDiff` makes the specific `D` irrelevant, which it does for
    `hcmp` — but `hchart` needs the REAL `D ≠ 0`). No sympy-vs-Lean conflation (the hslot trap).
+6. **★ FLATTEN BRIDGE `rlctAt_eq_rlctAtOn_lossFlatShift` (NEW, rides in this QA — @06f244e0, not yet QA'd).**
+   The abstract `hchart` is on a flat normed `E` at a basepoint `wstar`; the DLN loss is `rlctAt H (dlnLoss
+   H B) v` on `Params H` at `v`. The bridge connects them: `Params H ≃ flat (Fin (flatDim H) → ℝ)` + a
+   TRANSLATION moving `v` to the chart origin `0`. QA must confirm:
+   (a) the `Params H ↔ flat` equiv is MEASURE-PRESERVING (`measurePreserving_paramsEquivFlat`) so the RLCT
+       transfers via `rlctAtOn_comp_homeomorph` (MP, det = 1) — NOT silently assuming MP, and `rlctAt`
+       (`Params`) ↔ `rlctAtOn` (flat) is the banked `rlctAtOn_eq_rlctAt`;
+   (b) the TRANSLATION `w ↦ w + v_flat` (or `w − v_flat`) moving `v` to `0` is measure-preserving (Lebesgue
+       translation-invariance, `MeasurePreserving.add_right`/`sub`) so it carries the RLCT — and the
+       basepoint bookkeeping is EXACT (`v ↦ flat ↦ 0`, the `Φ wstar = wstar` the abstract `hchart` needs is
+       at `wstar = 0` AFTER the shift, NOT at raw `v`). A sign/basepoint slip here is the likely bug.
+   (c) the COMPOSITE `rlctAt H (dlnLoss H B) v = rlctAtOn (loss-flattened-and-shifted) 0` is what the
+       instantiation feeds the abstract `hchart` as its `f` at `wstar = 0` — confirm the `f` matches (same
+       loss, correctly flattened + shifted), NO dropped Jacobian, NO basepoint mismatch.
+   Forced `#print axioms` on `rlctAt_eq_rlctAtOn_lossFlatShift` = clean-three.
 
-On PASS: relay clean-three + the D-nonvanishing confirmation to the controller for the cone-merge → this
-closes the last DLN-specific D1 obligation (the `≥` leg, modulo #44 `hDeepest` + the R1-at-`M'`
-`hDegraded`). On FAIL (det vanishes / `q` not `C¹` / scope-gap to deepest-only / `F` mismatch): surface the
-precise residual. The OTHER two obligations (`hDeepest` #44 via the clean `deepest_gauge_construction_L2`;
-`hDegraded` R1-at-`M'`) get their own QA as discharged.
+On PASS: relay clean-three + the D-nonvanishing confirmation + the flatten-bridge fidelity to the controller
+for the cone-merge → this closes the last DLN-specific D1 obligation (the `≥` leg, modulo #44 `hDeepest` +
+the R1-at-`M'` `hDegraded`). On FAIL (det vanishes / `q` not `C¹` / scope-gap to deepest-only / `F` mismatch
+/ flatten-bridge MP-or-basepoint slip): surface the precise residual. The OTHER two obligations (`hDeepest`
+#44 via the clean `deepest_gauge_construction_L2`; `hDegraded` R1-at-`M'`) get their own QA as discharged.
 
 ---
 
