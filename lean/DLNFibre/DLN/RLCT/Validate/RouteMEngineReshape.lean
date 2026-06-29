@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurFrameDet
-import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorFDeriv
 import Mathlib.Topology.Algebra.Module.Equiv
+import Mathlib.LinearAlgebra.Matrix.ToLin
 
 /-!
 # `RouteMEngineReshape` — the engine-block reshape CLEs (`SchurInc`/`LDUParam` ≃L a coordinate Pi)
@@ -12,7 +13,7 @@ the engine block types `SchurInc t r c` (a `Matrix×(Matrix×(Matrix×Matrix))` 
 `chartIdxEquiv`-derived `(Fin N → ℝ) ≃L (Block → ℝ) × (Rest → ℝ)`) yields the per-boundary CLE
 `E : (Fin N → ℝ) ≃L (SchurInc/LDUParam) × Rest` that `schur`/`lduChartFactor` conjugate by.
 
-* `schurIncReshapeCLE` — `SchurInc t r c ≃L (roleIdx → ℝ)` via the four banked `matrixPiCLE`s +
+* `schurIncReshapeCLE` — `SchurInc t r c ≃L (roleIdx → ℝ)` via the four banked `matrixCoordCLE`s +
   `prodCongr` + `sumPiEquivProdPi`.
 * `lduParamReshapeCLE` — `LDUParam t ≃L ((LowIdx t ⊕ Fin t) ⊕ UpIdx t → ℝ)` via `sumPiEquivProdPi`
   (the three role-Pi's regrouped; no matrices — `LDUParam` is already a Pi-product).
@@ -26,10 +27,23 @@ noncomputable section
 
 namespace DLNFibre.DLN.RLCT
 
+/-- **The matrix↔coordinate-Pi reshape CLE** `Matrix (Fin a) (Fin b) ℝ ≃L (Fin a × Fin b → ℝ)`
+(`Matrix.ofLinearEquiv` + `LinearEquiv.curry`, upgraded to a `≃L` since finite-dim). Local copy (the
+`DeepestGaugeConstruction.matrixPiCLE` import-closure clashes with `RouteMFlatLive`'s — a duplicate
+`continuous_dlnLoss` in `DeepestGaugeChart` vs `LossContinuity`; coexists with the chart). -/
+def matrixCoordCLE (a b : ℕ) :
+    Matrix (Fin a) (Fin b) ℝ ≃L[ℝ] (Fin a × Fin b → ℝ) :=
+  (((Matrix.ofLinearEquiv ℝ).symm.trans
+    (LinearEquiv.curry ℝ ℝ (Fin a) (Fin b)).symm) : Matrix (Fin a) (Fin b) ℝ ≃ₗ[ℝ]
+      (Fin a × Fin b → ℝ)).toContinuousLinearEquiv
+
+@[simp] theorem matrixCoordCLE_apply (a b : ℕ) (M : Matrix (Fin a) (Fin b) ℝ) (p : Fin a × Fin b) :
+    matrixCoordCLE a b M p = M p.1 p.2 := rfl
+
 /-- **The Schur-increment reshape CLE** `SchurInc t r c ≃L (roleIdx → ℝ)`, the K/X/N/E matrix blocks
 flattened to a coordinate Pi. The codomain index `((Fin t×Fin t) ⊕ ((Fin t×Fin c) ⊕ ((Fin r×Fin t) ⊕
 (Fin r×Fin c))))` is RIGHT-nested to match `SchurInc`'s `K × (N × (X × E))` nesting, so
-`sumPiEquivProdPi` right-nested gives the four-fold product of role-Pi's, the four `matrixPiCLE`s
+`sumPiEquivProdPi` right-nested gives the four-fold product of role-Pi's, the four `matrixCoordCLE`s
 reshape each matrix block. -/
 def schurIncReshapeCLE (t r c : ℕ) :
     SchurInc t r c ≃L[ℝ]
@@ -37,17 +51,17 @@ def schurIncReshapeCLE (t r c : ℕ) :
   -- innermost: `(X × E) ≃L (XΠ × EΠ) ≃L ((XIdx ⊕ EIdx) → ℝ)`
   have eXE : (Matrix (Fin r) (Fin t) ℝ × Matrix (Fin r) (Fin c) ℝ) ≃L[ℝ]
       (((Fin r × Fin t) ⊕ (Fin r × Fin c)) → ℝ) :=
-    ((matrixPiCLE r t).prodCongr (matrixPiCLE r c)).trans
+    ((matrixCoordCLE r t).prodCongr (matrixCoordCLE r c)).trans
       (ContinuousLinearEquiv.sumPiEquivProdPi ℝ (Fin r × Fin t) (Fin r × Fin c) (fun _ => ℝ)).symm
   -- next: `(N × (X × E)) ≃L (NΠ × ((XE)Π)) ≃L ((NIdx ⊕ (XEIdx)) → ℝ)`
   have eNXE :
       (Matrix (Fin t) (Fin c) ℝ × (Matrix (Fin r) (Fin t) ℝ × Matrix (Fin r) (Fin c) ℝ)) ≃L[ℝ]
       (((Fin t × Fin c) ⊕ ((Fin r × Fin t) ⊕ (Fin r × Fin c))) → ℝ) :=
-    ((matrixPiCLE t c).prodCongr eXE).trans
+    ((matrixCoordCLE t c).prodCongr eXE).trans
       (ContinuousLinearEquiv.sumPiEquivProdPi ℝ (Fin t × Fin c)
         ((Fin r × Fin t) ⊕ (Fin r × Fin c)) (fun _ => ℝ)).symm
   -- outer: `K × (N × (X × E)) ≃L (KΠ × ((NXE)Π)) ≃L ((KIdx ⊕ (NXEIdx)) → ℝ)`
-  exact ((matrixPiCLE t t).prodCongr eNXE).trans
+  exact ((matrixCoordCLE t t).prodCongr eNXE).trans
     (ContinuousLinearEquiv.sumPiEquivProdPi ℝ (Fin t × Fin t)
       ((Fin t × Fin c) ⊕ ((Fin r × Fin t) ⊕ (Fin r × Fin c))) (fun _ => ℝ)).symm
 
