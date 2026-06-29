@@ -46,18 +46,18 @@ namespace DLNFibre.DLN.RLCT
 
 /-- The squared-Frobenius energy `∑ᵢ ∑ⱼ (X i j)²` of a matrix. The loss/energy currency throughout
 the deepest-point squeeze (`dlnLoss`, `deepestCoreF`, the block residuals are all this shape). -/
-def frobSq {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) : ℝ :=
+def frobSqMat {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) : ℝ :=
   ∑ i, ∑ j, (X i j) ^ 2
 
-/-- `frobSq` is nonnegative (a sum of squares). -/
-theorem frobSq_nonneg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) :
-    0 ≤ frobSq X :=
+/-- `frobSqMat` is nonnegative (a sum of squares). -/
+theorem frobSqMat_nonneg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) :
+    0 ≤ frobSqMat X :=
   Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
 
-/-- `frobSq (-X) = frobSq X` (each entry is negated, the square is even). -/
-theorem frobSq_neg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) :
-    frobSq (-X) = frobSq X := by
-  simp only [frobSq, Matrix.neg_apply, neg_sq]
+/-- `frobSqMat (-X) = frobSqMat X` (each entry is negated, the square is even). -/
+theorem frobSqMat_neg {m n : Type*} [Fintype m] [Fintype n] (X : Matrix m n ℝ) :
+    frobSqMat (-X) = frobSqMat X := by
+  simp only [frobSqMat, Matrix.neg_apply, neg_sq]
 
 /-! ## The two-layer Schur-complement LDU identity (the frame-free `hR` for the germ charge)
 
@@ -268,8 +268,8 @@ cores `∏S = S0·S1` is exactly `−(S0·Z1)·⅟P·(Y0·S1)`. Pure `Matrix` di
 **SCOPE CAVEAT (2026-06-25, the refuted size claim).** An earlier docstring asserted the remainder is
 `O(Sreg)` (regular reads `Z1, Y0 = O(√Sreg)`). That `O(Sreg)` reading is REFUTED: the independent
 confirm found a reachable family on the clean S5a interior (cond `P00 = 1`) where the remainder energy
-`frobSq(R − S0·S1)` is NOT `≤ Crem·Sreg²` — the `⅟P`/core factors are NOT uniformly bounded as the
-reg reads vanish, so the product bound `frobSq(S0Z1)·frobSq(⅟P)·frobSq(Y0S1)` does not collapse to
+`frobSqMat(R − S0·S1)` is NOT `≤ Crem·Sreg²` — the `⅟P`/core factors are NOT uniformly bounded as the
+reg reads vanish, so the product bound `frobSqMat(S0Z1)·frobSqMat(⅟P)·frobSqMat(Y0S1)` does not collapse to
 `Sreg²`. The identity below stands; the additive `O(Sreg)` charge built on it does NOT. The repair
 charges the gap to `coreΦ` (Θ(t⁴)), not `Sreg` (Θ(t⁶)) — see the cert. -/
 theorem schur_core_remainder_regroup_identity {r m0 m1 m2 : Type*} [Fintype r] [Fintype m1]
@@ -281,20 +281,20 @@ theorem schur_core_remainder_regroup_identity {r m0 m1 m2 : Type*} [Fintype r] [
 
 /-- **The regrouped Frobenius submultiplicative bound** (TRUE unconditionally). The triple product
 `S0Z1·Pinv·Y0S1` has squared-Frobenius energy bounded by the product of the three factor energies
-`frobSq (S0Z1) · frobSq Pinv · frobSq (Y0S1)`. Two `frobenius_mul_le`. This is a pure submultiplicative
+`frobSqMat (S0Z1) · frobSqMat Pinv · frobSqMat (Y0S1)`. Two `frobenius_mul_le`. This is a pure submultiplicative
 inequality — it holds for any conformable real matrices and asserts nothing about `Sreg`.
 
-**SCOPE CAVEAT (2026-06-25).** This bound was banked to feed an additive `frobSq D ≤ Crem·Sreg²` charge
-via `frobSq (S0Z1), frobSq (Y0S1) ≤ C·Sreg` + a `⅟P` bound. That downstream charge is REFUTED (the
-independent confirm exhibited a clean-S5a family where `frobSq D / Sreg² → ∞`: the `⅟P`/core factors do
+**SCOPE CAVEAT (2026-06-25).** This bound was banked to feed an additive `frobSqMat D ≤ Crem·Sreg²` charge
+via `frobSqMat (S0Z1), frobSqMat (Y0S1) ≤ C·Sreg` + a `⅟P` bound. That downstream charge is REFUTED (the
+independent confirm exhibited a clean-S5a family where `frobSqMat D / Sreg² → ∞`: the `⅟P`/core factors do
 not stay bounded as the reg reads vanish). The inequality below is still true and reusable; the
 `Sreg²` downstream it was meant for is not. The repair charges to `coreΦ` instead (see the cert). -/
 theorem schur_core_remainder_regroup_frobeniusSq_le {r m0 m2 : Type*}
     [Fintype r] [Fintype m0] [Fintype m2]
     (S0Z1 : Matrix m0 r ℝ) (Pinv : Matrix r r ℝ) (Y0S1 : Matrix r m2 ℝ) :
-    frobSq (S0Z1 * Pinv * Y0S1) ≤ frobSq S0Z1 * frobSq Pinv * frobSq Y0S1 := by
+    frobSqMat (S0Z1 * Pinv * Y0S1) ≤ frobSqMat S0Z1 * frobSqMat Pinv * frobSqMat Y0S1 := by
   -- `∑‖(S0Z1·Pinv)·Y0S1‖² ≤ (∑‖S0Z1·Pinv‖²)·(∑‖Y0S1‖²) ≤ (∑‖S0Z1‖²·∑‖Pinv‖²)·(∑‖Y0S1‖²)`.
-  simp only [frobSq]
+  simp only [frobSqMat]
   have h1 : (∑ i, ∑ j, ((S0Z1 * Pinv * Y0S1) i j) ^ 2)
       ≤ (∑ i, ∑ k, ((S0Z1 * Pinv) i k) ^ 2) * (∑ j, ∑ k, (Y0S1 k j) ^ 2) :=
     frobenius_mul_le (S0Z1 * Pinv) Y0S1
@@ -303,7 +303,7 @@ theorem schur_core_remainder_regroup_frobeniusSq_le {r m0 m2 : Type*}
     frobenius_mul_le S0Z1 Pinv
   have hY0S1nn : (0 : ℝ) ≤ ∑ j, ∑ k, (Y0S1 k j) ^ 2 :=
     Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
-  -- Normalise the column-major factors to the row-major `frobSq` orientation.
+  -- Normalise the column-major factors to the row-major `frobSqMat` orientation.
   have hPcomm : (∑ j, ∑ k, (Pinv k j) ^ 2) = ∑ i, ∑ j, (Pinv i j) ^ 2 := Finset.sum_comm
   have hY0S1comm : (∑ j, ∑ k, (Y0S1 k j) ^ 2) = ∑ i, ∑ j, (Y0S1 i j) ^ 2 := Finset.sum_comm
   rw [hPcomm] at h2
@@ -329,12 +329,12 @@ theorem schur_core_remainder_identity {m0 m1 m2 : Type*} [Fintype m1] [Decidable
 `D = − S0·K·S1` (hence `R − ∏S`) has squared-Frobenius energy bounded by the product of the three
 factor energies: `∑‖S0·K·S1‖² ≤ (∑‖S0‖²)·(∑‖K‖²)·(∑‖S1‖²)`. This is what makes the remainder **higher
 order** on the germ: with `S0, S1 = O(ε)` and `K = O(ε²)`, the bound is `O(ε⁶)`, charged to the
-`O(ε²)` regular energy by the consumer. Two `frobenius_mul_le` + `frobSq_nonneg` monotonicity. -/
+`O(ε²)` regular energy by the consumer. Two `frobenius_mul_le` + `frobSqMat_nonneg` monotonicity. -/
 theorem schur_core_remainder_frobeniusSq_le {m0 m1 m2 : Type*} [Fintype m0] [Fintype m1] [Fintype m2]
     (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ) :
-    frobSq (S0 * K * S1) ≤ frobSq S0 * frobSq K * frobSq S1 := by
+    frobSqMat (S0 * K * S1) ≤ frobSqMat S0 * frobSqMat K * frobSqMat S1 := by
   -- `∑‖(S0·K)·S1‖² ≤ (∑‖S0·K‖²)·(∑‖S1‖²) ≤ (∑‖S0‖²·∑‖K‖²)·(∑‖S1‖²)`.
-  simp only [frobSq]
+  simp only [frobSqMat]
   have h1 : (∑ i, ∑ j, ((S0 * K * S1) i j) ^ 2)
       ≤ (∑ i, ∑ k, ((S0 * K) i k) ^ 2) * (∑ j, ∑ k, (S1 k j) ^ 2) :=
     frobenius_mul_le (S0 * K) S1
@@ -344,7 +344,7 @@ theorem schur_core_remainder_frobeniusSq_le {m0 m1 m2 : Type*} [Fintype m0] [Fin
   have hS1nn : (0 : ℝ) ≤ ∑ j, ∑ k, (S1 k j) ^ 2 :=
     Finset.sum_nonneg fun _ _ => Finset.sum_nonneg fun _ _ => sq_nonneg _
   -- The `K`/`S1` factors of `frobenius_mul_le` are column-major (`∑ j ∑ k · k j`); normalise both to
-  -- the row-major `frobSq` orientation by `Finset.sum_comm`.
+  -- the row-major `frobSqMat` orientation by `Finset.sum_comm`.
   have hKcomm : (∑ j, ∑ k, (K k j) ^ 2) = ∑ i, ∑ j, (K i j) ^ 2 := Finset.sum_comm
   have hS1comm : (∑ j, ∑ k, (S1 k j) ^ 2) = ∑ i, ∑ j, (S1 i j) ^ 2 := Finset.sum_comm
   rw [hKcomm] at h2
@@ -356,11 +356,11 @@ theorem schur_core_remainder_frobeniusSq_le {m0 m1 m2 : Type*} [Fintype m0] [Fin
 
 /-- **The double-sum Cauchy–Schwarz cross-term bound** (the squared form, sqrt-free). For two
 matrices the entrywise inner product squared is bounded by the product of their squared-Frobenius
-energies: `(∑ᵢⱼ X i j · Y i j)² ≤ frobSq X · frobSq Y`. The flattened (`Fintype.sum_prod_type'`)
+energies: `(∑ᵢⱼ X i j · Y i j)² ≤ frobSqMat X · frobSqMat Y`. The flattened (`Fintype.sum_prod_type'`)
 Cauchy–Schwarz (`Finset.sum_mul_sq_le_sq_mul_sq`). Bounds the cross term in the difference split. -/
 theorem frobInner_sq_le {m n : Type*} [Fintype m] [Fintype n] (X Y : Matrix m n ℝ) :
-    (∑ i, ∑ j, X i j * Y i j) ^ 2 ≤ frobSq X * frobSq Y := by
-  simp only [frobSq]
+    (∑ i, ∑ j, X i j * Y i j) ^ 2 ≤ frobSqMat X * frobSqMat Y := by
+  simp only [frobSqMat]
   -- Flatten the double sums over `m × n`, then single-index Cauchy–Schwarz.
   rw [← Fintype.sum_prod_type' (fun i j => X i j * Y i j),
       ← Fintype.sum_prod_type' (fun i j => (X i j) ^ 2),
@@ -370,11 +370,11 @@ theorem frobInner_sq_le {m n : Type*} [Fintype m] [Fintype n] (X Y : Matrix m n 
 
 /-- **The difference-of-squared-Frobenius split** (route-independent algebra). Writing `R = ∏S + D`
 (`∏S := S0·S1`, `D := R − ∏S` the remainder), the squared-Frobenius energies satisfy the exact
-expansion `frobSq R = frobSq ∏S + 2·⟨∏S, D⟩ + frobSq D`. Pure `Finset` distribution (`(a+b)² =
+expansion `frobSqMat R = frobSqMat ∏S + 2·⟨∏S, D⟩ + frobSqMat D`. Pure `Finset` distribution (`(a+b)² =
 a² + 2ab + b²` entrywise). -/
-theorem frobSq_add_eq {m n : Type*} [Fintype m] [Fintype n] (P D : Matrix m n ℝ) :
-    frobSq (P + D) = frobSq P + 2 * (∑ i, ∑ j, P i j * D i j) + frobSq D := by
-  simp only [frobSq, Matrix.add_apply]
+theorem frobSqMat_add_eq {m n : Type*} [Fintype m] [Fintype n] (P D : Matrix m n ℝ) :
+    frobSqMat (P + D) = frobSqMat P + 2 * (∑ i, ∑ j, P i j * D i j) + frobSqMat D := by
+  simp only [frobSqMat, Matrix.add_apply]
   -- Per-entry `(P + D)² = P² + 2·P·D + D²`, then split the double sums.
   have hentry : ∀ i, (∑ j, (P i j + D i j) ^ 2)
       = (∑ j, (P i j) ^ 2) + 2 * (∑ j, P i j * D i j) + (∑ j, (D i j) ^ 2) := by
@@ -389,15 +389,15 @@ the four difference-bound INGREDIENTS that make the germ comparability `∑‖R�
 NOT a standalone comparability (the `∑E²` charge that closes it lives in the consumer; see below). For
 the L = 2 reduced core, the global product Schur complement `R` (in middle-factor form
 `R = S0·(1−K)·S1`, `K = Z1·A⁻¹·Y0` the off-pivot correction) and the product of per-layer Schur cores
-`∏S = S0·S1`: the squared-Frobenius energies differ by exactly `2·⟨∏S, D⟩ + frobSq D`, where
+`∏S = S0·S1`: the squared-Frobenius energies differ by exactly `2·⟨∏S, D⟩ + frobSqMat D`, where
 `D = R − ∏S = −S0·K·S1` is the remainder, whose energy is sub-multiplicatively bounded
-`frobSq D ≤ frobSq S0·frobSq K·frobSq S1`.
+`frobSqMat D ≤ frobSqMat S0·frobSqMat K·frobSqMat S1`.
 
 This is the GERM (in-sum) form, NOT a uniform two-sided box ratio (the box ratio
-`∑‖R‖² ≍ ∑‖∏S‖²` is FALSE for `M > 1` off-germ; cert). The consumer charges `frobSq D` to the
+`∑‖R‖² ≍ ∑‖∏S‖²` is FALSE for `M > 1` off-germ; cert). The consumer charges `frobSqMat D` to the
 regular energy `∑E²` (since `K = Z1·A⁻¹·Y0 = O(ε²)` is charged via `‖Z1‖, ‖Y0‖ ≤ √(∑E²)`). The cross
-term is bounded sqrt-free via `frobInner_sq_le`: `(⟨∏S, D⟩)² ≤ frobSq ∏S · frobSq D`. Bundles
-`schur_core_remainder_identity` (exact `D = −S0·K·S1`) + `frobSq_add_eq` + `frobInner_sq_le` +
+term is bounded sqrt-free via `frobInner_sq_le`: `(⟨∏S, D⟩)² ≤ frobSqMat ∏S · frobSqMat D`. Bundles
+`schur_core_remainder_identity` (exact `D = −S0·K·S1`) + `frobSqMat_add_eq` + `frobInner_sq_le` +
 `schur_core_remainder_frobeniusSq_le`. -/
 theorem schur_core_germ_comparability {m0 m1 m2 : Type*} [Fintype m0] [Fintype m1] [DecidableEq m1]
     [Fintype m2]
@@ -406,23 +406,23 @@ theorem schur_core_germ_comparability {m0 m1 m2 : Type*} [Fintype m0] [Fintype m
     -- (i) the exact remainder identity: `R − ∏S = −S0·K·S1`
     (R - S0 * S1 = - (S0 * K * S1))
     -- (ii) the sub-multiplicative remainder energy bound
-    ∧ frobSq (R - S0 * S1) ≤ frobSq S0 * frobSq K * frobSq S1
+    ∧ frobSqMat (R - S0 * S1) ≤ frobSqMat S0 * frobSqMat K * frobSqMat S1
     -- (iii) the in-sum difference-of-squared-Frobenius split (germ form): the energies of `R` and
     --       `∏S` differ by exactly twice the cross term plus the remainder energy
-    ∧ (frobSq R = frobSq (S0 * S1) + 2 * (∑ i, ∑ j, (S0 * S1) i j * (R - S0 * S1) i j)
-          + frobSq (R - S0 * S1))
+    ∧ (frobSqMat R = frobSqMat (S0 * S1) + 2 * (∑ i, ∑ j, (S0 * S1) i j * (R - S0 * S1) i j)
+          + frobSqMat (R - S0 * S1))
     -- (iv) the cross term is Cauchy–Schwarz-controlled by the two energies
     ∧ (∑ i, ∑ j, (S0 * S1) i j * (R - S0 * S1) i j) ^ 2
-        ≤ frobSq (S0 * S1) * frobSq (R - S0 * S1) := by
+        ≤ frobSqMat (S0 * S1) * frobSqMat (R - S0 * S1) := by
   have hid : R - S0 * S1 = - (S0 * K * S1) := schur_core_remainder_identity S0 S1 K R hR
   refine ⟨hid, ?_, ?_, frobInner_sq_le (S0 * S1) (R - S0 * S1)⟩
-  · -- (ii): `frobSq (R − ∏S) = frobSq (−S0·K·S1) = frobSq (S0·K·S1)`, then sub-multiplicativity.
-    rw [hid, frobSq_neg]
+  · -- (ii): `frobSqMat (R − ∏S) = frobSqMat (−S0·K·S1) = frobSqMat (S0·K·S1)`, then sub-multiplicativity.
+    rw [hid, frobSqMat_neg]
     exact schur_core_remainder_frobeniusSq_le S0 S1 K
-  · -- (iii): `R = ∏S + D` with `D := R − ∏S` frozen, then `frobSq_add_eq`.
+  · -- (iii): `R = ∏S + D` with `D := R − ∏S` frozen, then `frobSqMat_add_eq`.
     set D := R - S0 * S1 with hD
     have hRsplit : R = S0 * S1 + D := by rw [hD]; abel
-    rw [hRsplit]; exact frobSq_add_eq (S0 * S1) D
+    rw [hRsplit]; exact frobSqMat_add_eq (S0 * S1) D
 
 /-! ## Non-vacuity witness (RECTANGULAR instance)
 

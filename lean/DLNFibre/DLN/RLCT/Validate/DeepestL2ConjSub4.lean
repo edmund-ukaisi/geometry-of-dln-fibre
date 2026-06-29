@@ -107,7 +107,7 @@ theorem hsub4core_conj_germ (H : Fin 3 → ℕ) (r : ℕ)
     (hsplit : ∀ w, split w
       = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
     (Score : (Fin (flatDim H) → ℝ) → ℝ)
-    (hScoreDef : Score = fun w => frobSq ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+    (hScoreDef : Score = fun w => frobSqMat ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
           (pivotThresholdSplit r (H (Fin.last 2)) (hr (Fin.last 2)) J)
           (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm w) - B)
             * endpointQL H hL Qf)).toBlocks₂₂

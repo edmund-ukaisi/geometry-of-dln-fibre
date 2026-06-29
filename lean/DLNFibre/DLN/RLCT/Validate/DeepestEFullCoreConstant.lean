@@ -240,13 +240,13 @@ theorem framedParamsPivot_zeroReg_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
       = framedLayer H r hr s (Pf s) (Qf s) 0 0 0 ((paramsEquivFlat (deepestM H r)).symm c s) := by
   rw [framedParamsPivot_of_ne_last H r hr hL J Pf Qf _ s hs]
   show framedLayer H r hr s (Pf s) (Qf s)
-      (readX H r hr hL (((0 : Fin (deepestNReg H r) → ℝ), c,
+      (gaugeReadX H r hr hL (((0 : Fin (deepestNReg H r) → ℝ), c,
         (0 : Fin (deepestNGauge H r) → ℝ)).1, (_, c, _).2.2) s) _ _ _
     = _
   rw [show (((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).1,
         ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).2.2)
       = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
-    readX_zero H r hr hL s, readY_zero H r hr hL s, readZ_zero H r hr hL s]
+    gaugeReadX_zero H r hr hL s, gaugeReadY_zero H r hr hL s, gaugeReadZ_zero H r hr hL s]
 
 /-- At reg=spec=0, the LAST framed layer (pivot col split) is `corner + Pf_last · pivotRsym(fromBlocks 0
 0 0 (core read)) · Qf_last` (reads vanish; the pivot column split `pivotJSucc J`). -/
@@ -272,8 +272,8 @@ theorem framedParamsPivot_zeroReg_last (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [show (((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).1,
         ((0 : Fin (deepestNReg H r) → ℝ), c, (0 : Fin (deepestNGauge H r) → ℝ)).2.2)
       = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl,
-    readX_zero H r hr hL (lastLayer hL), readY_zero H r hr hL (lastLayer hL),
-    readZ_zero H r hr hL (lastLayer hL)]
+    gaugeReadX_zero H r hr hL (lastLayer hL), gaugeReadY_zero H r hr hL (lastLayer hL),
+    gaugeReadZ_zero H r hr hL (lastLayer hL)]
 
 /-! ## The two-factor assembly: `reindex(prod(framedParamsPivot(0,c,0))) = fromBlocks 1 0 0 (junk)`
 

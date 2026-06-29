@@ -8,9 +8,9 @@ producer's sub-4 (`deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score`) consumes.
 
 ## The fix landed here (W-a, 2026-06-28, genm-l2conj)
 
-The PRIOR statement (bare per-layer Schur cores, pivot `1 + readX_s`) is **numerically FALSE** — the
+The PRIOR statement (bare per-layer Schur cores, pivot `1 + gaugeReadX_s`) is **numerically FALSE** — the
 deepest boundary leading block is `A11 ≠ 1`, so the actual reindexed decode-layer `(1,1)`-block is
-`M̄_s + readX_s` (with `M̄_s = (reindex deepestPoint_s).toBlocks₁₁`), not `1 + readX_s`. The discriminator
+`M̄_s + gaugeReadX_s` (with `M̄_s = (reindex deepestPoint_s).toBlocks₁₁`), not `1 + gaugeReadX_s`. The discriminator
 (r=1, H=[2,2,2], A11 = 3): bare LDU = 0.0942, Score = 0.0741.
 
 The **W-a fix** (adjudicated, `threads/31-pin2-comparability/codex/l2-ldutie-adjudicate-*.md`; reproduced
@@ -348,11 +348,11 @@ theorem reindex_decode_blocks_split (H : Fin (L + 1) → ℕ) (r : ℕ)
       = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
           (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)
         + Matrix.fromBlocks
-            (readX H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+            (gaugeReadX H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
               (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
-            (readY H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+            (gaugeReadY H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
               (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
-            (readZ H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
+            (gaugeReadZ H r hr hL ((deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).1,
               (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.2) s)
             ((paramsEquivFlat (deepestM H r)).symm
               (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w).2.1 s) := by
@@ -418,8 +418,8 @@ theorem absorbedCoreConj_eq_schurCore (H : Fin (L + 1) → ℕ) (r : ℕ)
   set q := deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w with hq
   set MD := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
       (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s) with hMD
-  set FB := Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s) with hFB
+  set FB := Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+      (gaugeReadZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s) with hFB
   -- The reindexed decode layer's blocks split as `MD + FB` (`reindex_decode_blocks_split`).
   have hsplit := reindex_decode_blocks_split H r B hB hr hL w s
   rw [← hMD, ← hFB] at hsplit
@@ -432,26 +432,26 @@ theorem absorbedCoreConj_eq_schurCore (H : Fin (L + 1) → ℕ) (r : ℕ)
     show MD (Sum.inr i) (Sum.inr j) + FB (Sum.inr i) (Sum.inr j) = _
     have : MD (Sum.inr i) (Sum.inr j) = 0 := hMD22
     rw [this, zero_add, hFB, Matrix.fromBlocks_apply₂₂]
-  have h21 : (MD + FB).toBlocks₂₁ = deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s := by
+  have h21 : (MD + FB).toBlocks₂₁ = deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL (q.1, q.2.2) s := by
     funext i j
     show MD (Sum.inr i) (Sum.inl j) + FB (Sum.inr i) (Sum.inl j) = _
     rw [hFB, Matrix.fromBlocks_apply₂₁]; rfl
-  have h11 : (MD + FB).toBlocks₁₁ = deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s := by
+  have h11 : (MD + FB).toBlocks₁₁ = deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL (q.1, q.2.2) s := by
     funext i j
     show MD (Sum.inl i) (Sum.inl j) + FB (Sum.inl i) (Sum.inl j) = _
     rw [hFB, Matrix.fromBlocks_apply₁₁]; rfl
-  have h12 : (MD + FB).toBlocks₁₂ = deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s := by
+  have h12 : (MD + FB).toBlocks₁₂ = deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL (q.1, q.2.2) s := by
     funext i j
     show MD (Sum.inl i) (Sum.inr j) + FB (Sum.inl i) (Sum.inr j) = _
     rw [hFB, Matrix.fromBlocks_apply₁₂]; rfl
   rw [h22, h21, h11, h12, schurCorrectionConj]
   -- `decode core + (−Z·A⁻¹·Y) = decode core − Z·A⁻¹·Y` (`neg_mul` twice + `sub_eq_add_neg`).
-  rw [show -(deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s)
-        * (deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s)⁻¹
-        * (deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s)
-      = -((deepBlkZ H r B hB hr hL s + readZ H r hr hL (q.1, q.2.2) s)
-        * (deepBlkA H r B hB hr hL s + readX H r hr hL (q.1, q.2.2) s)⁻¹
-        * (deepBlkY H r B hB hr hL s + readY H r hr hL (q.1, q.2.2) s)) from by
+  rw [show -(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL (q.1, q.2.2) s)
+        * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL (q.1, q.2.2) s)⁻¹
+        * (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL (q.1, q.2.2) s)
+      = -((deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL (q.1, q.2.2) s)
+        * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL (q.1, q.2.2) s)⁻¹
+        * (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL (q.1, q.2.2) s)) from by
     rw [Matrix.neg_mul, Matrix.neg_mul]]
   rw [← sub_eq_add_neg]
 

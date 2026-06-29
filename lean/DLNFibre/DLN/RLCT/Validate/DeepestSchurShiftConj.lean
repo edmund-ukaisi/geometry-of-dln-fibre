@@ -4,8 +4,8 @@ import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestSchurShiftConj` — the CONJUGATED cutoff Schur shift
 
-The W-a **conjugated** core-shift (pivot the actual deepest layer block `M̄A_s + readX_s`, off-diagonals
-`M̄Z_s + readZ_s` / `M̄Y_s + readY_s`), parallel to the bare `schurCutoffShift` in `DeepestSchurShift`.
+The W-a **conjugated** core-shift (pivot the actual deepest layer block `M̄A_s + gaugeReadX_s`, off-diagonals
+`M̄Z_s + gaugeReadZ_s` / `M̄Y_s + gaugeReadY_s`), parallel to the bare `schurCutoffShift` in `DeepestSchurShift`.
 The bare path stays untouched (it is consumed by `DeepestGermCharge` and the L≥3 legs); these `…Conj`
 parallels are used ONLY in the L=2 wire's `hstep2` (the bare↔conjugated MP-shear RLCT bridge — the
 conjugated absorb is a LOCAL RLCT intermediate, never a chart field, so its derivative never enters
@@ -15,10 +15,10 @@ PIN-1; NO atom needed). The conjugated correction `schurCorrectionConj` itself +
 **Continuity, NOT strict-derivative.** The MP-shear route needs only that `schurCutoffShiftConj` is
 globally continuous and vanishes at the origin (so the conjugated `coreShearHomeo` is a basepoint-fixing
 homeomorphism, hence MP via `measurePreserving_coreShear`). The strict-derivative-`0` fact (which is
-FALSE — `D(schurCorrectionConj)(0) = −M̄Z_0·M̄A_0⁻¹·D(readY_0) ≠ 0`, the "atom") is NOT needed.
+FALSE — `D(schurCorrectionConj)(0) = −M̄Z_0·M̄A_0⁻¹·D(gaugeReadY_0) ≠ 0`, the "atom") is NOT needed.
 
-The conjugated pivot `M̄A_s + readX_s` is invertible near the origin iff `M̄A_s = deepBlkA_s` is a unit
-(`readX → 0` at `0`). That unit-ness (`hDA`) is threaded as a hypothesis here — discharged at the wire
+The conjugated pivot `M̄A_s + gaugeReadX_s` is invertible near the origin iff `M̄A_s = deepBlkA_s` is a unit
+(`gaugeReadX → 0` at `0`). That unit-ness (`hDA`) is threaded as a hypothesis here — discharged at the wire
 (layer-0 via `deepestPoint_leadingBlock_isUnit`/`htop`; layer-`(L−1)` via the column-WLOG dual, the
 row-WLOG seam #154).
 
@@ -31,8 +31,8 @@ LANDED here (stages 1-5):
 * `deepestCoreF_coreAbsorbConj_eq_prodSchur` (inner ball): the conjugated absorbed-core energy.
 
 REMAINING — Step Ψ_conj (the conjugated joint move). **The bare `psiSplitRawL2` is tuned to the bare
-pivot `1 + readX` (numerically verified: bare-ψ + conj-absorb ≠ Score), so Step Ψ needs a CONJUGATED
-joint move `psiSplitRawL2Conj`** (the W/K/S1/T1'/Y1' closed form with conjugated pivots `M̄A+readX` and
+pivot `1 + gaugeReadX` (numerically verified: bare-ψ + conj-absorb ≠ Score), so Step Ψ needs a CONJUGATED
+joint move `psiSplitRawL2Conj`** (the W/K/S1/T1'/Y1' closed form with conjugated pivots `M̄A+gaugeReadX` and
 conjugated off-diagonals `M̄·+read·`; verified numerically to give `coreF(conjAbsorb(Ψ_conj q)).last =
 (1−Kc)·S1c`, the keystone's conjugated last-layer LDU). KEY SIMPLIFICATION: `D(Ψ_conj)(wstar) = id`
 (at the basepoint `K̂ = Z1 = 0` by the boundary `M̄Z1 = 0` + reads `= 0`, and `Y0 = M̄Y0 = 0`), so the
@@ -46,14 +46,14 @@ keystone `absorbedCoreConj_eq_schurCore` + readback `prod_deepestM_eq_schur_ldu_
 
 The conjugated joint move `psiSplitRawL2CoreConj` IS `psiSplitRawL2Core` (DeepestDiffeoBridgeL2:95) with
 the SAME `W/K/S1/T1'/Y1'/core'/g'` formulas, but the per-layer blocks `l2A0/l2A1/l2Y0/l2Z1` swapped from
-bare `1 + readX_s` / `readX/Y/Z_s` to the CONJUGATED reindexed-decode-layer blocks (= `deepBlk·_s +
+bare `1 + gaugeReadX_s` / `gaugeReadX/Y/Z_s` to the CONJUGATED reindexed-decode-layer blocks (= `deepBlk·_s +
 read·_s`, the actual pivot the readback reads). Explicitly (mirror `l2A0..l2Y1p`):
 
-    l2A0c := deepBlkA_0 + readX_0 (= reindex(decode)_0.toBlocks₁₁)   -- bare was `1 + readX_0`
-    l2A1c := deepBlkA_1 + readX_1
-    l2Y0c := deepBlkY_0 + readY_0  (= reindex(decode)_0.toBlocks₁₂; deepBlkY_0 = 0 at the boundary)
-    l2Z1c := deepBlkZ_1 + readZ_1  (deepBlkZ_1 = 0 at the boundary)
-    l2Y1c := deepBlkY_1 + readY_1 ;  l2T1c := coreLast (the core slot read, unchanged)
+    l2A0c := deepBlkA_0 + gaugeReadX_0 (= reindex(decode)_0.toBlocks₁₁)   -- bare was `1 + gaugeReadX_0`
+    l2A1c := deepBlkA_1 + gaugeReadX_1
+    l2Y0c := deepBlkY_0 + gaugeReadY_0  (= reindex(decode)_0.toBlocks₁₂; deepBlkY_0 = 0 at the boundary)
+    l2Z1c := deepBlkZ_1 + gaugeReadZ_1  (deepBlkZ_1 = 0 at the boundary)
+    l2Y1c := deepBlkY_1 + gaugeReadY_1 ;  l2T1c := coreLast (the core slot read, unchanged)
     l2P00c := l2A0c*l2A1c + l2Y0c*l2Z1c ;  Kc := l2Z1c*l2P00c⁻¹*l2Y0c
     Wc := 1 + l2Z1c*l2A1c⁻¹*l2A0c⁻¹*l2Y0c ;  S1c := l2T1c − l2Z1c*l2A1c⁻¹*l2Y1c
     T1'c := Wc⁻¹*((1−Kc)*S1c + l2Z1c*l2A1c⁻¹*l2Y1c + l2Z1c*l2A1c⁻¹*l2A0c⁻¹*l2Y0c*l2T1c)
@@ -64,15 +64,15 @@ schurCorrectionConj(Ψ_conj q)_last) = T1'c − l2Z1c·l2A1c⁻¹·Y1'c = (1−K
 conjugated last-layer LDU `hC1`. (The bare l2T1p + conj-correction does NOT — bare-pivot tuning, verified.)
 
 **GAUGE RE-ENCODE — the read↔block OFFSET (genm-l2psi's catch, CONFIRMED, load-bearing).** The gauge tag
-stores the READ, but the conjugated blocks carry a deepest-constant: `l2Y1c = deepBlkY_last + readY_last`.
-So the post-move Y read-TAG is NOT `Y1'c` (the new block) but `readY_last' = Y1'c − deepBlkY_last`. With
+stores the READ, but the conjugated blocks carry a deepest-constant: `l2Y1c = deepBlkY_last + gaugeReadY_last`.
+So the post-move Y read-TAG is NOT `Y1'c` (the new block) but `gaugeReadY_last' = Y1'c − deepBlkY_last`. With
 the literal `Y1'c`: (i) the keystone reads `deepBlkY_last + Y1'c ≠ Y1'c` (wrong block), and (ii)
 `psiSplitRawL2CoreConj 0 ≠ 0` — at `q = 0` the tag is `Y1'c(0) = deepBlkY_last ≠ 0` (basepoint BROKEN).
 `deepBlkY_last` need NOT vanish at the L=2 boundary: layer-last `rows ≥ r` vanish ⟹ `deepBlkZ_last =
 deepBlkT_last = 0`, but `deepBlkY_last = toBlocks₁₂` reads `rows < r`, so it survives. VERIFIED:
 `Y1'c(0) = deepBlkY_last` (since `l2Y0c(0) = deepBlkY_0 + 0 = 0`, the correction vanishes at 0), so
 `Y1'c(0) − deepBlkY_last = 0` — basepoint fixed ONLY with the subtraction. The BARE case has NO offset
-(`l2Y1 = readY_last` directly), which is why the literal-block encode is right there but WRONG here.
+(`l2Y1 = gaugeReadY_last` directly), which is why the literal-block encode is right there but WRONG here.
 ASYMMETRY: the CORE encode IS literal `T1'c` (no subtraction) because `deepBlkT_last = 0` (banked
 `deepBlkT_layerLast_zero`), so `core block = deepBlkT_last + coreLast = coreLast`. ONLY the Y-tag carries
 the `− deepBlkY_last` offset (the move edits only the last-layer Y + core).
@@ -83,7 +83,7 @@ Per-stage notes for the fresh hand:
 * `D(Ψ_conj)(wstar) = id` (Kc=l2Z1c=0, l2Y0c=0 at the boundary basepoint), so the comp-identity bridge
   reuses `e = ContinuousLinearEquiv.refl` — NO new derivative work beyond mirroring the bare S2/S4.
 * The S2 (ContDiff) re-derivations: same as bare, but the pivot `l2A0c/l2A1c⁻¹` is ContDiffAt where
-  `det(deepBlkA_s + readX_s) ≠ 0` (the `unitSetConj` neighborhood; `continuousAt_inv_deepBlkA_add_readX`
+  `det(deepBlkA_s + gaugeReadX_s) ≠ 0` (the `unitSetConj` neighborhood; `continuousAt_inv_deepBlkA_add_gaugeReadX`
   here is the continuity analogue — a ContDiffAt version is the S2 leaf, mirroring `contDiffAt_matrix_inv_…`).
 * Step Ψ_conj's comp-identity discharges via `absorbedCoreConj_eq_schurCore` (layer-0: hT from
   `deepBlkT_layer0_zero`; layer-1: the joint move gives T1'c so `decode(Ψq).core_1 + schurCorrectionConj_1
@@ -122,7 +122,7 @@ theorem schurCorrectionConj_zero_boundary (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hbdy : deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0) :
     schurCorrectionConj H r B hB hr hL 0 s = 0 := by
   unfold schurCorrectionConj
-  simp only [readX_zero, readY_zero, readZ_zero, add_zero]
+  simp only [gaugeReadX_zero, gaugeReadY_zero, gaugeReadZ_zero, add_zero]
   rcases hbdy with hY | hZ
   · rw [hY, Matrix.mul_zero]
   · rw [hZ, neg_zero, Matrix.zero_mul, Matrix.zero_mul]
@@ -146,17 +146,17 @@ private theorem continuousAt_matrix_mul' {X mm nn pp : Type*} [TopologicalSpace 
     (fun k _ => (hsum k : Filter.Tendsto (fun q => A q i k * C q k j) (𝓝 x) _))
   simpa [ContinuousAt] using this
 
-/-- The conjugated pivot inverse `(M̄A_s + readX p s)⁻¹` is `ContinuousAt p` where its det `≠ 0`
-(`M̄A_s = deepBlkA_s` is constant; `readX` continuous). -/
-theorem continuousAt_inv_deepBlkA_add_readX (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- The conjugated pivot inverse `(M̄A_s + gaugeReadX p s)⁻¹` is `ContinuousAt p` where its det `≠ 0`
+(`M̄A_s = deepBlkA_s` is constant; `gaugeReadX` continuous). -/
+theorem continuousAt_inv_deepBlkA_add_gaugeReadX (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-    (hdet : (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0) :
-    ContinuousAt (fun q => (deepBlkA H r B hB hr hL s + readX H r hr hL q s)⁻¹) p := by
+    (hdet : (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s).det ≠ 0) :
+    ContinuousAt (fun q => (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s)⁻¹) p := by
   have hadd : ContinuousAt
-      (fun q => deepBlkA H r B hB hr hL s + readX H r hr hL q s) p :=
-    (continuous_const.add (continuous_readX H r hr hL s)).continuousAt
+      (fun q => deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s) p :=
+    (continuous_const.add (continuous_gaugeReadX H r hr hL s)).continuousAt
   refine ContinuousAt.comp ?_ hadd
   apply continuousAt_matrix_inv
   obtain ⟨u, hu⟩ := Ne.isUnit hdet
@@ -168,39 +168,39 @@ theorem continuousAt_schurCorrectionConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-    (hdet : (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0) :
+    (hdet : (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s).det ≠ 0) :
     ContinuousAt (fun q => schurCorrectionConj H r B hB hr hL q s) p := by
   unfold schurCorrectionConj
   refine continuousAt_matrix_mul' (continuousAt_matrix_mul' ?_
-    (continuousAt_inv_deepBlkA_add_readX H r B hB hr hL s p hdet)) ?_
-  · exact (continuous_const.add (continuous_readZ H r hr hL s)).continuousAt.neg
-  · exact (continuous_const.add (continuous_readY H r hr hL s)).continuousAt
+    (continuousAt_inv_deepBlkA_add_gaugeReadX H r B hB hr hL s p hdet)) ?_
+  · exact (continuous_const.add (continuous_gaugeReadZ H r hr hL s)).continuousAt.neg
+  · exact (continuous_const.add (continuous_gaugeReadY H r hr hL s)).continuousAt
 
 /-! ## The conjugated unit-set + cutoff + global continuity of `schurCutoffShiftConj`
 
 The conjugated correction is `ContinuousAt` only on the open **conjugated unit-set** `unitSetConj` where
-every conjugated pivot `det(M̄A_s + readX_s) ≠ 0`. It contains the origin WHEN every `M̄A_s = deepBlkA_s`
+every conjugated pivot `det(M̄A_s + gaugeReadX_s) ≠ 0`. It contains the origin WHEN every `M̄A_s = deepBlkA_s`
 is a unit (`hDA`, the foundation discharged at the wire). A `ContDiffBump` with support in `unitSetConj`
 gives a globally continuous cutoff `schurCutoffShiftConj`, `= 1` near `0`, vanishing off the set. -/
 
-/-- The conjugated unit-set: gauge coords where every conjugated pivot `M̄A_s + readX_s` is invertible. -/
+/-- The conjugated unit-set: gauge coords where every conjugated pivot `M̄A_s + gaugeReadX_s` is invertible. -/
 def unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Set ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :=
-  {p | ∀ s : Fin L, (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0}
+  {p | ∀ s : Fin L, (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s).det ≠ 0}
 
 theorem isOpen_unitSetConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     IsOpen (unitSetConj H r B hB hr hL) := by
   have hrw : unitSetConj H r B hB hr hL
-      = ⋂ s : Fin L, {p | (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det ≠ 0} := by
+      = ⋂ s : Fin L, {p | (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s).det ≠ 0} := by
     ext p; simp [unitSetConj, Set.mem_iInter]
   rw [hrw]
   refine isOpen_iInter_of_finite (fun s => ?_)
-  have hcont : Continuous (fun p => (deepBlkA H r B hB hr hL s + readX H r hr hL p s).det) :=
-    (continuous_const.add (continuous_readX H r hr hL s)).matrix_det
+  have hcont : Continuous (fun p => (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s).det) :=
+    (continuous_const.add (continuous_gaugeReadX H r hr hL s)).matrix_det
   exact hcont.isOpen_preimage _ isOpen_ne
 
 /-- The origin lies in the conjugated unit-set when every conjugated pivot base `M̄A_s` is a unit. -/
@@ -210,7 +210,7 @@ theorem mem_unitSetConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
     (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ∈ unitSetConj H r B hB hr hL := by
   intro s
-  rw [readX_zero H r hr hL s, add_zero]
+  rw [gaugeReadX_zero H r hr hL s, add_zero]
   exact ((Matrix.isUnit_iff_isUnit_det _).mp (hDA s)).ne_zero
 
 /-- An open ball `ball 0 ε ⊆ unitSetConj` (the origin's conjugated-unit nbhd; needs `hDA`). -/
@@ -499,7 +499,7 @@ theorem schurCutoffShiftConj_eq_raw_of_mem_closedBall (H : Fin (L + 1) → ℕ) 
     (cutoffBumpConj H r B hB hr hL hDA).one_of_mem_closedBall hp, one_smul]
 
 /-- **The conjugated absorbed-core energy** (inner ball): `deepestCoreF (deepestCoreAbsorbConj q).2.1 =
-frobSq(prod(deepestM)(decode(q).core_s + schurCorrectionConj_s))`. Conjugated analogue of
+frobSqMat(prod(deepestM)(decode(q).core_s + schurCorrectionConj_s))`. Conjugated analogue of
 `deepestCoreF_coreAbsorb_eq_prodSchur` (`coreShearHomeo` ADD-form + χ_conj=1 + `paramsEquivFlat`
 additivity/round-trip). -/
 theorem deepestCoreF_coreAbsorbConj_eq_prodSchur (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -510,7 +510,7 @@ theorem deepestCoreF_coreAbsorbConj_eq_prodSchur (H : Fin (L + 1) → ℕ) (r : 
     (hq : q ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
       ((cutoffBumpConj H r B hB hr hL hDA).rIn)) :
     deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1
-      = frobSq (prod (deepestM H r)
+      = frobSqMat (prod (deepestM H r)
           (fun s => (paramsEquivFlat (deepestM H r)).symm q.2.1 s
             + schurCorrectionConj H r B hB hr hL (q.1, q.2.2) s)) := by
   -- The absorbed core slot: ADD-form `(coreAbsorbConj q).2.1 = q.2.1 + schurCutoffShiftConj (q.1, q.2.2)`.
@@ -557,6 +557,6 @@ theorem deepestCoreF_coreAbsorbConj_eq_prodSchur (H : Fin (L + 1) → ℕ) (r : 
   show dlnLoss (deepestM H r)
       (0 : Matrix (Fin (deepestM H r 0)) (Fin (deepestM H r (Fin.last L))) ℝ)
       ((paramsEquivFlat (deepestM H r)).symm (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
-    = frobSq _
+    = frobSqMat _
   rw [hdecode]
-  simp only [dlnLoss, frobSq, sub_zero]
+  simp only [dlnLoss, frobSqMat, sub_zero]

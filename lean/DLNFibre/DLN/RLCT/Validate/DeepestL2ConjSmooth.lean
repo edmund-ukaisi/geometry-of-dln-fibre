@@ -13,11 +13,11 @@ so `deepestCoreAbsorbConj = coreShearHomeo (schurCutoffShiftConj)` must be GLOBA
 
 This module supplies the smoothness upgrade of `continuous_schurCutoffShiftConj` (which is only
 `Continuous`): the conjugated cutoff Schur shift is globally `ContDiff ⊤`. It MIRRORS the bare
-`DeepestSchurSmooth` ladder, with the conjugated pivot `deepBlkA_s + readX_s` (invertible on
-`unitSetConj`, under `hDA`) in place of the bare `1 + readX_s` (always invertible).
+`DeepestSchurSmooth` ladder, with the conjugated pivot `deepBlkA_s + gaugeReadX_s` (invertible on
+`unitSetConj`, under `hDA`) in place of the bare `1 + gaugeReadX_s` (always invertible).
 
 The ladder (bottom-up, conj versions):
-  • `contDiffAt_inv_deepBlkA_add_readX_entry`: each `(deepBlkA + readX)⁻¹` entry is `ContDiffAt` on
+  • `contDiffAt_inv_deepBlkA_add_gaugeReadX_entry`: each `(deepBlkA + gaugeReadX)⁻¹` entry is `ContDiffAt` on
     `unitSetConj` (the entrywise det/adjugate/inverse route of `DeepestSchurSmooth`);
   • `contDiffAt_schurCorrectionConj_entry` / `contDiffAt_schurShiftRawConj`: the conjugated correction +
     raw shift are `ContDiffAt` on `unitSetConj`;
@@ -25,7 +25,7 @@ The ladder (bottom-up, conj versions):
     cutoff glue `contDiff_contDiffBump_smul` + `tsupport_cutoffBumpConj_subset_unitSetConj`).
 
 **No strict-derivative-`0` lemma here.** The conjugated shift's derivative at `0` is genuinely NONZERO
-(`D(schurCorrectionConj)(0) = −deepBlkZ·deepBlkA⁻¹·D(readY) ≠ 0`, the "atom" the file header flags); the
+(`D(schurCorrectionConj)(0) = −deepBlkZ·deepBlkA⁻¹·D(gaugeReadY) ≠ 0`, the "atom" the file header flags); the
 reg-absorb peel handles this via the value-fold atom `deepestEFull_coreConstant` (D_E annihilates the
 core direction), NOT via a `D(shift)(0) = 0` fact. Only the ContDiff⊤ is built here.
 -/
@@ -38,65 +38,65 @@ variable {L : ℕ}
 
 /-! ## `schurShiftRawConj` `ContDiffAt` on `unitSetConj`
 
-The conjugated pivot `deepBlkA_s + readX_s` (a constant `deepBlkA_s` plus the entrywise-`ContDiff`
-`readX`) has `ContDiffAt` inverse entries where its det `≠ 0`; the conjugated correction is the triple
-product `−(deepBlkZ + readZ)·(deepBlkA + readX)⁻¹·(deepBlkY + readY)`. -/
+The conjugated pivot `deepBlkA_s + gaugeReadX_s` (a constant `deepBlkA_s` plus the entrywise-`ContDiff`
+`gaugeReadX`) has `ContDiffAt` inverse entries where its det `≠ 0`; the conjugated correction is the triple
+product `−(deepBlkZ + gaugeReadZ)·(deepBlkA + gaugeReadX)⁻¹·(deepBlkY + gaugeReadY)`. -/
 
-/-- Each entry of the conjugated pivot inverse `(deepBlkA_s + readX p s)⁻¹` is `ContDiffAt p` on
-`unitSetConj` (det `≠ 0` there). The `deepBlkA + readX` family is entrywise `ContDiff` (constant
-`deepBlkA` + `contDiff_readX_entry`). -/
-theorem contDiffAt_inv_deepBlkA_add_readX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- Each entry of the conjugated pivot inverse `(deepBlkA_s + gaugeReadX p s)⁻¹` is `ContDiffAt p` on
+`unitSetConj` (det `≠ 0` there). The `deepBlkA + gaugeReadX` family is entrywise `ContDiff` (constant
+`deepBlkA` + `contDiff_gaugeReadX_entry`). -/
+theorem contDiffAt_inv_deepBlkA_add_gaugeReadX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
     (hp : p ∈ unitSetConj H r B hB hr hL) (i j : Fin r) :
     ContDiffAt ℝ (⊤ : ℕ∞)
-      (fun q => ((deepBlkA H r B hB hr hL s + readX H r hr hL q s)⁻¹) i j) p := by
+      (fun q => ((deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s)⁻¹) i j) p := by
   refine contDiffAt_matrix_inv_entry_of_det_ne_zero
-    (A := fun q => deepBlkA H r B hB hr hL s + readX H r hr hL q s) (fun a b => ?_) (hp s) i j
-  have : (fun q => (deepBlkA H r B hB hr hL s + readX H r hr hL q s) a b)
-      = fun q => (deepBlkA H r B hB hr hL s) a b + readX H r hr hL q s a b := by
+    (A := fun q => deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s) (fun a b => ?_) (hp s) i j
+  have : (fun q => (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s) a b)
+      = fun q => (deepBlkA H r B hB hr hL s) a b + gaugeReadX H r hr hL q s a b := by
     funext q; rw [Matrix.add_apply]
   rw [this]
-  exact contDiff_const.add (contDiff_readX_entry H r hr hL s a b)
+  exact contDiff_const.add (contDiff_gaugeReadX_entry H r hr hL s a b)
 
 /-- Each conjugated per-layer correction entry is `ContDiffAt p` on `unitSetConj`: the triple product
-`−(deepBlkZ + readZ)·(deepBlkA + readX)⁻¹·(deepBlkY + readY)`, all factors entrywise `ContDiffAt` there. -/
+`−(deepBlkZ + gaugeReadZ)·(deepBlkA + gaugeReadX)⁻¹·(deepBlkY + gaugeReadY)`, all factors entrywise `ContDiffAt` there. -/
 theorem contDiffAt_schurCorrectionConj_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
     (hp : p ∈ unitSetConj H r B hB hr hL) (i : Fin (H s.castSucc - r)) (j : Fin (H s.succ - r)) :
     ContDiffAt ℝ (⊤ : ℕ∞) (fun q => schurCorrectionConj H r B hB hr hL q s i j) p := by
-  -- `schurCorrectionConj q s = (−(deepBlkZ + readZ q s))·(deepBlkA + readX q s)⁻¹·(deepBlkY + readY q s)`.
+  -- `schurCorrectionConj q s = (−(deepBlkZ + gaugeReadZ q s))·(deepBlkA + gaugeReadX q s)⁻¹·(deepBlkY + gaugeReadY q s)`.
   have hZinv : ∀ (a : Fin (H s.castSucc - r)) (k : Fin r),
       ContDiffAt ℝ (⊤ : ℕ∞)
-        (fun q => ((-(deepBlkZ H r B hB hr hL s + readZ H r hr hL q s))
-          * (deepBlkA H r B hB hr hL s + readX H r hr hL q s)⁻¹) a k) p := by
+        (fun q => ((-(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL q s))
+          * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s)⁻¹) a k) p := by
     intro a k
     refine contDiffAt_matrix_mul_entry (fun a' k' => ?_)
-      (fun k' j' => contDiffAt_inv_deepBlkA_add_readX_entry H r B hB hr hL s p hp k' j') a k
-    have : (fun q => (-(deepBlkZ H r B hB hr hL s + readZ H r hr hL q s)) a' k')
-        = fun q => -((deepBlkZ H r B hB hr hL s) a' k' + readZ H r hr hL q s a' k') := by
+      (fun k' j' => contDiffAt_inv_deepBlkA_add_gaugeReadX_entry H r B hB hr hL s p hp k' j') a k
+    have : (fun q => (-(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL q s)) a' k')
+        = fun q => -((deepBlkZ H r B hB hr hL s) a' k' + gaugeReadZ H r hr hL q s a' k') := by
       funext q; rw [Matrix.neg_apply, Matrix.add_apply]
     rw [this]
-    exact ((contDiff_const.add (contDiff_readZ_entry H r hr hL s a' k')).neg).contDiffAt
+    exact ((contDiff_const.add (contDiff_gaugeReadZ_entry H r hr hL s a' k')).neg).contDiffAt
   have hmul := contDiffAt_matrix_mul_entry
-    (A := fun q => (-(deepBlkZ H r B hB hr hL s + readZ H r hr hL q s))
-      * (deepBlkA H r B hB hr hL s + readX H r hr hL q s)⁻¹)
-    (B := fun q => deepBlkY H r B hB hr hL s + readY H r hr hL q s) hZinv
+    (A := fun q => (-(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL q s))
+      * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s)⁻¹)
+    (B := fun q => deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL q s) hZinv
     (fun k' j' => by
-      have : (fun q => (deepBlkY H r B hB hr hL s + readY H r hr hL q s) k' j')
-          = fun q => (deepBlkY H r B hB hr hL s) k' j' + readY H r hr hL q s k' j' := by
+      have : (fun q => (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL q s) k' j')
+          = fun q => (deepBlkY H r B hB hr hL s) k' j' + gaugeReadY H r hr hL q s k' j' := by
         funext q; rw [Matrix.add_apply]
       rw [this]
-      exact (contDiff_const.add (contDiff_readY_entry H r hr hL s k' j')).contDiffAt) i j
+      exact (contDiff_const.add (contDiff_gaugeReadY_entry H r hr hL s k' j')).contDiffAt) i j
   refine hmul.congr_of_eventuallyEq ?_
   filter_upwards with q
   show schurCorrectionConj H r B hB hr hL q s i j
-      = ((-(deepBlkZ H r B hB hr hL s + readZ H r hr hL q s))
-          * (deepBlkA H r B hB hr hL s + readX H r hr hL q s)⁻¹
-          * (deepBlkY H r B hB hr hL s + readY H r hr hL q s)) i j
+      = ((-(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL q s))
+          * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL q s)⁻¹
+          * (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL q s)) i j
   rfl
 
 /-- `schurShiftRawConj` is `ContDiffAt p` on `unitSetConj`: `paramsEquivFlatCLE (deepestM)` (a `ContDiff`

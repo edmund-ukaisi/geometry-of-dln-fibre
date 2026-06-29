@@ -20,7 +20,7 @@ two-grouped product.
 network the layer product `prod H A` has `L` factors; one groups them as `(first L−1)·(last)` via the
 banked `prodAux_succ`, so this block-decomposition lemma applies with `G0 = first L−1 grouped product`,
 `G1 = last layer`. The h1 obligation `hR` then holds for any L. (The companion h2 obligation
-`coreΦ = frobSq (S0·S1)` does NOT reduce so cleanly: it needs the grouped Schur core of the first L−1
+`coreΦ = frobSqMat (S0·S1)` does NOT reduce so cleanly: it needs the grouped Schur core of the first L−1
 layers to equal the per-layer-core product — a recursive Schur-core identity, trivial only at L = 2.
 That recursion is the genuine general-L residual; this module is unaffected by it.)
 

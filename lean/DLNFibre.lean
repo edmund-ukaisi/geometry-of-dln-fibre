@@ -524,5 +524,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 -- Varah field-A margins, hboxpos, hexp). Built on the Core Varah brick `Core.Matrix.DiagDominance`
 -- (`StrictRowDominant.det_ne_zero`). Cone sorry-free, S2-FREE. Reviewer PASS (5-point + decorrelated Codex).
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
+-- L2 Skeleton rung 1/5 (`product_reduction`) at L=2: the deepest-point diffeo bridge wired into the
+-- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
+-- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
+import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

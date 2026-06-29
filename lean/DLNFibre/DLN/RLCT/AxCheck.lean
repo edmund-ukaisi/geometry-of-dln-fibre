@@ -7,6 +7,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
+import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 
 /-!
 # Axiom-hygiene check
@@ -87,6 +88,17 @@ open DLNFibre.DLN.RLCT
 -- clean-three chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`.
 -- Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE, no `monomial_rlct`, no `sorryAx`.
 #print axioms routeMBoxThresholdFinite_rrp
+
+-- L2 Skeleton rung 1/5 (`product_reduction`) at L=2 — `deepest_gauge_construction_L2`, the standalone
+-- clean-three L=2 witness for the deepest-point gauge-slice diffeo construction (the geometric obligation
+-- of L2). Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: the L=2 arm is sorry-free
+-- (geometric, S2-FREE, no `monomial_rlct`), no `sorryAx`.
+#print axioms deepest_gauge_construction_L2
+
+-- L2 gauge-construction at general L — `deepest_gauge_construction` dispatches L<3 to the clean-three
+-- `_L2` witness and carries the #120-tracked L≥3-arm sorries (the grouped recursive diffeo, RESEARCH-RISK
+-- roadmapped). Expected `sorryAx` until #120 closes; tracked here so the day it goes clean is visible.
+#print axioms deepest_gauge_construction
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

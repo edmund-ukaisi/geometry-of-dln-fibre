@@ -109,52 +109,52 @@ end EntrywiseInv
 
 /-! ## `schurCorrection` / `schurShiftRaw` `ContDiffAt` on `unitSet`
 
-`schurCorrection p s = −(readZ p s) · (1 + readX p s)⁻¹ · (readY p s)` — a triple matrix product. On
-`unitSet` (every `det(1 + readX p s) ≠ 0`) the inverse entries are `ContDiffAt` (entrywise route); the
-`readX/Y/Z` entries are `ContDiff` (global). `schurShiftRaw = paramsEquivFlatCLE (deepestM) ∘ assemble`
+`schurCorrection p s = −(gaugeReadZ p s) · (1 + gaugeReadX p s)⁻¹ · (gaugeReadY p s)` — a triple matrix product. On
+`unitSet` (every `det(1 + gaugeReadX p s) ≠ 0`) the inverse entries are `ContDiffAt` (entrywise route); the
+`gaugeReadX/Y/Z` entries are `ContDiff` (global). `schurShiftRaw = paramsEquivFlatCLE (deepestM) ∘ assemble`
 (the CLE is `ContDiff`), so the flat shift is `ContDiffAt` on `unitSet`. -/
 
-/-- Each entry of `(1 + readX p s)⁻¹` is `ContDiffAt p` on `unitSet` (det ≠ 0 there). The
-`1 + readX` family is entrywise `ContDiff` (`contDiff_readX_entry` + `contDiff_const`). -/
-theorem contDiffAt_inv_one_add_readX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- Each entry of `(1 + gaugeReadX p s)⁻¹` is `ContDiffAt p` on `unitSet` (det ≠ 0 there). The
+`1 + gaugeReadX` family is entrywise `ContDiff` (`contDiff_gaugeReadX_entry` + `contDiff_const`). -/
+theorem contDiffAt_inv_one_add_gaugeReadX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
     (hp : p ∈ unitSet H r hr hL) (i j : Fin r) :
-    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => ((1 + readX H r hr hL q s)⁻¹) i j) p := by
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => ((1 + gaugeReadX H r hr hL q s)⁻¹) i j) p := by
   refine contDiffAt_matrix_inv_entry_of_det_ne_zero
-    (A := fun q => (1 : Matrix (Fin r) (Fin r) ℝ) + readX H r hr hL q s) (fun a b => ?_) (hp s) i j
-  have : (fun q => ((1 : Matrix (Fin r) (Fin r) ℝ) + readX H r hr hL q s) a b)
-      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) a b + readX H r hr hL q s a b := by
+    (A := fun q => (1 : Matrix (Fin r) (Fin r) ℝ) + gaugeReadX H r hr hL q s) (fun a b => ?_) (hp s) i j
+  have : (fun q => ((1 : Matrix (Fin r) (Fin r) ℝ) + gaugeReadX H r hr hL q s) a b)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) a b + gaugeReadX H r hr hL q s a b := by
     funext q; rw [Matrix.add_apply]
   rw [this]
-  exact contDiff_const.add (contDiff_readX_entry H r hr hL s a b)
+  exact contDiff_const.add (contDiff_gaugeReadX_entry H r hr hL s a b)
 
 /-- Each per-layer Schur correction entry is `ContDiffAt p` on `unitSet`: the triple product
-`(−readZ) · (1 + readX)⁻¹ · readY`, all factors entrywise `ContDiffAt` there. -/
+`(−gaugeReadZ) · (1 + gaugeReadX)⁻¹ · gaugeReadY`, all factors entrywise `ContDiffAt` there. -/
 theorem contDiffAt_schurCorrection_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
     (hp : p ∈ unitSet H r hr hL) (i : Fin (H s.castSucc - r)) (j : Fin (H s.succ - r)) :
     ContDiffAt ℝ (⊤ : ℕ∞) (fun q => schurCorrection H r hr hL q s i j) p := by
-  -- `schurCorrection q s = (−readZ q s) · (1 + readX q s)⁻¹ · readY q s` (negate the first factor).
+  -- `schurCorrection q s = (−gaugeReadZ q s) · (1 + gaugeReadX q s)⁻¹ · gaugeReadY q s` (negate the first factor).
   have hZinv : ∀ (a : Fin (H s.castSucc - r)) (k : Fin r),
       ContDiffAt ℝ (⊤ : ℕ∞)
-        (fun q => ((-(readZ H r hr hL q s)) * (1 + readX H r hr hL q s)⁻¹) a k) p := by
+        (fun q => ((-(gaugeReadZ H r hr hL q s)) * (1 + gaugeReadX H r hr hL q s)⁻¹) a k) p := by
     intro a k
     refine contDiffAt_matrix_mul_entry (fun a' k' => ?_)
-      (fun k' j' => contDiffAt_inv_one_add_readX_entry H r hr hL s p hp k' j') a k
-    have : (fun q => (-(readZ H r hr hL q s)) a' k') = fun q => -(readZ H r hr hL q s a' k') := by
+      (fun k' j' => contDiffAt_inv_one_add_gaugeReadX_entry H r hr hL s p hp k' j') a k
+    have : (fun q => (-(gaugeReadZ H r hr hL q s)) a' k') = fun q => -(gaugeReadZ H r hr hL q s a' k') := by
       funext q; rw [Matrix.neg_apply]
-    rw [this]; exact (contDiff_readZ_entry H r hr hL s a' k').contDiffAt.neg
+    rw [this]; exact (contDiff_gaugeReadZ_entry H r hr hL s a' k').contDiffAt.neg
   have hmul := contDiffAt_matrix_mul_entry
-    (A := fun q => (-(readZ H r hr hL q s)) * (1 + readX H r hr hL q s)⁻¹)
-    (B := fun q => readY H r hr hL q s) hZinv
-    (fun k' j' => (contDiff_readY_entry H r hr hL s k' j').contDiffAt) i j
+    (A := fun q => (-(gaugeReadZ H r hr hL q s)) * (1 + gaugeReadX H r hr hL q s)⁻¹)
+    (B := fun q => gaugeReadY H r hr hL q s) hZinv
+    (fun k' j' => (contDiff_gaugeReadY_entry H r hr hL s k' j').contDiffAt) i j
   -- The triple product `((−Z)·inv)·Y` equals `schurCorrection`'s `−Z·inv·Y` (associativity + neg).
   refine hmul.congr_of_eventuallyEq ?_
   filter_upwards with q
   show schurCorrection H r hr hL q s i j
-      = ((-(readZ H r hr hL q s)) * (1 + readX H r hr hL q s)⁻¹ * readY H r hr hL q s) i j
+      = ((-(gaugeReadZ H r hr hL q s)) * (1 + gaugeReadX H r hr hL q s)⁻¹ * gaugeReadY H r hr hL q s) i j
   rfl
 
 /-- `schurShiftRaw` is `ContDiffAt p` on `unitSet`: `paramsEquivFlatCLE (deepestM)` (a `ContDiff` CLE)
@@ -307,10 +307,10 @@ theorem hasStrictFDerivAt_schurCorrection_entry_zero (H : Fin (L + 1) → ℕ) (
   -- `schurCorrection q s i j = ∑_l ∑_k (−Z q s i k)·(inv q s k l)·(Y q s l j)`.
   have heq : (fun q => schurCorrection H r hr hL q s i j)
       = fun q => ∑ l : Fin r, ∑ k : Fin r,
-          (-(readZ H r hr hL q s) i k) * ((1 + readX H r hr hL q s)⁻¹ k l)
-            * (readY H r hr hL q s l j) := by
+          (-(gaugeReadZ H r hr hL q s) i k) * ((1 + gaugeReadX H r hr hL q s)⁻¹ k l)
+            * (gaugeReadY H r hr hL q s l j) := by
     funext q
-    show (-(readZ H r hr hL q s) * (1 + readX H r hr hL q s)⁻¹ * readY H r hr hL q s) i j = _
+    show (-(gaugeReadZ H r hr hL q s) * (1 + gaugeReadX H r hr hL q s)⁻¹ * gaugeReadY H r hr hL q s) i j = _
     rw [Matrix.mul_apply]
     refine Finset.sum_congr rfl (fun l _ => ?_)
     rw [Matrix.mul_apply, Finset.sum_mul]
@@ -318,29 +318,29 @@ theorem hasStrictFDerivAt_schurCorrection_entry_zero (H : Fin (L + 1) → ℕ) (
   rw [heq]
   -- The per-summand derivative-`0` family (each a triple product with outer factors vanishing at `0`).
   have hterm : ∀ l k : Fin r, HasStrictFDerivAt
-      (fun q => (-(readZ H r hr hL q s) i k) * ((1 + readX H r hr hL q s)⁻¹ k l)
-        * (readY H r hr hL q s l j))
+      (fun q => (-(gaugeReadZ H r hr hL q s) i k) * ((1 + gaugeReadX H r hr hL q s)⁻¹ k l)
+        * (gaugeReadY H r hr hL q s l j))
       (0 : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ] ℝ) 0 := by
     intro l k
     refine hasStrictFDerivAt_triple_mul_zero _ _ _ ?_ ?_ ?_ ?_ ?_
-    · exact ((contDiff_readZ_entry H r hr hL s i k).contDiffAt.neg)
-    · exact contDiffAt_inv_one_add_readX_entry H r hr hL s p0 hmem k l
-    · exact (contDiff_readY_entry H r hr hL s l j).contDiffAt
-    · show -(readZ H r hr hL p0 s) i k = 0
-      rw [hp0, readZ_zero H r hr hL s]; simp
-    · show readY H r hr hL p0 s l j = 0
-      rw [hp0, readY_zero H r hr hL s]; rfl
+    · exact ((contDiff_gaugeReadZ_entry H r hr hL s i k).contDiffAt.neg)
+    · exact contDiffAt_inv_one_add_gaugeReadX_entry H r hr hL s p0 hmem k l
+    · exact (contDiff_gaugeReadY_entry H r hr hL s l j).contDiffAt
+    · show -(gaugeReadZ H r hr hL p0 s) i k = 0
+      rw [hp0, gaugeReadZ_zero H r hr hL s]; simp
+    · show gaugeReadY H r hr hL p0 s l j = 0
+      rw [hp0, gaugeReadY_zero H r hr hL s]; rfl
   -- Sum over `l, k`: the function-level `Finset.sum` strict-deriv, with derivative `∑∑ 0 = 0`.
   have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset (Fin r)))
     (fun l _ => HasStrictFDerivAt.sum (u := (Finset.univ : Finset (Fin r)))
       (fun k _ => hterm l k))
   -- `hsum`'s function is the pointwise `Finset.sum`; rewrite to the `fun q => ∑∑ …` shape, deriv `0`.
   have hfun : (∑ l : Fin r, ∑ k : Fin r,
-        (fun q => (-(readZ H r hr hL q s) i k) * ((1 + readX H r hr hL q s)⁻¹ k l)
-          * (readY H r hr hL q s l j)))
+        (fun q => (-(gaugeReadZ H r hr hL q s) i k) * ((1 + gaugeReadX H r hr hL q s)⁻¹ k l)
+          * (gaugeReadY H r hr hL q s l j)))
       = fun q => ∑ l : Fin r, ∑ k : Fin r,
-          (-(readZ H r hr hL q s) i k) * ((1 + readX H r hr hL q s)⁻¹ k l)
-            * (readY H r hr hL q s l j) := by
+          (-(gaugeReadZ H r hr hL q s) i k) * ((1 + gaugeReadX H r hr hL q s)⁻¹ k l)
+            * (gaugeReadY H r hr hL q s l j) := by
     funext q; simp only [Finset.sum_apply]
   rw [hfun, show (∑ l : Fin r, ∑ k : Fin r,
         (0 : ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) →L[ℝ] ℝ)) = 0 from by

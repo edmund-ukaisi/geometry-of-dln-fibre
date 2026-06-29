@@ -180,7 +180,7 @@ theorem deepest_gauge_construction_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
             ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   -- `split` (obligation (i), MP reindex carrying the deepest point to `0`). Use the CONCRETE
   -- `deepestSplit` witness (not the `deepestSplit_exists` existential) so the PIN2 cert's round-trip
-  -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`readX/Y/Z_deepestSplit`,
+  -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`gaugeReadX/Y/Z_deepestSplit`,
   -- `DeepestSplitConcrete`) are stated against THIS map, so generality of `split` would block them.
   set split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
     deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) with hsplit_def
@@ -335,7 +335,7 @@ theorem deepest_gauge_construction_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
   -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
   -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
-  -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
+  -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSqMat(Rcore)` (the `hscore`/`hScoreDef`
   -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
   set Score : (Fin (flatDim H) → ℝ) → ℝ :=
     fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -392,18 +392,18 @@ theorem deepest_gauge_construction_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
     refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
       ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
       c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
-    · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
+    · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSqMat of a continuous matrix in `w`).
       rw [hΦscore, hScoreDef]
       apply Measurable.add
       · exact (Finset.measurable_sum _ (fun i _ =>
           ((measurable_pi_apply i).comp
             (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
-      · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
+      · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSqMat(Schur(Mw w))`,
         -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
         -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
         -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
         -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
-        -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
+        -- (∑∑ of products of measurable scalars), and `frobSqMat` (finite ∑∑ of squares) is measurable.
         set Mw : (Fin (flatDim H) → ℝ) →
             Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
           fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -696,7 +696,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
   · -- ===== L ≥ 3 ARM (roadmapped #120 sorries) =====
     -- `split` (obligation (i), MP reindex carrying the deepest point to `0`). Use the CONCRETE
     -- `deepestSplit` witness (not the `deepestSplit_exists` existential) so the PIN2 cert's round-trip
-    -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`readX/Y/Z_deepestSplit`,
+    -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`gaugeReadX/Y/Z_deepestSplit`,
     -- `DeepestSplitConcrete`) are stated against THIS map, so generality of `split` would block them.
     set split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r) :=
       deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) with hsplit_def
@@ -852,7 +852,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- field is the RLCT-EQUALITY `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`. We prove it from the TRUE
     -- Score-sandwich `hsq` (`deepest_loss_squeeze`, axiom-clean) via `rlctAtOn_squeeze`
     -- (⟹ `rlctAtOn(Sreg_E + Score)`) + the analytic-unit diffeo bridge `rlctAtOn(Sreg_E + Score) =
-    -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSq(Rcore)` (the `hscore`/`hScoreDef`
+    -- rlctAtOn(Sreg_E + coreΦ)` (`Ψ : S1 ↦ (I−K)·S1`). `Score = frobSqMat(Rcore)` (the `hscore`/`hScoreDef`
     -- lambda); `coreΦ = deepestCoreF (coreAbsorb …)`.
     set Score : (Fin (flatDim H) → ℝ) → ℝ :=
       fun w => ∑ i, ∑ j, (((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
@@ -909,18 +909,18 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       refine rlctAtOn_squeeze (fun x => dlnLoss H B ((paramsEquivFlat H).symm x)) Φscore wstar
         ((continuous_dlnLoss H B).comp (continuous_paramsEquivFlat_symm H)).measurable ?_
         c₁ c₂ hc₁ hc₂ ⟨U, hU, fun w hw => ?_⟩
-      · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSq of a continuous matrix in `w`).
+      · -- `Φscore` measurable: reg sum-of-squares + `Score` (a frobSqMat of a continuous matrix in `w`).
         rw [hΦscore, hScoreDef]
         apply Measurable.add
         · exact (Finset.measurable_sum _ (fun i _ =>
             ((measurable_pi_apply i).comp
               (continuous_fst.comp (hra_cont.comp split.continuous)).measurable).pow_const _))
-        · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSq(Schur(Mw w))`,
+        · -- **MEASURABILITY of `Score` (mechanical, entrywise).** `Score w = frobSqMat(Schur(Mw w))`,
           -- `Mw w = reindex(endpointP0·(prod(symm w)−B)·endpointQL)` — CONTINUOUS in `w` (`continuous_Mw`).
           -- The only non-continuous piece is `(Mw₁₁+1)⁻¹`, but it is MEASURABLE entrywise: `inv_def` gives
           -- `A⁻¹ = (Ring.inverse A.det) • A.adjugate`, with `Continuous.matrix_det`/`Continuous.matrix_adjugate`
           -- continuous and `Ring.inverse : ℝ → ℝ` measurable. So each Schur-leak entry is measurable
-          -- (∑∑ of products of measurable scalars), and `frobSq` (finite ∑∑ of squares) is measurable.
+          -- (∑∑ of products of measurable scalars), and `frobSqMat` (finite ∑∑ of squares) is measurable.
           set Mw : (Fin (flatDim H) → ℝ) →
               Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H (Fin.last L) - r)) ℝ :=
             fun w => Matrix.reindex (rThresholdSplit r (H 0) (hr 0))

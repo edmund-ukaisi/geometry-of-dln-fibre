@@ -185,7 +185,7 @@ Build the three block agreements for `prod H Aψ` vs `prod H Aq` where `Aq = dec
 `Aψ = decode (split.symm (psiSplitRawL2CoreConj (split x)))`, then `hsub3reg` = #147 verbatim. -/
 
 -- Per-layer block dictionary at the MOVED point (reindex(Aψ s)₁₁) via the chart-point readback +
--- the conj readX-transport + the split round-trip. Layer s, boundary (deepBlkT_s = 0).
+-- the conj gaugeReadX-transport + the split round-trip. Layer s, boundary (deepBlkT_s = 0).
 example (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
@@ -200,12 +200,12 @@ example (H : Fin (L + 1) → ℕ) (r : ℕ)
         (((paramsEquivFlat H).symm (split.symm
           (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))) s)).toBlocks₁₁
       = deepBlkA H r B hB hr hL s
-        + readX H r hr hL ((split x).1, (split x).2.2) s := by
+        + gaugeReadX H r hr hL ((split x).1, (split x).2.2) s := by
   set w := split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) with hw
   have hrt : deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w
       = psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x) := by
     rw [← hsplit w, hw, split.apply_symm_apply]
   obtain ⟨h11, _, _, _⟩ := reindex_decode_split_toBlocks H r B hB hr hL w s hT
-  rw [h11, hrt, readX_psiSplitRawL2CoreConj_eq]
+  rw [h11, hrt, gaugeReadX_psiSplitRawL2CoreConj_eq]
 
 end DLNFibre.DLN.RLCT

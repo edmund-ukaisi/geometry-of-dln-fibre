@@ -6,7 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurShift
 
 `deepestSplit_exists` (in `DeepestSplitReindex`) packages the gauge-slice reindex as an EXISTENTIAL
 `∃ split, MeasurePreserving split ∧ split wstar = 0`. PIN2's frame-bridge cert needs the round-trip
-`readX/Y/Z (split w) = the raw deviation block of (w − wstar)`, which is provable ONLY for the CONCRETE
+`gaugeReadX/Y/Z (split w) = the raw deviation block of (w − wstar)`, which is provable ONLY for the CONCRETE
 witness (the slot decode must definitionally invert the role-split enumeration), not a generic `split`.
 
 This module names that concrete witness `deepestSplit` (verbatim the `deepestSplit_exists` construction,
@@ -15,7 +15,7 @@ lemmas — the durable contract the round-trip is proved against. The reg/gauge/
 of `w − wstar` along `deepestRoleIndexEquiv`, restricted to the corresponding `⊕`-arm.
 
 All declarations here are sorry-free: pure defs + `rfl` projection lemmas + the slot-read round-trip
-index half. The full `readX (deepestSplit w) = raw` layer identity is the PIN2-(i) content built on top
+index half. The full `gaugeReadX (deepestSplit w) = raw` layer identity is the PIN2-(i) content built on top
 (a separate, larger obligation — the matrix-block step joining this index round-trip to `framedLayer`).
 -/
 
@@ -153,7 +153,7 @@ def regGaugeRecombine (nReg nM nG : ℕ) :
 coordinate `deepestRoleIndexEquiv.symm (regGaugeRecombine (regGaugeIdxSplit idx))`. The two
 `regGaugeIdxSplit` enumerations (one in `regGaugeSlotEquiv`, one in `deepestRoleIndexEquiv`'s reg/gauge
 half) cancel through the `Sum.rec`/`piCongrLeft` recombination — the round-trip the PIN2 cert needs to
-identify `readX/Y/Z (deepestSplit w)` with the raw layer deviation. -/
+identify `gaugeReadX/Y/Z (deepestSplit w)` with the raw layer deviation. -/
 theorem regGaugeSlotEquiv_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar w : Fin (flatDim H) → ℝ)
     (idx : RegGaugeIdx H r) :
@@ -196,42 +196,42 @@ theorem regGaugeSlotEquiv_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [Equiv.piCongrLeft_apply_eq_cast]
     simp [regGaugeRecombine]
 
-/-- `readX (deepestSplit w) s` is the `(w − wstar)` flat-coordinate at the X-block role index of layer
+/-- `gaugeReadX (deepestSplit w) s` is the `(w − wstar)` flat-coordinate at the X-block role index of layer
 `s` — the round-trip specialized to the `X` arm (`Sum.inl (Sum.inl (i,j))`). The matrix-block half of
 the PIN2-(i) identity (the layer entry vs the raw-product entry) is built on this + `roleSplitIdx`. -/
-theorem readX_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadX_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar w : Fin (flatDim H) → ℝ)
     (s : Fin L) (i j : Fin r) :
-    readX H r hr hL ((deepestSplit H r hr hL wstar w).1,
+    gaugeReadX H r hr hL ((deepestSplit H r hr hL wstar w).1,
         (deepestSplit H r hr hL wstar w).2.2) s i j
       = (w - wstar) ((deepestRoleIndexEquiv H r hr hL).symm
           (regGaugeRecombine (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
             (regGaugeIdxSplit H r hr hL ⟨s, Sum.inl (Sum.inl (i, j))⟩))) := by
-  simp only [readX, Matrix.of_apply]
+  simp only [gaugeReadX, Matrix.of_apply]
   exact regGaugeSlotEquiv_deepestSplit H r hr hL wstar w ⟨s, Sum.inl (Sum.inl (i, j))⟩
 
-/-- `readY (deepestSplit w) s` at the Y-block role index `Sum.inl (Sum.inr (i,j))`. -/
-theorem readY_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- `gaugeReadY (deepestSplit w) s` at the Y-block role index `Sum.inl (Sum.inr (i,j))`. -/
+theorem gaugeReadY_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar w : Fin (flatDim H) → ℝ)
     (s : Fin L) (i : Fin r) (j : Fin (H s.succ - r)) :
-    readY H r hr hL ((deepestSplit H r hr hL wstar w).1,
+    gaugeReadY H r hr hL ((deepestSplit H r hr hL wstar w).1,
         (deepestSplit H r hr hL wstar w).2.2) s i j
       = (w - wstar) ((deepestRoleIndexEquiv H r hr hL).symm
           (regGaugeRecombine (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
             (regGaugeIdxSplit H r hr hL ⟨s, Sum.inl (Sum.inr (i, j))⟩))) := by
-  simp only [readY, Matrix.of_apply]
+  simp only [gaugeReadY, Matrix.of_apply]
   exact regGaugeSlotEquiv_deepestSplit H r hr hL wstar w ⟨s, Sum.inl (Sum.inr (i, j))⟩
 
-/-- `readZ (deepestSplit w) s` at the Z-block role index `Sum.inr (i,j)`. -/
-theorem readZ_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- `gaugeReadZ (deepestSplit w) s` at the Z-block role index `Sum.inr (i,j)`. -/
+theorem gaugeReadZ_deepestSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (wstar w : Fin (flatDim H) → ℝ)
     (s : Fin L) (i : Fin (H s.castSucc - r)) (j : Fin r) :
-    readZ H r hr hL ((deepestSplit H r hr hL wstar w).1,
+    gaugeReadZ H r hr hL ((deepestSplit H r hr hL wstar w).1,
         (deepestSplit H r hr hL wstar w).2.2) s i j
       = (w - wstar) ((deepestRoleIndexEquiv H r hr hL).symm
           (regGaugeRecombine (deepestNReg H r) (flatDim (deepestM H r)) (deepestNGauge H r)
             (regGaugeIdxSplit H r hr hL ⟨s, Sum.inr (i, j)⟩))) := by
-  simp only [readZ, Matrix.of_apply]
+  simp only [gaugeReadZ, Matrix.of_apply]
   exact regGaugeSlotEquiv_deepestSplit H r hr hL wstar w ⟨s, Sum.inr (i, j)⟩
 
 end DLNFibre.DLN.RLCT

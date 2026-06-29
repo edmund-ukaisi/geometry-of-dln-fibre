@@ -38,9 +38,9 @@ private theorem reindex_decode_blocks_at (H : Fin (L + 1) → ℕ) (r : ℕ)
         (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0) :
     let MX := Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
         (rThresholdSplit r (H s.succ) (hr s.succ)) (((paramsEquivFlat H).symm w) s)
-    MX.toBlocks₁₁ = deepBlkA H r B hB hr hL s + readX H r hr hL ((split w).1, (split w).2.2) s
-      ∧ MX.toBlocks₂₁ = deepBlkZ H r B hB hr hL s + readZ H r hr hL ((split w).1, (split w).2.2) s
-      ∧ MX.toBlocks₁₂ = deepBlkY H r B hB hr hL s + readY H r hr hL ((split w).1, (split w).2.2) s
+    MX.toBlocks₁₁ = deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL ((split w).1, (split w).2.2) s
+      ∧ MX.toBlocks₂₁ = deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL ((split w).1, (split w).2.2) s
+      ∧ MX.toBlocks₁₂ = deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL ((split w).1, (split w).2.2) s
       ∧ MX.toBlocks₂₂ = (paramsEquivFlat (deepestM H r)).symm (split w).2.1 s := by
   intro MX
   obtain ⟨h11, h21, h12, h22⟩ := reindex_decode_split_toBlocks H r B hB hr hL w s hT
@@ -73,9 +73,9 @@ private theorem reindex_decode0_conj_shared (H : Fin (L + 1) → ℕ) (r : ℕ)
   obtain ⟨hq11, hq21, hq12, hq22⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x s hT
   -- All four reads are fixed at a non-last layer.
   rw [hsw] at hψ11 hψ21 hψ12 hψ22
-  rw [readX_psiSplitRawL2CoreConj_eq] at hψ11
-  rw [readZ_psiSplitRawL2CoreConj_eq] at hψ21
-  rw [readY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq (split x) s hs] at hψ12
+  rw [gaugeReadX_psiSplitRawL2CoreConj_eq] at hψ11
+  rw [gaugeReadZ_psiSplitRawL2CoreConj_eq] at hψ21
+  rw [gaugeReadY_psiSplitRawL2CoreConj_of_ne_eq H r B hB hr hL hL2eq (split x) s hs] at hψ12
   rw [coreRead_psiSplitRawL2CoreConj_of_ne H r B hB hr hL hL2eq (split x) s hs] at hψ22
   -- Reassemble via fromBlocks of the four (now-equal) blocks.
   rw [← Matrix.fromBlocks_toBlocks (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
@@ -105,7 +105,7 @@ private theorem reindex_decode0_conj_shared (H : Fin (L + 1) → ℕ) (r : ℕ)
       from by rw [hψ22, hq22]]
 
 /-- **Last-layer ₁₁ agreement** under the conjugated move (`reindex(Aψ last)₁₁ = reindex(Aq last)₁₁`),
-at the `rThr (H last.succ)` split (readX fixed). -/
+at the `rThr (H last.succ)` split (gaugeReadX fixed). -/
 private theorem reindex_decodeLast_conj_b11 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
@@ -128,9 +128,9 @@ private theorem reindex_decodeLast_conj_b11 (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [hw, split.apply_symm_apply]
   obtain ⟨hψ11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit w (lastLayer hL) hT
   obtain ⟨hq11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
-  rw [hψ11, hsw, readX_psiSplitRawL2CoreConj_eq, hq11]
+  rw [hψ11, hsw, gaugeReadX_psiSplitRawL2CoreConj_eq, hq11]
 
-/-- **Last-layer ₂₁ agreement** under the conjugated move (readZ fixed). Mirror of `_b11`. -/
+/-- **Last-layer ₂₁ agreement** under the conjugated move (gaugeReadZ fixed). Mirror of `_b11`. -/
 private theorem reindex_decodeLast_conj_b21 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
@@ -153,7 +153,7 @@ private theorem reindex_decodeLast_conj_b21 (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [hw, split.apply_symm_apply]
   obtain ⟨_, hψ21, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit w (lastLayer hL) hT
   obtain ⟨_, hq21, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
-  rw [hψ21, hsw, readZ_psiSplitRawL2CoreConj_eq, hq21]
+  rw [hψ21, hsw, gaugeReadZ_psiSplitRawL2CoreConj_eq, hq21]
 
 /-- **The e2 dictionary relation** (the {12}-leak-kill, `P01` fixed). In the `l2*Conj` dictionary:
 `A0c·Y1'c + Y0c·T1'c = A0c·Y1c + Y0c·T1c`. Via `e2_regPreserve` (needs `Invertible l2A0Conj`). -/
@@ -300,10 +300,10 @@ theorem conj_he2_raw (H : Fin 3 → ℕ) (r : ℕ)
     at hAq0_11 hAq0_12 hAq1_12 hAq1_22 hAψ1_12 hAψ1_22
   -- Literal-`1` forms of the two conj readbacks: `exact`-transport handles `lastLayer hL ≡ 1` (defeq),
   -- where `▸`/`rw` fail on the dependent codomain width.
-  have hRY : readY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL rfl q).1,
+  have hRY : gaugeReadY H r hr hL ((psiSplitRawL2CoreConj H r B hB hr hL rfl q).1,
         (psiSplitRawL2CoreConj H r B hB hr hL rfl q).2.2) (1 : Fin 2)
       = l2Y1pReadConj H r B hB hr hL rfl q :=
-    readY_psiSplitRawL2CoreConj_last_eq H r B hB hr hL rfl q
+    gaugeReadY_psiSplitRawL2CoreConj_last_eq H r B hB hr hL rfl q
   have hRT : (paramsEquivFlat (deepestM H r)).symm
         (psiSplitRawL2CoreConj H r B hB hr hL rfl q).2.1 (1 : Fin 2)
       = l2T1pConj H r B hB hr hL rfl q :=

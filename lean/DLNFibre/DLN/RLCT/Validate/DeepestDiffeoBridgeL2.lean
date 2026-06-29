@@ -41,12 +41,12 @@ variable {L : ℕ}
 /-! ## S0 — the joint `(T1, Y1)` action on `DeepestSplit`, its cutoff, and the flat conjugation
 
 The split coordinates `q : DeepestSplit H r (deepestNGauge H r) = Reg × (Core × Spec)` decode to the
-per-layer reads: the gauge blocks `readX/readY/readZ (q.1, q.2.2) s` (off `regGaugeSlotEquiv`) and the
+per-layer reads: the gauge blocks `gaugeReadX/gaugeReadY/gaugeReadZ (q.1, q.2.2) s` (off `regGaugeSlotEquiv`) and the
 per-layer cores `(paramsEquivFlat (deepestM H r)).symm q.2.1 s`. The joint Ψ edits ONLY the last-layer
 core block (`T1`) and the last-layer `Y`-read (`Y1`); everything else is fixed.
 
 The certified closed form (`h2-diffeo-bridge-cert.md`, `h2-joint-psi-cert.md`, verified ~1e-17), with
-`A_s = 1 + readX s`, all reads `0` at the split origin:
+`A_s = 1 + gaugeReadX s`, all reads `0` at the split origin:
 
     K   := Z1 · ⅟P00 · Y0           (P00 = A0·A1 + Y0·Z1, the full-product (1,1) block; here we use
                                      the Mathlib inverse `Inv.inv` = nonsing_inv, `0` off-units)
@@ -82,8 +82,8 @@ theorem midWidth_eq_of_L2 (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) (hL
   subst hL2eq; congr 1
 
 /-- **The certified joint `(T1, Y1)` action at `L = 2`** (the real closed form, under `hL2eq : L = 2`).
-With `A_s = 1 + readX s`, `Y0 = readY 0` (cols bridged to the middle interface by `midWidth_eq_of_L2`),
-`Z1 = readZ (lastLayer)`, `Y1 = readY (lastLayer)`, `T1 = coreLast`, `P00 = A0·A1 + Y0·Z1`:
+With `A_s = 1 + gaugeReadX s`, `Y0 = gaugeReadY 0` (cols bridged to the middle interface by `midWidth_eq_of_L2`),
+`Z1 = gaugeReadZ (lastLayer)`, `Y1 = gaugeReadY (lastLayer)`, `T1 = coreLast`, `P00 = A0·A1 + Y0·Z1`:
 
     K   := Z1·P00⁻¹·Y0 ;  W := I + Z1·A1⁻¹·A0⁻¹·Y0 ;  S1 := T1 − Z1·A1⁻¹·Y1
     T1' := W⁻¹·[(I−K)·S1 + Z1·A1⁻¹·Y1 + Z1·A1⁻¹·A0⁻¹·Y0·T1] ;  Y1' := Y1 + A0⁻¹·Y0·(T1 − T1')
@@ -96,15 +96,15 @@ noncomputable def psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
   let p := (q.1, q.2.2)
-  let A0 : Matrix (Fin r) (Fin r) ℝ := 1 + readX H r hr hL p (⟨0, by omega⟩ : Fin L)
-  let A1 : Matrix (Fin r) (Fin r) ℝ := 1 + readX H r hr hL p (lastLayer hL)
+  let A0 : Matrix (Fin r) (Fin r) ℝ := 1 + gaugeReadX H r hr hL p (⟨0, by omega⟩ : Fin L)
+  let A1 : Matrix (Fin r) (Fin r) ℝ := 1 + gaugeReadX H r hr hL p (lastLayer hL)
   let Y0 : Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
     Matrix.reindex (Equiv.refl (Fin r)) (finCongr (midWidth_eq_of_L2 H r hL hL2eq))
-      (readY H r hr hL p (⟨0, by omega⟩ : Fin L))
+      (gaugeReadY H r hr hL p (⟨0, by omega⟩ : Fin L))
   let Z1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin r) ℝ :=
-    readZ H r hr hL p (lastLayer hL)
+    gaugeReadZ H r hr hL p (lastLayer hL)
   let Y1 : Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
-    readY H r hr hL p (lastLayer hL)
+    gaugeReadY H r hr hL p (lastLayer hL)
   let T1 : Matrix (Fin (deepestM H r (lastLayer hL).castSucc))
       (Fin (deepestM H r (lastLayer hL).succ)) ℝ := coreLast H r hL q
   let P00 : Matrix (Fin r) (Fin r) ℝ := A0 * A1 + Y0 * Z1
@@ -155,39 +155,39 @@ theorem regGaugeSlotCLE_symm_coe (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [(regGaugeSlotEquiv H r hr hL).apply_symm_apply, ← regGaugeSlotCLE_coe H r hr hL,
     (regGaugeSlotCLE H r hr hL).apply_symm_apply]
 
-/-- The `A0 = 1 + readX_0` block (last-layer joint action, matching `psiSplitRawL2Core`'s `let`). -/
+/-- The `A0 = 1 + gaugeReadX_0` block (last-layer joint action, matching `psiSplitRawL2Core`'s `let`). -/
 noncomputable def l2A0 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r)) : Matrix (Fin r) (Fin r) ℝ :=
-  1 + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L)
+  1 + gaugeReadX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L)
 
-/-- The `A1 = 1 + readX_last` block. -/
+/-- The `A1 = 1 + gaugeReadX_last` block. -/
 noncomputable def l2A1 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r)) : Matrix (Fin r) (Fin r) ℝ :=
-  1 + readX H r hr hL (q.1, q.2.2) (lastLayer hL)
+  1 + gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL)
 
-/-- The `Y0 = readY_0` block, cols bridged to the middle interface (`midWidth_eq_of_L2`). -/
+/-- The `Y0 = gaugeReadY_0` block, cols bridged to the middle interface (`midWidth_eq_of_L2`). -/
 noncomputable def l2Y0 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).castSucc)) ℝ :=
   Matrix.reindex (Equiv.refl (Fin r)) (finCongr (midWidth_eq_of_L2 H r hL hL2eq))
-    (readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L))
+    (gaugeReadY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L))
 
-/-- The `Z1 = readZ_last` block. -/
+/-- The `Z1 = gaugeReadZ_last` block. -/
 noncomputable def l2Z1 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     Matrix (Fin (deepestM H r (lastLayer hL).castSucc)) (Fin r) ℝ :=
-  readZ H r hr hL (q.1, q.2.2) (lastLayer hL)
+  gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL)
 
-/-- The `Y1 = readY_last` block (the reg block the joint action edits). -/
+/-- The `Y1 = gaugeReadY_last` block (the reg block the joint action edits). -/
 noncomputable def l2Y1 (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r)) :
     Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
-  readY H r hr hL (q.1, q.2.2) (lastLayer hL)
+  gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL)
 
 /-- The `T1 = coreLast` block (the core block the joint action edits). -/
 noncomputable def l2T1 (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -477,7 +477,7 @@ theorem paramsEquivFlat_symm_zero (M : Fin (L + 1) → ℕ) :
 
 /-! ### S4b — the named matrices at the split origin (all reads vanish there)
 
-At `q = 0` every read vanishes (`readX/Y/Z_zero`), so `A0 = A1 = 1`, `Y0 = Z1 = Y1 = T1 = 0`. These feed
+At `q = 0` every read vanishes (`gaugeReadX/Y/Z_zero`), so `A0 = A1 = 1`, `Y0 = Z1 = Y1 = T1 = 0`. These feed
 the `O(read²)` strict-derivative-vanishing of the joint correction (S4). -/
 
 /-- The gauge slot `(q.1, q.2.2)` of the split origin is `0`. -/
@@ -488,29 +488,29 @@ theorem gaugeProj_zero (H : Fin (L + 1) → ℕ) (r : ℕ) :
 /-- `A0 = 1` at the origin. -/
 theorem l2A0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2A0 H r hr hL 0 = 1 := by
-  rw [l2A0, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+  rw [l2A0, gaugeProj_zero, gaugeReadX_zero H r hr hL, add_zero]
 
 /-- `A1 = 1` at the origin. -/
 theorem l2A1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2A1 H r hr hL 0 = 1 := by
-  rw [l2A1, gaugeProj_zero, readX_zero H r hr hL, add_zero]
+  rw [l2A1, gaugeProj_zero, gaugeReadX_zero H r hr hL, add_zero]
 
 /-- `Y0 = 0` at the origin. -/
 theorem l2Y0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2) :
     l2Y0 H r hr hL hL2eq 0 = 0 := by
-  rw [l2Y0, gaugeProj_zero, readY_zero H r hr hL]
+  rw [l2Y0, gaugeProj_zero, gaugeReadY_zero H r hr hL]
   simp only [Matrix.reindex_apply, Matrix.submatrix_zero, Pi.zero_apply]
 
 /-- `Z1 = 0` at the origin. -/
 theorem l2Z1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2Z1 H r hr hL 0 = 0 := by
-  rw [l2Z1, gaugeProj_zero, readZ_zero H r hr hL]
+  rw [l2Z1, gaugeProj_zero, gaugeReadZ_zero H r hr hL]
 
 /-- `Y1 = 0` at the origin. -/
 theorem l2Y1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) : l2Y1 H r hr hL 0 = 0 := by
-  rw [l2Y1, gaugeProj_zero, readY_zero H r hr hL]
+  rw [l2Y1, gaugeProj_zero, gaugeReadY_zero H r hr hL]
 
 /-- `T1 = 0` at the origin (`coreLast 0 = 0`). -/
 theorem l2T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -540,10 +540,10 @@ theorem contDiff_l2A0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A0 H r hr hL q i j) := by
   have : (fun q => l2A0 H r hr hL q i j)
       = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
-          + readX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i j := by
+          + gaugeReadX H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i j := by
     funext q; rw [l2A0, Matrix.add_apply]
   rw [this]
-  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+  exact contDiff_const.add ((contDiff_gaugeReadX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
 
 /-- Each `l2A1` entry is `ContDiff ⊤`. -/
 theorem contDiff_l2A1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -551,10 +551,10 @@ theorem contDiff_l2A1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (fun q => l2A1 H r hr hL q i j) := by
   have : (fun q => l2A1 H r hr hL q i j)
       = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
-          + readX H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
+          + gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
     funext q; rw [l2A1, Matrix.add_apply]
   rw [this]
-  exact contDiff_const.add ((contDiff_readX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
+  exact contDiff_const.add ((contDiff_gaugeReadX_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r))
 
 /-- Each `l2Z1` entry is `ContDiff ⊤`. -/
 theorem contDiff_l2Z1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -562,8 +562,8 @@ theorem contDiff_l2Z1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (i : Fin (deepestM H r (lastLayer hL).castSucc)) (j : Fin r) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Z1 H r hr hL q i j) := by
   have : (fun q => l2Z1 H r hr hL q i j)
-      = fun q => readZ H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Z1]
-  rw [this]; exact (contDiff_readZ_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
+      = fun q => gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Z1]
+  rw [this]; exact (contDiff_gaugeReadZ_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
 
 /-- Each `l2Y1` entry is `ContDiff ⊤`. -/
 theorem contDiff_l2Y1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -571,8 +571,8 @@ theorem contDiff_l2Y1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).succ)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y1 H r hr hL q i j) := by
   have : (fun q => l2Y1 H r hr hL q i j)
-      = fun q => readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Y1]
-  rw [this]; exact (contDiff_readY_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
+      = fun q => gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by funext q; rw [l2Y1]
+  rw [this]; exact (contDiff_gaugeReadY_entry H r hr hL _ i j).comp (contDiff_gaugeProj H r)
 
 /-- Each `l2T1` entry is `ContDiff ⊤` (the last-layer core read). -/
 theorem contDiff_l2T1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -584,18 +584,18 @@ theorem contDiff_l2T1_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     funext q; rw [l2T1, coreLast]
   rw [this]; exact contDiff_coreRead_entry H r hr hL (lastLayer hL) i j
 
-/-- Each `l2Y0` entry is `ContDiff ⊤` (the col-reindexed first-layer `readY`). -/
+/-- Each `l2Y0` entry is `ContDiff ⊤` (the col-reindexed first-layer `gaugeReadY`). -/
 theorem contDiff_l2Y0_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (i : Fin r) (j : Fin (deepestM H r (lastLayer hL).castSucc)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q => l2Y0 H r hr hL hL2eq q i j) := by
   have : (fun q => l2Y0 H r hr hL hL2eq q i j)
-      = fun q => readY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i
+      = fun q => gaugeReadY H r hr hL (q.1, q.2.2) (⟨0, by omega⟩ : Fin L) i
           ((finCongr (midWidth_eq_of_L2 H r hL hL2eq)).symm j) := by
     funext q
     rw [l2Y0, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply]
   rw [this]
-  exact (contDiff_readY_entry H r hr hL _ i _).comp (contDiff_gaugeProj H r)
+  exact (contDiff_gaugeReadY_entry H r hr hL _ i _).comp (contDiff_gaugeProj H r)
 
 /-- `l2P00 = 1` at the origin (`A0·A1 + Y0·Z1 = 1·1 + 0·0`). -/
 theorem l2P00_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -1054,9 +1054,9 @@ noncomputable def psiRawL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-! ### S2a — the joint unit radius (the `cutoffBumpSplit` re-key)
 
-`cutoffBumpSplit`'s support must sit in the JOINT unit locus where the per-layer `1 + readX_s`, the
+`cutoffBumpSplit`'s support must sit in the JOINT unit locus where the per-layer `1 + gaugeReadX_s`, the
 full-product `P00`, and the Schur `W` are ALL invertible — only then is the raw correction `δ` (which
-carries `A_s⁻¹`, `P00⁻¹`, `W⁻¹`) `ContDiffAt` there (S2). The `1 + readX_s` part is `unitRadius`; the
+carries `A_s⁻¹`, `P00⁻¹`, `W⁻¹`) `ContDiffAt` there (S2). The `1 + gaugeReadX_s` part is `unitRadius`; the
 extra `det P00 ≠ 0 ∧ det W ≠ 0` part holds on a ball at `0` (both dets `= 1` at `0`, continuous), only
 meaningful at `L = 2`. The joint radius is `unitRadius ⊓ (the extra radius)` at `L = 2`, `unitRadius`
 otherwise (the bump stays `L`-generic; the `dite` lives only in this scalar). -/
@@ -1144,7 +1144,7 @@ theorem jointUnitRadiusSplit_le_l2ExtraRadius (H : Fin (L + 1) → ℕ) (r : ℕ
   unfold jointUnitRadiusSplit; rw [dif_pos hL2]; exact min_le_right _ _
 
 /-- A fresh `ContDiffBump` at `0` on the FULL split `DeepestSplit`, keyed to the JOINT unit radius
-(`jointUnitRadiusSplit/4`, `/2`), so its support sits in the joint unit locus (`1 + readX_s`, `P00`,
+(`jointUnitRadiusSplit/4`, `/2`), so its support sits in the joint unit locus (`1 + gaugeReadX_s`, `P00`,
 `W` all invertible) — exactly where the raw correction `δ` is `ContDiffAt` (S2). -/
 noncomputable def cutoffBumpSplit (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
@@ -1180,7 +1180,7 @@ noncomputable def psiL2 (H : Fin (L + 1) → ℕ) (r : ℕ)
       (deepestSplit H r hr hL (wstarL2 H r B hB hr hL) w))
 
 /-- **The certified joint action fixes the split origin.** At `q = 0` every read vanishes
-(`readX/Y/Z_zero`) and the core slot is `0`, so `Z1 = Y0 = Y1 = T1 = 0`, hence `T1' = 0` (every bracket
+(`gaugeReadX/Y/Z_zero`) and the core slot is `0`, so `Z1 = Y0 = Y1 = T1 = 0`, hence `T1' = 0` (every bracket
 term carries a `Z1` or is `(1−K)·0`) and `Y1' = 0` (carries `Y0`); the core re-encode updates `lastLayer`
 to the already-`0` block and the `Y`-re-encode edits the already-`0` tags, so both collapse to `0`. -/
 theorem psiSplitRawL2Core_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -1194,7 +1194,7 @@ theorem psiSplitRawL2Core_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   have hcoreLast : coreLast H r hL (0 : DeepestSplit H r (deepestNGauge H r)) = 0 := by
     rw [coreLast, hcore0, paramsEquivFlat_symm_zero]
   unfold psiSplitRawL2Core
-  simp only [hp, hcore0, readX_zero H r hr hL, readY_zero H r hr hL, readZ_zero H r hr hL,
+  simp only [hp, hcore0, gaugeReadX_zero H r hr hL, gaugeReadY_zero H r hr hL, gaugeReadZ_zero H r hr hL,
     hcoreLast, Matrix.reindex_apply, Matrix.submatrix_zero, Matrix.zero_apply,
     Matrix.mul_zero, Matrix.zero_mul, sub_zero, zero_sub, add_zero, zero_add,
     mul_zero, neg_zero]
@@ -1638,7 +1638,7 @@ in that unit locus (`cutoffBumpSplit`'s `tsupport ⊆ {dets ≠ 0}`). So the cor
 − id` is `ContDiffAt ⊤` on `tsupport (cutoffBumpSplit)`. (Skeleton placeholder `psiSplitRawL2 = id`
 makes `δ = 0`, `ContDiffAt` by `contDiffAt_const`; once the closed form is filled, this consumes the banked
 `contDiffAt_matrix_inv_entry_of_det_ne_zero` + `contDiffAt_matrix_mul_entry` +
-`contDiffAt_inv_one_add_readX_entry` on the composite/product-pivot inverses.) -/
+`contDiffAt_inv_one_add_gaugeReadX_entry` on the composite/product-pivot inverses.) -/
 theorem contDiffAt_psiSplitDeltaL2_of_mem_tsupport (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (q : DeepestSplit H r (deepestNGauge H r))
@@ -2037,8 +2037,8 @@ At `L = 2` the reduced layer product `prod (deepestM H r) C` (a left-associated 
 `Fin 3`) collapses to `C firstLayer · C lastLayer`, transported to the running widths by the layer
 `finCongr` reindexes. This is the `prod_eq_prodAux_mul_last` (m = 1) front-peel followed by the
 `prodAux 1 = prodAux 0 · layer0 = 1 · layer0` base, with the width-equalities at `L = 2` discharged by
-`rfl` (`deepestM s = H s − r`). It is what turns the absorbed-core energy `frobSq(prod(deepestM) C)`
-into `frobSq(C₀ · C₁)`, the form the `prod_absorbed_eq_schur_ldu` LDU consumes. -/
+`rfl` (`deepestM s = H s − r`). It is what turns the absorbed-core energy `frobSqMat(prod(deepestM) C)`
+into `frobSqMat(C₀ · C₁)`, the form the `prod_absorbed_eq_schur_ldu` LDU consumes. -/
 
 /-- **The L=2 reduced product is the two-factor product of the layer cores** (running-width reindexes
 from `prod_eq_prodAux_mul_last` at `m = 1`; the prefix `prodAux 1` peels to `1 · reindex(C 0)`). The
@@ -2065,7 +2065,7 @@ theorem prod_deepestM_eq_two_of_L2 (H : Fin 3 → ℕ) (r : ℕ)
 
 /-! ### S6r — joint-move readbacks (the shared foundation for both S6 geometric subs)
 
-`psiSplitRawL2Core` edits ONLY the last-layer `readY` (→ `l2Y1p`) and the last-layer core (→ `l2T1p`);
+`psiSplitRawL2Core` edits ONLY the last-layer `gaugeReadY` (→ `l2Y1p`) and the last-layer core (→ `l2T1p`);
 every other per-layer read is fixed. These readbacks (via the `DeepestPsiLens` round-trips) are what the
 reg-invariance + core=Score subs consume to reduce `framedParamsPivot (psiSplitRawL2Core q)` to the
 original `framedParamsPivot q` with the two last-layer blocks swapped. -/
@@ -2078,49 +2078,49 @@ theorem psiSplitRawL2Core_gauge (H : Fin (L + 1) → ℕ) (r : ℕ)
       = (regGaugeSlotEquiv H r hr hL).symm (l2g' H r hr hL hL2eq q) := by
   rw [psiSplitRawL2Core_eq]
 
--- readX of the moved gauge = original (g' fixes all X-tags).
-theorem readX_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
+-- gaugeReadX of the moved gauge = original (g' fixes all X-tags).
+theorem gaugeReadX_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (i j : Fin r) :
-    readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
-      = readX H r hr hL (q.1, q.2.2) s i j := by
-  rw [psiSplitRawL2Core_gauge, readX_regGaugeSlotEquiv_symm]
-  -- l2g' at the X-tag = g idx = regGaugeSlotEquiv (q.1,q.2.2) (X-tag) = readX (q.1,q.2.2) s i j.
+      = gaugeReadX H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, gaugeReadX_regGaugeSlotEquiv_symm]
+  -- l2g' at the X-tag = g idx = regGaugeSlotEquiv (q.1,q.2.2) (X-tag) = gaugeReadX (q.1,q.2.2) s i j.
   rfl
 
--- readZ of the moved gauge = original.
-theorem readZ_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
+-- gaugeReadZ of the moved gauge = original.
+theorem gaugeReadZ_psiSplitRawL2Core (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L)
     (i : Fin (H s.castSucc - r)) (j : Fin r) :
-    readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
-      = readZ H r hr hL (q.1, q.2.2) s i j := by
-  rw [psiSplitRawL2Core_gauge, readZ_regGaugeSlotEquiv_symm]; rfl
+      = gaugeReadZ H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, gaugeReadZ_regGaugeSlotEquiv_symm]; rfl
 
--- readY of the moved gauge at a NON-last layer = original.
-theorem readY_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
+-- gaugeReadY of the moved gauge at a NON-last layer = original.
+theorem gaugeReadY_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL)
     (i : Fin r) (j : Fin (H s.succ - r)) :
-    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s i j
-      = readY H r hr hL (q.1, q.2.2) s i j := by
-  rw [psiSplitRawL2Core_gauge, readY_regGaugeSlotEquiv_symm]
-  -- l2g' at the Y-tag ⟨s, inl(inr(i,j))⟩ with s ≠ last → the `else` branch = g idx = readY q s i j.
-  show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩ = readY H r hr hL (q.1, q.2.2) s i j
+      = gaugeReadY H r hr hL (q.1, q.2.2) s i j := by
+  rw [psiSplitRawL2Core_gauge, gaugeReadY_regGaugeSlotEquiv_symm]
+  -- l2g' at the Y-tag ⟨s, inl(inr(i,j))⟩ with s ≠ last → the `else` branch = g idx = gaugeReadY q s i j.
+  show l2g' H r hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩ = gaugeReadY H r hr hL (q.1, q.2.2) s i j
   rw [l2g']; simp only [dif_neg hs]; rfl
 
--- readY of the moved gauge at the LAST layer = l2Y1p (the moved reg block).
-theorem readY_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
+-- gaugeReadY of the moved gauge at the LAST layer = l2Y1p (the moved reg block).
+theorem gaugeReadY_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r))
     (i : Fin r) (j : Fin (H (lastLayer hL).succ - r)) :
-    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) (lastLayer hL) i j
       = l2Y1p H r hr hL hL2eq q i j := by
-  rw [psiSplitRawL2Core_gauge, readY_regGaugeSlotEquiv_symm]
+  rw [psiSplitRawL2Core_gauge, gaugeReadY_regGaugeSlotEquiv_symm]
   show l2g' H r hr hL hL2eq q ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
       = l2Y1p H r hr hL hL2eq q i j
   rw [l2g']
@@ -2157,38 +2157,38 @@ theorem coreRead_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
 /-! ### S6f — framedParamsPivot under the joint move (non-last layers identical) -/
 
 -- Matrix-level readbacks (from the entrywise ones).
-theorem readX_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadX_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
-    readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
-      = readX H r hr hL (q.1, q.2.2) s := by
-  ext i j; exact readX_psiSplitRawL2Core H r hr hL hL2eq q s i j
+      = gaugeReadX H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact gaugeReadX_psiSplitRawL2Core H r hr hL hL2eq q s i j
 
-theorem readZ_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadZ_psiSplitRawL2Core_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
-    readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
-      = readZ H r hr hL (q.1, q.2.2) s := by
-  ext i j; exact readZ_psiSplitRawL2Core H r hr hL hL2eq q s i j
+      = gaugeReadZ H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact gaugeReadZ_psiSplitRawL2Core H r hr hL hL2eq q s i j
 
-theorem readY_psiSplitRawL2Core_of_ne_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadY_psiSplitRawL2Core_of_ne_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) (hs : s ≠ lastLayer hL) :
-    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s
-      = readY H r hr hL (q.1, q.2.2) s := by
-  ext i j; exact readY_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs i j
+      = gaugeReadY H r hr hL (q.1, q.2.2) s := by
+  ext i j; exact gaugeReadY_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs i j
 
--- readY of the moved gauge at the LAST layer = l2Y1p (matrix-level).
-theorem readY_psiSplitRawL2Core_last_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+-- gaugeReadY of the moved gauge at the LAST layer = l2Y1p (matrix-level).
+theorem gaugeReadY_psiSplitRawL2Core_last_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) :
-    readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+    gaugeReadY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) (lastLayer hL)
       = l2Y1p H r hr hL hL2eq q := by
-  ext i j; exact readY_psiSplitRawL2Core_last H r hr hL hL2eq q i j
+  ext i j; exact gaugeReadY_psiSplitRawL2Core_last H r hr hL hL2eq q i j
 
 /-! ### S6c — the absorbed per-layer cores of the moved point (the sub-4 c₀/c₁ identification)
 
@@ -2199,7 +2199,7 @@ Schur-shifted core read off the MOVED gauge). At the last layer the move sends `
 so `c_0` is the original layer-0 Schur core. -/
 
 /-- The moved last-layer Schur correction `schurCorrection(ψq) last = −l2Z1·l2A1⁻¹·l2Y1p`: at the last
-layer `readZ(ψq) = l2Z1`, `1 + readX(ψq) = l2A1`, `readY(ψq) = l2Y1p`. -/
+layer `gaugeReadZ(ψq) = l2Z1`, `1 + gaugeReadX(ψq) = l2A1`, `gaugeReadY(ψq) = l2Y1p`. -/
 theorem schurCorrection_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) :
@@ -2207,8 +2207,8 @@ theorem schurCorrection_psiSplitRawL2Core_last (H : Fin (L + 1) → ℕ) (r : �
         ((psiSplitRawL2Core H r hr hL hL2eq q).1, (psiSplitRawL2Core H r hr hL hL2eq q).2.2)
         (lastLayer hL)
       = -(l2Z1 H r hr hL q) * (l2A1 H r hr hL q)⁻¹ * l2Y1p H r hr hL hL2eq q := by
-  rw [schurCorrection, readZ_psiSplitRawL2Core_eq, readX_psiSplitRawL2Core_eq,
-    readY_psiSplitRawL2Core_last_eq]
+  rw [schurCorrection, gaugeReadZ_psiSplitRawL2Core_eq, gaugeReadX_psiSplitRawL2Core_eq,
+    gaugeReadY_psiSplitRawL2Core_last_eq]
   rfl
 
 /-- **The absorbed last-layer core IS `(1 − K)·S1`** (the sub-4 `c₁`): the moved decode-core `l2T1p`
@@ -2243,8 +2243,8 @@ theorem absorbedCore_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
   congr 1
   -- `schurCorrection(ψq) s = schurCorrection(q) s` for `s ≠ last` (reads fixed).
-  rw [schurCorrection, schurCorrection, readZ_psiSplitRawL2Core_eq, readX_psiSplitRawL2Core_eq,
-    readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs]
+  rw [schurCorrection, schurCorrection, gaugeReadZ_psiSplitRawL2Core_eq, gaugeReadX_psiSplitRawL2Core_eq,
+    gaugeReadY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs]
 
 -- framedParamsPivot of the moved point: per-layer, equals the original EXCEPT last-layer Y/core.
 theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -2258,18 +2258,18 @@ theorem framedParamsPivot_psiSplitRawL2Core_of_ne (H : Fin (L + 1) → ℕ) (r :
   rw [framedParamsPivot_of_ne_last H r hr hL J P Q (psiSplitRawL2Core H r hr hL hL2eq q) s hs,
     framedParamsPivot_of_ne_last H r hr hL J P Q q s hs]
   show framedLayer H r hr s (P s) (Q s)
-      (readX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+      (gaugeReadX H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
-      (readY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+      (gaugeReadY H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
-      (readZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
+      (gaugeReadZ H r hr hL ((psiSplitRawL2Core H r hr hL hL2eq q).1,
         (psiSplitRawL2Core H r hr hL hL2eq q).2.2) s)
       ((paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2Core H r hr hL hL2eq q).2.1 s)
     = framedLayer H r hr s (P s) (Q s)
-      (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-      (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
-  rw [readX_psiSplitRawL2Core_eq, readZ_psiSplitRawL2Core_eq,
-    readY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
+      (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+      (gaugeReadZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
+  rw [gaugeReadX_psiSplitRawL2Core_eq, gaugeReadZ_psiSplitRawL2Core_eq,
+    gaugeReadY_psiSplitRawL2Core_of_ne_eq H r hr hL hL2eq q s hs,
     coreRead_psiSplitRawL2Core_of_ne H r hr hL hL2eq q s hs]
 
 /-! ### S6d — the raw 2-factor product reg-block invariance (the e2/leak-kill at the RAW level)
@@ -2705,12 +2705,12 @@ banked:
   `Ŝ0·(1−K̂)·Ŝ1`), with the per-factor blocks read off the layers (the `l2*` dictionary).
 
 The per-factor block readback (the `l2A0/Y0/Z1/A1/Y1/T1` reads ARE the `reindex prod`-factor `toBlocks`)
-is the genuinely-new content; it rests on `reindex_fromBlocks_reads_eq_deviation` + the `1+readX`
+is the genuinely-new content; it rests on `reindex_fromBlocks_reads_eq_deviation` + the `1+gaugeReadX`
 deepest-normalization absorbing the threshold corner. -/
 
 /-- **Layer-deviation reindex bridge** (the per-factor readback's foundation, ANY layer `s`). The
 reindexed deviation layer `reindex (rThr s.castSucc) (rThr s.succ) ((decode (w − w0)) s)` reads off as
-the `fromBlocks` of the four reads `(readX, readY, readZ, core)` evaluated at the deepest-split point
+the `fromBlocks` of the four reads `(gaugeReadX, gaugeReadY, gaugeReadZ, core)` evaluated at the deepest-split point
 `deepestSplit w0 w`. This is `reindex_fromBlocks_reads_eq_deviation` cast to the FORWARD
 (reindex-of-deviation) direction. -/
 theorem reindex_decodeDev_eq_fromBlocks_reads (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -2719,9 +2719,9 @@ theorem reindex_decodeDev_eq_fromBlocks_reads (H : Fin (L + 1) → ℕ) (r : ℕ
         (rThresholdSplit r (H s.succ) (hr s.succ))
         (((paramsEquivFlat H).symm (w - w0)) s)
       = Matrix.fromBlocks
-          (readX H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
-          (readY H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
-          (readZ H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          (gaugeReadX H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          (gaugeReadY H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
+          (gaugeReadZ H r hr hL ((deepestSplit H r hr hL w0 w).1, (deepestSplit H r hr hL w0 w).2.2) s)
           ((paramsEquivFlat (deepestM H r)).symm (deepestSplit H r hr hL w0 w).2.1 s) := by
   -- Invert `reindex_fromBlocks_reads_eq_deviation` (it states `reindex.symm (fromBlocks reads) = dev`).
   -- Apply `reindex (rThr) (rThr)` to BOTH sides of `h`; the LHS round-trips to `fromBlocks`.
@@ -2885,21 +2885,21 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
   -- SCOPED RESIDUAL (route A, sub-4 — feasibility CONFIRMED closeable w/ banked pieces, Codex high). The
   -- chain (each step a banked lemma; the 2 novel pieces — `schur_frame_transform`, `l2T1p_sub_Z1A1invY1p_eq`
   -- — are landed + axiom-clean):
-  -- (a) `deepestCoreF_coreAbsorb_eq_prodSchur` (hball): LHS = frobSq(prod(deepestM)(decode(ψq).2.1 _s +
+  -- (a) `deepestCoreF_coreAbsorb_eq_prodSchur` (hball): LHS = frobSqMat(prod(deepestM)(decode(ψq).2.1 _s +
   --     schurCorrection(ψq) _s)). At L=2 the reduced product = c0·c1.
-  --     c0 = T0 − Z0·A0⁻¹·Y0 = S0 (layer0 reads fixed under ψ: readX/Z/Y/core);
+  --     c0 = T0 − Z0·A0⁻¹·Y0 = S0 (layer0 reads fixed under ψ: gaugeReadX/Z/Y/core);
   --     c1 = l2T1p − Z1·A1⁻¹·l2Y1p = (1−K)·S1 (the keystone `l2T1p_sub_Z1A1invY1p_eq`, det W ≠ 0 from hball).
-  -- (b) `prod_absorbed_eq_schur_ldu` / `reindex_mul_schur_factor`: frobSq(S0·(1−K)·S1) = frobSq(Rcore),
+  -- (b) `prod_absorbed_eq_schur_ldu` / `reindex_mul_schur_factor`: frobSqMat(S0·(1−K)·S1) = frobSqMat(Rcore),
   --     Rcore = (2,2)-Schur of reindex(prod(decode x)) [raw layers = fromBlocks(1+X)YZT via
   --     `reindex_fromBlocks_reads_eq_deviation`, DeepestFrameRaw:239 — the per-layer block bridge].
   -- (c) `rcore_eq_schur_of_corner_split` (hS3b removes the +1) then `schur_frame_transform` (hPbr/hQbr,
-  --     D_P=D_Q=1) on M̂ = endpointP0·prod·endpointQL: frobSq(Rcore) = Score x.
+  --     D_P=D_Q=1) on M̂ = endpointP0·prod·endpointQL: frobSqMat(Rcore) = Score x.
   -- MISSING for green: the explicit reduced-product-at-L2 unfold (prodAux casts) + the reindex
   -- block-read instantiation + threading hS3b/hPbr/hQbr (to be added at the caller's wiring). The math
   -- is verified; the residual is cast/instantiation bookkeeping.
   -- Step (a): the absorbed-core energy form (banked, on the inner ball `hball`).
   have hstepA : deepestCoreF H r (deepestCoreAbsorb H r hr hL (psiSplitRawL2 H r hr hL q)).2.1
-      = frobSq (prod (deepestM H r)
+      = frobSqMat (prod (deepestM H r)
           (fun s => (paramsEquivFlat (deepestM H r)).symm (psiSplitRawL2 H r hr hL q).2.1 s
             + schurCorrection H r hr hL
                 ((psiSplitRawL2 H r hr hL q).1, (psiSplitRawL2 H r hr hL q).2.2) s)) :=
@@ -2924,8 +2924,8 @@ theorem deepestCoreF_coreAbsorb_psiSplitRawL2_eq_score (H : Fin (L + 1) → ℕ)
       rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_last H r hr hL hL2 q hWdet
     · rw [Function.update_of_ne hs]
       rw [hψeq]; exact absorbedCore_psiSplitRawL2Core_of_ne H r hr hL hL2 q s hs
-  -- STEP 3-4 (threaded `hLDUtie`, producer-internal LDU) + the `frobSq`/∑∑ congr:
-  -- `frobSq(prod c) = frobSq(prod c'') [hc_eq] = frobSq(integrand) [hLDUtie] = Score x [hScoreDef]`.
+  -- STEP 3-4 (threaded `hLDUtie`, producer-internal LDU) + the `frobSqMat`/∑∑ congr:
+  -- `frobSqMat(prod c) = frobSqMat(prod c'') [hc_eq] = frobSqMat(integrand) [hLDUtie] = Score x [hScoreDef]`.
   rw [hc_eq, hLDUtie, hScoreDef]
   rfl
 

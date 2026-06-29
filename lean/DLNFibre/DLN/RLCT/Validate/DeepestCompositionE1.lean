@@ -9,11 +9,11 @@ composition identity is the matrix-algebra fact that, once Ψ has absorbed the l
 `S1 ↦ S1' = (1 − K)·S1` (the cert's E1 constraint), the reduced two-layer product of the per-layer
 cores equals the GLOBAL product Schur complement `Rcore`:
 
-    coreΦ(Ψ x) = frobSq( prod_M (absorbed cores) )       -- deepestCoreF_coreAbsorb_eq_prodSchur
-               = frobSq( S0 · S1' )                       -- the 2-layer product = product of factors
-               = frobSq( S0 · ((1 − K)·S1) )              -- S1' = (1 − K)·S1 (the absorb)
-               = frobSq( S0 · (1 − K) · S1 )              -- associativity
-               = frobSq( Rcore )                          -- schur_product_ldu: Rcore = S0·(1−K)·S1
+    coreΦ(Ψ x) = frobSqMat( prod_M (absorbed cores) )       -- deepestCoreF_coreAbsorb_eq_prodSchur
+               = frobSqMat( S0 · S1' )                       -- the 2-layer product = product of factors
+               = frobSqMat( S0 · ((1 − K)·S1) )              -- S1' = (1 − K)·S1 (the absorb)
+               = frobSqMat( S0 · (1 − K) · S1 )              -- associativity
+               = frobSqMat( Rcore )                          -- schur_product_ldu: Rcore = S0·(1−K)·S1
                = Score(x).
 
 This module supplies the **frame-free matrix core** of that chain (the middle four `=`), as
@@ -48,14 +48,14 @@ theorem prod_absorbed_eq_rcore
 
 /-- **E1 energy identity** (the form the diffeo bridge consumes). With the LDU output
 `Rcore = S0·(1 − K)·S1` and the absorb `S1' = (1 − K)·S1`, the squared-Frobenius energy of the
-absorbed reduced product `S0 · S1'` equals `frobSq Rcore` (`= Score` in the producer). This is the
+absorbed reduced product `S0 · S1'` equals `frobSqMat Rcore` (`= Score` in the producer). This is the
 `coreΦ(Ψ·) = Score` half of the composition identity, at the energy level, frame-free. -/
-theorem frobSq_prod_absorbed_eq_rcore
+theorem frobSqMat_prod_absorbed_eq_rcore
     [Fintype m0] [Fintype m1] [DecidableEq m1] [Fintype m2]
     (S0 : Matrix m0 m1 ℝ) (S1 : Matrix m1 m2 ℝ) (K : Matrix m1 m1 ℝ)
     (Rcore : Matrix m0 m2 ℝ) (S1' : Matrix m1 m2 ℝ)
     (hR : Rcore = S0 * (1 - K) * S1) (habs : S1' = (1 - K) * S1) :
-    frobSq (S0 * S1') = frobSq Rcore := by
+    frobSqMat (S0 * S1') = frobSqMat Rcore := by
   rw [prod_absorbed_eq_rcore S0 S1 K Rcore S1' hR habs]
 
 /-- **E1, keyed directly on the banked LDU** (`schur_product_ldu`). For two gauge-sliced layers with
