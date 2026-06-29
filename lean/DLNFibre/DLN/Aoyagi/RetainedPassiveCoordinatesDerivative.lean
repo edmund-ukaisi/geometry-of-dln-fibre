@@ -6983,6 +6983,80 @@ theorem fderiv_topologyTupleEdgeRawOrder_F3_shear_apply
   rw [hF3proj]
   simpa [raw, projF3] using hcomponent
 
+set_option linter.style.longLine false in
+/-- Positive-tail terminal `F3` shear with the earlier-tail derivative
+replaced by the target-staged retained-passive lower-left recurrence. -/
+theorem fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply
+    {M : ℕ} {ρ : Type*} {κ' : Fin ((M + 1) + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    {z : TopologyTuple ρ κ' ℝ}
+    (hz : z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (v : TopologyTuple ρ κ' ℝ) :
+    let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+      fun y p ↦
+        ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+    let Earlyfun : TopologyTuple ρ κ' ℝ →
+        Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+      fun y ↦
+        retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+          (A1fun y)
+          (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+            (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+          0 (Nat.zero_le ((M + 1) + 1))
+    let Lastfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+      fun y ↦
+        residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+          (A1fun y) (Fin.last ((M + 1) + 1)) (Fin.last (M + 1)).castSucc
+            (Fin.last (M + 1)).castSucc.le_last
+    let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+    let coord := data.toCoordinateData
+    ((fderiv ℝ raw z) v).2.2.2.2.2
+      - retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') z v 0 (Nat.zero_le (M + 1)) * Lastfun z
+      + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+      v.2.2.2.2.2 * (-(Lastfun z)) := by
+  let raw := topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let A1fun : TopologyTuple ρ κ' ℝ → Fin ((M + 1) + 1) → Matrix ρ ρ ℝ :=
+    fun y p ↦
+      ((ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).toCoordinateData).solvedA1 p
+  let Earlyfun : TopologyTuple ρ κ' ℝ →
+      Matrix (κ' (Fin.last ((M + 1) + 1))) ρ ℝ :=
+    fun y ↦
+      retainedPassiveLowerLeftProductTailSum (K := ℝ) (ρ := ρ) (κ := κ')
+        (A1fun y)
+        (retainedPassiveA3WithoutLast (K := ℝ) (ρ := ρ)
+          (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).A3seed)
+        (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') y).C
+        0 (Nat.zero_le ((M + 1) + 1))
+  let Lastfun : TopologyTuple ρ κ' ℝ → Matrix ρ ρ ℝ :=
+    fun y ↦
+      residualFactorProduct (K := ℝ) (κ := fun _ : Fin ((M + 1) + 2) ↦ ρ)
+        (A1fun y) (Fin.last ((M + 1) + 1)) (Fin.last (M + 1)).castSucc
+          (Fin.last (M + 1)).castSucc.le_last
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') z
+  let coord := data.toCoordinateData
+  have hshear :=
+    fderiv_topologyTupleEdgeRawOrder_F3_shear_apply
+      (M := M + 1) (ρ := ρ) (κ' := κ') hz v
+  have hEarly :
+      (fderiv ℝ Earlyfun z) v =
+        retainedPassiveLowerLeftProductTailTargetStagedFDerivAt
+          (M := M) (ρ := ρ) (κ' := κ') z v 0 (Nat.zero_le (M + 1)) := by
+    simpa [A1fun, Earlyfun, Nat.add_assoc] using
+      fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply
+        (M := M) (ρ := ρ) (κ' := κ') hz v 0 (Nat.zero_le (M + 1))
+  have hshearLocal :
+      ((fderiv ℝ raw z) v).2.2.2.2.2
+        - (fderiv ℝ Earlyfun z) v * Lastfun z
+        + (coord.F3 - Earlyfun z) * (fderiv ℝ Lastfun z) v =
+        v.2.2.2.2.2 * (-(Lastfun z)) := by
+    simpa [raw, A1fun, Earlyfun, Lastfun, data, coord, Nat.add_assoc] using hshear
+  rw [hEarly] at hshearLocal
+  simpa [raw, A1fun, Earlyfun, Lastfun, data, coord, Nat.add_assoc] using hshearLocal
+
 /-- Reassembling raw-order tuple coordinates into an edge family is
 differentiable. -/
 theorem differentiableAt_edgeFamilyOfRawOrderTuple

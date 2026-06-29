@@ -14814,3 +14814,30 @@ new generic declaration and the refactored Case 2 declaration report only
 This is chart-produced support infrastructure only.  It is not an arbitrary-
 measure theorem, Haar/source-prior transport, full determinant-chart coverage,
 source-rank coverage, normal crossings, pole order, or RLCT.
+
+## 2026-06-29 Lean A2 retained-passive F3 target-staged shear
+
+Reproduction:
+`reproduction-a2-retained-passive-f3-target-staged-shear.md`.
+Statement card:
+`statement-card-a2-retained-passive-f3-target-staged-shear.md`.
+Review:
+`review-a2-retained-passive-f3-target-staged-shear.md`
+passed by xhigh `Bernoulli`.
+
+Lean now proves:
+
+```text
+fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply
+```
+
+This is the positive-tail terminal `F3` shear with the earlier-tail derivative
+substituted by
+`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt`.  It consumes the
+already-proved `fderiv_topologyTupleEdgeRawOrder_F3_shear_apply` at `M+1` and
+`fderiv_retainedPassiveLowerLeftProductTailSum_targetStaged_apply` at `M`,
+leaving the terminal top-factor correction explicit.
+
+Nonclaims: no full derivative/formal-Jacobian equality, no determinant
+equality, no target-side linear equivalence, no measure transport, no normal
+crossings, no pole order, and no RLCT.

@@ -10782,3 +10782,17 @@ with the already-proved finite raw-pivot selected-entry predicates at state
 `(S,J+1)`.  The analytic frontier is unchanged: do not treat this as next-chart
 source production, analytic transition regularity, branch termination, normal
 crossings, pole order, or RLCT.
+
+A2 retained-passive F3 target-staged shear has landed locally:
+`RetainedPassiveCoordinatesDerivative.lean` proves
+`fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply`.  This advances
+the terminal `F3` derivative lane by substituting the target-staged earlier
+lower-left tail derivative into the existing `F3` shear for positive tail
+length.  Treat it as a convenience wrapper, not a new frontier: the stronger
+derivative/formal-Jacobian and determinant results are already banked in
+`RetainedPassiveCoordinatesJacobian.lean`.  Next priority is the p.13 source
+production/coverage calculation: define the retained-passive source chart,
+local inverse/readback, endpoint recovery, and image/coverage statement
+supported by Aoyagi before adding more Lean wrappers.  Do not claim determinant
+equality, target-side linear equivalence, measure transport, normal crossings,
+pole order, or RLCT from this substitution.

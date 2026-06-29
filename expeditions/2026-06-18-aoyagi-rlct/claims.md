@@ -11904,7 +11904,7 @@ RLCT, source-rank coverage, or final Theorem 2 statement is proved.
 
 ## A4 Case 2 finite raw-pivot continuing successor boundary
 
-Status: Proved in Lean; focused module build passed; xhigh review pending.
+Status: Proved in Lean; focused module build passed; xhigh review passed.
 
 Claim: under `hS : 1 <= S` and
 `hnext : J+2 <= prefixMinNat n (S+1)`, the successor Case 2 residual-block
@@ -11925,3 +11925,25 @@ Kill condition: the theorem must remain a finite wrapper around
 `finiteRawPivotChartFamilyBoundary`.  It must not be cited as analytic
 next-chart construction, analytic transition regularity, source production,
 branch termination, normal crossings, pole order, or RLCT extraction.
+
+## A2 retained-passive F3 target-staged shear
+
+Status: Proved in Lean; focused module build passed; xhigh review pending.
+
+Claim: in positive retained-passive tail length, the terminal `F3` shear can
+be stated with the earlier-tail derivative replaced by the recursive
+target-staged lower-left tail derivative.
+
+Lean theorem:
+
+```text
+fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply
+```
+
+Artifact:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-target-staged-shear.md`.
+
+Kill condition: this theorem is only a positive-tail substitution wrapper.  It
+must not be cited as the full derivative/formal-Jacobian equality, determinant
+equality, target-side linear equivalence, measure transport, normal crossings,
+pole order, or RLCT.

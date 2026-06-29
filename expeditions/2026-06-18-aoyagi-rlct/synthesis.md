@@ -19674,3 +19674,39 @@ Artifacts:
 `threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-continuing-successor-boundary-a4.md`
 and
 `threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-continuing-successor-boundary.md`.
+
+## Latest A2 Retained-Passive F3 Target-Staged Shear
+
+`RetainedPassiveCoordinatesDerivative.lean` now proves:
+
+```text
+fderiv_topologyTupleEdgeRawOrder_F3_targetStaged_shear_apply
+```
+
+For positive retained-passive tail length, the theorem substitutes the
+target-staged earlier-tail derivative
+`retainedPassiveLowerLeftProductTailTargetStagedFDerivAt z v 0 ...` into the
+terminal `F3` shear:
+
+```text
+D(raw F3)
+  - targetStagedEarly * LastTop
+  + (F3 - Early) * dLastTop
+= dF3 * (-LastTop).
+```
+
+It is a wrapper around the already-proved terminal `F3` shear at `M+1` and the
+target-staged lower-left tail recurrence at `M`.  The terminal top-factor
+derivative correction remains explicit.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-f3-target-staged-shear.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-f3-target-staged-shear.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-f3-target-staged-shear.md`
+passed by xhigh `Bernoulli`.
+
+Nonclaims: no full derivative/formal-Jacobian equality, determinant equality,
+target-side linear equivalence, measure transport, normal crossings, pole
+order, or RLCT.
