@@ -48,6 +48,41 @@ Boundary: this is not source-rank coverage, selected-entry image equality,
 source-prior/Jacobian transport, analytic atlas construction, normal crossings,
 pole order, or RLCT.
 
+## Latest A2 retained-passive selected-entry source-stratum bounds - 2026-06-29
+
+Landed a retained-passive selected-entry specialization:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds
+```
+
+This theorem keeps the selected-entry signed-box residual chart, pushforward
+identity, and residual readout explicit, but moves the regular-coordinate loss
+and density bounds from `nhdsWithin x₀ retainedPassiveP13LocalSource` to
+`nhdsWithin x₀ sourceStratum`.  It derives residual positivity/integrability
+on the retained-passive local source from the selected-entry monomial-unit
+residual chart, obtains the local retained-passive source coverage neighborhood
+from the self-base determinant-chart lemma, and calls the source-stratum-bound
+local-source handoff.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-selected-entry-source-stratum-bounds.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-selected-entry-source-stratum-bounds.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-retained-passive-selected-entry-source-stratum-bounds.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure
+```
+
+Boundary: still no selected-entry chart image equality, source-rank coverage,
+external/original source-prior transport, Jacobian comparison, normal
+crossings, pole order, or RLCT.
+
 ## Resume checkpoint after VM interruption - 2026-06-28
 
 Reorientation state:
