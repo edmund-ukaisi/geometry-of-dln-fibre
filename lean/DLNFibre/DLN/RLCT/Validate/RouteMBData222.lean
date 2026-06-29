@@ -752,8 +752,9 @@ pack222`, measure-preserving, `|det| = 1`), so `DB = Q222CLM.comp (TbCLM u)` wit
 
 `TbCLM u` (the fderiv of `Tb` at `u`) is the explicit per-output product/sum CLM. Its determinant is
 computed by reindexing the 8 OPAQUE input slots to the literal coordinate order via the bijection
-`slotEquiv` (the 8 slots `a,b,n,w0,w1,p,lf0,lf1` are pairwise distinct), turning `toMatrix'` into an
-explicit lower-triangular matrix with diagonal `[1, a, a, 1, 1, 1, 1, 1]`, det `= a²`. -/
+`bdataSlotEquiv`/`colEquivT` (the 8 slots `a,b,n,w0,w1,p,lf0,lf1` are pairwise distinct), turning
+`toMatrix'` into an explicit lower-triangular matrix with diagonal `[1, a, a, 1, 1, 1, 1, 1]`,
+det `= a²`. -/
 
 /-! ### The 8 slots are pairwise distinct (reader/reader via `chartIdxEquiv.symm` injectivity) -/
 
@@ -894,11 +895,11 @@ theorem slotList_injective : Function.Injective slotList := by
 
 /-- The slot bijection `Fin 8 ≃ Fin (routeMAmbient M222)` (injective `slotList`, equal
 cardinalities), given the radial-axis non-degeneracy `PivotNotReader`. -/
-noncomputable def slotEquiv : Fin 8 ≃ Fin (routeMAmbient M222) :=
+noncomputable def bdataSlotEquiv : Fin 8 ≃ Fin (routeMAmbient M222) :=
   Equiv.ofBijective slotList ((Fintype.bijective_iff_injective_and_card slotList).mpr
     ⟨slotList_injective, by rw [routeMAmbient_M222]⟩)
 
-theorem slotEquiv_apply (i : Fin 8) : slotEquiv i = slotList i := rfl
+theorem bdataSlotEquiv_apply (i : Fin 8) : bdataSlotEquiv i = slotList i := rfl
 
 /-! ### `Tb` (the entry-readout) + the factorization `Bparams = pack222 ∘ Tb` -/
 
