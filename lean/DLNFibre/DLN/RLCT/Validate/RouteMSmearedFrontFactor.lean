@@ -90,4 +90,35 @@ theorem frontShear_cancel_general
   obtain ⟨K, hK⟩ := front_factorsThrough_general P U V hP ρ σ P₁ P₂ hP₁ hP₂ hVρ
   exact proj_cancel_of_factorsThrough P₁ P₂ K hK hdet
 
+/-! ## The wired front-bottleneck bridge — `prodAux` factors through the width-`r` BOTTLENECK layer
+
+The structural fact (`certificate-genM-smeared.md` §1, front-bottleneck `= r`, validated 652/652): the
+smeared front product `P = prodAux M A (L−1)` factors through ANY earlier layer `p` (`prodAux_split_exists`
+gives `P = prodAux M A p · Y`). At the width-`r` bottleneck layer the inner width is exactly `r`, so this
+is the `U·V` factorization the general-`r` cancellation consumes. (The inner width here is the abstract
+`Fin (M ⟨p,_⟩)`; the chart instantiates it as the `r` rank-block.) -/
+
+variable {L : ℕ}
+
+/-- **The general-`r` `prodAux` front shear cancellation** (the chart consumer): the front product
+`P = prodAux M A (L−1)` through the split at layer `p`, with column selectors `ρ`/`σ` into the deepest
+width `Fin (M ⟨L−1,_⟩)`, has its shear cancel `P₁·Λ₀ = P₂` off the two poles. Combines the prefix split
+(`prodAux_split_exists`, `P = U·Y`) with `frontShear_cancel_general`. The general-`r` analog of
+`prodAux_frontScalarShear_cancel` (which is the `M ⟨p,_⟩ = 1`, rank-one, special case). -/
+theorem prodAux_frontShear_cancel_general
+    (M : Fin (L + 1) → ℕ) (A : Params M)
+    (p : ℕ) (hp : p < L + 1) (k : ℕ) (hpk : p ≤ k) (hk : k < L + 1)
+    {s : Type*}
+    (ρ : Fin (M ⟨p, hp⟩) → Fin (M ⟨k, hk⟩)) (σ : s → Fin (M ⟨k, hk⟩))
+    (P₁ : Matrix (Fin (M 0)) (Fin (M ⟨p, hp⟩)) ℝ) (P₂ : Matrix (Fin (M 0)) s ℝ)
+    (hP₁ : ∀ i kk, P₁ i kk = prodAux M A k hk i (ρ kk))
+    (hP₂ : ∀ i j, P₂ i j = prodAux M A k hk i (σ j))
+    (hVρ : ∀ (Y : Matrix (Fin (M ⟨p, hp⟩)) (Fin (M ⟨k, hk⟩)) ℝ),
+      prodAux M A k hk = prodAux M A p hp * Y → (Y.submatrix (id : _ → _) ρ).det ≠ 0)
+    (hdet : (P₁.transpose * P₁).det ≠ 0) :
+    P₁ * ((P₁.transpose * P₁)⁻¹ * P₁.transpose * P₂) = P₂ := by
+  obtain ⟨Y, hY⟩ := prodAux_split_exists M A p hp k hpk hk
+  exact frontShear_cancel_general (prodAux M A k hk) (prodAux M A p hp) Y hY ρ σ P₁ P₂
+    hP₁ hP₂ (hVρ Y hY) hdet
+
 end DLNFibre.DLN.RLCT

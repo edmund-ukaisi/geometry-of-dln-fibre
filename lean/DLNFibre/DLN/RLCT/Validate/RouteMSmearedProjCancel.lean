@@ -13,7 +13,8 @@ The honest content the square case hid: for a TALL `P₁`, the normal-equations 
 `Λ₀ = (P₁ᵀP₁)⁻¹P₁ᵀP₂` satisfies `P₁·Λ₀ = P₂` **iff `col(P₂) ⊆ col(P₁)`** — the projection
 `P₁(P₁ᵀP₁)⁻¹P₁ᵀ` is onto `col(P₁)`, and fixes `P₂` only there. The clean hypothesis is the FACTORING
 form `P₂ = P₁·K` (which is exactly `col(P₂) ⊆ col(P₁)`); then the Gram-cancellation gives `Λ₀ = K`
-directly, with **no** left-invertibility of `P₁` needed:
+directly, with **no SQUARE inverse of `P₁`** needed (`(P₁ᵀP₁)⁻¹·P₁ᵀ` is itself the rectangular
+Moore–Penrose left-inverse — what is avoided is inverting the tall `P₁` directly):
 
     Λ₀ = (P₁ᵀP₁)⁻¹·P₁ᵀ·P₂ = (P₁ᵀP₁)⁻¹·P₁ᵀ·(P₁·K) = (P₁ᵀP₁)⁻¹·(P₁ᵀP₁)·K = I·K = K,
 
@@ -40,10 +41,10 @@ variable {rows : Type*} [Fintype rows]
 variable {r : Type*} [Fintype r] [DecidableEq r]
 variable {s : Type*}
 
-/-- **The Gram routing collapses to the factor** `Λ₀ = K`. If `P₂ = P₁·K` (`col(P₂) ⊆ col(P₁)`) and the
-`r×r` Gram `P₁ᵀP₁` is invertible (`det ≠ 0`), then the normal-equations routing
+/-- **The Gram routing collapses to the factor** `Λ₀ = K`. If `P₂ = P₁·K` (`col(P₂) ⊆ col(P₁)`) and
+the `r×r` Gram `P₁ᵀP₁` is invertible (`det ≠ 0`), then the normal-equations routing
 `Λ₀ = (P₁ᵀP₁)⁻¹·P₁ᵀ·P₂` equals `K`. The single step is `(P₁ᵀP₁)⁻¹·(P₁ᵀP₁) = I`
-(`Matrix.nonsing_inv_mul`); no left-inverse of `P₁`. -/
+(`Matrix.nonsing_inv_mul`); no SQUARE inverse of the tall `P₁`. -/
 theorem gram_routing_eq_factor
     (P₁ : Matrix rows r ℝ) (K : Matrix r s ℝ)
     (hdet : (P₁.transpose * P₁).det ≠ 0) :
@@ -67,8 +68,7 @@ theorem proj_cancel_of_factorsThrough
     P₁ * ((P₁.transpose * P₁)⁻¹ * P₁.transpose * P₂) = P₂ := by
   rw [hfac, gram_routing_eq_factor P₁ K hdet]
 
-/-! ## Non-vacuity: a genuinely-TALL `P₁` instance satisfies both hypotheses (the square case did not)
--/
+/-! ## Non-vacuity: a genuinely-TALL `P₁` satisfies both hypotheses (the square case did not) -/
 
 /-- **In-file witness that the antecedents are jointly inhabited at a TALL `P₁`** — the case the
 `(2,3,1)` square `P₁` hid. `P₁ = !![1; 0; 0]` (`3×1`, full column rank, Gram `= [1] ≠ 0`),
