@@ -25,6 +25,33 @@ namespace CenterCoord
 
 variable {ι : Type*} [DecidableEq ι]
 
+private theorem map_withDensity_comp_of_aemeasurable
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {η : Measure α} {f : α → β} {g : β → ℝ≥0∞}
+    (hf : AEMeasurable f η)
+    (hg : AEMeasurable g (Measure.map f η)) :
+    Measure.map f (η.withDensity (fun x => g (f x))) =
+      (Measure.map f η).withDensity g := by
+  ext t ht
+  have hf_density :
+      AEMeasurable f (η.withDensity (fun x => g (f x))) :=
+    hf.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hpre : NullMeasurableSet (f ⁻¹' t) η :=
+    hf.nullMeasurableSet_preimage ht
+  rw [Measure.map_apply_of_aemeasurable hf_density ht,
+    withDensity_apply _ ht,
+    withDensity_apply₀ _ hpre]
+  calc
+    ∫⁻ x in f ⁻¹' t, g (f x) ∂η =
+        ∫⁻ x, (f ⁻¹' t).indicator (fun x => g (f x)) x ∂η := by
+          rw [lintegral_indicator₀ hpre]
+    _ = ∫⁻ x, (t.indicator g) (f x) ∂η := by
+          rfl
+    _ = ∫⁻ y, t.indicator g y ∂Measure.map f η := by
+          exact (lintegral_map' (hg.indicator ht) hf).symm
+    _ = ∫⁻ y in t, g y ∂Measure.map f η := by
+          rw [lintegral_indicator ht]
+
 /-- The syntactic chart-point type of the one-chart selected-entry
 normal-crossing certificate.  This is definitionally the certificate field
 `ChartPoint 0`, but keeping the product type visible gives Lean the standard
@@ -132,6 +159,44 @@ def chartPointProductMeasure {center : Finset ι} (pivot : center)
       volume.restrict
         (Set.Ioo (-(R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩))
           (R ⟨i.1, (Finset.mem_erase.mp i.2).2⟩)))
+
+/-- The chart-point density corresponding to the selected-entry Jacobian
+factor in product coordinates. -/
+def chartPointDensity {center : Finset ι} (pivot : center)
+    (x : FormalChartPoint pivot) : ℝ :=
+  |x.1| ^ ((center.erase pivot.1).card : ℝ)
+
+/-- Pulling the chart-point density back by the adapter gives the
+center-coordinate selected-entry source density. -/
+theorem chartPointDensity_chartPointAdapter_eq_sourceDensity
+    {center : Finset ι} (pivot : center) (y : center → ℝ) :
+    chartPointDensity pivot (chartPointAdapter pivot y) =
+      sourceDensity pivot y := by
+  simp [chartPointDensity, chartPointAdapter,
+    selectedEntryCenterSqFormalJacobianChartCertificate.sourceChartPoint,
+    sourceDensity]
+
+/-- The chart-point density is a.e.-measurable for the chart-point product
+box measure. -/
+theorem aemeasurable_chartPointDensity {center : Finset ι} (pivot : center)
+    (R : center → ℝ) :
+    AEMeasurable (fun x : FormalChartPoint pivot =>
+      ENNReal.ofReal (chartPointDensity pivot x))
+        (chartPointProductMeasure pivot R) := by
+  have hreal :
+      Measurable (fun x : FormalChartPoint pivot =>
+        chartPointDensity pivot x) := by
+    have hfun :
+        (fun x : FormalChartPoint pivot => chartPointDensity pivot x) =
+          fun x : FormalChartPoint pivot =>
+            |x.1| ^ (center.erase pivot.1).card := by
+      funext x
+      simp [chartPointDensity, Real.rpow_natCast]
+    rw [hfun]
+    exact
+      ((continuous_fst : Continuous fun x : FormalChartPoint pivot => x.1).abs.pow
+        (center.erase pivot.1).card).measurable
+  exact (ENNReal.measurable_ofReal.comp hreal).aemeasurable
 
 /-- The measurable equivalence exposing `chartPointAdapter` as a finite product split. -/
 def chartPointSplitEquiv {center : Finset ι} (pivot : center) :
@@ -253,6 +318,55 @@ theorem map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
       chartPointProductMeasure pivot R := by
   rw [← chartPointSplitEquiv_eq_chartPointAdapter pivot]
   exact (measurePreserving_chartPointSplitEquiv_signedBoxMeasure pivot R).map_eq
+
+/-- The chart-point adapter sends the weighted center signed-box measure to
+the chart-point product box measure weighted by the pulled-forward pivot
+density. -/
+theorem map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity
+    {center : Finset ι} (pivot : center) (R : center → ℝ) :
+    Measure.map (chartPointAdapter pivot)
+        ((Measure.pi fun i : center =>
+          volume.restrict (Set.Ioo (-(R i)) (R i))).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))) =
+      (chartPointProductMeasure pivot R).withDensity
+        (fun x : FormalChartPoint pivot =>
+          ENNReal.ofReal (chartPointDensity pivot x)) := by
+  let μ : Measure (center → ℝ) :=
+    Measure.pi fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i))
+  let g : FormalChartPoint pivot → ℝ≥0∞ :=
+    fun x => ENNReal.ofReal (chartPointDensity pivot x)
+  have hsource :
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)) =
+        fun y : center → ℝ => g (chartPointAdapter pivot y) := by
+    funext y
+    simp [g, chartPointDensity_chartPointAdapter_eq_sourceDensity]
+  have hf : AEMeasurable (chartPointAdapter pivot) μ :=
+    (measurable_chartPointAdapter pivot).aemeasurable
+  have hg : AEMeasurable g (Measure.map (chartPointAdapter pivot) μ) := by
+    rw [show Measure.map (chartPointAdapter pivot) μ =
+        chartPointProductMeasure pivot R by
+      simpa [μ] using
+        map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+          pivot R]
+    simpa [g] using aemeasurable_chartPointDensity pivot R
+  calc
+    Measure.map (chartPointAdapter pivot)
+        ((Measure.pi fun i : center =>
+          volume.restrict (Set.Ioo (-(R i)) (R i))).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))) =
+        Measure.map (chartPointAdapter pivot)
+          (μ.withDensity (fun y : center → ℝ => g (chartPointAdapter pivot y))) := by
+          simp [μ, hsource]
+    _ = (Measure.map (chartPointAdapter pivot) μ).withDensity g :=
+          map_withDensity_comp_of_aemeasurable hf hg
+    _ = (chartPointProductMeasure pivot R).withDensity
+        (fun x : FormalChartPoint pivot =>
+          ENNReal.ofReal (chartPointDensity pivot x)) := by
+          rw [show Measure.map (chartPointAdapter pivot) μ =
+              chartPointProductMeasure pivot R by
+            simpa [μ] using
+              map_chartPointAdapter_signedBoxMeasure_eq_chartPointProductMeasure
+                pivot R]
 
 /-- The one-chart selected-entry normal-crossing certificate chart map is
 continuous as a map from chart-point coordinates to ambient center

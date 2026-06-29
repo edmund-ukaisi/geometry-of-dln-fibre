@@ -3,6 +3,73 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Selected-Entry Chart-Point Weighted Product Measure - 2026-06-29
+
+`SelectedEntryChartPointMeasureBridge.lean` now proves the finite weighted
+product-measure transport for the selected-entry chart-point adapter.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-point-weighted-product-measure.md
+threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-point-weighted-product-measure.md
+```
+
+The pen-and-paper calculation is:
+
+```text
+chartPointAdapter(y) = (y_p, y|_{E \ {p}})
+sourceDensity_p(y) = |y_p|^(#(E \ {p}))
+chartPointDensity_p(u, r) = |u|^(#(E \ {p}))
+```
+
+Therefore:
+
+```text
+chartPointDensity_p(chartPointAdapter(y)) = sourceDensity_p(y).
+```
+
+Together with the already-proved unweighted pushforward
+
+```text
+map chartPointAdapter (prod_i volume|(-R_i, R_i))
+  = chartPointProductMeasure pivot R,
+```
+
+the private `withDensity` transport lemma gives:
+
+```text
+map chartPointAdapter
+  ((prod_i volume|(-R_i, R_i)).withDensity (ofReal sourceDensity_p))
+= (chartPointProductMeasure pivot R).withDensity
+  (ofReal chartPointDensity_p).
+```
+
+Lean packages this as:
+
+```text
+chartPointDensity
+chartPointDensity_chartPointAdapter_eq_sourceDensity
+aemeasurable_chartPointDensity
+map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity
+```
+
+No positivity hypothesis on radii and no pivot-nonzero hypothesis are needed.
+The absolute value in `|x.1|` is essential.  This is still finite adapter
+measure bookkeeping; it proves no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no original/source-prior transport,
+no determinant-chart Haar theorem, no source coverage/source-rank coverage, no
+normal-crossing extraction, no pole order, and no RLCT.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` and full
+`DLNFibre` build passed via `lean/scripts/lb`; only pre-existing replay
+warnings appeared.  Xhigh source-scope scout `Pascal the 4th`, xhigh Lean/API
+scout `Descartes the 4th`, and xhigh implementation reviewer `Huygens the
+4th` gave PASS.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes passed with
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 Selected-Entry Chart-Point Product Measure - 2026-06-29
 
 `SelectedEntryChartPointMeasureBridge.lean` now proves the natural finite

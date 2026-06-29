@@ -10,6 +10,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 chart-point weighted product measure
+
+The selected-entry chart-point adapter now has the finite weighted product
+measure transport in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean
+```
+
+The new chart-point density is:
+
+```text
+chartPointDensity pivot x = |x.1| ^ ((center.erase pivot.1).card : R)
+```
+
+Lean proves:
+
+```text
+chartPointDensity_chartPointAdapter_eq_sourceDensity
+aemeasurable_chartPointDensity
+map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity
+```
+
+This combines the banked unweighted product-measure split for
+`chartPointAdapter` with the elementary identity `x.1 = y pivot` under the
+adapter.  No positivity hypothesis on `R` and no pivot-nonzero hypothesis are
+needed.  The density remains on the chart-point side; this is not an
+unweighted product-measure theorem.
+
+This does not construct `SelectedEntryAnalyticJacobianVolumeData`, and it
+proves no original/source-prior transport, determinant-chart Haar transport,
+source coverage, source-rank coverage, transition regularity,
+normal-crossing extraction, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 chart-point product measure
 
 The selected-entry chart-point adapter now has the natural finite product

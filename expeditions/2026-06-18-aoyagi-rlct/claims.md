@@ -140,6 +140,32 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, selected-entry chart-point weighted product
+  measure, 2026-06-29.** Lean now proves the finite weighted product-measure
+  transport for the selected-entry `chartPointAdapter` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean`.
+  It defines
+  `chartPointDensity pivot x = |x.1| ^ ((center.erase pivot.1).card : R)`,
+  proves `chartPointDensity_chartPointAdapter_eq_sourceDensity` and
+  `aemeasurable_chartPointDensity`, and combines these with the banked
+  unweighted product-measure split to prove
+  `map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity`.
+  No positivity hypothesis on radii and no pivot-nonzero hypothesis are needed
+  for this equality.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-chart-point-weighted-product-measure.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-chart-point-weighted-product-measure.md`.
+  Focused build of
+  `DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` and full
+  `DLNFibre` build passed via `scripts/lb`; only pre-existing replay warnings
+  appeared.  Xhigh source-scope, Lean/API, and implementation reviews returned
+  PASS; `scripts/sorries`, `git diff --check`, touched Lean-file marker scan,
+  and direct axiom probes passed with
+  `[propext, Classical.choice, Quot.sound]`.  This proves no
+  analytic atlas construction, no `SelectedEntryAnalyticJacobianVolumeData`,
+  no original/source-prior transport, no determinant-chart Haar transport, no
+  source coverage, no source-rank coverage, no transition regularity, no
+  normal-crossing extraction, no pole order, and no RLCT.
 - **Current status addendum, selected-entry chart-target nonzero measure,
   2026-06-29.** Lean now proves a finite fixed-pivot nonzero target/source
   measure brick for selected-entry signed-box charts in

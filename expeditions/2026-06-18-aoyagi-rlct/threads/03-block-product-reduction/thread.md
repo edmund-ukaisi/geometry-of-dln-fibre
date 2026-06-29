@@ -18,6 +18,47 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 selected-entry chart-point weighted product measure
+
+Reproduction:
+`reproduction-a2-selected-entry-chart-point-weighted-product-measure.md`.
+Statement card:
+`statement-card-a2-selected-entry-chart-point-weighted-product-measure.md`.
+
+Lean now proves the finite weighted product-measure transport for the
+selected-entry chart-point adapter:
+
+```text
+map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity
+```
+
+The new chart-point density is
+
+```text
+chartPointDensity pivot x = |x.1| ^ ((center.erase pivot.1).card : R).
+```
+
+The proof uses
+`chartPointDensity_chartPointAdapter_eq_sourceDensity`, measurability of the
+chart-point density, the banked unweighted adapter pushforward, and a local
+`withDensity` transport lemma.  No positivity hypothesis on radii and no
+pivot-nonzero hypothesis are needed.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.SelectedEntryChartPointMeasureBridge` and full
+`DLNFibre` build passed via `lean/scripts/lb`; only pre-existing replay
+warnings appeared.  Xhigh source-scope scout `Pascal the 4th`, xhigh Lean/API
+scout `Descartes the 4th`, and xhigh implementation reviewer `Huygens the
+4th` returned PASS.  `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes passed with
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no analytic atlas construction, no
+`SelectedEntryAnalyticJacobianVolumeData`, no unweighted weighted-measure
+collapse, no source-prior transport, no determinant-chart Haar theorem, no
+source coverage/source-rank coverage, no transition regularity, no source
+production, no normal-crossing extraction, no pole order, and no RLCT.
+
 ## 2026-06-29 A2 selected-entry chart-point product measure
 
 Reproduction:
