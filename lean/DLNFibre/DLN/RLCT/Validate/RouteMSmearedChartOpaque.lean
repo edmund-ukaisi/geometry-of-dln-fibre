@@ -39,6 +39,72 @@ theorem measurePreserving_shearMBody (coreSet : Finset (Fin N))
     MeasurePreserving (shearMBody coreSet shift) (volume : Measure (Fin N → ℝ)) volume :=
   measurePreserving_shearM coreSet shift hshift
 
+/-- The inverse of `shearMBody` — SUBTRACT the shift from the Core block (the shift reads `(reg, spec)`,
+both preserved, so this is a two-sided inverse). -/
+noncomputable def shearMBodyInv (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ)) :
+    (Fin N → ℝ) → (Fin N → ℝ) :=
+  fun v : Fin N → ℝ =>
+    (splitOfCoreSet coreSet).symm
+      (let q := splitOfCoreSet coreSet v; (q.1, (q.2.1 - shift (q.1, q.2.2), q.2.2)))
+
+/-- `shearMBody` is measurable (the split/skew/symm composition). -/
+theorem measurable_shearMBody (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) : Measurable (shearMBody coreSet shift) :=
+  (measurePreserving_shearMBody coreSet shift hshift).measurable
+
+/-- `shearMBodyInv` is measurable. -/
+theorem measurable_shearMBodyInv (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) : Measurable (shearMBodyInv coreSet shift) := by
+  unfold shearMBodyInv
+  have hreg : Measurable (fun v : Fin N → ℝ => (splitOfCoreSet coreSet v).1) :=
+    measurable_fst.comp (splitOfCoreSet coreSet).measurable
+  have hcore : Measurable (fun v : Fin N → ℝ => (splitOfCoreSet coreSet v).2.1) :=
+    measurable_fst.comp (measurable_snd.comp (splitOfCoreSet coreSet).measurable)
+  have hspec : Measurable (fun v : Fin N → ℝ => (splitOfCoreSet coreSet v).2.2) :=
+    measurable_snd.comp (measurable_snd.comp (splitOfCoreSet coreSet).measurable)
+  refine (splitOfCoreSet coreSet).symm.measurable.comp
+    (hreg.prodMk ((hcore.sub (hshift.comp (hreg.prodMk hspec))).prodMk hspec))
+
+/-- `shearMBody` as a `MeasurableEquiv` (its inverse subtracts the shift). The shift reads the preserved
+`(reg, spec)` blocks, so the two are mutually inverse. -/
+noncomputable def shearMBodyME (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) : (Fin N → ℝ) ≃ᵐ (Fin N → ℝ) where
+  toFun := shearMBody coreSet shift
+  invFun := shearMBodyInv coreSet shift
+  left_inv := by
+    intro u
+    show (splitOfCoreSet coreSet).symm
+        (let q := splitOfCoreSet coreSet (shearMBody coreSet shift u);
+          (q.1, (q.2.1 - shift (q.1, q.2.2), q.2.2))) = u
+    rw [shearMBody, MeasurableEquiv.apply_symm_apply]
+    simp only [add_sub_cancel_right, Prod.mk.eta, MeasurableEquiv.symm_apply_apply]
+  right_inv := by
+    intro v
+    show shearMBody coreSet shift
+        ((splitOfCoreSet coreSet).symm
+          (let q := splitOfCoreSet coreSet v; (q.1, (q.2.1 - shift (q.1, q.2.2), q.2.2)))) = v
+    rw [shearMBody, MeasurableEquiv.apply_symm_apply]
+    simp only [sub_add_cancel, Prod.mk.eta, MeasurableEquiv.symm_apply_apply]
+  measurable_toFun := measurable_shearMBody coreSet shift hshift
+  measurable_invFun := measurable_shearMBodyInv coreSet shift hshift
+
+/-- `shearMBody = ⇑(shearMBodyME …)` (the ME's `toFun` is `shearMBody`). -/
+theorem shearMBodyME_coe (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) :
+    ⇑(shearMBodyME coreSet shift hshift) = shearMBody coreSet shift := rfl
+
+/-- `shearMBody` is a measurable embedding (it is a `MeasurableEquiv`). -/
+theorem measurableEmbedding_shearMBody (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (hshift : Measurable shift) : MeasurableEmbedding (shearMBody coreSet shift) := by
+  rw [← shearMBodyME_coe coreSet shift hshift]
+  exact (shearMBodyME coreSet shift hshift).measurableEmbedding
+
 /-! ### The `coreSetEquiv` images (the bridge from a `Sum`-index to a `Fin N` coord) -/
 
 /-- `coreSetEquiv coreSet (Sum.inr (Sum.inl j)) = coreSet.equivFin.symm j` (Core block image). -/
