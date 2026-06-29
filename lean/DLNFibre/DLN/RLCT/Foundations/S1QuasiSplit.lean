@@ -67,6 +67,41 @@ section Iterate
 variable {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
     [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
 
+/-- `(chartN m Y).symm (a, (f, y)) = (Fin.cons a f, y)` (re-derived; the S1Fubini twin is private). -/
+private theorem qs_chartN_symm_app (m : ℕ) (a : ℝ) (f : Fin m → ℝ) (y : Y) :
+    (chartN m Y).symm (a, (f, y)) = (Fin.cons a f, y) := by
+  have h : (chartN m Y).symm (a, (f, y)) = ((finPeel m).symm (a, f), y) := rfl
+  rw [h]; congr 1
+  show (MeasurableEquiv.piFinSuccAbove (fun _ => ℝ) (0 : Fin (m + 1))).symm (a, f) = Fin.cons a f
+  rw [MeasurableEquiv.piFinSuccAbove_symm_apply]; exact Fin.insertNth_zero' a f
+
+/-- `(chartN m Y) (0, y0) = (0, (0, y0))` (re-derived; the S1Fubini twin is private). -/
+private theorem qs_chartN_at_zero (m : ℕ) (y0 : Y) : (chartN m Y) (0, y0) = (0, (0, y0)) := by
+  apply (chartN m Y).symm.injective
+  rw [Homeomorph.symm_apply_apply, qs_chartN_symm_app]
+  congr 1; funext i
+  rcases Fin.eq_zero_or_eq_succ i with rfl | ⟨j, rfl⟩
+  · rw [Fin.cons_zero]; rfl
+  · rw [Fin.cons_succ]; rfl
+
+/-- The intermediate core `H_m(p) = (∑_{i<m} p.1 i²) + R p.2` is a.e.-nonzero near `(0, y0)` (since
+`∑ + R ≥ R > 0` a.e.). The `≥`-route analog of S1Fubini's private `hHne_sumSq`. -/
+private theorem qs_hHne_block (m : ℕ) (R : Y → ℝ) (y0 : Y) (hR : ∀ z, 0 ≤ R z)
+    (hRne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), R z ≠ 0) :
+    ∃ U ∈ 𝓝 ((0 : Fin m → ℝ), y0), ∀ᵐ z ∂(volume.restrict U),
+      ((∑ i, ((z : (Fin m → ℝ) × Y).1) i ^ 2) + R z.2) ≠ 0 := by
+  obtain ⟨Ug, hUg, hRae⟩ := hRne
+  refine ⟨Set.univ ×ˢ Ug, prod_mem_nhds Filter.univ_mem hUg, ?_⟩
+  have hsnd : ∀ᵐ z ∂(volume.restrict (Set.univ ×ˢ Ug : Set ((Fin m → ℝ) × Y))), R z.2 ≠ 0 := by
+    rw [Measure.volume_eq_prod, ← Measure.prod_restrict]
+    exact (Measure.quasiMeasurePreserving_snd
+      (μ := (volume : Measure (Fin m → ℝ)).restrict univ)
+      (ν := (volume : Measure Y).restrict Ug)).tendsto_ae.eventually hRae
+  filter_upwards [hsnd] with z hz
+  have h1 : 0 < R z.2 := lt_of_le_of_ne (hR z.2) (Ne.symm hz)
+  have h2 : 0 ≤ ∑ i, (z.1) i ^ 2 := Finset.sum_nonneg (fun i _ => sq_nonneg _)
+  positivity
+
 /-- **The iterated regular-block RLCT LOWER bound** (general residual). For a measurable,
 a.e.-nonzero residual `R : Y → ℝ` with `R ≥ 0`, adding the regular block `∑_{i<m} x_i²` lowers the
 RLCT by at least `m/2`:
@@ -80,7 +115,55 @@ theorem rlct_smooth_block_ge (R : Y → ℝ) (y0 : Y) (hR : ∀ z, 0 ≤ R z) (h
     (hRne : ∃ U ∈ 𝓝 y0, ∀ᵐ z ∂(volume.restrict U), R z ≠ 0) (m : ℕ) :
     (m : ℝ≥0∞) / 2 + rlctAtOn R y0
       ≤ rlctAtOn (fun p : (Fin m → ℝ) × Y => (∑ i, p.1 i ^ 2) + R p.2) (0, y0) := by
-  sorry
+  induction m with
+  | zero =>
+    -- `0/2 + λ R = λ R`, and `(fun p:(Fin 0→ℝ)×Y => 0 + R p.2)` transports to `R` by the singleton chart.
+    have hrhs : (↑(0 : ℕ) : ℝ≥0∞) / 2 + rlctAtOn R y0 = rlctAtOn R y0 := by simp
+    rw [hrhs]
+    set e : Y ≃ₜ ((Fin 0 → ℝ) × Y) := (Homeomorph.uniqueProd (Fin 0 → ℝ) Y).symm with he
+    have hfwd : MeasurePreserving (Homeomorph.uniqueProd (Fin 0 → ℝ) Y) (volume) (volume) := by
+      have hsnd : MeasurePreserving (Prod.snd : (Fin 0 → ℝ) × Y → Y) (volume) (volume) := by
+        rw [Measure.volume_eq_prod]; exact measurePreserving_snd
+      rw [show (Homeomorph.uniqueProd (Fin 0 → ℝ) Y : ((Fin 0 → ℝ) × Y) → Y) = Prod.snd from rfl]
+      exact hsnd
+    have hMP : MeasurePreserving e :=
+      MeasurePreserving.symm (Homeomorph.uniqueProd (Fin 0 → ℝ) Y).toMeasurableEquiv hfwd
+    have hkey := rlctAtOn_comp_homeomorph e hMP e.measurableEmbedding
+      (fun p : (Fin 0 → ℝ) × Y => (∑ i, p.1 i ^ 2) + R p.2) y0
+    rw [show ((0 : Fin 0 → ℝ), y0) = e y0 from Prod.ext (Subsingleton.elim _ _) rfl, ← hkey]
+    apply le_of_eq
+    congr 1
+    funext y
+    show R y = (∑ i : Fin 0, ((e y).1) i ^ 2) + R ((e y).2)
+    rw [Finset.univ_eq_empty, Finset.sum_empty, zero_add]
+    rfl
+  | succ k ih =>
+    -- peel one coordinate via `chartN`, then `step_rlct_ge` against the `m=k` block core.
+    have hMP : MeasurePreserving (chartN k Y).symm :=
+      MeasurePreserving.symm (chartN k Y).toMeasurableEquiv (chartN_mp k)
+    have hkey := rlctAtOn_comp_homeomorph (chartN k Y).symm hMP
+      (chartN k Y).symm.measurableEmbedding
+      (fun p : (Fin (k + 1) → ℝ) × Y => (∑ i, p.1 i ^ 2) + R p.2) (0, (0, y0))
+    rw [show ((0 : Fin (k + 1) → ℝ), y0) = (chartN k Y).symm (0, (0, y0)) from by
+          rw [← qs_chartN_at_zero k y0, Homeomorph.symm_apply_apply], ← hkey]
+    -- rewrite the transported core into the peeled `q.1² + (block core)` form.
+    have hcomp : (fun q : ℝ × ((Fin k → ℝ) × Y) =>
+          (∑ i, ((chartN k Y).symm q).1 i ^ 2) + R ((chartN k Y).symm q).2)
+        = (fun q : ℝ × ((Fin k → ℝ) × Y) => q.1 ^ 2 + ((∑ i, q.2.1 i ^ 2) + R q.2.2)) := by
+      funext q; obtain ⟨a, f, y⟩ := q
+      rw [qs_chartN_symm_app]
+      simp only [Fin.sum_univ_succ, Fin.cons_zero, Fin.cons_succ]; ring
+    rw [hcomp]
+    -- `step_rlct_ge` for the `m=k` block core `H`; then IH.
+    have hstep := step_rlct_ge (fun p : (Fin k → ℝ) × Y => (∑ i, p.1 i ^ 2) + R p.2) (0, y0)
+      (fun p => by have := hR p.2; positivity) (by fun_prop) (qs_hHne_block k R y0 hR hRne)
+    refine le_trans ?_ hstep
+    -- `(k+1)/2 + λR = 1/2 + (k/2 + λR) ≤ 1/2 + λ(block core)` by IH.
+    have hsplit : ((k + 1 : ℕ) : ℝ≥0∞) / 2 + rlctAtOn R y0
+        = (1 / 2 : ℝ≥0∞) + ((k : ℝ≥0∞) / 2 + rlctAtOn R y0) := by
+      rw [← add_assoc]; congr 1; rw [← ENNReal.add_div]; congr 1; push_cast; ring
+    rw [hsplit]
+    gcongr
 
 end Iterate
 
