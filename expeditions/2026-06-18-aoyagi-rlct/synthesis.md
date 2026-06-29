@@ -3,6 +3,45 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 selected-entry finite-cover source-stratum restriction - 2026-06-29
+
+`SelectedEntryOriginalLossLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower
+```
+
+This theorem applies the existing all-pivot selected-entry finite-cover
+original-loss theorem over `signedBoxSet Sres`, then shrinks the open
+neighborhood by a supplied `Ulocal`.  Under the explicit hypothesis
+
+```text
+Ulocal ∩ sourceStratum ⊆ Ulocal ∩ signedBoxSet Sres,
+```
+
+product-measure monotonicity gives the same finite lower integral over
+`U ∩ sourceStratum`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-finite-cover-source-stratum-restriction.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-selected-entry-finite-cover-source-stratum-restriction.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-selected-entry-finite-cover-source-stratum-restriction.md`
+passed by xhigh `Archimedes the 2nd`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryOriginalLossLocalMeasure
+```
+
+`scripts/sorries`, `git diff --check`, and the touched Lean-file
+forbidden-marker scan were clean.  Nonclaims: the theorem does not prove the
+local inclusion, source-rank coverage, chart image equality, source-prior or
+Jacobian transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 nonzero-pivot inverse residual readout - 2026-06-29
 
 Landed a punctured-chart inverse readout bridge:

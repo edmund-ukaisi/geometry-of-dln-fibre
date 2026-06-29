@@ -10,6 +10,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, finite-cover source-stratum restriction
+
+The selected-entry finite-cover lane now has the right conditional restriction
+consumer: from the all-pivot finite-cover original-loss theorem plus an
+explicit local inclusion
+
+```text
+Ulocal ∩ sourceStratum ⊆ Ulocal ∩ signedBoxSet Sres,
+```
+
+it obtains a finite integral over the restricted source-rank stratum by
+measure monotonicity.  This is useful because it weakens the earlier fixed
+chart-image local-equality consumer, but it still does not move the source
+coverage boundary.
+
+Next work should not add more finite-cover restriction wrappers.  The live
+mathematical frontier remains proving or correctly packaging the local
+inclusion/source-production input: source-rank membership for produced points,
+selected-entry source-rank coverage, original source-prior/Jacobian transport,
+or analytic atlas/source-production data.  Keep the local inclusion explicit
+until a separate Aoyagi-backed proof supplies it.
+
 ## Active workspace
 
 Work from

@@ -1286,6 +1286,265 @@ theorem exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_de
 
 set_option linter.style.longLine false in
 set_option linter.unusedSectionVars false in
+/-- Source-stratum restriction of the finite selected-entry sector-cover
+original-loss handoff.
+
+The theorem assumes only that the source-rank stratum lies locally inside the
+smaller selected-entry signed box used by the finite-cover theorem.  It does
+not prove that local inclusion, source-rank coverage, source/image equality,
+source-prior transport, Jacobian compatibility, normal crossings, pole order,
+or RLCT. -/
+theorem exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_sourceStratum_locally_subset_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower
+    {N : ℕ}
+    (W : Fin (N + 1) → Type v) [∀ i, AddCommGroup (W i)]
+    [∀ i, TopologicalSpace (W i)] [∀ i, IsTopologicalAddGroup (W i)]
+    [∀ i, T2Space (W i)] [∀ i, Module ℝ (W i)]
+    [∀ i, ContinuousSMul ℝ (W i)]
+    (B : ∀ i : Fin N, W i.succ →ₗ[ℝ] W i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W j)]
+    {ι : Type*} [DecidableEq ι]
+    {center : Finset ι} [Nonempty center]
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    {CedgeBase : (center → ℝ) → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin N → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W B U₀ hU₀ (0 : center → ℝ) CedgeBase H r rEdge)
+    {d : Fin (N + 1) → ℕ}
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (reverseVertex W j))
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {CedgeProd :
+      (center → ℝ) × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ∀ p : Fin N,
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ}
+    {density :
+      (center → ℝ) × EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀ 0)) → ℝ}
+    {t Rreg creg Creg : ℝ} {Rres Sres : center → ℝ}
+    (hRreg : 0 < Rreg) (hcreg : 0 < creg) (hCreg : 0 ≤ Creg) (ht : 0 < t)
+    (hEdgeMatrix :
+      Measurable (fun x : center → ℝ ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := ℝ) W B U₀ hU₀
+          (fun p : Fin N ↦
+            (CedgeBase x p : reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ))))
+    (hSres_le_Rres : ∀ i, Sres i ≤ Rres i)
+    (hRres_one : ∀ i, 1 < Rres i)
+    (hcrit_pivot :
+      ∀ pivot : center, 2 * t < ((center.erase pivot.1).card : ℝ) + 1)
+    (hresidual_eq :
+      ∀ pivot : center,
+        ∀ y : center → ℝ,
+          aoyagiCoordinateSquareSum
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+              (K := ℝ) W B U₀ hU₀ CedgeBase
+                (SelectedEntrySignedBox.CenterCoord.chartMap pivot y)) =
+          SelectedEntrySignedBox.CenterCoord.residual pivot y)
+    (hadapted_lower :
+      ∀ pivot : center,
+        ∀ᶠ x in nhdsWithin (0 : center → ℝ)
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+              SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres),
+          ∀ u : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0)),
+            u ∈ Metric.ball
+                (0 : EuclideanSpace ℝ
+                  (AoyagiRegularBlockCoordinateIndex
+                    (Fin (Module.finrank ℝ U₀))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+              creg * (aoyagiCoordinateSquareSum
+                  (paperEndpointFixedBaseResidualBlockCoordinateMap
+                    (K := ℝ) W B U₀ hU₀ CedgeBase x) +
+                aoyagiCoordinateSquareSum (fun i => u i)) ≤
+              paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+                (K := ℝ) W B U₀ hU₀ CedgeProd (x, u))
+    (hdensity_nonneg :
+      ∀ pivot : center,
+        ∀ᶠ x in nhdsWithin (0 : center → ℝ)
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+              SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres),
+          ∀ u : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0)),
+            u ∈ Metric.ball
+                (0 : EuclideanSpace ℝ
+                  (AoyagiRegularBlockCoordinateIndex
+                    (Fin (Module.finrank ℝ U₀))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+              0 ≤ density (x, u))
+    (hdensity_le :
+      ∀ pivot : center,
+        ∀ᶠ x in nhdsWithin (0 : center → ℝ)
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivot ''
+              SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres),
+          ∀ u : EuclideanSpace ℝ
+              (AoyagiRegularBlockCoordinateIndex
+                (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀ 0)),
+            u ∈ Metric.ball
+                (0 : EuclideanSpace ℝ
+                  (AoyagiRegularBlockCoordinateIndex
+                    (Fin (Module.finrank ℝ U₀))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W) (reverseEdge W B) U₀ 0))) Rreg →
+              density (x, u) ≤ Creg)
+    (Ulocal : Set (center → ℝ))
+    (hUlocal_open : IsOpen Ulocal)
+    (h0Ulocal : (0 : center → ℝ) ∈ Ulocal)
+    (hsourceStratum_local_subset :
+      Ulocal ∩
+          paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) W B CedgeBase r rEdge ⊆
+        Ulocal ∩ SelectedEntrySignedBox.CenterCoord.signedBoxSet Sres) :
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W B CedgeBase r rEdge
+    let target :=
+      LinearMap.toMatrix (b 0) (b (Fin.last N))
+        (chainMap (reverseVertex W) (reverseEdge W B)
+          0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+    ∃ U : Set (center → ℝ), IsOpen U ∧ (0 : center → ℝ) ∈ U ∧
+      (∫⁻ z : (center → ℝ) × EuclideanSpace ℝ ρ,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρ) Rreg).indicator
+            (fun u =>
+              (lossDLN d target
+                (chainMapMatrixTuple b
+                  (fun p : Fin N =>
+                    (CedgeProd (z.1, u) p :
+                      reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))) ^
+                (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2)) *
+                density (z.1, u)) z.2) ∂
+          ((volume : Measure (center → ℝ)).restrict
+            (U ∩ sourceStratum)).prod ν) < ∞ := by
+  classical
+  let ρ :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ (Fin.last N))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀ 0)
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) W B CedgeBase r rEdge
+  let target : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ :=
+    LinearMap.toMatrix (b 0) (b (Fin.last N))
+      (chainMap (reverseVertex W) (reverseEdge W B)
+        0 (Fin.last N) (Fin.zero_le (Fin.last N)))
+  let signedBox := SelectedEntrySignedBox.CenterCoord.signedBoxSet Sres
+  let originalLoss : (center → ℝ) × EuclideanSpace ℝ ρ → ℝ :=
+    fun z =>
+      lossDLN d target
+        (chainMapMatrixTuple b
+          (fun p : Fin N =>
+            (CedgeProd z p :
+              reverseVertex W p.castSucc →ₗ[ℝ] reverseVertex W p.succ)))
+  rcases
+      exists_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_selectedEntryCenter_signedBox_finiteCover_withDensity_edgeMatrix_adaptedProductDifferenceSquareSum_lower
+        (W := W) (B := B) sourceData b
+        (ν := ν) (CedgeProd := CedgeProd) (density := density)
+        (t := t) (Rreg := Rreg) (creg := creg) (Creg := Creg)
+        (Rres := Rres) (Sres := Sres)
+        hRreg hcreg hCreg ht hEdgeMatrix
+        hSres_le_Rres hRres_one hcrit_pivot hresidual_eq
+        hadapted_lower hdensity_nonneg hdensity_le with
+    ⟨Ubox, hUbox_open, h0Ubox, hfinite_box⟩
+  let U := Ubox ∩ Ulocal
+  have hU_open : IsOpen U := hUbox_open.inter hUlocal_open
+  have h0U : (0 : center → ℝ) ∈ U := ⟨h0Ubox, h0Ulocal⟩
+  let integrand :
+      (center → ℝ) × EuclideanSpace ℝ ρ → ℝ≥0∞ :=
+    fun z =>
+      ENNReal.ofReal
+        ((Metric.ball (0 : EuclideanSpace ℝ ρ) Rreg).indicator
+          (fun u =>
+            (originalLoss (z.1, u)) ^
+              (-(t + (aoyagiTheorem2RegularVariableCount N H r : ℝ) / 2)) *
+              density (z.1, u)) z.2)
+  have hsubset :
+      U ∩ sourceStratum ⊆ Ubox ∩ signedBox := by
+    intro x hx
+    have hxlocal :
+        x ∈ Ulocal ∩
+          paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) W B CedgeBase r rEdge := by
+      exact ⟨hx.1.2, by simpa [sourceStratum] using hx.2⟩
+    have hxbox := hsourceStratum_local_subset hxlocal
+    exact ⟨hx.1.1, by simpa [signedBox] using hxbox.2⟩
+  have hmeasure_le :
+      ((volume : Measure (center → ℝ)).restrict
+          (U ∩ sourceStratum)).prod ν ≤
+        ((volume : Measure (center → ℝ)).restrict
+          (Ubox ∩ signedBox)).prod ν := by
+    rw [Measure.restrict_prod_eq_prod_univ, Measure.restrict_prod_eq_prod_univ]
+    exact Measure.restrict_mono (Set.prod_mono_left hsubset) le_rfl
+  have hfinite_source :
+      (∫⁻ z : (center → ℝ) × EuclideanSpace ℝ ρ, integrand z ∂
+          ((volume : Measure (center → ℝ)).restrict
+            (U ∩ sourceStratum)).prod ν) < ∞ := by
+    have hmono :
+        (∫⁻ z : (center → ℝ) × EuclideanSpace ℝ ρ, integrand z ∂
+            ((volume : Measure (center → ℝ)).restrict
+              (U ∩ sourceStratum)).prod ν) ≤
+          (∫⁻ z : (center → ℝ) × EuclideanSpace ℝ ρ, integrand z ∂
+            ((volume : Measure (center → ℝ)).restrict
+              (Ubox ∩ signedBox)).prod ν) := by
+      exact lintegral_mono' hmeasure_le (le_refl integrand)
+    exact hmono.trans_lt
+      (by simpa [integrand, originalLoss, ρ, target, signedBox] using hfinite_box)
+  exact ⟨U, hU_open, h0U,
+    by simpa [integrand, originalLoss, ρ, sourceStratum, target] using hfinite_source⟩
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
 /-- Locally boundary-explicit selected-entry signed-box handoff for the
 original square-Frobenius `lossDLN`.
 
