@@ -11818,3 +11818,26 @@ local hygiene checks also passed.
 Nonclaims: no selected-entry source/image equality, no source-rank coverage,
 no external/original source-prior transport, no Jacobian comparison, no
 analytic atlas construction, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 Case 2 produced local-source point readout:
+`RetainedPassiveCase2LocalJacobianMeasure.lean` proves
+`exists_case2EndpointTransport_sourceEdgeFamilyOfData_mem_localSource_and_residualBlockCoordinateMap_eq_value_of_pivot_ne_zero`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-produced-local-source-point-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-produced-local-source-point-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-produced-local-source-point-readout.md`
+passed by xhigh `Russell the 2nd`.
+
+The theorem takes a selected-entry residual center value with nonzero selected
+pivot, chooses the fixed-pivot selected-entry inverse coordinates, and feeds
+them through the endpoint-transported Case 2 retained-passive source edge
+family.  It proves local-source membership and exact fixed-base residual
+coordinate readout.  Focused build and local hygiene checks passed.
+
+Nonclaims: no source-rank-stratum membership for the produced source point,
+no selected-entry source-rank coverage, no source/image equality, no
+source-prior transport, no Jacobian comparison, no analytic atlas, no normal
+crossings, no pole order, and no RLCT.

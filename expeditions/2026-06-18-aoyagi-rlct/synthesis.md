@@ -19991,3 +19991,40 @@ forbidden-marker scan were clean.  Focused builds covered
 no selected-entry source/image equality, source-rank coverage,
 external/original source-prior transport, Jacobian comparison, analytic atlas,
 normal crossings, pole order, or RLCT.
+
+## Latest A2 Case 2 Produced Local-Source Point Readout
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_case2EndpointTransport_sourceEdgeFamilyOfData_mem_localSource_and_residualBlockCoordinateMap_eq_value_of_pivot_ne_zero
+```
+
+Given an endpoint-transported explicit Case 2 setup and a selected-entry
+residual center value whose selected pivot is nonzero, the theorem produces
+fixed-pivot selected-entry coordinates `yNext`.  The corresponding
+chart-produced retained-passive source edge family lies in the p.13
+retained-passive local source, and its fixed-base residual-coordinate map is
+the supplied target value.
+
+The proof uses the fixed-pivot inverse
+`SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero`, the existing
+Case 2 local-source/readout bridge, and the preceding nonzero-pivot residual
+coordinate readout theorem.  This is a point-production/readout package, not a
+source-rank coverage theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-produced-local-source-point-readout.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-produced-local-source-point-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-produced-local-source-point-readout.md`
+passed by xhigh `Russell the 2nd`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`lean/scripts/sorries`, `git diff --check`, and a touched-Lean-file
+forbidden-marker scan were clean.  Nonclaims: no source-rank-stratum
+membership of the produced point, selected-entry source-rank coverage,
+source/image equality, source-prior transport, Jacobian comparison, analytic
+atlas, normal crossings, pole order, or RLCT.
