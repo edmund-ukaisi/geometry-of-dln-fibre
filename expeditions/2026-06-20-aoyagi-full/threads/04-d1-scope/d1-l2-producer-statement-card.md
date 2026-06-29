@@ -45,7 +45,15 @@
 > - **Circularity audit (Codex).** PASS. No field assumes the conclusion, `hAtV`, or `hCore`. `hchart`
 >   is an RLCT transfer to `F` (not the D1 inequality); `hcoreDeepest` ties `coreDeepest` to the reduced
 >   core (not `hCore`); `hCore` is PROVED from the diffeo, not assumed.
-> - **Status.** sorry-free; awaiting reviewer fidelity check.
+> - **Status.** sorry-free + reviewed. Reviewer (decorrelated Codex xhigh corroborated) verdict PASS
+>   on all of: soundness (no field assumes the conclusion / `hAtV` / `hCore`; `hCore` is proved
+>   in-module), fidelity (conclusion = Skeleton:1176 shape at `deepest = deepestPoint`), scope honesty
+>   (Mathlib-lacking split confirmed; L=2-only; #44/#120 named-not-done), vacuity (`ofExactGerm` +
+>   concrete `example` inhabit it; zero-core caveat documented), axiom hygiene
+>   (`[propext, Classical.choice, Quot.sound]`, no `sorryAx`). Reviewer NOTE (precision, not a defect):
+>   the witnesses are degenerate (identity diffeo / `m=0`); joint realizability of the full `nReg>0`
+>   field set is the unbuilt analytic existence theorem this producer does not claim to establish —
+>   honestly hedged in-file as "jointly satisfiable in principle".
 
 ## What this banks vs what remains
 
