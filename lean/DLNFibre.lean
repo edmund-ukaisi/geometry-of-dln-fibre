@@ -554,6 +554,16 @@ import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 -- D-INDEPENDENT, so the §SEL collapse to `rlct_quasiSplit_ge` needs NO new Mathlib lemma / Morse-Bott /
 -- operator-√). Clean-three; double-decorrelated review (genm-d1prod reviewer + lean-formaliser §QA PASS).
 import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
+-- D1 Altitude-B abstract hchart (network-free Foundations bedrock, reusable): `rlctAtOn_eq_of_boundedUnit_chart`
+-- (chart-transfer atom — germ-congruence f=ᶠF∘Ψ + bounded-unit local diffeo Ψ fixing wstar ⟹ rlctAtOn f =
+-- rlctAtOn F) + `exists_boundedUnit_chart_of_contDiffAt` (THE hard piece — ContDiff ℝ 2 Φ + invertible
+-- f':E≃L E ⟹ the C^r IFT gives the bounded-unit local-diffeo package, det DΨ≠0 PROVEN [not posited] at
+-- GENERAL wstar via LinearEquiv.isUnit_det' + continuity, NO rank-exact-pivot) + `rlctAtOn_eq_of_contDiff_chart`
+-- (chains them = the general chart-transfer). Resolves the D1-chart-at-general-v problem via standard IFT
+-- (NO Morse-Bott). Double-eyes: genm-d1prod build + lean-formaliser §QA-B PASS (gates 1+4 scrutinized).
+-- The DLN use-site (the §SEL selected-minor chart on dlnLoss, the H_indep block-invertibility) instantiates these.
+import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
+import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 -- D1 (rung 2/5) (★) chart-producer skeleton (L=2): `rlctAt_ge_nReg_add_slice` (the (★)-as-`hAtV`
 -- reduction, pure delegation to the banked engine) + `deepest_le_of_optimal_chart` (wires `hAtV`
 -- through `deepest_le_of_optimal_via_L2_ge` to the `rlctAt_deepest_le_of_optimal` per-point conclusion,

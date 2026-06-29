@@ -10,6 +10,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
+import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
+import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
@@ -184,6 +186,15 @@ open DLNFibre.DLN.RLCT
 -- reviewer + lean-formaliser §QA). The §SEL win: chart-DATA (hF/hQ0/hcmp) removed from the hyp list.
 #print axioms rlctAtOn_quasiSplit_ge_of_contDiff_residual
 #print axioms deepest_le_of_optimal_of_iftResidual
+
+-- D1 Altitude-B abstract hchart (network-free) — must be CLEAN-THREE [propext, Classical.choice,
+-- Quot.sound], no `sorryAx`: `exists_boundedUnit_chart_of_contDiffAt` is THE hard piece (det DΨ≠0
+-- PROVEN not posited at GENERAL wstar — via LinearEquiv.isUnit_det' + continuity, NO rank-exact-pivot),
+-- `rlctAtOn_eq_of_contDiff_chart` chains it with the chart-transfer atom = the general chart-transfer.
+-- Complete reusable lemmas (no carried obligations); lean-formaliser §QA-B PASS (gates 1+4). The DLN
+-- use-site instantiates with the §SEL selected-minor Φ + the H_indep block-invertible f'.
+#print axioms exists_boundedUnit_chart_of_contDiffAt
+#print axioms rlctAtOn_eq_of_contDiff_chart
 
 -- R1 interior-det headline at the (2,2,2) node — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `interiorDet_headline_222` is the FIRST end-to-end faithful-route
