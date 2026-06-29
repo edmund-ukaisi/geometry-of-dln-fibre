@@ -428,4 +428,170 @@ theorem Agen0_Glr_eq (rfin : (Fin (routeMAmbient M222) → ℝ) → Matrix (Fin 
           (⟨1, by decide⟩ : Fin (Text M222 tach222 1))) from by apply Fin.ext; simp]
     exact e11
 
+/-! ## The R2 active set: leaf slots chosen from the complement of the reader slots
+
+The slot wall (the opaque `chartIdxEquiv`): I cannot pin which flat slots the readers `a,b,n,w0,w1`
+occupy, nor whether a chosen leaf slot equals `structPivot = ⟨0,_⟩`. RESOLVED (R2): the five reader
+slots form `readerSet` (card ≤ 5); the two leaf slots are chosen from the FINITE COMPLEMENT
+`univ \ insert structPivot readerSet` (card ≥ 8 − 6 = 2). Membership in the complement then gives
+`lf ≠ structPivot` and `lf ∉ readerSet` for free — no opaque comparison. -/
+
+/-- The five reader slots of `genBlkFlatLiveR1 M222` (the `chartIdxEquiv.symm` images of the K/X/N
+Schur tags + the two W lift tags). The flat coords `a,b,n,w0,w1` live here. -/
+noncomputable def readerSlotK : Fin (routeMAmbient M222) :=
+  (chartIdxEquiv M222 (tDesc M222 tach222) structAdm_tach222.h0 structAdm_tach222.hc
+    structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inl ((frameSplitEquiv M222 tach222 1
+      (structAdm_tach222.hdesc 0 (by decide)) (structAdm_tach222.hub 0)).symm
+      (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (⟨0, by decide⟩, ⟨0, by decide⟩))))))⟩
+
+noncomputable def readerSlotX : Fin (routeMAmbient M222) :=
+  (chartIdxEquiv M222 (tDesc M222 tach222) structAdm_tach222.h0 structAdm_tach222.hc
+    structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inl ((frameSplitEquiv M222 tach222 1
+      (structAdm_tach222.hdesc 0 (by decide)) (structAdm_tach222.hub 0)).symm
+      (Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (⟨0, by decide⟩, ⟨0, by decide⟩))))))⟩
+
+noncomputable def readerSlotN : Fin (routeMAmbient M222) :=
+  (chartIdxEquiv M222 (tDesc M222 tach222) structAdm_tach222.h0 structAdm_tach222.hc
+    structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inl ((frameSplitEquiv M222 tach222 1
+      (structAdm_tach222.hdesc 0 (by decide)) (structAdm_tach222.hub 0)).symm
+      (Sum.inl (Sum.inr (finProdFinEquiv (⟨0, by decide⟩, ⟨0, by decide⟩)))))⟩
+
+noncomputable def readerSlotW0 : Fin (routeMAmbient M222) :=
+  (chartIdxEquiv M222 (tDesc M222 tach222) structAdm_tach222.h0 structAdm_tach222.hc
+    structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inr ((liftSlotEquiv M222 (tDesc M222 tach222) 0
+      (by decide)).symm (⟨0, by decide⟩, ⟨0, by decide⟩))⟩
+
+noncomputable def readerSlotW1 : Fin (routeMAmbient M222) :=
+  (chartIdxEquiv M222 (tDesc M222 tach222) structAdm_tach222.h0 structAdm_tach222.hc
+    structAdm_tach222.hL).symm ⟨⟨0, by decide⟩, Sum.inr ((liftSlotEquiv M222 (tDesc M222 tach222) 0
+      (by decide)).symm (⟨0, by decide⟩, ⟨1, by decide⟩))⟩
+
+/-- The set of slots `pivotBlowupOn` must leave fixed: the pivot + the five reader slots (card ≤ 6). -/
+noncomputable def forbiddenSlots : Finset (Fin (routeMAmbient M222)) :=
+  insert (structPivot M222 hN_M222)
+    {readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+
+/-- `forbiddenSlots.card ≤ 6` (one pivot + five reader slots). -/
+theorem forbiddenSlots_card_le : forbiddenSlots.card ≤ 6 := by
+  have c1 := Finset.card_insert_le (structPivot M222 hN_M222)
+    ({readerSlotK, readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+      : Finset (Fin (routeMAmbient M222)))
+  have c2 := Finset.card_insert_le readerSlotK
+    ({readerSlotX, readerSlotN, readerSlotW0, readerSlotW1}
+      : Finset (Fin (routeMAmbient M222)))
+  have c3 := Finset.card_insert_le readerSlotX
+    ({readerSlotN, readerSlotW0, readerSlotW1} : Finset (Fin (routeMAmbient M222)))
+  have c4 := Finset.card_insert_le readerSlotN
+    ({readerSlotW0, readerSlotW1} : Finset (Fin (routeMAmbient M222)))
+  have c5 := Finset.card_insert_le readerSlotW0
+    ({readerSlotW1} : Finset (Fin (routeMAmbient M222)))
+  have c6 : ({readerSlotW1} : Finset (Fin (routeMAmbient M222))).card = 1 := Finset.card_singleton _
+  simp only [forbiddenSlots] at *
+  omega
+
+/-- The complement of `forbiddenSlots` has at least 2 slots (`8 − 6`). -/
+theorem free_card_ge_two :
+    2 ≤ ((Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots).card := by
+  have hle := Finset.le_card_sdiff forbiddenSlots (Finset.univ : Finset (Fin (routeMAmbient M222)))
+  have huniv : (Finset.univ : Finset (Fin (routeMAmbient M222))).card = 8 := by
+    rw [Finset.card_univ, Fintype.card_fin, routeMAmbient_M222]
+  have := forbiddenSlots_card_le
+  omega
+
+/-- Two distinct slots in the complement of `forbiddenSlots` (the leaf coords). -/
+theorem exists_leaf_pair :
+    ∃ lf0 lf1 : Fin (routeMAmbient M222),
+      lf0 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
+      ∧ lf1 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots
+      ∧ lf0 ≠ lf1 := by
+  obtain ⟨a, b, ha, hb, hab⟩ := Finset.one_lt_card_iff.mp free_card_ge_two
+  exact ⟨a, b, ha, hb, hab⟩
+
+/-- The first leaf slot (`Classical.choose`; in the complement, so `≠ structPivot`, `∉ readerSet`). -/
+noncomputable def lf0 : Fin (routeMAmbient M222) := (exists_leaf_pair).choose
+
+/-- The second leaf slot. -/
+noncomputable def lf1 : Fin (routeMAmbient M222) := (exists_leaf_pair).choose_spec.choose
+
+theorem lf0_mem : lf0 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
+  (exists_leaf_pair).choose_spec.choose_spec.1
+
+theorem lf1_mem : lf1 ∈ (Finset.univ : Finset (Fin (routeMAmbient M222))) \ forbiddenSlots :=
+  (exists_leaf_pair).choose_spec.choose_spec.2.1
+
+theorem lf0_ne_lf1 : lf0 ≠ lf1 := (exists_leaf_pair).choose_spec.choose_spec.2.2
+
+/-- `lf0 ≠ structPivot` (the leaf slot avoids the pivot — from the complement). -/
+theorem lf0_ne_pivot : lf0 ≠ structPivot M222 hN_M222 := by
+  intro h
+  have := lf0_mem
+  rw [Finset.mem_sdiff] at this
+  exact this.2 (h ▸ Finset.mem_insert_self _ _)
+
+theorem lf1_ne_pivot : lf1 ≠ structPivot M222 hN_M222 := by
+  intro h
+  have := lf1_mem
+  rw [Finset.mem_sdiff] at this
+  exact this.2 (h ▸ Finset.mem_insert_self _ _)
+
+/-- The R2 active set `{structPivot, lf0, lf1}` (card 3 = minAdm; pbo scales the two leaf slots). -/
+noncomputable def active222 : Finset (Fin (routeMAmbient M222)) :=
+  {structPivot M222 hN_M222, lf0, lf1}
+
+/-- `structPivot ∈ active222`. -/
+theorem structPivot_mem_active222 : structPivot M222 hN_M222 ∈ active222 :=
+  Finset.mem_insert_self _ _
+
+/-- `active222.card = 3 = minAdm M222` (pivot + two distinct leaf slots). -/
+theorem active222_card : active222.card = minAdm M222 := by
+  have hp0 : structPivot M222 hN_M222 ≠ lf0 := fun h => lf0_ne_pivot h.symm
+  have hp1 : structPivot M222 hN_M222 ≠ lf1 := fun h => lf1_ne_pivot h.symm
+  rw [active222, Finset.card_insert_of_notMem (by
+    simp only [Finset.mem_insert, Finset.mem_singleton, not_or]; exact ⟨hp0, hp1⟩),
+    Finset.card_insert_of_notMem (by simp only [Finset.mem_singleton]; exact lf0_ne_lf1),
+    Finset.card_singleton, minAdm_M222]
+
+/-- A reader slot is `≠ lf0` and `≠ lf1` (it lies in `forbiddenSlots`, the leaf slots in the
+complement). -/
+theorem readerSlot_ne_leaf (q : Fin (routeMAmbient M222)) (hq : q ∈ forbiddenSlots) :
+    q ≠ lf0 ∧ q ≠ lf1 := by
+  have h0 := lf0_mem; have h1 := lf1_mem
+  rw [Finset.mem_sdiff] at h0 h1
+  exact ⟨fun h => h0.2 (h ▸ hq), fun h => h1.2 (h ▸ hq)⟩
+
+/-- `pivotBlowupOn active222 structPivot x` at the pivot is `x structPivot`. -/
+theorem pbo_pivot (x : Fin (routeMAmbient M222) → ℝ) :
+    pivotBlowupOn active222 (structPivot M222 hN_M222) x (structPivot M222 hN_M222)
+      = x (structPivot M222 hN_M222) := by
+  unfold pivotBlowupOn; rw [if_pos rfl]
+
+/-- `pivotBlowupOn` at `lf0` scales by the pivot: `= x structPivot · x lf0`. -/
+theorem pbo_lf0 (x : Fin (routeMAmbient M222) → ℝ) :
+    pivotBlowupOn active222 (structPivot M222 hN_M222) x lf0
+      = x (structPivot M222 hN_M222) * x lf0 := by
+  unfold pivotBlowupOn
+  rw [if_neg lf0_ne_pivot, if_pos (show lf0 ∈ active222 from by
+    rw [active222]; exact Finset.mem_insert_of_mem (Finset.mem_insert_self _ _))]
+
+/-- `pivotBlowupOn` at `lf1` scales by the pivot: `= x structPivot · x lf1`. -/
+theorem pbo_lf1 (x : Fin (routeMAmbient M222) → ℝ) :
+    pivotBlowupOn active222 (structPivot M222 hN_M222) x lf1
+      = x (structPivot M222 hN_M222) * x lf1 := by
+  unfold pivotBlowupOn
+  rw [if_neg lf1_ne_pivot, if_pos (show lf1 ∈ active222 from by
+    rw [active222]; exact Finset.mem_insert_of_mem (Finset.mem_insert_of_mem
+      (Finset.mem_singleton_self _)))]
+
+/-- `pivotBlowupOn` fixes any reader slot (`∉ {lf0, lf1}`; the pivot branch fixes it too). -/
+theorem pbo_reader (x : Fin (routeMAmbient M222) → ℝ) (q : Fin (routeMAmbient M222))
+    (hq : q ∈ forbiddenSlots) :
+    pivotBlowupOn active222 (structPivot M222 hN_M222) x q = x q := by
+  obtain ⟨hq0, hq1⟩ := readerSlot_ne_leaf q hq
+  by_cases hp : q = structPivot M222 hN_M222
+  · rw [hp]; exact pbo_pivot x
+  · simp only [pivotBlowupOn, if_neg hp,
+      if_neg (show q ∉ active222 from by
+        rw [active222]; simp only [Finset.mem_insert, Finset.mem_singleton, not_or]
+        exact ⟨hp, hq0, hq1⟩)]
+
 end DLNFibre.DLN.RLCT
