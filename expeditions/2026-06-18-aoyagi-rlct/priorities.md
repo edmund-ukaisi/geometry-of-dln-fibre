@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive source-prior coordinate-domain frontier
+
+The source-measure frontier has been sharpened by:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-coordinate-domain.md
+threads/03-block-product-reduction/review-a2-retained-passive-source-prior-coordinate-domain.md
+```
+
+Xhigh read-only review by `Noether the 3rd` returned PASS.
+
+Controller decision: the next A2 source-measure theorem must distinguish the
+three separate measure statements:
+
+```text
+full retained-passive determinant-chart COV
+passive selected-entry chart-produced measure
+external/original DLN source-prior comparison
+```
+
+The first is already present at the retained-passive chart layer.  The second
+is the measure used by the current passive selected-entry finite-integral
+theorems.  The third is still open.  The reduced selected-entry signed-box
+section is lower-dimensional inside the full determinant chart, so it cannot
+remove the raw-order inverse-Jacobian lane hypothesis
+`m.restrict Sdet = Measure.map chart weightedBox` and cannot be called an
+original source prior.
+
+Next priority: prove a passive-variable-explicit sector transport theorem,
+prove an external-prior comparison with explicit density/mutual absolute
+continuity, or rewrite a downstream consumer over the chart-produced passive
+sector measure without a hidden determinant-chart Haar/source-prior
+hypothesis.  Do not add another finite-integral wrapper unless it removes one
+of those named fields.
+
 ## Latest controller decision - 2026-06-29, dev dimension-stack integration
 
 The expedition branch now includes the current `origin/dev` dimension-stack

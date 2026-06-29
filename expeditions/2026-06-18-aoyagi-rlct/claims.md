@@ -140,6 +140,24 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-prior coordinate-domain
+  frontier, 2026-06-29.** A controller reproduction and xhigh read-only review
+  now sharpen the source-measure boundary at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-coordinate-domain.md`
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-source-prior-coordinate-domain.md`.
+  The artifact is not a Lean theorem.  It records that Aoyagi pp. 10-13
+  support the Schur/product algebra, retained-passive coordinate inverse, and
+  p.13 product-difference variables, but do not by themselves identify the
+  reduced selected-entry signed-box measure with full determinant-chart Haar
+  measure or with an external/original DLN source prior.  The next theorem in
+  this lane must remove a named field: either a passive-variable-explicit
+  sector transport theorem, an external-prior density or mutual absolute
+  continuity comparison, or a consumer genuinely rewritten over the
+  chart-produced passive sector measure.  No source-prior transport,
+  selected-entry image coverage, determinant-chart Haar theorem for the
+  reduced section, source-rank coverage, normal crossings, pole order, or RLCT
+  is claimed.
 - **Current status addendum, Case 2 passive Jacobian-weighted source-stratum
   bounds finite integral, 2026-06-29.** Lean now exposes
   `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_withDensity_jacobian_finiteMass_sourceStratum_bounds`

@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive source-prior coordinate-domain frontier
+
+Reproduction:
+`reproduction-a2-retained-passive-source-prior-coordinate-domain.md`.
+Review:
+`review-a2-retained-passive-source-prior-coordinate-domain.md`
+passed by xhigh read-only checker `Noether the 3rd`.
+
+This is a frontier clarification, not a new Lean theorem.  The note separates
+three statements that must not be conflated:
+
+```text
+full retained-passive determinant-chart COV
+passive selected-entry chart-produced measure
+external/original source-prior comparison
+```
+
+Aoyagi pp. 10-13 support the Schur/product algebra, retained-passive
+coordinate inverse, and p.13 product-difference variables.  They do not by
+themselves identify the reduced selected-entry signed-box measure with full
+determinant-chart Haar measure or with an external DLN source prior.
+
+The next Lean theorem in this lane should remove a named field or construct a
+precise sector/source-prior comparison.  Acceptable shapes are a
+passive-variable-explicit sector transport theorem, a mutually absolutely
+continuous external-prior comparison with explicit density, or a downstream
+consumer rewritten over the chart-produced passive sector measure without a
+hidden `hmap`/Haar hypothesis.  Do not add another finite-integral wrapper
+unless it removes one of those fields.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian-weighted source-stratum bounds finite integral
 
 Reproduction:

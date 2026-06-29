@@ -3,6 +3,51 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Source-Prior Coordinate-Domain Frontier - 2026-06-29
+
+The post-interruption source-measure frontier has been sharpened in:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-source-prior-coordinate-domain.md
+threads/03-block-product-reduction/review-a2-retained-passive-source-prior-coordinate-domain.md
+```
+
+Xhigh read-only review by `Noether the 3rd` returned PASS after wording was
+tightened around the determinant/source-recursive chart inverse.
+
+The controlling distinction is now:
+
+```text
+full retained-passive determinant-chart COV
+passive selected-entry chart-produced measure
+external/original DLN source-prior comparison
+```
+
+The retained-passive coordinate/inverse layer is strong: the source readback
+lies in the determinant chart on the source-recursive chart and is the
+coordinate inverse there, via the `sourceRecursiveDetChart`,
+`sourceReadback`, `sourceReadback_edgeMatrix_eq`,
+`edgeMatrix_sourceReadback_eq_of_sourceRecursiveDetChart`, and raw-order
+inverse families.  The full retained-passive determinant-chart COV is already
+present, and the Case 2 passive selected-entry finite-integral theorems use
+chart-produced measures of the form `weightedBox` or
+`passiveMeasure.prod weightedBox`.
+
+What is not proved is the third statement: an external/source-prior
+comparison.  The reduced selected-entry section is lower-dimensional inside
+the full determinant chart and cannot remove the `m.restrict Sdet =
+Measure.map chart weightedBox` hypothesis in the raw-order inverse-Jacobian
+lane.  Removing that field requires either a passive-variable-explicit sector
+transport theorem, an external-prior comparison with explicit density or
+mutual absolute continuity, or a downstream consumer stated directly over the
+chart-produced passive sector measure.  Another finite-integral wrapper is
+not progress unless it removes such a named field.
+
+Nonclaims: no determinant-chart Haar theorem for the reduced selected-entry
+section, no raw/source Haar theorem, no original source-prior transport, no
+source-image or source-rank coverage, no normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian-Weighted Source-Stratum Bounds Finite Integral - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has:
