@@ -112,10 +112,10 @@ import DLNFibre.Core.DeterminantalChart
 import DLNFibre.Core.DeterminantalChartRing
 -- ker of a multivariate aeval = the graph ideal (reusable, arbitrary index type), + the elimination
 -- quotient equiv + graph-ideal primality. The generator-free elimination engine (G2-2).
-import DLNFibre.Core.MvPolynomialKerAeval
+import DLNFibre.Core.MvPolynomial.GraphIdeal
 -- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C`
 -- engine (G2-2).
-import DLNFibre.Core.GraphIdealHeight
+import DLNFibre.Core.MvPolynomial.GraphIdealHeight
 -- Reindex + detΔ-localization bridge for the determinantal base: repCoordReindex, blockAlgEquiv
 -- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C
 -- detSchurS). The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
@@ -488,3 +488,11 @@ import DLNFibre.Core.MinimalPrime.Localization
 import DLNFibre.Core.MinimalPrime.Polynomial
 import DLNFibre.Core.MinimalPrime.Radical
 import DLNFibre.Core.MinimalPrime.Bridge
+-- foundation-lift P2-R2: the matrix minor-rank core, extracted from `Core.RankLocusClosed` into the
+-- network-free `Core.Matrix.RankMinors` (ns `Matrix`, mirrors `Mathlib.LinearAlgebra.Matrix.Rank`):
+-- the determinantal-rank criterion `Matrix.rank_le_iff_forall_submatrix_det_eq_zero` (over a field,
+-- `A.rank ≤ r ↔` every `(r+1)`-minor's det = 0) + the supports
+-- (`rank_submatrix_le_rank`, `det_eq_zero_of_rank_lt`, `submatrix_det_eq_zero_of_rank_le`,
+-- `exists_injective_linearIndependent_rows`, `exists_submatrix_det_ne_zero_of_le_rank`) and the
+-- injective-field-hom rank invariance `Matrix.rank_map_eq_of_injective`.
+import DLNFibre.Core.Matrix.RankMinors

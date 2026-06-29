@@ -4,7 +4,7 @@ import Mathlib.LinearAlgebra.Matrix.ToLinearEquiv
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 import Mathlib.RingTheory.Localization.FractionRing
 import Mathlib.Algebra.MvPolynomial.Rename
-import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.Matrix.RankMinors
 import DLNFibre.Core.MultComorphism
 import DLNFibre.Core.SigmaComponents
 import DLNFibre.Core.SigmaCodim

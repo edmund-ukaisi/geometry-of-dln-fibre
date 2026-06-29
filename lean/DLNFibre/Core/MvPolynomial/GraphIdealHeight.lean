@@ -1,9 +1,12 @@
-import DLNFibre.Core.MvPolynomialKerAeval
-import DLNFibre.Core.NullstellensatzCodim
+/-
+Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
+-/
+import DLNFibre.Core.MvPolynomial.GraphIdeal
+import DLNFibre.Core.Dimension.Codimension
 import Mathlib.RingTheory.MvPolynomial.Localization
 
 /-!
-# `DLNFibre.Core.GraphIdealHeight` — the height of a block graph ideal over a field
+# `DLNFibre.Core.MvPolynomial.GraphIdealHeight` — the height of a block graph ideal over a field
 
 The **height** of the graph ideal that eliminates the `σ`-block of `MvPolynomial (σ ⊕ τ) k` (`k` a
 field, `σ τ` finite) is `Nat.card σ`. Concretely, viewing `MvPolynomial (σ ⊕ τ) k ≃ₐ[k]
@@ -17,15 +20,26 @@ This is the lower-bound engine for the localized determinantal base presentation
 graph ideal `J` eliminates the `B22` block, so `height J = #B22block = (p−r)(q−r) = C` — the
 direction the `Iad = J` height-squeeze genuinely needs (the inclusion `J ⊆ Iad` only gives `≤ C`).
 
-Reuses `Core.MvPolynomialKerAeval` (the graph-ideal / quotient package) and
-`Core.NullstellensatzCodim` (the field catenary `height_add_ringKrullDim_quotient_eq_card`).
+This module is the height-measuring companion to `DLNFibre.Core.MvPolynomial.GraphIdeal` (which
+builds `graphIdeal` and its elimination quotient). It lives in namespace `MvPolynomial`, beside the
+ideal it measures, and so — like `GraphIdeal` — mirrors a plausible upstream home
+(`Mathlib.RingTheory.MvPolynomial.…`). The height content uses the field catenary
+`height_add_ringKrullDim_quotient_eq_card` and the `AlgEquiv` height/quotient-dimension transports
+from `DLNFibre.Core.Dimension` (`Codimension`/`Catenary`), so it carries that dimension dependency,
+which `GraphIdeal` deliberately does not — the reason for the split into a sibling file.
 
-**Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
+**Minimal hypotheses.** `ringKrullDim_quotient_graphIdeal_eq` needs only `[Finite τ]` (it reads the
+quotient `MvPolynomial τ k`, so it is marked `omit [Finite σ]`). The height results need **both**
+`[Finite σ]` and `[Finite τ]`: the catenary fires on `MvPolynomial (σ ⊕ τ) k`, whose finite Krull
+dimension needs `[Finite (σ ⊕ τ)]`, and `Nat.card_sum` needs both summands finite.
+
+**Dependency rule:** pure commutative algebra (`MvPolynomial` + `Dimension`); no DLN/RepCoord
+dependency. `Core` only — never import `DLNFibre.DLN`.
 -/
 
-namespace DLNFibre.Core
+namespace MvPolynomial
 
-open MvPolynomial Dimension
+open DLNFibre.Core.Dimension
 
 universe u v w
 
@@ -131,8 +145,9 @@ theorem height_coordIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
 
 /-- The **translation automorphism** `X b ↦ X b + C (c b)` of `MvPolynomial σ R`, an `AlgEquiv` with
 inverse `X b ↦ X b − C (c b)`. It carries the coordinate ideal `span (range X)` to `graphIdeal c`
-(used to transport heights: a graph ideal is a translated coordinate ideal). -/
-noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
+(used to transport heights: a graph ideal is a translated coordinate ideal). Local proof helper for
+`height_graphIdeal_localization_eq`; `private`. -/
+private noncomputable def translateAux {R : Type*} [CommRing R] (c : σ → R) :
     MvPolynomial σ R ≃ₐ[R] MvPolynomial σ R :=
   AlgEquiv.ofAlgHom (aeval (fun b ↦ X b + C (c b))) (aeval (fun b ↦ X b - C (c b)))
     (by apply MvPolynomial.algHom_ext; intro b; simp)
@@ -158,4 +173,4 @@ theorem height_graphIdeal_localization_eq (f : MvPolynomial τ k) (hf : f ≠ 0)
     · rintro ⟨b, rfl⟩; exact ⟨X b, ⟨b, rfl⟩, by simp [translateAux, map_neg]; ring⟩
   rw [← htrans, height_map_algEquiv, height_coordIdeal_localization_eq f hf Sd]
 
-end DLNFibre.Core
+end MvPolynomial

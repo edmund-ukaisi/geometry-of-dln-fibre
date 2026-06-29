@@ -3,6 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.FibreChartConjugation
 import DLNFibre.Core.FibreBundleTransition
+import DLNFibre.Core.Matrix.RankMinors
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 
 /-!

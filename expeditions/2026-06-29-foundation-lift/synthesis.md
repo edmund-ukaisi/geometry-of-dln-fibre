@@ -40,9 +40,37 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   axiom-clean. The `Ideal.MinimalPrime`-mirroring family now stands: `Finite · TopDimensional · Localization ·
   Polynomial · Radical · Bridge`. Decorrelated crux-review (05r) in flight; on PASS → **PR-P1 opens** (async
   review) and P2 begins.
+- **2026-06-29 — PHASE 1 SIGNED OFF → PR #15** (`expedition/foundation-lift-p1 → dev`). Crux-review **PASS**:
+  the per-prime `hper` is genuine + byte-faithful, and the non-foldability was Codex-corroborated with the
+  explicit counterexample `A = k[t]₍ₜ₎ × k[u]`, `f=(t,1)` (sharpening the per-prime-no-drop memory — the
+  *product* shape, not a bare DVR, is what witnesses it). Transport sound, assembly coherent, no blocker.
+  P1-boundary re-gate green 3819. → **Rolling into P2 without pausing**: stacked branch
+  `expedition/foundation-lift-p2` off P1's tip; P2-R1 (graph-ideal package, the lowest-risk warm-up) dispatched.
+- **2026-06-29 — P2-R1 LANDED** (`c7287232`). The graph-ideal elimination package → `Core/MvPolynomial/GraphIdeal.lean`
+  (ns `MvPolynomial`): `ker_aeval_eq_graphIdeal` (the multivariate analogue of `Polynomial.ker_evalRingHom`,
+  absent in Mathlib v4.29) + quotient-equiv elimination + primality, all `[CommRing]`-general, verbatim re-home.
+  `MvPolynomialKerAeval.lean` deleted; only `GraphIdealHeight` re-pointed (transitive consumers `open MvPolynomial`).
+  Green 3819, axiom-clean. → P2-R2 dispatched — **the P2 CRUX** (matrix minor-rank `rank_le_iff_forall_submatrix_det_eq_zero`,
+  the `←` extraction direction): full re-gate + decorrelated review on completion.
 - **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
   (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
   unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
   to avoid `map`/`comap`/`height` shadowing). Green 3819, axiom-clean. The per-prime no-drop is NOT here
   (R5's). → **P1-R5 dispatched — the CRUX** (transport rungs; the per-prime no-drop count survival): full
   controller re-gate + decorrelated review on completion.
+- **2026-06-29 — P2-R2 LANDED + PR #15 review fixes applied** (`eff28654` rebased / `165e0954`). P2-R2 (the P2
+  crux): matrix minor-rank core → `Core/Matrix/RankMinors.lean` — `rank_le_iff_forall_submatrix_det_eq_zero`
+  (the `↔` Mathlib lacks) + `rank_map_eq_of_injective`; the `←` minor-extraction kept verbatim at `Fin`/`ℕ`
+  generality (broader `Fintype` index = clean follow-up); DLN remainder stays local; green 3820, axiom-clean.
+  **Meanwhile, operator review on PR #15** (5 comments — all concurred): dropped 2 unused `[q.IsPrime]`
+  (verified), repointed stale `Core.TopDimMinPrimes` prose, softened `TopDimensional` doc to dimension-only,
+  `Radical` doc prime→ideal, stripped process-provenance from `Localization` header — applied Lean-only on p1
+  (`165e0954`, #15 updated), and **p2 rebased onto p1'** (`09c5cb79`, clean — disjoint files). → P2-R2 crux-review
+  (07r) routed + **P2-R3 dispatched** (`GraphIdealHeight`), concurrently. After R3 + 07r: P2 boundary → PR-P2.
+- **2026-06-29 — PHASE 2 CONTENT-COMPLETE → PR-P2.** P2-R2 crux-review (07r) **PASS** (the `←` minor-extraction
+  sound at `Fin`/`ℕ` generality, Codex xhigh corroborated; honest `[Field k]`; faithful split; the deferred
+  broader `Fintype` index an honest non-extension → roadmap). P2-R3 (`12fb9faa`): `height_graphIdeal_eq`
+  re-homed to a sibling `Core/MvPolynomial/GraphIdealHeight.lean` (dimension-dep quarantined from the
+  upstream-ready `GraphIdeal`), min hyps confirmed. **P2-boundary authoritative re-gate green 3820**,
+  axiom-clean. The determinantal & elimination library now stands: `Core/Matrix/RankMinors.lean` +
+  `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}.lean`. → PR-P2 opened (stacked on P1); rolling into P3.
