@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive source-stratum selected-entry
+  two-sided loss-density iff, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds`.
+  For the retained-passive p.13 local source, the selected-entry monomial
+  lower bound plus supplied residual readout and signed-box pushforward prove
+  residual positivity on the local source.  The retained-passive self-base
+  local coverage theorem then allows the source-stratum/local-source two-sided
+  iff to use source-rank-stratum comparison bounds.  The theorem keeps
+  residual boundedness and all four source-stratum comparison bounds explicit,
+  and returns the local iff between actual loss-density finiteness over
+  `(mu.restrict (U inter sourceStratum)).prod nu` and
+  `residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`.
+  This does not prove signed-box pushforward, residual readout, comparison
+  bounds, residual boundedness, selected-entry critical integrability,
+  signed-box source/image equality, source-rank coverage, external source-prior
+  or Jacobian/density transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive chart-produced selected-entry
   two-sided loss-density iff, 2026-06-29.** Lean now exposes
   `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure`.

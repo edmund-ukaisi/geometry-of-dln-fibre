@@ -10,6 +10,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, retained-passive source-stratum selected-entry two-sided loss-density iff
+
+The retained-passive selected-entry source-stratum-bound socket now has a
+two-sided iff:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds
+```
+
+It derives residual measurability and positivity on the retained-passive p.13
+local source from `Continuous Cedge`, the selected-entry monomial lower bound,
+the supplied signed-box pushforward, and the supplied residual readout.  It
+then uses the retained-passive self-base local coverage theorem to pass from
+local-source residual hypotheses to source-rank-stratum comparison bounds and
+conclusion.  Residual boundedness and all four source-stratum two-sided bounds
+remain explicit.
+
+Nonclaims remain strict: no selected-entry critical inequality, no positive
+signed-box radius hypothesis, no source-density upper/nonnegativity
+hypotheses, no residual integrability proof, no signed-box source/image
+equality or source-rank coverage proof, no external source-prior/Jacobian/
+density transport, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, retained-passive chart-produced selected-entry two-sided loss-density iff
 
 The retained-passive local-source selected-entry two-sided iff now has a

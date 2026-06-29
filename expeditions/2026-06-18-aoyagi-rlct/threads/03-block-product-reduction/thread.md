@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive source-stratum selected-entry two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-retained-passive-source-stratum-selected-entry-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_retainedPassiveP13LocalSource_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds
+```
+
+It derives residual measurability and residual positivity on the retained-
+passive local source, uses the retained-passive self-base local coverage
+theorem to relate the source-rank stratum to that local source, and returns the
+source-stratum two-sided loss-density iff.  Residual boundedness and the four
+source-stratum comparison bounds remain explicit.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RetainedPassiveLocalMeasure` passed.
+Cicero the 2nd xhigh read-only review passed.  Hygiene gates passed:
+`scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+axiom probe with `[propext, Classical.choice, Quot.sound]`.  Nonclaims remain:
+no selected-entry critical inequality, no residual integrability proof, no
+signed-box source/image equality, no source-rank coverage proof, no external
+transport theorem, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced selected-entry two-sided loss-density iff
 
 Reproduction:
