@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive Jacobian product bounded unit,
+  2026-06-29.** Lean now exposes
+  `exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For the endpoint-transported passive Case 2 selected-entry coordinate map
+  `Y`, the retained-passive solved-`A1` product raw-order Jacobian density is
+  eventually bounded above and below by positive constants near any basepoint
+  whose `Ctop` and passive `A1` determinants are units.  The theorem assumes
+  continuity of the passive fields and does not require determinant-unit
+  hypotheses away from the basepoint.  Reproduction, statement card, and review
+  are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-jacobian-product-bounded-unit.md`.
+  Xhigh review passed.  This is passive retained-coordinate Jacobian-unit
+  bookkeeping only: no determinant-chart Haar transport, raw/source Haar
+  transport, external/original source-prior comparison, selected-entry image
+  coverage, source-rank coverage, local inverse/coverage, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, Case 2 passive residual-coordinate product-measure
   pushforward, 2026-06-29.** Lean now exposes
   `measure_map_residualBlockCoordinateMap_case2EndpointTransport_sourceEdgeFamilyOfData_withPassive_passiveProductMeasure_eq_smul_restrict_chartMap_image`

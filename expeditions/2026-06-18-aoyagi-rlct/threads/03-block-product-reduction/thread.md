@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian product bounded unit
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-product-bounded-unit.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-product-bounded-unit.md`.
+Review:
+`review-a2-case2-passive-jacobian-product-bounded-unit.md`.
+
+Lean now exposes:
+
+```text
+exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive
+```
+
+This theorem composes the generic retained-passive determinant-chart
+bounded-unit theorem with the endpoint-transported passive Case 2 selected-
+entry coordinate map.  It needs continuity of the passive fields and basepoint
+determinant-unit hypotheses for `Ctop` and passive `A1`; it concludes positive
+lower and upper bounds eventually near the chosen point.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+`git diff --check`, `scripts/sorries`, and direct axiom probe passed.
+Leibniz the 3rd xhigh review returned PASS with no findings.
+
+Nonclaims: no determinant-chart Haar pushforward, raw/source Haar transport,
+source-prior comparison, selected-entry image coverage, source-rank coverage,
+local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive residual-coordinate product-measure pushforward
 
 Reproduction:

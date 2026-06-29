@@ -3,6 +3,57 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian Product Bounded Unit - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now has a composed
+bounded-unit theorem for the endpoint-transported passive Case 2 selected-entry
+coordinates:
+
+```text
+exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive
+```
+
+For
+
+```text
+rawData z =
+  case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+    (A1passive z.1) (F2 z.1) (A3passive z.1)
+    (Ctop z.1) (F3 z.1) z.2 eNext
+retainedData z = (rawData z).endpointTransport e
+Y z = topologyTuple (retainedData z)
+```
+
+the theorem proves that
+`retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)` is eventually
+bounded below and above by positive real constants near `z0`.  The hypotheses
+are continuity of the five passive fields and determinant-unit hypotheses at
+the base parameter for `Ctop` and each passive `A1` block.  The residual
+selected-entry coordinate `z.2` carries no determinant-unit hypothesis.
+
+The proof route is the expected one: passive selected-entry datum continuity,
+continuous endpoint transport, continuous `topologyTuple`, basepoint
+determinant-chart membership from `Ctop`/`A1passive` units, then the generic
+retained-passive composed bounded-unit theorem.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-jacobian-product-bounded-unit.md`.
+
+Xhigh review by `Leibniz the 3rd` returned PASS with no findings.  Focused
+build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`git diff --check` passed.  `scripts/sorries` reports
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`.  Direct axiom probe reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no determinant-chart Haar pushforward, no raw/source Haar theorem,
+no original source-prior transport, no selected-entry source/image equality,
+no source-rank coverage, no local inverse/coverage, no normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Case 2 Passive Residual-Coordinate Product-Measure Pushforward - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now identifies the

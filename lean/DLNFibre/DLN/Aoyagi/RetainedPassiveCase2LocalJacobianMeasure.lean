@@ -1201,7 +1201,7 @@ theorem continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTran
     [∀ i, ContinuousSMul ℝ (W₂ i)]
     (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
     [∀ j, FiniteDimensional ℝ (W₂ j)]
-    {τ η : Type} [TopologicalSpace η] [Fintype τ] [DecidableEq τ]
+    {τ η : Type} [TopologicalSpace η]
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
@@ -1332,6 +1332,144 @@ theorem continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTran
     paperEndpointFixedBaseRetainedPassiveP13SourceChart,
     paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData, ρ, κ'] using
     hsource.comp htransported
+
+set_option linter.style.longLine false in
+/-- Along the endpoint-transported passive-parameter Case 2 selected-entry
+chart, the retained-passive solved-`A1` product raw-order Jacobian density is
+locally a positive bounded unit.
+
+This is only passive Jacobian accounting for the chart coordinates.  It does
+not prove source-prior transport, determinant-chart Haar transport,
+source-image coverage, normal crossings, pole order, or RLCT. -/
+theorem exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type} [TopologicalSpace η]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3)
+    (z₀ : η × (case2ResidualBlockPivotEntries n S (J + 1) → ℝ))
+    (hCtop₀ : IsUnit ((Ctop z₀.1).det))
+    (hA1passive₀ : ∀ p : Fin 1, IsUnit ((A1passive z₀.1 p).det)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let Y :
+        η × (center → ℝ) →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦ topologyTuple (retainedData z)
+    ∃ ε K : ℝ, 0 < ε ∧ 0 < K ∧
+      ∀ᶠ z in nhds z₀,
+        ε ≤
+            retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z) ∧
+          retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z) ≤ K := by
+  intro center retainedData Y
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ : Fin 3 → Type := case2PostPivotTwoEdgeDomain n S J τ
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let rawData :
+      η × (center → ℝ) →
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ :=
+    fun z ↦
+      case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+        (ρ := ρ) n hS hcont hnext
+        (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+        (F3 z.1) z.2 eNext
+  have hraw : Continuous rawData := by
+    simpa [rawData, center, ρ, κ] using
+      continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+        (ρ := ρ) n hS hcont hnext
+        A1passive F2 A3passive Ctop F3 eNext
+        hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+  have htransport :
+      Continuous
+        (fun data :
+            ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+              (K := ℝ) (ρ := ρ) κ ↦
+          data.endpointTransport e) := by
+    simpa [κ, κ'] using
+      ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_endpointTransport
+        (K := ℝ) (ρ := ρ) e
+  have hYcont : Continuous Y := by
+    have hretained :
+        Continuous
+          (fun z : η × (center → ℝ) ↦ (rawData z).endpointTransport e) :=
+      htransport.comp hraw
+    change Continuous
+      (fun z : η × (center → ℝ) ↦ topologyTuple ((rawData z).endpointTransport e))
+    exact
+      (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_topologyTuple
+        (K := ℝ) (ρ := ρ) (κ' := κ')).comp hretained
+  have hY₀ :
+      Y z₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    have hdet : ((rawData z₀).endpointTransport e).detChart := by
+      simpa [rawData, center, ρ, κ] using
+        case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+          (ρ := ρ) n hS hcont hnext
+          (A1passive z₀.1) (F2 z₀.1) (A3passive z₀.1)
+          (Ctop z₀.1) (F3 z₀.1) z₀.2 eNext e
+          hCtop₀ hA1passive₀
+    change
+      topologyTuple ((rawData z₀).endpointTransport e) ∈
+        topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    simpa using
+      (topologyTuple_mem_topologyTupleDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') ((rawData z₀).endpointTransport e)).2 hdet
+  simpa [Y, center, ρ, κ'] using
+    exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_comp
+      (M := 1) (ρ := ρ) (κ' := κ')
+      (Y := Y) (a₀ := z₀) hYcont.continuousAt hY₀
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

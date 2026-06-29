@@ -10,6 +10,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian product bounded unit
+
+The passive selected-entry frontier now has local bounded-unit accounting for
+the retained-passive solved-`A1` product Jacobian factor:
+
+```text
+exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive
+```
+
+The theorem composes the generic retained-passive determinant-chart
+bounded-unit theorem with the endpoint-transported passive Case 2 selected-
+entry coordinate map.  It assumes continuity of the passive fields and requires
+determinant-unit hypotheses only at the base parameter for `Ctop` and
+`A1passive`; it concludes positive lower and upper bounds eventually near the
+chosen point.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit.md
+threads/03-block-product-reduction/review-a2-case2-passive-jacobian-product-bounded-unit.md
+```
+
+This is passive retained-coordinate Jacobian-unit bookkeeping only.  Do not
+treat it as determinant-chart Haar transport, raw/source Haar transport,
+original source-prior comparison, selected-entry image coverage, source-rank
+coverage, local inverse/coverage, normal crossings, pole order, or RLCT.
+
+Next priority is the larger passive-selected-entry source-measure frontier:
+combine the passive product-domain measure, residual-coordinate marginal,
+chart support, and this bounded-unit factor into a precise local measure
+comparison without inventing an external source prior.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive residual-coordinate product-measure pushforward
 
 The concrete passive product-domain measure now has its residual-coordinate
