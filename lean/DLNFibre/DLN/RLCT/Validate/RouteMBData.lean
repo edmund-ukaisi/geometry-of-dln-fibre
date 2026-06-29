@@ -107,13 +107,24 @@ example (M t : Fin (L + 1) → ℕ) (B : GenBlk M t)
 
 /-! ## The `φ = B ∘ pivotBlowupOn` reduction (the map-identity half, modulo the slot-identification)
 
-The radial split `φ = B ∘ pivotBlowupOn active p₀` of route (i): `B` the radial-`1` boundary chart
-`B y := phiGen 1 M t (genBlkFlatLiveR1 … (rfin y) y) hle`. Holds iff the achiever radial
-scalar `x p₀` equals the `pivotBlowupOn`-scaling of the residual coords — the `GenBlk`-level
-SLOT-IDENTIFICATION `smulRmatRfin (x p₀) (B₀ x) = B₀ (pivotBlowupOn active p₀ x)` (the R/Rfin free
-coords ARE the active set, scaled by `x p₀`; the genm-detradj budget/squareness piece). This BANKS
-the reduction: given that `GenBlk` identity (`hslot`), `φ = B ∘ pivotBlowupOn`. Via
-`phiGen_smul_radial` (radial absorbs into `smulRmatRfin`) + `hslot` (= read the blown-up coords). -/
+⚠ **DEAD-END (do NOT wire): the `hslot` hypothesis below is FALSE for `genBlkFlatLiveR1`** — REFUTED
+sorry-free in `RouteMSlotId.not_hslot_genBlkFlatLiveR1` (triple-confirmed: hand + Codex + sympy
+`route-i-l2/fixed_pivot_refutation.py`). `phiFlatLiveR1` uses the GAUGE-FIXED pivot decoder
+`genBlkFlatLiveR1`: its pivot `Rmat p = rmatPad (pivotEIndicator p)` is the LITERAL `1` (not a free
+`readE`). So `smulRmatRfin (x p₀)` scales it to entry `x p₀`, while the RHS keeps the SAME constant
+`pivotEIndicator` (entry `1`) — `hslot` forces `x p₀ = 1`, false for general `x`.
+
+DEEPER: `φ = B ∘ pivotBlowupOn` ITSELF fails for the fixed pivot — the pivot E-block carries the
+ADDITIVE radial `u·1 = u`, which the MULTIPLICATIVE `pivotBlowupOn` (blowing up OTHER active coords)
+cannot reproduce; `B` (radial-`1`) loses that `u`. The route-(i) decoder choice is UNSETTLED
+(controller-level: the fixed pivot is the `minAdm−1` count gauge per the `RouteMFlatLive` header;
+re-targeting at the live-pivot `phiFlatLive` reshapes the det/count). It stays a VALID CONDITIONAL
+(the `phiGen_smul_radial` reduction is sound + reusable) but is OFF the build path until resettled.
+
+The radial split `φ = B ∘ pivotBlowupOn active p₀`: `B` the radial-`1` boundary chart
+`B y := phiGen 1 M t (genBlkFlatLiveR1 … (rfin y) y) hle`. Holds iff the `GenBlk`-level
+SLOT-IDENTIFICATION `smulRmatRfin (x p₀) (B₀ x) = B₀ (pivotBlowupOn active p₀ x)` (`hslot`) — FALSE
+(above). Via `phiGen_smul_radial` + `hslot`. -/
 theorem phiFlatLiveR1_eq_B_comp_pivotBlowupOn (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
     (hN : 0 < routeMAmbient M) (p : ℕ)
     (hp1 : Text M t (p + 1) ≤ Text M t p) (hp2 : Text M t (p + 1) ≤ Wext M p)
