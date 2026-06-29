@@ -1,23 +1,40 @@
 # Statement cards — thread 59 (smeared per-family, genm-smeared2)
 
-The R1-LOWER boundary-SMEARED achiever box-divergence (#159). The genuinely-new algebraic core (the
-projection cancellation that the rate `F = z²·U` rests on) + the cast-free rate chain, banked
-sorry-free + axiom-clean. Reviewer fidelity-PASS on the projection core (decorrelated + Codex xhigh,
-in-Lean negative control). **The remaining gap is the opaque-width chart construction** (see the
-"Reachable ceiling" section at the end) — the algebra and the routeMCore rate-from-collapsed-product
-are bedrock; discharging the chart-eval hypothesis is the next (multi-tide) leg.
+The R1-LOWER boundary-SMEARED achiever box-divergence (#159). The genuinely-new algebraic core + the
+cast-free rate chain + the L=2 opaque-width chart-eval + the M-agnostic divergence engine + the
+honest-ceiling contract interface — banked sorry-free + axiom-clean. Reviewer fidelity-PASS on the
+projection core (decorrelated + Codex xhigh, in-Lean negative control). **The remaining gap is the L=2
+chart geometry** (the `φ=ψ∘R` factorization/rate-transport + containment field A); the rate and the
+divergence are bedrock, end-to-end (see "End-to-end chain" + "Reachable ceiling" below).
 
-## Modules banked (@8576f861)
+## Modules banked (@197a17c9) — 8 modules, ~24 theorems, ALL axiom-clean
 
 | module | theorems | role |
 |---|---|---|
 | `RouteMSmearedProjCancel` | `gram_routing_eq_factor`, `proj_cancel_of_factorsThrough` | general projection cancellation (any tall P₁) |
 | `RouteMSmearedFrontFactor` | `front_factorsThrough_general`, `frontShear_cancel_general`, `prodAux_frontShear_cancel_general` | col(P₂)⊆col(P₁) bridge + the wired `prodAux` bottleneck bridge |
-| `RouteMSmearedTelescope` | `telescope_collapse`, `frobeniusSq_smul`, `smeared_rate_of_cancel`, `frobeniusSq_nonneg` | abstract `F = z²·U` (cast-free) |
+| `RouteMSmearedTelescope` | `telescope_collapse`, `frobeniusSq_smul`, `smeared_rate_of_cancel`, `frobeniusSq_nonneg`, `deepBlock`, `deepBlock_collapse` | abstract `F = z²·U` (cast-free) + the `r⊕s` block collapse |
 | `RouteMSmearedRateBridge` | `routeMCore_eq_frobeniusSq_prod`, `routeMCore_rate_of_prod_collapsed` | the `routeMCore` rate from a collapsed deep product |
+| `RouteMSmearedChartL2` | `deepWidthEquiv`, `chartL2Deep`, `chartL2Params`, `prod_chartL2Params`, `phiL2`, `routeMCore_phiL2` | the L=2 OPAQUE-width chart-eval + rate (the [HIGH]-cast piece) |
+| `RouteMSmearedAxisPeel` | `axisPeel_diverges_of_quadratic_rate` | M-agnostic weighted divergence from a quadratic rate (field B core) |
+| `RouteMSmearedBoxDiv` | `smearedSubBox_peel`, `smearedSubBox_weighted_diverges` | field B on the real source box (pivot peel) |
+| `RouteMSmearedHeadlineIface` | `routeMCore_box_diverges_on_smearedSubBox`, `hSdiv_of_peeled_rate` | the honest-ceiling contract interface (headline from named chart hyps) |
 
 All axiom-clean `[propext, Classical.choice, Quot.sound]`. NEED aggregator wiring (`DLNFibre.lean`,
 single-writer — DEFERRED to the smeared leg-close per controller).
+
+## End-to-end chain (what stands hole-free)
+
+    RATE:  prodAux_split_exists (banked) → prodAux_frontShear_cancel_general (P₁·Λ₀=P₂, gen r)
+             → frontShear_cancel_general → proj_cancel_of_factorsThrough
+           telescope_collapse → deepBlock_collapse (r⊕s) → prod_chartL2Params (L=2, opaque width)
+             → routeMCore_phiL2  (routeMCore M φ = z²·‖P₁H̄‖², L=2)
+    DIVERGENCE:  axisPeel_diverges_of_quadratic_rate → smearedSubBox_weighted_diverges
+             → hSdiv_of_peeled_rate  (the contract's hSdiv from the peeled rate)
+    HEADLINE:  routeMCore_box_diverges_on_smearedSubBox  (= the banked contract on smearedSubBox)
+
+The headline needs only: `ψ` MP+embedding, `R` radial (det/injOn/fderiv), `hSpre` (containment = field A),
+and `hRate` (the rate in the contract's `routeMCore (ψ(R·))` form). Each is a NAMED interface hypothesis.
 
 ---
 
@@ -118,32 +135,40 @@ single-writer — DEFERRED to the smeared leg-close per controller).
 
 ---
 
-## Reachable ceiling (this tide) + the named gap
+## Reachable ceiling (this tide) + the named gaps
 
-**Banked bedrock (this tide):** the complete cast-free **algebra + rate chain** for the smeared rate
-`F = z²·U`, 9 theorems across 4 modules, all sorry-free + axiom-clean, projection core reviewer-PASS:
+**Banked bedrock (this tide):** the complete cast-free **rate chain** AND the **L=2 opaque-width
+chart-eval** AND the **M-agnostic divergence engine** AND the **honest-ceiling contract interface** —
+~24 theorems across 8 modules, all sorry-free + axiom-clean, projection core reviewer-PASS. The
+end-to-end chain (RATE → DIVERGENCE → HEADLINE-interface) is shown above; the [HIGH]-cast chart-eval
+(`prod_chartL2Params` / `routeMCore_phiL2`) is DONE for L=2 (built first try, the dependent-`Fin`
+block-split isolated to ONE `deepWidthEquiv` sum-reindex per Codex's option-c).
 
-    prodAux_split_exists (banked)
-      → prodAux_frontShear_cancel_general   (P₁·Λ₀ = P₂, the shear cancellation, general r)
-        → frontShear_cancel_general → proj_cancel_of_factorsThrough
-    telescope_collapse (P₁·Λ₀=P₂ ⟹ D = z•(P₁H̄)) → smeared_rate_of_cancel (∑Dᵢⱼ² = z²·‖P₁H̄‖²)
-    routeMCore_eq_frobeniusSq_prod → routeMCore_rate_of_prod_collapsed (the routeMCore rate)
+**The remaining gaps for the L=2 HEADLINE** (each a NAMED hypothesis of
+`routeMCore_box_diverges_on_smearedSubBox` — no `sorry`):
 
-**The one named gap (the next leg, multi-tide, [HIGH] cast-risk):** the **opaque-width chart-eval**
+1. **The `φ = ψ∘R` factorization + rate transport** (the load-bearing one, Codex `headline-path` §2):
+   my `phiL2` uses the rate-form `z • H̄` (H̄ free), NOT the contract's radial `R = pivotBlowupOn`
+   convention (`z, z·hᵢ`). So `phiL2 = ψ∘R` is NOT literally true — the contract's `R` blows up the `r·c`
+   top coords radially (det `|z|^{r·c−1}`), and the angular `hᵢ` becomes `z·hᵢ`. The rate
+   `routeMCore_phiL2` IS the post-radial rate, but it must be transported to the `routeMCore (ψ(R·))`
+   form. EITHER redefine the chart as `ψ∘R` from the start, OR prove the factorization. **VERIFY this
+   first** (Codex flag): confirm the exact `pivotBlowupOn`/angular layout before assuming `phiL2 = ψ∘R`.
+2. **Field A — containment** `smearedSubBox p δ ⊆ (ψ∘R)⁻¹(cubeBox ε)`: every chart entry small on the box,
+   incl a quantitative `Λ₀`-bound over opaque widths (the `(2,3,1)` `subBox231_lam_bound` generalized).
+3. **`ψ` MP+embedding assembly**: combine the banked `measurePreserving_shearM` with the pack/reshape into
+   the full `ψ`; **`R` radial facts** (det/injOn/fderiv) from generic `pivotBlowupOn`.
 
-    prod M ((paramsEquivFlat M).symm (phi_sm_M u)) = (u p) • (P₁ · H̄)
+Field B (the contract's `hSdiv`) is fully discharged: `hSdiv_of_peeled_rate` produces it from the peeled
+rate + `U`-positivity via the banked `smearedSubBox_weighted_diverges`.
 
-i.e. construct `phi_sm_M = (radial pivotBlowupOn = R) ∘ (the Λ₀-shear = ψ, banked
-`measurePreserving_shearM`) + the opaque-width pack/reshape, and show the deepest product collapses to
-the pure radial. This is the dependent-`Fin` block-split of the deepest factor into `Fin r ⊕ Fin s` rows
-(the [HIGH] cast). Once discharged, `routeMCore_rate_of_prod_collapsed` gives the rate immediately, and
-the headline `routeMCore_box_diverges_smeared` follows by the banked contract
-`routeMCore_box_diverges_smearedContract` (ψ MP-embedding via `measurePreserving_shearM` + R radial +
-the weighted divergence — the `(2,3,1)` `routeM231sm_box_diverges` is the concrete template, 1125 lines
-for the single instance). The chart's rational `cov` (det `|z|^{minAdm−1}` off the `{det P₁ᵀP₁ = 0}` null
-pole) is the other piece, via `S1.1 weightedThreshold_transport` (cited).
+**L ≥ 3** (the GENERAL aoyagi needs all L): the front product `P = prodAux M A (L−1)` is a prefix product,
+so the chart-eval needs `prodAux_front_peel` (banked) to express `prod = P · A^{L−1}` and the
+`prodAux_frontShear_cancel_general` bridge (banked, general r) to supply `P₁·Λ₀ = P₂`. The L=2
+`prod_chartL2Params` generalizes by replacing `prod_two_layer221` with the front-peel — a separate,
+controller-scoped sub-tide (the spec's noted gate).
 
-**Why stop here (not a spike):** the chart-eval is genuine new opaque-width cast work, not algebra. Banked
-is the hole-free interior (everything provable from the abstract pieces); the boundary (the chart) is named,
-not papered over with a `sorry`. The rate consumer (`routeMCore_rate_of_prod_collapsed`) takes the chart-eval
-as an explicit hypothesis, so there is no `sorry` anywhere — the gap is an honest interface, dispatchable.
+**Why this ceiling (not a spike):** the rate (the genuinely-new mathematical content) is hole-free and the
+divergence is M-agnostic + reusable. The remaining gaps are NAMED interface hypotheses (no `sorry`
+anywhere) — chart geometry + the `φ=ψ∘R` transport, each dispatchable. The L=2 chart-eval — the piece the
+spec flagged [HIGH] — is DONE, proving the machinery end-to-end.
