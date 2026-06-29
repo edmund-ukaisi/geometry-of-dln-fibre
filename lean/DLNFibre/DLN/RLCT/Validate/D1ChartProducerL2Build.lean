@@ -39,13 +39,18 @@ and produces `coreDeepest ≤ rlctAtOn R t0`.
 
 Constructing a `GeneralVChartL2` INSTANCE at a general optimal `v` — the producer the spec's §4
 build order envisages — requires the constant-`nReg` IFT chart at general `v`. Mathlib v4.29 has NO
-Morse / Morse–Bott / Gromoll–Meyer / constant-rank quadratic split (verified in `D1ChartProducerL2`'s
-docstring), and even the DEEPEST analog `deepest_gauge_squeeze_exists` (`DeepestGaugeChart`:353) is
-itself an open `sorry`. So the chart construction is the precise residual wall (expedition Item 81 /
-named wall #120 for L ≥ 3); it is NOT built here. This module lands the arithmetic + the case-(B)
-`hCore` reduction (the formalisable content), feeding the existing certificate-level reduction.
+Morse / Morse–Bott / Gromoll–Meyer / constant-rank quadratic split (verified in
+`D1ChartProducerL2`'s docstring), and even the DEEPEST analog `deepest_gauge_squeeze_exists`
+(`DeepestGaugeChart`:353) is itself an open `sorry`. So the chart construction is the precise
+residual wall (expedition Item 81 / named wall #120 for L ≥ 3); it is NOT built here. This module
+lands the arithmetic + the case-(B) `hCore` reduction (the formalisable content), feeding the
+existing certificate-level reduction.
 
-Scope L = 2 only (`H : Fin 3 → ℕ`).
+Scope L = 2 only (`H : Fin 3 → ℕ`). The banked adjudication parameterizes the middle stratum by a
+SINGLE reduced width `m` (square deepest widths `(m, m, m)`, covering square `H = (m+r, m+r, m+r)`);
+the §6 arithmetic and the case-(B) reduction are stated at that square-deepest scope. (Non-square
+`H` at L = 2 has non-square deepest widths `H − r` outside the single-`m` `M'`-formula — beyond the
+banked adjudication.)
 -/
 
 open MeasureTheory
@@ -196,5 +201,196 @@ theorem extra_half_add_lambdaCore_Mprime_ge_square (m a b : ℕ) (hab : a + b �
   rw [lambdaCore, lambdaCore, ← hIsq, ← hIp]
   have hkeyQ : (Isq : ℚ) ≤ (extraCount m a b : ℚ) + (Ip : ℚ) := by exact_mod_cast hkey
   linarith [hkeyQ]
+
+/-- `lambdaCore M ≥ 0` (admissible `Mval ≥ 0` on the cone ⟹ `inf' ≥ 0`). Reuses the banked
+`Mval_nonneg_of_adm`; stated at L = 2 (`hL : 1 ≤ 2` is automatic). -/
+theorem lambdaCore_nonneg_L2 (M : Fin 3 → ℕ) : 0 ≤ lambdaCore M := by
+  rw [lambdaCore]
+  have hge : 0 ≤ (Adm M).inf' (Adm_nonempty M) (Mval M) :=
+    Finset.le_inf' _ _ (fun T hT => Mval_nonneg_of_adm M T hT (by norm_num))
+  positivity
+
+/-- **§6 — the `ℝ≥0∞` form of the arithmetic lemma** (the shape the RLCT chain consumes). With
+`coreDeepest = ofReal(lambdaCore (square m))` and the degraded-core value `ofReal(lambdaCore M')`,
+
+    coreDeepest ≤ (extra : ℝ≥0∞)/2 + ofReal(lambdaCore M').
+
+Bridges the `ℚ` lemma through `ENNReal.ofReal` (both `lambdaCore`s nonneg; `(extra:ℝ≥0∞)/2 =
+ofReal((extra:ℝ)/2)`). This is the `hCore` arithmetic in the units `rlct_quasiSplit_ge` produces. -/
+theorem coreDeepest_le_extra_half_add_lambdaCore_Mprime (m a b : ℕ) (hab : a + b ≤ m) :
+    ENNReal.ofReal (lambdaCore (squareWidths m) : ℝ)
+      ≤ (extraCount m a b : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (MprimeWidths m a b) : ℝ) := by
+  have hQ := extra_half_add_lambdaCore_Mprime_ge_square m a b hab
+  -- nonnegativity of the two cores + `extra/2`
+  have hsqnn : (0 : ℚ) ≤ lambdaCore (squareWidths m) := lambdaCore_nonneg_L2 _
+  have hpnn : (0 : ℚ) ≤ lambdaCore (MprimeWidths m a b) := lambdaCore_nonneg_L2 _
+  have hext2 : (0 : ℝ) ≤ (extraCount m a b : ℝ) / 2 := by positivity
+  -- rewrite `(extra:ℝ≥0∞)/2` as `ofReal((extra:ℝ)/2)`
+  have hof2 : ENNReal.ofReal (2 : ℝ) = (2 : ℝ≥0∞) := by
+    rw [show (2 : ℝ) = ((2 : ℕ) : ℝ) by norm_num, ENNReal.ofReal_natCast]; norm_num
+  have hbridge : (extraCount m a b : ℝ≥0∞) / 2 = ENNReal.ofReal ((extraCount m a b : ℝ) / 2) := by
+    rw [ENNReal.ofReal_div_of_pos (by norm_num : (0:ℝ) < 2), ENNReal.ofReal_natCast, hof2]
+  rw [hbridge, ← ENNReal.ofReal_add hext2 (by exact_mod_cast hpnn)]
+  apply ENNReal.ofReal_le_ofReal
+  -- the `ℝ` form of the `ℚ` inequality (cast `ℚ → ℝ`, monotone)
+  have hQR : (lambdaCore (squareWidths m) : ℝ)
+      ≤ (extraCount m a b : ℝ) / 2 + (lambdaCore (MprimeWidths m a b) : ℝ) := by
+    have hcast := (Rat.cast_le (K := ℝ)).2 hQ
+    push_cast at hcast
+    linarith [hcast]
+  linarith [hQR]
+
+/-! ## §4B — the middle-stratum `hCore` discharge (the SECOND-PEEL engine application + interface)
+
+At a middle-stratum optimal `v` (`nReg_v > nReg`), the constant-`nReg` slice residual `R` itself
+admits a SECOND constant-rank peel (the Morse-with-parameters local diffeo, design-pass a9a2cf):
+`R` brings into the post-(second-)chart form `F₂ = ∑_{extra} s² + Q₂` over `(Fin extra → ℝ) × Y₂`,
+with the degraded-core residual `R₂ = Q₂(0,·)` on `Y₂` (RLCT-equal to the deepest DLN core of the
+rectangular widths `M' = (m−a, m−a−b, m−b)`). The SECOND `rlct_quasiSplit_ge` then gives
+
+    extra/2 + rlctAtOn R₂ t0₂ ≤ rlctAtOn R t0,
+
+and the §5 R1-resolution-at-`M'` interface (`hDegraded`) supplies `rlctAtOn R₂ t0₂ =
+ofReal(lambdaCore M')`. Combined with the §6 arithmetic
+(`coreDeepest_le_extra_half_add_lambdaCore_Mprime`)
+and `coreDeepest = ofReal(lambdaCore (square m))`, this gives `coreDeepest ≤ rlctAtOn R t0` — the
+case-(B) `hCore`. The second-peel chart DATA is the genuinely-unbuilt Morse-with-parameters content
+(taken as hypotheses, NOT sorries); the `rlct_quasiSplit_ge` application + the arithmetic are the
+formalisable content this theorem PROVES. -/
+
+/-- **Case-(B) `hCore` via the second peel + the R1-resolution interface.** For the middle-stratum
+data `a + b ≤ m`: given the second-peel chart transfer (`hchart₂ : rlctAtOn R t0 = rlctAtOn F₂
+(0,t0₂)`), the post-(second-)chart sum-of-squares form `F₂ = ∑_{extra} s² + Q₂` with its slice
+residual `R₂ = Q₂(0,·)` (measurable a.e.-nonzero) and quasi-split comparison `hcmp₂`, the
+degraded-core value `hDegraded : rlctAtOn R₂ t0₂ = ofReal(lambdaCore M')` (the §5 interface
+specialized — R1's
+general resolution at the rectangular `M'`), and `coreDeepest = ofReal(lambdaCore (square m))`,
+the D1 `hCore` holds: `coreDeepest ≤ rlctAtOn R t0`. The `extra` Morse squares peeled in the SECOND
+engine pass are `extraCount m a b = m(a+b) − ab`. -/
+theorem hCore_middle_stratum_of_interface {Y₂ : Type*}
+    [PseudoMetricSpace Y₂] [MeasureSpace Y₂] [ProperSpace Y₂]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y₂)] [BorelSpace Y₂]
+    {Y : Type*} [MeasureSpace Y] [TopologicalSpace Y] (R : Y → ℝ) (t0 : Y)
+    (m a b : ℕ) (hab : a + b ≤ m) (coreDeepest : ℝ≥0∞)
+    (hcoreDeepest : coreDeepest = ENNReal.ofReal (lambdaCore (squareWidths m) : ℝ))
+    (F₂ : (Fin (extraCount m a b) → ℝ) × Y₂ → ℝ) (Q₂ : (Fin (extraCount m a b) → ℝ) × Y₂ → ℝ)
+    (R₂ : Y₂ → ℝ) (t0₂ : Y₂)
+    (hchart₂ : rlctAtOn R t0 = rlctAtOn F₂ ((0 : Fin (extraCount m a b) → ℝ), t0₂))
+    (hF₂ : ∀ p, F₂ p = (∑ i, p.1 i ^ 2) + Q₂ p)
+    (hQ₂0 : ∀ p, 0 ≤ Q₂ p) (hF₂meas : Measurable F₂)
+    (hR₂ : ∀ t, R₂ t = Q₂ (0, t)) (hR₂meas : Measurable R₂)
+    (hR₂ne : ∃ U ∈ 𝓝 t0₂, ∀ᵐ z ∂(volume.restrict U), R₂ z ≠ 0)
+    (C : ℝ) (hC : 0 < C)
+    (hcmp₂ : ∃ U ∈ 𝓝 ((0 : Fin (extraCount m a b) → ℝ), t0₂), ∀ p ∈ U,
+        (∑ i, p.1 i ^ 2) + R₂ p.2 ≤ C * F₂ p)
+    (hDegraded : rlctAtOn R₂ t0₂ = ENNReal.ofReal (lambdaCore (MprimeWidths m a b) : ℝ)) :
+    coreDeepest ≤ rlctAtOn R t0 := by
+  -- the SECOND quasi-split engine pass on `R` (peel the `extra` Morse squares)
+  have hpeel : (extraCount m a b : ℝ≥0∞) / 2 + rlctAtOn R₂ t0₂
+      ≤ rlctAtOn F₂ ((0 : Fin (extraCount m a b) → ℝ), t0₂) :=
+    rlct_quasiSplit_ge F₂ Q₂ R₂ t0₂ hF₂ hQ₂0 hF₂meas hR₂ hR₂meas hR₂ne C hC hcmp₂
+  -- rewrite via the chart transfer + the interface value
+  rw [hchart₂]
+  refine le_trans ?_ hpeel
+  rw [hDegraded, hcoreDeepest]
+  exact coreDeepest_le_extra_half_add_lambdaCore_Mprime m a b hab
+
+/-! ## §5 — the R1-resolution-at-`M'` interface (the named-hypothesis contract)
+
+The `hDegraded` hypothesis of `hCore_middle_stratum_of_interface` is the §5 interface specialized
+to the degraded-core slice `R₂`. The spec's exact interface — R1's general resolution at the
+rectangular `M'` — is the `R1ResolutionInterface` predicate below; when the second-peel
+degraded-core slice IS the literal DLN core `dlnLoss M' 0` at its deepest point `(0 : Params M')`,
+the interface
+discharges `hDegraded` directly (`r1_interface_discharges_degraded`).
+
+★ BINDING CONSTRAINT (recorded): `resolution_charts` (Skeleton:1228) MUST stay general-width
+(`hMid : ∀ s, 0 < M' s`, NOT narrowed to square-only) so it covers the rectangular `M'`. The
+interface is dischargeable from the banked `resolution_value_of_atlas` (ResolutionAtlas:197) +
+`resolution_charts` for arbitrary width (both verified general-width); R1's resolution closing
+supplies it. -/
+
+/-- **The R1-resolution-at-`M'` interface (spec §5).** R1's general resolution at the (rectangular)
+reduced widths `M : Fin 3 → ℕ` with all layers nondegenerate (`hMid`): the deepest DLN core
+`dlnLoss M 0` at the origin `(0 : Params M)` has local RLCT `ofReal(lambdaCore M)`. The
+middle-stratum `hCore` consumes this at the degraded `M' = (m−a, m−a−b, m−b)`, NOT R1's closed-form
+VALUE and NOT
+#44 — so D1 sequences independently of R1's core value. -/
+def R1ResolutionInterface : Prop :=
+  ∀ (M : Fin 3 → ℕ), (∀ s, 0 < M s) →
+    rlctAtOn (fun A : Params M => dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last 2))) ℝ) A)
+        (fun _ => 0 : Params M)
+      = ENNReal.ofReal (lambdaCore M : ℝ)
+
+/-- The §5 interface discharges the `hDegraded` hypothesis when the second-peel degraded-core slice
+is the literal DLN core `dlnLoss M' 0` on `Params M'` at its deepest point — provided `M'`'s layers
+are all nondegenerate (`hMid'`, the R1 carve-out). -/
+theorem r1_interface_discharges_degraded
+    (hR1 : R1ResolutionInterface) (m a b : ℕ)
+    (hMid' : ∀ s, 0 < MprimeWidths m a b s) :
+    rlctAtOn (fun A : Params (MprimeWidths m a b) =>
+        dlnLoss (MprimeWidths m a b)
+          (0 : Matrix (Fin (MprimeWidths m a b 0))
+            (Fin (MprimeWidths m a b (Fin.last 2))) ℝ) A) (fun _ => 0 : Params (MprimeWidths m a b))
+      = ENNReal.ofReal (lambdaCore (MprimeWidths m a b) : ℝ) :=
+  hR1 (MprimeWidths m a b) hMid'
+
+/-! ## §4B (assembly) — the middle-stratum producer (the case-(B) per-point D1 `≥`)
+
+Assembles the FIRST quasi-split peel (`rlctAt_ge_nReg_add_slice`, the `nReg`-block giving the
+`hAtV` half) with the case-(B) `hCore` (`hCore_middle_stratum_of_interface`, the second peel +
+the §5 interface + the §6 arithmetic) through the banked `deepest_le_of_optimal_chart`, landing the
+D1 per-point `≥` at a middle-stratum optimal `v` (square deepest reduced widths `(m,m,m)`). The
+first-peel chart data (the constant-`nReg` IFT chart producing the slice residual `R`) is the
+genuinely-unbuilt analytic content — taken as hypotheses; the assembly is the formalisable
+wiring. -/
+
+/-- **The middle-stratum producer: case-(B) per-point D1 `≥`.** At a middle-stratum optimal `v`
+(square deepest reduced widths `M = (m,m,m)`, `coreDeepest = ofReal(lambdaCore (square m))`), given
+the FIRST-peel chart data (`hchart`/`hF`/`hQ0`/`hR`/`hRne`/`hcmp` on `(Fin nReg → ℝ) × Y`, the
+`nReg`-block producing the slice residual `R`), the deepest-side `#44` equality `hDeepest`, AND the
+SECOND-peel chart data + §5 interface (`hCore_middle_stratum_of_interface`'s inputs), the deepest
+point has `≤` local RLCT than `v`: `rlctAt deepest ≤ rlctAt v`. The `hCore` is PROVED here (not a
+bare hypothesis) from the second peel; `nReg = nRegL2 H r`, `extra = extraCount m a b`. -/
+theorem deepest_le_of_optimal_middle_stratum
+    {Y : Type*} [PseudoMetricSpace Y] [MeasureSpace Y] [ProperSpace Y]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y)] [BorelSpace Y]
+    {Y₂ : Type*} [PseudoMetricSpace Y₂] [MeasureSpace Y₂] [ProperSpace Y₂]
+    [IsFiniteMeasureOnCompacts (volume : Measure Y₂)] [BorelSpace Y₂]
+    (H : Fin (2 + 1) → ℕ) (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
+    (deepest v : Params H) (m a b : ℕ) (hab : a + b ≤ m) (coreDeepest : ℝ≥0∞)
+    (hcoreDeepest : coreDeepest = ENNReal.ofReal (lambdaCore (squareWidths m) : ℝ))
+    -- the FIRST-peel chart data (the `nReg`-block producing `R`)
+    (F : (Fin (nRegL2 H r) → ℝ) × Y → ℝ) (Q : (Fin (nRegL2 H r) → ℝ) × Y → ℝ) (R : Y → ℝ) (t0 : Y)
+    (hDeepest : rlctAt H (dlnLoss H B) deepest = (nRegL2 H r : ℝ≥0∞) / 2 + coreDeepest)
+    (hchart : rlctAt H (dlnLoss H B) v = rlctAtOn F ((0 : Fin (nRegL2 H r) → ℝ), t0))
+    (hF : ∀ p, F p = (∑ i, p.1 i ^ 2) + Q p)
+    (hQ0 : ∀ p, 0 ≤ Q p) (hFmeas : Measurable F)
+    (hR : ∀ t, R t = Q (0, t)) (hRmeas : Measurable R)
+    (hRne : ∃ U ∈ 𝓝 t0, ∀ᵐ z ∂(volume.restrict U), R z ≠ 0)
+    (Cc : ℝ) (hCc : 0 < Cc)
+    (hcmp : ∃ U ∈ 𝓝 ((0 : Fin (nRegL2 H r) → ℝ), t0), ∀ p ∈ U,
+        (∑ i, p.1 i ^ 2) + R p.2 ≤ Cc * F p)
+    -- the SECOND-peel chart data + the §5 interface (discharging `hCore` on `R`)
+    (F₂ : (Fin (extraCount m a b) → ℝ) × Y₂ → ℝ) (Q₂ : (Fin (extraCount m a b) → ℝ) × Y₂ → ℝ)
+    (R₂ : Y₂ → ℝ) (t0₂ : Y₂)
+    (hchart₂ : rlctAtOn R t0 = rlctAtOn F₂ ((0 : Fin (extraCount m a b) → ℝ), t0₂))
+    (hF₂ : ∀ p, F₂ p = (∑ i, p.1 i ^ 2) + Q₂ p)
+    (hQ₂0 : ∀ p, 0 ≤ Q₂ p) (hF₂meas : Measurable F₂)
+    (hR₂ : ∀ t, R₂ t = Q₂ (0, t)) (hR₂meas : Measurable R₂)
+    (hR₂ne : ∃ U ∈ 𝓝 t0₂, ∀ᵐ z ∂(volume.restrict U), R₂ z ≠ 0)
+    (C₂ : ℝ) (hC₂ : 0 < C₂)
+    (hcmp₂ : ∃ U ∈ 𝓝 ((0 : Fin (extraCount m a b) → ℝ), t0₂), ∀ p ∈ U,
+        (∑ i, p.1 i ^ 2) + R₂ p.2 ≤ C₂ * F₂ p)
+    (hDegraded : rlctAtOn R₂ t0₂ = ENNReal.ofReal (lambdaCore (MprimeWidths m a b) : ℝ)) :
+    rlctAt H (dlnLoss H B) deepest ≤ rlctAt H (dlnLoss H B) v := by
+  -- discharge `hCore : coreDeepest ≤ rlctAtOn R t0` from the SECOND peel + the interface
+  have hCore : coreDeepest ≤ rlctAtOn R t0 :=
+    hCore_middle_stratum_of_interface R t0 m a b hab coreDeepest hcoreDeepest
+      F₂ Q₂ R₂ t0₂ hchart₂ hF₂ hQ₂0 hF₂meas hR₂ hR₂meas hR₂ne C₂ hC₂ hcmp₂ hDegraded
+  -- the banked per-point chart producer wiring (FIRST peel `hAtV` + `hCore` + `hDeepest`)
+  exact deepest_le_of_optimal_chart H r B deepest v F Q R t0 coreDeepest
+    hDeepest hchart hF hQ0 hFmeas hR hRmeas hRne Cc hCc hcmp hCore
 
 end DLNFibre.DLN.RLCT
