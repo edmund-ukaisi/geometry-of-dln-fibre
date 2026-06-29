@@ -77,3 +77,20 @@ decoder (the E-block-angular-active + leaf, the genuine ∀M achiever) — subst
 touches the achiever chart; (ii) restrict the ∀M-L2 headline to the 1×1-interior-E-block sub-family
 (where `genBlkFlatLiveR1` suffices) — narrower, but `genBlkFlatLiveR1`-faithful. Coordinator call:
 this touches the achiever-chart construction (a coordination point per the standing instruction).
+
+## REFINEMENT (same session): option (i) is LESS new construction than feared
+
+`genBlkFlatLive` (the live-leaf decoder WITHOUT the R1 single-pivot override) ALREADY reads the
+interior E-block angular coords via `readE` (`Rmat (k+1) = rmatPad(readE)`, inherited from
+`genBlkFlatStruct`) AND has the live leaf (`Rfin L = rfin`). In `Cgen`, the radial `u` scales the
+WHOLE residual: `u • Rmat` (E-block angular) + `u • Rfin` (leaf). So `genBlkFlatLive` IS the cert's
+`B_det M` decoder (the full residual active, u-scaled) — the R1 `pivotEIndicator` override was a
+(2,2,2)-only simplification (valid there because the 1×1 E-block = single pivot).
+
+So option (i) ≈ use `genBlkFlatLive` (banked) with chart `phiGen (x p₀) … (genBlkFlatLive …)` and
+active = the full residual (E-block-angular slots via `activeSlotE` + leaf slots). The non-pivot
+per-boundary brick `Cgen_live_interior_eq_schurFrameProd` (brick 2a, E=readE) is ALREADY the right
+identity (not the pivot variant). Remaining: the pivot placement (one residual slot as `p₀`, the
+fixed-1), the leaf-slot reading, the full active.card=minAdm (E-block via activeSlotE_inj + leaf),
+and the chart rate (genBlkFlatLive's rate is likely banked — RouteMFlatLive has C0_eq_one_live etc.).
+Substantially de-risked; awaiting coordinator go on (i) vs (ii).
