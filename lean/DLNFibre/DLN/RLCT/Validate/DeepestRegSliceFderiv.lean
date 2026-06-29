@@ -20,7 +20,7 @@ and the gauge-zero reg-slice cancels by `Equiv.symm_apply_apply`:
 - **Alignment** (`regGaugeSlotEquiv_regSlice_boundary`): at the gauge-zero slice, the slot read of a
   routed boundary index `regBoundaryToRegGauge b` returns `r0 (regPivotFinEquiv.symm b)`.
 - **Off-image vanishing** (`regGaugeSlotEquiv_regSlice_zero_of_notMem`): a non-routed index reads `0`
-  (the gauge half is held at `0`). Hence `readX/readY/readZ (r0,0) s` are nonzero ONLY at the routed
+  (the gauge half is held at `0`). Hence `gaugeReadX/gaugeReadY/gaugeReadZ (r0,0) s` are nonzero ONLY at the routed
   layer (X,Z at `firstLayer`; Y at `lastLayer`), so all INTERIOR layers are the constant corner.
 - **Product collapse** (`framedProd_regSlice_fderiv`): the only varying factors are `C_first`/`C_last`;
   the idempotent corner sandwich keeps `(0,0)→δX`, `(0,1)→δY_last`, `(1,0)→δZ_first`, `(1,1)→0`.
@@ -135,66 +135,66 @@ theorem notMem_Y_of_ne_last (H : Fin (L + 1) → ℕ) (r : ℕ) (hL : 1 ≤ L) (
   · exact hs hb'.1.symm
   · rcases hb' with ⟨hlay, harm⟩; subst hlay; simp at harm
 
-/-! ## The `readX/readY/readZ` slice values -/
+/-! ## The `gaugeReadX/gaugeReadY/gaugeReadZ` slice values -/
 
-/-- `readX (r0,0) (firstLayer) a b` reads back `r0` at the X-pivot coordinate. -/
-theorem readX_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+/-- `gaugeReadX (r0,0) (firstLayer) a b` reads back `r0` at the X-pivot coordinate. -/
+theorem gaugeReadX_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (a b : Fin r) :
-    readX H r hr hL (r0, 0) (firstLayer hL) a b
+    gaugeReadX H r hr hL (r0, 0) (firstLayer hL) a b
       = r0 ((regPivotFinEquiv H r hr).symm (Sum.inl (a, b))) := by
-  simp only [readX, Matrix.of_apply]
+  simp only [gaugeReadX, Matrix.of_apply]
   have : (⟨firstLayer hL, Sum.inl (Sum.inl (a, b))⟩ : RegGaugeIdx H r)
       = regBoundaryToRegGauge H r hL (Sum.inl (a, b)) := rfl
   rw [this, regGaugeSlotEquiv_regSlice_boundary]
 
-/-- `readX (r0,0) s = 0` for `s ≠ firstLayer` (the X-routing hits only `firstLayer`). -/
-theorem readX_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+/-- `gaugeReadX (r0,0) s = 0` for `s ≠ firstLayer` (the X-routing hits only `firstLayer`). -/
+theorem gaugeReadX_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (s : Fin L) (hs : s ≠ firstLayer hL) :
-    readX H r hr hL (r0, 0) s = 0 := by
+    gaugeReadX H r hr hL (r0, 0) s = 0 := by
   ext a b
-  simp only [readX, Matrix.of_apply, Matrix.zero_apply]
+  simp only [gaugeReadX, Matrix.of_apply, Matrix.zero_apply]
   exact regGaugeSlotEquiv_regSlice_zero_of_notMem H r hr hL r0 _
     (by rw [range_regBoundaryEmbed_eq]; exact notMem_X_of_ne_first H r hL s hs a b)
 
-/-- `readZ (r0,0) (firstLayer) a b` reads back `r0` at the Z-pivot coordinate. -/
-theorem readZ_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+/-- `gaugeReadZ (r0,0) (firstLayer) a b` reads back `r0` at the Z-pivot coordinate. -/
+theorem gaugeReadZ_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (a : Fin (H (firstLayer hL).castSucc - r))
     (b : Fin r) :
-    readZ H r hr hL (r0, 0) (firstLayer hL) a b
+    gaugeReadZ H r hr hL (r0, 0) (firstLayer hL) a b
       = r0 ((regPivotFinEquiv H r hr).symm (Sum.inr (Sum.inr (a, b)))) := by
-  simp only [readZ, Matrix.of_apply]
+  simp only [gaugeReadZ, Matrix.of_apply]
   have : (⟨firstLayer hL, Sum.inr (a, b)⟩ : RegGaugeIdx H r)
       = regBoundaryToRegGauge H r hL (Sum.inr (Sum.inr (a, b))) := rfl
   rw [this, regGaugeSlotEquiv_regSlice_boundary]
 
-/-- `readZ (r0,0) s = 0` for `s ≠ firstLayer`. -/
-theorem readZ_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+/-- `gaugeReadZ (r0,0) s = 0` for `s ≠ firstLayer`. -/
+theorem gaugeReadZ_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (s : Fin L) (hs : s ≠ firstLayer hL) :
-    readZ H r hr hL (r0, 0) s = 0 := by
+    gaugeReadZ H r hr hL (r0, 0) s = 0 := by
   ext a b
-  simp only [readZ, Matrix.of_apply, Matrix.zero_apply]
+  simp only [gaugeReadZ, Matrix.of_apply, Matrix.zero_apply]
   exact regGaugeSlotEquiv_regSlice_zero_of_notMem H r hr hL r0 _
     (by rw [range_regBoundaryEmbed_eq]; exact notMem_Z_of_ne_first H r hL s hs a b)
 
-/-- `readY (r0,0) s = 0` for `s ≠ lastLayer`. -/
-theorem readY_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+/-- `gaugeReadY (r0,0) s = 0` for `s ≠ lastLayer`. -/
+theorem gaugeReadY_regSlice_zero_of_ne (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (s : Fin L) (hs : s ≠ lastLayer hL) :
-    readY H r hr hL (r0, 0) s = 0 := by
+    gaugeReadY H r hr hL (r0, 0) s = 0 := by
   ext a b
-  simp only [readY, Matrix.of_apply, Matrix.zero_apply]
+  simp only [gaugeReadY, Matrix.of_apply, Matrix.zero_apply]
   exact regGaugeSlotEquiv_regSlice_zero_of_notMem H r hr hL r0 _
     (by rw [range_regBoundaryEmbed_eq]; exact notMem_Y_of_ne_last H r hL s hs a b)
 
-/-- `readY (r0,0) (lastLayer) a b` reads back `r0` at the Y-pivot coordinate (the missing sibling of
-`readX/readZ_regSlice_first`). The column index carries the `finCongr` of `H_lastLayer_succ` from the
+/-- `gaugeReadY (r0,0) (lastLayer) a b` reads back `r0` at the Y-pivot coordinate (the missing sibling of
+`gaugeReadX/gaugeReadZ_regSlice_first`). The column index carries the `finCongr` of `H_lastLayer_succ` from the
 Y-routing (`regBoundaryToRegGauge`'s `inr ∘ inl` arm). -/
-theorem readY_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
+theorem gaugeReadY_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (hL : 1 ≤ L) (r0 : Fin (deepestNReg H r) → ℝ) (a : Fin r)
     (b : Fin (H (lastLayer hL).succ - r)) :
-    readY H r hr hL (r0, 0) (lastLayer hL) a b
+    gaugeReadY H r hr hL (r0, 0) (lastLayer hL) a b
       = r0 ((regPivotFinEquiv H r hr).symm
           (Sum.inr (Sum.inl (a, (finCongr (by rw [H_lastLayer_succ H hL])).symm b)))) := by
-  simp only [readY, Matrix.of_apply]
+  simp only [gaugeReadY, Matrix.of_apply]
   have hidx : (⟨lastLayer hL, Sum.inl (Sum.inr (a, b))⟩ : RegGaugeIdx H r)
       = regBoundaryToRegGauge H r hL
           (Sum.inr (Sum.inl (a, (finCongr (by rw [H_lastLayer_succ H hL])).symm b))) := by
@@ -216,8 +216,8 @@ theorem framedParamsReg_regSlice_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
       = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
           (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-  simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 s hsf,
-    readY_regSlice_zero_of_ne H r hr hL r0 s hsl, readZ_regSlice_zero_of_ne H r hr hL r0 s hsf]
+  simp only [framedParamsReg, framedLayer, gaugeReadX_regSlice_zero_of_ne H r hr hL r0 s hsf,
+    gaugeReadY_regSlice_zero_of_ne H r hr hL r0 s hsl, gaugeReadZ_regSlice_zero_of_ne H r hr hL r0 s hsf]
   rw [show Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 = 0 from by
       ext a b; rcases a with a | a <;> rcases b with b | b <;> rfl]
   simp [Matrix.reindex_apply, Matrix.submatrix_zero]
@@ -236,12 +236,12 @@ theorem framedParamsReg_regSlice_first (H : Fin (L + 1) → ℕ) (r : ℕ)
         + Pf (firstLayer hL)
           * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
               (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
-              (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
-                (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+              (Matrix.fromBlocks (gaugeReadX H r hr hL (r0, 0) (firstLayer hL)) 0
+                (gaugeReadZ H r hr hL (r0, 0) (firstLayer hL)) 0)
           * Qf (firstLayer hL) := by
   have hfl : firstLayer hL ≠ lastLayer hL := by
     simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
-  simp only [framedParamsReg, framedLayer, readY_regSlice_zero_of_ne H r hr hL r0 _ hfl]
+  simp only [framedParamsReg, framedLayer, gaugeReadY_regSlice_zero_of_ne H r hr hL r0 _ hfl]
 
 /-- The `lastLayer` framed reg-slice layer (`L ≥ 2`): `X = Z = 0` (last ≠ first), so it is
 `corM + Pf · reindex(fromBlocks 0 Y 0 0) · Qf`. -/
@@ -257,12 +257,12 @@ theorem framedParamsReg_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ)
         + Pf (lastLayer hL)
           * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
               (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
-              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0)
+              (Matrix.fromBlocks 0 (gaugeReadY H r hr hL (r0, 0) (lastLayer hL)) 0 0)
           * Qf (lastLayer hL) := by
   have hfl : lastLayer hL ≠ firstLayer hL := by
     simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
-  simp only [framedParamsReg, framedLayer, readX_regSlice_zero_of_ne H r hr hL r0 _ hfl,
-    readZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
+  simp only [framedParamsReg, framedLayer, gaugeReadX_regSlice_zero_of_ne H r hr hL r0 _ hfl,
+    gaugeReadZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
 
 /-! ## The frame value collapse (frame `firstShape` + through-interiors) -/
 
@@ -286,8 +286,8 @@ noncomputable def firstShapeF (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : 
     + Pf (firstLayer hL)
       * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
           (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
-          (Matrix.fromBlocks (readX H r hr hL (r0, 0) (firstLayer hL)) 0
-            (readZ H r hr hL (r0, 0) (firstLayer hL)) 0)
+          (Matrix.fromBlocks (gaugeReadX H r hr hL (r0, 0) (firstLayer hL)) 0
+            (gaugeReadZ H r hr hL (r0, 0) (firstLayer hL)) 0)
       * Qf (firstLayer hL)
       * Matrix.reindex (rThresholdSplit r (H (firstLayer hL).succ) (hr _)).symm
           (rThresholdSplit r (H i) (hr i)).symm
@@ -408,7 +408,7 @@ theorem prodAux_regSlice_through_first (H : Fin (L + 1) → ℕ) (r : ℕ)
           devXZ_mul_corner (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
             (rThresholdSplit r (H (firstLayer hL).succ) (hr _))
             (rThresholdSplit r (H ⟨0 + 1, hk⟩) (hr _))
-            (readX H r hr hL (r0, 0) (firstLayer hL)) (readZ H r hr hL (r0, 0) (firstLayer hL))]
+            (gaugeReadX H r hr hL (r0, 0) (firstLayer hL)) (gaugeReadZ H r hr hL (r0, 0) (firstLayer hL))]
         rfl
       · -- k ≥ 1: `prodAux (k+1) = prodAux k · corM = firstShapeF k · corM = firstShapeF (k+1)`.
         have hcorner : framedParamsReg H r hr hL Pf Qf (r0, 0) ⟨k, hkL1⟩

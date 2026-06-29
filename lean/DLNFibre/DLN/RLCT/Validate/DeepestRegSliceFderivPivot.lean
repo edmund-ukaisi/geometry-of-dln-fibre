@@ -35,12 +35,12 @@ theorem framedParamsRegPivot_regSlice_last (H : Fin (L + 1) → ℕ) (r : ℕ)
         + Pf (lastLayer hL)
           * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
               (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-              (Matrix.fromBlocks 0 (readY H r hr hL (r0, 0) (lastLayer hL)) 0 0)
+              (Matrix.fromBlocks 0 (gaugeReadY H r hr hL (r0, 0) (lastLayer hL)) 0 0)
           * Qf (lastLayer hL) := by
   have hfl : lastLayer hL ≠ firstLayer hL := by
     simp only [firstLayer, lastLayer, ne_eq, Fin.mk.injEq]; omega
   rw [framedParamsRegPivot_last H r hr hL J Pf Qf (r0, 0),
-    readX_regSlice_zero_of_ne H r hr hL r0 _ hfl, readZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
+    gaugeReadX_regSlice_zero_of_ne H r hr hL r0 _ hfl, gaugeReadZ_regSlice_zero_of_ne H r hr hL r0 _ hfl]
 
 /-- The reg-slice running product through the first `m` layers of `framedParamsRegPivot` agrees with the
 threshold `framedParamsReg` for `m ≤ L−1` (those layers are all NON-last). -/

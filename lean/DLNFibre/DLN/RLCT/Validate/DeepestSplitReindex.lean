@@ -513,7 +513,7 @@ Fin nReg ⊕ (Fin (flatDim (deepestM H r)) ⊕ Fin nGauge)`, where the MIDDLE su
 (`= FlatIdx (deepestM)`) and the outer/right are the reg/gauge entries — slots BY ROLE, NOT arbitrary.
 **The reg/gauge half is `regGaugeIdxSplit`** (NOT the opaque `Fintype.equivFin`): the SAME explicit split
 `regGaugeSlotEquiv` un-flattens through, so the concrete `deepestSplit` decode and the slot reads share
-one enumeration and the `readX/Y/Z (deepestSplit w) = raw-deviation` round-trip cancels definitionally
+one enumeration and the `gaugeReadX/Y/Z (deepestSplit w) = raw-deviation` round-trip cancels definitionally
 (the PIN2 unblock — the prior opaque `Fintype.equivFin` made that round-trip non-definitional). Built
 from `roleSplitIdx` (the role split) + `regGaugeIdxSplit` (reg-gauge) + `Fintype.equivFin` on the core +
 `sumAssoc` + `sumComm`. -/

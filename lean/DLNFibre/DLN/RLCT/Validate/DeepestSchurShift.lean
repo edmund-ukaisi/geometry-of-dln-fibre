@@ -45,21 +45,21 @@ blocks are read (`gaugeSlotRead`'s inner half, here typed as a function of `(reg
 continuous (composition of the homeomorphism `regGaugeSlotEquiv` with coordinate projections). -/
 
 /-- The per-layer `X_s` block (`r×r`) read off the gauge `(reg, spec)` slot. -/
-noncomputable def readX (H : Fin (L + 1) → ℕ) (r : ℕ)
+noncomputable def gaugeReadX (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) (s : Fin L) :
     Matrix (Fin r) (Fin r) ℝ :=
   Matrix.of (fun i j => regGaugeSlotEquiv H r hr hL p ⟨s, Sum.inl (Sum.inl (i, j))⟩)
 
 /-- The per-layer `Y_s` block (`r×(H_{s+1}−r)`) read off the gauge `(reg, spec)` slot. -/
-noncomputable def readY (H : Fin (L + 1) → ℕ) (r : ℕ)
+noncomputable def gaugeReadY (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) (s : Fin L) :
     Matrix (Fin r) (Fin (H s.succ - r)) ℝ :=
   Matrix.of (fun i j => regGaugeSlotEquiv H r hr hL p ⟨s, Sum.inl (Sum.inr (i, j))⟩)
 
 /-- The per-layer `Z_s` block (`(H_s−r)×r`) read off the gauge `(reg, spec)` slot. -/
-noncomputable def readZ (H : Fin (L + 1) → ℕ) (r : ℕ)
+noncomputable def gaugeReadZ (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) (s : Fin L) :
     Matrix (Fin (H s.castSucc - r)) (Fin r) ℝ :=
@@ -67,25 +67,25 @@ noncomputable def readZ (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- The gauge `(reg, spec)` read is continuous: each entry is a coordinate of the homeomorphism
 `regGaugeSlotEquiv` composed with `continuous_apply`. -/
-theorem continuous_readX (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem continuous_gaugeReadX (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    Continuous (fun p => readX H r hr hL p s) := by
+    Continuous (fun p => gaugeReadX H r hr hL p s) := by
   refine continuous_matrix (fun i j => ?_)
-  simp only [readX, Matrix.of_apply]
+  simp only [gaugeReadX, Matrix.of_apply]
   exact (continuous_apply _).comp (regGaugeSlotEquiv H r hr hL).continuous
 
-theorem continuous_readY (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem continuous_gaugeReadY (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    Continuous (fun p => readY H r hr hL p s) := by
+    Continuous (fun p => gaugeReadY H r hr hL p s) := by
   refine continuous_matrix (fun i j => ?_)
-  simp only [readY, Matrix.of_apply]
+  simp only [gaugeReadY, Matrix.of_apply]
   exact (continuous_apply _).comp (regGaugeSlotEquiv H r hr hL).continuous
 
-theorem continuous_readZ (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem continuous_gaugeReadZ (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    Continuous (fun p => readZ H r hr hL p s) := by
+    Continuous (fun p => gaugeReadZ H r hr hL p s) := by
   refine continuous_matrix (fun i j => ?_)
-  simp only [readZ, Matrix.of_apply]
+  simp only [gaugeReadZ, Matrix.of_apply]
   exact (continuous_apply _).comp (regGaugeSlotEquiv H r hr hL).continuous
 
 /-- The gauge-slot un-flattening sends the zero coordinates to the zero index function (it is a
@@ -102,25 +102,25 @@ theorem regGaugeSlotEquiv_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- At the origin gauge slot, every block is `0` (the deepest point is the block-normal rank-`r`
 chain: `X_s = Y_s = Z_s = 0`). -/
-theorem readX_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadX_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    readX H r hr hL 0 s = 0 := by
+    gaugeReadX H r hr hL 0 s = 0 := by
   ext i j
-  simp only [readX, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
+  simp only [gaugeReadX, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
     Pi.zero_apply]
 
-theorem readY_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadY_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    readY H r hr hL 0 s = 0 := by
+    gaugeReadY H r hr hL 0 s = 0 := by
   ext i j
-  simp only [readY, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
+  simp only [gaugeReadY, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
     Pi.zero_apply]
 
-theorem readZ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem gaugeReadZ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
-    readZ H r hr hL 0 s = 0 := by
+    gaugeReadZ H r hr hL 0 s = 0 := by
   ext i j
-  simp only [readZ, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
+  simp only [gaugeReadZ, Matrix.of_apply, Matrix.zero_apply, regGaugeSlotEquiv_zero H r hr hL,
     Pi.zero_apply]
 
 /-! ## The raw (pole-bearing) per-layer Schur correction
@@ -136,7 +136,7 @@ noncomputable def schurCorrection (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
     Params (deepestM H r) :=
-  fun s => -(readZ H r hr hL p s) * (1 + readX H r hr hL p s)⁻¹ * (readY H r hr hL p s)
+  fun s => -(gaugeReadZ H r hr hL p s) * (1 + gaugeReadX H r hr hL p s)⁻¹ * (gaugeReadY H r hr hL p s)
 
 /-- The raw Schur shift: the per-layer corrections assembled and flat-encoded into the core slot. -/
 noncomputable def schurShiftRaw (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -144,6 +144,51 @@ noncomputable def schurShiftRaw (H : Fin (L + 1) → ℕ) (r : ℕ)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
     Fin (flatDim (deepestM H r)) → ℝ :=
   paramsEquivFlat (deepestM H r) (schurCorrection H r hr hL p)
+
+/-! ## The W-a CONJUGATED per-layer Schur correction (the dict-match keystone)
+
+The bare `schurCorrection` pivots on `1 + gaugeReadX_s`, which presumes the deepest layer `(1,1)`-block is the
+identity. It is NOT (deepest boundary `A11 ≠ 1`), so the bare absorbed core ≠ the Score (the W-a falsity).
+The CONJUGATED correction reads the **full reindexed decode layer** `reindex(decode w)_s` — pivot the
+actual `(1,1)`-block `M̄A_s + gaugeReadX_s` (`M̄A_s := (reindex deepestPoint_s).toBlocks₁₁`), full off-diagonal
+blocks `M̄Z_s + gaugeReadZ_s` / `M̄Y_s + gaugeReadY_s`. The absorbed core `decode(q).core_s + conjCorr_s` is then
+exactly the `(1,1)`-Schur core of the reindexed decode layer (`conjCore`), which the standalone
+`prod_deepestM_eq_schur_ldu_readback` ties to the Score. This `schurCorrectionConj` is `B`-dependent
+(through `deepestPoint`). -/
+
+/-- The reindexed deepest-layer `(1,1)`-block `M̄A_s` (the actual pivot base, `≠ 1` at the boundary). -/
+noncomputable def deepBlkA (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) : Matrix (Fin r) (Fin r) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₁₁
+
+/-- The reindexed deepest-layer `(1,2)`-block `M̄Y_s` (deepest off-diagonal Y; `0` at layer-0 boundary). -/
+noncomputable def deepBlkY (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    Matrix (Fin r) (Fin (H s.succ - r)) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₁₂
+
+/-- The reindexed deepest-layer `(2,1)`-block `M̄Z_s` (deepest off-diagonal Z; `0` at layer-(L−1) bdry). -/
+noncomputable def deepBlkZ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    Matrix (Fin (H s.castSucc - r)) (Fin r) ℝ :=
+  (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+      (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₁
+
+/-- **The W-a conjugated Schur correction** `−(M̄Z_s + gaugeReadZ_s)·(M̄A_s + gaugeReadX_s)⁻¹·(M̄Y_s + gaugeReadY_s)`,
+read off the FULL reindexed decode layer (deepest constants + gauge deviations). -/
+noncomputable def schurCorrectionConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :
+    Params (deepestM H r) :=
+  fun s => -(deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL p s)
+    * (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL p s)⁻¹
+    * (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL p s)
 
 /-- `ContinuousAt` rectangular matrix multiplication: each output entry is a finite sum of products
 of entries, continuous-at by `ContinuousAt.mul` + `tendsto_finset_sum`. -/
@@ -163,38 +208,38 @@ private theorem continuousAt_matrix_mul {X mm nn pp : Type*} [TopologicalSpace X
     (fun k _ => (hsum k : Filter.Tendsto (fun q => A q i k * B q k j) (𝓝 x) _))
   simpa [ContinuousAt] using this
 
-/-- The matrix inverse `(1 + readX p s)⁻¹` is `ContinuousAt p` when `det(1 + readX p s) ≠ 0`. -/
-theorem continuousAt_inv_one_add_readX (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- The matrix inverse `(1 + gaugeReadX p s)⁻¹` is `ContinuousAt p` when `det(1 + gaugeReadX p s) ≠ 0`. -/
+theorem continuousAt_inv_one_add_gaugeReadX (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-    (hdet : (1 + readX H r hr hL p s).det ≠ 0) :
-    ContinuousAt (fun q => (1 + readX H r hr hL q s)⁻¹) p := by
-  have hadd : ContinuousAt (fun q => (1 : Matrix (Fin r) (Fin r) ℝ) + readX H r hr hL q s) p :=
-    (continuous_const.add (continuous_readX H r hr hL s)).continuousAt
+    (hdet : (1 + gaugeReadX H r hr hL p s).det ≠ 0) :
+    ContinuousAt (fun q => (1 + gaugeReadX H r hr hL q s)⁻¹) p := by
+  have hadd : ContinuousAt (fun q => (1 : Matrix (Fin r) (Fin r) ℝ) + gaugeReadX H r hr hL q s) p :=
+    (continuous_const.add (continuous_gaugeReadX H r hr hL s)).continuousAt
   refine ContinuousAt.comp ?_ hadd
   apply continuousAt_matrix_inv
   obtain ⟨u, hu⟩ := Ne.isUnit hdet
   rw [← hu]
   exact NormedRing.inverse_continuousAt u
 
-/-- The per-layer Schur correction is `ContinuousAt p` when `det(1 + readX p s) ≠ 0`. -/
+/-- The per-layer Schur correction is `ContinuousAt p` when `det(1 + gaugeReadX p s) ≠ 0`. -/
 theorem continuousAt_schurCorrection (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
-    (hdet : (1 + readX H r hr hL p s).det ≠ 0) :
+    (hdet : (1 + gaugeReadX H r hr hL p s).det ≠ 0) :
     ContinuousAt (fun q => schurCorrection H r hr hL q s) p := by
   unfold schurCorrection
   exact continuousAt_matrix_mul
-    (continuousAt_matrix_mul ((continuous_readZ H r hr hL s).continuousAt.neg)
-      (continuousAt_inv_one_add_readX H r hr hL s p hdet))
-    (continuous_readY H r hr hL s).continuousAt
+    (continuousAt_matrix_mul ((continuous_gaugeReadZ H r hr hL s).continuousAt.neg)
+      (continuousAt_inv_one_add_gaugeReadX H r hr hL s p hdet))
+    (continuous_gaugeReadY H r hr hL s).continuousAt
 
 /-- At the origin, each per-layer Schur correction vanishes (`Z_s(0) = 0`, so `−0·…·… = 0`). -/
 theorem schurCorrection_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     schurCorrection H r hr hL 0 = fun _ => 0 := by
   funext s
-  simp only [schurCorrection, readZ_zero H r hr hL s, neg_zero, Matrix.zero_mul]
+  simp only [schurCorrection, gaugeReadZ_zero H r hr hL s, neg_zero, Matrix.zero_mul]
 
 /-- At the origin the raw Schur shift vanishes (`paramsEquivFlat` sends the zero tuple to `0`). -/
 theorem schurShiftRaw_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
@@ -218,25 +263,25 @@ correction on the inner ball where `χ = 1`, and `0` at the origin. -/
 /-- The open unit set: the gauge coords where every pivot `1 + X_s` is invertible. -/
 def unitSet (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     Set ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) :=
-  {p | ∀ s : Fin L, (1 + readX H r hr hL p s).det ≠ 0}
+  {p | ∀ s : Fin L, (1 + gaugeReadX H r hr hL p s).det ≠ 0}
 
 theorem isOpen_unitSet (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     IsOpen (unitSet H r hr hL) := by
   have hrw : unitSet H r hr hL
-      = ⋂ s : Fin L, {p | (1 + readX H r hr hL p s).det ≠ 0} := by
+      = ⋂ s : Fin L, {p | (1 + gaugeReadX H r hr hL p s).det ≠ 0} := by
     ext p; simp [unitSet, Set.mem_iInter]
   rw [hrw]
   refine isOpen_iInter_of_finite (fun s => ?_)
-  have hcont : Continuous (fun p => (1 + readX H r hr hL p s).det) :=
-    (continuous_const.add (continuous_readX H r hr hL s)).matrix_det
+  have hcont : Continuous (fun p => (1 + gaugeReadX H r hr hL p s).det) :=
+    (continuous_const.add (continuous_gaugeReadX H r hr hL s)).matrix_det
   exact hcont.isOpen_preimage _ isOpen_ne
 
 theorem mem_unitSet_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) :
     (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) ∈ unitSet H r hr hL := by
   intro s
-  rw [readX_zero H r hr hL s, add_zero, Matrix.det_one]
+  rw [gaugeReadX_zero H r hr hL s, add_zero, Matrix.det_one]
   exact one_ne_zero
 
 /-- An open ball radius `ε > 0` with `ball 0 ε ⊆ unitSet` (the origin's unit-neighbourhood). -/

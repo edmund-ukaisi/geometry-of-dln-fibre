@@ -1,0 +1,85 @@
+  2) A quadratic shift that carries a reg (or reg+spec) factor: ‖δ(q)‖ ≤ K‖reg(q)‖·‖q‖, or at least ‖δ(q)‖ ≤ K‖(reg,spec)(q)‖·‖q‖. Then ΔR inherits a reg (or reg+spec) factor.
+  3) A second “PIN” giving spec control: for small q, ‖R'(q)‖ ≳ ‖(reg,spec)(q)‖. With this, your original factor ‖(reg,spec)‖ suffices.
+
+Any one of 1–3 makes the ε-squeeze valid and clean.
+
+**Q2 — Cleanest Lean proof structure (once the right factor is secured).**
+Below I give two parallel skeletons depending on which fix you pick. Both aim to prove on a small ball U that 0 ≤ Φ and (1/2)Φ ≤ F ≤ (3/2)Φ.
+
+- Common setup (notation and standing facts):
+  - Split M = R ⊕ C ⊕ S with projections `r q`, `c q`, `s q`. Fix an equivalent product norm.
+  - Θ has the form Θ(q) = (r q, c q + δ(q), s q), with δ(0)=0 and the quantitative bound from your assumption (either O(‖q‖²) or with a reg/spec factor).
+  - Define ΔR(q) := R'(Θ q) − R'(q). Then F = ‖R'(q)+ΔR(q)‖² + C(q), Φ = ‖R'(q)‖² + C(q).
+  - PIN-1 (available as a lemma): ∃ c1>0, nbhd U1, ∀ q∈U1, ‖R'(q)‖ ≥ c1‖r q‖.
+
+- Derivative control along core (Hadamard/mean-value step):
+  - Define G(q) = D_core R'(q) ∈ L(C, ℝ^n). Using the atom and smoothness:
+    - Under fix 1 (atom+): G(0,c,s)=0 for all (c,s).
+    - Under the original atom: G(0,c,0)=0; by smoothness, ‖G(r,c,s)‖ ≤ L·‖(r,s)‖ for small q (uniform in c in a small core ball). This is obtained by a mean-value inequality in (r,s): for each fixed c, apply `convex.norm_image_sub_le_of_norm_fderiv_le` to the map (r,s) ↦ G(r,c,s), using bounded second derivatives on a small product ball to make L uniform.
+  - Core line integral (FTC in Banach spaces):
+    - For fixed (r,s), c ↦ R'(r,c,s) is C¹ with derivative G(r,c,s). Along the segment c → c+δ:
+      ΔR(q) = ∫₀¹ G(r, c + tδ, s)[δ(q)] dt, hence
+      ‖ΔR(q)‖ ≤ (sup_{t∈[0,1]} ‖G(r,c+tδ,s)‖) · ‖δ(q)‖.
+
+- Path A (cleanest; assumes fix 1 or 2 so ΔR carries a reg factor):
+  - If fix 1 (atom+): ‖G(r,*,s)‖ ≤ L_reg‖r‖ for small q; then ‖ΔR(q)‖ ≤ L_reg‖r‖‖δ(q)‖.
+  - If fix 2 (δ has reg factor): keep the weaker bound ‖G(r,*,s)‖ ≤ L_rs‖(r,s)‖, but use ‖δ(q)‖ ≤ Kδ‖r‖‖q‖; hence ‖ΔR(q)‖ ≤ L_rs Kδ ‖r‖‖(r,s)‖‖q‖ ≤ L'‖r‖‖q‖² (after shrinking to keep ‖(r,s)‖ ≲ ‖q‖).
+  - In either subcase, conclude a pure-reg bound: ‖ΔR(q)‖ ≤ A‖r‖‖q‖² for some A>0 on a small ball U2.
+  - Use PIN-1 to trade reg for residual: ‖r‖ ≤ c1^{-1}‖R'(q)‖; hence
+    ‖ΔR(q)‖ ≤ η(q)‖R'(q)‖ with η(q) := (A/c1)‖q‖² → 0 as q→0.
+  - Shrink to U := U1 ∩ U2 ∩ B(0,ρ) with ρ small so that sup_{q∈U} η(q) ≤ η0 := √(3/2)−1.
+  - Algebraic squeeze:
+    - Lower: F = ‖R'+ΔR‖² + C ≥ (1−η0)²‖R'‖² + C ≥ (1−η0)²(‖R'‖² + C) ≥ (1/2)Φ.
+    - Upper: F ≤ (1+η0)²‖R'‖² + C ≤ (3/2)Φ.
+  - Positivity: Φ≥0 is immediate since both summands are ≥0.
+
+- Path B (if you have fix 3: spec also dominated by R'):
+  - From the earlier G-bound and plain O(‖q‖²) shift:
+    ‖ΔR‖ ≤ L‖(r,s)‖‖q‖² ≤ (L/c2)‖R'‖‖q‖² using the strengthened PIN that ‖R'‖ ≥ c2‖(r,s)‖.
+  - Proceed as above, choose ρ so that (L/c2)ρ² ≤ √(3/2)−1, and conclude the same squeeze.
+
+- What you’ll actually use from Mathlib:
+  - Smoothness/derivatives: `ContDiff`, `HasFDerivAt`, `fderiv`, continuity of `fderiv`.
+  - Mean value on convex sets to pass from a bound on operator norm of the derivative to a Lipschitz estimate along a segment:
+    - `convex.norm_image_sub_le_of_norm_fderiv_le` (for the map c ↦ R'(r,c,s)).
+  - Basic norm inequalities and shrinking neighborhoods; no heavy inverse-function machinery is required because you already take PIN-1 as a lemma that yields ‖R'‖ ≳ ‖reg‖ near 0.
+  - Elementary algebra for the final (1±η)² squeeze.
+
+- How to package ΔR and the constants cleanly:
+  - Define localized constants with `∀ᶠ q in 𝓝 0, ...` or, more concretely, restrict to a product closed ball `B_R × B_C × B_S` and take uniform sup-bounds of operator norms on that compact set.
+  - Define `η(q)` explicitly and then pick `ρ` so that `sup_{‖q‖≤ρ} η(q) ≤ √(3/2)−1`. In code this is done by continuity of η at 0.
+
+- What not to do (to keep it clean and robust):
+  - Don’t try to compare ‖ΔR‖ directly to ‖(r,s)‖ and then appeal to PIN-1 alone; that loses spec control and runs into the gap above.
+  - Don’t try to use a change-of-variables trick with Θ; C(q) is held fixed in F, so Φ∘Θ doesn’t appear.
+
+**Q2(a) — Getting ‖ΔR‖ ≤ K⋅(reg-factor) via smoothness + constancy.**
+- Core-line integral: c ↦ R'(r,c,s) with derivative G = D_core R'(r,c,s).
+- Use atom (or atom+) to get G=0 on the relevant slice, then mean-value in (r,s) to obtain
+  - under atom+: ‖G(r,c,s)‖ ≤ L_reg‖r‖,
+  - under plain atom: ‖G(r,c,s)‖ ≤ L_rs‖(r,s)‖.
+- Combine with ‖δ(q)‖ bounds (assumed O(‖q‖²), or with extra reg-factor) to get ΔR bounds as above.
+- The exact Mathlib doorways are `HasFDerivAt.comp`, `ContDiff` facts for partials, and `convex.norm_image_sub_le_of_norm_fderiv_le`.
+
+**Q2(b) — PIN-1 to lower bound ∑ R'² by ‖reg‖².**
+- Treat this as given: there exist c1>0 and a small U with ‖R'(q)‖ ≥ c1‖reg(q)‖.
+- If you needed to rebuild it: from `HasFDerivAt R' 0 = A` with `A ∘ i_reg` a continuous linear equivalence, and continuity of `fderiv`, you can get on a small ball that the remainder in the reg-direction is ≤ (c1/2)‖reg‖, yielding the claimed inequality by triangle inequality. This is standard “strict derivative with invertible restriction implies local antilipschitz in that direction”.
+
+**Q2(c) — Assembling the 1/2 and 3/2 constants.**
+- Once ‖ΔR‖ ≤ η‖R'‖ holds with η ≤ √(3/2)−1, use
+  - (‖x+y‖)² ≤ (1+η)²‖x‖² and (‖x−y‖)² ≥ (1−η)²‖x‖² with y any vector of norm ≤ η‖x‖.
+  - Then F = ‖R'+ΔR‖² + C and Φ = ‖R'‖² + C give the two-sided bounds because C≥0 is the same on both sides.
+
+**Q3 — Difficulty assessment.**
+- If you adopt one of the clean fixes (preferably fix 1: atom+ giving a pure reg factor for D_core R'), this is a focused 1 working day in Lean:
+  - 2–3 hours to set up the split, the Θ/δ assumptions, and state ΔR and the needed derivative lemmas cleanly;
+  - 2–3 hours to prove the mean-value–type bound for ΔR and to instantiate PIN-1;
+  - 1–2 hours to do the final ε-assembly and neighborhood shrinking with explicit constants.
+- Hardest step: Uniformizing the “G vanishes on the slice ⇒ ‖G‖ ≤ L⋅(reg-factor)” estimate in a way that’s both (i) genuinely uniform in the core slot on a small product ball and (ii) stated with the exact operator norms Mathlib expects to feed into `convex.norm_image_sub_le_of_norm_fderiv_le`. This is where people often burn time massaging partial derivatives and bounding `opNorm` on product neighborhoods.
+- If you insist on working under the original atom only (no spec lower bound, no reg-factor in δ, no atom+), you will not be able to prove the uniform 1±ε comparability; the counterexample pattern above shows the mechanism can fail. Trying to salvage it by case splits or by relying on C(q) will lead to brittle arguments. I would not spend time on that route.
+
+**Actionable recommendation.**
+- Strengthen the structural hypothesis minimally in the way that matches your application:
+  - Easiest: assert atom+ (core-constancy on the whole {reg=0} hyperplane), which is natural if “core” is genuinely Schur-corrected only through interaction with reg.
+  - Or, if Θ is constructed by a blockwise Schur complement, verify that δ(q) has a reg factor: ‖δ(q)‖ ≤ K‖reg(q)‖‖q‖. This is often true in practice and is enough.
+- Then follow Path A above; it yields a short, composable Lean proof with clear dependencies and avoids any need to reason about spec-dominance.

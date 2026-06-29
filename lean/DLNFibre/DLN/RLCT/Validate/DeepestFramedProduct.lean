@@ -36,7 +36,7 @@ variable {L : ℕ}
 not exposed — but the SAME relabels have `ContinuousLinearEquiv` forms in Mathlib v4.29
 (`ContinuousLinearEquiv.{sumPiEquivProdPi, piCongrLeft}`), whose underlying `Homeomorph` IS the one
 `regGaugeSlotEquiv` uses (`__ := Homeomorph.…`). So a CLE mirror `regGaugeSlotCLE` coerces to the SAME
-function (defeq), giving `ContDiff` of `regGaugeSlotEquiv` (hence of the `readX/Y/Z` entries) via
+function (defeq), giving `ContDiff` of `regGaugeSlotEquiv` (hence of the `gaugeReadX/Y/Z` entries) via
 `ContinuousLinearEquiv.contDiff`. This is a fact ABOUT crux2's def, not a change to it. -/
 
 /-- The `ContinuousLinearEquiv` mirror of `regGaugeSlotEquiv` (same underlying Homeomorph/function). -/
@@ -60,33 +60,33 @@ theorem contDiff_regGaugeSlotEquiv (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [← regGaugeSlotCLE_coe H r hr hL]
   exact (regGaugeSlotCLE H r hr hL).contDiff
 
-/-- Each `readX` entry is `ContDiff ⊤` (a coordinate of the `ContDiff` gauge read). -/
-theorem contDiff_readX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- Each `gaugeReadX` entry is `ContDiff ⊤` (a coordinate of the `ContDiff` gauge read). -/
+theorem contDiff_gaugeReadX_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i j : Fin r) :
-    ContDiff ℝ (⊤ : ℕ∞) (fun p => readX H r hr hL p s i j) := by
-  simp only [readX, Matrix.of_apply]
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => gaugeReadX H r hr hL p s i j) := by
+  simp only [gaugeReadX, Matrix.of_apply]
   exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
 
-/-- Each `readY` entry is `ContDiff ⊤`. -/
-theorem contDiff_readY_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- Each `gaugeReadY` entry is `ContDiff ⊤`. -/
+theorem contDiff_gaugeReadY_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i : Fin r)
     (j : Fin (H s.succ - r)) :
-    ContDiff ℝ (⊤ : ℕ∞) (fun p => readY H r hr hL p s i j) := by
-  simp only [readY, Matrix.of_apply]
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => gaugeReadY H r hr hL p s i j) := by
+  simp only [gaugeReadY, Matrix.of_apply]
   exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
 
-/-- Each `readZ` entry is `ContDiff ⊤`. -/
-theorem contDiff_readZ_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- Each `gaugeReadZ` entry is `ContDiff ⊤`. -/
+theorem contDiff_gaugeReadZ_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) (i : Fin (H s.castSucc - r))
     (j : Fin r) :
-    ContDiff ℝ (⊤ : ℕ∞) (fun p => readZ H r hr hL p s i j) := by
-  simp only [readZ, Matrix.of_apply]
+    ContDiff ℝ (⊤ : ℕ∞) (fun p => gaugeReadZ H r hr hL p s i j) := by
+  simp only [gaugeReadZ, Matrix.of_apply]
   exact ContDiff.comp (contDiff_apply (𝕜 := ℝ) (E := ℝ) _) (contDiff_regGaugeSlotEquiv H r hr hL)
 
 /-- Each reduced-core read `(paramsEquivFlat (deepestM)).symm q.2.1 s a b` is `ContDiff ⊤` in `q`: the
 core slot `q.2.1` is a `ContDiff` linear projection, `(paramsEquivFlat (deepestM)).symm` is a `ContDiff`
 continuous-linear equiv (`paramsEquivFlatCLE.symm`), then layer/entry selection are `ContDiff` applies.
-The full-`framedParams` analogue of the `readX/Y/Z` ContDiff (the L2-PIN2 core read). -/
+The full-`framedParams` analogue of the `gaugeReadX/Y/Z` ContDiff (the L2-PIN2 core read). -/
 theorem contDiff_coreRead_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
     (a : Fin (deepestM H r s.castSucc)) (b : Fin (deepestM H r s.succ)) :
@@ -156,7 +156,7 @@ noncomputable def framedLayer (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- **The framed parameter tuple** `C : Params H` reconstructed from a `DeepestSplit` point: each layer
 is `framedLayer` of the gauge blocks `(X_s, Y_s, Z_s)` (read off the reg+spectator slot via
-`readX/readY/readZ`) and the reduced core `T_s` (read off the core slot via `paramsEquivFlat (deepestM)`).
+`gaugeReadX/gaugeReadY/gaugeReadZ`) and the reduced core `T_s` (read off the core slot via `paramsEquivFlat (deepestM)`).
 The framed product `∏C = prod H (framedParams q)` is the shared object; `dlnLoss = ‖∏A − B‖²` relates to
 `‖∏C − D‖²` through the endpoint conjugation (the #77 (iii) telescoping). Decision-independent (the
 product `∏C` is well-defined regardless of (iii)/(B); those affect how it relates to `dlnLoss`/`Ereg`). -/
@@ -167,8 +167,8 @@ noncomputable def framedParams (H : Fin (L + 1) → ℕ) (r : ℕ)
     (q : DeepestSplit H r (deepestNGauge H r)) : Params H :=
   fun s =>
     framedLayer H r hr s (P s) (Q s)
-      (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-      (readZ H r hr hL (q.1, q.2.2) s)
+      (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+      (gaugeReadZ H r hr hL (q.1, q.2.2) s)
       ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
 
 /-- **The `T = 0` framed reconstruction** (the `deepestEPivot` reconstruction half). Reconstructs the
@@ -176,7 +176,7 @@ gauge-sliced layer tuple from the `(reg, gauge)` slots ALONE, with the reduced c
 (the core is `coreAbsorb`'s domain — `deepestEPivot` is the regular residual of `∏C|_{T=0}`, the
 core-INDEPENDENT pivot part, per the #115/g222 cert). Each layer is `framedLayer` of the read blocks
 `(X_s, Y_s, Z_s)` with the `(1,1)` block zeroed. Layout-independent: it does not depend on the final
-`Fin nReg` pack convention (the open obstruction), only on the gauge read `readX/Y/Z`. -/
+`Fin nReg` pack convention (the open obstruction), only on the gauge read `gaugeReadX/Y/Z`. -/
 noncomputable def framedParamsReg (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (P : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
@@ -184,7 +184,7 @@ noncomputable def framedParamsReg (H : Fin (L + 1) → ℕ) (r : ℕ)
     (p : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) : Params H :=
   fun s =>
     framedLayer H r hr s (P s) (Q s)
-      (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+      (gaugeReadX H r hr hL p s) (gaugeReadY H r hr hL p s) (gaugeReadZ H r hr hL p s)
       (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
 
 /-- At the origin gauge slot, `framedParamsReg` is the **block-normal identity chain**: every layer is
@@ -200,14 +200,14 @@ theorem framedParamsReg_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
           (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
   -- At the deepest gauge slot the deviation `fromBlocks 0 0 0 0 = 0`, so the frame term
   -- `P · reindex 0 · Q = 0` vanishes and `framedLayer = corM` (frame-INDEPENDENT base).
-  simp only [framedParamsReg, framedLayer, readX_zero H r hr hL s, readY_zero H r hr hL s,
-    readZ_zero H r hr hL s]
+  simp only [framedParamsReg, framedLayer, gaugeReadX_zero H r hr hL s, gaugeReadY_zero H r hr hL s,
+    gaugeReadZ_zero H r hr hL s]
   rw [show Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 = 0 from by
       ext a b; rcases a with a | a <;> rcases b with b | b <;> rfl]
   simp [Matrix.reindex_apply, Matrix.submatrix_zero]
 
 /-- Each `framedParamsReg` layer ENTRY is `ContDiff ⊤` in the `(reg, gauge)` slots: the entry is a
-`fromBlocks (1+X) Y Z 0` block entry (reindexed), i.e. `1+readX` / `readY` / `readZ` / `0`, each
+`fromBlocks (1+X) Y Z 0` block entry (reindexed), i.e. `1+gaugeReadX` / `gaugeReadY` / `gaugeReadZ` / `0`, each
 `ContDiff` (the read entries + `const`). The `_contdiff` layer input to `contDiff_prod_entry`. -/
 theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
@@ -217,22 +217,22 @@ theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsReg H r hr hL P Q p s i j) := by
   -- The entry is `corM i j + (P · reindex(fromBlocks X Y Z 0) · Q) i j`. `corM i j` is a constant;
   -- the frame term expands by `Matrix.mul_apply` to `∑ m, ∑ n, P i m · reindex(...) m n · Q n j` with
-  -- `P, Q` constant and each `reindex(...) m n` a block read (`readX/Y/Z` entry, ContDiff) or `0`.
-  -- Each entry of the raw-deviation matrix `D(p) = reindex(fromBlocks (readX) (readY) (readZ) 0)` is
+  -- `P, Q` constant and each `reindex(...) m n` a block read (`gaugeReadX/Y/Z` entry, ContDiff) or `0`.
+  -- Each entry of the raw-deviation matrix `D(p) = reindex(fromBlocks (gaugeReadX) (gaugeReadY) (gaugeReadZ) 0)` is
   -- ContDiff (block read).
   have hD : ∀ (m : Fin (H s.castSucc)) (n : Fin (H s.succ)),
       ContDiff ℝ (⊤ : ℕ∞) (fun p => (Matrix.reindex
           (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-          (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+          (Matrix.fromBlocks (gaugeReadX H r hr hL p s) (gaugeReadY H r hr hL p s) (gaugeReadZ H r hr hL p s)
             (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ))) m n) := by
     intro m n
     have hmn : (fun p => (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-          (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s) (readZ H r hr hL p s)
+          (Matrix.fromBlocks (gaugeReadX H r hr hL p s) (gaugeReadY H r hr hL p s) (gaugeReadZ H r hr hL p s)
             (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ))) m n)
-        = fun p => Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s)
-            (readZ H r hr hL p s) (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
+        = fun p => Matrix.fromBlocks (gaugeReadX H r hr hL p s) (gaugeReadY H r hr hL p s)
+            (gaugeReadZ H r hr hL p s) (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)
             ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m)
             ((rThresholdSplit r (H s.succ) (hr s.succ)) n) := by
       funext p
@@ -242,9 +242,9 @@ theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
       rcases (rThresholdSplit r (H s.succ) (hr s.succ)) n with b | b <;>
       simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
         Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]
-    · exact contDiff_readX_entry H r hr hL s a b
-    · exact contDiff_readY_entry H r hr hL s a b
-    · exact contDiff_readZ_entry H r hr hL s a b
+    · exact contDiff_gaugeReadX_entry H r hr hL s a b
+    · exact contDiff_gaugeReadY_entry H r hr hL s a b
+    · exact contDiff_gaugeReadZ_entry H r hr hL s a b
     · exact contDiff_const
   -- The framedParamsReg entry = `corM i j + (P s * D(p) * Q s) i j`; the latter is a double sum of
   -- (const · D-entry · const) by `Matrix.mul_apply`.
@@ -255,8 +255,8 @@ theorem contDiff_framedParamsReg_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
               (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) i j
           + (P s * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
                   (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-                  (Matrix.fromBlocks (readX H r hr hL p s) (readY H r hr hL p s)
-                    (readZ H r hr hL p s)
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL p s) (gaugeReadY H r hr hL p s)
+                    (gaugeReadZ H r hr hL p s)
                     (0 : Matrix (Fin (H s.castSucc - r)) (Fin (H s.succ - r)) ℝ)) * Q s) i j := by
     funext p
     simp only [framedParamsReg, framedLayer, Matrix.add_apply]
@@ -278,25 +278,25 @@ theorem contDiff_framedParams_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
     ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
       framedParams H r hr hL P Q q s i j) := by
-  -- Each entry of `D(q) = reindex(fromBlocks (readX) (readY) (readZ) (coreRead))` is ContDiff (a block
+  -- Each entry of `D(q) = reindex(fromBlocks (gaugeReadX) (gaugeReadY) (gaugeReadZ) (coreRead))` is ContDiff (a block
   -- read or the core read), then the framedLayer entry is `corM + (P·D·Q)`.
   have hD : ∀ (m : Fin (H s.castSucc)) (n : Fin (H s.succ)),
       ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
           (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-          (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-            (readZ H r hr hL (q.1, q.2.2) s)
+          (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+            (gaugeReadZ H r hr hL (q.1, q.2.2) s)
             ((paramsEquivFlat (deepestM H r)).symm q.2.1 s))) m n) := by
     intro m n
     have hmn : (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
           (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
           (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-          (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-            (readZ H r hr hL (q.1, q.2.2) s)
+          (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+            (gaugeReadZ H r hr hL (q.1, q.2.2) s)
             ((paramsEquivFlat (deepestM H r)).symm q.2.1 s))) m n)
         = fun q : DeepestSplit H r (deepestNGauge H r) =>
-            Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-              (readZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
+            Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+              (gaugeReadZ H r hr hL (q.1, q.2.2) s) ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)
               ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)) m)
               ((rThresholdSplit r (H s.succ) (hr s.succ)) n) := by
       funext q
@@ -310,9 +310,9 @@ theorem contDiff_framedParams_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
       rcases (rThresholdSplit r (H s.succ) (hr s.succ)) n with b | b <;>
       simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
         Matrix.fromBlocks_apply₂₂]
-    · exact (contDiff_readX_entry H r hr hL s a b).comp hreg
-    · exact (contDiff_readY_entry H r hr hL s a b).comp hreg
-    · exact (contDiff_readZ_entry H r hr hL s a b).comp hreg
+    · exact (contDiff_gaugeReadX_entry H r hr hL s a b).comp hreg
+    · exact (contDiff_gaugeReadY_entry H r hr hL s a b).comp hreg
+    · exact (contDiff_gaugeReadZ_entry H r hr hL s a b).comp hreg
     · exact contDiff_coreRead_entry H r hr hL s a b
   have hentry : (fun q : DeepestSplit H r (deepestNGauge H r) => framedParams H r hr hL P Q q s i j)
       = fun q : DeepestSplit H r (deepestNGauge H r) =>
@@ -321,8 +321,8 @@ theorem contDiff_framedParams_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
               (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)) i j
           + (P s * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
                   (rThresholdSplit r (H s.succ) (hr s.succ)).symm
-                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) s) (readY H r hr hL (q.1, q.2.2) s)
-                    (readZ H r hr hL (q.1, q.2.2) s)
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) s) (gaugeReadY H r hr hL (q.1, q.2.2) s)
+                    (gaugeReadZ H r hr hL (q.1, q.2.2) s)
                     ((paramsEquivFlat (deepestM H r)).symm q.2.1 s)) * Q s) i j := by
     funext q
     simp only [framedParams, framedLayer, Matrix.add_apply]

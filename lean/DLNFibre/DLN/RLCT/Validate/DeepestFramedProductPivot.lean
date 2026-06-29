@@ -61,8 +61,8 @@ noncomputable def framedParamsRegPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
             + P (lastLayer hL)
               * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                   (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                  (Matrix.fromBlocks (readX H r hr hL p (lastLayer hL))
-                    (readY H r hr hL p (lastLayer hL)) (readZ H r hr hL p (lastLayer hL)) 0)
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL))
+                    (gaugeReadY H r hr hL p (lastLayer hL)) (gaugeReadZ H r hr hL p (lastLayer hL)) 0)
               * Q (lastLayer hL) :
           Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ)
     else
@@ -93,8 +93,8 @@ theorem framedParamsRegPivot_last (H : Fin (L + 1) → ℕ) (r : ℕ)
           + P (lastLayer hL)
             * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                 (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                (Matrix.fromBlocks (readX H r hr hL p (lastLayer hL))
-                  (readY H r hr hL p (lastLayer hL)) (readZ H r hr hL p (lastLayer hL)) 0)
+                (Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL))
+                  (gaugeReadY H r hr hL p (lastLayer hL)) (gaugeReadZ H r hr hL p (lastLayer hL)) 0)
             * Q (lastLayer hL) := by
   show (dite (lastLayer hL = lastLayer hL) _ _) = _
   rw [dif_pos rfl]
@@ -123,9 +123,9 @@ noncomputable def framedParamsPivot (H : Fin (L + 1) → ℕ) (r : ℕ)
             + P (lastLayer hL)
               * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                   (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-                    (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-                    (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
                     ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))
               * Q (lastLayer hL) :
           Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ)
@@ -157,9 +157,9 @@ theorem framedParamsPivot_last (H : Fin (L + 1) → ℕ) (r : ℕ)
           + P (lastLayer hL)
             * Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                 (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-                  (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-                  (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
                   ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))
             * Q (lastLayer hL) := by
   show (dite (lastLayer hL = lastLayer hL) _ _) = _
@@ -199,7 +199,7 @@ theorem framedParamsPivot_coreZero (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- Each `framedParamsRegPivot` layer ENTRY is `ContDiff ⊤` in the `(reg, gauge)` slots: non-last layers
 ARE `framedParamsReg` (the banked `contDiff_framedParamsReg_entry`); the last layer is the same
-`corM + P·reindex(fromBlocks readX readY readZ 0)·Q` block-read shape with a pivot column reindex
+`corM + P·reindex(fromBlocks gaugeReadX gaugeReadY gaugeReadZ 0)·Q` block-read shape with a pivot column reindex
 (`ContDiff` by the same double-sum-of-reads argument, generic over the reindex equiv). -/
 theorem contDiff_framedParamsRegPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
@@ -210,26 +210,26 @@ theorem contDiff_framedParamsRegPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
     ContDiff ℝ (⊤ : ℕ∞) (fun p => framedParamsRegPivot H r hr hL J P Q p s i j) := by
   by_cases hs : s = lastLayer hL
   · -- last layer: pivot column reindex. The entry is `corM_pivot i j + (P·D(p)·Q) i j` with each entry
-    -- of `D(p) = reindex(fromBlocks (readX) (readY) (readZ) 0)` a block read (ContDiff) or `0`.
+    -- of `D(p) = reindex(fromBlocks (gaugeReadX) (gaugeReadY) (gaugeReadZ) 0)` a block read (ContDiff) or `0`.
     subst hs
     have hD : ∀ (m : Fin (H (lastLayer hL).castSucc)) (n : Fin (H (lastLayer hL).succ)),
         ContDiff ℝ (⊤ : ℕ∞) (fun p => (Matrix.reindex
             (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
             (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-            (Matrix.fromBlocks (readX H r hr hL p (lastLayer hL)) (readY H r hr hL p (lastLayer hL))
-              (readZ H r hr hL p (lastLayer hL))
+            (Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL)) (gaugeReadY H r hr hL p (lastLayer hL))
+              (gaugeReadZ H r hr hL p (lastLayer hL))
               (0 : Matrix (Fin (H (lastLayer hL).castSucc - r)) (Fin (H (lastLayer hL).succ - r)) ℝ)))
             m n) := by
       intro m n
       have hmn : (fun p => (Matrix.reindex
             (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
             (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-            (Matrix.fromBlocks (readX H r hr hL p (lastLayer hL)) (readY H r hr hL p (lastLayer hL))
-              (readZ H r hr hL p (lastLayer hL))
+            (Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL)) (gaugeReadY H r hr hL p (lastLayer hL))
+              (gaugeReadZ H r hr hL p (lastLayer hL))
               (0 : Matrix (Fin (H (lastLayer hL).castSucc - r)) (Fin (H (lastLayer hL).succ - r)) ℝ)))
             m n)
-          = fun p => Matrix.fromBlocks (readX H r hr hL p (lastLayer hL))
-              (readY H r hr hL p (lastLayer hL)) (readZ H r hr hL p (lastLayer hL))
+          = fun p => Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL))
+              (gaugeReadY H r hr hL p (lastLayer hL)) (gaugeReadZ H r hr hL p (lastLayer hL))
               (0 : Matrix (Fin (H (lastLayer hL).castSucc - r)) (Fin (H (lastLayer hL).succ - r)) ℝ)
               ((rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)) m)
               ((pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)) n) := by
@@ -241,9 +241,9 @@ theorem contDiff_framedParamsRegPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
           with b | b <;>
         simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
           Matrix.fromBlocks_apply₂₂, Matrix.zero_apply]
-      · exact contDiff_readX_entry H r hr hL (lastLayer hL) a b
-      · exact contDiff_readY_entry H r hr hL (lastLayer hL) a b
-      · exact contDiff_readZ_entry H r hr hL (lastLayer hL) a b
+      · exact contDiff_gaugeReadX_entry H r hr hL (lastLayer hL) a b
+      · exact contDiff_gaugeReadY_entry H r hr hL (lastLayer hL) a b
+      · exact contDiff_gaugeReadZ_entry H r hr hL (lastLayer hL) a b
       · exact contDiff_const
     have hentry : (fun p => framedParamsRegPivot H r hr hL J P Q p (lastLayer hL) i j)
         = fun p =>
@@ -253,8 +253,8 @@ theorem contDiff_framedParamsRegPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
             + (P (lastLayer hL) * Matrix.reindex
                   (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                   (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                  (Matrix.fromBlocks (readX H r hr hL p (lastLayer hL))
-                    (readY H r hr hL p (lastLayer hL)) (readZ H r hr hL p (lastLayer hL))
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL p (lastLayer hL))
+                    (gaugeReadY H r hr hL p (lastLayer hL)) (gaugeReadZ H r hr hL p (lastLayer hL))
                     (0 : Matrix (Fin (H (lastLayer hL).castSucc - r))
                       (Fin (H (lastLayer hL).succ - r)) ℝ)) * Q (lastLayer hL)) i j := by
       funext p
@@ -291,22 +291,22 @@ theorem contDiff_framedParamsPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
         ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
             (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
             (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-            (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-              (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-              (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+            (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
               ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))) m n) := by
       intro m n
       have hmn : (fun q : DeepestSplit H r (deepestNGauge H r) => (Matrix.reindex
             (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
             (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-            (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-              (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-              (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+            (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+              (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
               ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL)))) m n)
           = fun q : DeepestSplit H r (deepestNGauge H r) =>
-              Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-                (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-                (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+              Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
                 ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))
                 ((rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)) m)
                 ((pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)) n) := by
@@ -321,9 +321,9 @@ theorem contDiff_framedParamsPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
           with b | b <;>
         simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₂₁,
           Matrix.fromBlocks_apply₂₂]
-      · exact (contDiff_readX_entry H r hr hL (lastLayer hL) a b).comp hreg
-      · exact (contDiff_readY_entry H r hr hL (lastLayer hL) a b).comp hreg
-      · exact (contDiff_readZ_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact (contDiff_gaugeReadX_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact (contDiff_gaugeReadY_entry H r hr hL (lastLayer hL) a b).comp hreg
+      · exact (contDiff_gaugeReadZ_entry H r hr hL (lastLayer hL) a b).comp hreg
       · exact contDiff_coreRead_entry H r hr hL (lastLayer hL) a b
     have hentry : (fun q : DeepestSplit H r (deepestNGauge H r) =>
           framedParamsPivot H r hr hL J P Q q (lastLayer hL) i j)
@@ -334,9 +334,9 @@ theorem contDiff_framedParamsPivot_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
             + (P (lastLayer hL) * Matrix.reindex
                   (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
                   (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
-                  (Matrix.fromBlocks (readX H r hr hL (q.1, q.2.2) (lastLayer hL))
-                    (readY H r hr hL (q.1, q.2.2) (lastLayer hL))
-                    (readZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+                  (Matrix.fromBlocks (gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+                    (gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
                     ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))) * Q (lastLayer hL)) i j := by
       funext q
       rw [framedParamsPivot_last H r hr hL J P Q q]
@@ -366,8 +366,8 @@ theorem framedParamsRegPivot_zero_last (H : Fin (L + 1) → ℕ) (r : ℕ)
       = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
           (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
           (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
-  rw [framedParamsRegPivot_last H r hr hL J P Q 0, readX_zero H r hr hL (lastLayer hL),
-    readY_zero H r hr hL (lastLayer hL), readZ_zero H r hr hL (lastLayer hL)]
+  rw [framedParamsRegPivot_last H r hr hL J P Q 0, gaugeReadX_zero H r hr hL (lastLayer hL),
+    gaugeReadY_zero H r hr hL (lastLayer hL), gaugeReadZ_zero H r hr hL (lastLayer hL)]
   rw [show Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 = 0 from by
       ext a b; rcases a with a | a <;> rcases b with b | b <;> rfl]
   simp [Matrix.reindex_apply, Matrix.submatrix_zero]
