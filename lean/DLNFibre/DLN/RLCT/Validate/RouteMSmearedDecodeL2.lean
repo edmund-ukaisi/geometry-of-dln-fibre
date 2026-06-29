@@ -208,4 +208,48 @@ noncomputable def Rmap (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc 
     (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
   pivotBlowupOn (topCoords M hrs) (pivotCoord M hrs hr hc)
 
+/-! ## The smeared shear `shiftFull` (the `−Λ₀·S_bot` correction, by an injective single-term sum)
+
+The correction at a deepest-top coord `m = coordOf (topSlot a j)` is `−(Λ₀·S_bot) a j`. To define it
+TOTALLY over all `m` WITHOUT a dependent slot-extraction, sum over all `(a,j)` with an `if` selecting the
+unique matching slot (`coordOf (topSlot ·) ` is injective). The single nonzero term gives the value. -/
+
+/-- The full-vector correction `−∑_{a,j} [coordOf(topSlot a j) = m]·(Λ₀ v'·S_bot v') a j`. At a top coord
+`m = coordOf(topSlot a₀ j₀)` it collapses to `−(Λ₀·S_bot) a₀ j₀`; off `topCoords` it is `0`. -/
+noncomputable def shiftFull (M : Fin 3 → ℕ) (hrs : r + s = M 1) (v' : Fin (routeMAmbient M) → ℝ)
+    (m : Fin (routeMAmbient M)) : ℝ :=
+  -∑ a : Fin r, ∑ j : Fin (M 2),
+    (if coordOf M (topSlot M hrs a j) = m then (Lam0u M hrs v' * Sbotu M hrs v') a j else 0)
+
+/-- **The single-term collapse.** At a deepest-top coord, `shiftFull` reads off the `(a,j)` correction
+(the `coordOf (topSlot ·)` injectivity kills every off-diagonal term). -/
+theorem shiftFull_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1) (v' : Fin (routeMAmbient M) → ℝ)
+    (a₀ : Fin r) (j₀ : Fin (M 2)) :
+    shiftFull M hrs v' (coordOf M (topSlot M hrs a₀ j₀))
+      = -(Lam0u M hrs v' * Sbotu M hrs v') a₀ j₀ := by
+  -- the column of equal top slots: `topSlot a j = topSlot a₀ j₀ ⟹ j = j₀` (non-dependent `.2.val`)
+  have hcol : ∀ (a : Fin r) (j : Fin (M 2)),
+      topSlot M hrs a j = topSlot M hrs a₀ j₀ → j = j₀ := fun a j h =>
+    Fin.ext (congrArg (fun q : FlatIdx M => (q.2.val : ℕ)) h)
+  -- the row: `topSlot a j = topSlot a₀ j₀ ⟹ a = a₀` (via `deepWidthEquiv` injectivity on the row `.1.2`)
+  have hrow : ∀ (a : Fin r) (j : Fin (M 2)),
+      topSlot M hrs a j = topSlot M hrs a₀ j₀ → a = a₀ := by
+    intro a j h
+    have hv : (deepWidthEquiv hrs (Sum.inl a) : Fin (M 1)).val
+        = (deepWidthEquiv hrs (Sum.inl a₀) : Fin (M 1)).val :=
+      congrArg (fun q : FlatIdx M => (q.1.2.val : ℕ)) h
+    have he : deepWidthEquiv hrs (Sum.inl a) = deepWidthEquiv hrs (Sum.inl a₀) := Fin.ext hv
+    exact Sum.inl_injective ((deepWidthEquiv hrs).injective he)
+  rw [shiftFull, neg_inj, Finset.sum_eq_single a₀]
+  · rw [Finset.sum_eq_single j₀]
+    · rw [if_pos rfl]
+    · intro j _ hj
+      refine if_neg (fun hcoord => hj ?_)
+      exact hcol a₀ j (coordOf_injective M hcoord)
+    · intro hj0; exact absurd (Finset.mem_univ j₀) hj0
+  · intro a _ ha
+    refine Finset.sum_eq_zero (fun j _ => if_neg (fun hcoord => ha ?_))
+    exact hrow a j (coordOf_injective M hcoord)
+  · intro ha0; exact absurd (Finset.mem_univ a₀) ha0
+
 end DLNFibre.DLN.RLCT
