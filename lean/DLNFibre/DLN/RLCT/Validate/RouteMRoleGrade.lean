@@ -28,11 +28,15 @@ are disjoint (`Sum.inl ≠ Sum.inr`), so the role grading has zero within-layer 
 
 This is the INPUT-side value-locality, role-refined. It does NOT, on its own, give the fderiv
 block-triangularity of the real chart frame: that additionally needs (i) `paramsPack_layer` —
-aligning the chart's OUTPUT grading (`paramsEquivFlat`'s `FlatIdx` layer) with this INPUT grading
-(`chartIdxEquiv`'s `ChartIdx` layer), a separate bijection-alignment construction, since
-`Matrix.BlockTriangular` consumes a SINGLE grading on rows and columns; and (ii) the per-block-det
-`toSquareBlock` reindex (the deferred cast-surface b-1). Those are tracked separately; this module
-banks the bounded refinement.
+aligning the chart's OUTPUT grading (`paramsEquivFlat`'s `FlatIdx` layer, where layer `s` carries the
+whole `M_s · M_{s+1}` weight block) with this INPUT grading (`chartIdxEquiv`'s `ChartIdx` layer, where
+layer `k` carries `schurDim k + liftDim k` coords), a separate alignment construction, since
+`Matrix.BlockTriangular` consumes a SINGLE grading on rows and columns. The two per-layer block sizes
+differ in general, so a RAW-layer-preserving `FlatIdx ≃ ChartIdx` need not exist — the honest common
+grading is the COARSE boundary-level one (radial grade `0` + one grade per boundary), which is also the
+route-decision (the fine role grading here is then optional input-side infrastructure). And (ii) the
+per-block-det `toSquareBlock` reindex (the deferred cast-surface b-1). Those are tracked separately;
+this module banks the bounded refinement.
 
 Axiom-clean `[propext, Classical.choice, Quot.sound]` (finite equivalences; no analysis).
 -/

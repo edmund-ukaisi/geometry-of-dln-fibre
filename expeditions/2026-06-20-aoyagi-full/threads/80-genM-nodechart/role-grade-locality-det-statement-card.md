@@ -35,7 +35,11 @@ proven `bLayer` value-locality, and the **reusable locality⟹det bridge** compo
 >   `Agen_genBlkFlatLiveR1_reads_le`) — only needed if the FINE role grading is taken; per the route
 >   adjudication the COARSE grading is preferred (see below), so this refinement is INPUT-side
 >   infrastructure, not on the immediate critical path.
-> - **Status.** sorry-free, clean-three (forced `#print axioms`) — awaiting reviewer.
+> - **Status.** sorry-free, clean-three (forced `#print axioms`) — reviewed (fidelity verdict
+>   *survived*; two report-only docstring sharpenings applied: the `RouteMLocalityDet` "in one shot"
+>   phrasing now states the small `toDual`-transport wrapper to use it WITH the headline; the
+>   `FlatIdx ≃ ChartIdx` phrase now notes the raw per-layer sizes differ so the honest common grading is
+>   the COARSE boundary-level one).
 
 ## Brick 2 — the locality⟹det bridge (`RouteMLocalityDet`)
 
@@ -77,4 +81,8 @@ proven `bLayer` value-locality, and the **reusable locality⟹det bridge** compo
 >   one grade per boundary), keep `interiorDet_headline_of_blockTri` as-is, and add a single
 >   `boundary_block_factorises` lemma (per-boundary block = Schur ⊗ LDU ⟹ det = product). The fine role
 >   grading (Brick 1) is then optional input-side infrastructure, not required.
-> - **Status.** sorry-free, clean-three (forced `#print axioms`) — awaiting reviewer.
+> - **Status.** sorry-free, clean-three (forced `#print axioms`) — reviewed (fidelity verdict
+>   *survived*; two report-only docstring sharpenings applied: the `RouteMLocalityDet` "in one shot"
+>   phrasing now states the small `toDual`-transport wrapper to use it WITH the headline; the
+>   `FlatIdx ≃ ChartIdx` phrase now notes the raw per-layer sizes differ so the honest common grading is
+>   the COARSE boundary-level one).

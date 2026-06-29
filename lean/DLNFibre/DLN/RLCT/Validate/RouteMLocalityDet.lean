@@ -19,10 +19,13 @@ applies.
 * `fderiv_abs_det_eq_prod_diagBlocks` — `|det (fderiv f u)| = ∏_{a ∈ image (toDual∘g)}
   |(toMatrix' D).toSquareBlock (toDual∘g) a).det|`, from value-locality + `HasFDerivAt`.
 
-This is the UNCONDITIONAL det-factorizes-by-grade fact: it discharges the headline's `hbt` AND the
-abs `BlockTriangular.det` step in one shot, leaving ONLY the per-block-det identifications (the
-`hR`/`hB` engine values) and — for the real chart — the input/output grading alignment
-(`paramsPack_layer`) to the wiring stage. See `RouteMRoleGrade`'s scope note for the recalibration.
+This is the UNCONDITIONAL det-factorizes-by-grade fact: it re-proves the abs `BlockTriangular.det`
+product directly over `toDual ∘ g` (rather than filling `interiorDet_headline_of_blockTri`'s `hbt`,
+which is stated for a bare `g` — using it WITH the headline instantiates the headline at `toDual ∘ g`
+and transports `himg`/`hR`/`hB` to the dual-indexed blocks, a small wrapper). It leaves the per-block-det
+identifications (the `hR`/`hB` engine values) and — for the real chart — the input/output grading
+alignment (`paramsPack_layer`) to the wiring stage. See `RouteMRoleGrade`'s scope note for the
+recalibration.
 
 Axiom-clean `[propext, Classical.choice, Quot.sound]` (calculus + determinant; no S2).
 -/
