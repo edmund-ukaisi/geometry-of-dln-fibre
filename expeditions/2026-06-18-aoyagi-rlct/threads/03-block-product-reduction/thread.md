@@ -18,6 +18,34 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 local-source two-sided loss-density handoff
+
+Reproduction:
+`reproduction-a2-local-source-two-sided-loss-density-handoff.md`.
+Statement card:
+`statement-card-a2-local-source-two-sided-loss-density-handoff.md`.
+Review:
+`review-a2-local-source-two-sided-loss-density-handoff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+```
+
+The theorem takes four supplied `nhdsWithin x0 source` bounds, uniform in the
+p.13 regular-coordinate ball, and transports them to four a.e. facts over one
+common restricted product measure `(mu.restrict (U inter source)).prod nu`
+after shrinking to an open base neighborhood `U`.  It is only
+filter-to-measure plumbing; it does not prove positivity of constants, the
+comparison hypotheses, chart construction or transport, residual hypotheses,
+integrability, normal crossings, pole order, or RLCT.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure`,
+`scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, direct axiom probe, and xhigh review passed.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-06-28 A2 direct-chart positive-set measurability hardening
 
 Reproduction:

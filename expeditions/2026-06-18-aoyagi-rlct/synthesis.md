@@ -3,6 +3,66 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 local-source two-sided loss-density handoff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided_loss_density_bounds
+```
+
+It is the local-source product-measure handoff for the supplied two-sided
+loss-density comparison layer.  Given four eventual `nhdsWithin x0 source`
+bounds, uniform in the p.13 regular-coordinate ball,
+
+```text
+cL * model(x,u) <= loss(x,u),
+loss(x,u) <= CL * model(x,u),
+dRho <= density(x,u),
+density(x,u) <= DRho,
+```
+
+where
+
+```text
+model(x,u) =
+  aoyagiCoordinateSquareSum
+    (paperEndpointFixedBaseResidualBlockCoordinateMap ... Cedge x)
+  + aoyagiCoordinateSquareSum (fun i => u i),
+```
+
+it returns an open `U` with `x0 in U` and four corresponding a.e. facts over
+`(mu.restrict (U inter source)).prod nu`.
+
+The proof only bundles the four eventual predicates, applies
+`exists_open_ae_restrict_inter_prod_fst_of_eventually_nhdsWithin`, and
+projects the conjunction.  It intentionally has no positivity assumptions on
+`R`, `cL`, `CL`, `dRho`, or `DRho`; those are consumed by the later
+integrability iff, not by this handoff.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-local-source-two-sided-loss-density-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-local-source-two-sided-loss-density-handoff.md`.
+Review passed in
+`threads/03-block-product-reduction/review-a2-local-source-two-sided-loss-density-handoff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probe for the new public theorem name.
+The axiom footprint is the expected `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the supplied comparison hypotheses, no p.13 chart
+construction or coverage, no source-prior/Jacobian/density/product-measure
+transport, no residual positivity or integrability, no integrability iff, no
+normal crossings, no pole order, and no RLCT.
+
 ## Latest A2 two-sided loss-density supplied comparison iff - 2026-06-29
 
 `RegularSuspensionSquareSumIntegrability.lean` now has a supplied two-sided

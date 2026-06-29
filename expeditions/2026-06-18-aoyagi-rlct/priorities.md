@@ -10,6 +10,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, local-source two-sided loss-density handoff
+
+`RegularSuspensionLocalMeasure.lean` now has the local-source handoff that the
+two-sided supplied comparison iff needs: four source-filter hypotheses,
+uniform in the regular-coordinate ball,
+
+```text
+cL * model <= loss,
+loss <= CL * model,
+dRho <= density,
+density <= DRho,
+```
+
+are bundled and transported to four a.e. facts over one common restricted
+product measure `(mu.restrict (U inter source)).prod nu` after shrinking to an
+open base neighborhood `U`.
+
+This is deliberately only filter-to-measure plumbing.  It assumes the four
+bounds and does not require or prove positivity of `R`, `cL`, `CL`, `dRho`, or
+`DRho`.  Those hypotheses belong to the later integrability iff.  It also
+does not prove the p.13 chart, loss comparison, density/Jacobian/source-prior
+transport, residual hypotheses, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, two-sided loss-density supplied comparison iff
 
 The regular-suspension square-model threshold iff now has a supplied
