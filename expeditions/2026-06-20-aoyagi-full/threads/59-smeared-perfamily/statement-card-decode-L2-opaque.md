@@ -51,10 +51,14 @@ landed; what remains is the genuinely-analytic conditioned input (field A + the 
 > - **Assumed (the precisely-isolated remaining inputs, carried as named hypotheses).**
 >   1. **The off-pole cancellation** `P₁·Λ₀ = P₂` on each peeled point. Reduces (banked
 >      `Lam0u_cancel_of_factoring` = `proj_cancel_of_factorsThrough`) to the STRUCTURAL factoring
->      `P₂ = P₁·K` (`col(P₂) ⊆ col(P₁)`) + `det(P₁ᵀP₁) ≠ 0`. For the verified precedents `(2,3,1)`/`(1,2,1)`
->      this is the SQUARE case `r = M 0` (P₁ square-invertible ⟹ `col(P₁) = ℝ^{M0} ⊇ col(P₂)`). For tall
->      `P₁` (`r < M 0`) it is FALSE for generic free `A⁰` — so this needs `M 0 ≤ r` (full row rank) or the
->      conditioned structural factoring. **Genuinely-new for general `r`.**
+>      `P₂ = P₁·K` (`col(P₂) ⊆ col(P₁)`) + `det(P₁ᵀP₁) ≠ 0`. **The off-pole `det(P₁ᵀP₁) ≠ 0` forces `P₁`
+>      full COLUMN rank ⟹ `r ≤ M 0`.** So for a FREE `A⁰` (the chart's front), UNIVERSAL cancellation
+>      (every `A⁰` off the pole) holds exactly in the SQUARE case `r = M 0` (P₁ square-invertible ⟹
+>      `col(P₁) = ℝ^{M0} ⊇ col(P₂)`, `K := P₁⁻¹·P₂`) — the verified precedents `(2,3,1)`/`(1,2,1)` are this
+>      case. For tall `P₁` (`r < M 0`) it is FALSE for generic free `A⁰` (`s > 0`); the `r > M 0` regime is
+>      EMPTY off the pole. Outside the square case the cancellation needs the conditioned structural
+>      factoring `P₂ = P₁·K` (the achiever's front-bottleneck `col(P₂) ⊆ col(P₁)`). **Genuinely-new for
+>      general `r`.**
 >   2. **Field A** — the containment `condBox ⊆ (ψ∘R)⁻¹(cubeBox ε)` via the conditioned `Λ₀`-bound. The
 >      `(2,3,1)` uses an explicit `2×2`-cofactor `nlinarith`; opaque `r,s` needs the general inverse-norm
 >      bound (the handoff's "new analysis"). `U`-positivity (`U ≥ bound > 0` on the conditioned box) is the

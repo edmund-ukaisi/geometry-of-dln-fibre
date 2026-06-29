@@ -665,9 +665,10 @@ theorem Uunit_hN_insertNth {n : ℕ} (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr
 
 The complete opaque-width chart (`psiMap` MP+embedding, `Rmap` fderiv/injOn/det, the DECODE → rate)
 discharges the headline's chart facts. What remains per family are the genuinely-analytic conditioned
-inputs — the shear cancellation `P₁·Λ₀ = P₂` (off the `det P₁ᵀP₁ = 0` pole; holds for `M 0 ≤ r` on the
-conditioned box) and FIELD A (the containment `condBox ⊆ (ψ∘R)⁻¹(cubeBox ε)` + `U`-positivity), supplied
-as named hypotheses here. -/
+inputs — the shear cancellation `P₁·Λ₀ = P₂` (off the `det P₁ᵀP₁ = 0` pole, which forces `r ≤ M 0`; for a
+free front it holds UNIVERSALLY only in the square case `r = M 0`, else via the conditioned structural
+factoring `P₂ = P₁·K`, cf. `Lam0u_cancel_of_factoring`) and FIELD A (the containment
+`condBox ⊆ (ψ∘R)⁻¹(cubeBox ε)` + `U`-positivity), supplied as named hypotheses here. -/
 
 /-- **The opaque-width L=2 smeared box-divergence (the chart assembly).** For L=2 widths `M` with
 `r + s = M 1`, `0 < r`, `0 < M 2`, and `routeMAmbient M = n + 1`: feeding the GENERIC chart
