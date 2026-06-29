@@ -3,6 +3,60 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 source-stratum signed-box two-sided loss-density iff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+This is the source-rank-stratum specialization of the local-source signed-box
+two-sided iff.  It sets `source := paperEndpointFixedBaseSourceRankStratum` and
+rewrites the conclusion back to source-stratum notation.  The signed-box
+positivity inputs are still only the chart a.e. measurability, source-stratum
+pushforward identity, `0 < cres`, and residual monomial lower bound.  The
+explicit residual boundedness input remains:
+
+```text
+residualSquareSum x <= Rreg^2
+```
+
+on `mu.restrict sourceStratum`.
+
+With four supplied source-stratum-filter two-sided bounds, the theorem returns
+an open `U` with `x0 in U` and
+
+```text
+actual loss-density integral over (mu.restrict (U inter sourceStratum)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U inter sourceStratum) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Anscombe xhigh read-only review passed the theorem surface.  Hygiene passed:
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe for the new theorem name.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of signed-box chart construction, pushforward identity,
+source-stratum coverage, comparison bounds, residual boundedness, residual
+integrability from signed-box critical inequalities,
+source-prior/Jacobian/density/product-measure transport, original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest A2 local-source signed-box two-sided loss-density iff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:

@@ -18,6 +18,40 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 source-stratum signed-box two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-source-stratum-signed-box-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+It specializes the local-source signed-box two-sided theorem to
+`paperEndpointFixedBaseSourceRankStratum`.  It assumes source-stratum
+measurability, measurable fixed-basis edge matrices, the source-stratum
+weighted signed-box pushforward, `0 < cres`, the residual monomial lower bound,
+explicit residual boundedness `residualSquareSum <= Rreg^2`, and four supplied
+two-sided source-stratum comparison bounds.  It returns an open `U` where
+actual loss-density finiteness over `(mu.restrict (U inter sourceStratum)).prod
+nu` is equivalent to `residualNegPowerIntegrableOn Cedge (U inter
+sourceStratum) mu t`.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` passed.
+Anscombe xhigh read-only review passed.  Hygiene gates passed
+(`scripts/sorries`, `git diff --check`, touched-file marker scan, direct axiom
+probe with `[propext, Classical.choice, Quot.sound]`).  Nonclaims remain: no
+signed-box chart construction, no pushforward or source-stratum coverage proof,
+no comparison-bound or residual-boundedness proof, no residual integrability
+proof from signed-box critical inequalities, no transport theorem, no
+original-loss identification, no normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 local-source signed-box two-sided loss-density iff
 
 Reproduction:

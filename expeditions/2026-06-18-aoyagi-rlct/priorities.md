@@ -10,6 +10,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, source-stratum signed-box two-sided loss-density iff
+
+The local-source signed-box two-sided iff now has its source-rank-stratum
+wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+It specializes the local-source theorem to
+`paperEndpointFixedBaseSourceRankStratum`.  The theorem keeps the source-stratum
+pushforward identity, residual monomial lower bound, explicit residual
+boundedness `residualSquareSum <= Rreg^2`, and the four two-sided loss/density
+bounds as hypotheses.  It deliberately does not assume signed-box critical
+inequalities or source-density upper/nonnegativity hypotheses, so it does not
+hide residual integrability in the signed-box inputs.
+
+Nonclaims remain strict: no proof of signed-box chart construction,
+pushforward identity, local/source-stratum coverage, comparison bounds,
+residual boundedness, residual integrability from signed-box critical
+inequalities, source-prior/Jacobian/density/product-measure transport,
+original-loss identification, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, local-source signed-box two-sided loss-density iff
 
 The local-source signed-box residual chart now feeds the two-sided local
