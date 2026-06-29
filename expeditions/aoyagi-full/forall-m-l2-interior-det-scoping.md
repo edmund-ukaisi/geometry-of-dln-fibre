@@ -94,3 +94,25 @@ identity (not the pivot variant). Remaining: the pivot placement (one residual s
 fixed-1), the leaf-slot reading, the full active.card=minAdm (E-block via activeSlotE_inj + leaf),
 and the chart rate (genBlkFlatLive's rate is likely banked — RouteMFlatLive has C0_eq_one_live etc.).
 Substantially de-risked; awaiting coordinator go on (i) vs (ii).
+
+## PINNED DESIGN (Codex-confirmed, active-genblklive-answer.md): the genBlkFlatLive + leaf-pivot decoder
+
+The ∀M-L2 headline decoder = `genBlkFlatLive M (tach M) ha (rfinFixedPivot x) x` with the LEAF-pivot:
+- `rfinFixedPivot x : Matrix (Fin (Text L)) (Fin (Wext L))` with `(0,0) = 1` (the fixed bare-`u`
+  pivot, so `Cgen … L = u • rfin` gives `C_L(0,0) = u·1 = u` — the radial axis), and the OTHER leaf
+  entries read from chosen complement slots (`u·angular`).
+- `Rmat₁ = rmatPad(readE)` UNCHANGED (all interior E-block entries READ from x = `u·angular`). NO
+  E-block override (unlike genBlkFlatLiveR1, which zeroed the E-block — the 1×1-special bug).
+- `active = E₁ ∪ Rfin_L` (the full interior E-block slots ∪ the leaf slots), `card = minAdm`,
+  `p₀ = Rfin_L(0,0)` ∈ active. The non-pivot residual entries are `u·angular`; `pivotBlowupOn active
+  p₀` reproduces this (p₀→u, rest→u·angular).
+- (3,3,4): tach=(3,1,0), Text=[3,3,1]; E₁ = 2×2 = 4, Rfin₂ = 1×4 = 4, active.card = 8 = minAdm,
+  p₀ = Rfin₂(0,0). The `|u1|²` in leafH334 is a SEPARATE spectator (the b=aβ substitution), NOT the
+  radial blow-up — so the radial Jacobian is `|u0|⁷ = |u_p₀|^{minAdm−1}`, matching.
+
+WRONG alternatives (Codex): p₀ separate from E∪Rfin → card = minAdm+1 (exp wrong); raw-read at pivot
+slot → u·x_p₀ = u² (no bare-u). So the decoder MUST supply the fixed-pivot rfin (not raw genBlkFlatLive).
+
+REMAINING: rfinFixedPivot + the leaf-slot complement choice; structured active M (E-block via
+activeSlotE ∪ leaf slots) + active.card=minAdm; the chart phiFlatLiveAt (= phiGen (x p₀) … genBlkFlatLive)
++ its rate (RouteMFlatLive's live machinery); the hmap funext (brick 2a non-pivot Cgen + leaf) + BDataAt.
