@@ -26,7 +26,7 @@ gate, and composing.
 
 namespace DLNFibre.Core
 
-open Algebra MvPolynomial Matrix TensorProduct
+open Algebra MvPolynomial Matrix TensorProduct Dimension
 
 /-! ## The generic engine — `TopDimMinPrimes` nonempty for a nontrivial Noetherian ring -/
 

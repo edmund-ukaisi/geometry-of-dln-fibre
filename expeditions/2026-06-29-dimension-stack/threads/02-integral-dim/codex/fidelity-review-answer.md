@@ -1,0 +1,9 @@
+**Q1. FAITHFUL.** Stacks 00OK states exactly that for an integral inclusion `R ⊂ S`, `dim R = dim S`; an injective integral ring hom is the Lean re-home of that inclusion after identifying `A` with its image. Equality is symmetric, so `ringKrullDim S = ringKrullDim A` is fine, assuming Mathlib’s `RingHom.IsIntegral` and `ringKrullDim` are the usual notions. ([stacks.math.columbia.edu](https://stacks.math.columbia.edu/tag/00OK))
+
+**Q2. MISTAG.** 00GU is the single-step going-up lemma: from `p ⊂ p'` and `q` over `p`, produce `q' ⊃ q` over `p'`. Declaration (2) is a finite-chain lifting corollary, using 00GU iteratively plus an initial lying-over/surjectivity input from injectivity. Defensible as “powered by 00GU,” but not literal enough for a strict `@[stacks 00GU]` tag. ([stacks.math.columbia.edu](https://stacks.math.columbia.edu/tag/00GU))
+
+**Q3. MISMATCH.** Not tagging (3) as 00GT is honest: `StrictMono comap` is an order-theoretic reformulation/corollary of incomparability, not the literal same-fiber incomparability statement. Not tagging (5) as 00OK is also reasonable; it is a derived half of 00OK. But (4) is under-tagged if conjunct/substatement tags are allowed, because Stacks 00OJ literally includes “integral `R → S` implies `dim R ≥ dim S`.” ([stacks.math.columbia.edu](https://stacks.math.columbia.edu/tag/00GT))
+
+**Q4. ACCURATE.** Fact: `dim S ≤ dim A` is injectivity-free for integral maps; comparable distinct primes in `S` cannot contract to the same prime by incomparability, so strict chains in `S` contract to strict chains in `A`. Dropping injectivity from `dim A ≤ dim S` is false: the quotient map `k[x] → k[x]/(x) ≅ k` is surjective, hence integral, non-injective, and has `dim k[x] = 1 > 0 = dim k`. Caveat: injectivity is a clean sufficient hypothesis, not logically minimal; nilpotent-kernel maps can still have surjective Spec.
+
+FLAGS: Q2 non-literal 00GU tag; Q3 possible under-tag on (4) as 00OJ.

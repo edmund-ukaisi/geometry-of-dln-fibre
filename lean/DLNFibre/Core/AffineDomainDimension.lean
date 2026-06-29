@@ -5,7 +5,8 @@ import Mathlib.RingTheory.Ideal.Height
 import Mathlib.RingTheory.Polynomial.UniqueFactorization
 import Mathlib.RingTheory.Polynomial.RationalRoot
 import Mathlib.RingTheory.NoetherNormalization
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NoetherMonicPositioning
 
@@ -48,6 +49,8 @@ prime `q` (`height_B q + dim (B ⧸ q) = s`) assembles the equality additively, 
 open PrimeSpectrum
 
 namespace DLNFibre.Core
+
+open Dimension
 
 /-! ### Integral height transport (the one new general brick) -/
 

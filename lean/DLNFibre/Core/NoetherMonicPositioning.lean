@@ -4,7 +4,8 @@ import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.Ideal.GoingDown
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
 import Mathlib.Algebra.MvPolynomial.Division
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.PolynomialDimension
 
 /-!
@@ -29,6 +30,8 @@ degree in `X₀`.
 open Polynomial MvPolynomial Ideal Nat RingHom List
 
 namespace DLNFibre.Core
+
+open Dimension
 
 variable {k : Type*} [Field k] {n : ℕ} (f : MvPolynomial (Fin (n + 1)) k)
 variable (v w : Fin (n + 1) →₀ ℕ)

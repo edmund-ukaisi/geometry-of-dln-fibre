@@ -31,12 +31,14 @@ import Mathlib.RingTheory.Smooth.Locus
 import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.LinearAlgebra.Dimension.Finrank
 import DLNFibre.Core.FlatQuasiFiniteHeight
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.NoetherMonicPositioning
 
 open Algebra
 
 namespace DLNFibre.Core
+
+open Dimension
 
 variable {k : Type*} [Field k] {A : Type*} [CommRing A] [Algebra k A] [Algebra.FiniteType k A]
 

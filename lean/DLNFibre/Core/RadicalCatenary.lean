@@ -1,5 +1,5 @@
 import DLNFibre.Core.NullstellensatzCodim
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Basic
 import Mathlib.RingTheory.Ideal.MinimalPrime.Noetherian
 import Mathlib.FieldTheory.IsAlgClosed.AlgebraicClosure
 
@@ -35,6 +35,8 @@ catenary that `Core.RouteCAssembly` carries as the named hypotheses `hCatFibre`/
 open MvPolynomial Ideal Order
 
 namespace DLNFibre.Core
+
+open Dimension
 
 universe u
 

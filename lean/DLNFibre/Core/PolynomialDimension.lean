@@ -3,7 +3,8 @@ import Mathlib.RingTheory.KrullDimension.Field
 import Mathlib.RingTheory.NoetherNormalization
 import Mathlib.RingTheory.Ideal.GoingDown
 import Mathlib.RingTheory.Ideal.KrullsHeightTheorem
-import DLNFibre.Core.IntegralDimension
+import DLNFibre.Core.Dimension.Integral
+import DLNFibre.Core.Dimension.Basic
 
 /-!
 # Dimension data of primes in a polynomial ring over a field (network-free engine)
@@ -46,6 +47,8 @@ field.
 open Order PrimeSpectrum
 
 namespace DLNFibre.Core
+
+open Dimension
 
 /-! ### L5.5 — `dim (R ⧸ p)` equals the Noether-normalization rank -/
 
