@@ -314,4 +314,27 @@ private theorem reindex_decodeLast_conj_b11 (H : Fin (L + 1) → ℕ) (r : ℕ)
   obtain ⟨hq11, _, _, _⟩ := reindex_decode_blocks_at H r B hB hr hL split hsplit x (lastLayer hL) hT
   rw [hψ11, hsw, readX_psiSplitRawL2CoreConj_eq, hq11]
 
+/-- **The e2 dictionary relation** (the {12}-leak-kill, `P01` fixed). In the `l2*Conj` dictionary:
+`A0c·Y1'c + Y0c·T1'c = A0c·Y1c + Y0c·T1c`. Via `e2_regPreserve` (needs `Invertible l2A0Conj`). -/
+private theorem e2_conj_dict (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hdet : (l2A0Conj H r B hB hr hL q).det ≠ 0) :
+    l2A0Conj H r B hB hr hL q * l2Y1pConj H r B hB hr hL hL2eq q
+        + l2Y0Conj H r B hB hr hL hL2eq q * l2T1pConj H r B hB hr hL hL2eq q
+      = l2A0Conj H r B hB hr hL q * l2Y1Conj H r B hB hr hL q
+        + l2Y0Conj H r B hB hr hL hL2eq q * l2T1Conj H r hr hL q := by
+  letI hinv : Invertible (l2A0Conj H r B hB hr hL q) :=
+    (l2A0Conj H r B hB hr hL q).invertibleOfIsUnitDet (Ne.isUnit hdet)
+  -- `l2Y1pConj = l2Y1Conj + ⅟(l2A0Conj)·l2Y0Conj·(l2T1Conj − l2T1pConj)` (the def, with ⅟ for ⁻¹).
+  have hY1p : l2Y1pConj H r B hB hr hL hL2eq q
+      = l2Y1Conj H r B hB hr hL q
+        + ⅟(l2A0Conj H r B hB hr hL q) * l2Y0Conj H r B hB hr hL hL2eq q
+          * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q) := by
+    rw [l2Y1pConj, invOf_eq_nonsing_inv]
+  rw [hY1p]
+  exact e2_regPreserve (l2A0Conj H r B hB hr hL q) (l2Y0Conj H r B hB hr hL hL2eq q)
+    (l2Y1Conj H r B hB hr hL q) (l2T1Conj H r hr hL q) (l2T1pConj H r B hB hr hL hL2eq q)
+
 end DLNFibre.DLN.RLCT
