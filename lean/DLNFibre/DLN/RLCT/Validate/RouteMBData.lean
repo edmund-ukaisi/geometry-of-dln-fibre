@@ -3,6 +3,20 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBInterface
 /-!
 # `RouteMBData` — the radial-scaling core of the B-interface map identity (the `hmap` algebra)
 
+⚠ **ROUTING NOTE: the `B := phiGen 1 (genBlkFlatLiveR1 …)` consumers below
+(`phiFlatLiveR1_eq_B_comp_pivotBlowupOn`, `_chart`) are SUPERSEDED — the WRONG `B`.** Their hyps
+(`hslot`/`hchart`) are undischargeable for `genBlkFlatLiveR1` (the affine-radial verdict,
+`codex/affine-radial-resolution-answer.md`): `genBlkFlatLiveR1`'s `Rmat p` literal-1
+becomes the pivot COORDINATE contribution in the COMPOSITE chart (`C_p = x_p·[1,…]`), blown up
+MULTIPLICATIVELY — NOT an additive `u·1` constant; a u-free `B` reading it would steal the pivot DOF
+(det 0). The FAITHFUL decomposition is the banked `(2,2,2)` `pack/T/pb` route
+(`RouteM222Det.{T222, pack222, pb222}`, `phi222_abs_det = |u0|²·|u4|`) generalized to ∀M — its `B =
+paramsEquivFlat ∘ pack ∘ (boundary frame) ∘ (shear)` reads the pivot as an ORDINARY coord, u-free
+with `det DB = engine ≠ 0`. The pack/T generalization is a separate module (the controller-cleared
+build); `radialComp_abs_det` (radial = pure `pivotBlowupOn`) stands. The ALGEBRA lemmas here
+(`smulRmatRfin`, `phiGen_smul_radial`, the `…_smulRmatRfin` lemmas) are SOUND/reusable;
+only the two `phiFlatLiveR1_eq_B_comp_pivotBlowupOn` consumers are off the build path.
+
 The genuinely-reachable, network-free core of `BData.hmap` (`phiFlatLiveR1 = B ∘ pivotBlowupOn`):
 the radial scalar `u` of the achiever chart `phiGen u M t B hle` can be ABSORBED into the block
 data, because `phiGen` reads `u` and `B` ONLY through `Cgen u M t B hle = Bmat·chainQ(N) + u•Rmat`
