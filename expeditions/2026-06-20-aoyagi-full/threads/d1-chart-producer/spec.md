@@ -2,39 +2,60 @@
 
 **For: a fresh worktree-isolated `lean-formaliser`.** This is the SINGLE remaining D1 (★) obligation.
 Everything upstream (the engine, the wiring, the residual-core interface, the kill-condition + design
-adjudications) is BANKED clean-three. Your job: construct the constant-`nReg` IFT chart at a **general**
+adjudications) is BANKED clean-three. Your job: construct the constant-`nReg` chart at a **general**
 optimal `v` and supply its outputs to the banked consumers, landing the D1 per-point `≥` leg
 `rlctAt_deepest_le_of_optimal` (Skeleton:1172) at L = 2.
 
+**★ READ §★ FIRST — the chart is the INTER-LAYER-STRAIGHTENING (partial Morse-Bott) reduction, NOT the
+cheap per-layer squeeze (KILL-CONDITION fired) and NOT an exact clean-square chart (walled).** The
+banked-consumer routing (§2) and the reductions (§4–6) stand; the CHART CONSTRUCTION (§3) is the heavy
+piece. Do NOT charge a build until the controller scopes the inter-layer-straightening lemma.
+
 ---
 
-## ★ RIGHT-SIZING (decisive-test adjudication a4ef57, 2026-06-29) — TAKE THE SQUEEZE ROUTE, NOT clean squares
+## ★ RIGHT-SIZING — TWO decisive tests; the SQUEEZE route FAILS at general v (do NOT charge it)
 
-The decisive (3,3,3)/r=1 middle-stratum gauge-frame SOS computation (EXACT + Codex) found: the `nReg=5`
-deepest-aligned directions are **NOT literal clean squares** of `F`. There is a rank-1 regular×regular
-coupling `p20·q01 = L20·L01` sitting inside the purely-quadratic core residuals `g21, g22`, which forces
-a t-DEPENDENT (nonlinear) shift to straighten — the parametrized Morse–Bott completion, which a
-constant-linear relabel CANNOT achieve. So an **exact clean-square chart (`hF : F = ∑s² + Q` with the
-`s` literally the chart coords; the `ofExactGerm` route) is IMPOSSIBLE at a general middle-stratum `v`.**
+**Test 1 (a4ef57): the exact clean-square chart is WALLED at general v.** The `nReg=5` deepest-aligned
+directions are NOT literal clean squares of `F`: a rank-1 regular×regular coupling sits inside the
+quadratic core residuals, forcing a t-DEPENDENT (nonlinear) shift — the parametrized Morse–Bott
+completion a constant-linear relabel cannot achieve. So `hF : F = ∑s² + Q` with the `s` literally the
+chart coords (the `ofExactGerm` route) is IMPOSSIBLE at a general middle-stratum `v`.
 
-**BUT this does NOT force the (~1k-line) Mathlib partial-Morse–Bott lemma.** The cheaper standing route
-is the SQUEEZE the existing `DeepestGaugeChart.loss_squeeze` already encodes: a two-sided constant
-comparison `c₁·Φ ≤ F ≤ c₂·Φ` (`0 < c₁ < c₂`) where `Φ = ∑E² + core` (`E` = the `P₁₁−I_r, P₁₂, P₂₁`
-regular residual blocks). The regular×regular leak (the `p20·q01`-type terms) is CHARGED to the regular
-block `∑E²` (the `core_comparability_squeeze` #54 leak bound `regular×regular ≤ t²·∑E²`, `t = ‖pivot‖`).
-Then:
-  1. `rlctAtOn F v = rlctAtOn Φ v`        [`rlctAtOn_squeeze` (S1NonMPTransport:119), the BANKED two-sided
-     constant comparison — NO clean squares, NO Morse–Bott, NO Mathlib gap];
-  2. `Φ = ∑E² + core` IS the `∑s² + Q` clean-square form (the `E` ARE the clean square coords of `Φ`),
-     so `Φ` feeds the banked `rlct_quasiSplit_ge` engine directly.
+**Test 2 (a9bfa7, the BINDING KILL-CONDITION check) — the SQUEEZE route also FAILS. ★ KILL-CONDITION
+FIRED.** The hoped-for cheap escape — the two-sided squeeze `c₁·Φ ≤ F ≤ c₂·Φ` with the EXISTING
+per-layer Schur `Φ = ∑E² + ‖∏S_s‖²` (`S_s = T_s − Z_s(I+X_s)⁻¹Y_s`) — does **NOT** hold at a general
+middle-stratum `v`. EXACT + decorrelated Codex found a positive-dimensional family of curved arcs
+(param `λ`) through the (3,3,3)/r=1 middle stratum (`T₁ = diag(1,0) ≠ 0` at `v`) on which, with all 5
+regular residuals `E = 0`:
 
-So the producer's chart is the SQUEEZE chart (route b), NOT an exact clean-square chart (route a). This
-is rung-1-comparable and reuses the SAME `loss_squeeze`/`rlctAtOn_squeeze` machinery the deepest L=2
-construction (`deepest_gauge_construction_L2`, clean-three) already uses — generalized off `deepestPoint`
-to a general optimal `v`. **The binding finite check (NOT a new Mathlib lemma):** confirm
-`core_comparability_squeeze` (#54) closes with the explicit two-sided constants
-`(2(1+t²))⁻¹ ≤ F/Φ ≤ 2+2t²` against the general-`v` residual (the `p20·q01`-type regular×regular leak ≤
-`t²·∑E²`) — a finite exact-algebra check. The adjudication did not find this fails.
+    F = (λ−1)²·p²b²w²,   Φ = (λ−2)²·p²b²w²,   F/Φ = (λ−1)²/(λ−2)²  (scale-independent).
+
+`λ=1`: `F=0` but `Φ>0` ⟹ the LOWER bound `c₁·Φ ≤ F` fails (`c₁→0`). `λ=2`: `Φ=0` but `F>0` ⟹ the UPPER
+bound `F ≤ c₂·Φ` fails (`c₂→∞`). **Root cause:** on `{E=0}`, `F = ‖R₂₂‖²` (the FULL lower-right product
+residual) while `Φ`'s core is `‖S₁S₂‖²` (PER-LAYER Schur) — different quartics, different zero loci. The
+surviving discrepancy is the inter-layer coupling `(T₂)₂₁·Y1_1·Z1_0` (a deep-kernel core direction ×
+deep-kernel × regular), which lives in `F` but is DROPPED by the per-layer Schur factorization in `Φ`. At
+the DEEPEST point `T₁=0` kills it (`leak ≤ t²∑E²`, the #54 bound holds); at a MIDDLE stratum `T₁≠0` it is
+ORDER-1 and breaks both bounds. The leak is NOT charge-able to `∑E²`.
+
+This is verified faithful to the Lean `Φ`: `deepestCoreF`'s core-output is TYPE-FORCED to the per-layer
+Schur `∏S_s` (`coreAbsorb` reads only reg+spec; the full `R` depends on `E` so CANNOT be the core slot),
+and `R − ∏S_s` is exactly the leak `#54` charges to `∑E²` (DeepestGaugeChart docstring §60-73). So the
+escape "redefine the core as the full `‖R₂₂‖²`" is type-FORBIDDEN in the current per-layer structure —
+and it IS the Morse-Bott reduction anyway (straightening the inter-layer coupling into the core).
+
+**TRAP NOTE (why earlier checks looked clean):** the degree-3 leak DOES charge cleanly, and undirected
+Monte-Carlo gave `eta(τ) → 0` across all four test strata — both FALSE POSITIVES. The failure lives on a
+measure-zero curved subvariety random sampling never hits and the degree-3 jet does not see (a
+quartic-vs-quartic zero-set mismatch). The decorrelated Codex found the arc independently; exact algebra
+confirmed it. The verify-first gate did its job — it caught a wrong "cheap route" BEFORE a wasted build.
+
+**VERDICT: D1's general-v chart genuinely needs the INTER-LAYER-STRAIGHTENING reduction** (straighten
+`R₂₂ = S₁S₂ + Z₁Y₁T₂ + …` into the core, not compare to the per-layer Schur core) — i.e. the
+parametrized Morse-Bott / partial splitting lemma (the ~1k-line classical lemma Mathlib v4.29 lacks),
+NOT the cheap per-layer squeeze. Per the ambition mandate this is a CHARGEABLE classical build (no new
+math), not a research wall (unlike #120). Do NOT charge the squeeze chart; scope the inter-layer
+straightening / partial splitting lemma instead.
 
 **SOUNDNESS NOTE (verified 2026-06-29, forced `#print axioms`):** the D1 producer reductions
 (`deepest_le_of_optimal_middle_stratum`, `hCore_middle_stratum_of_interface`,
