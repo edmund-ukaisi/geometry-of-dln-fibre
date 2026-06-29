@@ -3,6 +3,74 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 local-source signed-box two-sided loss-density iff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+This theorem connects the supplied weighted signed-box residual-source socket
+to the previously landed local-source two-sided loss-density iff.  From the
+measurable fixed-basis edge matrix family it derives `AEMeasurable` for the
+residual square-sum.  From the new positivity-only weighted signed-box
+monomial-lower helper it obtains residual positivity on `mu.restrict source`.
+The theorem no longer assumes the signed-box critical inequalities or
+source-density upper bounds that would already imply residual integrability on
+the whole source.
+
+The reverse-side local boundedness remains an explicit hypothesis:
+
+```text
+residualSquareSum x <= Rreg^2
+```
+
+on `mu.restrict source`.  With four supplied source-filter bounds
+
+```text
+cLreg * model <= loss,
+loss <= CLreg * model,
+dRho <= density,
+density <= DRho,
+```
+
+the theorem returns an open `U` with `x0 in U` and
+
+```text
+actual loss-density integral over (mu.restrict (U inter source)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U inter source) mu t.
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-local-source-signed-box-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-local-source-signed-box-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-local-source-signed-box-two-sided-loss-density-iff.md`.
+
+Focused build passed after the positivity-only weakening:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Mencius flagged the original stronger statement because it used the finite
+residual-source constructor and thus assumed enough to prove the right side.
+The theorem was weakened by adding
+`residualSquareSum_pos_ae_of_measure_map_signedBox_withDensity_monomialLower`
+and its measurable-edge-matrix wrapper.  Follow-up xhigh review passed.
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker scan, and direct axiom probes for the three new public theorem
+names.  The axiom footprint is `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the signed-box chart, pushforward identity, local source
+coverage, comparison bounds, residual local boundedness, residual integrability
+from signed-box critical inequalities, source-prior/Jacobian/density/product-
+measure transport, original-loss identification, normal crossings, pole order,
+or RLCT.
+
 ## Latest A2 source-stratum/local-source two-sided loss-density iff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:

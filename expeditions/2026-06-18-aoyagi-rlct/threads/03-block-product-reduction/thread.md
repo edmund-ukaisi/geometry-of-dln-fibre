@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 local-source signed-box two-sided loss-density iff
+
+Reproduction:
+`reproduction-a2-local-source-signed-box-two-sided-loss-density-iff.md`.
+Statement card:
+`statement-card-a2-local-source-signed-box-two-sided-loss-density-iff.md`.
+Review:
+`review-a2-local-source-signed-box-two-sided-loss-density-iff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+It derives residual square-sum measurability from the measurable fixed-basis
+edge matrices and residual positivity from the positivity-only weighted
+signed-box monomial-lower helper, then applies the local-source two-sided
+loss-density iff with explicit residual boundedness
+`residualSquareSum <= Rreg^2` and four supplied two-sided comparison bounds.
+The result returns an open `U` where actual loss-density finiteness over
+`(mu.restrict (U inter source)).prod nu` is equivalent to
+`residualNegPowerIntegrableOn Cedge (U inter source) mu t`.
+
+Focused `scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure` passed
+after the positivity-only weakening.  Mencius' follow-up xhigh review passed;
+hygiene gates passed (`scripts/sorries`, `git diff --check`, touched-file
+marker scan, direct axiom probes with `[propext, Classical.choice,
+Quot.sound]`).  Nonclaims remain: no signed-box chart construction, no
+pushforward or
+local-coverage proof, no comparison-bound or residual-boundedness proof, no
+residual-integrability proof from signed-box critical inequalities, no
+transport theorem, no original-loss identification, no normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 source-stratum/local-source two-sided loss-density iff
 
 Reproduction:

@@ -10,6 +10,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, local-source signed-box two-sided loss-density iff
+
+The local-source signed-box residual chart now feeds the two-sided local
+loss-density iff:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+The theorem derives residual square-sum measurability from the measurable
+fixed-basis edge matrices and residual positivity from a new positivity-only
+weighted signed-box monomial-lower helper.  It deliberately does not assume the
+signed-box critical inequalities or source-density upper bounds that would
+already imply residual integrability on the whole source.  The local
+boundedness input remains explicit:
+
+```text
+residualSquareSum x <= Rreg^2
+```
+
+on `mu.restrict source`.  With four supplied two-sided p.13 loss/density
+comparison bounds, Lean returns an open `U` such that actual loss-density
+finiteness over `(mu.restrict (U inter source)).prod nu` is equivalent to
+`residualNegPowerIntegrableOn Cedge (U inter source) mu t`.
+
+Nonclaims remain strict: no proof of the signed-box chart, pushforward
+identity, local source coverage, comparison bounds, residual local
+boundedness, residual integrability from signed-box critical inequalities,
+source-prior/Jacobian/density/product-measure transport, original-loss
+identification, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, source-stratum/local-source two-sided loss-density iff
 
 The source-stratum two-sided iff now has the boundary-explicit local-source
