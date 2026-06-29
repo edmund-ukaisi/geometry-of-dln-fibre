@@ -211,6 +211,31 @@ noncomputable def l2Y1pConj (H : Fin (L + 1) → ℕ) (r : ℕ)
     + (l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q
       * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q)
 
+/-- The conjugated new last-layer reg **READ** `readY_last + A0c⁻¹·Y0c·(T1c − T1'c)` (`= Y1'c −
+deepBlkY_last`). The gauge slot stores READS, and the conjugated last-Y block is `Y1c = deepBlkY_last +
+readY_last`; so the move WRITES this read so that the post-move conjugated block IS `Y1'c` (genm-l2thread
+CONFIRMED, load-bearing: literal `Y1'c` would break the basepoint, `deepBlkY_last ≠ 0`). Contrast the
+CORE: `T1'c` is written LITERALLY (no offset) since `deepBlkT_last = 0`, so there the read IS the block. -/
+noncomputable def l2Y1pReadConj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    Matrix (Fin r) (Fin (deepestM H r (lastLayer hL).succ)) ℝ :=
+  readY H r hr hL (q.1, q.2.2) (lastLayer hL)
+    + (l2A0Conj H r B hB hr hL q)⁻¹ * l2Y0Conj H r B hB hr hL hL2eq q
+      * (l2T1Conj H r hr hL q - l2T1pConj H r B hB hr hL hL2eq q)
+
+/-- The new read minus the old read is the SAME delta as `Y1'c − Y1c` (the deepest constant cancels):
+`l2Y1pReadConj − readY_last = l2Y1pConj − l2Y1Conj`. So all derivative/ContDiffAt facts stated via the
+`l2Y1pConj − l2Y1Conj` delta transfer verbatim to the read-encode. -/
+theorem l2Y1pReadConj_sub_read_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (q : DeepestSplit H r (deepestNGauge H r)) :
+    l2Y1pReadConj H r B hB hr hL hL2eq q - readY H r hr hL (q.1, q.2.2) (lastLayer hL)
+      = l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q := by
+  rw [l2Y1pReadConj, l2Y1pConj, l2Y1Conj]; abel
+
 /-! ## S0b — the conjugated joint action `psiSplitRawL2CoreConj` + its lens decomposition
 
 `psiSplitRawL2CoreConj` re-encodes the last-layer core block (`T1c ↦ T1'c`) and the last-layer reg
@@ -218,14 +243,15 @@ noncomputable def l2Y1pConj (H : Fin (L + 1) → ℕ) (r : ℕ)
 `psiSplitRawL2Core` but with the conjugated `l2T1pConj`/`l2Y1pConj`. Defined directly in terms of the
 named blocks so the lens decomposition is `rfl`. -/
 
-/-- The conjugated edited reg/gauge function `g'c` (last-layer `Y`-tag set to `Y1'c`, else `g`). -/
+/-- The conjugated edited reg/gauge function `g'c` (last-layer `Y`-tag set to the new READ
+`l2Y1pReadConj`, else `g`). The gauge slot stores reads, so the move writes `Y1'c − deepBlkY_last`. -/
 noncomputable def l2g'Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
     (q : DeepestSplit H r (deepestNGauge H r)) : RegGaugeIdx H r → ℝ := fun idx =>
   match idx with
   | ⟨s, Sum.inl (Sum.inr (i, j))⟩ =>
-      if h : s = lastLayer hL then l2Y1pConj H r B hB hr hL hL2eq q i (h ▸ j)
+      if h : s = lastLayer hL then l2Y1pReadConj H r B hB hr hL hL2eq q i (h ▸ j)
         else regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
   | _ => regGaugeSlotEquiv H r hr hL (q.1, q.2.2) idx
 
@@ -442,6 +468,15 @@ theorem l2T1pConj_sub_T1_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [l2T1pConj_sub_T1, l2BrConj_sub_T1, l2KConj_zero H r B hB hr hL hL2eq hZ,
     l2RConj_zero H r B hB hr hL hL2eq hZ]
   simp [Matrix.zero_mul, l2WConj_zero H r B hB hr hL hL2eq hZ]
+
+/-- `l2Y1pReadConj = 0` at the split origin (`readY_last(0) = 0`, `Y0c(0) = 0` boundary). -/
+theorem l2Y1pReadConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    l2Y1pReadConj H r B hB hr hL hL2eq 0 = 0 := by
+  rw [l2Y1pReadConj, l2Y0Conj_zero H r B hB hr hL hL2eq hY, Matrix.mul_zero, Matrix.zero_mul, add_zero,
+    gaugeProj_zero, readY_zero H r hr hL]
 
 /-! ## S2/S4 — entrywise `ContDiff` of the conjugated blocks (deepBlk const + read)
 
@@ -1042,27 +1077,21 @@ theorem hasStrictFDerivAt_l2GaugeΔConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [h0]; exact hasStrictFDerivAt_const _ _
     · by_cases h : s = lastLayer hL
       · subst h
-        -- The gauge read at the last-`Y` tag is `readY_last = l2Y1Conj − deepBlkY_last` (the gauge slot
-        -- carries ONLY the read, not the deepest constant). So the payload is
-        -- `l2Y1'c − readY_last = (l2Y1'c − l2Y1c) + deepBlkY_last` — a deriv-0 term plus a constant.
+        -- The payload at the last-`Y` tag is the NEW read minus the OLD read, exactly the delta
+        -- `l2Y1pConj − l2Y1Conj` (the deepest constant cancels — `l2Y1pReadConj_sub_read_eq`).
         have hY' : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q
               ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
-            = fun q => (l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q) i j
-                + deepBlkY H r B hB hr hL (lastLayer hL) i j := by
+            = fun q => (l2Y1pConj H r B hB hr hL hL2eq q - l2Y1Conj H r B hB hr hL q) i j := by
           funext q
           have hg : regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
               ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
               = readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := rfl
-          have hY1c : l2Y1Conj H r B hB hr hL q i j
-              = deepBlkY H r B hB hr hL (lastLayer hL) i j
-                + readY H r hr hL (q.1, q.2.2) (lastLayer hL) i j := by
-            rw [l2Y1Conj, Matrix.add_apply]
-          simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hg, Matrix.sub_apply]
-          rw [hY1c]; ring
+          simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hg]
+          have := congrFun (congrFun (l2Y1pReadConj_sub_read_eq H r B hB hr hL hL2eq q) i) j
+          rw [Matrix.sub_apply, Matrix.sub_apply] at this
+          exact this
         rw [hY']
-        have hbase := hasStrictFDerivAt_l2Y1pConj_sub_Y1_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i j
-        have := hbase.add_const (deepBlkY H r B hB hr hL (lastLayer hL) i j)
-        simpa using this
+        exact hasStrictFDerivAt_l2Y1pConj_sub_Y1_entry_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ i j
       · have h0 : (fun q => l2GaugeΔConj H r B hB hr hL hL2eq q ⟨s, Sum.inl (Sum.inr (i, j))⟩)
             = fun _ => (0 : ℝ) := by
           funext q; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_neg h]; ring
@@ -1452,24 +1481,21 @@ theorem contDiffAt_l2GaugeΔConj_at (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [h0]; exact contDiffAt_const
     · by_cases h : s = lastLayer hL
       · subst h
-        -- payload = l2Y1'c − readY_last = (l2Y1'c − l2Y1c) + deepBlkY_last (const).
+        -- payload = NEW read − OLD read = the delta `l2Y1pConj − l2Y1Conj` (deepest const cancels).
         have hY' : (fun q' => l2GaugeΔConj H r B hB hr hL hL2eq q'
               ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
-            = fun q' => (l2Y1pConj H r B hB hr hL hL2eq q' - l2Y1Conj H r B hB hr hL q') i j
-                + deepBlkY H r B hB hr hL (lastLayer hL) i j := by
+            = fun q' => (l2Y1pConj H r B hB hr hL hL2eq q' - l2Y1Conj H r B hB hr hL q') i j := by
           funext q'
           have hg : regGaugeSlotEquiv H r hr hL (q'.1, q'.2.2)
               ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩
               = readY H r hr hL (q'.1, q'.2.2) (lastLayer hL) i j := rfl
-          have hY1c : l2Y1Conj H r B hB hr hL q' i j
-              = deepBlkY H r B hB hr hL (lastLayer hL) i j
-                + readY H r hr hL (q'.1, q'.2.2) (lastLayer hL) i j := by
-            rw [l2Y1Conj, Matrix.add_apply]
-          simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hg, Matrix.sub_apply]
-          rw [hY1c]; ring
+          simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hg]
+          have := congrFun (congrFun (l2Y1pReadConj_sub_read_eq H r B hB hr hL hL2eq q') i) j
+          rw [Matrix.sub_apply, Matrix.sub_apply] at this
+          exact this
         rw [hY']
-        refine ((contDiffAt_l2Y1pConj_entry_at H r B hB hr hL hL2eq q hA0 hA1 hP00 hW i j).sub
-          (contDiff_l2Y1Conj_entry H r B hB hr hL i j).contDiffAt).add contDiffAt_const
+        exact (contDiffAt_l2Y1pConj_entry_at H r B hB hr hL hL2eq q hA0 hA1 hP00 hW i j).sub
+          (contDiff_l2Y1Conj_entry H r B hB hr hL i j).contDiffAt
       · have h0 : (fun q' => l2GaugeΔConj H r B hB hr hL hL2eq q' ⟨s, Sum.inl (Sum.inr (i, j))⟩)
             = fun _ => (0 : ℝ) := by
           funext q'; simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_neg h]; ring
@@ -1623,5 +1649,148 @@ noncomputable def psiSplitCutL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
     (χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)))
     (q : DeepestSplit H r (deepestNGauge H r)) : DeepestSplit H r (deepestNGauge H r) :=
   q + (χ q : ℝ) • psiSplitDeltaL2Conj H r B hB hr hL hL2eq q
+
+/-- **The conjugated joint action fixes the split origin** (`psiSplitRawL2CoreConj 0 = 0`). Both lens
+payloads vanish at the origin: the core payload `l2CoreΔTupleConj 0 = update 0 last 0 = 0`
+(`l2T1pConj_sub_T1_zero`, `hZ`); the gauge payload `l2GaugeΔConj 0 = 0` (the new READ `l2Y1pReadConj 0
+= 0` matches the old read `0`, all other tags are reads of `0`). -/
+theorem psiSplitRawL2CoreConj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    psiSplitRawL2CoreConj H r B hB hr hL hL2eq (0 : DeepestSplit H r (deepestNGauge H r)) = 0 := by
+  have hsub : psiSplitRawL2CoreConj H r B hB hr hL hL2eq 0 - 0 = 0 := by
+    rw [psiSplitDeltaL2CoreConj_eq_payload]
+    have hcore0 : l2CoreΔTupleConj H r B hB hr hL hL2eq 0 = 0 := by
+      rw [l2CoreΔTupleConj, l2T1pConj_sub_T1_zero H r B hB hr hL hL2eq hZ]
+      exact Function.update_eq_self _ _
+    have hgauge0 : l2GaugeΔConj H r B hB hr hL hL2eq 0 = 0 := by
+      funext idx
+      obtain ⟨s, rest⟩ := idx
+      have hgz : regGaugeSlotEquiv H r hr hL ((0 : DeepestSplit H r (deepestNGauge H r)).1,
+          (0 : DeepestSplit H r (deepestNGauge H r)).2.2) = 0 := by
+        rw [gaugeProj_zero]; exact regGaugeSlotEquiv_zero H r hr hL
+      rcases rest with (rest | rest)
+      · rcases rest with rest | ⟨i, j⟩
+        · simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, hgz, Pi.zero_apply, sub_zero]
+        · by_cases h : s = lastLayer hL
+          · subst h
+            -- the new read `l2Y1pReadConj 0 = 0`; the old read `regGaugeSlotEquiv 0 = 0`.
+            have hRead0 : l2Y1pReadConj H r B hB hr hL hL2eq (0 : DeepestSplit H r (deepestNGauge H r))
+                = 0 := l2Y1pReadConj_zero H r B hB hr hL hL2eq hY
+            simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_pos, hgz, Pi.zero_apply, sub_zero]
+            rw [hRead0]; rfl
+          · simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, dif_neg h, hgz, Pi.zero_apply, sub_zero]
+      · simp only [l2GaugeΔConj, l2g'Conj, Pi.sub_apply, hgz, Pi.zero_apply, sub_zero]
+    rw [hcore0, hgauge0]
+    simp only [map_zero]
+    rfl
+  rwa [sub_zero] at hsub
+
+/-- The conjugated correction vanishes at the split origin (`δc 0 = 0`). -/
+theorem psiSplitDeltaL2Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0) :
+    psiSplitDeltaL2Conj H r B hB hr hL hL2eq (0 : DeepestSplit H r (deepestNGauge H r)) = 0 := by
+  rw [psiSplitDeltaL2Conj, psiSplitRawL2CoreConj_zero H r B hB hr hL hL2eq hY hZ, sub_zero]
+
+/-- The conjugated χ-cutoff joint action fixes the split origin (`χ • δc 0 = 0`). -/
+theorem psiSplitCutL2Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r))) :
+    psiSplitCutL2Conj H r B hB hr hL hL2eq χ (0 : DeepestSplit H r (deepestNGauge H r)) = 0 := by
+  simp only [psiSplitCutL2Conj, psiSplitDeltaL2Conj_zero H r B hB hr hL hL2eq hY hZ, smul_zero,
+    add_zero]
+
+/-! ## S2 — global ContDiff of the conjugated cutoff map (raw `ContDiffAt` on the joint-unit tsupport) -/
+
+/-- The conjugated correction `δc = psiSplitRawL2CoreConj − id` is `ContDiffAt` on the bump's support
+(the joint unit set, where all four conjugated dets `≠ 0`). -/
+theorem contDiffAt_psiSplitDeltaL2Conj_of_mem_tsupport (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (q : DeepestSplit H r (deepestNGauge H r))
+    (hq : q ∈ tsupport (fun y => ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY) y : ℝ))) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (psiSplitDeltaL2Conj H r B hB hr hL hL2eq) q := by
+  obtain ⟨hA0, hA1, hP00, hW⟩ := tsupport_cutoffBumpSplitConj_subset H r B hB hr hL hL2eq hDA0 hDA1 hY hq
+  -- δc = encoded payloads (lens decomposition).
+  have heq : psiSplitDeltaL2Conj H r B hB hr hL hL2eq
+      = fun q' => (((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q')).1,
+          (paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q'),
+            ((regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q')).2)) := by
+    funext q'; rw [psiSplitDeltaL2Conj]; exact psiSplitDeltaL2CoreConj_eq_payload H r B hB hr hL hL2eq q'
+  rw [heq]
+  have hrg : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q' => (regGaugeSlotCLE H r hr hL).symm (l2GaugeΔConj H r B hB hr hL hL2eq q')) q :=
+    (regGaugeSlotCLE H r hr hL).symm.contDiff.contDiffAt.comp q
+      (contDiffAt_l2GaugeΔConj_at H r B hB hr hL hL2eq q hA0 hA1 hP00 hW)
+  have hcore : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q' => paramsEquivFlatCLE (deepestM H r) (l2CoreΔTupleConj H r B hB hr hL hL2eq q')) q :=
+    contDiffAt_paramsEquivFlatCLE_l2CoreΔTupleConj_at H r B hB hr hL hL2eq q hA0 hA1 hP00 hW
+  exact (contDiffAt_fst.comp q hrg).prodMk ((hcore).prodMk (contDiffAt_snd.comp q hrg))
+
+/-- **S2 — the conjugated cutoff map is globally `ContDiff ⊤`** (`q + χc • δc`, raw `ContDiffAt` on
+`tsupport χc`, off-support the bump vanishes; `contDiff_contDiffBump_smul`). -/
+theorem contDiff_psiSplitCutL2Conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0) :
+    ContDiff ℝ (⊤ : ℕ∞)
+      (psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)) := by
+  have hcorr : ContDiff ℝ (⊤ : ℕ∞)
+      (fun q => ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY) q : ℝ)
+        • psiSplitDeltaL2Conj H r B hB hr hL hL2eq q) :=
+    contDiff_contDiffBump_smul (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      (psiSplitDeltaL2Conj H r B hB hr hL hL2eq)
+      (fun x hx => contDiffAt_psiSplitDeltaL2Conj_of_mem_tsupport H r B hB hr hL hL2eq hDA0 hDA1 hY x hx)
+  have heq : psiSplitCutL2Conj H r B hB hr hL hL2eq (cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY)
+      = fun q => q + ((cutoffBumpSplitConj H r B hB hr hL hL2eq hDA0 hDA1 hY) q : ℝ)
+          • psiSplitDeltaL2Conj H r B hB hr hL hL2eq q := rfl
+  rw [heq]
+  exact contDiff_id.add hcorr
+
+/-- **S4 — the conjugated cutoff map has strict derivative `id` at the split origin** (`D(δc)(0) = 0`
+via the lens keystone + `δc(0) = 0`; the scalar–vector product rule). -/
+theorem hasStrictFDerivAt_psiSplitCutL2Conj_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (hDA0 : IsUnit (deepBlkA H r B hB hr hL (⟨0, by omega⟩ : Fin L)))
+    (hDA1 : IsUnit (deepBlkA H r B hB hr hL (lastLayer hL)))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin L) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r))) :
+    HasStrictFDerivAt (psiSplitCutL2Conj H r B hB hr hL hL2eq χ)
+      (ContinuousLinearMap.id ℝ (DeepestSplit H r (deepestNGauge H r)))
+      (0 : DeepestSplit H r (deepestNGauge H r)) := by
+  have hχ : HasStrictFDerivAt (fun q => (χ q : ℝ))
+      (fderiv ℝ (fun q => (χ q : ℝ)) 0) (0 : DeepestSplit H r (deepestNGauge H r)) :=
+    (χ.contDiff (n := (1 : ℕ∞))).hasStrictFDerivAt (by norm_num)
+  have hδ : HasStrictFDerivAt (psiSplitDeltaL2Conj H r B hB hr hL hL2eq)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 := by
+    have hk := hasStrictFDerivAt_psiSplitDeltaL2CoreConj_zero H r B hB hr hL hL2eq hDA0 hDA1 hY hZ
+    refine hk.congr_of_eventuallyEq ?_
+    filter_upwards with q; rw [psiSplitDeltaL2Conj]
+  have hδ0 : psiSplitDeltaL2Conj H r B hB hr hL hL2eq (0 : DeepestSplit H r (deepestNGauge H r)) = 0 :=
+    psiSplitDeltaL2Conj_zero H r B hB hr hL hL2eq hY hZ
+  have hsmul := hχ.smul hδ
+  rw [hδ0] at hsmul
+  simp only [smul_zero, ContinuousLinearMap.smulRight_zero, add_zero] at hsmul
+  have hid : HasStrictFDerivAt (fun q : DeepestSplit H r (deepestNGauge H r) => q)
+      (ContinuousLinearMap.id ℝ (DeepestSplit H r (deepestNGauge H r))) 0 :=
+    hasStrictFDerivAt_id 0
+  have hsum := hid.add hsmul
+  rw [add_zero] at hsum
+  exact hsum.congr_of_eventuallyEq (by filter_upwards with q; rfl)
 
 end DLNFibre.DLN.RLCT
