@@ -11901,3 +11901,27 @@ assembled from the exported predicate wrappers.
 Nonclaims: no analytic atlas construction, extraction hypothesis, proved
 Jacobian-density formula from `C.jacobianPrior`, normal crossings, pole order,
 RLCT, source-rank coverage, or final Theorem 2 statement is proved.
+
+## A4 Case 2 finite raw-pivot continuing successor boundary
+
+Status: Proved in Lean; focused module build passed; xhigh review pending.
+
+Claim: under `hS : 1 <= S` and
+`hnext : J+2 <= prefixMinNat n (S+1)`, the successor Case 2 residual-block
+chart-family boundary at `(S,J+1)` is inhabited by the nontrivial finite
+selected-entry predicates, not by `True` predicates.
+
+Lean theorem:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+  .finiteRawPivotContinuingSuccessorBoundary
+```
+
+Artifact:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-continuing-successor-boundary-a4.md`.
+
+Kill condition: the theorem must remain a finite wrapper around
+`finiteRawPivotChartFamilyBoundary`.  It must not be cited as analytic
+next-chart construction, analytic transition regularity, source production,
+branch termination, normal crossings, pole order, or RLCT extraction.

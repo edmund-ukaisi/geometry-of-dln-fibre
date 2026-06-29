@@ -6745,3 +6745,28 @@ or prove extraction.  The projection is forgetful; shared-context coherence
 should be consumed through the producer.  Focused build passed; independent
 Lean-interface and source-boundary reviews passed.  The density remains
 supplied analytic data, not derived from `C.jacobianPrior`.
+
+## 2026-06-29 Lean Case 2 finite raw-pivot continuing successor boundary
+
+Reproduction:
+`reproduction-case2-finite-raw-pivot-continuing-successor-boundary-a4.md`.
+Statement card:
+`statement-card-a4-case2-finite-raw-pivot-continuing-successor-boundary.md`.
+
+Lean now proves:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+  .finiteRawPivotContinuingSuccessorBoundary
+```
+
+This applies the already-proved finite raw-pivot chart-family boundary at the
+successor state `(S,J+1)`, using the continuing condition
+`J+2 <= prefixMinNat n (S+1)`.  The output uses the nontrivial finite
+selected-entry predicates `Case2FiniteRawPivotChartRegular n S (J+1)` and
+`Case2FiniteRawPivotTransitionRegular`.
+
+This supersedes the old `True`-predicate successor-boundary wrapper for this
+finite interface only.  It does not construct analytic next charts, coverage,
+analytic transition maps, source-produced successor matrices or suffixes,
+termination, normal crossings, pole order, or RLCT.

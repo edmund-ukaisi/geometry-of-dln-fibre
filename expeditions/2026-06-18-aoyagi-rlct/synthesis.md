@@ -19643,3 +19643,34 @@ Focused build passed with
 `env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.SelectedEntryAnalyticAtlasProducer`.
 Xhigh Lean-interface and source-boundary reviews passed.  Remaining limitation:
 the density is supplied analytic data, not derived from `C.jacobianPrior`.
+
+## Latest A4 Case 2 Finite Raw-Pivot Continuing Successor Boundary
+
+`SelectedEntryNormalCrossing.lean` now proves:
+
+```text
+case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+  .finiteRawPivotContinuingSuccessorBoundary
+```
+
+Given `hS : 1 <= S` and
+`hnext : J+2 <= prefixMinNat n (S+1)`, the theorem inhabits
+
+```text
+Case2ResidualBlockChartFamilyBoundary n S (J+1)
+  (Case2FiniteRawPivotChartRegular n S (J+1))
+  (Case2FiniteRawPivotTransitionRegular (K := K) n hS hnext).
+```
+
+It is a successor-state wrapper around the already-proved
+`finiteRawPivotChartFamilyBoundary`, not new source production.  This removes
+the need to use the historical `True`-predicate successor witness when the
+finite selected-entry predicates are the intended boundary.  It still proves
+no analytic next chart, analytic coverage, transition regularity in the
+analytic sense, successor/suffix source production, branch termination, normal
+crossings, pole order, or RLCT.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-continuing-successor-boundary-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-continuing-successor-boundary.md`.

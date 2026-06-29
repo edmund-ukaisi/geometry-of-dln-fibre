@@ -10773,3 +10773,12 @@ of this recurrence into a finite sum, or whether staged Ctop/F3 assembly can
 continue with the explicit suffix derivative.  Do not claim determinant
 equality, target-side shear equivalence, measure transport, normal crossings,
 pole order, or RLCT from this substitution slice.
+
+A4 finite successor-boundary hardening has landed locally:
+`SelectedEntryNormalCrossing.lean` proves
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteRawPivotContinuingSuccessorBoundary`.
+This replaces the historical `True`-predicate continuing successor boundary
+with the already-proved finite raw-pivot selected-entry predicates at state
+`(S,J+1)`.  The analytic frontier is unchanged: do not treat this as next-chart
+source production, analytic transition regularity, branch termination, normal
+crossings, pole order, or RLCT.

@@ -3525,6 +3525,27 @@ theorem finiteRawPivotChartFamilyBoundary
         ((finsetSubtypeChartEquiv
             (case2ResidualBlockPivotEntries n S J)).symm ⟨q, hq⟩)
 
+/-- Continuing one selected-entry step keeps the finite raw-pivot
+chart-family boundary nontrivial.
+
+This is only the finite successor-state wrapper for
+`finiteRawPivotChartFamilyBoundary`: at state `(S,J+1)`, chart regularity still
+means raw-pivot selected-entry formula plus finite center-ideal
+principalization, and transition regularity still means finite affine overlap
+algebra.  It does not construct analytic next charts, source-produce successor
+data, prove coverage, prove normal crossings, compute pole order, or extract
+the RLCT. -/
+theorem finiteRawPivotContinuingSuccessorBoundary
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K] :
+    Case2ResidualBlockChartFamilyBoundary n S (J + 1)
+      (Case2FiniteRawPivotChartRegular n S (J + 1))
+      (Case2FiniteRawPivotTransitionRegular (K := K) n hS hnext) := by
+  simpa [Nat.add_assoc] using
+    (finiteRawPivotChartFamilyBoundary (K := K) n (S := S) (J := J + 1)
+      hS hnext)
+
 /-- The displayed source-substitution block is the supplied selected-entry
 substitution block for the displayed pivot `(J+1,J+1)`.
 

@@ -11745,3 +11745,19 @@ assembled from the exported predicates.
 
 Limitation: the density is supplied analytic data, not derived from
 `C.jacobianPrior`.
+
+Latest A4 finite successor-boundary hardening:
+`case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.finiteRawPivotContinuingSuccessorBoundary`
+is proved in `SelectedEntryNormalCrossing.lean`.  From `hS : 1 <= S` and
+`hnext : J+2 <= prefixMinNat n (S+1)`, it produces the successor
+`Case2ResidualBlockChartFamilyBoundary n S (J+1)` with
+`Case2FiniteRawPivotChartRegular n S (J+1)` and
+`Case2FiniteRawPivotTransitionRegular`.  It is exactly
+`finiteRawPivotChartFamilyBoundary` applied at `J+1`; no analytic atlas,
+source production, branch termination, normal crossings, pole order, or RLCT
+is proved.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-case2-finite-raw-pivot-continuing-successor-boundary-a4.md`
+and
+`threads/04-blow-up-certificate/statement-card-a4-case2-finite-raw-pivot-continuing-successor-boundary.md`.
