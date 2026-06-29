@@ -101,4 +101,44 @@ theorem frontSlot_ne_topSlot (M : Fin 3 → ℕ) (hrs : r + s = M 1)
   have hlayer : (0 : Fin 2) = (1 : Fin 2) := congrArg (·.1.1) h
   exact absurd hlayer (by decide)
 
+/-! ## The chart components, read off `u` at the flat slots -/
+
+/-- The front factor `A⁰ i j = u (coordOf (frontSlot i j))` (the identity front block). -/
+noncomputable def A0u (M : Fin 3 → ℕ) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin (M 1)) ℝ :=
+  fun i j => u (coordOf M (frontSlot M i j))
+
+/-- The radial pivot value `z = u (pivotCoord)`. -/
+noncomputable def zu (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) : ℝ :=
+  u (pivotCoord M hrs hr hc)
+
+/-- The residual `S_bot b j = u (coordOf (botSlot b j))` (the free bottom block). -/
+noncomputable def Sbotu (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin s) (Fin (M 2)) ℝ :=
+  fun b j => u (coordOf M (botSlot M hrs b j))
+
+/-- The angular UNIT block `H̄_unit a j`: the pivot entry `(⟨0⟩,⟨0⟩)` is fixed `= 1`, every other top-row
+entry is the free coord `u (coordOf (topSlot a j))`. (The `(0,0)` entry IS the radial pivot, so its
+angular value is `1`; the others are the `h`-coords.) -/
+noncomputable def HbarUnit (M : Fin 3 → ℕ) (hrs : r + s = M 1) (hr : 0 < r) (hc : 0 < M 2)
+    (u : Fin (routeMAmbient M) → ℝ) : Matrix (Fin r) (Fin (M 2)) ℝ :=
+  fun a j => if coordOf M (topSlot M hrs a j) = pivotCoord M hrs hr hc then 1
+    else u (coordOf M (topSlot M hrs a j))
+
+/-- The rank-block front columns `P₁ i a = A⁰ i (deepWidthEquiv (inl a))`. -/
+noncomputable def P1u (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin r) ℝ :=
+  fun i a => A0u M u i (deepWidthEquiv hrs (Sum.inl a))
+
+/-- The residual front columns `P₂ i b = A⁰ i (deepWidthEquiv (inr b))`. -/
+noncomputable def P2u (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin s) ℝ :=
+  fun i b => A0u M u i (deepWidthEquiv hrs (Sum.inr b))
+
+/-- The rational routing `Λ₀ = (P₁ᵀP₁)⁻¹P₁ᵀP₂` (the smeared shear coefficient; pole at `det P₁ᵀP₁ = 0`). -/
+noncomputable def Lam0u (M : Fin 3 → ℕ) (hrs : r + s = M 1) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin r) (Fin s) ℝ :=
+  ((P1u M hrs u).transpose * P1u M hrs u)⁻¹ * (P1u M hrs u).transpose * P2u M hrs u
+
 end DLNFibre.DLN.RLCT
