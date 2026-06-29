@@ -3,6 +3,42 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Selected-Entry Passive-Parameter Datum - 2026-06-29
+
+`RetainedPassiveCase2SelectedEntryChartBridge.lean` now has a finite
+passive-parameter version of the Case 2 selected-entry retained-passive datum:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This keeps the selected-entry residual `C` family unchanged and supplies the
+retained passive fields `A1passive`, `F2`, `A3passive`, `Ctop`, and `F3` as
+independent parameters.  Determinant-chart membership is proved from exactly
+the supplied unit hypotheses on `Ctop` and `A1passive`, and the
+endpoint-transported residual readout is the same successor selected-entry
+center-coordinate matrix as in the reduced datum.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-passive-parameter-datum.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-selected-entry-passive-parameter-datum.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-selected-entry-passive-parameter-datum.md`
+passed by xhigh Euclid the 3rd.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge`; replayed
+warnings were in imported `ProductReductionStepRegularDensity.lean`.
+
+Nonclaims: this is not a source map, local inverse, image/coverage theorem,
+measure pushforward, source-prior transport, normal-crossing chart, pole-order
+calculation, or RLCT extraction.  It is the first passive-parameter finite
+coordinate object needed before the source-measure frontier can be attacked.
+
 ## Latest A2 Source-Measure Frontier Reorientation - 2026-06-29
 
 Post-interruption reorientation and three xhigh read-only scouts confirm that

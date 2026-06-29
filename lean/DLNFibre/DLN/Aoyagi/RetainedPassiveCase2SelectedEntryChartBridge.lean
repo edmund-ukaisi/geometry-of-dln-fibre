@@ -81,6 +81,40 @@ noncomputable def case2PostPivotSelectedEntryRetainedPassiveData
     (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
 
 set_option linter.style.longLine false in
+/-- Passive-parameter variant of the explicit selected-entry retained-passive
+datum.
+
+The selected-entry coordinates still control only the two residual `C` factors.
+The remaining retained-passive coordinates are supplied as independent
+parameters.  This is the first finite coordinate object large enough to keep
+the passive variables that the reduced selected-entry section fixes. -/
+noncomputable def case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) where
+  A1passive := A1passive
+  F2 := F2
+  A3passive := A3passive
+  C := case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+    (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+    (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
+  Ctop := Ctop
+  F3 := F3
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry retained-passive datum lies in the finite
 retained-passive determinant chart for every coordinate vector `yNext`. -/
 theorem case2PostPivotSelectedEntryRetainedPassiveData_detChart
@@ -100,6 +134,36 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_detChart
       (case2SuccessorSelectedEntrySourceCprime n hS hcont hnext yNext eNext)
 
 set_option linter.style.longLine false in
+/-- The passive-parameter selected-entry retained-passive datum lies in the
+determinant chart under the supplied active top-block and passive `A1` unit
+hypotheses. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hCtop : IsUnit Ctop.det)
+    (hA1passive : ∀ p : Fin 1, IsUnit (A1passive p).det) :
+    (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+      (ρ := ρ) n hS hcont hnext A1passive F2 A3passive Ctop F3
+      yNext eNext).detChart := by
+  constructor
+  · simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassive] using hCtop
+  · intro p
+    simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassive] using
+      hA1passive p
+
+set_option linter.style.longLine false in
 /-- Endpoint transport preserves the determinant-chart proof for the explicit
 selected-entry Case 2 retained-passive datum. -/
 theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChart
@@ -117,6 +181,36 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_detChar
   simpa using
     case2PostPivotSelectedEntryRetainedPassiveData_detChart
       (ρ := ρ) n hS hcont hnext yNext eNext
+
+set_option linter.style.longLine false in
+/-- Endpoint transport preserves the determinant-chart proof for the
+passive-parameter selected-entry Case 2 retained-passive datum. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hCtop : IsUnit Ctop.det)
+    (hA1passive : ∀ p : Fin 1, IsUnit (A1passive p).det) :
+    ((case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+      (ρ := ρ) n hS hcont hnext A1passive F2 A3passive Ctop F3
+      yNext eNext).endpointTransport e).detChart := by
+  simpa using
+    case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+      (ρ := ρ) n hS hcont hnext A1passive F2 A3passive Ctop F3
+      yNext eNext hCtop hA1passive
 
 set_option linter.style.longLine false in
 /-- The explicit selected-entry retained-passive datum is continuous as a
@@ -592,6 +686,55 @@ theorem case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residua
       (ρ := ρ) n hS hcont hnext yNext eNext
   rw [htransport, hbase]
   rfl
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.style.longLine false in
+/-- Endpoint-transported residual readout for the passive-parameter selected-
+entry retained-passive datum.
+
+The conclusion is independent of the supplied passive variables: only the
+stored residual `C` factors feed the selected-entry center-coordinate matrix.
+This is finite coordinate algebra, not a measure pushforward or coverage
+theorem. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [Fintype τ] [DecidableEq τ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    ChartLocalSuffixState.residualFactorProduct
+        ((case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := ρ) n hS hcont hnext A1passive F2 A3passive Ctop F3
+          yNext eNext).endpointTransport e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2)) =
+      AoyagiResidualBlockCoordinateIndex.matrix
+        (fun c : AoyagiResidualBlockCoordinateIndex (κ' (Fin.last 2)) (κ' 0) ↦
+          SelectedEntrySignedBox.CenterCoord.chartMap
+            (⟨(J + 2, J + 2),
+              case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+              {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)})
+            yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (e (Fin.last 2)).symm
+              ((e 0).symm.trans eNext) c)) := by
+  simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassive,
+    case2PostPivotSelectedEntryRetainedPassiveData,
+    case2PostPivotRetainedPassiveData] using
+    case2PostPivotSelectedEntryRetainedPassiveData_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+      (ρ := ρ) n hS hcont hnext yNext eNext e
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

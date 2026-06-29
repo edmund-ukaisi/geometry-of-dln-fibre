@@ -18,6 +18,38 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 selected-entry passive-parameter datum
+
+Reproduction:
+`reproduction-a2-case2-selected-entry-passive-parameter-datum.md`.
+Statement card:
+`statement-card-a2-case2-selected-entry-passive-parameter-datum.md`.
+Review:
+`review-a2-case2-selected-entry-passive-parameter-datum.md`.
+
+Lean now exposes:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+This is the first finite passive-parameter bridge for the Case 2
+selected-entry retained-passive datum.  It supplies `A1passive`, `F2`,
+`A3passive`, `Ctop`, and `F3` independently while preserving the selected-
+entry residual `C` family and its endpoint-transported residual-factor
+readout.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge` passed.
+The replayed warnings are in imported `ProductReductionStepRegularDensity.lean`.
+Euclid the 3rd xhigh read-only review returned PASS.
+
+Nonclaims: no source map, local inverse, image/coverage theorem, measure
+pushforward, source-prior transport, normal crossings, pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 source-rank-supported endpoint-basis original-loss finite-integral bridge
 
 Reproduction:

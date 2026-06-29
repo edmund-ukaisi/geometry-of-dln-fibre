@@ -140,6 +140,31 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 selected-entry passive-parameter datum,
+  2026-06-29.** Lean now exposes
+  `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive`,
+  `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart`,
+  `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart`,
+  and
+  `case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryChartBridge.lean`.
+  The theorem family enlarges the reduced selected-entry retained-passive
+  datum by supplied passive fields while keeping the residual `C` family
+  unchanged.  Under explicit `Ctop` and `A1passive` determinant-unit
+  hypotheses, the datum and endpoint transport land in the determinant chart,
+  and the endpoint-transported residual factor product is the same successor
+  selected-entry center-coordinate chart matrix as before.  Reproduction and
+  statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-passive-parameter-datum.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-selected-entry-passive-parameter-datum.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-case2-selected-entry-passive-parameter-datum.md`
+  and passed by xhigh Euclid the 3rd.
+  This is finite coordinate algebra only: it does not prove a source map,
+  local inverse, image/coverage theorem, measure pushforward, source-prior
+  transport, normal crossings, pole order, or RLCT.
 - **Current status addendum, source-measure frontier after scout round,
   2026-06-29.** Post-interruption reorientation and three xhigh read-only
   scouts confirm that the next A2 work is a retained-passive source-measure

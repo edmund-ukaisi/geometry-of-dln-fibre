@@ -10,6 +10,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 selected-entry passive-parameter datum
+
+The first finite passive-parameter bridge at the Case 2 selected-entry
+frontier has landed locally:
+
+```text
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_detChart
+case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_endpointTransport_residualFactorProduct_eq_successorSelectedEntryCenterCoordChartMapMatrix
+```
+
+It keeps the selected-entry residual `C` family from the reduced datum and
+supplies `A1passive`, `F2`, `A3passive`, `Ctop`, and `F3` independently.  The
+determinant-chart proof uses only `IsUnit Ctop.det` and
+`forall p, IsUnit (A1passive p).det`; the residual readout is independent of
+the passive fields.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-passive-parameter-datum.md
+threads/03-block-product-reduction/statement-card-a2-case2-selected-entry-passive-parameter-datum.md
+threads/03-block-product-reduction/review-a2-case2-selected-entry-passive-parameter-datum.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge`.
+Euclid the 3rd xhigh review passed.
+
+Next priority is still the real source-measure frontier: source map, local
+inverse or image/coverage theorem, and passive Jacobian/source-density
+accounting.  Do not treat this finite datum as determinant-chart Haar
+transport, selected-entry image coverage, or original source-prior transport.
+
 ## Latest controller decision - 2026-06-29, A2 source-measure frontier after scout round
 
 The wrapper search at the retained-passive Case 2 source-measure boundary is
