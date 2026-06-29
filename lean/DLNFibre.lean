@@ -517,5 +517,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 -- (RouteMBoxThresholdRRP imports RouteMBoxReduction + RouteMSchurRecStepP, transitively pulling the whole
 -- P-chain: RouteMSchurCapACarveP/CapAP/DirectMorseP/ThresholdP/GenCover/Firing/General). S2-FREE, clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+-- R1-LOWER ∀M smeared-square achiever: the clean-three `routeMCore_smearedL2_square_uncond`
+-- (`∫⁻_{cubeBox 2δ} |routeMCore M|^{−c'} = ⊤` box-divergence, ARBITRARY M, scoped `r = M 0` — the
+-- smeared-stratum L=2 square case `M0 < M1 & r = M0`). The three analytic per-family facts (hcancel /
+-- hUpos / hSpre) are discharged; remaining hyps are structural + non-analytic box inputs (diag-dominance
+-- Varah field-A margins, hboxpos, hexp). Built on the Core Varah brick `Core.Matrix.DiagDominance`
+-- (`StrictRowDominant.det_ne_zero`). Cone sorry-free, S2-FREE. Reviewer PASS (5-point + decorrelated Codex).
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

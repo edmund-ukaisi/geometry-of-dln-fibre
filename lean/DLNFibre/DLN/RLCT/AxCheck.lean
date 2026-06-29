@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 
 /-!
 # Axiom-hygiene check
@@ -65,6 +66,13 @@ open DLNFibre.DLN.RLCT
 -- must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE (literal outer-product cancellation,
 -- no analysis axiom), no `sorryAx`.
 #print axioms prodAux_frontScalarShear_cancel
+
+-- R1-LOWER ∀M smeared-square achiever (`routeMCore_smearedL2_square_uncond`, the box-divergence for the
+-- smeared L=2 square stratum `M0<M1 & r=M0`, ARBITRARY M) — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: S2-FREE (the divergence rests on the diag-dominance Varah
+-- field-A bound + the 1D `abs_rpow` first principle, NOT on `monomial_rlct`), no `sorryAx`. Its compile
+-- cone is sorry-free; the three analytic per-family facts (hcancel/hUpos/hSpre) are discharged.
+#print axioms routeMCore_smearedL2_square_uncond
 
 -- R1-UPPER corank-3 (the rank-stratified recursion's first real firing) — `core_schur3_lt_top`
 -- (general-`T`, `∫_{matBox 3 3 T}∫_{matBox 3 4 T} frobSq(Δ·S)^{−c'} < ⊤` for `0 < c' < 4 = λ_{3,4}`)
