@@ -25,3 +25,7 @@
   next into the same shared worktree. The safety net that made it recoverable: **per-rung push + a strict
   build-gate + a clean committed base to fall back to.** (Root cause: the Uplift-B worktree-collapse — a
   worktree-based controller's teammates share one tree and must be strictly serialised.)
+- **L4 — the `longLine` linter counts codepoints, not bytes.** RF found `awk length` (UTF-8 bytes) disagrees
+  with the Lean `longLine` linter and Python `len(str)` (codepoints) on comment lines dense with wide chars
+  (`≤`, `≃`, `★`, `⟹`, …). A line that passes a byte-count check can still trip the linter and vice versa —
+  reflow against **codepoint** width (the linter's `:N:100` column is the binding target, not a byte count).

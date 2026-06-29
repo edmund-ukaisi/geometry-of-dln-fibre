@@ -95,4 +95,14 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   separability) — card doesn't overclaim. → **RF dispatched** (the final rung: drop the dead-weight
   `[IsAlgClosed]` on the DLN `codimRep_*` consumers per bedrock weakest-hypotheses; fix `DeepChartRing:138`
   stale prose + all aggregator/Dimension `longLine` warnings for upstream-grade). After RF: exposition +
-  final synthesis + PR against `dev` (operator-gated).**
+  final synthesis + PR against `dev` (operator-gated).
+- **2026-06-29 — RF LANDED → EXPEDITION CONTENT-COMPLETE** (`a0cbcf74`). Final retrofit + cleanup: the DLN
+  `codimRep_*` consumers carry only `[Field k]` (the `[IsAlgClosed]` was already shed in R4); `DeepChartRing`
+  stale prose fixed + two further dead-weight `[IsAlgClosed]` shed; the aggregator `longLine` 105→0 (the seven
+  `Dimension/` modules already 0). **The DLN headline payoff axioms are UNCHANGED** (`[propext, Classical.choice,
+  Quot.sound]` — the retrofit altered no proof's meaning), re-gate green 3819, sorries 0. (Pre-existing
+  library-wide longLine warnings ~763 are out of scope.) **★ THE DIMENSION STACK IS DELIVERED:** 7 Mathlib-grade,
+  any-field/`[PerfectField]`, `Tuple`-free modules in `DLNFibre.Core.Dimension.*`
+  (`Integral · Basic · Catenary · AffineDomain · Codimension · Smooth · Regular`), each reviewed (fidelity +
+  decorrelated Codex), with the DLN consumers retrofitted to tag to them. → Final **hardener** pass (10) on the
+  assembled stack, then exposition + this synthesis's close + PR against `dev` (operator-gated).**
