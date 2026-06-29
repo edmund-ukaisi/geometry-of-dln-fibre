@@ -198,4 +198,142 @@ theorem link2_at_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
   (link2_rho_residual H r B hB hr hL hDA regStraighten hregcont).trans
     (link2_thetaPeel_half H r B hB hr hL hDA hbdy regStraighten)
 
+/-! ### The LIVE route — the gauge-reg Θ-peel sandwich (SPECIFY skeleton).
+
+Replaces the dead `link2_rho_residual`/`link2_at_zero`. LINK2 (conj→bare core, at `0 : DeepestSplit`,
+`regStraighten` reg term) closes by dropping to the GAUGE reg `∑q.1²` — where the BANKED Θ-peel
+`rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb` (@439) converts bare↔conj with NO drag (`Θ` fixes `q.1`) — and
+lifting back via the `rlctAtOn_regAbsorb_reduce2` (π̃ option-D) LOCAL-DIFFEO reg-absorb (which preserves zero
+sets, so the dead comparability does not recur). Two `hpeel` residuals (HELD pending a44dd7e4's π̃-invertibility
+cert): the conj reg-absorb and the bare reg-absorb (= the wire's `hTilde` strict-deriv). -/
+
+/-- **π̃ reg-absorb peel, CONJ side (HELD — π̃-conj invertibility, a44dd7e4 cert pending).** The `hpeel` input
+`rlctAtOn_regAbsorb_reduce2` needs for `coreAbsorb := conjAbsorb`, `E := deepestEFull`: the conjugated π̃
+`q ↦ (deepestEFull (conjAbsorb.symm q), q.2)` is a local diffeo at `0` (`HasStrictFDerivAt` an `≃L` =
+the core-shear ∘ the `regStraightenTotalCLM2 (dE)` shear, both invertible under `hDA`), so
+`rlctAtOn_comp_localDiffeo` peels it: `rlctAtOn(∑(deepestEFull (conjAbsorb.symm q))² + ∑q.2.1²-core) 0
+= rlctAtOn(∑q.1² + …) 0`. The conj analogue of the wire's bare `hTilde`. -/
+theorem regAbsorbPeel_conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, deepestEFull H r hr hL J Pf Qf
+            ((deepestCoreAbsorbConj H r B hB hr hL hDA).symm q) i ^ 2)
+          + deepestCoreF H r q.2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) := by
+  sorry
+
+/-- **π̃ reg-absorb peel, BARE side (HELD — = the wire's `hTilde` strict-deriv, in-flight).** The bare
+analogue of `regAbsorbPeel_conj` (`coreAbsorb := deepestCoreAbsorb`): the bare π̃
+`q ↦ (deepestEFull (deepestCoreAbsorb.symm q), q.2)` is a local diffeo at `0` (the degree-2 core-block
+vanishing `∂deepestEFull/∂core(0)=0` keeps π̃'s reg-reg block PIN1's invertible `F` despite the
+`coreAbsorb.symm` reg→core shear). IS the wire's `hTilde` (DeepestL2Wiring:238). -/
+theorem regAbsorbPeel_bare (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, deepestEFull H r hr hL J Pf Qf
+            ((deepestCoreAbsorb H r hr hL).symm q) i ^ 2)
+          + deepestCoreF H r q.2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) := by
+  sorry
+
+/-- **The gauge-reg reg-absorb (CONJ), via `rlctAtOn_regAbsorb_reduce2` + `regAbsorbPeel_conj`.** Straightens
+the `deepestEFull` reg output down to the gauge reg `∑q.1²`, holding the CONJ core absorb fixed. -/
+theorem regAbsorb_conj (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, deepestEFull H r hr hL J Pf Qf q i ^ 2)
+          + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) :=
+  rlctAtOn_regAbsorb_reduce2 (deepestCoreAbsorbConj H r B hB hr hL hDA)
+    (deepestEFull H r hr hL J Pf Qf) (fun rr => ∑ i, rr i ^ 2) (deepestCoreF H r)
+    (deepestCoreAbsorbConj_mp H r B hB hr hL hDA)
+    (deepestCoreAbsorbConj_basepoint H r B hB hr hL hDA hbdy)
+    (deepestCoreAbsorbConj_regular H r B hB hr hL hDA)
+    (regAbsorbPeel_conj H r B hB hr hL hDA J Pf Qf)
+
+/-- **The gauge-reg reg-absorb (BARE), via `rlctAtOn_regAbsorb_reduce2` + `regAbsorbPeel_bare`.** -/
+theorem regAbsorb_bare (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, deepestEFull H r hr hL J Pf Qf q i ^ 2)
+          + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, q.1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) :=
+  rlctAtOn_regAbsorb_reduce2 (deepestCoreAbsorb H r hr hL)
+    (deepestEFull H r hr hL J Pf Qf) (fun rr => ∑ i, rr i ^ 2) (deepestCoreF H r)
+    (deepestCoreAbsorb_mp H r hr hL)
+    ((deepest_coreAbsorb_exists H r hr hL).1)
+    ((deepest_coreAbsorb_exists H r hr hL).2.1)
+    (regAbsorbPeel_bare H r B hB hr hL J Pf Qf)
+
+/-- **LINK-2 at `0` — the LIVE gauge-reg sandwich.** With `regStraighten.1 = deepestEFull` (`hregval`):
+`conj-target =[regAbsorb_conj] gauge-reg+conjAbsorb =[Θ-peel @439] gauge-reg+bareAbsorb =[regAbsorb_bare⁻¹]
+bare-target`. Modulo the two π̃ peels (`regAbsorbPeel_conj`/`_bare`, HELD). -/
+theorem link2_at_zero_gaugeReg (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q) :
+    rlctAtOn
+        (fun q : DeepestSplit H r (deepestNGauge H r) =>
+          (∑ i, (regStraighten q).1 i ^ 2)
+            + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
+        (0 : DeepestSplit H r (deepestNGauge H r))
+      = rlctAtOn
+          (fun q : DeepestSplit H r (deepestNGauge H r) =>
+            (∑ i, (regStraighten q).1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
+          (0 : DeepestSplit H r (deepestNGauge H r)) := by
+  -- Rewrite `(regStraighten q).1` to `deepestEFull q` (hregval) under both `rlctAtOn` binders.
+  simp only [hregval]
+  -- conj-target = gauge-reg+conjAbsorb = gauge-reg+bareAbsorb = bare-target.
+  rw [regAbsorb_conj H r B hB hr hL hDA hbdy J Pf Qf,
+    ← rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb H r B hB hr hL hDA hbdy,
+    ← regAbsorb_bare H r B hB hr hL J Pf Qf]
+
 end DLNFibre.DLN.RLCT
