@@ -318,4 +318,119 @@ theorem link2_at_zero_gaugeReg (H : Fin 3 → ℕ) (r : ℕ)
     ← rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb H r B hB hr hL hDA hbdy,
     ← regAbsorb_bare H r hr hL J Pf Qf hPf hQf hQf0 hPfL hQf22]
 
+/-- **LINK-2 at flat `wstar`** — the `0`-form `link2_at_zero_gaugeReg` transported along the MP homeomorphism
+`split` (`rlctAtOn_comp_homeomorph`, `split wstar = 0`). `rlctAtOn(R'∘split + coreF∘conjAbsorb∘split) wstar
+= rlctAtOn(R'∘split + coreF∘bareAbsorb∘split) wstar`. -/
+theorem link2_at_wstar_gaugeReg (H : Fin 3 → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1 : ℕ) ≤ 2)
+    (hDA : ∀ s : Fin 2, IsUnit (deepBlkA H r B hB hr hL s))
+    (hbdy : ∀ s : Fin 2, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin 2) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin 2) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hQf22 : IsUnit ((Matrix.reindex
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (Qf (lastLayer hL))).toBlocks₂₂))
+    (hPtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit_mp : MeasurePreserving split volume volume)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hsplit_wstar : split wstar = (0 : DeepestSplit H r (deepestNGauge H r))) :
+    rlctAtOn
+        (fun x : Fin (flatDim H) → ℝ =>
+          (∑ i, (regStraighten (split x)).1 i ^ 2)
+            + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA (split x)).2.1)
+        wstar
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split x)).2.1)
+          wstar := by
+  -- Transport the `0`-form LINK2 to flat `wstar` via `rlctAtOn_comp_homeomorph split` (both sides).
+  have hconj := rlctAtOn_comp_homeomorph split hsplit_mp split.measurableEmbedding
+    (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (∑ i, (regStraighten q).1 i ^ 2)
+        + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1) wstar
+  have hbare := rlctAtOn_comp_homeomorph split hsplit_mp split.measurableEmbedding
+    (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (∑ i, (regStraighten q).1 i ^ 2)
+        + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1) wstar
+  rw [hsplit_wstar] at hconj hbare
+  rw [hconj, hbare]
+  exact link2_at_zero_gaugeReg H r B hB hr hL hDA hbdy J hJfront Pf Qf hPf hQf hQf0 hPfL hQf22
+    hPtri hQtri regStraighten hregval
+
+/-- **The L=2 diffeo bridge, ASSEMBLED — the BARE canonical target, sorry-free.** `Φscore = R'∘split +
+coreF∘BAREabsorb∘split` at `wstar`, the conclusion of `deepest_diffeo_bridge_L2` / the `hstep2` L=2 branch
+consumes. Route: LINK1 (`deepest_diffeo_bridge_L2_conj_impl`, Φscore → conj target) ∘ the flat
+`link2_at_wstar_gaugeReg` (conj → bare core). The TRUE conjugated hypotheses (`hsub3reg` conj via
+`psiSplitRawL2CoreConj`, `hsub4core` conj) replace the bare `_impl`'s W-a-FALSE ones; `coreAbsorb` stays
+BARE (route-b). The controller wires this into `deepest_gauge_construction`'s `hstep2`. -/
+theorem deepest_diffeo_bridge_L2_assembled (H : Fin 3 → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin 3, r ≤ H s) (hL : (1 : ℕ) ≤ 2)
+    (hDA : ∀ s : Fin 2, IsUnit (deepBlkA H r B hB hr hL s))
+    (hY : deepBlkY H r B hB hr hL (⟨0, by omega⟩ : Fin 2) = 0)
+    (hZ : deepBlkZ H r B hB hr hL (lastLayer hL) = 0)
+    (hbdy : ∀ s : Fin 2, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
+    (J : Fin r ↪ Fin (H (Fin.last 2))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin 2) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin 2) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hQf22 : IsUnit ((Matrix.reindex
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        (Qf (lastLayer hL))).toBlocks₂₂))
+    (hPtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin 2, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit_mp : MeasurePreserving split volume volume)
+    (hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, (deepestEFull H r hr hL J Pf Qf
+          (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2)
+    (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
+    (Score : (Fin (flatDim H) → ℝ) → ℝ)
+    (hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in
+        nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+          (psiSplitRawL2CoreConj H r B hB hr hL rfl (split x))).2.1 = Score x)
+    (Φscore : (Fin (flatDim H) → ℝ) → ℝ)
+    (hΦscore : Φscore = fun x => (∑ i, (regStraighten (split x)).1 i ^ 2) + Score x)
+    (wstar : Fin (flatDim H) → ℝ)
+    (hwstar : wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL)) :
+    rlctAtOn Φscore wstar
+      = rlctAtOn
+          (fun x : Fin (flatDim H) → ℝ =>
+            (∑ i, (regStraighten (split x)).1 i ^ 2)
+              + deepestCoreF H r (deepestCoreAbsorb H r hr hL (split x)).2.1)
+          wstar := by
+  -- `split wstar = 0` (the basepoint, from `hsplit` + `hwstar`).
+  have hsplit_wstar : split wstar = (0 : DeepestSplit H r (deepestNGauge H r)) := by
+    rw [hsplit wstar]
+    rw [show wstar = (paramsEquivFlat H) (deepestPoint H r B hB hr hL) from hwstar]
+    exact (deepestSplit_mp_basepoint H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))).2
+  -- LINK1: `Φscore = conj target`.
+  rw [deepest_diffeo_bridge_L2_conj_impl H r B hB hr hL rfl hDA hY hZ J Pf Qf split hsub3reg
+      regStraighten hsplit hregval Score hsub4core Φscore hΦscore wstar hwstar]
+  -- LINK2 (flat): conj target = bare target.
+  exact link2_at_wstar_gaugeReg H r B hB hr hL hDA hbdy J hJfront Pf Qf hPf hQf hQf0 hPfL hQf22
+    hPtri hQtri regStraighten hregval split hsplit_mp wstar hsplit_wstar
+
 end DLNFibre.DLN.RLCT
