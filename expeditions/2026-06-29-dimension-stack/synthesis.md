@@ -110,3 +110,34 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   (`Integral · Basic · Catenary · AffineDomain · Codimension · Smooth · Regular`), each reviewed (fidelity +
   decorrelated Codex), with the DLN consumers retrofitted to tag to them. → Final **hardener** pass (10) on the
   assembled stack, then exposition + this synthesis's close + PR against `dev` (operator-gated).**
+- **2026-06-29 — POLISH LANDED → EXPEDITION COMPLETE** (`abdaeb9d`). Hardener's three in-reach completions
+  done: the **any-proper-ideal** codim generalization `height_add_ringKrullDim_quotient_eq_card_of_ne_top`
+  pulled into `Core/Dimension/Codimension.lean` (the prime headline is now its corollary — strictly stronger,
+  no closure); `Regular.lean`'s non-vacuity witness on `MvPolynomial (Fin 1) ℚ`; the nested-`Ideal.` namespace
+  fix in `Smooth.lean` (shipped as plain names). Task 4 (a `00P2` tag swap) deliberately skipped — unverifiable
+  fidelity risk. Final controller re-gate green **3819**, sorries 0, **DLN payoffs axiom-unchanged**.
+
+## CLOSE — the foundation delivered
+
+**Deliverable.** A clean, **any-field/`[PerfectField]`, `Tuple`-free, Mathlib-grade** affine-dimension /
+commutative-algebra library — `DLNFibre.Core.Dimension.*` (7 modules: `Integral`, `Basic`, `Catenary`,
+`AffineDomain`, `Codimension`, `Smooth`, `Regular`) — every headline fact **grep-confirmed absent from Mathlib
+v4.29** and built to upstream grade (Mathlib-mirror namespaces, docstrings, minimal hypotheses, `@[stacks]`
+tags). The DLN consumers (`codimRep_*`, fibre-codim, orbit-dim) are **retrofitted to tag to it** — no bespoke
+dimension proof left behind — with the DLN headline payoff axioms unchanged.
+
+**This is the programme's first "build the buildable" foundation** ([`../../docs/policies/library-building.md`](../../docs/policies/library-building.md)):
+well-established, detail-at-scale, Mathlib-absent maths *built* rather than cited; the one genuine monument
+(the analytic SLT core) stays cited. Every rung green / sorry-free / axiom-clean, fidelity-reviewed +
+decorrelated-Codex'd, with a final hardener **SOLID-with-notes** on the assembled stack.
+
+**Process record.** 6 build rungs (R1–R4, E1–E2) + retrofit + polish, each pushed per-rung; lessons L0–L4
+(generalising-surfaces-holes; over-assumed-`[IsAlgClosed]`; transitive-consumer sweep; **L3** the worktree
+race — caught benign by per-rung-push + build-gate; **L4** codepoint-vs-byte longLine). The disposition lift
+(`library-building.md` + CLAUDE.md/controller.md) is folded in.
+
+**Roadmap (NOT this expedition).** Actual mathlib4 upstream PRs (build was internal-first, upstream-grade,
+not blocked on review); shared-package extraction (a knowing decision when a cross-repo dependency is wired —
+the ReLU sibling is the second consumer); the optional `00P2`/`varietyDim`-totalization cosmetics.
+
+**Status: COMPLETE — PR `expedition/dimension-stack → dev` opened, operator-gated merge.**
