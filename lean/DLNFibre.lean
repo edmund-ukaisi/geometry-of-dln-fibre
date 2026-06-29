@@ -40,7 +40,8 @@ import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.RingTheory.Kaehler.GenericRank
+import DLNFibre.Core.Dimension.Trdeg
 import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
 import DLNFibre.Core.MatrixKaehler

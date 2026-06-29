@@ -1,6 +1,6 @@
 import DLNFibre.Core.OrbitVariety
 import DLNFibre.Core.MatrixKaehler
-import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.RingTheory.Kaehler.GenericRank
 import DLNFibre.Core.OrbitImageDim
 import Mathlib.RingTheory.Kaehler.Basic
 import Mathlib.RingTheory.Localization.FractionRing
