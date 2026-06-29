@@ -2412,7 +2412,16 @@ theorem frobSq_prod_deepestM_hLDUtieConjC_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
                 (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₁)⁻¹
             * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 1) (hr 1))
                 (((paramsEquivFlat H).symm x) (0 : Fin 2))).toBlocks₁₂ := by
-    sorry
+    -- Collapse the trivial `finCongr` reindexes.
+    rw [finCongr_refl, finCongr_refl]
+    erw [Matrix.reindex_refl_refl]
+    -- `C 0 = decode(q).core_0 + corrConj(q)_0` (`0 ≠ lastLayer`).
+    rw [hLDUtieConjC,
+      Function.update_of_ne (show (0 : Fin 2) ≠ lastLayer hL from
+        Fin.ne_of_val_ne (by simp [lastLayer]))]
+    -- The schur-core keystone at layer 0 (`hT = deepBlkT_layer0_zero`).
+    exact absorbedCoreConj_eq_schurCore H r B hB hr hL x (⟨0, by omega⟩ : Fin 2)
+      (deepBlkT_layer0_zero H r B hB hr hL (by omega) (⟨0, by omega⟩ : Fin 2) (by rfl))
   have hC1 : Matrix.reindex (finCongr (rfl : deepestM H r 1 = deepestM H r ((1 : Fin 2)).castSucc))
         (finCongr (rfl : deepestM H r (Fin.last 2) = deepestM H r ((1 : Fin 2)).succ))
         (hLDUtieConjC H r B hB hr hL rfl x (1 : Fin 2))
