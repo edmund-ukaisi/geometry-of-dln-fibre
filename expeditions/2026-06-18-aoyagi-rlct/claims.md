@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 adapted product-difference finite-integral
+  bridge, 2026-06-29.** Lean now exposes
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_adaptedProductDifferenceSquareSum_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.
+  For the endpoint-transported continuing Case 2 chart-produced selected-entry
+  source measure, positive continuity of the regular-coordinate density gives
+  a preliminary radius and density bound; the self-base multi-edge
+  product-coordinate theorem then gives the adapted p.13 product-difference
+  lower bound at the final radius; the existing Case 2 source-stratum socket
+  returns finite integrability over
+  `(mu.restrict (U inter sourceStratum)).prod nu`.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-adapted-product-difference-finite-integral-bridge.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-adapted-product-difference-finite-integral-bridge.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-adapted-product-difference-finite-integral-bridge.md`.
+  This removes only the supplied regular-plus-residual lower comparison for
+  the adapted p.13 square-sum.  It does not identify an original loss, prove a
+  reverse implication, rewrite by source-rank support, prove selected-entry
+  source/image equality, transport an external source prior or Jacobian,
+  construct normal crossings, compute pole order, or extract RLCT.
 - **Current status addendum, selected-entry center residual upper bound on
   small signed boxes, 2026-06-29.** Lean now exposes
   `SelectedEntrySignedBox.CenterCoord.residual_le_sq_of_abs_le`,

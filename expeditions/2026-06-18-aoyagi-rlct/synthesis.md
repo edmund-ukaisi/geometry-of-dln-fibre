@@ -3,6 +3,44 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Adapted Product-Difference Finite-Integral Bridge - 2026-06-29
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:
+
+```text
+exists_radius_open_lintegral_ofReal_adaptedProductDifferenceSquareSum_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+```
+
+This specialises the endpoint-transported continuing Case 2 source-stratum
+finite-integral handoff to Aoyagi's adapted p.13 product-difference square-sum.
+The theorem derives the lower comparison
+
+```text
+c * (residualSq + regularSq) <= adaptedProductDifferenceSquareSum
+```
+
+from the self-base multi-edge product-coordinate source theorem instead of
+requiring it as a supplied loss hypothesis.  Radius bookkeeping is two-stage:
+positive continuous density gives `Rden <= Rmax` and an upper bound `C`; the
+adapted lower-bound theorem is applied at `Rden`, producing the final
+`R <= Rden`, and the density bounds are restricted to that final radius.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-adapted-product-difference-finite-integral-bridge.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-adapted-product-difference-finite-integral-bridge.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-adapted-product-difference-finite-integral-bridge.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.
+`scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan, and
+direct axiom probe passed.  The theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Planck the 3rd xhigh read-only review passed.
+
+Nonclaims: no original-loss identification, reverse implication, source-rank
+support rewrite, selected-entry source/image equality, external source-prior
+or Jacobian transport, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Source-Rank-Supported Continuous-Density Small-Box Iff - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now proves:

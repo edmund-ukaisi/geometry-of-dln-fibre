@@ -3919,6 +3919,162 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Endpoint-transported explicit Case 2 chart-produced finite-integral
+handoff for Aoyagi's adapted p.13 product-difference square-sum.
+
+The regular-plus-residual lower bound is derived from the source-side
+product-coordinate theorem for the self-base multi-edge product family; it is
+not an external loss-comparison hypothesis.  The source measure remains the
+selected-entry chart-produced pushforward. -/
+theorem exists_radius_open_lintegral_ofReal_adaptedProductDifferenceSquareSum_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let base : EdgeFamily :=
+      fun p ↦ LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p)
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    let rhoReg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+    ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily]
+      [BorelSpace EdgeFamily],
+    ∀ {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ},
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W₂ B₂ U₀ hU₀ base (fun E : EdgeFamily ↦ E) H r rEdge →
+    ∀ {ν : Measure (EuclideanSpace ℝ rhoReg)}, ν.IsAddHaarMeasure →
+    ∀ {density : EdgeFamily × EuclideanSpace ℝ rhoReg → ℝ}
+      {t Rmax : ℝ} {Rres : center → ℝ},
+      0 < Rmax → 0 < t →
+      (∀ i, 0 < Rres i) →
+      2 * t < ((center.erase pivotNext.1).card : ℝ) + 1 →
+      ContinuousAt density (base, (0 : EuclideanSpace ℝ rhoReg)) →
+      0 < density (base, (0 : EuclideanSpace ℝ rhoReg)) →
+      let sourceMeasure :=
+        (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+          (fun y : center → ℝ =>
+            ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+      let μ := Measure.map sourceChart sourceMeasure
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+      ∃ R C : ℝ, ∃ U : Set EdgeFamily,
+        0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ base ∈ U ∧
+        (∫⁻ z : EdgeFamily × EuclideanSpace ℝ rhoReg,
+          ENNReal.ofReal
+            ((Metric.ball (0 : EuclideanSpace ℝ rhoReg) R).indicator
+              (fun u =>
+                (paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+                    (K := ℝ) W₂ B₂ U₀ hU₀ CedgeProd (z.1, u)) ^
+                    (-(t + (aoyagiTheorem2RegularVariableCount 2 H r : ℝ) / 2)) *
+                  density (z.1, u)) z.2) ∂
+            (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  intro center pivotNext EdgeFamily base retainedData sourceChart rhoReg CedgeProd
+    _ _ _ H r rEdge sourceData ν hν density t Rmax Rres
+    hRmax ht hRres hcrit_pivot hdensity_cont hdensity_pos
+    sourceMeasure μ sourceStratum
+  rcases
+      exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
+        (α := EdgeFamily) (E := EuclideanSpace ℝ rhoReg)
+        (density := density) (x₀ := base) (s := sourceStratum) (Rmax := Rmax)
+        hdensity_cont hdensity_pos hRmax with
+    ⟨Rden, C, hRden, hRden_le, hC, hdensity_nonneg_den, hdensity_le_den⟩
+  rcases
+      exists_pos_radius_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_nhdsWithin_source
+        (V := W₂) (Bv := B₂) (x₀ := base) U₀ hU₀
+        (fun E : EdgeFamily ↦ E)
+        (by
+          simpa [EdgeFamily] using
+            (continuous_id : Continuous (fun E : EdgeFamily ↦ E)).continuousAt)
+        (by rfl)
+        (r := r) (rEdge := rEdge) (Rmax := Rden) hRden with
+    ⟨R, creg, hR, hR_le_Rden, hcreg, hadapted_lower⟩
+  have hdensity_nonneg :
+      ∀ᶠ x in nhdsWithin base sourceStratum,
+        ∀ u : EuclideanSpace ℝ rhoReg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ rhoReg) R →
+            0 ≤ density (x, u) := by
+    filter_upwards [hdensity_nonneg_den] with x hx u hu
+    exact hx u (Metric.ball_subset_ball hR_le_Rden hu)
+  have hdensity_le :
+      ∀ᶠ x in nhdsWithin base sourceStratum,
+        ∀ u : EuclideanSpace ℝ rhoReg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ rhoReg) R →
+            density (x, u) ≤ C := by
+    filter_upwards [hdensity_le_den] with x hx u hu
+    exact hx u (Metric.ball_subset_ball hR_le_Rden hu)
+  have hloss :
+      ∀ᶠ x in nhdsWithin base sourceStratum,
+        ∀ u : EuclideanSpace ℝ rhoReg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ rhoReg) R →
+            creg * (aoyagiCoordinateSquareSum
+                (paperEndpointFixedBaseResidualBlockCoordinateMap
+                  (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) x) +
+              aoyagiCoordinateSquareSum (fun i => u i)) ≤
+            paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+              (K := ℝ) W₂ B₂ U₀ hU₀ CedgeProd (x, u) := by
+    simpa [rhoReg, CedgeProd, sourceStratum] using hadapted_lower
+  rcases
+      exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        (H := H) (r := r) (rEdge := rEdge) sourceData (ν := ν) hν
+        (loss := fun z : EdgeFamily × EuclideanSpace ℝ rhoReg ↦
+          paperEndpointFixedBaseAdaptedProductDifferenceSquareSum
+            (K := ℝ) W₂ B₂ U₀ hU₀ CedgeProd z)
+        (density := density)
+        (t := t) (Rreg := R) (creg := creg) (Creg := C) (Rres := Rres)
+        hR hcreg hC ht hRres hcrit_pivot
+        hloss hdensity_nonneg hdensity_le with
+    ⟨U, hUopen, hbaseU, hfinite⟩
+  refine ⟨R, C, U, hR, hR_le_Rden.trans hRden_le, hC, hUopen, hbaseU, ?_⟩
+  simpa [rhoReg, CedgeProd, sourceMeasure, μ, sourceStratum] using hfinite
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Endpoint-cardinality version of the endpoint-transported explicit Case 2
 chart-produced finite-integral handoff for a positive continuous density
 factor.
