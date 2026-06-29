@@ -546,5 +546,11 @@ import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 -- modulo three NAMED obligations: the IFT chart, `hDeepest` (=#44), and `hCore`).
 -- Both clean-three conditional reductions (carry the obligations as hypotheses; do NOT close D1).
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
+-- D1 obligation (i) at L=2: the IFT-chart producer as a sorry-free REDUCTION. `GeneralVChartL2`
+-- bundles the (Mathlib-lacking) general-v IFT chart as a named certificate; `deepest_le_of_optimal_of_
+-- chart_certificate` proves `rlctAt deepest ≤ rlctAt v` from it + #44 (via hCore_slice_residual_eq).
+-- CONDITIONAL reduction: it REDUCES D1 to {a GeneralVChartL2 instance at the real DLN loss (the
+-- general-v Morse-Bott constant-rank split — a major multi-tide build) + #44}, NOT a D1 closure.
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

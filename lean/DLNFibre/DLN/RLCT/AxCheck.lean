@@ -10,6 +10,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 
 /-!
@@ -138,6 +139,15 @@ open DLNFibre.DLN.RLCT
 #print axioms routeMCore_box_diverges_of_smearedChart
 #print axioms hSmeared_of_smearedChart
 #print axioms routeM231sm_box_diverges_via_smearedChart
+
+-- D1 obligation (i) at L=2 — the IFT-chart producer REDUCTION. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], no `sorryAx`: `deepest_le_of_optimal_of_chart_certificate`
+-- proves `rlctAt deepest ≤ rlctAt v` from a `GeneralVChartL2` certificate + #44 (the producer route).
+-- It REDUCES D1 to {a GeneralVChartL2 instance at the real DLN loss (the general-v Morse-Bott chart,
+-- a major multi-tide build Mathlib lacks) + #44}; it does NOT close D1. `GeneralVChartL2.ofExactGerm`
+-- is the (degenerate) non-vacuity witness (the real nReg>0 instance is the unbuilt analytic existence).
+#print axioms deepest_le_of_optimal_of_chart_certificate
+#print axioms GeneralVChartL2.ofExactGerm
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
