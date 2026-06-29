@@ -18,6 +18,41 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive selected-entry weighted local source support after open restriction
+
+Reproduction:
+`reproduction-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`.
+Statement card:
+`statement-card-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`.
+Review:
+`review-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`.
+
+Lean now exposes:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+The theorem reuses the open determinant-domain source/readback package.  For
+any source-domain measure and any density, after restricting the measure to
+the constructed open neighborhood `U` and then applying `withDensity`, the
+fixed-base p.13 source-chart pushforward is supported on the retained-passive
+p.13 local source.  The proof transfers a.e. measurability and a.e. local-
+source membership from `sourceMeasure.restrict U` to the weighted measure via
+`withDensity_absolutelyContinuous`.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+passed.  Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed.  Xhigh reviews by
+`Nietzsche the 3rd` and `Schrodinger the 3rd` returned PASS.
+
+Nonclaims: no Jacobian identification, global determinant-chart membership,
+selected-entry source-image equality, local coverage, source-rank support or
+coverage, determinant-chart Haar pushforward, raw/source Haar transport,
+source-prior comparison, exact localized residual marginal, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive selected-entry local source support after open restriction
 
 Reproduction:

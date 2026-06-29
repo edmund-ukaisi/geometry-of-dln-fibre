@@ -3,6 +3,57 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Selected-Entry Weighted Local Source Support After Open Restriction - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now has:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+It consumes the already banked open determinant-domain source/readback theorem
+and the unweighted support proof pattern.  For passive selected-entry
+coordinates, basepoint determinant units and passive-field continuity give an
+open neighborhood `U` of `z0`.  For any source-domain measure and any density,
+the source-chart pushforward of
+
+```text
+(sourceMeasure.restrict U).withDensity density
+```
+
+is supported on the retained-passive p.13 local source:
+
+```text
+(Measure.map sourceChart ((sourceMeasure.restrict U).withDensity density)).restrict localSource
+  =
+Measure.map sourceChart ((sourceMeasure.restrict U).withDensity density).
+```
+
+The proof first derives `AEMeasurable sourceChart (sourceMeasure.restrict U)`
+from continuity on `U`, as in the unweighted theorem.  It then uses
+`withDensity_absolutelyContinuous` to transfer both a.e. measurability and
+a.e. local-source membership to the weighted measure, and finishes with
+`measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Nietzsche the 3rd` and `Schrodinger the 3rd` returned PASS.
+
+Nonclaims: no Jacobian identification, no global determinant-chart
+membership, no selected-entry source-image equality, no local coverage, no
+source-rank support or coverage, no determinant-chart Haar pushforward, no
+raw/source Haar theorem, no original source-prior transport, no exact
+localized residual marginal, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Selected-Entry Local Source Support After Open Restriction - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now has:

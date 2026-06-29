@@ -10,6 +10,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive selected-entry weighted local source support after open restriction
+
+The passive selected-entry frontier now has the arbitrary-density weighted
+version of the local restricted-source-measure support theorem:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_withDensity_restrict_retainedPassiveP13LocalSource_eq_self
+```
+
+From passive-field continuity and determinant-unit hypotheses at one base
+point, the theorem reuses the same open determinant-domain source/readback
+package as the unweighted support theorem.  For any source-domain measure and
+any density on the selected-entry coordinate domain, the pushforward of
+
+```text
+(sourceMeasure.restrict U).withDensity density
+```
+
+along the fixed-base p.13 source chart restricts to the retained-passive p.13
+local source as itself.  The proof derives source-chart a.e. measurability on
+`sourceMeasure.restrict U` from continuity on `U`, then transfers both a.e.
+measurability and a.e. local-source membership through
+`withDensity_absolutelyContinuous`.
+
+New reproduction, card, and review:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md
+threads/03-block-product-reduction/review-a2-case2-passive-selected-entry-weighted-local-source-support-after-open-restriction.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`.
+Full `DLNFibre` aggregator build passed.  `git diff --check`,
+`scripts/sorries`, and direct axiom probe passed with
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviews by
+`Nietzsche the 3rd` and `Schrodinger the 3rd` returned PASS.
+
+This is arbitrary-density support only after restricting the source-domain
+measure to the constructed open determinant domain.  Do not treat it as a
+Jacobian formula, global determinant-chart membership, selected-entry
+source-image equality, local coverage, source-rank support or coverage,
+determinant-chart Haar transport, raw/source Haar transport,
+source-prior transport, exact localized residual marginal, normal crossings,
+pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive selected-entry local source support after open restriction
 
 The passive selected-entry frontier now has a local restricted-source-measure
