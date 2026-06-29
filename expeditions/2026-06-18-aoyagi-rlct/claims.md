@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive Jacobian product bounded-unit
+  a.e. handoff, 2026-06-29.** Lean now exposes
+  `exists_open_ae_restrict_of_eventually_nhds` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and
+  `exists_pos_open_ae_restrict_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`.
+  For the concrete passive product-domain measure
+  `passiveMeasure.prod weightedBox`, the retained-passive solved-`A1` product
+  raw-order Jacobian density is a.e. bounded above and below by positive
+  constants after restricting to a small open neighborhood of a
+  determinant-chart basepoint.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`.
+  Focused build, xhigh review, `git diff --check`, `scripts/sorries`, and
+  direct axiom probes passed.  This
+  is passive chart-domain a.e. bounded-unit bookkeeping only: no
+  determinant-chart Haar transport, raw/source Haar transport, external or
+  original source-prior comparison, positive-mass/support assertion,
+  selected-entry image coverage, source-rank coverage, local inverse/coverage,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive Jacobian product bounded unit,
   2026-06-29.** Lean now exposes
   `exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive`

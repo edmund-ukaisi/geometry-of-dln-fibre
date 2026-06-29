@@ -1471,6 +1471,132 @@ theorem exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProduc
       (M := 1) (ρ := ρ) (κ' := κ')
       (Y := Y) (a₀ := z₀) hYcont.continuousAt hY₀
 
+set_option linter.style.longLine false in
+/-- For the concrete passive product-domain measure, the retained-passive
+solved-`A1` product raw-order Jacobian density is a.e. bounded above and below
+by positive constants after restricting to a small open neighborhood of any
+determinant-chart basepoint.
+
+This is still only local passive chart-domain Jacobian-unit bookkeeping.  It
+does not prove source-prior transport, determinant-chart Haar transport,
+source-image coverage, normal crossings, pole order, or RLCT. -/
+theorem exists_pos_open_ae_restrict_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure_bounds
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ η : Type}
+    [TopologicalSpace η] [MeasurableSpace η] [OpensMeasurableSpace η]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (A1passive :
+      η → Fin 1 →
+        Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix (Fin (Module.finrank ℝ U₀))
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ)
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (Ctop :
+      η → Matrix (Fin (Module.finrank ℝ U₀)) (Fin (Module.finrank ℝ U₀)) ℝ)
+    (F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2))
+        (Fin (Module.finrank ℝ U₀)) ℝ)
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3)
+    (passiveMeasure : Measure η)
+    (Rres : case2ResidualBlockPivotEntries n S (J + 1) → ℝ)
+    (z₀ : η × (case2ResidualBlockPivotEntries n S (J + 1) → ℝ))
+    (hCtop₀ : IsUnit ((Ctop z₀.1).det))
+    (hA1passive₀ : ∀ p : Fin 1, IsUnit ((A1passive z₀.1 p).det)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let signedBox : Measure (center → ℝ) :=
+      Measure.pi (fun i : center ↦ volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (center → ℝ) :=
+      signedBox.withDensity
+        (fun y : center → ℝ ↦
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure : Measure (η × (center → ℝ)) :=
+      passiveMeasure.prod weightedBox
+    let retainedData :
+        η × (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        (case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+          (A1passive z.1) (F2 z.1) (A3passive z.1) (Ctop z.1)
+          (F3 z.1) z.2 eNext).endpointTransport e
+    let Y :
+        η × (center → ℝ) →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦ topologyTuple (retainedData z)
+    ∃ ε K : ℝ, 0 < ε ∧ 0 < K ∧
+      ∃ U : Set (η × (center → ℝ)), IsOpen U ∧ z₀ ∈ U ∧
+        ∀ᵐ z ∂ sourceMeasure.restrict U,
+          ε ≤
+              retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z) ∧
+            retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z) ≤ K := by
+  intro center pivotNext signedBox weightedBox sourceMeasure retainedData Y
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  rcases
+      (by
+        simpa [center, retainedData, Y, ρ, κ'] using
+          exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) eNext e
+            A1passive F2 A3passive Ctop F3
+            hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+            z₀ hCtop₀ hA1passive₀) with
+    ⟨ε, hε_pos, K, hK_pos, hbounds⟩
+  have hbounds_eventually :
+      ∀ᶠ z in nhds z₀,
+        ε ≤
+            retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := 1) (ρ := ρ) (κ' := κ') (Y z) ∧
+          retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := 1) (ρ := ρ) (κ' := κ') (Y z) ≤ K := by
+    filter_upwards [hbounds.1, hbounds.2] with z hz_low hz_high
+    constructor
+    · simpa [Y, retainedData, center, ρ, κ'] using hz_low
+    · simpa [Y, retainedData, center, ρ, κ'] using hz_high
+  rcases
+      exists_open_ae_restrict_of_eventually_nhds
+        (μ := sourceMeasure) (x₀ := z₀) hbounds_eventually with
+    ⟨U, hUopen, hz₀U, hU_bounds⟩
+  exact ⟨ε, K, hε_pos, hK_pos, U, hUopen, hz₀U, hU_bounds⟩
+
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in

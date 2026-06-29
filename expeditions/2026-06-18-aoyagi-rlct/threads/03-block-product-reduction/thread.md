@@ -18,6 +18,36 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 Case 2 passive Jacobian product bounded-unit a.e. handoff
+
+Reproduction:
+`reproduction-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`.
+Statement card:
+`statement-card-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`.
+
+Lean now exposes:
+
+```text
+exists_open_ae_restrict_of_eventually_nhds
+exists_pos_open_ae_restrict_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure_bounds
+```
+
+The Case 2 theorem turns the previously banked local passive Jacobian
+bounded-unit theorem into an a.e. statement for the concrete passive
+product-domain measure restricted to a small open neighborhood of the base
+point.  It makes no positive-mass, support, rank, source-image, or source-prior
+transport claim.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure` passed.
+Heisenberg the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probes passed.
+
+Nonclaims: no determinant-chart Haar pushforward, raw/source Haar transport,
+source-prior comparison, selected-entry image coverage, source-rank coverage,
+local inverse/coverage, positive-mass/support assertion, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-29 A2 Case 2 passive Jacobian product bounded unit
 
 Reproduction:

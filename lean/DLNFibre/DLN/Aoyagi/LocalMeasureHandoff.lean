@@ -180,6 +180,20 @@ theorem exists_open_ae_restrict_inter_of_eventually_nhdsWithin
       ae_restrict_of_forall_mem (hUopen.measurableSet.inter hs)
         (fun x hx => hsub hx)⟩
 
+/-- A property holding eventually in `nhds x₀` holds a.e. after restricting
+any measure to a sufficiently small open neighborhood. -/
+theorem exists_open_ae_restrict_of_eventually_nhds
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {μ : Measure α} {x₀ : α} {p : α → Prop}
+    (hp : ∀ᶠ x in nhds x₀, p x) :
+    ∃ U : Set α, IsOpen U ∧ x₀ ∈ U ∧
+      ∀ᵐ x ∂ μ.restrict U, p x := by
+  rcases mem_nhds_iff.mp hp with ⟨U, hUsub, hUopen, hx₀U⟩
+  exact
+    ⟨U, hUopen, hx₀U,
+      ae_restrict_of_forall_mem hUopen.measurableSet
+        (fun x hx => hUsub hx)⟩
+
 /-- Product-measure version of
 `exists_open_ae_restrict_inter_of_eventually_nhdsWithin`: after the same base
 restriction, a relative-neighborhood property of the first coordinate holds

@@ -3,6 +3,59 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Case 2 Passive Jacobian Product Bounded-Unit A.E. Handoff - 2026-06-29
+
+`LocalMeasureHandoff.lean` now has the generic handoff
+
+```text
+exists_open_ae_restrict_of_eventually_nhds
+```
+
+which turns a property holding eventually in `nhds x0` into an a.e. property
+after restricting any measure to a sufficiently small open neighborhood of
+`x0`.
+
+`RetainedPassiveCase2LocalJacobianMeasure.lean` now specializes this to the
+Case 2 passive product-domain measure:
+
+```text
+exists_pos_open_ae_restrict_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure_bounds
+```
+
+For
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+Y z = topologyTuple (retainedData z)
+```
+
+the theorem gives `epsilon > 0`, `K > 0`, and an open neighborhood `U` of
+`z0` such that for a.e. `z` with respect to `sourceMeasure.restrict U`,
+the retained-passive solved-`A1` product raw-order Jacobian density at `Y z`
+lies between `epsilon` and `K`.
+
+The proof invokes the previously banked local bounded-unit theorem, recombines
+its eventual lower and upper bounds into an eventual conjunction, and applies
+the generic open-restriction a.e. handoff.  No support, positive-mass, rank, or
+source-image assertion is used.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md`.
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Heisenberg
+the 3rd xhigh read-only review returned PASS with no findings.
+`git diff --check` passed.  `scripts/sorries` reports
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`.  Direct axiom probes for both
+new Lean targets report `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no determinant-chart Haar pushforward, no raw/source Haar theorem,
+no original source-prior transport, no selected-entry source/image equality,
+no source-rank coverage, no local inverse/coverage, no positive-mass/support
+claim for the restricted measure, no normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Jacobian Product Bounded Unit - 2026-06-29
 
 `RetainedPassiveCase2LocalJacobianMeasure.lean` now has a composed

@@ -10,6 +10,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, Case 2 passive Jacobian product bounded-unit a.e. handoff
+
+The passive selected-entry frontier now has a restricted-open-neighborhood
+a.e. version of the local Jacobian bounded-unit theorem for the concrete
+passive product-domain measure:
+
+```text
+exists_pos_open_ae_restrict_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2EndpointTransport_withPassive_passiveProductMeasure_bounds
+```
+
+It uses the new generic handoff
+
+```text
+exists_open_ae_restrict_of_eventually_nhds
+```
+
+to pass from an eventual `nhds z0` two-sided bound to an a.e. bound after
+restricting `passiveMeasure.prod weightedBox` to a small open neighborhood of
+`z0`.  It keeps determinant-unit hypotheses only at the base parameter and
+makes no positive-mass or support assertion about the restricted measure.
+
+New reproduction and card:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-jacobian-product-bounded-unit-ae-handoff.md
+```
+
+Focused build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`.  Heisenberg
+the 3rd xhigh read-only review returned PASS.  `git diff --check`,
+`scripts/sorries`, and direct axiom probes passed.
+
+This remains passive chart-domain Jacobian-unit bookkeeping.  Do not treat it
+as determinant-chart Haar transport, raw/source Haar transport,
+original source-prior comparison, selected-entry image coverage, source-rank
+coverage, local inverse/coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, Case 2 passive Jacobian product bounded unit
 
 The passive selected-entry frontier now has local bounded-unit accounting for
