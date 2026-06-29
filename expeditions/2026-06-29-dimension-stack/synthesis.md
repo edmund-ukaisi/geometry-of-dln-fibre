@@ -30,3 +30,13 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   8 consumers re-pointed; old file deleted. Green 3819 / sorry-0 / axiom-clean; reviewer + decorrelated Codex
   PASS. **The first rung of the Mathlib-grade dimension stack stands.** Next: R2 (polynomial-ring catenary +
   monic positioning).
+- **2026-06-29 — R2 LANDED** (`574a9056`). Polynomial-ring catenary re-homed to `Core/Dimension/Catenary.lean`
+  (482 lines): headline `height_add_ringKrullDim_quotient_eq` (`height p + dim(R/p) = n` for `R = k[Fin n]`,
+  any field; `@[stacks 00OS]`) + `primeHeight`/coheight forms + the monic-positioning crux
+  `exists_algEquiv_finSuccEquiv_leadingCoeff_isUnit` (`@[stacks 00OX]`). **Crux handled:** Mathlib's `private`
+  Noether-normalization substitution re-derived in-repo (visibility-only verbatim copy, Provenance-documented;
+  no public v4.29 route — Codex xhigh confirmed the call + the any-field generality, char/cardinality-free,
+  no `IsAlgClosed`). `NoetherMonicPositioning` deleted, `PolynomialDimension` trimmed to its non-catenary
+  fact, 7 consumers + aggregator re-pointed (4 were **transitive/unqualified** — L2 trap, caught by the
+  full-build sweep). Green 3819 / sorry-0 / axiom-clean. **Controller re-gate + an independent decorrelated
+  crux-review (verbatim-copy fidelity + any-field soundness) in flight before R3.**
