@@ -68,14 +68,17 @@ prime is integral injective) and **four** non-vacuity `example` witnesses (ident
 existence).
 
 ## name = content — the 00OS tagging (a correction over the source)
-Stacks **00OS** (Lemma 10.114.4, verified against the Stacks project) is *exactly* the
-equidimensionality of a finite-type domain over a field: `dim S = dim Sₘ` for every maximal `m`, every
-maximal prime chain has length `dim S`. So 00OS is the **genuine verbatim match** for these
-finite-type-domain corollaries — more so than for the polynomial-ring identity that `Catenary.lean`
-carries 00OS on (R2 review flagged that as "defensible PASS-with-note"). Here 00OS is machine-tagged
-on the headline formula (the dimension-formula restatement of 10.114.4) and the two closed-point
-corollaries (the verbatim `dim S = dim Sₘ`), each with a docstring quote clarifying which sentence of
-10.114.4 it instantiates. The integral-extension dimension equality used inside is `00OK` (tagged on
+Stacks **00OS** (Lemma 10.114.4, verified against the Stacks project) is the equidimensionality of a
+finite-type domain over a field — its *displayed* statement is `dim S = dim Sₘ` for every maximal `m`
+(equivalently, every maximal prime chain has length `dim S`). The two closed-point corollaries
+(`height_eq_ringKrullDim_of_isMaximal`, `ringKrullDim_localizationAtPrime_isMaximal_eq`) are the
+**verbatim** `dim S = dim Sₘ` match. The **headline** arbitrary-prime formula
+`height p + dim(A/p) = dim A` is an **equivalent restatement** of the same equidimensionality (via
+finite-type catenary), **not** 00OS's displayed statement — the docstring + tag-quote say "restated"
+accordingly (reviewer + decorrelated Codex note: `00P2` is the closest literal tag, but none displays
+the arbitrary-prime formula exactly; 00OS is true and on-point). All three are machine-tagged
+`@[stacks 00OS]` with a per-decl quote clarifying which reading it instantiates. (R2's `Catenary.lean`
+carries 00OS on the polynomial-ring identity — flagged there as "defensible PASS-with-note".) The integral-extension dimension equality used inside is `00OK` (tagged on
 `ringKrullDim_eq_of_integral_injective` in `Core.Dimension.Integral`); the going-down half of the new
 height brick is Stacks `00H8` (`Algebra.HasGoingDown`), prose-cited only.
 
@@ -133,8 +136,33 @@ sub-namespace `Dimension`):
 ## Holes / surprises
 - **No mathematical hole.** Proof bodies are the R2-banked code, re-namespaced; the logical content is
   unchanged. The build re-verifies all four headline decls axiom-clean.
-- **One name=content surprise (improvement, not a hole):** verifying Stacks 00OS against the source
-  showed it is *precisely* the finite-type-domain equidimensionality — so the 00OS machine tags here
-  are a tighter statement-match than the same tag on the polynomial-ring identity in `Catenary.lean`.
-  Recorded above; no action needed on `Catenary.lean` (R2 signed off; its 00OS is the accepted
-  PASS-with-note).
+- **name=content (00OS reading, refined after review):** verifying Stacks 00OS against the source
+  showed its *displayed* statement is the closed-point `dim S = dim Sₘ` — a **verbatim** match for the
+  two corollaries (a tighter match than the same tag on the polynomial-ring identity in
+  `Catenary.lean`). The headline arbitrary-prime formula is an **equivalent restatement** of the same
+  equidimensionality, not the displayed statement; the docstring, the `@[stacks 00OS]` tag-quote, and
+  this card all say "restated" accordingly (reviewer + Codex flagged the original "exactly" wording as
+  a slight overstatement — softened, no code-logic change). No action on `Catenary.lean` (R2 signed
+  off; its 00OS is the accepted PASS-with-note).
+
+## R4 follow-up (R3 cosmetics folded into the R3+R4 re-gate, 2026-06-29)
+- **(a) 00OS/00P2 softening now in `AffineDomain.lean` itself.** The 00P2 note (previously only in
+  this card's prose) is now in the **headline docstring** of
+  `affine_domain_height_add_ringKrullDim_quotient_eq`: the arbitrary-prime form is a **restatement**
+  of 00OS (the verbatim displayed form is the maximal-ideal/equidimensionality corollary), with Codex's
+  00P2-as-closest-literal-tag note inline, "though none displays it exactly" — the `@[stacks 00OS]`
+  **tag kept** (true and on-point), its quote shortened to `"restatement of equidimensionality as
+  height p + dim (A ⧸ p) = dim A"`. The module docstring carries the same softening. This card's
+  name=content section (above) already matched and is unchanged.
+- **(b) `longLine` re-verified clean.** The 5 docstring `longLine` warnings were already reflowed in
+  R3's commit `f3670561`; re-measured at the R4 re-gate — **zero** lines over 100 chars in
+  `AffineDomain.lean` (and the `longLine` linter confirmed active in the fresh `Codimension.lean`
+  build, so the clean measurement is real, not a cache artifact). No further reflow needed.
+
+## Independent review (AUDIT step)
+Fidelity reviewer (controller-spawned, with decorrelated Codex on the 00OS reading): **PASS-with-notes**
+— no FAIL, no mathematical hole. All six checks pass: name=content, minimal hypotheses (no
+`IsAlgClosed`/`CharZero`/cardinality), re-home faithfulness (only diff is a local `hL5 → hcat` rename
++ namespace + docstrings + tags), both rider cosmetics, L2 sweep. Two non-blocking notes — the 00OS
+"restatement vs verbatim" wording (now softened, above) and 5 docstring `longLine` warnings (now
+reflowed) — both addressed in the follow-up commit.

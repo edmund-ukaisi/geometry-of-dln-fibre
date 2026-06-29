@@ -26,6 +26,7 @@ import DLNFibre.Core.Dimension.Basic
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Catenary
 import DLNFibre.Core.Dimension.AffineDomain
+import DLNFibre.Core.Dimension.Codimension
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.FlatQuasiFiniteHeight

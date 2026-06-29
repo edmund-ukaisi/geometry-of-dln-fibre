@@ -22,31 +22,36 @@ of `A`:
     equidimensionality, [Stacks, Tag 00OS]).
 
 * `height_eq_ringKrullDim_of_isMaximal` : for `m` maximal, `Ideal.height m = ringKrullDim A`
-  (every maximal ideal has height `dim A` — equidimensionality at closed points, [Stacks, Tag 00OS]).
+  (every maximal ideal has height `dim A` — equidimensionality at closed points,
+  [Stacks, Tag 00OS]).
 
 * `ringKrullDim_localizationAtPrime_isMaximal_eq` : for `m` maximal,
   `ringKrullDim (Localization.AtPrime m) = ringKrullDim A` (local ↔ global dimension at a closed
   point, [Stacks, Tag 00OS] — `dim A = dim Aₘ`). This is the feed-in to the smooth ⟹ regular-local
   bridge.
 
-[Stacks, Tag 00OS] (Lemma 10.114.4) is exactly the equidimensionality statement for a finite-type
-domain over a field: every maximal chain of primes has length `dim S`, equivalently `dim S = dim Sₘ`
-for every maximal `m`. The dimension formula `height p + dim (A ⧸ p) = dim A` is its restatement at
-an arbitrary prime; the closed-point corollaries (`m` maximal, `dim (A ⧸ m) = 0`) are the verbatim
-`dim S = dim Sₘ`.
+[Stacks, Tag 00OS] (Lemma 10.114.4) is the equidimensionality statement for a finite-type domain
+over a field: every maximal chain of primes has length `dim S`, equivalently `dim S = dim Sₘ` for
+every maximal `m`. The two closed-point corollaries are the verbatim `dim S = dim Sₘ`. The headline
+dimension formula `height p + dim (A ⧸ p) = dim A` at an arbitrary prime is a **restatement** of the
+same equidimensionality (via finite-type catenary): the verbatim displayed form is the
+maximal-ideal/equidimensionality corollary, and Codex notes 00P2 as the closest literal tag for the
+arbitrary-prime form, though none displays it exactly. All three carry the `@[stacks 00OS]` tag —
+true and on-point.
 
 This file mirrors the eventual Mathlib home for the dimension theory of finitely generated algebras
-(distinct from `Mathlib.RingTheory.KrullDimension.Catenary`, the polynomial-ring identity), and builds
-on `Core.Dimension.Catenary` (the polynomial-ring catenary equality, reused as a black box — no
-catenary re-induction), `Core.Dimension.Integral` (integral-extension dimension invariance), and
+(distinct from `Mathlib.RingTheory.KrullDimension.Catenary`, the polynomial-ring identity), and
+builds on `Core.Dimension.Catenary` (the polynomial-ring catenary equality, reused as a black box —
+no catenary re-induction), `Core.Dimension.Integral` (integral-extension dimension invariance), and
 `Core.Dimension.Basic` (`dim k[x₁,…,xₙ] = n`).
 
 ## Route — Noether normalization + integral height transport
 
-The single new ingredient is the **integral height-transport** lemma `height_under_eq_of_isIntegral`:
-for an integral injective extension `R → S` with `R` an integrally-closed Noetherian domain and `S` a
-domain, a prime `P` of `S` and its contraction `p = P.under R` have equal height. The `≤` direction is
-going-up (`comap` is strictly monotone on the spectrum, `strictMono_comap_of_isIntegral`); the `≥`
+The single new ingredient is the **integral height-transport** lemma
+`height_under_eq_of_isIntegral`: for an integral injective extension `R → S` with `R` an
+integrally-closed Noetherian domain and `S` a domain, a prime `P` of `S` and its contraction
+`p = P.under R` have equal height. The `≤` direction is going-up (`comap` is strictly monotone on
+the spectrum, `strictMono_comap_of_isIntegral`); the `≥`
 direction is going-down, supplied by Mathlib's classical `Algebra.HasGoingDown` for integral
 extensions of an integrally closed domain ([Stacks, Tag 00H8]) via
 `Ideal.exists_ltSeries_of_hasGoingDown`.
@@ -124,8 +129,12 @@ theorem quotientMap_under_isIntegral_injective {B A : Type*} [CommRing B] [CommR
 `R = MvPolynomial (Fin n) k` (`k` a field), a prime `I`, the finite-type domain `A = R ⧸ I`, and a
 prime `p` of `A`: `Ideal.height p + ringKrullDim (A ⧸ p) = ringKrullDim A`. Proved by
 Noether-normalizing `A`, transporting the height of `p` to its contraction in the polynomial base,
-and reusing the polynomial-ring catenary equality on the base. -/
-@[stacks 00OS "the dimension formula `height p + dim (A ⧸ p) = dim A` for a finite-type domain"]
+and reusing the polynomial-ring catenary equality on the base. This arbitrary-prime form is a
+**restatement** of 00OS's equidimensionality (the verbatim displayed form is the
+maximal-ideal/equidimensionality corollary below); Codex notes 00P2 as the closest literal tag for
+the arbitrary-prime form, though none displays it exactly — the `@[stacks 00OS]` tag is true and
+on-point. -/
+@[stacks 00OS "restatement of equidimensionality as `height p + dim (A ⧸ p) = dim A`"]
 theorem affine_domain_height_add_ringKrullDim_quotient_eq
     (k : Type*) [Field k] (n : ℕ) (I : Ideal (MvPolynomial (Fin n) k)) [I.IsPrime]
     (p : Ideal ((MvPolynomial (Fin n) k) ⧸ I)) [p.IsPrime] :
