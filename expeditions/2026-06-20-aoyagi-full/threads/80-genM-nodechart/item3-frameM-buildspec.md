@@ -80,3 +80,37 @@ RISK: b-FrameM-3 (lifting Agen-locality to the fderiv block-tri — the "constan
   cast-light-ish (the hard soundness — the off-block-vanishing — is ALREADY PROVEN at the value level).
   The genuine cast-surface is b-1 (toSquareBlock reindex). Frame_M-as-abstract (not entrywise) is the key
   cast-avoiding move — do NOT hand-write Frame_M's bilinear entries.
+
+## GRADING-SHAPE ISSUE (genm-mapeq's b-FrameM-1 catch) — CONFIRMED: e is the RIGHT shape, unavoidable
+genm-mapeq caught that `Frame_M = phiGen` has MISMATCHED row/col gradings: input via chartIdxEquiv (ChartIdx),
+output via paramsEquivFlat (FlatIdx) — two SEPARATE Fintype.equivFins on DIFFERENT layer-graded Σ-types. The
+proven off-block-vanishing is TWO-graded (output-layer via FlatIdx, input-layer via ChartIdx), but
+Matrix.BlockTriangular needs ONE grading. Real issue.
+
+VERDICT (spec-author + decorrelated Codex xhigh, frameM-grading-shape-answer.md): genm-mapeq's layer-
+compatible-e fix is the RIGHT shape, NOT over-engineered. The two-grading vanishing FORCES identifying the
+row/col layer-gradings before BlockTriangular.det (strictly single-grading) applies; the relabel e IS that
+identification, UNAVOIDABLE up to packaging. The lighter-route candidates all reduce to e:
+- (a) a custom two-grading block-tri det still needs the layerwise fibre equivs = the same data as e.
+- (b) a permutation σ is just e.trans rFlat.symm (same data); same-conjugation submatrix σ σ does NOT work
+  (permuting both row+col can't make genuinely different layer functions equal).
+- (c) absorbing into Q_M IS the fix; no direct chartIdxEquiv-as-flat-equiv (ChartIdx ≠ FlatIdx types).
+
+CONFIRMED CONSTRUCTION (deep-fill this):
+- `e : Fin N ≃ FlatIdx M` noncomputable, layer-compatible: built chartIdxEquiv ∘ (per-layer fibre bijection
+  ChartIdx-layer-s ≃ FlatIdx-layer-s; cards match via roleSquare_eq: schurDim s + liftDim s =
+  M(s.castSucc)·M(s.succ)). [the per-layer fibre is a Sigma/sum-to-product card bijection; opaque OK]
+- the SINGLE COMPATIBILITY LEMMA (the only gateway, keep explicit): `(e q).layer = (chartIdxEquiv q).fst`
+  (e's FlatIdx outer-Σ layer = chartIdxEquiv's ChartIdx layer). bLayer works for BOTH row & col through it.
+- `Frame_M := (flatEquivOf M e).symm (chartParamsGen (x p₀) (decoder x) hle)` (output relabeled by e); both
+  row & col graded by `bLayer = (chartIdxEquiv ·).fst`.
+- `Q_M := paramsEquivFlat ∘ (flatEquivOf M e).symm` — LINEAR relabel, |det| = 1 (a coordinate permutation,
+  measure-preserving; generalize measurePreserving_Q3333CLM). The outer det-unit factor absorbing the mismatch.
+
+THE ONE RISK (Codex): opaque Fintype.equivFin + casts across Fin L layer equalities → brittle simp. MITIGATION:
+keep the compatibility lemma `(e q).layer = (chartIdxEquiv q).fst` EXPLICIT as the SOLE gateway (route all
+layer reasoning through it; never unfold the opaque equivFins). This is the cast-avoiding discipline for e.
+
+genm-mapeq: deep-fill e + the compatibility lemma (it's building e in scratch — this confirms it deep-fills
+the fibre bijection, not a simpler shape; the simpler shape doesn't exist). Then b-FrameM-2/3/4 proceed with
+the single bLayer.
