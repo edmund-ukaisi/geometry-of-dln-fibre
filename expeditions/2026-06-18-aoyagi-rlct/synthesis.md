@@ -3,6 +3,65 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 local-source two-sided loss-density iff - 2026-06-29
+
+`RegularSuspensionLocalMeasure.lean` now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_localSource_two_sided_bounds
+```
+
+The theorem composes the local-source two-sided a.e. handoff with the p.13
+two-sided comparison iff.  It assumes on the supplied `source`:
+
+```text
+AEMeasurable residualSquareSum (mu.restrict source),
+residualSquareSum > 0 a.e.,
+residualSquareSum <= R^2 a.e.,
+0 < R, 0 < t, 0 < cL, 0 < CL, 0 < dRho, 0 <= DRho,
+[SFinite nu], [nu.IsAddHaarMeasure],
+```
+
+and four supplied source-filter bounds for loss and density, uniform on the
+regular-coordinate ball.  It returns an open `U` with `x0 in U` and
+
+```text
+actual loss-density integral over (mu.restrict (U inter source)).prod nu < infinity
+iff
+residualNegPowerIntegrableOn Cedge (U inter source) mu t.
+```
+
+The proof chooses `U` from
+`exists_open_ae_restrict_localSource_prod_p13RegularCoordinates_two_sided_loss_density_bounds`,
+restricts residual measurability/positivity/`<=R^2` from `source` to
+`U inter source`, and applies
+`lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_iff_residual_power_lt_top_of_two_sided_bounds`
+with `mu := mu.restrict (U inter source)`.
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-local-source-two-sided-loss-density-iff.md`,
+`threads/03-block-product-reduction/statement-card-a2-local-source-two-sided-loss-density-iff.md`,
+and
+`threads/03-block-product-reduction/review-a2-local-source-two-sided-loss-density-iff.md`.
+
+Focused build passed:
+
+```text
+cd lean
+env LAKE_SHARED="$PWD/.lake-local-shared" scripts/lb DLNFibre.DLN.Aoyagi.RegularSuspensionLocalMeasure
+```
+
+Hygiene passed: `scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, direct axiom probe for the new public theorem name, and
+xhigh final review.  The axiom footprint is the expected
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the supplied comparison hypotheses, no proof of
+residual measurability/positivity/boundedness/integrability, no p.13 chart
+construction or coverage, no source-prior/Jacobian/density/product-measure
+transport, no original-loss identification, no normal crossings, no pole
+order, and no RLCT.
+
 ## Latest A2 source-stratum two-sided loss-density handoff - 2026-06-29
 
 `RegularSuspensionLocalMeasure.lean` now proves:

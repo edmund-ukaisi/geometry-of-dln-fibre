@@ -10,6 +10,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, local-source two-sided loss-density iff
+
+The local-source two-sided comparison handoff is now composed with the p.13
+two-sided comparison iff.  Under explicit residual hypotheses on `source`
+
+```text
+AEMeasurable residualSquareSum (mu.restrict source),
+residualSquareSum > 0 a.e.,
+residualSquareSum <= R^2 a.e.,
+```
+
+plus `0<R`, `0<t`, positive lower comparison constants, Haar/SFinite regular
+measure, and the four supplied source-filter bounds, Lean produces an open `U`
+with
+
+```text
+actual loss-density finite over (mu.restrict (U inter source)).prod nu
+iff
+residualNegPowerIntegrableOn Cedge (U inter source) mu t.
+```
+
+This is still a supplied-bound local theorem.  It proves no comparison bounds,
+no residual hypotheses, no chart construction or coverage, no source-prior or
+Jacobian/density/product-measure transport, no original-loss identification,
+no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-29, source-stratum two-sided loss-density handoff
 
 The local-source two-sided handoff now has the parallel source-rank-stratum
