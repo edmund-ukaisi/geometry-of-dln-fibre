@@ -83,3 +83,31 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   the transpose orientation SOUND (rank-deficient witness `g₁=x+2y,g₂=3x+6y`). P3-boundary re-gate **green 3821**,
   axiom-clean, DLN payoffs untouched. Decorrelated crux-review (09r) in flight on B2's `Ψ`-orientation; on PASS →
   PR-P3 → **expedition close**.
+- **2026-06-29 — PHASE 3 SIGNED OFF → EXPEDITION CLOSE** (`12d25fca`). 09r **PASS**, with model decorrelation:
+  the reviewer re-derived the `Ψ`-orientation, **caught that the builder's witness was square** (non-discriminating
+  for a transpose error), and supplied **rectangular + node (`x²−y²`) examples** that distinguish `coker Jᵀ` from
+  the wrong `coker J` — all matching the geometric tangent dimension. → PR-P3 (#17) opened.
+
+## CLOSE — three foundations delivered
+
+The second **build-the-buildable** expedition is complete: three more reusable, Mathlib-grade libraries lifted
+from project-local `DLNFibre.Core` modules, each its own PR, driven autonomously straight through.
+
+- **P1 (#15) — Components & local dimension:** `Core/MinimalPrime/{Finite,TopDimensional,Localization,Polynomial,Radical,Bridge}`
+  (the `TopDimMinPrimes` count engine + the per-prime no-drop — crux PASS) + `Core/Dimension/Localization` (no-drop dim).
+- **P2 (#16) — Determinantal & elimination algebra:** `Core/Matrix/RankMinors` (the minor-rank `↔` Mathlib lacks —
+  crux PASS) + `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}`.
+- **P3 (#17) — Smooth points & cotangent dimension:** `Core/RingTheory/{Ideal/CotangentLocalization,MvPolynomial/CotangentJacobian}`
+  (the rectangular point-Jacobian cotangent-dim formula, no smoothness — crux PASS).
+
+Every rung green / sorry-free / axiom-clean; each phase re-gated at its boundary (L5); the three crux rungs each
+independently decorrelated-reviewed (PASS) — P3's notably catching + closing a non-discriminating witness. DLN
+consumers retrofitted; DLN payoff axioms unchanged throughout. Operator review on #15 (5 comments) concurred +
+applied; p2/p3 rebased to stay in sync.
+
+**The 3-PR set (operator-gated, merge in order):** #15 (P1→dev) → #16 (P2→P1) → #17 (P3→P2). GitHub retargets each
+to `dev` as its predecessor merges. **Roadmap:** mathlib4 upstream PRs (internal-first, upstream-grade);
+shared-package extraction (ReLU second consumer); the deferred broader `Fintype` index for the minor-rank `↔`;
+`GenericFreeness`/`PrincipalOpenComorphism` (fold opportunistically).
+
+**Status: COMPLETE — 3 PRs open.**
