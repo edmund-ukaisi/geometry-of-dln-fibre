@@ -65,6 +65,36 @@ confirms it builds at general `v`). General-L = #120.
 
 ## §QA-B. ALTITUDE-B `hchart` QA GATE (held by genm-d1producer; binding on the next genm-d1prod build)
 
+**ABSTRACT-`hchart` VERDICT (2026-06-29, QA holder): PASS.** The network-free abstract `hchart` landed
+FIRST (front-loading the crux), `origin/genm-d1hchart @8f1051ce`, 2 disjoint additive files
+(`Foundations/S1ChartTransfer.lean` 74 LoC + `Foundations/S1IFTChart.lean` 240 LoC), 5 theorems. Re-built
+green in an isolated throwaway worktree (2675 jobs); forced `#print axioms` on all 5 =
+`[propext, Classical.choice, Quot.sound]` (no `sorryAx`, no `monomial_rlct`); temp worktree removed (no leak).
+ - **★ Gate 1 (det ≠ 0 PROVEN, not posited) — PASS.** `exists_boundedUnit_chart_of_contDiffAt`:
+   `(fderiv ℝ Φ wstar).det ≠ 0` is GENUINELY PROVEN from `f' : E ≃L[ℝ] E` via `(fderiv Φ wstar = f')`
+   (`hΦ'.fderiv`) + `LinearEquiv.isUnit_det'.ne_zero` (verified Determinant.lean:488 — a `≃ₗ`'s
+   `LinearMap.det` is a unit, hence `≠ 0`); the bounded-unit `0<a≤|det|≤b` from
+   `exists_boundedUnit_nbhd_of_continuousOn_ne` (continuity of `|det∘fderiv|` + nonvanishing-at-`wstar`
+   ⟹ compact-ball min/max, the positive min from `xmin ∈ {|d|≠0}`). NO posited det, NO vacuity. The
+   inverse side uses `f'.symm` symmetrically via `HasStrictFDerivAt.to_localInverse`.
+ - **Gate 4 (general `wstar`, no rank-exact-pivot dependence) — PASS.** The construction takes
+   `f' : E ≃L[ℝ] E` as a hypothesis at ANY `wstar` — no pivot/deepest structure. The DLN-specific
+   "selected minors give an invertible `f'` at general `v`" (the `(H_indep)` block-invertibility, anchored
+   by Gauss–Newton rank-`nReg_v ≥ nReg`) is correctly DEFERRED to the instantiation.
+ - **Gates 2/3/5 — PASS.** Chart-transfer fidelity: `rlctAtOn_eq_of_contDiff_chart` chains
+   `exists_boundedUnit_chart_of_contDiffAt` with `rlctAtOn_eq_of_boundedUnit_chart` (= germ-congruence
+   `rlctAtOn_congr_germ` + banked `rlctAtOn_boundedUnit_localHomeomorph`); the `∀w∈V, Ψ w = Φ w` clause
+   (`hΨΦ`) is the honest `F∘Ψ = F∘Φ` bridge (used to convert the `f =ᶠ F∘Φ` germ). Clean-three; 2 disjoint
+   additive files.
+
+REMAINING (the DLN INSTANTIATION, the next QA): supply `Φ` = the §SEL selected-minor map (+ complement
+projection), `f' : E ≃L E` = the block-invertible derivative (the `(H_indep)` content — the selected
+`nReg` gradient minors independent at `v`), `F = ∑s² + ∑q²`, and the germ `f =ᶠ F∘Φ` (the on-image
+`g_k∘Ψ.symm = s_k` identity). Gate-1/4's CONCRETE discharge (`f'` genuinely a `≃L` at general `v`, the
+non-vacuity at (3,3,3)/r=1 middle) lands THERE. The abstract crux is now banked.
+
+---
+
 The §SEL producer (Altitude A) is MERGED to canonical @81992c38 (controller green-gated, 8600 jobs, AxCheck
 added). The NEXT build (commissioned 2026-06-29) is the concrete DLN selected-minor IFT chart + the
 chart-transfer `hchart : rlctAt H (dlnLoss H B) v = rlctAtOn F ((0:Fin m→ℝ), t0)` (Altitude B — where the
