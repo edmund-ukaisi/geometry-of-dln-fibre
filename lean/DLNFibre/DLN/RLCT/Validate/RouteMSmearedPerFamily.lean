@@ -197,4 +197,31 @@ theorem measurePreserving_shearM {N : ℕ} (coreSet : Finset (Fin N))
     hsplit.symm (splitOfCoreSet coreSet)
   exact hsymm.comp (hcore.comp hsplit)
 
+/-! ### Sub-tide 4 — the general smeared source box `smearedSubBox` (the contract's `S`)
+
+The achiever source set, ∀M: pin the radial pivot coord `p` into `Ioo 0 δ` (so `|u p| > 0`, the radial
+det non-degenerate + the box image small) and ALL other coords into `Icc (−δ) δ`. The general analog of
+`(2,3,1)`'s `subBox231` (which pins `u 6 ∈ Ioo 0 δ` + the rest in small `Icc`s). Used as the contract's
+measurable source `S` (its `measurableSet` here; the containment + divergence consume the chart). -/
+
+/-- **The general smeared source box.** `smearedSubBox p δ = {u | u p ∈ Ioo 0 δ ∧ ∀ k ≠ p, u k ∈ Icc −δ δ}`
+— the pivot coord positive-and-small, the rest small. -/
+def smearedSubBox {N : ℕ} (p : Fin N) (δ : ℝ) : Set (Fin N → ℝ) :=
+  {u | u p ∈ Set.Ioo (0 : ℝ) δ ∧ ∀ k, k ≠ p → u k ∈ Set.Icc (-δ) δ}
+
+/-- `smearedSubBox p δ` is measurable (a finite intersection of coordinate-preimages of `Ioo`/`Icc`). -/
+theorem measurableSet_smearedSubBox {N : ℕ} (p : Fin N) (δ : ℝ) :
+    MeasurableSet (smearedSubBox p δ) := by
+  have hpiv : MeasurableSet {u : Fin N → ℝ | u p ∈ Set.Ioo (0 : ℝ) δ} :=
+    measurableSet_preimage (measurable_pi_apply p) measurableSet_Ioo
+  have hrest : MeasurableSet {u : Fin N → ℝ | ∀ k, k ≠ p → u k ∈ Set.Icc (-δ) δ} := by
+    have heq : {u : Fin N → ℝ | ∀ k, k ≠ p → u k ∈ Set.Icc (-δ) δ}
+        = ⋂ k ∈ (Finset.univ.erase p), {u : Fin N → ℝ | u k ∈ Set.Icc (-δ) δ} := by
+      ext u
+      simp only [Set.mem_setOf_eq, Set.mem_iInter, Finset.mem_erase, Finset.mem_univ, and_true]
+    rw [heq]
+    exact Finset.measurableSet_biInter _ (fun k _ =>
+      measurableSet_preimage (measurable_pi_apply k) measurableSet_Icc)
+  exact hpiv.inter hrest
+
 end DLNFibre.DLN.RLCT
