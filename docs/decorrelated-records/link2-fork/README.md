@@ -58,3 +58,46 @@ The remaining honest work is threading `htop` / the row-WLOG seam (and the `hDA1
 analogue) through the producer, alongside the already-present column WLOG.
 
 Reproduce: `python3 <script>.py` (sympy 1.14).
+
+## LINK2 route decision — the two sharp questions (2026-06-29, second dispatch)
+
+The controller sharpened to two exact-algebra questions deciding the LINK2 route. Both answered.
+
+### (1) Is `coreF(bareAbsorb(ψq)) = coreF(conjAbsorb(q))` near wstar? — **FALSE** (definitive)
+
+`ψ = psiSplitRawL2CoreConj` (the conj joint move, core ↦ T1'c). This is the single-bridge
+(option-b) core identity. EXACT-RATIONAL WITNESS (`q1_witness.py`, (2,2,2) r=1, the fairest
+setting — forced `schurConj = schur` to isolate the moved-vs-original difference):
+
+- `coreF(bareAbsorb(ψq)) = 6053384292071/400000000000000000`
+- `coreF(conjAbsorb(q))  = 14641/914457600`
+- differ (diff ≈ −8.77e-7).
+
+The two energies AGREE exactly at wstar (reads=0, diff=0) but DIVERGE at second order off it
+(`diff = −eps²/88200 + eps⁴/47040`). M-uniform (the reduced core at r=1 is scalar for all H).
+Structurally: `(1)` would need `bareAbsorb(ψq)=Score` (the FALSE W-a hLDUtie) AND `Score=conjAbsorb(q)`
+(also false — Score is the joint-MOVED Schur complement, `conjAbsorb(q)` is the un-moved one); two
+false links, and the witness confirms no cancellation. ⟹ **The Θ-peel route is NECESSARY**, not
+scaffolding. Deliverable is (2).
+
+### (2) Does `link2_rho_residual` close, and by what mechanism? — by **DOMINATION**, not first-order, not a diffeo
+
+`link2_rho_residual : rlctAtOn(∑R'(q)² + C) 0 = rlctAtOn(∑R'(Θq)² + C) 0`, `C = coreF∘conjAbsorb`
+FIXED both sides, `Θ = thetaConj`, `R' = regStraighten.1 = deepestEFull`.
+
+Answer: it holds, by Watanabe two-sided comparability `(1−ε)F ≤ F_moved ≤ (1+ε)F`, ε→0 at 0
+(`link2_rho.py`, `link2_honest.py`; Codex-confirmed `codex_rho_answer.md` — both germs comparable to
+a controlled quadratic). **First-order core-blindness alone does NOT suffice** at the RLCT level
+(higher-order perturbations can move the RLCT — Codex's `x²+y¹⁰` example). The load-bearing triple:
+1. atom `deepestEFull_coreConstant` (on-slice value-constancy) ⟹ `ΔR = R'(Θq)−R'(q)` carries a REG
+   factor (vanishes when reg=0);
+2. `Θ0=0` ⟹ the core shift `delta` carries its own →0 factor;
+3. PIN-1 `dE(0)` invertibility ⟹ `∑R'²` dominates the reg directions.
+Then `F_moved − F = ∑(2R'ΔR + ΔR²)` (C cancels — same both sides), each term ≤ ε·∑R'² ≤ ε·F.
+**C's core-degeneracy (the singular DLN multiplication map) NEVER enters the denominator** — only
+`F ≥ ∑R'² ≥ 0` is used. So `link2_rho_residual` closes via comparability, NOT a reg-side diffeo.
+
+The honest residual for the formaliser: this is an `rlctAtOn`-comparability lemma (a
+`c1·H ≤ H' ≤ c2·H ⟹ equal rlctAtOn` interface + the explicit ε-bound from the three inputs above),
+NOT a `rlctAtOn_comp_localDiffeo`/`_homeomorph` application. If that comparability interface is not
+yet banked, it is the new piece (Watanabe-standard; integrability-threshold sandwich).
