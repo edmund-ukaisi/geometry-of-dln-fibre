@@ -90,3 +90,15 @@ TRIANGULAR pieces via listProd_clm_abs_det + LOCAL uniform per-piece det lemmas,
 one-sided locality. NOT a global grading (sidesteps M-dependence). b-0 capstone + reader/block-locality
 feed it. Validate per-piece det uniformity at a 2nd M (2,3,2): flatDim 12, L=2, distinct K-core dims —
 a good decorrelated second node from (3,3,3,3)'s L=3.
+
+## NOTE on the #eval harness (correction)
+
+The naive support-violation #eval (frameB j > frameB i ∧ j ∈ depSupport i) flags 38 "violations" on the
+KNOWN-GOOD frameB at (3,3,3,3) — because it counts WITHIN-block and into-coupling-block edges (e.g.
+(9,7),(9,15) feed the 7-block K/Kᵀ coupling, handled by that diagonal block's own det, not a violation).
+So the kill-check must compare frameB j ≤ frameB i ONLY across DISTINCT blocks (strict-lower jumps),
+i.e. the BlockTriangular condition is `frameB j < frameB i → entry = 0` (strict), and within-block
+(frameB j = frameB i) coupling is allowed. My proposed #eval was too coarse; the genuine screen is the
+proved BlockTriangular (strict-lower vanish), which is what Frame3333Deriv_blockTri establishes. Moot for
+the single-frameB route (dead, M-non-uniform); the det_comp-per-piece route's screen is per-piece det
+uniformity across M, not a global grading violation count.
