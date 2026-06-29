@@ -9,6 +9,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 
 /-!
 # Axiom-hygiene check
@@ -110,6 +111,17 @@ open DLNFibre.DLN.RLCT
 #print axioms rlct_quasiSplit_ge
 #print axioms rlct_smooth_block_ge
 #print axioms coupled_controls_slice
+
+-- D1 (rung 2/5) (★) chart-producer reductions — both must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], no `sorryAx`: they are CONDITIONAL reductions (carry the
+-- producer obligations as hypotheses), NOT a D1 closure. `rlctAt_ge_nReg_add_slice` delivers the
+-- (★) `hAtV` side from the IFT-chart producer's outputs via the banked engine `rlct_quasiSplit_ge`;
+-- `deepest_le_of_optimal_chart` wires it through `deepest_le_of_optimal_via_L2_ge` to the exact
+-- `rlctAt_deepest_le_of_optimal` per-point conclusion, reduced to (i) the IFT chart + (ii) `hDeepest`
+-- (=#44) + (iii) `hCore` (the network-free leading-form RLCT lower bound). They BANK the D1 reduction;
+-- the day (i)/(ii)/(iii) discharge, D1 (Skeleton rung 2/5) closes.
+#print axioms rlctAt_ge_nReg_add_slice
+#print axioms deepest_le_of_optimal_chart
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient

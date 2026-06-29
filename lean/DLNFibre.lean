@@ -533,5 +533,11 @@ import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 -- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
 -- reviewer-PASS. The D1 use-site (the IFT-chart producer for the DLN loss at a general v) consumes it.
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
+-- D1 (rung 2/5) (★) chart-producer skeleton (L=2): `rlctAt_ge_nReg_add_slice` (the (★)-as-`hAtV`
+-- reduction, pure delegation to the banked engine) + `deepest_le_of_optimal_chart` (wires `hAtV`
+-- through `deepest_le_of_optimal_via_L2_ge` to the `rlctAt_deepest_le_of_optimal` per-point conclusion,
+-- modulo three NAMED obligations: the IFT chart, `hDeepest` (=#44), and `hCore`).
+-- Both clean-three conditional reductions (carry the obligations as hypotheses; do NOT close D1).
+import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
