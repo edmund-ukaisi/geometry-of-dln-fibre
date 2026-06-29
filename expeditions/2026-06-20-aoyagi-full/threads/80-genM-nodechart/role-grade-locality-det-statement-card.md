@@ -77,10 +77,21 @@ proven `bLayer` value-locality, and the **reusable locality⟹det bridge** compo
 >      block-triangular route needs the opaque-width `toSquareBlock` reindex (`Fin blockSize ≃ {i // g i =
 >      a}`) tying each real diagonal block to its engine differential — the buildspec's "one genuine
 >      cast-surface piece."
->   The route-decision (decorrelated Codex): take the COARSE headline-shaped grading (radial grade `0` +
->   one grade per boundary), keep `interiorDet_headline_of_blockTri` as-is, and add a single
->   `boundary_block_factorises` lemma (per-boundary block = Schur ⊗ LDU ⟹ det = product). The fine role
->   grading (Brick 1) is then optional input-side infrastructure, not required.
+>   The route-decision (decorrelated Codex, NOW SUPERSEDED — see UPDATE): take the COARSE headline-shaped
+>   grading (radial grade `0` + one grade per boundary), keep `interiorDet_headline_of_blockTri` as-is,
+>   and add a single `boundary_block_factorises` lemma. The fine role grading (Brick 1) is then optional.
+>
+>   **UPDATE (commissioned coarse-route leg — the COARSE grading is ALSO BLOCKED).** Verify-first on the
+>   coarse route surfaced that the single-grading `BlockTriangular` route fails even at the boundary
+>   level: the INPUT partition (`chartIdxEquiv` boundary counts `schurDim+liftDim`) and the OUTPUT
+>   partition (`paramsEquivFlat`/`FlatIdx` layer counts `M_s·M_{s+1}`) are GENUINELY DIFFERENT (concrete
+>   witness at `(2,2,2)`: `(6,2)` vs `(4,4)`, same total `8`), so no layer-aligned bijection exists and
+>   `Matrix.BlockTriangular` (single grading on rows+cols) cannot express the rectangular/staircase block
+>   structure. Banked: `RouteMGradingObstruction.flatLayer_ne_chartBoundary_222`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMGradingObstruction.lean`, sorry-free, `[propext]`). See
+>   `coarse-route-grading-obstruction.md` for the full finding + the two constructive routes forward
+>   (a re-derived nonlinear chain factor / β-rebuild, or a hand-built staircase det) — both genuine new
+>   work, not a bounded cast-cleanup.
 > - **Status.** sorry-free, clean-three (forced `#print axioms`) — reviewed (fidelity verdict
 >   *survived*; two report-only docstring sharpenings applied: the `RouteMLocalityDet` "in one shot"
 >   phrasing now states the small `toDual`-transport wrapper to use it WITH the headline; the
