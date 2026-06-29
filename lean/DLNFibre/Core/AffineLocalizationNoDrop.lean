@@ -1,7 +1,7 @@
 import DLNFibre.Core.AffineNoetherRank
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Basic
-import DLNFibre.Core.LocalizationKrullDim
+import DLNFibre.Core.Dimension.Localization
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.RingTheory.Localization.Away.AdjoinRoot
 import Mathlib.RingTheory.Localization.FractionRing

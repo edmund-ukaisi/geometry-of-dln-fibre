@@ -214,8 +214,6 @@ import DLNFibre.Core.ChartSection
 import DLNFibre.Core.ChartRetraction
 -- rung-2 set-level chart bijection Σ^r∩U_Δ ≅ base × F, both directions (round-trip).
 import DLNFibre.Core.ChartBijection
--- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
-import DLNFibre.Core.LocalizationKrullDim
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
@@ -472,3 +470,8 @@ import DLNFibre.Core.DeformationBaseChange
 -- from SigmaComponents to a clean Mathlib-grade home (ns `Ideal`, mirrors
 -- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.minimalPrimes_sInf_of_finite_of_isPrime`.
 import DLNFibre.Core.MinimalPrime.Finite
+-- foundation-lift P1-R2: the localization `≤`-half `ringKrullDim S ≤ ringKrullDim R` for any
+-- localization `S = M⁻¹R`, re-homed from `LocalizationKrullDim` into the `Core.Dimension` family
+-- (ns `DLNFibre.Core.Dimension`, mirrors a would-be `Mathlib.RingTheory.KrullDimension.Localization`);
+-- `DLNFibre.Core.Dimension.ringKrullDim_localization_le`.
+import DLNFibre.Core.Dimension.Localization

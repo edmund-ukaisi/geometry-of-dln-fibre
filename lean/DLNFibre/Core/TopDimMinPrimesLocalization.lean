@@ -2,7 +2,7 @@
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.TopDimMinPrimes
-import DLNFibre.Core.LocalizationKrullDim
+import DLNFibre.Core.Dimension.Localization
 import Mathlib.RingTheory.Localization.Away.Basic
 
 /-!
@@ -43,7 +43,7 @@ Pure commutative algebra — no DLN content; reusable for any single-element loc
 
 namespace DLNFibre.Core
 
-open IsLocalization Localization
+open IsLocalization Localization Dimension
 
 universe u
 
