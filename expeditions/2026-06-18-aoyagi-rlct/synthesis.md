@@ -3,6 +3,72 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Passive-Product Residual Source - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_passiveProductMeasure_finiteMass
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md
+threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md
+```
+
+The theorem specializes the residual-source socket to the concrete coordinate
+domain measure
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox,
+```
+
+where `weightedBox` is the raw selected-entry signed box with Aoyagi's source
+density.  The socket chooses the open determinant-and-pivot-nonzero sector
+`V`; for
+
+```text
+mu = Measure.map sourceChart ((passiveMeasure.prod weightedBox).restrict V)
+```
+
+it proves `mu.restrict localSource = mu`, retained-passive residual positivity
+a.e. over `mu.restrict localSource`, and `residualNegPowerIntegrableOn
+localSource mu t`, assuming finite passive mass, `0 <= t`, positive signed-box
+radii, and the selected-entry critical inequality.
+
+The new measure calculation is domination of the restricted residual-coordinate
+marginal:
+
+```text
+Measure.map Prod.snd ((passiveMeasure.prod weightedBox).restrict V)
+  <= passiveMeasure Set.univ • weightedBox.
+```
+
+The proof gets this from `Measure.restrict_le_self`, `Measure.map_mono`, and
+`Measure.map_snd_prod`.  It then uses
+`SelectedEntrySignedBox.CenterCoord.residual_pos_ae_and_lintegral_rpow_neg_withDensity_sourceDensity`
+on the raw `weightedBox`, and transfers positivity/integrability to the sector
+marginal by `ae_of_measure_le_smul` and
+`lintegral_lt_top_of_measure_le_smul`.
+
+Xhigh route review by `Cicero the 3rd` and implementation review by
+`Epicurus the 3rd` returned PASS.  Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`; only pre-existing replay
+warnings outside the touched theorem appeared.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe passed.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+This is a chart-produced restricted passive-product residual-source theorem.
+It proves no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT.
+
 ## Latest A2 Retained-Passive Chart-Produced Punctured-Sector Residual-Source Socket - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean` now proves:

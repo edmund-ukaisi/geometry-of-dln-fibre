@@ -141,6 +141,35 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, retained-passive chart-produced punctured-sector
+  passive-product residual source, 2026-06-29.** Lean now proves
+  `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_passiveProductMeasure_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`.
+  The theorem specializes the residual-source socket to the concrete coordinate
+  domain measure `passiveMeasure.prod weightedBox`, where `weightedBox` is the
+  raw selected-entry signed box with Aoyagi's source density.  After the socket
+  chooses an open determinant-and-pivot-nonzero sector `V`, the proof uses
+  domination
+  `Measure.map Prod.snd ((passiveMeasure.prod weightedBox).restrict V) <=
+  passiveMeasure Set.univ • weightedBox`, not equality, to transfer the raw
+  selected-entry residual positivity and finite negative-power integrability to
+  the sector marginal.  Finite passive mass is explicit.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+  scan, and direct axiom probe passed with
+  `[propext, Classical.choice, Quot.sound]`.  Xhigh route review by
+  `Cicero the 3rd` and implementation review by `Epicurus the 3rd` returned
+  PASS.  This is only a chart-produced restricted passive-product
+  residual-source theorem: no determinant-chart Haar transport, raw/source
+  Haar theorem, external/original source-prior comparison, passive Jacobian
+  formula, source-image equality, source-rank coverage, normal crossings, pole
+  order, or RLCT is claimed.
+- **Current status addendum, retained-passive chart-produced punctured-sector
   residual-source socket, 2026-06-29.** Lean now proves
   `exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_marginal`
   in

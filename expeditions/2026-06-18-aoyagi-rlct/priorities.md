@@ -10,6 +10,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector passive-product residual source
+
+The residual-source socket now has a concrete passive-product specialization:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_passiveProductMeasure_finiteMass
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean
+```
+
+For
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox,
+```
+
+where `weightedBox` is the raw selected-entry signed box with Aoyagi's source
+density, finite passive mass and the selected-entry critical inequality
+discharge the socket's marginal residual positivity and finite-integral
+hypotheses.  The proof uses only domination:
+
+```text
+Measure.map Prod.snd (sourceMeasure.restrict V)
+  <= passiveMeasure Set.univ • weightedBox,
+```
+
+not equality after sector restriction.
+
+This closes the concrete product/signed-box marginal-hypothesis subfrontier for
+the chart-produced punctured sector.  The next source-measure frontier is now
+one of:
+
+```text
+prove an external/source-prior comparison with explicit density or mutual AC,
+prove a generic local prior-unit/mutual-AC wrapper with explicit pullback assumptions,
+or lift the chart-produced sector transport to a topology-tuple target without Haar claims.
+```
+
+Do not call this theorem determinant-chart Haar transport, raw/source Haar,
+original source-prior transport, passive Jacobian transport, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive chart-produced punctured-sector residual-source socket
 
 The chart-produced punctured-sector readout has been packaged as a

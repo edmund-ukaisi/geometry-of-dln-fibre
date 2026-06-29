@@ -18,6 +18,47 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive chart-produced punctured-sector passive-product residual source
+
+Reproduction:
+`reproduction-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`.
+Statement card:
+`statement-card-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`.
+Review:
+`review-a2-retained-passive-chart-produced-punctured-sector-passive-product-residual-source.md`.
+
+Lean now exposes:
+
+```text
+exists_open_residualSourceHypotheses_of_case2EndpointTransport_withPassive_puncturedSector_inverseReadout_passiveProductMeasure_finiteMass
+```
+
+The theorem specializes the residual-source socket to
+`sourceMeasure = passiveMeasure.prod weightedBox`, where `weightedBox` is the
+raw selected-entry signed box with Aoyagi's source density.  The socket chooses
+the open punctured sector `V`; domination of
+`Measure.map Prod.snd ((passiveMeasure.prod weightedBox).restrict V)` by
+`passiveMeasure Set.univ • weightedBox`, plus finite passive mass, transfers
+the raw selected-entry residual positivity and negative-power integrability
+from `weightedBox` to the sector marginal.  The socket then gives
+`mu.restrict localSource = mu`, retained-passive residual positivity a.e., and
+`residualNegPowerIntegrableOn localSource mu t` for the chart-produced source
+measure.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh route
+review by `Cicero the 3rd` and implementation review by `Epicurus the 3rd`
+returned PASS.
+
+Nonclaims: no equality of the restricted residual marginal with the
+unrestricted product marginal, no determinant-chart Haar transport, raw/source
+Haar theorem, external/original source-prior comparison, passive Jacobian
+formula, source-image equality, source-rank coverage, normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive chart-produced punctured-sector residual-source socket
 
 Reproduction:
