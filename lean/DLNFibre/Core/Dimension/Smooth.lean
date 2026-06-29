@@ -27,9 +27,9 @@ itself lives in `DLNFibre.Core.Dimension.Regular`, the entry-2 capstone).
 
 1. **Étale (more generally flat + quasi-finite) preserves height.** For a flat, Noetherian
    `R`-algebra `S` that is `R`-quasi-finite at a prime `Q`, the height of `Q` equals the height of
-   the prime `Q.under R` it lies over (`Ideal.height_eq_under_of_flat_quasiFiniteAt`); étale ⟹ flat
+   the prime `Q.under R` it lies over (`height_eq_under_of_flat_quasiFiniteAt`); étale ⟹ flat
    and quasi-finite, so an étale Noetherian `R`-algebra preserves the height of *every* prime
-   (`Ideal.height_eq_under_of_etale`). The fibre contributes nothing because quasi-finiteness forces
+   (`height_eq_under_of_etale`). The fibre contributes nothing because quasi-finiteness forces
    `Q` to be minimal in its fibre (`fibre_height_eq_zero_of_quasiFiniteAt`).
 
 2. **The smooth-point local-dimension bridge.** For `A` a finite-type algebra over a field `k` and
@@ -115,9 +115,16 @@ theorem fibre_height_eq_zero_of_quasiFiniteAt (Q : Ideal S) [Q.IsPrime]
       _ = Q.map f := by rw [hK'Q']
   exact hKJ'.ge
 
+-- Plain names in `DLNFibre.Core.Dimension`, consistent with their siblings
+-- (`fibre_height_eq_zero_of_quasiFiniteAt`, `ringKrullDim_localizationAtPrime_eq_of_isSmoothAt`).
+-- The earlier `Ideal.`-prefixed names resolved to a nested
+-- `DLNFibre.Core.Dimension.Ideal.height_eq_under_of_*` sub-namespace (a discoverability wart that
+-- only *looks like* the global `Ideal` namespace); on the eventual Mathlib move these become the
+-- true `Ideal.height_eq_under_of_*`.
+
 /-- For a flat, Noetherian `R`-algebra `S` quasi-finite at a prime `Q`, the height of `Q`
 equals the height of the prime `Q.under R` it lies over. -/
-theorem Ideal.height_eq_under_of_flat_quasiFiniteAt
+theorem height_eq_under_of_flat_quasiFiniteAt
     [IsNoetherianRing R] [IsNoetherianRing S] [Module.Flat R S]
     (Q : Ideal S) [Q.IsPrime] [Algebra.QuasiFiniteAt R Q] :
     Q.height = (Q.under R).height := by
@@ -127,17 +134,17 @@ theorem Ideal.height_eq_under_of_flat_quasiFiniteAt
 
 /-- Étale algebras are flat and quasi-finite, so an étale Noetherian `R`-algebra `S` preserves
 the height of every prime: `Q.height = (Q.under R).height`. -/
-theorem Ideal.height_eq_under_of_etale
+theorem height_eq_under_of_etale
     [IsNoetherianRing R] [IsNoetherianRing S] [Algebra.Etale R S]
     (Q : Ideal S) [Q.IsPrime] :
     Q.height = (Q.under R).height :=
-  Ideal.height_eq_under_of_flat_quasiFiniteAt Q
+  height_eq_under_of_flat_quasiFiniteAt Q
 
 /-- Non-vacuity: the hypotheses hold for the identity algebra `R = S` (flat and module-finite over
 itself), where the statement reduces to `Q.height = Q.height`. -/
 example [IsNoetherianRing R] (Q : Ideal R) [Q.IsPrime] :
     Q.height = (Q.under R).height :=
-  Ideal.height_eq_under_of_flat_quasiFiniteAt (R := R) (S := R) Q
+  height_eq_under_of_flat_quasiFiniteAt (R := R) (S := R) Q
 
 end HeightPreservation
 
@@ -256,7 +263,7 @@ theorem ringKrullDim_localizationAtPrime_eq_of_isSmoothAt
     rw [Ideal.under_def]; rfl
   -- Étale ⟹ `q.height = (q.under B).height`; combine with `(q.comap g).height = n`.
   have hM1 : q.height = (q.under (MvPolynomial (Fin n) k)).height :=
-    Ideal.height_eq_under_of_etale q
+    height_eq_under_of_etale q
   have hpheight : (q.comap (g : MvPolynomial (Fin n) k →+* S)).height = (n : ℕ∞) :=
     height_comap_etale_eq (g : MvPolynomial (Fin n) k →+* S) hg q
   have hqheight : q.height = (n : ℕ∞) := by rw [hM1, hunder, hpheight]

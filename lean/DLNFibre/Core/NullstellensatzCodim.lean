@@ -46,7 +46,8 @@ open Dimension
 export Dimension (IsZariskiClosed IsZariskiIrreducible vanishingIdeal_isRadical
   isZariskiIrreducible_iff_isPrime_vanishingIdeal ringKrullDim_mvPolynomial_finite
   height_add_ringKrullDim_quotient_eq_card varietyDim height_vanishingIdeal_add_varietyDim_eq_card
-  height_vanishingIdeal_eq_card_sub_varietyDim)
+  height_vanishingIdeal_eq_card_sub_varietyDim height_add_ringKrullDim_quotient_eq_card_of_ne_top
+  exists_minimalPrime_height_eq_height exists_minimalPrime_ringKrullDim_quotient_ge)
 
 universe u
 

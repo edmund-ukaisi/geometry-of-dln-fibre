@@ -235,4 +235,20 @@ theorem finrank_cotangentSpace_eq_of_isSmoothAt [PerfectField k]
   rw [hdim] at h
   exact_mod_cast h
 
+/-! ### Non-vacuity witness -/
+
+/-- The capstone fires concretely: the affine line `A = MvPolynomial (Fin 1) ℚ` is finite type over
+the perfect field `ℚ` and smooth at every maximal ideal `m` (its smooth locus is everything), so
+`Localization.AtPrime m` is a regular local ring. This exhibits the full antecedent bundle
+`[PerfectField k] [IsSmoothAt k m] [FiniteType k A]` satisfied on a concrete nonzero target. -/
+example (m : Ideal (MvPolynomial (Fin 1) ℚ)) [hm : m.IsMaximal] :
+    IsRegularLocalRing (Localization.AtPrime m) := by
+  haveI : m.IsPrime := hm.isPrime
+  haveI : IsSmoothAt ℚ m := by
+    have h : smoothLocus ℚ (MvPolynomial (Fin 1) ℚ) = Set.univ := smoothLocus_eq_univ
+    have : (⟨m, ‹_›⟩ : PrimeSpectrum _) ∈ smoothLocus ℚ (MvPolynomial (Fin 1) ℚ) := by
+      rw [h]; trivial
+    exact this
+  exact smooth_point_isRegularLocalRing (k := ℚ) (A := MvPolynomial (Fin 1) ℚ) m
+
 end DLNFibre.Core.Dimension
