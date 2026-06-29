@@ -488,3 +488,11 @@ import DLNFibre.Core.MinimalPrime.Localization
 import DLNFibre.Core.MinimalPrime.Polynomial
 import DLNFibre.Core.MinimalPrime.Radical
 import DLNFibre.Core.MinimalPrime.Bridge
+-- foundation-lift P2-R2: the matrix minor-rank core, extracted from `Core.RankLocusClosed` into the
+-- network-free `Core.Matrix.RankMinors` (ns `Matrix`, mirrors `Mathlib.LinearAlgebra.Matrix.Rank`):
+-- the determinantal-rank criterion `Matrix.rank_le_iff_forall_submatrix_det_eq_zero` (over a field,
+-- `A.rank ≤ r ↔` every `(r+1)`-minor's det = 0) + the supports
+-- (`rank_submatrix_le_rank`, `det_eq_zero_of_rank_lt`, `submatrix_det_eq_zero_of_rank_le`,
+-- `exists_injective_linearIndependent_rows`, `exists_submatrix_det_ne_zero_of_le_rank`) and the
+-- injective-field-hom rank invariance `Matrix.rank_map_eq_of_injective`.
+import DLNFibre.Core.Matrix.RankMinors
