@@ -39,4 +39,10 @@ bespoke inside `DLNFibre.Core`, Mathlib-absent — into clean, general, Mathlib-
   no `IsAlgClosed`). `NoetherMonicPositioning` deleted, `PolynomialDimension` trimmed to its non-catenary
   fact, 7 consumers + aggregator re-pointed (4 were **transitive/unqualified** — L2 trap, caught by the
   full-build sweep). Green 3819 / sorry-0 / axiom-clean. **Controller re-gate + an independent decorrelated
-  crux-review (verbatim-copy fidelity + any-field soundness) in flight before R3.**
+  crux-review (verbatim-copy fidelity + any-field soundness) in flight before R3.
+- **2026-06-29 — R2 SIGNED OFF.** Controller re-gate PASS (3819 green); independent crux-review
+  **PASS-with-notes** — verbatim private-substitution copy is byte-faithful (only `T` de-privatised, helpers
+  stay private), the any-field generality is sound (zero closure/char/cardinality hypotheses anywhere). Two
+  non-blocking cosmetics (statement-card tag-claim overstates `@[stacks]` attributes that are prose in code;
+  two dangling `§` cross-refs in `Catenary.lean`) folded into R3. **Catenary rung stands.** → R3 dispatched
+  (finite-type-domain catenary L4d + closed-point corollaries).**
