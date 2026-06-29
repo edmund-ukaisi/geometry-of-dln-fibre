@@ -82,4 +82,27 @@ theorem shearMBody_spec (coreSet : Finset (Fin N))
   simp only [Sum.elim_inr]
   rw [coreSetEquiv_inr_inr coreSet k, splitOfCoreSet_spec coreSet u k]
 
+/-- **The membership-form Spec readback.** Off `coreSet`, `shearMBody` fixes any coord `m` (rewritten as
+the `coreSetᶜ.equivFin` index `m` belongs to). -/
+theorem shearMBody_apply_of_not_mem (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (u : Fin N → ℝ) {m : Fin N} (hm : m ∉ coreSet) :
+    shearMBody coreSet shift u m = u m := by
+  have hmc : m ∈ coreSetᶜ := Finset.mem_compl.mpr hm
+  have hmk : (coreSetᶜ.equivFin.symm (coreSetᶜ.equivFin ⟨m, hmc⟩) : Fin N) = m := by
+    rw [Equiv.symm_apply_apply]
+  rw [← hmk, shearMBody_spec coreSet shift u]
+
+/-- **The membership-form Core readback.** On `coreSet`, `shearMBody u m = u m + (the shift entry at the
+`coreSet.equivFin` index of `m`)`. -/
+theorem shearMBody_apply_of_mem (coreSet : Finset (Fin N))
+    (shift : (Fin 0 → ℝ) × (Fin coreSetᶜ.card → ℝ) → (Fin coreSet.card → ℝ))
+    (u : Fin N → ℝ) {m : Fin N} (hm : m ∈ coreSet) :
+    shearMBody coreSet shift u m
+      = u m + shift ((splitOfCoreSet coreSet u).1, (splitOfCoreSet coreSet u).2.2)
+          (coreSet.equivFin ⟨m, hm⟩) := by
+  have hmj : (coreSet.equivFin.symm (coreSet.equivFin ⟨m, hm⟩) : Fin N) = m := by
+    rw [Equiv.symm_apply_apply]
+  rw [← hmj, shearMBody_core coreSet shift u]
+
 end DLNFibre.DLN.RLCT
