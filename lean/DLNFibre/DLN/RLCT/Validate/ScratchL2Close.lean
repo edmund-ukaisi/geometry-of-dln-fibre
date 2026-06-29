@@ -392,4 +392,68 @@ example (H : Fin 3 → ℕ) (r : ℕ)
     (rThresholdSplit r (H 1) (hr 1)) (rThresholdSplit r (H 2) (hr 2))
     (Aq 0) (Aq 0) (Aq 0) (Aψ 1) (Aq 1) h11G h21G he2
 
+/-- **The conjugated reg-energy invariance `hsub3reg`** (the long pole) — germ-local. Mirrors #147,
+with `psiSplitRawL2CoreConj` as the moved point. Per-x on the germ (where `l2A0Conj (split x)` is a
+unit), the three `hm·` block agreements hold (decode↔read + layer-0 shared + last-layer X/Z fixed +
+the e2 leak-kill), so #147 gives the `deepestEFull²`-sum invariance. -/
+private theorem deepestEFull_sq_sum_psiSplitRawL2CoreConj_eq_germ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2eq : L = 2)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
+      Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
+        Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
+          (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc)) ℝ))
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (x : Fin (flatDim H) → ℝ)
+    (hdet0 : (l2A0Conj H r B hB hr hL (split x)).det ≠ 0) :
+    (∑ i, (deepestEFull H r hr hL J Pf Qf
+        (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) i) ^ 2)
+      = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
+  -- The two framed raw params: Aq = decode x, Aψ = decode (split.symm (ψ (split x))).
+  set Aq : Params H := (paramsEquivFlat H).symm x with hAq
+  set Aψ : Params H :=
+    (paramsEquivFlat H).symm (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))
+    with hAψ
+  -- Frame identities (§iii) for both points.
+  have hframeq : ∀ s : Fin L,
+      framedParamsPivot H r hr hL J Pf Qf (split x) s = Pf s * Aq s * Qf s := by
+    intro s; rw [hsplit x]
+    exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' x s
+  have hframeψ : ∀ s : Fin L,
+      framedParamsPivot H r hr hL J Pf Qf
+          (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)) s
+        = Pf s * Aψ s * Qf s := by
+    intro s
+    have hrt : psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)
+        = split (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))) :=
+      (split.apply_symm_apply _).symm
+    rw [hrt, hsplit (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x)))]
+    exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
+      (split.symm (psiSplitRawL2CoreConj H r B hB hr hL hL2eq (split x))) s
+  sorry
+
 end DLNFibre.DLN.RLCT
