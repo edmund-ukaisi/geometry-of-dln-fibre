@@ -92,19 +92,52 @@ the `reindex`-as-CLE route stalls on the Sum-indexed intermediate (no norm insta
 note. `ContinuousLinearMap.proj_pi` is `rfl`, so `(proj j).comp ((proj r).comp (clmPi …))` reduces to the
 per-entry coordinate by `rw [… from rfl]` before the `finSplit` case split.
 
-## NEXT concrete step (sub-piece 1, continued)
-Thread the two atoms up: `Cgen` fderiv-value (`Cgen k = Bmat k · chainQ(Nblk k) + u • Rmat k` interior,
-`u • Rfin` leaf) via `HasFDerivAt.matMul`/`.add`/`.smul` + `hasFDerivAt_chainQ`; then `Agen` fderiv-value
-(`= chainA(Nblk s, Wblk s, Cgen(s+1))`) via `hasFDerivAt_chainA`. This needs the live-decoder block
-fderiv VALUES (`Bmat`/`Nblk`/`Wblk`/`Rmat`/`Rfin` of `genBlkFlatLiveR1`) — reader fderivs are projection
-CLMs; the `Rmat` `Function.update` + `Rfin` `dite` are cased as in `diffAt_liveRmat`/`_Rfin`; the radial
-`u = x p₀` read is `differentiableAt_apply`. Then the ENGINE IDENTIFICATION (recognizing the assembled
-`Agen s` fderiv as `schurFrameDeriv ∘ lduCoreDeriv ⊞ shear`) + the `eIn`/`eOut`/`V`/`f`/`c` assembly
-remain (sub-pieces 2–5).
+## Sub-piece 1c BANKED (this leg) — `Cgen`/`Agen` fderiv VALUES
+`lean/DLNFibre/DLN/RLCT/Validate/RouteMAgenFDerivValue.lean` (sorry-free, clean-three, axiom-clean, zero
+warnings): `hasFDerivAt_Cgen_interior` (`Bmat·chainQ + u•Rmat` via `HasFDerivAt.matMul` + `hasFDerivAt_chainQ`,
+`.add`, `HasFDerivAt.smul`), `hasFDerivAt_Cgen_leaf` (`u•Rfin`), `hasFDerivAt_Agen_interior` (via
+`hasFDerivAt_chainA`), `hasFDerivAt_Agen_leaf` (const `0`). GENERIC in the block fderivs (hypotheses) — the
+live-decoder block fderiv VALUES discharge them at the wiring stage. Cast notes: `HasFDerivAt.matMul` must
+be called by NAME (dot-notation hits `HasFDerivAtFilter.matMul`); the leaf `0` fderiv needs the CLM type
+ascribed (`(0 : … →L[ℝ] …)`) or the `Module` instance is stuck.
+
+## NEXT concrete step — the ENGINE IDENTIFICATION (Codex engine-id consult, xhigh; artefacts
+`threads/80-genM-nodechart/codex/engine-id-{prompt,answer}.md`)
+
+Decorrelated design for recognizing `Agen s`'s fderiv as the engine block:
+
+- **Least-risk next bank (Codex rank-4, do FIRST):** the MATRIX VALUE identity `Cgen s = Schur frame`.
+  Define `frameOut : Matrix (Fin (Text s)) (Fin (Wext s)) ℝ ≃L SchurInc t r c` (the output block split, SAME
+  row/col orientation as `bmatStack`/`rmatPad`/`chainQ`), and prove
+  `frameOut (Cgen u … s) = schurFrameMap (K_s, N_s, X_s, u•E_s)` i.e. `Bmat·chainQ + u•Rmat =
+  [[K,KN],[XK,XKN+uE]]`. Proof grain: **per-block theorem statements, per-entry proofs INSIDE** (do NOT
+  one giant `ext i j` over opaque `Fin (Text s)`). Four block lemmas (K / KN / XK / XKN+uE) via the banked
+  accessors `bmatStack_top`/`_bot`, `chainQ_apply_castAdd`/`_natAdd`, `rmatPad_*_*` (+ `fromBlocks`), each
+  closed with `Matrix.mul_apply` over the `chainQ`/`bmatStack` splits.
+- **K-slot adapter (avoid a Matrix/LDUParam mismatch):** use `FrameParam t r c := LDUParam t × (Matrix (Fin
+  t)(Fin c) × (Matrix (Fin r)(Fin t) × Matrix (Fin r)(Fin c)))` as `V (s+1)` (NOT raw `SchurInc`), with a
+  local CLE `FrameParam ≃L SchurInc` (`matrixSplit.symm` on the K slot, id elsewhere). The engine block is
+  then the conjugated `raw.symm ∘ schurFrameDeriv X K N ∘ raw ∘ (lduCoreDeriv on K-slot, id elsewhere)` —
+  the conjugation cancels in det. Safer than pretending `LDUParam`/`Matrix` interchange.
+- **Fderiv identification** then becomes a chain-rule/congruence problem one boundary at a time (local
+  input/output coordinate equivs first, assemble globally) — NOT a global reindex fight.
+
+**Codex cast-risk ranking** (highest→lowest), to sequence the remaining sub-pieces:
+1. Global `eIn`/`eOut` into dependent `StairProd V` — DO NOT hand-build from `Fin N`; compose the existing
+   spine (`paramsEquivFlatCLE`, `chartIdxEquiv`, `frameSplitEquiv`, local matrix/tuple split CLEs).
+2. Output-side `Agen`→staircase wiring (chain shears + the `s`/`s+1` shift).
+3. K-slot raw-matrix vs `LDUParam` coordination (solved by the `FrameParam` adapter above).
+4. `Cgen = Schur frame` value identity over opaque widths ← **DO THIS NEXT**.
+5. Boundary fderiv identification after the value identity.
+6. Determinant computations once the maps type.
+
+Staircase two-sided conjugacy CONFIRMED (again) as the sound assembly; the `det_comp` bypass is not easier
+(it needs value equality of the whole nonlinear map — the same/worse cast cost).
 
 ## Reusable for the residual (banked this leg + prior)
 - This leg: `hasFDerivAt_chainA` / `hasFDerivAt_chainQ` (the per-layer fderiv-value atoms),
-  `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
+  `hasFDerivAt_Cgen_interior`/`_leaf` + `hasFDerivAt_Agen_interior`/`_leaf` (the threaded chain-layer
+  fderiv values), `stairMap_abs_det_twoConj` (the det once `eIn`/`eOut`/`f`/`c` are exhibited),
   `interiorDet_headline_of_twoStairConj` (the headline wrapper for the rectangular layout).
 - Prior: `stairMap_abs_det_conj` (single-`e`), `interiorDet_phiFlatLiveR1_of_stairConj` (the real-chart
   target), `fderiv_det_one_of_shear` (the `−dN·W` shear is det-1), `finSplit.symm` cast lemmas,
