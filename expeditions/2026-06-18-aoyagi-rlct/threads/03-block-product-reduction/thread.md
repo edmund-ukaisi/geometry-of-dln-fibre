@@ -18,6 +18,61 @@ and product reduction.
 Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 `DLNFibre.Core`.
 
+## 2026-06-29 A2 retained-passive raw-order composite measure factorization
+
+Reproduction:
+`reproduction-a2-retained-passive-raw-order-map-factorization.md`.
+Statement card:
+`statement-card-a2-retained-passive-raw-order-map-factorization.md`.
+Review:
+`review-a2-retained-passive-raw-order-map-factorization.md`.
+
+Lean now exposes:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_comp_eq_sourceChart_inverseReadout_eq_snd
+```
+
+The theorem defines
+
+```text
+rawMap z = topologyTupleEdgeRawOrder (topologyTuple (retainedData z))
+```
+
+and `rawChart` as the public raw-order p.13 source chart.  It returns an open
+punctured sector `V` containing the basepoint.  For every `z in V`, it proves
+raw-order source-recursive determinant-chart membership, equality
+`rawChart (rawMap z) = sourceChart z`, pointwise local-source membership,
+source-readback recovery of `retainedData z`, and
+`inverseReadout (sourceChart z) = z.2`.
+
+For arbitrary `sourceMeasure`, the measure conclusion is the one-stage
+composite equality:
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V)
+  = Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+This is proved by `Measure.map_congr` from the pointwise sector bridge.  It is
+not the two-stage equality through
+`Measure.map rawChart (Measure.map rawMap ...)`, and it does not retain the
+earlier theorem's local-source support or inverse-readout pushforward fields.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`.  `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker scan, and direct axiom probe
+passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh source-scope
+review by `Sagan the 4th`, xhigh Lean/API review by `Popper the 4th`, and
+xhigh implementation review by `Volta the 4th` returned PASS after a
+documentation scope repair.
+
+Nonclaims: no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula, density
+identity, source-image equality, source-rank coverage, normal crossings, pole
+order, or RLCT.
+
 ## 2026-06-29 A2 retained-passive topology-tuple punctured-sector transport
 
 Reproduction:

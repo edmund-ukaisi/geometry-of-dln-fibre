@@ -3,6 +3,77 @@
 The controller's internal ground. Flush here before compaction, long operations,
 and branch/integration decisions.
 
+## Latest A2 Retained-Passive Raw-Order Composite Measure Factorization - 2026-06-29
+
+`RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean` now proves:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_comp_eq_sourceChart_inverseReadout_eq_snd
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-map-factorization.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-map-factorization.md
+threads/03-block-product-reduction/review-a2-retained-passive-raw-order-map-factorization.md
+```
+
+This is the measure-level raw-order composite presentation of the
+chart-produced punctured-sector source pushforward.  It is repo-local measure
+functoriality around the banked topology-tuple sector bridge, not a new Aoyagi
+source calculation.  With
+
+```text
+rawMap z = topologyTupleEdgeRawOrder (topologyTuple (retainedData z)),
+rawChart = paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart W2 B2 U0 hU0,
+```
+
+the theorem returns an open punctured sector `V` containing `z0` and proves for
+every `z in V`:
+
+```text
+rawMap z ∈ topologyTupleRawOrderSourceRecursiveDetChartSet,
+rawChart (rawMap z) = sourceChart z,
+sourceChart z ∈ retained-passive p.13 localSource,
+sourceReadback(edgeMatrix(sourceChart z)) = retainedData z,
+inverseReadout (sourceChart z) = z.2.
+```
+
+For any measurable structure on the source edge-family target, it proves only
+the one-stage pushforward equality
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V)
+  = Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+The proof calls the topology-tuple punctured-sector theorem, projects the
+pointwise raw-order source-chart equality, and applies `Measure.map_congr` on
+`sourceMeasure.restrict V`.  The two-stage equality through
+`Measure.map rawChart (Measure.map rawMap ...)` is deferred because it needs
+the intermediate raw-order a.e. measurability package.  The local-source
+support and inverse-readout pushforward fields are available from the earlier
+punctured-sector measure-readout theorem, but are not part of this checkpoint.
+
+Focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure`
+and full `DLNFibre` build passed via `scripts/lb`; only pre-existing replay
+warnings in unrelated modules appeared.  `scripts/sorries`, `git diff --check`,
+touched-file forbidden-marker scan, and direct axiom probe passed.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh source-scope scout `Sagan the 4th` and xhigh Lean/API scout `Popper the
+4th` returned PASS.  Xhigh implementation reviewer `Volta the 4th` first
+returned a documentation-only FAIL because the notes overstated support/readout
+pushforward fields; after correcting the notes to the pointwise-only scope,
+Volta re-checked and returned PASS.
+
+This proves no determinant-chart Haar transport, raw/source Haar theorem,
+external/original source-prior comparison, passive Jacobian formula, density
+identity, source-image equality, source-rank coverage, normal crossings, pole
+order, or RLCT.
+
 ## Latest A2 Retained-Passive Topology-Tuple Punctured-Sector Transport - 2026-06-29
 
 `RetainedPassiveCase2PassiveSelectedEntrySource.lean` now proves:

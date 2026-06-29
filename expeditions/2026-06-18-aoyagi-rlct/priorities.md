@@ -10,6 +10,55 @@ The controller proposes this ranking; the operator may edit this file directly.
 - This is an Aoyagi-only expedition. Do not use the quiver paper, quiver Lean
   results, or quiver notation as source evidence or proof input.
 
+## Latest controller decision - 2026-06-29, A2 retained-passive raw-order composite measure factorization
+
+The chart-produced punctured-sector source measure now has a one-stage
+raw-order composite presentation:
+
+```text
+exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_comp_eq_sourceChart_inverseReadout_eq_snd
+```
+
+in
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean
+```
+
+The theorem uses the same with-passive Case 2 data and arbitrary
+coordinate-domain source measure.  It returns an open punctured sector `V`.
+For every `z in V`, it proves raw-order source-recursive determinant-chart
+membership, equality of the public raw-order p.13 source chart composite with
+the direct chart-produced source chart, pointwise local-source membership,
+source-readback recovery of `retainedData z`, and
+`inverseReadout (sourceChart z) = z.2`.  It then proves the one-stage
+pushforward congruence:
+
+```text
+Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V)
+  = Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+This is repo-local measure functoriality around the banked topology-tuple
+sector bridge.  It is not a new Aoyagi source calculation.  The two-stage
+factorization through `Measure.map rawChart (Measure.map rawMap ...)` remains
+deferred until the intermediate raw-order a.e. measurability package is needed.
+The local-source support and inverse-readout pushforward fields remain in the
+earlier punctured-sector measure-readout theorem; this checkpoint does not
+reprove or restate them.
+
+Focused build, full `DLNFibre` build, `scripts/sorries`,
+`git diff --check`, touched-file forbidden-marker scan, and direct axiom probe
+passed.  The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh source-scope and Lean/API reviews passed.  Xhigh implementation review
+first caught a documentation overstatement about support/readout pushforwards;
+after correction, re-review passed.
+
+Do not call this theorem determinant-chart Haar transport, raw/source Haar,
+external/original source-prior comparison, a passive Jacobian or density
+formula, local domination for arbitrary `sourceMeasure`, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-29, A2 retained-passive topology-tuple punctured-sector transport
 
 The chart-produced punctured-sector source/readout lane now has a topology

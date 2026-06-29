@@ -140,6 +140,36 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive raw-order composite measure
+  factorization, 2026-06-29.** Lean now proves
+  `exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_comp_eq_sourceChart_inverseReadout_eq_snd`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasure.lean`.
+  This is repo-local measure functoriality around the already banked topology-
+  tuple sector bridge.  It returns an open punctured sector `V`, proves
+  pointwise raw-order chart membership, equality of
+  `rawChart (rawMap z)` with `sourceChart z`, local-source membership,
+  source-readback recovery of `retainedData z`, and
+  `inverseReadout (sourceChart z) = z.2` on `V`, and proves the one-stage
+  pushforward equality
+  `Measure.map (fun z => rawChart (rawMap z)) (sourceMeasure.restrict V) =
+  Measure.map sourceChart (sourceMeasure.restrict V)`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-raw-order-map-factorization.md`,
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-raw-order-map-factorization.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-retained-passive-raw-order-map-factorization.md`.
+  Focused build and full `DLNFibre` build passed via `scripts/lb`;
+  `scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan,
+  and direct axiom probe passed with `[propext, Classical.choice, Quot.sound]`.
+  Xhigh source-scope and Lean/API reviews returned PASS; xhigh implementation
+  review returned PASS after documentation scope repair.  This is not a
+  two-stage raw-order pushforward theorem and does not include the earlier
+  local-source support or inverse-readout pushforward fields.  It proves no
+  determinant-chart Haar transport, raw/source Haar theorem, external/original
+  source-prior comparison, passive Jacobian formula, density identity,
+  source-image equality, source-rank coverage, normal crossings, pole order,
+  or RLCT.
 - **Current status addendum, retained-passive topology-tuple punctured-sector
   transport, 2026-06-29.** Lean now proves
   `exists_open_case2EndpointTransport_withPassive_topologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq`
