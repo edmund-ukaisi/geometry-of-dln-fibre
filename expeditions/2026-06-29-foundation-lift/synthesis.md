@@ -32,3 +32,9 @@ smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously 
   hypothesis discharged once-per-top-prime via R3's `ringKrullDim_localizationAway_eq_of_fg_domain` (NOT from
   global no-drop + avoidance — DVR-at-uniformizer); R5 must carry the per-prime shape. → P1-R4 dispatched
   (`TopDimMinPrimes` core).
+- **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
+  (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
+  unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
+  to avoid `map`/`comap`/`height` shadowing). Green 3819, axiom-clean. The per-prime no-drop is NOT here
+  (R5's). → **P1-R5 dispatched — the CRUX** (transport rungs; the per-prime no-drop count survival): full
+  controller re-gate + decorrelated review on completion.
