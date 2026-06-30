@@ -620,5 +620,12 @@ import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
 -- ∉readerSet by membership). Cone-scoped; the entry-Jacobian bijection renamed bdataSlotEquiv
 -- (deconflicted vs smeared RouteMSmearedDecodeL2.slotEquiv — different defs). ∀M-ready.
 import DLNFibre.DLN.RLCT.Validate.RouteMBData222
+-- R1-LOWER ∀M-L2 interior-det `|det Dφ|` headline (the general-M generalization of the (2,2,2) anchor):
+-- `interiorDet_leaf_headline_eihd` — the staircase-conjugated leaf Jacobian |det Dφ| = |det K|^… ∏engine,
+-- via the eIn input-reindex (faithful, eIn_projV0) + the eihdc coupling + the three fderiv-BparamsLeaf
+-- J-blocks (J00=schurFrameDeriv / J01=0 / J11=chainUnit). The 23-file eihd chain lands here (RouteMHDtotEihd
+-- is the top; transitively pulls the staircase-det / flatBlock / projV0 / Agen+chain+reader fderiv-value
+-- substrate). CLEAN-THREE, S2-FREE — the cov-field input to the R1-LOWER cover_ge_div / NodeAchieverChart.
+import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

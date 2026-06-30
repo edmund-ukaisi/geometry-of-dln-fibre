@@ -7,6 +7,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
+import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
@@ -230,6 +231,13 @@ open DLNFibre.DLN.RLCT
 -- UNCONDITIONAL (PivotNotReader via route-D, pRad ∉ readerSet by membership). The (2,2,2)
 -- VALIDATION milestone; the ∀M-L2 generalization reuses its pivot-generic lemmas.
 #print axioms interiorDet_headline_222
+
+-- R1-LOWER ∀M-L2 interior-det `|det Dφ|` headline (the general-M generalization of the (2,2,2) anchor) —
+-- must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`: `interiorDet_leaf_headline_eihd`
+-- (the staircase-conjugated leaf Jacobian, via eIn faithfulness + the eihdc coupling + the 3 fderiv-BparamsLeaf
+-- J-blocks J00/J01/J11) + the coupling identity `eihd_hD`. The cov-field input to cover_ge_div / NodeAchieverChart.
+#print axioms eihd_hD
+#print axioms interiorDet_leaf_headline_eihd
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
