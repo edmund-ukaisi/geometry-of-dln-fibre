@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Product Source-Chart Source-Readback Fields - 2026-06-30
+
+Lean now proves the concrete fixed-base Case 2 product-chart source-readback
+field formula:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+For the endpoint fixed-base passive-theta source chart `sourceChart theta` and
+its p.13 product-coordinate suspension `productSourceChart(theta,u)`, the
+theorem builds the fixed-base matrix family `Eprod` and proves its
+`sourceReadback` fields are
+
+```text
+A1passive = 1
+F2        = first decoded F2 from u, then zero
+A3passive = 0
+C         = residualBlock(fixedBase(sourceChart theta))
+Ctop      = decoded Ctop from u
+F3        = decoded F3 from u
+```
+
+under the determinant-unit hypothesis for the decoded `Ctop` block.  The proof
+identifies `Eprod` with the prescribed fixed-base product-coordinate matrix
+family and then instantiates the raw theorem
+`sourceReadback_productCoordinate_fields_succSucc` with `N = 0`; the Case 2
+middle-edge condition is vacuous.
+
+Boundary: this is a pointwise p.13 fixed-base readback theorem.  It does not
+claim full recovery of passive theta from the product chart, original/source
+prior transport, Haar/Jacobian density identity, source-image coverage or
+equality, normal crossings, pole order, or RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-source-readback-fields.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-source-readback-fields.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-source-readback-fields.md
+```
+
+Review: xhigh scout `Anscombe the 2nd` PASS.  The only concern was Lean/API
+fragility from endpoint proofs using definitional unfolding plus `simp ...;
+rfl`; no mathematical overreach was found.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_source_readback_axioms.lean
+```
+
+Axiom probe for the new public theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 Product Source-Readback Field Formula - 2026-06-30
 
 Lean now proves the raw p.13 product-coordinate source-readback fields:

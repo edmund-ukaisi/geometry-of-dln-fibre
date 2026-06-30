@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 product source-chart source-readback fields
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-source-readback-fields.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-source-readback-fields.md`.
+Review:
+`review-a2-case2-product-source-chart-source-readback-fields.md`, PASS by
+xhigh reviewer `Anscombe the 2nd`; only Lean/API fragility noted.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+For the concrete endpoint fixed-base product source chart
+`productSourceChart(theta,u)`, the theorem instantiates the raw p.13
+source-readback field formula.  It returns canonical retained passive fields,
+the regular fields decoded from `u`, and residual factors extracted from the
+base `sourceChart theta`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_source_readback_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
+from the product chart, no original/source-prior transport, no Haar/Jacobian
+density formula, no source-image coverage/equality, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 product source-chart regular readback
 
 Reproduction:

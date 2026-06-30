@@ -12,6 +12,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 product source-chart source-readback fields
+
+The raw product source-readback formula has now been instantiated through the
+concrete Case 2 endpoint fixed-base Euclidean `productSourceChart`:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+At a point `(theta,u)`, the theorem identifies the fixed-base product edge
+matrices with the p.13 product-coordinate shapes and applies the raw readback
+formula with `N = 0`.  The conclusion is only fieldwise source-readback:
+
+```text
+A1passive = 1
+F2        = first decoded F2 from u, then zero
+A3passive = 0
+C         = residualBlock(fixedBase(sourceChart theta))
+Ctop      = decoded Ctop from u
+F3        = decoded F3 from u
+```
+
+This closes the immediate fixed-base product-chart readback bridge while
+preserving the negative boundary: the product chart does not recover full
+passive theta data by `sourceReadback`, and it does not prove source-prior
+transport, Haar/Jacobian density identity, source-image coverage/equality,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 product source-readback field formula
 
 The next finite-algebra boundary is now proved generically:
