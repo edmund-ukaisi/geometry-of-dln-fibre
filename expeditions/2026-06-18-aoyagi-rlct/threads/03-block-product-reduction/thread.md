@@ -21,6 +21,43 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta Jacobian-weighted residual-source adapter
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-weighted-residual-source.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-weighted-residual-source.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-weighted-residual-source.md`.
+
+Lean now combines the concrete passive-theta raw-order Jacobian sandwich with
+the concrete passive-theta local-domination residual-source socket:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+The theorem first chooses an open Jacobian-unit neighborhood `U`, weights
+`(passiveMeasure.prod weightedBox).restrict U` by the retained-passive
+raw-order Jacobian product read through
+`case2PassiveThetaEndpointTopologyTuple`, obtains finite scalar domination by
+the passive-product source measure from the upper sandwich, and then obtains a
+second open neighborhood `V` from the residual-source socket.  The final
+chart-produced measure restricted by `V` is supported on the retained-passive
+p.13 local source, has a.e. residual square-sum positivity, and satisfies
+`residualNegPowerIntegrableOn`.
+
+Focused direct warning check, focused module build, full local build,
+aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The public theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Meitner` and
+xhigh Lean/API reviewer `Hubble` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta Jacobian sandwich
 
 Reproduction:

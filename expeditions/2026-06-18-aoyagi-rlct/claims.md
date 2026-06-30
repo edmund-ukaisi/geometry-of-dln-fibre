@@ -140,6 +140,37 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta Jacobian-weighted
+  residual-source adapter, 2026-06-30.** Lean now combines the concrete
+  passive-theta raw-order Jacobian sandwich with the concrete passive-theta
+  local-domination residual-source socket in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+  The public theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_withDensity_jacobian_finiteMass`
+  first chooses an open Jacobian-unit neighborhood `U`, then defines the source
+  measure as the `jacobianDensity` weighting of
+  `(passiveMeasure.prod weightedBox).restrict U`, where `jacobianDensity` is
+  the retained-passive raw-order Jacobian product read through
+  `case2PassiveThetaEndpointTopologyTuple`.  The upper Jacobian sandwich gives
+  finite scalar domination by
+  `passiveMeasure.prod weightedBox`, and the residual-source socket returns a
+  second open neighborhood `V`.  The resulting chart-produced measure
+  `Measure.map sourceChart (sourceMeasure.restrict V)` is supported on the
+  retained-passive p.13 local source and satisfies a.e. residual square-sum
+  positivity plus `residualNegPowerIntegrableOn`.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-weighted-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-weighted-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-weighted-residual-source.md`.
+  Focused direct warning check, focused module build, full local build,
+  aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Meitner` and
+  xhigh Lean/API reviewer `Hubble` returned PASS.  This proves no
+  determinant-chart Haar transport, raw-order Haar transport, source-prior
+  transport, exact passive-sector pushforward, source-image equality,
+  source-rank coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive theta Jacobian sandwich,
   2026-06-30.** Lean now specializes the generic passive-parameter
   retained-passive raw-order Jacobian sandwich to the concrete full theta

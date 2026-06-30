@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Jacobian-Weighted Residual Source - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now combines the
+concrete `Case2PassiveTheta` raw-order Jacobian sandwich with the concrete
+theta local-domination residual-source socket.
+
+New public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_withDensity_jacobian_finiteMass
+```
+
+The theorem works over
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+sourceMeasure =
+  (passiveSource.restrict U).withDensity
+    (fun z => ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)))
+```
+
+where `U` is the open neighborhood returned by the theta Jacobian sandwich.
+The upper sandwich gives finite scalar domination of `sourceMeasure` by
+`passiveSource`; the theta residual-source socket then returns a second open
+neighborhood `V`.  For
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+the theorem proves retained-passive local-source support, a.e. residual
+square-sum positivity, and `residualNegPowerIntegrableOn localSource mu t`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-weighted-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-weighted-residual-source.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-weighted-residual-source.md
+```
+
+Xhigh source/scope reviewer `Meitner` and xhigh Lean/API reviewer `Hubble`
+returned PASS.
+
+Boundary: no determinant-chart Haar transport, no raw-order Haar transport,
+no source-prior transport, no exact passive-sector pushforward, no
+source-image equality, no source-rank coverage, no normal crossings, no pole
+order, and no RLCT extraction.
+
+Next frontier: construct a real passive-sector transport/Jacobian comparison
+or local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest A2 Case 2 Passive Theta Jacobian Sandwich - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` specializes the generic
