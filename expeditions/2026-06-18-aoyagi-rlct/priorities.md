@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 source-rank-neighborhood product readout package
+
+The concrete Case 2 endpoint product source chart now has a full readout
+package in the filter shape used by source-rank-local arguments:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package_nhdsWithin_source
+```
+
+For every `Rmax > 0`, Lean chooses `0 < R ≤ Rmax` so that eventually in
+`nhdsWithin theta₀ sourceStratum`, every `u ∈ ball(0,R)` satisfies the same
+five facts as the global small-ball package:
+
+```text
+regularCoordinateMap(productSourceChart(theta,u)) = u
+residualCoordinateMap(productSourceChart(theta,u))
+  =
+residualCoordinateMap(sourceChart theta)
+regularReadback(productSourceChart(theta,u)) = u
+selectedInverseReadout(productSourceChart(theta,u))
+  =
+selectedInverseReadout(sourceChart theta)
+sourceReadback(productSourceChart(theta,u)) has the canonical p.13 product fields
+```
+
+The proof is only `Filter.Eventually.of_forall` applied to the global uniform
+Case 2 package.  It does not prove source-rank openness, source-rank coverage,
+source-image equality, source-prior transport, Haar/Jacobian density identity,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 generic fixed-base small-ball product readout package
 
 The generic fixed-base product-coordinate API now has a shared small-ball

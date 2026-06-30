@@ -1079,6 +1079,113 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Source-rank-neighborhood version of the Case 2 endpoint p.13 product
+source-chart readout package.
+
+The small-ball readout package is uniform in the passive-theta base point, so
+it holds eventually along any fixed-base source-rank stratum.  This is only a
+filter-shaped coordinate/readback wrapper: no source-rank coverage,
+source-image equality, source-prior transport, Haar/Jacobian transport, normal
+crossings, pole order, or RLCT extraction is proved. -/
+theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package_nhdsWithin_source
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [TopologicalSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (theta₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    {r : ℕ} {rEdge : Fin 2 → ℕ} {Rmax : ℝ}
+    (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+      let EdgeFamily :=
+        ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+      let sourceChart :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J → EdgeFamily :=
+        case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+      let productSourceChart :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+            EuclideanSpace ℝ Coord →
+            EdgeFamily :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          W₂ B₂ U₀ hU₀ sourceChart
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := 2) W₂ B₂ sourceChart r rEdge
+      ∀ᶠ theta in nhdsWithin theta₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+                  (fun c ↦ u c)) ∧
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+              paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta) ∧
+            (case2PassiveThetaEndpointProductSourceChartRegularReadback W₂ B₂ hU₀
+                (productSourceChart (theta, u)) = u) ∧
+            (case2PassiveThetaEndpointInverseReadout W₂ B₂ n hS hnext hU₀ eNext e
+                (productSourceChart (theta, u)) =
+              case2PassiveThetaEndpointInverseReadout W₂ B₂ n hS hnext hU₀ eNext e
+                (sourceChart theta)) ∧
+            let Ebase : ∀ p : Fin 2, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p ↦
+                  (sourceChart theta p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            let Eprod : ∀ p : Fin 2, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p ↦
+                  (productSourceChart (theta, u) p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            let F2 := AoyagiRegularBlockCoordinateIndex.f2Matrix (fun c : Coord ↦ u c)
+            let F3 := AoyagiRegularBlockCoordinateIndex.f3Matrix (fun c : Coord ↦ u c)
+            let Ctop := AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c : Coord ↦ u c)
+            let C : ∀ p : Fin 2, Matrix (κ p.succ) (κ p.castSucc) ℝ :=
+              fun p ↦ ChartLocalSuffixState.residualBlock Ebase (Fin.last 2) p p.succ.le_last
+            let data := sourceReadback (K := ℝ) (ρ := ρ) (M := 1) (κ' := κ) Eprod
+            data.A1passive = (fun _ : Fin 1 ↦ 1) ∧
+              data.F2 = Fin.cases F2 (fun _ : Fin 1 ↦ 0) ∧
+              data.A3passive = (fun _ : Fin 1 ↦ 0) ∧
+              data.C = C ∧
+              data.Ctop = Ctop ∧
+              data.F3 = F3 := by
+  rcases
+      exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e hRmax with
+    ⟨R, hR, hRle, hpackage⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord EdgeFamily sourceChart productSourceChart sourceStratum
+  exact Filter.Eventually.of_forall fun theta ↦ by
+    intro u hu
+    simpa [ρ, κ, Coord, sourceChart, productSourceChart] using hpackage theta u hu
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Small-ball version of the Case 2 p.13 product-source-chart coordinate
 readout.
 
@@ -1158,15 +1265,58 @@ theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular
               paperEndpointFixedBaseResidualBlockCoordinateMap
                 (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta) := by
   rcases
-      exists_pos_radius_le_regular_residualBlockCoordinateMap_eq_multiEdgeProductCoordinateEuclidean_baseEdgeFamily_nhdsWithin_source
-        (M := 0) (V := W₂) (Bv := B₂) (x₀ := theta₀) (U₀ := U₀)
-        (hU₀ := hU₀)
-        (CedgeBase :=
-          case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e)
-        (r := r) (rEdge := rEdge) (Rmax := Rmax) hRmax with
-    ⟨R, hR, hRle, hreadout⟩
+      exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package_nhdsWithin_source
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e theta₀
+        (r := r) (rEdge := rEdge) hRmax with
+    ⟨R, hR, hRle, hpackage⟩
   refine ⟨R, hR, hRle, ?_⟩
-  simpa using hreadout
+  intro Coord EdgeFamily sourceChart productSourceChart sourceStratum
+  have hfull :
+      ∀ᶠ theta in nhdsWithin theta₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+                  (fun c ↦ u c)) ∧
+            (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+              paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta) ∧
+            (case2PassiveThetaEndpointProductSourceChartRegularReadback W₂ B₂ hU₀
+                (productSourceChart (theta, u)) = u) ∧
+            (case2PassiveThetaEndpointInverseReadout W₂ B₂ n hS hnext hU₀ eNext e
+                (productSourceChart (theta, u)) =
+              case2PassiveThetaEndpointInverseReadout W₂ B₂ n hS hnext hU₀ eNext e
+                (sourceChart theta)) ∧
+            let ρ := Fin (Module.finrank ℝ U₀)
+            let κ := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+            let Ebase : ∀ p : Fin 2, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p ↦
+                  (sourceChart theta p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            let Eprod : ∀ p : Fin 2, Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p ↦
+                  (productSourceChart (theta, u) p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            let F2 := AoyagiRegularBlockCoordinateIndex.f2Matrix (fun c : Coord ↦ u c)
+            let F3 := AoyagiRegularBlockCoordinateIndex.f3Matrix (fun c : Coord ↦ u c)
+            let Ctop := AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c : Coord ↦ u c)
+            let C : ∀ p : Fin 2, Matrix (κ p.succ) (κ p.castSucc) ℝ :=
+              fun p ↦ ChartLocalSuffixState.residualBlock Ebase (Fin.last 2) p p.succ.le_last
+            let data := sourceReadback (K := ℝ) (ρ := ρ) (M := 1) (κ' := κ) Eprod
+            data.A1passive = (fun _ : Fin 1 ↦ 1) ∧
+              data.F2 = Fin.cases F2 (fun _ : Fin 1 ↦ 0) ∧
+              data.A3passive = (fun _ : Fin 1 ↦ 0) ∧
+              data.C = C ∧
+              data.Ctop = Ctop ∧
+              data.F3 = F3 := by
+    simpa [Coord, sourceChart, productSourceChart, sourceStratum] using hpackage
+  constructor
+  · exact hfull.mono fun theta htheta u hu ↦ (htheta u hu).1
+  · exact hfull.mono fun theta htheta u hu ↦ (htheta u hu).2.1
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
