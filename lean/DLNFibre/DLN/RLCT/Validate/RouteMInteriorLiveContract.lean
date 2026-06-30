@@ -377,17 +377,32 @@ theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
         '' interiorLiveInjDom ha h0r h0c) :=
   sorry
 
-/-- **injOn atom #2 (my deliverable)** — `BchartLeaf` injective on the kLDU-image of `pbo '' injDom`.
-The off-radial block recovery (radial fixed to `1` in `BchartLeaf`): K via the LDU-coordinatized
-read, then X via forward-substitution through the Schur block `Bmat = [K; XK]`, then N/E/leaf linear
-(banked `Agen_congr` / `schurFrameProd_u_to_E`), then `paramsEquivFlat` injective. STATED `sorry`. -/
+/-- **injOn atom #2a (my deliverable, the genuine content)** — `BparamsLeaf` injective on the
+kLDU-image of `pbo '' injDom`: the off-radial chart-param recovery from the per-layer `Agen 1`
+matrices (radial fixed to `1` in `BparamsLeaf`). K via the LDU-coordinatized read, X via
+forward-substitution through the Schur block `Bmat = [K; XK]`, N/E/leaf linear (banked `Agen_congr` /
+`schurFrameProd_u_to_E`). STATED `sorry` — the genuine remaining recovery. -/
+theorem interiorLive_BparamsLeaf_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (BparamsLeaf ha)
+      (kLDU M (tach M) ha
+        '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+          '' interiorLiveInjDom ha h0r h0c)) :=
+  sorry
+
+/-- **injOn atom #2 (my deliverable)** — `BchartLeaf` injective on the kLDU-image of `pbo '' injDom`,
+via peeling the injective `paramsEquivFlat` MeasurableEquiv (`BchartLeaf = paramsEquivFlat ∘
+BparamsLeaf`) onto the genuine `BparamsLeaf` recovery (`interiorLive_BparamsLeaf_injOn`). -/
 theorem interiorLive_BchartLeaf_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     Set.InjOn (BchartLeaf ha)
       (kLDU M (tach M) ha
         '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
-          '' interiorLiveInjDom ha h0r h0c)) :=
-  sorry
+          '' interiorLiveInjDom ha h0r h0c)) := by
+  intro y hy y' hy' heq
+  refine interiorLive_BparamsLeaf_injOn ha h0r h0c hy hy' ?_
+  exact (paramsEquivFlat M).injective (heq : paramsEquivFlat M (BparamsLeaf ha y)
+    = paramsEquivFlat M (BparamsLeaf ha y'))
 
 /-- **H-inj — `InjOn` off the pivot ∪ q-axes** — the `Set.InjOn.comp` glue (#3, this thread): from the
 factorization `interiorLivePhi = (BchartLeaf ∘ kLDU) ∘ pivotBlowupOn` (hmap-for-B' via `hmap_leaf` at
