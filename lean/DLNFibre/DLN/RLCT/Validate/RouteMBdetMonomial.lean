@@ -153,4 +153,50 @@ theorem leafH_diagAxis (ha : StructAdm M (tach M))
   simp only [Equiv.apply_symm_apply, finProdFinEquiv.symm_apply_apply]
   rfl
 
+/-- **The off-image collapse** — a non-pivot axis with nonzero `leafH` IS a diagonal K-axis. The only
+nonzero `liveLeafHOnIdx` slots are boundary-`k` K-role diagonal entries; at `L = 2` the leaf boundary
+`k = 1` is vacuous (`Fin (Text 3 · Text 3) = Fin 0`), so `k = 0` and the slot is `diagAxis i` with
+`i = (finProdFinEquiv.symm qK).1` on the diagonal. -/
+theorem mem_image_diagAxis_of_leafH_ne_zero (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (j : Fin (routeMAmbient M))
+    (hjp : j ≠ leafPivot M ha (by norm_num) h0r h0c)
+    (hne : interiorLive_leafH ha h0r h0c j ≠ 0) :
+    j ∈ Finset.image (diagAxis ha) Finset.univ := by
+  rw [interiorLive_leafH, if_neg hjp] at hne
+  have hjq : j = (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+      (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j) := by
+    rw [Equiv.symm_apply_apply]
+  match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j with
+  | ⟨k, Sum.inr s⟩ => rw [hc] at hne; simp only [liveLeafHOnIdx] at hne; exact absurd rfl hne
+  | ⟨k, Sum.inl s⟩ =>
+    rw [hc] at hne; simp only [liveLeafHOnIdx] at hne
+    match hfeq : frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      rw [hfeq] at hne; simp only at hne
+      have hk0 : k = (0 : Fin 2) := by
+        fin_cases k
+        · rfl
+        · have hT3 : Text M (tach M) 3 = 0 := by
+            have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+          exact (Fin.cast (by
+            show Text M (tach M) ((1 : Fin 2).val + 1 + 1)
+              * Text M (tach M) ((1 : Fin 2).val + 1 + 1) = 0
+            show Text M (tach M) 3 * Text M (tach M) 3 = 0
+            rw [hT3, Nat.mul_zero]) qK).elim0
+      subst hk0
+      by_cases hdiag : (finProdFinEquiv.symm qK).1 = (finProdFinEquiv.symm qK).2
+      · refine Finset.mem_image.mpr ⟨(finProdFinEquiv.symm qK).1, Finset.mem_univ _, ?_⟩
+        -- diagAxis i = j: peel chartIdxEquiv.symm, frameSplitEquiv.symm, finProd; uses hfeq + hdiag.
+        have hs : s = (frameSplitEquiv M (tach M) ((0 : Fin 2).val + 1)
+            (ha.hdesc (0 : Fin 2).val (0 : Fin 2).isLt) (ha.hub (0 : Fin 2).val)).symm
+              (Sum.inl (Sum.inl (Sum.inl qK))) := by rw [← hfeq, Equiv.symm_apply_apply]
+        have hqK : finProdFinEquiv ((finProdFinEquiv.symm qK).1, (finProdFinEquiv.symm qK).1) = qK := by
+          nth_rewrite 2 [hdiag]
+          rw [Prod.mk.eta, finProdFinEquiv.apply_symm_apply]
+        rw [diagAxis, hjq, hc, hs, hqK]
+      · rw [if_neg hdiag] at hne; exact absurd rfl hne
+    | Sum.inl (Sum.inl (Sum.inr e)) => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+    | Sum.inl (Sum.inr e) => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+    | Sum.inr e => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+
 end DLNFibre.DLN.RLCT
