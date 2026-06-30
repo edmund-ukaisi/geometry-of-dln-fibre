@@ -10,6 +10,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
+import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
 import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
@@ -120,6 +123,18 @@ open DLNFibre.DLN.RLCT
 -- of L2). Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: the L=2 arm is sorry-free
 -- (geometric, S2-FREE, no `monomial_rlct`), no `sorryAx`.
 #print axioms deepest_gauge_construction_L2
+
+-- hJfront re-arch (genm-44l2, reviewer genm-rev-hjfront SURVIVED) — the #44-L2 value side made
+-- HEADLINE-CLOSEABLE by replacing the unprovable hJfront with the provable precursor `hcolfront`. All
+-- must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`:
+-- `deepest_regular_core_normal_form_L2_front` = Skeleton #44 conclusion at L=2, conditional ONLY on
+-- htop[#154] + hcolfront[#100] + hRValue[R1] (no hJfront); `exists_frontPivotFrame_lastBlock_isUnit`
+-- (front-preferring chooser, J=frontEmbed) + `deepestPoint_lastBlock_front_rank` (column-dual) are the
+-- hard atoms; `deepest_gauge_construction_L2_ofBundle` is the Route-X parameterized gauge body.
+#print axioms deepest_regular_core_normal_form_L2_front
+#print axioms exists_frontPivotFrame_lastBlock_isUnit
+#print axioms deepestPoint_lastBlock_front_rank
+#print axioms deepest_gauge_construction_L2_ofBundle
 
 -- L2 gauge-construction at general L — `deepest_gauge_construction` dispatches L<3 to the clean-three
 -- `_L2` witness and carries the #120-tracked L≥3-arm sorries (the grouped recursive diffeo, RESEARCH-RISK

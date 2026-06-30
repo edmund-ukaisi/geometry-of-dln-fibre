@@ -555,6 +555,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+-- hJfront re-arch (genm-44l2, reviewer SURVIVED): the unprovable hJfront (arbitrary frame-pivot .choose =
+-- frontEmbed) REPLACED by the provable precursor `hcolfront` (B's front-cols rank r, col-WLOG-supplied).
+-- DeepestLastBlock = the column-dual peel; DeepestFrontGauge = the front triangular bundle + front feeder
+-- (via the Route-X `deepest_gauge_construction_L2_ofBundle` in DeepestL2Wiring) + `deepest_regular_core_normal_form_L2_front`
+-- (Skeleton #44 conclusion at L=2, conditional ONLY on htop[#154]+hcolfront[#100]+hRValue[R1], NO hJfront).
+import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
+import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
 -- D1 (rung 2/5) (★)-deliverer engine: the analytic quasi-split RLCT lower bound `rlct_quasiSplit_ge`
 -- (+ rlct_smooth_block_ge / coupled_controls_slice) — network-free, sidesteps the full Gromoll–Meyer
 -- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
