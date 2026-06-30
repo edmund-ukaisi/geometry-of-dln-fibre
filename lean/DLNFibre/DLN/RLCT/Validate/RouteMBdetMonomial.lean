@@ -234,4 +234,46 @@ theorem kLDU_ambient_det_pbo (ha : StructAdm M (tach M))
   rw [hq]
   norm_num
 
+/-- **The boundary-factor det monomializes (hreg-conditional)** —
+`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}`. The chain-rule split
+(`BchartLeaf_kLDU_abs_det_split`) factors into the boundary-factor det (`BchartLeaf_abs_det_free`, given
+`hreg`) and the ambient lens det (`kLDU_ambient_det_pbo`); `readK_kLDU_pbo` + `kLens_det` fold the
+former to `|∏_i u(diagAxis i)|^{r+c}`; `lhs_collapse` merges them to `∏_i |u(diagAxis i)|^{leafH(diagAxis
+i)}`; then the RHS reindexes onto the diagonal axes (`prod_subset` to `image diagAxis` via the off-image
+collapse, `prod_image` via `diagAxis_injective`). -/
+theorem interiorLive_BdetMonomial_of_hreg (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
+    (hreg : |LinearMap.det
+        (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+          ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
+    |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ j, if j = leafPivot M ha (by norm_num) h0r h0c then (1 : ℝ)
+          else |u j| ^ (interiorLive_leafH ha h0r h0c j) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  -- factor 1 = `|∏_i u(diagAxis i)|^{r+c}`
+  have hf1 : |LinearMap.det (fderiv ℝ (BchartLeaf ha)
+        (kLDU M (tach M) ha (pivotBlowupOn (activeM M ha) p₀ u))).toLinearMap|
+      = |∏ i, u (diagAxis ha i)|
+        ^ ((Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)) := by
+    rw [BchartLeaf_abs_det_free ha _ hreg, readK_kLDU_pbo ha h0r h0c u, kLens_det]
+    congr 2
+  -- combine via the chain-rule split + lhs_collapse → `∏_i |u(diagAxis i)|^{leafH(diagAxis i)}`
+  rw [BchartLeaf_kLDU_abs_det_split ha, hf1, kLDU_ambient_det_pbo ha h0r h0c u,
+    lhs_collapse (Text M (tach M) 2) (Text M (tach M) 1 - Text M (tach M) 2)
+      (Wext M 1 - Text M (tach M) 2) (fun i => u (diagAxis ha i))]
+  have hexp : ∀ i : Fin (Text M (tach M) 2),
+      |u (diagAxis ha i)|
+        ^ ((Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)
+          + 2 * (Text M (tach M) 2 - 1 - (i : ℕ)))
+        = |u (diagAxis ha i)| ^ (interiorLive_leafH ha h0r h0c (diagAxis ha i)) := by
+    intro i; rw [leafH_diagAxis ha h0r h0c i]
+  rw [Finset.prod_congr rfl (fun i _ => hexp i)]
+  -- LHS is now `∏ i, |u(diagAxis i)|^{leafH(diagAxis i)}`. RHS: split off the pivot (if_pos→1), reindex
+  -- the rest onto `image diagAxis` (prod_subset via the off-image collapse + prod_image via injectivity).
+  -- REMAINING (handed to genm-prod-arith per flag-at-2-cycles): the Finset prod-reindex bookkeeping —
+  -- `prod_eq_mul_prod_diff_singleton_of_mem` codomain inference is stuck; all the math above is closed
+  -- (factor1·factor2·lhs_collapse·leafH_diagAxis), only this prod glue remains.
+  sorry
+
 end DLNFibre.DLN.RLCT
