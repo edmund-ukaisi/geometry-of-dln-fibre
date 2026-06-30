@@ -25,3 +25,12 @@ New lessons specific to this expedition accumulate below.
   → `Module.Free.of_divisionRing` → `Flat`), not by re-importing the heavy module the split removed. Generalises
   L2 (transitive *consumer* sweep) to transitive *instance-provider* breaks: a green full-aggregator build after
   a split is necessary, and a missing-instance error there is the expected symptom, not a regression.
+
+- **L7 — a `DLNFibre.Core.X` namespace SHADOWS Mathlib's root `X` for files that `open X` inside
+  `namespace DLNFibre.Core`.** P2.2's first home `DLNFibre.Core.AlgebraicGeometry.Group.Orbit` created a
+  `DLNFibre.Core.AlgebraicGeometry` segment; three sibling files doing `open AlgebraicGeometry` from inside
+  `namespace DLNFibre.Core` then resolved to the (empty) local segment, not Mathlib's — `Scheme`/`Spec`/etc.
+  became "unknown identifier" only in the full build. **Rule:** a new file mirroring a Mathlib target declares
+  its content in the **bare Mathlib-mirror namespace** (`namespace AlgebraicGeometry.Group.Orbit`, like
+  `CotangentLocalization`'s `namespace Ideal` / `CotangentJacobian`'s `namespace MvPolynomial`), NOT a
+  `DLNFibre.Core.`-prefixed one — both the correct eventual file-move target AND shadow-safe.

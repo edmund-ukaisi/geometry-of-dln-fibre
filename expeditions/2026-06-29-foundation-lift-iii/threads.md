@@ -27,10 +27,10 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
 | P2.0 | scout | abf59d3e | ✅ PROCEED `1e099b56` | de-`Tuple` probe → small hypothesis-carrying 4-brick engine; H1/H2 named hyps; keystone restates clean. Codex-concurred. Report = authoritative Phase-2 design |
-| **P2.2** | formaliser | dispatching | 🔄 | keystone: `AffineGVariety` carrier `structure` + orbit-as-image irreducibility on `(R, fρ)`, DLN as instance → `Core/AlgebraicGeometry/Group/Orbit` |
-| P2.1 | — | — | ⏳ | trace/transpose-rank brick (or prefer Mathlib dualMap + drop `deltaT`) |
-| P2.3 | — | — | ⏳ | A0/A4.1/A4.4 assembly on `(R, fρ)` + L6.4 as hypothesis |
-| P2.4 | — | — | ⏳ CRUX | B1 `GenericRankBound` (A4.3, H1) — de-risk (H1) `L` signature first; decorrelated review |
+| P2.2 | formaliser | aa04914a | ✅ DONE `64d75981` | keystone: **layered** `AffineGVariety` carrier `(ρ, R: k-domain, fρ)` (deformation deferred to extension) + `isPrime_ker_pullback` irreducibility + DLN `dlnOrbit` instance (DLN lemma re-derived). bare-Mathlib-mirror ns (→ L7 shadowing fix). green 3824 |
+| **P2.3** | formaliser | dispatching | 🔄 | A4.1 anchor `varietyDim 𝒪 = trdeg` on the carrier (from Phase-1 `ringKrullDim_eq_trdeg_of_fg_domain` + `isDomain_quotient_ker_pullback`); A0/L6.4 orbit↔vanishingIdeal bridge as hypothesis; DLN instance derives |
+| P2.1 | — | — | ⏳ folded → P2.4 | trace self-duality `traceEquiv` is reusable, but the abstract B1 likely uses Mathlib `finrank_range_dualMap_eq_finrank_range` (dropping `deltaT`); decide at P2.4 to avoid double-touching `OrbitDifferentialRank` |
+| P2.4 | — | — | ⏳ CRUX | B1 `GenericRankBound` (A4.3, H1) + the `deltaT`-vs-dualMap call — de-risk (H1) `L` signature first; decorrelated review |
 | P2.5 | — | — | ⏳ CRUX | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2) — decorrelated review |
 | P2.6 | — | — | ⏳ | squeeze headline + L7 assembly |
 
