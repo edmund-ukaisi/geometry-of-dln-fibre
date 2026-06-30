@@ -15,8 +15,9 @@ per shared worktree at a time; read-only auditors run concurrently. Controller i
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
 | P1.a | formaliser | abaaacd2 | ✅ DONE + RE-GATED `f6684cf5` | overlap API → `Core/RingTheory/Localization/Overlap.lean` (bare `Localization` ns); consumers swept. **Full-aggregator re-gate GREEN (3828 jobs), sorries 0, `awayTriple_cocycle` axiom-clean.** |
-| **P1.b** | formaliser | dispatching | 🔄 | matrix coord ring + **determinantal `(r+1)`-minor ideal** (genuinely-new def) + re-home `detMinorPoly`/`eval_detMinorPoly` → `Core/RingTheory/Determinantal/Basic.lean` |
-| P1.c–e | — | — | ⏳ | rank strata + cover (re-home) · Schur coords (re-home) · dimension (Brick A cited) |
+| P1.b | formaliser | a728b739 | ✅ DONE `d24f9b01` | `Core/RingTheory/Determinantal/Basic.lean` (bare `Matrix` ns): `detMinorPoly`/`eval_detMinorPoly` re-homed + generalized `Field→CommRing`; new `Matrix.determinantalIdeal` + API (`_mem_`, `_eq_span`, `_le_iff`). green 3829, sorries 0, axiom-clean |
+| **P1.c** | formaliser | dispatching | 🔄 | rank strata (`rankLeLocus`/`rankEqLocus`) + pivot `minorChart` + **cover theorem** + minor↔rank criterion → `Core/RingTheory/Determinantal/Strata.lean` (re-home `RankMinorCover`/`Matrix/RankMinors`) |
+| P1.d–e | — | — | ⏳ | Schur coords (re-home) · dimension (Brick A cited) |
 
 ## ✅ Build status — re-gate GREEN; contamination episode CLOSED
 - **Contamination (mine, fixed + confirmed):** the worktree's `.lake` was warmed (`cp -al`) from the
