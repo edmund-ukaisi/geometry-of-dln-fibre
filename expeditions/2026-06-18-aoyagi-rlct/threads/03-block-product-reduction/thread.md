@@ -21,6 +21,55 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 passive theta external source-image pullback
+
+Reproduction:
+`reproduction-a2-passive-theta-external-source-image-pullback.md`.
+Statement card:
+`statement-card-a2-passive-theta-external-source-image-pullback.md`.
+Review:
+`review-a2-passive-theta-external-source-image-pullback.md`, PASS by xhigh
+API scout `Huygens` and xhigh source/scope scout `Linnaeus`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
+```
+
+The concrete theorem returns a local passive-theta source image `sourceChart ''
+V` with a right inverse.  For any external source measure restricted to this
+image, assuming `readback` is a.e. measurable for that restricted measure, the
+pulled-back candidate theta measure is supported on `V` and pushes forward
+exactly to the restricted external source measure.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probe for the new concrete theorem reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no proof that the original prior is
+supported in one chart image, no density domination by the Jacobian-weighted
+passive product measure, no Haar transport, normal crossings, pole order, or
+RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta compatible source right inverse
 
 Reproduction:

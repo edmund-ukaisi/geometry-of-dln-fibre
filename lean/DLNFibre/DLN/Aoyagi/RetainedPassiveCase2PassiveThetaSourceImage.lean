@@ -44,6 +44,78 @@ theorem measure_map_restrict_image_eq_self_of_aemeasurable
     (ae_map_iff hf himage).2 hmem
   exact Measure.restrict_eq_self_of_ae_mem hmap_mem
 
+set_option linter.style.longLine false in
+/-- If `sourceChart` is a right inverse to `readback` on a measurable image
+set, then pushing the restricted external measure through `readback` and back
+through `sourceChart` recovers that restricted external measure.
+
+This is pure measure bookkeeping for a chosen measurable chart image.  It does
+not assert that an original prior is supported in the image, prove any density
+comparison, or provide Haar transport, normal crossings, pole order, or RLCT
+extraction. -/
+theorem measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (externalMeasure : Measure E) (imageSet : Set E)
+    (himage : MeasurableSet imageSet)
+    (hreadback : AEMeasurable readback (externalMeasure.restrict imageSet))
+    (hsourceChart : AEMeasurable sourceChart
+      (Measure.map readback (externalMeasure.restrict imageSet)))
+    (hright : ∀ E ∈ imageSet, sourceChart (readback E) = E) :
+    Measure.map sourceChart
+        (Measure.map readback (externalMeasure.restrict imageSet)) =
+      externalMeasure.restrict imageSet := by
+  calc
+    Measure.map sourceChart
+        (Measure.map readback (externalMeasure.restrict imageSet)) =
+        Measure.map (fun E ↦ sourceChart (readback E))
+          (externalMeasure.restrict imageSet) := by
+          exact AEMeasurable.map_map_of_aemeasurable hsourceChart hreadback
+    _ = Measure.map id (externalMeasure.restrict imageSet) := by
+      apply Measure.map_congr
+      filter_upwards [ae_restrict_mem himage] with E hE
+      exact hright E hE
+    _ = externalMeasure.restrict imageSet := by
+      rw [Measure.map_id]
+
+set_option linter.style.longLine false in
+/-- The pullback of a measure restricted to a chart image is supported on the
+coordinate set if the readback sends every image point into that set. -/
+theorem measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    (readback : E → Θ)
+    (externalMeasure : Measure E) (imageSet : Set E) (V : Set Θ)
+    (himage : MeasurableSet imageSet)
+    (hV : MeasurableSet V)
+    (hreadback : AEMeasurable readback (externalMeasure.restrict imageSet))
+    (hmem : ∀ E ∈ imageSet, readback E ∈ V) :
+    (Measure.map readback (externalMeasure.restrict imageSet)).restrict V =
+      Measure.map readback (externalMeasure.restrict imageSet) := by
+  have hpre : ∀ᵐ E ∂ externalMeasure.restrict imageSet, readback E ∈ V := by
+    filter_upwards [ae_restrict_mem himage] with E hE
+    exact hmem E hE
+  have hmap : ∀ᵐ theta ∂ Measure.map readback (externalMeasure.restrict imageSet),
+      theta ∈ V :=
+    (ae_map_iff hreadback hV).2 hpre
+  exact Measure.restrict_eq_self_of_ae_mem hmap
+
+set_option linter.style.longLine false in
+/-- A map continuous on a measurable carrier is a.e. measurable for any
+measure supported on that carrier. -/
+theorem aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+    {Θ E : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [OpensMeasurableSpace Θ] [MeasurableSpace E] [TopologicalSpace E] [BorelSpace E]
+    {sourceChart : Θ → E} {μ : Measure Θ} {V : Set Θ}
+    (hcont : ContinuousOn sourceChart V)
+    (hV : MeasurableSet V)
+    (hsupport : μ.restrict V = μ) :
+    AEMeasurable sourceChart μ := by
+  have hsource_restrict : AEMeasurable sourceChart (μ.restrict V) :=
+    hcont.aemeasurable hV
+  have hac : μ ≪ μ.restrict V := by
+    rw [hsupport]
+  exact hsource_restrict.mono_ac hac
+
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
@@ -479,6 +551,160 @@ theorem exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_im
     · simpa [hleftV' z hzV] using hzV
     · rw [hleftV' z hzV]
   exact ⟨V, hVopen, hz₀V, hVG, hleftV', hsource_inj', hsource_image', hright⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Pull back an external source-side measure restricted to the concrete local
+passive-theta source-chart image, and push it forward back to the same
+restricted external measure.
+
+The returned measure identity is only for the portion of `externalMeasure`
+already restricted to the actual measurable image `sourceChart '' V`.  It does
+not prove that an original source prior is supported in one chart image, nor
+does it prove a density domination by the passive-theta Jacobian measure,
+Haar transport, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    (G :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun theta ↦
+        case2PassiveThetaEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e theta
+    let readback : EdgeFamily →
+        Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+      case2PassiveThetaEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ eNext e
+    ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, readback (sourceChart z) = z) ∧
+          Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+            MeasurableSet (sourceChart '' V) ∧
+              (∀ E ∈ sourceChart '' V,
+                readback E ∈ V ∧ sourceChart (readback E) = E) ∧
+                ∀ externalMeasure : Measure EdgeFamily,
+                  AEMeasurable readback
+                    (externalMeasure.restrict (sourceChart '' V)) →
+                    let candidateMeasure :=
+                      Measure.map readback
+                        (externalMeasure.restrict (sourceChart '' V))
+                    candidateMeasure.restrict V = candidateMeasure ∧
+                      Measure.map sourceChart candidateMeasure =
+                        externalMeasure.restrict (sourceChart '' V) := by
+  intro EdgeFamily sourceChart readback
+  rcases
+      (by
+        simpa [EdgeFamily, sourceChart, readback] using
+          exists_open_subset_continuousOn_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_leftInverse
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ G hGopen hz₀G) with
+    ⟨V, hVopen, hz₀V, hVG, _hdetV, hleftV, hsource_inj, hsource_contOn,
+      hsource_image⟩
+  have hleftV' : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    simpa [sourceChart, readback, case2PassiveThetaEndpointSourceChart,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleftV z.A1passive z.F2 z.A3passive z.Ctop z.F3 z.yNext hz
+  have hsource_inj' : Set.InjOn sourceChart V := by
+    simpa [sourceChart] using hsource_inj
+  have hsource_contOn' : ContinuousOn sourceChart V := by
+    simpa [sourceChart] using hsource_contOn
+  have hsource_image' : MeasurableSet (sourceChart '' V) := by
+    simpa [sourceChart] using hsource_image
+  have hright : ∀ E ∈ sourceChart '' V,
+      readback E ∈ V ∧ sourceChart (readback E) = E := by
+    intro E hE
+    rcases hE with ⟨z, hzV, rfl⟩
+    constructor
+    · simpa [hleftV' z hzV] using hzV
+    · rw [hleftV' z hzV]
+  have hVmeas : MeasurableSet V := hVopen.measurableSet
+  refine
+    ⟨V, hVopen, hz₀V, hVG, hleftV', hsource_inj', hsource_contOn',
+      hsource_image', hright, ?_⟩
+  intro externalMeasure hreadback
+  let candidateMeasure : Measure
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+    Measure.map readback (externalMeasure.restrict (sourceChart '' V))
+  have hsupport : candidateMeasure.restrict V = candidateMeasure :=
+    measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+      readback externalMeasure (sourceChart '' V) V hsource_image' hVmeas
+      hreadback (fun E hE ↦ (hright E hE).1)
+  have hsourceChart :
+      AEMeasurable sourceChart candidateMeasure :=
+    aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+      hsource_contOn' hVmeas hsupport
+  have hmap :
+      Measure.map sourceChart candidateMeasure =
+        externalMeasure.restrict (sourceChart '' V) :=
+    measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+      sourceChart readback externalMeasure (sourceChart '' V) hsource_image'
+      hreadback hsourceChart (fun E hE ↦ (hright E hE).2)
+  exact ⟨hsupport, hmap⟩
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

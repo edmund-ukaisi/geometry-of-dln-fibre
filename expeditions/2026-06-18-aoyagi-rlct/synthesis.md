@@ -6,6 +6,79 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Passive Theta External Source-Image Pullback - 2026-06-30
+
+The local passive-theta source image now has an exact external-measure pullback
+adapter for the portion of an external source measure already restricted to
+the measurable chart image.
+
+New Lean names:
+
+```text
+measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
+```
+
+The concrete theorem returns an open `V` with the existing local left inverse,
+injectivity, `ContinuousOn sourceChart V`, measurable image, and right inverse
+on `sourceChart '' V`.  For any external source-side measure
+`externalMeasure`, if `readback` is a.e. measurable for
+
+```text
+externalMeasure.restrict (sourceChart '' V),
+```
+
+then the pulled-back coordinate-domain measure
+
+```text
+candidateMeasure =
+  Measure.map readback (externalMeasure.restrict (sourceChart '' V))
+```
+
+is supported on `V` and pushes forward exactly:
+
+```text
+candidateMeasure.restrict V = candidateMeasure
+Measure.map sourceChart candidateMeasure =
+  externalMeasure.restrict (sourceChart '' V)
+```
+
+Xhigh API scout `Huygens` confirmed the proof route and the need for the
+explicit `AEMeasurable readback` hypothesis.  Xhigh source/scope scout
+`Linnaeus` confirmed the mathematical boundary: Aoyagi assumes a smooth
+compactly supported prior density positive at the true parameter, but this
+theorem does not identify the original prior with the chart-produced passive
+measure or prove a density domination.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-external-source-image-pullback.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-external-source-image-pullback.md
+threads/03-block-product-reduction/review-a2-passive-theta-external-source-image-pullback.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probe for the new concrete theorem reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Next boundary: conditional domination from this `candidateMeasure` to the
+passive-theta Jacobian-weighted product measure, and then a pushforward
+domination on the source image.  This theorem proves no source-rank coverage,
+no global source-prior support in one chart, no density comparison, no Haar
+transport, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Latest A2 Case 2 Passive Theta Compatible Source Right Inverse - 2026-06-30
 
 After three xhigh scouts checked the post-source-rank-support frontier, the

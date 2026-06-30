@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 passive theta external source-image pullback
+
+The source-prior bridge now has its first exact local measure adapter.  For an
+external source-side measure restricted to the actual measurable image
+`sourceChart '' V`, Lean constructs the theta-domain pullback
+
+```text
+candidateMeasure =
+  Measure.map readback (externalMeasure.restrict (sourceChart '' V))
+```
+
+and proves:
+
+```text
+candidateMeasure.restrict V = candidateMeasure
+Measure.map sourceChart candidateMeasure =
+  externalMeasure.restrict (sourceChart '' V)
+```
+
+New public names:
+
+```text
+measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
+```
+
+This is the right way to introduce an external measure without naming a
+chart-produced passive measure as the original prior.  The remaining real
+frontier is a conditional domination handoff:
+
+```text
+candidateMeasure ≤ c • baseJ.restrict V
+```
+
+and then source-image domination after pushing by `sourceChart`.
+
+Nonclaims: no proof that the original prior is supported in one chart image,
+no source-rank coverage, no density domination, no Haar transport, no normal
+crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta compatible source right inverse
 
 The attempted broad source-rank coverage target is rejected as too strong.
