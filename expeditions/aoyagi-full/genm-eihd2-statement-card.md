@@ -48,6 +48,21 @@ useful sub-lemma to land first: `eIn_frameRead` (the slot-0 frame read collapses
 `δ (chartIdxEquiv.symm ⟨0, Sum.inl a⟩)`); the simp set above + `rfl` closes it once the statement
 parenthesization is right (the `(sumArrow (...)).1).1 a` nesting + `piFinTwo`'s slot-0 projection).
 
+**WORKING COMBINATOR-EVAL RECIPE (verified in scratch, the unblock):**
+- `flatMatLE_apply : flatMatLE a b f i j = f (finProdFinEquiv (i,j))` — proved by
+  `unfold flatMatLE; simp only [LinearEquiv.trans_apply]; rfl` (NOT `:= rfl`; and there is NO
+  `LinearEquiv.curry_apply` lemma — the `simp [trans_apply]; rfl` route handles `curry`+`ofLinearEquiv`).
+- `frameToSchurInc` block-reduction: `simp only [LinearEquiv.trans_apply]` does NOT fire when the goal is
+  `(frameToSchurInc ha g).1 i j = …` (the `.1 i j` projections sit between the equiv coercion and the
+  entry, blocking the rewrite). Peel with a `show`/`change` of the FULL tuple equality
+  `frameToSchurInc ha g = (Matrix.of …, …, …, …)` first (`rw [frameToSchurInc]` then the trans/prodCongr/
+  `roleReorderLE.toFun` reduce — `roleReorderLE` is an anonymous `where`-`LinearEquiv`, so `show` its
+  `toFun` p-form directly rather than relying on `LinearEquiv.coe_mk`), THEN go entrywise. Same pattern for
+  the `eIn` slot-0 reduction (`hg : (eIn δ).1 = frameToSchurInc ha (fun a => δ (chartIdxEquiv.symm ⟨0,inl a⟩))`).
+- The J-blocks (2)-(4) are STRICTLY HARDER than `eIn_projV0`: each needs `eIn.symm` reduction (same
+  combinator friction) PLUS the `fderiv BparamsLeaf` computation. Build the eval tooling +
+  `eIn_projV0` FIRST (validates eIn), then the J-blocks reuse it.
+
 ### (2)-(4) `eihdT_J00` / `eihdT_J01` / `eihdT_J11` — the block facts
 Each computes `eihdT (v0,(0,())).i` or `(0,(v1,())).i` where `eihdT = eihdOut ∘ Dtot ∘ eIn.symm`. Route
 (Codex): `eIn.symm (v0,(0,()))` writes the V0 (frame) data back through `chartIdxEquiv.symm`; `Dtot`
