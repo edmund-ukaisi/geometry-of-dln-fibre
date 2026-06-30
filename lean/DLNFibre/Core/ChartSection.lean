@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.SchurChartIff
+import DLNFibre.Core.RingTheory.Determinantal.Schur
 import DLNFibre.Core.SchurGauge
 import DLNFibre.Core.DeterminantalBaseElimination
 

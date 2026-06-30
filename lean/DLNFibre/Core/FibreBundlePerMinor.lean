@@ -1,8 +1,8 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.RankMinorCover
-import DLNFibre.Core.DeterminantalChart
+import DLNFibre.Core.RingTheory.Determinantal.Strata
+import DLNFibre.Core.RingTheory.Determinantal.Schur
 
 /-!
 # `DLNFibre.Core.FibreBundlePerMinor` — the per-minor pivot chart family + the cover (B3-1, B3-2)
@@ -14,7 +14,8 @@ Thread 11 (`Core.FibreBundleReduced`) landed **single-chart** triviality: the ch
 This module builds it, at the level of the **base matrix space** `Mat_{p×q}` (the target of the
 multiplication map), to the honest scope the brief sets:
 
-- **B3-2 — the open cover (PROVED, the headline).** `Core.RankMinorCover` supplies the missing
+- **B3-2 — the open cover (PROVED, the headline).** `Matrix` (`RingTheory.Determinantal.Strata`)
+  supplies the missing
   determinantal-rank existence fact: a rank-`r` matrix has **some** invertible `r × r` minor
   (`exists_invertible_minor_of_rank`). Hence the det-open family `{minorChart s t}` over the pivot
   positions `(s, t)` is a genuine open cover of `Mat^{=r} = {M | M.rank = r}`
@@ -22,7 +23,7 @@ multiplication map), to the honest scope the brief sets:
 
 - **B3-1 — the per-minor chart family as reindexings of the top-left chart (PROVED).** For each
   pivot `(s, t)` (injective row/column selectors) the chart at `(s, t)` is the **top-left** pivot
-  chart `Core.pivotRankChart` of the matrix **reindexed** so the `(s, t)` minor sits in the
+  chart `Matrix.pivotRankChart` of the matrix **reindexed** so the `(s, t)` minor sits in the
   top-left block: a coordinate permutation of `Mat_{p×q}` (`perMinorRowEquiv` / `perMinorColEquiv`,
   built from `Equiv.ofInjective` + `Equiv.Set.sumCompl`) carries the `(s, t)` minor to `toBlocks₁₁`
   (`submatrix_det_eq_toBlocks₁₁_det_reindex`) and preserves rank (`Matrix.rank_reindex`). So each
@@ -94,7 +95,7 @@ theorem isUnit_submatrix_det_iff_toBlocks₁₁ (M : Matrix (Fin p) (Fin q) k)
 
 /-! ## The per-minor chart reduces to the top-left pivot chart
 
-The `Core.pivotRankChart` reuse pins the matrix entry field to `Type` (universe `0`): its block
+The `Matrix.pivotRankChart` reuse pins the matrix entry field to `Type` (universe `0`): its block
 index types must live in the same universe as `k`, and the per-minor block types are `Fin r` and the
 complement subtypes `↥(range s)ᶜ ⊆ Fin p`, all in `Type 0`. The DLN application (`k = ℂ`) is in
 `Type 0`, so this monomorphic restriction is harmless. -/
@@ -106,7 +107,7 @@ variable {k : Type} [Field k] {p q r : ℕ}
 /-- **B3-1 — the per-minor chart is the top-left pivot chart of the reindexed matrix.** For a pivot
 position `(s, t)` (injective row/column selectors), a matrix `M` lies in the rank-`r` locus and its
 `(s, t)` minor is invertible **iff** the matrix reindexed so the selected rows/columns come first
-lies in the top-left pivot chart `Core.pivotRankChart` (over the block index types `Fin r` /
+lies in the top-left pivot chart `Matrix.pivotRankChart` (over the block index types `Fin r` /
 `↥(range s)ᶜ` / `↥(range t)ᶜ`). The coordinate permutation `reindex perMinorEquiv.symm` preserves
 rank (`Matrix.rank_reindex`) and carries the `(s, t)` minor to the top-left block
 (`submatrix_eq_toBlocks₁₁_reindex`). This realizes every per-minor chart as the single built
@@ -135,7 +136,7 @@ noncomputable def minorChartReindexEquiv (s : Fin r → Fin p) (hs : Function.In
 
 /-- **B3-1 headline — the explicit per-minor Schur parametrization.** Every per-minor pivot chart
 `{M | M.rank = r ∧ the (s,t) minor is invertible}` is, via the coordinate-permutation reindex
-followed by the top-left Schur parametrization (`Core.pivotRankChartEquiv`), in explicit bijection
+followed by the top-left Schur parametrization (`Matrix.pivotRankChartEquiv`), in explicit bijection
 with `GL_r × Mat × Mat`: the chart is freely parametrized by an invertible `r × r` pivot block and
 two off-diagonal blocks, the fourth block being Schur-forced. This is the per-minor analogue of the
 single top-left chart — a genuine chart for **each** pivot position `(s, t)`, all of them realized

@@ -4,6 +4,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 import DLNFibre.Core.FibreChartConjugation
 import DLNFibre.Core.FibreBundleTransition
 import DLNFibre.Core.Matrix.RankMinors
+import DLNFibre.Core.RingTheory.Determinantal.Strata
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 
 /-!
@@ -32,7 +33,7 @@ instantiated at `R = sweepSigmaRing`, `f = chartDsigAt s t`, `g = chartDsigAt s'
   `sweepSigmaRing` — the genuine transition `AlgEquiv` on the double overlap `D(g_I · g_J)`, with
   the pairwise cocycle laws it exposes (`_commutes`, `_symm`, `_trans_symm`) from the banked thread-19
   engine (localization initiality). The triple-overlap cocycle is available abstractly as
-  `FibreBundleTransition.awayTriple_cocycle`, but is NOT exposed as a field of the atlas below.
+  `Localization.awayTriple_cocycle`, but is NOT exposed as a field of the atlas below.
 
 ## Scope (honest) — the per-pivot local-product atlas over the rank-`r` open
 
@@ -90,7 +91,7 @@ NOT the rank-tie (landed via S1).
 
 namespace DLNFibre.Core
 
-open MvPolynomial Matrix
+open MvPolynomial Matrix Localization
 
 universe u
 
@@ -552,7 +553,7 @@ pairwise base-side overlap data** — a `LocalTrivializationDatum` at every pivo
 base-side overlap transition with its pairwise laws (round-trip + base-normalization +
 overlap-restriction), and the cancellation that the transitions factor through the base gauges. It
 does **NOT** bundle a coherent (triple-overlap) *trivialization* cocycle — only the pairwise base-side
-data; the abstract triple-overlap cocycle is `FibreBundleTransition.awayTriple_cocycle`, not a field
+data; the abstract triple-overlap cocycle is `Localization.awayTriple_cocycle`, not a field
 here. Assembled and machine-checked. -/
 
 open scoped TensorProduct in
@@ -703,7 +704,7 @@ assembled (`pivotLocalProductAtlas`).
 
 **Deliberately NOT named `locallyTrivial`** (reviewer + Codex, decorrelated): the genuine content is
 the per-pivot trivializations + the pairwise base-side overlap data (NOT a bundled triple cocycle — the
-triple-overlap cocycle is the abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here),
+triple-overlap cocycle is the abstract `Localization.awayTriple_cocycle`, not a field here),
 but the *fixed-target* overlap gluing (R1 `targetOverlapTransition`) and the over-base `SchurLoc`-linear
 structure are not assembled into THIS atlas object. (Projection compatibility is now CLOSED, separately,
 in `Core.FibreProjectionCompat` (R5); it is not a residual.) (The prime-level identity `rankROpen = {rank = r}` IS now formalized — as a set-of-primes
@@ -719,7 +720,7 @@ per-pivot charts, the per-pivot trivializations into the standard fibre `SchurLo
 and the pairwise base-side overlap data on overlaps — all genuinely assembled and
 machine-checked. **Not** named `locallyTrivial`: the genuine content is the trivializations + the
 pairwise base-side overlap data (not a bundled triple cocycle — the triple-overlap cocycle is the
-abstract `FibreBundleTransition.awayTriple_cocycle`, not a field here); the fixed-target overlap gluing
+abstract `Localization.awayTriple_cocycle`, not a field here); the fixed-target overlap gluing
 (R1) and the over-base `SchurLoc`-linear structure are not assembled into THIS object (projection
 compatibility is CLOSED, separately, in `Core.FibreProjectionCompat`, R5 — not a residual).
 (Its identity with `{rank = r}` is now formalized as a set-of-primes identity — S1

@@ -1,6 +1,7 @@
 import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.SigmaStratification
+import DLNFibre.Core.RingTheory.Determinantal.Dimension
 
 /-!
 # `DLNFibre.Core.DeterminantalStratumDim` — the determinantal-stratum dimension (AG rung 1)
@@ -225,7 +226,13 @@ determinantal variety `Mat^{rk ≤ r}_{m × n}` (encoded as the `N = 1` product-
 
 Proof: the catenary bridge `codim + dim = card = m·n` (primality, Brick 1) with the LANDED codim
 `codim = cCodim ![n,m] r` (Brick 2) and its value `(n − r)(m − r)` (Brick 3), then
-`m·n − (n − r)(m − r) = r(n + m − r)`. -/
+`m·n − (n − r)(m − r) = r(n + m − r)` (`Matrix.rankStratumCodim_add_rankStratumDim_eq`).
+
+**Proved, not cited.** The load-bearing codimension input is "Brick A"
+(`codimRepCanonical_productRankLocusLE_eq_cCodim_enat`, `Core.SigmaCodim`), which is **Proved here,
+zero-cited** — the determinantal codimension is re-derived from the quiver-orbit codimension engine,
+not taken from Eagon–Northcott / Bruns–Vetter. This dimension is therefore an unconditional theorem;
+nothing in its chain is `axiom`/`cited`. -/
 theorem varietyDim_productRankLocusLE_stratum [IsAlgClosed k] [CharZero k] (n m r : ℕ)
     (hn : r ≤ n) (hm : r ≤ m) :
     varietyDim (canonicalCoord (dStratum n m) '' productRankLocusLE (k := k) (dStratum n m) r)
@@ -247,13 +254,12 @@ theorem varietyDim_productRankLocusLE_stratum [IsAlgClosed k] [CharZero k] (n m 
     rw [card_repCoord_stratum]
   rw [hcodim, hcard] at hbridge
   -- `hbridge : (n−r)(m−r) + varietyDim Z = m·n`
-  -- arithmetic: `(n−r)(m−r) + r(n+m−r) = m·n` (over `ℕ`, with `r ≤ n`, `r ≤ m`)
+  -- arithmetic: `(n−r)(m−r) + r(n+m−r) = m·n` — the general "codim + dim = ambient" identity
+  -- (`Matrix.rankStratumCodim_add_rankStratumDim_eq`, the matrix-general dimension content,
+  -- `Core.RingTheory.Determinantal.Dimension`), with the ambient `n·m` commuted to `m·n`.
   have harith : (n - r) * (m - r) + r * (n + m - r) = m * n := by
-    obtain ⟨a, rfl⟩ := Nat.le.dest hn
-    obtain ⟨b, rfl⟩ := Nat.le.dest hm
-    simp only [Nat.add_sub_cancel_left]
-    have : r + a + (r + b) - r = r + a + b := by omega
-    rw [this]; ring
+    have h := Matrix.rankStratumCodim_add_rankStratumDim_eq r n m hn hm
+    simpa only [Matrix.rankStratumCodim_def, Matrix.rankStratumDim_def, Nat.mul_comm] using h
   -- so the two `ℕ∞` sums agree; cancel the finite left summand `(n−r)(m−r)`
   have heq : (((n - r) * (m - r) : ℕ) : ℕ∞) + varietyDim (canonicalCoord (dStratum n m) '' Z)
       = (((n - r) * (m - r) : ℕ) : ℕ∞) + ((r * (n + m - r) : ℕ) : ℕ∞) := by

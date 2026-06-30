@@ -267,6 +267,59 @@ $\operatorname{rlct}=C/2$ (Thm 8.6). The geometric codimension is Bundle 1/2 con
 $\operatorname{rlct}\le\tfrac12\operatorname{codim}$ is **Cited** (Aoyagi / Watanabe) — named as such, never
 folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
 
+### Bundle 4b — generic RLCT foundation (PLANNED programme — tracked, not yet built)
+
+**Status: roadmap only.** Folded in from the `determinantal-atlas` expedition (operator scope call: clean scope
+now, build later). The goal is to retire the current **honesty debt** in Bundle 4: today the payoff leans on an
+**opaque `rlct : Loss → ℝ`** *assumed* to satisfy two inequalities (Watanabe upper + Aoyagi lower). The RLCT
+foundation replaces that assumed function with a **defined** invariant + a clean proved/cited boundary. RLCT is
+**not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`, outside `DLN`.
+
+**Canonical definitions (generic, in `Core`).**
+- **Value, via the integrability threshold** (Lean-friendly; the repo already has `rlctAt` / `rlctAtOn` /
+  `weightedThreshold` to build on): `λ_x(K) = sup { c ≥ 0 : K^{-c} is locally integrable near x }`. Fibre value
+  `λ_Z(K) = inf_{x∈Z} λ_x(K)`.
+- **Full pair, via the local zeta pole** (the honest multiplicity story): `ζ_x(z) = ∫_U K^z φ`, meromorphically
+  continued; `λ_x` = location of the largest pole on the negative real axis, `m_x` = its **order**. `RLCTPair K x
+  = (λ_x, m_x)`. **Honesty point:** `m` is *pole order*, not a combinatorial count — so calling the DLN `θ`
+  (currently `#` top-dim components, Bundle 1) a "multiplicity" requires either a theorem (count = pole order) or
+  a citation. The foundation forces that boundary to be stated.
+- **Ideal / sum-of-squares form:** `λ_x(f_1,…,f_s) = λ_x(Σ fᵢ²)`, with **generator invariance** (same local
+  analytic ideal ⟹ same RLCT), proved for the value via two-sided comparability `C₁ Σfᵢ² ≤ Σgⱼ² ≤ C₂ Σfᵢ²`.
+
+**BUILD (detail-at-scale — real RLCT theorems, far short of re-proving Aoyagi):** germ invariance · bounded-
+positive-unit invariance · two-sided-comparability invariance (value) · smooth-prior/cutoff invariance · local-
+diffeo / analytic-coordinate-change invariance · spectator-variable invariance · sum-of-squares generator
+invariance · the **smooth quadratic block** `λ_0(x_1²+…+x_c²) = c/2` · monomial integrability thresholds · 1-D
+Mellin continuation `∫ t^{az+b} φ(t) dt` · product normal-crossing ζ-continuation + pole formula
+`λ = min_{aᵢ>0} (bᵢ+1)/aᵢ`, `m = #{ i : (bᵢ+1)/aᵢ = λ }` (denominator `2aᵢ` for squared losses) · normal-crossing
+**atlas** theorem (combine finitely many chart certificates; global value = min over charts, global order = max
+attaining, with the noncancellation hypotheses).
+
+**CITE (monuments — quarantined in a small generic `Core/.../RLCT/Cited.lean`):** meromorphic continuation of
+local ζ for arbitrary real-analytic loss · equivalence zeta-pole RLCT ↔ integrability-threshold RLCT ↔
+volume-asymptotic RLCT · general resolution / principalization existence · general pole-order-from-resolution.
+**DLN-specific cites (under `DLNFibre/DLN/RLCT`):** Aoyagi's `λ` computation · Aoyagi's `θ` / pole-order · the
+Watanabe codimension upper bound (if retained as a separate inequality).
+
+**Module split:**
+```text
+Core/Analysis/RLCT/{Basic, Zeta, Integrability, NormalCrossing, Cited}.lean   -- generic foundation
+DLN/RLCT/{AoyagiCited, Payoff}.lean                                            -- DLN cited theorem + transport
+```
+**Honest payoff reading (the boundary, after the lift):** *generic def* `RLCTPair` is zeta-pole data; *generic
+thm/cite* zeta-pole value = integrability threshold where needed; *DLN def* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved*
+`Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` = the Core algebraic codimension; *cited* Aoyagi:
+`RLCTPair(K_B|Z_B) = (codim_ℝ(Z_B)/2, θ_B)`; *therefore* the L&R/Aoyagi formulae.
+
+**Caveat — domain risk:** this is real-analysis (ζ, Mellin, integrability, meromorphic continuation), unlike the
+algebraic-geometry work so far; **Mathlib analysis coverage is the unknown.** Pick this up **recon-first** (map
+coverage + lock the build-vs-cite boundary), and scope the first slice tight — the **value-only integrability
+threshold + the core invariances + the quadratic block `λ=c/2` + axiom retirement** is the headline honesty win;
+defer the zeta-pole *multiplicity* and the full normal-crossing *atlas* (where the analysis monuments cluster).
+Connects to the existing `rlct-runway-target` note (kill-condition: a singular-locus lower bound — the smooth
+locus alone gives only an upper bound).
+
 ## Dependency sketch
 
 ```
