@@ -34,7 +34,11 @@ headline). Standalone, reusable bedrock; consumed as `genm-r1lower`'s `injon-ske
 >   `P i j · q j = q' i · Q i j`: diagonal ⟹ `q = q'`; `i < j` ⟹ `P i j = 0` (lower) ⟹ `Q i j = 0`
 >   (`q' i = q i ≠ 0`); `j < i` ⟹ `Q i j = 0` (upper) ⟹ `P i j = 0` (`q j ≠ 0`). So `P = Q = 1`,
 >   giving `1+L = 1+L'`, `1+U = 1+U'`; extract the coordinate functions on the strict index sets.
-> - **Status.** sorry-free (pending reviewer fidelity check).
+> - **Status.** sorry-free + reviewed. Reviewer verdict (genm-lduinj reviewer, tip `90b668fc`):
+>   FIDELITY PASS · SOUNDNESS PASS (forced `#print axioms` independently re-run → clean three) ·
+>   WIRE PASS (wire-check rebuilt + verified) · card precision honest, no overclaim. Reviewer
+>   independently confirmed `q i ≠ 0` is necessary (kill-condition at `t=2`) and the statement is
+>   non-vacuous (decorrelated Codex concurred).
 
 ## Wire into genm-r1lower atom #1
 
