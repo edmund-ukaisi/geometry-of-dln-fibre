@@ -206,6 +206,68 @@ theorem ringKrullDim_localizationAtPrime_isMaximal_eq
   rw [IsLocalization.AtPrime.ringKrullDim_eq_height m (Localization.AtPrime m)]
   exact height_eq_ringKrullDim_of_isMaximal k n I m
 
+/-! ### `Fintype`-indexed companions (arbitrary finite coordinate index) -/
+
+/-- **Equidimensionality at a closed point, `Fintype`-indexed.** For `A = MvPolynomial σ k ⧸ I` a
+finite-type domain over a field (`σ` finite, `I` prime) and `m` a maximal ideal of `A`,
+`Ideal.height m = ringKrullDim A`. Transported from the `Fin (card σ)` headline
+`height_eq_ringKrullDim_of_isMaximal` through the `renameEquiv` coordinate relabelling and the
+induced quotient algebra equivalence. -/
+theorem height_eq_ringKrullDim_of_isMaximal_fintype
+    {k : Type*} [Field k] {σ : Type*} [Finite σ]
+    (I : Ideal (MvPolynomial σ k)) [I.IsPrime] (m : Ideal (MvPolynomial σ k ⧸ I)) [m.IsMaximal] :
+    (m.height : WithBot ℕ∞) = ringKrullDim (MvPolynomial σ k ⧸ I) := by
+  classical
+  haveI : Fintype σ := Fintype.ofFinite _
+  -- relabel `σ ≃ Fin (card σ)` and transport `I` to a prime `J`
+  set e : MvPolynomial σ k ≃ₐ[k] MvPolynomial (Fin (Fintype.card σ)) k :=
+    MvPolynomial.renameEquiv k (Fintype.equivFin σ) with he
+  set J : Ideal (MvPolynomial (Fin (Fintype.card σ)) k) :=
+    I.map (e : MvPolynomial σ k →+* _) with hJ
+  haveI : J.IsPrime := by rw [hJ]; exact Ideal.map_isPrime_of_equiv e
+  -- the induced quotient algebra equivalence `A ≃ₐ[k] MvPolynomial (Fin _) k ⧸ J`
+  set Φ : (MvPolynomial σ k ⧸ I) ≃ₐ[k] (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) :=
+    Ideal.quotientEquivAlg I J e rfl with hΦ
+  -- transport `m` to a maximal ideal `m'` of the `Fin`-indexed quotient
+  set m' : Ideal (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) :=
+    m.map (Φ.toRingEquiv : (MvPolynomial σ k ⧸ I) ≃+* _) with hm'
+  haveI : m'.IsMaximal := by rw [hm']; infer_instance
+  -- `Fin`-indexed headline, transported back along `Φ` and `e`
+  have hL4d := height_eq_ringKrullDim_of_isMaximal k (Fintype.card σ) J m'
+  rw [hm', show (m.map (Φ.toRingEquiv : (MvPolynomial σ k ⧸ I) ≃+* _))
+      = m.map (Φ : (MvPolynomial σ k ⧸ I) →+* _) from rfl,
+    height_map_algEquiv Φ m, hJ, ringKrullDim_quotient_map_algEquiv e I] at hL4d
+  exact hL4d
+
+/-- **Local ↔ global dimension at a closed point, `Fintype`-indexed.** For
+`A = MvPolynomial σ k ⧸ I` (`σ` finite, `I` prime) and a maximal ideal `m`, the local ring
+`Localization.AtPrime m` has Krull dimension equal to `ringKrullDim A`. `Fintype`-indexed companion
+of `ringKrullDim_localizationAtPrime_isMaximal_eq`, via
+`IsLocalization.AtPrime.ringKrullDim_eq_height` and the equidimensionality
+`height_eq_ringKrullDim_of_isMaximal_fintype`. -/
+theorem ringKrullDim_localizationAtPrime_isMaximal_eq_fintype
+    {k : Type*} [Field k] {σ : Type*} [Finite σ]
+    (I : Ideal (MvPolynomial σ k)) [I.IsPrime] (m : Ideal (MvPolynomial σ k ⧸ I)) [m.IsMaximal] :
+    ringKrullDim (Localization.AtPrime m) = ringKrullDim (MvPolynomial σ k ⧸ I) := by
+  haveI : m.IsPrime := inferInstance
+  rw [IsLocalization.AtPrime.ringKrullDim_eq_height m (Localization.AtPrime m)]
+  exact height_eq_ringKrullDim_of_isMaximal_fintype I m
+
+/-! ### The `k`-rational-residue-field tower step (GAP 2) -/
+
+/-- **`k`-rational residue-field tower step.** If a field `κ` is a `k`-algebra with `κ ≃ₐ[k] k` (a
+`k`-rational residue field), then for any `κ`-module `V` in a `k → κ → V` scalar tower,
+`finrank k V = finrank κ V`: the tower law `finrank k κ · finrank κ V = finrank k V` with
+`finrank k κ = 1` (from `κ ≃ₐ[k] k`). -/
+theorem finrank_eq_finrank_of_residueField_equiv
+    {k : Type*} [Field k] {κ : Type*} [Field κ] [Algebra k κ] (e : κ ≃ₐ[k] k)
+    {V : Type*} [AddCommGroup V] [Module κ V] [Module k V] [IsScalarTower k κ V] :
+    Module.finrank k V = Module.finrank κ V := by
+  haveI : Module.Finite k κ := Module.Finite.of_surjective e.symm.toLinearMap e.symm.surjective
+  have hκ : Module.finrank k κ = 1 := by
+    rw [LinearEquiv.finrank_eq e.toLinearEquiv, Module.finrank_self]
+  rw [← Module.finrank_mul_finrank k κ V, hκ, one_mul]
+
 /-! ### Non-vacuity witnesses -/
 
 /-- Witness for the height-transport brick: the identity on `MvPolynomial (Fin 1) ℚ` is integral and

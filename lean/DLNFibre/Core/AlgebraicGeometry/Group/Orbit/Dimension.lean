@@ -1,20 +1,49 @@
 import DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Basic
 import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.Dimension.Codimension
+import DLNFibre.Core.Dimension.AffineDomain
+import DLNFibre.Core.Dimension.Regular
+import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 
 /-!
-# `DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Dimension` — the `varietyDim = trdeg` anchor (A4.1)
+# `Orbit.Dimension` — the `varietyDim = trdeg` anchor (A4.1) + B4 `SmoothCotangentDim`
 
-The squeeze's **lower anchor** on the abstract affine-`G`-variety carrier
-`AlgebraicGeometry.Group.Orbit.AffineGVariety` (`Orbit/Basic.lean`). For an orbit-image variety
-presented as the kernel/range of the coordinate pullback `μ* = aeval fρ`, its dimension is the
-transcendence degree of the orbit coordinate algebra `k[fρ]`:
+The squeeze's **lower anchor** and its **upper cotangent identity** on the abstract
+affine-`G`-variety carrier `AlgebraicGeometry.Group.Orbit.AffineGVariety` (`Orbit/Basic.lean`). For
+an orbit-image variety presented as the kernel/range of the coordinate pullback `μ* = aeval fρ`:
 
-> `varietyDim Z = (trdeg k (μ*.range)).toNat`,  when `vanishingIdeal Z = ker μ*`.
+* **A4.1 anchor** — its dimension is the transcendence degree of the orbit coordinate algebra
+  `k[fρ]`: `varietyDim Z = (trdeg k (μ*.range)).toNat`, when `vanishingIdeal Z = ker μ*`;
+* **B4 `SmoothCotangentDim` (A6.1 second half)** — at a **smooth `k`-rational point** `m` of a
+  finite-type `k`-domain coordinate ring `A = MvPolynomial σ k ⧸ I` (`I` parameterized; for the
+  orbit-image presentation `I = ker μ*`), the Zariski cotangent space `m.Cotangent` has
+  `k`-dimension equal to the variety dimension: `finrank k (m.Cotangent) = varietyDim Z`.
 
-This file holds the **abstract** A4.1 anchor; the DLN matrix-tuple specialisation
-(`ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat`, `Core/AffineNoetherRank.lean`) re-derives
-from it through the orbit↔kernel bridge `vanishingIdeal_range_orbitMap_eq_ker`.
+This file holds the **abstract** A4.1 anchor + B4; the DLN matrix-tuple specialisations re-derive
+from them through the orbit↔kernel bridge `vanishingIdeal_range_orbitMap_eq_ker` (A4.1:
+`ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat`, `Core/AffineNoetherRank.lean`; B4: R6
+`finrank_cotangent_eq_varietyDim`, `Core/OrbitTangentCotangent.lean`).
+
+## B4 — the smooth-point cotangent identity (A6.1 second half), name = content
+
+B4 lifts R6 onto the carrier. The hypotheses are the **point's** smoothness and `k`-rationality, NOT
+a smooth-point *existence* claim — the existence (the M3 generic-smoothness density argument: a
+dense `k`-orbit meets the open smooth locus, giving a genuinely `k`-rational smooth point over a
+possibly non-algebraically-closed `k`) is the concrete model's burden, discharged in the DLN
+instance, never a hypothesis of B4. The pinned hypothesis bundle:
+
+* `[Finite σ]` — `A` is a finite-type `k`-algebra (needed by M3 + the affine-domain dimension);
+* `[PerfectField k]` — M3's residue-field formal smoothness (no algebraic closedness; `ℝ` ok);
+* `m` maximal with `[Algebra.IsSmoothAt k m]` — the point IS smooth;
+* `hrat : Ideal.ResidueField m ≃ₐ[k] k` — the point IS `k`-rational (residue field is `k`);
+* `hZ : vanishingIdeal Z = I` — the A0 bridge linking `varietyDim Z` to `ringKrullDim A`.
+
+The route is the R6 chain stated abstractly: L2a localization collapse
+(`Ideal.finrank_cotangentSpace_localization_eq_cotangent`), the κ/k bridge
+(`finrank_eq_finrank_of_residueField_equiv`, GAP2), M3
+(`finrank_cotangentSpace_eq_of_isSmoothAt` at a smooth point), GAP3
+(`ringKrullDim_localizationAtPrime_isMaximal_eq_fintype`), and `varietyDim Z = ringKrullDim A` (the
+A0 bridge + the `varietyDim` definition). All bricks are DLN-free Phase-1 dimension facts.
 
 ## What enters where (name = content)
 
@@ -41,7 +70,7 @@ mirrors that target (bare `AlgebraicGeometry.Group.Orbit`) so the lift is a file
 
 namespace AlgebraicGeometry.Group.Orbit
 
-open MvPolynomial DLNFibre.Core.Dimension
+open MvPolynomial Module DLNFibre.Core.Dimension
 
 namespace AffineGVariety
 
@@ -94,5 +123,85 @@ theorem varietyDim_eq_trdeg_of_eq_ker [Finite G.ρ] {Z : Set (G.ρ → k)}
   exact WithBot.unbotD_coe 0 _
 
 end AffineGVariety
+
+variable {k : Type u} [Field k]
+
+/-! ## B4 — the smooth-point cotangent identity (A6.1 second half) -/
+
+/-- **B4 — `SmoothCotangentDim` (A6.1 second half), abstract.** At a **smooth `k`-rational point**
+`m` of a finite-type `k`-domain coordinate ring `A = MvPolynomial σ k ⧸ I` (`σ` finite, `I` prime —
+the orbit-image presentation ideal), the Zariski cotangent space `m.Cotangent` has `k`-dimension
+equal to the variety dimension of any point set `Z` whose vanishing ideal is `I`:
+`finrank k (m.Cotangent) = varietyDim Z`.
+
+The hypotheses are the **point's** properties — `m` smooth (`[Algebra.IsSmoothAt k m]`) and
+`k`-rational (`hrat : Ideal.ResidueField m ≃ₐ[k] k`) — NOT a smooth-point *existence* claim; the
+existence (M3 generic-smoothness density: a dense `k`-orbit meets the open smooth locus, yielding a
+genuinely `k`-rational smooth point over a possibly non-algebraically-closed `k`) is the concrete
+model's burden, discharged in the DLN instance (`isSmoothAt_normalFormIdeal` +
+`residueFieldAtPrimeNormalFormEquiv`), never a hypothesis here.
+
+`I` is **parameterized** (not hard-wired to `ker μ*`): like B3's `InfinitesimalAction`, this lets
+the concrete model instantiate `I = orbitIdeal M` and re-derive R6 `finrank_cotangent_eq_varietyDim`
+**definitionally** (no quotient/cotangent transport). For the carrier orbit-image presentation
+`I = ker G.pullback`, the A0 bridge `hZ` reads `vanishingIdeal Z = ker μ*` (`P2.3`'s anchor uses the
+same input).
+
+Route (R6 stated abstractly): `varietyDim Z =[A0 bridge `hZ` + def] ringKrullDim A` (a finite nat
+`n`); `=[GAP3] ringKrullDim (AtPrime m)`; `=[M3, smooth point] finrank κ (CotangentSpace m)`;
+`=[GAP2, `k`-rational residue field] finrank k (CotangentSpace m)`; `=[L2a localization
+collapse] finrank k (m.Cotangent)`. All DLN-free Phase-1 dimension facts. Char carried via
+`[PerfectField k]` (M3). -/
+theorem finrank_cotangent_eq_varietyDim [PerfectField k] {σ : Type*} [Finite σ]
+    (I : Ideal (MvPolynomial σ k)) [hI : I.IsPrime]
+    (m : Ideal (MvPolynomial σ k ⧸ I)) [hm : m.IsMaximal] [Algebra.IsSmoothAt k m]
+    (hrat : Ideal.ResidueField m ≃ₐ[k] k)
+    {Z : Set (σ → k)} (hZ : MvPolynomial.vanishingIdeal k Z = I) :
+    (finrank k (m.Cotangent) : ℕ∞) = varietyDim Z := by
+  classical
+  haveI : Fintype σ := Fintype.ofFinite _
+  haveI : m.IsPrime := hm.isPrime
+  haveI : IsDomain (MvPolynomial σ k ⧸ I) := Ideal.Quotient.isDomain I
+  haveI : Algebra.FiniteType k (MvPolynomial σ k ⧸ I) :=
+    Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k I) (Ideal.Quotient.mkₐ_surjective k I)
+  -- `varietyDim Z = ringKrullDim A` as a finite nat `n`
+  have hge : (0 : WithBot ℕ∞) ≤ ringKrullDim (MvPolynomial σ k ⧸ I) :=
+    ringKrullDim_nonneg_of_nontrivial
+  have hle : ringKrullDim (MvPolynomial σ k ⧸ I) ≤ (Nat.card σ : WithBot ℕ∞) := by
+    refine le_trans (ringKrullDim_quotient_le I) ?_
+    rw [ringKrullDim_mvPolynomial_finite]
+  have hbot : ringKrullDim (MvPolynomial σ k ⧸ I) ≠ ⊥ := by
+    intro h; rw [h] at hge; simp at hge
+  have hcardlt : (Nat.card σ : WithBot ℕ∞) < (⊤ : WithBot ℕ∞) := compareOfLessAndEq_eq_lt.mp rfl
+  have htop : ringKrullDim (MvPolynomial σ k ⧸ I) ≠ (⊤ : WithBot ℕ∞) :=
+    ne_of_lt (lt_of_le_of_lt hle hcardlt)
+  obtain ⟨w, hw⟩ := WithBot.ne_bot_iff_exists.mp hbot
+  have hwtop : w ≠ ⊤ := fun h ↦ htop (by rw [← hw, h]; rfl)
+  obtain ⟨n, hn⟩ : ∃ n : ℕ, ((n : ℕ∞) : WithBot ℕ∞) = ringKrullDim (MvPolynomial σ k ⧸ I) :=
+    ⟨w.toNat, by rw [ENat.coe_toNat hwtop, hw]⟩
+  have hvar : varietyDim Z = (n : ℕ∞) := by
+    rw [varietyDim, hZ, ← hn, WithBot.unbotD_coe]
+  -- GAP3: localization at the maximal ideal has the same dim
+  have hdimLoc : ringKrullDim (Localization.AtPrime m) = ((n : ℕ∞) : WithBot ℕ∞) := by
+    rw [ringKrullDim_localizationAtPrime_isMaximal_eq_fintype I m, ← hn]
+  -- M3: smooth point ⟹ finrank κ (CotangentSpace) = n
+  have hM3 : finrank (IsLocalRing.ResidueField (Localization.AtPrime m))
+      (IsLocalRing.CotangentSpace (Localization.AtPrime m)) = n :=
+    finrank_cotangentSpace_eq_of_isSmoothAt (k := k) (A := MvPolynomial σ k ⧸ I) m hdimLoc
+  -- κ/k bridge (GAP2): the residue field is `k`-rational
+  haveI : IsScalarTower k (IsLocalRing.ResidueField (Localization.AtPrime m))
+      (IsLocalRing.CotangentSpace (Localization.AtPrime m)) := by
+    refine IsScalarTower.of_algebraMap_smul fun r x ↦ ?_
+    rw [IsScalarTower.algebraMap_apply k (Localization.AtPrime m)
+        (IsLocalRing.ResidueField (Localization.AtPrime m)) r, algebraMap_smul, algebraMap_smul]
+  have hbridge : finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime m))
+      = finrank (IsLocalRing.ResidueField (Localization.AtPrime m))
+        (IsLocalRing.CotangentSpace (Localization.AtPrime m)) :=
+    finrank_eq_finrank_of_residueField_equiv hrat
+  -- L2a collapse: `finrank k (m.Cotangent) = finrank k (CotangentSpace (AtPrime m))`
+  have hcollapse : finrank k (m.Cotangent)
+      = finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime m)) :=
+    (Ideal.finrank_cotangentSpace_localization_eq_cotangent (k := k) m).symm
+  rw [hvar, hcollapse, hbridge, hM3]
 
 end AlgebraicGeometry.Group.Orbit

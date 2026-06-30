@@ -5,6 +5,7 @@ import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.Dimension.AffineDomain
+import DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Dimension
 import Mathlib.Algebra.MvPolynomial.Derivation
 import Mathlib.Algebra.DualNumber
 import Mathlib.Data.Matrix.DualNumber
@@ -50,64 +51,15 @@ theorem card_repCoord_eq_finrank_cochain1 (d : Fin (N + 1) → ℕ) :
   refine Finset.sum_congr rfl fun i _ ↦ ?_
   rw [Fintype.card_prod, Fintype.card_fin, Fintype.card_fin]
 
-/-! ## GAP 3 — L4d over a `Fintype` index (equidimensionality at the orbit point) -/
+/-! ## GAP 2/3 dimension bridges — re-homed to the dimension stack
 
-/-- **GAP 3 — equidimensionality at a closed point, `Fintype`-indexed.** For `A = MvPolynomial σ k ⧸ I`
-a finite-type domain over a field (`σ` finite, `I` prime) and `m` a maximal ideal of `A`,
-`m.height = ringKrullDim A`. Transported from the `Fin (card σ)` headline
-`height_eq_ringKrullDim_of_isMaximal` (L4d) through the `renameEquiv` coordinate relabelling and the
-induced quotient algebra equivalence. -/
-theorem height_eq_ringKrullDim_of_isMaximal_fintype {σ : Type*} [Finite σ]
-    (I : Ideal (MvPolynomial σ k)) [I.IsPrime] (m : Ideal (MvPolynomial σ k ⧸ I)) [m.IsMaximal] :
-    (m.height : WithBot ℕ∞) = ringKrullDim (MvPolynomial σ k ⧸ I) := by
-  classical
-  haveI : Fintype σ := Fintype.ofFinite _
-  -- relabel `σ ≃ Fin (card σ)` and transport `I` to a prime `J`
-  set e : MvPolynomial σ k ≃ₐ[k] MvPolynomial (Fin (Fintype.card σ)) k :=
-    MvPolynomial.renameEquiv k (Fintype.equivFin σ) with he
-  set J : Ideal (MvPolynomial (Fin (Fintype.card σ)) k) :=
-    I.map (e : MvPolynomial σ k →+* _) with hJ
-  haveI : J.IsPrime := by rw [hJ]; exact Ideal.map_isPrime_of_equiv e
-  -- the induced quotient algebra equivalence `A ≃ₐ[k] MvPolynomial (Fin _) k ⧸ J`
-  set Φ : (MvPolynomial σ k ⧸ I) ≃ₐ[k] (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) :=
-    Ideal.quotientEquivAlg I J e rfl with hΦ
-  -- transport `m` to a maximal ideal `m'` of the `Fin`-indexed quotient
-  set m' : Ideal (MvPolynomial (Fin (Fintype.card σ)) k ⧸ J) :=
-    m.map (Φ.toRingEquiv : (MvPolynomial σ k ⧸ I) ≃+* _) with hm'
-  haveI : m'.IsMaximal := by rw [hm']; infer_instance
-  -- L4d on the `Fin`-indexed side, transported back along `Φ` and `e`
-  have hL4d := height_eq_ringKrullDim_of_isMaximal k (Fintype.card σ) J m'
-  rw [hm', show (m.map (Φ.toRingEquiv : (MvPolynomial σ k ⧸ I) ≃+* _))
-      = m.map (Φ : (MvPolynomial σ k ⧸ I) →+* _) from rfl,
-    height_map_algEquiv Φ m, hJ, ringKrullDim_quotient_map_algEquiv e I] at hL4d
-  exact hL4d
+The DLN-free equidimensionality + κ/k tower facts behind R6 now live in `Core.Dimension.AffineDomain`
+(`height_eq_ringKrullDim_of_isMaximal_fintype`, `ringKrullDim_localizationAtPrime_isMaximal_eq_fintype`,
+`finrank_eq_finrank_of_residueField_equiv`), consumed here (and by `FibreDimFibration`/`FibreSmoothBlock`)
+through the `open DLNFibre.Core.Dimension`. Only the DLN-specific `k`-rationality witness
+`residueFieldAtPrimeNormalFormEquiv` stays below. -/
 
-/-- **GAP 3 — local ↔ global dimension at the orbit normal-form point.** For the orbit ring
-`A = MvPolynomial σ k ⧸ I` (`σ` finite, `I` prime) and a maximal ideal `m`, the local ring
-`Localization.AtPrime m` has Krull dimension equal to `ringKrullDim A`. `Fintype`-indexed companion of
-L4d's `ringKrullDim_localizationAtPrime_isMaximal_eq`, via `IsLocalization.AtPrime.ringKrullDim_eq_height`
-and the equidimensionality `height_eq_ringKrullDim_of_isMaximal_fintype`. -/
-theorem ringKrullDim_localizationAtPrime_isMaximal_eq_fintype {σ : Type*} [Finite σ]
-    (I : Ideal (MvPolynomial σ k)) [I.IsPrime] (m : Ideal (MvPolynomial σ k ⧸ I)) [m.IsMaximal] :
-    ringKrullDim (Localization.AtPrime m) = ringKrullDim (MvPolynomial σ k ⧸ I) := by
-  haveI : m.IsPrime := inferInstance
-  rw [IsLocalization.AtPrime.ringKrullDim_eq_height m (Localization.AtPrime m)]
-  exact height_eq_ringKrullDim_of_isMaximal_fintype I m
-
-/-! ## GAP 2 — the κ/k base-ring bridge (`finrank k V = finrank κ V` for `κ ≃ₐ[k] k`) -/
-
-/-- **GAP 2 (general tower step).** If a field `κ` is a `k`-algebra with `κ ≃ₐ[k] k` (a `k`-rational
-residue field), then for any `κ`-module `V` in a `k → κ → V` scalar tower, `finrank k V = finrank κ V`:
-the tower law `finrank k κ · finrank κ V = finrank k V` with `finrank k κ = 1` (from `κ ≃ₐ[k] k`). -/
-theorem finrank_eq_finrank_of_residueField_equiv {κ : Type*} [Field κ] [Algebra k κ]
-    (e : κ ≃ₐ[k] k) {V : Type*} [AddCommGroup V] [Module κ V] [Module k V] [IsScalarTower k κ V] :
-    finrank k V = finrank κ V := by
-  haveI : Module.Finite k κ := Module.Finite.of_surjective e.symm.toLinearMap e.symm.surjective
-  have hκ : finrank k κ = 1 := by
-    rw [LinearEquiv.finrank_eq e.toLinearEquiv, finrank_self]
-  rw [← Module.finrank_mul_finrank k κ V, hκ, one_mul]
-
-/-- **GAP 2 (the orbit residue field is `k`).** `Ideal.ResidueField (normalFormIdeal M) ≃ₐ[k] k`: the
+/-- **The orbit residue field is `k`.** `Ideal.ResidueField (normalFormIdeal M) ≃ₐ[k] k`: the
 normal-form point `M` is `k`-rational, so the residue field at `m_M` is `k`. The quotient
 `orbitRing M ⧸ m_M` is a field (`m_M` maximal); `IsFractionRing.algEquiv` makes it `k`-isomorphic to
 its fraction field `κ(m_M)`, and `residueFieldNormalFormEquiv` identifies it with `k`. -/
@@ -509,78 +461,28 @@ theorem finrank_range_deformationδ_le_finrank_cotangent [PerfectField k] (M : T
     finiteDimensional_cotangent_normalFormIdeal M
   exact (dlnInfinitesimalAction M).finrank_range_δ_le_finrank_cotangent
 
-/-! ## R6 — chain `finrank (m_M.Cotangent)` to `varietyDim Z_M` -/
+/-! ## R6 — `finrank (m_M.Cotangent) = varietyDim Z_M` via the abstract B4 -/
 
-/-- `ringKrullDim (orbitRing M)` is a finite natural number `n`, equal to `varietyDim Z_M`:
-`A = orbitRing M` is a nontrivial finite-type domain over `k`, with `ringKrullDim` bounded by the
-ambient `ringKrullDim (MvPolynomial (RepCoord d) k) = card < ⊤` and `≥ 0` (nontrivial). Carries
-`[PerfectField k]` (explicit) `[Infinite k]` (from the section). -/
-theorem exists_ringKrullDim_orbitRing_eq [PerfectField k] (M : Tuple (k := k) d) :
-    ∃ n : ℕ, ringKrullDim (orbitRing M) = (n : WithBot ℕ∞)
-      ∧ varietyDim (canonicalCoord d '' orbitRankLocus M) = (n : ℕ∞) := by
-  haveI : Nontrivial (orbitRing M) := inferInstance
-  -- `0 ≤ dim A ≤ card` so `dim A` is a finite nat
-  have hge : (0 : WithBot ℕ∞) ≤ ringKrullDim (orbitRing M) :=
-    ringKrullDim_nonneg_of_nontrivial
-  have hle : ringKrullDim (orbitRing M) ≤ (Nat.card (RepCoord d) : WithBot ℕ∞) := by
-    refine le_trans (ringKrullDim_quotient_le (orbitIdeal M)) ?_
-    rw [ringKrullDim_mvPolynomial_finite]
-  -- `varietyDim Z_M = (ringKrullDim (orbitRing M)).unbotD 0` (L6.4 + `varietyDim` def)
-  have hvar : varietyDim (canonicalCoord d '' orbitRankLocus M)
-      = (ringKrullDim (orbitRing M)).unbotD 0 := by
-    rw [varietyDim, vanishingIdeal_orbitRankLocus_eq_orbitSet M]; rfl
-  -- extract the nat value `n` of `dim A` (finite: `0 ≤ dim A ≤ card`)
-  have hbot : ringKrullDim (orbitRing M) ≠ ⊥ := by
-    intro h; rw [h] at hge; simp at hge
-  have hcardlt : (Nat.card (RepCoord d) : WithBot ℕ∞) < (⊤ : WithBot ℕ∞) :=
-    compareOfLessAndEq_eq_lt.mp rfl
-  have htop : ringKrullDim (orbitRing M) ≠ (⊤ : WithBot ℕ∞) :=
-    ne_of_lt (lt_of_le_of_lt hle hcardlt)
-  -- a `WithBot ℕ∞` that is neither `⊥` nor `⊤` is a finite nat
-  obtain ⟨m, hm⟩ := WithBot.ne_bot_iff_exists.mp hbot
-  have hmtop : m ≠ ⊤ := fun h ↦ htop (by rw [← hm, h]; rfl)
-  have hmcast : ((m.toNat : ℕ∞) : WithBot ℕ∞) = ringKrullDim (orbitRing M) := by
-    rw [ENat.coe_toNat hmtop, hm]
-  refine ⟨m.toNat, hmcast.symm, ?_⟩
-  rw [hvar, ← hmcast, WithBot.unbotD_coe]
-
-/-- **R6 — `finrank k (m_M.Cotangent) = varietyDim Z_M`.** The cotangent finrank equals the variety
-dimension: L2a localization collapse (`m_M.Cotangent ≃ CotangentSpace (AtPrime m_M)` in `k`-finrank),
-the κ/k bridge (GAP2), M3 (smooth point: `finrank κ (CotangentSpace) = ringKrullDim (AtPrime m_M)`),
-GAP3 (`ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M)`), and `varietyDim Z_M =
-ringKrullDim (orbitRing M)` (L6.4). Carries `[PerfectField k]` (explicit) `[Infinite k]`
-(from the section). -/
+/-- **R6 — `finrank k (m_M.Cotangent) = varietyDim Z_M`** (the cotangent finrank equals the variety
+dimension), now a transport of the **abstract B4**
+(`AlgebraicGeometry.Group.Orbit.finrank_cotangent_eq_varietyDim`,
+`Core/AlgebraicGeometry/Group/Orbit/Dimension.lean`) at the DLN instance: `σ = RepCoord d`,
+`I = orbitIdeal M`, `m = normalFormIdeal M` (a maximal ideal of `orbitRing M = MvPolynomial (RepCoord
+d) k ⧸ orbitIdeal M`, definitionally). The abstract B4 chains L2a localization collapse + the κ/k
+bridge (GAP2) + M3 (smooth point) + GAP3 + `varietyDim = ringKrullDim`; the DLN instance supplies its
+**point** hypotheses — smoothness (`isSmoothAt_normalFormIdeal`, the M3 generic-smoothness density),
+`k`-rationality (`residueFieldAtPrimeNormalFormEquiv`, the orbit point is a genuine `k`-point) — and
+the A0 bridge `vanishingIdeal Z_M = orbitIdeal M` (`vanishingIdeal_orbitRankLocus_eq_orbitSet`).
+Carries `[PerfectField k]` (explicit) `[Infinite k]` (from the section). -/
 theorem finrank_cotangent_eq_varietyDim [PerfectField k] (M : Tuple (k := k) d) :
     (finrank k ((normalFormIdeal M).Cotangent) : ℕ∞)
       = varietyDim (canonicalCoord d '' orbitRankLocus M) := by
-  haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
   haveI : (orbitIdeal M).IsPrime := isPrime_vanishingIdeal_orbitSet M
+  haveI : (normalFormIdeal M).IsMaximal := orbitPointIdeal_isMaximal M 1
   haveI : Algebra.IsSmoothAt k (normalFormIdeal M) := isSmoothAt_normalFormIdeal (k := k) M
-  obtain ⟨n, hdimA, hvar⟩ := exists_ringKrullDim_orbitRing_eq M
-  -- GAP3: `ringKrullDim (AtPrime m_M) = ringKrullDim (orbitRing M) = n`
-  have hdimLoc : ringKrullDim (Localization.AtPrime (normalFormIdeal M)) = (n : WithBot ℕ∞) := by
-    rw [ringKrullDim_localizationAtPrime_isMaximal_eq_fintype (orbitIdeal M) (normalFormIdeal M),
-      hdimA]
-  -- M3: `finrank κ (CotangentSpace (AtPrime m_M)) = n`
-  have hM3 : finrank (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
-      (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) = n :=
-    finrank_cotangentSpace_eq_of_isSmoothAt (k := k) (A := orbitRing M) (normalFormIdeal M) hdimLoc
-  -- κ/k bridge (GAP2): `finrank k (CotangentSpace) = finrank κ (CotangentSpace)`
-  haveI : IsScalarTower k (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
-      (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) := by
-    refine IsScalarTower.of_algebraMap_smul fun r x ↦ ?_
-    rw [IsScalarTower.algebraMap_apply k (Localization.AtPrime (normalFormIdeal M))
-        (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M))) r,
-      algebraMap_smul, algebraMap_smul]
-  have hbridge : finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M)))
-      = finrank (IsLocalRing.ResidueField (Localization.AtPrime (normalFormIdeal M)))
-        (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) :=
-    finrank_eq_finrank_of_residueField_equiv (residueFieldAtPrimeNormalFormEquiv M)
-  -- L2a collapse: `finrank k (m_M.Cotangent) = finrank k (CotangentSpace (AtPrime m_M))`
-  have hcollapse : finrank k ((normalFormIdeal M).Cotangent)
-      = finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime (normalFormIdeal M))) :=
-    (Ideal.finrank_cotangentSpace_localization_eq_cotangent (k := k) (normalFormIdeal M)).symm
-  rw [hcollapse, hbridge, hM3, hvar]
+  exact AlgebraicGeometry.Group.Orbit.finrank_cotangent_eq_varietyDim (orbitIdeal M)
+    (normalFormIdeal M) (residueFieldAtPrimeNormalFormEquiv M)
+    (vanishingIdeal_orbitRankLocus_eq_orbitSet M)
 
 /-! ## The A6.1 headline — `finrank (range δ⁰) ≤ varietyDim Z_M` -/
 
