@@ -21,6 +21,57 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta compatible source right inverse
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-compatible-source-right-inverse.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-compatible-source-right-inverse.md`.
+Review:
+`review-a2-case2-passive-theta-compatible-source-right-inverse.md`, PASS by
+xhigh read-only checker `Confucius` after a documentation-only correction to
+name the ambient open partial homeomorphism `right_inv'`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaEndpointSourceChart_readback_eq_and_rightInverse_of_sourceReadback_eq_retainedData
+```
+
+The theorem packages the honest local chart boundary.  If a source edge family
+`X` is already in the retained-passive determinant source chart, and if its
+recursive `sourceReadback` equals the selected Case 2 passive-theta endpoint
+retained data while the selected-entry inverse readout equals `theta.yNext`,
+then the concrete passive-theta source readback recovers `theta` and the
+concrete passive-theta source chart maps `theta` back to `X`.
+
+This uses the existing concrete readback lemma plus the retained-passive
+determinant-source `OpenPartialHomeomorph.right_inv'`.  It does not derive the
+compatibility hypotheses from source-rank membership.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probe for the new theorem reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, source-image equality, exact-rank
+openness, canonical blow-up-center lift, source-prior comparison or transport,
+Haar transport, normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta source-image source-rank support
 
 Reproduction:

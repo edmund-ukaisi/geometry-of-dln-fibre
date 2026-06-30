@@ -6,6 +6,70 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Compatible Source Right Inverse - 2026-06-30
+
+After three xhigh scouts checked the post-source-rank-support frontier, the
+controller rejected the overbroad Target A reading
+
+```text
+source-rank local neighborhood subset sourceChart image.
+```
+
+Source-rank membership alone does not provide determinant-chart membership,
+selected-entry/pivot compatibility, or a canonical lift through the blow-up
+center.  The honest chart-local theorem is now Lean-proved:
+
+```text
+case2PassiveThetaEndpointSourceChart_readback_eq_and_rightInverse_of_sourceReadback_eq_retainedData
+```
+
+It says that for a concrete source edge family `X`, if:
+
+```text
+X in paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W2 B2 U0 hU0,
+sourceReadback(edgeMatrixOfReverseEdges X) =
+  case2PassiveThetaEndpointRetainedData ... theta eNext e,
+case2PassiveThetaEndpointInverseReadout ... X = theta.yNext,
+```
+
+then the concrete passive-theta source readback recovers `theta` and the
+concrete passive-theta source chart maps `theta` back to `X`.
+
+Proof inputs: the existing concrete passive-theta readback lemma and the
+retained-passive determinant source chart `OpenPartialHomeomorph.right_inv'`.
+This exposes the real frontier: derive the two compatibility hypotheses from
+source-side data, or else build the external source-prior domination/handoff.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-compatible-source-right-inverse.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-compatible-source-right-inverse.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-compatible-source-right-inverse.md
+```
+
+Xhigh read-only checker `Confucius` returned PASS after a documentation-only
+correction: the statement card now names the ambient open partial
+homeomorphism `right_inv'` actually used by the proof.
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probe for the new theorem reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no source-rank coverage, no source-image equality, no exact-rank
+openness, no canonical blow-up-center lift, no external/original source-prior
+comparison or transport, no determinant-chart or raw-order Haar transport, no
+normal crossings, no pole order, and no RLCT extraction.
+
 ## Latest A2 Case 2 Passive Theta Source-Image Source-Rank Support - 2026-06-30
 
 The local passive-theta source image now has one-way source-rank support under

@@ -443,6 +443,104 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Compatibility-gated two-sided reconstruction for the concrete Case 2
+passive-theta endpoint source chart.
+
+The source edge family must already lie in the retained-passive determinant
+source chart, and its `sourceReadback` and selected-entry inverse readout must
+match the chosen passive-theta endpoint datum.  Under exactly those
+compatibility hypotheses, the concrete passive-theta readback recovers
+`theta`, and the concrete passive-theta source chart maps `theta` back to the
+original source edge family.
+
+This is not a source-rank coverage theorem, source-prior transport theorem,
+Haar transport theorem, normal-crossing statement, pole-order computation, or
+RLCT extraction. -/
+theorem case2PassiveThetaEndpointSourceChart_readback_eq_and_rightInverse_of_sourceReadback_eq_retainedData
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (theta :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hsource :
+      X ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀)
+    (hread :
+      let E :=
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+          (fun p : Fin 2 ↦
+            (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+      sourceReadback
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E =
+        case2PassiveThetaEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e)
+    (hinv :
+      case2PassiveThetaEndpointInverseReadout
+          W₂ B₂ n hS hnext hU₀ eNext e X =
+        theta.yNext) :
+    case2PassiveThetaEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ eNext e X = theta ∧
+      case2PassiveThetaEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e theta = X := by
+  constructor
+  · exact
+      case2PassiveThetaEndpointSourceChartReadback_eq_of_sourceReadback_eq_retainedData
+        W₂ B₂ n hS hcont hnext hU₀ eNext e theta X hread hinv
+  · let E :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+        (fun p : Fin 2 ↦
+          (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+    have hread' :
+        sourceReadback
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E =
+          case2PassiveThetaEndpointRetainedData
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e := by
+      simpa [E] using hread
+    have hright :
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+            (K := ℝ) W₂ B₂ U₀ hU₀
+            (sourceReadback
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E) =
+          X := by
+      simpa [E] using
+        (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_openPartialHomeomorph
+          (K := ℝ) W₂ B₂ U₀ hU₀).right_inv' hsource
+    change
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          (K := ℝ) W₂ B₂ U₀ hU₀
+          (case2PassiveThetaEndpointRetainedData
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e) = X
+    rw [← hread']
+    exact hright
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The generic passive selected-entry source-measure theorem, specialized to
 the concrete full `Case2PassiveTheta` coordinate domain.
 

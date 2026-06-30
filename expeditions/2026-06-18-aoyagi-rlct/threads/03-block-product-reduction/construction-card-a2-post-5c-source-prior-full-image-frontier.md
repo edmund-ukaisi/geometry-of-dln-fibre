@@ -147,3 +147,27 @@ statement can be made precise from `sourceReadback`; otherwise attack Target B
 as a bounded-density handoff with the external source measure explicit.  Target
 C is only appropriate after confirming which Haar chart the intended original
 source prior is expressed in.
+
+## Addendum - 2026-06-30 compatibility audit
+
+Three xhigh scouts checked Target A after the passive-theta source-rank support
+commit.  The broad source-rank local-image statement is too strong as written:
+`paperEndpointFixedBaseSourceRankStratum` does not imply source-recursive
+determinant-chart membership, selected-entry/pivot compatibility, or a
+canonical projective lift through the Case 2 blow-up center.
+
+The Lean theorem now proved instead is:
+
+```text
+case2PassiveThetaEndpointSourceChart_readback_eq_and_rightInverse_of_sourceReadback_eq_retainedData
+```
+
+It gives two-sided reconstruction for a source edge family already in the
+retained-passive determinant source chart, assuming its `sourceReadback` is
+the selected Case 2 passive-theta endpoint datum and its selected-entry inverse
+readout is `theta.yNext`.
+
+Revised Target A is therefore not source-rank coverage.  It is to derive those
+compatibility hypotheses from honest source-side lifted-chart assumptions.  If
+that is not available, move to Target B with an explicit external/source
+measure and a non-vacuous domination hypothesis.

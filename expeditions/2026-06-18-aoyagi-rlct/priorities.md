@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta compatible source right inverse
+
+The attempted broad source-rank coverage target is rejected as too strong.
+Source-rank membership alone does not imply determinant-chart membership,
+selected-entry/pivot compatibility, or a canonical lift through the blow-up
+center.
+
+New public name:
+
+```text
+case2PassiveThetaEndpointSourceChart_readback_eq_and_rightInverse_of_sourceReadback_eq_retainedData
+```
+
+The theorem proves two-sided reconstruction for a concrete source edge family
+`X` only under explicit compatibility hypotheses:
+
+```text
+X in paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W2 B2 U0 hU0
+sourceReadback(edgeMatrixOfReverseEdges X) =
+  case2PassiveThetaEndpointRetainedData ... theta eNext e
+case2PassiveThetaEndpointInverseReadout ... X = theta.yNext
+```
+
+Conclusion:
+
+```text
+case2PassiveThetaEndpointSourceChartReadback ... X = theta
+case2PassiveThetaEndpointSourceChart ... theta = X
+```
+
+Next non-wrapper frontier: prove the readback/selected-entry compatibility
+from source-side hypotheses for a chosen lifted chart, or move to an explicit
+external/source-prior domination handoff.  Do not replace this with a theorem
+that only repackages chart-produced measures.
+
+Nonclaims: no source-rank coverage, no source-image equality, no exact-rank
+openness, no canonical blow-up-center lift, no source-prior transport, no Haar
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-image source-rank support
 
 The concrete passive-theta endpoint source image is now tied one-way to the
