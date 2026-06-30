@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta global Jacobian-weighted single-open wrapper
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`.
+
+Lean now repackages the Jacobian-weighted residual-source theorem with one
+open neighborhood:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_globalWithDensity_jacobian_finiteMass
+```
+
+It uses `sourceMeasure = passiveSource.withDensity jacobianDensity` and
+`Measure.map sourceChart (sourceMeasure.restrict W)`, with `W = U ∩ V` from
+the previous two-open theorem.  The measure equality is just
+`restrict_withDensity` plus `Measure.restrict_restrict`.
+
+Focused direct warning check, focused module build, full local build,
+aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The public theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Leibniz` and
+xhigh Lean/API reviewer `Locke` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, global usefulness of the Jacobian density,
+normal crossings, pole order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta Jacobian-weighted residual-source adapter
 
 Reproduction:

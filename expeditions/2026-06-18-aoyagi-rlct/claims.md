@@ -140,6 +140,32 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta global Jacobian-weighted
+  single-open wrapper, 2026-06-30.** Lean now repackages the Jacobian-weighted
+  residual-source theorem with a single open neighborhood in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+  The public theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_globalWithDensity_jacobian_finiteMass`
+  uses `sourceMeasure = passiveSource.withDensity jacobianDensity` and proves
+  retained-passive local-source support, a.e. residual square-sum positivity,
+  and `residualNegPowerIntegrableOn` for
+  `Measure.map sourceChart (sourceMeasure.restrict W)` on one open
+  neighborhood `W`.  The proof calls the previous two-open theorem, takes
+  `W = U ∩ V`, and rewrites restrictions using `restrict_withDensity` and
+  `Measure.restrict_restrict`.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`.
+  Focused direct warning check, focused module build, full local build,
+  aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Leibniz` and
+  xhigh Lean/API reviewer `Locke` returned PASS.  This proves no
+  determinant-chart Haar transport, raw-order Haar transport, source-prior
+  transport, exact passive-sector pushforward, source-image equality,
+  source-rank coverage, global usefulness of the Jacobian density, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive theta Jacobian-weighted
   residual-source adapter, 2026-06-30.** Lean now combines the concrete
   passive-theta raw-order Jacobian sandwich with the concrete passive-theta

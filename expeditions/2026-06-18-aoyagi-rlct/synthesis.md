@@ -6,6 +6,65 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Global Jacobian-Weighted Single Open - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now has a single-open
+presentation of the Jacobian-weighted passive-product theta source measure.
+
+New public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_globalWithDensity_jacobian_finiteMass
+```
+
+The theorem works over
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+jacobianDensity z =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))
+sourceMeasure = passiveSource.withDensity jacobianDensity
+```
+
+and returns one open neighborhood `W` of the base point.  For
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict W)
+```
+
+it proves retained-passive local-source support, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn localSource mu t`.
+
+The proof calls the previous two-open theorem, takes `W = U ∩ V`, and rewrites
+
+```text
+(passiveSource.withDensity jacobianDensity).restrict (U ∩ V)
+  = ((passiveSource.restrict U).withDensity jacobianDensity).restrict V
+```
+
+using `restrict_withDensity` and `Measure.restrict_restrict`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-global-weighted-single-open.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-global-weighted-single-open.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-global-weighted-single-open.md
+```
+
+Xhigh source/scope reviewer `Leibniz` and xhigh Lean/API reviewer `Locke`
+returned PASS.
+
+Boundary: no determinant-chart Haar transport, no raw-order Haar transport,
+no source-prior transport, no exact passive-sector pushforward, no
+source-image equality, no source-rank coverage, no claim that the Jacobian
+density is useful outside the chosen local neighborhood, no normal crossings,
+no pole order, and no RLCT extraction.
+
+Next frontier: construct a real passive-sector transport/Jacobian comparison
+or local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest A2 Case 2 Passive Theta Jacobian-Weighted Residual Source - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now combines the

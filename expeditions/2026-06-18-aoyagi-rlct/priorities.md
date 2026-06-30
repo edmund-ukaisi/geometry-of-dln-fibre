@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta global Jacobian-weighted single-open wrapper
+
+The single-open presentation of the Jacobian-weighted theta source measure has
+landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+
+Public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_globalWithDensity_jacobian_finiteMass
+```
+
+It repackages the previous two-open theorem by taking `W = U ∩ V` and using
+
+```text
+sourceMeasure = passiveSource.withDensity jacobianDensity
+mu = Measure.map sourceChart (sourceMeasure.restrict W)
+```
+
+The proof is only `restrict_withDensity` plus repeated restriction:
+
+```text
+(passiveSource.withDensity jacobianDensity).restrict (U ∩ V)
+  = ((passiveSource.restrict U).withDensity jacobianDensity).restrict V
+```
+
+This is a localized presentation cleanup, not a new source-moving theorem.  It
+does not prove determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, global usefulness of the Jacobian density,
+normal crossings, pole order, or RLCT extraction.
+
+Xhigh source/scope reviewer `Leibniz` and xhigh Lean/API reviewer `Locke`
+returned PASS, recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-global-weighted-single-open.md`.
+
+Next source-moving frontier remains the harder passive-sector transport or
+local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian-weighted residual-source adapter
 
 The next passive-theta local-domination slice has landed in
