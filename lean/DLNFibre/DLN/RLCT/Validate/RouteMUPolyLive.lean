@@ -474,11 +474,13 @@ as `achieverUfun_wInt_ne_zero`, applied to the live decoder — the surviving en
 `Bmat/Nblk/Wblk/Rmat` (definitionally shared with `genBlkFlatStruct ha (wInt)`), so it is `Rfin L`-blind,
 and the generic lemmas conclude the literal `1` (scalar-`u`-blind). -/
 theorem interiorLiveUnit_wInt_ne_zero (ha : StructAdm M (tach M))
-    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (hML : 0 < Wext M 2)
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
     (p : ℕ) (hp1 : 1 ≤ p) (hpL : p < 2)
     (hr : Text M (tach M) (p + 1) < Text M (tach M) p)
     (hcd : ∀ b, p ≤ b → b < 2 → Text M (tach M) (b + 1) < Wext M b) :
     interiorLiveUnit ha h0r h0c (wInt M ha p) ≠ 0 := by
+  -- the leaf width `0 < Wext M 2` (the `hML` the survival machinery reads) IS `h0c`.
+  have hML : 0 < Wext M 2 := h0c
   -- reduce to `sqSumHmat0` of the live decoder chain at `wInt` (`kLDU` fixes `wInt`)
   rw [interiorLiveUnit, kLDU_wInt ha p, VvalGen_eq_sqSumHmat0]
   set hle := hleStruct M (tach M) ha with hledef
@@ -594,9 +596,9 @@ theorem UPolyLive_ne_zero (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
     (hInt : InteriorDrop M) :
     UPolyLive ha h0r h0c ≠ 0 := by
-  obtain ⟨hML, p, hp1, hpL, hrdrop, hcd⟩ := hInt
+  obtain ⟨_hML, p, hp1, hpL, hrdrop, hcd⟩ := hInt
   intro h0
-  refine interiorLiveUnit_wInt_ne_zero ha h0r h0c hML p hp1 hpL hrdrop hcd ?_
+  refine interiorLiveUnit_wInt_ne_zero ha h0r h0c p hp1 hpL hrdrop hcd ?_
   rw [← eval_UPolyLive ha h0r h0c (wInt M ha p), h0, map_zero]
 
 /-! ## The a.e.-positivity atom (the LEAF-1 deliverable) -/

@@ -33,8 +33,20 @@
 >   and `kLens 1 = 1`), then the generic survival entry `Hmat 0 (ρ,0) = 1` for the live decoder
 >   (scalar- and `Rfin-L`-agnostic: the surviving entry reads only `Bmat/Nblk/Wblk/Rmat`, all
 >   definitionally shared with `genBlkFlatStruct ha wInt`).
-> - **Status.** sorry-free; forced `#print axioms` = `[propext, Classical.choice, Quot.sound]` (no S2,
->   no `sorryAx`, no `native_decide`). Awaiting reviewer fidelity check.
+> - **Status.** sorry-free + reviewed. Forced `#print axioms` = `[propext, Classical.choice, Quot.sound]`
+>   (no S2, no `sorryAx`, no `native_decide`). Reviewer fidelity check SURVIVED (all 5 points PASS,
+>   axioms independently re-verified, Codex-decorrelated on the scalar/`Rfin`-independence).
+
+## Reviewer note — the scalar/`Rfin`-independence keystone
+
+The load-bearing soundness fact (why the dead-leaf survival transfers to the live decoder): the surviving
+entry `Hmat 0 (ρ,0) = 1` never reads `Rfin L` (`= C L`) nor the radial scalar `u`. The decisive lemma is
+`chainA_apply_natAdd` (`RouteMGenChainBridge.lean`): the LIFT rows of `chainA h N W C` equal `W a j` with
+provably NO dependence on the kept block `C`. So `suffix` (via `suffix_carrier`) reads `A` only through
+lift rows (`= Wblk`) and bottoms out at `suffix L = I` (never `C L = u·Rfin L`); `Hmat_pivot`'s value is
+`Rmat p · suffix p` (both `u`-free); `Hmat_row_thread` threads `p→0` via `Bmat`-identity rows + `E s = 0`,
+never evaluating `Hmat L = Rfin L`. The live decoder's `Bmat/Nblk/Wblk/Rmat` are definitionally the
+struct's (`rfl`), and `Rfin` is the only differing field — never touched. (Reviewer + Codex confirmed.)
 
 ## Reusable infra delivered (route-independent)
 
