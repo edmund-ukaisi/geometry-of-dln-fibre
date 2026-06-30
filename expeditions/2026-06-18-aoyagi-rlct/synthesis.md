@@ -25591,3 +25591,58 @@ This closes the elementary right-`Q` Schur cleanup layer.  It does not close
 analytic atlas coverage, source production, source-prior transport,
 normal-crossing extraction, pole order, RLCT, or the separate continuing-branch
 identification of the Schur lower-right block with the next residual block.
+
+## 2026-06-30 retained-passive conditional raw-order Haar precomposition
+
+After the post-5c frontier audit, xhigh scouts checked the three plausible
+frontiers:
+
+- Target A: retained-passive source image is already exact, but passive-theta
+  image coverage would require a structural condition beyond source-rank
+  membership.
+- Target B: external/original source-prior transfer is feasible only as a
+  finite-scalar domination handoff until the actual domination theorem is
+  proved.
+- Target C: retained-passive Haar/raw-order transport exists, while
+  passive-theta Haar transport is still conditional on an explicit
+  endpoint-topology-tuple pushforward hypothesis.
+
+The Lean patch adds the honest Target C conditional consumer
+`map_topologyTupleEdgeRawOrder_comp_eq_withDensity_inverseJacobian` in
+`RetainedPassiveCoordinatesMeasure.lean`.  If `pre_* eta` is already Haar
+restricted to the retained-passive determinant chart, then
+`(topologyTupleEdgeRawOrder o pre)_* eta` is the inverse-Jacobian weighted raw
+source-chart measure.  This mirrors the existing product-step conditional
+precomposition theorem and keeps the source-side pushforward as an explicit
+hypothesis.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-conditional-raw-order-haar-precomposition.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-conditional-raw-order-haar-precomposition.md
+```
+
+Focused local build passed:
+
+```text
+cd lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesMeasure
+```
+
+The downstream local gate also passed:
+
+```text
+cd lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
+./scripts/sorries
+```
+
+The sorry scan reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`;
+`git diff --check` passed; the direct axiom probe for the new theorem reported
+only `[propext, Classical.choice, Quot.sound]`.  Xhigh review by `Dewey`
+returned PASS with no blocking findings.
+
+Boundary: no passive-theta endpoint topology-tuple Haar theorem, no
+source-rank image coverage, no original source-prior domination, no normal
+crossings, no pole order, and no RLCT extraction.

@@ -652,6 +652,80 @@ theorem map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJa
       (ρ := ρ) (κ' := κ') m hs hF hG hG_comp
 
 set_option maxRecDepth 2048 in
+/-- Conditional consumer for retained-passive raw-order inverse-Jacobian
+transport.
+
+If a source-side parametrisation `pre` is already known to push `η` to Haar
+measure restricted to the retained-passive determinant chart, then composing
+`pre` with the retained-passive raw-order map gives the inverse-Jacobian
+weighted raw source chart measure.  This deliberately keeps the source-side
+pushforward as an explicit hypothesis; it is not passive-theta Haar transport
+or an original source-prior construction. -/
+theorem map_topologyTupleEdgeRawOrder_comp_eq_withDensity_inverseJacobian
+    {M : ℕ} {ρ X : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace X]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (η : Measure X)
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (pre : X → TopologyTuple ρ κ' ℝ)
+    (hpre : AEMeasurable pre η)
+    (hpre_map :
+      Measure.map pre η =
+        m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))) :
+    Measure.map
+        (fun x =>
+          topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') (pre x))
+        η =
+      (m.restrict
+        (topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ') y)) := by
+  let Φ : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m := by
+    exact nullMeasurableSet_topologyTupleDetChartSet
+      (ρ := ρ) (κ' := κ') m
+  have hΦ : AEMeasurable Φ (Measure.map pre η) := by
+    rw [hpre_map]
+    refine ContinuousOn.aemeasurable₀ ?_ hs
+    rw [continuousOn_iff_continuous_restrict]
+    change Continuous
+      (fun z :
+          topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') =>
+        topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z.1)
+    exact continuous_topologyTupleEdgeRawOrder_detChart_subtype
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  calc
+    Measure.map (fun x => Φ (pre x)) η =
+        Measure.map Φ (Measure.map pre η) := by
+          simpa [Φ, Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := η) (g := Φ) (f := pre) hΦ hpre).symm
+    _ =
+        Measure.map Φ
+          (m.restrict (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))) := by
+          rw [hpre_map]
+    _ =
+      (m.restrict
+        (topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          ENNReal.ofReal
+            (topologyTupleEdgeRawOrderInverseJacobianDensity
+              (ρ := ρ) (κ' := κ') y)) := by
+          simpa [Φ] using
+            map_topologyTupleEdgeRawOrder_restrict_detChart_eq_withDensity_inverseJacobian
+              (ρ := ρ) (κ' := κ') m hs
+
+set_option maxRecDepth 2048 in
 /-- The retained-passive weighted raw-order change-of-variables theorem
 composed with an arbitrary a.e.-measurable target map. -/
 theorem
