@@ -7,6 +7,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMNullSliceCov
 import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
 import DLNFibre.DLN.RLCT.Validate.RouteMLDUUniqueness
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
+import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
+import DLNFibre.DLN.RLCT.Validate.RouteMProjV0Gate
 
 /-!
 # `RouteMInteriorLiveContract` — the LIVE-leaf ∘ kLDU interior achiever box-divergence (SPECIFY)
@@ -469,18 +471,140 @@ theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
       ⊆ interiorLiveInjDom ha h0r h0c \ {x | x p₀ = 0} := fun u hu => ⟨hu, hu.1⟩
   exact congrArg _ ((pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub hx₀ hx₀' hpb)
 
+/-- **The Schur-frame map is injective when `K` is nonsingular.** `schurFrameMap z =
+(K, K·N, (X·K, X·K·N + E))`; given `K.det ≠ 0`, the four output blocks recover `(K,N,X,E)`: top-left
+⟹ `K = K'`; top-right `K·N = K·N'` ⟹ `N = N'` (left-cancel by `K⁻¹`); bottom-left `X·K = X'·K` ⟹
+`X = X'` (right-cancel); bottom-right then ⟹ `E = E'`. The ONLY load-bearing invertibility. -/
+theorem schurFrameMap_inj_of_det_ne_zero {t r c : ℕ} {z z' : SchurInc t r c}
+    (hK : z.1.det ≠ 0) (h : schurFrameMap z = schurFrameMap z') : z = z' := by
+  obtain ⟨K, N, X, E⟩ := z
+  obtain ⟨K', N', X', E'⟩ := z'
+  simp only [schurFrameMap, Prod.mk.injEq] at h
+  obtain ⟨hKK, hKN, hXK, hE⟩ := h
+  subst hKK
+  have hKunit : IsUnit K.det := isUnit_iff_ne_zero.mpr (by simpa using hK)
+  have hN : N = N' := by
+    have hh : K⁻¹ * (K * N) = K⁻¹ * (K * N') := by rw [hKN]
+    rwa [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul K hKunit,
+      Matrix.one_mul, Matrix.one_mul] at hh
+  have hX : X = X' := by
+    have hh : X * K * K⁻¹ = X' * K * K⁻¹ := by rw [hXK]
+    rwa [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv K hKunit,
+      Matrix.mul_one, Matrix.mul_one] at hh
+  subst hN; subst hX
+  have hEeq : E = E' := add_left_cancel hE
+  subst hEeq
+  rfl
+
+/-- **The recovered V0 `K`-block is nonsingular on the target domain `D`.** For `y = kLDU (pbo x)`
+with `x ∈ injDom` (all coords nonzero), `det (readK y ⟨0⟩) = ∏ q_i` (`readK_kLDU_det`) where each
+diagonal pivot `q_i = (readK (pbo x) ⟨0⟩) i i = (pbo x)(K-diag-slot) ≠ 0` (pbo of an all-nonzero
+point — only the K-DIAGONAL pre-kLDU coords need to be nonzero, not the post-kLDU coords). -/
+theorem slotReadV0_K_det_ne_zero_of_mem (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    {y : Fin (routeMAmbient M) → ℝ}
+    (hy : y ∈ kLDU M (tach M) ha ''
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) ''
+        interiorLiveInjDom ha h0r h0c)) :
+    (slotReadV0 ha y).1.det ≠ 0 := by
+  obtain ⟨z, ⟨x₀, hx₀, rfl⟩, rfl⟩ := hy
+  have hpbo_ne : ∀ q, pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀ q ≠ 0 := by
+    intro q
+    have hall : ∀ j, x₀ j ≠ 0 := fun j => hx₀.2 j (by simp [interiorLive_E])
+    rw [pivotBlowupOn]
+    split
+    · exact hall _
+    · split
+      · exact mul_ne_zero (hall _) (hall _)
+      · exact hall _
+  show (Matrix.of (readK M (tach M) ha
+    (kLDU M (tach M) ha (pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀)) ⟨0, by decide⟩)).det ≠ 0
+  rw [readK_kLDU_det M (tach M) ha _ ⟨0, by decide⟩, Finset.prod_ne_zero_iff]
+  intro i _
+  show (Matrix.of (readK M (tach M) ha
+    (pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀) ⟨0, by decide⟩)) i i ≠ 0
+  rw [Matrix.of_apply, readK]
+  exact hpbo_ne _
+
+/-- **V0 recovery** — `BparamsLeaf ha y 0 = BparamsLeaf ha y' 0 ⟹ slotReadV0 ha y = slotReadV0 ha y'`
+when `det (readK y ⟨0⟩) ≠ 0`. Peel `reindexL0` (`reindexL0_BparamsLeaf0`) ⟹ `layer0SchurMap` match ⟹
+(`flatBlockLE` injective) `schurFrameMap (slotReadV0 y) = schurFrameMap (slotReadV0 y')` ⟹ the readback
+lemma. -/
+theorem slotReadV0_eq_of_BparamsLeaf0_eq (ha : StructAdm M (tach M))
+    {y y' : Fin (routeMAmbient M) → ℝ}
+    (hK : (slotReadV0 ha y).1.det ≠ 0)
+    (h0 : BparamsLeaf ha y 0 = BparamsLeaf ha y' 0) :
+    slotReadV0 ha y = slotReadV0 ha y' := by
+  set hr := eihd_schurR_split ha
+  set hc := eihd_schurC_split ha
+  have hL0 : layer0SchurMap ha hr hc y = layer0SchurMap ha hr hc y' := by
+    rw [← reindexL0_BparamsLeaf0 ha hr hc y, ← reindexL0_BparamsLeaf0 ha hr hc y', h0]
+  have hSF : schurFrameMap (slotReadV0 ha y) = schurFrameMap (slotReadV0 ha y') := by
+    have hh := hL0
+    rw [layer0SchurMap, layer0SchurMap] at hh
+    exact (flatBlockLE hr hc).injective hh
+  exact schurFrameMap_inj_of_det_ne_zero hK hSF
+
+/-- **V1 recovery** — `BparamsLeaf ha y 1 = BparamsLeaf ha y' 1 ⟹ Wfun y = Wfun y'` and (using
+`Nfun y = Nfun y'` from V0) `Lfun y = Lfun y'`. Peel `rsL1` (`rsL1_BparamsLeaf1`) ⟹ the `(kept, lift)`
+pair matches; the lift gives `W`, then the kept + `N·W` gives the leaf. -/
+theorem Wfun_Lfun_eq_of_BparamsLeaf1_eq (ha : StructAdm M (tach M))
+    {y y' : Fin (routeMAmbient M) → ℝ}
+    (hN : Nfun ha y = Nfun ha y')
+    (h1 : BparamsLeaf ha y 1 = BparamsLeaf ha y' 1) :
+    Wfun ha y = Wfun ha y' ∧ Lfun ha y = Lfun ha y' := by
+  have hpair : ((Lfun ha y) - (Nfun ha y) * (Wfun ha y), (Wfun ha y))
+      = ((Lfun ha y') - (Nfun ha y') * (Wfun ha y'), (Wfun ha y')) := by
+    rw [← rsL1_BparamsLeaf1 ha y, ← rsL1_BparamsLeaf1 ha y', h1]
+  obtain ⟨hkept, hW⟩ := Prod.mk.injEq .. ▸ hpair
+  refine ⟨hW, ?_⟩
+  have hsplit : Lfun ha y
+      = ((Lfun ha y) - (Nfun ha y) * (Wfun ha y)) + (Nfun ha y) * (Wfun ha y) := by
+    rw [sub_add_cancel]
+  rw [hsplit, hkept, hN, hW, sub_add_cancel]
+
+/-- `Nfun ha z = (slotReadV0 ha z).2.1` (both read the boundary-0 `N` slot; the idx functions agree). -/
+theorem Nfun_eq_slotReadV0 (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Nfun ha z = (slotReadV0 ha z).2.1 := by
+  ext i j
+  show z (readN0_idx ha i j) = readN M (tach M) ha z ⟨0, by decide⟩ i j
+  rw [readN, readN0_idx]
+
 /-- **injOn atom #2a (my deliverable, the genuine content)** — `BparamsLeaf` injective on the
-kLDU-image of `pbo '' injDom`: the off-radial chart-param recovery from the per-layer `Agen 1`
-matrices (radial fixed to `1` in `BparamsLeaf`). K via the LDU-coordinatized read, X via
-forward-substitution through the Schur block `Bmat = [K; XK]`, N/E/leaf linear (banked `Agen_congr` /
-`schurFrameProd_u_to_E`). STATED `sorry` — the genuine remaining recovery. -/
+kLDU-image of `pbo '' injDom`: the off-radial chart-param recovery from the per-layer `Agen` matrices
+(radial fixed to `1`). Packed Route A reusing the `eIn`/`slotReadV0`/`rsL1` derivative machinery: V0
+(`reindexL0`+`flatBlockLE`+`schurFrameMap_inj`, with K-det≠0 on `D`) recovers `(K,N,X,E)`; V1 (`rsL1`)
+recovers `(W,leaf)`; then `eIn ha y = eIn ha y'` (V0 via `eIn_projV0`, V1 via `dWdC_eq_eInV1`, PUnit
+tail) and `(eIn ha).injective` finishes. -/
 theorem interiorLive_BparamsLeaf_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     Set.InjOn (BparamsLeaf ha)
       (kLDU M (tach M) ha
         '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
-          '' interiorLiveInjDom ha h0r h0c)) :=
-  sorry
+          '' interiorLiveInjDom ha h0r h0c)) := by
+  intro y hy y' hy' heq
+  have h0 : BparamsLeaf ha y 0 = BparamsLeaf ha y' 0 := congrFun heq 0
+  have h1 : BparamsLeaf ha y 1 = BparamsLeaf ha y' 1 := congrFun heq 1
+  have hK := slotReadV0_K_det_ne_zero_of_mem ha h0r h0c hy
+  have hV0 : slotReadV0 ha y = slotReadV0 ha y' := slotReadV0_eq_of_BparamsLeaf0_eq ha hK h0
+  have hN : Nfun ha y = Nfun ha y' := by
+    rw [Nfun_eq_slotReadV0, Nfun_eq_slotReadV0, hV0]
+  obtain ⟨hW, hLeaf⟩ := Wfun_Lfun_eq_of_BparamsLeaf1_eq ha hN h1
+  refine (eIn ha).injective ?_
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · rw [eIn_projV0, eIn_projV0, hV0]
+  · rw [← dWdC_eq_eInV1, ← dWdC_eq_eInV1]
+    refine Prod.ext ?_ ?_
+    · show (matrixReaderCLM (fun i j => readW0_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => readW0_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hW : Wfun ha y = Wfun ha y')
+    · show (matrixReaderCLM (fun i j => leaf_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => leaf_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hLeaf : Lfun ha y = Lfun ha y')
+  · rfl
 
 /-- **injOn atom #2 (my deliverable)** — `BchartLeaf` injective on the kLDU-image of `pbo '' injDom`,
 via peeling the injective `paramsEquivFlat` MeasurableEquiv (`BchartLeaf = paramsEquivFlat ∘
