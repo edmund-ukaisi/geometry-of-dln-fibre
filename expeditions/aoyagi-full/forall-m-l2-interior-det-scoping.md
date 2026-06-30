@@ -154,3 +154,49 @@ BFactors` proven first. The SOUND route is (A), the opaque-width generalization 
   det-irrelevant). This is the heavy piece, where a wrong reindex hides.
 ENGINE = honest Schur·LDU value (boundary 0: |det K|^{r+c}·∏|q_i|^{2(t−1−i)}; boundary 1 leaf = 1),
 NOT engine:=|det DB| (self-ref vacuous). (2,2,2) template: RouteMBData222 DB_abs_det/TbCLM_abs_det/litMatLT_det.
+
+## STATE (2026-06-30, genm-detfderiv hdet thread): validate-(3,3,4) PASS + FIDELITY CORRECTION + WALL
+
+VALIDATE-(3,3,4) result: **PASS, with a fidelity correction.** Numeric Jacobian of the boundary
+factor `BparamsLeaf` (the u-free chart, the inner factor of `BchartLeaf = paramsEquivFlat ∘
+BparamsLeaf`) at (3,3,4): `det (fderiv BparamsLeaf) = (det K)^{r+c} = (det K)^4` EXACTLY, where K is
+the interior Schur core `readK ⟨0⟩` (1×1 at (3,3,4)), `r = Text1−Text2 = 2`, `c = Wext1−Text2 = 2`.
+Confirmed at a second case (t=2 Schur core, M=(4,4,5)): `det = (det K)^4` again. So the honest engine
+for the EXISTING `BchartLeaf` is **free-K Schur `|det K|^{r+c}`, NOT Schur·LDU**.
+
+FIDELITY CORRECTION (decorrelated Codex `hdet-realize-answer.txt` corroborates the numeric): the
+`∏ᵢ|qᵢ|^{2(t−1−i)}` LDU multiplier of the briefed engine is FALSE for `BchartLeaf` — `BparamsLeaf`
+reads the K-core via `readK` DIRECTLY (free coords), it does NOT pre-apply the `kLDU` lens
+(`RouteMKLens`). The LDU factor appears only for a *lensed* decoder `BparamsLeafLDU`. The precise
+false identity is `readK y = kLens (readK y)`. At (3,3,4) the two coincide vacuously (t=1 → LDU
+exponents 0 → product 1), which is why `|det K|^4` is simultaneously free-K and (vacuously) Schur·LDU
+there; for t≥2 they genuinely differ and the honest value is the free-K one. The honest engine is
+`engineFreeK 0 = |det K|^{r+c}`, `engineFreeK 1 = 1`.
+
+LANDED (genm-detfderiv, sorry-free, axiom-clean [propext,Classical.choice,Quot.sound], clean-three):
+- `RouteMLeafEngine`: `engineFreeK` + `engineFreeK_prod` (the honest free-K engine).
+- `RouteMLeafReduce`: `Bchart_abs_det_eq_Dtot` — `|det (fderiv BchartLeaf y₀)| = |det (Dtot y₀)|`,
+  `Dtot = paramsEquivFlatCLE ∘L (fderiv BparamsLeaf)` (the `paramsEquivFlat` measure-preserving reindex
+  STRIPPED; via `HasFDerivAt.unique`, NOT `.fderiv`, to dodge the opaque-width `ContinuousAdd` synth).
+- `RouteMLeafFreeKHeadline`: `interiorDet_leaf_headline_freeK` — the ∀M-L2 headline
+  `|det Dφ| = |u p₀|^{minAdm−1}·∏ engineFreeK`, modulo the SINGLE sharp fact
+  `hDtot : |det (Dtot …)| = |det K|^{r+c}`. Strictly sharper than the capstone's opaque `|det DB|`.
+
+THE WALL (named, NOT graded): `hDtot : |det (Dtot ha (pbo u))| = |det K|^{r+c}`. This is the staircase
+determinant of the boundary-factor Jacobian: `Dtot` regrouped into V0 = {Schur frame inputs K,X,N1,E}
+and V1 = {lift W1, leaf} is a 2-block staircase (`stairMap V 2`) with `f 0 = schurFrameDeriv`
+(det `|det K|^{r+c}`, banked), `f 1 = chainUnit` (det 1, banked), the shared N1-coupling strictly
+head→tail (det-invisible). It discharges via `RouteMStairTwoSided.stairMap_abs_det_twoConj` once the
+two layer-collecting equivs `eIn/eOut : (Fin N → ℝ) ≃ StairProd V 2` are built + the entry match
+`eOut ∘ Dtot ∘ eIn.symm = stairMap` is proven over the opaque dependent `Fin (Text/Wext)` widths.
+
+This is the SAME wall already isolated and named by `RouteMInteriorDetReal.interiorDet_phiFlatLiveR1_of_stairConj`
+(the `hconj` hypothesis) — the "cast-heavy multi-tide staircase decomposition over the opaque
+chart-coordinate widths" the `staircase-det-bricks-statement-card.md` flags, the `frameB` ∀M
+generalization (done by hand at (3,3,3,3), never for ∀M). `RouteMGradingObstruction` proves the simpler
+single-grading square `Matrix.BlockTriangular` route is mathematically blocked (FlatIdx layer counts ≠
+ChartIdx boundary counts), so it MUST be the rectangular two-sided staircase. Beyond a 3-4 attempt
+budget for one goal — surfaced, not ground. The headline is now reduced to exactly this ONE det.
+
+CONE (additive, 0 name clashes vs siblings): RouteMLeafEngine, RouteMLeafReduce, RouteMLeafFreeKHeadline
+(NOT yet wired into DLNFibre.lean — single-writer; controller integrates).
