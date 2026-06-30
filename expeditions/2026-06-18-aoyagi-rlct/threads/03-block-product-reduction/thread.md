@@ -21,6 +21,56 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 chart-piece external-source measure handoff
+
+Reproduction:
+`reproduction-a2-chart-piece-external-source-measure-handoff.md`.
+Statement card:
+`statement-card-a2-chart-piece-external-source-measure-handoff.md`.
+Review:
+`review-a2-chart-piece-external-source-measure-handoff.md`, PASS by xhigh
+reviewer `Nietzsche the 2nd`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+```
+
+Lean now proves:
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le_of_subset
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned `sourceLocal = U ∩ sourceStratum`, the theorem accepts any
+measurable `chartPiece ⊆ sourceLocal`; equality with a bounded-density
+perturbation of `sourceImageMeasure` on that piece gives finite integrability
+over `(externalSourceMeasure.restrict chartPiece).prod ν`.
+
+Current verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_chart_piece_external_source_measure_handoff_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no chart-image measurability, no source-image equality,
+original/source-prior transport, Haar/Jacobian transport, normal crossings,
+pole order, or RLCT.
+
 ## 2026-06-30 A2 product source-chart measure local-source support
 
 Reproduction:

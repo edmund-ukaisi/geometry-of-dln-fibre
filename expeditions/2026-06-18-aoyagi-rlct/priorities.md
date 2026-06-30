@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 chart-piece external-source measure handoff
+
+The source-level external-measure handoff now has a measurable-piece variant:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned `sourceLocal = U ∩ sourceStratum`, Lean accepts any
+measurable `chartPiece ⊆ sourceLocal`.  A local bounded-density equality
+
+```text
+externalSourceMeasure.restrict chartPiece
+  =
+(sourceImageMeasure.withDensity externalDensity).restrict chartPiece
+```
+
+and an a.e. bound for `externalDensity` with respect to
+`sourceImageMeasure.restrict chartPiece` imply finite loss-power
+integrability over `(externalSourceMeasure.restrict chartPiece).prod ν`.
+
+The helper
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le_of_subset
+```
+
+packages the restricted-density domination enlarged from `chartPiece` to
+`sourceLocal`.  This is useful for later chart-image-local source-prior
+handoffs, but it deliberately does not prove chart-image measurability,
+source-image equality, original/source-prior transport, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 product source-chart measure local-source support
 
 The pointwise Case 2 endpoint product source-chart local-source support now

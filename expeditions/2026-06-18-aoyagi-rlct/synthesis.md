@@ -6,6 +6,73 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Chart-Piece External-Source Measure Handoff - 2026-06-30
+
+Lean now proves a measurable-piece version of the source-level external
+measure handoff:
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le_of_subset
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The existing full-product socket proves finite integrability for every
+product measure dominated by
+
+```text
+Cext • (sourceImageMeasure.restrict sourceLocal).prod ν
+```
+
+where `sourceLocal = U ∩ sourceStratum`.  The new theorem derives this
+domination from hypotheses only on an arbitrary measurable
+`chartPiece ⊆ sourceLocal`:
+
+```text
+externalSourceMeasure.restrict chartPiece
+  =
+(sourceImageMeasure.withDensity externalDensity).restrict chartPiece
+
+externalDensity <= Cext
+  a.e. with respect to sourceImageMeasure.restrict chartPiece.
+```
+
+It then concludes finite loss-power integrability over
+`(externalSourceMeasure.restrict chartPiece).prod ν`.  This is the correct
+API for a later measurable chart image or subimage argument because it does
+not ask for density comparison on all of `sourceLocal`.
+
+Boundary: the theorem proves no chart-image measurability, no
+`sourceChart '' W = sourceLocal`, no original source-prior density identity,
+no Haar/Jacobian transport, no normal crossings, no pole order, and no RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-chart-piece-external-source-measure-handoff.md
+threads/03-block-product-reduction/statement-card-a2-chart-piece-external-source-measure-handoff.md
+threads/03-block-product-reduction/review-a2-chart-piece-external-source-measure-handoff.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_chart_piece_external_source_measure_handoff_axioms.lean
+```
+
+Axiom probe for the new helper and theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Nietzsche the 2nd` PASS.  No blocking formalization
+or mathematical issue found.
+
 ## Latest A2 Product Source-Chart Measure Local-Source Support - 2026-06-30
 
 Lean now turns the pointwise Case 2 endpoint product source-chart
