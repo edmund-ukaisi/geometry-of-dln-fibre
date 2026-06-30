@@ -428,8 +428,8 @@ theorem eihdc_fst_apply (ha : StructAdm M (tach M))
     (u : Fin (routeMAmbient M) → ℝ) (v0 : eihdV M 0) :
     (eihdc ha h0r h0c u).1 v0 = (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).2 := rfl
 
-/-- **J00 — the Schur-frame block** (the in-Lean faithfulness gate for `eIn`). The V0→V0 block of `T`
-is `eihdF … 0 = schurFrameDeriv X K N`. -/
+/-- **J00 — the Schur-frame block** (part of the in-Lean faithfulness gate for `eIn`, with J01/J11).
+The V0→V0 block of `T` is `eihdF … 0 = schurFrameDeriv X K N`. -/
 theorem eihdT_J00 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v0 : eihdV M 0) :
@@ -437,16 +437,17 @@ theorem eihdT_J00 (ha : StructAdm M (tach M))
       = eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 0 v0 :=
   sorry
 
-/-- **J01 = 0 — the det-invisible upper block** (the in-Lean faithfulness gate for `eIn`). The V1→V0
-block of `T` is `0`: the layer-1 (chain) coordinates do not feed the layer-0 (frame) Schur output. -/
+/-- **J01 = 0 — the upper block** (part of the in-Lean faithfulness gate for `eIn`, with J00/J11). The
+V1→V0 block of `T` is `0`: the layer-1 (chain) coordinates do not feed the layer-0 (frame) Schur output. -/
 theorem eihdT_J01 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v1 : eihdV M 1) :
     (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).1 = 0 :=
   sorry
 
-/-- **J11 — the chain-unit block**. The V1→V1 block of `T` is `eihdF … 1 = chainUnitMap (readN ⟨0⟩)`:
-the layer-1 chaining `(W, C) ↦ (W, C − N·W)`. -/
+/-- **J11 — the chain-unit block** (part of the in-Lean faithfulness gate for `eIn`, with J00/J01 — the
+V1-line of `eihd_hD` cannot close without it). The V1→V1 block of `T` is
+`eihdF … 1 = chainUnitMap (readN ⟨0⟩)`: the layer-1 chaining `(W, C) ↦ (W, C − N·W)`. -/
 theorem eihdT_J11 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v1 : eihdV M 1) :

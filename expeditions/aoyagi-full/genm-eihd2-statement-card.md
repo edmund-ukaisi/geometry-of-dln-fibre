@@ -15,7 +15,10 @@ sorries remain (the faithfulness gate + the J-blocks). No `axiom`/`native_decide
   DEFINED from the actual off-diagonal block of `T` (`c.1 = snd ∘ T ∘ inclV0`, a `LinearMap` composite —
   linearity automatic; never separately identified, det-invisible). `LinearMap.ext` over `StairProd V 2 =
   V0 × (V1 × PUnit)` + `map_add` split + the explicit `stairMap`/`lowerTri` reduction. **This is the
-  in-Lean faithfulness gate** — a misaligned `eIn` fails the J00/J01 step.
+  in-Lean faithfulness gate** — a misaligned `eIn` fails the {J00, J01, J11} step. (Reviewer + decorrelated
+  Codex confirmed GENUINE, not vacuous: the coupling absorbs ONLY the det-invisible lower-left V0→V1 block;
+  the V0-line forces J00 (`= f0 v0`) and J01 (`= 0`), and the V1-line still requires J11 to rewrite
+  `(eihdT (0,(v1,()))).2.1` to the fixed `eihdF 1 v1` — all three fail `rfl`, so none is trivially true.)
 - **`eihdc`** — the coupling as `(LinearMap.snd …).comp (eihdT … ).comp eihdInclV0`.
 - **`eIn`** — a GENUINE `LinearEquiv (Fin (flatDim M) → ℝ) ≃ₗ StairProd (eihdV M) 2`, built (Option A,
   Codex-endorsed) as the composite
