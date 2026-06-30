@@ -14,7 +14,7 @@ UNCONDITIONAL ∀M-L2 interior-determinant headline `interiorDet_leaf_headline_u
 
 for the REAL `genBlkFlatLive` + leaf-pivot chart `phiFlatLiveAt`.
 
-The boundary factor `B = Bchart` is the `u`-FREE per-layer chart that reads the residual coordinates
+The boundary factor `B = BchartLeaf` is the `u`-FREE per-layer chart reading the residual coords
 as ORDINARY `y`-values (no radial blow-up); the `u`-scaling lives entirely in `pivotBlowupOn`. The
 map identity `hmap` reduces (funext + `paramsEquivFlat` injective) to a per-layer chart-parameter
 equality, which — via `Agen_congr` — reduces to matching `Nblk`/`Wblk`/`Cgen(k+1)` on the two
@@ -291,7 +291,7 @@ theorem leafSlot_ne_leafPivot (ha : StructAdm M (tach M))
   obtain ⟨hi, hj⟩ := leafSlot_inj M (tach M) ha (by norm_num) h
   exact hij ⟨by simp [hi], by simp [hj]⟩
 
-/-! ## The boundary factor `B = Bchart` (the `u`-free residual-reading chart) -/
+/-! ## The boundary factor `B = BchartLeaf` (the `u`-free residual-reading chart) -/
 
 /-- The direct leaf reader: `rfinDirect ha y i j := y (leafSlot … i j)` — reads ALL leaf entries
 (including the pivot slot `(0,0)`) DIRECTLY from `y`, no fixed-`1`, no radial scaling. -/
@@ -300,16 +300,17 @@ noncomputable def rfinDirect (ha : StructAdm M (tach M))
     Matrix (Fin (Text M (tach M) 2)) (Fin (Wext M 2)) ℝ :=
   Matrix.of fun i j => y (leafSlot M (tach M) ha (by norm_num) i j)
 
-/-- **The boundary-factor chart parameters** `Bparams ha y : Params M` — the `u`-FREE chart with the
+/-- **The boundary-factor chart parameters** `BparamsLeaf ha y : Params M` — the `u`-FREE chart, the
 radial scalar hardwired to `1`, reading the residual coords directly (`rfinDirect`) from `y`. -/
-noncomputable def Bparams (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) : Params M :=
+noncomputable def BparamsLeaf (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) :
+    Params M :=
   chartParamsGen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y)
     (hleStruct M (tach M) ha)
 
-/-- **The boundary factor** `Bchart ha y := paramsEquivFlat M (Bparams ha y)`. -/
-noncomputable def Bchart (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) :
+/-- **The boundary factor** `BchartLeaf ha y := paramsEquivFlat M (BparamsLeaf ha y)`. -/
+noncomputable def BchartLeaf (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) :
     Fin (routeMAmbient M) → ℝ :=
-  paramsEquivFlat M (Bparams ha y)
+  paramsEquivFlat M (BparamsLeaf ha y)
 
 /-! ## The Cgen-block match between the chart decoder and the `B` decoder (`L = 2`) -/
 
@@ -418,7 +419,7 @@ theorem chartParamsGen_match (ha : StructAdm M (tach M))
     chartParamsGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
         (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
         (hleStruct M (tach M) ha)
-      = Bparams ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) := by
+      = BparamsLeaf ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) := by
   set p₀ := leafPivot M ha (by norm_num) h0r h0c
   set pbo := pivotBlowupOn (activeM M ha) p₀
   funext s
@@ -433,14 +434,14 @@ theorem chartParamsGen_match (ha : StructAdm M (tach M))
     exact Agen_congr M (tach M) (hleStruct M (tach M) ha) (x p₀) 1 _ _ 1
       (live_Nblk_match ha h0r h0c x) (live_Wblk_match ha h0r h0c x) (Cgen2_match ha h0r h0c x)
 
-/-- **`hmap`**: `phiFlatLiveAt M ha hL p₀ = Bchart ha ∘ pivotBlowupOn activeM p₀` — the map identity
+/-- **`hmap`**: `phiFlatLiveAt M ha hL p₀ = BchartLeaf ha ∘ pivotBlowupOn activeM p₀` — the map id
 (obligation (1) of `interiorDet_leaf_headline`), discharged from the per-layer match
 (via the Cgen-block matches; NO explicit `chainA` reindexing). Both sides are `paramsEquivFlat ∘
 chartParamsGen`; `chartParamsGen_match` does the work. -/
 theorem hmap_leaf (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     phiFlatLiveAt M ha (by norm_num) (leafPivot M ha (by norm_num) h0r h0c)
-      = Bchart ha ∘ pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) := by
+      = BchartLeaf ha ∘ pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) := by
   funext x
   show phiGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
       (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
@@ -452,9 +453,9 @@ theorem hmap_leaf (ha : StructAdm M (tach M))
   rw [chartParamsGen_match ha h0r h0c x]
   rfl
 
-/-! ## `hasDB` — `Bchart` is differentiable (the chain is polynomial in `y`)
+/-! ## `hasDB` — `BchartLeaf` is differentiable (the chain is polynomial in `y`)
 
-`Bchart ha y = paramsEquivFlat M (chartParamsGen 1 … (genBlkFlatLive … (rfinDirect y) y) …)`. The
+`BchartLeaf ha y = paramsEquivFlat M (chartParamsGen 1 … (genBlkFlatLive … (rfinDirect y) y))`. The
 radial scalar is the constant `1` and every block reader (`readK/X/N/E/W`, `rfinDirect`) is a linear
 coordinate read, so the chain is polynomial in `y` — `DifferentiableAt` everywhere. The per-layer
 `Agen` differentiability assembles from the banked atoms (`diffAt_bmatStack`, `diffAt_rmatPad`,
@@ -566,44 +567,44 @@ theorem diffAt_Agen_live (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) 
         = fun _ => 0 from by funext y; rw [Agen, dif_neg hs]]
     exact differentiableAt_const _
 
-/-- **`Bchart` is differentiable** — the chain is polynomial in `y` (radial `1`, linear reads).
+/-- **`BchartLeaf` is differentiable** — the chain is polynomial in `y` (radial `1`, linear reads).
 Mirrors `phiFlatLiveR1_differentiableAt_of_Agen`: reduce through the linear CLE `paramsEquivFlat`,
 the `Params` Pi, and the per-component `reindex`, leaving the per-layer `diffAt_Agen_live`. -/
 theorem Bchart_differentiableAt (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ) :
-    DifferentiableAt ℝ (Bchart ha) u := by
-  have hchart : DifferentiableAt ℝ (fun y => Bparams ha y) u := by
+    DifferentiableAt ℝ (BchartLeaf ha) u := by
+  have hchart : DifferentiableAt ℝ (fun y => BparamsLeaf ha y) u := by
     apply differentiableAt_pi.mpr
     intro s
     exact diffAt_reindex_finCongr _ _ _ u (diffAt_Agen_live ha u s.val)
-  have hlin : DifferentiableAt ℝ (fun P => paramsEquivFlat M P) (Bparams ha u) := by
-    have hd := (paramsEquivFlatCLE M).differentiableAt (x := Bparams ha u)
+  have hlin : DifferentiableAt ℝ (fun P => paramsEquivFlat M P) (BparamsLeaf ha u) := by
+    have hd := (paramsEquivFlatCLE M).differentiableAt (x := BparamsLeaf ha u)
     refine hd.congr_of_eventuallyEq ?_
     filter_upwards with P; rw [paramsEquivFlatCLE_coe]
   exact hlin.comp u hchart
 
-/-- **`hasDB`** — `Bchart ha` has fderiv `fderiv ℝ (Bchart ha) (pbo u)` at the blown-up point
+/-- **`hasDB`** — `BchartLeaf ha` has fderiv `fderiv ℝ (BchartLeaf ha) (pbo u)` at the pivot point
 (`Bchart_differentiableAt`'s `HasFDerivAt`). Discharges obligation (2). -/
 theorem hasDB_leaf (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
-    HasFDerivAt (Bchart ha)
-      (fderiv ℝ (Bchart ha)
+    HasFDerivAt (BchartLeaf ha)
+      (fderiv ℝ (BchartLeaf ha)
         (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
       (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) :=
   (Bchart_differentiableAt ha _).hasFDerivAt
 
-/-! ## The ∀M-L2 interior-det headline with the CONCRETE `B = Bchart`, `hmap` AND `hasDB` DISCHARGED
+/-! ## ∀M-L2 interior-det headline: CONCRETE `B = BchartLeaf`, `hmap` AND `hasDB` DISCHARGED
 
-The capstone: `interiorDet_leaf_headline` with `B := Bchart ha` SUPPLIED, the map
+The capstone: `interiorDet_leaf_headline` with `B := BchartLeaf ha` SUPPLIED, the map
 identity `hmap` DISCHARGED (`hmap_leaf`) AND `hasDB` DISCHARGED (`hasDB_leaf`, the chain
 differentiability). This removes obligations (1) — the design doc's stated BOTTLENECK (the
-opaque-width per-layer reindex) — AND (2) — `Bchart` differentiability. The
+opaque-width per-layer reindex) — AND (2) — `BchartLeaf` differentiability. The
 SINGLE genuinely remaining input is the `hdet` engine reading `|det DB| = ∏_s engine_s` (the
 per-boundary Schur·LDU value — the heavy `BFactors`/coordinate-split determinant assembly, the
-`nodeChartGeneral` det piece). `DB` is the canonical `fderiv ℝ (Bchart ha) (pbo u)`. -/
+`nodeChartGeneral` det piece). `DB` is the canonical `fderiv ℝ (BchartLeaf ha) (pbo u)`. -/
 
-/-- **The ∀M-L2 interior-det headline from the CONCRETE `Bchart`** (`hmap` AND `hasDB`
+/-- **The ∀M-L2 interior-det headline from the CONCRETE `BchartLeaf`** (`hmap` AND `hasDB`
 discharged). The chart Jacobian abs-det is `|u_p₀|^{minAdm−1} · ∏_s engine_s`, against the
-boundary-factor fderiv `DB := fderiv ℝ (Bchart ha) (pbo u)`. The ONLY remaining hypothesis is the
+boundary-factor fderiv `DB := fderiv ℝ (BchartLeaf ha) (pbo u)`. The ONLY remaining input is the
 `hdet` engine reading `|det DB| = ∏ engine` (the Schur·LDU per-boundary value). The map identity
 (`hmap_leaf`) and the differentiability (`hasDB_leaf`) are both discharged — only the genuine engine
 det remains. -/
@@ -611,15 +612,16 @@ theorem interiorDet_leaf_headline_Bchart (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
     (u : Fin (routeMAmbient M) → ℝ)
     (engine : Fin 2 → ℝ)
-    (hdet : |LinearMap.det (fderiv ℝ (Bchart ha)
+    (hdet : |LinearMap.det (fderiv ℝ (BchartLeaf ha)
         (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
       = ∏ s : Fin 2, engine s) :
     |LinearMap.det (fderiv ℝ (phiFlatLiveAt M ha (by norm_num)
         (leafPivot M ha (by norm_num) h0r h0c)) u).toLinearMap|
       = |u (leafPivot M ha (by norm_num) h0r h0c)| ^ (minAdm M - 1)
         * ∏ s : Fin 2, engine s :=
-  interiorDet_leaf_headline_engine M ha h0r h0c u (Bchart ha)
-    (fderiv ℝ (Bchart ha) (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
+  interiorDet_leaf_headline_engine M ha h0r h0c u (BchartLeaf ha)
+    (fderiv ℝ (BchartLeaf ha)
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
     engine (hmap_leaf ha h0r h0c) (hasDB_leaf ha h0r h0c u) hdet
 
 end L2
