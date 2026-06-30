@@ -1,5 +1,5 @@
 import DLNFibre.Core.DeformationExt
-import DLNFibre.Core.MatrixKaehler
+import DLNFibre.Core.LinearAlgebra.BaseChange
 import Mathlib.LinearAlgebra.TensorProduct.Pi
 import Mathlib.LinearAlgebra.TensorProduct.Tower
 import Mathlib.Data.Real.Basic
@@ -20,7 +20,7 @@ This is the dimension-side of the real↔complex transfer: the orbit dimension d
 field, so `varietyDim_ℝ(orbit) = varietyDim_K(orbit)` follows from the squeeze
 `varietyDim = finrank (range deformationδ)` (`Core.VoigtDischarge`) on each side.
 
-**Route.** The banked brick `finrank_range_baseChange` (`Core.MatrixKaehler`) gives
+**Route.** The banked brick `finrank_range_baseChange` (`Core.LinearAlgebra.BaseChange`) gives
 `finrank K (range (f.baseChange K)) = finrank k (range f)`. The general conjugacy lemma
 `finrank_range_eq_of_baseChange_conj` lifts it across a pair of `K`-linear equivs `cochain*_K ≅ K ⊗
 cochain*_k` intertwining the two differentials; the `deformationδ`-specific input is the commuting

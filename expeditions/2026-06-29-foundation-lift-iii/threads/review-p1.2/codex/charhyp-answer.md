@@ -1,0 +1,8 @@
+(Q1) **No.** Standard math: `[PerfectField k]` does not imply `PerfectField (k(X_1,...,X_n))` when `char k = p > 0` and `n > 0`; `X_1` has no `p`th root in the rational function field. Worse, the theorem is false under `[PerfectField k]`: take `k = F_p`, `B = k[T]`, `K = k(T)`, `x_0 = T^p`. Then `x_0` is algebraically independent over `k`, but `D_k(x_0) = d(T^p) = 0`, so the singleton differential is not `K`-linearly independent. Mathlib inference not source-verified here: the same proof cannot obtain the needed perfect-field instance on `Pf`.
+
+(Q2) Standard math:  
+`k(X_1,...,X_n)` is perfect iff `char k = 0`, or `n = 0` and `k` is perfect. Thus for positive `n`, perfection of the rational function field is exactly the char-zero case.
+
+For a fixed family, put `F = k(x_1,...,x_n) ⊂ K = FractionRing B`. The clean genuine hypothesis is that `F → K` is separable/formally smooth; under essentially finite type this is “separably generated”. Then the Jacobi-Zariski base-change map is injective and the usual basis `dX_i` maps to `dx_i`. In char `p`, the exact differential criterion is `p`-independence of the `x_i` over `k K^p`; algebraic independence alone is not enough.
+
+(Q3) **leave.** `CharZero k` is optimal for the current field-only theorem quantified over all `B` and all algebraically independent families, since every char-`p` field has the `B = k[T]`, `x = T^p` counterexample. Roadmap a separate conditional lemma assuming separability/formal smoothness of `k(x_i) → K`; that is not a drop-in `[PerfectField k]` replacement.

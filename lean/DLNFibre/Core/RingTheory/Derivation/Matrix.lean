@@ -1,13 +1,9 @@
 import Mathlib.RingTheory.Derivation.Basic
 import Mathlib.Data.Matrix.Mul
 import Mathlib.LinearAlgebra.Matrix.NonsingularInverse
-import Mathlib.LinearAlgebra.TensorProduct.Tower
-import Mathlib.LinearAlgebra.Dimension.Constructions
-import Mathlib.RingTheory.Flat.Basic
-import Mathlib.LinearAlgebra.TensorProduct.RightExactness
 
 /-!
-# `DLNFibre.Core.MatrixKaehler` — entrywise matrix calculus + a base-change rank brick
+# `DLNFibre.Core.RingTheory.Derivation.Matrix` — entrywise matrix calculus for a `Derivation`
 
 A bounded slice of matrix differential calculus over a `Derivation R A M` (`A` a commutative ring,
 `M` an `A`-module), enough to differentiate `genericUnit · genericUnitInv = 1` for the A4.3
@@ -23,11 +19,6 @@ The two derivation facts, for `D : Derivation R A M`:
 * **The matrix-Kähler inverse identity** (`derivMatrix_inv_apply`): if `U * U⁻¹ = 1` entrywise over
   `A`, then `D ((U⁻¹) r c) = − Σ_{s,t} (U⁻¹ r s) • (U⁻¹ t c) • D (U s t)` — the entrywise
   `D(U⁻¹) = −U⁻¹ (DU) U⁻¹`.
-
-Plus a base-change rank brick (`finrank_range_baseChange`): for a `k`-linear `f` between `k`-spaces
-and a field extension `K/k`, `finrank K (range (f.baseChange K)) = finrank k (range f)` — base
-change preserves the rank of a linear map. This is the rank-side tool the A4.3 generic-Jacobian
-bound consumes (`genericDifferentialRank` over `K = FractionRing B` vs `finrank` over `k`).
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -96,32 +87,5 @@ theorem derivMatrix_inv_apply {U W : Matrix m m A} (hUW : U * W = 1) (r c : m) :
       = - ∑ s : m, W r p • W s c • D (U p s) := fun p ↦ by
     rw [derivMatrix_inv_aux D hUW p c, smul_neg, Finset.smul_sum]
   rw [Finset.sum_congr rfl fun p _ ↦ e3 p, Finset.sum_neg_distrib]
-
-/-! ## Base-change rank brick -/
-
-open Module LinearMap in
-/-- **Base change preserves the rank of a linear map.** For `f : V →ₗ[k] W` between `k`-modules with
-`range f` finite-dimensional, and a field extension `K/k`, the base-changed map `f.baseChange K`
-(`= K ⊗ f`) has `finrank K (range (f.baseChange K)) = finrank k (range f)`. Factor
-`f = subtype ∘ rangeRestrict`; base change preserves the surjection (`lTensor_surjective`, so the
-range of the base-changed `rangeRestrict` is `⊤`) and the injection (over the flat `K`, via
-`Flat.lTensor_preserves_injective_linearMap`, so the range of the base-changed `subtype` is
-`≅ K ⊗ range f`); then `Module.finrank_baseChange`. The rank-side tool for the A4.3 bound. -/
-theorem finrank_range_baseChange {k : Type*} [Field k] {V W : Type*} [AddCommGroup V] [Module k V]
-    [AddCommGroup W] [Module k W] (K : Type*) [Field K] [Algebra k K]
-    (f : V →ₗ[k] W) [Module.Finite k (LinearMap.range f)] :
-    finrank K (LinearMap.range (f.baseChange K)) = finrank k (LinearMap.range f) := by
-  have hfac : f.baseChange K
-      = (LinearMap.range f).subtype.baseChange K ∘ₗ f.rangeRestrict.baseChange K := by
-    rw [← LinearMap.baseChange_comp, subtype_comp_codRestrict]
-  rw [hfac, LinearMap.range_comp]
-  have hsurj : LinearMap.range (f.rangeRestrict.baseChange K) = ⊤ := by
-    rw [LinearMap.range_eq_top, LinearMap.baseChange_eq_ltensor]
-    exact lTensor_surjective K f.surjective_rangeRestrict
-  rw [hsurj, Submodule.map_top]
-  have hinj : Function.Injective ((LinearMap.range f).subtype.baseChange K) := by
-    rw [LinearMap.baseChange_eq_ltensor]
-    exact Module.Flat.lTensor_preserves_injective_linearMap _ (Submodule.injective_subtype _)
-  rw [LinearMap.finrank_range_of_inj hinj, Module.finrank_baseChange]
 
 end DLNFibre.Core

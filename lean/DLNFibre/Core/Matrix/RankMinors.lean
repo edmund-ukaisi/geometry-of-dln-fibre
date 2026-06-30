@@ -159,7 +159,12 @@ determinantal-rank criterion `rank_le_iff_forall_submatrix_det_eq_zero`,
 `(B.map ι).rank ≤ r ↔ B.rank ≤ r` for every `r`, because each `(r+1)×(r+1)` minor satisfies
 `det ((B.map ι).submatrix er ec) = ι (det (B.submatrix er ec))` (`Matrix.submatrix_map` +
 `RingHom.map_det`), and `ι` injective gives `ι x = 0 ↔ x = 0`. The rank base-change micro-lemma the
-real↔complex codim transfer rests on. -/
+real↔complex codim transfer rests on.
+
+This is the **entrywise-matrix** base-change-rank variant, distinct from the **linear-map** variant
+`finrank_range_baseChange` (`Core.LinearAlgebra.BaseChange`, `K ⊗ f`) and the **flat
+differential-family-span** variant `Module.Flat.linearIndependent_one_tmul` (Mathlib, used inline in
+`GenericRank`). -/
 theorem rank_map_eq_of_injective {R S : Type*} [Field R] [Field S]
     {p q : ℕ} (B : Matrix (Fin p) (Fin q) R) (ι : R →+* S) (hι : Function.Injective ι) :
     (B.map ι).rank = B.rank := by

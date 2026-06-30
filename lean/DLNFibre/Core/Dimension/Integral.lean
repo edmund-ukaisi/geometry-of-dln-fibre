@@ -2,6 +2,8 @@ import Mathlib.RingTheory.Ideal.GoingUp
 import Mathlib.RingTheory.Spectrum.Prime.Topology
 import Mathlib.RingTheory.Spectrum.Prime.RingHom
 import Mathlib.RingTheory.KrullDimension.Basic
+import Mathlib.RingTheory.AlgebraicIndependent.TranscendenceBasis
+import Mathlib.RingTheory.Algebraic.Integral
 
 /-!
 # Krull dimension of an integral ring extension
@@ -18,6 +20,13 @@ by the standard going-up route, each at the weakest hypotheses that suffice:
   (`exists_ltSeries_comap_last_of_isIntegral`), with injectivity supplying the bottom of the chain
   via lying-over over `⊥`.
 
+The companion transcendence-degree fact `trdeg_eq_of_integral_injective` — an integral injective
+`k[Fin s] →ₐ[k] B` into a `k`-domain forces `trdeg k B = s` — also lives here: it is the
+"integral ⟹ trdeg" twin of the dimension invariance, and a low-level fact importing only the
+Mathlib trdeg + integral API (no Kähler, no orbit machinery), so both the dimension stack
+(`Dimension.Localization`) and the orbit specialisation (`AffineNoetherRank`) consume it without
+pulling in heavier modules.
+
 This file mirrors the eventual Mathlib home `Mathlib.RingTheory.KrullDimension.Integral`; all
 statements are at `RingHom` / `Algebra` generality over commutative rings. No new interface is
 assumed — every step is a proved Mathlib lemma.
@@ -26,6 +35,8 @@ assumed — every step is a proved Mathlib lemma.
 open Order PrimeSpectrum
 
 namespace DLNFibre.Core.Dimension
+
+universe u
 
 variable {R S A : Type*}
 
@@ -118,5 +129,31 @@ example (R : Type*) [CommRing R] : ringKrullDim R = ringKrullDim R :=
   ringKrullDim_eq_of_integral_injective
     (RingHom.isIntegral_of_surjective (RingHom.id R) Function.surjective_id)
     Function.injective_id
+
+/-! ## The transcendence-degree twin: integral injective ⟹ `trdeg = s` -/
+
+/-- An integral injective `k`-algebra map from a polynomial ring `k[Fin s]` into a `k`-domain `B`
+forces `trdeg k B = s`: `B` is algebraic over the image of `k[Fin s]`, so by tower additivity
+`trdeg_add_eq` the degree splits as `trdeg_k k[Fin s] + trdeg_{k[Fin s]} B = s + 0`.
+
+The "integral ⟹ trdeg" twin of `ringKrullDim_eq_of_integral_injective`; together they give
+`dim = trdeg` for an affine domain after Noether normalization. Char-free. -/
+theorem trdeg_eq_of_integral_injective {k : Type u} [Field k] {s : ℕ} {B : Type u} [CommRing B]
+    [IsDomain B] [Algebra k B] (g : MvPolynomial (Fin s) k →ₐ[k] B) (hinj : Function.Injective g)
+    (hint : g.IsIntegral) :
+    Algebra.trdeg k B = (s : Cardinal) := by
+  letI : Algebra (MvPolynomial (Fin s) k) B := g.toRingHom.toAlgebra
+  haveI : IsScalarTower k (MvPolynomial (Fin s) k) B :=
+    IsScalarTower.of_algebraMap_eq fun x ↦ (g.commutes x).symm
+  haveI : FaithfulSMul (MvPolynomial (Fin s) k) B :=
+    (faithfulSMul_iff_algebraMap_injective ..).mpr hinj
+  haveI : Algebra.IsIntegral (MvPolynomial (Fin s) k) B :=
+    (Algebra.isIntegral_def).mpr (fun b ↦ hint b)
+  haveI : Algebra.IsAlgebraic (MvPolynomial (Fin s) k) B := inferInstance
+  have h : Algebra.trdeg k (MvPolynomial (Fin s) k) + Algebra.trdeg (MvPolynomial (Fin s) k) B
+      = Algebra.trdeg k B := trdeg_add_eq k (MvPolynomial (Fin s) k)
+  rw [MvPolynomial.trdeg_of_isDomain, trdeg_eq_zero, add_zero, Cardinal.mk_fin,
+    Cardinal.lift_natCast] at h
+  exact h.symm
 
 end DLNFibre.Core.Dimension

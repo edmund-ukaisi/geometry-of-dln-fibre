@@ -40,10 +40,12 @@ import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.RingTheory.Kaehler.GenericRank
+import DLNFibre.Core.Dimension.Trdeg
 import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
-import DLNFibre.Core.MatrixKaehler
+import DLNFibre.Core.LinearAlgebra.BaseChange
+import DLNFibre.Core.RingTheory.Derivation.Matrix
 import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
@@ -459,7 +461,8 @@ import DLNFibre.Core.FibreTargetOverlap
 -- L7 (rlct-bridge): finrank (range deformationδ) is base-change invariant along a field extension
 -- K/k — the orbit-tangent dimension is the SAME integer over ℝ and K. General conjugacy lemma
 -- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
--- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
+-- LinearAlgebra.BaseChange.finrank_range_baseChange brick. The dimension-side of the real↔complex
+-- transfer.
 import DLNFibre.Core.DeformationBaseChange
 -- foundation-lift P1-R1: the minimal-primes-of-`sInf`-of-a-finite-prime-family SPIKE, extracted
 -- from SigmaComponents to a clean Mathlib-grade home (ns `Ideal`, mirrors
