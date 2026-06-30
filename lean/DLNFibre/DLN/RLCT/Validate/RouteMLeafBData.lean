@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMLeafHeadline
 import DLNFibre.DLN.RLCT.Validate.RouteMHmapGen
+import DLNFibre.DLN.RLCT.Validate.RouteMChainAssembleDiff
+import DLNFibre.DLN.RLCT.Validate.RouteMChartDiff
 
 /-!
 # `RouteMLeafBData` — the concrete boundary factor `B` discharging the ∀M-L2 interior-det headline
@@ -449,6 +451,176 @@ theorem hmap_leaf (ha : StructAdm M (tach M))
         (hleStruct M (tach M) ha)) = _
   rw [chartParamsGen_match ha h0r h0c x]
   rfl
+
+/-! ## `hasDB` — `Bchart` is differentiable (the chain is polynomial in `y`)
+
+`Bchart ha y = paramsEquivFlat M (chartParamsGen 1 … (genBlkFlatLive … (rfinDirect y) y) …)`. The
+radial scalar is the constant `1` and every block reader (`readK/X/N/E/W`, `rfinDirect`) is a linear
+coordinate read, so the chain is polynomial in `y` — `DifferentiableAt` everywhere. The per-layer
+`Agen` differentiability assembles from the banked atoms (`diffAt_bmatStack`, `diffAt_rmatPad`,
+`diffAt_chainA`/`diffAt_chainQ`, `diffAt_read*`); the chart-level reduction mirrors
+`phiFlatLiveR1_differentiableAt_of_Agen` (linear CLE + Params Pi + reindex). -/
+
+/-- `rfinDirect ha` is differentiable (a linear matrix coordinate read). -/
+theorem diffAt_rfinDirect (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ) :
+    DifferentiableAt ℝ (fun y => rfinDirect ha y) u := by
+  apply differentiableAt_pi.mpr; intro i; apply differentiableAt_pi.mpr; intro j
+  exact differentiableAt_apply _ u
+
+/-- The `genBlkFlatLive` decoder's `Cgen` (radial `1`) is differentiable at each `k`. -/
+theorem diffAt_Cgen_live (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ) (k : ℕ) :
+    DifferentiableAt ℝ
+      (fun y => Cgen (1 : ℝ) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) k) u := by
+  by_cases hk : k < 2
+  · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Bmat k
+            * chainQ (genWidthEq M (tach M) (hleStruct M (tach M) ha) k hk)
+              ((genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Nblk k)
+            + (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Rmat k from by
+      funext y; rw [Cgen, dif_pos hk]]
+    -- the blocks are the structured decoder's; reuse the banked structural diff atoms
+    refine (DifferentiableAt.matMul ?_ (diffAt_chainQ _ _ u ?_)).add
+      (DifferentiableAt.const_smul ?_ (1 : ℝ))
+    · match k with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < 2
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Bmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]
+          exact diffAt_bmatStack M (tach M) (j + 1) (ha.hdesc j hj) _ _ u
+            (diffAt_readK M (tach M) ha ⟨j, hj⟩ u) (diffAt_readX M (tach M) ha ⟨j, hj⟩ u)
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Bmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match k with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < 2
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]; exact diffAt_readN M (tach M) ha ⟨j, hj⟩ u
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match k with
+      | 0 =>
+        show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat 0) u
+        exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < 2
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]
+          exact diffAt_rmatPad M (tach M) (j + 1) (ha.hdesc j hj) (ha.hub j) _ u
+            (diffAt_readE M (tach M) ha ⟨j, hj⟩ u)
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+  · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Rfin k from by
+      funext y; rw [Cgen, dif_neg hk]]
+    refine DifferentiableAt.const_smul ?_ (1 : ℝ)
+    by_cases hkL : k = 2
+    · subst hkL
+      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Rfin 2)
+          = fun y => rfinDirect ha y from by funext y; simp [genBlkFlatLive]]
+      exact diffAt_rfinDirect ha u
+    · rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Rfin k)
+          = fun _ => 0 from by funext y; simp only [genBlkFlatLive, dif_neg hkL]]
+      exact differentiableAt_const _
+
+/-- The `genBlkFlatLive` decoder's `Agen` (radial `1`) is differentiable at each `s`. -/
+theorem diffAt_Agen_live (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ) (s : ℕ) :
+    DifferentiableAt ℝ
+      (fun y => Agen (1 : ℝ) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) s) u := by
+  by_cases hs : s < 2
+  · rw [show (fun y => Agen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) s)
+        = fun y => chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) s hs)
+            ((genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Nblk s)
+            ((genBlkFlatLive M (tach M) ha (rfinDirect ha y) y).Wblk s)
+            (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y)
+              (hleStruct M (tach M) ha) (s + 1)) from by funext y; rw [Agen, dif_pos hs]]
+    refine diffAt_chainA _ _ _ _ u ?_ ?_ (diffAt_Cgen_live ha u (s + 1))
+    · match s with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < 2
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]; exact diffAt_readN M (tach M) ha ⟨j, hj⟩ u
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match s with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < 2
+        · by_cases hj2 : j + 1 < 2
+          · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+            simp only [genBlkFlatStruct, dif_pos hj, dif_pos hj2]
+            exact diffAt_readW M (tach M) ha ⟨j, hj⟩ hj2 u
+          · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+            simp only [genBlkFlatStruct, dif_pos hj, dif_neg hj2]; exact differentiableAt_const _
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+  · rw [show (fun y => Agen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y) (hleStruct M (tach M) ha) s)
+        = fun _ => 0 from by funext y; rw [Agen, dif_neg hs]]
+    exact differentiableAt_const _
+
+/-- **`Bchart` is differentiable** — the chain is polynomial in `y` (radial `1`, linear reads).
+Mirrors `phiFlatLiveR1_differentiableAt_of_Agen`: reduce through the linear CLE `paramsEquivFlat`,
+the `Params` Pi, and the per-component `reindex`, leaving the per-layer `diffAt_Agen_live`. -/
+theorem Bchart_differentiableAt (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ) :
+    DifferentiableAt ℝ (Bchart ha) u := by
+  have hchart : DifferentiableAt ℝ (fun y => Bparams ha y) u := by
+    apply differentiableAt_pi.mpr
+    intro s
+    exact diffAt_reindex_finCongr _ _ _ u (diffAt_Agen_live ha u s.val)
+  have hlin : DifferentiableAt ℝ (fun P => paramsEquivFlat M P) (Bparams ha u) := by
+    have hd := (paramsEquivFlatCLE M).differentiableAt (x := Bparams ha u)
+    refine hd.congr_of_eventuallyEq ?_
+    filter_upwards with P; rw [paramsEquivFlatCLE_coe]
+  exact hlin.comp u hchart
+
+/-- **`hasDB`** — `Bchart ha` has fderiv `fderiv ℝ (Bchart ha) (pbo u)` at the blown-up point
+(`Bchart_differentiableAt`'s `HasFDerivAt`). Discharges obligation (2). -/
+theorem hasDB_leaf (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (Bchart ha)
+      (fderiv ℝ (Bchart ha)
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) :=
+  (Bchart_differentiableAt ha _).hasFDerivAt
+
+/-! ## The ∀M-L2 interior-det headline with the CONCRETE `B = Bchart`, `hmap` AND `hasDB` DISCHARGED
+
+The capstone: `interiorDet_leaf_headline` with `B := Bchart ha` SUPPLIED, the map
+identity `hmap` DISCHARGED (`hmap_leaf`) AND `hasDB` DISCHARGED (`hasDB_leaf`, the chain
+differentiability). This removes obligations (1) — the design doc's stated BOTTLENECK (the
+opaque-width per-layer reindex) — AND (2) — `Bchart` differentiability. The
+SINGLE genuinely remaining input is the `hdet` engine reading `|det DB| = ∏_s engine_s` (the
+per-boundary Schur·LDU value — the heavy `BFactors`/coordinate-split determinant assembly, the
+`nodeChartGeneral` det piece). `DB` is the canonical `fderiv ℝ (Bchart ha) (pbo u)`. -/
+
+/-- **The ∀M-L2 interior-det headline from the CONCRETE `Bchart`** (`hmap` AND `hasDB`
+discharged). The chart Jacobian abs-det is `|u_p₀|^{minAdm−1} · ∏_s engine_s`, against the
+boundary-factor fderiv `DB := fderiv ℝ (Bchart ha) (pbo u)`. The ONLY remaining hypothesis is the
+`hdet` engine reading `|det DB| = ∏ engine` (the Schur·LDU per-boundary value). The map identity
+(`hmap_leaf`) and the differentiability (`hasDB_leaf`) are both discharged — only the genuine engine
+det remains. -/
+theorem interiorDet_leaf_headline_Bchart (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ)
+    (engine : Fin 2 → ℝ)
+    (hdet : |LinearMap.det (fderiv ℝ (Bchart ha)
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ s : Fin 2, engine s) :
+    |LinearMap.det (fderiv ℝ (phiFlatLiveAt M ha (by norm_num)
+        (leafPivot M ha (by norm_num) h0r h0c)) u).toLinearMap|
+      = |u (leafPivot M ha (by norm_num) h0r h0c)| ^ (minAdm M - 1)
+        * ∏ s : Fin 2, engine s :=
+  interiorDet_leaf_headline_engine M ha h0r h0c u (Bchart ha)
+    (fderiv ℝ (Bchart ha) (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
+    engine (hmap_leaf ha h0r h0c) (hasDB_leaf ha h0r h0c u) hdet
 
 end L2
 
