@@ -88,6 +88,37 @@ bundled `LinearMap`s, NOT `Matrix.mulLeftLinearMap` which is absent at this pin)
 nReg = `(H0·r−r²)+r·H2` (`finrank_prod`+`finrank_matrix`+rank-nullity surjection); `finrank_le_of_injective`
 + `Submodule.finrank_mono`. NOT yet in the aggregator — controller wires DLNFibre.lean import + AxCheck.
 
+## STEP 1 route (the analytic-Jacobian ↔ jointDiffL2 tie) — de-risked, sub-identities verified
+
+The chart's first-block derivative `DG(0)` reads the banked analytic gradient
+`prodAuxEntryDeriv H (gmapAt H v) 0 gmapDeriv 2 i j` (`hasStrictFDerivAt_lossEntry`). To feed step 2b's
+rank bound to the chart, prove the ENTRY identity (target signature typechecks):
+
+    (prodAuxEntryDeriv H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 2 _ i j) δ
+      = (jointDiffL2 H v ((paramsEquivFlatLinear H).symm δ)) i j
+
+REUSE `paramsEquivFlatLinear H : Params H ≃ₗ[ℝ] (Fin (flatDim H) → ℝ)` (banked, `ParamsFlatLinear.lean`)
+— the LINEAR flatten, so `.symm` is the linear flat→Params iso. VERIFIED-CLEAN sub-identities:
+- `gmapDeriv H s a b δ = δ (flatIdx H s a b)` is `rfl`;
+- `(paramsEquivFlat H).symm δ s a b = δ (flatIdx H s a b)` via `paramsEquivFlat_symm_entry` + `rfl`;
+so `gmapDeriv H s a b δ = ((paramsEquivFlatLinear H).symm δ) s a b` (use `paramsEquivFlatLinear_coe`).
+The cast-heavy part: unfold `prodAuxEntryDeriv` at `k+1=2` then `k+1=1` (`prodAuxEntryDeriv 0 = 0`,
+`prodAux 0 = 1`), giving `∑_m (v⁰_{im}·gmapDeriv(1,m,j) + v¹_{mj}·gmapDeriv(0,i,m))`; match against
+`(δ⁰·v¹ + v⁰·δ¹)_{ij}` (the unfolded `jointDiffL2`) entry via `Matrix.mul_apply` + the coord identities.
+The `e1 ▸ / e2 ▸` dependent-`Fin` casts in `prodAuxEntryDeriv`'s def are the friction (the recurring
+opaque-width quirk). THEN: flat rank bound `nReg ≤ (jacFlat-matrix).rank` follows from step 2b via
+`range (jointDiffL2 ∘ₗ Lflat.symm) = range jointDiffL2` (compose with the surjective linear iso).
+
+## REMAINING after step 1 (controller's sequence)
+- #229 minor: banked `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank` (rank≥nReg ⟹
+  nonzero nReg-minor); W = its columns (the ∃-extraction, NEVER a fixed complement — gate-4 trap).
+- #230 Φ = (g_S − g_S(0), proj Wᶜ), det DΦ(0) = ±det(minor) ≠ 0 (block-triangular), f' :=
+  `toContinuousLinearEquivOfDetNeZero` (coe def-eq DΦ ⟹ hΦ' free), ContDiff ℝ 2.
+- #231 wire via `S1IFTChart.rlctAtOn_eq_of_contDiff_chart_inv`: F = f∘Ψsymm = ∑s²+∑q² (selected
+  g_k∘Ψsymm=π_k off the exposed inverse; inactive g's = q, global C¹ via bump-cutoff χ≡1 near 0) →
+  MP-reindex ℝ^N≅ℝ^nReg×Y → `dln_hchart_flat` → `deepest_le_of_optimal_of_iftResidual` hchart slot.
+  Bump-cutoff (pinning the IFT nbhd to feed χ) is the flagged 3-attempt friction spot.
+
 SPECIFY validated (the original jointDiffL2 SPECIFY, now subsumed by the adopted base above):
 - **`jointDiffL2 H v : Params H →ₗ[ℝ] Mat (H 0) (H 2)`**, `δ ↦ layer0 δ * layer1 v + layer0 v * layer1 δ`
   (`= δ⁰A²_v + A¹_v δ²`). The `layer0`/`layer1` ascriptions (`@[reducible]`, `A 0`/`A 1` re-typed to
