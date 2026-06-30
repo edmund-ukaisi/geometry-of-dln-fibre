@@ -517,6 +517,14 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 -- (RouteMBoxThresholdRRP imports RouteMBoxReduction + RouteMSchurRecStepP, transitively pulling the whole
 -- P-chain: RouteMSchurCapACarveP/CapAP/DirectMorseP/ThresholdP/GenCover/Firing/General). S2-FREE, clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+-- R1-UPPER general-(M0,M1,M2) L=2 leg (the rectangular-Schur extension of the square `_rrp` family):
+-- `routeMBoxThresholdFinite_mnp` + `routeMLayerCover_coverLe_mnp` for ARBITRARY widths (M0≠M1) at depth 2,
+-- via the real `min(m,n)` recursion `rectSchurRecStep_mnp` (0 vacuous / 1 corank-leaf=cap-B / ≥2 split on
+-- λ vs p/2 → cap-B directMorse or cap-A interior carve). The whole rect chain (8 files: RouteMSchurRect[SPEC]
+-- /N2b/Cover/Angular/Chart/Carve/Step/CapB) lands here — RouteMSchurRectCapB is the top (transitively pulls
+-- the other 7). Item-97 regime (ii), the LAST bounded UPPER build for fully-general L=2. CLEAN-THREE on the
+-- per-step + box-finiteness; cover_le adds only the permitted `monomial_rlct` (hfin leaf side, NO new axiom).
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 -- R1-LOWER ∀M smeared-square achiever: the clean-three `routeMCore_smearedL2_square_uncond`
 -- (`∫⁻_{cubeBox 2δ} |routeMCore M|^{−c'} = ⊤` box-divergence, ARBITRARY M, scoped `r = M 0` — the
 -- smeared-stratum L=2 square case `M0 < M1 & r = M0`). The three analytic per-family facts (hcancel /
@@ -609,7 +617,7 @@ import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
 -- parameterization: BDataAt/phiFlatLiveR1At/radialComp_abs_det_at + pRad chosen from univ\readerSet,
--- ∉readerSet by membership). Cone-scoped (13 files); the entry-Jacobian bijection renamed bdataSlotEquiv
+-- ∉readerSet by membership). Cone-scoped; the entry-Jacobian bijection renamed bdataSlotEquiv
 -- (deconflicted vs smeared RouteMSmearedDecodeL2.slotEquiv — different defs). ∀M-ready.
 import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.

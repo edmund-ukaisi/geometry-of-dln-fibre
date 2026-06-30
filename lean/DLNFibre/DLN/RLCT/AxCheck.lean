@@ -6,6 +6,7 @@ import DLNFibre.DLN.RLCT.Validate.Case222Rlct
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCorank3
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
@@ -101,6 +102,14 @@ open DLNFibre.DLN.RLCT
 -- clean-three chain `schurCoreP_two → schurCoreP_capA → schurRecStep_p → routeMBoxThresholdFinite_rrp`.
 -- Must be CLEAN-THREE [propext, Classical.choice, Quot.sound]: S2-FREE, no `monomial_rlct`, no `sorryAx`.
 #print axioms routeMBoxThresholdFinite_rrp
+
+-- R1-UPPER general-(M0,M1,M2) L=2 leg (the rectangular-Schur extension): the real `min(m,n)` recursion
+-- `rectSchurRecStep_mnp` + the box-finiteness `routeMBoxThresholdFinite_mnp` must be CLEAN-THREE [propext,
+-- Classical.choice, Quot.sound] (S2-FREE, no sorryAx); `routeMLayerCover_coverLe_mnp` adds only the
+-- permitted `monomial_rlct` (hfin leaf side, NO new axiom — same S2 the headline rides). Item-97 regime (ii).
+#print axioms rectSchurRecStep_mnp
+#print axioms routeMBoxThresholdFinite_mnp
+#print axioms routeMLayerCover_coverLe_mnp
 
 -- L2 Skeleton rung 1/5 (`product_reduction`) at L=2 — `deepest_gauge_construction_L2`, the standalone
 -- clean-three L=2 witness for the deepest-point gauge-slice diffeo construction (the geometric obligation
