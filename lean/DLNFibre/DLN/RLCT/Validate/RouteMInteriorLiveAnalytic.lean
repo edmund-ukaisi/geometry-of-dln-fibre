@@ -270,6 +270,41 @@ theorem continuous_toChain_E {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t
       Matrix (Fin (Text M' t s)) (Fin (Wext M' (s + 1))) ℝ)) :=
   (hB.hRmat s).matrix_mul (continuous_Agen hB hg hle s)
 
+/-- **`Hmat 0` of the L=2 chain is continuous in `x`** — the depth-2 telescope, each chain-projection
+wrapped with `show … from` so the codomain is the fixed `Text/Wext` type (`continuous_matrix` /
+`matrix_mul` reject the syntactically-`x`-dependent `.Twid`/`.Wwid` projection codomain otherwise). -/
+theorem continuous_Hmat0_L2 {M' t : Fin (2 + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B) {g : X → ℝ} (hg : Continuous g)
+    (hle : ∀ k, k < 2 → Text M' t (k + 1) ≤ Wext M' k) :
+    Continuous (fun x => (show Matrix (Fin (Text M' t 0)) (Fin (Wext M' 2)) ℝ
+      from (chainOfMt (g x) M' t (B x) hle).toChain.Hmat 0 (by omega))) := by
+  have hsuf2 : Continuous (fun x => (show Matrix (Fin (Wext M' 2)) (Fin (Wext M' 2)) ℝ
+      from (chainOfMt (g x) M' t (B x) hle).toChain.suffix 2 (le_refl 2))) := by
+    refine Continuous.congr (continuous_const
+      (y := (1 : Matrix (Fin (Wext M' 2)) (Fin (Wext M' 2)) ℝ))) (fun x => ?_)
+    exact ((chainOfMt (g x) M' t (B x) hle).toChain.suffix_last).symm
+  have hsuf1 : Continuous (fun x => (show Matrix (Fin (Wext M' 1)) (Fin (Wext M' 2)) ℝ
+      from (chainOfMt (g x) M' t (B x) hle).toChain.suffix 1 (by omega))) := by
+    refine Continuous.congr (Continuous.matrix_mul (n := Fin (Wext M' 2))
+      (continuous_toChain_A hB hg hle 1) hsuf2) (fun x => ?_)
+    exact ((chainOfMt (g x) M' t (B x) hle).toChain.suffix_succ 1 (by omega)).symm
+  have hH2 : Continuous (fun x => (show Matrix (Fin (Text M' t 2)) (Fin (Wext M' 2)) ℝ
+      from (chainOfMt (g x) M' t (B x) hle).toChain.Hmat 2 (le_refl 2))) := by
+    refine Continuous.congr (hB.hRfin 2) (fun x => ?_)
+    exact ((chainOfMt (g x) M' t (B x) hle).toChain.Hmat_last).symm
+  have hH1 : Continuous (fun x => (show Matrix (Fin (Text M' t 1)) (Fin (Wext M' 2)) ℝ
+      from (chainOfMt (g x) M' t (B x) hle).toChain.Hmat 1 (by omega))) := by
+    refine Continuous.congr (Continuous.add
+      (Continuous.matrix_mul (n := Fin (Text M' t 2)) (continuous_toChain_B hB hle 1) hH2)
+      (Continuous.matrix_mul (n := Fin (Wext M' 2)) (continuous_toChain_E hB hg hle 1) hsuf2))
+      (fun x => ?_)
+    exact ((chainOfMt (g x) M' t (B x) hle).toChain.Hmat_succ 1 (by omega)).symm
+  refine Continuous.congr (Continuous.add
+    (Continuous.matrix_mul (n := Fin (Text M' t 1)) (continuous_toChain_B hB hle 0) hH1)
+    (Continuous.matrix_mul (n := Fin (Wext M' 1)) (continuous_toChain_E hB hg hle 0) hsuf1))
+    (fun x => ?_)
+  exact ((chainOfMt (g x) M' t (B x) hle).toChain.Hmat_succ 0 (by omega)).symm
+
 end Cont
 
 end DLNFibre.DLN.RLCT
