@@ -366,6 +366,30 @@ theorem BparamsLeaf_layer0_entry (ha : StructAdm M (tach M))
   rw [Agen0_live_entry ha (rfinDirect ha y) y i' j,
     Cgen1_eq_layer0SchurMap ha hr hc (rfinDirect ha y) y]
 
+/-! ## The V1 (chain-layer) `g`-block for the route-C `lowerTri` assembly: det 1
+
+The full `hDtot` (`|det Dtot| = |det K|^{r+c}`) factors, in the two-sided rectangular presentation
+`eOut ∘ Dtot ∘ eIn.symm = lowerTri f g h`, as `|det f| · |det g|` (`lowerTri_det`; the J10 coupling
+`h` det-invisible, J01 = 0). The `f`-block is the gate's `schurFrameDeriv`
+(`gate_schurCore_abs_det`, `|det K|^{r+c}`). The `g`-block is the layer-1 chain map
+`(W, leaf) ↦ (W, leaf − N·W)` — the banked
+det-1 `chainUnitMap`. This records the `g`-block det-1 at the boundary-1 chain widths, the second
+factor the assembly needs (so both `lowerTri` diagonal blocks are banked here). -/
+
+/-- **The V1 chain-layer `g`-block has determinant `1`** — the layer-1 unit-triangular chaining
+`(W, C) ↦ (W, C − N·W)` (`chainUnitMap`) at the boundary-1 widths (`t = t1`, `c = c1`, lift cols
+`Wext M 2`). The `g` factor of the route-C `lowerTri` (det `|det f| · |det g| = |det K|^{r+c} · 1`).
+Banked from `chainUnit_det`; the N-coupling is det-invisible. -/
+theorem gate_chainCore_det (N : Matrix (Fin (schurT1 M)) (Fin (schurC1 M)) ℝ) :
+    LinearMap.det (chainUnitMap (m' := Wext M 2) N) = 1 :=
+  chainUnit_det N
+
+/-- **The V1 chain-layer `g`-block abs-det `= 1`** (the form the `lowerTri`/`twoConj` assembly
+consumes alongside `gate_schurCore_abs_det`). -/
+theorem gate_chainCore_abs_det (N : Matrix (Fin (schurT1 M)) (Fin (schurC1 M)) ℝ) :
+    |LinearMap.det (chainUnitMap (m' := Wext M 2) N)| = 1 := by
+  rw [gate_chainCore_det, abs_one]
+
 end L2
 
 end DLNFibre.DLN.RLCT
