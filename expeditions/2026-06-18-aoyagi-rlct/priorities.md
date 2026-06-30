@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, dev merge and source-prior inventory
+
+The expedition branch has merged and pushed current `origin/dev`:
+
+```text
+8801181f Merge remote-tracking branch 'origin/dev' into expedition/aoyagi-rlct
+```
+
+The new infrastructure is usable on the Aoyagi worktree.  Verified:
+
+```text
+lake build DLNFibre
+lake env lean DLNFibre.lean
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+An xhigh measure inventory found no existing named original DLN local
+source/prior measure independent of a chart pushforward.  Current candidate
+objects are chart-produced or coordinate-side:
+
+```text
+passiveMeasure.prod weightedBox
+passiveSource.withDensity jacobianDensity
+Measure.map sourceChart (baseJ.restrict W)
+```
+
+Therefore the next non-wrapper A2 target remains a real source-prior or
+full-image bridge.  The smallest useful theorem should compare a named
+external/original source measure to the chart-produced source image by local
+bounded density or domination.  A theorem that still assumes that comparison,
+or defines the original measure to be the chart pushforward, does not move the
+frontier.
+
 ## Latest controller decision - 2026-06-30, A2 chart-piece readback-domination handoff
 
 The chart-piece finite-integral socket now has a readback-domination variant:

@@ -6,6 +6,80 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Dev Infrastructure Merge And Source-Prior Inventory - 2026-06-30
+
+The expedition branch has been updated with the current `origin/dev`
+infrastructure:
+
+```text
+8801181f Merge remote-tracking branch 'origin/dev' into expedition/aoyagi-rlct
+```
+
+The merge brings in the determinantal/atlas rehome:
+
+```text
+Core.RingTheory.Determinantal.{Basic,Schur,Strata,Dimension}
+Core.RingTheory.Localization.Overlap
+Core.Matrix.RankMinors
+Core.MinimalPrime.*
+Core.Dimension.Localization
+Core.RingTheory.{Ideal.CotangentLocalization,MvPolynomial.CotangentJacobian}
+Core.LinearAlgebra.BaseChange
+```
+
+The only manual conflict was `lean/DLNFibre.lean`; resolution keeps the new
+Core/foundation imports before the Aoyagi leaf imports.  Verification after
+the merge:
+
+```text
+lake build DLNFibre
+lake env lean DLNFibre.lean
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Xhigh scout `Tesla the 2nd` checked the measure/source-prior inventory after
+the merge.  Verdict: no current Lean object defines an original DLN local
+source/prior measure independently of a chart pushforward.  Closest objects:
+
+```text
+passiveSource := passiveMeasure.prod weightedBox
+baseJ := passiveSource.withDensity jacobianDensity
+sourceMeasure := baseJ.withDensity sourceDensity
+sourceImageBase := Measure.map sourceChart (baseJ.restrict W)
+sourceImageMeasure := sourceImageBase.withDensity sourceImageDensity
+```
+
+These are coordinate-side or chart-produced measures.  The retained-passive
+raw-order Haar identities in `RetainedPassiveLocalJacobianMeasure.lean` are
+chart-layer change-of-variables facts, not original source-prior transport.
+`OriginalLossSourceMeasure.lean` and `OriginalLossLocalMeasure.lean` quantify
+over arbitrary measures and densities; they are consumers, not constructors.
+
+The next honest theorem must name an external/original source measure and
+prove a local comparison with the chart-produced reference, for example:
+
+```text
+originalSourcePrior.restrict (sourceChart '' W)
+  =
+((Measure.map sourceChart (baseJ.restrict W)).withDensity sourceImageDensity).restrict
+  (sourceChart '' W)
+
+sourceImageDensity <= Csrc
+  a.e. with respect to (Measure.map sourceChart (baseJ.restrict W)).restrict
+    (sourceChart '' W)
+```
+
+or the weaker one-sided domination:
+
+```text
+originalSourcePrior.restrict (sourceChart '' W) <=
+  Csrc • Measure.map sourceChart (baseJ.restrict W)
+```
+
+Do not spend another round adding finite-integral wrappers unless the theorem
+removes an external-source-measure, Haar-transport, or local-image assumption.
+
 ## Latest A2 Chart-Piece Readback-Domination Handoff - 2026-06-30
 
 Lean now proves a chart-piece handoff from a supplied readback-side domination

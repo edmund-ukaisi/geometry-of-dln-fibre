@@ -254,3 +254,46 @@ This removes only a chart-produced support bookkeeping obligation. It does
 not change the frontier conclusion above: original/external source-measure
 comparison, source-image equality, and Haar/Jacobian transport remain open or
 explicit theorem inputs.
+
+## Addendum - 2026-06-30 post-dev-merge source-prior inventory
+
+After merging current `origin/dev` into the expedition branch, an xhigh scout
+rechecked the exact Lean measure inventory.  No current declaration defines a
+source-side original DLN prior measure independently of a chart pushforward.
+
+The closest objects are:
+
+```text
+RetainedPassiveCase2PassiveThetaProductMeasure.lean
+  passiveSource := passiveMeasure.prod weightedBox
+
+RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+  baseJ := passiveSource.withDensity jacobianDensity
+  sourceMeasure := baseJ.withDensity sourceDensity
+
+RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+  sourceImageBase := Measure.map sourceChart (baseJ.restrict W)
+  sourceImageMeasure := sourceImageBase.withDensity sourceImageDensity
+
+RetainedPassiveLocalJacobianMeasure.lean
+  measure_map_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData_...
+```
+
+All four are coordinate-side, chart-produced, or chart-layer change-of-
+variables statements.  `OriginalLossSourceMeasure.lean` and
+`OriginalLossLocalMeasure.lean` still consume arbitrary `μ`, `ν`, and density
+hypotheses; they do not construct the original source measure.
+
+Thus the sharpened theorem target is a named external/original source measure
+with local comparison to the chart-produced reference:
+
+```text
+originalSourcePrior.restrict (sourceChart '' W) <=
+  Csrc • Measure.map sourceChart (baseJ.restrict W)
+```
+
+or a bounded-density equality over the same image.  The theorem must not
+define `originalSourcePrior` to be the right hand side.  Aoyagi pp. 10-13
+support the Schur/product algebra already formalized; pp. 5 and 8 support
+local boundedness of a smooth positive prior after a valid coordinate-change
+identity is present, not the project-specific identity itself.
