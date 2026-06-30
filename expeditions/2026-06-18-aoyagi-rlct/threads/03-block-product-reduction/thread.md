@@ -21,6 +21,59 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 passive theta automatic readback measurability
+
+Reproduction:
+`reproduction-a2-passive-theta-source-image-automatic-readback-measurability.md`.
+Statement card:
+`statement-card-a2-passive-theta-source-image-automatic-readback-measurability.md`.
+Review:
+`review-a2-passive-theta-source-image-automatic-readback-measurability.md`,
+PASS by controller review after the earlier xhigh Lean/API scout identified
+the measurable-embedding route.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le_of_continuousOn_injOn
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+```
+
+The theorem family derives readback a.e. measurability for
+
+```text
+Measure.map sourceChart (thetaReference.restrict V)
+```
+
+from the local measurable continuous injective source chart and its pointwise
+left inverse.  The concrete passive-theta bounded-density source-image
+pullback wrapper now supplies this readback measurability internally.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_readback_axioms.lean
+```
+
+The direct axiom probe for all three new public names reports only the
+baseline `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no source-rank coverage,
+no one-chart global support, no Haar transport, no normal crossings, no pole
+order, and no RLCT extraction.
+
 ## 2026-06-30 A2 passive theta source-image bounded-density pullback
 
 Reproduction:

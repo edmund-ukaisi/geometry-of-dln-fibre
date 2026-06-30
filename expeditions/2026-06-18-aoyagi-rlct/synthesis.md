@@ -26104,3 +26104,72 @@ source-rank coverage, not equality with a source-rank stratum, not
 external/original source-prior comparison or transport, not determinant-chart
 or raw-order Haar transport, not normal crossings, not pole order, and not
 RLCT.
+
+## 2026-06-30 passive-theta source-image bounded-density and automatic readback
+
+The source-image density socket is now hardened in two steps.
+
+First, Lean proves the bounded-density pullback theorem for the chart-produced
+source-image reference:
+
+```text
+measure_map_readback_map_sourceChart_restrict_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul
+```
+
+If a source-image measure is a bounded-density perturbation of
+`Measure.map sourceChart (thetaReference.restrict V)`, then its readback
+pullback is dominated by `c • thetaReference.restrict V`.  If an external
+measure is explicitly identified with such a bounded-density source-image
+measure on `sourceChart '' V`, the same domination follows for its pulled-back
+candidate.
+
+Second, Lean now discharges the readback a.e.-measurability input for the
+chart-produced source-image reference:
+
+```text
+aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le_of_continuousOn_injOn
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+```
+
+Pen-and-paper calculation: restrict the source chart to the measurable local
+theta set `V`.  Since the restricted chart is continuous and injective from a
+Polish Borel space, it is a measurable embedding.  By
+`MeasurableEmbedding.aemeasurable_map_iff`, readback a.e.-measurability for
+the source-image pushforward reduces to a.e.-measurability of
+`readback ∘ sourceChart` on `V`, and this composition equals the measurable
+subtype inclusion by the local left inverse.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-bounded-density-pullback.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-bounded-density-pullback.md
+threads/03-block-product-reduction/review-a2-passive-theta-source-image-bounded-density-pullback.md
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-automatic-readback-measurability.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-automatic-readback-measurability.md
+threads/03-block-product-reduction/review-a2-passive-theta-source-image-automatic-readback-measurability.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_readback_axioms.lean
+```
+
+`./scripts/sorries` reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+The direct axiom probe for the three automatic-readback declarations reported
+only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this still does not prove the original/source prior density identity
+or domination for arbitrary external measures.  It is not source-rank
+coverage, one-chart global support, Haar transport, normal crossings, pole
+order, or RLCT.

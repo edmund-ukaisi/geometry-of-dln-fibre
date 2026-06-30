@@ -118,6 +118,63 @@ theorem aemeasurable_of_continuousOn_of_measure_restrict_eq_self
   exact hsource_restrict.mono_ac hac
 
 set_option linter.style.longLine false in
+/-- On a Polish measurable coordinate domain, a continuous injective local
+source chart with a pointwise readback left inverse makes the readback
+a.e.-measurable for the chart-produced source-image measure.
+
+This is only inverse-measurability bookkeeping for the actual local image.  It
+does not identify an external source prior, prove source-rank coverage, or
+provide Haar transport, normal crossings, pole order, or RLCT extraction. -/
+theorem aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+    {Θ E : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace E] [TopologicalSpace E] [BorelSpace E] [T2Space E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (thetaReference : Measure Θ) (V : Set Θ)
+    (hV : MeasurableSet V)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta) :
+    AEMeasurable readback
+      (Measure.map sourceChart (thetaReference.restrict V)) := by
+  let sourceChartV : V → E := V.restrict sourceChart
+  let thetaReferenceV : Measure V :=
+    Measure.comap ((↑) : V → Θ) thetaReference
+  have hsource_emb : MeasurableEmbedding sourceChartV :=
+    hsource_contOn.measurableEmbedding hV hsource_inj
+  have hcomp :
+      AEMeasurable (readback ∘ sourceChartV) thetaReferenceV := by
+    have hval : Measurable ((↑) : V → Θ) := measurable_subtype_coe
+    have heq : readback ∘ sourceChartV = ((↑) : V → Θ) := by
+      funext theta
+      exact hleft theta.1 theta.2
+    rw [heq]
+    exact hval.aemeasurable
+  have hreadbackV :
+      AEMeasurable readback (Measure.map sourceChartV thetaReferenceV) :=
+    (hsource_emb.aemeasurable_map_iff).2 hcomp
+  have hval :
+      AEMeasurable ((↑) : V → Θ) thetaReferenceV :=
+    measurable_subtype_coe.aemeasurable
+  have hsource :
+      AEMeasurable sourceChart
+        (Measure.map ((↑) : V → Θ) thetaReferenceV) := by
+    rw [map_comap_subtype_coe hV]
+    exact hsource_contOn.aemeasurable hV
+  have hmap_eq :
+      Measure.map sourceChartV thetaReferenceV =
+        Measure.map sourceChart (thetaReference.restrict V) := by
+    calc
+      Measure.map sourceChartV thetaReferenceV =
+          Measure.map (sourceChart ∘ ((↑) : V → Θ)) thetaReferenceV := by
+            rfl
+      _ = Measure.map sourceChart (Measure.map ((↑) : V → Θ) thetaReferenceV) := by
+            exact (AEMeasurable.map_map_of_aemeasurable hsource hval).symm
+      _ = Measure.map sourceChart (thetaReference.restrict V) := by
+            rw [map_comap_subtype_coe hV]
+  simpa [hmap_eq] using hreadbackV
+
+set_option linter.style.longLine false in
 /-- Conditional domination handoff from a pulled-back external image measure to
 the source image.
 
@@ -260,6 +317,50 @@ theorem measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
       measure_map_readback_map_sourceChart_restrict_eq_self_of_aemeasurable
         sourceChart readback thetaReference V hV hsource hreadback hleft
   simpa [sourceBase, hbase_pull] using hpush
+
+set_option linter.style.longLine false in
+/-- A bounded source-image density pulls back to theta-domain scalar
+domination, with readback a.e. measurability discharged from a continuous
+injective local source chart and its pointwise left inverse.
+
+This is the same bounded-density socket as
+`measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le`, but the
+readback measurability hypothesis is derived from Lusin-Souslin-style
+measurable embedding infrastructure.  It still does not identify an external
+or original source prior, prove source-image coverage or Haar transport, or
+extract normal crossings, pole order, or RLCT. -/
+theorem measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le_of_continuousOn_injOn
+    {Θ E : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace E] [TopologicalSpace E] [BorelSpace E] [T2Space E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (thetaReference : Measure Θ) (V : Set Θ)
+    (density : E → ENNReal) (c : ENNReal)
+    (hV : MeasurableSet V)
+    (himage : MeasurableSet (sourceChart '' V))
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hdensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (thetaReference.restrict V)).restrict
+          (sourceChart '' V),
+        density E ≤ c) :
+    Measure.map readback
+        (((Measure.map sourceChart (thetaReference.restrict V)).withDensity density).restrict
+          (sourceChart '' V)) ≤
+      c • thetaReference.restrict V := by
+  have hsource :
+      AEMeasurable sourceChart (thetaReference.restrict V) :=
+    hsource_contOn.aemeasurable hV
+  have hreadback :
+      AEMeasurable readback
+        (Measure.map sourceChart (thetaReference.restrict V)) :=
+    aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+      sourceChart readback thetaReference V hV hsource_contOn hsource_inj hleft
+  exact
+    measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
+      sourceChart readback thetaReference V density c hV himage hsource hreadback
+      hleft hdensity_le
 
 set_option linter.style.longLine false in
 /-- If an external source-image measure is identified as a bounded-density
@@ -1031,6 +1132,142 @@ theorem exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_
     measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
       sourceChart readback thetaReference V density c hVopen.measurableSet
       hsource_image hsource hreadback hleftV' hdensity_le
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Local bounded-density source-image pullback for the concrete passive-theta
+endpoint source chart, with readback a.e. measurability generated internally.
+
+After shrinking inside any prescribed open theta-neighborhood `G`, any
+bounded-density perturbation of the chart-produced source-image reference
+measure pulls back by the readback to a measure dominated by the corresponding
+theta-domain reference measure on `V`.  Unlike
+`exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul`,
+this version derives readback a.e. measurability from the local continuous
+injective source chart and its pointwise readback left inverse.
+
+This remains a density-comparison socket.  It does not construct or identify
+an original source prior, prove source-rank coverage, prove Haar transport,
+construct normal crossings, compute pole order, or extract RLCT. -/
+theorem exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    (G :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun theta ↦
+        case2PassiveThetaEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e theta
+    let readback : EdgeFamily →
+        Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+      case2PassiveThetaEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ eNext e
+    ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, readback (sourceChart z) = z) ∧
+          Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+            MeasurableSet (sourceChart '' V) ∧
+              ∀ thetaReference :
+                Measure
+                  (Case2PassiveTheta
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+              ∀ density : EdgeFamily → ENNReal,
+              ∀ c : ENNReal,
+                (∀ᵐ E ∂ (Measure.map sourceChart
+                    (thetaReference.restrict V)).restrict (sourceChart '' V),
+                  density E ≤ c) →
+                Measure.map readback
+                    (((Measure.map sourceChart
+                      (thetaReference.restrict V)).withDensity density).restrict
+                      (sourceChart '' V)) ≤
+                  c • thetaReference.restrict V := by
+  intro EdgeFamily sourceChart readback
+  rcases
+      (by
+        simpa [EdgeFamily, sourceChart, readback] using
+          exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ G hGopen hz₀G) with
+    ⟨V, hVopen, hz₀V, hVG, hleftV, hsource_inj, hsource_contOn,
+      hsource_image, hbounded⟩
+  have hleftV' : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    simpa [sourceChart, readback, case2PassiveThetaEndpointSourceChart,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleftV z.A1passive z.F2 z.A3passive z.Ctop z.F3 z.yNext hz
+  refine
+    ⟨V, hVopen, hz₀V, hVG, hleftV', hsource_inj, hsource_contOn,
+      hsource_image, ?_⟩
+  intro thetaReference density c hdensity_le
+  have hreadback :
+      AEMeasurable readback
+        (Measure.map sourceChart (thetaReference.restrict V)) :=
+    aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+      sourceChart readback thetaReference V hVopen.measurableSet
+      hsource_contOn hsource_inj hleftV'
+  exact hbounded thetaReference density c hreadback hdensity_le
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

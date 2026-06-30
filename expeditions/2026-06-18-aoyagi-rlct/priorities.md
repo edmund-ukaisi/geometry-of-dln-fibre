@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 passive theta automatic readback measurability
+
+The bounded-density source-image socket no longer needs a caller-supplied
+readback a.e.-measurability proof for the chart-produced source-image
+reference.  Lean now proves that if `V` is measurable, `sourceChart` is
+continuous and injective on `V`, and `readback (sourceChart theta) = theta` on
+`V`, then
+
+```text
+AEMeasurable readback
+  (Measure.map sourceChart (thetaReference.restrict V)).
+```
+
+This is proved by applying measurable-embedding/Lusin-Souslin infrastructure
+to the restricted map `V.restrict sourceChart`, reducing readback
+a.e.-measurability to the measurable subtype inclusion `V -> Theta`.
+
+New public names:
+
+```text
+aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le_of_continuousOn_injOn
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+```
+
+This is an API hardening of the previous bounded-density socket, not a
+source-prior theorem.  Next non-wrapper target remains a source-prior
+density/readback theorem or a Haar/source-measure transport theorem supplying
+the density identity for the intended source/original prior.  Source anchors
+and kill conditions are recorded in
+`threads/03-block-product-reduction/source-audit-a2-source-prior-density-identity-boundary.md`.
+
 ## Latest controller decision - 2026-06-30, A2 passive theta source-image bounded-density pullback
 
 The domination frontier has been narrowed to the correct density socket.  Lean
