@@ -482,6 +482,28 @@ theorem eihdc_fst_apply (ha : StructAdm M (tach M))
     (u : Fin (routeMAmbient M) → ℝ) (v0 : eihdV M 0) :
     (eihdc ha h0r h0c u).1 v0 = (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).2 := rfl
 
+/-- **Bridge 1 — the flatten/unflatten cancel**: `eihdT w = packStair (fderiv BparamsLeaf y₀ (eIn.symm
+w))`. `eihdOut = paramsEquivFlatLinear.symm ≫ packStair` and `Dtot = paramsEquivFlatCLE ∘ fderiv
+BparamsLeaf`, so the `paramsEquivFlatLinear.symm ∘ paramsEquivFlatCLE` round-trip is the identity (same
+underlying map), leaving `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm`. Reduces all three J-blocks to
+facts about the `Params`-valued `fderiv BparamsLeaf` applied at `eIn.symm w`, then `packStair`-projected. -/
+theorem eihdT_eq_packStair_fderiv (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ) (w : StairProd (eihdV M) 2) :
+    eihdT ha h0r h0c u w
+      = packStair ha (fderiv ℝ (fun z => BparamsLeaf ha z)
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+          ((eIn ha).symm w)) := by
+  show (eihdOut ha) ((Dtot ha _) ((eIn ha).symm w)) = _
+  unfold eihdOut Dtot
+  rw [LinearEquiv.trans_apply]
+  congr 1
+  show (paramsEquivFlatLinear M).symm
+      ((paramsEquivFlatCLE M) (fderiv ℝ (fun z => BparamsLeaf ha z) _ ((eIn ha).symm w))) = _
+  rw [show ⇑(paramsEquivFlatCLE M) = ⇑(paramsEquivFlatLinear M) from by
+        rw [paramsEquivFlatCLE_coe, paramsEquivFlatLinear_coe]]
+  exact (paramsEquivFlatLinear M).symm_apply_apply _
+
 /-- **J00 — the Schur-frame block** (part of the in-Lean faithfulness gate for `eIn`, with J01/J11).
 The V0→V0 block of `T` is `eihdF … 0 = schurFrameDeriv X K N`. -/
 theorem eihdT_J00 (ha : StructAdm M (tach M))
