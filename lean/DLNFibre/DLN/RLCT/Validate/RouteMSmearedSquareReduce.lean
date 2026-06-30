@@ -112,6 +112,31 @@ theorem interiorDrop_L2_iff (M : Fin 3 → ℕ) :
       subst hb
       rw [show (1 : ℕ) + 1 = 2 from rfl, hdeep, hWext1]; exact hlt1
 
+/-- **The `BoundaryClean ⟹ NoInteriorBothDrop` BRIDGE at `L = 2`** (#160; the spine's clean-branch
+`hNo` precondition). At `L = 2` the only interior boundary is `s = 1`, whose both-drop's second conjunct
+is `Text(2) < Wext(1)`, i.e. `deepRank M < deepRows M` (`Text(2) = deepRank`, `Wext(1) = M 1 = deepRows`).
+The clean equality `deepRank M = deepRows M` makes that strict inequality FALSE, so no interior both-drop.
+
+Only `deepRank = deepRows` is used — NOT `¬InteriorDrop`, NOT `0 < M 2` (the `hno-bridge-verdict.md`
+read: at `L = 2` the bridge is TRIVIAL via the clean equality; the argmin-minimality block-raise is only
+needed for `L ≥ 3`). This supersedes the earlier `¬InteriorDrop`-form attempt — it is the exact form the
+clean branch supplies (`BoundaryClean.2`). -/
+theorem boundaryClean_noInteriorBothDrop_L2 (M : Fin 3 → ℕ) (hclean : deepRank M = deepRows M) :
+    NoInteriorBothDrop M := by
+  -- `deepRows M = M 1` at `L = 2`
+  have hrows : deepRows M = M 1 := by
+    rw [deepRows]; exact (Wext_apply M (2 - 1) (by omega)).trans (by norm_num)
+  have hWext1 : Wext M 1 = M 1 := Wext_apply M 1 (by omega)
+  have hdeep : Text M (tach M) 2 = deepRank M := rfl
+  intro s hs1 hsL
+  have hs : s = 1 := by omega
+  subst hs
+  rw [show (1 : ℕ) + 1 = 2 from rfl, hdeep, hWext1]
+  rintro ⟨_, hlt⟩
+  -- `Text(2) = deepRank = deepRows = M 1`, contradicting `Text(2) = deepRank < M 1`
+  rw [hclean, hrows] at hlt
+  exact absurd hlt (lt_irrefl _)
+
 /-- **`deepRank M ≤ M 0`** at L=2 (the achiever rank is bounded by the front width, via the
 `admBound 0 = min(M 0, M 1)` bound). -/
 theorem deepRank_le_M0 (M : Fin 3 → ℕ) : deepRank M ≤ M 0 := by
