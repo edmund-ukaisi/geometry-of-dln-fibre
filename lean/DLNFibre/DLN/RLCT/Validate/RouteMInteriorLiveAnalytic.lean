@@ -305,6 +305,188 @@ theorem continuous_Hmat0_L2 {M' t : Fin (2 + 1) → ℕ} {B : X → GenBlk M' t}
     (fun x => ?_)
   exact ((chainOfMt (g x) M' t (B x) hle).toChain.Hmat_succ 0 (by omega)).symm
 
+/-! ### Continuity of the block constructors + readers (toward the live decoder) -/
+
+/-- `bmatStack K X` is continuous in `(K, X)`. -/
+theorem continuous_bmatStack {M' t : Fin (L + 1) → ℕ} (k : ℕ)
+    (hdesc : Text M' t (k + 1) ≤ Text M' t k)
+    {K : X → Matrix (Fin (Text M' t (k + 1))) (Fin (Text M' t (k + 1))) ℝ}
+    {Xb : X → Matrix (Fin (Text M' t k - Text M' t (k + 1))) (Fin (Text M' t (k + 1))) ℝ}
+    (hK : Continuous K) (hX : Continuous Xb) :
+    Continuous (fun x => bmatStack M' t k hdesc (K x) (Xb x)) := by
+  unfold bmatStack
+  refine Continuous.matrix_reindex (continuous_matrix (fun i j => ?_)) _ _
+  simp only [Matrix.of_apply]
+  rcases finSumFinEquiv.symm i with a | b
+  · simp only [Sum.elim_inl]; exact hK.matrix_elem a j
+  · simp only [Sum.elim_inr]; exact (hX.matrix_mul hK).matrix_elem b j
+
+/-- `rmatPad E` is continuous in `E`. -/
+theorem continuous_rmatPad {M' t : Fin (L + 1) → ℕ} (s : ℕ)
+    (h1 : Text M' t (s + 1) ≤ Text M' t s) (h2 : Text M' t (s + 1) ≤ Wext M' s)
+    {E : X → Matrix (Fin (Text M' t s - Text M' t (s + 1))) (Fin (Wext M' s - Text M' t (s + 1))) ℝ}
+    (hE : Continuous E) :
+    Continuous (fun x => rmatPad M' t s h1 h2 (E x)) := by
+  unfold rmatPad
+  exact Continuous.matrix_reindex
+    (Continuous.matrix_fromBlocks continuous_const continuous_const continuous_const hE) _ _
+
 end Cont
+
+/-! ## `ldu_Umeas` — measurability of the lensed unit (via continuity) -/
+
+/-- **`kLDU` is continuous** (from the banked `differentiable_kLDU`). -/
+theorem continuous_kLDU (ha : StructAdm M (tach M)) :
+    Continuous (kLDU M (tach M) ha) := (differentiable_kLDU M (tach M) ha).continuous
+
+/-- The live decoder `genBlkFlatLive … (rfinFixedPivot (kLDU x)) (kLDU x)` is block-continuous in `x`.
+Each block is `bmatStack`/`rmatPad` of single-coordinate readers of `kLDU x`; the leaf `rfinFixedPivot`
+reads single coordinates / constant `1`. (`L = 2` here.) -/
+theorem genBlkContinuous_live (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    GenBlkContinuous M (tach M)
+      (fun x => genBlkFlatLive M (tach M) ha
+        (rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x)) (kLDU M (tach M) ha x)) := by
+  have hkapp : ∀ q, Continuous (fun x : Fin (routeMAmbient M) → ℝ => kLDU M (tach M) ha x q) :=
+    fun q => (continuous_apply q).comp (continuous_kLDU ha)
+  -- reader-block continuity: each reader entry is `(kLDU x)` at a fixed slot
+  have hreadK : ∀ k : Fin 2, Continuous (fun x => readK M (tach M) ha (kLDU M (tach M) ha x) k) :=
+    fun k => continuous_matrix (fun i j => hkapp _)
+  have hreadX : ∀ k : Fin 2, Continuous (fun x => readX M (tach M) ha (kLDU M (tach M) ha x) k) :=
+    fun k => continuous_matrix (fun i j => hkapp _)
+  have hreadN : ∀ k : Fin 2, Continuous (fun x => readN M (tach M) ha (kLDU M (tach M) ha x) k) :=
+    fun k => continuous_matrix (fun i j => hkapp _)
+  have hreadE : ∀ k : Fin 2, Continuous (fun x => readE M (tach M) ha (kLDU M (tach M) ha x) k) :=
+    fun k => continuous_matrix (fun i j => hkapp _)
+  have hreadW : ∀ (k : Fin 2) (hk : k.val + 1 < 2),
+      Continuous (fun x => readW M (tach M) ha (kLDU M (tach M) ha x) k hk) :=
+    fun k hk => continuous_matrix (fun i j => hkapp _)
+  refine ⟨fun k => ?_, fun k => ?_, fun k => ?_, fun k => ?_, fun k => ?_⟩
+  · -- Bmat
+    show Continuous (fun x => (genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha x)).Bmat k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]
+        exact continuous_bmatStack (j + 1) (ha.hdesc j hj) (hreadK ⟨j, hj⟩) (hreadX ⟨j, hj⟩)
+      · simp only [dif_neg hj]; exact continuous_const
+  · -- Nblk
+    show Continuous (fun x => (genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha x)).Nblk k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]; exact hreadN ⟨j, hj⟩
+      · simp only [dif_neg hj]; exact continuous_const
+  · -- Wblk
+    show Continuous (fun x => (genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha x)).Wblk k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]
+        by_cases hj2 : j + 1 < 2
+        · simp only [dif_pos hj2]; exact hreadW ⟨j, hj⟩ hj2
+        · simp only [dif_neg hj2]; exact continuous_const
+      · simp only [dif_neg hj]; exact continuous_const
+  · -- Rmat
+    show Continuous (fun x => (genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha x)).Rmat k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]
+        exact continuous_rmatPad (j + 1) (ha.hdesc j hj) (ha.hub j) (hreadE ⟨j, hj⟩)
+      · simp only [dif_neg hj]; exact continuous_const
+  · -- Rfin = rfinFixedPivot ∘ kLDU
+    by_cases hk : k = 2
+    · subst hk
+      have hrw : (fun x => (genBlkFlatLive M (tach M) ha
+            (rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x)) (kLDU M (tach M) ha x)).Rfin 2)
+          = fun x => rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x) := by
+        funext x; simp only [genBlkFlatLive, dif_pos]
+      rw [hrw]
+      refine continuous_matrix (fun i j => ?_)
+      show Continuous (fun x => if i.val = 0 ∧ j.val = 0 then (1 : ℝ)
+        else kLDU M (tach M) ha x (leafSlot M (tach M) ha (by norm_num) i j))
+      by_cases hij : i.val = 0 ∧ j.val = 0
+      · simp only [if_pos hij]; exact continuous_const
+      · simp only [if_neg hij]; exact hkapp _
+    · have hrw : (fun x => (genBlkFlatLive M (tach M) ha
+            (rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x)) (kLDU M (tach M) ha x)).Rfin k)
+          = fun _ => 0 := by
+        funext x; simp only [genBlkFlatLive, dif_neg hk]
+      rw [hrw]; exact continuous_const
+
+/-- **`interiorLiveUnit` is continuous** — `= sqSumHmat0` of the chain (`VvalGen_eq_sqSumHmat0`),
+which is `∑∑ (Hmat 0)²`; `Hmat 0` is continuous (`continuous_Hmat0_L2` with the live decoder
+`genBlkContinuous_live` + the radial scalar `x ↦ x leafPivot`). -/
+theorem continuous_interiorLiveUnit (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Continuous (interiorLiveUnit ha h0r h0c) := by
+  have hg : Continuous (fun x : Fin (routeMAmbient M) → ℝ => x (leafPivot M ha (by norm_num) h0r h0c)) :=
+    continuous_apply _
+  have hHmat0 := continuous_Hmat0_L2 (genBlkContinuous_live ha h0r h0c) hg
+    (hleStruct M (tach M) ha)
+  -- ∑∑ (Hmat 0)² is continuous (each entry continuous via hHmat0, finite sum of squares)
+  have hsq : Continuous (fun x => ∑ i, ∑ j,
+      ((show Matrix (Fin (Text M (tach M) 0)) (Fin (Wext M 2)) ℝ
+          from (chainOfMt (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+            (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x))
+              (kLDU M (tach M) ha x)) (hleStruct M (tach M) ha)).toChain.Hmat 0 (Nat.zero_le 2))
+        i j) ^ 2) :=
+    continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ =>
+      (hHmat0.matrix_elem i j).pow 2))
+  refine hsq.congr (fun x => ?_)
+  rw [interiorLiveUnit, VvalGen_eq_sqSumHmat0, sqSumHmat0]
+  rfl
+
+/-- **`ldu_Umeas`** — the lensed unit is measurable (continuity ⟹ measurable). Matches the contract's
+frozen `interiorLive_Umeas` signature. -/
+theorem ldu_Umeas (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Measurable (interiorLiveUnit ha h0r h0c) :=
+  (continuous_interiorLiveUnit ha h0r h0c).measurable
+
+/-! ## `ldu_Ubound` — box bound + a.e.-positivity (consuming the positivity atom) -/
+
+/-- **The box bound** `interiorLiveUnit ≤ B` on `[0,δ]^N` — continuity on a compact box
+(`continuous_interiorLiveUnit` + `IsCompact.exists_isMaxOn`). Mirrors `achieverUfun_le_on_box`. -/
+theorem ldu_Uval_le_on_box (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (δ : ℝ) :
+    ∃ B, 0 < B ∧ ∀ u ∈ Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ),
+      interiorLiveUnit ha h0r h0c u ≤ B := by
+  have hcont : Continuous (interiorLiveUnit ha h0r h0c) := continuous_interiorLiveUnit ha h0r h0c
+  have hcpt : IsCompact (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ)) :=
+    isCompact_univ_pi (fun _ => isCompact_Icc)
+  rcases (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ)).eq_empty_or_nonempty
+    with he | hne
+  · exact ⟨1, one_pos, fun u hu => absurd (he ▸ hu) (Set.mem_empty_iff_false u).mp⟩
+  · obtain ⟨u0, _, hu0⟩ := hcpt.exists_isMaxOn hne hcont.continuousOn
+    exact ⟨max 1 (interiorLiveUnit ha h0r h0c u0), lt_of_lt_of_le one_pos (le_max_left _ _),
+      fun u hu => le_trans (hu0 hu) (le_max_right _ _)⟩
+
+/-- **`ldu_Ubound`** — the full `NodeAchieverChart.Ubound` field, CONSUMING the a.e.-positivity atom
+`hpos` (the genm-upolylive deliverable: `∀ᵐ u, 0 < interiorLiveUnit …`). The box bound is proven here
+(`ldu_Uval_le_on_box`); the positivity conjunct is restricted to the box (`ae_restrict_of_ae hpos`).
+Matches the contract's frozen `interiorLive_Ubound` shape (modulo the extra `hpos` input genm-r1lower
+threads from genm-upolylive). -/
+theorem ldu_Ubound (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (hpos : ∀ᵐ u, 0 < interiorLiveUnit ha h0r h0c u) :
+    ∀ δ : ℝ, ∃ B : ℝ, 0 < B ∧
+      (∀ u ∈ Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ),
+        interiorLiveUnit ha h0r h0c u ≤ B) ∧
+      ∀ᵐ u ∂(volume.restrict
+          (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ))),
+        0 < interiorLiveUnit ha h0r h0c u := by
+  intro δ
+  obtain ⟨B, hB0, hBle⟩ := ldu_Uval_le_on_box ha h0r h0c δ
+  exact ⟨B, hB0, hBle, ae_restrict_of_ae hpos⟩
 
 end DLNFibre.DLN.RLCT
