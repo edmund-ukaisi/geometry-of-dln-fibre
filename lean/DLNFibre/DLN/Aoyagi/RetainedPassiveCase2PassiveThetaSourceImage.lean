@@ -1032,20 +1032,18 @@ theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout
               data.Ctop = Ctop ∧
               data.F3 = F3 := by
   rcases
-      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
-        (ι := Fin (Module.finrank ℝ U₀))
-        (μ := throughSubspaceEndpointComplementIndex
-          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
-        (ν := throughSubspaceEndpointComplementIndex
-          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+      exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readout_package
+        (M := 0) W₂ B₂ U₀ hU₀
+        (case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e)
         hRmax with
-    ⟨R, hR, hRle, hunit⟩
+    ⟨R, hR, hRle, hpackage⟩
   refine ⟨R, hR, hRle, ?_⟩
   intro ρ κ Coord EdgeFamily sourceChart productSourceChart theta u hu
+  have hgeneric := hpackage theta u hu
   have hCtop :
       IsUnit
         (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c : Coord ↦ u c)).det :=
-    hunit u hu
+    by simpa [ρ, κ, Coord] using hgeneric.1
   have hcoord :
       (paperEndpointFixedBaseRegularBlockCoordinateMap
           (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
@@ -1054,10 +1052,11 @@ theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout
           (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
         paperEndpointFixedBaseResidualBlockCoordinateMap
           (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta) := by
-    simpa [ρ, κ, Coord, sourceChart, productSourceChart] using
-      case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
-        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
-        theta u hCtop
+    exact
+      ⟨by
+        simpa [ρ, κ, Coord, sourceChart, productSourceChart] using hgeneric.2.1,
+       by
+        simpa [ρ, κ, Coord, sourceChart, productSourceChart] using hgeneric.2.2.1⟩
   constructor
   · exact hcoord.1
   constructor
@@ -1074,10 +1073,7 @@ theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout
         theta u hCtop
   · intro Ebase Eprod F2 F3 Ctop C data
     simpa [ρ, κ, Coord, sourceChart, productSourceChart, Ebase, Eprod, F2, F3,
-      Ctop, C, data] using
-      case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
-        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
-        theta u hCtop
+      Ctop, C, data] using hgeneric.2.2.2
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

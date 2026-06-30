@@ -29,9 +29,8 @@ exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package
 - the concrete passive-theta endpoint source chart;
 - the p.13 product-coordinate source-dependent family over that chart;
 - a positive radius cap `Rmax`;
-- the determinant-unit small-ball theorem for `ctopMatrix`;
-- the pointwise raw coordinate-map, regular-readback, selected inverse-readout,
-  and source-readback field theorems.
+- the generic fixed-base small-ball product readout package;
+- the pointwise regular-readback and selected inverse-readout theorems.
 
 ## Output
 
@@ -49,19 +48,20 @@ F3        = decoded F3(u)
 
 ## Proof Shape
 
-Choose `R` using
+Specialize
 
 ```text
-AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readout_package
 ```
 
-and use the resulting `hCtop` for the same `u` in the four pointwise APIs:
+at `M := 0` and the concrete passive-theta endpoint source chart.  This gives
+the determinant-unit certificate, raw coordinate-map readouts, and
+source-readback field equalities.  The same `hCtop` then feeds the two
+Case 2-specific pointwise APIs:
 
 ```text
-case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
 case2PassiveThetaEndpointProductSourceChart_regularReadback_eq
 case2PassiveThetaEndpointProductSourceChart_inverseReadout_eq_sourceChart
-case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
 ```
 
 ## Nonclaims

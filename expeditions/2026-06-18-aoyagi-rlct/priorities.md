@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 generic fixed-base small-ball product readout package
+
+The generic fixed-base product-coordinate API now has a shared small-ball
+readout package:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readout_package
+```
+
+For every `Rmax > 0`, Lean chooses `0 < R ≤ Rmax` so that every base point
+`x` and every p.13 regular variable `u ∈ ball(0,R)` satisfy:
+
+```text
+IsUnit det(Ctop(u))
+regularCoordinateMap(CedgeProd(x,u)) = u
+residualCoordinateMap(CedgeProd(x,u))
+  =
+residualCoordinateMap(CedgeBase x)
+sourceReadback(CedgeProd(x,u)) has the canonical p.13 product fields
+```
+
+The concrete Case 2 small-ball product readout package now delegates its
+determinant certificate, raw coordinate readouts, and source-readback fields
+to this generic theorem, adding only the Case 2-specific regular readback and
+selected inverse-readout facts.
+
+This remains fixed-base coordinate/readback algebra only.  It proves no full
+parameter recovery, source-image coverage, source-prior transport,
+Haar/Jacobian density identity, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 small-ball product readout package
 
 The Case 2 endpoint product source chart now has one shared small-ball readout

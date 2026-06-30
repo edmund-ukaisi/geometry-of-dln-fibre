@@ -6,6 +6,80 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Generic Fixed-Base Small-Ball Product Readout Package - 2026-06-30
+
+Lean now packages the generic fixed-base p.13 source-dependent product chart
+readouts under one determinant-unit radius:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readout_package
+```
+
+For every `Rmax > 0`, the theorem returns `0 < R ≤ Rmax` such that for every
+base point `x` and every p.13 regular variable `u ∈ ball(0,R)`, the following
+facts hold:
+
+```text
+IsUnit det(Ctop(u))
+regularCoordinateMap(CedgeProd(x,u)) = u
+residualCoordinateMap(CedgeProd(x,u))
+  =
+residualCoordinateMap(CedgeBase x)
+sourceReadback(CedgeProd(x,u)) fields:
+  A1passive = 1
+  F2        = first decoded F2(u), then zeros
+  A3passive = 0
+  C         = residualBlock(fixedBase(CedgeBase x))
+  Ctop      = decoded Ctop(u)
+  F3        = decoded F3(u)
+```
+
+The proof chooses the radius from
+`AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean`
+and uses the resulting `hCtop` for the pointwise raw-coordinate theorem and
+the pointwise generic fixed-base source-readback field theorem.
+
+The concrete Case 2 theorem
+`exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package`
+now delegates its determinant certificate, raw coordinate readouts, and
+source-readback fields to this generic theorem, then applies the two
+Case 2-specific pointwise theorems for regular readback and selected inverse
+readout.
+
+Boundary: this is fixed-base local coordinate/readback packaging.  It proves
+no original parameter recovery, source-image coverage, source-prior transport,
+Haar/Jacobian density identity, normal crossings, pole order, or RLCT
+extraction.  The source-readback `C` field is the per-edge residual-factor
+family, while the raw residual-coordinate map is the residual-product readout.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-generic-fixed-base-small-ball-product-readout-package.md
+threads/03-block-product-reduction/statement-card-a2-generic-fixed-base-small-ball-product-readout-package.md
+threads/03-block-product-reduction/review-a2-generic-fixed-base-small-ball-product-readout-package.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_generic_readout_package_axioms.lean
+```
+
+Axiom probes for the generic theorem and refactored Case 2 theorem report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh scout `Chandrasekhar the 2nd` PASS.  The only concern was
+non-blocking Lean/API fragility from local `let` unfolding, nested conjunction
+projections, and larger `simpa` calls; no mathematical overreach was found.
+
 ## Latest A2 Case 2 Small-Ball Product Readout Package - 2026-06-30
 
 Lean now packages the concrete Case 2 endpoint product source chart readouts
@@ -37,10 +111,12 @@ sourceReadback(productSourceChart(theta,u)) fields:
   F3        = decoded F3(u)
 ```
 
-The proof chooses the radius from
-`AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean`
-and uses the resulting `hCtop` for the existing pointwise raw-coordinate,
-regular-readback, selected inverse-readout, and source-readback field theorems.
+The proof now specializes the generic fixed-base small-ball product readout
+package at `M := 0` and the concrete passive-theta endpoint source chart,
+getting the determinant certificate, raw coordinate readouts, and
+source-readback fields from the generic theorem.  It then uses the resulting
+`hCtop` for the Case 2-specific regular-readback and selected inverse-readout
+pointwise theorems.
 
 Boundary: this is local coordinate/readback packaging.  It does not recover
 the full passive-theta point from `productSourceChart(theta,u)`; the selected
