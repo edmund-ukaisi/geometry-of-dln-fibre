@@ -49,6 +49,18 @@ Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on
 | **P2.d** | formaliser | p2d-capstone | ✅ DONE + PUSHED `7b43aaef` | **`Algebra.IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U`** (`LocalTriviality.lean`, bare `Algebra` ns): `ι` + `chart : ι → AtlasFibreChart` + `cover : (⋃ basicOpen chartElt) = U`. **Cocycle = derived lemma (not a field)** — `overlapTransition_trans_symm`/`_symm` from P2.c (holds for any `AtlasChart`s). DLN instance `reducedFibre_isZariskiLocallyTrivialAffineProduct` (`FibreZariskiLocalTriviality.lean`) at `U = rankROpen` (open, load-bearing — not `⊤`); new cover lemma `iUnion_pivotDatum_basicOpen_eq_rankROpen` (PivotDatum-indexed, le_antisymm via banked selector cover). green **3834**, sorries 0, **instance witness axiom-clean** = non-vacuity. Executor Codex (xhigh): clean on all 5 fidelity Qs. **Controller taste-check: faithful + sound.** |
 | P2.d review | reviewer | p2d-review | ✅ DONE — **PASS-WITH-NITS** | decorrelated audit (`threads/p2d-review/verdict.md` + Codex): sound + faithful, no soundness/fidelity defect; new cover lemma correct (both inclusions), no global-bundle over-claim. **Independent re-gate GREEN 3834, sorries 0, axiom-clean** (= Phase-2 boundary re-gate). Two prose-precision nits FIXED `60fb928b`: Q2a (instance "non-vacuity/geometric witness/realized" → honest inhabited/satisfiable; `rankROpen ≠ ∅` not proved) + Q1c (cocycle decoupling line: on `trivK`/`M`, not the over-`BaseLoc` product). **Escalated to operator:** `Base → TotalRing/AmbientRing` rename (signature change — `Base` is the total/source ring by AG convention; docstrings flag it, mathematically fine) |
 
+## Operator decisions (2026-06-30)
+- **Capstone naming → BRIDGE, not keep-vs-rename.** Operator: build a bridge so the predicate retains its
+  correct names in BOTH worlds (ring-theory `Base`/`BaseLoc` ↔ AG `total`/`base`/`fibre`/`projection`, via the
+  `Spec`-contravariance flip) rather than pick one convention. → **rung P2.e** (additive view, keep `Base`/`BaseLoc`;
+  scheme-side accessors PER-CHART; global fibration morphism R1-gated). Dispatched (`p2e-bridge`).
+- **Phase-2 PR → AUTHORIZED** (operator authorized controller to open `det-atlas-p2 → dev`; merging stays
+  operator's). Sequenced AFTER P2.e lands green, so the PR ships the complete both-worlds capstone in one piece.
+
+| rung | seat | teammate | status | notes |
+|------|------|----------|--------|-------|
+| **P2.e** | formaliser | p2e-bridge | 🔄 | two-worlds bridge view on `IsZariskiLocallyTrivialAffineProduct`: scheme-side accessors (`totalSpace = Spec Base`, `chartProjection i = comap structMap`, `fibreSpace`) + `Spec`-flip dictionary docstring; additive (keep `Base`/`BaseLoc`); per-chart projection only (global = R1-gated). Decorrelated Codex on the view shape |
+
 ## Phase 2 — boundary re-gate (controller) ✅ PASSED
 Full aggregator GREEN (**3834 jobs**); sorries 0 / 0 axiom; the P2.d capstone (`reducedFibre_isZariskiLocallyTrivialAffineProduct`) + the abstract predicate's derived cocycle + the new cover lemma all axiom-clean `[propext, Classical.choice, Quot.sound]`; both DLN payoffs unchanged. Decorrelated review PASS-WITH-NITS, nits fixed (`60fb928b`). **Phase 2 COMPLETE (P2.a/b′/b/c/d) → ready for the Phase-2 PR (base `dev`, signal-and-wait).** Roadmapped-not-built: P2.c′ triple cocycle (R1 global-gluing track).
 
