@@ -3954,7 +3954,7 @@ theorem exists_right_quotients_of_forall_dvd
   rw [hq i]
   ac_rfl
 
-/-- Equal row weights admit the trivial right-oriented quotient witnesses. -/
+/-- Equal row weights give the trivial right-oriented quotient witnesses. -/
 theorem exists_right_quotients_of_forall_eq
     {ι : Type*} {b0 : α} {b : ι → α} (h : ∀ i, b i = b0) :
     ∃ q : ι → α, ∀ i, b i = q i * b0 :=
@@ -3976,14 +3976,14 @@ theorem monomialRec_tail_eq_right_mul (step : ℕ → α) {a b : ℕ} (h : a ≤
   subst hk
   rw [Nat.add_sub_cancel_left, monomialRec_add_eq_tail_mul]
 
-/-- Monomial recurrence terms later than `a` admit right quotient witnesses over `b_a`. -/
+/-- Monomial recurrence terms later than `a` give right quotient witnesses over `b_a`. -/
 theorem exists_right_quotients_monomialRec_of_le
     (step : ℕ → α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
     (hlevel : ∀ i, a ≤ level i) :
     ∃ q : ι → α, ∀ i, monomialRec step (level i) = q i * monomialRec step a :=
   exists_right_quotients_of_forall_dvd (fun i ↦ monomialRec_dvd_of_le step (hlevel i))
 
-/-- Equal pivot-strip weights or later recurrence levels admit quotient witnesses over `b_a`. -/
+/-- Equal pivot-strip weights or later recurrence levels give quotient witnesses over `b_a`. -/
 theorem exists_right_quotients_monomialRec_of_eq_or_le
     (step : ℕ → α) {ι : Type*} {a : ℕ} {level : ι → ℕ}
     (hlevel : ∀ i, monomialRec step (level i) = monomialRec step a ∨ a ≤ level i) :
@@ -4013,7 +4013,7 @@ theorem exists_right_quotients_pivotMul_monomialRec_of_eq_or_le
     · right
       exact pivotMul_monomialRec_dvd_of_le step u hle)
 
-/-- Constant row weights admit the trivial quotient witnesses. -/
+/-- Constant row weights give the trivial quotient witnesses. -/
 theorem exists_right_quotients_const {ι : Type*} (b0 : α) :
     ∃ q : ι → α, ∀ i, b0 = q i * b0 :=
   ⟨fun _ ↦ 1, by intro i; simp⟩
@@ -5831,6 +5831,22 @@ theorem pivotPreQBlock_mul_pivotQ
     · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply]
     · simp [pivotPreQBlock, pivotQ, pivotPostQBlock, Matrix.fromBlocks_multiply,
         sub_eq_add_neg, add_comm]
+
+/-- Pivot-first right multiplication by `Q` is the same Schur cleanup, once the
+pivot entry is normalised to `1`. -/
+theorem pivotFirstMatrix_mul_pivotQ_eq_pivotPostQBlock
+    {ι κ' : Type*} [DecidableEq ι] [DecidableEq κ']
+    {rowPivot : ι} {colPivot : κ'}
+    [Fintype (pivotComplement colPivot)] [DecidableEq (pivotComplement colPivot)]
+    (A : Matrix ι κ' R) (hA : A rowPivot colPivot = 1) :
+    pivotFirstMatrix rowPivot colPivot A *
+        pivotQ (pivotFirstY rowPivot colPivot A) =
+      pivotPostQBlock
+        (pivotFirstX rowPivot colPivot A)
+        (pivotFirstY rowPivot colPivot A)
+        (pivotFirstD rowPivot colPivot A) := by
+  rw [pivotFirstMatrix_eq_pivotPreQBlock A hA]
+  rw [pivotPreQBlock_mul_pivotQ]
 
 /-- The displayed inverse really is a right inverse for `Q`. -/
 theorem pivotQ_mul_pivotQinv (y : Matrix Unit κ R) :
@@ -9509,6 +9525,16 @@ def case2SourceSelectedNormalizedBlockOfMem
     Matrix (Case2ResidualRowIndex n S J) (Case2ResidualColIndex n S J) R :=
   fun i j ↦ case2SourceSelectedNormalizedMapOfMem hp residual (i.1, j.1)
 
+/-- The supplied-pivot source-coordinate substituted block is the selected
+variable times the source-coordinate normalised block. -/
+theorem case2SourceSelectedSubstitutionBlockOfMem_eq_mul_normalized
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (u : R) (residual : ℕ × ℕ → R) :
+    case2SourceSelectedSubstitutionBlockOfMem hp u residual =
+      fun i j ↦ u * case2SourceSelectedNormalizedBlockOfMem hp residual i j :=
+  rfl
+
 /-- The source-coordinate normalised block agrees with the existing
 source-selected normalised matrix after restricting source residuals. -/
 theorem case2SourceSelectedNormalizedBlockOfMem_eq_selectedNormalizedMatrixOfMem
@@ -9581,6 +9607,40 @@ theorem case2SourceSelectedSubstitutionBlockOfMem_eq_selectedSubstitutionMatrixO
       (case2ResidualBlockPivotRowOfMem hp)
       (case2ResidualBlockPivotColOfMem hp) = u := by
   simp [case2SourceSelectedSubstitutionMatrixOfMem, case2SelectedSubstitutionMatrix]
+
+/-- Source-coordinate Case 2 form of `E * Q = [[1,0],[c,Z-ca]]` for a supplied
+residual-block pivot. -/
+theorem case2SourceSelectedNormalizedBlockOfMem_mul_pivotQ
+    {n : ℕ → ℕ} {S J : ℕ} {p : ℕ × ℕ}
+    (hp : p ∈ case2ResidualBlockPivotEntries n S J)
+    (residual : ℕ × ℕ → R) :
+    pivotFirstMatrix
+        (case2ResidualBlockPivotRowOfMem hp)
+        (case2ResidualBlockPivotColOfMem hp)
+        (case2SourceSelectedNormalizedBlockOfMem hp residual) *
+      pivotQ
+        (pivotFirstY
+          (case2ResidualBlockPivotRowOfMem hp)
+          (case2ResidualBlockPivotColOfMem hp)
+          (case2SourceSelectedNormalizedBlockOfMem hp residual)) =
+      pivotPostQBlock
+        (pivotFirstX
+          (case2ResidualBlockPivotRowOfMem hp)
+          (case2ResidualBlockPivotColOfMem hp)
+          (case2SourceSelectedNormalizedBlockOfMem hp residual))
+        (pivotFirstY
+          (case2ResidualBlockPivotRowOfMem hp)
+          (case2ResidualBlockPivotColOfMem hp)
+          (case2SourceSelectedNormalizedBlockOfMem hp residual))
+        (pivotFirstD
+          (case2ResidualBlockPivotRowOfMem hp)
+          (case2ResidualBlockPivotColOfMem hp)
+          (case2SourceSelectedNormalizedBlockOfMem hp residual)) := by
+  exact
+    pivotFirstMatrix_mul_pivotQ_eq_pivotPostQBlock
+      (case2SourceSelectedNormalizedBlockOfMem hp residual)
+      (by
+        simp [case2SourceSelectedNormalizedBlockOfMem_eq_selectedNormalizedMatrixOfMem])
 
 /-- Entrywise source-coordinate Schur-complement formula for a supplied Case 2
 residual-block pivot.
@@ -12856,6 +12916,33 @@ theorem case2DisplayedPaperDpp_eq_pivotPostQBlock
   · rw [pivotPreQBlock_mul_pivotQ]
   · simp [case2DisplayedPaperDchart, case2DisplayedSourceNormalizedBlock,
       case2DisplayedPivotRow, case2DisplayedPivotCol]
+
+/-- The displayed source-coordinate product `D_chart * Q` is Aoyagi's
+post-`Q` Schur block. -/
+theorem case2DisplayedPaperDchart_mul_Q_eq_pivotPostQBlock
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (residual : ℕ × ℕ → R) :
+    pivotFirstMatrix
+        (case2DisplayedPivotRow n hS hcont)
+        (case2DisplayedPivotCol n hS hcont)
+        (case2DisplayedPaperDchart n hS hcont residual) *
+      case2DisplayedPaperQ n hS hcont residual =
+      pivotPostQBlock
+        (pivotFirstX
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual))
+        (pivotFirstY
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual))
+        (pivotFirstD
+          (case2DisplayedPivotRow n hS hcont)
+          (case2DisplayedPivotCol n hS hcont)
+          (case2DisplayedPaperDchart n hS hcont residual)) := by
+  simpa [case2DisplayedPaperDpp] using
+    case2DisplayedPaperDpp_eq_pivotPostQBlock n hS hcont residual
 
 /-- The paper orientation `C' = Q⁻¹ C`: multiplying `D'' = D_chart * Q` by
 `C'` gives the original normalised block times the source following factor. -/

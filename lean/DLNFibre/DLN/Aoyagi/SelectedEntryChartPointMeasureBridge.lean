@@ -499,6 +499,22 @@ theorem map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_i
     map_formalChartMap_comp_chartPointAdapter_weightedSignedBox_eq_restrict_image
       pivot R
 
+/-- The normal-crossing chart map sends the weighted chart-point product box
+measure to Lebesgue measure restricted to the selected-entry chart image. -/
+theorem map_formalChartMap_chartPointProductMeasure_withDensity_eq_restrict_image
+    {center : Finset ι} (pivot : center) (R : center → ℝ) :
+    Measure.map (formalChartMap pivot)
+        ((chartPointProductMeasure pivot R).withDensity
+          (fun x : FormalChartPoint pivot =>
+            ENNReal.ofReal (chartPointDensity pivot x))) =
+      (volume : Measure (center → ℝ)).restrict
+        (chartMap pivot '' signedBoxSet R) := by
+  rw [← map_chartPointAdapter_withDensity_sourceDensity_eq_chartPointProductMeasure_withDensity
+    pivot R]
+  exact
+    map_formalChartMap_map_chartPointAdapter_weightedSignedBox_eq_restrict_image
+      pivot R
+
 /-- The chart-point adapter pushforward of the weighted signed-box measure is
 nonzero when all source radii are positive. -/
 theorem map_chartPointAdapter_weightedSignedBox_ne_zero

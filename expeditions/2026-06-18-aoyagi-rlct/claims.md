@@ -140,6 +140,336 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive-sector source-stratum-bounds
+  finite-integral handoff, 2026-06-29.** Lean now proves the source-stratum-bound
+  sibling
+  `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_withPassive_puncturedSector_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`.
+  The theorem keeps the passive/selected-entry coordinate-domain sector `V` and
+  chart-produced measure `mu = Measure.map sourceChart (sourceMeasure.restrict V)`
+  from the passive-sector handoff, but moves the loss lower bound and density
+  hypotheses to `nhdsWithin base sourceStratum`.  The proof uses the
+  passive-product residual-source handoff, source-stratum measurability, and only
+  the self-base retained-passive local inclusion
+  `Ulocal ∩ sourceStratum ⊆ Ulocal ∩ localSource`; it does not assert
+  source-rank coverage.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-sector-source-stratum-bounds-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-sector-source-stratum-bounds-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-sector-source-stratum-bounds-finite-integral.md`.
+  Focused local `lake build`, direct `lake env lean -E warning`, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and a direct
+  axiom probe passed; the theorem reports only `[propext, Classical.choice,
+  Quot.sound]`.  Xhigh source/scope reviewer `Mencius the 4th` and xhigh
+  Lean/API reviewer `Dalton the 4th` returned PASS.  This proves no
+  determinant-chart Haar transport, source-prior transport, passive/source
+  Jacobian transport, source-image equality, source-rank coverage, exact
+  localized residual marginal equality, normal crossings, pole order, or RLCT.
+- **Current status addendum, selected-entry all-pivot producer shell,
+  2026-06-29.** Lean now assembles all proved all-pivot analytic fields over
+  the shared universal-domain context into
+  `SelectedEntrySuppliedAnalyticAtlasProducer` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducerShell.lean`.  The new
+  declaration
+  `SelectedEntrySignedBox.CenterCoord.selectedEntryAllPivotSuppliedAnalyticAtlasProducer`
+  takes as explicit inputs a branch-state type, a
+  `SelectedEntryAtlasProducedBranchData` over
+  `selectedEntryAllPivotAnalyticAtlasContext hcenter chartEquiv`, and a
+  `SelectedEntryBranchTerminationData` for the same selected-entry all-pivot
+  chart certificate.  It fills source coverage, chart regularity, transition
+  regularity, unit regularity, and Jacobian/volume compatibility from the
+  already proved all-pivot data.  Reproduction, statement card, and review are
+  at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-all-pivot-producer-shell.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-all-pivot-producer-shell.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-all-pivot-producer-shell.md`.
+  Focused local `lake build`, direct `lake env lean -E warning`, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probe passed; the declaration reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Darwin the
+  4th` and xhigh Lean/API reviewer `James the 4th` returned PASS.  This proves
+  no source production, branch termination, branch guard exhaustiveness,
+  branch-state transition semantics, normal-crossing extraction, pole order, or
+  RLCT.
+- **Current status addendum, Case 2 passive-sector finite-integral handoff,
+  2026-06-29.** Lean now proves the passive selected-entry punctured-sector
+  finite-integral wrapper
+  `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_withPassive_puncturedSector_passiveProductMeasure_finiteMass`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSelectedEntrySourceMeasureHandoff.lean`.
+  The theorem returns an open passive/selected-entry coordinate-domain sector
+  `V` around `z0`; for `mu = Measure.map sourceChart
+  (sourceMeasure.restrict V)` it returns an open edge-family neighborhood `U`
+  around the fixed-base source family and proves the p.13 regular-coordinate
+  finite integral over `(mu.restrict (U ∩ sourceStratum)).prod nu`.  It
+  composes the existing punctured-sector residual-source theorem with the
+  retained-passive local finite-integral consumer.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-sector-finite-integral-handoff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-sector-finite-integral-handoff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-sector-finite-integral-handoff.md`.
+  Focused local `lake build`, direct `lake env lean -E warning`,
+  `scripts/sorries`, `git diff --check`, and direct axiom probe passed; the
+  theorem reports only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  source/scope reviewer `Fermat the 4th` returned PASS after documentation
+  wording was repaired from "source-rank coverage" to the actual local-source
+  inclusion, and xhigh Lean/API reviewer `Curie the 4th` returned PASS.  This
+  proves no determinant-chart Haar transport, source-prior transport,
+  passive/source Jacobian transport, source-image equality, source-rank
+  coverage, exact localized residual marginal equality, normal crossings, pole
+  order, or RLCT.
+- **Current status addendum, selected-entry all-pivot transition regular data,
+  2026-06-29.** Lean now packages the finite selected-entry normalized overlap
+  formula as transition regularity over the all-pivot selected-entry shared
+  universal-domain context in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotTransitionRegularData.lean`.
+  It defines/proves `allPivotTransitionDenom`, `allPivotTransitionDomain`,
+  `allPivotTransitionPoint`, `continuous_allPivotTransitionDenom`,
+  `continuous_allPivotTransitionNumerator`,
+  `continuousOn_allPivotTransitionPoint`,
+  `selectedEntryAllPivotAnalyticTransitionRegularData`, and
+  `selectedEntryAllPivotAnalyticTransitionRegular`.  The transition domain
+  from source chart `source` to target chart `target` is exactly the
+  normalized target-coordinate nonzero locus `{x | denom x != 0}`; on that
+  domain the division formula is continuous and preserves the represented
+  center point by the finite theorem
+  `chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-all-pivot-transition-regular-data.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-all-pivot-transition-regular-data.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-all-pivot-transition-regular-data.md`.
+  Focused local `lake build`, direct `lake env lean -E warning`, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probes passed; the two new public declarations report only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Erdos the 4th`
+  returned PASS after documentation attribution was repaired, and xhigh
+  Lean/API reviewer `Confucius the 4th` returned PASS.  This proves no source
+  production, branch termination, original/source-prior transport,
+  determinant-chart Haar transport, full supplied analytic atlas producer,
+  normal-crossing extraction, pole order, or RLCT.
+- **Current status addendum, selected-entry all-pivot Jacobian/volume data,
+  2026-06-29.** Lean now lifts the one-pivot selected-entry chart-point
+  product-measure pushforward to the all-pivot selected-entry shared
+  universal-domain context in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotJacobianVolumeData.lean`.
+  It defines/proves `selectedEntryAllPivotAnalyticJacobianVolumeData` and
+  `selectedEntryAllPivotAnalyticJacobianVolumeCompatible`.  For each chart
+  index `c`, the proof applies the one-pivot Jacobian/volume data at
+  `chartEquiv c`; the chart measure is
+  `chartPointProductMeasure (chartEquiv c) R`, the density is
+  `ofReal (chartPointDensity (chartEquiv c) x)`, and the target is
+  `chartMap (chartEquiv c) '' signedBoxSet R`.  Reproduction, statement card,
+  and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-all-pivot-jacobian-volume-data.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-all-pivot-jacobian-volume-data.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-all-pivot-jacobian-volume-data.md`.
+  Focused local `lake build`, direct `lake env lean -E warning`, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probes passed; the two new declarations report only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Arendt the
+  4th` and xhigh Lean/API reviewer `Mendel the 4th` returned PASS.  This proves
+  no transition regularity between distinct selected-entry pivots, no source
+  production, no branch termination, no original/source-prior transport, no
+  determinant-chart Haar transport, no full supplied analytic atlas producer,
+  no normal-crossing extraction, no pole order, and no RLCT.
+- **Current status addendum, selected-entry all-pivot regular data,
+  2026-06-29.** Lean now lifts the one-pivot selected-entry chart and unit
+  regularity facts to the all-pivot selected-entry shared universal-domain
+  context in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotRegularData.lean`.  It
+  defines/proves `selectedEntryAllPivotAnalyticChartRegularData`,
+  `selectedEntryAllPivotAnalyticUnitRegularData`,
+  `selectedEntryAllPivotAnalyticChartRegular`, and
+  `selectedEntryAllPivotAnalyticUnitRegular`.  For each chart index `c`, the
+  proof applies the one-pivot continuity/unit facts at `chartEquiv c`; the
+  chart map is `x_p = u`, `x_i = u r_i`, the coordinate is `u`, the loss unit
+  is `1 + sum r_i^2`, and the formal Jacobian/prior unit is `1`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-all-pivot-regular-data.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-all-pivot-regular-data.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-all-pivot-regular-data.md`.
+  Focused and full local `lake build` gates passed, and a direct Lean check of
+  the new file passed.  The direct axiom probe for the four new declarations
+  reported only `[propext, Classical.choice, Quot.sound]`.  Xhigh source/scope
+  reviewer `Maxwell the 4th` and xhigh Lean/API reviewer `Sartre the 4th`
+  returned PASS.  This proves no transition regularity between distinct
+  selected-entry pivots, no Jacobian/volume compatibility, no full supplied
+  analytic atlas producer, no source production, no branch termination, no
+  original/source-prior transport, no determinant-chart Haar transport, no
+  source-rank coverage, no normal-crossing extraction, no pole order, and no
+  RLCT.
+- **Current status addendum, Case 2 source chart-point coverage,
+  2026-06-29.** Lean now specializes the generic all-pivot selected-entry
+  source chart-point coverage theorem to the Case 2 residual-block certificate
+  in `lean/DLNFibre/DLN/Aoyagi/SelectedEntryNormalCrossing.lean`.  It proves
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value`
+  and
+  `case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value_and_coord_zero_eq_sourceSelected`.
+  For every finite residual-block center value, the first theorem chooses a
+  chart index, source selected variable `u`, and residual function whose
+  `sourceChartPoint` maps to that value; the second also records that the
+  unique certificate coordinate of the chosen witness is `u`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-source-chart-point-coverage.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-source-chart-point-coverage.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-source-chart-point-coverage.md`.
+  Aoyagi PDF pp. 19-22 are used only for the displayed selected-entry
+  substitution `x_p = u`, `x_i = u r_i`; the all-pivot residual-block version
+  is expedition-built finite coordinate bookkeeping.  The full `DLNFibre`
+  build passed via local `lake build` fallback after environment policy
+  rejected escalated `scripts/lb` access to `$HOME/.lake-shared`; after a
+  docstring wording repair, the focused `SelectedEntryNormalCrossing` build
+  passed.  `scripts/sorries`, `git diff --check`, touched Lean-file
+  forbidden-marker scan, and direct axiom probes passed with `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Euclid the
+  4th` and xhigh Lean/API reviewer `Feynman the 4th` returned PASS.  This
+  proves no analytic atlas coverage, transition regularity, source production
+  of successor matrices or suffixes, source-prior transport, determinant-chart
+  Haar transport, source-rank coverage, normal-crossing extraction, pole order,
+  or RLCT.
+- **Current status addendum, selected-entry all-pivot source coverage data,
+  2026-06-29.** Lean now packages the all-pivot selected-entry finite chart
+  family coverage theorem as `SelectedEntryAnalyticSourceCoverageData` for a
+  shared universal-domain context in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotSourceCoverageData.lean`.
+  It defines/proves `selectedEntryAllPivotAnalyticAtlasContext`,
+  `selectedEntryAllPivotAnalyticSourceCoverageData`, and
+  `selectedEntryAllPivotAnalyticSourceCoverage`, reusing the existing finite
+  coverage theorem
+  `selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_chartPoint_chartMap_eq_value`.
+  The reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-all-pivot-source-coverage-data.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-all-pivot-source-coverage-data.md`.
+  Focused build and full `DLNFibre` build passed; `scripts/sorries`,
+  `git diff --check`, touched Lean-file forbidden-marker scan, and direct
+  axiom probes passed with `[propext, Classical.choice, Quot.sound]`.
+  Review is recorded at
+  `threads/03-block-product-reduction/review-a2-selected-entry-all-pivot-source-coverage-data.md`;
+  xhigh source/scope reviewer `Wegener the 4th` returned PASS after
+  documentation repairs and xhigh Lean/API reviewer `Nash the 4th` returned
+  PASS.  Aoyagi prints the
+  displayed top-left selected-entry chart, not this all-pivot analytic atlas as
+  a source theorem; this is expedition-built finite coordinate coverage for the
+  all-pivot certificate only.  It proves no chart regularity, transition
+  regularity, unit regularity, Jacobian/volume compatibility, full supplied
+  analytic atlas producer, source production, branch termination,
+  original/source-prior transport, determinant-chart Haar transport,
+  normal-crossing extraction, pole order, or RLCT.
+- **Current status addendum, selected-entry one-chart source-coverage
+  obstruction, 2026-06-29.** Lean now proves that the exact one-chart
+  selected-entry context with `sourceDomain = Set.univ` cannot provide
+  `SelectedEntryAnalyticSourceCoverageData` when the center has a non-pivot
+  coordinate, in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryOneChartSourceCoverageObstruction.lean`.
+  The helper theorems are `formalChartMap_pivot` and
+  `formalChartMap_eq_zero_of_fst_eq_zero`; the obstruction theorem is
+  `not_selectedEntryOneChartAnalyticSourceCoverageData_of_ne`.  Reproduction
+  and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-one-chart-source-coverage-obstruction.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-one-chart-source-coverage-obstruction.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-selected-entry-one-chart-source-coverage-obstruction.md`.
+  Focused build and full `DLNFibre` build passed.  `scripts/sorries`,
+  `git diff --check`, touched Lean-file forbidden-marker scan, and direct
+  axiom probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  source/scope reviewer `Epicurus the 4th` and xhigh Lean/API reviewer
+  `Nietzsche the 4th` returned PASS.  This is not an obstruction to source
+  coverage for a smaller source domain, a multi-pivot atlas, or a supplied
+  analytic atlas producer, and it proves no source production, branch
+  termination, original/source-prior transport, determinant-chart Haar
+  transport, source-rank coverage, normal-crossing extraction, pole order, or
+  RLCT.
+- **Current status addendum, selected-entry one-chart analytic predicate data,
+  2026-06-29.** Lean now wraps the selected-entry one-chart records into the
+  forgetful analytic predicate interface in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryOneChartAnalyticPredicateData.lean`.
+  It proves `selectedEntryOneChartAnalyticChartRegular`,
+  `selectedEntryOneChartAnalyticTransitionRegular`,
+  `selectedEntryOneChartAnalyticUnitRegular`, and
+  `selectedEntryOneChartAnalyticJacobianVolumeCompatible`.  The witnesses use
+  `selectedEntryOneChartAnalyticAtlasContext pivot` and the already proved
+  one-chart data records; the Jacobian/volume-compatible theorem inherits
+  positive radii from `selectedEntryOneChartAnalyticJacobianVolumeData`.
+  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-one-chart-analytic-predicate-data.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-one-chart-analytic-predicate-data.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-selected-entry-one-chart-analytic-predicate-data.md`.
+  Focused build and full `DLNFibre` build passed.  `scripts/sorries`,
+  `git diff --check`, touched Lean-file forbidden-marker scan, and direct
+  axiom probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  source/scope reviewer `Lorentz the 4th` and xhigh Lean/API reviewer `Harvey
+  the 4th` returned PASS.  This proves no source-domain coverage, no full
+  supplied analytic atlas producer, no source production, no branch
+  termination, no original/source-prior transport, no determinant-chart Haar
+  transport, no source-rank coverage, no
+  normal-crossing extraction, no pole order, and no RLCT.
+- **Current status addendum, selected-entry one-chart regular data,
+  2026-06-29.** Lean now packages chart regularity, identity transition
+  regularity, and unit regularity for the selected-entry one-chart context in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryOneChartRegularData.lean`.  It proves
+  `continuous_chartPointCoord`, `continuous_chartPointLossUnit`, and
+  `continuous_chartPointJacobianPriorUnit`, then defines
+  `selectedEntryOneChartAnalyticChartRegularData`,
+  `selectedEntryOneChartAnalyticTransitionRegularData`, and
+  `selectedEntryOneChartAnalyticUnitRegularData`.  The chart map is the
+  continuous map `(u, r) |-> (x_p = u, x_i = u r_i)`, the unique certificate
+  coordinate is `u`, the single one-chart transition is identity on `Set.univ`,
+  the loss unit is `1 + sum r_i^2`, and the Jacobian/prior unit is constant
+  `1`.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-one-chart-regular-data.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-one-chart-regular-data.md`.
+  Review is at
+  `threads/03-block-product-reduction/review-a2-selected-entry-one-chart-regular-data.md`.
+  Focused build and full `DLNFibre` build passed.  `scripts/sorries`,
+  `git diff --check`, touched Lean-file forbidden-marker scan, and direct
+  axiom probe passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  route scout `Dirac the 4th` confirmed the target is faithful under the
+  narrow one-chart label; xhigh implementation reviewer `Mill the 4th`
+  returned PASS after documentation repairs.  This proves no source-domain
+  coverage, no multi-pivot analytic
+  transition regularity, no full analytic atlas producer, no source
+  production, no branch termination, no original/source-prior transport, no
+  determinant-chart Haar transport, no source-rank coverage, no
+  normal-crossing extraction, no pole order, and no RLCT.
+- **Current status addendum, selected-entry one-chart Jacobian/volume data,
+  2026-06-29.** Lean now proves the finite chart-point volume-form pushforward
+  `map_formalChartMap_chartPointProductMeasure_withDensity_eq_restrict_image`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryChartPointMeasureBridge.lean` and
+  packages it as one `SelectedEntryAnalyticJacobianVolumeData` record in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryOneChartJacobianVolumeData.lean`.
+  The context uses the single selected-entry normal-crossing certificate chart,
+  `sourceDomain = Set.univ`, and `chartDomain = Set.univ`; the data uses
+  source measure `volume`, chart measure `chartPointProductMeasure pivot R`,
+  density `ofReal (chartPointDensity pivot x)`, and target
+  `chartMap pivot '' signedBoxSet R`.  Positive radii `forall i, 0 < R i`
+  are required for target nonemptiness and nonzero restricted source measure,
+  but not for the pushforward equality itself.  Reproduction, statement card,
+  and review are at
+  `threads/03-block-product-reduction/reproduction-a2-selected-entry-one-chart-jacobian-volume-data.md`,
+  `threads/03-block-product-reduction/statement-card-a2-selected-entry-one-chart-jacobian-volume-data.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-selected-entry-one-chart-jacobian-volume-data.md`.
+  Focused builds and full `DLNFibre` build passed; `scripts/sorries`,
+  `git diff --check`, touched Lean-file marker scan, and direct axiom probes
+  passed with `[propext, Classical.choice, Quot.sound]`.  Xhigh implementation
+  review by `Tesla the 4th` returned PASS.  This proves no full analytic atlas producer,
+  source coverage, chart/transition/unit regularity as full analytic data,
+  source production, branch termination, source-prior transport,
+  determinant-chart Haar transport, source-rank coverage, normal-crossing
+  extraction, pole order, or RLCT.
 - **Current status addendum, selected-entry chart-point weighted product
   measure, 2026-06-29.** Lean now proves the finite weighted product-measure
   transport for the selected-entry `chartPointAdapter` in
@@ -2677,8 +3007,14 @@ No such claim is formalisation-ready until both fields are filled.
   open. The printed `b'_i` versus
   standalone-`u` ambiguity is now handled only by the single-count
   normalization: the selected variable is absorbed into successor weights, not
-  counted a second time outside them. Termination and boundary cases remain
-  open.
+  counted a second time outside them. The introduced-label progress kernel now
+  proves that strict growth of the finite introduced-label support is
+  well-founded and that the displayed Case 2 same-stage advance
+  `(S,J) -> (S,J+1)` is one such progress step under the actual-width bound,
+  hence under the prefix-minimum continuation bound. This is termination
+  infrastructure only: it does not connect branch source-production payloads
+  or branch guards to the progress relation. Termination and boundary cases
+  remain open.
 - **Kill-condition.** The transition system misses a source chart or permits a
   terminal state not covered by Aoyagi's proof; or the Case 2 mismatch is a
   genuine source gap with no certificate-level repair compatible with the
@@ -2686,7 +3022,9 @@ No such claim is formalisation-ready until both fields are filled.
 - **Evidence/source.** Aoyagi blow-up section, PDF pp. 14-23.
 - **Pen-and-paper reproduction.** draft at
   `threads/04-blow-up-certificate/reproduction-draft.md`; current repair
-  report at `threads/04-blow-up-certificate/reproduction-repair-a4.md`.
+  report at `threads/04-blow-up-certificate/reproduction-repair-a4.md`;
+  progress kernel at
+  `threads/04-blow-up-certificate/reproduction-a4-introduced-label-progress-kernel.md`.
 - **Reproduction check.** failed/blocked at
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
@@ -2893,11 +3231,24 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/reproduction-selected-entry-multi-chart-certificate-a4.md`;
 	  xhigh fidelity review passed and is saved at
 	  `threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
+	  Review of the introduced-label progress kernel is saved at
+	  `threads/04-blow-up-certificate/review-a4-introduced-label-progress-kernel.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
-  `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`.
-- **Proved.** terminal-exponent split API:
+  `lean/DLNFibre/DLN/Aoyagi/BlowupArithmetic.lean`; the introduced-label
+  progress kernel is landed in
+  `lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`.
+- **Proved.** introduced-label progress kernel:
+  `AoyagiIntroducedLabelBranchState`, `support`, `remaining`,
+  `support_subset_actual`, `remaining_lt_of_support_ssubset`, `progressStep`,
+  `progressStep_wellFounded`, `support_ssubset_case2_increment`,
+  `progressStep_case2_increment`, and
+  `progressStep_case2_increment_of_prefixBound`.  This proves well-founded
+  descent for strict growth of the finite introduced-label support and the
+  displayed Case 2 same-stage increment under actual-width/prefix-minimum
+  bounds; it does not fill branch production or branch termination. Also
+  proved terminal-exponent split API:
   `terminalExponent`, `printedCase2Vector`, `prefixMin`,
   `prefixCase2Vector`, `prefixMin_step_factor_zero`,
   `terminalExponent_printedCase2Vector`, and
@@ -13125,3 +13476,47 @@ Kill condition: this theorem is only a positive-tail substitution wrapper.  It
 must not be cited as the full derivative/formal-Jacobian equality, determinant
 equality, target-side linear equivalence, measure transport, normal crossings,
 pole order, or RLCT.
+
+## A2 Case 2 selected-entry Schur cleanup
+
+Status: Proved in Lean; focused and full local builds passed; xhigh reviews
+passed.
+
+Claim: Aoyagi pp. 19-22's displayed Case 2 selected-entry cleanup is finite
+matrix algebra:
+
+```text
+D = u E,
+E Q = [[1,0],[c,Z-ca]],
+P B E Q = B [[1,0],[0,Z-ca]]
+```
+
+with quotient witnesses `b_i = q_i b0` for the weighted row operation.  If the
+old source block is `D = u E`, the selected variable is absorbed into the row
+weights `B' = u B_old`; there is no second global `u`.
+
+Lean theorems added:
+
+```text
+pivotFirstMatrix_mul_pivotQ_eq_pivotPostQBlock
+case2SourceSelectedSubstitutionBlockOfMem_eq_mul_normalized
+case2SourceSelectedNormalizedBlockOfMem_mul_pivotQ
+case2DisplayedPaperDchart_mul_Q_eq_pivotPostQBlock
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-schur-cleanup.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-case2-selected-entry-schur-cleanup.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-case2-selected-entry-schur-cleanup.md`
+passed by xhigh source/scope reviewer `Ampere the 4th` and xhigh Lean/API
+reviewer `Franklin the 4th`.
+
+Kill condition: this claim must not be cited as analytic atlas coverage,
+chart-domain regularity, transition regularity, Jacobian or volume
+compatibility, source production, branch termination, source-prior transport,
+normal crossings, pole order, RLCT, or as identification of `Z-ca` with the
+next residual block without the separate continuing-branch reindexing and size
+hypotheses.

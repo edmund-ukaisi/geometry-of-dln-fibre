@@ -6770,3 +6770,47 @@ This supersedes the old `True`-predicate successor-boundary wrapper for this
 finite interface only.  It does not construct analytic next charts, coverage,
 analytic transition maps, source-produced successor matrices or suffixes,
 termination, normal crossings, pole order, or RLCT.
+
+## 2026-06-29 Lean introduced-label progress kernel
+
+Reproduction:
+`reproduction-a4-introduced-label-progress-kernel.md`.
+Statement card:
+`statement-card-a4-introduced-label-progress-kernel.md`.
+Review:
+`review-a4-introduced-label-progress-kernel.md`.
+
+Lean now proves a small branch-termination kernel in
+`lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`:
+
+```text
+AoyagiIntroducedLabelBranchState
+AoyagiIntroducedLabelBranchState.progressStep_wellFounded
+AoyagiIntroducedLabelBranchState.support_ssubset_case2_increment
+AoyagiIntroducedLabelBranchState.progressStep_case2_increment
+AoyagiIntroducedLabelBranchState.progressStep_case2_increment_of_prefixBound
+```
+
+The state is a stage/index pair `(S,J)` with `1 <= S <= L`, and progress is
+measured by the number of actual source labels not yet introduced:
+
+```text
+remaining L n s =
+  (actualWidthLabelFinset L n).card - s.support.card
+```
+
+Strict growth of `introducedLabelFinset L n S J` is well-founded by descent in
+this finite count.  The displayed Case 2 same-stage advance from `(S,J)` to
+`(S,J+1)` strictly grows support by the fresh label `(S,J+1)` under
+`J+1 <= n(S+1)`, and hence under Aoyagi's prefix-minimum continuation bound via
+`prefixMinNat_le_width`.
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probes passed.  Xhigh source/scope review and two xhigh Lean/API reviews
+passed.
+
+This is only a progress kernel.  It does not prove that every source-produced
+branch payload satisfies this relation, does not prove branch guard
+exhaustiveness, does not fill `SelectedEntryBranchTerminationData`, and does
+not prove normal crossings, pole order, or RLCT.

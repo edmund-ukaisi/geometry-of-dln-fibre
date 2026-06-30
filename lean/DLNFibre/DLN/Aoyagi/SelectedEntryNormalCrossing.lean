@@ -2018,6 +2018,59 @@ theorem coord_sourceChartPoint_eq_sourceSelected
       (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
       c u residual
 
+set_option linter.style.longLine false in
+/-- Every finite Case 2 residual-block center value is represented by a
+source point in some chart of the all-pivot finite selected-entry certificate.
+
+This is finite chart-point coverage only.  It is not analytic atlas coverage,
+source production of successor matrices or suffixes, transition regularity,
+normal crossings, pole order, or RLCT extraction. -/
+theorem exists_sourceChartPoint_chartMap_eq_value
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (value : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → K) :
+    ∃ c : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts,
+      ∃ u : K, ∃ residual : ℕ × ℕ → K,
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).chartMap c
+          (sourceChartPoint n hS hcont c u residual) = value := by
+  simpa [sourceChartPoint,
+    case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate] using
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value
+      (K := K)
+      (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
+      (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
+      value
+
+/-- Every finite Case 2 residual-block center value is represented by a source
+point, and the unique certificate coordinate of the chosen source point is the
+source selected variable `u`.
+
+This is finite coordinate bookkeeping only.  It does not prove analytic atlas
+coverage, source production of successor matrices or suffixes, transition
+regularity, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_sourceChartPoint_chartMap_eq_value_and_coord_zero_eq_sourceSelected
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    {K : Type*} [Field K] [LinearOrder K] [IsStrictOrderedRing K]
+    (value : {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S J} → K) :
+    ∃ c : Fin (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+        (K := K) n hS hcont).numCharts,
+      ∃ u : K, ∃ residual : ℕ × ℕ → K,
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).chartMap c
+            (sourceChartPoint n hS hcont c u residual) = value ∧
+        (case2ResidualBlockCenterSqFormalJacobianChartFamilyCertificate
+          (K := K) n hS hcont).coord c
+            (sourceChartPoint n hS hcont c u residual) (0 : Fin 1) = u := by
+  rcases exists_sourceChartPoint_chartMap_eq_value
+      (K := K) n hS hcont value with
+    ⟨c, u, residual, hmap⟩
+  exact ⟨c, u, residual, hmap,
+    coord_sourceChartPoint_eq_sourceSelected n hS hcont c u residual⟩
+
 /-- Target chart point on a Case 2 all-pivot selected-entry overlap.
 
 This is the Case 2 residual-block specialization of the finite selected-entry
@@ -2265,12 +2318,13 @@ theorem chartMap_sourceChartTransitionPoint_eq_of_target_normalized_ne_zero
       (by
         simpa [case2SourceSelectedNormalizedMapOfMem] using htarget)
 
-/-- Every finite Case 2 residual-block center value is produced by some
+set_option linter.style.longLine false in
+/-- Every finite Case 2 residual-block center value is represented by some
 source-selected chart of the all-pivot selected-entry family.
 
-The produced chart index chooses a residual-block pivot and the source map is
+The witnessing chart index chooses a residual-block pivot and the source map is
 `case2SourceSelectedChartMapOfMem` for that pivot.  This is finite
-selected-entry source-coordinate production only: it is not analytic atlas
+selected-entry source-coordinate representation only: it is not analytic atlas
 coverage, transition regularity, source production of successor matrices or
 suffixes, normal crossings, pole order, or RLCT extraction. -/
 theorem exists_sourceSelectedChartMap_eq_value
@@ -2285,8 +2339,8 @@ theorem exists_sourceSelectedChartMap_eq_value
           case2SourceSelectedChartMapOfMem
             ((finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J)) c).2
             u residual p.1) = value := by
-  open selectedEntryCenterSqFormalJacobianChartFamilyCertificate in
-  rcases exists_sourceChartPoint_chartMap_eq_value
+  rcases
+    selectedEntryCenterSqFormalJacobianChartFamilyCertificate.exists_sourceChartPoint_chartMap_eq_value
       (K := K)
       (case2ResidualBlockPivotEntries_nonempty_of_cont n hS hcont)
       (finsetSubtypeChartEquiv (case2ResidualBlockPivotEntries n S J))
