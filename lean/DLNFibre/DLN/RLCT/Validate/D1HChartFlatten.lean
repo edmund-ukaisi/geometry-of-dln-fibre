@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlat
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedProduct
 import Mathlib.MeasureTheory.Group.Measure
 
 /-!
@@ -100,5 +101,53 @@ theorem dln_hchart_flat (H : Fin (L + 1) → ℕ)
   rw [rlctAt_eq_rlctAtOn_lossFlatShift H B v]
   exact rlctAtOn_eq_of_contDiff_chart (lossFlatShift H B v) F Φ
     (0 : Fin (flatDim H) → ℝ) f' hΦ hΦ' hfix hgerm
+
+/-- **The flatten-inverse entry is a single flat coordinate** (the entry-wise unblocker). The
+flattening `paramsEquivFlat H` is a coordinate REINDEX, so each `Params`-entry of its inverse reads
+one flat coordinate: `((paramsEquivFlat H).symm x) s i j = x (equivFin (FlatIdx H) ⟨⟨s,i⟩,j⟩)`. This
+is what makes the flat-coord loss `C^∞` ENTRY-WISE into `ℝ` — necessary because `Params H` is NOT a
+normed space, so no `ContDiff` map routes through it. -/
+theorem paramsEquivFlat_symm_entry (H : Fin (L + 1) → ℕ) (x : Fin (flatDim H) → ℝ)
+    (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) :
+    ((paramsEquivFlat H).symm x) s i j
+      = x ((Fintype.equivFin (FlatIdx H)) ⟨⟨s, i⟩, j⟩) := rfl
+
+/-- **`lossFlatShift` is `C^∞`** — the smoothness the IFT chart (and the `ContDiff ℝ 2` premise of
+`dln_hchart_flat`) needs, built ENTRY-WISE into `ℝ` (never through the un-normed `Params H`).
+`lossFlatShift w = ∑_ij ((prod H (flatSymm(w+flat v)) − B) i j)²`; each layer entry
+`(flatSymm(w+flat v)) s i j = (w + flat v)(idx s i j)` is `C^∞` in `w` (a flat coordinate + const,
+`paramsEquivFlat_symm_entry`), so each product entry is `C^∞` (`contDiff_prod_entry`); the loss is
+then a finite sum of squares. -/
+theorem contDiff_lossFlatShift (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (v : Params H) :
+    ContDiff ℝ (⊤ : ℕ∞) (lossFlatShift H B v) := by
+  -- the reconstruction `gmap w = flatSymm (w + flat v)`, accessed entry-wise.
+  set gmap : (Fin (flatDim H) → ℝ) → Params H :=
+    fun w => (paramsEquivFlat H).symm (w + (paramsEquivFlat H) v) with hgmap
+  -- each layer entry is `C^∞`: it's a single flat coordinate of `w + flat v`.
+  have hentry : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun w => gmap w s i j) := by
+    intro s i j
+    have hcoord : (fun w => gmap w s i j)
+        = fun w : Fin (flatDim H) → ℝ =>
+          (w + (paramsEquivFlat H) v) ((Fintype.equivFin (FlatIdx H)) ⟨⟨s, i⟩, j⟩) := by
+      funext w; rw [hgmap]; exact paramsEquivFlat_symm_entry H _ s i j
+    rw [hcoord]
+    exact (contDiff_apply ℝ _ _).comp (contDiff_id.add contDiff_const)
+  -- each product entry is `C^∞`.
+  have hprod : ∀ (i : Fin (H 0)) (j : Fin (H (Fin.last L))),
+      ContDiff ℝ (⊤ : ℕ∞) (fun w => prod H (gmap w) i j) :=
+    fun i j => contDiff_prod_entry H gmap hentry i j
+  -- the loss as a finite double sum of squares.
+  have heq : lossFlatShift H B v = fun w => ∑ i, ∑ j, ((prod H (gmap w) - B) i j) ^ 2 := by
+    funext w; rw [lossFlatShift, dlnLoss]
+  rw [heq]
+  apply ContDiff.sum; intro i _
+  apply ContDiff.sum; intro j _
+  have hsub : ContDiff ℝ (⊤ : ℕ∞) (fun w => (prod H (gmap w) - B) i j) := by
+    have hrw : (fun w => (prod H (gmap w) - B) i j)
+        = fun w => prod H (gmap w) i j - B i j := by funext w; simp [Matrix.sub_apply]
+    rw [hrw]; exact (hprod i j).sub contDiff_const
+  exact hsub.pow 2
 
 end DLNFibre.DLN.RLCT
