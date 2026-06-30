@@ -46,4 +46,27 @@ theorem eBlockPivot_mem_activeM (ha : StructAdm M (tach M))
     eBlockPivot ha hr hc ∈ activeM M ha :=
   activeSlotE_mem_activeM ha ⟨0, hr⟩ ⟨0, hc⟩
 
+/-! ## The deepRank=0 E-block radial chart + its rate -/
+
+/-- **The deepRank=0 chart** `φ₀ := phiFlatLiveAt … eBlockPivot` — the SAME live chart as the interior
+leg with the radial pivot moved from the (empty) leaf to the E-block. Pivot-generic `phiFlatLiveAt`
+carries the radial scalar at `eBlockPivot`. (At `deepRank = 0` every K-block vanishes — boundary 0's K
+is `Text 2 = 0`-dim, the leaf's is `Text 3 = 0`-dim — so no `∘ kLDU` lens is needed.) -/
+noncomputable def eDeepRank0Phi (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  phiFlatLiveAt M ha (by norm_num) (eBlockPivot ha hr hc)
+
+/-- **The deepRank=0 rate** `routeMCore M (φ₀ x) = (x eBlockPivot)²·V` — the pivot-generic
+`phiFlatLiveAt_rate` at `p₀ = eBlockPivot` (verbatim; the rate holds for ANY pivot). -/
+theorem eDeepRank0Phi_rate (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    routeMCore M (eDeepRank0Phi ha hr hc x)
+      = (x (eBlockPivot ha hr hc)) ^ 2
+        * VvalGen (x (eBlockPivot ha hr hc)) M (tach M)
+            (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
+            (hleStruct M (tach M) ha) :=
+  phiFlatLiveAt_rate M ha (by norm_num) (eBlockPivot ha hr hc) x
+
 end DLNFibre.DLN.RLCT
