@@ -238,11 +238,133 @@ The slot-faithful input regroup. Its V0-component reads exactly the boundary-0 S
 (the Codex-endorsed Option B: `slotReadV0` is the V0 component DEFINITIONALLY). The V1-component reads
 the boundary-0 lift slot (`W`) and the boundary-1 frame slot (`leaf`). -/
 
+/-! ### The V0 frame-slot reshape `(Fin (schurDim 0) → ℝ) ≃ₗ SchurInc` (matching `frameSplitEquiv`)
+
+The boundary-0 frame slot (`schurDim 0 = Text1·Wext1`) reshapes to the `SchurInc (t2, r1, c1)` tuple via
+the SAME `frameSplitEquiv` the readers use: reindex `Fin (schurDim 0) → ℝ` by `frameSplitEquiv` to the
+role-Sum-indexed Pi `(((K⊕X)⊕N)⊕E) → ℝ`, split off each role by `sumArrowLequivProdArrow`, reshape each
+to its matrix, and REORDER `(K, X, N, E) → (K, N, X, E)` to match `slotReadV0`'s tuple. -/
+
+/-- Reorder/reshape `(((K-coords × X-coords) × N-coords) × E-coords)` → `SchurInc (K, N, X, E)` —
+the `frameSplitEquiv` role order is `(((K⊕X)⊕N)⊕E)` but `SchurInc`/`slotReadV0` is `(K, N, X, E)`. -/
+noncomputable def roleReorderLE (M : Fin (2 + 1) → ℕ) :
+    ((((Fin (schurT1 M * schurT1 M) → ℝ) × (Fin (schurR1 M * schurT1 M) → ℝ))
+        × (Fin (schurT1 M * schurC1 M) → ℝ)) × (Fin (schurR1 M * schurC1 M) → ℝ))
+      ≃ₗ[ℝ] SchurInc (schurT1 M) (schurR1 M) (schurC1 M) where
+  toFun p :=
+    (flatMatLE (schurT1 M) (schurT1 M) p.1.1.1,
+     flatMatLE (schurT1 M) (schurC1 M) p.1.2,
+     flatMatLE (schurR1 M) (schurT1 M) p.1.1.2,
+     flatMatLE (schurR1 M) (schurC1 M) p.2)
+  invFun z :=
+    ((((flatMatLE (schurT1 M) (schurT1 M)).symm z.1,
+       (flatMatLE (schurR1 M) (schurT1 M)).symm z.2.2.1),
+      (flatMatLE (schurT1 M) (schurC1 M)).symm z.2.1),
+     (flatMatLE (schurR1 M) (schurC1 M)).symm z.2.2.2)
+  map_add' a b := by
+    simp only [Prod.fst_add, Prod.snd_add, map_add]; rfl
+  map_smul' r a := by
+    simp only [Prod.smul_fst, Prod.smul_snd, map_smul, RingHom.id_apply]; rfl
+  left_inv p := by
+    simp only [LinearEquiv.symm_apply_apply]
+  right_inv z := by
+    simp only [LinearEquiv.apply_symm_apply]
+
+/-- The boundary-1 Schur role widths (`s = 1`, the V0 boundary): `frameSplitEquiv M t 1` splits
+`Fin (Text1·Wext1)` into `K (t2·t2) ⊕ X (r1·t2) ⊕ N (t2·c1) ⊕ E (r1·c1)`. Reindex `Fin (schurDim 0) → ℝ`
+by `frameSplitEquiv.symm`, peel the nested `⊕` from the outside (E, N, X, K), reshape + reorder. -/
+noncomputable def frameToSchurInc (ha : StructAdm M (tach M)) :
+    (Fin (schurDim M (tDesc M (tach M)) 0) → ℝ) ≃ₗ[ℝ]
+      SchurInc (schurT1 M) (schurR1 M) (schurC1 M) :=
+  (LinearEquiv.funCongrLeft ℝ ℝ
+      (frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm).trans
+    (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+        ((((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+            (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).prodCongr
+              (LinearEquiv.refl ℝ _)))).prodCongr (LinearEquiv.refl ℝ _)))).trans
+      (roleReorderLE M))
+
+/-- The V1 leaf-slot reshape `(Fin (schurDim 1) → ℝ) ≃ₗ Matrix (schurT1) (Wext2)` — the boundary-1 frame
+slot `schurDim 1 = Text2·Wext2` is the leaf residual matrix. -/
+noncomputable def leafToMat (ha : StructAdm M (tach M)) :
+    (Fin (schurDim M (tDesc M (tach M)) 1) → ℝ) ≃ₗ[ℝ]
+      Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ :=
+  flatMatLE (schurT1 M) (Wext M 2)
+
+/-- The product-indexed coords → matrix reshape `(Fin a × Fin b → ℝ) ≃ₗ Matrix (Fin a) (Fin b)`. -/
+noncomputable def prodMatLE (a b : ℕ) :
+    (Fin a × Fin b → ℝ) ≃ₗ[ℝ] Matrix (Fin a) (Fin b) ℝ :=
+  (LinearEquiv.curry ℝ ℝ (Fin a) (Fin b)).trans (Matrix.ofLinearEquiv ℝ)
+
+/-- The V1 W-slot reshape `(Fin (liftDim 0) → ℝ) ≃ₗ Matrix (schurC1) (Wext2)` — the boundary-0 lift slot
+`liftDim 0 = (Wext1−Text2)·Wext2` is the lift `W` matrix. Reindex by `liftSlotEquiv.symm` to the
+product-index `Fin schurC1 × Fin Wext2`, then `prodMatLE`. -/
+noncomputable def wToMat (ha : StructAdm M (tach M)) :
+    (Fin (liftDim M (tDesc M (tach M)) 0) → ℝ) ≃ₗ[ℝ]
+      Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ :=
+  (LinearEquiv.funCongrLeft ℝ ℝ (liftSlotEquiv M (tDesc M (tach M)) 0 (by decide)).symm).trans
+    (prodMatLE (schurC1 M) (Wext M 2))
+
+/-- The empty lift slot `liftDim 1 = 0`, so `(Fin (liftDim 1) → ℝ) ≃ₗ PUnit` (the `Fin 0 → ℝ` zero
+space). -/
+theorem liftDim_one_eq_zero : liftDim M (tDesc M (tach M)) 1 = 0 := by
+  rw [liftDim, if_neg (by decide)]
+
+/-- The leaf lift slot is `PUnit`-like: `(Fin (liftDim 1) → ℝ) ≃ₗ PUnit` (both `Subsingleton`,
+`liftDim 1 = 0`). -/
+noncomputable def leafLiftToPUnit (ha : StructAdm M (tach M)) :
+    (Fin (liftDim M (tDesc M (tach M)) 1) → ℝ) ≃ₗ[ℝ] PUnit := by
+  haveI : Subsingleton (Fin (liftDim M (tDesc M (tach M)) 1) → ℝ) := by
+    rw [liftDim_one_eq_zero]; infer_instance
+  exact
+    { toFun := fun _ => PUnit.unit
+      invFun := fun _ => 0
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl
+      left_inv := fun _ => Subsingleton.elim _ _
+      right_inv := fun _ => Subsingleton.elim _ _ }
+
+/-- The `eIn` final rearrange `((V0 × W) × (leaf × PUnit)) ≃ₗ V0 × ((W × leaf) × PUnit)` — collect the
+two V1 matrix blocks `(W, leaf)` into `eihdV M 1` (the chain pair), keep `V0` head and the `PUnit` tail. -/
+noncomputable def eInRearrange (ha : StructAdm M (tach M)) :
+    (((eihdV M 0 × Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ)
+        × (Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ × PUnit)))
+      ≃ₗ[ℝ] StairProd (eihdV M) 2 where
+  toFun p := (p.1.1, ((p.1.2, p.2.1), p.2.2))
+  invFun q := ((q.1, q.2.1.1), (q.2.1.2, q.2.2))
+  map_add' a b := rfl
+  map_smul' r a := rfl
+  left_inv p := rfl
+  right_inv q := rfl
+
+/-- The per-boundary slot split `(slot k → ℝ) ≃ₗ (Fin (schurDim k) → ℝ) × (Fin (liftDim k) → ℝ)`. -/
+noncomputable def slotSplitLE (k : ℕ) :
+    ((Fin (schurDim M (tDesc M (tach M)) k) ⊕ Fin (liftDim M (tDesc M (tach M)) k)) → ℝ)
+      ≃ₗ[ℝ] (Fin (schurDim M (tDesc M (tach M)) k) → ℝ) × (Fin (liftDim M (tDesc M (tach M)) k) → ℝ) :=
+  LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ
+
 /-- **`eIn` (residual piece 1)** — the input layer-collecting equiv `(Fin (flatDim M) → ℝ) ≃ₗ
-StairProd (eihdV M) 2`, V0-component `= slotReadV0`. -/
+StairProd (eihdV M) 2`, V0-component `= slotReadV0`. Built (Option A) as a composite of `LinearEquiv`s
+through `chartIdxEquiv`: `funCongrLeft chartIdxEquiv.symm` (flat → ChartIdx-Pi), `piCurry` (Σ → nested
+Π), `piFinTwo` (Π over `Fin 2` → product), per-boundary `slotSplitLE` (frame/lift split), then reshape
+each slot to `V0`/`V1` and rearrange `(V0 × W) × (leaf × PUnit) → V0 × ((W, leaf) × PUnit)`. -/
 noncomputable def eIn (ha : StructAdm M (tach M)) :
     (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
-  sorry
+  -- step 1: flat → ChartIdx-indexed Pi
+  LinearEquiv.funCongrLeft ℝ ℝ
+      (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ≪≫ₗ
+  -- step 2: Σ → nested Π (piCurry, constant codomain ℝ)
+  LinearEquiv.piCurry ℝ (κ := fun k : Fin 2 =>
+      Fin (schurDim M (tDesc M (tach M)) k.val) ⊕ Fin (liftDim M (tDesc M (tach M)) k.val))
+      (fun _ _ => ℝ) ≪≫ₗ
+  -- step 3: Π over `Fin 2` → product (slot 0 × slot 1)
+  LinearEquiv.piFinTwo ℝ (fun k : Fin 2 =>
+      (Fin (schurDim M (tDesc M (tach M)) k.val) ⊕ Fin (liftDim M (tDesc M (tach M)) k.val)) → ℝ) ≪≫ₗ
+  -- step 4: split each slot, reshape, rearrange
+  ((slotSplitLE 0).prodCongr (slotSplitLE 1)) ≪≫ₗ
+  (((frameToSchurInc ha).prodCongr (wToMat ha)).prodCongr
+      ((leafToMat ha).prodCongr (leafLiftToPUnit ha))) ≪≫ₗ
+  eInRearrange ha
 
 /-- **The V0-faithfulness invariant**: `(eIn ha δ).1 = slotReadV0 ha δ` — the boundary-0 frame slot.
 The in-Lean check that `eIn` reads the Schur frame into V0; with `hD`'s J00 match this catches a
