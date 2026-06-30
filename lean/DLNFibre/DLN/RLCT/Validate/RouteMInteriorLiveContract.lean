@@ -120,15 +120,77 @@ theorem interiorLiveUnit_nonneg (ha : StructAdm M (tach M))
 
 /-! ## The commute fact (the load-bearing map identity) -/
 
+/-- **`kLDU` is identity on every `activeM` slot** — the E-block slots decode to `frameSplitEquiv`'s
+`Sum.inr` (E-role, kLDU identity arm); the leaf slots sit at the leaf boundary where the K-block is
+`0×0`, so they fall through the identity arm too. (The shared atom for the commute.) -/
+theorem kLDU_eq_on_activeM (ha : StructAdm M (tach M)) (x : Fin (routeMAmbient M) → ℝ)
+    {q : Fin (routeMAmbient M)} (hq : q ∈ activeM M ha) :
+    (kLDU M (tach M) ha x) q = x q := by
+  rw [activeM, Finset.mem_union] at hq
+  rcases hq with hE | hL
+  · rw [activeEImg, Finset.mem_image] at hE
+    obtain ⟨p, _, hp⟩ := hE; subst hp
+    rw [kLDU, activeSlotE]; simp only [Equiv.apply_symm_apply]
+  · rw [activeLeafImg, Finset.mem_image] at hL
+    obtain ⟨p, _, hp⟩ := hL; subst hp
+    rw [kLDU, leafSlot]; simp only [Equiv.apply_symm_apply]
+    have hT3 : Text M (tach M) 3 = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    split
+    · rename_i qK _
+      exact (Fin.cast (by show Text M (tach M) 3 * Text M (tach M) 3 = 0; rw [hT3, Nat.mul_zero])
+        qK).elim0
+    · rfl
+
+/-- **`readK (pbo x) = readK x` ∀ boundary `k`** — `pivotBlowupOn` fixes K-slots: boundary `0` by the
+banked `readK_pbo`; the leaf boundary `1` is vacuous (`Text 3 = 0`, the K-block is `0×0`). -/
+theorem readK_pbo_all (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ)
+    (k : Fin 2) (i j : Fin (Text M (tach M) (k.val + 2))) :
+    readK M (tach M) ha
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) k i j
+      = readK M (tach M) ha x k i j := by
+  fin_cases k
+  · exact readK_pbo ha h0r h0c x i j
+  · have hT3 : Text M (tach M) 3 = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    have : i.val < Text M (tach M) 3 := by simpa using i.isLt
+    omega
+
 /-- **The kLDU / pivotBlowupOn commute** — `pivotBlowupOn activeM leafPivot (kLDU x) =
 kLDU (pivotBlowupOn activeM leafPivot x)`. `activeM = {E-block ∪ leaf slots}` (NO K-slots), `kLDU`
-touches ONLY K-slots, so the two maps act on disjoint coordinate sets. -/
+touches ONLY K-slots, so the two maps act on disjoint coordinate sets. The funext casework: a K-branch
+`q` lands in the kLDU K-arm on both sides (`kLens(readK · k)`, equal by `readK_pbo_all`), and `pbo`
+fixes it (K ∉ activeM); a non-K `q` lands in the kLDU identity arm, where `pbo` and `kLDU` commute
+because the pivot + activeM slots `pbo` scales are all kLDU-fixed (`kLDU_eq_on_activeM`). -/
 theorem interiorLive_commute (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
     pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) (kLDU M (tach M) ha x)
       = kLDU M (tach M) ha
-        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) :=
-  sorry
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  funext q
+  by_cases hpiv : q = p₀
+  · subst hpiv
+    rw [pivotBlowupOn, if_pos rfl, kLDU_leafPivot ha h0r h0c x,
+        kLDU_leafPivot ha h0r h0c (pivotBlowupOn (activeM M ha) p₀ x), pivotBlowupOn, if_pos rfl]
+  · by_cases hact : q ∈ activeM M ha
+    · rw [pivotBlowupOn, if_neg hpiv, if_pos hact,
+          kLDU_eq_on_activeM ha x hact, kLDU_leafPivot ha h0r h0c x,
+          kLDU_eq_on_activeM ha (pivotBlowupOn (activeM M ha) p₀ x) hact,
+          pivotBlowupOn, if_neg hpiv, if_pos hact]
+    · -- spectator: both kLDU calls land in the same arm; K-arm equal by `readK_pbo_all`, identity
+      -- arm by `pbo` fixing the slot (`q ∉ activeM`, `q ≠ p₀`).
+      rw [pivotBlowupOn, if_neg hpiv, if_neg hact, kLDU, kLDU]
+      have hpboq : pivotBlowupOn (activeM M ha) p₀ x q = x q := by
+        rw [pivotBlowupOn, if_neg hpiv, if_neg hact]
+      match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL q with
+      | ⟨k, Sum.inl s⟩ =>
+        have hmat : readK M (tach M) ha (pivotBlowupOn (activeM M ha) p₀ x) k
+            = readK M (tach M) ha x k := by
+          funext a b; exact readK_pbo_all ha h0r h0c x k a b
+        simp only [hmat, hpboq]
+      | ⟨k, Sum.inr s⟩ => simp only [hpboq]
 
 /-! ## H2 — the multi-axis Jacobian exponent vector `leafH` -/
 
