@@ -52,3 +52,34 @@
 >   single-writer `Skeleton.lean`/`DeepestL2Wiring.lean` theorems); discharge `hGne` from `hpos`.
 > - **Status.** sorry-free + axiom clean-three (forced `#print axioms`); pending fidelity review +
 >   cone-merge wiring into Skeleton #44.
+
+---
+
+## hJfront re-architecture (follow-on, phases A+B banked; phase C = wall-flag)
+
+The `hJfront` discharge (the value-side gap that also gates the D1 ≥-leg). The arbitrary-`.choose`
+identity `(deepestPoint_frame_pivot_exists ...).choose.trans finCongr = frontEmbed` is **unprovable**
+(Codex-confirmed: `exists_pivot_cols_of_rank` picks an arbitrary maximal-independent column subfamily,
+not the front). The sound route REPLACES it with a PROVABLE precursor `hcolfront` (`B`'s front `r`
+columns full rank — the column-WLOG `headline_frontRowColPivot_exists` supplies it at the headline ⨅,
+the dual of `htop`).
+
+> - **Banked (phase A, `DeepestPivotFrame.lean`, additive, clean-three @ `035c1c7d`):**
+>   `exists_pivotFrame_lastBlock_isUnit_of_pivot` (the deterministic pivot-frame core — `J`/`hJ` as
+>   inputs; the Codex factorization) + `exists_frontPivotFrame_lastBlock_isUnit` (the front variant:
+>   when `V`'s front `r` cols are full rank, `J = frontEmbed` deterministically). The legacy
+>   `exists_pivotFrame_lastBlock_isUnit` refactored to DELEGATE — statement unchanged, all consumers +
+>   `AxCheck` unaffected (verified, full `lake build DLNFibre` green).
+> - **Banked (phase B, `DeepestLastBlock.lean`, NEW, clean-three @ `035c1c7d`):**
+>   `deepestPoint_lastBlock_front_rank` — the COLUMN-dual of `DeepestLeadingBlock`'s
+>   `deepestPoint_leadingBlock_isUnit`: from `hcolfront` (`B`'s front `r` cols rank `r`), the deepest
+>   point's LAST layer has a full-rank top-left `r×r` block. Via `prod = B` + the back-peel
+>   `prod_eq_prodAux_mul_last` + `deepestPoint_layerLast_rows_vanish` + a rank-squeeze. NO
+>   `deepestPoint_exists` edit. This is the `hfront` input to the front frame builder.
+> - **WALL-FLAG (phase C, NOT done).** Discharging `hJfront` requires a PARALLEL front-threaded stack
+>   (`exists_deepest_lastLayer_pivotFrame_front` → `deepestPoint_frame_pivot_exists_front` →
+>   `deepestPoint_frame_pivot_triangular_exists_front` → a `_front` copy of `deepest_gauge_construction_L2`
+>   → the value-chain re-thread), because `hJfront` is keyed to the arbitrary `.choose` across 29 sites
+>   (pinned at `DeepestPivotFrameTriangular:243`). ~250-400 LoC, all MECHANICAL + ADDITIVE (no new math —
+>   phases A+B are the hard atoms); exceeds the original ~150-250 estimate because the gauge-construction
+>   body must be duplicated (differs by one `obtain` line). Flagged to the controller for a scope call.
