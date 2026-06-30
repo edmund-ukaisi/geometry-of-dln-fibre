@@ -272,3 +272,24 @@ extensionality is intractable, the wall holds and the route needs a different de
 VERDICT: NOT discharged this thread. Genuine multi-tide; surfaced (not ground, not faked). No Lean edit
 made (no sorry introduced); the headline remains `interiorDet_leaf_headline_freeK` modulo hDtot, the build
 unchanged/green. The honest ceiling without the dedicated slot-partition + reader-fderiv-value tide.
+
+## projV0 GATE: PASS — hDtot foundation is TRACTABLE (2026-06-30), prior wall verdict OVERTURNED
+
+The discriminating projV0 de-risk gate CLOSED cleanly + axiom-clean (RouteMProjV0Gate, commit
+0f0c261a). The layer-0 (V0={K,X,N,E}→V0) block of the boundary-factor Jacobian IS schurFrameDeriv:
+- gate_schurCore_eq: `schurFrameD (slotReadV0 y₀) = schurFrameDeriv (readX)(readK)(readN)`.
+- gate_schurCore_abs_det: `|det| = |det K|^{r+c}` (the engine value, via banked schurFrameDeriv_det).
+- BparamsLeaf_layer0_entry: ties to the REAL chart — `Agen 1 … 0 = layer0SchurMap` entrywise (via
+  Agen0_live_entry [c0=0 collapse] + Cgen_live_interior_eq_schurFrameProd [brick 2a] +
+  flatBlock_schurFrameMap_eq [the riskiest sub-goal, the N↔X-swap trap caught+corrected]).
+All [propext, Classical.choice, Quot.sound].
+
+VERDICT FLIP: the prior "multi-tide wall" was OVERLY PESSIMISTIC for the ONE-SIDED factorization route
+(reindex ∘ flatBlock ∘ schurFrameMap ∘ slotReadV0). The opaque-Fin slot reindex closed WITHOUT the full
+StairProd/twoConj or the (Fin N→ℝ)≃V0×V1 ambient-partition machinery (which RouteMGradingObstruction
+showed is blocked). slotReadV0 (the V0 slot reader) + the flatBlock factorization are TRACTABLE.
+
+REMAINING for the full hDtot (now de-risked past its bottleneck): the V1 (chain layer, det 1) block +
+the J01=0 / J10 lower-triangular assembly via lowerTri — the route-C steps, all PAST the discriminating
+gate. Foundation atoms now banked: slotReadV0/_hasFDerivAt, flatBlock/_castAdd/_natAdd,
+flatBlock_schurFrameMap_eq, Agen0_live_entry, layer0SchurMap_hasFDerivAt, gate_schurCore_eq/_abs_det.
