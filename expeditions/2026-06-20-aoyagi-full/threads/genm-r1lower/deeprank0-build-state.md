@@ -48,3 +48,31 @@ structure / whether chartParamsGen at deepRank=0 is affine-in-residual.
 ## Bedrock reqs (lead, standing)
 Pure-monomial pivotBlowupOn Jacobian throughout (NO poly-det fold — Item-102 trap); U-pos PROVED not
 assumed; target axioms = [propext, Classical.choice, Quot.sound, monomial_rlct].
+
+## Item-5 det: the conservative-generalization shape (lead-approved shared edit, RouteMLeafBData)
+
+Approved route: generalize the radial pivot leafPivot → generic p₀ ∈ activeM in RouteMLeafBData, so
+both legs share it. BEDROCK GUARD (lead): must be CONSERVATIVE — existing leaf leg recovers every lemma
+by p₀ := leafPivot with the same proof; after the edit, GREEN-GATE THE WHOLE LIB + #print axioms on
+routeMCore_box_diverges_interiorLive UNCHANGED ([propext,Classical.choice,Quot.sound,monomial_rlct]);
+else REVERT to isolated re-derive.
+
+THE INTRICACY (more than a pivot-rename — flagged): the deepRank=0 chart INVERTS block roles.
+- Leaf chart: radial lives in the LEAF block; readE SCALES by x(leafPivot) (readE_pbo); K/X/N/W are
+  spectators (read*_pbo via pbo_fixes_boundary0 "slot ≠ pivot"); rfinFixedPivot scales the leaf block;
+  Cgen2_match handles the leaf radial.
+- deepRank=0 chart: radial lives in the FRONT E-block; the PIVOT is one E-slot (→1 under pbo), OTHER
+  E-slots scale; leaf block is 0-dim (vacuous); K/X/N/W still spectators.
+So readE_pbo must split: pivot E-slot → 1, non-pivot E-slots → scale by x p₀. The pbo_fixes_boundary0
+spectator lemmas (K/X/N/W) generalize cleanly (pivot-generic "slot ≠ p₀"). The genuinely new pieces:
+(a) readE_pbo_generic: at a generic E-pivot p₀, readE(pbo x) at slot ≠ p₀ scales by x p₀, at p₀ = x p₀
+    (pivot fixed) — this is the radial kernel for the E-block.
+(b) Cgen1_match_generic: the interior Cgen match with the radial-u in the E-block (schurFrameProd_u_to_E
+    already does u→E; the question is whether it composes with a generic E-pivot).
+(c) Cgen2_match at deepRank=0: the leaf Cgen is VACUOUS (leaf 0-dim) — should be trivial/refl.
+(d) chartParamsGen_match_generic + hmap_generic threading (a)-(c).
+Then radialComp_abs_det_at (generic) + |det DB| = 1 (pure radial, no leaf shear) → the single-axis det.
+
+ESTIMATE: ~250-350 lines, intricate (block-role inversion). Conservative-recovery of the leaf leg is
+the load-bearing guard — the generalization must keep leafPivot-instantiation proof-identical. Needs a
+fresh focused session to do conservatively + whole-lib green-gate. Resume here.
