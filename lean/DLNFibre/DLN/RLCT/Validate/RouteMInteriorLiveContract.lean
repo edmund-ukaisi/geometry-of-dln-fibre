@@ -383,11 +383,31 @@ theorem kLens_injOn_qne {t : ℕ} (K K' : Matrix (Fin t) (Fin t) ℝ)
     RouteMLDUUniqueness.lduCore_unique _ _ _ _ _ _ hq (matrixSplit.injective hldu)
   exact matrixSplit.injective (Prod.ext hl (Prod.ext hqq hu))
 
+/-- **Step 1 of kLDU injectivity — `readK` is recovered** — if all coords of `y` are nonzero and
+`kLDU y = kLDU y'`, then the per-boundary K-block `readK y k = readK y' k`. From `readK_kLDU`
+(`readK (kLDU z) k = kLens (readK z k)`) the K-blocks satisfy `kLens (readK y k) = kLens (readK y' k)`,
+and `kLens_injOn_qne` recovers `readK y k` (the diagonal pivots `= readK y` at the K-diagonal flat
+slots, all nonzero since every coord of `y` is). -/
+theorem readK_eq_of_kLDU_eq (ha : StructAdm M (tach M))
+    (y y' : Fin (routeMAmbient M) → ℝ) (hqy : ∀ q, y q ≠ 0)
+    (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') (k : Fin 2) :
+    Matrix.of (readK M (tach M) ha y k) = Matrix.of (readK M (tach M) ha y' k) := by
+  have hkl : kLens (Matrix.of (readK M (tach M) ha y k))
+      = kLens (Matrix.of (readK M (tach M) ha y' k)) := by
+    have hbridge : ∀ (z : Fin (routeMAmbient M) → ℝ),
+        Matrix.of (readK M (tach M) ha (kLDU M (tach M) ha z) k)
+          = kLens (Matrix.of (readK M (tach M) ha z k)) := by
+      intro z; ext i j; exact readK_kLDU M (tach M) ha z k i j
+    rw [← hbridge y, ← hbridge y', hkeq]
+  refine kLens_injOn_qne _ _ (fun i => ?_) hkl
+  show (Matrix.of (readK M (tach M) ha y k)) i i ≠ 0
+  rw [Matrix.of_apply, readK]; exact hqy _
+
 /-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` is injective on the
-blown-up domain `pbo '' injDom`. Per-coordinate: the K-arm reduces (via `kLens_injOn_qne` +
-`readK_kLDU`) to the LDU-product uniqueness off the q-pivots (which `pbo` preserves — K-slots ∉
-activeM), the identity arm is direct. STATED `sorry` — the kLDU-on-set + membership-to-q-nonzero
-wiring around the now-banked `kLens_injOn_qne`. -/
+blown-up domain `pbo '' injDom`. With `interiorLive_E = univ` the domain forces ALL coords nonzero, so
+Step 1 (`readK_eq_of_kLDU_eq`) recovers every K-block; the remaining per-coordinate glue (K-slot →
+`readK` entry via the slot decode; non-K → the `kLDU` identity arm) closes `y = y'`. STATED `sorry`
+(the per-coordinate K-slot-decode glue around the banked Step 1). -/
 theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     Set.InjOn (kLDU M (tach M) ha)
