@@ -78,8 +78,10 @@ theorem mulVecLin_fromBlocks_zero_conj
 
 /-! ## Block-diagonal rank additivity (general index types; missing in Mathlib v4.29) -/
 
-/-- The natural `LinearEquiv` from a product of submodules `S.prod T` to `S × T`. -/
-noncomputable def _root_.Submodule.prodLequiv (S : Submodule k (m → k)) (T : Submodule k (l → k)) :
+/-- `S.prod T ≃ₗ S × T` — a `private` file-local helper for `rank_fromBlocks_zero` (general `Submodule`
+infra, kept off this determinantal module's public surface; promote to a `Submodule` foundation file
+if a second consumer appears). -/
+private noncomputable def _root_.Submodule.prodLequiv (S : Submodule k (m → k)) (T : Submodule k (l → k)) :
     (S.prod T) ≃ₗ[k] (S × T) where
   toFun x := (⟨x.1.1, x.2.1⟩, ⟨x.1.2, x.2.2⟩)
   invFun y := ⟨(y.1.1, y.2.1), ⟨y.1.2, y.2.2⟩⟩

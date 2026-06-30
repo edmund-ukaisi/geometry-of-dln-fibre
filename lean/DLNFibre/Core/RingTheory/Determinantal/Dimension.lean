@@ -27,7 +27,7 @@ project's orbit-closure codimension engine. Its load-bearing input is the **Prov
 geometric codimension of `Σ̄^r` equals the combinatorial `cCodim d r = C`. **Brick A is Proved here,
 not cited** — there is no Eagon–Northcott / Bruns–Vetter citation behind it; the determinantal
 codimension is re-derived from the quiver-orbit codimension engine. (The only *cited* results in the
-repository are the analytic RLCT bricks `cited_watanabe_upper` / `ln_lower`, which live on the `DLN`
+repository are the analytic RLCT bricks `cited_watanabe_upper` / `cited_aoyagi_lower`, which live on the `DLN`
 side and play no role in the dimension/codimension.) This file supplies only the arithmetic those
 geometric theorems consume; it does not, and must not, restate the geometric dimension as a bare
 matrix fact (that would drag the orbit engine into a Mathlib-mirror module) or as a cited assumption
@@ -44,9 +44,12 @@ universe u
 
 /-! ## The closed-form natural numbers -/
 
-/-- **Rank-stratum dimension** `rankStratumDim r p q = r · (p + q − r)`: the variety dimension of
-the rank-`≤ r` locus of `p × q` matrices (the geometric statement that it is attained lives in
-`DLNFibre.Core.DeterminantalStratumDim`). -/
+/-- **Rank-stratum dimension — closed form** `rankStratumDim r p q = r · (p + q − r)`. This is the
+variety dimension of the rank-`≤ r` locus of `p × q` matrices **only in the determinantal regime
+`r ≤ min p q`** (where the locus is a proper subvariety). It is a *total* `ℕ` function and is NOT the
+locus dimension when `r > min p q` (there the locus is the whole `p · q`-dimensional space — e.g.
+`r = 3, p = q = 2` gives `3 ≠ 4`); the downstream geometric theorems carry the `r ≤ p`, `r ≤ q`
+guards. The attained geometric statement lives in `DLNFibre.Core.DeterminantalStratumDim`. -/
 def rankStratumDim (r p q : ℕ) : ℕ := r * (p + q - r)
 
 /-- **Rank-stratum codimension** `rankStratumCodim r p q = (p − r) · (q − r)`: the codimension of
