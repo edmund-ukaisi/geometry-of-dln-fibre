@@ -9,7 +9,7 @@
 > `|det DB| = ∏_s engine_s` (the per-boundary Schur·LDU value).
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.interiorDet_leaf_headline_Bchart`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMLeafBData.lean` @ `241bac44`); with `hmap_leaf`,
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMLeafBData.lean` @ `26834bc3`); with `hmap_leaf`,
 >   `hasDB_leaf`, `chartParamsGen_match` the load-bearing sub-results.
 > - **Gloss.** The achiever chart factors as `boundary factor ∘ radial blow-up`. The boundary factor
 >   `BchartLeaf ha y := paramsEquivFlat M (chartParamsGen 1 M (tach M) (genBlkFlatLive M (tach M) ha
