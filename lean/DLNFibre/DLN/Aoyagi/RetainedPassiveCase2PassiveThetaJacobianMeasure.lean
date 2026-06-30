@@ -1,6 +1,7 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaProductMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSector
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
 
 /-!
 # Case 2 passive theta Jacobian-measure adapter
@@ -183,6 +184,142 @@ theorem exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobi
       A1passive F2 A3passive Ctop F3
       hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
       passiveMeasure Rres z₀ hCtop₀ hA1passive₀
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The local upper side of the concrete `Case2PassiveTheta` Jacobian
+sandwich gives endpoint-sector pushforward domination for the
+Jacobian-weighted passive-product theta measure.
+
+The endpoint sector image measurability remains an explicit local hypothesis.
+This theorem instantiates the conditional endpoint-sector domination transfer
+with the concrete retained-passive formal raw-order Jacobian density; it still
+does not identify determinant-chart Haar measure, raw-order Haar measure, a
+source prior, exact passive-sector pushforward, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT. -/
+theorem exists_pos_open_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (passiveMeasure :
+      Measure
+        (Case2PassiveTheta.PassiveFields
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (hY :
+      Measurable
+        (fun z :
+            Case2PassiveTheta
+              (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J ↦
+          case2PassiveThetaEndpointTopologyTuple
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure :
+        Measure
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      passiveMeasure.prod weightedBox
+    let Y :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let jacobianDensity :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J → ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    ∃ K : ℝ, 0 < K ∧
+      ∃ U :
+        Set
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+        IsOpen U ∧ z₀ ∈ U ∧
+          (MeasurableSet
+              (case2PassiveThetaEndpointSectorSet
+                (ρ := Fin (Module.finrank ℝ U₀))
+                n hS hcont hnext eNext e U) →
+            let sectorSet :
+                Set
+                  (TopologyTuple (Fin (Module.finrank ℝ U₀))
+                    (throughSubspaceEndpointComplementIndex
+                      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ) :=
+              case2PassiveThetaEndpointSectorSet
+                (ρ := Fin (Module.finrank ℝ U₀))
+                n hS hcont hnext eNext e U
+            (Measure.map Y ((sourceMeasure.withDensity jacobianDensity).restrict U)).restrict
+                sectorSet ≤
+              ENNReal.ofReal K •
+                (Measure.map Y (sourceMeasure.restrict U)).restrict sectorSet) := by
+  intro center pivotNext signedBox weightedBox sourceMeasure Y jacobianDensity
+  rcases
+      exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaEndpointTopologyTuple_passiveProductMeasure
+        W₂ B₂ n hS hcont hnext eNext e z₀ hdet₀ passiveMeasure Rres with
+    ⟨ε, K, hε, hK, U, hUopen, hz₀U, hlower, hupper⟩
+  refine ⟨K, hK, U, hUopen, hz₀U, ?_⟩
+  intro hsector sectorSet
+  have hdom :
+      (sourceMeasure.withDensity jacobianDensity).restrict U ≤
+        ENNReal.ofReal K • sourceMeasure.restrict U := by
+    rw [restrict_withDensity hUopen.measurableSet]
+    exact hupper
+  simpa [sectorSet, Y, jacobianDensity] using
+    measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+      (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ)
+      (κ' := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+      n hS hcont hnext eNext e
+      (sourceMeasure.withDensity jacobianDensity) sourceMeasure U
+      hUopen.measurableSet hsector hY hdom
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

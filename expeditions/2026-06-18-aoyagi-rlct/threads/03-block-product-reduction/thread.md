@@ -17833,3 +17833,38 @@ source-image equality, source-rank coverage, normal crossings, pole order, or
 RLCT extraction.  The next frontier is to prove the actual local
 theta-domain domination or bounded-density hypothesis from a
 passive-sector/reference measure model.
+
+## 2026-06-30 A2 Case 2 passive theta Jacobian endpoint-sector domination
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md`, PASS
+by xhigh source/scope reviewer `Hegel` and xhigh Lean/API reviewer
+`Epicurus`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+exists_pos_open_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+This theorem applies the upper side of the concrete passive theta Jacobian
+sandwich to the endpoint-sector domination transfer.  It returns a positive
+scalar `K` and an open neighborhood `U` such that the endpoint pushforward of
+the Jacobian-weighted passive-product theta measure is dominated by
+`ofReal K` times the endpoint pushforward of the unweighted passive-product
+theta measure, both restricted to the named endpoint sector image.
+
+Nonclaims: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.

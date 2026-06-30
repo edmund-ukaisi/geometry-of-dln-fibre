@@ -6,6 +6,58 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Jacobian Endpoint-Sector Domination - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now instantiates the
+conditional endpoint-sector domination transfer with the upper side of the
+concrete passive theta Jacobian sandwich.
+
+New public name:
+
+```text
+exists_pos_open_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+For
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+jacobianDensity theta =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y theta))
+```
+
+the theorem returns a positive `K` and an open neighborhood `U` of the base
+theta point.  Assuming the named sector image
+`case2PassiveThetaEndpointSectorSet U` is measurable, it proves
+
+```text
+(Measure.map Y ((passiveSource.withDensity jacobianDensity).restrict U)).restrict sectorSet
+  <= ofReal K *
+     (Measure.map Y (passiveSource.restrict U)).restrict sectorSet.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-endpoint-sector-domination.md
+```
+
+Xhigh source/scope reviewer `Hegel` and xhigh Lean/API reviewer `Epicurus`
+returned PASS.  The theorem keeps endpoint sector measurability and endpoint
+map measurability explicit.
+
+Boundary: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
+
+Next frontier: prove a genuine local passive-sector/reference measure
+comparison or measurable local inverse/image theorem for the endpoint theta
+map.
+
 ## Latest A2 Case 2 Passive Theta Endpoint-Sector Domination - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now proves conditional

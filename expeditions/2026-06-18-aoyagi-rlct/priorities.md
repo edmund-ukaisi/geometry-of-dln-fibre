@@ -12,6 +12,57 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian endpoint-sector domination
+
+The concrete formal-Jacobian endpoint-sector domination slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+
+New public name:
+
+```text
+exists_pos_open_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+For
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+jacobianDensity theta =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y theta))
+```
+
+the theorem returns a positive scalar `K` and an open neighborhood `U` of the
+base theta point.  For any proof that
+
+```text
+case2PassiveThetaEndpointSectorSet U
+```
+
+is measurable, it proves endpoint-sector domination:
+
+```text
+(Measure.map Y ((passiveSource.withDensity jacobianDensity).restrict U)).restrict sectorSet
+  <= ofReal K *
+     (Measure.map Y (passiveSource.restrict U)).restrict sectorSet.
+```
+
+This instantiates the conditional endpoint-sector domination transfer with
+the upper side of the concrete Case 2 passive theta Jacobian sandwich.  It
+does not prove exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
+Xhigh source/scope reviewer `Hegel` and xhigh Lean/API reviewer `Epicurus`
+returned PASS.  Epicurus's API recommendations to add the direct source-measure
+import and to phrase sector measurability as an implication after choosing `U`
+were applied.
+
+Next source-moving frontier: prove a genuine local passive-sector/reference
+measure comparison or measurable local inverse/image theorem for the endpoint
+theta map, rather than another conditional domination transfer.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta endpoint-sector domination
 
 The endpoint-sector domination transfer has landed in
