@@ -108,7 +108,8 @@ theorem exists_boundedUnit_chart_of_contDiffAt {E : Type*}
       (Measurable fun w => |(DΨ w).det|) ∧ (Measurable fun w => |(DΨsymm w).det|) ∧
       (∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(DΨ w).det| ∧ |(DΨ w).det| ≤ b) ∧
       (∃ a b : ℝ, 0 < a ∧ ∀ w ∈ V, a ≤ |(DΨsymm w).det| ∧ |(DΨsymm w).det| ≤ b) ∧
-      (∀ w ∈ V, Ψ w = Φ w) := by
+      (∀ w ∈ V, Ψ w = Φ w) ∧
+      ContDiffOn ℝ 2 Ψsymm V := by
   classical
   have hn : (2 : WithTop ℕ∞) ≠ 0 := by decide
   have hΦat : ContDiffAt ℝ 2 Φ wstar := hΦ.contDiffAt
@@ -166,7 +167,7 @@ theorem exists_boundedUnit_chart_of_contDiffAt {E : Type*}
   set DΨs : E → (E →L[ℝ] E) :=
     fun w => if w ∈ Usymm' then fderiv ℝ (h.symm : E → E) w else 0 with hDΨs
   refine ⟨(h : E → E), (h.symm : E → E), (fun w => fderiv ℝ Φ w), DΨs, V, hVopen, hwV,
-    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · rw [hcoe]; exact hfix
   · intro w hw; exact h.left_inv hw.1.1.1.1
   · intro w hw; exact h.right_inv hw.1.1.1.2
@@ -204,6 +205,8 @@ theorem exists_boundedUnit_chart_of_contDiffAt {E : Type*}
       rw [hDΨs]; simp only [hwU, if_true]
     rw [hdeq]; exact hbndS w hw.2
   · intro w _; rw [hcoe]
+  · -- `ContDiffOn ℝ 2 Ψsymm V`: `Ψsymm = h.symm` is `C²` on `Usymm' ⊇ V`.
+    exact hUsymm'_cd.mono (fun w hw => hw.1.1.2)
 
 /-! ## The abstract `hchart` — chart-transfer from a `ContDiff` map with invertible derivative
 
@@ -228,7 +231,7 @@ theorem rlctAtOn_eq_of_contDiff_chart {E : Type*}
     (hgerm : f =ᶠ[𝓝 wstar] fun w => F (Φ w)) :
     rlctAtOn f wstar = rlctAtOn F wstar := by
   obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
-    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ⟩ :=
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ, _⟩ :=
     exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
   -- the germ `f =ᶠ F∘Ψ`: on the open `V ∋ wstar`, `Ψ = Φ`, and `f =ᶠ F∘Φ` (hgerm).
   have hgermΨ : f =ᶠ[𝓝 wstar] fun w => F (Ψ w) := by
@@ -255,7 +258,7 @@ theorem rlctAtOn_eq_of_contDiff_chart_inv {E : Type*}
       (∀ w ∈ V, Ψsymm (Φ w) = w) ∧
       rlctAtOn f wstar = rlctAtOn (fun w => f (Ψsymm w)) wstar := by
   obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
-    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ⟩ :=
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ, _⟩ :=
     exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
   -- the inverse identity on `V`: `Ψsymm (Φ w) = Ψsymm (Ψ w) = w`.
   have hinv : ∀ w ∈ V, Ψsymm (Φ w) = w := by

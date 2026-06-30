@@ -33,11 +33,12 @@ theorem rlctAtOn_eq_of_contDiff_chart_rinv {E : Type*}
     (f : E → ℝ) (Φ : E → E) (wstar : E) (f' : E ≃L[ℝ] E)
     (hΦ : ContDiff ℝ 2 Φ) (hΦ' : HasFDerivAt Φ (f' : E →L[ℝ] E) wstar)
     (hfix : Φ wstar = wstar) :
-    ∃ (Ψsymm : E → E),
+    ∃ (Ψsymm : E → E) (V : Set E), IsOpen V ∧ wstar ∈ V ∧
+      ContDiffOn ℝ 2 Ψsymm V ∧
       (∀ᶠ w in 𝓝 wstar, Φ (Ψsymm w) = w) ∧
       rlctAtOn f wstar = rlctAtOn (fun w => f (Ψsymm w)) wstar := by
   obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
-    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ⟩ :=
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ, hsymmCD⟩ :=
     exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
   -- `Ψsymm wstar = wstar` (the left inverse at `wstar`, with `Ψ wstar = wstar`).
   have hsymmfix : Ψsymm wstar = wstar := by
@@ -52,7 +53,7 @@ theorem rlctAtOn_eq_of_contDiff_chart_rinv {E : Type*}
   have hrinv : ∀ᶠ w in 𝓝 wstar, Φ (Ψsymm w) = w := by
     filter_upwards [hVopen.mem_nhds hwV, h2] with w hwVmem hsymmVmem
     rw [← hΨΦ _ hsymmVmem]; exact hright w hwVmem
-  refine ⟨Ψsymm, hrinv, ?_⟩
+  refine ⟨Ψsymm, V, hVopen, hwV, hsymmCD, hrinv, ?_⟩
   -- the RLCT transfer (the `_inv` body, with these witnesses): germ `f =ᶠ (f∘Ψsymm)∘Φ` on `V`.
   have hinv : ∀ w ∈ V, Ψsymm (Φ w) = w := by
     intro w hw; rw [← hΨΦ w hw]; exact hleft w hw
