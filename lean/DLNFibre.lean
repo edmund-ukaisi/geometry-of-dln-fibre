@@ -563,6 +563,13 @@ import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
 import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
+-- L=2 headline ENDGAME scaffold (genm-l2asm, spec-first + Codex-corroborated): `aoyagi_learning_coefficient_L2`
+-- = the L=2 instance of the headline, assembled from the banked rungs (WLOG transport + #44 front-value +
+-- the proven aoyagiLambda recombination + D1 reduction) modulo EXACTLY TWO named-open route-independent
+-- leaves — `hR1_L2` (the R1-LOWER interior interface, in progress) + `hD1ge_L2` (the D1 ∀-v ≥-leg, the
+-- second open obligation). Forced #print = [propext, sorryAx, Classical.choice, Quot.sound], sorryAx ONLY
+-- from the 2 leaves, NO monomial_rlct leakage. The day both land, the headline closes with no edits.
+import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 -- D1 (rung 2/5) (★)-deliverer engine: the analytic quasi-split RLCT lower bound `rlct_quasiSplit_ge`
 -- (+ rlct_smooth_block_ge / coupled_controls_slice) — network-free, sidesteps the full Gromoll–Meyer
 -- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
