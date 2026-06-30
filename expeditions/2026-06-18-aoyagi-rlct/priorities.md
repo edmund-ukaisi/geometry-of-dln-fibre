@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta coordinate domain
+
+The first passive-sector Lean slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSector.lean`.
+
+It introduces the full post-pivot Case 2 passive coordinate vector
+
+```text
+Case2PassiveTheta = (A1passive, F2, A3passive, Ctop, F3, yNext)
+```
+
+as a product `abbrev`, plus the determinant sector, punctured determinant
+sector, retained-data and endpoint-retained-data maps, topology-tuple maps,
+determinant-chart membership lemmas, and continuity lemmas.  The determinant
+sector is exactly the passive unit condition: `Ctop.det` and every passive
+`A1passive.det` are units.  The selected pivot nonzero condition is recorded
+separately and is not used as determinant-chart membership.
+
+Focused direct warning check, focused module build, full local build, no-sorry
+audit, whitespace check, and direct axiom probes passed.  Full local build has
+only pre-existing warning noise from unrelated modules.  Xhigh source/scope
+reviewer `Socrates` and xhigh Lean/API reviewer `Chandrasekhar` returned PASS,
+recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-coordinate-domain.md`.
+
+Nonclaims: no determinant-chart Haar transport, source-prior transport,
+exact/dominated passive-sector measure theorem, finite-integral transfer,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
+
 ## Latest controller decision - 2026-06-30, A2 passive-sector construction frontier
 
 The next A2 source-prior move is pen-and-paper construction, not Lean wrapper

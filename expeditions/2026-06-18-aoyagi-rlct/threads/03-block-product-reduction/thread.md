@@ -21,6 +21,54 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta coordinate domain
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-coordinate-domain.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-coordinate-domain.md`.
+Review:
+`review-a2-case2-passive-theta-coordinate-domain.md`.
+
+Lean now introduces the concrete full passive-sector coordinate package for
+the Case 2 post-pivot selected-entry retained-passive chart:
+
+```text
+Case2PassiveTheta.PassiveFields
+Case2PassiveTheta
+case2PassiveThetaPivotNext
+case2PassiveThetaPivotNonzero
+case2PassiveThetaDetSector
+case2PassiveThetaPuncturedDetSector
+case2PassiveThetaRetainedData
+case2PassiveThetaEndpointRetainedData
+case2PassiveThetaTopologyTuple
+case2PassiveThetaEndpointTopologyTuple
+continuous_case2PassiveThetaRetainedData
+continuous_case2PassiveThetaEndpointRetainedData
+continuous_case2PassiveThetaTopologyTuple
+continuous_case2PassiveThetaEndpointTopologyTuple
+case2PassiveThetaRetainedData_detChart
+case2PassiveThetaEndpointRetainedData_detChart
+case2PassiveThetaTopologyTuple_mem_detChartSet
+case2PassiveThetaEndpointTopologyTuple_mem_detChartSet
+```
+
+The determinant sector requires only the retained-passive unit conditions
+`Ctop.det` and all passive `A1passive.det` to be units.  The selected pivot
+nonzero condition is recorded separately as a punctured-sector predicate.
+
+Focused direct warning check, focused module build, full local build,
+`scripts/sorries`, `git diff --check`, and direct axiom probes passed.  Full
+local build has only pre-existing warning noise from unrelated modules.
+Xhigh source/scope reviewer `Socrates` and xhigh Lean/API reviewer
+`Chandrasekhar` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, source-prior transport,
+exact/dominated passive-sector measure theorem, finite-integral transfer,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
+
 ## 2026-06-30 A2 retained-passive passive-sector construction frontier
 
 Reproduction:

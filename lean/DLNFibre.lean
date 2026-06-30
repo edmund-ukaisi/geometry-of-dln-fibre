@@ -578,3 +578,4 @@ import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotTransitionRegularData
 import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotProducerShell
 import DLNFibre.DLN.Aoyagi.BlowupBranchProgress
 import DLNFibre.DLN.Aoyagi.SelectedEntryBranchProgressBridge
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSector

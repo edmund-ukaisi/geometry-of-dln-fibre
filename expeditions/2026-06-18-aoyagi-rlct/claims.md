@@ -140,6 +140,29 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta coordinate domain,
+  2026-06-30.** Lean now proves the first full passive-sector coordinate-domain
+  slice in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSector.lean`.  It defines
+  the product coordinate type
+  `Case2PassiveTheta = (A1passive, F2, A3passive, Ctop, F3, yNext)`, the
+  determinant sector, punctured determinant sector, pre- and post-endpoint
+  retained-data maps, pre- and post-endpoint topology-tuple maps, continuity
+  lemmas, and determinant/topology-tuple determinant-chart membership lemmas.
+  The determinant sector is only the passive unit condition on `Ctop.det` and
+  the passive `A1passive.det` fields; selected pivot nonzero is separate.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-coordinate-domain.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-coordinate-domain.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-coordinate-domain.md`.
+  Focused direct warning check, focused module build, full local build,
+  `scripts/sorries`, `git diff --check`, and direct axiom probes passed; full
+  build warning noise was pre-existing.  Xhigh source/scope reviewer `Socrates`
+  and xhigh Lean/API reviewer `Chandrasekhar` returned PASS.  This proves no
+  determinant-chart Haar transport, source-prior transport, exact/dominated
+  passive-sector measure theorem, finite-integral transfer, source-image
+  equality, source-rank coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, retained-passive passive-sector construction
   frontier, 2026-06-30.** The next source-prior step is a pen-and-paper
   construction target, not a Lean wrapper.  The live Case 2 retained-passive

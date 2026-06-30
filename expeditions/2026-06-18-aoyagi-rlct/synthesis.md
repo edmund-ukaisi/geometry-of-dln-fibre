@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Coordinate Domain - 2026-06-30
+
+`RetainedPassiveCase2PassiveSector.lean` now gives a concrete full
+passive-sector coordinate package for the Case 2 post-pivot selected-entry
+retained-passive chart:
+
+```text
+Case2PassiveTheta = (A1passive, F2, A3passive, Ctop, F3, yNext)
+```
+
+The package is a product `abbrev`, so the product topology is inherited.  It
+defines:
+
+```text
+Case2PassiveTheta.PassiveFields
+Case2PassiveTheta
+case2PassiveThetaPivotNext
+case2PassiveThetaPivotNonzero
+case2PassiveThetaDetSector
+case2PassiveThetaPuncturedDetSector
+case2PassiveThetaRetainedData
+case2PassiveThetaEndpointRetainedData
+case2PassiveThetaTopologyTuple
+case2PassiveThetaEndpointTopologyTuple
+continuous_case2PassiveThetaRetainedData
+continuous_case2PassiveThetaEndpointRetainedData
+continuous_case2PassiveThetaTopologyTuple
+continuous_case2PassiveThetaEndpointTopologyTuple
+case2PassiveThetaRetainedData_detChart
+case2PassiveThetaEndpointRetainedData_detChart
+case2PassiveThetaTopologyTuple_mem_detChartSet
+case2PassiveThetaEndpointTopologyTuple_mem_detChartSet
+```
+
+The determinant sector is only the passive determinant-unit condition:
+`Ctop.det` and every `A1passive p.det` are units.  The selected pivot nonzero
+condition is a separate punctured-sector predicate and is not conflated with
+determinant-chart membership.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-coordinate-domain.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-coordinate-domain.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-coordinate-domain.md
+```
+
+Verification passed: direct `lake env lean -E warning` for the new module,
+focused module build, full local `lake build DLNFibre`, `scripts/sorries`,
+`git diff --check`, and direct axiom probes.  The full build has only
+pre-existing warning noise from unrelated modules.  Xhigh source/scope reviewer
+`Socrates` and xhigh Lean/API reviewer `Chandrasekhar` returned PASS.
+
+Boundary: no determinant-chart Haar transport, source-prior transport,
+exact/dominated passive-sector measure theorem, finite-integral transfer,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
+
 ## Latest A2 Passive-Sector Construction Frontier - 2026-06-30
 
 The retained-passive Case 2 source-prior frontier is not another finite
