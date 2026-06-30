@@ -85,6 +85,51 @@ no Eagon–Northcott/Bruns–Vetter citation, `#print axioms` standard-3). So th
 **Proved**; a `_of_brickA`/cited framing would have been the *inverse* overclaim (under-claiming a Proved result).
 Reviewer + decorrelated Codex (xhigh) confirmed. name=content cuts both ways.
 
-## Phase 2
-_starting: P2 recon-refined ladder (P2.a atlas datum · P2.b′ AlgEquiv groupoid · P2.b transitions · P2.c cocycle
-[CRUX] · P2.d bespoke `IsZariskiLocallyTrivialAffineProduct` [CRUX])._
+## Phase 2 CLOSE (2026-06-30)
+All five rungs landed; controller boundary re-gate + decorrelated review PASSED. The constructive pivot-chart
+atlas and its capstone are built — network-free `Core`, bare `Algebra`/`AlgEquiv` namespaces (L7), DLN as the
+instance. New `Core` API (all axiom-clean `[propext, Classical.choice, Quot.sound]`):
+- `Core/RingTheory/Determinantal/Atlas.lean` — `Algebra.StandardFibreChart` (P2.a): the per-chart fibre model
+  (structMap + `≃ₐ[BaseLoc] BaseLoc ⊗_k Fibre` triv + `BaseLoc`-flatness), with `flatModel`/`ofTrivialization`.
+- `Core/Algebra/AlgEquiv/Groupoid.lean` — `AlgEquiv.trans_assoc`/`trans_refl`/`refl_trans` (P2.b′), `ext x; rfl`;
+  absent in Mathlib v4.29, the cocycle-unblocker.
+- `Core/RingTheory/Determinantal/AtlasTransition.lean` — `Algebra.AtlasChart` (chartElt + bare-`k` `trivK`) +
+  `AtlasFibreChart` (adds the over-base `fibreModel`) + `overlapTransition` (P2.b); the **2-fold cocycle**
+  `overlapTransition_trans_symm`/`_symm` (P2.c) — pure groupoid algebra (Mathlib `self_trans_symm` + the LANDED
+  base-side `chartOverlapTransitionK_trans_symm`), no localization-element entry, no kernel-cost trap.
+- `Core/RingTheory/Determinantal/LocalTriviality.lean` — **the capstone predicate**
+  `Algebra.IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U` (P2.d): a chart family
+  `ι → AtlasFibreChart` + `cover : (⋃ basicOpen chartElt) = U`. Cocycle = **derived lemma, not a field** (it
+  holds for any `AtlasChart`s — storing it would misrepresent the content).
+- `Core/FibreZariskiLocalTriviality.lean` — the **DLN instance**
+  `reducedFibre_isZariskiLocallyTrivialAffineProduct` over `U = rankROpen` (the open — false over the closure),
+  via the new `iUnion_pivotDatum_basicOpen_eq_rankROpen` cover; axiom-clean ⟹ the predicate is satisfiable.
+
+**Boundary re-gate (controller + independent reviewer):** full aggregator GREEN (**3834 jobs**), sorries 0 / 0
+axiom, capstone + derived cocycle + new cover lemma all standard-3; both DLN payoffs unchanged.
+
+**Decorrelated review (reviewer + Codex xhigh) — PASS-WITH-NITS** (`threads/p2d-review/verdict.md`): sound +
+faithful, no soundness/fidelity defect; cover lemma correct on both inclusions; no global-bundle over-claim. Two
+**prose-precision** nits fixed (`60fb928b`):
+- **Q2a** — the axiom-clean instance proves the predicate is *satisfiable* (structure inhabited for DLN data),
+  NOT that `rankROpen ≠ ∅`; the "non-vacuity / geometric witness / realized" wording was softened to the honest
+  inhabited/satisfiable reading (mirrors `FibreBundleHeadline`'s caveat — name=content).
+- **Q1c** — the 2-fold cocycle is on the `trivK`/`M` presentation, DECOUPLED from the over-`BaseLoc`
+  `fibreModel.triv` product (independent fields); a decoupling line was added so it is not misread as an
+  over-base-product cocycle.
+
+## The honest boundary (what is and isn't proved)
+- **Proved:** the DLN reduced-fibre bundle is **chartwise** Zariski-locally-trivial over the rank-`=r` open — a
+  principal-open cover where each chart's total ring is the over-base product `SchurLoc ⊗_k sweepFibreRing`, flat
+  over `SchurLoc`, with the **2-fold** overlap cocycle. The predicate is satisfiable (axiom-clean DLN instance).
+- **NOT claimed:** that `rankROpen` is nonempty (no `∃ P ∈ rankROpen`); a **global** `Flat π` / scheme fibre
+  bundle / triple-overlap descent; a Mathlib `FiberBundle` (topological-only). The **triple cocycle (P2.c′)** is
+  genuinely ill-typed without a target-side `awayTriple` object (Codex-confirmed (i)-(iv) sub-build) and is
+  roadmapped to the **R1 global-gluing** track — NOT a blocker for the local-triviality predicate.
+
+## Pending at close (operator-gated)
+1. **`Base → TotalRing`/`AmbientRing` rename** in the capstone predicate — escalated (signature change; `Base` is
+   the total/source ring by AG convention, the fibration base is `BaseLoc`). Controller lean: keep `Base` (bare
+   `Algebra` mirror, `[Algebra k Base]` standard reading; docstrings flag it). Operator's call.
+2. **Phase-2 PR** `expedition/det-atlas-p2 → dev` — staged (tip pushed; clean 3-way merge, +959/−123 over 9 Lean
+   files; ready title/body in the controller signal). Opening/merging operator-gated.
