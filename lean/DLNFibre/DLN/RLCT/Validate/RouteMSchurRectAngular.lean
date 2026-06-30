@@ -115,6 +115,32 @@ theorem piRatioRect_symm_offpivot_le (m n N : ℕ) (hN : m * n = N + 1) (p : Fin
   rw [hval]
   have := hz j (Set.mem_univ j); rw [Set.mem_Icc, ← abs_le] at this; exact this
 
+/-- `(piRatioRect … y).1 = y pivot` — the forward map's pivot-axis component. -/
+theorem piRatioRect_apply_fst (m n N : ℕ) (hN : m * n = N + 1) (p : Fin (m * n)) (y : Fin (m * n) → ℝ) :
+    (piRatioRect m n N hN p y).1 = y p := by
+  show ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+        ((MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)) y)).1 = y p
+  simp only [MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.coe_mk, Fin.insertNthEquiv]
+  rfl
+
+/-- `(piRatioRect … y).2 j = y (the succAbove-decoded index)`. -/
+theorem piRatioRect_apply_snd (m n N : ℕ) (hN : m * n = N + 1) (p : Fin (m * n)) (y : Fin (m * n) → ℝ)
+    (j : Fin N) :
+    (piRatioRect m n N hN p y).2 j = y ((finCongr hN).symm ((finCongr hN p).succAbove j)) := by
+  show ((MeasurableEquiv.piFinSuccAbove (fun _ : Fin (N + 1) => ℝ) (finCongr hN p))
+        ((MeasurableEquiv.arrowCongr' (finCongr hN) (MeasurableEquiv.refl ℝ)) y)).2 j = _
+  simp only [MeasurableEquiv.piFinSuccAbove, MeasurableEquiv.coe_mk, Fin.insertNthEquiv]
+  rfl
+
+/-- The decoded ratio index is never the pivot. -/
+theorem piRatioRect_ratioIdx_ne (m n N : ℕ) (hN : m * n = N + 1) (p : Fin (m * n)) (j : Fin N) :
+    (finCongr hN).symm ((finCongr hN p).succAbove j) ≠ p := by
+  intro h
+  apply Fin.succAbove_ne (finCongr hN p) j
+  have h' : finCongr hN ((finCongr hN).symm ((finCongr hN p).succAbove j)) = finCongr hN p := by
+    rw [h]
+  rwa [(finCongr hN).apply_symm_apply] at h'
+
 /-! ## The pivot-normalised angular matrix `RmatRectNorm` -/
 
 /-- The pivot-normalised angular matrix: `RmatRectNorm m n p z a b = RmatRect (…symm(0,z)) (σr a) (σc b)`
