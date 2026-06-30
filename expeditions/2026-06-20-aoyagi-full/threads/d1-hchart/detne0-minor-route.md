@@ -98,6 +98,11 @@ Remaining sequence (each its own clean-three commit):
    is Codex's flagged trickiest-coercion spot (3-attempt watch). Alternative if factorization stalls: the
    explicit matrix-unit basis `{Eᵢⱼ·Q} ∪ {P·Eⱼₖ}` minus the `r²` overlap (`{P·Eⱼₗ·Q}`) — `nReg` independent
    by full-rank `P,Q` injectivity; heavier enumeration but no kernel-iso.
+   **★ REPO ASSETS CLOSE BOTH GAPS (found this tide):** `Core.Matrix.RankNormalForm.rank_normal_form_exists`
+   gives `∃ (P Q units), P·A·Q = diag(E_r,0)` for `A.rank = r` — the rank-`r` factorization derives from this
+   (`B = (P⁻¹·firstCols)·(firstRows·Q⁻¹)`). `Skeleton.rank_factor_{left,right}` (private; de-privatise) prove
+   full-rank of given factors. So the "2 from-scratch foundational lemmas" reduce to normal-form→factorization
+   plumbing + column-containment extraction (the unit `P,Q` feed it). Estimate drops; multi-lemma but NO new math.
 3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
    (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
 4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
