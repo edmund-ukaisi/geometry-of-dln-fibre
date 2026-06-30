@@ -29,6 +29,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
+import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 
 /-!
 # Axiom-hygiene check
@@ -274,3 +275,13 @@ open DLNFibre.DLN.RLCT
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
+
+-- L=2 headline ENDGAME scaffold (genm-l2asm) — the `L = 2` instance of the headline, assembled from
+-- the banked L=2 rungs (front-gauge #44 `_L2_front`, the WLOG transport, D1 `deepest_point_reduction`,
+-- the PROVEN arithmetic recombination) + exactly TWO named-open leaves. Expected axiom profile:
+-- [propext, Classical.choice, Quot.sound, sorryAx] — the `sorryAx` ONLY from the two named leaves
+-- (the route-independent R1 resolution interface `hR1_L2` + the D1 ∀-v ≥-leg producer `hD1ge_L2`),
+-- and NO `monomial_rlct` (S2 enters only DOWNSTREAM of the R1 leaf, once that sorry is discharged).
+-- STEP-0 finding: the dependency graph has TWO open leaves, not one — the D1 ≥-leg is a genuine
+-- second obligation beyond R1 (per-v middle-stratum producer), corroborated by Codex xhigh.
+#print axioms aoyagi_learning_coefficient_L2
