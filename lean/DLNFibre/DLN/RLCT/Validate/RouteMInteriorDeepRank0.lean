@@ -69,4 +69,21 @@ theorem eDeepRank0Phi_rate (ha : StructAdm M (tach M))
             (hleStruct M (tach M) ha) :=
   phiFlatLiveAt_rate M ha (by norm_num) (eBlockPivot ha hr hc) x
 
+/-! ## The single-axis Jacobian exponent vector (pure radial: `minAdm−1` at the pivot, `0` else) -/
+
+/-- **The deepRank=0 Jacobian exponent vector** — SINGLE-AXIS: `minAdm − 1` on the binding E-pivot,
+`0` on every other coordinate. At `deepRank = 0` the chart is a pure radial blow-up of the E-block
+(all K-blocks vanish, so there is no LDU-core / Schur-frame exponent contribution); the only Jacobian
+weight is the radial `|u_{eBlockPivot}|^{minAdm−1}`. -/
+noncomputable def eDeepRank0_leafH (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2) :
+    Fin (routeMAmbient M) → ℕ := fun j =>
+  if j = eBlockPivot ha hr hc then minAdm M - 1 else 0
+
+/-- **The binding axis carries `minAdm − 1`** (`if_pos rfl`). -/
+theorem eDeepRank0_leafH_pivot (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2) :
+    eDeepRank0_leafH ha hr hc (eBlockPivot ha hr hc) = minAdm M - 1 := by
+  rw [eDeepRank0_leafH, if_pos rfl]
+
 end DLNFibre.DLN.RLCT
