@@ -86,6 +86,28 @@ theorem interiorLDUunit_nonneg (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
     0 ≤ interiorLDUunit M ha hN x :=
   UvalLDU_nonneg M (tach M) ha hN (kLDU M (tach M) ha) x
 
+/-! ## H1 (piece #1) — the `u`-free LDU-lensed boundary factor `BchartLDU` (the `BchartLeaf` analog)
+
+Route B (Codex): `interiorLDUphi = phiFlatLDU … kLDU` factors as `BchartLDU ∘ pivotBlowupOn activeM p₀`
+(a `u`-free boundary factor ∘ the radial blow-up), so the banked `radialComp_abs_det_at` gives
+`|det Dφ| = |u_{p₀}|^{minAdm−1} · |det DBchartLDU|` — NO per-role CLE tower, NO long `composeFold`. The
+boundary factor reads the LDU-lensed structured decoder at the FIXED radial scalar `1`, residuals from
+the blown-up `y`. Mirrors `RouteMLeafBData.BparamsLeaf`/`BchartLeaf` but on `genBlkFlatStruct ∘ kLDU`
+(the dead-leaf LDU decoder) instead of `genBlkFlatLive`. -/
+
+/-- **The `u`-free LDU boundary-factor `Params`** `BparamsLDU ha y := chartParamsGen 1 M (tach M)
+(genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha y)) hle` — radial scalar hardwired to `1`, the
+K-slots LDU-straightened by `kLDU`, residuals read from `y`. -/
+noncomputable def BparamsLDU (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) : Params M :=
+  chartParamsGen 1 M (tach M)
+    (genBlkFlatStruct M (tach M) ha (kLDU M (tach M) ha y)) (hleStruct M (tach M) ha)
+
+/-- **The `u`-free LDU boundary factor** `BchartLDU ha y := paramsEquivFlat M (BparamsLDU ha y)`. -/
+noncomputable def BchartLDU (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
+  paramsEquivFlat M (BparamsLDU M ha y)
+
 /-! ## H2 — the multi-axis Jacobian exponent vector `leafH` -/
 
 /-- **H2 — the multi-axis Jacobian exponent vector** for the LDU-lensed interior chart:
