@@ -386,4 +386,24 @@ theorem height_map_sigmaIdeal_away_eq_cCodim [IsAlgClosed k] [CharZero k]
     ← codimRepCanonical_productRankLocusLE_eq_height_sigmaIdeal,
     codimRepCanonical_productRankLocusLE_eq_cCodim_enat (dStratum q p) r hne]
 
+/-- **The localized base codimension in closed form: `height Iad = (p − r)(q − r)`.** The localized
+determinantal base ideal of the rank-`≤ r` stratum of `p × q` matrices has height equal to the
+classical determinantal codimension `Matrix.rankStratumCodim r p q = (p − r)(q − r)`. Composes the
+`cCodim` form (`height_map_sigmaIdeal_away_eq_cCodim`) with the closed-form combinatorial value
+`cCodim ![q,p] r = (q − r)(p − r)` (`cCodim_stratum_eq`). **Proved, not cited** — the load-bearing
+codimension is the Proved zero-cited Brick A, not Eagon–Northcott / Bruns–Vetter. Over an
+algebraically closed field of characteristic `0`. -/
+theorem height_map_sigmaIdeal_away_eq_rankStratumCodim [IsAlgClosed k] [CharZero k]
+    (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
+    ((sigmaIdeal (k := k) (dStratum q p) r).map
+        (algebraMap (MvPolynomial (RepCoord (dStratum q p)) k)
+          (Localization.Away (detPivotPoly (k := k) q p r hp hq)))).height
+      = ((Matrix.rankStratumCodim r p q : ℕ) : ℕ∞) := by
+  rw [height_map_sigmaIdeal_away_eq_cCodim q p r hp hq
+    (kostantPartitions_stratum_nonempty q p r hq hp),
+    cCodim_stratum_eq q p r hq hp (kostantPartitions_stratum_nonempty q p r hq hp),
+    Matrix.rankStratumCodim_def]
+  -- `cCodim ![q,p] r = (q − r)(p − r)`; the codim closed form is `(p − r)(q − r)` — commute.
+  rw [Int.toNat_natCast, Nat.mul_comm]
+
 end DLNFibre.Core

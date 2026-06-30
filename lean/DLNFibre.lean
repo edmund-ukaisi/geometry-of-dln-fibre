@@ -341,6 +341,15 @@ import DLNFibre.Core.RingTheory.Determinantal.Basic
 -- L7). Re-homed from `DeterminantalChart`/`SchurChartIff` (deleted) + `SchurGauge`'s normal form;
 -- aligns with `Strata`'s `minorChart`/`rankEqLocus`.
 import DLNFibre.Core.RingTheory.Determinantal.Schur
+-- P1.e (det-atlas, rank-stratum dimension/codim): the closed-form rank-stratum dimension
+-- `rankStratumDim r p q = r(p+q−r)` and codimension `rankStratumCodim r p q = (p−r)(q−r)` with the
+-- "codim + dim = ambient `p·q`" identity (pure `Nat`), plus the anchoring of `rankStratumDim` to
+-- the pivot-chart parameter-space `finrank` (`finrank_pivotRankChart_params_eq_rankStratumDim`). Bare
+-- `Matrix` namespace (Mathlib-mirror, L7); the matrix-general dimension content only. The GEOMETRIC
+-- statement that `Σ̄^r` has this variety dimension is Proved (not cited) in
+-- `Core.DeterminantalStratumDim`, via the Proved zero-cited Brick A (`Core.SigmaCodim`); this file
+-- supplies only the arithmetic those theorems consume.
+import DLNFibre.Core.RingTheory.Determinantal.Dimension
 -- Scope-3 (bundle transition cocycle, thread 19): the per-minor instantiation — the per-minor
 -- principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` with their `minorChartTransition` (= the
 -- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this
