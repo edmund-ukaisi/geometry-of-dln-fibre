@@ -1,5 +1,6 @@
 import DLNFibre.Core.OrbitVariety
-import DLNFibre.Core.MatrixKaehler
+import DLNFibre.Core.LinearAlgebra.BaseChange
+import DLNFibre.Core.RingTheory.Derivation.Matrix
 import DLNFibre.Core.RingTheory.Kaehler.GenericRank
 import DLNFibre.Core.OrbitImageDim
 import Mathlib.RingTheory.Kaehler.Basic
@@ -16,7 +17,8 @@ The char-free differential-rank bound that discharges the last residual of A4.4:
 `genericDifferentialRank` is `finrank_K (span_K {D_k(f_x)})`, `K = FractionRing (groupRing d)`,
 `Ω = Ω[K⁄k]`, `f_x = (genericOrbitCoord M) x`. The proof factors the generic Jacobian through the
 deformation coboundary `δ⁰ = deformationδ M M` via the **matrix-Kähler identity** (gate
-`derivMatrix_inv_apply` in `Core.MatrixKaehler`) and the **transpose / trace-pairing**:
+`derivMatrix_inv_apply` in `Core.RingTheory.Derivation.Matrix`) and the **transpose /
+trace-pairing**:
 
 1. **Per-coordinate** (`D_genericOrbitCoord_eq`): over `K`, `D(f_x)` is `D` of the `(s,t)` entry of
    `V₂ · F · V₁⁻¹` (`V_v = (genericUnit v).map alg`, `F = (genericFactor M i).map alg = M_i`, constant
