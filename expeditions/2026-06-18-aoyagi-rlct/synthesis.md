@@ -6,6 +6,83 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Chart-Piece Readback-Domination Handoff - 2026-06-30
+
+Lean now proves a chart-piece handoff from a supplied readback-side domination
+to the existing finite-integral socket:
+
+```text
+measure_le_smul_restrict_of_le_smul_of_restrict_eq_self
+restrict_restrict_eq_self_of_subset
+restrict_le_smul_restrict_of_le_smul_of_subset
+
+measure_restrict_piece_le_smul_map_restrict_of_map_readback_restrict_piece_le_smul
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_map_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned `sourceLocal = U ∩ sourceStratum`, a caller can now work with
+any measurable `chartPiece ⊆ sourceLocal` by supplying:
+
+```text
+∀ E ∈ chartPiece, readback E ∈ W ∧ sourceChart (readback E) = E
+
+AEMeasurable readback (externalSourceMeasure.restrict chartPiece)
+
+Measure.map readback (externalSourceMeasure.restrict chartPiece)
+  ≤ Cpull • coordinateSourceMeasure.restrict W
+
+Cpull < ∞
+```
+
+where
+
+```text
+coordinateSourceMeasure =
+  baseJ.withDensity (fun z => sourceImageDensity (sourceChart z)).
+```
+
+The proof pushes the supplied domination forward by `sourceChart`, recovers
+`externalSourceMeasure.restrict chartPiece` by the right-inverse identity,
+identifies `Measure.map sourceChart (coordinateSourceMeasure.restrict W)` with
+`sourceImageMeasure`, sharpens the target to
+`sourceImageMeasure.restrict sourceLocal` using support on `chartPiece`, and
+then productizes into the existing finite-product theorem.
+
+Boundary: no original/source-prior transport, no chart-image equality, no
+source-rank coverage, no Haar/Jacobian transport, no normal crossings, no pole
+order, and no RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-chart-piece-readback-domination-handoff.md
+threads/03-block-product-reduction/statement-card-a2-chart-piece-readback-domination-handoff.md
+threads/03-block-product-reduction/review-a2-chart-piece-readback-domination-handoff.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_chart_piece_readback_domination_axioms.lean
+```
+
+Axiom probe for the new helpers and theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh `Schrodinger the 2nd` PASS.  The reviewer found no blocking
+correctness issue; the theorem docstring was clarified to state that
+`chartPiece` measurability and containment are caller-supplied.
+
 ## Latest A2 Chart-Piece External-Source Measure Handoff - 2026-06-30
 
 Lean now proves a measurable-piece version of the source-level external

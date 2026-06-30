@@ -229,6 +229,60 @@ theorem measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smu
   simpa [candidateMeasure, hmap] using hpush
 
 set_option linter.style.longLine false in
+/-- If the readback of a measurable source-side piece is dominated by a
+coordinate-side reference measure and the source chart is a right inverse to
+the readback on that piece, then the source-side piece is dominated by the
+chart-produced reference measure restricted to any larger local source set.
+
+This is a chart-piece version of
+`measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul`.
+It assumes the readback domination and the pointwise right-inverse property on
+the chosen piece.  It does not prove original-prior transport, source-image
+coverage, Haar transport, normal crossings, pole order, or RLCT extraction. -/
+theorem measure_restrict_piece_le_smul_map_restrict_of_map_readback_restrict_piece_le_smul
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (externalMeasure : Measure E) (thetaReference : Measure Θ)
+    (V : Set Θ) (chartPiece sourceLocal : Set E) (c : ENNReal)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hchartPiece_sub : chartPiece ⊆ sourceLocal)
+    (hsource : AEMeasurable sourceChart (thetaReference.restrict V))
+    (hreadback : AEMeasurable readback (externalMeasure.restrict chartPiece))
+    (hright : ∀ E ∈ chartPiece, sourceChart (readback E) = E)
+    (hdom :
+      Measure.map readback (externalMeasure.restrict chartPiece) ≤
+        c • thetaReference.restrict V) :
+    externalMeasure.restrict chartPiece ≤
+      c • (Measure.map sourceChart (thetaReference.restrict V)).restrict sourceLocal := by
+  let candidateMeasure : Measure Θ :=
+    Measure.map readback (externalMeasure.restrict chartPiece)
+  have hcandidate_ac :
+      candidateMeasure ≪ thetaReference.restrict V :=
+    Measure.absolutelyContinuous_of_le_smul hdom
+  have hsource_candidate :
+      AEMeasurable sourceChart candidateMeasure :=
+    hsource.mono_ac hcandidate_ac
+  have hmap :
+      Measure.map sourceChart candidateMeasure =
+        externalMeasure.restrict chartPiece :=
+    measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+      sourceChart readback externalMeasure chartPiece hchartPiece hreadback
+      hsource_candidate hright
+  have hpush :
+      externalMeasure.restrict chartPiece ≤
+        c • Measure.map sourceChart (thetaReference.restrict V) := by
+    have hpush' :
+        Measure.map sourceChart candidateMeasure ≤
+          c • Measure.map sourceChart (thetaReference.restrict V) :=
+      map_le_smul_map_of_le_smul_aemeasurable hsource hdom
+    simpa [candidateMeasure, hmap] using hpush'
+  exact
+    restrict_le_smul_restrict_of_le_smul_of_subset
+      (μ := externalMeasure) (η := Measure.map sourceChart (thetaReference.restrict V))
+      (s := chartPiece) (t := sourceLocal) (c := c)
+      hchartPiece hchartPiece_sub hpush
+
+set_option linter.style.longLine false in
 /-- Pulling back the chart-produced source-image reference measure by the
 readback recovers the theta-domain reference measure on `V`.
 

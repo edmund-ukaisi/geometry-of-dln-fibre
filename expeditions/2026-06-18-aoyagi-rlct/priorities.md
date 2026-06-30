@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 chart-piece readback-domination handoff
+
+The chart-piece finite-integral socket now has a readback-domination variant:
+
+```text
+measure_restrict_piece_le_smul_map_restrict_of_map_readback_restrict_piece_le_smul
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_map_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned `sourceLocal = U ∩ sourceStratum`, Lean accepts any
+measurable `chartPiece ⊆ sourceLocal`.  Instead of source-side
+`withDensity` equality, the caller may supply:
+
+```text
+∀ E ∈ chartPiece, readback E ∈ W ∧ sourceChart (readback E) = E
+
+Measure.map readback (externalSourceMeasure.restrict chartPiece)
+  ≤ Cpull • (baseJ.withDensity
+      (fun z => sourceImageDensity (sourceChart z))).restrict W
+```
+
+with `AEMeasurable readback` on the restricted external measure and
+`Cpull < ∞`.  Lean pushes this domination forward by `sourceChart`, uses the
+right-inverse identity on `chartPiece`, sharpens the target by
+`chartPiece ⊆ sourceLocal`, productizes with `[SFinite ν]`, and applies the
+existing finite-product socket.
+
+This is still a consumer theorem.  It does not prove original/source-prior
+transport, chart-image equality, source-rank coverage, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 chart-piece external-source measure handoff
 
 The source-level external-measure handoff now has a measurable-piece variant:

@@ -361,6 +361,45 @@ theorem measure_le_smul_of_le_smul_restrict
     rw [Measure.smul_apply, Measure.smul_apply]
     exact mul_le_mul_right (Measure.restrict_le_self s) c
 
+/-- If the left measure is supported on `U`, a scalar domination by `μ`
+upgrades to scalar domination by `μ.restrict U`. -/
+theorem measure_le_smul_restrict_of_le_smul_of_restrict_eq_self
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {U : Set α}
+    (hν : ν ≤ c • μ)
+    (hsupport : ν.restrict U = ν) :
+    ν ≤ c • μ.restrict U := by
+  refine Measure.le_iff.2 ?_
+  intro s hs
+  calc
+    ν s = (ν.restrict U) s := by rw [hsupport]
+    _ = ν (s ∩ U) := by rw [Measure.restrict_apply hs]
+    _ ≤ (c • μ) (s ∩ U) := hν (s ∩ U)
+    _ = c • μ (s ∩ U) := by rw [Measure.smul_apply]
+    _ = c • (μ.restrict U) s := by rw [Measure.restrict_apply hs]
+    _ = (c • μ.restrict U) s := by rw [Measure.smul_apply]
+
+/-- Restricting a measure to a set and then to a containing set does not
+change the already restricted measure. -/
+theorem restrict_restrict_eq_self_of_subset
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {s t : Set α}
+    (hs : MeasurableSet s) (hst : s ⊆ t) :
+    (μ.restrict s).restrict t = μ.restrict s := by
+  exact
+    Measure.restrict_eq_self_of_ae_mem
+      ((ae_restrict_mem hs).mono fun x hx ↦ hst hx)
+
+/-- A scalar domination of a restricted measure upgrades to domination by the
+same scalar multiple of a larger restricted reference measure. -/
+theorem restrict_le_smul_restrict_of_le_smul_of_subset
+    {α : Type*} [MeasurableSpace α] {μ η : Measure α} {c : ℝ≥0∞}
+    {s t : Set α}
+    (hs : MeasurableSet s) (hst : s ⊆ t)
+    (hμ : μ.restrict s ≤ c • η) :
+    μ.restrict s ≤ c • η.restrict t :=
+  measure_le_smul_restrict_of_le_smul_of_restrict_eq_self hμ
+    (restrict_restrict_eq_self_of_subset hs hst)
+
 /-- A local a.e. upper bound on a density gives scalar domination by the same
 restricted reference measure. -/
 theorem restrict_withDensity_le_smul_restrict_of_ae_le

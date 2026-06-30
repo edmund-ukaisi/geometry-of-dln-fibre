@@ -19075,3 +19075,67 @@ env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_small_ball_axioms.lean
 Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
 no original/source-prior transport, no Haar transport, no Jacobian formula, no
 normal crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-30 A2 chart-piece readback-domination handoff
+
+Reproduction:
+`reproduction-a2-chart-piece-readback-domination-handoff.md`.
+Statement card:
+`statement-card-a2-chart-piece-readback-domination-handoff.md`.
+Review:
+`review-a2-chart-piece-readback-domination-handoff.md`, PASS by xhigh
+`Schrodinger the 2nd`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+```
+
+Lean now proves:
+
+```text
+measure_le_smul_restrict_of_le_smul_of_restrict_eq_self
+restrict_restrict_eq_self_of_subset
+restrict_le_smul_restrict_of_le_smul_of_subset
+
+measure_restrict_piece_le_smul_map_restrict_of_map_readback_restrict_piece_le_smul
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_restrict_chartPiece_map_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The new Aoyagi theorem keeps the caller-supplied readback domination explicit:
+
+```text
+Measure.map readback (externalSourceMeasure.restrict chartPiece)
+  <= Cpull * coordinateSourceMeasure.restrict W
+```
+
+where `coordinateSourceMeasure = baseJ.withDensity
+(fun z => sourceImageDensity (sourceChart z))`.  A pointwise right-inverse
+hypothesis on `chartPiece`, `chartPiece subset sourceLocal`, and
+`Cpull < infinity` give finite loss-power integrability over
+`(externalSourceMeasure.restrict chartPiece).prod nu`.
+
+Verification passed so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_chart_piece_readback_domination_axioms.lean
+```
+
+Axiom footprint: `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source-prior transport, no chart-image equality, no
+source-rank coverage, no Haar/Jacobian transport, no normal crossings, no pole
+order, and no RLCT extraction.
