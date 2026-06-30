@@ -4,6 +4,9 @@ import DLNFibre.Core.Dimension.Codimension
 import DLNFibre.Core.Dimension.AffineDomain
 import DLNFibre.Core.Dimension.Regular
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
+import Mathlib.RingTheory.Smooth.Basic
+import Mathlib.RingTheory.LocalRing.ResidueField.Ideal
+import Mathlib.Algebra.MvPolynomial.Funext
 
 /-!
 # `Orbit.Dimension` — the `varietyDim = trdeg` anchor (A4.1) + B4 `SmoothCotangentDim`
@@ -203,5 +206,91 @@ theorem finrank_cotangent_eq_varietyDim [PerfectField k] {σ : Type*} [Finite σ
       = finrank k (IsLocalRing.CotangentSpace (Localization.AtPrime m)) :=
     (Ideal.finrank_cotangentSpace_localization_eq_cotangent (k := k) m).symm
   rw [hvar, hcollapse, hbridge, hM3]
+
+/-! ## B4 non-vacuity witness — the affine point `Spec ℚ` (bedrock §2.1)
+
+A self-contained, **non-DLN** in-file witness that B4's antecedent bundle is satisfiable. Model: the
+affine point `σ = Empty`, `I = ⊥`, so `A = MvPolynomial Empty ℚ ⧸ ⊥ ≃ₐ[ℚ] ℚ` is a field; the unique
+maximal ideal is `m = ⊥`, the residue field is `ℚ` (genuinely `ℚ`-rational), the point is smooth
+(`ℚ` is formally smooth over `ℚ`), and `Z = univ` (the single point of `Empty → ℚ`) has vanishing
+ideal `⊥` and `varietyDim = 0 = finrank (m.Cotangent)`. Every B4 hypothesis fires on a genuine,
+tiny, network-free model — not the DLN instance. -/
+
+namespace B4Witness
+
+/-- The coordinate ring of the affine point over `ℚ`: `MvPolynomial Empty ℚ ⧸ ⊥`. -/
+abbrev pointRing : Type := MvPolynomial Empty ℚ ⧸ (⊥ : Ideal (MvPolynomial Empty ℚ))
+
+/-- `pointRing ≃ₐ[ℚ] ℚ` (no variables ⟹ the quotient by `⊥` is `ℚ`). -/
+noncomputable def pointRingEquiv : pointRing ≃ₐ[ℚ] ℚ :=
+  (AlgEquiv.quotientBot ℚ (MvPolynomial Empty ℚ)).trans (MvPolynomial.isEmptyAlgEquiv ℚ Empty)
+
+instance : (⊥ : Ideal (MvPolynomial Empty ℚ)).IsPrime := Ideal.bot_prime
+
+/-- `pointRing` is a field (transported from `ℚ`). -/
+theorem pointRing_isField : IsField pointRing :=
+  pointRingEquiv.toMulEquiv.isField (Field.toIsField ℚ)
+
+/-- The base point `m = ⊥` is maximal (`pointRing ⧸ ⊥` is a field). -/
+instance pointBot_isMaximal : (⊥ : Ideal pointRing).IsMaximal := by
+  rw [Ideal.Quotient.maximal_ideal_iff_isField_quotient]
+  exact (AlgEquiv.quotientBot ℚ pointRing).toMulEquiv.isField pointRing_isField
+
+/-- The base point is **smooth**: `pointRing ≃ₐ[ℚ] ℚ` is formally smooth over `ℚ`, and localizing
+at `⊥` preserves it (`IsSmoothAt ℚ ⊥ = FormallySmooth ℚ (Localization.AtPrime ⊥)`). -/
+instance pointBot_isSmoothAt : Algebra.IsSmoothAt ℚ (⊥ : Ideal pointRing) := by
+  haveI : Algebra.FormallySmooth ℚ pointRing := Algebra.FormallySmooth.of_equiv pointRingEquiv.symm
+  unfold Algebra.IsSmoothAt
+  infer_instance
+
+/-- The base point is **`ℚ`-rational**: the residue field at `⊥` is `ℚ`. `pointRing ⧸ ⊥` is a field
+(`≃ₐ[ℚ] ℚ`), so the structure map into its fraction field `ResidueField ⊥` is bijective. -/
+noncomputable def pointBot_hrat : Ideal.ResidueField (⊥ : Ideal pointRing) ≃ₐ[ℚ] ℚ := by
+  have hfield : IsField (pointRing ⧸ (⊥ : Ideal pointRing)) :=
+    (AlgEquiv.quotientBot ℚ pointRing).toMulEquiv.isField pointRing_isField
+  haveI : IsScalarTower ℚ (pointRing ⧸ (⊥ : Ideal pointRing))
+      (Ideal.ResidueField (⊥ : Ideal pointRing)) :=
+    IsScalarTower.of_algebraMap_eq fun x ↦ by
+      rw [show algebraMap ℚ (pointRing ⧸ (⊥ : Ideal pointRing)) x
+            = algebraMap pointRing (pointRing ⧸ (⊥ : Ideal pointRing))
+              (algebraMap ℚ pointRing x) from
+          IsScalarTower.algebraMap_apply ℚ pointRing (pointRing ⧸ (⊥ : Ideal pointRing)) x,
+        ← IsScalarTower.algebraMap_apply pointRing (pointRing ⧸ (⊥ : Ideal pointRing))
+          (Ideal.ResidueField (⊥ : Ideal pointRing)),
+        ← IsScalarTower.algebraMap_apply ℚ pointRing (Ideal.ResidueField (⊥ : Ideal pointRing))]
+  have hbij : Function.Bijective
+      (algebraMap (pointRing ⧸ (⊥ : Ideal pointRing)) (Ideal.ResidueField (⊥ : Ideal pointRing))) :=
+    ⟨IsFractionRing.injective _ _,
+      (IsFractionRing.surjective_iff_isField (R := pointRing ⧸ (⊥ : Ideal pointRing))
+        (K := Ideal.ResidueField (⊥ : Ideal pointRing))).mpr hfield⟩
+  exact (AlgEquiv.restrictScalars ℚ (AlgEquiv.ofBijective
+      (Algebra.ofId (pointRing ⧸ (⊥ : Ideal pointRing))
+        (Ideal.ResidueField (⊥ : Ideal pointRing))) hbij)).symm.trans
+    ((AlgEquiv.quotientBot ℚ pointRing).trans pointRingEquiv)
+
+/-- The A0 bridge for the witness: the whole space `Z = univ` of `Empty → ℚ` has vanishing ideal
+`⊥` (`ℚ` infinite ⟹ a polynomial vanishing on `univ` is `0`). -/
+theorem pointBot_hZ :
+    MvPolynomial.vanishingIdeal ℚ (Set.univ : Set (Empty → ℚ))
+      = (⊥ : Ideal (MvPolynomial Empty ℚ)) := by
+  rw [eq_bot_iff]
+  intro p hp
+  rw [Ideal.mem_bot]
+  refine MvPolynomial.funext (R := ℚ) fun x ↦ ?_
+  rw [MvPolynomial.mem_vanishingIdeal_iff] at hp
+  rw [map_zero, ← MvPolynomial.aeval_eq_eval]
+  exact hp x (Set.mem_univ x)
+
+/-- **B4 fires on the affine point.** `finrank_cotangent_eq_varietyDim` instantiated at the non-DLN
+`Spec ℚ` model: `(finrank ℚ ((⊥ : Ideal pointRing).Cotangent) : ℕ∞) = varietyDim (univ)`. Every
+antecedent — `[I.IsPrime]`, `[m.IsMaximal]`, `[IsSmoothAt]`, `ℚ`-rational residue field, the A0
+bridge — is satisfied by the model above; the bundle is non-vacuous. -/
+example :
+    (finrank ℚ ((⊥ : Ideal pointRing).Cotangent) : ℕ∞)
+      = varietyDim (Set.univ : Set (Empty → ℚ)) :=
+  finrank_cotangent_eq_varietyDim (k := ℚ) (⊥ : Ideal (MvPolynomial Empty ℚ))
+    (⊥ : Ideal pointRing) pointBot_hrat pointBot_hZ
+
+end B4Witness
 
 end AlgebraicGeometry.Group.Orbit
