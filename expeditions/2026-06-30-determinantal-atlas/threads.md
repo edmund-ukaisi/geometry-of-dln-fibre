@@ -54,8 +54,9 @@ Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on
   correct names in BOTH worlds (ring-theory `Base`/`BaseLoc` ↔ AG `total`/`base`/`fibre`/`projection`, via the
   `Spec`-contravariance flip) rather than pick one convention. → **rung P2.e** (additive view, keep `Base`/`BaseLoc`;
   scheme-side accessors PER-CHART; global fibration morphism R1-gated). Dispatched (`p2e-bridge`).
-- **Phase-2 PR → AUTHORIZED** (operator authorized controller to open `det-atlas-p2 → dev`; merging stays
-  operator's). Sequenced AFTER P2.e lands green, so the PR ships the complete both-worlds capstone in one piece.
+- **Phase-2 PR → OPENED (#21)** `det-atlas-p2 → dev` (https://github.com/edmund-ukaisi/geometry-of-dln-fibre/pull/21),
+  after P2.e landed green, shipping the complete both-worlds capstone. **Awaiting operator merge** (merging
+  stays operator's). After merge: branch cleanup + mark expedition complete.
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
