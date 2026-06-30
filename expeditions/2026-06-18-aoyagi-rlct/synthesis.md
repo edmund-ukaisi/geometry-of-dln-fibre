@@ -6,6 +6,53 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Case 1(1) Same-Domain Plateau Progress - 2026-06-30
+
+`BlowupBranchProgress.lean` now adds the separate progress measure for Case
+1(1).  This is not introduced-label support growth.  It is finite
+same-domain level-count progress over `IntroducedLabelRecurrenceState`.
+
+New Lean names:
+
+```text
+IntroducedLabelRecurrenceState.levelPlateau
+IntroducedLabelRecurrenceState.mem_levelPlateau
+IntroducedLabelRecurrenceState.levelPlateauProgress
+IntroducedLabelRecurrenceState.levelPlateauProgress_wellFounded
+IntroducedLabelRecurrenceState.abovePivotLevelFinset
+IntroducedLabelRecurrenceState.mem_abovePivotLevelFinset
+IntroducedLabelRecurrenceState.abovePivotLevelProgress
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_wellFounded
+IntroducedLabelRecurrenceState.levelPlateau_eq_erase_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.levelPlateauProgress_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.levelPlateauProgress_case1SelectedOldLevelMove_of_sameDomain
+IntroducedLabelRecurrenceState.abovePivotLevelFinset_eq_erase_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain
+```
+
+The exact `levelPlateau` theorem says the supplied Case 1(1) selected-old level
+move erases the selected old label from the `J+J1` plateau.  The
+`abovePivotLevelFinset` theorem gives the more useful Nat-valued measure: after
+the same move, the set of introduced labels with level `> J` loses exactly
+that selected old label.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case1-same-domain-plateau-progress.md
+threads/04-blow-up-certificate/statement-card-a4-case1-same-domain-plateau-progress.md
+threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md
+```
+
+Focused local `lake build`, direct `lake env lean -E warning`, and direct axiom
+probe passed.  Source/scope and Lean/API xhigh reviews returned PASS.
+
+Boundary: this is Case 1(1) same-domain selected-old lowering only.  It does
+not cover Case 1(2), introduced-label support growth, chart construction,
+source production, full branch termination, normal crossings, pole order, or
+RLCT.
+
 ## Latest A4 Case 1(2) Row-Strip Progress Bridge - 2026-06-30
 
 `BlowupBranchProgress.lean` now separates the generic same-stage

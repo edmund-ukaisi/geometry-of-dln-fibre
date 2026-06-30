@@ -2847,6 +2847,29 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, Case 1(1) same-domain plateau progress,
+  2026-06-30.** Lean now adds a separate same-domain finite level-count
+  progress kernel for Case 1(1) in
+  `lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`.  The exact plateau
+  data `IntroducedLabelRecurrenceState.levelPlateau` and
+  `levelPlateauProgress` count introduced labels at a fixed recurrence level.
+  The same-domain measure `abovePivotLevelFinset` and
+  `abovePivotLevelProgress` count introduced labels whose recurrence level is
+  still above `J`.  The Case 1(1) theorems consume
+  `IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData` and prove
+  that the selected old lowering erases `(s0,k0)` from both the `J+J1` plateau
+  and the above-pivot set, hence strictly decreases both finite counts.
+  Reproduction, statement card, and review are at
+  `threads/04-blow-up-certificate/reproduction-a4-case1-same-domain-plateau-progress.md`,
+  `threads/04-blow-up-certificate/statement-card-a4-case1-same-domain-plateau-progress.md`,
+  and
+  `threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md`.
+  Focused local build, direct warning check, and direct axiom probe passed; the
+  new declarations report only `[propext, Classical.choice, Quot.sound]`.
+  Xhigh source/scope reviewer `Boole` and xhigh Lean/API reviewer `Arendt`
+  returned PASS.  This proves no Case 1(2) progress, introduced-label support
+  growth, chart construction, source production, full branch termination,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 1(2) row-strip progress bridge,
   2026-06-30.** Lean now adds the same-stage introduced-label progress alias
   `AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment` and the
@@ -3072,7 +3095,9 @@ No such claim is formalisation-ready until both fields are filled.
   progress kernel at
   `threads/04-blow-up-certificate/reproduction-a4-introduced-label-progress-kernel.md`;
   Case 1(2) row-strip progress bridge at
-  `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`.
+  `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`;
+  Case 1(1) same-domain plateau progress at
+  `threads/04-blow-up-certificate/reproduction-a4-case1-same-domain-plateau-progress.md`.
 - **Reproduction check.** failed/blocked at
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
@@ -3283,6 +3308,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-a4-introduced-label-progress-kernel.md`.
 	  Review of the Case 1(2) row-strip progress bridge is saved at
 	  `threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md`.
+	  Review of the Case 1(1) same-domain plateau progress kernel is saved at
+	  `threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -3301,8 +3328,17 @@ No such claim is formalisation-ready until both fields are filled.
   This proves well-founded
   descent for strict growth of the finite introduced-label support and the
   displayed Case 2 and Case 1(2) row-strip same-stage increments under their
-  stated actual-width/payload bounds; it does not fill branch production or
-  branch termination. Also
+  stated actual-width/payload bounds; same-domain Case 1(1) plateau progress:
+  `IntroducedLabelRecurrenceState.levelPlateau`,
+  `levelPlateauProgress`, `levelPlateauProgress_wellFounded`,
+  `abovePivotLevelFinset`, `abovePivotLevelProgress`,
+  `abovePivotLevelProgress_wellFounded`,
+  `levelPlateauProgress_of_case1SelectedOldLevelMoveData`,
+  `levelPlateauProgress_case1SelectedOldLevelMove_of_sameDomain`,
+  `abovePivotLevelProgress_of_case1SelectedOldLevelMoveData`, and
+  `abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain`; these
+  prove strict finite count decrease for Case 1(1) selected-old lowering, but
+  are not yet a combined branch termination theorem. Also
   proved terminal-exponent split API:
   `terminalExponent`, `printedCase2Vector`, `prefixMin`,
   `prefixCase2Vector`, `prefixMin_step_factor_zero`,

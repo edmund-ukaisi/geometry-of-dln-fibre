@@ -21,6 +21,35 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean Case 1(1) same-domain plateau progress
+
+Reproduction:
+`reproduction-a4-case1-same-domain-plateau-progress.md`.
+Statement card:
+`statement-card-a4-case1-same-domain-plateau-progress.md`.
+Review:
+`review-a4-case1-same-domain-plateau-progress.md`.
+
+Lean now adds same-domain finite level-count progress for Case 1(1):
+
+```text
+IntroducedLabelRecurrenceState.levelPlateau
+IntroducedLabelRecurrenceState.levelPlateauProgress
+IntroducedLabelRecurrenceState.abovePivotLevelFinset
+IntroducedLabelRecurrenceState.abovePivotLevelProgress
+```
+
+The supplied `Case1SelectedOldLevelMoveData` theorem erases `(s0,k0)` from the
+`J+J1` plateau.  The above-pivot theorem erases the same label from the finite
+set of introduced labels with level still above `J`, giving a Nat-valued
+same-domain progress measure.
+
+Source boundary: this is Case 1(1), not Case 1(2).  It is not introduced-label
+support growth and is not wired into `SelectedEntryAtlasBranchProgressData`.
+
+Focused local build, direct warning check, axiom probe, and xhigh reviews
+passed.
+
 ## 2026-06-30 Lean Case 1(2) row-strip progress bridge
 
 Reproduction:

@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 Case 1(1) same-domain plateau progress
+
+Case 1(1) now has its own same-domain finite progress kernel, separate from
+introduced-label support growth.  Lean adds finite level-count progress over
+`IntroducedLabelRecurrenceState` in
+`lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`:
+
+```text
+IntroducedLabelRecurrenceState.levelPlateau
+IntroducedLabelRecurrenceState.levelPlateauProgress
+IntroducedLabelRecurrenceState.levelPlateauProgress_wellFounded
+IntroducedLabelRecurrenceState.abovePivotLevelFinset
+IntroducedLabelRecurrenceState.abovePivotLevelProgress
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_wellFounded
+IntroducedLabelRecurrenceState.levelPlateauProgress_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.levelPlateauProgress_case1SelectedOldLevelMove_of_sameDomain
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_of_case1SelectedOldLevelMoveData
+IntroducedLabelRecurrenceState.abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain
+```
+
+The exact plateau theorem proves that a supplied Case 1(1) selected-old level
+move erases `(s0,k0)` from the `J+J1` plateau.  The above-pivot theorem gives a
+single Nat-valued same-domain measure: the number of introduced labels with
+level still above `J`.
+
+Focused local `lake build`, direct `lake env lean -E warning`, and direct axiom
+probe passed.  Xhigh source/scope reviewer `Boole` and xhigh Lean/API reviewer
+`Arendt` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md`.
+
+Nonclaims: no Case 1(2), no introduced-label support growth, no chart/source
+construction, no source production, no full branch termination, no normal
+crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-30, A4 Case 1(2) row-strip progress bridge
 
 Case 1 is now split correctly for the introduced-label progress lane.  Lean

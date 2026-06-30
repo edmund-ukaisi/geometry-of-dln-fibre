@@ -199,6 +199,226 @@ theorem case2SameStageChild_progress_of_continuingGuard {L : ℕ} {n : ℕ → �
 
 end AoyagiIntroducedLabelBranchState
 
+namespace IntroducedLabelRecurrenceState
+
+/-- The finite plateau of introduced old labels whose recurrence level is
+`target` at a fixed branch state `(S,J)`. -/
+def levelPlateau {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (target : ℕ) :
+    Finset (Σ _ : ℕ, ℕ) :=
+  (introducedLabelFinset L n S J).filter fun p ↦ state.level p.1 p.2 = target
+
+/-- Membership in a fixed recurrence-level plateau. -/
+theorem mem_levelPlateau {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) (target : ℕ)
+    (p : Σ _ : ℕ, ℕ) :
+    p ∈ state.levelPlateau target ↔
+      introducedLabel L n S J p.1 p.2 ∧ state.level p.1 p.2 = target := by
+  simp [levelPlateau, mem_introducedLabelFinset]
+
+/-- A fixed-level plateau progress relation: the child has fewer introduced
+labels at `target` than the parent. -/
+def levelPlateauProgress {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (target : ℕ) :
+    IntroducedLabelRecurrenceState L n S J α →
+      IntroducedLabelRecurrenceState L n S J α → Prop :=
+  fun child parent ↦
+    (child.levelPlateau target).card < (parent.levelPlateau target).card
+
+/-- Fixed-level plateau progress is well-founded. -/
+theorem levelPlateauProgress_wellFounded
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*} (target : ℕ) :
+    WellFounded
+      (levelPlateauProgress (L := L) (n := n) (S := S) (J := J)
+        (α := α) target) :=
+  InvImage.wf
+    (fun state : IntroducedLabelRecurrenceState L n S J α ↦
+      (state.levelPlateau target).card)
+    Nat.lt_wfRel.wf
+
+/-- The finite set of introduced old labels whose recurrence level remains
+above the current pivot level `J`. -/
+def abovePivotLevelFinset {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α) :
+    Finset (Σ _ : ℕ, ℕ) :=
+  (introducedLabelFinset L n S J).filter fun p ↦ J < state.level p.1 p.2
+
+/-- Membership in the above-pivot recurrence-level set. -/
+theorem mem_abovePivotLevelFinset {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    (state : IntroducedLabelRecurrenceState L n S J α)
+    (p : Σ _ : ℕ, ℕ) :
+    p ∈ state.abovePivotLevelFinset ↔
+      introducedLabel L n S J p.1 p.2 ∧ J < state.level p.1 p.2 := by
+  simp [abovePivotLevelFinset, mem_introducedLabelFinset]
+
+/-- Same-domain old-label progress: the child has fewer introduced labels
+above the pivot level `J` than the parent. -/
+def abovePivotLevelProgress {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*} :
+    IntroducedLabelRecurrenceState L n S J α →
+      IntroducedLabelRecurrenceState L n S J α → Prop :=
+  fun child parent ↦
+    child.abovePivotLevelFinset.card < parent.abovePivotLevelFinset.card
+
+/-- Same-domain above-pivot level progress is well-founded. -/
+theorem abovePivotLevelProgress_wellFounded
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*} :
+    WellFounded
+      (abovePivotLevelProgress (L := L) (n := n) (S := S) (J := J)
+        (α := α)) :=
+  InvImage.wf
+    (fun state : IntroducedLabelRecurrenceState L n S J α ↦
+      state.abovePivotLevelFinset.card)
+    Nat.lt_wfRel.wf
+
+/-- A supplied Case 1(1) selected-old level move erases exactly the selected
+old label from the plateau at level `J+J1`. -/
+theorem levelPlateau_eq_erase_of_case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {pre post : IntroducedLabelRecurrenceState L n S J α} {u : α}
+    (data :
+      Case1SelectedOldLevelMoveData (J1 := J1) pre post s0 k0 u)
+    (hJ1 : 1 ≤ J1) :
+    post.levelPlateau (J + J1) =
+      (pre.levelPlateau (J + J1)).erase (Sigma.mk s0 k0) := by
+  classical
+  ext p
+  rcases p with ⟨s, k⟩
+  by_cases hp : (s, k) = (s0, k0)
+  · have hs : s = s0 := congrArg Prod.fst hp
+    have hk : k = k0 := congrArg Prod.snd hp
+    subst s
+    subst k
+    have hJ1_ne : J1 ≠ 0 := by omega
+    simp [levelPlateau, mem_introducedLabelFinset, data.selectedIntroduced,
+      data.pre_level_selected, data.post_level_selected, hJ1_ne]
+  · have hsigma :
+        (Sigma.mk s k : Σ _ : ℕ, ℕ) ≠ Sigma.mk s0 k0 := by
+      intro h
+      cases h
+      exact hp rfl
+    by_cases hintro : introducedLabel L n S J s k
+    · have hlevel := data.level_old hintro hp
+      simp [levelPlateau, mem_introducedLabelFinset, hintro, hsigma, hlevel]
+    · have hnotmem :
+        (Sigma.mk s k : Σ _ : ℕ, ℕ) ∉ introducedLabelFinset L n S J := by
+        rw [mem_introducedLabelFinset]
+        exact hintro
+      simp [levelPlateau, hnotmem, hsigma]
+
+/-- A supplied Case 1(1) selected-old level move strictly decreases the
+plateau count at the first-jump level `J+J1`. -/
+theorem levelPlateauProgress_of_case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {pre post : IntroducedLabelRecurrenceState L n S J α} {u : α}
+    (data :
+      Case1SelectedOldLevelMoveData (J1 := J1) pre post s0 k0 u)
+    (hJ1 : 1 ≤ J1) :
+    levelPlateauProgress (L := L) (n := n) (S := S) (J := J)
+      (α := α) (J + J1) post pre := by
+  classical
+  change (post.levelPlateau (J + J1)).card < (pre.levelPlateau (J + J1)).card
+  rw [levelPlateau_eq_erase_of_case1SelectedOldLevelMoveData data hJ1]
+  have hmem : Sigma.mk s0 k0 ∈ pre.levelPlateau (J + J1) := by
+    rw [mem_levelPlateau]
+    exact ⟨data.selectedIntroduced, data.pre_level_selected⟩
+  exact Finset.card_erase_lt_of_mem hmem
+
+/-- The concrete Case 1(1) selected-old level override strictly decreases the
+first-jump plateau count. -/
+theorem levelPlateauProgress_case1SelectedOldLevelMove_of_sameDomain
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J α)
+    (sameDomain :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 pre.level
+        t t' numerator numerator' leastValue leastValue') :
+    levelPlateauProgress (L := L) (n := n) (S := S) (J := J)
+      (α := α) (J + J1) (pre.case1SelectedOldLevelMove s0 k0) pre :=
+  levelPlateauProgress_of_case1SelectedOldLevelMoveData
+    (pre.case1SelectedOldLevelMove_levelMoveData sameDomain.selectedIntroduced
+      sameDomain.selectedLevel)
+    sameDomain.firstJump.positive
+
+/-- A supplied Case 1(1) selected-old level move erases exactly the selected
+old label from the finite set of introduced labels above the pivot level. -/
+theorem abovePivotLevelFinset_eq_erase_of_case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {pre post : IntroducedLabelRecurrenceState L n S J α} {u : α}
+    (data :
+      Case1SelectedOldLevelMoveData (J1 := J1) pre post s0 k0 u)
+    (hJ1 : 1 ≤ J1) :
+    post.abovePivotLevelFinset =
+      pre.abovePivotLevelFinset.erase (Sigma.mk s0 k0) := by
+  classical
+  ext p
+  rcases p with ⟨s, k⟩
+  by_cases hp : (s, k) = (s0, k0)
+  · have hs : s = s0 := congrArg Prod.fst hp
+    have hk : k = k0 := congrArg Prod.snd hp
+    subst s
+    subst k
+    have hpre : J < pre.level s0 k0 := by
+      rw [data.pre_level_selected]
+      omega
+    have hpost : ¬ J < post.level s0 k0 := by
+      rw [data.post_level_selected]
+      omega
+    simp [abovePivotLevelFinset, mem_introducedLabelFinset, data.selectedIntroduced,
+      hpre, hpost]
+  · have hsigma :
+        (Sigma.mk s k : Σ _ : ℕ, ℕ) ≠ Sigma.mk s0 k0 := by
+      intro h
+      cases h
+      exact hp rfl
+    by_cases hintro : introducedLabel L n S J s k
+    · have hlevel := data.level_old hintro hp
+      simp [abovePivotLevelFinset, mem_introducedLabelFinset, hintro, hsigma, hlevel]
+    · have hnotmem :
+        (Sigma.mk s k : Σ _ : ℕ, ℕ) ∉ introducedLabelFinset L n S J := by
+        rw [mem_introducedLabelFinset]
+        exact hintro
+      simp [abovePivotLevelFinset, hnotmem, hsigma]
+
+/-- A supplied Case 1(1) selected-old level move strictly decreases the
+same-domain above-pivot old-label count. -/
+theorem abovePivotLevelProgress_of_case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {pre post : IntroducedLabelRecurrenceState L n S J α} {u : α}
+    (data :
+      Case1SelectedOldLevelMoveData (J1 := J1) pre post s0 k0 u)
+    (hJ1 : 1 ≤ J1) :
+    abovePivotLevelProgress (L := L) (n := n) (S := S) (J := J)
+      (α := α) post pre := by
+  classical
+  change post.abovePivotLevelFinset.card < pre.abovePivotLevelFinset.card
+  rw [abovePivotLevelFinset_eq_erase_of_case1SelectedOldLevelMoveData data hJ1]
+  have hmem : Sigma.mk s0 k0 ∈ pre.abovePivotLevelFinset := by
+    rw [mem_abovePivotLevelFinset]
+    exact ⟨data.selectedIntroduced, by
+      rw [data.pre_level_selected]
+      omega⟩
+  exact Finset.card_erase_lt_of_mem hmem
+
+/-- The concrete Case 1(1) selected-old level override strictly decreases the
+same-domain above-pivot old-label count. -/
+theorem abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain
+    {L : ℕ} {n : ℕ → ℕ} {S J J1 s0 k0 : ℕ} {α : Type*}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (pre : IntroducedLabelRecurrenceState L n S J α)
+    (sameDomain :
+      Case1SelectedOldSuppliedSameDomainBoundary L n S J J1 s0 k0 pre.level
+        t t' numerator numerator' leastValue leastValue') :
+    abovePivotLevelProgress (L := L) (n := n) (S := S) (J := J)
+      (α := α) (pre.case1SelectedOldLevelMove s0 k0) pre :=
+  abovePivotLevelProgress_of_case1SelectedOldLevelMoveData
+    (pre.case1SelectedOldLevelMove_levelMoveData sameDomain.selectedIntroduced
+      sameDomain.selectedLevel)
+    sameDomain.firstJump.positive
+
+end IntroducedLabelRecurrenceState
+
 end Aoyagi
 end DLN
 end DLNFibre
