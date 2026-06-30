@@ -12,6 +12,55 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian-dominated source
+
+The next local-domination socket has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+It allows an arbitrary concrete `Case2PassiveTheta` candidate source measure
+to inherit the retained-passive residual-source conclusions when, after
+shrinking to the returned open set, it is finitely dominated by the globally
+Jacobian-weighted passive-product theta measure.
+
+Public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+The theorem works over
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+jacobianDensity z =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))
+baseJ = passiveSource.withDensity jacobianDensity
+```
+
+and returns an open neighborhood `W` of the base point.  For
+
+```text
+mu = Measure.map sourceChart (candidateMeasure.restrict W)
+```
+
+it proves retained-passive local-source support unconditionally.  If
+`candidateMeasure.restrict W <= c * baseJ.restrict W` for a finite scalar
+`c`, then it also proves a.e. residual square-sum positivity and
+`residualNegPowerIntegrableOn localSource mu t`.
+
+This is local domination bookkeeping only.  It does not construct an original
+source prior, identify determinant-chart Haar measure, prove raw-order Haar
+transport, prove exact passive-sector pushforward, prove source-image equality
+or source-rank coverage, construct normal crossings, compute pole order, or
+extract RLCT.
+
+Xhigh source/scope reviewer `Darwin` and xhigh Lean/API reviewer
+`McClintock` returned PASS, recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-dominated-source.md`.
+
+Next source-moving frontier remains the harder passive-sector transport or
+local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta global Jacobian-weighted single-open wrapper
 
 The single-open presentation of the Jacobian-weighted theta source measure has

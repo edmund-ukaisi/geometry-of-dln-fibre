@@ -6,6 +6,85 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Jacobian-Dominated Source - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now has an arbitrary
+candidate-measure local-domination socket over the globally
+Jacobian-weighted passive-product theta measure.
+
+New public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+The theorem works over
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+jacobianDensity z =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))
+baseJ = passiveSource.withDensity jacobianDensity
+```
+
+and returns an open neighborhood `W` of the base theta point.  For
+
+```text
+mu = Measure.map sourceChart (candidateMeasure.restrict W)
+```
+
+it proves retained-passive local-source support.  Then, for every finite
+scalar `c`, the explicit local domination hypothesis
+
+```text
+candidateMeasure.restrict W <= c * baseJ.restrict W
+```
+
+implies a.e. residual square-sum positivity and
+`residualNegPowerIntegrableOn localSource mu t`.
+
+Proof skeleton:
+
+```text
+U := open neighborhood from the theta Jacobian sandwich
+restrictedCandidate := candidateMeasure.restrict U
+V := open neighborhood from the passive-product domination socket
+W := U inter V
+```
+
+The key equalities are
+
+```text
+(candidateMeasure.restrict U).restrict V
+  = candidateMeasure.restrict (U inter V)
+
+baseJ.restrict (U inter V)
+  = ((passiveSource.restrict U).withDensity jacobianDensity).restrict V
+```
+
+and the upper Jacobian sandwich converts domination by `baseJ.restrict W` to
+finite domination by `passiveSource`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-dominated-source.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-dominated-source.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-dominated-source.md
+```
+
+Xhigh source/scope reviewer `Darwin` and xhigh Lean/API reviewer
+`McClintock` returned PASS.
+
+Boundary: no source-prior construction, no determinant-chart Haar transport,
+no raw-order Haar transport, no exact passive-sector pushforward, no
+source-image equality, no source-rank coverage, no normal crossings, no pole
+order, and no RLCT extraction.
+
+Next frontier: construct a real passive-sector transport/Jacobian comparison
+or local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest A2 Case 2 Passive Theta Global Jacobian-Weighted Single Open - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now has a single-open

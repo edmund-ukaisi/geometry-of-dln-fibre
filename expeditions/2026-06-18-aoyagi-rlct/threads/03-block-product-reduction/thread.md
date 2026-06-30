@@ -17703,3 +17703,55 @@ This note changes no mathematical claim.  The active A2 frontier remains the
 p.13 retained-passive source-chart/source-prior transport and
 regular-square-suspension line, with pen-and-paper reproduction required before
 substantial Lean.
+
+## 2026-06-30 A2 Case 2 passive theta Jacobian-dominated source
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-dominated-source.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-dominated-source.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-dominated-source.md`, PASS by xhigh
+source/scope reviewer `Darwin` and xhigh Lean/API reviewer `McClintock`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+For an arbitrary concrete `Case2PassiveTheta` candidate source measure, the
+theorem returns an open neighborhood `W` of the passive determinant-sector base
+point.  The chart-produced measure
+
+```text
+mu = Measure.map sourceChart (candidateMeasure.restrict W)
+```
+
+is supported on the retained-passive p.13 local source.  If, for a finite
+scalar `c`, the restricted candidate measure is dominated by
+
+```text
+c * (passiveSource.withDensity jacobianDensity).restrict W,
+```
+
+then the theorem also proves a.e. residual square-sum positivity and
+`residualNegPowerIntegrableOn localSource mu t`.
+
+The proof first obtains an open Jacobian-unit neighborhood `U`, applies the
+existing passive-product local-domination residual-source socket to
+`candidateMeasure.restrict U`, and then takes `W = U inter V`.  Repeated
+restriction and `restrict_withDensity` identify the local hypotheses, and the
+upper Jacobian sandwich converts domination by the weighted measure to finite
+domination by `passiveSource`.
+
+Nonclaims: no original source-prior construction, determinant-chart Haar
+transport, raw-order Haar transport, exact passive-sector pushforward,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
