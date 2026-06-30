@@ -21,6 +21,56 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 passive theta source-image bounded-density pullback
+
+Reproduction:
+`reproduction-a2-passive-theta-source-image-bounded-density-pullback.md`.
+Statement card:
+`statement-card-a2-passive-theta-source-image-bounded-density-pullback.md`.
+Review:
+`review-a2-passive-theta-source-image-bounded-density-pullback.md`, PASS by
+controller review after xhigh source scout `Galileo` and xhigh Lean/API scout
+`Euclid`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+measure_map_readback_map_sourceChart_restrict_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul
+```
+
+The theorem family proves that a bounded-density perturbation of the
+chart-produced source-image reference pulls back by `readback` to a measure
+dominated by the theta-domain reference.  If an external source measure is
+identified with that bounded-density source-image measure on `sourceChart ''
+V`, its pulled-back candidate is dominated.  The density identity itself
+remains explicit.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probes report only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no source-rank coverage,
+no one-chart global support, no Haar transport, no normal crossings, no pole
+order, and no RLCT extraction.
+
 ## 2026-06-30 A2 passive theta external source-image pullback
 
 Reproduction:

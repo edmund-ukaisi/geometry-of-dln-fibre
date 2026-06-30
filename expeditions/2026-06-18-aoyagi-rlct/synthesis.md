@@ -6,6 +6,90 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Passive Theta Source-Image Bounded-Density Pullback - 2026-06-30
+
+The source-prior bridge now has the honest bounded-density socket on the
+local passive-theta source image.  This does not prove domination for an
+arbitrary external measure.  It proves the elementary step: once the
+source-image measure is identified as a bounded-density perturbation of the
+chart-produced source-image reference, its readback pullback is dominated on
+theta coordinates.
+
+New Lean names:
+
+```text
+measure_map_readback_map_sourceChart_restrict_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul
+```
+
+For
+
+```text
+sourceBase = Measure.map sourceChart (thetaReference.restrict V),
+```
+
+the first theorem proves:
+
+```text
+Measure.map readback sourceBase = thetaReference.restrict V.
+```
+
+The bounded-density theorem proves:
+
+```text
+Measure.map readback
+  ((sourceBase.withDensity density).restrict (sourceChart '' V))
+  ≤ c • thetaReference.restrict V
+```
+
+from `density ≤ c` a.e. on `sourceBase.restrict (sourceChart '' V)`.  The
+external-measure variant adds the explicit identity
+
+```text
+externalMeasure.restrict (sourceChart '' V)
+  = (sourceBase.withDensity density).restrict (sourceChart '' V)
+```
+
+and concludes the corresponding domination for the pulled-back external
+candidate.  The concrete Case 2 theorem returns the local open `V`, measurable
+image, continuity, and left-inverse data needed to apply this socket.
+
+Xhigh source scout `Galileo` checked the source boundary: Aoyagi's smooth
+compactly supported prior gives local boundedness once a coordinate-density
+identity is known, but Aoyagi pp. 10-13 do not state that project-specific
+source-prior transport identity.  Xhigh Lean/API scout `Euclid` identified
+this bounded-density pullback as the smallest honest next theorem; the
+remaining blocker is the actual density/readback or Haar/source-measure
+transport theorem.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-bounded-density-pullback.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-bounded-density-pullback.md
+threads/03-block-product-reduction/review-a2-passive-theta-source-image-bounded-density-pullback.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+```
+
+Axiom probes for all new bounded-density/readback theorems report only the
+baseline `[propext, Classical.choice, Quot.sound]`.
+
+Next boundary: prove the source-prior density identity, or a local
+Haar/source-measure transport theorem that supplies it.  Arbitrary external
+measures remain outside the theorem: a singular measure on one image point
+can pull back to an atom and need not be dominated by the theta reference.
+
 ## Latest A2 Passive Theta External Source-Image Pullback - 2026-06-30
 
 The local passive-theta source image now has an exact external-measure pullback

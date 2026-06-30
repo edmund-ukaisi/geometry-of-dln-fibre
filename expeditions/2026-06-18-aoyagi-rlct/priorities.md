@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 passive theta source-image bounded-density pullback
+
+The domination frontier has been narrowed to the correct density socket.  Lean
+now proves that the chart-produced source-image reference pulls back exactly:
+
+```text
+Measure.map readback
+  (Measure.map sourceChart (thetaReference.restrict V))
+  =
+thetaReference.restrict V.
+```
+
+It also proves that any bounded-density perturbation of that source-image
+reference pulls back to a dominated theta measure:
+
+```text
+Measure.map readback
+  (((Measure.map sourceChart (thetaReference.restrict V)).withDensity density)
+    .restrict (sourceChart '' V))
+  ≤ c • thetaReference.restrict V.
+```
+
+If an external measure is identified with that bounded-density source-image
+measure on `sourceChart '' V`, the same domination holds for its pulled-back
+candidate.  This is the strongest honest elementary step currently available:
+it proves no density identity for the original DLN prior.
+
+New public names:
+
+```text
+measure_map_readback_map_sourceChart_restrict_eq_self_of_aemeasurable
+measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul
+```
+
+Next non-wrapper target: a source-prior density/readback theorem or a
+Haar/source-measure transport theorem that proves the explicit density identity
+assumed by this socket.  Do not claim domination for arbitrary external
+measures.
+
 ## Latest controller decision - 2026-06-30, A2 passive theta external source-image pullback
 
 The source-prior bridge now has its first exact local measure adapter.  For an
