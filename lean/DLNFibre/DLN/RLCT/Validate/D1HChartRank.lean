@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.D1HChartGrad
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 import DLNFibre.Core.RankLocusClosed
 import Mathlib.LinearAlgebra.Dimension.Constructions
 
@@ -418,5 +419,49 @@ theorem nReg_le_finrank_range_jointDiffL2 (H : Fin (2 + 1) → ℕ) (r : ℕ) (v
     _ ≤ finrank ℝ (LinearMap.range Ψ) := by
         rw [← LinearMap.finrank_range_of_inj hΨinj]
     _ ≤ finrank ℝ (LinearMap.range (jointDiffL2 H v)) := Submodule.finrank_mono hrange
+
+/-! ## Step 1: the analytic flat-Jacobian gradient IS `jointDiffL2 ∘ flatSymm` (entry-wise)
+
+The chart's first-block derivative `DG(0)` reads the banked analytic gradient
+`prodAuxEntryDeriv … 2 i j` (`hasStrictFDerivAt_lossEntry`). To carry step 2b's rank bound onto the
+chart, identify that gradient (applied to a flat tangent `δ`) with the `(i,j)` entry of
+`jointDiffL2 H v (flatSymm δ)`. The `prodAuxEntryDeriv` fold is unrolled by the `rfl`-stated `_succ`
+equation (a `rw`, not a `show`-unfold — the latter times out on the dependent-`Fin`-cast term). -/
+
+/-- **The `prodAuxEntryDeriv` `succ` unfold** as a `rfl`-equation `rw` can fire (dodging the
+`show`-elaboration timeout on the dependent-`Fin`-cast fold term). Local to the D1HChart lane. -/
+theorem prodAuxEntryDeriv_succ {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    (H : Fin (L + 1) → ℕ) (g : X → Params H) (x : X)
+    (g' : ∀ (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)), X →L[ℝ] ℝ)
+    (k : ℕ) (hk : k + 1 < L + 1) (i : Fin (H 0)) (j : Fin (H ⟨k + 1, hk⟩))
+    (hk' : k < L + 1) (hkL : k < L)
+    (e1 : (⟨k, hk'⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).castSucc)
+    (e2 : (⟨k + 1, hk⟩ : Fin (L + 1)) = (⟨k, hkL⟩ : Fin L).succ) :
+    prodAuxEntryDeriv H g x g' (k + 1) hk i j
+      = ∑ m : Fin (H ⟨k, hk'⟩),
+        ((prodAux H (g x) k hk' i m) • g' ⟨k, hkL⟩ (e1 ▸ m) (e2 ▸ j)
+          + ((by rw [e1, e2]; exact g x ⟨k, hkL⟩ :
+              Matrix (Fin (H ⟨k, hk'⟩)) (Fin (H ⟨k + 1, hk⟩)) ℝ) m j)
+            • prodAuxEntryDeriv H g x g' k hk' i m) := rfl
+
+/-- `paramsEquivFlatLinear.symm` agrees with `paramsEquivFlat.symm` as a function. -/
+theorem paramsEquivFlatLinear_symm_coe (H : Fin (2 + 1) → ℕ) :
+    ⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm := by
+  funext x; apply (paramsEquivFlat H).injective
+  rw [(paramsEquivFlat H).apply_symm_apply]
+  have : (paramsEquivFlat H) ((paramsEquivFlatLinear H).symm x)
+      = (paramsEquivFlatLinear H) ((paramsEquivFlatLinear H).symm x) := by
+    rw [paramsEquivFlatLinear_coe]
+  rw [this, (paramsEquivFlatLinear H).apply_symm_apply]
+
+/-- `gmapDeriv H s a b` applied to `δ` reads the `(s,a,b)` layer entry of the linear
+flatten-inverse `(paramsEquivFlatLinear H).symm δ`. -/
+theorem gmapDeriv_apply_symm (H : Fin (2 + 1) → ℕ) (s : Fin 2) (a : Fin (H s.castSucc))
+    (b : Fin (H s.succ)) (δ : Fin (flatDim H) → ℝ) :
+    (gmapDeriv H s a b) δ = ((paramsEquivFlatLinear H).symm δ) s a b := by
+  have hL : (gmapDeriv H s a b) δ = δ (flatIdx H s a b) := rfl
+  have hR : ((paramsEquivFlatLinear H).symm δ) s a b = δ (flatIdx H s a b) := by
+    rw [paramsEquivFlatLinear_symm_coe, paramsEquivFlat_symm_entry]; rfl
+  rw [hL, hR]
 
 end DLNFibre.DLN.RLCT
