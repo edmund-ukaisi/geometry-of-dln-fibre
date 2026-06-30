@@ -43,9 +43,9 @@ section SecondPeelMinor
 
 variable {N n : ℕ}
 
-/-- **The residual Jacobian matrix** `jacResid h t0 : Matrix (Fin n) (Fin N) ℝ`: the `(i, c)` entry is
-the `c`-th partial derivative of the `i`-th component of `h` at `t0` (`fderiv` of the scalar component
-`fun t => h t i`, applied to the `c`-th coordinate tangent `Pi.single c 1`). -/
+/-- **The residual Jacobian matrix** `jacResid h t0 : Matrix (Fin n) (Fin N) ℝ`: the `(i, c)`
+entry is the `c`-th partial derivative of the `i`-th component of `h` at `t0` (`fderiv` of the
+scalar component `fun t => h t i`, applied to the `c`-th coordinate tangent `Pi.single c 1`). -/
 noncomputable def jacResid (h : (Fin N → ℝ) → EuclideanSpace ℝ (Fin n)) (t0 : Fin N → ℝ) :
     Matrix (Fin n) (Fin N) ℝ :=
   Matrix.of (fun i c => (fderiv ℝ (fun t => h t i) t0) (Pi.single c 1))
