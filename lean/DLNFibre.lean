@@ -538,3 +538,9 @@ import DLNFibre.Core.Matrix.RankMinors
 -- than Mathlib's smooth/square submersive Jacobian.
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
+-- det-atlas P2.b′: the `AlgEquiv` groupoid laws absent in Mathlib v4.29 — `trans_assoc`,
+-- `trans_refl`, `refl_trans` (each `ext x; rfl`; Mathlib has only the inverse laws
+-- `self_trans_symm`/`symm_trans_self`). Bare Mathlib-mirror namespace `AlgEquiv`. The cocycle
+-- unblocker for the P2.c target-side round-trip (rearrange `trans` at the abstract `AlgEquiv`
+-- level, off the heavy double-localized chart type).
+import DLNFibre.Core.Algebra.AlgEquiv.Groupoid
