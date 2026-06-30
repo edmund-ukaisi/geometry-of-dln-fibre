@@ -271,6 +271,185 @@ theorem readE_pbo (ha : StructAdm M (tach M)) (h0r : 0 < Text M (tach M) 2) (h0c
   unfold pivotBlowupOn
   rw [if_neg hne, if_pos (activeSlotE_mem_activeM ha i j)]
 
+/-! ## The leaf slots under `pivotBlowupOn` (pivot fixed at `(0,0)`, the rest scale) -/
+
+/-- `leafSlot 0 0` IS `leafPivot` (definitionally). -/
+theorem leafSlot_zero_eq_leafPivot (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    leafSlot M (tach M) ha (by norm_num) ⟨0, h0r⟩ ⟨0, h0c⟩
+      = leafPivot M ha (by norm_num) h0r h0c := rfl
+
+/-- A leaf slot `(i, j) ≠ (0, 0)` is `≠ leafPivot` (`leafSlot` is injective in `(i, j)`). -/
+theorem leafSlot_ne_leafPivot (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (i : Fin (Text M (tach M) 2)) (j : Fin (Wext M 2)) (hij : ¬ (i.val = 0 ∧ j.val = 0)) :
+    leafSlot M (tach M) ha (by norm_num) i j ≠ leafPivot M ha (by norm_num) h0r h0c := by
+  rw [leafPivot]
+  intro h
+  obtain ⟨hi, hj⟩ := leafSlot_inj M (tach M) ha (by norm_num) h
+  exact hij ⟨by simp [hi], by simp [hj]⟩
+
+/-! ## The boundary factor `B = Bchart` (the `u`-free residual-reading chart) -/
+
+/-- The direct leaf reader: `rfinDirect ha y i j := y (leafSlot … i j)` — reads ALL leaf entries
+(including the pivot slot `(0,0)`) DIRECTLY from `y`, no fixed-`1`, no radial scaling. -/
+noncomputable def rfinDirect (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (Text M (tach M) 2)) (Fin (Wext M 2)) ℝ :=
+  Matrix.of fun i j => y (leafSlot M (tach M) ha (by norm_num) i j)
+
+/-- **The boundary-factor chart parameters** `Bparams ha y : Params M` — the `u`-FREE chart with the
+radial scalar hardwired to `1`, reading the residual coords directly (`rfinDirect`) from `y`. -/
+noncomputable def Bparams (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) : Params M :=
+  chartParamsGen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha y) y)
+    (hleStruct M (tach M) ha)
+
+/-- **The boundary factor** `Bchart ha y := paramsEquivFlat M (Bparams ha y)`. -/
+noncomputable def Bchart (ha : StructAdm M (tach M)) (y : Fin (routeMAmbient M) → ℝ) :
+    Fin (routeMAmbient M) → ℝ :=
+  paramsEquivFlat M (Bparams ha y)
+
+/-! ## The Cgen-block match between the chart decoder and the `B` decoder (`L = 2`) -/
+
+/-- **The interior `Cgen 1` match**: the chart's interior transition (radial `u = x p₀`, leaf
+`rfinFixedPivot x`) equals the `B`-decoder's (radial `1`, leaf `rfinDirect (pbo x)`). Both are the
+Schur frame (`Cgen_live_interior_eq_schurFrameProd`); the K/X/N blocks read spectator slots (fixed
+via `readK/X/N_pbo`), and the radial `u` of the E-term moves into the residual coordinate
+(`schurFrameProd_u_to_E` + `readE_pbo`). -/
+theorem Cgen1_match (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    Cgen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+        (genBlkFlatLive M (tach M) ha
+          (rfinFixedPivot M ha (by norm_num) x) x) (hleStruct M (tach M) ha) (0 + 1)
+      = Cgen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha
+          (rfinDirect ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+        (hleStruct M (tach M) ha) (0 + 1) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c
+  set pbo := pivotBlowupOn (activeM M ha) p₀
+  rw [Cgen_live_interior_eq_schurFrameProd M (tach M) ha _ _ x 0 (by norm_num),
+    Cgen_live_interior_eq_schurFrameProd M (tach M) ha _ _ (pbo x) 0 (by norm_num),
+    schurFrameProd_u_to_E M (tach M) (0 + 1) _ _ (x p₀)]
+  congr 1
+  · funext i j; exact (readK_pbo ha h0r h0c x i j).symm
+  · funext i j; exact (readX_pbo ha h0r h0c x i j).symm
+  · funext i j; exact (readN_pbo ha h0r h0c x i j).symm
+  · funext i j
+    rw [Matrix.smul_apply, smul_eq_mul, readE_pbo ha h0r h0c x i j]
+
+/-- **The leaf `Cgen 2` match**: `(x p₀) • rfinFixedPivot x = 1 • rfinDirect (pbo x)` (boundary
+`2 = L`). At the pivot `(0,0)`: `(x p₀)·1 = (pbo x) p₀ = x p₀` (pivot fixed); off `(0,0)`:
+`(x p₀)·x(leafSlot i j) = (pbo x)(leafSlot i j)` (a leaf slot in `activeM`, `≠ p₀`, scaled). -/
+theorem Cgen2_match (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    Cgen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+        (genBlkFlatLive M (tach M) ha
+          (rfinFixedPivot M ha (by norm_num) x) x) (hleStruct M (tach M) ha) 2
+      = Cgen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha
+          (rfinDirect ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+        (hleStruct M (tach M) ha) 2 := by
+  rw [Cgen_live_leaf M (tach M) ha (rfinFixedPivot M ha (by norm_num) x)
+      (x (leafPivot M ha (by norm_num) h0r h0c)) x,
+    Cgen_live_leaf M (tach M) ha
+      (rfinDirect ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+      (1 : ℝ) (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x), one_smul]
+  funext i j
+  rw [Matrix.smul_apply, smul_eq_mul]
+  by_cases hij : i.val = 0 ∧ j.val = 0
+  · -- the pivot entry: both sides are `x p₀`
+    obtain ⟨hi, hj⟩ := hij
+    have hi' : i = ⟨0, h0r⟩ := Fin.ext hi
+    have hj' : j = ⟨0, h0c⟩ := Fin.ext hj
+    subst hi' hj'
+    rw [rfinFixedPivot_pivot M ha (by norm_num) h0r h0c, mul_one]
+    show x (leafPivot M ha (by norm_num) h0r h0c)
+      = pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x
+          (leafSlot M (tach M) ha (by norm_num) ⟨0, h0r⟩ ⟨0, h0c⟩)
+    rw [leafSlot_zero_eq_leafPivot ha h0r h0c, pivotBlowupOn, if_pos rfl]
+  · -- a non-pivot leaf entry: `(x p₀)·x(leafSlot i j) = pbo x (leafSlot i j)`
+    rw [rfinFixedPivot_off M ha (by norm_num) x i j hij]
+    show x (leafPivot M ha (by norm_num) h0r h0c) * x (leafSlot M (tach M) ha (by norm_num) i j)
+      = pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x
+          (leafSlot M (tach M) ha (by norm_num) i j)
+    rw [pivotBlowupOn, if_neg (leafSlot_ne_leafPivot ha h0r h0c i j hij),
+      if_pos (leafSlot_mem_activeM ha i j)]
+
+/-! ## The chart-parameter match + `hmap` -/
+
+/-- The genBlkFlatLive `Nblk (k+1)` reads `readN` (`k < L`); the spectator match for `k = 0`. -/
+theorem live_Nblk_match (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x).Nblk (0 + 1)
+      = (genBlkFlatLive M (tach M) ha
+          (rfinDirect ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x)).Nblk (0 + 1) :=
+    by
+  rw [genBlkFlatLive_Nblk_succ M (tach M) ha _ x 0 (by norm_num),
+    genBlkFlatLive_Nblk_succ M (tach M) ha _ _ 0 (by norm_num)]
+  funext i j; exact (readN_pbo ha h0r h0c x i j).symm
+
+/-- The genBlkFlatLive `Wblk (k+1)` is the structured decoder's `Wblk`; the spectator match. -/
+theorem live_Wblk_match (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x).Wblk (0 + 1)
+      = (genBlkFlatLive M (tach M) ha
+          (rfinDirect ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x))
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x)).Wblk (0 + 1) :=
+    by
+  show (genBlkFlatStruct M (tach M) ha x).Wblk (0 + 1)
+    = (genBlkFlatStruct M (tach M) ha
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x)).Wblk (0 + 1)
+  simp only [genBlkFlatStruct, dif_pos (show (0 : ℕ) < 2 by decide),
+    dif_pos (show 0 + 1 < 2 by decide)]
+  funext i j; exact (readW_pbo ha h0r h0c (by decide) x i j).symm
+
+/-- **The chart-parameter match** `chartParamsGen (x p₀) … (chart decoder) = chartParamsGen 1 …
+(B decoder ∘ pbo)` — the genuine content of `hmap`, per layer `s : Fin 2`. Both are `reindex (Agen …
+s.val)`; `Agen_congr` reduces each to the `Nblk`/`Wblk`/`Cgen(k+1)` matches (`live_Nblk_match`,
+`live_Wblk_match`, `Cgen1_match` / `Cgen2_match`). Boundary `0` uses the interior `Cgen 1`; boundary
+`1` uses the leaf `Cgen 2`. -/
+theorem chartParamsGen_match (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    chartParamsGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
+        (hleStruct M (tach M) ha)
+      = Bparams ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c
+  set pbo := pivotBlowupOn (activeM M ha) p₀
+  funext s
+  show Matrix.reindex _ _ (Agen (x p₀) M (tach M) _ (hleStruct M (tach M) ha) s.val)
+    = Matrix.reindex _ _ (Agen 1 M (tach M) _ (hleStruct M (tach M) ha) s.val)
+  congr 1
+  fin_cases s
+  · -- boundary 0: `Agen 0` uses `Nblk 0 = 0` (rfl) and the interior `Cgen 1` match
+    exact Agen_congr M (tach M) (hleStruct M (tach M) ha) (x p₀) 1 _ _ 0
+      (by rfl) (by rfl) (Cgen1_match ha h0r h0c x)
+  · -- boundary 1: `Agen 1` uses `Nblk 1 = readN ⟨0⟩` (the `_pbo` match) and the leaf `Cgen 2` match
+    exact Agen_congr M (tach M) (hleStruct M (tach M) ha) (x p₀) 1 _ _ 1
+      (live_Nblk_match ha h0r h0c x) (live_Wblk_match ha h0r h0c x) (Cgen2_match ha h0r h0c x)
+
+/-- **`hmap`**: `phiFlatLiveAt M ha hL p₀ = Bchart ha ∘ pivotBlowupOn activeM p₀` — the map identity
+(obligation (1) of `interiorDet_leaf_headline`), discharged from the per-layer match
+(via the Cgen-block matches; NO explicit `chainA` reindexing). Both sides are `paramsEquivFlat ∘
+chartParamsGen`; `chartParamsGen_match` does the work. -/
+theorem hmap_leaf (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    phiFlatLiveAt M ha (by norm_num) (leafPivot M ha (by norm_num) h0r h0c)
+      = Bchart ha ∘ pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) := by
+  funext x
+  show phiGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
+      (hleStruct M (tach M) ha) = _
+  show paramsEquivFlat M
+      (chartParamsGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha (by norm_num) x) x)
+        (hleStruct M (tach M) ha)) = _
+  rw [chartParamsGen_match ha h0r h0c x]
+  rfl
+
 end L2
 
 end DLNFibre.DLN.RLCT
