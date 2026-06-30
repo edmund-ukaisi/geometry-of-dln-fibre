@@ -6,6 +6,67 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Product Source-Chart Measure Local-Source Support - 2026-06-30
+
+Lean now turns the pointwise Case 2 endpoint product source-chart
+local-source support into a chart-produced product-measure support identity:
+
+```text
+exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_retainedPassiveP13LocalSource_eq_self
+```
+
+The theorem chooses `0 < R <= Rmax` and an open ambient theta-neighborhood
+`V`, used through `V inter sourceStratum`. For arbitrary `thetaMeasure` and
+`regularMeasure`, let
+
+```text
+productDomainMeasure =
+  (thetaMeasure.restrict (V inter sourceStratum)).prod
+    (regularMeasure.restrict regularBall).
+```
+
+If the product source chart is a.e. measurable for this restricted product
+measure, then
+
+```text
+let μ := Measure.map productSourceChart productDomainMeasure
+μ.restrict localSource = μ.
+```
+
+The proof uses the pointwise small-ball local-source support theorem, projects
+the first and second coordinates of the restricted product measure a.e., and
+applies `measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem`.
+
+Boundary: source-rank carrier measurability and product source-chart
+a.e. measurability are explicit inputs. This is not source-rank coverage,
+source-image equality, original source-prior transport, Haar/Jacobian
+transport, normal crossings, pole order, RLCT, or product-chart invertibility.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-measure-local-source-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-measure-local-source-support.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-measure-local-source-support.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_source_measure_support_axioms.lean
+```
+
+Axiom probe for the new theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Aquinas the 2nd` PASS. Reviewer suggested wording
+fixes to avoid implying source-rank openness; controller applied them.
+
 ## Latest A2 Retained-Passive Source-Chart Image Coverage - 2026-06-30
 
 Lean now exposes the determinant-chart coordinate witness behind the existing

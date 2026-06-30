@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 product source-chart measure local-source support
+
+The pointwise Case 2 endpoint product source-chart local-source support now
+has its chart-produced measure wrapper:
+
+```text
+exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_retainedPassiveP13LocalSource_eq_self
+```
+
+After shrinking regular variables and choosing an open ambient base
+neighborhood `V`, any product-domain measure restricted to
+`V ∩ sourceStratum` and the regular-coordinate ball pushes forward to a
+measure supported on the retained-passive p.13 local source:
+
+```text
+let μ := Measure.map productSourceChart productDomainMeasure
+μ.restrict localSource = μ.
+```
+
+Measurability of the source-rank carrier and a.e. measurability of the product
+source chart remain explicit theorem inputs. This is chart-produced
+measure-support bookkeeping only; it does not prove source-rank coverage,
+source-image equality, original source-prior transport, Haar/Jacobian
+transport, normal crossings, pole order, RLCT, or product-chart invertibility.
+
 ## Latest controller decision - 2026-06-30, A2 retained-passive source-chart image coverage
 
 The retained-passive local-source self-base coverage theorem now exposes an

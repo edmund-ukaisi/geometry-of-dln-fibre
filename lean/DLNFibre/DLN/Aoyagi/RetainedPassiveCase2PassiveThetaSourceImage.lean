@@ -1369,6 +1369,214 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Small-ball product source-chart measures are supported on the named
+retained-passive p.13 local source.
+
+This is the measure-support wrapper for
+`exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source`.
+After choosing a sufficiently small regular-coordinate ball and an open
+ambient base neighborhood `V`, used through `V ∩ sourceStratum`, the
+pushforward of any product-domain measure restricted to that source-rank
+carrier slice and the ball restricts to the retained-passive local source as
+itself.
+
+The theorem assumes the source-rank carrier is measurable and the product
+source chart is a.e. measurable for the chosen restricted product measure.
+It does not prove source-rank coverage, source-image equality, original
+source-prior transport, Haar/Jacobian transport, normal crossings, pole order,
+or RLCT extraction. -/
+theorem exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_retainedPassiveP13LocalSource_eq_self
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [TopologicalSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (theta₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    {r : ℕ} {rEdge : Fin 2 → ℕ} {Rmax : ℝ}
+    (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      0 < R ∧ R ≤ Rmax ∧ IsOpen V ∧ theta₀ ∈ V ∧
+        let ρ := Fin (Module.finrank ℝ U₀)
+        let κ := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+        let Coord :=
+          AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+        let EdgeFamily :=
+          ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+        let sourceChart :
+            Case2PassiveTheta (ρ := ρ) (τ := τ) n S J → EdgeFamily :=
+          case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+        let productSourceChart :
+            Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+              EuclideanSpace ℝ Coord →
+              EdgeFamily :=
+          paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+            W₂ B₂ U₀ hU₀ sourceChart
+        let sourceStratum :=
+          paperEndpointFixedBaseSourceRankStratum
+            (K := ℝ) (N := 2) W₂ B₂ sourceChart r rEdge
+        let regularBall := Metric.ball (0 : EuclideanSpace ℝ Coord) R
+        let localSource :=
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource
+            (K := ℝ) (M := 1) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+        MeasurableSet sourceStratum →
+          V ∩ sourceStratum ⊆
+            {theta |
+              ∀ u : EuclideanSpace ℝ Coord, u ∈ regularBall →
+                productSourceChart (theta, u) ∈ localSource} ∧
+            ∀ thetaMeasure :
+              Measure
+                (Case2PassiveTheta
+                  (ρ := ρ) (τ := τ) n S J),
+            ∀ regularMeasure : Measure (EuclideanSpace ℝ Coord),
+              let productDomainMeasure :=
+                (thetaMeasure.restrict (V ∩ sourceStratum)).prod
+                  (regularMeasure.restrict regularBall)
+              AEMeasurable productSourceChart productDomainMeasure →
+                let μ := Measure.map productSourceChart productDomainMeasure
+                μ.restrict localSource = μ := by
+  rcases
+      exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e theta₀
+        (r := r) (rEdge := rEdge) hRmax with
+    ⟨R, hR, hRle, hsupport_eventually⟩
+  refine ⟨R, ?_⟩
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let Coord :=
+    AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let sourceChart :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J → EdgeFamily :=
+    case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+  let productSourceChart :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+        EuclideanSpace ℝ Coord →
+        EdgeFamily :=
+    paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+      W₂ B₂ U₀ hU₀ sourceChart
+  let sourceStratum :=
+    paperEndpointFixedBaseSourceRankStratum
+      (K := ℝ) (N := 2) W₂ B₂ sourceChart r rEdge
+  let regularBall := Metric.ball (0 : EuclideanSpace ℝ Coord) R
+  let localSource :=
+    paperEndpointFixedBaseRetainedPassiveP13LocalSource
+      (K := ℝ) (M := 1) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+  have hsupport_eventually' :
+      ∀ᶠ theta in nhdsWithin theta₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ Coord, u ∈ regularBall →
+          productSourceChart (theta, u) ∈ localSource := by
+    simpa [ρ, κ, Coord, EdgeFamily, sourceChart, productSourceChart,
+      sourceStratum, regularBall, localSource] using hsupport_eventually
+  rcases mem_nhdsWithin.1 hsupport_eventually' with
+    ⟨V, hVopen, htheta₀V, hVsub⟩
+  refine ⟨V, hR, hRle, hVopen, htheta₀V, ?_⟩
+  change
+    MeasurableSet sourceStratum →
+      V ∩ sourceStratum ⊆
+        {theta |
+          ∀ u : EuclideanSpace ℝ Coord, u ∈ regularBall →
+            productSourceChart (theta, u) ∈ localSource} ∧
+        ∀ thetaMeasure :
+          Measure
+            (Case2PassiveTheta
+              (ρ := ρ) (τ := τ) n S J),
+        ∀ regularMeasure : Measure (EuclideanSpace ℝ Coord),
+          let productDomainMeasure :=
+            (thetaMeasure.restrict (V ∩ sourceStratum)).prod
+              (regularMeasure.restrict regularBall)
+          AEMeasurable productSourceChart productDomainMeasure →
+            let μ := Measure.map productSourceChart productDomainMeasure
+            μ.restrict localSource = μ
+  intro hsourceStratum_meas
+  constructor
+  · exact hVsub
+  · intro thetaMeasure regularMeasure productDomainMeasure hproduct_aemeas μ
+    let thetaDomain :
+        Set
+          (Case2PassiveTheta
+            (ρ := ρ) (τ := τ) n S J) :=
+      V ∩ sourceStratum
+    have hthetaDomain_meas : MeasurableSet thetaDomain :=
+      hVopen.measurableSet.inter hsourceStratum_meas
+    have htheta_support :
+        ∀ᵐ theta ∂ thetaMeasure.restrict thetaDomain,
+          ∀ u : EuclideanSpace ℝ Coord, u ∈ regularBall →
+            productSourceChart (theta, u) ∈ localSource := by
+      filter_upwards [ae_restrict_mem hthetaDomain_meas] with theta htheta
+      exact hVsub htheta
+    have htheta_support_prod :
+        ∀ᵐ z ∂ productDomainMeasure,
+          ∀ u : EuclideanSpace ℝ Coord, u ∈ regularBall →
+            productSourceChart (z.1, u) ∈ localSource := by
+      simpa [productDomainMeasure, thetaDomain] using
+        (Measure.quasiMeasurePreserving_fst
+          (μ := thetaMeasure.restrict thetaDomain)
+          (ν := regularMeasure.restrict regularBall)).ae htheta_support
+    have hregular_mem :
+        ∀ᵐ u ∂ regularMeasure.restrict regularBall,
+          u ∈ regularBall :=
+      ae_restrict_mem Metric.isOpen_ball.measurableSet
+    have hregular_mem_prod :
+        ∀ᵐ z ∂ productDomainMeasure, z.2 ∈ regularBall := by
+      simpa [productDomainMeasure, thetaDomain] using
+        (Measure.quasiMeasurePreserving_snd
+          (μ := thetaMeasure.restrict thetaDomain)
+          (ν := regularMeasure.restrict regularBall)).ae hregular_mem
+    have hchart_mem :
+        ∀ᵐ z ∂ productDomainMeasure,
+          productSourceChart z ∈ localSource := by
+      filter_upwards [htheta_support_prod, hregular_mem_prod] with z hzsupport hzball
+      exact hzsupport z.2 hzball
+    simpa [μ, localSource, productDomainMeasure, thetaDomain] using
+      measure_map_restrict_retainedPassiveP13LocalSource_eq_self_of_ae_mem
+        (M := 1) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := fun E : EdgeFamily ↦ E)
+        (η := productDomainMeasure) (sourceChart := productSourceChart)
+        (by simpa [EdgeFamily] using
+          (continuous_id : Continuous (fun E : EdgeFamily ↦ E)))
+        hproduct_aemeas hchart_mem
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Source-rank-neighborhood version of the Case 2 endpoint p.13 product
 source-chart readout package.
 

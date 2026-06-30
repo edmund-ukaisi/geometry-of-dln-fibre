@@ -235,3 +235,22 @@ precisely the original/external source-measure local bounded-density transport
 over the Case 2 chart-produced source image, or an equivalent Haar/Jacobian
 transport theorem.  It is not supplied by `withDensity` bookkeeping,
 local-source support, or product-reduction certificates.
+
+## Addendum - 2026-06-30 product-source measure support wrapper
+
+The pointwise product source-chart support theorem has been lifted to a
+chart-produced product-measure support wrapper:
+
+```text
+exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_retainedPassiveP13LocalSource_eq_self
+```
+
+For arbitrary theta-domain and regular-coordinate measures, after restricting
+to the chosen open theta neighborhood, source-rank carrier, and regular ball,
+the pushforward through the concrete product source chart restricts to the
+retained-passive local source as itself.
+
+This removes only a chart-produced support bookkeeping obligation. It does
+not change the frontier conclusion above: original/external source-measure
+comparison, source-image equality, and Haar/Jacobian transport remain open or
+explicit theorem inputs.

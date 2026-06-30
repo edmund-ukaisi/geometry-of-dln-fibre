@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 product source-chart measure local-source support
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-measure-local-source-support.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-measure-local-source-support.md`.
+Review:
+`review-a2-case2-product-source-chart-measure-local-source-support.md`,
+PASS by xhigh reviewer `Aquinas the 2nd`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_retainedPassiveP13LocalSource_eq_self
+```
+
+This wraps the pointwise product source-chart local-source support theorem as
+a pushforward-measure support identity for arbitrary product-domain measures
+restricted to `V inter sourceStratum` and the regular ball.
+
+Current verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_source_measure_support_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, source-image equality,
+original/source-prior transport, Haar/Jacobian transport, normal crossings,
+pole order, RLCT, or product-chart invertibility.
+
 ## 2026-06-30 A2 retained-passive source-chart image coverage
 
 Reproduction:
