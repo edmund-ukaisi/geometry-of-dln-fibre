@@ -6,6 +6,73 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Fixed-Basis Original Coordinate Readout - 2026-06-30
+
+Lean now proves the finite index bridge between Aoyagi's p.13 fixed endpoint
+bases and the original `Fin (d j)` tuple-coordinate convention:
+
+```text
+paperEndpointFixedBaseCoordinateIndex
+paperEndpointFixedBaseDim
+paperEndpointFixedBaseFinBasis
+edgeFamilyMatrixTuple_p13Basis_reindex_eq
+edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq
+edgeFamilyMatrixTuple_p13FinBasis_eq_reindex_edgeMatrix
+edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq
+```
+
+For arbitrary finite equivalences
+
+```text
+e j :
+  (Fin (Module.finrank ℝ U0) ⊕ κ' j) ≃ Fin (d j),
+```
+
+the theorem `edgeFamilyMatrixTuple_p13Basis_reindex_eq` says that
+`edgeFamilyMatrixTuple` in the reindexed p.13 bases is exactly the p.13
+fixed-base edge-matrix readout with `Matrix.reindex (e p.succ)
+(e p.castSucc)` applied edgewise.  The raw-order source-chart specialization
+rewrites the p.13 edge matrices by the existing theorem
+`paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13RawOrderSourceChart_eq`,
+so it reads `edgeFamilyOfRawOrderTuple y p` with the same row/column
+reindexing.
+
+This is pure finite coordinate algebra.  It is intentionally not a Haar
+normalization theorem and not a source-prior/chart-measure comparison.  Xhigh
+scouts Russell and Ptolemy independently flagged the same boundary: an exact
+measure equality is false or at least unjustified for arbitrary original
+bases/Haar choices; the next honest measure target is finite-scalar
+domination or finite-scalar equivalence between `originalEdgeFamilyVolume`
+in these adapted/reindexed bases and the retained-passive chart-produced
+source measure on the source edge-family set.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-fixed-basis-original-coordinate-readout.md
+threads/03-block-product-reduction/statement-card-a2-p13-fixed-basis-original-coordinate-readout.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13Coordinates.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13Coordinates
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+lake env lean --stdin                # axiom probe
+```
+
+Review: xhigh `Hume the 2nd` PASS with no required changes; it checked the
+finite-index-only claim, row/column direction, retained chart hypothesis, and
+nonclaim boundary.  Nonclaims: no original/source-prior transport, no
+chart-piece equality, no readback domination, no Haar/Jacobian transport, no
+source-rank coverage, no normal crossings, pole order, or RLCT extraction.
+Axiom probe for the four new readout theorems reports only `[propext,
+Classical.choice, Quot.sound]`.
+
 ## Original Edge-Family Prior In Fixed Bases - 2026-06-30
 
 Lean now transports the original tuple-coordinate measure to continuous

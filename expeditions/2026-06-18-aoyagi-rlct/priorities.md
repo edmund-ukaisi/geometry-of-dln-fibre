@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, p.13 fixed-basis original coordinate readout
+
+The expedition now has the finite index/basis bridge between Aoyagi's p.13
+fixed endpoint bases and the `Fin (d j)` coordinate convention used by
+`originalEdgeFamilyVolume`:
+
+```text
+paperEndpointFixedBaseCoordinateIndex
+paperEndpointFixedBaseDim
+paperEndpointFixedBaseFinBasis
+edgeFamilyMatrixTuple_p13Basis_reindex_eq
+edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq
+edgeFamilyMatrixTuple_p13FinBasis_eq_reindex_edgeMatrix
+edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq
+```
+
+This proves only finite basis-index reindexing.  For any equivalences from the
+p.13 sum-index basis
+
+```text
+Fin (finrank U0) ⊕ κ' j
+```
+
+to `Fin (d j)`, `edgeFamilyMatrixTuple` in the reindexed p.13 bases is the
+p.13 fixed-base edge-matrix readout with row/column indices reindexed.  The
+raw-order source-chart specialization then reads the existing
+`edgeFamilyOfRawOrderTuple` matrices, again only up to this finite reindexing.
+
+This is the needed algebraic prerequisite for the next measure step.  It does
+not prove any equality or domination between `originalEdgeFamilyVolume` and
+the retained-passive chart-produced source-image measure.  The scouts agree
+that exact equality is not honest under arbitrary Haar/basis normalization;
+the next measure frontier should be finite-scalar domination or equivalence,
+then the readback-domination consumer socket and finally bounded-prior
+handoff.
+
 ## Latest controller decision - 2026-06-30, original edge-family prior in fixed bases
 
 The expedition now has a fixed-basis original measure/prior on continuous
