@@ -1,7 +1,12 @@
 import DLNFibre.DLN.RLCT.Validate.D1HChartWire
+import DLNFibre.DLN.RLCT.Validate.D1HChartInverse
+import DLNFibre.DLN.RLCT.Validate.D1HChartConstruction
+import DLNFibre.DLN.RLCT.Validate.D1HChartFlatten
 import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
 import Mathlib.MeasureTheory.Constructions.Pi
-import Mathlib.Analysis.Calculus.BumpFunction.Basic
+import Mathlib.Analysis.Calculus.BumpFunction.FiniteDimension
+import Mathlib.Analysis.InnerProductSpace.Calculus
+import Mathlib.Logic.Equiv.Fin.Basic
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.D1HChartResidual` — the #231 `hchart` assembly (sub-build 5)
@@ -254,5 +259,69 @@ theorem exists_contDiff_eventuallyEq_of_contDiffOn {E F : Type*}
   · -- `χ • g =ᶠ g` near `x₀` (where `χ ≡ 1`).
     filter_upwards [χ.eventuallyEq_one] with x hx
     rw [hx, Pi.one_apply, one_smul]
+
+/-- **Each flat loss entry is globally `C^∞`** (the reconstruction is entry-wise a flat coordinate,
+`prod` is entry-polynomial). Mirrors `contDiff_chartΦ`'s internal `hprodSmooth`. -/
+theorem contDiff_prod_gmapAt_entry (H : Fin (2 + 1) → ℕ) (v : Params H)
+    (i : Fin (H 0)) (j : Fin (H (Fin.last 2))) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun w => prod H (gmapAt H v w) i j) := by
+  have hgmap : ∀ (s : Fin 2) (a : Fin (H s.castSucc)) (b : Fin (H s.succ)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun w => gmapAt H v w s a b) := by
+    intro s a b
+    have hcoord : (fun w => gmapAt H v w s a b)
+        = fun w : Fin (flatDim H) → ℝ =>
+          (w + (paramsEquivFlat H) v) ((Fintype.equivFin (FlatIdx H)) ⟨⟨s, a⟩, b⟩) := by
+      funext w; rw [gmapAt]; exact paramsEquivFlat_symm_entry H _ s a b
+    rw [hcoord]
+    exact (contDiff_apply ℝ _ _).comp (contDiff_id.add contDiff_const)
+  exact contDiff_prod_entry H (gmapAt H v) hgmap i j
+
+/-- The product index `Fin (H 0) × Fin (H 2) ≃ Fin (H 0 * H 2)` (loss-entry coordinate labelling). -/
+noncomputable def entryIdx (H : Fin (2 + 1) → ℕ) : Fin (H 0) × Fin (H 2) ≃ Fin (H 0 * H 2) :=
+  finProdFinEquiv
+
+/-- The RAW residual as a `EuclideanSpace`-valued vector on the FLAT space (selected slots zeroed),
+coordinatised by `entryIdx`. -/
+noncomputable def rawResidVec (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    {m : ℕ} (er : Fin m → Fin (H 0) × Fin (H 2))
+    (Ψsymm : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+    (w : Fin (flatDim H) → ℝ) : EuclideanSpace ℝ (Fin (H 0 * H 2)) :=
+  WithLp.toLp 2 (fun i => rawResid B v er Ψsymm w ((entryIdx H).symm i))
+
+/-- The `i`-th coordinate of `rawResidVec` is the raw residual at the `entryIdx`-decoded pair. -/
+theorem rawResidVec_apply (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    {m : ℕ} (er : Fin m → Fin (H 0) × Fin (H 2))
+    (Ψsymm : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+    (w : Fin (flatDim H) → ℝ) (i : Fin (H 0 * H 2)) :
+    rawResidVec B v er Ψsymm w i = rawResid B v er Ψsymm w ((entryIdx H).symm i) := rfl
+
+/-- On the open set `V` where `Ψsymm` is `C²`, the raw residual vector is `C²`. -/
+theorem contDiffOn_rawResidVec (hopt : prod H v = B)
+    (Ψsymm : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ)) {V : Set (Fin (flatDim H) → ℝ)}
+    (hsymmCD : ContDiffOn ℝ 2 Ψsymm V) :
+    ContDiffOn ℝ 2 (rawResidVec B v er Ψsymm) V := by
+  classical
+  -- coordinate-wise via `contDiffOn_euclidean`
+  rw [contDiffOn_euclidean]
+  intro i
+  set ij := (entryIdx H).symm i with hij
+  have hcoord : (fun w => rawResidVec B v er Ψsymm w i)
+      = fun w => if selRow er ij then 0 else (prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2 := by
+    funext w; rw [rawResidVec_apply, rawResid]
+  rw [hcoord]
+  by_cases hsr : selRow er ij
+  · simp only [if_pos hsr]; exact contDiffOn_const
+  · simp only [if_neg hsr]
+    have hsub : (fun w => (prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2)
+        = fun w => prod H (gmapAt H v (Ψsymm w)) ij.1 ij.2 - B ij.1 ij.2 := by
+      funext w; rw [Matrix.sub_apply]
+    rw [hsub]
+    refine ContDiffOn.sub ?_ contDiffOn_const
+    -- `(prod (gmapAt v ·) ij) ∘ Ψsymm`: outer `C^∞` (global), inner `Ψsymm` `C²` on `V`.
+    have houter : ContDiff ℝ 2 (fun w' => prod H (gmapAt H v w') ij.1 ij.2) := by
+      refine (contDiff_prod_gmapAt_entry H v ij.1 ij.2).of_le ?_
+      rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
+      exact WithTop.coe_le_coe.mpr le_top
+    exact houter.comp_contDiffOn hsymmCD
 
 end DLNFibre.DLN.RLCT
