@@ -4,6 +4,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLeafChart
 import DLNFibre.DLN.RLCT.Validate.RouteMLeafHeadline
 import DLNFibre.DLN.RLCT.Validate.RouteMLeafBData
 import DLNFibre.DLN.RLCT.Validate.RouteMNullSliceCov
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
 
 /-!
@@ -117,6 +118,47 @@ theorem interiorLiveUnit_nonneg (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
     0 ≤ interiorLiveUnit ha h0r h0c x :=
   VvalGen_nonneg _ M (tach M) _ _
+
+/-! ## Differentiability atoms (the `kLens` / `kLDU` / `pivotBlowupOn` polynomial chain) -/
+
+/-- **`kLens` is differentiable** — `matrixSplit.symm ∘ lduCoreMap ∘ matrixSplit`, the LinearEquivs
+smooth and `lduCoreMap` with fderiv everywhere (`lduCoreMap_hasFDerivAt`). -/
+theorem differentiable_kLens {t : ℕ} : Differentiable ℝ (kLens (t := t)) := by
+  have hlduc : Differentiable ℝ (lduCoreMap (t := t)) :=
+    fun z => (lduCoreMap_hasFDerivAt z).differentiableAt
+  intro K
+  unfold kLens
+  exact (matrixSplit.symm.toContinuousLinearEquiv.differentiable _).comp K
+    ((hlduc _).comp K (matrixSplit.toContinuousLinearEquiv.differentiable K))
+
+/-- **`kLDU` is differentiable** — per coordinate: the K-arm is `kLens ∘ (linear K-read)`, the identity
+arm is a coordinate projection. -/
+theorem differentiable_kLDU {L : ℕ} (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) :
+    Differentiable ℝ (kLDU M t ha) := by
+  apply differentiable_pi.mpr
+  intro q
+  unfold kLDU
+  split
+  · rename_i k s heq
+    split
+    · rename_i qK hfeq
+      have hrk : Differentiable ℝ
+          (fun x : Fin (routeMAmbient M) → ℝ => Matrix.of (readK M t ha x k)) := by
+        apply differentiable_pi.mpr; intro i; apply differentiable_pi.mpr; intro j
+        exact differentiable_apply _
+      have hcomp : Differentiable ℝ
+          (fun x : Fin (routeMAmbient M) → ℝ => kLens (Matrix.of (readK M t ha x k))) :=
+        fun x => (differentiable_kLens _).comp x (hrk x)
+      exact differentiable_pi.mp (differentiable_pi.mp hcomp (finProdFinEquiv.symm qK).1)
+        (finProdFinEquiv.symm qK).2
+    · exact differentiable_apply _
+  · exact differentiable_apply _
+
+/-- **`pivotBlowupOn` is differentiable** (`pivotBlowupOn_hasFDerivWithinAt` on `Set.univ`). -/
+theorem differentiable_pivotBlowupOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    Differentiable ℝ (pivotBlowupOn active p) :=
+  fun x => (hasFDerivWithinAt_univ.mp
+    (pivotBlowupOn_hasFDerivWithinAt active p Set.univ x)).differentiableAt
 
 /-! ## The commute fact (the load-bearing map identity) -/
 
@@ -244,12 +286,24 @@ theorem interiorLive_abs_det (ha : StructAdm M (tach M))
 
 /-! ## H1-internal — differentiability, injectivity, unit facts, image -/
 
-/-- **Differentiable** — `interiorLivePhi` is a polynomial chain (BchartLeaf ∘ kLDU ∘ pivotBlowupOn,
-all polynomial coordinate reads). -/
+/-- **Differentiable** — `interiorLivePhi` is a polynomial chain. Via the hmap-for-B' factorization
+(`hmap_leaf` at `kLDU x` + the commute): `interiorLivePhi = (BchartLeaf ∘ kLDU) ∘ pivotBlowupOn`, each
+factor differentiable (`Bchart_differentiableAt`, `differentiable_kLDU`, `differentiable_pivotBlowupOn`). -/
 theorem interiorLive_diff (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
-    Differentiable ℝ (interiorLivePhi ha h0r h0c) :=
-  sorry
+    Differentiable ℝ (interiorLivePhi ha h0r h0c) := by
+  have hfact : interiorLivePhi ha h0r h0c
+      = (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+        ∘ pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+      (kLDU M (tach M) ha x)) = _
+    rw [interiorLive_commute ha h0r h0c x]; rfl
+  rw [hfact]
+  refine Differentiable.comp ?_ (differentiable_pivotBlowupOn (activeM M ha) _)
+  exact fun y => ((fun u => Bchart_differentiableAt ha u) _).comp y
+    (differentiable_kLDU M (tach M) ha y)
 
 /-- **The injectivity set's extra weighted axes** — the slots where `leafH > 0` off the binding pivot
 (the K-LDU diagonal-pivot q-axes). Selected by `leafH`, so the cov engine's null-slice add-back
