@@ -6,6 +6,53 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest Post-5c Source-Construction Frontier Audit - 2026-06-30
+
+After commit `5c113254`, the controller checked whether the new relative
+passive-theta raw-order endpoint-sector theorem unlocks a non-thin A2/A4/A5
+follow-up.  Direct PDF checks and three xhigh scouts all agree that it does
+not.
+
+Audit:
+
+```text
+post-5c-source-construction-frontier-audit-2026-06-30.md
+```
+
+Verdict:
+
+- A2: the new theorem is a useful local chart-produced bridge, but downstream
+  uses would currently be presentation wrappers.  After rechecking the
+  current Lean inventory, the remaining non-wrapper frontier is no longer the
+  passive-variable chart-produced path itself; it is the external
+  source-prior/full-image bridge into that path.
+- A4: the narrow Case 2 displayed source-production field fill is already
+  present.  The remaining `SelectedEntryAnalyticAtlasBoundary` fields are
+  analytic/source fields, not consequences of finite transition algebra.
+- A5: the current Eq5 endpoint-chain and own-block classifier adapters already
+  expose the honest boundary.  The missing fields are source-produced
+  terminal-label classifier/injectivity/no-extra/back-to-label data.
+
+Controller correction after rechecking the current Lean inventory: the broad
+"retained-passive passive-variable construction package" has already landed in
+substantial form.  Current A2 Lean includes passive-theta domain/readback,
+local injectivity, measurable endpoint image, source/local-source support,
+source-rank support for chart-produced points, continuity, chart-produced
+measure support, Jacobian boundedness, and local finite-integral handoffs for
+the chart-produced passive measure.
+
+The next construction card is therefore:
+
+```text
+threads/03-block-product-reduction/construction-card-a2-post-5c-source-prior-full-image-frontier.md
+```
+
+It records the remaining non-wrapper frontier: a source-prior/full-image
+bridge from an external or original local source measure to the existing
+chart-produced retained-passive measure path.  Future work should not restart
+local inverse/support wrappers unless they remove an actual external
+source-prior, Haar-transport, or local-image coverage field.
+
 ## Latest A2 Case 2 Passive Theta Jacobian Measurable Endpoint-Sector Domination - 2026-06-30
 
 The previous concrete Jacobian endpoint-sector domination theorem asked the
