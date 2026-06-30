@@ -30,17 +30,26 @@ cancel — `eihdT w = packStair (fderiv BparamsLeaf y₀ (eIn.symm w))`. Collaps
 - J01: `(packStair ha (fderiv BparamsLeaf y₀ (eIn.symm (0,(v1,()))))).1 = 0`.
 - J11: `(packStair ha (fderiv BparamsLeaf y₀ (eIn.symm (0,(v1,()))))).2.1 = chainUnitMap (readN ⟨0⟩) v1`.
 
-**Remaining bridges (NOT yet banked — the work):**
-2. A per-LAYER `HasFDerivAt` VALUE of `BparamsLeaf` (`chartParamsGen = fun s => reindex (Agen 1 … s)`):
-   layer 0 `= reindex (fderiv layer0SchurMap)` (banked `layer0SchurMap_hasFDerivAt` → factors through
-   `schurFrameDeriv ∘ slotReadV0D`); layer 1 `= reindex (chainAFDeriv …)` (banked `hasFDerivAt_chainA`).
-   Extract the layer-`s` component of the single `Params`-valued `fderiv` via `fderiv_pi`/`hasFDerivAt_pi''`.
-3. `eIn.symm (v0,(0,()))` / `eIn.symm (0,(v1,()))` explicit (the harder `.symm` direction — reuse the
-   combinator recipe on `eInRearrange.symm`/reshape `.symm`s/`funCongrLeft chartIdxEquiv.symm |>.symm`);
-   `slotReadV0D ∘ eIn.symm` = the V0-projection; `packStair` projects layer-0 → V0 via
-   `packLayer0 = flatBlockLE.symm` (banked `flatBlockLE_symm_fderiv_flatBlock` normalization).
-Then J00 (banked Schur core), J01 (=0: layer-0 indep of V1), J11 (chainUnit via `chainAFDeriv` +
-`packLayer1` W/C reorder). Genuine multi-tide: build Bridge 2 + Bridge 3, then the three discharges.
+**Bridge 2a LANDED** (`BparamsLeaf_fderiv_layer`, SHA `4e31b551`, sorry-free): the per-layer component
+`(fderiv BparamsLeaf y₀ w) s = fderiv (fun z => BparamsLeaf z s) y₀ w` (eval-at-`s` proj CLM through
+`fderiv`). Isolates each chart layer for the per-layer atoms.
+
+**Remaining (NOT yet banked — the work; every sub-piece confirmed TRACTABLE in scratch, no new math):**
+- **Bridge 2 (rest)** — the per-layer fderiv VALUE. (a) live-decoder block fderiv VALUES: `readK/N/X/E/W`
+  as matrix-valued maps of `y` are differentiable by `differentiableAt_pi.mpr + differentiableAt_apply`
+  (CONFIRMED in scratch — same pattern as banked `slotReadV0_hasFDerivAt`); their fderiv is the constant
+  read CLM. (b) feed those into banked `hasFDerivAt_Agen_interior`/`hasFDerivAt_Cgen_interior`
+  (`RouteMAgenFDerivValue`, GENERIC in `dB/dN/dR/dW/du`) → layer-0/layer-1 `Agen` fderiv value.
+  (c) the `chartParamsGen = reindex (Agen …)` outer `reindex` (use `Matrix.reindex` fderiv = reindex of
+  fderiv, linear). Combine with Bridge 2a → `fderiv BparamsLeaf y₀` layer-`s` value explicitly.
+- **Bridge 3** — `eIn.symm (v0,(0,()))` / `(0,(v1,()))` explicit (the `.symm` direction; reuse the
+  combinator-eval recipe — `flatMatLE_apply`-style — on `eInRearrange.symm`/reshape `.symm`s/`funCongrLeft
+  chartIdxEquiv.symm |>.symm`; the anonymous-ofLinear `invFun`s unfold via `rfl`/`show` as the forward did);
+  `slotReadV0 (eIn.symm (v0,(0,()))) = v0` (the inverse of `eIn_projV0`); `packStair` projects layer-0 → V0
+  via `packLayer0 = flatBlockLE.symm` (banked `flatBlockLE_symm_fderiv_flatBlock` normalization).
+Then the 3 discharges: J00 (banked Schur core `gate_schurCore_eq` + `schurFrameDeriv`), J01 (=0: layer-0
+`Agen` indep of the V1/chain coords after the `eIn.symm` write), J11 (chainUnit via `chainAFDeriv` +
+`packLayer1` W/C reorder). Genuine multi-tide (Bridge 2 ≈ one focused build, Bridge 3 + discharges ≈ another).
 
 **Prior SHAs:** `bd9081f2` (skeleton), `f70b8f8c` (eIn_projV0), `d959df9c` (Bridge 1).
 **Module:** `lean/DLNFibre/DLN/RLCT/Validate/RouteMHDtotEihd.lean` (546 LoC). Single-writer; NOT wired into
