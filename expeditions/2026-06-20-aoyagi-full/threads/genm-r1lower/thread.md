@@ -52,6 +52,12 @@ CLOSED (cont.) — BOTH KEYSTONES ASSEMBLED sorry-free (reduce to named parallel
   full-ambient `det D(kLDU) = ∏|q|^{2(t−1−i)}`, route-indep) + conditional freeK/eihd + hreg. `hreg` is
   TRUE + BOUNDED (slot-reindex det-1) but a named LEAF-1 sub-obligation (analogous to GAP A on LEAF 2).
   `interiorLive_abs_det` (the assembly) is sorry-free but hreg-gated through this atom (docstrings flag it).
+  **CONTROLLER DECISION (2026-06-30): hreg FOLDED into genm-h2bdet.** That hand closes hreg internally
+  → discharges hDtot → freeK → delivers `interiorLive_BdetMonomial` UNCONDITIONALLY in this exact slot
+  shape. So my slot statement (the unconditional monomial) is the RIGHT target unchanged — no
+  contract-level hreg hyp. (If genm-h2bdet flags hreg irreducible, the slot gains hreg as one ha-level
+  hyp.) So LEAF 1 is now LARGE-but-ALL-BOUNDED (every atom incl hreg bounded-in-progress); the one
+  genuine bounded-vs-wall gate left across the expedition is GAP A on LEAF 2.
 - `interiorLive_kLDU_injOn` ← **genm-lduinj** (kLDU inj on `pbo''injDom`, via LDU-product uniqueness).
 - `interiorLive_BchartLeaf_injOn` ← **ME (injOn#2)** — the off-radial block recovery (K via LDU, X via
   fwd-subst K⁻¹, N/E/leaf linear, then `paramsEquivFlat`). The genuine remaining content on my side.
