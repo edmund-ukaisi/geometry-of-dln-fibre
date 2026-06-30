@@ -313,15 +313,59 @@ noncomputable def interiorLive_E (ha : StructAdm M (tach M))
   Finset.univ.filter (fun j => 0 < interiorLive_leafH ha h0r h0c j
     ∧ j ≠ leafPivot M ha (by norm_num) h0r h0c)
 
-/-- **H-inj — `InjOn` off the pivot ∪ q-axes** — factors through the composition: `pivotBlowupOn`
-injective off `{u leafPivot = 0}` (banked `pivotBlowupOn_injOn`), `BchartLeaf` injective (the
-`(0,0)=1` radial anchor + leaf recovery), `kLDU` injective off the q-pivots (`kLens` LDU-recovery). -/
+/-- The injectivity domain — `{u | u leafPivot ≠ 0 ∧ ∀ j ∈ E, u j ≠ 0}` (off the pivot ∪ q-axes). -/
+def interiorLiveInjDom (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Set (Fin (routeMAmbient M) → ℝ) :=
+  {u | u (leafPivot M ha (by norm_num) h0r h0c) ≠ 0 ∧ ∀ j ∈ interiorLive_E ha h0r h0c, u j ≠ 0}
+
+/-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` is injective on the
+blown-up domain `pbo '' injDom`. Reduces (via the banked `kLens`-Equiv peeling) to the LDU-product
+uniqueness `(1+L)·diag(q)·(1+U)` injective off the q-pivots, which `pbo` preserves (K-slots ∉ activeM,
+so `pbo` fixes them). STATED `sorry` — wired to genm-lduinj's LDU-uniqueness atom. -/
+theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (kLDU M (tach M) ha)
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+        '' interiorLiveInjDom ha h0r h0c) :=
+  sorry
+
+/-- **injOn atom #2 (my deliverable)** — `BchartLeaf` injective on the kLDU-image of `pbo '' injDom`.
+The off-radial block recovery (radial fixed to `1` in `BchartLeaf`): K via the LDU-coordinatized
+read, then X via forward-substitution through the Schur block `Bmat = [K; XK]`, then N/E/leaf linear
+(banked `Agen_congr` / `schurFrameProd_u_to_E`), then `paramsEquivFlat` injective. STATED `sorry`. -/
+theorem interiorLive_BchartLeaf_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (BchartLeaf ha)
+      (kLDU M (tach M) ha
+        '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+          '' interiorLiveInjDom ha h0r h0c)) :=
+  sorry
+
+/-- **H-inj — `InjOn` off the pivot ∪ q-axes** — the `Set.InjOn.comp` glue (#3, this thread): from the
+factorization `interiorLivePhi = (BchartLeaf ∘ kLDU) ∘ pivotBlowupOn` (hmap-for-B' via `hmap_leaf` at
+`kLDU x` + the commute), `pivotBlowupOn` injective off `{u leafPivot = 0}` (banked, the domain already
+excludes it), then `BchartLeaf ∘ kLDU` injective via the two atoms (`interiorLive_kLDU_injOn` #1 +
+`interiorLive_BchartLeaf_injOn` #2). -/
 theorem interiorLive_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
-    Set.InjOn (interiorLivePhi ha h0r h0c)
-      {u : Fin (routeMAmbient M) → ℝ |
-        u (leafPivot M ha (by norm_num) h0r h0c) ≠ 0 ∧ ∀ j ∈ interiorLive_E ha h0r h0c, u j ≠ 0} :=
-  sorry
+    Set.InjOn (interiorLivePhi ha h0r h0c) (interiorLiveInjDom ha h0r h0c) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  set pbo := pivotBlowupOn (activeM M ha) p₀ with hpbo
+  have hfact : interiorLivePhi ha h0r h0c
+      = (BchartLeaf ha ∘ kLDU M (tach M) ha) ∘ pbo := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pbo (kLDU M (tach M) ha x)) = _
+    rw [hpbo, interiorLive_commute ha h0r h0c x]; rfl
+  rw [hfact]
+  have hpbo_inj : Set.InjOn pbo (interiorLiveInjDom ha h0r h0c) := by
+    have hsub : interiorLiveInjDom ha h0r h0c
+        ⊆ interiorLiveInjDom ha h0r h0c \ {x | x p₀ = 0} := by
+      intro u hu; exact ⟨hu, hu.1⟩
+    exact (pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub
+  exact (interiorLive_BchartLeaf_injOn ha h0r h0c).comp
+    (interiorLive_kLDU_injOn ha h0r h0c) (Set.mapsTo_image _ _)
+    |>.comp hpbo_inj (Set.mapsTo_image _ _)
 
 /-- **H1-internal — the lensed unit a.e.-positivity + box bound** (`NodeAchieverChart.Ubound`). -/
 theorem interiorLive_Ubound (ha : StructAdm M (tach M))
