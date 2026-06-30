@@ -1,15 +1,15 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectShear
-import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCarve
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRect
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSchurRectAssemble` — the RECTANGULAR carve heart + assembly (3b-carve + 3b-assemble)
 
 (Renamed from `RouteMSchurRectCarve` to avoid the filename collision with genm-rectfill's
-`RouteMSchurRectCarve.lean`, which independently carries 3b-pos + 3b-peel under identical names. The heart
-here consumes `frobSqShiftRect_ne_zero_ae` (3b-pos) + `resolvedShiftRRect_le` / `coreSchurValRect` (3b-peel)
-BY NAME — currently from `RouteMSchurRectPos` / `RouteMSchurRectPeel`; at integration the import can be
-re-pointed to genm-rectfill's `RouteMSchurRectCarve` with no proof edits, since the signatures match.)
+`RouteMSchurRectCarve.lean`, which is the AUTHORITATIVE source of 3b-pos + 3b-peel. This module's heart
+consumes `frobSqShiftRect_ne_zero_ae` (3b-pos) + `resolvedShiftRRect_le` / `coreSchurValRect` (3b-peel)
+from genm-rectfill's `RouteMSchurRectCarve` directly. The plumbing layer (`RouteMSchurRectShear`) is this
+thread's unique contribution; the heart + assembly below are the rect-Schur analytic crux.)
 
 The asymmetric (`R : Fin m → Fin n` RECTANGULAR) generalisation of the square `Fin p`-width cap-A carve
 (`RouteMSchurCapACarveP.innerSGenCarveP_le` / `schurRatioResidGenP_mid` / `schurRatioResidGenP`, where the
