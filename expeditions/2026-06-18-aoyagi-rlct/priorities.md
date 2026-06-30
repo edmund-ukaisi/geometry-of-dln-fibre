@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-image carrier and support
+
+The concrete passive-theta endpoint source image is now packaged as a
+measurable local carrier with a right inverse and pushforward support:
+
+```text
+measure_map_restrict_image_eq_self_of_aemeasurable
+exists_open_subset_continuousOn_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_leftInverse
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_rightInverse
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_restrict_image_eq_self_readback_leftInverse
+```
+
+The stronger local theorem exposes `ContinuousOn sourceChart V` from the same
+determinant-chart factorisation used for Lusin-Souslin.  The right-inverse
+theorem proves only that `readback` inverts `sourceChart` on the named image
+`sourceChart '' V`.  The support theorem says every pushed-forward restricted
+theta-domain measure
+
+```text
+Measure.map sourceChart (thetaMeasure.restrict V)
+```
+
+is supported on that same measurable image.
+
+This proves no source-rank coverage, no equality with a source-rank stratum,
+no external/original source-prior comparison or transport, no determinant-chart
+or raw-order Haar transport, no normal crossings, no pole order, and no RLCT.
+
+Next source-moving frontier: either add the one-way source-rank support theorem
+for this image under explicit rank hypotheses, or use this measurable carrier
+to state a conditional external-prior comparison without pretending it is
+proved.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian measurable endpoint-sector domination
 
 The local endpoint-sector measurability theorem has now been used to remove

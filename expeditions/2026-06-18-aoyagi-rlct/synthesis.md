@@ -25755,3 +25755,59 @@ only `[propext, Classical.choice, Quot.sound]`.
 Boundary: this is not source-rank coverage, not source-image equality beyond
 the named chart image, not original source-prior domination or transport, not
 Haar transport, not normal crossings, not pole order, and not RLCT.
+
+## 2026-06-30 passive-theta source-image carrier and support
+
+The local source image is now a usable measurable carrier for target-side
+bookkeeping.  The new public names are:
+
+```text
+measure_map_restrict_image_eq_self_of_aemeasurable
+exists_open_subset_continuousOn_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_leftInverse
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_rightInverse
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_restrict_image_eq_self_readback_leftInverse
+```
+
+Pen-and-paper calculation: if `E in sourceChart '' V`, choose `theta in V`
+with `E = sourceChart(theta)`.  The local left inverse gives
+`readback(E) = theta`, hence `readback(E) in V` and
+`sourceChart(readback(E)) = E`.  For a theta-domain measure `m`, the restricted
+measure `m.restrict V` is a.e. supported on `V`; therefore its source-chart
+pushforward is a.e. supported on `sourceChart '' V`.  Since the preceding
+Lusin-Souslin theorem made this image measurable and the determinant-chart
+factorisation gives `ContinuousOn sourceChart V`, the support equality follows:
+
+```text
+(Measure.map sourceChart (m.restrict V)).restrict (sourceChart '' V)
+  = Measure.map sourceChart (m.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-support.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-support.md
+```
+
+Local verification passed:
+
+```text
+cd lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean -E warning /tmp/aoyagi_source_image_support_axioms.lean
+```
+
+The root `DLNFibre` build passed.  `./scripts/sorries` reported
+`0 sorry, 0 #exit, 0 native_decide, 0 axiom`; `git diff --check` passed; the
+direct axiom probes for the four new public names reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is image-carrier and image-support bookkeeping only.  It is not
+source-rank coverage, not equality with a source-rank stratum, not
+external/original source-prior comparison or transport, not determinant-chart
+or raw-order Haar transport, not normal crossings, not pole order, and not
+RLCT.
