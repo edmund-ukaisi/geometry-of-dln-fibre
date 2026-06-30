@@ -58,3 +58,27 @@ MP reindex (permutation tracking). See [[step3-construction-answer]] for the Cod
 
 Artefacts: `codex/dln_{chart,q123,theory,slack}.py` (exact sympy), `codex/detne0-minor-route-codex.md`
 (decorrelated Codex), `codex/step3-construction-answer.md` (the chart-construction design pass).
+
+## BUILD STATE (live)
+
+Banked clean-three this tide (branch `genm-d1hchart`, pushed origin):
+- **`S1IFTChart.rlctAtOn_eq_of_contDiff_chart_inv`** (`@5e6b596e`) — the route-(3) interface: exposes
+  the IFT inverse `Ψsymm` (total `E→E`, locally inverts `Φ` on open `V∋wstar`) with
+  `rlctAtOn f wstar = rlctAtOn (f∘Ψsymm) wstar` for ANY `f`. Germ automatic. This UNBLOCKS the germ
+  step — the DLN site reads off the selected-coordinate structure of `f∘Ψsymm` rather than supplying
+  `F` + re-proving the germ.
+
+Remaining sequence (each its own clean-three commit):
+1. **`Dg(v)` joint differential** as `E →L[ℝ] Mat_{H0×H2}` (or its flat matrix), `δ↦δ¹A²_v+A¹_v δ²`,
+   with `HasFDerivAt (prod∘flatSymm∘translate)` to it at `0` — from the banked
+   `prodAuxEntryDeriv`/`hasStrictFDerivAt_lossEntry` at `k=L=2` (reduce the recursive fold to the
+   two-term form). The DLN content.
+2. **`rank Dg(v) ≥ nReg`** via the explicit `nReg`-independent family (the regular directions,
+   general-`v`) + `Submodule.finrank_mono`. Skips the 3 absent rank-value facts.
+3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
+   (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
+4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
+   `DΦ(v).toContinuousLinearEquivOfDetNeZero` (coe def-eq `DΦ(v)` ⟹ `hΦ'` free); `ContDiff ℝ 2 Φ`.
+5. **wire**: `dln_hchart_flat` (or the `_inv` corollary directly) → `F = f∘Ψsymm` is `∑s²+∑q²` form
+   via `g_k∘Ψsymm=π_k` (selected) + `q = χ·(g_nonSel∘Ψsymm)` global C¹ (bump cutoff) → the
+   `ℝ^N≅ℝ^nReg×Y` MP reindex → `deepest_le_of_optimal_of_iftResidual`'s `hchart` slot.
