@@ -1034,3 +1034,18 @@ arithmetic fact — that wants enumeration.
 **Reusable for:** any opaque-width chart derivative — the interior `phiFlatLiveR1` (b-FrameM-2), the smeared chart's L≥3 HasFDerivAt. Banked atoms: `RouteMFrameDiff.lean` (`diffAt_entry`/`matmul`/`matadd`/`smul`/`read`/`constBlock`, all clean-three).
 
 **ADDENDUM (per-entry for Sum-indexed intermediates, genm-detcomp):** the Pi-norm fix above works for `Matrix (Fin l) (Fin m) ℝ` (the banked `instNormedAddCommGroupMatrix`/`matMulBilin`/`HasFDerivAt.matMul` in RouteMFactorFDeriv). But chain constructors (`chainQ`/`chainA`) assemble over a `Fin t ⊕ Fin (M'−t)` **Sum-indexed** intermediate matrix space, which has NO norm instance → the `reindexLinearEquiv`-as-CLE route STALLS there. Fix: differentiate **per-entry** (each entry is in `ℝ`, always normed) — `finSplit` the row/col index, then the banked entry laws (`chainA_apply_castAdd`/`_natAdd`, `chainQ_apply_*`) reduce each entry. So: Pi-norm for Fin×Fin matrices; per-entry for Sum-indexed intermediates.
+
+## Pin a shard's division ONCE — don't re-divide mid-flight without explicit DROP instructions (2026-06-30, rect-Schur pos+peel collision)
+A two-thread shard of the rect-Schur item-3 port produced REDUNDANT work: both threads independently built
+CHARACTER-IDENTICAL pos+peel (`frobSqRect_ne_zero_ae` / `coreSchurValRect` / `resolvedShiftRRect_le` / …, same
+names AND same `(ha:0<a)(hb:0<b)` hypotheses). ROOT: the controller oscillated the division across ticks
+(solo → shard {pos+peel} to thread B → expand B to the whole item-3 carve, while thread A had meanwhile also
+built pos+peel) and never sent an explicit DROP when re-dividing. The redundancy was BENIGN here (character-identical
+= independent verification of the statements; the genuinely-hard unique pieces — the carve heart + assembly — were
+NOT duplicated, only the lighter pos+peel), but it wasted a thread's effort and forced a reconcile. **Standing rule:**
+pin a shard's division ONCE, with a clear single-writer FILE boundary, BEFORE both threads start on overlapping
+pieces; if you must re-divide mid-flight, send each thread an explicit "DROP X, you now own Y" — never just "expand
+your charge" while the other thread is already inside X. **Controller directed-suspicion:** a collision report on
+character-identical lemmas is the signature of an unpinned division — accept the benign dedup (keep ONE authoritative
+copy, drop the other), note it, and do not re-derive. (Decision-quality note: the underlying call — sharding once the
+substrate had landed — was right; the error was the *transition*, not the destination.)
