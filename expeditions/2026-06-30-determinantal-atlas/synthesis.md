@@ -53,4 +53,15 @@ programme; NOT built here (operator's scope call — clean scope over premature 
 The refined rung ladder + the de-DLN-ify target list are in [`priorities.md`](priorities.md) (from the report's §4).
 
 ## Phase 1 / Phase 2
-_executing: P1.a (overlap API re-home) dispatched first as the lowest-risk, recon-confirmed rung._
+**P1.a (overlap-API re-home) landed clean** (`f6684cf5`): `Core/RingTheory/Localization/Overlap.lean`, bare
+`Localization` namespace (L7), `Overlap.lean` + `FibreBundleTransition` green standalone, axiom-clean, consumers
+swept. The re-home WORK is correct + done.
+
+**Build episode (banked, lessons DA1/DA2):** the full aggregator hit a spurious `Unknown constant Algebra.trdeg`
+at `Dimension/Localization` — **my own cache contamination**, not a regression: I warmed the worktree's `.lake`
+from the pre-FL-III `foundation-lift` (FL-III restructured the trdeg/Dimension stack). Diagnosed cleanly (source
+correct, `Algebra.trdeg` present, FL-III green on dev), fixed by nuking `.lake/build`; the clean rebuild built
+`Dimension/Integral` green with no error before being **reaped under heavy multi-expedition box load**.
+**Full-aggregator re-gate + P1.b are DEFERRED until box load subsides** (the parallel aoyagi/main/genm builds are
+saturating memory). dev is sound; this is scheduling, not correctness. On a quieter heartbeat: verify no det-atlas
+lake alive → `scripts/lb` resumes from cache → green → integrate P1.a + dispatch P1.b.

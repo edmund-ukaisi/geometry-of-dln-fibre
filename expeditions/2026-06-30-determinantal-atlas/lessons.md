@@ -20,4 +20,19 @@ The proven craft from #14, FL-II, and FL-III carries over — see
 
 New lessons specific to this expedition accumulate below.
 
-- _(none yet)_
+- **DA1 — warm a new worktree's `.lake` ONLY from a worktree at *identical source*.** Warming this worktree
+  via `cp -al` of `.lake/build` from `foundation-lift` (a **pre-FL-III** source) left stale oleans for the
+  trdeg/Dimension stack that FL-III had restructured (it moved `trdeg_eq_of_integral_injective` into a new
+  `Dimension/Integral` module absent from the warm). The aggregator then failed with a **spurious
+  `Unknown constant Algebra.trdeg`** — which looked like a dev regression but was pure cache contamination
+  (the source is correct, the Mathlib API is present, FL-III built it green). **`scripts/sorries` (a text grep)
+  cannot catch an elaboration failure**, so a contaminated branch can read "0 sorry" while red. Fix: `rm -rf
+  .lake/build` + clean rebuild. Rule: warm only from an identical-commit worktree, else don't warm (pay the
+  clean build) — a structurally-divergent warm is worse than none.
+- **DA2 — under heavy multi-worktree box load, DEFER the from-scratch build; do not fight it, and do not
+  manually `pkill`.** Parallel expeditions (aoyagi/main/genm) saturating the box OOM-reap a fresh det-atlas
+  build mid-module (olean count static while lake PIDs churn) — `scripts/lb`'s worker-semaphore throttles
+  count but not total memory pressure. Forcing it thrashes. Manual `pkill` of build processes on a shared box
+  is error-prone (a kill loop signalled its own shell, exit 144). Right move: bank the state, defer to a
+  quieter tick (the idle heartbeat is for exactly this re-check), and verify no det-atlas lake is alive
+  before re-launching `scripts/lb`.
