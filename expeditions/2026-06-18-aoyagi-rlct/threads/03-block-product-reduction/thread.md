@@ -21,6 +21,39 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta Jacobian sandwich
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-sandwich.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-sandwich.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-sandwich.md`.
+
+Lean now specializes the generic passive-parameter retained-passive raw-order
+Jacobian sandwich to `Case2PassiveTheta`:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaEndpointTopologyTuple_passiveProductMeasure
+```
+
+The theorem gives positive constants `epsilon`, `K`, and an open neighborhood
+`U` so that weighting `sourceMeasure.restrict U` by
+`ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))` is
+bounded between finite scalar multiples of the unweighted local measure.
+
+Focused direct warning check, focused module build, full local build, and
+aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The public theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Aristotle`
+returned PASS; xhigh Lean/API reviewer `Copernicus` found an unnecessary
+`[Fintype tau] [DecidableEq tau]` API restriction, which was removed.
+
+Nonclaims: no determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta bounded-density residual-source adapter
 
 Reproduction:

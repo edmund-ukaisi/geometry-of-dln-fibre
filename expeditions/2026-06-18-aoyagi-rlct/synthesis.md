@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Jacobian Sandwich - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` specializes the generic
+passive-parameter retained-passive raw-order Jacobian sandwich to the concrete
+`Case2PassiveTheta` coordinate domain.
+
+New public name:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaEndpointTopologyTuple_passiveProductMeasure
+```
+
+The theorem works over
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+```
+
+and returns positive constants `epsilon`, `K`, and an open neighborhood `U`
+of a passive determinant-sector base point such that
+
+```text
+ofReal epsilon • sourceMeasure.restrict U
+  <= (sourceMeasure.restrict U).withDensity
+       (fun z => ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)))
+```
+
+and the reverse upper domination by
+`ofReal K • sourceMeasure.restrict U`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-sandwich.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-sandwich.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-sandwich.md
+```
+
+Xhigh source/scope reviewer `Aristotle` returned PASS.  Xhigh Lean/API
+reviewer `Copernicus` found one minor API restriction, repaired by removing
+unnecessary `[Fintype tau] [DecidableEq tau]` assumptions.
+
+Boundary: no determinant-chart Haar transport, no raw-order Haar transport,
+no source-prior transport, no exact passive-sector pushforward, no
+source-image equality, no source-rank coverage, no normal crossings, no pole
+order, and no RLCT extraction.
+
+Next frontier: construct a real passive-sector transport/Jacobian comparison
+or local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest A2 Case 2 Passive Theta Bounded-Density Residual-Source Adapter - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaProductMeasure.lean` now also specializes the

@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian sandwich
+
+The passive-Jacobian comparison slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+It specializes the generic passive-parameter retained-passive raw-order
+Jacobian `withDensity` sandwich to the concrete `Case2PassiveTheta`
+coordinate domain.
+
+Public name:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaEndpointTopologyTuple_passiveProductMeasure
+```
+
+The theorem uses
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+Y z = case2PassiveThetaEndpointTopologyTuple z
+```
+
+and returns positive constants `epsilon`, `K`, and an open neighborhood `U`
+of a passive determinant-sector base point such that the measure weighted by
+`ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))` is
+sandwiched between `ofReal epsilon • sourceMeasure.restrict U` and
+`ofReal K • sourceMeasure.restrict U`.
+
+This is local chart-domain Jacobian-unit bookkeeping only.  It does not prove
+determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
+Xhigh source/scope reviewer `Aristotle` returned PASS.  Xhigh Lean/API
+reviewer `Copernicus` found and the controller repaired one minor API
+restriction: unnecessary `[Fintype tau] [DecidableEq tau]` assumptions were
+removed.  Review is recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-sandwich.md`.
+
+Next source-moving frontier remains the harder passive-sector transport or
+local domination theorem for an actual source-prior/passive-sector measure.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta bounded-density residual-source adapter
 
 The next theta source-moving socket has landed in

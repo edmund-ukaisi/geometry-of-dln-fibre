@@ -140,6 +140,34 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta Jacobian sandwich,
+  2026-06-30.** Lean now specializes the generic passive-parameter
+  retained-passive raw-order Jacobian sandwich to the concrete full theta
+  coordinate domain in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+  The public theorem
+  `exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaEndpointTopologyTuple_passiveProductMeasure`
+  works over `sourceMeasure = passiveMeasure.prod weightedBox` and
+  `Y z = case2PassiveThetaEndpointTopologyTuple z`.  It returns positive
+  constants `epsilon`, `K`, and an open neighborhood `U` of a passive
+  determinant-sector base point such that weighting `sourceMeasure.restrict U`
+  by `ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))` is
+  sandwiched between `ofReal epsilon` and `ofReal K` scalar multiples of the
+  unweighted local measure.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-jacobian-sandwich.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-jacobian-sandwich.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-jacobian-sandwich.md`.
+  Focused direct warning check, focused module build, full local build,
+  aggregator direct warning check, `scripts/sorries`, `git diff --check`, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Aristotle`
+  returned PASS.  Xhigh Lean/API reviewer `Copernicus` found and the
+  controller repaired one minor API restriction by removing unnecessary
+  `[Fintype tau] [DecidableEq tau]` assumptions.  This proves no
+  determinant-chart Haar transport, raw-order Haar transport, source-prior
+  transport, exact passive-sector pushforward, source-image equality,
+  source-rank coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive theta bounded-density residual-source
   adapter, 2026-06-30.** Lean now specializes the generic bounded-density
   passive-product residual-source handoff to the concrete full theta coordinate
