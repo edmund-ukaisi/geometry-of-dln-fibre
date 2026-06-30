@@ -56,4 +56,45 @@ theorem hasStrictFDerivAt_gmap_entry (H : Fin (L + 1) → ℕ) (v : Params H)
   rw [heq]
   exact hproj.add_const _
 
+/-- The flat-coordinate reconstruction `gmap w = flatSymm (w + flat v)` — the smooth `Params`-valued
+map whose loss-entry gradients feed H_indep. -/
+noncomputable def gmapAt (H : Fin (L + 1) → ℕ) (v : Params H) :
+    (Fin (flatDim H) → ℝ) → Params H :=
+  fun w => (paramsEquivFlat H).symm (w + (paramsEquivFlat H) v)
+
+/-- The per-layer-entry strict derivative of `gmapAt`: the coordinate proj CLM at `flatIdx`. -/
+noncomputable def gmapDeriv (H : Fin (L + 1) → ℕ)
+    (s : Fin L) (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) : (Fin (flatDim H) → ℝ) →L[ℝ] ℝ :=
+  ContinuousLinearMap.proj (R := ℝ) (φ := fun _ : Fin (flatDim H) => ℝ) (flatIdx H s i j)
+
+/-- **The loss-entry gradient** (step 3a). Each loss entry `g_ij = (prod − B)_ij` in flat
+origin-centred coordinates has, at any point `w₀`, the explicit strict derivative
+`prodAuxEntryDeriv H (gmapAt H v) w₀ gmapDeriv L _ i j` — the banked Leibniz gradient
+(`hasStrictFDerivAt_prodAux_entry_explicit`) fed the layer-derivative `gmapDeriv` from step 2a. The
+constant `−B` does not change the derivative. This gradient functional is the input to the H_indep
+rank/independence argument (whether the `nReg` selected `∇g_ij(0)` are linearly independent). -/
+theorem hasStrictFDerivAt_lossEntry (H : Fin (L + 1) → ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (v : Params H)
+    (w₀ : Fin (flatDim H) → ℝ) (i : Fin (H 0)) (j : Fin (H (Fin.last L))) :
+    HasStrictFDerivAt
+      (fun w => (prod H (gmapAt H v w) - B) i j)
+      (prodAuxEntryDeriv H (gmapAt H v) w₀ (fun s a b => gmapDeriv H s a b) L
+        (Nat.lt_succ_self L) i j) w₀ := by
+  -- the layer-entry derivatives (step 2a), repackaged at `gmapAt`/`gmapDeriv`.
+  have hlayer : ∀ (s : Fin L) (a : Fin (H s.castSucc)) (b : Fin (H s.succ)),
+      HasStrictFDerivAt (fun w => gmapAt H v w s a b) (gmapDeriv H s a b) w₀ := by
+    intro s a b
+    exact hasStrictFDerivAt_gmap_entry H v s a b w₀
+  -- the Leibniz gradient of the product entry (banked), at `k = L`.
+  have hprodEntry : HasStrictFDerivAt (fun w => prodAux H (gmapAt H v w) L (Nat.lt_succ_self L) i j)
+      (prodAuxEntryDeriv H (gmapAt H v) w₀ (fun s a b => gmapDeriv H s a b) L
+        (Nat.lt_succ_self L) i j) w₀ :=
+    hasStrictFDerivAt_prodAux_entry_explicit H (gmapAt H v) w₀
+      (fun s a b => gmapDeriv H s a b) hlayer L (Nat.lt_succ_self L) i j
+  -- `prod = prodAux L`; the `−B` entry is a constant subtraction.
+  have hsubst : (fun w => (prod H (gmapAt H v w) - B) i j)
+      = fun w => prodAux H (gmapAt H v w) L (Nat.lt_succ_self L) i j - B i j := rfl
+  rw [hsubst]
+  exact hprodEntry.sub_const _
+
 end DLNFibre.DLN.RLCT
