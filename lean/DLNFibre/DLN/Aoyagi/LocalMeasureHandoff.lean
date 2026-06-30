@@ -443,6 +443,53 @@ theorem restrict_withDensity_le_smul_of_ae_le
     restrict_withDensity_le_smul_restrict_of_ae_le hs hf
   exact measure_le_smul_of_le_smul_restrict (μ := μ) (U := s) hlocal
 
+/-- If an unweighted local source measure is dominated by a scalar multiple
+of a reference measure, then adding a locally bounded prior density preserves
+domination with the multiplied scalar.
+
+This is the source-prior adapter: it separates the remaining Haar/chart
+transport problem (`μ.restrict s ≤ c • ν`) from the elementary bounded-prior
+bookkeeping.  Finiteness of `C` and `c`, when needed for later integrability
+transfer, is a downstream hypothesis. -/
+theorem restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {f : α → ℝ≥0∞}
+    {s : Set α} {C c : ℝ≥0∞}
+    (hs : MeasurableSet s)
+    (hμ : μ.restrict s ≤ c • ν)
+    (hf : ∀ᵐ x ∂μ.restrict s, f x ≤ C) :
+    (μ.withDensity f).restrict s ≤ (C * c) • ν := by
+  have hlocal :
+      (μ.withDensity f).restrict s ≤ C • μ.restrict s :=
+    restrict_withDensity_le_smul_restrict_of_ae_le hs hf
+  have hscale : C • μ.restrict s ≤ C • (c • ν) := by
+    refine Measure.le_iff.2 ?_
+    intro t _ht
+    rw [Measure.smul_apply, Measure.smul_apply]
+    exact mul_le_mul_right (hμ t) C
+  have hsmul_assoc : C • (c • ν) = (C * c) • ν := by
+    ext t ht
+    simp [Measure.smul_apply, mul_assoc]
+  calc
+    (μ.withDensity f).restrict s ≤ C • μ.restrict s := hlocal
+    _ ≤ C • (c • ν) := hscale
+    _ = (C * c) • ν := hsmul_assoc
+
+/-- Real-valued version of
+`restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le`, for priors
+written as `ENNReal.ofReal` of a locally bounded real density. -/
+theorem restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {density : α → ℝ}
+    {s : Set α} {K : ℝ} {c : ℝ≥0∞}
+    (hs : MeasurableSet s)
+    (hμ : μ.restrict s ≤ c • ν)
+    (hdensity : ∀ᵐ x ∂μ.restrict s, density x ≤ K) :
+    (μ.withDensity (fun x ↦ ENNReal.ofReal (density x))).restrict s ≤
+      (ENNReal.ofReal K * c) • ν :=
+  restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+    (μ := μ) (ν := ν)
+    (f := fun x ↦ ENNReal.ofReal (density x)) hs hμ
+    (hdensity.mono fun _ hx ↦ ENNReal.ofReal_le_ofReal hx)
+
 end Aoyagi
 end DLN
 end DLNFibre

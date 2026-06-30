@@ -297,3 +297,43 @@ define `originalSourcePrior` to be the right hand side.  Aoyagi pp. 10-13
 support the Schur/product algebra already formalized; pp. 5 and 8 support
 local boundedness of a smooth positive prior after a valid coordinate-change
 identity is present, not the project-specific identity itself.
+
+## Addendum - 2026-06-30 original coordinate prior and density adapter
+
+Lean now names the flattened ambient original coordinate measure:
+
+```text
+originalCoordinateVolume
+originalCoordinatePrior
+originalCoordinatePrior_restrict_le_smul_of_ae_le
+```
+
+This lives on `RepCoord d -> ℝ`, the canonical matrix-entry coordinate space,
+and is independent of retained-passive chart pushforwards.
+
+Lean also proves the generic adapter from unweighted local domination to
+prior-weighted local domination:
+
+```text
+restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le
+```
+
+The theorem says that if
+
+```text
+μ.restrict s <= c • ν
+```
+
+and the prior density is locally bounded on `s`, then
+
+```text
+(μ.withDensity f).restrict s <= (C * c) • ν.
+```
+
+This is useful because Aoyagi's smooth compactly supported prior contributes
+only local boundedness after a legitimate coordinate transport theorem has
+been proved.  The new definitions and adapter do not prove that transport
+theorem; they sharpen the remaining source-prior frontier to transporting the
+flattened original-coordinate measure through the Aoyagi source chart and
+comparing it with the retained-passive chart-produced reference.

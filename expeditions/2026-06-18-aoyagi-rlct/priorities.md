@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, original coordinate prior and density adapter
+
+The expedition now has an ambient flattened-coordinate prior module:
+
+```text
+originalCoordinateVolume
+originalCoordinatePrior
+originalCoordinatePrior_restrict_le_smul_of_ae_le
+```
+
+`originalCoordinateVolume d` is product Lebesgue measure on `RepCoord d -> ℝ`,
+independent of the retained-passive chart-produced source measures.
+
+The expedition also has the bounded-prior adapter:
+
+```text
+restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le
+```
+
+This proves that a local unweighted domination
+
+```text
+μ.restrict s <= c • ν
+```
+
+upgrades to prior-weighted domination when the prior density is locally
+bounded on `s`:
+
+```text
+(μ.withDensity f).restrict s <= (C * c) • ν.
+```
+
+This removes smooth-prior boundedness as a separate future obligation once
+the unweighted original/source Haar or chart transport is available.  It does
+not move the hard transport field itself: the live frontier remains the local
+comparison between the flattened original-coordinate measure, transported
+through the Aoyagi source chart, and the chart-produced retained-passive
+reference, or an equivalent full-image/Haar transport theorem.
+
 ## Latest controller decision - 2026-06-30, dev merge and source-prior inventory
 
 The expedition branch has merged and pushed current `origin/dev`:

@@ -6,6 +6,79 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Coordinate Prior And Density Adapter - 2026-06-30
+
+Lean now names the ambient flattened-coordinate original measure and prior:
+
+```text
+originalCoordinateVolume
+originalCoordinatePrior
+originalCoordinatePrior_restrict_le_smul_of_ae_le
+```
+
+`originalCoordinateVolume d` is product Lebesgue measure on
+`RepCoord d -> ℝ`, the coordinate space used by the canonical matrix-entry
+flattening `canonicalCoord d`.  `originalCoordinatePrior d density` weights it
+by `ENNReal.ofReal density`.  A local upper bound on the density gives local
+domination by `(originalCoordinateVolume d).restrict s`.  Finiteness of the
+bounding scalar is a downstream hypothesis when an integrability transfer
+needs a finite scalar.
+
+Lean also proves the bounded-prior adapter:
+
+```text
+restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le
+```
+
+If an unweighted local original/source measure satisfies
+
+```text
+μ.restrict s <= c • ν
+```
+
+and a prior density is locally bounded on `s` with respect to `μ.restrict s`,
+then the prior-weighted measure is dominated by the same reference measure
+with the multiplied scalar:
+
+```text
+(μ.withDensity f).restrict s <= (C * c) • ν.
+```
+
+For a real-valued prior density the helper applies this to
+`ENNReal.ofReal density`.  This isolates the smooth-prior bookkeeping from the
+remaining frontier: the expedition still has to prove or supply the
+unweighted transport from the flattened original-coordinate measure through
+the Aoyagi source chart to the retained-passive chart-produced measure.  The
+new module does not prove source-image equality, source-rank coverage,
+Haar/Jacobian transport, normal crossings, pole order, or RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-prior-density-from-unweighted-domination.md
+threads/03-block-product-reduction/statement-card-a2-original-prior-density-from-unweighted-domination.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalPrior.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalPrior
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_original_prior_axioms.lean
+```
+
+Axiom probe for the new helper/prior theorems reports only
+`[propext, Classical.choice, Quot.sound]`.  Review: xhigh `Laplace the 2nd`
+PASS; the review requested measure-scalar notation cleanup in the new cards,
+which is applied.
+
 ## Dev Infrastructure Merge And Source-Prior Inventory - 2026-06-30
 
 The expedition branch has been updated with the current `origin/dev`
