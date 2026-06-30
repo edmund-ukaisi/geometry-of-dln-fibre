@@ -97,6 +97,17 @@ chain collapsed). Forward-vs-transpose is genuinely model/hypothesis-dependent (
 does not. Formaliser self-spawned decorrelated review SURVIVED + Codex; controller code-inspection confirmed
 honesty + non-vacuity (the DLN instance is a built witness) → accepted.
 
-_Executing: P2.5b (B4 `SmoothCotangentDim`, the `= varietyDim` half — smooth `k`-point + dense `k`-orbit)
-dispatched; controller decorrelated review reserved for it (the non-alg-closed-`k` density sub-crux). Then P2.6
-assembles the squeeze._
+**P2.5b (B4 `SmoothCotangentDim`) landed (`45049b6f`) + decorrelated review SURVIVED.** `finrank(m.Cotangent) =
+varietyDim Z` at a smooth `k`-rational point; the smooth-point hypotheses are honest inputs (`[IsSmoothAt k m]` +
+`hrat : ResidueField m ≃ₐ[k] k`). **The `k`-rationality sub-crux is sound over non-alg-closed `k`:** the DLN
+discharge takes the smooth point *from* the dense set of `k`-rational orbit points (`orbitSpecSet`) ∩ the smooth
+locus — `dense_smoothLocus_of_perfectField` needs only `[PerfectField][IsReduced]`, no algebraic closedness — and
+`residueFieldNormalFormEquiv` makes the residue field literally `≃ₐ[k] k`. `hrat` is load-bearing (GAP2 consumes it
+only for `[κ:k]=1`; a degree-`e>1` extension would break B4). Reviewer + Codex (xhigh) concurred; genuinely Proved
+(no Aoyagi axiom). GAP2/GAP3 re-homed to `Dimension/AffineDomain`. This underwrites the DLN payoff being over ℝ.
+
+**The orbit-dimension squeeze engine is complete (4 bricks + carrier + anchors), all cruxes reviewed + bedrock.**
+
+_Executing: P2.6 — assemble the abstract squeeze headline `varietyDim Z = finrank(range δ)` (`≤` from B1 + A4.1 +
+Phase-1 trdeg; `≥` from B3∘B4; `le_antisymm`) + re-derive the DLN `VoigtDischarge`; folds the two cosmetic
+non-blockers (in-file B4 witness, stale docstring). Phase-2 boundary re-gate + PR after._
