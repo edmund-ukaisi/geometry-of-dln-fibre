@@ -350,6 +350,10 @@ import DLNFibre.Core.RingTheory.Determinantal.Schur
 -- `Core.DeterminantalStratumDim`, via the Proved zero-cited Brick A (`Core.SigmaCodim`); this file
 -- supplies only the arithmetic those theorems consume.
 import DLNFibre.Core.RingTheory.Determinantal.Dimension
+-- P2.a (Phase 2): the abstract pivot-chart atlas datum + standard fibre model
+-- (`Algebra.StandardFibreChart`, bare `Algebra` ns); the DLN bundle instantiates it. Direct import
+-- (was transitive-only via `FibreBundleHeadline`).
+import DLNFibre.Core.RingTheory.Determinantal.Atlas
 -- Scope-3 (bundle transition cocycle, thread 19): the per-minor instantiation — the per-minor
 -- principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` with their `minorChartTransition` (= the
 -- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this

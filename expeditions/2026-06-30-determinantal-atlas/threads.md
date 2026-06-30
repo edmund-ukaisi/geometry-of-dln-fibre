@@ -39,8 +39,10 @@ Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| **P2.a** | formaliser | dispatching | 🔄 | pivot-chart datum + standard fibre model (drop `s/t/σ/τ` threading; bundle base ring + fibre + tensor + structure map + flatness + localization transport) → `Core/RingTheory/Determinantal/Atlas.lean` (generalize `FibreOverBaseTriv`+`FibreBundleHeadline`) |
-| P2.b′ | — | — | ⏳ | `AlgEquiv` groupoid spin-out (`trans_assoc`/`trans_refl`/`refl_trans` by `ext;rfl`) — cocycle unblocker (small) |
+| P2.a | formaliser | a9f9042b | ✅ DONE `5aad04f5` | `Atlas.lean` (bare `Algebra` ns): `StandardFibreChart` (structMap/triv/flat) + `flatModel`/`ofTrivialization`; DLN `standardFibreChartOfPivot` the non-vacuous instance. green 3830, axiom-clean; aggregator-wired at integration |
+| **P2.b′** | formaliser | dispatching | 🔄 | `AlgEquiv` groupoid spin-out (`trans_assoc`/`trans_refl`/`refl_trans` by `ext;rfl`) → `Core/Algebra/AlgEquiv/Groupoid.lean` — the cocycle unblocker (small, Mathlib-gap) |
+
+> **#20 review fixes merged forward** (`58c661b7`): PR #20's three points (Schur `prodLequiv`→`private`; `rankStratumDim` docstring scoped to `r ≤ min p q`; priorities/Dimension prose Brick-A→Proved) landed on `det-atlas-p1` (`5d846875`, threads replied + resolved) and merged into `det-atlas-p2`; re-gate green 3830.
 | P2.b | — | — | ⏳ | transition maps on overlaps (via P1.a overlap API) |
 | P2.c | — | — | ⏳ CRUX | cocycle-compatibility (target-side round-trip; math LANDED, transport to finish) — decorrelated review |
 | P2.d | — | — | ⏳ CRUX (BUILD) | **bespoke `IsZariskiLocallyTrivialAffineProduct` over the rank-`r` open** (NOT Mathlib `FiberBundle`); cover-every-scheme-point via the already-proved `FibreRankBridge` — decorrelated review |
