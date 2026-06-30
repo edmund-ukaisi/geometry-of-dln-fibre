@@ -25,7 +25,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 > - **Cited.** none new. Reduces to the Phase-1 `Dimension.ringKrullDim_eq_trdeg_of_fg_domain`
 >   (Noether normalization + `trdeg`-API, already in-repo, axiom-clean).
 > - **Deferred.** none.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free + reviewed (PASS, fidelity + decorrelated Codex, 303db988).
 
 ## Anchor (variety-dimension form, with the A0 bridge)
 
@@ -44,7 +44,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 >   model-specific orbit↔kernel input (the abstract carrier never asserts `Z` or the orbit exists).
 > - **Cited.** none new (same Phase-1 fact; `Ideal.quotientKerEquivRange` is Mathlib's first-iso).
 > - **Deferred.** none.
-> - **Status.** sorry-free.
+> - **Status.** sorry-free + reviewed (PASS, fidelity + decorrelated Codex, 303db988).
 
 ## DLN re-derivation (consumer collapse)
 
@@ -62,7 +62,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 >   transport) is removed.
 > - **Consumers.** `OrbitImageDim.lean` consumes this DLN lemma; signature unchanged ⟹ green
 >   (full aggregator build 3825 jobs, verified).
-> - **Status.** sorry-free.
+> - **Status.** sorry-free + reviewed (PASS, fidelity + decorrelated Codex, 303db988).
 
 ---
 
