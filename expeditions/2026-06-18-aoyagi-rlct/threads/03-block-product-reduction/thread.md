@@ -21,6 +21,56 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 original edge-family prior in fixed bases
+
+Reproduction:
+`reproduction-a2-original-edge-family-prior-fixed-basis.md`.
+Statement card:
+`statement-card-a2-original-edge-family-prior-fixed-basis.md`.
+Review:
+`review-a2-original-edge-family-prior-fixed-basis.md`, PASS by xhigh
+sidecar `Noether the 2nd` plus controller check.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyPrior.lean
+```
+
+Lean now proves the fixed-basis equivalence between continuous edge families
+and original matrix tuples, and defines:
+
+```text
+originalEdgeFamilyVolume
+originalEdgeFamilyVolume_map_edgeFamilyMatrixTuple
+originalEdgeFamilyPrior
+originalEdgeFamilyPrior_restrict_le_smul_of_ae_le
+```
+
+The key theorem is:
+
+```text
+Measure.map (edgeFamilyMatrixTuple b) (originalEdgeFamilyVolume b)
+  = originalTupleVolume d.
+```
+
+Current verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyPrior.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPrior
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_edge_family_prior_axioms.lean
+```
+
+Nonclaims: no source-chart transport, chart-image equality, readback
+domination, source-rank coverage, Haar/Jacobian transport, normal crossings,
+pole order, or RLCT.  The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-06-30 A2 chart-piece external-source measure handoff
 
 Reproduction:

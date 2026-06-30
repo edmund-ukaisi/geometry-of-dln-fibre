@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, original edge-family prior in fixed bases
+
+The expedition now has a fixed-basis original measure/prior on continuous
+edge-family spaces:
+
+```text
+edgeFamilyMatrixTuple
+tupleToEdgeFamily
+edgeFamilyMatrixTuple_tupleToEdgeFamily
+tupleToEdgeFamily_edgeFamilyMatrixTuple
+continuous_edgeFamilyMatrixTuple
+continuous_tupleToEdgeFamily
+measurable_edgeFamilyMatrixTuple
+measurable_tupleToEdgeFamily
+originalEdgeFamilyVolume
+originalEdgeFamilyVolume_map_edgeFamilyMatrixTuple
+originalEdgeFamilyPrior
+originalEdgeFamilyPrior_restrict_le_smul_of_ae_le
+```
+
+For fixed bases `b`, `originalEdgeFamilyVolume b` is the pushforward of
+`originalTupleVolume d` by the tuple-to-continuous-edge reconstruction map.
+Pushing it back by fixed-basis matrix coordinates recovers
+`originalTupleVolume d`.  This is the first source-side original measure
+object on the same continuous edge-family type used by the source-image
+sockets, without defining it as `Measure.map sourceChart ...`.
+
+The live frontier is unchanged in substance but now better typed: compare
+`originalEdgeFamilyVolume b` or `originalEdgeFamilyPrior b density`, restricted
+to a chart image/piece, with the retained-passive chart-produced source-image
+measure.  The useful next theorem should discharge a chart-piece equality,
+readback domination, or Haar/Jacobian transport hypothesis.  Another wrapper
+around finite integrals or a definition of original volume as a source-chart
+pushforward would not move the frontier.
+
 ## Latest controller decision - 2026-06-30, original coordinate/tuple prior and density adapter
 
 The expedition now has an ambient flattened-coordinate prior module and the

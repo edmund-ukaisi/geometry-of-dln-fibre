@@ -6,6 +6,78 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Edge-Family Prior In Fixed Bases - 2026-06-30
+
+Lean now transports the original tuple-coordinate measure to continuous
+edge-family spaces through fixed bases:
+
+```text
+edgeFamilyMatrixTuple
+tupleToEdgeFamily
+edgeFamilyMatrixTuple_tupleToEdgeFamily
+tupleToEdgeFamily_edgeFamilyMatrixTuple
+continuous_edgeFamilyMatrixTuple
+continuous_tupleToEdgeFamily
+measurable_edgeFamilyMatrixTuple
+measurable_tupleToEdgeFamily
+originalEdgeFamilyVolume
+originalEdgeFamilyVolume_map_edgeFamilyMatrixTuple
+originalEdgeFamilyPrior
+originalEdgeFamilyPrior_restrict_le_smul_of_ae_le
+```
+
+For bases `b j : Basis (Fin (d j)) ℝ (V j)`, `edgeFamilyMatrixTuple b` takes
+the fixed-basis matrix of every continuous edge map and
+`tupleToEdgeFamily b` reconstructs continuous edge maps from a core matrix
+tuple.  Lean proves the two inverse identities.  The original edge-family
+volume is:
+
+```text
+originalEdgeFamilyVolume b
+  = Measure.map (tupleToEdgeFamily b) (originalTupleVolume d).
+```
+
+The key map-back theorem is:
+
+```text
+Measure.map (edgeFamilyMatrixTuple b) (originalEdgeFamilyVolume b)
+  = originalTupleVolume d.
+```
+
+This gives a source-side original measure object on the continuous edge-family
+type used by the retained-passive source-image sockets.  It still does not
+compare that measure with any Aoyagi source-chart pushforward.  The remaining
+frontier is to prove a local chart-piece equality, readback domination, or
+Haar/Jacobian transport from `originalEdgeFamilyVolume b` to the
+chart-produced source-image measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-edge-family-prior-fixed-basis.md
+threads/03-block-product-reduction/statement-card-a2-original-edge-family-prior-fixed-basis.md
+threads/03-block-product-reduction/review-a2-original-edge-family-prior-fixed-basis.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyPrior.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPrior
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_edge_family_prior_axioms.lean
+```
+
+Review: xhigh `Noether the 2nd` confirmed the target is useful only if it
+packages the fixed-basis equivalence and map-back/measurability lemmas.  The
+implemented API meets that condition.  Nonclaims: no source-chart transport,
+chart-image equality, readback domination, source-rank coverage,
+Haar/Jacobian transport, normal crossings, pole order, or RLCT extraction.
+The axiom probe reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## Original Coordinate/Tuple Prior And Density Adapter - 2026-06-30
 
 Lean now names the ambient flattened-coordinate original measure and prior,
