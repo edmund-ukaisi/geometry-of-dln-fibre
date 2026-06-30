@@ -480,6 +480,210 @@ theorem exists_open_measure_map_case2PassiveThetaEndpointSourceChart_puncturedSe
       hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
       z₀ hCtop₀ hA1passive₀ hpivot₀' sourceMeasure
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- The final specialization is a large definitional `simpa` over the generic
+-- passive selected-entry theorem and needs the same budget as that bridge.
+/-- The concrete passive-theta endpoint topology tuple gives the direct p.13
+source chart after local raw-order reindexing.
+
+This is the `Case2PassiveTheta` specialization of the generic passive
+selected-entry raw-order bridge.  It proves a local pointwise chart equality
+and the corresponding restricted one-stage/two-stage pushforward identities;
+it is not determinant-chart Haar transport, source-prior transport, a
+Jacobian formula, source-image coverage, normal crossings, pole order, or RLCT
+extraction. -/
+theorem exists_open_measure_map_case2PassiveThetaEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    (sourceMeasure :
+      Measure
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun theta ↦
+        case2PassiveThetaEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun theta ↦
+        case2PassiveThetaEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e theta
+    let rawMap :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun theta ↦
+        topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+          (case2PassiveThetaEndpointTopologyTuple
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e)
+    let rawChart :
+        TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ →
+          EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let inverseReadout : EdgeFamily → center → ℝ :=
+      case2PassiveThetaEndpointInverseReadout
+        W₂ B₂ n hS hnext hU₀ eNext e
+    ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧
+        (∀ z ∈ V,
+          rawMap z ∈
+              topologyTupleRawOrderSourceRecursiveDetChartSet
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ∧
+            rawChart (rawMap z) = sourceChart z ∧
+            sourceChart z ∈
+              paperEndpointFixedBaseRetainedPassiveP13LocalSource
+                W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) ∧
+            (let E :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p : Fin 2 ↦
+                  (sourceChart z p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            sourceReadback (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E =
+              retainedData z) ∧
+            inverseReadout (sourceChart z) = z.yNext) ∧
+        ∀ [MeasurableSpace
+              (TopologyTuple (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+            [BorelSpace
+              (TopologyTuple (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+            [MeasurableSpace EdgeFamily] [BorelSpace EdgeFamily],
+            let ν := sourceMeasure.restrict V
+            let μ := Measure.map sourceChart ν
+            let μrawComp :=
+              Measure.map (fun z ↦ rawChart (rawMap z)) ν
+            let μrawTwoStage :=
+              Measure.map rawChart (Measure.map rawMap ν)
+            μrawComp = μ ∧ μrawTwoStage = μ := by
+  intro center EdgeFamily retainedData sourceChart rawMap rawChart
+    inverseReadout
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let η : Type :=
+    Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J
+  let A1passive : η → Fin 1 → Matrix ρ ρ ℝ := fun passive ↦ passive.1
+  let F2 : η → ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ :=
+    fun passive ↦ passive.2.1
+  let A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ :=
+    fun passive ↦ passive.2.2.1
+  let Ctop : η → Matrix ρ ρ ℝ := fun passive ↦ passive.2.2.2.1
+  let F3 : η →
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ :=
+    fun passive ↦ passive.2.2.2.2
+  have hA1passive_cont : Continuous A1passive := by
+    simpa [A1passive] using (continuous_fst : Continuous (fun passive : η ↦ passive.1))
+  have hF2_cont : Continuous F2 := by
+    simpa [F2] using
+      (continuous_fst.comp continuous_snd :
+        Continuous (fun passive : η ↦ passive.2.1))
+  have hA3passive_cont : Continuous A3passive := by
+    simpa [A3passive] using
+      (continuous_fst.comp (continuous_snd.comp continuous_snd) :
+        Continuous (fun passive : η ↦ passive.2.2.1))
+  have hCtop_cont : Continuous Ctop := by
+    simpa [Ctop] using
+      (continuous_fst.comp
+        (continuous_snd.comp (continuous_snd.comp continuous_snd)) :
+        Continuous (fun passive : η ↦ passive.2.2.2.1))
+  have hF3_cont : Continuous F3 := by
+    simpa [F3] using
+      (continuous_snd.comp
+        (continuous_snd.comp (continuous_snd.comp continuous_snd)) :
+        Continuous (fun passive : η ↦ passive.2.2.2.2))
+  have hdet₀' :
+      IsUnit (z₀.Ctop.det) ∧
+        ∀ p : Fin 1, IsUnit ((z₀.A1passive p).det) := by
+    simpa [case2PassiveThetaDetSector] using hdet₀
+  have hCtop₀ : IsUnit ((Ctop z₀.1).det) := by
+    simpa [Ctop, Case2PassiveTheta.Ctop] using hdet₀'.1
+  have hA1passive₀ : ∀ p : Fin 1, IsUnit ((A1passive z₀.1 p).det) := by
+    intro p
+    simpa [A1passive, Case2PassiveTheta.A1passive] using hdet₀'.2 p
+  have hpivot₀' :
+      z₀.2
+        (⟨(J + 2, J + 2),
+          case2_displayedPivot_mem_residualBlockPivotEntries_of_cont n hS hnext⟩ :
+          {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)}) ≠ 0 := by
+    simpa [case2PassiveThetaPivotNonzero, case2PassiveThetaPivotNext,
+      Case2PassiveTheta.yNext] using hpivot₀
+  simpa [center, EdgeFamily, retainedData, sourceChart, rawMap,
+    rawChart, inverseReadout, case2PassiveThetaEndpointSourceChart,
+    case2PassiveThetaEndpointResidualCoordEquiv,
+    case2PassiveThetaEndpointInverseReadout, case2PassiveThetaEndpointTopologyTuple,
+    case2PassiveThetaEndpointRetainedData, case2PassiveThetaRetainedData,
+    Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+    Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+    Case2PassiveTheta.F3, Case2PassiveTheta.yNext,
+    A1passive, F2, A3passive, Ctop, F3, η, ρ] using
+    exists_open_measure_map_case2EndpointTransport_withPassive_puncturedSector_rawOrderMap_twoStage_eq_sourceChart_inverseReadout_eq_snd
+      W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+      A1passive F2 A3passive Ctop F3
+      hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+      z₀ hCtop₀ hA1passive₀ hpivot₀' sourceMeasure
+
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
 end Aoyagi

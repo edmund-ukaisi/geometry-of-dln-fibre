@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta raw-order two-stage source chart
+
+The concrete passive-theta raw-order source-chart bridge has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+
+New public name:
+
+```text
+exists_open_measure_map_case2PassiveThetaEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+For any determinant-sector, nonzero-pivot base theta point, the theorem returns
+an open neighborhood `V` on which
+
+```text
+rawMap theta =
+  topologyTupleEdgeRawOrder
+    (case2PassiveThetaEndpointTopologyTuple ... theta eNext e)
+
+rawChart (rawMap theta) = sourceChart theta
+```
+
+where `sourceChart` is the direct
+`case2PassiveThetaEndpointSourceChart` and `rawChart` is the fixed-base p.13
+raw-order source chart.  It also records local source membership,
+`sourceReadback = retainedData`, pointwise
+`inverseReadout (sourceChart theta) = theta.yNext`, and the corresponding
+one-stage/two-stage restricted pushforward equalities through `rawMap` and
+`rawChart`.
+
+This is source-chart/raw-order compatibility for the concrete endpoint topology
+tuple.  It does not prove exact passive-sector Haar transport, determinant
+chart Haar transport, raw-order Haar transport, source-prior comparison,
+endpoint-sector measurability, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.
+
+Xhigh source/scope reviewer `Herschel` and xhigh Lean/API reviewer `Gibbs`
+returned PASS.  Their caveats were recorded: the public theorem should not be
+read as exposing a standalone `V ⊆ case2PassiveThetaPuncturedDetSector`, and
+the inverse-readout conclusion here is pointwise, not the earlier readout
+pushforward equality.
+
+Next source-moving frontier: prove a genuine local inverse/image theorem for
+the concrete passive-theta endpoint map, likely by building a local readback
+from source families or endpoint topology tuples back to full theta
+coordinates.  This should target endpoint-sector measurability or an image
+characterization, not another conditional domination wrapper.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian endpoint-sector domination
 
 The concrete formal-Jacobian endpoint-sector domination slice has landed in

@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta raw-order two-stage source chart
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-raw-order-two-stage-source-chart.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-raw-order-two-stage-source-chart.md`.
+Review:
+`review-a2-case2-passive-theta-raw-order-two-stage-source-chart.md`, PASS by
+xhigh source/scope reviewer `Herschel` and xhigh Lean/API reviewer `Gibbs`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_measure_map_case2PassiveThetaEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+This specializes the generic passive selected-entry raw-order bridge to the
+concrete full `Case2PassiveTheta` endpoint topology-tuple map.  Locally near a
+determinant-sector, nonzero-pivot base point, the raw-order p.13 source chart
+applied to
+
+```text
+topologyTupleEdgeRawOrder
+  (case2PassiveThetaEndpointTopologyTuple ... theta eNext e)
+```
+
+equals the direct `case2PassiveThetaEndpointSourceChart`.  The theorem also
+records local source membership, `sourceReadback = retainedData`, pointwise
+`inverseReadout (sourceChart theta) = theta.yNext`, and the one-stage/two-stage
+restricted pushforward equalities through the raw-order intermediate map.
+
+Nonclaims: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+endpoint-sector measurability, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.  The next frontier is a
+local inverse/image theorem for the concrete endpoint theta map, not another
+conditional domination wrapper.
+
 ## 2026-06-30 A2 Case 2 passive theta global Jacobian-weighted single-open wrapper
 
 Reproduction:

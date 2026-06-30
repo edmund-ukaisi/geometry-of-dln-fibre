@@ -6,6 +6,71 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Raw-Order Two-Stage Source Chart - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now specializes the
+generic passive selected-entry raw-order bridge to the concrete full
+`Case2PassiveTheta` endpoint topology-tuple map.
+
+New public name:
+
+```text
+exists_open_measure_map_case2PassiveThetaEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+For the endpoint topology tuple
+
+```text
+Y theta = case2PassiveThetaEndpointTopologyTuple ... theta eNext e
+rawMap theta = topologyTupleEdgeRawOrder (Y theta)
+rawChart = paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart ...
+sourceChart theta = case2PassiveThetaEndpointSourceChart ... theta
+```
+
+the theorem returns an open neighborhood `V` of a determinant-sector,
+nonzero-pivot base point such that, for `theta in V`,
+
+```text
+rawChart (rawMap theta) = sourceChart theta
+sourceReadback (edgeMatrix (sourceChart theta)) = retainedData theta
+inverseReadout (sourceChart theta) = theta.yNext
+```
+
+It also proves the one-stage and two-stage restricted pushforward identities
+
+```text
+Measure.map (fun theta => rawChart (rawMap theta)) (sourceMeasure.restrict V)
+  =
+Measure.map sourceChart (sourceMeasure.restrict V)
+
+Measure.map rawChart (Measure.map rawMap (sourceMeasure.restrict V))
+  =
+Measure.map sourceChart (sourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-raw-order-two-stage-source-chart.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-raw-order-two-stage-source-chart.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-raw-order-two-stage-source-chart.md
+```
+
+Xhigh source/scope reviewer `Herschel` and xhigh Lean/API reviewer `Gibbs`
+returned PASS.  Non-blocking caveats: the theorem exports chart/readback
+consequences on `V`, not a separate `V ⊆ case2PassiveThetaPuncturedDetSector`;
+and its inverse-readout equality is pointwise, while the earlier source-chart
+theorem supplies the readout pushforward equality.
+
+Boundary: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+endpoint-sector measurability, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.
+
+Next frontier: a genuine local inverse/image theorem for the concrete
+passive-theta endpoint topology-tuple map, strong enough to attack
+`case2PassiveThetaEndpointSectorSet` measurability or image characterization.
+
 ## Latest A2 Case 2 Passive Theta Jacobian Endpoint-Sector Domination - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now instantiates the
