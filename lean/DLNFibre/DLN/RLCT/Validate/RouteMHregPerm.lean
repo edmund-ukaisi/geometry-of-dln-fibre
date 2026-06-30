@@ -489,6 +489,320 @@ theorem isCoordLE_eIn (ha : StructAdm M (tach M)) :
   · -- empty
     exact e.elim0
 
+/-! ## The `packStair` block reads (each output block reads one Params coordinate)
+
+`packStair p .1 = packLayer0 (p 0)` (the V0 SchurInc via `flatBlockLE.symm = unflatBlock` on the
+reindexed `M0×M1` matrix), `.2.1 = packLayer1 (p 1)` (the V1 `(W, leaf)` pair via `rowSplitLE` +
+`prodComm`). Reading `p = (paramsEquivFlatLinear M).symm f` (whose coord read is `rfl`,
+`(paramsEquivFlatLinear M).symm f s i j = f (Fintype.equivFin (FlatIdx M) ⟨⟨s,i⟩,j⟩)`) gives each block
+as `f (equivFin ⟨⟨layer, rowIdx⟩, colIdx⟩)` at the matching `castAdd`/`natAdd`/`finSumFinEquiv` index. -/
+
+/-- `(paramsEquivFlatLinear M).symm` coordinate read (`rfl`): layer `s`, entry `(i,j)`. -/
+theorem paramsEquivFlatLinear_symm_apply (f : Fin (flatDim M) → ℝ) (s : Fin 2)
+    (i : Fin (M s.castSucc)) (j : Fin (M s.succ)) :
+    ((paramsEquivFlatLinear M).symm f) s i j
+      = f ((Fintype.equivFin (FlatIdx M)) ⟨⟨s, i⟩, j⟩) := rfl
+
+/-- packStair V0-K read. -/
+theorem packStair_readK (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ) (i j : Fin (schurT1 M)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).1 i j
+      = ((paramsEquivFlatLinear M).symm f) 0
+          (Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha)
+            (Fin.castAdd (schurR1 M) i)))
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (Fin.castAdd (schurC1 M) j))) := by
+  show ((flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+      (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+        (((paramsEquivFlatLinear M).symm f) 0))).1 i j = _
+  rw [show (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+          (((paramsEquivFlatLinear M).symm f) 0))
+      = unflatBlock (eihd_schurR_split ha) (eihd_schurC_split ha) _ from rfl]
+  show (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+      (((paramsEquivFlatLinear M).symm f) 0)) _ _ = _
+  rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+  rfl
+
+/-- packStair V0-N read. -/
+theorem packStair_readN (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ)
+    (i : Fin (schurT1 M)) (j : Fin (schurC1 M)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.1 i j
+      = ((paramsEquivFlatLinear M).symm f) 0
+          (Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha)
+            (Fin.castAdd (schurR1 M) i)))
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (Fin.natAdd (schurT1 M) j))) := by
+  show ((flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+      (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+        (((paramsEquivFlatLinear M).symm f) 0))).2.1 i j = _
+  rw [show (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+          (((paramsEquivFlatLinear M).symm f) 0))
+      = unflatBlock (eihd_schurR_split ha) (eihd_schurC_split ha) _ from rfl]
+  show (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+      (((paramsEquivFlatLinear M).symm f) 0)) _ _ = _
+  rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+  rfl
+
+/-- packStair V0-X read. -/
+theorem packStair_readX (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ)
+    (i : Fin (schurR1 M)) (j : Fin (schurT1 M)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.1 i j
+      = ((paramsEquivFlatLinear M).symm f) 0
+          (Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha)
+            (Fin.natAdd (schurT1 M) i)))
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (Fin.castAdd (schurC1 M) j))) := by
+  show ((flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+      (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+        (((paramsEquivFlatLinear M).symm f) 0))).2.2.1 i j = _
+  rw [show (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+          (((paramsEquivFlatLinear M).symm f) 0))
+      = unflatBlock (eihd_schurR_split ha) (eihd_schurC_split ha) _ from rfl]
+  show (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+      (((paramsEquivFlatLinear M).symm f) 0)) _ _ = _
+  rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+  rfl
+
+/-- packStair V0-E read. -/
+theorem packStair_readE (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ)
+    (i : Fin (schurR1 M)) (j : Fin (schurC1 M)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.2 i j
+      = ((paramsEquivFlatLinear M).symm f) 0
+          (Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha)
+            (Fin.natAdd (schurT1 M) i)))
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (Fin.natAdd (schurT1 M) j))) := by
+  show ((flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+      (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+        (((paramsEquivFlatLinear M).symm f) 0))).2.2.2 i j = _
+  rw [show (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+          (((paramsEquivFlatLinear M).symm f) 0))
+      = unflatBlock (eihd_schurR_split ha) (eihd_schurC_split ha) _ from rfl]
+  show (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+      (((paramsEquivFlatLinear M).symm f) 0)) _ _ = _
+  rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+  rfl
+
+/-- packStair V1-W read (the lift block, `schurC1` rows). -/
+theorem packStair_readW (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ)
+    (i : Fin (schurC1 M)) (j : Fin (Wext M 2)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).1 i j
+      = ((paramsEquivFlatLinear M).symm f) 1
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (finSumFinEquiv (Sum.inr i)))) (Fin.cast eihd_M2_eq_Wext2.symm j) := by
+  show ((packLayer1 ha (((paramsEquivFlatLinear M).symm f) 1)).1) i j = _
+  unfold packLayer1 rowSplitLE
+  simp only [LinearEquiv.trans_apply, LinearEquiv.prodComm_apply, Prod.fst_swap,
+    LinearEquiv.prodCongr_apply, Matrix.coe_ofLinearEquiv,
+    LinearEquiv.sumArrowLequivProdArrow_apply_snd, Matrix.coe_ofLinearEquiv_symm,
+    Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.refl_symm, Equiv.refl_apply]
+  rfl
+
+/-- packStair V1-leaf read (the kept block, `schurT1` rows). -/
+theorem packStair_readLeaf (ha : StructAdm M (tach M)) (f : Fin (flatDim M) → ℝ)
+    (i : Fin (schurT1 M)) (j : Fin (Wext M 2)) :
+    ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).2 i j
+      = ((paramsEquivFlatLinear M).symm f) 1
+          (Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (finSumFinEquiv (Sum.inl i)))) (Fin.cast eihd_M2_eq_Wext2.symm j) := by
+  show ((packLayer1 ha (((paramsEquivFlatLinear M).symm f) 1)).2) i j = _
+  unfold packLayer1 rowSplitLE
+  simp only [LinearEquiv.trans_apply, LinearEquiv.prodComm_apply, Prod.snd_swap,
+    LinearEquiv.prodCongr_apply, Matrix.coe_ofLinearEquiv,
+    LinearEquiv.sumArrowLequivProdArrow_apply_fst, Matrix.coe_ofLinearEquiv_symm,
+    Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.refl_symm, Equiv.refl_apply]
+  rfl
+
+/-! ## `bigToFlatIdx : BigIdx ≃ FlatIdx M` (the `packStair` index bijection)
+
+Maps each `stairChart` block index to its `FlatIdx M = Σ (Σ s, Fin (M s.castSucc)), Fin (M s.succ)`
+position: the V0 roles into layer `0` (`castAdd`/`natAdd` row/col splits through the
+`M0=Text1`/`M1=Wext1` recasts), the V1 `W`/`leaf` into layer `1` (the `finSumFinEquiv` lift/kept split
+through `M1=Wext1`/`M2=Wext2`). The `σ_pack` of the `packStair` certificate is
+`bigToFlatIdx ≪≫ Fintype.equivFin (FlatIdx M)`. -/
+
+/-- The layer-0 row index from a `Fin schurT1` (`castAdd`, the K/N top rows) — into `Fin (M 0)`. -/
+def v0RowTop (ha : StructAdm M (tach M)) (i : Fin (schurT1 M)) : Fin (M 0) :=
+  Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha) (Fin.castAdd (schurR1 M) i))
+
+/-- The layer-0 row index from a `Fin schurR1` (`natAdd`, the X/E bottom rows) — into `Fin (M 0)`. -/
+def v0RowBot (ha : StructAdm M (tach M)) (i : Fin (schurR1 M)) : Fin (M 0) :=
+  Fin.cast (eihd_M0_eq_Text1 ha).symm (Fin.cast (eihd_schurR_split ha) (Fin.natAdd (schurT1 M) i))
+
+/-- The layer-0 col index from a `Fin schurT1` (`castAdd`, the K/X left cols) — into `Fin (M 1)`. -/
+def v0ColLeft (ha : StructAdm M (tach M)) (j : Fin (schurT1 M)) : Fin (M 1) :=
+  Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha) (Fin.castAdd (schurC1 M) j))
+
+/-- The layer-0 col index from a `Fin schurC1` (`natAdd`, the N/E right cols) — into `Fin (M 1)`. -/
+def v0ColRight (ha : StructAdm M (tach M)) (j : Fin (schurC1 M)) : Fin (M 1) :=
+  Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha) (Fin.natAdd (schurT1 M) j))
+
+/-- `bigToFlatIdx : BigIdx ≃ FlatIdx M` — the `packStair` index reshape. -/
+def bigToFlatIdx (ha : StructAdm M (tach M)) :
+    (((Fin (schurT1 M * schurT1 M) ⊕ (Fin (schurT1 M * schurC1 M) ⊕
+        (Fin (schurR1 M * schurT1 M) ⊕ Fin (schurR1 M * schurC1 M)))) ⊕
+        (((Fin (schurC1 M * Wext M 2) ⊕ Fin (schurT1 M * Wext M 2)) ⊕ Fin 0))))
+      ≃ FlatIdx M where
+  toFun := fun x => match x with
+    | Sum.inl (Sum.inl mK) =>
+      ⟨⟨0, v0RowTop ha (finProdFinEquiv.symm mK).1⟩, v0ColLeft ha (finProdFinEquiv.symm mK).2⟩
+    | Sum.inl (Sum.inr (Sum.inl mN)) =>
+      ⟨⟨0, v0RowTop ha (finProdFinEquiv.symm mN).1⟩, v0ColRight ha (finProdFinEquiv.symm mN).2⟩
+    | Sum.inl (Sum.inr (Sum.inr (Sum.inl mX))) =>
+      ⟨⟨0, v0RowBot ha (finProdFinEquiv.symm mX).1⟩, v0ColLeft ha (finProdFinEquiv.symm mX).2⟩
+    | Sum.inl (Sum.inr (Sum.inr (Sum.inr mE))) =>
+      ⟨⟨0, v0RowBot ha (finProdFinEquiv.symm mE).1⟩, v0ColRight ha (finProdFinEquiv.symm mE).2⟩
+    | Sum.inr (Sum.inl (Sum.inl mW)) =>
+      ⟨⟨1, Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+          (finSumFinEquiv (Sum.inr (finProdFinEquiv.symm mW).1)))⟩,
+        Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mW).2⟩
+    | Sum.inr (Sum.inl (Sum.inr mL)) =>
+      ⟨⟨1, Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+          (finSumFinEquiv (Sum.inl (finProdFinEquiv.symm mL).1)))⟩,
+        Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mL).2⟩
+    | Sum.inr (Sum.inr e) => e.elim0
+  invFun := fun c =>
+    match c with
+    | ⟨⟨⟨0, _⟩, row⟩, col⟩ =>
+      -- decode layer-0 row (castAdd/natAdd) and col, classify into K/N/X/E
+      match finSumFinEquiv.symm (Fin.cast (eihd_schurR_split ha).symm
+            (Fin.cast (eihd_M0_eq_Text1 ha) row)),
+          finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm (Fin.cast eihd_M1_eq_Wext1 col)) with
+      | Sum.inl ri, Sum.inl ci => Sum.inl (Sum.inl (finProdFinEquiv (ri, ci)))
+      | Sum.inl ri, Sum.inr ci => Sum.inl (Sum.inr (Sum.inl (finProdFinEquiv (ri, ci))))
+      | Sum.inr ri, Sum.inl ci => Sum.inl (Sum.inr (Sum.inr (Sum.inl (finProdFinEquiv (ri, ci)))))
+      | Sum.inr ri, Sum.inr ci => Sum.inl (Sum.inr (Sum.inr (Sum.inr (finProdFinEquiv (ri, ci)))))
+    | ⟨⟨⟨1, _⟩, row⟩, col⟩ =>
+      match finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 row)) with
+      | Sum.inl ri =>
+        Sum.inr (Sum.inl (Sum.inr (finProdFinEquiv (ri, Fin.cast eihd_M2_eq_Wext2 col))))
+      | Sum.inr ri =>
+        Sum.inr (Sum.inl (Sum.inl (finProdFinEquiv (ri, Fin.cast eihd_M2_eq_Wext2 col))))
+  left_inv := by
+    rintro (((mK | (mN | (mX | mE))) | ((mW | mL) | e)))
+    · simp only [v0RowTop, v0ColLeft, Fin.cast_cast, Fin.cast_eq_self,
+        finSumFinEquiv_symm_apply_castAdd, Prod.mk.eta, Equiv.apply_symm_apply]
+    · simp only [v0RowTop, v0ColRight, Fin.cast_cast, Fin.cast_eq_self,
+        finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Prod.mk.eta,
+        Equiv.apply_symm_apply]
+    · simp only [v0RowBot, v0ColLeft, Fin.cast_cast, Fin.cast_eq_self,
+        finSumFinEquiv_symm_apply_castAdd, finSumFinEquiv_symm_apply_natAdd, Prod.mk.eta,
+        Equiv.apply_symm_apply]
+    · simp only [v0RowBot, v0ColRight, Fin.cast_cast, Fin.cast_eq_self,
+        finSumFinEquiv_symm_apply_natAdd, Prod.mk.eta, Equiv.apply_symm_apply]
+    · show (match finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+            (Fin.cast eihd_M1_eq_Wext1 (Fin.cast eihd_M1_eq_Wext1.symm
+              (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (Sum.inr (finProdFinEquiv.symm mW).1))))))
+            with
+          | Sum.inl ri => Sum.inr (Sum.inl (Sum.inr (finProdFinEquiv (ri,
+              Fin.cast eihd_M2_eq_Wext2 (Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mW).2)))))
+          | Sum.inr ri => Sum.inr (Sum.inl (Sum.inl (finProdFinEquiv (ri,
+              Fin.cast eihd_M2_eq_Wext2 (Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mW).2)))))) = _
+      rw [show finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+            (Fin.cast eihd_M1_eq_Wext1 (Fin.cast eihd_M1_eq_Wext1.symm
+              (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (Sum.inr (finProdFinEquiv.symm mW).1))))))
+          = Sum.inr (finProdFinEquiv.symm mW).1 from by
+        simp only [Fin.cast_cast, Fin.cast_eq_self, Equiv.symm_apply_apply]]
+      simp only [Fin.cast_cast, Fin.cast_eq_self, Prod.mk.eta, Equiv.apply_symm_apply]
+    · show (match finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+            (Fin.cast eihd_M1_eq_Wext1 (Fin.cast eihd_M1_eq_Wext1.symm
+              (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (Sum.inl (finProdFinEquiv.symm mL).1))))))
+            with
+          | Sum.inl ri => Sum.inr (Sum.inl (Sum.inr (finProdFinEquiv (ri,
+              Fin.cast eihd_M2_eq_Wext2 (Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mL).2)))))
+          | Sum.inr ri => Sum.inr (Sum.inl (Sum.inl (finProdFinEquiv (ri,
+              Fin.cast eihd_M2_eq_Wext2 (Fin.cast eihd_M2_eq_Wext2.symm (finProdFinEquiv.symm mL).2)))))) = _
+      rw [show finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+            (Fin.cast eihd_M1_eq_Wext1 (Fin.cast eihd_M1_eq_Wext1.symm
+              (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (Sum.inl (finProdFinEquiv.symm mL).1))))))
+          = Sum.inl (finProdFinEquiv.symm mL).1 from by
+        simp only [Fin.cast_cast, Fin.cast_eq_self, Equiv.symm_apply_apply]]
+      simp only [Fin.cast_cast, Fin.cast_eq_self, Prod.mk.eta, Equiv.apply_symm_apply]
+    · exact e.elim0
+  right_inv := by
+    rintro ⟨⟨⟨kv, hk⟩, row⟩, col⟩
+    match kv, hk with
+    | 0, _ =>
+      have hrowrec0 : Fin.cast (eihd_M0_eq_Text1 ha).symm
+          (Fin.cast (eihd_schurR_split ha) (finSumFinEquiv (finSumFinEquiv.symm
+            (Fin.cast (eihd_schurR_split ha).symm (Fin.cast (eihd_M0_eq_Text1 ha) row))))) = row := by
+        rw [Equiv.apply_symm_apply]; simp only [Fin.cast_cast, Fin.cast_eq_self]
+      have hcolrec0 : Fin.cast eihd_M1_eq_Wext1.symm
+          (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (finSumFinEquiv.symm
+            (Fin.cast (eihd_schurC_split ha).symm (Fin.cast eihd_M1_eq_Wext1 col))))) = col := by
+        rw [Equiv.apply_symm_apply]; simp only [Fin.cast_cast, Fin.cast_eq_self]
+      have hrowTop : ∀ ri : Fin (schurT1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurR_split ha).symm
+          (Fin.cast (eihd_M0_eq_Text1 ha) row)) = Sum.inl ri → v0RowTop ha ri = row := by
+        intro ri hri; rw [v0RowTop, ← finSumFinEquiv_apply_left ri, ← hri]; exact hrowrec0
+      have hrowBot : ∀ ri : Fin (schurR1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurR_split ha).symm
+          (Fin.cast (eihd_M0_eq_Text1 ha) row)) = Sum.inr ri → v0RowBot ha ri = row := by
+        intro ri hri; rw [v0RowBot, ← finSumFinEquiv_apply_right ri, ← hri]; exact hrowrec0
+      have hcolLeft : ∀ ci : Fin (schurT1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 col)) = Sum.inl ci → v0ColLeft ha ci = col := by
+        intro ci hci; rw [v0ColLeft, ← finSumFinEquiv_apply_left ci, ← hci]; exact hcolrec0
+      have hcolRight : ∀ ci : Fin (schurC1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 col)) = Sum.inr ci → v0ColRight ha ci = col := by
+        intro ci hci; rw [v0ColRight, ← finSumFinEquiv_apply_right ci, ← hci]; exact hcolrec0
+      rcases hri : finSumFinEquiv.symm (Fin.cast (eihd_schurR_split ha).symm
+          (Fin.cast (eihd_M0_eq_Text1 ha) row)) with ri | ri
+      · rcases hci : finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 col)) with ci | ci
+        · simp only [hri, hci]
+          rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, ci))) = (ri, ci) from Equiv.symm_apply_apply _ _]
+          rw [hrowTop ri hri, hcolLeft ci hci]
+          rfl
+        · simp only [hri, hci]
+          rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, ci))) = (ri, ci) from Equiv.symm_apply_apply _ _]
+          rw [hrowTop ri hri, hcolRight ci hci]
+          rfl
+      · rcases hci : finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 col)) with ci | ci
+        · simp only [hri, hci]
+          rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, ci))) = (ri, ci) from Equiv.symm_apply_apply _ _]
+          rw [hrowBot ri hri, hcolLeft ci hci]
+          rfl
+        · simp only [hri, hci]
+          rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, ci))) = (ri, ci) from Equiv.symm_apply_apply _ _]
+          rw [hrowBot ri hri, hcolRight ci hci]
+          rfl
+    | 1, _ =>
+      have hrowrec1 : Fin.cast eihd_M1_eq_Wext1.symm
+          (Fin.cast (eihd_schurC_split ha) (finSumFinEquiv (finSumFinEquiv.symm
+            (Fin.cast (eihd_schurC_split ha).symm (Fin.cast eihd_M1_eq_Wext1 row))))) = row := by
+        rw [Equiv.apply_symm_apply]; simp only [Fin.cast_cast, Fin.cast_eq_self]
+      have hcolrec2 : Fin.cast eihd_M2_eq_Wext2.symm
+          (Fin.cast eihd_M2_eq_Wext2 col) = col := by simp only [Fin.cast_cast, Fin.cast_eq_self]
+      have hrowW : ∀ ri : Fin (schurC1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 row)) = Sum.inr ri →
+          Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (finSumFinEquiv (Sum.inr ri))) = row := by
+        intro ri hri; rw [← hri]; exact hrowrec1
+      have hrowL : ∀ ri : Fin (schurT1 M), finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 row)) = Sum.inl ri →
+          Fin.cast eihd_M1_eq_Wext1.symm (Fin.cast (eihd_schurC_split ha)
+            (finSumFinEquiv (Sum.inl ri))) = row := by
+        intro ri hri; rw [← hri]; exact hrowrec1
+      rcases hri : finSumFinEquiv.symm (Fin.cast (eihd_schurC_split ha).symm
+          (Fin.cast eihd_M1_eq_Wext1 row)) with ri | ri
+      · simp only [hri]
+        rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, Fin.cast eihd_M2_eq_Wext2 col))) = (ri, Fin.cast eihd_M2_eq_Wext2 col) from Equiv.symm_apply_apply _ _]
+        dsimp only
+        rw [← hri, Equiv.apply_symm_apply]
+        simp only [Fin.cast_cast, Fin.cast_eq_self]
+        rfl
+      · simp only [hri]
+        rw [show (finProdFinEquiv.symm (finProdFinEquiv (ri, Fin.cast eihd_M2_eq_Wext2 col))) = (ri, Fin.cast eihd_M2_eq_Wext2 col) from Equiv.symm_apply_apply _ _]
+        dsimp only
+        rw [← hri, Equiv.apply_symm_apply]
+        simp only [Fin.cast_cast, Fin.cast_eq_self]
+        rfl
+
 /-! ## The two coordinate-permutation certificates and the assembled `eihd_hreg`
 
 The composite `eihdOut.symm ∘ₗ eIn` corresponds (as a `LinearEquiv`) to
@@ -502,25 +816,98 @@ permutation:
 `IsCoordLE.trans` composes them to `IsCoordLE refl refl (eIn ha ≪≫ₗ (eihdOut ha).symm)`, i.e. the
 `∃ σ, … = funCongrLeft σ` that `hreg_of_exists_funCongrLeft` consumes.
 
-The `eIn` certificate (`isCoordLE_eIn`) is DONE + axiom-clean. The only remaining piece is the parallel
-`packStair` certificate `IsCoordLE (paramsEquivFlatLinear M) (stairChart M) (packStair ha)` (σ = the
-`paramsEquivFlatLinear`-`FlatIdx` reindex composed with the `packLayer0`/`packLayer1` reshapes), an
-`isCoordLE_of_read` whose read goes through `flatBlockLE.symm`/`rowSplitLE`/`prodComm`. Once banked, the
-final assembly is `(isCoordLE_eIn ha).trans (isCoordLE_packStair ha |>.symm |> …)` fed through
-`hreg_of_exists_funCongrLeft`. The single `sorry` below isolates that obligation. -/
+Both certificates are banked + axiom-clean: `isCoordLE_eIn` (the `eIn` half, via `bigToChartEin`) and
+`isCoordLE_packStair` (the `packStair` half, via `bigToFlatIdx` — the `paramsEquivFlatLinear`-`FlatIdx`
+reindex composed with the `packLayer0`/`packLayer1` reshapes, read through `flatBlockLE.symm`/`rowSplitLE`/
+`prodComm`). The final `eihd_hreg` assembly is
+`(isCoordLE_eIn ha).trans ((isCoordLE_packStair ha).symm.trans htriv)` (`htriv` the trivial
+`paramsEquivFlatLinear` chart factor) fed through `hreg_of_exists_funCongrLeft`. -/
+
+/-- **`packStair ha` is a coordinate permutation** — `IsCoordLE (paramsEquivFlatLinear M) (stairChart M)
+(packStair ha)`, with `σ = bigToFlatIdx ha ≪≫ Fintype.equivFin (FlatIdx M)`. The read is the per-block
+`packStair_read*` lemmas + the `rfl` `paramsEquivFlatLinear`-coordinate read, matched to `bigToFlatIdx`. -/
+theorem isCoordLE_packStair (ha : StructAdm M (tach M)) :
+    IsCoordLE (paramsEquivFlatLinear M) (stairChart M) (packStair ha) := by
+  refine isCoordLE_of_read ((bigToFlatIdx ha).trans (Fintype.equivFin (FlatIdx M))) ?_
+  intro f k
+  rcases k with v0 | (mW | mL) | e
+  · rcases v0 with mK | mN | mX | mE
+    · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f)) (Sum.inl (Sum.inl mK))
+            = ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).1
+              (finProdFinEquiv.symm mK).1 (finProdFinEquiv.symm mK).2 from
+          matChart_apply (schurT1 M) (schurT1 M) ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).1 mK
+        , packStair_readK, paramsEquivFlatLinear_symm_apply]
+      rfl
+    · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f))
+            (Sum.inl (Sum.inr (Sum.inl mN)))
+            = ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.1
+              (finProdFinEquiv.symm mN).1 (finProdFinEquiv.symm mN).2 from
+          matChart_apply (schurT1 M) (schurC1 M) ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.1 mN
+        , packStair_readN, paramsEquivFlatLinear_symm_apply]
+      rfl
+    · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f))
+            (Sum.inl (Sum.inr (Sum.inr (Sum.inl mX))))
+            = ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.1
+              (finProdFinEquiv.symm mX).1 (finProdFinEquiv.symm mX).2 from
+          matChart_apply (schurR1 M) (schurT1 M) ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.1 mX
+        , packStair_readX, paramsEquivFlatLinear_symm_apply]
+      rfl
+    · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f))
+            (Sum.inl (Sum.inr (Sum.inr (Sum.inr mE))))
+            = ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.2
+              (finProdFinEquiv.symm mE).1 (finProdFinEquiv.symm mE).2 from
+          matChart_apply (schurR1 M) (schurC1 M) ((packStair ha ((paramsEquivFlatLinear M).symm f)).1).2.2.2 mE
+        , packStair_readE, paramsEquivFlatLinear_symm_apply]
+      rfl
+  · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f))
+          (Sum.inr (Sum.inl (Sum.inl mW)))
+          = ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).1
+            (finProdFinEquiv.symm mW).1 (finProdFinEquiv.symm mW).2 from
+        matChart_apply (schurC1 M) (Wext M 2) ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).1 mW
+      , packStair_readW, paramsEquivFlatLinear_symm_apply]
+    rfl
+  · rw [show (stairChart M) ((packStair ha) ((paramsEquivFlatLinear M).symm f))
+          (Sum.inr (Sum.inl (Sum.inr mL)))
+          = ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).2
+            (finProdFinEquiv.symm mL).1 (finProdFinEquiv.symm mL).2 from
+        matChart_apply (schurT1 M) (Wext M 2) ((packStair ha ((paramsEquivFlatLinear M).symm f)).2.1).2 mL
+      , packStair_readLeaf, paramsEquivFlatLinear_symm_apply]
+    rfl
+  · exact e.elim0
 
 /-- **`eihd_hreg` — the regauge abs-det is `1`** (the `hreg` slot of `interiorDet_leaf_headline_eihd`).
 The composite `(eihdOut ha).symm ∘ₗ (eIn ha)` is a coordinate permutation `funCongrLeft σ` of the flat
 space (every constituent of `eIn`/`eihdOut` is a `→ℝ` coordinate bijection), hence measure-preserving
-with abs-det `1` (`hreg_of_exists_funCongrLeft`). The `eIn` half is `isCoordLE_eIn`; the `packStair`
-half (the isolated `sorry`) is the parallel `IsCoordLE (paramsEquivFlatLinear) (stairChart) (packStair)`. -/
+with abs-det `1` (`hreg_of_exists_funCongrLeft`), assembled from `isCoordLE_eIn` + `isCoordLE_packStair`
+via `IsCoordLE.trans`/`.symm` (`eihdOut = paramsEquivFlatLinear.symm ≪≫ₗ packStair`). -/
 theorem eihd_hreg (ha : StructAdm M (tach M)) :
     |LinearMap.det (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
         ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1 := by
   refine hreg_of_exists_funCongrLeft (eihdV M) (eIn ha) (eihdOut ha) ?_
-  -- eIn half banked (isCoordLE_eIn); packStair half remaining (see docstring). Assemble via
-  -- `IsCoordLE.trans` once `isCoordLE_packStair` is banked.
-  sorry
+  -- IsCoordLE refl refl (eIn ha ≪≫ₗ (eihdOut ha).symm) ⟹ ∃ σ, eihdOut.symm ∘ₗ eIn = funCongrLeft σ
+  have hcoord : IsCoordLE (LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ))
+      (LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ)) (eIn ha ≪≫ₗ (eihdOut ha).symm) := by
+    -- eihdOut = paramsEquivFlatLinear.symm ≪≫ₗ packStair, so eihdOut.symm = packStair.symm ≪≫ₗ paramsEquivFlatLinear
+    have heihd : (eihdOut ha).symm
+        = (packStair ha).symm ≪≫ₗ paramsEquivFlatLinear M := by
+      rw [eihdOut]; rfl
+    rw [heihd]
+    -- IsCoordLE (paramsEquivFlatLinear) refl (paramsEquivFlatLinear M): σ = refl
+    have htriv : IsCoordLE (paramsEquivFlatLinear M) (LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ))
+        (paramsEquivFlatLinear M) :=
+      ⟨Equiv.refl _, by ext g i; simp [LinearEquiv.symm_apply_apply]⟩
+    exact (isCoordLE_eIn ha).trans (((isCoordLE_packStair ha).symm).trans htriv)
+  obtain ⟨σ, hσ⟩ := hcoord
+  refine ⟨σ, ?_⟩
+  rw [show ((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+        ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
+      = ((eIn ha ≪≫ₗ (eihdOut ha).symm : (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] (Fin (flatDim M) → ℝ)) :
+          (Fin (flatDim M) → ℝ) →ₗ[ℝ] (Fin (flatDim M) → ℝ)) from rfl]
+  have := hσ
+  rw [show (LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ)).symm ≪≫ₗ (eIn ha ≪≫ₗ (eihdOut ha).symm)
+        ≪≫ₗ LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ)
+      = (eIn ha ≪≫ₗ (eihdOut ha).symm) from by ext g; rfl] at this
+  rw [this]
 
 end L2
 
