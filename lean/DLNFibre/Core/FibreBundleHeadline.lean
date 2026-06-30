@@ -3,6 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.FibreLocallyTrivial
 import DLNFibre.Core.FibreOverBaseTriv
+import DLNFibre.Core.RingTheory.Determinantal.Atlas
 
 /-!
 # `DLNFibre.Core.FibreBundleHeadline` — the over-base local-product-with-flatness capstone (S5)
@@ -128,6 +129,30 @@ noncomputable def overBaseChartDatum (d : Fin (N + 2) → ℕ) (r : ℕ)
   structMap := schurToDsigAt d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ
   triv := chartDsigAt_schurLocTensorEquiv d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ
   flat := chartDsigAt_flat_over_schurLoc d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ
+
+/-! ## The DLN bundle is an instance of the abstract `Algebra.StandardFibreChart` (P2.a)
+
+The per-pivot DLN over-base datum is exactly the network-free standard fibre model datum
+`Algebra.StandardFibreChart` of `DLNFibre.Core.RingTheory.Determinantal.Atlas`, at
+`Total = Away (chartDsigAt I.s I.t)`, `BaseLoc = SchurLoc`, `Fibre = sweepFibreRing`, with structure
+map `schurToDsigAt`. So the abstract Core datum is the honest home of the bundle's per-chart fibre
+model: the DLN layer instantiates it, dropping the `s/t/σ/τ` threading into one structure. -/
+
+/-- **The DLN per-pivot fibre model as an abstract standard fibre chart (P2.a instance).** The
+per-pivot DLN over-base datum (`overBaseChartDatum`) re-packaged as the network-free
+`Algebra.StandardFibreChart`: the structure map is `schurToDsigAt`, the over-base trivialization is
+`chartDsigAt_schurLocTensorEquiv`, the flatness is `chartDsigAt_flat_over_schurLoc`. This exhibits
+the DLN reduced-fibre bundle as an INSTANCE of the Core determinantal-atlas fibre model — the
+abstract datum (`StandardFibreChart`) is the honest, reusable home; the DLN chart is an instance. -/
+noncomputable def standardFibreChartOfPivot (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I : PivotDatum d r hp hq) :
+    Algebra.StandardFibreChart k
+      (Localization.Away (chartDsigAt (k := k) d r I.s I.t))
+      (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
+      (sweepFibreRing k d r hp hq) where
+  structMap := (overBaseChartDatum d r hp hq I).structMap
+  triv := (overBaseChartDatum d r hp hq I).triv
+  flat := (overBaseChartDatum d r hp hq I).flat
 
 /-! ## The over-base local-product structure over the rank-`= r` open -/
 
