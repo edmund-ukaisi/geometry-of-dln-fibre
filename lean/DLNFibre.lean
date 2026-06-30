@@ -323,12 +323,17 @@ import DLNFibre.Core.FibreGenericSmooth
 -- yet `locallyTrivial`.
 import DLNFibre.Core.RankMinorCover
 import DLNFibre.Core.FibreBundlePerMinor
--- Scope-3 (bundle transition cocycle, thread 19): the genuine ring-level transition `AlgEquiv` on
--- the per-minor principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` + full coherence (commutes/symm/
--- round-trip/triple-overlap cocycle), via localization initiality. The abstract `awayOverlap`/
--- `awayTriple` engine is network-free (spin-out candidate). DISCLAIMER: this cocycle is on the
--- AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the bundle is NOT
--- `locallyTrivial`.
+-- P1.a (det-atlas): the abstract transition cocycle for a principal-open cover of `Spec R` over an
+-- arbitrary `CommRing R` — `awayOverlap`/`awayOverlapTransition` + the three pairwise cocycle laws,
+-- the single-chart restriction (`chartToSwappedOverlap`), and the triple-overlap cocycle
+-- `awayTriple_cocycle`, all via localization initiality. Network-free, bare `Localization` namespace
+-- (Mathlib-mirror, L7). Re-homed verbatim from `FibreBundleTransition` §Abstract+§TripleOverlap.
+import DLNFibre.Core.RingTheory.Localization.Overlap
+-- Scope-3 (bundle transition cocycle, thread 19): the per-minor instantiation — the per-minor
+-- principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` with their `minorChartTransition` (= the
+-- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this
+-- cocycle is on the AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the
+-- bundle is NOT `locallyTrivial`.
 import DLNFibre.Core.FibreBundleTransition
 -- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric
 -- fact. C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime

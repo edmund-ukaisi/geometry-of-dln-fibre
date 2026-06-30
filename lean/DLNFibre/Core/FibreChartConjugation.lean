@@ -55,7 +55,7 @@ A `locallyTrivial` name additionally needs (Codex xhigh, decorrelated — the ge
 **transition cocycle on the per-pivot trivializations** — restricting the per-pivot charts to a
 double overlap `D(chartDsigAt s t · chartDsigAt s' t')` and identifying the restricted composite
 (`e_{s,t} ∘ e_{s',t'}⁻¹` *on that overlap*) with the ambient transition cocycle
-(`Core.FibreBundleTransition.awayOverlapTransition`). The per-pivot trivializations live in the same
+(`Localization.awayOverlapTransition`). The per-pivot trivializations live in the same
 standard schur ring, so they compose to a uniform normal form, but that is NOT the cocycle: the
 source localizations `Away (chartDsigAt s t)` and `Away (chartDsigAt s' t')` differ, and matching
 the restricted overlap composite with the *ambient* cocycle (over a different coordinate ring) is a

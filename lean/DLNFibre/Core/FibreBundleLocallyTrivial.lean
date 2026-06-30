@@ -64,7 +64,7 @@ at `k : Type` (the common ground; `ℂ` is `Type 0`, so this is harmless for the
 
 namespace DLNFibre.Core
 
-open MvPolynomial Matrix
+open MvPolynomial Matrix Localization
 open scoped TensorProduct
 
 universe u
