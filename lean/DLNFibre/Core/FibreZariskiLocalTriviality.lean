@@ -12,8 +12,8 @@ product over the rank-`= r` open (P2.d capstone)
 The Phase-2 capstone. The abstract predicate
 `Algebra.IsZariskiLocallyTrivialAffineProduct` (`Core.RingTheory.Determinantal.LocalTriviality`)
 names "locally a product over a principal-open cover of an open `U ⊆ Spec Base`". This module
-exhibits the **DLN reduced-fibre bundle** as a genuine, non-vacuous instance of it, over the
-rank-`= r` open `rankROpen ⊆ Spec (sweepSigmaRing)`.
+exhibits the **DLN reduced-fibre bundle** as a genuine (axiom-clean, inhabited) instance of it, over
+the rank-`= r` open `rankROpen ⊆ Spec (sweepSigmaRing)`.
 
 ## The instance
 
@@ -36,13 +36,15 @@ with:
 is the `Away (chartDsigAt I.s I.t)` of `standardFibreChartOfPivot` — the over-base datum slots into
 the `AtlasFibreChart` over `pivotAtlasChart`'s chart element with no coercion.
 
-## Non-vacuity (the point)
+## Inhabitation / satisfiability
 
 Every field of the instance is a banked, machine-checked DLN fact (`pivotAtlasChart`,
 `standardFibreChartOfPivot`, `iUnion_pivotDatum_basicOpen_eq_rankROpen`), so the instance is
-axiom-clean (`#print axioms` ⊆ `[propext, Classical.choice, Quot.sound]`). It is the genuine
-geometric witness that the abstract predicate is non-vacuous — "locally a product over a
-principal-open cover of the rank-`= r` open" is realized by the DLN bundle.
+axiom-clean (`#print axioms` ⊆ `[propext, Classical.choice, Quot.sound]`). It is an axiom-clean
+**inhabited instance**: the abstract predicate is **satisfiable** by the DLN bundle (its structure
+type is inhabited). Nonemptiness of `rankROpen` — that the local triviality is over a *nonempty*
+open — is a separate claim, NOT proved here (no `∃ P, P ∈ rankROpen` is exhibited; cf.
+`FibreBundleHeadline`'s Witness caveat).
 
 ## `name = content`: the open is load-bearing
 
@@ -126,15 +128,16 @@ theorem iUnion_pivotDatum_basicOpen_eq_rankROpen (d : Fin (N + 2) → ℕ) (r : 
 /-! ## The DLN bundle is a Zariski-locally-trivial affine product over the rank-`= r` open -/
 
 /-- **The DLN reduced-fibre bundle is a Zariski-locally-trivial affine product over the rank-`= r`
-open (P2.d capstone, non-vacuity witness).** For a fixed `(d, r)`, the abstract predicate
+open (P2.d capstone, inhabited-instance witness).** For a fixed `(d, r)`, the abstract predicate
 `Algebra.IsZariskiLocallyTrivialAffineProduct` holds for the DLN reduced-fibre bundle over
 `rankROpen d r ⊆ Spec (sweepSigmaRing)`: index type the pivots `PivotDatum d r hp hq`, chart family
 `pivotAtlasFibreChart` (per-pivot `AtlasFibreChart` — bare-`k` trivialization + over-base product +
 flatness), cover the `PivotDatum`-indexed scheme open-cover
 `iUnion_pivotDatum_basicOpen_eq_rankROpen`. Every field is a
-banked, machine-checked DLN fact, so the instance is axiom-clean — the genuine geometric witness
-that the abstract predicate is non-vacuous. The open `rankROpen` is load-bearing: a bundle over the
-closure `Σ̄^r` is false (the rank-`< r` boundary lies in no chart). -/
+banked, machine-checked DLN fact, so the instance is axiom-clean — an inhabited instance witnessing
+that the abstract predicate is satisfiable by the DLN bundle (nonemptiness of `rankROpen` is a
+separate, unproved claim). The open `rankROpen` is load-bearing: a bundle over the closure `Σ̄^r` is
+false (the rank-`< r` boundary lies in no chart). -/
 noncomputable def reducedFibre_isZariskiLocallyTrivialAffineProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     Algebra.IsZariskiLocallyTrivialAffineProduct k (sweepSigmaRing k d r)
@@ -149,7 +152,7 @@ noncomputable def reducedFibre_isZariskiLocallyTrivialAffineProduct (d : Fin (N 
     simpa only [pivotAtlasFibreChart, pivotAtlasChart_chartElt, pivotElt]
       using iUnion_pivotDatum_basicOpen_eq_rankROpen (k := k) d r hp hq
 
-/-! ## Non-vacuity witnesses -/
+/-! ## Inhabitation witnesses -/
 
 section Witness
 

@@ -114,7 +114,9 @@ any two charts `i, j` of a Zariski-locally-trivial affine product, the pairwise 
 target/model overlap presentations is the identity — this is `Algebra.AtlasChart.overlapTransition_
 trans_symm` at `(chart i).toAtlasChart`, `(chart j).toAtlasChart`. It is a PROVEN property of the
 predicate, not a field the instance must discharge: the cocycle is automatically satisfied for any
-atlas of `AtlasChart`s. -/
+atlas of `AtlasChart`s. The cocycle lives on the bare-`k` `trivK`/`M` presentation
+(`overlapTransition` conjugates through `trivK`), DECOUPLED from the over-`BaseLoc` `fibreModel.triv`
+product — it is NOT an over-base-product cocycle. -/
 theorem overlapTransition_trans_symm
     (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j : A.ι) :
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).trans
