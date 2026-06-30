@@ -403,17 +403,71 @@ theorem readK_eq_of_kLDU_eq (ha : StructAdm M (tach M))
   show (Matrix.of (readK M (tach M) ha y k)) i i ≠ 0
   rw [Matrix.of_apply, readK]; exact hqy _
 
-/-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` is injective on the
-blown-up domain `pbo '' injDom`. With `interiorLive_E = univ` the domain forces ALL coords nonzero, so
-Step 1 (`readK_eq_of_kLDU_eq`) recovers every K-block; the remaining per-coordinate glue (K-slot →
-`readK` entry via the slot decode; non-K → the `kLDU` identity arm) closes `y = y'`. STATED `sorry`
-(the per-coordinate K-slot-decode glue around the banked Step 1). -/
+/-- **Step 2 of kLDU injectivity — the per-coordinate recovery** — given `readK y = readK y'` (Step 1)
+and `kLDU y = kLDU y'`, the value `y q = y' q` at every coordinate `q`. The kLDU match on
+`chartIdxEquiv q`: the K-arm reads `kLens(readK · k)` but `y q` is recovered from the `readK`-equality
+via the slot round-trip (`readK z k (finProd.symm qK) = z q`, a `chartIdxEquiv`/`frameSplitEquiv`/
+`finProdFinEquiv` round-trip); the X/N/E and lift arms are the `kLDU` identity arm (`y q = y' q`
+directly from `hkeq`). -/
+theorem kLDU_injStep2 (ha : StructAdm M (tach M)) (y y' : Fin (routeMAmbient M) → ℝ)
+    (hRKall : ∀ k : Fin 2,
+      Matrix.of (readK M (tach M) ha y k) = Matrix.of (readK M (tach M) ha y' k))
+    (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') (q : Fin (routeMAmbient M)) :
+    y q = y' q := by
+  have hq := congrFun hkeq q
+  rw [kLDU, kLDU] at hq
+  match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL q with
+  | ⟨k, Sum.inl s⟩ =>
+    rw [hc] at hq; simp only at hq
+    match heqf : frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      have hslot : ∀ z : Fin (routeMAmbient M) → ℝ,
+          z q = readK M (tach M) ha z k (finProdFinEquiv.symm qK).1 (finProdFinEquiv.symm qK).2 := by
+        intro z; rw [readK, Prod.mk.eta, finProdFinEquiv.apply_symm_apply qK,
+          ← heqf, Equiv.symm_apply_apply, ← hc, Equiv.symm_apply_apply]
+      rw [hslot y, hslot y']
+      exact congrFun (congrFun (Matrix.of.injective (hRKall k))
+        (finProdFinEquiv.symm qK).1) (finProdFinEquiv.symm qK).2
+    | Sum.inl (Sum.inl (Sum.inr e)) => rw [heqf] at hq; exact hq
+    | Sum.inl (Sum.inr e) => rw [heqf] at hq; exact hq
+    | Sum.inr e => rw [heqf] at hq; exact hq
+  | ⟨k, Sum.inr s⟩ => rw [hc] at hq; simp only at hq; exact hq
+
+/-- **`kLDU` injective off the zero locus** — all-coords-nonzero `y` + `kLDU y = kLDU y'` ⟹ `y = y'`
+(Step 1 `readK_eq_of_kLDU_eq` ⊕ Step 2 `kLDU_injStep2`, funext). -/
+theorem kLDU_inj_of_nonzero (ha : StructAdm M (tach M)) (y y' : Fin (routeMAmbient M) → ℝ)
+    (hqy : ∀ q, y q ≠ 0) (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') : y = y' := by
+  funext q
+  exact kLDU_injStep2 ha y y' (fun k => readK_eq_of_kLDU_eq ha y y' hqy hkeq k) hkeq q
+
+/-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` injective on `pbo '' injDom`.
+With `interiorLive_E = univ`, `injDom` forces ALL coords nonzero; `pivotBlowupOn` preserves that (scales
+by `x₀ leafPivot ≠ 0`), so `kLDU_inj_of_nonzero` recovers the blown-up point, then `pivotBlowupOn_injOn`
+recovers the source. -/
 theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     Set.InjOn (kLDU M (tach M) ha)
       (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
-        '' interiorLiveInjDom ha h0r h0c) :=
-  sorry
+        '' interiorLiveInjDom ha h0r h0c) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  -- `injDom` (E = univ) gives all coords nonzero; `pbo` preserves it.
+  have hpbo_ne : ∀ x₀ : Fin (routeMAmbient M) → ℝ, x₀ ∈ interiorLiveInjDom ha h0r h0c →
+      ∀ q, pivotBlowupOn (activeM M ha) p₀ x₀ q ≠ 0 := by
+    intro x₀ hx₀ q
+    have hall : ∀ j, x₀ j ≠ 0 := fun j => hx₀.2 j (by simp [interiorLive_E])
+    rw [pivotBlowupOn]
+    split
+    · exact hall _
+    · split
+      · exact mul_ne_zero (hall _) (hall _)
+      · exact hall _
+  rintro x ⟨x₀, hx₀, rfl⟩ x' ⟨x₀', hx₀', rfl⟩ hkeq
+  have hpb : pivotBlowupOn (activeM M ha) p₀ x₀ = pivotBlowupOn (activeM M ha) p₀ x₀' :=
+    kLDU_inj_of_nonzero ha _ _ (hpbo_ne x₀ hx₀) hkeq
+  -- `pbo` injective off `{x p₀ = 0}` (the domain excludes it); recover `x₀ = x₀'` ⟹ images equal.
+  have hsub : interiorLiveInjDom ha h0r h0c
+      ⊆ interiorLiveInjDom ha h0r h0c \ {x | x p₀ = 0} := fun u hu => ⟨hu, hu.1⟩
+  exact congrArg _ ((pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub hx₀ hx₀' hpb)
 
 /-- **injOn atom #2a (my deliverable, the genuine content)** — `BparamsLeaf` injective on the
 kLDU-image of `pbo '' injDom`: the off-radial chart-param recovery from the per-layer `Agen 1`
