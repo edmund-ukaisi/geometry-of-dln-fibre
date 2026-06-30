@@ -88,5 +88,15 @@ PASS (rank-tie *proved* via `finrank_range_deltaT`, not assumed; `deltaT` confin
 byte-identical, re-gate green (3826) + axioms clean; Codex (xhigh) concurred on all four sub-questions. P2.4 is
 bedrock.
 
-_Executing: P2.5 split into P2.5a (B3 `CotangentInjection`, H2 — guard-first) + P2.5b (B4 `SmoothCotangentDim`,
-smooth point). P2.5a dispatched._
+**P2.5a (B3 `CotangentInjection`) landed (`21908723`).** Unlike H1, the **forward H2 pins cleanly** — the
+`InfinitesimalAction` hypothesis carries `dirDeriv`/`c1coord` directly, so the coordinate test recovers `δφ`'s
+components (no adjoint, no rank-tie, no `deltaT`). B3 `finrank(range δ) ≤ finrank(cotangent)` is a clean
+rank-nullity (`ker cotPairing ≤ ker δ` + `dual_finrank_eq`), `[FiniteDimensional k m.Cotangent]` the only input
+(smooth-point deferred to B4). DLN discharge `dlnInfinitesimalAction` re-derives R5 signature-unchanged (dead R3–R5
+chain collapsed). Forward-vs-transpose is genuinely model/hypothesis-dependent (L8): H1 needed the transpose, H2
+does not. Formaliser self-spawned decorrelated review SURVIVED + Codex; controller code-inspection confirmed
+honesty + non-vacuity (the DLN instance is a built witness) → accepted.
+
+_Executing: P2.5b (B4 `SmoothCotangentDim`, the `= varietyDim` half — smooth `k`-point + dense `k`-orbit)
+dispatched; controller decorrelated review reserved for it (the non-alg-closed-`k` density sub-crux). Then P2.6
+assembles the squeeze._
