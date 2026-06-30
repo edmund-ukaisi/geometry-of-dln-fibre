@@ -32,8 +32,8 @@ namespace DLNFibre.Core
 
 open Module LinearMap in
 /-- **Base change preserves the rank of a linear map** (the **linear-map** base-change-rank
-variant, distinct from the entrywise-matrix variant `Matrix.rank_map_eq_of_injective` and from the
-differential-family-span variant in `JacobianTrdeg.diffIndepCriterion_proof`). For `f : V →ₗ[k] W`
+variant, distinct from the entrywise-matrix `Matrix.rank_map_eq_of_injective` and the flat
+differential-family-span variant — see the module docstring). For `f : V →ₗ[k] W`
 between `k`-modules with `range f` finite-dimensional, and a field extension `K/k`, the base-changed
 map `f.baseChange K` (`= K ⊗ f`) has `finrank K (range (f.baseChange K)) = finrank k (range f)`.
 Factor `f = subtype ∘ rangeRestrict`; base change preserves the surjection (`lTensor_surjective`, so
