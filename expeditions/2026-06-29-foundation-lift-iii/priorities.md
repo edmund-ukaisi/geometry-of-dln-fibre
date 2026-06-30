@@ -6,8 +6,12 @@ Controller proposes by VOI; **operator edits this file directly**. Build-the-bui
 
 ## Phase 1 — differential-algebra interface  ·  branch `fl3-p1` (off `origin/dev`)
 
-~70% already built + DLN-free. Mostly re-home / consolidate / extract-V3 / name-hygiene. Homes:
-`Core.RingTheory.Kaehler` + `Core.Dimension.Trdeg`.
+~70% already built + DLN-free. Mostly re-home / consolidate / name-hygiene. Homes:
+`Core.RingTheory.Kaehler` + `Core.Dimension.Trdeg`. **Live status → [`threads.md`](threads.md).** As of
+the last tick: P1.1 ✅`333a038b`, P1.2 ✅reviewed (leave `[CharZero]` — see below), P1.3/P1.4 ✅verified,
+P1.5/P1.6-V2 ✅`1dc6c698`, P1.6-V3 ✅resolved (Mathlib's, no extraction), P1.7+P1.2-finish+P1.6-V1 🔄
+(folded "P1-final" rung). **P1.2 crux outcome:** `[CharZero]` is the exact line — `[PerfectField]` is FALSE
+(`𝔽_p[T]`, `x=T^p`); char-`p` criterion roadmapped in [`synthesis.md`](synthesis.md), not a chore.
 
 | rung | item | source on dev | target (Mathlib-mirror) | status |
 |------|------|---------------|--------------------------|--------|

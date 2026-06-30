@@ -17,4 +17,11 @@ The proven craft from #14 (dimension stack) and FL-II carries over — see
 
 New lessons specific to this expedition accumulate below.
 
-- _(none yet)_
+- **L6 — splitting a file can sever an *incidental transitive instance* import.** A monolithic file often
+  acquires instances (`Module.Free`, `Module.Flat`, …) transitively via an import it needs for *one* half of
+  its content. Splitting that half out severs the chain, so the other half loses instances it silently relied
+  on — surfacing only in the full build, as a missing-instance error, not in the moved declaration's own text.
+  Fix with the **honest minimal import** that actually provides the instance (here `Mathlib.LinearAlgebra.Basis.VectorSpace`
+  → `Module.Free.of_divisionRing` → `Flat`), not by re-importing the heavy module the split removed. Generalises
+  L2 (transitive *consumer* sweep) to transitive *instance-provider* breaks: a green full-aggregator build after
+  a split is necessary, and a missing-instance error there is the expected symptom, not a regression.
