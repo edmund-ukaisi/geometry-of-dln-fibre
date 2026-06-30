@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta source-measure adapter
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-source-measure-adapter.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-source-measure-adapter.md`.
+Review:
+`review-a2-case2-passive-theta-source-measure-adapter.md`.
+
+Lean now specializes the generic passive selected-entry source-measure theorem
+to the concrete full theta coordinate domain:
+
+```text
+case2PassiveThetaEndpointSourceChart
+case2PassiveThetaEndpointResidualCoordEquiv
+case2PassiveThetaEndpointInverseReadout
+exists_open_measure_map_case2PassiveThetaEndpointSourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+The theorem takes an arbitrary measure on `Case2PassiveTheta`, restricts it to
+an existential open punctured determinant-sector neighborhood `V`, and proves
+that the chart-produced source measure is supported on the retained-passive
+p.13 local source and has selected residual inverse readout equal to the
+`Case2PassiveTheta.yNext` marginal.
+
+Focused direct warning check, focused module build, full local build,
+`scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+direct axiom probe passed.  The public theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Banach` and
+xhigh Lean/API reviewer `Popper` returned PASS.
+
+Nonclaims: no determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, dominated
+passive-sector comparison, finite-integral transfer, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
+Next frontier: instantiate the theta-domain measure with a product-style
+passive measure and selected-entry weighted box, proving domination of the
+restricted `yNext` marginal.  Do not claim exact marginal equality without a
+product-saturated sector theorem.
+
 ## 2026-06-30 A2 Case 2 passive theta coordinate domain
 
 Reproduction:

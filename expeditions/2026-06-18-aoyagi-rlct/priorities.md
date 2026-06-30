@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-measure adapter
+
+The concrete passive-theta source-measure adapter has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+It specializes the generic arbitrary-passive-parameter theorem to
+`eta = Case2PassiveTheta.PassiveFields`.
+
+Public names:
+
+```text
+case2PassiveThetaEndpointSourceChart
+case2PassiveThetaEndpointResidualCoordEquiv
+case2PassiveThetaEndpointInverseReadout
+exists_open_measure_map_case2PassiveThetaEndpointSourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+The theorem consumes an arbitrary theta-domain `sourceMeasure`, restricts it to
+an existential open punctured determinant-sector neighborhood `V`, and proves
+only local-source support plus the selected residual inverse-readout marginal
+identity
+
+```text
+Measure.map inverseReadout μ =
+  Measure.map Case2PassiveTheta.yNext (sourceMeasure.restrict V).
+```
+
+The passive-fields `MeasurableSpace` and `OpensMeasurableSpace` assumptions
+are explicit.  This is not a construction of determinant-chart Haar measure,
+not source-prior transport, and not exact/dominated passive-sector transport.
+
+Focused direct warning check, focused module build, full local build, no-sorry
+audit, whitespace check, aggregator direct warning check, and direct axiom
+probe passed.  The public theorem reports only `[propext, Classical.choice,
+Quot.sound]`.  Xhigh source/scope reviewer `Banach` and xhigh Lean/API
+reviewer `Popper` returned PASS, recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-source-measure-adapter.md`.
+
+Next source-moving frontier: instantiate the theta-domain measure with a
+product-style passive measure and a selected-entry weighted box, using
+finite-scalar domination of restricted `yNext` marginals rather than claiming
+exact marginal equality unless product-saturated sector structure is proved.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta coordinate domain
 
 The first passive-sector Lean slice has landed in

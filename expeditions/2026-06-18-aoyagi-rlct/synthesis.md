@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Source-Measure Adapter - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` specializes the existing
+generic passive selected-entry source-measure theorem to the concrete full
+theta coordinate domain:
+
+```text
+Case2PassiveTheta = Case2PassiveTheta.PassiveFields × Case2PassiveTheta.Center
+```
+
+New public names:
+
+```text
+case2PassiveThetaEndpointSourceChart
+case2PassiveThetaEndpointResidualCoordEquiv
+case2PassiveThetaEndpointInverseReadout
+exists_open_measure_map_case2PassiveThetaEndpointSourceChart_puncturedSector_inverseReadout_eq_yNext
+```
+
+The theorem takes an arbitrary measure on theta coordinates.  Around a base
+theta point in the determinant sector with nonzero selected pivot, it returns
+an open punctured determinant-sector neighborhood `V`.  For
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+the theorem proves support on the retained-passive p.13 local source and exact
+selected residual inverse-readout as the `Case2PassiveTheta.yNext` marginal of
+the restricted theta measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-source-measure-adapter.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-source-measure-adapter.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-source-measure-adapter.md
+```
+
+Verification passed: direct `lake env lean -E warning` for the new module and
+aggregator, focused module build, full local `lake build DLNFibre`,
+`scripts/sorries`, `git diff --check`, and direct axiom probe.  The full build
+has only pre-existing warning noise.  Xhigh source/scope reviewer `Banach` and
+xhigh Lean/API reviewer `Popper` returned PASS.
+
+Boundary: no determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, dominated
+passive-sector comparison, finite-integral transfer, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
+Next frontier: product-style theta measures.  Use domination of the restricted
+`yNext` marginal by finite passive mass times the selected-entry weighted
+signed-box measure.  Do not claim exact marginal equality unless the chosen
+sector is proved product-saturated.
+
 ## Latest A2 Case 2 Passive Theta Coordinate Domain - 2026-06-30
 
 `RetainedPassiveCase2PassiveSector.lean` now gives a concrete full

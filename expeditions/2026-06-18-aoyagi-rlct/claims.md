@@ -140,6 +140,35 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta source-measure adapter,
+  2026-06-30.** Lean now specializes the generic passive selected-entry
+  source-measure theorem to the concrete full theta coordinate domain in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+  It defines
+  `case2PassiveThetaEndpointSourceChart`,
+  `case2PassiveThetaEndpointResidualCoordEquiv`, and
+  `case2PassiveThetaEndpointInverseReadout`, and proves
+  `exists_open_measure_map_case2PassiveThetaEndpointSourceChart_puncturedSector_inverseReadout_eq_yNext`.
+  The theorem consumes an arbitrary theta-domain `sourceMeasure` and returns an
+  open punctured determinant-sector neighborhood `V` such that the chart-produced
+  source measure is supported on the retained-passive p.13 local source and its
+  selected residual inverse readout pushes forward to the
+  `Case2PassiveTheta.yNext` marginal of `sourceMeasure.restrict V`.
+  The passive-fields `MeasurableSpace` and `OpensMeasurableSpace` hypotheses
+  are explicit.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-source-measure-adapter.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-source-measure-adapter.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-source-measure-adapter.md`.
+  Focused direct warning check, focused module build, full local build,
+  `scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Banach` and
+  xhigh Lean/API reviewer `Popper` returned PASS.  This proves no
+  determinant-chart Haar transport, raw-order Haar transport, source-prior
+  transport, exact passive-sector pushforward, dominated passive-sector
+  comparison, finite-integral transfer, source-image equality, source-rank
+  coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive theta coordinate domain,
   2026-06-30.** Lean now proves the first full passive-sector coordinate-domain
   slice in
