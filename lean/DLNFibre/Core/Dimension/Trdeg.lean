@@ -33,7 +33,7 @@ For `x ∈ Algebra.adjoin k (Set.range g)` in a field `K`, `D_k(x)` is a `K`-com
 the Leibniz rule keeps products inside, additivity keeps sums) containing every `g_i`, so it
 contains the whole adjoin. -/
 theorem D_adjoin_mem_span (k K : Type u) {ι : Type*} [Field k] [Field K] [Algebra k K]
-    [Fintype ι] (g : ι → K) {x : K} (hx : x ∈ Algebra.adjoin k (Set.range g)) :
+    (g : ι → K) {x : K} (hx : x ∈ Algebra.adjoin k (Set.range g)) :
     KaehlerDifferential.D k K x ∈
       Submodule.span K (Set.range fun i ↦ KaehlerDifferential.D k K (g i)) := by
   set W := Submodule.span K (Set.range fun i ↦ KaehlerDifferential.D k K (g i)) with hW
