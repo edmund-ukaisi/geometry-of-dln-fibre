@@ -348,7 +348,7 @@ theorem dln_hchart_residual (hopt : prod H v = B) (hr : B.rank = r)
       ContDiff ℝ 1 q ∧
       rlctAt H (dlnLoss H B) v
         = rlctAtOn (fun p : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) =>
-            (∑ i, p.1 i ^ 2) + (∑ i, q p i ^ 2)) ((0 : Fin m → ℝ), (splitHomeo hec 0).2) := by
+            (∑ i, p.1 i ^ 2) + (∑ i, q p i ^ 2)) ((0 : Fin m → ℝ), t0) := by
   classical
   -- the concrete chart `Φ`, its `≃L` derivative, smoothness, fix.
   set Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) := chartΦ H B v er ec with hΦdef
