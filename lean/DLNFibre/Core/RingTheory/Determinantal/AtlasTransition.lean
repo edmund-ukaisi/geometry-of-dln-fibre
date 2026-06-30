@@ -3,6 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.RingTheory.Localization.Overlap
 import DLNFibre.Core.RingTheory.Determinantal.Atlas
+import DLNFibre.Core.Algebra.AlgEquiv.Groupoid
 
 /-!
 # `Algebra` — overlap transition maps of a constructive pivot-chart atlas
@@ -175,6 +176,32 @@ noncomputable def overlapTransition (C D : AtlasChart k Base M) :
     targetChartLoc C D ≃ₐ[k] targetChartLoc D C :=
   (overlapTriv C D).symm.trans
     ((chartOverlapTransitionK C D).trans (overlapTriv D C))
+
+/-! ## The target-side overlap round-trip (cocycle compatibility) -/
+
+/-- **The target-side overlap transition round-trips to the identity (cocycle compatibility).** The
+pairwise round trip `(C, D)` then `(D, C)` on the target/model presentations is the identity on
+`targetChartLoc C D`. Unfolding `overlapTransition`, the composite collapses by the `AlgEquiv`
+groupoid laws WITHOUT entering localization elements: the inner `overlapTriv D C ≪≫ (overlapTriv D
+C).symm = refl`, then the base-side round-trip `chartOverlapTransitionK C D ≪≫
+chartOverlapTransitionK D C = refl`, then `(overlapTriv C D).symm ≪≫ overlapTriv C D = refl`. -/
+theorem overlapTransition_trans_symm (C D : AtlasChart k Base M) :
+    (overlapTransition C D).trans (overlapTransition D C) = AlgEquiv.refl (R := k) := by
+  simp only [overlapTransition, AlgEquiv.trans_assoc]
+  rw [← AlgEquiv.trans_assoc (overlapTriv D C) (overlapTriv D C).symm,
+    AlgEquiv.self_trans_symm, AlgEquiv.refl_trans,
+    ← AlgEquiv.trans_assoc (chartOverlapTransitionK C D) (chartOverlapTransitionK D C),
+    chartOverlapTransitionK_trans_symm, AlgEquiv.refl_trans,
+    AlgEquiv.symm_trans_self]
+
+/-- **The inverse of the target-side overlap transition is the swapped transition.**
+`(overlapTransition C D).symm = overlapTransition D C` — the cocycle round-trip
+(`overlapTransition_trans_symm`) read as a characterization of the inverse. -/
+theorem overlapTransition_symm (C D : AtlasChart k Base M) :
+    (overlapTransition C D).symm = overlapTransition D C := by
+  rw [← AlgEquiv.trans_refl (overlapTransition C D).symm,
+    ← overlapTransition_trans_symm C D, ← AlgEquiv.trans_assoc,
+    AlgEquiv.symm_trans_self, AlgEquiv.refl_trans]
 
 end AtlasChart
 
