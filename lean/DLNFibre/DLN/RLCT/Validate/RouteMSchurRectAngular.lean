@@ -438,4 +438,142 @@ theorem ScCarve_rect_eq (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 
     rw [hib]; exact RmatRectNorm_carve_b m n N hN hm hn hmn p M v b
   rw [hM22, hg, hbb, bgShiftRect]
 
+/-! ## The inner-`S` integral interface `innerSRect` + the pivot-normalised CoV (3b-norm) -/
+
+/-- The inner angular `S`-integral at the angular matrix `RmatRect m n pv y`:
+`innerSRect m n p c' T pv y = ∫_{S∈matBox n p T} frobSq (RmatRect · S)^{−c'}` (`S` is `n × p`, the
+contracted dim `n` = `Δ`'s column count). The asymmetric `innerSGen`. -/
+noncomputable def innerSRect (m n p : ℕ) (c' : ℝ) (T : ℝ) (pv : Fin (m * n)) (y : Fin (m * n) → ℝ) :
+    ℝ≥0∞ :=
+  ∫⁻ S in matBox n p T, ENNReal.ofReal ((frobSq (rmatMul (RmatRect m n pv y) S)) ^ (-c'))
+
+/-- `innerSRect` is `y pv`-invariant: `RmatRect m n pv y` reads `y i` only for `i ≠ pv`. -/
+theorem innerSRect_offpivot (m n p : ℕ) (c' : ℝ) (T : ℝ) (pv : Fin (m * n)) (y y' : Fin (m * n) → ℝ)
+    (h : ∀ i, i ≠ pv → y i = y' i) : innerSRect m n p c' T pv y = innerSRect m n p c' T pv y' := by
+  have hR : RmatRect m n pv y = RmatRect m n pv y' := by
+    funext i j; rw [RmatRect_entry, RmatRect_entry]
+    by_cases hij : eRect m n (i, j) = pv
+    · rw [if_pos hij, if_pos hij]
+    · rw [if_neg hij, if_neg hij]; exact h _ hij
+  rw [innerSRect, innerSRect, hR]
+
+/-- `innerSRect m n p c' T pv` is measurable in `y`. -/
+theorem measurable_innerSRect (m n p : ℕ) (c' : ℝ) (T : ℝ) (pv : Fin (m * n)) :
+    Measurable (innerSRect m n p c' T pv) := by
+  unfold innerSRect
+  apply Measurable.lintegral_prod_right (f := fun y S =>
+    ENNReal.ofReal ((frobSq (rmatMul (RmatRect m n pv y) S)) ^ (-c')))
+  apply ENNReal.measurable_ofReal.comp
+  apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+  unfold frobSq rmatMul
+  refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+  refine Measurable.pow_const (Finset.measurable_sum _ (fun k _ => ?_)) 2
+  refine Measurable.mul ?_ ((measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd))
+  have : Measurable (fun y : Fin (m * n) → ℝ => RmatRect m n pv y i k) := by
+    unfold RmatRect
+    show Measurable (fun y : Fin (m * n) → ℝ =>
+      (matToFlatRect m n).symm (fun l => if l = pv then 1 else y l) i k)
+    have hidx : ∀ y : Fin (m * n) → ℝ,
+        (matToFlatRect m n).symm (fun l => if l = pv then 1 else y l) i k
+          = (fun l => if l = pv then 1 else y l) (eRect m n (i, k)) := fun y => rfl
+    simp only [hidx]
+    by_cases hp : eRect m n (i, k) = pv
+    · simp only [if_pos hp]; exact measurable_const
+    · simp only [if_neg hp]; exact measurable_pi_apply _
+  exact this.comp measurable_fst
+
+/-- `frobSq (R·S)` is invariant under a row-perm `σr` of `R` (`Fin m`) + a simultaneous col-perm `σc`
+of `R` (`Fin n`) = row-perm of `S`. The rectangular `frobSq_rmatMul_permG`. -/
+theorem frobSq_rmatMul_permRect {m n p : ℕ} (R : Fin m → Fin n → ℝ) (S : Fin n → Fin p → ℝ)
+    (σr : Fin m ≃ Fin m) (σc : Fin n ≃ Fin n) :
+    frobSq (rmatMul R S)
+      = frobSq (rmatMul (fun a c => R (σr a) (σc c)) (fun k j => S (σc k) j)) := by
+  unfold frobSq rmatMul
+  rw [← Equiv.sum_comp σr (fun a => ∑ j, (∑ k, R a k * S k j) ^ 2)]
+  refine Finset.sum_congr rfl (fun a _ => ?_)
+  refine Finset.sum_congr rfl (fun j _ => ?_)
+  congr 1
+  rw [← Equiv.sum_comp σc (fun k => R (σr a) k * S k j)]
+
+/-- The `S` row-permutation CoV on `matBox n p T`: permuting the `Fin n` row-index of `S` by `σc` is
+measure-preserving (`piCongrLeft`) and the box is `σc`-invariant. The rectangular
+`matBox_rowperm_lintegralG`. -/
+theorem matBox_rowperm_lintegralRect {n p : ℕ} (T : ℝ) (σc : Fin n ≃ Fin n)
+    (f : (Fin n → Fin p → ℝ) → ℝ≥0∞) :
+    (∫⁻ S in matBox n p T, f S) = ∫⁻ S in matBox n p T, f (fun k j => S (σc k) j) := by
+  set E := MeasurableEquiv.piCongrLeft (fun _ : Fin n => Fin p → ℝ) σc with hE
+  have hmp : MeasurePreserving E.symm volume volume :=
+    (volume_measurePreserving_piCongrLeft (fun _ : Fin n => Fin p → ℝ) σc).symm E
+  have hpre : matBox n p T = E.symm ⁻¹' (matBox n p T) := by
+    ext S
+    simp only [Set.mem_preimage, matBox, Set.mem_setOf_eq]
+    constructor
+    · intro h i k; exact h (σc i) k
+    · intro h i k
+      have := h (σc.symm i) k
+      rw [show E.symm S (σc.symm i) k = S i k from by
+        show S (σc (σc.symm i)) k = S i k; rw [Equiv.apply_symm_apply]] at this
+      exact this
+  have key := hmp.setLIntegral_comp_preimage_emb E.symm.measurableEmbedding f (matBox n p T)
+  have hrhs : (∫⁻ S in matBox n p T, f (fun k j => S (σc k) j))
+      = ∫⁻ S in matBox n p T, f (E.symm S) := rfl
+  rw [hrhs]
+  rw [← hpre] at key
+  exact key.symm
+
+/-- **`innerSRect` in the pivot-normalised form.** `innerSRect m n p c' T pv (…symm(0,z)) =
+∫_{S∈matBox n p T} frobSq(RmatRectNorm·S)^{−c'}`. The asymmetric `innerSGen_eq_norm`. -/
+theorem innerSRect_eq_norm (m n N p : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (c' : ℝ) (T : ℝ) (pv : Fin (m * n)) (z : Fin N → ℝ) :
+    innerSRect m n p c' T pv ((piRatioRect m n N hN pv).symm (0, z))
+      = ∫⁻ S in matBox n p T,
+          ENNReal.ofReal ((frobSq (rmatMul (RmatRectNorm m n N hN hm hn pv z) S)) ^ (-c')) := by
+  set y := (piRatioRect m n N hN pv).symm (0, z) with hy
+  set σr := Equiv.swap ((eRect m n).symm pv).1 (⟨0, by omega⟩ : Fin m) with hσr
+  set σc := Equiv.swap ((eRect m n).symm pv).2 (⟨0, by omega⟩ : Fin n) with hσc
+  rw [innerSRect]
+  rw [matBox_rowperm_lintegralRect T σc
+    (fun S => ENNReal.ofReal ((frobSq (rmatMul (RmatRectNorm m n N hN hm hn pv z) S)) ^ (-c')))]
+  refine lintegral_congr (fun S => ?_)
+  congr 2
+  exact frobSq_rmatMul_permRect (RmatRect m n pv y) S σr σc
+
+/-- The rectangular degree-2 radial homogeneity `frobSq ((a•R)·S) = a²·frobSq (R·S)` for
+`R : Fin m → Fin n` (the asymmetric `radialDelta_loss_factor`; pure `ring`). -/
+theorem radialDelta_loss_factor_rect {m n p : ℕ} (a : ℝ) (R : Fin m → Fin n → ℝ)
+    (S : Fin n → Fin p → ℝ) :
+    frobSq (rmatMul (fun i k => a * R i k) S) = a ^ 2 * frobSq (rmatMul R S) := by
+  rw [show rmatMul (fun i k => a * R i k) S = fun i j => a * rmatMul R S i j from by
+    funext i j; unfold rmatMul; rw [Finset.mul_sum]; exact Finset.sum_congr rfl (fun k _ => by ring)]
+  unfold frobSq
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun j _ => ?_); ring
+
+/-- **The radial pull-out** (degree-2 homogeneity): `gFlatRect c' T (blowup) =
+∫_S ((y pv)²·frobSq(RmatRect·S))^{−c'}`. Bridges the cover (item 2) to `innerSRect`. The asymmetric
+`gFlatG_blowup_radial`. -/
+theorem gFlatRect_blowup_radial (m n p : ℕ) (c' : ℝ) (T : ℝ) (pv : Fin (m * n))
+    (y : Fin (m * n) → ℝ) :
+    gFlatRect m n p c' T (pivotBlowupOn (Finset.univ : Finset (Fin (m * n))) pv y)
+      = ∫⁻ S in matBox n p T,
+          ENNReal.ofReal (((y pv) ^ 2 * frobSq (rmatMul (RmatRect m n pv y) S)) ^ (-c')) := by
+  unfold gFlatRect RmatRect
+  refine lintegral_congr (fun S => ?_)
+  congr 1
+  have hbl : (matToFlatRect m n).symm (pivotBlowupOn (Finset.univ : Finset (Fin (m * n))) pv y)
+      = fun a b => (y pv) * ((matToFlatRect m n).symm (fun i => if i = pv then 1 else y i)) a b := by
+    funext a b
+    show (matToFlatRect m n).symm (pivotBlowupOn (Finset.univ : Finset (Fin (m * n))) pv y) a b = _
+    rw [show pivotBlowupOn (Finset.univ : Finset (Fin (m * n))) pv y
+        = (fun i => (y pv) * (if i = pv then 1 else y i)) from by
+      funext i; unfold pivotBlowupOn
+      by_cases hi : i = pv
+      · subst hi; simp
+      · simp [hi]]
+    rfl
+  rw [hbl, radialDelta_loss_factor_rect (y pv)
+    ((matToFlatRect m n).symm (fun i => if i = pv then 1 else y i)) S]
+
 end DLNFibre.DLN.RLCT
