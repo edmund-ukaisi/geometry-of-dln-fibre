@@ -10,6 +10,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
+import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
 import DLNFibre.DLN.RLCT.Foundations.S1QuasiSplit
 import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
 import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
@@ -17,12 +20,16 @@ import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelMinor
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelGlueL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
 import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
+import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 
 /-!
 # Axiom-hygiene check
@@ -118,6 +125,18 @@ open DLNFibre.DLN.RLCT
 -- (geometric, S2-FREE, no `monomial_rlct`), no `sorryAx`.
 #print axioms deepest_gauge_construction_L2
 
+-- hJfront re-arch (genm-44l2, reviewer genm-rev-hjfront SURVIVED) — the #44-L2 value side made
+-- HEADLINE-CLOSEABLE by replacing the unprovable hJfront with the provable precursor `hcolfront`. All
+-- must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`:
+-- `deepest_regular_core_normal_form_L2_front` = Skeleton #44 conclusion at L=2, conditional ONLY on
+-- htop[#154] + hcolfront[#100] + hRValue[R1] (no hJfront); `exists_frontPivotFrame_lastBlock_isUnit`
+-- (front-preferring chooser, J=frontEmbed) + `deepestPoint_lastBlock_front_rank` (column-dual) are the
+-- hard atoms; `deepest_gauge_construction_L2_ofBundle` is the Route-X parameterized gauge body.
+#print axioms deepest_regular_core_normal_form_L2_front
+#print axioms exists_frontPivotFrame_lastBlock_isUnit
+#print axioms deepestPoint_lastBlock_front_rank
+#print axioms deepest_gauge_construction_L2_ofBundle
+
 -- L2 gauge-construction at general L — `deepest_gauge_construction` dispatches L<3 to the clean-three
 -- `_L2` witness and carries the #120-tracked L≥3-arm sorries (the grouped recursive diffeo, RESEARCH-RISK
 -- roadmapped). Expected `sorryAx` until #120 closes; tracked here so the day it goes clean is visible.
@@ -178,6 +197,13 @@ open DLNFibre.DLN.RLCT
 #print axioms smeared_deepRank_eq_M0
 #print axioms smearedChart_of_square
 
+-- R1-LOWER BOUNDARY-SMEARED branch, the spine's `hSmeared` SLOT at L=2 (the named atom genm-r1lower's
+-- spine wiring consumes) — must be CLEAN-THREE [propext, Classical.choice, Quot.sound], S2-FREE, no
+-- `sorryAx`: `hSmeared_L2` is the closer `hSmeared_squareSmeared_L2` CURRIED into the exact slot shape
+-- `(2 ≤ L) → BoundarySmeared M → BoxDiverges M c' ε`; `hSmeared_L2_apply` is the uncurried reading.
+#print axioms hSmeared_L2
+#print axioms hSmeared_L2_apply
+
 -- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
 -- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is
 -- the UNCONDITIONAL §6 arithmetic (lambdaCore(square m) ≤ extra/2 + lambdaCore(M')); `hCore_middle_stratum_
@@ -198,6 +224,14 @@ open DLNFibre.DLN.RLCT
 -- reviewer + lean-formaliser §QA). The §SEL win: chart-DATA (hF/hQ0/hcmp) removed from the hyp list.
 #print axioms rlctAtOn_quasiSplit_ge_of_contDiff_residual
 #print axioms deepest_le_of_optimal_of_iftResidual
+
+-- D1 ≥-leg L=2 de-risk (genm-d1asm @70cb36ba; reviewer genm-rev-d1 SURVIVED 6/6) — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], no `sorryAx`: `exists_secondPeel_minor` produces hminor₂ (the
+-- extra×extra Jacobian-minor non-degeneracy) from a rank bound; `rlctAt_deepest_le_of_optimal_L2` is the
+-- L=2 Skeleton reduction (via Route A `deepest_le_of_optimal_secondPeel_discharged`), CONDITIONAL on the
+-- two named-open gates #44/hDeepest + hInterface/R1 — NOT wired into Skeleton:1172 (stays a conditional component).
+#print axioms exists_secondPeel_minor
+#print axioms rlctAt_deepest_le_of_optimal_L2
 
 -- D1 Altitude-B abstract hchart (network-free) — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `exists_boundedUnit_chart_of_contDiffAt` is THE hard piece (det DΨ≠0
@@ -241,3 +275,13 @@ open DLNFibre.DLN.RLCT
 
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
+
+-- L=2 headline ENDGAME scaffold (genm-l2asm) — the `L = 2` instance of the headline, assembled from
+-- the banked L=2 rungs (front-gauge #44 `_L2_front`, the WLOG transport, D1 `deepest_point_reduction`,
+-- the PROVEN arithmetic recombination) + exactly TWO named-open leaves. Expected axiom profile:
+-- [propext, Classical.choice, Quot.sound, sorryAx] — the `sorryAx` ONLY from the two named leaves
+-- (the route-independent R1 resolution interface `hR1_L2` + the D1 ∀-v ≥-leg producer `hD1ge_L2`),
+-- and NO `monomial_rlct` (S2 enters only DOWNSTREAM of the R1 leaf, once that sorry is discharged).
+-- STEP-0 finding: the dependency graph has TWO open leaves, not one — the D1 ≥-leg is a genuine
+-- second obligation beyond R1 (per-v middle-stratum producer), corroborated by Codex xhigh.
+#print axioms aoyagi_learning_coefficient_L2

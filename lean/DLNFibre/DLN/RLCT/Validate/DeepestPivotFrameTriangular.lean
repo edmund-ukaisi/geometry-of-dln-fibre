@@ -76,8 +76,12 @@ private theorem tri_reindex_fromBlocks_one_eq_corM (r a b : ℕ) (ha : r ≤ a) 
 /-- **The block-LOWER layer-0 frame** (the `endpointP0` triangular witness). Under `htop`, the deepest
 point's layer-0 (tail columns zero, leading `r×r` block `A11` invertible) is carried to the block-normal
 corner `corM` by the explicit block-LOWER unit `P := reindex⁻¹ [[⅟A11,0],[−A21⅟A11,1]]`; that `P` is a
-unit, satisfies `P · layer0 = corM`, and is block-lower (`reindex P` has `toBlocks₁₂ = 0`). -/
-private theorem deepest_layer0_blockLower_frame (H : Fin (L + 1) → ℕ) (r : ℕ)
+unit, satisfies `P · layer0 = corM`, and is block-lower (`reindex P` has `toBlocks₁₂ = 0`).
+(Visibility: was `private`; exposed for the front-pivot triangular variant
+`deepestPoint_frame_pivot_triangular_front_exists` (genm-44l2), which reuses this layer-0 (htop) arm
+verbatim and only swaps the last-layer pivot to `frontEmbed`. Behavior-preserving — no statement or
+proof change.) -/
+theorem deepest_layer0_blockLower_frame (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))

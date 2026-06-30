@@ -547,10 +547,29 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 -- S2-FREE. CLOSES `hSmeared` OUTRIGHT (not reduced); the non-square case is skipped (L=2-square always).
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedDecodeL2
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
+-- R1-LOWER BOUNDARY-SMEARED `hSmeared` slot at L=2: `hSmeared_L2` (the named atom the achiever spine
+-- consumes), curried from `hSmeared_squareSmeared_L2`. Reviewer-PASS (slot-match + totality + vacuity
+-- M=(1,2,1) + clean-three). genm-r1smeared @8ab4419c.
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 -- L2 Skeleton rung 1/5 (`product_reduction`) at L=2: the deepest-point diffeo bridge wired into the
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+-- hJfront re-arch (genm-44l2, reviewer SURVIVED): the unprovable hJfront (arbitrary frame-pivot .choose =
+-- frontEmbed) REPLACED by the provable precursor `hcolfront` (B's front-cols rank r, col-WLOG-supplied).
+-- DeepestLastBlock = the column-dual peel; DeepestFrontGauge = the front triangular bundle + front feeder
+-- (via the Route-X `deepest_gauge_construction_L2_ofBundle` in DeepestL2Wiring) + `deepest_regular_core_normal_form_L2_front`
+-- (Skeleton #44 conclusion at L=2, conditional ONLY on htop[#154]+hcolfront[#100]+hRValue[R1], NO hJfront).
+import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
+import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
+-- L=2 headline ENDGAME scaffold (genm-l2asm, spec-first + Codex-corroborated): `aoyagi_learning_coefficient_L2`
+-- = the L=2 instance of the headline, assembled from the banked rungs (WLOG transport + #44 front-value +
+-- the proven aoyagiLambda recombination + D1 reduction) modulo EXACTLY TWO named-open route-independent
+-- leaves — `hR1_L2` (the R1-LOWER interior interface, in progress) + `hD1ge_L2` (the D1 ∀-v ≥-leg, the
+-- second open obligation). Forced #print = [propext, sorryAx, Classical.choice, Quot.sound], sorryAx ONLY
+-- from the 2 leaves, NO monomial_rlct leakage. The day both land, the headline closes with no edits.
+import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 -- D1 (rung 2/5) (★)-deliverer engine: the analytic quasi-split RLCT lower bound `rlct_quasiSplit_ge`
 -- (+ rlct_smooth_block_ge / coupled_controls_slice) — network-free, sidesteps the full Gromoll–Meyer
 -- Morse lemma (quasi-split by constant comparison via the IFT chart + mean-value Lipschitz). Clean-three,
@@ -613,6 +632,11 @@ import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 -- `hInterface` [R1 at M'], `hminor₂`). Clean-three, NO #120/gauge dependency in the proof terms
 -- (the verify-first gate verdict: the second peel is BOUNDED, off the L≥3 wall). Reviewer PASS-with-notes.
 import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
+-- D1 ≥-leg L=2 de-risk (genm-d1asm @70cb36ba, reviewer genm-rev-d1 SURVIVED 6/6): `exists_secondPeel_minor`
+-- (hminor₂ from a rank bound) + `rlctAt_deepest_le_of_optimal_L2` (the L=2 Skeleton reduction; conditional
+-- on the 2 named-open gates #44/hDeepest + hInterface/R1 — NOT wired into Skeleton:1172). Clean-three.
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelMinor
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelGlueL2
 -- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
