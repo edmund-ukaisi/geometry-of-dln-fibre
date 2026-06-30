@@ -35,13 +35,15 @@ Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on
   deferred until the box quieted (18G free), then re-ran clean → green. The worktree now has a correct warm
   `.lake` for the remaining rungs (P1.b+ build incrementally). (→ lesson DA2.)
 
-## Phase 2 — constructive atlas + capstone (`det-atlas-p2`)
+## Phase 2 — constructive atlas + capstone (`det-atlas-p2`, off `-p1`)
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| P2.a–b | — | — | ⏳ | pivot-chart datum + fibre model · transitions |
-| P2.c | — | — | ⏳ CRUX | cocycle compatibility — decorrelated review |
-| P2.d | — | — | ⏳ CRUX (recon-gated) | bare `FiberBundle` capstone / residue-field-rank bridge — build iff detail-at-scale |
+| **P2.a** | formaliser | dispatching | 🔄 | pivot-chart datum + standard fibre model (drop `s/t/σ/τ` threading; bundle base ring + fibre + tensor + structure map + flatness + localization transport) → `Core/RingTheory/Determinantal/Atlas.lean` (generalize `FibreOverBaseTriv`+`FibreBundleHeadline`) |
+| P2.b′ | — | — | ⏳ | `AlgEquiv` groupoid spin-out (`trans_assoc`/`trans_refl`/`refl_trans` by `ext;rfl`) — cocycle unblocker (small) |
+| P2.b | — | — | ⏳ | transition maps on overlaps (via P1.a overlap API) |
+| P2.c | — | — | ⏳ CRUX | cocycle-compatibility (target-side round-trip; math LANDED, transport to finish) — decorrelated review |
+| P2.d | — | — | ⏳ CRUX (BUILD) | **bespoke `IsZariskiLocallyTrivialAffineProduct` over the rank-`r` open** (NOT Mathlib `FiberBundle`); cover-every-scheme-point via the already-proved `FibreRankBridge` — decorrelated review |
 
 ## Concurrency rule (this expedition)
 At most **one builder/committer** in `.claude/worktrees/det-atlas` at a time (a second `lake build` corrupts
