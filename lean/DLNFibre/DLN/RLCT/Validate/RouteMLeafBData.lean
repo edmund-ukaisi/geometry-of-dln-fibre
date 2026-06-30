@@ -6,13 +6,16 @@ import DLNFibre.DLN.RLCT.Validate.RouteMChartDiff
 /-!
 # `RouteMLeafBData` — the concrete boundary factor `B` discharging the ∀M-L2 interior-det headline
 
-Constructs the explicit `B`/`DB`/`engine` discharging the three open obligations
-(`hmap`/`hasDB`/`hdet`) of `interiorDet_leaf_headline` (`RouteMLeafHeadline`), and assembles the
-UNCONDITIONAL ∀M-L2 interior-determinant headline `interiorDet_leaf_headline_unconditional`:
+Constructs the explicit `u`-free boundary factor `B = BchartLeaf` discharging TWO of the three open
+obligations (`hmap`, `hasDB`) of `interiorDet_leaf_headline` (`RouteMLeafHeadline`), and assembles
+the ∀M-L2 interior-determinant headline `interiorDet_leaf_headline_Bchart`:
 
   `|det Dφ| = |u p₀|^(minAdm M − 1) · ∏_s engine_s`
 
-for the REAL `genBlkFlatLive` + leaf-pivot chart `phiFlatLiveAt`.
+for the REAL `genBlkFlatLive` + leaf-pivot chart `phiFlatLiveAt`. The determinant equality is
+CONDITIONAL on the third obligation `hdet` (the per-boundary Schur·LDU `engine` reading
+`|det DB| = ∏ engine`), which remains a named hypothesis — the heavy `BFactors`/coordinate-split
+determinant assembly, NOT proved here. Only `hmap` (the bottleneck) and `hasDB` are discharged.
 
 The boundary factor `B = BchartLeaf` is the `u`-FREE per-layer chart reading the residual coords
 as ORDINARY `y`-values (no radial blow-up); the `u`-scaling lives entirely in `pivotBlowupOn`. The
