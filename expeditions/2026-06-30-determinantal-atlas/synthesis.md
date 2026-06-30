@@ -66,3 +66,25 @@ correct, `Algebra.trdeg` present, FL-III green on dev), fixed by nuking `.lake/b
 `Dimension/Localization.olean` BUILT — contamination confirmed-fixed, dev sound, P1.a re-gate passed (sorries 0,
 `awayTriple_cocycle` axiom-clean). The worktree now has a correct warm `.lake`; P1.b+ build incrementally.
 **Phase 1 resumed: P1.b dispatched** (matrix coord ring + the determinantal `(r+1)`-minor ideal).
+
+## Phase 1 CLOSE (2026-06-30)
+All five rungs landed; controller boundary re-gate PASSED (full build 3829 jobs green, sorries 0 / 0 axiom,
+axioms `[propext, Classical.choice, Quot.sound]` on every headline + both DLN payoffs unchanged). The
+determinantal/atlas foundation is Mathlib-grade, **bare `Matrix`/`Localization` namespaces** (L7, file-move-ready),
+DLN instances preserved:
+- `Core/RingTheory/Localization/Overlap.lean` — overlap API + triple cocycle (P1.a).
+- `Core/RingTheory/Determinantal/Basic.lean` — `detMinorPoly` + the determinantal `(r+1)`-minor ideal (P1.b).
+- `Core/RingTheory/Determinantal/Strata.lean` — rank strata + pivot cover + the ideal↔rank-locus connective (P1.c).
+- `Core/RingTheory/Determinantal/Schur.lean` — block-rank additivity + `pivotRankChartEquiv` + rank↔Schur iff (P1.d).
+- `Core/RingTheory/Determinantal/Dimension.lean` — `rankStratumDim/Codim` closed forms + `codim+dim=ambient` (P1.e).
+- Deleted (emptied): `RankMinorCover`, `DeterminantalChart`, `SchurChartIff`.
+
+**Precision correction (P1.e, banked):** the recon's "rides cited Brick A" was a mis-tag I propagated into the P1.e
+brief. Brick A (`codim Σ̄^r = C`) is **Proved zero-cited** in-repo (re-derived from the quiver-orbit codim engine —
+no Eagon–Northcott/Bruns–Vetter citation, `#print axioms` standard-3). So the dimension headlines are honestly
+**Proved**; a `_of_brickA`/cited framing would have been the *inverse* overclaim (under-claiming a Proved result).
+Reviewer + decorrelated Codex (xhigh) confirmed. name=content cuts both ways.
+
+## Phase 2
+_starting: P2 recon-refined ladder (P2.a atlas datum · P2.b′ AlgEquiv groupoid · P2.b transitions · P2.c cocycle
+[CRUX] · P2.d bespoke `IsZariskiLocallyTrivialAffineProduct` [CRUX])._

@@ -18,7 +18,13 @@ per shared worktree at a time; read-only auditors run concurrently. Controller i
 | P1.b | formaliser | a728b739 | ✅ DONE `d24f9b01` | `Core/RingTheory/Determinantal/Basic.lean` (bare `Matrix` ns): `detMinorPoly`/`eval_detMinorPoly` re-homed + generalized `Field→CommRing`; new `Matrix.determinantalIdeal` + API (`_mem_`, `_eq_span`, `_le_iff`). green 3829, sorries 0, axiom-clean |
 | P1.c | formaliser | a4700497 | ✅ DONE `040a66e2` | `Strata.lean` (bare `Matrix`): rank strata + cover + connective `mem_rankLeLocus_iff_determinantalIdeal_le_ker` (field-level); `RankMinorCover` deleted, consumers swept. green 3829, sorries 0, axiom-clean, self-review+Codex PASS. (Tip advanced post-commit → L3 validated) |
 | P1.d | formaliser | a8eebf34 | ✅ DONE `e572b50f` | `Schur.lean` (bare `Matrix`): `rank_fromBlocks_zero`, `pivotRankChartEquiv` (`finrank=r(p+q−r)`), `rank_eq_iff_schur_eq`, `schurComplement_normal_form`; `DeterminantalChart`+`SchurChartIff` deleted, `SchurGauge` kept (DLN gauge). green 3828, sorries 0, axiom-clean |
-| **P1.e** | formaliser | dispatching | 🔄 | rank-stratum dimension `r(n+m−r)` / codim `(n−r)(m−r)` → `Core/RingTheory/Determinantal/Dimension.lean` (re-home `DeterminantalStratumDim`). **Precision: Brick A is CITED — keep it named, do NOT fold into the dim theorem name** |
+| P1.e | formaliser | a6a886c2 | ✅ DONE `f2cd20af` | `Dimension.lean` (bare `Matrix`, engine-free): `rankStratumDim`/`Codim` + `codim+dim=ambient` + finrank-anchor to the pivot chart; engine-bound `varietyDim_…_stratum`/`height_…` re-pointed + "Proved, not cited" docstrings. green 3829, sorries 0, axiom-clean. **PRECISION CORRECTION: Brick A is Proved (zero-cited, via the orbit codim engine), NOT cited — reviewer+Codex confirmed; my brief's "cited" tag was wrong** |
+
+## Phase 1 — boundary re-gate (controller) ✅ PASSED
+Full build green (3829 jobs); sorries 0 / **0 axiom**; axioms `[propext, Classical.choice, Quot.sound]` on all
+Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on the engine-bound
+`varietyDim_productRankLocusLE_stratum` (**Brick A Proved — no global axiom**), and on **both DLN payoffs
+(unchanged)**. **Phase 1 complete → PR opened (base `dev`); proceeding to Phase 2.**
 
 ## ✅ Build status — re-gate GREEN; contamination episode CLOSED
 - **Contamination (mine, fixed + confirmed):** the worktree's `.lake` was warmed (`cp -al`) from the
