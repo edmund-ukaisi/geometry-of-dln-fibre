@@ -194,17 +194,42 @@ theorem interiorLive_commute (ha : StructAdm M (tach M))
 
 /-! ## H2 — the multi-axis Jacobian exponent vector `leafH` -/
 
-/-- **H2 — the multi-axis Jacobian exponent vector** for the LIVE-leaf ∘ kLDU chart. The binding axis
-`leafPivot` carries `minAdm−1`; the lensed K-pivot axes carry the frame+LDU exponents; `0` elsewhere. -/
-noncomputable def interiorLive_leafH (ha : StructAdm M (tach M))
-    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Fin (routeMAmbient M) → ℕ :=
-  sorry
+/-- **The `ChartIdx`-indexed K-diagonal exponent placement** (the LIVE-leaf analogue of the dead-leaf
+`lduleafHOnIdx`, inlined to decouple from the retired `RouteMInteriorLDUContract`). At a frame slot
+(`Sum.inl s`), boundary `k`, the K-role branch decodes `(i,j) = finProdFinEquiv.symm qK`; on the
+diagonal `i = j` it returns the per-pivot exponent `(r_s + c_s) + 2·(t_s − 1 − i)` (the Schur frame
+`r_s+c_s` + the LDU core `2(t_s−1−i)`), `0` off-diagonal / X,N,E / lift. -/
+noncomputable def liveLeafHOnIdx (ha : StructAdm M (tach M)) :
+    ChartIdx M (tDesc M (tach M)) → ℕ := fun q =>
+  match q with
+  | ⟨k, Sum.inl s⟩ =>
+    match frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      let ij := finProdFinEquiv.symm qK
+      if ij.1 = ij.2 then
+        (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+          + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+          + 2 * (Text M (tach M) (k.val + 2) - 1 - ij.1.val)
+      else 0
+    | _ => 0
+  | ⟨_, Sum.inr _⟩ => 0
 
-/-- **H2 — the binding axis carries `minAdm−1`**. -/
+/-- **H2 — the multi-axis Jacobian exponent vector** for the LIVE-leaf ∘ kLDU chart. The binding axis
+`leafPivot` carries `minAdm−1` (override); the lensed K-diagonal axes carry the frame+LDU exponents
+`liveLeafHOnIdx`; `0` elsewhere. At `leafPivot` the placement is `0` (the leaf boundary's K-block is
+empty), so the override introduces the genuine radial exponent without masking a K exponent. -/
+noncomputable def interiorLive_leafH (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Fin (routeMAmbient M) → ℕ := fun j =>
+  if j = leafPivot M ha (by norm_num) h0r h0c then
+    minAdm M - 1
+  else
+    liveLeafHOnIdx ha (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j)
+
+/-- **H2 — the binding axis carries `minAdm−1`** (the pivot override is `if_pos rfl`). -/
 theorem interiorLive_leafH_pivot (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
-    interiorLive_leafH ha h0r h0c (leafPivot M ha (by norm_num) h0r h0c) = minAdm M - 1 :=
-  sorry
+    interiorLive_leafH ha h0r h0c (leafPivot M ha (by norm_num) h0r h0c) = minAdm M - 1 := by
+  rw [interiorLive_leafH, if_pos rfl]
 
 /-! ## H2 — the chart Jacobian monomial (headline ∘ kLDU) -/
 
