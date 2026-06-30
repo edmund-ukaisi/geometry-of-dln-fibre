@@ -116,3 +116,24 @@ slot → u·x_p₀ = u² (no bare-u). So the decoder MUST supply the fixed-pivot
 REMAINING: rfinFixedPivot + the leaf-slot complement choice; structured active M (E-block via
 activeSlotE ∪ leaf slots) + active.card=minAdm; the chart phiFlatLiveAt (= phiGen (x p₀) … genBlkFlatLive)
 + its rate (RouteMFlatLive's live machinery); the hmap funext (brick 2a non-pivot Cgen + leaf) + BDataAt.
+
+## STATE (2026-06-30): ∀M-L2 headline MODULO hdet — 3 of 4 legs closed
+
+The capstone `interiorDet_leaf_headline_Bchart` (RouteMLeafBData) is the ∀M-L2 headline
+`|det Dφ| = |u p₀|^{minAdm−1}·∏ engine` for the REAL chart phiFlatLiveAt, with B (BchartLeaf), hmap
+(hmap_leaf), hasDB (hasDB_leaf) ALL CLOSED concretely + axiom-clean [propext,Classical.choice,
+Quot.sound]. It CARRIES one hypothesis: hdet.
+
+NAMED RESIDUAL (hdet): `|det (fderiv BchartLeaf …)| = ∏_s engine_s`, BchartLeaf = paramsEquivFlat ∘
+chartParamsGen-at-1 (the u-free boundary chart), engine = the per-boundary Schur·LDU value
+`(|det K|^{r+c}·∏_i|q_i|^{2(t−1−i)}, 1)`. The route EXISTS (BOUNDED, not a wall): factor BchartLeaf's
+fderiv as (paramsEquivFlat CLE, |det|=1) ∘ (entry-Jacobian = composeFold [schurChartFactor,
+chainChartFactor, lduChartFactor]), then composeFold_abs_det + schurFrame_abs_det (validated vs 334) +
+the lduCore/chain dets = ∏ engine. The (2,2,2) TEMPLATE is bData222.hdet (DB = Q222CLM ∘ TbCLM,
+|det| = 1·|aRead|²). The opaque-width work: the entry-Jacobian factorization + matching its det to the
+engine product (the N-block couples layer-0 frame + chaining, so a genuine block-triangular split —
+NO free-product shortcut, Codex-confirmed; engine:=|det DB| self-referential would be vacuous).
+
+CONE (modulo-hdet, deconflicted vs canonical 5184db86, 0 clashes, purely additive): 10 NEW modules —
+RouteMReaderCard, RouteMHmapGen, RouteMActiveSlots, RouteMLeafSlot, RouteMLeafChart,
+RouteMLeafHeadline, RouteMLeafBData, RouteMChainAssembleDiff, RouteMChartDiff, RouteMFrameDiff.
