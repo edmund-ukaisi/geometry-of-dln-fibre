@@ -577,3 +577,4 @@ import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotJacobianVolumeData
 import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotTransitionRegularData
 import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotProducerShell
 import DLNFibre.DLN.Aoyagi.BlowupBranchProgress
+import DLNFibre.DLN.Aoyagi.SelectedEntryBranchProgressBridge

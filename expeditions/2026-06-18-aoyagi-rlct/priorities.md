@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 selected-entry branch progress bridge
+
+The selected-entry producer interface now has a separate branch-progress layer,
+not a child field inside source-production payloads:
+
+```text
+SelectedEntryAtlasBranchProgressData
+```
+
+The source-production record remains unchanged.  The new progress data takes a
+supplied `SelectedEntryAtlasProducedBranchData` and a supplied
+`SelectedEntryBranchTerminationData`, names an `activeGuard`, proves the
+continuing/stopped branch guards cover it, and gives a decreasing child only
+for continuing branches.
+
+Lean adds the displayed Case 2 introduced-label bridge in
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntryBranchProgressBridge.lean`:
+
+```text
+AoyagiIntroducedLabelBranchState.case2DisplayedActiveGuard
+selectedEntryIntroducedLabelBranchTerminationData
+selectedEntryCase2DisplayedPrefixBoundBranchProgressData
+selectedEntryCase2DisplayedContinuingBranchProgressData
+```
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  Xhigh source/scope reviewer `Turing` and xhigh Lean/API
+reviewer `Kepler` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-selected-entry-branch-progress-bridge.md`.
+
+Source-scout boundary: Case 1(1) must not be forced into this support-growth
+progress relation.  It is same-domain progress on Aoyagi's old-variable
+plateau count.  Case 1(2) can later get its own row-strip `J -> J+1` progress
+bridge.  Case 2 remains the direct continuing-child bridge here.
+
+Nonclaims: no `SelectedEntryAtlasProducedBranchData` construction, no payload
+source-data realization of the child, no stopped-branch child, no guard
+exclusivity, no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-30, A4 displayed Case 2 branch progress
 
 The branch-progress lane now connects the displayed Case 2 frontier split to

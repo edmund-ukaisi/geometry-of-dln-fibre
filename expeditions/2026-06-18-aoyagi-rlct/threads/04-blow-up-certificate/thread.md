@@ -21,6 +21,45 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean selected-entry branch progress bridge
+
+Reproduction:
+`reproduction-a4-selected-entry-branch-progress-bridge.md`.
+Statement card:
+`statement-card-a4-selected-entry-branch-progress-bridge.md`.
+Review:
+`review-a4-selected-entry-branch-progress-bridge.md`.
+
+Lean now adds a separate progress layer above source-production data:
+
+```text
+SelectedEntryAtlasBranchProgressData
+```
+
+This layer consumes supplied `SelectedEntryAtlasProducedBranchData` and
+`SelectedEntryBranchTerminationData`, records an active branch guard, proves
+the continuing/stopped source-production guards cover it, and provides a
+decreasing child only for continuing branches.  It does not alter the existing
+source-production payload record.
+
+The displayed Case 2 bridge is in
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntryBranchProgressBridge.lean`:
+
+```text
+AoyagiIntroducedLabelBranchState.case2DisplayedActiveGuard
+selectedEntryIntroducedLabelBranchTerminationData
+selectedEntryCase2DisplayedPrefixBoundBranchProgressData
+selectedEntryCase2DisplayedContinuingBranchProgressData
+```
+
+Focused local `lake build` and direct `lake env lean -E warning` checks passed
+for the touched modules.
+
+Source boundary: xhigh source scout `Erdos` confirmed Case 1(1) is not
+support-growth progress.  It is same-domain old-plateau-count progress.  Case
+1(2), not Case 1 wholesale, can later feed the introduced-label progress
+kernel.
+
 ## 2026-06-18 check result
 
 Draft reproduction: `reproduction-draft.md`. Independent checker:

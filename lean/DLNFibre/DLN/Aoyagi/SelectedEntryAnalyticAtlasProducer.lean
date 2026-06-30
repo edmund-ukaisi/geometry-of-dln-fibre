@@ -220,6 +220,35 @@ structure SelectedEntryBranchTerminationData
   step_wellFounded : WellFounded step
   initial : BranchState
 
+/-- Branch-progress data connecting supplied branch guards to a supplied
+termination relation.
+
+This does not construct source-production payloads or choose a termination
+relation.  It names the active branch region, records that the supplied
+continuing/stopped guards cover that region, and gives a decreasing child only
+for continuing branches.  Stopped branches intentionally have no child here:
+they should be handled by terminal payloads, not by fake decreasing steps. -/
+structure SelectedEntryAtlasBranchProgressData
+    {Param R : Type*} [CommMonoid R] [TopologicalSpace Param]
+    {C : AoyagiNormalCrossingChartCertificate.{uAtlas} Param R}
+    {ctx : SelectedEntryAnalyticAtlasContext C}
+    {BranchState : Type uBranch}
+    (sourceProduction :
+      SelectedEntryAtlasProducedBranchData ctx BranchState)
+    (termination :
+      SelectedEntryBranchTerminationData C BranchState) where
+  activeGuard : BranchState → Prop
+  guards_complete :
+    ∀ s : BranchState, activeGuard s →
+      sourceProduction.continuingGuard s ∨
+        sourceProduction.actualWidthStoppedGuard s ∨
+          sourceProduction.rowExhaustedStoppedGuard s
+  continuingChild :
+    ∀ s : BranchState, sourceProduction.continuingGuard s → BranchState
+  continuing_child_step :
+    ∀ (s : BranchState) (h : sourceProduction.continuingGuard s),
+      termination.step (continuingChild s h) s
+
 /- The predicate wrappers below are deliberately forgetful: each exposes one
 field shape to the existing boundary socket.  Shared-context coherence lives in
 `SelectedEntrySuppliedAnalyticAtlasProducer`; arbitrary boundaries assembled

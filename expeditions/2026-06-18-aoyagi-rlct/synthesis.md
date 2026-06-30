@@ -6,6 +6,53 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Selected-Entry Branch Progress Bridge - 2026-06-30
+
+The selected-entry producer interface now has a separate progress layer:
+
+```text
+SelectedEntryAtlasBranchProgressData
+```
+
+It consumes supplied source-production data and supplied termination data,
+records an active guard, proves the source-production branch guards cover it,
+and names a decreasing child only for continuing branches.  It does not modify
+`SelectedEntryAtlasProducedBranchData` and does not construct any payloads.
+
+`SelectedEntryBranchProgressBridge.lean` connects this interface to the
+introduced-label progress kernel for displayed Case 2:
+
+```text
+AoyagiIntroducedLabelBranchState.case2DisplayedActiveGuard
+selectedEntryIntroducedLabelBranchTerminationData
+selectedEntryCase2DisplayedPrefixBoundBranchProgressData
+selectedEntryCase2DisplayedContinuingBranchProgressData
+```
+
+The active guard is `s.J+1 <= prefixMinNat n (s.S+1)`.  The continuing child
+chosen by the progress data is `case2SameStageChild s = (S,J+1)`.  The
+decreasing step is the existing introduced-label support-growth theorem.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-selected-entry-branch-progress-bridge.md
+threads/04-blow-up-certificate/statement-card-a4-selected-entry-branch-progress-bridge.md
+```
+
+Focused local `lake build DLNFibre.DLN.Aoyagi.SelectedEntryBranchProgressBridge`
+and direct `lake env lean -E warning` checks for the producer and bridge files
+passed.
+
+Boundary from the xhigh source scout: Case 1(1) is same-domain old-plateau
+progress and cannot be treated as introduced-label support growth.  Case 1(2)
+can later get a row-strip progress bridge to `(S,J+1)`.
+
+Still open: real `SelectedEntryAtlasProducedBranchData`, payload source-data
+realization of the child, terminal payloads for stopped branches, and full
+`SelectedEntryBranchTerminationData` coverage beyond the supplied progress
+layer.
+
 ## Latest A4 Displayed Case 2 Branch Progress - 2026-06-30
 
 `BlowupBranchProgress.lean` now names the displayed Case 2 frontier guards on

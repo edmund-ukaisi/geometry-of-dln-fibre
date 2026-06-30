@@ -2847,6 +2847,29 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, selected-entry branch progress bridge,
+  2026-06-30.** Lean now adds a separate branch-progress layer
+  `SelectedEntryAtlasBranchProgressData` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryAnalyticAtlasProducer.lean`, and the
+  displayed Case 2 introduced-label instance in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryBranchProgressBridge.lean`.  The
+  source-production record is unchanged.  The progress data consumes supplied
+  `SelectedEntryAtlasProducedBranchData` and supplied
+  `SelectedEntryBranchTerminationData`, records an active branch guard, proves
+  the supplied continuing/stopped guards cover it, and supplies a decreasing
+  child only for continuing branches.  The displayed Case 2 instance uses the
+  active guard `s.J+1 <= prefixMinNat n (s.S+1)` and continuing child
+  `(S,J+1)`.  Reproduction and statement card are at
+  `threads/04-blow-up-certificate/reproduction-a4-selected-entry-branch-progress-bridge.md`
+  and
+  `threads/04-blow-up-certificate/statement-card-a4-selected-entry-branch-progress-bridge.md`.
+  Focused local build, direct warning checks, full local `lake build DLNFibre`,
+  no-sorry audit, whitespace check, and direct axiom probe passed.  Xhigh
+  source scout `Erdos` confirmed that Case 1(1) is same-domain old-plateau
+  progress, not introduced-label support growth; only Case 1(2) should later
+  feed a `J -> J+1` support-growth bridge.  This proves no source-production
+  payloads, child-state realization by payload source data, stopped-branch
+  child, full termination coverage, normal crossings, pole order, or RLCT.
 - **Status.** blocked after repair pass. The source-confirmed repair separates
   actual widths `M^{(s)}` from prefix minima `M(S)`, but it exposes a Case 2
   incompatibility: the printed vector update on PDF p. 20 uses
