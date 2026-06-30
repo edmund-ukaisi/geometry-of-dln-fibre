@@ -6,6 +6,55 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Sector-Image Support - 2026-06-30
+
+`RetainedPassiveCase2PassiveSector.lean` now names the passive theta image
+sectors in topology-tuple coordinates:
+
+```text
+case2PassiveThetaSectorSet
+case2PassiveThetaEndpointSectorSet
+```
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now proves:
+
+```text
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+```
+
+For
+
+```text
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+sectorSet = case2PassiveThetaEndpointSectorSet Omega = Y '' Omega
+nu = Measure.map Y (thetaMeasure.restrict Omega)
+```
+
+the theorem proves `nu.restrict sectorSet = nu`, assuming `Omega` is
+measurable, `sectorSet` is measurable, and `Y` is a.e.-measurable for the
+restricted theta measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-sector-image-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-sector-image-support.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-sector-image-support.md
+```
+
+Xhigh source/scope reviewer `Nietzsche` returned PASS for this sector-image
+support target and rejected another generic domination wrapper as low
+priority.  Xhigh Lean/API reviewer `Beauvoir` returned PASS and confirmed the
+placement/API shape.
+
+Boundary: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison, finite-scalar
+domination, bounded-density comparison, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
+Next frontier: construct the real exact or dominated passive-sector measure
+comparison for an actual source-prior/passive-sector measure.
+
 ## Latest A2 Case 2 Passive Theta Jacobian-Dominated Source - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaJacobianMeasure.lean` now has an arbitrary

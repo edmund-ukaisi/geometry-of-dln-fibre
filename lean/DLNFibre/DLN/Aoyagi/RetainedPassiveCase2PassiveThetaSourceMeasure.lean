@@ -22,6 +22,60 @@ namespace Aoyagi
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
+set_option linter.style.longLine false in
+/-- A restricted passive-theta endpoint topology-tuple pushforward is supported
+on the corresponding endpoint sector image.
+
+This is only image-support bookkeeping for the full passive-sector coordinate
+map.  The sector measurability and map a.e.-measurability hypotheses are
+explicit; the theorem does not prove exact sector Haar transport,
+finite-scalar domination, bounded-density comparison, source-prior transport,
+normal crossings, pole order, or RLCT extraction. -/
+theorem measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (thetaMeasure :
+      Measure (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hsector :
+      MeasurableSet
+        (case2PassiveThetaEndpointSectorSet
+          (ρ := ρ) n hS hcont hnext eNext e Ω))
+    (hY :
+      AEMeasurable
+        (fun theta : Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ↦
+          case2PassiveThetaEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e)
+        (thetaMeasure.restrict Ω)) :
+    let Y :
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let sectorSet : Set (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaEndpointSectorSet
+        (ρ := ρ) n hS hcont hnext eNext e Ω
+    (Measure.map Y (thetaMeasure.restrict Ω)).restrict sectorSet =
+      Measure.map Y (thetaMeasure.restrict Ω) := by
+  intro Y sectorSet
+  have hmem :
+      ∀ᵐ theta ∂ thetaMeasure.restrict Ω, Y theta ∈ sectorSet := by
+    filter_upwards [ae_restrict_mem hΩ] with theta htheta
+    exact ⟨theta, htheta, rfl⟩
+  have hmap_mem :
+      ∀ᵐ y ∂ Measure.map Y (thetaMeasure.restrict Ω), y ∈ sectorSet := by
+    exact (ae_map_iff (f := Y) hY hsector).2 hmem
+  exact Measure.restrict_eq_self_of_ae_mem hmap_mem
+
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v

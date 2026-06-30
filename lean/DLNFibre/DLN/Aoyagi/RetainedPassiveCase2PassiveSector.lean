@@ -279,6 +279,39 @@ noncomputable def case2PassiveThetaEndpointTopologyTuple
       (ρ := ρ) n hS hcont hnext theta eNext e)
 
 set_option linter.style.longLine false in
+/-- Image sector in topology-tuple coordinates for a full passive theta domain
+before endpoint transport.  This names the target set for later sector-measure
+statements; it is not a measure-transport theorem. -/
+noncomputable def case2PassiveThetaSectorSet
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)) :
+    Set (TopologyTuple ρ (case2PostPivotTwoEdgeDomain n S J τ) ℝ) :=
+  (fun theta ↦
+    case2PassiveThetaTopologyTuple
+      (ρ := ρ) n hS hcont hnext theta eNext) '' Ω
+
+set_option linter.style.longLine false in
+/-- Image sector in endpoint-transported topology-tuple coordinates for a full
+passive theta domain.  This is the named sector target needed before exact or
+dominated passive-sector measure comparisons can be stated. -/
+noncomputable def case2PassiveThetaEndpointSectorSet
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)) :
+    Set (TopologyTuple ρ κ' ℝ) :=
+  (fun theta ↦
+    case2PassiveThetaEndpointTopologyTuple
+      (ρ := ρ) n hS hcont hnext theta eNext e) '' Ω
+
+set_option linter.style.longLine false in
 /-- The full passive-sector coordinate map to retained-passive data is
 continuous in the product topology. -/
 theorem continuous_case2PassiveThetaRetainedData

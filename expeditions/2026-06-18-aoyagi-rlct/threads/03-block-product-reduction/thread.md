@@ -17755,3 +17755,45 @@ Nonclaims: no original source-prior construction, determinant-chart Haar
 transport, raw-order Haar transport, exact passive-sector pushforward,
 source-image equality, source-rank coverage, normal crossings, pole order, or
 RLCT extraction.
+
+## 2026-06-30 A2 Case 2 passive theta sector-image support
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-sector-image-support.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-sector-image-support.md`.
+Review:
+`review-a2-case2-passive-theta-sector-image-support.md`, PASS by xhigh
+source/scope reviewer `Nietzsche` and xhigh Lean/API reviewer `Beauvoir`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSector.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now names:
+
+```text
+case2PassiveThetaSectorSet
+case2PassiveThetaEndpointSectorSet
+```
+
+and proves:
+
+```text
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+```
+
+For the endpoint topology-tuple map `Y`, the named sector
+`case2PassiveThetaEndpointSectorSet Omega = Y '' Omega`, and
+`nu = Measure.map Y (thetaMeasure.restrict Omega)`, the theorem proves
+`nu.restrict sectorSet = nu` under explicit measurability hypotheses on
+`Omega`, `sectorSet`, and `Y`.
+
+This is support bookkeeping for the full passive theta sector image.  It is
+not exact passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, finite-scalar domination,
+bounded-density comparison, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.

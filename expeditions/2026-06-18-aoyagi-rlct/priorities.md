@@ -12,6 +12,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta sector-image support
+
+The passive theta endpoint sector-image support slice has landed across
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveSector.lean` and
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+
+New public names:
+
+```text
+case2PassiveThetaSectorSet
+case2PassiveThetaEndpointSectorSet
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+```
+
+The definitions name the pre-transport and endpoint-transport image sectors
+of the full `Case2PassiveTheta` topology-tuple map.  The theorem proves that
+for
+
+```text
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+sectorSet = case2PassiveThetaEndpointSectorSet Omega = Y '' Omega
+nu = Measure.map Y (thetaMeasure.restrict Omega)
+```
+
+one has
+
+```text
+nu.restrict sectorSet = nu
+```
+
+under explicit measurability hypotheses on `Omega`, `sectorSet`, and `Y`.
+
+This is image-support bookkeeping only.  It does not prove exact
+passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, finite-scalar domination,
+bounded-density comparison, source-image equality, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.
+
+Xhigh source/scope reviewer `Nietzsche` returned PASS for this sector-image
+target and FAIL/low priority for another generic domination wrapper.  Xhigh
+Lean/API reviewer `Beauvoir` returned PASS and confirmed that image
+measurability should remain an explicit hypothesis.
+
+Next source-moving frontier remains the exact or dominated passive-sector
+measure comparison for an actual source-prior/passive-sector measure.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian-dominated source
 
 The next local-domination socket has landed in
