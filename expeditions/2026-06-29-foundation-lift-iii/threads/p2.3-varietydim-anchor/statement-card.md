@@ -13,7 +13,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 > has Krull dimension equal to its transcendence degree over `k`.
 >
 > - **Lean:** `AlgebraicGeometry.Group.Orbit.AffineGVariety.ringKrullDim_pullback_range_unbotD_eq_trdeg_toNat`
->   (`lean/DLNFibre/Core/AlgebraicGeometry/Group/Orbit/Dimension.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/AlgebraicGeometry/Group/Orbit/Dimension.lean` @ `303db988`)
 > - **Gloss.** `[Finite G.ρ] ⊢ (ringKrullDim G.pullback.range).unbotD 0 = (Algebra.trdeg k G.pullback.range).toNat`.
 >   `G.pullback = aeval fρ : MvPolynomial G.ρ k →ₐ[k] G.R`; its range is `Algebra.adjoin k (range fρ)`.
 > - **Proved.** The `dim = trdeg` equality, in `.unbotD 0` / `.toNat` (`ℕ`) form, on the abstract carrier.
@@ -33,7 +33,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 > kernel (the A0 / L6.4 orbit↔kernel equality), `varietyDim Z = trdeg k (k[fρ])`.
 >
 > - **Lean:** `AlgebraicGeometry.Group.Orbit.AffineGVariety.varietyDim_eq_trdeg_of_eq_ker`
->   (`lean/DLNFibre/Core/AlgebraicGeometry/Group/Orbit/Dimension.lean` @ `<commit-sha>`)
+>   (`lean/DLNFibre/Core/AlgebraicGeometry/Group/Orbit/Dimension.lean` @ `303db988`)
 > - **Gloss.** `[Finite G.ρ] → (vanishingIdeal k Z = RingHom.ker G.pullback.toRingHom) →`
 >   `varietyDim Z = ((Algebra.trdeg k G.pullback.range).toNat : ℕ∞)`. `varietyDim Z` is
 >   `(ringKrullDim (MvPolynomial G.ρ k ⧸ vanishingIdeal Z)).unbotD 0`.
@@ -52,7 +52,7 @@ re-derived from it. Scope: the A4.1 anchor + the A0 bridge only (NOT A4.4 — th
 > specialisation of the abstract anchor — the old standalone reindex+transport proof is **collapsed**.
 >
 > - **Lean:** `DLNFibre.Core.ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat`
->   (`lean/DLNFibre/Core/AffineNoetherRank.lean` @ `<commit-sha>`) — **signature unchanged**, body
+>   (`lean/DLNFibre/Core/AffineNoetherRank.lean` @ `303db988`) — **signature unchanged**, body
 >   re-derived (4 lines).
 > - **Gloss.** `(M : Tuple d) ⊢ (ringKrullDim (orbitPullback M).range).unbotD 0 =`
 >   `(Algebra.trdeg k (orbitPullback M).range).toNat`.
