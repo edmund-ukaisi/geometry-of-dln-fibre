@@ -68,8 +68,24 @@ Banked clean-three this tide (branch `genm-d1hchart`, pushed origin):
   step — the DLN site reads off the selected-coordinate structure of `f∘Ψsymm` rather than supplying
   `F` + re-proving the germ.
 
-SPECIFY validated (UNCOMMITTED working file `lean/DLNFibre/DLN/RLCT/Validate/D1HChartRank.lean`,
-signature builds green, single isolated `sorry` = the rank lower bound):
+★★★ ADOPTED BASE (UNCOMMITTED `D1HChartRank.lean`, 202 lines, builds GREEN, backed up
+`/tmp/D1HChartRank-inflight-backup.lean`): the genm-d1hfin in-flight handoff (collision resolved —
+genm-d1hfin stood down, no branch/worktree, I'm sole driver). DONE + sorry-free in it:
+`jointDiffL2`; `exists_rank_factorization` (B=U·V rank-r, `#print axioms` clean-three, from PUBLIC
+`block_elimination` re-derived LOCALLY — NO Skeleton edit); `isUnit_of_rank_eq_card`;
+`exists_left_inverse_of_rank_eq_width` / `exists_right_inverse_of_rank_eq_height` (the Gram-matrix
+one-sided inverses Λ,Ρ — exactly what the gauge-slice needs). 3 OPEN sorries:
+- `exists_left_lift` (`U = (v 0)·C` from `col U = col B ⊆ col(v 0)`) — needs the column-containment
+  factor-extraction `col(U)⊆col(M) ⟹ ∃C, U=M·C` (ABSENT from Mathlib; build column-wise via
+  `range(M.mulVecLin)` membership + `Classical.choice`, assemble `C`; the repo's
+  `P2u_factorsThrough_P1u_of_gram` is SQUARE-only so not directly reusable). Connect `prod v = B` to
+  `(v 0)·(v 1)` via `DeepestBlockDecomp.prod_eq_prodAux_mul_last` (cast-heavy).
+- `exists_right_lift` (`V = K·(v 1)`) — the row-dual.
+- `nReg_le_finrank_range_jointDiffL2` — the gauge-slice injection finrank (uses the Λ,Ρ inverses +
+  `finrank_le_finrank_of_injective`, skipping ker≃Mat(r)(r); `finrank_matrix`+`finrank_prod` for dims).
+NEXT TIDE: fill the 3 sorries → whole file clean-three → commit+push (attribute the genm-d1hfin base).
+
+SPECIFY validated (the original jointDiffL2 SPECIFY, now subsumed by the adopted base above):
 - **`jointDiffL2 H v : Params H →ₗ[ℝ] Mat (H 0) (H 2)`**, `δ ↦ layer0 δ * layer1 v + layer0 v * layer1 δ`
   (`= δ⁰A²_v + A¹_v δ²`). The `layer0`/`layer1` ascriptions (`@[reducible]`, `A 0`/`A 1` re-typed to
   `Mat (H 0) (H 1)`/`Mat (H 1) (H 2)`) dodge the `Fin.castSucc`/`Fin.succ` `HMul`-unification block;
