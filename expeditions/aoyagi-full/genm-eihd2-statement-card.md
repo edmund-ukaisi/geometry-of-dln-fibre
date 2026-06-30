@@ -21,20 +21,28 @@ Quot.sound]`. The combinator-eval tooling that unblocked it (reusable for the J-
   readX, readE)` index-for-index).
 
 ## J-block residual (J00/J01/J11 — the genuine `fderiv-BparamsLeaf` multi-tide)
-These compute `eihdT (v0,(0,())) = eihdOut(Dtot(eIn.symm (v0,(0,()))))` with `Dtot = paramsEquivFlatCLE ∘
-fderiv BparamsLeaf`. **Missing bridge lemmas (NOT yet banked — this is the work):**
-1. A per-LAYER VALUE form of `fderiv BparamsLeaf y₀` (only existence `BparamsLeaf_hasFDerivAt` + the
-   function-level `layer0SchurMap_hasFDerivAt`/`gate_schurCore_eq` are banked). Need: `Dtot`'s layer-0
-   action on a perturbation = `reindex (schurFrameDeriv ∘ slotReadV0D)`.
-2. `eIn.symm (v0,(0,()))` as an explicit flat vector whose boundary-0 frame slot carries `v0` (the
-   harder direction — `eInRearrange.symm`/reshape `.symm`s + `funCongrLeft chartIdxEquiv.symm |>.symm`).
-3. The composition `slotReadV0D ∘ eIn.symm = (the V0 projection)` (so J00's `schurFrameDeriv` reads `v0`),
-   `eihdOut` projects layer-0 → V0 via `packStair`/`flatBlockLE.symm` (the banked
-   `flatBlockLE_symm_fderiv_flatBlock` is the normalization).
-Build (1)+(2)+(3) as named bridges first; then J00 (banked Schur core), J01 (=0: layer-0 indep of V1),
-J11 (chainUnit via `hasFDerivAt_chainA` + `packLayer1` W/C reorder). A genuine multi-tide.
 
-**Prior SHA:** `bd9081f2` (skeleton).
+**Bridge 1 LANDED** (`eihdT_eq_packStair_fderiv`, SHA `d959df9c`, sorry-free): the flatten/unflatten
+cancel — `eihdT w = packStair (fderiv BparamsLeaf y₀ (eIn.symm w))`. Collapses `Dtot`/`eihdOut`'s
+`paramsEquivFlat` round-trip, reducing ALL THREE J-blocks to facts about the `Params`-valued
+`fderiv BparamsLeaf y₀` applied at `eIn.symm w`, then `packStair`-projected:
+- J00: `(packStair ha (fderiv BparamsLeaf y₀ (eIn.symm (v0,(0,()))))).1 = schurFrameDeriv X K N v0`.
+- J01: `(packStair ha (fderiv BparamsLeaf y₀ (eIn.symm (0,(v1,()))))).1 = 0`.
+- J11: `(packStair ha (fderiv BparamsLeaf y₀ (eIn.symm (0,(v1,()))))).2.1 = chainUnitMap (readN ⟨0⟩) v1`.
+
+**Remaining bridges (NOT yet banked — the work):**
+2. A per-LAYER `HasFDerivAt` VALUE of `BparamsLeaf` (`chartParamsGen = fun s => reindex (Agen 1 … s)`):
+   layer 0 `= reindex (fderiv layer0SchurMap)` (banked `layer0SchurMap_hasFDerivAt` → factors through
+   `schurFrameDeriv ∘ slotReadV0D`); layer 1 `= reindex (chainAFDeriv …)` (banked `hasFDerivAt_chainA`).
+   Extract the layer-`s` component of the single `Params`-valued `fderiv` via `fderiv_pi`/`hasFDerivAt_pi''`.
+3. `eIn.symm (v0,(0,()))` / `eIn.symm (0,(v1,()))` explicit (the harder `.symm` direction — reuse the
+   combinator recipe on `eInRearrange.symm`/reshape `.symm`s/`funCongrLeft chartIdxEquiv.symm |>.symm`);
+   `slotReadV0D ∘ eIn.symm` = the V0-projection; `packStair` projects layer-0 → V0 via
+   `packLayer0 = flatBlockLE.symm` (banked `flatBlockLE_symm_fderiv_flatBlock` normalization).
+Then J00 (banked Schur core), J01 (=0: layer-0 indep of V1), J11 (chainUnit via `chainAFDeriv` +
+`packLayer1` W/C reorder). Genuine multi-tide: build Bridge 2 + Bridge 3, then the three discharges.
+
+**Prior SHAs:** `bd9081f2` (skeleton), `f70b8f8c` (eIn_projV0), `d959df9c` (Bridge 1).
 **Module:** `lean/DLNFibre/DLN/RLCT/Validate/RouteMHDtotEihd.lean` (546 LoC). Single-writer; NOT wired into
 `DLNFibre.lean` (controller cone-merges).
 
