@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta bounded-density residual-source adapter
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-bounded-density-residual-source.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-bounded-density-residual-source.md`.
+Review:
+`review-a2-case2-passive-theta-bounded-density-residual-source.md`.
+
+Lean now specializes the generic bounded-density passive-product
+residual-source handoff to `Case2PassiveTheta`:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+The theorem uses
+`sourceMeasure = (passiveMeasure.prod weightedBox).withDensity sourceDensity`.
+It returns a local punctured determinant-sector `V`; after `V` is chosen, any
+finite local a.e. density bound against `(passiveMeasure.prod weightedBox).restrict V`
+implies retained-passive local-source support, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn`.
+
+Focused direct warning check, focused module build, full local build,
+`scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+direct axiom probe passed.  The public theorem reports only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Fermat` and
+xhigh Lean/API reviewer `Pauli` returned PASS.
+
+Nonclaims: no original source-prior density construction, no proof that an
+original prior satisfies the bound, no exact restricted `yNext` marginal
+equality, determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta product-measure residual-source adapter
 
 Reproduction:

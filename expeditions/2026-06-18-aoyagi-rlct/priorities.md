@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta bounded-density residual-source adapter
+
+The next theta source-moving socket has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductMeasure.lean`.
+It specializes the generic bounded-density passive-product residual-source
+handoff to the concrete `Case2PassiveTheta` coordinate domain.
+
+Public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+The theorem uses
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+sourceMeasure = passiveSource.withDensity sourceDensity
+```
+
+with finite passive mass, positive selected-entry radii, `0 <= t`, and the
+selected-entry critical inequality.  It returns a local punctured
+determinant-sector `V`; after `V` is chosen, any finite local a.e. bound
+
+```text
+c < infinity
+forall^ae z in passiveSource.restrict V, sourceDensity z <= c
+```
+
+implies retained-passive local-source support, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn` for the chart-produced measure.
+
+This is a bounded-density wrapper over the passive-product comparison source.
+It does not construct an original source-prior density, prove that an original
+prior satisfies the bound, prove exact restricted `yNext` marginal equality,
+determinant-chart Haar transport, raw-order Haar transport,
+source-prior transport, exact passive-sector pushforward, source-image
+equality, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
+Xhigh source/scope reviewer `Fermat` and xhigh Lean/API reviewer `Pauli`
+returned PASS, recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-bounded-density-residual-source.md`.
+
+Next source-moving frontier: construct a genuine local domination or bounded
+density theorem from an actual source-prior/passive-sector transport model,
+or keep packaging finite-integral consumers without claiming that transport.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta product-measure residual-source adapter
 
 The next theta source-moving slice has landed in

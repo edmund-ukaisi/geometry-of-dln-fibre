@@ -140,6 +140,35 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta bounded-density residual-source
+  adapter, 2026-06-30.** Lean now specializes the generic bounded-density
+  passive-product residual-source handoff to the concrete full theta coordinate
+  domain in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductMeasure.lean`.
+  The public theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass`
+  uses
+  `sourceMeasure = (passiveMeasure.prod weightedBox).withDensity sourceDensity`.
+  It returns a local punctured determinant-sector `V`; after `V` is chosen, any
+  finite a.e. bound of `sourceDensity` with respect to
+  `(passiveMeasure.prod weightedBox).restrict V` implies retained-passive
+  local-source support, a.e. residual square-sum positivity, and
+  `residualNegPowerIntegrableOn` for the chart-produced measure.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-bounded-density-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-bounded-density-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-bounded-density-residual-source.md`.
+  Focused direct warning check, focused module build, full local build,
+  `scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Fermat` and
+  xhigh Lean/API reviewer `Pauli` returned PASS.  This proves no original
+  source-prior density construction, no proof that an original source prior
+  satisfies the local bound, no exact restricted `yNext` marginal equality,
+  determinant-chart Haar transport, raw-order Haar transport, source-prior
+  transport, exact passive-sector pushforward, source-image equality,
+  source-rank coverage, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive theta product-measure residual-source
   adapter, 2026-06-30.** Lean now specializes the generic passive-product and
   local-domination residual-source handoffs to the concrete full theta

@@ -6,6 +6,65 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Bounded-Density Residual-Source Adapter - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaProductMeasure.lean` now also specializes the
+generic bounded-density passive-product residual-source handoff to
+`Case2PassiveTheta`.
+
+New public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_withDensity_ae_le_const_passiveProductMeasure_finiteMass
+```
+
+The theorem works over
+
+```text
+passiveSource = passiveMeasure.prod weightedBox
+sourceMeasure = passiveSource.withDensity sourceDensity
+```
+
+and returns a local punctured determinant-sector `V`.  For the chart-produced
+measure
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+it proves retained-passive local-source support.  Then, for every finite
+scalar `c`, the local a.e. bound
+
+```text
+forall^ae z in passiveSource.restrict V,
+  sourceDensity z <= c
+```
+
+implies a.e. residual square-sum positivity and
+`residualNegPowerIntegrableOn localSource mu t`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-bounded-density-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-bounded-density-residual-source.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-bounded-density-residual-source.md
+```
+
+Xhigh source/scope reviewer `Fermat` and xhigh Lean/API reviewer `Pauli`
+returned PASS.
+
+Boundary: no original source-prior density construction, no proof that an
+original prior satisfies the bound, no exact restricted `yNext` marginal
+equality, no determinant-chart Haar transport, no raw-order Haar transport, no
+source-prior transport, no exact passive-sector pushforward, no source-image
+equality, no source-rank coverage, no normal crossings, no pole order, and no
+RLCT extraction.
+
+Next frontier: the harder passive-sector transport/Jacobian comparison needed
+to derive local domination or local bounded density from a genuine source-prior
+model.
+
 ## Latest A2 Case 2 Passive Theta Product-Measure Residual-Source Adapter - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaProductMeasure.lean` specializes the existing
