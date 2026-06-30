@@ -25,22 +25,29 @@ P1.5/P1.6-V2 ✅`1dc6c698`, P1.6-V3 ✅resolved (Mathlib's, no extraction), P1.7
 
 **Mathlib:** `Algebra.trdeg` + transcendence-basis API, `KaehlerDifferential` base-change, `FormallySmooth.of_perfectField`, `IsSmoothAt`/smooth-locus all **present-reusable**; the **Jacobian-criterion-for-trdeg ABSENT** (built in-repo, P1.2); image-dim=trdeg packaging **absent** (bespoke, #14).
 
-## Phase 2 — orbit-dimension capstone (the squeeze)  ·  branch `fl3-p2` (off `fl3-p1`) — PROBE-GATED
+## Phase 2 — orbit-dimension squeeze (the capstone)  ·  branch `fl3-p2` (off `fl3-p1`)
 
-The squeeze `varietyDim = trdeg ≤ genericDiffRank ≤ finrank(range δ⁰) ≤ cotangent = varietyDim`, de-`Tuple`'d
-onto an abstract affine-`G`-variety interface (`R`, `μ*`, `δ⁰`), on Phase 1. ~2400 lines fused.
+**P2.0 PROBE ✅ → PROCEED** (scout + decorrelated Codex; [`threads/p2.0-probe/report.md`](threads/p2.0-probe/report.md)
+is the authoritative Phase-2 design). The squeeze `varietyDim = trdeg ≤ genericDiffRank ≤ finrank(range δ⁰) ≤
+cotangent = varietyDim` lifts to a **small hypothesis-carrying 4-brick engine** — NOT a full algebraic-group
+framework (YAGNI: one consumer). Carrier `structure AffineGVariety k := (ρ, R, fρ : ρ → R, C0, C1, δ : C0 →ₗ[k] C1)`;
+the two geometric facts are **named hypotheses** the DLN matrix-tuple instance discharges: **(H1)**
+`DifferentialFactors` (Maurer–Cartan span factorisation), **(H2)** infinitesimal-action (dual-number
+ideal-killing). No step irreducibly `Tuple`-shaped (keystone restatement scratch-elaborates, no `cochain`/`Tuple`
+type). name=content: H1/H2 are abstract *inputs*, not consequences of a bare orbit map.
 
-| rung | item | source | target | status |
-|------|------|--------|--------|--------|
-| **P2.0** | **DE-`TUPLE` PROBE [GATE]** — write the abstract interface signature (`R`, `μ*`, `δ⁰` + finite-type/smooth instances) + **restate `genericDifferentialRank_…_le_finrank_range_deformationδ` against it without `cochain` types**. Reveals interface-shaped vs irreducibly-`Tuple`-shaped. | `OrbitDifferentialRank` | — | pending — **default proceed on positive; halt+surface only if irreducibly `Tuple`-shaped** |
-| P2.1 | trace self-duality brick (`traceFun`/`traceEquiv`, general `{a b : ι → ℕ}`) | `Core/OrbitDifferentialRank.lean` | `Core/.../LinearAlgebra/Matrix/TracePairing` | pending — extract (low risk) |
-| P2.2 | **abstract affine-`G`-variety interface** (the de-`Tuple` carrier) | new, modeled on `OrbitVariety`+`OrbitPullbackDim` | `Core/.../AlgebraicGeometry/Group/Orbit` | pending — keystone |
-| P2.3 | orbit-as-image irreducibility (`ker μ*` prime) | `Core/OrbitVariety.lean` | P2.2 home | pending — generalize off `BaseChangeGroup` |
-| P2.4 | **orbit dim ≤ diff-rank ≤ finrank(range δ⁰) [CRUX]** — the A4.3 adjoint-transpose argument | `Core/OrbitImageDim.lean` + `OrbitDifferentialRank.lean` (672 ln) | P2.2 home, tagging P1.2 | pending — **the big de-`Tuple` refactor** |
-| P2.5 | **orbit smooth ⟹ finrank(range δ⁰) = cotangent = orbit dim [CRUX]** — A6.1 | `OrbitTangentCotangent` + `OrbitSmooth` + `OrbitDifferential` (660+552+99 ln), tagging `Dimension/{Smooth,Regular}` | P2.2 home | pending — de-`Tuple` the cotangent-pairing + smoothness |
-| P2.6 | squeeze headline `orbit dim = finrank(range δ⁰)` | `Core/VoigtDischarge.lean` | P2.2 home | pending — assemble |
+| rung | brick / item | from | risk / review |
+|------|------|------|---------------|
+| **P2.2** | **`AffineGVariety` carrier `structure` + orbit-as-image irreducibility** on `(R, fρ)` (`ker μ*` prime via `MvPolynomial.funext`), DLN as instance | `OrbitVariety`+`OrbitPullbackDim` → `Core/AlgebraicGeometry/Group/Orbit` | **keystone, low risk** — dispatch FIRST (unblocks all) |
+| P2.1 | trace/transpose-rank brick — extract `traceEquiv`/`finrank_range_deltaT` (general `{ι}{a b}`), **or** prefer Mathlib `finrank_range_dualMap_eq_finrank_range` + drop `deltaT` | `OrbitDifferentialRank` | low — decide drop-`deltaT` at extraction; feeds P2.4 |
+| P2.3 | A0/A4.1/A4.4 assembly on `(R, fρ)` + **L6.4 ideal-equality as hypothesis** (`orbitRankLocus=orbitSet` stays DLN) | `OrbitPullbackDim`/`AffineNoetherRank`/`OrbitImageDim` | low-med — transports through first-iso |
+| **P2.4** | **B1 `GenericRankBound` [CRUX]** — A4.3 `genericDiffRank ≤ finrank(range δ)` from (H1); DLN discharges (H1) via `D_orbit_conj`/`mcΘ`/gate | `OrbitDifferentialRank` (674 ln) | **big refactor; decorrelated review** of the (H1) carrier `L` signature. De-risk first: pin `L` against the DLN instance |
+| **P2.5** | **B3 `CotangentInjection` + B4 `SmoothCotangentDim` [CRUX]** — A6.1 from (H2) + smooth `k`-rational point + dense `k`-orbit | `OrbitTangentCotangent`+`OrbitSmooth`+`OrbitDifferential` (660+552+99) | **decorrelated review** of (H2)'s derivation carrier + "dense `k`-orbit meets smooth locus" over non-alg-closed `k` |
+| P2.6 | squeeze headline `varietyDim Z = finrank(range δ)` + L7 ⟹ `hVoigt`, assembled | `VoigtDischarge` | low — `le_antisymm` + ENat cancel, already abstract |
 
-**Stays DLN-local:** `OrbitClosure`/`OrbitKostant`/`Orbit` (type-A box-moves — correct). **Mathlib:** algebraic-group orbit-dimension theory **absent** (this is net-new-to-Mathlib but built-in-repo, fused).
+**Stays DLN-local:** `OrbitClosure`/`OrbitKostant`/`Orbit` (type-A box-moves) incl. the L6.4 ideal-equality.
+**B2 `AdjointRank`:** no new statement — Mathlib `finrank_range_dualMap_eq_finrank_range`. **Mathlib:**
+algebraic-group orbit-dimension theory absent (net-new, built in-repo as the small engine).
 
 ## Crux rungs (decorrelated review)
 P1.2 (char hyp — `[CharZero]` vs `[PerfectField]`/separable, composing with A6.1) · P2.4 + P2.5 (the de-`Tuple`

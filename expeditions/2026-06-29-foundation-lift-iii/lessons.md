@@ -25,3 +25,22 @@ New lessons specific to this expedition accumulate below.
   → `Module.Free.of_divisionRing` → `Flat`), not by re-importing the heavy module the split removed. Generalises
   L2 (transitive *consumer* sweep) to transitive *instance-provider* breaks: a green full-aggregator build after
   a split is necessary, and a missing-instance error there is the expected symptom, not a regression.
+
+- **L7 — a `DLNFibre.Core.X` namespace SHADOWS Mathlib's root `X` for files that `open X` inside
+  `namespace DLNFibre.Core`.** P2.2's first home `DLNFibre.Core.AlgebraicGeometry.Group.Orbit` created a
+  `DLNFibre.Core.AlgebraicGeometry` segment; three sibling files doing `open AlgebraicGeometry` from inside
+  `namespace DLNFibre.Core` then resolved to the (empty) local segment, not Mathlib's — `Scheme`/`Spec`/etc.
+  became "unknown identifier" only in the full build. **Rule:** a new file mirroring a Mathlib target declares
+  its content in the **bare Mathlib-mirror namespace** (`namespace AlgebraicGeometry.Group.Orbit`, like
+  `CotangentLocalization`'s `namespace Ideal` / `CotangentJacobian`'s `namespace MvPolynomial`), NOT a
+  `DLNFibre.Core.`-prefixed one — both the correct eventual file-move target AND shadow-safe.
+
+- **L8 — when abstracting a concrete proof into a hypothesis-carrying engine, GUARD-first: write the concrete
+  discharge BEFORE fixing the abstract hypothesis signature.** The naive *forward* shape of a hypothesis can be
+  **undischargeable** by the very model it is meant to abstract. P2.4: the forward `span ≤ range(L ∘ δ.baseChange)`
+  fails because `range(L ∘ δ.bc) = L(range δ)` only sees the coboundary image `range δ ⊊ C1`, while the concrete
+  differentials live outside it; the honest dischargeable form was the **transpose/adjoint** carrier (`δAdj : C1 →ₗ C0`
+  + a rank-tie `finrank(range δAdj) = finrank(range δ)`). The guard (a scratch `example` proving the DLN instance
+  discharges the candidate hypothesis, body = the existing proof) reveals this *before* the refactor commits to a
+  wrong signature. Pair with name=content: the adjoint + rank-tie are abstract *inputs* the instance supplies; the
+  matrix self-duality (`deltaT`) stays the instance detail, never escaping into the engine signature.

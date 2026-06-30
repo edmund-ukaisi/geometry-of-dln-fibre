@@ -79,7 +79,7 @@ theorem ringKrullDim_quotient_vanishingIdeal_stratum_eq_delta [IsAlgClosed k] [C
 
 /-! ## The base-stratum closed-point height: `height m = δ` for any maximal ideal of `O(Mat^{≤r})`
 
-By equidimensionality at a closed point (`OrbitTangentCotangent.height_eq_ringKrullDim_of_isMaximal_fintype`,
+By equidimensionality at a closed point (`Dimension.height_eq_ringKrullDim_of_isMaximal_fintype`,
 `Fintype`-indexed) and the base Krull dimension `= δ` just established: every maximal ideal of the
 irreducible base `O(Mat^{≤r})` has height `δ`. The base-side input to the going-down/00OM easy
 direction. -/
