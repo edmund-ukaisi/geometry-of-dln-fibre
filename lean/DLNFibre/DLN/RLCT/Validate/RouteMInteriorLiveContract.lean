@@ -598,10 +598,10 @@ theorem interiorLive_BparamsLeaf_injOn (ha : StructAdm M (tach M))
   · rw [eIn_projV0, eIn_projV0, hV0]
   · rw [← dWdC_eq_eInV1, ← dWdC_eq_eInV1]
     refine Prod.ext ?_ ?_
-    · show (matrixReaderCLM (fun i j => readW0_idx ha i j)) y
+    · change (matrixReaderCLM (fun i j => readW0_idx ha i j)) y
         = (matrixReaderCLM (fun i j => readW0_idx ha i j)) y'
       simpa [matrixReaderCLM] using (hW : Wfun ha y = Wfun ha y')
-    · show (matrixReaderCLM (fun i j => leaf_idx ha i j)) y
+    · change (matrixReaderCLM (fun i j => leaf_idx ha i j)) y
         = (matrixReaderCLM (fun i j => leaf_idx ha i j)) y'
       simpa [matrixReaderCLM] using (hLeaf : Lfun ha y = Lfun ha y')
   · rfl
