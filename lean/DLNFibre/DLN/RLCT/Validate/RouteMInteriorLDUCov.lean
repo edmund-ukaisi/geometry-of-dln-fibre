@@ -144,10 +144,14 @@ weighted axes (`hinj`, the opaque-`N` analogue of `phi3333_injOn`'s triangular b
 general statement exists in the skeleton). NONE follows from the determinant value alone.
 
 The theorem below makes the reduction precise and machine-checked, with ALL THREE as explicit
-hypotheses (so it is itself clean-three, importing no sorry): GIVEN them (for ANY extra-axis set
-`E`), the engine yields the EXACT frozen `interiorLDU_cov` conclusion. The `interiorLDU_cov := ldu_cov`
-wiring is gated on H1 banking `hdiff`/`hinj` and on `interiorLDU_abs_det` becoming sorry-free; at that
-point this theorem (specialized at the right `E` = the `leafH > 0` extra axes) closes it. -/
+hypotheses: GIVEN them (for ANY extra-axis set `E`), the engine yields the EXACT frozen
+`interiorLDU_cov` conclusion. Its PROOF TERM introduces no sorry (it is a direct application of the
+clean-three engine); the theorem's axiom footprint nonetheless inherits `sorryAx` purely through
+`interiorLDU_leafH` — the H2 stub the frozen statement TYPE must mention — not through the proof.
+Once H2 fills `interiorLDU_leafH` that `sorryAx` vanishes automatically. The `interiorLDU_cov :=
+ldu_cov` wiring is gated on H1 banking `hdiff`/`hinj` and on `interiorLDU_abs_det` becoming
+sorry-free; at that point this theorem (specialized at the right `E` = the `leafH > 0` extra axes,
+pivot excluded) closes it. -/
 theorem interiorLDU_cov_of_facts (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (hN : 0 < routeMAmbient M) (E : Finset (Fin (routeMAmbient M)))
     (hdiff : Differentiable ℝ (interiorLDUphi M ha hN))
