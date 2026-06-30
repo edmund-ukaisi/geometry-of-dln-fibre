@@ -231,4 +231,17 @@ theorem schur_matBoxRect_chart_capA_lt_top (m n p : ℕ) (hmm : 2 ≤ m) (hnn : 
   rw [lintegral_congr hinner, lintegral_mul_const' _ _ hratiofin.ne]
   exact ENNReal.mul_lt_top hradfin hratiofin
 
+/-- **The cap-A interior cover.** `RectSchurCore m n p c' T` for `0 < c' < rectSchurLambda p m n`
+(`min(m,n) ≥ 2`, interior stratum): the `mn`-chart radial-Δ cover (`matBoxRect_outer_flat` +
+`gFlatRect_cover_sum`) reduces to a sum over `mn` charts, each finite by the cap-A per-chart
+`schur_matBoxRect_chart_capA_lt_top`. The asymmetric `schurCoreP_capA_interior`. -/
+theorem schurCoreRect_capA_interior (m n p : ℕ) (hmm : 2 ≤ m) (hnn : 2 ≤ n) (hp : 0 < p)
+    (hIH : RectSchurLowerIH p (rectSchurLambda p) m n)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < rectSchurLambda p m n)
+    (hmid : (p : ℝ) / 2 < rectSchurLambda p m n) (T : ℝ) (hT : 0 < T) :
+    RectSchurCore m n p c' T := by
+  rw [RectSchurCore, matBoxRect_outer_flat m n p c' T, gFlatRect_cover_sum m n p (by positivity) c' T]
+  exact ENNReal.sum_lt_top.2
+    (fun q _ => schur_matBoxRect_chart_capA_lt_top m n p hmm hnn hp hIH c' hc0 hc' hmid q T hT)
+
 end DLNFibre.DLN.RLCT
