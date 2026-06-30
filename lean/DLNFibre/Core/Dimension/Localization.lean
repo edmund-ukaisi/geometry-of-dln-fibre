@@ -1,9 +1,9 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.AffineNoetherRank
 import DLNFibre.Core.Dimension.Integral
 import DLNFibre.Core.Dimension.Basic
+import Mathlib.RingTheory.NoetherNormalization
 import Mathlib.RingTheory.Localization.Ideal
 import Mathlib.RingTheory.KrullDimension.Basic
 import Mathlib.RingTheory.Spectrum.Prime.Topology
@@ -120,6 +120,21 @@ theorem ringKrullDim_eq_trdeg_of_fg_domain (A : Type u) [CommRing A] [IsDomain A
   have htr : Algebra.trdeg k A = (s : Cardinal) :=
     trdeg_eq_of_integral_injective g hg_inj hg_int
   rw [hdim, htr, Cardinal.toNat_natCast]
+
+/-- **`dim = trdeg` for a polynomial-ring quotient by a prime, in `.unbotD`/`.toNat` form.** For a
+prime `p` of `R = k[Fin n]`, the quotient `R ⧸ p` is an f.g. `k`-domain, so the general
+`ringKrullDim_eq_trdeg_of_fg_domain` applies; reading off the `WithBot ℕ∞` equality through
+`WithBot.unbotD_coe` gives
+`(ringKrullDim (R ⧸ p)).unbotD 0 = (Algebra.trdeg k (R ⧸ p)).toNat`. Char-free. -/
+theorem ringKrullDim_quotient_unbotD_eq_trdeg_toNat (n : ℕ)
+    (p : Ideal (MvPolynomial (Fin n) k)) [p.IsPrime] :
+    (ringKrullDim (MvPolynomial (Fin n) k ⧸ p)).unbotD 0
+      = (Algebra.trdeg k (MvPolynomial (Fin n) k ⧸ p)).toNat := by
+  haveI : IsDomain (MvPolynomial (Fin n) k ⧸ p) := Ideal.Quotient.isDomain p
+  haveI : Algebra.FiniteType k (MvPolynomial (Fin n) k ⧸ p) :=
+    Algebra.FiniteType.of_surjective (Ideal.Quotient.mkₐ k p) (Ideal.Quotient.mkₐ_surjective k p)
+  rw [ringKrullDim_eq_trdeg_of_fg_domain (k := k) (MvPolynomial (Fin n) k ⧸ p)]
+  exact WithBot.unbotD_coe 0 _
 
 /-! ### trdeg is invariant under localization (sandwiched in the fraction field) -/
 
