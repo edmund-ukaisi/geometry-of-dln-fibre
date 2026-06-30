@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, retained-passive passive-sector construction
+  frontier, 2026-06-30.** The next source-prior step is a pen-and-paper
+  construction target, not a Lean wrapper.  The live Case 2 retained-passive
+  local-jacobian lane keeps the full determinant-chart pushforward hypothesis
+  `m.restrict Sdet = Measure.map chart weightedBox`.  The reduced selected-entry
+  signed-box chart varies only residual center coordinates and should not be
+  used to prove that full retained-passive determinant-chart Haar statement.
+  The next source-moving theorem must add the suppressed retained p.13 passive
+  coordinates and prove an exact or finite-scalar/bounded-density dominated
+  passive-sector measure theorem, provisionally
+  `measure_map_case2PassiveThetaTopologyTuple_eq_restrict_sectorSet`, in a
+  future passive-sector module.  Reproduction and statement card are at
+  `threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-sector-construction.md`
+  and
+  `threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-sector-construction.md`.
+  No Lean theorem is claimed.  Xhigh reviewer `Raman` returned findings that
+  were repaired: bare mutual absolute continuity was removed as too weak, and
+  the passive-coordinate list now includes `A3passive`.  Review is recorded at
+  `threads/03-block-product-reduction/review-a2-retained-passive-passive-sector-construction.md`.
+  This asserts no original source prior, source-rank coverage,
+  determinant-chart Haar transport from the reduced selected-entry section,
+  normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 2 passive-sector source-stratum-bounds
   finite-integral handoff, 2026-06-29.** Lean now proves the source-stratum-bound
   sibling

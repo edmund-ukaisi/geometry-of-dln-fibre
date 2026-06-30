@@ -21,6 +21,33 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 retained-passive passive-sector construction frontier
+
+Reproduction:
+`reproduction-a2-retained-passive-passive-sector-construction.md`.
+Statement card:
+`statement-card-a2-retained-passive-passive-sector-construction.md`.
+
+The live Case 2 retained-passive local-jacobian lane still has an explicit
+determinant-chart pushforward hypothesis:
+
+```text
+m.restrict Sdet = Measure.map chart weightedBox
+```
+
+The reduced selected-entry signed-box chart is lower-dimensional and should
+not be used to prove this full determinant-chart Haar statement.  The next
+source-moving A2 work is to add the suppressed passive retained p.13
+coordinates and prove an exact or finite-scalar/bounded-density dominated
+passive-sector measure theorem, provisionally in a future module
+`RetainedPassiveCase2PassiveSector.lean`.
+
+This note proves no Lean theorem.  Xhigh reviewer `Raman` found two wording
+issues, both repaired: bare mutual absolute continuity was removed as too
+weak for the finite-integral handoff, and the passive-coordinate list now
+includes `A3passive`.  Review:
+`review-a2-retained-passive-passive-sector-construction.md`.
+
 ## 2026-06-29 A2 selected-entry all-pivot producer shell
 
 Reproduction:

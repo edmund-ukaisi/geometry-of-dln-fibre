@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 passive-sector construction frontier
+
+The next A2 source-prior move is pen-and-paper construction, not Lean wrapper
+work.  The reduced Case 2 selected-entry signed-box chart should not be used
+to prove the full determinant-chart pushforward hypothesis
+
+```text
+m.restrict Sdet = Measure.map chart weightedBox
+```
+
+because it lacks the retained p.13 passive coordinates.  The useful target is
+a full passive-sector coordinate domain and a theorem such as
+
+```text
+measure_map_case2PassiveThetaTopologyTuple_eq_restrict_sectorSet
+```
+
+or a finite-scalar domination / bounded-density comparison strong enough for
+the local finite-integral consumer.  Bare mutual absolute continuity is too
+weak for the negative-power finite-integral handoff.
+
+Reproduction and statement card are in
+`threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-sector-construction.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-sector-construction.md`.
+No Lean theorem is claimed.  Xhigh reviewer `Raman` returned findings that
+were repaired: bare mutual absolute continuity was removed as too weak, and
+the passive-coordinate list now includes `A3passive`.  Review is recorded in
+`threads/03-block-product-reduction/review-a2-retained-passive-passive-sector-construction.md`.
+
 ## Latest controller decision - 2026-06-30, A4 recurrence Case 2 branch progress
 
 The displayed Case 2 branch-progress bridge is now lifted to the

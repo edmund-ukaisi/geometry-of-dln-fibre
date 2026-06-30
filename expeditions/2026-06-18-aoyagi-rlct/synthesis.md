@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Passive-Sector Construction Frontier - 2026-06-30
+
+The retained-passive Case 2 source-prior frontier is not another finite
+integral wrapper.  The live local-jacobian lane still keeps the full
+determinant-chart pushforward hypothesis:
+
+```text
+m.restrict Sdet = Measure.map chart weightedBox
+```
+
+The reduced selected-entry signed-box chart varies only the residual center
+coordinates.  It is lower-dimensional relative to the full retained-passive
+`TopologyTuple` determinant chart, so it should not be used to prove that full
+Haar restriction statement.
+
+The next source-moving A2 work is a passive-sector construction adding the
+suppressed retained p.13 passive coordinates, with a future theorem of the
+shape:
+
+```text
+measure_map_case2PassiveThetaTopologyTuple_eq_restrict_sectorSet
+```
+
+or a finite-scalar domination / bounded-density comparison strong enough for
+local integrability transfer.  Bare mutual absolute continuity is too weak for
+the negative-power finite-integral handoff.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-passive-sector-construction.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-passive-sector-construction.md
+```
+
+No Lean theorem is claimed.  Xhigh reviewer `Raman` returned findings that
+were repaired: bare mutual absolute continuity was removed as too weak, and
+the passive-coordinate list now includes `A3passive`.  Review is recorded in
+`threads/03-block-product-reduction/review-a2-retained-passive-passive-sector-construction.md`.
+
 ## Latest A4 Recurrence Case 2 Branch Progress - 2026-06-30
 
 `SelectedEntryBranchProgressBridge.lean` now lifts the displayed Case 2
