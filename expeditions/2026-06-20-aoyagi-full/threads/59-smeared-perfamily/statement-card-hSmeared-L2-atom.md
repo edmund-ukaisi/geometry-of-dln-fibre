@@ -32,18 +32,22 @@ card is one rung above: the spine-slot WIRING + the square-stratum reduction tha
 >         ∫⁻ x in cubeBox (routeMAmbient M) ε,
 >           ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) = ⊤
 >   ```
-> - **Gloss.** `hSmeared_of_smearedChart` (the spine wiring from a chart-BUILDER) instantiated at
->   `L = 2` with the total square-stratum chart-builder `smearedChart_of_square`
->   (`fun hsm => smearedChart_of_square M hpos hsm`). The RHS is definitionally the spine's
+> - **Gloss.** the banked spine-feeding closer `hSmeared_squareSmeared_L2`
+>   (`fun _ hsm => hSmeared_squareSmeared_L2 M hpos c' hc' ε hε hsm`), CURRIED into the spine's slot
+>   shape. `hSmeared_squareSmeared_L2` itself routes the smeared branch through the square stratum
+>   `deepRank M = M 0` (`smeared_deepRank_eq_M0`) and `smearedChart_of_square` into the
+>   fully-unconditional square box-divergence. The RHS is definitionally the spine's
 >   `BoxDiverges M c' ε`.
 > - **Proved.** sorry-free; forced `#print axioms` (scratch, olean force-elaborated) =
 >   `[propext, Classical.choice, Quot.sound]` on BOTH `hSmeared_L2` and `hSmeared_L2_apply`. S2-FREE
->   (no `monomial_rlct`), no `sorryAx`, no new axiom.
+>   (no `monomial_rlct`), no `sorryAx`, no new axiom. Pinned in `AxCheck.lean` (the module is imported
+>   there); the pre-existing pins for `hSmeared_squareSmeared_L2` / `smeared_deepRank_eq_M0` /
+>   `smearedChart_of_square` remain.
 > - **Assumed.** the spine's own branch conditions — `1 ≤ minAdm M` (the dispatch regime, top-level
 >   spine hyp), `c' ≥ ½·minAdm M`, `ε > 0`. No analytic per-family hypothesis (those are discharged
 >   inside the banked `routeMCore_smearedL2_square_uncond`).
 > - **Cited / Deferred.** none.
-> - **Status.** sorry-free; pending reviewer fidelity check + controller AxCheck/aggregator wiring.
+> - **Status.** sorry-free; AxCheck-pinned; pending reviewer fidelity check + controller cone-merge.
 
 ## Why the wiring is TOTAL on the smeared-L=2 class (the square reduction — STEP-0 gate)
 
@@ -73,6 +77,8 @@ card is one rung above: the spine-slot WIRING + the square-stratum reduction tha
   (new; imports only `RouteMSmearedSquareReduce`). The assembly that plugs this into the spine
   (`RouteMLayerCoverGE` / `RouteMLayerCoverGEL2` / interior-chart files) is the `genm-r1lower` tide's
   domain — NOT touched here.
-- Controller to wire: add the module import to the aggregator `DLNFibre.lean` and pin
-  `#print axioms hSmeared_L2` (+ `hSmeared_L2_apply`) in `AxCheck.lean` (currently neither
-  `smearedChart_of_square` nor the closer `hSmeared_squareSmeared_L2` is axiom-pinned in AxCheck).
+- AxCheck-pinned (per controller directive): `AxCheck.lean` now imports `RouteMSmearedHSmearedL2`
+  and emits `#print axioms hSmeared_L2` (+ `hSmeared_L2_apply`), alongside the pre-existing
+  `hSmeared_squareSmeared_L2` / `smeared_deepRank_eq_M0` / `smearedChart_of_square` pins. Since
+  `AxCheck` is imported by the aggregator `DLNFibre.lean`, this transitively wires the module into the
+  aggregator's build — the controller does the final cone-merge.
