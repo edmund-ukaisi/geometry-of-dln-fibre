@@ -131,41 +131,34 @@ private theorem rank_topRows {a b r : ℕ} (hra : r ≤ a)
   rw [hA] at hge
   omega
 
-/-- **The pivot-aligned boundary frame fact** (PIN1 (a)). For a rank-`r` matrix `A : Fin a × Fin b`
-whose tail rows vanish (`A i j = 0` for `(i:ℕ) ≥ r`), there is a `B`-determined pivot column set
-`J : Fin r ↪ Fin b` and a UNIT frame `Q : Fin b × Fin b` such that:
-- the lower-right block of `Q` under the pivot split `e := pivotThresholdSplit r b ha J` is a unit
-  (`IsUnit ((reindex e e Q).toBlocks₂₂)`) — the `B22`-invertibility PIN1 needs; AND
-- `A · Q` is the block-normal corner in split coordinates:
-  `reindex (rThresholdSplit r a haA) e (A * Q) = fromBlocks 1 0 0 0`.
-
-Construction (Codex `xhigh` design (I)): `Q := reindex e.symm e.symm (fromBlocks VJ⁻¹ (−VJ⁻¹·VK) 0 1)`,
-with `VJ`/`VK` the pivot/complement columns of the top-`r`-rows row factor `V`. Then `reindex e e Q` is
-the explicit block frame, `toBlocks₂₂ = 1` (a unit), and `V · Q` is the pivot-aligned `[I_r | 0]` —
-realising `B22 = 1` directly, with NO restriction on the rank-`r` `A` (the `corM`-vs-pivot mismatch of a
-generic right-only normal form is avoided). Network-free; the deepest last layer instantiates it. -/
-theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r ≤ a)
-    (A : Matrix (Fin a) (Fin b) ℝ) (hA : A.rank = r)
-    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → A i j = 0) :
-    ∃ (J : Fin r ↪ Fin b) (Q : Matrix (Fin b) (Fin b) ℝ),
+/-- **The deterministic pivot-frame core** (Codex factorization, genm-44l2). The body of
+`exists_pivotFrame_lastBlock_isUnit` with the pivot embedding `J` and its column-unit `hJ` taken as
+explicit INPUTS rather than chosen — so a consumer can supply ANY pivot set whose `r×r` column
+submatrix of the top-`r`-rows factor `V := A.submatrix (castLE) id` is a unit (the FRONT embedding,
+when `V`'s front cols are full rank — the `_front` route below — or the arbitrary
+`exists_pivot_cols_of_rank` pivot — the legacy route). All five conclusions are the explicit
+pivot-aligned frame `Q := reindex e.symm e.symm (fromBlocks VJ⁻¹ (−VJ⁻¹·VK) 0 1)`; the pivot-ness of
+`J` enters ONLY through `hJ` (⟹ `IsUnit VJ`). -/
+theorem exists_pivotFrame_lastBlock_isUnit_of_pivot {a b r : ℕ} (ha : r ≤ b) (hra : r ≤ a)
+    (A : Matrix (Fin a) (Fin b) ℝ)
+    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → A i j = 0)
+    (J : Fin r ↪ Fin b)
+    (hJ : IsUnit ((A.submatrix (Fin.castLE hra : Fin r → Fin a) (id : Fin b → Fin b)).submatrix
+      (id : Fin r → Fin r) (J : Fin r → Fin b))) :
+    ∃ Q : Matrix (Fin b) (Fin b) ℝ,
       IsUnit Q ∧
       IsUnit ((Matrix.reindex (pivotThresholdSplit r b ha J)
           (pivotThresholdSplit r b ha J) Q).toBlocks₂₂) ∧
       Matrix.reindex (rThresholdSplit r a hra) (pivotThresholdSplit r b ha J) (A * Q)
         = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 ∧
-      -- The frame is block-UPPER under the pivot split: its split form is `fromBlocks _ _ 0 1`.
       (Matrix.reindex (pivotThresholdSplit r b ha J)
           (pivotThresholdSplit r b ha J) Q).toBlocks₂₁ = 0 ∧
-      -- The frame's ₂₂-block under the pivot split is the IDENTITY (the explicit normalizer's bottom-right
-      -- is literally `1`; the `DQ = 1` fact `schur_frame_transform` needs to strip the endpoint frame).
       (Matrix.reindex (pivotThresholdSplit r b ha J)
           (pivotThresholdSplit r b ha J) Q).toBlocks₂₂
         = (1 : Matrix (Fin (b - r)) (Fin (b - r)) ℝ) := by
   classical
-  -- The top-`r`-rows row factor `V` and its pivot column set `J`.
+  -- The top-`r`-rows row factor `V`; `J`/`hJ` are supplied.
   set V : Matrix (Fin r) (Fin b) ℝ := A.submatrix (Fin.castLE hra) id with hV
-  have hVrank : V.rank = r := rank_topRows hra A hA htail
-  obtain ⟨J, hJ⟩ := Core.Matrix.exists_pivot_cols_of_rank V hVrank
   set e := pivotThresholdSplit r b ha J with he
   -- The pivot / complement column blocks of `V` (in sorted order).
   set VJ : Matrix (Fin r) (Fin r) ℝ :=
@@ -187,7 +180,7 @@ theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r
     rw [Matrix.reindex_apply, Matrix.reindex_apply, Equiv.symm_symm,
       Matrix.submatrix_submatrix, Equiv.self_comp_symm, Matrix.submatrix_id_id]
   -- The actual frame `Q := reindex e.symm e.symm Q̃` (so `reindex e e Q = Q̃`).
-  refine ⟨J, Matrix.reindex e.symm e.symm Qt, ?_, ?_, ?_, ?_, ?_⟩
+  refine ⟨Matrix.reindex e.symm e.symm Qt, ?_, ?_, ?_, ?_, ?_⟩
   · -- `IsUnit Q` from `IsUnit Q̃` (reindex is a unit-preserving submatrix by an equiv).
     rw [Matrix.reindex_apply, Equiv.symm_symm]
     exact (Matrix.isUnit_submatrix_equiv e e).mpr hQtunit
@@ -230,6 +223,77 @@ theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r
     rw [hree, hQt, Matrix.toBlocks_fromBlocks₂₁]
   · -- ₂₂-block `= 1`: `reindex e e Q = Q̃ = fromBlocks _ _ 0 1`, so `toBlocks₂₂ = 1`.
     rw [hree, hQt, Matrix.toBlocks_fromBlocks₂₂]
+
+/-- **The pivot-aligned boundary frame fact** (PIN1 (a), legacy ARBITRARY-pivot form). For a rank-`r`
+matrix `A` whose tail rows vanish, there is a `B`-determined pivot column set `J` (the arbitrary
+`exists_pivot_cols_of_rank` choice) and a UNIT frame `Q` with the five pivot-aligned conclusions.
+Delegates to the deterministic core `exists_pivotFrame_lastBlock_isUnit_of_pivot`, supplying `J`/`hJ`
+from the arbitrary chooser. (Statement unchanged from the original; consumers unaffected.) -/
+theorem exists_pivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r ≤ a)
+    (A : Matrix (Fin a) (Fin b) ℝ) (hA : A.rank = r)
+    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → A i j = 0) :
+    ∃ (J : Fin r ↪ Fin b) (Q : Matrix (Fin b) (Fin b) ℝ),
+      IsUnit Q ∧
+      IsUnit ((Matrix.reindex (pivotThresholdSplit r b ha J)
+          (pivotThresholdSplit r b ha J) Q).toBlocks₂₂) ∧
+      Matrix.reindex (rThresholdSplit r a hra) (pivotThresholdSplit r b ha J) (A * Q)
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 ∧
+      (Matrix.reindex (pivotThresholdSplit r b ha J)
+          (pivotThresholdSplit r b ha J) Q).toBlocks₂₁ = 0 ∧
+      (Matrix.reindex (pivotThresholdSplit r b ha J)
+          (pivotThresholdSplit r b ha J) Q).toBlocks₂₂
+        = (1 : Matrix (Fin (b - r)) (Fin (b - r)) ℝ) := by
+  classical
+  -- The arbitrary pivot column set of the top-`r`-rows row factor `V`.
+  have hVrank : (A.submatrix (Fin.castLE hra : Fin r → Fin a) (id : Fin b → Fin b)).rank = r :=
+    rank_topRows hra A hA htail
+  obtain ⟨J, hJ⟩ := Core.Matrix.exists_pivot_cols_of_rank
+    (A.submatrix (Fin.castLE hra : Fin r → Fin a) (id : Fin b → Fin b)) hVrank
+  obtain ⟨Q, hQ⟩ := exists_pivotFrame_lastBlock_isUnit_of_pivot ha hra A htail J hJ
+  exact ⟨J, Q, hQ⟩
+
+/-- **A square full-rank matrix over `ℝ` is a unit** (genm-44l2 helper; mirrors the private one in
+`DeepestLeadingBlock`). `rank A = n` ⟹ `range A.toLin'` full-finrank ⟹ `= ⊤` ⟹ `A` a unit. -/
+private theorem isUnit_of_rank_eq_card {n : ℕ} (A : Matrix (Fin n) (Fin n) ℝ)
+    (h : A.rank = n) : IsUnit A := by
+  rw [← Matrix.isUnit_toLin'_iff, LinearMap.isUnit_iff_range_eq_top]
+  apply Submodule.eq_top_of_finrank_eq
+  have hrange : Module.finrank ℝ (LinearMap.range (Matrix.toLin' A)) = A.rank := rfl
+  rw [hrange, h, Module.finrank_fin_fun]
+
+/-- **The FRONT-pivot boundary frame fact** (PIN1 (a), genm-44l2 front variant). When the FRONT `r`
+columns of the top-`r`-rows row factor `V := A.submatrix (castLE) id` are full rank (`hfront`), the
+FRONT embedding `Fin.castLE : Fin r ↪ Fin b` IS a valid pivot set, so the pivot frame can be built
+with `J = the front embedding` — DETERMINISTICALLY (no arbitrary choose). The five conclusions hold
+with the explicit `J := ⟨Fin.castLE ha, _⟩`. This is the `hJfront`-discharging variant: its `J` is the
+front embedding by construction, so the downstream front-embed identity is `rfl`-true. -/
+theorem exists_frontPivotFrame_lastBlock_isUnit {a b r : ℕ} (ha : r ≤ b) (hra : r ≤ a)
+    (A : Matrix (Fin a) (Fin b) ℝ)
+    (htail : ∀ (i : Fin a) (j : Fin b), r ≤ (i : ℕ) → A i j = 0)
+    (hfront : ((A.submatrix (Fin.castLE hra : Fin r → Fin a) (id : Fin b → Fin b)).submatrix
+      (id : Fin r → Fin r) (Fin.castLE ha : Fin r → Fin b)).rank = r) :
+    ∃ Q : Matrix (Fin b) (Fin b) ℝ,
+      IsUnit Q ∧
+      IsUnit ((Matrix.reindex (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩)
+          (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩) Q).toBlocks₂₂) ∧
+      Matrix.reindex (rThresholdSplit r a hra)
+          (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩) (A * Q)
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 ∧
+      (Matrix.reindex (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩)
+          (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩) Q).toBlocks₂₁ = 0 ∧
+      (Matrix.reindex (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩)
+          (pivotThresholdSplit r b ha ⟨Fin.castLE ha, Fin.castLE_injective ha⟩) Q).toBlocks₂₂
+        = (1 : Matrix (Fin (b - r)) (Fin (b - r)) ℝ) := by
+  classical
+  -- The front embedding as the pivot set; its column-`r×r` block of `V` is the full-rank front block,
+  -- hence a unit (square full-rank over ℝ).
+  set Jf : Fin r ↪ Fin b := ⟨Fin.castLE ha, Fin.castLE_injective ha⟩ with hJf
+  have hJ : IsUnit ((A.submatrix (Fin.castLE hra : Fin r → Fin a) (id : Fin b → Fin b)).submatrix
+      (id : Fin r → Fin r) (Jf : Fin r → Fin b)) := by
+    apply isUnit_of_rank_eq_card
+    -- `(V.submatrix id Jf) = (V.submatrix id (Fin.castLE ha))`: `Jf` is `Fin.castLE ha` as a function.
+    exact hfront
+  exact exists_pivotFrame_lastBlock_isUnit_of_pivot ha hra A htail Jf hJ
 
 /-- **The deepest-point last-layer pivot frame** (the deepest-point instance of (a), `2 ≤ L`). At the
 deepest point's last layer (tail rows vanish at `2 ≤ L`, rank exactly `r`), there is a `B`-determined
