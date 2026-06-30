@@ -1,9 +1,50 @@
-# Statement card — `{eIn + hD}` coupled tide (genm-eihd2): architecture + `eIn` + `eIn_projV0` DONE, 3-sorry residual
+# Statement card — `{eIn + hD}` coupled tide (genm-eihd2 → genm-eihd2-cont): FULLY CLOSED (all 3 J-blocks landed)
 
-**Status:** architecture validated end-to-end (green build, 8347 jobs); `eIn` built sorry-free AND
-VALIDATED FAITHFUL (`eIn_projV0` PROVEN clean-three — the green-but-wrong tripwire is cleared); the
-coupling proof `eihd_hD` and the gate `interiorDet_leaf_headline_eihd` DONE. THREE documented term-level
-sorries remain (the J-blocks J00/J01/J11). No `axiom`/`native_decide`/`#exit`.
+**Status (UPDATE 2026-06-30, genm-eihd2-cont):** COMPLETE. All three J-blocks (`eihdT_J00`/`eihdT_J01`/
+`eihdT_J11`) are PROVEN sorry-free; `RouteMHDtotEihd.lean` has ZERO sorries; green build (8349 jobs).
+`#print axioms` clean-three `[propext, Classical.choice, Quot.sound]` (S2-free) on all five:
+`eihdT_J00`, `eihdT_J01`, `eihdT_J11`, `eihd_hD`, `interiorDet_leaf_headline_eihd`. So the gate
+discharges `hreg` only (banked) → the ∀M-L2 interior-det `|det Dφ|` headline holds (the R1-LOWER
+`cover_ge_div` / NodeAchieverChart-cov dependency). Two new imports added to the module:
+`RouteMReaderFDeriv`, `RouteMChainFDerivValue`.
+
+**Branch:** `expedition/genm-eihd2-cont` (off `origin/expedition/genm-eihd2` @ `1e3ef016`). The
+controller cone-merges the whole eihd chain.
+
+## The closing route (genm-eihd2-cont — banked, sorry-free)
+
+All three J-blocks reduce via Bridge 1 (`eihdT w = packStair (fderiv BparamsLeaf y₀ (eIn.symm w))`) +
+the `rfl` facts `(packStair p).1 = packLayer0 (p 0)`, `(packStair p).2.1 = packLayer1 (p 1)`, +
+Bridge 2a (`fderiv BparamsLeaf y₀ w s = fderiv (fun z => BparamsLeaf z s) y₀ w`).
+
+- **J00 / J01 (V0 line):** `fun z => BparamsLeaf ha z 0` reindexes (`reindexL0_BparamsLeaf0`, via the
+  banked `BparamsLeaf_layer0_entry`) to the gate `layer0SchurMap`; its fderiv collapses
+  (`flatBlockLE_symm_fderiv_flatBlock` + `gate_schurCore_eq`) to `schurFrameDeriv X K N (fderiv
+  slotReadV0 ·)`. `slotReadV0` is linear (`slotReadV0_fderiv_apply`, via a prod of `matrixReaderCLM`),
+  and `slotReadV0 (eIn.symm w) = w.1` (the inverse of `eIn_projV0`). So J00 reads `v0`, J01 reads `0`
+  (`map_zero`).
+- **J11 (V1 line):** `fun z => BparamsLeaf ha z 1` reindexes (`reindexL1_BparamsLeaf1`) to
+  `chainA(Nblk 1, Wblk 1, Cgen 2)` with `Nblk 1 = readN ⟨0⟩` (a V0-frame slot), `Wblk 1 = readW ⟨0⟩`,
+  `Cgen 2 = rfinDirect`. `packLayer1 = prodComm ∘ rowSplitLE ∘ reindexL1`; `rowSplitLE` of a `chainA`
+  is `(C − N·W, W)` (`rowSplitLE_chainA`, the `chainA_apply_castAdd/_natAdd` block laws, aligning
+  `finSumFinEquiv` with `finSplit`). The chain map fderiv is built from the matrix readers
+  (`chainKL_hasFDerivAt`); pushed through `rsL1 = rowSplitLE ∘ reindexL1` (concrete Matrix codomain — has
+  topology, unlike the `eihdV M 1`-valued `packLayer1`); the `prodComm` swap is `rfl`-defeq at the end.
+  At `d = eIn.symm (0,(v1,()))`: `dN d = (slotReadV0 d).2.1 = 0` (V0 zeroed), `dW d = v1.1`,
+  `dC d = v1.2` (the inverse of `(eIn δ).2.1 = (wToMat W-read, leafToMat leaf-read)`). Lands on
+  `chainUnitMap (readN ⟨0⟩) v1 = (v1.1, v1.2 − N·v1.1)`.
+
+New reusable in-module infra (all sorry-free): `reindexL0`, `reindexL0_BparamsLeaf0`,
+`BparamsLeaf0_hasFDerivAt`, `reindexL0_fderiv`, `packLayer0_layer0_fderiv_eq`,
+`layer0SchurMap_fderiv_collapse`, `readK/N/X/E_idx`, `slotReadV0_hasFDerivAt'`, `slotReadV0_fderiv_apply`,
+`packLayer0_layer0_fderiv` (V0); `reindexL1`, `packLayer1_eq`, `reindexL1_BparamsLeaf1`,
+`readN0/W0_idx`, `leaf_idx`, `Nblk1_eq`, `Wblk1_eq`, `Cgen2_eq`, `rowSplitLE_chainA`,
+`BparamsLeaf1_hasFDerivAt`, `Wfun/Lfun/Nfun`, `rsL1`, `rsL1_BparamsLeaf1`, `chainKL_hasFDerivAt`,
+`rsL1_fderiv`, `dWdC_eq_eInV1`, `packLayer1_fderiv` (V1).
+
+---
+
+## (original card, genm-eihd2 — architecture + eIn_projV0)
 
 **Branch:** `origin/expedition/genm-eihd2` (off `origin/genm-eihd`). SHA `5d596c4a`.
 

@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMHDtotConj
 import DLNFibre.DLN.RLCT.Validate.RouteMFlatBlockLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
 import DLNFibre.DLN.RLCT.Validate.RouteMReaderFDeriv
+import DLNFibre.DLN.RLCT.Validate.RouteMChainFDerivValue
 
 /-!
 # `RouteMHDtotEihd` — the coupled `eIn`/`eihdOut`/`hD` two-sided staircase conjugacy of `Dtot` (∀M-L2)
@@ -715,6 +716,216 @@ theorem eihdT_J01 (ha : StructAdm M (tach M))
     exact h.symm
   rw [hslot]; exact map_zero _
 
+/-! ### Bridge 2 + Bridge 3 for the V1 line (J11) — the layer-1 chain fderiv VALUE
+
+The layer-1 chart component `fun z => BparamsLeaf ha z 1` reindexes to `Agen 1 … 1 = chainA(Nblk 1,
+Wblk 1, Cgen 2)` with `Nblk 1 = readN ⟨0⟩`, `Wblk 1 = readW ⟨0⟩`, `Cgen 2 = rfinDirect` (the leaf).
+`packLayer1` row-splits + swaps the `chainA` output to the V1 = `(W, leaf)` coordinates, giving the
+chain map `z ↦ (W z, leaf z − N z · W z)`. Its fderiv is the matrix-calculus differential; at the
+V1 direction `eIn.symm (0, (v1, ()))` — where the V0 frame (hence `dN`) reads `0`, and `dW`/`dC` recover
+`v1.1`/`v1.2` (the inverse of the `(eIn δ).2.1` read) — it lands exactly on `chainUnitMap (readN ⟨0⟩) v1`. -/
+
+/-- The layer-1 width reindex `Matrix (M 1) (M 2) ≃ₗ Matrix (Wext1) (Wext2)`. -/
+noncomputable def reindexL1 (ha : StructAdm M (tach M)) :
+    Matrix (Fin (M 1)) (Fin (M 2)) ℝ ≃ₗ[ℝ] Matrix (Fin (Wext M 1)) (Fin (Wext M 2)) ℝ :=
+  Matrix.reindexLinearEquiv ℝ ℝ (finCongr eihd_M1_eq_Wext1) (finCongr eihd_M2_eq_Wext2)
+
+/-- `packLayer1 = prodComm ∘ rowSplitLE ∘ reindexL1`. -/
+theorem packLayer1_eq (ha : StructAdm M (tach M)) (A : Matrix (Fin (M 1)) (Fin (M 2)) ℝ) :
+    packLayer1 ha A = (LinearEquiv.prodComm ℝ _ _) ((rowSplitLE ha) (reindexL1 ha A)) := rfl
+
+/-- The layer-1 chart component, `M`-width-reindexed, IS `chainA(Nblk 1, Wblk 1, Cgen 2)` (`Agen 1 … 1`,
+the reindex of reindex cancelling). -/
+theorem reindexL1_BparamsLeaf1 (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    reindexL1 ha (BparamsLeaf ha z 1)
+      = chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num))
+          ((genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Nblk 1)
+          ((genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Wblk 1)
+          (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z)
+            (hleStruct M (tach M) ha) 2) := by
+  ext i j
+  show reindexL1 ha (BparamsLeaf ha z 1) i j = _
+  rw [reindexL1, Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    finCongr_symm, finCongr_symm, finCongr_apply, finCongr_apply]
+  show (Matrix.reindex _ _ (Agen (1 : ℝ) M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z) (hleStruct M (tach M) ha) 1))
+      (Fin.cast _ i) (Fin.cast _ j) = _
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply]
+  rw [show Agen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z)
+        (hleStruct M (tach M) ha) 1
+      = chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num))
+          ((genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Nblk 1)
+          ((genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Wblk 1)
+          (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z)
+            (hleStruct M (tach M) ha) 2) from by
+    show (if hk : (1 : ℕ) < 2 then chainA _ _ _ _ else 0) = _
+    rw [dif_pos (by norm_num)]]
+  congr 1 <;> apply Fin.ext <;> simp
+
+/-- The boundary-0 `N`-slot index for the chain layer (`Nblk 1 = readN ⟨0⟩`). -/
+def readN0_idx (ha : StructAdm M (tach M)) (i : Fin (schurT1 M)) (j : Fin (schurC1 M)) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨(⟨0, by decide⟩ : Fin 2),
+    Sum.inl ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+      (Sum.inl (Sum.inr (finProdFinEquiv (i, j)))))⟩
+
+/-- The boundary-0 lift `W`-slot index (`Wblk 1 = readW ⟨0⟩`). -/
+def readW0_idx (ha : StructAdm M (tach M))
+    (i : Fin (Wext M (0 + 1) - Text M (tach M) (0 + 2))) (j : Fin (Wext M (0 + 2))) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+    ⟨(⟨0, by decide⟩ : Fin 2), Sum.inr ((liftSlotEquiv M (tDesc M (tach M)) 0 (by decide)).symm (i, j))⟩
+
+/-- The leaf-slot index (`Cgen 2 = rfinDirect`). -/
+def leaf_idx (ha : StructAdm M (tach M)) (i : Fin (Text M (tach M) 2)) (j : Fin (Wext M 2)) :
+    Fin (routeMAmbient M) := leafSlot M (tach M) ha (by norm_num) i j
+
+/-- `Nblk 1 = readN ⟨0⟩` (the matrix coordinate read). -/
+theorem Nblk1_eq (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Nblk 1
+      = (Matrix.of fun i j => z (readN0_idx ha i j)) := by
+  show (genBlkFlatStruct M (tach M) ha z).Nblk 1 = _
+  simp only [genBlkFlatStruct, dif_pos (show (0 : ℕ) < 2 by decide)]; rfl
+
+/-- `Wblk 1 = readW ⟨0⟩`. -/
+theorem Wblk1_eq (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Wblk 1
+      = (Matrix.of fun i j => z (readW0_idx ha i j)) := by
+  show (genBlkFlatStruct M (tach M) ha z).Wblk 1 = _
+  simp only [genBlkFlatStruct, dif_pos (show (0 : ℕ) < 2 by decide),
+    dif_pos (show (0 : ℕ) + 1 < 2 by decide)]; rfl
+
+/-- `Cgen 2 = rfinDirect` (the leaf, `2 = L`). -/
+theorem Cgen2_eq (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z)
+        (hleStruct M (tach M) ha) 2
+      = (Matrix.of fun i j => z (leaf_idx ha i j)) := by
+  rw [Cgen, dif_neg (show ¬ (2 : ℕ) < 2 by decide), one_smul]
+  show (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z).Rfin 2 = _
+  simp only [genBlkFlatLive, dif_pos (rfl : (2 : ℕ) = 2), dite_true]; rfl
+
+/-- **The rowSplit/chainA block extraction**: `rowSplitLE` of a `chainA h N W C` is `(C − N·W, W)` — the
+kept block (the `castAdd` rows, `chainA_apply_castAdd`) and the lift block (the `natAdd` rows,
+`chainA_apply_natAdd`). The `rowSplitLE` row reindex (`finSumFinEquiv ∘ finCongr`) aligns with `chainA`'s
+`finSplit` up to the proof-irrelevant width cast. -/
+theorem rowSplitLE_chainA (ha : StructAdm M (tach M))
+    (N : Matrix (Fin (schurT1 M)) (Fin (schurC1 M)) ℝ)
+    (W : Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ)
+    (C : Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ) :
+    rowSplitLE ha (chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num)) N W C)
+      = (C - N * W, W) := by
+  set A := chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num)) N W C with hA
+  have hr : rowSplitLE ha A
+      = (Matrix.of (fun (i : Fin (schurT1 M)) (j : Fin (Wext M 2)) =>
+            A ((finSumFinEquiv.trans (finCongr (eihd_schurC_split ha))) (Sum.inl i)) j),
+         Matrix.of (fun (i : Fin (schurC1 M)) (j : Fin (Wext M 2)) =>
+            A ((finSumFinEquiv.trans (finCongr (eihd_schurC_split ha))) (Sum.inr i)) j)) := by
+    refine Prod.ext ?_ ?_ <;> rfl
+  rw [hr]
+  refine Prod.ext ?_ ?_ <;> ext i j
+  · show A _ j = (C - N * W) i j
+    rw [hA, show (finSumFinEquiv.trans (finCongr (eihd_schurC_split ha))) (Sum.inl i)
+        = Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num))
+          (Fin.castAdd (schurC1 M) i) from by apply Fin.ext; simp,
+      chainA_apply_castAdd]
+  · show A _ j = W i j
+    rw [hA, show (finSumFinEquiv.trans (finCongr (eihd_schurC_split ha))) (Sum.inr i)
+        = Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) 1 (by norm_num))
+          (Fin.natAdd (schurT1 M) i) from by apply Fin.ext; simp,
+      chainA_apply_natAdd]
+
+/-- The layer-1 chart component `fun z => BparamsLeaf ha z 1` has its fderiv at every `y₀`. -/
+theorem BparamsLeaf1_hasFDerivAt (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z => BparamsLeaf ha z 1) (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀) y₀ := by
+  apply DifferentiableAt.hasFDerivAt
+  have hpi := BparamsLeaf_hasFDerivAt ha y₀
+  exact ((ContinuousLinearMap.proj (R := ℝ)
+    (φ := fun s : Fin 2 => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) 1).hasFDerivAt.comp y₀
+    hpi).differentiableAt
+
+/-- The lift `W`-block reader as a matrix function of `z`. -/
+abbrev Wfun (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ := Matrix.of fun i j => z (readW0_idx ha i j)
+/-- The leaf-block reader as a matrix function of `z`. -/
+abbrev Lfun (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ := Matrix.of fun i j => z (leaf_idx ha i j)
+/-- The frame `N`-block reader as a matrix function of `z`. -/
+abbrev Nfun (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (schurT1 M)) (Fin (schurC1 M)) ℝ := Matrix.of fun i j => z (readN0_idx ha i j)
+
+/-- The Matrix→Matrix×Matrix composite `rowSplitLE ∘ reindexL1` (concrete codomain, has topology — so
+`toContinuousLinearMap` works, unlike the `eihdV M 1`-valued `packLayer1`). -/
+noncomputable def rsL1 (ha : StructAdm M (tach M)) :
+    Matrix (Fin (M 1)) (Fin (M 2)) ℝ ≃ₗ[ℝ]
+      Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ × Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ :=
+  (reindexL1 ha).trans (rowSplitLE ha)
+
+/-- `rsL1 (BparamsLeaf ha z 1) = (leaf z − N z · W z, W z)` (the kept, lift blocks). -/
+theorem rsL1_BparamsLeaf1 (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    rsL1 ha (BparamsLeaf ha z 1)
+      = ((Lfun ha z) - (Nfun ha z) * (Wfun ha z), (Wfun ha z)) := by
+  rw [rsL1, LinearEquiv.trans_apply, reindexL1_BparamsLeaf1, Nblk1_eq, Wblk1_eq, Cgen2_eq,
+    rowSplitLE_chainA]
+
+/-- The chain map `(kept, lift) = (leaf − N·W, W)` fderiv (product/sub rule on the matrix readers). -/
+theorem chainKL_hasFDerivAt (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z => ((Lfun ha z) - (Nfun ha z) * (Wfun ha z), (Wfun ha z)))
+      ((matrixReaderCLM (fun i j => leaf_idx ha i j)
+          - ((matMulBilin (schurT1 M) (schurC1 M) (Wext M 2)).precompR _
+              (Nfun ha y₀) (matrixReaderCLM (fun i j => readW0_idx ha i j))
+            + (matMulBilin (schurT1 M) (schurC1 M) (Wext M 2)).precompL _
+              (matrixReaderCLM (fun i j => readN0_idx ha i j)) (Wfun ha y₀))).prod
+        (matrixReaderCLM (fun i j => readW0_idx ha i j)))
+      y₀ := by
+  have hW : HasFDerivAt (fun z => Wfun ha z) (matrixReaderCLM (fun i j => readW0_idx ha i j)) y₀ :=
+    hasFDerivAt_matrixRead _ y₀
+  have hL : HasFDerivAt (fun z => Lfun ha z) (matrixReaderCLM (fun i j => leaf_idx ha i j)) y₀ :=
+    hasFDerivAt_matrixRead _ y₀
+  have hN : HasFDerivAt (fun z => Nfun ha z) (matrixReaderCLM (fun i j => readN0_idx ha i j)) y₀ :=
+    hasFDerivAt_matrixRead _ y₀
+  exact (hL.sub (HasFDerivAt.matMul hN hW)).prodMk hW
+
+/-- Push `rsL1` (a CLM) through the layer-1 fderiv (uniqueness, the base maps agreeing by
+`rsL1_BparamsLeaf1` / `chainKL_hasFDerivAt`). -/
+theorem rsL1_fderiv (ha : StructAdm M (tach M)) (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    rsL1 ha (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d)
+      = ((matrixReaderCLM (fun i j => leaf_idx ha i j)) d
+           - ((Nfun ha y₀) * (matrixReaderCLM (fun i j => readW0_idx ha i j)) d
+              + (matrixReaderCLM (fun i j => readN0_idx ha i j)) d * (Wfun ha y₀)),
+         (matrixReaderCLM (fun i j => readW0_idx ha i j)) d) := by
+  set RC := (rsL1 ha).toLinearMap.toContinuousLinearMap with hRC
+  have hcomp : HasFDerivAt (fun z => rsL1 ha (BparamsLeaf ha z 1))
+      (RC.comp (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀)) y₀ :=
+    RC.hasFDerivAt.comp y₀ (BparamsLeaf1_hasFDerivAt ha y₀)
+  have hchain := chainKL_hasFDerivAt ha y₀
+  have hfun : (fun z => rsL1 ha (BparamsLeaf ha z 1))
+      = (fun z => ((Lfun ha z) - (Nfun ha z) * (Wfun ha z), (Wfun ha z))) := by
+    funext z; exact rsL1_BparamsLeaf1 ha z
+  rw [hfun] at hcomp
+  have huniq := hcomp.unique hchain
+  show RC (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d) = _
+  rw [show RC (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d)
+      = (RC.comp (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀)) d from rfl, huniq]
+  rfl
+
+/-- The V1 read pair `(readW, leaf)` of `δ` IS `(eIn ha δ).2.1` (so `eIn.symm` inverts to `v1`). -/
+theorem dWdC_eq_eInV1 (ha : StructAdm M (tach M)) (δ : Fin (flatDim M) → ℝ) :
+    ((matrixReaderCLM (fun i j => readW0_idx ha i j)) δ,
+     (matrixReaderCLM (fun i j => leaf_idx ha i j)) δ) = (eIn ha δ).2.1 := rfl
+
+/-- `packLayer1` of the layer-1 fderiv = the swap of `rsL1`'s blocks: `(dW d, dC d − (N·dW + dN·W) d)`. -/
+theorem packLayer1_fderiv (ha : StructAdm M (tach M)) (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    packLayer1 ha (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d)
+      = ((matrixReaderCLM (fun i j => readW0_idx ha i j)) d,
+         (matrixReaderCLM (fun i j => leaf_idx ha i j)) d
+           - ((Nfun ha y₀) * (matrixReaderCLM (fun i j => readW0_idx ha i j)) d
+              + (matrixReaderCLM (fun i j => readN0_idx ha i j)) d * (Wfun ha y₀))) := by
+  show (LinearEquiv.prodComm ℝ _ _) ((rowSplitLE ha) (reindexL1 ha
+      (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d))) = _
+  rw [show (rowSplitLE ha) (reindexL1 ha (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d))
+      = rsL1 ha (fderiv ℝ (fun z => BparamsLeaf ha z 1) y₀ d) from rfl, rsL1_fderiv]
+  rfl
+
 /-- **J11 — the chain-unit block** (part of the in-Lean faithfulness gate for `eIn`, with J00/J01 — the
 V1-line of `eihd_hD` cannot close without it). The V1→V1 block of `T` is
 `eihdF … 1 = chainUnitMap (readN ⟨0⟩)`: the layer-1 chaining `(W, C) ↦ (W, C − N·W)`. -/
@@ -722,8 +933,28 @@ theorem eihdT_J11 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v1 : eihdV M 1) :
     (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).2.1
-      = (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 1 v1) :=
-  sorry
+      = (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 1 v1) := by
+  set y₀ := pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u with hy₀
+  rw [eihdT_eq_packStair_fderiv ha h0r h0c u]
+  show packLayer1 ha
+      ((fderiv ℝ (fun z => BparamsLeaf ha z) y₀ ((eIn ha).symm (0, (v1, PUnit.unit)))) 1) = _
+  rw [BparamsLeaf_fderiv_layer ha y₀ _ 1, packLayer1_fderiv ha y₀ _]
+  set d := (eIn ha).symm (0, (v1, PUnit.unit)) with hd
+  have hV1 : ((matrixReaderCLM (fun i j => readW0_idx ha i j)) d,
+       (matrixReaderCLM (fun i j => leaf_idx ha i j)) d) = v1 := by
+    rw [dWdC_eq_eInV1, hd, LinearEquiv.apply_symm_apply]
+  have hW : (matrixReaderCLM (fun i j => readW0_idx ha i j)) d = v1.1 := by rw [← hV1]
+  have hC : (matrixReaderCLM (fun i j => leaf_idx ha i j)) d = v1.2 := by rw [← hV1]
+  have hslot0 : slotReadV0 ha d = 0 := by
+    have h := eIn_projV0 ha d
+    rw [hd, LinearEquiv.apply_symm_apply] at h
+    rw [← h]; rfl
+  have hN : (matrixReaderCLM (fun i j => readN0_idx ha i j)) d = 0 := by
+    show (slotReadV0 ha d).2.1 = 0
+    rw [hslot0]; rfl
+  rw [hW, hC, hN, Matrix.zero_mul, add_zero]
+  show (v1.1, v1.2 - (Nfun ha y₀) * v1.1) = _
+  rfl
 
 /-- **`hD` — the block identity** `eihdOut ∘ Dtot ∘ eIn.symm = stairMap V 2 f c`, assembled from the
 three block facts (J00/J01/J11) with `c` the off-diagonal coupling. `LinearMap.ext` over arbitrary
