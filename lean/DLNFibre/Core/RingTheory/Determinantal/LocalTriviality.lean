@@ -115,8 +115,8 @@ target/model overlap presentations is the identity — this is `Algebra.AtlasCha
 trans_symm` at `(chart i).toAtlasChart`, `(chart j).toAtlasChart`. It is a PROVEN property of the
 predicate, not a field the instance must discharge: the cocycle is automatically satisfied for any
 atlas of `AtlasChart`s. The cocycle lives on the bare-`k` `trivK`/`M` presentation
-(`overlapTransition` conjugates through `trivK`), DECOUPLED from the over-`BaseLoc` `fibreModel.triv`
-product — it is NOT an over-base-product cocycle. -/
+(`overlapTransition` conjugates through `trivK`), DECOUPLED from the over-`BaseLoc`
+`fibreModel.triv` product — it is NOT an over-base-product cocycle. -/
 theorem overlapTransition_trans_symm
     (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j : A.ι) :
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).trans
@@ -132,6 +132,69 @@ theorem overlapTransition_symm
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).symm
       = (A.chart j).toAtlasChart.overlapTransition (A.chart i).toAtlasChart :=
   AtlasChart.overlapTransition_symm (A.chart i).toAtlasChart (A.chart j).toAtlasChart
+
+/-! ## The two-worlds bridge view (AG-facing accessors)
+
+The predicate names a **ring/algebra** object, but it sits at the junction of two naming worlds,
+and the word "base" is overloaded between them because **`Spec` is contravariant**. This section
+adds an additive scheme/AG-facing **view** — accessors that re-expose the SAME data under scheme
+names, with NO change to the predicate. Both name-sets are correct, each in its own world.
+
+### Ring-side ↔ scheme-side dictionary (ring name → scheme name; DLN meaning)
+
+* `Base` (the algebra's base ring) → `totalSpace = Spec Base`, the ambient **total** affine space
+  (DLN: `Σ̄^r`). Local triviality holds over the open `U ⊆ totalSpace`, not all of it.
+* `BaseLoc` (the ring each chart is a product *over*) → `chartBaseSpace i = Spec BaseLoc`, the
+  fibration **base** (DLN: the rank-chart `SchurLoc`).
+* `Fibre` → `fibreSpace = Spec Fibre`, the **model fibre** factor (DLN: `sweepFibreRing`). The
+  scheme-theoretic fibres over points of `Spec BaseLoc` are base changes of this model fibre.
+* `(chart i).fibreModel.structMap : BaseLoc →ₐ[k] Total` → `chartProjection i`, the comorphism
+  projection `Spec Total → Spec BaseLoc` on the chart domain (DLN: `π : D(chartElt) → SchurLoc`).
+
+`Spec` contravariance is what flips top↔bottom: the structure map `structMap : BaseLoc → Total`
+points base→total in the RING world, so its comorphism `comap structMap : Spec Total → Spec BaseLoc`
+points total→base in the SCHEME world. Hence `Base` is the *total* ring while `Spec Base` is the
+*total* space, and `BaseLoc` is the over-ring while `Spec BaseLoc` is the fibration *base* — both
+names are correct, each in its own world.
+
+### Honest boundary (name = content): the projection is PER-CHART only
+
+`chartProjection` is exposed **per chart** `i`: its domain is `Spec(Away (chart i).chartElt)`, the
+localized affine spectrum canonically corresponding to the chart's own basic open
+`D((chart i).chartElt)` — NOT all of `U`. A SINGLE GLOBAL fibration morphism `π : U → (base)` over
+all of `U` is NOT constructed here: it needs an actual gluing of the per-chart projections from
+their overlap-compatibility data (roadmap R1 / the P2.c′ target-side gluing), which this view does
+not build or prove. The view does NOT assert a global projection: it exposes exactly the chartwise
+picture the predicate proves (chartwise local triviality + the 2-fold overlap cocycle of
+`overlapTransition_trans_symm`). This is a renaming view — it adds no new data and no new
+theorems. -/
+
+section FibrationView
+
+/-- AG-facing ambient **total space** `Spec Base` (DLN: `Σ̄^r`); local triviality holds over `U`. -/
+def totalSpace
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) :
+    Type u := PrimeSpectrum Base
+
+/-- AG-facing **model fibre** factor `Spec Fibre` (DLN: `Spec(sweepFibreRing)`). -/
+def fibreSpace
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) :
+    Type u := PrimeSpectrum Fibre
+
+/-- AG-facing **per-chart fibration base** `Spec BaseLoc` (DLN: the rank-chart `SchurLoc`). -/
+def chartBaseSpace
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (_i : _A.ι) :
+    Type u := PrimeSpectrum BaseLoc
+
+/-- AG-facing **per-chart** fibration projection `Spec(Away chartElt) → Spec BaseLoc`, the
+comorphism `comap (fibreModel.structMap)` on the chart domain `D(chartElt)`; per-chart, NOT a
+global `π` on `U`. -/
+def chartProjection
+    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i : A.ι) :
+    PrimeSpectrum (Localization.Away (A.chart i).chartElt) → PrimeSpectrum BaseLoc :=
+  PrimeSpectrum.comap (A.chart i).fibreModel.structMap.toRingHom
+
+end FibrationView
 
 end IsZariskiLocallyTrivialAffineProduct
 

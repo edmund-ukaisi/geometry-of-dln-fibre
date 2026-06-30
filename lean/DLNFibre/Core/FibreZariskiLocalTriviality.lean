@@ -167,6 +167,23 @@ example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r
   Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm
     (reducedFibre_isZariskiLocallyTrivialAffineProduct (k := k) d r hp hq) I J
 
+/-- **The two-worlds bridge view on the DLN instance (P2.e dictionary).** The AG-facing accessors of
+`Algebra.IsZariskiLocallyTrivialAffineProduct` (`Core.RingTheory.Determinantal.LocalTriviality`)
+read, on the DLN instance: `totalSpace = Spec(sweepSigmaRing) = Σ̄^r` (the total space),
+`chartBaseSpace I = Spec(SchurLoc)` (the per-pivot fibration base, the rank-chart), and
+`fibreSpace = Spec(sweepFibreRing)` (the model fibre) — the dictionary `Base`=total, `BaseLoc`=base,
+`Fibre`=fibre, correct because `Spec` is contravariant. The projection `chartProjection I` is
+PER-PIVOT; a global
+`π` on `rankROpen` is roadmapped, not built. This `example` pins those type identities. -/
+example {k : Type} [Field k] [Infinite k] {N : ℕ} (d : Fin (N + 2) → ℕ) (r : ℕ)
+    (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I : PivotDatum d r hp hq) :
+    letI A := reducedFibre_isZariskiLocallyTrivialAffineProduct (k := k) d r hp hq
+    (A.totalSpace = PrimeSpectrum (sweepSigmaRing k d r))
+      ∧ (A.fibreSpace = PrimeSpectrum (sweepFibreRing k d r hp hq))
+      ∧ (A.chartBaseSpace I
+        = PrimeSpectrum (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)) :=
+  ⟨rfl, rfl, rfl⟩
+
 end Witness
 
 end DLNFibre.Core
