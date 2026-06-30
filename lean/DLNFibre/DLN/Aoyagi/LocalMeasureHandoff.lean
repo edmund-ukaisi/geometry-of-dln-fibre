@@ -266,6 +266,49 @@ theorem lintegral_lt_top_of_measure_le_smul
     exact ENNReal.mul_lt_top hc hfinite
   exact hmono.trans_lt htarget
 
+/-- Finite-scalar domination of the left measure lifts to product measures
+with any fixed s-finite right measure. -/
+theorem prod_le_smul_prod_of_le_smul_left
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ ν : Measure α} (η : Measure β) [SFinite η] {c : ℝ≥0∞}
+    (hν : ν ≤ c • μ) :
+    ν.prod η ≤ c • μ.prod η := by
+  refine Measure.le_iff.2 ?_
+  intro s hs
+  rw [Measure.prod_apply hs, Measure.smul_apply, Measure.prod_apply hs]
+  let f : α → ℝ≥0∞ := fun x ↦ η (Prod.mk x ⁻¹' s)
+  calc
+    ∫⁻ x, η (Prod.mk x ⁻¹' s) ∂ν ≤ ∫⁻ x, f x ∂(c • μ) :=
+      lintegral_mono' hν (le_refl f)
+    _ = c * ∫⁻ x, η (Prod.mk x ⁻¹' s) ∂μ := by
+      simp [lintegral_smul_measure, f]
+
+/-- A property that holds a.e. for `μ.prod η` also holds a.e. after replacing
+the left measure by one dominated by a scalar multiple of `μ`, with `η`
+s-finite. -/
+theorem ae_prod_of_left_measure_le_smul
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ ν : Measure α} {η : Measure β} [SFinite η] {c : ℝ≥0∞}
+    {p : α × β → Prop}
+    (hν : ν ≤ c • μ)
+    (hp : ∀ᵐ z ∂μ.prod η, p z) :
+    ∀ᵐ z ∂ν.prod η, p z :=
+  ae_of_measure_le_smul
+    (prod_le_smul_prod_of_le_smul_left (η := η) hν) hp
+
+/-- Finite product lower integrals transfer after replacing the left measure
+by one dominated by a finite scalar multiple, with s-finite right measure. -/
+theorem lintegral_prod_lt_top_of_left_measure_le_smul
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ ν : Measure α} {η : Measure β} [SFinite η] {c : ℝ≥0∞}
+    {f : α × β → ℝ≥0∞}
+    (hν : ν ≤ c • μ)
+    (hc : c < ∞)
+    (hfinite : (∫⁻ z, f z ∂μ.prod η) < ∞) :
+    (∫⁻ z, f z ∂ν.prod η) < ∞ :=
+  lintegral_lt_top_of_measure_le_smul
+    (prod_le_smul_prod_of_le_smul_left (η := η) hν) hc hfinite
+
 /-- A measure domination by a scalar multiple remains true after mapping by a
 measurable function. -/
 theorem map_le_smul_map_of_le_smul

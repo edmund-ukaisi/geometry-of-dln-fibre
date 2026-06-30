@@ -25646,3 +25646,57 @@ returned PASS with no blocking findings.
 Boundary: no passive-theta endpoint topology-tuple Haar theorem, no
 source-rank image coverage, no original source-prior domination, no normal
 crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-30 external source product-domination handoff
+
+Target B now has a generic product-measure domination consumer in
+`LocalMeasureHandoff.lean`:
+
+```text
+prod_le_smul_prod_of_le_smul_left
+ae_prod_of_left_measure_le_smul
+lintegral_prod_lt_top_of_left_measure_le_smul
+```
+
+Pen-and-paper calculation: if an external local source measure `nu` is
+dominated by a finite scalar multiple of the chart-produced source measure
+`mu`, then Fubini gives
+
+```text
+(nu.prod eta)(A)
+  = integral_x eta(A_x) dnu(x)
+  <= integral_x eta(A_x) d(c * mu)(x)
+  = c * (mu.prod eta)(A).
+```
+
+Therefore any finite product integral already proved for `mu.prod eta`
+transfers to `nu.prod eta` by scalar-domination monotonicity.  This is the
+measure-theoretic handoff needed after a future local original/source-prior
+domination theorem.
+
+The right measure is explicit in Lean as `[SFinite eta]`; the prose notes use
+the same s-finite right-measure condition after xhigh review.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-external-source-product-domination-handoff.md
+threads/03-block-product-reduction/statement-card-a2-external-source-product-domination-handoff.md
+```
+
+Local gates passed:
+
+```text
+cd lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure
+```
+
+`scripts/sorries` reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`;
+`git diff --check` passed; direct axiom probes for the three new helpers
+reported only `[propext, Classical.choice, Quot.sound]`.  Independent xhigh
+review passed.
+
+Boundary: this does not prove the external/original source-prior domination
+hypothesis.  It does not construct a local inverse, source-image coverage,
+external-prior Jacobian comparison, normal crossings, pole order, or RLCT.
