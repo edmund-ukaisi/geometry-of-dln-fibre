@@ -365,6 +365,28 @@ theorem zσRect_slot (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 �
       (cellR_rect m n hm hn s).1 (cellR_rect m n hm hn s).2) = s :=
   (Equiv.ofBijective _ (slotFunRect_bijective m n N hN hm hn hmn p)).symm_apply_apply s
 
+/-- `(zERect z).1 ik = z (zσRect.symm (inl ik))` — the forward `zERect` reads the `M22`-cube slot. -/
+theorem zERect_fst_apply (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (pv : Fin (m * n)) (z : Fin N → ℝ) (ik : Fin (m - 1) × Fin (n - 1)) :
+    (zERect m n N hN hm hn hmn pv z).1 ik = z ((zσRect m n N hN hm hn hmn pv).symm (Sum.inl ik)) := by
+  have : (zERect m n N hN hm hn hmn pv z).1 ik
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ)
+          (zσRect m n N hN hm hn hmn pv) z (Sum.inl ik) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσRect m n N hN hm hn hmn pv) (Sum.inl ik),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
+/-- `(zERect z).2 s = z (zσRect.symm (inr s))` — the forward `zERect` reads the `(g,b)`-cube slot. -/
+theorem zERect_snd_apply (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (pv : Fin (m * n)) (z : Fin N → ℝ) (s : Fin (m - 1) ⊕ Fin (n - 1)) :
+    (zERect m n N hN hm hn hmn pv z).2 s = z ((zσRect m n N hN hm hn hmn pv).symm (Sum.inr s)) := by
+  have : (zERect m n N hN hm hn hmn pv z).2 s
+      = MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ)
+          (zσRect m n N hN hm hn hmn pv) z (Sum.inr s) := rfl
+  rw [this, ← Equiv.apply_symm_apply (zσRect m n N hN hm hn hmn pv) (Sum.inr s),
+    MeasurableEquiv.piCongrLeft_apply_apply, Equiv.apply_symm_apply]
+
 /-- M22-cell carve readback. -/
 theorem RmatRectNorm_carve_M22 (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
     (hmn : 2 ≤ m * n) (p : Fin (m * n))

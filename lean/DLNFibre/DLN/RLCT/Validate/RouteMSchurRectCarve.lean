@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectAngular
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurRect
 import DLNFibre.DLN.RLCT.Validate.RouteMSchurCapACarveP
 
 /-!
@@ -609,5 +610,263 @@ theorem innerSGenCarveRect_le (m n N p : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m
               refine lintegral_mono (fun T' => ?_)
               refine le_of_eq ?_
               rw [hSc_carve]
+
+/-! ## 3b-assemble: the rectangular ratio-residual (mid + subcritical fold) -/
+
+/-- `coreSchurValRect (m−1) (n−1) p c'' Kr < ⊤` for `0 < c'' < rectSchurLambda p (m−1) (n−1)`,
+`0 < Kr`, via the rectangular lower IH at `j = 1`. The asymmetric `coreSchurGenValP_lt_top`. -/
+theorem coreSchurValRect_lt_top (m n p : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hIH : RectSchurLowerIH p (rectSchurLambda p) m n)
+    (c'' : ℝ) (hc0 : 0 < c'') (hclam : c'' < rectSchurLambda p (m - 1) (n - 1))
+    (Kr : ℝ) (hKr : 0 < Kr) :
+    coreSchurValRect (m - 1) (n - 1) p c'' Kr < ⊤ := by
+  have hcore : RectSchurCore (m - 1) (n - 1) p c'' Kr :=
+    hIH 1 (le_refl 1) hm hn c'' hc0 (by simpa using hclam) Kr hKr
+  rwa [RectSchurCore] at hcore
+
+/-- The threshold peel `c' − p/2 < rectSchurLambda p (m−1)(n−1)` from `c' < rectSchurLambda p m n`
+(`1 ≤ m, n`), via `minAdm_mnp_subadd` at `j = 1`. -/
+theorem rectSchurLambda_peel (m n p : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (c' : ℝ) (hc' : c' < rectSchurLambda p m n) :
+    c' - (p : ℝ) / 2 < rectSchurLambda p (m - 1) (n - 1) := by
+  have hsub := minAdm_mnp_subadd p (m := m) (n := n) (j := 1) hm hn
+  have hcast : ((minAdm (![m, n, p] : Fin 3 → ℕ) : ℝ))
+      ≤ (p : ℝ) + ((minAdm (![m - 1, n - 1, p] : Fin 3 → ℕ) : ℝ)) := by
+    have h1 : ((1 * p : ℕ) : ℝ) = (p : ℝ) := by push_cast; ring
+    calc ((minAdm (![m, n, p] : Fin 3 → ℕ) : ℝ))
+        ≤ (((1 * p + minAdm (![m - 1, n - 1, p] : Fin 3 → ℕ) : ℕ)) : ℝ) := by exact_mod_cast hsub
+      _ = (p : ℝ) + ((minAdm (![m - 1, n - 1, p] : Fin 3 → ℕ) : ℝ)) := by push_cast; ring
+  rw [rectSchurLambda] at hc'
+  rw [rectSchurLambda]
+  linarith
+
+/-- **The rectangular ratio-residual (mid case `p/2 < c' < rectSchurLambda p m n`).** The JOINT integral
+over the `mn−1` angular ratios `z` of `innerSRect (…symm(0,z))` is finite: per `z` the carve
+(`innerSGenCarveRect_le`) peels the top `Fin p` Morse block, leaving the residual at `c' − p/2 ∈
+(0, rectSchurLambda p (m−1)(n−1))`, closed by `resolvedShiftRRect_le` + the lower IH. The asymmetric
+`schurRatioResidGenP_mid`. -/
+theorem schurRatioResidRect_mid (m n N p : ℕ) (hN : m * n = N + 1) (hmm : 2 ≤ m) (hnn : 2 ≤ n)
+    (hp : 0 < p) (hIH : RectSchurLowerIH p (rectSchurLambda p) m n)
+    (c' : ℝ) (hcp : (p : ℝ) / 2 < c') (hc' : c' < rectSchurLambda p m n)
+    (pivot : Fin (m * n)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSRect m n p c' T pivot ((piRatioRect m n N hN pivot).symm (0, z)))
+      < ⊤ := by
+  classical
+  have hm : 1 ≤ m := by omega
+  have hn : 1 ≤ n := by omega
+  have hmn : 2 ≤ m * n := by nlinarith
+  have hc0 : 0 < c' := lt_trans (by positivity) hcp
+  set Mbox := Set.univ.pi (fun _ : (Fin (m - 1) × Fin (n - 1)) => Set.Icc (-1 : ℝ) 1) with hMbox
+  set vbox := Set.univ.pi (fun _ : (Fin (m - 1) ⊕ Fin (n - 1)) => Set.Icc (-1 : ℝ) 1) with hvbox
+  set K := max 1 ((n : ℝ) * T) with hKdef
+  have hKpos : 0 < K := lt_of_lt_of_le zero_lt_one (le_max_left _ _)
+  set c₀ := (schur_minorPivot_split_rect (m := m) (n := n) (p := p) 1 hm hn).choose with hc₀def
+  -- (1) rewrite the integrand to the pivot-normalised form (innerSRect_eq_norm)
+  rw [setLIntegral_congr_fun (MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
+    (fun z _ => innerSRect_eq_norm m n N p hN hm hn c' T pivot z)]
+  -- (2) CoV via zERect : z ↦ (M,v); box preimage [-1,1]^N = zERect ⁻¹' (Mbox ×ˢ vbox)
+  set H : ((Fin (m - 1) × Fin (n - 1) → ℝ) × ((Fin (m - 1) ⊕ Fin (n - 1)) → ℝ)) → ℝ≥0∞ := fun q =>
+    ∫⁻ S in matBox n p T,
+      ENNReal.ofReal ((frobSq (rmatMul (RmatRectNorm m n N hN hm hn pivot
+        ((zERect m n N hN hm hn hmn pivot).symm q)) S)) ^ (-c'))
+    with hHdef
+  have hHmeas : Measurable H := by
+    rw [hHdef]
+    apply Measurable.lintegral_prod_right (f := fun q S =>
+      ENNReal.ofReal ((frobSq (rmatMul (RmatRectNorm m n N hN hm hn pivot
+        ((zERect m n N hN hm hn hmn pivot).symm q)) S)) ^ (-c')))
+    apply ENNReal.measurable_ofReal.comp
+    apply Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    unfold frobSq rmatMul
+    refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+    refine Measurable.pow_const (Finset.measurable_sum _ (fun k _ => ?_)) 2
+    refine Measurable.mul ?_ ((measurable_pi_apply j).comp ((measurable_pi_apply k).comp measurable_snd))
+    have hz : Measurable (fun q : (Fin (m - 1) × Fin (n - 1) → ℝ) × ((Fin (m - 1) ⊕ Fin (n - 1)) → ℝ) =>
+        (zERect m n N hN hm hn hmn pivot).symm q) := (zERect m n N hN hm hn hmn pivot).symm.measurable
+    have hsel : Measurable (fun z : Fin N → ℝ =>
+        RmatRectNorm m n N hN hm hn pivot z i k) := by
+      show Measurable (fun z : Fin N → ℝ => RmatRect m n pivot
+        ((piRatioRect m n N hN pivot).symm (0, z))
+        ((Equiv.swap ((eRect m n).symm pivot).1 ⟨0, by omega⟩) i)
+        ((Equiv.swap ((eRect m n).symm pivot).2 ⟨0, by omega⟩) k))
+      have hidx : ∀ z : Fin N → ℝ, RmatRect m n pivot
+          ((piRatioRect m n N hN pivot).symm (0, z))
+          ((Equiv.swap ((eRect m n).symm pivot).1 ⟨0, by omega⟩) i)
+          ((Equiv.swap ((eRect m n).symm pivot).2 ⟨0, by omega⟩) k)
+          = (fun l => if l = pivot then 1 else (piRatioRect m n N hN pivot).symm (0, z) l)
+              (eRect m n ((Equiv.swap ((eRect m n).symm pivot).1 ⟨0, by omega⟩) i,
+                (Equiv.swap ((eRect m n).symm pivot).2 ⟨0, by omega⟩) k)) := fun z => rfl
+      simp only [hidx]
+      by_cases hpp : eRect m n ((Equiv.swap ((eRect m n).symm pivot).1 ⟨0, by omega⟩) i,
+          (Equiv.swap ((eRect m n).symm pivot).2 ⟨0, by omega⟩) k) = pivot
+      · simp only [if_pos hpp]; exact measurable_const
+      · simp only [if_neg hpp]
+        exact (measurable_pi_apply _).comp
+          (by fun_prop : Measurable (fun z : Fin N → ℝ =>
+            (piRatioRect m n N hN pivot).symm (0, z)))
+    exact (hsel.comp hz).comp measurable_fst
+  have hpre : (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+      = (zERect m n N hN hm hn hmn pivot) ⁻¹' (Mbox ×ˢ vbox) := by
+    ext z
+    simp only [Set.mem_preimage, Set.mem_prod, hMbox, hvbox, Set.mem_pi, Set.mem_univ, true_implies]
+    constructor
+    · intro h
+      refine ⟨fun ik => ?_, fun s => ?_⟩
+      · rw [zERect_fst_apply]; exact h _
+      · rw [zERect_snd_apply]; exact h _
+    · rintro ⟨h1, h2⟩ i
+      obtain ⟨s, hs⟩ := (zσRect m n N hN hm hn hmn pivot).symm.surjective i
+      rcases s with ik | s
+      · have := h1 ik; rw [zERect_fst_apply, hs] at this; exact this
+      · have := h2 s; rw [zERect_snd_apply, hs] at this; exact this
+  rw [hpre]
+  have hintegrand : (∫⁻ x in (zERect m n N hN hm hn hmn pivot) ⁻¹' (Mbox ×ˢ vbox),
+      ∫⁻ S in matBox n p T,
+        ENNReal.ofReal ((frobSq (rmatMul (RmatRectNorm m n N hN hm hn pivot x) S)) ^ (-c')))
+      = ∫⁻ x in (zERect m n N hN hm hn hmn pivot) ⁻¹' (Mbox ×ˢ vbox),
+          H (zERect m n N hN hm hn hmn pivot x) := by
+    refine lintegral_congr (fun x => ?_)
+    rw [hHdef]; simp only [MeasurableEquiv.symm_apply_apply]
+  rw [hintegrand]
+  rw [(measurePreserving_zERect m n N hN hm hn hmn pivot).setLIntegral_comp_preimage_emb
+    (zERect m n N hN hm hn hmn pivot).measurableEmbedding H (Mbox ×ˢ vbox)]
+  have hMboxms : MeasurableSet Mbox := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  have hvboxms : MeasurableSet vbox := MeasurableSet.univ_pi (fun _ => measurableSet_Icc)
+  rw [Measure.volume_eq_prod, setLIntegral_prod _ hHmeas.aemeasurable,
+    lintegral_lintegral_swap hHmeas.aemeasurable]
+  set curryME : (Fin (m - 1) → Fin (n - 1) → ℝ) ≃ᵐ (Fin (m - 1) × Fin (n - 1) → ℝ) :=
+    (MeasurableEquiv.piCurry (fun (_ : Fin (m - 1)) (_ : Fin (n - 1)) => ℝ)).symm.trans
+      (MeasurableEquiv.arrowCongr' (Equiv.sigmaEquivProd (Fin (m - 1)) (Fin (n - 1)))
+        (MeasurableEquiv.refl ℝ)) with hcurryME
+  have hcurryMP : MeasurePreserving curryME (volume : Measure (Fin (m - 1) → Fin (n - 1) → ℝ))
+      (volume : Measure (Fin (m - 1) × Fin (n - 1) → ℝ)) := by
+    rw [hcurryME]
+    refine MeasurePreserving.trans ?_ (volume_preserving_arrowCongr'
+      (Equiv.sigmaEquivProd (Fin (m - 1)) (Fin (n - 1))) (MeasurableEquiv.refl ℝ)
+      (MeasurePreserving.id _))
+    exact (measurePreserving_piCurry (fun (_ : Fin (m - 1)) (_ : Fin (n - 1)) => ℝ)
+      (fun _ _ => (volume : Measure ℝ))).symm
+      (MeasurableEquiv.piCurry (fun (_ : Fin (m - 1)) (_ : Fin (n - 1)) => ℝ))
+  have hperv : ∀ v ∈ vbox, (∫⁻ M in Mbox, H (M, v))
+      ≤ ENNReal.ofReal (c₀ ^ (-c'))
+        * (ENNReal.ofReal (Cresid p c') * coreSchurValRect (m - 1) (n - 1) p (c' - (p : ℝ) / 2) (K + 1)) := by
+    intro v hv
+    have hMcarve : ∀ M ∈ Mbox, H (M, v)
+        ≤ ENNReal.ofReal (c₀ ^ (-c'))
+          * (∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+              ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                + frobSq (rmatMul (fun a b => M (a, b) - bgShiftRect m n v a b) S_bot)) ^ (-c'))) := by
+      intro M hM
+      rw [hHdef]
+      exact innerSGenCarveRect_le m n N p hN hm hn hmn hp c' hcp pivot T hT M v hM hv
+    calc (∫⁻ M in Mbox, H (M, v))
+        ≤ ∫⁻ M in Mbox, ENNReal.ofReal (c₀ ^ (-c'))
+            * (∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+                ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                  + frobSq (rmatMul (fun a b => M (a, b) - bgShiftRect m n v a b) S_bot)) ^ (-c'))) :=
+          setLIntegral_mono_ae' hMboxms (ae_of_all _ (fun M hM => hMcarve M hM))
+      _ = ENNReal.ofReal (c₀ ^ (-c'))
+            * ∫⁻ M in Mbox, (∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+                ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                  + frobSq (rmatMul (fun a b => M (a, b) - bgShiftRect m n v a b) S_bot)) ^ (-c'))) := by
+          rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+      _ ≤ ENNReal.ofReal (c₀ ^ (-c'))
+            * (ENNReal.ofReal (Cresid p c') * coreSchurValRect (m - 1) (n - 1) p (c' - (p : ℝ) / 2) (K + 1)) := by
+          refine mul_le_mul' (le_refl _) ?_
+          have hvabs : ∀ s, |v s| ≤ 1 := by
+            intro s; have := Set.mem_Icc.1 (hv s (Set.mem_univ s)); rw [abs_le]; exact this
+          have hSh : ∀ i j, |bgShiftRect m n v i j| ≤ (1 : ℝ) := fun i j =>
+            bgShiftRect_entry_le m n v hvabs i j
+          set G : (Fin (m - 1) × Fin (n - 1) → ℝ) → ℝ≥0∞ := fun M =>
+            ∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+              ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                + frobSq (rmatMul (fun a b => M (a, b) - bgShiftRect m n v a b) S_bot)) ^ (-c'))
+            with hGdef
+          have hcov := hcurryMP.setLIntegral_comp_preimage_emb curryME.measurableEmbedding G Mbox
+          have hpresub : curryME ⁻¹' Mbox ⊆ matBox (m - 1) (n - 1) K := by
+            intro Δ hΔ i k
+            have h1K : (1 : ℝ) ≤ K := le_max_left _ _
+            have hmem : curryME Δ ∈ Mbox := hΔ
+            have : curryME Δ (i, k) ∈ Set.Icc (-1 : ℝ) 1 := hmem (i, k) (Set.mem_univ _)
+            have hΔik : Δ i k ∈ Set.Icc (-1 : ℝ) 1 := by
+              rw [hcurryME] at this; exact this
+            have := Set.mem_Icc.1 hΔik
+            rw [Set.mem_Icc]; constructor <;> [linarith [this.1]; linarith [this.2]]
+          have hcurryapp : ∀ (Δ : Fin (m - 1) → Fin (n - 1) → ℝ) (a : Fin (m - 1)) (b : Fin (n - 1)),
+              curryME Δ (a, b) = Δ a b := fun Δ a b => rfl
+          have hGcurry : ∀ Δ : Fin (m - 1) → Fin (n - 1) → ℝ, G (curryME Δ)
+              = ∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+                  ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                    + frobSq (rmatMul (fun a b => Δ a b - bgShiftRect m n v a b) S_bot)) ^ (-c')) := by
+            intro Δ; rw [hGdef]; simp only [hcurryapp]
+          calc (∫⁻ M in Mbox, G M)
+              = ∫⁻ Δ in curryME ⁻¹' Mbox, G (curryME Δ) := hcov.symm
+            _ = ∫⁻ Δ in curryME ⁻¹' Mbox, ∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+                  ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                    + frobSq (rmatMul (fun a b => Δ a b - bgShiftRect m n v a b) S_bot)) ^ (-c')) :=
+                lintegral_congr (fun Δ => hGcurry Δ)
+            _ ≤ ∫⁻ Δ in matBox (m - 1) (n - 1) K, ∫⁻ S_bot in matBox (n - 1) p K, ∫⁻ T' in morseBox p K,
+                  ENNReal.ofReal (((∑ q, (T' q) ^ 2)
+                    + frobSq (rmatMul (fun a b => Δ a b - bgShiftRect m n v a b) S_bot)) ^ (-c')) :=
+                lintegral_mono_set hpresub
+            _ ≤ ENNReal.ofReal (Cresid p c') * coreSchurValRect (m - 1) (n - 1) p (c' - (p : ℝ) / 2) (K + 1) :=
+                resolvedShiftRRect_le (m - 1) (n - 1) p (by omega) (by omega) hp
+                  (bgShiftRect m n v) 1 hSh K hKpos c' hcp
+  calc (∫⁻ v in vbox, ∫⁻ M in Mbox, H (M, v))
+      ≤ ∫⁻ _v in vbox, ENNReal.ofReal (c₀ ^ (-c'))
+          * (ENNReal.ofReal (Cresid p c') * coreSchurValRect (m - 1) (n - 1) p (c' - (p : ℝ) / 2) (K + 1)) :=
+        setLIntegral_mono_ae' hvboxms (ae_of_all _ (fun v hv => hperv v hv))
+    _ = (ENNReal.ofReal (c₀ ^ (-c'))
+          * (ENNReal.ofReal (Cresid p c')
+            * coreSchurValRect (m - 1) (n - 1) p (c' - (p : ℝ) / 2) (K + 1))) * volume vbox := by
+        rw [setLIntegral_const]
+    _ < ⊤ := by
+        refine ENNReal.mul_lt_top (ENNReal.mul_lt_top ENNReal.ofReal_lt_top
+          (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ?_)) ?_
+        · refine coreSchurValRect_lt_top m n p hm hn hIH (c' - (p : ℝ) / 2) (by linarith) ?_ (K + 1)
+            (by linarith)
+          exact rectSchurLambda_peel m n p hm hn c' hc'
+        · rw [hvbox]
+          exact (isCompact_univ_pi (fun _ => isCompact_Icc)).measure_lt_top
+
+/-- **The rectangular ratio-residual, all `0 < c' < rectSchurLambda p m n` (subcritical fold).** Mid
+case `p/2 < c'` is `schurRatioResidRect_mid`; subcritical `c' ≤ p/2` dominates `F^{−c'} ≤ 1 + F^{−c''}`
+and reduces to the `c'' = ½(p/2 + λ)` mid case (interior stratum, `λ > p/2`). The asymmetric
+`schurRatioResidGenP`. -/
+theorem schurRatioResidRect (m n N p : ℕ) (hN : m * n = N + 1) (hmm : 2 ≤ m) (hnn : 2 ≤ n)
+    (hp : 0 < p) (hIH : RectSchurLowerIH p (rectSchurLambda p) m n)
+    (c' : ℝ) (hc0 : 0 < c') (hc' : c' < rectSchurLambda p m n)
+    (hmid : (p : ℝ) / 2 < rectSchurLambda p m n) (pivot : Fin (m * n)) (T : ℝ) (hT : 0 < T) :
+    (∫⁻ z in (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)),
+        innerSRect m n p c' T pivot ((piRatioRect m n N hN pivot).symm (0, z)))
+      < ⊤ := by
+  set c'' : ℝ := ((p : ℝ) / 2 + rectSchurLambda p m n) / 2 with hc''def
+  have hc''lo : (p : ℝ) / 2 < c'' := by rw [hc''def]; linarith
+  have hc''hi : c'' < rectSchurLambda p m n := by rw [hc''def]; linarith
+  rcases lt_or_ge ((p : ℝ) / 2) c' with hc2 | hc2
+  · exact schurRatioResidRect_mid m n N p hN hmm hnn hp hIH c' hc2 hc' pivot T hT
+  · set q : (Fin N → ℝ) → (Fin (m * n) → ℝ) := fun z => (piRatioRect m n N hN pivot).symm (0, z) with hq
+    have hdom : ∀ z : Fin N → ℝ,
+        innerSRect m n p c' T pivot (q z)
+          ≤ volume (matBox n p T) + innerSRect m n p c'' T pivot (q z) := by
+      intro z
+      rw [innerSRect, innerSRect]
+      calc (∫⁻ S in matBox n p T,
+              ENNReal.ofReal ((frobSq (rmatMul (RmatRect m n pivot (q z)) S)) ^ (-c')))
+          ≤ ∫⁻ S in matBox n p T,
+              (1 + ENNReal.ofReal ((frobSq (rmatMul (RmatRect m n pivot (q z)) S)) ^ (-c''))) :=
+            lintegral_mono (fun S =>
+              ofReal_rpow_neg_le_one_addG _ (frobSq_nonneg _) c' c'' hc0 (by linarith))
+        _ = volume (matBox n p T) + ∫⁻ S in matBox n p T,
+              ENNReal.ofReal ((frobSq (rmatMul (RmatRect m n pivot (q z)) S)) ^ (-c'')) := by
+            rw [lintegral_add_left measurable_const, setLIntegral_const, one_mul]
+    refine lt_of_le_of_lt (lintegral_mono hdom) ?_
+    rw [lintegral_add_left measurable_const, setLIntegral_const]
+    refine ENNReal.add_lt_top.2 ⟨?_, ?_⟩
+    · exact ENNReal.mul_lt_top (matBox_volume_lt_top n p T)
+        (by rw [show (Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1)) = morseBox N 1 from by
+          rw [morseBox]]; exact morseBox_volume_lt_top N 1)
+    · exact schurRatioResidRect_mid m n N p hN hmm hnn hp hIH c'' hc''lo hc''hi pivot T hT
 
 end DLNFibre.DLN.RLCT
