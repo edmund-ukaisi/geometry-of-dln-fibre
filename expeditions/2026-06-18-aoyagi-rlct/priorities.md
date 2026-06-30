@@ -12,6 +12,60 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 product source-chart local-source support
+
+The concrete Case 2 endpoint product source chart now lands in the named
+retained-passive p.13 local source after shrinking regular coordinates:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_retainedPassiveP13LocalSource
+case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source
+```
+
+The generic pointwise theorem uses the product-coordinate certificate theorem
+and the iff
+
+```text
+mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts
+```
+
+to turn the certificate's recursive determinant-chart field into membership
+in `paperEndpointFixedBaseRetainedPassiveP13LocalSource`. The concrete wrapper
+specializes to `case2PassiveThetaEndpointSourceChart`, and the small-ball
+theorem packages the determinant-unit hypothesis on `Ctop(u)`.
+
+This is one-way support for the constructed product source point. It removes
+a local-source support obligation for downstream local-measure consumers, but
+it does not prove source-rank coverage, source-image equality, source-prior
+transport, Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+## Latest controller decision - 2026-06-30, A2 Case 2 product source-chart product-reduction certificate
+
+The concrete Case 2 endpoint product source chart now exposes the fixed-base
+p.13 product-reduction certificate in the same source-filter shape as the
+readout package:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_productReductionCertificate_nhdsWithin_source
+```
+
+For every `Rmax > 0`, Lean chooses `0 < R ≤ Rmax` so that eventually in
+`nhdsWithin theta₀ sourceStratum`, every `u ∈ ball(0,R)` gives:
+
+```text
+PaperEndpointFixedBaseProductReductionCertificate
+  W₂ B₂ U₀ hU₀ productSourceChart rEdge (theta,u)
+```
+
+The proof is the generic fixed-base product-coordinate certificate theorem
+specialized to `CedgeBase = case2PassiveThetaEndpointSourceChart` and
+`M = 0`. This records that the constructed product chart carries the p.13
+triangular block-diagonal certificate, not only coordinate/readback data.
+
+This does not prove source-rank coverage, source-image equality, source-prior
+transport, Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 source-level external-measure density handoff
 
 The full-product domination socket now has a source-level bounded-density

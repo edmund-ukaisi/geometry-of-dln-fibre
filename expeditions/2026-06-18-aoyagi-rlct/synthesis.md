@@ -6,6 +6,113 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Product Source-Chart Local-Source Support - 2026-06-30
+
+Lean now proves that the explicit p.13 product-coordinate chart lands in the
+named retained-passive p.13 local source, and specializes this to the concrete
+Case 2 endpoint product source chart:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_retainedPassiveP13LocalSource
+case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source
+```
+
+The generic pointwise proof applies the existing product-coordinate
+certificate theorem with a dummy `rEdge` and uses the local-source iff
+
+```text
+mem_paperEndpointFixedBaseRetainedPassiveP13LocalSource_iff_recursiveDetCharts
+```
+
+to turn the certificate's `detCharts` field into local-source membership. The
+concrete pointwise wrapper unfolds the product chart as a source-side edge
+family. The source-filter theorem chooses the determinant-unit small ball for
+`Ctop(u)` and then applies the pointwise theorem eventually.
+
+Boundary: this is one-way support for the constructed product source point.
+It does not prove source-rank coverage, source-image equality, source-prior
+transport, Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-local-source-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-local-source-support.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-local-source-support.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_local_source_axioms.lean
+```
+
+Axiom probes for the three local-source support theorems report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Avicenna the 2nd` PASS. No formal or mathematical
+issue found; public theorem names are long but exact about the chart and
+source-filter scope.
+
+## Latest A2 Case 2 Product Source-Chart Product-Reduction Certificate - 2026-06-30
+
+Lean now proves the concrete Case 2 product source chart satisfies the
+fixed-base p.13 product-reduction certificate on a small regular-coordinate
+ball:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_productReductionCertificate_nhdsWithin_source
+```
+
+For every `Rmax > 0`, the theorem returns `0 < R ≤ Rmax` such that eventually
+in `nhdsWithin theta₀ sourceStratum`, every `u ∈ ball(0,R)` satisfies
+
+```text
+PaperEndpointFixedBaseProductReductionCertificate
+  W₂ B₂ U₀ hU₀ productSourceChart rEdge (theta,u).
+```
+
+The proof specializes the generic fixed-base product-coordinate certificate
+theorem to the Case 2 endpoint source chart. It does not require the
+passive-theta center to be the original fixed base, because the generic
+certificate theorem is pointwise after the determinant-unit radius is chosen.
+
+Boundary: this is constructed-product-chart p.13 certificate packaging. It
+does not prove source-rank coverage, source-image equality, source-prior
+transport, Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-product-reduction-certificate.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-product-reduction-certificate.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-product-reduction-certificate.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_local_source_axioms.lean
+```
+
+Axiom probe for the product-reduction certificate wrapper reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Avicenna the 2nd` PASS. No formal or mathematical
+issue found; the theorem is a correct `M := 0` specialization of the generic
+fixed-base product-coordinate certificate.
+
 ## Latest A2 Source-Level External-Measure Density Handoff - 2026-06-30
 
 Lean now derives the full p.13 product-measure domination hypothesis from a

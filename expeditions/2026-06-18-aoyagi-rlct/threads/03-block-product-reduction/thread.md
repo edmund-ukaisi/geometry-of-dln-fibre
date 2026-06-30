@@ -21,6 +21,99 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 product source-chart local-source support
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-local-source-support.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-local-source-support.md`.
+Review:
+`review-a2-case2-product-source-chart-local-source-support.md`, PASS by
+xhigh reviewer `Avicenna the 2nd`; no formal or mathematical issue found.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_mem_retainedPassiveP13LocalSource
+case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source
+```
+
+The generic theorem converts the product-coordinate certificate's recursive
+determinant-chart field into membership in the named retained-passive p.13
+local source. The concrete wrappers specialize this to the Case 2 endpoint
+product source chart and package the determinant-unit hypothesis by a small
+regular-coordinate ball.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_local_source_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no source-image equality, no
+original/source-prior transport, no Haar/Jacobian transport, no normal
+crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-30 A2 Case 2 product source-chart product-reduction certificate
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-product-reduction-certificate.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-product-reduction-certificate.md`.
+Review:
+`review-a2-case2-product-source-chart-product-reduction-certificate.md`, PASS
+by xhigh reviewer `Avicenna the 2nd`; no formal or mathematical issue found.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_productReductionCertificate_nhdsWithin_source
+```
+
+For every `Rmax > 0`, the theorem chooses `0 < R ≤ Rmax` so that eventually
+along the base source-rank filter, every small regular variable `u` makes the
+concrete Case 2 product source chart satisfy
+`PaperEndpointFixedBaseProductReductionCertificate`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_product_local_source_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-rank coverage, no source-image equality, no
+original/source-prior transport, no Haar/Jacobian transport, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 source-level external-measure density handoff
 
 Reproduction:
