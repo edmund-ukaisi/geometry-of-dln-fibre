@@ -35,16 +35,24 @@ CLOSED (cont.): `differentiable_kLens` / `_kLDU` / `_pivotBlowupOn` atoms; `inte
 hmap-for-B' factorization → composition); `interiorLive_E`; cov engine extracted to standalone
 `RouteMNullSliceCov.lean` (LIVE contract decoupled from the retired dead-leaf trio — orphan, clean).
 
-OPEN obligations — 5 left, 2 substantive + 3 handed off:
-- `interiorLive_abs_det` (H2 keystone) — SPINE verified bounded (hmap-for-B' via commute +
-  `radialComp_abs_det_at`). The ONE heavy piece: the det bookkeeping
-  `|det D(BchartLeaf∘kLDU)| = ∏_{K-diag}|q|^{(r+c)+2(t−1−i)}` (dead-leaf H2b — Schur·LDU det telescope;
-  banked partial `interiorDet_leaf_headline_Bchart`). DIRECTION-REQUEST pending (solo vs sub-hand).
-- `interiorLive_injOn` (the NAMED RISK, BOUNDED read) — factors through the composition: `pivotBlowupOn_injOn`
-  (banked) + `kLens`/`lduCoreMap` injectivity off q-pivots (LDU recovery, NEW but single-block) +
-  `BchartLeaf` injectivity (opaque-width chart-param recovery — the genuine content, composition-factored
-  so far cheaper than the monolithic `chartParams3333_injOn`). NO banked BchartLeaf/kLens inj yet.
-  flag-at-2-cycles armed.
-- `interiorLive_Ubound` / `_Umeas` / `_image` — handed to genm-ubound (route-independent).
+CLOSED (cont.) — BOTH KEYSTONES ASSEMBLED sorry-free (reduce to named parallel-hand atoms):
+- `interiorLive_abs_det` (H2 keystone) — `radialComp_abs_det_at` (hmap-for-B' via commute + hasDB'
+  composition) → `|u leafPivot|^{minAdm−1}·|det DB'|`, then `interiorLive_BdetMonomial` + the
+  `Finset.prod`-split-at-pivot arithmetic. Sorry-free modulo the atom.
+- `interiorLive_injOn` (#3 glue) — `Set.InjOn.comp` chain (pbo banked + the 2 sub-atoms). Sorry-free
+  modulo the atoms. `interiorLiveInjDom` names the domain.
+
+## 4-hand split — the 6 remaining sorries are EXACTLY the parallel-hand atoms + my injOn#2:
+- `interiorLive_BdetMonomial` ← **genm-h2bdet** (det monomial, slot shape:
+  `|det D(BchartLeaf∘kLDU)(pbo u)| = ∏(if j=leafPivot then 1 else |u j|^{leafH j})`).
+- `interiorLive_kLDU_injOn` ← **genm-lduinj** (kLDU inj on `pbo''injDom`, via LDU-product uniqueness).
+- `interiorLive_BchartLeaf_injOn` ← **ME (injOn#2)** — the off-radial block recovery (K via LDU, X via
+  fwd-subst K⁻¹, N/E/leaf linear, then `paramsEquivFlat`). The genuine remaining content on my side.
+- `interiorLive_Umeas` / `_Ubound` / `_image` ← **genm-ubound** (route-independent).
+
+spine→cover_ge_div: my atom `routeMCore_box_diverges_interiorLive` is the `hInterior` provider; the
+binding `routeMCore_box_diverges_achiever` (RouteMLayerCoverGE.lean, NOT my file) is the controller's
+integration with my atom + genm-r1smeared's `hSmeared_L2` + structural facts.
 
 ## injOn-∀M read: BOUNDED (composition factoring; the monolithic 27-coord `chartParams3333_injOn` NOT needed).
+injOn build skeleton in `injon-skeleton.md`; Codex scope verdict in `codex/injon-scope-*`.
