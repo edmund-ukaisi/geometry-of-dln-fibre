@@ -23,7 +23,7 @@ the cocycle field). The lone blocker (`AlgEquiv.trans_assoc/refl`, absent v4.29)
 | P1.b | matrix coord ring + **determinantal `(r+1)`-minor ideal** (the one genuinely new def; absent in Mathlib) + `detMinorPoly`/`eval_detMinorPoly` | `Core/RingTheory/Determinantal/Basic.lean` | **[generalize]** |
 | P1.c | rank strata (`rankLeLocus` closed / `rankEqLocus` open) + pivot `minorChart` + **cover theorem** + minor↔rank criterion | `Core/RingTheory/Determinantal/Strata.lean` (+ `Matrix/RankMinors` mirror re-home) | **[re-home]** — `RankMinorCover`+`Matrix/RankMinors` (i) |
 | P1.d | Schur coords — `rank_fromBlocks_zero` (absent Mathlib), `rank_eq_iff_schur_eq`, `pivotRankChartEquiv`, `schurComplement_normal_form` | `Core/RingTheory/Determinantal/Schur.lean` | **[re-home]** — `DeterminantalChart`/`SchurChartIff`/`SchurGauge` |
-| P1.e | rank-stratum dimension `r(n+m−r)` / codim `(n−r)(m−r)` | `Core/RingTheory/Determinantal/Dimension.lean` | **[generalize]** — from `DeterminantalStratumDim`; **keep cited Brick A named** (precision — don't fold into the dim theorem name) |
+| P1.e | rank-stratum dimension `r(n+m−r)` / codim `(n−r)(m−r)` | `Core/RingTheory/Determinantal/Dimension.lean` | **[generalize]** — from `DeterminantalStratumDim`. **CORRECTION (landed): Brick A (det codim = C) is Proved, zero-cited** (re-derived via the orbit codim engine — no Eagon–Northcott/Bruns–Vetter cite); state the dimension as **Proved**, name=content (a `_of_brickA`/cited framing would under-claim a Proved result) |
 
 ## Phase 2 — constructive atlas + capstone  ·  `det-atlas-p2` (off `-p1`)
 
@@ -48,7 +48,8 @@ P2.c (target-side cocycle round-trip) · P2.d (bespoke Zariski capstone). **Most
 ## Cross-cutting
 - **Constructive-first** (explicit pivot index + Schur formulas + explicit transitions over abstract existence).
 - name=content; lessons **L2/L3/L4/L5/L6/L7/L8** (see [`lessons.md`](lessons.md)); bare Mathlib-mirror namespaces;
-  sibling-clash `rg` per new top-level name; keep cited bricks (Brick A) named, not folded.
+  sibling-clash `rg` per new top-level name; keep genuinely-cited bricks named (the DLN RLCT bricks
+  `cited_watanabe_upper`/`cited_aoyagi_lower`) — NB Brick A (det codim = C) is **Proved zero-cited**, not cited.
 
 ## Roadmapped (NOT this expedition)
 RLCT generic-foundation programme (in [`ROADMAP.md`](../../ROADMAP.md) Bundle 4b) · char-`p` (dropped) ·
