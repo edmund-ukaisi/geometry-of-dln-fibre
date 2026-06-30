@@ -5,13 +5,13 @@ import DLNFibre.DLN.Aoyagi.BlowupBranchProgress
 # Selected-entry branch progress bridge
 
 This file connects the supplied selected-entry analytic-atlas branch interface
-to the introduced-label progress kernel.
+to the introduced-label and recurrence-aware progress kernels.
 
 It does not construct `SelectedEntryAtlasProducedBranchData`, source payloads,
 terminal payloads, chart production, normal crossings, pole order, or RLCT
-data.  It only supplies a well-founded termination relation from the finite
-introduced-label measure and a progress-data bridge whose continuing child is
-the displayed Case 2 same-stage child.
+data.  It only supplies well-founded termination relations from finite progress
+measures and progress-data bridges whose continuing children are supplied or
+finite bookkeeping states.
 -/
 
 namespace DLNFibre
@@ -34,6 +34,22 @@ def selectedEntryIntroducedLabelBranchTerminationData
   step := AoyagiIntroducedLabelBranchState.progressStep L n
   step_wellFounded := AoyagiIntroducedLabelBranchState.progressStep_wellFounded L n
   initial := ⟨1, 0, Nat.le_refl 1, hL⟩
+
+/-- Branch-termination data supplied by the finite recurrence-aware progress
+relation.
+
+The initial state is `(1,0)` with supplied initial recurrence data.  This is
+only a termination relation on branch states; it does not construct recurrence
+data, branch guards, or source-production payloads. -/
+def selectedEntryRecurrenceBranchTerminationData
+    {Param R : Type*} [CommMonoid R]
+    (C : AoyagiNormalCrossingChartCertificate.{uAtlas} Param R)
+    (L : ℕ) (n : ℕ → ℕ) (α : Type*) (hL : 1 ≤ L)
+    (initialRecurrence : IntroducedLabelRecurrenceState L n 1 0 α) :
+    SelectedEntryBranchTerminationData C (AoyagiRecurrenceBranchState L n α) where
+  step := AoyagiRecurrenceBranchState.progressStep L n α
+  step_wellFounded := AoyagiRecurrenceBranchState.progressStep_wellFounded L n α
+  initial := ⟨1, 0, Nat.le_refl 1, hL, initialRecurrence⟩
 
 namespace AoyagiIntroducedLabelBranchState
 

@@ -21,6 +21,30 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean recurrence branch termination data
+
+Reproduction:
+`reproduction-a4-recurrence-branch-termination-data.md`.
+Statement card:
+`statement-card-a4-recurrence-branch-termination-data.md`.
+Review:
+`review-a4-recurrence-branch-termination-data.md`.
+
+Lean now exposes the recurrence-aware branch progress relation to the
+selected-entry termination socket:
+
+```text
+selectedEntryRecurrenceBranchTerminationData
+```
+
+The adapter takes supplied initial recurrence data over `(1,0)` and returns
+`SelectedEntryBranchTerminationData C (AoyagiRecurrenceBranchState L n alpha)`.
+It constructs no recurrence data, source payloads, branch guards, terminal
+payloads, full branch termination, normal crossings, pole order, or RLCT.
+
+Focused build, direct Lean check, full local build, no-sorry audit, whitespace
+check, axiom probe, and xhigh reviews passed.
+
 ## 2026-06-30 Lean combined recurrence branch progress
 
 Reproduction:

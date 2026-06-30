@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Recurrence Branch Termination Data - 2026-06-30
+
+`SelectedEntryBranchProgressBridge.lean` now exposes the combined recurrence
+progress relation as selected-entry termination data:
+
+```text
+selectedEntryRecurrenceBranchTerminationData
+```
+
+The adapter takes a supplied initial recurrence state over `(1,0)`:
+
+```text
+initialRecurrence : IntroducedLabelRecurrenceState L n 1 0 alpha
+```
+
+and returns
+
+```text
+SelectedEntryBranchTerminationData C (AoyagiRecurrenceBranchState L n alpha).
+```
+
+It sets `step` to `AoyagiRecurrenceBranchState.progressStep L n alpha`, uses
+`AoyagiRecurrenceBranchState.progressStep_wellFounded`, and sets `initial` to
+`(1,0,hL,initialRecurrence)`.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-recurrence-branch-termination-data.md
+threads/04-blow-up-certificate/statement-card-a4-recurrence-branch-termination-data.md
+threads/04-blow-up-certificate/review-a4-recurrence-branch-termination-data.md
+```
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Russell` and xhigh Lean/API reviewer `Ohm` returned PASS.
+
+Boundary: this constructs no recurrence data, source payloads, branch guards,
+continuing children, terminal payloads, full analytic-atlas branch termination,
+normal crossings, pole order, or RLCT.
+
 ## Latest A4 Combined Recurrence Branch Progress - 2026-06-30
 
 `BlowupBranchProgress.lean` now adds a recurrence-aware progress state that

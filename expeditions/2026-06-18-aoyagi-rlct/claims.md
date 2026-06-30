@@ -2847,6 +2847,29 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, recurrence branch termination data,
+  2026-06-30.** Lean now exposes the recurrence-aware progress relation through
+  the selected-entry termination socket via
+  `selectedEntryRecurrenceBranchTerminationData` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryBranchProgressBridge.lean`.  The
+  adapter consumes a supplied initial recurrence state
+  `IntroducedLabelRecurrenceState L n 1 0 alpha`, sets `step` to
+  `AoyagiRecurrenceBranchState.progressStep L n alpha`, uses
+  `AoyagiRecurrenceBranchState.progressStep_wellFounded`, and sets the initial
+  branch state to `(1,0)` with the supplied recurrence data.  Reproduction,
+  statement card, and review are at
+  `threads/04-blow-up-certificate/reproduction-a4-recurrence-branch-termination-data.md`,
+  `threads/04-blow-up-certificate/statement-card-a4-recurrence-branch-termination-data.md`,
+  and
+  `threads/04-blow-up-certificate/review-a4-recurrence-branch-termination-data.md`.
+  Focused local build, direct warning check, full local build, no-sorry audit,
+  whitespace check, and direct axiom probe passed; the declaration reports only
+  `[propext, Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer
+  `Russell` and xhigh Lean/API reviewer `Ohm` returned PASS.  This is only a
+  termination-data adapter: it constructs no recurrence data, source-production
+  payloads, branch-guard coverage, continuing children, terminal payloads,
+  full analytic-atlas branch termination theorem, normal crossings, pole order,
+  or RLCT.
 - **Current status addendum, combined recurrence branch progress,
   2026-06-30.** Lean now adds the recurrence-aware branch state
   `AoyagiRecurrenceBranchState` in
@@ -3120,6 +3143,8 @@ No such claim is formalisation-ready until both fields are filled.
   report at `threads/04-blow-up-certificate/reproduction-repair-a4.md`;
   progress kernel at
   `threads/04-blow-up-certificate/reproduction-a4-introduced-label-progress-kernel.md`;
+  recurrence branch termination-data adapter at
+  `threads/04-blow-up-certificate/reproduction-a4-recurrence-branch-termination-data.md`;
   Case 1(2) row-strip progress bridge at
   `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`;
   Case 1(1) same-domain plateau progress at
@@ -3340,6 +3365,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md`.
 	  Review of the combined recurrence branch progress kernel is saved at
 	  `threads/04-blow-up-certificate/review-a4-combined-recurrence-branch-progress.md`.
+	  Review of the recurrence branch termination-data adapter is saved at
+	  `threads/04-blow-up-certificate/review-a4-recurrence-branch-termination-data.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -3386,6 +3413,11 @@ No such claim is formalisation-ready until both fields are filled.
   finite well-founded progress relation combining support growth, stage
   handoff, and same-domain selected-old lowering, but still do not construct
   source production, branch guards, terminal payloads, or full analytic-atlas
+  termination. Selected-entry recurrence branch termination adapter:
+  `selectedEntryRecurrenceBranchTerminationData`; this packages the combined
+  recurrence progress relation as `SelectedEntryBranchTerminationData` from
+  supplied initial recurrence data, but does not construct source production,
+  branch guards, continuing children, terminal payloads, or full analytic-atlas
   termination. Also
   proved terminal-exponent split API:
   `terminalExponent`, `printedCase2Vector`, `prefixMin`,

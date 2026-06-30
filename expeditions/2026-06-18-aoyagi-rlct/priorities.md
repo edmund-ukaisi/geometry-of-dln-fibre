@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 recurrence branch termination data
+
+The combined recurrence-aware progress relation is now exposed through the
+selected-entry termination socket:
+
+```text
+selectedEntryRecurrenceBranchTerminationData
+```
+
+It consumes a supplied
+`IntroducedLabelRecurrenceState L n 1 0 alpha` as the initial recurrence data
+and returns
+`SelectedEntryBranchTerminationData C (AoyagiRecurrenceBranchState L n alpha)`.
+The `step` field is `AoyagiRecurrenceBranchState.progressStep`; the
+well-foundedness proof is `AoyagiRecurrenceBranchState.progressStep_wellFounded`.
+
+This is only an adapter for a well-founded finite relation.  It does not
+construct recurrence data, source-production payloads, branch guards,
+continuing children, terminal payloads, chart construction, full
+analytic-atlas branch termination, normal crossings, pole order, or RLCT.
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Russell` and xhigh Lean/API reviewer `Ohm` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-recurrence-branch-termination-data.md`.
+
 ## Latest controller decision - 2026-06-30, A4 combined recurrence branch progress
 
 The next progress interface is now a recurrence-aware branch state rather than
