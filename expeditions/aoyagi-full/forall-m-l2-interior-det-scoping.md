@@ -224,3 +224,51 @@ fill — the honest ceiling for the genBlkFlatLive headline without the staircas
 PROGRESS LEDGER: B/hmap/hasDB CLOSED (the (2,2,2)-bottleneck ∀M); hdet→hDtot (opaque→sharp staircase
 det); engine = honest free-K. Cone (modulo-hDtot): the 10 prior + RouteMLeafEngine/Reduce/FreeKHeadline,
 deconflicted vs canonical 5184db86 (0 clashes), green 8335.
+
+## STATE (2026-06-30, genm-detfderiv hDtot re-probe): WALL CONFIRMED (multi-tide), partition CERTIFIED
+
+Re-attacked hDtot on a fresh thread. Three-way convergent verdict — the prior "multi-tide wall" stands.
+
+PARTITION CERTIFIED (numeric, exact, 6 random seeds at (3,3,4)): reconstructed `fderiv BparamsLeaf` by
+hand and confirmed the two-block lower-triangular structure DECISIVELY:
+- input role-split `eIn = {K,X,N,E} ⊕ {W,leaf}` (V0=9 coords, V1=12), output `eOut = C1 ⊕ Agen1`.
+- `‖J01‖ = 0` EXACTLY (C1 = layer-0 output is independent of W,leaf) ⟹ block-LOWER-triangular.
+- `det J00 / |det K|^4 = 1.000000` (the Schur frame `schurFrameDeriv`, r=c=2), `|det J11| = 1.000000`
+  (the chain layer `(W,leaf) ↦ (leaf−N·W, W)`, det-trivial). product = total. The N-block (`readN ⟨0⟩`)
+  is SHARED: feeds layer-0 frame (K·N, X·K·N) AND layer-1 kept row (−N·W) — the strictly-lower coupling.
+So the MATH is settled and the route is `lowerTri`/`schurFrameDeriv_det` (route C, below). NOT a research
+question; the wall is purely Lean opaque-width plumbing.
+
+ROUTE (decorrelated Codex `codex/hdtot-route-{prompt,answer}.md`, xhigh): route **C** (lowerTri at the
+linear-map level) beats A (full StairProd/twoConj) and B (M222-style litMatLT reindex). The 8 ordered
+sub-lemmas + their risk are in the answer; the dominant cost is "opaque-width coordinate plumbing, not
+determinant algebra." Codex's verdict verbatim: "I agree with the prior 'multi-tide wall' assessment
+unless [`projV0 ∘ fderiv BparamsLeaf y₀ ∘ inclV0 = schurFrameDeriv X K N`] can be made to close cleanly
+first."
+
+THE PRECISE WALL (named, two compounding HIGH-risk sub-goals, neither a 3-4-attempt fill):
+1. `slotEquiv_BparamsLeaf_twoBlock` — the input/output slot-partition equiv
+   `(Fin N → ℝ) ≃ₗ (V0 × V1)` over OPAQUE `Text/Wext` widths, where V0/V1 are the role-blocks
+   (K/X/N/E vs W/leaf) read through `chartIdxEquiv.symm`. This is the (2,2,2) `slotList`/`bdataSlotEquiv`
+   construction (1283 LoC for the literal special case) generalized to opaque width — a green-but-WRONG
+   reindex (N, E, or a layer slice in the wrong order) hides here. It is the slot-zone machinery the
+   scoping's "obstruction #3" lists as a whole separate set of NEW modules.
+2. `BparamsLeaf_block00_schur` — identify the V0→V0 block of the ASSEMBLED `fderiv BparamsLeaf` with
+   `schurFrameDeriv X K N`, matching `readK/X/N/E` + the radial-1 frame + the `c0 = 0` chainA collapse
+   without losing defeq over opaque `Fin` casts.
+
+FOUNDATION GAP (confirmed by `rg`): the fderiv-VALUE atoms for the readers (`readK/X/N/E`), the block
+constructors (`bmatStack`/`rmatPad`), and the per-component `reindex` do NOT exist (only DIFFERENTIABILITY,
+`diffAt_*`, is banked). So sub-lemma 2 (`fderiv BparamsLeaf y₀` as an explicit CLM, MED) — the foundation
+EVERY route needs — must first be assembled from a NEW layer of reader/block fderiv-value lemmas threaded
+up through `Cgen`/`Agen`/`reindex` (the `chainAFDeriv`/`hasFDerivAt_Agen_interior` VALUES exist; the reader
++ reindex VALUES do not). This precedes the two HIGH-risk wall sub-goals.
+
+DE-RISK GATE for the next thread (Codex's cheapest discriminating test, do FIRST before any lowerTri):
+prove `projV0 ∘ fderiv BparamsLeaf y₀ ∘ inclV0 = schurFrameDeriv X K N` with W/leaf increments zeroed,
+ending EXACTLY in `schurFrameDeriv`. If it closes cleanly the route is open; if the opaque-`Fin`/cast
+extensionality is intractable, the wall holds and the route needs a different decomposition.
+
+VERDICT: NOT discharged this thread. Genuine multi-tide; surfaced (not ground, not faked). No Lean edit
+made (no sorry introduced); the headline remains `interiorDet_leaf_headline_freeK` modulo hDtot, the build
+unchanged/green. The honest ceiling without the dedicated slot-partition + reader-fderiv-value tide.
