@@ -1,5 +1,6 @@
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.OrbitDifferential
+import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitLinearCodim
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.Dimension.Regular
@@ -363,56 +364,20 @@ theorem dirDeriv_orbitIdeal_eq_zero [Infinite k] (M : Tuple (k := k) d) (φ : co
     rw [← evalGroupRingε_comp_orbitPullback M φ f, hker, map_zero]
   rw [dirDeriv_apply, h0, TrivSqZeroExt.snd_zero]
 
-/-! ## R3 — descend `D_v` to `A`, restrict to `m_M`, factor through the cotangent
+/-! ## R3–R5 — the cotangent injection, now via the abstract engine
 
-`D_v` kills `orbitIdeal M` (R2★), so it descends to `Ā_v : A →ₗ[k] k`; restricting to `m_M` and using
-the Leibniz vanishing on products gives a functional on the cotangent space `m_M.Cotangent`. -/
+`D_v` kills `orbitIdeal M` (R2★), so it descends to `A = orbitRing M`, restricts to `m_M`, and
+factors through the cotangent space `m_M.Cotangent`; the resulting pairing
+`C⁰ → Dual k (m_M.Cotangent)` has `ker ⊆ ker δ⁰`, giving `finrank (range δ⁰) ≤ finrank
+(m_M.Cotangent)`. This whole chain is now the **abstract B3 engine**
+(`AffineGVarietyDeformation.InfinitesimalAction`, `Core.AlgebraicGeometry.Group.Orbit.Deformation`);
+the matrix tuple discharges its (H2) hypothesis (`dlnInfinitesimalAction`, below) with the
+R2★/Leibniz/φ-linearity/coordinate-test lemmas above. R5 is then the abstract bound at that
+discharge. -/
 
 variable [Infinite k]
 
-/-- The descended functional `Ā_v : A →ₗ[k] k` (with `A = orbitRing M`): `D_v` factors through the
-quotient `R ↠ A` since it kills `orbitIdeal M` (R2★). On a residue class `mk g` it is `D_v g`. -/
-noncomputable def dirDerivQuot (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) :
-    orbitRing M →ₗ[k] k :=
-  Submodule.liftQ ((orbitIdeal M).restrictScalars k) (dirDeriv M φ)
-    (fun x hx ↦ dirDeriv_orbitIdeal_eq_zero M φ hx)
-
-@[simp] theorem dirDerivQuot_mk (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d)
-    (g : MvPolynomial (RepCoord d) k) :
-    dirDerivQuot M φ (Ideal.Quotient.mk (orbitIdeal M) g) = dirDeriv M φ g := rfl
-
-/-- `Ā_v` is a derivation at the orbit point: `Ā_v(a b) = a_M(a)·Ā_v(b) + a_M(b)·Ā_v(a)`, where
-`a_M(·) = orbitEval M 1`. From `dirDeriv_mul` pushed through the quotient. -/
-theorem dirDerivQuot_mul (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (a b : orbitRing M) :
-    dirDerivQuot M φ (a * b)
-      = orbitEval M 1 a * dirDerivQuot M φ b + orbitEval M 1 b * dirDerivQuot M φ a := by
-  obtain ⟨a, rfl⟩ := Ideal.Quotient.mk_surjective a
-  obtain ⟨b, rfl⟩ := Ideal.Quotient.mk_surjective b
-  rw [← map_mul, dirDerivQuot_mk, dirDerivQuot_mk, dirDerivQuot_mk, dirDeriv_mul,
-    orbitEval_mk, orbitEval_mk, one_smul, MvPolynomial.aeval_eq_eval]
-
-/-- The cotangent functional `cot_v : m_M.Cotangent →ₗ[k] k` of the tangent direction `v = δ⁰ φ`:
-`Ā_v` restricted to `m_M ⊆ A` (`k`-linearly) factors through `m_M ⧸ m_M²` because it vanishes on
-products (`x, y ∈ m_M ⟹ a_M(x) = a_M(y) = 0`, so the Leibniz terms drop). -/
-noncomputable def cotFunctional (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) :
-    (normalFormIdeal M).Cotangent →ₗ[k] k :=
-  Ideal.Cotangent.lift
-    ((dirDerivQuot M φ).comp ((normalFormIdeal M).subtype.restrictScalars k))
-    (fun x y ↦ by
-      -- `x, y ∈ m_M` evaluate to `0` at `M`, killing both Leibniz terms
-      have hx : orbitEval M 1 (x : orbitRing M) = 0 := x.2
-      have hy : orbitEval M 1 (y : orbitRing M) = 0 := y.2
-      have hxy : ((x * y : normalFormIdeal M) : orbitRing M)
-          = (x : orbitRing M) * (y : orbitRing M) := rfl
-      simp only [LinearMap.comp_apply, LinearMap.coe_restrictScalars, Submodule.coe_subtype, hxy,
-        dirDerivQuot_mul, hx, hy, zero_mul, add_zero])
-
-@[simp] theorem cotFunctional_toCotangent (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d)
-    (x : normalFormIdeal M) :
-    cotFunctional M φ ((normalFormIdeal M).toCotangent x) = dirDerivQuot M φ (x : orbitRing M) :=
-  rfl
-
-/-! ## R4 — `cotFunctional` is `k`-linear in `φ`; the coordinate test for injectivity -/
+/-! ## R4 — the φ-linearity inputs to the abstract (H2) discharge -/
 
 omit [Infinite k] in
 /-- `D_v (C r) = 0` (the directional derivative kills constants). -/
@@ -462,61 +427,6 @@ theorem dirDeriv_smul (M : Tuple (k := k) d) (c : k) (φ : cochain0 (k := k) d d
     simp only [smul_eq_mul]
     ring
 
-/-! ## R4–R5 — the injection `range δ⁰ ↪ Dual k (m_M.Cotangent)` and the finrank bound -/
-
-omit [Infinite k] in
-/-- The coordinate test polynomial `X x − C (a_x)` lies in `m_M` (it evaluates to `0` at `M`). -/
-theorem coordTest_mem_normalFormIdeal (M : Tuple (k := k) d) (x : RepCoord d) :
-    Ideal.Quotient.mk (orbitIdeal M)
-        (MvPolynomial.X x - MvPolynomial.C (canonicalCoord d M x)) ∈ normalFormIdeal M := by
-  rw [normalFormIdeal, orbitPointIdeal, RingHom.mem_ker, AlgHom.toRingHom_eq_coe, RingHom.coe_coe,
-    orbitEval_mk, map_sub, MvPolynomial.eval_X, MvPolynomial.eval_C, one_smul, sub_self]
-
-/-- `Ψ : C⁰ →ₗ[k] Dual k (m_M.Cotangent)`, `φ ↦ cotFunctional M φ`, the cotangent-functional pairing
-of the orbit tangent direction `δ⁰ φ`. Linear in `φ` by `dirDeriv_add`/`dirDeriv_smul`. -/
-noncomputable def cotPairing (M : Tuple (k := k) d) :
-    cochain0 (k := k) d d →ₗ[k] Module.Dual k (normalFormIdeal M).Cotangent where
-  toFun φ := cotFunctional M φ
-  map_add' φ φ' := by
-    refine LinearMap.ext fun z ↦ ?_
-    obtain ⟨z, rfl⟩ := (normalFormIdeal M).toCotangent_surjective z
-    obtain ⟨g, hg⟩ := Ideal.Quotient.mk_surjective (z : orbitRing M)
-    simp only [LinearMap.add_apply, cotFunctional_toCotangent, ← hg, dirDerivQuot_mk,
-      dirDeriv_add]
-  map_smul' c φ := by
-    refine LinearMap.ext fun z ↦ ?_
-    obtain ⟨z, rfl⟩ := (normalFormIdeal M).toCotangent_surjective z
-    obtain ⟨g, hg⟩ := Ideal.Quotient.mk_surjective (z : orbitRing M)
-    simp only [LinearMap.smul_apply, RingHom.id_apply, cotFunctional_toCotangent, ← hg,
-      dirDerivQuot_mk, dirDeriv_smul, smul_eq_mul]
-
-/-- `cotPairing M φ` evaluated on the cotangent class of the coordinate test `X x − C a_x` is the
-component `v x = (δ⁰ φ)_x`: the directional derivative of a coordinate is its `v`-component. -/
-theorem cotPairing_coordTest (M : Tuple (k := k) d) (φ : cochain0 (k := k) d d) (x : RepCoord d) :
-    cotPairing M φ
-        ((normalFormIdeal M).toCotangent
-          ⟨Ideal.Quotient.mk (orbitIdeal M)
-              (MvPolynomial.X x - MvPolynomial.C (canonicalCoord d M x)),
-            coordTest_mem_normalFormIdeal M x⟩)
-      = canonicalCoord d (deformationδ M M φ) x := by
-  show cotFunctional M φ _ = _
-  rw [cotFunctional_toCotangent, dirDerivQuot_mk, map_sub, dirDeriv_X, dirDeriv_C, sub_zero]
-
-/-- **R4 — `ker (cotPairing M) ⊆ ker (deformationδ M M)`.** If the cotangent functional of `φ`
-vanishes, then so does `δ⁰ φ`: testing on the coordinate classes recovers each component
-`(δ⁰ φ)_x = cotPairing M φ (…) = 0`. -/
-theorem ker_cotPairing_le_ker_deformationδ (M : Tuple (k := k) d) :
-    LinearMap.ker (cotPairing M) ≤ LinearMap.ker (deformationδ M M) := by
-  intro φ hφ
-  rw [LinearMap.mem_ker] at hφ ⊢
-  -- every coordinate of `δ⁰ φ` is `0`, so `δ⁰ φ = 0`
-  have hv : ∀ x : RepCoord d, canonicalCoord d (deformationδ M M φ) x = 0 := by
-    intro x
-    rw [← cotPairing_coordTest M φ x, hφ, LinearMap.zero_apply]
-  have hz : canonicalCoord d (deformationδ M M φ) = canonicalCoord d 0 := by
-    funext x; rw [hv x]; simp [canonicalCoord_apply]
-  exact (canonicalCoord d).injective hz
-
 /-- The orbit-point cotangent space `m_M.Cotangent` is finite-dimensional over `k`. It is a
 finitely-generated `A`-module (`A = orbitRing M` noetherian, `m_M` f.g.), torsion by `m_M`, hence a
 finite-dimensional `κ = A/m_M`-vector space; and `κ ≃ₐ[k] k` (the orbit point is `k`-rational), so it
@@ -545,31 +455,59 @@ instance finiteDimensional_cotangent_normalFormIdeal [PerfectField k] (M : Tuple
     Module.IsTorsionBySet.isScalarTower (Ideal.isTorsionBySet_cotangent (normalFormIdeal M))
   exact Module.Finite.trans (orbitRing M ⧸ normalFormIdeal M) ((normalFormIdeal M).Cotangent)
 
+/-! ## B3 discharge — the matrix-tuple discharges the abstract (H2) infinitesimal-action
+
+The DLN deformation instance `dlnOrbitDef M` discharges the abstract `InfinitesimalAction`
+hypothesis (`Core.AlgebraicGeometry.Group.Orbit.Deformation`) over the orbit ideal `I = orbitIdeal
+M`, with: `basePt = aeval (canonicalCoord (1 • M))` (the orbit-point evaluation), `dirDeriv =
+dirDeriv M`, `c1coord = canonicalCoord d`. The discharge body is the R2★/Leibniz/coordinate-test
+lemmas above. Because `basePt = aeval (canonicalCoord (1 • M))`, the abstract base ideal
+`m = ker (basePt descended)` is **definitionally** `normalFormIdeal M = ker (orbitEval M 1)`, so the
+abstract B3 re-derives R5 with no transport. -/
+
+open AlgebraicGeometry.Group.Orbit in
+/-- **The DLN discharge of the abstract (H2) infinitesimal action.** The matrix-tuple deformation
+instance `dlnOrbitDef M` satisfies `AffineGVarietyDeformation.InfinitesimalAction (orbitIdeal M)`:
+`basePt = aeval (canonicalCoord (1 • M))`, `dirDeriv = dirDeriv M`, `c1coord = canonicalCoord d`.
+The fields are the landed R2★ (`dirDeriv_orbitIdeal_eq_zero`), Leibniz (`dirDeriv_mul`),
+φ-linearity (`dirDeriv_add`/`dirDeriv_smul`), and the coordinate test (`dirDeriv_X`). -/
+noncomputable def dlnInfinitesimalAction (M : Tuple (k := k) d) :
+    (dlnOrbitDef M).InfinitesimalAction (k := k) (orbitIdeal M) where
+  basePt := MvPolynomial.aeval (canonicalCoord d ((1 : BaseChangeGroup (k := k) d) • M))
+  dirDeriv :=
+    { toFun := fun φ ↦ dirDeriv M φ
+      map_add' := fun φ φ' ↦ LinearMap.ext fun f ↦ dirDeriv_add M φ φ' f
+      map_smul' := fun c φ ↦ LinearMap.ext fun f ↦ dirDeriv_smul M c φ f }
+  c1coord :=
+    { toFun := fun (φ : cochain1 (k := k) d d) ↦ canonicalCoord d φ
+      map_add' := fun A B ↦ by funext x; rfl
+      map_smul' := fun c A ↦ by funext x; rfl }
+  hc1coord := (canonicalCoord d).injective
+  hkill := fun φ f hf ↦ dirDeriv_orbitIdeal_eq_zero M φ hf
+  hbase := fun f hf ↦ by
+    show MvPolynomial.aeval (canonicalCoord d ((1 : BaseChangeGroup (k := k) d) • M)) f = 0
+    rw [MvPolynomial.aeval_eq_eval]
+    exact eval_orbitPoint_mem_orbitIdeal M 1 hf
+  hLeibniz := fun φ f g ↦ by
+    have h := dirDeriv_mul M φ f g
+    rw [show ((1 : BaseChangeGroup (k := k) d) • M) = M from one_smul _ _]
+    exact h
+  hcoord := fun φ x ↦ dirDeriv_X M φ x
+
 /-- **R5 — `finrank (range δ⁰) ≤ finrank (m_M.Cotangent)`.** The injection of the orbit tangent
-image into the Zariski cotangent space, in finrank form: `ker (cotPairing) ⊆ ker δ⁰` (R4) gives
-`finrank (range δ⁰) ≤ finrank (range cotPairing)`, and `range cotPairing ⊆ Dual k (m_M.Cotangent)`
-has `finrank ≤ finrank (m_M.Cotangent)` (`Subspace.dual_finrank_eq`). Carries `[PerfectField k]`
-(explicit) `[Infinite k]` (from the section). -/
+image into the Zariski cotangent space, in finrank form. Now a transport of the **abstract B3**
+(`AffineGVarietyDeformation.InfinitesimalAction.finrank_range_δ_le_finrank_cotangent`,
+`Core.AlgebraicGeometry.Group.Orbit.Deformation`) at the DLN discharge `dlnInfinitesimalAction M`:
+its base ideal `m` is `normalFormIdeal M` definitionally, and `(dlnOrbitDef M).δ = deformationδ M
+M`, so the abstract bound is exactly this statement. The `[PerfectField k]`/`[Infinite k]` feed the
+cotangent finite-dimensionality (`finiteDimensional_cotangent_normalFormIdeal`); the injection
+itself is char-free (the engine needs only that the cotangent is finite-dimensional). -/
 theorem finrank_range_deformationδ_le_finrank_cotangent [PerfectField k] (M : Tuple (k := k) d) :
     finrank k (LinearMap.range (deformationδ M M))
       ≤ finrank k ((normalFormIdeal M).Cotangent) := by
-  -- rank–nullity for `δ⁰` and `cotPairing` (same domain `C⁰`), with `ker cotPairing ⊆ ker δ⁰`
-  have hδ : finrank k (LinearMap.range (deformationδ M M))
-      + finrank k (LinearMap.ker (deformationδ M M)) = finrank k (cochain0 (k := k) d d) :=
-    (deformationδ M M).finrank_range_add_finrank_ker
-  have hΨ : finrank k (LinearMap.range (cotPairing M))
-      + finrank k (LinearMap.ker (cotPairing M)) = finrank k (cochain0 (k := k) d d) :=
-    (cotPairing M).finrank_range_add_finrank_ker
-  have hker : finrank k (LinearMap.ker (cotPairing M))
-      ≤ finrank k (LinearMap.ker (deformationδ M M)) :=
-    Submodule.finrank_mono (ker_cotPairing_le_ker_deformationδ M)
-  have hdual : finrank k (LinearMap.range (cotPairing M))
-      ≤ finrank k ((normalFormIdeal M).Cotangent) := by
-    calc finrank k (LinearMap.range (cotPairing M))
-        ≤ finrank k (Module.Dual k (normalFormIdeal M).Cotangent) :=
-          Submodule.finrank_le _
-      _ = finrank k ((normalFormIdeal M).Cotangent) := Subspace.dual_finrank_eq
-  omega
+  haveI : FiniteDimensional k ((dlnInfinitesimalAction M).basePtIdeal).Cotangent :=
+    finiteDimensional_cotangent_normalFormIdeal M
+  exact (dlnInfinitesimalAction M).finrank_range_δ_le_finrank_cotangent
 
 /-! ## R6 — chain `finrank (m_M.Cotangent)` to `varietyDim Z_M` -/
 
