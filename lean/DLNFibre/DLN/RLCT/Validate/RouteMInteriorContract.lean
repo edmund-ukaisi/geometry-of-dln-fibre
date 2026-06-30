@@ -4,6 +4,16 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
 /-!
 # `RouteMInteriorContract` — the INTERIOR-branch achiever box-divergence contract (#3 spine)
 
+> **SUPERSEDED-for-interior (free-K `cov` unsatisfiable; live route is `phiFlatLDU … kLDU`).** This
+> contract is built on the FREE-K chart `achieverPhi = phiFlatStructV`, whose frame Jacobian carries
+> `∏_s |det K_s|^{r_s+c_s}` — a degree-`t` POLYNOMIAL in the K-core coords for `t ≥ 2`, NOT a
+> monomial. So `NodeAchieverChart.cov`'s pure-monomial Jacobian `∏_j |u_j|^{leafH_j}` CANNOT hold on
+> this chart for the interior class, and the `hcov` hypothesis below is unsatisfiable there. The LIVE
+> interior route is the LDU-lensed chart `phiFlatLDU M (tach M) ha hN (kLDU …)`, whose `kLDU` lens
+> straightens each `det K_s` to the diagonal-pivot monomial `∏_i q_i` — see
+> `RouteMInteriorLDUContract` (`routeMCore_box_diverges_interiorLDU`). This file is kept as the
+> rate-side/`leaf_integrand` reference; do NOT mistake it for the live interior divergence route.
+
 The spine for the INTERIOR branch of the ∀M achiever box-divergence (`hInterior` in
 `RouteMAchieverDispatch`). It assembles the interior `NodeAchieverChart M` from the BANKED rate-side
 fields (the achiever chart `achieverPhi`, the rate `routeMCore = (x p)²·U`, the det-FREE

@@ -1,0 +1,303 @@
+import DLNFibre.DLN.RLCT.Validate.RouteMKLDUAmbientDet
+import DLNFibre.DLN.RLCT.Validate.RouteMEihdFreePoint
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveContract
+
+/-!
+# `RouteMBdetMonomial` — PIECE 2 scaffold: the `interiorLive_BdetMonomial` chain-rule fold
+
+The boundary-factor determinant of the LIVE-leaf ∘ kLDU chart monomializes:
+
+  `|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}`
+
+via the chain rule `|det D(g∘f)(x)| = |det D(g)(f x)| · |det D(f)(x)|`, with:
+
+* **Factor 2** (`RouteMKLDUAmbientDet`, axiom-clean, BANKED): the ambient lens det
+  `|det D(kLDU)(pbo u)| = ∏_k ∏_i |q_{k,i}|^{2(t_k−1−i)}`.
+* **Factor 1** (genm-eihdfree `Dtot_abs_det_free` + `Bchart_abs_det_eq_Dtot`): the free-`y₀`
+  boundary-factor det `|det D(BchartLeaf)(Z)| = |det (readK Z 0)|^{r+c}` at `Z = kLDU(pbo u)`,
+  CONDITIONAL on the regauge `hreg : |det((eihdOut).symm ∘ eIn)| = 1`.
+
+`readK_kLDU` naturality + `kLens_det` fold factor 1 to `(∏_i |q_{0,i}|)^{r+c}`; the per-diagonal-pivot
+exponent `(r_0+c_0) + 2(t_0−1−i)` matches `liveLeafHOnIdx`.
+
+## Status (SCAFFOLD — the structural atoms LANDED; the product-reindex assembly is the open piece)
+
+LANDED sorry-free (the chain-rule + factor structure, the diagonal-axis API):
+* `BchartLeaf_abs_det_free` — factor 1 (`Bchart_abs_det_eq_Dtot` + `Dtot_abs_det_free`, hreg-conditional).
+* `BchartLeaf_kLDU_abs_det_split` — the chain rule (`fderiv_comp` + `LinearMap.det_comp` + `abs_mul`).
+* `readK_kLDU_pbo` — the K-core of `kLDU(pbo u)` at boundary 0 is `kLens (readK u 0)`.
+* `diagAxis` / `u_diagAxis` / `diagAxis_injective` — the boundary-0 K-diagonal axis API.
+
+OPEN (handed back — the bounded `liveLeafHOnIdx`-decode product-reindex glue):
+* `leafH_diagAxis` — `leafH (diagAxis i) = (r₀+c₀)+2(t₀−1−i)` (the diagonal `if` fires after the
+  `frameSplitEquiv`/`finProdFinEquiv` round-trips; the inner `fse (fse.symm _)` round-trip needs a robust
+  decode — the `(0:Fin 2).val+1` vs `0+1` arg-form mismatch blocks a one-shot `simp`).
+* `mem_image_diagAxis_of_leafH_ne_zero` — the off-image collapse (`leafH j ≠ 0 ∧ j ≠ pivot ⟹ j ∈
+  image diagAxis`; the `Sigma.ext` + `fse.symm` reconstruction).
+* `interiorLive_BdetMonomial_of_hreg` — the assembly: LHS-collapse (`Finset.abs_prod`/`prod_pow`/
+  `prod_mul_distrib`/`pow_add`, VALIDATED) · the RHS reindex (`Finset.prod_image` via diagAxis
+  injectivity + `Finset.prod_subset` onto `univ.erase leafPivot`, off-image `leafH = 0`) → the monomial.
+
+## hreg gate (caveat next to the claim)
+
+`hreg` is the regauge abs-det-`1` (`eihd_hreg`, `RouteMHregPerm.lean`, CLOSED). The final
+`interiorLive_BdetMonomial_of_hreg` carries `hreg` as an `ha`-level hypothesis; it is discharged
+downstream at `interiorLive_abs_det'` (`RouteMInteriorLiveAtom`, fed `eihd_hreg ha`). NOT a new
+mathematical gap — both the fold here and `hreg` are now sorry-free.
+-/
+
+open Matrix
+open scoped BigOperators
+
+namespace DLNFibre.DLN.RLCT
+
+variable {M : Fin (2 + 1) → ℕ}
+
+/-- **Factor 1 (free-`y₀`)** — `|det D(BchartLeaf)(Z)| = |det (readK Z 0)|^{r+c}` (given `hreg`). The
+`Bchart_abs_det_eq_Dtot` reindex peel + the banked free-point `Dtot_abs_det_free`. -/
+theorem BchartLeaf_abs_det_free (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ)
+    (hreg : |LinearMap.det
+        (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+          ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
+    |LinearMap.det (fderiv ℝ (BchartLeaf ha) y₀).toLinearMap|
+      = |(Matrix.of (readK M (tach M) ha y₀ ⟨0, by decide⟩)).det|
+        ^ ((Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)) := by
+  rw [Bchart_abs_det_eq_Dtot ha y₀, Dtot_abs_det_free ha y₀ hreg]
+
+/-- **The chain-rule split** — `|det D(BchartLeaf ∘ kLDU)(x)| = |det D(BchartLeaf)(kLDU x)| ·
+|det D(kLDU)(x)|`. `fderiv_comp` + `LinearMap.det_comp` + `abs_mul`. -/
+theorem BchartLeaf_kLDU_abs_det_split (ha : StructAdm M (tach M)) (x : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y)) x).toLinearMap|
+      = |LinearMap.det (fderiv ℝ (BchartLeaf ha) (kLDU M (tach M) ha x)).toLinearMap|
+        * |LinearMap.det (fderiv ℝ (kLDU M (tach M) ha) x).toLinearMap| := by
+  have hcomp : (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+      = BchartLeaf ha ∘ kLDU M (tach M) ha := rfl
+  rw [hcomp, fderiv_comp x (Bchart_differentiableAt ha _) (differentiable_kLDU M (tach M) ha x)]
+  rw [ContinuousLinearMap.coe_comp, LinearMap.det_comp, abs_mul]
+
+/-- The K-core of `kLDU (pbo u)` at boundary `0` is the lens applied to the (pbo-fixed) K-core of `u`. -/
+theorem readK_kLDU_pbo (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix.of (readK M (tach M) ha
+        (kLDU M (tach M) ha (pivotBlowupOn (activeM M ha)
+          (leafPivot M ha (by norm_num) h0r h0c) u)) ⟨0, by decide⟩)
+      = kLens (Matrix.of (readK M (tach M) ha u ⟨0, by decide⟩)) := by
+  ext i j
+  rw [Matrix.of_apply, readK_kLDU]
+  congr 1
+  ext a b
+  exact readK_pbo_all ha h0r h0c u ⟨0, by decide⟩ a b
+
+/-- The diagonal K-axis of boundary `0` at index `i`: the flat coordinate reading `readK · 0 i i`. -/
+noncomputable def diagAxis (ha : StructAdm M (tach M)) (i : Fin (Text M (tach M) 2)) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+    ⟨(0 : Fin 2), Sum.inl ((frameSplitEquiv M (tach M) ((0 : Fin 2).val + 1)
+      (ha.hdesc (0 : Fin 2).val (0 : Fin 2).isLt) (ha.hub (0 : Fin 2).val)).symm
+        (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i, i))))))⟩
+
+/-- `u (diagAxis i) = readK u 0 i i` (the diagonal K-core entry). -/
+theorem u_diagAxis (ha : StructAdm M (tach M)) (u : Fin (routeMAmbient M) → ℝ)
+    (i : Fin (Text M (tach M) 2)) :
+    u (diagAxis ha i) = readK M (tach M) ha u (0 : Fin 2) i i := by
+  rw [readK, diagAxis]
+
+/-- `diagAxis` is injective. -/
+theorem diagAxis_injective (ha : StructAdm M (tach M)) : Function.Injective (diagAxis ha) := by
+  intro i j hij
+  rw [diagAxis, diagAxis] at hij
+  have h1 := (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm.injective hij
+  have h2 := eq_of_heq (Sigma.mk.inj_iff.mp h1).2
+  have h3 := (frameSplitEquiv M (tach M) ((0 : Fin 2).val + 1) (ha.hdesc 0 (by norm_num))
+    (ha.hub 0)).symm.injective ((Sum.inl.injEq _ _).mp h2)
+  have h4 := finProdFinEquiv.injective
+    ((Sum.inl.injEq _ _).mp ((Sum.inl.injEq _ _).mp ((Sum.inl.injEq _ _).mp h3)))
+  exact (Prod.mk.injEq .. ▸ h4).1
+
+/-- **The LHS collapse** — factor 1 · factor 2 (boundary 0) folds to the single per-pivot product:
+`|∏ q|^{r+c} · ∏_i |q i|^{2(t−1−i)} = ∏_i |q i|^{(r+c)+2(t−1−i)}`. -/
+theorem lhs_collapse (τ r c : ℕ) (q : Fin τ → ℝ) :
+    |∏ i, q i| ^ (r + c) * ∏ i, |q i| ^ (2 * (τ - 1 - (i : ℕ)))
+      = ∏ i : Fin τ, |q i| ^ ((r + c) + 2 * (τ - 1 - (i : ℕ))) := by
+  rw [Finset.abs_prod, ← Finset.prod_pow, ← Finset.prod_mul_distrib]
+  exact Finset.prod_congr rfl (fun i _ => by rw [← pow_add])
+
+/-- **`frameSplitEquiv` is proof-irrelevant in its admissibility args.** The two `≤` hypotheses are
+`Subsingleton` (`Nat.le` is a `Prop`), so `frameSplitEquiv` built from different proofs is the SAME
+equiv — needed to bridge the `diagAxis` (`by norm_num` proofs) and `liveLeafHOnIdx` (`k.isLt`-derived
+proofs) `frameSplitEquiv` copies so the round-trip `e (e.symm X)` is syntactically `Equiv.apply_symm_apply`. -/
+theorem frameSplitEquiv_proof_irrel (M t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 h1' : Text M t (s + 1) ≤ Text M t s) (h2 h2' : Text M t (s + 1) ≤ Wext M s) :
+    frameSplitEquiv M t s h1 h2 = frameSplitEquiv M t s h1' h2' := by
+  cases Subsingleton.elim h1 h1'
+  cases Subsingleton.elim h2 h2'
+  rfl
+
+/-- `diagAxis i ≠ leafPivot` — the boundary-0 K-diagonal slot is not the (boundary-1) leaf pivot. -/
+theorem diagAxis_ne_leafPivot (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (i : Fin (Text M (tach M) 2)) :
+    diagAxis ha i ≠ leafPivot M ha (by norm_num) h0r h0c := by
+  rw [diagAxis]
+  exact boundary0_ne_leafPivot ha h0r h0c _
+
+/-- **`leafH` at the diagonal axis** — `interiorLive_leafH (diagAxis i) = (r₀+c₀) + 2(t₀−1−i)`. The
+`if j = leafPivot` is `false` (`diagAxis_ne_leafPivot`); the `chartIdxEquiv` round-trip on `diagAxis i`
+exposes the boundary-0 K-slot tag, the `frameSplitEquiv`/`finProdFinEquiv` round-trips collapse, and the
+diagonal `i = i` fires `if_pos`. -/
+theorem leafH_diagAxis (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (i : Fin (Text M (tach M) 2)) :
+    interiorLive_leafH ha h0r h0c (diagAxis ha i)
+      = (Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)
+        + 2 * (Text M (tach M) 2 - 1 - (i : ℕ)) := by
+  rw [interiorLive_leafH, if_neg (diagAxis_ne_leafPivot ha h0r h0c i)]
+  rw [diagAxis, Equiv.apply_symm_apply, liveLeafHOnIdx]
+  simp only [Equiv.apply_symm_apply, finProdFinEquiv.symm_apply_apply]
+  rfl
+
+/-- **The off-image collapse** — a non-pivot axis with nonzero `leafH` IS a diagonal K-axis. The only
+nonzero `liveLeafHOnIdx` slots are boundary-`k` K-role diagonal entries; at `L = 2` the leaf boundary
+`k = 1` is vacuous (`Fin (Text 3 · Text 3) = Fin 0`), so `k = 0` and the slot is `diagAxis i` with
+`i = (finProdFinEquiv.symm qK).1` on the diagonal. -/
+theorem mem_image_diagAxis_of_leafH_ne_zero (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (j : Fin (routeMAmbient M))
+    (hjp : j ≠ leafPivot M ha (by norm_num) h0r h0c)
+    (hne : interiorLive_leafH ha h0r h0c j ≠ 0) :
+    j ∈ Finset.image (diagAxis ha) Finset.univ := by
+  rw [interiorLive_leafH, if_neg hjp] at hne
+  have hjq : j = (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+      (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j) := by
+    rw [Equiv.symm_apply_apply]
+  match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j with
+  | ⟨k, Sum.inr s⟩ => rw [hc] at hne; simp only [liveLeafHOnIdx] at hne; exact absurd rfl hne
+  | ⟨k, Sum.inl s⟩ =>
+    rw [hc] at hne; simp only [liveLeafHOnIdx] at hne
+    match hfeq : frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      rw [hfeq] at hne; simp only at hne
+      have hk0 : k = (0 : Fin 2) := by
+        fin_cases k
+        · rfl
+        · have hT3 : Text M (tach M) 3 = 0 := by
+            have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+          exact (Fin.cast (by
+            show Text M (tach M) ((1 : Fin 2).val + 1 + 1)
+              * Text M (tach M) ((1 : Fin 2).val + 1 + 1) = 0
+            show Text M (tach M) 3 * Text M (tach M) 3 = 0
+            rw [hT3, Nat.mul_zero]) qK).elim0
+      subst hk0
+      by_cases hdiag : (finProdFinEquiv.symm qK).1 = (finProdFinEquiv.symm qK).2
+      · refine Finset.mem_image.mpr ⟨(finProdFinEquiv.symm qK).1, Finset.mem_univ _, ?_⟩
+        -- diagAxis i = j: peel chartIdxEquiv.symm, frameSplitEquiv.symm, finProd; uses hfeq + hdiag.
+        have hs : s = (frameSplitEquiv M (tach M) ((0 : Fin 2).val + 1)
+            (ha.hdesc (0 : Fin 2).val (0 : Fin 2).isLt) (ha.hub (0 : Fin 2).val)).symm
+              (Sum.inl (Sum.inl (Sum.inl qK))) := by rw [← hfeq, Equiv.symm_apply_apply]
+        have hqK : finProdFinEquiv ((finProdFinEquiv.symm qK).1, (finProdFinEquiv.symm qK).1) = qK := by
+          nth_rewrite 2 [hdiag]
+          rw [Prod.mk.eta, finProdFinEquiv.apply_symm_apply]
+        rw [diagAxis, hjq, hc, hs, hqK]
+      · rw [if_neg hdiag] at hne; exact absurd rfl hne
+    | Sum.inl (Sum.inl (Sum.inr e)) => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+    | Sum.inl (Sum.inr e) => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+    | Sum.inr e => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
+
+/-- **The ambient det at `pbo u`, boundary-0 only** — the `kLDU` lens det folds to the single
+boundary-0 K-diagonal product `∏_i |u(diagAxis i)|^{2(t₀−1−i)}` (the `k = 1` leaf factor is the empty
+product `1`, `Fin (Text 3) = Fin 0`). -/
+theorem kLDU_ambient_det_pbo (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (kLDU M (tach M) ha)
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ i : Fin (Text M (tach M) 2),
+          |u (diagAxis ha i)| ^ (2 * ((Text M (tach M) 2 : ℕ) - 1 - (i : ℕ))) := by
+  rw [kLDU_ambient_abs_det M (tach M) ha, Fin.prod_univ_two]
+  -- `k = 1` factor: `Fin (Text 3) = Fin 0` is empty, product = 1.
+  have hk1 : ∏ i : Fin (Text M (tach M) ((1 : Fin 2).val + 2)),
+      |(matrixSplit (Matrix.of (readK M (tach M) ha
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+          (1 : Fin 2)))).2.1 i|
+        ^ (2 * ((Text M (tach M) ((1 : Fin 2).val + 2) : ℕ) - 1 - (i : ℕ))) = 1 := by
+    have hT3 : Text M (tach M) ((1 : Fin 2).val + 2) = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    haveI : IsEmpty (Fin (Text M (tach M) ((1 : Fin 2).val + 2))) := by
+      rw [hT3]; exact Fin.isEmpty
+    exact Finset.prod_of_isEmpty _
+  rw [hk1, mul_one]
+  -- `k = 0` factor: each q-pivot is `u (diagAxis i)`.
+  refine Finset.prod_congr rfl (fun i _ => ?_)
+  have hq : (matrixSplit (Matrix.of (readK M (tach M) ha
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) (0 : Fin 2)))).2.1 i
+        = u (diagAxis ha i) := by
+    rw [u_diagAxis ha u i]
+    show readK M (tach M) ha
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) (0 : Fin 2) i i
+        = readK M (tach M) ha u (0 : Fin 2) i i
+    exact readK_pbo_all ha h0r h0c u (0 : Fin 2) i i
+  rw [hq]
+  norm_num
+
+/-- **The boundary-factor det monomializes (hreg-conditional)** —
+`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}`. The chain-rule split
+(`BchartLeaf_kLDU_abs_det_split`) factors into the boundary-factor det (`BchartLeaf_abs_det_free`, given
+`hreg`) and the ambient lens det (`kLDU_ambient_det_pbo`); `readK_kLDU_pbo` + `kLens_det` fold the
+former to `|∏_i u(diagAxis i)|^{r+c}`; `lhs_collapse` merges them to `∏_i |u(diagAxis i)|^{leafH(diagAxis
+i)}`; then the RHS reindexes onto the diagonal axes (`prod_subset` to `image diagAxis` via the off-image
+collapse, `prod_image` via `diagAxis_injective`). -/
+theorem interiorLive_BdetMonomial_of_hreg (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
+    (hreg : |LinearMap.det
+        (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+          ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
+    |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ j, if j = leafPivot M ha (by norm_num) h0r h0c then (1 : ℝ)
+          else |u j| ^ (interiorLive_leafH ha h0r h0c j) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  -- factor 1 = `|∏_i u(diagAxis i)|^{r+c}`
+  have hf1 : |LinearMap.det (fderiv ℝ (BchartLeaf ha)
+        (kLDU M (tach M) ha (pivotBlowupOn (activeM M ha) p₀ u))).toLinearMap|
+      = |∏ i, u (diagAxis ha i)|
+        ^ ((Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)) := by
+    rw [BchartLeaf_abs_det_free ha _ hreg, readK_kLDU_pbo ha h0r h0c u, kLens_det]
+    congr 2
+  -- combine via the chain-rule split + lhs_collapse → `∏_i |u(diagAxis i)|^{leafH(diagAxis i)}`
+  rw [BchartLeaf_kLDU_abs_det_split ha, hf1, kLDU_ambient_det_pbo ha h0r h0c u,
+    lhs_collapse (Text M (tach M) 2) (Text M (tach M) 1 - Text M (tach M) 2)
+      (Wext M 1 - Text M (tach M) 2) (fun i => u (diagAxis ha i))]
+  have hexp : ∀ i : Fin (Text M (tach M) 2),
+      |u (diagAxis ha i)|
+        ^ ((Text M (tach M) 1 - Text M (tach M) 2) + (Wext M 1 - Text M (tach M) 2)
+          + 2 * (Text M (tach M) 2 - 1 - (i : ℕ)))
+        = |u (diagAxis ha i)| ^ (interiorLive_leafH ha h0r h0c (diagAxis ha i)) := by
+    intro i; rw [leafH_diagAxis ha h0r h0c i]
+  rw [Finset.prod_congr rfl (fun i _ => hexp i)]
+  -- LHS = `∏ i, g (diagAxis i)`, RHS = `∏ j, if j = p₀ then 1 else g j`, with `g j := |u j|^{leafH j}`.
+  -- Both equal `∏ j ∈ univ.erase p₀, g j`: the RHS via `mul_prod_erase` (pivot factor `1`) + dropping the
+  -- now-redundant `if`; the LHS via `prod_image` (diagAxis injective) then `prod_subset` onto `erase p₀`
+  -- (off-image axes have `leafH = 0`, contributing `1`).  Pin the codomain to `ℝ` everywhere.
+  let g : Fin (routeMAmbient M) → ℝ := fun j => |u j| ^ (interiorLive_leafH ha h0r h0c j)
+  show ∏ i, g (diagAxis ha i) = ∏ j, if j = p₀ then (1 : ℝ) else g j
+  -- RHS: split the pivot off and collapse the `if`.
+  have hRHS : (∏ j, if j = p₀ then (1 : ℝ) else g j)
+      = ∏ j ∈ (Finset.univ : Finset (Fin (routeMAmbient M))).erase p₀, g j := by
+    rw [← Finset.mul_prod_erase Finset.univ (fun j => if j = p₀ then (1 : ℝ) else g j)
+      (Finset.mem_univ p₀), if_pos rfl, one_mul]
+    exact Finset.prod_congr rfl (fun j hj => if_neg (Finset.ne_of_mem_erase hj))
+  -- LHS: reindex through the injective image, then grow to `erase p₀`.
+  have hLHS : (∏ i, g (diagAxis ha i))
+      = ∏ j ∈ (Finset.univ : Finset (Fin (routeMAmbient M))).erase p₀, g j := by
+    rw [← Finset.prod_image (g := diagAxis ha) (f := g) ((diagAxis_injective ha).injOn)]
+    refine Finset.prod_subset ?_ ?_
+    · intro j hj
+      rw [Finset.mem_image] at hj
+      obtain ⟨i, _, rfl⟩ := hj
+      exact Finset.mem_erase.mpr ⟨diagAxis_ne_leafPivot ha h0r h0c i, Finset.mem_univ _⟩
+    · intro j hj hjimg
+      have hjp : j ≠ p₀ := (Finset.mem_erase.mp hj).1
+      have hz : interiorLive_leafH ha h0r h0c j = 0 := by
+        by_contra hne
+        exact hjimg (mem_image_diagAxis_of_leafH_ne_zero ha h0r h0c j hjp hne)
+      show g j = 1
+      simp only [g]; rw [hz, pow_zero]
+  rw [hLHS, hRHS]
+
+end DLNFibre.DLN.RLCT

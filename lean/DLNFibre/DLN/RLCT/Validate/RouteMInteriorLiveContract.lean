@@ -1,0 +1,622 @@
+import DLNFibre.DLN.RLCT.Validate.NodeAchieverChart
+import DLNFibre.DLN.RLCT.Validate.RouteMKLens
+import DLNFibre.DLN.RLCT.Validate.RouteMLeafChart
+import DLNFibre.DLN.RLCT.Validate.RouteMLeafHeadline
+import DLNFibre.DLN.RLCT.Validate.RouteMLeafBData
+import DLNFibre.DLN.RLCT.Validate.RouteMNullSliceCov
+import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
+import DLNFibre.DLN.RLCT.Validate.RouteMLDUUniqueness
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
+import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
+import DLNFibre.DLN.RLCT.Validate.RouteMProjV0Gate
+
+/-!
+# `RouteMInteriorLiveContract` — the LIVE-leaf ∘ kLDU interior achiever box-divergence (SPECIFY)
+
+The CORRECT interior-branch achiever chart for the ∀M-L2 R1-LOWER leg: the **LIVE-leaf** chart
+`phiFlatLiveAt` (with the `rfinFixedPivot` `(0,0)=1` anchor that makes it INJECTIVE — the dead-leaf
+`genBlkFlatStruct` of `RouteMInteriorLDUContract` is provably NON-INJECTIVE, genm-hinj) **precomposed
+with the K-slot LDU lens `kLDU`** (which monomializes the polynomial frame det `|det K|^{r+c}` into the
+diagonal-pivot product, the `RouteMFlatLDU` wall-check fix). The binding pivot is `leafPivot`, NOT the
+`structPivot = ⟨0⟩` of the dead-leaf contract.
+
+## The double-count-free factorization (Codex xhigh verdict, `codex/livekldu-fork-answer.md`)
+
+Chain-ruling through `kLDU` TWICE would square the K-pivot. AVOIDED by pushing `kLDU` into the
+boundary factor. `radialComp_abs_det_at` is generic in `B`; set `B' := BchartLeaf ha ∘ kLDU`. Then the
+single map identity `phiFlatLiveAt … leafPivot (kLDU x) = B' (pivotBlowupOn activeM leafPivot x)` makes
+the headline fire ONCE: `|det Dφ| = |u_{leafPivot}|^{minAdm−1}·|det DB'|`. The map identity reduces to a
+COMMUTE fact (source-verified): `activeM = {E-block ∪ leaf slots}` (NO K), `kLDU` touches ONLY K, so
+`pivotBlowupOn activeM leafPivot ∘ kLDU = kLDU ∘ pivotBlowupOn activeM leafPivot` (disjoint coords),
+and `hmap_leaf` fires at the point `kLDU x`.
+
+## Banked infrastructure consumed
+
+* RATE: `phiFlatLiveAt_rate` (∀M, any reparam; reads the radial from `x p₀`; `(kLDU x) leafPivot =
+  x leafPivot` since `kLDU` skips leaf slots). banked.
+* HEADLINE: `interiorDet_leaf_headline` (`|det D(phiFlatLiveAt)| = |u p₀|^{minAdm−1}·|det DB|`, generic
+  `B`/`DB`/`hmap`/`hasDB`). banked.
+* MAP id: `hmap_leaf` (`phiFlatLiveAt = BchartLeaf ∘ pivotBlowupOn activeM leafPivot`). banked.
+* K-LDU monomial: `readK_kLDU_det`, `kLens_det`, the `read*_kLDU` pass-through. banked.
+* COV engine: `ldu_cov_of_differentiable_injOn` (takes `hdiff`/`habsdet`/`hinj`). banked.
+* THRESHOLD: `nodeChart_thresholdLe` (`leafH p = minAdm−1` ⟹ `≤ ½·minAdm`). banked.
+
+## Contract pieces (all CLOSED, sorry-free)
+
+* `interiorLive_commute` — `pivotBlowupOn activeM leafPivot (kLDU x) = kLDU (pivotBlowupOn …)` (the
+  disjoint-coords commute; the load-bearing map fact).
+* `interiorLive_leafH` (def, H2) — the multi-axis exponent vector, with `leafH leafPivot = minAdm−1`.
+* `interiorLive_diff` — `Differentiable ℝ (interiorLivePhi)` (polynomial chain).
+* `interiorLive_injOn` (H-inj) — `InjOn` off the pivot ∪ q-axes (factors through the composition).
+
+The H2 chart-Jacobian monomial (`|det Dφ| = ∏_j |u_j|^{leafH j}`) is now CLOSED unconditionally and
+lives DOWNSTREAM (`interiorLive_abs_det'`, `RouteMInteriorLiveAtom`) — see the H2 note below; it fed
+back here only via a cycle.  The TOP result `routeMCore_box_diverges_interiorLive` (in
+`RouteMInteriorLiveAtom`) is the interior `BoxDiverges` atom the dispatch spine's `hInterior` consumes;
+it is axiom-clean (`[propext, Classical.choice, Quot.sound, monomial_rlct]`). The dead-leaf
+`RouteMInteriorLDUContract` is RETIRED in favour of this.
+-/
+
+open MeasureTheory
+open scoped ENNReal BigOperators
+
+namespace DLNFibre.DLN.RLCT
+
+variable {M : Fin (2 + 1) → ℕ}
+
+/-! ## The LIVE-leaf ∘ kLDU interior chart -/
+
+/-- **The LIVE-leaf ∘ kLDU interior achiever chart** `phiFlatLiveAt M ha leafPivot (kLDU x)` — the
+injective live-leaf chart with the K-slots LDU-straightened so the frame det is a monomial. -/
+noncomputable def interiorLivePhi (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  fun x => phiFlatLiveAt M ha (by norm_num) (leafPivot M ha (by norm_num) h0r h0c)
+    (kLDU M (tach M) ha x)
+
+/-- **The LIVE-leaf ∘ kLDU unit factor** — the radial quotient `routeMCore(φ x)/(x leafPivot)²`. -/
+noncomputable def interiorLiveUnit (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    (Fin (routeMAmbient M) → ℝ) → ℝ :=
+  fun x => VvalGen (x (leafPivot M ha (by norm_num) h0r h0c)) M (tach M)
+    (genBlkFlatLive M (tach M) ha
+      (rfinFixedPivot M ha (by norm_num) (kLDU M (tach M) ha x)) (kLDU M (tach M) ha x))
+    (hleStruct M (tach M) ha)
+
+/-- **`(kLDU x) leafPivot = x leafPivot`** — the radial axis survives `kLDU` (a leaf slot, not a
+K-slot; `kLDU` is identity off K-slots). The leaf pivot `leafPivot = leafSlot…0 0` decodes via
+`chartIdxEquiv` to the Schur slot at boundary `L−1 = 1`; the kLDU K-arm at boundary `k = 1` reads the
+K-core `readK x 1 : Matrix (Fin (Text 3)) …` which is `0×0` (`Text 3 = 0` at `L = 2`), so the K-arm is
+vacuous and the leaf slot falls through `kLDU`'s identity branch. -/
+theorem kLDU_leafPivot (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    (kLDU M (tach M) ha x) (leafPivot M ha (by norm_num) h0r h0c)
+      = x (leafPivot M ha (by norm_num) h0r h0c) := by
+  rw [kLDU, leafPivot, leafSlot]
+  simp only [Equiv.apply_symm_apply]
+  have hT3 : Text M (tach M) 3 = 0 := by
+    have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+  split
+  · -- K-arm: `qK : Fin (Text 3 · Text 3) = Fin 0` is uninhabited (the leaf boundary's K-block is `0×0`)
+    rename_i qK _
+    have hz : Text M (tach M) ((⟨2 - 1, by norm_num⟩ : Fin 2).val + 1 + 1)
+          * Text M (tach M) ((⟨2 - 1, by norm_num⟩ : Fin 2).val + 1 + 1) = 0 := by
+      show Text M (tach M) 3 * Text M (tach M) 3 = 0
+      rw [hT3, Nat.mul_zero]
+    exact (Fin.cast hz qK).elim0
+  · rfl
+
+/-- **The rate of the LIVE-leaf ∘ kLDU chart ∀M** (banked, NO bridge): `routeMCore M (φ x) =
+(x leafPivot)² · interiorLiveUnit x`. The radial axis survives `kLDU` (`kLDU_leafPivot`), so
+`phiFlatLiveAt_rate` at the point `kLDU x` transfers verbatim. -/
+theorem routeMCore_interiorLivePhi (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    routeMCore M (interiorLivePhi ha h0r h0c x)
+      = (x (leafPivot M ha (by norm_num) h0r h0c)) ^ 2 * interiorLiveUnit ha h0r h0c x := by
+  rw [interiorLivePhi, phiFlatLiveAt_rate M ha (by norm_num)
+    (leafPivot M ha (by norm_num) h0r h0c) (kLDU M (tach M) ha x), kLDU_leafPivot ha h0r h0c x]
+  rfl  -- `interiorLiveUnit x` is, by def, the `VvalGen … (kLDU x)` the rate produces
+
+/-- `0 ≤ interiorLiveUnit` (sum of squares, banked `VvalGen_nonneg`). -/
+theorem interiorLiveUnit_nonneg (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    0 ≤ interiorLiveUnit ha h0r h0c x :=
+  VvalGen_nonneg _ M (tach M) _ _
+
+/-! ## Differentiability atoms (the `kLens` / `kLDU` / `pivotBlowupOn` polynomial chain) -/
+
+/-- **`kLens` is differentiable** — `matrixSplit.symm ∘ lduCoreMap ∘ matrixSplit`, the LinearEquivs
+smooth and `lduCoreMap` with fderiv everywhere (`lduCoreMap_hasFDerivAt`). -/
+theorem differentiable_kLens {t : ℕ} : Differentiable ℝ (kLens (t := t)) := by
+  have hlduc : Differentiable ℝ (lduCoreMap (t := t)) :=
+    fun z => (lduCoreMap_hasFDerivAt z).differentiableAt
+  intro K
+  unfold kLens
+  exact (matrixSplit.symm.toContinuousLinearEquiv.differentiable _).comp K
+    ((hlduc _).comp K (matrixSplit.toContinuousLinearEquiv.differentiable K))
+
+/-- **`kLDU` is differentiable** — per coordinate: the K-arm is `kLens ∘ (linear K-read)`, the identity
+arm is a coordinate projection. -/
+theorem differentiable_kLDU {L : ℕ} (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t) :
+    Differentiable ℝ (kLDU M t ha) := by
+  apply differentiable_pi.mpr
+  intro q
+  unfold kLDU
+  split
+  · rename_i k s heq
+    split
+    · rename_i qK hfeq
+      have hrk : Differentiable ℝ
+          (fun x : Fin (routeMAmbient M) → ℝ => Matrix.of (readK M t ha x k)) := by
+        apply differentiable_pi.mpr; intro i; apply differentiable_pi.mpr; intro j
+        exact differentiable_apply _
+      have hcomp : Differentiable ℝ
+          (fun x : Fin (routeMAmbient M) → ℝ => kLens (Matrix.of (readK M t ha x k))) :=
+        fun x => (differentiable_kLens _).comp x (hrk x)
+      exact differentiable_pi.mp (differentiable_pi.mp hcomp (finProdFinEquiv.symm qK).1)
+        (finProdFinEquiv.symm qK).2
+    · exact differentiable_apply _
+  · exact differentiable_apply _
+
+/-- **`pivotBlowupOn` is differentiable** (`pivotBlowupOn_hasFDerivWithinAt` on `Set.univ`). -/
+theorem differentiable_pivotBlowupOn {N : ℕ} (active : Finset (Fin N)) (p : Fin N) :
+    Differentiable ℝ (pivotBlowupOn active p) :=
+  fun x => (hasFDerivWithinAt_univ.mp
+    (pivotBlowupOn_hasFDerivWithinAt active p Set.univ x)).differentiableAt
+
+/-! ## The commute fact (the load-bearing map identity) -/
+
+/-- **`kLDU` is identity on every `activeM` slot** — the E-block slots decode to `frameSplitEquiv`'s
+`Sum.inr` (E-role, kLDU identity arm); the leaf slots sit at the leaf boundary where the K-block is
+`0×0`, so they fall through the identity arm too. (The shared atom for the commute.) -/
+theorem kLDU_eq_on_activeM (ha : StructAdm M (tach M)) (x : Fin (routeMAmbient M) → ℝ)
+    {q : Fin (routeMAmbient M)} (hq : q ∈ activeM M ha) :
+    (kLDU M (tach M) ha x) q = x q := by
+  rw [activeM, Finset.mem_union] at hq
+  rcases hq with hE | hL
+  · rw [activeEImg, Finset.mem_image] at hE
+    obtain ⟨p, _, hp⟩ := hE; subst hp
+    rw [kLDU, activeSlotE]; simp only [Equiv.apply_symm_apply]
+  · rw [activeLeafImg, Finset.mem_image] at hL
+    obtain ⟨p, _, hp⟩ := hL; subst hp
+    rw [kLDU, leafSlot]; simp only [Equiv.apply_symm_apply]
+    have hT3 : Text M (tach M) 3 = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    split
+    · rename_i qK _
+      exact (Fin.cast (by show Text M (tach M) 3 * Text M (tach M) 3 = 0; rw [hT3, Nat.mul_zero])
+        qK).elim0
+    · rfl
+
+/-- **`readK (pbo x) = readK x` ∀ boundary `k`** — `pivotBlowupOn` fixes K-slots: boundary `0` by the
+banked `readK_pbo`; the leaf boundary `1` is vacuous (`Text 3 = 0`, the K-block is `0×0`). -/
+theorem readK_pbo_all (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ)
+    (k : Fin 2) (i j : Fin (Text M (tach M) (k.val + 2))) :
+    readK M (tach M) ha
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) k i j
+      = readK M (tach M) ha x k i j := by
+  fin_cases k
+  · exact readK_pbo ha h0r h0c x i j
+  · have hT3 : Text M (tach M) 3 = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    have : i.val < Text M (tach M) 3 := by simpa using i.isLt
+    omega
+
+/-- **The kLDU / pivotBlowupOn commute** — `pivotBlowupOn activeM leafPivot (kLDU x) =
+kLDU (pivotBlowupOn activeM leafPivot x)`. `activeM = {E-block ∪ leaf slots}` (NO K-slots), `kLDU`
+touches ONLY K-slots, so the two maps act on disjoint coordinate sets. The funext casework: a K-branch
+`q` lands in the kLDU K-arm on both sides (`kLens(readK · k)`, equal by `readK_pbo_all`), and `pbo`
+fixes it (K ∉ activeM); a non-K `q` lands in the kLDU identity arm, where `pbo` and `kLDU` commute
+because the pivot + activeM slots `pbo` scales are all kLDU-fixed (`kLDU_eq_on_activeM`). -/
+theorem interiorLive_commute (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (x : Fin (routeMAmbient M) → ℝ) :
+    pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) (kLDU M (tach M) ha x)
+      = kLDU M (tach M) ha
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) x) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  funext q
+  by_cases hpiv : q = p₀
+  · subst hpiv
+    rw [pivotBlowupOn, if_pos rfl, kLDU_leafPivot ha h0r h0c x,
+        kLDU_leafPivot ha h0r h0c (pivotBlowupOn (activeM M ha) p₀ x), pivotBlowupOn, if_pos rfl]
+  · by_cases hact : q ∈ activeM M ha
+    · rw [pivotBlowupOn, if_neg hpiv, if_pos hact,
+          kLDU_eq_on_activeM ha x hact, kLDU_leafPivot ha h0r h0c x,
+          kLDU_eq_on_activeM ha (pivotBlowupOn (activeM M ha) p₀ x) hact,
+          pivotBlowupOn, if_neg hpiv, if_pos hact]
+    · -- spectator: both kLDU calls land in the same arm; K-arm equal by `readK_pbo_all`, identity
+      -- arm by `pbo` fixing the slot (`q ∉ activeM`, `q ≠ p₀`).
+      rw [pivotBlowupOn, if_neg hpiv, if_neg hact, kLDU, kLDU]
+      have hpboq : pivotBlowupOn (activeM M ha) p₀ x q = x q := by
+        rw [pivotBlowupOn, if_neg hpiv, if_neg hact]
+      match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL q with
+      | ⟨k, Sum.inl s⟩ =>
+        have hmat : readK M (tach M) ha (pivotBlowupOn (activeM M ha) p₀ x) k
+            = readK M (tach M) ha x k := by
+          funext a b; exact readK_pbo_all ha h0r h0c x k a b
+        simp only [hmat, hpboq]
+      | ⟨k, Sum.inr s⟩ => simp only [hpboq]
+
+/-! ## H2 — the multi-axis Jacobian exponent vector `leafH` -/
+
+/-- **The `ChartIdx`-indexed K-diagonal exponent placement** (the LIVE-leaf analogue of the dead-leaf
+`lduleafHOnIdx`, inlined to decouple from the retired `RouteMInteriorLDUContract`). At a frame slot
+(`Sum.inl s`), boundary `k`, the K-role branch decodes `(i,j) = finProdFinEquiv.symm qK`; on the
+diagonal `i = j` it returns the per-pivot exponent `(r_s + c_s) + 2·(t_s − 1 − i)` (the Schur frame
+`r_s+c_s` + the LDU core `2(t_s−1−i)`), `0` off-diagonal / X,N,E / lift. -/
+noncomputable def liveLeafHOnIdx (ha : StructAdm M (tach M)) :
+    ChartIdx M (tDesc M (tach M)) → ℕ := fun q =>
+  match q with
+  | ⟨k, Sum.inl s⟩ =>
+    match frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      let ij := finProdFinEquiv.symm qK
+      if ij.1 = ij.2 then
+        (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+          + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+          + 2 * (Text M (tach M) (k.val + 2) - 1 - ij.1.val)
+      else 0
+    | _ => 0
+  | ⟨_, Sum.inr _⟩ => 0
+
+/-- **H2 — the multi-axis Jacobian exponent vector** for the LIVE-leaf ∘ kLDU chart. The binding axis
+`leafPivot` carries `minAdm−1` (override); the lensed K-diagonal axes carry the frame+LDU exponents
+`liveLeafHOnIdx`; `0` elsewhere. At `leafPivot` the placement is `0` (the leaf boundary's K-block is
+empty), so the override introduces the genuine radial exponent without masking a K exponent. -/
+noncomputable def interiorLive_leafH (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Fin (routeMAmbient M) → ℕ := fun j =>
+  if j = leafPivot M ha (by norm_num) h0r h0c then
+    minAdm M - 1
+  else
+    liveLeafHOnIdx ha (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL j)
+
+/-- **H2 — the binding axis carries `minAdm−1`** (the pivot override is `if_pos rfl`). -/
+theorem interiorLive_leafH_pivot (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    interiorLive_leafH ha h0r h0c (leafPivot M ha (by norm_num) h0r h0c) = minAdm M - 1 := by
+  rw [interiorLive_leafH, if_pos rfl]
+
+/-! ## H2 — the chart Jacobian monomial (headline ∘ kLDU)
+
+**The monomial is now CLOSED, sorry-free, DOWNSTREAM.** The boundary-factor determinant
+`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}` and the chart-Jacobian headline
+`|det Dφ u| = ∏_j |u_j|^{leafH j}` were once `sorry`-stated here (hreg-GATED on the open regauge residual
+`|det((eihdOut).symm ∘ eIn)| = 1`). Both are now PROVED unconditionally:
+
+* the monomial fold is `interiorLive_BdetMonomial_of_hreg` in `RouteMBdetMonomial` (chain-rule split +
+  the diagonal-axis prod-reindex);
+* the regauge residual `hreg` is `eihd_hreg` in `RouteMHregPerm` (a slot-reindex `det = 1`);
+* the chart-Jacobian headline is `interiorLive_abs_det'` in `RouteMInteriorLiveAtom`, which feeds the cov.
+
+These live downstream of this contract (they reference `interiorLivePhi`/`kLDU` machinery this module
+states), so they cannot be wired back here as one-liners (that would cycle: contract → fold → contract).
+The two former `sorry`-stubs (`interiorLive_BdetMonomial`, `interiorLive_abs_det`) had no live consumer
+once `interiorLive_abs_det'` replaced them, and are removed. -/
+
+/-! ## H1-internal — differentiability, injectivity, unit facts, image -/
+
+/-- **Differentiable** — `interiorLivePhi` is a polynomial chain. Via the hmap-for-B' factorization
+(`hmap_leaf` at `kLDU x` + the commute): `interiorLivePhi = (BchartLeaf ∘ kLDU) ∘ pivotBlowupOn`, each
+factor differentiable (`Bchart_differentiableAt`, `differentiable_kLDU`, `differentiable_pivotBlowupOn`). -/
+theorem interiorLive_diff (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Differentiable ℝ (interiorLivePhi ha h0r h0c) := by
+  have hfact : interiorLivePhi ha h0r h0c
+      = (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+        ∘ pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+      (kLDU M (tach M) ha x)) = _
+    rw [interiorLive_commute ha h0r h0c x]; rfl
+  rw [hfact]
+  refine Differentiable.comp ?_ (differentiable_pivotBlowupOn (activeM M ha) _)
+  exact fun y => ((fun u => Bchart_differentiableAt ha u) _).comp y
+    (differentiable_kLDU M (tach M) ha y)
+
+/-- **The injectivity set's extra weighted axes** — ALL coordinate axes (`Finset.univ`). The cov
+engine's null-slice add-back works for any finite `E` (a finite union of coordinate hyperplanes is
+null), and the injectivity domain `{u | u_p ≠ 0 ∧ ∀ j ∈ E, u j ≠ 0}` is then "all coords nonzero",
+which is exactly what `kLens_injOn_qne` needs (ALL diagonal q-pivots nonzero, full LDU recovery — not
+only the `leafH > 0` ones; the achiever's `r+c = 0` last pivot would otherwise escape). `E` does not
+appear in the cov conclusion, so widening it is invisible downstream and avoids threading
+`InteriorDrop ⟹ r+c > 0`. -/
+def interiorLive_E (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Finset (Fin (routeMAmbient M)) :=
+  (Finset.univ : Finset (Fin (routeMAmbient M)))
+
+/-- The injectivity domain — `{u | u leafPivot ≠ 0 ∧ ∀ j ∈ E, u j ≠ 0}` (off the pivot ∪ q-axes). -/
+def interiorLiveInjDom (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Set (Fin (routeMAmbient M) → ℝ) :=
+  {u | u (leafPivot M ha (by norm_num) h0r h0c) ≠ 0 ∧ ∀ j ∈ interiorLive_E ha h0r h0c, u j ≠ 0}
+
+/-- **`kLens` injective off the q-pivots** — the genm-lduinj LDU-uniqueness atom consumed: peel the two
+`matrixSplit` LinearEquivs, then `RouteMLDUUniqueness.lduCore_unique` recovers `(l,q,u)` from the
+product `(1+L)·diag(q)·(1+U)` when the diagonal pivots `q` are nonzero. -/
+theorem kLens_injOn_qne {t : ℕ} (K K' : Matrix (Fin t) (Fin t) ℝ)
+    (hq : ∀ i, (matrixSplit K).2.1 i ≠ 0) (hk : kLens K = kLens K') : K = K' := by
+  rw [kLens, kLens] at hk
+  have hldu : lduCoreMap (matrixSplit K) = lduCoreMap (matrixSplit K') :=
+    matrixSplit.symm.injective hk
+  rw [lduCoreMap, lduCoreMap] at hldu
+  obtain ⟨hl, hqq, hu⟩ :=
+    RouteMLDUUniqueness.lduCore_unique _ _ _ _ _ _ hq (matrixSplit.injective hldu)
+  exact matrixSplit.injective (Prod.ext hl (Prod.ext hqq hu))
+
+/-- **Step 1 of kLDU injectivity — `readK` is recovered** — if all coords of `y` are nonzero and
+`kLDU y = kLDU y'`, then the per-boundary K-block `readK y k = readK y' k`. From `readK_kLDU`
+(`readK (kLDU z) k = kLens (readK z k)`) the K-blocks satisfy `kLens (readK y k) = kLens (readK y' k)`,
+and `kLens_injOn_qne` recovers `readK y k` (the diagonal pivots `= readK y` at the K-diagonal flat
+slots, all nonzero since every coord of `y` is). -/
+theorem readK_eq_of_kLDU_eq (ha : StructAdm M (tach M))
+    (y y' : Fin (routeMAmbient M) → ℝ) (hqy : ∀ q, y q ≠ 0)
+    (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') (k : Fin 2) :
+    Matrix.of (readK M (tach M) ha y k) = Matrix.of (readK M (tach M) ha y' k) := by
+  have hkl : kLens (Matrix.of (readK M (tach M) ha y k))
+      = kLens (Matrix.of (readK M (tach M) ha y' k)) := by
+    have hbridge : ∀ (z : Fin (routeMAmbient M) → ℝ),
+        Matrix.of (readK M (tach M) ha (kLDU M (tach M) ha z) k)
+          = kLens (Matrix.of (readK M (tach M) ha z k)) := by
+      intro z; ext i j; exact readK_kLDU M (tach M) ha z k i j
+    rw [← hbridge y, ← hbridge y', hkeq]
+  refine kLens_injOn_qne _ _ (fun i => ?_) hkl
+  show (Matrix.of (readK M (tach M) ha y k)) i i ≠ 0
+  rw [Matrix.of_apply, readK]; exact hqy _
+
+/-- **Step 2 of kLDU injectivity — the per-coordinate recovery** — given `readK y = readK y'` (Step 1)
+and `kLDU y = kLDU y'`, the value `y q = y' q` at every coordinate `q`. The kLDU match on
+`chartIdxEquiv q`: the K-arm reads `kLens(readK · k)` but `y q` is recovered from the `readK`-equality
+via the slot round-trip (`readK z k (finProd.symm qK) = z q`, a `chartIdxEquiv`/`frameSplitEquiv`/
+`finProdFinEquiv` round-trip); the X/N/E and lift arms are the `kLDU` identity arm (`y q = y' q`
+directly from `hkeq`). -/
+theorem kLDU_injStep2 (ha : StructAdm M (tach M)) (y y' : Fin (routeMAmbient M) → ℝ)
+    (hRKall : ∀ k : Fin 2,
+      Matrix.of (readK M (tach M) ha y k) = Matrix.of (readK M (tach M) ha y' k))
+    (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') (q : Fin (routeMAmbient M)) :
+    y q = y' q := by
+  have hq := congrFun hkeq q
+  rw [kLDU, kLDU] at hq
+  match hc : chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL q with
+  | ⟨k, Sum.inl s⟩ =>
+    rw [hc] at hq; simp only at hq
+    match heqf : frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val) s with
+    | Sum.inl (Sum.inl (Sum.inl qK)) =>
+      have hslot : ∀ z : Fin (routeMAmbient M) → ℝ,
+          z q = readK M (tach M) ha z k (finProdFinEquiv.symm qK).1 (finProdFinEquiv.symm qK).2 := by
+        intro z; rw [readK, Prod.mk.eta, finProdFinEquiv.apply_symm_apply qK,
+          ← heqf, Equiv.symm_apply_apply, ← hc, Equiv.symm_apply_apply]
+      rw [hslot y, hslot y']
+      exact congrFun (congrFun (Matrix.of.injective (hRKall k))
+        (finProdFinEquiv.symm qK).1) (finProdFinEquiv.symm qK).2
+    | Sum.inl (Sum.inl (Sum.inr e)) => rw [heqf] at hq; exact hq
+    | Sum.inl (Sum.inr e) => rw [heqf] at hq; exact hq
+    | Sum.inr e => rw [heqf] at hq; exact hq
+  | ⟨k, Sum.inr s⟩ => rw [hc] at hq; simp only at hq; exact hq
+
+/-- **`kLDU` injective off the zero locus** — all-coords-nonzero `y` + `kLDU y = kLDU y'` ⟹ `y = y'`
+(Step 1 `readK_eq_of_kLDU_eq` ⊕ Step 2 `kLDU_injStep2`, funext). -/
+theorem kLDU_inj_of_nonzero (ha : StructAdm M (tach M)) (y y' : Fin (routeMAmbient M) → ℝ)
+    (hqy : ∀ q, y q ≠ 0) (hkeq : kLDU M (tach M) ha y = kLDU M (tach M) ha y') : y = y' := by
+  funext q
+  exact kLDU_injStep2 ha y y' (fun k => readK_eq_of_kLDU_eq ha y y' hqy hkeq k) hkeq q
+
+/-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` injective on `pbo '' injDom`.
+With `interiorLive_E = univ`, `injDom` forces ALL coords nonzero; `pivotBlowupOn` preserves that (scales
+by `x₀ leafPivot ≠ 0`), so `kLDU_inj_of_nonzero` recovers the blown-up point, then `pivotBlowupOn_injOn`
+recovers the source. -/
+theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (kLDU M (tach M) ha)
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+        '' interiorLiveInjDom ha h0r h0c) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  -- `injDom` (E = univ) gives all coords nonzero; `pbo` preserves it.
+  have hpbo_ne : ∀ x₀ : Fin (routeMAmbient M) → ℝ, x₀ ∈ interiorLiveInjDom ha h0r h0c →
+      ∀ q, pivotBlowupOn (activeM M ha) p₀ x₀ q ≠ 0 := by
+    intro x₀ hx₀ q
+    have hall : ∀ j, x₀ j ≠ 0 := fun j => hx₀.2 j (by simp [interiorLive_E])
+    rw [pivotBlowupOn]
+    split
+    · exact hall _
+    · split
+      · exact mul_ne_zero (hall _) (hall _)
+      · exact hall _
+  rintro x ⟨x₀, hx₀, rfl⟩ x' ⟨x₀', hx₀', rfl⟩ hkeq
+  have hpb : pivotBlowupOn (activeM M ha) p₀ x₀ = pivotBlowupOn (activeM M ha) p₀ x₀' :=
+    kLDU_inj_of_nonzero ha _ _ (hpbo_ne x₀ hx₀) hkeq
+  -- `pbo` injective off `{x p₀ = 0}` (the domain excludes it); recover `x₀ = x₀'` ⟹ images equal.
+  have hsub : interiorLiveInjDom ha h0r h0c
+      ⊆ interiorLiveInjDom ha h0r h0c \ {x | x p₀ = 0} := fun u hu => ⟨hu, hu.1⟩
+  exact congrArg _ ((pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub hx₀ hx₀' hpb)
+
+/-- **The Schur-frame map is injective when `K` is nonsingular.** `schurFrameMap z =
+(K, K·N, (X·K, X·K·N + E))`; given `K.det ≠ 0`, the four output blocks recover `(K,N,X,E)`: top-left
+⟹ `K = K'`; top-right `K·N = K·N'` ⟹ `N = N'` (left-cancel by `K⁻¹`); bottom-left `X·K = X'·K` ⟹
+`X = X'` (right-cancel); bottom-right then ⟹ `E = E'`. The ONLY load-bearing invertibility. -/
+theorem schurFrameMap_inj_of_det_ne_zero {t r c : ℕ} {z z' : SchurInc t r c}
+    (hK : z.1.det ≠ 0) (h : schurFrameMap z = schurFrameMap z') : z = z' := by
+  obtain ⟨K, N, X, E⟩ := z
+  obtain ⟨K', N', X', E'⟩ := z'
+  simp only [schurFrameMap, Prod.mk.injEq] at h
+  obtain ⟨hKK, hKN, hXK, hE⟩ := h
+  subst hKK
+  have hKunit : IsUnit K.det := isUnit_iff_ne_zero.mpr (by simpa using hK)
+  have hN : N = N' := by
+    have hh : K⁻¹ * (K * N) = K⁻¹ * (K * N') := by rw [hKN]
+    rwa [← Matrix.mul_assoc, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul K hKunit,
+      Matrix.one_mul, Matrix.one_mul] at hh
+  have hX : X = X' := by
+    have hh : X * K * K⁻¹ = X' * K * K⁻¹ := by rw [hXK]
+    rwa [Matrix.mul_assoc, Matrix.mul_assoc, Matrix.mul_nonsing_inv K hKunit,
+      Matrix.mul_one, Matrix.mul_one] at hh
+  subst hN; subst hX
+  have hEeq : E = E' := add_left_cancel hE
+  subst hEeq
+  rfl
+
+/-- **The recovered V0 `K`-block is nonsingular on the target domain `D`.** For `y = kLDU (pbo x)`
+with `x ∈ injDom` (all coords nonzero), `det (readK y ⟨0⟩) = ∏ q_i` (`readK_kLDU_det`) where each
+diagonal pivot `q_i = (readK (pbo x) ⟨0⟩) i i = (pbo x)(K-diag-slot) ≠ 0` (pbo of an all-nonzero
+point — only the K-DIAGONAL pre-kLDU coords need to be nonzero, not the post-kLDU coords). -/
+theorem slotReadV0_K_det_ne_zero_of_mem (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    {y : Fin (routeMAmbient M) → ℝ}
+    (hy : y ∈ kLDU M (tach M) ha ''
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) ''
+        interiorLiveInjDom ha h0r h0c)) :
+    (slotReadV0 ha y).1.det ≠ 0 := by
+  obtain ⟨z, ⟨x₀, hx₀, rfl⟩, rfl⟩ := hy
+  have hpbo_ne : ∀ q, pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀ q ≠ 0 := by
+    intro q
+    have hall : ∀ j, x₀ j ≠ 0 := fun j => hx₀.2 j (by simp [interiorLive_E])
+    rw [pivotBlowupOn]
+    split
+    · exact hall _
+    · split
+      · exact mul_ne_zero (hall _) (hall _)
+      · exact hall _
+  show (Matrix.of (readK M (tach M) ha
+    (kLDU M (tach M) ha (pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀)) ⟨0, by decide⟩)).det ≠ 0
+  rw [readK_kLDU_det M (tach M) ha _ ⟨0, by decide⟩, Finset.prod_ne_zero_iff]
+  intro i _
+  show (Matrix.of (readK M (tach M) ha
+    (pivotBlowupOn (activeM M ha)
+      (leafPivot M ha (by norm_num) h0r h0c) x₀) ⟨0, by decide⟩)) i i ≠ 0
+  rw [Matrix.of_apply, readK]
+  exact hpbo_ne _
+
+/-- **V0 recovery** — `BparamsLeaf ha y 0 = BparamsLeaf ha y' 0 ⟹ slotReadV0 ha y = slotReadV0 ha y'`
+when `det (readK y ⟨0⟩) ≠ 0`. Peel `reindexL0` (`reindexL0_BparamsLeaf0`) ⟹ `layer0SchurMap` match ⟹
+(`flatBlockLE` injective) `schurFrameMap (slotReadV0 y) = schurFrameMap (slotReadV0 y')` ⟹ the readback
+lemma. -/
+theorem slotReadV0_eq_of_BparamsLeaf0_eq (ha : StructAdm M (tach M))
+    {y y' : Fin (routeMAmbient M) → ℝ}
+    (hK : (slotReadV0 ha y).1.det ≠ 0)
+    (h0 : BparamsLeaf ha y 0 = BparamsLeaf ha y' 0) :
+    slotReadV0 ha y = slotReadV0 ha y' := by
+  set hr := eihd_schurR_split ha
+  set hc := eihd_schurC_split ha
+  have hL0 : layer0SchurMap ha hr hc y = layer0SchurMap ha hr hc y' := by
+    rw [← reindexL0_BparamsLeaf0 ha hr hc y, ← reindexL0_BparamsLeaf0 ha hr hc y', h0]
+  have hSF : schurFrameMap (slotReadV0 ha y) = schurFrameMap (slotReadV0 ha y') := by
+    have hh := hL0
+    rw [layer0SchurMap, layer0SchurMap] at hh
+    exact (flatBlockLE hr hc).injective hh
+  exact schurFrameMap_inj_of_det_ne_zero hK hSF
+
+/-- **V1 recovery** — `BparamsLeaf ha y 1 = BparamsLeaf ha y' 1 ⟹ Wfun y = Wfun y'` and (using
+`Nfun y = Nfun y'` from V0) `Lfun y = Lfun y'`. Peel `rsL1` (`rsL1_BparamsLeaf1`) ⟹ the `(kept, lift)`
+pair matches; the lift gives `W`, then the kept + `N·W` gives the leaf. -/
+theorem Wfun_Lfun_eq_of_BparamsLeaf1_eq (ha : StructAdm M (tach M))
+    {y y' : Fin (routeMAmbient M) → ℝ}
+    (hN : Nfun ha y = Nfun ha y')
+    (h1 : BparamsLeaf ha y 1 = BparamsLeaf ha y' 1) :
+    Wfun ha y = Wfun ha y' ∧ Lfun ha y = Lfun ha y' := by
+  have hpair : ((Lfun ha y) - (Nfun ha y) * (Wfun ha y), (Wfun ha y))
+      = ((Lfun ha y') - (Nfun ha y') * (Wfun ha y'), (Wfun ha y')) := by
+    rw [← rsL1_BparamsLeaf1 ha y, ← rsL1_BparamsLeaf1 ha y', h1]
+  obtain ⟨hkept, hW⟩ := Prod.mk.injEq .. ▸ hpair
+  refine ⟨hW, ?_⟩
+  have hsplit : Lfun ha y
+      = ((Lfun ha y) - (Nfun ha y) * (Wfun ha y)) + (Nfun ha y) * (Wfun ha y) := by
+    rw [sub_add_cancel]
+  rw [hsplit, hkept, hN, hW, sub_add_cancel]
+
+/-- `Nfun ha z = (slotReadV0 ha z).2.1` (both read the boundary-0 `N` slot; the idx functions agree). -/
+theorem Nfun_eq_slotReadV0 (ha : StructAdm M (tach M)) (z : Fin (routeMAmbient M) → ℝ) :
+    Nfun ha z = (slotReadV0 ha z).2.1 := by
+  ext i j
+  show z (readN0_idx ha i j) = readN M (tach M) ha z ⟨0, by decide⟩ i j
+  rw [readN, readN0_idx]
+
+/-- **injOn atom #2a (my deliverable, the genuine content)** — `BparamsLeaf` injective on the
+kLDU-image of `pbo '' injDom`: the off-radial chart-param recovery from the per-layer `Agen` matrices
+(radial fixed to `1`). Packed Route A reusing the `eIn`/`slotReadV0`/`rsL1` derivative machinery: V0
+(`reindexL0`+`flatBlockLE`+`schurFrameMap_inj`, with K-det≠0 on `D`) recovers `(K,N,X,E)`; V1 (`rsL1`)
+recovers `(W,leaf)`; then `eIn ha y = eIn ha y'` (V0 via `eIn_projV0`, V1 via `dWdC_eq_eInV1`, PUnit
+tail) and `(eIn ha).injective` finishes. -/
+theorem interiorLive_BparamsLeaf_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (BparamsLeaf ha)
+      (kLDU M (tach M) ha
+        '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+          '' interiorLiveInjDom ha h0r h0c)) := by
+  intro y hy y' hy' heq
+  have h0 : BparamsLeaf ha y 0 = BparamsLeaf ha y' 0 := congrFun heq 0
+  have h1 : BparamsLeaf ha y 1 = BparamsLeaf ha y' 1 := congrFun heq 1
+  have hK := slotReadV0_K_det_ne_zero_of_mem ha h0r h0c hy
+  have hV0 : slotReadV0 ha y = slotReadV0 ha y' := slotReadV0_eq_of_BparamsLeaf0_eq ha hK h0
+  have hN : Nfun ha y = Nfun ha y' := by
+    rw [Nfun_eq_slotReadV0, Nfun_eq_slotReadV0, hV0]
+  obtain ⟨hW, hLeaf⟩ := Wfun_Lfun_eq_of_BparamsLeaf1_eq ha hN h1
+  refine (eIn ha).injective ?_
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · rw [eIn_projV0, eIn_projV0, hV0]
+  · rw [← dWdC_eq_eInV1, ← dWdC_eq_eInV1]
+    refine Prod.ext ?_ ?_
+    · change (matrixReaderCLM (fun i j => readW0_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => readW0_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hW : Wfun ha y = Wfun ha y')
+    · change (matrixReaderCLM (fun i j => leaf_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => leaf_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hLeaf : Lfun ha y = Lfun ha y')
+  · rfl
+
+/-- **injOn atom #2 (my deliverable)** — `BchartLeaf` injective on the kLDU-image of `pbo '' injDom`,
+via peeling the injective `paramsEquivFlat` MeasurableEquiv (`BchartLeaf = paramsEquivFlat ∘
+BparamsLeaf`) onto the genuine `BparamsLeaf` recovery (`interiorLive_BparamsLeaf_injOn`). -/
+theorem interiorLive_BchartLeaf_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (BchartLeaf ha)
+      (kLDU M (tach M) ha
+        '' (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c)
+          '' interiorLiveInjDom ha h0r h0c)) := by
+  intro y hy y' hy' heq
+  refine interiorLive_BparamsLeaf_injOn ha h0r h0c hy hy' ?_
+  exact (paramsEquivFlat M).injective (heq : paramsEquivFlat M (BparamsLeaf ha y)
+    = paramsEquivFlat M (BparamsLeaf ha y'))
+
+/-- **H-inj — `InjOn` off the pivot ∪ q-axes** — the `Set.InjOn.comp` glue (#3, this thread): from the
+factorization `interiorLivePhi = (BchartLeaf ∘ kLDU) ∘ pivotBlowupOn` (hmap-for-B' via `hmap_leaf` at
+`kLDU x` + the commute), `pivotBlowupOn` injective off `{u leafPivot = 0}` (banked, the domain already
+excludes it), then `BchartLeaf ∘ kLDU` injective via the two atoms (`interiorLive_kLDU_injOn` #1 +
+`interiorLive_BchartLeaf_injOn` #2). -/
+theorem interiorLive_injOn (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
+    Set.InjOn (interiorLivePhi ha h0r h0c) (interiorLiveInjDom ha h0r h0c) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  set pbo := pivotBlowupOn (activeM M ha) p₀ with hpbo
+  have hfact : interiorLivePhi ha h0r h0c
+      = (BchartLeaf ha ∘ kLDU M (tach M) ha) ∘ pbo := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pbo (kLDU M (tach M) ha x)) = _
+    rw [hpbo, interiorLive_commute ha h0r h0c x]; rfl
+  rw [hfact]
+  have hpbo_inj : Set.InjOn pbo (interiorLiveInjDom ha h0r h0c) := by
+    have hsub : interiorLiveInjDom ha h0r h0c
+        ⊆ interiorLiveInjDom ha h0r h0c \ {x | x p₀ = 0} := by
+      intro u hu; exact ⟨hu, hu.1⟩
+    exact (pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub
+  exact (interiorLive_BchartLeaf_injOn ha h0r h0c).comp
+    (interiorLive_kLDU_injOn ha h0r h0c) (Set.mapsTo_image _ _)
+    |>.comp hpbo_inj (Set.mapsTo_image _ _)
+
+/-! ## The cov / bundle / atom moved DOWNSTREAM
+
+The change-of-variables, the `NodeAchieverChart` bundle, and the box-divergence atom
+`routeMCore_box_diverges_interiorLive` are assembled in `RouteMInteriorLiveAtom` (which imports this
+contract + the two LEAF-1 analytic modules). They CANNOT live here: the LEAF-1 facts `ldu_image` /
+`ldu_Umeas` / `ldu_Ubound` (genm-ubound) and `interiorLiveUnit_ae_pos` (genm-upolylive) reference this
+contract's `interiorLivePhi` / `interiorLiveUnit`, so they sit downstream — wiring them back in here
+would cycle. The former `interiorLive_image` / `interiorLive_Umeas` / `interiorLive_Ubound` STUBS are
+deleted (the analytic atoms supersede them in the downstream assembly). Likewise the chart-Jacobian det
+is now `interiorLive_abs_det'` (DOWNSTREAM, in `RouteMInteriorLiveAtom`, sorry-free via the closed
+monomial fold + `eihd_hreg`); the former `interiorLive_abs_det` / `interiorLive_BdetMonomial` `sorry`-
+stubs are removed (see the H2 note above). This contract keeps the chart, the rate, the unit, and the
+injectivity (`interiorLive_injOn`, sorry-free). -/
+
+end DLNFibre.DLN.RLCT
