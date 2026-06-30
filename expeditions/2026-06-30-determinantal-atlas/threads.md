@@ -8,14 +8,14 @@ per shared worktree at a time; read-only auditors run concurrently. Controller i
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| P0 | scout | dispatching | 🔄 | map current DLN rank-chart/bundle machinery + Mathlib coverage (determinantal ideals, `Matrix.rank`, iterated `Localization.Away`, `FiberBundle`); **the build-vs-cite verdict on the residue-field-rank bridge**; refine the P1/P2 ladder + de-DLN-ify target list |
+| P0 | scout | a687ac4d | ✅ DONE `787e688f` | verdict: mostly re-home/de-DLN-ify (overlap API + cover already built; residue bridge already proved); **capstone = BUILD** as a bespoke Zariski predicate over the rank-`r` open (NOT Mathlib `FiberBundle`, NOT over the closure). Refined ladder in `priorities.md`; report `threads/p0-recon/report.md` |
 
 ## Phase 1 — foundation (`det-atlas-p1`)
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| P1.a | — | — | ⏳ gated on P0 | localization-overlap API |
-| P1.b–e | — | — | ⏳ gated on P0 | determinantal ideals · rank strata + cover · Schur coords · dimension |
+| **P1.a** | formaliser | dispatching | 🔄 | overlap API **re-home** (`FibreBundleTransition` §Abstract+§Triple, triple cocycle proved) → `Core/RingTheory/Localization/Overlap.lean`; retarget 2 consumers (L6). Lowest-risk |
+| P1.b–e | — | — | ⏳ | determinantal `(r+1)`-minor ideal (new) · rank strata + cover (re-home) · Schur coords (re-home) · dimension (Brick A cited) |
 
 ## Phase 2 — constructive atlas + capstone (`det-atlas-p2`)
 

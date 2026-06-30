@@ -30,8 +30,27 @@ threshold / zeta-pole RLCT definition, the generic invariance theorems, the norm
 the quarantined citations, and the honest DLN payoff boundary. Tracked as the important next-after-this
 programme; NOT built here (operator's scope call — clean scope over premature analysis).
 
-## P0 — recon
-_dispatched._
+## P0 — recon ✅ (`787e688f`; report `threads/p0-recon/report.md`)
+**Two headline findings (scout + decorrelated Codex xhigh):**
+
+1. **The expedition is overwhelmingly re-home + de-DLN-ify, not fresh build.** The overlap API (P1.a) — incl.
+   the **triple-overlap cocycle, proved** — already exists DLN-free over arbitrary `CommRing`
+   (`FibreBundleTransition` §Abstract/§Triple); the minor↔rank cover (P1.b/c) is general field-level
+   (`Matrix/RankMinors`, `RankMinorCover`); and the gating P2.d crux, the **residue-field-rank bridge, is
+   already proved** for the DLN instance (`FibreRankBridge.mem_rankROpen_iff_rank_universalMatrixResidue_eq`).
+   So most rungs are L7 re-homes/generalizes; the genuinely-new defs are the determinantal `(r+1)`-minor ideal
+   (P1.b) and the small `AlgEquiv`-groupoid spin-out (P2.b′). Lower risk than anticipated — FL-III-Phase-1-shaped.
+
+2. **Capstone = BUILD, with a framing correction (adopted).** The "bare Mathlib `FiberBundle`" target was wrong:
+   Mathlib's `FiberBundle` is **topological only** (no scheme/Zariski class at this pin), and a bundle over the
+   **closure** `Σ̄^r` is genuinely **false** (the rank-`<r` boundary lies in no chart). The honest capstone is a
+   **bespoke `IsZariskiLocallyTrivialAffineProduct` over the rank-`r` open** — `FibreBundleHeadline` already
+   packages it except the cocycle field. The only blocker (`AlgEquiv.trans_assoc`/`refl`, absent in v4.29)
+   dissolves by `ext x; rfl` (scratch-compiled clean) → rung P2.b′. **No monument on the path, no fallback
+   expected.** (This resolves the earlier `locallyTrivial` reservation: the bridge is proved + detail-at-scale;
+   the right target is the bespoke predicate over the open, not Mathlib's topological bundle.)
+
+The refined rung ladder + the de-DLN-ify target list are in [`priorities.md`](priorities.md) (from the report's §4).
 
 ## Phase 1 / Phase 2
-_pending the recon's refined ladder._
+_executing: P1.a (overlap API re-home) dispatched first as the lowest-risk, recon-confirmed rung._

@@ -57,6 +57,12 @@ detail-at-scale; if it is genuinely new/deep, the honest ceiling is the explicit
 already the full constructive object) and the bare-bundle leap is roadmapped.** The constructive atlas does not
 depend on (b); (b) is abstract repackaging for Mathlib-API interop.
 
+> **Recon update (P0, adopted):** verdict is **BUILD**, but the literal target is corrected — Mathlib has **no**
+> scheme `FiberBundle` (topological-only), and a bundle over the **closure** `Σ̄^r` is **false** (rank-`<r`
+> boundary in no chart). The honest capstone is a **bespoke `IsZariskiLocallyTrivialAffineProduct` over the
+> rank-`r` open**; the residue-field-rank bridge is already proved (`FibreRankBridge`). No fallback expected.
+> Details: [`threads/p0-recon/report.md`](threads/p0-recon/report.md).
+
 ## Execution (operator-confirmed)
 Drive Phase 1 → Phase 2 to completion, no pausing for merges; one **PR per phase** (stacked `det-atlas-p1` off
 `origin/dev`, `det-atlas-p2` off `-p1`), async operator review. Recon (P0) first → refines the rung ladder +

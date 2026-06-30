@@ -2,58 +2,54 @@
 
 Controller proposes by VOI; **operator edits this file directly**. Build-the-buildable
 ([`../../docs/policies/library-building.md`](../../docs/policies/library-building.md)). Scoped against
-`origin/dev` `a13b11f2` (post #14 + FL-II + FL-III). **Live status → [`threads.md`](threads.md).** The recon
-(P0) refines this ladder + locks the build-vs-cite boundary before Phase 1 dispatch.
+`origin/dev` `a13b11f2`. **Live status → [`threads.md`](threads.md).** The authoritative detailed ladder is
+the P0 recon report [`threads/p0-recon/report.md`](threads/p0-recon/report.md).
 
-## P0 — recon (scout)  ·  branch `det-atlas-p1`
-Map, before committing the ladder:
-- **Current state:** what the existing DLN rank-chart/bundle machinery already proves (`productRankLocusLE`,
-  `sigmaIdeal`, `dStratum`, `RepCoord`, the per-pivot bundle, the existing Schur/localization pieces) — what's
-  reusable-as-is vs DLN-fused.
-- **Mathlib coverage:** determinantal ideals, `Matrix.rank` / minors API, `Localization.Away` + iterated
-  localization isos, `FiberBundle`/local-triviality vocabulary, Schur-complement lemmas. Present vs absent.
-- **The build-vs-cite call:** the **residue-field-rank bridge** for the bare-`FiberBundle` capstone — is it
-  detail-at-scale (basic-opens-cover + minor↔rank over `κ(p)`) or a genuine monument? Verdict gates Phase 2's
-  capstone (build vs roadmap), like FL-III's P2.0 probe.
-- Output: the refined P1/P2 rung ladder + the build-vs-cite ledger + the de-DLN-ify target list.
+## P0 — recon ✅ DONE (`787e688f`)
+**Verdict (scout + decorrelated Codex xhigh):** the expedition is **overwhelmingly re-home + de-DLN-ify, not
+fresh build** — the overlap API (P1.a, *triple cocycle proved*) and the minor↔rank cover (P1.b/c) already exist
+DLN-free over arbitrary `CommRing`/field; the residue-field-rank bridge (the P2.d crux) is **already proved**
+for the DLN instance (`FibreRankBridge`). **Capstone = BUILD**, with a **framing correction:** NOT Mathlib's
+`FiberBundle` (topological-only), NOT over the closure `Σ̄^r` (false — rank-`<r` boundary in no chart) — but a
+**bespoke `IsZariskiLocallyTrivialAffineProduct` over the rank-`r` open** (`FibreBundleHeadline` packages all but
+the cocycle field). The lone blocker (`AlgEquiv.trans_assoc/refl`, absent v4.29) dissolves by `ext x; rfl`
+(scratch-verified) → rung P2.b′. No monument on the path; no fallback expected.
 
-## Phase 1 — foundation (overlap API + determinantal rank-stratum)  ·  `det-atlas-p1`
+## Phase 1 — overlap API + determinantal rank-stratum  ·  `det-atlas-p1`
 
-| rung | item | home (Mathlib-mirror) | risk |
-|------|------|------------------------|------|
-| P1.a | **Localization-overlap API** — double/triple principal-open overlaps as `Localization.Away (f*g)` / `(f*g*h)`; canonical `AlgEquiv`s between iterated presentations (`R[1/f][1/g] ≃ R[1/(fg)]`); `refl`/`symm`/`trans`/`algebraMap` transport + cocycle identities | `Core/RingTheory/Localization/Overlap.lean` | med — the iterated-localization iso bookkeeping is the known fragile part; standard but fiddly |
-| P1.b | **Matrix coordinate ring + determinantal ideals** — `MvPolynomial` coords for `Matrix (Fin m) (Fin n) k`; the ideal of `(r+1)`-minors (rank `≤ r`) | `Core/…/Determinantal/Basic.lean` | low — standard |
-| P1.c | **Rank strata** — rank-`≤r` (closed) + rank-`=r` (open = remove rank-`≤r-1`); pivot principal opens `U_P = D(det A_P)`; the **cover theorem** (rank-`r` ⟹ some pivot minor a unit) | `Core/…/Determinantal/Strata.lean` | low–med |
-| P1.d | **Schur coordinates** — on `U_P`, `D = C A⁻¹ B`; the explicit trivialization `U_P ≅ GL_r × (B,C)`-space; localized coordinate-ring iso | `Core/…/Determinantal/Schur.lean` | med |
-| P1.e | **Dimension / height** of rank strata (from #14 dimension stack) | `Core/…/Determinantal/Dimension.lean` | low |
-
-## Phase 2 — the constructive atlas + capstone  ·  `det-atlas-p2` (off `-p1`)
-
-| rung | item | home | risk |
+| rung | item | home | kind |
 |------|------|------|------|
-| P2.a | **Pivot-chart datum + standard fibre model** — canonical chart datum (drop repeated `s`/`t`/`σ`/`τ` threading); the bundled fibre model (Schur base ring, fibre coord ring, tensor, structure map, flatness, localization transport) | `Core/…/Determinantal/Atlas.lean` | med |
-| P2.b | **Transition maps** on overlaps (explicit rational change-of-coords, via the P1.a overlap API) | atlas home | med |
-| **P2.c** | **Cocycle-compatibility theorem [CRUX]** — transitions compose on triple overlaps (`g_{P''P} = g_{P''P'} ∘ g_{P'P}`, `g_{PP}=id`) → a coherent atlas | atlas home | **crux** — decorrelated review (the iterated-localization cocycle is the delicate bit) |
-| **P2.d** | **bare `FiberBundle` capstone [CRUX, recon-gated]** — the residue-field-rank bridge ⟹ charts cover every scheme point ⟹ Mathlib local-triviality | atlas home | **crux** — build iff P0 says detail-at-scale; else roadmap, atlas+cocycle is the ceiling |
+| **P1.a** | overlap API — `awayOverlap`/`awayOverlapTransition` + 3 cocycle laws + restriction + `awayTriple` + **`awayTriple_cocycle`** | `Core/RingTheory/Localization/Overlap.lean` | **[re-home]** — `FibreBundleTransition` §Abstract+§Triple verbatim (general `R`), retarget 2 consumers. **Lowest-risk, already proved → dispatch FIRST** |
+| P1.b | matrix coord ring + **determinantal `(r+1)`-minor ideal** (the one genuinely new def; absent in Mathlib) + `detMinorPoly`/`eval_detMinorPoly` | `Core/RingTheory/Determinantal/Basic.lean` | **[generalize]** |
+| P1.c | rank strata (`rankLeLocus` closed / `rankEqLocus` open) + pivot `minorChart` + **cover theorem** + minor↔rank criterion | `Core/RingTheory/Determinantal/Strata.lean` (+ `Matrix/RankMinors` mirror re-home) | **[re-home]** — `RankMinorCover`+`Matrix/RankMinors` (i) |
+| P1.d | Schur coords — `rank_fromBlocks_zero` (absent Mathlib), `rank_eq_iff_schur_eq`, `pivotRankChartEquiv`, `schurComplement_normal_form` | `Core/RingTheory/Determinantal/Schur.lean` | **[re-home]** — `DeterminantalChart`/`SchurChartIff`/`SchurGauge` |
+| P1.e | rank-stratum dimension `r(n+m−r)` / codim `(n−r)(m−r)` | `Core/RingTheory/Determinantal/Dimension.lean` | **[generalize]** — from `DeterminantalStratumDim`; **keep cited Brick A named** (precision — don't fold into the dim theorem name) |
 
-## Woven — de-DLN-ify
-Re-express `productRankLocusLE`/`sigmaIdeal`/`dStratum`/`RepCoord` as **instances** of the Core determinantal
-API; collapse duplication; keep ALL DLN consumers green + signatures + payoff axioms unchanged. (FL-III pattern:
-abstract Core + thin DLN adapter that re-derives the existing headlines.)
+## Phase 2 — constructive atlas + capstone  ·  `det-atlas-p2` (off `-p1`)
+
+| rung | item | home | kind |
+|------|------|------|------|
+| P2.a | pivot-chart datum + standard fibre model (drop `s/t/σ/τ` threading; bundle base ring + fibre + tensor + structure map + flatness + localization transport) | `Core/RingTheory/Determinantal/Atlas.lean` | **[generalize]** — `FibreOverBaseTriv`+`FibreBundleHeadline` |
+| **P2.b′** | **`AlgEquiv` groupoid spin-out** — `trans_assoc`/`trans_refl`/`refl_trans` by `ext x; rfl` (the cocycle-unblocker; network-free, Codex+scratch-vetted) | `Core/Algebra/AlgEquiv/Groupoid.lean` (Mathlib `Algebra/Algebra/Equiv` mirror) | **[build, small]** |
+| P2.b | transition maps on overlaps (explicit, via P1.a) | atlas home | **[re-home]** — `FibreBundleTransition`/`FibreTargetOverlap` |
+| **P2.c** | **cocycle-compatibility [CRUX]** — base-side DONE; residual = target-side round-trip `(I,J)∘(J,I)=id`, reachable via P2.b′ (+ de-`reducible` `targetChartLoc` if the kernel cost resurfaces) | atlas home | **[crux]** decorrelated review; math LANDED, transport-through-trivialization to finish |
+| **P2.d** | **bespoke Zariski local-triviality capstone [CRUX → BUILD]** — `IsZariskiLocallyTrivialAffineProduct` over the rank-`r` open; cover-every-scheme-point via the **de-DLN-ified residue bridge** (already proved `FibreRankBridge`) | atlas home | **[crux, build]** NOT a Mathlib `FiberBundle` |
+
+## Woven — de-DLN-ify (re-express as Core instances; DLN consumers green, signatures + payoff axioms unchanged)
+`productRankLocusLE` (22 files) → `rankLeLocus` at the product matrix · `sigmaIdeal` (18) → the `(r+1)`-minor
+ideal pulled back along `multComap` (the pullback is the DLN-specific glue, stays) · `dStratum` (8) → `![n,m]`
+specialization · `chartDsigAt`/`sweepSigmaRing` (9/24) → pivot open + chart-closure ring. **`RepCoord` (79
+files) — DO NOT remove** (pervasive; out of scope).
 
 ## Crux rungs (decorrelated review)
-P2.c (cocycle compatibility) · P2.d (residue-field-rank bridge / bare bundle). P0 recon de-risks both first.
+P2.c (target-side cocycle round-trip) · P2.d (bespoke Zariski capstone). **Most likely to break:** P2.c's
+`@[reducible] targetChartLoc` kernel cost (the predicate P2.d is safe; its cocycle field is the fragile bit).
 
 ## Cross-cutting
-- **Constructive-first:** prefer explicit (finite pivot index, Schur formulas, explicit transitions) over
-  abstract existence wherever both are available (the computability is the point).
-- name=content (object-eq vs `finrank`/dimension-eq; "rank-`=r`" vs "rank-`≤r`" stated precisely; no name hiding
-  a cited step). Lessons **L2** (transitive sweep + full-build), **L3** (gate dispatch on completion), **L4**
-  (codepoint longLine), **L5** (re-gate at boundaries + crux), **L6** (split severs transitive instance imports),
-  **L7** (bare Mathlib-mirror namespaces — NOT `DLNFibre.Core.X`), **L8** (GUARD-first when abstracting).
-- Namespace-mirror the eventual Mathlib home so extraction is a file-move.
+- **Constructive-first** (explicit pivot index + Schur formulas + explicit transitions over abstract existence).
+- name=content; lessons **L2/L3/L4/L5/L6/L7/L8** (see [`lessons.md`](lessons.md)); bare Mathlib-mirror namespaces;
+  sibling-clash `rg` per new top-level name; keep cited bricks (Brick A) named, not folded.
 
 ## Roadmapped (NOT this expedition)
-- **RLCT generic-foundation programme** — written into [`ROADMAP.md`](../../ROADMAP.md) this expedition; built later.
-- **char-`p` differential-independence criterion** — dropped (scope).
-- **top-dim minimal-primes vs `k`-point-components clarification** — lower priority; stretch/roadmap.
+RLCT generic-foundation programme (in [`ROADMAP.md`](../../ROADMAP.md) Bundle 4b) · char-`p` (dropped) ·
+top-dim minimal-primes-vs-`k`-point-components clarification (lower priority).
