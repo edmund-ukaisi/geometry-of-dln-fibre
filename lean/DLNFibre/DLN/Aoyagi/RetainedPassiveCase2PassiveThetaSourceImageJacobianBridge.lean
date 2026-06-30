@@ -532,6 +532,258 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordin
       hfinite (Csrc := Csrc) hsourceDensity_le hCsrc
   simpa [hmap_density] using hfinite_theta
 
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Full p.13 product-measure domination handoff for a source-image density.
+
+The returned source-image p.13 product measure is
+`(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν`, so it includes the
+regular variables, not only the passive-theta source image.  Any external
+measure on this full product coordinate space dominated by a finite scalar
+multiple of that product measure inherits the finite loss-power integral.
+
+This theorem still does not prove that an original DLN prior has such a
+domination, nor does it prove Haar transport, source-rank coverage, normal
+crossings, pole order, or RLCT. -/
+theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalProductMeasure_le_smul_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W₂ B₂ U₀ hU₀
+        ((fun p : Fin 2 ↦
+          LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p)) :
+          ∀ p : Fin 2,
+            reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+        (fun E :
+            (∀ p : Fin 2,
+              reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) ↦ E)
+        H r rEdge)
+    (sourceImageDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    (passiveMeasure :
+      Measure
+        (Case2PassiveTheta.PassiveFields
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    {ν :
+      Measure
+        (EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {loss :
+      (∀ p : Fin 2,
+        reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) ×
+        EuclideanSpace ℝ
+          (AoyagiRegularBlockCoordinateIndex
+            (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)) → ℝ}
+    {t R c : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (hR : 0 < R) (hc : 0 < c) (ht : 0 < t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let passiveSource :
+        Measure
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      passiveMeasure.prod weightedBox
+    let Y :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let jacobianDensity :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    let baseJ :
+        Measure
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      passiveSource.withDensity jacobianDensity
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let base : EdgeFamily :=
+      fun p : Fin 2 ↦ LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p)
+    let ρreg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+    (∀ᶠ x in nhdsWithin base sourceStratum,
+      ∀ u : EuclideanSpace ℝ ρreg,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+          c * (aoyagiCoordinateSquareSum
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) x) +
+            aoyagiCoordinateSquareSum (fun i ↦ u i)) ≤ loss (x, u)) →
+    ∃ W :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen W ∧ z₀ ∈ W ∧
+        let sourceImageBase : Measure EdgeFamily :=
+          Measure.map sourceChart (baseJ.restrict W)
+        let sourceImageMeasure : Measure EdgeFamily :=
+          sourceImageBase.withDensity sourceImageDensity
+        AEMeasurable sourceChart (baseJ.restrict W) →
+          AEMeasurable sourceImageDensity sourceImageBase →
+            ∀ {Csrc : ℝ≥0∞},
+              (∀ᵐ E ∂ sourceImageBase, sourceImageDensity E ≤ Csrc) →
+                Csrc < ∞ →
+                  ∃ U : Set EdgeFamily, IsOpen U ∧ base ∈ U ∧
+                    ∀ {externalProductMeasure :
+                        Measure (EdgeFamily × EuclideanSpace ℝ ρreg)}
+                      {Cext : ℝ≥0∞},
+                      externalProductMeasure ≤
+                          Cext •
+                            (sourceImageMeasure.restrict
+                              (U ∩ sourceStratum)).prod ν →
+                        Cext < ∞ →
+                          (∫⁻ z : EdgeFamily × EuclideanSpace ℝ ρreg,
+                            ENNReal.ofReal
+                              ((Metric.ball (0 : EuclideanSpace ℝ ρreg) R).indicator
+                                (fun u ↦
+                                  (loss (z.1, u)) ^
+                                    (-(t +
+                                      (aoyagiTheorem2RegularVariableCount 2 H r : ℝ) /
+                                        2))) z.2) ∂
+                          externalProductMeasure) < ∞ := by
+  intro center pivotNext signedBox weightedBox passiveSource Y jacobianDensity
+    baseJ EdgeFamily sourceChart base ρreg sourceStratum hloss
+  let oneDensity : EdgeFamily × EuclideanSpace ℝ ρreg → ℝ := fun _ ↦ 1
+  have hone_nonneg :
+      ∀ᶠ x in nhdsWithin base sourceStratum,
+        ∀ u : EuclideanSpace ℝ ρreg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+            0 ≤ oneDensity (x, u) := by
+    exact Filter.Eventually.of_forall fun _ _ _ ↦ zero_le_one
+  have hone_le :
+      ∀ᶠ x in nhdsWithin base sourceStratum,
+        ∀ u : EuclideanSpace ℝ ρreg,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
+            oneDensity (x, u) ≤ 1 := by
+    exact Filter.Eventually.of_forall fun _ _ _ ↦ le_rfl
+  rcases
+      (by
+        simpa [center, pivotNext, signedBox, weightedBox, passiveSource, Y,
+          jacobianDensity, baseJ, EdgeFamily, sourceChart, base, ρreg,
+          sourceStratum, oneDensity] using
+          exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+            (ν := ν) (loss := loss) (density := oneDensity) (t := t) (R := R)
+            (c := c) (C := 1)
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ sourceData sourceImageDensity passiveMeasure
+            hpassive_lt_top Rres hR hc zero_le_one ht hRres hcrit hloss
+            hone_nonneg hone_le) with
+    ⟨W, hWopen, hz₀W, hsocket⟩
+  refine ⟨W, hWopen, hz₀W, ?_⟩
+  intro sourceImageBase sourceImageMeasure hsourceChart hsourceImageDensity
+    Csrc hsourceImageDensity_le hCsrc
+  rcases
+      hsocket hsourceChart hsourceImageDensity
+        (Csrc := Csrc) hsourceImageDensity_le hCsrc with
+    ⟨U, hUopen, hbaseU, hfinite⟩
+  refine ⟨U, hUopen, hbaseU, ?_⟩
+  intro externalProductMeasure Cext hdom hCext
+  have hfinite_base :
+      (∫⁻ z : EdgeFamily × EuclideanSpace ℝ ρreg,
+        ENNReal.ofReal
+          ((Metric.ball (0 : EuclideanSpace ℝ ρreg) R).indicator
+            (fun u ↦
+              (loss (z.1, u)) ^
+                (-(t + (aoyagiTheorem2RegularVariableCount 2 H r : ℝ) / 2)))
+            z.2) ∂
+        (sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+    simpa [oneDensity] using hfinite
+  exact lintegral_lt_top_of_measure_le_smul hdom hCext hfinite_base
+
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 end Aoyagi
 end DLN

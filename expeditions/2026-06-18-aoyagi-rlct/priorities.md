@@ -12,6 +12,33 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 full product domination handoff
+
+The immediate next Lean step is a full-product domination socket, not an
+original-prior transport theorem.  Lean now proves that once the source-image
+finite-integral theorem gives a finite integral over
+
+```text
+(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν,
+```
+
+any external product-coordinate measure dominated by a finite scalar multiple
+of that full p.13 product measure inherits the same finite loss-power
+integral.
+
+New public name:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalProductMeasure_le_smul_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This includes the regular-variable measure `ν`.  It still does not prove that
+an original DLN prior satisfies the domination.  Xhigh source scout
+`Kierkegaard` confirmed that the eventual source-prior theorem must live on
+the full p.13 regular-suspension chart `(theta, B, F2, F3)` with a positive
+bounded transported density `phi(Psi(theta,u)) * |J_Psi(theta,u)|`; passive
+theta alone is lower-dimensional and insufficient.
+
 ## Latest controller decision - 2026-06-30, A2 passive theta source-image Jacobian bridge
 
 The next honest source-image/Jacobian bridge is a consumer, not a

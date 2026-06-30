@@ -21,6 +21,52 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 source-image full product domination handoff
+
+Reproduction:
+`reproduction-a2-source-image-full-product-domination-handoff.md`.
+Statement card:
+`statement-card-a2-source-image-full-product-domination-handoff.md`.
+Review:
+`review-a2-source-image-full-product-domination-handoff.md`.
+
+Lean now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalProductMeasure_le_smul_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The theorem consumes the source-image finite-integral bridge and transfers
+finiteness from `(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν` to
+any externally supplied full product-coordinate measure dominated by a finite
+scalar multiple of that product measure.  This includes the p.13 regular
+variables through `ν`.
+
+Xhigh source scout `Kierkegaard` checked Aoyagi pp. 10-13 and confirmed that
+the future source-prior theorem must be a full p.13 regular-suspension
+transport theorem on `(theta, B, F2, F3)`, with positive bounded transported
+density `phi(Psi(theta,u)) * |J_Psi(theta,u)|`.  This handoff proves only the
+downstream dominated-measure transfer.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_source_image_jacobian_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source-prior density identity, no proof that the
+original prior satisfies the domination, no passive-theta-only full p.13 prior
+transport, no Haar transport, no source-rank coverage, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 passive theta source-image Jacobian bridge
 
 Reproduction:

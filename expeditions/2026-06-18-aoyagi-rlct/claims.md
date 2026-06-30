@@ -140,6 +140,28 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, full product domination handoff, 2026-06-30.**
+  Lean now proves a downstream finite-integral transfer theorem in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean`.
+  The public theorem
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalProductMeasure_le_smul_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  says that after the source-image finite-integral theorem returns the full
+  product measure `(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν`,
+  any external product-coordinate measure dominated by a finite scalar
+  multiple of that product measure inherits finite loss-power integrability.
+  This includes the p.13 regular variables through `ν`; it is not a
+  passive-theta-only theorem.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-source-image-full-product-domination-handoff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-source-image-full-product-domination-handoff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-source-image-full-product-domination-handoff.md`.
+  Xhigh source scout `Kierkegaard` confirmed that the eventual original-prior
+  theorem must prove source-prior transport for the full p.13 chart
+  `(theta, B, F2, F3)` with positive bounded density
+  `phi(Psi(theta,u)) * |J_Psi(theta,u)|`.  Nonclaims: no original/source-prior
+  density identity, no proof that the original prior satisfies the domination,
+  no passive-theta-only full p.13 prior transport, no Haar transport, no
+  source-rank coverage, normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, passive theta source-image Jacobian bridge,
   2026-06-30.** Lean now proves a downstream source-image consumer theorem in
   `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean`.

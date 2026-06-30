@@ -6,6 +6,35 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Full Product Domination Handoff - 2026-06-30
+
+The newest Lean theorem is a downstream socket for the full p.13 product
+coordinate measure:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalProductMeasure_le_smul_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+It takes the source-image finite-integral theorem, applies it with density
+`1`, and then transfers finiteness to any external measure on
+`EdgeFamily × EuclideanSpace R rhoReg` dominated by a finite scalar multiple of
+`(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν`.
+
+This is not the original-prior transport theorem.  Xhigh source scout
+`Kierkegaard` checked Aoyagi pp. 10-13 and confirmed the eventual theorem must
+include the p.13 regular variables `(B = C1 - I, F2, F3)` and prove a positive
+bounded transported density `phi(Psi(theta,u)) * |J_Psi(theta,u)|` after
+shrinking.  This theorem only makes that future domination/density output
+usable.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-image-full-product-domination-handoff.md
+threads/03-block-product-reduction/statement-card-a2-source-image-full-product-domination-handoff.md
+threads/03-block-product-reduction/review-a2-source-image-full-product-domination-handoff.md
+```
+
 ## Latest A2 Passive Theta Source-Image Jacobian Bridge - 2026-06-30
 
 The source-image/Jacobian connection now has a precise consumer theorem.  If
