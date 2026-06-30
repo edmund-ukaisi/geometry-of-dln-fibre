@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
 import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrameTriangular
+import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge` — the FRONT-pivot triangular bundle (genm-44l2, phase C)
@@ -234,5 +235,133 @@ theorem deepestPoint_frame_pivot_triangular_front_exists (H : Fin (L + 1) → �
     · rw [Function.update_of_ne hsf]; exact hNF0 s hs
   · rw [Function.update_self]; exact hP0new_tri
   · rw [Function.update_self]; exact hP0new_22one
+
+/-! ## The `hJfront`-free L=2 chain (the headline-closeable value side)
+
+Feeding the FRONT triangular bundle into the parameterized gauge core
+`deepest_gauge_construction_L2_ofBundle` (Route X) gives the L=2 gauge chart — and the whole #44-L2
+value chain — conditional on `hcolfront` (PROVABLE, column-WLOG-supplied) + `htop` (row-WLOG-supplied),
+**not** the unprovable `hJfront`. -/
+
+open MeasureTheory in
+/-- **The L=2 gauge construction at a column-aligned `B`** (front feeder, Route X). Obtains the FRONT
+triangular bundle (`deepestPoint_frame_pivot_triangular_front_exists`, `J = frontEmbed` by construction
+from `hcolfront`) and applies the parameterized core `deepest_gauge_construction_L2_ofBundle`. Same
+existential conclusion as `deepest_gauge_construction_L2`, but with `hJfront` REPLACED by the provable
+`hcolfront`. -/
+theorem deepest_gauge_construction_L2_front (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
+    (hcolfront : (B.submatrix (id : Fin (H 0) → Fin (H 0))
+        (Fin.castLE (hr (Fin.last L)) : Fin r → Fin (H (Fin.last L)))).rank = r)
+    (hLlt : L < 3) :
+    ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
+      (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
+      (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
+      MeasurePreserving split volume volume ∧
+      split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0 ∧
+      coreAbsorb 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+            (0 : DeepestSplit H r nGauge) ∧
+      Continuous regStraighten ∧
+      regStraighten 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.1 = q.2.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge =>
+            (∑ i, (regStraighten q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge =>
+              (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+            (0 : DeepestSplit H r nGauge) ∧
+      rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+        = rlctAtOn
+            (fun x : Fin (flatDim H) → ℝ =>
+              (∑ i, (regStraighten (split x)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split x)).2.1)
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+  obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
+      hP22one, hQ22one⟩ :=
+    deepestPoint_frame_pivot_triangular_front_exists H r B hB hr hL hL2 htop hcolfront
+  exact deepest_gauge_construction_L2_ofBundle H r B hB hr hL hL2 hpos htop hLlt
+    Jb Pf Qf hJtri hPunit hQunit hQf0 hPfL hNF hQf22b hcorner hPtri hQtri hP22one hQ22one
+
+/-- **The L=2 gauge chart at a column-aligned `B`** (front, taint-clean). Destructures
+`deepest_gauge_construction_L2_front` into the `DeepestGaugeChart` structure — the `hcolfront`-conditional
+analog of `deepest_gauge_chart_construct_L2`. -/
+theorem deepest_gauge_chart_construct_L2_front (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
+    (hcolfront : (B.submatrix (id : Fin (H 0) → Fin (H 0))
+        (Fin.castLE (hr (Fin.last L)) : Fin r → Fin (H (Fin.last L)))).rank = r)
+    (hLlt : L < 3) :
+    Nonempty (DeepestGaugeChart H r B hB hr hL) := by
+  obtain ⟨nGauge, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base, hca_reg,
+    hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, hsq⟩ :=
+    deepest_gauge_construction_L2_front H r B hB hr hL hL2 hpos htop hcolfront hLlt
+  exact ⟨{
+    nGauge := nGauge
+    split := split
+    split_mp := hsplit_mp
+    split_basepoint := hsplit_base
+    coreAbsorb := coreAbsorb
+    coreAbsorb_basepoint := hca_base
+    coreAbsorb_regular := hca_reg
+    coreAbsorb_spectator := hca_spec
+    coreAbsorb_rlct := hca_rlct
+    regStraighten := regStraighten
+    regStraighten_continuous := hra_cont
+    regStraighten_basepoint := hra_base
+    regStraighten_core := hra_core
+    regStraighten_spectator := hra_spec
+    regAbsorb_rlct := hra_rlct
+    loss_squeeze := hsq }⟩
+
+open MeasureTheory in
+/-- **The #44-at-L2 normal form, `hJfront`-FREE** (genm-44l2, the headline-closeable value lemma). The
+`L = 2` instance of the Skeleton's `deepest_regular_core_normal_form` (#44), conditional on `htop` +
+`hcolfront` (BOTH headline-WLOG-supplied — `#154` row-WLOG + `#100` column-WLOG) + `hRValue` (R1) — and
+NOT on the unprovable `hJfront`. `hGne` is discharged internally from `hpos`. Proof:
+`deepest_gauge_chart_construct_L2_front` (front bundle → parameterized core) ▸ the banked transport +
+smooth-split ▸ `hRValue`. -/
+theorem deepest_regular_core_normal_form_L2_front (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
+    (hcolfront : (B.submatrix (id : Fin (H 0) → Fin (H 0))
+        (Fin.castLE (hr (Fin.last L)) : Fin r → Fin (H (Fin.last L)))).rank = r)
+    (hLlt : L < 3)
+    (hRValue :
+      rlctAtOn
+          (fun A : Params (fun s => H s - r) =>
+            dlnLoss (fun s => H s - r)
+              (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
+          (fun _ => 0 : Params (fun s => H s - r))
+        = ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ)) :
+    rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+      = ((r * (H 0 + H (Fin.last L) - r) : ℕ) : ℝ≥0∞) / 2
+        + ENNReal.ofReal (lambdaCore (fun s => H s - r) : ℝ) := by
+  -- `hGne` from `hpos` (`r < H s ⟹ 1 ≤ M s`), via the `DeepestCoreNonvanishing` glue.
+  have hGne := dlnLoss_deepest_core_ae_ne_zero (fun s => H s - r)
+    (fun s => Nat.sub_pos_of_lt (hpos s))
+  -- The value-free reduction at the front chart, then R1's value.
+  obtain ⟨Γ⟩ := deepest_gauge_chart_construct_L2_front H r B hB hr hL hL2 hpos htop hcolfront hLlt
+  rw [deepest_squeeze_transport H r B hB hr hL Γ,
+    deepest_regular_smooth_split H r B hB hr hL Γ hGne, hRValue]
 
 end DLNFibre.DLN.RLCT
