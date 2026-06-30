@@ -275,14 +275,50 @@ theorem interiorLive_leafH_pivot (ha : StructAdm M (tach M))
 
 /-! ## H2 — the chart Jacobian monomial (headline ∘ kLDU) -/
 
-/-- **H2 — the chart Jacobian is the monomial** `|det Dφ u| = ∏_j |u_j|^{leafH j}`. Via the
-B' = BchartLeaf ∘ kLDU factorization: `interiorDet_leaf_headline` fires ONCE, separating the radial
-`|u leafPivot|^{minAdm−1}`; the residual `|det DB'|` is the kLDU-monomialized engine product. -/
+/-- **H2b (genm-h2bdet's deliverable, consumed here)** — the boundary-factor determinant monomializes:
+`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}` (the off-pivot K-diagonal
+product, `1` at the pivot). The Schur·LDU det telescope: `interiorDet_leaf_headline_Bchart` gives
+`∏ engine`, monomialized by `readK_kLDU_det` + `kLens_det` to the diagonal-pivot exponents. STATED
+`sorry` — wired to genm-h2bdet's atom. -/
+theorem interiorLive_BdetMonomial (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ j, if j = leafPivot M ha (by norm_num) h0r h0c then (1 : ℝ)
+          else |u j| ^ (interiorLive_leafH ha h0r h0c j) :=
+  sorry
+
+/-- **H2 — the chart Jacobian is the monomial** `|det Dφ u| = ∏_j |u_j|^{leafH j}` (this thread's
+assembly). Via the B' = BchartLeaf ∘ kLDU factorization (hmap-for-B' from `hmap_leaf` at `kLDU x` +
+the commute): `radialComp_abs_det_at` fires ONCE → `|u leafPivot|^{minAdm−1} · |det DB'|`; the residual
+`|det DB'|` is genm-h2bdet's monomial (`interiorLive_BdetMonomial`); the pivot factor folds in via
+`interiorLive_leafH_pivot` + the `Finset.prod` split. -/
 theorem interiorLive_abs_det (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
     |LinearMap.det (fderiv ℝ (interiorLivePhi ha h0r h0c) u).toLinearMap|
-      = ∏ j, |u j| ^ (interiorLive_leafH ha h0r h0c j) :=
-  sorry
+      = ∏ j, |u j| ^ (interiorLive_leafH ha h0r h0c j) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  set B' := fun y => BchartLeaf ha (kLDU M (tach M) ha y) with hB'
+  have hmap : interiorLivePhi ha h0r h0c = B' ∘ pivotBlowupOn (activeM M ha) p₀ := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pivotBlowupOn (activeM M ha) p₀ (kLDU M (tach M) ha x)) = _
+    rw [interiorLive_commute ha h0r h0c x]; rfl
+  have hasDB' : HasFDerivAt B'
+      (fderiv ℝ B' (pivotBlowupOn (activeM M ha) p₀ u))
+      (pivotBlowupOn (activeM M ha) p₀ u) :=
+    ((Bchart_differentiableAt ha _).comp _ (differentiable_kLDU M (tach M) ha _)).hasFDerivAt
+  rw [radialComp_abs_det_at M (activeM M ha) p₀ (leafPivot_mem_activeM ha h0r h0c) (activeM_card ha)
+    B' (interiorLivePhi ha h0r h0c) u _ hmap hasDB', interiorLive_BdetMonomial ha h0r h0c u]
+  -- |u p₀|^{minAdm−1} · ∏(if j=p₀ then 1 else |u j|^{leafH j}) = ∏ |u j|^{leafH j}
+  conv_rhs => rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => |u j| ^ (interiorLive_leafH ha h0r h0c j))]
+  rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => if j = p₀ then (1 : ℝ) else |u j| ^ (interiorLive_leafH ha h0r h0c j))]
+  rw [if_pos rfl, one_mul, interiorLive_leafH_pivot ha h0r h0c]
+  congr 1
+  refine Finset.prod_congr rfl (fun j hj => ?_)
+  rw [if_neg (by simp at hj; exact hj : j ≠ p₀)]
 
 /-! ## H1-internal — differentiability, injectivity, unit facts, image -/
 
