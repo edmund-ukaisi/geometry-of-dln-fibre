@@ -108,6 +108,32 @@ only for `[κ:k]=1`; a degree-`e>1` extension would break B4). Reviewer + Codex 
 
 **The orbit-dimension squeeze engine is complete (4 bricks + carrier + anchors), all cruxes reviewed + bedrock.**
 
-_Executing: P2.6 — assemble the abstract squeeze headline `varietyDim Z = finrank(range δ)` (`≤` from B1 + A4.1 +
-Phase-1 trdeg; `≥` from B3∘B4; `le_antisymm`) + re-derive the DLN `VoigtDischarge`; folds the two cosmetic
-non-blockers (in-file B4 witness, stale docstring). Phase-2 boundary re-gate + PR after._
+**P2.6 (the capstone) landed (`97a0bd70`).** Abstract headline `varietyDim_eq_finrank_range_δ`:
+`varietyDim Z = (finrank k (range δ) : ℕ∞)` on `AffineGVarietyDeformation`, assembled `le_antisymm` of the `≤`
+chain (A4.1 → Phase-1 `trdeg_adjoin_le_genericDifferentialRank` → B1) and the `≥` chain (B3 → B4); the DLN
+`VoigtDischarge` squeeze re-derives signature-unchanged (a whnf timeout was Codex-diagnosed + fixed via
+`@`-application with frozen instances). B4 in-file witness (`Spec ℚ`) + the stale docstring fixed. Self-spawned
+review SURVIVED and **caught a dead `[CharZero]` hypothesis** on the abstract headline (char-0 rides on `hcrit`;
+B4 needs only `[PerfectField]`) — tightened to `[PerfectField k]`. Monument-free.
+
+## Phase 2 CLOSE (2026-06-30)
+Controller phase-boundary re-gate PASSED: full build 3827 jobs green, sorries 0, axioms `[propext,
+Classical.choice, Quot.sound]` on the abstract squeeze headline + the DLN squeeze + **both DLN payoffs unchanged**.
+The orbit-dimension **squeeze engine** is complete, DLN-free, and reusable:
+- `Core/AlgebraicGeometry/Group/Orbit/{Basic,Dimension,Deformation,Squeeze}.lean` — carrier
+  `AffineGVariety`/`AffineGVarietyDeformation`, orbit-as-image irreducibility, A4.1 anchor, the 4 bricks
+  (B1 `GenericRankBound`, B3 `CotangentInjection`, B4 `SmoothCotangentDim`, B2 = Mathlib `dualMap`), and the
+  capstone `varietyDim Z = finrank(range δ)`.
+- The two geometric facts are **named hypotheses** the DLN matrix-tuple instance discharges: (H1) the transpose
+  Maurer–Cartan factorisation (`DifferentialFactors` + rank-tie — the *forward* shape was undischargeable, L8),
+  (H2) the infinitesimal-action (`InfinitesimalAction` — *forward* pins). All DLN `Orbit*` results re-derive from
+  the engine, signatures unchanged; the type-A box-moves (`OrbitClosure`/`OrbitKostant`) correctly stay DLN.
+- Every crux decorrelated-reviewed + Codex-concurred; the `k`-rationality discharge is sound over non-alg-closed
+  `k`, which underwrites the DLN payoff over ℝ. Genuinely Proved — no Aoyagi/RLCT axiom in the engine.
+
+## Expedition close
+Two stacked PRs: **#18** (Phase 1, differential-algebra interface → `dev`) and the Phase-2 PR (orbit-dimension
+squeeze engine → `fl3-p1`, retarget to `dev` after #18 merges). Lessons banked: L6 (split severs transitive
+instance imports), L7 (bare Mathlib-mirror namespaces — `DLNFibre.Core.X` shadows root `X`), L8 (GUARD-first when
+abstracting — the forward hypothesis shape can be undischargeable). One roadmap item: the char-`p`
+differential-independence criterion (genuine new math, not a chore). PRs + merges operator-gated.

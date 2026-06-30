@@ -35,7 +35,12 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 | P2.5a | formaliser | a7ccc4f1 | ✅ DONE `21908723` (+review `ccdd82ea`) | B3 `CotangentInjection`. **Forward H2 PINS** (no pivot — `InfinitesimalAction` carries `dirDeriv`/`c1coord`, coordinate test recovers δφ; no adjoint/rank-tie). Clean rank-nullity proof; R5 re-derived sig-unchanged, dead chain collapsed. green 3826. Formaliser self-spawned decorrelated review SURVIVED + Codex; **controller code-inspection confirms** honesty + non-vacuity (DLN instance built + trivial witness) → accepted, no 2nd review |
 | P2.5b | formaliser | a0864888 | ✅ DONE `45049b6f` | B4 `SmoothCotangentDim` — `(finrank k m.Cotangent : ℕ∞) = varietyDim Z`. Hyps are honest INPUTS (`[IsSmoothAt k m]` + `hrat : ResidueField m ≃ₐ[k] k`, "is smooth + `k`-rational", not "exists"); R6 chain abstracted (M3/L2a/GAP2/GAP3), GAP2/3 re-homed to `Dimension/AffineDomain`. DLN discharges `k`-rationality via M3 density (smooth pt is an orbit pt). R6 re-derived sig-unchanged. green 3826, axioms clean |
 | P2.5b-review | reviewer | a5bb3c7d | ✅ SURVIVED | `k`-rationality SOUND (smooth pt taken from dense `k`-rational `orbitSpecSet` ∩ smooth locus; `dense_smoothLocus_of_perfectField` no alg-closedness; `hrat` load-bearing for `[κ:k]=1`). Codex-concurred. GAP re-home PASS, R6/A6.1 byte-identical, re-gate green 3826. 2 cosmetic non-blockers (no in-file B4 witness; stale docstring `FibreDimFibration:82`) |
-| **P2.6** | formaliser | dispatching | 🔄 | squeeze headline `varietyDim Z = finrank(range δ)` (abstract: B1 `≤` via A4.1+Phase-1 trdeg; B3∘B4 `≥`; `le_antisymm`) + re-derive DLN `VoigtDischarge` from it. **Folds the 2 cosmetic fixes** (in-file B4 `example` witness; `FibreDimFibration:82` docstring). Phase-2 boundary re-gate after |
+| P2.6 | formaliser | aabccd62 | ✅ DONE `97a0bd70` | capstone `varietyDim_eq_finrank_range_δ` (`le_antisymm`: A4.1→Phase-1 trdeg→B1 for `≤`; B3→B4 for `≥`); DLN `VoigtDischarge` re-derived sig-unchanged (whnf-timeout Codex-fixed via `@`+frozen instances); B4 in-file witness (`Spec ℚ`) + docstring fixed. Self-review SURVIVED + caught dead `[CharZero]` → tightened to `[PerfectField]`. Monument-free |
+
+## Phase 2 — boundary re-gate (controller) ✅ PASSED
+Full build green (3827 jobs); sorries 0; axioms `[propext, Classical.choice, Quot.sound]` on the abstract squeeze
+headline + the DLN squeeze + **both DLN payoffs unchanged**. **The orbit-dimension squeeze engine is complete →
+Phase-2 PR opened. Expedition complete (2 stacked PRs, operator-gated).**
 
 ## Concurrency rule (this expedition)
 At most **one builder/committer** in `.claude/worktrees/fl3` at a time (a second `lake build` corrupts `.lake`;
