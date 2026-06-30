@@ -200,3 +200,27 @@ budget for one goal — surfaced, not ground. The headline is now reduced to exa
 
 CONE (additive, 0 name clashes vs siblings): RouteMLeafEngine, RouteMLeafReduce, RouteMLeafFreeKHeadline
 (NOT yet wired into DLNFibre.lean — single-writer; controller integrates).
+
+## STATE (2026-06-30, hdet leg): headline MODULO hDtot — engine corrected to free-K
+
+FIDELITY CORRECTION (sound): the honest engine is FREE-K `|det K|^{r+c}` (engineFreeK), NOT
+"Schur·LDU `·∏|q_i|`" — the `∏|q_i|` is ALREADY inside det K (K = the full LDU core; verified vs
+schurFrame_abs_det's (3,3,3,3) validation: the `(z1z4−z2z3)²` block = `|det K₁|²`). My route brief
+double-counted; corrected. engineFreeK = explicit `|det leafKcore|^{r+c}` (NOT self-ref).
+
+CAPSTONE `interiorDet_leaf_headline_freeK` (RouteMLeafFreeKHeadline): `|det Dφ| =
+|u p₀|^{minAdm−1}·∏ engineFreeK`, B/hmap/hasDB CLOSED, hdet REDUCED to hDtot (via
+Bchart_abs_det_eq_Dtot stripping paramsEquivFlat). Axiom-clean. CARRIES hDtot.
+
+NAMED WALL hDtot: `|det (Dtot …)| = |det K|^{r+c}` — the staircase det of the boundary-factor
+Jacobian at opaque widths. Discharges via the banked RouteMStairTwoSided.stairMap_abs_det_twoConj
+ONCE eIn/eOut : (Fin N→ℝ) ≃ StairProd V 2 are built + `eOut ∘ Dtot ∘ eIn.symm = stairMap` proven over
+opaque Fin(Text/Wext). This IS the prior-isolated hconj/stairConj
+(RouteMInteriorDetReal.interiorDet_…_of_stairConj — done by hand at (3,3,3,3), never ∀M).
+RouteMGradingObstruction proves the single-grading BlockTriangular route is BLOCKED (partitions
+differ), forcing the rectangular two-sided staircase. A cast-heavy MULTI-TIDE piece, not a 3-4-attempt
+fill — the honest ceiling for the genBlkFlatLive headline without the staircase-conjugacy tide.
+
+PROGRESS LEDGER: B/hmap/hasDB CLOSED (the (2,2,2)-bottleneck ∀M); hdet→hDtot (opaque→sharp staircase
+det); engine = honest free-K. Cone (modulo-hDtot): the 10 prior + RouteMLeafEngine/Reduce/FreeKHeadline,
+deconflicted vs canonical 5184db86 (0 clashes), green 8335.
