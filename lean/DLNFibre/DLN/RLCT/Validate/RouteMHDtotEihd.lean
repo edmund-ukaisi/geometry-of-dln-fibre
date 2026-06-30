@@ -504,6 +504,22 @@ theorem eihdT_eq_packStair_fderiv (ha : StructAdm M (tach M))
         rw [paramsEquivFlatCLE_coe, paramsEquivFlatLinear_coe]]
   exact (paramsEquivFlatLinear M).symm_apply_apply _
 
+/-- **Bridge 2a — the per-layer component of `fderiv BparamsLeaf`**: `(fderiv BparamsLeaf y₀ w) s =
+fderiv (fun z => BparamsLeaf z s) y₀ w`. The `Params`-valued fderiv reads componentwise (the eval-at-`s`
+projection CLM `ContinuousLinearMap.proj s` commutes through `fderiv` by the chain rule). The first step
+of Bridge 2 (per-layer fderiv VALUE): isolates each chart layer for the per-layer `Agen`/`Cgen` atoms. -/
+theorem BparamsLeaf_fderiv_layer (ha : StructAdm M (tach M))
+    (y₀ w : Fin (routeMAmbient M) → ℝ) (s : Fin 2) :
+    (fderiv ℝ (fun z => BparamsLeaf ha z) y₀ w) s
+      = fderiv ℝ (fun z => BparamsLeaf ha z s) y₀ w := by
+  have hpi : HasFDerivAt (fun z => BparamsLeaf ha z)
+      (fderiv ℝ (fun z => BparamsLeaf ha z) y₀) y₀ := BparamsLeaf_hasFDerivAt ha y₀
+  have hs : HasFDerivAt (fun z => BparamsLeaf ha z s)
+      ((ContinuousLinearMap.proj s).comp (fderiv ℝ (fun z => BparamsLeaf ha z) y₀)) y₀ :=
+    (ContinuousLinearMap.proj (R := ℝ)
+      (φ := fun s : Fin 2 => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).hasFDerivAt.comp y₀ hpi
+  rw [hs.fderiv]; rfl
+
 /-- **J00 — the Schur-frame block** (part of the in-Lean faithfulness gate for `eIn`, with J01/J11).
 The V0→V0 block of `T` is `eihdF … 0 = schurFrameDeriv X K N`. -/
 theorem eihdT_J00 (ha : StructAdm M (tach M))
