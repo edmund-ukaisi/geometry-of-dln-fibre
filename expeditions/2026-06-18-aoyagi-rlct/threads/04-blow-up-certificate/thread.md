@@ -6814,3 +6814,45 @@ This is only a progress kernel.  It does not prove that every source-produced
 branch payload satisfies this relation, does not prove branch guard
 exhaustiveness, does not fill `SelectedEntryBranchTerminationData`, and does
 not prove normal crossings, pole order, or RLCT.
+
+## 2026-06-30 Lean displayed Case 2 branch progress
+
+Reproduction:
+`reproduction-a4-case2-displayed-branch-progress.md`.
+Statement card:
+`statement-card-a4-case2-displayed-branch-progress.md`.
+Review:
+`review-a4-case2-displayed-branch-progress.md`.
+
+Lean now connects the displayed Case 2 finite frontier split to the
+introduced-label progress kernel:
+
+```text
+AoyagiIntroducedLabelBranchState.case2SameStageChild
+AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedActualWidthStoppedGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard
+AoyagiIntroducedLabelBranchState.case2Displayed_frontier_guards_complete
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_prefixBound
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_continuingGuard
+```
+
+For a state `(S,J)`, the continuing child is `(S,J+1)`.  Under displayed pivot
+validity, the three guards cover the finite frontier:
+
+```text
+J+2 <= prefixMinNat n (S+1)
+or n(S+1)=J+1
+or prefixMinNat n S=J+1.
+```
+
+The continuing guard gives progress to `(S,J+1)` by the existing
+introduced-label support-growth theorem.  Focused local `lake build`, direct
+`lake env lean -E warning`, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, direct axiom probes, and xhigh
+source/API reviews passed.
+
+This is a displayed Case 2 branch-progress bridge only.  It does not construct
+source-production payloads, prove that source data realizes the child state,
+make stopped guards exclusive, fill `SelectedEntryBranchTerminationData`, or
+prove normal crossings, pole order, or RLCT.

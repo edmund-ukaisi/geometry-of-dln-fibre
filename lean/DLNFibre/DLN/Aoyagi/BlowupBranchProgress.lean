@@ -112,6 +112,61 @@ theorem progressStep_case2_increment_of_prefixBound
   exact progressStep_case2_increment L n hS hSL
     (le_trans hJ (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
 
+/-- The same-stage child state for the displayed Case 2 continuing branch. -/
+def case2SameStageChild {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n) :
+    AoyagiIntroducedLabelBranchState L n :=
+  ⟨s.S, s.J + 1, s.stage_pos, s.stage_le⟩
+
+/-- Displayed Case 2 continuing guard after the pivot at state `(S,J)`. -/
+def case2DisplayedContinuingGuard {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n) : Prop :=
+  s.J + 2 ≤ prefixMinNat n (s.S + 1)
+
+/-- Displayed Case 2 actual next-width stopped guard after the pivot at
+state `(S,J)`. -/
+def case2DisplayedActualWidthStoppedGuard {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n) : Prop :=
+  n (s.S + 1) = s.J + 1
+
+/-- Displayed Case 2 current-prefix row-exhausted stopped guard after the pivot
+at state `(S,J)`. -/
+def case2DisplayedRowExhaustedStoppedGuard {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n) : Prop :=
+  prefixMinNat n s.S = s.J + 1
+
+/-- Under displayed Case 2 pivot validity, the continuing/actual-width-stopped/
+row-exhausted guards cover the finite frontier.  The stopped guards are not
+claimed to be exclusive. -/
+theorem case2Displayed_frontier_guards_complete {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n)
+    (hcont : s.J + 1 ≤ prefixMinNat n (s.S + 1)) :
+    case2DisplayedContinuingGuard s ∨
+      case2DisplayedActualWidthStoppedGuard s ∨
+        case2DisplayedRowExhaustedStoppedGuard s := by
+  exact
+    case2DisplayedFrontier_next_or_actualWidth_or_rowExhausted_of_cont
+      s.stage_pos hcont
+
+/-- Displayed Case 2 pivot validity gives progress from `(S,J)` to the
+same-stage child `(S,J+1)`. -/
+theorem case2SameStageChild_progress_of_prefixBound {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n)
+    (hcont : s.J + 1 ≤ prefixMinNat n (s.S + 1)) :
+    progressStep L n (case2SameStageChild s) s := by
+  rcases s with ⟨S, J, hS, hSL⟩
+  exact progressStep_case2_increment_of_prefixBound L n hS hSL hcont
+
+/-- The displayed Case 2 continuing guard gives progress to the same-stage
+child. -/
+theorem case2SameStageChild_progress_of_continuingGuard {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiIntroducedLabelBranchState L n)
+    (hnext : case2DisplayedContinuingGuard s) :
+    progressStep L n (case2SameStageChild s) s := by
+  exact case2SameStageChild_progress_of_prefixBound s (by
+    dsimp [case2DisplayedContinuingGuard] at hnext
+    omega)
+
 end AoyagiIntroducedLabelBranchState
 
 end Aoyagi

@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 displayed Case 2 branch progress
+
+The branch-progress lane now connects the displayed Case 2 frontier split to
+the introduced-label progress kernel, still below source production and below
+`SelectedEntryBranchTerminationData`.
+
+Lean extends `lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean` with:
+
+```text
+AoyagiIntroducedLabelBranchState.case2SameStageChild
+AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedActualWidthStoppedGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard
+AoyagiIntroducedLabelBranchState.case2Displayed_frontier_guards_complete
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_prefixBound
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_continuingGuard
+```
+
+The complete guard theorem packages the existing finite frontier split:
+
+```text
+J+2 <= prefixMinNat n (S+1)
+or n(S+1)=J+1
+or prefixMinNat n S=J+1.
+```
+
+The continuing branch child is the same-stage state `(S,J+1)`, and the new
+progress lemmas prove only that this child is a `progressStep`.
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probes passed.  Xhigh source/scope reviewer `Mill` and xhigh Lean/API
+reviewer `Curie` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-case2-displayed-branch-progress.md`.
+
+Nonclaims remain central: no branch payload construction, no source-produced
+child-state realization, no stopped-guard exclusivity, no
+`SelectedEntryBranchTerminationData`, no normal crossings, no pole order, and
+no RLCT.
+
 ## Latest controller decision - 2026-06-29, A4 introduced-label progress kernel
 
 The branch-termination lane now has a narrow, non-vacuous progress kernel:

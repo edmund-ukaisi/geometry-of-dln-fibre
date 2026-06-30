@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Displayed Case 2 Branch Progress - 2026-06-30
+
+`BlowupBranchProgress.lean` now names the displayed Case 2 frontier guards on
+`AoyagiIntroducedLabelBranchState` and connects the continuing branch to the
+introduced-label progress kernel.
+
+New Lean names:
+
+```text
+AoyagiIntroducedLabelBranchState.case2SameStageChild
+AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedActualWidthStoppedGuard
+AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard
+AoyagiIntroducedLabelBranchState.case2Displayed_frontier_guards_complete
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_prefixBound
+AoyagiIntroducedLabelBranchState.case2SameStageChild_progress_of_continuingGuard
+```
+
+The guard-completeness theorem is a wrapper around the existing finite frontier
+split from `BlowupArithmetic.lean`; it does not make the stopped guards
+exclusive.  The continuing child is exactly `(S,J+1)`, and the progress lemmas
+route through the already-reviewed introduced-label support growth theorem.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case2-displayed-branch-progress.md
+threads/04-blow-up-certificate/statement-card-a4-case2-displayed-branch-progress.md
+threads/04-blow-up-certificate/review-a4-case2-displayed-branch-progress.md
+```
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probes passed.  Source/scope and Lean/API xhigh reviews returned PASS.
+
+Boundary: this still does not construct source-production payloads, prove that
+payload source data realizes the child state, fill branch termination, make
+stopped branches exclusive, prove normal crossings, compute pole order, or
+extract an RLCT.
+
 ## Latest A4 Introduced-Label Progress Kernel - 2026-06-29
 
 `BlowupBranchProgress.lean` adds the first narrow termination kernel for the
