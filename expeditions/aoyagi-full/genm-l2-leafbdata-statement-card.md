@@ -60,5 +60,7 @@
 >   `hasDB` by mirroring the banked `phiFlatLiveR1_differentiableAt_of_Agen` for the `genBlkFlatLive`
 >   chain. Decorrelated Codex (gpt-5.5, high) red-teamed the route and confirmed soundness +
 >   flagged the slot-disjointness grind + `rmatPad_smul` as the bricks to bank first.
-> - **Status.** sorry-free; axiom-clean `[propext, Classical.choice, Quot.sound]` (forced
->   `#print axioms` with the olean deleted). NOT yet reviewer-confirmed for fidelity.
+> - **Status.** sorry-free + reviewed; axiom-clean `[propext, Classical.choice, Quot.sound]` (forced
+>   `#print axioms` with the olean deleted). Reviewer fidelity audit (decorrelated-Codex-corroborated)
+>   PASSED all six questions — non-vacuous, faithful, `B` genuinely `u`-free, the `hdet` gap honestly
+>   named; the one defect found (an overclaiming module docstring) is fixed.
