@@ -32,7 +32,9 @@ domain has `finrank = (H0·r − r²) + r·H2 = nReg` (the slice `Λ·X = 0` is 
 surjection with right inverse `Z ↦ U·Z`). `Submodule.finrank_le` then gives the bound.
 This sidesteps the (genuinely-Mathlib-absent) intersection-dim `colspace(v⁰)⊗rowspace(v¹) = a·b`.
 
-STATUS: SPECIFY — signatures validated; the lower bound `sorry`-skeletoned through the sub-lemmas.
+STATUS: LANDED — the rank lower bound `nReg_le_finrank_range_jointDiffL2` is proved (no open goal),
+and Step 1 ties the analytic flat-Jacobian gradient to `jointDiffL2 ∘ flatSymm`
+(`prodAuxEntryDeriv_two_apply_eq_jointDiffL2`). Clean-three.
 -/
 
 open Matrix Module
@@ -463,5 +465,88 @@ theorem gmapDeriv_apply_symm (H : Fin (2 + 1) → ℕ) (s : Fin 2) (a : Fin (H s
   have hR : ((paramsEquivFlatLinear H).symm δ) s a b = δ (flatIdx H s a b) := by
     rw [paramsEquivFlatLinear_symm_coe, paramsEquivFlat_symm_entry]; rfl
   rw [hL, hR]
+
+/-! ## Step 1 — the analytic flat-Jacobian gradient IS `jointDiffL2 ∘ flatSymm` (entry-wise)
+
+The chart's first-block derivative reads the banked analytic gradient
+`prodAuxEntryDeriv H (gmapAt H v) 0 gmapDeriv 2 i j` (`hasStrictFDerivAt_lossEntry` at `L = 2`,
+`w₀ = 0`). To carry step 2b's rank bound onto the chart, identify that gradient (applied to a flat
+tangent `δ`) with the `(i,j)` entry of `jointDiffL2 H v (flatSymm δ)` — the keystone `Dg(v)` of the
+rank bound. The `prodAuxEntryDeriv` `L = 2` fold is unrolled by `prodAuxEntryDeriv_succ` (`rw` on a
+`rfl`-equation, dodging the `show`-elaboration timeout): outer peel at `k = 1` then inner at `k = 0`
+(`prodAux 0 = 1`, `prodAuxEntryDeriv 0 = 0`), giving `∑ x (v⁰ᵢₓ · δ¹ₓⱼ + v¹ₓⱼ · δ⁰ᵢₓ)` which is the
+`jointDiffL2` entry `(δ⁰·v¹ + v⁰·δ¹)ᵢⱼ` after `Finset.sum_add_distrib` + `mul_comm`. -/
+
+/-- `gmapAt H v 0 = v`: the flat-shift reconstruction at the origin recovers the base point. -/
+theorem gmapAt_zero (H : Fin (L + 1) → ℕ) (v : Params H) : gmapAt H v 0 = v := by
+  unfold gmapAt; rw [zero_add]; exact (paramsEquivFlat H).symm_apply_apply v
+
+/-- The inner `k = 1` analytic gradient applied to `δ` reads a single `layer0` entry of the
+flatten-inverse: `prodAuxEntryDeriv … 1 i m δ = (flatSymm δ)⁰ᵢₘ`. (`prodAux 0 = 1` collapses the
+inner sum to the `i`-th term, `prodAuxEntryDeriv 0 = 0` kills the recursion, leaving the
+`gmapDeriv 0` coordinate.) -/
+theorem prodAuxEntryDeriv_one_apply_symm (H : Fin (2 + 1) → ℕ) (v : Params H) (i : Fin (H 0))
+    (m : Fin (H 1)) (δ : Fin (flatDim H) → ℝ) :
+    (prodAuxEntryDeriv H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 1
+        (by norm_num) i m) δ = ((paramsEquivFlatLinear H).symm δ) 0 i m := by
+  rw [prodAuxEntryDeriv_succ H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 0
+        (by norm_num) i m (by norm_num) (by norm_num) (by apply Fin.ext; simp [Fin.castSucc])
+        (by apply Fin.ext; simp [Fin.succ])]
+  simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul, prodAuxEntryDeriv,
+    ContinuousLinearMap.zero_apply, mul_zero, add_zero]
+  have h0 : ∀ x : Fin (H 0),
+      prodAux H (gmapAt H v 0) 0 (by norm_num) i x = (if i = x then 1 else 0) := fun x => rfl
+  rw [Finset.sum_congr rfl (fun x _ => by rw [h0 x])]
+  refine (Finset.sum_eq_single i ?_ ?_).trans ?_
+  · intro b _ hb; rw [if_neg (fun h => hb h.symm), zero_mul]
+  · intro h; exact absurd (Finset.mem_univ i) h
+  · rw [if_pos rfl, one_mul, gmapDeriv_apply_symm]; congr 1
+
+/-- `prodAux H v 1 = layer0 H v`: the one-layer prefix product is the first layer (the
+`prodAux_succ` reindex collapses to identity at the `rfl`-true width — `finCongr_refl` idiom). -/
+theorem prodAux_one_eq_layer0 (H : Fin (2 + 1) → ℕ) (v : Params H) :
+    prodAux H v 1 (by norm_num) = layer0 H v := by
+  have e1 : H (⟨0, by norm_num⟩ : Fin (2 + 1)) = H ((⟨0, by norm_num⟩ : Fin 2).castSucc) := rfl
+  have e2 : H (⟨0 + 1, by norm_num⟩ : Fin (2 + 1)) = H ((⟨0, by norm_num⟩ : Fin 2).succ) := rfl
+  rw [prodAux_succ H v 0 (by norm_num) e1 e2]
+  rw [show (finCongr e1.symm) = Equiv.refl _ from finCongr_refl _,
+      show (finCongr e2.symm) = Equiv.refl _ from finCongr_refl _]
+  erw [Matrix.reindex_refl_refl, Matrix.one_mul]
+  rfl
+
+/-- **The flat-analytic-Jacobian bridge** (Step 1). At an optimal base point `v` (`L = 2`), the
+banked analytic loss-entry gradient `prodAuxEntryDeriv H (gmapAt H v) 0 gmapDeriv 2 i j` (the strict
+derivative of `w ↦ (prod (gmapAt H v w))ᵢⱼ` at the flat origin, `hasStrictFDerivAt_lossEntry`),
+applied to a flat tangent `δ`, equals the `(i,j)` entry of `jointDiffL2 H v` evaluated at the linear
+flatten-inverse `(paramsEquivFlatLinear H).symm δ`. This ties the chart's first-block derivative to
+the keystone `Dg(v)` whose rank ≥ `nReg` (`nReg_le_finrank_range_jointDiffL2`), so the flat Jacobian
+inherits that rank bound (compose with the surjective flatten iso). -/
+theorem prodAuxEntryDeriv_two_apply_eq_jointDiffL2 (H : Fin (2 + 1) → ℕ) (v : Params H)
+    (i : Fin (H 0)) (j : Fin (H (Fin.last 2))) (δ : Fin (flatDim H) → ℝ) :
+    (prodAuxEntryDeriv H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 2
+        (Nat.lt_succ_self 2) i j) δ
+      = (jointDiffL2 H v ((paramsEquivFlatLinear H).symm δ)) i j := by
+  rw [prodAuxEntryDeriv_succ H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 1
+        (Nat.lt_succ_self 2) i j (by norm_num) (by norm_num) (by apply Fin.ext; simp [Fin.castSucc])
+        (by apply Fin.ext; simp [Fin.succ])]
+  simp only [ContinuousLinearMap.coe_sum', Finset.sum_apply, ContinuousLinearMap.add_apply,
+    ContinuousLinearMap.coe_smul', Pi.smul_apply, smul_eq_mul]
+  -- substitute the base point and the inner gradients
+  rw [Finset.sum_congr rfl (fun x _ => by
+    rw [gmapAt_zero, prodAuxEntryDeriv_one_apply_symm, gmapDeriv_apply_symm])]
+  -- unfold the `jointDiffL2` entry and split the sum
+  change _ = (layer0 H _ * layer1 H v + layer0 H v * layer1 H _) i j
+  rw [Matrix.add_apply, Matrix.mul_apply, Matrix.mul_apply, ← Finset.sum_add_distrib]
+  apply Finset.sum_congr rfl
+  intro x _
+  rw [show prodAux H v 1 (by norm_num) i x = layer0 H v i x from
+    congrFun (congrFun (prodAux_one_eq_layer0 H v) i) x]
+  -- the cast-layer is `layer1 v`, the `⟨1,_⟩`/`1` indices are defeq; match by `ring`
+  change layer0 H v i x * (paramsEquivFlatLinear H).symm δ 1 x j
+      + layer1 H v x j * (paramsEquivFlatLinear H).symm δ 0 i x
+    = (paramsEquivFlatLinear H).symm δ 0 i x * layer1 H v x j
+      + layer0 H v i x * (paramsEquivFlatLinear H).symm δ 1 x j
+  ring
 
 end DLNFibre.DLN.RLCT
