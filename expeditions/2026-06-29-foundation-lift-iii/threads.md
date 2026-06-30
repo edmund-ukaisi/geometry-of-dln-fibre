@@ -31,9 +31,10 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 | P2.3 | formaliser | ad3cc933 | ✅ DONE `303db988` | A4.1 anchor `varietyDim 𝒪 = trdeg` in `Orbit/Dimension.lean`; `[Finite ρ]` minimal-hyp; DLN lemma re-derived to 3 lines (collapsed). green 3825, fidelity PASS + Codex. card `reviewed` |
 | P2.1 | — | — | ⏳ folded → P2.4 | trace self-duality `traceEquiv` reusable, but abstract B1 likely uses Mathlib `finrank_range_dualMap_eq_finrank_range` (dropping `deltaT`); decide at P2.4 to avoid double-touching `OrbitDifferentialRank` |
 | P2.4 | formaliser | a8e13a62 | ✅ DONE `0b580992` | B1 `GenericRankBound` (A4.3). **Guard caught it:** forward H1 undischargeable (`range(L∘δ.bc)=L(range δ)⊊`); pivoted to **transpose** H1 (`δAdj:C1→C0` + rank-tie, probe §1(iii)-blessed). B1 clean (V2, no `deltaT`); keystone re-derived sig-unchanged. green 3826, axioms clean. → L8 |
-| **P2.4-review** | reviewer | dispatching | 🔄 CRUX-review | decorrelated audit: transpose-H1 honesty (rank-tie not vacuous/circular), DLN discharge fidelity, keystone-bound preserved + re-gate (build/sorries/axioms) + Codex |
-| P2.5 | — | — | ⏳ CRUX (held) | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2). **Held until P2.4-review clears** — H2 design reuses the validated H1 pattern + GUARD-first (L8) |
-| P2.6 | — | — | ⏳ | squeeze headline + assembly |
+| P2.4-review | reviewer | a31f1da4 | ✅ SURVIVED | transpose-H1 honest (non-circular, **non-vacuity witness built** ℚ[X]/`id`), forward-fails diagnosis confirmed, discharge fidelity PASS (rank-tie *proved* via `finrank_range_deltaT`, `deltaT` confined to DLN file), keystone byte-identical, re-gate green 3826 + axioms clean, Codex concurred. Minor docstring flag judged non-blocking |
+| **P2.5a** | formaliser | dispatching | 🔄 CRUX | B3 `CotangentInjection` — `finrank(range δ) ≤ finrank(cotangent)` from (H2) infinitesimal-action. **GUARD-first (L8):** pin H2 carrier by writing the DLN discharge (`dirDeriv_orbitIdeal_eq_zero`, dual-number) first; STOP+report if forward H2 fails. Decorrelated review after |
+| P2.5b | — | — | ⏳ CRUX | B4 `SmoothCotangentDim` — `finrank(cotangent) = varietyDim` from smooth `k`-rational point + dense `k`-orbit (`OrbitSmooth`); the "dense `k`-orbit meets smooth locus over non-alg-closed `k`" sub-crux |
+| P2.6 | — | — | ⏳ | squeeze headline `varietyDim = finrank(range δ)` + assembly |
 
 ## Concurrency rule (this expedition)
 At most **one builder/committer** in `.claude/worktrees/fl3` at a time (a second `lake build` corrupts `.lake`;

@@ -81,4 +81,12 @@ Mathlib lift is a file-move.
 
 **P2.4 finding — the forward H1 is undischargeable; the transpose is the honest shape (the guard earned its keep).** The probe §3 forward hypothesis `span_K{D f_x} ≤ range(L ∘ δ.baseChange)` cannot be discharged by the DLN model: `range(L ∘ δ.bc) = L(range δ)`, so `L` only ever sees the coboundary image `range δ ⊊ C1`, but the orbit-coordinate differentials pair the Maurer–Cartan bracket against *single* `C1` entries outside `range δ`. The GUARD-first step (write the DLN discharge before fixing the abstract signature) caught this exactly. The honest, dischargeable form is the **transpose** carrier — `DifferentialFactors (δAdj : C1 →ₗ[k] C0) (L) := span_K{D f_x} ≤ range(L ∘ δAdj.baseChange)` plus a rank-tie `finrank(range δAdj) = finrank(range δ)` — which is the "carry `δAdj`" alternative the probe blessed in §1(iii). DLN discharges it with `δAdj := deltaT M`, rank-tie `= finrank_range_deltaT`; abstract B1 stays clean (V2 + finrank_mono, no `deltaT`); the keystone re-derives signature-unchanged (~70-line monolith collapsed into engine + discharge). name=content preserved — the adjoint + rank-tie are abstract *inputs*, `deltaT`/matrix self-duality stay the DLN detail. _Routed for decorrelated review (crux)._ **Implication for P2.5:** same GUARD-first discipline — pin the (H2) carrier by writing the DLN discharge first; the forward shape may again be the wrong one.
 
-_Executing: P2.4 review in flight; P2.5 held until it clears (its H2 design depends on the validated H1 pattern)._
+**P2.4 decorrelated review: SURVIVED.** Transpose-H1 honest — non-circular (`δ` enters only via the rank-tie at
+the final step; `δAdj` is a free argument), **non-vacuous** (reviewer built a non-DLN witness `R=ℚ[X]`, `δ=δAdj=id`
+firing `genericRankBound`), forward-fails diagnosis confirmed against `deformationδ`/`bracketG`, discharge fidelity
+PASS (rank-tie *proved* via `finrank_range_deltaT`, not assumed; `deltaT` confined to the DLN file), keystone
+byte-identical, re-gate green (3826) + axioms clean; Codex (xhigh) concurred on all four sub-questions. P2.4 is
+bedrock.
+
+_Executing: P2.5 split into P2.5a (B3 `CotangentInjection`, H2 — guard-first) + P2.5b (B4 `SmoothCotangentDim`,
+smooth point). P2.5a dispatched._
