@@ -1049,3 +1049,13 @@ your charge" while the other thread is already inside X. **Controller directed-s
 character-identical lemmas is the signature of an unpinned division — accept the benign dedup (keep ONE authoritative
 copy, drop the other), note it, and do not re-derive. (Decision-quality note: the underlying call — sharding once the
 substrate had landed — was right; the error was the *transition*, not the destination.)
+
+**ADDENDUM — a "stood-down" but alive/idle teammate may CONTINUE; resume IT, don't spawn fresh (2026-06-30, eihd eIn_projV0):**
+2nd instance of the same root. A teammate reported "standing down at the clean boundary" + went idle, so the controller
+spawned a FRESH hand for the next focused build — but the idle teammate then CONTINUED (it proved the next lemma itself),
+so two hands were briefly in the same residual. (Caught early this time: the fresh hand was still in read/scaffold, made
+ZERO edits, so no Lean waste — cleaner than the pos+peel case.) **Rule:** when a still-alive/idle teammate "stands down,"
+its stand-down is a PAUSE, not a termination — for the NEXT build of the SAME residual, RESUME that teammate (SendMessage
+to it) rather than spawn a fresh hand; only spawn fresh for genuinely-disjoint work or a truly-terminated agent. Spawning
+fresh "because it stood down" is the trap — an idle teammate is one nudge from continuing. (Both instances: the *call*
+was reasonable, the *transition*/assumption-it-was-done was the error.)
