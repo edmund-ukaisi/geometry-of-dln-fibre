@@ -1,10 +1,40 @@
-# Statement card — `{eIn + hD}` coupled tide (genm-eihd2): architecture + `eIn` DONE, 4-sorry residual
+# Statement card — `{eIn + hD}` coupled tide (genm-eihd2): architecture + `eIn` + `eIn_projV0` DONE, 3-sorry residual
 
-**Status:** architecture validated end-to-end (green build, 8347 jobs); `eIn` built sorry-free; the
-coupling proof `eihd_hD` and the gate `interiorDet_leaf_headline_eihd` DONE. Four documented term-level
-sorries remain (the faithfulness gate + the J-blocks). No `axiom`/`native_decide`/`#exit`.
+**Status:** architecture validated end-to-end (green build, 8347 jobs); `eIn` built sorry-free AND
+VALIDATED FAITHFUL (`eIn_projV0` PROVEN clean-three — the green-but-wrong tripwire is cleared); the
+coupling proof `eihd_hD` and the gate `interiorDet_leaf_headline_eihd` DONE. THREE documented term-level
+sorries remain (the J-blocks J00/J01/J11). No `axiom`/`native_decide`/`#exit`.
 
-**Branch:** `origin/expedition/genm-eihd2` (off `origin/genm-eihd`). SHA `bd9081f2`.
+**Branch:** `origin/expedition/genm-eihd2` (off `origin/genm-eihd`). SHA `5d596c4a`.
+
+## `eIn_projV0` LANDED (the faithfulness validation — controller's #1 priority)
+`eIn_projV0 : (eIn ha δ).1 = slotReadV0 ha δ` is PROVEN, axiom-clean `[propext, Classical.choice,
+Quot.sound]`. The combinator-eval tooling that unblocked it (reusable for the J-blocks):
+- `flatMatLE_apply : flatMatLE a b f i j = f (finProdFinEquiv (i,j))` — `unfold flatMatLE; simp only
+  [LinearEquiv.trans_apply]; rfl` (NOT `:= rfl`; there is NO `LinearEquiv.curry_apply`).
+- `frameToSchurInc_blocks` — the 4 `SchurInc` blocks read `g` at `frameSplitEquiv.symm` role indices
+  (K@`inl inl inl`, N@`inl inr`, X@`inl inl inr`, E@`inr`): `have hr : frameToSchurInc ha g = roleReorderLE
+  M (…) := rfl`, then per-block `show flatMatLE _ _ _ i j = _; rw [flatMatLE_apply]; simp [trans_apply,
+  prodCongr_apply, refl_apply, sumArrow…_apply_fst/_snd, funCongrLeft_apply, funLeft_apply, of_apply]`.
+- `eIn_projV0` itself: `(eIn δ).1 = frameToSchurInc ha (fun a => δ (chartIdxEquiv.symm ⟨0, inl a⟩))` is
+  `rfl`; then `rw [frameToSchurInc_blocks]; rfl` (the block-tuple matches `slotReadV0 = (readK, readN,
+  readX, readE)` index-for-index).
+
+## J-block residual (J00/J01/J11 — the genuine `fderiv-BparamsLeaf` multi-tide)
+These compute `eihdT (v0,(0,())) = eihdOut(Dtot(eIn.symm (v0,(0,()))))` with `Dtot = paramsEquivFlatCLE ∘
+fderiv BparamsLeaf`. **Missing bridge lemmas (NOT yet banked — this is the work):**
+1. A per-LAYER VALUE form of `fderiv BparamsLeaf y₀` (only existence `BparamsLeaf_hasFDerivAt` + the
+   function-level `layer0SchurMap_hasFDerivAt`/`gate_schurCore_eq` are banked). Need: `Dtot`'s layer-0
+   action on a perturbation = `reindex (schurFrameDeriv ∘ slotReadV0D)`.
+2. `eIn.symm (v0,(0,()))` as an explicit flat vector whose boundary-0 frame slot carries `v0` (the
+   harder direction — `eInRearrange.symm`/reshape `.symm`s + `funCongrLeft chartIdxEquiv.symm |>.symm`).
+3. The composition `slotReadV0D ∘ eIn.symm = (the V0 projection)` (so J00's `schurFrameDeriv` reads `v0`),
+   `eihdOut` projects layer-0 → V0 via `packStair`/`flatBlockLE.symm` (the banked
+   `flatBlockLE_symm_fderiv_flatBlock` is the normalization).
+Build (1)+(2)+(3) as named bridges first; then J00 (banked Schur core), J01 (=0: layer-0 indep of V1),
+J11 (chainUnit via `hasFDerivAt_chainA` + `packLayer1` W/C reorder). A genuine multi-tide.
+
+**Prior SHA:** `bd9081f2` (skeleton).
 **Module:** `lean/DLNFibre/DLN/RLCT/Validate/RouteMHDtotEihd.lean` (546 LoC). Single-writer; NOT wired into
 `DLNFibre.lean` (controller cone-merges).
 
