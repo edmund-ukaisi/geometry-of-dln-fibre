@@ -17797,3 +17797,39 @@ not exact passive-sector Haar transport, determinant-chart Haar transport,
 raw-order Haar transport, source-prior comparison, finite-scalar domination,
 bounded-density comparison, source-image equality, source-rank coverage,
 normal crossings, pole order, or RLCT extraction.
+
+## 2026-06-30 A2 Case 2 passive theta endpoint-sector domination
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-endpoint-sector-domination.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-endpoint-sector-domination.md`.
+Review:
+`review-a2-case2-passive-theta-endpoint-sector-domination.md`, PASS as a
+conditional domination transfer by xhigh source/scope reviewer `Lorentz` and
+xhigh Lean/API reviewer `Carver`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now proves:
+
+```text
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+```
+
+The first theorem transports an explicit theta-domain domination to
+endpoint-sector pushforwards restricted to the named sector image.  The second
+theorem derives the theta-domain domination from a local a.e. upper bound on
+a `withDensity` density.
+
+This is not exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.  The next frontier is to prove the actual local
+theta-domain domination or bounded-density hypothesis from a
+passive-sector/reference measure model.

@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Endpoint-Sector Domination - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now proves conditional
+endpoint-sector domination:
+
+```text
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+```
+
+For
+
+```text
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+sectorSet = case2PassiveThetaEndpointSectorSet Omega
+```
+
+the first theorem sends a theta-domain domination
+
+```text
+sourceMeasure.restrict Omega <= c * referenceMeasure.restrict Omega
+```
+
+to endpoint-sector domination after applying `Measure.map Y` and restricting
+both sides to `sectorSet`.  The second theorem derives the theta-domain
+domination from an a.e. upper bound on a `withDensity` density over
+`baseMeasure.restrict Omega`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-endpoint-sector-domination.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-endpoint-sector-domination.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-endpoint-sector-domination.md
+```
+
+Xhigh source/scope reviewer `Lorentz` recommended local bounded-density
+sector comparison as the real frontier and warned against premature exact
+global pushforward.  Xhigh Lean/API reviewer `Carver` recommended this
+finite-scalar endpoint-sector theorem plus the bounded-density corollary as
+the smallest non-overclaiming next Lean target.
+
+Boundary: no exact passive-sector Haar transport, determinant-chart Haar
+transport, raw-order Haar transport, source-prior comparison,
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.
+
+Next frontier: prove the actual local theta-domain domination or
+bounded-density hypothesis from a passive-sector/reference measure model.
+
 ## Latest A2 Case 2 Passive Theta Sector-Image Support - 2026-06-30
 
 `RetainedPassiveCase2PassiveSector.lean` now names the passive theta image

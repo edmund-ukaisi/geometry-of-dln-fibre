@@ -14,6 +14,7 @@ crossings, pole order, or RLCT.
 noncomputable section
 
 open MeasureTheory
+open scoped ENNReal
 
 namespace DLNFibre
 namespace DLN
@@ -75,6 +76,126 @@ theorem measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSect
       ∀ᵐ y ∂ Measure.map Y (thetaMeasure.restrict Ω), y ∈ sectorSet := by
     exact (ae_map_iff (f := Y) hY hsector).2 hmem
   exact Measure.restrict_eq_self_of_ae_mem hmap_mem
+
+set_option linter.style.longLine false in
+/-- Finite-scalar domination of theta-domain measures pushes forward to the
+corresponding endpoint topology-tuple sector measures.
+
+The conclusion is restricted to the named endpoint image sector on both sides.
+This is the consumer-facing domination direction needed by later finite
+integral transfers.  It assumes the theta-domain domination explicitly; it
+does not identify determinant-chart Haar measure, construct a source prior,
+prove a bounded density, or extract an RLCT. -/
+theorem measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (sourceMeasure referenceMeasure :
+      Measure (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hsector :
+      MeasurableSet
+        (case2PassiveThetaEndpointSectorSet
+          (ρ := ρ) n hS hcont hnext eNext e Ω))
+    {c : ℝ≥0∞}
+    (hY :
+      Measurable
+        (fun theta : Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ↦
+          case2PassiveThetaEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e))
+    (hdom : sourceMeasure.restrict Ω ≤ c • referenceMeasure.restrict Ω) :
+    let Y :
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let sectorSet : Set (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaEndpointSectorSet
+        (ρ := ρ) n hS hcont hnext eNext e Ω
+    (Measure.map Y (sourceMeasure.restrict Ω)).restrict sectorSet ≤
+      c • (Measure.map Y (referenceMeasure.restrict Ω)).restrict sectorSet := by
+  intro Y sectorSet
+  have hsource_support :
+      (Measure.map Y (sourceMeasure.restrict Ω)).restrict sectorSet =
+        Measure.map Y (sourceMeasure.restrict Ω) := by
+    simpa [Y, sectorSet] using
+      measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+        sourceMeasure Ω hΩ hsector hY.aemeasurable
+  have href_support :
+      (Measure.map Y (referenceMeasure.restrict Ω)).restrict sectorSet =
+        Measure.map Y (referenceMeasure.restrict Ω) := by
+    simpa [Y, sectorSet] using
+      measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+        referenceMeasure Ω hΩ hsector hY.aemeasurable
+  rw [hsource_support, href_support]
+  exact map_le_smul_map_of_le_smul hY hdom
+
+set_option linter.style.longLine false in
+/-- A local a.e. upper bound on a theta-domain density gives
+finite-scalar domination after pushing forward to the named endpoint sector.
+
+This is a bounded-density corollary of
+`measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul`.
+The density bound is still an explicit hypothesis; the theorem does not
+construct a passive-sector Haar comparison or source-prior density. -/
+theorem measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (baseMeasure : Measure (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hsector :
+      MeasurableSet
+        (case2PassiveThetaEndpointSectorSet
+          (ρ := ρ) n hS hcont hnext eNext e Ω))
+    {density :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J → ℝ≥0∞}
+    {c : ℝ≥0∞}
+    (hY :
+      Measurable
+        (fun theta : Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ↦
+          case2PassiveThetaEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e))
+    (hdensity_le :
+      ∀ᵐ theta ∂ baseMeasure.restrict Ω, density theta ≤ c) :
+    let Y :
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let sectorSet : Set (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaEndpointSectorSet
+        (ρ := ρ) n hS hcont hnext eNext e Ω
+    (Measure.map Y ((baseMeasure.withDensity density).restrict Ω)).restrict sectorSet ≤
+      c • (Measure.map Y (baseMeasure.restrict Ω)).restrict sectorSet := by
+  intro Y sectorSet
+  have hdom :
+      (baseMeasure.withDensity density).restrict Ω ≤ c • baseMeasure.restrict Ω := by
+    rw [restrict_withDensity hΩ]
+    rw [← withDensity_const (μ := baseMeasure.restrict Ω) c]
+    exact withDensity_mono hdensity_le
+  simpa [Y, sectorSet] using
+    measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+      (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+      (baseMeasure.withDensity density) baseMeasure Ω hΩ hsector hY hdom
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 

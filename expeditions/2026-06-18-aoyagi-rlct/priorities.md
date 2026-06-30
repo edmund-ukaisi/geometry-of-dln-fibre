@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta endpoint-sector domination
+
+The endpoint-sector domination transfer has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+
+New public names:
+
+```text
+measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+```
+
+For the endpoint topology-tuple map
+
+```text
+Y theta = case2PassiveThetaEndpointTopologyTuple theta
+sectorSet = case2PassiveThetaEndpointSectorSet Omega
+```
+
+the first theorem transports an explicit theta-domain domination
+
+```text
+sourceMeasure.restrict Omega <= c * referenceMeasure.restrict Omega
+```
+
+to the corresponding endpoint-sector pushforwards restricted to `sectorSet`.
+The second theorem derives the same conclusion for
+`sourceMeasure = baseMeasure.withDensity density` from a local a.e. bound
+`density <= c` on `baseMeasure.restrict Omega`.
+
+This is a conditional domination transfer only.  It does not prove exact
+passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, source-image equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
+Xhigh source/scope reviewer `Lorentz` recommended local bounded-density sector
+comparison as the real frontier and rejected global exact pushforward as
+premature.  Xhigh Lean/API reviewer `Carver` recommended this finite-scalar
+endpoint-sector theorem and bounded-density corollary as the smallest
+non-overclaiming next Lean target.
+
+Next source-moving frontier: prove the actual local theta-domain domination or
+bounded-density hypothesis from a passive-sector/reference measure model.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta sector-image support
 
 The passive theta endpoint sector-image support slice has landed across
