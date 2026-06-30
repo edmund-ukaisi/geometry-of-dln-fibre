@@ -88,7 +88,7 @@ bundled `LinearMap`s, NOT `Matrix.mulLeftLinearMap` which is absent at this pin)
 nReg = `(H0·r−r²)+r·H2` (`finrank_prod`+`finrank_matrix`+rank-nullity surjection); `finrank_le_of_injective`
 + `Submodule.finrank_mono`. NOT yet in the aggregator — controller wires DLNFibre.lean import + AxCheck.
 
-## STEP 1 route (the analytic-Jacobian ↔ jointDiffL2 tie) — UNBLOCKED, infra lemmas COMPILE
+## STEP 1 route (the analytic-Jacobian ↔ jointDiffL2 tie) — INFRA LANDED in-file @f9137587
 
 The chart's first-block derivative `DG(0)` reads the banked analytic gradient
 `prodAuxEntryDeriv H (gmapAt H v) 0 gmapDeriv 2 i j` (`hasStrictFDerivAt_lossEntry`). To feed step 2b's
@@ -98,8 +98,8 @@ rank bound to the chart, prove the ENTRY identity (target signature typechecks):
       = (jointDiffL2 H v ((paramsEquivFlatLinear H).symm δ)) i j
 
 ★ THE UNBLOCKER (the earlier timeout was a `show`-elaboration of the dependent-`Fin`-cast fold term;
-a `rfl`-stated `_succ` EQUATION lets `rw` fire it cheaply). THREE lemmas BUILT + COMPILE sorry-free
-(ready to paste into D1HChartRank after `import …Foundations.ParamsFlatLinear`):
+a `rfl`-stated `_succ` EQUATION lets `rw` fire it cheaply). THREE lemmas COMMITTED clean-three in
+`D1HChartRank.lean` @f9137587 (`import …Foundations.ParamsFlatLinear` already added; build green):
 - `prodAuxEntryDeriv_succ` — `prodAuxEntryDeriv … (k+1) i j = ∑ m, (prodAux … k i m • g' ⟨k,_⟩ (e1▸m)
   (e2▸j) + (cast layer)_{mj} • prodAuxEntryDeriv … k i m)`, proof `:= rfl` (carries `hk' hkL e1 e2` as
   args, matching the def's internal `have`s — supply by proof-irrelevance at the use-site). `rw` fires
