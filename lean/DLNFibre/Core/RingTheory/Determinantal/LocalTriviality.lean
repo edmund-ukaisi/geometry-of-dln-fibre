@@ -28,15 +28,18 @@ A Zariski-locally-trivial affine product over an open `U` carries exactly:
    `trivK : Away chartElt ≃ₐ[k] M` (for the transitions) + the over-base `fibreModel :
    StandardFibreChart` (the `≃ₐ[BaseLoc]` local product + flatness).
 
-The transition/cocycle compatibility is **NOT** a field. The pairwise round-trip
-`overlapTransition C D ≪≫ overlapTransition D C = refl` is a THEOREM that holds for ANY two
-`AtlasChart`s (`Algebra.AtlasChart.overlapTransition_trans_symm`, P2.c) — it is automatically
-satisfied, never a constraint to discharge. Adding it as a field the instance must fill by hand
-would be busy-work and would misrepresent the content. Instead the "atlas glues compatibly" content
-is recorded as a **derived lemma** about any such atlas — `overlapTransition_trans_symm` /
-`overlapTransition_symm` below — a PROVEN property of the predicate, not a field. So the predicate's
-content is faithfully "locally a product over a principal-open cover of `U`", with the cocycle as a
-free consequence.
+The transition/cocycle compatibility is **NOT** a field. Both the pairwise round-trip
+`overlapTransition C D ≪≫ overlapTransition D C = refl` and the triple cocycle
+`tripleTransition C D E ≪≫ tripleTransition D E C ≪≫ tripleTransition E C D = refl` are THEOREMS
+that hold for ANY two/three `AtlasChart`s (`Algebra.AtlasChart.overlapTransition_trans_symm`, P2.c;
+`tripleTransition_cocycle`, P2.f) — automatically satisfied by localization initiality, never
+constraints to discharge. Adding them as fields the instance must fill by hand would be busy-work
+and would misrepresent the content. Instead the "atlas glues compatibly" content is recorded as
+**derived lemmas** about any such atlas — `overlapTransition_trans_symm` / `overlapTransition_symm`
+/ `tripleTransition_cocycle` below — PROVEN properties of the predicate, not fields. So the
+predicate's content is faithfully "locally a product over a principal-open cover of `U`", with the
+2-fold inverse/round-trip and the canonical triple cocycle as free consequences. (The triple cocycle
+is for the canonical triple transitions; the naturality tie to the 2-fold transition is R1.)
 
 ## `name = content`: the open `U` is load-bearing
 
@@ -51,8 +54,19 @@ boundary lies in no chart). So `U` is part of the statement, not decoration: the
   family `chart : ι → AtlasFibreChart` (`ι` a field of the structure) + the cover hypothesis
   `cover : (⋃ i, D((chart i).chartElt)) = U`.
 * `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm` /
-  `…overlapTransition_symm` — the **derived** cocycle compatibility of the atlas (from P2.c), a
-  proven property, not a field.
+  `…overlapTransition_symm` — the **derived 2-fold** cocycle compatibility of the atlas (from P2.c),
+  a proven property, not a field.
+* `Algebra.IsZariskiLocallyTrivialAffineProduct.tripleTransition_cocycle` — the **derived triple**
+  cocycle (from P2.f): on a fixed triple overlap the three CANONICAL pivot-swap triple transitions
+  compose cyclically to the identity (`g_jl ∘ g_ij = g_il`), again a proven property, not a field.
+  These are the canonical triple transitions (built like `overlapTransition`); their identification
+  with the further-localized 2-fold `overlapTransition` (naturality) is a separate rung (R1), NOT
+  proved here — so this is NOT yet stated as the cocycle of the already-defined 2-fold transitions.
+
+So the atlas advertises: **cover** · **per-chart product** (the two fields) · **2-fold
+inverse/round-trip** (P2.c) · **canonical triple cocycle** (P2.f) — the last two as derived
+theorems (transitions are theorems, not fields). The remaining coherence step is the R1 naturality
+tie of the triple transition to the 2-fold one.
 
 The eventual Mathlib home is the algebraic-geometry / localization-atlas library, so the predicate
 lives in the bare `Algebra` namespace (L7 Mathlib-mirror), network-free over arbitrary `k`-algebras.
@@ -133,6 +147,27 @@ theorem overlapTransition_symm
       = (A.chart j).toAtlasChart.overlapTransition (A.chart i).toAtlasChart :=
   AtlasChart.overlapTransition_symm (A.chart i).toAtlasChart (A.chart j).toAtlasChart
 
+/-- **The triple-overlap cocycle of the atlas (derived, P2.f).** For any three charts `i, j, l` of a
+Zariski-locally-trivial affine product, the three canonical pivot-swap triple transitions on the
+fixed triple overlap `D((chart i).chartElt) ∩ D((chart j).chartElt) ∩ D((chart l).chartElt)`
+compose, around the cycle, to the identity — the standard cocycle condition `g_jl ∘ g_ij = g_il` (in
+cyclic form `g_{ij} ≫ g_{jl} ≫ g_{li} = 1`). This is `Algebra.AtlasChart.tripleTransition_cocycle`
+at `(chart i).toAtlasChart`, `(chart j).toAtlasChart`, `(chart l).toAtlasChart`. It is a PROVEN
+property of the predicate, not a field. The cocycle lives on the canonical triple transitions (built
+identically to `overlapTransition`); their identification with the further-localized 2-fold
+`overlapTransition` (naturality) is a separate rung (R1) — see `tripleTransition`'s scope note. -/
+theorem tripleTransition_cocycle
+    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (((A.chart i).toAtlasChart.tripleTransition (A.chart j).toAtlasChart
+          (A.chart l).toAtlasChart).trans
+        ((A.chart j).toAtlasChart.tripleTransition (A.chart l).toAtlasChart
+          (A.chart i).toAtlasChart)).trans
+      ((A.chart l).toAtlasChart.tripleTransition (A.chart i).toAtlasChart
+        (A.chart j).toAtlasChart)
+      = AlgEquiv.refl (R := k) :=
+  AtlasChart.tripleTransition_cocycle (A.chart i).toAtlasChart (A.chart j).toAtlasChart
+    (A.chart l).toAtlasChart
+
 /-! ## The two-worlds bridge view (AG-facing accessors)
 
 The predicate names a **ring/algebra** object, but it sits at the junction of two naming worlds,
@@ -163,11 +198,12 @@ names are correct, each in its own world.
 localized affine spectrum canonically corresponding to the chart's own basic open
 `D((chart i).chartElt)` — NOT all of `U`. A SINGLE GLOBAL fibration morphism `π : U → (base)` over
 all of `U` is NOT constructed here: it needs an actual gluing of the per-chart projections from
-their overlap-compatibility data (roadmap R1 / the P2.c′ target-side gluing), which this view does
-not build or prove. The view does NOT assert a global projection: it exposes exactly the chartwise
-picture the predicate proves (chartwise local triviality + the 2-fold overlap cocycle of
-`overlapTransition_trans_symm`). This is a renaming view — it adds no new data and no new
-theorems. -/
+their overlap-compatibility data (roadmap R1: the triple-overlap NATURALITY tying
+`tripleTransition` to the further-localized 2-fold `overlapTransition`), which this view does not
+build or prove. The view does NOT assert a global projection: it exposes exactly the chartwise
+picture the predicate proves (chartwise local triviality + the 2-fold cocycle
+`overlapTransition_trans_symm` and the canonical triple cocycle `tripleTransition_cocycle`). This is
+a renaming view — it adds no new data and no new theorems. -/
 
 section FibrationView
 

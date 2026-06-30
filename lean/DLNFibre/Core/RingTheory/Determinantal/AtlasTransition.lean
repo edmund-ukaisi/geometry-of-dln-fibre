@@ -50,16 +50,26 @@ DIRECTION `BaseLoc` of the fibre model. A chart element is always `: Base`, neve
   side: the `k`-algebra iso `targetChartLoc C D ≃ₐ[k] targetChartLoc D C`, the explicit
   change-of-coordinates between the two trivialized presentations of the overlap, obtained by
   conjugating `chartOverlapTransitionK` through the two base→target transports.
+* `Algebra.AtlasChart.overlapTransition_trans_symm` / `…_symm` — the **2-fold cocycle**: the
+  target-side pairwise round-trip is the identity (P2.c), by the `AlgEquiv` groupoid laws.
+* `Algebra.AtlasChart.targetTripleLoc C D E` / `tripleTriv` / `chartTripleTransitionK` /
+  `tripleTransition` — the **triple-overlap** layer: the symmetric pivot-`C` triple presentation
+  (the chart localized at the PRODUCT `D.chartElt * E.chartElt` of the two non-pivot elements), its
+  base→target transport, the base-side pivot-swap triple transition, and the canonical target-side
+  triple transition `tripleTransition C D E : targetTripleLoc C D E ≃ₐ[k] targetTripleLoc D E C`.
+* `Algebra.AtlasChart.tripleTransition_cocycle` — the **triple cocycle** (P2.f): the cyclic
+  composite of the three pivot-swap triple transitions on a fixed triple is the identity (standard
+  form `g_jk ∘ g_ij = g_ik`), by the same conjugation/groupoid collapse one denominator up.
 * `Algebra.AtlasFibreChart …` — `AtlasChart` paired with the over-base `StandardFibreChart` (the
   capstone's per-chart fibre model), with the same `chartElt`.
 
-**Scope.** This builds the transition OBJECTS + their basic identities (the base-side round-trip
-`chartOverlapTransitionK_trans_symm`). The **cocycle compatibility** (the target-side round-trip
-`overlapTransition C D ≪≫ overlapTransition D C = refl`, and triple-overlap associativity) is NOT
-proved here — the transitions are set up (stable `AlgEquiv.trans` parenthesization + the base-side
-round-trip named) so the cocycle is reachable via the `AlgEquiv` groupoid laws
-(`AlgEquiv.trans_assoc`/`trans_refl`/`refl_trans`) without entering localization elements, but the
-cocycle proof is a separate rung.
+**Scope.** This builds the transition OBJECTS + the cocycle COMPATIBILITIES (the 2-fold round-trip
+`overlapTransition_trans_symm`, P2.c; the triple cocycle `tripleTransition_cocycle`, P2.f) — both by
+the `AlgEquiv` groupoid laws without entering localization elements. What is NOT proved here is the
+**naturality** tying the triple transition to the further-localization of the 2-fold
+`overlapTransition` (the symmetric triple localizes at the PRODUCT `D·E`, the 2-fold at `D` alone,
+so the tie needs the `Away.mul'` refinement + a compatibility lemma — roadmap R1). The cocycle is
+the cocycle of the CANONICAL triple transitions, which are built identically to `overlapTransition`.
 
 The eventual home is the localization-atlas library, so the data live in the bare `Algebra`
 namespace (L7 Mathlib-mirror), network-free over arbitrary `k`-algebras.
@@ -202,6 +212,180 @@ theorem overlapTransition_symm (C D : AtlasChart k Base M) :
   rw [← AlgEquiv.trans_refl (overlapTransition C D).symm,
     ← overlapTransition_trans_symm C D, ← AlgEquiv.trans_assoc,
     AlgEquiv.symm_trans_self, AlgEquiv.refl_trans]
+
+/-! ## The triple overlap, its symmetric target presentation, and the triple cocycle
+
+The triple-overlap presentations are indexed `(pivot, other, other)` and made **symmetric in the
+two non-pivot charts**: `targetTripleLoc C D E` is the chart-`C` presentation of the triple overlap
+`D(C.chartElt) ∩ D(D.chartElt) ∩ D(E.chartElt)`, localized at the PRODUCT `D.chartElt * E.chartElt`
+of the other two elements (not nested `D` then `E`). This symmetry is what makes the standard
+**pairwise-swap-on-a-fixed-triple** cocycle `g_jk ∘ g_ij = g_ik` well-typed: each transition swaps
+the pivot on the fixed triple `{C, D, E}`, so `targetTripleLoc C D E → targetTripleLoc D C E →
+targetTripleLoc E C D → targetTripleLoc C D E` has matching composition targets, AND the further
+localization of the 2-fold `overlapTransition C D` lands on the same `targetTripleLoc D C E` (the
+naturality `overlapTransition_restrict_to_triple`, below). The asymmetric nested-`D`-then-`E`
+presentation makes neither of these type. -/
+
+/-- **The product of the two non-pivot chart elements, localized into the pivot-`C` total ring.**
+`algebraMap Base (Localization.Away C.chartElt) (D.chartElt * E.chartElt)` — the element of the
+pivot-`C` chart total ring whose inversion cuts the rest of the triple overlap
+`D(C.chartElt) ∩ D(D.chartElt) ∩ D(E.chartElt)`. Localizing at the PRODUCT keeps the construction
+symmetric in the non-pivot charts `D, E`. Its `Localization.Away` is the localization of `Base` at
+`C.chartElt * (D.chartElt * E.chartElt)` (`IsLocalization.Away.mul'`). `@[reducible]` so the
+`Localization.Away` instance fires at the unfolded `algebraMap` form (needed by `Away.mul'`). -/
+@[reducible] noncomputable def tripleElt (C D E : AtlasChart k Base M) :
+    Localization.Away C.chartElt :=
+  algebraMap Base (Localization.Away C.chartElt) (D.chartElt * E.chartElt)
+
+/-- **The base-side triple-overlap ring as a localization of `Base` at the triple element.** The
+pivot-`C` triple overlap `Localization.Away (tripleElt C D E)` is the localization of `Base` at
+**any** `x = C.chartElt * D.chartElt * E.chartElt` (any reordering): instance-wise it is
+`IsLocalization.Away (C.chartElt * (D.chartElt * E.chartElt))`, realigned to `x` by
+`IsLocalization.Away.of_associated`. This is the explicit common-submonoid instance the cyclic
+cocycle consumes — every pivot presentation localizes `Base` at the same `powers (C·D·E)`. -/
+theorem isLocalization_tripleElt (C D E : AtlasChart k Base M) {x : Base}
+    (hx : x = C.chartElt * D.chartElt * E.chartElt) :
+    IsLocalization (Submonoid.powers x) (Localization.Away (tripleElt C D E)) := by
+  haveI : IsLocalization.Away (C.chartElt * (D.chartElt * E.chartElt))
+      (Localization.Away (tripleElt C D E)) :=
+    IsLocalization.Away.mul' (Localization.Away C.chartElt)
+      (Localization.Away (tripleElt C D E)) C.chartElt (D.chartElt * E.chartElt)
+  have hassoc : Associated (C.chartElt * (D.chartElt * E.chartElt)) x := by
+    rw [hx, mul_assoc]
+  exact IsLocalization.Away.of_associated (S := Localization.Away (tripleElt C D E)) hassoc
+
+/-- **The chart-`C` (symmetric) target presentation of the triple overlap.** The model `M`'s
+pivot-`C` chart trivialization localized at the image, under `C.trivK`, of the non-pivot product
+element `tripleElt C D E` — the triple-localized object on which the target-side triple transition
+lives. Symmetric in the non-pivot charts `D, E` (it localizes at the product `D.chartElt *
+E.chartElt`). `@[reducible]` so its `CommRing` / `Algebra k` instances fire transparently. -/
+@[reducible] noncomputable def targetTripleLoc (C D E : AtlasChart k Base M) : Type u :=
+  Localization.Away (C.trivK (tripleElt C D E))
+
+/-- **The base→target transport of the chart-`C` triple-overlap presentation.** The generalized
+localization transport `Localization.awayCongr'` of the chart-`C` trivialization `C.trivK`, carrying
+the base-side triple overlap `Localization.Away (tripleElt C D E)` to the chart-`C` target
+presentation `targetTripleLoc C D E`. The exact analogue of `overlapTriv` (which transports the
+2-fold overlap through `C.trivK`), one denominator further. -/
+noncomputable def tripleTriv (C D E : AtlasChart k Base M) :
+    Localization.Away (tripleElt C D E) ≃ₐ[k] targetTripleLoc C D E :=
+  Localization.awayCongr' C.trivK (tripleElt C D E) (C.trivK (tripleElt C D E)) rfl
+
+/-- **The base-side triple transition between two pivot presentations on a fixed triple, restricted
+to `k`.** The canonical localization iso `IsLocalization.algEquiv` between the pivot-`C`
+presentation `Localization.Away (tripleElt C D E)` and the pivot-`D` presentation
+`Localization.Away (tripleElt D E C)` of the SAME triple overlap `{C, D, E}` (both localizations of
+`Base` at `powers (C.chartElt * D.chartElt * E.chartElt)`, `isLocalization_tripleElt`),
+`k`-restricted along the tower `k → Base → Away`. The pivot moves `C → D`; the non-pivot args are
+written `E C` so
+the three cyclic transitions chain with matching targets (`targetTripleLoc` is symmetric in its two
+non-pivot args, so the order there is immaterial to the overlap — only to type-level chaining). -/
+noncomputable def chartTripleTransitionK (C D E : AtlasChart k Base M) :
+    Localization.Away (tripleElt C D E) ≃ₐ[k] Localization.Away (tripleElt D E C) := by
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  haveI := isLocalization_tripleElt D E C (x := C.chartElt * D.chartElt * E.chartElt) (by ring)
+  exact (IsLocalization.algEquiv (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+    (Localization.Away (tripleElt C D E))
+    (Localization.Away (tripleElt D E C))).restrictScalars k
+
+/-- **The canonical triple-overlap transition (pivot swap on a fixed triple).** The
+change-of-coordinates between the pivot-`C` and pivot-`D` target presentations
+`targetTripleLoc C D E` and `targetTripleLoc D E C` of the SAME triple overlap
+`D(C.chartElt) ∩ D(D.chartElt) ∩ D(E.chartElt)`, obtained by conjugating the base-side triple
+transition `chartTripleTransitionK C D E` through the two base→target transports `tripleTriv` —
+constructed identically to the 2-fold `overlapTransition` (conjugate the canonical base localization
+transition through the canonical trivialization transports), one denominator further. Parenthesized
+as `(tripleTriv C D E).symm ≪≫ (chartTripleTransitionK C D E ≪≫ tripleTriv D E C)` so the cocycle is
+reachable by the `AlgEquiv` groupoid laws.
+
+**Scope (name = content).** This is the CANONICAL triple transition of the two charts (the unique
+`k`-restriction of the localization iso between the two triple presentations). It is NOT proved here
+to coincide with the further-localization of the 2-fold `overlapTransition C D`: the symmetric
+triple `targetTripleLoc C D E` localizes the pivot-`C` chart at the PRODUCT
+`D.chartElt * E.chartElt`, whereas `targetChartLoc C D` localizes at `D.chartElt` alone, so the tie
+needs the `Away.mul'` refinement iso `Away (d * e) ≃ (Away d) away e` plus a
+transition-compatibility lemma — a separate naturality rung (roadmap R1). The cocycle below is the
+cocycle of THESE canonical triple transitions, on the triple overlap. -/
+noncomputable def tripleTransition (C D E : AtlasChart k Base M) :
+    targetTripleLoc C D E ≃ₐ[k] targetTripleLoc D E C :=
+  (tripleTriv C D E).symm.trans
+    ((chartTripleTransitionK C D E).trans (tripleTriv D E C))
+
+/-! ## The triple-overlap cocycle on the target/model side -/
+
+/-- **The base-side triple cocycle, restricted to `k`.** The cyclic composite of the three base-side
+pivot-swap triple transitions `chartTripleTransitionK C D E` (pivot `C → D`),
+`chartTripleTransitionK D E C` (pivot `D → E`), `chartTripleTransitionK E C D` (pivot `E → C`) on
+the fixed triple `{C, D, E}` is the identity on `Localization.Away (tripleElt C D E)`. Automatic by
+localization initiality: it is a `Base`-algebra endo of the localization, whose only such endo is
+`id` (`IsLocalization.algHom_subsingleton`). -/
+theorem chartTripleTransitionK_cocycle (C D E : AtlasChart k Base M) :
+    ((chartTripleTransitionK C D E).trans (chartTripleTransitionK D E C)).trans
+        (chartTripleTransitionK E C D)
+      = AlgEquiv.refl (R := k) := by
+  -- The cyclic composite is the `k`-restriction of a composite of `Base`-algebra isos; that
+  -- `Base`-algebra composite is an endo of `Localization.Away (tripleElt C D E)`, whose only
+  -- `Base`-algebra endo is `id`. Each edge is realigned to the common submonoid `powers (C·D·E)`,
+  -- so the unrestricted composite is `refl`, and `restrictScalars` preserves it.
+  -- Mirror, per edge, the SAME submonoid `chartTripleTransitionK X Y Z` uses internally
+  -- (`powers (X·Y·Z)`): supply `IsLocalization` of both endpoints at that submonoid (source by
+  -- `rfl`, target realigned `by ring`). Then `hbase`'s edges match the unfolded goal's edges
+  -- termwise — no submonoid-label mismatch.
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  haveI := isLocalization_tripleElt D E C (x := C.chartElt * D.chartElt * E.chartElt) (by ring)
+  haveI := isLocalization_tripleElt D E C (x := D.chartElt * E.chartElt * C.chartElt) rfl
+  haveI := isLocalization_tripleElt E C D (x := D.chartElt * E.chartElt * C.chartElt) (by ring)
+  haveI := isLocalization_tripleElt E C D (x := E.chartElt * C.chartElt * D.chartElt) rfl
+  haveI := isLocalization_tripleElt C D E (x := E.chartElt * C.chartElt * D.chartElt) (by ring)
+  have hbase :
+      (((IsLocalization.algEquiv (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+            (Localization.Away (tripleElt C D E))
+            (Localization.Away (tripleElt D E C))).trans
+          (IsLocalization.algEquiv (Submonoid.powers (D.chartElt * E.chartElt * C.chartElt))
+            (Localization.Away (tripleElt D E C))
+            (Localization.Away (tripleElt E C D)))).trans
+        (IsLocalization.algEquiv (Submonoid.powers (E.chartElt * C.chartElt * D.chartElt))
+          (Localization.Away (tripleElt E C D))
+          (Localization.Away (tripleElt C D E))))
+        = AlgEquiv.refl (R := Base) :=
+    have : Subsingleton
+        (Localization.Away (tripleElt C D E) →ₐ[Base] Localization.Away (tripleElt C D E)) :=
+      IsLocalization.algHom_subsingleton (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+    AlgEquiv.coe_algHom_injective (Subsingleton.elim _ _)
+  refine AlgEquiv.ext (fun x ↦ ?_)
+  have hpt := AlgEquiv.ext_iff.mp hbase x
+  simp only [chartTripleTransitionK, AlgEquiv.trans_apply, AlgEquiv.restrictScalars_apply,
+    AlgEquiv.coe_refl, id_eq] at hpt ⊢
+  -- Each edge of `chartTripleTransitionK X Y Z` is `IsLocalization.algEquiv` at `powers (X·Y·Z)`,
+  -- matching the corresponding edge of `hbase` termwise.
+  exact hpt
+
+/-- **The target-side triple cocycle (standard pivot-swap form `g_jk ∘ g_ij = g_ik`).** On the fixed
+triple overlap `D(C.chartElt) ∩ D(D.chartElt) ∩ D(E.chartElt)`, the three pivot-swap atlas
+transitions `tripleTransition C D E` (pivot `C → D`), `tripleTransition D E C` (pivot `D → E`),
+`tripleTransition E C D` (pivot `E → C`) compose, around the cycle, to the identity on
+`targetTripleLoc C D E` — the genuine cocycle condition (in cyclic form `g_{CD} ≫ g_{DE} ≫ g_{EC} =
+1`, equivalently `g_{DE} ∘ g_{CD} = (g_{EC})⁻¹ = g_{CE}` on the triple). The composite collapses by
+the `AlgEquiv` groupoid laws WITHOUT entering localization elements: the inner `tripleTriv`
+round-trips cancel, then the base-side cocycle `chartTripleTransitionK_cocycle` collapses the
+middle, then the outer `(tripleTriv C D E).symm ≪≫ tripleTriv C D E = refl`. -/
+theorem tripleTransition_cocycle (C D E : AtlasChart k Base M) :
+    ((tripleTransition C D E).trans (tripleTransition D E C)).trans
+        (tripleTransition E C D)
+      = AlgEquiv.refl (R := k) := by
+  -- Conjugation collapse: re-associate, cancel each adjacent `tripleTriv`/`tripleTriv.symm` pair
+  -- (the inner round-trips), then the base-side cocycle collapses the middle and the outer
+  -- `tripleTriv` round-trip closes it. No localization elements are entered.
+  simp only [tripleTransition, AlgEquiv.trans_assoc]
+  rw [← AlgEquiv.trans_assoc (tripleTriv D E C) (tripleTriv D E C).symm,
+    AlgEquiv.self_trans_symm, AlgEquiv.refl_trans,
+    ← AlgEquiv.trans_assoc (tripleTriv E C D) (tripleTriv E C D).symm,
+    AlgEquiv.self_trans_symm, AlgEquiv.refl_trans,
+    ← AlgEquiv.trans_assoc (chartTripleTransitionK D E C) (chartTripleTransitionK E C D),
+    ← AlgEquiv.trans_assoc (chartTripleTransitionK C D E)
+      ((chartTripleTransitionK D E C).trans (chartTripleTransitionK E C D)),
+    ← AlgEquiv.trans_assoc (chartTripleTransitionK C D E) (chartTripleTransitionK D E C),
+    chartTripleTransitionK_cocycle, AlgEquiv.refl_trans, AlgEquiv.symm_trans_self]
 
 end AtlasChart
 
