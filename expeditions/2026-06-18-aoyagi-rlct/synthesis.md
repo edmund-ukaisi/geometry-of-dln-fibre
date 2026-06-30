@@ -6,6 +6,69 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Passive Theta Source-Image Jacobian Bridge - 2026-06-30
+
+The source-image/Jacobian connection now has a precise consumer theorem.  If
+
+```text
+sourceImageBase = Measure.map sourceChart (baseJ.restrict W),
+```
+
+then a locally bounded density `sourceImageDensity` on `sourceImageBase`
+feeds into the retained-passive residual-source hypotheses for
+
+```text
+sourceImageBase.withDensity sourceImageDensity.
+```
+
+New Lean name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+The proof is elementary measure bookkeeping.  Apply the existing theta-domain
+Jacobian bounded-density theorem to
+`sourceImageDensity ∘ sourceChart`; pull the a.e. bound back from
+`Measure.map sourceChart (baseJ.restrict W)` using `ae_of_ae_map`; rewrite the
+pushforward by `restrict_withDensity` and the map-with-density composition
+identity.  The conclusion is local-source support, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn` for the source-image
+`withDensity` measure.
+
+This theorem deliberately keeps the actual source-prior density identity out
+of scope.  Xhigh scout `Mencius` confirmed that passive theta alone does not
+represent the full original DLN prior; the missing theorem must include the
+p.13 regular variables.  Xhigh scout `Halley` confirmed that this consumer is
+the smallest useful non-wrapper bridge between the source-image and
+Jacobian-measure layers.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-jacobian-bridge.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-jacobian-bridge.md
+threads/03-block-product-reduction/review-a2-passive-theta-source-image-jacobian-bridge.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_source_image_jacobian_axioms.lean
+```
+
+Axiom probe for the new public theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no arbitrary external
+measure domination, no Haar transport, no source-rank coverage, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## Latest A2 Passive Theta Source-Image Bounded-Density Pullback - 2026-06-30
 
 The source-prior bridge now has the honest bounded-density socket on the

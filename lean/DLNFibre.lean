@@ -583,3 +583,4 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaProductMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaJacobianMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge

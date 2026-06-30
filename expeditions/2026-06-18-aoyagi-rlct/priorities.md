@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 passive theta source-image Jacobian bridge
+
+The next honest source-image/Jacobian bridge is a consumer, not a
+source-prior transport theorem.  Lean now proves that a locally bounded
+density on the chart-produced source-image base
+
+```text
+sourceImageBase = Measure.map sourceChart (baseJ.restrict W)
+```
+
+feeds into the existing retained-passive residual-source hypotheses for
+
+```text
+sourceImageBase.withDensity sourceImageDensity.
+```
+
+New public name:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+The proof converts `sourceImageDensity` to the theta-domain density
+`sourceImageDensity ∘ sourceChart`, pulls the source-image a.e. bound back by
+`ae_of_ae_map`, and identifies the pushed theta-domain `withDensity` measure
+with the source-image `withDensity` measure by the map-with-density
+composition identity.
+
+This is the right downstream socket once a true source-prior transport theorem
+supplies the density.  It still does not prove that the original DLN prior is
+this source-image measure.  Xhigh scout `Mencius` confirmed that the full
+source-prior theorem must include the p.13 regular variables; passive theta
+alone is insufficient.
+
 ## Latest controller decision - 2026-06-30, A2 passive theta automatic readback measurability
 
 The bounded-density source-image socket no longer needs a caller-supplied

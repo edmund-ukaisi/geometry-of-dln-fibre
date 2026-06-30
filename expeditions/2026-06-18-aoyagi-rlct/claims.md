@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, passive theta source-image Jacobian bridge,
+  2026-06-30.** Lean now proves a downstream source-image consumer theorem in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean`.
+  The public theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass`
+  takes a locally bounded density on
+  `Measure.map sourceChart (baseJ.restrict W)` and proves local-source support,
+  a.e. residual square-sum positivity, and `residualNegPowerIntegrableOn` for
+  the source-image `withDensity` measure.  The proof reduces to the existing
+  theta-domain Jacobian bounded-density theorem using `ae_of_ae_map`,
+  `restrict_withDensity`, and the map-with-density composition identity.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-jacobian-bridge.md`,
+  `threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-jacobian-bridge.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-passive-theta-source-image-jacobian-bridge.md`.
+  Nonclaims: no original/source prior density identity, no arbitrary
+  external-measure domination, no passive-theta-only full p.13 prior transport,
+  no Haar transport, no source-rank coverage, normal crossings, pole order, or
+  RLCT extraction.
 - **Current status addendum, Case 2 passive theta global Jacobian-weighted
   single-open wrapper, 2026-06-30.** Lean now repackages the Jacobian-weighted
   residual-source theorem with a single open neighborhood in

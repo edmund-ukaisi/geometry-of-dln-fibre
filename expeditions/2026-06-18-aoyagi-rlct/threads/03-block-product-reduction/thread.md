@@ -21,6 +21,65 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 passive theta source-image Jacobian bridge
+
+Reproduction:
+`reproduction-a2-passive-theta-source-image-jacobian-bridge.md`.
+Statement card:
+`statement-card-a2-passive-theta-source-image-jacobian-bridge.md`.
+Review:
+`review-a2-passive-theta-source-image-jacobian-bridge.md`, PASS by controller
+review after xhigh scouts `Halley` and `Mencius`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+```
+
+The theorem consumes a density on the chart-produced source-image base
+
+```text
+sourceImageBase = Measure.map sourceChart (baseJ.restrict W)
+```
+
+and proves local-source support, a.e. residual square-sum positivity, and
+`residualNegPowerIntegrableOn` for
+`sourceImageBase.withDensity sourceImageDensity`, assuming the local
+source-image density is a.e.-measurable and bounded and `sourceChart` is
+a.e.-measurable for `baseJ.restrict W`.
+
+The proof applies the existing theta-domain Jacobian bounded-density theorem
+to `sourceImageDensity ∘ sourceChart`.  The source-image a.e. bound pulls back
+by `ae_of_ae_map`, and `restrict_withDensity` plus the standard
+map-with-density composition identity identifies the resulting pushforward
+with `sourceImageBase.withDensity sourceImageDensity`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_source_image_jacobian_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no domination for
+arbitrary external measures, no passive-theta-only representation of the full
+p.13 source prior, no Haar transport, no source-rank coverage, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 passive theta automatic readback measurability
 
 Reproduction:
