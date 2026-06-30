@@ -6,7 +6,7 @@
 > triple transitions is the identity).
 >
 > - **Lean:** `Algebra.AtlasChart.tripleTransition_cocycle`
->   (`lean/DLNFibre/Core/RingTheory/Determinantal/AtlasTransition.lean` @ `b255f3d9`),
+>   (`lean/DLNFibre/Core/RingTheory/Determinantal/AtlasTransition.lean` @ `93e998e6`),
 >   surfaced on the predicate as
 >   `Algebra.IsZariskiLocallyTrivialAffineProduct.tripleTransition_cocycle`
 >   (`lean/DLNFibre/Core/RingTheory/Determinantal/LocalTriviality.lean`).
@@ -40,4 +40,5 @@
 >   triple object (localize at the non-pivot product) to make the standard pivot-swap cocycle
 >   well-typed with matching composition targets. Decorrelated Codex confirmed conjugation sound,
 >   target-side subsingleton-on-`M` unsound, orientation faithful.
-> - **Status.** sorry-free (awaiting fidelity review)
+> - **Status.** sorry-free + reviewed (fidelity reviewer approved the statements/names/proofs as
+>   faithful + honest Proved/Deferred split; one docstring overclaim found and fixed @ `93e998e6`).
