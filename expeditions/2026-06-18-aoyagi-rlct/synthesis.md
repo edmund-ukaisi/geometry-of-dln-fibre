@@ -6,6 +6,51 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Recurrence Case 2 Branch Progress - 2026-06-30
+
+`SelectedEntryBranchProgressBridge.lean` now lifts the displayed Case 2
+branch-progress bridge to recurrence-aware branch states:
+
+```text
+AoyagiRecurrenceBranchState.case2DisplayedActiveGuard
+selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData
+selectedEntryCase2DisplayedRecurrenceContinuingBranchProgressData
+```
+
+The extra recurrence field is not synthesized.  The bridge takes supplied
+child recurrence data for each continuing branch:
+
+```text
+childRecurrence :
+  forall s, sourceProduction.continuingGuard s ->
+    IntroducedLabelRecurrenceState L n s.S (s.J+1) alpha
+```
+
+and chooses
+
+```text
+sameStageChildWithRecurrence s (childRecurrence s h)
+```
+
+as the continuing child.  The decreasing step is the existing combined
+recurrence theorem
+`AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_prefixBound`.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-recurrence-case2-branch-progress.md
+threads/04-blow-up-certificate/statement-card-a4-recurrence-case2-branch-progress.md
+```
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Avicenna` and xhigh Lean/API reviewer `Bernoulli` returned PASS.
+
+Boundary: this constructs no recurrence data, source-production payloads,
+branch guards, terminal payloads, chart construction, analytic atlas fields,
+normal crossings, pole order, or RLCT.
+
 ## Latest A4 Recurrence Branch Termination Data - 2026-06-30
 
 `SelectedEntryBranchProgressBridge.lean` now exposes the combined recurrence

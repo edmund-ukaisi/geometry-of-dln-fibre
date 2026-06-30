@@ -2847,6 +2847,32 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, recurrence-aware Case 2 branch progress,
+  2026-06-30.** Lean now lifts the displayed Case 2 selected-entry
+  branch-progress bridge to the recurrence-aware branch state via
+  `AoyagiRecurrenceBranchState.case2DisplayedActiveGuard`,
+  `selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData`, and
+  `selectedEntryCase2DisplayedRecurrenceContinuingBranchProgressData` in
+  `lean/DLNFibre/DLN/Aoyagi/SelectedEntryBranchProgressBridge.lean`.  The
+  adapter takes supplied child recurrence data
+  `childRecurrence s h : IntroducedLabelRecurrenceState L n s.S (s.J+1) alpha`
+  for each continuing branch, chooses
+  `sameStageChildWithRecurrence s (childRecurrence s h)` as the continuing
+  child, and proves the selected-entry `continuing_child_step` with
+  `AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_prefixBound`.
+  Reproduction and statement card are at
+  `threads/04-blow-up-certificate/reproduction-a4-recurrence-case2-branch-progress.md`
+  and
+  `threads/04-blow-up-certificate/statement-card-a4-recurrence-case2-branch-progress.md`,
+  and
+  `threads/04-blow-up-certificate/review-a4-recurrence-case2-branch-progress.md`.
+  Focused local build, direct warning check, full local build, no-sorry audit,
+  whitespace check, and direct axiom probe passed; the new declarations report
+  only `[propext, Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer
+  `Avicenna` and xhigh Lean/API reviewer `Bernoulli` returned PASS.  This
+  constructs no recurrence data, source-production payloads, branch guards,
+  terminal payloads, chart construction, analytic atlas fields, normal
+  crossings, pole order, or RLCT.
 - **Current status addendum, recurrence branch termination data,
   2026-06-30.** Lean now exposes the recurrence-aware progress relation through
   the selected-entry termination socket via

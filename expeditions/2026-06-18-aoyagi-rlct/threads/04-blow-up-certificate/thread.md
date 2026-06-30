@@ -21,6 +21,31 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean recurrence-aware Case 2 branch progress
+
+Reproduction:
+`reproduction-a4-recurrence-case2-branch-progress.md`.
+Statement card:
+`statement-card-a4-recurrence-case2-branch-progress.md`.
+
+Lean now lifts the displayed Case 2 branch-progress bridge to recurrence-aware
+branch states:
+
+```text
+AoyagiRecurrenceBranchState.case2DisplayedActiveGuard
+selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData
+selectedEntryCase2DisplayedRecurrenceContinuingBranchProgressData
+```
+
+The bridge takes supplied child recurrence data for continuing branches and
+chooses `sameStageChildWithRecurrence` as the continuing child.  It constructs
+no recurrence data, source-production payloads, branch guards, terminal
+payloads, chart construction, analytic atlas fields, normal crossings, pole
+order, or RLCT.
+
+Focused build, direct Lean warning check, full local build, no-sorry audit,
+whitespace check, axiom probe, and xhigh reviews passed.
+
 ## 2026-06-30 Lean recurrence branch termination data
 
 Reproduction:

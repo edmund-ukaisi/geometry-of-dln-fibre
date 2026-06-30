@@ -61,6 +61,16 @@ def case2DisplayedActiveGuard {L : ℕ} {n : ℕ → ℕ}
 
 end AoyagiIntroducedLabelBranchState
 
+namespace AoyagiRecurrenceBranchState
+
+/-- Displayed Case 2 active branch guard on recurrence-aware branch states:
+the selected pivot `(J+1,J+1)` is within the current residual block. -/
+def case2DisplayedActiveGuard {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : Prop :=
+  s.J + 1 ≤ prefixMinNat n (s.S + 1)
+
+end AoyagiRecurrenceBranchState
+
 /-- Displayed Case 2 branch-progress data from the pivot-validity bound.
 
 This assumes the supplied source-production guards cover the displayed active
@@ -127,6 +137,92 @@ def selectedEntryCase2DisplayedContinuingBranchProgressData
       intro s h
       have hnext := hguard s h
       dsimp [AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard] at hnext
+      omega)
+
+/-- Recurrence-aware displayed Case 2 branch-progress data from the
+pivot-validity bound.
+
+This is the recurrence-state analogue of
+`selectedEntryCase2DisplayedPrefixBoundBranchProgressData`.  It requires
+explicit child recurrence data for continuing branches; the bridge constructs
+no recurrence data or source-production payload. -/
+def selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData
+    {Param R : Type*} [CommMonoid R] [TopologicalSpace Param]
+    {C : AoyagiNormalCrossingChartCertificate.{uAtlas} Param R}
+    {ctx : SelectedEntryAnalyticAtlasContext C}
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*} {hL : 1 ≤ L}
+    (initialRecurrence : IntroducedLabelRecurrenceState L n 1 0 α)
+    (sourceProduction :
+      SelectedEntryAtlasProducedBranchData ctx
+        (AoyagiRecurrenceBranchState L n α))
+    (childRecurrence :
+      ∀ (s : AoyagiRecurrenceBranchState L n α)
+        (_h : sourceProduction.continuingGuard s),
+        IntroducedLabelRecurrenceState L n s.S (s.J + 1) α)
+    (hcomplete :
+      ∀ s : AoyagiRecurrenceBranchState L n α,
+        AoyagiRecurrenceBranchState.case2DisplayedActiveGuard s →
+          sourceProduction.continuingGuard s ∨
+            sourceProduction.actualWidthStoppedGuard s ∨
+              sourceProduction.rowExhaustedStoppedGuard s)
+    (hbound :
+      ∀ (s : AoyagiRecurrenceBranchState L n α)
+        (_h : sourceProduction.continuingGuard s),
+        s.J + 1 ≤ prefixMinNat n (s.S + 1)) :
+    SelectedEntryAtlasBranchProgressData sourceProduction
+      (selectedEntryRecurrenceBranchTerminationData
+        C L n α hL initialRecurrence) where
+  activeGuard := AoyagiRecurrenceBranchState.case2DisplayedActiveGuard
+  guards_complete := hcomplete
+  continuingChild :=
+    fun s h ↦
+      AoyagiRecurrenceBranchState.sameStageChildWithRecurrence s
+        (childRecurrence s h)
+  continuing_child_step := by
+    intro s h
+    simpa [selectedEntryRecurrenceBranchTerminationData] using
+      AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_prefixBound
+        s (childRecurrence s h) (hbound s h)
+
+/-- Recurrence-aware displayed Case 2 branch-progress data from the displayed
+continuing guard.
+
+This assumes supplied child recurrence data for continuing branches and that
+each continuing branch satisfies Aoyagi's displayed Case 2 continuing guard. -/
+def selectedEntryCase2DisplayedRecurrenceContinuingBranchProgressData
+    {Param R : Type*} [CommMonoid R] [TopologicalSpace Param]
+    {C : AoyagiNormalCrossingChartCertificate.{uAtlas} Param R}
+    {ctx : SelectedEntryAnalyticAtlasContext C}
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*} {hL : 1 ≤ L}
+    (initialRecurrence : IntroducedLabelRecurrenceState L n 1 0 α)
+    (sourceProduction :
+      SelectedEntryAtlasProducedBranchData ctx
+        (AoyagiRecurrenceBranchState L n α))
+    (childRecurrence :
+      ∀ (s : AoyagiRecurrenceBranchState L n α)
+        (_h : sourceProduction.continuingGuard s),
+        IntroducedLabelRecurrenceState L n s.S (s.J + 1) α)
+    (hcomplete :
+      ∀ s : AoyagiRecurrenceBranchState L n α,
+        AoyagiRecurrenceBranchState.case2DisplayedActiveGuard s →
+          sourceProduction.continuingGuard s ∨
+            sourceProduction.actualWidthStoppedGuard s ∨
+              sourceProduction.rowExhaustedStoppedGuard s)
+    (hguard :
+      ∀ (s : AoyagiRecurrenceBranchState L n α)
+        (_h : sourceProduction.continuingGuard s),
+        AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard
+          s.toIntroducedState) :
+    SelectedEntryAtlasBranchProgressData sourceProduction
+      (selectedEntryRecurrenceBranchTerminationData
+        C L n α hL initialRecurrence) :=
+  selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData
+    (C := C) (ctx := ctx) (L := L) (n := n) (α := α) (hL := hL)
+    initialRecurrence sourceProduction childRecurrence hcomplete (by
+      intro s h
+      have hnext := hguard s h
+      dsimp [AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard,
+        AoyagiRecurrenceBranchState.toIntroducedState] at hnext
       omega)
 
 end Aoyagi

@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 recurrence Case 2 branch progress
+
+The displayed Case 2 branch-progress bridge is now lifted to the
+recurrence-aware branch state:
+
+```text
+AoyagiRecurrenceBranchState.case2DisplayedActiveGuard
+selectedEntryCase2DisplayedRecurrencePrefixBoundBranchProgressData
+selectedEntryCase2DisplayedRecurrenceContinuingBranchProgressData
+```
+
+The child recurrence update is deliberately supplied:
+
+```text
+childRecurrence :
+  forall s, sourceProduction.continuingGuard s ->
+    IntroducedLabelRecurrenceState L n s.S (s.J+1) alpha
+```
+
+The bridge chooses the continuing child
+`sameStageChildWithRecurrence s (childRecurrence s h)` and proves the
+selected-entry `continuing_child_step` by
+`sameStageChildWithRecurrence_progress_of_prefixBound`.
+
+This is only branch-progress packaging for supplied source-production guards
+and supplied recurrence child data.  It constructs no recurrence data,
+source-production payloads, branch guards, terminal payloads, chart
+construction, analytic atlas fields, normal crossings, pole order, or RLCT.
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Avicenna` and xhigh Lean/API reviewer `Bernoulli` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-recurrence-case2-branch-progress.md`.
+
 ## Latest controller decision - 2026-06-30, A4 recurrence branch termination data
 
 The combined recurrence-aware progress relation is now exposed through the
