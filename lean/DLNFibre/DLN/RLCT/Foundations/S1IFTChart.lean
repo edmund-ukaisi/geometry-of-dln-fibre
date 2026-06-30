@@ -237,4 +237,35 @@ theorem rlctAtOn_eq_of_contDiff_chart {E : Type*}
   exact rlctAtOn_eq_of_boundedUnit_chart f F wstar Ψ Ψsymm DΨ DΨsymm V hVopen hwV hΨfix
     hleft hright hΨcont hsymmcont hderiv hderivsymm hdetmeas hdetmeassymm hbdd hbddsymm hgermΨ
 
+/-- **The inverse-exposing `hchart`** (route (3), Codex's design pass). For a `ContDiff ℝ 2`
+self-map `Φ : E → E` fixing `wstar` with invertible derivative `f' : E ≃L[ℝ] E`, the IFT inverse
+`Ψsymm`
+exists as a total `E → E` map that locally inverts `Φ` on an open `V ∋ wstar` (`hinv`), and for ANY
+`f`, `rlctAtOn f wstar = rlctAtOn (f ∘ Ψsymm) wstar`. So the post-chart form is `f ∘ Ψsymm` — the
+chart inverse is EXPOSED, letting the DLN use-site read off the selected-coordinate structure (the
+selected `g_k ∘ Ψsymm = π_k` identity) rather than supply an `F` and re-prove the germ. The germ is
+automatic: on `V`, `Φ = Ψ` and `Ψsymm (Ψ w) = w`, so `(f ∘ Ψsymm)(Φ w) = f w`. -/
+theorem rlctAtOn_eq_of_contDiff_chart_inv {E : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [MeasureSpace E] [BorelSpace E]
+    [FiniteDimensional ℝ E] [(volume : Measure E).IsAddHaarMeasure]
+    (f : E → ℝ) (Φ : E → E) (wstar : E) (f' : E ≃L[ℝ] E)
+    (hΦ : ContDiff ℝ 2 Φ) (hΦ' : HasFDerivAt Φ (f' : E →L[ℝ] E) wstar)
+    (hfix : Φ wstar = wstar) :
+    ∃ (Ψsymm : E → E) (V : Set E), IsOpen V ∧ wstar ∈ V ∧
+      (∀ w ∈ V, Ψsymm (Φ w) = w) ∧
+      rlctAtOn f wstar = rlctAtOn (fun w => f (Ψsymm w)) wstar := by
+  obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ⟩ :=
+    exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
+  -- the inverse identity on `V`: `Ψsymm (Φ w) = Ψsymm (Ψ w) = w`.
+  have hinv : ∀ w ∈ V, Ψsymm (Φ w) = w := by
+    intro w hw; rw [← hΨΦ w hw]; exact hleft w hw
+  refine ⟨Ψsymm, V, hVopen, hwV, hinv, ?_⟩
+  -- the germ `f =ᶠ (f∘Ψsymm)∘Φ`: on `V`, `(f∘Ψsymm)(Φ w) = f w` by `hinv`.
+  have hgerm : f =ᶠ[𝓝 wstar] fun w => (fun w => f (Ψsymm w)) (Φ w) := by
+    filter_upwards [hVopen.mem_nhds hwV] with w hwV'
+    show f w = f (Ψsymm (Φ w))
+    rw [hinv w hwV']
+  exact rlctAtOn_eq_of_contDiff_chart f (fun w => f (Ψsymm w)) Φ wstar f' hΦ hΦ' hfix hgerm
+
 end DLNFibre.DLN.RLCT
