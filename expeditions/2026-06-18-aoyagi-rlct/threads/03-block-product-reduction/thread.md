@@ -21,6 +21,44 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta source-image source-rank support
+
+Reproduction:
+`reproduction-a2-passive-theta-source-image-source-rank-support.md`.
+Statement card:
+`statement-card-a2-passive-theta-source-image-source-rank-support.md`.
+Review:
+`review-a2-passive-theta-source-image-source-rank-support.md`, PASS by
+xhigh mathematical checker `Bohr` and xhigh Lean/API checker `Anscombe`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaEndpointSourceChart_mem_sourceRankStratum
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_sourceRankStratum
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_restrict_sourceRankStratum_eq_self
+```
+
+The pointwise theorem follows the retained-passive p.13 rank calculation:
+the two stored residual `C` ranks are `card tau` and the successor
+selected-entry residual rank, and endpoint transport preserves the stored
+`C` ranks.  The image theorem exposes determinant-chart membership on the
+local source-image domain and proves only the forward implication from
+`sourceChart '' V` to the source-rank stratum under the explicit
+successor-rank equation.  The measure theorem replaces the pointwise
+successor-rank equation by an a.e. hypothesis for the restricted theta-domain
+measure.
+
+Nonclaims: no source-rank coverage, source-image equality, exact-rank
+openness, source-prior comparison or transport, Haar transport, normal
+crossings, pole order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta Jacobian measurable endpoint-sector domination
 
 Reproduction:

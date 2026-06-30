@@ -6,6 +6,62 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Source-Image Source-Rank Support - 2026-06-30
+
+The local passive-theta source image now has one-way source-rank support under
+explicit rank hypotheses.
+
+New Lean names:
+
+```text
+case2PassiveThetaEndpointSourceChart_mem_sourceRankStratum
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_sourceRankStratum
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_restrict_sourceRankStratum_eq_self
+```
+
+The pointwise theorem proves that the concrete full-theta endpoint source
+chart lands in
+
+```text
+paperEndpointFixedBaseSourceRankStratum W2 B2 id r rEdge
+```
+
+from determinant-chart membership of the retained data, the base product-rank
+equation, `r + card tau = rEdge 0`, and
+`r + rank(case2SuccessorSelectedEntryMatrix theta.yNext) = rEdge 1`.
+The proof follows the retained-passive p.13 rank formula: the two stored `C`
+block ranks are `card tau` and the successor selected-entry residual rank,
+with endpoint transport preserving the stored `C` ranks.
+
+The image theorem reuses the local measurable source-image shrink and now
+also exposes
+
+```text
+forall z in V, (retainedData z).detChart
+```
+
+so each chart-produced point can be fed into the pointwise source-rank
+constructor.  The image-level conclusion is conditional and forward only:
+if the successor-rank equation holds on `V`, then every point of
+`sourceChart '' V` is in the source-rank stratum.  The measure theorem replaces
+that pointwise condition by an a.e. condition for `thetaMeasure.restrict V` and
+proves the pushed-forward chart-produced measure restricts to the source-rank
+stratum unchanged.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-source-rank-support.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-source-rank-support.md
+threads/03-block-product-reduction/review-a2-passive-theta-source-image-source-rank-support.md
+```
+
+Xhigh mathematical checker `Bohr` and xhigh Lean/API checker `Anscombe`
+returned PASS on the statement shape and proof route.  Boundary: no
+source-rank coverage, no source-image equality, no exact-rank openness, no
+source-prior comparison/transport, no Haar transport, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## Latest Post-5c Source-Construction Frontier Audit - 2026-06-30
 
 After commit `5c113254`, the controller checked whether the new relative

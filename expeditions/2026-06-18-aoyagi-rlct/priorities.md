@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-image source-rank support
+
+The concrete passive-theta endpoint source image is now tied one-way to the
+named source-rank stratum under explicit rank hypotheses:
+
+```text
+case2PassiveThetaEndpointSourceChart_mem_sourceRankStratum
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_sourceRankStratum
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_restrict_sourceRankStratum_eq_self
+```
+
+The pointwise theorem proves source-stratum membership from determinant-chart
+membership of the retained datum, the base product-rank equation, the first
+edge equation `r + card tau = rEdge 0`, and the successor-rank equation
+`r + rank(successorSelectedEntryMatrix z.yNext) = rEdge 1`.  The image theorem
+returns the same local measurable source image as before, now also exposing
+determinant-chart membership of the retained data on `V`; it proves only the
+forward implication from a point in `sourceChart '' V` to source-stratum
+membership when the successor-rank equation holds on `V`.  The measure theorem
+uses an a.e. successor-rank hypothesis to restrict the pushed-forward
+theta-domain measure to the source-rank stratum without changing it.
+
+This proves no source-rank coverage, no equality between the source image and
+the stratum, no exact-rank openness, no external/original source-prior
+comparison or transport, no determinant-chart or raw-order Haar transport, no
+normal crossings, no pole order, and no RLCT.
+
+Next source-moving frontier: external/source-prior comparison or an actual
+Haar/passive-sector transport bridge, not another support wrapper unless it
+removes one of those external hypotheses.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-image carrier and support
 
 The concrete passive-theta endpoint source image is now packaged as a
