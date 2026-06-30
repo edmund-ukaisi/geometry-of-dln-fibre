@@ -21,6 +21,51 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta source-chart readback left inverse
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-source-chart-readback-left-inverse.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-source-chart-readback-left-inverse.md`.
+Review:
+`review-a2-case2-passive-theta-source-chart-readback-left-inverse.md`, PASS by
+xhigh source/scope reviewer `Dirac` and xhigh Lean/API reviewer `Ramanujan`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now proves:
+
+```text
+endpointTransport_symm_endpointTransport
+case2PassiveThetaEndpointSourceChartReadback
+case2PassiveThetaEndpointSourceChartReadback_eq_of_sourceReadback_eq_retainedData
+exists_open_case2PassiveThetaEndpointSourceChart_readback_leftInverse
+```
+
+The final theorem returns an open neighborhood of any determinant-sector,
+nonzero-pivot base theta point on which the concrete endpoint p.13 source
+chart has a pointwise left inverse:
+
+```text
+readback (sourceChart z) = z.
+```
+
+The proof is purely local coordinate algebra.  It uses the determinant-domain
+source-readback theorem, restricts to the open selected-pivot nonzero set, and
+then applies the selected-entry inverse-readout equality.  Passive fields are
+recovered by the new endpoint-transport inverse lemma.
+
+Nonclaims: no endpoint-sector image measurability, source-image equality,
+exact passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.  The natural next use is
+local injectivity/image measurability for the concrete endpoint theta map.
+
 ## 2026-06-30 A2 Case 2 passive theta raw-order two-stage source chart
 
 Reproduction:

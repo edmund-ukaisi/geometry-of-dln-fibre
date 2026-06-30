@@ -6,6 +6,42 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Source-Chart Readback Left Inverse - 2026-06-30
+
+`RetainedPassiveCoordinates.lean` now has the generic endpoint-transport
+inverse theorem:
+
+```text
+endpointTransport_symm_endpointTransport
+```
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now defines the concrete
+endpoint source-family readback and proves the local left inverse:
+
+```text
+case2PassiveThetaEndpointSourceChartReadback
+case2PassiveThetaEndpointSourceChartReadback_eq_of_sourceReadback_eq_retainedData
+exists_open_case2PassiveThetaEndpointSourceChart_readback_leftInverse
+```
+
+For any determinant-sector, nonzero-pivot base theta point, the theorem returns
+an open neighborhood `V` such that
+
+```text
+readback (sourceChart z) = z
+```
+
+for every `z ∈ V`.  The proof uses the determinant-domain source-readback
+theorem, intersects the returned set with the open selected-pivot nonzero
+condition, translates the residual-coordinate readout through the fixed-base
+residual block map, and applies the pointwise readback helper.
+
+This is local coordinate injectivity data for the direct endpoint source
+chart.  It does not prove endpoint-sector measurability, source-image equality,
+exact passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.
+
 ## Latest A2 Case 2 Passive Theta Raw-Order Two-Stage Source Chart - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now specializes the

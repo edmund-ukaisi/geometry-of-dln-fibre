@@ -2664,6 +2664,30 @@ theorem ext_fields
   cases data'
   simp_all
 
+omit [CommRing K] [Fintype ρ] [DecidableEq ρ] in
+/-- Transporting retained-passive endpoint coordinates forward and then back
+along endpoint equivalences recovers the original coordinates. -/
+@[simp]
+theorem endpointTransport_symm_endpointTransport
+    {M : ℕ} {κ κ' : Fin (M + 2) → Type*}
+    (e : ∀ j, κ j ≃ κ' j)
+    (data : RetainedPassiveNonredundantCoordinateData (K := K) (ρ := ρ) κ) :
+    (data.endpointTransport e).endpointTransport (fun j ↦ (e j).symm) = data := by
+  apply ext_fields
+  · rfl
+  · funext p
+    ext i j
+    simp [endpointTransport, Matrix.submatrix_submatrix, Function.comp_def]
+  · funext p
+    ext i j
+    simp [endpointTransport, Matrix.submatrix_submatrix, Function.comp_def]
+  · funext p
+    ext i j
+    simp [endpointTransport, Matrix.submatrix_submatrix, Function.comp_def]
+  · rfl
+  · ext i j
+    simp [endpointTransport, Matrix.submatrix_submatrix, Function.comp_def]
+
 /-- The deterministic suffix state used to read retained-passive coordinates
 from an arbitrary source edge family. -/
 def sourceReadbackSuffixState

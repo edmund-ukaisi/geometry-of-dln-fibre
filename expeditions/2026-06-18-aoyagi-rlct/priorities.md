@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-chart readback left inverse
+
+The concrete passive-theta endpoint p.13 source chart now has a local
+pointwise readback left inverse.
+
+New public names:
+
+```text
+endpointTransport_symm_endpointTransport
+case2PassiveThetaEndpointSourceChartReadback
+case2PassiveThetaEndpointSourceChartReadback_eq_of_sourceReadback_eq_retainedData
+exists_open_case2PassiveThetaEndpointSourceChart_readback_leftInverse
+```
+
+For a determinant-sector, nonzero-pivot base theta point, the final theorem
+returns an open neighborhood `V` such that
+
+```text
+readback (sourceChart z) = z
+```
+
+for every `z ∈ V`.  The proof uses the determinant-domain source-readback
+theorem, intersects with the open selected-pivot nonzero condition, and applies
+the selected-entry inverse-readout equality.  The generic endpoint-transport
+inverse lemma supplies the passive-field cancellation.
+
+This is a local coordinate inverse only.  It does not prove endpoint-sector
+measurability, source-image equality, exact passive-sector Haar transport,
+determinant-chart Haar transport, raw-order Haar transport, source-prior
+comparison, source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
+Next source-moving frontier: use this left inverse to prove local injectivity
+and a measurable/open image statement for the concrete endpoint theta map, or
+continue toward a genuine source-prior/passive-sector measure comparison.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta raw-order two-stage source chart
 
 The concrete passive-theta raw-order source-chart bridge has landed in
