@@ -81,11 +81,23 @@ Remaining sequence (each its own clean-three commit):
 1. **`Dg(v)` joint differential** — DONE as `jointDiffL2` (the `LinearMap`). The `HasFDerivAt`-from-loss
    tie (`δ↦δ¹A²_v+A¹_v δ²` = the loss-entry gradients, from `prodAuxEntryDeriv` at `k=L=2`) is a
    separate small lemma the assembly needs; the rank bound is stated directly on `jointDiffL2`.
-2. **`rank Dg(v) ≥ nReg`** (the OPEN sorry) via the explicit `nReg`-independent family (the regular
-   directions, general-`v`) + `Submodule.finrank_mono`. Skips the 3 absent rank-value facts. THE dense
-   watch-point (team-lead + skill flag: 3-attempt-then-surface here). The explicit family: a basis-adapted
-   construction from `B = A¹_v A²_v` of rank `r` (e.g. SVD-like blocks) giving `nReg` independent
-   directions in `range`; intricate at general `v`.
+2. **`rank Dg(v) ≥ nReg`** (the OPEN sorry). ROUTE C, Codex xhigh endorsed (`codex/rank-lowerbound-{prompt,answer}.md`):
+   embed the EXACTLY-rank-`r` **deep tangent space** `deep(δ₀,δ₁) = δ₀·Q + P·δ₁` (`P : Mat (H0)(r)`,
+   `Q : Mat (r)(H2)`, `B = P·Q` rank-`r` factorization) into `range (jointDiffL2 H v)` — sidesteps the
+   pivot-sensitive explicit family AND the intersection-dim. The embed: `col(B) ⊆ col(A¹) ⟹ P = A¹·S`,
+   `row(B) ⊆ row(A²) ⟹ Q = T·A²`, so `deep(δ₀,δ₁) = (δ₀ T)A² + A¹(S δ₁) ∈ range`. Then
+   `finrank(range deep) = nReg` (rank-nullity, `ker deep ≃ Mat (r)(r)` via `δ₀=−PX, δ₁=XQ`) and
+   `Submodule.finrank_le` gives `nReg ≤ finrank(range jointDiffL2)`.
+   **Verify-first findings (gate the build):** the Codex-named Mathlib lemmas `Matrix.rank_factorization`,
+   `range_mul_le_left/right`, `exists_mul_of_mul_subset_range` are ALL ABSENT in v4.29 (only
+   `Matrix.range_mulVecLin` exists). BUT the repo has `Skeleton.rank_factor_left/right` (private — takes an
+   EXISTING `B=U·V`, proves `U,V` full-rank `r`); the rank-`r` factorization EXISTENCE `∃ P Q, B=P·Q ∧
+   rk P = rk Q = r` must still be built (or found elsewhere), and the column-containment factor-extraction
+   (`col(P) ⊆ col(A¹) ⟹ ∃ S, P = A¹·S`) too. So step 2 is a ~4-6-lemma sub-build with 2 from-scratch
+   foundational lemmas — a genuine multi-tide, NOT a single fill. The kernel `≃ Mat (r)(r)` dimension count
+   is Codex's flagged trickiest-coercion spot (3-attempt watch). Alternative if factorization stalls: the
+   explicit matrix-unit basis `{Eᵢⱼ·Q} ∪ {P·Eⱼₖ}` minus the `r²` overlap (`{P·Eⱼₗ·Q}`) — `nReg` independent
+   by full-rank `P,Q` injectivity; heavier enumeration but no kernel-iso.
 3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
    (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
 4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
