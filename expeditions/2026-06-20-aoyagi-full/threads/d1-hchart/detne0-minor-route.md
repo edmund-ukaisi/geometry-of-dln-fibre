@@ -88,7 +88,7 @@ bundled `LinearMap`s, NOT `Matrix.mulLeftLinearMap` which is absent at this pin)
 nReg = `(H0·r−r²)+r·H2` (`finrank_prod`+`finrank_matrix`+rank-nullity surjection); `finrank_le_of_injective`
 + `Submodule.finrank_mono`. NOT yet in the aggregator — controller wires DLNFibre.lean import + AxCheck.
 
-## STEP 1 route (the analytic-Jacobian ↔ jointDiffL2 tie) — de-risked, sub-identities verified
+## STEP 1 route (the analytic-Jacobian ↔ jointDiffL2 tie) — UNBLOCKED, infra lemmas COMPILE
 
 The chart's first-block derivative `DG(0)` reads the banked analytic gradient
 `prodAuxEntryDeriv H (gmapAt H v) 0 gmapDeriv 2 i j` (`hasStrictFDerivAt_lossEntry`). To feed step 2b's
@@ -96,6 +96,28 @@ rank bound to the chart, prove the ENTRY identity (target signature typechecks):
 
     (prodAuxEntryDeriv H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 2 _ i j) δ
       = (jointDiffL2 H v ((paramsEquivFlatLinear H).symm δ)) i j
+
+★ THE UNBLOCKER (the earlier timeout was a `show`-elaboration of the dependent-`Fin`-cast fold term;
+a `rfl`-stated `_succ` EQUATION lets `rw` fire it cheaply). THREE lemmas BUILT + COMPILE sorry-free
+(ready to paste into D1HChartRank after `import …Foundations.ParamsFlatLinear`):
+- `prodAuxEntryDeriv_succ` — `prodAuxEntryDeriv … (k+1) i j = ∑ m, (prodAux … k i m • g' ⟨k,_⟩ (e1▸m)
+  (e2▸j) + (cast layer)_{mj} • prodAuxEntryDeriv … k i m)`, proof `:= rfl` (carries `hk' hkL e1 e2` as
+  args, matching the def's internal `have`s — supply by proof-irrelevance at the use-site). `rw` fires
+  it WITHOUT timeout (verified at k=1 on the L=2 goal).
+- `paramsEquivFlatLinear_symm_coe` — `⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm`
+  (inverses of equal-forward equivs agree; `funext` + `injective` + `apply_symm_apply` + the banked
+  `paramsEquivFlatLinear_coe`).
+- `gmapDeriv_apply_symm` — `gmapDeriv H s a b δ = ((paramsEquivFlatLinear H).symm δ) s a b` (both sides
+  `= δ (flatIdx H s a b)`: LHS `rfl`, RHS via `paramsEquivFlatLinear_symm_coe`+`paramsEquivFlat_symm_entry`+`rfl`).
+
+REMAINING (the focused fill on top of those three): in the entry identity, `rw [prodAuxEntryDeriv_succ
+…1…]`, push the CLM-sum onto δ (`simp [ContinuousLinearMap.coe_sum', add_apply, smul_apply,
+Finset.sum_apply, smul_eq_mul]`), peel the INNER `prodAuxEntryDeriv …1 i m` via `_succ` at k=0
+(`prodAux 0 = 1`, `prodAuxEntryDeriv 0 = 0`) ⟹ `= gmapDeriv(0,i,m) δ`; substitute the gmapDeriv coords
+(`gmapDeriv_apply_symm`) + `prodAux …1 i m = (v 0)_{im}` (= layer0, inner peel) + the cast-layer
+`= (v 1)_{mj}`; then unfold `jointDiffL2` (`Matrix.add_apply`+`mul_apply`) and match the two `∑_m`
+products via `Finset.sum_add_distrib` + `mul_comm`. The sum-reassembly is the detailed-bookkeeping
+residue (NO timeout, NO false statement — the math is `δ⁰v¹+v⁰δ¹`, machine-checked in step 2b's family).
 
 REUSE `paramsEquivFlatLinear H : Params H ≃ₗ[ℝ] (Fin (flatDim H) → ℝ)` (banked, `ParamsFlatLinear.lean`)
 — the LINEAR flatten, so `.symm` is the linear flat→Params iso. VERIFIED-CLEAN sub-identities:
