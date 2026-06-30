@@ -110,8 +110,20 @@ Remaining sequence (each its own clean-three commit):
    (`block_elimination` is public) and `Loss`/`D1HChartGrad` don't import `Skeleton`. NEXT-TIDE REUSE:
    (a) ask controller to de-privatise the 4 helpers + export a packaged `exists_rank_factorization B (hB) :
    ∃ U V, B=U*V ∧ U.rank=r ∧ V.rank=r` from `Skeleton`/`Core` (cleaner, single-source — flag to controller);
-   or (b) re-prove the ~10-line extraction in `D1HChartRank` from public `block_elimination` (the two
-   `rank_factor` lemmas are 8-line rank-sandwiches, trivial to re-state).
+   or (b) re-prove the ~10-line extraction in `D1HChartRank` from public `block_elimination`. **TRIED (b)
+   this tide → cast-grind** on `block_elimination`'s `H : Fin(L+1)→ℕ` indexing (bare `a×c` needs
+   `H = fun i => if i=0 then a else c`, defeq-fragile width casts); caught at the 3-attempt signal,
+   reverted clean. **(a) is the correct unblock** — a 10-line public `exists_rank_factorization` export
+   from `Skeleton` (controller's single-writer edit, requested). The cast-grind is exactly the friction
+   single-source prevents.
+   **★★★ GAUGE-SLICE FINRANK (`codex/step2b-family-answer.md`, decorrelated — corroborates+IMPROVES Route C):**
+   skip the kernel-iso/rank-nullity entirely. With `B = U·W` rank-`r` (`U:Mat(H0,r)`, `W:Mat(r,H2)`),
+   one-sided inverses `Λ·U = I_r`, `W·Ρ = I_r`, lifts `U = v⁰·C`, `W = K·v¹` (so `T(X,Y) = X·W + U·Y =
+   (XK)v¹ + v⁰(CY) ∈ range Dg`), restrict to the gauge slice `G := {X : Mat(H0,r) | Λ·X = 0} × Mat(r,H2)`.
+   Then `Ψ(X,Y) = X·W + U·Y` is INJECTIVE on `G` (`Ψ=0 ⟹ Λ(·)=0 ⟹ Y=0 ⟹ XW=0 ⟹ XWΡ=0 ⟹ X=0`), so
+   `finrank G ≤ finrank(range Dg)` via `LinearMap.finrank_le_finrank_of_injective` — NO kernel computation.
+   `finrank G = (H0·r − r²) + r·H2 = nReg` (`X ↦ ΛX` surjects onto `Mat(r,r)`, right-inverse `Z ↦ U·Z`).
+   `finrank_matrix` + `Module.finrank_prod` (both verified present) give the dims. THE finrank route to build.
 3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
    (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
 4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
