@@ -68,6 +68,59 @@ from the product chart, no source-image coverage, no original/source-prior
 transport, no Haar transport, no Jacobian formula, no normal crossings, no
 pole order, and no RLCT extraction.
 
+## 2026-06-30 A2 Case 2 product source-chart selected inverse readout
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-selected-inverse-readout.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-selected-inverse-readout.md`.
+Review:
+`review-a2-case2-product-source-chart-selected-inverse-readout.md`, PASS by
+xhigh reviewer `Fermat the 2nd`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_inverseReadout_eq_sourceChart
+```
+
+The selected residual inverse readout of `productSourceChart(theta,u)` equals
+that of `sourceChart theta`, because the product chart preserves fixed-base
+residual block coordinates.  This pairs with the regular readback theorem but
+still does not give full passive-theta recovery.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_selected_inverse_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Xhigh scout `Mendel the 2nd` checked full theta recovery and found the exact
+missing retained-data identity: current product APIs do not show
+`sourceReadback(Eprod) = case2PassiveThetaEndpointRetainedData ... theta eNext
+e` for `Eprod` extracted from `productSourceChart(theta,u)`.  For arbitrary
+`u`, that statement is conceptually too strong for the present product chart.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
+from the product chart, no sourceReadback retained-data identity, no
+source-image coverage, no original/source-prior transport, no Haar transport,
+no Jacobian formula, no normal crossings, no pole order, and no RLCT
+extraction.
+
 ## 2026-06-30 A2 source-image full product domination handoff
 
 Reproduction:

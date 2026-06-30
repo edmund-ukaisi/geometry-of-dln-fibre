@@ -12256,3 +12256,43 @@ Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
 from the product chart, no source-image coverage, no original/source-prior
 transport, no Haar transport, no Jacobian formula, no normal crossings, no
 pole order, and no RLCT.
+
+Latest A2 Case 2 product source-chart selected inverse readout:
+`RetainedPassiveCase2PassiveThetaSourceImage.lean` proves
+`case2PassiveThetaEndpointProductSourceChart_inverseReadout_eq_sourceChart`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-selected-inverse-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-selected-inverse-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-selected-inverse-readout.md`.
+
+Ledger status: selected residual inverse readout is preserved by the full p.13
+product source chart.  Since `case2PassiveThetaEndpointInverseReadout` uses
+only fixed-base residual block coordinates, the existing product-chart
+residual equality identifies its value on `productSourceChart(theta,u)` with
+its value on the underlying passive-theta source chart.
+
+Focused file elaboration, focused module build, full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, a direct axiom probe, and an xhigh
+reviewer audit passed.  The axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary found by xhigh scout `Mendel the 2nd`: full `theta` recovery from the
+product chart is not available from current APIs.  The missing retained-data
+identity is
+
+```text
+sourceReadback(Eprod) =
+  case2PassiveThetaEndpointRetainedData ... theta eNext e
+```
+
+for `Eprod` extracted from `productSourceChart(theta,u)`.  For arbitrary `u`,
+this is conceptually too strong for the present product chart; it belongs to a
+future retained-passive product chart/readback construction.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
+from the product chart, no sourceReadback retained-data identity, no
+source-image coverage, no original/source-prior transport, no Haar transport,
+no Jacobian formula, no normal crossings, no pole order, and no RLCT.
