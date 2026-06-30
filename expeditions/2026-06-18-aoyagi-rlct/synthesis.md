@@ -6,14 +6,22 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
-## Original Coordinate Prior And Density Adapter - 2026-06-30
+## Original Coordinate/Tuple Prior And Density Adapter - 2026-06-30
 
-Lean now names the ambient flattened-coordinate original measure and prior:
+Lean now names the ambient flattened-coordinate original measure and prior,
+and the corresponding measure/prior on the original matrix tuple space:
 
 ```text
 originalCoordinateVolume
 originalCoordinatePrior
 originalCoordinatePrior_restrict_le_smul_of_ae_le
+
+measurable_canonicalCoord
+measurable_canonicalCoord_symm
+originalTupleVolume
+originalTupleVolume_map_canonicalCoord
+originalTuplePrior
+originalTuplePrior_restrict_le_smul_of_ae_le
 ```
 
 `originalCoordinateVolume d` is product Lebesgue measure on
@@ -23,6 +31,13 @@ by `ENNReal.ofReal density`.  A local upper bound on the density gives local
 domination by `(originalCoordinateVolume d).restrict s`.  Finiteness of the
 bounding scalar is a downstream hypothesis when an integrability transfer
 needs a finite scalar.
+
+`originalTupleVolume d` is the tuple-side original measure on
+`Tuple (k := ℝ) d`, defined as the pushforward of `originalCoordinateVolume d`
+by `(canonicalCoord d).symm`, not by any Aoyagi source chart.  Lean proves
+that pushing it forward along `canonicalCoord d` returns
+`originalCoordinateVolume d`.  The tuple-side prior has the same local
+bounded-density domination by `(originalTupleVolume d).restrict s`.
 
 Lean also proves the bounded-prior adapter:
 
@@ -48,9 +63,9 @@ with the multiplied scalar:
 For a real-valued prior density the helper applies this to
 `ENNReal.ofReal density`.  This isolates the smooth-prior bookkeeping from the
 remaining frontier: the expedition still has to prove or supply the
-unweighted transport from the flattened original-coordinate measure through
-the Aoyagi source chart to the retained-passive chart-produced measure.  The
-new module does not prove source-image equality, source-rank coverage,
+unweighted transport from this original coordinate/tuple measure through the
+Aoyagi source chart to the retained-passive chart-produced measure.  The new
+module does not prove source-image equality, source-rank coverage,
 Haar/Jacobian transport, normal crossings, pole order, or RLCT extraction.
 
 Artifacts:
@@ -65,6 +80,10 @@ Verification so far:
 ```text
 env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
 env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/MatrixMeasurable.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.MatrixMeasurable
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/ChartTopology.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.ChartTopology
 env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalPrior.lean
 env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalPrior
 env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
@@ -75,9 +94,10 @@ env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_original_prior_axioms.lean
 ```
 
 Axiom probe for the new helper/prior theorems reports only
-`[propext, Classical.choice, Quot.sound]`.  Review: xhigh `Laplace the 2nd`
-PASS; the review requested measure-scalar notation cleanup in the new cards,
-which is applied.
+`[propext, Classical.choice, Quot.sound]`.  Reviews: xhigh `Laplace the 2nd`
+PASS for the previous coordinate/prior adapter; xhigh `Curie the 2nd` PASS
+for the tuple-side API shape, with the caution that it is transport
+scaffolding only, not source-chart transport.
 
 ## Dev Infrastructure Merge And Source-Prior Inventory - 2026-06-30
 

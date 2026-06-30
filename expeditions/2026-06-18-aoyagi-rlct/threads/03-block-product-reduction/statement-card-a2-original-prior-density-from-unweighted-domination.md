@@ -2,10 +2,11 @@
 
 ## Claim
 
-If an unweighted local original/source measure is dominated by a finite scalar
+If an unweighted local original/source measure is dominated by a scalar
 multiple of a chart-produced reference measure, then weighting it by a locally
 bounded prior density preserves domination, with the scalar multiplied by the
-prior-density bound.
+prior-density bound.  Later finite-integral applications still supply the
+needed scalar finiteness hypotheses.
 
 Public Lean names:
 
@@ -13,6 +14,13 @@ Public Lean names:
 originalCoordinateVolume
 originalCoordinatePrior
 originalCoordinatePrior_restrict_le_smul_of_ae_le
+
+measurable_canonicalCoord
+measurable_canonicalCoord_symm
+originalTupleVolume
+originalTupleVolume_map_canonicalCoord
+originalTuplePrior
+originalTuplePrior_restrict_le_smul_of_ae_le
 
 restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
 
@@ -52,6 +60,29 @@ with the local bounded-density domination:
 The theorem records domination.  Later finite-integral transfer theorems must
 still carry the needed finite-scalar hypotheses.
 
+The module also defines the same original measure on the matrix tuple space:
+
+```text
+originalTupleVolume d : Measure (Tuple (k := Real) d)
+```
+
+by pushing `originalCoordinateVolume d` through `(canonicalCoord d).symm`.
+The coordinate map and its inverse are measurable, and Lean proves
+
+```text
+Measure.map (canonicalCoord d) (originalTupleVolume d)
+  = originalCoordinateVolume d.
+```
+
+The tuple-side prior and local bounded-density domination are:
+
+```text
+originalTuplePrior d density
+
+(originalTuplePrior d density).restrict s
+  <= ENNReal.ofReal K • (originalTupleVolume d).restrict s.
+```
+
 The `ENNReal`-valued helper proves
 
 ```text
@@ -83,9 +114,9 @@ from the unweighted local domination.
 
 ## Nonclaims
 
-This does not transport the flattened original-coordinate measure to an
-Aoyagi source edge-family chart. It only names the ambient coordinate prior
-and removes smooth-prior boundedness as a separate future source-prior
-obligation once Haar/chart transport has been proved or supplied. It proves
-no source-image equality, source-rank coverage, normal crossings, pole order,
-or RLCT extraction.
+This does not transport the original coordinate or tuple measure to an Aoyagi
+source edge-family chart. It only names the ambient original measures and
+removes smooth-prior boundedness as a separate future source-prior obligation
+once Haar/chart transport has been proved or supplied. It proves no
+source-image equality, source-rank coverage, normal crossings, pole order, or
+RLCT extraction.

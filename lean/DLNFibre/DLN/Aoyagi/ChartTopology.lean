@@ -1,3 +1,4 @@
+import DLNFibre.DLN.Aoyagi.MatrixMeasurable
 import DLNFibre.DLN.Aoyagi.ThroughLayerMatrix
 import Mathlib.Analysis.Normed.Module.FiniteDimension
 import Mathlib.MeasureTheory.Constructions.BorelSpace.Basic
@@ -21,10 +22,6 @@ open Matrix
 namespace DLNFibre
 namespace DLN
 namespace Aoyagi
-
-instance instMeasurableSpaceMatrix {m n R : Type*} [MeasurableSpace R] :
-    MeasurableSpace (Matrix m n R) :=
-  inferInstanceAs (MeasurableSpace (m → n → R))
 
 instance instSecondCountableTopologyMatrix {m n R : Type*}
     [Countable m] [Countable n] [TopologicalSpace R] [SecondCountableTopology R] :

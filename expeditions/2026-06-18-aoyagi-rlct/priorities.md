@@ -12,18 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
-## Latest controller decision - 2026-06-30, original coordinate prior and density adapter
+## Latest controller decision - 2026-06-30, original coordinate/tuple prior and density adapter
 
-The expedition now has an ambient flattened-coordinate prior module:
+The expedition now has an ambient flattened-coordinate prior module and the
+corresponding tuple-side original measure:
 
 ```text
 originalCoordinateVolume
 originalCoordinatePrior
 originalCoordinatePrior_restrict_le_smul_of_ae_le
+
+measurable_canonicalCoord
+measurable_canonicalCoord_symm
+originalTupleVolume
+originalTupleVolume_map_canonicalCoord
+originalTuplePrior
+originalTuplePrior_restrict_le_smul_of_ae_le
 ```
 
 `originalCoordinateVolume d` is product Lebesgue measure on `RepCoord d -> ℝ`,
 independent of the retained-passive chart-produced source measures.
+`originalTupleVolume d` is the same original measure on
+`Tuple (k := ℝ) d`, transported through `(canonicalCoord d).symm`; pushing it
+forward by `canonicalCoord d` returns `originalCoordinateVolume d`.  This is
+still independent of any Aoyagi source-chart pushforward.
 
 The expedition also has the bounded-prior adapter:
 
@@ -48,9 +60,9 @@ bounded on `s`:
 This removes smooth-prior boundedness as a separate future obligation once
 the unweighted original/source Haar or chart transport is available.  It does
 not move the hard transport field itself: the live frontier remains the local
-comparison between the flattened original-coordinate measure, transported
-through the Aoyagi source chart, and the chart-produced retained-passive
-reference, or an equivalent full-image/Haar transport theorem.
+comparison between the original coordinate/tuple measure, transported through
+the Aoyagi source chart, and the chart-produced retained-passive reference,
+or an equivalent full-image/Haar transport theorem.
 
 ## Latest controller decision - 2026-06-30, dev merge and source-prior inventory
 

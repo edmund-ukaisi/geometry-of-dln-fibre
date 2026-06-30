@@ -71,12 +71,38 @@ lean/DLNFibre/DLN/Aoyagi/OriginalPrior.lean
 originalCoordinateVolume
 originalCoordinatePrior
 originalCoordinatePrior_restrict_le_smul_of_ae_le
+
+measurable_canonicalCoord
+measurable_canonicalCoord_symm
+originalTupleVolume
+originalTupleVolume_map_canonicalCoord
+originalTuplePrior
+originalTuplePrior_restrict_le_smul_of_ae_le
 ```
 
 Here `originalCoordinateVolume d` is product Lebesgue measure on
 `RepCoord d -> Real`, the coordinate space used by `canonicalCoord d`.  This
 names an original ambient measure independently of any retained-passive
 source-chart pushforward.
+
+The tuple-side measure is
+
+```text
+originalTupleVolume d
+  = Measure.map (canonicalCoord d).symm (originalCoordinateVolume d),
+```
+
+so it lives on the original matrix tuple type `Tuple (k := Real) d` without
+being defined through an Aoyagi chart.  The coordinate map and its inverse are
+measurable, and Lean proves
+
+```text
+Measure.map (canonicalCoord d) (originalTupleVolume d)
+  = originalCoordinateVolume d.
+```
+
+The tuple-side prior and bounded-density domination are the same elementary
+with-density calculation over `originalTupleVolume d`.
 
 Also add two reusable helpers to
 `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`:
@@ -94,8 +120,8 @@ still supply it when required.
 
 ## Nonclaims
 
-No theorem transports `originalCoordinateVolume` or `originalCoordinatePrior`
-through an Aoyagi source chart.  No theorem proves the unweighted Haar/chart
-transport hypothesis. No source-image equality, source-rank coverage,
-determinant/raw-order Haar transport, normal crossings, pole order, or RLCT
-extraction is proved.
+No theorem transports `originalCoordinateVolume`, `originalTupleVolume`, or
+the corresponding priors through an Aoyagi source chart.  No theorem proves
+the unweighted Haar/chart transport hypothesis. No source-image equality,
+source-rank coverage, determinant/raw-order Haar transport, normal crossings,
+pole order, or RLCT extraction is proved.
