@@ -14,6 +14,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
 import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
@@ -203,6 +204,16 @@ open DLNFibre.DLN.RLCT
 -- no `sorryAx` (the whole D1HChart* ladder is sorry-free + S2-free; reviewer + Codex fidelity-PASS,
 -- gate-4 existential-Wᶜ + residual-form non-vacuity confirmed).
 #print axioms dln_hchart_residual
+
+-- D1 SECOND-peel `extraCount` chart producer + the assembled L=2 ≥-leg (D1SecondPeelChart/Assembly).
+-- Must be CLEAN-THREE [propext, Classical.choice, Quot.sound], no `sorryAx`: `secondPeel_hchart_residual`
+-- (the §5 extraCount selected-minor IFT chart on the first residual VECTOR — the minor is Jacobian-rank
+-- on `h`, NOT the scalar Hessian, exactly like the first peel) + `deepest_le_of_optimal_secondPeel_discharged`
+-- (the L=2 D1 per-point ≥, second peel discharged from data; modulo the 4 named-open hyps first-peel
+-- hchart / #44 hDeepest / hInterface [R1 at M'] / hminor₂). NO #120/gauge-slice in the proof terms — the
+-- verify-first gate verdict (reviewer + Codex): the second peel is BOUNDED, off the L≥3 wall.
+#print axioms secondPeel_hchart_residual
+#print axioms deepest_le_of_optimal_secondPeel_discharged
 
 -- R1 interior-det headline at the (2,2,2) node — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `interiorDet_headline_222` is the FIRST end-to-end faithful-route

@@ -598,6 +598,13 @@ import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 -- D1 ≥-leg's hard analytic content; the remaining hyps (#44 hDeepest / R1-at-M' hDegraded / hRne)
 -- stay named on the §SEL consumer.
 import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
+-- D1 SECOND-peel `extraCount` chart producer + the assembled L=2 ≥-leg (D1SecondPeelChart/Assembly):
+-- `secondPeel_hchart_residual` (the §5 extraCount selected-minor IFT chart on the first residual,
+-- structural analog of the first-peel `dln_hchart_residual`) + `deepest_le_of_optimal_secondPeel_discharged`
+-- (the L=2 D1 per-point ≥, modulo the 4 named-open hyps: first-peel `hchart`, #44 `hDeepest`,
+-- `hInterface` [R1 at M'], `hminor₂`). Clean-three, NO #120/gauge dependency in the proof terms
+-- (the verify-first gate verdict: the second peel is BOUNDED, off the L≥3 wall). Reviewer PASS-with-notes.
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
 -- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
