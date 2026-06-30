@@ -212,4 +212,47 @@ theorem germA (hopt : prod H v = B) (her : Function.Injective er) (hec : Functio
     · rw [if_pos hsr, if_pos hsr]; norm_num
     · rw [if_neg hsr, if_neg hsr]
 
+/-! ## Sub-build 4 — globalize a locally-`C^n` map by a bump cutoff -/
+
+/-- **Bump-globalization.** A map `g : E → F` (`E` finite-dim real normed) that is `ContDiffOn ℝ n`
+on an open `U ∋ x₀` can be replaced by a GLOBAL `ContDiff ℝ n` map agreeing with `g` on a
+neighbourhood of `x₀`: multiply by a `C^∞` bump `χ` with `tsupport χ ⊆ U` and `χ =ᶠ 1` near `x₀`,
+extending by `0` off `tsupport χ`. The product is `C^n` everywhere — on the open `U` both factors
+are, and off the open `(tsupport χ)ᶜ` it vanishes; these cover `E`. -/
+theorem exists_contDiff_eventuallyEq_of_contDiffOn {E F : Type*}
+    [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] [HasContDiffBump E]
+    [NormedAddCommGroup F] [NormedSpace ℝ F]
+    {n : ℕ∞} {g : E → F} {U : Set E} {x₀ : E} (hUopen : IsOpen U) (hx₀ : x₀ ∈ U)
+    (hg : ContDiffOn ℝ n g U) :
+    ∃ G : E → F, ContDiff ℝ n G ∧ G =ᶠ[𝓝 x₀] g := by
+  classical
+  -- a metric ball `ball x₀ r ⊆ U`.
+  obtain ⟨r, hrpos, hrU⟩ := Metric.isOpen_iff.1 hUopen x₀ hx₀
+  -- a `C^∞` bump centred at `x₀` with `rOut = r/2 < r`, `≡ 1` near `x₀`, `tsupport ⊆ ball x₀ r`.
+  set χ : ContDiffBump x₀ :=
+    { rIn := r / 4, rOut := r / 2, rIn_pos := by positivity, rIn_lt_rOut := by linarith } with hχ
+  have hχsupp : tsupport (χ : E → ℝ) ⊆ U := by
+    rw [χ.tsupport_eq]
+    refine subset_trans (fun y hy => ?_) hrU
+    rw [Metric.mem_ball]; rw [Metric.mem_closedBall] at hy
+    have hrout : χ.rOut = r / 2 := rfl
+    rw [hrout] at hy; linarith
+  refine ⟨fun x => χ x • g x, ?_, ?_⟩
+  · -- global `C^n`: pointwise `ContDiffAt`.
+    rw [contDiff_iff_contDiffAt]
+    intro x
+    by_cases hx : x ∈ tsupport (χ : E → ℝ)
+    · -- inside `tsupport χ ⊆ U`: both `χ` and `g` are `C^n` on the open `U`.
+      have hxU : x ∈ U := hχsupp hx
+      exact ((χ.contDiff (n := n)).contDiffAt).smul (hg.contDiffAt (hUopen.mem_nhds hxU))
+    · -- outside `tsupport χ` (open): `χ • g ≡ 0`.
+      have hopen : IsOpen (tsupport (χ : E → ℝ))ᶜ := (isClosed_tsupport _).isOpen_compl
+      have hzero : (fun x => χ x • g x) =ᶠ[𝓝 x] fun _ => (0 : F) := by
+        filter_upwards [hopen.mem_nhds hx] with y hy
+        rw [image_eq_zero_of_notMem_tsupport hy, zero_smul]
+      exact (contDiff_const.contDiffAt).congr_of_eventuallyEq hzero
+  · -- `χ • g =ᶠ g` near `x₀` (where `χ ≡ 1`).
+    filter_upwards [χ.eventuallyEq_one] with x hx
+    rw [hx, Pi.one_apply, one_smul]
+
 end DLNFibre.DLN.RLCT
