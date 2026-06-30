@@ -552,3 +552,16 @@ import DLNFibre.Core.Algebra.AlgEquiv.Groupoid
 -- (L7). The DLN target-side transition (`FibreTargetOverlap`) is the instance. Transition OBJECTS
 -- only — the cocycle round-trip is P2.c (set up reachable via the `AlgEquiv` groupoid laws).
 import DLNFibre.Core.RingTheory.Determinantal.AtlasTransition
+-- det-atlas P2.d: the bespoke Zariski local-triviality capstone. The abstract network-free predicate
+-- `Algebra.IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U` (chart family of
+-- `AtlasFibreChart` + a principal-open cover of the open `U`; cocycle compatibility is the DERIVED
+-- `overlapTransition_trans_symm`, NOT a field — it holds automatically by P2.c). NOT a Mathlib
+-- `FiberBundle` (that is topological; there is no Zariski local-triviality class at this pin). Bare
+-- `Algebra` ns (L7).
+import DLNFibre.Core.RingTheory.Determinantal.LocalTriviality
+-- det-atlas P2.d (DLN instance): the DLN reduced-fibre bundle is a non-vacuous instance of the
+-- abstract predicate over the rank-`= r` open `rankROpen` —
+-- `reducedFibre_isZariskiLocallyTrivialAffineProduct` (ι = pivots, chart = pivotAtlasChart +
+-- standardFibreChartOfPivot, cover = the PivotDatum-indexed scheme cover). Axiom-clean ⟹ the
+-- non-vacuity proof. The open is load-bearing (a bundle over the closure Σ̄^r is false).
+import DLNFibre.Core.FibreZariskiLocalTriviality
