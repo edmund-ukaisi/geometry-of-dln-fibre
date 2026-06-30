@@ -26377,3 +26377,54 @@ Boundary: this theorem does not define a full readback
 `EdgeFamily -> Case2PassiveTheta × EuclideanSpace R Coord`, and it does not
 prove source-image coverage, source-prior transport, Haar transport, normal
 crossings, pole order, or RLCT.
+
+## 2026-06-30 concrete p.13 product source-chart small-ball readout
+
+The pointwise product-source readout now has a local small-ball version:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source
+```
+
+For any positive radius cap `Rmax`, Lean returns `R > 0`, `R <= Rmax`, such
+that eventually along
+
+```text
+paperEndpointFixedBaseSourceRankStratum W2 B2 sourceChart r rEdge
+```
+
+and for every `u in ball 0 R`,
+
+```text
+regular(productSourceChart(theta,u)) = u
+residual(productSourceChart(theta,u)) = residual(sourceChart theta).
+```
+
+This is the local determinant-chart packaging of the p.13 regular variables:
+near `u = 0`, the decoded top block `ctopMatrix u` remains invertible.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-small-ball-readout.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-small-ball-readout.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-small-ball-readout.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_small_ball_axioms.lean
+```
+
+The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this theorem is still coordinate readout only.  It does not provide
+a full source-edge-family inverse to `(theta,u)`, source-image coverage,
+source-prior transport, Haar transport, normal crossings, pole order, or RLCT.

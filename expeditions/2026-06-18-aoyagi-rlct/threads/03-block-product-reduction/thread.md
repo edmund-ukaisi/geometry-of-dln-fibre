@@ -18488,3 +18488,46 @@ env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_readout_axioms.lean
 Nonclaims: no full inverse/readback to `(theta,u)`, no original/source-prior
 transport, no source-rank coverage, no Haar transport, no Jacobian formula, no
 normal crossings, no pole order, and no RLCT extraction.
+
+## 2026-06-30 A2 Case 2 product source-chart small-ball readout
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-small-ball-readout.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-small-ball-readout.md`.
+Review:
+`review-a2-case2-product-source-chart-small-ball-readout.md`, PASS after
+focused and full Lean verification.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source
+```
+
+This packages the pointwise `ctopMatrix u` unit-determinant hypothesis for the
+full Case 2 product source chart into a positive Euclidean radius.  For all
+regular variables `u` in the returned ball and eventually along the base
+source-rank stratum, the product chart reads out regular coordinates as `u`
+and residual coordinates as the passive-theta source residual coordinates.
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_small_ball_axioms.lean
+```
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
+no original/source-prior transport, no Haar transport, no Jacobian formula, no
+normal crossings, no pole order, and no RLCT extraction.

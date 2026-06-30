@@ -545,6 +545,99 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Small-ball version of the Case 2 p.13 product-source-chart coordinate
+readout.
+
+After shrinking the p.13 regular Euclidean variables around `0`, the full
+product chart built from the passive-theta endpoint source chart has regular
+coordinate readout `u` and residual-coordinate readout equal to the underlying
+passive-theta source residual readout, eventually along the base source-rank
+stratum.
+
+This packages the `ctopMatrix u` unit-determinant condition by a local radius.
+It is still only a coordinate readout theorem: no full inverse to `(theta,u)`,
+source-image coverage, original prior transport, Haar transport, normal
+crossings, pole order, or RLCT extraction is proved. -/
+theorem exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [TopologicalSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (theta₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    {r : ℕ} {rEdge : Fin 2 → ℕ} {Rmax : ℝ}
+    (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+      let EdgeFamily :=
+        ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+      let sourceChart :
+          Case2PassiveTheta
+              (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+            EdgeFamily :=
+        case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+      let productSourceChart :
+          Case2PassiveTheta
+              (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J ×
+            EuclideanSpace ℝ Coord →
+            EdgeFamily :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          W₂ B₂ U₀ hU₀ sourceChart
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := 2) W₂ B₂ sourceChart r rEdge
+      (∀ᶠ theta in nhdsWithin theta₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            paperEndpointFixedBaseRegularBlockCoordinateMap
+              (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+                fun i ↦ u i) ∧
+      (∀ᶠ theta in nhdsWithin theta₀ sourceStratum,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+              paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta) := by
+  rcases
+      exists_pos_radius_le_regular_residualBlockCoordinateMap_eq_multiEdgeProductCoordinateEuclidean_baseEdgeFamily_nhdsWithin_source
+        (M := 0) (V := W₂) (Bv := B₂) (x₀ := theta₀) (U₀ := U₀)
+        (hU₀ := hU₀)
+        (CedgeBase :=
+          case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e)
+        (r := r) (rEdge := rEdge) (Rmax := Rmax) hRmax with
+    ⟨R, hR, hRle, hreadout⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  simpa using hreadout
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Relative local source-chart image measurability and continuity for the
 concrete passive-theta endpoint chart.
 

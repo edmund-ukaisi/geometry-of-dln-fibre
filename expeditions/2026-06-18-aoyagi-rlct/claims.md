@@ -13992,6 +13992,33 @@ cited as a full inverse/readback to `(theta,u)`, source-image coverage,
 source-prior transport, Haar transport, a Jacobian formula, normal crossings,
 pole order, or RLCT.
 
+## A2 Case 2 product source-chart small-ball readout
+
+Status: Proved in Lean; focused and full verification passed.
+
+Claim: for the full p.13 product source chart built from the concrete Case 2
+passive-theta endpoint source chart, there is a positive Euclidean radius for
+the regular variables such that, eventually along the base source-rank stratum
+and for all `u` in that ball, regular coordinates read out as `u` and residual
+coordinates agree with the passive-theta source chart.
+
+Lean theorem:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-small-ball-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-small-ball-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-small-ball-readout.md`.
+
+Kill condition: this theorem is a local coordinate-readout theorem.  It must
+not be cited as a full inverse/readback to `(theta,u)`, source-image coverage,
+source-prior transport, Haar transport, a Jacobian formula, normal crossings,
+pole order, or RLCT.
+
 ## A2 Case 2 selected-entry Schur cleanup
 
 Status: Proved in Lean; focused and full local builds passed; xhigh reviews

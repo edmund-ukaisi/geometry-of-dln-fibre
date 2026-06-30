@@ -12202,3 +12202,28 @@ axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
 no original/source-prior transport, no Haar transport, no Jacobian formula, no
 normal crossings, no pole order, and no RLCT.
+
+Latest A2 Case 2 product source-chart small-ball readout:
+`RetainedPassiveCase2PassiveThetaSourceImage.lean` proves
+`exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-small-ball-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-small-ball-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-small-ball-readout.md`.
+
+Ledger status: local determinant-chart packaging of the full p.13
+product-coordinate readout.  The theorem returns a positive regular-coordinate
+radius under which the product-source chart reads out regular coordinates as
+the supplied `u` and residual coordinates as the passive-theta source residual
+coordinates, eventually along the base source-rank stratum.
+
+Focused file elaboration, focused module build, full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, and a direct axiom probe passed.  The
+axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
+no original/source-prior transport, no Haar transport, no Jacobian formula, no
+normal crossings, no pole order, and no RLCT.

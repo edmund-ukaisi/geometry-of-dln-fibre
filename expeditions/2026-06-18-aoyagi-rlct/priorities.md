@@ -15013,3 +15013,17 @@ local small-ball version that packages the `ctopMatrix u` unit condition into
 `u ∈ ball 0 R`, or (b) a genuine full product-chart image/readback theorem.
 Do not claim a full inverse, source-image coverage, Haar transport, original
 prior transport, normal crossings, pole order, or RLCT from this readout.
+
+A2 Case 2 product source-chart small-ball readout has landed locally in
+`RetainedPassiveCase2PassiveThetaSourceImage.lean`:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq_nhdsWithin_source
+```
+
+This completes the radius-packaged version of the concrete p.13
+regular/residual coordinate readout.  Next priority: the remaining
+source-prior frontier is not another coordinate-readout wrapper.  It is a
+genuine full product-chart inverse/image theorem, or a density/Jacobian
+transport theorem for a specified source measure.  Keep the lack of a full
+`EdgeFamily -> (theta,u)` readback explicit.
