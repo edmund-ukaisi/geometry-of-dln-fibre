@@ -279,7 +279,7 @@ theorem basePt_C (r : k) : H.basePt (MvPolynomial.C r) = r := by
 theorem coordTest_mem (x : G.ρ) :
     Ideal.Quotient.mk I
         (MvPolynomial.X x - MvPolynomial.C (H.basePt (MvPolynomial.X x))) ∈ H.basePtIdeal := by
-  show H.basePtA (Ideal.Quotient.mk I
+  change H.basePtA (Ideal.Quotient.mk I
       (MvPolynomial.X x - MvPolynomial.C (H.basePt (MvPolynomial.X x)))) = 0
   rw [basePtA_mk, map_sub, basePt_C, sub_self]
 
@@ -310,7 +310,7 @@ theorem cotPairing_coordTest (φ : G.C0) (x : G.ρ) :
               (MvPolynomial.X x - MvPolynomial.C (H.basePt (MvPolynomial.X x))),
             H.coordTest_mem x⟩)
       = H.c1coord (G.δ φ) x := by
-  show H.cotFunctional φ _ = _
+  change H.cotFunctional φ _ = _
   rw [cotFunctional_toCotangent, dirDerivQuot_mk, map_sub, dirDeriv_C, sub_zero, H.hcoord φ x]
 
 /-- **`ker (cotPairing) ≤ ker δ`.** If the cotangent functional of `φ` vanishes then so does `δ φ`:

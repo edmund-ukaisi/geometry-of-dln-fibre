@@ -225,7 +225,7 @@ abbrev pointRing : Type := MvPolynomial Empty ℚ ⧸ (⊥ : Ideal (MvPolynomial
 noncomputable def pointRingEquiv : pointRing ≃ₐ[ℚ] ℚ :=
   (AlgEquiv.quotientBot ℚ (MvPolynomial Empty ℚ)).trans (MvPolynomial.isEmptyAlgEquiv ℚ Empty)
 
-instance : (⊥ : Ideal (MvPolynomial Empty ℚ)).IsPrime := Ideal.bot_prime
+instance : (⊥ : Ideal (MvPolynomial Empty ℚ)).IsPrime := Ideal.isPrime_bot
 
 /-- `pointRing` is a field (transported from `ℚ`). -/
 theorem pointRing_isField : IsField pointRing :=
