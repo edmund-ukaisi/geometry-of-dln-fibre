@@ -6,6 +6,77 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Generic Fixed-Base Product Source-Readback Fields - 2026-06-30
+
+Lean now has a reusable fixed-base product-coordinate source-readback theorem:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+```
+
+It lives in the new module
+
+```text
+DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+```
+
+and imports both the fixed-base regular-suspension product-coordinate
+constructor and the retained-passive source-readback algebra.  For any base
+edge family `CedgeBase x`, the theorem proves that the fixed-base product
+family `CedgeProd(x,u)` has readback fields
+
+```text
+A1passive = 1
+F2        = first decoded F2 from u, then zeros
+A3passive = 0
+C         = residualBlock(fixedBase(CedgeBase x))
+Ctop      = decoded Ctop from u
+F3        = decoded F3 from u
+```
+
+assuming `IsUnit (ctopMatrix u).det`.
+
+The proof centralizes the endpoint/middle shape unfolding: realise the
+product edge family by the prescribed fixed-base matrix family `G`, prove the
+raw p.13 left/middle/right shape hypotheses, and call
+`sourceReadback_productCoordinate_fields_succSucc`.  The concrete Case 2
+theorem `case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields`
+now delegates to this generic theorem with `M = 0`.
+
+Boundary: still only pointwise finite p.13 algebra.  No full parameter
+recovery, source-prior transport, Haar/Jacobian density identity, source-image
+coverage/equality, normal crossings, pole order, or RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-generic-fixed-base-product-source-readback-fields.md
+threads/03-block-product-reduction/statement-card-a2-generic-fixed-base-product-source-readback-fields.md
+threads/03-block-product-reduction/review-a2-generic-fixed-base-product-source-readback-fields.md
+```
+
+Review: xhigh scout `Epicurus the 2nd` PASS.  The only concern was Lean/API
+maintenance fragility from definitional unfolding of the product-coordinate
+matrix constructor, now centralized in the generic theorem; no mathematical
+overreach was found.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_generic_source_readback_axioms.lean
+```
+
+Axiom probes for the generic theorem and refactored Case 2 theorem report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 Case 2 Product Source-Chart Source-Readback Fields - 2026-06-30
 
 Lean now proves the concrete fixed-base Case 2 product-chart source-readback

@@ -7,10 +7,8 @@
 >   `DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData.case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields`
 >   (`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`)
 > - **Supporting Lean:**
->   `DLNFibre.DLN.Aoyagi.ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback_productCoordinate_fields_succSucc`
->   (`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean`) and
->   `paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean`
->   (`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionCoordinates.lean`).
+>   `DLNFibre.DLN.Aoyagi.paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields`
+>   (`lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean`).
 > - **Gloss.** At a point `(theta,u)`, convert the product source chart to
 >   fixed-base edge matrices.  These matrices are the p.13 left/right endpoint
 >   product-coordinate shapes; in Case 2 there is no middle edge.  The raw
@@ -25,18 +23,16 @@
 > - **Deferred.** Full recovery of passive theta from the product chart,
 >   original/source-prior transport, Haar/Jacobian density identity,
 >   source-image coverage/equality, normal crossings, pole order, and RLCT.
-> - **Structure & ideas observed.** The proof defines the fixed-base base
->   matrices `Ebase`, the product matrices `Eprod`, and the prescribed product
->   matrix family `G`.  The realisation theorem identifies `Eprod = G`; the
->   endpoint cases unfold to the raw p.13 shapes, and the middle case is
->   vacuous because the Case 2 chain has only two edges.
+> - **Structure & ideas observed.** The proof now delegates to the generic
+>   fixed-base product-source-readback theorem with `M = 0`; the endpoint
+>   shape unfolding is centralized in the generic API.
 > - **Route.** Instantiate
->   `sourceReadback_productCoordinate_fields_succSucc` with `N = 0`, residual
->   factors `residualBlock Ebase`, and the regular fields decoded from `u`.
-> - **Status.** sorry-free + controller checked + xhigh review PASS.  The
->   reviewer noted only Lean/API fragility from endpoint proofs using
->   definitional unfolding plus `simp ...; rfl`, not mathematical overreach.
->   Verification: focused direct check, focused module build, full local
->   `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
->   axiom probe passed.  Axiom footprint:
->   `[propext, Classical.choice, Quot.sound]`.
+>   `paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields`
+>   with the concrete passive-theta endpoint source chart.
+> - **Status.** sorry-free + controller checked + xhigh review PASS before
+>   generic refactor.  The reviewer noted only Lean/API fragility from local
+>   endpoint unfolding; the refactor removes that fragility from the concrete
+>   theorem.  Verification before refactor: focused direct check, focused
+>   module build, full local `lake build DLNFibre`, `scripts/sorries`,
+>   `git diff --check`, and direct axiom probe passed.  Verification after
+>   refactor is tracked on the generic fixed-base statement card.

@@ -22,9 +22,12 @@
 > - **Assumed.** The raw edge family satisfies the stated p.13 product-coordinate
 >   block patterns, and `Ctop.det` is a unit.
 > - **Cited.** none.
-> - **Deferred.** Instantiating this theorem through the endpoint fixed-base
->   Euclidean `productSourceChart` into a concrete Case 2 `sourceReadback`
->   statement, and all source-prior/Haar/normal-crossing/RLCT transport.
+> - **Landed downstream.** The endpoint fixed-base Euclidean
+>   `productSourceChart` instantiation now exists generically as
+>   `paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields`
+>   and concretely in Case 2 as
+>   `case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields`.
+> - **Deferred.** All source-prior/Haar/normal-crossing/RLCT transport.
 > - **Structure & ideas observed.** The suffix recursion processes the right
 >   endpoint first, converting the transformed lower-left block `-F3` into the
 >   accumulated lower-unitriangular suffix field `+F3`.  Middle edges preserve

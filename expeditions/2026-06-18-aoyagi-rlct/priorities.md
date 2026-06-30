@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 generic fixed-base product source-readback fields
+
+The concrete Case 2 product-chart readback bridge has been lifted to a generic
+fixed-base product-coordinate API:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+```
+
+For any base edge family `CedgeBase x`, the explicit fixed-base p.13 product
+chart has `sourceReadback` fields
+
+```text
+A1passive = 1
+F2        = first decoded F2 from u, then zeros
+A3passive = 0
+C         = residualBlock(fixedBase(CedgeBase x))
+Ctop      = decoded Ctop from u
+F3        = decoded F3 from u
+```
+
+assuming `IsUnit (ctopMatrix u).det`.  The previous concrete Case 2 theorem
+now delegates to this generic theorem with `M = 0`, reducing local proof
+fragility and making the fixed-base product-readback API reusable.
+
+This remains pointwise finite p.13 algebra.  It does not recover full
+parameters, prove source-prior transport, Haar/Jacobian density identity,
+source-image coverage/equality, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 product source-chart source-readback fields
 
 The raw product source-readback formula has now been instantiated through the
@@ -58,9 +87,9 @@ p.13 block forms.
 This resolves the immediate product-readback question at the raw finite
 algebra level and also prevents overclaiming: the product-coordinate edge
 family does not recover full passive theta data by `sourceReadback` alone.
-Next useful bridge is an instantiation through the endpoint fixed-base
-Euclidean `productSourceChart` if needed; source-prior transport, Haar
-transport, normal crossings, pole order, and RLCT extraction remain separate.
+The endpoint fixed-base Euclidean `productSourceChart` instantiation has now
+landed generically and concretely; source-prior transport, Haar transport,
+normal crossings, pole order, and RLCT extraction remain separate.
 
 ## Latest controller decision - 2026-06-30, A2 full product domination handoff
 

@@ -21,6 +21,61 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 generic fixed-base product source-readback fields
+
+Reproduction:
+`reproduction-a2-generic-fixed-base-product-source-readback-fields.md`.
+Statement card:
+`statement-card-a2-generic-fixed-base-product-source-readback-fields.md`.
+Review:
+`review-a2-generic-fixed-base-product-source-readback-fields.md`, PASS by
+xhigh reviewer `Epicurus the 2nd`; only generic proof-maintenance fragility
+noted.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre.lean
+```
+
+Lean now proves:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+```
+
+For any fixed-base base edge family `CedgeBase x`, the explicit p.13 product
+coordinate family reads back to canonical retained passive fields, decoded
+regular fields from `u`, and residual factors extracted from `CedgeBase x`.
+The previous concrete Case 2 theorem
+`case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields` now calls
+this generic theorem with `M = 0`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_generic_source_readback_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to original parameters, no passive-theta
+recovery from the product chart beyond the stated field package, no
+original/source-prior transport, no Haar/Jacobian density formula, no
+source-image coverage/equality, no normal crossings, no pole order, and no
+RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 product source-chart source-readback fields
 
 Reproduction:

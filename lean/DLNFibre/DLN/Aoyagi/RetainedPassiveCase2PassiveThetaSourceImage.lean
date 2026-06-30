@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+import DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
 
 /-!
@@ -851,40 +852,10 @@ theorem case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
       data.Ctop = Ctop ∧
       data.F3 = F3 := by
   intro ρ κ Coord EdgeFamily sourceChart productSourceChart Ebase Eprod F2 F3 Ctop C data
-  let G :=
-    paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean
-      W₂ B₂ U₀ u Ebase
-  have hEMat : Eprod = G := by
-    funext p
-    simpa [Eprod, productSourceChart,
-      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean,
-      Ebase, G] using
-      paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuousReverseEdgeFamilyOfMatrices
-        (K := ℝ) W₂ B₂ U₀ hU₀ G p
-  have hLast :
-      Eprod (Fin.last 1) =
-        ChartLocalSuffixState.productCoordinateRightEndpointMatrix F3 (C (Fin.last 1)) := by
-    rw [hEMat]
-    simp [G, F3, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
-    rfl
-  have hMid :
-      ∀ p : Fin 2, 0 < p.val → p.val < 1 →
-        Eprod p =
-          ChartLocalSuffixState.productCoordinateMiddleMatrix (ρ := ρ) (C p) := by
-    intro p hp0 hplast
-    omega
-  have hLeft :
-      let p0 : Fin 2 := 0
-      Eprod p0 = ChartLocalSuffixState.productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
-    rw [hEMat]
-    simp [G, F2, Ctop, C, paperEndpointFixedBaseMultiEdgeProductCoordinateMatrixOfEuclidean]
-    rfl
-  have hfields :=
-    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback_productCoordinate_fields_succSucc
-        (K := ℝ) (N := 0) (ρ := ρ) (κ := κ)
-        Eprod F2 F3 Ctop C hLast hMid hLeft
-        (by simpa [Ctop] using hCtop)
-  simpa [data] using hfields
+  simpa [ρ, κ, Coord, sourceChart, productSourceChart, Ebase, Eprod, F2, F3,
+    Ctop, C, data] using
+    (paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+      (M := 0) W₂ B₂ U₀ hU₀ sourceChart theta u hCtop)
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
