@@ -148,6 +148,89 @@ theorem flatBlockLE_symm_fderiv_flatBlock {t r c Trow Wcol : ℕ}
   show (flatBlockLE hr hc).symm (flatBlockLin hr hc z) = z
   exact unflatBlock_flatBlock hr hc z
 
+/-! ## The output `packStair : Params M ≃ₗ StairProd V 2` and `eOut`
+
+`packStair` collects the two `Params` layers into the staircase product:
+* layer 0 (`Matrix(M0,M1)`) → `V 0 = SchurInc` via the dim-recast `Matrix(M0,M1) ≃ Matrix(Text1,Wext1)`
+  then `flatBlockLE.symm` (`M0 = Text1`, `M1 = Wext1`).
+* layer 1 (`Matrix(M1,M2)`) → `V 1 = (W, leaf)` via the dim-recast `Matrix(M1,M2) ≃ Matrix(Wext1,Wext2)`
+  then the ROW split `Fin Wext1 ≃ Fin Text2 ⊕ Fin (Wext1−Text2)` into `(kept, lift)`, REORDERED to
+  `(lift = W, kept = leaf)` to match `chainUnitMap`'s `(W, C)` domain orientation (the flagged trap).
+
+`eOut := packStair ∘ₗ paramsEquivFlatCLE.symm` absorbs the `paramsEquivFlat` flattening, so
+`eOut ∘ paramsEquivFlatCLE = packStair` and `hD` reduces to `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm
+= stairMap`. -/
+
+/-- The boundary width facts at `L = 2`: `M 0 = Text 1`, `M 1 = Wext 1`, `M 2 = Wext 2`. -/
+theorem eihd_M0_eq_Text1 (ha : StructAdm M (tach M)) : M 0 = Text M (tach M) 1 := by
+  have h := Text0_eq_Text1_struct M (tach M) ha.h0; rw [Text_zero] at h; exact h
+
+theorem eihd_M1_eq_Wext1 : M 1 = Wext M 1 := by
+  rw [Wext_apply M 1 (by omega)]; congr 1
+
+theorem eihd_M2_eq_Wext2 : M 2 = Wext M 2 := by
+  rw [Wext_apply M 2 (by omega)]; congr 1
+
+/-- The row/col split facts: `schurT1 + schurR1 = Text 1`, `schurT1 + schurC1 = Wext 1`,
+`schurT1 + schurC1 = Wext 1` (the V1 row split is `Text2 + (Wext1−Text2) = Wext1`). -/
+theorem eihd_schurR_split (ha : StructAdm M (tach M)) :
+    schurT1 M + schurR1 M = Text M (tach M) 1 := by
+  have h : Text M (tach M) 2 ≤ Text M (tach M) 1 := ha.hdesc 0 (by decide)
+  simp only [schurT1, schurR1]; omega
+
+theorem eihd_schurC_split (ha : StructAdm M (tach M)) :
+    schurT1 M + schurC1 M = Wext M 1 := by
+  have h : Text M (tach M) 2 ≤ Wext M 1 := ha.hub 0
+  simp only [schurT1, schurC1]; omega
+
+/-! ### The two layer reshapes (the components of `packStair`) -/
+
+/-- The layer-0 reshape `Matrix (M 0) (M 1) ≃ₗ V 0 = SchurInc` — dim-recast `Matrix(M0,M1) ≃
+Matrix(Text1,Wext1)` then `flatBlockLE.symm`. (`M0 = Text1`, `M1 = Wext1`.) -/
+noncomputable def packLayer0 (ha : StructAdm M (tach M)) :
+    Matrix (Fin (M 0)) (Fin (M 1)) ℝ ≃ₗ[ℝ] eihdV M 0 :=
+  (Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)).trans
+    (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+
+/-- The row-split of a `Matrix(Wext1, Wext2)` into `(kept = Matrix(schurT1,Wext2)) ×
+(lift = Matrix(schurC1,Wext2))` — reindex rows by `(finSumFinEquiv).symm` to `Fin schurT1 ⊕ Fin schurC1`,
+then `sumArrowLequivProdArrow`, then `ofLinearEquiv` on each component. (`schurT1 + schurC1 = Wext1`.) -/
+noncomputable def rowSplitLE (ha : StructAdm M (tach M)) :
+    Matrix (Fin (Wext M 1)) (Fin (Wext M 2)) ℝ ≃ₗ[ℝ]
+      Matrix (Fin (schurT1 M)) (Fin (Wext M 2)) ℝ × Matrix (Fin (schurC1 M)) (Fin (Wext M 2)) ℝ :=
+  (Matrix.reindexLinearEquiv ℝ ℝ
+      (finSumFinEquiv.trans (finCongr (eihd_schurC_split ha))).symm
+      (Equiv.refl (Fin (Wext M 2)))).trans
+    (((Matrix.ofLinearEquiv ℝ).symm.trans
+        (LinearEquiv.sumArrowLequivProdArrow (Fin (schurT1 M)) (Fin (schurC1 M)) ℝ
+          (Fin (Wext M 2) → ℝ))).trans
+      ((Matrix.ofLinearEquiv ℝ).prodCongr (Matrix.ofLinearEquiv ℝ)))
+
+/-- The layer-1 reshape `Matrix (M 1) (M 2) ≃ₗ V 1 = (W, leaf)` — dim-recast `Matrix(M1,M2) ≃
+Matrix(Wext1,Wext2)`, ROW-split into `(kept = leaf) × (lift = W)`, then SWAP to `(W, leaf)` — the
+`chainUnitMap (W, C)` orientation (the flagged trap). -/
+noncomputable def packLayer1 (ha : StructAdm M (tach M)) :
+    Matrix (Fin (M 1)) (Fin (M 2)) ℝ ≃ₗ[ℝ] eihdV M 1 :=
+  (Matrix.reindexLinearEquiv ℝ ℝ (finCongr eihd_M1_eq_Wext1) (finCongr eihd_M2_eq_Wext2)).trans
+    ((rowSplitLE ha).trans (LinearEquiv.prodComm ℝ _ _))
+
+/-- **`packStair : Params M ≃ₗ StairProd (eihdV M) 2`** — the output collector. Split the `Fin 2` Pi
+into the two layers (`piFinTwo`), reshape each (`packLayer0`/`packLayer1`), then append the `PUnit`
+tail (`prodUnique.symm`) to land in `V 0 × (V 1 × PUnit)`. -/
+noncomputable def packStair (ha : StructAdm M (tach M)) :
+    Params M ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
+  (LinearEquiv.piFinTwo ℝ (fun s : Fin 2 => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ)).trans
+    (((packLayer0 ha).prodCongr (packLayer1 ha)).trans
+      ((LinearEquiv.refl ℝ (eihdV M 0)).prodCongr
+        (LinearEquiv.prodUnique (R := ℝ) (M := eihdV M 1) (M₂ := PUnit)).symm))
+
+/-- **`eOut := packStair ∘ₗ paramsEquivFlatCLE.symm`** — the output layer-collecting equiv. Absorbs
+the `paramsEquivFlat` flattening: `eOut ∘ paramsEquivFlatCLE = packStair` (so `hD` reduces to
+`packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm = stairMap`). -/
+noncomputable def eOut (ha : StructAdm M (tach M)) :
+    (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
+  (paramsEquivFlatLinear M).symm.trans (packStair ha)
+
 end L2
 
 end DLNFibre.DLN.RLCT
