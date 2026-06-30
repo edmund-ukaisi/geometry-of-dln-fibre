@@ -128,7 +128,7 @@ theorem contDiff_splitHomeo_symm (hec : Function.Injective ec) :
 
 /-! ## Sub-build 3 — the raw residual and the flat-space loss germ -/
 
-variable {B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ} {v : Params H}
+variable {B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ} {v : Params H} {r : ℕ}
   {er : Fin m → Fin (H 0) × Fin (H 2)}
 
 /-- The selected-entry predicate on loss-entry pairs: `(i,j)` is one of the `er`-rows. -/
@@ -323,5 +323,107 @@ theorem contDiffOn_rawResidVec (hopt : prod H v = B)
       rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
       exact WithTop.coe_le_coe.mpr le_top
     exact houter.comp_contDiffOn hsymmCD
+
+/-! ## Sub-build 5 — the assembled `hchart` -/
+
+/-- **The D1 `hchart` (the §SEL engine input).** At an optimal `v` (`prod v = B`, `rank B = r`),
+given the invertible flat-Jacobian minor `(er, ec)` (`exists_jacFlatL2_minor`), the local RLCT of
+the DLN loss at `v` equals the post-chart `∑ s² + ∑ q²` shape on `ℝ^m × ℝ^(N−m)` for a GLOBAL `C¹`
+residual `q` and the basepoint `(0, t0)` (`t0` the complement-block image of the flat origin):
+
+    rlctAt H (dlnLoss H B) v
+      = rlctAtOn (fun p => (∑ i, p.1 i ^ 2) + (∑ i, q p i ^ 2)) ((0 : Fin m → ℝ), t0).
+
+This is exactly the `hchart` `deepest_le_of_optimal_of_iftResidual` consumes (with `m = nRegL2 H r`,
+`Y = Fin (flatDim H − m) → ℝ`, `n = H0·H2`). Chains: the flatten+translate bridge
+(`rlctAt_eq_rlctAtOn_lossFlatShift`), the right-inverse-exposing IFT chart
+(`rlctAtOn_eq_of_contDiff_chart_rinv`, with `Ψsymm` `C²` near `0`), the flat-space germ split
+(`germA`), the bump-globalised residual (`exists_contDiff_eventuallyEq_of_contDiffOn`), and the MP
+reindex (`rlctAtOn_comp_homeomorph` on `splitHomeo`). -/
+theorem dln_hchart_residual (hopt : prod H v = B) (hr : B.rank = r)
+    (her : Function.Injective er) (hec : Function.Injective ec)
+    (hminor : ((jacFlatL2 H v).submatrix er ec).det ≠ 0) :
+    ∃ (q : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) → EuclideanSpace ℝ (Fin (H 0 * H 2)))
+      (t0 : Fin (flatDim H - m) → ℝ),
+      ContDiff ℝ 1 q ∧
+      rlctAt H (dlnLoss H B) v
+        = rlctAtOn (fun p : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) =>
+            (∑ i, p.1 i ^ 2) + (∑ i, q p i ^ 2)) ((0 : Fin m → ℝ), (splitHomeo hec 0).2) := by
+  classical
+  -- the concrete chart `Φ`, its `≃L` derivative, smoothness, fix.
+  set Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) := chartΦ H B v er ec with hΦdef
+  set f' : (Fin (flatDim H) → ℝ) ≃L[ℝ] (Fin (flatDim H) → ℝ) :=
+    chartFDerivEquiv H B v er ec hec hminor with hf'def
+  have hΦcd : ContDiff ℝ 2 Φ := contDiff_chartΦ
+  have hΦ' : HasFDerivAt Φ (f' : (Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ)) 0 :=
+    hasFDerivAt_chartΦ_equiv hec hminor
+  have hfix : Φ 0 = 0 := chartΦ_zero hec
+  -- the right-inverse chart: `Ψsymm`, `V` open ∋ 0, `Ψsymm` `C²` on `V`, the germ + RLCT transfer.
+  obtain ⟨Ψsymm, V, hVopen, hwV, hsymmCD, hrinv, hrlcttransfer⟩ :=
+    rlctAtOn_eq_of_contDiff_chart_rinv (lossFlatShift H B v) Φ 0 f' hΦcd hΦ' hfix
+  -- the residual vector, `C²` on `V`.
+  have hgCD : ContDiffOn ℝ 2 (rawResidVec B v er Ψsymm) V := contDiffOn_rawResidVec hopt Ψsymm hsymmCD
+  -- transport to the product space: `g₁ = rawResidVec ∘ splitHomeo.symm`, `C²` on `U = splitHomeo '' V`.
+  set U : Set ((Fin m → ℝ) × (Fin (flatDim H - m) → ℝ)) := splitHomeo hec '' V with hUdef
+  have hUopen : IsOpen U := (splitHomeo hec).isOpenMap V hVopen
+  set w0 : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) := splitHomeo hec 0 with hw0def
+  have hw0U : w0 ∈ U := ⟨0, hwV, rfl⟩
+  have hmapsto : Set.MapsTo (splitHomeo hec).symm U V := by
+    rintro p ⟨w, hwV', rfl⟩
+    rw [Homeomorph.symm_apply_apply]; exact hwV'
+  have hsymmContDiff2 : ContDiff ℝ 2 (splitHomeo hec).symm := by
+    refine (contDiff_splitHomeo_symm hec).of_le ?_
+    rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  have hg1CD : ContDiffOn ℝ 2
+      (fun p => rawResidVec B v er Ψsymm ((splitHomeo hec).symm p)) U := by
+    have := hgCD.comp (hsymmContDiff2.contDiffOn (s := U)) hmapsto
+    exact this
+  -- bump-globalise: `q` global `C¹`, `=ᶠ g₁` near `w0`.
+  obtain ⟨q, hqCD, hqeq⟩ :=
+    exists_contDiff_eventuallyEq_of_contDiffOn (n := 1) hUopen hw0U (hg1CD.of_le (by norm_num))
+  refine ⟨q, w0.2, hqCD, ?_⟩
+  -- the engine post-chart loss `F`.
+  set F : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) → ℝ :=
+    fun p => (∑ i, p.1 i ^ 2) + (∑ i, q p i ^ 2) with hFdef
+  -- KEY germ: `F ∘ splitHomeo =ᶠ[𝓝 0] lossFlatShift ∘ Ψsymm`.
+  have hkey : (fun w => F (splitHomeo hec w)) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+      fun w => lossFlatShift H B v (Ψsymm w) := by
+    -- `q =ᶠ g₁` near `w0`, pulled back along `splitHomeo` (continuous, `splitHomeo 0 = w0`).
+    have hqpull : (fun w => q (splitHomeo hec w)) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+        fun w => rawResidVec B v er Ψsymm w := by
+      have hcont : ContinuousAt (splitHomeo hec) 0 := (splitHomeo hec).continuous.continuousAt
+      have := hcont.eventually hqeq
+      filter_upwards [this] with w hw
+      rw [hw, Homeomorph.symm_apply_apply]
+    -- germA for the loss side
+    have hgA := germA hopt her hec Ψsymm hrinv
+    filter_upwards [hqpull, hgA] with w hwq hwA
+    show (∑ i, (splitHomeo hec w).1 i ^ 2) + (∑ i, q (splitHomeo hec w) i ^ 2)
+      = lossFlatShift H B v (Ψsymm w)
+    -- selected block: `∑ (splitHomeo w).1 k² = ∑_k w(ec k)²`
+    have hsel : (∑ i, (splitHomeo hec w).1 i ^ 2) = ∑ k : Fin m, (w (ec k)) ^ 2 := by
+      apply Finset.sum_congr rfl; intro k _; rw [splitHomeo_fst_apply hec w k]
+    -- residual block: `∑ q(splitHomeo w) i² = ∑_ij rawResid w ij²`
+    have hresid : (∑ i, q (splitHomeo hec w) i ^ 2)
+        = ∑ ij : Fin (H 0) × Fin (H 2), (rawResid B v er Ψsymm w ij) ^ 2 := by
+      rw [show (fun i => q (splitHomeo hec w) i ^ 2)
+          = fun i => rawResidVec B v er Ψsymm w i ^ 2 from by rw [hwq]]
+      rw [show (∑ i, rawResidVec B v er Ψsymm w i ^ 2)
+          = ∑ i, (rawResid B v er Ψsymm w ((entryIdx H).symm i)) ^ 2 from by
+        apply Finset.sum_congr rfl; intro i _; rw [rawResidVec_apply]]
+      exact Equiv.sum_comp (entryIdx H).symm (fun ij => (rawResid B v er Ψsymm w ij) ^ 2)
+    rw [hsel, hresid, ← hwA]
+  -- assemble: flatten bridge ▸ rinv transfer ▸ germ congr ▸ homeomorph transfer.
+  rw [rlctAt_eq_rlctAtOn_lossFlatShift H B v, hrlcttransfer]
+  rw [← rlctAtOn_congr_germ (fun w => F (splitHomeo hec w)) (fun w => lossFlatShift H B v (Ψsymm w))
+    0 hkey]
+  rw [rlctAtOn_comp_homeomorph (splitHomeo hec) (splitHomeo_mp hec) (splitHomeo_emb hec) F 0]
+  -- `splitHomeo 0 = (0, (splitHomeo 0).2)`: the selected block reads `0 (ec k) = 0`.
+  have hfst : (splitHomeo hec (0 : Fin (flatDim H) → ℝ)).1 = (0 : Fin m → ℝ) := by
+    funext k; rw [splitHomeo_fst_apply hec 0 k]; rfl
+  have hsh : splitHomeo hec (0 : Fin (flatDim H) → ℝ)
+      = ((0 : Fin m → ℝ), (splitHomeo hec 0).2) := Prod.ext hfst rfl
+  rw [hsh]
 
 end DLNFibre.DLN.RLCT
