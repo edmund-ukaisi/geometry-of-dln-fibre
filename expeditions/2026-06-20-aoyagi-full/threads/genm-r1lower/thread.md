@@ -45,6 +45,13 @@ CLOSED (cont.) — BOTH KEYSTONES ASSEMBLED sorry-free (reduce to named parallel
 ## 4-hand split — the 6 remaining sorries are EXACTLY the parallel-hand atoms + my injOn#2:
 - `interiorLive_BdetMonomial` ← **genm-h2bdet** (det monomial, slot shape:
   `|det D(BchartLeaf∘kLDU)(pbo u)| = ∏(if j=leafPivot then 1 else |u j|^{leafH j})`).
+  **hreg-GATED (decision-critical, source-verified 2026-06-30):** NOT a bounded monomialization. The
+  un-lensed boundary det reduces (`interiorDet_leaf_headline_freeK` → `_eihd`, `RouteMHDtotEihd:1029`)
+  only UNDER the open regauge `hreg : |det((eihdOut).symm ∘ eIn)| = 1` (two-sided staircase conjugacy).
+  No unconditional headline; `hreg` discharged nowhere (#224 still open). Honest closure = H2b-i (NEW
+  full-ambient `det D(kLDU) = ∏|q|^{2(t−1−i)}`, route-indep) + conditional freeK/eihd + hreg. `hreg` is
+  TRUE + BOUNDED (slot-reindex det-1) but a named LEAF-1 sub-obligation (analogous to GAP A on LEAF 2).
+  `interiorLive_abs_det` (the assembly) is sorry-free but hreg-gated through this atom (docstrings flag it).
 - `interiorLive_kLDU_injOn` ← **genm-lduinj** (kLDU inj on `pbo''injDom`, via LDU-product uniqueness).
 - `interiorLive_BchartLeaf_injOn` ← **ME (injOn#2)** — the off-radial block recovery (K via LDU, X via
   fwd-subst K⁻¹, N/E/leaf linear, then `paramsEquivFlat`). The genuine remaining content on my side.

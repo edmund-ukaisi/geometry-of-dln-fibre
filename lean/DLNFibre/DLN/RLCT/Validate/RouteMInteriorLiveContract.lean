@@ -277,9 +277,17 @@ theorem interiorLive_leafH_pivot (ha : StructAdm M (tach M))
 
 /-- **H2b (genm-h2bdet's deliverable, consumed here)** — the boundary-factor determinant monomializes:
 `|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}` (the off-pivot K-diagonal
-product, `1` at the pivot). The Schur·LDU det telescope: `interiorDet_leaf_headline_Bchart` gives
-`∏ engine`, monomialized by `readK_kLDU_det` + `kLens_det` to the diagonal-pivot exponents. STATED
-`sorry` — wired to genm-h2bdet's atom. -/
+product, `1` at the pivot). STATED `sorry` — wired to genm-h2bdet's atom.
+
+**CAVEAT (NOT a bounded monomialization — hreg-GATED; genm-h2bdet STEP-0 + source-verified).** The
+un-lensed boundary det is NOT banked as `∏engine`: `interiorDet_leaf_headline_freeK` reduces it to
+`engineFreeK = |det K|^{r+c}` only under the hypothesis `hDtot : |det Dtot| = |det K|^{r+c}`, and that
+in turn (`interiorDet_leaf_headline_eihd`, `RouteMHDtotEihd.lean:1029`) rests on the OPEN regauge
+residual `hreg : |det((eihdOut).symm ∘ eIn)| = 1` (the two-sided staircase conjugacy). No unconditional
+headline exists; `hreg` is discharged nowhere (task #224 still open). So this `sorry` is hreg-GATED:
+its honest closure is `H2b-i (the NEW full-ambient det D(kLDU) = ∏|q|^{2(t−1−i)}, genm-h2bdet,
+route-independent) + the conditional freeK/eihd headline + hreg`. `hreg` is TRUE + BOUNDED (a slot-
+reindex det-1, `eIn`/`eihdOut` permutation-like) but genuinely open — a named LEAF-1 sub-obligation. -/
 theorem interiorLive_BdetMonomial (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
     |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
@@ -291,8 +299,12 @@ theorem interiorLive_BdetMonomial (ha : StructAdm M (tach M))
 /-- **H2 — the chart Jacobian is the monomial** `|det Dφ u| = ∏_j |u_j|^{leafH j}` (this thread's
 assembly). Via the B' = BchartLeaf ∘ kLDU factorization (hmap-for-B' from `hmap_leaf` at `kLDU x` +
 the commute): `radialComp_abs_det_at` fires ONCE → `|u leafPivot|^{minAdm−1} · |det DB'|`; the residual
-`|det DB'|` is genm-h2bdet's monomial (`interiorLive_BdetMonomial`); the pivot factor folds in via
-`interiorLive_leafH_pivot` + the `Finset.prod` split. -/
+`|det DB'|` is `interiorLive_BdetMonomial`; the pivot factor folds in via `interiorLive_leafH_pivot` +
+the `Finset.prod` split.
+
+The assembly (radial split + prod arithmetic) is sorry-free; it is **hreg-GATED through
+`interiorLive_BdetMonomial`** (see that caveat) — the unconditional abs_det needs the open regauge
+`hreg` closed (a bounded LEAF-1 sub-obligation), NOT a bounded monomialization. -/
 theorem interiorLive_abs_det (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
     |LinearMap.det (fderiv ℝ (interiorLivePhi ha h0r h0c) u).toLinearMap|
