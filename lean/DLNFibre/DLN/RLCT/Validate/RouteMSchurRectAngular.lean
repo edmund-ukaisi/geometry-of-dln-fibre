@@ -97,4 +97,345 @@ theorem piRatioRect_symm_offpivot (m n N : ℕ) (hN : m * n = N + 1) (p : Fin (m
   rw [← hj]
   simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
 
+/-- Off the pivot, the ratio read-back lands in `[−1,1]` on the ratio box. -/
+theorem piRatioRect_symm_offpivot_le (m n N : ℕ) (hN : m * n = N + 1) (p : Fin (m * n))
+    (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (k : Fin (m * n)) (hk : k ≠ p) :
+    |((piRatioRect m n N hN p).symm (0, z)) k| ≤ 1 := by
+  have hne : finCongr hN k ≠ finCongr hN p := fun h => hk ((finCongr hN).injective h)
+  obtain ⟨j, hj⟩ := Fin.exists_succAbove_eq hne
+  have hk_eq : k = (finCongr hN).symm ((finCongr hN p).succAbove j) := by
+    rw [hj]; exact ((finCongr hN).symm_apply_apply k).symm
+  have hval : ((piRatioRect m n N hN p).symm (0, z)) k = z j := by
+    rw [piRatioRect_symm_apply, hk_eq]
+    have : finCongr hN ((finCongr hN).symm ((finCongr hN p).succAbove j))
+        = (finCongr hN p).succAbove j := (finCongr hN).apply_symm_apply _
+    rw [this]
+    simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+  rw [hval]
+  have := hz j (Set.mem_univ j); rw [Set.mem_Icc, ← abs_le] at this; exact this
+
+/-! ## The pivot-normalised angular matrix `RmatRectNorm` -/
+
+/-- The pivot-normalised angular matrix: `RmatRectNorm m n p z a b = RmatRect (…symm(0,z)) (σr a) (σc b)`
+with `σr = swap r₀ 0` on `Fin m`, `σc = swap c₀ 0` on `Fin n`, `(r₀,c₀) = (eRect m n).symm p`. Pivot `1`
+at `(0,0)`. Needs `1 ≤ m, 1 ≤ n` for the `⟨0,_⟩` indices. The asymmetric `RmatGnorm`. -/
+noncomputable def RmatRectNorm (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (p : Fin (m * n)) (z : Fin N → ℝ) : Fin m → Fin n → ℝ :=
+  fun a b => RmatRect m n p ((piRatioRect m n N hN p).symm (0, z))
+    ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a)
+    ((Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b)
+
+/-- `RmatRectNorm … z ⟨0⟩ ⟨0⟩ = 1`. -/
+theorem RmatRectNorm_pivot (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (p : Fin (m * n)) (z : Fin N → ℝ) :
+    RmatRectNorm m n N hN hm hn p z ⟨0, by omega⟩ ⟨0, by omega⟩ = 1 := by
+  unfold RmatRectNorm
+  rw [Equiv.swap_apply_right, Equiv.swap_apply_right, RmatRect_entry, if_pos]
+  rw [show (((eRect m n).symm p).1, ((eRect m n).symm p).2) = (eRect m n).symm p from rfl,
+    Equiv.apply_symm_apply]
+
+/-- The matrix index of `(σr a, σc b)` is the pivot `p` iff `(a,b) = (0,0)`; off `(0,0)` it is `≠ p`. -/
+theorem RmatRectNorm_offpivot_idx (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) (p : Fin (m * n))
+    (a : Fin m) (b : Fin n) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b) ≠ p := by
+  set σr := Equiv.swap ((eRect m n).symm p).1 (⟨0, by omega⟩ : Fin m) with hσr
+  set σc := Equiv.swap ((eRect m n).symm p).2 (⟨0, by omega⟩ : Fin n) with hσc
+  have hσr0 : σr ⟨0, by omega⟩ = ((eRect m n).symm p).1 := by rw [hσr, Equiv.swap_apply_right]
+  have hσc0 : σc ⟨0, by omega⟩ = ((eRect m n).symm p).2 := by rw [hσc, Equiv.swap_apply_right]
+  have hpe : eRect m n (((eRect m n).symm p).1, ((eRect m n).symm p).2) = p := by
+    rw [show (((eRect m n).symm p).1, ((eRect m n).symm p).2) = (eRect m n).symm p from rfl,
+      Equiv.apply_symm_apply]
+  intro heq
+  rw [← hpe] at heq
+  obtain ⟨hi, hj⟩ := Prod.mk.injEq .. ▸ (eRect m n).injective heq
+  rw [← hσr0] at hi; rw [← hσc0] at hj
+  exact hab ⟨σr.injective hi, σc.injective hj⟩
+
+/-- Off-`(0,0)` entries of `RmatRectNorm … z` are `z`-components, hence `|·| ≤ 1` on `[−1,1]^N`. -/
+theorem RmatRectNorm_offpivot_le (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (p : Fin (m * n)) (z : Fin N → ℝ) (hz : z ∈ Set.univ.pi (fun _ : Fin N => Set.Icc (-1 : ℝ) 1))
+    (a : Fin m) (b : Fin n) (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    |RmatRectNorm m n N hN hm hn p z a b| ≤ 1 := by
+  unfold RmatRectNorm
+  rw [RmatRect_entry, if_neg (RmatRectNorm_offpivot_idx m n hm hn p a b hab)]
+  exact piRatioRect_symm_offpivot_le m n N hN p z hz _ (RmatRectNorm_offpivot_idx m n hm hn p a b hab)
+
+/-! ## The slot decode `slotMatRect` -/
+
+/-- The `z`-slot of a matrix cell `(a,b) ≠ (0,0)`: the `Fin N` index whose `piRatioRect`-decode is
+`eRect (σr a, σc b)`. The asymmetric `slotMatG`. -/
+noncomputable def slotMatRect (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) (a : Fin m) (b : Fin n) : Fin N :=
+  if h : eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b) ≠ p then
+    (Fin.exists_succAbove_eq (show
+      finCongr hN (eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+        (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b))
+      ≠ finCongr hN p from fun he => h ((finCongr hN).injective he))).choose
+  else ⟨0, by omega⟩
+
+/-- The defining spec of `slotMatRect`: `(finCongr hN p).succAbove (slotMatRect … a b)
+= finCongr hN (eRect (σr a, σc b))`. -/
+theorem slotMatRect_spec (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) (a : Fin m) (b : Fin n)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    (finCongr hN p).succAbove (slotMatRect m n N hN hm hn hmn p a b)
+      = finCongr hN (eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+          (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b)) := by
+  have hidx : eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b) ≠ p :=
+    RmatRectNorm_offpivot_idx m n hm hn p a b hab
+  have hne : finCongr hN (eRect m n ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) a,
+      (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  rw [slotMatRect, dif_pos hidx]
+  exact (Fin.exists_succAbove_eq hne).choose_spec
+
+/-- The read-back: `RmatRectNorm … z a b = z (slotMatRect … a b)` for `(a,b) ≠ (0,0)`. -/
+theorem RmatRectNorm_eq_slot (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) (z : Fin N → ℝ) (a : Fin m) (b : Fin n)
+    (hab : ¬ (a = ⟨0, by omega⟩ ∧ b = ⟨0, by omega⟩)) :
+    RmatRectNorm m n N hN hm hn p z a b = z (slotMatRect m n N hN hm hn hmn p a b) := by
+  set σr := Equiv.swap ((eRect m n).symm p).1 (⟨0, by omega⟩ : Fin m) with hσr
+  set σc := Equiv.swap ((eRect m n).symm p).2 (⟨0, by omega⟩ : Fin n) with hσc
+  have hidx : eRect m n (σr a, σc b) ≠ p := RmatRectNorm_offpivot_idx m n hm hn p a b hab
+  have hentry : RmatRectNorm m n N hN hm hn p z a b
+      = (piRatioRect m n N hN p).symm (0, z) (eRect m n (σr a, σc b)) := by
+    rw [RmatRectNorm, RmatRect_entry, if_neg hidx]
+  rw [hentry]
+  have hne : finCongr hN (eRect m n (σr a, σc b)) ≠ finCongr hN p :=
+    fun he => hidx ((finCongr hN).injective he)
+  have hslot : slotMatRect m n N hN hm hn hmn p a b = (Fin.exists_succAbove_eq hne).choose := by
+    rw [slotMatRect, dif_pos hidx]
+  have hspec : (finCongr hN p).succAbove (slotMatRect m n N hN hm hn hmn p a b)
+      = finCongr hN (eRect m n (σr a, σc b)) := by
+    rw [hslot]; exact (Fin.exists_succAbove_eq hne).choose_spec
+  rw [piRatioRect_symm_apply, ← hspec]
+  simp [Fin.insertNthEquiv, Fin.insertNth_apply_succAbove]
+
+/-! ## The carve cell enumeration `cellR_rect` and the bg-shift -/
+
+/-- The enumeration of the off-`(0,0)` cells of `Fin m × Fin n`: `inl (a,b) ↦ (a+1, b+1)` (M22),
+`inr (inl a) ↦ (a+1, 0)` (row-coupling g), `inr (inr b) ↦ (0, b+1)` (col-coupling b). Needs
+`1 ≤ m, 1 ≤ n`. The asymmetric `cellR`. -/
+def cellR_rect (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
+    (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) → Fin m × Fin n
+  | Sum.inl (a, b) => (⟨(a : ℕ) + 1, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+  | Sum.inr (Sum.inl a) => (⟨(a : ℕ) + 1, by omega⟩, ⟨0, by omega⟩)
+  | Sum.inr (Sum.inr b) => (⟨0, by omega⟩, ⟨(b : ℕ) + 1, by omega⟩)
+
+/-- `cellR_rect` lands on non-`(0,0)` cells. -/
+theorem cellR_rect_ne_zero (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (s : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1))) :
+    ¬ ((cellR_rect m n hm hn s).1 = ⟨0, by omega⟩ ∧ (cellR_rect m n hm hn s).2 = ⟨0, by omega⟩) := by
+  rcases s with ⟨a, b⟩ | (a | b) <;> simp [cellR_rect, Fin.ext_iff]
+
+/-- `cellR_rect` is injective. -/
+theorem cellR_rect_injective (m n : ℕ) (hm : 1 ≤ m) (hn : 1 ≤ n) :
+    Function.Injective (cellR_rect m n hm hn) := by
+  rintro (⟨a1, b1⟩ | (a1 | b1)) (⟨a2, b2⟩ | (a2 | b2)) h <;>
+    simp only [cellR_rect, Prod.mk.injEq, Fin.ext_iff] at h
+  · obtain ⟨h1, h2⟩ := h
+    have ea : a1 = a2 := Fin.ext (by omega)
+    have eb : b1 = b2 := Fin.ext (by omega)
+    subst ea; subst eb; rfl
+  · omega
+  · omega
+  · omega
+  · have ea : a1 = a2 := Fin.ext (by omega); subst ea; rfl
+  · omega
+  · omega
+  · omega
+  · have eb : b1 = b2 := Fin.ext (by omega); subst eb; rfl
+
+/-- The bg-shift matrix `g·bᵀ` from the `(g,b)`-cube `v : Fin (m-1) ⊕ Fin (n-1) → ℝ`:
+`bgShiftRect v a b = v (inl a) · v (inr b)` (the rank-1 Cramer shift at `j=1`). `Sc : (m-1)×(n-1)`. -/
+noncomputable def bgShiftRect (m n : ℕ) (v : Fin (m - 1) ⊕ Fin (n - 1) → ℝ) :
+    Matrix (Fin (m - 1)) (Fin (n - 1)) ℝ :=
+  fun a b => v (Sum.inl a) * v (Sum.inr b)
+
+/-- `|bgShiftRect m n v a b| ≤ 1` when `|v| ≤ 1`. -/
+theorem bgShiftRect_entry_le (m n : ℕ) (v : Fin (m - 1) ⊕ Fin (n - 1) → ℝ) (hv : ∀ s, |v s| ≤ 1)
+    (a : Fin (m - 1)) (b : Fin (n - 1)) : |bgShiftRect m n v a b| ≤ 1 := by
+  rw [bgShiftRect, abs_mul]
+  calc |v (Sum.inl a)| * |v (Sum.inr b)| ≤ 1 * 1 :=
+        mul_le_mul (hv _) (hv _) (abs_nonneg _) (by norm_num)
+    _ = 1 := by norm_num
+
+/-! ## The carve-slot bijection `zσRect` / reshape `zERect` and the carve readbacks -/
+
+/-- The slot-composition `s ↦ slotMatRect p (cellR_rect s).1 (cellR_rect s).2 : (M22 ⊕ g ⊕ b) → Fin N`
+is injective: `slotMatRect_spec` decodes the slot to `finCongr hN (eRect (σr cell, σc cell))`, injective
+via `eRect`/swap/`finCongr`/`succAbove` injectivity, then `cellR_rect_injective`. -/
+theorem slotFunRect_injective (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) :
+    Function.Injective
+      (fun s : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) =>
+        slotMatRect m n N hN hm hn hmn p (cellR_rect m n hm hn s).1 (cellR_rect m n hm hn s).2) := by
+  intro s1 s2 hs
+  simp only [] at hs
+  have e1 := slotMatRect_spec m n N hN hm hn hmn p (cellR_rect m n hm hn s1).1
+    (cellR_rect m n hm hn s1).2 (cellR_rect_ne_zero m n hm hn s1)
+  have e2 := slotMatRect_spec m n N hN hm hn hmn p (cellR_rect m n hm hn s2).1
+    (cellR_rect m n hm hn s2).2 (cellR_rect_ne_zero m n hm hn s2)
+  rw [hs, e2] at e1
+  have hcell : ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) (cellR_rect m n hm hn s2).1,
+      (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) (cellR_rect m n hm hn s2).2)
+      = ((Equiv.swap ((eRect m n).symm p).1 ⟨0, by omega⟩) (cellR_rect m n hm hn s1).1,
+        (Equiv.swap ((eRect m n).symm p).2 ⟨0, by omega⟩) (cellR_rect m n hm hn s1).2) :=
+    (eRect m n).injective ((finCongr hN).injective e1)
+  rw [Prod.mk.injEq] at hcell
+  obtain ⟨hi, hj⟩ := hcell
+  exact (cellR_rect_injective m n hm hn
+    (Prod.ext ((Equiv.swap _ _).injective hi) ((Equiv.swap _ _).injective hj))).symm
+
+/-- The carve-slot index count `card ((M22) ⊕ (g ⊕ b)) = (m−1)(n−1) + (m−1) + (n−1) = mn − 1 = N`. -/
+theorem slotFunRect_card (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n) :
+    Fintype.card ((Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1))) = N := by
+  simp only [Fintype.card_sum, Fintype.card_prod, Fintype.card_fin]
+  obtain ⟨m', rfl⟩ : ∃ m', m = m' + 1 := ⟨m - 1, by omega⟩
+  obtain ⟨n', rfl⟩ : ∃ n', n = n' + 1 := ⟨n - 1, by omega⟩
+  simp only [Nat.add_sub_cancel]
+  have : (m' + 1) * (n' + 1) = N + 1 := hN
+  nlinarith [this]
+
+/-- **The carve-slot bijection** `(M22 ⊕ g ⊕ b) ≃ Fin N`. -/
+theorem slotFunRect_bijective (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) :
+    Function.Bijective
+      (fun s : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) =>
+        slotMatRect m n N hN hm hn hmn p (cellR_rect m n hm hn s).1 (cellR_rect m n hm hn s).2) := by
+  rw [Fintype.bijective_iff_injective_and_card]
+  refine ⟨slotFunRect_injective m n N hN hm hn hmn p, ?_⟩
+  rw [Fintype.card_fin]; exact slotFunRect_card m n N hN hm hn
+
+/-- The slot equiv `Fin N ≃ (M22 ⊕ g ⊕ b)`. -/
+noncomputable def zσRect (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) :
+    Fin N ≃ ((Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1))) :=
+  (Equiv.ofBijective _ (slotFunRect_bijective m n N hN hm hn hmn p)).symm
+
+/-- The reshape `zERect` splitting the ratios `z` into the `M22`-cube and the `(g,b)`-cube. -/
+noncomputable def zERect (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) :
+    (Fin N → ℝ) ≃ᵐ (((Fin (m - 1) × Fin (n - 1)) → ℝ) × ((Fin (m - 1) ⊕ Fin (n - 1)) → ℝ)) :=
+  (MeasurableEquiv.piCongrLeft
+    (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ)
+    (zσRect m n N hN hm hn hmn p)).trans
+    (MeasurableEquiv.sumPiEquivProdPi
+      (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ))
+
+theorem measurePreserving_zERect (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n)) :
+    MeasurePreserving (zERect m n N hN hm hn hmn p) (volume : Measure (Fin N → ℝ))
+      (volume : Measure (((Fin (m - 1) × Fin (n - 1)) → ℝ) × ((Fin (m - 1) ⊕ Fin (n - 1)) → ℝ))) :=
+  (volume_measurePreserving_piCongrLeft
+    (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ)
+    (zσRect m n N hN hm hn hmn p)).trans
+    (volume_measurePreserving_sumPiEquivProdPi
+      (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ))
+
+/-- The `zERect.symm` read-back: `(zERect.symm (M,v)) k = Sum.elim M v (zσRect k)`. -/
+theorem zERect_symm_apply (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (M : (Fin (m - 1) × Fin (n - 1)) → ℝ) (v : (Fin (m - 1) ⊕ Fin (n - 1)) → ℝ) (k : Fin N) :
+    (zERect m n N hN hm hn hmn p).symm (M, v) k = Sum.elim M v (zσRect m n N hN hm hn hmn p k) := by
+  have hdec : (zERect m n N hN hm hn hmn p).symm (M, v)
+      = (MeasurableEquiv.piCongrLeft
+          (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ)
+          (zσRect m n N hN hm hn hmn p)).symm (Sum.elim M v) := rfl
+  rw [hdec]
+  set e := zσRect m n N hN hm hn hmn p
+  have h1 : MeasurableEquiv.piCongrLeft
+      (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ) e
+      ((MeasurableEquiv.piCongrLeft
+        (fun _ : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1)) => ℝ) e).symm
+        (Sum.elim M v)) (e k) = Sum.elim M v (e k) := by
+    rw [MeasurableEquiv.apply_symm_apply]
+  rw [MeasurableEquiv.piCongrLeft_apply_apply] at h1
+  exact h1
+
+/-- `zσRect` round-trips on the slot of a cell. -/
+theorem zσRect_slot (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (s : (Fin (m - 1) × Fin (n - 1)) ⊕ (Fin (m - 1) ⊕ Fin (n - 1))) :
+    zσRect m n N hN hm hn hmn p (slotMatRect m n N hN hm hn hmn p
+      (cellR_rect m n hm hn s).1 (cellR_rect m n hm hn s).2) = s :=
+  (Equiv.ofBijective _ (slotFunRect_bijective m n N hN hm hn hmn p)).symm_apply_apply s
+
+/-- M22-cell carve readback. -/
+theorem RmatRectNorm_carve_M22 (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (M : (Fin (m - 1) × Fin (n - 1)) → ℝ) (v : (Fin (m - 1) ⊕ Fin (n - 1)) → ℝ)
+    (a : Fin (m - 1)) (b : Fin (n - 1)) :
+    RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = M (a, b) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin m) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin n) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatRectNorm_eq_slot m n N hN hm hn hmn p _ _ _ hab,
+    show slotMatRect m n N hN hm hn hmn p ⟨(a : ℕ) + 1, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatRect m n N hN hm hn hmn p (cellR_rect m n hm hn (Sum.inl (a, b))).1
+          (cellR_rect m n hm hn (Sum.inl (a, b))).2 from rfl,
+    zERect_symm_apply, zσRect_slot]
+  rfl
+
+/-- g-cell carve readback. -/
+theorem RmatRectNorm_carve_g (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (M : (Fin (m - 1) × Fin (n - 1)) → ℝ) (v : (Fin (m - 1) ⊕ Fin (n - 1)) → ℝ) (a : Fin (m - 1)) :
+    RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+        ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩ = v (Sum.inl a) := by
+  have hab : ¬ ((⟨(a : ℕ) + 1, by omega⟩ : Fin m) = ⟨0, by omega⟩
+      ∧ (⟨0, by omega⟩ : Fin n) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatRectNorm_eq_slot m n N hN hm hn hmn p _ _ _ hab,
+    show slotMatRect m n N hN hm hn hmn p ⟨(a : ℕ) + 1, by omega⟩ ⟨0, by omega⟩
+      = slotMatRect m n N hN hm hn hmn p (cellR_rect m n hm hn (Sum.inr (Sum.inl a))).1
+          (cellR_rect m n hm hn (Sum.inr (Sum.inl a))).2 from rfl,
+    zERect_symm_apply, zσRect_slot]
+  rfl
+
+/-- b-cell carve readback. -/
+theorem RmatRectNorm_carve_b (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (M : (Fin (m - 1) × Fin (n - 1)) → ℝ) (v : (Fin (m - 1) ⊕ Fin (n - 1)) → ℝ) (b : Fin (n - 1)) :
+    RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+        ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩ = v (Sum.inr b) := by
+  have hab : ¬ ((⟨0, by omega⟩ : Fin m) = ⟨0, by omega⟩
+      ∧ (⟨(b : ℕ) + 1, by omega⟩ : Fin n) = ⟨0, by omega⟩) := by simp [Fin.ext_iff]
+  rw [RmatRectNorm_eq_slot m n N hN hm hn hmn p _ _ _ hab,
+    show slotMatRect m n N hN hm hn hmn p ⟨0, by omega⟩ ⟨(b : ℕ) + 1, by omega⟩
+      = slotMatRect m n N hN hm hn hmn p (cellR_rect m n hm hn (Sum.inr (Sum.inr b))).1
+          (cellR_rect m n hm hn (Sum.inr (Sum.inr b))).2 from rfl,
+    zERect_symm_apply, zσRect_slot]
+  rfl
+
+/-- **The carve-point Schur complement readback.** At `R = RmatRectNorm (zERect.symm (M,v))` (pivot
+`R ⟨0⟩ ⟨0⟩ = 1`), the N2b (`j = 1`) Schur complement
+`Sc a b = R ⟨1+a⟩ ⟨1+b⟩ − R ⟨1+a⟩ ⟨0⟩ · R ⟨0⟩ ⟨1+b⟩` reads off as `M (a,b) − v(inl a)·v(inr b)`. -/
+theorem ScCarve_rect_eq (m n N : ℕ) (hN : m * n = N + 1) (hm : 1 ≤ m) (hn : 1 ≤ n)
+    (hmn : 2 ≤ m * n) (p : Fin (m * n))
+    (M : (Fin (m - 1) × Fin (n - 1)) → ℝ) (v : (Fin (m - 1) ⊕ Fin (n - 1)) → ℝ)
+    (a : Fin (m - 1)) (b : Fin (n - 1)) :
+    RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+        ⟨1 + (a : ℕ), by omega⟩ ⟨1 + (b : ℕ), by omega⟩
+      - RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+          ⟨1 + (a : ℕ), by omega⟩ ⟨0, by omega⟩
+        * RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+            ⟨0, by omega⟩ ⟨1 + (b : ℕ), by omega⟩
+      = M (a, b) - bgShiftRect m n v a b := by
+  have hia : (⟨1 + (a : ℕ), by omega⟩ : Fin m) = ⟨(a : ℕ) + 1, by omega⟩ := Fin.ext (Nat.add_comm 1 _)
+  have hib : (⟨1 + (b : ℕ), by omega⟩ : Fin n) = ⟨(b : ℕ) + 1, by omega⟩ := Fin.ext (Nat.add_comm 1 _)
+  have hM22 : RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+      ⟨1 + (a : ℕ), by omega⟩ ⟨1 + (b : ℕ), by omega⟩ = M (a, b) := by
+    rw [hia, hib]; exact RmatRectNorm_carve_M22 m n N hN hm hn hmn p M v a b
+  have hg : RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+      ⟨1 + (a : ℕ), by omega⟩ ⟨0, by omega⟩ = v (Sum.inl a) := by
+    rw [hia]; exact RmatRectNorm_carve_g m n N hN hm hn hmn p M v a
+  have hbb : RmatRectNorm m n N hN hm hn p ((zERect m n N hN hm hn hmn p).symm (M, v))
+      ⟨0, by omega⟩ ⟨1 + (b : ℕ), by omega⟩ = v (Sum.inr b) := by
+    rw [hib]; exact RmatRectNorm_carve_b m n N hN hm hn hmn p M v b
+  rw [hM22, hg, hbb, bgShiftRect]
+
 end DLNFibre.DLN.RLCT
