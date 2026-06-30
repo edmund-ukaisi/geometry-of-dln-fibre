@@ -1,7 +1,7 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.RankMinorCover
+import DLNFibre.Core.RingTheory.Determinantal.Strata
 import DLNFibre.Core.DeterminantalChart
 
 /-!
@@ -14,7 +14,8 @@ Thread 11 (`Core.FibreBundleReduced`) landed **single-chart** triviality: the ch
 This module builds it, at the level of the **base matrix space** `Mat_{p×q}` (the target of the
 multiplication map), to the honest scope the brief sets:
 
-- **B3-2 — the open cover (PROVED, the headline).** `Core.RankMinorCover` supplies the missing
+- **B3-2 — the open cover (PROVED, the headline).** `Matrix` (`RingTheory.Determinantal.Strata`)
+  supplies the missing
   determinantal-rank existence fact: a rank-`r` matrix has **some** invertible `r × r` minor
   (`exists_invertible_minor_of_rank`). Hence the det-open family `{minorChart s t}` over the pivot
   positions `(s, t)` is a genuine open cover of `Mat^{=r} = {M | M.rank = r}`

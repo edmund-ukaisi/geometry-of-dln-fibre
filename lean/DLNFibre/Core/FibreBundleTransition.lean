@@ -1,7 +1,6 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.RankMinorCover
 import DLNFibre.Core.RingTheory.Localization.Overlap
 import DLNFibre.Core.RingTheory.Determinantal.Basic
 import Mathlib.RingTheory.Localization.Away.Basic
