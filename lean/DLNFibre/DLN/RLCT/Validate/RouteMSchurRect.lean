@@ -27,17 +27,16 @@ DETERMINED / SORRY-FREE here (the scaffold + the value side):
   satisfies the contract (the value side, PROVED — the contract is inhabited in-Lean).
 - `eParamsMNP` + `routeMLayerBoxIntegral_mnp_eq` — the general-`(m,n,p)` layer reshape (PROVED, MP plumbing).
 
-DEFERRED (the single analytic `sorry`, the dedicated deep-fill tide — NOT this SPEC):
-- `rectSchurRecStep_stub` — the per-step analytic content: the radial-`Δ` cover (`mn`-chart blow-up,
-  Jacobian `|a|^{mn−1}`) + the rectangular minor-pivot Schur split (N2b at a `t×t` invertible pivot of the
-  RECTANGULAR `Δ`, residual Schur complement `Sc : (m−t)×(n−t)`) + the `M22 ↦ Sc` translation-domination
-  (O2 cert, adjudicated sound for general corank) + the shifted-exponent Morse peel, recursing on the JOINT
-  lower core. The rectangular analog of `schurRecStep4_stub`; the HIGH-risk long pole.
-
-GATED on the stub (the deliverable shape, typechecking — these CLOSE once `rectSchurRecStep_stub` lands):
-- `routeMBoxThresholdFinite_mnp` — the general-`(M0,M1,M2)` `hbox` (the analog of `routeMBoxThresholdFinite_rrp`).
-- `routeMLayerCover_coverLe_mnp` — the general-`(M0,M1,M2)` `cover_le` UPPER leg (the analog of
-  `routeMLayerCover_coverLe_rrp`), composing `routeMLayerCover_hfin` ∘ `routeMBoxThresholdFinite_mnp`.
+PROVED DOWNSTREAM (the per-step analytic content + the gated deliverables — NOT this SPEC, but no `sorry`):
+- `rectSchurRecStep_mnp` (in `RouteMSchurRectCapB`) — the per-step analytic content: the radial-`Δ` cover
+  (`mn`-chart blow-up, Jacobian `|a|^{mn−1}`) + the rectangular minor-pivot Schur split (N2b at a `t×t`
+  invertible pivot of the RECTANGULAR `Δ`, residual Schur complement `Sc : (m−t)×(n−t)`) + the `M22 ↦ Sc`
+  translation-domination (O2 cert, adjudicated sound for general corank) + the shifted-exponent Morse peel,
+  recursing on the JOINT lower core via the IH. The rectangular analog of `schurRecStep_p`. It lives
+  downstream because its proof imports the carve / cover stack, which imports this SPEC file.
+- `routeMBoxThresholdFinite_mnp` / `routeMLayerCover_coverLe_mnp` (also in `RouteMSchurRectCapB`) — the
+  general-`(M0,M1,M2)` `hbox` + `cover_le` UPPER leg (analogs of `routeMBoxThresholdFinite_rrp` /
+  `routeMLayerCover_coverLe_rrp`), consuming `rectSchurRecStep_mnp` through `rectCore_schurGen_lt_top`.
 
 ## Validation
 
@@ -49,8 +48,8 @@ faithful generalisation, not a new design.
 
 ## S2-hygiene
 
-The scaffold + threshold + reshape are S2-FREE. The deferred `rectSchurRecStep_stub` is the analytic
-content (Morse leaves / a-divisor / Tonelli / Schur splits) — S2-FREE when proven, as in the square case.
+The scaffold + threshold + reshape are S2-FREE. The downstream `rectSchurRecStep_mnp` is the analytic
+content (Morse leaves / a-divisor / Tonelli / Schur splits) — S2-FREE, as in the square case.
 `monomial_rlct` enters only the `hfin` leaf-sum side (via `routeMLayerCover_hfin`), the same S2 use the
 headline already rides. No new axiom.
 -/
@@ -312,82 +311,17 @@ theorem routeMLayerBoxIntegral_mnp_eq (m n p : ℕ) (c' : ℝ) :
   rw [Measure.volume_eq_prod (Fin m → Fin n → ℝ) (Fin n → Fin p → ℝ),
     setLIntegral_prod _ hmeas.aemeasurable]
 
-/-! ## The single DEFERRED analytic stub (the dedicated deep-fill tide — marked `sorry`) -/
+/-! ## The per-step + the gated deliverables (PROVED downstream, not here)
 
-/-- **STUB — the deferred rectangular per-step (the genuine analytic wall).** `RectSchurRecStep p
-(rectSchurLambda p)` — the SOLE remaining input to the general-`(m,n,p)` finiteness. The asymmetric analog
-of `schurRecStep_p`: the radial-`Δ` (`mn`-chart) blow-up cover + the RECTANGULAR minor-pivot Schur split
-(pivot `t×t` minor of `Δ : m×n`, residual `Sc : (m−t)×(n−t)`) + the `M22 ↦ Sc` translation-domination (O2
-cert, sound for general corank) + shifted-exponent Morse peel + recursion on the JOINT lower core
-(`rectCore_schurGen_lt_top` via the IH). Marked `sorry` ON PURPOSE; the dedicated deep-fill tide replaces
-it — that closes the general-`(M0,M1,M2)` UPPER leg. (HIGH-risk long pole; the square `schurRecStep_p` is
-the proven template — the rectangular generalisation tracks `(m−t)(n−t)` strata, NOT square `(r−t)²`.) -/
-theorem rectSchurRecStep_stub (p : ℕ) : RectSchurRecStep p (rectSchurLambda p) := by
-  sorry
-
-/-! ## The GATED deliverable shape (CLOSES once `rectSchurRecStep_stub` lands) -/
-
-/-- **The general-`(M0,M1,M2)` `hbox` (GATED on the stub).** `RouteMBoxThresholdFinite (![m,n,p])` for ALL
-`m, n, p` — the asymmetric analog of `routeMBoxThresholdFinite_rrp`. Assembly: the threshold match
-(`rectSchurLambda p m n = ½·minAdm`, `rfl`) + the reshape (`routeMLayerBoxIntegral_mnp_eq`) to the
-rectangular two-matrix box, finite by `rectCore_schurGen_lt_top p (rectSchurLambda p)
-(rectSchurLambda_satisfies_threshold p) (rectSchurRecStep_stub p)`; the `c' = 0` branch is the box-volume
-bound. Currently rides the `sorry` stub; CLEAN once the stub lands. -/
-theorem routeMBoxThresholdFinite_mnp (m n p : ℕ) :
-    RouteMBoxThresholdFinite (![m, n, p] : Fin 3 → ℕ) := by
-  intro c' hc'
-  rw [routeMLayerBoxIntegral_mnp_eq m n p]
-  rcases eq_or_lt_of_le (c'.2 : (0 : ℝ) ≤ (c' : ℝ)) with hc0 | hc0
-  · -- c' = 0: integrand ^0 = 1, box volume finite.
-    have hzero : (c' : ℝ) = 0 := hc0.symm
-    have hmatvol : ∀ a b : ℕ, (volume (matBox a b 1) : ℝ≥0∞) < ⊤ := by
-      intro a b
-      have hcpt : IsCompact (matBox a b (1 : ℝ)) := by
-        have heq : matBox a b (1 : ℝ)
-            = Set.univ.pi (fun _ : Fin a => Set.univ.pi (fun _ : Fin b => Set.Icc (-(1 : ℝ)) 1)) := by
-          ext X; simp only [matBox, Set.mem_setOf_eq, Set.mem_pi, Set.mem_univ, true_implies]
-        rw [heq]; exact isCompact_univ_pi (fun _ => isCompact_univ_pi (fun _ => isCompact_Icc))
-      exact hcpt.measure_lt_top
-    have hcalc : ∫⁻ A0 in matBox m n 1, ∫⁻ A1 in matBox n p 1,
-          ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(c' : ℝ)))
-        = volume (matBox m n 1) * volume (matBox n p 1) := by
-      calc ∫⁻ A0 in matBox m n 1, ∫⁻ A1 in matBox n p 1,
-              ENNReal.ofReal ((frobSq (rmatMul A0 A1)) ^ (-(c' : ℝ)))
-          = ∫⁻ _A0 in matBox m n 1, ∫⁻ _A1 in matBox n p 1, (1 : ℝ≥0∞) := by
-            refine setLIntegral_congr_fun (matBox_measurableSet _ _ _) (fun A0 _ => ?_)
-            refine setLIntegral_congr_fun (matBox_measurableSet _ _ _) (fun A1 _ => ?_)
-            rw [hzero]; simp [Real.rpow_zero]
-        _ = volume (matBox m n 1) * volume (matBox n p 1) := by
-            simp only [setLIntegral_const, one_mul]; rw [mul_comm]
-    rw [hcalc]
-    exact ENNReal.mul_lt_top (hmatvol m n) (hmatvol n p)
-  · -- 0 < c' < ½·minAdm = rectSchurLambda p m n: the rectangular core finiteness.
-    have hlt : (c' : ℝ) < rectSchurLambda p m n := by rw [rectSchurLambda]; exact hc'
-    have hrc : RectSchurCore m n p (c' : ℝ) 1 :=
-      rectCore_schurGen_lt_top p (rectSchurLambda p) (rectSchurLambda_satisfies_threshold p)
-        (rectSchurRecStep_stub p) m n (c' : ℝ) hc0 hlt 1 one_pos
-    rw [RectSchurCore] at hrc
-    exact hrc
-
-/-- **The general-`(M0,M1,M2)` `cover_le` UPPER leg (GATED on the stub).** The `IsRouteMCover.cover_le`
-field for `(![m,n,p])` (`1 ≤ minAdm`), the asymmetric analog of `routeMLayerCover_coverLe_rrp`: compose
-`routeMLayerCover_hfin` (whose `hbox` is `routeMBoxThresholdFinite_mnp`) + the banked RHS positivity
-`layerCover_rhs_ne_zero`, via `routeM_coverLe_of_finiteness`. CLEAN once `rectSchurRecStep_stub` lands —
-this is the general-`L=2` UPPER deliverable. -/
-theorem routeMLayerCover_coverLe_mnp (m n p : ℕ) (hpos : 1 ≤ minAdm (![m, n, p] : Fin 3 → ℕ)) :
-    ∀ c' : NNReal, ∃ C : ℝ≥0∞, C < ⊤ ∧
-      ∫⁻ x in routeMBaseNbhd (![m, n, p] : Fin 3 → ℕ),
-          ENNReal.ofReal (|routeMCore (![m, n, p] : Fin 3 → ℕ) x| ^ (-(c' : ℝ)))
-        ≤ C * ∑ i : (routeLayerAtlas (![m, n, p] : Fin 3 → ℕ)).ι,
-            ∫⁻ y in unitBox (layerD (![m, n, p] : Fin 3 → ℕ) i),
-              ENNReal.ofReal (monomialIntegrand (layerD (![m, n, p] : Fin 3 → ℕ) i)
-                (layerK (![m, n, p] : Fin 3 → ℕ) i)
-                (layerH (![m, n, p] : Fin 3 → ℕ) i) (c' : ℝ) y) :=
-  routeM_coverLe_of_finiteness (routeMCore (![m, n, p] : Fin 3 → ℕ))
-    (routeMBaseNbhd (![m, n, p] : Fin 3 → ℕ))
-    (layerD (![m, n, p] : Fin 3 → ℕ)) (layerK (![m, n, p] : Fin 3 → ℕ))
-    (layerH (![m, n, p] : Fin 3 → ℕ))
-    (layerCover_rhs_ne_zero (![m, n, p] : Fin 3 → ℕ))
-    (routeMLayerCover_hfin (![m, n, p] : Fin 3 → ℕ) hpos (routeMBoxThresholdFinite_mnp m n p))
+The per-step `RectSchurRecStep p (rectSchurLambda p)` is the genuine analytic content (the radial-`Δ`
+`mn`-chart blow-up cover + the RECTANGULAR minor-pivot Schur split + the `M22 ↦ Sc` translation-domination
++ shifted-exponent Morse peel + recursion on the JOINT lower core via the IH). It is BUILT — sorry-free —
+as `rectSchurRecStep_mnp` in `RouteMSchurRectCapB` (the dispatch on `min(m,n)`: corank-0 vacuous, corank-1
+leaf, interior cap-A carve / cap-B directMorse). It cannot live here because its proof imports the carve /
+cover stack, which in turn imports this SPEC file. The two gated deliverables
+`routeMBoxThresholdFinite_mnp` + `routeMLayerCover_coverLe_mnp` (the general-`(M0,M1,M2)` UPPER leg) likewise
+live in `RouteMSchurRectCapB`, consuming `rectSchurRecStep_mnp` through `rectCore_schurGen_lt_top` above.
+This file stays the SPEC: the predicates, the WellFounded wrapper, the threshold arithmetic + witness, and
+the layer reshape — all sorry-free. -/
 
 end DLNFibre.DLN.RLCT
