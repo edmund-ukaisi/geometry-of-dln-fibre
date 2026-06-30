@@ -21,6 +21,48 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta Jacobian measurable endpoint-sector domination
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-jacobian-measurable-endpoint-sector-domination.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-jacobian-measurable-endpoint-sector-domination.md`.
+Review:
+`review-a2-case2-passive-theta-jacobian-measurable-endpoint-sector-domination.md`,
+PASS by xhigh source/scope reviewer `Poincare` and xhigh Lean/API reviewer
+`Feynman`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSectorSet
+exists_pos_open_measurableSet_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+The first theorem is a shrink-stable Lusin-Souslin image-measurability lemma.
+Inside any prescribed open neighborhood of a determinant-sector, nonzero-pivot
+base theta point, it returns a smaller open neighborhood with measurable
+endpoint sector image.
+
+The second theorem combines that shrink-stable measurability with the
+concrete Jacobian upper sandwich.  It returns a positive `K` and one open
+local endpoint sector `V` for which the sector image is measurable and the
+Jacobian-weighted passive-product endpoint pushforward is dominated by
+`ofReal K` times the unweighted passive-product endpoint pushforward, both
+restricted to that named endpoint sector.
+
+Nonclaims: no global endpoint-sector measurability, exact passive-sector Haar
+transport, determinant-chart Haar transport, raw-order Haar transport,
+source-prior comparison, source-image equality, source-rank coverage, normal
+crossings, pole order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta endpoint local injectivity and measurable image
 
 Reproduction:

@@ -1353,6 +1353,120 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Relative local endpoint image measurability: inside any prescribed open
+neighborhood of a determinant-sector, nonzero-pivot base point, there is a
+smaller open neighborhood whose endpoint theta sector image is measurable.
+
+This is the local injectivity/Lusin-Souslin theorem with one additional
+intersection.  It does not prove global endpoint-sector measurability, Haar
+transport, source-prior comparison, normal crossings, pole order, or RLCT
+extraction. -/
+theorem exists_open_subset_measurableSet_case2PassiveThetaEndpointSectorSet
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    (G :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        MeasurableSet
+          (case2PassiveThetaEndpointSectorSet
+            (ρ := Fin (Module.finrank ℝ U₀))
+            n hS hcont hnext eNext e V) := by
+  let Y :
+      Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+        TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+    fun theta ↦
+      case2PassiveThetaEndpointTopologyTuple
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e
+  obtain ⟨V₀, hV₀open, hz₀V₀, _hsourceInj, hYinj⟩ :=
+    (by
+      simpa [Y] using
+        exists_open_case2PassiveThetaEndpointTopologyTuple_sourceChart_injOn
+          W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+          z₀ hdet₀ hpivot₀)
+  let V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+    G ∩ V₀
+  have hVopen : IsOpen V := hGopen.inter hV₀open
+  have hz₀V : z₀ ∈ V := ⟨hz₀G, hz₀V₀⟩
+  have hVG : V ⊆ G := Set.inter_subset_left
+  have hVmeas : MeasurableSet V := hVopen.measurableSet
+  have hYcont : ContinuousOn Y V :=
+    (continuous_case2PassiveThetaEndpointTopologyTuple
+      (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext eNext e).continuousOn
+  have hYinjV : Set.InjOn Y V := by
+    intro z hz z' hz' hzz'
+    exact hYinj hz.2 hz'.2 hzz'
+  have himage : MeasurableSet (Y '' V) :=
+    hVmeas.image_of_continuousOn_injOn hYcont hYinjV
+  refine ⟨V, hVopen, hz₀V, hVG, ?_⟩
+  simpa [Y, V, case2PassiveThetaEndpointSectorSet] using himage
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
 -- The final specialization is a large definitional `simpa` over the generic
 -- passive selected-entry theorem and needs the same budget as that bridge.

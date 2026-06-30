@@ -6,6 +6,36 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Jacobian Measurable Endpoint-Sector Domination - 2026-06-30
+
+The previous concrete Jacobian endpoint-sector domination theorem asked the
+caller to provide measurability of
+`case2PassiveThetaEndpointSectorSet U`.  That input has now been removed in a
+new local wrapper, at the cost of adding the standard local
+image-measurability hypotheses and shrinking:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSectorSet
+exists_pos_open_measurableSet_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+The important boundary is that measurability is proved on the final returned
+open set.  The proof first gets the Jacobian upper sandwich on `U`, then uses
+the shrink-stable Lusin-Souslin lemma to choose `V ⊆ U` with measurable
+endpoint image.  The upper side of the sandwich restricts to `V`, and the
+existing endpoint-sector domination transfer pushes it forward.
+
+Xhigh source/scope reviewer `Poincare` and xhigh Lean/API reviewer `Feynman`
+returned PASS.  Their main implementation warnings were applied: do not infer
+intersection image measurability from a larger measurable image, and do not
+add an explicit full-domain measurable-space binder in the Jacobian theorem
+because it conflicts with the product measure instance.
+
+Boundary: no global endpoint-sector measurability, exact passive-sector Haar
+transport, determinant-chart Haar transport, raw-order Haar transport,
+source-prior comparison, source-image equality, source-rank coverage, normal
+crossings, pole order, or RLCT extraction.
+
 ## Latest A2 Case 2 Passive Theta Endpoint Local Injectivity and Measurable Image - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now proves the pointwise

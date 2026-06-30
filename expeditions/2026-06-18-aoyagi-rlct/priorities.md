@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta Jacobian measurable endpoint-sector domination
+
+The local endpoint-sector measurability theorem has now been used to remove
+the explicit sector-measurability input from the concrete Jacobian
+endpoint-sector domination wrapper, after adding the standard
+Lusin-Souslin hypotheses and shrinking the Jacobian-unit neighborhood.
+
+New public names:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSectorSet
+exists_pos_open_measurableSet_measure_map_case2PassiveThetaEndpointTopologyTuple_withDensity_jacobian_restrict_endpointSectorSet_le_smul_passiveProductMeasure
+```
+
+The first theorem is the shrink-stable image-measurability statement: inside
+any prescribed open neighborhood of a determinant-sector, nonzero-pivot base
+theta point, it returns a smaller open neighborhood whose endpoint sector
+image is measurable.  The second theorem obtains a Jacobian upper sandwich on
+one open set, shrinks to such a measurable endpoint sector, restricts the
+upper domination, and pushes it forward to the endpoint topology-tuple sector.
+
+This is local finite-scalar endpoint-sector domination only.  It does not
+prove global endpoint-sector measurability, exact passive-sector Haar
+transport, determinant-chart Haar transport, raw-order Haar transport,
+source-prior comparison, source-image equality, source-rank coverage, normal
+crossings, pole order, or RLCT extraction.
+
+Next source-moving frontier: continue toward genuine source-prior/passive-
+sector measure comparison, or use this local measurable domination in a
+finite-integral handoff if that moves closer to the final Aoyagi RLCT socket.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta endpoint local injectivity and measurable image
 
 The concrete passive-theta endpoint map now has local injectivity and a local
