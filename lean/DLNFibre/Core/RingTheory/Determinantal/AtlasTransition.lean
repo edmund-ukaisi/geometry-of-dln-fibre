@@ -216,15 +216,17 @@ theorem overlapTransition_symm (C D : AtlasChart k Base M) :
 /-! ## The triple overlap, its symmetric target presentation, and the triple cocycle
 
 The triple-overlap presentations are indexed `(pivot, other, other)` and made **symmetric in the
-two non-pivot charts**: `targetTripleLoc C D E` is the chart-`C` presentation of the triple overlap
+two non-pivot charts** (canonical symmetry of the overlap, NOT a Lean-definitional one):
+`targetTripleLoc C D E` is the chart-`C` presentation of the triple overlap
 `D(C.chartElt) ∩ D(D.chartElt) ∩ D(E.chartElt)`, localized at the PRODUCT `D.chartElt * E.chartElt`
 of the other two elements (not nested `D` then `E`). This symmetry is what makes the standard
 **pairwise-swap-on-a-fixed-triple** cocycle `g_jk ∘ g_ij = g_ik` well-typed: each transition swaps
-the pivot on the fixed triple `{C, D, E}`, so `targetTripleLoc C D E → targetTripleLoc D C E →
-targetTripleLoc E C D → targetTripleLoc C D E` has matching composition targets, AND the further
-localization of the 2-fold `overlapTransition C D` lands on the same `targetTripleLoc D C E` (the
-naturality `overlapTransition_restrict_to_triple`, below). The asymmetric nested-`D`-then-`E`
-presentation makes neither of these type. -/
+the pivot on the fixed triple `{C, D, E}`, so `targetTripleLoc C D E → targetTripleLoc D E C →
+targetTripleLoc E C D → targetTripleLoc C D E` has matching composition targets. (The same symmetry
+is also what would let the further localization of the 2-fold `overlapTransition C D` be compared to
+this triple presentation — the naturality tie — but that comparison is NOT built here: it is roadmap
+R1, see `tripleTransition`'s scope note. The asymmetric nested-`D`-then-`E` presentation makes the
+cocycle's composition targets fail to type.) -/
 
 /-- **The product of the two non-pivot chart elements, localized into the pivot-`C` total ring.**
 `algebraMap Base (Localization.Away C.chartElt) (D.chartElt * E.chartElt)` — the element of the

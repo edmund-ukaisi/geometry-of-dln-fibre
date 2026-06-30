@@ -6,7 +6,7 @@
 > triple transitions is the identity).
 >
 > - **Lean:** `Algebra.AtlasChart.tripleTransition_cocycle`
->   (`lean/DLNFibre/Core/RingTheory/Determinantal/AtlasTransition.lean` @ `<commit-sha after commit>`),
+>   (`lean/DLNFibre/Core/RingTheory/Determinantal/AtlasTransition.lean` @ `b255f3d9`),
 >   surfaced on the predicate as
 >   `Algebra.IsZariskiLocallyTrivialAffineProduct.tripleTransition_cocycle`
 >   (`lean/DLNFibre/Core/RingTheory/Determinantal/LocalTriviality.lean`).
