@@ -68,13 +68,24 @@ Banked clean-three this tide (branch `genm-d1hchart`, pushed origin):
   step — the DLN site reads off the selected-coordinate structure of `f∘Ψsymm` rather than supplying
   `F` + re-proving the germ.
 
+SPECIFY validated (UNCOMMITTED working file `lean/DLNFibre/DLN/RLCT/Validate/D1HChartRank.lean`,
+signature builds green, single isolated `sorry` = the rank lower bound):
+- **`jointDiffL2 H v : Params H →ₗ[ℝ] Mat (H 0) (H 2)`**, `δ ↦ layer0 δ * layer1 v + layer0 v * layer1 δ`
+  (`= δ⁰A²_v + A¹_v δ²`). The `layer0`/`layer1` ascriptions (`@[reducible]`, `A 0`/`A 1` re-typed to
+  `Mat (H 0) (H 1)`/`Mat (H 1) (H 2)`) dodge the `Fin.castSucc`/`Fin.succ` `HMul`-unification block;
+  `layer{0,1}_{add,smul}` `@[simp] rfl` lemmas discharge `map_add'`/`map_smul'`. Codomain `Mat (H 0) (H 2)`.
+  The clean foundation — REUSE it.
+- open `sorry` = `nReg_le_finrank_range_jointDiffL2`: `r*(H0+H2−r) ≤ finrank ℝ (range (jointDiffL2 H v))`.
+
 Remaining sequence (each its own clean-three commit):
-1. **`Dg(v)` joint differential** as `E →L[ℝ] Mat_{H0×H2}` (or its flat matrix), `δ↦δ¹A²_v+A¹_v δ²`,
-   with `HasFDerivAt (prod∘flatSymm∘translate)` to it at `0` — from the banked
-   `prodAuxEntryDeriv`/`hasStrictFDerivAt_lossEntry` at `k=L=2` (reduce the recursive fold to the
-   two-term form). The DLN content.
-2. **`rank Dg(v) ≥ nReg`** via the explicit `nReg`-independent family (the regular directions,
-   general-`v`) + `Submodule.finrank_mono`. Skips the 3 absent rank-value facts.
+1. **`Dg(v)` joint differential** — DONE as `jointDiffL2` (the `LinearMap`). The `HasFDerivAt`-from-loss
+   tie (`δ↦δ¹A²_v+A¹_v δ²` = the loss-entry gradients, from `prodAuxEntryDeriv` at `k=L=2`) is a
+   separate small lemma the assembly needs; the rank bound is stated directly on `jointDiffL2`.
+2. **`rank Dg(v) ≥ nReg`** (the OPEN sorry) via the explicit `nReg`-independent family (the regular
+   directions, general-`v`) + `Submodule.finrank_mono`. Skips the 3 absent rank-value facts. THE dense
+   watch-point (team-lead + skill flag: 3-attempt-then-surface here). The explicit family: a basis-adapted
+   construction from `B = A¹_v A²_v` of rank `r` (e.g. SVD-like blocks) giving `nReg` independent
+   directions in `range`; intricate at general `v`.
 3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
    (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
 4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
