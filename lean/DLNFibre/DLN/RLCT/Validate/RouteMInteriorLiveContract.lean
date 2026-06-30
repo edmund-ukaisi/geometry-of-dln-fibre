@@ -354,13 +354,16 @@ theorem interiorLive_diff (ha : StructAdm M (tach M))
   exact fun y => ((fun u => Bchart_differentiableAt ha u) _).comp y
     (differentiable_kLDU M (tach M) ha y)
 
-/-- **The injectivity set's extra weighted axes** — the slots where `leafH > 0` off the binding pivot
-(the K-LDU diagonal-pivot q-axes). Selected by `leafH`, so the cov engine's null-slice add-back
-covers exactly the axes carrying a positive Jacobian exponent. -/
-noncomputable def interiorLive_E (ha : StructAdm M (tach M))
+/-- **The injectivity set's extra weighted axes** — ALL coordinate axes (`Finset.univ`). The cov
+engine's null-slice add-back works for any finite `E` (a finite union of coordinate hyperplanes is
+null), and the injectivity domain `{u | u_p ≠ 0 ∧ ∀ j ∈ E, u j ≠ 0}` is then "all coords nonzero",
+which is exactly what `kLens_injOn_qne` needs (ALL diagonal q-pivots nonzero, full LDU recovery — not
+only the `leafH > 0` ones; the achiever's `r+c = 0` last pivot would otherwise escape). `E` does not
+appear in the cov conclusion, so widening it is invisible downstream and avoids threading
+`InteriorDrop ⟹ r+c > 0`. -/
+def interiorLive_E (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Finset (Fin (routeMAmbient M)) :=
-  Finset.univ.filter (fun j => 0 < interiorLive_leafH ha h0r h0c j
-    ∧ j ≠ leafPivot M ha (by norm_num) h0r h0c)
+  (Finset.univ : Finset (Fin (routeMAmbient M)))
 
 /-- The injectivity domain — `{u | u leafPivot ≠ 0 ∧ ∀ j ∈ E, u j ≠ 0}` (off the pivot ∪ q-axes). -/
 def interiorLiveInjDom (ha : StructAdm M (tach M))
