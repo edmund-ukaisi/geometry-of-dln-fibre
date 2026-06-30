@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta endpoint local injectivity and measurable image
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-endpoint-local-injectivity-measurable-image.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-endpoint-local-injectivity-measurable-image.md`.
+Review:
+`review-a2-case2-passive-theta-endpoint-local-injectivity-measurable-image.md`,
+PASS by xhigh source/scope reviewer `Hooke` and xhigh Lean/API reviewer
+`Pasteur`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_case2PassiveThetaEndpointTopologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+exists_open_case2PassiveThetaEndpointTopologyTuple_sourceChart_injOn
+exists_open_measurableSet_case2PassiveThetaEndpointSectorSet
+```
+
+The pointwise raw-order theorem removes the measure wrapper from the
+raw-order/source-chart bridge.  The injectivity theorem returns one open
+neighborhood `V` of a determinant-sector, nonzero-pivot base theta point with
+
+```text
+Set.InjOn sourceChart V
+Set.InjOn (case2PassiveThetaEndpointTopologyTuple ...) V.
+```
+
+The measurable-image theorem applies Lusin-Souslin under explicit
+Polish/Borel domain hypotheses and opens-measurable/T2 target hypotheses, and
+returns an open `V` with
+
+```text
+MeasurableSet (case2PassiveThetaEndpointSectorSet ... V).
+```
+
+Nonclaims: no global endpoint-sector measurability, source-image equality,
+source-rank coverage, exact passive-sector Haar transport, determinant-chart
+Haar transport, raw-order Haar transport, source-prior comparison, normal
+crossings, pole order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta source-chart readback left inverse
 
 Reproduction:

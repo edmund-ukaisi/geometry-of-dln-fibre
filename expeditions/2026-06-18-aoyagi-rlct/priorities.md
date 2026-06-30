@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta endpoint local injectivity and measurable image
+
+The concrete passive-theta endpoint map now has local injectivity and a local
+measurable endpoint-sector image theorem.
+
+New public names:
+
+```text
+exists_open_case2PassiveThetaEndpointTopologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+exists_open_case2PassiveThetaEndpointTopologyTuple_sourceChart_injOn
+exists_open_measurableSet_case2PassiveThetaEndpointSectorSet
+```
+
+The pointwise raw-order bridge removes the measure wrapper from the preceding
+raw-order source-chart compatibility theorem.  The injectivity theorem
+intersects the source-chart readback-left-inverse neighborhood with the
+raw-order bridge neighborhood and proves both
+
+```text
+Set.InjOn sourceChart V
+Set.InjOn (case2PassiveThetaEndpointTopologyTuple ...) V.
+```
+
+The measurable-image theorem applies Lusin-Souslin under explicit
+Polish/Borel hypotheses for the theta coordinate domain and opens
+measurable/T2 hypotheses for the endpoint topology-tuple target:
+
+```text
+MeasurableSet (case2PassiveThetaEndpointSectorSet ... V).
+```
+
+This is still local image measurability only.  It does not prove global
+endpoint-sector measurability, source-image equality, source-rank coverage,
+exact passive-sector Haar transport, determinant-chart Haar transport,
+raw-order Haar transport, source-prior comparison, normal crossings, pole
+order, or RLCT extraction.
+
+Next source-moving frontier: use the local measurable endpoint sector to remove
+explicit sector-measurability assumptions from the local endpoint-sector
+domination/Jacobian domination wrappers, or continue toward genuine
+source-prior/passive-sector measure comparison.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-chart readback left inverse
 
 The concrete passive-theta endpoint p.13 source chart now has a local

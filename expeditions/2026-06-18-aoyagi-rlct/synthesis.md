@@ -6,6 +6,44 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Endpoint Local Injectivity and Measurable Image - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaSourceMeasure.lean` now proves the pointwise
+raw-order bridge, local injectivity, and local endpoint-sector measurability:
+
+```text
+exists_open_case2PassiveThetaEndpointTopologyTuple_rawOrderSourceChart_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
+exists_open_case2PassiveThetaEndpointTopologyTuple_sourceChart_injOn
+exists_open_measurableSet_case2PassiveThetaEndpointSectorSet
+```
+
+The injectivity theorem returns one open neighborhood `V` of a
+determinant-sector, nonzero-pivot base point with
+
+```text
+Set.InjOn sourceChart V
+Set.InjOn Y V
+```
+
+where `Y` is the concrete endpoint topology-tuple map.  Source-chart
+injectivity is readback-left-inverse injectivity.  Endpoint map injectivity is
+obtained by applying `topologyTupleEdgeRawOrder` to equal endpoint tuples and
+then using the local equality `rawChart (rawMap z) = sourceChart z`.
+
+The measurable-image theorem applies `MeasurableSet.image_of_continuousOn_injOn`
+under explicit Polish/Borel hypotheses on the theta coordinate domain and
+opens-measurable/T2 hypotheses on the endpoint topology-tuple target.  It
+returns an open `V` with
+
+```text
+MeasurableSet (case2PassiveThetaEndpointSectorSet ... V).
+```
+
+Boundary: this is local image measurability only, not global endpoint-sector
+measurability, source-image equality, source-rank coverage, exact
+passive-sector Haar transport, determinant-chart Haar transport, raw-order
+Haar transport, source-prior comparison, normal crossings, pole order, or RLCT.
+
 ## Latest A2 Case 2 Passive Theta Source-Chart Readback Left Inverse - 2026-06-30
 
 `RetainedPassiveCoordinates.lean` now has the generic endpoint-transport
