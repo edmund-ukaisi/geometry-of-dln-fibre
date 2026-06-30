@@ -5,6 +5,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLeafHeadline
 import DLNFibre.DLN.RLCT.Validate.RouteMLeafBData
 import DLNFibre.DLN.RLCT.Validate.RouteMNullSliceCov
 import DLNFibre.DLN.RLCT.Validate.RouteMFactorMaps
+import DLNFibre.DLN.RLCT.Validate.RouteMLDUUniqueness
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverWitnessInterior
 
 /-!
@@ -366,10 +367,24 @@ def interiorLiveInjDom (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Set (Fin (routeMAmbient M) → ℝ) :=
   {u | u (leafPivot M ha (by norm_num) h0r h0c) ≠ 0 ∧ ∀ j ∈ interiorLive_E ha h0r h0c, u j ≠ 0}
 
+/-- **`kLens` injective off the q-pivots** — the genm-lduinj LDU-uniqueness atom consumed: peel the two
+`matrixSplit` LinearEquivs, then `RouteMLDUUniqueness.lduCore_unique` recovers `(l,q,u)` from the
+product `(1+L)·diag(q)·(1+U)` when the diagonal pivots `q` are nonzero. -/
+theorem kLens_injOn_qne {t : ℕ} (K K' : Matrix (Fin t) (Fin t) ℝ)
+    (hq : ∀ i, (matrixSplit K).2.1 i ≠ 0) (hk : kLens K = kLens K') : K = K' := by
+  rw [kLens, kLens] at hk
+  have hldu : lduCoreMap (matrixSplit K) = lduCoreMap (matrixSplit K') :=
+    matrixSplit.symm.injective hk
+  rw [lduCoreMap, lduCoreMap] at hldu
+  obtain ⟨hl, hqq, hu⟩ :=
+    RouteMLDUUniqueness.lduCore_unique _ _ _ _ _ _ hq (matrixSplit.injective hldu)
+  exact matrixSplit.injective (Prod.ext hl (Prod.ext hqq hu))
+
 /-- **injOn atom #1 (genm-lduinj's deliverable, consumed here)** — `kLDU` is injective on the
-blown-up domain `pbo '' injDom`. Reduces (via the banked `kLens`-Equiv peeling) to the LDU-product
-uniqueness `(1+L)·diag(q)·(1+U)` injective off the q-pivots, which `pbo` preserves (K-slots ∉ activeM,
-so `pbo` fixes them). STATED `sorry` — wired to genm-lduinj's LDU-uniqueness atom. -/
+blown-up domain `pbo '' injDom`. Per-coordinate: the K-arm reduces (via `kLens_injOn_qne` +
+`readK_kLDU`) to the LDU-product uniqueness off the q-pivots (which `pbo` preserves — K-slots ∉
+activeM), the identity arm is direct. STATED `sorry` — the kLDU-on-set + membership-to-q-nonzero
+wiring around the now-banked `kLens_injOn_qne`. -/
 theorem interiorLive_kLDU_injOn (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) :
     Set.InjOn (kLDU M (tach M) ha)
