@@ -231,38 +231,182 @@ noncomputable def eihdOut (ha : StructAdm M (tach M)) :
     (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
   (paramsEquivFlatLinear M).symm.trans (packStair ha)
 
+/-! ## The input equiv `eIn` (RESIDUAL piece 1)
+
+The slot-faithful input regroup. Its V0-component reads exactly the boundary-0 Schur frame slot —
+`(eIn δ).1 = slotReadV0 ha δ` — so the J00 block computation is a clean read, not a reindex fight
+(the Codex-endorsed Option B: `slotReadV0` is the V0 component DEFINITIONALLY). The V1-component reads
+the boundary-0 lift slot (`W`) and the boundary-1 frame slot (`leaf`). -/
+
+/-- **`eIn` (residual piece 1)** — the input layer-collecting equiv `(Fin (flatDim M) → ℝ) ≃ₗ
+StairProd (eihdV M) 2`, V0-component `= slotReadV0`. -/
+noncomputable def eIn (ha : StructAdm M (tach M)) :
+    (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
+  sorry
+
+/-- **The V0-faithfulness invariant**: `(eIn ha δ).1 = slotReadV0 ha δ` — the boundary-0 frame slot.
+The in-Lean check that `eIn` reads the Schur frame into V0; with `hD`'s J00 match this catches a
+misaligned reindex. -/
+theorem eIn_projV0 (ha : StructAdm M (tach M)) (δ : Fin (flatDim M) → ℝ) :
+    (eIn ha δ).1 = slotReadV0 ha δ :=
+  sorry
+
+/-! ## The block identity `hD` (RESIDUAL piece 2)
+
+`hD : eihdOut ∘ Dtot ∘ eIn.symm = stairMap V 2 f c` at the pivot-blowup point. With the coupling `c`
+DEFINED from the actual off-diagonal block of `T := eihdOut ∘ Dtot ∘ eIn.symm` (Codex's "even better":
+`c.1 v0 := (projV1 (T (inclV0 v0)), ())`), `hD` reduces to the THREE diagonal/off-diagonal block facts:
+`projV0 ∘ T ∘ inclV0 = f 0` (J00, the Schur frame — the faithfulness gate for `eIn`),
+`projV0 ∘ T ∘ inclV1 = 0` (J01, the det-invisible upper block),
+`projV1 ∘ T ∘ inclV1 = f 1` (J11, the chain unit). -/
+
+/-- The flat-Jacobian conjugate `T := eihdOut ∘ Dtot ∘ eIn.symm` at the pivot-blowup point — the
+endomorphism of `StairProd (eihdV M) 2` whose staircase the block facts read. -/
+noncomputable def eihdT (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    StairProd (eihdV M) 2 →ₗ[ℝ] StairProd (eihdV M) 2 :=
+  (eihdOut ha : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
+    ∘ₗ Dtot ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+    ∘ₗ ((eIn ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+
+/-- The V0-inclusion `inclV0 : V 0 →ₗ StairProd V 2`, `v0 ↦ (v0, (0, ()))` — `LinearMap.inl` into the
+head, the tail at `0`. The head-into-tail coupling reads `T` along this inclusion. -/
+noncomputable def eihdInclV0 :
+    eihdV M 0 →ₗ[ℝ] StairProd (eihdV M) 2 :=
+  LinearMap.inl ℝ (eihdV M 0) (StairProd (fun k => eihdV M (k + 1)) 1)
+
+@[simp] theorem eihdInclV0_apply (v0 : eihdV M 0) :
+    eihdInclV0 (M := M) v0 = (v0, (0 : StairProd (fun k => eihdV M (k + 1)) 1)) := rfl
+
+/-- **The staircase coupling `c`**, DEFINED from the actual off-diagonal block of `T` (Codex's "even
+better": the V0→V1 head-into-tail coupling is whatever `T` does, never separately identified — it is
+det-invisible). `c.1 = projTail ∘ T ∘ inclV0` (a `LinearMap` composite, so linearity is automatic);
+`c.2 = (0, ())` (the leaf has no lower layer). -/
+noncomputable def eihdc (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ) :
+    StairCoupling (eihdV M) 2 :=
+  ⟨(LinearMap.snd ℝ (eihdV M 0) (StairProd (fun k => eihdV M (k + 1)) 1)).comp
+      ((eihdT ha h0r h0c u).comp (eihdInclV0 (M := M))),
+    ⟨0, PUnit.unit⟩⟩
+
+/-- `eihdc.1 v0 = (eihdT … (v0, (0, ()))).2` — the coupling reads the tail of `T` along `inclV0`. -/
+theorem eihdc_fst_apply (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ) (v0 : eihdV M 0) :
+    (eihdc ha h0r h0c u).1 v0 = (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).2 := rfl
+
+/-- **J00 — the Schur-frame block** (the in-Lean faithfulness gate for `eIn`). The V0→V0 block of `T`
+is `eihdF … 0 = schurFrameDeriv X K N`. -/
+theorem eihdT_J00 (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
+    (v0 : eihdV M 0) :
+    (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).1
+      = eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 0 v0 :=
+  sorry
+
+/-- **J01 = 0 — the det-invisible upper block** (the in-Lean faithfulness gate for `eIn`). The V1→V0
+block of `T` is `0`: the layer-1 (chain) coordinates do not feed the layer-0 (frame) Schur output. -/
+theorem eihdT_J01 (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
+    (v1 : eihdV M 1) :
+    (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).1 = 0 :=
+  sorry
+
+/-- **J11 — the chain-unit block**. The V1→V1 block of `T` is `eihdF … 1 = chainUnitMap (readN ⟨0⟩)`:
+the layer-1 chaining `(W, C) ↦ (W, C − N·W)`. -/
+theorem eihdT_J11 (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
+    (v1 : eihdV M 1) :
+    (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).2.1
+      = (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 1 v1) :=
+  sorry
+
+/-- **`hD` — the block identity** `eihdOut ∘ Dtot ∘ eIn.symm = stairMap V 2 f c`, assembled from the
+three block facts (J00/J01/J11) with `c` the off-diagonal coupling. `LinearMap.ext` over arbitrary
+`(v0, (v1, ()))`; the V0-component is `f0 v0 + 0` (J00 + J01), the V1-component is `f1 v1 + (coupling)`
+(J11 + the defined `c.1`). -/
+theorem eihd_hD (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    (eihdOut ha : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
+        ∘ₗ Dtot ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+        ∘ₗ ((eIn ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+      = stairMap (eihdV M) 2
+          (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
+          (eihdc ha h0r h0c u) := by
+  -- the LHS is `eihdT`; ext over `StairProd (eihdV M) 2 = V0 × (V1 × PUnit)`
+  apply LinearMap.ext
+  rintro ⟨v0, v1, ⟨⟩⟩
+  -- the LHS composite applied at the point IS `eihdT … (v0,(v1,()))`; rewrite to that, then split.
+  have hT : ((eihdOut ha : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
+        ∘ₗ Dtot ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+        ∘ₗ ((eIn ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ)))
+          (v0, (v1, PUnit.unit))
+      = eihdT ha h0r h0c u (v0, (v1, PUnit.unit)) := rfl
+  rw [hT]
+  -- `eihdT` is linear: split `(v0,(v1,())) = inclV0 v0 + inclV1 v1`
+  have hsplit : ((v0, (v1, PUnit.unit)) : StairProd (eihdV M) 2)
+      = (v0, ((0 : eihdV M 1), PUnit.unit)) + (0, (v1, PUnit.unit)) := by
+    refine Prod.ext ?_ (Prod.ext ?_ ?_)
+    · show v0 = v0 + 0; exact (add_zero v0).symm
+    · show v1 = 0 + v1; exact (zero_add v1).symm
+    · rfl
+  have happ : eihdT ha h0r h0c u (v0, (v1, PUnit.unit))
+      = eihdT ha h0r h0c u (v0, ((0 : eihdV M 1), PUnit.unit))
+        + eihdT ha h0r h0c u (0, (v1, PUnit.unit)) := by
+    rw [hsplit]; exact map_add _ _ _
+  rw [happ]
+  -- the `stairMap` RHS at the point reduces (def of `stairMap`/`lowerTri`) to
+  -- `(f0 v0, (f1 v1 + (c.1 v0).1, (c.1 v0).2))`
+  set f := eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) with hf
+  set c := eihdc ha h0r h0c u with hc
+  show eihdT ha h0r h0c u (v0, (0, PUnit.unit)) + eihdT ha h0r h0c u (0, (v1, PUnit.unit))
+      = (f 0 v0, ((f 1 v1 + (c.1 v0).1), (c.1 v0).2))
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · -- V0: (J00 v0) + (J01 v1) = f0 v0 + 0 = f0 v0
+    show (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).1
+        + (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).1 = f 0 v0
+    rw [eihdT_J00 ha h0r h0c u v0, eihdT_J01 ha h0r h0c u v1, add_zero]
+  · -- V1: (J·0 V1-feed) + (J11 v1) = f1 v1 + (c.1 v0).1; by `eihdc`, `(c.1 v0).1 = (J·0 feed)`
+    show (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).2.1
+        + (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).2.1 = f 1 v1 + (c.1 v0).1
+    rw [eihdT_J11 ha h0r h0c u v1, add_comm]
+    rfl
+  · -- PUnit component (`StairProd V 0 = PUnit`)
+    rfl
+
+end L2
+
 /-! ## The assembly: `hDtot`/headline from the residual `(eIn, c, hD, hreg)`
 
-Everything except the input equiv `eIn`, the staircase coupling `c`, the block identity `hD`, and
-the regauge `hreg` is now BANKED: the boundary spaces `eihdV`, the diagonal blocks `eihdF`
-(with both dets `eihdF0_abs_det`/`eihdF1_abs_det`), and the output equiv `eihdOut`. This theorem feeds
-them through `hDtot_of_twoStairConj` + `interiorDet_leaf_headline_freeK`, pinning EXACTLY what the
-remaining `eIn`/`c`/`hD`/`hreg` tide must produce. -/
+Everything except the regauge `hreg` is now BANKED or BUILT: the boundary spaces `eihdV`, the diagonal
+blocks `eihdF` (with both dets), the output equiv `eihdOut`, the input equiv `eIn`, the coupling `eihdc`,
+and the block identity `eihd_hD`. This theorem feeds them through `hDtot_of_twoStairConj` +
+`interiorDet_leaf_headline_freeK`. -/
 
-/-- **The ∀M-L2 interior-det headline from the residual `eIn`/`c`/`hD`/`hreg`** — the wrapper
-`interiorDet_leaf_headline_of_DtotConj` instantiated with the banked `eihdV`/`eihdF`/`eihdOut` and the
-two banked block dets (`eihdF0_abs_det`/`eihdF1_abs_det`). The hypotheses are EXACTLY the geometric
-residual: the input equiv `eIn`, the coupling `c`, the staircase identity
-`hD : eihdOut ∘ Dtot ∘ eIn.symm = stairMap`, and the regauge abs-det-`1` `hreg`. -/
+section L2
+
+variable {M : Fin (2 + 1) → ℕ}
+
+/-- **The ∀M-L2 interior-det headline from the residual** — the wrapper
+`interiorDet_leaf_headline_of_DtotConj` instantiated with the banked/built `eihdV`/`eihdF`/`eihdOut`/
+`eIn`/`eihdc`/`eihd_hD` and the two banked block dets (`eihdF0_abs_det`/`eihdF1_abs_det`). The only
+remaining hypothesis is the regauge abs-det-`1` `hreg`. -/
 theorem interiorDet_leaf_headline_eihd (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
     (u : Fin (routeMAmbient M) → ℝ)
-    (c : StairCoupling (eihdV M) 2)
-    (eIn : (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2)
-    (hD : (eihdOut ha : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
-        ∘ₗ Dtot ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
-        ∘ₗ (eIn.symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
-      = stairMap (eihdV M) 2
-          (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)) c)
     (hreg : |LinearMap.det (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
-        ∘ₗ (eIn : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
+        ∘ₗ ((eIn ha) : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
     |LinearMap.det (fderiv ℝ (phiFlatLiveAt M ha (by norm_num)
         (leafPivot M ha (by norm_num) h0r h0c)) u).toLinearMap|
       = |u (leafPivot M ha (by norm_num) h0r h0c)| ^ (minAdm M - 1)
         * ∏ s : Fin 2, engineFreeK ha h0r h0c u s :=
   interiorDet_leaf_headline_of_DtotConj (eihdV M) ha h0r h0c u
-    (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)) c
-    eIn (eihdOut ha) hD hreg (eihdF0_abs_det ha h0r h0c u) (eihdF1_abs_det ha _)
+    (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u))
+    (eihdc ha h0r h0c u)
+    (eIn ha) (eihdOut ha) (eihd_hD ha h0r h0c u) hreg
+    (eihdF0_abs_det ha h0r h0c u) (eihdF1_abs_det ha _)
 
 end L2
 
