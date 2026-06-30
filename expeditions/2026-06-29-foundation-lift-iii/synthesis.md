@@ -59,6 +59,22 @@ differential-algebra interface is now Mathlib-grade and DLN-free:
 Net library effect beyond the re-homes: a #14 layering inversion repaired, two minimal-hypothesis/name=content
 fixes, and one roadmap item surfaced (the char-`p` criterion). PR opened off `fl3-p1` for async review.
 
-## Phase 2 — orbit-dimension squeeze
-_starting: the P2.0 de-`Tuple` probe (the gate). Proceed on a positive probe; halt + surface only if the
-argument is irreducibly `Tuple`-shaped._
+## Phase 2 — orbit-dimension squeeze (`fl3-p2`)
+
+**P2.0 probe (scout, 2026-06-30) → VERDICT: PROCEED** ([`threads/p2.0-probe/report.md`](threads/p2.0-probe/report.md)).
+The squeeze lifts to a **small hypothesis-carrying engine**, not a full algebraic-group framework. No step is
+irreducibly `Tuple`-shaped — the two geometric facts (Maurer–Cartan differential factorisation; dual-number
+infinitesimal-action ideal-killing) become **named hypotheses** (H1 `DifferentialFactors`, H2) that the DLN
+matrix-tuple code discharges as the first instance. The keystone A4.3 bound restated against the abstract
+carrier `AffineGVariety k := (ρ, R, fρ, C0, C1, δ)` scratch-elaborates with no `cochain`/`Tuple` type — the core
+feasibility signal. Decorrelated Codex (xhigh) independently concurred on verdict + boundary.
+
+**Engine (the 4 bricks):** B1 `GenericRankBound` (A4.3 ≤, from H1), B2 `AdjointRank` (= Mathlib
+`finrank_range_dualMap_eq_finrank_range`, no new statement), B3 `CotangentInjection` + B4 `SmoothCotangentDim`
+(A6.1 ≥, from H2 + smooth `k`-rational point + dense `k`-orbit), + the squeeze headline. Rung plan P2.1–P2.6 in
+[`priorities.md`](priorities.md); cruxes P2.4 (the H1 `L` carrier signature) + P2.5 (the H2 derivation carrier +
+"dense `k`-orbit meets smooth locus" over non-alg-closed `k`) flagged for decorrelated review. Scope discipline:
+name=content on H1/H2 (abstract *inputs*, not consequences of a bare orbit map); namespace-mirror so the eventual
+Mathlib lift is a file-move.
+
+_Executing: P2.2 (carrier + irreducibility) dispatched first as the keystone._

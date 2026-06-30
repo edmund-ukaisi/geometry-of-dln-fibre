@@ -22,11 +22,17 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 `rlct_lossDLN_d222_one_eq_two_via_aoyagi`) — payoff footprint unchanged. longLine warnings all pre-FL-III
 (out of scope). **Phase 1 complete → PR opened for async review; proceeding to Phase 2.**
 
-## Phase 2 — orbit-dimension squeeze (`fl3-p2`, probe-gated)
+## Phase 2 — orbit-dimension squeeze (`fl3-p2`)
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| P2.0 | formaliser | — | gated on Phase 1 | de-`Tuple` probe |
+| P2.0 | scout | abf59d3e | ✅ PROCEED `1e099b56` | de-`Tuple` probe → small hypothesis-carrying 4-brick engine; H1/H2 named hyps; keystone restates clean. Codex-concurred. Report = authoritative Phase-2 design |
+| **P2.2** | formaliser | dispatching | 🔄 | keystone: `AffineGVariety` carrier `structure` + orbit-as-image irreducibility on `(R, fρ)`, DLN as instance → `Core/AlgebraicGeometry/Group/Orbit` |
+| P2.1 | — | — | ⏳ | trace/transpose-rank brick (or prefer Mathlib dualMap + drop `deltaT`) |
+| P2.3 | — | — | ⏳ | A0/A4.1/A4.4 assembly on `(R, fρ)` + L6.4 as hypothesis |
+| P2.4 | — | — | ⏳ CRUX | B1 `GenericRankBound` (A4.3, H1) — de-risk (H1) `L` signature first; decorrelated review |
+| P2.5 | — | — | ⏳ CRUX | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2) — decorrelated review |
+| P2.6 | — | — | ⏳ | squeeze headline + L7 assembly |
 
 ## Concurrency rule (this expedition)
 At most **one builder/committer** in `.claude/worktrees/fl3` at a time (a second `lake build` corrupts `.lake`;
