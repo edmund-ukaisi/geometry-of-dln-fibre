@@ -13938,6 +13938,33 @@ must not be cited as the full derivative/formal-Jacobian equality, determinant
 equality, target-side linear equivalence, measure transport, normal crossings,
 pole order, or RLCT.
 
+## A2 source-image external density automatic readback
+
+Status: Proved in Lean; focused and full verification passed.
+
+Claim: for any coordinate domain, a restricted external source-image measure
+identified as a bounded-density perturbation of the chart-produced source-image
+reference pulls back by the local readback to a measure dominated by the
+coordinate reference measure.  The readback a.e. measurability hypothesis is
+derived from a continuous injective local chart and a pointwise left inverse.
+
+Lean theorem:
+
+```text
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-source-image-external-density-automatic-readback.md`,
+`threads/03-block-product-reduction/statement-card-a2-source-image-external-density-automatic-readback.md`,
+and
+`threads/03-block-product-reduction/review-a2-source-image-external-density-automatic-readback.md`.
+
+Kill condition: this theorem assumes the restricted external-measure equality
+with a bounded `withDensity` perturbation.  It must not be cited as original
+prior transport, source-rank coverage, Haar transport, a Jacobian formula,
+normal crossings, pole order, or RLCT.
+
 ## A2 Case 2 selected-entry Schur cleanup
 
 Status: Proved in Lean; focused and full local builds passed; xhigh reviews

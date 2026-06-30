@@ -12151,3 +12151,29 @@ Nonclaims: no analytic atlas coverage, chart-domain regularity, transition
 regularity, Jacobian or volume compatibility, source production, branch
 termination, source-prior transport, determinant-chart Haar transport,
 source-rank coverage, normal crossings, pole order, or RLCT.
+
+Latest A2 source-image external density automatic readback:
+`RetainedPassiveCase2PassiveThetaSourceImage.lean` proves
+`measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-source-image-external-density-automatic-readback.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-source-image-external-density-automatic-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-source-image-external-density-automatic-readback.md`.
+
+Ledger status: generic source-image density/equality handoff.  The theorem
+derives readback a.e. measurability from a continuous injective local chart
+and a pointwise left inverse, then pulls back a restricted external measure
+identified as a bounded-density perturbation of the chart-produced
+source-image reference.  It is generic in the coordinate domain, so it may be
+used for the future full p.13 product-coordinate chart.
+
+Focused file elaboration, focused module build, full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, and a direct axiom probe passed.  The
+axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no arbitrary external
+measure domination, no source-rank coverage, no Haar transport, no Jacobian
+formula, no normal crossings, no pole order, and no RLCT.

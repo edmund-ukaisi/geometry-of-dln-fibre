@@ -14973,3 +14973,22 @@ the regular-suspension bridge from residual `prod C^(s)` to the full product
 difference with regular coordinates.  Do not claim cardinality provenance,
 label-preserving endpoint transport, original prior transport, normal
 crossings, pole order, or RLCT from this handoff.
+
+A2 source-image external density automatic readback has landed locally in
+`RetainedPassiveCase2PassiveThetaSourceImage.lean`:
+
+```text
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+This removes a generic measure-theory nuisance from the source-prior frontier:
+once a full p.13 source chart is continuous/injective on a local coordinate
+domain and has a left-inverse readback, a restricted external measure with a
+bounded `withDensity` identity pulls back to finite-scalar domination on
+coordinates.  The theorem is generic in the coordinate domain, so it can apply
+to `(theta,u)` when that chart exists.
+
+Next priority: use the concrete p.13 product-coordinate API to build a
+full-coordinate source chart/readback statement.  Do not treat this helper as
+proving original-prior density transport, Haar transport, source-rank
+coverage, normal crossings, pole order, or RLCT.

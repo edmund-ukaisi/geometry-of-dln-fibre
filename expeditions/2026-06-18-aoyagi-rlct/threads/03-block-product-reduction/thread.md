@@ -18405,3 +18405,40 @@ Nonclaims: no exact passive-sector Haar transport, determinant-chart Haar
 transport, raw-order Haar transport, source-prior comparison,
 source-image equality, source-rank coverage, normal crossings, pole order, or
 RLCT extraction.
+
+## 2026-06-30 A2 source-image external density automatic readback
+
+Reproduction:
+`reproduction-a2-source-image-external-density-automatic-readback.md`.
+Statement card:
+`statement-card-a2-source-image-external-density-automatic-readback.md`.
+Review:
+`review-a2-source-image-external-density-automatic-readback.md`, PASS after
+focused Lean elaboration.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+This is the generic external-measure equality version of the bounded-density
+source-image pullback theorem.  Given a continuous injective local chart and a
+pointwise left inverse, Lean derives readback a.e. measurability for the
+chart-produced source-image reference and then pulls back any restricted
+external measure that is explicitly equal to a bounded-density perturbation of
+that reference.
+
+The coordinate domain is generic.  It can later be instantiated with full
+p.13 product coordinates `(theta,u)` once the actual source chart/readback and
+source-prior density identity are available.
+
+Nonclaims: no original/source prior transport, no source-rank coverage, no
+Haar transport, no Jacobian formula, no normal crossings, no pole order, and
+no RLCT extraction.

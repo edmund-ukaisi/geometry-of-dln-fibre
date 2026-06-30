@@ -26268,3 +26268,56 @@ Boundary: this still does not prove the original/source prior density identity
 or domination for arbitrary external measures.  It is not source-rank
 coverage, one-chart global support, Haar transport, normal crossings, pole
 order, or RLCT.
+
+## 2026-06-30 external source-image density equality with automatic readback
+
+The bounded-density source-image socket now has a generic external-measure
+variant with automatic readback measurability:
+
+```text
+measure_map_readback_restrict_image_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+If `sourceChart` is continuous and injective on a measurable coordinate set
+`V`, `readback` is a pointwise left inverse there, and
+`externalMeasure.restrict (sourceChart '' V)` is exactly a restricted
+`withDensity` perturbation of
+`Measure.map sourceChart (thetaReference.restrict V)` with density bounded by
+`c`, then
+
+```text
+Measure.map readback (externalMeasure.restrict (sourceChart '' V))
+  <= c • thetaReference.restrict V.
+```
+
+The theorem is generic in the coordinate domain, so it is suitable for the
+future full p.13 product-coordinate chart `(theta,u)` rather than being tied
+to passive theta alone.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-image-external-density-automatic-readback.md
+threads/03-block-product-reduction/statement-card-a2-source-image-external-density-automatic-readback.md
+threads/03-block-product-reduction/review-a2-source-image-external-density-automatic-readback.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_external_density_axioms.lean
+```
+
+`./scripts/sorries` reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+The direct axiom probe for the new theorem reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this still assumes the source-image density equality and upper
+bound.  It does not construct Aoyagi's original prior in coordinates, prove
+source-image coverage, Haar transport, a Jacobian formula, normal crossings,
+pole order, or RLCT.
