@@ -251,11 +251,13 @@ theorem interiorLive_diff (ha : StructAdm M (tach M))
     Differentiable ℝ (interiorLivePhi ha h0r h0c) :=
   sorry
 
-/-- **The injectivity set's extra weighted axes** — the K-LDU diagonal-pivot slots (the q-axes), where
-`leafH > 0` off the binding pivot. -/
+/-- **The injectivity set's extra weighted axes** — the slots where `leafH > 0` off the binding pivot
+(the K-LDU diagonal-pivot q-axes). Selected by `leafH`, so the cov engine's null-slice add-back
+covers exactly the axes carrying a positive Jacobian exponent. -/
 noncomputable def interiorLive_E (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) : Finset (Fin (routeMAmbient M)) :=
-  sorry
+  Finset.univ.filter (fun j => 0 < interiorLive_leafH ha h0r h0c j
+    ∧ j ≠ leafPivot M ha (by norm_num) h0r h0c)
 
 /-- **H-inj — `InjOn` off the pivot ∪ q-axes** — factors through the composition: `pivotBlowupOn`
 injective off `{u leafPivot = 0}` (banked `pivotBlowupOn_injOn`), `BchartLeaf` injective (the
