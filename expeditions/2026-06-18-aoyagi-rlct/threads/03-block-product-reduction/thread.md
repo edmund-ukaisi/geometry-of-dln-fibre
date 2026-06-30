@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 passive theta product-measure residual-source adapter
+
+Reproduction:
+`reproduction-a2-case2-passive-theta-product-measure-residual-source.md`.
+Statement card:
+`statement-card-a2-case2-passive-theta-product-measure-residual-source.md`.
+Review:
+`review-a2-case2-passive-theta-product-measure-residual-source.md`.
+
+Lean now specializes the generic passive-product and local-domination
+residual-source handoffs to `Case2PassiveTheta`:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_finiteMass
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+The concrete product-measure theorem uses
+`sourceMeasure = passiveMeasure.prod weightedBox`, finite passive mass, positive
+selected-entry radii, `0 <= t`, and the selected-entry critical inequality.
+The arbitrary-source theorem leaves
+`sourceMeasure.restrict V <= c • passiveSource` and `c < infinity` as explicit
+local hypotheses after `V` is chosen.
+
+Focused direct warning check, focused module build, full local build,
+`scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+direct axiom probes passed.  Both public theorems report only `[propext,
+Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Parfit` and
+xhigh Lean/API reviewer `Averroes` returned PASS.
+
+Nonclaims: no exact restricted `yNext` marginal equality, determinant-chart
+Haar transport, raw-order Haar transport, source-prior transport, exact
+passive-sector pushforward, source-image equality, source-rank coverage,
+finite-integral transfer for the original source prior, normal crossings, pole
+order, or RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 passive theta source-measure adapter
 
 Reproduction:

@@ -140,6 +140,36 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive theta product-measure residual-source
+  adapter, 2026-06-30.** Lean now specializes the generic passive-product and
+  local-domination residual-source handoffs to the concrete full theta
+  coordinate domain in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductMeasure.lean`.
+  The concrete product-measure theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_finiteMass`
+  consumes `sourceMeasure = passiveMeasure.prod weightedBox`, finite passive
+  mass, positive selected-entry radii, `0 <= t`, and the selected-entry critical
+  inequality.  The arbitrary-source theorem
+  `exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_passiveProductMeasure_finiteMass`
+  returns the same kind of sector but keeps
+  `sourceMeasure.restrict V <= c • passiveSource` and `c < ∞` as explicit local
+  hypotheses.  Both prove only retained-passive local-source support, a.e.
+  residual square-sum positivity, and `residualNegPowerIntegrableOn` for the
+  chart-produced measure.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-product-measure-residual-source.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-product-measure-residual-source.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-product-measure-residual-source.md`.
+  Focused direct warning check, focused module build, full local build,
+  `scripts/sorries`, `git diff --check`, aggregator direct warning check, and
+  direct axiom probes passed; both theorems report only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh source/scope reviewer `Parfit` and
+  xhigh Lean/API reviewer `Averroes` returned PASS.  This proves no exact
+  restricted `yNext` marginal equality, determinant-chart Haar transport,
+  raw-order Haar transport, source-prior transport, exact passive-sector
+  pushforward, source-image equality, source-rank coverage, finite-integral
+  transfer for the original source prior, normal crossings, pole order, or
+  RLCT.
 - **Current status addendum, Case 2 passive theta source-measure adapter,
   2026-06-30.** Lean now specializes the generic passive selected-entry
   source-measure theorem to the concrete full theta coordinate domain in

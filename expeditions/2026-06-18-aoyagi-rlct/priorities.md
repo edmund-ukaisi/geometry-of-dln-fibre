@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 passive theta product-measure residual-source adapter
+
+The next theta source-moving slice has landed in
+`lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductMeasure.lean`.
+It specializes the generic passive-product and local-domination residual-source
+handoffs to the concrete `Case2PassiveTheta` coordinate domain.
+
+Public names:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_finiteMass
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+The concrete product-measure theorem takes
+`sourceMeasure = passiveMeasure.prod weightedBox`, finite passive mass,
+positive selected-entry radii, `0 <= t`, and the selected-entry critical
+inequality.  It returns a local punctured determinant-sector `V` and proves
+support on the retained-passive p.13 local source, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn` for the chart-produced source
+measure.
+
+The arbitrary-source wrapper keeps the comparison hypothesis explicit after
+`V` is chosen:
+
+```text
+c < infinity
+sourceMeasure.restrict V <= c • passiveSource
+```
+
+This is the intended domination socket for future source-prior work.  It does
+not construct that domination from an original prior or a determinant-chart
+Jacobian.
+
+Focused direct warning check, focused module build, full local build, no-sorry
+audit, whitespace check, aggregator direct warning check, and direct axiom
+probes passed.  Both public theorems report only `[propext, Classical.choice,
+Quot.sound]`.  Xhigh source/scope reviewer `Parfit` and xhigh Lean/API
+reviewer `Averroes` returned PASS, recorded in
+`threads/03-block-product-reduction/review-a2-case2-passive-theta-product-measure-residual-source.md`.
+
+Nonclaims: no exact restricted `yNext` marginal equality, determinant-chart
+Haar transport, raw-order Haar transport, source-prior transport, exact
+passive-sector pushforward, source-image equality, source-rank coverage,
+finite-integral transfer for the original source prior, normal crossings, pole
+order, or RLCT extraction.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta source-measure adapter
 
 The concrete passive-theta source-measure adapter has landed in

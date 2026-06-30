@@ -6,6 +6,75 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Passive Theta Product-Measure Residual-Source Adapter - 2026-06-30
+
+`RetainedPassiveCase2PassiveThetaProductMeasure.lean` specializes the existing
+generic passive-product residual-source handoffs to the concrete
+`Case2PassiveTheta` coordinate domain.
+
+New public names:
+
+```text
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_passiveProductMeasure_finiteMass
+exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_puncturedSector_yNext_of_restrict_le_smul_passiveProductMeasure_finiteMass
+```
+
+The first theorem uses
+
+```text
+sourceMeasure = passiveMeasure.prod weightedBox
+```
+
+with finite passive mass and the selected-entry critical inequality.  It
+returns a local punctured determinant-sector `V`; for
+
+```text
+mu = Measure.map sourceChart (sourceMeasure.restrict V)
+```
+
+it proves retained-passive local-source support, a.e. residual square-sum
+positivity, and `residualNegPowerIntegrableOn localSource mu t`.
+
+The proof route is domination:
+
+```text
+Measure.map Case2PassiveTheta.yNext (sourceMeasure.restrict V)
+  <= passiveMeasure Set.univ • weightedBox.
+```
+
+The second theorem is the arbitrary-source socket.  It returns a sector `V`
+and proves the same residual-source conclusion under explicit local finite
+scalar domination:
+
+```text
+sourceMeasure.restrict V <= c • passiveSource,
+c < infinity.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-product-measure-residual-source.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-product-measure-residual-source.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-product-measure-residual-source.md
+```
+
+Verification passed: direct `lake env lean -E warning` for the new module and
+aggregator, focused module build, full local `lake build DLNFibre`,
+`scripts/sorries`, `git diff --check`, and direct axiom probes.  The full build
+has only pre-existing warning noise.  Xhigh source/scope reviewer `Parfit` and
+xhigh Lean/API reviewer `Averroes` returned PASS.
+
+Boundary: no exact restricted `yNext` marginal equality, determinant-chart
+Haar transport, raw-order Haar transport, source-prior transport, exact
+passive-sector pushforward, source-image equality, source-rank coverage,
+finite-integral transfer for the original source prior, normal crossings, pole
+order, or RLCT extraction.
+
+Next frontier: a bounded-density theta wrapper, or the harder passive-sector
+transport/Jacobian comparison needed to construct the local domination
+hypothesis from a genuine source-prior model.
+
 ## Latest A2 Case 2 Passive Theta Source-Measure Adapter - 2026-06-30
 
 `RetainedPassiveCase2PassiveThetaSourceMeasure.lean` specializes the existing
