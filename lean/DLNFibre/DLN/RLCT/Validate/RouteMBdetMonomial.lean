@@ -199,4 +199,39 @@ theorem mem_image_diagAxis_of_leafH_ne_zero (ha : StructAdm M (tach M))
     | Sum.inl (Sum.inr e) => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
     | Sum.inr e => rw [hfeq] at hne; simp only at hne; exact absurd rfl hne
 
+/-- **The ambient det at `pbo u`, boundary-0 only** — the `kLDU` lens det folds to the single
+boundary-0 K-diagonal product `∏_i |u(diagAxis i)|^{2(t₀−1−i)}` (the `k = 1` leaf factor is the empty
+product `1`, `Fin (Text 3) = Fin 0`). -/
+theorem kLDU_ambient_det_pbo (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (kLDU M (tach M) ha)
+        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
+      = ∏ i : Fin (Text M (tach M) 2),
+          |u (diagAxis ha i)| ^ (2 * ((Text M (tach M) 2 : ℕ) - 1 - (i : ℕ))) := by
+  rw [kLDU_ambient_abs_det M (tach M) ha, Fin.prod_univ_two]
+  -- `k = 1` factor: `Fin (Text 3) = Fin 0` is empty, product = 1.
+  have hk1 : ∏ i : Fin (Text M (tach M) ((1 : Fin 2).val + 2)),
+      |(matrixSplit (Matrix.of (readK M (tach M) ha
+          (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+          (1 : Fin 2)))).2.1 i|
+        ^ (2 * ((Text M (tach M) ((1 : Fin 2).val + 2) : ℕ) - 1 - (i : ℕ))) = 1 := by
+    have hT3 : Text M (tach M) ((1 : Fin 2).val + 2) = 0 := by
+      have := Text_Lsucc_eq_zero M (by norm_num : 0 < 2); simpa using this
+    haveI : IsEmpty (Fin (Text M (tach M) ((1 : Fin 2).val + 2))) := by
+      rw [hT3]; exact Fin.isEmpty
+    exact Finset.prod_of_isEmpty _
+  rw [hk1, mul_one]
+  -- `k = 0` factor: each q-pivot is `u (diagAxis i)`.
+  refine Finset.prod_congr rfl (fun i _ => ?_)
+  have hq : (matrixSplit (Matrix.of (readK M (tach M) ha
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) (0 : Fin 2)))).2.1 i
+        = u (diagAxis ha i) := by
+    rw [u_diagAxis ha u i]
+    show readK M (tach M) ha
+      (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) (0 : Fin 2) i i
+        = readK M (tach M) ha u (0 : Fin 2) i i
+    exact readK_pbo_all ha h0r h0c u (0 : Fin 2) i i
+  rw [hq]
+  norm_num
+
 end DLNFibre.DLN.RLCT
