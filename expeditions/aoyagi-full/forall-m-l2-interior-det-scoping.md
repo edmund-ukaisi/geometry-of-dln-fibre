@@ -137,3 +137,20 @@ NO free-product shortcut, Codex-confirmed; engine:=|det DB| self-referential wou
 CONE (modulo-hdet, deconflicted vs canonical 5184db86, 0 clashes, purely additive): 10 NEW modules —
 RouteMReaderCard, RouteMHmapGen, RouteMActiveSlots, RouteMLeafSlot, RouteMLeafChart,
 RouteMLeafHeadline, RouteMLeafBData, RouteMChainAssembleDiff, RouteMChartDiff, RouteMFrameDiff.
+
+## hdet ROUTE PINNED (Codex-verified, hdet-route-answer.md): route (A), the explicit entry-Jacobian
+
+The coordinator's "BchartLeaf's fderiv = composeFold[schur,chain,ldu]" is NOT literally true from the
+defs (BchartLeaf = paramsEquivFlat ∘ chartParamsGen-at-1; the inner fderiv is the per-layer Agen-fderiv
+assembly, NOT a composeFold). Route (B) would need a map-level bridge `BparamsLeaf = pack_M ∘ composeFold
+BFactors` proven first. The SOUND route is (A), the opaque-width generalization of the (2,2,2) DB template:
+- `BchartLeaf = Q_M ∘ TbGen`, `Q_M = paramsEquivFlat ∘ pack_M` (linear CLE, |det| = 1), `TbGen` the
+  EXPLICIT entry-Jacobian chart (the general analogue of (2,2,2)'s TbCLM/litMatLT).
+- `fderiv BchartLeaf y₀ = Q_M ∘L fderiv TbGen y₀`, so `|det fderiv BchartLeaf| = |det fderiv TbGen|`.
+- `|det fderiv TbGen| = ∏ engine` = the Schur-frame det × LDU det (chain det 1), via the banked
+  schurFrame_abs_det (validated vs 334) + lduChartFactor_abs_det + the BLOCK-LOWER-TRIANGULAR grading.
+- The N-block coupling (N feeds layer-0 Schur frame AND layer-1 chaining C−N·W) is NOT a free product —
+  needs a genuine block-triangular/ordered-factor det argument (the N off-diagonal/unit-triangular/
+  det-irrelevant). This is the heavy piece, where a wrong reindex hides.
+ENGINE = honest Schur·LDU value (boundary 0: |det K|^{r+c}·∏|q_i|^{2(t−1−i)}; boundary 1 leaf = 1),
+NOT engine:=|det DB| (self-ref vacuous). (2,2,2) template: RouteMBData222 DB_abs_det/TbCLM_abs_det/litMatLT_det.
