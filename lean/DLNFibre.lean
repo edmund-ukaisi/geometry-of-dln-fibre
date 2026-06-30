@@ -592,12 +592,18 @@ import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
 -- (#44, route the CLEAN deepest_gauge_construction_L2), hDegraded (R1-at-M') as NAMED hyps; does NOT
 -- close the D1 rung. The Altitude-B chart `hchart` is the named D1 residual on this route.
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
+-- D1 hchart slot (#225/#231) — `dln_hchart_residual` (D1HChartResidual): the assembled §SEL `hchart`
+-- (selected-minor IFT chart + germ-decompose + bump-globalize), clean-three, discharging the #225
+-- chart-transfer obligation `deepest_le_of_optimal_of_iftResidual` consumes (m = nRegL2 H r). The
+-- D1 ≥-leg's hard analytic content; the remaining hyps (#44 hDeepest / R1-at-M' hDegraded / hRne)
+-- stay named on the §SEL consumer.
+import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 -- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
 -- parameterization: BDataAt/phiFlatLiveR1At/radialComp_abs_det_at + pRad chosen from univ\readerSet,
 -- ∉readerSet by membership). Cone-scoped (13 files); the entry-Jacobian bijection renamed bdataSlotEquiv
--- (deconflicted vs the smeared RouteMSmearedDecodeL2.slotEquiv — genuinely different defs). ∀M-ready.
+-- (deconflicted vs smeared RouteMSmearedDecodeL2.slotEquiv — different defs). ∀M-ready.
 import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck

@@ -13,6 +13,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1IFTProducer
 import DLNFibre.DLN.RLCT.Foundations.S1ChartTransfer
 import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
+import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
@@ -196,10 +197,17 @@ open DLNFibre.DLN.RLCT
 #print axioms exists_boundedUnit_chart_of_contDiffAt
 #print axioms rlctAtOn_eq_of_contDiff_chart
 
+-- D1 hchart slot (#225/#231) — `dln_hchart_residual`: the assembled §SEL `hchart` (selected-minor IFT
+-- chart + germ-decompose + bump-globalize), the chart-transfer obligation `deepest_le_of_optimal_of_
+-- iftResidual` consumes (m = nRegL2 H r). Must be CLEAN-THREE [propext, Classical.choice, Quot.sound],
+-- no `sorryAx` (the whole D1HChart* ladder is sorry-free + S2-free; reviewer + Codex fidelity-PASS,
+-- gate-4 existential-Wᶜ + residual-form non-vacuity confirmed).
+#print axioms dln_hchart_residual
+
 -- R1 interior-det headline at the (2,2,2) node — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `interiorDet_headline_222` is the FIRST end-to-end faithful-route
 -- interior-det Jacobian (|det Dφ| = |u_pRad|^{minAdm−1}·|aRead(pbo u)|²) on a concrete node,
--- UNCONDITIONAL (PivotNotReader discharged via route-D, pRad ∉ readerSet by membership). The (2,2,2)
+-- UNCONDITIONAL (PivotNotReader via route-D, pRad ∉ readerSet by membership). The (2,2,2)
 -- VALIDATION milestone; the ∀M-L2 generalization reuses its pivot-generic lemmas.
 #print axioms interiorDet_headline_222
 
