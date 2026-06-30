@@ -1,6 +1,7 @@
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.Dimension.Localization
+import DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Dimension
 
 /-!
 # `DLNFibre.Core.AffineNoetherRank` — A4.1: `ringKrullDim = trdeg` for the pullback image
@@ -11,16 +12,13 @@ its Krull dimension equals its transcendence degree over `k`:
 > `(ringKrullDim (orbitPullback M).range).unbotD 0`
 > ` = (Algebra.trdeg k (orbitPullback M).range).toNat`.
 
-This is the **orbit specialisation** of the general affine-dimension fact. The two char-free engine
-bricks now live one layer down, in the dimension stack: `Dimension.trdeg_eq_of_integral_injective`
-(integral injective `⟹ trdeg = s`, beside the `dim`-invariance twin in `Dimension.Integral`) and
-`Dimension.ringKrullDim_quotient_unbotD_eq_trdeg_toNat` (the `dim = trdeg` quotient form, derived
-from the general f.g.-domain `Dimension.ringKrullDim_eq_trdeg_of_fg_domain`, in
-`Dimension.Localization`).
-Here we only transport that quotient form along the orbit isomorphism: the image `Aimg` is
-`k`-algebra isomorphic to `R ⧸ ker` (first iso, landed as `quotientKerEquivRangeOrbitPullback`),
-with the coordinate index reindexed `RepCoord d ≃ Fin n` (`renameEquiv`), so both invariants
-transport (`ringKrullDim_eq_of_ringEquiv`, `AlgEquiv.trdeg_eq`).
+This is the **orbit specialisation** of the abstract A4.1 anchor on the affine-`G`-variety carrier
+(`AffineGVariety.ringKrullDim_pullback_range_unbotD_eq_trdeg_toNat`,
+`Core/AlgebraicGeometry/Group/Orbit/Dimension.lean`). The abstract anchor reads `dim = trdeg` off
+the f.g. `k`-domain `μ*.range` (the Phase-1 `Dimension.ringKrullDim_eq_trdeg_of_fg_domain`,
+where `[Finite ρ]` is the finite-generation input). The DLN instance `dlnOrbit M`
+(`Core/OrbitVariety.lean`) has `(dlnOrbit M).pullback = orbitPullback M` definitionally, so the
+specialisation is the anchor at `dlnOrbit M` transported by `dlnOrbit_pullback`.
 
 Char-free: no algebraic closure, no `CharZero` (the dimension engine and `trdeg` API are char-free).
 
@@ -29,7 +27,7 @@ Char-free: no algebraic closure, no `CharZero` (the dimension engine and `trdeg`
 
 namespace DLNFibre.Core
 
-open MvPolynomial Algebra DLNFibre.Core.Dimension
+open MvPolynomial Algebra DLNFibre.Core.Dimension AlgebraicGeometry.Group.Orbit
 
 universe u
 
@@ -40,34 +38,16 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-- **A4.1 headline.** For the pullback image `Aimg = (orbitPullback M).range`, a finitely-generated
 `k`-domain, the Krull dimension equals the transcendence degree:
 `(ringKrullDim (orbitPullback M).range).unbotD 0 = (Algebra.trdeg k (orbitPullback M).range).toNat`.
-The first iso (`quotientKerEquivRangeOrbitPullback`) presents `Aimg` as `R_RepCoord ⧸ ker`; the
-coordinate index is reindexed `RepCoord d ≃ Fin n` (`renameEquiv`), carrying `ker` to a prime `p` of
-`k[Fin n]`; then `ringKrullDim_quotient_unbotD_eq_trdeg_toNat` applies, transported back through
-`ringKrullDim_eq_of_ringEquiv` and `AlgEquiv.trdeg_eq`. Char-free. -/
+The orbit specialisation of the abstract carrier anchor
+`AffineGVariety.ringKrullDim_pullback_range_unbotD_eq_trdeg_toNat`: the DLN instance `dlnOrbit M`
+satisfies `(dlnOrbit M).pullback = orbitPullback M` (`dlnOrbit_pullback`, definitional), and
+`(dlnOrbit M).ρ = RepCoord d` is `Finite`, so the anchor applies and transports back. Char-free. -/
 theorem ringKrullDim_range_orbitPullback_unbotD_eq_trdeg_toNat {d : Fin (N + 1) → ℕ}
     (M : Tuple (k := k) d) :
     (ringKrullDim (orbitPullback M).range).unbotD 0
       = (Algebra.trdeg k (orbitPullback M).range).toNat := by
-  -- reindex `RepCoord d ≃ Fin n` (it is `Finite`)
-  letI : Fintype (RepCoord d) := Fintype.ofFinite _
-  set n := Fintype.card (RepCoord d) with hn
-  let e : RepCoord d ≃ Fin n := Fintype.equivFin _
-  -- the renaming algebra-iso and the image prime `p`
-  let R := renameEquiv k e
-  let Rr : MvPolynomial (RepCoord d) k ≃+* MvPolynomial (Fin n) k := R.toRingEquiv
-  set ker := RingHom.ker (orbitPullback M).toRingHom with hker
-  haveI : ker.IsPrime := RingHom.ker_isPrime (orbitPullback M).toRingHom
-  set p : Ideal (MvPolynomial (Fin n) k) := ker.map (Rr : _ →+* _) with hp
-  haveI : p.IsPrime := by
-    rw [hp, Ideal.map_comap_of_equiv Rr]
-    infer_instance
-  -- `R_RepCoord ⧸ ker ≃ₐ[k] R_Fin ⧸ p`
-  let Φ : (MvPolynomial (RepCoord d) k ⧸ ker) ≃ₐ[k] (MvPolynomial (Fin n) k ⧸ p) :=
-    Ideal.quotientEquivAlg ker p R rfl
-  -- chain: `Aimg ≃ₐ R_RepCoord ⧸ ker ≃ₐ R_Fin ⧸ p`
-  let Ψ : (orbitPullback M).range ≃ₐ[k] (MvPolynomial (Fin n) k ⧸ p) :=
-    (quotientKerEquivRangeOrbitPullback M).symm.trans Φ
-  rw [ringKrullDim_eq_of_ringEquiv Ψ.toRingEquiv, AlgEquiv.trdeg_eq Ψ,
-    ringKrullDim_quotient_unbotD_eq_trdeg_toNat n p]
+  haveI : Finite (dlnOrbit M).ρ := inferInstanceAs (Finite (RepCoord d))
+  have h := (dlnOrbit M).ringKrullDim_pullback_range_unbotD_eq_trdeg_toNat
+  rwa [dlnOrbit_pullback] at h
 
 end DLNFibre.Core
