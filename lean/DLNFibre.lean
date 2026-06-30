@@ -32,7 +32,6 @@ import DLNFibre.Core.PolynomialDimension
 import DLNFibre.Core.NullstellensatzCodim
 import DLNFibre.Core.PolynomialCurveLimit
 import DLNFibre.Core.OrbitVariety
-import DLNFibre.Core.CotangentJacobian
 import DLNFibre.Core.BoxMoveDegeneration
 import DLNFibre.Core.RankLocusClosed
 import DLNFibre.Core.BoxMoveGeneral
@@ -41,10 +40,12 @@ import DLNFibre.Core.OrbitClosure
 import DLNFibre.Core.OrbitPullbackDim
 import DLNFibre.Core.OrbitSmooth
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.RingTheory.Kaehler.GenericRank
+import DLNFibre.Core.Dimension.Trdeg
 import DLNFibre.Core.OrbitImageDim
 import DLNFibre.Core.OrbitDifferential
-import DLNFibre.Core.MatrixKaehler
+import DLNFibre.Core.LinearAlgebra.BaseChange
+import DLNFibre.Core.RingTheory.Derivation.Matrix
 import DLNFibre.Core.OrbitDifferentialRank
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.VoigtDischarge
@@ -174,11 +175,6 @@ import DLNFibre.Core.FibreCodim
 -- action + mult-equivariance + height-comap codim-invariance + rank normal form. Reduces Lemma 4.6
 -- to a single normal-form fibre.
 import DLNFibre.Core.FibreNormalForm
--- Determinantal pivot-chart presentation (rank-chart build G2-1): the Schur rank criterion rank
--- (fromBlocks Δ B12 B21 B22) = card m ↔ B22 = B21·Δ⁻¹·B12, the explicit chart parametrization
--- Mat^{rk=r}∩U ≅ GL_r × Mat × Mat, + reusable block-diag rank additivity. Feeds G2-3 (the Schur
--- AlgEquiv).
-import DLNFibre.Core.DeterminantalChart
 -- Bordered Schur minor (G2-2 sub-rung 1): det [[Δ,u],[v,d]] = d·detΔ − v·adjΔ·u over ANY CommRing
 -- (universal-coefficient route, no invertible pivot), and the Schur expression = an (r+1)-minor ⟹
 -- vanishes on Mat^{rk≤r}. The generator-free handle for the localized base presentation (dodges
@@ -186,10 +182,10 @@ import DLNFibre.Core.DeterminantalChart
 import DLNFibre.Core.DeterminantalChartRing
 -- ker of a multivariate aeval = the graph ideal (reusable, arbitrary index type), + the elimination
 -- quotient equiv + graph-ideal primality. The generator-free elimination engine (G2-2).
-import DLNFibre.Core.MvPolynomialKerAeval
+import DLNFibre.Core.MvPolynomial.GraphIdeal
 -- Height of a block graph ideal over a field = #eliminated vars (catenary). The `height J = C`
 -- engine (G2-2).
-import DLNFibre.Core.GraphIdealHeight
+import DLNFibre.Core.MvPolynomial.GraphIdealHeight
 -- Reindex + detΔ-localization bridge for the determinantal base: repCoordReindex, blockAlgEquiv
 -- (A_eng ≃ MvPolynomial B22block (MvPolynomial SchurVar k)), blockAlgEquiv_detPivot (detΔ ↦ C
 -- detSchurS). The reindex/detΔ infra feeding the final localized-base presentation (G2-2 D2).
@@ -278,8 +274,6 @@ import DLNFibre.Core.ClosureBridge
 -- hSweep build (chart-trivialization): general matrix-rank helpers (diag(I_r,0) rank; rank=0 iff 0;
 -- block-diagonal rank-additivity).
 import DLNFibre.Core.RankNormalFormDim
--- rung-1 chart-membership iff: rank(mult A) ≤ r ⟺ Schur block = 0 on detΔ≠0.
-import DLNFibre.Core.SchurChartIff
 -- rung-3 +δ: varietyDim W = varietyDim F + card ι from a coordinate-ring AlgEquiv (domain-free).
 import DLNFibre.Core.VarietyDimPolyExtension
 -- rung-2a chart normalization: L⁻¹·M·H⁻¹ = diag(I_r,0) over k + factor_chart_matrix (L·E·H = M).
@@ -288,14 +282,12 @@ import DLNFibre.Core.ChartSection
 import DLNFibre.Core.ChartRetraction
 -- rung-2 set-level chart bijection Σ^r∩U_Δ ≅ base × F, both directions (round-trip).
 import DLNFibre.Core.ChartBijection
--- no-drop ≤ half: ringKrullDim(localization) ≤ ringKrullDim of the ring.
-import DLNFibre.Core.LocalizationKrullDim
 -- step-3a: gauge-conjugation transport at endpointGauge over SchurLoc
 -- (gaugeEquiv(endpointGauge)(multPoly) = L⁻¹·multPoly·H⁻¹).
 import DLNFibre.Core.ChartGaugeNormalize
--- no-drop machinery (shared by step-4/5): affine-domain dim(D[1/g])=dim D + the abstract no-drop
--- dim(R[1/g])=dim R when g avoids a top prime of a reducible Noetherian R.
-import DLNFibre.Core.AffineLocalizationNoDrop
+-- no-drop machinery (shared by step-4/5) re-homed to Core.Dimension.Localization (P1-R3):
+-- affine-domain dim(D[1/g])=dim D + the abstract no-drop dim(R[1/g])=dim R when g avoids a top
+-- prime of a reducible Noetherian R.
 -- route-3 dimension-arithmetic wrapper (localized chart AlgEquiv + the two no-drops).
 import DLNFibre.Core.ChartLocalizedPolyDim
 -- schur-side no-drop input (dim(P[1/gfib]) = dim P for P a polynomial extension of O(F)).
@@ -357,17 +349,13 @@ import DLNFibre.DLN.Aoyagi.ClosedForm
 -- (reducedness-free); + the shifted count numTop d r = cTheta(d−r) = C(m,|δ|).
 import DLNFibre.Core.FibreDetUnit
 import DLNFibre.Core.CThetaShiftCount
--- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework + the
--- polynomial-extension minimal-prime descent + the Σ̄^r / fibre count endpoints.
-import DLNFibre.Core.TopDimMinPrimes
-import DLNFibre.Core.TopDimMinPrimesPoly
-import DLNFibre.Core.TopDimMinPrimesBridge
+-- θ-components (fibre-count transport, thread 06): the TopDimMinPrimes framework (core +
+-- general transport rungs in `Core.MinimalPrime.*`, appended below) + the Σ̄^r / fibre count
+-- endpoints.
 import DLNFibre.Core.TopComponentsTopDim
 import DLNFibre.Core.FibreTopDimDetUnit
--- θ-components (fibre-count wiring, thread 08): the keystone localization-survival of the top-dim
--- minimal-prime count, + radical-insensitivity (W3), the chart-e count carry, and the W2 avoidance.
-import DLNFibre.Core.TopDimMinPrimesLocalization
-import DLNFibre.Core.TopDimMinPrimesRadical
+-- θ-components (fibre-count wiring, thread 08): the chart-e count carry and the W2 avoidance (the
+-- general localization-survival / radical-insensitivity rungs live in `Core.MinimalPrime.*`).
 import DLNFibre.Core.TopDimMinPrimesChartE
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 -- θ-components (W0 indexing bridge): TopDimMinPrimes(O(Σ̄^r)) = TopDimMinPrimes(O(Σ^r)) (closed ≤r
@@ -395,19 +383,52 @@ import DLNFibre.Core.FibreSmoothPlumbing
 -- NOT discharged), the chart product `SchurLoc ⊗ Away g` is `Smooth k`. The fibre is reducible for
 -- θ≥2, so the honest object is `IsSmoothAt` (generic), never a global `Smooth k`.
 import DLNFibre.Core.FibreGenericSmooth
--- Scope-3 (per-minor bundle, thread 18): the genuine open cover of `Mat^{=r}` by the `{r×r minor ≠
--- 0}` opens + the per-minor chart family. Keystone `exists_invertible_minor_of_rank` (a rank-r
--- matrix has some invertible r×r minor — a Mathlib v4.29 gap, network-free spin-out candidate).
--- B3-3 transition coherence is NOT built (the cocycle on overlaps) — so this is cover + family, NOT
--- yet `locallyTrivial`.
-import DLNFibre.Core.RankMinorCover
+-- P1.c (det-atlas): rank strata + the pivot-minor cover + the ideal↔rank-locus connective. Bare
+-- `Matrix` namespace (Mathlib-mirror, L7). Re-homed verbatim from `RankMinorCover`: `rankEqLocus`
+-- (rank-`= r` open), `minorChart`, the keystone `exists_invertible_minor_of_rank` (a rank-`r`
+-- matrix has some invertible `r×r` minor — a Mathlib v4.29 gap), and the cover theorem
+-- `rankEqLocus_subset_iUnion_minorChart`. NEW: `rankLeLocus` (rank-`≤ r` closed) + the connective
+-- `rankLeLocus_eq_vanishingLocus` / `mem_rankLeLocus_iff_determinantalIdeal_le_ker` tying the
+-- closed locus to the vanishing locus of `determinantalIdeal (r+1)` (P1.b), at the field level.
+import DLNFibre.Core.RingTheory.Determinantal.Strata
 import DLNFibre.Core.FibreBundlePerMinor
--- Scope-3 (bundle transition cocycle, thread 19): the genuine ring-level transition `AlgEquiv` on
--- the per-minor principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` + full coherence (commutes/symm/
--- round-trip/triple-overlap cocycle), via localization initiality. The abstract `awayOverlap`/
--- `awayTriple` engine is network-free (spin-out candidate). DISCLAIMER: this cocycle is on the
--- AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the bundle is NOT
--- `locallyTrivial`.
+-- P1.a (det-atlas): the abstract transition cocycle for a principal-open cover of `Spec R` over an
+-- arbitrary `CommRing R` — `awayOverlap`/`awayOverlapTransition` + the three pairwise cocycle laws,
+-- the single-chart restriction (`chartToSwappedOverlap`), and the triple-overlap cocycle
+-- `awayTriple_cocycle`, all via localization initiality. Network-free, bare `Localization` namespace
+-- (Mathlib-mirror, L7). Re-homed verbatim from `FibreBundleTransition` §Abstract+§TripleOverlap.
+import DLNFibre.Core.RingTheory.Localization.Overlap
+-- P1.b (det-atlas): matrix coordinate ring + the determinantal `(r+1)`-minor ideal. The
+-- minor-determinant polynomial `Matrix.detMinorPoly s t` (det of the `(s,t)` minor of the generic
+-- matrix `Matrix.mvPolynomialX`; `eval_detMinorPoly` evaluates it to `(M.submatrix s t).det`,
+-- re-homed verbatim from `FibreBundleTransition` §MinorChart, generalized `Field → CommRing`), and the
+-- genuinely-new (absent-in-Mathlib) `Matrix.determinantalIdeal p q R N` — the ideal generated by all
+-- order-`N` minors, whose vanishing locus is rank `< N`. Bare `Matrix` namespace (Mathlib-mirror, L7).
+import DLNFibre.Core.RingTheory.Determinantal.Basic
+-- P1.d (det-atlas): Schur-complement coordinates on the pivot rank chart. Block-diagonal rank
+-- additivity `Matrix.rank_fromBlocks_zero` (general index, absent in Mathlib v4.29), the pivot
+-- Schur rank criterion `rank_fromBlocks_eq_card_iff_schur{,_inv}` + the `Fin`-indexed
+-- chart-membership iffs `rank_le_iff_schur_eq` / `rank_eq_iff_schur_eq` (via
+-- `rank_fromBlocks_invertible₁₁`), the explicit chart parametrization
+-- `pivotRankChart`/`pivotRankChartEquiv` (Mat^{rk=r}∩U ≅ GL_r×Mat×Mat, `finrank = δ`), and the
+-- `CommRing` normal form `schurComplement_normal_form`. Bare `Matrix` namespace (Mathlib-mirror,
+-- L7). Re-homed from `DeterminantalChart`/`SchurChartIff` (deleted) + `SchurGauge`'s normal form;
+-- aligns with `Strata`'s `minorChart`/`rankEqLocus`.
+import DLNFibre.Core.RingTheory.Determinantal.Schur
+-- P1.e (det-atlas, rank-stratum dimension/codim): the closed-form rank-stratum dimension
+-- `rankStratumDim r p q = r(p+q−r)` and codimension `rankStratumCodim r p q = (p−r)(q−r)` with the
+-- "codim + dim = ambient `p·q`" identity (pure `Nat`), plus the anchoring of `rankStratumDim` to
+-- the pivot-chart parameter-space `finrank` (`finrank_pivotRankChart_params_eq_rankStratumDim`). Bare
+-- `Matrix` namespace (Mathlib-mirror, L7); the matrix-general dimension content only. The GEOMETRIC
+-- statement that `Σ̄^r` has this variety dimension is Proved (not cited) in
+-- `Core.DeterminantalStratumDim`, via the Proved zero-cited Brick A (`Core.SigmaCodim`); this file
+-- supplies only the arithmetic those theorems consume.
+import DLNFibre.Core.RingTheory.Determinantal.Dimension
+-- Scope-3 (bundle transition cocycle, thread 19): the per-minor instantiation — the per-minor
+-- principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` with their `minorChartTransition` (= the
+-- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this
+-- cocycle is on the AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the
+-- bundle is NOT `locallyTrivial`.
 import DLNFibre.Core.FibreBundleTransition
 -- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric
 -- fact. C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime
@@ -557,8 +578,53 @@ import DLNFibre.Core.FibreTargetOverlap
 -- L7 (rlct-bridge): finrank (range deformationδ) is base-change invariant along a field extension
 -- K/k — the orbit-tangent dimension is the SAME integer over ℝ and K. General conjugacy lemma
 -- finrank_range_eq_of_baseChange_conj + the deformationδ commuting square + the banked
--- MatrixKaehler.finrank_range_baseChange brick. The dimension-side of the real↔complex transfer.
+-- LinearAlgebra.BaseChange.finrank_range_baseChange brick. The dimension-side of the real↔complex
+-- transfer.
 import DLNFibre.Core.DeformationBaseChange
+-- foundation-lift P1-R1: the minimal-primes-of-`sInf`-of-a-finite-prime-family SPIKE, extracted
+-- from SigmaComponents to a clean Mathlib-grade home (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.minimalPrimes_sInf_of_finite_of_isPrime`.
+import DLNFibre.Core.MinimalPrime.Finite
+-- foundation-lift P1-R2: the localization `≤`-half `ringKrullDim S ≤ ringKrullDim R` for any
+-- localization `S = M⁻¹R`, re-homed from `LocalizationKrullDim` into the `Core.Dimension` family
+-- (ns `DLNFibre.Core.Dimension`, mirrors a would-be `Mathlib.RingTheory.KrullDimension.Localization`);
+-- `DLNFibre.Core.Dimension.ringKrullDim_localization_le`.
+import DLNFibre.Core.Dimension.Localization
+-- foundation-lift P1-R4: the `TopDimMinPrimes` count-engine core (top-dimensional minimal primes
+-- + `comap`-transport along a `RingEquiv` ⟹ `ncard` invariance), re-homed from `TopDimMinPrimes`
+-- into the `Core.MinimalPrime` family (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.MinimalPrime`); `Ideal.TopDimMinPrimes`,
+-- `Ideal.topDimMinPrimes_ncard_eq_of_ringEquiv`.
+import DLNFibre.Core.MinimalPrime.TopDimensional
+-- foundation-lift P1-R5: the four general count-transport rungs built on the R4 core, re-homed from
+-- `TopDimMinPrimes{Localization,Poly,Radical,Bridge}` into the `Core.MinimalPrime` family (ns
+-- `Ideal`, mirrors `Mathlib.RingTheory.Ideal.MinimalPrime`): away-localization survival
+-- (`Ideal.topDimMinPrimes_ncard_away_eq`, the per-prime no-drop keystone), polynomial-extension
+-- descent (`Ideal.topDimMinPrimes_mvPolynomial_ncard_eq`), radical-insensitivity
+-- (`Ideal.topDimMinPrimes_quotient_radical_ncard_eq`), and the height ↔ dimension bridge
+-- (`Ideal.ringKrullDim_quotient_eq_iff_height_eq`).
+import DLNFibre.Core.MinimalPrime.Localization
+import DLNFibre.Core.MinimalPrime.Polynomial
+import DLNFibre.Core.MinimalPrime.Radical
+import DLNFibre.Core.MinimalPrime.Bridge
+-- foundation-lift P2-R2: the matrix minor-rank core, extracted from `Core.RankLocusClosed` into the
+-- network-free `Core.Matrix.RankMinors` (ns `Matrix`, mirrors `Mathlib.LinearAlgebra.Matrix.Rank`):
+-- the determinantal-rank criterion `Matrix.rank_le_iff_forall_submatrix_det_eq_zero` (over a field,
+-- `A.rank ≤ r ↔` every `(r+1)`-minor's det = 0) + the supports
+-- (`rank_submatrix_le_rank`, `det_eq_zero_of_rank_lt`, `submatrix_det_eq_zero_of_rank_le`,
+-- `exists_injective_linearIndependent_rows`, `exists_submatrix_det_ne_zero_of_le_rank`) and the
+-- injective-field-hom rank invariance `Matrix.rank_map_eq_of_injective`.
+import DLNFibre.Core.Matrix.RankMinors
+-- foundation-lift P3-R1: the cotangent-dimension = Jacobian-kernel dimension formula (cotangent =
+-- `coker Jᵀ`, tangent = `ker J`; finite dims agree), extracted from
+-- `Core.CotangentJacobian` into two network-free libraries. The localize-the-cotangent-space
+-- comparison `Ideal.finrank_cotangentSpace_localization_eq_cotangent` (ns `Ideal`, mirrors
+-- `Mathlib.RingTheory.Ideal.Cotangent`; `[CommRing k]`, no `Field`); and the rectangular point-
+-- Jacobian cotangent-dimension headline `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`
+-- (ns `MvPolynomial`, mirrors `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general
+-- than Mathlib's smooth/square submersive Jacobian.
+import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
+import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure

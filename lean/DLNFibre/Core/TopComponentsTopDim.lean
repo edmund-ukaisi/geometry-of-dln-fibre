@@ -1,17 +1,20 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimesBridge
+import DLNFibre.Core.MinimalPrime.Bridge
+import DLNFibre.Core.MinimalPrime.Radical
 import DLNFibre.Core.ThetaComponentCount
 import DLNFibre.Core.SigmaCodim
 import DLNFibre.Core.CThetaShiftCount
+import DLNFibre.Core.RadicalCatenary
 
 /-!
 # `DLNFibre.Core.TopComponentsTopDim` — `Σ̄^r` top components ↔ `TopDimMinPrimes (O(Σ̄^r))`
 
 The DLN wire connecting the LANDED height-based `Σ̄^r` top-component count
 (`Core.ThetaComponentCount.topComponents`, counted by `numTop_eq_ncard_topComponents` and
-`ncard_topComponents_sigma_eq_cTheta_dminus`) to the dimension-based `Core.TopDimMinPrimes` on the
+`ncard_topComponents_sigma_eq_cTheta_dminus`) to the dimension-based `Ideal.TopDimMinPrimes` (see
+`Core.MinimalPrime.TopDimensional`) on the
 **coordinate ring** `O(Σ̄^r) = MvPolynomial (RepCoord d) k ⧸ sigmaIdeal d r`. The quotient
 minimal-prime bijection `comap (Quotient.mk)` carries `TopDimMinPrimes (O(Σ̄^r))` onto
 `topComponents d r h`, because:
@@ -21,7 +24,7 @@ minimal-prime bijection `comap (Quotient.mk)` carries `TopDimMinPrimes (O(Σ̄^r
   `codimRepCanonical_productRankLocusLE_eq_cCodim_enat`), so the `topComponents` predicate
   `p.height = (cCodim).toNat` is exactly `p.height = (sigmaIdeal).height`;
 * on a minimal prime, `p.height = (sigmaIdeal).height ↔ ringKrullDim (R ⧸ p) = ringKrullDim (R ⧸
-  sigmaIdeal)` (`Core.TopDimMinPrimesBridge.ringKrullDim_quotient_eq_iff_height_eq`);
+  sigmaIdeal)` (`Core.MinimalPrime.Bridge.ringKrullDim_quotient_eq_iff_height_eq`);
 * and `ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ comap P)` via the third isomorphism theorem.
 
 Conclusion:
@@ -31,36 +34,22 @@ Conclusion:
 
 This is the entry point of the chart transport on the count side: the next steps invert `detΔ`
 (unit), pass through the chart `e`, strip the Schur polynomial extension
-(`Core.TopDimMinPrimesPoly`), and land on the fibre coordinate ring.
+(`Core.MinimalPrime.Polynomial`), and land on the fibre coordinate ring.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
 
 namespace DLNFibre.Core
 
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv
+  ringKrullDim_doubleQuot_eq ringKrullDim_quotient_eq_iff_height_eq)
+
 open MvPolynomial
 
 universe u
 
 variable {k : Type u} [Field k] {N : ℕ}
-
-/-! ## The double-quotient dimension transport -/
-
-/-- **The third isomorphism theorem at `ringKrullDim`.** For a prime `P` of `R ⧸ I`,
-`ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ Ideal.comap (Quotient.mk I) P)` via
-`DoubleQuot.quotQuotEquivQuotOfLE` (`P = (comap P).map (mk I)`, `I ≤ comap P`). -/
-theorem ringKrullDim_doubleQuot_eq {R : Type*} [CommRing R] (I : Ideal R)
-    (P : Ideal (R ⧸ I)) :
-    ringKrullDim ((R ⧸ I) ⧸ P) = ringKrullDim (R ⧸ (P.comap (Ideal.Quotient.mk I))) := by
-  have hle : I ≤ P.comap (Ideal.Quotient.mk I) := by
-    intro x hx
-    rw [Ideal.mem_comap, Ideal.Quotient.eq_zero_iff_mem.mpr hx]
-    exact zero_mem P
-  have hmapeq : (P.comap (Ideal.Quotient.mk I)).map (Ideal.Quotient.mk I) = P :=
-    Ideal.map_comap_of_surjective _ Ideal.Quotient.mk_surjective P
-  have key := ringKrullDim_eq_of_ringEquiv (DoubleQuot.quotQuotEquivQuotOfLE hle)
-  rw [hmapeq] at key
-  exact key
 
 /-! ## `(sigmaIdeal d r).height = (cCodim d r h).toNat` -/
 

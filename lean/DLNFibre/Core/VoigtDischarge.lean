@@ -1,5 +1,6 @@
 import DLNFibre.Core.OrbitTangentCotangent
 import DLNFibre.Core.OrbitDifferentialRank
+import DLNFibre.Core.AlgebraicGeometry.Group.Orbit.Squeeze
 import DLNFibre.Core.NullstellensatzCodim
 import Mathlib.Algebra.CharZero.Infinite
 
@@ -35,16 +36,46 @@ variable {k : Type u} [Field k] {N : ℕ}
 /-! ## The squeeze — `varietyDim Z_M = finrank (range δ⁰)` -/
 
 /-- **The squeeze (Voigt's geometric heart).** The variety dimension of the orbit closure `Z_M =
-canonicalCoord '' orbitRankLocus M` equals the dimension of the orbit tangent image `range δ⁰`:
-`le_antisymm` of A4's submersion bound (`≤`, char 0) and A6.1's reverse inequality (`≥`,
-`[PerfectField]`, supplied by `CharZero`). Holds over any characteristic-zero field, `ℝ` included. -/
+canonicalCoord '' orbitRankLocus M` equals the dimension of the orbit tangent image `range δ⁰`.
+
+Now a transport of the **abstract orbit-dimension squeeze headline**
+(`AlgebraicGeometry.Group.Orbit.varietyDim_eq_finrank_range_δ`, `Orbit/Squeeze.lean`) at the DLN
+deformation instance `dlnOrbitDef M`: the matrix tuple discharges the full hypothesis bundle —
+(H1) via `dlnOrbitDef_differentialFactors M` (adjoint `deltaT M`, rank-tie `finrank_range_deltaT`),
+the criterion via `diffIndepCriterion_groupRing`, (H2) via `dlnInfinitesimalAction M`, the smooth
+`k`-rational point via `isSmoothAt_normalFormIdeal` + `residueFieldAtPrimeNormalFormEquiv`, and the
+A0/orbit↔kernel bridges. The base ideal `(dlnInfinitesimalAction M).basePtIdeal = normalFormIdeal M`
+and `(dlnOrbitDef M).δ = deformationδ M M` definitionally, so the abstract `varietyDim = finrank
+(range δ)` IS this statement. `[CharZero k]` supplies `[PerfectField k]` + `[Infinite k]` as Mathlib
+instances. Holds over any characteristic-zero field, `ℝ` included. -/
 theorem varietyDim_orbitRankLocus_eq_finrank_range_deformationδ
     [CharZero k] {d : Fin (N + 1) → ℕ} (M : Tuple (k := k) d) :
     varietyDim (canonicalCoord d '' orbitRankLocus M)
       = (finrank k (LinearMap.range (deformationδ M M)) : ℕ∞) := by
   letI : Fintype (RepCoord d) := Fintype.ofFinite _
-  refine le_antisymm ?_ (finrank_range_deformationδ_le_varietyDim M)
-  exact varietyDim_orbitRankLocus_le_finrank_range_deformationδ_unconditional M
+  haveI hρ : Finite (dlnOrbitDef M).ρ := inferInstanceAs (Finite (RepCoord d))
+  -- freeze the (H2) discharge + its base ideal (`H.basePtIdeal = normalFormIdeal M` defeq), so the
+  -- bracketed instance arguments are keyed SYNTACTICALLY on `H.basePtIdeal` — no instance search
+  -- across a defeq (the whnf-timeout trigger; Codex-diagnosed). The (H1) transport `L` is left
+  -- implicit, inferred from the type of `dlnOrbitDef_differentialFactors M` (the `pairMC` lift).
+  set H : (dlnOrbitDef M).InfinitesimalAction (orbitIdeal M) := dlnInfinitesimalAction M with hH
+  have hPrime : (orbitIdeal M).IsPrime := isPrime_vanishingIdeal_orbitSet M
+  have hmMax : (H.basePtIdeal).IsMaximal := orbitPointIdeal_isMaximal M 1
+  have hmSm : Algebra.IsSmoothAt k (H.basePtIdeal) := isSmoothAt_normalFormIdeal (k := k) M
+  have hmFin : FiniteDimensional k (H.basePtIdeal).Cotangent :=
+    finiteDimensional_cotangent_normalFormIdeal M
+  have hrat : Ideal.ResidueField (H.basePtIdeal) ≃ₐ[k] k := residueFieldAtPrimeNormalFormEquiv M
+  -- the orbit↔kernel linkage `orbitIdeal M = ker (dlnOrbitDef M).pullback`
+  have hIker : orbitIdeal M
+      = RingHom.ker (dlnOrbitDef M).toAffineGVariety.pullback.toRingHom := by
+    show orbitIdeal M = RingHom.ker (orbitPullback M).toRingHom
+    rw [orbitIdeal, ← range_orbitMap, vanishingIdeal_range_orbitMap_eq_ker]
+  exact @AlgebraicGeometry.Group.Orbit.varietyDim_eq_finrank_range_δ k _ _
+    (dlnOrbitDef M) hρ (deltaT M) _
+    (dlnOrbitDef_differentialFactors M) (finrank_range_deltaT M) diffIndepCriterion_groupRing
+    (orbitIdeal M) H hmFin hPrime hmMax hmSm hrat
+    (canonicalCoord d '' orbitRankLocus M)
+    (vanishingIdeal_orbitRankLocus_eq_orbitSet M) hIker
 
 /-! ## L7 — the additive cancellation discharging `hVoigt` -/
 

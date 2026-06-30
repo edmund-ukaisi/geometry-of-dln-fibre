@@ -1,5 +1,5 @@
 import DLNFibre.Core.AffineNoetherRank
-import DLNFibre.Core.JacobianTrdeg
+import DLNFibre.Core.Dimension.Trdeg
 import DLNFibre.Core.OrbitCodim
 import Mathlib.RingTheory.EssentialFiniteness
 

@@ -112,7 +112,7 @@ of `chartComponentIdeal` to `sweepSigmaRing` is a sigma top-dim minimal prime `q
 (the avoidance via the W1/chartE no-drop lemmas — stated for the `Away gF`/`Away dsig` chart `e_β`,
 not the product keystone, so a bridge `chartComponentIdeal = comap (algebraMap _ (Away dsig)) q_Σ`
 is needed); (ii) the localization-quotient ring iso `(Away f)⧸(map p) ≃+* Away (mk p f)` (built
-inside `TopDimMinPrimesLocalization.ringKrullDim_quotient_map_localizationAway_eq` — to extract as
+inside `MinimalPrime.Localization.ringKrullDim_quotient_map_localizationAway_eq` — to extract as
 an `AlgEquiv`); (iii) the W0 descent `sweepSigmaRing⧸q_Σ ↝ O(Σ̄^r)⧸q ≃ orbitRing (realizerD m)`
 (`exists_sigma_topComponent_orbitRingEquiv`).
 

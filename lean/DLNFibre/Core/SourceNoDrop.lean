@@ -18,7 +18,7 @@ i.e. inverting the deep pivot minor `detΔ = ΔPdeep d r` over the chart-closure
 `O(Σ^r) = sweepSigmaRing` does not drop the Krull dimension.
 
 Discharged via the LANDED reducible-ring no-drop
-`Core.AffineLocalizationNoDrop.ringKrullDim_localizationAway_eq_of_avoids_top_prime` at the prime
+`Core.Dimension.ringKrullDim_localizationAway_eq_of_avoids_top_prime` at the prime
 `p₀ = P / I_eq` of `O(Σ^r)`, where:
 
 - `P = partitionIdeal d r m₀` for a *minimising* Kostant partition `m₀` — a corner-`r` top minimal
@@ -43,7 +43,7 @@ No global rank-raising / density theorem, no `I_eq = I_le` ideal equality.
 
 namespace DLNFibre.Core
 
-open Matrix MvPolynomial Ideal
+open Matrix MvPolynomial Ideal Dimension
 
 universe u
 

@@ -3,7 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.DLN.RlctPayoffGeneral
 import DLNFibre.Core.FibreCodimFinal
-import DLNFibre.Core.RankLocusClosed
+import DLNFibre.Core.Matrix.RankMinors
 
 /-!
 # `DLNFibre.DLN.BundleShiftDischarge` — discharging the bundle-shift interface from Core
@@ -30,8 +30,8 @@ Three reconciliations:
 
 2. **Base-change ℝ→K.** `cited_bundle_shift` concerns `fibre (B.map ι)` for `B : Matrix … ℝ` of
    rank `r`. Core needs `(B.map ι).rank = r`. The injective field hom `ι : ℝ →+* K` preserves rank
-   (`Matrix.rank_map_eq_of_injective`, now a network-free Core lemma in `Core.RankLocusClosed`, via
-   the in-repo determinantal-rank bridge `Core.rank_le_iff_forall_submatrix_det_eq_zero` +
+   (`Matrix.rank_map_eq_of_injective`, a network-free Core lemma in `Core.Matrix.RankMinors`, via
+   the in-repo determinantal-rank criterion `Matrix.rank_le_iff_forall_submatrix_det_eq_zero` +
    `RingHom.map_det` + injectivity).
 
 3. **Kostant-nonempty.** `(kostantPartitions d r).Nonempty` from `0 < N` + `∀ k, r ≤ d k`, via
@@ -48,8 +48,8 @@ variable {N : ℕ}
 
 /-! ## The discharge — a proved `BundleShiftInterface` instance from Core
 
-(Rank base-change `Matrix.rank_map_eq_of_injective` is now a network-free Core lemma in
-`Core.RankLocusClosed`, reused both here and in the real↔complex codim transfer
+(Rank base-change `Matrix.rank_map_eq_of_injective` is a network-free Core lemma in
+`Core.Matrix.RankMinors`, reused both here and in the real↔complex codim transfer
 `DLN.RlctPayoff.codimRealFibre_eq_codimRepCanonical_baseChange`.) -/
 
 section Discharge

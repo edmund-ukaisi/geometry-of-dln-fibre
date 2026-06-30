@@ -1,5 +1,5 @@
 import DLNFibre.Core.MultDifferential
-import DLNFibre.Core.CotangentJacobian
+import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
 
 /-!
 # `DLNFibre.Core.FibreJacobian` — the Jacobian of the fibre generators (H3a)
@@ -12,7 +12,7 @@ does **not** invoke genericity or smoothness (H3c). No result here claims `codim
 The fibre generators are `g_{(r,c)} = multPoly d r c − C (B r c)`
 (`Core.MultComorphism.fibreGenSet`), one per output entry `(r, c) : Fin d_N × Fin d_0`. Presenting
 them as the **product-indexed family** `fibreGen d B` (rather than the `Set.range` of
-`fibreGenSet`) lets them plug into `Core.CotangentJacobian.jacobianMatrix`, whose row index is now
+`fibreGenSet`) lets them plug into `MvPolynomial.jacobianMatrix`, whose row index is now
 an arbitrary `Fintype` (generalised from `Fin m`): the rows of the fibre Jacobian *are* the output
 entries `(r, c)`, its columns the coordinate variables `⟨i, s, t⟩ : RepCoord d`.
 
@@ -28,7 +28,7 @@ Deliverables, for `d : Fin (N+1) → ℕ` and a target `B`:
 * **`finrank_cotangentSpace_fibre_eq_finrank_ker`** (the tangent = ker identity) — the local
   cotangent space of the fibre ring at `A` has `k`-dimension `= finrank (ker (fibreJacobian))`,
   unconditionally (no smoothness), reusing
-  `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`.
+  `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`.
 * **`finrank_ker_add_rank_fibreJacobianMatrix`** — the card-rank reading
   `finrank (ker) + rank(matrix) = card (RepCoord d)`, into which H3b plugs `rank = C + δ` to read
   `finrank (ker) = card − C − δ`.
@@ -108,14 +108,14 @@ theorem fibreJacobianMatrix_apply (d : Fin (N + 1) → ℕ)
 /-- **Tangent = ker Jacobian.** For a tuple `A` in the fibre (`mult d A = B`), the local cotangent
 space of the fibre coordinate ring at the rational point `canonicalCoord d A` has `k`-dimension
 equal to `finrank (ker (fibreJacobian d B A))`. Unconditional (no smoothness, no genericity),
-reusing `Core.CotangentJacobian.finrank_cotangentSpace_eq_finrank_ker_jacobian`. The localised
-ideal is `maxIdealAt (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the
+reusing `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`. The localised
+ideal is `maxIdealAtSpan (fibreGen d B) (canonicalCoord d A) hg`, whose underlying ideal is the
 localisation of `fibreGenIdeal d B` (`span (range (fibreGen d B)) = fibreGenIdeal d B`) at `A`. -/
 theorem finrank_cotangentSpace_fibre_eq_finrank_ker (d : Fin (N + 1) → ℕ)
     (B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) k) (A : Tuple (k := k) d)
     (hA : mult d A = B) :
     finrank k (CotangentSpace (Localization.AtPrime
-        (maxIdealAt (fibreGen d B) (canonicalCoord d A) (eval_fibreGen_eq_zero d B A hA))))
+        (maxIdealAtSpan (fibreGen d B) (canonicalCoord d A) (eval_fibreGen_eq_zero d B A hA))))
       = finrank k (LinearMap.ker (fibreJacobian d B A)) :=
   finrank_cotangentSpace_eq_finrank_ker_jacobian (fibreGen d B) (canonicalCoord d A)
     (eval_fibreGen_eq_zero d B A hA)

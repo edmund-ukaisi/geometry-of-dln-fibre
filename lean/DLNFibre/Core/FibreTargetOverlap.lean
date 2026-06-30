@@ -63,7 +63,7 @@ pairwise, transported from the base-side transition.
 
 namespace DLNFibre.Core
 
-open MvPolynomial Matrix
+open MvPolynomial Matrix Localization
 open scoped TensorProduct
 
 universe u

@@ -54,8 +54,10 @@ harness directory.
     *distinct* per-teammate worktrees only if the controller session runs from the **main checkout**. If
     the controller is itself in a worktree, spawned isolation-worktrees **collapse onto the controller's**
     (all teammates share one) — isolation becomes nominal. When that happens, run teammates **serially**
-    in the shared worktree (one active editor at a time): the centralized-merge integrity still holds, but
-    the parallelism is lost. (a past Stage-3 run: the controller was launched in a worktree, so all
+    in the shared worktree under a **one-builder/committer-at-a-time rule**: at most one agent building or
+    committing at once (a second concurrent `lake build` corrupts the shared `.lake`; two commits race the
+    git index); a read-only auditor (no build, no commit) may run alongside the one builder; and rungs
+    touching the same file serialize. The centralized-merge integrity still holds, but the parallelism is lost. (a past Stage-3 run: the controller was launched in a worktree, so all
     teammates shared it; the inherently sequential P1→P2→P3 chain made serial fine. Launch the controller
     from the main checkout to get true isolation.)
 - **The controller is the sole merger.** Teammates commit only to their own worktree branches; the
@@ -319,6 +321,26 @@ long (≥20 min) idle heartbeat; on an idle wake with nothing new, drift-glance 
 
 Stop at CLOSE, or when the operator pauses.
 ````
+
+### The heartbeat (scheduled tick)
+
+The loop prompt is fired by a **scheduled heartbeat** so an unattended expedition keeps advancing on its own:
+a **durable hourly cron** (`CronCreate`, prompt *"Controller tick — run ONE tick per `<exp>/loop-prompt.md`"*),
+or `/loop`. It is the **operator-away autonomous driver** — *not* a substitute for event wakes: teammate
+completions and operator messages already wake the controller automatically, and while you are actively driving
+in-session you don't wait on it. The heartbeat exists to cover the genuinely-**idle** gaps (waiting on nothing
+the harness will notify you about, or between units of work when the operator is away) so the expedition does
+not stall.
+
+- **An idle firing is a checkpoint, not a no-op.** When the tick fires with nothing new since the last, that is
+  exactly the moment to **regroup, orient, and check in**: re-ground (`priorities.md` / `synthesis.md` /
+  `threads.md`), drift-glance against `brief.md`, look in on in-flight teammates / open PRs / the build state,
+  and surface anything operator-facing — then re-sleep. Treat idle time as orientation time.
+- **Cadence + hygiene.** Pick an **off-minute** (not `:00`/`:30`: schedulers across the fleet fire on the round
+  minute, so an off-minute avoids self-inflicted synchronized load). Make it **durable** only if it must survive
+  a session restart, and note the **~7-day auto-expiry** (re-arm a longer-running expedition). **Stop the cron at
+  close** — and when several expeditions run in parallel, leave the *other* expeditions' heartbeats alone (touch
+  only your own).
 
 ## Close
 

@@ -1,0 +1,122 @@
+# Synthesis — `foundation-lift` (foundation-lift II)
+
+*Accumulates as rungs/phases land. Opening shape: [`brief.md`](brief.md) + [`priorities.md`](priorities.md).*
+
+The second **build-the-buildable** expedition: lift three more batches of project-local-but-general
+`DLNFibre.Core` modules to Mathlib-grade, in phases — **P1** components & local dimension (`TopDimMinPrimes*`
++ localization no-drop), **P2** determinantal & elimination algebra (graph ideals + matrix-rank), **P3**
+smooth/cotangent (`CotangentJacobian`) — each its own PR, driven autonomously on stacked branches off
+`origin/dev` `00fb7238` (PR #14). Built on #14's dimension stack; same machine + lessons L1–L4.
+
+## Tick log
+- **2026-06-29 — kickoff.** Coverage recon closed (corrected the audit: P1 = `TopDimMinPrimes*` not
+  `SigmaComponents`/`ThetaComponentCount`; P3 one module; `SmoothPointRegular`/`NoetherMonicPositioning`/
+  `rank_map_eq_of_injective`/`minimalPrimes` already done in #14). Worktree on `expedition/foundation-lift-p1`
+  off `origin/dev`, build warmed (430M, trees identical). Scaffold + cron set. P1-R1 dispatched.
+- **2026-06-29 — P1-R1 LANDED** (`2ab2995a`). The minimal-primes SPIKE re-homed to
+  `Core/MinimalPrime/Finite.lean`: `Ideal.minimalPrimes_sInf_of_finite_of_isPrime` (minimal primes of a
+  finite prime-family `sInf` = inclusion-minimal members), with a bonus hypothesis-weakening
+  `[CommRing]→[CommSemiring]` (build-confirmed). Sibling-clash cleared, re-gate green 3820, axiom-clean,
+  L3-clean. Review **waived** (low-risk warm-up — review reserved for the three crux rungs). → P1-R2 dispatched
+  (localization `≤`-half).
+- **2026-06-29 — P1-R2 LANDED** (`3ad47fe7`). `ringKrullDim_localization_le` re-homed verbatim to
+  `Core/Dimension/Localization.lean` (co-located with #14's `Dimension/` family; R3 lands here too). `@[stacks]`
+  declined (Stacks carries it only as a corollary — name=content). Formaliser green 3820, axiom-clean, L3-clean.
+  **Gate-cadence recalibrated (L5):** under sustained box load, controller re-gates at phase boundaries + crux
+  rungs (not every low-risk re-home); intermediate verbatim re-homes ride the formaliser's fresh green + the
+  boundary re-gate. → P1-R3 dispatched (affine-domain trdeg-sandwich no-drop).
+- **2026-06-29 — P1-R3 LANDED** (`16cd40f2`). The four affine-domain no-drop lemmas
+  (`ringKrullDim_eq_trdeg_of_fg_domain`, `trdeg_localization_eq`, `ringKrullDim_localizationAway_eq_of_{fg_domain,avoids_top_prime}`)
+  folded into `Core/Dimension/Localization.lean` beside R2's `≤`-half; `AffineLocalizationNoDrop.lean` deleted;
+  5 consumers re-pointed. Green 3819, axiom-clean. **R5 crux detail captured:** the per-prime `hper` is a
+  hypothesis discharged once-per-top-prime via R3's `ringKrullDim_localizationAway_eq_of_fg_domain` (NOT from
+  global no-drop + avoidance — DVR-at-uniformizer); R5 must carry the per-prime shape. → P1-R4 dispatched
+  (`TopDimMinPrimes` core).
+- **2026-06-29 — P1-R5 LANDED → PHASE-1 CONTENT-COMPLETE** (`9b66a95f`). The four transport rungs →
+  `Core/MinimalPrime/{Localization,Polynomial,Radical,Bridge}.lean`. **The crux held:** the per-prime `hper`
+  on `topDimMinPrimes_ncard_away_eq` is preserved **verbatim** (`∀ p ∈ TopDimMinPrimes A, dim(Away (mk p f)) =
+  dim(A⧸p)`), separate from the global `hdim`, not derivable from `hdim + havoid` (DVR-at-uniformizer); the
+  discharge stays local in `TopDimMinPrimesW1W2` via R3's lemma. **P1-boundary re-gate green 3819**,
+  axiom-clean. The `Ideal.MinimalPrime`-mirroring family now stands: `Finite · TopDimensional · Localization ·
+  Polynomial · Radical · Bridge`. Decorrelated crux-review (05r) in flight; on PASS → **PR-P1 opens** (async
+  review) and P2 begins.
+- **2026-06-29 — PHASE 1 SIGNED OFF → PR #15** (`expedition/foundation-lift-p1 → dev`). Crux-review **PASS**:
+  the per-prime `hper` is genuine + byte-faithful, and the non-foldability was Codex-corroborated with the
+  explicit counterexample `A = k[t]₍ₜ₎ × k[u]`, `f=(t,1)` (sharpening the per-prime-no-drop memory — the
+  *product* shape, not a bare DVR, is what witnesses it). Transport sound, assembly coherent, no blocker.
+  P1-boundary re-gate green 3819. → **Rolling into P2 without pausing**: stacked branch
+  `expedition/foundation-lift-p2` off P1's tip; P2-R1 (graph-ideal package, the lowest-risk warm-up) dispatched.
+- **2026-06-29 — P2-R1 LANDED** (`c7287232`). The graph-ideal elimination package → `Core/MvPolynomial/GraphIdeal.lean`
+  (ns `MvPolynomial`): `ker_aeval_eq_graphIdeal` (the multivariate analogue of `Polynomial.ker_evalRingHom`,
+  absent in Mathlib v4.29) + quotient-equiv elimination + primality, all `[CommRing]`-general, verbatim re-home.
+  `MvPolynomialKerAeval.lean` deleted; only `GraphIdealHeight` re-pointed (transitive consumers `open MvPolynomial`).
+  Green 3819, axiom-clean. → P2-R2 dispatched — **the P2 CRUX** (matrix minor-rank `rank_le_iff_forall_submatrix_det_eq_zero`,
+  the `←` extraction direction): full re-gate + decorrelated review on completion.
+- **2026-06-29 — P1-R4 LANDED** (`9a922438`). The `TopDimMinPrimes` count-engine core → `Core/MinimalPrime/TopDimensional.lean`
+  (ns `Ideal`): 6 decls, all `[CommRing]`-only, the count `topDimMinPrimes_ncard_eq_of_ringEquiv` an
+  unconditional ring-iso invariant. `TopDimMinPrimes.lean` deleted, 16 consumers re-pointed (selective `open`
+  to avoid `map`/`comap`/`height` shadowing). Green 3819, axiom-clean. The per-prime no-drop is NOT here
+  (R5's). → **P1-R5 dispatched — the CRUX** (transport rungs; the per-prime no-drop count survival): full
+  controller re-gate + decorrelated review on completion.
+- **2026-06-29 — P2-R2 LANDED + PR #15 review fixes applied** (`eff28654` rebased / `165e0954`). P2-R2 (the P2
+  crux): matrix minor-rank core → `Core/Matrix/RankMinors.lean` — `rank_le_iff_forall_submatrix_det_eq_zero`
+  (the `↔` Mathlib lacks) + `rank_map_eq_of_injective`; the `←` minor-extraction kept verbatim at `Fin`/`ℕ`
+  generality (broader `Fintype` index = clean follow-up); DLN remainder stays local; green 3820, axiom-clean.
+  **Meanwhile, operator review on PR #15** (5 comments — all concurred): dropped 2 unused `[q.IsPrime]`
+  (verified), repointed stale `Core.TopDimMinPrimes` prose, softened `TopDimensional` doc to dimension-only,
+  `Radical` doc prime→ideal, stripped process-provenance from `Localization` header — applied Lean-only on p1
+  (`165e0954`, #15 updated), and **p2 rebased onto p1'** (`09c5cb79`, clean — disjoint files). → P2-R2 crux-review
+  (07r) routed + **P2-R3 dispatched** (`GraphIdealHeight`), concurrently. After R3 + 07r: P2 boundary → PR-P2.
+- **2026-06-29 — PHASE 2 CONTENT-COMPLETE → PR-P2.** P2-R2 crux-review (07r) **PASS** (the `←` minor-extraction
+  sound at `Fin`/`ℕ` generality, Codex xhigh corroborated; honest `[Field k]`; faithful split; the deferred
+  broader `Fintype` index an honest non-extension → roadmap). P2-R3 (`12fb9faa`): `height_graphIdeal_eq`
+  re-homed to a sibling `Core/MvPolynomial/GraphIdealHeight.lean` (dimension-dep quarantined from the
+  upstream-ready `GraphIdeal`), min hyps confirmed. **P2-boundary authoritative re-gate green 3820**,
+  axiom-clean. The determinantal & elimination library now stands: `Core/Matrix/RankMinors.lean` +
+  `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}.lean`. → PR-P2 opened (stacked on P1); rolling into P3.
+- **2026-06-29 — P3-R1 LANDED → PHASE 3 CONTENT-COMPLETE** (`12d25fca`). The cotangent crux: `CotangentJacobian`
+  re-homed as a 2-module split — `Core/RingTheory/Ideal/CotangentLocalization.lean` (network-free, `[CommRing]`)
+  + `Core/RingTheory/MvPolynomial/CotangentJacobian.lean`. Headline `finrank_cotangentSpace_eq_finrank_ker_jacobian`
+  (cotangent dim = ker of the rectangular point-Jacobian, **no smoothness**, arbitrary rational point — more
+  general than Mathlib's smooth/square Jacobian), via bridges B1 (rank-nullity) + B2 (conormal → `Jᵀ`). Bonus
+  `[Field k]→[CommRing k]` weakening on the localization lemma. Bridge bodies verbatim; Codex xhigh red-teamed
+  the transpose orientation SOUND (rank-deficient witness `g₁=x+2y,g₂=3x+6y`). P3-boundary re-gate **green 3821**,
+  axiom-clean, DLN payoffs untouched. Decorrelated crux-review (09r) in flight on B2's `Ψ`-orientation; on PASS →
+  PR-P3 → **expedition close**.
+- **2026-06-29 — PHASE 3 SIGNED OFF → EXPEDITION CLOSE** (`12d25fca`). 09r **PASS**, with model decorrelation:
+  the reviewer re-derived the `Ψ`-orientation, **caught that the builder's witness was square** (non-discriminating
+  for a transpose error), and supplied **rectangular + node (`x²−y²`) examples** that distinguish `coker Jᵀ` from
+  the wrong `coker J` — all matching the geometric tangent dimension. → PR-P3 (#17) opened.
+
+## CLOSE — three foundations delivered
+
+The second **build-the-buildable** expedition is complete: three more reusable, Mathlib-grade libraries lifted
+from project-local `DLNFibre.Core` modules, each its own PR, driven autonomously straight through.
+
+- **P1 (#15) — Components & local dimension:** `Core/MinimalPrime/{Finite,TopDimensional,Localization,Polynomial,Radical,Bridge}`
+  (the `TopDimMinPrimes` count engine + the per-prime no-drop — crux PASS) + `Core/Dimension/Localization` (no-drop dim).
+- **P2 (#16) — Determinantal & elimination algebra:** `Core/Matrix/RankMinors` (the minor-rank `↔` Mathlib lacks —
+  crux PASS) + `Core/MvPolynomial/{GraphIdeal,GraphIdealHeight}`.
+- **P3 (#17) — Smooth points & cotangent dimension:** `Core/RingTheory/{Ideal/CotangentLocalization,MvPolynomial/CotangentJacobian}`
+  (the rectangular point-Jacobian cotangent-dim formula, no smoothness — crux PASS).
+
+Every rung green / sorry-free / axiom-clean; each phase re-gated at its boundary (L5); the three crux rungs each
+independently decorrelated-reviewed (PASS) — P3's notably catching + closing a non-discriminating witness. DLN
+consumers retrofitted; DLN payoff axioms unchanged throughout. Operator review on #15 (5 comments) concurred +
+applied; p2/p3 rebased to stay in sync.
+
+**The 3-PR set (operator-gated, merge in order):** #15 (P1→dev) → #16 (P2→P1) → #17 (P3→P2). GitHub retargets each
+to `dev` as its predecessor merges. **Roadmap:** mathlib4 upstream PRs (internal-first, upstream-grade);
+shared-package extraction (ReLU second consumer); the deferred broader `Fintype` index for the minor-rank `↔`;
+`GenericFreeness`/`PrincipalOpenComorphism` (fold opportunistically).
+
+**Status: COMPLETE — 3 PRs open.**
+
+- **2026-06-29 — deep-review polish on all 3 PRs (concurred + applied).** Operator deep-review found **no blocking
+  issues** on any PR. **#15** clean (earlier 5 items already in `165e0954`) — ready. **#16** (`0fdcc2e9`): `translateAux`
+  privatized (local helper); the `Core.Matrix.RankMinors` boundary made honest — 4 consumers given direct imports
+  (incl. an extra transitive-only one), `RlctPayoff` correctly left (uses RankLocusClosed DLN content). **#17**
+  (`e3878e19`): the **name=content** wording fix — "cotangent = Jacobian kernel" → "cotangent **dimension** =
+  Jacobian-kernel dimension" (cotangent = `coker Jᵀ`, tangent = `ker J`, only finite dims agree); 3 local supports
+  privatized; `maxIdealAt → maxIdealAtSpan`. All Lean-only; p3 rebased onto the fixed p2; final p3 re-gate green
+  **3821**, axiom-clean. The 3-PR merge train (#15 → #16 → #17) is ready.

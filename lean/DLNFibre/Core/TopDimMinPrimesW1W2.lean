@@ -1,15 +1,15 @@
 /-
 Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
-import DLNFibre.Core.TopDimMinPrimesLocalization
-import DLNFibre.Core.TopDimMinPrimesPoly
+import DLNFibre.Core.MinimalPrime.Localization
+import DLNFibre.Core.MinimalPrime.Polynomial
 import DLNFibre.Core.TopDimMinPrimesGfibAvoid
 import DLNFibre.Core.SchurSideNoDrop
 import DLNFibre.Core.FibreCodimFinal
-import DLNFibre.Core.AffineLocalizationNoDrop
+import DLNFibre.Core.Dimension.Localization
 import DLNFibre.Core.SourceNoDrop
 import DLNFibre.Core.TopDimMinPrimesW0
-import DLNFibre.Core.TopDimMinPrimesRadical
+import DLNFibre.Core.MinimalPrime.Radical
 
 /-!
 # `DLNFibre.Core.TopDimMinPrimesW1W2` — the keystone localization-survival applications (W1 + W2 inputs)
@@ -43,7 +43,12 @@ presentation to dodge the `MvPolynomial`-over-quotient instance diamond).
 
 namespace DLNFibre.Core
 
-open MvPolynomial Matrix
+open Ideal (TopDimMinPrimes mem_topDimMinPrimes isPrime_of_mem_topDimMinPrimes
+  comap_mem_topDimMinPrimes bijOn_comap_topDimMinPrimes topDimMinPrimes_ncard_eq_of_ringEquiv
+  topDimMinPrimes_ncard_away_eq comap_C_mem_minimalPrimes map_comap_C_of_mem_minimalPrimes
+  quotTopDimSet bijOn_comap_quotTopDimSet)
+
+open MvPolynomial Matrix Dimension
 
 universe u
 
