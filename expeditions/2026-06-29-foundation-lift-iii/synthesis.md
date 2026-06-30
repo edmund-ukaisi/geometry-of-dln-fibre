@@ -45,5 +45,20 @@ already, no edit.
   the char-0 restriction on `trdeg ≤ generic differential rank`. Genuinely-separate new math, not a hypothesis
   relaxation. The DLN payoff is char-0 (ℝ/ℂ), so this is library generality, not application need.
 
+### Phase 1 CLOSE (2026-06-30)
+All rungs landed; controller phase-boundary re-gate PASSED (full build 3823 jobs green, sorries 0, axioms
+`[propext, Classical.choice, Quot.sound]` on every Phase-1 headline + both DLN payoffs unchanged). The
+differential-algebra interface is now Mathlib-grade and DLN-free:
+- `Core/RingTheory/Kaehler/GenericRank.lean` — generic differential rank + the char-0 `DiffIndepCriterion`.
+- `Core/Dimension/Trdeg.lean` — `trdeg ≤ generic differential rank` (char-free wrapper).
+- `Core/RingTheory/MvPolynomial/CotangentJacobian.lean` + `Core/RingTheory/Ideal/CotangentLocalization.lean`
+  — Jacobian orientation + cotangent-dim = ker-Jacobian-dim (FL-II, verified).
+- `Core/RingTheory/Derivation/Matrix.lean` — matrix-Kähler derivation calculus.
+- `Core/LinearAlgebra/BaseChange.lean` — base-change rank (V2), with the 3-way distinctness recorded.
+- `Core/Dimension/Integral.lean` — `trdeg_eq_of_integral_injective` (re-homed; layering inversion fixed).
+Net library effect beyond the re-homes: a #14 layering inversion repaired, two minimal-hypothesis/name=content
+fixes, and one roadmap item surfaced (the char-`p` criterion). PR opened off `fl3-p1` for async review.
+
 ## Phase 2 — orbit-dimension squeeze
-_gated on the P2.0 de-`Tuple` probe._
+_starting: the P2.0 de-`Tuple` probe (the gate). Proceed on a positive probe; halt + surface only if the
+argument is irreducibly `Tuple`-shaped._

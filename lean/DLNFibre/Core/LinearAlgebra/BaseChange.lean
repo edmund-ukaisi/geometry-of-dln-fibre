@@ -20,9 +20,10 @@ distinct** (name = content):
 * **V2 — linear-map rank under scalar extension** (`finrank_range_baseChange`, *here*):
   `finrank K (range (f.baseChange K)) = finrank k (range f)` for `f : V →ₗ[k] W` and a field
   extension `K/k`. The tensor `K ⊗ f`, not an entrywise map nor a span of a family.
-* **V3 — differential-family span** (currently inlined in
-  `JacobianTrdeg.diffIndepCriterion_proof`, to be extracted): span-dimension of a family of
-  differentials under base change.
+* **V3 — differential-family span**: linear independence of a family of differentials under base
+  change. This is Mathlib's `Module.Flat.linearIndependent_one_tmul` (flat base change preserves
+  linear independence); used inline in `RingTheory.Kaehler.GenericRank.diffIndepCriterion_proof`.
+  No bespoke lemma — wrapping a Mathlib result would be a redundant re-export.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/

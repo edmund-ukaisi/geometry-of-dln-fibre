@@ -13,8 +13,14 @@ per shared worktree at a time; read-only auditors run concurrently. Controller i
 | P1.3 | controller | — | ✅ VERIFIED (no edit) | `CotangentJacobian.lean` — orientation discipline exemplary; namespace+path mirror Mathlib |
 | P1.4 | controller | — | ✅ VERIFIED (no edit) | `CotangentLocalization.lean` — name=content, minimal hyps (`[Field k]` not needed) |
 | P1.5 + P1.6-V2 | formaliser | a41d8e0e | ✅ DONE `1dc6c698` | `MatrixKaehler.lean` split → `Core/RingTheory/Derivation/Matrix.lean` + `Core/LinearAlgebra/BaseChange.lean` (V2 + 3-way distinctness docstring); green 3823, axiom-clean. Caught + honestly fixed a severed transitive instance import (→ L6) |
-| **P1-final** (P1.7 + P1.2-finish + P1.6-V1) | formaliser | dispatching | 🔄 | **P1.7 layering fix**: push `trdeg_eq_of_integral_injective` down off orbit-flavored `AffineNoetherRank`, break `Dimension/Localization→AffineNoetherRank` inversion, re-derive quotient lemma from `ringKrullDim_eq_trdeg_of_fg_domain`; **P1.2-finish** drop `[Fintype ι]`; **P1.6-V1** distinctness docstring |
-| P1.6-V3 | controller | — | ✅ RESOLVED (no extraction) | V3 = Mathlib's `Module.Flat.linearIndependent_one_tmul`, already named+documented in `GenericRank`. Wrapping it would be an anti-Mathlib re-export |
+| **P1-final** (P1.7 + P1.2-finish + P1.6-V1) | formaliser | a30d5c63 | ✅ DONE `3419daa3`+`e51a9d35` | P1.7 layering inversion broken (`trdeg_eq_of_integral_injective`→`Dimension/Integral`, quotient lemma re-derived from general form, `AffineNoetherRank` thinned to 1 orbit lemma); `[Fintype ι]` dropped; V1 distinctness docstring. L6 hit+fixed again |
+| P1.6-V3 | controller | — | ✅ RESOLVED (no extraction) | V3 = Mathlib's `Module.Flat.linearIndependent_one_tmul`, already named+documented in `GenericRank`. Wrapping it would be an anti-Mathlib re-export. BaseChange.lean V3 docstring aligned (controller) |
+
+## Phase 1 — re-gate (controller, phase boundary) ✅ PASSED
+Full build green (3823 jobs); sorries 0; axioms `[propext, Classical.choice, Quot.sound]` on all Phase-1
+headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi`,
+`rlct_lossDLN_d222_one_eq_two_via_aoyagi`) — payoff footprint unchanged. longLine warnings all pre-FL-III
+(out of scope). **Phase 1 complete → PR opened for async review; proceeding to Phase 2.**
 
 ## Phase 2 — orbit-dimension squeeze (`fl3-p2`, probe-gated)
 
