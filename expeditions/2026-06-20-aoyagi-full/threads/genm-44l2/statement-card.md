@@ -55,7 +55,28 @@
 
 ---
 
-## hJfront re-architecture (follow-on, phases A+B banked; phase C = wall-flag)
+## hJfront re-architecture — COMPLETE (phases A+B+C, the value side is now headline-closeable)
+
+> **Result.** The `#44`-at-`L=2` normal form holds CONDITIONAL on `htop` + `hcolfront` (BOTH
+> headline-WLOG-supplied — `#154` row-WLOG + `#100` column-WLOG) + `hRValue` (R1) — and **NOT** on the
+> unprovable `hJfront`. So the value-side leg (`#44`, and the D1 ≥-leg that inherits it) is now
+> closeable by the headline.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.deepest_regular_core_normal_form_L2_front`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestFrontGauge.lean` @ `3ab44e9f`) — clean-three.
+> - **Conclusion:** identical to `deepest_regular_core_normal_form` (#44) at `L = 2`. Hypotheses:
+>   `hB`, `hr`, `hL`, `hL2`, `hpos`, `htop`, `hcolfront`, `hLlt`, `hRValue` (no `hJfront`; `hGne`
+>   discharged from `hpos`).
+> - **Route X (parameterize, bedrock).** `DeepestL2Wiring` gains `deepest_gauge_construction_L2_ofBundle`
+>   (the L2 gauge body with the triangular bundle as explicit args, byte-verbatim) +
+>   `deepest_gauge_construction_L2` refactored to a thin wrapper (obtains the ARBITRARY bundle, applies
+>   the core). **Guardrail verified:** the existing `deepest_gauge_construction_L2` stays clean-three
+>   `[propext, Classical.choice, Quot.sound]`, behavior unchanged (the banked rung-1 L2 witness). The
+>   FRONT bundle (`deepestPoint_frame_pivot_triangular_front_exists`) feeds the SAME core — no
+>   duplication. Full `lake build DLNFibre` green (8644 jobs).
+> - **Status.** sorry-free + clean-three; pending the controller's A+B+C review + cone-merge.
+
+## hJfront re-architecture (follow-on, phases A+B+C — banked)
 
 The `hJfront` discharge (the value-side gap that also gates the D1 ≥-leg). The arbitrary-`.choose`
 identity `(deepestPoint_frame_pivot_exists ...).choose.trans finCongr = frontEmbed` is **unprovable**
@@ -76,10 +97,11 @@ the dual of `htop`).
 >   point's LAST layer has a full-rank top-left `r×r` block. Via `prod = B` + the back-peel
 >   `prod_eq_prodAux_mul_last` + `deepestPoint_layerLast_rows_vanish` + a rank-squeeze. NO
 >   `deepestPoint_exists` edit. This is the `hfront` input to the front frame builder.
-> - **WALL-FLAG (phase C, NOT done).** Discharging `hJfront` requires a PARALLEL front-threaded stack
->   (`exists_deepest_lastLayer_pivotFrame_front` → `deepestPoint_frame_pivot_exists_front` →
->   `deepestPoint_frame_pivot_triangular_exists_front` → a `_front` copy of `deepest_gauge_construction_L2`
->   → the value-chain re-thread), because `hJfront` is keyed to the arbitrary `.choose` across 29 sites
->   (pinned at `DeepestPivotFrameTriangular:243`). ~250-400 LoC, all MECHANICAL + ADDITIVE (no new math —
->   phases A+B are the hard atoms); exceeds the original ~150-250 estimate because the gauge-construction
->   body must be duplicated (differs by one `obtain` line). Flagged to the controller for a scope call.
+> - **Banked (phase C, `DeepestFrontGauge.lean`, NEW, clean-three @ `48162ab4`/`3ab44e9f`):** the front
+>   frame stack — `exists_deepest_lastLayer_frontPivotFrame`, `deepestPoint_frame_pivot_front_exists`,
+>   `deepestPoint_frame_pivot_triangular_front_exists` (SAME output signature as the arbitrary
+>   triangular bundle, `J.trans finCongr = frontEmbed` by construction via `frontJsucc_trans_eq_frontEmbed`)
+>   — then the front feeder `deepest_gauge_construction_L2_front` + `deepest_gauge_chart_construct_L2_front`
+>   + the value lemma `deepest_regular_core_normal_form_L2_front` (above). Route X parameterization replaced
+>   the feared ~450-line body copy (`deepest_gauge_construction_L2_ofBundle` shared by both paths).
+>   `deepest_layer0_blockLower_frame` un-privated (behavior-preserving visibility; reused verbatim).
