@@ -1,4 +1,4 @@
-# Statement card — #44 L2 deepest-point normal form (front-aligned B)
+# Statement card — #44 L2 deepest-point normal form (front-aligned B) + headline ⨅-WLOG (ROUTE a)
 
 > **Claim.** At depth `L = 2`, for a rank-`r` target `B` whose pivot columns are front-aligned
 > (`hJfront`, #100) and whose top `r` rows have full rank (`htop`, #154), with strictly positive
@@ -56,3 +56,38 @@
    xhigh, `codex/p44-route-answer.md`). So hJfront/htop stay as hypotheses; the perm-WLOG belongs
    DOWNSTREAM at the `⨅ optimalSet` level (`Set.BijOn.iInf_congr`, `rlct_infimum_{row,col}Perm_eq`),
    where point-matching is global — the D1 headline consumer's natural shape.
+
+3. **The front-pivot-FRAME identity `hJfront` is not derivable from the WLOG's front-COLUMN rank.**
+   `headline_frontRowColPivot_exists` gives the permuted target `Bpr`'s front-`r`-COLUMNS rank `r`,
+   but `hJfront` is about `deepestPoint_frame_pivot_exists(Bpr).choose = frontEmbed` — the column
+   pivot of the deepest-point MATRIX `deepestPoint Bpr (lastLayer)`, an arbitrary `Classical.choice`
+   witness's structure, NOT `Bpr`'s columns. No bridge "front-col rank ⟹ frame pivot = frontEmbed" is
+   banked (`hJfront` is consumed everywhere, produced nowhere). Carried as an explicit hypothesis in
+   ROUTE (a) until built/adjudicated. (`htop` IS supplied directly by the WLOG — `hBpr_top` matches.)
+
+## ROUTE (a) — the headline ⨅-WLOG (controller-decided, genm-p44wire)
+
+> **Claim (aligned).** At `L = 2`, for a front+row-aligned rank-`r` `B'`, the headline infimum
+> `⨅ v ∈ optimalSet B', rlctAt (dlnLoss B') v = ofReal (aoyagiLambda H r)`, GIVEN the D1 reduction
+> `hD1` for `B'`, the front-pivot frame `hJfront`, the top-row rank `htop`, and the R1 value `hcore`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.headline_infimum_eq_aoyagiLambda_aligned`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/HeadlineL2InfimumWLOG.lean` @ HEAD)
+> - **Gloss.** `hD1` (`⨅ = rlctAt deepest`) ▸ front-aligned #44 (`= nReg/2 + ofReal(lambdaCore)`) ▸
+>   `reg_shift_add_core_eq_aoyagiLambda` (`= ofReal(aoyagiLambda)`).
+> - **Proved.** the three-step chain unconditionally given the hyps; axiom-clean.
+> - **Assumed.** `hJfront`, `htop`, `hpos`, `hLlt` (the front-aligned #44's hyps).
+> - **Deferred.** `hD1` (D1 ≥-leg, genm-d1ladder), `hcore` (R1). Named hyps, not sorries.
+
+> **Claim (arbitrary B).** At `L = 2`, for ANY rank-`r` `B`, the headline infimum `= ofReal
+> (aoyagiLambda H r)`, GIVEN the aligned value for the WLOG-produced `B.submatrix R P`.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.headline_infimum_eq_aoyagiLambda`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/HeadlineL2InfimumWLOG.lean` @ HEAD)
+> - **Gloss.** `headline_frontRowColPivot_exists` produces `P, R` + the infimum invariance
+>   `⨅(B) = ⨅(B.submatrix R P)`; the aligned value (the hypothesis `haligned`, keyed to that exact
+>   target) closes it. `aoyagiLambda` depends only on `(H,r)`, so no value transfer is needed.
+> - **Proved.** the WLOG transport unconditionally; axiom-clean.
+> - **Assumed.** `haligned` (the aligned-target value — discharged by the aligned lemma above, which
+>   carries {D1, R1, front-pivot bridge}).
+> - **Status.** both sorry-free, clean-three; reviewer fidelity check pending.
