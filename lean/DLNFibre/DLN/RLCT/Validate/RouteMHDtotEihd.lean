@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotConj
 import DLNFibre.DLN.RLCT.Validate.RouteMFlatBlockLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
+import DLNFibre.DLN.RLCT.Validate.RouteMReaderFDeriv
 
 /-!
 # `RouteMHDtotEihd` — the coupled `eIn`/`eihdOut`/`hD` two-sided staircase conjugacy of `Dtot` (∀M-L2)
@@ -520,22 +521,199 @@ theorem BparamsLeaf_fderiv_layer (ha : StructAdm M (tach M))
       (φ := fun s : Fin 2 => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).hasFDerivAt.comp y₀ hpi
   rw [hs.fderiv]; rfl
 
+/-! ### Bridge 2 + Bridge 3 for the V0 line (J00 / J01) — the layer-0 fderiv VALUE
+
+The layer-0 chart component `fun z => BparamsLeaf ha z 0` factors (after the `M`-width reindex) as the
+banked gate `layer0SchurMap = flatBlock ∘ schurFrameMap ∘ slotReadV0`, so its `packStair`-projection
+collapses (via `flatBlockLE_symm_fderiv_flatBlock` + `gate_schurCore_eq`) to the Schur-frame
+differential `schurFrameDeriv X K N` applied to `slotReadV0 d`. With `d = eIn.symm w` and the inverse
+of `eIn_projV0` (`slotReadV0 (eIn.symm w) = w.1`), the V0 line reads off `v0` (J00) / `0` (J01). -/
+
+/-- The layer-0 width reindex `Matrix (M 0) (M 1) ≃ₗ Matrix (Text1) (Wext1)` (the inner factor of
+`packLayer0`). -/
+noncomputable def reindexL0 (ha : StructAdm M (tach M)) :
+    Matrix (Fin (M 0)) (Fin (M 1)) ℝ ≃ₗ[ℝ] Matrix (Fin (Text M (tach M) 1)) (Fin (Wext M 1)) ℝ :=
+  Matrix.reindexLinearEquiv ℝ ℝ (finCongr (eihd_M0_eq_Text1 ha)) (finCongr eihd_M1_eq_Wext1)
+
+/-- The layer-0 chart component, `M`-width-reindexed, IS the banked gate `layer0SchurMap`:
+`reindexL0 (BparamsLeaf ha z 0) = layer0SchurMap ha hr hc z` (entrywise via `BparamsLeaf_layer0_entry`,
+the lift block being empty since `c0 = 0`). -/
+theorem reindexL0_BparamsLeaf0 (ha : StructAdm M (tach M))
+    (hr : schurT1 M + schurR1 M = Text M (tach M) 1) (hc : schurT1 M + schurC1 M = Wext M 1)
+    (z : Fin (routeMAmbient M) → ℝ) :
+    reindexL0 ha (BparamsLeaf ha z 0) = layer0SchurMap ha hr hc z := by
+  ext i' j
+  show reindexL0 ha (BparamsLeaf ha z 0) i' j = _
+  rw [reindexL0, Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    finCongr_symm, finCongr_symm, finCongr_apply, finCongr_apply]
+  rw [← BparamsLeaf_layer0_entry ha hr hc z i' j]
+  show (Matrix.reindex _ _ (Agen (1 : ℝ) M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirect ha z) z) (hleStruct M (tach M) ha) 0))
+      (Fin.cast _ i') (Fin.cast _ j) = _
+  rw [Matrix.reindex_apply, Matrix.submatrix_apply]
+  congr 1 <;> apply Fin.ext <;> simp
+
+/-- The layer-0 chart component `fun z => BparamsLeaf ha z 0` has its fderiv at every `y₀`. -/
+theorem BparamsLeaf0_hasFDerivAt (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z => BparamsLeaf ha z 0)
+      (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀) y₀ := by
+  apply DifferentiableAt.hasFDerivAt
+  have hpi := BparamsLeaf_hasFDerivAt ha y₀
+  exact ((ContinuousLinearMap.proj (R := ℝ)
+    (φ := fun s : Fin 2 => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) 0).hasFDerivAt.comp y₀
+    hpi).differentiableAt
+
+/-- `reindexL0` (a finite-dim `LinearEquiv`, hence a CLM) commutes through the layer-0 fderiv:
+`reindexL0 (fderiv (BparamsLeaf·0) y₀ d) = fderiv layer0SchurMap y₀ d` (uniqueness of fderiv, the base
+maps agreeing by `reindexL0_BparamsLeaf0`). -/
+theorem reindexL0_fderiv (ha : StructAdm M (tach M))
+    (hr : schurT1 M + schurR1 M = Text M (tach M) 1) (hc : schurT1 M + schurC1 M = Wext M 1)
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    reindexL0 ha (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀ d)
+      = fderiv ℝ (layer0SchurMap ha hr hc) y₀ d := by
+  set RC := (reindexL0 ha).toLinearMap.toContinuousLinearMap with hRC
+  have hcomp : HasFDerivAt (fun z => reindexL0 ha (BparamsLeaf ha z 0))
+      (RC.comp (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀)) y₀ :=
+    RC.hasFDerivAt.comp y₀ (BparamsLeaf0_hasFDerivAt ha y₀)
+  have hcomp' : HasFDerivAt (layer0SchurMap ha hr hc)
+      (RC.comp (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀)) y₀ := by
+    have hfun : (fun z => reindexL0 ha (BparamsLeaf ha z 0)) = layer0SchurMap ha hr hc := by
+      funext z; exact reindexL0_BparamsLeaf0 ha hr hc z
+    rwa [hfun] at hcomp
+  rw [hcomp'.fderiv]; rfl
+
+/-- The `packLayer0` of the layer-0 fderiv = `flatBlockLE.symm` of the gate's fderiv (the inner
+reindex cancels). -/
+theorem packLayer0_layer0_fderiv_eq (ha : StructAdm M (tach M))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    packLayer0 ha (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀ d)
+      = (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+          (fderiv ℝ (layer0SchurMap ha (eihd_schurR_split ha) (eihd_schurC_split ha)) y₀ d) := by
+  show (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+      (reindexL0 ha (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀ d)) = _
+  rw [reindexL0_fderiv ha (eihd_schurR_split ha) (eihd_schurC_split ha) y₀ d]
+
+set_option maxHeartbeats 1000000 in
+/-- The gate fderiv collapse: `flatBlockLE.symm (fderiv layer0SchurMap y₀ d) = schurFrameDeriv X K N
+(fderiv slotReadV0 y₀ d)` (the linear flatten cancels, the Schur core is `gate_schurCore_eq`). -/
+theorem layer0SchurMap_fderiv_collapse (ha : StructAdm M (tach M))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        (fderiv ℝ (layer0SchurMap ha (eihd_schurR_split ha) (eihd_schurC_split ha)) y₀ d)
+      = schurFrameDeriv (readX M (tach M) ha y₀ ⟨0, by decide⟩)
+          (readK M (tach M) ha y₀ ⟨0, by decide⟩) (readN M (tach M) ha y₀ ⟨0, by decide⟩)
+          (fderiv ℝ (fun y => slotReadV0 ha y) y₀ d) := by
+  rw [(layer0SchurMap_hasFDerivAt ha (eihd_schurR_split ha) (eihd_schurC_split ha) y₀).fderiv]
+  simp only [ContinuousLinearMap.comp_apply]
+  rw [show ∀ x, (flatBlockLE (eihd_schurR_split ha) (eihd_schurC_split ha)).symm
+        ((fderiv ℝ (fun z => flatBlock (eihd_schurR_split ha) (eihd_schurC_split ha) z)
+          (schurFrameMap (slotReadV0 ha y₀))) x) = x from fun x => by
+    have h := flatBlockLE_symm_fderiv_flatBlock (eihd_schurR_split ha) (eihd_schurC_split ha)
+      (schurFrameMap (slotReadV0 ha y₀))
+    exact congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => m.toFun) h) x]
+  rw [← gate_schurCore_eq ha y₀]
+  rfl
+
+/-- The boundary-0 `K`-slot index (`readK ⟨0⟩` reads `y` at this coordinate). -/
+def readK_idx (ha : StructAdm M (tach M)) (i j : Fin (schurT1 M)) : Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨(⟨0, by decide⟩ : Fin 2),
+    Sum.inl ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+      (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i, j))))))⟩
+
+/-- The boundary-0 `N`-slot index. -/
+def readN_idx (ha : StructAdm M (tach M)) (i : Fin (schurT1 M)) (j : Fin (schurC1 M)) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨(⟨0, by decide⟩ : Fin 2),
+    Sum.inl ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+      (Sum.inl (Sum.inr (finProdFinEquiv (i, j)))))⟩
+
+/-- The boundary-0 `X`-slot index. -/
+def readX_idx (ha : StructAdm M (tach M)) (i : Fin (schurR1 M)) (j : Fin (schurT1 M)) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨(⟨0, by decide⟩ : Fin 2),
+    Sum.inl ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+      (Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (i, j))))))⟩
+
+/-- The boundary-0 `E`-slot index. -/
+def readE_idx (ha : StructAdm M (tach M)) (i : Fin (schurR1 M)) (j : Fin (schurC1 M)) :
+    Fin (routeMAmbient M) :=
+  (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨(⟨0, by decide⟩ : Fin 2),
+    Sum.inl ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+      (Sum.inr (finProdFinEquiv (i, j))))⟩
+
+/-- `slotReadV0` has fderiv an explicit prod of matrix-reader CLMs (each reader is a coordinate read,
+so its fderiv IS the read). -/
+theorem slotReadV0_hasFDerivAt' (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun y => slotReadV0 ha y)
+      ((matrixReaderCLM (fun i j => readK_idx ha i j)).prod
+        (((matrixReaderCLM (fun i j => readN_idx ha i j)).prod
+          (((matrixReaderCLM (fun i j => readX_idx ha i j)).prod
+            (matrixReaderCLM (fun i j => readE_idx ha i j)))))))
+      y₀ := by
+  apply HasFDerivAt.prodMk
+  · exact hasFDerivAt_matrixRead _ y₀
+  apply HasFDerivAt.prodMk
+  · exact hasFDerivAt_matrixRead _ y₀
+  apply HasFDerivAt.prodMk
+  · exact hasFDerivAt_matrixRead _ y₀
+  · exact hasFDerivAt_matrixRead _ y₀
+
+/-- `slotReadV0` is linear, so its fderiv applied to a direction IS the read of that direction:
+`fderiv slotReadV0 y₀ d = slotReadV0 d`. -/
+theorem slotReadV0_fderiv_apply (ha : StructAdm M (tach M))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    fderiv ℝ (fun y => slotReadV0 ha y) y₀ d = slotReadV0 ha d := by
+  rw [(slotReadV0_hasFDerivAt' ha y₀).fderiv]; rfl
+
+/-- The V0-line value: `packLayer0` of the layer-0 fderiv at direction `d` reads the Schur frame
+`schurFrameDeriv X K N (slotReadV0 d)`. -/
+theorem packLayer0_layer0_fderiv (ha : StructAdm M (tach M))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    packLayer0 ha (fderiv ℝ (fun z => BparamsLeaf ha z 0) y₀ d)
+      = schurFrameDeriv (readX M (tach M) ha y₀ ⟨0, by decide⟩)
+          (readK M (tach M) ha y₀ ⟨0, by decide⟩) (readN M (tach M) ha y₀ ⟨0, by decide⟩)
+          (slotReadV0 ha d) := by
+  rw [packLayer0_layer0_fderiv_eq ha y₀ d, layer0SchurMap_fderiv_collapse ha y₀ d,
+    slotReadV0_fderiv_apply]
+
 /-- **J00 — the Schur-frame block** (part of the in-Lean faithfulness gate for `eIn`, with J01/J11).
 The V0→V0 block of `T` is `eihdF … 0 = schurFrameDeriv X K N`. -/
 theorem eihdT_J00 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v0 : eihdV M 0) :
     (eihdT ha h0r h0c u (v0, (0, PUnit.unit))).1
-      = eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 0 v0 :=
-  sorry
+      = eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u) 0 v0 := by
+  set y₀ := pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u with hy₀
+  rw [eihdT_eq_packStair_fderiv ha h0r h0c u]
+  show packLayer0 ha
+      ((fderiv ℝ (fun z => BparamsLeaf ha z) y₀ ((eIn ha).symm (v0, (0, PUnit.unit)))) 0) = _
+  rw [BparamsLeaf_fderiv_layer ha y₀ _ 0,
+    packLayer0_layer0_fderiv ha y₀ ((eIn ha).symm (v0, (0, PUnit.unit)))]
+  have hslot : slotReadV0 ha ((eIn ha).symm (v0, (0, PUnit.unit))) = v0 := by
+    have h := eIn_projV0 ha ((eIn ha).symm (v0, (0, PUnit.unit)))
+    rw [LinearEquiv.apply_symm_apply] at h
+    exact h.symm
+  rw [hslot]; rfl
 
 /-- **J01 = 0 — the upper block** (part of the in-Lean faithfulness gate for `eIn`, with J00/J11). The
 V1→V0 block of `T` is `0`: the layer-1 (chain) coordinates do not feed the layer-0 (frame) Schur output. -/
 theorem eihdT_J01 (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ)
     (v1 : eihdV M 1) :
-    (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).1 = 0 :=
-  sorry
+    (eihdT ha h0r h0c u (0, (v1, PUnit.unit))).1 = 0 := by
+  set y₀ := pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u with hy₀
+  rw [eihdT_eq_packStair_fderiv ha h0r h0c u]
+  show packLayer0 ha
+      ((fderiv ℝ (fun z => BparamsLeaf ha z) y₀ ((eIn ha).symm (0, (v1, PUnit.unit)))) 0) = _
+  rw [BparamsLeaf_fderiv_layer ha y₀ _ 0,
+    packLayer0_layer0_fderiv ha y₀ ((eIn ha).symm (0, (v1, PUnit.unit)))]
+  have hslot : slotReadV0 ha ((eIn ha).symm (0, (v1, PUnit.unit))) = 0 := by
+    have h := eIn_projV0 ha ((eIn ha).symm (0, (v1, PUnit.unit)))
+    rw [LinearEquiv.apply_symm_apply] at h
+    exact h.symm
+  rw [hslot]; exact map_zero _
 
 /-- **J11 — the chain-unit block** (part of the in-Lean faithfulness gate for `eIn`, with J00/J01 — the
 V1-line of `eihd_hD` cannot close without it). The V1→V1 block of `T` is
