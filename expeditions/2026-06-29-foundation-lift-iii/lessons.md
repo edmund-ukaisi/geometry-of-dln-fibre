@@ -34,3 +34,13 @@ New lessons specific to this expedition accumulate below.
   its content in the **bare Mathlib-mirror namespace** (`namespace AlgebraicGeometry.Group.Orbit`, like
   `CotangentLocalization`'s `namespace Ideal` / `CotangentJacobian`'s `namespace MvPolynomial`), NOT a
   `DLNFibre.Core.`-prefixed one — both the correct eventual file-move target AND shadow-safe.
+
+- **L8 — when abstracting a concrete proof into a hypothesis-carrying engine, GUARD-first: write the concrete
+  discharge BEFORE fixing the abstract hypothesis signature.** The naive *forward* shape of a hypothesis can be
+  **undischargeable** by the very model it is meant to abstract. P2.4: the forward `span ≤ range(L ∘ δ.baseChange)`
+  fails because `range(L ∘ δ.bc) = L(range δ)` only sees the coboundary image `range δ ⊊ C1`, while the concrete
+  differentials live outside it; the honest dischargeable form was the **transpose/adjoint** carrier (`δAdj : C1 →ₗ C0`
+  + a rank-tie `finrank(range δAdj) = finrank(range δ)`). The guard (a scratch `example` proving the DLN instance
+  discharges the candidate hypothesis, body = the existing proof) reveals this *before* the refactor commits to a
+  wrong signature. Pair with name=content: the adjoint + rank-tie are abstract *inputs* the instance supplies; the
+  matrix self-duality (`deltaT`) stays the instance detail, never escaping into the engine signature.

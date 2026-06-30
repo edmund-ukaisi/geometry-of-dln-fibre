@@ -30,9 +30,10 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 | P2.2 | formaliser | aa04914a | ✅ DONE `64d75981` | keystone: **layered** `AffineGVariety` carrier `(ρ, R: k-domain, fρ)` (deformation deferred to extension) + `isPrime_ker_pullback` irreducibility + DLN `dlnOrbit` instance (DLN lemma re-derived). bare-Mathlib-mirror ns (→ L7 shadowing fix). green 3824 |
 | P2.3 | formaliser | ad3cc933 | ✅ DONE `303db988` | A4.1 anchor `varietyDim 𝒪 = trdeg` in `Orbit/Dimension.lean`; `[Finite ρ]` minimal-hyp; DLN lemma re-derived to 3 lines (collapsed). green 3825, fidelity PASS + Codex. card `reviewed` |
 | P2.1 | — | — | ⏳ folded → P2.4 | trace self-duality `traceEquiv` reusable, but abstract B1 likely uses Mathlib `finrank_range_dualMap_eq_finrank_range` (dropping `deltaT`); decide at P2.4 to avoid double-touching `OrbitDifferentialRank` |
-| **P2.4** | formaliser | dispatching | 🔄 CRUX | B1 `GenericRankBound` (A4.3). **Guarded step 0:** add `AffineGVarietyDeformation` extension `(C0,C1,δ)` + pin H1 `DifferentialFactors` `L` against the DLN instance + prove `D_orbit_conj`/`mcΘ` discharge it — STOP+report if H1 can't pin. Then abstract B1 (+ Mathlib dualMap, drop `deltaT`) + wire DLN. **Decorrelated review after.** |
-| P2.5 | — | — | ⏳ CRUX | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2) — decorrelated review |
-| P2.6 | — | — | ⏳ | squeeze headline + L7 assembly |
+| P2.4 | formaliser | a8e13a62 | ✅ DONE `0b580992` | B1 `GenericRankBound` (A4.3). **Guard caught it:** forward H1 undischargeable (`range(L∘δ.bc)=L(range δ)⊊`); pivoted to **transpose** H1 (`δAdj:C1→C0` + rank-tie, probe §1(iii)-blessed). B1 clean (V2, no `deltaT`); keystone re-derived sig-unchanged. green 3826, axioms clean. → L8 |
+| **P2.4-review** | reviewer | dispatching | 🔄 CRUX-review | decorrelated audit: transpose-H1 honesty (rank-tie not vacuous/circular), DLN discharge fidelity, keystone-bound preserved + re-gate (build/sorries/axioms) + Codex |
+| P2.5 | — | — | ⏳ CRUX (held) | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2). **Held until P2.4-review clears** — H2 design reuses the validated H1 pattern + GUARD-first (L8) |
+| P2.6 | — | — | ⏳ | squeeze headline + assembly |
 
 ## Concurrency rule (this expedition)
 At most **one builder/committer** in `.claude/worktrees/fl3` at a time (a second `lake build` corrupts `.lake`;
