@@ -21,6 +21,33 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean Case 1(2) row-strip progress bridge
+
+Reproduction:
+`reproduction-a4-case1-rowstrip-progress-bridge.md`.
+Statement card:
+`statement-card-a4-case1-rowstrip-progress-bridge.md`.
+Review:
+`review-a4-case1-rowstrip-progress-bridge.md`.
+
+Lean now adds:
+
+```text
+AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment
+AoyagiIntroducedLabelBranchState.progressStep_case1DisplayedRowStrip_jIncrementPayload
+```
+
+The bridge consumes a `Case1DisplayedRowStripJIncrementPayload` and proves only
+the finite introduced-label progress step `(S,J) -> (S,J+1)`.  It uses the
+payload's actual-width proof for the fresh label `(S,J+1)`.
+
+Source boundary: this is Case 1(2), not Case 1 wholesale.  Case 1(1) remains a
+same-domain selected-old lowering step whose progress is Aoyagi's separate
+old-variable plateau count.
+
+Focused local `lake build`, direct warning check, full local `lake build
+DLNFibre`, no-sorry audit, whitespace check, and axiom probe passed.
+
 ## 2026-06-30 Lean selected-entry branch progress bridge
 
 Reproduction:

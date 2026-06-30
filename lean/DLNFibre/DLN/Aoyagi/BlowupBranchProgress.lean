@@ -100,6 +100,16 @@ theorem progressStep_case2_increment
   exact remaining_lt_of_support_ssubset
     (support_ssubset_case2_increment L n hS hSL hJ)
 
+/-- A same-stage advance `(S,J) -> (S,J+1)` strictly grows introduced-label
+support whenever the fresh label is actual-width valid. -/
+theorem progressStep_sameStage_increment
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    (hS : 1 ≤ S) (hSL : S ≤ L) (hJ : J + 1 ≤ n (S + 1)) :
+    progressStep L n
+      ⟨S, J + 1, hS, hSL⟩
+      ⟨S, J, hS, hSL⟩ :=
+  progressStep_case2_increment L n hS hSL hJ
+
 /-- The Case 2 continuation bound gives the same progress step through the
 prefix-minimum bound used in Aoyagi's displayed Case 2 branch. -/
 theorem progressStep_case2_increment_of_prefixBound
@@ -111,6 +121,26 @@ theorem progressStep_case2_increment_of_prefixBound
       ⟨S, J, hS, hSL⟩ := by
   exact progressStep_case2_increment L n hS hSL
     (le_trans hJ (prefixMinNat_le_width n (by omega : 1 ≤ S + 1)))
+
+/-- A displayed Case 1(2) row-strip `J`-increment payload gives the
+same-stage introduced-label progress step `(S,J) -> (S,J+1)`.
+
+This intentionally applies only to the Case 1(2) row-strip continuation
+payload.  Case 1(1) is a same-domain selected-old lowering step and is not
+visible to the introduced-label support-growth measure. -/
+theorem progressStep_case1DisplayedRowStrip_jIncrementPayload
+    (L : ℕ) (n : ℕ → ℕ) {S J : ℕ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (payload :
+      Case1DisplayedRowStripJIncrementPayload L n S J t numerator leastValue) :
+    progressStep L n
+      ⟨S, J + 1, payload.newLabelActualWidth.1, payload.newLabelActualWidth.2.1⟩
+      ⟨S, J, payload.newLabelActualWidth.1, payload.newLabelActualWidth.2.1⟩ :=
+  progressStep_sameStage_increment L n
+    payload.newLabelActualWidth.1
+    payload.newLabelActualWidth.2.1
+    payload.newLabelActualWidth.2.2.2
 
 /-- The same-stage child state for the displayed Case 2 continuing branch. -/
 def case2SameStageChild {L : ℕ} {n : ℕ → ℕ}

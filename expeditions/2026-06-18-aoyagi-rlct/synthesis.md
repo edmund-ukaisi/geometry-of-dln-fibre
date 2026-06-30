@@ -6,6 +6,43 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Case 1(2) Row-Strip Progress Bridge - 2026-06-30
+
+`BlowupBranchProgress.lean` now separates the generic same-stage
+introduced-label support-growth calculation from the Case 2 name and adds the
+Case 1(2) row-strip payload bridge.
+
+New Lean names:
+
+```text
+AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment
+AoyagiIntroducedLabelBranchState.progressStep_case1DisplayedRowStrip_jIncrementPayload
+```
+
+The payload bridge consumes only
+`Case1DisplayedRowStripJIncrementPayload`.  Its proof extracts the
+actual-width side of the fresh label `(S,J+1)` from
+`payload.newLabelActualWidth`, then delegates to the generic same-stage
+support-growth theorem.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md
+threads/04-blow-up-certificate/statement-card-a4-case1-rowstrip-progress-bridge.md
+threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md
+```
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  Source/scope and Lean/API xhigh reviews returned PASS.
+
+Boundary: Case 1(1) is not part of this progress theorem.  It is same-domain
+selected-old lowering and needs a separate old-variable plateau-count measure.
+This slice also proves no chart construction, no post-state construction, no
+source production, no full branch termination, no normal crossings, no pole
+order, and no RLCT.
+
 ## Latest A4 Selected-Entry Branch Progress Bridge - 2026-06-30
 
 The selected-entry producer interface now has a separate progress layer:

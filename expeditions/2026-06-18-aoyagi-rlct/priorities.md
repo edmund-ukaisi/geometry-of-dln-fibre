@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 Case 1(2) row-strip progress bridge
+
+Case 1 is now split correctly for the introduced-label progress lane.  Lean
+adds a generic same-stage progress alias and a Case 1(2)-specific bridge in
+`lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`:
+
+```text
+AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment
+AoyagiIntroducedLabelBranchState.progressStep_case1DisplayedRowStrip_jIncrementPayload
+```
+
+The bridge consumes only
+`Case1DisplayedRowStripJIncrementPayload` and proves the finite progress step
+`(S,J) -> (S,J+1)` by using the payload's actual-width proof for the fresh
+label `(S,J+1)`.
+
+This is deliberately not a Case 1 theorem wholesale.  Case 1(1) remains a
+same-domain selected-old lowering step and needs a separate old-plateau-count
+progress measure.  The new bridge covers only the displayed Case 1(2)
+row-strip continuation branch where Aoyagi introduces `u_(S,J+1)`.
+
+Focused local `lake build`, direct `lake env lean -E warning`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  Xhigh source/scope reviewer `Wegener` and xhigh Lean/API
+reviewer `Euler` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md`.
+
+Nonclaims: no Case 1(1) progress theorem, no chart construction, no post-state
+construction, no source production, no full branch termination, no normal
+crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-06-30, A4 selected-entry branch progress bridge
 
 The selected-entry producer interface now has a separate branch-progress layer,

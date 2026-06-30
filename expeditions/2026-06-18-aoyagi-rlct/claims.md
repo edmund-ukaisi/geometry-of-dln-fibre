@@ -2847,6 +2847,29 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, Case 1(2) row-strip progress bridge,
+  2026-06-30.** Lean now adds the same-stage introduced-label progress alias
+  `AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment` and the
+  Case 1(2) payload bridge
+  `AoyagiIntroducedLabelBranchState.progressStep_case1DisplayedRowStrip_jIncrementPayload`
+  in `lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`.  The bridge consumes
+  only `Case1DisplayedRowStripJIncrementPayload` and proves the finite
+  introduced-label support-growth step `(S,J) -> (S,J+1)` from the payload's
+  actual-width proof for the fresh label.  Reproduction, statement card, and
+  review are at
+  `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`,
+  `threads/04-blow-up-certificate/statement-card-a4-case1-rowstrip-progress-bridge.md`,
+  and
+  `threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md`.
+  Focused local build, direct warning check, full local `lake build DLNFibre`,
+  no-sorry audit, whitespace check, and direct axiom probe passed; the new
+  declarations report only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  source/scope reviewer `Wegener` and xhigh Lean/API reviewer `Euler` returned
+  PASS.  This covers Case 1(2), not Case 1(1): the latter is same-domain
+  selected-old lowering and needs a separate old-variable plateau-count
+  progress measure.  This proves no chart construction, post-state
+  construction, source production, full branch termination, normal crossings,
+  pole order, or RLCT.
 - **Current status addendum, selected-entry branch progress bridge,
   2026-06-30.** Lean now adds a separate branch-progress layer
   `SelectedEntryAtlasBranchProgressData` in
@@ -3047,7 +3070,9 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/04-blow-up-certificate/reproduction-draft.md`; current repair
   report at `threads/04-blow-up-certificate/reproduction-repair-a4.md`;
   progress kernel at
-  `threads/04-blow-up-certificate/reproduction-a4-introduced-label-progress-kernel.md`.
+  `threads/04-blow-up-certificate/reproduction-a4-introduced-label-progress-kernel.md`;
+  Case 1(2) row-strip progress bridge at
+  `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`.
 - **Reproduction check.** failed/blocked at
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
@@ -3256,6 +3281,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-selected-entry-multi-chart-certificate-a4.md`.
 	  Review of the introduced-label progress kernel is saved at
 	  `threads/04-blow-up-certificate/review-a4-introduced-label-progress-kernel.md`.
+	  Review of the Case 1(2) row-strip progress bridge is saved at
+	  `threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -3267,10 +3294,15 @@ No such claim is formalisation-ready until both fields are filled.
   `support_subset_actual`, `remaining_lt_of_support_ssubset`, `progressStep`,
   `progressStep_wellFounded`, `support_ssubset_case2_increment`,
   `progressStep_case2_increment`, and
-  `progressStep_case2_increment_of_prefixBound`.  This proves well-founded
+  `progressStep_case2_increment_of_prefixBound`; same-stage and Case 1(2)
+  row-strip payload bridges:
+  `AoyagiIntroducedLabelBranchState.progressStep_sameStage_increment` and
+  `AoyagiIntroducedLabelBranchState.progressStep_case1DisplayedRowStrip_jIncrementPayload`.
+  This proves well-founded
   descent for strict growth of the finite introduced-label support and the
-  displayed Case 2 same-stage increment under actual-width/prefix-minimum
-  bounds; it does not fill branch production or branch termination. Also
+  displayed Case 2 and Case 1(2) row-strip same-stage increments under their
+  stated actual-width/payload bounds; it does not fill branch production or
+  branch termination. Also
   proved terminal-exponent split API:
   `terminalExponent`, `printedCase2Vector`, `prefixMin`,
   `prefixCase2Vector`, `prefixMin_step_factor_zero`,
