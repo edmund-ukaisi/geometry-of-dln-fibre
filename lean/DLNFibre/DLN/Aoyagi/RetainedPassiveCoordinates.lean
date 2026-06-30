@@ -2832,6 +2832,187 @@ theorem sourceReadback_C_eq_schurResidualBlock_sourceReadbackTransformedEdge
       schurResidualBlock (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p) := by
   rfl
 
+/-- The full source-readback right field is the negative of the deterministic
+suffix-state right field at the same layer. -/
+theorem sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
+    {M : ℕ} {κ' : Fin (M + 2) → Type*}
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (E : ∀ p : Fin (M + 1),
+      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
+    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
+    (sourceReadback (K := K) (ρ := ρ) E).F2full i =
+      -(sourceReadbackSuffixState (K := K) (ρ := ρ) E i hi).B := by
+  rcases Fin.eq_castSucc_or_eq_last i with ⟨p, rfl⟩ | rfl
+  · have hstate :
+        sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc hi =
+          step E p
+            (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last) := by
+      simpa [sourceReadbackSuffixState] using
+        suffixState_castSucc (K := K) E p p.succ.le_last
+    rw [hstate]
+    simp [sourceReadback, sourceReadbackTransformedEdge, sourceReadbackSuffixState, step]
+  · change
+      (sourceReadback (K := K) (ρ := ρ) E).F2full (Fin.last (M + 1)) =
+        -(sourceReadbackSuffixState (K := K) (ρ := ρ) E (Fin.last (M + 1)) le_rfl).B
+    simp [sourceReadback, sourceReadbackSuffixState, suffixState_self, terminal]
+
+/-- Fieldwise source readback for a raw multi-edge p.13 product-coordinate
+family.
+
+The product-coordinate family keeps the supplied regular variables `Ctop`,
+`F2`, `F3` and residual factors `C`, while its retained passive fields read
+back as the canonical values `A1passive = 1` and `A3passive = 0`.  This is only
+finite p.13 block algebra; it is not a source-prior or measure-transport
+statement. -/
+theorem sourceReadback_productCoordinate_fields_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0))
+    (hCtop : IsUnit Ctop.det) :
+    let data :=
+      sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E
+    data.A1passive = (fun _ : Fin (N + 1) ↦ (1 : Matrix ρ ρ K)) ∧
+      data.F2 = Fin.cases F2 (fun _ : Fin (N + 1) ↦ 0) ∧
+      data.A3passive =
+        (fun p : Fin (N + 1) ↦ (0 : Matrix (κ p.castSucc.succ) ρ K)) ∧
+      data.C = C ∧
+      data.Ctop = Ctop ∧
+      data.F3 = F3 := by
+  intro data
+  have hfields :=
+    suffixState_productCoordinate_fields_succSucc
+      (K := K) E F2 F3 Ctop C hLast hMid hLeft hCtop
+  refine ⟨?_, ?_, ?_, ?_, ?_, ?_⟩
+  · funext p
+    change topLeftCorner
+        (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p.succ) =
+      (1 : Matrix ρ ρ K)
+    by_cases hlast : (p.succ : Fin (N + 2)).val = N + 1
+    · have hp : p.succ = Fin.last (N + 1) := by
+        ext
+        simpa using hlast
+      have hT :=
+        transformedEdge_productCoordinateRightEndpoint_succSucc
+          (K := K) E F3 C hLast
+      rw [hp]
+      simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState] using
+        congrArg topLeftCorner hT
+    · have hpos : 0 < (p.succ : Fin (N + 2)).val := by
+        simp
+      have hlt : (p.succ : Fin (N + 2)).val < N + 1 := by
+        have hle : (p.succ : Fin (N + 2)).val ≤ N + 1 :=
+          Nat.le_of_lt_succ (p.succ : Fin (N + 2)).isLt
+        exact Nat.lt_of_le_of_ne hle hlast
+      have hT :=
+        transformedEdge_productCoordinateMiddle_succSucc
+          (K := K) E F3 C hLast hMid p.succ hpos hlt
+      simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState] using
+        congrArg topLeftCorner hT
+  · funext p
+    rcases Fin.eq_zero_or_eq_succ p with hp0 | ⟨q, hpq⟩
+    · subst p
+      have hB :
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+            (0 : Fin (N + 2)).castSucc (0 : Fin (N + 2)).castSucc.le_last).B =
+            -F2 := by
+        simpa [sourceReadbackSuffixState] using hfields.1
+      have hfull :=
+        sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
+          (K := K) (ρ := ρ) E
+          (0 : Fin (N + 2)).castSucc (0 : Fin (N + 2)).castSucc.le_last
+      have hread :
+          (sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E).F2 0 =
+            -((sourceReadbackSuffixState (K := K) (ρ := ρ) E
+              (0 : Fin (N + 2)).castSucc (0 : Fin (N + 2)).castSucc.le_last).B) := by
+        simpa [F2full] using hfull
+      rw [hB] at hread
+      have hread' : data.F2 0 = - -F2 := by
+        simpa [data] using hread
+      exact hread'.trans (neg_neg F2)
+    · subst p
+      have hpos : 0 < (q.succ : Fin (N + 2)).val := by
+        simp
+      have htail :=
+        suffixState_tail_fields_of_productCoordinateEdges_from
+          (K := K) E F3 C hLast hMid (q.succ : Fin (N + 2)) hpos
+      have hB :
+          (sourceReadbackSuffixState (K := K) (ρ := ρ) E
+            (q.succ : Fin (N + 2)).castSucc
+            (q.succ : Fin (N + 2)).castSucc.le_last).B = 0 := by
+        simpa [sourceReadbackSuffixState] using htail.1
+      have hfull :=
+        sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
+          (K := K) (ρ := ρ) E
+          (q.succ : Fin (N + 2)).castSucc
+          (q.succ : Fin (N + 2)).castSucc.le_last
+      have hcastFull :
+          (sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E).F2full
+              ((q.succ : Fin (N + 2)).castSucc) =
+            (sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E).F2
+              (q.succ : Fin (N + 2)) := by
+        simpa using
+          F2full_castSucc
+            (K := K) (ρ := ρ)
+            (data := sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E)
+            (q.succ : Fin (N + 2))
+      have hread :
+          (sourceReadback (K := K) (ρ := ρ) (M := N + 1) (κ' := κ) E).F2
+              (q.succ : Fin (N + 2)) =
+            -((sourceReadbackSuffixState (K := K) (ρ := ρ) E
+              (q.succ : Fin (N + 2)).castSucc
+              (q.succ : Fin (N + 2)).castSucc.le_last).B) := by
+        rw [← hcastFull]
+        exact hfull
+      rw [hB] at hread
+      have hread' : data.F2 (q.succ : Fin (N + 2)) = -0 := by
+        simpa [data] using hread
+      exact hread'.trans neg_zero
+  · funext p
+    change lowerLeftBlock
+        (sourceReadbackTransformedEdge (K := K) (ρ := ρ) E p.castSucc) =
+      (0 : Matrix (κ p.castSucc.succ) ρ K)
+    by_cases hzero : p.val = 0
+    · have hp : p.castSucc = (0 : Fin (N + 2)) := by
+        ext
+        simpa using hzero
+      have hT :=
+        transformedEdge_productCoordinateLeftEndpoint_succSucc
+          (K := K) E F2 F3 Ctop C hLast hMid hLeft
+      rw [hp]
+      simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState] using
+        congrArg lowerLeftBlock hT
+    · have hpos : 0 < (p.castSucc : Fin (N + 2)).val := by
+        simpa using Nat.pos_of_ne_zero hzero
+      have hlt : (p.castSucc : Fin (N + 2)).val < N + 1 := by
+        simpa using p.isLt
+      have hT :=
+        transformedEdge_productCoordinateMiddle_succSucc
+          (K := K) E F3 C hLast hMid p.castSucc hpos hlt
+      simpa [sourceReadbackTransformedEdge, sourceReadbackSuffixState] using
+        congrArg lowerLeftBlock hT
+  · funext p
+    have hC :=
+      residualBlock_productCoordinateEdges_succSucc
+        (K := K) E F2 F3 Ctop C hLast hMid hLeft p
+    simpa [sourceReadback, sourceReadbackTransformedEdge, sourceReadbackSuffixState,
+      residualBlock] using hC
+  · simpa [sourceReadback, sourceReadbackSuffixState] using hfields.2.1
+  · have hL := congrArg lowerLeftBlock hfields.2.2.2
+    simpa [sourceReadback, sourceReadbackSuffixState] using hL
+
 /-- Along a source family satisfying the recursive determinant-chart predicate,
 the accumulated source-readback top block has determinant a unit at every suffix
 state. -/
@@ -2904,30 +3085,6 @@ theorem sourceReadback_detChart_of_sourceRecursiveDetChart
     simpa [sourceReadback, sourceReadbackTransformedEdge, sourceRecursiveDetChart,
       sourceReadbackSuffixState, identityCornerDetChart] using
       hchart p.succ p.succ.succ.le_last
-
-/-- The full source-readback right field is the negative of the deterministic
-suffix-state right field at the same layer. -/
-theorem sourceReadback_F2full_eq_neg_sourceReadbackSuffixState_B
-    {M : ℕ} {κ' : Fin (M + 2) → Type*}
-    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
-    (E : ∀ p : Fin (M + 1),
-      Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) K)
-    (i : Fin (M + 2)) (hi : i ≤ Fin.last (M + 1)) :
-    (sourceReadback (K := K) (ρ := ρ) E).F2full i =
-      -(sourceReadbackSuffixState (K := K) (ρ := ρ) E i hi).B := by
-  rcases Fin.eq_castSucc_or_eq_last i with ⟨p, rfl⟩ | rfl
-  · have hstate :
-        sourceReadbackSuffixState (K := K) (ρ := ρ) E p.castSucc hi =
-          step E p
-            (sourceReadbackSuffixState (K := K) (ρ := ρ) E p.succ p.succ.le_last) := by
-      simpa [sourceReadbackSuffixState] using
-        suffixState_castSucc (K := K) E p p.succ.le_last
-    rw [hstate]
-    simp [sourceReadback, sourceReadbackTransformedEdge, sourceReadbackSuffixState, step]
-  · change
-      (sourceReadback (K := K) (ρ := ρ) E).F2full (Fin.last (M + 1)) =
-        -(sourceReadbackSuffixState (K := K) (ρ := ρ) E (Fin.last (M + 1)) le_rfl).B
-    simp [sourceReadback, sourceReadbackSuffixState, suffixState_self, terminal]
 
 /-- The source-readback suffix-state top block unfolds by one step through the
 top-left corner of the visited transformed edge. -/

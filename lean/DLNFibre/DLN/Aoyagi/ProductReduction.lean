@@ -2727,6 +2727,154 @@ theorem suffixState_productCoordinate_fields_succSucc
   rw [← hstate]
   exact hDres
 
+/-- The right endpoint of a raw p.13 product-coordinate edge family has the
+displayed transformed-edge shape. -/
+theorem transformedEdge_productCoordinateRightEndpoint_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1)))) :
+    transformedEdge E (Fin.last (N + 1))
+        (suffixState E (Fin.last (N + 2)) (Fin.last (N + 1)).succ
+          (Fin.last (N + 1)).succ.le_last) =
+      fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  have hsucc : (Fin.last (N + 1)).succ = j := by
+    ext
+    simp [j]
+  have hterminal :
+      suffixState E j (Fin.last (N + 1)).succ
+          (Fin.last (N + 1)).succ.le_last =
+        terminal (ρ := ρ) (κ := κ) (K := K) j := by
+    cases hsucc
+    exact suffixState_self (K := K) E j
+  have hE :
+      E (Fin.last (N + 1)) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C (Fin.last (N + 1))) := by
+    simpa [productCoordinateRightEndpointMatrix] using hLast
+  let q : Fin (N + 2) := Fin.last (N + 1)
+  have hMterm :
+      transformedEdge E q (terminal (ρ := ρ) (κ := κ) (K := K) q.succ) =
+        fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+    have hEq :
+        E q = fromBlocks (1 : Matrix ρ ρ K) 0 (-F3) (C q) := by
+      simpa [q] using hE
+    simp [transformedEdge, terminal, hEq]
+  rw [hterminal]
+  cases hsucc
+  simpa [q] using hMterm
+
+/-- The left endpoint of a raw p.13 product-coordinate edge family has the
+displayed transformed-edge shape after the tail suffix state is accumulated. -/
+theorem transformedEdge_productCoordinateLeftEndpoint_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F2 : Matrix ρ (κ 0) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (Ctop : Matrix ρ ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (hLeft :
+      let p0 : Fin (N + 2) := 0
+      E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0)) :
+    let p0 : Fin (N + 2) := 0
+    transformedEdge E p0
+        (suffixState E (Fin.last (N + 2)) p0.succ p0.succ.le_last) =
+      fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0) := by
+  let p0 : Fin (N + 2) := 0
+  let one : Fin (N + 3) := ⟨1, by omega⟩
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  have hp0_succ : p0.succ = one := by
+    ext
+    simp [p0, one]
+  have htail :
+      let S := suffixState E j p0.succ p0.succ.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K) := by
+    cases hp0_succ
+    simpa [p0, one, j] using
+      suffixState_tail_fields_of_productCoordinateEdges
+        (K := K) E F3 C hLast hMid
+  have hLeft' : E p0 = productCoordinateLeftEndpointMatrix F2 Ctop (C p0) := by
+    simpa [p0] using hLeft
+  have hB0 :
+      (suffixState E (Fin.last (N + 2)) p0.succ p0.succ.le_last).B = 0 := by
+    simpa [p0, j] using htail.1
+  change
+    fromBlocks (1 : Matrix ρ ρ K)
+        (suffixState E (Fin.last (N + 2)) p0.succ p0.succ.le_last).B 0 1 *
+        E p0 =
+      fromBlocks Ctop (-(Ctop * F2)) (0 : Matrix (κ p0.succ) ρ K) (C p0)
+  rw [hB0, hLeft']
+  dsimp [productCoordinateLeftEndpointMatrix]
+  rw [Matrix.fromBlocks_one]
+  exact Matrix.one_mul _
+
+/-- Every middle edge of a raw p.13 product-coordinate edge family has the
+displayed transformed-edge shape after the tail suffix state is accumulated. -/
+theorem transformedEdge_productCoordinateMiddle_succSucc
+    {N : ℕ} {ρ : Type*} {κ : Fin (N + 3) → Type*}
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ j)] [∀ j, DecidableEq (κ j)]
+    (E : ∀ p : Fin (N + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) K)
+    (F3 : Matrix (κ (Fin.last (N + 2))) ρ K)
+    (C : ∀ p : Fin (N + 2), Matrix (κ p.succ) (κ p.castSucc) K)
+    (hLast :
+      E (Fin.last (N + 1)) =
+        productCoordinateRightEndpointMatrix F3 (C (Fin.last (N + 1))))
+    (hMid :
+      ∀ p : Fin (N + 2), 0 < p.val → p.val < N + 1 →
+        E p = productCoordinateMiddleMatrix (ρ := ρ) (C p))
+    (p : Fin (N + 2)) (hp0 : 0 < p.val) (hplast : p.val < N + 1) :
+    transformedEdge E p
+        (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last) =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+        (0 : Matrix (κ p.succ) ρ K) (C p) := by
+  let j : Fin (N + 3) := Fin.last (N + 2)
+  let q : Fin (N + 2) := ⟨p.val + 1, by omega⟩
+  have hqpos : 0 < q.val := by
+    simp [q]
+  have hq_cast : q.castSucc = p.succ := by
+    ext
+    simp [q]
+  have htailq :
+      let S := suffixState E j q.castSucc q.castSucc.le_last
+      S.B = 0 ∧ S.Ctop = 1 ∧
+        S.L =
+          fromBlocks (1 : Matrix ρ ρ K) 0 F3
+            (1 : Matrix (κ j) (κ j) K) := by
+    simpa [j] using
+      suffixState_tail_fields_of_productCoordinateEdges_from
+        (K := K) E F3 C hLast hMid q hqpos
+  have hB0 :
+      (suffixState E j p.succ p.succ.le_last).B = 0 := by
+    cases hq_cast
+    simpa using htailq.1
+  have hB0' :
+      (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last).B = 0 := by
+    simpa [j] using hB0
+  change
+    fromBlocks (1 : Matrix ρ ρ K)
+        (suffixState E (Fin.last (N + 2)) p.succ p.succ.le_last).B 0 1 *
+        E p =
+      fromBlocks (1 : Matrix ρ ρ K) 0
+        (0 : Matrix (κ p.succ) ρ K) (C p)
+  rw [hB0', hMid p hp0 hplast]
+  dsimp [productCoordinateMiddleMatrix]
+  rw [Matrix.fromBlocks_one]
+  exact Matrix.one_mul _
+
 /-- Raw multi-edge product-coordinate matrices satisfy the recursive
 determinant-chart hypotheses whenever the left endpoint `Ctop` is a
 determinant unit. -/
