@@ -549,4 +549,110 @@ theorem prodAuxEntryDeriv_two_apply_eq_jointDiffL2 (H : Fin (2 + 1) → ℕ) (v 
       + layer0 H v i x * (paramsEquivFlatLinear H).symm δ 1 x j
   ring
 
+/-! ## #229 — the invertible `nReg`-minor of the flat Jacobian
+
+The flat-Jacobian matrix `jacFlatL2 H v` represents the linear map `jointDiffL2 H v ∘ flatSymm`
+(rows = loss entries `Fin H0 × Fin H2`, columns = flat coords `Fin (flatDim H)`). Its `(i,j)`-th row
+is the analytic gradient `∇gᵢⱼ(0)` read off the flat tangents
+(`jacFlatL2_apply_eq_lossEntryDeriv`, via Step 1). By the keystone rank bound
+(`nReg_le_finrank_range_jointDiffL2`, transported through the
+surjective flatten iso), `nReg ≤ jacFlatL2.rank`, so the banked determinantal-minor engine extracts
+an invertible `nReg × nReg` minor (`exists_jacFlatL2_minor`). Its columns `ec` are the
+**existentially-chosen** complement `W` of #230 (NEVER a fixed coordinate complement — the gate-4
+trap), its rows `er` the selected loss entries. -/
+
+/-- **The flat Jacobian matrix** `Dg(v) ∘ flatSymm` of the loss entries in flat coordinates: rows
+indexed by loss entries `(i,j) : Fin H0 × Fin H2`, columns by flat input coords `Fin (flatDim H)`.
+Defined as the `LinearMap.toMatrix` of `jointDiffL2 H v` precomposed with the linear flatten-inverse
+(`Pi.basisFun` domain basis, `Matrix.stdBasis` codomain basis). -/
+noncomputable def jacFlatL2 (H : Fin (2 + 1) → ℕ) (v : Params H) :
+    Matrix (Fin (H 0) × Fin (H 2)) (Fin (flatDim H)) ℝ :=
+  LinearMap.toMatrix (Pi.basisFun ℝ (Fin (flatDim H)))
+    (Matrix.stdBasis ℝ (Fin (H 0)) (Fin (H 2)))
+    ((jointDiffL2 H v).comp ((paramsEquivFlatLinear H).symm.toLinearMap))
+
+/-- The `(ij, c)` entry of `jacFlatL2` is `jointDiffL2 H v` at the `c`-th flat basis tangent. -/
+theorem jacFlatL2_apply (H : Fin (2 + 1) → ℕ) (v : Params H) (ij : Fin (H 0) × Fin (H 2))
+    (c : Fin (flatDim H)) :
+    jacFlatL2 H v ij c
+      = (jointDiffL2 H v ((paramsEquivFlatLinear H).symm (Pi.single c 1))) ij.1 ij.2 := by
+  rw [jacFlatL2, LinearMap.toMatrix_apply]
+  simp only [Pi.basisFun_apply, LinearMap.comp_apply, LinearEquiv.coe_coe]
+  rfl
+
+/-- **The flat-Jacobian entry IS the analytic loss-entry gradient** (Step-1 tie). The `(i,j)`-th row
+of `jacFlatL2`, read at the `c`-th flat basis tangent, equals the banked analytic gradient
+`prodAuxEntryDeriv … 2 i j` applied there — so the minor of `jacFlatL2` and the chart's first-block
+derivative agree (the bridge #230 consumes). -/
+theorem jacFlatL2_apply_eq_lossEntryDeriv (H : Fin (2 + 1) → ℕ) (v : Params H)
+    (i : Fin (H 0)) (j : Fin (H (Fin.last 2))) (c : Fin (flatDim H)) :
+    jacFlatL2 H v (i, j) c
+      = (prodAuxEntryDeriv H (gmapAt H v) 0 (fun s a b => gmapDeriv H s a b) 2
+          (Nat.lt_succ_self 2) i j) (Pi.single c 1) := by
+  rw [jacFlatL2_apply, ← prodAuxEntryDeriv_two_apply_eq_jointDiffL2 H v i j (Pi.single c 1)]
+
+/-- **`nReg ≤ jacFlatL2.rank`.** The flat-Jacobian rank equals
+`finrank (range (jointDiffL2 ∘ flatSymm)) = finrank (range jointDiffL2)` (precompose the surjective
+flatten iso; `rank_eq_finrank_range_toLin` + `toLin_toMatrix`), so the keystone bound transfers. -/
+theorem nReg_le_jacFlatL2_rank (H : Fin (2 + 1) → ℕ) (r : ℕ) (v : Params H)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
+    (hopt : prod H v = B) (hr : B.rank = r) :
+    r * (H 0 + H 2 - r) ≤ (jacFlatL2 H v).rank := by
+  classical
+  have hbridge : (jacFlatL2 H v).rank
+      = finrank ℝ (LinearMap.range ((jointDiffL2 H v).comp
+          ((paramsEquivFlatLinear H).symm.toLinearMap))) := by
+    rw [jacFlatL2, Matrix.rank_eq_finrank_range_toLin _
+      (Matrix.stdBasis ℝ (Fin (H 0)) (Fin (H 2)))
+      (Pi.basisFun ℝ (Fin (flatDim H))), Matrix.toLin_toMatrix]
+  have hrangeeq : LinearMap.range ((jointDiffL2 H v).comp
+        ((paramsEquivFlatLinear H).symm.toLinearMap))
+      = LinearMap.range (jointDiffL2 H v) := by
+    rw [LinearMap.range_comp, LinearEquiv.range, Submodule.map_top]
+  rw [hbridge, hrangeeq]
+  have hkey := nReg_le_finrank_range_jointDiffL2 H r v B hopt hr
+  rw [show H (Fin.last 2) = H 2 from rfl] at hkey
+  exact hkey
+
+/-- From `m ≤ A.rank`, an invertible `m × m` minor of `A` (index maps `er, ec` injective). Wraps the
+banked engine `exists_submatrix_det_ne_zero_of_le_rank` and handles `m = 0` (the empty minor has
+`det = 1`). Generic over a real matrix; lifted to the flat Jacobian below. -/
+theorem exists_minor_of_le_rank {p q m : ℕ} (A : Matrix (Fin p) (Fin q) ℝ) (hm : m ≤ A.rank) :
+    ∃ (er : Fin m → Fin p) (ec : Fin m → Fin q),
+      Function.Injective er ∧ Function.Injective ec ∧ (A.submatrix er ec).det ≠ 0 := by
+  classical
+  cases m with
+  | zero =>
+      refine ⟨Fin.elim0, Fin.elim0, fun a => a.elim0, fun a => a.elim0, ?_⟩
+      rw [Matrix.det_eq_one_of_card_eq_zero (by simp)]; exact one_ne_zero
+  | succ k => exact DLNFibre.Core.exists_submatrix_det_ne_zero_of_le_rank A hm
+
+/-- **#229 — the invertible `nReg`-minor of the flat Jacobian.** At an optimal `v` (`prod v = B`,
+`rank B = r`), there are injective index maps `er` (selected loss entries) and `ec` (selected flat
+input coords) with `det (jacFlatL2.submatrix er ec) ≠ 0`. The `nReg` columns `ec` are the
+existentially-chosen complement `W` for the #230 chart (NEVER a fixed coordinate complement). -/
+theorem exists_jacFlatL2_minor (H : Fin (2 + 1) → ℕ) (r : ℕ) (v : Params H)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
+    (hopt : prod H v = B) (hr : B.rank = r) :
+    ∃ (er : Fin (r * (H 0 + H 2 - r)) → Fin (H 0) × Fin (H 2))
+      (ec : Fin (r * (H 0 + H 2 - r)) → Fin (flatDim H)),
+      Function.Injective er ∧ Function.Injective ec ∧
+      ((jacFlatL2 H v).submatrix er ec).det ≠ 0 := by
+  classical
+  set ι := Fin (H 0) × Fin (H 2) with hι
+  set eι : Fin (Fintype.card ι) ≃ ι := (Fintype.equivFin ι).symm with heι
+  set A' : Matrix (Fin (Fintype.card ι)) (Fin (flatDim H)) ℝ :=
+    (jacFlatL2 H v).submatrix eι id with hA'
+  have hrankA' : (jacFlatL2 H v).rank ≤ A'.rank := by
+    rw [hA', show ((jacFlatL2 H v).submatrix eι id)
+        = (jacFlatL2 H v).submatrix eι (Equiv.refl _) from rfl,
+      Matrix.rank_submatrix (jacFlatL2 H v) eι (Equiv.refl _)]
+  have hbound : r * (H 0 + H 2 - r) ≤ A'.rank :=
+    le_trans (nReg_le_jacFlatL2_rank H r v B hopt hr) hrankA'
+  obtain ⟨er, ec, her, hec, hdet⟩ := exists_minor_of_le_rank A' hbound
+  refine ⟨eι ∘ er, ec, eι.injective.comp her, hec, ?_⟩
+  have hsub : A'.submatrix er ec = (jacFlatL2 H v).submatrix (eι ∘ er) ec := by
+    rw [hA', Matrix.submatrix_submatrix]; rfl
+  rw [← hsub]; exact hdet
+
 end DLNFibre.DLN.RLCT
