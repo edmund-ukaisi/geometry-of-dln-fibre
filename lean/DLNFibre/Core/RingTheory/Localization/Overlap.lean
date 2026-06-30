@@ -40,6 +40,12 @@ cocycle laws:
 All of these hold because the localization is initial among `R`-algebras inverting the relevant
 denominators, so any two `R`-algebra maps out of it agree (`IsLocalization.algHom_subsingleton`).
 
+The file also packages the **localization transport** `awayCongr'`: for an `R`-algebra iso
+`e : A ≃ₐ[R] B` carrying `a` to `b`, the canonical `Localization.Away a ≃ₐ[R] Localization.Away b`.
+This is the brick that conjugates an overlap localization through a chart trivialization — the
+ingredient a constructive atlas needs to re-express the base-side overlap transition on the
+trivialized (target/model) side.
+
 These are general localization combinators — the eventual home is
 `Mathlib.RingTheory.Localization.*`, so they live in the bare `Localization` namespace (L7
 Mathlib-mirror), network-free over arbitrary `R`.
@@ -136,6 +142,44 @@ theorem awayOverlapTransition_restrict_left (f g : R) :
   Subsingleton.elim _ _
 
 end Abstract
+
+/-! ## The localization transport of an algebra equivalence between different algebras -/
+
+section AwayCongr
+
+variable {R A B : Type*} [CommRing R] [CommRing A] [CommRing B] [Algebra R A] [Algebra R B]
+
+/-- **The localization transport of an `AlgEquiv` between (possibly different) `R`-algebras.** For
+`e : A ≃ₐ[R] B` carrying `a` to `b`, the canonical `R`-algebra iso
+`Localization.Away a ≃ₐ[R] Localization.Away b` — `IsLocalization.Away.mapₐ` of `e` and of `e.symm`,
+round-tripping by localization initiality (`IsLocalization.ringHom_ext`). This is the brick that
+transports a base localization across a chart trivialization `Away f ≃ₐ[k] M`: it carries the
+overlap `awayOverlap f g = Localization.Away (algebraMap R (Away f) g)` to the model `M` localized
+at the image of the chart-`g` element. (The special case `A = B` is the gauge-transport `awayCongr`
+in the DLN bundle layer; this is the general version.) -/
+noncomputable def awayCongr' (e : A ≃ₐ[R] B) (a : A) (b : B) (hb : e a = b) :
+    Localization.Away a ≃ₐ[R] Localization.Away b := by
+  haveI h1 : IsLocalization.Away (e.toAlgHom a) (Localization.Away b) := by
+    change IsLocalization.Away (e a) (Localization.Away b); rw [hb]; infer_instance
+  haveI h2 : IsLocalization.Away (e.symm.toAlgHom b) (Localization.Away a) := by
+    change IsLocalization.Away (e.symm b) (Localization.Away a)
+    rw [← hb, e.symm_apply_apply]; infer_instance
+  exact AlgEquiv.ofAlgHom
+    (IsLocalization.Away.mapₐ (Localization.Away a) (Localization.Away b) e.toAlgHom a)
+    (IsLocalization.Away.mapₐ (Localization.Away b) (Localization.Away a) e.symm.toAlgHom b)
+    (AlgHom.coe_ringHom_injective (IsLocalization.ringHom_ext (Submonoid.powers b)
+      (by ext x; simp [IsLocalization.Away.mapₐ, IsLocalization.Away.map])))
+    (AlgHom.coe_ringHom_injective (IsLocalization.ringHom_ext (Submonoid.powers a)
+      (by ext x; simp [IsLocalization.Away.mapₐ, IsLocalization.Away.map])))
+
+/-- **`awayCongr'` of `e` inverts to `awayCongr'` of `e.symm`.** The transport of the inverse
+trivialization is the inverse transport — both are the `mapₐ` round-trip, agreeing pointwise. -/
+@[simp] theorem awayCongr'_symm (e : A ≃ₐ[R] B) (a : A) (b : B) (hb : e a = b) :
+    (awayCongr' e a b hb).symm = awayCongr' e.symm b a (by rw [← hb, e.symm_apply_apply]) := by
+  ext x
+  rfl
+
+end AwayCongr
 
 /-! ## The triple-overlap cocycle condition -/
 

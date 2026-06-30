@@ -544,3 +544,11 @@ import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
 -- unblocker for the P2.c target-side round-trip (rearrange `trans` at the abstract `AlgEquiv`
 -- level, off the heavy double-localized chart type).
 import DLNFibre.Core.Algebra.AlgEquiv.Groupoid
+-- det-atlas P2.b: the abstract overlap transition maps of a constructive pivot-chart atlas
+-- (`Algebra.AtlasChart` = chart-element + bare-`k` trivialization; `overlapElt`/`targetChartLoc`/
+-- `overlapTriv`/`chartOverlapTransitionK`(+ round-trip)/`overlapTransition`; `AtlasFibreChart`
+-- extends it with the over-base `StandardFibreChart`). Built from the P1.a overlap API
+-- (`awayOverlap`/`awayOverlapTransition`/`awayCongr'`) + the P2.a atlas datum; bare `Algebra` ns
+-- (L7). The DLN target-side transition (`FibreTargetOverlap`) is the instance. Transition OBJECTS
+-- only — the cocycle round-trip is P2.c (set up reachable via the `AlgEquiv` groupoid laws).
+import DLNFibre.Core.RingTheory.Determinantal.AtlasTransition
