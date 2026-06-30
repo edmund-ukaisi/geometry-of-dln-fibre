@@ -183,4 +183,93 @@ theorem ldu_image (ha : StructAdm M (tach M))
   rw [Set.mem_Ioo] at hi
   exact ⟨hi.1.le, hi.2.le⟩
 
+/-! ## Continuity of `interiorLiveUnit` (the chain threaded through `x`) -/
+
+section Cont
+
+variable {X : Type*} [TopologicalSpace X]
+
+/-- `chainQ N` is continuous in `N`. -/
+theorem continuous_chainQ {M' t c : ℕ} (h : t + c = M') {N : X → Matrix (Fin t) (Fin c) ℝ}
+    (hN : Continuous N) : Continuous (fun x => chainQ h (N x)) := by
+  unfold chainQ
+  refine Continuous.matrix_reindex (continuous_matrix (fun i j => ?_)) _ _
+  simp only [Matrix.of_apply]
+  rcases j with a | b
+  · simp only [Sum.elim_inl]; exact continuous_const
+  · simp only [Sum.elim_inr]; exact (hN.matrix_reindex _ _).matrix_elem i b
+
+/-- `chainA N W C` is continuous in `(N, W, C)`. -/
+theorem continuous_chainA {M' t c m' : ℕ} (h : t + c = M')
+    {N : X → Matrix (Fin t) (Fin c) ℝ} {W : X → Matrix (Fin c) (Fin m') ℝ}
+    {C : X → Matrix (Fin t) (Fin m') ℝ}
+    (hN : Continuous N) (hW : Continuous W) (hC : Continuous C) :
+    Continuous (fun x => chainA h (N x) (W x) (C x)) := by
+  unfold chainA
+  refine Continuous.matrix_reindex (continuous_matrix (fun i j => ?_)) _ _
+  simp only [Matrix.of_apply]
+  rcases i with a | b
+  · simp only [Sum.elim_inl]; exact (hC.sub (hN.matrix_mul hW)).matrix_elem a j
+  · simp only [Sum.elim_inr]; exact (hW.matrix_reindex _ _).matrix_elem b j
+
+variable {L : ℕ}
+
+/-- Continuity bundle for a parametrized `GenBlk M' t`: every block family is continuous in `x`. -/
+structure GenBlkContinuous (M' t : Fin (L + 1) → ℕ) (B : X → GenBlk M' t) : Prop where
+  hBmat : ∀ k, Continuous (fun x => (B x).Bmat k)
+  hNblk : ∀ k, Continuous (fun x => (B x).Nblk k)
+  hWblk : ∀ k, Continuous (fun x => (B x).Wblk k)
+  hRmat : ∀ k, Continuous (fun x => (B x).Rmat k)
+  hRfin : ∀ k, Continuous (fun x => (B x).Rfin k)
+
+/-- `Cgen (g x) (B x) k` is continuous in `x`. -/
+theorem continuous_Cgen {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B) {g : X → ℝ} (hg : Continuous g)
+    (hle : ∀ k, k < L → Text M' t (k + 1) ≤ Wext M' k) (k : ℕ) :
+    Continuous (fun x => Cgen (g x) M' t (B x) hle k) := by
+  unfold Cgen
+  by_cases hk : k < L
+  · simp only [dif_pos hk]
+    exact ((hB.hBmat k).matrix_mul (continuous_chainQ _ (hB.hNblk k))).add
+      (hg.smul (hB.hRmat k))
+  · simp only [dif_neg hk]
+    exact hg.smul (hB.hRfin k)
+
+/-- `Agen (g x) (B x) k` is continuous in `x` (uses `continuous_Cgen` at `k+1`). -/
+theorem continuous_Agen {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B) {g : X → ℝ} (hg : Continuous g)
+    (hle : ∀ k, k < L → Text M' t (k + 1) ≤ Wext M' k) (k : ℕ) :
+    Continuous (fun x => Agen (g x) M' t (B x) hle k) := by
+  unfold Agen
+  by_cases hk : k < L
+  · simp only [dif_pos hk]
+    exact continuous_chainA _ (hB.hNblk k) (hB.hWblk k) (continuous_Cgen hB hg hle (k + 1))
+  · simp only [dif_neg hk]; exact continuous_const
+
+/-- `.toChain.A s` continuity (= `Agen s`), in pinned `Wext M'` widths. -/
+theorem continuous_toChain_A {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B) {g : X → ℝ} (hg : Continuous g)
+    (hle : ∀ k, k < L → Text M' t (k + 1) ≤ Wext M' k) (s : ℕ) :
+    Continuous (fun x => (Agen (g x) M' t (B x) hle s :
+      Matrix (Fin (Wext M' s)) (Fin (Wext M' (s + 1))) ℝ)) :=
+  continuous_Agen hB hg hle s
+
+/-- `.toChain.B s` continuity (= `Bmat s`), in pinned `Text M' t` widths. -/
+theorem continuous_toChain_B {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B)
+    (hle : ∀ k, k < L → Text M' t (k + 1) ≤ Wext M' k) (s : ℕ) :
+    Continuous (fun x => ((B x).Bmat s :
+      Matrix (Fin (Text M' t s)) (Fin (Text M' t (s + 1))) ℝ)) :=
+  hB.hBmat s
+
+/-- `.toChain.E s` continuity (= `Rmat s · Agen s`), in pinned widths. -/
+theorem continuous_toChain_E {M' t : Fin (L + 1) → ℕ} {B : X → GenBlk M' t}
+    (hB : GenBlkContinuous M' t B) {g : X → ℝ} (hg : Continuous g)
+    (hle : ∀ k, k < L → Text M' t (k + 1) ≤ Wext M' k) (s : ℕ) :
+    Continuous (fun x => ((B x).Rmat s * Agen (g x) M' t (B x) hle s :
+      Matrix (Fin (Text M' t s)) (Fin (Wext M' (s + 1))) ℝ)) :=
+  (hB.hRmat s).matrix_mul (continuous_Agen hB hg hle s)
+
+end Cont
+
 end DLNFibre.DLN.RLCT
