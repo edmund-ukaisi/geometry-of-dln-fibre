@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 Case 2 product source-chart regular readback
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-regular-readback.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-regular-readback.md`.
+Review:
+`review-a2-case2-product-source-chart-regular-readback.md`, PASS by xhigh
+reviewer `Goodall the 2nd`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now defines/proves:
+
+```text
+case2PassiveThetaEndpointProductSourceChartRegularReadback
+case2PassiveThetaEndpointProductSourceChart_regularReadback_eq
+```
+
+This packages the p.13 regular-coordinate readout as a source-side map from an
+ambient two-edge family to the Euclidean regular block, then proves that the
+full Case 2 product source chart sends `(theta,u)` to an edge family whose
+regular readback is exactly `u`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_regular_readback_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
+from the product chart, no source-image coverage, no original/source-prior
+transport, no Haar transport, no Jacobian formula, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 source-image full product domination handoff
 
 Reproduction:

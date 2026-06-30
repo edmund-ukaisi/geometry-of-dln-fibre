@@ -12227,3 +12227,32 @@ axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
 no original/source-prior transport, no Haar transport, no Jacobian formula, no
 normal crossings, no pole order, and no RLCT.
+
+Latest A2 Case 2 product source-chart regular readback:
+`RetainedPassiveCase2PassiveThetaSourceImage.lean` defines
+`case2PassiveThetaEndpointProductSourceChartRegularReadback` and proves
+`case2PassiveThetaEndpointProductSourceChart_regularReadback_eq`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-regular-readback.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-regular-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-regular-readback.md`.
+
+Ledger status: source-side readback of only the p.13 regular Euclidean
+coordinates.  The readback applies the fixed-base regular-coordinate map to an
+ambient edge family via the identity edge-family chart and converts
+`Coord -> R` back to `EuclideanSpace R Coord`.  For the concrete full Case 2
+product source chart, it recovers the supplied regular vector `u` under the
+existing determinant-chart hypothesis.
+
+Focused file elaboration, focused module build, full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, a direct axiom probe, and an xhigh
+reviewer audit passed.  The axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
+from the product chart, no source-image coverage, no original/source-prior
+transport, no Haar transport, no Jacobian formula, no normal crossings, no
+pole order, and no RLCT.
