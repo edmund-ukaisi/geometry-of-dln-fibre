@@ -21,6 +21,56 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 small-ball fixed-base product source-readback fields
+
+Reproduction:
+`reproduction-a2-small-ball-fixed-base-product-source-readback-fields.md`.
+Statement card:
+`statement-card-a2-small-ball-fixed-base-product-source-readback-fields.md`.
+Review:
+`review-a2-small-ball-fixed-base-product-source-readback-fields.md`, PASS by
+xhigh reviewer `Singer the 2nd`; only non-blocking thin-wrapper `simpa`
+fragility noted.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+For every `Rmax > 0`, these theorems choose `0 < R ≤ Rmax` so that all
+regular variables in `ball(0,R)` satisfy the fixed-base product
+source-readback field formula.  The generic theorem is uniform in the base
+edge-family point; the Case 2 theorem is uniform in the passive-theta point.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_small_ball_source_readback_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to original parameters, no original/source
+prior transport, no Haar/Jacobian density formula, no source-image
+coverage/equality, no normal crossings, no pole order, and no RLCT extraction.
+
 ## 2026-06-30 A2 generic fixed-base product source-readback fields
 
 Reproduction:

@@ -137,6 +137,81 @@ theorem paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFami
       (by simpa [Ctop] using hCtop)
   simpa [data] using hfields
 
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- On a sufficiently small regular Euclidean ball, the generic fixed-base
+source-dependent p.13 product-coordinate family has the stated source-readback
+fields uniformly in the base point.
+
+This only packages the `Ctop` determinant-unit hypothesis in
+`paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields`
+by shrinking around `u = 0`.  It is not a source-prior, coverage,
+normal-crossing, pole-order, or RLCT statement. -/
+theorem exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+      ∀ x : α, ∀ u : EuclideanSpace ℝ Coord,
+        u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+          let CedgeProd :=
+            paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+              V Bv U₀ hU₀ CedgeBase
+          let Ebase : ∀ p : Fin (M + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+            paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun p ↦
+                (CedgeBase x p :
+                  reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+          let Eprod : ∀ p : Fin (M + 2), Matrix (ρ ⊕ κ p.succ) (ρ ⊕ κ p.castSucc) ℝ :=
+            paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun p ↦
+                (CedgeProd (x, u) p :
+                  reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))
+          let F2 := AoyagiRegularBlockCoordinateIndex.f2Matrix (fun c : Coord ↦ u c)
+          let F3 := AoyagiRegularBlockCoordinateIndex.f3Matrix (fun c : Coord ↦ u c)
+          let Ctop := AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c : Coord ↦ u c)
+          let C : ∀ p : Fin (M + 2), Matrix (κ p.succ) (κ p.castSucc) ℝ :=
+            fun p ↦
+              ChartLocalSuffixState.residualBlock Ebase (Fin.last (M + 2)) p p.succ.le_last
+          let data :=
+            ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceReadback
+              (K := ℝ) (ρ := ρ) (M := M + 1) (κ' := κ) Eprod
+          data.A1passive = (fun _ : Fin (M + 1) ↦ 1) ∧
+            data.F2 = Fin.cases F2 (fun _ : Fin (M + 1) ↦ 0) ∧
+            data.A3passive = (fun _ : Fin (M + 1) ↦ 0) ∧
+            data.C = C ∧
+            data.Ctop = Ctop ∧
+            data.F3 = F3 := by
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord x u hu CedgeProd Ebase Eprod F2 F3 Ctop C data
+  simpa [ρ, κ, Coord, CedgeProd, Ebase, Eprod, F2, F3, Ctop, C, data] using
+    (paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+      (M := M) V Bv U₀ hU₀ CedgeBase x u (hunit u hu))
+
 end Aoyagi
 end DLN
 end DLNFibre

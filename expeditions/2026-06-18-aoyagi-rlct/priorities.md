@@ -12,6 +12,26 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 small-ball fixed-base product source-readback fields
+
+The fixed-base product source-readback API now has its local regular-domain
+wrapper:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+For every `Rmax > 0`, Lean chooses `0 < R ≤ Rmax` so that all p.13 regular
+variables `u ∈ ball(0,R)` have `IsUnit (det (ctopMatrix u))`.  The generic
+fixed-base source-readback field formula then holds uniformly in the base
+edge-family point, and the concrete Case 2 wrapper holds uniformly in the
+passive-theta point.
+
+This is local coordinate-domain packaging only.  It proves no source-prior
+transport, Haar/Jacobian density identity, source-image coverage/equality,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 generic fixed-base product source-readback fields
 
 The concrete Case 2 product-chart readback bridge has been lifted to a generic

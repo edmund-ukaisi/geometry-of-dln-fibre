@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Small-Ball Fixed-Base Product Source-Readback Fields - 2026-06-30
+
+Lean now packages the determinant-unit hypothesis in the fixed-base
+source-readback field theorem by shrinking the p.13 regular coordinates around
+`0`:
+
+```text
+exists_pos_radius_le_forall_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceReadback_fields
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_sourceReadback_fields
+```
+
+For every `Rmax > 0`, the generic theorem returns `0 < R ≤ Rmax` such that
+for all base points `x` and all `u ∈ ball(0,R)`, the fixed-base product chart
+has the readback fields
+
+```text
+A1passive = 1
+F2        = first decoded F2 from u, then zeros
+A3passive = 0
+C         = residualBlock(fixedBase(CedgeBase x))
+Ctop      = decoded Ctop from u
+F3        = decoded F3 from u
+```
+
+The concrete Case 2 wrapper applies this to the passive-theta endpoint source
+chart, uniformly in the passive-theta base point.  The proof only uses
+continuity of `det (ctopMatrix u)` at the origin, where `Ctop(0) = I`, and the
+pointwise fixed-base product source-readback theorem.
+
+Boundary: this is a local regular-coordinate domain theorem.  It proves no
+full parameter recovery, source-prior transport, Haar/Jacobian density
+identity, source-image coverage/equality, normal crossings, pole order, or
+RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-small-ball-fixed-base-product-source-readback-fields.md
+threads/03-block-product-reduction/statement-card-a2-small-ball-fixed-base-product-source-readback-fields.md
+threads/03-block-product-reduction/review-a2-small-ball-fixed-base-product-source-readback-fields.md
+```
+
+Review: xhigh scout `Singer the 2nd` PASS.  The only concern was
+non-blocking Lean/API maintenance fragility from large `simpa` calls over
+local `let`s in the thin wrappers; no mathematical overreach was found.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionSourceReadback
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_small_ball_source_readback_axioms.lean
+```
+
+Axiom probes for the generic theorem and concrete Case 2 wrapper report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 Generic Fixed-Base Product Source-Readback Fields - 2026-06-30
 
 Lean now has a reusable fixed-base product-coordinate source-readback theorem:
