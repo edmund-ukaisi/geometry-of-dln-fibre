@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 retained-passive source-chart image coverage
+
+The retained-passive local-source self-base coverage theorem now exposes an
+actual retained-passive source-chart preimage:
+
+```text
+exists_open_paperEndpointFixedBaseRetainedPassiveP13SourceChart_image_coverage_of_selfBase
+```
+
+For every point `x` in the returned local-source neighborhood, Lean produces
+determinant-chart data `data` with
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U0 hU0 data =
+  Cedge x.
+```
+
+This was extracted from the existing retained-passive source-edge-family
+homeomorphism. It is useful for retained-passive image bookkeeping, but it is
+not the overstrong Case 2 passive-theta/selected-entry coverage theorem: it
+does not derive the selected-entry readback shape, source-image equality with
+a source-rank stratum, source-prior transport, Haar/Jacobian transport, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 product source-chart local-source support
 
 The concrete Case 2 endpoint product source chart now lands in the named

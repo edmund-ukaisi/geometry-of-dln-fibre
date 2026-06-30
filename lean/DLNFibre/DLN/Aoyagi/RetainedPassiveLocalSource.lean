@@ -1547,6 +1547,89 @@ theorem exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage
   intro x hx
   exact ⟨hx.1, hUlocal_sub hx.1⟩
 
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Near the self-base point, retained-passive local-source membership gives
+an explicit retained-passive source-chart preimage.
+
+This is retained-passive determinant-chart image coverage only.  It exposes a
+coordinate datum whose fixed-base retained-passive source chart is `Cedge x`
+for points in the local source neighborhood.  It does not prove Case 2
+passive-theta or selected-entry coverage, source-image equality with a
+source-rank stratum, source-prior transport, a Jacobian theorem, normal
+crossings, pole order, or RLCT extraction. -/
+theorem exists_open_paperEndpointFixedBaseRetainedPassiveP13SourceChart_image_coverage_of_selfBase
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin (M + 1),
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (r : ℕ) (rEdge : Fin (M + 1) → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ =
+        fun p : Fin (M + 1) ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p)) :
+    ∃ Ulocal : Set α, IsOpen Ulocal ∧ x₀ ∈ Ulocal ∧
+      Ulocal ⊆ paperEndpointFixedBaseRetainedPassiveP13LocalSource W B U₀ hU₀ Cedge ∧
+      (∀ x ∈ Ulocal,
+        ∃ data :
+          {data :
+            RetainedPassiveNonredundantCoordinateData
+              (K := K) (ρ := Fin (Module.finrank K U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W) (reverseEdge W B) U₀) // data.detChart},
+          paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data =
+            Cedge x) ∧
+      Ulocal ∩ paperEndpointFixedBaseSourceRankStratum
+          (K := K) W B Cedge r rEdge ⊆
+        {x |
+          ∃ data :
+            {data :
+              RetainedPassiveNonredundantCoordinateData
+                (K := K) (ρ := Fin (Module.finrank K U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W) (reverseEdge W B) U₀) // data.detChart},
+            paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data =
+              Cedge x} := by
+  rcases
+      exists_open_paperEndpointFixedBaseRetainedPassiveP13LocalSource_coverage_of_selfBase
+        (K := K) W B U₀ hU₀ Cedge r rEdge hCedge hbase with
+    ⟨Ulocal, hUopen, hx₀U, hUsub, _hcoverage⟩
+  have himage : ∀ x ∈ Ulocal,
+      ∃ data :
+        {data :
+          RetainedPassiveNonredundantCoordinateData
+            (K := K) (ρ := Fin (Module.finrank K U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W) (reverseEdge W B) U₀) // data.detChart},
+        paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U₀ hU₀ data =
+          Cedge x := by
+    intro x hxU
+    have hsource :
+        Cedge x ∈
+          paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀ := by
+      have hxlocal := hUsub hxU
+      simpa [paperEndpointFixedBaseRetainedPassiveP13LocalSource,
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet] using hxlocal
+    let Esub :
+        {E : ∀ p : Fin (M + 1),
+            reverseVertex W p.castSucc →L[K] reverseVertex W p.succ //
+          E ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet W B U₀ hU₀} :=
+      ⟨Cedge x, hsource⟩
+    let H :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph
+        (K := K) W B U₀ hU₀
+    let data := H.symm Esub
+    refine ⟨data, ?_⟩
+    have hright : H data = Esub := by
+      simp [data]
+    simpa [H, Esub, data, paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph]
+      using congrArg Subtype.val hright
+  refine ⟨Ulocal, hUopen, hx₀U, hUsub, himage, ?_⟩
+  intro x hx
+  exact himage x hx.1
+
 end RetainedPassiveLocalSource
 
 end Aoyagi

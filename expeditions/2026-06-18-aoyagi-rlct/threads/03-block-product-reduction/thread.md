@@ -21,6 +21,51 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 retained-passive source-chart image coverage
+
+Reproduction:
+`reproduction-a2-retained-passive-source-chart-image-coverage.md`.
+Statement card:
+`statement-card-a2-retained-passive-source-chart-image-coverage.md`.
+Review:
+`review-a2-retained-passive-source-chart-image-coverage.md`, PASS by xhigh
+reviewer `Hooke the 2nd`; no formal or mathematical issue found.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_paperEndpointFixedBaseRetainedPassiveP13SourceChart_image_coverage_of_selfBase
+```
+
+This strengthens the existing retained-passive local-source self-base coverage
+by exposing a determinant-chart coordinate datum whose retained-passive source
+chart realizes `Cedge x` for every `x` in the returned local neighborhood.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_retained_passive_source_chart_image_coverage_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no Case 2 passive-theta coverage, no selected-entry coverage, no
+source-image equality with a source-rank stratum, no original/source-prior
+transport, no Haar/Jacobian transport, no normal crossings, no pole order, and
+no RLCT extraction.
+
 ## 2026-06-30 A2 Case 2 product source-chart local-source support
 
 Reproduction:

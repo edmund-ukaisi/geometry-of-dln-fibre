@@ -171,3 +171,67 @@ Revised Target A is therefore not source-rank coverage.  It is to derive those
 compatibility hypotheses from honest source-side lifted-chart assumptions.  If
 that is not available, move to Target B with an explicit external/source
 measure and a non-vacuous domination hypothesis.
+
+## Addendum - 2026-06-30 post-product-source-support audit
+
+After commit `2e8e23dd`, the concrete Case 2 product source chart has both:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_productReductionCertificate_nhdsWithin_source
+
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_retainedPassiveP13LocalSource_nhdsWithin_source
+```
+
+These close product-chart certificate/support obligations for constructed
+points.  They do not change the source-prior/full-image frontier: the chart
+point is in the named local source, but no theorem says an arbitrary nearby
+source-rank point is produced by the Case 2 passive-theta chart, and no theorem
+identifies an original/external source prior with the chart-produced source
+measure.
+
+Two xhigh scouts rechecked the frontier.
+
+Image/coverage verdict: genuine `Case2PassiveTheta` source-rank coverage is
+not currently feasible from source-rank membership alone.  The missing
+source-side field is the readback-shape compatibility
+
+```text
+sourceReadback E =
+  case2PassiveThetaEndpointRetainedData ... theta ...
+```
+
+for `theta = case2PassiveThetaEndpointSourceChartReadback ... X`, together
+with the selected-entry inverse-readout equality.  Equivalently, after
+endpoint transport the residual factors must be the canonical Case 2
+selected-entry factors attached to `theta.yNext`.  Source-rank membership and
+retained-passive local-source membership do not imply that selected-entry
+factorization.
+
+The honest theorem extracted from this audit is retained-passive rather than
+passive-theta:
+
+```text
+exists_open_paperEndpointFixedBaseRetainedPassiveP13SourceChart_image_coverage_of_selfBase
+```
+
+It exposes a determinant-chart coordinate datum whose retained-passive source
+chart realizes `Cedge x` on the existing self-base retained-passive local
+source neighborhood.  This is useful image-witness bookkeeping, but it is not
+Case 2 selected-entry coverage.
+
+Measure/prior verdict: current measure APIs still only consume a bounded
+density transport statement.  The landed source-level handoff asks for
+
+```text
+externalSourceMeasure.restrict sourceLocal =
+  (sourceImageMeasure.withDensity externalDensity).restrict sourceLocal
+
+externalDensity <= Cext
+  a.e. with respect to sourceImageMeasure.restrict sourceLocal
+```
+
+and then proves the finite-integral conclusion.  The missing theorem is
+precisely the original/external source-measure local bounded-density transport
+over the Case 2 chart-produced source image, or an equivalent Haar/Jacobian
+transport theorem.  It is not supplied by `withDensity` bookkeeping,
+local-source support, or product-reduction certificates.

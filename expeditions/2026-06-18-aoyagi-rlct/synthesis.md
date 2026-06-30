@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Retained-Passive Source-Chart Image Coverage - 2026-06-30
+
+Lean now exposes the determinant-chart coordinate witness behind the existing
+self-base retained-passive local-source coverage theorem:
+
+```text
+exists_open_paperEndpointFixedBaseRetainedPassiveP13SourceChart_image_coverage_of_selfBase
+```
+
+For an edge-family map `Cedge` continuous at the self-base point, Lean returns
+an open neighborhood `Ulocal` of the self-base point such that `Ulocal` lies
+inside the retained-passive p.13 local source and every `x in Ulocal` has
+determinant-chart data `data` satisfying
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13SourceChart W B U0 hU0 data =
+  Cedge x.
+```
+
+The proof uses the existing local-source coverage theorem, converts local
+source membership to membership in the retained-passive source edge-family
+set, and applies the inverse of
+`paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_homeomorph`.
+
+Boundary: this is retained-passive determinant-chart image coverage. It is
+not Case 2 passive-theta or selected-entry coverage, not source-image equality
+with a source-rank stratum, and not source-prior transport, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-retained-passive-source-chart-image-coverage.md
+threads/03-block-product-reduction/statement-card-a2-retained-passive-source-chart-image-coverage.md
+threads/03-block-product-reduction/review-a2-retained-passive-source-chart-image-coverage.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveLocalSource.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveLocalSource
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_retained_passive_source_chart_image_coverage_axioms.lean
+```
+
+Axiom probe for the new theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Hooke the 2nd` PASS.
+
 ## Latest A2 Case 2 Product Source-Chart Local-Source Support - 2026-06-30
 
 Lean now proves that the explicit p.13 product-coordinate chart lands in the
