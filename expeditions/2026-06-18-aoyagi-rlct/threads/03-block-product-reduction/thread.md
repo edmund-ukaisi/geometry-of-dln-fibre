@@ -21,6 +21,66 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-06-30 A2 source-level external-measure density handoff
+
+Reproduction:
+`reproduction-a2-source-level-external-measure-density-handoff.md`.
+Statement card:
+`statement-card-a2-source-level-external-measure-density-handoff.md`.
+Review:
+`review-a2-source-level-external-measure-density-handoff.md`, PASS by xhigh
+reviewer `Feynman the 2nd`; only non-blocking theorem-name explicitness and
+`[SFinite ν]` caller-obligation risks noted.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+```
+
+Lean now proves:
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned `sourceLocal = U ∩ sourceStratum`, a local equality
+
+```text
+externalSourceMeasure.restrict sourceLocal
+  =
+(sourceImageMeasure.withDensity externalDensity).restrict sourceLocal
+```
+
+plus an a.e. finite upper bound for `externalDensity` gives the full product
+domination needed by the earlier external-product-measure theorem. The result
+therefore proves finite loss-power integrability over
+`(externalSourceMeasure.restrict sourceLocal).prod ν`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_external_source_measure_handoff_axioms.lean
+```
+
+The direct axiom probe reports only the baseline
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source-prior density identity, no proof that the
+original prior satisfies the local equality, no Haar transport, no source-rank
+coverage, no source-image equality, no normal crossings, no pole order, and no
+RLCT extraction.
+
 ## 2026-06-30 A2 small-ball fixed-base product source-readback fields
 
 Reproduction:

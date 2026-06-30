@@ -6,6 +6,77 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Source-Level External-Measure Density Handoff - 2026-06-30
+
+Lean now derives the full p.13 product-measure domination hypothesis from a
+source-level bounded-density equality. The new public theorem is:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the local set `sourceLocal = U ∩ sourceStratum`, the caller supplies an
+external source measure and density satisfying
+
+```text
+externalSourceMeasure.restrict sourceLocal
+  =
+(sourceImageMeasure.withDensity externalDensity).restrict sourceLocal
+
+externalDensity ≤ Cext
+  a.e. with respect to sourceImageMeasure.restrict sourceLocal
+```
+
+with `Cext < ∞`. The proof first establishes
+
+```text
+externalSourceMeasure.restrict sourceLocal
+  ≤ Cext • sourceImageMeasure.restrict sourceLocal
+```
+
+by the new reusable helper
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le
+```
+
+and then uses product domination to feed the previous full-product theorem.
+The theorem carries `[SFinite ν]`, matching the Mathlib product-domination API
+used in the proof.
+
+Boundary: this is a bounded-density external source-measure consumer. It does
+not construct or identify the original DLN prior, prove the chart/Jacobian
+source-prior transport, Haar comparison, source-rank coverage, source-image
+equality, normal crossings, pole order, or RLCT extraction.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-level-external-measure-density-handoff.md
+threads/03-block-product-reduction/statement-card-a2-source-level-external-measure-density-handoff.md
+threads/03-block-product-reduction/review-a2-source-level-external-measure-density-handoff.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_external_source_measure_handoff_axioms.lean
+```
+
+Axiom probes for the new helper and source-level theorem report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh reviewer `Feynman the 2nd` PASS. The only residual risks are
+non-blocking: the public theorem name could be more explicit about local
+restriction, and `[SFinite ν]` is a real downstream caller obligation.
+
 ## Latest A2 Case 2 Source-Rank-Neighborhood Product Readout Package - 2026-06-30
 
 Lean now packages the concrete Case 2 endpoint product source chart readouts

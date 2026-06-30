@@ -361,6 +361,18 @@ theorem measure_le_smul_of_le_smul_restrict
     rw [Measure.smul_apply, Measure.smul_apply]
     exact mul_le_mul_right (Measure.restrict_le_self s) c
 
+/-- A local a.e. upper bound on a density gives scalar domination by the same
+restricted reference measure. -/
+theorem restrict_withDensity_le_smul_restrict_of_ae_le
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → ℝ≥0∞}
+    {s : Set α} {c : ℝ≥0∞}
+    (hs : MeasurableSet s)
+    (hf : ∀ᵐ x ∂μ.restrict s, f x ≤ c) :
+    (μ.withDensity f).restrict s ≤ c • μ.restrict s := by
+  rw [restrict_withDensity hs]
+  rw [← withDensity_const (μ := μ.restrict s) c]
+  exact withDensity_mono hf
+
 /-- A local a.e. upper bound on a density gives scalar domination after
 restricting the weighted measure to that local set. -/
 theorem restrict_withDensity_le_smul_of_ae_le
@@ -370,10 +382,8 @@ theorem restrict_withDensity_le_smul_of_ae_le
     (hf : ∀ᵐ x ∂μ.restrict s, f x ≤ c) :
     (μ.withDensity f).restrict s ≤ c • μ := by
   have hlocal :
-      (μ.withDensity f).restrict s ≤ c • μ.restrict s := by
-    rw [restrict_withDensity hs]
-    rw [← withDensity_const (μ := μ.restrict s) c]
-    exact withDensity_mono hf
+      (μ.withDensity f).restrict s ≤ c • μ.restrict s :=
+    restrict_withDensity_le_smul_restrict_of_ae_le hs hf
   exact measure_le_smul_of_le_smul_restrict (μ := μ) (U := s) hlocal
 
 end Aoyagi

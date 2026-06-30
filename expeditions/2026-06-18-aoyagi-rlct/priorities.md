@@ -12,6 +12,49 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 source-level external-measure density handoff
+
+The full-product domination socket now has a source-level bounded-density
+consumer:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_externalSourceMeasure_eq_withDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the returned local source set `sourceLocal = U ∩ sourceStratum`, the
+theorem accepts an explicitly supplied external source measure and density:
+
+```text
+externalSourceMeasure.restrict sourceLocal
+  =
+(sourceImageMeasure.withDensity externalDensity).restrict sourceLocal
+
+externalDensity ≤ Cext
+  a.e. with respect to sourceImageMeasure.restrict sourceLocal
+```
+
+with `Cext < ∞`. Lean proves
+
+```text
+(externalSourceMeasure.restrict sourceLocal).prod ν
+  ≤ Cext • (sourceImageMeasure.restrict sourceLocal).prod ν
+```
+
+and then applies the earlier full-product domination theorem.
+
+The new helper
+
+```text
+restrict_withDensity_le_smul_restrict_of_ae_le
+```
+
+packages the local `restrict(withDensity)` domination calculation.
+
+This is still a consumer theorem, not original-prior transport. It does not
+identify `externalSourceMeasure` with the original DLN prior and does not
+prove Haar transport, source-rank coverage, source-image equality, normal
+crossings, pole order, or RLCT extraction.
+
 ## Latest controller decision - 2026-06-30, A2 Case 2 source-rank-neighborhood product readout package
 
 The concrete Case 2 endpoint product source chart now has a full readout
