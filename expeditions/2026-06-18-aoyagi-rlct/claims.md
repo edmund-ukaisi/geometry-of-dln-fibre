@@ -13965,6 +13965,33 @@ with a bounded `withDensity` perturbation.  It must not be cited as original
 prior transport, source-rank coverage, Haar transport, a Jacobian formula,
 normal crossings, pole order, or RLCT.
 
+## A2 Case 2 product source-chart regular/residual readout
+
+Status: Proved in Lean; focused and full verification passed.
+
+Claim: for the full p.13 product source chart built from the concrete Case 2
+passive-theta endpoint source chart, the regular-coordinate map reads out the
+supplied Euclidean vector `u`, and the residual-coordinate map agrees with the
+base passive-theta source chart at `theta`, under the explicit unit determinant
+hypothesis for `ctopMatrix u`.
+
+Lean theorem:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-regular-residual-readout.md`,
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-regular-residual-readout.md`,
+and
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-regular-residual-readout.md`.
+
+Kill condition: this theorem is only coordinate readout.  It must not be
+cited as a full inverse/readback to `(theta,u)`, source-image coverage,
+source-prior transport, Haar transport, a Jacobian formula, normal crossings,
+pole order, or RLCT.
+
 ## A2 Case 2 selected-entry Schur cleanup
 
 Status: Proved in Lean; focused and full local builds passed; xhigh reviews

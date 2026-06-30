@@ -26321,3 +26321,59 @@ Boundary: this still assumes the source-image density equality and upper
 bound.  It does not construct Aoyagi's original prior in coordinates, prove
 source-image coverage, Haar transport, a Jacobian formula, normal crossings,
 pole order, or RLCT.
+
+## 2026-06-30 concrete p.13 product source-chart readout
+
+The concrete Case 2 passive-theta source chart is now connected to the full
+p.13 product-coordinate readout:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
+```
+
+For
+
+```text
+sourceChart = case2PassiveThetaEndpointSourceChart ...
+productSourceChart =
+  paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+    W2 B2 U0 hU0 sourceChart
+```
+
+and for `u` with `IsUnit (det (ctopMatrix u))`, Lean proves
+
+```text
+regular(productSourceChart(theta,u)) = u
+residual(productSourceChart(theta,u)) = residual(sourceChart theta).
+```
+
+This is a direct `M := 0` specialization of the generic source-dependent
+product-coordinate readout.  It names the actual full chart input `(theta,u)`
+without claiming a full inverse.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-regular-residual-readout.md
+threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-regular-residual-readout.md
+threads/03-block-product-reduction/review-a2-case2-product-source-chart-regular-residual-readout.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_readout_axioms.lean
+```
+
+The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this theorem does not define a full readback
+`EdgeFamily -> Case2PassiveTheta × EuclideanSpace R Coord`, and it does not
+prove source-image coverage, source-prior transport, Haar transport, normal
+crossings, pole order, or RLCT.

@@ -12177,3 +12177,28 @@ axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
 Nonclaims: no original/source prior density identity, no arbitrary external
 measure domination, no source-rank coverage, no Haar transport, no Jacobian
 formula, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 Case 2 product source-chart regular/residual readout:
+`RetainedPassiveCase2PassiveThetaSourceImage.lean` proves
+`case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-case2-product-source-chart-regular-residual-readout.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-case2-product-source-chart-regular-residual-readout.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-case2-product-source-chart-regular-residual-readout.md`.
+
+Ledger status: concrete full p.13 product-coordinate readout for Case 2.  The
+theorem specializes the generic source-dependent product-coordinate readout at
+`M := 0`: for the product chart built from the passive-theta endpoint source
+chart, regular coordinates read out the supplied Euclidean vector `u`, and
+residual coordinates agree with the passive-theta source chart.
+
+Focused file elaboration, focused module build, full `DLNFibre` build,
+`scripts/sorries`, `git diff --check`, and a direct axiom probe passed.  The
+axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no source-image coverage,
+no original/source-prior transport, no Haar transport, no Jacobian formula, no
+normal crossings, no pole order, and no RLCT.

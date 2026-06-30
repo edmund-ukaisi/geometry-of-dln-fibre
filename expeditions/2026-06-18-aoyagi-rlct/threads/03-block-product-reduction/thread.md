@@ -18442,3 +18442,49 @@ source-prior density identity are available.
 Nonclaims: no original/source prior transport, no source-rank coverage, no
 Haar transport, no Jacobian formula, no normal crossings, no pole order, and
 no RLCT extraction.
+
+## 2026-06-30 A2 Case 2 product source-chart regular/residual readout
+
+Reproduction:
+`reproduction-a2-case2-product-source-chart-regular-residual-readout.md`.
+Statement card:
+`statement-card-a2-case2-product-source-chart-regular-residual-readout.md`.
+Review:
+`review-a2-case2-product-source-chart-regular-residual-readout.md`, PASS after
+focused and full Lean verification.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
+```
+
+This is the concrete Case 2 specialization of the generic p.13
+source-dependent product-coordinate readout.  For the full product chart
+constructed from `case2PassiveThetaEndpointSourceChart`, the regular
+coordinate map reads out the supplied Euclidean vector `u`, while the residual
+coordinate map agrees with the base passive-theta source chart at `theta`.
+
+The theorem keeps the `ctopMatrix u` unit-determinant hypothesis explicit and
+does not assert a full inverse from source edge families to `(theta,u)`.
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_readout_axioms.lean
+```
+
+Nonclaims: no full inverse/readback to `(theta,u)`, no original/source-prior
+transport, no source-rank coverage, no Haar transport, no Jacobian formula, no
+normal crossings, no pole order, and no RLCT extraction.

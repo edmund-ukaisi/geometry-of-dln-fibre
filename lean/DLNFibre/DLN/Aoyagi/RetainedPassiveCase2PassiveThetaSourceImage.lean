@@ -463,6 +463,88 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Case 2 specialization of the p.13 source-dependent product-coordinate
+readout.
+
+For the full product chart built from the passive-theta endpoint source chart,
+the p.13 regular-coordinate readout is the supplied Euclidean vector `u`, and
+the residual-coordinate readout is the residual readout of the underlying
+passive-theta source chart at `theta`.
+
+This names the full `(theta,u)` chart input.  It is only a coordinate readout:
+it does not construct a full inverse to `(theta,u)`, identify an original
+prior, prove source-image coverage, Haar transport, normal crossings, pole
+order, or RLCT extraction. -/
+theorem case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (theta :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (u :
+      EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)))
+    (hCtop :
+      IsUnit
+        (AoyagiRegularBlockCoordinateIndex.ctopMatrix (fun c ↦ u c)).det) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let productSourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J ×
+          EuclideanSpace ℝ
+            (AoyagiRegularBlockCoordinateIndex
+              (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)) →
+          EdgeFamily :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        W₂ B₂ U₀ hU₀ sourceChart
+    (paperEndpointFixedBaseRegularBlockCoordinateMap
+        (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+          fun c ↦ u c) ∧
+      paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ productSourceChart (theta, u) =
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart theta := by
+  intro EdgeFamily sourceChart productSourceChart
+  simpa [EdgeFamily, sourceChart, productSourceChart] using
+    paperEndpointFixedBaseRegular_residualBlockCoordinateMap_eq_multiEdgeProductCoordinateEuclidean_baseEdgeFamily
+      (M := 0) (V := W₂) (Bv := B₂) (U₀ := U₀) (hU₀ := hU₀)
+      (CedgeBase := sourceChart) (x := theta) (u := u) hCtop
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Relative local source-chart image measurability and continuity for the
 concrete passive-theta endpoint chart.
 

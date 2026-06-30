@@ -14992,3 +14992,24 @@ Next priority: use the concrete p.13 product-coordinate API to build a
 full-coordinate source chart/readback statement.  Do not treat this helper as
 proving original-prior density transport, Haar transport, source-rank
 coverage, normal crossings, pole order, or RLCT.
+
+A2 Case 2 product source-chart regular/residual readout has landed locally in
+`RetainedPassiveCase2PassiveThetaSourceImage.lean`:
+
+```text
+case2PassiveThetaEndpointProductSourceChart_regular_residualBlockCoordinateMap_eq
+```
+
+This names the actual full p.13 product chart input `(theta,u)` and proves
+the coordinate readouts:
+
+```text
+regular(productSourceChart(theta,u)) = u
+residual(productSourceChart(theta,u)) = residual(sourceChart theta).
+```
+
+Next priority: decide whether the next useful source-prior step is (a) a
+local small-ball version that packages the `ctopMatrix u` unit condition into
+`u ∈ ball 0 R`, or (b) a genuine full product-chart image/readback theorem.
+Do not claim a full inverse, source-image coverage, Haar transport, original
+prior transport, normal crossings, pole order, or RLCT from this readout.
