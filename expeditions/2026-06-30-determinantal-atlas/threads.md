@@ -14,19 +14,18 @@ per shared worktree at a time; read-only auditors run concurrently. Controller i
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| P1.a | formaliser | abaaacd2 | ✅ DONE `f6684cf5` (re-home; full re-gate DEFERRED) | overlap API → `Core/RingTheory/Localization/Overlap.lean` (bare `Localization` ns); `Overlap.lean` + `FibreBundleTransition` green **standalone**, axiom-clean, consumers swept. Full-aggregator green pending (see below) |
-| P1.b–e | — | — | ⏳ gated on box load | determinantal `(r+1)`-minor ideal (new) · rank strata + cover (re-home) · Schur coords (re-home) · dimension (Brick A cited) |
+| P1.a | formaliser | abaaacd2 | ✅ DONE + RE-GATED `f6684cf5` | overlap API → `Core/RingTheory/Localization/Overlap.lean` (bare `Localization` ns); consumers swept. **Full-aggregator re-gate GREEN (3828 jobs), sorries 0, `awayTriple_cocycle` axiom-clean.** |
+| **P1.b** | formaliser | dispatching | 🔄 | matrix coord ring + **determinantal `(r+1)`-minor ideal** (genuinely-new def) + re-home `detMinorPoly`/`eval_detMinorPoly` → `Core/RingTheory/Determinantal/Basic.lean` |
+| P1.c–e | — | — | ⏳ | rank strata + cover (re-home) · Schur coords (re-home) · dimension (Brick A cited) |
 
-## ⚠ Build status — full re-gate DEFERRED (box load), NOT a correctness issue
-- **Contamination (mine, fixed):** the worktree's `.lake` was warmed (`cp -al`) from the **pre-FL-III**
-  `foundation-lift` worktree, leaving stale trdeg/Dimension oleans → spurious `Unknown constant Algebra.trdeg`
-  at `Dimension/Localization`. Diagnosed as cache, not source (source correct, API present, dev sound, FL-III
-  built it green). Fixed: `rm -rf .lake/build`. Clean rebuild built `Dimension/Integral` **green** with no
-  `trdeg` error before being reaped. (→ lesson DA1.)
-- **Deferral:** the box is saturated by parallel expeditions (aoyagi/main/genm builds), which OOM-reap a
-  from-scratch det-atlas build. **Full-aggregator re-gate + P1.b dispatch are paused until box load subsides**
-  (the idle heartbeat re-checks; verify no det-atlas lake is alive, then `scripts/lb` resumes from cache → green).
-  (→ lesson DA2.)
+## ✅ Build status — re-gate GREEN; contamination episode CLOSED
+- **Contamination (mine, fixed + confirmed):** the worktree's `.lake` was warmed (`cp -al`) from the
+  **pre-FL-III** `foundation-lift` worktree → stale trdeg/Dimension oleans → spurious `Unknown constant
+  Algebra.trdeg`. Diagnosed as cache not source. Fixed: `rm -rf .lake/build` + clean rebuild → **full aggregator
+  GREEN (3828 jobs), `Dimension/Localization.olean` BUILT**. dev sound throughout. (→ lesson DA1.)
+- **Box-load episode (resolved):** under heavy parallel-expedition load the from-scratch build OOM-thrashed;
+  deferred until the box quieted (18G free), then re-ran clean → green. The worktree now has a correct warm
+  `.lake` for the remaining rungs (P1.b+ build incrementally). (→ lesson DA2.)
 
 ## Phase 2 — constructive atlas + capstone (`det-atlas-p2`)
 

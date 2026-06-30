@@ -62,6 +62,7 @@ at `Dimension/Localization` — **my own cache contamination**, not a regression
 from the pre-FL-III `foundation-lift` (FL-III restructured the trdeg/Dimension stack). Diagnosed cleanly (source
 correct, `Algebra.trdeg` present, FL-III green on dev), fixed by nuking `.lake/build`; the clean rebuild built
 `Dimension/Integral` green with no error before being **reaped under heavy multi-expedition box load**.
-**Full-aggregator re-gate + P1.b are DEFERRED until box load subsides** (the parallel aoyagi/main/genm builds are
-saturating memory). dev is sound; this is scheduling, not correctness. On a quieter heartbeat: verify no det-atlas
-lake alive → `scripts/lb` resumes from cache → green → integrate P1.a + dispatch P1.b.
+**RESOLVED:** when the box quieted (18G free), the clean rebuild ran to a **full-aggregator GREEN (3828 jobs)** with
+`Dimension/Localization.olean` BUILT — contamination confirmed-fixed, dev sound, P1.a re-gate passed (sorries 0,
+`awayTriple_cocycle` axiom-clean). The worktree now has a correct warm `.lake`; P1.b+ build incrementally.
+**Phase 1 resumed: P1.b dispatched** (matrix coord ring + the determinantal `(r+1)`-minor ideal).
