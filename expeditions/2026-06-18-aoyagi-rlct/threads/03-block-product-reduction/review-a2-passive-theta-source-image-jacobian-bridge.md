@@ -21,6 +21,11 @@ existing Jacobian-weighted residual-source theorem.
 The statement does not mention arbitrary external measures and does not turn a
 source-image density into an original prior.
 
+The finite-integral theorem uses the same rewrite, but delegates the analytic
+comparison step to the already-proved theta-domain p.13 finite-integral
+wrapper.  It adds no new loss, density, source-stratum, or regular-variable
+hypothesis.
+
 ## Source Fidelity
 
 This bridge is elementary measure bookkeeping over Aoyagi's local p.13

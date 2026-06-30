@@ -15,6 +15,7 @@ negative-power integrability for
 
 ```text
 exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
 ```
 
 ## Inputs Used
@@ -54,6 +55,15 @@ for `sourceImageMeasure.restrict localSource`-a.e. source point, plus
 
 ```text
 residualNegPowerIntegrableOn ... localSource sourceImageMeasure t.
+```
+
+The finite-integral theorem also proves the p.13 regular-coordinate local
+finite-side conclusion:
+
+```text
+∫⁻ z, ofReal ((ball R).indicator
+  (fun u => loss (z.1,u) ^ (-(t + regularCount/2)) * density (z.1,u)) z.2)
+  ∂(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod nu < ∞.
 ```
 
 ## Nonclaims

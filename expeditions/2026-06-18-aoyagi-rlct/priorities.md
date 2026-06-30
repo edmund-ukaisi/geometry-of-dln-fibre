@@ -32,13 +32,16 @@ New public name:
 
 ```text
 exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
 ```
 
 The proof converts `sourceImageDensity` to the theta-domain density
 `sourceImageDensity ∘ sourceChart`, pulls the source-image a.e. bound back by
 `ae_of_ae_map`, and identifies the pushed theta-domain `withDensity` measure
 with the source-image `withDensity` measure by the map-with-density
-composition identity.
+composition identity.  The same rewrite feeds the p.13 regular-coordinate
+finite-integral theorem, giving the finite integral over the source-image
+measure restricted to `U ∩ sourceStratum`.
 
 This is the right downstream socket once a true source-prior transport theorem
 supplies the density.  It still does not prove that the original DLN prior is

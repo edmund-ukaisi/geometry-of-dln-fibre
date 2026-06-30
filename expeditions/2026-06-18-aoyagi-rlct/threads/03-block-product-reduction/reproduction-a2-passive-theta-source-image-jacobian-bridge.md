@@ -76,6 +76,18 @@ exactly `sourceImageMeasure`.  The local-source support equality, residual
 square-sum positivity a.e., and finite residual negative-power integrability
 therefore transfer by rewriting.
 
+The same calculation feeds the p.13 regular-coordinate finite-integral wrapper.
+The existing theta-domain finite-integral theorem has the same bounded-density
+input and produces an integral over
+
+```text
+(mu.restrict (U ∩ sourceStratum)).prod nu.
+```
+
+After the same map-with-density rewrite, `mu` is
+`sourceImageBase.withDensity g`, so the integral is finite with the
+source-image measure in place of the theta-domain pushforward.
+
 ## Source Boundary
 
 This is not a new Aoyagi source-prior theorem.  Aoyagi's p.13 coordinate

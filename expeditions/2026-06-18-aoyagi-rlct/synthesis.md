@@ -25,6 +25,7 @@ New Lean name:
 
 ```text
 exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
 ```
 
 The proof is elementary measure bookkeeping.  Apply the existing theta-domain
@@ -34,7 +35,9 @@ Jacobian bounded-density theorem to
 pushforward by `restrict_withDensity` and the map-with-density composition
 identity.  The conclusion is local-source support, a.e. residual square-sum
 positivity, and `residualNegPowerIntegrableOn` for the source-image
-`withDensity` measure.
+`withDensity` measure.  The same source-image rewrite also feeds the p.13
+regular-coordinate finite-integral theorem and proves the local finite
+integral over `(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν`.
 
 This theorem deliberately keeps the actual source-prior density identity out
 of scope.  Xhigh scout `Mencius` confirmed that passive theta alone does not

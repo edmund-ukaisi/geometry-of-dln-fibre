@@ -41,6 +41,7 @@ Lean now proves:
 
 ```text
 exists_open_residualSourceHypotheses_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass
+exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
 ```
 
 The theorem consumes a density on the chart-produced source-image base
@@ -60,6 +61,11 @@ to `sourceImageDensity ∘ sourceChart`.  The source-image a.e. bound pulls back
 by `ae_of_ae_map`, and `restrict_withDensity` plus the standard
 map-with-density composition identity identifies the resulting pushforward
 with `sourceImageBase.withDensity sourceImageDensity`.
+
+The same source-image measure also feeds the p.13 regular-coordinate
+finite-integral wrapper, yielding the local finite integral over
+`(sourceImageMeasure.restrict (U ∩ sourceStratum)).prod ν` under the existing
+source-stratum loss/density bounds.
 
 Verification:
 

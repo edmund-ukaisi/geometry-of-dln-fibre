@@ -148,8 +148,12 @@ No such claim is formalisation-ready until both fields are filled.
   takes a locally bounded density on
   `Measure.map sourceChart (baseJ.restrict W)` and proves local-source support,
   a.e. residual square-sum positivity, and `residualNegPowerIntegrableOn` for
-  the source-image `withDensity` measure.  The proof reduces to the existing
-  theta-domain Jacobian bounded-density theorem using `ae_of_ae_map`,
+  the source-image `withDensity` measure.  The companion finite-integral
+  theorem
+  `exists_open_lintegral_ofReal_loss_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_sourceImage_withDensity_ae_le_const_globalWithDensity_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  gives the existing p.13 regular-coordinate finite-integral conclusion for
+  the same source-image measure.  The proof reduces to the existing
+  theta-domain Jacobian bounded-density theorems using `ae_of_ae_map`,
   `restrict_withDensity`, and the map-with-density composition identity.
   Reproduction, statement card, and review are at
   `threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-jacobian-bridge.md`,
