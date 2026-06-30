@@ -3,12 +3,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMFlatBlockLE
 import DLNFibre.DLN.RLCT.Validate.RouteMRoleCLE
 
 /-!
-# `RouteMHDtotEihd` — the coupled `eIn`/`eOut`/`hD` two-sided staircase conjugacy of `Dtot` (∀M-L2)
+# `RouteMHDtotEihd` — the coupled `eIn`/`eihdOut`/`hD` two-sided staircase conjugacy of `Dtot` (∀M-L2)
 
 The load-bearing geometric residual of `hDtot`. The assembly wrapper
 `RouteMHDtotConj.hDtot_of_twoStairConj` reduces `hDtot : |det Dtot| = |det K|^(r+c)` to EXACTLY the
-two layer-collecting equivs `eIn eOut : (Fin (flatDim M) → ℝ) ≃ₗ StairProd V 2`, the block identity
-`hD : eOut ∘ Dtot ∘ eIn.symm = stairMap V 2 f c`, and `hreg` (discharged by the banked
+two layer-collecting equivs `eIn eihdOut : (Fin (flatDim M) → ℝ) ≃ₗ StairProd V 2`, the block identity
+`hD : eihdOut ∘ Dtot ∘ eIn.symm = stairMap V 2 f c`, and `hreg` (discharged by the banked
 `hreg_of_measurePreserving_comp`). This module BUILDS that trio as one coherent construction.
 
 The numeric partition certificate (6 random seeds at (3,3,4), EXACT) fixes the design:
@@ -20,7 +20,7 @@ The numeric partition certificate (6 random seeds at (3,3,4), EXACT) fixes the d
 
 The trio is COUPLED (a misaligned reindex is the green-but-wrong trap): the input role reindex,
 the output Params-layer split, and the block identity must agree on the SAME `V 0`/`V 1` boundary
-spaces. `eOut` absorbs the `paramsEquivFlat` flattening cleanly (`eOut := packStair ∘ₗ
+spaces. `eihdOut` absorbs the `paramsEquivFlat` flattening cleanly (`eihdOut := packStair ∘ₗ
 paramsEquivFlatCLE.symm`), so `hD` reduces to `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm =
 stairMap`.
 
@@ -79,7 +79,7 @@ def eihdF (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ) :
 
 The boundary-`0` block det is the banked Schur value, the leaf block det is `1`. These discharge the
 two `hf*` hypotheses of `hDtot_of_twoStairConj` directly from the banked `schurFrameDeriv_det` /
-`chainUnit_det` — independent of the geometric `eIn`/`eOut`/`hD`. -/
+`chainUnit_det` — independent of the geometric `eIn`/`eihdOut`/`hD`. -/
 
 /-- `|det (eihdF … 0)| = |det K|^(r+c)` — the boundary-`0` Schur block, via `schurFrameDeriv_det`,
 with `K = readK ⟨0⟩ = (slotReadV0 ha y₀).1 = leafKcore`. The `r+c` exponent matches the headline. -/
@@ -148,7 +148,7 @@ theorem flatBlockLE_symm_fderiv_flatBlock {t r c Trow Wcol : ℕ}
   show (flatBlockLE hr hc).symm (flatBlockLin hr hc z) = z
   exact unflatBlock_flatBlock hr hc z
 
-/-! ## The output `packStair : Params M ≃ₗ StairProd V 2` and `eOut`
+/-! ## The output `packStair : Params M ≃ₗ StairProd V 2` and `eihdOut`
 
 `packStair` collects the two `Params` layers into the staircase product:
 * layer 0 (`Matrix(M0,M1)`) → `V 0 = SchurInc` via the dim-recast `Matrix(M0,M1) ≃ Matrix(Text1,Wext1)`
@@ -157,8 +157,8 @@ theorem flatBlockLE_symm_fderiv_flatBlock {t r c Trow Wcol : ℕ}
   then the ROW split `Fin Wext1 ≃ Fin Text2 ⊕ Fin (Wext1−Text2)` into `(kept, lift)`, REORDERED to
   `(lift = W, kept = leaf)` to match `chainUnitMap`'s `(W, C)` domain orientation (the flagged trap).
 
-`eOut := packStair ∘ₗ paramsEquivFlatCLE.symm` absorbs the `paramsEquivFlat` flattening, so
-`eOut ∘ paramsEquivFlatCLE = packStair` and `hD` reduces to `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm
+`eihdOut := packStair ∘ₗ paramsEquivFlatCLE.symm` absorbs the `paramsEquivFlat` flattening, so
+`eihdOut ∘ paramsEquivFlatCLE = packStair` and `hD` reduces to `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm
 = stairMap`. -/
 
 /-- The boundary width facts at `L = 2`: `M 0 = Text 1`, `M 1 = Wext 1`, `M 2 = Wext 2`. -/
@@ -224,12 +224,45 @@ noncomputable def packStair (ha : StructAdm M (tach M)) :
       ((LinearEquiv.refl ℝ (eihdV M 0)).prodCongr
         (LinearEquiv.prodUnique (R := ℝ) (M := eihdV M 1) (M₂ := PUnit)).symm))
 
-/-- **`eOut := packStair ∘ₗ paramsEquivFlatCLE.symm`** — the output layer-collecting equiv. Absorbs
-the `paramsEquivFlat` flattening: `eOut ∘ paramsEquivFlatCLE = packStair` (so `hD` reduces to
+/-- **`eihdOut := packStair ∘ₗ paramsEquivFlatCLE.symm`** — the output layer-collecting equiv. Absorbs
+the `paramsEquivFlat` flattening: `eihdOut ∘ paramsEquivFlatCLE = packStair` (so `hD` reduces to
 `packStair ∘ (fderiv BparamsLeaf) ∘ eIn.symm = stairMap`). -/
-noncomputable def eOut (ha : StructAdm M (tach M)) :
+noncomputable def eihdOut (ha : StructAdm M (tach M)) :
     (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2 :=
   (paramsEquivFlatLinear M).symm.trans (packStair ha)
+
+/-! ## The assembly: `hDtot`/headline from the residual `(eIn, c, hD, hreg)`
+
+Everything except the input equiv `eIn`, the staircase coupling `c`, the block identity `hD`, and
+the regauge `hreg` is now BANKED: the boundary spaces `eihdV`, the diagonal blocks `eihdF`
+(with both dets `eihdF0_abs_det`/`eihdF1_abs_det`), and the output equiv `eihdOut`. This theorem feeds
+them through `hDtot_of_twoStairConj` + `interiorDet_leaf_headline_freeK`, pinning EXACTLY what the
+remaining `eIn`/`c`/`hD`/`hreg` tide must produce. -/
+
+/-- **The ∀M-L2 interior-det headline from the residual `eIn`/`c`/`hD`/`hreg`** — the wrapper
+`interiorDet_leaf_headline_of_DtotConj` instantiated with the banked `eihdV`/`eihdF`/`eihdOut` and the
+two banked block dets (`eihdF0_abs_det`/`eihdF1_abs_det`). The hypotheses are EXACTLY the geometric
+residual: the input equiv `eIn`, the coupling `c`, the staircase identity
+`hD : eihdOut ∘ Dtot ∘ eIn.symm = stairMap`, and the regauge abs-det-`1` `hreg`. -/
+theorem interiorDet_leaf_headline_eihd (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
+    (u : Fin (routeMAmbient M) → ℝ)
+    (c : StairCoupling (eihdV M) 2)
+    (eIn : (Fin (flatDim M) → ℝ) ≃ₗ[ℝ] StairProd (eihdV M) 2)
+    (hD : (eihdOut ha : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2)
+        ∘ₗ Dtot ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)
+        ∘ₗ (eIn.symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+      = stairMap (eihdV M) 2
+          (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)) c)
+    (hreg : |LinearMap.det (((eihdOut ha).symm : StairProd (eihdV M) 2 →ₗ[ℝ] (Fin (flatDim M) → ℝ))
+        ∘ₗ (eIn : (Fin (flatDim M) → ℝ) →ₗ[ℝ] StairProd (eihdV M) 2))| = 1) :
+    |LinearMap.det (fderiv ℝ (phiFlatLiveAt M ha (by norm_num)
+        (leafPivot M ha (by norm_num) h0r h0c)) u).toLinearMap|
+      = |u (leafPivot M ha (by norm_num) h0r h0c)| ^ (minAdm M - 1)
+        * ∏ s : Fin 2, engineFreeK ha h0r h0c u s :=
+  interiorDet_leaf_headline_of_DtotConj (eihdV M) ha h0r h0c u
+    (eihdF ha (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)) c
+    eIn (eihdOut ha) hD hreg (eihdF0_abs_det ha h0r h0c u) (eihdF1_abs_det ha _)
 
 end L2
 
