@@ -25700,3 +25700,58 @@ review passed.
 Boundary: this does not prove the external/original source-prior domination
 hypothesis.  It does not construct a local inverse, source-image coverage,
 external-prior Jacobian comparison, normal crossings, pole order, or RLCT.
+
+## 2026-06-30 passive-theta source-image measurability
+
+Target A now has a source-side image-measurability prerequisite for the
+concrete Case 2 passive-theta endpoint chart:
+
+```text
+RetainedPassiveCase2PassiveThetaSourceImage.lean
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_readback_leftInverse
+```
+
+Pen-and-paper calculation: start from the existing local readback theorem
+`readback(sourceChart(theta)) = theta` on an open `Vread`.  This gives
+`Set.InjOn sourceChart V` on any smaller `V subset Vread`.  Intersect with
+the determinant-chart preimage
+
+```text
+D = {theta | topologyTuple(retainedData(theta)) in detChart}.
+```
+
+The set `D` is open because the endpoint topology-tuple map is continuous and
+the determinant chart is open.  On `D`, the source chart factors through the
+determinant-chart subtype, where the fixed-base retained-passive source chart
+is continuous.  Hence for every prescribed open `G` containing the base point,
+the shrink `V = G inter Vread inter D` is open, `sourceChart` is continuous on
+`V`, and Lusin-Souslin gives measurability of the actual source-side image
+`sourceChart '' V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-theta-source-image-measurability.md
+threads/03-block-product-reduction/statement-card-a2-passive-theta-source-image-measurability.md
+```
+
+Local verification passed:
+
+```text
+cd lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean -E warning /tmp/aoyagi_source_image_axioms.lean
+```
+
+The root `DLNFibre` build passed after adding the aggregator import.
+`./scripts/sorries` reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`;
+`git diff --check` passed; the direct axiom probe for the new theorem reported
+only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is not source-rank coverage, not source-image equality beyond
+the named chart image, not original source-prior domination or transport, not
+Haar transport, not normal crossings, not pole order, and not RLCT.

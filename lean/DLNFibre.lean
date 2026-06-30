@@ -580,5 +580,6 @@ import DLNFibre.DLN.Aoyagi.BlowupBranchProgress
 import DLNFibre.DLN.Aoyagi.SelectedEntryBranchProgressBridge
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSector
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaProductMeasure
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaJacobianMeasure
