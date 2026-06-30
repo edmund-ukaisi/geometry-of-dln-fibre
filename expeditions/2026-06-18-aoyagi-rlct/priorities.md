@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 product source-readback field formula
+
+The next finite-algebra boundary is now proved generically:
+
+```text
+sourceReadback_productCoordinate_fields_succSucc
+```
+
+For a raw multi-edge p.13 product-coordinate edge family, `sourceReadback`
+returns canonical passive fields `A1passive = 1` and `A3passive = 0`, the
+first supplied `F2` followed by zeros, the supplied residual factors `C`, and
+the supplied endpoint regular fields `Ctop` and `F3`.  Supporting transformed
+edge shape lemmas expose the right endpoint, left endpoint, and middle-edge
+p.13 block forms.
+
+This resolves the immediate product-readback question at the raw finite
+algebra level and also prevents overclaiming: the product-coordinate edge
+family does not recover full passive theta data by `sourceReadback` alone.
+Next useful bridge is an instantiation through the endpoint fixed-base
+Euclidean `productSourceChart` if needed; source-prior transport, Haar
+transport, normal crossings, pole order, and RLCT extraction remain separate.
+
 ## Latest controller decision - 2026-06-30, A2 full product domination handoff
 
 The immediate next Lean step is a full-product domination socket, not an

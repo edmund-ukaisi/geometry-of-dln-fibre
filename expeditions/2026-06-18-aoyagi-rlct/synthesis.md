@@ -6,6 +6,65 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Product Source-Readback Field Formula - 2026-06-30
+
+Lean now proves the raw p.13 product-coordinate source-readback fields:
+
+```text
+sourceReadback_productCoordinate_fields_succSucc
+```
+
+For a multi-edge product-coordinate family with left/middle/right p.13 block
+patterns and `IsUnit Ctop.det`, the theorem returns
+
+```text
+A1passive = 1
+F2        = first F2, then zeros
+A3passive = 0
+C         = supplied residual factors
+Ctop      = supplied Ctop
+F3        = supplied F3
+```
+
+The proof first exposes three transformed-edge shape lemmas in
+`ProductReduction.lean` for the right endpoint, left endpoint, and middle
+edges.  The source-readback theorem then reads `A1passive`, `A3passive`, and
+`C` directly from those shapes, and reads `F2` through the suffix-state
+identity `F2full = -B`.
+
+This is an important negative/positive boundary.  It proves the finite p.13
+algebra that the product chart remembers regular variables and residual
+factors, but it also proves that the retained passive fields are reset to
+canonical values.  Therefore the current product-coordinate edge family is not
+a full inverse to an original passive theta point by source-readback alone.
+The next concrete bridge, if pursued, is to instantiate this raw theorem
+through the endpoint fixed-base Euclidean `productSourceChart`; source-prior
+transport and Haar/Jacobian density identities remain separate.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-product-source-readback-field-formula.md
+threads/03-block-product-reduction/statement-card-a2-product-source-readback-field-formula.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/ProductReduction.lean
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinates.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinates
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_product_source_readback_axioms.lean
+```
+
+Axiom probe for the new public theorem and three transformed-edge helpers
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest A2 Full Product Domination Handoff - 2026-06-30
 
 The newest Lean theorem is a downstream socket for the full p.13 product
