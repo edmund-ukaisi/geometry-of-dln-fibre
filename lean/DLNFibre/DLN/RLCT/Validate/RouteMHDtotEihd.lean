@@ -366,21 +366,75 @@ noncomputable def eIn (ha : StructAdm M (tach M)) :
       ((leafToMat ha).prodCongr (leafLiftToPUnit ha))) ≪≫ₗ
   eInRearrange ha
 
+/-- `flatMatLE a b f i j = f (finProdFinEquiv (i, j))` — the flat-slot ↔ matrix reshape reads the slot
+coord at the `finProdFinEquiv`-packed index (the `funCongrLeft ≫ curry ≫ ofLinearEquiv` eval). -/
+theorem flatMatLE_apply (a b : ℕ) (f : Fin (a * b) → ℝ) (i : Fin a) (j : Fin b) :
+    flatMatLE a b f i j = f (finProdFinEquiv (i, j)) := by
+  unfold flatMatLE; simp only [LinearEquiv.trans_apply]; rfl
+
+/-- The four `SchurInc` blocks of `frameToSchurInc ha g` read `g` at the `frameSplitEquiv.symm` role
+indices — exactly the indices `readK/N/X/E … ⟨0⟩` use, after the `roleReorderLE` `(K,X,N,E) → (K,N,X,E)`
+reshuffle: K@`inl inl inl`, N@`inl inr`, X@`inl inl inr`, E@`inr`. -/
+theorem frameToSchurInc_blocks (ha : StructAdm M (tach M))
+    (g : Fin (schurDim M (tDesc M (tach M)) 0) → ℝ) :
+    frameToSchurInc ha g
+      = (Matrix.of (fun i j =>
+          g ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+            (Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i, j))))))),
+         Matrix.of (fun i j =>
+          g ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+            (Sum.inl (Sum.inr (finProdFinEquiv (i, j)))))),
+         Matrix.of (fun i j =>
+          g ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+            (Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (i, j))))))),
+         Matrix.of (fun i j =>
+          g ((frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm
+            (Sum.inr (finProdFinEquiv (i, j)))))) := by
+  -- peel the outer `roleReorderLE` (`rfl`); each block is `flatMatLE` of a `sumArrow`-split coord
+  have hr : frameToSchurInc ha g
+      = roleReorderLE M
+          ((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ ≪≫ₗ
+            (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+                (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).prodCongr
+                  (LinearEquiv.refl ℝ _)))).prodCongr (LinearEquiv.refl ℝ _)))
+            ((LinearEquiv.funCongrLeft ℝ ℝ
+                (frameSplitEquiv M (tach M) 1 (ha.hdesc 0 (by decide)) (ha.hub 0)).symm) g)) := rfl
+  rw [hr]
+  refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_)) <;> ext i j
+  · show flatMatLE (schurT1 M) (schurT1 M) _ i j = _
+    rw [flatMatLE_apply]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply,
+      LinearEquiv.sumArrowLequivProdArrow_apply_fst, LinearEquiv.funCongrLeft_apply,
+      LinearMap.funLeft_apply, Matrix.of_apply]
+  · show flatMatLE (schurT1 M) (schurC1 M) _ i j = _
+    rw [flatMatLE_apply]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply,
+      LinearEquiv.sumArrowLequivProdArrow_apply_fst, LinearEquiv.sumArrowLequivProdArrow_apply_snd,
+      LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply, Matrix.of_apply]
+  · show flatMatLE (schurR1 M) (schurT1 M) _ i j = _
+    rw [flatMatLE_apply]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply,
+      LinearEquiv.sumArrowLequivProdArrow_apply_fst, LinearEquiv.sumArrowLequivProdArrow_apply_snd,
+      LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply, Matrix.of_apply]
+  · show flatMatLE (schurR1 M) (schurC1 M) _ i j = _
+    rw [flatMatLE_apply]
+    simp only [LinearEquiv.trans_apply, LinearEquiv.prodCongr_apply, LinearEquiv.refl_apply,
+      LinearEquiv.sumArrowLequivProdArrow_apply_snd, LinearEquiv.funCongrLeft_apply,
+      LinearMap.funLeft_apply, Matrix.of_apply]
+
 /-- **The V0-faithfulness invariant**: `(eIn ha δ).1 = slotReadV0 ha δ` — the boundary-0 frame slot.
 The in-Lean check that `eIn` reads the Schur frame into V0; with `hD`'s J00 match this catches a
-misaligned reindex.
-
-RESIDUAL (the single hard reindex-match lemma, Codex-flagged): `eIn` is built (sorry-free) as the
-composite `funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ piFinTwo ≫ slotSplitLE ≫ frameToSchurInc …`, so
-`(eIn δ).1` reduces (the slot-0 frame factor) to `frameToSchurInc` applied to the function
-`a ↦ δ (chartIdxEquiv.symm ⟨0, Sum.inl a⟩)`. The proof is componentwise on the 4 `SchurInc` blocks
-(K, N, X, E), each matching `frameToSchurInc`'s `roleReorderLE` + `flatMatLE` against the reader
-`readK/N/X/E … ⟨0⟩` (both read `δ (chartIdxEquiv.symm ⟨0, Sum.inl (frameSplitEquiv.symm (…))⟩)`).
-Mechanical but heavy: the `sumArrowLequivProdArrow_apply_fst`/`piCurry_apply (= Sigma.curry)`/
-`piFinTwo_apply`/`funCongrLeft_apply` chain through the opaque-Fin-width slot casts. -/
+misaligned reindex. `(eIn δ).1 = frameToSchurInc ha g` (`rfl`) with `g a = δ (chartIdxEquiv.symm
+⟨0, Sum.inl a⟩)`; `frameToSchurInc_blocks` reads the 4 `SchurInc` blocks (K, N, X, E) at exactly the
+`readK/N/X/E … ⟨0⟩` slot indices, so the `(readK, readN, readX, readE) = slotReadV0` match is `rfl`. -/
 theorem eIn_projV0 (ha : StructAdm M (tach M)) (δ : Fin (flatDim M) → ℝ) :
-    (eIn ha δ).1 = slotReadV0 ha δ :=
-  sorry
+    (eIn ha δ).1 = slotReadV0 ha δ := by
+  -- `(eIn δ).1 = frameToSchurInc ha g` (rfl) with `g a = δ (chartIdxEquiv.symm ⟨0, Sum.inl a⟩)`
+  have hg : (eIn ha δ).1 = frameToSchurInc ha
+      (fun a => δ ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨0, Sum.inl a⟩)) := rfl
+  rw [hg, frameToSchurInc_blocks ha]
+  -- both sides are the 4-tuple of readers; `slotReadV0 = (readK, readN, readX, readE)` matches
+  rfl
 
 /-! ## The block identity `hD` (RESIDUAL piece 2)
 
