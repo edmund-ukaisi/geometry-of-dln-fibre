@@ -68,22 +68,25 @@ Banked clean-three this tide (branch `genm-d1hchart`, pushed origin):
   step — the DLN site reads off the selected-coordinate structure of `f∘Ψsymm` rather than supplying
   `F` + re-proving the germ.
 
-★★★ ADOPTED BASE (UNCOMMITTED `D1HChartRank.lean`, 202 lines, builds GREEN, backed up
-`/tmp/D1HChartRank-inflight-backup.lean`): the genm-d1hfin in-flight handoff (collision resolved —
-genm-d1hfin stood down, no branch/worktree, I'm sole driver). DONE + sorry-free in it:
-`jointDiffL2`; `exists_rank_factorization` (B=U·V rank-r, `#print axioms` clean-three, from PUBLIC
-`block_elimination` re-derived LOCALLY — NO Skeleton edit); `isUnit_of_rank_eq_card`;
-`exists_left_inverse_of_rank_eq_width` / `exists_right_inverse_of_rank_eq_height` (the Gram-matrix
-one-sided inverses Λ,Ρ — exactly what the gauge-slice needs). 3 OPEN sorries:
-- `exists_left_lift` (`U = (v 0)·C` from `col U = col B ⊆ col(v 0)`) — needs the column-containment
-  factor-extraction `col(U)⊆col(M) ⟹ ∃C, U=M·C` (ABSENT from Mathlib; build column-wise via
-  `range(M.mulVecLin)` membership + `Classical.choice`, assemble `C`; the repo's
-  `P2u_factorsThrough_P1u_of_gram` is SQUARE-only so not directly reusable). Connect `prod v = B` to
-  `(v 0)·(v 1)` via `DeepestBlockDecomp.prod_eq_prodAux_mul_last` (cast-heavy).
-- `exists_right_lift` (`V = K·(v 1)`) — the row-dual.
-- `nReg_le_finrank_range_jointDiffL2` — the gauge-slice injection finrank (uses the Λ,Ρ inverses +
-  `finrank_le_finrank_of_injective`, skipping ker≃Mat(r)(r); `finrank_matrix`+`finrank_prod` for dims).
-NEXT TIDE: fill the 3 sorries → whole file clean-three → commit+push (attribute the genm-d1hfin base).
+★★★ STEP 2b LANDED clean-three (`D1HChartRank.lean`, `@719d3b8b`, pushed origin/genm-d1hchart):
+`nReg_le_finrank_range_jointDiffL2` is PROVED sorry-free — the 3 previously-open sorries
+(`exists_left_lift`, `exists_right_lift`, the gauge-slice finrank) are all closed; whole file
+clean-three (`#print axioms` = `[propext, Classical.choice, Quot.sound]`), full `lake build DLNFibre`
+green (2959 jobs), lint-clean. Sorry-free reusable bedrock in the file:
+- `jointDiffL2`; `isUnit_of_rank_eq_card` (`private`, dup-safe vs `DeepestLeadingBlock`);
+- `exists_rank_factorization` (B=U·V rank-r, from PUBLIC `block_elimination` re-derived LOCALLY — NO
+  Skeleton edit; controller may later de-privatise for a single-source export);
+- `exists_left/right_inverse_of_rank_eq_width/height` (Gram-matrix one-sided inverses Λ,Ρ);
+- `exists_factor_left_of_col_mem` (the column-containment factor-extraction `col(U)⊆col(M) ⟹ ∃C, U=M·C`,
+  built column-wise via `range(M.mulVecLin)` membership + `Classical.choice` — the Mathlib-absent piece);
+- `range_mulVecLin_le_of_eq_mul` + `col_mem_range_mulVecLin` (col-space inclusion infra);
+- `prod_entry`/`prod_eq_layerMul` (cast-clean L=2 layer-product; the opaque-width `HMul` quirk dodged
+  via the `RouteMBoxThresholdRRP.prod_two_layer_rrp` entry-formula idiom, NOT `prod_eq_prodAux_mul_last`);
+- `exists_left/right_lift` (`U=(v 0)·C`, `V=K·(v 1)`); `gaugeImage_mem_range` (gauge values ∈ range).
+The gauge-slice injection `{X | Λ·X=0}×Mat(r×H2) ↪ range(jointDiffL2)` (via `coprod` of explicit
+bundled `LinearMap`s, NOT `Matrix.mulLeftLinearMap` which is absent at this pin) has finrank exactly
+nReg = `(H0·r−r²)+r·H2` (`finrank_prod`+`finrank_matrix`+rank-nullity surjection); `finrank_le_of_injective`
++ `Submodule.finrank_mono`. NOT yet in the aggregator — controller wires DLNFibre.lean import + AxCheck.
 
 SPECIFY validated (the original jointDiffL2 SPECIFY, now subsumed by the adopted base above):
 - **`jointDiffL2 H v : Params H →ₗ[ℝ] Mat (H 0) (H 2)`**, `δ ↦ layer0 δ * layer1 v + layer0 v * layer1 δ`
