@@ -43,6 +43,8 @@ Lean now proves:
 measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
 measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
 aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+map_le_smul_map_of_le_smul_aemeasurable
+measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul
 exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
 ```
 
@@ -51,6 +53,10 @@ V` with a right inverse.  For any external source measure restricted to this
 image, assuming `readback` is a.e. measurable for that restricted measure, the
 pulled-back candidate theta measure is supported on `V` and pushes forward
 exactly to the restricted external source measure.
+
+The generic domination handoff also pushes any supplied domination of that
+candidate measure by a theta-domain reference measure restricted to `V` to a
+domination of the restricted external source measure on `sourceChart '' V`.
 
 Verification:
 
@@ -62,13 +68,14 @@ env LEAN_NUM_THREADS=3 lake build DLNFibre
 git diff --check
 ```
 
-Axiom probe for the new concrete theorem reports only the baseline
+Axiom probes for the new generic handoff theorem and the new generic
+a.e.-measurable map-domination theorem report only the baseline
 `[propext, Classical.choice, Quot.sound]`.
 
 Nonclaims: no source-rank coverage, no proof that the original prior is
-supported in one chart image, no density domination by the Jacobian-weighted
-passive product measure, no Haar transport, normal crossings, pole order, or
-RLCT extraction.
+supported in one chart image, no proof of density domination by the
+Jacobian-weighted passive product measure, no Haar transport, normal crossings,
+pole order, or RLCT extraction.
 
 ## 2026-06-30 A2 Case 2 passive theta compatible source right inverse
 

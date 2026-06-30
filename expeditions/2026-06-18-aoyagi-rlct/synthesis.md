@@ -18,6 +18,8 @@ New Lean names:
 measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
 measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
 aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+map_le_smul_map_of_le_smul_aemeasurable
+measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul
 exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
 ```
 
@@ -45,6 +47,19 @@ Measure.map sourceChart candidateMeasure =
   externalMeasure.restrict (sourceChart '' V)
 ```
 
+The generic domination handoff then proves that any supplied domination
+
+```text
+candidateMeasure ≤ c • thetaReference.restrict V
+```
+
+pushes forward to:
+
+```text
+externalMeasure.restrict (sourceChart '' V) ≤
+  c • Measure.map sourceChart (thetaReference.restrict V)
+```
+
 Xhigh API scout `Huygens` confirmed the proof route and the need for the
 explicit `AEMeasurable readback` hypothesis.  Xhigh source/scope scout
 `Linnaeus` confirmed the mathematical boundary: Aoyagi assumes a smooth
@@ -70,14 +85,15 @@ env LEAN_NUM_THREADS=3 lake build DLNFibre
 git diff --check
 ```
 
-Axiom probe for the new concrete theorem reports only the baseline
+Axiom probes for the new generic handoff theorem and the new generic
+a.e.-measurable map-domination theorem report only the baseline
 `[propext, Classical.choice, Quot.sound]`.
 
-Next boundary: conditional domination from this `candidateMeasure` to the
-passive-theta Jacobian-weighted product measure, and then a pushforward
-domination on the source image.  This theorem proves no source-rank coverage,
-no global source-prior support in one chart, no density comparison, no Haar
-transport, no normal crossings, no pole order, and no RLCT extraction.
+Next boundary: prove the domination from this `candidateMeasure` to the
+passive-theta Jacobian-weighted product measure.  The handoff now pushes such
+a supplied domination to the source image.  This theorem proves no source-rank
+coverage, no global source-prior support in one chart, no density comparison,
+no Haar transport, no normal crossings, no pole order, and no RLCT extraction.
 
 ## Latest A2 Case 2 Passive Theta Compatible Source Right Inverse - 2026-06-30
 

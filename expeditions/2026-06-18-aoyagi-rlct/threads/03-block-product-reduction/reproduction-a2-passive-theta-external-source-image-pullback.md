@@ -115,7 +115,14 @@ It also does not prove a density bound
 candidateMeasure.restrict V <= c • baseJacobianMeasure.restrict V.
 ```
 
-That domination remains the next source-prior/Jacobian handoff hypothesis or
-target.  No determinant-chart Haar transport, raw-order Haar transport, normal
-crossings, pole order, or RLCT extraction is proved here.
+That domination remains the next source-prior/Jacobian hypothesis or target.
+Once it is supplied, the generic domination handoff pushes it forward to the
+source image:
 
+```text
+externalMeasure.restrict (sourceChart '' V)
+  <= c • Measure.map sourceChart (baseJacobianMeasure.restrict V).
+```
+
+No determinant-chart Haar transport, raw-order Haar transport, normal
+crossings, pole order, or RLCT extraction is proved here.

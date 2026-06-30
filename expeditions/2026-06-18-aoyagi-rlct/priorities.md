@@ -37,22 +37,26 @@ New public names:
 measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
 measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
 aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+map_le_smul_map_of_le_smul_aemeasurable
+measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul
 exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
 ```
 
 This is the right way to introduce an external measure without naming a
-chart-produced passive measure as the original prior.  The remaining real
-frontier is a conditional domination handoff:
+chart-produced passive measure as the original prior.  A generic conditional
+domination handoff now pushes any supplied domination
 
 ```text
 candidateMeasure ≤ c • baseJ.restrict V
 ```
 
-and then source-image domination after pushing by `sourceChart`.
+to source-image domination after pushing by `sourceChart`.  The remaining real
+frontier is proving that domination for the intended source prior/Jacobian
+measure.
 
 Nonclaims: no proof that the original prior is supported in one chart image,
-no source-rank coverage, no density domination, no Haar transport, no normal
-crossings, no pole order, and no RLCT.
+no source-rank coverage, no proof of the density domination hypothesis, no
+Haar transport, no normal crossings, no pole order, and no RLCT.
 
 ## Latest controller decision - 2026-06-30, A2 Case 2 passive theta compatible source right inverse
 

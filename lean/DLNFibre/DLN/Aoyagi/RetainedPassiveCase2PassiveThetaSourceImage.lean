@@ -1,3 +1,4 @@
+import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
 
 /-!
@@ -115,6 +116,59 @@ theorem aemeasurable_of_continuousOn_of_measure_restrict_eq_self
   have hac : μ ≪ μ.restrict V := by
     rw [hsupport]
   exact hsource_restrict.mono_ac hac
+
+set_option linter.style.longLine false in
+/-- Conditional domination handoff from a pulled-back external image measure to
+the source image.
+
+If the portion of an external source measure on a measurable chart image is
+pulled back by `readback`, and that pulled-back measure is dominated by a
+theta-domain reference measure on `V`, then the restricted external source
+measure is dominated by the source-chart pushforward of the reference measure.
+
+This theorem assumes the domination; it does not prove source-prior density
+comparison, source-image coverage, Haar transport, normal crossings, pole
+order, or RLCT extraction. -/
+theorem measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul
+    {Θ E : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [OpensMeasurableSpace Θ] [MeasurableSpace E] [TopologicalSpace E] [BorelSpace E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (externalMeasure : Measure E) (thetaReference : Measure Θ)
+    (V : Set Θ) (c : ENNReal)
+    (hV : MeasurableSet V)
+    (himage : MeasurableSet (sourceChart '' V))
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hreadback : AEMeasurable readback (externalMeasure.restrict (sourceChart '' V)))
+    (hright : ∀ E ∈ sourceChart '' V, readback E ∈ V ∧ sourceChart (readback E) = E)
+    (hdom :
+      Measure.map readback (externalMeasure.restrict (sourceChart '' V)) ≤
+        c • thetaReference.restrict V) :
+    externalMeasure.restrict (sourceChart '' V) ≤
+      c • Measure.map sourceChart (thetaReference.restrict V) := by
+  let candidateMeasure : Measure Θ :=
+    Measure.map readback (externalMeasure.restrict (sourceChart '' V))
+  have hsupport : candidateMeasure.restrict V = candidateMeasure :=
+    measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
+      readback externalMeasure (sourceChart '' V) V himage hV hreadback
+      (fun E hE ↦ (hright E hE).1)
+  have hsource_candidate :
+      AEMeasurable sourceChart candidateMeasure :=
+    aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+      hsource_contOn hV hsupport
+  have hmap :
+      Measure.map sourceChart candidateMeasure =
+        externalMeasure.restrict (sourceChart '' V) :=
+    measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
+      sourceChart readback externalMeasure (sourceChart '' V) himage hreadback
+      hsource_candidate (fun E hE ↦ (hright E hE).2)
+  have hsource_ref :
+      AEMeasurable sourceChart (thetaReference.restrict V) :=
+    hsource_contOn.aemeasurable hV
+  have hpush :
+      Measure.map sourceChart candidateMeasure ≤
+        c • Measure.map sourceChart (thetaReference.restrict V) :=
+    map_le_smul_map_of_le_smul_aemeasurable hsource_ref hdom
+  simpa [candidateMeasure, hmap] using hpush
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 

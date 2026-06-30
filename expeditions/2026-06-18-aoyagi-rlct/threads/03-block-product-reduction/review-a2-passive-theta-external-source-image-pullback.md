@@ -45,21 +45,21 @@ The present theorem is therefore only the local measurable chart-image adapter
 for the portion of an external source measure already restricted to one
 passive-theta image.
 
-## Next Boundary
+## Domination Handoff
 
-The next handoff should be conditional domination:
+The follow-up generic handoff has also been formalized:
 
 ```text
 candidateMeasure ≤ c • baseJ.restrict V
 ```
 
-implying a source-image domination after pushing by `sourceChart`.  This was
-not included here because it needs a clean measurable-map inequality API or a
-separate a.e.-measurable pushforward monotonicity lemma.
+implies a source-image domination after pushing by `sourceChart`.
+
+The domination itself remains an explicit hypothesis; no source-prior/Jacobian
+density comparison is proved.
 
 ## Nonclaims
 
 No source-rank coverage, no proof that the original source prior is supported
 in one chart image, no source-prior density domination, no Haar transport, no
 normal crossings, no pole order, and no RLCT extraction.
-

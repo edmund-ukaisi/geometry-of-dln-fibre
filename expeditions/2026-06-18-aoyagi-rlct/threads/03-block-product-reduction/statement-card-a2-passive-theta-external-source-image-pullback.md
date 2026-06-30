@@ -16,6 +16,8 @@ Public generic names:
 measure_map_rightInverse_restrict_image_eq_self_of_aemeasurable
 measure_map_readback_restrict_image_restrict_eq_self_of_aemeasurable
 aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+map_le_smul_map_of_le_smul_aemeasurable
+measure_restrict_image_le_smul_map_of_map_readback_restrict_image_le_smul
 ```
 
 Concrete name:
@@ -60,21 +62,21 @@ Measure.map sourceChart candidateMeasure =
   externalMeasure.restrict (sourceChart '' V)
 ```
 
-The theorem deliberately stops before the domination pushforward:
+The generic domination handoff then proves:
 
 ```text
 candidateMeasure ≤ c • baseJ.restrict V
 ```
 
-to
+implies
 
 ```text
 externalMeasure.restrict (sourceChart '' V) ≤
   c • Measure.map sourceChart (baseJ.restrict V).
 ```
 
-That is the next conditional handoff once the right measurable-map API is
-chosen for pushing inequalities.
+Here `baseJ` can be any theta-domain reference measure; in the intended use it
+is the passive-theta Jacobian-weighted product measure.
 
 ## Inputs Used
 
@@ -84,6 +86,7 @@ chosen for pushing inequalities.
 - `Measure.map_congr`
 - `Measure.restrict_eq_self_of_ae_mem`
 - `ContinuousOn.aemeasurable`
+- `map_le_smul_map_of_le_smul_aemeasurable`
 - xhigh API scout `Huygens`, which confirmed the support-plus-pullback theorem
   shape and the need to assume `AEMeasurable readback` for the restricted
   external measure.
@@ -100,7 +103,7 @@ passive-theta chart image.
 - No proof that the original source prior is supported in one chart image.
 - No source-rank coverage or source-image equality with a source-rank stratum.
 - No proof that the pulled-back candidate measure is dominated by the
-  passive-theta Jacobian-weighted product measure.
-- No pushforward of such a domination to the source image in this theorem.
+  passive-theta Jacobian-weighted product measure; the theorem only pushes such
+  a supplied domination forward.
 - No determinant-chart Haar or raw-order Haar transport.
 - No normal crossings, pole order, or RLCT extraction.

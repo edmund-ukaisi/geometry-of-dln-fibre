@@ -323,6 +323,32 @@ theorem map_le_smul_map_of_le_smul
     _ = c • Measure.map f μ := by
       rw [Measure.map_smul]
 
+/-- A measure domination by a scalar multiple remains true after mapping by an
+a.e. measurable function, with the a.e. measurability checked for the
+dominating/reference measure. -/
+theorem map_le_smul_map_of_le_smul_aemeasurable
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {μ ν : Measure α} {c : ℝ≥0∞} {f : α → β}
+    (hfμ : AEMeasurable f μ)
+    (hν : ν ≤ c • μ) :
+    Measure.map f ν ≤ c • Measure.map f μ := by
+  let f' := AEMeasurable.mk f hfμ
+  have hν_ac : ν ≪ μ := Measure.absolutelyContinuous_of_le_smul hν
+  have hfν_eq : f =ᶠ[ae ν] f' :=
+    hν_ac.ae_le hfμ.ae_eq_mk
+  have hν_eq : Measure.map f ν = Measure.map f' ν :=
+    Measure.map_congr hfν_eq
+  have hμ_eq : Measure.map f μ = Measure.map f' μ :=
+    Measure.map_congr hfμ.ae_eq_mk
+  calc
+    Measure.map f ν = Measure.map f' ν := hν_eq
+    _ ≤ Measure.map f' (c • μ) :=
+      Measure.map_mono hν hfμ.measurable_mk
+    _ = c • Measure.map f' μ := by
+      rw [Measure.map_smul]
+    _ = c • Measure.map f μ := by
+      rw [hμ_eq]
+
 /-- If a measure is dominated by a scalar multiple of a restricted measure,
 then it is dominated by the same scalar multiple of the original measure. -/
 theorem measure_le_smul_of_le_smul_restrict
