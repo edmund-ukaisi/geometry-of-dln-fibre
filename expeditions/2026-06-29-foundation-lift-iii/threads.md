@@ -28,9 +28,9 @@ headlines + **both DLN payoffs** (`rlct_lossDLN_eq_half_cCodim_add_shift_via_aoy
 |------|------|----------|--------|-------|
 | P2.0 | scout | abf59d3e | ✅ PROCEED `1e099b56` | de-`Tuple` probe → small hypothesis-carrying 4-brick engine; H1/H2 named hyps; keystone restates clean. Codex-concurred. Report = authoritative Phase-2 design |
 | P2.2 | formaliser | aa04914a | ✅ DONE `64d75981` | keystone: **layered** `AffineGVariety` carrier `(ρ, R: k-domain, fρ)` (deformation deferred to extension) + `isPrime_ker_pullback` irreducibility + DLN `dlnOrbit` instance (DLN lemma re-derived). bare-Mathlib-mirror ns (→ L7 shadowing fix). green 3824 |
-| **P2.3** | formaliser | dispatching | 🔄 | A4.1 anchor `varietyDim 𝒪 = trdeg` on the carrier (from Phase-1 `ringKrullDim_eq_trdeg_of_fg_domain` + `isDomain_quotient_ker_pullback`); A0/L6.4 orbit↔vanishingIdeal bridge as hypothesis; DLN instance derives |
-| P2.1 | — | — | ⏳ folded → P2.4 | trace self-duality `traceEquiv` is reusable, but the abstract B1 likely uses Mathlib `finrank_range_dualMap_eq_finrank_range` (dropping `deltaT`); decide at P2.4 to avoid double-touching `OrbitDifferentialRank` |
-| P2.4 | — | — | ⏳ CRUX | B1 `GenericRankBound` (A4.3, H1) + the `deltaT`-vs-dualMap call — de-risk (H1) `L` signature first; decorrelated review |
+| P2.3 | formaliser | ad3cc933 | ✅ DONE `303db988` | A4.1 anchor `varietyDim 𝒪 = trdeg` in `Orbit/Dimension.lean`; `[Finite ρ]` minimal-hyp; DLN lemma re-derived to 3 lines (collapsed). green 3825, fidelity PASS + Codex. card `reviewed` |
+| P2.1 | — | — | ⏳ folded → P2.4 | trace self-duality `traceEquiv` reusable, but abstract B1 likely uses Mathlib `finrank_range_dualMap_eq_finrank_range` (dropping `deltaT`); decide at P2.4 to avoid double-touching `OrbitDifferentialRank` |
+| **P2.4** | formaliser | dispatching | 🔄 CRUX | B1 `GenericRankBound` (A4.3). **Guarded step 0:** add `AffineGVarietyDeformation` extension `(C0,C1,δ)` + pin H1 `DifferentialFactors` `L` against the DLN instance + prove `D_orbit_conj`/`mcΘ` discharge it — STOP+report if H1 can't pin. Then abstract B1 (+ Mathlib dualMap, drop `deltaT`) + wire DLN. **Decorrelated review after.** |
 | P2.5 | — | — | ⏳ CRUX | B3 `CotangentInjection` + B4 `SmoothCotangentDim` (A6.1, H2) — decorrelated review |
 | P2.6 | — | — | ⏳ | squeeze headline + L7 assembly |
 
