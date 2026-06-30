@@ -91,4 +91,125 @@ theorem splitHomeo_emb (hec : Function.Injective ec) :
     MeasurableEmbedding (splitHomeo hec) :=
   (splitHomeo hec).measurableEmbedding
 
+/-- `splitHomeo.symm` reads coordinate `c`: the selected branch from `s`, the complement from `t`. -/
+theorem splitHomeo_symm_apply (hec : Function.Injective ec)
+    (p : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ)) (c : Fin (flatDim H)) :
+    (splitHomeo hec).symm p c
+      = if hc : selPred ec c then p.1 ((selEquiv hec).symm ⟨c, hc⟩)
+        else p.2 ((complEquiv hec).symm ⟨c, hc⟩) := by
+  classical
+  simp only [splitHomeo, Homeomorph.symm_trans_apply, Homeomorph.prodCongr_symm,
+    Homeomorph.symm_symm, Homeomorph.coe_prodCongr,
+    Homeomorph.piEquivPiSubtypeProd_symm_apply, Prod.map_fst, Prod.map_snd,
+    Homeomorph.piCongrLeft_apply, Equiv.piCongrLeft, Equiv.piCongrLeft'_symm,
+    Equiv.symm_symm, Equiv.piCongrLeft'_apply]
+
+/-- `splitHomeo.symm` is `C^∞` (each coordinate is a `contDiff_apply` of `s` or `t`). -/
+theorem contDiff_splitHomeo_symm (hec : Function.Injective ec) :
+    ContDiff ℝ (⊤ : ℕ∞) (splitHomeo hec).symm := by
+  classical
+  rw [contDiff_pi]
+  intro c
+  have hfun : (fun p : (Fin m → ℝ) × (Fin (flatDim H - m) → ℝ) => (splitHomeo hec).symm p c)
+      = fun p => if hc : selPred ec c then p.1 ((selEquiv hec).symm ⟨c, hc⟩)
+          else p.2 ((complEquiv hec).symm ⟨c, hc⟩) := by
+    funext p; exact splitHomeo_symm_apply hec p c
+  rw [hfun]
+  by_cases hc : selPred ec c
+  · simp only [dif_pos hc]
+    exact (contDiff_apply ℝ _ ((selEquiv hec).symm ⟨c, hc⟩)).comp contDiff_fst
+  · simp only [dif_neg hc]
+    exact (contDiff_apply ℝ _ ((complEquiv hec).symm ⟨c, hc⟩)).comp contDiff_snd
+
+/-! ## Sub-build 3 — the raw residual and the flat-space loss germ -/
+
+variable {B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ} {v : Params H}
+  {er : Fin m → Fin (H 0) × Fin (H 2)}
+
+/-- The selected-entry predicate on loss-entry pairs: `(i,j)` is one of the `er`-rows. -/
+def selRow (er : Fin m → Fin (H 0) × Fin (H 2)) : Fin (H 0) × Fin (H 2) → Prop :=
+  fun ij => ∃ k, er k = ij
+
+instance instDecidableSelRow (er : Fin m → Fin (H 0) × Fin (H 2)) : DecidablePred (selRow er) :=
+  fun _ => Fintype.decidableExistsFintype
+
+/-- The RAW residual loss-entry vector `g₀ ∘ Ψsymm`: the `(i,j)` loss entry of
+`prod (gmapAt H v (Ψsymm w)) − B`, ZEROED on the selected `er`-rows (those become the `∑ s²` block).
+A function of the flat point `w` (pre-reindex), keyed by the loss-entry pair. -/
+noncomputable def rawResid (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    {m : ℕ} (er : Fin m → Fin (H 0) × Fin (H 2))
+    (Ψsymm : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+    (w : Fin (flatDim H) → ℝ) (ij : Fin (H 0) × Fin (H 2)) : ℝ :=
+  if selRow er ij then 0 else (prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2
+
+/-- **The selected/residual sum split** (network-free, `er` injective). For any `f`, the full
+double sum splits as the selected `er`-rows (reindexed by `k`) plus the zeroed-selected residual:
+
+    ∑_{(i,j)} f (i,j) = ∑_{k} f (er k) + ∑_{(i,j)} (if selRow er (i,j) then 0 else f (i,j)). -/
+theorem sum_split_selected (her : Function.Injective er) (f : Fin (H 0) × Fin (H 2) → ℝ) :
+    ∑ ij : Fin (H 0) × Fin (H 2), f ij
+      = (∑ k : Fin m, f (er k))
+        + ∑ ij : Fin (H 0) × Fin (H 2), (if selRow er ij then 0 else f ij) := by
+  classical
+  -- the selected finset = image of `er`
+  set S : Finset (Fin (H 0) × Fin (H 2)) := Finset.image er Finset.univ with hS
+  have hsel_mem : ∀ ij, ij ∈ S ↔ selRow er ij := by
+    intro ij; rw [hS, Finset.mem_image]
+    constructor
+    · rintro ⟨k, _, rfl⟩; exact ⟨k, rfl⟩
+    · rintro ⟨k, rfl⟩; exact ⟨k, Finset.mem_univ k, rfl⟩
+  -- selected sum reindexes to `∑ k`
+  have hsumS : ∑ ij ∈ S, f ij = ∑ k : Fin m, f (er k) := by
+    rw [hS, Finset.sum_image (fun a _ b _ h => her h)]
+  -- the residual sum drops the selected
+  have hresid : ∑ ij : Fin (H 0) × Fin (H 2), (if selRow er ij then 0 else f ij)
+      = ∑ ij ∈ Sᶜ, f ij := by
+    rw [← Finset.sum_compl_add_sum S (fun ij => if selRow er ij then 0 else f ij)]
+    have hSpart : ∑ ij ∈ S, (if selRow er ij then 0 else f ij) = 0 := by
+      apply Finset.sum_eq_zero; intro ij hij; rw [if_pos ((hsel_mem ij).mp hij)]
+    rw [hSpart, add_zero]
+    apply Finset.sum_congr rfl; intro ij hij
+    have hnot : ¬ selRow er ij := fun h => (Finset.mem_compl.mp hij) ((hsel_mem ij).mpr h)
+    rw [if_neg hnot]
+  rw [hresid, ← hsumS]
+  rw [add_comm (∑ ij ∈ S, f ij) (∑ ij ∈ Sᶜ, f ij)]
+  exact (Finset.sum_compl_add_sum S f).symm
+
+/-- **Germ A — the flat-space loss decomposition.** Near the flat origin, the chart-pulled loss
+`lossFlatShift ∘ Ψsymm` splits as the `m` selected squared coordinates `(w (ec k))²` plus the
+squared residual `∑_{(i,j)} (rawResid w (i,j))²` (the selected entries become coordinates via
+`selected_lossEntry_germ`; the rest are the residual, with `0²` collapsing the selected slots). -/
+theorem germA (hopt : prod H v = B) (her : Function.Injective er) (hec : Function.Injective ec)
+    (Ψsymm : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+    (hrinv : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ), chartΦ H B v er ec (Ψsymm w) = w) :
+    (fun w => lossFlatShift H B v (Ψsymm w)) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+      fun w => (∑ k : Fin m, (w (ec k)) ^ 2)
+        + ∑ ij : Fin (H 0) × Fin (H 2), (rawResid B v er Ψsymm w ij) ^ 2 := by
+  classical
+  -- the selected-entry germ for each `k`
+  have hsel : ∀ k : Fin m, ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ),
+      (prod H (gmapAt H v (Ψsymm w)) - B) (er k).1 (er k).2 = w (ec k) :=
+    fun k => selected_lossEntry_germ hopt hec Ψsymm hrinv k
+  filter_upwards [Filter.eventually_all.2 hsel] with w hw
+  -- expand the loss as the double sum of squared entries
+  rw [lossFlatShift_eq_sum_sq]
+  -- fold the `Fin (H 0) × Fin (H 2)` double sum to a product index (`H (Fin.last 2) = H 2` defeq)
+  have hfold : (∑ i, ∑ j, ((prod H (gmapAt H v (Ψsymm w)) - B) i j) ^ 2)
+      = ∑ ij : Fin (H 0) × Fin (H 2), ((prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2) ^ 2 :=
+    (Fintype.sum_prod_type (f := fun ij : Fin (H 0) × Fin (H 2) =>
+      ((prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2) ^ 2)).symm
+  rw [hfold]
+  -- split selected/residual
+  rw [sum_split_selected (er := er) her
+    (fun ij => ((prod H (gmapAt H v (Ψsymm w)) - B) ij.1 ij.2) ^ 2)]
+  congr 1
+  · -- selected: each squared entry becomes `(w (ec k))²`
+    apply Finset.sum_congr rfl; intro k _; rw [hw k]
+  · -- residual: `if sel then 0 else (entry)² = (rawResid)²`
+    apply Finset.sum_congr rfl; intro ij _
+    rw [rawResid]
+    by_cases hsr : selRow er ij
+    · rw [if_pos hsr, if_pos hsr]; norm_num
+    · rw [if_neg hsr, if_neg hsr]
+
 end DLNFibre.DLN.RLCT
