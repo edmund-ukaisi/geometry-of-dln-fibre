@@ -23,6 +23,7 @@ import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
 import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 
 /-!
 # Axiom-hygiene check
@@ -177,6 +178,13 @@ open DLNFibre.DLN.RLCT
 #print axioms hSmeared_squareSmeared_L2
 #print axioms smeared_deepRank_eq_M0
 #print axioms smearedChart_of_square
+
+-- R1-LOWER BOUNDARY-SMEARED branch, the spine's `hSmeared` SLOT at L=2 (the named atom genm-r1lower's
+-- spine wiring consumes) — must be CLEAN-THREE [propext, Classical.choice, Quot.sound], S2-FREE, no
+-- `sorryAx`: `hSmeared_L2` is the closer `hSmeared_squareSmeared_L2` CURRIED into the exact slot shape
+-- `(2 ≤ L) → BoundarySmeared M → BoxDiverges M c' ε`; `hSmeared_L2_apply` is the uncurried reading.
+#print axioms hSmeared_L2
+#print axioms hSmeared_L2_apply
 
 -- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
 -- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is

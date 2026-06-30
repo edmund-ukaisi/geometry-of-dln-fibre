@@ -547,6 +547,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 -- S2-FREE. CLOSES `hSmeared` OUTRIGHT (not reduced); the non-square case is skipped (L=2-square always).
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedDecodeL2
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
+-- R1-LOWER BOUNDARY-SMEARED `hSmeared` slot at L=2: `hSmeared_L2` (the named atom the achiever spine
+-- consumes), curried from `hSmeared_squareSmeared_L2`. Reviewer-PASS (slot-match + totality + vacuity
+-- M=(1,2,1) + clean-three). genm-r1smeared @8ab4419c.
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 -- L2 Skeleton rung 1/5 (`product_reduction`) at L=2: the deepest-point diffeo bridge wired into the
 -- gauge-construction. `deepest_gauge_construction_L2` is the standalone clean-three L=2 witness;
 -- `deepest_gauge_construction` dispatches L<3 to it and carries the #120-tracked L≥3-arm sorries.
