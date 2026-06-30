@@ -2847,6 +2847,32 @@ No such claim is formalisation-ready until both fields are filled.
   the exponent vectors stated in the paper.
 - **Tier.** New Lean packaging of source-guided finite bookkeeping; the full
   transition proof is not yet established.
+- **Current status addendum, combined recurrence branch progress,
+  2026-06-30.** Lean now adds the recurrence-aware branch state
+  `AoyagiRecurrenceBranchState` in
+  `lean/DLNFibre/DLN/Aoyagi/BlowupBranchProgress.lean`.  Its progress measure
+  is a weighted natural encoding of
+  `(remaining, stageBudget, abovePivotCount)`:
+  `(remaining * (L+2) + stageBudget) * (#actualWidthLabelFinset + 1) +
+  abovePivotCount`.  Same-stage Case 1(2)/Case 2 moves decrease `remaining`
+  by support growth.  Stage handoffs `(S,J) -> (S+1,0)` weakly decrease
+  `remaining` by introduced-domain monotonicity and strictly decrease
+  `stageBudget`.  Case 1(1) selected-old same-domain lowering keeps the first
+  two coordinates fixed and decreases `abovePivotCount`.  Reproduction,
+  statement card, and review are at
+  `threads/04-blow-up-certificate/reproduction-a4-combined-recurrence-branch-progress.md`,
+  `threads/04-blow-up-certificate/statement-card-a4-combined-recurrence-branch-progress.md`,
+  and
+  `threads/04-blow-up-certificate/review-a4-combined-recurrence-branch-progress.md`.
+  Focused local build, direct warning check, full local build, no-sorry audit,
+  whitespace check, and direct axiom probe passed; the new declarations report
+  only `[propext, Classical.choice, Quot.sound]`.  Xhigh source explorer
+  `Einstein` independently recommended this three-coordinate finite measure
+  including the stage handoff.  Xhigh source/scope reviewer `Heisenberg` and
+  xhigh Lean/API reviewer `Ptolemy` returned PASS.  This is still finite
+  branch-progress bookkeeping only: it proves no source-production payloads,
+  branch-guard coverage, terminal payloads, full analytic-atlas branch
+  termination theorem, normal crossings, pole order, or RLCT.
 - **Current status addendum, Case 1(1) same-domain plateau progress,
   2026-06-30.** Lean now adds a separate same-domain finite level-count
   progress kernel for Case 1(1) in
@@ -3097,7 +3123,9 @@ No such claim is formalisation-ready until both fields are filled.
   Case 1(2) row-strip progress bridge at
   `threads/04-blow-up-certificate/reproduction-a4-case1-rowstrip-progress-bridge.md`;
   Case 1(1) same-domain plateau progress at
-  `threads/04-blow-up-certificate/reproduction-a4-case1-same-domain-plateau-progress.md`.
+  `threads/04-blow-up-certificate/reproduction-a4-case1-same-domain-plateau-progress.md`;
+  combined recurrence branch progress at
+  `threads/04-blow-up-certificate/reproduction-a4-combined-recurrence-branch-progress.md`.
 - **Reproduction check.** failed/blocked at
   `threads/04-blow-up-certificate/reproduction-check.md`; source-image scout
   `Russell the 2nd` and pen-and-paper scout `Hume the 2nd` independently
@@ -3310,6 +3338,8 @@ No such claim is formalisation-ready until both fields are filled.
 	  `threads/04-blow-up-certificate/review-a4-case1-rowstrip-progress-bridge.md`.
 	  Review of the Case 1(1) same-domain plateau progress kernel is saved at
 	  `threads/04-blow-up-certificate/review-a4-case1-same-domain-plateau-progress.md`.
+	  Review of the combined recurrence branch progress kernel is saved at
+	  `threads/04-blow-up-certificate/review-a4-combined-recurrence-branch-progress.md`.
 - **Lean target.** No full transition theorem yet. Safe narrow targets must
   stay inside finite bookkeeping or monomial divisibility lemmas that do not
   assert Aoyagi's Case 2 transition. The first such target is landed in
@@ -3338,7 +3368,25 @@ No such claim is formalisation-ready until both fields are filled.
   `abovePivotLevelProgress_of_case1SelectedOldLevelMoveData`, and
   `abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain`; these
   prove strict finite count decrease for Case 1(1) selected-old lowering, but
-  are not yet a combined branch termination theorem. Also
+  are not yet a combined branch termination theorem. Combined recurrence branch
+  progress:
+  `AoyagiRecurrenceBranchState`, `support`, `toIntroducedState`, `remaining`,
+  `stageBudget`, `abovePivotCount`, `progressStageBase`, `progressWeightBase`,
+  `progressMeasure`, `progressStep`, `progressStep_wellFounded`,
+  `progressStep_of_toIntroducedState_progress`,
+  `sameStageChildWithRecurrence_progress_of_actualWidth`,
+  `sameStageChildWithRecurrence_progress_of_prefixBound`,
+  `case2SuccChild_progress_of_prefixBound`,
+  `sameStageChildWithRecurrence_progress_of_case1DisplayedRowStripPayload`,
+  `sameStageChildWithRecurrence_progress_of_case2DisplayedPayload`,
+  `stageSuccZeroWithRecurrence_progress`,
+  `sameDomainWithRecurrence_progress_of_abovePivotProgress`,
+  `sameDomainWithRecurrence_progress_of_case1SelectedOldLevelMoveData`, and
+  `case1SelectedOldLevelMove_progress_of_sameDomain`; these prove a single
+  finite well-founded progress relation combining support growth, stage
+  handoff, and same-domain selected-old lowering, but still do not construct
+  source production, branch guards, terminal payloads, or full analytic-atlas
+  termination. Also
   proved terminal-exponent split API:
   `terminalExponent`, `printedCase2Vector`, `prefixMin`,
   `prefixCase2Vector`, `prefixMin_step_factor_zero`,

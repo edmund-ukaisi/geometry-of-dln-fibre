@@ -419,6 +419,484 @@ theorem abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain
 
 end IntroducedLabelRecurrenceState
 
+/-- A branch state carrying both the finite branch position `(S,J)` and the
+recurrence-level data over the labels introduced at that position.
+
+This is a bookkeeping state for progress only.  It does not assert that the
+recurrence data came from a produced chart or a transition invariant. -/
+structure AoyagiRecurrenceBranchState (L : ℕ) (n : ℕ → ℕ) (α : Type*) where
+  S : ℕ
+  J : ℕ
+  stage_pos : 1 ≤ S
+  stage_le : S ≤ L
+  recurrence : IntroducedLabelRecurrenceState L n S J α
+
+namespace AoyagiRecurrenceBranchState
+
+/-- The finite support of labels introduced at a recurrence-aware branch
+state. -/
+def support {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : Finset (Σ _ : ℕ, ℕ) :=
+  introducedLabelFinset L n s.S s.J
+
+/-- Forget the recurrence data, retaining only the support-growth branch
+state. -/
+def toIntroducedState {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    AoyagiIntroducedLabelBranchState L n where
+  S := s.S
+  J := s.J
+  stage_pos := s.stage_pos
+  stage_le := s.stage_le
+
+/-- The number of actual-width source labels not yet introduced. -/
+def remaining (L : ℕ) (n : ℕ → ℕ) {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : ℕ :=
+  (actualWidthLabelFinset L n).card - s.support.card
+
+/-- The recurrence-aware remaining-label coordinate agrees with the
+support-only branch state's remaining-label coordinate. -/
+theorem remaining_eq_toIntroducedState_remaining
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    remaining L n s =
+      AoyagiIntroducedLabelBranchState.remaining L n s.toIntroducedState := by
+  rfl
+
+/-- The number of already introduced labels whose recurrence level is still
+above the current pivot level. -/
+def abovePivotCount {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : ℕ :=
+  s.recurrence.abovePivotLevelFinset.card
+
+/-- The remaining stage budget.  This coordinate handles stage handoffs where
+the introduced-label support may stay unchanged. -/
+def stageBudget {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : ℕ :=
+  L + 1 - s.S
+
+/-- The fixed base used to encode the stage coordinate. -/
+def progressStageBase (L : ℕ) : ℕ :=
+  L + 2
+
+/-- The fixed base used to append the above-pivot coordinate to the weighted
+remaining/stage block.  The above-pivot coordinate is always strictly smaller
+than this base. -/
+def progressWeightBase (L : ℕ) (n : ℕ → ℕ) : ℕ :=
+  (actualWidthLabelFinset L n).card + 1
+
+/-- Weighted progress measure: first decrease the number of not-yet introduced
+labels; when that is unchanged, decrease the stage budget; when both are
+unchanged, decrease the above-pivot old-label count. -/
+def progressMeasure (L : ℕ) (n : ℕ → ℕ) {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : ℕ :=
+  (remaining L n s * progressStageBase L + s.stageBudget) *
+    progressWeightBase L n + s.abovePivotCount
+
+/-- The recurrence-aware support is always contained in the finite actual-width
+source-label set. -/
+theorem support_subset_actual {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    s.support ⊆ actualWidthLabelFinset L n := by
+  intro p hp
+  exact mem_actualWidthLabelFinset.mpr
+    (actualWidthLabel_of_introducedLabel (mem_introducedLabelFinset.mp hp))
+
+/-- The above-pivot count is bounded by the number of actual-width source
+labels. -/
+theorem abovePivotCount_le_actualWidthCard
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    s.abovePivotCount ≤ (actualWidthLabelFinset L n).card := by
+  classical
+  apply Finset.card_le_card
+  intro p hp
+  have hp' := (IntroducedLabelRecurrenceState.mem_abovePivotLevelFinset
+    s.recurrence p).mp hp
+  exact mem_actualWidthLabelFinset.mpr
+    (actualWidthLabel_of_introducedLabel hp'.1)
+
+/-- The above-pivot count is strictly below the progress-measure base. -/
+theorem abovePivotCount_lt_progressWeightBase
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    s.abovePivotCount < progressWeightBase L n := by
+  have hle := abovePivotCount_le_actualWidthCard s
+  dsimp [progressWeightBase]
+  omega
+
+/-- The stage budget is strictly below its encoding base. -/
+theorem stageBudget_lt_progressStageBase
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) :
+    s.stageBudget < progressStageBase L := by
+  dsimp [stageBudget, progressStageBase]
+  omega
+
+/-- Strict support growth decreases the first coordinate of the combined
+measure. -/
+theorem remaining_lt_of_support_ssubset
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (h : parent.support ⊂ child.support) :
+    remaining L n child < remaining L n parent := by
+  have hcard : parent.support.card < child.support.card := Finset.card_lt_card h
+  have hchild :
+      child.support.card ≤ (actualWidthLabelFinset L n).card :=
+    Finset.card_le_card (support_subset_actual child)
+  simp [remaining]
+  omega
+
+/-- Support monotonicity weakly decreases the remaining-label coordinate. -/
+theorem remaining_le_of_support_subset
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (h : parent.support ⊆ child.support) :
+    remaining L n child ≤ remaining L n parent := by
+  have hcard : parent.support.card ≤ child.support.card := Finset.card_le_card h
+  have hchild :
+      child.support.card ≤ (actualWidthLabelFinset L n).card :=
+    Finset.card_le_card (support_subset_actual child)
+  simp [remaining]
+  omega
+
+/-- A bounded second coordinate lets a strict first-coordinate decrease
+decrease the usual weighted natural encoding. -/
+theorem weightedNat_lt_of_left_lt {a a' b b' base : ℕ}
+    (hb : b < base) (ha : a < a') :
+    a * base + b < a' * base + b' := by
+  have hsucc_le : a + 1 ≤ a' := Nat.succ_le_of_lt ha
+  have hlt_succ : a * base + b < (a + 1) * base := by
+    rw [Nat.add_one_mul]
+    exact Nat.add_lt_add_left hb (a * base)
+  have hle_parent : (a + 1) * base ≤ a' * base :=
+    Nat.mul_le_mul_right base hsucc_le
+  have hle_parent_add : a' * base ≤ a' * base + b' :=
+    Nat.le_add_right _ _
+  exact lt_of_lt_of_le hlt_succ (le_trans hle_parent hle_parent_add)
+
+/-- A decrease in the first coordinate decreases the weighted natural measure,
+regardless of the lower coordinates. -/
+theorem progressMeasure_lt_of_remaining_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child < remaining L n parent) :
+    progressMeasure L n child < progressMeasure L n parent := by
+  let stageBase := progressStageBase L
+  let aboveBase := progressWeightBase L n
+  let childBlock := remaining L n child * stageBase + child.stageBudget
+  let parentBlock := remaining L n parent * stageBase + parent.stageBudget
+  have hchildStage : child.stageBudget < stageBase := by
+    simpa [stageBase] using stageBudget_lt_progressStageBase child
+  have hblock : childBlock < parentBlock := by
+    simpa [childBlock, parentBlock, stageBase] using
+      weightedNat_lt_of_left_lt
+        (b' := parent.stageBudget) hchildStage hremaining
+  have hchildAbove : child.abovePivotCount < aboveBase := by
+    simpa [aboveBase] using abovePivotCount_lt_progressWeightBase child
+  simpa [progressMeasure, childBlock, parentBlock, stageBase, aboveBase] using
+    weightedNat_lt_of_left_lt
+      (b' := parent.abovePivotCount) hchildAbove hblock
+
+/-- If the introduced-label coordinate is unchanged, a decrease in the stage
+budget decreases the weighted natural measure. -/
+theorem progressMeasure_lt_of_remaining_eq_of_stageBudget_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child = remaining L n parent)
+    (hstage : child.stageBudget < parent.stageBudget) :
+    progressMeasure L n child < progressMeasure L n parent := by
+  let aboveBase := progressWeightBase L n
+  let childBlock :=
+    remaining L n child * progressStageBase L + child.stageBudget
+  let parentBlock :=
+    remaining L n parent * progressStageBase L + parent.stageBudget
+  have hblock : childBlock < parentBlock := by
+    simpa [childBlock, parentBlock, hremaining] using
+      Nat.add_lt_add_left hstage
+        (remaining L n parent * progressStageBase L)
+  have hchildAbove : child.abovePivotCount < aboveBase := by
+    simpa [aboveBase] using abovePivotCount_lt_progressWeightBase child
+  simpa [progressMeasure, childBlock, parentBlock, aboveBase] using
+    weightedNat_lt_of_left_lt
+      (b' := parent.abovePivotCount) hchildAbove hblock
+
+/-- If the introduced-label and stage coordinates are unchanged, a decrease in
+the above-pivot count decreases the weighted natural measure. -/
+theorem progressMeasure_lt_of_remaining_eq_of_stageBudget_eq_of_abovePivotCount_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child = remaining L n parent)
+    (hstage : child.stageBudget = parent.stageBudget)
+    (habove : child.abovePivotCount < parent.abovePivotCount) :
+    progressMeasure L n child < progressMeasure L n parent := by
+  simpa [progressMeasure, hremaining, hstage] using
+    Nat.add_lt_add_left habove
+      ((remaining L n parent * progressStageBase L + parent.stageBudget) *
+        progressWeightBase L n)
+
+/-- Combined recurrence-aware progress relation. -/
+def progressStep (L : ℕ) (n : ℕ → ℕ) (α : Type*) :
+    AoyagiRecurrenceBranchState L n α →
+      AoyagiRecurrenceBranchState L n α → Prop :=
+  fun child parent ↦ progressMeasure L n child < progressMeasure L n parent
+
+/-- The combined recurrence-aware progress relation is well-founded. -/
+theorem progressStep_wellFounded
+    (L : ℕ) (n : ℕ → ℕ) (α : Type*) :
+    WellFounded (progressStep L n α) :=
+  InvImage.wf (progressMeasure L n) Nat.lt_wfRel.wf
+
+/-- A first-coordinate decrease gives a combined progress step. -/
+theorem progressStep_of_remaining_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child < remaining L n parent) :
+    progressStep L n α child parent :=
+  progressMeasure_lt_of_remaining_lt hremaining
+
+/-- Support-only introduced-label progress gives recurrence-aware progress by
+decreasing the first coordinate of the combined measure. -/
+theorem progressStep_of_toIntroducedState_progress
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (h :
+      AoyagiIntroducedLabelBranchState.progressStep L n
+        child.toIntroducedState parent.toIntroducedState) :
+    progressStep L n α child parent := by
+  exact progressStep_of_remaining_lt h
+
+/-- A weak first-coordinate decrease and strict stage-budget decrease give a
+combined progress step. -/
+theorem progressStep_of_remaining_le_of_stageBudget_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child ≤ remaining L n parent)
+    (hstage : child.stageBudget < parent.stageBudget) :
+    progressStep L n α child parent := by
+  rcases lt_or_eq_of_le hremaining with hlt | heq
+  · exact progressMeasure_lt_of_remaining_lt hlt
+  · exact progressMeasure_lt_of_remaining_eq_of_stageBudget_lt heq hstage
+
+/-- A same-support decrease in the above-pivot count gives a combined progress
+step. -/
+theorem progressStep_of_remaining_eq_of_stageBudget_eq_of_abovePivotCount_lt
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {child parent : AoyagiRecurrenceBranchState L n α}
+    (hremaining : remaining L n child = remaining L n parent)
+    (hstage : child.stageBudget = parent.stageBudget)
+    (habove : child.abovePivotCount < parent.abovePivotCount) :
+    progressStep L n α child parent :=
+  progressMeasure_lt_of_remaining_eq_of_stageBudget_eq_of_abovePivotCount_lt
+    hremaining hstage habove
+
+/-- Replace only the recurrence data, staying over the same branch domain
+`(S,J)`. -/
+def sameDomainWithRecurrence
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S s.J α) :
+    AoyagiRecurrenceBranchState L n α where
+  S := s.S
+  J := s.J
+  stage_pos := s.stage_pos
+  stage_le := s.stage_le
+  recurrence := recurrence
+
+/-- Advance to `(S,J+1)` with supplied recurrence data over the larger
+introduced-label domain. -/
+def sameStageChildWithRecurrence
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S (s.J + 1) α) :
+    AoyagiRecurrenceBranchState L n α where
+  S := s.S
+  J := s.J + 1
+  stage_pos := s.stage_pos
+  stage_le := s.stage_le
+  recurrence := recurrence
+
+/-- Advance to the next stage with `J=0` and supplied recurrence data over the
+new stage domain. -/
+def stageSuccZeroWithRecurrence
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (hstage : s.S + 1 ≤ L)
+    (recurrence : IntroducedLabelRecurrenceState L n (s.S + 1) 0 α) :
+    AoyagiRecurrenceBranchState L n α where
+  S := s.S + 1
+  J := 0
+  stage_pos := by omega
+  stage_le := hstage
+  recurrence := recurrence
+
+/-- Case 2 recurrence successor as a recurrence-aware branch child. -/
+def case2SuccChild
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) (u : α) :
+    AoyagiRecurrenceBranchState L n α :=
+  sameStageChildWithRecurrence s (s.recurrence.case2Succ u)
+
+/-- Case 1(1) selected-old level move as a same-domain recurrence-aware branch
+child. -/
+def case1SelectedOldLevelMove
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) (s0 k0 : ℕ) :
+    AoyagiRecurrenceBranchState L n α :=
+  sameDomainWithRecurrence s (s.recurrence.case1SelectedOldLevelMove s0 k0)
+
+/-- Same-stage support growth gives combined recurrence-aware progress.  The
+recurrence data of the child is arbitrary here; this theorem uses only the
+finite introduced-label domain growth. -/
+theorem sameStageChildWithRecurrence_progress_of_actualWidth
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S (s.J + 1) α)
+    (hJ : s.J + 1 ≤ n (s.S + 1)) :
+    progressStep L n α (sameStageChildWithRecurrence s recurrence) s := by
+  exact progressStep_of_remaining_lt
+    (remaining_lt_of_support_ssubset (by
+      simpa [support, sameStageChildWithRecurrence] using
+        AoyagiIntroducedLabelBranchState.support_ssubset_case2_increment
+          L n s.stage_pos s.stage_le hJ))
+
+/-- The prefix-minimum continuation bound gives same-stage combined progress. -/
+theorem sameStageChildWithRecurrence_progress_of_prefixBound
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S (s.J + 1) α)
+    (hJ : s.J + 1 ≤ prefixMinNat n (s.S + 1)) :
+    progressStep L n α (sameStageChildWithRecurrence s recurrence) s :=
+  sameStageChildWithRecurrence_progress_of_actualWidth s recurrence
+    (le_trans hJ (prefixMinNat_le_width n (by omega : 1 ≤ s.S + 1)))
+
+/-- The concrete Case 2 recurrence successor gives combined progress under the
+prefix-minimum continuation bound. -/
+theorem case2SuccChild_progress_of_prefixBound
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) (u : α)
+    (hJ : s.J + 1 ≤ prefixMinNat n (s.S + 1)) :
+    progressStep L n α (s.case2SuccChild u) s :=
+  sameStageChildWithRecurrence_progress_of_prefixBound s
+    (s.recurrence.case2Succ u) hJ
+
+/-- A displayed Case 1(2) row-strip `J`-increment payload gives combined
+progress for any supplied recurrence data over the pre- and post-domains. -/
+theorem sameStageChildWithRecurrence_progress_of_case1DisplayedRowStripPayload
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (payload :
+      Case1DisplayedRowStripJIncrementPayload L n S J t numerator leastValue)
+    (preRecurrence : IntroducedLabelRecurrenceState L n S J α)
+    (postRecurrence : IntroducedLabelRecurrenceState L n S (J + 1) α) :
+    progressStep L n α
+      ⟨S, J + 1, payload.newLabelActualWidth.1,
+        payload.newLabelActualWidth.2.1, postRecurrence⟩
+      ⟨S, J, payload.newLabelActualWidth.1,
+        payload.newLabelActualWidth.2.1, preRecurrence⟩ := by
+  let parent : AoyagiRecurrenceBranchState L n α :=
+    ⟨S, J, payload.newLabelActualWidth.1,
+      payload.newLabelActualWidth.2.1, preRecurrence⟩
+  change progressStep L n α
+    (sameStageChildWithRecurrence parent postRecurrence) parent
+  exact sameStageChildWithRecurrence_progress_of_actualWidth parent postRecurrence
+    payload.newLabelActualWidth.2.2.2
+
+/-- A displayed Case 2 `J`-increment payload gives combined progress for any
+supplied recurrence data over the pre- and post-domains. -/
+theorem sameStageChildWithRecurrence_progress_of_case2DisplayedPayload
+    {L : ℕ} {n : ℕ → ℕ} {S J : ℕ} {α : Type*}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (payload : Case2DisplayedJIncrementPayload L n S J t numerator leastValue)
+    (preRecurrence : IntroducedLabelRecurrenceState L n S J α)
+    (postRecurrence : IntroducedLabelRecurrenceState L n S (J + 1) α) :
+    progressStep L n α
+      ⟨S, J + 1, payload.newLabelActualWidth.1,
+        payload.newLabelActualWidth.2.1, postRecurrence⟩
+      ⟨S, J, payload.newLabelActualWidth.1,
+        payload.newLabelActualWidth.2.1, preRecurrence⟩ := by
+  let parent : AoyagiRecurrenceBranchState L n α :=
+    ⟨S, J, payload.newLabelActualWidth.1,
+      payload.newLabelActualWidth.2.1, preRecurrence⟩
+  change progressStep L n α
+    (sameStageChildWithRecurrence parent postRecurrence) parent
+  exact sameStageChildWithRecurrence_progress_of_actualWidth parent postRecurrence
+    payload.newLabelActualWidth.2.2.2
+
+/-- A stage handoff `(S,J) -> (S+1,0)` gives combined progress from finite
+domain monotonicity and strict stage-budget decrease.  The recurrence data of
+the child is supplied; no source-production claim is made. -/
+theorem stageSuccZeroWithRecurrence_progress
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    (hstage : s.S + 1 ≤ L)
+    (recurrence : IntroducedLabelRecurrenceState L n (s.S + 1) 0 α) :
+    progressStep L n α
+      (stageSuccZeroWithRecurrence s hstage recurrence) s := by
+  exact progressStep_of_remaining_le_of_stageBudget_lt
+    (remaining_le_of_support_subset (by
+      simpa [support, stageSuccZeroWithRecurrence] using
+        introducedLabelFinset_subset_of_state_le
+          (L := L) (n := n) (S := s.S) (J := s.J)
+          (S' := s.S + 1) (J' := 0)
+          (Or.inl (Nat.lt_succ_self s.S))))
+    (by
+      dsimp [stageBudget, stageSuccZeroWithRecurrence]
+      omega)
+
+/-- Replacing the recurrence data over the same domain by an above-pivot
+progress step gives combined recurrence-aware progress. -/
+theorem sameDomainWithRecurrence_progress_of_abovePivotProgress
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    {recurrence : IntroducedLabelRecurrenceState L n s.S s.J α}
+    (h :
+      IntroducedLabelRecurrenceState.abovePivotLevelProgress
+        (L := L) (n := n) (S := s.S) (J := s.J) (α := α)
+        recurrence s.recurrence) :
+    progressStep L n α (sameDomainWithRecurrence s recurrence) s := by
+  exact progressStep_of_remaining_eq_of_stageBudget_eq_of_abovePivotCount_lt
+    (by simp [remaining, support, sameDomainWithRecurrence])
+    (by simp [stageBudget, sameDomainWithRecurrence])
+    (by simpa [abovePivotCount, sameDomainWithRecurrence] using h)
+
+/-- Supplied Case 1(1) selected-old level-move data gives combined
+same-domain recurrence-aware progress. -/
+theorem sameDomainWithRecurrence_progress_of_case1SelectedOldLevelMoveData
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    {J1 s0 k0 : ℕ}
+    {postRecurrence : IntroducedLabelRecurrenceState L n s.S s.J α}
+    {u : α}
+    (data :
+      IntroducedLabelRecurrenceState.Case1SelectedOldLevelMoveData
+        (J1 := J1) s.recurrence postRecurrence s0 k0 u)
+    (hJ1 : 1 ≤ J1) :
+    progressStep L n α (sameDomainWithRecurrence s postRecurrence) s :=
+  sameDomainWithRecurrence_progress_of_abovePivotProgress s
+    (IntroducedLabelRecurrenceState.abovePivotLevelProgress_of_case1SelectedOldLevelMoveData
+      data hJ1)
+
+/-- The concrete Case 1(1) selected-old level move gives combined same-domain
+recurrence-aware progress. -/
+theorem case1SelectedOldLevelMove_progress_of_sameDomain
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α)
+    {J1 s0 k0 : ℕ}
+    {t t' : ℕ → ℕ → ℕ → ℤ}
+    {numerator numerator' leastValue leastValue' : ℕ → ℕ → ℤ}
+    (sameDomain :
+      Case1SelectedOldSuppliedSameDomainBoundary L n s.S s.J J1 s0 k0
+        s.recurrence.level t t' numerator numerator' leastValue leastValue') :
+    progressStep L n α (s.case1SelectedOldLevelMove s0 k0) s :=
+  sameDomainWithRecurrence_progress_of_abovePivotProgress s
+    (IntroducedLabelRecurrenceState.abovePivotLevelProgress_case1SelectedOldLevelMove_of_sameDomain
+      s.recurrence sameDomain)
+
+end AoyagiRecurrenceBranchState
+
 end Aoyagi
 end DLN
 end DLNFibre

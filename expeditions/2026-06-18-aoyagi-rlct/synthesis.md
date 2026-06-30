@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A4 Combined Recurrence Branch Progress - 2026-06-30
+
+`BlowupBranchProgress.lean` now adds a recurrence-aware progress state that
+combines the support-growth lane with the Case 1(1) same-domain level-count
+lane.
+
+New Lean names:
+
+```text
+AoyagiRecurrenceBranchState
+AoyagiRecurrenceBranchState.support
+AoyagiRecurrenceBranchState.toIntroducedState
+AoyagiRecurrenceBranchState.remaining
+AoyagiRecurrenceBranchState.stageBudget
+AoyagiRecurrenceBranchState.abovePivotCount
+AoyagiRecurrenceBranchState.progressStageBase
+AoyagiRecurrenceBranchState.progressWeightBase
+AoyagiRecurrenceBranchState.progressMeasure
+AoyagiRecurrenceBranchState.progressStep
+AoyagiRecurrenceBranchState.progressStep_wellFounded
+AoyagiRecurrenceBranchState.progressStep_of_toIntroducedState_progress
+AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_actualWidth
+AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_prefixBound
+AoyagiRecurrenceBranchState.case2SuccChild_progress_of_prefixBound
+AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_case1DisplayedRowStripPayload
+AoyagiRecurrenceBranchState.sameStageChildWithRecurrence_progress_of_case2DisplayedPayload
+AoyagiRecurrenceBranchState.stageSuccZeroWithRecurrence_progress
+AoyagiRecurrenceBranchState.sameDomainWithRecurrence_progress_of_abovePivotProgress
+AoyagiRecurrenceBranchState.sameDomainWithRecurrence_progress_of_case1SelectedOldLevelMoveData
+AoyagiRecurrenceBranchState.case1SelectedOldLevelMove_progress_of_sameDomain
+```
+
+The measure is
+
+```text
+(remaining * (L+2) + stageBudget) * (#actualWidthLabelFinset + 1)
+  + abovePivotCount.
+```
+
+The first coordinate decreases for Case 1(2)/Case 2 same-stage support growth.
+The second coordinate decreases for stage handoff.  The third coordinate
+decreases for Case 1(1) same-domain selected-old lowering.  This gives a
+single well-founded `progressStep` below source production.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-combined-recurrence-branch-progress.md
+threads/04-blow-up-certificate/statement-card-a4-combined-recurrence-branch-progress.md
+threads/04-blow-up-certificate/review-a4-combined-recurrence-branch-progress.md
+```
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Heisenberg` and xhigh Lean/API reviewer `Ptolemy` returned PASS.
+
+Boundary: this is a finite branch-progress kernel only.  It does not construct
+source payloads, branch guards, terminal payloads, full analytic-atlas branch
+termination, normal crossings, pole order, or RLCT.
+
 ## Latest A4 Case 1(1) Same-Domain Plateau Progress - 2026-06-30
 
 `BlowupBranchProgress.lean` now adds the separate progress measure for Case

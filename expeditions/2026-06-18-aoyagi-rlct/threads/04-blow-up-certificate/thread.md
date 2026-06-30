@@ -21,6 +21,38 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-06-30 Lean combined recurrence branch progress
+
+Reproduction:
+`reproduction-a4-combined-recurrence-branch-progress.md`.
+Statement card:
+`statement-card-a4-combined-recurrence-branch-progress.md`.
+Review:
+`review-a4-combined-recurrence-branch-progress.md`.
+
+Lean now adds recurrence-aware branch progress:
+
+```text
+AoyagiRecurrenceBranchState
+AoyagiRecurrenceBranchState.progressMeasure
+AoyagiRecurrenceBranchState.progressStep
+AoyagiRecurrenceBranchState.progressStep_wellFounded
+```
+
+The measure is the weighted Nat
+`(remaining * (L+2) + stageBudget) * (#actualWidthLabelFinset + 1) +
+abovePivotCount`.  Same-stage Case 1(2)/Case 2 support growth decreases
+`remaining`; stage handoff decreases `stageBudget` when support is only
+weakly monotone; same-domain Case 1(1) selected-old lowering decreases
+`abovePivotCount`.
+
+This is the current best branch-progress interface below source production.
+It still does not construct source payloads, branch guards, terminal payloads,
+full branch termination, normal crossings, pole order, or RLCT.
+
+Focused build, direct Lean check, full local build, no-sorry audit, whitespace
+check, axiom probe, and xhigh reviews passed.
+
 ## 2026-06-30 Lean Case 1(1) same-domain plateau progress
 
 Reproduction:

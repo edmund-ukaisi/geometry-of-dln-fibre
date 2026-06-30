@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A4 combined recurrence branch progress
+
+The next progress interface is now a recurrence-aware branch state rather than
+the earlier support-only branch state:
+
+```text
+AoyagiRecurrenceBranchState
+AoyagiRecurrenceBranchState.progressMeasure
+AoyagiRecurrenceBranchState.progressStep
+AoyagiRecurrenceBranchState.progressStep_wellFounded
+```
+
+The measure is a weighted Nat encoding of lexicographic descent:
+
+```text
+(remaining * (L+2) + stageBudget) * (#actualWidthLabelFinset + 1)
+  + abovePivotCount
+```
+
+Same-stage Case 1(2)/Case 2 moves decrease `remaining` by strict support
+growth.  Stage handoffs weakly decrease `remaining` and strictly decrease
+`stageBudget`.  Same-domain Case 1(1) selected-old lowering keeps `remaining`
+and `stageBudget` fixed and decreases `abovePivotCount`.
+
+Lean now proves combined progress for arbitrary supplied recurrence data over
+same-stage child domains, the concrete Case 2 recurrence successor, the
+displayed Case 1(2) row-strip payload, supplied Case 1(1) level-move data, and
+the concrete Case 1(1) selected-old level move under the same-domain boundary.
+It also proves the finite stage-successor handoff `(S,J) -> (S+1,0)` for
+supplied recurrence data over the child domain.
+
+Nonclaims: no source-production payloads, no branch-guard coverage, no
+terminal payloads, no full analytic-atlas branch termination theorem, no
+normal crossings, no pole order, and no RLCT.
+
+Focused local build, direct warning check, full local build, no-sorry audit,
+whitespace check, and axiom probe passed.  Xhigh source/scope reviewer
+`Heisenberg` and xhigh Lean/API reviewer `Ptolemy` returned PASS, recorded in
+`threads/04-blow-up-certificate/review-a4-combined-recurrence-branch-progress.md`.
+
 ## Latest controller decision - 2026-06-30, A4 Case 1(1) same-domain plateau progress
 
 Case 1(1) now has its own same-domain finite progress kernel, separate from
