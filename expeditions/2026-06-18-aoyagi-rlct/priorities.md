@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, A2 Case 2 small-ball product readout package
+
+The Case 2 endpoint product source chart now has one shared small-ball readout
+package:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package
+```
+
+For every `Rmax > 0`, Lean chooses `0 < R ≤ Rmax` so that every passive-theta
+base point `theta` and every p.13 regular variable `u ∈ ball(0,R)` satisfy:
+
+```text
+regularCoordinateMap(productSourceChart(theta,u)) = u
+residualCoordinateMap(productSourceChart(theta,u))
+  =
+residualCoordinateMap(sourceChart theta)
+regularReadback(productSourceChart(theta,u)) = u
+selectedInverseReadout(productSourceChart(theta,u))
+  =
+selectedInverseReadout(sourceChart theta)
+sourceReadback(productSourceChart(theta,u)) has the canonical p.13 product fields
+```
+
+The same determinant-unit radius for `ctopMatrix u` feeds all pointwise
+readout lemmas.  This is coordinate/readback packaging only: it does not
+recover full passive theta, prove source-image coverage, source-prior
+transport, Haar/Jacobian density identity, normal crossings, pole order, or
+RLCT.
+
 ## Latest controller decision - 2026-06-30, A2 small-ball fixed-base product source-readback fields
 
 The fixed-base product source-readback API now has its local regular-domain

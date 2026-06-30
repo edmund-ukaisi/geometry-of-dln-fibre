@@ -6,6 +6,75 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Latest A2 Case 2 Small-Ball Product Readout Package - 2026-06-30
+
+Lean now packages the concrete Case 2 endpoint product source chart readouts
+under one determinant-unit radius:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_readout_package
+```
+
+For every `Rmax > 0`, the theorem returns `0 < R ≤ Rmax` such that for every
+passive-theta base point `theta` and every p.13 regular variable
+`u ∈ ball(0,R)`, the following five facts hold:
+
+```text
+regularCoordinateMap(productSourceChart(theta,u)) = u
+residualCoordinateMap(productSourceChart(theta,u))
+  =
+residualCoordinateMap(sourceChart theta)
+case2 regular readback(productSourceChart(theta,u)) = u
+selected inverse readout(productSourceChart(theta,u))
+  =
+selected inverse readout(sourceChart theta)
+sourceReadback(productSourceChart(theta,u)) fields:
+  A1passive = 1
+  F2        = first decoded F2(u), then 0
+  A3passive = 0
+  C         = residualBlock(fixedBase(sourceChart theta))
+  Ctop      = decoded Ctop(u)
+  F3        = decoded F3(u)
+```
+
+The proof chooses the radius from
+`AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean`
+and uses the resulting `hCtop` for the existing pointwise raw-coordinate,
+regular-readback, selected inverse-readout, and source-readback field theorems.
+
+Boundary: this is local coordinate/readback packaging.  It does not recover
+the full passive-theta point from `productSourceChart(theta,u)`; the selected
+inverse readout is only the selected residual inverse readout, and
+`sourceReadback` resets retained passive fields to canonical values.  No
+source-image coverage, source-prior transport, Haar/Jacobian density identity,
+normal crossings, pole order, or RLCT extraction is proved.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-small-ball-product-readout-package.md
+threads/03-block-product-reduction/statement-card-a2-case2-small-ball-product-readout-package.md
+threads/03-block-product-reduction/review-a2-case2-small-ball-product-readout-package.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_case2_readout_package_axioms.lean
+```
+
+Axiom probe for the new theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Review: xhigh scout `Faraday the 2nd` PASS.  The only concern was
+non-blocking Lean/API fragility from local `let` unfolding and larger `simpa`
+calls in the wrapper; no mathematical overreach was found.
+
 ## Latest A2 Small-Ball Fixed-Base Product Source-Readback Fields - 2026-06-30
 
 Lean now packages the determinant-unit hypothesis in the fixed-base
