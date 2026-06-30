@@ -368,7 +368,16 @@ noncomputable def eIn (ha : StructAdm M (tach M)) :
 
 /-- **The V0-faithfulness invariant**: `(eIn ha δ).1 = slotReadV0 ha δ` — the boundary-0 frame slot.
 The in-Lean check that `eIn` reads the Schur frame into V0; with `hD`'s J00 match this catches a
-misaligned reindex. -/
+misaligned reindex.
+
+RESIDUAL (the single hard reindex-match lemma, Codex-flagged): `eIn` is built (sorry-free) as the
+composite `funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ piFinTwo ≫ slotSplitLE ≫ frameToSchurInc …`, so
+`(eIn δ).1` reduces (the slot-0 frame factor) to `frameToSchurInc` applied to the function
+`a ↦ δ (chartIdxEquiv.symm ⟨0, Sum.inl a⟩)`. The proof is componentwise on the 4 `SchurInc` blocks
+(K, N, X, E), each matching `frameToSchurInc`'s `roleReorderLE` + `flatMatLE` against the reader
+`readK/N/X/E … ⟨0⟩` (both read `δ (chartIdxEquiv.symm ⟨0, Sum.inl (frameSplitEquiv.symm (…))⟩)`).
+Mechanical but heavy: the `sumArrowLequivProdArrow_apply_fst`/`piCurry_apply (= Sigma.curry)`/
+`piFinTwo_apply`/`funCongrLeft_apply` chain through the opaque-Fin-width slot casts. -/
 theorem eIn_projV0 (ha : StructAdm M (tach M)) (δ : Fin (flatDim M) → ℝ) :
     (eIn ha δ).1 = slotReadV0 ha δ :=
   sorry
