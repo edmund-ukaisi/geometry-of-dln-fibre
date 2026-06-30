@@ -4,6 +4,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 import DLNFibre.Core.FibreBundleTransition
 import DLNFibre.Core.FibreBundleReduced
 import DLNFibre.Core.DeepChartRing
+import DLNFibre.Core.RingTheory.Determinantal.Basic
 
 /-!
 # `DLNFibre.Core.FibreBundleLocallyTrivial` — the `e_β` ↔ ambient bridge (B3-4)
@@ -91,7 +92,7 @@ generic matrix entries `X (a, b)` (ambient) and `X ⟨0, (a, b)⟩` (stratum) co
 theorem detMinorPoly_topLeft_rename (q p r : ℕ) (hp : r ≤ p) (hq : r ≤ q) :
     (renameEquiv k (repStratumEquiv q p))
         (detPivotPoly (k := k) q p r hp hq)
-      = detMinorPoly (k := k) (topLeftRows p r hp) (topLeftCols q r hq) := by
+      = detMinorPoly (R := k) (topLeftRows p r hp) (topLeftCols q r hq) := by
   -- both sides are `det` of the same generic-minor matrix; the algebra map commutes with `det`
   -- (`AlgEquiv.map_det`), and entrywise `renameEquiv repStratumEquiv (X ⟨0,(a,b)⟩) = X (a,b)`.
   rw [detPivotPoly, detMinorPoly, AlgEquiv.map_det]
@@ -203,7 +204,7 @@ section Witness
 rename of the chart pivot minor (a concrete instance of `detMinorPoly_topLeft_rename`). -/
 example (h : (1 : ℕ) ≤ 2) :
     (renameEquiv ℚ (repStratumEquiv 2 2)) (detPivotPoly (k := ℚ) 2 2 1 h h)
-      = detMinorPoly (k := ℚ) (topLeftRows 2 1 h) (topLeftCols 2 1 h) :=
+      = detMinorPoly (R := ℚ) (topLeftRows 2 1 h) (topLeftCols 2 1 h) :=
   detMinorPoly_topLeft_rename 2 2 1 h h
 
 /-- **Datum witness.** The top-left local-trivialization datum is genuine data — its chart elt is

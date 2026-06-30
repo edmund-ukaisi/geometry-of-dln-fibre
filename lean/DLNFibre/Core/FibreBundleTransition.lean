@@ -3,6 +3,7 @@ Copyright (c) 2026. Released under Apache 2.0; see LICENSE.
 -/
 import DLNFibre.Core.RankMinorCover
 import DLNFibre.Core.RingTheory.Localization.Overlap
+import DLNFibre.Core.RingTheory.Determinantal.Basic
 import Mathlib.RingTheory.Localization.Away.Basic
 import Mathlib.LinearAlgebra.Matrix.MvPolynomial
 
@@ -28,11 +29,14 @@ triple-overlap cocycle `awayTriple_cocycle` — now lives in
 This module **instantiates** that abstract cocycle at the per-minor cover of `Mat^{=r}`. Over the
 coordinate ring `R = MvPolynomial (Fin p × Fin q) k` of the ambient matrix space, each per-minor
 chart `minorChart s t = {M | the (s,t) minor is invertible}` is the **principal open**
-`D(detMinorPoly s t)` cut by the minor-determinant polynomial `detMinorPoly s t` (its evaluation at
-a point `M` is `(M.submatrix s t).det`, `eval_detMinorPoly`). On the overlap `D(f) ∩ D(g)` of two
-charts (`f = detMinorPoly s t`, `g = detMinorPoly s' t'`), the two iterated localizations are
-canonically identified by `minorChartTransition` = `Localization.awayOverlapTransition` at the two
-minor polynomials — the genuine per-minor instance of the abstract base-space cocycle.
+`D(detMinorPoly s t)` cut by the minor-determinant polynomial `Matrix.detMinorPoly s t` (its
+evaluation at a point `M` is `(M.submatrix s t).det`, `Matrix.eval_detMinorPoly`), which now lives in
+[`DLNFibre.Core.RingTheory.Determinantal.Basic`](RingTheory/Determinantal/Basic.lean) (bare `Matrix`
+namespace, the Mathlib-mirror home for the generic-matrix minor polynomial + the determinantal
+ideal). On the overlap `D(f) ∩ D(g)` of two charts (`f = detMinorPoly s t`, `g = detMinorPoly s' t'`),
+the two iterated localizations are canonically identified by `minorChartTransition` =
+`Localization.awayOverlapTransition` at the two minor polynomials — the genuine per-minor instance of
+the abstract base-space cocycle.
 
 ## What is NOT built (disclaimed — the deeper rung)
 
@@ -58,37 +62,6 @@ section MinorChart
 
 variable {k : Type} [Field k] {p q r : ℕ}
 
-/-- **The minor-determinant polynomial** `detMinorPoly s t : MvPolynomial (Fin p × Fin q) k`: the
-determinant of the `(s, t)` minor of the **generic matrix** `Matrix.mvPolynomialX` (entries the
-coordinate variables `X (i, j)`). Its evaluation at a point `M` is `(M.submatrix s t).det`
-(`eval_detMinorPoly`), so the per-minor chart `minorChart s t` (the `(s, t)` minor invertible) is
-the principal open `D(detMinorPoly s t)` of the matrix coordinate ring. -/
-noncomputable def detMinorPoly (s : Fin r → Fin p) (t : Fin r → Fin q) :
-    MvPolynomial (Fin p × Fin q) k :=
-  ((Matrix.mvPolynomialX (Fin p) (Fin q) k).submatrix s t).det
-
-/-- **The minor polynomial evaluates to the minor determinant.** Evaluating `detMinorPoly s t` at
-the point `M` (the assignment `X (i, j) ↦ M i j`) gives `(M.submatrix s t).det`. So membership
-`M ∈ minorChart s t` (the `(s, t)` minor invertible) is equivalent to
-`MvPolynomial.eval (fun ij ↦ M ij.1 ij.2) (detMinorPoly s t)` being a unit — the chart is the
-principal open `D(detMinorPoly s t)`. -/
-theorem eval_detMinorPoly (M : Matrix (Fin p) (Fin q) k)
-    (s : Fin r → Fin p) (t : Fin r → Fin q) :
-    MvPolynomial.eval (fun ij ↦ M ij.1 ij.2) (detMinorPoly (k := k) s t)
-      = (M.submatrix s t).det := by
-  -- `eval e` is a ring hom; it commutes with `det` (`RingHom.map_det`). The mapped minor matrix
-  -- is `M.submatrix s t`: `map` commutes with `submatrix`, and `eval e` sends the generic matrix
-  -- `mvPolynomialX` to `M` (`mvPolynomialX_mapMatrix_eval`).
-  have hmap : ((Matrix.mvPolynomialX (Fin p) (Fin q) k).submatrix s t).map
-      (MvPolynomial.eval fun ij ↦ M ij.1 ij.2) = M.submatrix s t := by
-    rw [← Matrix.submatrix_map]
-    -- the RECTANGULAR generic matrix maps to `M` under `eval e = eval₂ id e`
-    -- (`mvPolynomialX_map_eval₂`); `submatrix` then matches.
-    congr 1
-    rw [MvPolynomial.eval, MvPolynomial.coe_eval₂Hom]
-    exact Matrix.mvPolynomialX_map_eval₂ (RingHom.id k) M
-  rw [detMinorPoly, RingHom.map_det, RingHom.mapMatrix_apply, hmap]
-
 /-- **The per-minor charts are principal opens, and their overlaps carry the transition cocycle.**
 For two pivot positions `(s, t)`, `(s', t')`, the overlap `minorChart s t ∩ minorChart s' t'` is the
 principal open `D(detMinorPoly s t · detMinorPoly s' t')` of the matrix coordinate ring, and the two
@@ -97,9 +70,9 @@ transition `AlgEquiv` `awayOverlapTransition (detMinorPoly s t) (detMinorPoly s'
 instantiates the abstract base-space cocycle at the genuine per-minor cover of `Mat^{=r}`. -/
 noncomputable def minorChartTransition (s : Fin r → Fin p) (t : Fin r → Fin q)
     (s' : Fin r → Fin p) (t' : Fin r → Fin q) :
-    awayOverlap (detMinorPoly (k := k) s t) (detMinorPoly (k := k) s' t')
+    awayOverlap (detMinorPoly (R := k) s t) (detMinorPoly (R := k) s' t')
       ≃ₐ[MvPolynomial (Fin p × Fin q) k]
-        awayOverlap (detMinorPoly (k := k) s' t') (detMinorPoly (k := k) s t) :=
+        awayOverlap (detMinorPoly (R := k) s' t') (detMinorPoly (R := k) s t) :=
   awayOverlapTransition (detMinorPoly s t) (detMinorPoly s' t')
 
 end MinorChart
