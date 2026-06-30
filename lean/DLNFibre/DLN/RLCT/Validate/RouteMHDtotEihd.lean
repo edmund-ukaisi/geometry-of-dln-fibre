@@ -145,7 +145,7 @@ theorem flatBlockLE_symm_fderiv_flatBlock {t r c Trow Wcol : ℕ}
   rw [fderiv_flatBlock_eq hr hc z₀]
   apply LinearMap.ext
   intro z
-  show (flatBlockLE hr hc).symm (flatBlockLin hr hc z) = z
+  change (flatBlockLE hr hc).symm (flatBlockLin hr hc z) = z
   exact unflatBlock_flatBlock hr hc z
 
 /-! ## The output `packStair : Params M ≃ₗ StairProd V 2` and `eihdOut`
