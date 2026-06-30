@@ -1,0 +1,9 @@
+**R1: BOUNDED-BUT-MAJOR.**  
+[DERIVED] The fixed-width anchors and banked Schur/LDU/radial factor determinants show the geometry is real and the determinant telescope is already in place. [INFERENCE] The hardest sub-step is the uniform `Params → Params` decomposition of `phiParamsStruct` over opaque widths, especially proving that the general LDU/Kparam straightening turns every Schur `|det K|^{r+c}` contribution into the claimed pure monomial exponents. [INFERENCE] This is not yet a wall, because the arbitrary-size LDU determinant is banked; it becomes a wall only if `phiParamsStruct` is not definitionally/projectionally organized by the same Schur/LDU dependency order.
+
+**R2: BOUNDED-BUT-MAJOR.**  
+[DERIVED] The fixed `phi3333_cov` gives a sorry-free template for finite coordinate-slice removal, and the weighted-axis count is finite though variable. [INFERENCE] The hardest sub-step is not the `n`-fold null-slice itself, but packaging `injOn` and nullity uniformly over a list/finite index of weighted axes while matching the exact punctured domain used by the change-of-variables theorem. [INFERENCE] Variable axis count should be bounded by finite induction/finite-union nullity; it becomes major because the proof must compose cleanly with the chart bridge and off-axis injectivity.
+
+**Overall recommendation:** proceed with sub-hands.
+
+**Cheapest R1 discriminating test:** [INFERENCE] On paper or in Lean, isolate one arbitrary-size Schur boundary block and prove the local identity: after LDU parametrizing `K = (1+L) diag(q) (1+U)`, the monolithic block of `phiParamsStruct` agrees with the ordered Schur/LDU layer-op projection and contributes exponents `(r+c) + 2(t-1-i)` to each `q_i`; failure here identifies the real wall before the full ∀M build.
