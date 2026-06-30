@@ -1,6 +1,8 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveContract
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveAnalytic
 import DLNFibre.DLN.RLCT.Validate.RouteMUPolyLive
+import DLNFibre.DLN.RLCT.Validate.RouteMBdetMonomial
+import DLNFibre.DLN.RLCT.Validate.RouteMHregPerm
 
 /-!
 # `RouteMInteriorLiveAtom` — the assembled LIVE-leaf interior box-divergence ATOM (cov + bundle + atom)
@@ -18,13 +20,16 @@ contract + the two analytic modules and assembles the cov / bundle / atom, wirin
   * `Ubound := ldu_Ubound … (ae_restrict_of_ae (interiorLiveUnit_ae_pos …))`
         (box bound `ldu_Ubound` + the a.e.-positivity atom `interiorLiveUnit_ae_pos`, genm-upolylive)
 
-The cov consumes the contract's `interiorLive_abs_det` (still gated on `interiorLive_BdetMonomial`
-← genm-ambdet, the only open leaf). The atom `routeMCore_box_diverges_interiorLive` is the `hInterior`
-the dispatch spine consumes; it lives here (not the contract) so the analytic LEAF-1 facts are visible.
+The cov consumes the UNCONDITIONAL chart-Jacobian monomial `interiorLive_abs_det'` (proved here: the
+contract's gated `interiorLive_BdetMonomial` is replaced by `interiorLive_BdetMonomial_of_hreg`
+(`RouteMBdetMonomial`) discharged by `eihd_hreg ha` (`RouteMHregPerm`)). The atom
+`routeMCore_box_diverges_interiorLive` is the `hInterior` the dispatch spine consumes; it lives here
+(not the contract) so the analytic LEAF-1 facts are visible.
 
-Axiom profile: clean-three `[propext, Classical.choice, Quot.sound]` + (transitively, until genm-ambdet
-lands) the `interiorLive_BdetMonomial` sorry. The three ubound leaves + injectivity + rate are all
-sorry-free here.
+Axiom profile: `routeMCore_box_diverges_interiorLive` depends on exactly
+`[propext, Classical.choice, Quot.sound, monomial_rlct]` — the clean-three + the single S2 cited
+axiom, NO `sorryAx`. The whole interior leg (monomial fold → `interiorLive_abs_det'` → cov → bundle →
+atom) is sorry-free.
 -/
 
 open MeasureTheory
@@ -34,8 +39,44 @@ namespace DLNFibre.DLN.RLCT
 
 variable {M : Fin (2 + 1) → ℕ}
 
+/-- **The chart Jacobian is the monomial (UNCONDITIONAL)** — the contract's `interiorLive_abs_det`
+re-proved here with the `hreg`-gated `interiorLive_BdetMonomial_of_hreg` discharged by `eihd_hreg ha`
+(`RouteMHregPerm`). This is the Route-X join: `RouteMBdetMonomial` (where the monomial fold lives) imports
+the contract, so the monomial cannot be wired back into the contract's `interiorLive_BdetMonomial` slot
+(that would cycle); instead this DOWNSTREAM module — which imports both `RouteMBdetMonomial` and
+`RouteMHregPerm` — closes it and feeds the result to the cov. Verbatim the contract proof, with line 327's
+gated `interiorLive_BdetMonomial` replaced by `interiorLive_BdetMonomial_of_hreg … (eihd_hreg ha)`. -/
+theorem interiorLive_abs_det' (ha : StructAdm M (tach M))
+    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (interiorLivePhi ha h0r h0c) u).toLinearMap|
+      = ∏ j, |u j| ^ (interiorLive_leafH ha h0r h0c j) := by
+  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
+  set B' := fun y => BchartLeaf ha (kLDU M (tach M) ha y) with hB'
+  have hmap : interiorLivePhi ha h0r h0c = B' ∘ pivotBlowupOn (activeM M ha) p₀ := by
+    funext x
+    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
+    show BchartLeaf ha (pivotBlowupOn (activeM M ha) p₀ (kLDU M (tach M) ha x)) = _
+    rw [interiorLive_commute ha h0r h0c x]; rfl
+  have hasDB' : HasFDerivAt B'
+      (fderiv ℝ B' (pivotBlowupOn (activeM M ha) p₀ u))
+      (pivotBlowupOn (activeM M ha) p₀ u) :=
+    ((Bchart_differentiableAt ha _).comp _ (differentiable_kLDU M (tach M) ha _)).hasFDerivAt
+  rw [radialComp_abs_det_at M (activeM M ha) p₀ (leafPivot_mem_activeM ha h0r h0c) (activeM_card ha)
+    B' (interiorLivePhi ha h0r h0c) u _ hmap hasDB',
+    interiorLive_BdetMonomial_of_hreg ha h0r h0c u (eihd_hreg ha)]
+  -- |u p₀|^{minAdm−1} · ∏(if j=p₀ then 1 else |u j|^{leafH j}) = ∏ |u j|^{leafH j}
+  conv_rhs => rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => |u j| ^ (interiorLive_leafH ha h0r h0c j))]
+  rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => if j = p₀ then (1 : ℝ) else |u j| ^ (interiorLive_leafH ha h0r h0c j))]
+  rw [if_pos rfl, one_mul, interiorLive_leafH_pivot ha h0r h0c]
+  congr 1
+  refine Finset.prod_congr rfl (fun j hj => ?_)
+  rw [if_neg (by simp at hj; exact hj : j ≠ p₀)]
+
 /-- **The change-of-variables** — assembles the cov engine `ldu_cov_of_differentiable_injOn` with
-`hdiff` (`interiorLive_diff`), `habsdet` (`interiorLive_abs_det`), `hinj` (`interiorLive_injOn`). -/
+`hdiff` (`interiorLive_diff`), `habsdet` (`interiorLive_abs_det'`, unconditional via `eihd_hreg`),
+`hinj` (`interiorLive_injOn`). -/
 theorem interiorLive_cov (ha : StructAdm M (tach M))
     (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2)
     (V : Set (Fin (routeMAmbient M) → ℝ)) (hV : MeasurableSet V)
@@ -48,7 +89,7 @@ theorem interiorLive_cov (ha : StructAdm M (tach M))
   ldu_cov_of_differentiable_injOn (interiorLivePhi ha h0r h0c)
     (leafPivot M ha (by norm_num) h0r h0c) (interiorLive_leafH ha h0r h0c)
     (interiorLive_E ha h0r h0c) (interiorLive_diff ha h0r h0c)
-    (fun u => interiorLive_abs_det ha h0r h0c u) (interiorLive_injOn ha h0r h0c) V hV g
+    (fun u => interiorLive_abs_det' ha h0r h0c u) (interiorLive_injOn ha h0r h0c) V hV g
 
 /-- **The LIVE-leaf ∘ kLDU interior achiever chart bundle** — `interiorLivePhi` with binding pivot
 `leafPivot`, the multi-axis `leafH`, unit `interiorLiveUnit`, and the LEAF-1 fields wired from the

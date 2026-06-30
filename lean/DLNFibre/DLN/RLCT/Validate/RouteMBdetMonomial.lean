@@ -35,14 +35,15 @@ OPEN (handed back — the bounded `liveLeafHOnIdx`-decode product-reindex glue):
 * `mem_image_diagAxis_of_leafH_ne_zero` — the off-image collapse (`leafH j ≠ 0 ∧ j ≠ pivot ⟹ j ∈
   image diagAxis`; the `Sigma.ext` + `fse.symm` reconstruction).
 * `interiorLive_BdetMonomial_of_hreg` — the assembly: LHS-collapse (`Finset.abs_prod`/`prod_pow`/
-  `prod_mul_distrib`/`pow_add`, VALIDATED) · the RHS reindex (`Finset.prod_subset` to `image diagAxis`
-  + `prod_image`, the open glue) → the monomial.
+  `prod_mul_distrib`/`pow_add`, VALIDATED) · the RHS reindex (`Finset.prod_image` via diagAxis
+  injectivity + `Finset.prod_subset` onto `univ.erase leafPivot`, off-image `leafH = 0`) → the monomial.
 
 ## hreg gate (caveat next to the claim)
 
-`hreg` is the OPEN regauge abs-det-`1` (`eihd_hreg`, genm-castdet's `RouteMHregPerm.lean`, in flight).
-The final `interiorLive_BdetMonomial_of_hreg` carries `hreg` as an `ha`-level hypothesis; genm-r1lower
-discharges it at `interiorLive_abs_det` (fed `eihd_hreg ha`). NOT a new mathematical gap.
+`hreg` is the regauge abs-det-`1` (`eihd_hreg`, `RouteMHregPerm.lean`, CLOSED). The final
+`interiorLive_BdetMonomial_of_hreg` carries `hreg` as an `ha`-level hypothesis; it is discharged
+downstream at `interiorLive_abs_det'` (`RouteMInteriorLiveAtom`, fed `eihd_hreg ha`). NOT a new
+mathematical gap — both the fold here and `hreg` are now sorry-free.
 -/
 
 open Matrix
@@ -269,11 +270,34 @@ theorem interiorLive_BdetMonomial_of_hreg (ha : StructAdm M (tach M))
         = |u (diagAxis ha i)| ^ (interiorLive_leafH ha h0r h0c (diagAxis ha i)) := by
     intro i; rw [leafH_diagAxis ha h0r h0c i]
   rw [Finset.prod_congr rfl (fun i _ => hexp i)]
-  -- LHS is now `∏ i, |u(diagAxis i)|^{leafH(diagAxis i)}`. RHS: split off the pivot (if_pos→1), reindex
-  -- the rest onto `image diagAxis` (prod_subset via the off-image collapse + prod_image via injectivity).
-  -- REMAINING (handed to genm-prod-arith per flag-at-2-cycles): the Finset prod-reindex bookkeeping —
-  -- `prod_eq_mul_prod_diff_singleton_of_mem` codomain inference is stuck; all the math above is closed
-  -- (factor1·factor2·lhs_collapse·leafH_diagAxis), only this prod glue remains.
-  sorry
+  -- LHS = `∏ i, g (diagAxis i)`, RHS = `∏ j, if j = p₀ then 1 else g j`, with `g j := |u j|^{leafH j}`.
+  -- Both equal `∏ j ∈ univ.erase p₀, g j`: the RHS via `mul_prod_erase` (pivot factor `1`) + dropping the
+  -- now-redundant `if`; the LHS via `prod_image` (diagAxis injective) then `prod_subset` onto `erase p₀`
+  -- (off-image axes have `leafH = 0`, contributing `1`).  Pin the codomain to `ℝ` everywhere.
+  let g : Fin (routeMAmbient M) → ℝ := fun j => |u j| ^ (interiorLive_leafH ha h0r h0c j)
+  show ∏ i, g (diagAxis ha i) = ∏ j, if j = p₀ then (1 : ℝ) else g j
+  -- RHS: split the pivot off and collapse the `if`.
+  have hRHS : (∏ j, if j = p₀ then (1 : ℝ) else g j)
+      = ∏ j ∈ (Finset.univ : Finset (Fin (routeMAmbient M))).erase p₀, g j := by
+    rw [← Finset.mul_prod_erase Finset.univ (fun j => if j = p₀ then (1 : ℝ) else g j)
+      (Finset.mem_univ p₀), if_pos rfl, one_mul]
+    exact Finset.prod_congr rfl (fun j hj => if_neg (Finset.ne_of_mem_erase hj))
+  -- LHS: reindex through the injective image, then grow to `erase p₀`.
+  have hLHS : (∏ i, g (diagAxis ha i))
+      = ∏ j ∈ (Finset.univ : Finset (Fin (routeMAmbient M))).erase p₀, g j := by
+    rw [← Finset.prod_image (g := diagAxis ha) (f := g) ((diagAxis_injective ha).injOn)]
+    refine Finset.prod_subset ?_ ?_
+    · intro j hj
+      rw [Finset.mem_image] at hj
+      obtain ⟨i, _, rfl⟩ := hj
+      exact Finset.mem_erase.mpr ⟨diagAxis_ne_leafPivot ha h0r h0c i, Finset.mem_univ _⟩
+    · intro j hj hjimg
+      have hjp : j ≠ p₀ := (Finset.mem_erase.mp hj).1
+      have hz : interiorLive_leafH ha h0r h0c j = 0 := by
+        by_contra hne
+        exact hjimg (mem_image_diagAxis_of_leafH_ne_zero ha h0r h0c j hjp hne)
+      show g j = 1
+      simp only [g]; rw [hz, pow_zero]
+  rw [hLHS, hRHS]
 
 end DLNFibre.DLN.RLCT

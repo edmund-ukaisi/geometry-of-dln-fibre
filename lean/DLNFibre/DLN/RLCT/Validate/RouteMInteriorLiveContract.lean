@@ -41,18 +41,19 @@ and `hmap_leaf` fires at the point `kLDU x`.
 * COV engine: `ldu_cov_of_differentiable_injOn` (takes `hdiff`/`habsdet`/`hinj`). banked.
 * THRESHOLD: `nodeChart_thresholdLe` (`leafH p = minAdm−1` ⟹ `≤ ½·minAdm`). banked.
 
-## Open obligations (each a stated `sorry`, mapped to an H-sub-task)
+## Contract pieces (all CLOSED, sorry-free)
 
 * `interiorLive_commute` — `pivotBlowupOn activeM leafPivot (kLDU x) = kLDU (pivotBlowupOn …)` (the
   disjoint-coords commute; the load-bearing map fact).
 * `interiorLive_leafH` (def, H2) — the multi-axis exponent vector, with `leafH leafPivot = minAdm−1`.
-* `interiorLive_abs_det` (H2) — `|det Dφ| = ∏_j |u_j|^{leafH j}` (headline ∘ kLDU monomial).
 * `interiorLive_diff` — `Differentiable ℝ (interiorLivePhi)` (polynomial chain).
 * `interiorLive_injOn` (H-inj) — `InjOn` off the pivot ∪ q-axes (factors through the composition).
-* `interiorLive_Ubound`, `interiorLive_Umeas`, `interiorLive_image` (H1-internal).
 
-The TOP result `routeMCore_box_diverges_interiorLive` is the interior `BoxDiverges` atom the dispatch
-spine's `hInterior` consumes. NOT axiom-clean yet (carries the listed `sorry`s). The dead-leaf
+The H2 chart-Jacobian monomial (`|det Dφ| = ∏_j |u_j|^{leafH j}`) is now CLOSED unconditionally and
+lives DOWNSTREAM (`interiorLive_abs_det'`, `RouteMInteriorLiveAtom`) — see the H2 note below; it fed
+back here only via a cycle.  The TOP result `routeMCore_box_diverges_interiorLive` (in
+`RouteMInteriorLiveAtom`) is the interior `BoxDiverges` atom the dispatch spine's `hInterior` consumes;
+it is axiom-clean (`[propext, Classical.choice, Quot.sound, monomial_rlct]`). The dead-leaf
 `RouteMInteriorLDUContract` is RETIRED in favour of this.
 -/
 
@@ -276,64 +277,22 @@ theorem interiorLive_leafH_pivot (ha : StructAdm M (tach M))
     interiorLive_leafH ha h0r h0c (leafPivot M ha (by norm_num) h0r h0c) = minAdm M - 1 := by
   rw [interiorLive_leafH, if_pos rfl]
 
-/-! ## H2 — the chart Jacobian monomial (headline ∘ kLDU) -/
+/-! ## H2 — the chart Jacobian monomial (headline ∘ kLDU)
 
-/-- **H2b (genm-h2bdet's deliverable, consumed here)** — the boundary-factor determinant monomializes:
-`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}` (the off-pivot K-diagonal
-product, `1` at the pivot). STATED `sorry` — wired to genm-h2bdet's atom.
+**The monomial is now CLOSED, sorry-free, DOWNSTREAM.** The boundary-factor determinant
+`|det D(BchartLeaf ∘ kLDU)(pbo u)| = ∏_{j ≠ leafPivot} |u_j|^{leafH j}` and the chart-Jacobian headline
+`|det Dφ u| = ∏_j |u_j|^{leafH j}` were once `sorry`-stated here (hreg-GATED on the open regauge residual
+`|det((eihdOut).symm ∘ eIn)| = 1`). Both are now PROVED unconditionally:
 
-**CAVEAT (NOT a bounded monomialization — hreg-GATED; genm-h2bdet STEP-0 + source-verified).** The
-un-lensed boundary det is NOT banked as `∏engine`: `interiorDet_leaf_headline_freeK` reduces it to
-`engineFreeK = |det K|^{r+c}` only under the hypothesis `hDtot : |det Dtot| = |det K|^{r+c}`, and that
-in turn (`interiorDet_leaf_headline_eihd`, `RouteMHDtotEihd.lean:1029`) rests on the OPEN regauge
-residual `hreg : |det((eihdOut).symm ∘ eIn)| = 1` (the two-sided staircase conjugacy). No unconditional
-headline exists; `hreg` is discharged nowhere (task #224 still open). So this `sorry` is hreg-GATED:
-its honest closure is `H2b-i (the NEW full-ambient det D(kLDU) = ∏|q|^{2(t−1−i)}, genm-h2bdet,
-route-independent) + the conditional freeK/eihd headline + hreg`. `hreg` is TRUE + BOUNDED (a slot-
-reindex det-1, `eIn`/`eihdOut` permutation-like) but genuinely open — a named LEAF-1 sub-obligation. -/
-theorem interiorLive_BdetMonomial (ha : StructAdm M (tach M))
-    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
-    |LinearMap.det (fderiv ℝ (fun y => BchartLeaf ha (kLDU M (tach M) ha y))
-        (pivotBlowupOn (activeM M ha) (leafPivot M ha (by norm_num) h0r h0c) u)).toLinearMap|
-      = ∏ j, if j = leafPivot M ha (by norm_num) h0r h0c then (1 : ℝ)
-          else |u j| ^ (interiorLive_leafH ha h0r h0c j) :=
-  sorry
+* the monomial fold is `interiorLive_BdetMonomial_of_hreg` in `RouteMBdetMonomial` (chain-rule split +
+  the diagonal-axis prod-reindex);
+* the regauge residual `hreg` is `eihd_hreg` in `RouteMHregPerm` (a slot-reindex `det = 1`);
+* the chart-Jacobian headline is `interiorLive_abs_det'` in `RouteMInteriorLiveAtom`, which feeds the cov.
 
-/-- **H2 — the chart Jacobian is the monomial** `|det Dφ u| = ∏_j |u_j|^{leafH j}` (this thread's
-assembly). Via the B' = BchartLeaf ∘ kLDU factorization (hmap-for-B' from `hmap_leaf` at `kLDU x` +
-the commute): `radialComp_abs_det_at` fires ONCE → `|u leafPivot|^{minAdm−1} · |det DB'|`; the residual
-`|det DB'|` is `interiorLive_BdetMonomial`; the pivot factor folds in via `interiorLive_leafH_pivot` +
-the `Finset.prod` split.
-
-The assembly (radial split + prod arithmetic) is sorry-free; it is **hreg-GATED through
-`interiorLive_BdetMonomial`** (see that caveat) — the unconditional abs_det needs the open regauge
-`hreg` closed (a bounded LEAF-1 sub-obligation), NOT a bounded monomialization. -/
-theorem interiorLive_abs_det (ha : StructAdm M (tach M))
-    (h0r : 0 < Text M (tach M) 2) (h0c : 0 < Wext M 2) (u : Fin (routeMAmbient M) → ℝ) :
-    |LinearMap.det (fderiv ℝ (interiorLivePhi ha h0r h0c) u).toLinearMap|
-      = ∏ j, |u j| ^ (interiorLive_leafH ha h0r h0c j) := by
-  set p₀ := leafPivot M ha (by norm_num) h0r h0c with hp₀
-  set B' := fun y => BchartLeaf ha (kLDU M (tach M) ha y) with hB'
-  have hmap : interiorLivePhi ha h0r h0c = B' ∘ pivotBlowupOn (activeM M ha) p₀ := by
-    funext x
-    rw [interiorLivePhi, hmap_leaf ha h0r h0c]
-    show BchartLeaf ha (pivotBlowupOn (activeM M ha) p₀ (kLDU M (tach M) ha x)) = _
-    rw [interiorLive_commute ha h0r h0c x]; rfl
-  have hasDB' : HasFDerivAt B'
-      (fderiv ℝ B' (pivotBlowupOn (activeM M ha) p₀ u))
-      (pivotBlowupOn (activeM M ha) p₀ u) :=
-    ((Bchart_differentiableAt ha _).comp _ (differentiable_kLDU M (tach M) ha _)).hasFDerivAt
-  rw [radialComp_abs_det_at M (activeM M ha) p₀ (leafPivot_mem_activeM ha h0r h0c) (activeM_card ha)
-    B' (interiorLivePhi ha h0r h0c) u _ hmap hasDB', interiorLive_BdetMonomial ha h0r h0c u]
-  -- |u p₀|^{minAdm−1} · ∏(if j=p₀ then 1 else |u j|^{leafH j}) = ∏ |u j|^{leafH j}
-  conv_rhs => rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
-    (fun j => |u j| ^ (interiorLive_leafH ha h0r h0c j))]
-  rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
-    (fun j => if j = p₀ then (1 : ℝ) else |u j| ^ (interiorLive_leafH ha h0r h0c j))]
-  rw [if_pos rfl, one_mul, interiorLive_leafH_pivot ha h0r h0c]
-  congr 1
-  refine Finset.prod_congr rfl (fun j hj => ?_)
-  rw [if_neg (by simp at hj; exact hj : j ≠ p₀)]
+These live downstream of this contract (they reference `interiorLivePhi`/`kLDU` machinery this module
+states), so they cannot be wired back here as one-liners (that would cycle: contract → fold → contract).
+The two former `sorry`-stubs (`interiorLive_BdetMonomial`, `interiorLive_abs_det`) had no live consumer
+once `interiorLive_abs_det'` replaced them, and are removed. -/
 
 /-! ## H1-internal — differentiability, injectivity, unit facts, image -/
 
@@ -654,8 +613,10 @@ contract + the two LEAF-1 analytic modules). They CANNOT live here: the LEAF-1 f
 `ldu_Umeas` / `ldu_Ubound` (genm-ubound) and `interiorLiveUnit_ae_pos` (genm-upolylive) reference this
 contract's `interiorLivePhi` / `interiorLiveUnit`, so they sit downstream — wiring them back in here
 would cycle. The former `interiorLive_image` / `interiorLive_Umeas` / `interiorLive_Ubound` STUBS are
-deleted (the analytic atoms supersede them in the downstream assembly). This contract keeps the chart,
-the rate, the unit, the det (`interiorLive_abs_det`, gated on `interiorLive_BdetMonomial`), and the
+deleted (the analytic atoms supersede them in the downstream assembly). Likewise the chart-Jacobian det
+is now `interiorLive_abs_det'` (DOWNSTREAM, in `RouteMInteriorLiveAtom`, sorry-free via the closed
+monomial fold + `eihd_hreg`); the former `interiorLive_abs_det` / `interiorLive_BdetMonomial` `sorry`-
+stubs are removed (see the H2 note above). This contract keeps the chart, the rate, the unit, and the
 injectivity (`interiorLive_injOn`, sorry-free). -/
 
 end DLNFibre.DLN.RLCT
