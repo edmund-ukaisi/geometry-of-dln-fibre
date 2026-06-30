@@ -17,6 +17,8 @@ import DLNFibre.DLN.RLCT.Foundations.S1IFTChart
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
 import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelMinor
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelGlueL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducer
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2
 import DLNFibre.DLN.RLCT.Validate.D1ChartProducerL2Build
@@ -206,6 +208,14 @@ open DLNFibre.DLN.RLCT
 -- reviewer + lean-formaliser §QA). The §SEL win: chart-DATA (hF/hQ0/hcmp) removed from the hyp list.
 #print axioms rlctAtOn_quasiSplit_ge_of_contDiff_residual
 #print axioms deepest_le_of_optimal_of_iftResidual
+
+-- D1 ≥-leg L=2 de-risk (genm-d1asm @70cb36ba; reviewer genm-rev-d1 SURVIVED 6/6) — must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound], no `sorryAx`: `exists_secondPeel_minor` produces hminor₂ (the
+-- extra×extra Jacobian-minor non-degeneracy) from a rank bound; `rlctAt_deepest_le_of_optimal_L2` is the
+-- L=2 Skeleton reduction (via Route A `deepest_le_of_optimal_secondPeel_discharged`), CONDITIONAL on the
+-- two named-open gates #44/hDeepest + hInterface/R1 — NOT wired into Skeleton:1172 (stays a conditional component).
+#print axioms exists_secondPeel_minor
+#print axioms rlctAt_deepest_le_of_optimal_L2
 
 -- D1 Altitude-B abstract hchart (network-free) — must be CLEAN-THREE [propext, Classical.choice,
 -- Quot.sound], no `sorryAx`: `exists_boundedUnit_chart_of_contDiffAt` is THE hard piece (det DΨ≠0

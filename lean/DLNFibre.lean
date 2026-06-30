@@ -617,6 +617,11 @@ import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 -- `hInterface` [R1 at M'], `hminor₂`). Clean-three, NO #120/gauge dependency in the proof terms
 -- (the verify-first gate verdict: the second peel is BOUNDED, off the L≥3 wall). Reviewer PASS-with-notes.
 import DLNFibre.DLN.RLCT.Validate.D1SecondPeelAssembly
+-- D1 ≥-leg L=2 de-risk (genm-d1asm @70cb36ba, reviewer genm-rev-d1 SURVIVED 6/6): `exists_secondPeel_minor`
+-- (hminor₂ from a rank bound) + `rlctAt_deepest_le_of_optimal_L2` (the L=2 Skeleton reduction; conditional
+-- on the 2 named-open gates #44/hDeepest + hInterface/R1 — NOT wired into Skeleton:1172). Clean-three.
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelMinor
+import DLNFibre.DLN.RLCT.Validate.D1SecondPeelGlueL2
 -- R1 interior-det headline at the (2,2,2) node (the FIRST end-to-end faithful-route interior-det
 -- Jacobian, UNCONDITIONAL + clean-three): `interiorDet_headline_222` |det Dφ(phiFlatLiveR1At … pRad)|
 -- = |u_pRad|^{minAdm−1}·|aRead(pbo u)|². PivotNotReader discharged via route-D (additive pivot-
