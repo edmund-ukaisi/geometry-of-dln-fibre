@@ -103,6 +103,15 @@ Remaining sequence (each its own clean-three commit):
    (`B = (P⁻¹·firstCols)·(firstRows·Q⁻¹)`). `Skeleton.rank_factor_{left,right}` (private; de-privatise) prove
    full-rank of given factors. So the "2 from-scratch foundational lemmas" reduce to normal-form→factorization
    plumbing + column-containment extraction (the unit `P,Q` feed it). Estimate drops; multi-lemma but NO new math.
+   **★★ THE FACTORIZATION IS ALREADY DERIVED in `Skeleton.lean`** (inside `product_reduction`, ~line 1142):
+   `obtain ⟨P,Q,hP,hQ,hPBQ⟩ := block_elimination H r B hB` (PUBLIC) → `U:=P⁻¹·embM`, `V:=projM·Q⁻¹` →
+   `B=U·V` via `factor_from_blockElim` + `U.rank=V.rank=r` via `rank_factor_{left,right}`. BUT
+   `factor_from_blockElim`, `rank_factor_{left,right}`, `embM`, `projM` are all `private` to `Skeleton.lean`
+   (`block_elimination` is public) and `Loss`/`D1HChartGrad` don't import `Skeleton`. NEXT-TIDE REUSE:
+   (a) ask controller to de-privatise the 4 helpers + export a packaged `exists_rank_factorization B (hB) :
+   ∃ U V, B=U*V ∧ U.rank=r ∧ V.rank=r` from `Skeleton`/`Core` (cleaner, single-source — flag to controller);
+   or (b) re-prove the ~10-line extraction in `D1HChartRank` from public `block_elimination` (the two
+   `rank_factor` lemmas are 8-line rank-sandwiches, trivial to re-state).
 3. **invertible `nReg`-minor** via `Core.RankLocusClosed.exists_submatrix_det_ne_zero_of_le_rank`
    (banked); choose `W` = its columns (the ∃-extraction — NEVER fix the complement, the trap).
 4. **`Φ = (g_S − g_S(0), proj Wᶜ)`**, `det DΦ(v) ≠ 0` (block-triangular), `f' :=
