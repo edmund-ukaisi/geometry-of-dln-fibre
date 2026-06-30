@@ -31,13 +31,20 @@ CLOSED (sorry-free):
 - `interiorLive_cov` — assembled from the banked `ldu_cov_of_differentiable_injOn` engine (given diff/abs_det/injOn).
 - bundle `interiorLiveNodeChart` + atom `routeMCore_box_diverges_interiorLive` — wired (sorry-gated on the below).
 
-OPEN obligations (each a stated `sorry`):
-- `interiorLive_abs_det` (H2 keystone) — SPINE verified bounded (hmap-for-B' via commute + `radialComp_abs_det_at`).
-  The ONE heavy piece: the det bookkeeping `|det D(BchartLeaf∘kLDU)| = ∏_{K-diag}|q|^{(r+c)+2(t−1−i)}`
-  (dead-leaf H2b — Schur·LDU det telescope; banked partial `interiorDet_leaf_headline_Bchart`).
-- `interiorLive_diff` — bounded; needs a `Differentiable kLDU` atom (kLens polynomial), not yet banked.
-- `interiorLive_E` + `interiorLive_injOn` — bounded; factors through the composition (pivotBlowupOn_injOn
-  banked + BchartLeaf inj via the (0,0)=1 anchor + kLens LDU-recovery off q-pivots).
+CLOSED (cont.): `differentiable_kLens` / `_kLDU` / `_pivotBlowupOn` atoms; `interiorLive_diff` (via
+hmap-for-B' factorization → composition); `interiorLive_E`; cov engine extracted to standalone
+`RouteMNullSliceCov.lean` (LIVE contract decoupled from the retired dead-leaf trio — orphan, clean).
+
+OPEN obligations — 5 left, 2 substantive + 3 handed off:
+- `interiorLive_abs_det` (H2 keystone) — SPINE verified bounded (hmap-for-B' via commute +
+  `radialComp_abs_det_at`). The ONE heavy piece: the det bookkeeping
+  `|det D(BchartLeaf∘kLDU)| = ∏_{K-diag}|q|^{(r+c)+2(t−1−i)}` (dead-leaf H2b — Schur·LDU det telescope;
+  banked partial `interiorDet_leaf_headline_Bchart`). DIRECTION-REQUEST pending (solo vs sub-hand).
+- `interiorLive_injOn` (the NAMED RISK, BOUNDED read) — factors through the composition: `pivotBlowupOn_injOn`
+  (banked) + `kLens`/`lduCoreMap` injectivity off q-pivots (LDU recovery, NEW but single-block) +
+  `BchartLeaf` injectivity (opaque-width chart-param recovery — the genuine content, composition-factored
+  so far cheaper than the monolithic `chartParams3333_injOn`). NO banked BchartLeaf/kLens inj yet.
+  flag-at-2-cycles armed.
 - `interiorLive_Ubound` / `_Umeas` / `_image` — handed to genm-ubound (route-independent).
 
 ## injOn-∀M read: BOUNDED (composition factoring; the monolithic 27-coord `chartParams3333_injOn` NOT needed).
