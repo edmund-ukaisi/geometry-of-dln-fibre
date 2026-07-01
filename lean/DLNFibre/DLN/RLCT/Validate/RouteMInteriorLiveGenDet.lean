@@ -1900,6 +1900,111 @@ theorem isCoordLE_matReindexFinCongr {a b a' b' : ℕ} (h1 : a = a') (h2 : b = b
   rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
   simp only [finCongr_symm, Equiv.prodCongr_apply, Prod.map, finCongr_apply]
 
+/-- **The role-regroup equiv** for the frame flatten — `(Fin t ⊕ Fin r) × (Fin t ⊕ Fin c) ≃
+(((Fin(t·t) ⊕ Fin(r·t)) ⊕ Fin(t·c)) ⊕ Fin(r·c))` — reassembles the 2D-block-decoded matrix index
+`(row-half, col-half)` into `frameSplitEquiv`'s nested role order `(((K⊕X)⊕N)⊕E)`, packing each role
+product to its flat sub-index via `finProdFinEquiv`. K=(inl,inl), X=(inr,inl), N=(inl,inr), E=(inr,inr).
+The combinatorial heart of the row-major↔role-contiguous frame-flatten permutation. -/
+def roleRegroup (t r c : ℕ) :
+    ((Fin t ⊕ Fin r) × (Fin t ⊕ Fin c))
+      ≃ ((((Fin (t * t) ⊕ Fin (r * t)) ⊕ Fin (t * c)) ⊕ Fin (r * c))) where
+  toFun p :=
+    match p with
+    | (Sum.inl i', Sum.inl j') => Sum.inl (Sum.inl (Sum.inl (finProdFinEquiv (i', j'))))
+    | (Sum.inr a, Sum.inl j') => Sum.inl (Sum.inl (Sum.inr (finProdFinEquiv (a, j'))))
+    | (Sum.inl i', Sum.inr b) => Sum.inl (Sum.inr (finProdFinEquiv (i', b)))
+    | (Sum.inr a, Sum.inr b) => Sum.inr (finProdFinEquiv (a, b))
+  invFun q :=
+    match q with
+    | Sum.inl (Sum.inl (Sum.inl m)) =>
+        (Sum.inl (finProdFinEquiv.symm m).1, Sum.inl (finProdFinEquiv.symm m).2)
+    | Sum.inl (Sum.inl (Sum.inr m)) =>
+        (Sum.inr (finProdFinEquiv.symm m).1, Sum.inl (finProdFinEquiv.symm m).2)
+    | Sum.inl (Sum.inr m) =>
+        (Sum.inl (finProdFinEquiv.symm m).1, Sum.inr (finProdFinEquiv.symm m).2)
+    | Sum.inr m =>
+        (Sum.inr (finProdFinEquiv.symm m).1, Sum.inr (finProdFinEquiv.symm m).2)
+  left_inv p := by
+    rcases p with ⟨_ | _, _ | _⟩ <;>
+      simp only [Equiv.symm_apply_apply, Prod.mk.injEq, and_self]
+  right_inv q := by
+    rcases q with (((_ | _) | _) | _) <;>
+      simp only [Prod.mk.eta, Equiv.apply_symm_apply]
+
+/-- **Atom: the block-aware frame flatten `frameToSchurIncGen ≫ flatBlockLE` is a coordinate
+permutation** — `IsCoordLE (refl) (matChart (Text(s+1))(Wext(s+1))) (frameToSchurIncGen s ≫ flatBlockLE
+hr hc)`. The composite reshapes the flat frame vector into the row-major `Text(s+1)×Wext(s+1)` matrix;
+its `.symm` is the block-aware frame OUTPUT pack of `packStairGen` (fix (i)). The σ is
+`finProdFinEquiv.symm` (matrix→2D) ≫ the `castAdd/natAdd` block decode ≫ `roleRegroup` (into
+`frameSplitEquiv`'s role order) ≫ `frameSplitEquiv.symm`; the read splits the matrix index 4-ways
+(mirroring `flatBlock_schurFrameMap_eq_gen`) and each block reads one flat coord via
+`frameToSchurIncGen`'s role-read. -/
+theorem isCoordLE_frameToSchurInc_flatBlock (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L)
+    (hr : Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Text M (tach M) (s.val + 1))
+    (hc : Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Wext M (s.val + 1)) :
+    IsCoordLE (LinearEquiv.refl ℝ (Fin (schurDim M (tDesc M (tach M)) s.val) → ℝ))
+      (matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))
+      ((frameToSchurIncGen M ha s) ≪≫ₗ (flatBlockLE hr hc)) := by
+  -- widths + the frameSplitEquiv the readers use.
+  set t := Text M (tach M) (s.val + 2) with ht
+  set r := Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2) with hrr
+  set c := Wext M (s.val + 1) - Text M (tach M) (s.val + 2) with hcc
+  set fse := frameSplitEquiv M (tach M) (s.val + 1) (ha.hdesc s.val s.isLt) (ha.hub s.val) with hfse
+  -- σ : Fin (Text(s+1)*Wext(s+1)) ≃ Fin (schurDim) — the row-major → role-contiguous permutation.
+  -- `finProdFinEquiv.symm` → 2D `(i,j)`; `finCongr hr/hc` recast the widths to `t+r`/`t+c`;
+  -- `finSumFinEquiv.symm` the castAdd/natAdd block decode; `roleRegroup`; `fse.symm`.
+  refine isCoordLE_of_read
+    ((finProdFinEquiv (m := Text M (tach M) (s.val + 1)) (n := Wext M (s.val + 1))).symm.trans
+      ((Equiv.prodCongr ((finCongr hr.symm).trans finSumFinEquiv.symm)
+          ((finCongr hc.symm).trans finSumFinEquiv.symm)).trans
+        ((roleRegroup t r c).trans fse.symm))) ?_
+  intro f m
+  -- `cx.symm f = f` (refl); the read goal is `matChart (flatBlockLE hr hc (frameToSchurIncGen f)) m = f (σ m)`.
+  show matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))
+      ((flatBlockLE hr hc) ((frameToSchurIncGen M ha s) f)) m = _
+  rw [matChart_apply]
+  -- reduce the RHS `f (σ m)`: unfold the trans-chain to `f (fse.symm (roleRegroup (i-split, j-split)))`.
+  simp only [Equiv.trans_apply, Equiv.prodCongr_apply, Prod.map, finCongr_apply]
+  -- generalize the 2D-decoded matrix index to a free var so the flatBlock split can `subst`.
+  -- flatBlockLE = flatBlock (coe via ofLinear).
+  show flatBlock hr hc ((frameToSchurIncGen M ha s) f)
+      (finProdFinEquiv.symm m).1 (finProdFinEquiv.symm m).2
+    = f (fse.symm ((roleRegroup t r c)
+        (finSumFinEquiv.symm (Fin.cast hr.symm (finProdFinEquiv.symm m).1),
+         finSumFinEquiv.symm (Fin.cast hc.symm (finProdFinEquiv.symm m).2))))
+  set i := (finProdFinEquiv.symm m).1 with hi
+  set j := (finProdFinEquiv.symm m).2 with hj
+  clear_value i j
+  -- decompose row / col of the matrix index by the canonical sum split, and substitute.
+  obtain ⟨is, hieq⟩ : ∃ is : Fin t ⊕ Fin r, i = Fin.cast hr (finSumFinEquiv is) :=
+    ⟨finSumFinEquiv.symm (Fin.cast hr.symm i), by rw [Equiv.apply_symm_apply]; apply Fin.ext; simp⟩
+  obtain ⟨js, hjeq⟩ : ∃ js : Fin t ⊕ Fin c, j = Fin.cast hc (finSumFinEquiv js) :=
+    ⟨finSumFinEquiv.symm (Fin.cast hc.symm j), by rw [Equiv.apply_symm_apply]; apply Fin.ext; simp⟩
+  subst hieq hjeq
+  -- the double-cast round-trip: `finSumFinEquiv.symm (cast hr.symm (cast hr (finSumFinEquiv is))) = is`.
+  rw [show finSumFinEquiv.symm (Fin.cast hr.symm (Fin.cast hr (finSumFinEquiv is))) = is from by
+      simp only [Fin.cast_cast, Fin.cast_eq_self, Equiv.symm_apply_apply],
+    show finSumFinEquiv.symm (Fin.cast hc.symm (Fin.cast hc (finSumFinEquiv js))) = js from by
+      simp only [Fin.cast_cast, Fin.cast_eq_self, Equiv.symm_apply_apply]]
+  -- 4-way flatBlock split (mirror `flatBlock_schurFrameMap_eq_gen`): normalize row/col `finSumFinEquiv`
+  -- constructors to `castAdd`/`natAdd`, then `flatBlock_castAdd`/`_natAdd` picks the role `z.role i' j'`;
+  -- the `frameToSchurIncGen` role-read (`flatMatLE_apply` after `frameSplitEquiv.symm` peel) is `rfl`.
+  rcases is with i' | a <;> rcases js with j' | b <;>
+    simp only [finSumFinEquiv_apply_left, finSumFinEquiv_apply_right, flatBlock_castAdd,
+      flatBlock_natAdd, Fin.cast_cast, Fin.cast_eq_self, finSumFinEquiv_symm_apply_castAdd,
+      finSumFinEquiv_symm_apply_natAdd, Equiv.symm_apply_apply, Sum.elim_inl, Sum.elim_inr]
+  · -- K block: `z.1 i' j'`, fse.symm (inl inl inl finProd).
+    change flatMatLE t t _ i' j' = _; rw [flatMatLE_apply]; rfl
+  · -- N block: `z.2.1 i' b`, fse.symm (inl inr finProd).
+    change flatMatLE t c _ i' b = _; rw [flatMatLE_apply]; rfl
+  · -- X block: `z.2.2.1 a j'`, fse.symm (inl inl inr finProd).
+    change flatMatLE r t _ a j' = _; rw [flatMatLE_apply]; rfl
+  · -- E block: `z.2.2.2 a b`, fse.symm (inr finProd).
+    change flatMatLE r c _ a b = _; rw [flatMatLE_apply]; rfl
+
 /-! ### The `genV` chart family + the `eInGen`/`packStairGen` `IsCoordLE` certificates -/
 
 /-- The per-slot `→ℝ` chart on `genV M k = (Fin (schurDim k) → ℝ) × (Fin (liftDim k) → ℝ)` — the
@@ -1983,17 +2088,37 @@ theorem isCoordLE_packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
           (matChart (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))))
       (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s)) :=
     isCoordLE_piCongrRight _ _ _ (fun s => isCoordLE_packRowSplitGen M ha s)
-  -- S2: piCongrRight (flatMatLEGen.symm × flatMatLEGen.symm) : ⟶ piArrowChart (prodChart refl refl).
+  -- S2: piCongrRight (BLOCK-AWARE frame flatten × flatMatLEGen.symm lift) : ⟶ piArrowChart (prodChart refl refl).
+  -- FRAME factor now `(flatBlockLE hr hc).symm ≪≫ₗ (frameToSchurIncGen s).symm = (frameToSchurIncGen ≪≫ₗ
+  -- flatBlockLE).symm` (fix (i)); its cert is `isCoordLE_frameToSchurInc_flatBlock.symm` (matChart→refl).
   have hS2 : IsCoordLE (piArrowChart (fun s : Fin L =>
         prodChart (matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))
           (matChart (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))))
       (piArrowChart (fun s : Fin L =>
         prodChart (LinearEquiv.refl ℝ (Fin (schD s) → ℝ)) (LinearEquiv.refl ℝ (Fin (lblk s) → ℝ))))
       (LinearEquiv.piCongrRight (fun s : Fin L =>
-        (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+        ((flatBlockLE
+              (show Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+                  = Text M (tach M) (s.val + 1) from by have := ha.hdesc s.val s.isLt; omega)
+              (show Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+                  = Wext M (s.val + 1) from by have := ha.hub s.val; omega)).symm ≪≫ₗ
+            (frameToSchurIncGen M ha s).symm).prodCongr
           (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm)) := by
     refine isCoordLE_piCongrRight _ _ _ (fun s => ?_)
-    exact isCoordLE_prodCongr (isCoordLE_flatMatLEGen_symm _ _) (isCoordLE_flatMatLEGen_symm _ _)
+    refine isCoordLE_prodCongr ?_ (isCoordLE_flatMatLEGen_symm _ _)
+    -- `(flatBlockLE).symm ≪≫ₗ (frameToSchurIncGen).symm = (frameToSchurIncGen ≪≫ₗ flatBlockLE).symm`.
+    rw [show ((flatBlockLE
+            (show Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+                = Text M (tach M) (s.val + 1) from by have := ha.hdesc s.val s.isLt; omega)
+            (show Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+                = Wext M (s.val + 1) from by have := ha.hub s.val; omega)).symm ≪≫ₗ
+          (frameToSchurIncGen M ha s).symm)
+        = ((frameToSchurIncGen M ha s) ≪≫ₗ (flatBlockLE
+            (show Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+                = Text M (tach M) (s.val + 1) from by have := ha.hdesc s.val s.isLt; omega)
+            (show Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+                = Wext M (s.val + 1) from by have := ha.hub s.val; omega))).symm from rfl]
+    exact (isCoordLE_frameToSchurInc_flatBlock M ha s _ _).symm
   -- S3: piProdSplit : ⟶ prodChart (sigmaChart schD) (sigmaChart lblk).
   have hS3 : IsCoordLE
       (piArrowChart (fun s : Fin L =>
@@ -2035,7 +2160,12 @@ theorem isCoordLE_packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
               rw [Wext_apply M (s.val + 1) (by omega)]; rfl))))
         ≪≫ₗ (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s))
         ≪≫ₗ (LinearEquiv.piCongrRight (fun s : Fin L =>
-            (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+            ((flatBlockLE
+                  (show Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+                      = Text M (tach M) (s.val + 1) from by have := ha.hdesc s.val s.isLt; omega)
+                  (show Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+                      = Wext M (s.val + 1) from by have := ha.hub s.val; omega)).symm ≪≫ₗ
+                (frameToSchurIncGen M ha s).symm).prodCongr
               (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm))
         ≪≫ₗ (piProdSplit (fun s : Fin L => Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)
             (fun s : Fin L => Fin ((Wext M s.val - Text M (tach M) (s.val + 1)) * Wext M (s.val + 1)) → ℝ))
