@@ -412,6 +412,87 @@ def stairCouplingOf (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Modul
        ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
          (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))))⟩
 
+/-- **Lower-triangular-with-diagonal-`f` predicate** for a `StairProd` endomorphism, recursive on depth.
+At `n = 0` (`PUnit`), trivially true. At `n+1`: the head-diagonal block `fst ∘ T ∘ inl = f 0`, the
+upper block `fst ∘ T ∘ inr = 0`, and the tail endomorphism `snd ∘ T ∘ inr` is again
+lower-triangular-with-diagonal-`f∘succ`. (The head-into-tail coupling `snd ∘ T ∘ inl` is unconstrained
+— it is captured by `stairCouplingOf`.) -/
+def StairLowerTriDiag (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    (n : ℕ) → ((s : ℕ) → V s →ₗ[ℝ] V s) → (StairProd V n →ₗ[ℝ] StairProd V n) → Prop
+  | 0, _, _ => True
+  | (n + 1), f, T =>
+    (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+        (T.comp (LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n))) = f 0 ∧
+    (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+        (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))) = 0 ∧
+    StairLowerTriDiag (fun k => V (k + 1)) n (fun s => f (s + 1))
+      ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+        (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))))
+
+/-- **The reconstruction lemma**: a `StairLowerTriDiag`-`f` endomorphism `T` equals
+`stairMap V n f (stairCouplingOf T)` — the couplings are captured automatically by `stairCouplingOf`,
+so the crux `eihd_hD_gen` reduces to establishing `StairLowerTriDiag genV L genF T` (i.e. the two block
+facts: head-diag `= genF s`, upper-block `= 0`, at every depth). Induction on `n`, peeling one
+`lowerTri` per depth. -/
+theorem stairMap_eq_of_lowerTriDiag (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    [∀ k, FiniteDimensional ℝ (V k)] :
+    ∀ (n : ℕ) (f : (s : ℕ) → V s →ₗ[ℝ] V s) (T : StairProd V n →ₗ[ℝ] StairProd V n),
+      StairLowerTriDiag V n f T → T = stairMap V n f (stairCouplingOf V n T)
+  | 0, _, T, _ => by
+      -- `StairProd V 0 = PUnit` is a subsingleton; any two maps agree.
+      haveI : Subsingleton (StairProd V 0) := (inferInstance : Subsingleton PUnit)
+      apply LinearMap.ext; intro x
+      exact Subsingleton.elim _ _
+  | (n + 1), f, T, hT => by
+      obtain ⟨hdiag, hupper, htail⟩ := hT
+      -- unfold `stairMap` and `stairCouplingOf` at `n+1`; the RHS is `lowerTri (f 0) (stairMap tail …)
+      -- (coupling.1)`. Show `T = lowerTri …` by `LinearMap.ext` on `(v0, vtail)`, splitting via
+      -- `hdiag` (head block), `hupper` (upper block = 0), and the tail IH on `snd ∘ T ∘ inr`.
+      have hIH := stairMap_eq_of_lowerTriDiag (fun k => V (k + 1)) n (fun s => f (s + 1))
+        ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+          (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)))) htail
+      apply LinearMap.ext
+      rintro ⟨v0, vt⟩
+      -- decompose `(v0, vt) = inl v0 + inr vt`, push `T` through (map_add), and read the two components.
+      have hTsplit : T (v0, vt)
+          = T ((LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) v0)
+            + T ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt) := by
+        rw [← map_add]; congr 1
+        refine Prod.ext ?_ ?_
+        · show v0 = _ + _; simp
+        · show vt = _ + _; simp
+      rw [hTsplit]
+      -- LHS = T (inl v0) + T (inr vt); RHS (stairMap = lowerTri) = (f0 v0, tail vt + coupling v0).
+      show T ((LinearMap.inl ℝ (V 0) _) v0) + T ((LinearMap.inr ℝ (V 0) _) vt)
+        = ((f 0) v0, (stairMap (fun k => V (k + 1)) n (fun s => f (s + 1))
+              (stairCouplingOf (fun k => V (k + 1)) n
+                ((LinearMap.snd ℝ (V 0) _).comp (T.comp (LinearMap.inr ℝ (V 0) _)))) vt)
+            + (LinearMap.snd ℝ (V 0) _).comp (T.comp (LinearMap.inl ℝ (V 0) _)) v0)
+      refine Prod.ext ?_ ?_
+      · -- fst: (fst (T (inl v0))) + (fst (T (inr vt))) = f0 v0 + 0
+        show (T ((LinearMap.inl ℝ (V 0) _) v0)).1 + (T ((LinearMap.inr ℝ (V 0) _) vt)).1 = (f 0) v0
+        have e0 : (T ((LinearMap.inl ℝ (V 0) _) v0)).1 = (f 0) v0 := by
+          have := congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) hdiag) v0
+          simpa using this
+        have e1 : (T ((LinearMap.inr ℝ (V 0) _) vt)).1 = 0 := by
+          have := congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) hupper) vt
+          simpa using this
+        rw [e0, e1, add_zero]
+      · -- snd: (snd (T (inl v0))) + (snd (T (inr vt))) = tail vt + coupling v0
+        show (T ((LinearMap.inl ℝ (V 0) _) v0)).2 + (T ((LinearMap.inr ℝ (V 0) _) vt)).2
+          = (stairMap (fun k => V (k + 1)) n (fun s => f (s + 1))
+              (stairCouplingOf (fun k => V (k + 1)) n
+                ((LinearMap.snd ℝ (V 0) _).comp (T.comp (LinearMap.inr ℝ (V 0) _)))) vt)
+            + ((LinearMap.snd ℝ (V 0) _).comp (T.comp (LinearMap.inl ℝ (V 0) _))) v0
+        have etail : (T ((LinearMap.inr ℝ (V 0) _) vt)).2
+            = (stairMap (fun k => V (k + 1)) n (fun s => f (s + 1))
+                (stairCouplingOf (fun k => V (k + 1)) n
+                  ((LinearMap.snd ℝ (V 0) _).comp (T.comp (LinearMap.inr ℝ (V 0) _)))) vt) := by
+          have := congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) hIH) vt
+          simpa using this
+        rw [etail, add_comm]
+        rfl
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
