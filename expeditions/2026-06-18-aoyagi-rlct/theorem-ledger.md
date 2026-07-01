@@ -12529,3 +12529,29 @@ Nonclaims: no proof of formal p.13 measure domination by passive coordinates,
 no passive-theta source-image equality, no source coverage, no chart-image
 equality, no source-rank coverage, no Haar scalar normalization, no normal
 crossings, no pole order, and no RLCT.
+
+
+Latest A2 p.13 formal source-reference readback handoff:
+`LocalMeasureHandoff.lean` proves `readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure`.
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_le_smul_sourceMeasure`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-source-reference-readback-handoff.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-source-reference-readback-handoff.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-formal-source-reference-readback-handoff.md`.
+
+Ledger status: the formal-product p.13 readback assumptions are reduced to
+source-reference domination plus a supplied readback pullback identity for that
+source reference.
+
+Focused file elaboration, focused module builds, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `./scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of formal p.13 domination by a passive source-image
+measure, no source-reference identification, no source coverage, no chart-image
+equality, no source-rank coverage, no Haar scalar normalization, no normal
+crossings, no pole order, and no RLCT.

@@ -381,6 +381,24 @@ theorem measure_le_smul_of_le_smul_of_le_smul
     _ ≤ c • (d • η) := hscale
     _ = (c * d) • η := hassoc
 
+/-- Readback domination transfers from a source reference measure to any
+measure dominated by that source reference. -/
+theorem readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    {sourceRef μ : Measure E} {thetaRef : Measure Θ} {C : ℝ≥0∞}
+    {readback : E → Θ}
+    (hreadback_source : AEMeasurable readback sourceRef)
+    (hsource_pull : Measure.map readback sourceRef = thetaRef)
+    (hμ : μ ≤ C • sourceRef) :
+    AEMeasurable readback μ ∧ Measure.map readback μ ≤ C • thetaRef := by
+  have hμ_ac : μ ≪ sourceRef := Measure.absolutelyContinuous_of_le_smul hμ
+  have hreadback_μ : AEMeasurable readback μ :=
+    hreadback_source.mono_ac hμ_ac
+  have hmap :
+      Measure.map readback μ ≤ C • Measure.map readback sourceRef :=
+    map_le_smul_map_of_le_smul_aemeasurable hreadback_source hμ
+  exact ⟨hreadback_μ, by simpa [hsource_pull] using hmap⟩
+
 /-- If a measure is dominated by a scalar multiple of a restricted measure,
 then it is dominated by the same scalar multiple of the original measure. -/
 theorem measure_le_smul_of_le_smul_restrict

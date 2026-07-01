@@ -12,6 +12,20 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal source-reference readback handoff
+
+The formal-product p.13 readback assumptions now reduce to source-reference
+domination plus a supplied readback pullback identity:
+
+```text
+readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_le_smul_sourceMeasure
+```
+
+This is elementary measure bookkeeping.  It does not prove `muP13 ≤ C •
+sourceRef`, identify `sourceRef` with a passive-theta source image, or prove
+source coverage/chart-image equality.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior finite-integral bridge
 
 The p.13 original-prior readback bridge now feeds the existing Case 2

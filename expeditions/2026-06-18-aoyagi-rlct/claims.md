@@ -140,6 +140,25 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal source-reference readback handoff,
+  2026-07-01.** Lean now proves `readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and the p.13 wrapper
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_le_smul_sourceMeasure` in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`.
+  These theorems say that if the formal-product p.13 chart-piece measure is
+  dominated by a source reference measure and readback pulls that source
+  reference back to a theta reference measure, then the formal p.13 measure
+  satisfies the readback measurability/domination assumptions required by the
+  original-prior finite-integral bridge.  Reproduction, statement card, and
+  review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-source-reference-readback-handoff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-source-reference-readback-handoff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-source-reference-readback-handoff.md`.
+  Nonclaims: no proof of the source-reference domination, no passive-theta
+  source-image equality, no source coverage, no chart-image equality, no
+  source-rank coverage, no Haar scalar normalization, no normal crossings,
+  pole order, or RLCT extraction.
 - **Current status addendum, p.13 original-prior finite-integral bridge,
   2026-07-01.** Lean now proves a downstream consumer theorem in
   `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`:

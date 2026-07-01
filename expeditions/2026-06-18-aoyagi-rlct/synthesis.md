@@ -6,6 +6,50 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal Source-reference Readback Handoff - 2026-07-01
+
+Lean now proves the source-reference handoff needed to make the previous
+finite-integral theorem easier to use:
+
+```text
+readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_le_smul_sourceMeasure
+```
+
+If a source reference measure satisfies
+
+```text
+AEMeasurable readback sourceRef
+Measure.map readback sourceRef = thetaRef
+muP13 <= Cformal • sourceRef,
+```
+
+then the formal-product p.13 chart-piece measure satisfies the readback
+measurability and domination assumptions required downstream:
+
+```text
+AEMeasurable readback muP13
+Measure.map readback muP13 <= Cformal • thetaRef.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-source-reference-readback-handoff.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-source-reference-readback-handoff.md
+threads/03-block-product-reduction/review-a2-p13-formal-source-reference-readback-handoff.md
+```
+
+Focused file elaboration, focused module builds, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `./scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no formal p.13 domination by a passive source-image measure, no
+source-reference identification, no source coverage, no chart-image equality,
+no source-rank coverage, no Haar scalar normalization, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## p.13 Original-prior Readback Finite-integral Bridge - 2026-07-01
 
 Lean now proves a downstream consumer theorem composing the p.13
