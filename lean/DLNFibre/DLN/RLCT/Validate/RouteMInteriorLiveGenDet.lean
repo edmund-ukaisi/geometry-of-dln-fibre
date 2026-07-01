@@ -2415,6 +2415,30 @@ theorem piReindexOfSigma_apply {ι : Type} (d e : ι → ℕ)
     (g : (i : ι) → Fin (d i) → ℝ) (s : ι) (b : Fin (e s)) :
     (piReindexOfSigma d e σ g) s b = g (σ.symm ⟨s, b⟩).1 (σ.symm ⟨s, b⟩).2 := rfl
 
+/-- **`sigmaGather` at a `.succ` index** — `sigmaGather n blk lift … ⟨j.succ, i⟩ = ⟨j.castSucc, Fin.cast
+(hshift j) i⟩` (the `Fin.cases` succ arm). Isolates the raw gather reduction from the `sigmaCongrLeft'`
+transport. -/
+theorem sigmaGather_apply_succ (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) (j : Fin n) (i : Fin (blk j.succ)) :
+    sigmaGather n blk lift h0 hlast hshift ⟨j.succ, i⟩
+      = ⟨j.castSucc, Fin.cast (hshift j) i⟩ := by
+  show (⟨_, _⟩ : Σ k : Fin (n + 1), Fin (lift k)) = _
+  simp only [sigmaGather, Fin.cases_succ]
+
+/-- **`sigmaGather.symm` at a non-last index** — `(sigmaGather n blk lift …).symm ⟨j.castSucc, i⟩ =
+⟨j.succ, Fin.cast (hshift j).symm i⟩` (the `Fin.lastCases` non-last arm of `invFun`). -/
+theorem sigmaGather_symm_apply_castSucc (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) (j : Fin n) (i : Fin (lift j.castSucc)) :
+    (sigmaGather n blk lift h0 hlast hshift).symm ⟨j.castSucc, i⟩
+      = ⟨j.succ, Fin.cast (hshift j).symm i⟩ := by
+  -- apply the forward `sigmaGather` (injective) to both sides: LHS ↦ ⟨j.castSucc, i⟩ (apply_symm_apply),
+  -- RHS ↦ sigmaGather ⟨j.succ, cast i⟩ = ⟨j.castSucc, i⟩ (`sigmaGather_apply_succ` + cast cancel).
+  apply (sigmaGather n blk lift h0 hlast hshift).injective
+  rw [Equiv.apply_symm_apply, sigmaGather_apply_succ]
+  simp only [Fin.cast_cast, Fin.cast_eq_self]
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
