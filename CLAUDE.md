@@ -109,7 +109,7 @@ hourly loop/heartbeat with the operator away) these are load-bearing, not option
     Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
     freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
     sensible defaults).
-  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → master` promotion, and
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
     **any change to the destination or the definition of done.** These never proceed on silence.
 
 ## How research runs here
@@ -148,16 +148,16 @@ If dispatched into a role, read its role file and agent definition first.
 
 - **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
 - **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
-  `dev`. `master` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
   to directly.
-- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `master` directly. One
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
 - **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
   2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
   via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
   ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
   into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
-  `dev → master` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
   Always confirm the push target is `origin`, never a non-`origin` remote.
 
 ## Memory

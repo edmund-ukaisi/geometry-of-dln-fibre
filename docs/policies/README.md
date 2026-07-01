@@ -25,11 +25,11 @@ These three predate the research-process port and govern the **reader-facing exp
 
 - [`scholium-writing-format.md`](scholium-writing-format.md) — markdown formatting, frontmatter, collapsibles, theorem-like blocks, math rendering, images, and `.data.yaml` sidecar conventions.
 - [`writing-style-graduate-math-textbook.md`](writing-style-graduate-math-textbook.md) — prose style, reader model, proof pacing, examples, theorem restatement, source traceability.
-- [`writing-style-agent-exposition.md`](writing-style-agent-exposition.md) — (legacy) agent-work summaries / synthesis notes, not graduate-textbook expositions unless asked.
+- [`writing-style-agent-exposition.md`](writing-style-agent-exposition.md) — stub/alias of [`writing-style.md`](writing-style.md) (its content was consolidated there); kept so existing links resolve.
 
-`writing-style.md` is the umbrella research-writing discipline; the trio above are the detailed
-exposition-format references. They are complementary and agree on the scholium specifics; if they ever
-diverge, the operator reconciles.
+`writing-style.md` is the umbrella research-writing discipline; the first two above are the detailed
+exposition-format references (the third is now a stub/alias of `writing-style.md`). They are complementary
+and agree on the scholium specifics; if they ever diverge, the operator reconciles.
 
 Disposition (the stance all of this runs under) is in [`../../CLAUDE.md`](../../CLAUDE.md).
 Lean build conventions are in [`../../lean/CLAUDE.md`](../../lean/CLAUDE.md). The
