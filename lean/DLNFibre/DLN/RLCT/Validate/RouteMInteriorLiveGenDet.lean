@@ -1109,6 +1109,59 @@ theorem BparamsLeafGen_fderiv_layer (M : Fin (L + 1) → ℕ) (ha : StructAdm M 
       (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).hasFDerivAt.comp y₀ hpi
   rw [hs.fderiv]; rfl
 
+/-- **`packRecast` cancels the `reindexLs` reindex**: `packRecast s (BparamsLeafGen y s) =
+Agen 1 … s.val` (both are `finCongr` width recasts between the `M`-widths and the `Wext`-widths, so
+their composite is the value-preserving identity). Lets the pack projections read the chain layer
+`Agen ... s` (at the `Wext` widths, where `Agen ... s = chainA (Nblk s)(Wblk s)(Cgen(s+1))`). -/
+theorem packRecast_BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L)
+    (y : Fin (routeMAmbient M) → ℝ) :
+    packRecast M s (BparamsLeafGen M ha y s)
+      = Agen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+          (hleStruct M (tach M) ha) s.val := by
+  rw [← reindexLs_BparamsLeafGen M ha y s, packRecast]
+  ext i j
+  simp only [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    finCongr_symm, finCongr_apply]
+  congr 1
+
+/-- **`packRecast` commutes through the per-layer fderiv**: `packRecast s (fderiv (BparamsLeafGen · s)
+y₀ d) = fderiv (Agen 1 … s.val) y₀ d`. `packRecast` is a `LinearEquiv` (hence a CLM), so it commutes
+through `fderiv`; the base maps agree by `packRecast_BparamsLeafGen`. Feeds the per-slot block facts:
+the frame/lift components now read `fderiv (Agen-layer s) y₀ d`, decodable by `hasFDerivAt_chainA`. -/
+theorem packRecast_fderiv_layer (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L)
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    packRecast M s (fderiv ℝ (fun y => BparamsLeafGen M ha y s) y₀ d)
+      = fderiv ℝ (fun y => Agen 1 M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)
+          y₀ d := by
+  set RC := (packRecast M s).toLinearMap.toContinuousLinearMap with hRC
+  have hlayer : HasFDerivAt (fun y => BparamsLeafGen M ha y s)
+      ((ContinuousLinearMap.proj (R := ℝ)
+        (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).comp
+        (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀)) y₀ :=
+    (ContinuousLinearMap.proj (R := ℝ)
+      (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).hasFDerivAt.comp y₀
+      (BparamsLeafGen_hasFDerivAt M ha y₀)
+  have hcomp : HasFDerivAt (fun y => packRecast M s (BparamsLeafGen M ha y s))
+      (RC.comp ((ContinuousLinearMap.proj (R := ℝ)
+        (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).comp
+        (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀))) y₀ :=
+    RC.hasFDerivAt.comp y₀ hlayer
+  have hcomp' : HasFDerivAt (fun y => Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)
+      (RC.comp ((ContinuousLinearMap.proj (R := ℝ)
+        (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).comp
+        (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀))) y₀ := by
+    have hfun : (fun y => packRecast M s (BparamsLeafGen M ha y s))
+        = fun y => Agen 1 M (tach M)
+            (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val := by
+      funext y; exact packRecast_BparamsLeafGen M ha s y
+    rwa [hfun] at hcomp
+  rw [hcomp'.fderiv]
+  show RC (fderiv ℝ (fun y => BparamsLeafGen M ha y s) y₀ d) = _
+  rw [hRC, ← BparamsLeafGen_fderiv_layer M ha y₀ d s]
+  rfl
+
 /-- **The FRAME component of `stairProj s' (packStairGen P)`** — reads ONLY layer `s'` of `P` (the
 frame half never touches the off-by-one gather): flatten the KEPT rows of the row-split of the recast
 layer `s'`. -/
