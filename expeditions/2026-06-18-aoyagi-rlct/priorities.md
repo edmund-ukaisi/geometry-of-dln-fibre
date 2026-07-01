@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, source-image chart-piece density readback domination to W
+
+Lean now proves a strengthened chart-piece source-image bounded-density
+pullback that lands in a larger coordinate reference restriction:
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity
+
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+If
+
+```text
+sourceBase = Measure.map sourceChart (thetaReference.restrict V)
+externalMeasure.restrict chartPiece =
+  (sourceBase.withDensity density).restrict chartPiece
+density <= c over sourceBase.restrict chartPiece-a.e.
+V subset W
+```
+
+then the theorem returns both
+
+```text
+AEMeasurable readback (externalMeasure.restrict chartPiece)
+Measure.map readback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict W.
+```
+
+The proof first uses the previous chart-piece pullback to dominate by
+`thetaReference.restrict V`, then applies restriction monotonicity along
+`V subset W`.  It also records the absolute-continuity transfer that supplies
+the needed `AEMeasurable readback` for the external restricted measure.
+
+The p.13 specialization applies this to `originalEdgeFamilyVolume` and
+`coordinateSourceMeasure`.
+
+Nonclaims: no source-image density identity or density bound is proved, and no
+source coverage, source-rank coverage, Haar/Jacobian transport, normal
+crossings, pole order, or RLCT extraction is proved.
+
 ## Latest controller decision - 2026-07-01, source-image chart-piece bounded-density pullback
 
 Lean now proves generic chart-piece versions of the source-image

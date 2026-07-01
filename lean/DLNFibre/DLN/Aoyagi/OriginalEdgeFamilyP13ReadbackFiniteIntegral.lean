@@ -1841,6 +1841,81 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       hchartPiece_sub_image
       (density := density) (Kprior := Kprior) hdensity
       (D := D) hvolume_source hD
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A bounded-density identification of the restricted original edge-family
+volume with a local source-image reference gives the readback hypotheses needed
+by the direct original-volume readback finite-integral wrapper.
+
+The theorem does not prove the density identity or density bound.  It only says
+that once those are supplied on a measurable chart piece, the readback of that
+restricted original volume is a.e.-measurable and dominated by the same scalar
+multiple of the coordinate source measure on any larger theta set `W` containing
+`V`.  It does not prove source coverage, source-rank coverage, Haar transport,
+a Jacobian formula, normal crossings, pole order, or RLCT extraction. -/
+theorem originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    {Θ : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (sourceChart : Θ →
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (readback :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) → Θ)
+    (coordinateSourceMeasure : Measure Θ)
+    (V W : Set Θ)
+    (chartPiece : Set
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (volumeDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    (D : ℝ≥0∞)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hVW : V ⊆ W)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hvolume_eq :
+      (originalEdgeFamilyVolume (V := reverseVertex W₂)
+        (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)).restrict chartPiece =
+        ((Measure.map sourceChart (coordinateSourceMeasure.restrict V)).withDensity
+          volumeDensity).restrict chartPiece)
+    (hvolumeDensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (coordinateSourceMeasure.restrict V)).restrict
+          chartPiece,
+        volumeDensity E ≤ D) :
+    AEMeasurable readback
+        ((originalEdgeFamilyVolume (V := reverseVertex W₂)
+          (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)).restrict chartPiece) ∧
+      Measure.map readback
+          ((originalEdgeFamilyVolume (V := reverseVertex W₂)
+            (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)).restrict chartPiece) ≤
+        D • coordinateSourceMeasure.restrict W := by
+  simpa using
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn
+      sourceChart readback
+      (originalEdgeFamilyVolume (V := reverseVertex W₂)
+        (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀))
+      coordinateSourceMeasure V W chartPiece volumeDensity D
+      hV hchartPiece hVW hsource_contOn hsource_inj hleft hvolume_eq
+      hvolumeDensity_le
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

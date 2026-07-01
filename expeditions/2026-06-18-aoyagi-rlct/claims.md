@@ -140,6 +140,31 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, source-image chart-piece density readback
+  domination to W, 2026-07-01.** Lean now proves the generic `V subset W`
+  chart-piece pullback lemmas
+  `aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity`
+  and
+  `aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`.
+  They show that if an external restricted measure is identified on
+  `chartPiece` as a bounded-density perturbation of
+  `Measure.map sourceChart (thetaReference.restrict V)`, and `V subset W`,
+  then `readback` is a.e.-measurable for that external restricted measure and
+  its pushforward is dominated by the same scalar multiple of
+  `thetaReference.restrict W`.  The p.13 specialization
+  `originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn`
+  is proved in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-density-readback-domination-to-W.md`,
+  `threads/03-block-product-reduction/statement-card-a2-source-image-chart-piece-density-readback-domination-to-W.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-source-image-chart-piece-density-readback-domination-to-W.md`.
+  Nonclaims: no source-image density identity or density bound, no source
+  coverage, no source-rank coverage, no Haar/Jacobian transport, no normal
+  crossings, pole order, or RLCT extraction.
 - **Current status addendum, source-image chart-piece bounded-density
   pullback, 2026-07-01.** Lean now proves the generic chart-piece pullback
   lemmas

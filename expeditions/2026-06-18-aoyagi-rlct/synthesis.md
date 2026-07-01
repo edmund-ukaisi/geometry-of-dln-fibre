@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Source-image Chart-piece Density Readback Domination to W - 2026-07-01
+
+Lean now proves the `V subset W` version of the chart-piece bounded-density
+source-image readback pullback:
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity
+
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+For
+
+```text
+sourceBase := Measure.map sourceChart (thetaReference.restrict V),
+externalMeasure.restrict chartPiece =
+  (sourceBase.withDensity density).restrict chartPiece,
+density <= c  sourceBase.restrict chartPiece-a.e.,
+V subset W,
+```
+
+the theorem proves:
+
+```text
+AEMeasurable readback (externalMeasure.restrict chartPiece)
+Measure.map readback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict W.
+```
+
+The proof is measure bookkeeping.  Absolute continuity transfers
+`AEMeasurable readback` from the source reference to the external restricted
+measure.  The previous chart-piece pullback gives domination by
+`thetaReference.restrict V`; monotonicity of `Measure.restrict` and scalar
+monotonicity move this to `thetaReference.restrict W`.
+
+The p.13 original edge-family specialization is also proved:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-density-readback-domination-to-W.md
+threads/03-block-product-reduction/statement-card-a2-source-image-chart-piece-density-readback-domination-to-W.md
+threads/03-block-product-reduction/review-a2-source-image-chart-piece-density-readback-domination-to-W.md
+```
+
+Focused file elaborations, focused module builds, aggregate `DLNFibre.lean`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+and direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source-image density identity or density bound, no source
+coverage, no source-rank coverage, no Haar/Jacobian transport, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## Source-image Chart-piece Bounded-density Pullback - 2026-07-01
 
 Lean now proves the chart-piece variants of the bounded-density source-image
