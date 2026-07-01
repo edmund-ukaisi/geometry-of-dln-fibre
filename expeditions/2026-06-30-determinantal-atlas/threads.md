@@ -71,6 +71,12 @@ follow-up raised TWO items still open. (→ lesson DA4: fetch the LATEST reviews
   to LITERALLY delegate to the abstract `AtlasChart.…` at `pivotAtlasChart`, so the named theorem compiles by a
   one-step unfold with NO bump + single source of truth (removes the concrete/abstract duplication). Dispatched
   `p2j-reroute`, guard-first (downstream P2.f/g + FibreZariski defeq-preserved but build-swept). (→ DA5.)
+  **RESOLUTION:** P2.j LANDED (`15e633fa`) — reroute done (single source of truth), but the bump is INTRINSIC
+  to a concrete-`targetChartLoc`-typed theorem (statement-level instance synthesis whnf; not removable without
+  dropping to the abstract/predicate type), reduced 800k→400k. **Controller call: ACCEPT the 400k bump** (honest
+  minimized cost of the concrete DLN-named API; per-decl, axiom-clean; reversible if operator prefers
+  predicate-level). Extended R1-doc sweep (`2b6ad08e`) + 3 thread-provenance import-note tags (`f3d3f369`)
+  landed. **ALL PR #21 review items (both rounds + follow-up) RESOLVED; green 3834, axiom-clean; #21 ready for merge.**
 
 ## Ops note (operator, 2026-07-01)
 Posting PR **comments** is now controller-discretion (standing) — no per-comment gate. Opening/merging PRs +
