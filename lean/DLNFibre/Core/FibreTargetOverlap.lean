@@ -204,6 +204,21 @@ theorem chartOverlapTransitionK_trans_symm (I J : PivotDatum d r hp hq) :
   Algebra.AtlasChart.chartOverlapTransitionK_trans_symm
     (pivotAtlasChart d r hp hq I) (pivotAtlasChart d r hp hq J)
 
+set_option maxHeartbeats 800000 in
+/-- **The target-side overlap transition round-trips to the identity (named DLN API).**
+`((targetProductOverlapTransition I J).trans (targetProductOverlapTransition J I)) = refl` — the
+concrete DLN instance of the abstract `Algebra.AtlasChart.overlapTransition_trans_symm` (P2.c) at the
+pivot charts, `targetProductOverlapTransition` being definitionally
+`(pivotAtlasChart I).overlapTransition (pivotAtlasChart J)`. Needs a raised elaboration budget: the
+concrete transition unfolds through the explicit chart trivialization, so lining it up with the
+abstract statement is a large `whnf`. -/
+theorem targetProductOverlapTransition_trans_symm (I J : PivotDatum d r hp hq) :
+    (targetProductOverlapTransition d r hp hq I J).trans
+        (targetProductOverlapTransition d r hp hq J I)
+      = AlgEquiv.refl (R := k) :=
+  Algebra.AtlasChart.overlapTransition_trans_symm
+    (pivotAtlasChart d r hp hq I) (pivotAtlasChart d r hp hq J)
+
 /-! ### The target-side cocycle round-trip — LANDED (P2.c), inherited from the abstract atlas
 
 The pairwise target-side **transition object** `targetProductOverlapTransition` is the DLN instance
@@ -213,13 +228,12 @@ of the abstract `Algebra.AtlasChart.overlapTransition`. Its **round-trip cocycle
 K_JI ≪≫ T_IJ` by the `AlgEquiv` groupoid laws `AlgEquiv.trans_assoc` / `trans_refl` / `refl_trans`
 (supplied by `DLNFibre.Core.Algebra.AlgEquiv.Groupoid`) at the abstract `AlgEquiv` level — off the
 heavy double-localized `targetChartLoc`, so no pointwise-`ext` kernel cost — using the base-side
-`chartOverlapTransitionK_trans_symm` (just above) for the middle cancellation. On the DLN instance
-it fires as `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
-(`Core.FibreZariskiLocalTriviality`), for the derived charts `pivotAtlasFibreChart`. (A concrete
-`targetProductOverlapTransition_trans_symm` named directly on this def is not exported: unfolding
-`targetProductOverlapTransition` here goes through the concrete chart trivialization, so a direct
-proof `whnf`-times-out on the double-localized carrier — the predicate-level statement, on the
-abstract derived charts, is the exported form.) The canonical triple cocycle (P2.f
+`chartOverlapTransitionK_trans_symm` (just above) for the middle cancellation. It is exported as the
+concrete named theorem `targetProductOverlapTransition_trans_symm` (just above — needs a raised
+`maxHeartbeats`, since unfolding the concrete transition through the chart trivialization to line it
+up with the abstract statement is a large `whnf`), and on the derived charts `pivotAtlasFibreChart`
+as `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
+(`Core.FibreZariskiLocalTriviality`). The canonical triple cocycle (P2.f
 `tripleTransition_cocycle`) and the naturality tie of the triple to the further-localized 2-fold
 (P2.g) are likewise landed abstractly and inherited. Only the GLOBAL gluing into one `Flat π` /
 `FiberBundle` stays roadmapped (R1). -/

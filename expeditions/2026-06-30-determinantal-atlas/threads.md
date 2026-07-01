@@ -65,10 +65,9 @@ follow-up raised TWO items still open. (→ lesson DA4: fetch the LATEST reviews
   `perPivotLocalTrivializationDatum.trivialization`), not routed through the abstract atlas; the abstract
   round-trip works generically over opaque `C.trivK` but at the concrete `pivotAtlasChart` `trivK` reduces
   to the trivialization monster → both delegation and direct groupoid proof `whnf`-timeout (200000).
-  Reverted; honest prose note added (predicate-level `overlapTransition_trans_symm` on `pivotAtlasFibreChart`
-  is the green exported round-trip form). Options for a concrete named theorem: (i) `maxHeartbeats` bump
-  (historically used here; slow, discouraged), (ii) mark the concrete trivialization `irreducible` (may break
-  flatness/product proofs), (iii) accept predicate-level export + note. Awaiting operator call.
+  **RESOLVED** (operator: try the bump): a TARGETED `set_option maxHeartbeats 800000 in` on the delegation
+  COMPILES, axiom-clean — `targetProductOverlapTransition_trans_symm` now exported. Full green 3834. Cost:
+  per-declaration ceiling only (no project-wide tax), ~40s extra when `FibreTargetOverlap` recompiles. (→ DA5.)
 
 ## PR #21 re-review — earlier three items (09:02Z) RESOLVED (P2.h)
 Strengthen (item 3), stale-doc sweep (items 1-2), narrowed cocycle prose (item 2) all landed `e30952ff`; controller-verified. The capstone predicate `IsZariskiLocallyTrivialAffineProduct` now earns its name: the transitions consume the over-base PRODUCT trivialization, so pairwise inverse + triple cocycle are genuine product-atlas coherence. **#21 ready for operator merge.**
