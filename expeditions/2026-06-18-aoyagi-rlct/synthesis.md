@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Case 2 Passive-theta Source-image p.13 Source-set Support - 2026-07-01
+
+Lean now proves:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+```
+
+The theorem reuses the local passive-theta source-image inverse package and
+adds support of the actual image in the named p.13 source edge-family set:
+
+```text
+forall z in V, sourceChart z in p13SourceSet
+forall E in sourceChart '' V, E in p13SourceSet
+```
+
+The pointwise calculation constructs the determinant-chart subtype
+`{ data := retainedData z, property := hdetV z hz }`, applies
+`paperEndpointFixedBaseRetainedPassiveP13SourceChart_mem_sourceEdgeFamilySet`,
+and unfolds `case2PassiveThetaEndpointSourceChart` to identify the chart point.
+The image statement is immediate from `E = sourceChart z` for some `z in V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-source-image-p13-source-set-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-source-image-p13-source-set-support.md
+threads/03-block-product-reduction/review-a2-case2-passive-theta-source-image-p13-source-set-support.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source coverage, no equality of the chart image with the p.13
+source set, no source-rank coverage, no original-prior or volume transport, no
+Haar or Jacobian transport, no normal crossings, no pole order, and no RLCT
+extraction.
+
 ## p.13 Original-prior Volume Source-image Density Finite Integral - 2026-07-01
 
 Lean now proves the bounded-density variant of the concrete source-image

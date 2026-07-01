@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 passive-theta source-image p.13
+  source-set support, 2026-07-01.** Lean now proves
+  `exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`.
+  For the local passive-theta chart `V` returned by the source-image inverse
+  package, the theorem adds both pointwise support
+  `forall z in V, sourceChart z in p13SourceSet` and image support
+  `forall E in sourceChart '' V, E in p13SourceSet`.  The proof constructs the
+  determinant-chart subtype from the returned `hdetV` and applies
+  `paperEndpointFixedBaseRetainedPassiveP13SourceChart_mem_sourceEdgeFamilySet`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-source-image-p13-source-set-support.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-source-image-p13-source-set-support.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-source-image-p13-source-set-support.md`.
+  Nonclaims: no source coverage, no equality of the chart image with the p.13
+  source set, no source-rank coverage, no original-prior or volume transport,
+  no Haar or Jacobian transport, no normal crossings, pole order, or RLCT
+  extraction.
 - **Current status addendum, p.13 original-prior volume source-image
   density finite integral, 2026-07-01.** Lean now proves
   `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`

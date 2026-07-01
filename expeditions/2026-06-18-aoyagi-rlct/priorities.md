@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, Case 2 passive-theta source-image p.13 source-set support
+
+Lean now proves the local support theorem:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+```
+
+For the same local open passive-theta chart package returned by the source-image
+inverse theorem, the theorem adds:
+
+```text
+forall z in V, sourceChart z in p13SourceSet
+forall E in sourceChart '' V, E in p13SourceSet
+```
+
+The proof is pointwise determinant-chart bookkeeping: `hdetV` makes
+`retainedData z` into a determinant-chart subtype, and
+`paperEndpointFixedBaseRetainedPassiveP13SourceChart_mem_sourceEdgeFamilySet`
+says its fixed-base p.13 source chart lands in the named source edge-family
+set.  Image support follows by unpacking `E in sourceChart '' V`.
+
+This removes an avoidable duplicated downstream support obligation: when a
+chart piece is already contained in the returned actual image `sourceChart '' V`,
+its containment in the named p.13 source set follows by this theorem.
+
+Nonclaims: no source coverage, no equality of the chart image with the p.13
+source set, no source-rank coverage, no original-prior or volume transport, no
+Haar or Jacobian transport, no normal crossings, no pole order, and no RLCT
+extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior volume source-image density finite integral
 
 The source-image finite-integral wrapper now has a bounded-density variant:
