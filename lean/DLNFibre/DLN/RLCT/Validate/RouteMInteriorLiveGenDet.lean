@@ -2439,6 +2439,17 @@ theorem sigmaGather_symm_apply_castSucc (n : ℕ) (blk lift : Fin (n + 1) → �
   rw [Equiv.apply_symm_apply, sigmaGather_apply_succ]
   simp only [Fin.cast_cast, Fin.cast_eq_self]
 
+/-- **`sigmaCongrLeft'` apply** — `Equiv.sigmaCongrLeft' f ⟨a, x⟩ = ⟨f a, y⟩` with `y` the fiber
+transport of `x` (an `Eq.mpr`/`▸`). Proved by flipping via the forward `sigmaCongrLeft f.symm` (which
+has `@[simps apply]`): `⟨a, x⟩ = sigmaCongrLeft f.symm ⟨f a, y⟩ = ⟨f.symm (f a), y⟩ = ⟨a, x⟩`. -/
+theorem sigmaCongrLeft'_apply {α₁ α₂ : Type} {β : α₁ → Type} (f : α₁ ≃ α₂) (a : α₁) (x : β a) :
+    Equiv.sigmaCongrLeft' f ⟨a, x⟩
+      = ⟨f a, (Equiv.symm_apply_apply f a).symm ▸ x⟩ := by
+  rw [Equiv.sigmaCongrLeft', Equiv.symm_apply_eq, Equiv.sigmaCongrLeft_apply]
+  -- `⟨a, x⟩ = ⟨f.symm (f a), transport⟩` — first comp `a = f.symm (f a)`, second an `HEq` of casts.
+  apply Sigma.ext (Equiv.symm_apply_apply f a).symm
+  simp only [Equiv.symm_apply_apply, heq_eqRec_iff_heq, eqRec_heq_iff_heq, heq_eq_eq]
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
