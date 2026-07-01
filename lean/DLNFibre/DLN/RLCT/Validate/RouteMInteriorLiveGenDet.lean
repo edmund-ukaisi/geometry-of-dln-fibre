@@ -409,6 +409,20 @@ noncomputable def frameDecode2D (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
       ≃ₗ[ℝ] SchurInc (schurTGen M k.val) (schurRGen M k.val) (schurCGen M k.val) :=
   (flatMatLEGen (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1))) ≪≫ₗ (flatBlockLE hr hc).symm
 
+/-- **`frameDecode2D.symm` as a composite** — `frameDecode2D.symm = flatBlockLE ≪≫ flatMatLEGen.symm`
+(the row-major re-encode of the `SchurInc` tuple). Since `frameDecode2D = flatMatLEGen ≪≫
+flatBlockLE.symm`, `(a ≪≫ b.symm).symm = (b.symm).symm ≪≫ a.symm = b ≪≫ a.symm` (`trans_symm` +
+`symm_symm`), stated at the `LinearEquiv` level to avoid coercion fights. -/
+theorem frameDecode2D_symm_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2) + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2) + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Wext M (k.val + 1)) :
+    (frameDecode2D M ha k hr hc).symm
+      = flatBlockLE hr hc ≪≫ₗ (flatMatLEGen (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1))).symm := by
+  rw [frameDecode2D]
+  exact LinearEquiv.trans_symm
+
 /-- The `.toLinearMap`-form conjugation det: `det (e.symm ∘ f ∘ e) = det f` (via `LinearMap.det_conj`
 on `e.symm`, restated so it matches `.toLinearMap` composites). -/
 theorem det_symm_conj_toLinearMap {E₁ E₂ : Type} [AddCommGroup E₁] [Module ℝ E₁] [AddCommGroup E₂]
@@ -469,28 +483,14 @@ noncomputable def genF (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
               = Wext M (k + 1) from by have := ha.hub k; omega)).symm.toLinearMap
         ∘ₗ schurFrameDeriv (readX M (tach M) ha y₀ ⟨k, hk⟩) (readK M (tach M) ha y₀ ⟨k, hk⟩)
             (readN M (tach M) ha y₀ ⟨k, hk⟩)
-        ∘ₗ (frameDecode2D M ha ⟨k, hk⟩
-          (show Text M (tach M) (k + 2) + (Text M (tach M) (k + 1) - Text M (tach M) (k + 2))
-              = Text M (tach M) (k + 1) from by have := ha.hdesc k hk; omega)
-          (show Text M (tach M) (k + 2) + (Wext M (k + 1) - Text M (tach M) (k + 2))
-              = Wext M (k + 1) from by have := ha.hub k; omega)).toLinearMap).prodMap LinearMap.id
+        ∘ₗ (frameToSchurIncGen M ha ⟨k, hk⟩).toLinearMap).prodMap LinearMap.id
   else LinearMap.id
 
-/-- **The per-boundary det** `|det (genF k)| = |det K_k|^{r_k+c_k}` at an interior `k` (`0` at the
-leaf's `0×0` K). The frame block is `schurFrameDeriv` conjugated by `frameToSchurIncGen` (det-invariant,
-`schurFrame_abs_det`), the lift block is `id` (det `1`). -/
-theorem genF_abs_det (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
-    (y₀ : Fin (routeMAmbient M) → ℝ) (k : Fin L) :
-    |LinearMap.det (genF M ha y₀ k.val)|
-      = |(Matrix.of (readK M (tach M) ha y₀ k)).det|
-        ^ ((Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
-          + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))) := by
-  have hk : (k : ℕ) < L := k.isLt
-  rw [genF, dif_pos hk, LinearMap.det_prodMap, LinearMap.det_id, mul_one,
-    det_symm_conj_toLinearMap, schurFrame_abs_det]
-  -- `⟨↑k, hk⟩ = k` (Fin.eta, defeq) + `schurRGen/schurCGen` unfold (defeq) to the `Text`/`Wext`
-  -- exponent — the remaining goal is definitional.
-  rfl
+-- `genF_abs_det` (`|det (genF k)| = |det K_k|^{r_k+c_k}`) is proved BELOW the `IsCoordLE` atom cluster:
+-- the frame block is now the MIXED bridge `frameDecode2D.symm ∘ schurFrameDeriv ∘ frameToSchurIncGen`
+-- (`frameToSchurIncGen` INPUT decode / `frameDecode2D.symm` row-major OUTPUT encode — NOT a bare
+-- conjugation, since the two decodes differ), so its det needs `bridgePerm_abs_det`, which rides those
+-- atoms. Its only forward user is `DtotGen_abs_det` at the file bottom, so the relocation is safe.
 
 /-- **The input layer-collecting equiv** `eInGen : (Fin (routeMAmbient M) → ℝ) ≃ₗ StairProd genV L` —
 the `chartIdxEquiv`-based reshape collecting the per-boundary (frame slot ⊕ lift slot). Concrete and
@@ -1804,6 +1804,117 @@ theorem isCoordLE_flatMatLEGen_symm (a b : ℕ) :
   rw [show (matChart a b).symm = flatMatLEGen a b from by
       rw [matChart, LinearEquiv.symm_symm]; rfl]
   rw [LinearEquiv.symm_apply_apply]
+
+/-! ### The frame-decode bridge `bridgePerm` (det-`1`) + the relocated `genF_abs_det`
+
+`genF`'s frame block is `frameDecode2D.symm ∘ schurFrameDeriv ∘ frameToSchurIncGen` (`frameToSchurIncGen`
+INPUT decode / `frameDecode2D.symm` ROW-MAJOR OUTPUT encode). Regrouping `= bridgePerm ∘
+(frameToSchurIncGen.symm ∘ schurFrameDeriv ∘ frameToSchurIncGen)` with the coordinate permutation
+`bridgePerm := frameToSchurIncGen ≫ flatBlockLE ≫ flatMatLEGen.symm` (`|det| = 1`), so `|det (genF
+k)_frame| = |det schurFrameDeriv| = |det K_k|^{r_k+c_k}`. The `bridgePerm` `IsCoordLE` rides
+`isCoordLE_flatMatLEGen_symm` + a `frameToSchurIncGen ≫ flatBlockLE` read-form certificate. -/
+
+/-- **The frame-decode bridge** `bridgePerm k := frameToSchurIncGen ≫ flatBlockLE ≫ flatMatLEGen.symm`
+— the coordinate permutation reconciling `genF`'s `frameToSchurIncGen` INPUT decode with its
+`frameDecode2D.symm = flatMatLEGen.symm ∘ flatBlockLE` (row-major) OUTPUT encode. A self-map of the
+frame slot (`schurDim k = Text(k+1)·Wext(k+1)` defeq). -/
+noncomputable def bridgePerm (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2)
+        + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)) = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2)
+        + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) = Wext M (k.val + 1)) :
+    (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ)
+      ≃ₗ[ℝ] (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ) :=
+  frameToSchurIncGen M ha k ≪≫ₗ flatBlockLE hr hc ≪≫ₗ
+    (flatMatLEGen (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1))).symm
+
+/-- **`frameToSchurIncGen ≫ flatBlockLE` is a coordinate permutation** — `refl` frame-slot side,
+`matChart` matrix side; the composite reads each matrix entry `(i,j)` from a single frame-slot
+coordinate. -/
+theorem isCoordLE_frameToSchurIncGen_flatBlockLE (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2)
+        + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)) = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2)
+        + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) = Wext M (k.val + 1)) :
+    IsCoordLE (LinearEquiv.refl ℝ (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ))
+      (matChart (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1)))
+      (frameToSchurIncGen M ha k ≪≫ₗ flatBlockLE hr hc) := by
+  sorry
+
+/-- **`bridgePerm` is a coordinate permutation** — the read-form `frameToSchurIncGen ≫ flatBlockLE`
+then `flatMatLEGen.symm`, composed by `IsCoordLE.trans` (shared `matChart` middle chart). -/
+theorem isCoordLE_bridgePerm (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2)
+        + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)) = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2)
+        + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) = Wext M (k.val + 1)) :
+    IsCoordLE (LinearEquiv.refl ℝ (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ))
+      (LinearEquiv.refl ℝ (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ))
+      (bridgePerm M ha k hr hc) :=
+  (isCoordLE_frameToSchurIncGen_flatBlockLE M ha k hr hc).trans
+    (isCoordLE_flatMatLEGen_symm (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1)))
+
+/-- **`|det (bridgePerm k)| = 1`** — the bridge is a coordinate permutation (`isCoordLE_bridgePerm`),
+i.e. `funCongrLeft σ`, measure-preserving (`measurePreserving_funCongrLeft`); hence `|det| = 1`. -/
+theorem bridgePerm_abs_det (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2)
+        + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)) = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2)
+        + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) = Wext M (k.val + 1)) :
+    |LinearMap.det ((bridgePerm M ha k hr hc :
+        (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ)
+          →ₗ[ℝ] (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ)))| = 1 := by
+  sorry
+
+/-- **The per-boundary det** `|det (genF k)| = |det K_k|^{r_k+c_k}` at an interior `k` (`0` at the
+leaf's `0×0` K). Frame block regroups as `bridgePerm ∘ (frameToSchurIncGen-conjugation of
+schurFrameDeriv)`; `|det| = |det bridgePerm| · |det schurFrameDeriv| = 1 · |det K_k|^{r_k+c_k}`. -/
+theorem genF_abs_det (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (k : Fin L) :
+    |LinearMap.det (genF M ha y₀ k.val)|
+      = |(Matrix.of (readK M (tach M) ha y₀ k)).det|
+        ^ ((Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+          + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))) := by
+  have hk : (k : ℕ) < L := k.isLt
+  have hr : Text M (tach M) (k.val + 2)
+      + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)) = Text M (tach M) (k.val + 1) := by
+    have := ha.hdesc k.val hk; omega
+  have hc : Text M (tach M) (k.val + 2)
+      + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) = Wext M (k.val + 1) := by
+    have := ha.hub k.val; omega
+  rw [genF, dif_pos hk, LinearMap.det_prodMap, LinearMap.det_id, mul_one]
+  -- Frame block `= bridgePerm ∘ (frameToSchurIncGen.symm ∘ schurFrameDeriv ∘ frameToSchurIncGen)`.
+  have hframe :
+      ((frameDecode2D M ha ⟨k, hk⟩ hr hc).symm.toLinearMap
+        ∘ₗ schurFrameDeriv (readX M (tach M) ha y₀ ⟨k, hk⟩) (readK M (tach M) ha y₀ ⟨k, hk⟩)
+            (readN M (tach M) ha y₀ ⟨k, hk⟩)
+        ∘ₗ (frameToSchurIncGen M ha ⟨k, hk⟩).toLinearMap)
+      = ((bridgePerm M ha ⟨k, hk⟩ hr hc :
+            (Fin (schurDim M (tDesc M (tach M)) k) → ℝ)
+              →ₗ[ℝ] (Fin (schurDim M (tDesc M (tach M)) k) → ℝ)))
+          ∘ₗ ((frameToSchurIncGen M ha ⟨k, hk⟩).symm.toLinearMap
+            ∘ₗ schurFrameDeriv (readX M (tach M) ha y₀ ⟨k, hk⟩) (readK M (tach M) ha y₀ ⟨k, hk⟩)
+                (readN M (tach M) ha y₀ ⟨k, hk⟩)
+            ∘ₗ (frameToSchurIncGen M ha ⟨k, hk⟩).toLinearMap) := by
+    -- `frameDecode2D.symm = flatBlockLE ≪≫ flatMatLEGen.symm` (LinearEquiv level, no coercion fight),
+    -- then both sides apply to `z ↦ flatMatLEGen.symm (flatBlockLE (schurFrameDeriv … (frameToSchurIncGen
+    -- z)))`: RHS `bridgePerm` cancels `frameToSchurIncGen ∘ frameToSchurIncGen.symm`.
+    -- Both sides reduce to `flatMatLEGen.symm ∘ flatBlockLE ∘ schurFrameDeriv ∘ frameToSchurIncGen`:
+    -- `frameDecode2D.symm = flatBlockLE ≪≫ flatMatLEGen.symm` (`frameDecode2D_symm_eq`), and `bridgePerm`
+    -- cancels `frameToSchurIncGen ∘ frameToSchurIncGen.symm` (`apply_symm_apply`). Full `simp` handles the
+    -- coercion normal forms uniformly on both `.toLinearMap` (LHS) and the `(… : →ₗ)` ascription (RHS).
+    refine LinearMap.ext fun z => ?_
+    simp only [bridgePerm, frameDecode2D_symm_eq, LinearMap.comp_apply, LinearEquiv.coe_coe,
+      LinearEquiv.trans_apply, LinearEquiv.apply_symm_apply]
+    -- ISOLATED residual: LHS `(flatBlockLE ≪≫ₗ flatMatLEGen.symm) X` vs RHS `flatMatLEGen.symm
+    -- (flatBlockLE X)` — pure `LinearEquiv.trans_apply`, which `simp` fires on the RHS `bridgePerm`
+    -- composite but NOT the LHS (coercion-form asymmetry: LHS `.toLinearMap` vs RHS `(… : →ₗ)`). TRUE;
+    -- needs the matching coe normal-form. Math settled (see genF docstring / eihd_hD_gen soundness trace).
+    sorry
+  rw [hframe, LinearMap.det_comp, det_symm_conj_toLinearMap, abs_mul, bridgePerm_abs_det,
+    one_mul, schurFrame_abs_det]
+  rfl
 
 /-- The kept-block read of `packRowSplitGen s` — `(packRowSplitGen s Mat).1 i j` reads row
 `finSumFinEquiv (inl i)` (recast by `genWidthEq`) at column `j`. -/
