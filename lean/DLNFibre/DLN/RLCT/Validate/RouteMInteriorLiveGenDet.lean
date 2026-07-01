@@ -2356,6 +2356,57 @@ theorem NblkWblk_fderiv_vanish (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
       ContinuousLinearMap.comp_apply, matMulBilin_apply, hNd, hWd, Matrix.mul_zero,
       Matrix.zero_mul, add_zero]
 
+/-! ## Steps 2–4: the per-slot frame/lift fderiv reads (CLM-through-fderiv) -/
+
+/-- **Frame read of `packStairGen (fderiv …)`** — the KEPT-block fderiv is read off the chain layer.
+Combining `stairProj_packStairGen_fst` + `BparamsLeafGen_fderiv_layer` + `packRecast_fderiv_layer` +
+the `packRowSplitGen`-`fst` CLM commuting through `fderiv` (`packRowSplitGen`/`packRecast` are
+`LinearEquiv`s, `.1` is `fst`, all continuous linear), then `packRowSplitGen_kept_BparamsLeafGen`
+rewrites the base to `Cgen(s+1) − Nblk·Wblk`. -/
+theorem packStairGen_frame_fderiv_read (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    (packRowSplitGen M ha s (packRecast M s ((fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ d) s))).1
+      = fderiv ℝ (fun y => Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+            (hleStruct M (tach M) ha) (s.val + 1)
+          - (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+            * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) y₀ d := by
+  -- The base function is the KEPT block `(packRowSplitGen s (packRecast s (BparamsLeafGen y s))).1`.
+  rw [BparamsLeafGen_fderiv_layer, packRecast_fderiv_layer]
+  -- Φ := `fst ∘ₗ packRowSplitGen s` (CLM) commutes through fderiv of the differentiable `Agen`-layer.
+  set Φ : Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ →L[ℝ]
+      Matrix (Fin (Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ :=
+    (ContinuousLinearMap.fst ℝ _ _).comp (packRowSplitGen M ha s).toContinuousLinearMap with hΦ
+  have hdiff : DifferentiableAt ℝ (fun y => Agen 1 M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀ :=
+    diffAt_Agen_liveGen' M ha y₀ s.val
+  have hcomp : HasFDerivAt (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val))
+      (Φ.comp (fderiv ℝ (fun y => Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀)) y₀ :=
+    Φ.hasFDerivAt.comp y₀ hdiff.hasFDerivAt
+  have hΦval : ∀ Mat, Φ Mat = (packRowSplitGen M ha s Mat).1 := fun _ => rfl
+  rw [← hΦval]
+  -- `Φ (fderiv (Agen-layer) y₀ d) = fderiv (Φ ∘ Agen-layer) y₀ d`; rewrite the base by the KEPT read.
+  rw [show Φ (fderiv ℝ (fun y => Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀ d)
+      = fderiv ℝ (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)) y₀ d from
+    by rw [hcomp.fderiv]; rfl]
+  -- the two base functions agree (`Φ (Agen-layer y) = KEPT y` via the KEPT read).
+  have hfeq : (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val))
+      = fun y => Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+            (hleStruct M (tach M) ha) (s.val + 1)
+          - (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+            * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val := by
+    funext y
+    show (packRowSplitGen M ha s (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)).1 = _
+    rw [← packRecast_BparamsLeafGen M ha s y]
+    ext i j
+    exact packRowSplitGen_kept_BparamsLeafGen M ha s y i j
+  rw [hfeq]
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
