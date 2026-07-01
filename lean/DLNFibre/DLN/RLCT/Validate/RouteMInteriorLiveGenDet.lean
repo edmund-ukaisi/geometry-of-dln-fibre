@@ -2266,6 +2266,25 @@ theorem packRowSplitGen_kept_BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : Stru
         (Fin.castAdd _ i) from by rw [finSumFinEquiv_apply_left],
     chainA_apply_castAdd]
 
+/-- **`Cgen(s+1) = flatBlock (schurFrameMap (slotReadGen s))`** at an interior boundary (`s.val+1 < L`).
+`Cgen_live_interior_eq_schurFrameProd` reads `Cgen(s+1)` as `schurFrameProd … (readK)(readX)(readN)(readE)`;
+`flatBlock_schurFrameMap_eq_gen` reads `flatBlock (schurFrameMap (slotReadGen s))` as the SAME
+`schurFrameProd` (the `slotReadGen` tuple is `(readK, readN, readX, readE)`, and the block roles agree). -/
+theorem Cgen_succ_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (hs : s.val + 1 < L)
+    (hr : Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Text M (tach M) (s.val + 1))
+    (hc : Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Wext M (s.val + 1))
+    (y : Fin (routeMAmbient M) → ℝ) :
+    Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+        (hleStruct M (tach M) ha) (s.val + 1)
+      = flatBlock hr hc (schurFrameMap (slotReadGen M ha s y)) := by
+  rw [Cgen_live_interior_eq_schurFrameProd M (tach M) ha (rfinDirectGen M ha y) 1 y s.val hs,
+    flatBlock_schurFrameMap_eq_gen M (tach M) (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val)
+      hr hc (slotReadGen M ha s y)]
+  rfl
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
