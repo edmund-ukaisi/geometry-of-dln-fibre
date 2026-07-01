@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal-product Density Identity - 2026-07-01
+
+Lean now proves the inverse-scalar p.13 formal-product/original-volume
+comparison in bounded-density form:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_formalProductAbsDet_restrict_chartPiece
+```
+
+For a measurable chart piece contained in the named p.13 source edge-family
+set, the restricted original edge-family volume equals the p.13 formal-product
+chart measure with constant density `c^{-1}`, where `c` is the tuple-side Haar
+scalar from the existing formal-product comparison:
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (formalProductMeasure.withDensity (fun _ => c^{-1})).restrict chartPiece
+```
+
+The a.e. bound required by bounded-density sockets is reflexive.  The proof is
+scalar bookkeeping from the existing inverse-scalar theorem plus
+`withDensity_const` and restriction of scalar measures.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-density-identity.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-density-identity.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-density-identity.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no equality between the formal-product p.13 chart measure and the
+passive-theta source-image reference, no source-image coverage, no source-rank
+coverage, no scalar normalization, no normal crossings, no pole order, and no
+RLCT extraction.
+
 ## Source-image Chart-piece Density Readback Domination to W - 2026-07-01
 
 Lean now proves the `V subset W` version of the chart-piece bounded-density

@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal-product density identity
+
+Lean now proves that the p.13 formal-product chart measure controls the
+restricted original edge-family volume in the bounded-density identity shape
+used by downstream source-image sockets:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_formalProductAbsDet_restrict_chartPiece
+```
+
+For any measurable `chartPiece` contained in the named p.13 source edge-family
+set, if `formalProductMeasure` is the p.13 raw-order source-chart pushforward
+weighted by the formal product absolute determinant, then
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (formalProductMeasure.withDensity (fun _ => c^{-1})).restrict chartPiece
+```
+
+where `c` is the tuple-side Haar scalar already used in the p.13
+formal-product/original-volume comparison.  The bounded-density proof is the
+tautological a.e. inequality `c^{-1} <= c^{-1}`.
+
+This is a formal-product p.13 chart-measure theorem.  It does not identify the
+formal-product measure with the passive-theta source-image reference and does
+not prove source-image coverage, source-rank coverage, scalar normalization,
+normal crossings, pole order, or RLCT extraction.  The next real frontier is
+still the original/source-prior transport or a source-image density
+identity/bound connecting this formal-product measure to the passive-theta
+source-image reference.
+
 ## Latest controller decision - 2026-07-01, source-image chart-piece density readback domination to W
 
 Lean now proves a strengthened chart-piece source-image bounded-density

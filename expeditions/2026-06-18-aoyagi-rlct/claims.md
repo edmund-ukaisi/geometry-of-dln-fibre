@@ -140,6 +140,23 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal-product density identity,
+  2026-07-01.** Lean now proves
+  `originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_formalProductAbsDet_restrict_chartPiece`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`.
+  On any measurable chart piece contained in the named p.13 source edge-family
+  set, the restricted original edge-family volume is the p.13 formal-product
+  source-chart measure with constant density equal to the inverse tuple-side
+  Haar scalar `c^{-1}`.  The a.e. bound is reflexivity.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-product-density-identity.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-product-density-identity.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-product-density-identity.md`.
+  Nonclaims: no passive-theta source-image equality, no source-prior
+  transport, no source-image coverage, no source-rank coverage, no scalar
+  normalization, no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, source-image chart-piece density readback
   domination to W, 2026-07-01.** Lean now proves the generic `V subset W`
   chart-piece pullback lemmas
