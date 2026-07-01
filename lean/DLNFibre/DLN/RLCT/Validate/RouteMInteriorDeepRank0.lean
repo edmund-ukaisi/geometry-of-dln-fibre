@@ -754,4 +754,217 @@ theorem eDeepRank0_injOn (ha : StructAdm M (tach M)) (hdr0 : Text M (tach M) 2 =
     exact (pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub
   exact (BchartE_injective_of_hdr0 ha hdr0).injOn.comp hpbo_inj (Set.mapsTo_image _ _)
 
+/-! ## Item 8 helpers — differentiability, chart-zero, unit continuity/bound/measurability -/
+
+/-- **`eDeepRank0Phi` is differentiable** — `eDeepRank0Phi = BchartE ∘ pbo` (`hmap_E`), each factor
+differentiable (`BchartE_differentiableAt`, `differentiable_pivotBlowupOn`). -/
+theorem eDeepRank0_diff (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    Differentiable ℝ (eDeepRank0Phi ha hr hc hp1 hp2) := by
+  rw [hmap_E ha hr hc hp1 hp2]
+  exact fun x => (BchartE_differentiableAt ha _).comp x
+    (differentiable_pivotBlowupOn (activeM M ha) (eBlockPivot ha hr hc) x)
+
+/-- At radial `0` the `Rmat`-term of `Cgen`/`Agen` vanishes, so the Efp chart-params agree with the
+plain live decoder's at `0`; hence `chartParamsGen 0 (genBlkFlatEfp 0) = 0`. -/
+theorem chartParamsGen_Efp_zero (ha : StructAdm M (tach M))
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    chartParamsGen (0 : ℝ) M (tach M) (genBlkFlatEfp ha hp1 hp2 0) (hleStruct M (tach M) ha)
+      = (fun _ => 0 : Params M) := by
+  rw [← chartParamsGen_live_zero M (tach M) ha 0]
+  funext s
+  show Matrix.reindex _ _ (Agen 0 M (tach M) (genBlkFlatEfp ha hp1 hp2 0) _ s.val)
+    = Matrix.reindex _ _ (Agen 0 M (tach M) (genBlkFlatLive M (tach M) ha 0 0) _ s.val)
+  congr 1
+  -- `Agen 0` reads only `Nblk`/`Wblk`/`Cgen (·+1)`; `Cgen 0` reads `Bmat·chainQ + 0•Rmat` (Rmat unused).
+  -- The Efp and live decoders share `Bmat/Nblk/Wblk/Rfin`; the `0•Rmat` term kills the only difference.
+  refine Agen_congr M (tach M) (hleStruct M (tach M) ha) 0 0 _ _ s.val rfl rfl ?_
+  -- `Cgen 0 (s+1)`: for `s+1 < 2`, `Bmat·chainQ + 0•Rmat`; the Bmat/Nblk are shared, Rmat killed by `0•`.
+  by_cases hs : s.val + 1 < 2
+  · rw [Cgen, Cgen, dif_pos hs, dif_pos hs, zero_smul, zero_smul, add_zero, add_zero]
+    rfl
+  · rw [Cgen, Cgen, dif_neg hs, dif_neg hs, zero_smul, zero_smul]
+
+/-- **`eDeepRank0Phi 0 = 0`** (the deepest point) — the radial scalar `0 eBlockPivot = 0`, and
+`chartParamsGen 0 (genBlkFlatEfp 0) = 0` (`chartParamsGen_Efp_zero`), so `phiGen 0 = paramsEquivFlat 0 =
+0`. -/
+theorem eDeepRank0Phi_zero (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    eDeepRank0Phi ha hr hc hp1 hp2 0 = 0 := by
+  show phiGen ((0 : Fin (routeMAmbient M) → ℝ) (eBlockPivot ha hr hc)) M (tach M)
+    (genBlkFlatEfp ha hp1 hp2 0) (hleStruct M (tach M) ha) = 0
+  rw [Pi.zero_apply, phiGen, chartParamsGen_Efp_zero ha hp1 hp2]
+  exact paramsEquivFlat_deepest M
+
+/-- **The deepRank = 0 unit factor** `eDeepRank0Unit x := VvalGen (x eBlockPivot) … (genBlkFlatEfp x)`. -/
+noncomputable def eDeepRank0Unit (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    (Fin (routeMAmbient M) → ℝ) → ℝ :=
+  fun x => VvalGen (x (eBlockPivot ha hr hc)) M (tach M) (genBlkFlatEfp ha hp1 hp2 x)
+    (hleStruct M (tach M) ha)
+
+/-- `0 ≤ eDeepRank0Unit` (sum of squares). -/
+theorem eDeepRank0Unit_nonneg (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    0 ≤ eDeepRank0Unit ha hr hc hp1 hp2 x :=
+  VvalGen_nonneg _ M (tach M) _ _
+
+/-- **The rate identity via the unit** `routeMCore M (φ₀ x) = (x eBlockPivot)² · eDeepRank0Unit x`. -/
+theorem routeMCore_eDeepRank0Phi (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1)
+    (x : Fin (routeMAmbient M) → ℝ) :
+    routeMCore M (eDeepRank0Phi ha hr hc hp1 hp2 x)
+      = (x (eBlockPivot ha hr hc)) ^ 2 * eDeepRank0Unit ha hr hc hp1 hp2 x :=
+  eDeepRank0Phi_rate ha hr hc hp1 hp2 x
+
+/-- **The Efp decoder is block-continuous** — `Bmat/Nblk/Wblk` are the struct decoder's (direct
+readers, continuous); `Rmat` is the `Function.update` at `1` (off-`1` the struct `Rmat`, at-`1`
+`rmatPad (EfixedReader)`, continuous); `Rfin = 0`. -/
+theorem genBlkContinuous_efp (ha : StructAdm M (tach M))
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    GenBlkContinuous M (tach M) (fun x => genBlkFlatEfp ha hp1 hp2 x) := by
+  have happ : ∀ q, Continuous (fun x : Fin (routeMAmbient M) → ℝ => x q) := fun q => continuous_apply q
+  have hreadK : ∀ k : Fin 2, Continuous (fun x => readK M (tach M) ha x k) :=
+    fun k => continuous_matrix (fun i j => happ _)
+  have hreadX : ∀ k : Fin 2, Continuous (fun x => readX M (tach M) ha x k) :=
+    fun k => continuous_matrix (fun i j => happ _)
+  have hreadN : ∀ k : Fin 2, Continuous (fun x => readN M (tach M) ha x k) :=
+    fun k => continuous_matrix (fun i j => happ _)
+  have hreadE : ∀ k : Fin 2, Continuous (fun x => readE M (tach M) ha x k) :=
+    fun k => continuous_matrix (fun i j => happ _)
+  have hreadW : ∀ (k : Fin 2) (hk : k.val + 1 < 2),
+      Continuous (fun x => readW M (tach M) ha x k hk) :=
+    fun k hk => continuous_matrix (fun i j => happ _)
+  refine ⟨fun k => ?_, fun k => ?_, fun k => ?_, fun k => ?_, fun k => ?_⟩
+  · show Continuous (fun x => (genBlkFlatStruct M (tach M) ha x).Bmat k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]
+        exact continuous_bmatStack (j + 1) (ha.hdesc j hj) (hreadK ⟨j, hj⟩) (hreadX ⟨j, hj⟩)
+      · simp only [dif_neg hj]; exact continuous_const
+  · show Continuous (fun x => (genBlkFlatStruct M (tach M) ha x).Nblk k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]; exact hreadN ⟨j, hj⟩
+      · simp only [dif_neg hj]; exact continuous_const
+  · show Continuous (fun x => (genBlkFlatStruct M (tach M) ha x).Wblk k)
+    match k with
+    | 0 => exact continuous_const
+    | (j + 1) =>
+      simp only [genBlkFlatStruct]
+      by_cases hj : j < 2
+      · simp only [dif_pos hj]
+        by_cases hj2 : j + 1 < 2
+        · simp only [dif_pos hj2]; exact hreadW ⟨j, hj⟩ hj2
+        · simp only [dif_neg hj2]; exact continuous_const
+      · simp only [dif_neg hj]; exact continuous_const
+  · -- Rmat = Function.update (struct Rmat) 1 (rmatPad (EfixedReader))
+    show Continuous (fun x => Function.update (genBlkFlatLive M (tach M) ha 0 x).Rmat 1
+      (rmatPad M (tach M) 1 hp1 hp2 (EfixedReader ha x)) k)
+    by_cases hk : k = 1
+    · subst hk
+      have hrw : (fun x => Function.update (genBlkFlatLive M (tach M) ha 0 x).Rmat 1
+          (rmatPad M (tach M) 1 hp1 hp2 (EfixedReader ha x)) 1)
+          = fun x => rmatPad M (tach M) 1 hp1 hp2 (EfixedReader ha x) := by
+        funext x; rw [Function.update_self]
+      rw [hrw]
+      apply continuous_rmatPad 1 hp1 hp2
+      exact continuous_matrix (fun i j => by
+        by_cases hij : i.val = 0 ∧ j.val = 0
+        · simp only [EfixedReader, Matrix.of_apply, if_pos hij]; exact continuous_const
+        · simp only [EfixedReader, Matrix.of_apply, if_neg hij]; exact happ _)
+    · have hrw : (fun x => Function.update (genBlkFlatLive M (tach M) ha 0 x).Rmat 1
+          (rmatPad M (tach M) 1 hp1 hp2 (EfixedReader ha x)) k)
+          = fun x => (genBlkFlatStruct M (tach M) ha x).Rmat k := by
+        funext x; rw [Function.update_of_ne hk]; rfl
+      rw [hrw]
+      match k with
+      | 0 => exact continuous_const
+      | (j + 1) =>
+        simp only [genBlkFlatStruct]
+        by_cases hj : j < 2
+        · simp only [dif_pos hj]
+          exact continuous_rmatPad (j + 1) (ha.hdesc j hj) (ha.hub j) (hreadE ⟨j, hj⟩)
+        · simp only [dif_neg hj]; exact continuous_const
+  · -- Rfin = (genBlkFlatLive 0)'s Rfin = 0 (rfin = 0)
+    show Continuous (fun x => (genBlkFlatLive M (tach M) ha 0 x).Rfin k)
+    by_cases hk : k = 2
+    · subst hk
+      have hrw : (fun x : Fin (routeMAmbient M) → ℝ => (genBlkFlatLive M (tach M) ha 0 x).Rfin 2)
+          = fun _ => 0 := by funext x; simp only [genBlkFlatLive, dif_pos]
+      rw [hrw]; exact continuous_const
+    · have hrw : (fun x : Fin (routeMAmbient M) → ℝ => (genBlkFlatLive M (tach M) ha 0 x).Rfin k)
+          = fun _ => 0 := by funext x; simp only [genBlkFlatLive, dif_neg hk]
+      rw [hrw]; exact continuous_const
+
+/-- **`eDeepRank0Unit` is continuous** — `= sqSumHmat0` of the chain (`VvalGen_eq_sqSumHmat0`); `Hmat 0`
+continuous (`continuous_Hmat0_L2` with `genBlkContinuous_efp` + the radial scalar `x ↦ x eBlockPivot`). -/
+theorem continuous_eDeepRank0Unit (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    Continuous (eDeepRank0Unit ha hr hc hp1 hp2) := by
+  have hg : Continuous (fun x : Fin (routeMAmbient M) → ℝ => x (eBlockPivot ha hr hc)) :=
+    continuous_apply _
+  have hHmat0 := continuous_Hmat0_L2 (genBlkContinuous_efp ha hp1 hp2) hg (hleStruct M (tach M) ha)
+  have hsq : Continuous (fun x => ∑ i, ∑ j,
+      ((show Matrix (Fin (Text M (tach M) 0)) (Fin (Wext M 2)) ℝ
+          from (chainOfMt (x (eBlockPivot ha hr hc)) M (tach M)
+            (genBlkFlatEfp ha hp1 hp2 x) (hleStruct M (tach M) ha)).toChain.Hmat 0 (Nat.zero_le 2))
+        i j) ^ 2) :=
+    continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ =>
+      (hHmat0.matrix_elem i j).pow 2))
+  refine hsq.congr (fun x => ?_)
+  rw [eDeepRank0Unit, VvalGen_eq_sqSumHmat0, sqSumHmat0]
+  rfl
+
+/-- **`eDeepRank0Unit` is measurable** (continuity). -/
+theorem measurable_eDeepRank0Unit (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    Measurable (eDeepRank0Unit ha hr hc hp1 hp2) :=
+  (continuous_eDeepRank0Unit ha hr hc hp1 hp2).measurable
+
+/-- **Image containment** — a small source box `[0,δ]^N` maps into `cubeBox N ε` (continuity of
+`eDeepRank0Phi` + `eDeepRank0Phi 0 = 0`). Mirrors `ldu_image`. -/
+theorem eDeepRank0_image (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    ∀ ε : ℝ, 0 < ε →
+      ∃ δ > 0, eDeepRank0Phi ha hr hc hp1 hp2 ''
+        (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Icc (0 : ℝ) δ))
+        ⊆ cubeBox (routeMAmbient M) ε := by
+  intro ε hε
+  have hcont : Continuous (eDeepRank0Phi ha hr hc hp1 hp2) := (eDeepRank0_diff ha hr hc hp1 hp2).continuous
+  have hopen : IsOpen (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Ioo (-ε) ε)) :=
+    isOpen_set_pi Set.finite_univ (fun _ _ => isOpen_Ioo)
+  have hmem : (0 : Fin (routeMAmbient M) → ℝ)
+      ∈ eDeepRank0Phi ha hr hc hp1 hp2 ⁻¹'
+        (Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Ioo (-ε) ε)) := by
+    simp only [Set.mem_preimage, eDeepRank0Phi_zero ha hr hc hp1 hp2, Set.mem_pi, Set.mem_univ,
+      true_implies, Set.mem_Ioo, Pi.zero_apply]
+    exact fun i => ⟨by linarith, hε⟩
+  obtain ⟨δ, hδ, hsub⟩ := cubeBox_subset_of_isOpen (hopen.preimage hcont) hmem
+  refine ⟨δ, hδ, ?_⟩
+  rintro y ⟨x, hx, rfl⟩
+  have hxcube : x ∈ cubeBox (routeMAmbient M) δ := by
+    simp only [cubeBox, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc] at hx ⊢
+    intro i; exact ⟨le_trans (by linarith [hδ]) (hx i).1, (hx i).2⟩
+  have hxmem : eDeepRank0Phi ha hr hc hp1 hp2 x
+      ∈ Set.univ.pi (fun _ : Fin (routeMAmbient M) => Set.Ioo (-ε) ε) :=
+    Set.mem_preimage.mp (hsub hxcube)
+  simp only [cubeBox, Set.mem_pi, Set.mem_univ, true_implies, Set.mem_Icc, Set.mem_Ioo] at hxmem ⊢
+  exact fun i => ⟨le_of_lt (hxmem i).1, le_of_lt (hxmem i).2⟩
+
 end DLNFibre.DLN.RLCT
