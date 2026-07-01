@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHmap
 import DLNFibre.DLN.RLCT.Validate.RouteMLDUUniqueness
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenInjRec
 
 /-!
 # `RouteMInteriorLiveGenInj` — the general-`L` interior-chart injectivity `interiorLive_injOnGen`
@@ -8,18 +9,16 @@ The injectivity layer of the general-`L` interior-chart lift (`genm-glift`), gen
 `Fin (2 + 1)`-pinned `RouteMInteriorLiveContract.interiorLive_injOn`. The GENERIC kLDU-injectivity
 chain (`kLens_injOn_qneGen` / `readK_eq_of_kLDU_eqGen` / `kLDU_injStep2Gen` / `kLDU_inj_of_nonzeroGen`
 / `interiorLive_kLDU_injOnGen`) is fully general-`L` and lands here. The `BchartLeafGen`-recovery half
-(the per-boundary Schur-frame inversion, the L=2 `slotReadV0` / `rsL1` / `schurFrameMap_inj` chain) is
-the SAME per-boundary geometry factor1's `eihd_hD_gen` builds — it is the load-bearing residual, left
-as an isolated `sorry` (`interiorLive_BchartLeaf_injOnGen`) with a precise note; everything else is
-sorry-free.
+(the per-boundary Schur-frame value inversion, route (a) — the triangular forward-substitution over
+boundaries) is DONE sorry-free in `RouteMInteriorLiveGenInjRec.BchartLeafGen_injOn_recover`, consumed
+here as `interiorLive_BchartLeaf_injOnGen`. The whole module is sorry-free.
 
 The injectivity factorization is `interiorLivePhiGen = (BchartLeafGen ∘ kLDU) ∘ pbo` (`hmap_leafGen` +
 `interiorLive_commuteGen`); `pbo` injective off `{u leafPivot = 0}` (banked `pivotBlowupOn_injOn`);
 `kLDU` injective on the blown-up all-nonzero image (`interiorLive_kLDU_injOnGen`, general-`L`, DONE);
-`BchartLeafGen` injective on the kLDU-image (`interiorLive_BchartLeaf_injOnGen`, the residual).
+`BchartLeafGen` injective on the kLDU-image (`interiorLive_BchartLeaf_injOnGen`, via route (a) recovery).
 
-Axiom-clean for the kLDU chain `[propext, Classical.choice, Quot.sound]`; the `BchartLeafGen`-recovery
-sorry is isolated in `interiorLive_BchartLeaf_injOnGen` (hence `interiorLive_injOnGen`).
+Axiom-clean `[propext, Classical.choice, Quot.sound]` (the whole `interiorLive_injOnGen` chain).
 -/
 
 open Matrix
@@ -96,13 +95,10 @@ theorem kLDU_inj_of_nonzeroGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
   funext q
   exact kLDU_injStep2Gen M ha y y' (fun k => readK_eq_of_kLDU_eqGen M ha y y' hqy hkeq k) hkeq q
 
-/-! ## The injectivity domain (all coords nonzero) -/
+/-! ## The injectivity domain (all coords nonzero)
 
-/-- The general-`L` injectivity domain — `{u | u leafPivot ≠ 0 ∧ ∀ j, u j ≠ 0}` (the L=2 `E = univ`
-choice: all coords nonzero, exactly what `kLens_injOn_qneGen` needs). -/
-def interiorLiveInjDomGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) : Set (Fin (routeMAmbient M) → ℝ) :=
-  {u | u (leafPivot M ha hL h0r h0c) ≠ 0 ∧ ∀ j, u j ≠ 0}
+`interiorLiveInjDomGen` is defined in the shared gate `RouteMInteriorLiveGenSchurGate` (imported here via
+`RouteMInteriorLiveGenInjRec`) — the L=2 `E = univ` choice `{u | u leafPivot ≠ 0 ∧ ∀ j, u j ≠ 0}`. -/
 
 /-- **kLDU injective on `pbo '' injDom`** (general-`L`) — the `injDom` forces ALL coords nonzero;
 `pivotBlowupOn` preserves that (scales by `x₀ leafPivot ≠ 0`), so `kLDU_inj_of_nonzeroGen` recovers the
@@ -131,43 +127,32 @@ theorem interiorLive_kLDU_injOnGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (
       ⊆ interiorLiveInjDomGen M ha hL h0r h0c \ {x | x p₀ = 0} := fun u hu => ⟨hu, hu.1⟩
   exact congrArg _ ((pivotBlowupOn_injOn (activeMGen M ha) p₀ _).mono hsub hx₀ hx₀' hpb)
 
-/-! ## The `BchartLeafGen`-recovery half (the load-bearing residual — BOUNDED, not a wall)
+/-! ## The `BchartLeafGen`-recovery half (route (a), DONE in `RouteMInteriorLiveGenInjRec`)
 
-BOUNDED-vs-WALL VERDICT (verify-first, machine-checked against the defs): **BOUNDED-LABOUR, not a wall.**
-The recovery is a TRIANGULAR forward-substitution over boundaries, acyclic (`layer s ← layer s-1`), of
-which the L=2 `interiorLive_BchartLeaf_injOn` is the 2-node instance. From `BchartLeafGen y =
-BchartLeafGen y'`: `paramsEquivFlat` injective + `reindexLs_BparamsLeafGen` (banked) give `Agen 1 (…y) s
-= Agen 1 (…y') s` at every `s : Fin L`. Then per boundary `s`, `Agen … s = chainA(Nblk s, Wblk s,
-Cgen(s+1)) = [Cgen(s+1) − Nblk s·Wblk s ; Wblk s]` (via `chainA_apply_castAdd`/`_natAdd`): the lift rows
-give `Wblk s`, and — with `Nblk s = readN ⟨s-1⟩` already recovered at layer `s-1` — the kept rows give
-`Cgen(s+1)`, which is `schurFrameProd(K,X,N,E)_s` (interior, via `Cgen_live_interior_eq_schurFrameProd`)
-or `rfin` (leaf), inverted by `schurFrameMap_inj_of_det_ne_zero` with `det K_s ≠ 0` (banked-adjacent:
-`readK_kLDU_det = ∏ pivots`, each `= (pbo x)(diagAxis) ≠ 0` on the all-nonzero domain via
-`readK_pbo_all`). A final `funext q; cases chartIdxEquiv q` (mirroring `kLDU_injStep2Gen`) upgrades the
-per-boundary reader equality to `y = y'` — eInGen-FREE (does not need Factor 1's `eInGen`).
-
-REMAINING BRICKS (bounded, ~250 LoC, no new proof class, a focused follow-on tide):
-  (1) a per-boundary `frameRecoverGen s`: `Agen … s`-equality + `readN ⟨s-1⟩`-equality + `det K_s ≠ 0`
-      ⟹ raw K/X/N/E-slot equality at boundary `s` (the L=2 `slotReadV0_eq_of_BparamsLeaf0_eq` +
-      `flatBlock_schurFrameMap_eq`, generalized off boundary 1; the interior `s≥1` adds the
-      `− Nblk s·Wblk s` subtraction the L=2 `c0=0` collapse skipped);
-  (2) the forward induction over `s : Fin L`;
-  (3) the `funext q`-coverage closer, whose one fiddly step is reconciling the leaf/frame decode of the
-      shared `Sum.inl` `schurDim` slot at boundary `L-1` (`schurSlotEquiv` vs `frameSplitEquiv`).
-Left as an isolated `sorry` pending that follow-on; the MATH (slot-disjoint faithful decode + nonzero
-monomial det, genm-l3interior) supports injectivity ∀L. -/
+A TRIANGULAR forward-substitution over boundaries, acyclic (`layer s ← layer s-1`), of which the L=2
+`interiorLive_BchartLeaf_injOn` is the 2-node instance. From `BchartLeafGen y = BchartLeafGen y'`:
+`paramsEquivFlat` injective + `reindexLs_BparamsLeafGen` (banked) give `Agen 1 (…y) s = Agen 1 (…y') s`
+at every `s : Fin L` (`Agen_eq_of_BchartLeafGen_eq`). Then per boundary `s`, `Agen … s = chainA(Nblk s,
+Wblk s, Cgen(s+1)) = [Cgen(s+1) − Nblk s·Wblk s ; Wblk s]` (via `chainA_apply_castAdd`/`_natAdd`): the
+lift rows give `Wblk s`, and — with `Nblk s = readN ⟨s-1⟩` recovered at layer `s-1` — the kept rows give
+`Cgen(s+1)` (`Cgen_succ_eq_of_BchartLeafGen_eq`, the forward induction), which is
+`schurFrameProd(K,X,N,E)_s` (interior, via `Cgen_live_interior_eq_schurFrameProd` + the value bridge
+`flatBlock_schurFrameMap_eq_gen`) or `rfin` (leaf), inverted by `schurFrameMap_inj_of_det_ne_zero_gen`
+with `det K_s ≠ 0` (the shared gate `detK_ne_zero_gen`: `readK_kLDU_det = ∏ pivots`, each
+`≠ 0` on the all-nonzero domain via `readK_pbo_all`). A final `funext q; cases chartIdxEquiv q`
+(`BchartLeafGen_injOn_recover`) upgrades the per-boundary reader equality to `y = y'` — eInGen-FREE. All
+in `RouteMInteriorLiveGenInjRec`, sorry-free. -/
 
 /-- **`BchartLeafGen` injective on the kLDU-image of `pbo '' injDom`** (general-`L`). The per-boundary
-Schur-frame VALUE recovery — triangular forward-substitution over boundaries (see the module verdict
-above: BOUNDED, eInGen-free, ~250 LoC of `frameRecoverGen` + induction + coverage-closer). SORRY pending
-that focused follow-on tide; not a wall. -/
+Schur-frame VALUE recovery (route (a): triangular forward-substitution) — DONE sorry-free in
+`RouteMInteriorLiveGenInjRec.BchartLeafGen_injOn_recover`, consumed here. -/
 theorem interiorLive_BchartLeaf_injOnGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
     (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) :
     Set.InjOn (BchartLeafGen M ha)
       (kLDU M (tach M) ha
         '' (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c)
-          '' interiorLiveInjDomGen M ha hL h0r h0c)) := by
-  sorry
+          '' interiorLiveInjDomGen M ha hL h0r h0c)) :=
+  BchartLeafGen_injOn_recover M ha hL h0r h0c
 
 /-- **`interiorLive_injOnGen` — `InjOn` off the pivot ∪ q-axes** (general-`L`) — the `Set.InjOn.comp`
 glue: from the factorization `interiorLivePhiGen = (BchartLeafGen ∘ kLDU) ∘ pbo` (`hmap_leafGen` at
