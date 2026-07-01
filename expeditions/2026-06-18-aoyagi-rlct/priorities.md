@@ -12,6 +12,23 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference finite integral
+
+The original-prior finite-integral socket now has a source-reference wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This reduces the final chart-piece formal-readback assumptions to a supplied
+source reference: `AEMeasurable readback sourceRef`, `Measure.map readback
+sourceRef = coordinateSourceMeasure.restrict W`, `originalEdgeFamilyVolume.restrict
+chartPiece <= D • sourceRef`, and `D < infinity`.
+
+This is still conditional.  The remaining mathematical frontier is still the
+actual restricted-volume domination for a concrete source reference, not the
+readback or finite-integral bookkeeping.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference readback
 
 The original-prior p.13 readback domination now consumes the restricted-volume

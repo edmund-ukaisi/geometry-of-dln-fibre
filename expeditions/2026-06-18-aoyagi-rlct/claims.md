@@ -141,6 +141,28 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, p.13 original-prior volume-source-reference
+  finite integral, 2026-07-01.** Lean now proves
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  This is a downstream wrapper around the existing original-prior finite-integral
+  theorem: the final chart-piece handler consumes a supplied source reference
+  with `AEMeasurable readback sourceRef`, `Measure.map readback sourceRef =
+  coordinateSourceMeasure.restrict W`, a supplied restricted-volume domination
+  `(originalEdgeFamilyVolume b).restrict chartPiece <= D • sourceRef`, and
+  `D < infinity`; it derives the former formal p.13 readback assumptions with
+  scalar `(cHaar : ENNReal) * D`.  Reproduction, statement card, and review are
+  at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-finite-integral.md`.
+  Nonclaims: no proof of restricted-volume domination, no source-reference or
+  theta-reference identification, no passive-theta source-image equality, no
+  source coverage, no chart-image equality, no source-rank coverage, no Haar
+  scalar normalization or cancellation, no normal crossings, pole order, or
+  RLCT extraction.
+- **Current status addendum, p.13 original-prior volume-source-reference
   readback, 2026-07-01.** Lean now proves
   `originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure`
   and `originalEdgeFamilyPrior_p13VolumeReadbackDominationScalar_lt_top` in

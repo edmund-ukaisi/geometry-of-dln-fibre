@@ -12613,3 +12613,32 @@ Nonclaims: no proof of restricted-volume domination, no source-reference or
 theta-reference identification, no passive-theta source-image equality, no
 source coverage, no chart-image equality, no Haar scalar normalization or
 cancellation, no normal crossings, no pole order, and no RLCT extraction.
+
+Latest A2 p.13 original-prior volume-source-reference finite-integral wrapper:
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-finite-integral.md`.
+
+Ledger status: the original-prior finite-integral theorem now has a wrapper
+whose final chart-piece handler consumes a supplied source-reference pullback
+identity and a supplied restricted original edge-family volume domination.  It
+sets `Cformal = (cHaar : ENNReal) * D`, derives the formal p.13 readback
+assumptions from the formal-volume source-reference bridge, and applies the
+existing finite-integral theorem.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `./scripts/sorries`, `git diff --check`, direct
+axiom probe, and two xhigh read-only reviews passed.  The direct axiom probe
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no source-rank coverage, no Haar
+scalar normalization or cancellation, no normal crossings, no pole order, and
+no RLCT extraction.

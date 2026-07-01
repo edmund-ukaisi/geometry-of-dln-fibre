@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Volume-source-reference Finite Integral - 2026-07-01
+
+Lean now proves the downstream finite-integral wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This theorem keeps the Case 2 chart-piece finite-integral socket local, but its
+final chart-piece handler no longer asks the caller to provide formal p.13
+readback domination.  Instead it asks for a source reference measure satisfying
+
+```text
+AEMeasurable readback sourceRef
+Measure.map readback sourceRef = coordinateSourceMeasure.restrict W
+originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef
+D < infinity.
+```
+
+The proof derives the old formal p.13 readback assumptions with
+`Cformal := (cHaar : ENNReal) * D`, using the already-proved formal-volume
+source-reference readback bridge, and then applies the existing
+original-prior finite-integral theorem.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-finite-integral.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `./scripts/sorries`, `git diff --check`, direct
+axiom probe, and two xhigh read-only reviews passed.  The direct axiom probe
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no source-rank coverage, no Haar
+scalar normalization or cancellation, no normal crossings, no pole order, and
+no RLCT extraction.
+
 ## p.13 Original-prior Volume-source-reference Readback - 2026-07-01
 
 Lean now proves the composed original-prior readback bridge:
