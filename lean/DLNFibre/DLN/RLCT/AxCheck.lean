@@ -29,6 +29,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedAchieverGeneral
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0Atom
 import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 
 /-!
@@ -203,6 +204,19 @@ open DLNFibre.DLN.RLCT
 -- `(2 ≤ L) → BoundarySmeared M → BoxDiverges M c' ε`; `hSmeared_L2_apply` is the uncurried reading.
 #print axioms hSmeared_L2
 #print axioms hSmeared_L2_apply
+
+-- ★ R1-LOWER VALUE LEG CLOSED ∀M at L=2 (the interior TRICHOTOMY assembled) — `routeMCore_box_diverges_
+-- achiever_L2` (M : Fin 3 → ℕ) must be CLEAN modulo the single cited S2 axiom, i.e.
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`. It combines the interior
+-- `0 < deepRank` atom (`routeMCore_box_diverges_interiorLive`) + the deepRank=0 handler
+-- (`routeMCore_box_diverges_eDeepRank0`, E-fixed-pivot chart, det EXACTLY single-axis |u_p|^{minAdm−1},
+-- cov PURE monomial) + the smeared branch + the clean-branch hNo (derived IN-BRANCH from the clean
+-- equality, NOT a false flat hNo forced through the spine). The general-L `routeMCore_box_diverges_
+-- achiever` stays OPEN (#120-gated). `eDeepRank0Unit_ae_pos` is S2-FREE clean-three (nonzero-poly witness).
+#print axioms routeMCore_box_diverges_achiever_L2
+#print axioms routeMCore_box_diverges_eDeepRank0
+#print axioms routeMCore_box_diverges_interiorLive
+#print axioms eDeepRank0Unit_ae_pos
 
 -- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
 -- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is
