@@ -44,6 +44,48 @@ Do not claim determinant-chart Haar transport, exact raw-Haar pushforward,
 source coverage, normal crossings, pole order, or RLCT extraction from this
 canonical-piece corollary.
 
+## Latest controller decision - 2026-07-01, source-image lower-bound socket for canonical determinant finite integral
+
+Lean now proves the stronger source-image lower-bound variant:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_sourceLocal_inter_sourceChart_image_originalVolume_readback_invHaar_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_image_lower_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+It replaces the previous a.e. source-density lower-bound socket
+
+```text
+forall-ae z with respect to baseJ.restrict V, epsilon <= sourceDensity z
+```
+
+by the stronger pointwise chart-image hypothesis
+
+```text
+forall E in sourceChart '' V, epsilon <= sourceImageDensity E.
+```
+
+The generic helper
+
+```text
+ae_restrict_comp_lower_of_forall_image_lower
+```
+
+does the only new measure-theoretic work: `baseJ.restrict V` is supported on
+`V`, and `sourceDensity z = sourceImageDensity (sourceChart z)`.  The converse
+is not claimed; a.e. bounds can miss null points whose images remain in
+`sourceChart '' V`.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The theorem and helper report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh review found one wording
+issue in the reproduction note, fixed before banking.
+
+Next priority after this small hardening: the source-prior/full-image frontier
+should move to a measure-level domination theorem on the full local image
+`sourceChart '' V`, not another finite-integral wrapper.  Determinant Haar
+transport and source coverage remain explicit/unproved.
+
 ## Latest controller decision - 2026-07-01, Case 2 same-shrink reverse raw-source/source-chart package
 
 Lean now proves the same-shrink package:

@@ -57,6 +57,61 @@ raw-Haar normalization, source-image or source-rank coverage, original
 source-prior transport, normal crossings, pole order, or RLCT extraction.
 The next real A2 frontier remains source-prior/full-image/Haar-transport work.
 
+## Source-Image Lower-Bound Socket for Canonical Determinant Finite Integral - 2026-07-01
+
+Lean now proves:
+
+```text
+ae_restrict_comp_lower_of_forall_image_lower
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_sourceLocal_inter_sourceChart_image_originalVolume_readback_invHaar_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_image_lower_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The wrapper is a small but useful socket improvement.  The old determinant
+finite-integral endpoint asked for
+
+```text
+forall-ae z with respect to baseJ.restrict V, epsilon <= sourceDensity z.
+```
+
+The new endpoint instead accepts the stronger pointwise image condition
+
+```text
+forall E in sourceChart '' V, epsilon <= sourceImageDensity E.
+```
+
+The conversion is elementary: `baseJ.restrict V` is a.e. supported on `V`, so
+`sourceChart z` lies in `sourceChart '' V` a.e.; by definition
+`sourceDensity z = sourceImageDensity (sourceChart z)`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-source-image-lower-bound-canonical-detHaar-wrapper.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem and helper report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh reviewer `Curie` passed the Lean theorem and flagged one wording issue:
+the image bound is sufficient but not equivalent to the old a.e. lower bound.
+The reproduction note now states the non-equivalence explicitly.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image or source-rank coverage, original
+source-prior transport, normal crossings, pole order, or RLCT extraction.
+The next A2 move should be the measure-level full local image domination
+theorem for `originalEdgeFamilyPrior` on `sourceChart '' V`.
+
 ## Case 2 Same-Shrink Reverse Raw-Source/Source-Chart Package - 2026-07-01
 
 Lean now proves:
