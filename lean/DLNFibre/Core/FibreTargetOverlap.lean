@@ -215,7 +215,11 @@ K_JI ≪≫ T_IJ` by the `AlgEquiv` groupoid laws `AlgEquiv.trans_assoc` / `tran
 heavy double-localized `targetChartLoc`, so no pointwise-`ext` kernel cost — using the base-side
 `chartOverlapTransitionK_trans_symm` (just above) for the middle cancellation. On the DLN instance
 it fires as `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
-(`Core.FibreZariskiLocalTriviality`). The canonical triple cocycle (P2.f
+(`Core.FibreZariskiLocalTriviality`), for the derived charts `pivotAtlasFibreChart`. (A concrete
+`targetProductOverlapTransition_trans_symm` named directly on this def is not exported: unfolding
+`targetProductOverlapTransition` here goes through the concrete chart trivialization, so a direct
+proof `whnf`-times-out on the double-localized carrier — the predicate-level statement, on the
+abstract derived charts, is the exported form.) The canonical triple cocycle (P2.f
 `tripleTransition_cocycle`) and the naturality tie of the triple to the further-localized 2-fold
 (P2.g) are likewise landed abstractly and inherited. Only the GLOBAL gluing into one `Flat π` /
 `FiberBundle` stays roadmapped (R1). -/

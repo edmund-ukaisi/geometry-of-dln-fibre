@@ -68,11 +68,12 @@ DIRECTION `BaseLoc` of the fibre model. A chart element is always `: Base`, neve
   naturality (iv) tying the restricted 2-fold to the canonical `tripleTransition`, the commuting
   square exhibiting it as the restriction of the ACTUAL `overlapTransition`, and the cocycle of the
   restricted 2-fold transitions.
-* `Algebra.AtlasFibreChart …` — `AtlasChart` (model FIXED to `BaseLoc ⊗_k Fibre`) paired with the
-  over-base `StandardFibreChart` (the capstone's per-chart fibre model), with the same `chartElt`
-  AND the **product tie** `trivK_eq : trivK = fibreModel.triv.restrictScalars k` (the bare-`k`
-  trivialization the transitions consume IS the over-base product trivialization, scalars
-  forgotten).
+* `Algebra.AtlasFibreChart …` — stores `chartElt` + the over-base `StandardFibreChart` `fibreModel`
+  (the capstone's per-chart fibre model, the SINGLE stored trivialization) and DERIVES `toAtlasChart`
+  (model FIXED to `BaseLoc ⊗_k Fibre`) with `trivK := fibreModel.triv.restrictScalars k` — so the
+  bare-`k` trivialization the transitions consume IS the over-base product trivialization (scalars
+  forgotten). The tie is DEFINITIONAL (theorem `trivK_eq_product`, `rfl`), not a stored field; there
+  is no `extends AtlasChart` and no redundant trivialization.
 * `Algebra.AtlasFibreChart.overlapTransition_isProduct` — with the tie, the pairwise round-trip of
   the overlap transitions is coherence of the over-`BaseLoc` PRODUCT presentations (the transitions
   conjugate through `trivK`, which now IS `fibreModel.triv` `k`-restricted), not of a generic

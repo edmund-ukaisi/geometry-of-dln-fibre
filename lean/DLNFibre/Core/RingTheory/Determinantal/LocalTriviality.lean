@@ -117,8 +117,9 @@ structure IsZariskiLocallyTrivialAffineProduct
     (U : Set (PrimeSpectrum Base)) where
   /-- The chart index type. -/
   ι : Type u
-  /-- The chart family: at each index, an `AtlasFibreChart` (principal open `D(chartElt)` + bare-`k`
-  trivialization `trivK` + the over-base fibre model `fibreModel`, tied by `trivK_eq`). -/
+  /-- The chart family: at each index, an `AtlasFibreChart` (principal open `D(chartElt)` + the
+  over-base fibre model `fibreModel`, the SINGLE stored trivialization; the bare-`k` `trivK` the
+  transitions consume is DERIVED from `fibreModel.triv`). -/
   chart : ι → AtlasFibreChart k Base BaseLoc Fibre
   /-- The principal-open charts `D((chart i).chartElt)` cover the open `U`. -/
   cover :
@@ -139,9 +140,10 @@ any two charts `i, j` of a Zariski-locally-trivial affine product, the pairwise 
 target/model overlap presentations is the identity — this is `Algebra.AtlasChart.overlapTransition_
 trans_symm` at `(chart i).toAtlasChart`, `(chart j).toAtlasChart`. It is a PROVEN property of the
 predicate, not a field the instance must discharge: the cocycle is automatically satisfied for any
-atlas of `AtlasChart`s. The cocycle lives on the bare-`k` `trivK`/`M` presentation
-(`overlapTransition` conjugates through `trivK`), DECOUPLED from the over-`BaseLoc`
-`fibreModel.triv` product — it is NOT an over-base-product cocycle. -/
+atlas of `AtlasChart`s. Since each `AtlasFibreChart`'s `trivK` is DERIVED from `fibreModel.triv`
+(the over-`BaseLoc` product trivialization, scalars forgotten), the transitions conjugate through the
+product trivialization — so this IS coherence of the over-`BaseLoc` product presentations
+(`Algebra.AtlasFibreChart.overlapTransition_isProduct`). -/
 theorem overlapTransition_trans_symm
     (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j : A.ι) :
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).trans
