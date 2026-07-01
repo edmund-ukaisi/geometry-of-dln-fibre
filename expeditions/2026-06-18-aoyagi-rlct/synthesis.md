@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Source-Set Measure Bridge - 2026-07-01
+
+Lean now specializes the raw-order edge-family bridge to the public p.13
+fixed-base retained-passive source chart:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+```
+
+The first theorem is pointwise and chart-domain only: on
+`topologyTupleRawOrderSourceRecursiveDetChartSet`, the public p.13 source
+chart agrees with fixed-basis reconstruction of `rawOrderMatrixTuple`.  The
+restricted measure theorem then rewrites the generic edge-family bridge as
+
+```text
+Measure.map sourceChart (m.restrict rawSourceSet)
+= c • (originalEdgeFamilyVolume b).restrict sourceSet.
+```
+
+The formal-product theorem uses the existing retained-passive local Jacobian
+source-set theorem and support theorem to reach the same scalar-restricted
+`originalEdgeFamilyVolume` on the named p.13 source edge-family set.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-source-set-measure-bridge.md
+threads/03-block-product-reduction/statement-card-a2-p13-source-set-measure-bridge.md
+threads/03-block-product-reduction/review-a2-p13-source-set-measure-bridge.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+#print axioms on all three public theorems: [propext, Classical.choice, Quot.sound]
+```
+
+Post-implementation xhigh review and full verification passed.  Nonclaims:
+no source-rank coverage, no full source coverage, no restricted Haar theorem,
+no scalar normalization to `1`, no normal crossings, no pole order, and no
+RLCT extraction.
+
 ## Original Edge-Family Raw-Order Edge-Volume Bridge - 2026-07-01
 
 Lean now extends the tuple-side restricted measure bridge through fixed-basis

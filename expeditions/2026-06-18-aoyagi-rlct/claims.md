@@ -14171,3 +14171,36 @@ restricted-Haar theorem, as a theorem that the scalar is `1`, as a full
 original-source image theorem, or as normal-crossing/RLCT extraction.  It is
 only a restricted-pushforward scalar comparison transported through a
 fixed-basis coordinate equivalence.
+
+## A2 p.13 source-set measure bridge
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh review passed.
+
+Claim: on the raw source-recursive determinant chart, the public p.13
+raw-order source chart agrees pointwise with fixed-basis reconstruction of
+`rawOrderMatrixTuple`.  Therefore the restricted raw-coordinate Haar measure
+pushed forward by the public p.13 source chart is the restriction of
+`originalEdgeFamilyVolume` to the named p.13 source edge-family set, multiplied
+by the same tuple-side full-space Haar scalar.  The formal-product
+retained-passive Jacobian version reaches the same scalar-restricted source
+set measure.
+
+Lean theorems:
+
+```text
+paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-p13-source-set-measure-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-source-set-measure-bridge.md`;
+xhigh review in
+`threads/03-block-product-reduction/review-a2-p13-source-set-measure-bridge.md`.
+
+Kill condition: this claim must not be cited as source-rank coverage, full
+source coverage, restricted Haar structure, scalar normalization to `1`,
+normal crossings, pole order, or RLCT extraction.

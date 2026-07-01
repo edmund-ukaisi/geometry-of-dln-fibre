@@ -12404,3 +12404,31 @@ axiom probe, and xhigh review passed.  The direct axiom probe reports only
 Nonclaims: no source coverage, no exact scalar normalization to `1`, no
 restricted chart/source Haar theorem, no full original-source image theorem,
 no normal crossings, no pole order, and no RLCT.
+
+Latest A2 p.13 source-set measure bridge:
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple`,
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet`,
+and
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-source-set-measure-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-source-set-measure-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-source-set-measure-bridge.md`.
+
+Ledger status: the generic raw-order edge-family restricted measure bridge is
+specialized to the public p.13 raw-order source chart and the named p.13
+source edge-family set.  The formal-product Jacobian version uses the existing
+retained-passive local Jacobian source-set theorem and support theorem.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh review passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]` for all three public theorems.
+
+Nonclaims: no source-rank coverage, no full source coverage, no restricted
+Haar theorem, no scalar normalization to `1`, no normal crossings, no pole
+order, and no RLCT.
