@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Volume-source-reference Domination Finite Integral - 2026-07-01
+
+Lean now proves the weaker-pullback sibling of the previous
+source-reference finite-integral wrapper:
+
+```text
+readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure_le
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_le
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The calculation is:
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef
+muP13 <= ((cHaar : ENNReal) * D) • sourceRef
+Measure.map readback sourceRef <= Csource • coordinateSourceMeasure.restrict W
+---------------------------------------------------------------------------
+Measure.map readback muP13
+  <= (((cHaar : ENNReal) * D) * Csource) •
+       coordinateSourceMeasure.restrict W.
+```
+
+The finite-integral wrapper then applies the existing formal-readback theorem
+with
+
+```text
+Cformal := ((cHaar : ENNReal) * D) * Csource.
+```
+
+It assumes both `D < infinity` and `Csource < infinity`, and proves
+`Cformal < infinity` using finiteness of `cHaar : ENNReal`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md
+```
+
+Focused file elaborations, focused module builds, aggregate `DLNFibre.lean`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+direct axiom probes, and one xhigh read-only theorem-shape review passed. A
+second xhigh reviewer was blocked by the VM shell launcher and supplied no
+positive review evidence. The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no source-rank coverage, no Haar
+scalar normalization or cancellation, no normal crossings, no pole order, and
+no RLCT extraction.
+
 ## p.13 Original-prior Volume-source-reference Finite Integral - 2026-07-01
 
 Lean now proves the downstream finite-integral wrapper:

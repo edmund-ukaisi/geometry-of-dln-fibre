@@ -12,6 +12,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference domination finite integral
+
+The exact source-reference finite-integral wrapper now has a weaker pullback
+domination sibling:
+
+```text
+readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure_le
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_le
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The final chart-piece handler now accepts
+`Measure.map readback sourceRef <= Csource • coordinateSourceMeasure.restrict W`
+and `Csource < infinity` in place of exact source-reference pullback equality.
+The formal readback scalar is
+`((cHaar : ENNReal) * D) * Csource`.
+
+This is still conditional. It makes later local shrinking easier, but the
+remaining mathematical frontier is unchanged: construct a concrete source
+reference and prove the restricted-volume domination without claiming
+passive-theta source-image equality, source coverage, or Haar scalar
+normalization.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference finite integral
 
 The original-prior finite-integral socket now has a source-reference wrapper:

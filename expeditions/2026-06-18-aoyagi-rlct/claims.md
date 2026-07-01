@@ -141,6 +141,31 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, p.13 original-prior volume-source-reference
+  domination finite integral, 2026-07-01.** Lean now proves the weaker-pullback
+  source-reference wrapper
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  The final chart-piece handler consumes `AEMeasurable readback sourceRef`,
+  `Measure.map readback sourceRef <= Csource • coordinateSourceMeasure.restrict W`,
+  `Csource < infinity`, a supplied restricted-volume domination
+  `(originalEdgeFamilyVolume b).restrict chartPiece <= D • sourceRef`, and
+  `D < infinity`; it derives the formal p.13 readback assumptions with scalar
+  `((cHaar : ENNReal) * D) * Csource`. The supporting generic and p.13
+  source-reference domination lemmas are
+  `readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure_le` and
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_le`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`.
+  Nonclaims: no proof of restricted-volume domination, no source-reference or
+  theta-reference identification, no passive-theta source-image equality, no
+  source coverage, no chart-image equality, no source-rank coverage, no Haar
+  scalar normalization or cancellation, no normal crossings, pole order, or
+  RLCT extraction.
+- **Current status addendum, p.13 original-prior volume-source-reference
   finite integral, 2026-07-01.** Lean now proves
   `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
   in

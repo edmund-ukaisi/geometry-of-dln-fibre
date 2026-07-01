@@ -12642,3 +12642,41 @@ theta-reference identification, no passive-theta source-image equality, no
 source coverage, no chart-image equality, no source-rank coverage, no Haar
 scalar normalization or cancellation, no normal crossings, no pole order, and
 no RLCT extraction.
+
+Latest A2 p.13 original-prior volume-source-reference domination finite-integral wrapper:
+`LocalMeasureHandoff.lean` proves
+`readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure_le`.
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_le`.
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceReference_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-domination-finite-integral.md`.
+
+Ledger status: the original-prior finite-integral wrapper now also accepts a
+source reference whose readback pushforward is only dominated by a finite scalar
+multiple of the coordinate source measure. The final chart-piece handler
+assumes `Measure.map readback sourceRef <= Csource • coordinateSourceMeasure.restrict W`
+and `Csource < infinity`, in addition to the supplied restricted original
+edge-family volume domination by `D • sourceRef` and `D < infinity`. It sets
+`Cformal = ((cHaar : ENNReal) * D) * Csource`, derives the formal p.13
+readback assumptions from the new domination source-reference bridge, and
+applies the existing finite-integral theorem.
+
+Focused file elaborations, focused module builds, aggregate `DLNFibre.lean`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+direct axiom probes, and one xhigh read-only theorem-shape review passed. One
+earlier xhigh reviewer was blocked by the VM shell launcher and supplied no
+positive review evidence. The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no source-rank coverage, no Haar
+scalar normalization or cancellation, no normal crossings, no pole order, and
+no RLCT extraction.
