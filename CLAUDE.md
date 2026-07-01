@@ -68,7 +68,12 @@ In writing or in communication, focus on object-level. Resist meta-level pull.
 Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
 The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
 
-## Controller disposition — the cognitive adaptive controller
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
 
 You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
 hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
