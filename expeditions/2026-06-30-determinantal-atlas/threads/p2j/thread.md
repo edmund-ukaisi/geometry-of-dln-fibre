@@ -64,6 +64,32 @@ premise: after delegation the theorem becomes a one-step unfold, bump-free).
 - Gate 4 (`rg maxHeartbeats FibreTargetOverlap.lean` → empty): **NOT met** — one bump remains at
   400000 (obstruction above). Formatted with the repo's reason-comment idiom (linter clean).
 
+## Scope addition — stale-doc sweep (3 files, from PR #21 review)
+Comment/docstring-only sweep of live prose still implying the LOCAL target-side cocycle / round-trip
+(R1) is unbuilt. Narrowed every now-false claim to: the LOCAL target-side pairwise round-trip (P2.c)
++ canonical triple cocycle (P2.f) + restricted-2-fold naturality/cocycle (P2.g) are PROVED (per
+chart / per overlap); only the GLOBAL gluing of the per-chart data into one fibration morphism /
+`Flat π` over all of `rankROpen` stays roadmapped (R1). Kept the GLOBAL caveat (genuinely still
+unbuilt) everywhere; did not over-narrow.
+- `lean/DLNFibre.lean` — 3 aggregator comments (the `reducedFibre_pivotLocalProductAtlasOnRankOpen`
+  residual note; the `FibreLocallyTrivial` "UNCOCYCLED"; the `FibreProjectionCompat` "target-side
+  cocycle still residual"). Comments only, no import reorder. The already-accurate P2.c/f/g cluster
+  and the genuine "R1/global gluing" notes were left as-is.
+- `lean/DLNFibre/Core/FibreBundleHeadline.lean` — module OPEN-ITEM block + 3 docstrings. Dropped
+  "uncocycled".
+- `lean/DLNFibre/Core/FibreOverBaseTriv.lean` — module intro + main-results flatness bullet + Scope
+  (ii) + `TopLeftFlat` section header + both `_flat` theorem docstrings (shortened the two long
+  bold-headline first lines, moved the R1 caveat into the prose body).
+
+**FLAGGED (not edited — for lead adjudication):** `DLNFibre.lean` lines ~357–361 / ~373–378 /
+~396–400 are thread-scoped HISTORICAL annotations ("Scope-3 … thread NN #NNN … PARTIAL: still NOT
+`locallyTrivial` — the cocycle transport ON the per-pivot trivializations remains (#133)"). These
+describe what those INDIVIDUAL earlier modules delivered at their thread's time — accurate as
+per-module provenance, but a reader could read "cocycle transport … remains" as implying the
+now-landed (P2.c/f/g) transport is still open. Left untouched; flagged in the report.
+
+Build: full aggregator GREEN, 3834 jobs; `scripts/sorries` = 0; comment-only ⟹ axioms unchanged.
+
 ## Codex consult (xhigh, decorrelated)
 See `codex-consult.md`. Confirmed the diagnosis: the timeout is aligning the reducible-typed
 `AlgEquiv.refl` through the localization; Codex's proposed `show`/`change`-to-abstract-type idiom did
