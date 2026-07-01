@@ -68,3 +68,11 @@ New lessons specific to this expedition accumulate below.
   ~40s extra only when `FibreTargetOverlap` itself recompiles. So `targetProductOverlapTransition_trans_symm`
   IS exported. Gotcha: `set_option … in` goes ABOVE the docstring (a docstring immediately before `set_option`
   fails to parse — "unexpected token 'set_option'; expected 'lemma'").
+- **DA6 — fold expedition close-out docs into the MAIN PR before merge; don't trail a separate post-merge PR.**
+  On this expedition the synthesis addendum (P2.e–j + review arc) + the CLAUDE.md PR-comment-discretion policy
+  note were done AFTER #21 merged, as a separate close-out PR #22 — avoidable churn (operator flagged it). Those
+  updates are all KNOWN at close (the synthesis reflects the shipped rungs; policy refinements accrue during the
+  expedition), so stage them on the expedition branch and include them in the SAME PR before signalling merge.
+  Close-out checklist to run BEFORE the merge signal: (1) synthesis reflects every landed rung + the review
+  resolution, (2) any operator standing-instruction refinements promoted to the policy docs, (3) lessons banked,
+  (4) threads board final. Only branch/worktree deletion is genuinely post-merge.
