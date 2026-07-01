@@ -823,6 +823,50 @@ theorem stairLowerTriDiag_of_blocks (V : ℕ → Type) [∀ k, AddCommGroup (V k
           have := hupper (s + 1) (s' + 1) (by omega)
           simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
 
+/-- **Single-slot diagonal read** `stairProj s (stairIncl s v) = v` (for `s < n`). The slot proj/incl
+at the SAME slot round-trips (`inl`/`fst` at the head, recursing through `inr`/`snd` on the tail). -/
+theorem stairProj_stairIncl_self (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (s : ℕ), s < n → ∀ (v : V s),
+      stairProj V n s (stairIncl V n s v) = v
+  | (n + 1), 0, _, v => by
+      show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+        ((LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) v) = v
+      simp
+  | (n + 1), (s + 1), hs, v => by
+      show (stairProj (fun k => V (k + 1)) n s).comp
+          (LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+          ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+            ((stairIncl (fun k => V (k + 1)) n s) v)) = v
+      simp only [LinearMap.comp_apply, LinearMap.snd_apply, LinearMap.inr_apply]
+      exact stairProj_stairIncl_self (fun k => V (k + 1)) n s (by omega) v
+
+/-- **Single-slot off-diagonal read** `stairProj s' (stairIncl s v) = 0` for `s' ≠ s`. Distinct slots
+are orthogonal in the staircase (head `inl`/`fst` vs tail `inr`/`snd` cross to `0`, recursing). -/
+theorem stairProj_stairIncl_ne (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (s s' : ℕ), s' ≠ s → ∀ (v : V s),
+      stairProj V n s' (stairIncl V n s v) = 0
+  | 0, _, s', _, v => by
+      show stairProj V 0 s' ((0 : V _ →ₗ[ℝ] StairProd V 0) v) = 0
+      simp
+  | (n + 1), 0, 0, hne, _ => (hne rfl).elim
+  | (n + 1), 0, (s' + 1), _, v => by
+      show (stairProj (fun k => V (k + 1)) n s').comp
+          (LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+          ((LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) v) = 0
+      simp
+  | (n + 1), (s + 1), 0, _, v => by
+      show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+          ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+            ((stairIncl (fun k => V (k + 1)) n s) v)) = 0
+      simp
+  | (n + 1), (s + 1), (s' + 1), hne, v => by
+      show (stairProj (fun k => V (k + 1)) n s').comp
+          (LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+          ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+            ((stairIncl (fun k => V (k + 1)) n s) v)) = 0
+      simp only [LinearMap.comp_apply, LinearMap.snd_apply, LinearMap.inr_apply]
+      exact stairProj_stairIncl_ne (fun k => V (k + 1)) n s s' (by omega) v
+
 /-- **The reconstruction lemma**: a `StairLowerTriDiag`-`f` endomorphism `T` equals
 `stairMap V n f (stairCouplingOf T)` — the couplings are captured automatically by `stairCouplingOf`,
 so the crux `eihd_hD_gen` reduces to establishing `StairLowerTriDiag genV L genF T` (i.e. the two block
