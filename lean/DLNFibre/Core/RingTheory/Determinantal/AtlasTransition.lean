@@ -60,16 +60,26 @@ DIRECTION `BaseLoc` of the fibre model. A chart element is always `: Base`, neve
 * `Algebra.AtlasChart.tripleTransition_cocycle` — the **triple cocycle** (P2.f): the cyclic
   composite of the three pivot-swap triple transitions on a fixed triple is the identity (standard
   form `g_jk ∘ g_ij = g_ik`), by the same conjugation/groupoid collapse one denominator up.
+* `Algebra.AtlasChart.restrictedOverlapTripleTransition` / `restrictTriple` /
+  `restrict_overlapTransition_eq_tripleTransition` / `restrictTriple_comp_overlapTransition` /
+  `overlapTransition_restricted_triple_cocycle` — the **naturality layer** (P2.g): the
+  further-localization of the 2-fold `overlapTransition` to the triple, the restriction map, the
+  naturality (iv) tying the restricted 2-fold to the canonical `tripleTransition`, the commuting
+  square exhibiting it as the restriction of the ACTUAL `overlapTransition`, and the cocycle of the
+  restricted 2-fold transitions.
 * `Algebra.AtlasFibreChart …` — `AtlasChart` paired with the over-base `StandardFibreChart` (the
   capstone's per-chart fibre model), with the same `chartElt`.
 
 **Scope.** This builds the transition OBJECTS + the cocycle COMPATIBILITIES (the 2-fold round-trip
-`overlapTransition_trans_symm`, P2.c; the triple cocycle `tripleTransition_cocycle`, P2.f) — both by
-the `AlgEquiv` groupoid laws without entering localization elements. What is NOT proved here is the
-**naturality** tying the triple transition to the further-localization of the 2-fold
-`overlapTransition` (the symmetric triple localizes at the PRODUCT `D·E`, the 2-fold at `D` alone,
-so the tie needs the `Away.mul'` refinement + a compatibility lemma — roadmap R1). The cocycle is
-the cocycle of the CANONICAL triple transitions, which are built identically to `overlapTransition`.
+`overlapTransition_trans_symm`, P2.c; the triple cocycle `tripleTransition_cocycle`, P2.f — both by
+the `AlgEquiv` groupoid laws without entering localization elements) AND the **naturality** (P2.g)
+tying the triple transition to the further-localization of the 2-fold `overlapTransition`. The
+symmetric triple localizes at the PRODUCT `D·E` and the 2-fold at `D` alone, so the tie goes through
+the `Away.mul'` refinement (the base further-localization `baseRestrTriple`) and a
+`Base`-subsingleton naturality argument, transported through the trivializations. This is a
+per-triple compatibility (`restrict_overlapTransition_eq_tripleTransition` +
+`restrictTriple_comp_overlapTransition`); the GLOBAL gluing of the per-chart data into one fibration
+morphism is a separate rung (R1, not built here).
 
 The eventual home is the localization-atlas library, so the data live in the bare `Algebra`
 namespace (L7 Mathlib-mirror), network-free over arbitrary `k`-algebras.
@@ -301,13 +311,14 @@ as `(tripleTriv C D E).symm ≪≫ (chartTripleTransitionK C D E ≪≫ tripleTr
 reachable by the `AlgEquiv` groupoid laws.
 
 **Scope (name = content).** This is the CANONICAL triple transition of the two charts (the unique
-`k`-restriction of the localization iso between the two triple presentations). It is NOT proved here
-to coincide with the further-localization of the 2-fold `overlapTransition C D`: the symmetric
-triple `targetTripleLoc C D E` localizes the pivot-`C` chart at the PRODUCT
-`D.chartElt * E.chartElt`, whereas `targetChartLoc C D` localizes at `D.chartElt` alone, so the tie
-needs the `Away.mul'` refinement iso `Away (d * e) ≃ (Away d) away e` plus a
-transition-compatibility lemma — a separate naturality rung (roadmap R1). The cocycle below is the
-cocycle of THESE canonical triple transitions, on the triple overlap. -/
+`k`-restriction of the localization iso between the two triple presentations). Its coincidence with
+the further-localization of the 2-fold `overlapTransition C D` — the symmetric triple
+`targetTripleLoc C D E` localizes the pivot-`C` chart at the PRODUCT `D.chartElt * E.chartElt`,
+whereas `targetChartLoc C D` localizes at `D.chartElt` alone — is proved by the P2.g naturality
+layer below (`restrict_overlapTransition_eq_tripleTransition` and the commuting square
+`restrictTriple_comp_overlapTransition`), through the `Away.mul'` refinement `baseRestrTriple`. The
+cocycle immediately below is the cocycle of THESE canonical triple transitions; the restricted
+2-fold form is `overlapTransition_restricted_triple_cocycle`. -/
 noncomputable def tripleTransition (C D E : AtlasChart k Base M) :
     targetTripleLoc C D E ≃ₐ[k] targetTripleLoc D E C :=
   (tripleTriv C D E).symm.trans
@@ -388,6 +399,241 @@ theorem tripleTransition_cocycle (C D E : AtlasChart k Base M) :
       ((chartTripleTransitionK D E C).trans (chartTripleTransitionK E C D)),
     ← AlgEquiv.trans_assoc (chartTripleTransitionK C D E) (chartTripleTransitionK D E C),
     chartTripleTransitionK_cocycle, AlgEquiv.refl_trans, AlgEquiv.symm_trans_self]
+
+/-! ## Naturality (P2.g): the restricted 2-fold transition IS the triple transition
+
+The triple cocycle above is of the CANONICAL triple transitions `tripleTransition`. This section
+proves the NATURALITY tying them to the further-localization of the 2-fold `overlapTransition` — the
+R1 gap P2.f flagged. The genuine content is a per-triple compatibility (a commuting square), NOT the
+global gluing.
+
+The proof route is base-side subsingleton, then trivialization conjugation (mirroring the cocycle):
+the restricted 2-fold and the canonical triple transition are BOTH `Base`-algebra isos between the
+same two triple presentations (localizations of `Base` at `powers (C·D·E)`), so they agree by
+`IsLocalization.algHom_subsingleton` OVER `Base`; the target-side statement then follows by pure
+`AlgEquiv`-groupoid conjugation through `tripleTriv`. (Subsingleton over the model `M` would be
+unsound — the maps are not `M`-algebra maps.) -/
+
+/-- **The base-side restricted 2-fold transition (canonical, at the triple).** The canonical
+`Base`-algebra iso between the pivot-`C` and pivot-`D` triple presentations of the SAME triple
+overlap, at the common submonoid `powers (C·D·E)` — the further-localization of the 2-fold base
+transition `awayOverlapTransition C.chartElt D.chartElt` one denominator up (from `powers (C·D)` to
+`powers (C·D·E)`), realized as `IsLocalization.algEquiv` at the triple submonoid. -/
+noncomputable def chartOverlapTripleBase (C D E : AtlasChart k Base M) :
+    Localization.Away (tripleElt C D E) ≃ₐ[Base] Localization.Away (tripleElt D C E) := by
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  haveI := isLocalization_tripleElt D C E (x := C.chartElt * D.chartElt * E.chartElt) (by ring)
+  exact IsLocalization.algEquiv (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+    (Localization.Away (tripleElt C D E)) (Localization.Away (tripleElt D C E))
+
+/-- **The base-side non-pivot reorder `D·C·E → D·E·C`.** The canonical `Base`-algebra iso
+`Away (tripleElt D C E) ≃ₐ[Base] Away (tripleElt D E C)` — same pivot `D`, non-pivot product
+reordered by `mul_comm` (`C·E = E·C`) — via `Localization.awayCongr'` of the identity
+`AlgEquiv.refl` on the pivot-`D` chart ring. Absorbs the mismatch between the restricted 2-fold's
+codomain (`D C E`) and the canonical triple transition's codomain (`D E C`). -/
+noncomputable def tripleReorderBase (C D E : AtlasChart k Base M) :
+    Localization.Away (tripleElt D C E) ≃ₐ[Base] Localization.Away (tripleElt D E C) :=
+  Localization.awayCongr' (AlgEquiv.refl (R := Base) (A₁ := Localization.Away D.chartElt))
+    (tripleElt D C E) (tripleElt D E C)
+    (by simp only [AlgEquiv.coe_refl, id_eq, tripleElt]; rw [mul_comm])
+
+/-- **The base-side canonical triple transition (unrestricted `Base`).** `IsLocalization.algEquiv`
+at `powers (C·D·E)` between the pivot-`C` and pivot-`D` presentations `Away (tripleElt C D E)` and
+`Away (tripleElt D E C)`; `chartTripleTransitionK` is its `k`-restriction (`rfl`). Named so the base
+naturality can be stated and proved over `Base` (subsingleton), then `k`-restricted. -/
+noncomputable def chartTripleTransitionBase (C D E : AtlasChart k Base M) :
+    Localization.Away (tripleElt C D E) ≃ₐ[Base] Localization.Away (tripleElt D E C) := by
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  haveI := isLocalization_tripleElt D E C (x := C.chartElt * D.chartElt * E.chartElt) (by ring)
+  exact IsLocalization.algEquiv (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+    (Localization.Away (tripleElt C D E)) (Localization.Away (tripleElt D E C))
+
+/-- `chartTripleTransitionK` is the `k`-restriction of `chartTripleTransitionBase` (definitionally —
+both are `IsLocalization.algEquiv` at the same triple submonoid). -/
+theorem chartTripleTransitionK_eq_restrict (C D E : AtlasChart k Base M) :
+    chartTripleTransitionK C D E = (chartTripleTransitionBase C D E).restrictScalars k := rfl
+
+/-- **Base naturality (crux).** `chartOverlapTripleBase C D E ≪≫ tripleReorderBase C D E =
+chartTripleTransitionBase C D E`: the restricted 2-fold transition, followed by the non-pivot
+reorder, is the canonical triple transition. Both are `Base`-algebra maps out of the localization
+`Away (tripleElt C D E)`, so they agree by the universal property
+(`IsLocalization.algHom_subsingleton` at `powers (C·D·E)`). -/
+theorem chartOverlapTripleBase_trans_reorder (C D E : AtlasChart k Base M) :
+    (chartOverlapTripleBase C D E).trans (tripleReorderBase C D E)
+      = chartTripleTransitionBase C D E := by
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  have : Subsingleton
+      (Localization.Away (tripleElt C D E) →ₐ[Base] Localization.Away (tripleElt D E C)) :=
+    IsLocalization.algHom_subsingleton (Submonoid.powers (C.chartElt * D.chartElt * E.chartElt))
+  exact AlgEquiv.coe_algHom_injective (Subsingleton.elim _ _)
+
+/-- **The target-side restricted 2-fold transition (the further-localization of `overlapTransition`
+to the triple).** The change-of-coordinates on the triple presentations obtained by conjugating the
+base restricted 2-fold `chartOverlapTripleBase` through the trivializations `tripleTriv` — built
+identically to `overlapTransition` (conjugate the canonical base transition through the canonical
+trivialization transports), one denominator further. This is the further-localization of
+`overlapTransition C D`; `restrictTriple_comp_overlapTransition` below is the commuting square
+making that identification literal. -/
+noncomputable def restrictedOverlapTripleTransition (C D E : AtlasChart k Base M) :
+    targetTripleLoc C D E ≃ₐ[k] targetTripleLoc D C E :=
+  (tripleTriv C D E).symm.trans
+    (((chartOverlapTripleBase C D E).restrictScalars k).trans (tripleTriv D C E))
+
+/-- **The target-side non-pivot reorder** `targetTripleLoc D C E ≃ₐ[k] targetTripleLoc D E C`,
+conjugating `tripleReorderBase` through `tripleTriv`. -/
+noncomputable def targetTripleReorder (C D E : AtlasChart k Base M) :
+    targetTripleLoc D C E ≃ₐ[k] targetTripleLoc D E C :=
+  (tripleTriv D C E).symm.trans
+    (((tripleReorderBase C D E).restrictScalars k).trans (tripleTriv D E C))
+
+/-- `restrictScalars` distributes over `trans` (the underlying functions compose identically). -/
+theorem restrictScalars_trans {A B C : Type u} [CommRing A] [CommRing B] [CommRing C]
+    [Algebra k A] [Algebra Base A] [Algebra k B] [Algebra Base B] [Algebra k C] [Algebra Base C]
+    [IsScalarTower k Base A] [IsScalarTower k Base B] [IsScalarTower k Base C]
+    (e : A ≃ₐ[Base] B) (f : B ≃ₐ[Base] C) :
+    (e.restrictScalars k).trans (f.restrictScalars k) = (e.trans f).restrictScalars k := rfl
+
+/-- The `k`-restriction of the base naturality: the restricted 2-fold ≪≫ reorder (both
+`k`-restricted) is `chartTripleTransitionK`. -/
+theorem chartOverlapTripleK_trans_reorder (C D E : AtlasChart k Base M) :
+    (((chartOverlapTripleBase C D E).restrictScalars k).trans
+        ((tripleReorderBase C D E).restrictScalars k))
+      = chartTripleTransitionK C D E := by
+  rw [restrictScalars_trans, chartOverlapTripleBase_trans_reorder,
+    chartTripleTransitionK_eq_restrict]
+
+/-- **Naturality (iv): the restricted 2-fold transition IS the triple transition.** On the target/
+model triple presentations, the further-localization of the 2-fold `overlapTransition C D`
+(`restrictedOverlapTripleTransition`), followed by the non-pivot reorder, equals the canonical
+triple transition `tripleTransition C D E`. Unfolds the conjugations and collapses by the `AlgEquiv`
+groupoid laws to the `k`-restricted base naturality `chartOverlapTripleK_trans_reorder`, WITHOUT
+entering localization elements: the inner `tripleTriv D C E` round-trip cancels, then the base
+naturality
+identifies the middle with `chartTripleTransitionK`. This closes the R1 gap for the 2-fold ↔ triple
+tie. -/
+theorem restrict_overlapTransition_eq_tripleTransition (C D E : AtlasChart k Base M) :
+    (restrictedOverlapTripleTransition C D E).trans (targetTripleReorder C D E)
+      = tripleTransition C D E := by
+  simp only [restrictedOverlapTripleTransition, targetTripleReorder, tripleTransition,
+    AlgEquiv.trans_assoc]
+  rw [← AlgEquiv.trans_assoc (tripleTriv D C E) (tripleTriv D C E).symm,
+    AlgEquiv.self_trans_symm, AlgEquiv.refl_trans,
+    ← AlgEquiv.trans_assoc ((chartOverlapTripleBase C D E).restrictScalars k)
+      ((tripleReorderBase C D E).restrictScalars k),
+    chartOverlapTripleK_trans_reorder]
+
+/-! ### The genuine restriction map + the commuting square (tie to the ACTUAL 2-fold transition) -/
+
+/-- **The base-side further-localization of the chart-`C` overlap presentation to the triple.** The
+`Base`-algebra map `awayOverlap C.chartElt D.chartElt →ₐ[Base] Away (tripleElt C D E)`: the overlap
+`Away (overlapElt C D)` (loc of `Base` at `powers (C·D)`) localized further at the third element
+`E`. Built by the localization universal property (`IsLocalization.liftAlgHom`): `powers (C·D)` are
+units in the triple ring because `C·D·E` is (the localizing element) and `C·D ∣ C·D·E`. -/
+noncomputable def baseRestrTriple (C D E : AtlasChart k Base M) :
+    Localization.awayOverlap C.chartElt D.chartElt →ₐ[Base]
+      Localization.Away (tripleElt C D E) := by
+  haveI := isLocalization_tripleElt C D E (x := C.chartElt * D.chartElt * E.chartElt) rfl
+  refine IsLocalization.liftAlgHom (M := Submonoid.powers (C.chartElt * D.chartElt))
+    (f := Algebra.ofId Base (Localization.Away (tripleElt C D E))) ?_
+  rintro ⟨_, n, rfl⟩
+  rw [Algebra.ofId_apply, map_pow]
+  refine IsUnit.pow n ?_
+  have hu : IsUnit (algebraMap Base (Localization.Away (tripleElt C D E))
+      (C.chartElt * D.chartElt * E.chartElt)) :=
+    IsLocalization.map_units (Localization.Away (tripleElt C D E))
+      ⟨C.chartElt * D.chartElt * E.chartElt, Submonoid.mem_powers _⟩
+  rw [map_mul] at hu
+  exact isUnit_of_mul_isUnit_left hu
+
+/-- **The restriction map** `targetChartLoc C D →ₐ[k] targetTripleLoc C D E`: the
+further-localization of the chart-`C` overlap presentation to the triple, conjugating
+`baseRestrTriple` through the two base→target transports (`overlapTriv`, `tripleTriv`) — the
+target-side analogue of `baseRestrTriple`, built by conjugation so it agrees with the base
+restriction by construction (the inferred `targetChartLoc C D → targetTripleLoc C D E` localization
+tower is NOT automatic). -/
+noncomputable def restrictTriple (C D E : AtlasChart k Base M) :
+    targetChartLoc C D →ₐ[k] targetTripleLoc C D E :=
+  ((tripleTriv C D E).toAlgHom.restrictScalars k).comp
+    (((baseRestrTriple C D E).restrictScalars k).comp
+      ((overlapTriv C D).symm.toAlgHom.restrictScalars k))
+
+/-- **The base commuting square (crux of the literal tie).** `baseRestrTriple D C E ∘
+awayOverlapTransition C.chartElt D.chartElt = chartOverlapTripleBase C D E ∘ baseRestrTriple C D E`:
+the base 2-fold transition, further-localized at `E`, is the base restricted 2-fold transition. Both
+are `Base`-algebra maps out of `awayOverlap C.chartElt D.chartElt` (loc at `powers (C·D)`), so they
+agree by `IsLocalization.algHom_subsingleton`. -/
+theorem baseRestr_square (C D E : AtlasChart k Base M) :
+    (baseRestrTriple D C E).comp
+        (Localization.awayOverlapTransition C.chartElt D.chartElt).toAlgHom
+      = (chartOverlapTripleBase C D E).toAlgHom.comp (baseRestrTriple C D E) := by
+  have : Subsingleton
+      (Localization.awayOverlap C.chartElt D.chartElt →ₐ[Base]
+        Localization.Away (tripleElt D C E)) :=
+    IsLocalization.algHom_subsingleton (Submonoid.powers (C.chartElt * D.chartElt))
+  exact Subsingleton.elim _ _
+
+/-- The base commuting square, pointwise. -/
+theorem baseRestr_square_apply (C D E : AtlasChart k Base M)
+    (z : Localization.awayOverlap C.chartElt D.chartElt) :
+    baseRestrTriple D C E (Localization.awayOverlapTransition C.chartElt D.chartElt z)
+      = chartOverlapTripleBase C D E (baseRestrTriple C D E z) := by
+  have := AlgHom.ext_iff.mp (baseRestr_square C D E) z
+  simpa only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgEquiv.coe_algHom,
+    AlgHom.coe_coe] using this
+
+/-- The restriction map applied (pointwise unfolding). -/
+theorem restrictTriple_apply (C D E : AtlasChart k Base M) (x : targetChartLoc C D) :
+    restrictTriple C D E x
+      = tripleTriv C D E (baseRestrTriple C D E ((overlapTriv C D).symm x)) := by
+  rfl
+
+/-- The target restricted 2-fold transition applied (pointwise unfolding). -/
+theorem restrictedOverlapTripleTransition_apply (C D E : AtlasChart k Base M)
+    (y : targetTripleLoc C D E) :
+    restrictedOverlapTripleTransition C D E y
+      = tripleTriv D C E (chartOverlapTripleBase C D E ((tripleTriv C D E).symm y)) := by
+  simp only [restrictedOverlapTripleTransition, AlgEquiv.trans_apply,
+    AlgEquiv.restrictScalars_apply]
+
+/-- **The commuting square: the restricted 2-fold IS the further-localization of the ACTUAL
+`overlapTransition`.** `restrictTriple D C E ∘ overlapTransition C D =
+restrictedOverlapTripleTransition C D E ∘ restrictTriple C D E` (as `k`-algebra maps
+`targetChartLoc C D → targetTripleLoc D C E`) — the naturality square exhibiting
+`restrictedOverlapTripleTransition` genuinely as the restriction (further localization) of the
+honest 2-fold transition to the triple overlap. Reduces, after unfolding the
+restriction/transition applications and cancelling an `overlapTriv D C` round-trip, to the base
+commuting square `baseRestr_square`. -/
+theorem restrictTriple_comp_overlapTransition (C D E : AtlasChart k Base M) :
+    (restrictTriple D C E).comp (overlapTransition C D).toAlgHom
+      = (restrictedOverlapTripleTransition C D E).toAlgHom.comp (restrictTriple C D E) := by
+  apply AlgHom.ext
+  intro x
+  simp only [AlgHom.comp_apply, AlgEquiv.toAlgHom_eq_coe, AlgHom.coe_coe]
+  rw [restrictTriple_apply, restrictedOverlapTripleTransition_apply, restrictTriple_apply,
+    AlgEquiv.symm_apply_apply]
+  rw [show (overlapTriv D C).symm ((overlapTransition C D) x)
+        = Localization.awayOverlapTransition C.chartElt D.chartElt
+            ((overlapTriv C D).symm x) from by
+      simp only [overlapTransition, chartOverlapTransitionK, AlgEquiv.trans_apply,
+        AlgEquiv.symm_apply_apply, AlgEquiv.restrictScalars_apply]]
+  rw [baseRestr_square_apply]
+
+/-- **The restricted 2-fold cocycle (standard form `g_jk ∘ g_ij = g_ik`).** The cyclic composite of
+the three restricted 2-fold transitions — each `restrictedOverlapTripleTransition` re-symmetrized by
+its non-pivot reorder `targetTripleReorder` — is the identity on `targetTripleLoc C D E`. This is
+`tripleTransition_cocycle` rewritten along naturality (iv)
+`restrict_overlapTransition_eq_tripleTransition`: the restricted 2-fold transitions of the atlas
+(the honest further-localizations of `overlapTransition`) satisfy the genuine cocycle condition on
+the triple overlap. -/
+theorem overlapTransition_restricted_triple_cocycle (C D E : AtlasChart k Base M) :
+    ((((restrictedOverlapTripleTransition C D E).trans (targetTripleReorder C D E)).trans
+          ((restrictedOverlapTripleTransition D E C).trans (targetTripleReorder D E C))).trans
+        ((restrictedOverlapTripleTransition E C D).trans (targetTripleReorder E C D)))
+      = AlgEquiv.refl (R := k) := by
+  rw [restrict_overlapTransition_eq_tripleTransition,
+    restrict_overlapTransition_eq_tripleTransition,
+    restrict_overlapTransition_eq_tripleTransition]
+  exact tripleTransition_cocycle C D E
 
 end AtlasChart
 

@@ -38,8 +38,9 @@ and would misrepresent the content. Instead the "atlas glues compatibly" content
 **derived lemmas** about any such atlas — `overlapTransition_trans_symm` / `overlapTransition_symm`
 / `tripleTransition_cocycle` below — PROVEN properties of the predicate, not fields. So the
 predicate's content is faithfully "locally a product over a principal-open cover of `U`", with the
-2-fold inverse/round-trip and the canonical triple cocycle as free consequences. (The triple cocycle
-is for the canonical triple transitions; the naturality tie to the 2-fold transition is R1.)
+2-fold inverse/round-trip, the canonical triple cocycle, AND the naturality tie of the triple
+transition to the further-localized 2-fold `overlapTransition` (P2.g) — hence the cocycle of the
+atlas's OWN restricted 2-fold transitions — all as free consequences.
 
 ## `name = content`: the open `U` is load-bearing
 
@@ -59,14 +60,18 @@ boundary lies in no chart). So `U` is part of the statement, not decoration: the
 * `Algebra.IsZariskiLocallyTrivialAffineProduct.tripleTransition_cocycle` — the **derived triple**
   cocycle (from P2.f): on a fixed triple overlap the three CANONICAL pivot-swap triple transitions
   compose cyclically to the identity (`g_jl ∘ g_ij = g_il`), again a proven property, not a field.
-  These are the canonical triple transitions (built like `overlapTransition`); their identification
-  with the further-localized 2-fold `overlapTransition` (naturality) is a separate rung (R1), NOT
-  proved here — so this is NOT yet stated as the cocycle of the already-defined 2-fold transitions.
+* `Algebra.IsZariskiLocallyTrivialAffineProduct.restrictedOverlapTransition_eq` /
+  `restrictTriple_comp_overlapTransition` / `overlapTransition_restricted_triple_cocycle` — the
+  **derived naturality layer** (from P2.g): the restricted 2-fold transition equals the canonical
+  triple transition (naturality iv), the commuting square exhibiting it as the further-localization
+  of the atlas's ACTUAL `overlapTransition`, and the resulting cocycle of the atlas's OWN restricted
+  2-fold transitions. Proven properties, not fields.
 
 So the atlas advertises: **cover** · **per-chart product** (the two fields) · **2-fold
-inverse/round-trip** (P2.c) · **canonical triple cocycle** (P2.f) — the last two as derived
-theorems (transitions are theorems, not fields). The remaining coherence step is the R1 naturality
-tie of the triple transition to the 2-fold one.
+inverse/round-trip** (P2.c) · **canonical triple cocycle** (P2.f) · **naturality + restricted
+2-fold cocycle** (P2.g) — the transition properties as derived theorems, not fields. The remaining
+coherence step is the GLOBAL gluing of the per-chart projections into one fibration morphism (R1),
+which the per-triple naturality is the local input to.
 
 The eventual Mathlib home is the algebraic-geometry / localization-atlas library, so the predicate
 lives in the bare `Algebra` namespace (L7 Mathlib-mirror), network-free over arbitrary `k`-algebras.
@@ -155,7 +160,9 @@ cyclic form `g_{ij} ≫ g_{jl} ≫ g_{li} = 1`). This is `Algebra.AtlasChart.tri
 at `(chart i).toAtlasChart`, `(chart j).toAtlasChart`, `(chart l).toAtlasChart`. It is a PROVEN
 property of the predicate, not a field. The cocycle lives on the canonical triple transitions (built
 identically to `overlapTransition`); their identification with the further-localized 2-fold
-`overlapTransition` (naturality) is a separate rung (R1) — see `tripleTransition`'s scope note. -/
+`overlapTransition` is the P2.g naturality `restrict_overlapTransition_eq_tripleTransition`,
+surfaced as `restrictedOverlapTransition_eq` below, so the corresponding cocycle of the RESTRICTED
+2-fold transitions is `overlapTransition_restricted_triple_cocycle`. -/
 theorem tripleTransition_cocycle
     (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
     (((A.chart i).toAtlasChart.tripleTransition (A.chart j).toAtlasChart
@@ -167,6 +174,64 @@ theorem tripleTransition_cocycle
       = AlgEquiv.refl (R := k) :=
   AtlasChart.tripleTransition_cocycle (A.chart i).toAtlasChart (A.chart j).toAtlasChart
     (A.chart l).toAtlasChart
+
+/-- **Naturality (iv) of the atlas (derived, P2.g).** For any three charts `i, j, l`, the
+further-localization of the 2-fold `overlapTransition` (the restricted 2-fold transition), followed
+by the non-pivot reorder, equals the canonical triple transition — the tie between the 2-fold and
+triple transitions of the atlas. This is `Algebra.AtlasChart.restrict_overlapTransition_eq_
+tripleTransition` at the three charts; a PROVEN property, not a field. -/
+theorem restrictedOverlapTransition_eq
+    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    ((A.chart i).toAtlasChart.restrictedOverlapTripleTransition (A.chart j).toAtlasChart
+          (A.chart l).toAtlasChart).trans
+        ((A.chart i).toAtlasChart.targetTripleReorder (A.chart j).toAtlasChart
+          (A.chart l).toAtlasChart)
+      = (A.chart i).toAtlasChart.tripleTransition (A.chart j).toAtlasChart
+        (A.chart l).toAtlasChart :=
+  AtlasChart.restrict_overlapTransition_eq_tripleTransition (A.chart i).toAtlasChart
+    (A.chart j).toAtlasChart (A.chart l).toAtlasChart
+
+/-- **The commuting square of the atlas (derived, P2.g).** The restricted 2-fold transition
+genuinely IS the further-localization of the ACTUAL `overlapTransition` to the triple overlap:
+`restrictTriple ∘ overlapTransition = restrictedOverlapTripleTransition ∘ restrictTriple`. This is
+`Algebra.AtlasChart.restrictTriple_comp_overlapTransition` at the charts; a PROVEN property, not a
+field. -/
+theorem restrictTriple_comp_overlapTransition
+    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    ((A.chart j).toAtlasChart.restrictTriple (A.chart i).toAtlasChart
+          (A.chart l).toAtlasChart).comp
+        ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).toAlgHom
+      = ((A.chart i).toAtlasChart.restrictedOverlapTripleTransition (A.chart j).toAtlasChart
+          (A.chart l).toAtlasChart).toAlgHom.comp
+        ((A.chart i).toAtlasChart.restrictTriple (A.chart j).toAtlasChart
+          (A.chart l).toAtlasChart) :=
+  AtlasChart.restrictTriple_comp_overlapTransition (A.chart i).toAtlasChart
+    (A.chart j).toAtlasChart (A.chart l).toAtlasChart
+
+/-- **The restricted 2-fold cocycle of the atlas (derived, P2.g).** The cyclic composite of the
+three restricted 2-fold transitions (each re-symmetrized by its reorder) is the identity — the
+cocycle `g_jl ∘ g_ij = g_il` for the atlas's OWN 2-fold transitions restricted to the triple overlap
+(not
+merely the canonical triple transitions). This is
+`Algebra.AtlasChart.overlapTransition_restricted_triple_cocycle` at the charts; a PROVEN property,
+not a field. -/
+theorem overlapTransition_restricted_triple_cocycle
+    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (((((A.chart i).toAtlasChart.restrictedOverlapTripleTransition (A.chart j).toAtlasChart
+              (A.chart l).toAtlasChart).trans
+            ((A.chart i).toAtlasChart.targetTripleReorder (A.chart j).toAtlasChart
+              (A.chart l).toAtlasChart)).trans
+          (((A.chart j).toAtlasChart.restrictedOverlapTripleTransition (A.chart l).toAtlasChart
+                (A.chart i).toAtlasChart).trans
+            ((A.chart j).toAtlasChart.targetTripleReorder (A.chart l).toAtlasChart
+              (A.chart i).toAtlasChart))).trans
+        (((A.chart l).toAtlasChart.restrictedOverlapTripleTransition (A.chart i).toAtlasChart
+              (A.chart j).toAtlasChart).trans
+          ((A.chart l).toAtlasChart.targetTripleReorder (A.chart i).toAtlasChart
+            (A.chart j).toAtlasChart)))
+      = AlgEquiv.refl (R := k) :=
+  AtlasChart.overlapTransition_restricted_triple_cocycle (A.chart i).toAtlasChart
+    (A.chart j).toAtlasChart (A.chart l).toAtlasChart
 
 /-! ## The two-worlds bridge view (AG-facing accessors)
 
@@ -198,12 +263,14 @@ names are correct, each in its own world.
 localized affine spectrum canonically corresponding to the chart's own basic open
 `D((chart i).chartElt)` — NOT all of `U`. A SINGLE GLOBAL fibration morphism `π : U → (base)` over
 all of `U` is NOT constructed here: it needs an actual gluing of the per-chart projections from
-their overlap-compatibility data (roadmap R1: the triple-overlap NATURALITY tying
-`tripleTransition` to the further-localized 2-fold `overlapTransition`), which this view does not
-build or prove. The view does NOT assert a global projection: it exposes exactly the chartwise
-picture the predicate proves (chartwise local triviality + the 2-fold cocycle
-`overlapTransition_trans_symm` and the canonical triple cocycle `tripleTransition_cocycle`). This is
-a renaming view — it adds no new data and no new theorems. -/
+their overlap-compatibility data (roadmap R1). The per-chart projections' overlap compatibility —
+the triple-overlap naturality tying `tripleTransition` to the further-localized 2-fold
+`overlapTransition` — is now PROVED (`restrictedOverlapTransition_eq`,
+`restrictTriple_comp_overlapTransition`, P2.g); R1 is the remaining GLOBAL gluing that consumes it.
+The view does NOT assert a global projection: it exposes exactly the chartwise picture the predicate
+proves (chartwise local triviality + the 2-fold cocycle `overlapTransition_trans_symm`, the
+canonical triple cocycle `tripleTransition_cocycle`, and the restricted 2-fold cocycle
+`overlapTransition_restricted_triple_cocycle`). This is a renaming view — it adds no new data. -/
 
 section FibrationView
 
