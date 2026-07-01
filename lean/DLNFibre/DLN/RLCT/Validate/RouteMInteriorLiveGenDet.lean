@@ -669,9 +669,20 @@ noncomputable def packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
           (finCongr (show M s.succ = Wext M (s.val + 1) by rw [Wext_apply M (s.val + 1) (by omega)]; rfl)))) ≪≫ₗ
       -- (1) per-layer row-split
       (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s)) ≪≫ₗ
-      -- (2) flatten frame + lift blocks
+      -- (2) flatten frame + lift blocks. FRAME uses the BLOCK-AWARE decode (fix (i), matching L=2
+      -- `packLayer0`@RouteMHDtotEihd:192): kept `Text(s+1)×Wext(s+1)` matrix → `SchurInc` via
+      -- `flatBlockLE.symm` (physical 2D-block split) → frame flat via `frameToSchurIncGen.symm`. NOT the
+      -- row-major `flatMatLEGen.symm` (the ROOT-CAUSE bug: general-L packStairGen diverged from L=2's
+      -- block-aware convention; row-major swaps the X/N off-diagonal roles). LIFT stays row-major (no
+      -- 2D-block structure). Now the OUTPUT matches the block-aware convention `genF` /
+      -- `schurFrameGenMap_fderiv_collapse` speak → the diagonal threads through; audited `genF` intact.
       (LinearEquiv.piCongrRight (fun s : Fin L =>
-        (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+        ((flatBlockLE
+              (show Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+                  = Text M (tach M) (s.val + 1) from by have := ha.hdesc s.val s.isLt; omega)
+              (show Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+                  = Wext M (s.val + 1) from by have := ha.hub s.val; omega)).symm ≪≫ₗ
+            (frameToSchurIncGen M ha s).symm).prodCongr
           (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm)) ≪≫ₗ
       -- (3) split frame-Pi from lift-Pi
       (piProdSplit (fun s : Fin L => Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)
@@ -1284,8 +1295,13 @@ layer `s'`. -/
 theorem stairProj_packStairGen_fst (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
     (P : Params M) (s' : Fin L) :
     (stairProj (genV M) L s'.val (packStairGen M ha hL P)).1
-      = (flatMatLEGen (Text M (tach M) (s'.val + 1)) (Wext M (s'.val + 1))).symm
-          ((packRowSplitGen M ha s' (packRecast M s' (P s'))).1) := by
+      = (frameToSchurIncGen M ha s').symm
+          ((flatBlockLE
+              (show Text M (tach M) (s'.val + 2) + (Text M (tach M) (s'.val + 1) - Text M (tach M) (s'.val + 2))
+                  = Text M (tach M) (s'.val + 1) from by have := ha.hdesc s'.val s'.isLt; omega)
+              (show Text M (tach M) (s'.val + 2) + (Wext M (s'.val + 1) - Text M (tach M) (s'.val + 2))
+                  = Wext M (s'.val + 1) from by have := ha.hub s'.val; omega)).symm
+            ((packRowSplitGen M ha s' (packRecast M s' (P s'))).1)) := by
   rw [packStairGen, LinearEquiv.trans_apply, stairProj_piToStair]; rfl
 
 /-- **The LIFT component of `stairProj s' (packStairGen P)`** — the off-by-one gather
