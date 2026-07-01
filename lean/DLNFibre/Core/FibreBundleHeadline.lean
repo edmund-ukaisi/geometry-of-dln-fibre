@@ -64,10 +64,12 @@ map `structMap = schurToDsigAt`. The wording throughout is "over `SchurLoc`", ne
   respects the geometric projection, not merely the named in-chart base map.
 - **OPEN ITEM — NOT `Flat π` / `FiberBundle` over all of `rankROpen` (NOT a GLOBAL morphism, R1).**
   This is the CHARTWISE over-base local product + chartwise flatness, at every pivot / every
-  rank-`= r` point. A single GLOBAL flatness-of-`π` or fibre-bundle statement over the whole
-  `rankROpen` additionally needs the target-side overlap-gluing cocycle (roadmap R1
-  `targetOverlapTransition`) to assemble the per-chart data; that stays roadmapped and is **not**
-  claimed here.
+  rank-`= r` point. The LOCAL target-side overlap cocycle is landed (the pairwise round-trip P2.c,
+  the canonical triple cocycle P2.f, the restricted-2-fold naturality/cocycle P2.g, in
+  `Core.FibreTargetOverlap` / `Core.RingTheory.Determinantal.AtlasTransition`). A single GLOBAL
+  flatness-of-`π` or fibre-bundle statement over the whole `rankROpen` additionally needs the GLOBAL
+  gluing of the per-chart data into one fibration morphism (roadmap R1); that stays roadmapped and
+  is **not** claimed here.
 - The structure map `structMap` is the in-chart *ring* map `SchurLoc →ₐ[k] Total`; no scheme
   morphism / continuity / sheaf statement is asserted. The over-base content is exactly: the
   trivialization respects this named base map (it is a `≃ₐ[SchurLoc]`, not a bare `≃ₐ[k]`), and the
@@ -164,8 +166,9 @@ open-cover `cover` of `rankROpen`; (3) per-pivot the HONEST structure map + over
 a product OVER the in-chart base direction `SchurLoc` (via a named structure map), flat
 over `SchurLoc`. (`schurToDsigAt` agrees with the pullback of `mult`'s projection after precomposition
 with `localizeSchur`: projection compatibility, CLOSED in `Core.FibreProjectionCompat`, R5.)
-**Chartwise / per-chart**: it does NOT carry a target-side overlap cocycle (R1), so it is NOT a
-global `Flat π` / `FiberBundle`; see the module docstring. -/
+**Chartwise / per-chart**: it does NOT bundle the (landed, P2.c/f/g) target-side overlap cocycle
+into a single GLOBAL fibration morphism (R1), so it is NOT a global `Flat π` / `FiberBundle`; see
+the module docstring. -/
 structure RankROpenOverBaseLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) where
   /-- **The rank-locus identity (S1 keystone, folded in).** A prime lies in `rankROpen` iff the
@@ -186,8 +189,9 @@ rank-`= r` open (S5).** Assembled from the S1 rank-bridge keystone, the banked s
 and
 the S4b per-pivot over-base trivialization + flatness. Every field is a banked, machine-checked
 fact.
-**Chartwise**: NOT a global `Flat π` / `FiberBundle` (target-side overlap cocycle R1 unbuilt);
-see the module docstring. -/
+**Chartwise**: NOT a global `Flat π` / `FiberBundle` (the LOCAL target-side overlap cocycle is
+landed P2.c/f/g; only the GLOBAL gluing into one fibration morphism, R1, is unbuilt); see the module
+docstring. -/
 noncomputable def reducedFibre_rankROpenOverBaseLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     RankROpenOverBaseLocalProduct (k := k) d r hp hq where
@@ -219,11 +223,12 @@ schurToDsigAt` — but not vice versa.) The `flat` conjunct is a corollary of `t
 This UPGRADES the S4 headline `reducedFibre_existsProductChartAt_rankEq` (bare
 `Nonempty (… ≃ₐ[k] …)`)
 to the genuine over-base version. Composed from the S1 rank-bridge, the scheme open-cover, and the
-S4b per-pivot over-base data. **Chartwise / uncocycled, base = `SchurLoc`**: it does not itself fold in
+S4b per-pivot over-base data. **Chartwise, base = `SchurLoc`**: it does not itself fold in
 that `schurToDsigAt` agrees with the pullback of `mult`'s projection after precomposition with
 `localizeSchur` (projection compatibility — proven separately in `Core.FibreProjectionCompat`, R5), and
-does NOT assert a global `Flat π` / fibre bundle over all of `rankROpen` (the target-side overlap
-cocycle R1 is unbuilt). -/
+does NOT assert a global `Flat π` / fibre bundle over all of `rankROpen` (the LOCAL target-side
+overlap cocycle is landed P2.c/f/g; only the GLOBAL gluing into one fibration morphism, R1, is
+unbuilt). -/
 theorem reducedFibre_existsOverBaseProductChartAt_rankEq (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (P : PrimeSpectrum (sweepSigmaRing k d r))

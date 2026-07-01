@@ -12,8 +12,9 @@ import Mathlib.RingTheory.Flat.Basic
 This module upgrades the per-pivot chart trivialization from a **`k`-algebra** equiv to a
 **`SchurLoc`-algebra** equiv (over the in-chart Schur/base coordinate ring), and reads off chartwise
 flatness over that in-chart base direction `SchurLoc`. (The S3 `Flat π` payoff — flatness over the
-*geometric* base — additionally needs the R1 target-side cocycle / global gluing; projection
-compatibility is now CLOSED in `Core.FibreProjectionCompat`. See Scope.)
+*geometric* base — additionally needs the GLOBAL gluing of the per-chart data into one fibration
+morphism (R1); the LOCAL target-side cocycle is landed (P2.c/f/g) and projection compatibility is
+now CLOSED in `Core.FibreProjectionCompat`. See Scope.)
 
 ## The rung that was missing (S3/S4 convergent keystone)
 
@@ -51,8 +52,9 @@ base-change `algebraTensorAlgEquiv_symm_map`.
 * `chartDsig_flat_over_schurLoc` / `chartDsigAt_flat_over_schurLoc` — the top-left / per-pivot
   **flatness over the in-chart base direction `SchurLoc`** `Module.Flat SchurLoc (Away (chartDsig[At]))`,
   by `standardFibreModel_flat` across the `SchurLoc`-linear trivialization (chartwise; the S3 `Flat π`
-  payoff additionally needs the R1 target-side cocycle / global gluing — projection compatibility is now
-  CLOSED in `Core.FibreProjectionCompat` — see Scope).
+  payoff additionally needs the GLOBAL gluing into one fibration morphism (R1) — the LOCAL
+  target-side cocycle is landed P2.c/f/g and projection compatibility is now CLOSED in
+  `Core.FibreProjectionCompat` — see Scope).
 
 ## Scope (honest)
 
@@ -63,9 +65,11 @@ This is the CHARTWISE over-base trivialization + flatness, at every pivot, over 
 CLOSED (R5, `Core.FibreProjectionCompat`). So `chartDsigAt_flat_over_schurLoc` is flatness over a
 `SchurLoc` algebra now certified to agree with the geometric `mult`-projection (chartwise).
 (`Spec(sweepSigmaRing)` is the source/total; `SchurLoc` is only the base direction.)
-(ii) R1 (`targetOverlapTransition`) — the overlap-gluing cocycle for a single GLOBAL `Flat π` /
-`FiberBundle` morphism over all of `rankROpen` — stays open. It is the ONLY remaining bundle residual;
-NOT claimed here.
+(ii) R1 — the GLOBAL gluing of the per-chart data into a single `Flat π` / `FiberBundle` morphism
+over all of `rankROpen` — stays open. The LOCAL target-side overlap cocycle (pairwise round-trip
+P2.c, triple cocycle P2.f, restricted-2-fold naturality/cocycle P2.g) is landed
+(`Core.FibreTargetOverlap`); the GLOBAL assembly is the ONLY remaining bundle residual, NOT claimed
+here.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -208,8 +212,9 @@ end PerPivotStruct
 We register the banked `schurToDsig` as the `SchurLoc`-algebra structure on `Away chartDsig` (a
 `local instance`, confined to this module), promote the top-left trivialization to a
 **`SchurLoc`-algebra** equiv, and read off chartwise flatness over the in-chart base direction
-`SchurLoc` (the S3 `Flat π` payoff additionally needs the R1 target-side cocycle / global gluing;
-projection compatibility is now CLOSED in `Core.FibreProjectionCompat`). -/
+`SchurLoc` (the S3 `Flat π` payoff additionally needs the GLOBAL gluing into one fibration morphism,
+R1; the LOCAL target-side cocycle is landed P2.c/f/g and projection compatibility is now CLOSED in
+`Core.FibreProjectionCompat`). -/
 
 section TopLeftFlat
 
@@ -257,13 +262,15 @@ noncomputable def chartDsig_schurLocTensorEquiv :
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]
       exact reducedFibre_chartDsig_tensorEquiv_schurToDsig d r hp hq x)
 
-/-- **The top-left chart total ring is FLAT over `SchurLoc` (chartwise; the S3 `Flat π` payoff additionally needs the R1 target-side cocycle / global gluing — projection compatibility is now CLOSED in `Core.FibreProjectionCompat`).**
+/-- **The top-left chart total ring is FLAT over `SchurLoc` (chartwise).**
 `Module.Flat SchurLoc (Away chartDsig)`: the genuine fibre-family flatness over the in-chart base,
 chartwise. Transport of the standard model's `SchurLoc`-flatness (`standardFibreModel_flat`:
 `SchurLoc ⊗_k sweepFibreRing` is `SchurLoc`-free) across the `SchurLoc`-LINEAR trivialization
 `chartDsig_schurLocTensorEquiv` (via `Module.Flat.of_linearEquiv`). This is over the HONEST base
 `SchurLoc` (the structure map `schurToDsig`), NOT the auxiliary-only flatness recorded in
-`FibreFlatness.standardFibreModel_flat`. -/
+`FibreFlatness.standardFibreModel_flat`. The S3 `Flat π` payoff additionally needs the GLOBAL gluing
+into one fibration morphism (R1) — the LOCAL target-side cocycle is landed (P2.c/f/g) and projection
+compatibility is CLOSED (R5, `Core.FibreProjectionCompat`). -/
 theorem chartDsig_flat_over_schurLoc :
     Module.Flat (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
       (Localization.Away (chartDsig k d r hp hq)) :=
@@ -323,12 +330,14 @@ noncomputable def chartDsigAt_schurLocTensorEquiv :
       rw [Algebra.TensorProduct.algebraMap_apply, Algebra.algebraMap_self_apply]
       exact chartDsigAt_tensorEquiv_schurToDsigAt d r hp hq s t σ τ hσ hτ x)
 
-/-- **The per-pivot chart total ring is FLAT over `SchurLoc` (chartwise, every pivot; the S3 `Flat π` payoff additionally needs the R1 target-side cocycle / global gluing — projection compatibility is now CLOSED in `Core.FibreProjectionCompat`).**
+/-- **The per-pivot chart total ring is FLAT over `SchurLoc` (chartwise, every pivot).**
 `Module.Flat SchurLoc (Away (chartDsigAt s t))` (over the `letI` structure-map algebra
 `chartDsigAtSchurLocAlgebra`): the genuine fibre-family flatness over the in-chart base, chartwise,
 at EVERY pivot. Transport of `standardFibreModel_flat` across the `SchurLoc`-LINEAR trivialization
 `chartDsigAt_schurLocTensorEquiv` (via `Module.Flat.of_linearEquiv`). Over the HONEST base
-`SchurLoc` (the structure map `schurToDsigAt`). -/
+`SchurLoc` (the structure map `schurToDsigAt`). The S3 `Flat π` payoff additionally needs the GLOBAL
+gluing into one fibration morphism (R1) — the LOCAL target-side cocycle is landed (P2.c/f/g) and
+projection compatibility is CLOSED (R5, `Core.FibreProjectionCompat`). -/
 theorem chartDsigAt_flat_over_schurLoc :
     letI := chartDsigAtSchurLocAlgebra (k := k) d r hp hq s t σ τ hσ hτ
     Module.Flat (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)

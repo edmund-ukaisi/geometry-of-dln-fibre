@@ -405,9 +405,10 @@ import DLNFibre.Core.FibreChartConjugation
 -- sweepFibreRing` + the base-side overlap transition (`chartOverlapTransition` over
 -- `sweepSigmaRing`, pairwise laws) + the intertwining (`e_β` cancels → base-algebraic). Headline
 -- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial`: the rank-tie
--- `rankROpen={rank=r}` is now landed (S1, set-of-primes), so the residual to a bare
--- scheme-theoretic name is the target-side overlap-trivialization cocycle (R1) + projection
--- compatibility — NOT a bundled triple cocycle (this atlas carries only pairwise base-side data).
+-- `rankROpen={rank=r}` is now landed (S1, set-of-primes), the LOCAL target-side overlap cocycle is
+-- landed (P2.c/f/g, below) and projection compatibility is CLOSED (R5), so the residual to a bare
+-- scheme-theoretic name is the GLOBAL gluing of the per-chart data into one fibration morphism
+-- (R1).
 import DLNFibre.Core.FibreBundleLocallyTrivialFull
 -- Scope-3 (variety-level fibre-component↔orbit iso, thread 24 #138): rung 1 of the honest LOCALIZED
 -- `e` — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away
@@ -442,9 +443,10 @@ import DLNFibre.Core.FibreSmoothBlock
 -- `reducedFibre_existsProductChartAt_rankEq`). Folds in S1 to certify rankROpen genuinely IS the
 -- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a
 -- k-algebra product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`:
--- per-chart/UNCOCYCLED (overlap gluing = R1) and k-algebra-only (the over-base SchurLoc-linear
--- trivialization = S4b, LANDED below; it is over SchurLoc; projection-compatibility with mult is
--- CLOSED (R5, FibreProjectionCompat), the overlap-gluing R1 is the remaining residual).
+-- per-chart (the LOCAL target-side overlap cocycle is landed, P2.c/f/g; only the GLOBAL gluing into
+-- one fibration morphism = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization =
+-- S4b, LANDED below; it is over SchurLoc; projection-compatibility with mult is CLOSED (R5,
+-- FibreProjectionCompat), the GLOBAL-gluing R1 is the remaining residual).
 import DLNFibre.Core.FibreLocallyTrivial
 -- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial
 -- Noetherian ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the
@@ -480,8 +482,8 @@ import DLNFibre.Core.FibreBundleHeadline
 -- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt AGREES
 -- with mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
 -- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat +
--- over-base triv + flatness). Closes the S5/S4b "projection compatibility" item; global Flat π /
--- target-side cocycle still residual (R1).
+-- over-base triv + flatness). Closes the S5/S4b "projection compatibility" item; the LOCAL
+-- target-side cocycle is landed (P2.c/f/g), only the GLOBAL gluing / `Flat π` stays residual (R1).
 import DLNFibre.Core.FibreProjectionCompat
 -- R5 target-side overlap: awayCongr' (generalized localization transport) +
 -- targetProductOverlapTransition (the double-localized pairwise transition OBJECT, the DLN instance
