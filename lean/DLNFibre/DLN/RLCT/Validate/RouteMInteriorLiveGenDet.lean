@@ -2285,6 +2285,77 @@ theorem Cgen_succ_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : Str
       hr hc (slotReadGen M ha s y)]
   rfl
 
+/-! ## Step 1: the `−Nblk·Wblk` diagonal-vanishing (`NblkWblk_fderiv_vanish`)
+
+The diagonal frame KEPT block is `Cgen(s+1) − Nblk_{s.val}·Wblk_{s.val}` (`packRowSplitGen_kept_BparamsLeafGen`).
+On the slot-`s` input direction `d = eInGen.symm (stairIncl s v)`, the fderiv of the `−N·W` correction
+vanishes: `Nblk_{s.val} = readN⟨s.val−1⟩`, `Wblk_{s.val} = readW⟨s.val−1⟩` read the slot `s.val−1 ≠ s`,
+so both product-rule terms `dN(d)·W(y₀)`, `N(y₀)·dW(d)` are `0` (`readN_vanish`/`readW_vanish`). At
+`s.val = 0` the `Nblk 0 = 0` const makes the whole product `0`. -/
+
+/-- **`NblkWblk_fderiv_vanish`** — the fderiv of `y ↦ Nblk_{s.val}(y)·Wblk_{s.val}(y)` on the slot-`s`
+input `eInGen.symm (stairIncl s v)` vanishes. Step 1 of the `eihd_hD_gen` diagonal collapse. -/
+theorem NblkWblk_fderiv_vanish (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (y₀ : Fin (routeMAmbient M) → ℝ) (v : genV M s.val) :
+    fderiv ℝ (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+        * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) y₀
+        ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) = 0 := by
+  rcases Nat.eq_zero_or_pos s.val with h0 | hpos
+  · -- `s.val = 0`: `Nblk 0 = 0` (const), so the product is const `0` ⇒ fderiv `0`.
+    have hconst : (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+          * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val)
+        = fun _ => (0 : Matrix (Fin (Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ) := by
+      funext y
+      have hN0 : (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val = 0 := by
+        show (genBlkFlatStruct M (tach M) ha y).Nblk s.val = 0
+        rw [h0]; rfl
+      rw [hN0, Matrix.zero_mul _]
+    have hfd : HasFDerivAt (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+          * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val)
+        (0 : (Fin (routeMAmbient M) → ℝ) →L[ℝ]
+          Matrix (Fin (Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ) y₀ := by
+      rw [hconst]; exact hasFDerivAt_const _ _
+    rw [hfd.fderiv]
+    exact ContinuousLinearMap.zero_apply _
+  · -- `s.val = k+1`: product rule; both `dN(d)` and `dW(d)` vanish (slot `k ≠ s`). Substitute the
+    -- opaque layer width `s.val = k+1` everywhere (the CLAUDE.md `s.val`-cast trap) by generalising
+    -- `s.val`, so the reader identities `genBlkFlatLive_Nblk_succ`/`_Wblk_succ` apply at `k+1` directly.
+    obtain ⟨k, hk⟩ : ∃ k, s.val = k + 1 := ⟨s.val - 1, by omega⟩
+    have hkL : k < L := by omega
+    have hk2 : k + 1 < L := by omega
+    set kf : Fin L := ⟨k, hkL⟩ with hkf
+    have hkne : kf ≠ s := Fin.ne_of_val_ne (by simp only [hkf]; omega)
+    have hNd : (matrixReaderCLM (fun i j => readNslot M ha kf i j))
+        ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) = 0 := by
+      ext i j; exact readN_vanish M ha s kf hkne v i j
+    have hWd : (matrixReaderCLM (fun i j => readWslot M ha kf hk2 i j))
+        ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) = 0 := by
+      ext i j; exact readW_vanish M ha s kf hkne hk2 v i j
+    -- Generalise the width-carrying direction so rewriting `s.val → k+1` in the fderiv is type-safe.
+    generalize hdir : ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) = dir at hNd hWd ⊢
+    rw [show s.val = kf.val + 1 from hk]
+    have hN : HasFDerivAt (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk (kf.val + 1))
+        (matrixReaderCLM (fun i j => readNslot M ha kf i j)) y₀ := by
+      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk (kf.val + 1))
+          = fun y => (Matrix.of (fun i j => readN M (tach M) ha y kf i j) :
+              Matrix (Fin (Text M (tach M) (kf.val + 2)))
+                (Fin (Wext M (kf.val + 1) - Text M (tach M) (kf.val + 2))) ℝ) from
+        funext fun y => genBlkFlatLive_Nblk_succ M (tach M) ha (rfinDirectGen M ha y) y k hkL]
+      exact hasFDerivAt_readN M ha kf y₀
+    have hW : HasFDerivAt (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk (kf.val + 1))
+        (matrixReaderCLM (fun i j => readWslot M ha kf hk2 i j)) y₀ := by
+      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk (kf.val + 1))
+          = fun y => (Matrix.of (fun i j => readW M (tach M) ha y kf hk2 i j) :
+              Matrix (Fin (Wext M (kf.val + 1) - Text M (tach M) (kf.val + 2)))
+                (Fin (Wext M (kf.val + 2))) ℝ) from
+        funext fun y => genBlkFlatLive_Wblk_succ M (tach M) ha (rfinDirectGen M ha y) y k hkL hk2]
+      exact hasFDerivAt_readW M ha kf hk2 y₀
+    rw [(HasFDerivAt.matMul hN hW).fderiv]
+    simp only [ContinuousLinearMap.add_apply, ContinuousLinearMap.precompR_apply,
+      ContinuousLinearMap.precompL_apply, ContinuousLinearMap.compL_apply,
+      ContinuousLinearMap.comp_apply, matMulBilin_apply, hNd, hWd, Matrix.mul_zero,
+      Matrix.zero_mul, add_zero]
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
