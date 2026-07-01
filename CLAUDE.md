@@ -110,7 +110,9 @@ If dispatched into a role, read its role file and agent definition first.
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
 - **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
   2026-06-12) — push freely to bank and share work. **Opening/merging PRs and the `dev → master` promotion
-  remain operator-gated** (signal-and-wait); the operator performs those. Always confirm the push target is
+  remain operator-gated** (signal-and-wait); the operator performs those. **Posting PR review
+  comments/replies is at the controller's discretion** (operator standing instruction, 2026-07-01) — no
+  per-comment gate; only opening/merging the PR is gated. Always confirm the push target is
   `origin`, never a non-`origin` remote.
 
 ## Memory
