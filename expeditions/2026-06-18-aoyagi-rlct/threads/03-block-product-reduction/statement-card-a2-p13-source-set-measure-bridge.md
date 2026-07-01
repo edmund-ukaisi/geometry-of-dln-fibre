@@ -26,12 +26,25 @@ The scalar `c` is the tuple-side full-space Haar scalar comparing
 `Measure.map (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W B U0) m`
 with `originalTupleVolume d`.
 
+The source-set equalities also restrict to any supplied measurable
+`chartPiece ⊆ sourceSet`:
+
+```text
+muP13.restrict chartPiece
+= c • (originalEdgeFamilyVolume b).restrict chartPiece.
+```
+
+This is a chart-piece corollary of the source-set equality, not a proof that
+an arbitrary passive-theta image is contained in `sourceSet`.
+
 ## Public Lean Names
 
 ```text
 paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
 ```
 
 ## Inputs Used
@@ -51,9 +64,13 @@ map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_form
 3. Rewrite the image using the existing p.13 source-set image theorem.
 4. For the formal-product statement, compose the existing local Jacobian
    source-set theorem with the restricted source-set comparison.
+5. For chart pieces, restrict the source-set equality, commute restriction
+   with scalar multiplication, and collapse the double restriction using
+   `chartPiece ⊆ sourceSet`.
 
 ## Nonclaims
 
 This is not source-rank coverage, full source coverage, restricted Haar
-structure, scalar normalization to `1`, normal crossings, pole order, or RLCT
+structure, scalar normalization to `1`, containment of passive-theta image
+pieces in the p.13 source set, normal crossings, pole order, or RLCT
 extraction.

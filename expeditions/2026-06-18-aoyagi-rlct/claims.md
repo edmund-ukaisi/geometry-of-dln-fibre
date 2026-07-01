@@ -14184,7 +14184,8 @@ pushed forward by the public p.13 source chart is the restriction of
 `originalEdgeFamilyVolume` to the named p.13 source edge-family set, multiplied
 by the same tuple-side full-space Haar scalar.  The formal-product
 retained-passive Jacobian version reaches the same scalar-restricted source
-set measure.
+set measure.  Both source-set equalities restrict further to any supplied
+measurable `chartPiece` contained in the named p.13 source edge-family set.
 
 Lean theorems:
 
@@ -14192,6 +14193,8 @@ Lean theorems:
 paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
 ```
 
 Artifacts:
@@ -14202,5 +14205,6 @@ xhigh review in
 `threads/03-block-product-reduction/review-a2-p13-source-set-measure-bridge.md`.
 
 Kill condition: this claim must not be cited as source-rank coverage, full
-source coverage, restricted Haar structure, scalar normalization to `1`,
-normal crossings, pole order, or RLCT extraction.
+source coverage, passive-theta image containment in the named p.13 source set,
+restricted Haar structure, scalar normalization to `1`, normal crossings, pole
+order, or RLCT extraction.

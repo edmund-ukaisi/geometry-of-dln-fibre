@@ -45,3 +45,26 @@ statement.
   structure, normal crossings, pole order, or RLCT extraction.
 
 No edits were made by the reviewer.
+
+## Follow-up Chart-piece Corollary Review
+
+Date: 2026-07-01.
+
+Reviewer: Hegel the 2nd, xhigh read-only audit.
+
+Status: PASS.
+
+Scope: audit the two chart-piece restriction corollaries added to
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` and the corresponding
+reproduction/statement-card updates.
+
+Findings: no issues.  The corollaries keep the same tuple-side full-space Haar
+scalar, require `chartPiece ⊆ sourceSet`, and only restrict the already-proved
+source-set equalities.  They do not infer passive-theta source-image
+containment or scalar normalization.
+
+Verification noted by reviewer:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+```

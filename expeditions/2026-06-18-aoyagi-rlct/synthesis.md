@@ -15,6 +15,8 @@ fixed-base retained-passive source chart:
 paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
 ```
 
 The first theorem is pointwise and chart-domain only: on
@@ -30,6 +32,11 @@ Measure.map sourceChart (m.restrict rawSourceSet)
 The formal-product theorem uses the existing retained-passive local Jacobian
 source-set theorem and support theorem to reach the same scalar-restricted
 `originalEdgeFamilyVolume` on the named p.13 source edge-family set.
+
+The chart-piece corollaries restrict these source-set equalities to any
+measurable `chartPiece` supplied with `chartPiece ⊆ sourceSet`.  They are only
+restriction lemmas; they do not prove that a passive-theta image or local
+source piece lies inside the named p.13 source set.
 
 Artifacts:
 
@@ -48,13 +55,13 @@ env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
 env LEAN_NUM_THREADS=3 lake build DLNFibre
 ./scripts/sorries
 git diff --check
-#print axioms on all three public theorems: [propext, Classical.choice, Quot.sound]
+#print axioms on all five public theorems: [propext, Classical.choice, Quot.sound]
 ```
 
 Post-implementation xhigh review and full verification passed.  Nonclaims:
 no source-rank coverage, no full source coverage, no restricted Haar theorem,
-no scalar normalization to `1`, no normal crossings, no pole order, and no
-RLCT extraction.
+no scalar normalization to `1`, no passive-theta source-image containment, no
+normal crossings, no pole order, and no RLCT extraction.
 
 ## Original Edge-Family Raw-Order Edge-Volume Bridge - 2026-07-01
 

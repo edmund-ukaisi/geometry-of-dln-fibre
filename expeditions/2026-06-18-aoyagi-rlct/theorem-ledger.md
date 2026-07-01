@@ -12410,7 +12410,11 @@ Latest A2 p.13 source-set measure bridge:
 `paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple`,
 `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet`,
 and
-`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet`.
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet`,
+plus the chart-piece corollaries
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece`
+and
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece`.
 
 Reproduction:
 `threads/03-block-product-reduction/reproduction-a2-p13-source-set-measure-bridge.md`.
@@ -12422,13 +12426,15 @@ Review:
 Ledger status: the generic raw-order edge-family restricted measure bridge is
 specialized to the public p.13 raw-order source chart and the named p.13
 source edge-family set.  The formal-product Jacobian version uses the existing
-retained-passive local Jacobian source-set theorem and support theorem.
+retained-passive local Jacobian source-set theorem and support theorem.  The
+chart-piece corollaries restrict those equalities to any measurable supplied
+piece contained in the named source set.
 
 Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
 full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
 axiom probe, and xhigh review passed.  The direct axiom probe reports only
-`[propext, Classical.choice, Quot.sound]` for all three public theorems.
+`[propext, Classical.choice, Quot.sound]` for all five public theorems.
 
 Nonclaims: no source-rank coverage, no full source coverage, no restricted
-Haar theorem, no scalar normalization to `1`, no normal crossings, no pole
-order, and no RLCT.
+Haar theorem, no passive-theta source-image containment, no scalar
+normalization to `1`, no normal crossings, no pole order, and no RLCT.

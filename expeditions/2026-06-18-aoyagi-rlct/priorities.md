@@ -14,19 +14,24 @@ The controller proposes this ranking; the operator may edit this file directly.
 
 ## Latest controller decision - 2026-07-01, p.13 source-set measure bridge
 
-The next named-source specialization is in progress:
+The named-source specialization is proved, and now includes the chart-piece
+restriction corollaries:
 
 ```text
 paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
 ```
 
 This rewrites the generic edge-family volume bridge with the public p.13
 raw-order source chart and the named retained-passive p.13 source edge-family
-set.  It still keeps the tuple-side full-space Haar scalar and does not claim
-source coverage, scalar normalization, restricted Haar structure, normal
-crossings, or RLCT extraction.
+set.  It also restricts the resulting equality to any supplied measurable
+`chartPiece ⊆ sourceSet`.  It still keeps the tuple-side full-space Haar
+scalar and does not claim source coverage, passive-theta image containment,
+scalar normalization, restricted Haar structure, normal crossings, or RLCT
+extraction.
 
 ## Latest controller decision - 2026-07-01, raw-order restriction to edge-family volume
 

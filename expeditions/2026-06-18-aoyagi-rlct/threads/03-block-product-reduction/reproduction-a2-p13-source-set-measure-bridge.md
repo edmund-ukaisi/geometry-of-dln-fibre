@@ -100,6 +100,48 @@ The existing support theorem says the restriction on the right is the same
 measure.  Applying the restricted source-set comparison above gives the final
 scalar-restricted original edge-family volume.
 
+### Chart-piece restriction corollary
+
+Let `chartPiece` be a measurable subset of `sourceSet`.  If
+
+```text
+muP13
+  = c • (originalEdgeFamilyVolume b).restrict sourceSet,
+```
+
+where `muP13` is either the unweighted p.13 raw-order pushforward or the
+formal-product Jacobian pushforward, then restricting both sides to
+`chartPiece` gives
+
+```text
+muP13.restrict chartPiece
+  = (c • (originalEdgeFamilyVolume b).restrict sourceSet).restrict chartPiece.
+```
+
+Scalar restriction commutes with restriction, so the right side is
+
+```text
+c • ((originalEdgeFamilyVolume b).restrict sourceSet).restrict chartPiece.
+```
+
+The containment `chartPiece ⊆ sourceSet` then collapses the double restriction:
+
+```text
+((originalEdgeFamilyVolume b).restrict sourceSet).restrict chartPiece
+  = (originalEdgeFamilyVolume b).restrict chartPiece.
+```
+
+Hence the chart-piece equality is
+
+```text
+muP13.restrict chartPiece
+  = c • (originalEdgeFamilyVolume b).restrict chartPiece.
+```
+
+This corollary does not identify `chartPiece` with any passive-theta source
+image.  It is only a restriction of the already-proved p.13 source-set
+comparison to a supplied measurable subset of the named source set.
+
 ## Lean Target
 
 Add:
@@ -114,6 +156,8 @@ with:
 paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
 map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
 ```
 
 ## Kill Conditions
@@ -125,6 +169,9 @@ map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_form
 - If the scalar is identified with `1`, the theorem overclaims.
 - If the theorem is cited as restricted Haar, normal crossings, pole order,
   or RLCT extraction, it overclaims.
+- If the chart-piece corollary is used with a set only known to lie in a
+  passive-theta local source, but not in the named p.13 source edge-family set,
+  it overclaims.
 
 ## Nonclaims
 
