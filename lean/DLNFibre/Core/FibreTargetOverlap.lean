@@ -69,15 +69,17 @@ obtained by conjugating the base-side `chartOverlapTransitionK I J` through the 
 
 This is the **pairwise** target-side transition (the domains are chart-dependent double
 localizations). The transition OBJECT is built (as the DLN instance of the abstract atlas
-transition); its **round-trip cocycle** `(I, J) ∘ (J, I) = id` is a precisely-scoped residual —
-mathematically immediate from `chartOverlapTransitionK_trans_symm` (the base-side round-trip,
-LANDED), now reachable structurally via the `AlgEquiv` groupoid laws
-(`AlgEquiv.trans_assoc`/`trans_refl`/`refl_trans`, `DLNFibre.Core.Algebra.AlgEquiv.Groupoid`); the
-abstract transition is parenthesized so that route is open. A single GLOBAL `Flat π` / `FiberBundle`
-over all of `rankROpen` additionally needs the triple-overlap coherence packaged + a
-local-to-global flatness assembly; those stay roadmapped (see `Core.FibreBundleHeadline`). What this
-removes is "the target-side transition does not exist" — it does, pairwise, as an instance of the
-abstract atlas.
+transition); its **round-trip cocycle** `(I, J) ∘ (J, I) = id` is now PROVED — it is the abstract
+`Algebra.AtlasChart.overlapTransition_trans_symm` (P2.c, LANDED in `AtlasTransition`) at the pivot
+charts, and fires on the DLN instance via
+`Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
+(`Core.FibreZariskiLocalTriviality`). The canonical triple cocycle (P2.f) and the naturality tying
+the triple to the further-localized 2-fold transition (P2.g) are likewise proved abstractly and
+inherited. Only a single GLOBAL `Flat π` / `FiberBundle` over all of `rankROpen` stays roadmapped
+(R1): the GLOBAL gluing of the per-chart data into one fibration morphism + a local-to-global
+flatness assembly (see `Core.FibreBundleHeadline`) — NOT the local pairwise/triple coherence, which
+is landed. What this module removes is "the target-side transition does not exist" — it does,
+pairwise, as an instance of the abstract atlas, with the pairwise round-trip a free theorem.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -195,29 +197,28 @@ noncomputable def targetProductOverlapTransition (I J : PivotDatum d r hp hq) :
 /-- **The base transition round-trips to the identity — the abstract atlas round-trip at the pivot
 charts.** `Algebra.AtlasChart.chartOverlapTransitionK_trans_symm (pivotAtlasChart I)
 (pivotAtlasChart J)`: the pairwise round trip `(I, J)` then `(J, I)` is the identity on the overlap.
-This is the base-level evidence behind the (separately-proved) target-side cocycle. -/
+This is the base-level evidence the target-side cocycle (P2.c, LANDED) is built from. -/
 theorem chartOverlapTransitionK_trans_symm (I J : PivotDatum d r hp hq) :
     (chartOverlapTransitionK d r hp hq I J).trans (chartOverlapTransitionK d r hp hq J I)
       = AlgEquiv.refl (R := k) :=
   Algebra.AtlasChart.chartOverlapTransitionK_trans_symm
     (pivotAtlasChart d r hp hq I) (pivotAtlasChart d r hp hq J)
 
-/-! ### Roadmap residual — the target-side cocycle round-trip proof (P2.c)
+/-! ### The target-side cocycle round-trip — LANDED (P2.c), inherited from the abstract atlas
 
-The pairwise target-side **transition object** `targetProductOverlapTransition` is built (as the DLN
-instance of the abstract `Algebra.AtlasChart.overlapTransition`). Its **round-trip cocycle**
-`(I, J) ∘ (J, I) = id` is mathematically immediate from the base-side
-`chartOverlapTransitionK_trans_symm` (LANDED, just above): writing `T_IJ := overlapTriv I J`, the
-conjugation `T_IJ.symm ≪≫ K_IJ ≪≫ (T_JI ≪≫ T_JI.symm) ≪≫ K_JI ≪≫ T_IJ` cancels the inner
-`T_JI ≪≫ T_JI.symm = refl`, then `K_IJ ≪≫ K_JI = refl`.
-
-The structural route is now **unblocked**: the `AlgEquiv` groupoid laws `AlgEquiv.trans_assoc` /
-`trans_refl` / `refl_trans` (absent in Mathlib v4.29, supplied by
-`DLNFibre.Core.Algebra.AlgEquiv.Groupoid`) rearrange the sandwich at the abstract `AlgEquiv` level —
-off the heavy double-localized `targetChartLoc` — so the cancellation goes through without the
-pointwise-`ext` kernel cost. The abstract `overlapTransition` is parenthesized exactly as an
-`AlgEquiv.trans` sandwich for this. Proving the round-trip (and the triple-overlap associativity) is
-the P2.c rung; the transition OBJECT and the base-level round-trip evidence are landed here. -/
+The pairwise target-side **transition object** `targetProductOverlapTransition` is the DLN instance
+of the abstract `Algebra.AtlasChart.overlapTransition`. Its **round-trip cocycle**
+`(I, J) ∘ (J, I) = id` is now PROVED abstractly: `Algebra.AtlasChart.overlapTransition_trans_symm`
+(P2.c, in `AtlasTransition`) collapses the conjugation `T_IJ.symm ≪≫ K_IJ ≪≫ (T_JI ≪≫ T_JI.symm) ≪≫
+K_JI ≪≫ T_IJ` by the `AlgEquiv` groupoid laws `AlgEquiv.trans_assoc` / `trans_refl` / `refl_trans`
+(supplied by `DLNFibre.Core.Algebra.AlgEquiv.Groupoid`) at the abstract `AlgEquiv` level — off the
+heavy double-localized `targetChartLoc`, so no pointwise-`ext` kernel cost — using the base-side
+`chartOverlapTransitionK_trans_symm` (just above) for the middle cancellation. On the DLN instance
+it fires as `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
+(`Core.FibreZariskiLocalTriviality`). The canonical triple cocycle (P2.f
+`tripleTransition_cocycle`) and the naturality tie of the triple to the further-localized 2-fold
+(P2.g) are likewise landed abstractly and inherited. Only the GLOBAL gluing into one `Flat π` /
+`FiberBundle` stays roadmapped (R1). -/
 
 end Target
 
@@ -234,8 +235,8 @@ noncomputable example (d : Fin (N + 2) → ℕ) (r : ℕ)
     targetChartLoc (k := k) d r hp hq I J ≃ₐ[k] targetChartLoc (k := k) d r hp hq J I :=
   targetProductOverlapTransition d r hp hq I J
 
-/-- **Base round-trip witness.** The base transition round-trips to the identity — the evidence (at
-the base level) behind the deferred target-side cocycle proof. -/
+/-- **Base round-trip witness.** The base transition round-trips to the identity — the base-level
+evidence the LANDED target-side cocycle (P2.c) is built from. -/
 example (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I J : PivotDatum d r hp hq) :
     (chartOverlapTransitionK d r hp hq I J).trans (chartOverlapTransitionK d r hp hq J I)

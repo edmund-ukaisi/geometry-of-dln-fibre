@@ -23,10 +23,14 @@ the bespoke Zariski analogue, network-free over arbitrary `k`-algebras.
 A Zariski-locally-trivial affine product over an open `U` carries exactly:
 
 1. a **principal-open cover** of `U` by the charts `D((chart i).chartElt)`;
-2. a **per-chart over-base product trivialization** — `Algebra.AtlasFibreChart` already bundles one
-   chart's data: the base element `chartElt` (for the cover) + the bare-`k` trivialization
-   `trivK : Away chartElt ≃ₐ[k] M` (for the transitions) + the over-base `fibreModel :
-   StandardFibreChart` (the `≃ₐ[BaseLoc]` local product + flatness).
+2. a **per-chart over-base product trivialization** — `Algebra.AtlasFibreChart` bundles one chart's
+   data: the base element `chartElt` (for the cover) + the over-base `fibreModel :
+   StandardFibreChart` (the `≃ₐ[BaseLoc] BaseLoc ⊗_k Fibre` local product + flatness), the SINGLE
+   stored trivialization. The bare-`k` trivialization the transitions consume is DERIVED
+   (`toAtlasChart.trivK := fibreModel.triv.restrictScalars k`), so it IS the over-base product
+   trivialization with scalars forgotten (the product tie is definitional) — the transitions are
+   therefore change-of-coordinates between the over-`BaseLoc` PRODUCT presentations, not a generic
+   bare-`k` model.
 
 The transition/cocycle compatibility is **NOT** a field. Both the pairwise round-trip
 `overlapTransition C D ≪≫ overlapTransition D C = refl` and the triple cocycle
@@ -34,13 +38,14 @@ The transition/cocycle compatibility is **NOT** a field. Both the pairwise round
 that hold for ANY two/three `AtlasChart`s (`Algebra.AtlasChart.overlapTransition_trans_symm`, P2.c;
 `tripleTransition_cocycle`, P2.f) — automatically satisfied by localization initiality, never
 constraints to discharge. Adding them as fields the instance must fill by hand would be busy-work
-and would misrepresent the content. Instead the "atlas glues compatibly" content is recorded as
-**derived lemmas** about any such atlas — `overlapTransition_trans_symm` / `overlapTransition_symm`
-/ `tripleTransition_cocycle` below — PROVEN properties of the predicate, not fields. So the
-predicate's content is faithfully "locally a product over a principal-open cover of `U`", with the
-2-fold inverse/round-trip, the canonical triple cocycle, AND the naturality tie of the triple
+and would misrepresent the content. Instead they are recorded as **derived lemmas** about any such
+atlas — `overlapTransition_trans_symm` / `overlapTransition_symm` / `tripleTransition_cocycle` below
+— PROVEN properties of the predicate, not fields. What is automatic is exactly this LOCAL coherence:
+the pairwise inverse/round-trip, the canonical triple cocycle, AND the naturality tie of the triple
 transition to the further-localized 2-fold `overlapTransition` (P2.g) — hence the cocycle of the
-atlas's OWN restricted 2-fold transitions — all as free consequences.
+atlas's OWN restricted 2-fold transitions. This is NOT the global gluing: assembling the per-chart
+projections into one fibration morphism (R1) needs more than local compatibility (descent / a
+colimit) and is not derived here.
 
 ## `name = content`: the open `U` is load-bearing
 
@@ -51,9 +56,9 @@ boundary lies in no chart). So `U` is part of the statement, not decoration: the
 
 ## What is built
 
-* `Algebra.IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U` — the **predicate**: a
-  family `chart : ι → AtlasFibreChart` (`ι` a field of the structure) + the cover hypothesis
-  `cover : (⋃ i, D((chart i).chartElt)) = U`.
+* `Algebra.IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U` — the **predicate**: a
+  family `chart : ι → AtlasFibreChart` (`ι` a field of the structure; model FIXED to
+  `BaseLoc ⊗_k Fibre`) + the cover hypothesis `cover : (⋃ i, D((chart i).chartElt)) = U`.
 * `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm` /
   `…overlapTransition_symm` — the **derived 2-fold** cocycle compatibility of the atlas (from P2.c),
   a proven property, not a field.
@@ -88,13 +93,16 @@ universe u
 /-! ## The predicate: Zariski-locally-trivial affine product over an open -/
 
 /-- **A Zariski-locally-trivial affine product over an open `U ⊆ Spec Base`.** Over a base field
-`k`, with a fixed standard fibre model `M` and its base direction / fibre split `BaseLoc`, `Fibre`,
-this bundles the genuine content of "locally a product over a principal-open cover of `U`":
+`k`, with the standard fibre model FIXED to the over-base product `BaseLoc ⊗_k Fibre` (its base
+direction / fibre split `BaseLoc`, `Fibre`), this bundles the genuine content of "locally a product
+over a principal-open cover of `U`":
 
-* an index type `ι` and a chart family `chart : ι → AtlasFibreChart k Base M BaseLoc Fibre` — each
-  chart a principal open `D((chart i).chartElt)` of `Base` paired with the bare-`k` trivialization
-  `trivK : Away chartElt ≃ₐ[k] M` AND the over-base fibre model `fibreModel : StandardFibreChart`
-  (the `≃ₐ[BaseLoc] BaseLoc ⊗_k Fibre` local product + `BaseLoc`-flatness);
+* an index type `ι` and a chart family `chart : ι → AtlasFibreChart k Base BaseLoc Fibre` — each
+  chart a principal open `D((chart i).chartElt)` of `Base` paired with the over-base fibre model
+  `fibreModel : StandardFibreChart` (the `≃ₐ[BaseLoc] BaseLoc ⊗_k Fibre` local product +
+  `BaseLoc`-flatness), the SINGLE stored trivialization; the bare-`k` `trivK` the transitions
+  consume is DERIVED from it (`fibreModel.triv.restrictScalars k`), so it IS the over-base product
+  trivialization (scalars forgotten);
 * `cover` — the principal-open charts cover `U`: `(⋃ i, (D((chart i).chartElt) : Set _)) = U`.
 
 The transition/cocycle compatibility is intentionally NOT a field — it holds automatically for any
@@ -104,15 +112,14 @@ load-bearing: a bundle over the closure is generically false (the boundary lies 
 structure IsZariskiLocallyTrivialAffineProduct
     (k : Type u) [CommRing k]
     (Base : Type u) [CommRing Base] [Algebra k Base]
-    (M : Type u) [CommRing M] [Algebra k M]
     (BaseLoc : Type u) [CommRing BaseLoc] [Algebra k BaseLoc]
     (Fibre : Type u) [CommRing Fibre] [Algebra k Fibre]
     (U : Set (PrimeSpectrum Base)) where
   /-- The chart index type. -/
   ι : Type u
   /-- The chart family: at each index, an `AtlasFibreChart` (principal open `D(chartElt)` + bare-`k`
-  trivialization `trivK` + the over-base fibre model `fibreModel`). -/
-  chart : ι → AtlasFibreChart k Base M BaseLoc Fibre
+  trivialization `trivK` + the over-base fibre model `fibreModel`, tied by `trivK_eq`). -/
+  chart : ι → AtlasFibreChart k Base BaseLoc Fibre
   /-- The principal-open charts `D((chart i).chartElt)` cover the open `U`. -/
   cover :
     (⋃ i : ι, (PrimeSpectrum.basicOpen (chart i).chartElt : Set (PrimeSpectrum Base))) = U
@@ -121,7 +128,6 @@ namespace IsZariskiLocallyTrivialAffineProduct
 
 variable {k : Type u} [CommRing k]
   {Base : Type u} [CommRing Base] [Algebra k Base]
-  {M : Type u} [CommRing M] [Algebra k M]
   {BaseLoc : Type u} [CommRing BaseLoc] [Algebra k BaseLoc]
   {Fibre : Type u} [CommRing Fibre] [Algebra k Fibre]
   {U : Set (PrimeSpectrum Base)}
@@ -137,7 +143,7 @@ atlas of `AtlasChart`s. The cocycle lives on the bare-`k` `trivK`/`M` presentati
 (`overlapTransition` conjugates through `trivK`), DECOUPLED from the over-`BaseLoc`
 `fibreModel.triv` product — it is NOT an over-base-product cocycle. -/
 theorem overlapTransition_trans_symm
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j : A.ι) :
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).trans
         ((A.chart j).toAtlasChart.overlapTransition (A.chart i).toAtlasChart)
       = AlgEquiv.refl (R := k) :=
@@ -147,7 +153,7 @@ theorem overlapTransition_trans_symm
 `(overlapTransition i j).symm = overlapTransition j i` — the cocycle round-trip read as a
 characterization of the inverse (`Algebra.AtlasChart.overlapTransition_symm` at the charts). -/
 theorem overlapTransition_symm
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j : A.ι) :
     ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).symm
       = (A.chart j).toAtlasChart.overlapTransition (A.chart i).toAtlasChart :=
   AtlasChart.overlapTransition_symm (A.chart i).toAtlasChart (A.chart j).toAtlasChart
@@ -164,7 +170,7 @@ identically to `overlapTransition`); their identification with the further-local
 surfaced as `restrictedOverlapTransition_eq` below, so the corresponding cocycle of the RESTRICTED
 2-fold transitions is `overlapTransition_restricted_triple_cocycle`. -/
 theorem tripleTransition_cocycle
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j l : A.ι) :
     (((A.chart i).toAtlasChart.tripleTransition (A.chart j).toAtlasChart
           (A.chart l).toAtlasChart).trans
         ((A.chart j).toAtlasChart.tripleTransition (A.chart l).toAtlasChart
@@ -181,7 +187,7 @@ by the non-pivot reorder, equals the canonical triple transition — the tie bet
 triple transitions of the atlas. This is `Algebra.AtlasChart.restrict_overlapTransition_eq_
 tripleTransition` at the three charts; a PROVEN property, not a field. -/
 theorem restrictedOverlapTransition_eq
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j l : A.ι) :
     ((A.chart i).toAtlasChart.restrictedOverlapTripleTransition (A.chart j).toAtlasChart
           (A.chart l).toAtlasChart).trans
         ((A.chart i).toAtlasChart.targetTripleReorder (A.chart j).toAtlasChart
@@ -197,7 +203,7 @@ genuinely IS the further-localization of the ACTUAL `overlapTransition` to the t
 `Algebra.AtlasChart.restrictTriple_comp_overlapTransition` at the charts; a PROVEN property, not a
 field. -/
 theorem restrictTriple_comp_overlapTransition
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j l : A.ι) :
     ((A.chart j).toAtlasChart.restrictTriple (A.chart i).toAtlasChart
           (A.chart l).toAtlasChart).comp
         ((A.chart i).toAtlasChart.overlapTransition (A.chart j).toAtlasChart).toAlgHom
@@ -216,7 +222,7 @@ merely the canonical triple transitions). This is
 `Algebra.AtlasChart.overlapTransition_restricted_triple_cocycle` at the charts; a PROVEN property,
 not a field. -/
 theorem overlapTransition_restricted_triple_cocycle
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i j l : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i j l : A.ι) :
     (((((A.chart i).toAtlasChart.restrictedOverlapTripleTransition (A.chart j).toAtlasChart
               (A.chart l).toAtlasChart).trans
             ((A.chart i).toAtlasChart.targetTripleReorder (A.chart j).toAtlasChart
@@ -277,24 +283,24 @@ section FibrationView
 
 /-- AG-facing ambient **total space** `Spec Base` (DLN: `Σ̄^r`); local triviality holds over `U`. -/
 def totalSpace
-    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) :
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) :
     Type u := PrimeSpectrum Base
 
 /-- AG-facing **model fibre** factor `Spec Fibre` (DLN: `Spec(sweepFibreRing)`). -/
 def fibreSpace
-    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) :
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) :
     Type u := PrimeSpectrum Fibre
 
 /-- AG-facing **per-chart fibration base** `Spec BaseLoc` (DLN: the rank-chart `SchurLoc`). -/
 def chartBaseSpace
-    (_A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (_i : _A.ι) :
+    (_A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (_i : _A.ι) :
     Type u := PrimeSpectrum BaseLoc
 
 /-- AG-facing **per-chart** fibration projection `Spec(Away chartElt) → Spec BaseLoc`, the
 comorphism `comap (fibreModel.structMap)` on the chart domain `D(chartElt)`; per-chart, NOT a
 global `π` on `U`. -/
 def chartProjection
-    (A : IsZariskiLocallyTrivialAffineProduct k Base M BaseLoc Fibre U) (i : A.ι) :
+    (A : IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U) (i : A.ι) :
     PrimeSpectrum (Localization.Away (A.chart i).chartElt) → PrimeSpectrum BaseLoc :=
   PrimeSpectrum.comap (A.chart i).fibreModel.structMap.toRingHom
 

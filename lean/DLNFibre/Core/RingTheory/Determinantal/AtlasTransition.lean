@@ -23,9 +23,10 @@ element (it belongs with the cover, not the fibre model). The transitions live o
 `D(f) ∩ D(g)`, so a chart must be **paired with its base element**. `Algebra.AtlasChart` is that
 minimal pairing: a base element `chartElt : Base` cutting the chart `D(chartElt)`, and a bare
 `k`-algebra trivialization `trivK : Localization.Away chartElt ≃ₐ[k] M` of the localized chart total
-ring as the fixed model `M`. (`Algebra.AtlasFibreChart` extends it with the over-base
-`StandardFibreChart`, recording the over-base content for the capstone without burdening the
-transition with the over-base scalar-tower cost — the transition consumes only the bare `k` iso.)
+ring as the fixed model `M`. (`Algebra.AtlasFibreChart` fixes `M := BaseLoc ⊗_k Fibre` and extends
+it with the over-base `StandardFibreChart` PLUS the tie `trivK = fibreModel.triv.restrictScalars k`,
+recording the over-base content for the capstone AND making `trivK` the product trivialization — so
+the transitions, which consume only the bare `k` iso, are coherence of the over-base PRODUCT.)
 
 Two base rings are in play and are kept distinct throughout: the GLOBAL base `Base` (where the
 chart elements and the overlap localizations live) and, in `AtlasFibreChart`, the per-chart base
@@ -67,8 +68,15 @@ DIRECTION `BaseLoc` of the fibre model. A chart element is always `: Base`, neve
   naturality (iv) tying the restricted 2-fold to the canonical `tripleTransition`, the commuting
   square exhibiting it as the restriction of the ACTUAL `overlapTransition`, and the cocycle of the
   restricted 2-fold transitions.
-* `Algebra.AtlasFibreChart …` — `AtlasChart` paired with the over-base `StandardFibreChart` (the
-  capstone's per-chart fibre model), with the same `chartElt`.
+* `Algebra.AtlasFibreChart …` — `AtlasChart` (model FIXED to `BaseLoc ⊗_k Fibre`) paired with the
+  over-base `StandardFibreChart` (the capstone's per-chart fibre model), with the same `chartElt`
+  AND the **product tie** `trivK_eq : trivK = fibreModel.triv.restrictScalars k` (the bare-`k`
+  trivialization the transitions consume IS the over-base product trivialization, scalars
+  forgotten).
+* `Algebra.AtlasFibreChart.overlapTransition_isProduct` — with the tie, the pairwise round-trip of
+  the overlap transitions is coherence of the over-`BaseLoc` PRODUCT presentations (the transitions
+  conjugate through `trivK`, which now IS `fibreModel.triv` `k`-restricted), not of a generic
+  bare-`k` model.
 
 **Scope.** This builds the transition OBJECTS + the cocycle COMPATIBILITIES (the 2-fold round-trip
 `overlapTransition_trans_symm`, P2.c; the triple cocycle `tripleTransition_cocycle`, P2.f — both by
@@ -233,10 +241,12 @@ of the other two elements (not nested `D` then `E`). This symmetry is what makes
 **pairwise-swap-on-a-fixed-triple** cocycle `g_jk ∘ g_ij = g_ik` well-typed: each transition swaps
 the pivot on the fixed triple `{C, D, E}`, so `targetTripleLoc C D E → targetTripleLoc D E C →
 targetTripleLoc E C D → targetTripleLoc C D E` has matching composition targets. (The same symmetry
-is also what would let the further localization of the 2-fold `overlapTransition C D` be compared to
-this triple presentation — the naturality tie — but that comparison is NOT built here: it is roadmap
-R1, see `tripleTransition`'s scope note. The asymmetric nested-`D`-then-`E` presentation makes the
-cocycle's composition targets fail to type.) -/
+is also what lets the further localization of the 2-fold `overlapTransition C D` be compared to this
+triple presentation — the naturality tie — which IS built here, in the P2.g layer below
+(`restrict_overlapTransition_eq_tripleTransition` + `restrictTriple_comp_overlapTransition`); only
+the GLOBAL gluing of the per-chart data into one fibration morphism stays roadmapped (R1). The
+asymmetric nested-`D`-then-`E` presentation makes the cocycle's composition targets fail to
+type.) -/
 
 /-- **The product of the two non-pivot chart elements, localized into the pivot-`C` total ring.**
 `algebraMap Base (Localization.Away C.chartElt) (D.chartElt * E.chartElt)` — the element of the
@@ -639,22 +649,85 @@ end AtlasChart
 
 /-! ## The atlas chart paired with its over-base fibre model -/
 
-/-- **A chart paired with its over-base fibre model.** `AtlasChart` (the chart-element + bare
-`k`-trivialization the transitions consume) extended with the over-base per-chart fibre model
-`Algebra.StandardFibreChart` (the structure map, the `≃ₐ[BaseLoc]` trivialization, and the flatness)
-on the same localized chart total ring `Localization.Away chartElt`. This records the over-base
-content of the chart for the capstone, while keeping the transition decoupled from the over-base
-scalar-tower cost: the transitions read only `AtlasChart`. The two base rings are distinct — `Base`
-is the GLOBAL base (where `chartElt` lives) and `BaseLoc` is the per-chart base DIRECTION of the
-fibre model. -/
+/-- **A chart of a Zariski-locally-trivial affine PRODUCT — the over-base fibre model is the single
+source of truth.** For a base ring `k`, one chart carries just its principal-open base element
+`chartElt : Base` (cutting `D(chartElt)`) and the over-base per-chart fibre model
+`Algebra.StandardFibreChart` (the structure map, the over-base trivialization `triv : Away chartElt
+≃ₐ[BaseLoc] BaseLoc ⊗_k Fibre`, and the flatness) on the localized chart total ring
+`Localization.Away chartElt`. There is NO independent bare-`k` trivialization stored: the
+`AtlasChart` the transitions consume is DERIVED (`toAtlasChart` below), with its `trivK` DEFINED as
+the `k`-restriction of the over-base product `triv`. So the over-base product trivialization is the
+ONLY stored trivialization; the tie `trivK = fibreModel.triv.restrictScalars k` is DEFINITIONAL
+(`rfl`), not a field to discharge and not an invariant that could drift.
+
+The two base rings are distinct — `Base` is the GLOBAL base (where `chartElt` lives) and `BaseLoc`
+is the per-chart base DIRECTION of the fibre model. The model `M` of the derived `AtlasChart` is
+FIXED to the over-base product `BaseLoc ⊗_k Fibre`.
+
+**Why this shape (name = content).** The overlap transitions/cocycles are all built from the
+bare-`k` `AtlasChart.trivK`. If `trivK` were a free field alongside `fibreModel.triv`, the cocycles
+would be coherence of a generic bare-`k` `M`-presentation, NOT of the over-`BaseLoc` PRODUCT. By
+deriving `trivK` from `fibreModel.triv`, `trivK` IS the product trivialization (scalars forgotten),
+so those transition theorems ARE the change-of-coordinates between the over-base product
+presentations (`AtlasFibreChart.overlapTransition_isProduct` below). -/
 structure AtlasFibreChart (k : Type u) [CommRing k]
     (Base : Type u) [CommRing Base] [Algebra k Base]
-    (M : Type u) [CommRing M] [Algebra k M]
     (BaseLoc : Type u) [CommRing BaseLoc] [Algebra k BaseLoc]
-    (Fibre : Type u) [CommRing Fibre] [Algebra k Fibre]
-    extends AtlasChart k Base M where
-  /-- The over-base per-chart fibre model on the localized chart total ring `Away chartElt`. -/
+    (Fibre : Type u) [CommRing Fibre] [Algebra k Fibre] where
+  /-- The principal-open base element cutting the chart `D(chartElt)` of the global base `Base`. -/
+  chartElt : Base
+  /-- The over-base per-chart fibre model on the localized chart total ring `Away chartElt` — the
+  SINGLE stored trivialization (the bare-`k` `AtlasChart.trivK` is derived from its `triv`). -/
   fibreModel :
-    Algebra.StandardFibreChart k (Localization.Away toAtlasChart.chartElt) BaseLoc Fibre
+    Algebra.StandardFibreChart k (Localization.Away chartElt) BaseLoc Fibre
+
+namespace AtlasFibreChart
+
+variable {k : Type u} [CommRing k]
+  {Base : Type u} [CommRing Base] [Algebra k Base]
+  {BaseLoc : Type u} [CommRing BaseLoc] [Algebra k BaseLoc]
+  {Fibre : Type u} [CommRing Fibre] [Algebra k Fibre]
+
+/-- **The derived bare-`k` atlas chart the transitions consume.** The `AtlasChart k Base
+(BaseLoc ⊗_k Fibre)` with the same `chartElt` and `trivK := fibreModel.triv.restrictScalars k` — the
+over-base product trivialization with scalars forgotten from `BaseLoc` to `k`. This is a `def`, not
+an inherited subobject: `trivK` is DEFINED from `fibreModel`, so the product tie is definitional and
+there is no redundant stored trivialization. The `restrictScalars k` typechecks because
+`structMap : BaseLoc →ₐ[k] Away chartElt` gives `IsScalarTower k BaseLoc (Away chartElt)`
+(`IsScalarTower.of_algHom`, reintroduced by the `letI`), plus the standard tower on
+`BaseLoc ⊗_k Fibre`. -/
+noncomputable def toAtlasChart (C : AtlasFibreChart k Base BaseLoc Fibre) :
+    AtlasChart k Base (BaseLoc ⊗[k] Fibre) where
+  chartElt := C.chartElt
+  trivK :=
+    letI := C.fibreModel.structMap.toRingHom.toAlgebra
+    C.fibreModel.triv.restrictScalars k
+
+@[simp] theorem toAtlasChart_chartElt (C : AtlasFibreChart k Base BaseLoc Fibre) :
+    C.toAtlasChart.chartElt = C.chartElt := rfl
+
+/-- **The product tie (definitional).** The derived bare-`k` trivialization `toAtlasChart.trivK` IS
+the over-base product trivialization `fibreModel.triv`, scalars restricted from `BaseLoc` to `k`.
+This holds by `rfl` — `trivK` is DEFINED that way — recording at the API level that the transitions
+consume exactly the product trivialization. -/
+theorem trivK_eq_product (C : AtlasFibreChart k Base BaseLoc Fibre) :
+    letI := C.fibreModel.structMap.toRingHom.toAlgebra
+    C.toAtlasChart.trivK = C.fibreModel.triv.restrictScalars k :=
+  rfl
+
+/-- **The overlap transition is coherence of the over-base PRODUCT presentation.** For two charts
+`C, D`, the pairwise round-trip of the target-side overlap transitions is the identity — and, since
+the transitions conjugate through `trivK = fibreModel.triv.restrictScalars k` (the product tie,
+`rfl`), this is coherence of the presentations obtained from the over-`BaseLoc` PRODUCT
+trivializations `fibreModel.triv` (`k`-restricted), not of a generic bare-`k` model. This is
+`AtlasChart.overlapTransition_trans_symm` on the derived charts, re-surfaced to record the product
+interpretation the definitional tie licenses. -/
+theorem overlapTransition_isProduct (C D : AtlasFibreChart k Base BaseLoc Fibre) :
+    (C.toAtlasChart.overlapTransition D.toAtlasChart).trans
+        (D.toAtlasChart.overlapTransition C.toAtlasChart)
+      = AlgEquiv.refl (R := k) :=
+  AtlasChart.overlapTransition_trans_symm C.toAtlasChart D.toAtlasChart
+
+end AtlasFibreChart
 
 end Algebra

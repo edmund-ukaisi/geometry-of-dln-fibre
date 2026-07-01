@@ -19,22 +19,25 @@ the rank-`= r` open `rankROpen ⊆ Spec (sweepSigmaRing)`.
 
 `reducedFibre_isZariskiLocallyTrivialAffineProduct d r hp hq :
   Algebra.IsZariskiLocallyTrivialAffineProduct k (sweepSigmaRing k d r)
-    (SchurLoc ⊗_k sweepFibreRing) SchurLoc (sweepFibreRing) (rankROpen d r)`
+    SchurLoc (sweepFibreRing) (rankROpen d r)`
+(the model is FIXED inside `AtlasFibreChart` to `SchurLoc ⊗_k sweepFibreRing`; no `M` parameter)
 
 with:
 
 * `ι := PivotDatum d r hp hq` (the pivot charts);
-* `chart I :=` the `Algebra.AtlasFibreChart` built from the DLN pivot chart — `toAtlasChart :=
-  pivotAtlasChart I` (chart element `pivotElt I = chartDsigAt I.s I.t`, bare-`k` trivialization the
-  gauge-transported tensor package) and `fibreModel := standardFibreChartOfPivot I` (the over-base
-  `≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` + flatness);
+* `chart I :=` the `Algebra.AtlasFibreChart` built from the DLN pivot chart — chart element
+  `chartElt := pivotElt I = chartDsigAt I.s I.t` and `fibreModel := standardFibreChartOfPivot I`
+  (the over-base `≃ₐ[SchurLoc] SchurLoc ⊗_k sweepFibreRing` + flatness), the SINGLE stored
+  trivialization; the bare-`k` `toAtlasChart.trivK` is DERIVED as `fibreModel.triv.restrictScalars
+  k` (definitionally the gauge-transported tensor package, scalars forgotten), so the transitions
+  consume exactly the over-base product trivialization;
 * `cover :=` the `PivotDatum`-indexed scheme open-cover `iUnion_pivotDatum_basicOpen_eq_rankROpen`
   (the per-pivot charts cover exactly `rankROpen`; the `PivotDatum`-indexed companion of the banked
   selector-indexed `iSup_pivot_basicOpen_eq_rankROpen`).
 
 `pivotElt I = chartDsigAt I.s I.t` definitionally, so the `fibreModel`'s `Total = Away (pivotElt I)`
 is the `Away (chartDsigAt I.s I.t)` of `standardFibreChartOfPivot` — the over-base datum slots into
-the `AtlasFibreChart` over `pivotAtlasChart`'s chart element with no coercion.
+the `AtlasFibreChart` at the chart element with no coercion.
 
 ## Inhabitation / satisfiability
 
@@ -57,11 +60,13 @@ no chart). The cover hypothesis is `(⋃ I, D((chart I).chartElt)) = rankROpen`,
 The abstract predicate is the bespoke **Zariski** local-triviality of an affine product — NOT a
 Mathlib `FiberBundle` (which is topological: `[TopologicalSpace B]` + local *homeomorphic*
 trivializations; there is no algebraic / Zariski local-triviality class at this pin). It packages
-the per-chart over-base product + the principal-open cover; the cocycle compatibility holds
-automatically (P2.c) and is the derived
-`Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`. A single GLOBAL
-`Flat π` / triple-overlap coherence + local-to-global flatness assembly stays roadmapped (see
-`Core.FibreBundleHeadline`).
+the per-chart over-base product + the principal-open cover; the cocycle compatibilities hold
+automatically and are derived properties — the pairwise round-trip
+`Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm` (P2.c), the canonical
+triple cocycle `tripleTransition_cocycle` (P2.f), and the naturality tie + restricted-2-fold cocycle
+(P2.g). Only the GLOBAL gluing of the per-chart data into one fibration morphism (`Flat π`) +
+local-to-global flatness assembly stays roadmapped (R1; see `Core.FibreBundleHeadline`) — NOT the
+local triple-overlap coherence, which is landed.
 
 **Dependency rule:** `Core` only — never import `DLNFibre.DLN`.
 -/
@@ -77,18 +82,20 @@ variable {k : Type} [Field k] [Infinite k] {N : ℕ}
 
 /-- **The DLN pivot chart as an abstract `Algebra.AtlasFibreChart` (P2.d).** At a pivot `I`, the
 abstract chart over the global base `sweepSigmaRing` with standard fibre model `SchurLoc ⊗_k
-sweepFibreRing`: its `toAtlasChart` is `pivotAtlasChart I` (chart element `pivotElt I = chartDsigAt
-I.s I.t`, bare-`k` trivialization the gauge-transported tensor package), and its over-base
-`fibreModel` is `standardFibreChartOfPivot I` (the `≃ₐ[SchurLoc]` local product +
-`SchurLoc`-flatness). The `fibreModel`'s `Total = Away (pivotElt I)` is `Away (chartDsigAt I.s I.t)`
-definitionally, so the S4b over-base datum slots in with no coercion. -/
+sweepFibreRing`: chart element `chartElt := pivotElt I = chartDsigAt I.s I.t`, and over-base
+`fibreModel := standardFibreChartOfPivot I` (the `≃ₐ[SchurLoc]` local product +
+`SchurLoc`-flatness), the SINGLE stored trivialization. The derived
+`toAtlasChart.trivK = fibreModel.triv.restrictScalars k` is the gauge-transported tensor package
+with scalars forgotten (`chartDsigAt_schurLocTensorEquiv` is
+`AlgEquiv.ofRingEquiv chartDsigAt_tensorEquiv.toRingEquiv`, so the tie is `rfl`). The `fibreModel`'s
+`Total = Away (pivotElt I)` is `Away (chartDsigAt I.s I.t)` definitionally, so the S4b over-base
+datum slots in with no coercion. -/
 noncomputable def pivotAtlasFibreChart (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) (I : PivotDatum d r hp hq) :
     Algebra.AtlasFibreChart k (sweepSigmaRing k d r)
-      (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq)
       (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
       (sweepFibreRing k d r hp hq) where
-  toAtlasChart := pivotAtlasChart d r hp hq I
+  chartElt := pivotElt d r hp hq I
   fibreModel := standardFibreChartOfPivot d r hp hq I
 
 /-! ## The pivot-indexed scheme cover -/
@@ -141,15 +148,14 @@ false (the rank-`< r` boundary lies in no chart). -/
 noncomputable def reducedFibre_isZariskiLocallyTrivialAffineProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     Algebra.IsZariskiLocallyTrivialAffineProduct k (sweepSigmaRing k d r)
-      (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r ⊗[k] sweepFibreRing k d r hp hq)
       (SchurLoc (k := k) (d 0) (d (Fin.last (N + 1))) r)
       (sweepFibreRing k d r hp hq)
       (rankROpen (k := k) d r) where
   ι := PivotDatum d r hp hq
   chart I := pivotAtlasFibreChart d r hp hq I
   cover := by
-    -- `(chart I).chartElt = (pivotAtlasChart I).chartElt = pivotElt I = chartDsigAt I.s I.t`.
-    simpa only [pivotAtlasFibreChart, pivotAtlasChart_chartElt, pivotElt]
+    -- `(chart I).chartElt = (pivotAtlasFibreChart I).chartElt = pivotElt I = chartDsigAt I.s I.t`.
+    simpa only [pivotAtlasFibreChart, pivotElt]
       using iUnion_pivotDatum_basicOpen_eq_rankROpen (k := k) d r hp hq
 
 /-! ## Inhabitation witnesses -/
