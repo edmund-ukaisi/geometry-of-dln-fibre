@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, source-image chart-piece bounded-density
+  pullback, 2026-07-01.** Lean now proves the generic chart-piece pullback
+  lemmas
+  `measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity`
+  and
+  `measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`.
+  They show that a restricted external measure identified on a measurable
+  `chartPiece` as a bounded-density perturbation of
+  `Measure.map sourceChart (thetaReference.restrict V)` pulls back under
+  `readback` to a measure dominated by the same scalar multiple of
+  `thetaReference.restrict V`.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-bounded-density-pullback.md`,
+  `threads/03-block-product-reduction/statement-card-a2-source-image-chart-piece-bounded-density-pullback.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-source-image-chart-piece-bounded-density-pullback.md`.
+  Nonclaims: no original/source prior density identity, no source-image
+  coverage, no source-rank coverage, no Haar transport, no Jacobian formula,
+  no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, p.13 source-image finite-integral internal
   readback, 2026-07-01.** The source-image reference and bounded-density
   finite-integral wrappers in

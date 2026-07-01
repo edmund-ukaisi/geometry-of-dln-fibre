@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, source-image chart-piece bounded-density pullback
+
+Lean now proves generic chart-piece versions of the source-image
+bounded-density readback pullback:
+
+```text
+measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity
+
+measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+For a measurable `chartPiece`, if
+
+```text
+externalMeasure.restrict chartPiece =
+  ((Measure.map sourceChart (thetaReference.restrict V)).withDensity density).restrict chartPiece
+density <= c over (Measure.map sourceChart (thetaReference.restrict V)).restrict chartPiece-a.e.
+```
+
+then
+
+```text
+Measure.map readback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict V.
+```
+
+The second theorem derives the readback a.e.-measurability from
+`ContinuousOn sourceChart V`, `Set.InjOn sourceChart V`, and the pointwise left
+inverse.  This is meant for Aoyagi chart-piece sockets, where the final source
+piece is usually a measurable subset of the local image rather than the whole
+image.
+
+Nonclaims: no original/source prior density identity, no source-image coverage,
+no source-rank coverage, no Haar transport, no Jacobian formula, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 source-image finite-integral internal readback
 
 The concrete source-image finite-integral wrappers no longer ask the final

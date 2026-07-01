@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Source-image Chart-piece Bounded-density Pullback - 2026-07-01
+
+Lean now proves the chart-piece variants of the bounded-density source-image
+readback pullback:
+
+```text
+measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity
+
+measure_map_readback_restrict_piece_le_smul_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+The calculation is local to a measurable source-side piece.  With
+
+```text
+sourceBase := Measure.map sourceChart (thetaReference.restrict V),
+externalMeasure.restrict chartPiece =
+  (sourceBase.withDensity density).restrict chartPiece,
+density <= c  sourceBase.restrict chartPiece-a.e.,
+```
+
+the first theorem proves:
+
+```text
+Measure.map readback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict V.
+```
+
+The proof uses `restrict_withDensity_le_smul_of_ae_le`, maps the resulting
+domination through the already a.e.-measurable `readback`, and rewrites
+`Measure.map readback sourceBase` using the local left inverse.  The
+`_of_continuousOn_injOn` variant obtains readback a.e.-measurability from the
+continuous injective local source chart.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-bounded-density-pullback.md
+threads/03-block-product-reduction/statement-card-a2-source-image-chart-piece-bounded-density-pullback.md
+threads/03-block-product-reduction/review-a2-source-image-chart-piece-bounded-density-pullback.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original/source prior density identity, no source-image coverage,
+no source-rank coverage, no Haar transport, no Jacobian formula, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Source-image Finite-integral Internal Readback - 2026-07-01
 
 The concrete source-image finite-integral wrappers now internalize the final
