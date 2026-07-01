@@ -1094,6 +1094,21 @@ def packRecast (M : Fin (L + 1) → ℕ) (s : Fin L) :
     (finCongr (show M s.castSucc = Wext M s.val by rw [Wext_apply M s.val (by omega)]; rfl))
     (finCongr (show M s.succ = Wext M (s.val + 1) by rw [Wext_apply M (s.val + 1) (by omega)]; rfl))
 
+/-- **Per-layer projection of the chart's fderiv** — `(fderiv BparamsLeafGen y₀ d) s = fderiv
+(BparamsLeafGen · s) y₀ d`. The `Params`-valued fderiv reads componentwise (the eval-at-`s` projection
+CLM commutes through `fderiv`). The general-`L` lift of `RouteMHDtotEihd.BparamsLeaf_fderiv_layer`. -/
+theorem BparamsLeafGen_fderiv_layer (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) (s : Fin L) :
+    (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ d) s
+      = fderiv ℝ (fun y => BparamsLeafGen M ha y s) y₀ d := by
+  have hpi : HasFDerivAt (fun y => BparamsLeafGen M ha y)
+      (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀) y₀ := BparamsLeafGen_hasFDerivAt M ha y₀
+  have hs : HasFDerivAt (fun y => BparamsLeafGen M ha y s)
+      ((ContinuousLinearMap.proj s).comp (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀)) y₀ :=
+    (ContinuousLinearMap.proj (R := ℝ)
+      (φ := fun s : Fin L => Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ) s).hasFDerivAt.comp y₀ hpi
+  rw [hs.fderiv]; rfl
+
 /-- **The FRAME component of `stairProj s' (packStairGen P)`** — reads ONLY layer `s'` of `P` (the
 frame half never touches the off-by-one gather): flatten the KEPT rows of the row-split of the recast
 layer `s'`. -/
