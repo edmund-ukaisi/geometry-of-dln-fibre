@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal-volume source-reference domination,
+  2026-07-01.** Lean now proves two conditional scalar bridges in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`:
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul`
+  and
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure`.
+  These use the already-proved equality `muP13 = c •
+  originalEdgeFamilyVolume.restrict chartPiece` to reduce formal p.13
+  source-reference domination to a supplied domination of the restricted
+  original edge-family volume.  The readback wrapper then composes this with
+  the generic source-reference readback handoff.  Reproduction, statement card,
+  and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-volume-source-reference-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-volume-source-reference-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-volume-source-reference-domination.md`.
+  Nonclaims: no proof of the restricted-volume domination, no source-reference
+  identification, no passive-theta source-image equality, no source coverage,
+  no chart-image equality, no Haar scalar normalization, no normal crossings,
+  pole order, or RLCT extraction.
 - **Current status addendum, p.13 formal source-reference readback handoff,
   2026-07-01.** Lean now proves `readback_aemeasurable_and_map_le_smul_of_le_smul_source_measure` in
   `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and the p.13 wrapper

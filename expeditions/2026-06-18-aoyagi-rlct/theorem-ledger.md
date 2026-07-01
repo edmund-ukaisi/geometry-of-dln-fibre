@@ -12555,3 +12555,33 @@ Nonclaims: no proof of formal p.13 domination by a passive source-image
 measure, no source-reference identification, no source coverage, no chart-image
 equality, no source-rank coverage, no Haar scalar normalization, no normal
 crossings, no pole order, and no RLCT.
+
+
+Latest A2 p.13 formal-volume source-reference domination:
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul`
+and
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-volume-source-reference-domination.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-volume-source-reference-domination.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-formal-volume-source-reference-domination.md`.
+
+Ledger status: the formal p.13 chart-piece source-reference domination is
+reduced to a supplied domination of restricted original edge-family volume on
+the same chart piece.  The readback wrapper also consumes a supplied
+source-reference readback pullback identity.
+
+Focused file elaboration, focused module build, downstream
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` elaboration, `lake env lean
+DLNFibre.lean`, full local `lake build DLNFibre`, `./scripts/sorries`, `git
+diff --check`, direct axiom probes, and xhigh read-only review passed.  The
+direct axiom probes report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference
+identification, no passive-theta source-image equality, no source coverage, no
+chart-image equality, no Haar scalar normalization, no normal crossings, no
+pole order, and no RLCT extraction.

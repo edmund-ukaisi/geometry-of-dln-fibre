@@ -12,6 +12,19 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal-volume source-reference domination
+
+The p.13 formal-product chart-piece domination now reduces one step further:
+if the restricted original edge-family volume on the chart piece is dominated
+by `D • sourceRef`, then the formal p.13 measure is dominated by
+`((c : ENNReal) * D) • sourceRef`, and the readback assumptions follow after
+the supplied source-reference pullback identity.
+
+This remains conditional.  The next mathematical frontier is to prove or
+further localize the restricted-volume domination against a concrete
+source-reference measure, without claiming passive-theta image equality or
+source coverage.
+
 ## Latest controller decision - 2026-07-01, p.13 formal source-reference readback handoff
 
 The formal-product p.13 readback assumptions now reduce to source-reference

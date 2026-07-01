@@ -6,6 +6,48 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal-volume Source-reference Domination - 2026-07-01
+
+Lean now proves the scalar bridge from the existing p.13 chart-piece measure
+equality to a source-reference domination hypothesis:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure
+```
+
+The calculation is:
+
+```text
+muP13 = c • originalEdgeFamilyVolume.restrict chartPiece
+originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef
+-------------------------------------------------------------
+muP13 <= ((c : ENNReal) * D) • sourceRef.
+```
+
+The second theorem composes this with the generic readback handoff, requiring
+`AEMeasurable readback sourceRef` and `Measure.map readback sourceRef =
+thetaRef` explicitly.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-volume-source-reference-domination.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-volume-source-reference-domination.md
+threads/03-block-product-reduction/review-a2-p13-formal-volume-source-reference-domination.md
+```
+
+Focused file elaboration, focused module build, downstream
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` elaboration, `lake env lean
+DLNFibre.lean`, full local `lake build DLNFibre`, `./scripts/sorries`, `git
+diff --check`, direct axiom probes, and xhigh read-only review passed.  The
+direct axiom probes report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference
+identification, no passive-theta source-image equality, no source coverage, no
+chart-image equality, no Haar scalar normalization, no normal crossings, no
+pole order, and no RLCT extraction.
+
 ## p.13 Formal Source-reference Readback Handoff - 2026-07-01
 
 Lean now proves the source-reference handoff needed to make the previous
