@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Edge-Family Volume Haar Normalization - 2026-07-01
+
+Lean now proves that fixed-basis original edge-family volume is a full-space
+additive Haar measure:
+
+```text
+edgeFamilyMatrixTupleLinearEquiv
+edgeFamilyMatrixTupleLinearEquiv_apply
+edgeFamilyMatrixTupleLinearEquiv_symm_apply
+edgeFamilyMatrixTupleContinuousLinearEquiv
+isAddHaarMeasure_originalEdgeFamilyVolume
+originalEdgeFamilyVolume_eq_addHaarScalarFactor_smul
+originalEdgeFamilyVolume_addHaarScalarFactor_pos
+originalEdgeFamilyVolume_addHaarScalarFactor_coe_lt_top
+```
+
+The key mathematical point is that the existing fixed-basis matrix readout
+`edgeFamilyMatrixTuple b` and reconstruction `tupleToEdgeFamily b` are not
+just measurable inverses. They form a continuous linear equivalence between
+the full continuous edge-family space and the original matrix tuple space.
+Pushing `originalTupleVolume d` through the inverse continuous linear
+equivalence gives `originalEdgeFamilyVolume b`, hence it is Haar. Mathlib Haar
+uniqueness then compares it to any other full-space additive Haar measure by
+the positive scalar
+`(originalEdgeFamilyVolume b).addHaarScalarFactor ν`, and the ENNReal coercion
+of that scalar is finite.
+
+This deliberately stops at full-space Haar normalization.  Retained-passive
+raw-order chart measures such as `m.restrict T` or
+`Measure.map sourceChart (m.restrict T)` are restricted/pushed measures, not
+Haar measures.  They need separate support, map, restriction, and Jacobian
+bookkeeping after any full-space scalar comparison is in place.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-edge-family-volume-haar-normalization.md
+threads/03-block-product-reduction/statement-card-a2-original-edge-family-volume-haar-normalization.md
+threads/03-block-product-reduction/review-a2-original-edge-family-volume-haar-normalization.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyPriorHaar.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPriorHaar
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_edge_family_prior_haar_axioms.lean
+```
+
+The axiom probe reports only `[propext, Classical.choice, Quot.sound]`.
+Review: xhigh `Lagrange the 2nd` PASS with no findings. Nonclaims: no
+retained-passive or selected-entry source-image measure equality, no
+chart-piece equality, no readback domination, no determinant-chart Haar
+transport, no Aoyagi chart Haar/Jacobian transport, no source-rank coverage,
+no normal crossings, pole order, or RLCT extraction.
+
 ## Original Tuple Volume Haar Normalization - 2026-06-30
 
 Lean now proves that the original coordinate volume objects are genuine

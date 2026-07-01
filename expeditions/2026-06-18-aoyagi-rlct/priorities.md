@@ -12,6 +12,33 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, original edge-family volume Haar normalization
+
+The expedition now has full-space Haar normalization for the fixed-basis
+original edge-family volume:
+
+```text
+edgeFamilyMatrixTupleLinearEquiv
+edgeFamilyMatrixTupleContinuousLinearEquiv
+isAddHaarMeasure_originalEdgeFamilyVolume
+originalEdgeFamilyVolume_eq_addHaarScalarFactor_smul
+originalEdgeFamilyVolume_addHaarScalarFactor_pos
+originalEdgeFamilyVolume_addHaarScalarFactor_coe_lt_top
+```
+
+This packages the existing fixed-basis matrix readout and reconstruction maps
+as a continuous linear equivalence between continuous edge families and the
+original matrix tuple space.  Since `originalTupleVolume d` is Haar,
+`originalEdgeFamilyVolume b` is Haar on the full edge-family space.  Any other
+full-space additive Haar measure differs by a positive scalar whose ENNReal
+coercion is finite.
+
+The next retained-passive measure frontier should use this only at full-space
+Haar level.  Restricted determinant-chart/source-chart measures are not Haar;
+after obtaining a full-space scalar comparison, restriction and chart
+pushforward must be handled by separate support, map, or Jacobian theorems.
+Do not claim scalar `1` without an additional normalization theorem.
+
 ## Latest controller decision - 2026-06-30, original tuple volume Haar normalization
 
 The expedition now has the original coordinate Haar-normalization facts:
