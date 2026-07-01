@@ -887,6 +887,195 @@ theorem stairMap_eq_of_lowerTriDiag (V : ℕ → Type) [∀ k, AddCommGroup (V k
         rw [etail, add_comm]
         rfl
 
+/-! ## The `stairProj` ↔ `piToStair` readback + the `DtotGen` chain-rule bridge
+
+The foundation the per-slot block facts (`eihd_hD_gen`) stand on: (i) `stairProj_piToStair` reads the
+`piToStair`-collected value slotwise; (ii) `BparamsLeafGen_hasFDerivAt` gives the chart its fderiv
+(the per-layer differentiability rebuilt in-closure, since the Hmap analogue is downstream); (iii)
+`eihdT_gen_eq_packStairGen_fderiv` expresses `T = eihdOutGen ∘ DtotGen ∘ eInGen.symm` as
+`packStairGen ∘ (fderiv BparamsLeafGen) ∘ eInGen.symm` — the general-`L` lift of the `L = 2`
+`eihdT_free_eq_packStair_fderiv`. -/
+
+/-- `stairProj` reads back the `piToStair`-collected value: `stairProj V n s (piToStair V n f) = f s`
+for `s : Fin n`. Recursion on `n` mirroring `piToStair`. -/
+theorem stairProj_piToStair (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (f : (k : Fin n) → V k.val) (s : Fin n),
+      stairProj V n s.val (piToStair V n f) = f s
+  | 0, _, s => s.elim0
+  | (n + 1), f, s => by
+      refine Fin.cases ?_ ?_ s
+      · show stairProj V (n + 1) 0 (piToStair V (n + 1) f) = f 0
+        rfl
+      · intro i
+        show stairProj V (n + 1) (i.val + 1) (piToStair V (n + 1) f) = f i.succ
+        show (stairProj (fun k => V (k + 1)) n i.val)
+            ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) (piToStair V (n + 1) f))
+          = f i.succ
+        have hsnd : (LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) (piToStair V (n + 1) f)
+            = piToStair (fun k => V (k + 1)) n (fun j => f j.succ) := rfl
+        rw [hsnd, stairProj_piToStair (fun k => V (k + 1)) n (fun j => f j.succ) i]
+
+/-- `rfinDirectGen` is a matrix of coordinate reads, hence differentiable (in-closure copy of the Hmap
+`diffAt_rfinDirectGen`, which is downstream of this module). -/
+theorem diffAt_rfinDirectGen' (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (u : Fin (routeMAmbient M) → ℝ) :
+    DifferentiableAt ℝ (fun y => rfinDirectGen M ha y) u := by
+  apply differentiableAt_pi.mpr; intro i; apply differentiableAt_pi.mpr; intro j
+  unfold rfinDirectGen; exact differentiableAt_apply _ u
+
+/-- `Cgen` of the `genBlkFlatLive` decoder is differentiable at each `k` (in-closure rebuild of the
+Hmap `diffAt_Cgen_liveGen`, which is downstream of this module). The interior blocks are the dead
+structured readers (`genBlkFlatStruct`); the leaf is `rfinDirectGen`. -/
+theorem diffAt_Cgen_liveGen' (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (u : Fin (routeMAmbient M) → ℝ) (k : ℕ) :
+    DifferentiableAt ℝ
+      (fun y => Cgen (1 : ℝ) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k) u := by
+  by_cases hk : k < L
+  · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Bmat k
+            * chainQ (genWidthEq M (tach M) (hleStruct M (tach M) ha) k hk)
+              ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk k)
+            + (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rmat k from by
+      funext y; rw [Cgen, dif_pos hk]]
+    refine (DifferentiableAt.matMul ?_ (diffAt_chainQ _ _ u ?_)).add
+      (DifferentiableAt.const_smul ?_ (1 : ℝ))
+    · match k with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < L
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Bmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]
+          exact diffAt_bmatStack M (tach M) (j + 1) (ha.hdesc j hj) _ _ u
+            (diffAt_readK M (tach M) ha ⟨j, hj⟩ u) (diffAt_readX M (tach M) ha ⟨j, hj⟩ u)
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Bmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match k with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < L
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]; exact diffAt_readN M (tach M) ha ⟨j, hj⟩ u
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match k with
+      | 0 =>
+        show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat 0) u
+        exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < L
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]
+          exact diffAt_rmatPad M (tach M) (j + 1) (ha.hdesc j hj) (ha.hub j) _ u
+            (diffAt_readE M (tach M) ha ⟨j, hj⟩ u)
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+  · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k from by
+      funext y; rw [Cgen, dif_neg hk]]
+    refine DifferentiableAt.const_smul ?_ (1 : ℝ)
+    by_cases hkL : k = L
+    · subst hkL
+      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k)
+          = fun y => rfinDirectGen M ha y from by funext y; simp [genBlkFlatLive]]
+      exact diffAt_rfinDirectGen' M ha u
+    · rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k)
+          = fun _ => 0 from by funext y; simp only [genBlkFlatLive, dif_neg hkL]]
+      exact differentiableAt_const _
+
+/-- The per-layer differentiability of `BparamsLeafGen`'s chain (in-closure rebuild of the Hmap
+`diffAt_Agen_liveGen`, downstream of this module). Interior layers are `chainA (Nblk s)(Wblk s)
+(Cgen(s+1))` with `Nblk`/`Wblk` the dead structured readers and `Cgen(s+1)` differentiable. -/
+theorem diffAt_Agen_liveGen' (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (u : Fin (routeMAmbient M) → ℝ) (s : ℕ) :
+    DifferentiableAt ℝ
+      (fun y => Agen (1 : ℝ) M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s) u := by
+  by_cases hs : s < L
+  · rw [show (fun y => Agen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s)
+        = fun y => chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) s hs)
+            ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s)
+            ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s)
+            (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+              (hleStruct M (tach M) ha) (s + 1)) from by funext y; rw [Agen, dif_pos hs]]
+    refine diffAt_chainA _ _ _ _ u ?_ ?_ (diffAt_Cgen_liveGen' M ha u (s + 1))
+    · match s with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < L
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_pos hj]; exact diffAt_readN M (tach M) ha ⟨j, hj⟩ u
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+    · match s with
+      | 0 => exact differentiableAt_const _
+      | (j + 1) =>
+        by_cases hj : j < L
+        · by_cases hj2 : j + 1 < L
+          · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+            simp only [genBlkFlatStruct, dif_pos hj, dif_pos hj2]
+            exact diffAt_readW M (tach M) ha ⟨j, hj⟩ hj2 u
+          · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+            simp only [genBlkFlatStruct, dif_pos hj, dif_neg hj2]; exact differentiableAt_const _
+        · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
+          simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+  · rw [show (fun y => Agen (1 : ℝ) M (tach M)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s)
+        = fun _ => 0 from by funext y; rw [Agen, dif_neg hs]]
+    exact differentiableAt_const _
+
+/-- `BparamsLeafGen` has its fderiv (polynomial chain, radial `1`) — per-layer via `diffAt_Agen_liveGen'`
++ the `reindex` transport. -/
+theorem BparamsLeafGen_hasFDerivAt (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun y => BparamsLeafGen M ha y)
+      (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀) y₀ := by
+  have hchart : DifferentiableAt ℝ (fun y => BparamsLeafGen M ha y) y₀ := by
+    apply differentiableAt_pi.mpr
+    intro s
+    exact diffAt_reindex_finCongr _ _ _ y₀ (diffAt_Agen_liveGen' M ha y₀ s.val)
+  exact hchart.hasFDerivAt
+
+/-- **The chain-rule bridge for `DtotGen`**: `DtotGen y₀ w = paramsEquivFlatCLE (fderiv BparamsLeafGen
+y₀ w)`. `BchartLeafGen = paramsEquivFlat ∘ BparamsLeafGen`, `paramsEquivFlat` linear (a CLE); the chain
+rule factors the Jacobian. Uses `HasFDerivAt.unique` (NOT `.fderiv`, the opaque-width `ContinuousAdd`
+synthesis trap). -/
+theorem DtotGen_apply (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ w : Fin (routeMAmbient M) → ℝ) :
+    DtotGen M ha y₀ w = paramsEquivFlatCLE M (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ w) := by
+  show (fderiv ℝ (fun y => BchartLeafGen M ha y) y₀ : _ →L[ℝ] _) w = _
+  have hcomp : HasFDerivAt (fun y => BchartLeafGen M ha y)
+      ((paramsEquivFlatCLE M).toContinuousLinearMap.comp
+        (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀)) y₀ :=
+    (hasFDerivAt_paramsEquivFlat M (BparamsLeafGen M ha y₀)).comp y₀
+      (BparamsLeafGen_hasFDerivAt M ha y₀)
+  have hself : HasFDerivAt (fun y => BchartLeafGen M ha y)
+      (fderiv ℝ (fun y => BchartLeafGen M ha y) y₀) y₀ :=
+    hcomp.differentiableAt.hasFDerivAt
+  rw [hself.unique hcomp]; rfl
+
+/-- **The bridge `T w = packStairGen (fderiv BparamsLeafGen y₀ (eInGen.symm w))`** — the general-`L`
+lift of `RouteMEihdFreePoint.eihdT_free_eq_packStair_fderiv`. The `paramsEquivFlatLinear.symm ∘
+paramsEquivFlatCLE` round-trip cancels, leaving `packStairGen ∘ (fderiv BparamsLeafGen) ∘ eInGen.symm`. -/
+theorem eihdT_gen_eq_packStairGen_fderiv (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (w : StairProd (genV M) L) :
+    ((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+        ∘ₗ DtotGen M ha y₀
+        ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))) w
+      = packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ ((eInGen M ha).symm w)) := by
+  show (eihdOutGen M ha) ((DtotGen M ha y₀) ((eInGen M ha).symm w)) = _
+  rw [DtotGen_apply M ha y₀ ((eInGen M ha).symm w)]
+  show (packStairGen M ha ha.hL) ((paramsEquivFlatLinear M).symm
+      ((paramsEquivFlatCLE M)
+        (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ ((eInGen M ha).symm w)))) = _
+  rw [show ⇑(paramsEquivFlatCLE M) = ⇑(paramsEquivFlatLinear M) from by
+        rw [paramsEquivFlatCLE_coe, paramsEquivFlatLinear_coe]]
+  rw [(paramsEquivFlatLinear M).symm_apply_apply]
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
