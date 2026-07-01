@@ -4,7 +4,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenBase
 # `RouteMInteriorLiveGenPbo` — the general-`L` `pivotBlowupOn`-fixing K-reader
 
 The general-`L` lift of `RouteMLeafBData.readK_pbo` (boundary-`0`-only) and
-`RouteMInteriorLiveContract.readK_pbo_all` (`Fin 2`-pinned): `readK (pbo x) k = readK x k` at EVERY
+`RouteMInteriorLiveContract.readK_pbo_allGen` (`Fin 2`-pinned): `readK (pbo x) k = readK x k` at EVERY
 boundary `k : Fin L`, where `pbo = pivotBlowupOn (activeMGen M ha) (leafPivot M ha …)`.
 
 `pivotBlowupOn active p x q = if q = p then x p else if q ∈ active then x p · x q else x q`. So `pbo`
@@ -19,7 +19,7 @@ never in `activeMGen` nor `= leafPivot`, and `pbo` fixes it.
 * `readK_slot_notMem_activeImgGen` — the K-slot at boundary `k` is `∉ activeImgGen k'` for every `k'`.
 * `readK_slot_notMem_activeMGen` — hence `∉ activeMGen`.
 * `readK_slot_ne_leafPivot` — the K-slot is `≠ leafPivot`.
-* `readK_pbo_all` — `readK (pbo x) k = readK x k` ∀`k : Fin L`.
+* `readK_pbo_allGen` — `readK (pbo x) k = readK x k` ∀`k : Fin L`.
 
 Axiom-clean `[propext, Classical.choice, Quot.sound]` (finite equivalences; no analysis).
 -/
@@ -108,9 +108,9 @@ theorem readKslot_ne_leafPivot (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
     rw [hk2]; exact Text_Lsucc_eq_zero M hL
   have := i.isLt; omega
 
-/-- **`readK (pbo x) k = readK x k` at EVERY boundary `k : Fin L`** — the general-`L` `readK_pbo_all`.
+/-- **`readK (pbo x) k = readK x k` at EVERY boundary `k : Fin L`** — the general-`L` `readK_pbo_allGen`.
 The K-slot is `≠ leafPivot` and `∉ activeMGen`, so `pivotBlowupOn` fixes it. -/
-theorem readK_pbo_all (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+theorem readK_pbo_allGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
     (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (x : Fin (routeMAmbient M) → ℝ)
     (k : Fin L) (i j : Fin (Text M (tach M) (k.val + 2))) :
     readK M (tach M) ha

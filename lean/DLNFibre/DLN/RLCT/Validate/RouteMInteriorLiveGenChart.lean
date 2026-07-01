@@ -413,7 +413,7 @@ theorem kLDU_eq_on_activeMGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach 
 /-- **The kLDU / pivotBlowupOn commute at general `L`** — `pivotBlowupOn activeMGen leafPivot (kLDU x)
 = kLDU (pivotBlowupOn activeMGen leafPivot x)`. `activeMGen = {E-block ∪ leaf slots}` (NO K-slots),
 `kLDU` touches ONLY K-slots, so the two maps act on disjoint coordinate sets. The funext casework: a
-K-branch `q` lands in the kLDU K-arm on both sides (`kLens(readK · k)`, equal by `readK_pbo_all`), and
+K-branch `q` lands in the kLDU K-arm on both sides (`kLens(readK · k)`, equal by `readK_pbo_allGen`), and
 `pbo` fixes it (K ∉ activeMGen); a non-K `q` lands in the kLDU identity arm, where `pbo` and `kLDU`
 commute because the pivot + activeMGen slots `pbo` scales are all kLDU-fixed (`kLDU_eq_on_activeMGen`).
 The general-`L` lift of `RouteMInteriorLiveContract.interiorLive_commute`. -/
@@ -434,7 +434,7 @@ theorem interiorLive_commuteGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
           kLDU_eq_on_activeMGen M ha x hact, kLDU_leafPivotGen M ha hL h0r h0c x,
           kLDU_eq_on_activeMGen M ha (pivotBlowupOn (activeMGen M ha) p₀ x) hact,
           pivotBlowupOn, if_neg hpiv, if_pos hact]
-    · -- spectator: both kLDU calls land in the same arm; K-arm equal by `readK_pbo_all`, identity
+    · -- spectator: both kLDU calls land in the same arm; K-arm equal by `readK_pbo_allGen`, identity
       -- arm by `pbo` fixing the slot (`q ∉ activeMGen`, `q ≠ p₀`).
       rw [pivotBlowupOn, if_neg hpiv, if_neg hact, kLDU, kLDU]
       have hpboq : pivotBlowupOn (activeMGen M ha) p₀ x q = x q := by
@@ -443,7 +443,7 @@ theorem interiorLive_commuteGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
       | ⟨k, Sum.inl s⟩ =>
         have hmat : readK M (tach M) ha (pivotBlowupOn (activeMGen M ha) p₀ x) k
             = readK M (tach M) ha x k := by
-          funext a b; exact readK_pbo_all M ha hL h0r h0c x k a b
+          funext a b; exact readK_pbo_allGen M ha hL h0r h0c x k a b
         simp only [hmat, hpboq]
       | ⟨k, Sum.inr s⟩ => simp only [hpboq]
 

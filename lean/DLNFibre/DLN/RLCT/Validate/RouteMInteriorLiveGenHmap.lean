@@ -85,7 +85,7 @@ theorem Cgen_interior_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
     Cgen_live_interior_eq_schurFrameProd M (tach M) ha _ _ (pbo x) s (by omega),
     schurFrameProd_u_to_E M (tach M) (s + 1) _ _ (x p₀)]
   congr 1
-  · funext i j; exact (readK_pbo_all M ha hL h0r h0c x ⟨s, hsL⟩ i j).symm
+  · funext i j; exact (readK_pbo_allGen M ha hL h0r h0c x ⟨s, hsL⟩ i j).symm
   · funext i j; exact (readX_pbo_all M ha hL h0r h0c x ⟨s, hsL⟩ hsne i j).symm
   · funext i j; exact (readN_pbo_all M ha hL h0r h0c x ⟨s, hsL⟩ hsne i j).symm
   · funext i j

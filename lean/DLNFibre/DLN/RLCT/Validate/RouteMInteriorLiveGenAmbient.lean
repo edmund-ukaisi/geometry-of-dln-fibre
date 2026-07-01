@@ -11,7 +11,7 @@ via `Fin.prod_univ_two` + a vacuous leaf `k = 1`). The banked `kLDU_ambient_abs_
   `|det D(kLDU) y| = ∏_{k : Fin L} ∏_i |(matrixSplit (readK y k)).2.1 i|^{2(t_k−1−i)}`.
 
 This module instantiates it at `y = pbo u` and rewrites each per-boundary K-diagonal pivot via
-`readK_pbo_all` (`RouteMInteriorLiveGenPbo`, ∀L: `pbo` fixes every K-slot) into the flat coordinate
+`readK_pbo_allGen` (`RouteMInteriorLiveGenPbo`, ∀L: `pbo` fixes every K-slot) into the flat coordinate
 `u (readKslot k i i)` — the general-`L` diagonal axis. NO `Fin.prod_univ_two`, NO leaf collapse: the
 product runs over ALL boundaries `k : Fin L` (the leaf boundary's factor is the empty product `1`
 automatically, since its K-index type `Fin (Text(L+1)) = Fin 0` is empty — no manual `mul_one`).
@@ -46,7 +46,7 @@ theorem u_diagAxisGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
 /-- **The general-`L` ambient lens det at `pbo u`** — `|det D(kLDU)(pbo u)| =
 ∏_{k : Fin L} ∏_i |u (diagAxisGen k i)|^{2(t_k−1−i)}`. The banked ∀L `kLDU_ambient_abs_det` at
 `y = pbo u`, with each per-boundary K-diagonal pivot `(matrixSplit (readK (pbo u) k)).2.1 i =
-readK (pbo u) k i i = readK u k i i = u (diagAxisGen k i)` (`readK_pbo_all`). No leaf collapse — the
+readK (pbo u) k i i = readK u k i i = u (diagAxisGen k i)` (`readK_pbo_allGen`). No leaf collapse — the
 leaf boundary's K-index type is empty, so its factor is the empty product `1` automatically. -/
 theorem kLDU_ambient_det_pbo_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
     (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (u : Fin (routeMAmbient M) → ℝ) :
@@ -62,7 +62,7 @@ theorem kLDU_ambient_det_pbo_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (ta
         (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) u) k))).2.1 i
       = u (diagAxisGen M ha k i) := by
     rw [u_diagAxisGen M ha u k i]
-    exact readK_pbo_all M ha hL h0r h0c u k i i
+    exact readK_pbo_allGen M ha hL h0r h0c u k i i
   rw [hpiv]
 
 end DLNFibre.DLN.RLCT
