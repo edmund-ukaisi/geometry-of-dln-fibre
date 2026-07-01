@@ -359,6 +359,9 @@ import DLNFibre.Core.RingTheory.Determinantal.Atlas
 -- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this
 -- cocycle is on the AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the
 -- bundle is NOT `locallyTrivial`.
+-- (Now LANDED — per-pivot Schur trivializations (S4b) + target-side cocycle (P2.c/f/g): the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreBundleTransition
 -- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric
 -- fact. C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime
@@ -376,6 +379,9 @@ import DLNFibre.Core.FibreGenericSmoothUncond
 -- the top-left chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial`
 -- — the per-pivot trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it
 -- remain (#123).
+-- (Both now LANDED — per-pivot trivialization (S4b) + target-side cocycle transport (P2.c/f/g): the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreBundleLocallyTrivial
 -- Scope-3 (C2(a) dimension finding + sigma labeling, thread 20): thread-17's bare iso
 -- `sweepFibreRing⧸I ≃ orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure ×
@@ -398,6 +404,9 @@ import DLNFibre.Core.FibreComponentOrbitTransport
 -- the cover (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot
 -- `chartLocalizedAlgEquivAt`). PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the
 -- per-pivot trivializations remains (#133).
+-- (Now LANDED — that per-pivot cocycle transport is the target-side cocycle P2.c/f/g: the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreChartConjugation
 -- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled atlas with PAIRWISE
 -- base-side overlap data over the rank-`=r` open — scheme open-cover
