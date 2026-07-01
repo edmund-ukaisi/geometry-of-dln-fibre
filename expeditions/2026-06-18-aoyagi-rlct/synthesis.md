@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Readback Domination Bridge - 2026-07-01
+
+Lean now proves a conditional readback-domination bridge for locally bounded
+original edge-family priors on supplied p.13 chart pieces:
+
+```text
+measure_le_smul_of_le_smul_of_le_smul
+originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_formalProductAbsDet_map_readback_le_smul
+originalEdgeFamilyPrior_p13ReadbackDominationScalar_lt_top
+```
+
+If the existing p.13 bounded-prior theorem gives
+
+```text
+originalPriorPiece <=
+  (ENNReal.ofReal K * ((c^-1 : NNReal) : ENNReal)) • muP13,
+```
+
+and the caller supplies both `AEMeasurable readback muP13` and
+
+```text
+Measure.map readback muP13 <= Cformal • thetaRef,
+```
+
+then the same readback is a.e.-measurable for `originalPriorPiece` and
+
+```text
+Measure.map readback originalPriorPiece <=
+  ((ENNReal.ofReal K * ((c^-1 : NNReal) : ENNReal)) * Cformal) • thetaRef.
+```
+
+The companion scalar lemma proves this multiplied scalar is finite whenever
+`Cformal < infinity`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-domination.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-domination.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-readback-domination.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh review passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]` for all three public theorem names.
+
+Nonclaims: no proof of readback measurability or formal readback domination,
+no passive-theta source-image equality, no passive-theta image containment in
+the p.13 source set, no full original-prior transport through the p.13 chart,
+no scalar normalization to `1`, no restricted Haar theorem, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Chart-piece Inverse-scalar Measure Bridge - 2026-07-01
 
 Lean now proves the inverse orientation of the p.13 chart-piece measure

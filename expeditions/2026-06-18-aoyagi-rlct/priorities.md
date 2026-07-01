@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior readback bridge
+
+The original-prior source-side p.13 domination now composes with any supplied
+readback domination of the formal-product p.13 chart measure:
+
+```text
+measure_le_smul_of_le_smul_of_le_smul
+originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_formalProductAbsDet_map_readback_le_smul
+originalEdgeFamilyPrior_p13ReadbackDominationScalar_lt_top
+```
+
+This is a conditional handoff into downstream readback sockets.  It assumes
+`AEMeasurable readback muP13` and
+`Measure.map readback muP13 ≤ Cformal • thetaRef`; it does not prove those
+facts.  It also keeps the measurable `chartPiece ⊆ sourceSet` hypothesis and
+the local original-density bound from the upstream bounded-prior theorem.
+
+Nonclaims: no passive-theta source-image equality, no readback/right-inverse
+construction, no p.13 source containment theorem, no original-prior transport
+through a full p.13 parameter chart, no scalar normalization, no restricted
+Haar theorem, no normal crossings, and no RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 chart-piece inverse-scalar bridge
 
 The source-set/chart-piece scalar comparison now has the inverse orientation

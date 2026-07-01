@@ -363,6 +363,24 @@ theorem map_le_smul_map_of_le_smul_aemeasurable
     _ = c • Measure.map f μ := by
       rw [hμ_eq]
 
+/-- Two scalar measure dominations compose by multiplying the scalars. -/
+theorem measure_le_smul_of_le_smul_of_le_smul
+    {α : Type*} [MeasurableSpace α] {μ ν η : Measure α} {c d : ℝ≥0∞}
+    (hμ : μ ≤ c • ν) (hν : ν ≤ d • η) :
+    μ ≤ (c * d) • η := by
+  have hscale : c • ν ≤ c • (d • η) := by
+    refine Measure.le_iff.2 ?_
+    intro s _hs
+    rw [Measure.smul_apply, Measure.smul_apply]
+    exact mul_le_mul_right (hν s) c
+  have hassoc : c • (d • η) = (c * d) • η := by
+    ext s hs
+    simp [Measure.smul_apply, mul_assoc]
+  calc
+    μ ≤ c • ν := hμ
+    _ ≤ c • (d • η) := hscale
+    _ = (c * d) • η := hassoc
+
 /-- If a measure is dominated by a scalar multiple of a restricted measure,
 then it is dominated by the same scalar multiple of the original measure. -/
 theorem measure_le_smul_of_le_smul_restrict

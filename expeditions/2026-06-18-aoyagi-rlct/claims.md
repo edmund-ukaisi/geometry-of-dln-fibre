@@ -140,6 +140,29 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 original-prior readback domination bridge,
+  2026-07-01.** Lean now proves a conditional bridge in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`:
+  if the formal-product p.13 chart measure restricted to a supplied measurable
+  `chartPiece ⊆ sourceSet` is a.e.-measurable under a readback and its
+  readback pushforward is dominated by `Cformal • thetaRef`, then the locally
+  bounded original edge-family prior restricted to the same chart piece has
+  the same readback handoff with scalar
+  `(ENNReal.ofReal K * ((c^-1 : NNReal) : ENNReal)) * Cformal`.  The generic
+  scalar-composition helper is
+  `measure_le_smul_of_le_smul_of_le_smul`; the public p.13 theorems are
+  `originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_formalProductAbsDet_map_readback_le_smul`
+  and `originalEdgeFamilyPrior_p13ReadbackDominationScalar_lt_top`.
+  Reproduction, statement card, and xhigh review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-readback-domination.md`.
+  Nonclaims: no proof of the supplied readback measurability/domination, no
+  passive-theta source-image equality, no p.13 source containment theorem, no
+  full original-prior transport through the p.13 chart, no Haar scalar
+  normalization, no restricted Haar theorem, no normal crossings, pole order,
+  or RLCT extraction.
 - **Current status addendum, full product domination handoff, 2026-06-30.**
   Lean now proves a downstream finite-integral transfer theorem in
   `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImageJacobianBridge.lean`.

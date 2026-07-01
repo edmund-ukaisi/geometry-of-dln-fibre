@@ -912,6 +912,161 @@ theorem originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFix
         ext s
         simp [Measure.smul_apply, mul_assoc]
 
+set_option linter.style.longLine false in
+/-- If the formal-product p.13 chart measure is dominated after a supplied
+readback, then the locally bounded original edge-family prior is dominated
+after the same readback, with the density and inverse Haar scalars multiplied
+in front.
+
+This is a conditional consumer bridge.  It does not prove the readback
+hypothesis, identify the formal p.13 chart measure with a passive-theta source
+image measure, prove p.13 source containment, normalize the Haar scalar,
+construct normal crossings, or extract an RLCT. -/
+theorem originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_formalProductAbsDet_map_readback_le_smul
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    {chartPiece : Set
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)}
+    (hchartPiece : MeasurableSet chartPiece)
+    (hchartPiece_sub :
+      chartPiece ⊆
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W B U₀ hU₀)
+    {density :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) → ℝ}
+    {K : ℝ}
+    (hdensity :
+      ∀ᵐ E ∂(originalEdgeFamilyVolume (V := reverseVertex W)
+        (paperEndpointFixedBaseFinBasis W B U₀ hU₀)).restrict chartPiece,
+        density E ≤ K)
+    {Θ : Type*} [MeasurableSpace Θ]
+    (readback :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) → Θ)
+    {thetaRef : Measure Θ} {Cformal : ℝ≥0∞} :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let d := paperEndpointFixedBaseDim W B U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let sourceChart : TopologyTuple ρ κ' ℝ →
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    let c :=
+      ((Measure.map
+          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+            W B U₀)
+          m).addHaarScalarFactor (originalTupleVolume d))
+    let muP13 :=
+      (Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece
+    let originalPriorPiece :=
+      (originalEdgeFamilyPrior (V := reverseVertex W)
+        (paperEndpointFixedBaseFinBasis W B U₀ hU₀) density).restrict chartPiece
+    AEMeasurable readback muP13 →
+      Measure.map readback muP13 ≤ Cformal • thetaRef →
+        AEMeasurable readback originalPriorPiece ∧
+          Measure.map readback originalPriorPiece ≤
+            ((ENNReal.ofReal K * (((c⁻¹ : NNReal) : ℝ≥0∞))) * Cformal) •
+              thetaRef := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let d := paperEndpointFixedBaseDim W B U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let sourceChart : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+      (K := ℝ) W B U₀ hU₀
+  let c :=
+    ((Measure.map
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W B U₀)
+        m).addHaarScalarFactor (originalTupleVolume d))
+  let muP13 :=
+    (Measure.map
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+      ((m.restrict S).withDensity
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ENNReal.ofReal
+            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece
+  let originalPriorPiece :=
+    (originalEdgeFamilyPrior (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀) density).restrict chartPiece
+  let alpha : ℝ≥0∞ := ENNReal.ofReal K * (((c⁻¹ : NNReal) : ℝ≥0∞))
+  dsimp only
+  intro hreadback_formal hformal_readback_dom
+  have hprior_p13 : originalPriorPiece ≤ alpha • muP13 := by
+    simpa [S, sourceChart, c, muP13, originalPriorPiece, alpha, ρ, κ', d] using
+      originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+        hchartPiece hchartPiece_sub hdensity
+  have hprior_ac : originalPriorPiece ≪ muP13 :=
+    Measure.absolutelyContinuous_of_le_smul hprior_p13
+  have hreadback_prior : AEMeasurable readback originalPriorPiece :=
+    hreadback_formal.mono_ac hprior_ac
+  have hmap_to_formal :
+      Measure.map readback originalPriorPiece ≤
+        alpha • Measure.map readback muP13 :=
+    map_le_smul_map_of_le_smul_aemeasurable hreadback_formal hprior_p13
+  have hdom :
+      Measure.map readback originalPriorPiece ≤
+        (alpha * Cformal) • thetaRef :=
+    measure_le_smul_of_le_smul_of_le_smul hmap_to_formal hformal_readback_dom
+  exact ⟨hreadback_prior, by simpa [alpha] using hdom⟩
+
+/-- The scalar produced by the p.13 original-prior readback domination is
+finite whenever the supplied formal-product readback scalar is finite. -/
+theorem originalEdgeFamilyPrior_p13ReadbackDominationScalar_lt_top
+    {K : ℝ} {c : NNReal} {Cformal : ℝ≥0∞}
+    (hCformal : Cformal < ∞) :
+    (ENNReal.ofReal K * (((c⁻¹ : NNReal) : ℝ≥0∞)) * Cformal) < ∞ := by
+  exact ENNReal.mul_lt_top
+    (ENNReal.mul_lt_top ENNReal.ofReal_lt_top ENNReal.coe_lt_top)
+    hCformal
+
 end P13SourceMeasureBridge
 
 end Aoyagi

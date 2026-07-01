@@ -12468,3 +12468,36 @@ Nonclaims: no source-rank coverage, no full source coverage, no passive-theta
 source-image containment, no original-prior transport through the p.13 chart,
 no restricted Haar theorem, no scalar normalization to `1`, no normal
 crossings, no pole order, and no RLCT.
+
+
+Latest A2 p.13 original-prior readback domination bridge:
+`LocalMeasureHandoff.lean` proves `measure_le_smul_of_le_smul_of_le_smul`.
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_formalProductAbsDet_map_readback_le_smul`
+and `originalEdgeFamilyPrior_p13ReadbackDominationScalar_lt_top`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-domination.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-domination.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-readback-domination.md`.
+
+Ledger status: the existing locally bounded original-prior domination by the
+formal-product p.13 chart measure now composes with a supplied readback-side
+domination of that formal-product measure.  The multiplied scalar is
+`(ENNReal.ofReal K * ((c^-1 : NNReal) : ENNReal)) * Cformal`, and the finite
+scalar helper closes the downstream finite-integral side condition when
+`Cformal < infinity`.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh no-shell review passed.  The direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]` for all three public theorem
+names.
+
+Nonclaims: no proof of readback measurability, no proof of formal readback
+domination, no passive-theta source-image equality, no passive-theta image
+containment in the p.13 source set, no full original-prior transport through
+the p.13 chart, no restricted Haar theorem, no scalar normalization to `1`, no
+normal crossings, no pole order, and no RLCT.
