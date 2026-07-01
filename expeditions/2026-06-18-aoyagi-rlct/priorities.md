@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, raw-order to original matrix tuple bridge
+
+The expedition now has the full-space finite coordinate bridge from raw-order
+retained-passive tuples to original matrix tuples:
+
+```text
+edgeFamilyTupleReindexLinearEquiv
+rawOrderMatrixTuple
+rawOrderMatrixTupleLinearEquiv
+edgeFamilyTupleReindexContinuousLinearEquiv
+rawOrderMatrixTupleContinuousLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq_rawOrderMatrixTuple
+edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq_rawOrderMatrixTuple
+```
+
+This is an ambient linear/continuous-linear equivalence: rebuild raw blocks
+into edge matrices, then reindex each edge matrix into the chosen
+`Fin (d j)` original tuple coordinates.  On the raw-order
+source-recursive determinant chart, the public p.13 raw-order source chart's
+original edge-family coordinate readout agrees with this raw-order tuple
+readout.
+
+The theorem is intentionally not a measure transport theorem.  The next
+measure frontier should be a restricted-pushforward comparison: for the new
+continuous linear equivalence `L` and an ambient raw-coordinate Haar measure
+`m`, compare `Measure.map L (m.restrict rawSourceSet)` with a positive scalar
+multiple of `originalTupleVolume` restricted to `L '' rawSourceSet`, then
+combine with the existing Jacobian-weighted raw chart pushforward.  Do not
+assert that the restricted source/determinant chart measure is Haar.
+
+Verification passed through focused and full local builds, sorry/axiom scan,
+whitespace check, direct axiom probe, and xhigh post-implementation review.
+
 ## Latest controller decision - 2026-07-01, original edge-family volume Haar normalization
 
 The expedition now has full-space Haar normalization for the fixed-basis

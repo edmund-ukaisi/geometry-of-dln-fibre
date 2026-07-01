@@ -6,6 +6,75 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Edge-Family Raw-Order Bridge - 2026-07-01
+
+Lean now proves the full-space raw-order coordinate bridge:
+
+```text
+edgeFamilyTupleReindexLinearEquiv
+edgeFamilyTupleReindexLinearEquiv_apply
+edgeFamilyTupleReindexLinearEquiv_symm_apply
+rawOrderMatrixTuple
+rawOrderMatrixTuple_apply
+rawOrderMatrixTupleLinearEquiv
+rawOrderMatrixTupleLinearEquiv_apply
+continuous_edgeFamilyTupleReindex
+continuous_edgeFamilyTupleReindex_symm
+edgeFamilyTupleReindexContinuousLinearEquiv
+rawOrderMatrixTupleContinuousLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleLinearEquiv_apply
+paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq_rawOrderMatrixTuple
+edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq_rawOrderMatrixTuple
+```
+
+The construction is elementary finite coordinate algebra.  It composes the
+existing raw block/edge-family linear equivalence
+`edgeFamilyRawOrderLinearEquiv` with edgewise finite
+`Matrix.reindex`.  The resulting map reads a raw tuple `y` as
+
+```text
+fun p =>
+  Matrix.reindex (e p.succ) (e p.castSucc)
+    (edgeFamilyOfRawOrderTuple y p)
+```
+
+and is a continuous linear equivalence from the full raw tuple space to the
+original matrix tuple space.  For Aoyagi's p.13 canonical endpoint bases,
+the public raw-order source chart has this original coordinate readout only on
+`topologyTupleRawOrderSourceRecursiveDetChartSet`; this hypothesis is kept in
+the statement because the public chart uses `topologyTupleEdgeRawOrderInverse`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-bridge.md
+threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-bridge.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderBridge
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_raw_order_bridge_axioms.lean
+```
+
+Xhigh pre-review `Hypatia the 2nd` found low overclaim risk and confirmed the
+right next measure target is a restricted-pushforward comparison by a positive
+Haar scalar, not a restricted-measure Haar claim.  Post-implementation review:
+xhigh `Hypatia the 2nd` PASS with no findings.  The axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.  Nonclaims: no retained-passive or
+selected-entry source-image measure equality, no restricted chart Haar
+instance, no chart-piece equality, no readback domination, no Jacobian
+transport, no source-rank coverage, no normal crossings, pole order, or RLCT
+extraction.
+
 ## Original Edge-Family Volume Haar Normalization - 2026-07-01
 
 Lean now proves that fixed-basis original edge-family volume is a full-space

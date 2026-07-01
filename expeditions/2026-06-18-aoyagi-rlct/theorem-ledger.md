@@ -12315,3 +12315,36 @@ Nonclaims: no full inverse/readback to `(theta,u)`, no passive-theta recovery
 from the product chart, no sourceReadback retained-data identity, no
 source-image coverage, no original/source-prior transport, no Haar transport,
 no Jacobian formula, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 original edge-family raw-order bridge:
+`OriginalEdgeFamilyRawOrderBridge.lean` proves
+`rawOrderMatrixTupleLinearEquiv`,
+`rawOrderMatrixTupleContinuousLinearEquiv`,
+`paperEndpointFixedBaseRawOrderMatrixTupleLinearEquiv`,
+`paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv`,
+`edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq_rawOrderMatrixTuple`,
+and
+`edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq_rawOrderMatrixTuple`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-bridge.md`.
+
+Ledger status: ambient finite coordinate bridge from retained-passive raw-order
+tuples to original matrix tuples.  The bridge reassembles raw blocks into edge
+matrices and reindexes rows/columns by finite equivalences into the original
+`Fin (d j)` tuple convention.  The p.13 source-chart readout theorem remains
+restricted to `topologyTupleRawOrderSourceRecursiveDetChartSet`.
+
+Focused file elaboration, focused module build, aggregator elaboration, full
+`DLNFibre` build, `scripts/sorries`, `git diff --check`, direct axiom probe,
+and xhigh reviewer audit passed.  The axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no restricted determinant/source-chart Haar theorem, no comparison
+between `originalEdgeFamilyVolume` and a chart-produced source-image measure,
+no chart-piece equality, no readback domination, no Jacobian formula, no
+normal crossings, no pole order, and no RLCT.

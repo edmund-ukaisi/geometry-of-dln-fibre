@@ -14062,3 +14062,44 @@ compatibility, source production, branch termination, source-prior transport,
 normal crossings, pole order, RLCT, or as identification of `Z-ca` with the
 next residual block without the separate continuing-branch reindexing and size
 hypotheses.
+
+## A2 original edge-family raw-order bridge
+
+Status: Proved in Lean; focused and full verification passed; xhigh review
+passed.
+
+Claim: the full retained-passive raw-order tuple space is linearly and
+continuously linearly equivalent to original matrix tuple coordinates after
+reassembling raw blocks into edge matrices and applying edgewise finite
+row/column reindexing.  In the p.13 canonical endpoint bases, the public
+raw-order source chart has this original edge-family coordinate readout on
+`topologyTupleRawOrderSourceRecursiveDetChartSet`.
+
+Lean theorems:
+
+```text
+edgeFamilyTupleReindexLinearEquiv
+rawOrderMatrixTuple
+rawOrderMatrixTupleLinearEquiv
+edgeFamilyTupleReindexContinuousLinearEquiv
+rawOrderMatrixTupleContinuousLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleLinearEquiv
+paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+edgeFamilyMatrixTuple_p13Basis_reindex_rawOrderSourceChart_eq_rawOrderMatrixTuple
+edgeFamilyMatrixTuple_p13FinBasis_rawOrderSourceChart_eq_rawOrderMatrixTuple
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-bridge.md`.
+
+Review:
+`threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-bridge.md`
+passed by xhigh reviewer `Hypatia the 2nd`.
+
+Kill condition: this claim must not be cited as a theorem that restricted
+determinant-chart or source-chart measures are Haar, nor as a comparison
+between `originalEdgeFamilyVolume` and any chart-produced source-image
+measure.  It is an ambient coordinate equivalence plus a chart-domain
+pointwise readout theorem only.
