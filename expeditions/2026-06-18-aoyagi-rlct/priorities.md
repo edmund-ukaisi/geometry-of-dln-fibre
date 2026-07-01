@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, raw-order restriction to edge-family volume
+
+The next measure step lifts the tuple-side restricted comparison through
+fixed-basis edge-family reconstruction:
+
+```text
+map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_tupleToEdgeFamily_eq_smul_originalEdgeFamilyVolume_restrict_image
+```
+
+For `L := rawOrderMatrixTupleContinuousLinearEquiv e` and
+`T := tupleToEdgeFamily b`, the target statement is:
+
+```text
+Measure.map (fun y => T (rawOrderMatrixTuple e y)) (m.restrict S)
+= c • (originalEdgeFamilyVolume b).restrict
+    ((fun y => T (rawOrderMatrixTuple e y)) '' S),
+```
+
+where `c := (Measure.map L m).addHaarScalarFactor (originalTupleVolume d)`.
+
+This remains a restricted-pushforward scalar comparison.  It does not prove
+source coverage, exact normalization, restricted Haar structure, normal
+crossings, or RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, raw-order restriction to original tuple measure bridge
 
 The expedition now has the restricted-pushforward scalar comparison:

@@ -14135,3 +14135,39 @@ Kill condition: this claim must not be cited as a restricted-Haar theorem, as
 an exact-normalization theorem with scalar `1`, or as a comparison with
 `originalEdgeFamilyVolume` on continuous edge-family space.  It is a
 restricted pushforward of a full-space scalar Haar comparison.
+
+## A2 original edge-family raw-order edge-volume bridge
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh review passed.
+
+Claim: the tuple-side restricted raw-order measure bridge lifts through
+fixed-basis reconstruction `tupleToEdgeFamily b`.  Thus the raw-coordinate
+restricted Haar measure, after `rawOrderMatrixTuple e` and then
+`tupleToEdgeFamily b`, is the corresponding restriction of
+`originalEdgeFamilyVolume b`, multiplied by the same full-space Haar scalar
+comparing `Measure.map (rawOrderMatrixTupleContinuousLinearEquiv e) m` with
+`originalTupleVolume d`.  The formal-product retained-passive COV version
+composes the existing raw-order Jacobian theorem with this edge-family
+readout.
+
+Lean theorems:
+
+```text
+map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_tupleToEdgeFamily_eq_smul_originalEdgeFamilyVolume_restrict_image
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-edge-volume-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-edge-volume-bridge.md`;
+xhigh review in
+`threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-edge-volume-bridge.md`.
+
+Kill condition: this claim must not be cited as source coverage, as a
+restricted-Haar theorem, as a theorem that the scalar is `1`, as a full
+original-source image theorem, or as normal-crossing/RLCT extraction.  It is
+only a restricted-pushforward scalar comparison transported through a
+fixed-basis coordinate equivalence.

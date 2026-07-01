@@ -12375,3 +12375,32 @@ Nonclaims: no restricted determinant/source-chart Haar theorem, no scalar
 normalization to `1`, no comparison with `originalEdgeFamilyVolume` on
 continuous edge-family space, no chart-piece equality, no readback domination,
 no source-rank coverage, no normal crossings, no pole order, and no RLCT.
+
+Latest A2 original edge-family raw-order edge-volume bridge:
+`OriginalEdgeFamilyRawOrderMeasureBridge.lean` now also proves
+`map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image`,
+`map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image`,
+and
+`map_formalProduct_rawOrderMatrixTuple_tupleToEdgeFamily_eq_smul_originalEdgeFamilyVolume_restrict_image`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-edge-volume-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-edge-volume-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-edge-volume-bridge.md`.
+
+Ledger status: the tuple-side restricted raw-order comparison is transported
+through fixed-basis edge-family reconstruction to a restriction of
+`originalEdgeFamilyVolume`, with the same full-space Haar scalar.  The
+formal-product COV version composes the existing raw-order Jacobian theorem
+with this edge-family readout.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh review passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]` for all three public theorems.
+
+Nonclaims: no source coverage, no exact scalar normalization to `1`, no
+restricted chart/source Haar theorem, no full original-source image theorem,
+no normal crossings, no pole order, and no RLCT.

@@ -1,5 +1,5 @@
 import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderBridge
-import DLNFibre.DLN.Aoyagi.OriginalPriorHaar
+import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPriorHaar
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
 
 /-!
@@ -174,6 +174,203 @@ theorem map_formalProduct_rawOrderMatrixTuple_eq_smul_originalTupleVolume_restri
   simpa [L, rawOrderMatrixTupleContinuousLinearEquiv] using hcov.trans hrestrict
 
 end RawOrderMeasureBridge
+
+section RawOrderEdgeFamilyMeasureBridge
+
+variable {M : ℕ}
+variable {ρ : Type*}
+variable {κ' : Fin (M + 2) → Type*}
+variable {d : Fin (M + 2) → ℕ}
+variable {V : Fin (M + 2) → Type*}
+variable [∀ j, AddCommGroup (V j)]
+variable [∀ j, TopologicalSpace (V j)]
+variable [∀ j, IsTopologicalAddGroup (V j)]
+variable [∀ j, T2Space (V j)]
+variable [∀ j, Module ℝ (V j)]
+variable [∀ j, ContinuousSMul ℝ (V j)]
+variable [∀ j, FiniteDimensional ℝ (V j)]
+
+set_option linter.style.longLine false in
+/-- Transporting a restricted original tuple volume through fixed-basis edge
+family reconstruction gives the corresponding restriction of
+`originalEdgeFamilyVolume` to the image.
+
+This is only restriction compatibility for the full-space coordinate
+equivalence between tuple coordinates and fixed-basis continuous edge
+families. -/
+theorem map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    (S : Set (Tuple (k := ℝ) d)) :
+    Measure.map (tupleToEdgeFamily (V := V) b)
+        ((originalTupleVolume d).restrict S) =
+      (originalEdgeFamilyVolume (V := V) b).restrict
+        ((tupleToEdgeFamily (V := V) b) '' S) := by
+  let T : Tuple (k := ℝ) d ≃L[ℝ]
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    (edgeFamilyMatrixTupleContinuousLinearEquiv (V := V) b).symm
+  have hrestrict :=
+    (T.toHomeomorph.toMeasurableEquiv.restrict_map
+      (originalTupleVolume d) (T '' S)).symm
+  have hpre : T ⁻¹' (T '' S) = S :=
+    Set.preimage_image_eq S T.injective
+  have hrestrict' :
+      Measure.map T ((originalTupleVolume d).restrict (T ⁻¹' (T '' S))) =
+        (Measure.map T (originalTupleVolume d)).restrict (T '' S) := by
+    simpa using hrestrict
+  rw [hpre] at hrestrict'
+  simpa [T, originalEdgeFamilyVolume,
+    edgeFamilyMatrixTupleContinuousLinearEquiv, edgeFamilyMatrixTupleLinearEquiv]
+    using hrestrict'
+
+set_option linter.style.longLine false in
+/-- Pushing a restricted raw-coordinate Haar measure through the raw-order
+readout and then reconstructing fixed-basis continuous edge families gives the
+corresponding restriction of `originalEdgeFamilyVolume`, up to the same
+full-space Haar scalar as the tuple-coordinate comparison.
+
+The scalar is not asserted to be `1`, and no restricted source/image measure
+is asserted to be Haar. -/
+theorem map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (e : ∀ j, ρ ⊕ κ' j ≃ Fin (d j))
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    (S : Set (TopologyTuple ρ κ' ℝ)) :
+    Measure.map
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          tupleToEdgeFamily (V := V) b
+            (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e y))
+        (m.restrict S) =
+      ((Measure.map
+          (rawOrderMatrixTupleContinuousLinearEquiv
+            (ρ := ρ) (κ' := κ') (d := d) e)
+          m).addHaarScalarFactor (originalTupleVolume d)) •
+        (originalEdgeFamilyVolume (V := V) b).restrict
+          ((fun y : TopologyTuple ρ κ' ℝ =>
+            tupleToEdgeFamily (V := V) b
+              (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e y)) '' S) := by
+  let L : TopologyTuple ρ κ' ℝ ≃L[ℝ] Tuple (k := ℝ) d :=
+    rawOrderMatrixTupleContinuousLinearEquiv
+      (ρ := ρ) (κ' := κ') (d := d) e
+  let T : Tuple (k := ℝ) d →
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    tupleToEdgeFamily (V := V) b
+  have hraw :=
+    map_rawOrderMatrixTuple_restrict_eq_smul_originalTupleVolume_restrict_image
+      (ρ := ρ) (κ' := κ') (d := d) m e S
+  have htuple :=
+    map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+      (V := V) (d := d) b (L '' S)
+  calc
+    Measure.map
+        (fun y : TopologyTuple ρ κ' ℝ =>
+          tupleToEdgeFamily (V := V) b
+            (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e y))
+        (m.restrict S) =
+        Measure.map T (Measure.map L (m.restrict S)) := by
+          rw [Measure.map_map]
+          · rfl
+          · exact measurable_tupleToEdgeFamily (V := V) b
+          · exact L.continuous.measurable
+    _ =
+        Measure.map T
+          (((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+            (originalTupleVolume d).restrict (L '' S)) := by
+          rw [hraw]
+    _ =
+        ((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+          Measure.map T ((originalTupleVolume d).restrict (L '' S)) := by
+          rw [Measure.map_smul]
+    _ =
+        ((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+          (originalEdgeFamilyVolume (V := V) b).restrict (T '' (L '' S)) := by
+          rw [htuple]
+    _ =
+      ((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+        (originalEdgeFamilyVolume (V := V) b).restrict
+          ((fun y : TopologyTuple ρ κ' ℝ =>
+            tupleToEdgeFamily (V := V) b
+              (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e y)) '' S) := by
+          rw [Set.image_image]
+          rfl
+
+set_option linter.style.longLine false in
+/-- The retained-passive formal-product Jacobian change of variables,
+composed with the raw-order-to-original tuple readout and fixed-basis
+edge-family reconstruction, lands in `originalEdgeFamilyVolume` restricted to
+the raw source image, up to the full-space Haar scalar.
+
+This is still a restricted-pushforward scalar comparison, not a restricted
+Haar theorem and not a scalar normalization theorem. -/
+theorem map_formalProduct_rawOrderMatrixTuple_tupleToEdgeFamily_eq_smul_originalEdgeFamilyVolume_restrict_image
+    [Fintype ρ] [DecidableEq ρ] [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    (e : ∀ j, ρ ⊕ κ' j ≃ Fin (d j))
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    (hs :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) m) :
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          tupleToEdgeFamily (V := V) b
+            (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z)))
+        ((m.restrict
+          (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+      ((Measure.map
+          (rawOrderMatrixTupleContinuousLinearEquiv
+            (ρ := ρ) (κ' := κ') (d := d) e)
+          m).addHaarScalarFactor (originalTupleVolume d)) •
+        (originalEdgeFamilyVolume (V := V) b).restrict
+          ((fun y : TopologyTuple ρ κ' ℝ =>
+            tupleToEdgeFamily (V := V) b
+              (rawOrderMatrixTuple (ρ := ρ) (κ' := κ') (d := d) e y)) ''
+            topologyTupleRawOrderSourceRecursiveDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ')) := by
+  let L : TopologyTuple ρ κ' ℝ ≃L[ℝ] Tuple (k := ℝ) d :=
+    rawOrderMatrixTupleContinuousLinearEquiv
+      (ρ := ρ) (κ' := κ') (d := d) e
+  let ψ : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    fun y ↦ tupleToEdgeFamily (V := V) b (rawOrderMatrixTuple e y)
+  have hψ :
+      AEMeasurable ψ
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ'))) :=
+    ((continuous_tupleToEdgeFamily (V := V) b).comp L.continuous).aemeasurable
+  have hcov :=
+    map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_rawSourceChart
+      (M := M) (ρ := ρ) (κ' := κ')
+      (β := ∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)
+      m ψ hs hψ
+  have hrestrict :=
+    map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image
+      (ρ := ρ) (κ' := κ') (d := d) (V := V) m e b
+      (topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ'))
+  simpa [L, ψ, rawOrderMatrixTupleContinuousLinearEquiv] using
+    hcov.trans hrestrict
+
+end RawOrderEdgeFamilyMeasureBridge
 
 end Aoyagi
 end DLN

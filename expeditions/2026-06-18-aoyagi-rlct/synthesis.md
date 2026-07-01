@@ -6,6 +6,58 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Edge-Family Raw-Order Edge-Volume Bridge - 2026-07-01
+
+Lean now extends the tuple-side restricted measure bridge through fixed-basis
+edge-family reconstruction:
+
+```text
+map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+map_rawOrderMatrixTuple_tupleToEdgeFamily_restrict_eq_smul_originalEdgeFamilyVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_tupleToEdgeFamily_eq_smul_originalEdgeFamilyVolume_restrict_image
+```
+
+The new theorem says that, with
+`L := rawOrderMatrixTupleContinuousLinearEquiv e`,
+`T := tupleToEdgeFamily b`, and
+`c := (Measure.map L m).addHaarScalarFactor (originalTupleVolume d)`,
+
+```text
+Measure.map (fun y => T (rawOrderMatrixTuple e y)) (m.restrict S)
+= c • (originalEdgeFamilyVolume b).restrict
+    ((fun y => T (rawOrderMatrixTuple e y)) '' S).
+```
+
+The formal-product version composes the existing retained-passive raw-order
+COV with `fun y => T (rawOrderMatrixTuple e y)` and then applies the
+restricted edge-family-volume comparison at the raw source-recursive
+determinant chart.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-edge-volume-bridge.md
+threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-edge-volume-bridge.md
+threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-edge-volume-bridge.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+#print axioms on all three public theorems: [propext, Classical.choice, Quot.sound]
+```
+
+Post-implementation xhigh review and full verification passed.  Nonclaims:
+no source coverage, no scalar normalization to `1`, no restricted
+chart/source Haar theorem, no full original-source image theorem, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## Original Edge-Family Raw-Order Measure Bridge - 2026-07-01
 
 Lean now proves the first restricted-pushforward scalar comparison after the
