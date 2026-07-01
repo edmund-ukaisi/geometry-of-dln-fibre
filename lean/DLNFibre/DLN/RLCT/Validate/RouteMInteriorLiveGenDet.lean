@@ -122,6 +122,26 @@ REMAINING (2 sorries — both large, isolated, honest; NEITHER forced green):
 
 The mathematics is confirmed (numerically at `L = 3`, `(2,4,3,2)`, via
 `RouteMSchurStairDet.schurStairMap_abs_det_2432`); the residual is the LEAN CONSTRUCTION.
+
+STATEMENT-LEVEL OBSTRUCTION found during assembly (genm-hdasm, 2026-07-01, Codex `xhigh`-corroborated
++ hand-computed counterexample). The block identity `eihd_hD_gen` AS STATED is NOT provable, because the
+frame flatten conventions of the two sides DISAGREE by a coordinate permutation:
+* `eihdOutGen`'s OUTPUT frame pack flattens the KEPT block row-major via `flatMatLEGen.symm`
+  (`stairProj_packStairGen_fst`, `finProdFinEquiv`: index `finProdFinEquiv (i,j) = j + b·i` ↦ entry `(i,j)`);
+* `genF`'s frame block conjugates by `frameToSchurIncGen` — role-order (`frameSplitEquiv`: `K,X,N,E`
+  contiguous via `roleSquare_eq`), then `flatBlockLE` places the roles PHYSICALLY as `[[K,N],[X,E]]`.
+The composite `flatBlockLE ∘ frameToSchurIncGen ≠ flatMatLEGen` (they SWAP off-diagonal frame coords):
+counterexample `t=r=c=1` (`schurDim = 4`): flat basis index `1` lands at matrix `(0,1)` under row-major
+`flatMatLEGen` but at `(1,0)` under the role-order composite. So the required bridge
+`flatMatLEGen f = flatBlockLE hr hc (frameToSchurIncGen s f)` is FALSE (confirmed NOT `rfl`; the
+2×2×1×1×1 hand-check gives `LHS(0,1)=f₁` vs `RHS(0,1)=f₂`).
+The DETERMINANT headline `DtotGen_abs_det` is UNAFFECTED — the true diagonal frame block is
+`P_s ∘ genF_frame_s` for a coordinate permutation `P_s := frameToSchurIncGen ≫ flatBlockLE ≫ flatMatLEGen.symm`
+(`|det P_s| = 1`), so `|det| = |det K|^{r+c}` still. FIX (controller-gated, changes a def not a claim):
+either (i) make `eihdOutGen`'s frame output pack flatten via `flatBlockLE.symm ∘ frameToSchurIncGen.symm`
+(matching the L=2 `packLayer0`, which used `flatBlockLE.symm` directly — `RouteMHDtotEihd`), OR
+(ii) redefine `genF`'s diagonal frame block as the actual `P_s`-composed one. Both keep `genF_abs_det`.
+Until the def is reconciled, `eihd_hD_gen` remains a (correct-determinant, wrong-block-layout) sorry.
 -/
 
 open Matrix
