@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Volume Source-image Density Finite Integral - 2026-07-01
+
+Lean now proves the bounded-density variant of the concrete source-image
+finite-integral wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+For the local source-image reference
+
+```text
+sourceRef := Measure.map sourceChart (coordinateSourceMeasure.restrict V),
+```
+
+the final chart-piece handler assumes
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (sourceRef.withDensity volumeDensity).restrict chartPiece
+```
+
+and an a.e. bound `volumeDensity <= D` over `sourceRef.restrict chartPiece`,
+with `D < infinity`.  The proof derives
+`originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef` using
+`restrict_withDensity_le_smul_of_ae_le`, then reuses the previous source-image
+reference finite-integral wrapper.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-density-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-density-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-density-finite-integral.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the source-image density identity or density bound, no
+global passive-theta source-image identification, no source coverage, no
+chart-image equality, no Haar scalar normalization or cancellation, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Original-prior Volume Source-image Reference Finite Integral - 2026-07-01
 
 Lean now proves the concrete source-image specialization of the source-reference

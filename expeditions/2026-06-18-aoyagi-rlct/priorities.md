@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior volume source-image density finite integral
+
+The source-image finite-integral wrapper now has a bounded-density variant:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The returned local passive-theta chart data are the same as in the concrete
+source-image reference wrapper.  In the final chart-piece handler, set
+
+```text
+sourceRef := Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Instead of asking directly for
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef,
+```
+
+the theorem asks for the structured local density data
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (sourceRef.withDensity volumeDensity).restrict chartPiece,
+volumeDensity <= D  over sourceRef.restrict chartPiece-a.e.,
+D < infinity.
+```
+
+The proof applies `restrict_withDensity_le_smul_of_ae_le` to recover the old
+domination hypothesis and then calls the previous source-image reference
+finite-integral wrapper.  This is still conditional: the density identity and
+bound are now explicit remaining geometric measure obligations.
+
+Nonclaims: no proof of the density identity or density bound, no global
+passive-theta source-image identification, no source coverage, no chart-image
+equality, no Haar scalar normalization or cancellation, no normal crossings,
+no pole order, and no RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior volume source-image reference finite integral
 
 The abstract source-reference finite-integral wrapper now has a concrete

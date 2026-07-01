@@ -141,6 +141,26 @@ No such claim is formalisation-ready until both fields are filled.
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
 - **Current status addendum, p.13 original-prior volume source-image
+  density finite integral, 2026-07-01.** Lean now proves
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  This theorem keeps the local source-image chart `V` and source reference
+  `Measure.map sourceChart (coordinateSourceMeasure.restrict V)`, but replaces
+  the arbitrary source-reference domination field by an explicit restricted
+  density identity plus an a.e. upper bound on that density.  The proof uses
+  `restrict_withDensity_le_smul_of_ae_le` to recover the previous domination
+  hypothesis and then calls the source-image reference wrapper.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-density-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-density-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-density-finite-integral.md`.
+  Nonclaims: no proof of the density identity or density bound, no global
+  passive-theta source-image identification, no source coverage, no chart-image
+  equality, no Haar scalar normalization, no normal crossings, pole order, or
+  RLCT extraction.
+- **Current status addendum, p.13 original-prior volume source-image
   reference finite integral, 2026-07-01.** Lean now proves
   `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
   in

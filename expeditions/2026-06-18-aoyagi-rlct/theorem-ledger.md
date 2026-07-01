@@ -12713,3 +12713,32 @@ reference, no global passive-theta source-image identification, no source
 coverage, no chart-image equality, no source-rank coverage, no Haar scalar
 normalization or cancellation, no normal crossings, no pole order, and no RLCT
 extraction.
+
+
+Latest A2 p.13 original-prior volume source-image density finite-integral wrapper:
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-density-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-density-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-density-finite-integral.md`.
+
+Ledger status: the source-image finite-integral socket now accepts a
+structured bounded-density comparison for the original edge-family volume on
+the local chart piece.  If the restricted original volume equals a
+`withDensity` perturbation of the concrete source-image reference and that
+density is a.e. bounded by `D`, then the previous scalar domination hypothesis
+follows by `restrict_withDensity_le_smul_of_ae_le`.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probe passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the source-image density identity or density bound, no
+global passive-theta source-image identification, no source coverage, no
+chart-image equality, no Haar scalar normalization or cancellation, no normal
+crossings, no pole order, and no RLCT extraction.
