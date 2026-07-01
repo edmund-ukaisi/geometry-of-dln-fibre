@@ -28,6 +28,112 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- Push a density depending only on the image variable through a measurable
+map.
+
+This is the reusable measure-theoretic bookkeeping lemma used when a local
+coordinate measure is first expressed on a source domain and then pushed
+through a chart. -/
+theorem measure_map_withDensity_comp_of_aemeasurable
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {η : Measure α} {f : α → β} {g : β → ℝ≥0∞}
+    (hf : AEMeasurable f η)
+    (hg : AEMeasurable g (Measure.map f η)) :
+    Measure.map f (η.withDensity (fun x ↦ g (f x))) =
+      (Measure.map f η).withDensity g := by
+  ext t ht
+  have hf_density :
+      AEMeasurable f (η.withDensity (fun x ↦ g (f x))) :=
+    hf.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hpre : NullMeasurableSet (f ⁻¹' t) η :=
+    hf.nullMeasurableSet_preimage ht
+  rw [Measure.map_apply_of_aemeasurable hf_density ht,
+    withDensity_apply _ ht, withDensity_apply₀ _ hpre]
+  calc
+    ∫⁻ x in f ⁻¹' t, g (f x) ∂η =
+        ∫⁻ x, (f ⁻¹' t).indicator (fun x ↦ g (f x)) x ∂η := by
+          rw [lintegral_indicator₀ hpre]
+    _ = ∫⁻ x, (t.indicator g) (f x) ∂η := by
+          rfl
+    _ = ∫⁻ y, t.indicator g y ∂Measure.map f η := by
+          exact (lintegral_map' (hg.indicator ht) hf).symm
+    _ = ∫⁻ y in t, g y ∂Measure.map f η := by
+          rw [lintegral_indicator ht]
+
+/-- Push a restricted weighted measure through a map when the source density
+factors through that map almost everywhere.
+
+This is the raw-image form of the density handoff: it identifies the
+pushforward of `(thetaMeasure.withDensity thetaDensity).restrict V` with a
+`withDensity` perturbation of the raw-image measure
+`Measure.map rawMap (thetaMeasure.restrict V)`. -/
+theorem measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq
+    {Θ Raw : Type*} [MeasurableSpace Θ] [MeasurableSpace Raw]
+    {thetaMeasure : Measure Θ} {V : Set Θ}
+    {rawMap : Θ → Raw}
+    {thetaDensity : Θ → ℝ≥0∞} {rawDensity : Raw → ℝ≥0∞}
+    (hV : MeasurableSet V)
+    (hrawMap : AEMeasurable rawMap (thetaMeasure.restrict V))
+    (hrawDensity :
+      AEMeasurable rawDensity (Measure.map rawMap (thetaMeasure.restrict V)))
+    (hfactor :
+      ∀ᵐ theta ∂thetaMeasure.restrict V,
+        thetaDensity theta = rawDensity (rawMap theta)) :
+    Measure.map rawMap ((thetaMeasure.withDensity thetaDensity).restrict V) =
+      (Measure.map rawMap (thetaMeasure.restrict V)).withDensity rawDensity := by
+  rw [restrict_withDensity hV]
+  rw [withDensity_congr_ae hfactor]
+  exact measure_map_withDensity_comp_of_aemeasurable hrawMap hrawDensity
+
+/-- Restricted two-stage version of
+`measure_map_withDensity_comp_of_aemeasurable`.
+
+If the two-stage chart pushforward already agrees with a direct source chart
+after weighting and restricting the theta measure, then the same source measure
+is obtained by first pushing the restricted theta reference through `rawMap`
+and then adding the raw density. -/
+theorem measure_map_rawChart_restrict_withDensity_comp_eq_of_twoStage_restrict
+    {Θ Raw E : Type*} [MeasurableSpace Θ] [MeasurableSpace Raw]
+    [MeasurableSpace E]
+    {thetaMeasure : Measure Θ} {V : Set Θ}
+    {rawMap : Θ → Raw} {rawChart : Raw → E} {sourceChart : Θ → E}
+    {rawDensity : Raw → ℝ≥0∞}
+    (hV : MeasurableSet V)
+    (hrawMap : AEMeasurable rawMap (thetaMeasure.restrict V))
+    (hrawDensity :
+      AEMeasurable rawDensity (Measure.map rawMap (thetaMeasure.restrict V)))
+    (htwoStage :
+      Measure.map rawChart
+          (Measure.map rawMap
+            ((thetaMeasure.withDensity
+              (fun z ↦ rawDensity (rawMap z))).restrict V)) =
+        Measure.map sourceChart
+          ((thetaMeasure.withDensity
+            (fun z ↦ rawDensity (rawMap z))).restrict V)) :
+    Measure.map rawChart
+        ((Measure.map rawMap (thetaMeasure.restrict V)).withDensity rawDensity) =
+      Measure.map sourceChart
+        ((thetaMeasure.withDensity
+          (fun z ↦ rawDensity (rawMap z))).restrict V) := by
+  have htwoStage' :
+      Measure.map rawChart
+          (Measure.map rawMap
+            ((thetaMeasure.restrict V).withDensity
+              (fun z ↦ rawDensity (rawMap z)))) =
+        Measure.map sourceChart
+          ((thetaMeasure.restrict V).withDensity
+            (fun z ↦ rawDensity (rawMap z))) := by
+    simpa [restrict_withDensity hV] using htwoStage
+  have hmain :
+      Measure.map rawChart
+          ((Measure.map rawMap (thetaMeasure.restrict V)).withDensity rawDensity) =
+        Measure.map sourceChart
+          ((thetaMeasure.restrict V).withDensity
+            (fun z ↦ rawDensity (rawMap z))) := by
+    rw [← measure_map_withDensity_comp_of_aemeasurable hrawMap hrawDensity]
+    exact htwoStage'
+  simpa [restrict_withDensity hV] using hmain
+
 /-- A nonnegative real function is positive almost everywhere once its zero
 locus is null. -/
 theorem ae_pos_of_forall_nonneg_of_measure_zero_eq_zero
@@ -380,6 +486,155 @@ theorem measure_le_smul_of_le_smul_of_le_smul
     μ ≤ c • ν := hμ
     _ ≤ c • (d • η) := hscale
     _ = (c * d) • η := hassoc
+
+/-- Left-factor domination of product measures transfers through restriction
+and a map, then composes with a supplied domination of the reference
+pushforward.
+
+This is the bookkeeping needed when a future concrete left-factor reference
+measure is known to dominate a passive-field measure, and the product
+reference has already been compared to a chart-side target measure. -/
+theorem map_prod_restrict_le_smul_of_left_le_smul_of_map_prod_restrict_le_smul
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSpace γ]
+    {μ ν : Measure α} {η : Measure β} [SFinite η]
+    {V : Set (α × β)} {f : α × β → γ}
+    {target : Measure γ} {c d : ℝ≥0∞}
+    (hfν : AEMeasurable f ((ν.prod η).restrict V))
+    (hμ : μ ≤ d • ν)
+    (href :
+      Measure.map f ((ν.prod η).restrict V) ≤ c • target) :
+    Measure.map f ((μ.prod η).restrict V) ≤ (d * c) • target := by
+  have hprod : μ.prod η ≤ d • ν.prod η :=
+    prod_le_smul_prod_of_le_smul_left (η := η) hμ
+  have hrestrict :
+      (μ.prod η).restrict V ≤ d • (ν.prod η).restrict V := by
+    calc
+      (μ.prod η).restrict V ≤ (d • ν.prod η).restrict V :=
+        Measure.restrict_mono Set.Subset.rfl hprod
+      _ = d • (ν.prod η).restrict V := by
+        rw [Measure.restrict_smul]
+  have hmap :
+      Measure.map f ((μ.prod η).restrict V) ≤
+        d • Measure.map f ((ν.prod η).restrict V) :=
+    map_le_smul_map_of_le_smul_aemeasurable hfν hrestrict
+  exact measure_le_smul_of_le_smul_of_le_smul hmap href
+
+/-- A scalar measure domination remains true after weighting both measures by
+the same density. -/
+theorem withDensity_le_smul_withDensity_of_le_smul
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {density : α → ℝ≥0∞}
+    (hν : ν ≤ c • μ) :
+    ν.withDensity density ≤ c • μ.withDensity density := by
+  refine Measure.le_iff.2 ?_
+  intro s hs
+  rw [withDensity_apply _ hs, Measure.smul_apply, withDensity_apply _ hs]
+  have hrestrict :
+      ν.restrict s ≤ c • μ.restrict s := by
+    calc
+      ν.restrict s ≤ (c • μ).restrict s :=
+        Measure.restrict_mono Set.Subset.rfl hν
+      _ = c • μ.restrict s := by
+        rw [Measure.restrict_smul]
+  calc
+    ∫⁻ x, density x ∂ν.restrict s ≤
+        ∫⁻ x, density x ∂(c • μ.restrict s) :=
+      lintegral_mono' hrestrict (le_refl density)
+    _ = c * ∫⁻ x, density x ∂μ.restrict s := by
+      simp [lintegral_smul_measure]
+
+/-- Domination of a source pushforward transfers through a second map once the
+reference pushforward along that second map has been identified.
+
+This is pure measure bookkeeping.  The hypothesis
+`Measure.map pre μ ≤ c • sourceRef` is the substantive chart/source
+comparison; the theorem only composes it with `post` and rewrites the
+reference pushforward as `targetRef`. -/
+theorem map_comp_le_smul_of_map_le_smul_of_map_ref_eq
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
+    {μ : Measure α} {sourceRef : Measure β} {targetRef : Measure γ}
+    {c : ℝ≥0∞} {pre : α → β} {post : β → γ}
+    (hpre : AEMeasurable pre μ)
+    (hpost_ref : AEMeasurable post sourceRef)
+    (hpre_dom : Measure.map pre μ ≤ c • sourceRef)
+    (hpost_ref_map : Measure.map post sourceRef = targetRef) :
+    Measure.map (fun x ↦ post (pre x)) μ ≤ c • targetRef := by
+  have hmap_ac : Measure.map pre μ ≪ sourceRef :=
+    Measure.absolutelyContinuous_of_le_smul hpre_dom
+  have hpost_map_pre : AEMeasurable post (Measure.map pre μ) :=
+    hpost_ref.mono_ac hmap_ac
+  calc
+    Measure.map (fun x ↦ post (pre x)) μ =
+        Measure.map post (Measure.map pre μ) := by
+          simpa [Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := μ) (g := post) (f := pre) hpost_map_pre hpre).symm
+    _ ≤ c • Measure.map post sourceRef :=
+          map_le_smul_map_of_le_smul_aemeasurable hpost_ref hpre_dom
+    _ = c • targetRef := by
+          rw [hpost_ref_map]
+
+/-- Weighted domination of a source pushforward transfers through a second map
+once the weighted reference pushforward along that second map has been
+identified.
+
+This is pure measure bookkeeping.  The substantive hypothesis is
+`Measure.map pre μ ≤ c • sourceRef`; the theorem weights both sides by the same
+source-side density and then composes with `post`. -/
+theorem map_comp_withDensity_comp_le_smul_of_map_le_smul_of_weighted_map_ref_eq
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
+    {μ : Measure α} {sourceRef : Measure β} {targetRef : Measure γ}
+    {c : ℝ≥0∞} {pre : α → β} {post : β → γ} {density : β → ℝ≥0∞}
+    (hpre : AEMeasurable pre μ)
+    (hdensity_ref : AEMeasurable density sourceRef)
+    (hpost_ref_weighted : AEMeasurable post (sourceRef.withDensity density))
+    (hpre_dom : Measure.map pre μ ≤ c • sourceRef)
+    (hpost_ref_map : Measure.map post (sourceRef.withDensity density) = targetRef) :
+    Measure.map (fun x ↦ post (pre x))
+        (μ.withDensity (fun x ↦ density (pre x))) ≤
+      c • targetRef := by
+  have hmap_ac : Measure.map pre μ ≪ sourceRef :=
+    Measure.absolutelyContinuous_of_le_smul hpre_dom
+  have hdensity_map_pre :
+      AEMeasurable density (Measure.map pre μ) :=
+    hdensity_ref.mono_ac hmap_ac
+  have hpre_weighted :
+      Measure.map pre (μ.withDensity (fun x ↦ density (pre x))) =
+        (Measure.map pre μ).withDensity density :=
+    measure_map_withDensity_comp_of_aemeasurable hpre hdensity_map_pre
+  have hweighted_dom :
+      (Measure.map pre μ).withDensity density ≤
+        c • sourceRef.withDensity density :=
+    withDensity_le_smul_withDensity_of_le_smul hpre_dom
+  have hweighted_ac :
+      (Measure.map pre μ).withDensity density ≪ sourceRef.withDensity density :=
+    Measure.absolutelyContinuous_of_le_smul hweighted_dom
+  have hpre_weighted_aemeasurable :
+      AEMeasurable pre (μ.withDensity (fun x ↦ density (pre x))) :=
+    hpre.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hpost_map_pre :
+      AEMeasurable post
+        (Measure.map pre (μ.withDensity (fun x ↦ density (pre x)))) := by
+    rw [hpre_weighted]
+    exact hpost_ref_weighted.mono_ac hweighted_ac
+  calc
+    Measure.map (fun x ↦ post (pre x))
+        (μ.withDensity (fun x ↦ density (pre x))) =
+        Measure.map post
+          (Measure.map pre (μ.withDensity (fun x ↦ density (pre x)))) := by
+          simpa [Function.comp_def] using
+            (AEMeasurable.map_map_of_aemeasurable
+              (μ := μ.withDensity (fun x ↦ density (pre x)))
+              (g := post) (f := pre) hpost_map_pre
+              hpre_weighted_aemeasurable).symm
+    _ = Measure.map post ((Measure.map pre μ).withDensity density) := by
+          rw [hpre_weighted]
+    _ ≤ c • Measure.map post (sourceRef.withDensity density) :=
+          map_le_smul_map_of_le_smul_aemeasurable
+            hpost_ref_weighted hweighted_dom
+    _ = c • targetRef := by
+          rw [hpost_ref_map]
 
 /-- Readback domination transfers from a source reference measure to any
 measure dominated by that source reference. -/

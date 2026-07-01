@@ -97,6 +97,83 @@ theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEd
           rw [hmat]
 
 set_option linter.style.longLine false in
+/-- The public p.13 raw-order source chart is a.e. measurable on the
+raw-order source-recursive determinant chart.
+
+On that chart it agrees pointwise with the continuous fixed-basis
+reconstruction of the raw-order matrix tuple.  This is only a measurability
+handoff; it does not identify the restricted raw measure with Haar or prove a
+source-prior transport theorem. -/
+theorem aemeasurable_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_rawSourceSet
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let sourceChart : TopologyTuple ρ κ' ℝ →
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    AEMeasurable sourceChart
+      (m.restrict
+        (topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ'))) := by
+  intro ρ κ' sourceChart
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let b := paperEndpointFixedBaseFinBasis W B U₀ hU₀
+  let L : TopologyTuple ρ κ' ℝ ≃L[ℝ]
+      Tuple (k := ℝ) (paperEndpointFixedBaseDim W B U₀) :=
+    paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W B U₀
+  let psi : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+    fun y ↦ tupleToEdgeFamily (V := reverseVertex W) b (L y)
+  have hpsi : AEMeasurable psi (m.restrict T) :=
+    ((continuous_tupleToEdgeFamily (V := reverseVertex W) b).comp
+      L.continuous).measurable.aemeasurable
+  have hTnull : NullMeasurableSet T m := by
+    simpa [T, ρ, κ'] using
+      nullMeasurableSet_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hpsi_source : psi =ᵐ[m.restrict T] sourceChart := by
+    filter_upwards [ae_restrict_mem₀ hTnull] with y hy
+    have hpoint :
+        sourceChart y =
+          tupleToEdgeFamily (V := reverseVertex W) b (L y) := by
+      simpa [sourceChart, psi, L, b, T, ρ, κ',
+        paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv] using
+        paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEdgeFamily_rawOrderMatrixTuple
+          (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (y := y) hy
+    exact hpoint.symm
+  exact hpsi.congr hpsi_source
+
+set_option linter.style.longLine false in
 /-- The p.13 raw-order source chart pushes the restricted raw-coordinate Haar
 measure to `originalEdgeFamilyVolume` restricted to the named p.13 source
 edge-family set, up to the tuple-side full-space Haar scalar.

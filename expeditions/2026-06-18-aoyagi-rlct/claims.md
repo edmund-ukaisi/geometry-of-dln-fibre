@@ -140,6 +140,298 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 reverse raw-source domination handoff,
+  2026-07-01.** Lean now proves
+  `exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean`
+  and
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean`.
+  If `rawHaar.restrict rawSourceSet <= D • Measure.map rawMap
+  (thetaReference.restrict V)`, then the p.13 formal-product chart measure on
+  p.13 chart pieces is dominated by the chart-produced source reference, and
+  the original edge-family volume on measurable p.13 chart pieces is dominated
+  by `(cHaar^{-1} * D)` times the same source reference.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-reverse-raw-source-domination-to-source-reference.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-reverse-raw-source-domination-to-source-reference.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-reverse-raw-source-domination-to-source-reference.md`.
+  Focused elaboration, focused module builds, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, and direct theorem axiom audit
+  passed; both theorem names report only `[propext, Classical.choice,
+  Quot.sound]`.  Xhigh scout `Mendel` passed the theorem-shape and API audit.
+  Nonclaims: the reverse raw-source domination is not proved; no
+  determinant-chart Haar transport, exact raw-Haar pushforward, source
+  coverage, source-rank coverage, original source-prior transport, normal
+  crossings, pole order, or RLCT extraction is claimed.
+- **Current status addendum, Case 2 passive-theta endpoint reference,
+  2026-07-01.** Lean now defines the concrete coordinate-product passive-theta
+  reference source in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean`:
+  `matrixEntryReferenceMeasure`,
+  `case2PassiveThetaPassiveFieldReferenceMeasure`,
+  `case2PassiveThetaCenterSignedBoxMeasure`,
+  `case2PassiveThetaCenterWeightedBoxMeasure`, and
+  `case2PassiveThetaReferenceSourceMeasure`, and
+  `case2PassiveThetaEndpointReferenceImageMeasure`.  It also proves
+  `measure_map_case2PassiveThetaEndpointTopologyTuple_referenceSource_restrict_detChartSet_eq_self_of_subset_detSector`
+  and
+  `case2PassiveThetaEndpointReferenceImageMeasure_restrict_detChartSet_eq_self_of_subset_detSector`,
+  plus the corrected image-measure domination theorem
+  `measure_map_case2PassiveThetaEndpointTopologyTuple_passiveSource_restrict_le_smul_endpointReferenceImage_of_passiveMeasure_le_smul_reference`.
+  The passive-field reference is an explicit product of entrywise Lebesgue
+  measures because bare `volume` on the nested passive product did not match
+  the product/Pi measurable space in a direct Lean probe.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-theta-endpoint-reference.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-theta-endpoint-reference.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-theta-endpoint-reference.md`.
+  Focused elaboration, focused module build, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, and direct axiom probe passed;
+  the axiom footprint is `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  Lean/API scout `Banach the 3rd` found that unrestricted full
+  determinant-chart Haar domination is obstructed for this theta domain because
+  the endpoint image fixes the full `C` family through selected-entry residual
+  data.  Nonclaims: no endpoint determinant-chart Haar domination, no Jacobian
+  formula for `Y`, no exact Haar transport, no raw-Haar pushforward, no Haar
+  normalization, no original source-prior transport, no source-image/source-rank
+  coverage, normal crossings, pole order, or RLCT extraction.
+- **Current status addendum, Case 2 determinant-sector determinant-chart
+  support, 2026-07-01.** Lean now proves
+  `measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_detChartSet_eq_self_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+  If a measurable local full passive-theta set `Omega` is contained in
+  `case2PassiveThetaDetSector`, then the endpoint topology-tuple pushforward
+  of any restricted theta measure is unchanged by restriction to
+  `topologyTupleDetChartSet`.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-det-sector-detChart-support.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-det-sector-detChart-support.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-det-sector-detChart-support.md`.
+  Focused direct elaboration, focused module build, dependent
+  `RawImageHandoff` elaboration, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, and direct axiom probe passed.
+  The axiom footprint is `[propext, Classical.choice, Quot.sound]`.  Xhigh
+  reviewer `Locke the 3rd` passed the Lean/documentation boundary check.
+  Nonclaims: no passive reference construction, no Jacobian formula
+  for `Y`, no determinant-chart Haar transport or domination, no Haar
+  normalization, no original source-prior transport, no source-image coverage,
+  no source-rank coverage, normal crossings, pole order, or RLCT extraction.
+- **Current status addendum, Case 2 passive-reference determinant-chart
+  transfer, 2026-07-01.** Lean now proves the generic measure lemma
+  `map_prod_restrict_le_smul_of_left_le_smul_of_map_prod_restrict_le_smul`
+  in `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and the concrete
+  Case 2 wrapper
+  `measure_map_case2PassiveThetaEndpointTopologyTuple_passiveSource_restrict_le_smul_detChart_of_passiveMeasure_le_smul_reference`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  If `passiveMeasure <= d • passiveReferenceMeasure` and the reference product
+  source satisfies
+  `Measure.map Y (passiveReferenceSource.restrict V) <= c • rawReference.restrict rawDetChart`,
+  then the actual passive product source satisfies
+  `Measure.map Y (passiveSource.restrict V) <= (d * c) • rawReference.restrict rawDetChart`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-reference-detChart-transfer.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-reference-detChart-transfer.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-reference-detChart-transfer.md`.
+  Focused `LocalMeasureHandoff` build and direct `RawImageHandoff` elaboration
+  passed.  Full local `lake build DLNFibre`, `lean/scripts/sorries`,
+  `git diff --check`, the direct axiom probe, and independent xhigh review by
+  `Kierkegaard` also passed.  The axiom footprint is
+  `[propext, Classical.choice, Quot.sound]`.  Nonclaims: no construction of the
+  passive reference, no determinant-chart Haar transport, no exact raw-Haar
+  pushforward, no Haar normalization, no original source-prior transport, no
+  source-image coverage, no source-rank coverage, normal crossings, pole
+  order, or RLCT extraction.
+- **Current status addendum, Case 2 baseJ raw-Haar domination from
+  determinant Haar, 2026-07-01.** Lean now proves
+  `exists_open_subset_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_le_smul_rawHaar_restrict_rawSource_of_endpointTopologyTuple_restrict_le_smul_detHaar`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`,
+  using the generic weighted composed-map handoff
+  `map_comp_withDensity_comp_le_smul_of_map_le_smul_of_weighted_map_ref_eq`
+  and the formal-product raw-order change-of-variables theorem
+  `map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart`.
+  It assumes the explicit unweighted determinant-chart domination
+  `Measure.map Y (passiveSource.restrict V) <= c • rawHaar.restrict rawDetChart`
+  and concludes
+  `Measure.map rawMap (baseJ.restrict V) <= c • rawHaar.restrict rawSourceSet`,
+  where `baseJ = passiveSource.withDensity jacobianDensity` and
+  `jacobianDensity` is the retained-passive formal raw-order determinant factor
+  evaluated at `Y z`.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-baseJ-raw-haar-domination-from-detHaar.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-baseJ-raw-haar-domination-from-detHaar.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-baseJ-raw-haar-domination-from-detHaar.md`.
+  Focused direct elaboration, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+  direct axiom probe passed; the theorem and its two generic measure lemmas
+  report only `[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer
+  `Newton the 3rd` passed the documentation/Lean fidelity check.  Nonclaims:
+  the determinant-chart domination remains explicit; no exact raw-Haar
+  pushforward for the unweighted passive source, passive-product Haar
+  transport, raw-Haar normalization, original source-prior transport,
+  source-image coverage, source-rank coverage, normal crossings, pole order,
+  or RLCT extraction.
+- **Current status addendum, Case 2 baseJ raw-Haar inverse-Jacobian
+  domination, 2026-07-01.** Lean now proves
+  `exists_pos_open_subset_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_le_smul_rawHaar_withDensity_inverseJacobian_of_endpointTopologyTuple_restrict_le_smul_detHaar`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  It combines the local upper side of the retained-passive Jacobian sandwich
+  with the conditional unweighted raw-Haar socket.  It returns `K > 0` and
+  `V subset G`, assumes the unweighted determinant-chart domination
+  `Measure.map Y (passiveSource.restrict V) <= c • rawHaar.restrict rawDetChart`,
+  and concludes
+  `Measure.map rawMap (baseJ.restrict V) <= (ENNReal.ofReal K * c) • ((rawHaar.restrict rawSourceSet).withDensity rawInverseJacobianDensity)`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-baseJ-raw-haar-inverse-jacobian-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-baseJ-raw-haar-inverse-jacobian-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-baseJ-raw-haar-inverse-jacobian-domination.md`.
+  Focused direct elaboration, focused module build, and full local
+  `lake build DLNFibre` passed; final sorry/diff/axiom checks are recorded in
+  `synthesis.md`.  Xhigh scout `Laplace the 3rd` passed the statement and
+  emphasized that `c : ℝ≥0∞` is unrestricted, so documentation must not call
+  it finite.  Nonclaims: the determinant-chart domination remains explicit; no
+  exact raw-Haar pushforward, passive-product Haar transport, raw-Haar
+  normalization, original source-prior transport, source-image coverage,
+  source-rank coverage, normal crossings, pole order, or RLCT extraction.
+- **Current status addendum, Case 2 passive-source raw-Haar inverse-Jacobian
+  domination, 2026-07-01.** Lean now proves
+  `exists_open_subset_measure_map_case2PassiveTheta_rawMap_passiveSource_restrict_le_smul_rawHaar_withDensity_inverseJacobian_of_endpointTopologyTuple_restrict_le_smul_detHaar`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`,
+  with generic composed-map measure bookkeeping
+  `map_comp_le_smul_of_map_le_smul_of_map_ref_eq` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`.  The theorem assumes
+  the still-missing determinant-chart comparison
+  `Measure.map Y (passiveSource.restrict V) <= c • rawHaar.restrict rawDetChart`
+  and returns `AEMeasurable rawMap (passiveSource.restrict V)` together with
+  the conclusion
+  `Measure.map rawMap (passiveSource.restrict V) <= c • ((rawHaar.restrict rawSourceSet).withDensity rawInverseJacobianDensity)`,
+  where `rawInverseJacobianDensity y =
+  ofReal (topologyTupleEdgeRawOrderInverseJacobianDensity y)`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-passive-source-raw-haar-inverse-jacobian-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-passive-source-raw-haar-inverse-jacobian-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-passive-source-raw-haar-inverse-jacobian-domination.md`.
+  Focused direct elaboration, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+  direct axiom probe passed; the theorem reports only `[propext,
+  Classical.choice, Quot.sound]`.  Xhigh frontier scout `James the 3rd` and
+  xhigh statement/API scout `Popper the 3rd` both confirmed this is the honest
+  next socket.  Nonclaims: no proof of the determinant-chart domination
+  hypothesis, no exact raw-Haar pushforward, no passive-product Haar transport,
+  no raw-Haar normalization, no original source-prior transport, no
+  source-image coverage, no source-rank coverage, no normal crossings, pole
+  order, or RLCT extraction.
+- **Current status addendum, Case 2 baseJ raw-image inverse-readback density,
+  2026-07-01.** Lean now proves
+  `exists_open_subset_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_eq_withDensity_rawImage_rawOrderInverse_jacobianDensity`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  It specializes the previous raw-image handoff by choosing
+  `rawDensity y` to be the retained-passive source-side Jacobian product
+  evaluated at `topologyTupleEdgeRawOrderInverse y`.  The raw-order inverse law
+  on the local determinant/pivot sector proves
+  `jacobianDensity z = rawDensity (rawMap z)`, and continuity on the raw
+  source-recursive determinant chart supplies a.e. measurability.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-baseJ-raw-image-inverse-readback-density.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-baseJ-raw-image-inverse-readback-density.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-baseJ-raw-image-inverse-readback-density.md`.
+  Focused direct elaboration, focused module build, full local
+  `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
+  axiom probe passed; the theorem reports only `[propext, Classical.choice,
+  Quot.sound]`.  Xhigh Lean/math scout `Pasteur the 3rd` passed the route.
+  Nonclaims: this is still over the actual raw image
+  `Measure.map rawMap (passiveSource.restrict V)` and proves no raw Haar
+  pushforward, determinant-chart Haar transport, raw Haar normalization,
+  original source-prior transport, source-image coverage, source-rank coverage,
+  normal crossings, pole order, or RLCT extraction.
+- **Current status addendum, Case 2 baseJ raw-image density handoff,
+  2026-07-01.** Lean now proves
+  `measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and
+  `exists_open_subset_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_eq_withDensity_rawImage_of_jacobianDensity_ae_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  On the local Case 2 determinant/pivot sector, if the retained-passive
+  Jacobian density factors a.e. through the local raw-order map as an
+  a.e.-measurable `rawDensity`, then
+  `Measure.map rawMap (baseJ.restrict V)` is
+  `(Measure.map rawMap (passiveSource.restrict V)).withDensity rawDensity`.
+  Here `baseJ = passiveSource.withDensity jacobianDensity`.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-baseJ-raw-image-density-handoff.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-baseJ-raw-image-density-handoff.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-baseJ-raw-image-density-handoff.md`.
+  Focused direct elaboration, focused module build, full local
+  `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
+  axiom probe passed; the theorem reports only `[propext, Classical.choice,
+  Quot.sound]`.  Xhigh Lean/API and math/source-boundary reviewers passed.
+  Nonclaims: this does not identify
+  `Measure.map rawMap (passiveSource.restrict V)` with raw Haar restricted to
+  the raw-order source set; it proves no determinant-chart Haar transport,
+  raw Haar normalization, original source-prior transport, source-image
+  coverage, source-rank coverage, normal crossings, pole order, or RLCT
+  extraction.
+- **Current status addendum, Case 2 formal-product source-reference bridge
+  from raw pushforward, 2026-07-01.** Lean now proves
+  `exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_case2PassiveTheta_rawMap_eq_restrict_rawSource`
+  and
+  `exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_case2PassiveTheta_rawMap_eq_restrict_rawSource`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean`.
+  If the concrete passive-theta raw map satisfies the explicit local
+  raw-pushforward hypothesis
+  `Measure.map rawMap (thetaReference.restrict V) = rawHaar.restrict rawSourceSet`,
+  then on any `chartPiece subset p13SourceSet` the p.13 formal-product chart
+  measure restricts to the chart-produced source reference on that piece.  On
+  measurable chart pieces this is also packaged with constant density `1`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-reference-from-raw-pushforward.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-formal-product-source-reference-from-raw-pushforward.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-formal-product-source-reference-from-raw-pushforward.md`.
+  Nonclaims: no proof of the raw-pushforward hypothesis, no full raw Haar
+  transport, no original source-prior transport, no source-image coverage, no
+  source-rank coverage, no scalar normalization, no normal crossings, pole
+  order, or RLCT extraction.  The density `1` is relative to the
+  chart-produced source reference only.
+- **Current status addendum, Case 2 source-chart original-volume bridge from
+  raw pushforward, 2026-07-01.** Lean now proves
+  `exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_eq_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet_of_rawMap_eq_restrict_rawSource`
+  and
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceReference_of_case2PassiveTheta_rawMap_eq_restrict_rawSource`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean`.
+  If the concrete passive-theta raw map satisfies the explicit local
+  raw-pushforward hypothesis
+  `Measure.map rawMap (thetaReference.restrict V) = rawHaar.restrict rawSourceSet`,
+  the source chart pushes `thetaReference.restrict V` to restricted original
+  edge-family volume on the named p.13 source set up to the existing tuple-side
+  Haar scalar.  On measurable chart pieces contained in that source set,
+  original volume is the chart-produced source reference with constant
+  inverse-Haar density.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-source-chart-original-volume-of-raw-pushforward.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-source-chart-original-volume-of-raw-pushforward.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-source-chart-original-volume-of-raw-pushforward.md`.
+  Nonclaims: no proof of the raw-pushforward hypothesis, no full raw Haar
+  transport, no original source-prior transport, no source-image coverage, no
+  source-rank coverage, no scalar normalization, no normal crossings, pole
+  order, or RLCT extraction.
 - **Current status addendum, p.13 formal-product source-image
   bounded-density finite-integral wrapper, 2026-07-01.** Lean now proves
   `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
@@ -14677,3 +14969,528 @@ source-reference density identity, as proof of the direct formal-product
 source-image identity, or as scalar normalization of `cHaar` to `1`.  It also
 must not be cited as source coverage, passive-theta image equality,
 source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 - Named p.13 Source-Set Support for Product Chart
+
+Status: Proved in Lean.
+
+Claim: for the concrete Case 2 endpoint product source chart, there is a
+positive regular-coordinate radius such that the small-ball product chart is
+eventually supported on the named p.13 source edge-family set, and the
+corresponding pushed-forward small-ball product measure is unchanged after
+restriction to that named set.
+
+Lean witnesses:
+
+```text
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_p13SourceEdgeFamilySet_nhdsWithin_source
+
+exists_pos_radius_open_measure_map_case2PassiveThetaEndpointProductSourceChart_restrict_sourceRankStratum_ball_p13SourceEdgeFamilySet_eq_self
+```
+
+Kill conditions: a mismatch between the retained-passive local source and the
+named source edge-family set under the identity edge-family map; failure of the
+underlying retained-passive local-source support theorem; or a measurability
+mismatch in the pushed-forward measure support theorem.
+
+Current check: the result is a direct rewrite of the existing local-source
+support package by
+`paperEndpointFixedBaseRetainedPassiveP13LocalSource_eq_preimage_sourceEdgeFamilySet`.
+Focused and full Lean builds passed; direct axiom probes reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this does not prove source-image coverage, a full product-chart
+readback, original/source-prior density transport, Haar transport, normal
+crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 - Product Source-Chart Source-Rank Preservation
+
+Status: Proved in Lean.
+
+Claim: for the concrete Case 2 endpoint p.13 product source chart, determinant
+membership and the explicit Case 2 base-rank equations imply that sufficiently
+small regular coordinates preserve membership in the named source-rank stratum.
+
+Lean witnesses:
+
+```text
+case2PassiveThetaEndpointSourceChart_productReductionCertificate
+
+exists_pos_radius_le_case2PassiveThetaEndpointProductSourceChart_mem_sourceRankStratum_of_base_rank
+```
+
+Kill conditions: failure of the retained-passive local-source to recursive
+determinant-chart equivalence; mismatch between the explicit Case 2 base-rank
+equations and the base source-rank theorem; or failure of the generic
+product-coordinate source-rank preservation theorem under the `ctopMatrix`
+unit condition.
+
+Current check: focused and full Lean builds passed; direct axiom probes
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is one-way membership for chart-produced product points, not
+source-rank coverage, source-image equality, original/source-prior transport,
+normal crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 - Passive-Theta Source-Reference Readback
+
+Status: Proved in Lean.
+
+Claim: on the local passive-theta endpoint source-chart image, the
+chart-produced source reference
+`Measure.map sourceChart (thetaReference.restrict V)` pulls back by the
+readback to `thetaReference.restrict V`, with readback a.e.-measurability for
+that source reference.
+
+Lean witness:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_sourceReference_eq_self
+```
+
+Kill conditions: failure of the local source-chart left inverse, injectivity,
+or continuity package; or a mismatch in the generic push-pull measure theorem.
+
+Current check: focused and full Lean builds passed; the direct axiom probe
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this identifies only the chart-produced source reference.  It does
+not identify an original source prior, prove a density identity or bound,
+prove source-image coverage, transport Haar measure, prove normal crossings,
+compute pole order, or extract an RLCT.
+
+## 2026-07-01 - Passive-Theta Chart-Piece Density Readback Domination
+
+Status: Proved in Lean.
+
+Claim: on the local passive-theta endpoint source-chart image, a supplied
+bounded-density identity and a.e. bound for an external measure restricted to a
+measurable source-side chart piece imply readback a.e. measurability and
+finite-scalar domination by the theta reference on any theta superset
+containing the local chart domain.
+
+Lean witness:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn
+```
+
+Kill conditions: failure of the concrete local source-chart image/readback
+package; mismatch between the supplied density identity shape and the generic
+chart-piece handoff; or failure of the superset restriction domination.
+
+Current check: focused and full Lean builds passed; the direct axiom probe
+reported only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the density identity and bound are hypotheses.  This does not prove
+that an original source prior or original volume satisfies them, does not
+prove source-image coverage, and does not prove Haar/Jacobian transport,
+normal crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 - Passive-Theta Raw-Order Source-Chart Density Transport
+
+Status: Proved in Lean.
+
+Claim: on the local Case 2 passive-theta endpoint determinant/pivot sector, a
+raw density on the `rawMap` pushforward of `thetaReference.restrict V`
+transports through the p.13 raw-order source chart to the same source-side
+measure as the composed theta-domain density transported through the concrete
+passive-theta endpoint source chart.
+
+Lean witnesses:
+
+```text
+measure_map_withDensity_comp_of_aemeasurable
+
+measure_map_rawChart_restrict_withDensity_comp_eq_of_twoStage_restrict
+
+exists_open_subset_measure_map_case2PassiveThetaEndpoint_rawOrderSourceChart_withDensity_eq_sourceChart_withDensity
+```
+
+Kill conditions: failure of the existing relative Case 2 raw-order/source-chart
+two-stage equality; mismatch in the `restrict_withDensity` rewrite; or an
+unjustified attempt to identify the raw pushforward with Haar/original volume.
+
+Current check: focused and full Lean builds passed; `./scripts/sorries`
+reported zero sorries and zero axioms; the direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is conditional density transport for a chart-produced raw
+pushforward measure.  It does not identify determinant-chart Haar measure,
+raw-order Haar measure, original edge-family volume, or an original/source
+prior, and it does not prove source-image coverage, source-rank coverage,
+normal crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 - Passive-Theta Raw-Order Reference Image
+
+Status: Proved in Lean.
+
+Claim: on the local Case 2 determinant/punctured sector, Lean now names the
+raw-order image of the concrete passive-theta reference source and proves that
+it is supported on the raw-order source-recursive determinant chart.  On the
+same local set, passive-field scalar domination pushes forward to domination by
+this named raw-order image measure.
+
+Lean witnesses:
+
+```text
+case2PassiveThetaRawOrderReferenceImageMeasure
+
+exists_open_subset_case2PassiveThetaRawOrderReferenceImageMeasure_support_and_domination
+```
+
+Kill conditions: failure of the existing relative raw-order/source-chart local
+package; failure of continuity of `topologyTupleEdgeRawOrder` on the
+determinant-chart subtype; or an attempted upgrade from actual image measure
+to unrestricted raw Haar.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the target is the actual raw-order image of the concrete
+passive-theta reference source.  This does not identify raw Haar,
+determinant-chart Haar, original volume, source-prior transport, source-image
+coverage, source-rank coverage, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Endpoint-Reference Raw-Order/Source-Chart Handoff
+
+Status: Proved in Lean.
+
+Claim: on the local Case 2 determinant/punctured-sector shrink, pushing the
+named endpoint reference image through `topologyTupleEdgeRawOrder` gives the
+named raw-order reference image, and pushing that image through the p.13
+raw-order source chart gives the direct p.13 source-chart image of the
+theta-domain reference source.
+
+Lean witness:
+
+```text
+exists_open_subset_case2PassiveThetaEndpointReferenceImage_rawOrder_sourceChart_handoff
+```
+
+Kill conditions: failure of the endpoint determinant-chart support needed for
+local a.e. measurability of `topologyTupleEdgeRawOrder`; mismatch with the
+existing raw-order/source-chart two-stage theorem; or accidental use of
+`sourceChart` as an endpoint-domain map.
+
+Current check: focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, and direct axiom probe passed.
+The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a functorial image-measure identity.  It does not identify
+raw Haar, determinant-chart Haar, original volume, source-prior transport,
+source-image coverage, source-rank coverage, normal crossings, pole order, or
+RLCT.
+
+## 2026-07-01 - Raw-Order Reference Density Transport
+
+Status: Proved in Lean.
+
+Claim: on the local Case 2 determinant/punctured-sector shrink, any raw
+density a.e. measurable for the named raw-order reference image transports
+through the p.13 raw-order source chart to the direct source-chart image of
+the theta-domain reference source weighted by the composed density.
+
+Lean witness:
+
+```text
+exists_open_subset_case2PassiveThetaRawOrderReferenceImage_withDensity_sourceChart_handoff
+```
+
+Kill conditions: failure of the local a.e. measurability of `rawMap`; mismatch
+with the existing restricted raw-density transport lemma; or replacing the
+named raw-order image by raw Haar.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a density transport theorem for the actual named raw-order
+image measure.  It does not construct the raw density from an original prior,
+identify Haar/original volume, prove source-image coverage, source-rank
+coverage, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Raw-Order Reference Same-Shrink Package
+
+Status: Proved in Lean.
+
+Claim: on one local Case 2 determinant/punctured-sector shrink, the named
+raw-order reference image simultaneously has raw-source support, passive-field
+domination handoff, endpoint-reference image composition, raw-order
+source-chart pushforward, and raw-density transport.
+
+Lean witness:
+
+```text
+exists_open_subset_case2PassiveThetaRawOrderReferenceImage_same_shrink_package
+```
+
+Kill conditions: proving this by chaining separate existential wrappers;
+replacing the named image measure by raw Haar; assuming global raw-map
+measurability; or upgrading the theorem to source-prior, original-volume,
+source-coverage, normal-crossing, pole-order, or RLCT content.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh Lean/API reviewer `Jason the
+3rd` and xhigh source-boundary reviewer `Fermat the 3rd` both passed the
+same-`V` packaging boundary.
+
+Boundary: this is an interface theorem for the actual named image measures.
+It does not prove raw-Haar identification or raw-Haar pushforward,
+determinant-chart Haar domination, exact Haar transport, scalar
+normalization, source-image or source-rank coverage, original source-prior or
+original-volume transport, a Jacobian formula for `Y`, bounded-density
+construction, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Original-Volume Source-Image Same-Shrink Conditional
+
+Status: Proved in Lean as a conditional theorem.
+
+Claim: on one local Case 2 shrink, the source-chart image package and the
+conditional p.13 original-volume/source-image density identity hold together.
+For every measurable chart piece contained in the actual source image
+`sourceChart '' V`, a supplied raw-Haar raw-source pushforward identity gives
+an inverse-Haar constant-density identity for original edge-family volume
+against `Measure.map sourceChart (thetaReference.restrict V)`.
+
+Lean witness:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceImageReference_same_shrink_of_case2PassiveTheta_rawMap_eq_restrict_rawSource
+```
+
+Kill conditions: removing the raw-Haar raw-source pushforward hypothesis;
+using separate existential neighborhoods for source-chart image data and
+measure identity; or claiming that Aoyagi p.13 alone proves original-volume
+transport to the passive-theta source image.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a conditional source-image socket.  It does not identify
+raw-order image measures with raw Haar, prove determinant-chart Haar
+transport, source-image coverage, source-rank coverage, original source-prior
+transport, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Original-Volume Readback Domination Same-Shrink Conditional
+
+Status: Proved in Lean as a conditional theorem.
+
+Claim: the conditional original-volume/source-image same-shrink bridge
+feeds the direct p.13 source-chart readback-domination adapter without
+combining unrelated existential neighborhoods.  On one local `V subset G`,
+for every measurable chart piece inside `sourceChart '' V`, the explicit
+raw-Haar raw-source pushforward hypothesis gives a.e. measurability of the
+original-volume readback and domination of its readback pushforward by the
+inverse Haar scalar times `thetaReference.restrict G`.
+
+Lean witness:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveTheta_rawMap_eq_restrict_rawSource
+```
+
+Kill conditions: removing the raw-Haar raw-source pushforward hypothesis;
+using the older bounded source-image finite-integral front end as a black box
+and thereby mixing existential witnesses; or presenting this as an
+unconditional original-volume/source-image transport theorem.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a conditional readback-domination adapter.  It does not
+prove raw-Haar identification or raw-Haar pushforward, determinant-chart Haar
+transport, source-image coverage, source-rank coverage, original source-prior
+transport, scalar normalization, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Original-Volume Finite Integral Raw-Pushforward Conditional
+
+Status: Proved in Lean as a conditional theorem.
+
+Claim: the direct original-volume p.13 finite-integral socket is discharged on
+one same-shrink Case 2 source-image chart piece from the explicit raw-Haar
+raw-source pushforward hypothesis.  The theorem returns `W`, `U`, and
+`V subset W`; for each measurable chart piece inside both
+`U inter sourceStratum` and `sourceChart '' V`, the raw-pushforward identity
+for `coordinateSourceMeasure.restrict V` implies finiteness of the
+regular-coordinate negative-power integral for bounded original-prior
+densities.
+
+Lean witness:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolume_readback_invHaar_of_case2PassiveTheta_rawMap_eq_restrict_rawSource_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+Kill conditions: removing the raw-Haar raw-source pushforward hypothesis;
+mixing the finite-integral `W` with a separately chosen source-image `V`;
+failing to derive p.13 source-set containment and right-inverse data from the
+same source-chart image; or describing the theorem as normal-crossing or RLCT
+content.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a conditional finite-integral theorem.  It does not prove
+raw-Haar identification or raw-Haar pushforward, determinant-chart Haar
+transport, source-image coverage, source-rank coverage, original source-prior
+transport, scalar normalization, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 - Source-Image Forward Domination From Raw Domination
+
+Status: Proved in Lean as a forward-direction boundary theorem.
+
+Claim: if the local Case 2 passive-theta raw-order pushforward is dominated
+by `C` times raw Haar restricted to the raw-order source-recursive determinant
+chart, then the concrete source-chart image is dominated by
+`C * cHaar` times original edge-family volume restricted to the p.13 source
+set.
+
+Lean witnesses:
+
+```text
+aemeasurable_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_rawSourceSet
+
+exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_le_smul_originalEdgeFamilyVolume_restrict_sourceEdgeFamilySet_of_rawMap_le_smul_restrict_rawSource
+```
+
+Kill conditions: reading the result backwards; using it to discharge the
+original-volume readback finite-integral theorem; or claiming it proves
+raw-Haar equality, raw-Haar lower domination by the coordinate source image,
+or original-volume/source-image transport.
+
+Current check: focused elaboration of the bridge file, focused module build,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+and direct theorem axiom audits passed.  Both new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is exactly the wrong direction for removing the current
+raw-pushforward equality in the original-volume finite-integral theorem.  The
+remaining substantive theorem is still a local change-of-variables, coverage,
+or bounded-below density comparison proving reverse domination/equality for
+the relevant source image.  Xhigh scouts `Franklin the 3rd` and `Gibbs the
+3rd` independently confirmed that Aoyagi pp.10-13 supply block algebra and
+actual-image density bookkeeping, not raw-Haar equality or reverse
+original-volume domination.
+
+## 2026-07-01 - Original-Volume Source-Image Domination From Formal-Product Domination
+
+Status: Proved in Lean as a conditional same-shrink bridge.
+
+Claim: on one local Case 2 passive-theta source-chart shrink, if the p.13
+formal-product chart measure on a measurable chart piece is dominated by
+`D` times the chart-produced source reference
+`Measure.map sourceChart (thetaReference.restrict V)`, then the restricted
+original edge-family volume on that chart piece is dominated by
+`cHaar^{-1} * D` times the same source reference.
+
+Lean witness:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_same_shrink_of_formalProductMeasure_le_smul_sourceReference
+```
+
+Kill conditions: treating the supplied formal-product/source-image domination
+as proved; dropping the chart-piece containment in `sourceChart '' V`; using a
+separately chosen shrink for p.13 support; or reading the result as raw-Haar
+transport, source-prior transport, normal-crossing content, or RLCT extraction.
+
+Current check: focused warning-clean elaboration of the bridge file, focused
+module build, dependent readback module build, full local `lake build
+DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct theorem
+axiom audit passed.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this bridge identifies the exact useful downstream hypothesis.  It
+does not prove `muP13 <= D * sourceRef`, a bounded-density equality with the
+source image, reverse raw-Haar/source-image domination, determinant-chart Haar
+transport, source-image/source-rank coverage, source-prior transport, normal
+crossings, pole order, or RLCT.  Xhigh scouts `Aquinas` and `Descartes`
+confirmed that Aoyagi pp.10-13 justify the block algebra and p.13 coordinate
+interfaces, but not the unconditional measure comparison.
+
+## 2026-07-01 - Original-Volume Readback From Reverse Raw-Source Domination
+
+Status: Proved and verified in Lean as a conditional theorem.
+
+Claim: on one local Case 2 passive-theta source-chart shrink, if raw Haar on
+the raw-order source-recursive chart is dominated by `D` times the local
+raw-order image of `thetaReference.restrict V`, then every measurable chart
+piece inside `sourceChart '' V` has a.e.-measurable original-volume readback
+and readback pushforward dominated by `(cHaar^{-1} * D)` times
+`thetaReference.restrict G`.
+
+Lean witness:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap
+```
+
+Kill conditions: dropping the reverse raw-source domination hypothesis;
+claiming Aoyagi pp.10-13 prove it; mixing the source-image shrink with a
+different bridge shrink; or describing the result as Haar transport,
+source-prior transport, source coverage, normal-crossing content, or RLCT
+extraction.
+
+Current check: focused warning-clean elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+direct axiom audit, and xhigh read-only review all passed.  The direct axiom
+probe reported only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a conditional domination handoff.  It does not prove the
+reverse raw-source domination, raw-Haar identification, raw-Haar pushforward,
+determinant-chart Haar transport, source-image coverage, source-rank coverage,
+original source-prior transport, scalar normalization, normal crossings, pole
+order, or RLCT.
+
+## 2026-07-01 - Original-Volume Finite Integral From Reverse Raw-Source Domination
+
+Status: Proved in Lean and locally verified.
+
+Claim: the Case 2 original-volume finite-integral theorem no longer needs an
+exact raw-pushforward equality if a finite reverse raw-source domination is
+supplied on the same local source-chart image.  The theorem assumes
+
+```text
+m.restrict rawSourceSet
+  <= D * Measure.map rawMap (coordinateSourceMeasure.restrict V),
+D < ∞,
+```
+
+and concludes the same finite original-prior regular-coordinate integral for
+measurable chart pieces inside both `U inter sourceStratum` and
+`sourceChart '' V`.
+
+Lean witness:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolume_readback_invHaar_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+Kill conditions: dropping the finite reverse raw-source domination hypothesis;
+claiming it follows from Aoyagi p.13 block algebra; mixing source-image
+witnesses; or describing the result as Haar transport, source-prior transport,
+normal-crossing content, pole-order content, or RLCT extraction.
+
+Current check: focused warning-clean elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+direct axiom audit, and xhigh read-only review all passed.  The direct axiom
+probe reported only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a conditional finite-integral handoff.  It does not prove
+the reverse raw-source domination, raw-Haar identification, raw-Haar
+pushforward, determinant-chart Haar transport, source-image coverage,
+source-rank coverage, original source-prior transport, scalar normalization,
+normal crossings, pole order, or RLCT.

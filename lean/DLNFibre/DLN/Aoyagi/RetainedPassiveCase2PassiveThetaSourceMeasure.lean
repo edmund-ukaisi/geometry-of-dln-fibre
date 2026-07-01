@@ -78,6 +78,63 @@ theorem measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_endpointSect
   exact Measure.restrict_eq_self_of_ae_mem hmap_mem
 
 set_option linter.style.longLine false in
+/-- If a localized full passive-theta source lies in the passive determinant
+sector, then its endpoint topology-tuple pushforward is supported on the
+retained-passive determinant-chart target.
+
+This is only support bookkeeping.  It supplies the determinant-chart support
+side of a future passive-reference theorem; it does not identify the
+pushforward with determinant-chart Haar measure, prove a Jacobian formula,
+construct a source prior, or extract an RLCT. -/
+theorem measure_map_case2PassiveThetaEndpointTopologyTuple_restrict_detChartSet_eq_self_of_subset_detSector
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (thetaMeasure :
+      Measure (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (Ω : Set (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hΩdet : Ω ⊆ case2PassiveThetaDetSector (ρ := ρ) (τ := τ) n S J)
+    (hY :
+      AEMeasurable
+        (fun theta : Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ↦
+          case2PassiveThetaEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e)
+        (thetaMeasure.restrict Ω)) :
+    let Y :
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let rawDetChart : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    (Measure.map Y (thetaMeasure.restrict Ω)).restrict rawDetChart =
+      Measure.map Y (thetaMeasure.restrict Ω) := by
+  intro Y rawDetChart
+  have hdet_meas : MeasurableSet rawDetChart := by
+    exact
+      (isOpen_topologyTupleDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
+  have hmem :
+      ∀ᵐ theta ∂ thetaMeasure.restrict Ω, Y theta ∈ rawDetChart := by
+    filter_upwards [ae_restrict_mem hΩ] with theta htheta
+    exact
+      case2PassiveThetaEndpointTopologyTuple_mem_detChartSet
+        (ρ := ρ) n hS hcont hnext theta eNext e (hΩdet htheta)
+  have hmap_mem :
+      ∀ᵐ y ∂ Measure.map Y (thetaMeasure.restrict Ω), y ∈ rawDetChart :=
+    (ae_map_iff (f := Y) hY hdet_meas).2 hmem
+  exact Measure.restrict_eq_self_of_ae_mem hmap_mem
+
+set_option linter.style.longLine false in
 /-- Finite-scalar domination of theta-domain measures pushes forward to the
 corresponding endpoint topology-tuple sector measures.
 
