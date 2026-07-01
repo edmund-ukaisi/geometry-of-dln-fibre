@@ -1,14 +1,16 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.HeadlineRowColPermWLOG
+import DLNFibre.DLN.RLCT.Validate.R1ResolutionInterfaceL2
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly` — the L = 2 headline ENDGAME scaffold
 
 This module SCAFFOLDS the `L = 2` instance of the headline
 `aoyagi_learning_coefficient` (`Skeleton.lean:1725`) from the L = 2-banked rungs, so that the day
-its two genuinely-open leaves land the headline closes in one step. It does NOT edit `Skeleton.lean`
+its remaining open leaf lands the headline closes in one step. It does NOT edit `Skeleton.lean`
 (single-writer); it states the `L = 2` headline as its own theorem `aoyagi_learning_coefficient_L2`,
-assembled from the banked pieces + exactly TWO clearly-named, route-independent `sorry` leaves.
+assembled from the banked pieces (now including the landed R1 interface) + exactly ONE clearly-named,
+route-independent `sorry` leaf — the D1 wall.
 
 ## STEP-0 finding (the honest dependency graph — TWO open leaves, not one)
 
@@ -34,18 +36,22 @@ banked rungs (corroborated decorrelated by Codex xhigh, 2026-06-30) shows the de
     content BEYOND R1 (the per-`v` D1 producer). So the honest scaffold names this leg as its own
     leaf `hD1ge_L2`, distinct from the R1 leaf.
 
-So the scaffold below wires everything mechanical and leaves exactly two named leaves:
+So the scaffold below wires everything mechanical and (as of the R1-interface landing) leaves
+exactly ONE named leaf:
 
   1. **`hR1_L2`** — the route-independent R1 resolution interface (`R1ResolutionInterface`-shaped):
      for every nondegenerate reduced width vector `M`, the deepest DLN core has local RLCT
      `ofReal(lambdaCore M)`. This is the EXACT target the R1-LOWER interior leg must produce; it is
      route-independent (the same value statement regardless of the interior chart route), and it
-     discharges the `hRValue` slot of #44 by instantiation at `M = H − r`.
-  2. **`hD1ge_L2`** — the D1 `≥`-leg ∀-`v` per-point slot at the front-pivoted `B'` (the second open
-     obligation: the per-`v` middle-stratum chart producer, which sequences on R1 but is not
-     closed by R1 alone).
+     discharges the `hRValue` slot of #44 by instantiation at `M = H − r`. **LANDED** — via
+     `r1_resolution_interface_L2_generic` (`R1ResolutionInterfaceL2.lean`): the sorry-free
+     `IsRouteMCover` assembly (`L = 2` achiever box divergence + depth-2 box finiteness) ∘ the
+     cover→rlct bridge ∘ the flat↔params transport ∘ the layer-atlas value lane.
+  2. **`hD1ge_L2`** — the D1 `≥`-leg ∀-`v` per-point slot at the front-pivoted `B'` (the ONLY
+     remaining open obligation: the per-`v` middle-stratum chart producer, which sequences on R1 but
+     is not closed by R1 alone).
 
-When BOTH land, `aoyagi_learning_coefficient_L2` closes with no further work.
+When `hD1ge_L2` lands, `aoyagi_learning_coefficient_L2` closes with no further work.
 -/
 
 open MeasureTheory
@@ -81,16 +87,18 @@ theorem aoyagi_learning_coefficient_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
     B.submatrix (R : Fin (H 0) → Fin (H 0)) (P : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))
     with hB'def
   rw [hinv]
-  -- ===== LEAF 1 (R1): the route-independent resolution interface. =====
+  -- ===== LEAF 1 (R1): the route-independent resolution interface — NOW LANDED. =====
   -- The R1-LOWER interior leg's EXACT target: for every nondegenerate reduced-width vector `M`, the
-  -- deepest DLN core has local RLCT `ofReal(lambdaCore M)`. Route-independent. NOT proved here.
+  -- deepest DLN core has local RLCT `ofReal(lambdaCore M)`. Discharged by the banked
+  -- `r1_resolution_interface_L2_generic` (`R1ResolutionInterfaceL2.lean`) — the `IsRouteMCover`
+  -- assembly (achiever divergence + depth-2 box finiteness) ∘ bridge ∘ transport ∘ value lane.
   have hR1_L2 : ∀ (M : Fin (L + 1) → ℕ), (∀ s, 0 < M s) →
       rlctAtOn
           (fun A : Params M =>
             dlnLoss M (0 : Matrix (Fin (M 0)) (Fin (M (Fin.last L))) ℝ) A)
           (fun _ => 0 : Params M)
-        = ENNReal.ofReal (lambdaCore M : ℝ) := by
-    sorry
+        = ENNReal.ofReal (lambdaCore M : ℝ) :=
+    fun M hMid => r1_resolution_interface_L2_generic hL2 hLlt M hMid
   -- ===== LEAF 2 (D1): the ∀-v per-point ≥-leg slot at `B'` (the second open obligation). =====
   -- The per-`v` middle-stratum D1 producer; sequences on R1 but not closed by R1 alone. NOT here.
   have hD1ge_L2 : ∀ v ∈ optimalSet H B',

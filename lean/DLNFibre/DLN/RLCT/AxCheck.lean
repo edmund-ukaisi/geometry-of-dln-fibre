@@ -218,6 +218,14 @@ open DLNFibre.DLN.RLCT
 #print axioms routeMCore_box_diverges_interiorLive
 #print axioms eDeepRank0Unit_ae_pos
 
+-- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
+-- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
+-- no `sorryAx`. `r1_resolution_interface_L2` = `rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M)`
+-- ∀ nondeg M:Fin3, assembled from `achiever_L2` (R1-LOWER) + `routeMBoxThresholdFinite_mnp` (R1-UPPER)
+-- as the two `routeMLayerCover_of_atoms` atoms + the value lane. On wiring,
+-- `aoyagi_learning_coefficient_L2`'s ONLY remaining `sorryAx` is the D1 wall (hD1ge_L2, Item-109).
+#print axioms r1_resolution_interface_L2
+
 -- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
 -- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is
 -- the UNCONDITIONAL §6 arithmetic (lambdaCore(square m) ≤ extra/2 + lambdaCore(M')); `hCore_middle_stratum_
