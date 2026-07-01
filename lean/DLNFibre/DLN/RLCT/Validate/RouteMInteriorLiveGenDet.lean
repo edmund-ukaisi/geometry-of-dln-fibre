@@ -1,0 +1,459 @@
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenBase
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenChart
+import DLNFibre.DLN.RLCT.Validate.RouteMSchurStairDet
+import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
+import DLNFibre.DLN.RLCT.Validate.RouteMChainFDerivValue
+import DLNFibre.DLN.RLCT.Validate.RouteMReaderFDeriv
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
+
+/-!
+# `RouteMInteriorLiveGenDet` — Factor 1: the general-`L` boundary-factor determinant
+
+The general-`L` analogue of `RouteMEihdFreePoint.Dtot_abs_det_free` (the `L = 2` boundary-factor
+determinant). This is **Factor 1** of the general-`L` `BdetMonomial` chain-rule; Factor 2 (the ambient
+LDU lens) is the controller's `RouteMInteriorLiveGenAmbient.kLDU_ambient_det_pbo_gen`.
+
+## The mathematics
+
+The `u`-free boundary chart `BparamsLeafGen ha y : Params M` reads the residual/frame coordinates
+directly from `y` (radial hardwired to `1`) and assembles the chain. Its flat-Jacobian
+`DtotGen ha y₀ := fderiv ℝ (BchartLeafGen ha) y₀` is block-lower-triangular in the `L` chain layers
+`A_s` (`s : Fin L`); each diagonal block is the per-boundary Schur frame
+`schurFrameDeriv (readX s) (readK s) (readN s)` with abs-det `|det (readK s)|^{r_s + c_s}`; the
+head-into-tail chain couplings are det-irrelevant. Collecting the `L` flat layers by a
+layer-collecting equiv, `DtotGen` conjugates to the per-boundary Schur staircase
+`schurStairMap` (`RouteMSchurStairDet`), and `schurStairMap_abs_det_twoConj` reads off
+
+  `|det (DtotGen ha y₀)| = ∏_{s : Fin L} |det (readK y₀ s)|^{r_s + c_s}`,
+
+with `t_s = Text(s+2)`, `r_s = Text(s+1) − Text(s+2)`, `c_s = Wext(s+1) − Text(s+2)`.
+
+## The per-boundary width functions
+
+`schurTGen/schurRGen/schurCGen : ℕ → ℕ` are the per-boundary `t/r/c` families: `t s = Text(s+2)`,
+`r s = Text(s+1) − Text(s+2)`, `c s = Wext(s+1) − Text(s+2)` (the frame `SchurInc_s` shape).
+
+## The dimensionally-correct staircase (design corrected 2026-07-01)
+
+The flat ambient is `⊕_{k : Fin L} (frame slot k ⊕ lift slot k)` (`chartIdxEquiv`); the correct
+staircase boundary space is `genV k = (Fin (schurDim k) → ℝ) × (Fin (liftDim k) → ℝ)` — frame ⊕ lift.
+The diagonal block `genF k` is `schurFrameDeriv` on the frame (det `|det K_k|^{r_k+c_k}`) ⊕ id on the
+lift (det `1`). Consumes the general `stairMap` spine (`RouteMStairFold`/`RouteMStairTwoSided`), NOT
+the pure-`SchurInc` `schurStairMap` (which OMITS the lift coordinates — a dimension mismatch).
+
+## Deliverables
+
+* `rfinDirectGen` / `BparamsLeafGen` / `BchartLeafGen` — the general-`L` boundary chart.
+* `reindexLs_BparamsLeafGen` — the per-layer chart-component ↔ `Agen` bridge (sorry-free).
+* `DtotGen` — the flat-Jacobian linear map.
+* `genV` / `genF` / `genF_abs_det` — the staircase boundary spaces + diagonal blocks + per-block det.
+* `eInGen` / `eihdOutGen` / `eihdcGen` — the layer-collecting equivs + coupling.
+* `eihd_hD_gen` — the block identity `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
+* `eihd_hreg_gen` — the regauge abs-det-`1`.
+* `DtotGen_abs_det` — the headline, via `stairMap_abs_det_twoConj` + `genF_abs_det`.
+
+## Status (spine wiring PROVEN; input side + genF side + regauge DONE; 2 residuals remain)
+
+`DtotGen_abs_det` is PROVEN sorry-free MODULO the 2 residuals below: the general spine
+`stairMap_abs_det_twoConj` is threaded and `genF_abs_det` folds the per-block dets to the readers
+(`∏_{s : Fin L} |det (readK y₀ s)|^{r_s+c_s}`).
+
+DONE (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`):
+* `genV` / `genF` / `genF_abs_det` — the boundary spaces + diagonal block (`schurFrameDeriv` on the
+  frame via `frameToSchurIncGen` ⊕ id on the lift) + its det `|det K_k|^{r_k+c_k}`.
+* `flatMatLEGen` / `roleReorderLEGen` / `frameToSchurIncGen` — the faithful frame reshape.
+* `piToStair` / `headTailFinPi` — the reusable Pi-over-`Fin` ↔ `StairProd` bridge.
+* `eInGen` — the input equiv (`funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ per-boundary
+  `sumArrowLequivProdArrow` ≫ `piToStair`).
+* `eihdOutGen := eInGen` — the SINGLE-conjugate formulation (the general-`L` conjugacy is stated
+  `eInGen ∘ DtotGen ∘ eInGen.symm`, so no separate `packStair` is needed). This trivializes:
+* `eihd_hreg_gen` — DONE (`eInGen.symm ∘ eInGen = id`, det `1`).
+* `reindexLs_BparamsLeafGen` — the per-layer chart-component ↔ `Agen` bridge.
+* `det_symm_conj_toLinearMap` — det-conj helper (`.toLinearMap`-form).
+
+REMAINING (2 sorries, the coupled crux — general-`L` lift of `RouteMHDtotEihd`'s J00/J11 + gate):
+* `eihdcGen` — the chain coupling (the off-diagonal of the conjugated `DtotGen`; cf. `eihdc_free`).
+  Definable by recursion over `StairCoupling genV L`, extracting each head-into-tail block from
+  `eInGen ∘ DtotGen ∘ eInGen.symm`. Mechanical but recursive.
+* `eihd_hD_gen` — **THE CRUX.** `eInGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
+  Per-interior-boundary Schur-frame collapse: the `s`-th diagonal block of `fderiv BchartLeafGen` (in
+  `genV` coords) is `genF s`. `genF` + its det are DONE; this shows the fderiv MATCHES `genF s`. At
+  `L = 2` boundary `0` this is `layer0SchurMap_fderiv_collapse` + `gate_schurCore_eq`; the general-`L`
+  per-interior lift (coupled across layers via `Cgen (s+1)`, the strictly-lower coupling) is the
+  labour-bounded (math-confirmed) residual. Foundation ALL LANDED (sorry-free):
+  `reindexLs_BparamsLeafGen` (layer ↔ `Agen`); `hasFDerivAt_readN`/`_readX`/`_readW` (the reader fderiv
+  atoms, `= matrixReaderCLM (·slot)`); the banked `chainAFDeriv` / `hasFDerivAt_chainA` (the `chainA`
+  layer fderiv value); `genF`/`genF_abs_det`; `eInGen`/`piToStair` (the `genV` collector). What remains
+  is the ASSEMBLY: per-layer `HasFDerivAt (Agen s)` from these atoms via `hasFDerivAt_chainA` (with
+  `Cf = Cgen (s+1)` recursive), then the `genV`-coord block identification `= genF s` + strictly-lower
+  couplings — the general-`L` lift of `RouteMHDtotEihd`'s J00/J11/`packLayer·_fderiv` machinery.
+
+The mathematics is confirmed (numerically at `L = 3`, `(2,4,3,2)`, via
+`RouteMSchurStairDet.schurStairMap_abs_det_2432`); the residual is the LEAN CONSTRUCTION.
+-/
+
+open Matrix
+open scoped BigOperators
+
+noncomputable section
+
+namespace DLNFibre.DLN.RLCT
+
+variable {L : ℕ}
+
+/-! ## The per-boundary width functions (matching the Schur-staircase spine) -/
+
+/-- **The per-boundary K-block width** `t_s = Text(s+2)` — the `readK s` square dimension. -/
+def schurTGen (M : Fin (L + 1) → ℕ) : ℕ → ℕ := fun s => Text M (tach M) (s + 2)
+
+/-- **The per-boundary X-row count** `r_s = Text(s+1) − Text(s+2)` — the `readX s` row count. -/
+def schurRGen (M : Fin (L + 1) → ℕ) : ℕ → ℕ :=
+  fun s => Text M (tach M) (s + 1) - Text M (tach M) (s + 2)
+
+/-- **The per-boundary N-col count** `c_s = Wext(s+1) − Text(s+2)` — the `readN s` col count. -/
+def schurCGen (M : Fin (L + 1) → ℕ) : ℕ → ℕ := fun s => Wext M (s + 1) - Text M (tach M) (s + 2)
+
+/-! ## The general-`L` boundary chart `BparamsLeafGen` -/
+
+/-- **The direct leaf reader** at general `L`: `rfinDirectGen ha y i j := y (leafSlot … i j)` — reads
+ALL leaf entries (including the pivot slot `(0,0)`) DIRECTLY from `y`, no fixed-`1`, no radial scaling.
+The general-`L` lift of `RouteMLeafBData.rfinDirect`. -/
+def rfinDirectGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (Text M (tach M) L)) (Fin (Wext M L)) ℝ :=
+  Matrix.of fun i j => y (leafSlot M (tach M) ha ha.hL i j)
+
+/-- **The general-`L` boundary-factor chart parameters** `BparamsLeafGen ha y : Params M` — the
+`u`-FREE chart, radial scalar hardwired to `1`, reading the residual coords directly (`rfinDirectGen`)
+from `y`. The general-`L` lift of `RouteMLeafBData.BparamsLeaf`. -/
+def BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) : Params M :=
+  chartParamsGen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+    (hleStruct M (tach M) ha)
+
+/-- **The general-`L` boundary factor** `BchartLeafGen ha y := paramsEquivFlat M (BparamsLeafGen ha y)`.
+The general-`L` lift of `RouteMLeafBData.BchartLeaf`. -/
+def BchartLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
+  paramsEquivFlat M (BparamsLeafGen M ha y)
+
+/-! ## The per-layer chart-component ↔ `Agen` bridge (bankable, no fderiv/Schur collapse)
+
+The foundation the per-boundary fderiv-Schur-collapse (`eihd_hD_gen`) stands on: every boundary
+component of `BparamsLeafGen` is, after the ambient→`M` width reindex, the chain layer
+`Agen 1 … s.val` of the live decoder. This is pure `chartParamsGen`/`reindex` algebra (the banked
+`hAgen`), independent of the differentiation. The general-`L` lift of the `L = 2`
+`reindexL0_BparamsLeaf0` / `reindexL1_BparamsLeaf1` (which additionally special-cased the leaf and the
+row split). -/
+
+/-- **Per-layer chart-component identity** — `reindex (BparamsLeafGen ha z s) = Agen 1 … s.val`. The
+`BparamsLeafGen` layer `s` (a `Matrix (M s.castSucc) (M s.succ)`), reindexed by the width equalities
+`Wext s.val = M s.castSucc` / `Wext (s.val+1) = M s.succ`, IS the live decoder's chain layer
+`Agen 1 M (tach M) (genBlkFlatLive …) hle s.val`. Direct from the banked `hAgen` (the reindex is the
+same `Fin.cast`-valued composite) at `u = 1` and the achiever block data. -/
+theorem reindexLs_BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (z : Fin (routeMAmbient M) → ℝ) (s : Fin L) :
+    Matrix.reindex (finCongr (hWgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha z) z)
+        (hleStruct M (tach M) ha) s.val (le_of_lt s.isLt)))
+        (finCongr (hWgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha z) z)
+          (hleStruct M (tach M) ha) (s.val + 1) s.isLt))
+        (Agen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha z) z)
+          (hleStruct M (tach M) ha) s.val)
+      = (BparamsLeafGen M ha z s :
+          Matrix (Fin (M (s.castSucc))) (Fin (M (s.succ))) ℝ) := by
+  -- `chainOfMt.A = Agen` (`rfl`), and `BparamsLeafGen … s = chartParamsGen 1 … s` (`rfl`), so this is
+  -- exactly the banked `hAgen` at `u = 1`, block data the achiever's live decoder.
+  exact hAgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha z) z)
+    (hleStruct M (tach M) ha) s.val s.isLt
+
+/-! ### The per-layer reader fderiv atoms (`readN`/`readW`/`readX` are coordinate reads)
+
+Each Schur/lift reader is a matrix of single-coordinate reads (`read· x k i j = x (·slot k i j)`,
+banked in `RouteMInteriorLiveGenChart`), so its fderiv is the constant `matrixReaderCLM (·slot k)`
+(`hasFDerivAt_matrixRead`). These are the leaf atoms `hasFDerivAt_chainA` consumes in the per-layer
+`Agen`-fderiv (the grouping-2 infra for `eihd_hD_gen`). -/
+
+/-- `fun z => readN z k` (as a matrix function) has fderiv `matrixReaderCLM (readNslot k)`. -/
+theorem hasFDerivAt_readN (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readN M (tach M) ha z k i j) :
+          Matrix (Fin (Text M (tach M) (k.val + 2)))
+            (Fin (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))) ℝ))
+      (matrixReaderCLM (fun i j => readNslot M ha k i j)) y₀ := by
+  have : (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readN M (tach M) ha z k i j) : Matrix _ _ ℝ))
+      = fun z => Matrix.of (fun i j => z (readNslot M ha k i j)) := by
+    funext z; rfl
+  rw [this]; exact hasFDerivAt_matrixRead _ y₀
+
+/-- `fun z => readX z k` has fderiv `matrixReaderCLM (readXslot k)`. -/
+theorem hasFDerivAt_readX (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readX M (tach M) ha z k i j) :
+          Matrix (Fin (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)))
+            (Fin (Text M (tach M) (k.val + 2))) ℝ))
+      (matrixReaderCLM (fun i j => readXslot M ha k i j)) y₀ := by
+  have : (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readX M (tach M) ha z k i j) : Matrix _ _ ℝ))
+      = fun z => Matrix.of (fun i j => z (readXslot M ha k i j)) := by
+    funext z; rfl
+  rw [this]; exact hasFDerivAt_matrixRead _ y₀
+
+/-- `fun z => readW z k hk` has fderiv `matrixReaderCLM (readWslot k hk)` (deep interior `k+1 < L`). -/
+theorem hasFDerivAt_readW (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hk : k.val + 1 < L) (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readW M (tach M) ha z k hk i j) :
+          Matrix (Fin (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)))
+            (Fin (Wext M (k.val + 2))) ℝ))
+      (matrixReaderCLM (fun i j => readWslot M ha k hk i j)) y₀ := by
+  have : (fun z : Fin (routeMAmbient M) → ℝ =>
+        (Matrix.of (fun i j => readW M (tach M) ha z k hk i j) : Matrix _ _ ℝ))
+      = fun z => Matrix.of (fun i j => z (readWslot M ha k hk i j)) := by
+    funext z; rfl
+  rw [this]; exact hasFDerivAt_matrixRead _ y₀
+
+/-- **The flat-Jacobian** `DtotGen ha y₀ := fderiv ℝ (BchartLeafGen ha) y₀` (as a linear map) — the
+boundary-factor differential whose staircase det Factor 1 reads. -/
+def DtotGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ) :=
+  (fderiv ℝ (fun y => BchartLeafGen M ha y) y₀).toLinearMap
+
+/-! ## The dimensionally-correct staircase (frame slot ⊕ lift slot per boundary)
+
+DESIGN NOTE (corrected 2026-07-01). The pure-`SchurInc` staircase `schurStairMap` is NOT the flat
+conjugate: the flat ambient decomposes (`chartIdxEquiv`, `card_chartIdx` PROVEN) as
+`⊕_{k : Fin L} (Fin (schurDim k) ⊕ Fin (liftDim k))` — a **frame slot** (`schurDim k = Text(k+1)·
+Wext(k+1)`, the `K/X/N/E` roles = `SchurInc_k`) PLUS a **lift slot** (`liftDim k`, the chain lift
+`W_k`; `0` at the leaf). The pure-`SchurInc` product omits the `∑_k liftDim_k` lift coordinates, so no
+equiv exists. The correct staircase boundary space is `genV k = (frame slot k) × (lift slot k)`,
+dimensionally EXACT against the flat ambient. The diagonal block carries `schurFrameDeriv` on the
+frame (det `|det K_k|^{r_k+c_k}`) and identity on the lift (det `1`); couplings are the chain feed.
+This mirrors the `L = 2` `eihdV` (`V0 = SchurInc_0`, `V1 = (W_0, leaf)`) faithfully. Consumes the
+general `stairMap` spine (`RouteMStairFold`), NOT `schurStairMap`. -/
+
+/-- **The per-boundary staircase space** `genV k = (frame slot k) × (lift slot k)` — the flat
+coordinates of boundary `k`: the Schur-frame slot (`Fin (schurDim k) → ℝ`, the `SchurInc_k` roles) and
+the chain-lift slot (`Fin (liftDim k) → ℝ`, the lift `W_k`; trivial at the leaf). Dimensionally exact:
+`⊕_{k : Fin L} genV k` matches the flat ambient (`chartIdxEquiv`). -/
+abbrev genV (M : Fin (L + 1) → ℕ) : ℕ → Type := fun k =>
+  (Fin (schurDim M (tDesc M (tach M)) k) → ℝ) × (Fin (liftDim M (tDesc M (tach M)) k) → ℝ)
+
+/-! ### The Pi-over-`Fin n` ↔ `StairProd` bridge (general utility)
+
+The nested-product `StairProd V n` is linearly equivalent to the flat Pi `∀ k : Fin n, V k.val` — the
+head-tail recursion (`Fin.consLinearEquiv` at each step, with the `V (Fin.succ i) = V (i.val + 1)`
+index bridge). This is the collector that turns the per-boundary Pi (from `chartIdxEquiv` + `piCurry`)
+into the staircase product the `stairMap` spine consumes. -/
+
+/-- The head-tail split `(∀ k : Fin (n+1), V k.val) ≃ₗ V 0 × (∀ i : Fin n, V (i.val + 1))` — the
+`Fin.cons` split, the tail reindexing `V i.succ.val = V (i.val + 1)` (`rfl`). -/
+def headTailFinPi (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] (n : ℕ) :
+    ((k : Fin (n + 1)) → V k.val) ≃ₗ[ℝ] V 0 × ((i : Fin n) → V (i.val + 1)) where
+  toFun f := (f 0, fun i => f i.succ)
+  invFun p := Fin.cons p.1 (fun i => p.2 i)
+  map_add' f g := rfl
+  map_smul' c f := rfl
+  left_inv f := by
+    funext k
+    refine Fin.cases rfl (fun i => ?_) k
+    simp [Fin.cons_succ]
+  right_inv p := by
+    refine Prod.ext rfl ?_
+    funext i
+    simp [Fin.cons_succ]
+
+/-- **The Pi ↔ StairProd bridge** `(∀ k : Fin n, V k.val) ≃ₗ StairProd V n`, by recursion on `n`. At
+`n = 0` both are `Subsingleton` (`Fin 0` Pi / `PUnit`); at `n+1`, split the head `k = 0` off with
+`headTailFinPi` and recurse on the tail `V (·+1)`. -/
+def piToStair (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    (n : ℕ) → ((k : Fin n) → V k.val) ≃ₗ[ℝ] StairProd V n
+  | 0 =>
+    { toFun := fun _ => PUnit.unit
+      invFun := fun _ => fun k => k.elim0
+      map_add' := fun _ _ => rfl
+      map_smul' := fun _ _ => rfl
+      left_inv := fun _ => funext fun k => k.elim0
+      right_inv := fun _ => rfl }
+  | (n + 1) =>
+    -- `(∀ k : Fin (n+1), V k) ≃ V 0 × (∀ i : Fin n, V (i+1)) ≃ V 0 × StairProd (V∘succ) n`.
+    (headTailFinPi V n).trans
+      ((LinearEquiv.refl ℝ (V 0)).prodCongr (piToStair (fun k => V (k + 1)) n))
+
+/-! ### The faithful general-`L` frame reshape `(frame slot k) ≃ₗ SchurInc_k`
+
+The frame slot at boundary `k` (`schurDim k = Text(k+1)·Wext(k+1)`) reshapes to the `SchurInc
+(t_k)(r_k)(c_k)` tuple via the SAME `frameSplitEquiv M (tach M) (k+1)` the readers use: reindex
+`Fin (schurDim k) → ℝ` by `frameSplitEquiv.symm` to the role-Sum-indexed Pi `(((K⊕X)⊕N)⊕E) → ℝ`,
+split off each role by `sumArrowLequivProdArrow`, reshape each to its matrix, and REORDER
+`(K, X, N, E) → (K, N, X, E)` to match `SchurInc`'s tuple. General-`L` lift of `RouteMHDtotEihd`'s
+`frameToSchurInc` / `roleReorderLE` / `flatMatLE`. -/
+
+/-- `(Fin (a*b) → ℝ) ≃ₗ Matrix (Fin a) (Fin b) ℝ` — the flat-slot ↔ matrix reshape (local copy,
+avoids importing the L=2 module). -/
+noncomputable def flatMatLEGen (a b : ℕ) :
+    (Fin (a * b) → ℝ) ≃ₗ[ℝ] Matrix (Fin a) (Fin b) ℝ :=
+  (LinearEquiv.funCongrLeft ℝ ℝ finProdFinEquiv).trans
+    ((LinearEquiv.curry ℝ ℝ (Fin a) (Fin b)).trans (Matrix.ofLinearEquiv ℝ))
+
+/-- Reorder/reshape `(((K × X) × N) × E) → SchurInc (K, N, X, E)` at general per-boundary widths —
+`frameSplitEquiv`'s role order is `(((K⊕X)⊕N)⊕E)` but `SchurInc`/`readK…` is `(K, N, X, E)`. -/
+noncomputable def roleReorderLEGen (t r c : ℕ) :
+    ((((Fin (t * t) → ℝ) × (Fin (r * t) → ℝ)) × (Fin (t * c) → ℝ)) × (Fin (r * c) → ℝ))
+      ≃ₗ[ℝ] SchurInc t r c where
+  toFun p :=
+    (flatMatLEGen t t p.1.1.1, flatMatLEGen t c p.1.2, flatMatLEGen r t p.1.1.2, flatMatLEGen r c p.2)
+  invFun z :=
+    ((((flatMatLEGen t t).symm z.1, (flatMatLEGen r t).symm z.2.2.1),
+      (flatMatLEGen t c).symm z.2.1), (flatMatLEGen r c).symm z.2.2.2)
+  map_add' a b := by simp only [Prod.fst_add, Prod.snd_add, map_add]; rfl
+  map_smul' r a := by simp only [Prod.smul_fst, Prod.smul_snd, map_smul, RingHom.id_apply]; rfl
+  left_inv p := by simp only [LinearEquiv.symm_apply_apply]
+  right_inv z := by simp only [LinearEquiv.apply_symm_apply]
+
+/-- **The faithful frame reshape** `(Fin (schurDim k) → ℝ) ≃ₗ SchurInc (t_k)(r_k)(c_k)` at boundary
+`k : Fin L` — the general-`L` `frameToSchurInc`. Reindex by `frameSplitEquiv (k+1)`, peel the nested
+`⊕` (E, N, X, K), reshape + reorder to `(K, N, X, E)`. -/
+noncomputable def frameToSchurIncGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L) :
+    (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ)
+      ≃ₗ[ℝ] SchurInc (schurTGen M k.val) (schurRGen M k.val) (schurCGen M k.val) :=
+  (LinearEquiv.funCongrLeft ℝ ℝ
+      (frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt) (ha.hub k.val)).symm).trans
+    (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+        ((((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).trans
+            (((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ ℝ).prodCongr
+              (LinearEquiv.refl ℝ _)))).prodCongr (LinearEquiv.refl ℝ _)))).trans
+      (roleReorderLEGen (schurTGen M k.val) (schurRGen M k.val) (schurCGen M k.val)))
+
+/-- The `.toLinearMap`-form conjugation det: `det (e.symm ∘ f ∘ e) = det f` (via `LinearMap.det_conj`
+on `e.symm`, restated so it matches `.toLinearMap` composites). -/
+theorem det_symm_conj_toLinearMap {E₁ E₂ : Type} [AddCommGroup E₁] [Module ℝ E₁] [AddCommGroup E₂]
+    [Module ℝ E₂] [FiniteDimensional ℝ E₁] (f : E₂ →ₗ[ℝ] E₂) (e : E₁ ≃ₗ[ℝ] E₂) :
+    LinearMap.det (e.symm.toLinearMap ∘ₗ f ∘ₗ e.toLinearMap) = LinearMap.det f := by
+  have h := LinearMap.det_conj f e.symm
+  rw [LinearEquiv.symm_symm] at h
+  exact h
+
+/-- **The per-boundary diagonal block** `genF k : genV k →ₗ genV k` — `schurFrameDeriv (readX k)
+(readK k) (readN k)` conjugated onto the frame slot by `frameToSchurIncGen` (det `|det K_k|^{r_k+c_k}`),
+identity on the lift slot (det `1`). For `k ≥ L` the block is `id` (the staircase reads only `k < L`).
+The `readK/X/N k` are read at the free point `y₀`. -/
+noncomputable def genF (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    (k : ℕ) → genV M k →ₗ[ℝ] genV M k := fun k =>
+  if hk : k < L then
+    ((frameToSchurIncGen M ha ⟨k, hk⟩).symm.toLinearMap
+        ∘ₗ schurFrameDeriv (readX M (tach M) ha y₀ ⟨k, hk⟩) (readK M (tach M) ha y₀ ⟨k, hk⟩)
+            (readN M (tach M) ha y₀ ⟨k, hk⟩)
+        ∘ₗ (frameToSchurIncGen M ha ⟨k, hk⟩).toLinearMap).prodMap LinearMap.id
+  else LinearMap.id
+
+/-- **The per-boundary det** `|det (genF k)| = |det K_k|^{r_k+c_k}` at an interior `k` (`0` at the
+leaf's `0×0` K). The frame block is `schurFrameDeriv` conjugated by `frameToSchurIncGen` (det-invariant,
+`schurFrame_abs_det`), the lift block is `id` (det `1`). -/
+theorem genF_abs_det (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (k : Fin L) :
+    |LinearMap.det (genF M ha y₀ k.val)|
+      = |(Matrix.of (readK M (tach M) ha y₀ k)).det|
+        ^ ((Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+          + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))) := by
+  have hk : (k : ℕ) < L := k.isLt
+  rw [genF, dif_pos hk, LinearMap.det_prodMap, LinearMap.det_id, mul_one,
+    det_symm_conj_toLinearMap, schurFrame_abs_det]
+  -- `⟨↑k, hk⟩ = k` (Fin.eta, defeq) + `schurRGen/schurCGen` unfold (defeq) to the `Text`/`Wext`
+  -- exponent — the remaining goal is definitional.
+  rfl
+
+/-- **The input layer-collecting equiv** `eInGen : (Fin (routeMAmbient M) → ℝ) ≃ₗ StairProd genV L` —
+the `chartIdxEquiv`-based reshape collecting the per-boundary (frame slot ⊕ lift slot). Concrete and
+reachable (funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ the per-boundary sum-split), unlike the
+abstract recursion. LOAD-BEARING RESIDUAL. -/
+def eInGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] StairProd (genV M) L :=
+  -- flat → ChartIdx-Pi → nested Π (piCurry) → per-boundary sum-split (genV k) → StairProd (piToStair).
+  (LinearEquiv.funCongrLeft ℝ ℝ
+      (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm) ≪≫ₗ
+  (LinearEquiv.piCurry ℝ (κ := fun k : Fin L =>
+      Fin (schurDim M (tDesc M (tach M)) k.val) ⊕ Fin (liftDim M (tDesc M (tach M)) k.val))
+      (fun _ _ => ℝ)) ≪≫ₗ
+  (LinearEquiv.piCongrRight (fun k : Fin L =>
+      LinearEquiv.sumArrowLequivProdArrow (Fin (schurDim M (tDesc M (tach M)) k.val))
+        (Fin (liftDim M (tDesc M (tach M)) k.val)) ℝ ℝ)) ≪≫ₗ
+  piToStair (genV M) L
+
+/-- **The output layer-collecting equiv** `eihdOutGen := eInGen` — the SAME reader-basis reshape as the
+input. Unlike the `L = 2` `eihdOut` (a distinct `packStair ∘ paramsEquivFlatLinear.symm`), the general
+`L` conjugacy is stated SINGLE-sided (`eInGen ∘ DtotGen ∘ eInGen.symm`, `stairMap_abs_det_conj`), so
+the output equiv is `eInGen` itself. This trivializes the regauge (`eihdOutGen.symm ∘ eInGen = id`,
+det `1`) and folds the whole conjugacy into `eihd_hD_gen`. -/
+def eihdOutGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] StairProd (genV M) L :=
+  eInGen M ha
+
+/-- **The staircase coupling** — the head-into-tail chain feed (det-irrelevant), definable from the
+off-diagonal block of the conjugated `DtotGen` once `eInGen`/`eihdOutGen` exist. LOAD-BEARING
+RESIDUAL. -/
+def eihdcGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ) :
+    StairCoupling (genV M) L :=
+  -- MISSING: off-diagonal of `eihdOutGen ∘ DtotGen ∘ eInGen.symm` (lift of `eihdc_free`).
+  sorry
+
+/-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
+The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
+collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
+are the chain feed. THE CRUX — the per-interior-boundary Schur-frame collapse of the `chainA` layer
+fderiv, generalizing `layer0SchurMap_fderiv_collapse`. LOAD-BEARING RESIDUAL. -/
+theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    (eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+        ∘ₗ DtotGen M ha y₀
+        ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
+      = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀) :=
+  -- THE CRUX. MISSING: per-interior-boundary Schur-frame collapse — the fderiv diagonal block of
+  -- `Agen s = chainA(readN s)(readW s)(Cgen (s+1))`, in `genV` coords, is `genF s`.
+  sorry
+
+/-- **The regauge abs-det-`1`** `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`. The
+general-`L` lift of `RouteMHregPerm.eihd_hreg` (a slot-reindex is measure/det-1). LOAD-BEARING
+RESIDUAL. -/
+theorem eihd_hreg_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    |LinearMap.det
+        (((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
+        ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L))| = 1 := by
+  -- `eihdOutGen = eInGen`, so the regauge is `eInGen.symm ∘ eInGen = id`, det `1`.
+  have hid : ((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
+        ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+      = LinearMap.id := by
+    apply LinearMap.ext; intro x
+    show (eihdOutGen M ha).symm (eInGen M ha x) = x
+    rw [show eihdOutGen M ha = eInGen M ha from rfl, LinearEquiv.symm_apply_apply]
+  rw [hid, LinearMap.det_id, abs_one]
+
+/-! ## The headline: `DtotGen_abs_det` -/
+
+/-- **`DtotGen_abs_det`** — the general-`L` boundary-factor determinant (Factor 1). Given the conjugacy
+`eihd_hD_gen`, the per-boundary dets `genF_abs_det`, and the regauge `eihd_hreg_gen`, the determinant
+of `DtotGen ha y₀` is the multi-boundary Schur value
+
+  `∏_{s : Fin L} |det (readK y₀ s)|^{(Text(s+1) − Text(s+2)) + (Wext(s+1) − Text(s+2))}`.
+
+Via the general spine `stairMap_abs_det_twoConj` on `eihd_hD_gen`, the per-boundary block dets
+`genF_abs_det` folding the product to the readers. The general-`L` lift of
+`RouteMEihdFreePoint.Dtot_abs_det_free`. -/
+theorem DtotGen_abs_det (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (DtotGen M ha y₀)|
+      = ∏ s : Fin L, |(Matrix.of (readK M (tach M) ha y₀ s)).det|
+          ^ ((Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+            + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))) := by
+  rw [stairMap_abs_det_twoConj (genV M) L (genF M ha y₀) (eihdcGen M ha y₀)
+        (eInGen M ha) (eihdOutGen M ha) (DtotGen M ha y₀) (eihd_hD_gen M ha y₀)
+        (eihd_hreg_gen M ha)]
+  exact Finset.prod_congr rfl (fun s _ => genF_abs_det M ha y₀ s)
+
+end DLNFibre.DLN.RLCT
+
+end
