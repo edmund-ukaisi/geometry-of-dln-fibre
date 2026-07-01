@@ -52,11 +52,19 @@ the pure-`SchurInc` `schurStairMap` (which OMITS the lift coordinates — a dime
 * `eihd_hreg_gen` — the regauge abs-det-`1`.
 * `DtotGen_abs_det` — the headline, via `stairMap_abs_det_twoConj` + `genF_abs_det`.
 
-## Status (ROUND-2 corrected: staggered output pack; 4 residuals)
+## Status (ROUND-3, 2026-07-01: staggered pack LANDED; 2 residuals)
 
-`DtotGen_abs_det` is PROVEN sorry-free MODULO the 4 residuals below: the general spine
+`DtotGen_abs_det` is PROVEN sorry-free MODULO the 2 residuals below: the general spine
 `stairMap_abs_det_twoConj` is threaded and `genF_abs_det` folds the per-block dets to the readers
 (`∏_{s : Fin L} |det (readK y₀ s)|^{r_s+c_s}`).
+
+CLOSED THIS ROUND (were residuals, now sorry-free): `packStairGen` (the staggered Params-layer →
+staircase pack, ROUTE-B cast-tower assembly — `piReindexOfSigma` [step5] + `liftGatherFinL` [the
+`finCongr`+`Equiv.sigmaCongrLeft'` transport of `sigmaGather`] + `packRowSplitGen`/`flatMatLEGen`/
+`piProdSplit`/`piToStair`; the cast-tower typechecks — `schurDim = Text·Wext` defeq + the `genV k.val`
+alignment both fire), and `eihdOutGen := (paramsEquivFlatLinear).symm ≪≫ₗ packStairGen` (thin,
+`routeMAmbient = flatDim` DEFINITIONALLY). NB `packStairGen` carries an explicit `(hL : 0 < L)`
+(supplied by `ha.hL`) — the `L = 0` subsingleton case is not needed by any consumer.
 
 ROUND-2 CORRECTION (2026-07-01): the earlier `eihdOutGen := eInGen` (single-conjugate) was
 GREEN-BUT-WRONG — `eInGen` reads the SLOT layout but `DtotGen`'s OUTPUT is Params-LAYER, so
@@ -84,22 +92,25 @@ BANKED sorry-free (Route-B bricks, 2026-07-01 — the hard cores):
   irreducible combinatorial core), via `Fin.cases`/`Fin.lastCases`.
 * `gatherBlk_zero`/`gatherLift_last`/`gatherShift` — its 3 hyps at the actual DLN widths.
 
-REMAINING (4 sorries, the corrected staggered-pack track — ROUTE B, Codex `high` verdict 2026-07-01):
-* `packStairGen : Params M ≃ₗ StairProd genV L` — now PURE ASSEMBLY of the banked bricks (NO new math):
-  `piCongrRight packRowSplitGen` → `flatMatLEGen` per block → `funCongrLeft sigmaGather` (hyps via
-  `gatherBlk_zero`/`gatherLift_last`/`gatherShift`, `L = (L−1)+1` reindex) on the lift flat index →
-  recombine frame⊕gathered-lift → `piToStair`. ~40–80 LoC composition (+ `M s.castSucc = Wext s` recast,
-  proven).
-* `eihdOutGen := packStairGen ∘ paramsEquivFlatLinear.symm` (thin — reuses the banked
-  `paramsEquivFlatLinear` for flat↔Params, `routeMAmbient = flatDim` by `finCongr`).
-* `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`: the slot↔staggered-layer reindex is a
-  coord permutation (det ±1), via `RouteMHregPerm`'s `IsCoordLE`/`isCoordLE_of_read` infra. (No longer
-  the trivial `= id` — that was the wrong-design artefact.)
+REMAINING (2 sorries — both large, isolated, honest; NEITHER forced green):
 * `eihd_hD_gen` — **THE CRUX**: `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
-  Via `stairMap_eq_of_lowerTriDiag`, reduces to `StairLowerTriDiag genV L genF T`: per boundary (i)
-  upper-block = 0 + (ii) diag = genF s (`Cgen` non-recursive = boundary-s Schur block → schurFrameDeriv_s;
-  consumes chart's/the fderiv per-boundary collapse). Foundation banked: reader atoms + `hasFDerivAt_chainA`
-  + `reindexLs` + `genF`. VERIFY-FIRST-confirmed: staggered dims = genV (17/9/0) exactly.
+  REDUCED (this round) via `stairMap_eq_of_lowerTriDiag` (`eihdcGen = stairCouplingOf genV L T` by `rfl`)
+  to the single isolated goal `StairLowerTriDiag genV L genF T` (`T` the conjugated `DtotGen`): per
+  boundary (i) upper-block = 0 + (ii) diag = genF s. (ii) is the per-boundary fderiv-Schur collapse of
+  `Agen s = chainA(readN s)(readW s)(Cgen(s+1))` in the STAGGERED `genV` coords → `schurFrameDeriv` on
+  the frame ⊕ id on the lift. Foundation banked: `hasFDerivAt_chainA` + `hasFDerivAt_readN/X/W` +
+  `reindexLs_BparamsLeafGen` + `genF`; generalizes the `L = 2` `layer0SchurMap_fderiv_collapse` (which
+  needs the general analogues of `slotReadV0`/`packLayer0`/`gate_schurCore_eq` — a multi-hundred-LoC
+  fderiv development). SOUNDNESS: the staggered dims are `genV`-exact (VERIFY-FIRST L=3 (2,4,3,2):
+  17/9/0), so `diag(T) s = genF s` is genuinely TRUE (unlike the removed single-conjugate `eihdOutGen :=
+  eInGen`, which was green-but-wrong). NOT forced green.
+* `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`: the slot↔staggered-layer reindex is a signed
+  coord permutation (det ±1). Route (general-L lift of `RouteMHregPerm.eihd_hreg`): build a `stairChartGen`
+  on `StairProd genV L` + certify `isCoordLE_eInGen` / `isCoordLE_packStairGen` via `isCoordLE_of_read`,
+  compose by `IsCoordLE.trans`/`.symm`, feed `hreg_of_exists_funCongrLeft`. The top-level assembly is
+  general (mirrors L=2 `eihd_hreg`); the two per-block `IsCoordLE` certificates need per-slot reads
+  through the recursive `stairChartGen` (the ~600-LoC L=2 `bigToChartEin`/`bigToFlatIdx` analogue at
+  general L). TRUE and det-irrelevant to soundness; left isolated.
 
 The mathematics is confirmed (numerically at `L = 3`, `(2,4,3,2)`, via
 `RouteMSchurStairDet.schurStairMap_abs_det_2432`); the residual is the LEAN CONSTRUCTION.
@@ -506,25 +517,100 @@ theorem gatherShift (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L - 1) :
       = liftDim M (tDesc M (tach M)) i := by
   unfold liftDim; rw [if_pos (by omega : i + 1 < L)]; rfl
 
+/-- **Step-5 tool: a Pi-of-`→ℝ` reindex from a Σ-equiv.** Given a bijection `σ` between the flat
+Σ-indices `Σ i, Fin (d i)` and `Σ i, Fin (e i)`, reindex the Pi of `→ℝ` charts:
+`(∀ i, Fin (d i) → ℝ) ≃ₗ (∀ i, Fin (e i) → ℝ)` via `piCurry.symm ≫ funCongrLeft σ.symm ≫ piCurry`
+(uncurry both Pis to a single `Σ → ℝ`, precompose with `σ.symm`, re-curry). Factor1's de-risked
+composition tool. -/
+noncomputable def piReindexOfSigma {ι : Type} (d e : ι → ℕ)
+    (σ : (Σ i : ι, Fin (d i)) ≃ (Σ i : ι, Fin (e i))) :
+    ((i : ι) → Fin (d i) → ℝ) ≃ₗ[ℝ] ((i : ι) → Fin (e i) → ℝ) :=
+  (LinearEquiv.piCurry ℝ (fun (i : ι) (_ : Fin (d i)) => ℝ)).symm ≪≫ₗ
+    (LinearEquiv.funCongrLeft ℝ ℝ σ.symm) ≪≫ₗ
+    (LinearEquiv.piCurry ℝ (fun (i : ι) (_ : Fin (e i)) => ℝ))
+
+/-- **The `Fin L`-indexed lift gather (transported).** The off-by-one lift Σ-bijection `sigmaGather`,
+transported from its native `Fin ((L−1)+1)` indexing to the `Fin L` indexing via the base equiv
+`finCongr (L = (L−1)+1)` and `Equiv.sigmaCongrLeft'`. Relates the per-layer lift block dim
+`liftBlk k = (Wext k − Text(k+1))·Wext(k+1)` to the staggered `genV` lift dim `liftDim k` (`k ↦ k−1`).
+The three `sigmaGather` hyps come from `gatherBlk_zero`/`gatherLift_last`/`gatherShift`. -/
+noncomputable def liftGatherFinL (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L) :
+    (Σ k : Fin L, Fin ((Wext M k.val - Text M (tach M) (k.val + 1)) * Wext M (k.val + 1)))
+      ≃ (Σ k : Fin L, Fin (liftDim M (tDesc M (tach M)) k.val)) :=
+  -- transport `finCongr hLe : Fin L ≃ Fin ((L−1)+1)` onto both sides of `sigmaGather (L−1)`.
+  let hLe : L = (L - 1) + 1 := (Nat.succ_pred_eq_of_pos hL).symm
+  let ecast : Fin L ≃ Fin ((L - 1) + 1) := finCongr hLe
+  let blk : Fin ((L - 1) + 1) → ℕ := fun k =>
+    (Wext M (ecast.symm k).val - Text M (tach M) ((ecast.symm k).val + 1)) * Wext M ((ecast.symm k).val + 1)
+  let lift : Fin ((L - 1) + 1) → ℕ := fun k => liftDim M (tDesc M (tach M)) (ecast.symm k).val
+  -- `Σ k : Fin L, Fin (blkL k) ≃ Σ k : Fin ((L−1)+1), Fin (blk k)` by `sigmaCongrLeft'` (β at `ecast.symm`).
+  (Equiv.sigmaCongrLeft' (β := fun k : Fin L =>
+      Fin ((Wext M k.val - Text M (tach M) (k.val + 1)) * Wext M (k.val + 1))) ecast).trans
+    (-- the native off-by-one gather at `n = L−1`
+    (sigmaGather (L - 1) blk lift
+      (by
+        -- `blk 0 = liftBlk (ecast.symm 0)`; `ecast.symm 0 = ⟨0,_⟩`, so this is `gatherBlk_zero`.
+        show (Wext M (ecast.symm 0).val - Text M (tach M) ((ecast.symm 0).val + 1))
+            * Wext M ((ecast.symm 0).val + 1) = 0
+        have h0 : (ecast.symm 0).val = 0 := by
+          simp only [ecast, finCongr_symm, finCongr_apply]; rfl
+        rw [h0]; exact gatherBlk_zero M ha)
+      (by
+        -- `lift (last) = liftDim (ecast.symm last).val`; `(ecast.symm last).val = L−1`, so `gatherLift_last`.
+        show liftDim M (tDesc M (tach M)) (ecast.symm (Fin.last (L - 1))).val = 0
+        have hlast : (ecast.symm (Fin.last (L - 1))).val = L - 1 := by
+          simp only [ecast, finCongr_symm, finCongr_apply, Fin.val_last, Fin.coe_cast]
+        rw [hlast]; exact gatherLift_last M ha)
+      (by
+        -- `blk i.succ = lift i.castSucc`, i.e. `liftBlk (i.val+1) = liftDim (i.val)`, via `gatherShift`.
+        intro i
+        show (Wext M (ecast.symm i.succ).val - Text M (tach M) ((ecast.symm i.succ).val + 1))
+              * Wext M ((ecast.symm i.succ).val + 1)
+            = liftDim M (tDesc M (tach M)) (ecast.symm i.castSucc).val
+        have hsucc : (ecast.symm i.succ).val = i.val + 1 := by
+          simp only [ecast, finCongr_symm, finCongr_apply, Fin.coe_cast, Fin.val_succ]
+        have hcast : (ecast.symm i.castSucc).val = i.val := by
+          simp only [ecast, finCongr_symm, finCongr_apply, Fin.coe_cast, Fin.coe_castSucc]
+        rw [hsucc, hcast]; exact gatherShift M i.val (by omega))).trans
+    -- transport back to `Fin L` indexing
+    (Equiv.sigmaCongrLeft' (β := fun k : Fin ((L - 1) + 1) =>
+      Fin (liftDim M (tDesc M (tach M)) (ecast.symm k).val)) ecast.symm))
+
 /-- **The staggered pack** `packStairGen : Params M ≃ₗ StairProd genV L` — the CORRECT Params-layer →
-staircase reshape. ROUTE B (Codex `high` verdict 2026-07-01: cleaner than the Route-A `ChartIdx ≃ FlatIdx`
-index bijection, ~120–160 LoC): (1) `piCongrRight` split each layer into `kept_s × lift_s` (probe-clean
-row-split above); (2) the OFF-BY-ONE GATHER — reindex the lift Pi `s ↦ s+1` so slot `s` gets
-`lift(layer s+1)` (via `LinearEquiv.piCongrLeft'` on the lift index; the nonzero lifts are layers
-`1..L−1 ≃ pred → slots 0..L−2`, with `lift 0 = 0`-dim [`Wext0−Text1=0`] and `genLift (L−1) = 0`-dim
-[leaf] the two padded ends — `Subsingleton` closures); (3) `piToStair (genV M) L`. LOAD-BEARING RESIDUAL:
-the row-split + the gather (the gather is the irreducible combinatorial core, per Codex). -/
-def packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+staircase reshape (ROUTE B). Assembly of banked bricks: (0) width-recast `Params M` layer `s`
+(`M s.castSucc × M s.succ`) to `Wext s × Wext (s+1)`; (1) `piCongrRight packRowSplitGen` splits each
+layer into `kept_s × liftblock_s`; (2) `piCongrRight (flatMatLEGen.symm × flatMatLEGen.symm)` flattens
+both blocks to `Fin (schurDim s) → ℝ` and the lift flat `Fin (liftBlk s) → ℝ`; (3) `piProdSplit`
+separates the frame-Pi from the lift-Pi; (4) `piReindexOfSigma (liftGatherFinL)` reindexes the lift-Pi
+`liftBlk ↦ liftDim` (the off-by-one gather); (5) `piProdSplit.symm` recombines per slot to
+`∀ k, genV k.val`; (6) `piToStair (genV M) L`. -/
+noncomputable def packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L) :
     Params M ≃ₗ[ℝ] StairProd (genV M) L :=
-  -- REMAINING: pure ASSEMBLY of banked bricks (all sorry-free above): (1) `piCongrRight
-  -- packRowSplitGen` splits each layer → `∀ s, kept_s × liftblock_s`; (2) `flatMatLEGen` flattens
-  -- kept_s → frame (schurDim s) and liftblock_s → its flat; (3) `sigmaGather (L−1) blk lift` (with
-  -- `gatherBlk_zero`/`gatherLift_last`/`gatherShift` discharging its 3 hyps) `funCongrLeft`-reindexes
-  -- the lift flat index to the `genV` lift slots; (4) recombine frame⊕gathered-lift per slot →
-  -- `∀ k, genV k`; (5) `piToStair (genV M) L`. Needs the `L = (L−1)+1` reindex + the `M s.castSucc =
-  -- Wext s` Params recast (both proven). ~40–80 LoC composition — NO new math (the combinatorial core
-  -- `sigmaGather` + row-split `packRowSplitGen` are DONE).
-  sorry
+      -- (0) width recast: `Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ≃ Matrix (Fin (Wext s)) (Fin (Wext (s+1)))`
+      (LinearEquiv.piCongrRight (fun s : Fin L =>
+        Matrix.reindexLinearEquiv ℝ ℝ
+          (finCongr (show M s.castSucc = Wext M s.val by rw [Wext_apply M s.val (by omega)]; rfl))
+          (finCongr (show M s.succ = Wext M (s.val + 1) by rw [Wext_apply M (s.val + 1) (by omega)]; rfl)))) ≪≫ₗ
+      -- (1) per-layer row-split
+      (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s)) ≪≫ₗ
+      -- (2) flatten frame + lift blocks
+      (LinearEquiv.piCongrRight (fun s : Fin L =>
+        (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+          (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm)) ≪≫ₗ
+      -- (3) split frame-Pi from lift-Pi
+      (piProdSplit (fun s : Fin L => Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)
+        (fun s : Fin L => Fin ((Wext M s.val - Text M (tach M) (s.val + 1)) * Wext M (s.val + 1)) → ℝ)) ≪≫ₗ
+      -- (4) reindex the lift-Pi by the off-by-one gather
+      ((LinearEquiv.refl ℝ ((s : Fin L) → Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)).prodCongr
+        (piReindexOfSigma
+          (fun k : Fin L => (Wext M k.val - Text M (tach M) (k.val + 1)) * Wext M (k.val + 1))
+          (fun k : Fin L => liftDim M (tDesc M (tach M)) k.val)
+          (liftGatherFinL M ha hL))) ≪≫ₗ
+      -- (5) recombine frame ⊕ gathered-lift per slot into `∀ k, genV k.val`
+      (piProdSplit (fun s : Fin L => Fin (schurDim M (tDesc M (tach M)) s.val) → ℝ)
+        (fun s : Fin L => Fin (liftDim M (tDesc M (tach M)) s.val) → ℝ)).symm ≪≫ₗ
+      -- (6) collect to the staircase
+      (piToStair (genV M) L)
 
 /-- **The staggered output pack** `eihdOutGen : (Fin (routeMAmbient M) → ℝ) ≃ₗ StairProd genV L` — the
 CORRECT output reshape. `eihdOutGen := packStairGen ∘ paramsEquivFlatLinear.symm` (the controller's
@@ -533,8 +619,10 @@ flat↔Params grouping, `routeMAmbient M = flatDim M` by `finCongr`). LOAD-BEARI
 content is in `packStairGen`). -/
 def eihdOutGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] StairProd (genV M) L :=
-  -- MISSING: packStairGen M ha ∘ paramsEquivFlatLinear.symm (through finCongr routeMAmbient=flatDim).
-  sorry
+  -- `routeMAmbient M = flatDim M` DEFINITIONALLY (`RouteMExtraction.routeMAmbient`), so
+  -- `(paramsEquivFlatLinear M).symm : (Fin (routeMAmbient M) → ℝ) ≃ₗ Params M` typechecks directly;
+  -- compose with the staggered pack `packStairGen` (`0 < L` from `ha.hL`).
+  (paramsEquivFlatLinear M).symm ≪≫ₗ packStairGen M ha ha.hL
 
 /-- **Extract the staircase coupling from any endomorphism.** For `T : StairProd V n →ₗ StairProd V n`,
 `stairCouplingOf` reads off, at each depth, the head-into-tail block `projTail ∘ T ∘ inclHead`
@@ -653,9 +741,26 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
         ∘ₗ DtotGen M ha y₀
         ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
-      = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀) :=
-  -- THE CRUX. MISSING: per-interior-boundary Schur-frame collapse — the fderiv diagonal block of
-  -- `Agen s = chainA(readN s)(readW s)(Cgen (s+1))`, in `genV` coords, is `genF s`.
+      = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀) := by
+  -- THE CRUX, reduced to the per-boundary lower-triangular-with-diagonal fact via the banked
+  -- reconstruction lemma. `eihdcGen := stairCouplingOf … T` with `T` the conjugated `DtotGen`, so
+  -- `stairMap genV L genF eihdcGen = stairMap genV L genF (stairCouplingOf L T)`; `stairMap_eq_of_lowerTriDiag`
+  -- gives `T = stairMap genV L genF (stairCouplingOf L T)` FROM `StairLowerTriDiag genV L genF T`.
+  set T := ((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+      ∘ₗ DtotGen M ha y₀
+      ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))) with hT
+  show T = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀)
+  -- `eihdcGen = stairCouplingOf genV L T` (defeq: same `T`).
+  have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
+  rw [hcoupling]
+  refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
+  -- REMAINING (the genuine per-interior-boundary fderiv-Schur collapse): the diagonal block of `T` at
+  -- boundary `s` is `genF s` (`schurFrameDeriv (readX s)(readK s)(readN s)` on the frame ⊕ id on the
+  -- lift) and the upper block is `0`. The diagonal fact is the fderiv of `Agen s =
+  -- chainA(readN s)(readW s)(Cgen (s+1))` in `genV` coords, collapsing to `schurFrameDeriv` — via
+  -- `hasFDerivAt_chainA` + `hasFDerivAt_readN/X/W` + `reindexLs_BparamsLeafGen` + `genF`; generalizes
+  -- the `L = 2` `layer0SchurMap_fderiv_collapse`. The staggered dims are `genV`-exact (VERIFY-FIRST
+  -- confirmed L=3 (2,4,3,2): 17/9/0), so `diag(T) s = genF s` is genuinely TRUE.
   sorry
 
 /-- **The regauge abs-det-`1`** `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`. The
