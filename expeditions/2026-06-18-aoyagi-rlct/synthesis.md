@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Source-image Finite-integral Internal p.13 Support - 2026-07-01
+
+The concrete source-image finite-integral wrappers now internalize the p.13
+source-set containment of chart pieces.  Their final handlers no longer ask for
+
+```text
+chartPiece subset p13SourceSet
+```
+
+because the returned local source-image chart `V` is constructed using
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet.
+```
+
+The source-image reference wrapper derives the old p.13 support condition by
+unpacking `chartPiece subset sourceChart '' V` and applying the returned
+pointwise support fact.  The bounded-density source-image wrapper then consumes
+this strengthened reference wrapper, so it also drops the separate p.13 support
+argument.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-source-image-finite-integral-internal-p13-support.md
+threads/03-block-product-reduction/statement-card-a2-p13-source-image-finite-integral-internal-p13-support.md
+threads/03-block-product-reduction/review-a2-p13-source-image-finite-integral-internal-p13-support.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes for both strengthened
+wrappers report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source coverage, no equality of the chart image with the p.13
+source set, no original-volume transport to the source-image reference, no
+source-image density identity or density bound, no Haar or Jacobian transport,
+no normal crossings, no pole order, and no RLCT extraction.
+
 ## Case 2 Passive-theta Source-image p.13 Source-set Support - 2026-07-01
 
 Lean now proves:

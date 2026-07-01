@@ -1359,10 +1359,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
                         MeasurableSet chartPiece →
                           chartPiece ⊆ sourceLocal →
                             chartPiece ⊆ sourceChart '' V →
-                            chartPiece ⊆
-                              paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
-                                (K := ℝ) W₂ B₂ U₀ hU₀ →
-                              (∀ E ∈ chartPiece,
+                            (∀ E ∈ chartPiece,
                                 readback E ∈ W ∧ sourceChart (readback E) = E) →
                                 ∀ {density : EdgeFamily → ℝ} {Kprior : ℝ},
                                   (∀ᵐ E ∂(originalEdgeFamilyVolume
@@ -1415,20 +1412,14 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
         (Csrc := Csrc) hsourceImageDensity_le hCsrc with
     ⟨U, hUopen, hbaseU, hfinite⟩
   rcases
-      (by
-        simpa [EdgeFamily, sourceChart, readback] using
-          exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_map_readback_restrict_image_eq_self
-            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
-            z₀ hdet₀ hpivot₀ W hWopen hz₀W) with
-    ⟨V, hVopen, hz₀V, hVW, hleftV, hsource_inj, hsource_contOn,
-      hsource_image, hrightV, _hpullbackV⟩
+      exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        z₀ hdet₀ hpivot₀ W hWopen hz₀W with
+    ⟨V, hVopen, hz₀V, hVW, _hdetV, hleftV, hsource_inj, hsource_contOn,
+      hsource_image, hpointV, _himage_p13⟩
   have hleftV' : ∀ z ∈ V, readback (sourceChart z) = z := by
     intro z hz
-    simpa [sourceChart, readback, case2PassiveThetaEndpointSourceChart,
-      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
-      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
-      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
-      hleftV z.A1passive z.F2 z.A3passive z.Ctop z.F3 z.yNext hz
+    simpa [sourceChart, readback] using hleftV z hz
   have hrightV' : ∀ E ∈ sourceChart '' V,
       readback E ∈ V ∧ sourceChart (readback E) = E := by
     intro E hE
@@ -1441,11 +1432,18 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
   dsimp only at hfinite ⊢
   refine ⟨hfinite.1, ?_⟩
   intro chartPiece hchartPiece_meas hchartPiece_sub_local hchartPiece_sub_image
-    hchartPiece_sub_p13 hright density Kprior hdensity D hvolume_source hD
+    hright density Kprior hdensity D hvolume_source hD
   have hpiece_U : chartPiece ⊆ U := fun E hE ↦
     (hchartPiece_sub_local hE).1
   have hpiece_sourceStratum : chartPiece ⊆ sourceStratum := fun E hE ↦
     (hchartPiece_sub_local hE).2
+  have hchartPiece_sub_p13 :
+      chartPiece ⊆
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W₂ B₂ U₀ hU₀ := by
+    intro E hE
+    rcases hchartPiece_sub_image hE with ⟨z, hzV, rfl⟩
+    simpa [sourceChart] using hpointV z hzV
   let sourceRef : Measure EdgeFamily :=
     Measure.map sourceChart (coordinateSourceMeasure.restrict V)
   have hVmeas : MeasurableSet V := hVopen.measurableSet
@@ -1740,10 +1738,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
                         MeasurableSet chartPiece →
                           chartPiece ⊆ sourceLocal →
                             chartPiece ⊆ sourceChart '' V →
-                            chartPiece ⊆
-                              paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
-                                (K := ℝ) W₂ B₂ U₀ hU₀ →
-                              (∀ E ∈ chartPiece,
+                            (∀ E ∈ chartPiece,
                                 readback E ∈ W ∧ sourceChart (readback E) = E) →
                                 ∀ {density : EdgeFamily → ℝ} {Kprior : ℝ},
                                   (∀ᵐ E ∂(originalEdgeFamilyVolume
@@ -1819,8 +1814,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
     hsource_inj, hsource_contOn, hsource_image, hrightV', ?_⟩
   refine ⟨hfinite.1, ?_⟩
   intro chartPiece hchartPiece_meas hchartPiece_sub_local hchartPiece_sub_image
-    hchartPiece_sub_p13 hright density Kprior hdensity volumeDensity D
-    hvolume_eq hvolumeDensity_le hD
+    hright density Kprior hdensity volumeDensity D hvolume_eq hvolumeDensity_le hD
   have hpiece_U : chartPiece ⊆ U := fun E hE ↦
     (hchartPiece_sub_local hE).1
   have hpiece_sourceStratum : chartPiece ⊆ sourceStratum := fun E hE ↦
@@ -1843,7 +1837,7 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
               (by simpa [sourceRef] using hvolumeDensity_le)
   simpa [sourceRef] using
     hfinite.2 hchartPiece_meas hpiece_U hpiece_sourceStratum
-      hchartPiece_sub_image hchartPiece_sub_p13 hright
+      hchartPiece_sub_image hright
       (density := density) (Kprior := Kprior) hdensity
       (D := D) hvolume_source hD
 set_option maxRecDepth 2048 in

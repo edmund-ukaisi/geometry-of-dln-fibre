@@ -140,6 +140,25 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 source-image finite-integral internal
+  p.13 support, 2026-07-01.** The source-image reference and bounded-density
+  finite-integral wrappers in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`
+  no longer ask final chart-piece handlers for a separate
+  `chartPiece subset p13SourceSet` hypothesis.  The source-image reference
+  wrapper now constructs `V` with
+  `exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet`
+  and derives the old p.13 support hypothesis from
+  `chartPiece subset sourceChart '' V`; the bounded-density wrapper consumes
+  that strengthened wrapper.  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-source-image-finite-integral-internal-p13-support.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-source-image-finite-integral-internal-p13-support.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-source-image-finite-integral-internal-p13-support.md`.
+  Nonclaims: no source coverage, no equality of the chart image with the p.13
+  source set, no original-volume transport to the source-image reference, no
+  source-image density identity or density bound, no Haar or Jacobian transport,
+  no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, Case 2 passive-theta source-image p.13
   source-set support, 2026-07-01.** Lean now proves
   `exists_open_subset_measurableSet_case2PassiveThetaEndpointSourceChart_image_subset_p13SourceEdgeFamilySet`
