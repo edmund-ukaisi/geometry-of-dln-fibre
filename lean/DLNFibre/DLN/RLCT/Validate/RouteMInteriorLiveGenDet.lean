@@ -247,6 +247,18 @@ theorem hasFDerivAt_readW (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) 
     funext z; rfl
   rw [this]; exact hasFDerivAt_matrixRead _ y₀
 
+/-- **The live decoder's deep-interior `Wblk (k+1) = readW ⟨k⟩`** (`k + 1 < L`) — the `Wblk_succ`
+analogue of `RouteMHmapGen.genBlkFlatLive_Nblk_succ`. The chain lift block at boundary `k+1` is the
+reader `readW ⟨k⟩` (a slot-`k` LIFT coord). The DECISIVE fact for placing the `−Nblk·Wblk` coupling
+off-diagonal in `eihd_hD_gen`: with `Nblk (k+1) = readN⟨k⟩` (slot-`k` frame) and `Wblk (k+1) =
+readW⟨k⟩` (slot-`k` lift), the layer-`(k+1)` `−N·W` term reads only slot-`k` coords. -/
+theorem genBlkFlatLive_Wblk_succ (M t : Fin (L + 1) → ℕ) (ha : StructAdm M t)
+    (rfin : Matrix (Fin (Text M t L)) (Fin (Wext M L)) ℝ) (x : Fin (routeMAmbient M) → ℝ)
+    (k : ℕ) (hk : k < L) (hk2 : k + 1 < L) :
+    (genBlkFlatLive M t ha rfin x).Wblk (k + 1) = readW M t ha x ⟨k, hk⟩ hk2 := by
+  show (genBlkFlatStruct M t ha x).Wblk (k + 1) = _
+  simp only [genBlkFlatStruct, dif_pos hk, dif_pos hk2]
+
 /-- **The flat-Jacobian** `DtotGen ha y₀ := fderiv ℝ (BchartLeafGen ha) y₀` (as a linear map) — the
 boundary-factor differential whose staircase det Factor 1 reads. -/
 def DtotGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
@@ -700,6 +712,116 @@ def StairLowerTriDiag (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Mod
     StairLowerTriDiag (fun k => V (k + 1)) n (fun s => f (s + 1))
       ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
         (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))))
+
+/-- **The slot inclusion** `stairIncl V n s : V s →ₗ StairProd V n` — inject a single-boundary vector
+into slot `s` of the staircase (zero elsewhere). Slot `0` is the head (`inl`); slot `j+1` recurses into
+the tail via `inr`. Only meaningful for `s < n`; for `s ≥ n` it lands in the (subsingleton) tail. -/
+def stairIncl (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    (n : ℕ) → (s : ℕ) → V s →ₗ[ℝ] StairProd V n
+  | 0, _ => 0
+  | (n + 1), 0 => LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n)
+  | (n + 1), (s + 1) =>
+    (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+      (stairIncl (fun k => V (k + 1)) n s)
+
+/-- **The slot projection** `stairProj V n s : StairProd V n →ₗ V s` — read boundary `s` off the
+staircase. Slot `0` is the head (`fst`); slot `j+1` recurses via `snd`. -/
+def stairProj (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    (n : ℕ) → (s : ℕ) → StairProd V n →ₗ[ℝ] V s
+  | 0, _ => 0
+  | (n + 1), 0 => LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n)
+  | (n + 1), (s + 1) =>
+    (stairProj (fun k => V (k + 1)) n s).comp
+      (LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+
+/-- **Completeness of the slot decomposition** — any `x : StairProd V n` is the sum of its slot
+inclusions: `x = Σ_{s : Fin n} stairIncl V n s (stairProj V n s x)`. Induction on `n`: at `n+1`, split
+`x = (x.1, x.2)`; the head is slot `0` (`inl (fst x)`), and the tail expands by the IH, each tail slot
+`j` re-included via `inr` (`= stairIncl (n+1) (j+1)`). -/
+theorem stairProd_eq_sum_incl_proj (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (x : StairProd V n),
+      x = ∑ s : Fin n, (stairIncl V n s) (stairProj V n s x)
+  | 0, x => by
+      -- `StairProd V 0 = PUnit`; the empty sum is `0 = x` (subsingleton).
+      haveI : Subsingleton (StairProd V 0) := (inferInstance : Subsingleton PUnit)
+      rw [Fin.sum_univ_zero]
+      exact Subsingleton.elim _ _
+  | (n + 1), x => by
+      -- `x = (x.1, x.2)`; head slot 0 = `inl x.1`, tail slots via IH re-included through `inr`.
+      have hIH := stairProd_eq_sum_incl_proj (fun k => V (k + 1)) n x.2
+      rw [Fin.sum_univ_succ]
+      -- slot 0 term: `stairIncl (n+1) 0 (stairProj (n+1) 0 x) = inl x.1 = (x.1, 0)`.
+      show x = (LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) x.1
+          + ∑ i : Fin n, (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+              ((stairIncl (fun k => V (k + 1)) n i.val) (stairProj (fun k => V (k + 1)) n i.val x.2))
+      rw [← map_sum]
+      rw [show (∑ i : Fin n, (stairIncl (fun k => V (k + 1)) n i.val)
+            (stairProj (fun k => V (k + 1)) n i.val x.2)) = x.2 from hIH.symm]
+      refine Prod.ext ?_ ?_
+      · show x.1 = x.1 + 0; rw [add_zero]
+      · show x.2 = 0 + x.2; rw [zero_add]
+
+/-- **`inr` as a sum of slot inclusions** — `inr vt = Σ_{j : Fin n} stairIncl V (n+1) (j+1) (stairProj
+(V∘succ) n j vt)`. Apply `inr` (linear) to the tail completeness `stairProd_eq_sum_incl_proj`; each
+`inr ∘ stairIncl (V∘succ) n j = stairIncl V (n+1) (j+1)` by def. -/
+theorem stairInr_eq_sum_incl_proj (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    (n : ℕ) (vt : StairProd (fun k => V (k + 1)) n) :
+    (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt
+      = ∑ j : Fin n, (stairIncl V (n + 1) (j.val + 1))
+          (stairProj (fun k => V (k + 1)) n j.val vt) := by
+  conv_lhs => rw [stairProd_eq_sum_incl_proj (fun k => V (k + 1)) n vt]
+  rw [map_sum]
+  rfl
+
+/-- **`StairLowerTriDiag` from per-slot block facts.** If, for the endomorphism `T`, every diagonal
+slot block reads `genF`-diagonal (`stairProj s ∘ T ∘ stairIncl s = f s`) and every strictly-upper slot
+block vanishes (`stairProj s' ∘ T ∘ stairIncl s = 0` for `s' < s`), then `StairLowerTriDiag V n f T`.
+Induction on `n`: at `n+1`, the head-diag is the `s = 0` block, the upper block `fst ∘ T ∘ inr` = 0
+comes from the `s' = 0 < s+1` upper facts (over all tail slots), and the tail endomorphism's blocks are
+the `(s+1)`-shifted blocks of `T` (`stairIncl (s+1) = inr ∘ tailIncl s`, `stairProj (s+1) = tailProj s
+∘ snd`), so the IH applies. -/
+theorem stairLowerTriDiag_of_blocks (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (f : (s : ℕ) → V s →ₗ[ℝ] V s) (T : StairProd V n →ₗ[ℝ] StairProd V n),
+      (∀ s, (stairProj V n s).comp (T.comp (stairIncl V n s)) = f s) →
+      (∀ s s', s' < s → (stairProj V n s').comp (T.comp (stairIncl V n s)) = 0) →
+      StairLowerTriDiag V n f T
+  | 0, _, _, _, _ => trivial
+  | (n + 1), f, T, hdiag, hupper => by
+      refine ⟨?_, ?_, ?_⟩
+      · -- head-diag: `fst ∘ T ∘ inl = f 0` is the `s = 0` diagonal block (stairProj/Incl 0 = fst/inl).
+        exact hdiag 0
+      · -- upper: `fst ∘ T ∘ inr = 0`. Expand the tail input over slots (`stairProd_eq_sum_incl_proj`):
+        -- `inr vt = Σ_{j<n} stairIncl (n+1) (j+1) (stairProj (V∘succ) n j vt)`, and each
+        -- `fst ∘ T ∘ stairIncl (n+1) (j+1) = stairProj 0 ∘ T ∘ stairIncl (j+1) = 0` (upper, `0<j+1`).
+        apply LinearMap.ext
+        intro vt
+        show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+            (T ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt)) = 0
+        -- rewrite as `(fst ∘ₗ T) (inr vt)`, expand `inr vt` over slots, push through the linear map.
+        rw [show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+              (T ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt))
+            = ((LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp T)
+                ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt) from rfl,
+          stairInr_eq_sum_incl_proj V n vt, map_sum]
+        apply Finset.sum_eq_zero
+        intro j _
+        have hj := hupper (j.val + 1) 0 (by omega)
+        have := congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) hj)
+          (stairProj (fun k => V (k + 1)) n j.val vt)
+        -- `((fst ∘ T) ∘ stairIncl (j+1)) = stairProj 0 ∘ T ∘ stairIncl (j+1) = 0` (upper 0<(j+1)).
+        simpa only [LinearMap.comp_apply, stairProj] using this
+      · -- tail: `StairLowerTriDiag (V∘succ) n (f∘succ) (snd ∘ T ∘ inr)`, by IH with the shifted blocks.
+        refine stairLowerTriDiag_of_blocks (fun k => V (k + 1)) n (fun s => f (s + 1))
+          ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+            (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)))) ?_ ?_
+        · intro s
+          -- tail diag slot s = T's slot (s+1) diag: `tailProj s ∘ (snd ∘ T ∘ inr) ∘ tailIncl s`
+          -- = `(tailProj s ∘ snd) ∘ T ∘ (inr ∘ tailIncl s)` = `stairProj (s+1) ∘ T ∘ stairIncl (s+1)`.
+          have := hdiag (s + 1)
+          simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
+        · intro s s' hs'
+          have := hupper (s + 1) (s' + 1) (by omega)
+          simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
 
 /-- **The reconstruction lemma**: a `StairLowerTriDiag`-`f` endomorphism `T` equals
 `stairMap V n f (stairCouplingOf T)` — the couplings are captured automatically by `stairCouplingOf`,
