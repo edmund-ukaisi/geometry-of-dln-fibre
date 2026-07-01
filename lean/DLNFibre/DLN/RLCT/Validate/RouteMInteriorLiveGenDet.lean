@@ -392,6 +392,23 @@ noncomputable def frameToSchurIncGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M
               (LinearEquiv.refl ℝ _)))).prodCongr (LinearEquiv.refl ℝ _)))).trans
       (roleReorderLEGen (schurTGen M k.val) (schurRGen M k.val) (schurCGen M k.val)))
 
+/-- **The ROW-MAJOR 2D-block frame decode** `frameDecode2D k : (Fin (schurDim k) → ℝ) ≃ₗ SchurInc` —
+the frame-slot coordinatization that matches `packStairGen`'s OUTPUT (row-major `flatMatLEGen` of the
+kept `Text(k+1)×Wext(k+1)` matrix, then the physical 2D-block split into `SchurInc` via `flatBlockLE.symm`).
+The CORRECT decode for `genF`'s diagonal block: `genF`'s frame diagonal sits against the row-major
+OUTPUT slot of `packStairGen`, NOT the block-concatenated INPUT layout `frameToSchurIncGen` uses. The
+two differ by the off-diagonal `X/N`-role swap (row-major `[[K,N],[X,E]]` vs role-order `K|X|N|E`);
+since the staircase OUTPUT is row-major, `genF` decodes row-major. `frameToSchurIncGen` (block-concat)
+remains the correct decode on the INPUT/reader side (`slotReadGen_eInGen_symm`, `readN/readW` slots). -/
+noncomputable def frameDecode2D (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2) + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2) + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Wext M (k.val + 1)) :
+    (Fin (schurDim M (tDesc M (tach M)) k.val) → ℝ)
+      ≃ₗ[ℝ] SchurInc (schurTGen M k.val) (schurRGen M k.val) (schurCGen M k.val) :=
+  (flatMatLEGen (Text M (tach M) (k.val + 1)) (Wext M (k.val + 1))) ≪≫ₗ (flatBlockLE hr hc).symm
+
 /-- The `.toLinearMap`-form conjugation det: `det (e.symm ∘ f ∘ e) = det f` (via `LinearMap.det_conj`
 on `e.symm`, restated so it matches `.toLinearMap` composites). -/
 theorem det_symm_conj_toLinearMap {E₁ E₂ : Type} [AddCommGroup E₁] [Module ℝ E₁] [AddCommGroup E₂]
@@ -445,10 +462,18 @@ noncomputable def genF (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (y₀ : Fin (routeMAmbient M) → ℝ) :
     (k : ℕ) → genV M k →ₗ[ℝ] genV M k := fun k =>
   if hk : k < L then
-    ((frameToSchurIncGen M ha ⟨k, hk⟩).symm.toLinearMap
+    ((frameDecode2D M ha ⟨k, hk⟩
+          (show Text M (tach M) (k + 2) + (Text M (tach M) (k + 1) - Text M (tach M) (k + 2))
+              = Text M (tach M) (k + 1) from by have := ha.hdesc k hk; omega)
+          (show Text M (tach M) (k + 2) + (Wext M (k + 1) - Text M (tach M) (k + 2))
+              = Wext M (k + 1) from by have := ha.hub k; omega)).symm.toLinearMap
         ∘ₗ schurFrameDeriv (readX M (tach M) ha y₀ ⟨k, hk⟩) (readK M (tach M) ha y₀ ⟨k, hk⟩)
             (readN M (tach M) ha y₀ ⟨k, hk⟩)
-        ∘ₗ (frameToSchurIncGen M ha ⟨k, hk⟩).toLinearMap).prodMap LinearMap.id
+        ∘ₗ (frameDecode2D M ha ⟨k, hk⟩
+          (show Text M (tach M) (k + 2) + (Text M (tach M) (k + 1) - Text M (tach M) (k + 2))
+              = Text M (tach M) (k + 1) from by have := ha.hdesc k hk; omega)
+          (show Text M (tach M) (k + 2) + (Wext M (k + 1) - Text M (tach M) (k + 2))
+              = Wext M (k + 1) from by have := ha.hub k; omega)).toLinearMap).prodMap LinearMap.id
   else LinearMap.id
 
 /-- **The per-boundary det** `|det (genF k)| = |det K_k|^{r_k+c_k}` at an interior `k` (`0` at the
