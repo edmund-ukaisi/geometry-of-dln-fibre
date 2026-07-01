@@ -61,7 +61,9 @@ that depends on it. `Core` must never import `DLN`.
    (`CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`; cwd = this repo root).
 3. Spawn thread teammates (explore / formalisation / infra) per the brief; spawn reviewers to audit.
 4. Run the controller tick each turn: recover → ingest → re-anchor → triage → delegate → integrate → surface → review-to-equilibrium.
-5. Close: final integration, synthesis pass, commit on the expedition branch, signal-and-wait before any PR.
+5. Close: final integration, synthesis pass, commit on the expedition branch, then open the close PR (≤ 1
+   per expedition, controller-authorized per [`CLAUDE.md`](CLAUDE.md) § Branch discipline); merging is
+   operator-gated.
 
 ## Lean
 

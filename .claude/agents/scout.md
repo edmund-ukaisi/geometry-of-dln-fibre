@@ -17,7 +17,7 @@ compute, derive, map the terrain, form claims, stress-test them.
 `LONGLIST (what to compute/derive/map) → TRIAGE → COMPUTE/DERIVE → CHECK → NOTICE/INTERPRET → STEP_BACK`.
 - Compute worked examples (small dimension vectors, explicit orbit/component decompositions, codimensions) with sympy/numpy or by hand; record the working, not only the answer.
 - When a pattern crystallises, write it as a **claim**: precise statement, named hypotheses, and a **kill-condition** stated before hunting confirming cases.
-- Stress-test new claims against the kill-condition (degenerate neurons, boundary/closure, edge cases). Established/published results take the light verify-against-source path (`docs/policies/claims.md`).
+- Stress-test new claims against the kill-condition (degenerate dimension vectors, boundary/closure, edge cases). Established/published results take the light verify-against-source path (`docs/policies/claims.md`).
 - When a computation surprises you, investigate the surprise — it is more informative than the claim you came in with.
 
 ## Registers (state which you use)

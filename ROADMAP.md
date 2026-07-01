@@ -2,8 +2,7 @@
 
 The programme-level map: the destination, the bundles of work toward it, and what each depends on. Written
 to be elementary; pick up a **bundle** only when it is *whole-in-reach*, rather than nibbling one lemma at a
-time. This is a **first cut**; the `core-quiver-engine` expedition sharpens the ladder and, via an opening recon,
-resolves the load-bearing unknown (what Mathlib already provides). Update at each expedition close.
+time. Update at each expedition close.
 
 ## The destination, plainly
 
@@ -36,13 +35,14 @@ multiplication map $\operatorname{mult}(A_\ast)=A_N\cdots A_1$, we want, in hone
 
 Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT payoff → `DLNFibre.DLN`.
 
-## Top open question (resolve first)
+## What Mathlib provides (resolved)
 
 **What does Mathlib already provide?** Quiver representations, the type-A / `A_n` story, Gabriel's theorem,
 `Ext` for quiver reps / representations of a category, equivariant cohomology. The answer decides how much of
 the engine is *reuse* vs *build-from-scratch* — and the build-from-scratch part *is* the reusable asset, so
-getting its API right is high-value. **The `core-quiver-engine` expedition's opening recon resolves this.**
-Until it lands, the reachability tags below are estimates.
+getting its API right is high-value. **Resolved** (the Bundle sections below record the outcome): Mathlib
+had no type-A Gabriel classification, no `Ext`-codimension for these representations, and no orbit-closure
+order for the chains — the engine was built from scratch as `DLNFibre.Core`.
 
 ## The bundles
 
