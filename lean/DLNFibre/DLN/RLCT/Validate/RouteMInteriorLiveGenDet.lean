@@ -52,44 +52,50 @@ the pure-`SchurInc` `schurStairMap` (which OMITS the lift coordinates — a dime
 * `eihd_hreg_gen` — the regauge abs-det-`1`.
 * `DtotGen_abs_det` — the headline, via `stairMap_abs_det_twoConj` + `genF_abs_det`.
 
-## Status (spine wiring PROVEN; input side + genF side + regauge + coupling DONE; 1 residual = the crux)
+## Status (ROUND-2 corrected: staggered output pack; 4 residuals)
 
-`DtotGen_abs_det` is PROVEN sorry-free MODULO the SINGLE residual `eihd_hD_gen` below: the general spine
+`DtotGen_abs_det` is PROVEN sorry-free MODULO the 4 residuals below: the general spine
 `stairMap_abs_det_twoConj` is threaded and `genF_abs_det` folds the per-block dets to the readers
 (`∏_{s : Fin L} |det (readK y₀ s)|^{r_s+c_s}`).
 
+ROUND-2 CORRECTION (2026-07-01): the earlier `eihdOutGen := eInGen` (single-conjugate) was
+GREEN-BUT-WRONG — `eInGen` reads the SLOT layout but `DtotGen`'s OUTPUT is Params-LAYER, so
+`diag(T) s = genF s` was FALSE (numeric L=3: slot 17/9/0 vs Params-layer 8/12/6). FIX (genm-crux +
+Codex, VERIFY-FIRST-confirmed): a STAGGERED output pack in the EXISTING `genV` — `genV` slot `s` ←
+`kept(layer s) ⊕ lift(layer s+1)` (dims balance: `kept(layer s)=schurDim_s`, `lift(layer s+1)=liftDim_s`).
+`genV` is KEPT (injOn unaffected — grep-verified: GenInj/InjRec reuse `eInGen`-as-injection + reader
+side, not the det block route).
+
 DONE (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`):
-* `genV` / `genF` / `genF_abs_det` — the boundary spaces + diagonal block (`schurFrameDeriv` on the
-  frame via `frameToSchurIncGen` ⊕ id on the lift) + its det `|det K_k|^{r_k+c_k}`.
+* `genV` / `genF` / `genF_abs_det` — boundary spaces + diagonal block + det `|det K_k|^{r_k+c_k}`.
 * `flatMatLEGen` / `roleReorderLEGen` / `frameToSchurIncGen` — the faithful frame reshape.
 * `piToStair` / `headTailFinPi` — the reusable Pi-over-`Fin` ↔ `StairProd` bridge.
-* `eInGen` — the input equiv (`funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ per-boundary
-  `sumArrowLequivProdArrow` ≫ `piToStair`).
-* `eihdOutGen := eInGen` — the SINGLE-conjugate formulation (the general-`L` conjugacy is stated
-  `eInGen ∘ DtotGen ∘ eInGen.symm`, so NO separate cross-grouping `packStair` is needed — this
-  DISSOLVES the `Params`-layer ≠ frame/lift two-grouping problem).
-* `eihd_hreg_gen` — DONE (`eInGen.symm ∘ eInGen = id`, det `1`).
-* `stairCouplingOf` / `eihdcGen` — DONE. `stairCouplingOf` extracts the coupling from ANY `StairProd`
-  endomorphism (recursion on depth, head-into-tail block `snd ∘ T ∘ inl` + recurse on `snd ∘ T ∘ inr`);
-  `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)`.
-* `reindexLs_BparamsLeafGen` — the per-layer chart-component ↔ `Agen` bridge.
-* `hasFDerivAt_readN`/`_readX`/`_readW` — the reader fderiv atoms (`= matrixReaderCLM (·slot)`).
-* `det_symm_conj_toLinearMap` — det-conj helper (`.toLinearMap`-form).
+* `eInGen` — the input equiv (slot layout: `funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ sumArrow ≫
+  piToStair`) — CORRECT for the INPUT (readers ARE slot-based) + reused by injRec.
+* `stairCouplingOf` / `eihdcGen` — the coupling extractor + `eihdcGen := stairCouplingOf (eihdOutGen ∘
+  DtotGen ∘ eInGen.symm)`.
+* `stairMap_eq_of_lowerTriDiag` (+ `StairLowerTriDiag`) — reconstruction lemma: `StairLowerTriDiag V n
+  f T → T = stairMap V n f (stairCouplingOf T)`. Reduces `eihd_hD_gen` to per-boundary block facts.
+* `reindexLs_BparamsLeafGen`; `hasFDerivAt_readN/_readX/_readW`; `det_symm_conj_toLinearMap`.
 
-REMAINING (1 sorry) — `eihd_hD_gen`, **THE CRUX**:
-  `T := eInGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
-Because `eihdcGen = stairCouplingOf T`, this REDUCES to TWO facts:
-  (i)  `T` is LOWER-triangular in the `genV` staircase order (upper blocks `= 0` — the `L = 2` J01=0
-       analogue: boundary `s`'s frame output doesn't read boundary `> s`'s coords), AND
-  (ii) `diag(T) s = genF s` (the per-interior-boundary Schur-frame collapse — the real content).
-RECIPE: (a) a general reconstruction lemma `stairMap (diagOf T) (stairCouplingOf T) = T` for
-lower-triangular `T` (~40 lines, mechanical, reusable — belongs in `RouteMStairFold`); (b) (i) + (ii).
-(ii) is the labour: per-layer `HasFDerivAt (Agen s)` from the banked atoms (`hasFDerivAt_readN/X/W` +
-`hasFDerivAt_chainA`, `Cf = Cgen (s+1)`) → `reindexLs_BparamsLeafGen` → `frameToSchurIncGen`-coord
-identification `= genF s`. The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`'s J00/J11 + the
-`layer0SchurMap_fderiv_collapse` gate. VERIFY-FIRST the triangularity ORIENTATION of (i) before
-building — `Cgen (s+1)` feeds layer `s`'s output, so confirm it lands head→tail (lower-tri) in the
-`genV` order (the `L = 2` `eihd_hD` has it as boundary-0-frame → boundary-1, so expected to hold).
+REMAINING (4 sorries, the corrected staggered-pack track — ROUTE B, Codex `high` verdict 2026-07-01):
+* `packStairGen : Params M ≃ₗ StairProd genV L` — the staggered pack (Route B, ~120–160 LoC):
+  (1) `piCongrRight` per-layer row-split `Matrix (Wext s)(Wext s+1) ≃ₗ kept_s × lift_s` (PROBE-CLEAN:
+  `reindexLinearEquiv finSumFinEquiv.symm ≫ ofLinearEquiv.symm ≫ sumArrowLequivProdArrow ≫
+  (ofLinearEquiv.prodCongr ofLinearEquiv)`); (2) the OFF-BY-ONE GATHER (lift `s ↦ s+1` via
+  `LinearEquiv.piCongrLeft'` + the two 0-dim padded ends `lift 0 = 0`, `genLift (L−1) = 0` — the
+  irreducible combinatorial core); (3) `piToStair`. This REPLACES the Route-A `outIdxToFlatIdx` index
+  bijection (Codex: 200+ LoC Sigma bookkeeping — rejected).
+* `eihdOutGen := packStairGen ∘ paramsEquivFlatLinear.symm` (thin — reuses the banked
+  `paramsEquivFlatLinear` for flat↔Params, `routeMAmbient = flatDim` by `finCongr`).
+* `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`: the slot↔staggered-layer reindex is a
+  coord permutation (det ±1), via `RouteMHregPerm`'s `IsCoordLE`/`isCoordLE_of_read` infra. (No longer
+  the trivial `= id` — that was the wrong-design artefact.)
+* `eihd_hD_gen` — **THE CRUX**: `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
+  Via `stairMap_eq_of_lowerTriDiag`, reduces to `StairLowerTriDiag genV L genF T`: per boundary (i)
+  upper-block = 0 + (ii) diag = genF s (`Cgen` non-recursive = boundary-s Schur block → schurFrameDeriv_s;
+  consumes chart's/the fderiv per-boundary collapse). Foundation banked: reader atoms + `hasFDerivAt_chainA`
+  + `reindexLs` + `genF`. VERIFY-FIRST-confirmed: staggered dims = genV (17/9/0) exactly.
 
 The mathematics is confirmed (numerically at `L = 3`, `(2,4,3,2)`, via
 `RouteMSchurStairDet.schurStairMap_abs_det_2432`); the residual is the LEAN CONSTRUCTION.
@@ -387,14 +393,67 @@ def eInGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
         (Fin (liftDim M (tDesc M (tach M)) k.val)) ℝ ℝ)) ≪≫ₗ
   piToStair (genV M) L
 
-/-- **The output layer-collecting equiv** `eihdOutGen := eInGen` — the SAME reader-basis reshape as the
-input. Unlike the `L = 2` `eihdOut` (a distinct `packStair ∘ paramsEquivFlatLinear.symm`), the general
-`L` conjugacy is stated SINGLE-sided (`eInGen ∘ DtotGen ∘ eInGen.symm`, `stairMap_abs_det_conj`), so
-the output equiv is `eInGen` itself. This trivializes the regauge (`eihdOutGen.symm ∘ eInGen = id`,
-det `1`) and folds the whole conjugacy into `eihd_hD_gen`. -/
+/-! ### The STAGGERED output pack `eihdOutGen` (design corrected 2026-07-01, round 2)
+
+DESIGN NOTE (round-2 correction). The earlier `eihdOutGen := eInGen` (single-conjugate) was
+GREEN-BUT-WRONG for the block identity: `eInGen` reads coords in the `chartIdxEquiv` SLOT layout, but
+`DtotGen`'s OUTPUT lives in the `paramsEquivFlat` Params-LAYER layout — unrelated `Fintype.equivFin`
+bijections, so `diag(T) s = genF s` is FALSE (numeric L=3 `(2,4,3,2)`: slot 17/9/0 vs Params-layer
+8/12/6, per-position mismatch). The FIX (genm-crux + Codex + numeric): a STAGGERED output pack in the
+EXISTING `genV` — `genV` slot `s` ← `kept(layer s) ⊕ lift(layer s+1)` (dims balance exactly:
+`kept(layer s) = Text(s+1)·Wext(s+1) = schurDim_s`, `lift(layer s+1) = liftDim_s`). The stagger (lift
+of Params layer `s+1` → `genV` slot `s`'s lift) is why the per-position mismatch is no obstruction; it
+mirrors the `L = 2` `bigToFlatIdx` (W/leaf → Params layer `1`). ROUTE B (Codex `high`, 2026-07-01):
+build `packStairGen : Params M ≃ₗ StairProd genV L` DIRECTLY (per-layer row-split via `piCongrRight` +
+the off-by-one lift gather via `piCongrLeft'` + `piToStair`), then `eihdOutGen := packStairGen ∘
+paramsEquivFlatLinear.symm` — cleaner than the Route-A `ChartIdx ≃ FlatIdx` index bijection (200+ LoC
+Sigma bookkeeping). The off-by-one gather (lift `s ↦ s+1`, layers `1..L−1 ≃ pred → slots 0..L−2`, with
+`lift 0 = 0` and `genLift (L−1) = 0` the padded ends) is the irreducible combinatorial core. -/
+
+/-! ### Route-B brick 1: the per-layer row-split -/
+
+/-- **The per-layer row-split** `packRowSplitGen s : Matrix (Wext s) (Wext s+1) ≃ₗ (kept_s) × (lift_s)`
+— the layer-`s` matrix (`= Params M s` after the `M s.castSucc = Wext s` recast) splits its rows into
+the top `Text(s+1)` (KEPT → the frame block `Matrix (Text(s+1)) (Wext(s+1))`) and the bottom
+`Wext(s)−Text(s+1)` (LIFT → the lift block `Matrix (Wext(s)−Text(s+1)) (Wext(s+1))`). Via `genWidthEq`
+(`Text(s+1)+(Wext s−Text(s+1))=Wext s`) row recast + `finSumFinEquiv.symm` split + `sumArrowLequivProdArrow`.
+Route-B brick 1 (sorry-free). -/
+noncomputable def packRowSplitGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L) :
+    Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ ≃ₗ[ℝ]
+      (Matrix (Fin (Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ) ×
+      (Matrix (Fin (Wext M s.val - Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ) :=
+  (Matrix.reindexLinearEquiv ℝ ℝ
+      (finCongr (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt).symm)
+      (Equiv.refl _)) ≪≫ₗ
+    (Matrix.reindexLinearEquiv ℝ ℝ finSumFinEquiv.symm (Equiv.refl _)) ≪≫ₗ
+    (Matrix.ofLinearEquiv ℝ).symm ≪≫ₗ
+    (LinearEquiv.sumArrowLequivProdArrow (Fin (Text M (tach M) (s.val + 1)))
+      (Fin (Wext M s.val - Text M (tach M) (s.val + 1))) ℝ (Fin (Wext M (s.val + 1)) → ℝ)) ≪≫ₗ
+    ((Matrix.ofLinearEquiv ℝ).prodCongr (Matrix.ofLinearEquiv ℝ))
+
+/-- **The staggered pack** `packStairGen : Params M ≃ₗ StairProd genV L` — the CORRECT Params-layer →
+staircase reshape. ROUTE B (Codex `high` verdict 2026-07-01: cleaner than the Route-A `ChartIdx ≃ FlatIdx`
+index bijection, ~120–160 LoC): (1) `piCongrRight` split each layer into `kept_s × lift_s` (probe-clean
+row-split above); (2) the OFF-BY-ONE GATHER — reindex the lift Pi `s ↦ s+1` so slot `s` gets
+`lift(layer s+1)` (via `LinearEquiv.piCongrLeft'` on the lift index; the nonzero lifts are layers
+`1..L−1 ≃ pred → slots 0..L−2`, with `lift 0 = 0`-dim [`Wext0−Text1=0`] and `genLift (L−1) = 0`-dim
+[leaf] the two padded ends — `Subsingleton` closures); (3) `piToStair (genV M) L`. LOAD-BEARING RESIDUAL:
+the row-split + the gather (the gather is the irreducible combinatorial core, per Codex). -/
+def packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    Params M ≃ₗ[ℝ] StairProd (genV M) L :=
+  -- MISSING (Route B): piCongrRight (per-layer row-split) ≫ off-by-one lift gather (piCongrLeft' + 0-dim
+  -- padding) ≫ piToStair. Row-split probe-clean; gather = the hard core.
+  sorry
+
+/-- **The staggered output pack** `eihdOutGen : (Fin (routeMAmbient M) → ℝ) ≃ₗ StairProd genV L` — the
+CORRECT output reshape. `eihdOutGen := packStairGen ∘ paramsEquivFlatLinear.symm` (the controller's
+directive; reuses the banked `paramsEquivFlatLinear : Params M ≃ₗ (Fin flatDim → ℝ)` for the
+flat↔Params grouping, `routeMAmbient M = flatDim M` by `finCongr`). LOAD-BEARING RESIDUAL (thin — the
+content is in `packStairGen`). -/
 def eihdOutGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] StairProd (genV M) L :=
-  eInGen M ha
+  -- MISSING: packStairGen M ha ∘ paramsEquivFlatLinear.symm (through finCongr routeMAmbient=flatDim).
+  sorry
 
 /-- **Extract the staircase coupling from any endomorphism.** For `T : StairProd V n →ₗ StairProd V n`,
 `stairCouplingOf` reads off, at each depth, the head-into-tail block `projTail ∘ T ∘ inclHead`
@@ -525,14 +584,12 @@ theorem eihd_hreg_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     |LinearMap.det
         (((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
         ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L))| = 1 := by
-  -- `eihdOutGen = eInGen`, so the regauge is `eInGen.symm ∘ eInGen = id`, det `1`.
-  have hid : ((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
-        ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
-      = LinearMap.id := by
-    apply LinearMap.ext; intro x
-    show (eihdOutGen M ha).symm (eInGen M ha x) = x
-    rw [show eihdOutGen M ha = eInGen M ha from rfl, LinearEquiv.symm_apply_apply]
-  rw [hid, LinearMap.det_id, abs_one]
+  -- The regauge `eihdOutGen.symm ∘ eInGen` is a slot↔(staggered)Params-layer coordinate REINDEX —
+  -- a signed permutation of coords, det ±1 (abs 1). NO LONGER trivial `= id` (eihdOutGen ≠ eInGen now;
+  -- eOut is the STAGGERED pack). Route: it's `funCongrLeft` of an index `Equiv`, so `det = ±1` via the
+  -- `IsCoordLE`/`hreg_of_exists_funCongrLeft` infra (`RouteMHregPerm`, `isCoordLE_of_read`).
+  -- MISSING: certify the composite as a coordinate reindex (det ±1) — lift of `RouteMHregPerm.eihd_hreg`.
+  sorry
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
