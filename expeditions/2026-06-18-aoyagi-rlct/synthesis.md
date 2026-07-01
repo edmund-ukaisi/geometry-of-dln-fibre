@@ -6,11 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
-Banking note, 2026-07-01: the verified expedition batch is still uncommitted.
-Escalated `git add -A` from the expedition worktree was rejected twice by the
-environment policy even with user authorization, because staging writes the
-shared worktree git index outside the sandbox.  Do not route around this
-rejection; retry only if the execution policy changes.
+Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
+committed and pushed as `da154cdd`.  The current worktree is the dedicated
+expedition worktree, branch `expedition/aoyagi-rlct`.
+
+## Canonical p.13 Chart Piece for Determinant Finite Integral - 2026-07-01
+
+Lean now proves:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_sourceLocal_inter_sourceChart_image_originalVolume_readback_invHaar_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This is the canonical-piece specialization of the determinant-domination
+finite-integral wrapper.  After the wrapper returns a p.13 source neighborhood
+`U` and a same-shrink passive-theta chart domain `V`, the chart piece is fixed
+to
+
+```text
+(U inter sourceStratum) inter sourceChart '' V.
+```
+
+The proof is only projection bookkeeping: measurability is the intersection of
+`MeasurableSet (U inter sourceStratum)` and `MeasurableSet (sourceChart '' V)`,
+and the three containment hypotheses required by the arbitrary-piece socket
+are the three projections to `U`, `sourceStratum`, and `sourceChart '' V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-finite-integral-detHaar-canonical-chart-piece.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+read-only reviewer `Hilbert` passed the theorem-shape and boundary audit.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image or source-rank coverage, original
+source-prior transport, normal crossings, pole order, or RLCT extraction.
+The next real A2 frontier remains source-prior/full-image/Haar-transport work.
 
 ## Case 2 Same-Shrink Reverse Raw-Source/Source-Chart Package - 2026-07-01
 

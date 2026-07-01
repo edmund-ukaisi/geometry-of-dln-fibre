@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, canonical p.13 chart piece for determinant finite integral
+
+Lean now proves the canonical-chart-piece corollary:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_sourceLocal_inter_sourceChart_image_originalVolume_readback_invHaar_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This is a packaging hardening of the determinant-domination finite-integral
+wrapper.  Instead of leaving an arbitrary measurable `chartPiece` to downstream
+users, it fixes the natural p.13 local piece
+
+```text
+(U inter sourceStratum) inter sourceChart '' V
+```
+
+and proves its measurability from the two measurability facts already returned
+by the same-shrink package.  The determinant-side reverse domination and the
+source-density lower bound remain explicit hypotheses on the returned `V`.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Next priority: move from packaging to the A2 source-prior/full-image bridge.
+The real remaining inputs are local source-image coverage, source-prior
+domination, and determinant/raw-order Haar transport on actual chart pieces.
+Do not claim determinant-chart Haar transport, exact raw-Haar pushforward,
+source coverage, normal crossings, pole order, or RLCT extraction from this
+canonical-piece corollary.
+
 ## Latest controller decision - 2026-07-01, Case 2 same-shrink reverse raw-source/source-chart package
 
 Lean now proves the same-shrink package:
