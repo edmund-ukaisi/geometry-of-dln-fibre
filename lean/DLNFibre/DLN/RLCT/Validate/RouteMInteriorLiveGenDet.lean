@@ -52,9 +52,9 @@ the pure-`SchurInc` `schurStairMap` (which OMITS the lift coordinates — a dime
 * `eihd_hreg_gen` — the regauge abs-det-`1`.
 * `DtotGen_abs_det` — the headline, via `stairMap_abs_det_twoConj` + `genF_abs_det`.
 
-## Status (spine wiring PROVEN; input side + genF side + regauge DONE; 2 residuals remain)
+## Status (spine wiring PROVEN; input side + genF side + regauge + coupling DONE; 1 residual = the crux)
 
-`DtotGen_abs_det` is PROVEN sorry-free MODULO the 2 residuals below: the general spine
+`DtotGen_abs_det` is PROVEN sorry-free MODULO the SINGLE residual `eihd_hD_gen` below: the general spine
 `stairMap_abs_det_twoConj` is threaded and `genF_abs_det` folds the per-block dets to the readers
 (`∏_{s : Fin L} |det (readK y₀ s)|^{r_s+c_s}`).
 
@@ -66,27 +66,30 @@ DONE (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`):
 * `eInGen` — the input equiv (`funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ per-boundary
   `sumArrowLequivProdArrow` ≫ `piToStair`).
 * `eihdOutGen := eInGen` — the SINGLE-conjugate formulation (the general-`L` conjugacy is stated
-  `eInGen ∘ DtotGen ∘ eInGen.symm`, so no separate `packStair` is needed). This trivializes:
+  `eInGen ∘ DtotGen ∘ eInGen.symm`, so NO separate cross-grouping `packStair` is needed — this
+  DISSOLVES the `Params`-layer ≠ frame/lift two-grouping problem).
 * `eihd_hreg_gen` — DONE (`eInGen.symm ∘ eInGen = id`, det `1`).
+* `stairCouplingOf` / `eihdcGen` — DONE. `stairCouplingOf` extracts the coupling from ANY `StairProd`
+  endomorphism (recursion on depth, head-into-tail block `snd ∘ T ∘ inl` + recurse on `snd ∘ T ∘ inr`);
+  `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)`.
 * `reindexLs_BparamsLeafGen` — the per-layer chart-component ↔ `Agen` bridge.
+* `hasFDerivAt_readN`/`_readX`/`_readW` — the reader fderiv atoms (`= matrixReaderCLM (·slot)`).
 * `det_symm_conj_toLinearMap` — det-conj helper (`.toLinearMap`-form).
 
-REMAINING (2 sorries, the coupled crux — general-`L` lift of `RouteMHDtotEihd`'s J00/J11 + gate):
-* `eihdcGen` — the chain coupling (the off-diagonal of the conjugated `DtotGen`; cf. `eihdc_free`).
-  Definable by recursion over `StairCoupling genV L`, extracting each head-into-tail block from
-  `eInGen ∘ DtotGen ∘ eInGen.symm`. Mechanical but recursive.
-* `eihd_hD_gen` — **THE CRUX.** `eInGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
-  Per-interior-boundary Schur-frame collapse: the `s`-th diagonal block of `fderiv BchartLeafGen` (in
-  `genV` coords) is `genF s`. `genF` + its det are DONE; this shows the fderiv MATCHES `genF s`. At
-  `L = 2` boundary `0` this is `layer0SchurMap_fderiv_collapse` + `gate_schurCore_eq`; the general-`L`
-  per-interior lift (coupled across layers via `Cgen (s+1)`, the strictly-lower coupling) is the
-  labour-bounded (math-confirmed) residual. Foundation ALL LANDED (sorry-free):
-  `reindexLs_BparamsLeafGen` (layer ↔ `Agen`); `hasFDerivAt_readN`/`_readX`/`_readW` (the reader fderiv
-  atoms, `= matrixReaderCLM (·slot)`); the banked `chainAFDeriv` / `hasFDerivAt_chainA` (the `chainA`
-  layer fderiv value); `genF`/`genF_abs_det`; `eInGen`/`piToStair` (the `genV` collector). What remains
-  is the ASSEMBLY: per-layer `HasFDerivAt (Agen s)` from these atoms via `hasFDerivAt_chainA` (with
-  `Cf = Cgen (s+1)` recursive), then the `genV`-coord block identification `= genF s` + strictly-lower
-  couplings — the general-`L` lift of `RouteMHDtotEihd`'s J00/J11/`packLayer·_fderiv` machinery.
+REMAINING (1 sorry) — `eihd_hD_gen`, **THE CRUX**:
+  `T := eInGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF eihdcGen`.
+Because `eihdcGen = stairCouplingOf T`, this REDUCES to TWO facts:
+  (i)  `T` is LOWER-triangular in the `genV` staircase order (upper blocks `= 0` — the `L = 2` J01=0
+       analogue: boundary `s`'s frame output doesn't read boundary `> s`'s coords), AND
+  (ii) `diag(T) s = genF s` (the per-interior-boundary Schur-frame collapse — the real content).
+RECIPE: (a) a general reconstruction lemma `stairMap (diagOf T) (stairCouplingOf T) = T` for
+lower-triangular `T` (~40 lines, mechanical, reusable — belongs in `RouteMStairFold`); (b) (i) + (ii).
+(ii) is the labour: per-layer `HasFDerivAt (Agen s)` from the banked atoms (`hasFDerivAt_readN/X/W` +
+`hasFDerivAt_chainA`, `Cf = Cgen (s+1)`) → `reindexLs_BparamsLeafGen` → `frameToSchurIncGen`-coord
+identification `= genF s`. The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`'s J00/J11 + the
+`layer0SchurMap_fderiv_collapse` gate. VERIFY-FIRST the triangularity ORIENTATION of (i) before
+building — `Cgen (s+1)` feeds layer `s`'s output, so confirm it lands head→tail (lower-tri) in the
+`genV` order (the `L = 2` `eihd_hD` has it as boundary-0-frame → boundary-1, so expected to hold).
 
 The mathematics is confirmed (numerically at `L = 3`, `(2,4,3,2)`, via
 `RouteMSchurStairDet.schurStairMap_abs_det_2432`); the residual is the LEAN CONSTRUCTION.
