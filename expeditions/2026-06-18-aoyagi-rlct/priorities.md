@@ -12,6 +12,24 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 chart-piece inverse-scalar bridge
+
+The source-set/chart-piece scalar comparison now has the inverse orientation
+needed by downstream domination sockets:
+
+```text
+measure_eq_inv_smul_of_eq_nnreal_smul
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+```
+
+This is scalar bookkeeping on a supplied measurable `chartPiece ⊆ sourceSet`.
+The bounded-prior theorem additionally assumes a local density bound against
+`originalEdgeFamilyVolume`.  It does not prove passive-theta source-image
+containment, original-prior transport through the p.13 chart, scalar
+normalization, restricted Haar structure, normal crossings, or RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 source-set measure bridge
 
 The named-source specialization is proved, and now includes the chart-piece

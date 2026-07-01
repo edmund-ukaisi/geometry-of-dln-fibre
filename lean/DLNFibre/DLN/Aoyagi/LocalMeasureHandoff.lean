@@ -249,6 +249,20 @@ theorem ae_of_measure_le_smul
     ∀ᵐ x ∂ν, p x :=
   (Measure.absolutelyContinuous_of_le_smul hν).ae_le hp
 
+/-- Invert a nonzero `ℝ≥0` scalar equality of measures. -/
+theorem measure_eq_inv_smul_of_eq_nnreal_smul
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : NNReal}
+    (hc : c ≠ 0) (hμ : μ = c • ν) :
+    ν = c⁻¹ • μ := by
+  rw [hμ]
+  ext s
+  rw [Measure.coe_nnreal_smul_apply, Measure.coe_nnreal_smul_apply]
+  rw [ENNReal.coe_inv hc]
+  rw [← mul_assoc, ENNReal.inv_mul_cancel]
+  · simp
+  · exact ENNReal.coe_ne_zero.mpr hc
+  · exact ENNReal.coe_ne_top
+
 /-- Finite lower integral transfers to any measure dominated by a finite scalar
 multiple of the original measure. -/
 theorem lintegral_lt_top_of_measure_le_smul

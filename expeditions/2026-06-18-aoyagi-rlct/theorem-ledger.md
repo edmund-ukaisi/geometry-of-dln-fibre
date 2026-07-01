@@ -12438,3 +12438,33 @@ axiom probe, and xhigh review passed.  The direct axiom probe reports only
 Nonclaims: no source-rank coverage, no full source coverage, no restricted
 Haar theorem, no passive-theta source-image containment, no scalar
 normalization to `1`, no normal crossings, no pole order, and no RLCT.
+Latest A2 p.13 chart-piece inverse-scalar measure bridge:
+`LocalMeasureHandoff.lean` proves
+`measure_eq_inv_smul_of_eq_nnreal_smul`.  `OriginalEdgeFamilyP13SourceMeasureBridge.lean`
+proves
+`originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece`,
+`originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece`,
+and
+`originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`.
+
+Ledger status: the p.13 chart-piece equality is inverted using positivity of
+the tuple-side full-space Haar scalar.  The bounded-prior theorem assumes a
+local density bound against `originalEdgeFamilyVolume` on the chart piece and
+gives domination by the formal-product p.13 chart measure.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh review passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]` for all four public theorem names.
+
+Nonclaims: no source-rank coverage, no full source coverage, no passive-theta
+source-image containment, no original-prior transport through the p.13 chart,
+no restricted Haar theorem, no scalar normalization to `1`, no normal
+crossings, no pole order, and no RLCT.

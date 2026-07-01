@@ -14208,3 +14208,35 @@ Kill condition: this claim must not be cited as source-rank coverage, full
 source coverage, passive-theta image containment in the named p.13 source set,
 restricted Haar structure, scalar normalization to `1`, normal crossings, pole
 order, or RLCT extraction.
+## A2 p.13 chart-piece inverse-scalar measure bridge
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh review passed.
+
+Claim: on any supplied measurable `chartPiece` contained in the named p.13
+source edge-family set, the p.13 chart-piece source-measure equality can be
+inverted by the positive tuple-side full-space Haar scalar.  The formal-product
+version also gives a bounded-prior domination theorem for an original
+edge-family prior density locally bounded against `originalEdgeFamilyVolume` on
+that chart piece.
+
+Lean theorems:
+
+```text
+measure_eq_inv_smul_of_eq_nnreal_smul
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`;
+xhigh review in
+`threads/03-block-product-reduction/review-a2-p13-chart-piece-inverse-scalar-measure-bridge.md`.
+
+Kill condition: this claim must not be cited as source-rank coverage, full
+source coverage, passive-theta source-image containment, original-prior
+transport through the p.13 chart, restricted Haar structure, scalar
+normalization to `1`, normal crossings, pole order, or RLCT extraction.

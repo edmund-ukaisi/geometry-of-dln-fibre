@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
+import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 
 /-!
 # p.13 source-set measure bridge for original edge-family volume
@@ -23,6 +24,7 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+open DLNFibre.Core
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
@@ -324,6 +326,111 @@ theorem map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict
           rw [Measure.restrict_restrict_of_subset hsub]
 
 set_option linter.style.longLine false in
+/-- Inverse-scalar form of the unweighted p.13 chart-piece measure comparison. -/
+theorem originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    {chartPiece : Set
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)}
+    (hchartPiece : MeasurableSet chartPiece)
+    (hchartPiece_sub :
+      chartPiece ⊆
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W B U₀ hU₀) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let d := paperEndpointFixedBaseDim W B U₀
+    let sourceChart : TopologyTuple ρ κ' ℝ →
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    let c :=
+      ((Measure.map
+          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+            W B U₀)
+          m).addHaarScalarFactor (originalTupleVolume d))
+    (originalEdgeFamilyVolume (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀)).restrict chartPiece =
+      c⁻¹ •
+        (Measure.map sourceChart
+          (m.restrict
+            (topologyTupleRawOrderSourceRecursiveDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ')))).restrict chartPiece := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let d := paperEndpointFixedBaseDim W B U₀
+  let sourceChart : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+      (K := ℝ) W B U₀ hU₀
+  let c :=
+    ((Measure.map
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W B U₀)
+        m).addHaarScalarFactor (originalTupleVolume d))
+  let volume :=
+    originalEdgeFamilyVolume (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀)
+  let L : TopologyTuple ρ κ' ℝ ≃L[ℝ] Tuple (k := ℝ) d :=
+    paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W B U₀
+  haveI : Measure.IsAddHaarMeasure (Measure.map L m) :=
+    L.isAddHaarMeasure_map m
+  haveI : Measure.IsAddHaarMeasure (originalTupleVolume d) :=
+    isAddHaarMeasure_originalTupleVolume d
+  have hc_pos : 0 < c := by
+    simpa [c, L] using
+      MeasureTheory.Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+        (Measure.map L m) (originalTupleVolume d)
+  have hc_ne : c ≠ 0 := ne_of_gt hc_pos
+  have hchart :
+      (Measure.map sourceChart
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))).restrict chartPiece =
+        c • volume.restrict chartPiece := by
+    simpa [sourceChart, c, volume, ρ, κ', d] using
+      map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+        hchartPiece hchartPiece_sub
+  simpa [sourceChart, c, volume, ρ, κ', d] using
+    measure_eq_inv_smul_of_eq_nnreal_smul
+      (μ := (Measure.map sourceChart
+        (m.restrict
+          (topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')))).restrict chartPiece)
+      (ν := volume.restrict chartPiece) (c := c) hc_ne hchart
+
+set_option linter.style.longLine false in
 /-- The formal-product retained-passive p.13 source-chart Jacobian measure is
 the restricted original edge-family volume on the named p.13 source edge-family
 set, up to the tuple-side full-space Haar scalar.
@@ -552,6 +659,258 @@ theorem map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDens
           rw [Measure.restrict_smul]
     _ = c • volume.restrict chartPiece := by
           rw [Measure.restrict_restrict_of_subset hsub]
+
+set_option linter.style.longLine false in
+/-- Inverse-scalar form of the formal-product p.13 chart-piece measure comparison. -/
+theorem originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    {chartPiece : Set
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)}
+    (hchartPiece : MeasurableSet chartPiece)
+    (hchartPiece_sub :
+      chartPiece ⊆
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W B U₀ hU₀) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let d := paperEndpointFixedBaseDim W B U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let sourceChart : TopologyTuple ρ κ' ℝ →
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    let c :=
+      ((Measure.map
+          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+            W B U₀)
+          m).addHaarScalarFactor (originalTupleVolume d))
+    (originalEdgeFamilyVolume (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀)).restrict chartPiece =
+      c⁻¹ •
+        (Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          ((m.restrict S).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let d := paperEndpointFixedBaseDim W B U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let sourceChart : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+      (K := ℝ) W B U₀ hU₀
+  let c :=
+    ((Measure.map
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W B U₀)
+        m).addHaarScalarFactor (originalTupleVolume d))
+  let volume :=
+    originalEdgeFamilyVolume (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀)
+  let L : TopologyTuple ρ κ' ℝ ≃L[ℝ] Tuple (k := ℝ) d :=
+    paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W B U₀
+  haveI : Measure.IsAddHaarMeasure (Measure.map L m) :=
+    L.isAddHaarMeasure_map m
+  haveI : Measure.IsAddHaarMeasure (originalTupleVolume d) :=
+    isAddHaarMeasure_originalTupleVolume d
+  have hc_pos : 0 < c := by
+    simpa [c, L] using
+      MeasureTheory.Measure.addHaarScalarFactor_pos_of_isAddHaarMeasure
+        (Measure.map L m) (originalTupleVolume d)
+  have hc_ne : c ≠ 0 := ne_of_gt hc_pos
+  have hchart :
+      (Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece =
+        c • volume.restrict chartPiece := by
+    simpa [S, sourceChart, c, volume, ρ, κ', d] using
+      map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_smul_originalEdgeFamilyVolume_restrict_chartPiece
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+        hchartPiece hchartPiece_sub
+  simpa [S, sourceChart, c, volume, ρ, κ', d] using
+    measure_eq_inv_smul_of_eq_nnreal_smul
+      (μ := (Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          sourceChart
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict S).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece)
+      (ν := volume.restrict chartPiece) (c := c) hc_ne hchart
+
+set_option linter.style.longLine false in
+/-- A locally bounded original edge-family prior on a p.13 chart piece is
+controlled by the formal-product p.13 chart measure, with the inverse Haar
+scalar from the chart-piece measure comparison. -/
+theorem originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    [m.IsAddHaarMeasure]
+    {chartPiece : Set
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)}
+    (hchartPiece : MeasurableSet chartPiece)
+    (hchartPiece_sub :
+      chartPiece ⊆
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W B U₀ hU₀)
+    {density :
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) → ℝ}
+    {K : ℝ}
+    (hdensity :
+      ∀ᵐ E ∂(originalEdgeFamilyVolume (V := reverseVertex W)
+        (paperEndpointFixedBaseFinBasis W B U₀ hU₀)).restrict chartPiece,
+        density E ≤ K) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let d := paperEndpointFixedBaseDim W B U₀
+    let S : Set (TopologyTuple ρ κ' ℝ) :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let sourceChart : TopologyTuple ρ κ' ℝ →
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    let c :=
+      ((Measure.map
+          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+            W B U₀)
+          m).addHaarScalarFactor (originalTupleVolume d))
+    (originalEdgeFamilyPrior (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀) density).restrict chartPiece ≤
+      (ENNReal.ofReal K * (((c⁻¹ : NNReal) : ℝ≥0∞))) •
+        (Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ ↦
+            sourceChart
+              (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+          ((m.restrict S).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ ↦
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W) (reverseEdge W B) U₀
+  let d := paperEndpointFixedBaseDim W B U₀
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let sourceChart : TopologyTuple ρ κ' ℝ →
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ) :=
+    paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+      (K := ℝ) W B U₀ hU₀
+  let c :=
+    ((Measure.map
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W B U₀)
+        m).addHaarScalarFactor (originalTupleVolume d))
+  let volume :=
+    originalEdgeFamilyVolume (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀)
+  let muP13 :=
+    (Measure.map
+      (fun z : TopologyTuple ρ κ' ℝ ↦
+        sourceChart
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+      ((m.restrict S).withDensity
+        (fun z : TopologyTuple ρ κ' ℝ ↦
+          ENNReal.ofReal
+            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := M) (ρ := ρ) (κ' := κ') z)))).restrict chartPiece
+  have hprior :
+      (originalEdgeFamilyPrior (V := reverseVertex W)
+        (paperEndpointFixedBaseFinBasis W B U₀ hU₀) density).restrict chartPiece ≤
+        ENNReal.ofReal K • volume.restrict chartPiece := by
+    simpa [volume] using
+      originalEdgeFamilyPrior_restrict_le_smul_of_ae_le
+        (V := reverseVertex W)
+        (paperEndpointFixedBaseFinBasis W B U₀ hU₀)
+        (s := chartPiece) (K := K) hchartPiece hdensity
+  have hinv : volume.restrict chartPiece = c⁻¹ • muP13 := by
+    simpa [S, sourceChart, c, volume, muP13, ρ, κ', d] using
+      originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+        (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) m
+        hchartPiece hchartPiece_sub
+  calc
+    (originalEdgeFamilyPrior (V := reverseVertex W)
+      (paperEndpointFixedBaseFinBasis W B U₀ hU₀) density).restrict chartPiece ≤
+        ENNReal.ofReal K • volume.restrict chartPiece := hprior
+    _ = (ENNReal.ofReal K * (((c⁻¹ : NNReal) : ℝ≥0∞))) • muP13 := by
+        rw [hinv]
+        ext s
+        simp [Measure.smul_apply, mul_assoc]
 
 end P13SourceMeasureBridge
 

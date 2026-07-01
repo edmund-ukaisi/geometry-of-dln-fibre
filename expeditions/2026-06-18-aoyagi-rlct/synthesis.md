@@ -6,6 +6,50 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Chart-piece Inverse-scalar Measure Bridge - 2026-07-01
+
+Lean now proves the inverse orientation of the p.13 chart-piece measure
+comparison:
+
+```text
+measure_eq_inv_smul_of_eq_nnreal_smul
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_chartPiece
+originalEdgeFamilyVolume_restrict_chartPiece_eq_inv_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+originalEdgeFamilyPrior_restrict_chartPiece_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece
+```
+
+The scalar is still the tuple-side full-space Haar scalar.  Positivity comes
+from Haar uniqueness for `Measure.map L m` and `originalTupleVolume d`; no
+scalar normalization is claimed.  The bounded-prior theorem assumes a local
+bound on the density against `originalEdgeFamilyVolume` restricted to the
+chart piece and yields domination by the formal-product p.13 chart measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-chart-piece-inverse-scalar-measure-bridge.md
+threads/03-block-product-reduction/statement-card-a2-p13-chart-piece-inverse-scalar-measure-bridge.md
+threads/03-block-product-reduction/review-a2-p13-chart-piece-inverse-scalar-measure-bridge.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+#print axioms on all four public theorem names: [propext, Classical.choice, Quot.sound]
+```
+
+Xhigh review passed after adding the original-prior-transport nonclaim to the
+statement card.  Nonclaims: no source-rank coverage, no full source coverage,
+no passive-theta source-image containment, no original-prior transport through
+the p.13 chart, no restricted Haar theorem, no scalar normalization to `1`, no
+normal crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Source-Set Measure Bridge - 2026-07-01
 
 Lean now specializes the raw-order edge-family bridge to the public p.13
