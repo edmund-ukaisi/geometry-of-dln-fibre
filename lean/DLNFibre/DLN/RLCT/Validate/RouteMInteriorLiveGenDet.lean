@@ -959,6 +959,58 @@ theorem stairProj_piToStair (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ 
             = piToStair (fun k => V (k + 1)) n (fun j => f j.succ) := rfl
         rw [hsnd, stairProj_piToStair (fun k => V (k + 1)) n (fun j => f j.succ) i]
 
+/-- **`piToStair.symm` reads back slotwise**: `(piToStair V n).symm w k = stairProj V n k w`. The
+inverse of `stairProj_piToStair` (the collector's inverse reads each slot's projection). Recursion on
+`n` mirroring `piToStair` (`Fin.cases`, `Fin.cons_succ`). -/
+theorem piToStair_symm_apply (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (w : StairProd V n) (k : Fin n),
+      (piToStair V n).symm w k = stairProj V n k.val w
+  | (n + 1), w, k => by
+      refine Fin.cases ?_ ?_ k
+      · rfl
+      · intro i
+        show (piToStair V (n + 1)).symm w i.succ = stairProj V (n + 1) (i.val + 1) w
+        have hval : (piToStair V (n + 1)).symm w
+            = Fin.cons w.1 (fun j : Fin n => (piToStair (fun k => V (k + 1)) n).symm w.2 j) := rfl
+        rw [hval, Fin.cons_succ, piToStair_symm_apply (fun k => V (k + 1)) n w.2 i]; rfl
+
+/-! ### The `eInGen.symm` slot-read backbone (the INPUT side of the block facts)
+
+`eInGen` is `funCongrLeft chartIdxEquiv.symm ≫ piCurry ≫ piCongrRight sumArrow ≫ piToStair`; its
+`.symm`, read at a slot-`k` FRAME coord `chartIdxEquiv.symm ⟨k, Sum.inl a⟩`, returns `(stairProj k w).1
+a` (the slot-`k` frame component), and at a slot-`k` LIFT coord `⟨k, Sum.inr b⟩` returns `(stairProj k
+w).2 b`. So every boundary reader (`readK/X/N/E` frame, `readW` lift) of `eInGen.symm w` reads the
+slot-`k` `genV` component of `w`. With `w = stairIncl s v` (`stairProj_stairIncl_self`/`_ne`) this is
+the input recovery (`k = s`) / vanishing (`k ≠ s`) that places the block facts. -/
+
+/-- **Frame read of `eInGen.symm w`** at slot `k`, frame index `a`: the flat coord `chartIdxEquiv.symm
+⟨k, Sum.inl a⟩` reads `(stairProj k w).1 a`. -/
+theorem eInGen_symm_frame_read (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (w : StairProd (genV M) L) (k : Fin L) (a : Fin (schurDim M (tDesc M (tach M)) k.val)) :
+    (eInGen M ha).symm w ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+        ⟨k, Sum.inl a⟩)
+      = (stairProj (genV M) L k.val w).1 a := by
+  rw [eInGen]
+  simp only [LinearEquiv.symm_trans_apply]
+  rw [LinearEquiv.funCongrLeft_symm, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Equiv.symm_symm, Equiv.apply_symm_apply, LinearEquiv.piCurry_symm_apply, Sigma.uncurry,
+    LinearEquiv.piCongrRight_symm, LinearEquiv.piCongrRight_apply,
+    piToStair_symm_apply (genV M) L w k, LinearEquiv.sumArrowLequivProdArrow_symm_apply_inl]
+
+/-- **Lift read of `eInGen.symm w`** at slot `k`, lift index `b`: the flat coord `chartIdxEquiv.symm
+⟨k, Sum.inr b⟩` reads `(stairProj k w).2 b`. -/
+theorem eInGen_symm_lift_read (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (w : StairProd (genV M) L) (k : Fin L) (b : Fin (liftDim M (tDesc M (tach M)) k.val)) :
+    (eInGen M ha).symm w ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+        ⟨k, Sum.inr b⟩)
+      = (stairProj (genV M) L k.val w).2 b := by
+  rw [eInGen]
+  simp only [LinearEquiv.symm_trans_apply]
+  rw [LinearEquiv.funCongrLeft_symm, LinearEquiv.funCongrLeft_apply, LinearMap.funLeft_apply,
+    Equiv.symm_symm, Equiv.apply_symm_apply, LinearEquiv.piCurry_symm_apply, Sigma.uncurry,
+    LinearEquiv.piCongrRight_symm, LinearEquiv.piCongrRight_apply,
+    piToStair_symm_apply (genV M) L w k, LinearEquiv.sumArrowLequivProdArrow_symm_apply_inr]
+
 /-- `rfinDirectGen` is a matrix of coordinate reads, hence differentiable (in-closure copy of the Hmap
 `diffAt_rfinDirectGen`, which is downstream of this module). -/
 theorem diffAt_rfinDirectGen' (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
