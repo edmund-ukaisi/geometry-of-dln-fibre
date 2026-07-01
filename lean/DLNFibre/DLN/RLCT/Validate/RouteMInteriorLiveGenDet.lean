@@ -1284,6 +1284,64 @@ theorem stairProj_packStairGen_snd (M : Fin (L + 1) → ℕ) (ha : StructAdm M (
               ((packRowSplitGen M ha s (packRecast M s (P s))).2))) s' := by
   rw [packStairGen, LinearEquiv.trans_apply, stairProj_piToStair]; rfl
 
+/-! ## The general-boundary Schur-frame collapse anchor (the frame-block target)
+
+The frame-half of the diagonal block reads the KEPT rows of `Agen … s = chainA … (Cgen (s+1))`; at an
+interior boundary `Cgen (s+1) = schurFrameProd (readK,readX,readN,readE)`
+(`Cgen_live_interior_eq_schurFrameProd`), which is the block-flatten `flatBlock (schurFrameMap z)` of
+the Schur-frame tuple `z`. This anchor — the general-boundary lift of the `L = 2`
+`RouteMProjV0Gate.flatBlock_schurFrameMap_eq` — records `flatBlock (schurFrameMap z) = schurFrameProd`
+at ANY boundary `s` and generic width-split proofs `hr`/`hc`, at radial `u = 1` (the boundary chart's
+hardwired scalar; `schurFrameMap` carries no `u`, matching `1 • E`). The Schur-frame differential
+`schurFrameMap_hasFDerivAt` then collapses its fderiv to `schurFrameDeriv`. -/
+
+/-- **`flatBlock (schurFrameMap z) = schurFrameProd … 1 z.K z.X z.N z.E`** at ANY boundary `s`. The
+general-boundary lift of `flatBlock_schurFrameMap_eq`: split each row/col by `finSumFinEquiv`, hit the
+four `schurFrameProd_block_*` lemmas (K, K·N, X·K, X·K·N + 1·E), the `schurFrameMap` output blocks
+agreeing by `rfl`. The `u = 1` radial matches the boundary chart. -/
+theorem flatBlock_schurFrameMap_eq_gen (M t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
+    (hr : Text M t (s + 1) + (Text M t s - Text M t (s + 1)) = Text M t s)
+    (hc : Text M t (s + 1) + (Wext M s - Text M t (s + 1)) = Wext M s)
+    (z : SchurInc (Text M t (s + 1)) (Text M t s - Text M t (s + 1))
+      (Wext M s - Text M t (s + 1))) :
+    flatBlock hr hc (schurFrameMap z)
+      = schurFrameProd M t s h1 h2 (1 : ℝ) z.1 z.2.2.1 z.2.1 z.2.2.2 := by
+  ext i j
+  obtain ⟨is, hieq⟩ : ∃ is : Fin (Text M t (s + 1)) ⊕ Fin (Text M t s - Text M t (s + 1)),
+      i = Fin.cast hr (finSumFinEquiv is) := ⟨finSumFinEquiv.symm (Fin.cast hr.symm i), by
+        rw [Equiv.apply_symm_apply]; apply Fin.ext; simp⟩
+  obtain ⟨js, hjeq⟩ : ∃ js : Fin (Text M t (s + 1)) ⊕ Fin (Wext M s - Text M t (s + 1)),
+      j = Fin.cast hc (finSumFinEquiv js) := ⟨finSumFinEquiv.symm (Fin.cast hc.symm j), by
+        rw [Equiv.apply_symm_apply]; apply Fin.ext; simp⟩
+  subst hieq hjeq
+  have hcolL : ∀ j', (finSumFinEquiv.symm (Fin.cast hc.symm
+        (Fin.cast hc (finSumFinEquiv (Sum.inl j')))))
+      = (Sum.inl j' : Fin (Text M t (s + 1)) ⊕ Fin (Wext M s - Text M t (s + 1))) := fun j' => by
+    simp only [Fin.cast_trans, Fin.cast_eq_self, Equiv.symm_apply_apply]
+  have hcolR : ∀ b, (finSumFinEquiv.symm (Fin.cast hc.symm
+        (Fin.cast hc (finSumFinEquiv (Sum.inr b)))))
+      = (Sum.inr b : Fin (Text M t (s + 1)) ⊕ Fin (Wext M s - Text M t (s + 1))) := fun b => by
+    simp only [Fin.cast_trans, Fin.cast_eq_self, Equiv.symm_apply_apply]
+  rcases is with i' | a <;> rcases js with j' | b
+  · rw [show (Fin.cast hr (finSumFinEquiv (Sum.inl i')) : Fin (Text M t s))
+        = Fin.cast hr (Fin.castAdd _ i') from by rw [finSumFinEquiv_apply_left],
+      flatBlock_castAdd, hcolL, finSumFinEquiv_apply_left, schurFrameProd_block_K]
+    rfl
+  · rw [show (Fin.cast hr (finSumFinEquiv (Sum.inl i')) : Fin (Text M t s))
+        = Fin.cast hr (Fin.castAdd _ i') from by rw [finSumFinEquiv_apply_left],
+      flatBlock_castAdd, hcolR, finSumFinEquiv_apply_right, schurFrameProd_block_KN]
+    rfl
+  · rw [show (Fin.cast hr (finSumFinEquiv (Sum.inr a)) : Fin (Text M t s))
+        = Fin.cast hr (Fin.natAdd _ a) from by rw [finSumFinEquiv_apply_right],
+      flatBlock_natAdd, hcolL, finSumFinEquiv_apply_left, schurFrameProd_block_XK]
+    rfl
+  · rw [show (Fin.cast hr (finSumFinEquiv (Sum.inr a)) : Fin (Text M t s))
+        = Fin.cast hr (Fin.natAdd _ a) from by rw [finSumFinEquiv_apply_right],
+      flatBlock_natAdd, hcolR, finSumFinEquiv_apply_right, schurFrameProd_block_XKNuE]
+    show (z.2.2.1 * z.1 * z.2.1 + z.2.2.2) a b = (z.2.2.1 * z.1 * z.2.1) a b + 1 * z.2.2.2 a b
+    rw [Matrix.add_apply, one_mul]
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
