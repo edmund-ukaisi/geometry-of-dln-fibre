@@ -1342,6 +1342,50 @@ theorem flatBlock_schurFrameMap_eq_gen (M t : Fin (L + 1) → ℕ) (s : ℕ)
     show (z.2.2.1 * z.1 * z.2.1 + z.2.2.2) a b = (z.2.2.1 * z.1 * z.2.1) a b + 1 * z.2.2.2 a b
     rw [Matrix.add_apply, one_mul]
 
+/-! ## The per-slot Schur-frame reader tuple `slotReadGen` (the general `slotReadV0`)
+
+`slotReadGen k y = (readK, readN, readX, readE)` at boundary `k` — the `SchurInc` tuple the Schur frame
+`schurFrameMap` acts on (the general-`L` `RouteMProjV0Gate.slotReadV0`). Each reader is a coordinate
+read, so the tuple is LINEAR: its fderiv applied to a direction `d` is the read of `d`
+(`slotReadGen_fderiv_apply`) — the input the Schur-frame collapse consumes. -/
+
+/-- **The per-slot Schur-frame reader tuple** `slotReadGen k y : SchurInc (t_k, r_k, c_k)` — the
+`(readK, readN, readX, readE)` tuple at boundary `k`, the input of `schurFrameMap`. -/
+noncomputable def slotReadGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (y : Fin (routeMAmbient M) → ℝ) :
+    SchurInc (Text M (tach M) (k.val + 2))
+      (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+      (Wext M (k.val + 1) - Text M (tach M) (k.val + 2)) :=
+  (Matrix.of (fun i j => readK M (tach M) ha y k i j),
+   Matrix.of (fun i j => readN M (tach M) ha y k i j),
+   Matrix.of (fun i j => readX M (tach M) ha y k i j),
+   Matrix.of (fun i j => readE M (tach M) ha y k i j))
+
+/-- `slotReadGen k` is linear: its fderiv is the constant prod of the four matrix-reader CLMs (each
+reader `read· y = y ∘ ·slot` is a coordinate read, `hasFDerivAt_matrixRead`). -/
+theorem slotReadGen_hasFDerivAt (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivAt (fun y => slotReadGen M ha k y)
+      ((matrixReaderCLM (fun i j => readKslot M ha k i j)).prod
+        ((matrixReaderCLM (fun i j => readNslot M ha k i j)).prod
+          ((matrixReaderCLM (fun i j => readXslot M ha k i j)).prod
+            (matrixReaderCLM (fun i j =>
+              (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm
+                ⟨k, Sum.inl ((frameSplitEquiv M (tach M) (k.val + 1) (ha.hdesc k.val k.isLt)
+                  (ha.hub k.val)).symm (Sum.inr (finProdFinEquiv (i, j))))⟩)))))
+      y₀ := by
+  refine HasFDerivAt.prodMk ?_ (HasFDerivAt.prodMk ?_ (HasFDerivAt.prodMk ?_ ?_)) <;>
+    exact hasFDerivAt_matrixRead _ y₀
+
+/-- **`slotReadGen` fderiv-apply** — `fderiv (slotReadGen k) y₀ d = slotReadGen k d` (linear reader).
+The input the per-slot Schur-frame collapse reads: the fderiv of the reader tuple in direction `d` is
+the reader tuple of `d`, so at `d = eInGen.symm (stairIncl s v)` it recovers (`k = s`) / vanishes
+(`k ≠ s`) the slot-`s` frame component via `eInGen_symm_frame_read` + `stairProj_stairIncl_self`/`_ne`. -/
+theorem slotReadGen_fderiv_apply (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    fderiv ℝ (fun y => slotReadGen M ha k y) y₀ d = slotReadGen M ha k d := by
+  rw [(slotReadGen_hasFDerivAt M ha k y₀).fderiv]; rfl
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
