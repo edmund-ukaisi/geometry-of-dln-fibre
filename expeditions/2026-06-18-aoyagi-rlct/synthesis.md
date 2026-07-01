@@ -6,6 +6,43 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal-product Source-image Readback Socket - 2026-07-01
+
+Lean now proves the source-image readback domination consequence for the p.13
+formal-product chart measure:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn
+```
+
+The calculation is: assume the restricted formal-product chart-piece measure
+`muP13` is a bounded-density perturbation of
+`Measure.map sourceChart (coordinateSourceMeasure.restrict V)` with density
+bound `D`.  The local continuous injective source chart gives the readback
+pullback of that source-image reference as `coordinateSourceMeasure.restrict V`.
+Restriction monotonicity along `V subset W` upgrades the bound to
+`coordinateSourceMeasure.restrict W`, and absolute continuity supplies
+`AEMeasurable readback muP13`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-readback-domination.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-readback-domination.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-readback-domination.md
+```
+
+Focused direct file elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and a direct
+axiom probe passed locally.  Existing imported-module linter warnings appeared
+during the focused and full builds.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no formal-product/source-image bounded-density comparison is
+proved, no source-image coverage, no source-rank coverage, no Haar transport,
+no scalar normalization, no normal crossings, no pole order, and no RLCT
+extraction.
+
 ## p.13 Formal-product to Original-volume Domination - 2026-07-01
 
 Lean now proves that source-reference domination of the p.13 formal-product

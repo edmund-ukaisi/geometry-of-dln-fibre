@@ -1846,6 +1846,180 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- A bounded-density identification of the p.13 formal-product chart measure
+with a local source-image reference gives the readback hypotheses needed by
+the formal-product readback finite-integral wrapper.
+
+The theorem does not prove the density identity or density bound. It only
+transfers those supplied hypotheses through the local source-chart inverse,
+producing a.e. measurability of the readback and domination by the coordinate
+source measure on any larger theta set `W` containing `V`. It does not prove
+source coverage, source-rank coverage, Haar transport, a Jacobian formula,
+normal crossings, pole order, or RLCT extraction. -/
+theorem map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    {Θ : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ))
+    (sourceChart : Θ →
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (readback :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) → Θ)
+    (coordinateSourceMeasure : Measure Θ)
+    (V W : Set Θ)
+    (chartPiece : Set
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (formalDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    (D : ℝ≥0∞)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hVW : V ⊆ W)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hformal_eq :
+      (Measure.map
+        (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+          paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+            (K := ℝ) W₂ B₂ U₀ hU₀
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+        ((m.restrict
+          (topologyTupleDetChartSet
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀))).withDensity
+          (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))).restrict
+          chartPiece =
+        ((Measure.map sourceChart (coordinateSourceMeasure.restrict V)).withDensity
+          formalDensity).restrict chartPiece)
+    (hformalDensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (coordinateSourceMeasure.restrict V)).restrict
+          chartPiece,
+        formalDensity E ≤ D) :
+    AEMeasurable readback
+        ((Measure.map
+          (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+            paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+              (K := ℝ) W₂ B₂ U₀ hU₀
+              (topologyTupleEdgeRawOrder
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+          ((m.restrict
+            (topologyTupleDetChartSet
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀))).withDensity
+            (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                  (κ' := throughSubspaceEndpointComplementIndex
+                    (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))).restrict
+            chartPiece) ∧
+      Measure.map readback
+          ((Measure.map
+            (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+                (throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+              paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+                (K := ℝ) W₂ B₂ U₀ hU₀
+                (topologyTupleEdgeRawOrder
+                  (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                  (κ' := throughSubspaceEndpointComplementIndex
+                    (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+            ((m.restrict
+              (topologyTupleDetChartSet
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀))).withDensity
+              (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+                  (throughSubspaceEndpointComplementIndex
+                    (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+                ENNReal.ofReal
+                  (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                    (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                    (κ' := throughSubspaceEndpointComplementIndex
+                      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))).restrict
+              chartPiece) ≤
+        D • coordinateSourceMeasure.restrict W := by
+  simpa using
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn
+      sourceChart readback
+      (Measure.map
+        (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+          paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+            (K := ℝ) W₂ B₂ U₀ hU₀
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+        ((m.restrict
+          (topologyTupleDetChartSet
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀))).withDensity
+          (fun z : TopologyTuple (Fin (Module.finrank ℝ U₀))
+              (throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))))
+      coordinateSourceMeasure V W chartPiece formalDensity D
+      hV hchartPiece hVW hsource_contOn hsource_inj hleft hformal_eq
+      hformalDensity_le
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- A bounded-density identification of the restricted original edge-family
 volume with a local source-image reference gives the readback hypotheses needed
 by the direct original-volume readback finite-integral wrapper.

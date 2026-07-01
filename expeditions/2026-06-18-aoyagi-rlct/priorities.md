@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal-product source-image readback socket
+
+Lean now proves the chart-piece readback consequence of a supplied
+bounded-density comparison between the p.13 formal-product chart measure and
+the concrete passive-theta source-image reference:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn
+```
+
+If
+
+```text
+muP13 = (Measure.map sourceChart (coordinateSourceMeasure.restrict V)).withDensity delta
+```
+
+on a measurable chart piece, with `delta <= D` a.e. over the restricted
+source-image reference, and if `sourceChart` is continuous/injective on `V`
+with `readback` as a local left inverse and `V subset W`, then
+
+```text
+AEMeasurable readback muP13
+Measure.map readback muP13 <= D • coordinateSourceMeasure.restrict W
+```
+
+Focused direct file elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and a direct
+axiom probe passed; the axiom footprint is `[propext, Classical.choice,
+Quot.sound]`.
+
+This is a socket only.  It does not prove the formal-product/source-image
+comparison, source-image coverage, source-rank coverage, Haar transport, scalar
+normalization, normal crossings, pole order, or RLCT extraction.  The next real
+frontier remains proving or correctly assuming that bounded-density comparison.
+
 ## Latest controller decision - 2026-07-01, p.13 formal-product to original-volume domination
 
 Lean now proves the inverse-Haar domination bridge from p.13 formal-product

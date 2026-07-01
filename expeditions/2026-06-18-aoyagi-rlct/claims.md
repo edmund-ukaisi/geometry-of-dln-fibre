@@ -140,6 +140,25 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal-product source-image readback
+  socket, 2026-07-01.** Lean now proves
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  A supplied bounded-density identity between the p.13 formal-product
+  chart-piece measure and
+  `Measure.map sourceChart (coordinateSourceMeasure.restrict V)`, together
+  with an a.e. density bound by `D`, local source-chart continuity/injectivity,
+  a left inverse, and `V subset W`, gives `AEMeasurable readback muP13` and
+  `Measure.map readback muP13 <= D • coordinateSourceMeasure.restrict W`.
+  Reproduction, statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-readback-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-readback-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-readback-domination.md`.
+  Nonclaims: no formal-product/source-image comparison, no source-image
+  coverage, no source-rank coverage, no Haar transport, no scalar
+  normalization, no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, p.13 formal-product to original-volume
   domination, 2026-07-01.** Lean now proves
   `originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure`
