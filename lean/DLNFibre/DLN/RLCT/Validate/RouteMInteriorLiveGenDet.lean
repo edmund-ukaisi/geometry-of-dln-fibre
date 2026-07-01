@@ -101,9 +101,16 @@ REMAINING (2 sorries — both large, isolated, honest; NEITHER forced green):
   the frame ⊕ id on the lift. Foundation banked: `hasFDerivAt_chainA` + `hasFDerivAt_readN/X/W` +
   `reindexLs_BparamsLeafGen` + `genF`; generalizes the `L = 2` `layer0SchurMap_fderiv_collapse` (which
   needs the general analogues of `slotReadV0`/`packLayer0`/`gate_schurCore_eq` — a multi-hundred-LoC
-  fderiv development). SOUNDNESS: the staggered dims are `genV`-exact (VERIFY-FIRST L=3 (2,4,3,2):
-  17/9/0), so `diag(T) s = genF s` is genuinely TRUE (unlike the removed single-conjugate `eihdOutGen :=
-  eInGen`, which was green-but-wrong). NOT forced green.
+  fderiv development). SOUNDNESS — VERIFIED (2026-07-01, two decorrelated Codex `xhigh` passes):
+  `diag(T) s = genF s` GENUINELY holds. DECISIVE FACT: the chain-reader index-shift `Nblk_s = readN⟨s−1⟩`
+  (`genBlkFlatLive_Nblk_succ`): the layer-s KEPT block = `Cgen(s+1) − Nblk_s·Wblk_s` where `Cgen(s+1) =
+  schurFrameProd(readK⟨s⟩,readX⟨s⟩,readN⟨s⟩,readE⟨s⟩)`; the `−N·W` coupling reads `readN⟨s−1⟩` (slot s−1
+  frame) and `Wblk_s` (slot s−1 lift, by the STAGGER) → strictly OFF-DIAGONAL (s−1 → s, lower), captured
+  by `eihdcGen` (det-invisible). `Cgen` uses `Bmat/Nblk/Rmat` NOT `Wblk` ⇒ no same-slot spoiler; the
+  diagonal frame block is exactly the `Cgen(s+1)` Schur fderiv = `schurFrameDeriv_s`. Lift diag genuinely
+  `id` (the off-by-one gather routes layer-(s+1)-lift input=output to slot s). So `genF s =
+  schurFrameDeriv_s ⊕ id` IS the diagonal (unlike the removed single-conjugate `eihdOutGen := eInGen`,
+  green-but-wrong). NOT forced green — remaining sorry is pure Lean construction (own tide), math settled.
 * `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`: the slot↔staggered-layer reindex is a signed
   coord permutation (det ±1). Route (general-L lift of `RouteMHregPerm.eihd_hreg`): build a `stairChartGen`
   on `StairProd genV L` + certify `isCoordLE_eInGen` / `isCoordLE_packStairGen` via `isCoordLE_of_read`,
@@ -364,7 +371,43 @@ theorem det_symm_conj_toLinearMap {E₁ E₂ : Type} [AddCommGroup E₁] [Module
 /-- **The per-boundary diagonal block** `genF k : genV k →ₗ genV k` — `schurFrameDeriv (readX k)
 (readK k) (readN k)` conjugated onto the frame slot by `frameToSchurIncGen` (det `|det K_k|^{r_k+c_k}`),
 identity on the lift slot (det `1`). For `k ≥ L` the block is `id` (the staircase reads only `k < L`).
-The `readK/X/N k` are read at the free point `y₀`. -/
+The `readK/X/N k` are read at the free point `y₀`.
+
+## WHY this IS the diagonal block of the conjugated Jacobian (auditable soundness argument)
+
+`genF k = schurFrameDeriv_k ⊕ id` is claimed (in `eihd_hD_gen`) to equal the slot-`k`→slot-`k`
+DIAGONAL block of `T = eihdOutGen ∘ DtotGen ∘ eInGen.symm`. This holds — audit against the defs:
+
+The chart's layer-`s` matrix is `Agen … s = chainA (Nblk s) (Wblk s) (Cgen (s+1))`
+(`RouteMGenChain.Agen`/`RouteMChainBlock.chainA`); its rows split (`packRowSplitGen`) into the top
+`Text(s+1)` KEPT rows `Cgen(s+1) − Nblk_s · Wblk_s` and the bottom LIFT rows `Wblk_s`. The staggered
+pack (`packStairGen` via `liftGatherFinL`) routes: `genV`-slot-`s` **frame** ← KEPT rows of layer `s`;
+`genV`-slot-`s` **lift** ← LIFT rows of layer `s+1` (`Wblk_{s+1}`).
+
+* **Frame half `= schurFrameDeriv_k`.** The diagonal frame output is the fderiv of layer-`s`'s KEPT
+  block `Cgen(s+1) − Nblk_s·Wblk_s`, restricted to slot-`s` INPUT coordinates.
+  - `Cgen (s+1) = schurFrameProd (readK⟨s⟩, readX⟨s⟩, readN⟨s⟩, readE⟨s⟩)`
+    (`RouteMHmapGen.Cgen_live_interior_eq_schurFrameProd`) — its readers are all boundary-`s`
+    (slot-`s`) coords; `Cgen` is built from `Bmat/Nblk/Rmat`, NOT `Wblk` (`RouteMGenChain.Cgen`), so it
+    contributes NO same-slot lift term. Its fderiv is `schurFrameDeriv_s` (the width-generic
+    `schurFrameMap`/`schurFrameD`; the `L = 2` witness `RouteMProjV0Gate.gate_schurCore_eq`).
+  - the `−Nblk_s·Wblk_s` correction reads `Nblk_s = readN⟨s−1⟩` (`RouteMHmapGen.genBlkFlatLive_Nblk_succ`:
+    `.Nblk (k+1) = readN⟨k⟩`) — a slot-`(s−1)` FRAME coord — and `Wblk_s` — a slot-`(s−1)` LIFT coord
+    (by the stagger, `Wblk_s` = layer-`s` lift ↦ slot `s−1`). So BOTH its fderiv terms
+    `−(δNblk_s)·Wblk_s(y₀)` and `−Nblk_s(y₀)·(δWblk_s)` are variations of slot-`(s−1)` inputs feeding
+    the slot-`s` frame output ⇒ strictly LOWER (slot `s−1 → s`), NOT on the diagonal. They are the
+    head-into-tail chain feed captured by `eihdcGen` (det-invisible). Hence the diagonal frame block is
+    `schurFrameDeriv_s` alone.
+* **Lift half `= id`.** The slot-`s` lift INPUT is `Wblk_{s+1}` (layer `s+1`'s lift). In the chart, the
+  bottom rows of `Agen … (s+1)` are `Wblk_{s+1}` verbatim (`chainA` lift rows = `W`), and the off-by-one
+  gather (`liftGatherFinL`, `gatherShift`) routes that OUTPUT back to slot `s`'s lift — same slot as the
+  input. So the lift diagonal is `id`. The induced `−Nblk_{s+1}(y₀)·(δWblk_{s+1})` lands in the layer-
+  `(s+1)` frame ⇒ slot `s+1` ⇒ off-diagonal.
+
+Soundness verdict VERIFIED by two decorrelated Codex `xhigh` passes (2026-07-01); the decisive fact is
+the `Nblk_s = readN⟨s−1⟩` index shift moving the `−N·W` coupling strictly off-diagonal. This is NOT the
+removed green-but-wrong `eihdOutGen := eInGen` single-conjugate (there the Params-LAYER output was
+mis-paired with the SLOT input, so `diag ≠ genF`); the STAGGERED pack makes `diag = genF k` genuine. -/
 noncomputable def genF (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (y₀ : Fin (routeMAmbient M) → ℝ) :
     (k : ℕ) → genV M k →ₗ[ℝ] genV M k := fun k =>
@@ -735,7 +778,14 @@ def eihdcGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (y₀ : Fin (
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
 are the chain feed. THE CRUX — the per-interior-boundary Schur-frame collapse of the `chainA` layer
-fderiv, generalizing `layer0SchurMap_fderiv_collapse`. LOAD-BEARING RESIDUAL. -/
+fderiv, generalizing `layer0SchurMap_fderiv_collapse`. LOAD-BEARING RESIDUAL.
+
+The soundness of the STATEMENT (`diag(T) k = genF k`, i.e. the diagonal block genuinely collapses to
+`schurFrameDeriv_k ⊕ id`) is argued against the actual defs in the **`genF` docstring** — the WHY: the
+`−Nblk_s·Wblk_s` coupling reads slot-`(s−1)` coords (`Nblk_s = readN⟨s−1⟩` via
+`genBlkFlatLive_Nblk_succ`; `Wblk_s` in slot `s−1` by the stagger) so it is strictly lower / det-invisible,
+`Cgen` carries no same-slot `Wblk` term, and the off-by-one gather makes the lift half `id`. Read `genF`
+for the auditable trace. -/
 theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (y₀ : Fin (routeMAmbient M) → ℝ) :
     (eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
@@ -754,13 +804,24 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
   rw [hcoupling]
   refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
-  -- REMAINING (the genuine per-interior-boundary fderiv-Schur collapse): the diagonal block of `T` at
-  -- boundary `s` is `genF s` (`schurFrameDeriv (readX s)(readK s)(readN s)` on the frame ⊕ id on the
-  -- lift) and the upper block is `0`. The diagonal fact is the fderiv of `Agen s =
-  -- chainA(readN s)(readW s)(Cgen (s+1))` in `genV` coords, collapsing to `schurFrameDeriv` — via
-  -- `hasFDerivAt_chainA` + `hasFDerivAt_readN/X/W` + `reindexLs_BparamsLeafGen` + `genF`; generalizes
-  -- the `L = 2` `layer0SchurMap_fderiv_collapse`. The staggered dims are `genV`-exact (VERIFY-FIRST
-  -- confirmed L=3 (2,4,3,2): 17/9/0), so `diag(T) s = genF s` is genuinely TRUE.
+  -- REMAINING: `StairLowerTriDiag genV L genF T` — per depth, (i) frame-diag `fst∘T∘inl = genF 0`,
+  -- (ii) upper `fst∘T∘inr = 0`, (iii) tail recursion. SOUNDNESS CONFIRMED (2026-07-01, two decorrelated
+  -- Codex xhigh passes): `diag(T) s = genF s` GENUINELY holds. The decisive fact is the chain-reader
+  -- INDEX SHIFT `Nblk_s = readN⟨s−1⟩` (`genBlkFlatLive_Nblk_succ`: `.Nblk (k+1) = readN⟨k⟩`): the
+  -- layer-s KEPT block is `Cgen(s+1) − Nblk_s·Wblk_s = schurFrameProd(readK⟨s⟩,readX⟨s⟩,readN⟨s⟩,readE⟨s⟩)
+  -- − readN⟨s−1⟩·Wblk_s`. `readN⟨s−1⟩` is a slot-(s−1) frame coord and `Wblk_s` is (by the STAGGER) a
+  -- slot-(s−1) lift coord, so BOTH `−N·W` coupling terms are strictly OFF-DIAGONAL (slot s−1 → s, lower)
+  -- ⇒ absent from the diagonal (slot s→s) block. `Cgen` uses `Bmat/Nblk/Rmat` (NOT `Wblk`), so no
+  -- same-slot `Wblk` spoiler — the ONLY same-slot frame contribution is the `Cgen(s+1)` Schur-frame
+  -- fderiv = `schurFrameDeriv_s` (the L=2 `gate_schurCore_eq`/`layer0SchurMap_fderiv_collapse`). The
+  -- lift diag is genuinely `id`: slot-s lift input = `Wblk_{s+1}` = the bottom rows of layer s+1's
+  -- output verbatim, and the off-by-one gather (`liftGatherFinL`) routes that output back to slot s
+  -- (input=output slot). So `genF s = schurFrameDeriv_s ⊕ id` IS the diagonal; the `−N·W`/`−N·δW`
+  -- couplings are the head-into-tail chain feed captured by `eihdcGen` (det-invisible). NOT green-but-wrong.
+  -- LEAN CONSTRUCTION (proof-engineering, math done): needs general-L analogues of the L=2
+  -- `eihdT_free_eq_packStair_fderiv` (express `T w = packStairGen (fderiv BparamsLeafGen y₀ (eInGen.symm w))`),
+  -- `BparamsLeaf_fderiv_layer` (per-layer fderiv via `hasFDerivAt_chainA`), and per-slot `packLayer` reads —
+  -- a multi-hundred-LoC fderiv development (own tide). Reduction to this single isolated goal is banked.
   sorry
 
 /-- **The regauge abs-det-`1`** `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`. The
