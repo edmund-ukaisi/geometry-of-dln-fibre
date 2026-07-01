@@ -1076,6 +1076,50 @@ theorem eihdT_gen_eq_packStairGen_fderiv (M : Fin (L + 1) → ℕ) (ha : StructA
         rw [paramsEquivFlatCLE_coe, paramsEquivFlatLinear_coe]]
   rw [(paramsEquivFlatLinear M).symm_apply_apply]
 
+/-! ## The `packStairGen` slot-projection formulas (the staggered slot-plumbing, de-risked)
+
+`packStairGen = (steps 0–5) ≪≫ₗ piToStair`, so `stairProj s' (packStairGen P) = ((steps) P) s'`
+(`LinearEquiv.trans_apply` + `stairProj_piToStair`); each component then reduces by `rfl`. The FRAME
+half reads ONLY layer `s'` of `P` (it never touches the off-by-one gather — step 4 is `refl` on the
+frame-Pi); the LIFT half is the `liftGatherFinL`-permuted lift-Pi read at `s'` (the stagger: slot `s'`
+lift ← layer `s'+1` lift block). These are the two per-slot reads the block facts (`eihd_hD_gen`) read
+`fderiv BparamsLeafGen` through. -/
+
+/-- The layer-`s` width-recast `Matrix (M s.castSucc)(M s.succ) ≃ Matrix (Wext s)(Wext (s+1))` — the
+step-0 factor of `packStairGen`, named so the projection lemmas read layers uniformly. -/
+def packRecast (M : Fin (L + 1) → ℕ) (s : Fin L) :
+    Matrix (Fin (M s.castSucc)) (Fin (M s.succ)) ℝ ≃ₗ[ℝ]
+      Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ :=
+  Matrix.reindexLinearEquiv ℝ ℝ
+    (finCongr (show M s.castSucc = Wext M s.val by rw [Wext_apply M s.val (by omega)]; rfl))
+    (finCongr (show M s.succ = Wext M (s.val + 1) by rw [Wext_apply M (s.val + 1) (by omega)]; rfl))
+
+/-- **The FRAME component of `stairProj s' (packStairGen P)`** — reads ONLY layer `s'` of `P` (the
+frame half never touches the off-by-one gather): flatten the KEPT rows of the row-split of the recast
+layer `s'`. -/
+theorem stairProj_packStairGen_fst (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+    (P : Params M) (s' : Fin L) :
+    (stairProj (genV M) L s'.val (packStairGen M ha hL P)).1
+      = (flatMatLEGen (Text M (tach M) (s'.val + 1)) (Wext M (s'.val + 1))).symm
+          ((packRowSplitGen M ha s' (packRecast M s' (P s'))).1) := by
+  rw [packStairGen, LinearEquiv.trans_apply, stairProj_piToStair]; rfl
+
+/-- **The LIFT component of `stairProj s' (packStairGen P)`** — the off-by-one gather
+(`liftGatherFinL`) permutes the lift-Pi (whose slot `s` is the flattened LIFT rows of layer `s`);
+reading it at `s'` pulls layer `s'+1` (the stagger). Stated in terms of `piReindexOfSigma` so the
+`sigmaGather` internals stay opaque. -/
+theorem stairProj_packStairGen_snd (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+    (P : Params M) (s' : Fin L) :
+    (stairProj (genV M) L s'.val (packStairGen M ha hL P)).2
+      = (piReindexOfSigma
+          (fun k : Fin L => (Wext M k.val - Text M (tach M) (k.val + 1)) * Wext M (k.val + 1))
+          (fun k : Fin L => liftDim M (tDesc M (tach M)) k.val)
+          (liftGatherFinL M ha hL)
+          (fun s : Fin L =>
+            (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm
+              ((packRowSplitGen M ha s (packRecast M s (P s))).2))) s' := by
+  rw [packStairGen, LinearEquiv.trans_apply, stairProj_piToStair]; rfl
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
