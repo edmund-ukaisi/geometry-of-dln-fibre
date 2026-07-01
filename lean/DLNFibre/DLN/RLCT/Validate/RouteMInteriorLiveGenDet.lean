@@ -1505,6 +1505,29 @@ def eihdcGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (y₀ : Fin (
       ∘ₗ DtotGen M ha y₀
       ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)))
 
+/-- **Reader-vanishing (frame slot)** — at an OFF-slot boundary `j ≠ s`, the N-reader of the input
+`eInGen.symm (stairIncl s v)` is `0`. The `eInGen.symm`-`stairIncl` input places `v` at slot `s` only;
+reading slot `j`'s frame (`readNslot` → `eInGen_symm_frame_read`) then `stairProj_stairIncl_ne` gives
+`0`. This is the `−Nblk·Wblk` diagonal-vanishing: the `dN(d)·Wblk(y₀)` product-rule term reads
+`readN⟨s−1⟩` (slot `s−1 ≠ s`). Convention-independent. -/
+theorem readN_vanish (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s j : Fin L) (hne : j ≠ s)
+    (v : genV M s.val) (i : Fin (Text M (tach M) (j.val + 2)))
+    (jj : Fin (Wext M (j.val + 1) - Text M (tach M) (j.val + 2))) :
+    readN M (tach M) ha ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) j i jj = 0 := by
+  rw [readN_eq_readNslot, readNslot, eInGen_symm_frame_read,
+    stairProj_stairIncl_ne (genV M) L s.val j.val (fun h => hne (Fin.ext h)) v]; rfl
+
+/-- **Reader-vanishing (lift slot)** — at an OFF-slot boundary `j ≠ s`, the W-reader of the input
+`eInGen.symm (stairIncl s v)` is `0`. Same as `readN_vanish` on the lift slot (`readWslot` →
+`eInGen_symm_lift_read` → `stairProj_stairIncl_ne`). This is the other `−Nblk·Wblk` diagonal-vanishing:
+`Nblk(y₀)·dW(d)` reads `readW⟨s−1⟩` (slot `s−1 ≠ s`). Convention-independent. -/
+theorem readW_vanish (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s j : Fin L) (hne : j ≠ s)
+    (hj : j.val + 1 < L) (v : genV M s.val)
+    (i : Fin (Wext M (j.val + 1) - Text M (tach M) (j.val + 2))) (jj : Fin (Wext M (j.val + 2))) :
+    readW M (tach M) ha ((eInGen M ha).symm (stairIncl (genV M) L s.val v)) j hj i jj = 0 := by
+  rw [readW_eq_readWslot, readWslot, eInGen_symm_lift_read,
+    stairProj_stairIncl_ne (genV M) L s.val j.val (fun h => hne (Fin.ext h)) v]; rfl
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
