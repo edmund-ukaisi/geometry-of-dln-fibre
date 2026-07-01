@@ -6,6 +6,58 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal-product Source-image Bounded-density Finite-integral Wrapper - 2026-07-01
+
+Lean now proves the finite-integral front end that turns a supplied
+bounded-density identity between the p.13 formal-product chart-piece measure and
+the concrete passive-theta source-image reference into the final original-prior
+finite integral:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The theorem gets `W` from the existing formal-product readback finite-integral
+socket and then gets `V subset W` from the local passive-theta source-image
+support theorem.  A chart piece only has to satisfy
+`chartPiece subset sourceChart '' V`; the theorem derives p.13 support and the
+readback/right-inverse condition internally.  The supplied density identity and
+bound give
+
+```text
+AEMeasurable readback muP13
+Measure.map readback muP13 <= D • coordinateSourceMeasure.restrict W
+```
+
+by the previously landed formal-product readback domination helper, and the
+formal-product finite-integral socket is applied with `Cformal := D`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-density-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-density-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-density-finite-integral.md
+```
+
+Verification passed locally:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13FormalProductSourceImageFiniteIntegral.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13FormalProductSourceImageFiniteIntegral
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_formal_product_source_image_axioms.lean
+```
+
+The direct axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
+Existing imported-module linter warnings appeared during builds.
+
+Nonclaims: no formal-product/source-image density identity or bound is proved,
+no source-image coverage, no source-rank coverage, no Haar transport, no scalar
+normalization, no normal crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Formal-product Source-image Readback Socket - 2026-07-01
 
 Lean now proves the source-image readback domination consequence for the p.13

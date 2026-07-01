@@ -140,6 +140,27 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal-product source-image
+  bounded-density finite-integral wrapper, 2026-07-01.** Lean now proves
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13FormalProductSourceImageFiniteIntegral.lean`.
+  Given the returned local source-image chart `V subset W`, a measurable
+  chart piece contained in `sourceChart '' V`, the original-prior density
+  bound, and a supplied bounded-density identity between `muP13` and
+  `Measure.map sourceChart (coordinateSourceMeasure.restrict V)`, the theorem
+  derives p.13 support, chart-piece readback/right-inverse data,
+  `AEMeasurable readback muP13`, and
+  `Measure.map readback muP13 <= D • coordinateSourceMeasure.restrict W`, then
+  applies the formal-product readback finite-integral socket.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-density-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-density-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-density-finite-integral.md`.
+  Nonclaims: no formal-product/source-image density identity or bound, no
+  source-image coverage, no source-rank coverage, no Haar transport, no scalar
+  normalization, no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, p.13 formal-product source-image readback
   socket, 2026-07-01.** Lean now proves
   `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn`

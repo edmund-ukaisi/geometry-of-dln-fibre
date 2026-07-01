@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal-product source-image bounded-density finite-integral wrapper
+
+Lean now proves the finite-integral consumer that combines the local
+passive-theta source-image chart with the p.13 formal-product readback socket:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The theorem returns `V subset W` and asks the final chart-piece handler only
+for `chartPiece subset sourceChart '' V`, the original-prior density bound,
+and a supplied bounded-density identity
+
+```text
+muP13 =
+  ((Measure.map sourceChart (coordinateSourceMeasure.restrict V)).withDensity
+    formalDensity).restrict chartPiece
+```
+
+with `formalDensity <= D` a.e. and `D < infinity`.  It derives p.13 support,
+the readback/right-inverse condition on the chart piece, readback
+a.e.-measurability for `muP13`, and
+
+```text
+Measure.map readback muP13 <= D • coordinateSourceMeasure.restrict W.
+```
+
+The scalar sent to the formal-product socket is exactly `D`; no inverse Haar
+scalar appears in this wrapper.  The next frontier is the actual
+formal-product/source-image density identity or bounded-density comparison.
+
+Focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and a direct
+axiom probe passed; the axiom footprint is `[propext, Classical.choice,
+Quot.sound]`.
+
+Nonclaims: no formal-product/source-image comparison is proved, no density
+bound is proved, no source-image coverage, no source-rank coverage, no Haar
+transport, no scalar normalization, no normal crossings, pole order, or RLCT
+extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 formal-product source-image readback socket
 
 Lean now proves the chart-piece readback consequence of a supplied
