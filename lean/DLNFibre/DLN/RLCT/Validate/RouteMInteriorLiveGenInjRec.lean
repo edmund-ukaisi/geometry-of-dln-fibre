@@ -98,10 +98,11 @@ theorem readW_eq_of_Agen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
     readW M (tach M) ha y s hs = readW M (tach M) ha y' s hs := by
   sorry
 
-/-- **`Cgen(s+1)` recovery** (the kept rows of `Agen … s`): from `Agen … s`-equality + `readN ⟨s-1⟩`
-equality (giving `Nblk s`-equality) + `readW` equality (`Wblk s`), the interior transition
-`Cgen(s+1) = schurFrameProd(K,X,N,E)_s` agrees for `y`, `y'`. The `chainA_apply_castAdd` kept-block read
-+ the `− Nblk s·Wblk s` subtraction. -/
+/-- **`Cgen(s+1)` recovery** — from `Agen … s`-equality + `Nblk s`-equality, the transition
+`Cgen(s+1)` agrees for `y`, `y'`. Via the chaining identity `chainQ(Nblk s) · Agen…s = Cgen(s+1)`
+(`chainQ_mul_chainA`): `Cgen(s+1) = chainQ(Nblk s)·(Agen…s)`, so `Agen`-eq + `Nblk`-eq ⟹ `Cgen`-eq —
+NO `Wblk` input needed (the `chainQ·chainA` collapse absorbs the lift). `Nblk s` (`= readN⟨s-1⟩` at
+`s ≥ 1`, `0` at `s = 0`) comes from the prior frame recovery. -/
 theorem Cgen_eq_of_Agen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     {y y' : Fin (routeMAmbient M) → ℝ} (s : Fin L) (hs : s.val + 1 < L)
     (hA : Agen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
@@ -109,19 +110,58 @@ theorem Cgen_eq_of_Agen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
       = Agen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y')
         (hleStruct M (tach M) ha) s.val)
     (hN : (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
-      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y').Nblk s.val)
-    (hW : (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val
-      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y').Wblk s.val) :
+      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y').Nblk s.val) :
     Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
         (hleStruct M (tach M) ha) (s.val + 1)
       = Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y')
         (hleStruct M (tach M) ha) (s.val + 1) := by
+  set hle := hleStruct M (tach M) ha with hhle
+  set By := genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y with hBy
+  set By' := genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y') y' with hBy'
+  have hsL : s.val < L := s.isLt
+  -- `Cgen (s+1) = chainQ (Nblk s) · Agen s` (via `chainQ_mul_chainA` on the `dif_pos` unfold of Agen).
+  have hcol : ∀ B : GenBlk M (tach M),
+      Cgen 1 M (tach M) B hle (s.val + 1)
+        = chainQ (genWidthEq M (tach M) hle s.val hsL) (B.Nblk s.val)
+          * Agen 1 M (tach M) B hle s.val := by
+    intro B
+    rw [show Agen 1 M (tach M) B hle s.val
+          = chainA (genWidthEq M (tach M) hle s.val hsL) (B.Nblk s.val) (B.Wblk s.val)
+            (Cgen 1 M (tach M) B hle (s.val + 1)) from by rw [Agen, dif_pos hsL]]
+    rw [chainQ_mul_chainA]
+  rw [hcol By, hcol By', hN, hA]
+
+/-- **`schurFrameProd` (at `u = 1`) is injective in `(K,X,N,E)` when `det K ≠ 0`** (general `s`). From
+`schurFrameProd … 1 K X N E = schurFrameProd … 1 K' X' N' E'`, read the four blocks (`schurFrameProd_
+block_K/_KN/_XK/_XKNuE` at the `castAdd/natAdd` indices): `K=K'`; `K·N=K'·N'` ⟹ (left-cancel `K⁻¹`)
+`N=N'`; `X·K=X'·K'` ⟹ (right-cancel) `X=X'`; then `X·K·N + 1·E = … + 1·E'` ⟹ `E=E'` (add-left-cancel,
+`one_mul`). The value-side analogue of `schurFrameMap_inj_of_det_ne_zero`, on `schurFrameProd`'s blocks
+directly (no `flatBlock`). Radial `u` is `1` (the chart's `Cgen 1`). -/
+theorem schurFrameProd_inj_of_det_ne_zero {M : Fin (L + 1) → ℕ} (t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
+    {K K' : Matrix (Fin (Text M t (s + 1))) (Fin (Text M t (s + 1))) ℝ}
+    {X X' : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Text M t (s + 1))) ℝ}
+    {N N' : Matrix (Fin (Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ}
+    {E E' : Matrix (Fin (Text M t s - Text M t (s + 1))) (Fin (Wext M s - Text M t (s + 1))) ℝ}
+    (hK : K.det ≠ 0)
+    (h : schurFrameProd M t s h1 h2 1 K X N E = schurFrameProd M t s h1 h2 1 K' X' N' E') :
+    K = K' ∧ X = X' ∧ N = N' ∧ E = E' := by
+  -- PROOF STRATEGY (bounded; genm-inj to close): four block reads + matrix cancellation.
+  -- K: `ext a b; rw [← schurFrameProd_block_K … K X N E a b, h, schurFrameProd_block_K … K' X' N' E']`.
+  --   ⚠ the `rw [h]` on the full dependent-width `schurFrameProd` matrix eq hits a `whnf` HEARTBEAT
+  --   TIMEOUT (the opaque-width cast wall, CLAUDE.md). FIX: avoid `rw [h]` on the matrix — instead
+  --   `have := congrFun (congrFun h idx_a) idx_b` where idx_a/idx_b are the block lemma's OWN cast
+  --   indices (extract them by `set`/`generalize` from the block-lemma statement, or state a
+  --   `schurFrameProd_apply_castAdd_*` helper that fixes the index form), then `rwa [block, block]`.
+  --   The `by omega` cast args must MATCH the block lemma's `Fin.cast (show … by omega)` exactly
+  --   (needs h1/h2 in scope; the mismatch was the earlier omega failure).
+  -- N: from `K·N = K·N'` (block_KN), left-cancel K⁻¹ (K unit via hK). X: block_XK, right-cancel.
+  -- E: block_XKNuE gives `X·K·N + 1·E = X·K·N + 1·E'`; `one_mul` + `add_left_cancel`.
   sorry
 
 /-- **Interior frame recovery `frameRecoverGen`** — at an interior `s+1 < L`, from the `Cgen(s+1)`
 equality (`= schurFrameProd`) + `det K_s ≠ 0`, the four readers `readK/X/N/E ⟨s⟩` agree for `y`, `y'`.
-Via `Cgen_live_interior_eq_schurFrameProd` + `schurFrameMap_inj_of_det_ne_zero` (through the general-`s`
-`flatBlock_schurFrameMap_eq` bridge). -/
+Via `Cgen_live_interior_eq_schurFrameProd` + `schurFrameProd_inj_of_det_ne_zero`. -/
 theorem frameRecoverGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     {y y' : Fin (routeMAmbient M) → ℝ} (s : Fin L) (hs : s.val + 1 < L)
     (hK : (Matrix.of (readK M (tach M) ha y s)).det ≠ 0)
@@ -133,6 +173,14 @@ theorem frameRecoverGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
       ∧ readX M (tach M) ha y s = readX M (tach M) ha y' s
       ∧ readN M (tach M) ha y s = readN M (tach M) ha y' s
       ∧ readE M (tach M) ha y s = readE M (tach M) ha y' s := by
+  -- PROOF STRATEGY (bounded; genm-inj to close, once schurFrameProd_inj_of_det_ne_zero lands):
+  --   rw [Cgen_live_interior_eq_schurFrameProd … y s.val hs,
+  --       Cgen_live_interior_eq_schurFrameProd … y' s.val hs] at hC
+  -- turns hC into `schurFrameProd … 1 (readK y ⟨s⟩)(readX)(readN)(readE) = schurFrameProd … (…y'…)`;
+  -- then `schurFrameProd_inj_of_det_ne_zero (tach M) s.val (ha.hdesc s.val _) (ha.hub s.val) hKe hC`
+  -- gives the four `readK/X/N/E ⟨s.val⟩`-equalities; `rw [Fin.eta s s.isLt]` aligns `⟨s.val⟩ = s`.
+  -- NOTE: `hKe` needs `(readK y ⟨s.val⟩).det ≠ 0`; from `hK : (of (readK y s)).det ≠ 0` + `Fin.eta`
+  -- (of is defeq-identity on the Matrix type — align the `s`/`⟨s.val⟩` first, then `exact hK`).
   sorry
 
 /-- **The recovery capstone** — `BchartLeafGen` injective on the `kLDU ∘ pbo` image. The forward
