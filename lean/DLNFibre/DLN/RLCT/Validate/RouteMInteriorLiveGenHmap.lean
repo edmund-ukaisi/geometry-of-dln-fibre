@@ -1,18 +1,20 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenChart
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenDet
 
 /-!
 # `RouteMInteriorLiveGenHmap` — the general-`L` chart map identity `hmap` + differentiability + diffGen
 
 The map-identity layer of the general-`L` interior-chart lift (`genm-glift`), generalizing the
 `Fin (2 + 1)`-pinned `RouteMLeafBData.hmap_leaf` / `RouteMInteriorLiveContract.interiorLive_diff` to
-arbitrary depth `L`. Uses this thread's chart-layer boundary factor `BparamsLeafGenC` / `BchartLeafGenC`
-(`RouteMInteriorLiveGenChart`, `rfl`-equal to factor1's `RouteMInteriorLiveGenDet.BchartLeafGen`, kept
-local so the chart layer is decoupled from that actively-churning module) and this thread's
-`interiorLive_commuteGen` / `readX_pbo_all` / `readN_pbo_all` / `readW_pbo_all` / `readE_pbo_all`.
+arbitrary depth `L`. Consumes factor1's boundary factor `BparamsLeafGen` / `BchartLeafGen`
+(`RouteMInteriorLiveGenDet`, the shared `u`-free chart; its 4 in-flight sorries `eInGen`/`eihdOutGen`/
+`eihd_hD_gen`/`eihd_hreg_gen` are the Factor-1 conjugacy/regauge residuals, transitively present but not
+touched by anything here) and this thread's `interiorLive_commuteGen` / `readX_pbo_all` /
+`readN_pbo_all` / `readW_pbo_all` / `readE_pbo_all` (`RouteMInteriorLiveGenChart`).
 
 ## The map identity
 
-`phiFlatLiveAt M ha hL leafPivot = BchartLeafGenC ha ∘ pivotBlowupOn activeMGen leafPivot`. Both sides are
+`phiFlatLiveAt M ha hL leafPivot = BchartLeafGen ha ∘ pivotBlowupOn activeMGen leafPivot`. Both sides are
 `paramsEquivFlat ∘ chartParamsGen`; the work is the per-layer chart-parameter match
 `chartParamsGen_matchGen` (via `Agen_congr`, reducing each layer to the `Nblk`/`Wblk`/`Cgen(s+1)`
 matches):
@@ -21,7 +23,7 @@ matches):
   K/X/N blocks read spectator slots (fixed by `readK/X/N_pbo_all`), and the radial `u` of the E-term
   moves into the residual coordinate (`schurFrameProd_u_to_E` + `readE_pbo_all`);
 * leaf boundary `s+1 = L`: `Cgen = v • rfin` (`Cgen_live_leaf`), the pivot `(0,0)` fixed and the rest
-  scaled (`rfinFixedPivot`/`rfinDirectGenC` match under `pbo`).
+  scaled (`rfinFixedPivot`/`rfinDirectGen` match under `pbo`).
 
 The `Nblk (s)`/`Wblk (s)` at layer `s ≥ 1` read the INTERIOR boundary `s−1` (`≠ L−1`), fixed by
 `readN/W_pbo_all`; at `s = 0` they are `0` (identity boundary).
@@ -30,7 +32,7 @@ The `Nblk (s)`/`Wblk (s)` at layer `s ≥ 1` read the INTERIOR boundary `s−1` 
 * `Cgen_leaf_matchGen` — the leaf `Cgen (s+1 = L)` match.
 * `chartParamsGen_matchGen` — the per-layer chart-parameter match.
 * `hmap_leafGen` — the map identity.
-* `Bchart_differentiableAtGen` — `BchartLeafGenC` differentiable (the polynomial chain).
+* `Bchart_differentiableAtGen` — `BchartLeafGen` differentiable (the polynomial chain).
 * `interiorLive_diffGen` — `Differentiable (interiorLivePhiGen)` via the factorization + commute.
 
 Axiom-clean `[propext, Classical.choice, Quot.sound]` (matrix algebra + the banked wiring; only the
@@ -60,7 +62,7 @@ theorem leafSlot_ne_leafPivotGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (ta
 
 /-- **The interior `Cgen (s+1 < L)` match** at general `L`: the chart's interior transition (radial
 `u = x p₀`, leaf `rfinFixedPivot x`) equals the `B`-decoder's (radial `1`, leaf
-`rfinDirectGenC (pbo x)`) at every interior boundary `s+1 < L`. Both are the Schur frame
+`rfinDirectGen (pbo x)`) at every interior boundary `s+1 < L`. Both are the Schur frame
 (`Cgen_live_interior_eq_schurFrameProd`); the K/X/N blocks read spectator slots (fixed via
 `readK/X/N_pbo_all`), and the radial `u` of the E-term moves into the residual coordinate
 (`schurFrameProd_u_to_E` + `readE_pbo_all`). The general-`L` lift of `RouteMLeafBData.Cgen1_match`. -/
@@ -72,7 +74,7 @@ theorem Cgen_interior_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
           (rfinFixedPivot M ha hL x) x) (hleStruct M (tach M) ha) (s + 1)
       = Cgen 1 M (tach M)
         (genBlkFlatLive M (tach M) ha
-          (rfinDirectGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
+          (rfinDirectGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
           (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
         (hleStruct M (tach M) ha) (s + 1) := by
   set p₀ := leafPivot M ha hL h0r h0c with hp₀
@@ -89,7 +91,7 @@ theorem Cgen_interior_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach
   · funext i j
     rw [Matrix.smul_apply, smul_eq_mul, readE_pbo_all M ha hL h0r h0c x ⟨s, hsL⟩ hsne i j]
 
-/-- **The leaf `Cgen L` match** at general `L`: `(x p₀) • rfinFixedPivot x = 1 • rfinDirectGenC (pbo x)`
+/-- **The leaf `Cgen L` match** at general `L`: `(x p₀) • rfinFixedPivot x = 1 • rfinDirectGen (pbo x)`
 (boundary `L`). At the pivot `(0,0)`: `(x p₀)·1 = (pbo x) p₀ = x p₀` (pivot fixed); off `(0,0)`:
 `(x p₀)·x(leafSlot i j) = (pbo x)(leafSlot i j)` (a leaf slot in `activeMGen`, `≠ p₀`, scaled). The
 general-`L` lift of `RouteMLeafBData.Cgen2_match`. -/
@@ -100,13 +102,13 @@ theorem Cgen_leaf_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
           (rfinFixedPivot M ha hL x) x) (hleStruct M (tach M) ha) L
       = Cgen 1 M (tach M)
         (genBlkFlatLive M (tach M) ha
-          (rfinDirectGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
+          (rfinDirectGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
           (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
         (hleStruct M (tach M) ha) L := by
   set p₀ := leafPivot M ha hL h0r h0c with hp₀
   set pbo := pivotBlowupOn (activeMGen M ha) p₀ with hpbo
   rw [Cgen_live_leaf M (tach M) ha (rfinFixedPivot M ha hL x) (x p₀) x,
-    Cgen_live_leaf M (tach M) ha (rfinDirectGenC M ha (pbo x)) (1 : ℝ) (pbo x), one_smul]
+    Cgen_live_leaf M (tach M) ha (rfinDirectGen M ha (pbo x)) (1 : ℝ) (pbo x), one_smul]
   funext i j
   rw [Matrix.smul_apply, smul_eq_mul]
   by_cases hij : i.val = 0 ∧ j.val = 0
@@ -135,7 +137,7 @@ theorem live_Nblk_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (j : ℕ) (hj1 : j + 1 < L) :
     (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x).Nblk (j + 1)
       = (genBlkFlatLive M (tach M) ha
-          (rfinDirectGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
+          (rfinDirectGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
           (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x)).Nblk (j + 1) := by
   have hjL : j < L := by omega
   have hjne : (⟨j, hjL⟩ : Fin L).val ≠ L - 1 := by simp only [Fin.val_mk]; omega
@@ -150,7 +152,7 @@ theorem live_Wblk_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (j : ℕ) (hj1 : j + 1 < L) :
     (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x).Wblk (j + 1)
       = (genBlkFlatLive M (tach M) ha
-          (rfinDirectGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
+          (rfinDirectGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x))
           (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x)).Wblk (j + 1) := by
   have hjL : j < L := by omega
   show (genBlkFlatStruct M (tach M) ha x).Wblk (j + 1)
@@ -162,7 +164,7 @@ theorem live_Wblk_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
 /-! ## The chart-parameter match + `hmap` -/
 
 /-- **The chart-parameter match at general `L`** `chartParamsGen (x p₀) … (chart decoder) =
-BparamsLeafGenC (pbo x)` — the genuine content of `hmap`, per layer `s : Fin L`. Both are `reindex (Agen
+BparamsLeafGen (pbo x)` — the genuine content of `hmap`, per layer `s : Fin L`. Both are `reindex (Agen
 … s.val)`; `Agen_congr` reduces each to the `Nblk`/`Wblk`/`Cgen(s+1)` matches. Layer `0` reads
 `Nblk 0 = 0` (`rfl`) and the interior `Cgen 1`; layer `s ≥ 1` reads the interior boundary `s−1`'s
 `Nblk`/`Wblk`; the `Cgen (s+1)` is interior when `s+1 < L`, the leaf when `s+1 = L`. The general-`L`
@@ -172,10 +174,10 @@ theorem chartParamsGen_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
     chartParamsGen (x (leafPivot M ha hL h0r h0c)) M (tach M)
         (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x)
         (hleStruct M (tach M) ha)
-      = BparamsLeafGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x) := by
+      = BparamsLeafGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) x) := by
   set p₀ := leafPivot M ha hL h0r h0c with hp₀
   set pbo := pivotBlowupOn (activeMGen M ha) p₀ with hpbo
-  rw [BparamsLeafGenC]
+  rw [BparamsLeafGen]
   funext s
   show Matrix.reindex _ _ (Agen (x p₀) M (tach M) _ (hleStruct M (tach M) ha) s.val)
     = Matrix.reindex _ _ (Agen 1 M (tach M) _ (hleStruct M (tach M) ha) s.val)
@@ -183,14 +185,14 @@ theorem chartParamsGen_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
   -- the `Nblk`/`Wblk`/`Cgen(s+1)` matches per layer `s`.
   -- Nblk s: `0` at `s = 0`, `readN ⟨s−1⟩` at `s ≥ 1` (interior, `≠ L−1`).
   have hN : (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x).Nblk s.val
-      = (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha (pbo x)) (pbo x)).Nblk s.val := by
+      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha (pbo x)) (pbo x)).Nblk s.val := by
     match hsv : s.val with
     | 0 => rfl
     | (j + 1) =>
       have hj1 : j + 1 < L := by have := s.isLt; omega
       exact live_Nblk_matchGen M ha hL h0r h0c x j hj1
   have hW : (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x).Wblk s.val
-      = (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha (pbo x)) (pbo x)).Wblk s.val := by
+      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha (pbo x)) (pbo x)).Wblk s.val := by
     match hsv : s.val with
     | 0 => rfl
     | (j + 1) =>
@@ -198,7 +200,7 @@ theorem chartParamsGen_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
       exact live_Wblk_matchGen M ha hL h0r h0c x j hj1
   have hC : Cgen (x p₀) M (tach M) (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x)
         (hleStruct M (tach M) ha) (s.val + 1)
-      = Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha (pbo x)) (pbo x))
+      = Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha (pbo x)) (pbo x))
         (hleStruct M (tach M) ha) (s.val + 1) := by
     by_cases hsL : s.val + 1 < L
     · exact Cgen_interior_matchGen M ha hL h0r h0c x s.val hsL
@@ -208,14 +210,14 @@ theorem chartParamsGen_matchGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tac
       exact Cgen_leaf_matchGen M ha hL h0r h0c x
   exact Agen_congr M (tach M) (hleStruct M (tach M) ha) (x p₀) 1 _ _ s.val hN hW hC
 
-/-- **`hmap_leafGen`**: `phiFlatLiveAt M ha hL p₀ = BchartLeafGenC ha ∘ pivotBlowupOn activeMGen p₀` at
+/-- **`hmap_leafGen`**: `phiFlatLiveAt M ha hL p₀ = BchartLeafGen ha ∘ pivotBlowupOn activeMGen p₀` at
 general `L` — the map id, discharged from the per-layer match (`chartParamsGen_matchGen`; NO explicit
 `chainA` reindexing). Both sides are `paramsEquivFlat ∘ chartParamsGen`. The general-`L` lift of
 `RouteMLeafBData.hmap_leaf`. -/
 theorem hmap_leafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
     (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) :
     phiFlatLiveAt M ha hL (leafPivot M ha hL h0r h0c)
-      = BchartLeafGenC M ha ∘ pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) := by
+      = BchartLeafGen M ha ∘ pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) := by
   funext x
   show phiGen (x (leafPivot M ha hL h0r h0c)) M (tach M)
       (genBlkFlatLive M (tach M) ha (rfinFixedPivot M ha hL x) x)
@@ -227,30 +229,30 @@ theorem hmap_leafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL :
   rw [chartParamsGen_matchGen M ha hL h0r h0c x]
   rfl
 
-/-! ## `BchartLeafGenC` differentiability (the polynomial chain, general `L`) -/
+/-! ## `BchartLeafGen` differentiability (the polynomial chain, general `L`) -/
 
-/-- `rfinDirectGenC ha` is differentiable (a linear matrix coordinate read) — general `L`. -/
+/-- `rfinDirectGen ha` is differentiable (a linear matrix coordinate read) — general `L`. -/
 theorem diffAt_rfinDirectGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (u : Fin (routeMAmbient M) → ℝ) :
-    DifferentiableAt ℝ (fun y => rfinDirectGenC M ha y) u := by
+    DifferentiableAt ℝ (fun y => rfinDirectGen M ha y) u := by
   apply differentiableAt_pi.mpr; intro i; apply differentiableAt_pi.mpr; intro j
   exact differentiableAt_apply _ u
 
-/-- The `genBlkFlatLive` decoder's `Cgen` (radial `1`, leaf `rfinDirectGenC`) is differentiable at each
+/-- The `genBlkFlatLive` decoder's `Cgen` (radial `1`, leaf `rfinDirectGen`) is differentiable at each
 `k` — general `L`. The general-`L` lift of `RouteMLeafBData.diffAt_Cgen_live` (`by_cases hk : k < L`,
 not `< 2`). -/
 theorem diffAt_Cgen_liveGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (u : Fin (routeMAmbient M) → ℝ) (k : ℕ) :
     DifferentiableAt ℝ
       (fun y => Cgen (1 : ℝ) M (tach M)
-        (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) k) u := by
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k) u := by
   by_cases hk : k < L
   · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
-          (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) k)
-        = fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Bmat k
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Bmat k
             * chainQ (genWidthEq M (tach M) (hleStruct M (tach M) ha) k hk)
-              ((genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Nblk k)
-            + (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Rmat k from by
+              ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk k)
+            + (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rmat k from by
       funext y; rw [Cgen, dif_pos hk]]
     refine (DifferentiableAt.matMul ?_ (diffAt_chainQ _ _ u ?_)).add
       (DifferentiableAt.const_smul ?_ (1 : ℝ))
@@ -285,16 +287,16 @@ theorem diffAt_Cgen_liveGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
         · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Rmat (j + 1)) u
           simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
   · rw [show (fun y => Cgen (1 : ℝ) M (tach M)
-          (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) k)
-        = fun y => (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Rfin k from by
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) k)
+        = fun y => (1 : ℝ) • (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k from by
       funext y; rw [Cgen, dif_neg hk]]
     refine DifferentiableAt.const_smul ?_ (1 : ℝ)
     by_cases hkL : k = L
     · subst hkL
-      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Rfin k)
-          = fun y => rfinDirectGenC M ha y from by funext y; simp [genBlkFlatLive]]
+      rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k)
+          = fun y => rfinDirectGen M ha y from by funext y; simp [genBlkFlatLive]]
       exact diffAt_rfinDirectGen M ha u
-    · rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Rfin k)
+    · rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin k)
           = fun _ => 0 from by funext y; simp only [genBlkFlatLive, dif_neg hkL]]
       exact differentiableAt_const _
 
@@ -303,14 +305,14 @@ theorem diffAt_Agen_liveGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
     (u : Fin (routeMAmbient M) → ℝ) (s : ℕ) :
     DifferentiableAt ℝ
       (fun y => Agen (1 : ℝ) M (tach M)
-        (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) s) u := by
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s) u := by
   by_cases hs : s < L
   · rw [show (fun y => Agen (1 : ℝ) M (tach M)
-          (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) s)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s)
         = fun y => chainA (genWidthEq M (tach M) (hleStruct M (tach M) ha) s hs)
-            ((genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Nblk s)
-            ((genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y).Wblk s)
-            (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y)
+            ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s)
+            ((genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s)
+            (Cgen (1 : ℝ) M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
               (hleStruct M (tach M) ha) (s + 1)) from by funext y; rw [Agen, dif_pos hs]]
     refine diffAt_chainA _ _ _ _ u ?_ ?_ (diffAt_Cgen_liveGen M ha u (s + 1))
     · match s with
@@ -334,23 +336,23 @@ theorem diffAt_Agen_liveGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)
         · show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk (j + 1)) u
           simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
   · rw [show (fun y => Agen (1 : ℝ) M (tach M)
-          (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y) (hleStruct M (tach M) ha) s)
+          (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s)
         = fun _ => 0 from by funext y; rw [Agen, dif_neg hs]]
     exact differentiableAt_const _
 
-/-- **`BchartLeafGenC` is differentiable** at general `L` — the chain is polynomial in `y` (radial `1`,
+/-- **`BchartLeafGen` is differentiable** at general `L` — the chain is polynomial in `y` (radial `1`,
 linear reads). Mirrors `RouteMLeafBData.Bchart_differentiableAt`: reduce through the linear CLE
 `paramsEquivFlat`, the `Params` Pi, and the per-component `reindex`, leaving the per-layer
 `diffAt_Agen_liveGen`. -/
 theorem Bchart_differentiableAtGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (u : Fin (routeMAmbient M) → ℝ) :
-    DifferentiableAt ℝ (BchartLeafGenC M ha) u := by
-  have hchart : DifferentiableAt ℝ (fun y => BparamsLeafGenC M ha y) u := by
+    DifferentiableAt ℝ (BchartLeafGen M ha) u := by
+  have hchart : DifferentiableAt ℝ (fun y => BparamsLeafGen M ha y) u := by
     apply differentiableAt_pi.mpr
     intro s
     exact diffAt_reindex_finCongr _ _ _ u (diffAt_Agen_liveGen M ha u s.val)
-  have hlin : DifferentiableAt ℝ (fun P => paramsEquivFlat M P) (BparamsLeafGenC M ha u) := by
-    have hd := (paramsEquivFlatCLE M).differentiableAt (x := BparamsLeafGenC M ha u)
+  have hlin : DifferentiableAt ℝ (fun P => paramsEquivFlat M P) (BparamsLeafGen M ha u) := by
+    have hd := (paramsEquivFlatCLE M).differentiableAt (x := BparamsLeafGen M ha u)
     refine hd.congr_of_eventuallyEq ?_
     filter_upwards with P; rw [paramsEquivFlatCLE_coe]
   exact hlin.comp u hchart
@@ -399,7 +401,7 @@ theorem differentiable_pivotBlowupOnGen {N : ℕ} (active : Finset (Fin N)) (p :
 /-! ## `interiorLive_diffGen` — the full chart is differentiable -/
 
 /-- **`interiorLive_diffGen`** — `interiorLivePhiGen` is a polynomial chain, differentiable everywhere.
-Via the factorization `interiorLivePhiGen = (BchartLeafGenC ∘ kLDU) ∘ pbo` (from `hmap_leafGen` at
+Via the factorization `interiorLivePhiGen = (BchartLeafGen ∘ kLDU) ∘ pbo` (from `hmap_leafGen` at
 `kLDU x` + the commute `interiorLive_commuteGen`), each factor differentiable
 (`Bchart_differentiableAtGen`, `differentiable_kLDU`, `differentiable_pivotBlowupOn`). The general-`L`
 lift of `RouteMInteriorLiveContract.interiorLive_diff`. -/
@@ -407,11 +409,11 @@ theorem interiorLive_diffGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M
     (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) :
     Differentiable ℝ (interiorLivePhiGen M ha hL h0r h0c) := by
   have hfact : interiorLivePhiGen M ha hL h0r h0c
-      = (fun y => BchartLeafGenC M ha (kLDU M (tach M) ha y))
+      = (fun y => BchartLeafGen M ha (kLDU M (tach M) ha y))
         ∘ pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) := by
     funext x
     rw [interiorLivePhiGen, hmap_leafGen M ha hL h0r h0c]
-    show BchartLeafGenC M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c)
+    show BchartLeafGen M ha (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c)
       (kLDU M (tach M) ha x)) = _
     rw [interiorLive_commuteGen M ha hL h0r h0c x]; rfl
   rw [hfact]

@@ -321,35 +321,6 @@ theorem readE_pbo_all (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL 
   unfold pivotBlowupOn
   rw [if_neg hne, if_pos (activeSlotE_mem_activeMGen M ha k hk i j)]
 
-/-! ## The general-`L` `u`-free boundary chart (chart-layer-owned, defeq to factor1's `BchartLeafGen`)
-
-These three defs are shared infrastructure between this chart layer (the `hmap` / `diffGen` / `injOnGen`)
-and factor1's boundary-factor determinant (`RouteMInteriorLiveGenDet.BchartLeafGen`). They are stated
-here — in this thread's STABLE module — with a `C` suffix, IDENTICAL (`rfl`-equal) to factor1's, so the
-chart layer builds independently of the actively-churning `RouteMInteriorLiveGenDet`. The controller
-bridges `BchartLeafGenC = BchartLeafGen` (a `rfl`) at final assembly. -/
-
-/-- **The direct leaf reader** at general `L`: `rfinDirectGenC ha y i j := y (leafSlot … i j)` — reads
-ALL leaf entries directly from `y`. Chart-layer copy of `RouteMInteriorLiveGenDet.rfinDirectGen`. -/
-noncomputable def rfinDirectGenC (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
-    (y : Fin (routeMAmbient M) → ℝ) :
-    Matrix (Fin (Text M (tach M) L)) (Fin (Wext M L)) ℝ :=
-  Matrix.of fun i j => y (leafSlot M (tach M) ha ha.hL i j)
-
-/-- **The general-`L` `u`-free boundary-factor chart parameters** `BparamsLeafGenC ha y : Params M` —
-radial hardwired to `1`, reading the residual coords via `rfinDirectGenC`. Chart-layer copy of
-`RouteMInteriorLiveGenDet.BparamsLeafGen`. -/
-noncomputable def BparamsLeafGenC (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
-    (y : Fin (routeMAmbient M) → ℝ) : Params M :=
-  chartParamsGen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGenC M ha y) y)
-    (hleStruct M (tach M) ha)
-
-/-- **The general-`L` boundary factor** `BchartLeafGenC ha y := paramsEquivFlat M (BparamsLeafGenC ha
-y)`. Chart-layer copy of `RouteMInteriorLiveGenDet.BchartLeafGen` (`rfl`-equal). -/
-noncomputable def BchartLeafGenC (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
-    (y : Fin (routeMAmbient M) → ℝ) : Fin (routeMAmbient M) → ℝ :=
-  paramsEquivFlat M (BparamsLeafGenC M ha y)
-
 /-! ## The general-`L` LIVE-leaf ∘ kLDU interior chart -/
 
 /-- **The general-`L` LIVE-leaf ∘ kLDU interior achiever chart** `phiFlatLiveAt M ha hL leafPivot
