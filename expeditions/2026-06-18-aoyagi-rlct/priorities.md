@@ -12,6 +12,83 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, full-image prior domination from pointwise image bounds
+
+Lean now proves the density-frontier wrapper:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_image_lower_priorDensity_image_upper
+```
+
+It keeps the existing full source-image prior-domination conclusion and
+finite scalar, but replaces the two a.e. density sockets by pointwise
+hypotheses on the returned image `sourceChart '' V`:
+
+```text
+forall E in sourceChart '' V, epsilon <= sourceImageDensity E
+forall E in sourceChart '' V, density E <= Kprior.
+```
+
+The determinant-side reverse domination, `Cdet < infinity`, and nonzero finite
+`epsilon` remain explicit hypotheses.  The theorem also adds the generic
+support helper
+
+```text
+ae_restrict_upper_of_forall_mem
+```
+
+for turning a pointwise bound on a measurable restricted set into an a.e.
+bound for the restricted measure.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Franklin` passed
+the reproduction and theorem-shape audit.
+
+Next priority: this is still conditional hardening.  The actual frontier is
+to prove the pointwise image bounds, or the determinant/source transport
+inputs, from Aoyagi-local hypotheses.  Do not claim determinant-chart Haar
+transport, exact raw-Haar pushforward, raw-Haar normalization, source-image
+coverage, source-rank coverage, normal crossings, pole order, or RLCT
+extraction from this wrapper.
+
+## Latest controller intake - 2026-07-01, density wrapper next; determinant transport obstructed
+
+Two xhigh sidecar scouts were collected after the VM interruption.
+
+`Copernicus` checked the determinant/source transport frontier and found no
+current API route to the determinant-side reverse domination
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (passiveSource.restrict V).
+```
+
+The endpoint reference layer gives a supported selected-entry image reference,
+not additive Haar on the unrestricted determinant chart.  The existing p.13
+raw/source bridge is genuine Haar/scalar transport only after a raw Haar
+measure on the raw source set has already been supplied.  Therefore a
+transport theorem would require a new mathematical input, not another
+composition of the present packages.
+
+`Heisenberg` identified a buildable density-frontier hardening: wrap the
+full source-image prior-domination theorem so that its two a.e. density
+hypotheses are replaced by pointwise bounds on the returned chart image
+`sourceChart '' V`:
+
+```text
+forall E in sourceChart '' V, epsilon <= sourceImageDensity E
+forall E in sourceChart '' V, density E <= Kprior.
+```
+
+This is an honest conditional wrapper.  It does not prove those pointwise
+bounds, determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image coverage, source-rank coverage, normal
+crossings, pole order, or RLCT extraction.  It is still worth doing because it
+exposes the local chart-image hypotheses that smooth positive density and
+prior arguments should eventually feed.
+
 ## Latest controller decision - 2026-07-01, full source-image prior domination under determinant hypotheses
 
 Lean now proves the measure-level full-image domination theorem:

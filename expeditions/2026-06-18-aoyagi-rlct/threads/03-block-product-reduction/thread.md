@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-01 A2 Case 2 full-image prior domination from image bounds
+
+Reproduction:
+`reproduction-a2-case2-full-image-prior-domination-image-bounds-wrapper.md`.
+Statement card:
+`statement-card-a2-case2-full-image-prior-domination-image-bounds-wrapper.md`.
+Review:
+`review-a2-case2-full-image-prior-domination-image-bounds-wrapper.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves the generic helper
+
+```text
+ae_restrict_upper_of_forall_mem
+```
+
+and the full-image prior-domination image-bound wrapper
+
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_image_lower_priorDensity_image_upper
+```
+
+It wraps the existing full-image prior-domination theorem and replaces the two
+a.e. density hypotheses by pointwise bounds on the returned
+`sourceChart '' V`.  Verification passed: focused elaboration, focused module
+build, full local `lake build DLNFibre`, `scripts/sorries`, `git diff
+--check`, direct axiom probe, and xhigh read-only review.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no positivity or boundedness proof for either density, no
+determinant-chart Haar transport, exact raw-Haar pushforward, raw-Haar
+normalization, source-image/source-rank coverage, normal crossings, pole
+order, or RLCT extraction.
+
 ## 2026-07-01 A2 Case 2 finite integral from reverse raw-source domination
 
 Reproduction:

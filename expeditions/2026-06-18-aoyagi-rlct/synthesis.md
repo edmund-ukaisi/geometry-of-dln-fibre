@@ -10,6 +10,102 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Reorientation After VM Interruption - 2026-07-01
+
+Current worktree:
+
+```text
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/aoyagi-rlct
+```
+
+Current branch is clean and even with remote at:
+
+```text
+f1c54196 (origin/expedition/aoyagi-rlct) Add Aoyagi full source-image prior domination
+```
+
+Sidecar scouts collected:
+
+- `Heisenberg`: recommended the next buildable density-frontier theorem, a
+  full-image prior-domination wrapper replacing a.e. source/prior density
+  assumptions by pointwise bounds on `sourceChart '' V`.
+- `Copernicus`: audited determinant/source transport and found a real current
+  obstruction.  The endpoint reference image is a selected-entry image measure
+  supported on the determinant chart, not additive Haar on the full determinant
+  chart, so the determinant-side reverse domination cannot be composed from
+  existing APIs.  The p.13 raw/source bridge applies only once raw Haar on the
+  raw source set is already available.
+
+Decision: record the determinant-transport obstruction and pursue the
+image-bound wrapper as the next narrow Lean target, after a reproduction note
+and independent check.  This is conditional hardening only; it does not prove
+positivity, boundedness, source-prior transport, determinant Haar transport,
+coverage, normal crossings, pole order, or RLCT extraction.
+
+## Full Source-Image Prior Domination From Pointwise Image Bounds - 2026-07-01
+
+Lean now proves:
+
+```text
+ae_restrict_upper_of_forall_mem
+
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_image_lower_priorDensity_image_upper
+```
+
+This is a wrapper around the existing full source-image prior-domination
+theorem.  It keeps the same returned source-chart shrink `V`, the same
+determinant-side reverse domination hypothesis, and the same finite scalar
+
+```text
+ENNReal.ofReal Kprior *
+  (((cHaar^{-1} : NNReal) : ENNReal) * (Cdet * epsilon^{-1})).
+```
+
+The only change is that the two a.e. density sockets are exposed as pointwise
+image bounds on the returned measurable image:
+
+```text
+forall E in sourceChart '' V, epsilon <= sourceImageDensity E
+forall E in sourceChart '' V, density E <= Kprior.
+```
+
+The proof uses support of restricted measures.  For the source-density lower
+bound, `baseJ.restrict V` is a.e. supported on `V`, so `sourceChart z` lies in
+`sourceChart '' V`; by definition
+`sourceDensity z = sourceImageDensity (sourceChart z)`.  For the prior-density
+upper bound, `originalVolume.restrict (sourceChart '' V)` is a.e. supported on
+the same returned measurable image.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-full-image-prior-domination-image-bounds-wrapper.md
+threads/03-block-product-reduction/statement-card-a2-case2-full-image-prior-domination-image-bounds-wrapper.md
+threads/03-block-product-reduction/review-a2-case2-full-image-prior-domination-image-bounds-wrapper.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+Both new declarations report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh checker `Franklin` passed the reproduction and theorem-shape audit.
+
+Boundary: no positivity, boundedness, or concrete identification of
+`sourceImageDensity`; no proof of the prior-density upper bound; no
+determinant-chart Haar transport, exact raw-Haar pushforward, raw-Haar
+normalization, source-image or source-rank coverage, original source-prior
+transport beyond this conditional wrapper, normal crossings, pole order, or
+RLCT extraction.  No converse from a.e. bounds to pointwise image bounds is
+claimed.
+
 ## Full Source-Image Prior Domination Under Determinant Hypotheses - 2026-07-01
 
 Lean now proves:
