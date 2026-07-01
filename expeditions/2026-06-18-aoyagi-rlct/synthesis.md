@@ -10,6 +10,92 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Full Source-Image Prior Domination Under Determinant Hypotheses - 2026-07-01
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower_priorDensity_upper
+```
+
+This is the measure-level source-prior/full-image wrapper identified as the
+next A2 target.  On the returned Case 2 passive-theta shrink `V`, it proves
+
+```text
+(originalEdgeFamilyPrior ... density).restrict (sourceChart '' V)
+  <= Cprior *
+     (Measure.map sourceChart (coordinateSourceMeasure.restrict V)).restrict
+       (sourceChart '' V)
+```
+
+and also returns `Cprior < infinity`, where
+
+```text
+Cprior :=
+  ENNReal.ofReal Kprior *
+    (((cHaar^{-1} : NNReal) : ENNReal) * (Cdet * epsilon^{-1})).
+```
+
+The explicit hypotheses on the returned `V` are:
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (passiveSource.restrict V),
+Cdet < infinity,
+forall-ae z with respect to baseJ.restrict V, epsilon <= sourceDensity z,
+epsilon != 0,
+epsilon != infinity,
+forall-ae E with respect to originalVolume.restrict (sourceChart '' V),
+  density E <= Kprior.
+```
+
+Proof route: call the source-image volume bridge first, then choose the smaller
+same-shrink determinant/raw-source package inside its shrink.  Instantiate the
+source-image volume bridge with
+`thetaReference := coordinateSourceMeasure.restrict V`; the restriction
+identity
+
+```text
+(coordinateSourceMeasure.restrict V).restrict Vpre =
+  coordinateSourceMeasure.restrict V
+```
+
+uses `V subset Vpre`.  This gives original-volume domination by
+`Measure.map sourceChart (coordinateSourceMeasure.restrict V)`, which is then
+restricted to the same image and fed to
+`restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le` for the
+prior density.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-full-image-prior-domination-detHaar-wrapper.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.
+Xhigh checker `Volta` passed the reproduction after flagging the larger-`G`
+precision risk; the note was rewritten to the sharper source-image bridge
+route.  Xhigh reviewer `Euler` then passed theorem shape, mathematical
+precision, proof route, and boundary discipline.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image or source-rank coverage, original
+source-prior transport beyond this conditional density wrapper, normal
+crossings, pole order, or RLCT extraction.  The next A2 frontier is the actual
+source-density/prior-density lower/upper bounds and determinant Haar/source
+transport on Aoyagi chart images.
+
 ## Canonical p.13 Chart Piece for Determinant Finite Integral - 2026-07-01
 
 Lean now proves:

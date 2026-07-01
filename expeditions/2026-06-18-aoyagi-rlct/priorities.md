@@ -12,6 +12,59 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, full source-image prior domination under determinant hypotheses
+
+Lean now proves the measure-level full-image domination theorem:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower_priorDensity_upper
+```
+
+For the returned Case 2 passive-theta shrink `V`, the theorem dominates
+
+```text
+(originalEdgeFamilyPrior ... density).restrict (sourceChart '' V)
+```
+
+by the finite scalar
+
+```text
+ENNReal.ofReal Kprior *
+  (((cHaar^{-1} : NNReal) : ENNReal) * (Cdet * epsilon^{-1}))
+```
+
+times the chart-produced local source-image reference
+
+```text
+(Measure.map sourceChart (coordinateSourceMeasure.restrict V)).restrict
+  (sourceChart '' V).
+```
+
+The determinant-side reverse domination, `Cdet < infinity`, the a.e.
+lower bound for `sourceDensity` on `baseJ.restrict V`, `epsilon` nonzero and
+finite, and the a.e. upper bound for the real prior density against
+`originalVolume.restrict (sourceChart '' V)` remain explicit hypotheses.
+
+The proof deliberately uses the sharper source-image volume bridge, then the
+same-shrink determinant-to-raw package inside it, and finally the existing
+bounded-prior `withDensity` adapter.  It does not use the weaker exported
+determinant readback wrapper whose target is enlarged to
+`coordinateSourceMeasure.restrict G`.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh checks by `Volta` and
+`Euler` passed the reproduction, theorem-shape, and boundary audits.
+
+Next priority: this closes the conditional source-prior/full-image measure
+wrapper, not the actual A2 density/transport facts.  The remaining mathematical
+frontier is to prove, or further sharpen, the determinant-side Haar transport
+and source-density/prior-density hypotheses on actual Aoyagi chart images.
+Do not claim determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image coverage, source-rank coverage, normal
+crossings, pole order, or RLCT extraction from this wrapper.
+
 ## Latest controller decision - 2026-07-01, canonical p.13 chart piece for determinant finite integral
 
 Lean now proves the canonical-chart-piece corollary:
