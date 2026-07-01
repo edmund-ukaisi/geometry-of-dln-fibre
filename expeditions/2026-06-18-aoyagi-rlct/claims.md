@@ -140,6 +140,24 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 original-prior volume-source-reference
+  readback, 2026-07-01.** Lean now proves
+  `originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure`
+  and `originalEdgeFamilyPrior_p13VolumeReadbackDominationScalar_lt_top` in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`.
+  These compose the formal-volume source-reference handoff with the existing
+  original-prior-to-formal-p.13 readback bridge, reducing original-prior
+  readback domination to a supplied restricted-volume domination plus a
+  supplied source-reference readback pullback identity.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-readback.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-readback.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-readback.md`.
+  Nonclaims: no proof of restricted-volume domination, no source-reference or
+  theta-reference identification, no passive-theta source-image equality, no
+  source coverage, no chart-image equality, no Haar scalar normalization or
+  cancellation, no normal crossings, pole order, or RLCT extraction.
 - **Current status addendum, p.13 formal-volume source-reference domination,
   2026-07-01.** Lean now proves two conditional scalar bridges in
   `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`:

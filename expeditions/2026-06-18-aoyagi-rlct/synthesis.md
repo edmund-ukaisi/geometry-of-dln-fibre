@@ -6,6 +6,51 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Volume-source-reference Readback - 2026-07-01
+
+Lean now proves the composed original-prior readback bridge:
+
+```text
+originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure
+originalEdgeFamilyPrior_p13VolumeReadbackDominationScalar_lt_top
+```
+
+The calculation is:
+
+```text
+originalPriorPiece <= alpha • muP13
+muP13 readback <= ((c : ENNReal) * D) • thetaRef
+---------------------------------------------------
+originalPriorPiece readback <=
+  (alpha * ((c : ENNReal) * D)) • thetaRef,
+alpha = ENNReal.ofReal K * ((c^-1 : NNReal) : ENNReal).
+```
+
+The formal p.13 readback domination comes from the previous
+formal-volume source-reference bridge, using the supplied hypotheses
+`originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef`,
+`AEMeasurable readback sourceRef`, and `Measure.map readback sourceRef =
+thetaRef`.  The companion scalar lemma proves finiteness when `D < ∞`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-readback.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-readback.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-readback.md
+```
+
+Focused file elaboration, focused module build, downstream elaboration,
+`lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+`./scripts/sorries`, `git diff --check`, direct axiom probes, and xhigh
+read-only review passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no Haar scalar normalization or
+cancellation, no normal crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Formal-volume Source-reference Domination - 2026-07-01
 
 Lean now proves the scalar bridge from the existing p.13 chart-piece measure

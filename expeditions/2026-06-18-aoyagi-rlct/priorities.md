@@ -12,6 +12,18 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference readback
+
+The original-prior p.13 readback domination now consumes the restricted-volume
+source-reference hypothesis directly.  The formal p.13 readback assumptions are
+no longer needed at this layer if one supplies
+`originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef` plus the
+readback pullback identity for `sourceRef`.
+
+This is still conditional.  The remaining mathematical frontier is the actual
+restricted-volume domination for a concrete source reference, not the readback
+bookkeeping.
+
 ## Latest controller decision - 2026-07-01, p.13 formal-volume source-reference domination
 
 The p.13 formal-product chart-piece domination now reduces one step further:

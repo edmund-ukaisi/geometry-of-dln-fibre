@@ -12585,3 +12585,31 @@ Nonclaims: no proof of restricted-volume domination, no source-reference
 identification, no passive-theta source-image equality, no source coverage, no
 chart-image equality, no Haar scalar normalization, no normal crossings, no
 pole order, and no RLCT extraction.
+
+
+Latest A2 p.13 original-prior volume-source-reference readback:
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`originalEdgeFamilyPrior_map_readback_restrict_chartPiece_le_smul_of_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure`
+and `originalEdgeFamilyPrior_p13VolumeReadbackDominationScalar_lt_top`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-reference-readback.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-reference-readback.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-reference-readback.md`.
+
+Ledger status: original-prior p.13 readback domination is reduced to a
+supplied restricted original edge-family volume domination and a supplied
+source-reference readback pullback identity.
+
+Focused file elaboration, focused module build, downstream elaboration,
+`lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+`./scripts/sorries`, `git diff --check`, direct axiom probes, and xhigh
+read-only review passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of restricted-volume domination, no source-reference or
+theta-reference identification, no passive-theta source-image equality, no
+source coverage, no chart-image equality, no Haar scalar normalization or
+cancellation, no normal crossings, no pole order, and no RLCT extraction.
