@@ -350,11 +350,18 @@ import DLNFibre.Core.RingTheory.Determinantal.Schur
 -- `Core.DeterminantalStratumDim`, via the Proved zero-cited Brick A (`Core.SigmaCodim`); this file
 -- supplies only the arithmetic those theorems consume.
 import DLNFibre.Core.RingTheory.Determinantal.Dimension
+-- P2.a (Phase 2): the abstract pivot-chart atlas datum + standard fibre model
+-- (`Algebra.StandardFibreChart`, bare `Algebra` ns); the DLN bundle instantiates it. Direct import
+-- (was transitive-only via `FibreBundleHeadline`).
+import DLNFibre.Core.RingTheory.Determinantal.Atlas
 -- Scope-3 (bundle transition cocycle, thread 19): the per-minor instantiation — the per-minor
 -- principal-open overlaps `D(f)∩D(g)` of `Mat^{=r}` with their `minorChartTransition` (= the
 -- abstract `Localization.awayOverlapTransition` at the two minor polynomials). DISCLAIMER: this
 -- cocycle is on the AMBIENT `O(Mat)` cover — NOT yet bridged to the deep Schur chart `e_β`, so the
 -- bundle is NOT `locallyTrivial`.
+-- (Now LANDED — per-pivot Schur trivializations (S4b) + target-side cocycle (P2.c/f/g): the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreBundleTransition
 -- Scope-3 (fact-C unconditional, thread 17): generic smoothness reduced to ONE named geometric
 -- fact. C1 `LocalizationAtComponent` — reusable CA: localizing a reduced Noetherian ring at a prime
@@ -372,6 +379,9 @@ import DLNFibre.Core.FibreGenericSmoothUncond
 -- the top-left chart (the real e_β+tensor composite). PARTIAL: this does NOT earn `locallyTrivial`
 -- — the per-pivot trivialization `e_{s,t}` (the conjugation skeleton) + cocycle transport onto it
 -- remain (#123).
+-- (Both now LANDED — per-pivot trivialization (S4b) + target-side cocycle transport (P2.c/f/g): the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreBundleLocallyTrivial
 -- Scope-3 (C2(a) dimension finding + sigma labeling, thread 20): thread-17's bare iso
 -- `sweepFibreRing⧸I ≃ orbitRing M` is DIMENSIONALLY IMPOSSIBLE (fibre component = orbit closure ×
@@ -394,6 +404,9 @@ import DLNFibre.Core.FibreComponentOrbitTransport
 -- the cover (the seam `gaugeEquiv_ΔPdeep_eq_ΔPdeepAt`, descent `gaugeEquivSigma`, per-pivot
 -- `chartLocalizedAlgEquivAt`). PARTIAL: still NOT `locallyTrivial` — the cocycle transport ON the
 -- per-pivot trivializations remains (#133).
+-- (Now LANDED — that per-pivot cocycle transport is the target-side cocycle P2.c/f/g: the
+-- family IS Zariski-locally-trivial (`IsZariskiLocallyTrivialAffineProduct`); only the
+-- GLOBAL `Flat π` stays R1. Above = period-accurate provenance for this module's own content.)
 import DLNFibre.Core.FibreChartConjugation
 -- Scope-3 (per-pivot local-product atlas, thread 23 B3-6/7): the assembled atlas with PAIRWISE
 -- base-side overlap data over the rank-`=r` open — scheme open-cover
@@ -401,9 +414,10 @@ import DLNFibre.Core.FibreChartConjugation
 -- sweepFibreRing` + the base-side overlap transition (`chartOverlapTransition` over
 -- `sweepSigmaRing`, pairwise laws) + the intertwining (`e_β` cancels → base-algebraic). Headline
 -- `reducedFibre_pivotLocalProductAtlasOnRankOpen` — honestly NOT `locallyTrivial`: the rank-tie
--- `rankROpen={rank=r}` is now landed (S1, set-of-primes), so the residual to a bare
--- scheme-theoretic name is the target-side overlap-trivialization cocycle (R1) + projection
--- compatibility — NOT a bundled triple cocycle (this atlas carries only pairwise base-side data).
+-- `rankROpen={rank=r}` is now landed (S1, set-of-primes), the LOCAL target-side overlap cocycle is
+-- landed (P2.c/f/g, below) and projection compatibility is CLOSED (R5), so the residual to a bare
+-- scheme-theoretic name is the GLOBAL gluing of the per-chart data into one fibration morphism
+-- (R1).
 import DLNFibre.Core.FibreBundleLocallyTrivialFull
 -- Scope-3 (variety-level fibre-component↔orbit iso, thread 24 #138): rung 1 of the honest LOCALIZED
 -- `e` — `schurComponent_chartQuotientEquiv : SchurLoc ⊗ (sweepFibreRing⧸I) ≃ₐ[k] (Away
@@ -438,9 +452,10 @@ import DLNFibre.Core.FibreSmoothBlock
 -- `reducedFibre_existsProductChartAt_rankEq`). Folds in S1 to certify rankROpen genuinely IS the
 -- residue-field rank-=r locus; the pivot charts cover it; each chart's localized ring is a
 -- k-algebra product SchurLoc ⊗ sweepFibreRing. Deliberately NOT `locallyTrivial`:
--- per-chart/UNCOCYCLED (overlap gluing = R1) and k-algebra-only (the over-base SchurLoc-linear
--- trivialization = S4b, LANDED below; it is over SchurLoc; projection-compatibility with mult is
--- CLOSED (R5, FibreProjectionCompat), the overlap-gluing R1 is the remaining residual).
+-- per-chart (the LOCAL target-side overlap cocycle is landed, P2.c/f/g; only the GLOBAL gluing into
+-- one fibration morphism = R1) and k-algebra-only (the over-base SchurLoc-linear trivialization =
+-- S4b, LANDED below; it is over SchurLoc; projection-compatibility with mult is CLOSED (R5,
+-- FibreProjectionCompat), the GLOBAL-gluing R1 is the remaining residual).
 import DLNFibre.Core.FibreLocallyTrivial
 -- S2c: closes S2's top-component residual — `topDimMinPrimes_nonempty` (generic: nontrivial
 -- Noetherian ⟹ TopDimMinPrimes nonempty) → `exists_topComponent_smoothBlock_certificate`, the
@@ -476,13 +491,15 @@ import DLNFibre.Core.FibreBundleHeadline
 -- R5 projection compatibility (S5/S4b item (i) CLOSED): the in-chart base map schurToDsigAt AGREES
 -- with mult's comorphism multComap after precomposition with localizeSchur (on Schur generators) —
 -- schurToDsigAt_comp_localizeSchur, every pivot; + ProjCompatOverBaseChart (projection-compat +
--- over-base triv + flatness). Closes the S5/S4b "projection compatibility" item; global Flat π /
--- target-side cocycle still residual (R1).
+-- over-base triv + flatness). Closes the S5/S4b "projection compatibility" item; the LOCAL
+-- target-side cocycle is landed (P2.c/f/g), only the GLOBAL gluing / `Flat π` stays residual (R1).
 import DLNFibre.Core.FibreProjectionCompat
--- R5 target-side overlap (R1 partial): awayCongr' (generalized localization transport) +
--- targetProductOverlapTransition (the double-localized pairwise transition OBJECT). The cocycle
--- ROUND-TRIP proof is infra-blocked (kernel-cost on reducible double-localized type + missing
--- AlgEquiv.trans_assoc/refl_trans in v4.29) — named residual, NOT claimed; global Flat π unbuilt.
+-- R5 target-side overlap: awayCongr' (generalized localization transport) +
+-- targetProductOverlapTransition (the double-localized pairwise transition OBJECT, the DLN instance
+-- of the abstract `Algebra.AtlasChart.overlapTransition`). The cocycle ROUND-TRIP is now PROVED
+-- abstractly (P2.c `overlapTransition_trans_symm`, via the `AlgEquiv` groupoid laws off the heavy
+-- double-localized type) and inherited on the DLN instance; triple cocycle (P2.f) + naturality
+-- (P2.g) likewise. Only the GLOBAL gluing / `Flat π` stays residual (R1).
 import DLNFibre.Core.FibreTargetOverlap
 -- L7 (rlct-bridge): finrank (range deformationδ) is base-change invariant along a field extension
 -- K/k — the orbit-tangent dimension is the SAME integer over ℝ and K. General conjugacy lemma
@@ -534,3 +551,36 @@ import DLNFibre.Core.Matrix.RankMinors
 -- than Mathlib's smooth/square submersive Jacobian.
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
+-- det-atlas P2.b′: the `AlgEquiv` groupoid laws absent in Mathlib v4.29 — `trans_assoc`,
+-- `trans_refl`, `refl_trans` (each `ext x; rfl`; Mathlib has only the inverse laws
+-- `self_trans_symm`/`symm_trans_self`). Bare Mathlib-mirror namespace `AlgEquiv`. The cocycle
+-- unblocker for the P2.c target-side round-trip (rearrange `trans` at the abstract `AlgEquiv`
+-- level, off the heavy double-localized chart type).
+import DLNFibre.Core.Algebra.AlgEquiv.Groupoid
+-- det-atlas P2.b: the abstract overlap transition maps of a constructive pivot-chart atlas
+-- (`Algebra.AtlasChart` = chart-element + bare-`k` trivialization; `overlapElt`/`targetChartLoc`/
+-- `overlapTriv`/`chartOverlapTransitionK`(+ round-trip)/`overlapTransition`; `AtlasFibreChart`
+-- stores `chartElt` + the over-base `StandardFibreChart` as the SINGLE trivialization, with a
+-- DERIVED `toAtlasChart` whose `trivK = fibreModel.triv.restrictScalars k` — the product tie is
+-- definitional). Built from the P1.a overlap API
+-- (`awayOverlap`/`awayOverlapTransition`/`awayCongr'`) + the P2.a atlas datum; bare `Algebra` ns
+-- (L7). The DLN target-side transition (`FibreTargetOverlap`) is the instance. LANDED: pairwise
+-- round-trip (P2.c), canonical triple cocycle (P2.f), naturality + restricted-2-fold cocycle
+-- (P2.g), product-trivialization coherence (`AtlasFibreChart.overlapTransition_isProduct`).
+-- Roadmapped: GLOBAL gluing only (R1).
+import DLNFibre.Core.RingTheory.Determinantal.AtlasTransition
+-- det-atlas P2.d: the bespoke Zariski local-triviality capstone. The abstract network-free
+-- predicate `Algebra.IsZariskiLocallyTrivialAffineProduct k Base BaseLoc Fibre U` (chart family of
+-- `AtlasFibreChart` — over-base PRODUCT trivialization, model FIXED to `BaseLoc ⊗_k Fibre` — + a
+-- principal-open cover of the open `U`; the cocycle compatibilities are DERIVED theorems, NOT
+-- fields: `overlapTransition_trans_symm` (P2.c), `tripleTransition_cocycle` (P2.f), the naturality
+-- tie + restricted-2-fold cocycle (P2.g)). NOT a Mathlib `FiberBundle` (that is topological; there
+-- is no Zariski local-triviality class at this pin). Bare `Algebra` ns (L7).
+import DLNFibre.Core.RingTheory.Determinantal.LocalTriviality
+-- det-atlas P2.d (DLN instance): the DLN reduced-fibre bundle is a non-vacuous instance of the
+-- abstract predicate over the rank-`= r` open `rankROpen` —
+-- `reducedFibre_isZariskiLocallyTrivialAffineProduct` (ι = pivots, chart = `pivotAtlasFibreChart` =
+-- chartElt `pivotElt` + `standardFibreChartOfPivot` fibre model, cover = the PivotDatum-indexed
+-- scheme cover). Axiom-clean ⟹ the non-vacuity proof. The open is load-bearing (a bundle over the
+-- closure Σ̄^r is false).
+import DLNFibre.Core.FibreZariskiLocalTriviality

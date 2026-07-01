@@ -38,12 +38,13 @@ charts' products are not glued on overlaps, R1; see below.)
 
 ## What this does NOT claim (the honest residual — read before reusing)
 
-- **NOT `locallyTrivial` / `FiberBundle`.** Those names imply a coherent *target-side* transition
-  cocycle (the per-chart trivializations glued on overlaps, `targetOverlapTransition`, roadmap R1),
-  which is **not** assembled. This statement is **per-chart / uncocycled**: each chart is a product,
-  but the products are NOT identified on overlaps here. (The banked atlas carries the *base-side*
-  overlap cocycle `chartOverlapTransition` with its laws, and an overlap-local restriction; those
-  are available but are base-side, not the fixed-target gluing a fibre bundle needs.)
+- **NOT a global `locallyTrivial` / `FiberBundle`.** Those names imply the per-chart trivializations
+  glued into a single object over `rankROpen` (a global `Flat π`), which is **not** assembled here
+  (roadmap R1). The LOCAL target-side overlap cocycle IS built downstream (`FibreTargetOverlap` /
+  `LocalTriviality`: pairwise P2.c, triple P2.f, naturality P2.g). This statement is **per-chart**:
+  each chart is a product, but the products are not glued into one bundle here. (The banked atlas
+  also carries the *base-side* overlap cocycle `chartOverlapTransition` with its laws + an
+  overlap-local restriction.)
 - The product iso is a bare `k`-algebra equivalence `Total ≃ₐ[k] SchurLoc ⊗_k Fibre`; **no
   projection-compatibility field is asserted**. A genuine "respects the base projection" condition
   would compare the iso against a named base map `SchurLoc →ₐ[k] Total` (giving an `AlgEquiv` over
@@ -68,9 +69,10 @@ rank-`= r` locus of the universal product matrix (the name=content bridge); (2) 
 open-cover `cover` of `rankROpen` by the per-pivot charts; (3) a per-pivot product trivialization
 `triv` (a `k`-algebra iso of the localized chart total ring with `SchurLoc ⊗_k sweepFibreRing`)
 whose localizing element is the chart minor `chartDsigAt s t` (`triv_chartElt`). This is the honest
-"locally a product over an open cover of the rank-`= r` open" — **per-chart, uncocycled**: it does
-NOT carry a coherent target-side overlap cocycle (roadmap R1), so it is deliberately not a
-`locallyTrivial`/`FiberBundle` object. -/
+"locally a product over an open cover of the rank-`= r` open" — **per-chart**: it bundles NO overlap
+cocycle here (the local target-side cocycle is landed downstream in `FibreTargetOverlap` /
+`LocalTriviality`, P2.c/f/g; only the GLOBAL gluing / `Flat π` over `rankROpen` remains R1), so this
+per-chart datum is deliberately not itself a global `locallyTrivial`/`FiberBundle` object. -/
 structure RankROpenPerPivotLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) where
   /-- **The rank-locus identity (S1 keystone, folded in).** A prime lies in `rankROpen` iff the
@@ -102,8 +104,9 @@ structure RankROpenPerPivotLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
 the banked per-pivot atlas (`reducedFibre_pivotLocalProductAtlasOnRankOpen`, thread 22) + the S1
 rank-bridge keystone (`mem_rankROpen_iff_rank_universalMatrixResidue_eq`). Every field is a banked,
 machine-checked fact — the rank-locus identity, the scheme open-cover, the per-pivot product
-trivializations. **Per-chart / uncocycled**: NOT a `locallyTrivial`/`FiberBundle` (the target-side
-overlap cocycle R1 is unbuilt); see the module docstring. -/
+trivializations. **Per-chart**: NOT itself a global `locallyTrivial`/`FiberBundle` — it bundles no
+cocycle here (the local target-side cocycle is landed downstream, P2.c/f/g; only the GLOBAL gluing /
+`Flat π` is R1); see the module docstring. -/
 noncomputable def reducedFibre_rankROpenPerPivotLocalProduct (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0) :
     RankROpenPerPivotLocalProduct (k := k) d r hp hq where
@@ -122,10 +125,11 @@ t)` contains `P` and over which the localized total ring is, as a `k`-algebra, t
 **pointwise local-product chart at each point of the rank-`= r` open**: every rank-`= r` prime sits
 in a product-presented chart. Composed directly from the S1 rank-bridge (rank `= r` ⟹ `P ∈
 rankROpen`), the scheme open-cover (`P ∈ rankROpen` ⟹ some chart contains `P`), and the per-pivot
-product trivialization. **Per-chart / uncocycled, bare `k`-algebra**: it returns only a chart +
-`Nonempty (≃ₐ[k] …)` — NO base-map / projection compatibility, NO overlap cocycle — so it does NOT
-assert the charts' products agree on overlaps (the target-side overlap cocycle R1 is unbuilt), hence
-is not named `locallyTrivial`. -/
+product trivialization. **Per-chart, bare `k`-algebra**: it returns only a chart +
+`Nonempty (≃ₐ[k] …)` — NO base-map / projection compatibility, NO overlap cocycle bundled here — so
+it does NOT itself assert the charts' products agree on overlaps (that local target-side cocycle is
+landed downstream, P2.c/f/g; only the GLOBAL gluing / `Flat π` is R1), hence is not named
+`locallyTrivial`. -/
 theorem reducedFibre_existsProductChartAt_rankEq (d : Fin (N + 2) → ℕ) (r : ℕ)
     (hp : r ≤ d (Fin.last (N + 1))) (hq : r ≤ d 0)
     (P : PrimeSpectrum (sweepSigmaRing k d r))
