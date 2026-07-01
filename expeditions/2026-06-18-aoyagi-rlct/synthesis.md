@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Source-image Finite-integral Internal Readback - 2026-07-01
+
+The concrete source-image finite-integral wrappers now internalize the final
+chart-piece readback/right-inverse obligation.  Their final handlers no longer
+ask for:
+
+```text
+forall E in chartPiece, readback E in W and sourceChart (readback E) = E
+```
+
+The source-image reference wrapper derives it by composing:
+
+```text
+chartPiece subset sourceChart '' V
+forall E in sourceChart '' V,
+  readback E in V and sourceChart (readback E) = E
+V subset W
+```
+
+The bounded-density source-image wrapper consumes the strengthened reference
+wrapper, so it also drops the separate readback argument.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-source-image-finite-integral-internal-readback.md
+threads/03-block-product-reduction/statement-card-a2-p13-source-image-finite-integral-internal-readback.md
+threads/03-block-product-reduction/review-a2-p13-source-image-finite-integral-internal-readback.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes for both strengthened
+wrappers report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no source coverage, no equality of the chart image with the p.13
+source set, no original-volume transport to the source-image reference, no
+source-image density identity or density bound, no Haar or Jacobian transport,
+no normal crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Source-image Finite-integral Internal p.13 Support - 2026-07-01
 
 The concrete source-image finite-integral wrappers now internalize the p.13

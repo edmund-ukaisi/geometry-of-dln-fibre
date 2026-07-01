@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 source-image finite-integral internal readback
+
+The concrete source-image finite-integral wrappers no longer ask the final
+chart-piece handler for a separate readback/right-inverse hypothesis:
+
+```text
+forall E in chartPiece, readback E in W and sourceChart (readback E) = E
+```
+
+The wrappers now derive it internally from:
+
+```text
+chartPiece subset sourceChart '' V
+forall E in sourceChart '' V, readback E in V and sourceChart (readback E) = E
+V subset W
+```
+
+This applies to both the source-image reference domination wrapper and the
+bounded-density source-image wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_eq_withDensity_bounded_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+Nonclaims: no source coverage, no equality of the chart image with the p.13
+source set, no original-volume transport to the source-image reference, no
+source-image density identity or density bound, no Haar or Jacobian transport,
+no normal crossings, no pole order, and no RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 source-image finite-integral internal p.13 support
 
 The concrete source-image finite-integral wrappers no longer ask the final
