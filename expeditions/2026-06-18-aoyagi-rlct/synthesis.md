@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Tuple Volume Haar Normalization - 2026-06-30
+
+Lean now proves that the original coordinate volume objects are genuine
+additive Haar measures:
+
+```text
+canonicalCoordLinearEquiv
+isAddHaarMeasure_originalCoordinateVolume
+isAddHaarMeasure_originalTupleVolume
+originalTupleVolume_eq_addHaarScalarFactor_smul
+originalTupleVolume_addHaarScalarFactor_pos
+```
+
+The key mathematical point is that `canonicalCoord d` is not only a set
+equivalence: it is the entrywise linear equivalence from matrix tuples to
+`RepCoord d -> ℝ`. Product Lebesgue measure on the flattened coordinate space
+is Haar, so its inverse pushforward is Haar on tuple space. Mathlib Haar
+uniqueness then compares any other additive Haar measure `ν` on the same tuple
+space by the positive scalar
+`(originalTupleVolume d).addHaarScalarFactor ν`.
+
+This is the right normalization boundary for the next source-chart measure
+step: arbitrary retained-passive raw-order Haar choices should be compared by
+a finite scalar, not asserted equal to the original tuple measure unless a
+separate normalization theorem fixes the scalar to `1`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-tuple-volume-haar-normalization.md
+threads/03-block-product-reduction/statement-card-a2-original-tuple-volume-haar-normalization.md
+threads/03-block-product-reduction/review-a2-original-tuple-volume-haar-normalization.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalPriorHaar.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalPriorHaar
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries                    # from lean/: 0 sorry, 0 #exit, 0 native_decide, 0 axiom
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_original_prior_haar_axioms.lean
+```
+
+Review: xhigh `Kant the 2nd` PASS after repair. The initial duplicate global
+matrix topology/Borel instances were removed; `OriginalPriorHaar.lean` now
+imports `ChartTopology`, with the remaining local-compactness bridge kept
+proof-local inside the Haar-scalar comparison. The axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`. Nonclaims: no retained-passive or
+selected-entry source-image measure equality, no chart-piece equality, no
+readback domination, no Aoyagi chart Haar/Jacobian transport, no source-rank
+coverage, no normal crossings, pole order, or RLCT extraction.
+
 ## p.13 Fixed-Basis Original Coordinate Readout - 2026-06-30
 
 Lean now proves the finite index bridge between Aoyagi's p.13 fixed endpoint

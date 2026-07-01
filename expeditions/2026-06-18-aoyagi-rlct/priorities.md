@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-06-30, original tuple volume Haar normalization
+
+The expedition now has the original coordinate Haar-normalization facts:
+
+```text
+canonicalCoordLinearEquiv
+isAddHaarMeasure_originalCoordinateVolume
+isAddHaarMeasure_originalTupleVolume
+originalTupleVolume_eq_addHaarScalarFactor_smul
+originalTupleVolume_addHaarScalarFactor_pos
+```
+
+This establishes that `originalTupleVolume d` is an additive Haar measure on
+the finite matrix-tuple space, because `canonicalCoord d` is an entrywise
+linear equivalence and flattened product Lebesgue measure is Haar.  Any other
+additive Haar measure on the same tuple space is therefore a positive scalar
+multiple away from `originalTupleVolume d`.
+
+This makes the next measure frontier sharper: prove finite-scalar comparison
+between the raw-order p.13 chart coordinate Haar measure and the original
+tuple/edge-family volume transported through the already-proved p.13 finite
+reindexing.  Do not claim exact equality unless the Haar normalization is
+fixed.
+
 ## Latest controller decision - 2026-06-30, p.13 fixed-basis original coordinate readout
 
 The expedition now has the finite index/basis bridge between Aoyagi's p.13
