@@ -1591,3 +1591,18 @@ With R1-WIRE-L2 landed (canonical @dad1fb8f), `aoyagi_learning_coefficient_L2` i
 - **(c) SCOPE-to-deepest-RLCT-only** — drop the general-v ≥-leg; deliver the deepest-point RLCT = ½·minAdm (the bounded R1 value result), which is fully closed.
 
 The fully-GENERAL (all-L) headline additionally needs **#120** (L≥3 grouped recursive diffeo — the sibling wall). And the **Codex CLI is flaky/broken** (Item 111) — a fix restores decorrelated second-model review. I am NOT autonomously charging Item-109 or #120 (research walls, operator-gated, same category throughout); the bounded frontier at L=2 is exhausted, and the expedition awaits the operator's wall decision.
+
+### Item 113 — general-L R1 mapped: standalone + below the walls, but NEEDS-DESIGN (not a bounded charge); FULL autonomous ceiling confirmed (2026-07-01)
+genm-glmap (source-verified) mapped the general-L R1 resolution. **Architectural finding:** it is STANDALONE + BELOW both known walls — grep-confirmed the route-M resolution machinery does not import DeepestGaugeChart / route through `deepest_gauge_squeeze_exists`; it computes `rlctAtOn` at the origin directly, and the D1 ≥-leg is 'value-free' (Skeleton:1164). The resolution WIRING is fully general-L + sorry-free (a general `r1_resolution_interface` = a near-verbatim Fin(L+1) copy). BUT both box atoms are open general-L NEEDS-DESIGN, not bounded charges:
+- **UPPER (N4, box-finiteness ∀L — RouteMSchur:426 bare sorry):** the L=2 discharge is intrinsically two-matrix; the L-fold chain analog is unbuilt + needs a per-step recursion over the L-fold product. The synthesis' own 'heaviest single piece / multi-week Lean fight' (UPDATE-103, roadmapped not charged). The corank-recursion SCAFFOLD is proven bedrock.
+- **LOWER (achiever ∀L — RouteMLayerCoverGE:130 bare sorry):** closer — CLEAN branch + trichotomy + contracts already general-L sorry-free; only the INTERIOR chart (off the Fin(2+1) pin, multi-layer L≥3) + a general SmearedAchieverChart remain. Pivotal unknown: does the multi-layer L≥3 interior stay a pivotBlowupOn monomial? → **genm-l3interior** commissioned (exact-algebra verify-first).
+
+**★ FULL AUTONOMOUS CEILING CONFIRMED.** The bounded frontier is exhausted: L=2 closed modulo the sole Item-109 D1 wall; general-L R1 is a THIRD NEEDS-DESIGN frontier (below the walls, wall-independent), the 'large-from-scratch build' category the synthesis has consistently roadmapped (UPDATE-103/105), not charged.
+
+**OPERATOR DECISIONS (the expedition awaits direction):**
+1. **Item-109 D1 wall** — the SOLE L=2 blocker: (a) charge Morse–Bott / (b) cite-as-interface / (c) scope-to-deepest-RLCT (Item 112).
+2. **The general-L R1 phase** — charge it toward the fully-general headline? It is WALL-INDEPENDENT (pursuable without resolving Item-109/#120), so it directly sea-rises the general R1 result — but it is a LARGE multi-tide/multi-week commitment (LOWER leg first, pending genm-l3interior's verdict; then the UPPER N4 long pole). I am NOT autonomously charging the heavy build (only the bounded genm-l3interior de-risk) pending the operator's direction on committing the phase.
+3. **#120** (L≥3 grouped diffeo / `deepest_gauge_squeeze_exists`) — for the general-L headline's deepest-normal-form path (a DIFFERENT gap from general-L R1).
+4. **Codex-infra** — flaky/broken (Item 111).
+
+HOLDING at this confirmed full ceiling. The one bounded step in flight is genm-l3interior (the LOWER general-L leg's de-risk).
