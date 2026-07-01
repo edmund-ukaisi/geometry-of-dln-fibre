@@ -5,6 +5,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMGenChartId
 import DLNFibre.DLN.RLCT.Validate.RouteMChainFDerivValue
 import DLNFibre.DLN.RLCT.Validate.RouteMReaderFDeriv
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
+import DLNFibre.DLN.RLCT.Validate.RouteMHregPerm
 
 /-!
 # `RouteMInteriorLiveGenDet` — Factor 1: the general-`L` boundary-factor determinant
@@ -824,6 +825,547 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   -- a multi-hundred-LoC fderiv development (own tide). Reduction to this single isolated goal is banked.
   sorry
 
+/-! ## Generic `IsCoordLE` atoms for the `eihd_hreg_gen` coordinate-permutation route
+
+The regauge `eihdOutGen.symm ∘ₗ eInGen` is a coordinate permutation of the flat space; we certify it
+via the `RouteMHregPerm.IsCoordLE` toolkit. Both `eInGen` and `packStairGen` are `≪≫ₗ`-chains of
+shape-changing atoms (`piCurry`/`piCongrRight`/`piToStair`/`piProdSplit`/`sumArrowLequivProdArrow`/
+`reindexLinearEquiv`/`flatMatLEGen`/`packRowSplitGen`), each of which is `IsCoordLE` for the right
+`→ℝ` charts. Below are the general-`L` atom certificates + the recursive `stairChartGen` on
+`StairProd genV L`; composing them by `IsCoordLE.trans`/`.symm` feeds `hreg_of_exists_funCongrLeft`.
+The `sigmaChart`/`prodChart` charts pin the `→ℝ` coordinatizations of the arrow-shaped intermediates. -/
+
+/-- **The Σ-flat chart** on a Pi-of-arrows `∀ i : ι, (κ i → ℝ)` — reshape to the flat arrow
+`(Σ i, κ i) → ℝ` via `piCurry.symm` (uncurry). The canonical `→ℝ` chart for the reindex atoms. -/
+def sigmaChart {ι : Type} (κ : ι → Type) :
+    ((i : ι) → κ i → ℝ) ≃ₗ[ℝ] ((Σ i : ι, κ i) → ℝ) :=
+  (LinearEquiv.piCurry ℝ (fun (i : ι) (_ : κ i) => ℝ)).symm
+
+/-- `sigmaChart` reads coordinate `⟨i, j⟩` from the `i`-th arrow at `j` (`rfl`, `Sigma.uncurry`). -/
+theorem sigmaChart_apply {ι : Type} (κ : ι → Type) (f : (i : ι) → κ i → ℝ) (p : Σ i : ι, κ i) :
+    sigmaChart κ f p = f p.1 p.2 := rfl
+
+/-- `sigmaChart.symm` writes the flat arrow back into the `i`-th slot (`rfl`, `Sigma.curry`). -/
+theorem sigmaChart_symm_apply {ι : Type} (κ : ι → Type) (g : (Σ i : ι, κ i) → ℝ)
+    (i : ι) (j : κ i) : (sigmaChart κ).symm g i j = g ⟨i, j⟩ := rfl
+
+/-- **Atom: `piReindexOfSigma` is a coordinate permutation** — with the `sigmaChart` charts on both
+Pi-of-arrows endpoints, `piReindexOfSigma d e σ` reads output `⟨i, j⟩` from input `σ ⟨i, j⟩`. -/
+theorem isCoordLE_piReindexOfSigma {ι : Type} (d e : ι → ℕ)
+    (σ : (Σ i : ι, Fin (d i)) ≃ (Σ i : ι, Fin (e i))) :
+    IsCoordLE (sigmaChart (fun i => Fin (d i))) (sigmaChart (fun i => Fin (e i)))
+      (piReindexOfSigma d e σ) := by
+  refine isCoordLE_of_read σ.symm ?_
+  intro f p
+  -- `sigmaChart e (piReindexOfSigma d e σ (sigmaChart d).symm f) p = f (σ.symm p)`, by `Sigma.curry/uncurry`.
+  rfl
+
+/-- **Atom: `piCurry` is a coordinate permutation** — with `refl` on the flat `(Σ i, κ i) → ℝ` side and
+`sigmaChart` on the curried `∀ i, κ i → ℝ` side, `piCurry` is the identity coordinate map (σ = `refl`;
+`sigmaChart = piCurry.symm`, so `sigmaChart ∘ piCurry = id`). -/
+theorem isCoordLE_piCurry {ι : Type} (κ : ι → Type) :
+    IsCoordLE (LinearEquiv.refl ℝ ((Σ i : ι, κ i) → ℝ)) (sigmaChart κ)
+      (LinearEquiv.piCurry ℝ (fun (i : ι) (_ : κ i) => ℝ)) := by
+  refine isCoordLE_of_read (Equiv.refl _) ?_
+  intro f p
+  -- `sigmaChart (piCurry f) p = (piCurry.symm (piCurry f)) p = f p`.
+  show (sigmaChart κ) ((LinearEquiv.piCurry ℝ (fun (i : ι) (_ : κ i) => ℝ)) f) p = f p
+  rw [sigmaChart, LinearEquiv.symm_apply_apply]
+
+/-- **The per-slot-charted Pi chart** on `∀ i : ι, A i` — chart each factor by `cx i : A i ≃ₗ (κ i → ℝ)`
+(`piCongrRight`), then flatten to `(Σ i, κ i) → ℝ` (`sigmaChart`). The `→ℝ` chart the `piCongrRight`
+atom uses on both endpoints. -/
+def piArrowChart {ι : Type} {A : ι → Type} {κ : ι → Type}
+    [∀ i, AddCommGroup (A i)] [∀ i, Module ℝ (A i)]
+    (cx : (i : ι) → A i ≃ₗ[ℝ] (κ i → ℝ)) :
+    ((i : ι) → A i) ≃ₗ[ℝ] ((Σ i : ι, κ i) → ℝ) :=
+  (LinearEquiv.piCongrRight cx) ≪≫ₗ sigmaChart κ
+
+/-- `piArrowChart` reads coordinate `⟨i, j⟩` as the `i`-th factor's chart at `j` (`rfl` after
+`piCongrRight`/`sigmaChart` unfold). -/
+theorem piArrowChart_apply {ι : Type} {A : ι → Type} {κ : ι → Type}
+    [∀ i, AddCommGroup (A i)] [∀ i, Module ℝ (A i)]
+    (cx : (i : ι) → A i ≃ₗ[ℝ] (κ i → ℝ)) (f : (i : ι) → A i) (p : Σ i : ι, κ i) :
+    piArrowChart cx f p = cx p.1 (f p.1) p.2 := rfl
+
+/-- **Atom: `piCongrRight` is a coordinate permutation** — if each `φ i` is a coordinate permutation for
+charts `cx i`/`cy i`, then `piCongrRight φ` is one for `piArrowChart cx`/`piArrowChart cy`, with σ the
+Σ-map `⟨i, k⟩ ↦ ⟨i, σᵢ k⟩` induced by the per-slot `σᵢ`. -/
+theorem isCoordLE_piCongrRight {ι : Type} {A B : ι → Type} {α β : ι → Type}
+    [∀ i, AddCommGroup (A i)] [∀ i, Module ℝ (A i)]
+    [∀ i, AddCommGroup (B i)] [∀ i, Module ℝ (B i)]
+    (cx : (i : ι) → A i ≃ₗ[ℝ] (α i → ℝ)) (cy : (i : ι) → B i ≃ₗ[ℝ] (β i → ℝ))
+    (φ : (i : ι) → A i ≃ₗ[ℝ] B i)
+    (hφ : ∀ i, IsCoordLE (cx i) (cy i) (φ i)) :
+    IsCoordLE (piArrowChart cx) (piArrowChart cy) (LinearEquiv.piCongrRight φ) := by
+  -- collect the per-slot index permutations `σ i : β i ≃ α i` (by choice).
+  choose σ hσ using hφ
+  refine isCoordLE_of_read (Equiv.sigmaCongrRight σ) ?_
+  intro f p
+  obtain ⟨i, k⟩ := p
+  -- output coord ⟨i,k⟩ = cy i (φ i (cx i.symm (f∘slot i))) k = (per-slot read) = f ⟨i, σ i k⟩.
+  have hi := LinearEquiv.ext_iff.mp (hσ i) (fun j => f ⟨i, j⟩)
+  have hval := congrFun hi k
+  -- `hval : (cx i.symm ≪≫ φ i ≪≫ cy i) (fun j => f ⟨i,j⟩) k = funCongrLeft (σ i) (fun j => f ⟨i,j⟩) k`
+  simpa only [piArrowChart, LinearEquiv.trans_apply, LinearEquiv.piCongrRight_apply, sigmaChart,
+    LinearEquiv.piCurry_symm_apply, Sigma.uncurry, LinearEquiv.funCongrLeft_apply,
+    LinearMap.funLeft_apply, Equiv.sigmaCongrRight_apply] using hval
+
+/-- **Atom: `sumArrowLequivProdArrow` is a coordinate permutation** — with `refl` on the sum-arrow side
+and `prodChart refl refl` on the product side, it reads through the `Sum.inl/inr` split. σ = `id`. -/
+theorem isCoordLE_sumArrow {α β : Type} :
+    IsCoordLE (LinearEquiv.refl ℝ (α ⊕ β → ℝ))
+      (prodChart (LinearEquiv.refl ℝ (α → ℝ)) (LinearEquiv.refl ℝ (β → ℝ)))
+      (LinearEquiv.sumArrowLequivProdArrow α β ℝ ℝ) := by
+  refine isCoordLE_of_read (Equiv.refl (α ⊕ β)) ?_
+  intro f k
+  rcases k with a | b
+  · rw [prodChart_apply_inl]; rfl
+  · rw [prodChart_apply_inr]; rfl
+
+/-- **Atom: `piProdSplit` is a coordinate permutation** — `(∀ i, (α i → ℝ) × (β i → ℝ))` (charted by
+`piArrowChart (prodChart refl refl)`, flat index `Σ i, α i ⊕ β i`) splits to `(∀ i, α i → ℝ) × (∀ i, β i
+→ ℝ)` (charted `prodChart (sigmaChart α) (sigmaChart β)`, flat index `(Σ i, α i) ⊕ (Σ i, β i)`). σ is the
+Σ/⊕ regroup `⟨i, inl a⟩ ↦ inl ⟨i,a⟩`, `⟨i, inr b⟩ ↦ inr ⟨i,b⟩`. -/
+theorem isCoordLE_piProdSplit {ι : Type} (α β : ι → Type) :
+    IsCoordLE (piArrowChart (fun i => prodChart (LinearEquiv.refl ℝ (α i → ℝ))
+        (LinearEquiv.refl ℝ (β i → ℝ))))
+      (prodChart (sigmaChart α) (sigmaChart β))
+      (piProdSplit (fun i => α i → ℝ) (fun i => β i → ℝ)) := by
+  -- σ : (Σ i, α i) ⊕ (Σ i, β i) ≃ Σ i, α i ⊕ β i — the Σ/⊕ regroup (`Equiv.sigmaSumDistrib.symm`).
+  refine isCoordLE_of_read (Equiv.sigmaSumDistrib (fun i => α i) (fun i => β i)).symm ?_
+  intro f k
+  rcases k with ⟨i, a⟩ | ⟨i, b⟩
+  · rw [prodChart_apply_inl]
+    show ((piProdSplit (fun i => α i → ℝ) (fun i => β i → ℝ))
+        ((piArrowChart (fun i => prodChart (LinearEquiv.refl ℝ (α i → ℝ))
+          (LinearEquiv.refl ℝ (β i → ℝ)))).symm f)).1 i a = _
+    rfl
+  · rw [prodChart_apply_inr]
+    show ((piProdSplit (fun i => α i → ℝ) (fun i => β i → ℝ))
+        ((piArrowChart (fun i => prodChart (LinearEquiv.refl ℝ (α i → ℝ))
+          (LinearEquiv.refl ℝ (β i → ℝ)))).symm f)).2 i b = _
+    rfl
+
+/-! ### The recursive staircase chart + the `piToStair` atom -/
+
+/-- **The recursive `→ℝ` chart on `StairProd V n`**, from a per-slot chart family `cV k : V k ≃ₗ (κ k
+→ ℝ)`. At `n = 0` it is `punitChart` (`PUnit ≃ Fin 0 → ℝ`); at `n+1`, `prodChart (cV 0) (recurse on the
+tail)`. The `stairFlatIdx` index type accumulates the head/tail `⊕`. -/
+def stairFlatIdx (κ : ℕ → Type) : ℕ → Type
+  | 0 => Fin 0
+  | (n + 1) => κ 0 ⊕ stairFlatIdx (fun k => κ (k + 1)) n
+
+/-- The recursive staircase chart `StairProd V n ≃ₗ (stairFlatIdx κ n → ℝ)`. -/
+def stairChartGen (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    {κ : ℕ → Type} (cV : (k : ℕ) → V k ≃ₗ[ℝ] (κ k → ℝ)) :
+    (n : ℕ) → StairProd V n ≃ₗ[ℝ] (stairFlatIdx κ n → ℝ)
+  | 0 => punitChart
+  | (n + 1) =>
+    prodChart (cV 0) (stairChartGen (fun k => V (k + 1)) (fun k => cV (k + 1)) n)
+
+/-- **`headTailFinPi` is a coordinate permutation** — the `Fin.cons` head/tail split, between
+`piArrowChart cV` (flat index `Σ k:Fin (n+1), κ k.val`) and `prodChart (cV 0) (piArrowChart (cV∘succ))`
+(flat index `κ 0 ⊕ Σ i:Fin n, κ (i+1)`). σ is the `Fin.cases` regroup. -/
+theorem isCoordLE_headTailFinPi (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    {κ : ℕ → Type} (cV : (k : ℕ) → V k ≃ₗ[ℝ] (κ k → ℝ)) (n : ℕ) :
+    IsCoordLE (piArrowChart (fun k : Fin (n + 1) => cV k.val))
+      (prodChart (cV 0) (piArrowChart (fun i : Fin n => cV (i.val + 1))))
+      (headTailFinPi V n) := by
+  -- σ : (κ 0 ⊕ Σ i:Fin n, κ (i+1)) ≃ Σ k:Fin (n+1), κ k.val — head at 0, tail at succ.
+  refine isCoordLE_of_read
+    { toFun := fun s => match s with
+        | Sum.inl a => ⟨0, a⟩
+        | Sum.inr ⟨i, a⟩ => ⟨i.succ, a⟩
+      invFun := fun p => Fin.cases (fun a => Sum.inl a) (fun i a => Sum.inr ⟨i, a⟩) p.1 p.2
+      left_inv := by rintro (a | ⟨i, a⟩) <;> simp [Fin.cases_succ]
+      right_inv := by
+        rintro ⟨k, a⟩
+        refine Fin.cases ?_ (fun i => ?_) k a
+        · intro a; rfl
+        · intro a; simp [Fin.cases_succ] } ?_
+  intro f k
+  rcases k with a | ⟨i, a⟩
+  · rw [prodChart_apply_inl]
+    show (cV 0) ((piArrowChart (fun k : Fin (n + 1) => cV k.val)).symm f 0) a = f ⟨0, a⟩
+    show (cV 0) ((cV 0).symm (fun j => f ⟨0, j⟩)) a = f ⟨0, a⟩
+    rw [LinearEquiv.apply_symm_apply]
+  · rw [prodChart_apply_inr]
+    show (piArrowChart (fun i : Fin n => cV (i.val + 1)))
+        ((headTailFinPi V n) ((piArrowChart (fun k : Fin (n + 1) => cV k.val)).symm f)).2 ⟨i, a⟩ = _
+    show (cV (i.val + 1)) ((cV (i.val + 1)).symm (fun j => f ⟨i.succ, j⟩)) a = f ⟨i.succ, a⟩
+    rw [LinearEquiv.apply_symm_apply]
+
+/-- **Atom: `piToStair` is a coordinate permutation** — recursion on `n`. `piToStair V (n+1) =
+headTailFinPi ≪≫ (refl.prodCongr (piToStair tail))`; the head factor is `IsCoordLE.refl`, the tail is the
+IH, and `headTailFinPi` is `isCoordLE_headTailFinPi`, composed by `IsCoordLE.trans`. The charts are
+`piArrowChart cV` (in) and `stairChartGen cV` (out). -/
+theorem isCoordLE_piToStair (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)]
+    {κ : ℕ → Type} (cV : (k : ℕ) → V k ≃ₗ[ℝ] (κ k → ℝ)) :
+    (n : ℕ) → IsCoordLE (piArrowChart (fun k : Fin n => cV k.val)) (stairChartGen V cV n)
+      (piToStair V n)
+  | 0 => by
+      -- both index types (`stairFlatIdx κ 0 = Fin 0` and `Σ i:Fin 0, κ i.val`) are empty; σ = the
+      -- unique equiv between empty types (`stairFlatIdx κ 0` is defeq `Fin 0`).
+      haveI : IsEmpty (stairFlatIdx κ 0) := (inferInstance : IsEmpty (Fin 0))
+      refine ⟨Equiv.equivOfIsEmpty (stairFlatIdx κ 0) (Σ i : Fin 0, κ i.val), ?_⟩
+      ext f i; exact i.elim0
+  | (n + 1) => by
+      -- `piToStair V (n+1) = headTailFinPi ≪≫ (refl.prodCongr (piToStair tail n))`.
+      have hstep : piToStair V (n + 1)
+          = (headTailFinPi V n) ≪≫ₗ
+            ((LinearEquiv.refl ℝ (V 0)).prodCongr (piToStair (fun k => V (k + 1)) n)) := rfl
+      rw [hstep]
+      have hhead : IsCoordLE (cV 0) (cV 0) (LinearEquiv.refl ℝ (V 0)) := IsCoordLE.refl (cV 0)
+      have htail := isCoordLE_piToStair (fun k => V (k + 1)) (fun k => cV (k + 1)) n
+      have hprod := isCoordLE_prodCongr hhead htail
+      -- `stairChartGen V cV (n+1) = prodChart (cV 0) (stairChartGen tail (n))` (rfl).
+      exact (isCoordLE_headTailFinPi V cV n).trans hprod
+
+/-! ### The per-slot matrix atoms for `packStairGen` (steps 0/1/2) -/
+
+/-- **Atom: a `matChart`-charted matrix reshape reading each output entry from a single input entry is a
+coordinate permutation.** For `e : Matrix (Fin a)(Fin b) ≃ₗ Matrix (Fin a')(Fin b')`, if `(e Mat) i j`
+reads `Mat` at `(τ (i,j)).1 (τ (i,j)).2` for a bijection `τ : Fin a' × Fin b' ≃ Fin a × Fin b`, then
+`IsCoordLE (matChart a b) (matChart a' b') e` (the σ is the `finProdFinEquiv`-conjugate of τ). -/
+theorem isCoordLE_matReshape (a b a' b' : ℕ)
+    (e : Matrix (Fin a) (Fin b) ℝ ≃ₗ[ℝ] Matrix (Fin a') (Fin b') ℝ)
+    (τ : (Fin a' × Fin b') ≃ (Fin a × Fin b))
+    (hread : ∀ (Mat : Matrix (Fin a) (Fin b) ℝ) (i : Fin a') (j : Fin b'),
+      e Mat i j = Mat (τ (i, j)).1 (τ (i, j)).2) :
+    IsCoordLE (matChart a b) (matChart a' b') e := by
+  refine isCoordLE_of_read
+    ((finProdFinEquiv (m := a') (n := b')).symm.trans (τ.trans finProdFinEquiv)) ?_
+  intro f m
+  -- output flat coord m ↦ matrix entry (finProdFinEquiv.symm m) ↦ read via τ ↦ input flat coord.
+  rw [matChart_apply a' b' (e ((matChart a b).symm f)) m, hread]
+  -- `(matChart a b).symm f`: entry `(p,q)` is `f (finProdFinEquiv (p,q))`.
+  have hsym : ∀ (p : Fin a) (q : Fin b), (matChart a b).symm f p q = f (finProdFinEquiv (p, q)) := by
+    intro p q
+    have : matChart a b ((matChart a b).symm f) = f := (matChart a b).apply_symm_apply f
+    have h2 := matChart_apply a b ((matChart a b).symm f) (finProdFinEquiv (p, q))
+    rw [this] at h2
+    simpa only [Equiv.symm_apply_apply] using h2.symm
+  rw [hsym]
+  rfl
+
+/-- **Atom: `flatMatLEGen.symm` (matrix → flat arrow) is a coordinate permutation** — chart the matrix
+side by `matChart a b`, the arrow side by `refl`; σ = `id` (`matChart = flatMatLEGen.symm`). -/
+theorem isCoordLE_flatMatLEGen_symm (a b : ℕ) :
+    IsCoordLE (matChart a b) (LinearEquiv.refl ℝ (Fin (a * b) → ℝ)) (flatMatLEGen a b).symm := by
+  refine isCoordLE_of_read (Equiv.refl (Fin (a * b))) ?_
+  intro f m
+  -- `matChart = (flatMatLE).symm = (flatMatLEGen).symm`; `flatMatLEGen.symm ((matChart).symm f) = f`.
+  show (flatMatLEGen a b).symm ((matChart a b).symm f) m = f m
+  rw [show (matChart a b).symm = flatMatLEGen a b from by
+      rw [matChart, LinearEquiv.symm_symm]; rfl]
+  rw [LinearEquiv.symm_apply_apply]
+
+/-- The kept-block read of `packRowSplitGen s` — `(packRowSplitGen s Mat).1 i j` reads row
+`finSumFinEquiv (inl i)` (recast by `genWidthEq`) at column `j`. -/
+theorem packRowSplitGen_read_kept (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L)
+    (Mat : Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ)
+    (i : Fin (Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    (packRowSplitGen M ha s Mat).1 i j
+      = Mat (Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+          (finSumFinEquiv (Sum.inl i))) j := by
+  show ((Matrix.ofLinearEquiv ℝ) ((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ _)
+      ((Matrix.ofLinearEquiv ℝ).symm
+        ((Matrix.reindexLinearEquiv ℝ ℝ finSumFinEquiv.symm (Equiv.refl _))
+          ((Matrix.reindexLinearEquiv ℝ ℝ
+              (finCongr (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt).symm)
+              (Equiv.refl _)) Mat)))).1) i j = _
+  simp only [Matrix.coe_ofLinearEquiv, Matrix.of_apply,
+    LinearEquiv.sumArrowLequivProdArrow_apply_fst, Matrix.coe_ofLinearEquiv_symm,
+    Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_submatrix,
+    Matrix.submatrix_apply, Matrix.of_symm_apply,
+    finCongr_symm, Equiv.symm_symm, Equiv.refl_symm, Equiv.refl_apply, Function.comp_apply,
+    finCongr_apply]
+
+/-- The lift-block read of `packRowSplitGen s` — `(packRowSplitGen s Mat).2 i j` reads row
+`finSumFinEquiv (inr i)` (recast by `genWidthEq`) at column `j`. -/
+theorem packRowSplitGen_read_lift (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L)
+    (Mat : Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ)
+    (i : Fin (Wext M s.val - Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    (packRowSplitGen M ha s Mat).2 i j
+      = Mat (Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+          (finSumFinEquiv (Sum.inr i))) j := by
+  show ((Matrix.ofLinearEquiv ℝ) ((LinearEquiv.sumArrowLequivProdArrow _ _ ℝ _)
+      ((Matrix.ofLinearEquiv ℝ).symm
+        ((Matrix.reindexLinearEquiv ℝ ℝ finSumFinEquiv.symm (Equiv.refl _))
+          ((Matrix.reindexLinearEquiv ℝ ℝ
+              (finCongr (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt).symm)
+              (Equiv.refl _)) Mat)))).2) i j = _
+  simp only [Matrix.coe_ofLinearEquiv, Matrix.of_apply,
+    LinearEquiv.sumArrowLequivProdArrow_apply_snd, Matrix.coe_ofLinearEquiv_symm,
+    Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_submatrix,
+    Matrix.submatrix_apply, Matrix.of_symm_apply,
+    finCongr_symm, Equiv.symm_symm, Equiv.refl_symm, Equiv.refl_apply, Function.comp_apply,
+    finCongr_apply]
+
+/-- **Atom: `packRowSplitGen s` is a coordinate permutation** — chart the input matrix by `matChart`,
+the output `(kept × lift)` pair by `prodChart (matChart …) (matChart …)`. The read routes each output
+row/col through `finSumFinEquiv`/`genWidthEq`; σ is the induced flat-index regroup. -/
+theorem isCoordLE_packRowSplitGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s : Fin L) :
+    IsCoordLE (matChart (Wext M s.val) (Wext M (s.val + 1)))
+      (prodChart (matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))
+        (matChart (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))))
+      (packRowSplitGen M ha s) := by
+  -- σ : (Fin (Text·Wext) ⊕ Fin ((Wext-Text)·Wext)) ≃ Fin (Wext s · Wext(s+1)) — via matChart/finSum.
+  -- σ : (Fin(T·W) ⊕ Fin((Wₛ−T)·W)) ≃ Fin(Wₛ·W): unpack both summands, `sumProdDistrib.symm` to
+  -- `(Fin T ⊕ Fin(Wₛ−T)) × Fin W`, glue rows by `finSumFinEquiv`+`genWidthEq`, repack.
+  let s1 : (Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) ⊕
+      Fin ((Wext M s.val - Text M (tach M) (s.val + 1)) * Wext M (s.val + 1))) ≃
+      ((Fin (Text M (tach M) (s.val + 1)) × Fin (Wext M (s.val + 1))) ⊕
+        (Fin (Wext M s.val - Text M (tach M) (s.val + 1)) × Fin (Wext M (s.val + 1)))) :=
+    Equiv.sumCongr finProdFinEquiv.symm finProdFinEquiv.symm
+  let s2 := (Equiv.sumProdDistrib (Fin (Text M (tach M) (s.val + 1)))
+      (Fin (Wext M s.val - Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1)))).symm
+  let s3 := Equiv.prodCongr (finSumFinEquiv (m := Text M (tach M) (s.val + 1))
+      (n := Wext M s.val - Text M (tach M) (s.val + 1))) (Equiv.refl (Fin (Wext M (s.val + 1))))
+  let s4 := Equiv.prodCongr (finCongr (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt))
+      (Equiv.refl (Fin (Wext M (s.val + 1))))
+  let s5 := finProdFinEquiv (m := Wext M s.val) (n := Wext M (s.val + 1))
+  refine isCoordLE_of_read (s1.trans (s2.trans (s3.trans (s4.trans s5)))) ?_
+  intro f k
+  rcases k with a | b
+  · rw [prodChart_apply_inl, matChart_apply, packRowSplitGen_read_kept]
+    have hsym : ∀ (p : Fin (Wext M s.val)) (q : Fin (Wext M (s.val + 1))),
+        (matChart (Wext M s.val) (Wext M (s.val + 1))).symm f p q = f (finProdFinEquiv (p, q)) := by
+      intro p q
+      have h2 := matChart_apply (Wext M s.val) (Wext M (s.val + 1))
+        ((matChart (Wext M s.val) (Wext M (s.val + 1))).symm f) (finProdFinEquiv (p, q))
+      rw [(matChart (Wext M s.val) (Wext M (s.val + 1))).apply_symm_apply f] at h2
+      simpa only [Equiv.symm_apply_apply] using h2.symm
+    rw [hsym]
+    simp only [s1, s2, s3, s4, s5, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl,
+      Equiv.prodCongr_apply, Prod.map, Equiv.sumProdDistrib_symm_apply_left,
+      finSumFinEquiv_apply_left, finCongr_apply, Equiv.refl_apply]
+  · rw [prodChart_apply_inr, matChart_apply, packRowSplitGen_read_lift]
+    have hsym : ∀ (p : Fin (Wext M s.val)) (q : Fin (Wext M (s.val + 1))),
+        (matChart (Wext M s.val) (Wext M (s.val + 1))).symm f p q = f (finProdFinEquiv (p, q)) := by
+      intro p q
+      have h2 := matChart_apply (Wext M s.val) (Wext M (s.val + 1))
+        ((matChart (Wext M s.val) (Wext M (s.val + 1))).symm f) (finProdFinEquiv (p, q))
+      rw [(matChart (Wext M s.val) (Wext M (s.val + 1))).apply_symm_apply f] at h2
+      simpa only [Equiv.symm_apply_apply] using h2.symm
+    rw [hsym]
+    simp only [s1, s2, s3, s4, s5, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inr,
+      Equiv.prodCongr_apply, Prod.map, Equiv.sumProdDistrib_symm_apply_right,
+      finSumFinEquiv_apply_right, finCongr_apply, Equiv.refl_apply]
+
+/-- **Atom: the step-0 width-recast `reindexLinearEquiv (finCongr h1) (finCongr h2)`** is a coordinate
+permutation — chart both matrix sides by `matChart`, τ = `(finCongr h1.symm) × (finCongr h2.symm)`. -/
+theorem isCoordLE_matReindexFinCongr {a b a' b' : ℕ} (h1 : a = a') (h2 : b = b') :
+    IsCoordLE (matChart a b) (matChart a' b')
+      (Matrix.reindexLinearEquiv ℝ ℝ (finCongr h1) (finCongr h2)) := by
+  refine isCoordLE_matReshape a b a' b' _
+    (Equiv.prodCongr (finCongr h1.symm) (finCongr h2.symm)) ?_
+  intro Mat i j
+  rw [Matrix.reindexLinearEquiv_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+  simp only [finCongr_symm, Equiv.prodCongr_apply, Prod.map, finCongr_apply]
+
+/-! ### The `genV` chart family + the `eInGen`/`packStairGen` `IsCoordLE` certificates -/
+
+/-- The per-slot `→ℝ` chart on `genV M k = (Fin (schurDim k) → ℝ) × (Fin (liftDim k) → ℝ)` — the
+`prodChart` of the two `refl` arrow charts, to `(Fin (schurDim k) ⊕ Fin (liftDim k)) → ℝ`. -/
+def genVChart (M : Fin (L + 1) → ℕ) (k : ℕ) :
+    genV M k ≃ₗ[ℝ] ((Fin (schurDim M (tDesc M (tach M)) k) ⊕ Fin (liftDim M (tDesc M (tach M)) k)) → ℝ) :=
+  prodChart (LinearEquiv.refl ℝ (Fin (schurDim M (tDesc M (tach M)) k) → ℝ))
+    (LinearEquiv.refl ℝ (Fin (liftDim M (tDesc M (tach M)) k) → ℝ))
+
+/-- **`eInGen` is a coordinate permutation** — `IsCoordLE refl (stairChartGen genV genVChart L) (eInGen)`.
+Assembles the four `eInGen` atoms (`funCongrLeft chartIdxEquiv.symm`, `piCurry`, `piCongrRight
+sumArrow`, `piToStair`) by `IsCoordLE.trans`. -/
+theorem isCoordLE_eInGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    IsCoordLE (LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ))
+      (stairChartGen (genV M) (genVChart M) L) (eInGen M ha) := by
+  -- eInGen = A ≪≫ B ≪≫ C ≪≫ D (funCongrLeft, piCurry, piCongrRight sumArrow, piToStair).
+  set κ : Fin L → Type := fun k => Fin (schurDim M (tDesc M (tach M)) k.val) ⊕
+      Fin (liftDim M (tDesc M (tach M)) k.val) with hκ
+  -- A : IsCoordLE refl refl (funCongrLeft chartIdxEquiv.symm), σ = chartIdxEquiv.symm.
+  have hA : IsCoordLE (LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ))
+      (LinearEquiv.refl ℝ (ChartIdx M (tDesc M (tach M)) → ℝ))
+      (LinearEquiv.funCongrLeft ℝ ℝ (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm) :=
+    isCoordLE_funCongrLeft (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL)
+  -- B : IsCoordLE refl (sigmaChart κ) piCurry.
+  have hB : IsCoordLE (LinearEquiv.refl ℝ ((Σ k : Fin L, κ k) → ℝ)) (sigmaChart κ)
+      (LinearEquiv.piCurry ℝ (fun (k : Fin L) (_ : κ k) => ℝ)) := isCoordLE_piCurry κ
+  -- C : IsCoordLE (piArrowChart refl-per-slot) (piArrowChart genVChart) (piCongrRight sumArrow).
+  have hC : IsCoordLE (piArrowChart (fun k : Fin L => LinearEquiv.refl ℝ (κ k → ℝ)))
+      (piArrowChart (fun k : Fin L => genVChart M k.val))
+      (LinearEquiv.piCongrRight (fun k : Fin L =>
+        LinearEquiv.sumArrowLequivProdArrow (Fin (schurDim M (tDesc M (tach M)) k.val))
+          (Fin (liftDim M (tDesc M (tach M)) k.val)) ℝ ℝ)) := by
+    refine isCoordLE_piCongrRight _ _ _ (fun k => ?_)
+    -- each slot: sumArrowLequivProdArrow, charts refl / genVChart (= prodChart refl refl).
+    rw [genVChart]
+    exact isCoordLE_sumArrow
+  -- D : IsCoordLE (piArrowChart genVChart) (stairChartGen genV genVChart L) piToStair.
+  have hD : IsCoordLE (piArrowChart (fun k : Fin L => genVChart M k.val))
+      (stairChartGen (genV M) (genVChart M) L) (piToStair (genV M) L) :=
+    isCoordLE_piToStair (genV M) (genVChart M) L
+  -- eInGen = A ≪≫ B ≪≫ C ≪≫ D.
+  have heq : eInGen M ha
+      = (LinearEquiv.funCongrLeft ℝ ℝ (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm)
+          ≪≫ₗ (LinearEquiv.piCurry ℝ (fun (k : Fin L) (_ : κ k) => ℝ))
+          ≪≫ₗ (LinearEquiv.piCongrRight (fun k : Fin L =>
+              LinearEquiv.sumArrowLequivProdArrow (Fin (schurDim M (tDesc M (tach M)) k.val))
+                (Fin (liftDim M (tDesc M (tach M)) k.val)) ℝ ℝ))
+          ≪≫ₗ piToStair (genV M) L := rfl
+  rw [heq]
+  exact hA.trans (hB.trans (hC.trans hD))
+
+/-- The `Params M` `→ℝ` chart used for `packStairGen` — the per-layer `matChart`, flattened. -/
+def paramsMatChart (M : Fin (L + 1) → ℕ) :
+    Params M ≃ₗ[ℝ] ((Σ s : Fin L, Fin (M s.castSucc * M s.succ)) → ℝ) :=
+  piArrowChart (fun s : Fin L => matChart (M s.castSucc) (M s.succ))
+
+/-- **`packStairGen` is a coordinate permutation** — `IsCoordLE (paramsMatChart) (stairChartGen genV
+genVChart L) (packStairGen)`. Threads the seven `packStairGen` steps through the per-slot matrix atoms
++ the `piProdSplit`/`piReindexOfSigma`/`piToStair` atoms by `IsCoordLE.trans`. -/
+theorem isCoordLE_packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L) :
+    IsCoordLE (paramsMatChart M) (stairChartGen (genV M) (genVChart M) L)
+      (packStairGen M ha hL) := by
+  -- abbreviations for the per-slot flat dims / charts along the chain.
+  set schD : Fin L → ℕ := fun s => schurDim M (tDesc M (tach M)) s.val with hschD
+  set lftD : Fin L → ℕ := fun s => liftDim M (tDesc M (tach M)) s.val with hlftD
+  set lblk : Fin L → ℕ := fun s => (Wext M s.val - Text M (tach M) (s.val + 1)) * Wext M (s.val + 1)
+    with hlblk
+  -- S0: piCongrRight (matReindexFinCongr) : paramsMatChart ⟶ piArrowChart (matChart (Wext ..)).
+  have hS0 : IsCoordLE (paramsMatChart M)
+      (piArrowChart (fun s : Fin L => matChart (Wext M s.val) (Wext M (s.val + 1))))
+      (LinearEquiv.piCongrRight (fun s : Fin L =>
+        Matrix.reindexLinearEquiv ℝ ℝ
+          (finCongr (show M s.castSucc = Wext M s.val by rw [Wext_apply M s.val (by omega)]; rfl))
+          (finCongr (show M s.succ = Wext M (s.val + 1) by
+            rw [Wext_apply M (s.val + 1) (by omega)]; rfl)))) :=
+    isCoordLE_piCongrRight _ _ _ (fun s => isCoordLE_matReindexFinCongr _ _)
+  -- S1: piCongrRight packRowSplitGen : ⟶ piArrowChart (prodChart matChart matChart).
+  have hS1 : IsCoordLE (piArrowChart (fun s : Fin L => matChart (Wext M s.val) (Wext M (s.val + 1))))
+      (piArrowChart (fun s : Fin L =>
+        prodChart (matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))
+          (matChart (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))))
+      (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s)) :=
+    isCoordLE_piCongrRight _ _ _ (fun s => isCoordLE_packRowSplitGen M ha s)
+  -- S2: piCongrRight (flatMatLEGen.symm × flatMatLEGen.symm) : ⟶ piArrowChart (prodChart refl refl).
+  have hS2 : IsCoordLE (piArrowChart (fun s : Fin L =>
+        prodChart (matChart (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))
+          (matChart (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1)))))
+      (piArrowChart (fun s : Fin L =>
+        prodChart (LinearEquiv.refl ℝ (Fin (schD s) → ℝ)) (LinearEquiv.refl ℝ (Fin (lblk s) → ℝ))))
+      (LinearEquiv.piCongrRight (fun s : Fin L =>
+        (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+          (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm)) := by
+    refine isCoordLE_piCongrRight _ _ _ (fun s => ?_)
+    exact isCoordLE_prodCongr (isCoordLE_flatMatLEGen_symm _ _) (isCoordLE_flatMatLEGen_symm _ _)
+  -- S3: piProdSplit : ⟶ prodChart (sigmaChart schD) (sigmaChart lblk).
+  have hS3 : IsCoordLE
+      (piArrowChart (fun s : Fin L =>
+        prodChart (LinearEquiv.refl ℝ (Fin (schD s) → ℝ)) (LinearEquiv.refl ℝ (Fin (lblk s) → ℝ))))
+      (prodChart (sigmaChart (fun s : Fin L => Fin (schD s)))
+        (sigmaChart (fun s : Fin L => Fin (lblk s))))
+      (piProdSplit (fun s : Fin L => Fin (schD s) → ℝ) (fun s : Fin L => Fin (lblk s) → ℝ)) :=
+    isCoordLE_piProdSplit (fun s : Fin L => Fin (schD s)) (fun s : Fin L => Fin (lblk s))
+  -- S4: refl.prodCongr (piReindexOfSigma liftGatherFinL) : ⟶ prodChart (sigmaChart schD) (sigmaChart lftD).
+  have hS4 : IsCoordLE
+      (prodChart (sigmaChart (fun s : Fin L => Fin (schD s)))
+        (sigmaChart (fun s : Fin L => Fin (lblk s))))
+      (prodChart (sigmaChart (fun s : Fin L => Fin (schD s)))
+        (sigmaChart (fun s : Fin L => Fin (lftD s))))
+      ((LinearEquiv.refl ℝ ((s : Fin L) → Fin (schD s) → ℝ)).prodCongr
+        (piReindexOfSigma (fun s : Fin L => lblk s) (fun s : Fin L => lftD s)
+          (liftGatherFinL M ha hL))) :=
+    isCoordLE_prodCongr (IsCoordLE.refl _)
+      (isCoordLE_piReindexOfSigma (fun s : Fin L => lblk s) (fun s : Fin L => lftD s)
+        (liftGatherFinL M ha hL))
+  -- S5: piProdSplit.symm : ⟶ piArrowChart (prodChart refl refl) = piArrowChart genVChart.
+  have hS5 : IsCoordLE
+      (prodChart (sigmaChart (fun s : Fin L => Fin (schD s)))
+        (sigmaChart (fun s : Fin L => Fin (lftD s))))
+      (piArrowChart (fun s : Fin L =>
+        prodChart (LinearEquiv.refl ℝ (Fin (schD s) → ℝ)) (LinearEquiv.refl ℝ (Fin (lftD s) → ℝ))))
+      (piProdSplit (fun s : Fin L => Fin (schD s) → ℝ) (fun s : Fin L => Fin (lftD s) → ℝ)).symm :=
+    (isCoordLE_piProdSplit (fun s : Fin L => Fin (schD s)) (fun s : Fin L => Fin (lftD s))).symm
+  -- S6: piToStair : ⟶ stairChartGen genV genVChart L.
+  have hS6 : IsCoordLE (piArrowChart (fun s : Fin L => genVChart M s.val))
+      (stairChartGen (genV M) (genVChart M) L) (piToStair (genV M) L) :=
+    isCoordLE_piToStair (genV M) (genVChart M) L
+  -- packStairGen = S0 ≪≫ S1 ≪≫ S2 ≪≫ S3 ≪≫ S4 ≪≫ S5 ≪≫ S6.
+  have heq : packStairGen M ha hL
+      = (LinearEquiv.piCongrRight (fun s : Fin L =>
+          Matrix.reindexLinearEquiv ℝ ℝ
+            (finCongr (show M s.castSucc = Wext M s.val by rw [Wext_apply M s.val (by omega)]; rfl))
+            (finCongr (show M s.succ = Wext M (s.val + 1) by
+              rw [Wext_apply M (s.val + 1) (by omega)]; rfl))))
+        ≪≫ₗ (LinearEquiv.piCongrRight (fun s : Fin L => packRowSplitGen M ha s))
+        ≪≫ₗ (LinearEquiv.piCongrRight (fun s : Fin L =>
+            (flatMatLEGen (Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm.prodCongr
+              (flatMatLEGen (Wext M s.val - Text M (tach M) (s.val + 1)) (Wext M (s.val + 1))).symm))
+        ≪≫ₗ (piProdSplit (fun s : Fin L => Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)
+            (fun s : Fin L => Fin ((Wext M s.val - Text M (tach M) (s.val + 1)) * Wext M (s.val + 1)) → ℝ))
+        ≪≫ₗ ((LinearEquiv.refl ℝ ((s : Fin L) →
+              Fin (Text M (tach M) (s.val + 1) * Wext M (s.val + 1)) → ℝ)).prodCongr
+            (piReindexOfSigma
+              (fun k : Fin L => (Wext M k.val - Text M (tach M) (k.val + 1)) * Wext M (k.val + 1))
+              (fun k : Fin L => liftDim M (tDesc M (tach M)) k.val)
+              (liftGatherFinL M ha hL)))
+        ≪≫ₗ (piProdSplit (fun s : Fin L => Fin (schurDim M (tDesc M (tach M)) s.val) → ℝ)
+            (fun s : Fin L => Fin (liftDim M (tDesc M (tach M)) s.val) → ℝ)).symm
+        ≪≫ₗ (piToStair (genV M) L) := rfl
+  rw [heq]
+  exact hS0.trans (hS1.trans (hS2.trans (hS3.trans (hS4.trans (hS5.trans hS6)))))
+
+/-- The `FlatIdx ≃ Σ s, Fin (M s.cast · M s.succ)` regroup — combine each `(⟨s,i⟩, j)` into `⟨s,
+finProdFinEquiv (i,j)⟩`. Bridges `paramsEquivFlatLinear`'s `FlatIdx` layout with `paramsMatChart`'s
+per-layer flat layout. -/
+def flatIdxRegroup (M : Fin (L + 1) → ℕ) :
+    FlatIdx M ≃ (Σ s : Fin L, Fin (M s.castSucc * M s.succ)) where
+  toFun := fun q => ⟨q.1.1, finProdFinEquiv (q.1.2, q.2)⟩
+  invFun := fun p => ⟨⟨p.1, (finProdFinEquiv.symm p.2).1⟩, (finProdFinEquiv.symm p.2).2⟩
+  left_inv := fun q => by
+    obtain ⟨⟨s, i⟩, j⟩ := q
+    show (⟨⟨s, (finProdFinEquiv.symm (finProdFinEquiv (i, j))).1⟩,
+        (finProdFinEquiv.symm (finProdFinEquiv (i, j))).2⟩ : FlatIdx M) = ⟨⟨s, i⟩, j⟩
+    rw [Equiv.symm_apply_apply]
+  right_inv := fun p => by
+    obtain ⟨s, m⟩ := p
+    simp only [Prod.mk.eta, Equiv.apply_symm_apply]
+
+/-- **Atom: `paramsEquivFlatLinear` is a coordinate permutation** — `IsCoordLE (paramsMatChart M) refl
+(paramsEquivFlatLinear M)`. Both read Params layer `s` entry `(i,j)`; σ = `equivFin FlatIdx ≪≫
+flatIdxRegroup` (output flat coord `n` reads Params layer `s = (regroup (equivFin.symm n)).1` at the
+`finProdFinEquiv`-unpacked entry). -/
+theorem isCoordLE_paramsEquivFlatLinear (M : Fin (L + 1) → ℕ) :
+    IsCoordLE (paramsMatChart M) (LinearEquiv.refl ℝ (Fin (flatDim M) → ℝ))
+      (paramsEquivFlatLinear M) := by
+  refine isCoordLE_of_read
+    ((Fintype.equivFin (FlatIdx M)).symm.trans (flatIdxRegroup M)) ?_
+  intro f n
+  -- LHS: `paramsEquivFlatLinear (paramsMatChart.symm f) n`; RHS: `f (σ n)`.
+  show (paramsEquivFlatLinear M) ((paramsMatChart M).symm f) n = _
+  -- `paramsEquivFlatLinear P n = P s i j` at `⟨⟨s,i⟩,j⟩ = (equivFin FlatIdx).symm n` (defeq via the
+  -- two `piCurry.symm` uncurryings + `funCongrLeft`); `(paramsMatChart.symm f) s i j = f ⟨s,
+  -- finProdFinEquiv (i,j)⟩` (defeq via `sigmaChart.symm` + `matChart.symm = flatMatLEGen`).
+  rw [show (paramsEquivFlatLinear M) ((paramsMatChart M).symm f) n
+      = ((paramsMatChart M).symm f) ((Fintype.equivFin (FlatIdx M)).symm n).1.1
+          ((Fintype.equivFin (FlatIdx M)).symm n).1.2 ((Fintype.equivFin (FlatIdx M)).symm n).2
+    from rfl]
+  -- unpack the Params slot read through `paramsMatChart.symm` = `piCongrRight matChart.symm ∘ sigmaChart.symm`.
+  set q := (Fintype.equivFin (FlatIdx M)).symm n with hq
+  -- `(sigmaChart κ).symm f q.1.1 = fun m => f ⟨q.1.1, m⟩` (Sigma.curry); `matChart.symm = flatMatLEGen`.
+  show (matChart (M q.1.1.castSucc) (M q.1.1.succ)).symm
+      ((sigmaChart (fun s : Fin L => Fin (M s.castSucc * M s.succ))).symm f q.1.1) q.1.2 q.2 = _
+  rw [show ((sigmaChart (fun s : Fin L => Fin (M s.castSucc * M s.succ))).symm f q.1.1)
+      = (fun m => f ⟨q.1.1, m⟩) from rfl]
+  rw [show (matChart (M q.1.1.castSucc) (M q.1.1.succ)).symm
+      = flatMatLEGen (M q.1.1.castSucc) (M q.1.1.succ) from by rw [matChart, LinearEquiv.symm_symm]; rfl]
+  -- `flatMatLEGen a b g i j = g (finProdFinEquiv (i,j))` — the flat entry read.
+  rw [show (flatMatLEGen (M q.1.1.castSucc) (M q.1.1.succ)) (fun m => f ⟨q.1.1, m⟩) q.1.2 q.2
+      = (fun m => f ⟨q.1.1, m⟩) (finProdFinEquiv (q.1.2, q.2)) from
+    flatMatLE_apply (M q.1.1.castSucc) (M q.1.1.succ) (fun m => f ⟨q.1.1, m⟩) q.1.2 q.2]
+  rfl
+
 /-- **The regauge abs-det-`1`** `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`. The
 general-`L` lift of `RouteMHregPerm.eihd_hreg` (a slot-reindex is measure/det-1). LOAD-BEARING
 RESIDUAL. -/
@@ -831,12 +1373,34 @@ theorem eihd_hreg_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     |LinearMap.det
         (((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
         ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L))| = 1 := by
-  -- The regauge `eihdOutGen.symm ∘ eInGen` is a slot↔(staggered)Params-layer coordinate REINDEX —
-  -- a signed permutation of coords, det ±1 (abs 1). NO LONGER trivial `= id` (eihdOutGen ≠ eInGen now;
-  -- eOut is the STAGGERED pack). Route: it's `funCongrLeft` of an index `Equiv`, so `det = ±1` via the
-  -- `IsCoordLE`/`hreg_of_exists_funCongrLeft` infra (`RouteMHregPerm`, `isCoordLE_of_read`).
-  -- MISSING: certify the composite as a coordinate reindex (det ±1) — lift of `RouteMHregPerm.eihd_hreg`.
-  sorry
+  -- The regauge `eihdOutGen.symm ∘ eInGen` is a coordinate permutation `funCongrLeft σ` of the flat
+  -- space; `|det| = 1` via `hreg_of_exists_funCongrLeft`, assembled from the three `IsCoordLE`
+  -- certificates `isCoordLE_eInGen`/`isCoordLE_packStairGen`/`isCoordLE_paramsEquivFlatLinear` by
+  -- `.trans`/`.symm` (`eihdOutGen = paramsEquivFlatLinear.symm ≪≫ packStairGen`). Lift of `eihd_hreg`.
+  refine hreg_of_exists_funCongrLeft (genV M) (eInGen M ha) (eihdOutGen M ha) ?_
+  -- IsCoordLE refl refl (eInGen ≪≫ eihdOutGen.symm) ⟹ ∃ σ, eihdOutGen.symm ∘ₗ eInGen = funCongrLeft σ.
+  have hcoord : IsCoordLE (LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ))
+      (LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ)) (eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm) := by
+    -- eihdOutGen.symm = packStairGen.symm ≪≫ paramsEquivFlatLinear (unfold eihdOutGen).
+    have heihd : (eihdOutGen M ha).symm
+        = (packStairGen M ha ha.hL).symm ≪≫ₗ paramsEquivFlatLinear M := by
+      rw [eihdOutGen, LinearEquiv.trans_symm]
+      congr 1
+    rw [heihd]
+    exact (isCoordLE_eInGen M ha).trans
+      (((isCoordLE_packStairGen M ha ha.hL).symm).trans (isCoordLE_paramsEquivFlatLinear M))
+  obtain ⟨σ, hσ⟩ := hcoord
+  refine ⟨σ, ?_⟩
+  rw [show ((eihdOutGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
+        ∘ₗ ((eInGen M ha) : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+      = ((eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm :
+            (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)) :
+          (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)) from rfl]
+  have hthis := hσ
+  rw [show (LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ)).symm ≪≫ₗ
+        (eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm) ≪≫ₗ LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ)
+      = (eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm) from by ext g; rfl] at hthis
+  rw [hthis]
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
