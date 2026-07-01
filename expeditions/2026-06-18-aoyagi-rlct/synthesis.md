@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Formal-product to Original-volume Domination - 2026-07-01
+
+Lean now proves that source-reference domination of the p.13 formal-product
+chart measure transfers to source-reference domination of restricted original
+edge-family volume with the inverse Haar scalar multiplied into the bound:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure
+```
+
+and a bounded-density input variant:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_bounded
+```
+
+The calculation is `original = c^{-1} • formal` and
+`formal <= D • sourceRef`, hence
+`original <= (c^{-1} * D) • sourceRef`.  The bounded-density theorem first
+applies `restrict_withDensity_le_smul_of_ae_le` to the supplied
+formal-product/source-reference density identity.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-to-original-volume-domination.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-to-original-volume-domination.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-to-original-volume-domination.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
+axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no formal-product/source-reference comparison is proved, no equality
+between the formal-product p.13 chart measure and the passive-theta source-image
+reference, no source-image coverage, no source-rank coverage, no scalar
+normalization, no normal crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Formal-product Density Identity - 2026-07-01
 
 Lean now proves the inverse-scalar p.13 formal-product/original-volume

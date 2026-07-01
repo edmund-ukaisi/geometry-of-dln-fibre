@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 formal-product to original-volume domination
+
+Lean now proves the inverse-Haar domination bridge from p.13 formal-product
+chart measure to restricted original edge-family volume:
+
+```text
+originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure
+
+originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_bounded
+```
+
+If the p.13 formal-product chart-piece measure is dominated by `D • sourceRef`,
+then the restricted original edge-family volume is dominated by
+`(c^{-1} * D) • sourceRef`, where `c` is the tuple-side Haar scalar from the
+p.13 formal-product/original-volume comparison.  The bounded-density variant
+first converts a supplied formal-product/source-reference density identity and
+a.e. bound into that domination.
+
+This is still conditional on the formal-product/source-reference comparison.
+It does not identify the formal-product measure with the passive-theta
+source-image reference and does not prove source-image coverage, source-rank
+coverage, scalar normalization, normal crossings, pole order, or RLCT
+extraction.  The next real frontier is the actual formal-product/source-image
+reference equality or bounded-density comparison.
+
 ## Latest controller decision - 2026-07-01, p.13 formal-product density identity
 
 Lean now proves that the p.13 formal-product chart measure controls the

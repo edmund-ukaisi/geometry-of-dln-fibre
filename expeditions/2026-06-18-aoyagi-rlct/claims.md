@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 formal-product to original-volume
+  domination, 2026-07-01.** Lean now proves
+  `originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure`
+  and
+  `originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceMeasure_of_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_bounded`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`.
+  A supplied domination `formal <= D • sourceRef` gives
+  `originalVolume.restrict chartPiece <= (c^{-1} * D) • sourceRef`; the
+  bounded-density variant first derives the supplied domination from a
+  formal-product/source-reference density identity and a.e. bound.  Reproduction,
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-formal-product-to-original-volume-domination.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-formal-product-to-original-volume-domination.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-formal-product-to-original-volume-domination.md`.
+  Nonclaims: no formal-product/source-reference comparison, no passive-theta
+  source-image equality, no source-prior transport, no source-image coverage,
+  no source-rank coverage, no scalar normalization, no normal crossings, pole
+  order, or RLCT extraction.
 - **Current status addendum, p.13 formal-product density identity,
   2026-07-01.** Lean now proves
   `originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_formalProductAbsDet_restrict_chartPiece`
