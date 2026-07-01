@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior volume source-image reference finite integral
+
+The abstract source-reference finite-integral wrapper now has a concrete
+source-image specialization:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+After the finite-integral socket returns `W`, the theorem uses the existing
+passive-theta source-image inverse machinery to produce an open `V` with
+`z0 ∈ V`, `V ⊆ W`, local left/right inverse facts for `sourceChart`/`readback`,
+`Set.InjOn sourceChart V`, `ContinuousOn sourceChart V`, and measurable actual
+image `sourceChart '' V`.  The final chart-piece handler requires
+`chartPiece ⊆ sourceChart '' V` and the honest remaining comparison
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece <=
+  D • Measure.map sourceChart (coordinateSourceMeasure.restrict V),
+D < infinity.
+```
+
+The wrapper derives the source-reference readback hypotheses with `Csource = 1`
+from the local inverse theorem and `V ⊆ W`.  A smaller companion wrapper also
+specializes the abstract source reference to
+`originalEdgeFamilyVolume.restrict chartPiece` when readback domination of that
+volume piece is supplied directly.
+
+This still does not prove original-volume transport to the source-image
+reference.  It removes an artificial source-reference abstraction while keeping
+source coverage, chart-image equality, Haar scalar normalization, normal
+crossings, pole order, and RLCT outside the claim.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior volume-source-reference domination finite integral
 
 The exact source-reference finite-integral wrapper now has a weaker pullback

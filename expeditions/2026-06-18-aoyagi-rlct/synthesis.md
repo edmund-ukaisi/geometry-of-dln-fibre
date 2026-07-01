@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Volume Source-image Reference Finite Integral - 2026-07-01
+
+Lean now proves the concrete source-image specialization of the source-reference
+finite-integral wrapper:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+The theorem obtains an open passive-theta chart `V` inside the existing returned
+`W` using the source-image inverse theorem.  The returned `V` includes:
+
+```text
+z0 ∈ V, V ⊆ W,
+∀ z ∈ V, readback (sourceChart z) = z,
+Set.InjOn sourceChart V,
+ContinuousOn sourceChart V,
+MeasurableSet (sourceChart '' V),
+∀ E ∈ sourceChart '' V, readback E ∈ V ∧ sourceChart (readback E) = E.
+```
+
+It sets
+
+```text
+sourceRef := Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+The local inverse API proves `Measure.map readback sourceRef =
+coordinateSourceMeasure.restrict V`; since `V ⊆ W`, this gives the abstract
+source-reference wrapper's readback domination with `Csource := 1`.  The final
+chart-piece handler keeps the actual geometric measure comparison explicit:
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece <= D • sourceRef,
+D < infinity.
+```
+
+A smaller companion theorem also specializes the abstract source reference to
+`originalEdgeFamilyVolume.restrict chartPiece` when direct readback domination
+of that restricted volume piece is supplied.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-reference-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-reference-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-reference-finite-integral.md
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-readback-domination-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-readback-domination-finite-integral.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of original-volume domination by the source-image
+reference, no global passive-theta source-image identification, no source
+coverage, no chart-image equality, no source-rank coverage, no Haar scalar
+normalization or cancellation, no normal crossings, no pole order, and no RLCT
+extraction.
+
 ## p.13 Original-prior Volume-source-reference Domination Finite Integral - 2026-07-01
 
 Lean now proves the weaker-pullback sibling of the previous

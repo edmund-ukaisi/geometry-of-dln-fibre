@@ -140,6 +140,33 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 original-prior volume source-image
+  reference finite integral, 2026-07-01.** Lean now proves
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+  The theorem produces a local passive-theta chart `V ⊆ W`, uses the existing
+  source-image inverse API to set
+  `sourceRef := Measure.map sourceChart (coordinateSourceMeasure.restrict V)`,
+  and derives the abstract source-reference readback domination with
+  `Csource = 1`.  The final chart-piece handler assumes
+  `chartPiece ⊆ sourceChart '' V` and the explicit comparison
+  `(originalEdgeFamilyVolume b).restrict chartPiece <= D • sourceRef` with
+  `D < infinity`.  A companion theorem
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolume_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+  handles the direct `sourceRef := originalEdgeFamilyVolume.restrict chartPiece`
+  specialization.  Reproduction, statement cards, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-reference-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-reference-finite-integral.md`,
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-reference-finite-integral.md`,
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-readback-domination-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-readback-domination-finite-integral.md`.
+  Nonclaims: no proof of original-volume domination by the source-image
+  reference, no global passive-theta source-image identification, no source
+  coverage, no chart-image equality, no source-rank coverage, no Haar scalar
+  normalization or cancellation, no normal crossings, pole order, or RLCT
+  extraction.
 - **Current status addendum, p.13 original-prior volume-source-reference
   domination finite integral, 2026-07-01.** Lean now proves the weaker-pullback
   source-reference wrapper

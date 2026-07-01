@@ -12680,3 +12680,36 @@ theta-reference identification, no passive-theta source-image equality, no
 source coverage, no chart-image equality, no source-rank coverage, no Haar
 scalar normalization or cancellation, no normal crossings, no pole order, and
 no RLCT extraction.
+
+Latest A2 p.13 original-prior volume source-image reference finite-integral wrapper:
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` proves
+`exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolumeSourceImageReference_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`
+and the companion direct-volume-readback specialization
+`exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_originalVolume_readback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-source-image-reference-finite-integral.md` and
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-volume-readback-domination-finite-integral.md`.
+Statement cards:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-source-image-reference-finite-integral.md` and
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-volume-readback-domination-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-volume-source-image-reference-finite-integral.md`.
+
+Ledger status: the source-reference finite-integral wrapper now has a concrete
+local source-image specialization.  It produces `V ⊆ W` with local
+sourceChart/readback inverse data and uses
+`Measure.map sourceChart (coordinateSourceMeasure.restrict V)` as the source
+reference.  The original-volume domination by that concrete source-image
+reference remains an explicit hypothesis.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct axiom probes passed.  The direct axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of original-volume domination by the source-image
+reference, no global passive-theta source-image identification, no source
+coverage, no chart-image equality, no source-rank coverage, no Haar scalar
+normalization or cancellation, no normal crossings, no pole order, and no RLCT
+extraction.
