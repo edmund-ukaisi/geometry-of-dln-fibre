@@ -2407,6 +2407,14 @@ theorem packStairGen_frame_fderiv_read (M : Fin (L + 1) → ℕ) (ha : StructAdm
     exact packRowSplitGen_kept_BparamsLeafGen M ha s y i j
   rw [hfeq]
 
+/-- **`piReindexOfSigma` entrywise-apply** — `(piReindexOfSigma d e σ g) s b = g (σ.symm ⟨s,b⟩).1
+(σ.symm ⟨s,b⟩).2`. The `piCurry.symm ≫ funCongrLeft σ.symm ≫ piCurry` composite is the `Sigma.uncurry`/
+`Sigma.curry` round-trip around the base reindex `σ.symm` — `rfl` (mirrors `isCoordLE_piReindexOfSigma`). -/
+theorem piReindexOfSigma_apply {ι : Type} (d e : ι → ℕ)
+    (σ : (Σ i : ι, Fin (d i)) ≃ (Σ i : ι, Fin (e i)))
+    (g : (i : ι) → Fin (d i) → ℝ) (s : ι) (b : Fin (e s)) :
+    (piReindexOfSigma d e σ g) s b = g (σ.symm ⟨s, b⟩).1 (σ.symm ⟨s, b⟩).2 := rfl
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
