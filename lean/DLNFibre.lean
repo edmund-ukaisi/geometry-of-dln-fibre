@@ -658,3 +658,4 @@ import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPrior
 import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyPriorHaar
 import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13Coordinates
 import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderBridge
+import DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge

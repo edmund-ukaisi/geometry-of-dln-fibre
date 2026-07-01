@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## Original Edge-Family Raw-Order Measure Bridge - 2026-07-01
+
+Lean now proves the first restricted-pushforward scalar comparison after the
+raw-order coordinate bridge:
+
+```text
+map_rawOrderMatrixTuple_restrict_eq_smul_originalTupleVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_eq_smul_originalTupleVolume_restrict_image
+```
+
+The first theorem says that, for
+`L := rawOrderMatrixTupleContinuousLinearEquiv e`,
+
+```text
+Measure.map L (m.restrict S)
+= ((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+  (originalTupleVolume d).restrict (L '' S).
+```
+
+The proof is honest about the restriction: use `MeasurableEquiv.restrict_map`
+to identify the pushed restriction with `(Measure.map L m).restrict (L '' S)`,
+compare the two full-space Haar measures `Measure.map L m` and
+`originalTupleVolume d`, then restrict that full-space equality.  No
+restricted measure is claimed to be Haar.  The second theorem composes the
+existing formal-product retained-passive raw-order COV with this scalar
+comparison at `topologyTupleRawOrderSourceRecursiveDetChartSet`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-measure-bridge.md
+threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-measure-bridge.md
+threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-measure-bridge.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+#print axioms on both public theorems: [propext, Classical.choice, Quot.sound]
+```
+
+Post-implementation xhigh review and full verification passed.  Nonclaims:
+no restricted chart Haar theorem, no scalar normalization to `1`, no
+`originalEdgeFamilyVolume` comparison on continuous edge families, no
+chart-piece readback domination, no source-rank coverage, no normal crossings,
+pole order, or RLCT extraction.
+
 ## Original Edge-Family Raw-Order Bridge - 2026-07-01
 
 Lean now proves the full-space raw-order coordinate bridge:

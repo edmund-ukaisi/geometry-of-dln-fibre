@@ -14103,3 +14103,35 @@ determinant-chart or source-chart measures are Haar, nor as a comparison
 between `originalEdgeFamilyVolume` and any chart-produced source-image
 measure.  It is an ambient coordinate equivalence plus a chart-domain
 pointwise readout theorem only.
+
+## A2 original edge-family raw-order measure bridge
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh review passed.
+
+Claim: for the full-space raw-order-to-original tuple continuous linear
+equivalence `L`, pushing a restricted raw-coordinate Haar measure forward by
+`L` gives the original tuple volume restricted to `L`'s image, multiplied by
+the full-space Haar scalar comparing `Measure.map L m` with
+`originalTupleVolume d`.  Composing the existing formal-product retained
+passive raw-order COV with `L` gives the same scalar-restricted original tuple
+measure on the image of the raw-order source-recursive determinant chart.
+
+Lean theorems:
+
+```text
+map_rawOrderMatrixTuple_restrict_eq_smul_originalTupleVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_eq_smul_originalTupleVolume_restrict_image
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-original-edge-family-raw-order-measure-bridge.md`
+and
+`threads/03-block-product-reduction/statement-card-a2-original-edge-family-raw-order-measure-bridge.md`;
+xhigh review in
+`threads/03-block-product-reduction/review-a2-original-edge-family-raw-order-measure-bridge.md`.
+
+Kill condition: this claim must not be cited as a restricted-Haar theorem, as
+an exact-normalization theorem with scalar `1`, or as a comparison with
+`originalEdgeFamilyVolume` on continuous edge-family space.  It is a
+restricted pushforward of a full-space scalar Haar comparison.

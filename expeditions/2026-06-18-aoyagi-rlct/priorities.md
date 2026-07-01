@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, raw-order restriction to original tuple measure bridge
+
+The expedition now has the restricted-pushforward scalar comparison:
+
+```text
+map_rawOrderMatrixTuple_restrict_eq_smul_originalTupleVolume_restrict_image
+map_formalProduct_rawOrderMatrixTuple_eq_smul_originalTupleVolume_restrict_image
+```
+
+For the full-space continuous linear equivalence
+`L := rawOrderMatrixTupleContinuousLinearEquiv e` and a full raw-coordinate
+Haar measure `m`,
+
+```text
+Measure.map L (m.restrict S)
+= ((Measure.map L m).addHaarScalarFactor (originalTupleVolume d)) •
+  (originalTupleVolume d).restrict (L '' S).
+```
+
+The formal-product Jacobian COV version composes the existing retained-passive
+raw-order COV with this comparison at the raw source-recursive determinant
+chart.  The scalar is deliberately the full-space Haar scalar comparing
+`Measure.map L m` to `originalTupleVolume d`; it is not asserted to be `1`.
+
+This is the next honest measure step after the raw-order bridge.  It still
+does not identify a restricted chart measure as Haar and does not compare with
+`originalEdgeFamilyVolume` on continuous edge-family space.  The next frontier
+is to route this original tuple restriction back through the p.13 fixed-basis
+edge-family coordinates or into the existing source-image/readback domination
+sockets.
+
 ## Latest controller decision - 2026-07-01, raw-order to original matrix tuple bridge
 
 The expedition now has the full-space finite coordinate bridge from raw-order
