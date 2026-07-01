@@ -263,10 +263,11 @@ names are correct, each in its own world.
 localized affine spectrum canonically corresponding to the chart's own basic open
 `D((chart i).chartElt)` — NOT all of `U`. A SINGLE GLOBAL fibration morphism `π : U → (base)` over
 all of `U` is NOT constructed here: it needs an actual gluing of the per-chart projections from
-their overlap-compatibility data (roadmap R1). The per-chart projections' overlap compatibility —
-the triple-overlap naturality tying `tripleTransition` to the further-localized 2-fold
-`overlapTransition` — is now PROVED (`restrictedOverlapTransition_eq`,
-`restrictTriple_comp_overlapTransition`, P2.g); R1 is the remaining GLOBAL gluing that consumes it.
+their overlap-compatibility data (roadmap R1). One INPUT to that gluing — the per-triple naturality
+tying `tripleTransition` to the further-localized 2-fold `overlapTransition` — is now PROVED
+(`restrictedOverlapTransition_eq`, `restrictTriple_comp_overlapTransition`, P2.g); R1 is the GLOBAL
+gluing itself, which needs more than this local compatibility (e.g. descent / a colimit
+construction) and is NOT built here.
 The view does NOT assert a global projection: it exposes exactly the chartwise picture the predicate
 proves (chartwise local triviality + the 2-fold cocycle `overlapTransition_trans_symm`, the
 canonical triple cocycle `tripleTransition_cocycle`, and the restricted 2-fold cocycle
