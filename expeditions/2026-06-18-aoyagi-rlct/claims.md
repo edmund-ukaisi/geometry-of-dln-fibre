@@ -140,6 +140,26 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, p.13 original-prior finite-integral bridge,
+  2026-07-01.** Lean now proves a downstream consumer theorem in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`:
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductReadback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.  It composes the existing passive-theta readback finite-integral
+  socket with the p.13 original-prior readback domination bridge, fixing
+  `externalSourceMeasure := originalEdgeFamilyPrior b density` in the final
+  chart-piece handler.  The theorem keeps all geometric obligations explicit:
+  `chartPiece` must be measurable, lie in both the returned local source and
+  the named p.13 source set, satisfy the readback/right-inverse condition, and
+  the formal-product p.13 chart measure must have supplied finite readback
+  domination by `coordinateSourceMeasure.restrict W`.  Reproduction, statement
+  card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-finite-integral.md`,
+  `threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-finite-integral.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-p13-original-prior-readback-finite-integral.md`.
+  Nonclaims: no proof of the formal readback domination, no passive-theta
+  source-image equality, no source coverage, no chart-image equality, no
+  source-rank coverage, no Haar scalar normalization, no normal crossings,
+  pole order, or RLCT extraction.
 - **Current status addendum, p.13 original-prior readback domination bridge,
   2026-07-01.** Lean now proves a conditional bridge in
   `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean`:

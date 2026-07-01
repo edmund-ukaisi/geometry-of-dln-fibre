@@ -12501,3 +12501,31 @@ domination, no passive-theta source-image equality, no passive-theta image
 containment in the p.13 source set, no full original-prior transport through
 the p.13 chart, no restricted Haar theorem, no scalar normalization to `1`, no
 normal crossings, no pole order, and no RLCT.
+
+
+Latest A2 p.13 original-prior readback finite-integral bridge:
+`OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean` proves `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductReadback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-finite-integral.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-finite-integral.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-original-prior-readback-finite-integral.md`.
+
+Ledger status: the existing passive-theta readback finite-integral socket is
+instantiated with `externalSourceMeasure := originalEdgeFamilyPrior b density`
+using the p.13 original-prior readback domination bridge.  The final scalar is
+`(ENNReal.ofReal Kprior * ((cHaar^-1 : NNReal) : ENNReal)) * Cformal`, and the
+finite scalar helper discharges the socket's finite-scalar requirement from
+`Cformal < infinity`.
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh read-only theorem-shape review passed.  The direct
+axiom probe reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of formal p.13 measure domination by passive coordinates,
+no passive-theta source-image equality, no source coverage, no chart-image
+equality, no source-rank coverage, no Haar scalar normalization, no normal
+crossings, no pole order, and no RLCT.

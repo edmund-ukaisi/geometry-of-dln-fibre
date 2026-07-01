@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## p.13 Original-prior Readback Finite-integral Bridge - 2026-07-01
+
+Lean now proves a downstream consumer theorem composing the p.13
+original-prior readback domination bridge with the existing Case 2
+passive-theta readback finite-integral socket:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductReadback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+After the passive-theta socket returns `W` and `U`, the final chart-piece
+handler fixes
+
+```text
+externalSourceMeasure := originalEdgeFamilyPrior b density
+```
+
+and uses the p.13 bridge to produce the required readback domination with
+
+```text
+Cpull := (ENNReal.ofReal Kprior * ((cHaar^-1 : NNReal) : ENNReal)) * Cformal.
+```
+
+The theorem still asks the caller for the formal p.13 readback measurability,
+formal readback domination by `coordinateSourceMeasure.restrict W`, and
+`Cformal < infinity`.  It also keeps `chartPiece ⊆ sourceLocal` and
+`chartPiece ⊆ p13SourceSet` as separate hypotheses.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-readback-finite-integral.md
+threads/03-block-product-reduction/statement-card-a2-p13-original-prior-readback-finite-integral.md
+threads/03-block-product-reduction/review-a2-p13-original-prior-readback-finite-integral.md
+```
+
+Focused file elaboration, focused module build, aggregate `DLNFibre.lean`,
+full `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, direct
+axiom probe, and xhigh read-only theorem-shape review passed.  The direct
+axiom probe reports only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no formal p.13 measure domination by passive coordinates, no
+passive-theta source-image equality, no source coverage, no chart-image
+equality, no source-rank coverage, no Haar scalar normalization, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## p.13 Original-prior Readback Domination Bridge - 2026-07-01
 
 Lean now proves a conditional readback-domination bridge for locally bounded

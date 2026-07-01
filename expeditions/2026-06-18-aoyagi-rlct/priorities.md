@@ -12,6 +12,26 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, p.13 original-prior finite-integral bridge
+
+The p.13 original-prior readback bridge now feeds the existing Case 2
+passive-theta readback finite-integral socket in a new downstream module:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_originalEdgeFamilyPrior_restrict_chartPiece_formalProductReadback_le_smul_coordinateSourceMeasure_jacobian_passiveProductMeasure_finiteMass_sourceStratum_bounds
+```
+
+This is still a conditional chart-piece theorem.  It assumes the chart piece is
+measurable, lies in both the returned local source and the named p.13 source
+set, has the supplied readback/right-inverse property, and that the formal
+product p.13 chart measure has supplied finite readback domination by the
+coordinate source measure.
+
+Nonclaims: no proof of formal p.13 measure domination by passive coordinates,
+no passive-theta source-image equality, no source coverage, no chart-image
+equality, no source-rank coverage, no Haar scalar normalization, no normal
+crossings, no pole order, and no RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, p.13 original-prior readback bridge
 
 The original-prior source-side p.13 domination now composes with any supplied
