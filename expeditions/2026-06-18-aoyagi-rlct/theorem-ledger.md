@@ -12779,3 +12779,32 @@ Nonclaims: no proof of the source-image density identity or density bound, no
 passive-theta source-image equality, no source coverage, no chart-image
 equality, no source-rank coverage, no Haar scalar normalization or
 cancellation, no normal crossings, no pole order, and no RLCT extraction.
+
+Latest A2 p.13 formal-product source-image density from original-volume density:
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-density-from-original-volume-density.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-density-from-original-volume-density.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-density-from-original-volume-density.md`.
+
+Ledger status: the formal-product p.13 chart measure now has an exact
+`withDensity` source-reference identity whenever the restricted original
+edge-family volume has one on the chart piece.  The transferred density is
+`cHaar • volumeDensity`, with `cHaar` the existing tuple-side Haar comparison
+scalar.  This is an equality-level original-volume route and does not replace
+the direct formal-product/passive-theta source-image frontier.
+
+Focused file elaboration, focused module build, full local `lake build
+DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct axiom probe
+passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the original-volume source-reference density identity,
+no direct formal-product/passive-theta source-image identity, no passive-theta
+source-image equality, no source coverage, no chart-image equality, no
+source-rank coverage, no Haar scalar normalization or cancellation, no normal
+crossings, no pole order, and no RLCT extraction.

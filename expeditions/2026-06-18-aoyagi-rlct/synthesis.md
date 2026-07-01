@@ -28909,3 +28909,58 @@ The direct axiom probe reported only
 Boundary: this does not prove the source-image density identity or bound,
 passive-theta image equality, source coverage, source-rank coverage, Haar
 normalization, normal crossings, pole order, or RLCT extraction.
+
+## 2026-07-01 p.13 formal-product source-image density from original-volume density
+
+Lean now has the equality-level source-measure bridge from an original-volume
+source-reference density identity to a formal-product p.13 source-reference
+density identity:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity
+```
+
+Given
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (sourceRef.withDensity volumeDensity).restrict chartPiece,
+```
+
+on a measurable chart piece contained in the named p.13 source edge-family set,
+it proves
+
+```text
+muP13 = (sourceRef.withDensity (cHaar • volumeDensity)).restrict chartPiece,
+```
+
+where `cHaar` is the tuple-side Haar comparison scalar coerced to `ENNReal`.
+The proof uses the existing p.13 formal-product/original-volume chart-piece
+equality, `withDensity_smul'`, and `Measure.restrict_smul`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-density-from-original-volume-density.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-density-from-original-volume-density.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-density-from-original-volume-density.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_formal_density_from_volume_density_axioms.lean
+```
+
+The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this does not prove the original-volume source-reference density
+identity, the direct formal-product/passive-theta source-image identity,
+passive-theta image equality, source coverage, source-rank coverage, Haar
+normalization, normal crossings, pole order, or RLCT extraction.

@@ -14648,3 +14648,32 @@ formal-product density bound.  It also must not be cited as proof of the
 source-image density identity, source coverage, passive-theta image equality,
 source-rank coverage, Haar scalar normalization, normal crossings, pole order,
 or RLCT extraction.
+
+## A2 p.13 formal-product source-image density from original-volume density
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh API scout check passed.
+
+Claim: on a measurable p.13 chart piece contained in the named p.13 source
+edge-family set, a source-reference density identity for restricted original
+edge-family volume transfers to an exact source-reference density identity for
+the p.13 formal-product chart measure.  The density is `cHaar • volumeDensity`,
+with `cHaar : NNReal` coerced to `ENNReal`.
+
+Lean theorem:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-product-source-image-density-from-original-volume-density.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-product-source-image-density-from-original-volume-density.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-formal-product-source-image-density-from-original-volume-density.md`.
+
+Kill condition: this claim must not be cited as proof of the original-volume
+source-reference density identity, as proof of the direct formal-product
+source-image identity, or as scalar normalization of `cHaar` to `1`.  It also
+must not be cited as source coverage, passive-theta image equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.

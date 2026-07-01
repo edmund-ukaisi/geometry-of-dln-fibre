@@ -16284,3 +16284,19 @@ then the formal-product p.13 chart measure is dominated by
 forward direction.  The direct formal-product/source-image frontier from the
 previous checkpoint still has scalar `D` alone and still requires proving the
 actual passive-theta source-image density identity.
+
+A2 p.13 formal-product source-image density from original-volume density has landed locally in
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean`:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_eq_withDensity_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity
+```
+
+This equality-level bridge says that an original-volume source-reference density
+identity on a p.13 chart piece transfers to a formal-product source-reference
+density identity with density `cHaar • volumeDensity`.  It is useful when the
+available source-image theorem is for `originalEdgeFamilyVolume`, while the
+formal-product finite-integral socket wants an equality for the formal-product
+chart measure.  The direct formal-product/passive-theta source-image theorem,
+if proved directly, still carries its own density and scalar `D` without routing
+through `cHaar`.
