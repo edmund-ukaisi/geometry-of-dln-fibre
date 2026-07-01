@@ -1881,6 +1881,8 @@ theorem exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSource
           Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
             MeasurableSet (sourceChart '' V) ∧
               (∀ E ∈ sourceChart '' V, E ∈ p13SourceSet) ∧
+                (∀ z ∈ V, rawMap z ∈ rawSourceSet) ∧
+                  AEMeasurable rawMap (coordinateSourceMeasure.restrict V) ∧
                 (∀ sourceMeasure :
                   Measure
                     (Case2PassiveTheta
@@ -1921,7 +1923,7 @@ theorem exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSource
           exists_open_subset_measurableSet_measure_map_case2PassiveThetaEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_puncturedSector_inverseReadout_eq_yNext
             W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
             z₀ hdet₀ hpivot₀ Vsrc hVsrc_open hz₀Vsrc) with
-    ⟨Vtwo, hVtwo_open, hz₀Vtwo, hVtwo_src, _hsector_two, _hpoint_two,
+    ⟨Vtwo, hVtwo_open, hz₀Vtwo, hVtwo_src, _hsector_two, hpoint_two,
       hmeasure_maps_two⟩
   rcases
       (by
@@ -1971,8 +1973,67 @@ theorem exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSource
       Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
       himage_p13_src (sourceChart z) z.A1passive z.F2 z.A3passive
         z.Ctop z.F3 z.yNext hz_fields rfl
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  have hdet_of_mem :
+      ∀ z ∈ V,
+        Y z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    intro z hz
+    have hz_fields :
+        ((z.A1passive, z.F2, z.A3passive, z.Ctop, z.F3), z.yNext) ∈
+          Vtwo := by
+      simpa [Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hV_two hz
+    have hpoint :=
+      hpoint_two z.A1passive z.F2 z.A3passive z.Ctop z.F3 z.yNext
+        hz_fields
+    simpa [Y, RawTuple, ρ, κ'] using hpoint.1
+  have hraw_memV : ∀ z ∈ V, rawMap z ∈ rawSourceSet := by
+    intro z hz
+    have hz_fields :
+        ((z.A1passive, z.F2, z.A3passive, z.Ctop, z.F3), z.yNext) ∈
+          Vtwo := by
+      simpa [Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hV_two hz
+    have hpoint :=
+      hpoint_two z.A1passive z.F2 z.A3passive z.Ctop z.F3 z.yNext
+        hz_fields
+    simpa [rawMap, rawSourceSet, RawTuple, ρ, κ'] using hpoint.2.1
+  have hrawMapContOn : ContinuousOn rawMap V := by
+    rw [continuousOn_iff_continuous_restrict]
+    let Sdet : Set RawTuple :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let toDetTuple : V → Sdet :=
+      fun z ↦ ⟨Y z.1, hdet_of_mem z.1 z.2⟩
+    have hToDetTuple : Continuous toDetTuple := by
+      have hamb : Continuous (fun z : V ↦ Y z.1) := by
+        change Continuous
+          (fun z : V ↦
+            case2PassiveThetaEndpointTopologyTuple
+              (ρ := ρ) n hS hcont hnext z.1 eNext e)
+        exact
+          (continuous_case2PassiveThetaEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext eNext e).comp continuous_subtype_val
+      exact hamb.subtype_mk _
+    have hrawDet :
+        Continuous
+          (fun y : topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ↦
+            topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y.1) :=
+      continuous_topologyTupleEdgeRawOrder_detChart_subtype
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    simpa [rawMap, Y, toDetTuple, Sdet, RawTuple, ρ, κ'] using
+      hrawDet.comp hToDetTuple
+  have hrawMap_aemeas :
+      AEMeasurable rawMap (coordinateSourceMeasure.restrict V) := by
+    simpa using
+      ContinuousOn.aemeasurable₀ hrawMapContOn
+        hVopen.measurableSet.nullMeasurableSet
   refine ⟨V, hVopen, hz₀V, hVG, hleftV, hsource_injV, hsource_contOnV,
-    hsource_imageV, himage_p13V, ?_, hraw_dom⟩
+    hsource_imageV, himage_p13V, hraw_memV, hrawMap_aemeas, ?_, hraw_dom⟩
   intro sourceMeasure ν μ μrawComp μrawTwoStage
   have hmaps :=
     hmeasure_maps_two (sourceMeasure := sourceMeasure.restrict V)
