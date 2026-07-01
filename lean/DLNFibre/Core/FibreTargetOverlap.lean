@@ -27,11 +27,12 @@ base-side overlap transition `chartOverlapTransitionK I J` and its round-trip
 `chartOverlapTransitionK_trans_symm` are then **literally the abstract atlas transition** at the
 pivot charts (`Algebra.AtlasChart.chartOverlapTransitionK (pivotAtlasChart I) (pivotAtlasChart J)`
 &c.). The target-side data (`overlapElt`, `targetChartLoc`, `overlapTriv`,
-`targetProductOverlapTransition`) are the abstract construction unfolded to a single
-`Localization.Away` layer (so the doubly-localized `targetChartLoc`'s instances fire — routing them
-through the abstract `AtlasChart` structure projection makes `Semiring`-synthesis whnf-reduce the
-heavy per-pivot trivialization and time out); they are definitionally the abstract data at
-`pivotAtlasChart`.
+`targetProductOverlapTransition`) are **defined as** the abstract `Algebra.AtlasChart.…` at
+`pivotAtlasChart` — the module has a single source of truth. (The doubly-localized
+`targetChartLoc`'s `Semiring`/`Algebra` synthesis still `whnf`-reduces the heavy per-pivot
+trivialization; this is a property of the concrete `targetChartLoc` type — not of how the objects
+are defined — so `targetProductOverlapTransition_trans_symm`, whose STATEMENT elaborates that
+synthesis, keeps a raised elaboration budget.)
 
 ## The construction (double-localized)
 
@@ -126,41 +127,35 @@ noncomputable def pivotAtlasChart (I : PivotDatum d r hp hq) :
 /-- **The chart-`J` minor localized into the chart-`I` total ring.** `algebraMap sweepSigmaRing
 (Away (chartDsigAt I.s I.t)) (pivotElt J)` — the element of the chart-`I` total ring whose inversion
 cuts the overlap `D(pivotElt I · pivotElt J)`. Since `pivotElt I = chartDsigAt I.s I.t`, its
-`Localization.Away` is exactly the base-side overlap `awayOverlap (pivotElt I)(pivotElt J)`.
-Definitionally the abstract `Algebra.AtlasChart.overlapElt (pivotAtlasChart I)
-(pivotAtlasChart J)`. -/
+`Localization.Away` is exactly the base-side overlap `awayOverlap (pivotElt I)(pivotElt J)`. Defined
+as the abstract `Algebra.AtlasChart.overlapElt (pivotAtlasChart I) (pivotAtlasChart J)`, so the
+module has a single source of truth. -/
 noncomputable def overlapElt (I J : PivotDatum d r hp hq) :
     Localization.Away (chartDsigAt (k := k) d r I.s I.t) :=
-  algebraMap (sweepSigmaRing k d r) (Localization.Away (chartDsigAt (k := k) d r I.s I.t))
-    (pivotElt d r hp hq J)
+  Algebra.AtlasChart.overlapElt (pivotAtlasChart (k := k) d r hp hq I)
+    (pivotAtlasChart (k := k) d r hp hq J)
 
 /-- **The chart-`I` target presentation of the overlap.** The product model `M = SchurLoc ⊗_k
 sweepFibreRing` localized at the image, under the chart-`I` trivialization `triv I`, of the
 chart-`J` minor (`overlapElt I J`) — the double-localized object on which the target-side
-transition lives. `@[reducible]` so its `CommRing` / `Algebra k` instances fire transparently
-(needed by `Localization.awayCongr'`). Definitionally the abstract
-`Algebra.AtlasChart.targetChartLoc (pivotAtlasChart I) (pivotAtlasChart J)`, kept in this
-one-`Localization.Away`-layer shape so its
-`Semiring` instance fires (routing through the abstract structure projection times out). -/
+transition lives. Defined as the abstract `Algebra.AtlasChart.targetChartLoc (pivotAtlasChart I)
+(pivotAtlasChart J)`, so the module has a single source of truth. `@[reducible]` so its `CommRing` /
+`Algebra k` instances fire transparently (needed by `Localization.awayCongr'`). -/
 @[reducible] noncomputable def targetChartLoc (I J : PivotDatum d r hp hq) : Type :=
-  Localization.Away
-    ((perPivotLocalTrivializationDatum (k := k) d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ).trivialization
-      (overlapElt d r hp hq I J))
+  Algebra.AtlasChart.targetChartLoc (pivotAtlasChart (k := k) d r hp hq I)
+    (pivotAtlasChart (k := k) d r hp hq J)
 
 /-- **The base→target transport of the chart-`I` overlap presentation.** The re-homed generalized
 localization transport `Localization.awayCongr'` of the per-pivot trivialization `triv I`, carrying
-the base-side overlap `awayOverlap (pivotElt I)(pivotElt J) = Localization.Away (overlapElt I J)` to
-the chart-`I` target presentation `targetChartLoc I J = M` localized at `triv I (overlapElt I J)`.
-Definitionally the abstract `Algebra.AtlasChart.overlapTriv (pivotAtlasChart I)
-(pivotAtlasChart J)`, unfolded so the doubly-localized `targetChartLoc` instances fire. -/
+the base-side overlap `awayOverlap (pivotElt I)(pivotElt J)` to the chart-`I` target presentation
+`targetChartLoc I J = M` localized at `triv I (overlapElt I J)`. Defined as the abstract
+`Algebra.AtlasChart.overlapTriv (pivotAtlasChart I) (pivotAtlasChart J)`, so the module has a single
+source of truth. -/
 noncomputable def overlapTriv (I J : PivotDatum d r hp hq) :
     awayOverlap (pivotElt (k := k) d r hp hq I) (pivotElt (k := k) d r hp hq J)
       ≃ₐ[k] targetChartLoc (k := k) d r hp hq I J :=
-  Localization.awayCongr'
-    ((perPivotLocalTrivializationDatum (k := k) d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ).trivialization)
-    (overlapElt d r hp hq I J)
-    ((perPivotLocalTrivializationDatum (k := k) d r hp hq I.s I.t I.σ I.τ I.hσ I.hτ).trivialization
-      (overlapElt d r hp hq I J)) rfl
+  Algebra.AtlasChart.overlapTriv (pivotAtlasChart (k := k) d r hp hq I)
+    (pivotAtlasChart (k := k) d r hp hq J)
 
 /-- **The base-side overlap transition as a `k`-algebra equiv — the abstract atlas transition at the
 pivot charts.** `Algebra.AtlasChart.chartOverlapTransitionK (pivotAtlasChart I)
@@ -185,14 +180,16 @@ between the two chart presentations of the overlap on the product model `M`: the
 presentation `targetChartLoc I J` and the chart-`J` presentation `targetChartLoc J I`, obtained by
 conjugating the base-side overlap transition `chartOverlapTransitionK I J` (the `k`-restricted base
 transition) through the two base→target transports `overlapTriv`. This is the genuine target-side
-transition the S5 capstone named as residual R1 — here pairwise, as a double-localized object, and
-the DLN instance of the abstract `Algebra.AtlasChart.overlapTransition` (same construction:
+transition the S5 capstone named as residual R1 — here pairwise, as a double-localized object,
+defined as the abstract `Algebra.AtlasChart.overlapTransition (pivotAtlasChart I) (pivotAtlasChart
+J)` (same construction:
 `(overlapTriv I J).symm ≪≫ (chartOverlapTransitionK I J ≪≫ overlapTriv J I)`, parenthesized so the
-cocycle round-trip is reachable by the `AlgEquiv` groupoid laws). -/
+cocycle round-trip is reachable by the `AlgEquiv` groupoid laws), so the module has a single source
+of truth. -/
 noncomputable def targetProductOverlapTransition (I J : PivotDatum d r hp hq) :
     targetChartLoc (k := k) d r hp hq I J ≃ₐ[k] targetChartLoc (k := k) d r hp hq J I :=
-  (overlapTriv d r hp hq I J).symm.trans
-    ((chartOverlapTransitionK d r hp hq I J).trans (overlapTriv d r hp hq J I))
+  Algebra.AtlasChart.overlapTransition (pivotAtlasChart (k := k) d r hp hq I)
+    (pivotAtlasChart (k := k) d r hp hq J)
 
 /-- **The base transition round-trips to the identity — the abstract atlas round-trip at the pivot
 charts.** `Algebra.AtlasChart.chartOverlapTransitionK_trans_symm (pivotAtlasChart I)
@@ -204,14 +201,18 @@ theorem chartOverlapTransitionK_trans_symm (I J : PivotDatum d r hp hq) :
   Algebra.AtlasChart.chartOverlapTransitionK_trans_symm
     (pivotAtlasChart d r hp hq I) (pivotAtlasChart d r hp hq J)
 
-set_option maxHeartbeats 800000 in
+set_option maxHeartbeats 400000 in
+-- The theorem STATEMENT is what is expensive to elaborate, not the proof: `AlgEquiv.refl` (and the
+-- `.trans`) at the reducible DLN `targetChartLoc` alias forces instance synthesis to `whnf` the
+-- per-pivot trivialization applied to the overlap element. This whnf is a property of the
+-- `targetChartLoc` type, present regardless of how `targetProductOverlapTransition` is defined (the
+-- delegation does not remove it — it roughly halves it, 800000 → 400000); a raised budget stays.
 /-- **The target-side overlap transition round-trips to the identity (named DLN API).**
 `((targetProductOverlapTransition I J).trans (targetProductOverlapTransition J I)) = refl` — the
-concrete DLN instance of the abstract `Algebra.AtlasChart.overlapTransition_trans_symm` (P2.c) at the
-pivot charts, `targetProductOverlapTransition` being definitionally
-`(pivotAtlasChart I).overlapTransition (pivotAtlasChart J)`. Needs a raised elaboration budget: the
-concrete transition unfolds through the explicit chart trivialization, so lining it up with the
-abstract statement is a large `whnf`. -/
+concrete DLN instance of the abstract `Algebra.AtlasChart.overlapTransition_trans_symm` (P2.c) at
+the pivot charts, `targetProductOverlapTransition` being (by definition)
+`(pivotAtlasChart I).overlapTransition (pivotAtlasChart J)`, so the proof is a delegation to the
+abstract round-trip. -/
 theorem targetProductOverlapTransition_trans_symm (I J : PivotDatum d r hp hq) :
     (targetProductOverlapTransition d r hp hq I J).trans
         (targetProductOverlapTransition d r hp hq J I)
@@ -229,9 +230,12 @@ K_JI ≪≫ T_IJ` by the `AlgEquiv` groupoid laws `AlgEquiv.trans_assoc` / `tran
 (supplied by `DLNFibre.Core.Algebra.AlgEquiv.Groupoid`) at the abstract `AlgEquiv` level — off the
 heavy double-localized `targetChartLoc`, so no pointwise-`ext` kernel cost — using the base-side
 `chartOverlapTransitionK_trans_symm` (just above) for the middle cancellation. It is exported as the
-concrete named theorem `targetProductOverlapTransition_trans_symm` (just above — needs a raised
-`maxHeartbeats`, since unfolding the concrete transition through the chart trivialization to line it
-up with the abstract statement is a large `whnf`), and on the derived charts `pivotAtlasFibreChart`
+concrete named theorem `targetProductOverlapTransition_trans_symm` (just above — a one-line
+delegation to the abstract round-trip, but its STATEMENT keeps a raised `maxHeartbeats`: elaborating
+the `AlgEquiv.refl`/`.trans` equality synthesizes the `Semiring`/`Algebra` instances of the
+reducible `targetChartLoc`, which `whnf`-reduces the heavy per-pivot trivialization — a property
+of the
+concrete type, not of the delegation), and on the derived charts `pivotAtlasFibreChart`
 as `Algebra.IsZariskiLocallyTrivialAffineProduct.overlapTransition_trans_symm`
 (`Core.FibreZariskiLocalTriviality`). The canonical triple cocycle (P2.f
 `tripleTransition_cocycle`) and the naturality tie of the triple to the further-localized 2-fold
