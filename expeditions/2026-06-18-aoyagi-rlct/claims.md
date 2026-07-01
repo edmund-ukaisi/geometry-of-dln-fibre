@@ -140,6 +140,39 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 reverse raw-source density lower adapter,
+  2026-07-01.** Lean now proves the generic lower-density measure handoff
+  `measure_le_smul_map_restrict_withDensity_of_le_smul_map_restrict_of_ae_le`
+  and the reverse weighted map-reference adapter
+  `weighted_map_ref_le_smul_map_comp_withDensity_comp_of_le_smul_map`
+  in `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean` and the concrete
+  Case 2 theorems
+  `exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple`
+  and
+  `exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  The concrete coordinate-source theorem assumes
+  `rawHaar.restrict rawDetChart <= Cdet • Measure.map Y
+  (passiveSource.restrict V)`, `Cdet < infinity`, and
+  `epsilon <= sourceDensity z` for `baseJ.restrict V`-a.e. `z`, with
+  `epsilon` nonzero and finite.  It concludes finite domination
+  `rawHaar.restrict rawSourceSet <= (Cdet * epsilon^{-1}) • Measure.map rawMap
+  (coordinateSourceMeasure.restrict V)`.  Reproduction, statement card, and
+  review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-reverse-raw-source-density-lower-adapter.md`,
+  `threads/03-block-product-reduction/statement-card-a2-case2-reverse-raw-source-density-lower-adapter.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-reverse-raw-source-density-lower-adapter.md`.
+  Focused warning-clean elaboration, focused module builds, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, direct
+  axiom probes, and xhigh read-only review passed.  The new declarations
+  report only `[propext, Classical.choice, Quot.sound]`.  Nonclaims: the
+  determinant-side reverse domination and source-density lower bound are not
+  proved; no determinant-chart Haar transport, exact raw-Haar pushforward,
+  raw-Haar normalization, source-image coverage, source-rank coverage,
+  original source-prior transport, normal crossings, pole order, or RLCT
+  extraction is claimed.
 - **Current status addendum, Case 2 reverse raw-source domination handoff,
   2026-07-01.** Lean now proves
   `exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap`

@@ -30467,3 +30467,70 @@ read-only review all passed.  The direct axiom probe reported only
 Boundary: this still does not prove the reverse domination.  It shows that
 the downstream finite-integral theorem only needs finite domination, not exact
 raw-pushforward equality.
+
+## 2026-07-01 reverse raw-source density lower adapter
+
+Lean now proves the lower-density handoff needed to convert reverse raw-source
+domination by the globally Jacobian-weighted base measure into reverse
+raw-source domination by the concrete coordinate source measure.
+
+`LocalMeasureHandoff.lean` now has:
+
+```text
+smul_restrict_le_restrict_withDensity_of_ae_le
+measure_le_inv_smul_of_smul_le
+measure_le_smul_of_le_smul_of_smul_le
+measure_le_smul_map_restrict_withDensity_of_le_smul_map_restrict_of_ae_le
+weighted_map_ref_le_smul_map_comp_withDensity_comp_of_le_smul_map
+```
+
+`RetainedPassiveCase2PassiveThetaRawImageHandoff.lean` now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+The concrete result still assumes determinant-side reverse domination
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet • Measure.map Y (passiveSource.restrict V),
+```
+
+and a same-shrink lower bound
+
+```text
+epsilon <= sourceDensity z
+```
+
+for `baseJ.restrict V`-a.e. `z`.  Under `Cdet < infinity`,
+`epsilon != 0`, and `epsilon != infinity`, it proves finite-scalar domination
+of `rawHaar.restrict rawSourceSet` by
+`Measure.map rawMap (coordinateSourceMeasure.restrict V)` with scalar
+`Cdet * epsilon^{-1}`.
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+scripts/sorries
+git diff --check
+```
+
+All passed.  Direct axiom probes for the new generic and concrete declarations
+reported only `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only
+reviewer `Darwin` found no blocking formalisation or mathematical issue; the
+only low API note was that the concrete theorem proves
+`AEMeasurable rawMap (coordinateSourceMeasure.restrict V)` internally but does
+not return it.
+
+Boundary: determinant-chart reverse domination and the source-density lower
+bound remain explicit hypotheses.  This does not prove determinant-chart Haar
+transport, exact raw-Haar pushforward, raw-Haar normalization, source-image
+coverage, source-rank coverage, original source-prior transport, normal
+crossings, pole order, or RLCT extraction.

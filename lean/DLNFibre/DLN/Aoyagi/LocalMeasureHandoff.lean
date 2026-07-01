@@ -345,6 +345,18 @@ theorem withDensity_ofReal_sandwich_of_ae_bounds
       withDensity_mono
         (hupper.mono fun _ hx ↦ ENNReal.ofReal_le_ofReal hx)
 
+/-- A local a.e. lower bound on a density gives scalar domination of the
+unweighted restricted measure by the weighted restricted measure. -/
+theorem smul_restrict_le_restrict_withDensity_of_ae_le
+    {α : Type*} [MeasurableSpace α] {μ : Measure α} {f : α → ℝ≥0∞}
+    {s : Set α} {c : ℝ≥0∞}
+    (hs : MeasurableSet s)
+    (hf : ∀ᵐ x ∂μ.restrict s, c ≤ f x) :
+    c • μ.restrict s ≤ (μ.withDensity f).restrict s := by
+  rw [restrict_withDensity hs]
+  rw [← withDensity_const (μ := μ.restrict s) c]
+  exact withDensity_mono hf
+
 /-- A property that holds a.e. for `μ` also holds a.e. for any measure
 dominated by a scalar multiple of `μ`. -/
 theorem ae_of_measure_le_smul
@@ -368,6 +380,25 @@ theorem measure_eq_inv_smul_of_eq_nnreal_smul
   · simp
   · exact ENNReal.coe_ne_zero.mpr hc
   · exact ENNReal.coe_ne_top
+
+/-- Invert a nonzero finite scalar domination of measures. -/
+theorem measure_le_inv_smul_of_smul_le
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    (hc0 : c ≠ 0) (hctop : c ≠ ∞)
+    (hμ : c • μ ≤ ν) :
+    μ ≤ c⁻¹ • ν := by
+  refine Measure.le_iff.2 ?_
+  intro s _hs
+  have hs_le : c * μ s ≤ ν s := by
+    simpa [Measure.smul_apply] using hμ s
+  calc
+    μ s = c⁻¹ * (c * μ s) := by
+      rw [← mul_assoc, ENNReal.inv_mul_cancel hc0 hctop, one_mul]
+    _ ≤ c⁻¹ * ν s := by
+      simpa [mul_comm, mul_left_comm, mul_assoc] using
+        mul_le_mul_right hs_le c⁻¹
+    _ = (c⁻¹ • ν) s := by
+      simp [Measure.smul_apply, smul_eq_mul]
 
 /-- Finite lower integral transfers to any measure dominated by a finite scalar
 multiple of the original measure. -/
@@ -486,6 +517,57 @@ theorem measure_le_smul_of_le_smul_of_le_smul
     μ ≤ c • ν := hμ
     _ ≤ c • (d • η) := hscale
     _ = (c * d) • η := hassoc
+
+/-- Compose a domination `η ≤ D • μ` with a lower scalar domination
+`c • μ ≤ ν`, paying the inverse scalar `c⁻¹`. -/
+theorem measure_le_smul_of_le_smul_of_smul_le
+    {α : Type*} [MeasurableSpace α] {η μ ν : Measure α} {D c : ℝ≥0∞}
+    (hη : η ≤ D • μ)
+    (hμ : c • μ ≤ ν)
+    (hc0 : c ≠ 0) (hctop : c ≠ ∞) :
+    η ≤ (D * c⁻¹) • ν :=
+  measure_le_smul_of_le_smul_of_le_smul hη
+    (measure_le_inv_smul_of_smul_le hc0 hctop hμ)
+
+/-- If a target measure is dominated by the raw image of a base measure, and
+a density is locally bounded below, then it is dominated by the raw image of
+the corresponding weighted base measure, with the inverse lower-bound scalar.
+
+This is pure measure bookkeeping: the base domination and the lower density
+bound remain explicit hypotheses. -/
+theorem measure_le_smul_map_restrict_withDensity_of_le_smul_map_restrict_of_ae_le
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    {base : Measure α} {target : Measure β} {rawMap : α → β}
+    {density : α → ℝ≥0∞} {V : Set α} {D ε : ℝ≥0∞}
+    (hrawMap :
+      AEMeasurable rawMap ((base.withDensity density).restrict V))
+    (hV : MeasurableSet V)
+    (hbase :
+      target ≤ D • Measure.map rawMap (base.restrict V))
+    (hlower : ∀ᵐ x ∂base.restrict V, ε ≤ density x)
+    (hε0 : ε ≠ 0) (hεtop : ε ≠ ∞) :
+    target ≤
+      (D * ε⁻¹) •
+        Measure.map rawMap ((base.withDensity density).restrict V) := by
+  have hweighted_base :
+      ε • base.restrict V ≤ (base.withDensity density).restrict V :=
+    smul_restrict_le_restrict_withDensity_of_ae_le hV hlower
+  have hmap_weighted :
+      ε • Measure.map rawMap (base.restrict V) ≤
+        Measure.map rawMap ((base.withDensity density).restrict V) := by
+    have hweighted_base_one :
+        ε • base.restrict V ≤
+          (1 : ℝ≥0∞) • (base.withDensity density).restrict V := by
+      simpa using hweighted_base
+    have hmap :
+        Measure.map rawMap (ε • base.restrict V) ≤
+          (1 : ℝ≥0∞) • Measure.map rawMap
+            ((base.withDensity density).restrict V) :=
+      map_le_smul_map_of_le_smul_aemeasurable (c := 1) hrawMap
+        hweighted_base_one
+    simpa [Measure.map_smul] using hmap
+  exact
+    measure_le_smul_of_le_smul_of_smul_le hbase hmap_weighted hε0 hεtop
 
 /-- Left-factor domination of product measures transfers through restriction
 and a map, then composes with a supplied domination of the reference
@@ -635,6 +717,64 @@ theorem map_comp_withDensity_comp_le_smul_of_map_le_smul_of_weighted_map_ref_eq
             hpost_ref_weighted hweighted_dom
     _ = c • targetRef := by
           rw [hpost_ref_map]
+
+/-- Reverse weighted domination transfers through a second map once the
+weighted source-reference pushforward along that second map has been
+identified.
+
+This is pure measure bookkeeping.  The substantive hypothesis is
+`sourceRef ≤ c • Measure.map pre μ`; the theorem weights both sides by the same
+source-side density and then composes with `post`. -/
+theorem weighted_map_ref_le_smul_map_comp_withDensity_comp_of_le_smul_map
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
+    {μ : Measure α} {sourceRef : Measure β} {targetRef : Measure γ}
+    {c : ℝ≥0∞} {pre : α → β} {post : β → γ} {density : β → ℝ≥0∞}
+    (hpre : AEMeasurable pre μ)
+    (hdensity_map_pre : AEMeasurable density (Measure.map pre μ))
+    (hpost_map_pre_weighted :
+      AEMeasurable post ((Measure.map pre μ).withDensity density))
+    (hpre_dom : sourceRef ≤ c • Measure.map pre μ)
+    (hpost_ref_map : Measure.map post (sourceRef.withDensity density) = targetRef) :
+    targetRef ≤ c •
+      Measure.map (fun x ↦ post (pre x))
+        (μ.withDensity (fun x ↦ density (pre x))) := by
+  have hpre_weighted :
+      Measure.map pre (μ.withDensity (fun x ↦ density (pre x))) =
+        (Measure.map pre μ).withDensity density :=
+    measure_map_withDensity_comp_of_aemeasurable hpre hdensity_map_pre
+  have hweighted_dom :
+      sourceRef.withDensity density ≤
+        c • (Measure.map pre μ).withDensity density :=
+    withDensity_le_smul_withDensity_of_le_smul hpre_dom
+  have hpre_weighted_aemeasurable :
+      AEMeasurable pre (μ.withDensity (fun x ↦ density (pre x))) :=
+    hpre.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hpost_map_pre :
+      AEMeasurable post
+        (Measure.map pre (μ.withDensity (fun x ↦ density (pre x)))) := by
+    rw [hpre_weighted]
+    exact hpost_map_pre_weighted
+  have hmap_comp :
+      Measure.map post
+          (Measure.map pre (μ.withDensity (fun x ↦ density (pre x)))) =
+        Measure.map (fun x ↦ post (pre x))
+          (μ.withDensity (fun x ↦ density (pre x))) := by
+    simpa [Function.comp_def] using
+      AEMeasurable.map_map_of_aemeasurable
+        (μ := μ.withDensity (fun x ↦ density (pre x)))
+        (g := post) (f := pre) hpost_map_pre hpre_weighted_aemeasurable
+  calc
+    targetRef = Measure.map post (sourceRef.withDensity density) := by
+          rw [hpost_ref_map]
+    _ ≤ c • Measure.map post ((Measure.map pre μ).withDensity density) :=
+          map_le_smul_map_of_le_smul_aemeasurable
+            hpost_map_pre_weighted hweighted_dom
+    _ = c • Measure.map post
+          (Measure.map pre (μ.withDensity (fun x ↦ density (pre x)))) := by
+          rw [hpre_weighted]
+    _ = c • Measure.map (fun x ↦ post (pre x))
+          (μ.withDensity (fun x ↦ density (pre x))) := by
+          rw [hmap_comp]
 
 /-- Readback domination transfers from a source reference measure to any
 measure dominated by that source reference. -/

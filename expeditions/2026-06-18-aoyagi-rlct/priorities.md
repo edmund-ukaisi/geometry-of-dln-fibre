@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, Case 2 reverse raw-source density lower adapter
+
+Lean now proves the conditional reverse raw-source density-lower handoff:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveTheta_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+The first theorem converts explicit determinant-side reverse domination into
+reverse raw-source domination by the `baseJ` raw image.  The second theorem
+adds an explicit same-shrink lower bound for `sourceDensity` and converts this
+to finite domination by the coordinate source measure
+`coordinateSourceMeasure = baseJ.withDensity sourceDensity`, with scalar
+`Cdet * epsilon^{-1}`.
+
+This is still conditional.  The determinant-side reverse domination and the
+source-density lower bound remain the next substantive mathematical inputs;
+Aoyagi pp. 10-13 do not by themselves prove them.  Focused elaboration,
+focused local module builds, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, direct axiom probes, and xhigh
+review passed.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image coverage, source-rank coverage, original
+source-prior transport, normal crossings, pole order, or RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, Case 2 reverse raw-source domination handoff
 
 Lean now proves the conditional handoff:
