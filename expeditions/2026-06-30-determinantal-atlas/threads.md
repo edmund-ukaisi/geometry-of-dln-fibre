@@ -53,7 +53,24 @@ Phase-1 headlines (`rankStratumCodim_add_rankStratumDim_eq` even pure `Nat`), on
 |------|------|----------|--------|-------|
 | **P2.h** | formaliser | p2h-product | ✅ DONE + PUSHED `e30952ff` | (3) **STRENGTHEN-A** [substantive]: `AtlasFibreChart` drops `extends`/`M`, stores only `chartElt`+`fibreModel`, DERIVES `toAtlasChart` with `trivK := fibreModel.triv.restrictScalars k` — product triv is the SINGLE source of truth, tie is DEFINITIONAL (`trivK_eq_product = rfl`). Corollary `overlapTransition_isProduct` (cocycle is genuinely of the over-base PRODUCT). DLN instance discharges structurally (rfl). (1-2) all stale-doc sites swept (`AtlasTransition` Scope+`tripleElt`, `FibreTargetOverlap`, `DLNFibre.lean` comments, `FibreZariskiLocalTriviality`, `LocalTriviality`) → only GLOBAL gluing/π/Flat-π (R1) remains marked not-built. Codex verdict STRENGTHEN-A. **Controller fidelity PASS + independent re-gate: green 3834, sorries 0, `#print axioms` standard-3 on product corollary + witness + BOTH DLN payoffs (no regression).** |
 
-## PR #21 re-review — RESOLVED (all 3 items)
+## PR #21 re-review — FOLLOW-UP (10:06Z two-item review, at head b1902e79)
+Controller mis-targeted the first consolidated reply at the 09:02Z three-item review; the 10:06Z
+follow-up raised TWO items still open. (→ lesson DA4: fetch the LATEST reviews before replying "resolved".)
+- **Item A (stale product-API docs) — FIXED `a58752ce`** (controller, doc-only): LocalTriviality chart-field
+  doc + `overlapTransition_trans_symm` docstring (the now-false "DECOUPLED / NOT an over-base-product
+  cocycle" — invalidated by the P2.h tie); AtlasTransition `AtlasFibreChart` module bullet (stale
+  `extends`/`trivK_eq`-field wording). green 3834, no stale tokens remain.
+- **Item B (named `targetProductOverlapTransition_trans_symm`) — WALL, surfaced to operator.** The DLN
+  transition defs (`overlapTriv`/`targetChartLoc`/`targetProductOverlapTransition`) are CONCRETE (via
+  `perPivotLocalTrivializationDatum.trivialization`), not routed through the abstract atlas; the abstract
+  round-trip works generically over opaque `C.trivK` but at the concrete `pivotAtlasChart` `trivK` reduces
+  to the trivialization monster → both delegation and direct groupoid proof `whnf`-timeout (200000).
+  Reverted; honest prose note added (predicate-level `overlapTransition_trans_symm` on `pivotAtlasFibreChart`
+  is the green exported round-trip form). Options for a concrete named theorem: (i) `maxHeartbeats` bump
+  (historically used here; slow, discouraged), (ii) mark the concrete trivialization `irreducible` (may break
+  flatness/product proofs), (iii) accept predicate-level export + note. Awaiting operator call.
+
+## PR #21 re-review — earlier three items (09:02Z) RESOLVED (P2.h)
 Strengthen (item 3), stale-doc sweep (items 1-2), narrowed cocycle prose (item 2) all landed `e30952ff`; controller-verified. The capstone predicate `IsZariskiLocallyTrivialAffineProduct` now earns its name: the transitions consume the over-base PRODUCT trivialization, so pairwise inverse + triple cocycle are genuine product-atlas coherence. **#21 ready for operator merge.**
 
 ## Phase 2 — atlas coherence COMPLETE (P2.f + P2.g)
