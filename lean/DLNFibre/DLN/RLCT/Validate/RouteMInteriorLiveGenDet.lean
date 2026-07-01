@@ -1434,6 +1434,31 @@ theorem schurFrameGenMap_fderiv_collapse (M : Fin (L + 1) → ℕ) (ha : StructA
       (slotReadGen M ha k y₀).2.1) (slotReadGen M ha k d) = _
   rfl
 
+/-- **The input reconciliation** `slotReadGen k (eInGen.symm w) = frameToSchurIncGen k (stairProj k w).1`
+— the reader tuple at slot `k` of the flat vector `eInGen.symm w` IS the `frameToSchurIncGen` reshape of
+`w`'s slot-`k` frame component. Bridges the collapse's `slotReadGen` input to `genF`'s `frameToSchurIncGen`
+convention: each reader (`readK/N/X/E`) reads the frame slot via `eInGen_symm_frame_read`, matching the
+corresponding `frameToSchurIncGen` role-block (`flatMatLEGen`/`frameSplitEquiv.symm`) by `rfl`. With
+`w = stairIncl s v` this gives, via `stairProj_stairIncl_self`/`_ne`, the slot-`s` recovery /
+off-slot vanishing the block facts consume. -/
+theorem slotReadGen_eInGen_symm (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (w : StairProd (genV M) L) (k : Fin L) :
+    slotReadGen M ha k ((eInGen M ha).symm w)
+      = frameToSchurIncGen M ha k (stairProj (genV M) L k.val w).1 := by
+  refine Prod.ext ?_ (Prod.ext ?_ (Prod.ext ?_ ?_))
+  · ext i j
+    show readK M (tach M) ha ((eInGen M ha).symm w) k i j = _
+    rw [readK, eInGen_symm_frame_read]; rfl
+  · ext i j
+    show readN M (tach M) ha ((eInGen M ha).symm w) k i j = _
+    rw [readN, eInGen_symm_frame_read]; rfl
+  · ext i j
+    show readX M (tach M) ha ((eInGen M ha).symm w) k i j = _
+    rw [readX, eInGen_symm_frame_read]; rfl
+  · ext i j
+    show readE M (tach M) ha ((eInGen M ha).symm w) k i j = _
+    rw [readE, eInGen_symm_frame_read]; rfl
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
