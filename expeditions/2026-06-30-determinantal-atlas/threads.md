@@ -65,9 +65,16 @@ follow-up raised TWO items still open. (→ lesson DA4: fetch the LATEST reviews
   `perPivotLocalTrivializationDatum.trivialization`), not routed through the abstract atlas; the abstract
   round-trip works generically over opaque `C.trivK` but at the concrete `pivotAtlasChart` `trivK` reduces
   to the trivialization monster → both delegation and direct groupoid proof `whnf`-timeout (200000).
-  **RESOLVED** (operator: try the bump): a TARGETED `set_option maxHeartbeats 800000 in` on the delegation
-  COMPILES, axiom-clean — `targetProductOverlapTransition_trans_symm` now exported. Full green 3834. Cost:
-  per-declaration ceiling only (no project-wide tax), ~40s extra when `FibreTargetOverlap` recompiles. (→ DA5.)
+  **Item B resolution path:** (1) targeted `maxHeartbeats 800000` bump COMPILED the delegation (`49f1f0ac`,
+  axiom-clean) — but it's a fragility smell + walks back P2.b's cleanup. (2) **P2.j (chosen): the clean
+  refactor** — reroute the DLN transition defs (`targetChartLoc`/`overlapTriv`/`targetProductOverlapTransition`)
+  to LITERALLY delegate to the abstract `AtlasChart.…` at `pivotAtlasChart`, so the named theorem compiles by a
+  one-step unfold with NO bump + single source of truth (removes the concrete/abstract duplication). Dispatched
+  `p2j-reroute`, guard-first (downstream P2.f/g + FibreZariski defeq-preserved but build-swept). (→ DA5.)
+
+## Ops note (operator, 2026-07-01)
+Posting PR **comments** is now controller-discretion (standing) — no per-comment gate. Opening/merging PRs +
+dev→master promotion remain operator-gated. (Refinement to branch-discipline; promote to policy at close.)
 
 ## PR #21 re-review — earlier three items (09:02Z) RESOLVED (P2.h)
 Strengthen (item 3), stale-doc sweep (items 1-2), narrowed cocycle prose (item 2) all landed `e30952ff`; controller-verified. The capstone predicate `IsZariskiLocallyTrivialAffineProduct` now earns its name: the transitions consume the over-base PRODUCT trivialization, so pairwise inverse + triple cocycle are genuine product-atlas coherence. **#21 ready for operator merge.**
