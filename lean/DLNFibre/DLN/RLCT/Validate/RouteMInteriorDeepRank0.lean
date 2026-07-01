@@ -691,4 +691,67 @@ theorem eDeepRank0_abs_det (ha : StructAdm M (tach M)) (hdr0 : Text M (tach M) 2
   eDeepRank0_abs_det_of_hBdet ha hr hc hp1 hp2 u
     (BchartE_abs_det_eq_one ha hdr0 (pivotBlowupOn (activeM M ha) (eBlockPivot ha hr hc) u))
 
+/-! ## Item 7 — injectivity (the cov's `hinj`)
+
+At `deepRank = 0` the boundary-0 K-core is `0×0`, so `slotReadV0`'s K-det `= 1 ≠ 0` UNCONDITIONALLY;
+hence the banked V0/V1 recovery makes `BparamsLeaf` (`= BparamsE`) GLOBALLY injective, and the map
+factors as `eDeepRank0Phi = BchartE ∘ pbo` with `pbo` injective off the pivot-zero plane. -/
+
+/-- **The injectivity domain** — `{u | u eBlockPivot ≠ 0 ∧ ∀ j ∈ univ, u j ≠ 0}` (all coords nonzero),
+matching the cov's `E = univ`. -/
+def eDeepRank0InjDom (ha : StructAdm M (tach M))
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2) :
+    Set (Fin (routeMAmbient M) → ℝ) :=
+  {u | u (eBlockPivot ha hr hc) ≠ 0 ∧ ∀ j ∈ (Finset.univ : Finset (Fin (routeMAmbient M))), u j ≠ 0}
+
+/-- At `deepRank = 0` the boundary-0 K-core `readK z ⟨0⟩` has `det = 1 ≠ 0` UNCONDITIONALLY (`0×0`). -/
+theorem slotReadV0_K_det_ne_zero_of_hdr0 (ha : StructAdm M (tach M)) (hdr0 : Text M (tach M) 2 = 0)
+    (z : Fin (routeMAmbient M) → ℝ) :
+    (slotReadV0 ha z).1.det ≠ 0 := by
+  show (Matrix.of (readK M (tach M) ha z ⟨0, by decide⟩)).det ≠ 0
+  rw [readK0_det_one_of_hdr0 ha hdr0 z]; exact one_ne_zero
+
+/-- **`BchartE` is globally injective at `deepRank = 0`** — via `BchartE = BchartLeaf` + the banked V0/V1
+recovery (unconditional K-det `= 1`). -/
+theorem BchartE_injective_of_hdr0 (ha : StructAdm M (tach M)) (hdr0 : Text M (tach M) 2 = 0) :
+    Function.Injective (BchartE ha) := by
+  rw [BchartE_eq_BchartLeaf_of_hdr0 ha hdr0]
+  intro y y' heq
+  have heqP : BparamsLeaf ha y = BparamsLeaf ha y' :=
+    (paramsEquivFlat M).injective
+      (heq : paramsEquivFlat M (BparamsLeaf ha y) = paramsEquivFlat M (BparamsLeaf ha y'))
+  have h0 : BparamsLeaf ha y 0 = BparamsLeaf ha y' 0 := congrFun heqP 0
+  have h1 : BparamsLeaf ha y 1 = BparamsLeaf ha y' 1 := congrFun heqP 1
+  have hK : (slotReadV0 ha y).1.det ≠ 0 := slotReadV0_K_det_ne_zero_of_hdr0 ha hdr0 y
+  have hV0 : slotReadV0 ha y = slotReadV0 ha y' := slotReadV0_eq_of_BparamsLeaf0_eq ha hK h0
+  have hN : Nfun ha y = Nfun ha y' := by rw [Nfun_eq_slotReadV0, Nfun_eq_slotReadV0, hV0]
+  obtain ⟨hW, hLeaf⟩ := Wfun_Lfun_eq_of_BparamsLeaf1_eq ha hN h1
+  refine (eIn ha).injective ?_
+  refine Prod.ext ?_ (Prod.ext ?_ ?_)
+  · rw [eIn_projV0, eIn_projV0, hV0]
+  · rw [← dWdC_eq_eInV1, ← dWdC_eq_eInV1]
+    refine Prod.ext ?_ ?_
+    · change (matrixReaderCLM (fun i j => readW0_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => readW0_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hW : Wfun ha y = Wfun ha y')
+    · change (matrixReaderCLM (fun i j => leaf_idx ha i j)) y
+        = (matrixReaderCLM (fun i j => leaf_idx ha i j)) y'
+      simpa [matrixReaderCLM] using (hLeaf : Lfun ha y = Lfun ha y')
+  · rfl
+
+/-- **injOn** — `eDeepRank0Phi` injective on `eDeepRank0InjDom` (the cov's `hinj`). Factor
+`eDeepRank0Phi = BchartE ∘ pbo` (`hmap_E`); `pbo` injective off `{u_p = 0}` (banked, the domain
+excludes it); `BchartE` globally injective (`BchartE_injective_of_hdr0`). -/
+theorem eDeepRank0_injOn (ha : StructAdm M (tach M)) (hdr0 : Text M (tach M) 2 = 0)
+    (hr : 0 < Text M (tach M) 1 - Text M (tach M) 2) (hc : 0 < Wext M 1 - Text M (tach M) 2)
+    (hp1 : Text M (tach M) (1 + 1) ≤ Text M (tach M) 1) (hp2 : Text M (tach M) (1 + 1) ≤ Wext M 1) :
+    Set.InjOn (eDeepRank0Phi ha hr hc hp1 hp2) (eDeepRank0InjDom ha hr hc) := by
+  set p₀ := eBlockPivot ha hr hc with hp₀
+  rw [hmap_E ha hr hc hp1 hp2]
+  have hpbo_inj : Set.InjOn (pivotBlowupOn (activeM M ha) p₀) (eDeepRank0InjDom ha hr hc) := by
+    have hsub : eDeepRank0InjDom ha hr hc
+        ⊆ eDeepRank0InjDom ha hr hc \ {x | x p₀ = 0} := fun u hu => ⟨hu, hu.1⟩
+    exact (pivotBlowupOn_injOn (activeM M ha) p₀ _).mono hsub
+  exact (BchartE_injective_of_hdr0 ha hdr0).injOn.comp hpbo_inj (Set.mapsTo_image _ _)
+
 end DLNFibre.DLN.RLCT
