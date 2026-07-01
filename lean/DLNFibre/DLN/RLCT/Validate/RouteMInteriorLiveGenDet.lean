@@ -1386,6 +1386,54 @@ theorem slotReadGen_fderiv_apply (M : Fin (L + 1) → ℕ) (ha : StructAdm M (ta
     fderiv ℝ (fun y => slotReadGen M ha k y) y₀ d = slotReadGen M ha k d := by
   rw [(slotReadGen_hasFDerivAt M ha k y₀).fderiv]; rfl
 
+/-- **The per-slot Schur-frame fderiv collapse** — the general-`L` lift of
+`RouteMProjV0Gate.layer0SchurMap_fderiv_collapse`. The Schur-frame block map `y ↦ flatBlock
+(schurFrameMap (slotReadGen k y))` (= `Cgen (k+1)` at an interior boundary,
+`Cgen_live_interior_eq_schurFrameProd` + `flatBlock_schurFrameMap_eq_gen`) has fderiv whose
+`flatBlockLE`-un-flattened value is the Schur-frame differential `schurFrameDeriv (readX)(readK)(readN)`
+applied to the reader tuple of the direction `d`. Chain rule over the linear `slotReadGen`
+(`slotReadGen_hasFDerivAt`), the banked `schurFrameMap_hasFDerivAt`, and the linear `flatBlock`
+(`flatBlock_differentiableAt`); the flatten cancels by `flatBlockLE_symm_fderiv_flatBlock`, the Schur
+core is `schurFrameD z = schurFrameDeriv z.X z.K z.N` at `z = slotReadGen y₀`. -/
+theorem schurFrameGenMap_fderiv_collapse (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hr : Text M (tach M) (k.val + 2) + (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Text M (tach M) (k.val + 1))
+    (hc : Text M (tach M) (k.val + 2) + (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+        = Wext M (k.val + 1))
+    (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    (flatBlockLE hr hc).symm
+        (fderiv ℝ (fun y => flatBlock hr hc (schurFrameMap (slotReadGen M ha k y))) y₀ d)
+      = schurFrameDeriv (readX M (tach M) ha y₀ k) (readK M (tach M) ha y₀ k)
+          (readN M (tach M) ha y₀ k) (slotReadGen M ha k d) := by
+  have h1 : HasFDerivAt (fun y => slotReadGen M ha k y)
+      (fderiv ℝ (fun y => slotReadGen M ha k y) y₀) y₀ :=
+    (slotReadGen_hasFDerivAt M ha k y₀).differentiableAt.hasFDerivAt
+  have h2 : HasFDerivAt schurFrameMap (schurFrameD (slotReadGen M ha k y₀)) (slotReadGen M ha k y₀) :=
+    schurFrameMap_hasFDerivAt _
+  have h3 : HasFDerivAt (fun z => flatBlock hr hc z)
+      (fderiv ℝ (fun z => flatBlock hr hc z) (schurFrameMap (slotReadGen M ha k y₀)))
+      (schurFrameMap (slotReadGen M ha k y₀)) :=
+    (flatBlock_differentiableAt hr hc _).hasFDerivAt
+  have hcomp := HasFDerivAt.comp y₀ h3 (HasFDerivAt.comp y₀ h2 h1)
+  have hfd : fderiv ℝ (fun y => flatBlock hr hc (schurFrameMap (slotReadGen M ha k y))) y₀
+      = (fderiv ℝ (fun z => flatBlock hr hc z) (schurFrameMap (slotReadGen M ha k y₀))).comp
+          ((schurFrameD (slotReadGen M ha k y₀)).comp
+            (fderiv ℝ (fun y => slotReadGen M ha k y) y₀)) :=
+    hcomp.fderiv
+  rw [hfd]
+  simp only [ContinuousLinearMap.comp_apply]
+  rw [show (flatBlockLE hr hc).symm
+        ((fderiv ℝ (fun z => flatBlock hr hc z) (schurFrameMap (slotReadGen M ha k y₀)))
+          ((schurFrameD (slotReadGen M ha k y₀)) ((fderiv ℝ (fun y => slotReadGen M ha k y) y₀) d)))
+      = (schurFrameD (slotReadGen M ha k y₀))
+          ((fderiv ℝ (fun y => slotReadGen M ha k y) y₀) d) from by
+    have h := flatBlockLE_symm_fderiv_flatBlock hr hc (schurFrameMap (slotReadGen M ha k y₀))
+    exact congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) h) _]
+  rw [slotReadGen_fderiv_apply, schurFrameD]
+  show (schurFrameDeriv (slotReadGen M ha k y₀).2.2.1 (slotReadGen M ha k y₀).1
+      (slotReadGen M ha k y₀).2.1) (slotReadGen M ha k d) = _
+  rfl
+
 /-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
 head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
 `RouteMHDtotEihd.eihdc_free`. -/
