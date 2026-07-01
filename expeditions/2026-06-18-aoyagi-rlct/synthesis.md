@@ -12,6 +12,63 @@ environment policy even with user authorization, because staging writes the
 shared worktree git index outside the sandbox.  Do not route around this
 rejection; retry only if the execution policy changes.
 
+## Case 2 Same-Shrink Reverse Raw-Source/Source-Chart Package - 2026-07-01
+
+Lean now proves:
+
+```text
+exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSourceMeasure_reverse_domination_package_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+This is the same-shrink repair identified by the xhigh scouts.  The proof
+chooses `Vsrc` for source-chart/readback facts, `Vtwo subset Vsrc` for the
+raw-order/source-chart two-stage identity, and `V subset Vtwo` for the reverse
+raw-source density lower theorem.  It returns this final `V` with the
+source-chart facts restricted from `Vsrc`, the two-stage identity restricted
+by applying it to `sourceMeasure.restrict V`, and the raw domination on that
+same `V`.
+
+The determinant-side reverse domination and the lower bound for
+`sourceDensity` remain explicit hypotheses on the returned `V`:
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (passiveSource.restrict V)
+
+epsilon <= sourceDensity z
+```
+
+for `baseJ.restrict V`-a.e. `z`, with `Cdet < infinity` and `epsilon`
+nonzero and finite.  The conclusion supplies finite domination by
+`Measure.map rawMap (coordinateSourceMeasure.restrict V)` with scalar
+`Cdet * epsilon^{-1}`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-same-shrink-raw-domination-source-chart-package.md
+threads/03-block-product-reduction/statement-card-a2-case2-same-shrink-raw-domination-source-chart-package.md
+threads/03-block-product-reduction/review-a2-case2-same-shrink-raw-domination-source-chart-package.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only reviewer `Bohr` passed the theorem-shape and boundary audit.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image or source-rank coverage, original
+source-prior transport, normal crossings, pole order, or RLCT extraction.
+
 ## Case 2 Reverse Raw-Source Domination Handoff - 2026-07-01
 
 Lean now proves two new conditional bridges:

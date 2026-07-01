@@ -140,6 +140,31 @@ No such claim is formalisation-ready until both fields are filled.
   factors and a reduced singular product, with RLCT computation reducible to the
   reduced problem plus regular variables.
 - **Tier.** Established in Aoyagi; to be proved except for analytic extraction.
+- **Current status addendum, Case 2 same-shrink reverse raw-source/source-chart
+  package, 2026-07-01.** Lean now proves
+  `exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSourceMeasure_reverse_domination_package_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+  It returns one open `V subset G` carrying source-chart readback,
+  injectivity, continuity, measurable image, image containment in the p.13
+  source set, one-stage and two-stage raw-order/source-chart measure
+  identities, and the conditional reverse raw-source domination by
+  `Measure.map rawMap (coordinateSourceMeasure.restrict V)`.  Reproduction
+  statement card, and review are at
+  `threads/03-block-product-reduction/reproduction-a2-case2-same-shrink-raw-domination-source-chart-package.md`
+  `threads/03-block-product-reduction/statement-card-a2-case2-same-shrink-raw-domination-source-chart-package.md`,
+  and
+  `threads/03-block-product-reduction/review-a2-case2-same-shrink-raw-domination-source-chart-package.md`.
+  Focused elaboration, focused module build, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, and direct theorem axiom probe
+  passed; xhigh read-only reviewer `Bohr` also passed the theorem-shape and
+  boundary audit.  The theorem reports only
+  `[propext, Classical.choice, Quot.sound]`.  Nonclaims: the determinant-side
+  reverse domination and source-density lower bound remain hypotheses; no
+  determinant-chart Haar transport, exact raw-Haar pushforward, raw-Haar
+  normalization, source-image coverage, source-rank coverage, original
+  source-prior transport, normal crossings, pole order, or RLCT extraction is
+  claimed.
 - **Current status addendum, Case 2 reverse raw-source density lower adapter,
   2026-07-01.** Lean now proves the generic lower-density measure handoff
   `measure_le_smul_map_restrict_withDensity_of_le_smul_map_restrict_of_ae_le`

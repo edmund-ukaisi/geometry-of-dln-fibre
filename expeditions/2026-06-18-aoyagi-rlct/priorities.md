@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, Case 2 same-shrink reverse raw-source/source-chart package
+
+Lean now proves the same-shrink package:
+
+```text
+exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSourceMeasure_reverse_domination_package_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+The theorem chooses one open `V subset G` that simultaneously carries the
+source-chart readback, injectivity, continuity, measurable image,
+`sourceChart '' V subset p13SourceSet`, the one-stage and two-stage raw-order
+pushforward identities, and the conditional reverse raw-source domination
+
+```text
+rawHaar.restrict rawSourceSet
+  <= (Cdet * epsilon^{-1}) *
+     Measure.map rawMap (coordinateSourceMeasure.restrict V).
+```
+
+The determinant-side reverse domination
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (passiveSource.restrict V)
+```
+
+and the lower bound for `sourceDensity` on `baseJ.restrict V` remain explicit
+same-shrink hypotheses.  This closes the previous packaging risk where a
+downstream finite-integral wrapper could accidentally combine source-chart
+facts from one existential shrink with raw domination from another.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct
+theorem axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Next priority: use this package to build the honest determinant-domination and
+source-density-lower finite-integral wrapper, still keeping those two
+hypotheses explicit.  Do not claim determinant-chart Haar transport, exact
+raw-Haar pushforward, source coverage, normal crossings, pole order, or RLCT
+extraction from this package.
+
 ## Latest controller decision - 2026-07-01, Case 2 reverse raw-source density lower adapter
 
 Lean now proves the conditional reverse raw-source density-lower handoff:
