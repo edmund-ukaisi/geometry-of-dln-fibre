@@ -78,14 +78,18 @@ DONE (sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]`):
   f T → T = stairMap V n f (stairCouplingOf T)`. Reduces `eihd_hD_gen` to per-boundary block facts.
 * `reindexLs_BparamsLeafGen`; `hasFDerivAt_readN/_readX/_readW`; `det_symm_conj_toLinearMap`.
 
+BANKED sorry-free (Route-B bricks, 2026-07-01 — the hard cores):
+* `packRowSplitGen` — per-layer row-split `Matrix (Wext s)(Wext s+1) ≃ₗ kept_s × liftblock_s`.
+* `sigmaGather` — the OFF-BY-ONE lift Sigma-bijection `(Σ k, Fin(blk k)) ≃ (Σ k, Fin(lift k))` (the
+  irreducible combinatorial core), via `Fin.cases`/`Fin.lastCases`.
+* `gatherBlk_zero`/`gatherLift_last`/`gatherShift` — its 3 hyps at the actual DLN widths.
+
 REMAINING (4 sorries, the corrected staggered-pack track — ROUTE B, Codex `high` verdict 2026-07-01):
-* `packStairGen : Params M ≃ₗ StairProd genV L` — the staggered pack (Route B, ~120–160 LoC):
-  (1) `piCongrRight` per-layer row-split `Matrix (Wext s)(Wext s+1) ≃ₗ kept_s × lift_s` (PROBE-CLEAN:
-  `reindexLinearEquiv finSumFinEquiv.symm ≫ ofLinearEquiv.symm ≫ sumArrowLequivProdArrow ≫
-  (ofLinearEquiv.prodCongr ofLinearEquiv)`); (2) the OFF-BY-ONE GATHER (lift `s ↦ s+1` via
-  `LinearEquiv.piCongrLeft'` + the two 0-dim padded ends `lift 0 = 0`, `genLift (L−1) = 0` — the
-  irreducible combinatorial core); (3) `piToStair`. This REPLACES the Route-A `outIdxToFlatIdx` index
-  bijection (Codex: 200+ LoC Sigma bookkeeping — rejected).
+* `packStairGen : Params M ≃ₗ StairProd genV L` — now PURE ASSEMBLY of the banked bricks (NO new math):
+  `piCongrRight packRowSplitGen` → `flatMatLEGen` per block → `funCongrLeft sigmaGather` (hyps via
+  `gatherBlk_zero`/`gatherLift_last`/`gatherShift`, `L = (L−1)+1` reindex) on the lift flat index →
+  recombine frame⊕gathered-lift → `piToStair`. ~40–80 LoC composition (+ `M s.castSucc = Wext s` recast,
+  proven).
 * `eihdOutGen := packStairGen ∘ paramsEquivFlatLinear.symm` (thin — reuses the banked
   `paramsEquivFlatLinear` for flat↔Params, `routeMAmbient = flatDim` by `finCongr`).
 * `eihd_hreg_gen` — `|det (eihdOutGen.symm ∘ eInGen)| = 1`: the slot↔staggered-layer reindex is a
@@ -431,6 +435,77 @@ noncomputable def packRowSplitGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (t
       (Fin (Wext M s.val - Text M (tach M) (s.val + 1))) ℝ (Fin (Wext M (s.val + 1)) → ℝ)) ≪≫ₗ
     ((Matrix.ofLinearEquiv ℝ).prodCongr (Matrix.ofLinearEquiv ℝ))
 
+/-- **Pi-of-product split** `(∀ i, A i × B i) ≃ₗ (∀ i, A i) × (∀ i, B i)` — the `LinearEquiv` mirror
+of `Equiv.arrowProdEquivProdArrow` (Mathlib has only the `Equiv`/`MeasurableEquiv` forms). Separates
+the frame-Pi from the lift-Pi after the per-layer `packRowSplitGen` split, so the lift-Pi alone feeds
+the `sigmaGather` reindex. Reusable Route-B assembly brick. -/
+def piProdSplit {ι : Type} (A B : ι → Type)
+    [∀ i, AddCommGroup (A i)] [∀ i, Module ℝ (A i)]
+    [∀ i, AddCommGroup (B i)] [∀ i, Module ℝ (B i)] :
+    ((i : ι) → A i × B i) ≃ₗ[ℝ] ((i : ι) → A i) × ((i : ι) → B i) where
+  toFun f := (fun i => (f i).1, fun i => (f i).2)
+  invFun p := fun i => (p.1 i, p.2 i)
+  map_add' f g := rfl
+  map_smul' c f := rfl
+  left_inv f := by funext i; rfl
+  right_inv p := rfl
+
+/-! ### Route-B brick 2: the off-by-one lift Sigma-gather (the combinatorial core) -/
+
+/-- **The off-by-one Sigma-gather** — for two width families `blk lift : Fin (n+1) → ℕ` with
+`blk 0 = 0`, `lift (last) = 0`, and `blk i.succ = lift i.castSucc` (the shift identity), the flat
+lift index of `Params` (`Σ k, Fin (blk k)`) reindexes bijectively to the `genV` lift index
+(`Σ k, Fin (lift k)`) via `k ↦ k−1` (the nonzero part; the two `0`-dim ends `blk 0`, `lift last`
+cancel). The irreducible combinatorial core of the staggered pack (`Fin.cases`/`Fin.lastCases` on the
+boundary, closed by `Fin.cases_succ`/`Fin.lastCases_castSucc`). Sorry-free. -/
+def sigmaGather (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) :
+    (Σ k : Fin (n + 1), Fin (blk k)) ≃ (Σ k : Fin (n + 1), Fin (lift k)) where
+  toFun := fun ⟨k, i⟩ => by
+    refine Fin.cases ?_ ?_ k i
+    · intro i0; rw [h0] at i0; exact i0.elim0
+    · intro j i; exact ⟨j.castSucc, Fin.cast (hshift j) i⟩
+  invFun := fun ⟨k, i⟩ => by
+    refine Fin.lastCases ?_ ?_ k i
+    · intro ilast; rw [hlast] at ilast; exact ilast.elim0
+    · intro j i; exact ⟨j.succ, Fin.cast (hshift j).symm i⟩
+  left_inv := by
+    rintro ⟨k, i⟩
+    refine Fin.cases ?_ ?_ k i
+    · intro i0; rw [h0] at i0; exact i0.elim0
+    · intro j i
+      simp only [Fin.cases_succ, Fin.lastCases_castSucc, Fin.cast_cast, Fin.cast_eq_self]
+  right_inv := by
+    rintro ⟨k, i⟩
+    refine Fin.lastCases ?_ ?_ k i
+    · intro ilast; rw [hlast] at ilast; exact ilast.elim0
+    · intro j i
+      dsimp only
+      rw [Fin.lastCases_castSucc]
+      simp only [Fin.cases_succ, Fin.cast_cast, Fin.cast_eq_self]
+
+/-- `sigmaGather` hyp `blk 0 = 0`: at boundary `0` the lift rows `Wext 0 − Text 1 = 0` (`Text 1 =
+tDesc 0 = M 0 = Wext 0`, `ha.h0`). -/
+theorem gatherBlk_zero (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    (Wext M 0 - Text M (tach M) (0 + 1)) * Wext M (0 + 1) = 0 := by
+  have h : Text M (tach M) (0 + 1) = Wext M 0 := by
+    rw [show Wext M 0 = M 0 from by rw [Wext]; simp]
+    have := ha.h0; rw [tDesc_apply] at this; exact this
+  rw [h, Nat.sub_self, Nat.zero_mul]
+
+/-- `sigmaGather` hyp `lift (last) = 0`: the leaf boundary `L−1` has `liftDim = 0`. -/
+theorem gatherLift_last (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
+    liftDim M (tDesc M (tach M)) (L - 1) = 0 := by
+  have hL := ha.hL; unfold liftDim; rw [if_neg (by omega)]
+
+/-- `sigmaGather` hyp `blk (i+1) = lift i` (the shift identity): layer `i+1`'s lift rows =
+`genV` slot `i`'s lift. -/
+theorem gatherShift (M : Fin (L + 1) → ℕ) (i : ℕ) (hi : i < L - 1) :
+    (Wext M (i + 1) - Text M (tach M) (i + 1 + 1)) * Wext M (i + 1 + 1)
+      = liftDim M (tDesc M (tach M)) i := by
+  unfold liftDim; rw [if_pos (by omega : i + 1 < L)]; rfl
+
 /-- **The staggered pack** `packStairGen : Params M ≃ₗ StairProd genV L` — the CORRECT Params-layer →
 staircase reshape. ROUTE B (Codex `high` verdict 2026-07-01: cleaner than the Route-A `ChartIdx ≃ FlatIdx`
 index bijection, ~120–160 LoC): (1) `piCongrRight` split each layer into `kept_s × lift_s` (probe-clean
@@ -441,8 +516,14 @@ row-split above); (2) the OFF-BY-ONE GATHER — reindex the lift Pi `s ↦ s+1` 
 the row-split + the gather (the gather is the irreducible combinatorial core, per Codex). -/
 def packStairGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     Params M ≃ₗ[ℝ] StairProd (genV M) L :=
-  -- MISSING (Route B): piCongrRight (per-layer row-split) ≫ off-by-one lift gather (piCongrLeft' + 0-dim
-  -- padding) ≫ piToStair. Row-split probe-clean; gather = the hard core.
+  -- REMAINING: pure ASSEMBLY of banked bricks (all sorry-free above): (1) `piCongrRight
+  -- packRowSplitGen` splits each layer → `∀ s, kept_s × liftblock_s`; (2) `flatMatLEGen` flattens
+  -- kept_s → frame (schurDim s) and liftblock_s → its flat; (3) `sigmaGather (L−1) blk lift` (with
+  -- `gatherBlk_zero`/`gatherLift_last`/`gatherShift` discharging its 3 hyps) `funCongrLeft`-reindexes
+  -- the lift flat index to the `genV` lift slots; (4) recombine frame⊕gathered-lift per slot →
+  -- `∀ k, genV k`; (5) `piToStair (genV M) L`. Needs the `L = (L−1)+1` reindex + the `M s.castSucc =
+  -- Wext s` Params recast (both proven). ~40–80 LoC composition — NO new math (the combinatorial core
+  -- `sigmaGather` + row-split `packRowSplitGen` are DONE).
   sorry
 
 /-- **The staggered output pack** `eihdOutGen : (Fin (routeMAmbient M) → ℝ) ≃ₗ StairProd genV L` — the
