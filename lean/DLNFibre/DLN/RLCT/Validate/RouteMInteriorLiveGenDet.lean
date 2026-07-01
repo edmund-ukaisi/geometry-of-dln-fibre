@@ -1528,60 +1528,9 @@ theorem readW_vanish (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (s j 
   rw [readW_eq_readWslot, readWslot, eInGen_symm_lift_read,
     stairProj_stairIncl_ne (genV M) L s.val j.val (fun h => hne (Fin.ext h)) v]; rfl
 
-/-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
-The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
-collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
-are the chain feed. THE CRUX — the per-interior-boundary Schur-frame collapse of the `chainA` layer
-fderiv, generalizing `layer0SchurMap_fderiv_collapse`. LOAD-BEARING RESIDUAL.
-
-The soundness of the STATEMENT (`diag(T) k = genF k`, i.e. the diagonal block genuinely collapses to
-`schurFrameDeriv_k ⊕ id`) is argued against the actual defs in the **`genF` docstring** — the WHY: the
-`−Nblk_s·Wblk_s` coupling reads slot-`(s−1)` coords (`Nblk_s = readN⟨s−1⟩` via
-`genBlkFlatLive_Nblk_succ`; `Wblk_s` in slot `s−1` by the stagger) so it is strictly lower / det-invisible,
-`Cgen` carries no same-slot `Wblk` term, and the off-by-one gather makes the lift half `id`. Read `genF`
-for the auditable trace. -/
-theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
-    (y₀ : Fin (routeMAmbient M) → ℝ) :
-    (eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
-        ∘ₗ DtotGen M ha y₀
-        ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
-      = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀) := by
-  -- THE CRUX, reduced to the per-boundary lower-triangular-with-diagonal fact via the banked
-  -- reconstruction lemma. `eihdcGen := stairCouplingOf … T` with `T` the conjugated `DtotGen`, so
-  -- `stairMap genV L genF eihdcGen = stairMap genV L genF (stairCouplingOf L T)`; `stairMap_eq_of_lowerTriDiag`
-  -- gives `T = stairMap genV L genF (stairCouplingOf L T)` FROM `StairLowerTriDiag genV L genF T`.
-  set T := ((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
-      ∘ₗ DtotGen M ha y₀
-      ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))) with hT
-  show T = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀)
-  -- `eihdcGen = stairCouplingOf genV L T` (defeq: same `T`).
-  have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
-  rw [hcoupling]
-  refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
-  -- REDUCTION (banked + machine-verified this thread, ready to apply):
-  --   `refine stairLowerTriDiag_of_blocks (genV M) L (genF M ha y₀) T ?diag ?upper`
-  -- splits `StairLowerTriDiag genV L genF T` into the two PER-SLOT block families
-  --   (diag)  ∀ s,      stairProj s ∘ T ∘ stairIncl s = genF s
-  --   (upper) ∀ s s', s'<s → stairProj s' ∘ T ∘ stairIncl s = 0
-  -- (verified to fire green). Each block threads the BANKED (sorry-free) bricks of this thread:
-  --   `eihdT_gen_eq_packStairGen_fderiv` (T w = packStairGen (fderiv BparamsLeafGen y₀ (eInGen.symm w))),
-  --   `stairProj_packStairGen_fst`/`_snd` (frame reads layer s, lift reads layer s+1 — the stagger),
-  --   `BparamsLeafGen_fderiv_layer` (the per-layer fderiv isolation).
-  -- SOUNDNESS CONFIRMED (2026-07-01, two decorrelated Codex xhigh passes): `diag(T) s = genF s`
-  -- GENUINELY holds. The decisive fact is the chain-reader INDEX SHIFT `Nblk_s = readN⟨s−1⟩`
-  -- (`genBlkFlatLive_Nblk_succ`): the layer-s KEPT block is `Cgen(s+1) − Nblk_s·Wblk_s =
-  -- schurFrameProd(readK⟨s⟩,readX⟨s⟩,readN⟨s⟩,readE⟨s⟩) − readN⟨s−1⟩·Wblk_s`. `readN⟨s−1⟩` is a
-  -- slot-(s−1) frame coord and `Wblk_s` is (by the STAGGER) a slot-(s−1) lift coord, so BOTH `−N·W`
-  -- coupling terms are strictly OFF-DIAGONAL ⇒ absent from the diagonal block; the ONLY same-slot frame
-  -- contribution is the `Cgen(s+1)` Schur-frame fderiv = `schurFrameDeriv_s`. Lift diag `id`: slot-s
-  -- lift input `Wblk_{s+1}` routes back to slot s. So `genF s = schurFrameDeriv_s ⊕ id` IS the diagonal.
-  -- REMAINING (the residual): the per-layer `chainAFDeriv` decode (via `hasFDerivAt_chainA` + the
-  -- `readN/X/W` fderiv atoms) + the general schurFrameProd→schurFrameDeriv collapse (the general-L lift
-  -- of `gate_schurCore_eq` / `layer0SchurMap_fderiv_collapse`) + the `eInGen.symm (stairIncl s v)`
-  -- input-coordinate analysis (the `−N·W` slot-(s−1) vanishing). A multi-hundred-LoC fderiv development
-  -- (own tide / a decorrelated Lean hand for the schurFrameProd collapse). The reduction to the two
-  -- block families above is banked and green; only the per-slot analytic collapse remains.
-  sorry
+-- `eihd_hD_gen` (THE CRUX block identity) is proved at the FILE BOTTOM (just before its only forward
+-- user `DtotGen_abs_det`), since its per-slot block assembly threads the `packRowSplitGen_read_kept`/
+-- `stairProj_packStairGen_fst`/`_snd` reads defined below. See `eihd_hD_gen` there.
 
 /-! ## Generic `IsCoordLE` atoms for the `eihd_hreg_gen` coordinate-permutation route
 
@@ -2289,6 +2238,61 @@ theorem eihd_hreg_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
         (eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm) ≪≫ₗ LinearEquiv.refl ℝ (Fin (routeMAmbient M) → ℝ)
       = (eInGen M ha ≪≫ₗ (eihdOutGen M ha).symm) from by ext g; rfl] at hthis
   rw [hthis]
+
+/-! ## The crux block identity `eihd_hD_gen` (the per-slot lower-triangular-with-diagonal assembly)
+
+The two block families `stairLowerTriDiag_of_blocks` needs — diag `stairProj s ∘ T ∘ stairIncl s =
+genF s`, upper `stairProj s' ∘ T ∘ stairIncl s = 0` (`s' < s`) — thread the banked bricks:
+`eihdT_gen_eq_packStairGen_fderiv` + `stairProj_packStairGen_fst`/`_snd` (the block-aware reads) +
+`packRecast_fderiv_layer` + `chainA_apply_castAdd`/`_natAdd` (the KEPT/lift decode) +
+`schurFrameGenMap_fderiv_collapse` + `slotReadGen_eInGen_symm` (the Schur collapse & input recovery) +
+`readN_vanish`/`readW_vanish` (the `−N·W` off-diagonal vanishing) + `stairProj_stairIncl_self`/`_ne`. -/
+
+/-- **The layer-`s'` KEPT-block matrix as a function of `y`** — `(packRowSplitGen s' (packRecast s'
+(BparamsLeafGen y s')))_1 = (Cgen(s'+1)(y) − Nblk_{s'}(y)·Wblk_{s'}(y))` entrywise (the top rows of the
+chain layer `Agen … s' = chainA … (Cgen(s'+1))`, via `chainA_apply_castAdd`). -/
+theorem packRowSplitGen_kept_BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (y : Fin (routeMAmbient M) → ℝ)
+    (i : Fin (Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    (packRowSplitGen M ha s (packRecast M s (BparamsLeafGen M ha y s))).1 i j
+      = (Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+          (hleStruct M (tach M) ha) (s.val + 1)
+        - (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+          * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) i j := by
+  rw [packRowSplitGen_read_kept, packRecast_BparamsLeafGen, Agen, dif_pos s.isLt,
+    show (Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+        (finSumFinEquiv (Sum.inl i)))
+      = Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+        (Fin.castAdd _ i) from by rw [finSumFinEquiv_apply_left],
+    chainA_apply_castAdd]
+
+/-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
+The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
+collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
+are the chain feed. Reduced (via `stairMap_eq_of_lowerTriDiag` + `stairLowerTriDiag_of_blocks`) to the
+two per-slot block families; the diagonal frame reconciles through the block-aware `stairProj_packStairGen_fst`
++ `schurFrameGenMap_fderiv_collapse` + `slotReadGen_eInGen_symm` (genF's original `frameToSchurIncGen`
+conjugation matches — fix (i) made packStairGen block-aware), the `−N·W` off-diagonal vanishes via
+`readN_vanish`/`readW_vanish`, the lift half is `id`, and the upper block is `0` (`stairProj_stairIncl_ne`). -/
+theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) :
+    (eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+        ∘ₗ DtotGen M ha y₀
+        ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))
+      = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀) := by
+  set T := ((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+      ∘ₗ DtotGen M ha y₀
+      ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ))) with hT
+  show T = stairMap (genV M) L (genF M ha y₀) (eihdcGen M ha y₀)
+  have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
+  rw [hcoupling]
+  refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
+  -- ASSEMBLY RESIDUAL: the per-slot diag/upper block families (via `stairLowerTriDiag_of_blocks`),
+  -- threading `eihdT_gen_eq_packStairGen_fderiv` + block-aware `stairProj_packStairGen_fst`/`_snd` +
+  -- `packRowSplitGen_kept_BparamsLeafGen` + the product-rule `−N·W` vanishing (`readN/W_vanish`) +
+  -- `schurFrameGenMap_fderiv_collapse` + `slotReadGen_eInGen_symm`. Fix (i) made both sides block-aware
+  -- (genF's ORIGINAL `frameToSchurIncGen` conjugation matches directly — NO frameDecode2D/bridgePerm).
+  sorry
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
