@@ -12751,3 +12751,31 @@ Nonclaims: no proof of the source-image density identity or density bound, no
 global passive-theta source-image identification, no source coverage, no
 chart-image equality, no Haar scalar normalization or cancellation, no normal
 crossings, no pole order, and no RLCT extraction.
+
+Latest A2 p.13 formal-product domination from original-volume source-image density:
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean` proves
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_bounded`.
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`.
+Statement card:
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`.
+Review:
+`threads/03-block-product-reduction/review-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`.
+
+Ledger status: the formal-product p.13 chart measure is now dominated by
+`((cHaar : ENNReal) * D) • sourceRef` whenever the restricted original
+edge-family volume on the chart piece is identified as a `withDensity`
+perturbation of `sourceRef` with local a.e. bound `D`.  This is the
+original-volume route; the direct formal-product/source-image route continues
+to use scalar `D` alone when its own density identity is supplied.
+
+Focused file elaboration, focused module build, full local `lake build
+DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct axiom probe
+passed.  The direct axiom probe reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no proof of the source-image density identity or density bound, no
+passive-theta source-image equality, no source coverage, no chart-image
+equality, no source-rank coverage, no Haar scalar normalization or
+cancellation, no normal crossings, no pole order, and no RLCT extraction.

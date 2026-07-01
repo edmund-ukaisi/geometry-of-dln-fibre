@@ -28858,3 +28858,54 @@ The direct axiom probe reported only
 Boundary: this theorem is still coordinate readout only.  It does not provide
 a full source-edge-family inverse to `(theta,u)`, source-image coverage,
 source-prior transport, Haar transport, normal crossings, pole order, or RLCT.
+
+## 2026-07-01 p.13 formal-product domination from original-volume source-image density
+
+Lean now has the forward source-measure bridge from an original-volume
+source-image bounded-density identity to formal-product p.13 source-reference
+domination:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_bounded
+```
+
+Given a measurable p.13 chart piece contained in the named source edge-family
+set, a source reference `sourceRef`, and
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (sourceRef.withDensity volumeDensity).restrict chartPiece
+volumeDensity <= D   sourceRef.restrict chartPiece-a.e.,
+```
+
+it proves domination of the p.13 formal-product chart measure by
+`((cHaar : ENNReal) * D) • sourceRef`.  This scalar is correct for the route
+through original edge-family volume.  It is separate from the direct
+formal-product/source-image finite-integral front end, where a supplied
+formal-product source-image density bound enters with scalar `D` alone.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-formal-product-from-original-volume-source-image-density-domination.md
+threads/03-block-product-reduction/statement-card-a2-p13-formal-product-from-original-volume-source-image-density-domination.md
+threads/03-block-product-reduction/review-a2-p13-formal-product-from-original-volume-source-image-density-domination.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+./scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_formal_from_volume_source_image_axioms.lean
+```
+
+The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this does not prove the source-image density identity or bound,
+passive-theta image equality, source coverage, source-rank coverage, Haar
+normalization, normal crossings, pole order, or RLCT extraction.

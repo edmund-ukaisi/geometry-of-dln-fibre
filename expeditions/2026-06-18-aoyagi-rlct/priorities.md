@@ -16262,3 +16262,25 @@ source-prior frontier is not another coordinate-readout wrapper.  It is a
 genuine full product-chart inverse/image theorem, or a density/Jacobian
 transport theorem for a specified source measure.  Keep the lack of a full
 `EdgeFamily -> (theta,u)` readback explicit.
+
+A2 p.13 formal-product domination from original-volume source-image density has landed locally in
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean`:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_bounded
+```
+
+This is the original-volume route, not the direct formal-product/source-image
+route.  If
+
+```text
+originalEdgeFamilyVolume.restrict chartPiece =
+  (sourceRef.withDensity volumeDensity).restrict chartPiece
+volumeDensity <= D   a.e. on sourceRef.restrict chartPiece,
+```
+
+then the formal-product p.13 chart measure is dominated by
+`((cHaar : ENNReal) * D) • sourceRef`.  No inverse Haar scalar appears in this
+forward direction.  The direct formal-product/source-image frontier from the
+previous checkpoint still has scalar `D` alone and still requires proving the
+actual passive-theta source-image density identity.

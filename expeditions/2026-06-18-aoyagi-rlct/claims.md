@@ -14613,3 +14613,38 @@ Kill condition: this claim must not be cited as source-rank coverage, full
 source coverage, passive-theta source-image containment, original-prior
 transport through the p.13 chart, restricted Haar structure, scalar
 normalization to `1`, normal crossings, pole order, or RLCT extraction.
+
+## A2 p.13 formal-product domination from original-volume source-image density
+
+Status: Proved in Lean; focused verification, full verification, direct axiom
+probe, and xhigh scout/API check passed.
+
+Claim: on a measurable p.13 chart piece contained in the named p.13 source
+edge-family set, a bounded-density source-reference identification of the
+restricted original edge-family volume implies domination of the p.13
+formal-product chart measure by the same source reference.  The scalar is
+`(cHaar : ENNReal) * D`, because the route is
+
+```text
+formalProductMeasure = cHaar • originalEdgeFamilyVolume
+originalEdgeFamilyVolume <= D • sourceRef.
+```
+
+Lean theorem:
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_le_smul_sourceMeasure_of_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_bounded
+```
+
+Artifacts:
+`threads/03-block-product-reduction/reproduction-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`,
+`threads/03-block-product-reduction/statement-card-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`,
+and
+`threads/03-block-product-reduction/review-a2-p13-formal-product-from-original-volume-source-image-density-domination.md`.
+
+Kill condition: this claim must not be cited as the direct formal-product
+source-image density identity, where the scalar would be `D` alone under a
+formal-product density bound.  It also must not be cited as proof of the
+source-image density identity, source coverage, passive-theta image equality,
+source-rank coverage, Haar scalar normalization, normal crossings, pole order,
+or RLCT extraction.
