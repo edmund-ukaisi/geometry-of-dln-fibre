@@ -1175,24 +1175,29 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
   rw [hcoupling]
   refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
-  -- REMAINING: `StairLowerTriDiag genV L genF T` — per depth, (i) frame-diag `fst∘T∘inl = genF 0`,
-  -- (ii) upper `fst∘T∘inr = 0`, (iii) tail recursion. SOUNDNESS CONFIRMED (2026-07-01, two decorrelated
-  -- Codex xhigh passes): `diag(T) s = genF s` GENUINELY holds. The decisive fact is the chain-reader
-  -- INDEX SHIFT `Nblk_s = readN⟨s−1⟩` (`genBlkFlatLive_Nblk_succ`: `.Nblk (k+1) = readN⟨k⟩`): the
-  -- layer-s KEPT block is `Cgen(s+1) − Nblk_s·Wblk_s = schurFrameProd(readK⟨s⟩,readX⟨s⟩,readN⟨s⟩,readE⟨s⟩)
-  -- − readN⟨s−1⟩·Wblk_s`. `readN⟨s−1⟩` is a slot-(s−1) frame coord and `Wblk_s` is (by the STAGGER) a
-  -- slot-(s−1) lift coord, so BOTH `−N·W` coupling terms are strictly OFF-DIAGONAL (slot s−1 → s, lower)
-  -- ⇒ absent from the diagonal (slot s→s) block. `Cgen` uses `Bmat/Nblk/Rmat` (NOT `Wblk`), so no
-  -- same-slot `Wblk` spoiler — the ONLY same-slot frame contribution is the `Cgen(s+1)` Schur-frame
-  -- fderiv = `schurFrameDeriv_s` (the L=2 `gate_schurCore_eq`/`layer0SchurMap_fderiv_collapse`). The
-  -- lift diag is genuinely `id`: slot-s lift input = `Wblk_{s+1}` = the bottom rows of layer s+1's
-  -- output verbatim, and the off-by-one gather (`liftGatherFinL`) routes that output back to slot s
-  -- (input=output slot). So `genF s = schurFrameDeriv_s ⊕ id` IS the diagonal; the `−N·W`/`−N·δW`
-  -- couplings are the head-into-tail chain feed captured by `eihdcGen` (det-invisible). NOT green-but-wrong.
-  -- LEAN CONSTRUCTION (proof-engineering, math done): needs general-L analogues of the L=2
-  -- `eihdT_free_eq_packStair_fderiv` (express `T w = packStairGen (fderiv BparamsLeafGen y₀ (eInGen.symm w))`),
-  -- `BparamsLeaf_fderiv_layer` (per-layer fderiv via `hasFDerivAt_chainA`), and per-slot `packLayer` reads —
-  -- a multi-hundred-LoC fderiv development (own tide). Reduction to this single isolated goal is banked.
+  -- REDUCTION (banked + machine-verified this thread, ready to apply):
+  --   `refine stairLowerTriDiag_of_blocks (genV M) L (genF M ha y₀) T ?diag ?upper`
+  -- splits `StairLowerTriDiag genV L genF T` into the two PER-SLOT block families
+  --   (diag)  ∀ s,      stairProj s ∘ T ∘ stairIncl s = genF s
+  --   (upper) ∀ s s', s'<s → stairProj s' ∘ T ∘ stairIncl s = 0
+  -- (verified to fire green). Each block threads the BANKED (sorry-free) bricks of this thread:
+  --   `eihdT_gen_eq_packStairGen_fderiv` (T w = packStairGen (fderiv BparamsLeafGen y₀ (eInGen.symm w))),
+  --   `stairProj_packStairGen_fst`/`_snd` (frame reads layer s, lift reads layer s+1 — the stagger),
+  --   `BparamsLeafGen_fderiv_layer` (the per-layer fderiv isolation).
+  -- SOUNDNESS CONFIRMED (2026-07-01, two decorrelated Codex xhigh passes): `diag(T) s = genF s`
+  -- GENUINELY holds. The decisive fact is the chain-reader INDEX SHIFT `Nblk_s = readN⟨s−1⟩`
+  -- (`genBlkFlatLive_Nblk_succ`): the layer-s KEPT block is `Cgen(s+1) − Nblk_s·Wblk_s =
+  -- schurFrameProd(readK⟨s⟩,readX⟨s⟩,readN⟨s⟩,readE⟨s⟩) − readN⟨s−1⟩·Wblk_s`. `readN⟨s−1⟩` is a
+  -- slot-(s−1) frame coord and `Wblk_s` is (by the STAGGER) a slot-(s−1) lift coord, so BOTH `−N·W`
+  -- coupling terms are strictly OFF-DIAGONAL ⇒ absent from the diagonal block; the ONLY same-slot frame
+  -- contribution is the `Cgen(s+1)` Schur-frame fderiv = `schurFrameDeriv_s`. Lift diag `id`: slot-s
+  -- lift input `Wblk_{s+1}` routes back to slot s. So `genF s = schurFrameDeriv_s ⊕ id` IS the diagonal.
+  -- REMAINING (the residual): the per-layer `chainAFDeriv` decode (via `hasFDerivAt_chainA` + the
+  -- `readN/X/W` fderiv atoms) + the general schurFrameProd→schurFrameDeriv collapse (the general-L lift
+  -- of `gate_schurCore_eq` / `layer0SchurMap_fderiv_collapse`) + the `eInGen.symm (stairIncl s v)`
+  -- input-coordinate analysis (the `−N·W` slot-(s−1) vanishing). A multi-hundred-LoC fderiv development
+  -- (own tide / a decorrelated Lean hand for the schurFrameProd collapse). The reduction to the two
+  -- block families above is banked and green; only the per-slot analytic collapse remains.
   sorry
 
 /-! ## Generic `IsCoordLE` atoms for the `eihd_hreg_gen` coordinate-permutation route
