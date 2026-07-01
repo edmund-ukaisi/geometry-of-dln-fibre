@@ -393,13 +393,31 @@ def eihdOutGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) :
     (Fin (routeMAmbient M) → ℝ) ≃ₗ[ℝ] StairProd (genV M) L :=
   eInGen M ha
 
-/-- **The staircase coupling** — the head-into-tail chain feed (det-irrelevant), definable from the
-off-diagonal block of the conjugated `DtotGen` once `eInGen`/`eihdOutGen` exist. LOAD-BEARING
-RESIDUAL. -/
+/-- **Extract the staircase coupling from any endomorphism.** For `T : StairProd V n →ₗ StairProd V n`,
+`stairCouplingOf` reads off, at each depth, the head-into-tail block `projTail ∘ T ∘ inclHead`
+(recursing on the tail endomorphism `projTail ∘ T ∘ inclTail`). This is the coupling datum such that
+`stairMap V n (diag of T) (stairCouplingOf T)` reproduces `T`'s lower-triangular part — the general-`L`
+lift of the `L = 2` `eihdc_free` construction (`⟨projTail ∘ T ∘ inclV0, …⟩`). -/
+def stairCouplingOf (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    (n : ℕ) → (StairProd V n →ₗ[ℝ] StairProd V n) → StairCoupling V n
+  | 0, _ => PUnit.unit
+  | (n + 1), T =>
+    -- `StairProd V (n+1) = V 0 × StairProd (V∘succ) n`; head `V 0`, tail `StairProd (V∘succ) n`.
+    ⟨(LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+        (T.comp (LinearMap.inl ℝ (V 0) (StairProd (fun k => V (k + 1)) n))),
+     stairCouplingOf (fun k => V (k + 1)) n
+       ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+         (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n))))⟩
+
+/-- **The staircase coupling** `eihdcGen := stairCouplingOf (eInGen ∘ DtotGen ∘ eInGen.symm)` — the
+head-into-tail chain feed read off the conjugated `DtotGen` (det-irrelevant). The general-`L` lift of
+`RouteMHDtotEihd.eihdc_free`. -/
 def eihdcGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (y₀ : Fin (routeMAmbient M) → ℝ) :
     StairCoupling (genV M) L :=
-  -- MISSING: off-diagonal of `eihdOutGen ∘ DtotGen ∘ eInGen.symm` (lift of `eihdc_free`).
-  sorry
+  stairCouplingOf (genV M) L
+    ((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+      ∘ₗ DtotGen M ha y₀
+      ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)))
 
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
