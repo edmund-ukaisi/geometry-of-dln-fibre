@@ -31,6 +31,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0Atom
 import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 
 /-!
 # Axiom-hygiene check
@@ -217,6 +218,16 @@ open DLNFibre.DLN.RLCT
 #print axioms routeMCore_box_diverges_eDeepRank0
 #print axioms routeMCore_box_diverges_interiorLive
 #print axioms eDeepRank0Unit_ae_pos
+
+-- ★ GENERAL-`L` INTERIOR box-divergence atom (the general-`L` lift of `routeMCore_box_diverges_interiorLive`
+-- above) — `routeMCore_box_diverges_interiorLiveGen` must be CLEAN modulo the single cited S2 axiom, i.e.
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx` (identical to the L=2 analog). Its
+-- `NodeAchieverChart` bundle `interiorLiveNodeChartGen` must be CLEAN-THREE [propext, Classical.choice,
+-- Quot.sound]: the staggered staircase-conjugated leaf Jacobian (`DtotGen_abs_det`, det `∏|det K_s|^{r_s+c_s}`)
+-- + the general-`L` injOn/analytic legs carry no cited bound (the S2 dependence enters only in the
+-- box-divergence atom's threshold, via `monomial_rlct`).
+#print axioms routeMCore_box_diverges_interiorLiveGen
+#print axioms interiorLiveNodeChartGen
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
