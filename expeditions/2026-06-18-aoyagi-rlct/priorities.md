@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint reference image pivot-measurable support
+
+Lean now removes the separate endpoint-image measurability input from the
+with-following endpoint reference image support theorem on measurable
+selected-pivot-nonzero source sets:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self_of_subset_pivotNonzero
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image_of_subset_pivotNonzero
+```
+
+Decision: this is a small but honest A2 nuisance-field removal.  It composes
+the previous selected-pivot-nonzero measurable-image theorem with the existing
+endpoint reference image support theorem.  The target measure remains the named
+endpoint reference image measure, and the image remains exactly `Y '' Ω`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file forbidden-marker scan, direct
+axiom probe, and xhigh review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no local change-of-variables formula, no `Y` derivative or Jacobian
+determinant theorem, no determinant-chart Haar equality, no raw-Haar/raw-map
+transport, no raw-order composition, no source-image coverage beyond actual
+images, no formal-product domination, no normal crossings, no pole order, and
+no RLCT.
+
+Next A2 target: reassess the real `Y` local change-of-variables
+derivative/determinant statement.  Do not replace it with determinant-chart
+Haar, raw-Haar, or source-coverage overclaims.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint Y injectivity and measurable image
 
 Lean now exposes the next endpoint-coordinate support facts for the
@@ -46,12 +85,8 @@ Boundary: no local change-of-variables formula, no `Y` derivative or Jacobian
 determinant theorem, no determinant-chart Haar equality, no raw-Haar/raw-map
 transport, no raw-order composition, no source-image coverage beyond actual
 images, no formal-product domination, no normal crossings, no pole order, and
-no RLCT.
-
-Next A2 target: use this image/injectivity surface to remove the separate
-`himage` hypothesis from the endpoint reference image support theorem on
-measurable pivot-nonzero source sets, then reassess the real `Y` COV
-derivative/determinant statement.
+no RLCT.  The follow-up nuisance `himage` removal has now landed in the
+pivot-measurable endpoint reference image support wrappers.
 
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image support
 
@@ -85,11 +120,10 @@ new declarations report `[propext, Classical.choice, Quot.sound]`.
 Boundary: no determinant-chart Haar equality, no raw-Haar/raw-map transport,
 no raw-order composition, no source-image coverage beyond `Y '' Ω`, no
 formal-product domination, no normal crossings, no pole order, and no RLCT.
-
-Next A2 target: prove with-following `Y` injectivity on the
-selected-pivot-nonzero locus, then measurable image for `Y '' Ω`.  Full `Y`
-COV is not immediate; it still needs a derivative/determinant theorem and must
-not be replaced by determinant-chart Haar or raw-Haar overclaims.
+The follow-up `Y` injectivity/measurable-image theorem and the
+pivot-measurable support wrappers have now landed.  Full `Y` COV is still not
+immediate; it needs a derivative/determinant theorem and must not be replaced
+by determinant-chart Haar or raw-Haar overclaims.
 
 ## Latest controller decision - 2026-07-02, A4 branch-indexed continuing progress projection
 

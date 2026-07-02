@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Endpoint Reference Image Pivot-Measurable Support - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self_of_subset_pivotNonzero
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image_of_subset_pivotNonzero
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+These wrappers remove the separate `MeasurableSet (Y '' Ω)` hypothesis from
+the endpoint reference image support theorem when `Ω` is measurable and lies
+inside the selected-pivot-nonzero locus.  The proof obtains image
+measurability from the with-following endpoint measurable-image theorem and
+then reuses the existing support theorem for the named endpoint reference
+image measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md
+```
+
+Boundary: actual endpoint image support only.  No local COV, no Jacobian
+determinant theorem, no determinant-chart Haar equality, no raw-Haar
+transport, no raw-order composition, no source-image coverage beyond
+`Y '' Ω`, no formal-product domination, no normal crossings, no pole order, and
+no RLCT.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched-file
+forbidden-marker scan, direct axiom probe, and xhigh review passed.  The two
+new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Endpoint Y Injectivity and Measurable Image - 2026-07-02
 
 Lean now has:

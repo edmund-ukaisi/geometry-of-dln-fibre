@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following endpoint reference image pivot-measurable support
+
+Reproduction:
+`reproduction-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md`.
+Statement card:
+`statement-card-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md`.
+Review:
+`review-a2-case2-with-following-endpoint-reference-image-pivot-measurable-support.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self_of_subset_pivotNonzero
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image_of_subset_pivotNonzero
+```
+
+These wrappers remove the separate `MeasurableSet (Y '' Ω)` input from the
+endpoint reference image support theorem when `Ω` is measurable and contained
+in the selected-pivot-nonzero locus.  Image measurability is supplied by the
+with-following endpoint injectivity/measurable-image theorem from the previous
+rung.
+
+Boundary: this is actual endpoint image support only.  It does not prove a
+local change-of-variables formula, Jacobian determinant theorem,
+determinant-chart Haar equality, raw-Haar transport, raw-order composition,
+source-image coverage beyond the actual image `Y '' Ω`, formal-product
+domination, normal crossings, pole order, or RLCT.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file forbidden-marker scan, direct
+axiom probe, and xhigh review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following endpoint Y injectivity and measurable image
 
 Reproduction:
