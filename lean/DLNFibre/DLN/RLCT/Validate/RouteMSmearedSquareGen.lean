@@ -434,7 +434,8 @@ theorem psiMapG_RmapG_flat_le (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   · -- TOP slot: the deep-top entry `≤ δ + s·((1/γ)nb)·η ≤ 2δ`
     obtain ⟨a, j, hij⟩ := (mem_topCoordsG_iff M hL hrs i).mp hmem
     rw [← hij, psiMapG_RmapG_topSlotG]
-    have := deepTopG_entry_le_of_box M hL hrs hr hc hδ hγ hη1 hηpos hnb0 hpivot hrest hbotne hLam a j
+    have := deepTopG_entry_le_of_box M hL hrs hr hc hδ hγ hη1 hηpos hnb0 hpivot hrest hbotne
+      hLam a j
     linarith [hfieldA]
   · -- SPECTATOR (front/bottom): `psiMapG (RmapG u) i = u i`, a box coord `≤ δ ≤ 2δ`
     have hval : psiMapG M hL hrs (RmapG M hL hrs hr hc u) i = u i := by
@@ -475,5 +476,41 @@ theorem condBox_subset_preimage_gen (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   rw [Set.mem_Icc, ← abs_le]
   exact psiMapG_RmapG_flat_le M hL hrs hr hc hδ hγ hη hη1 hηpos hnb0 hfieldA hu.1
     (fun k hk => hu.2 k hk) hbotne (hLam u hu) i
+
+/-- **The `boxGen` double-cast collapse** `(fun k => boxGen (hN ▸ k)) ∘ (hN ▸ ·) = boxGen`
+(the `hN ▸ (hN ▸ ·) = id` round trip). The analog of L=2's `condBoxWidth_double_cast`. -/
+theorem boxGen_double_cast {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) (r : ℕ) (δ η : ℝ)
+    (hN : routeMAmbient M = n + 1) (k : Fin (routeMAmbient M)) :
+    boxGen M hL r δ η (hN ▸ (hN ▸ k : Fin (n + 1)) : Fin (routeMAmbient M))
+      = boxGen M hL r δ η k := by
+  have key : ∀ (N : ℕ) (h : N = n + 1) (z : Fin N),
+      (h ▸ (h ▸ z : Fin (n + 1)) : Fin N) = z := fun N h z => by subst h; rfl
+  rw [key (routeMAmbient M) hN k]
+
+/-- **The `hSpre`-shaped Field-A containment** (the exact shape `smearedChartDataGen_of_dets` consumes,
+with `box₀ := fun j => boxGen (hN ▸ j)`, `ε = 2δ`): `condBox (hN ▸ p) (fun k => box₀ (hN ▸ k)) δ ⊆
+(ψ∘R)⁻¹(cubeBox 2δ)`, `hN ▸ p = pivotCoordG`. Restates `condBox_subset_preimage_gen` through the
+double-cast collapse. The `hSpre` input the general-`L` box supplier feeds `smearedChartDataGen_of_dets`. -/
+theorem hSpre_gen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
+    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+      coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
+    (hLam : ∀ (u : Fin (routeMAmbient M) → ℝ),
+      u ∈ condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ →
+      ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb) :
+    condBox (hN ▸ p)
+        (fun k => (fun j : Fin (n + 1) => boxGen M hL r δ η (hN ▸ j)) (hN ▸ k)) δ
+      ⊆ (fun u => psiMapG M hL hrs (RmapG M hL hrs hr hc u))
+        ⁻¹' (cubeBox (routeMAmbient M) (2 * δ)) := by
+  -- the box collapses to `boxGen` (the `hN ▸ (hN ▸ ·)` round trip), the pivot to `pivotCoordG`
+  have hbox : (fun k : Fin (routeMAmbient M) =>
+      (fun j : Fin (n + 1) => boxGen M hL r δ η (hN ▸ j)) (hN ▸ k)) = boxGen M hL r δ η :=
+    funext (fun k => boxGen_double_cast M hL r δ η hN k)
+  rw [hp, hbox]
+  exact condBox_subset_preimage_gen M hL hrs hr hc hδ hγ hη hη1 hηpos hnb0 hfieldA hbotne hLam
 
 end DLNFibre.DLN.RLCT
