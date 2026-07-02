@@ -98,6 +98,169 @@ theorem aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_r
 
 end A2Case2FormalProductSourceImagePieceContract
 
+namespace PaperEndpointFixedBaseRegularCoordinateSourceData
+
+universe v
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The enlarged following-factor endpoint chart supplies all local
+source-image fields of the A2 bounded-density contract.
+
+The density identity and a.e. bound remain explicit hypotheses.  This theorem
+only packages the local open set, readback left inverse, injectivity,
+continuity, and measurable source-image facts from the enlarged source chart;
+it does not prove a Jacobian formula, Haar transport, source-rank coverage,
+normal crossings, pole order, or RLCT extraction. -/
+theorem exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z
+    let readback : EdgeFamily →
+        Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, (retainedData z).detChart) ∧
+          ∀ thetaReference :
+            Measure
+              (Case2PassiveThetaWithFollowingFactor
+                (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+          ∀ formalProductMeasure : Measure EdgeFamily,
+          ∀ chartPiece : Set EdgeFamily,
+          ∀ density : EdgeFamily → ℝ≥0∞,
+          ∀ bound : ℝ≥0∞,
+            MeasurableSet chartPiece →
+              chartPiece ⊆ sourceChart '' V →
+                formalProductMeasure.restrict chartPiece =
+                    ((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+                      density).restrict chartPiece →
+                  (∀ᵐ E ∂(Measure.map sourceChart (thetaReference.restrict V)).restrict
+                      chartPiece, density E ≤ bound) →
+                    ∃ C :
+                      A2Case2FormalProductSourceImagePieceContract
+                        (Case2PassiveThetaWithFollowingFactor
+                          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+                        EdgeFamily,
+                      C.sourceChart = sourceChart ∧
+                        C.readback = readback ∧
+                          C.thetaReference = thetaReference ∧
+                            C.V = V ∧
+                              C.chartPiece = chartPiece ∧
+                                C.formalProductMeasure = formalProductMeasure ∧
+                                  C.density = density ∧ C.bound = bound := by
+  intro EdgeFamily retainedData sourceChart readback
+  rcases
+      exists_open_subset_continuousOn_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_leftInverse
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        z₀ hdet₀ hpivot₀ G hGopen hz₀G with
+    ⟨V, hVopen, hz₀V, hVG, hdetV, hleftV, hsource_inj, hsource_contOn,
+      hsource_image⟩
+  refine ⟨V, hVopen, hz₀V, hVG, ?_, ?_⟩
+  · intro z hz
+    simpa [retainedData] using hdetV z hz
+  · intro thetaReference formalProductMeasure chartPiece density bound
+      hchartPiece hchartPiece_sub heq hdensity_le
+    let C :
+        A2Case2FormalProductSourceImagePieceContract
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+          EdgeFamily :=
+      { sourceChart := sourceChart
+        readback := readback
+        thetaReference := thetaReference
+        V := V
+        chartPiece := chartPiece
+        formalProductMeasure := formalProductMeasure
+        density := density
+        bound := bound
+        measurable_V := hVopen.measurableSet
+        measurable_chartPiece := hchartPiece
+        measurable_image := hsource_image
+        chartPiece_subset_image := hchartPiece_sub
+        source_contOn := hsource_contOn
+        source_injOn := hsource_inj
+        left_inv := hleftV
+        formalProduct_eq_withDensity := heq
+        density_le_bound := hdensity_le }
+    refine ⟨C, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rfl
+
+end PaperEndpointFixedBaseRegularCoordinateSourceData
+
 end Aoyagi
 end DLN
 end DLNFibre
