@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following source-density composition and contract constructor
+
+Reproduction:
+`reproduction-a2-with-following-source-density-composition-and-contract.md`.
+Statement card:
+`statement-card-a2-with-following-source-density-composition-and-contract.md`.
+Review:
+`review-a2-with-following-source-density-composition-and-contract.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+Lean now proves:
+
+```text
+aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_eq_unweighted_withDensity_selectedEntrySourceDensity_mul
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_restrict_eq_unweighted_withDensity_selectedEntrySourceDensity_mul_restrict
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource
+```
+
+This rung flattens selected-entry source density composed with an additional
+source density, and packages the existing raw-pushforward-to-source-reference
+handoff into the A2 bounded-density contract with constant density and bound
+`1`.
+
+Boundary: raw-pushforward equality, chart-piece measurability, local source
+image membership, and p.13 source-set membership remain hypotheses.  No raw
+Haar transport, determinant-chart Haar transport, source-image coverage,
+source-prior transport, density lower-bound removal, normal crossings, pole
+order, or RLCT is proved.
+
+Focused elaboration, focused module builds, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, direct axiom probe, and xhigh review passed.
+The four new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following endpoint selected-entry source density
 
 Reproduction:

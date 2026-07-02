@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following source-density composition and contract constructor
+
+Lean now has:
+
+```text
+aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_eq_unweighted_withDensity_selectedEntrySourceDensity_mul
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_restrict_eq_unweighted_withDensity_selectedEntrySourceDensity_mul_restrict
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource
+```
+
+Decision: this rung does two concrete pieces of source-side bookkeeping.  First
+it makes the selected-entry density a.e. measurable for the unweighted enlarged
+source and flattens nested source densities into the product
+`selectedEntryDensity * rawDensity`.  Second it packages the existing
+with-following raw-pushforward-to-source-reference theorem into the
+`A2Case2FormalProductSourceImagePieceContract` shape, with density `1` and
+bound `1`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-density-composition-and-contract.md
+threads/03-block-product-reduction/statement-card-a2-with-following-source-density-composition-and-contract.md
+threads/03-block-product-reduction/review-a2-with-following-source-density-composition-and-contract.md
+```
+
+Focused elaboration, focused module builds, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, direct axiom probe, and xhigh review passed.
+The four new declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the contract constructor still assumes the raw-pushforward equality,
+chart-piece measurability, `chartPiece ⊆ sourceChart '' V`, and
+`chartPiece ⊆ p13SourceSet`.  It does not prove raw-Haar transport,
+determinant-chart Haar transport, source-image coverage, source-prior
+transport, density lower-bound removal, normal crossings, pole order, or RLCT.
+
+Next A2 target: do not remove the raw-pushforward input by assertion.  Either
+build a genuine p.13/raw-source pushforward theorem, or use this contract only
+where that equality is already available.
+
 ## Latest controller decision - 2026-07-02, A2 with-following endpoint selected-entry source density
 
 Lean now exposes the selected-entry source-density convention for the enlarged

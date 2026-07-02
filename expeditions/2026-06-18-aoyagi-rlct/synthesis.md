@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Density Composition And Contract Constructor - 2026-07-02
+
+Lean now has:
+
+```text
+aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_eq_unweighted_withDensity_selectedEntrySourceDensity_mul
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_restrict_eq_unweighted_withDensity_selectedEntrySourceDensity_mul_restrict
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+The source-density lemmas expose selected-entry a.e. measurability for the
+unweighted enlarged source and flatten
+
+```text
+(unweightedSource.withDensity selectedEntryDensity).withDensity rawDensity
+```
+
+to
+
+```text
+unweightedSource.withDensity
+  (fun z => selectedEntryDensity z * rawDensity z).
+```
+
+The contract constructor combines the local source-chart
+readback/injectivity/continuity shrink with the existing
+formal-product/source-reference raw-pushforward handoff inside that shrink.
+It builds an `A2Case2FormalProductSourceImagePieceContract` with
+`density = fun _ => 1` and `bound = 1`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-density-composition-and-contract.md
+threads/03-block-product-reduction/statement-card-a2-with-following-source-density-composition-and-contract.md
+threads/03-block-product-reduction/review-a2-with-following-source-density-composition-and-contract.md
+```
+
+Verification: focused elaboration, focused module builds, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, direct axiom probe,
+and xhigh read-only review passed.  The four new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the raw-pushforward equality is still a hypothesis.  Chart-piece
+measurability, `chartPiece ⊆ sourceChart '' V`, and
+`chartPiece ⊆ p13SourceSet` also remain explicit.  No raw-Haar theorem,
+determinant-chart Haar theorem, source-image coverage, source-prior transport,
+density lower-bound removal, normal crossings, pole order, or RLCT extraction
+is proved.
+
 ## A2 With-Following Endpoint Selected-Entry Source Density - 2026-07-02
 
 Lean now has:

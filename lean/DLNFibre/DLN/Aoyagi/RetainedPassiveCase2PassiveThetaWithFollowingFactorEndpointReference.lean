@@ -169,6 +169,205 @@ theorem case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted
           rfl
 
 set_option linter.style.longLine false in
+/-- The selected-entry source density is a.e. measurable for the unweighted
+enlarged Case 2 source. -/
+theorem aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    AEMeasurable
+      (case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+        (ρ := ρ) (τ := τ) n hS hnext)
+      (case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres) := by
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let passiveRef :=
+    case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  let signedBox :=
+    case2PassiveThetaCenterSignedBoxMeasure n Rres
+  let followingRef :=
+    matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  let centerDensity : (Case2PassiveTheta.Center n S J → ℝ) → ℝ≥0∞ :=
+    fun y ↦
+      ENNReal.ofReal
+        (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y)
+  haveI : SFinite followingRef :=
+    sFinite_matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  have hcenterDensity :
+      AEMeasurable centerDensity signedBox := by
+    simpa [centerDensity, signedBox, case2PassiveThetaCenterSignedBoxMeasure,
+      pivotNext] using
+      (SelectedEntrySignedBox.CenterCoord.monomialLower_sourceDensityBounds
+        pivotNext Rres).1
+  have hthetaDensity :
+      AEMeasurable
+        (fun theta : Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ↦
+          centerDensity theta.yNext)
+        (passiveRef.prod signedBox) := by
+    simpa [Case2PassiveTheta.yNext] using
+      (hcenterDensity.comp_snd (μ := passiveRef))
+  have hsourceDensity :
+      AEMeasurable
+        (fun z :
+            Case2PassiveThetaWithFollowingFactor
+              (ρ := ρ) (τ := τ) n S J ↦
+          centerDensity z.1.yNext)
+        ((passiveRef.prod signedBox).prod followingRef) := by
+    simpa [Case2PassiveThetaWithFollowingFactor,
+      Case2PassiveTheta.yNext] using
+      (hthetaDensity.comp_fst (ν := followingRef))
+  simpa [case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure,
+    case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity,
+    centerDensity, passiveRef, signedBox, followingRef, pivotNext,
+    Case2PassiveTheta.yNext] using hsourceDensity
+
+set_option linter.style.longLine false in
+/-- Adding a further source density to the enlarged reference source is the
+same as adding the product of that density with the selected-entry density to
+the unweighted source.
+
+This is source-side density composition only.  It does not identify a raw-order
+image with Haar measure and does not add the retained-passive raw-order
+Jacobian factor unless `rawDensity` is instantiated with such a factor. -/
+theorem case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_eq_unweighted_withDensity_selectedEntrySourceDensity_mul
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (rawDensity :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        ℝ≥0∞)
+    (hrawDensity :
+      AEMeasurable rawDensity
+        (case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+          (ρ := ρ) (τ := τ) n S J Rres)) :
+    (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres).withDensity rawDensity =
+      (case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres).withDensity
+        (fun z ↦
+          case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+            (ρ := ρ) (τ := τ) n hS hnext z * rawDensity z) := by
+  let unweightedSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+      (ρ := ρ) (τ := τ) n S J Rres
+  let selectedEntryDensity :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        ℝ≥0∞ :=
+    case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+      (ρ := ρ) (τ := τ) n hS hnext
+  have hsource :
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres =
+        unweightedSource.withDensity selectedEntryDensity := by
+    simpa [unweightedSource, selectedEntryDensity] using
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+  have hselected :
+      AEMeasurable selectedEntryDensity unweightedSource := by
+    simpa [unweightedSource, selectedEntryDensity] using
+      aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+  calc
+    (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres).withDensity rawDensity =
+        (unweightedSource.withDensity selectedEntryDensity).withDensity
+          rawDensity := by
+          rw [hsource]
+    _ =
+        unweightedSource.withDensity
+          (fun z ↦ selectedEntryDensity z * rawDensity z) := by
+          simpa [Pi.mul_apply] using
+            (withDensity_mul₀ hselected hrawDensity).symm
+
+set_option linter.style.longLine false in
+/-- Local restricted version of
+`case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_eq_unweighted_withDensity_selectedEntrySourceDensity_mul`.
+
+This is the form used by local source-chart handoffs after shrinking to a
+neighborhood `Ω`. -/
+theorem case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_withDensity_restrict_eq_unweighted_withDensity_selectedEntrySourceDensity_mul_restrict
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (rawDensity :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        ℝ≥0∞)
+    (hrawDensity :
+      AEMeasurable rawDensity
+        ((case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+          (ρ := ρ) (τ := τ) n S J Rres).restrict Ω)) :
+    ((case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres).withDensity rawDensity).restrict Ω =
+      ((case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres).withDensity
+        (fun z ↦
+          case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+            (ρ := ρ) (τ := τ) n hS hnext z * rawDensity z)).restrict Ω := by
+  let unweightedSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+      (ρ := ρ) (τ := τ) n S J Rres
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  let selectedEntryDensity :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        ℝ≥0∞ :=
+    case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+      (ρ := ρ) (τ := τ) n hS hnext
+  have hsource :
+      referenceSource = unweightedSource.withDensity selectedEntryDensity := by
+    simpa [referenceSource, unweightedSource, selectedEntryDensity] using
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+  have hselected :
+      AEMeasurable selectedEntryDensity (unweightedSource.restrict Ω) := by
+    exact
+      (aemeasurable_case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity_unweightedSource
+        (ρ := ρ) (τ := τ) n hS hnext Rres).restrict
+  calc
+    (referenceSource.withDensity rawDensity).restrict Ω =
+        (referenceSource.restrict Ω).withDensity rawDensity := by
+          rw [restrict_withDensity hΩ]
+    _ =
+        ((unweightedSource.withDensity selectedEntryDensity).restrict Ω).withDensity
+          rawDensity := by
+          rw [hsource]
+    _ =
+        ((unweightedSource.restrict Ω).withDensity selectedEntryDensity).withDensity
+          rawDensity := by
+          rw [restrict_withDensity hΩ]
+    _ =
+        (unweightedSource.restrict Ω).withDensity
+          (fun z ↦ selectedEntryDensity z * rawDensity z) := by
+          simpa [Pi.mul_apply] using
+            (withDensity_mul₀ hselected
+              (by simpa [unweightedSource] using hrawDensity)).symm
+    _ =
+        (unweightedSource.withDensity
+          (fun z ↦ selectedEntryDensity z * rawDensity z)).restrict Ω := by
+          rw [restrict_withDensity hΩ]
+    _ =
+        ((case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+          (ρ := ρ) (τ := τ) n S J Rres).withDensity
+          (fun z ↦
+            case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+              (ρ := ρ) (τ := τ) n hS hnext z * rawDensity z)).restrict Ω := by
+          rfl
+
+set_option linter.style.longLine false in
 /-- Projecting the enlarged reference source to its passive-theta component
 recovers the old passive-theta reference source, scaled by the total mass of
 the independent following-factor reference measure.
