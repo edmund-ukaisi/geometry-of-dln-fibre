@@ -518,6 +518,347 @@ theorem case2PassiveThetaEndpointTopologyTuple_mem_detChartSet
       (case2PassiveThetaEndpointRetainedData
         (ρ := ρ) n hS hcont hnext theta eNext e)).2 hdata
 
+namespace Case2PassiveThetaWithFollowingFactor
+
+set_option linter.style.longLine false in
+/-- Constructor for the enlarged passive-sector coordinate vector with an
+independent following-factor matrix. -/
+def mk {ρ : Type*} {τ : Type} {n : ℕ → ℕ} {S J : ℕ}
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext : Case2PassiveTheta.Center n S J → ℝ)
+    (F : Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) :
+    Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+      Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ :=
+  (Case2PassiveTheta.mk
+    (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J)
+    A1passive F2 A3passive Ctop F3 yNext, F)
+
+/-- The underlying passive-theta coordinate vector. -/
+def theta {ρ : Type*} {τ : Type} {n : ℕ → ℕ} {S J : ℕ}
+    (z :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+        Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) :
+    Case2PassiveTheta (ρ := ρ) (τ := τ) n S J :=
+  z.1
+
+set_option linter.style.longLine false in
+/-- The independent following-factor matrix supplying the missing active
+`C 0` block. -/
+def followingFactor {ρ : Type*} {τ : Type} {n : ℕ → ℕ} {S J : ℕ}
+    (z :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+        Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) :
+    Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ :=
+  z.2
+
+end Case2PassiveThetaWithFollowingFactor
+
+set_option linter.style.longLine false in
+/-- Enlarged passive-sector coordinate vector for the Case 2 post-pivot
+selected-entry retained-passive datum.
+
+The second component is a free following-factor matrix for the active `C 0`
+block.  The selected-entry center coordinates still supply the active `C 1`
+block. -/
+abbrev Case2PassiveThetaWithFollowingFactor {ρ : Type*} {τ : Type}
+    (n : ℕ → ℕ) (S J : ℕ) :=
+  Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+    Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ
+
+set_option linter.style.longLine false in
+/-- Passive determinant-sector condition for the enlarged following-factor
+source.  The free following factor imposes no determinant condition. -/
+def case2PassiveThetaWithFollowingFactorDetSector
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+  {z | z.1 ∈ case2PassiveThetaDetSector (ρ := ρ) (τ := τ) n S J}
+
+set_option linter.style.longLine false in
+/-- Passive determinant sector together with the nonzero selected pivot for
+the enlarged following-factor source. -/
+def case2PassiveThetaWithFollowingFactorPuncturedDetSector
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1)) :
+    Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+  {z | z ∈ case2PassiveThetaWithFollowingFactorDetSector (ρ := ρ) (τ := τ) n S J ∧
+    case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}
+
+set_option linter.style.longLine false in
+/-- Retained-passive data produced from an enlarged passive-sector coordinate
+vector before endpoint transport. -/
+noncomputable def case2PassiveThetaWithFollowingFactorRetainedData
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+  case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+    (ρ := ρ) n hS hcont hnext
+    z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+    z.1.yNext z.2 eNext
+
+set_option linter.style.longLine false in
+/-- Endpoint-transported retained-passive data produced from an enlarged
+passive-sector coordinate vector. -/
+noncomputable def case2PassiveThetaWithFollowingFactorEndpointRetainedData
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' :=
+  (case2PassiveThetaWithFollowingFactorRetainedData
+    (ρ := ρ) n hS hcont hnext z eNext).endpointTransport e
+
+set_option linter.style.longLine false in
+/-- Product-topology tuple of enlarged following-factor coordinates before
+endpoint transport. -/
+noncomputable def case2PassiveThetaWithFollowingFactorTopologyTuple
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    TopologyTuple ρ (case2PostPivotTwoEdgeDomain n S J τ) ℝ :=
+  topologyTuple
+    (case2PassiveThetaWithFollowingFactorRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext)
+
+set_option linter.style.longLine false in
+/-- Product-topology tuple of enlarged following-factor coordinates after
+endpoint transport. -/
+noncomputable def case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    TopologyTuple ρ κ' ℝ :=
+  topologyTuple
+    (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e)
+
+set_option linter.style.longLine false in
+/-- Image sector in endpoint-transported topology-tuple coordinates for the
+enlarged following-factor source. -/
+noncomputable def case2PassiveThetaWithFollowingFactorEndpointSectorSet
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)) :
+    Set (TopologyTuple ρ κ' ℝ) :=
+  (fun z ↦
+    case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+      (ρ := ρ) n hS hcont hnext z eNext e) '' Ω
+
+set_option linter.style.longLine false in
+/-- The enlarged following-factor coordinate map to retained-passive data is
+continuous in the product topology. -/
+theorem continuous_case2PassiveThetaWithFollowingFactorRetainedData
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext) := by
+  let η :=
+    Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J
+  have hA1passive_cont :
+      Continuous (fun z : η ↦ z.1) :=
+    continuous_fst
+  have hF2_cont :
+      Continuous (fun z : η ↦ z.2.1) :=
+    continuous_fst.comp continuous_snd
+  have hA3passive_cont :
+      Continuous (fun z : η ↦ z.2.2.1) :=
+    continuous_fst.comp (continuous_snd.comp continuous_snd)
+  have hCtop_cont :
+      Continuous (fun z : η ↦ z.2.2.2.1) :=
+    continuous_fst.comp
+      (continuous_snd.comp (continuous_snd.comp continuous_snd))
+  have hF3_cont :
+      Continuous (fun z : η ↦ z.2.2.2.2) :=
+    continuous_snd.comp
+      (continuous_snd.comp (continuous_snd.comp continuous_snd))
+  simpa [case2PassiveThetaWithFollowingFactorRetainedData,
+    Case2PassiveThetaWithFollowingFactor.theta,
+    Case2PassiveThetaWithFollowingFactor.followingFactor,
+    Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+    Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+    Case2PassiveTheta.F3, Case2PassiveTheta.yNext, η,
+    Case2PassiveThetaWithFollowingFactor, Case2PassiveTheta] using
+    continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+      (ρ := ρ) (η := η) n hS hcont hnext
+      (fun z : η ↦ z.1) (fun z : η ↦ z.2.1) (fun z : η ↦ z.2.2.1)
+      (fun z : η ↦ z.2.2.2.1) (fun z : η ↦ z.2.2.2.2) eNext
+      hA1passive_cont hF2_cont hA3passive_cont hCtop_cont hF3_cont
+
+set_option linter.style.longLine false in
+/-- The enlarged following-factor coordinate map to endpoint-transported
+retained-passive data is continuous in the product topology. -/
+theorem continuous_case2PassiveThetaWithFollowingFactorEndpointRetainedData
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e) := by
+  change Continuous
+    (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+      (case2PassiveThetaWithFollowingFactorRetainedData
+        (ρ := ρ) n hS hcont hnext z eNext).endpointTransport e)
+  exact
+    (continuous_endpointTransport (K := ℝ) (ρ := ρ) e).comp
+      (continuous_case2PassiveThetaWithFollowingFactorRetainedData
+        (ρ := ρ) n hS hcont hnext eNext)
+
+set_option linter.style.longLine false in
+/-- The enlarged following-factor coordinate map to retained-passive topology
+tuples is continuous. -/
+theorem continuous_case2PassiveThetaWithFollowingFactorTopologyTuple
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext) := by
+  change Continuous
+    (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+      topologyTuple
+        (case2PassiveThetaWithFollowingFactorRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext))
+  exact
+    (continuous_topologyTuple
+      (K := ℝ) (ρ := ρ) (κ' := case2PostPivotTwoEdgeDomain n S J τ)).comp
+      (continuous_case2PassiveThetaWithFollowingFactorRetainedData
+        (ρ := ρ) n hS hcont hnext eNext)
+
+set_option linter.style.longLine false in
+/-- The enlarged following-factor coordinate map to endpoint-transported
+retained-passive topology tuples is continuous. -/
+theorem continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e) := by
+  change Continuous
+    (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+      topologyTuple
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e))
+  exact
+    (continuous_topologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')).comp
+      (continuous_case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := ρ) n hS hcont hnext eNext e)
+
+set_option linter.style.longLine false in
+/-- Enlarged following-factor coordinates in the determinant sector produce
+retained-passive determinant-chart data before endpoint transport. -/
+theorem case2PassiveThetaWithFollowingFactorRetainedData_detChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hdet :
+      z ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := ρ) (τ := τ) n S J) :
+    (case2PassiveThetaWithFollowingFactorRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext).detChart := by
+  exact
+    case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor_detChart
+      (ρ := ρ) n hS hcont hnext
+      z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+      z.1.yNext z.2 eNext hdet.1 hdet.2
+
+set_option linter.style.longLine false in
+/-- Enlarged following-factor coordinates in the determinant sector produce
+retained-passive determinant-chart data after endpoint transport. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointRetainedData_detChart
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hdet :
+      z ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := ρ) (τ := τ) n S J) :
+    (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e).detChart := by
+  have hraw :
+      (case2PassiveThetaWithFollowingFactorRetainedData
+        (ρ := ρ) n hS hcont hnext z eNext).detChart :=
+    case2PassiveThetaWithFollowingFactorRetainedData_detChart
+      (ρ := ρ) n hS hcont hnext z eNext hdet
+  simpa [case2PassiveThetaWithFollowingFactorEndpointRetainedData] using
+    (endpointTransport_detChart (K := ℝ) (ρ := ρ) e _).2 hraw
+
+set_option linter.style.longLine false in
+/-- The endpoint-transported enlarged following-factor tuple lies in the
+retained-passive determinant-chart set under the determinant-sector condition. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_mem_detChartSet
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hdet :
+      z ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := ρ) (τ := τ) n S J) :
+    case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext z eNext e ∈
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+  have hdata :
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := ρ) n hS hcont hnext z eNext e).detChart :=
+    case2PassiveThetaWithFollowingFactorEndpointRetainedData_detChart
+      (ρ := ρ) n hS hcont hnext z eNext e hdet
+  simpa [case2PassiveThetaWithFollowingFactorEndpointTopologyTuple] using
+    (topologyTuple_mem_topologyTupleDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := ρ) n hS hcont hnext z eNext e)).2 hdata
+
 end Aoyagi
 end DLN
 end DLNFibre
