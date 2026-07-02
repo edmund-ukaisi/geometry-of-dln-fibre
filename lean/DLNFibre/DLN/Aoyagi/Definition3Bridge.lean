@@ -1873,6 +1873,45 @@ theorem sourceRangeRankWidth_of_L_eq_two_triangle_widths
     (allSourceStrict_of_L_eq_two_triangle_widths
       (H := H) (r := r) hw1 hw2 hw3 htri1 htri2 htri3)
 
+/-- For three source layers (`L = 2`), concrete triangle inequalities give
+the all-source selected constructor without a separately supplied source-range
+rank-width hypothesis.
+
+This is only the all-source triangle branch.  It removes the rank-width input
+by deriving it from the same triangle inequalities; it is not an arbitrary
+Definition 3 source-data classification. -/
+theorem exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ))
+    (htri1 : 2 * w1 < w1 + w2 + w3)
+    (htri2 : 2 * w2 < w1 + w2 + w3)
+    (htri3 : 2 * w3 < w1 + w2 + w3) :
+    ∃ (C : AoyagiSelectedCutpoints 2)
+        (m : Fin (2 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 2 m),
+      (∀ j : Fin (2 + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData 2 2 H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (2 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (2 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (2 + 1),
+        (2 : ℤ) * m i < ∑ j : Fin (2 + 1), m j) ∧
+      (∀ i : Fin (2 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 2 m i) ∧
+      m (0 : Fin (2 + 1)) = (w1 : ℤ) ∧
+      m (1 : Fin (2 + 1)) = (w2 : ℤ) ∧
+      m (2 : Fin (2 + 1)) = (w3 : ℤ) :=
+  exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth
+    (H := H) (r := r) (w1 := (w1 : ℤ)) (w2 := (w2 : ℤ)) (w3 := (w3 : ℤ))
+    hw1 hw2 hw3
+    (by exact_mod_cast htri1)
+    (by exact_mod_cast htri2)
+    (by exact_mod_cast htri3)
+    (sourceRangeRankWidth_of_L_eq_two_triangle_widths
+      (H := H) (r := r) hw1 hw2 hw3 htri1 htri2 htri3)
+
 /-- For three source layers (`L = 2`), the all-source triangle branch with a
 supplied positive-remainder decomposition gives explicit Theorem 2 finite
 formula data.
@@ -3442,18 +3481,15 @@ theorem exists_consecutive_nonconstant_widths_one_two_two_selectedReducedWidthCe
       m (0 : Fin (2 + 1)) ≠ m (1 : Fin (2 + 1)) := by
   let H : ℕ → ℕ :=
     fun s ↦ if s = 1 then 1 else if s = 2 then 2 else if s = 3 then 2 else 0
-  have hr : ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → 0 ≤ H s := by
-    intro _s _hs1 _hsL
-    omega
   have hw1 : aoyagiReducedWidthInt H 0 1 = (1 : ℤ) := by
     norm_num [aoyagiReducedWidthInt, H]
   have hw2 : aoyagiReducedWidthInt H 0 2 = (2 : ℤ) := by
     norm_num [aoyagiReducedWidthInt, H]
   have hw3 : aoyagiReducedWidthInt H 0 3 = (2 : ℤ) := by
     norm_num [aoyagiReducedWidthInt, H]
-  rcases exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle_rankWidth
+  rcases exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
       (H := H) (r := 0) (w1 := 1) (w2 := 2) (w3 := 2)
-      hw1 hw2 hw3 (by norm_num) (by norm_num) (by norm_num) hr with
+      hw1 hw2 hw3 (by norm_num) (by norm_num) (by norm_num) with
     ⟨C, m, data, hC, S, hm, hnat, hnonneg, hstrict_m, hle, hnatNonneg,
       hm0, hm1, hm2⟩
   refine

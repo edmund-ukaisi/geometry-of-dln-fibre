@@ -3039,6 +3039,157 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Local bounded-density source-image pullback for the enlarged
+with-following endpoint source chart, with readback a.e. measurability
+generated internally.
+
+After shrinking inside any prescribed open enlarged theta-neighborhood `G`,
+any bounded-density perturbation of the chart-produced source-image reference
+measure pulls back by the readback to a measure dominated by the corresponding
+theta-domain reference measure on `V`.  The readback a.e. measurability is
+derived from the local continuous injective source chart and its pointwise
+readback left inverse.
+
+This remains a density-comparison socket.  It does not construct or identify
+an original source prior, prove source-image coverage, prove Haar transport,
+construct normal crossings, compute pole order, or extract RLCT. -/
+theorem exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z
+    let readback : EdgeFamily →
+        Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, readback (sourceChart z) = z) ∧
+          Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+            MeasurableSet (sourceChart '' V) ∧
+              ∀ thetaReference :
+                Measure
+                  (Case2PassiveThetaWithFollowingFactor
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+              ∀ density : EdgeFamily → ENNReal,
+              ∀ c : ENNReal,
+                (∀ᵐ E ∂(Measure.map sourceChart
+                    (thetaReference.restrict V)).restrict (sourceChart '' V),
+                  density E ≤ c) →
+                Measure.map readback
+                    (((Measure.map sourceChart
+                      (thetaReference.restrict V)).withDensity density).restrict
+                      (sourceChart '' V)) ≤
+                  c • thetaReference.restrict V := by
+  intro EdgeFamily sourceChart readback
+  rcases
+      (by
+        simpa [EdgeFamily, sourceChart, readback] using
+          exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_restrict_image_eq_self_readback_leftInverse
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ G hGopen hz₀G) with
+    ⟨V, hVopen, hz₀V, hVG, hleftV, hsource_inj, hsource_contOn,
+      hsource_image, _hsupport⟩
+  have hleftV' : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    have hzread_fields :
+        (Case2PassiveThetaWithFollowingFactor.mk
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) (n := n) (S := S) (J := J)
+            z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+            z.1.yNext z.2) ∈ V := by
+      simpa [Case2PassiveThetaWithFollowingFactor.mk,
+        Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hz
+    simpa [sourceChart, readback,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart,
+      Case2PassiveThetaWithFollowingFactor.mk,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleftV z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+        z.1.yNext z.2 hzread_fields
+  have hsource_inj' : Set.InjOn sourceChart V := by
+    simpa [sourceChart] using hsource_inj
+  have hsource_contOn' : ContinuousOn sourceChart V := by
+    simpa [sourceChart] using hsource_contOn
+  have hsource_image' : MeasurableSet (sourceChart '' V) := by
+    simpa [sourceChart] using hsource_image
+  refine
+    ⟨V, hVopen, hz₀V, hVG, hleftV', hsource_inj', hsource_contOn',
+      hsource_image', ?_⟩
+  intro thetaReference density c hdensity_le
+  exact
+    measure_map_readback_restrict_image_withDensity_le_smul_of_ae_le_of_continuousOn_injOn
+      sourceChart readback thetaReference V density c hVopen.measurableSet
+      hsource_image' hsource_contOn' hsource_inj' hleftV' hdensity_le
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Relative local source-chart image measurability for the concrete
 passive-theta endpoint chart.
 

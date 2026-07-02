@@ -19,6 +19,28 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, `L=2` triangle constructor rank-width removal
+
+Reproduction:
+`reproduction-definition3-l-eq-two-triangle-constructor-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-triangle-constructor-rankwidth-removal.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
+```
+
+The all-source `L=2` triangle selected-ceiling constructor no longer requires
+a separate source-range rank-width input.  It derives that input from the
+same natural reduced-width identities and triangle inequalities, then delegates
+to the existing `_rankWidth` constructor.  The `(1,2,2)` nonconstant-width
+example now uses this wrapper directly.
+
+Boundary: finite Definition 3 arithmetic only; no branch classifier, Eq5
+construction, chart production, normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, `ell=1` source-data rank-width removal
 
 Reproduction:

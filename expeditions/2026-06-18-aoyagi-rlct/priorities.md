@@ -12,6 +12,69 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Definition 3 `L=2` triangle constructor rank-width removal
+
+Lean now removes the separate source-range rank-width input from the
+all-source `L=2` triangle selected-ceiling constructor:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
+```
+
+The wrapper derives
+
+```text
+forall s, 1 <= s -> s <= 3 -> r <= H s
+```
+
+from the three natural reduced-width identities and triangle inequalities via
+the existing theorem
+`sourceRangeRankWidth_of_L_eq_two_triangle_widths`, then delegates to the
+existing `_rankWidth` constructor.  The concrete `(1,2,2)` nonconstant-width
+example now calls this wrapper and no longer manufactures a local `hr`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-triangle-constructor-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-triangle-constructor-rankwidth-removal.md
+```
+
+Decision: this is a small but real A6 finite field removal.  It is not a
+Definition 3 classifier, not a canonical branch theorem, not Eq5
+construction, not chart production, not normal crossings, not pole order, and
+not RLCT extraction.  xhigh read-only scout `Gauss the 2nd` identified the
+target and checked the theorem/consumer shape with Lean stdin.
+
+## Latest controller decision - 2026-07-02, A2 with-following source-image automatic readback measurability
+
+Lean now has the with-following analogue of the passive source-image automatic
+readback-measurability bounded-density socket:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+```
+
+On a local with-following source-chart image, readback a.e. measurability for
+the chart-produced source-image reference is derived internally from
+`ContinuousOn sourceChart V`, `Set.InjOn sourceChart V`, and the pointwise
+left inverse.  A supplied local density bound then gives the same pullback
+domination as the previous bounded-density socket, without a caller-supplied
+readback a.e.-measurability field.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-source-image-automatic-readback-measurability.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-source-image-automatic-readback-measurability.md
+```
+
+Decision: this is adjacent source-image bookkeeping, not a source-prior or
+determinant-Haar frontier theorem.  It removes a nuisance field for the
+chart-produced source-image reference only.  No density identity, density
+construction, source-image coverage, raw-Haar pushforward, endpoint Haar
+transport, normal crossings, pole order, or RLCT is claimed.
+
 ## Latest controller decision - 2026-07-02, A2 with-following inverse-readback raw-image density
 
 Lean now has the with-following analogue of the passive raw-image

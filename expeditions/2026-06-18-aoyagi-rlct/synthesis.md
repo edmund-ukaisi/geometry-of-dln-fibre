@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 `L=2` Triangle Constructor Rank-Width Removal - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_consecutive_three_widths_selectedReducedWidthCeilData_of_triangle
+```
+
+This theorem removes the separate source-range rank-width input from the
+all-source `L=2` triangle selected-ceiling constructor.  The proof derives
+the rank-width hypothesis from the same natural reduced-width identities and
+triangle inequalities via
+`sourceRangeRankWidth_of_L_eq_two_triangle_widths`, then delegates to the
+existing `_rankWidth` constructor.
+
+The diagnostic `(1,2,2)` nonconstant-width selected-ceiling example now calls
+this new wrapper and no longer carries a local `hr` block.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-triangle-constructor-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-triangle-constructor-rankwidth-removal.md
+```
+
+Boundary: finite branch-specific Definition 3 arithmetic only.  No arbitrary
+branch selection, no branch independence, no Eq5 payload, no chart production,
+no normal crossings, no pole order, and no RLCT extraction.
+
+## A2 With-Following Source-Image Automatic Readback Measurability - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_withDensity_restrict_image_le_smul_of_continuousOn_injOn
+```
+
+This is the with-following analogue of the passive-theta source-image
+automatic readback-measurability socket.  On the local chart-produced
+source-image reference, readback a.e. measurability follows from the continuous
+injective local source chart and pointwise left inverse; a supplied local
+density bound then gives the bounded-density pullback domination.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-source-image-automatic-readback-measurability.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-source-image-automatic-readback-measurability.md
+```
+
+Boundary: adjacent bookkeeping only.  Density identity/boundedness remain
+supplied; no source-prior identification, no determinant/raw Haar transport,
+no source-image coverage, no Jacobian theorem, no normal crossings, no pole
+order, and no RLCT.
+
 Banking note, 2026-07-02: the all-pivot producer recurrence-termination
 adapter was committed and pushed as `278cd9c6`.  At the code-slice banking
 point, the expedition worktree was clean and even with
