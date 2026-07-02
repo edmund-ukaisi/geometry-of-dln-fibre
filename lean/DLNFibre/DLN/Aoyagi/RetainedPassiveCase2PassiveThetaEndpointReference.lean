@@ -56,6 +56,160 @@ theorem sFinite_matrixEntryReferenceMeasure
     sigmaFinite_matrixEntryReferenceMeasure m n
   infer_instance
 
+/-- Entrywise open coordinate box around a real matrix.  This is the finite
+Pi-box replacement for metric balls on matrix types; it is tailored to the
+coordinate-product reference measure. -/
+def matrixEntryBox
+    {m n : Type*} (F₀ : Matrix m n ℝ) (R : ℝ) : Set (Matrix m n ℝ) :=
+  {F | ∀ i j, F i j ∈ Set.Ioo (F₀ i j - R) (F₀ i j + R)}
+
+theorem mem_matrixEntryBox_self
+    {m n : Type*} (F₀ : Matrix m n ℝ) {R : ℝ} (hR : 0 < R) :
+    F₀ ∈ matrixEntryBox F₀ R := by
+  intro i j
+  constructor <;> linarith
+
+theorem measurableSet_matrixEntryBox
+    {m n : Type*} [Countable m] [Countable n]
+    (F₀ : Matrix m n ℝ) (R : ℝ) :
+    MeasurableSet (matrixEntryBox F₀ R) := by
+  classical
+  unfold matrixEntryBox
+  rw [show
+      {F : Matrix m n ℝ | ∀ i j, F i j ∈ Set.Ioo (F₀ i j - R) (F₀ i j + R)} =
+        ⋂ i, ⋂ j,
+          (fun F : Matrix m n ℝ => F i j) ⁻¹'
+            Set.Ioo (F₀ i j - R) (F₀ i j + R) by
+    ext F
+    simp]
+  exact MeasurableSet.iInter fun i =>
+    MeasurableSet.iInter fun j => by
+      have hcoord : Measurable (fun F : Matrix m n ℝ => F i j) :=
+        (measurable_pi_apply j).comp
+          (measurable_pi_apply i : Measurable (fun F : Matrix m n ℝ => F i))
+      exact hcoord
+        (measurableSet_Ioo : MeasurableSet (Set.Ioo (F₀ i j - R) (F₀ i j + R)))
+
+set_option linter.style.longLine false in
+theorem matrixEntryReferenceMeasure_matrixEntryBox_lt_top
+    {m n : Type*} [Fintype m] [Fintype n]
+    (F₀ : Matrix m n ℝ) (R : ℝ) :
+    matrixEntryReferenceMeasure m n (matrixEntryBox F₀ R) < ∞ := by
+  classical
+  have hbox :
+      matrixEntryBox F₀ R =
+        Set.pi Set.univ
+          (fun i : m =>
+            Set.pi Set.univ
+              (fun j : n => Set.Ioo (F₀ i j - R) (F₀ i j + R))) := by
+    ext F
+    constructor
+    · intro hF i _ j _
+      exact hF i j
+    · intro hF i j
+      exact hF i (Set.mem_univ i) j (Set.mem_univ j)
+  rw [matrixEntryReferenceMeasure, hbox]
+  change
+    (Measure.pi fun i : m => Measure.pi fun j : n => volume)
+      (Set.pi Set.univ
+        (fun i : m => Set.pi Set.univ
+          (fun j : n => Set.Ioo (F₀ i j - R) (F₀ i j + R)))) < ∞
+  rw [Measure.pi_pi]
+  refine ENNReal.prod_lt_top fun i _ => ?_
+  rw [Measure.pi_pi]
+  exact ENNReal.prod_lt_top fun j _ => by
+    rw [Real.volume_Ioo]
+    exact ENNReal.ofReal_lt_top
+
+set_option linter.style.longLine false in
+/-- A base following factor whose square reindexing has unit determinant admits
+a finite measurable coordinate patch on which the determinant remains a unit
+and the reindexed inverse has a uniform coordinate square-sum bound.
+
+The patch is an entrywise coordinate box, cut by the determinant-unit locus and
+by a strict inverse-square-sum sublevel set.  This supplies exactly the
+finite-patch hypotheses needed by the with-following product-residual wrapper;
+it does not identify this condition with any passive-theta determinant sector. -/
+theorem exists_matrixEntryReferenceMeasure_finite_followingPatch_of_reindexed_det_isUnit
+    {ι τ : Type*} [Fintype ι] [Fintype τ] [DecidableEq ι]
+    (e : τ ≃ ι) (F₀ : Matrix ι τ ℝ)
+    (hF₀det : IsUnit ((F₀.submatrix id e.symm).det)) :
+    ∃ followingPatch : Set (Matrix ι τ ℝ), ∃ K : ℝ,
+      0 < K ∧
+        F₀ ∈ followingPatch ∧
+        MeasurableSet followingPatch ∧
+        matrixEntryReferenceMeasure ι τ followingPatch < ∞ ∧
+        (∀ F ∈ followingPatch, IsUnit ((F.submatrix id e.symm).det)) ∧
+        (∀ F ∈ followingPatch,
+          aoyagiCoordinateSquareSum
+              (fun ij : τ × ι =>
+                (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2) ≤ K) := by
+  classical
+  let inverseSquareSum : Matrix ι τ ℝ → ℝ := fun F =>
+    aoyagiCoordinateSquareSum
+      (fun ij : τ × ι =>
+        (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2)
+  let K : ℝ := inverseSquareSum F₀ + 1
+  let followingPatch : Set (Matrix ι τ ℝ) :=
+    matrixEntryBox F₀ 1 ∩
+      {F : Matrix ι τ ℝ | IsUnit ((F.submatrix id e.symm).det)} ∩
+      {F : Matrix ι τ ℝ | inverseSquareSum F < K}
+  have hbox_meas : MeasurableSet (matrixEntryBox F₀ 1) :=
+    measurableSet_matrixEntryBox F₀ 1
+  have hdet_meas :
+      MeasurableSet {F : Matrix ι τ ℝ | IsUnit ((F.submatrix id e.symm).det)} := by
+    have hdet_open :
+        IsOpen {F : Matrix ι τ ℝ | IsUnit ((F.submatrix id e.symm).det)} := by
+      exact
+        ((continuous_id.matrix_submatrix id e.symm).matrix_det).isOpen_preimage
+          ({a : ℝ | IsUnit a}) isOpen_setOf_isUnit
+    exact hdet_open.measurableSet
+  have hsub_meas : Measurable (fun F : Matrix ι τ ℝ => F.submatrix id e.symm) :=
+    (continuous_id.matrix_submatrix id e.symm).measurable
+  have hinv_meas :
+      Measurable (fun F : Matrix ι τ ℝ => (F.submatrix id e.symm)⁻¹) :=
+    measurable_matrix_inv_real.comp hsub_meas
+  have hcoords_meas :
+      Measurable
+        (fun F : Matrix ι τ ℝ =>
+          fun ij : τ × ι =>
+            (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2) := by
+    refine measurable_pi_lambda _ fun ij => ?_
+    exact
+      (measurable_pi_apply ij.2).comp
+        ((measurable_pi_apply (e ij.1)).comp hinv_meas)
+  have hinvSq_meas : Measurable inverseSquareSum := by
+    simpa [inverseSquareSum] using
+      measurable_aoyagiCoordinateSquareSum hcoords_meas
+  have hbound_meas : MeasurableSet {F : Matrix ι τ ℝ | inverseSquareSum F < K} :=
+    hinvSq_meas (measurableSet_Iio : MeasurableSet (Set.Iio K))
+  have hpatch_meas : MeasurableSet followingPatch := by
+    exact (hbox_meas.inter hdet_meas).inter hbound_meas
+  have hpatch_lt_top : matrixEntryReferenceMeasure ι τ followingPatch < ∞ := by
+    have hsub : followingPatch ⊆ matrixEntryBox F₀ 1 := by
+      intro F hF
+      exact hF.1.1
+    exact
+      (measure_mono hsub).trans_lt
+        (matrixEntryReferenceMeasure_matrixEntryBox_lt_top F₀ 1)
+  have hF₀_box : F₀ ∈ matrixEntryBox F₀ 1 :=
+    mem_matrixEntryBox_self F₀ zero_lt_one
+  have hF₀_bound : inverseSquareSum F₀ < K := by
+    dsimp [K]
+    linarith
+  have hK_pos : 0 < K := by
+    have hnonneg : 0 ≤ inverseSquareSum F₀ := by
+      dsimp [inverseSquareSum]
+      exact aoyagiCoordinateSquareSum_nonneg _
+    dsimp [K]
+    linarith
+  refine ⟨followingPatch, K, hK_pos, ?_, hpatch_meas, hpatch_lt_top, ?_, ?_⟩
+  · exact ⟨⟨hF₀_box, hF₀det⟩, hF₀_bound⟩
+  · intro F hF
+    exact hF.1.2
+  · intro F hF
+    exact le_of_lt hF.2
+
 set_option linter.style.longLine false in
 /-- Coordinate-product reference measure on the passive fields suppressed by
 the reduced selected-entry section in Aoyagi Case 2. -/

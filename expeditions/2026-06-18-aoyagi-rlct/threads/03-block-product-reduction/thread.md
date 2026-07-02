@@ -21,6 +21,83 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 matrix-entry following-factor local patch
+
+Reproduction:
+`reproduction-a2-matrix-entry-following-factor-local-patch.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves the matrix-entry coordinate box helpers:
+
+```text
+matrixEntryBox
+mem_matrixEntryBox_self
+measurableSet_matrixEntryBox
+matrixEntryReferenceMeasure_matrixEntryBox_lt_top
+```
+
+and the local following-factor patch theorem:
+
+```text
+exists_matrixEntryReferenceMeasure_finite_followingPatch_of_reindexed_det_isUnit
+```
+
+Given `e : τ ≃ ι`, a base following factor `F₀ : Matrix ι τ ℝ`, and
+`IsUnit ((F₀.submatrix id e.symm).det)`, it produces a patch and `K` with
+`0 < K`, `F₀ ∈ patch`, finite `matrixEntryReferenceMeasure` mass, determinant
+unit on the patch, and a uniform bound for the reindexed inverse square-sum.
+The finite-mass primitive is the entrywise box
+`Π_i Π_j (F₀ i j - 1, F₀ i j + 1)`, evaluated by `Measure.pi_pi` and
+`Real.volume_Ioo`.
+
+The Case 2 consumer wrapper is:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_base_reindexed_det_isUnit
+```
+
+It specializes the generic patch to
+`Matrix (Case2ResidualColIndex n S (J+1)) τ ℝ` and then invokes the
+determinant-chart finite patch wrapper to get a.e. positivity and finite
+negative-power integrability for the p.13 product residual over the restricted
+following-patch source measure.
+
+Focused local build passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+```
+
+Full verification passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+rg -n '\b(sorry|admit|axiom)\b|#exit|native_decide' touched Lean files
+```
+
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]` for the
+new finite-box and following-patch declarations.
+
+Xhigh scouts `Fermat the 3rd` and `Descartes the 3rd` confirmed the coordinate
+box route and the generic-then-Case-2 theorem order.  Xhigh review by
+`Hume the 3rd` found no issues.  Review specifically checked finite box
+measure, inverse-square-sum measurability, determinant hypothesis orientation,
+intersection membership, and absence of determinant-sector overclaim.
+
+Boundary: this does not prove positive patch mass and does not derive the base
+following-factor determinant condition from
+`case2PassiveThetaWithFollowingFactorDetSector`; that sector imposes no
+condition on the independent following factor.  It also does not prove
+source-prior/original-prior transport, normal crossings, pole order, or RLCT.
+
 ## 2026-07-02 A2 determinant following-factor patch wrapper
 
 Reproduction:

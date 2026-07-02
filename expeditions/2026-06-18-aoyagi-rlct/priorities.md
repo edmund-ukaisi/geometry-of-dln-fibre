@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 matrix-entry following-factor local patch
+
+Lean now has:
+
+```text
+matrixEntryBox
+matrixEntryReferenceMeasure_matrixEntryBox_lt_top
+exists_matrixEntryReferenceMeasure_finite_followingPatch_of_reindexed_det_isUnit
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_base_reindexed_det_isUnit
+```
+
+Decision: the determinant following-factor patch hypotheses are no longer only
+abstract.  A base following factor whose square reindexing has unit determinant
+now produces a finite measurable `matrixEntryReferenceMeasure` following patch,
+a positive uniform inverse-square-sum bound `K`, and the restricted p.13
+product-residual a.e. positivity/finite-integral conclusion.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-matrix-entry-following-factor-local-patch.md
+```
+
+Boundary: this constructs a finite measurable coordinate patch, not a full
+source-chart/original-prior theorem.  It still takes the base following-factor
+determinant condition as a separate hypothesis and does not derive it from
+`case2PassiveThetaWithFollowingFactorDetSector`, which imposes no condition on
+the independent following factor.  Positive patch mass, source-prior transport,
+normal crossings, pole order, and RLCT remain open.
+
 ## Latest controller decision - 2026-07-02, A2 determinant following-factor patch wrapper
 
 Lean now has:
