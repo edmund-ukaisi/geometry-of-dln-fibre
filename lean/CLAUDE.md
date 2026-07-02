@@ -23,8 +23,22 @@
 - New modules live at `DLNFibre/<Core|DLN>/<Topic>/<File>.lean`; one substantive theorem family per file.
 
 ## Sorry gate
-- Zero `sorry` / `axiom` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- Zero `sorry` / `native_decide` / `#exit` in committed files. Audit with `scripts/sorries` from `lean/` before every commit.
+- **`axiom` is allowed ONLY for a declared cite** — an `@[cited "<source>"]` axiom in a located
+  `…Cited.lean` file (see the citation cordon below). Any other axiom is a violation.
 - A `sorry` with a correct statement is a building block; a `sorry` with a wrong statement misleads. Fix wrong statements first.
+
+## Citation cordon (the Proved-vs-Cited gate)
+- Cited external results are `@[cited "<source>"]` `axiom`s in located `…Cited.lean` files; the kernel
+  tracks every axiom via `collectAxioms`, and the gate is `collectAxioms − {propext, Classical.choice,
+  Quot.sound} − @[cited] = ∅`. Full mechanism + declare-a-cite workflow:
+  [`../docs/policies/citation-cordon.md`](../docs/policies/citation-cordon.md).
+- **`scripts/cited`** — the ENFORCING gate (nonzero exit on any UNACCOUNTED / LOCATION violation),
+  sibling to the informational `scripts/sorries`. `scripts/cited --manifest` prints the per-source
+  cite map. **`#audit_cited foo`** — the in-file report (mirrors `#print axioms`), the inner loop.
+  **`scripts/cited-test`** — battle-tests the cordon against `tests/CordonFixtures.lean`.
+- Forget-proof: forgetting the tag doesn't hide a cite (the raw axiom still lands in UNACCOUNTED → red
+  gate). Green = "no unaccounted axiom", NOT a whole-TCB audit; a human still reviews the source string.
 
 ## Bedrock (the bar above the sorry gate)
 A green, sorry-free build is the **floor**: it defeats *technical* slop, never *conceptual* slop —

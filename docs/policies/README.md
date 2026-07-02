@@ -15,6 +15,7 @@ work.
 - [`lean-build-workflow.md`](lean-build-workflow.md) — running `lake` across many worktrees/sessions: the shared rev-keyed dependency store, the `scripts/lb` wrapper, and the global build-concurrency cap.
 - [`codex-consultation.md`](codex-consultation.md) — when and how to consult Codex as the independent second model.
 - [`statement-cards.md`](statement-cards.md) — linking a formalised claim to its Lean theorem in markdown.
+- [`citation-cordon.md`](citation-cordon.md) — the machine-enforced, forget-proof Proved-vs-Cited invariant: `@[cited]` axioms in located `…Cited.lean` files, `collectAxioms − foundational − @[cited] = ∅` as the `scripts/cited` gate, `#audit_cited` in-file, the adversarial fixtures.
 - [`writing-style.md`](writing-style.md) — the umbrella research-writing discipline: object-level focus + the banned-wording list, elementary build-up, layered detail (footnotes / collapsibles), and the scholium renderer's rendering rules.
 - [`draft-policy-semantic-auditing.md`](draft-policy-semantic-auditing.md) — draft, to be discussed: checking that compiled Lean statements, definitions, and APIs match the mathematics the research programme actually needs.
 

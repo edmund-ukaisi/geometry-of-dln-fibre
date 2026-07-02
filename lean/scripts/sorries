@@ -47,9 +47,29 @@ def block_comment_depth_at(lines: list[str], lineno: int, col: int) -> int:
     return depth
 
 
+def in_string_literal(line: str, col: int) -> bool:
+    """Heuristic: is column `col` inside a "..."-delimited string literal on this line?
+
+    Counts unescaped double-quotes before `col`; an odd count means we are inside a
+    string.  Covers `"…axiom…"` and `s!"…axiom…"` (the citation-cordon metaprogram's own
+    messages legitimately mention `axiom`).  Not a full lexer, but string literals rarely
+    contain the markers except in such tooling prose."""
+    depth = 0
+    i = 0
+    while i < col and i < len(line):
+        c = line[i]
+        if c == "\\":
+            i += 2
+            continue
+        if c == '"':
+            depth ^= 1
+        i += 1
+    return depth == 1
+
+
 def is_in_comment(lines: list[str], lineno: int, line: str, marker: str,
                   col: int) -> bool:
-    """Skip markers that appear inside comments."""
+    """Skip markers that appear inside comments, string literals, or backtick-quotes."""
     if marker in ("sorry", "axiom", "native_decide", "#exit"):
         stripped = line.lstrip()
         if stripped.startswith("--"):
@@ -57,9 +77,11 @@ def is_in_comment(lines: list[str], lineno: int, line: str, marker: str,
         # Check if inside a multi-line /- -/ block comment
         if block_comment_depth_at(lines, lineno, col) > 0:
             return True
-        # Also skip if the marker is inside a backtick-quoted identifier
-        idx = line.find(marker)
-        if idx > 0 and line[idx - 1] == "`":
+        # Skip if the marker sits inside a "..." string literal (tooling prose).
+        if in_string_literal(line, col):
+            return True
+        # Also skip if the marker is inside a backtick-quoted identifier (use the real col).
+        if col > 0 and line[col - 1] == "`":
             return True
     return False
 
