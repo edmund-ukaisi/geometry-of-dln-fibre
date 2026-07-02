@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following endpoint selected-entry source density
+
+Reproduction:
+`reproduction-a2-case2-with-following-endpoint-selected-entry-source-density.md`.
+Statement card:
+`statement-card-a2-case2-with-following-endpoint-selected-entry-source-density.md`.
+Review:
+`review-a2-case2-with-following-endpoint-selected-entry-source-density.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now defines and proves:
+
+```text
+case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_unweighted_withDensity_selectedEntrySourceDensity_restrict_eq_endpointReferenceImageMeasure
+```
+
+The result records the source-side selected-entry change-of-variables
+convention for the enlarged endpoint reference image: the existing reference
+source is the unweighted passive/center/following coordinate-product source
+with exactly the selected-entry source density on `yNext`, and its endpoint
+pushforward is the named endpoint reference image.
+
+Boundary: actual endpoint image/source-density convention only.  No
+determinant-chart Haar equality, no bare target-Haar `Y` COV theorem, no
+retained-passive raw-order determinant factor, no raw-Haar transport,
+source-prior transport, source-image coverage, formal-product domination,
+normal crossings, pole order, or RLCT is proved.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The four new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following raw-order reference image same-shrink package
 
 Reproduction:

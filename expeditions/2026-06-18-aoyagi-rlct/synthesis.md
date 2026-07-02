@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Endpoint Selected-Entry Source Density - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_unweighted_withDensity_selectedEntrySourceDensity_restrict_eq_endpointReferenceImageMeasure
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The unweighted source is the product of the passive-field reference measure,
+the unsigned selected-entry center signed-box measure, and the independent
+following-factor matrix reference measure.  The selected-entry density is
+
+```text
+theta ↦ ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext theta.1.yNext).
+```
+
+The source-measure theorem proves that the existing enlarged reference source
+is exactly this unweighted source with the selected-entry density.  The endpoint
+theorem substitutes that identity into the named endpoint reference image
+
+```text
+Measure.map Y (referenceSource.restrict Ω).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-selected-entry-source-density.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-selected-entry-source-density.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-selected-entry-source-density.md
+```
+
+Boundary: this is source-side selected-entry density for the actual endpoint
+image.  It does not identify the endpoint image with determinant-chart Haar,
+does not prove a bare target-Haar `Y` change-of-variables theorem, does not add
+the retained-passive raw-order determinant factor, and does not prove raw-Haar
+transport, source-prior transport, source-image coverage, formal-product
+domination, normal crossings, pole order, or RLCT.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, direct axiom probe, and xhigh read-only review passed.  The four new
+declarations report `[propext, Classical.choice, Quot.sound]`.  The full build
+replayed the repository's existing warning profile.
+
 ## A2 With-Following Raw-Order Reference Image Same-Shrink Package - 2026-07-02
 
 Lean now has:

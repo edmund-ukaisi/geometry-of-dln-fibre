@@ -12,6 +12,49 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following endpoint selected-entry source density
+
+Lean now exposes the selected-entry source-density convention for the enlarged
+Case 2 endpoint reference image:
+
+```text
+case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_unweighted_withDensity_selectedEntrySourceDensity_restrict_eq_endpointReferenceImageMeasure
+```
+
+Decision: this is the first honest source-side `Y` density rung.  It says that
+the existing enlarged reference source is the unweighted passive/center/following
+coordinate-product source with exactly the selected-entry density on `yNext`,
+and that pushing this weighted unweighted source through the enlarged endpoint
+map gives the named endpoint reference image.  The following-factor coordinate
+is independent and receives no extra density factor.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-selected-entry-source-density.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-selected-entry-source-density.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-selected-entry-source-density.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom probe,
+and xhigh review passed.  The four new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: actual endpoint image/source-density convention only.  No determinant
+chart Haar equality, no bare target-Haar `Y` COV theorem, no retained-passive
+raw-order determinant factor, no raw-Haar transport, no source-prior transport,
+no source-image coverage, no formal-product domination, no normal crossings, no
+pole order, and no RLCT.
+
+Next A2 target: compose this source-side selected-entry factor with the already
+banked raw-image/raw-order determinant handoff only when doing so removes a real
+downstream supplied density field.  Do not add another conditional contract
+wrapper unless it replaces a concrete missing input.
+
 ## Latest controller decision - 2026-07-02, A2 with-following raw-order actual-image package
 
 Lean now names the raw-order actual image of the enlarged Case 2 passive-theta
