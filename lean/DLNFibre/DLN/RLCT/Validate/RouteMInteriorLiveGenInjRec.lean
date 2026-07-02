@@ -298,12 +298,9 @@ private theorem Nblk_eq_of_readN_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M 
 induction (route (a)'s triangular substitution). At `k`, `Wblk k` agrees (from `Agen k`, uncond.);
 `Nblk k = readN ⟨k−1⟩` agrees from `frameRecoverGen (k−1)` (needs `Cgen(k)` = the previous step);
 `Cgen_eq_of_Agen_eq` then gives `Cgen(k+1)`. Base `k = 0`: `Nblk 0 = 0`, direct. -/
-theorem Cgen_succ_eq_of_BchartLeafGen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L)
+theorem Cgen_succ_eq_of_BchartLeafGen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (y y' : Fin (routeMAmbient M) → ℝ)
-    (hymem : y ∈ kLDU M (tach M) ha ''
-      (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) ''
-        interiorLiveInjDomGen M ha hL h0r h0c))
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
     (heq : BchartLeafGen M ha y = BchartLeafGen M ha y') :
     ∀ k, (hk : k < L) →
       Cgen 1 M (tach M) (Bof M ha y) (hleStruct M (tach M) ha) (k + 1)
@@ -322,7 +319,7 @@ theorem Cgen_succ_eq_of_BchartLeafGen_eq (M : Fin (L + 1) → ℕ) (ha : StructA
           = Cgen 1 M (tach M) (Bof M ha y') (hleStruct M (tach M) ha) (j + 1) := ih j hjk hjL
       have hj1L : j + 1 < L := by simp only at hjeq; omega
       have hdetKj : (Matrix.of (readK M (tach M) ha y ⟨j, by omega⟩)).det ≠ 0 :=
-        detK_ne_zero_gen M ha hL h0r h0c hymem ⟨j, by omega⟩
+        hdetK ⟨j, by omega⟩
       have hFrame := frameRecoverGen M ha y y' j hj1L hCgj hdetKj
       exact readN_eq_of_frameTuple_eq M ha y y' j (by omega) hFrame
     exact Cgen_eq_of_Agen_eq M ha y y' ⟨k, hk⟩ hAgen hN hW
@@ -331,27 +328,23 @@ theorem Cgen_succ_eq_of_BchartLeafGen_eq (M : Fin (L + 1) → ℕ) (ha : StructA
 
 /-- The four frame readers agree at every INTERIOR boundary `k` (`k + 1 < L`) — from `Cgen(k+1)`
 agreement (`Cgen_succ_eq_…`) + `det K ≠ 0` (gate) via `frameRecoverGen`. -/
-theorem frameReaders_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (y y' : Fin (routeMAmbient M) → ℝ)
-    (hymem : y ∈ kLDU M (tach M) ha ''
-      (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) ''
-        interiorLiveInjDomGen M ha hL h0r h0c))
+theorem frameReaders_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y y' : Fin (routeMAmbient M) → ℝ)
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
     (heq : BchartLeafGen M ha y = BchartLeafGen M ha y') (k : ℕ) (hk1 : k + 1 < L) :
     frameTuple M ha y k (by omega) = frameTuple M ha y' k (by omega) := by
   refine frameRecoverGen M ha y y' k hk1
-    (Cgen_succ_eq_of_BchartLeafGen_eq M ha hL h0r h0c y y' hymem heq k (by omega)) ?_
-  exact detK_ne_zero_gen M ha hL h0r h0c hymem ⟨k, by omega⟩
+    (Cgen_succ_eq_of_BchartLeafGen_eq M ha y y' hdetK heq k (by omega)) ?_
+  exact hdetK ⟨k, by omega⟩
 
 /-- The leaf reader agrees — `Cgen(L) = 1 • rfinDirectGen` (`Cgen` leaf arm), so `Cgen(L)`-agreement
 (`Cgen_succ_eq_…` at `k = L−1`) gives `rfinDirectGen y = rfinDirectGen y'`. -/
 theorem rfinDirectGen_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (y y' : Fin (routeMAmbient M) → ℝ)
-    (hymem : y ∈ kLDU M (tach M) ha ''
-      (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) ''
-        interiorLiveInjDomGen M ha hL h0r h0c))
+    (y y' : Fin (routeMAmbient M) → ℝ)
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
     (heq : BchartLeafGen M ha y = BchartLeafGen M ha y') :
     rfinDirectGen M ha y = rfinDirectGen M ha y' := by
-  have hCgL := Cgen_succ_eq_of_BchartLeafGen_eq M ha hL h0r h0c y y' hymem heq (L - 1) (by omega)
+  have hCgL := Cgen_succ_eq_of_BchartLeafGen_eq M ha y y' hdetK heq (L - 1) (by omega)
   rw [show L - 1 + 1 = L by omega] at hCgL
   have hleaf : ∀ z : Fin (routeMAmbient M) → ℝ,
       Cgen 1 M (tach M) (Bof M ha z) (hleStruct M (tach M) ha) L = rfinDirectGen M ha z := by
@@ -385,16 +378,14 @@ theorem readW_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (y y' : F
 /-- **Frame-slot coverage at an interior boundary** (`k + 1 < L`): `y` and `y'` agree on EVERY frame
 slot `chartIdxEquiv.symm ⟨k, Sum.inl s⟩`. Decode `s` via `frameSplitEquiv` into the K/X/N/E role and
 match the corresponding reader (all four agree by `frameReaders_eq`). -/
-theorem frameSlot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (y y' : Fin (routeMAmbient M) → ℝ)
-    (hymem : y ∈ kLDU M (tach M) ha ''
-      (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) ''
-        interiorLiveInjDomGen M ha hL h0r h0c))
+theorem frameSlot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y y' : Fin (routeMAmbient M) → ℝ)
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
     (heq : BchartLeafGen M ha y = BchartLeafGen M ha y') (k : Fin L) (hk1 : k.val + 1 < L)
     (s : Fin (schurDim M (tDesc M (tach M)) k.val)) :
     y ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨k, Sum.inl s⟩)
       = y' ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨k, Sum.inl s⟩) := by
-  have hFrame := frameReaders_eq M ha hL h0r h0c y y' hymem heq k.val hk1
+  have hFrame := frameReaders_eq M ha y y' hdetK heq k.val hk1
   have hK : (fun i j => readK M (tach M) ha y ⟨k.val, k.isLt⟩ i j)
       = fun i j => readK M (tach M) ha y' ⟨k.val, k.isLt⟩ i j := by
     have := congrArg (fun z => z.1) hFrame; simpa [frameTuple] using this
@@ -452,17 +443,15 @@ theorem frameSlot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL :
 `schurSlotEquiv` to `(a, b)`, and `leafSlot (cast a) (cast b) = chartIdxEquiv.symm ⟨⟨L−1,_⟩, Sum.inl
 s⟩`. -/
 theorem leafSlot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) (y y' : Fin (routeMAmbient M) → ℝ)
-    (hymem : y ∈ kLDU M (tach M) ha ''
-      (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c) ''
-        interiorLiveInjDomGen M ha hL h0r h0c))
+    (y y' : Fin (routeMAmbient M) → ℝ)
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
     (heq : BchartLeafGen M ha y = BchartLeafGen M ha y')
     (k : Fin L) (hkeq : k = ⟨L - 1, by omega⟩)
     (s : Fin (schurDim M (tDesc M (tach M)) k.val)) :
     y ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨k, Sum.inl s⟩)
       = y' ((chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm ⟨k, Sum.inl s⟩) := by
   subst hkeq
-  have hrfin := rfinDirectGen_eq M ha hL h0r h0c y y' hymem heq
+  have hrfin := rfinDirectGen_eq M ha hL y y' hdetK heq
   have hi : Text M (tach M) L = tDesc M (tach M) (L - 1) := by
     rw [tDesc_apply]; congr 1; omega
   have hj : Wext M L = Wext M (L - 1 + 1) := by congr 1; omega
@@ -487,18 +476,15 @@ theorem leafSlot_eq (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 
 
 /-! ## Step 6 — the funext coverage-closer -/
 
-/-- **`BchartLeafGen` injective on the kLDU-image of `pbo '' injDom`** (general-`L`) — the route (a)
-close. From `BchartLeafGen y = BchartLeafGen y'`, funext over the ambient coordinate `q`, decode via
-`chartIdxEquiv`: a lift slot `⟨k, Sum.inr s⟩` (nonempty ⟹ `k + 1 < L`) is a `readW k` coord
-(`readW_eq`); a frame slot `⟨k, Sum.inl s⟩` is recovered by `frameSlot_eq` (interior `k + 1 < L`) or
-`leafSlot_eq` (leaf `k = L − 1`). -/
-theorem BchartLeafGen_injOn_recover (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
-    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) :
-    Set.InjOn (BchartLeafGen M ha)
-      (kLDU M (tach M) ha
-        '' (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c)
-          '' interiorLiveInjDomGen M ha hL h0r h0c)) := by
-  intro y hy y' _ heq
+/-- **`BchartLeafGen` injective from the per-boundary `det K ≠ 0` gate** (general-`L`) — the
+hypothesis-weakened core of `BchartLeafGen_injOn_recover`: given `BchartLeafGen y = BchartLeafGen y'`
+and `det (readK y k) ≠ 0` at EVERY interior boundary `k : Fin L`, recover `y = y'`. The image-set
+membership is used ONLY to supply this per-boundary det gate; carrying it directly is strictly
+weaker, so the same recovery serves any pivot (leaf or E-slot) with nonsingular K-blocks. -/
+theorem BchartLeafGen_inj_of_detK (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+    (y y' : Fin (routeMAmbient M) → ℝ)
+    (hdetK : ∀ k : Fin L, (Matrix.of (readK M (tach M) ha y k)).det ≠ 0)
+    (heq : BchartLeafGen M ha y = BchartLeafGen M ha y') : y = y' := by
   funext q
   obtain ⟨c, hc⟩ : ∃ c, q = (chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL).symm c :=
     ⟨chartIdxEquiv M (tDesc M (tach M)) ha.h0 ha.hc ha.hL q, by
@@ -508,11 +494,11 @@ theorem BchartLeafGen_injOn_recover (M : Fin (L + 1) → ℕ) (ha : StructAdm M 
   cases side with
   | inl s =>
     by_cases hk1 : k.val + 1 < L
-    · exact frameSlot_eq M ha hL h0r h0c y y' hy heq k hk1 s
+    · exact frameSlot_eq M ha y y' hdetK heq k hk1 s
     · have hk1' : ¬ (k.val + 1 < L) := hk1
       have hkv : k.val = L - 1 := by have := k.isLt; omega
       have hkeq : k = ⟨L - 1, by omega⟩ := Fin.ext hkv
-      exact leafSlot_eq M ha hL h0r h0c y y' hy heq k hkeq s
+      exact leafSlot_eq M ha hL y y' hdetK heq k hkeq s
   | inr s =>
     by_cases hk1 : k.val + 1 < L
     · set e := liftSlotEquiv M (tDesc M (tach M)) k.val hk1 with he
@@ -527,5 +513,19 @@ theorem BchartLeafGen_injOn_recover (M : Fin (L + 1) → ℕ) (ha : StructAdm M 
         rw [liftDim, if_neg (by omega)]
       have hslt : (s : ℕ) < liftDim M (tDesc M (tach M)) k.val := s.isLt
       omega
+
+/-- **`BchartLeafGen` injective on the kLDU-image of `pbo '' injDom`** (general-`L`) — the route (a)
+close for the LEAF pivot. Derives the per-boundary det gate `det (readK y k) ≠ 0` from the image
+membership (the shared gate `detK_ne_zero_gen`) and feeds the hypothesis-weakened core
+`BchartLeafGen_inj_of_detK`. -/
+theorem BchartLeafGen_injOn_recover (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+    (h0r : 0 < Text M (tach M) L) (h0c : 0 < Wext M L) :
+    Set.InjOn (BchartLeafGen M ha)
+      (kLDU M (tach M) ha
+        '' (pivotBlowupOn (activeMGen M ha) (leafPivot M ha hL h0r h0c)
+          '' interiorLiveInjDomGen M ha hL h0r h0c)) := by
+  intro y hy y' _ heq
+  exact BchartLeafGen_inj_of_detK M ha hL y y'
+    (fun k => detK_ne_zero_gen M ha hL h0r h0c hy k) heq
 
 end DLNFibre.DLN.RLCT

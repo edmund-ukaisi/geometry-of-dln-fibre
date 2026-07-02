@@ -33,6 +33,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0Atom
 import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
 
 /-!
 # Axiom-hygiene check
@@ -238,6 +239,15 @@ open DLNFibre.DLN.RLCT
 -- (L ≥ 3) is the remaining general-`L` interior gap (banked at L = 2 only via `eDeepRank0`).
 #print axioms interiorLiveGen_hInterior_of_deepRank_pos
 #print axioms routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos
+
+-- ★ GENERAL-`L` `deepRank = 0` INTERIOR box-divergence atom (the complementary sub-stratum to the
+-- LIVE-leaf atom, closing the general-`L` interior obligation ∀L) — `routeMCore_box_diverges_
+-- eDeepRank0Gen` (the E-block re-pivot chart `eDeepRank0NodeChartGen` box divergence, chart boundary
+-- `k` aligned to the InteriorDrop pivot `p* = k+1`) + its `∀ _ : 2 ≤ L`-shaped consumer
+-- `interiorLiveGen_hInterior_of_deepRank_zero` must be CLEAN modulo the single cited S2 axiom:
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`.
+#print axioms routeMCore_box_diverges_eDeepRank0Gen
+#print axioms interiorLiveGen_hInterior_of_deepRank_zero
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
