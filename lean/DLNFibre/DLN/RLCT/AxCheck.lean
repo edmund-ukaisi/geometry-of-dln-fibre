@@ -33,6 +33,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0Atom
 import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHInterior
 
 /-!
 # Axiom-hygiene check
@@ -238,6 +240,22 @@ open DLNFibre.DLN.RLCT
 -- (L ≥ 3) is the remaining general-`L` interior gap (banked at L = 2 only via `eDeepRank0`).
 #print axioms interiorLiveGen_hInterior_of_deepRank_pos
 #print axioms routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos
+
+-- ★ GENERAL-`L` `deepRank = 0` INTERIOR box-divergence atom (the complementary sub-stratum to the
+-- LIVE-leaf atom, closing the general-`L` interior obligation ∀L) — `routeMCore_box_diverges_
+-- eDeepRank0Gen` (the E-block re-pivot chart `eDeepRank0NodeChartGen` box divergence, chart boundary
+-- `k` aligned to the InteriorDrop pivot `p* = k+1`) + its `∀ _ : 2 ≤ L`-shaped consumer
+-- `interiorLiveGen_hInterior_of_deepRank_zero` must be CLEAN modulo the single cited S2 axiom:
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`.
+#print axioms routeMCore_box_diverges_eDeepRank0Gen
+#print axioms interiorLiveGen_hInterior_of_deepRank_zero
+
+-- ★ GENERAL-`L` INTERIOR `hInterior` OBLIGATION ∀L (the CAPSTONE of R1-LOWER's interior branch) —
+-- `interiorLiveGen_hInterior` combines the two deepRank sub-strata (`interiorLiveGen_hInterior_of_
+-- deepRank_pos` + `_of_deepRank_zero`, cased via `Nat.eq_zero_or_pos`) into the spine's `hInterior`
+-- slot `∀ _ : 2 ≤ L, InteriorDrop M → BoxDiverges M c' ε`, unconditionally on `InteriorDrop`. Must
+-- inherit both atoms' footprint: [propext, Classical.choice, Quot.sound, monomial_rlct], no sorry.
+#print axioms interiorLiveGen_hInterior
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],

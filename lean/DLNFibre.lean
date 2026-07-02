@@ -665,5 +665,19 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 -- [propext, Classical.choice, Quot.sound, monomial_rlct]. The `deepRank M = 0` sub-stratum (L ≥ 3)
 -- is the remaining general-`L` interior gap (banked at L = 2 only).
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
+-- General-`L` `deepRank = 0` INTERIOR box-divergence atom (the complementary sub-stratum to the
+-- LIVE-leaf atom above): the E-block re-pivot chart `eDeepRank0NodeChartGen` bundle, its box
+-- divergence `routeMCore_box_diverges_eDeepRank0Gen`, and the `∀ _ : 2 ≤ L`-shaped consumer
+-- `interiorLiveGen_hInterior_of_deepRank_zero`. Chart boundary `k` aligned to the InteriorDrop
+-- pivot `p* = k+1` (the carrier of the row/col drops). Axiom footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] (the single permitted S2 axiom). Together
+-- with `_of_deepRank_pos` this closes the general-`L` interior `hInterior` obligation ∀L.
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
+-- General-`L` interior `hInterior` obligation ∀L (the CAPSTONE of the interior branch of R1-LOWER):
+-- `interiorLiveGen_hInterior` combines the two deepRank sub-strata (via `Nat.eq_zero_or_pos`) into the
+-- achiever-dispatch spine's `hInterior` slot `∀ _ : 2 ≤ L, InteriorDrop M → BoxDiverges M c' ε`,
+-- unconditionally on `InteriorDrop`. Inherits both atoms' footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct].
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHInterior
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
