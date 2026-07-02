@@ -1526,6 +1526,79 @@ theorem exists_ell_one_of_L_eq_two_positive_repeated
       · refine Finset.mem_image.mpr ⟨(1 : Fin (1 + 1)), Finset.mem_univ _, ?_⟩
         simpa [C] using h23
 
+/-- Exact `ell = 1` part of the complete finite `L=2` Definition 3
+classification.
+
+For three source layers, an `ell=1` source datum exists precisely when all
+three source-range reduced widths are positive and two of them repeat. -/
+theorem exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
+    {H : ℕ → ℕ} {r : ℕ} :
+    (∃ C : AoyagiSelectedCutpoints 1,
+      AoyagiDefinition3SourceData 2 1 H r C) ↔
+      ((0 : ℤ) < aoyagiReducedWidthInt H r 1 ∧
+        (0 : ℤ) < aoyagiReducedWidthInt H r 2 ∧
+        (0 : ℤ) < aoyagiReducedWidthInt H r 3 ∧
+        (aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 2 ∨
+          aoyagiReducedWidthInt H r 1 = aoyagiReducedWidthInt H r 3 ∨
+          aoyagiReducedWidthInt H r 2 = aoyagiReducedWidthInt H r 3)) := by
+  constructor
+  · rintro ⟨C, S⟩
+    have hmem1 :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+        (s := 1) (by norm_num) (by norm_num)
+    have hmem2 :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+        (s := 2) (by norm_num) (by norm_num)
+    have hmem3 :=
+      S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
+        (s := 3) (by norm_num) (by norm_num)
+    have hsel0pos :
+        0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+      have hstrict := S.selected_strict (1 : Fin (1 + 1))
+      rw [Fin.sum_univ_two] at hstrict
+      norm_num at hstrict
+      omega
+    have hsel1pos :
+        0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+      have hstrict := S.selected_strict (0 : Fin (1 + 1))
+      rw [Fin.sum_univ_two] at hstrict
+      norm_num at hstrict
+      omega
+    have hpos_of_mem : ∀ {s : ℕ},
+        aoyagiReducedWidthInt H r s ∈
+          Finset.univ.image
+            (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) →
+        0 < aoyagiReducedWidthInt H r s := by
+      intro s hm
+      rw [Finset.mem_image] at hm
+      rcases hm with ⟨j, _hjmem, hj⟩
+      fin_cases j
+      · exact hj ▸ hsel0pos
+      · exact hj ▸ hsel1pos
+    refine ⟨hpos_of_mem hmem1, hpos_of_mem hmem2, hpos_of_mem hmem3, ?_⟩
+    rw [Finset.mem_image] at hmem1 hmem2 hmem3
+    rcases hmem1 with ⟨j1, _hj1mem, hj1⟩
+    rcases hmem2 with ⟨j2, _hj2mem, hj2⟩
+    rcases hmem3 with ⟨j3, _hj3mem, hj3⟩
+    have hpigeon : j1 = j2 ∨ j1 = j3 ∨ j2 = j3 := by
+      fin_cases j1 <;> fin_cases j2 <;> fin_cases j3 <;> simp
+    rcases hpigeon with h12j | h13j | h23j
+    · left
+      subst j2
+      exact hj1.symm.trans hj2
+    · right
+      left
+      subst j3
+      exact hj1.symm.trans hj3
+    · right
+      right
+      subst j3
+      exact hj2.symm.trans hj3
+  · rintro ⟨hpos1, hpos2, hpos3, hrep⟩
+    exact
+      exists_ell_one_of_L_eq_two_positive_repeated
+        (H := H) (r := r) hpos1 hpos2 hpos3 hrep
+
 /-- Complete finite classification of Definition 3 source-data existence for
 `L=2`.
 
@@ -1583,57 +1656,9 @@ theorem exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
     have hell_pos : 0 < ell := S.ell_pos
     interval_cases ell
     · left
-      have hmem1 :=
-        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
-          (s := 1) (by norm_num) (by norm_num)
-      have hmem2 :=
-        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
-          (s := 2) (by norm_num) (by norm_num)
-      have hmem3 :=
-        S.reducedWidth_mem_selectedValueSet_of_ell_eq_one
-          (s := 3) (by norm_num) (by norm_num)
-      have hsel0pos :
-          0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
-        have hstrict := S.selected_strict (1 : Fin (1 + 1))
-        rw [Fin.sum_univ_two] at hstrict
-        norm_num at hstrict
-        omega
-      have hsel1pos :
-          0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
-        have hstrict := S.selected_strict (0 : Fin (1 + 1))
-        rw [Fin.sum_univ_two] at hstrict
-        norm_num at hstrict
-        omega
-      have hpos_of_mem : ∀ {s : ℕ},
-          aoyagiReducedWidthInt H r s ∈
-            Finset.univ.image
-              (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) →
-          0 < aoyagiReducedWidthInt H r s := by
-        intro s hm
-        rw [Finset.mem_image] at hm
-        rcases hm with ⟨j, _hjmem, hj⟩
-        fin_cases j
-        · exact hj ▸ hsel0pos
-        · exact hj ▸ hsel1pos
-      refine ⟨hpos_of_mem hmem1, hpos_of_mem hmem2, hpos_of_mem hmem3, ?_⟩
-      rw [Finset.mem_image] at hmem1 hmem2 hmem3
-      rcases hmem1 with ⟨j1, _hj1mem, hj1⟩
-      rcases hmem2 with ⟨j2, _hj2mem, hj2⟩
-      rcases hmem3 with ⟨j3, _hj3mem, hj3⟩
-      have hpigeon : j1 = j2 ∨ j1 = j3 ∨ j2 = j3 := by
-        fin_cases j1 <;> fin_cases j2 <;> fin_cases j3 <;> simp
-      rcases hpigeon with h12j | h13j | h23j
-      · left
-        subst j2
-        exact hj1.symm.trans hj2
-      · right
-        left
-        subst j3
-        exact hj1.symm.trans hj3
-      · right
-        right
-        subst j3
-        exact hj2.symm.trans hj3
+      exact
+        (exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
+          (H := H) (r := r)).mp ⟨C, S⟩
     · right
       have hC : ∀ j : Fin (2 + 1), C.cut j = j.val + 1 :=
         S.cut_eq_consecutive_of_L_eq_two

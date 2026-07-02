@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 `L=2`, `ell=1` Source-Data Classifier - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+```
+
+It exposes the exact `ell=1` case of the finite `L=2` Definition 3
+classification: there is an `ell=1` source datum iff all three source-range
+reduced widths are positive and two of them repeat.
+
+The forward proof uses `reducedWidth_mem_selectedValueSet_of_ell_eq_one` to
+place the three source-range values in the two selected values, derives
+positivity of both selected values from the two strict selected inequalities,
+and then applies a finite two-bin pigeonhole argument.  The reverse direction
+delegates to `exists_ell_one_of_L_eq_two_positive_repeated`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-one-classifier-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-one-classifier.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-one-classifier-a6.md
+```
+
+Boundary: finite Definition 3 arithmetic only.  No `L>2` theorem, no
+arbitrary-`ell` branch choice, no branch-independent Theorem 2 formula, no
+Eq5/chart construction, no normal crossings, no pole order, and no RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The new theorem and
+the refactored complete `L=2` classifier report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Mill the 2nd`
+passed after one documentation precision fix.
+
 ## A4 Continuing Payload Source/Progress Projection - 2026-07-02
 
 Lean now has:

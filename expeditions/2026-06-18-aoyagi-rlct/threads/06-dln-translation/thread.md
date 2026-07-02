@@ -19,6 +19,36 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, `L=2`, `ell=1` source-data classifier
+
+Reproduction:
+`reproduction-definition3-l-eq-two-ell-one-classifier-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-ell-one-classifier.md`.
+Review:
+`review-definition3-l-eq-two-ell-one-classifier-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
+```
+
+This exposes the exact `ell=1` part of the `L=2` Definition 3 finite
+classifier: such source data exists iff the three source-range reduced widths
+are positive and at least two repeat.  The complete `L=2` classifier now calls
+this theorem in its `ell=1` forward branch.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The new theorem and refactored complete
+classifier report only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+reviewer `Mill the 2nd` passed after one documentation precision fix.
+
+Boundary: finite Definition 3 arithmetic only; no `L>2` classifier, canonical
+branch choice, branch-independent formula, Eq5 construction, chart
+production, normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, `L=2` pairwise-distinct rank-width removal
 
 Reproduction:
