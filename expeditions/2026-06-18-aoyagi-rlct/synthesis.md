@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Volume Readback Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+The theorem composes the with-following source-chart
+left-inverse/injectivity/continuity package, the with-following
+original-volume/source-reference domination theorem, and the generic readback
+domination handoff.  On the local shrink, if
+
+```text
+Measure.map rawMap (thetaReference.restrict V) = rawHaar.restrict rawSourceSet,
+```
+
+then every measurable chart piece satisfying both
+`chartPiece subset sourceChart '' V` and `chartPiece subset p13SourceSet`
+has
+
+```text
+AEMeasurable readback (originalVolume.restrict chartPiece)
+Measure.map readback (originalVolume.restrict chartPiece)
+  <= ((((cHaar^-1 : NNReal) : ENNReal) * 1) • thetaReference.restrict G).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-domination.md
+```
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, and direct axiom probe passed.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Laplace the 2nd`
+passed after the reproduction wording was sharpened to say image measurability
+is re-established on the smaller open set.
+
+Boundary: the raw-pushforward equality, chart-piece measurability,
+source-image containment, and p.13 source-set containment remain hypotheses.
+No raw-Haar theorem, determinant-chart Haar theorem, p.13 image coverage,
+source-prior/original-prior transport, density lower-bound removal, normal
+crossings, pole order, or RLCT is proved.
+
 ## A2 With-Following Original-Volume Domination - 2026-07-02
 
 Lean now has:

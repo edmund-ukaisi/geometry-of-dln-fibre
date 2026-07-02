@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following original-volume readback domination
+
+Reproduction:
+`reproduction-a2-with-following-original-volume-readback-domination.md`.
+Statement card:
+`statement-card-a2-with-following-original-volume-readback-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+This composes the with-following source-chart readback package, the
+with-following original-volume/source-reference domination theorem, and the
+generic readback domination handoff.  Under the supplied raw-pushforward
+equality, any measurable p.13 chart piece contained in the actual
+with-following source-chart image has a.e.-measurable readback and readback
+pushforward dominated by `thetaReference.restrict G` with scalar
+`((cHaar^-1 : NNReal) : ENNReal) * 1`.
+
+Boundary: raw-pushforward equality, chart-piece measurability,
+`chartPiece subset sourceChart '' V`, and `chartPiece subset p13SourceSet`
+remain hypotheses.  No raw Haar transport, determinant-chart Haar transport,
+p.13 source-image coverage, source-prior/original-prior transport, density
+lower-bound removal, normal crossings, pole order, or RLCT is proved.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, and direct axiom
+probe passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh reviewer `Laplace the 2nd` passed after the reproduction wording was
+sharpened to say image measurability is re-established on the smaller open
+set.
+
 ## 2026-07-02 A2 with-following original-volume domination
 
 Reproduction:

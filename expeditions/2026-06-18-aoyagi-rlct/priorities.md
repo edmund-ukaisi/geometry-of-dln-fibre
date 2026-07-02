@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following original-volume readback domination
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+Decision: this is a conditional downstream socket, not source-frontier
+progress.  It consumes the with-following original-volume/source-reference
+domination theorem and the with-following source-chart readback package to
+prove readback a.e. measurability and readback domination for measurable p.13
+chart pieces contained in the actual with-following source-chart image.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-domination.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, and direct axiom
+probe passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh reviewer `Laplace the 2nd` passed after the reproduction wording was
+sharpened to say image measurability is re-established on the smaller open
+set.
+
+Boundary: the raw-pushforward equality, chart-piece measurability,
+`chartPiece subset sourceChart '' V`, and `chartPiece subset p13SourceSet`
+remain hypotheses.  This does not prove raw-Haar transport, determinant-chart
+Haar transport, p.13 source-image coverage, source-prior/original-prior
+transport, density lower-bound removal, normal crossings, pole order, or RLCT.
+
+Next A2 target: do not keep stacking finite-integral wrappers unless they
+remove a real explicit field.  Either attack a genuine source-prior/full-image
+or determinant-Haar transport theorem, or build only the smallest consumer
+needed by an existing downstream theorem.
+
 ## Latest controller decision - 2026-07-02, A2 with-following original-volume domination
 
 Lean now has:
