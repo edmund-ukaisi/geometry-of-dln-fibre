@@ -295,4 +295,126 @@ theorem Lam0uG_congr (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   have hP2 : P2uG M hL hrs v = P2uG M hL hrs w := by funext i b; simp only [P2uG, hFP]
   rw [Lam0uG, Lam0uG, hP1, hP2]
 
+/-! ## The smeared shear `shiftFullG` (the `−Λ₀·S_bot` correction, by an injective single-term sum) -/
+
+/-- The full-vector correction `−∑_{a,j} [coordOfG(topSlotG a j) = m]·(Λ₀ v'·S_bot v') a j`. At a
+deepest-top coord `m = coordOfG(topSlotG a₀ j₀)` it collapses to `−(Λ₀·S_bot) a₀ j₀`; off `topCoordsG`
+it is `0`. -/
+noncomputable def shiftFullG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (v' : Fin (routeMAmbient M) → ℝ)
+    (m : Fin (routeMAmbient M)) : ℝ :=
+  -∑ a : Fin r, ∑ j : Fin (M ((deepLayer hL).succ)),
+    (if coordOfG M (topSlotG M hL hrs a j) = m
+      then (Lam0uG M hL hrs v' * SbotuG M hL hrs v') a j else 0)
+
+/-- **The single-term collapse.** At a deepest-top coord, `shiftFullG` reads off the `(a,j)` correction
+(the `coordOfG (topSlotG ·)` injectivity kills every off-diagonal term). -/
+theorem shiftFullG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (v' : Fin (routeMAmbient M) → ℝ)
+    (a₀ : Fin r) (j₀ : Fin (M ((deepLayer hL).succ))) :
+    shiftFullG M hL hrs v' (coordOfG M (topSlotG M hL hrs a₀ j₀))
+      = -(Lam0uG M hL hrs v' * SbotuG M hL hrs v') a₀ j₀ := by
+  have hcol : ∀ (a : Fin r) (j : Fin (M ((deepLayer hL).succ))),
+      topSlotG M hL hrs a j = topSlotG M hL hrs a₀ j₀ → j = j₀ := fun a j h =>
+    Fin.ext (congrArg (fun q : FlatIdx M => (q.2.val : ℕ)) h)
+  have hrow : ∀ (a : Fin r) (j : Fin (M ((deepLayer hL).succ))),
+      topSlotG M hL hrs a j = topSlotG M hL hrs a₀ j₀ → a = a₀ := by
+    intro a j h
+    have hv : (deepWidthEquiv hrs (Sum.inl a) : Fin (M ((deepLayer hL).castSucc))).val
+        = (deepWidthEquiv hrs (Sum.inl a₀) : Fin (M ((deepLayer hL).castSucc))).val :=
+      congrArg (fun q : FlatIdx M => (q.1.2.val : ℕ)) h
+    have he : deepWidthEquiv hrs (Sum.inl a) = deepWidthEquiv hrs (Sum.inl a₀) := Fin.ext hv
+    exact Sum.inl_injective ((deepWidthEquiv hrs).injective he)
+  rw [shiftFullG, neg_inj, Finset.sum_eq_single a₀]
+  · rw [Finset.sum_eq_single j₀]
+    · rw [if_pos rfl]
+    · intro j _ hj
+      refine if_neg (fun hcoord => hj ?_)
+      exact hcol a₀ j (coordOfG_injective M hcoord)
+    · intro hj0; exact absurd (Finset.mem_univ j₀) hj0
+  · intro a _ ha
+    refine Finset.sum_eq_zero (fun j _ => if_neg (fun hcoord => ha ?_))
+    exact hrow a j (coordOfG_injective M hcoord)
+  · intro ha0; exact absurd (Finset.mem_univ a₀) ha0
+
+/-! ## The smeared shear `shiftCoreG` + the flat map `ψ`, and the DECODE -/
+
+/-- The shear shift (the `(reg, spec) → core` form `shearMBody` consumes): reconstruct the full vector
+from the spec block (zero core), then read `shiftFullG` at the `coreSet.equivFin.symm`-indexed coord. -/
+noncomputable def shiftCoreG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (q : (Fin 0 → ℝ) × (Fin (topCoordsG M hL hrs)ᶜ.card → ℝ)) :
+    Fin (topCoordsG M hL hrs).card → ℝ :=
+  fun jc => shiftFullG M hL hrs
+    ((splitOfCoreSet (topCoordsG M hL hrs)).symm
+      (q.1, ((0 : Fin (topCoordsG M hL hrs).card → ℝ), q.2)))
+    ((topCoordsG M hL hrs).equivFin.symm jc)
+
+/-- The flat smeared map `ψ = paramsEquivFlat ∘ packM ∘ shearMBody`,
+`packM := (flatEquivOf (slotEquivG)).symm`. -/
+noncomputable def psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  fun w => paramsEquivFlat M
+    ((flatEquivOf M (slotEquivG M)).symm
+      (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) w))
+
+/-- **The shear-shift value at a deepest-top coord** (`shiftCoreG` collapse): at the `equivFin` index
+of `coordOfG (topSlotG a j)` it is `−(Λ₀·S_bot) a j`. The `equivFin` round-trip + `shiftFullG_topSlotG`
++ the reconstruction's `topCoordsGᶜ`-agreement with `RmapG u` (`= u`). -/
+theorem shiftCoreG_at_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayer hL).succ)))
+    (hmem : coordOfG M (topSlotG M hL hrs a j) ∈ topCoordsG M hL hrs) :
+    shiftCoreG M hL hrs
+        ((splitOfCoreSet (topCoordsG M hL hrs) (RmapG M hL hrs hr hc u)).1,
+          (splitOfCoreSet (topCoordsG M hL hrs) (RmapG M hL hrs hr hc u)).2.2)
+        ((topCoordsG M hL hrs).equivFin ⟨coordOfG M (topSlotG M hL hrs a j), hmem⟩)
+      = -(Lam0uG M hL hrs u * SbotuG M hL hrs u) a j := by
+  rw [shiftCoreG, Equiv.symm_apply_apply]
+  set v := (splitOfCoreSet (topCoordsG M hL hrs)).symm
+    ((splitOfCoreSet (topCoordsG M hL hrs) (RmapG M hL hrs hr hc u)).1,
+      ((0 : Fin (topCoordsG M hL hrs).card → ℝ),
+        (splitOfCoreSet (topCoordsG M hL hrs) (RmapG M hL hrs hr hc u)).2.2)) with hv
+  have hagree : ∀ m, m ∉ topCoordsG M hL hrs → v m = u m := by
+    intro m hm
+    rw [hv, splitOfCoreSet_symm_specBlock_eq _ _ _ _ hm, RmapG_spectator M hL hrs hr hc u hm]
+  rw [shiftFullG_topSlotG, Lam0uG_congr M hL hrs hagree, SbotuG_congr M hL hrs hagree]
+
+/-- **The packM readback.** `packM (shearMBody … w) layer i j = shearMBody … w (coordOfG ⟨⟨layer,i⟩,j⟩)`
+(the `flatEquivOf_symm_coord` extraction at `e := slotEquivG M`). -/
+theorem packM_shearG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (w : Fin (routeMAmbient M) → ℝ) (q : FlatIdx M) :
+    ((flatEquivOf M (slotEquivG M)).symm
+        (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) w)) q.1.1 q.1.2 q.2
+      = shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) w (coordOfG M q) := by
+  rw [flatEquivOf_symm_coord]; rfl
+
+/-- **The deep-layer readback at a top row.** The shear readback at `coordOfG (topSlotG a j)` is the
+`(a,j)` entry of the radial-minus-shear block `z·H̄_unit − Λ₀·S_bot`. -/
+theorem shearG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u)
+        (coordOfG M (topSlotG M hL hrs a j))
+      = (zuG M hL hrs hr hc u • HbarUnitG M hL hrs hr hc u
+          - Lam0uG M hL hrs u * SbotuG M hL hrs u) a j := by
+  have hmem := coordOfG_topSlotG_mem M hL hrs a j
+  rw [shearMBody_apply_of_mem _ _ _ hmem,
+    shiftCoreG_at_topSlotG M hL hrs hr hc u a j hmem, RmapG_topSlotG M hL hrs hr hc u a j,
+    Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
+  ring
+
+/-- **The deep-layer readback at a bottom row.** The shear readback at `coordOfG (botSlotG b j)` is the
+free residual `S_bot b j` (a bottom slot is `∉ topCoordsG`, so `shearMBody`/`RmapG` leave it untouched). -/
+theorem shearG_botSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u)
+        (coordOfG M (botSlotG M hL hrs b j))
+      = SbotuG M hL hrs u b j := by
+  rw [shearMBody_apply_of_not_mem _ _ _ (coordOfG_botSlotG_not_mem M hL hrs b j),
+    RmapG_spectator M hL hrs hr hc u (coordOfG_botSlotG_not_mem M hL hrs b j)]
+  rfl
+
 end DLNFibre.DLN.RLCT
