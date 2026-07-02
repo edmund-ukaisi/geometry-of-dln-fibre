@@ -105,3 +105,25 @@ paper; payoff honestly r=0-only). Policy doc accurate. The one green-passes-a-fa
 custom batch's completeness, the load-bearing claim); (iii) `@[cited]` now **rejects an empty/whitespace source**
 at elaboration, with a `(B'')` test. Battle-test now **17/17** (was 13); real gate unchanged `UNACCOUNTED=0
 CITED=3`. Skipped the cosmetic test-only-allowlist nit (negligible).
+
+## R2a landed + the RLCT definition DECIDED: A (zeta-pole) (2026-07-02)
+
+**R2a — cite-free integrability-threshold substrate LANDED** (`expedition/rlct-r2` @ `c06a6f54`, controller-verified:
+build 3854 green, sorries 0, RLCT-ns audit clean, axiom-clean). `RLCT.integrabilityThreshold K U := sSup {c ≥ 0 |
+IntegrableOn (K^(-c)) U}` (bare `RLCT` ns, L7) + the validating witness `integrabilityThreshold |·| (Ioo 0 t) = 1`
++ down-set + germ-monotonicity. Built during the R2-decision wait as the definition-agnostic substrate. `rev-r2a`
+auditing the load-bearing ℝ-`IntegrableOn` formulation before merge.
+
+**DECISION (operator, 2026-07-02): A — the zeta-pole `(λ,m)` is THE definition of the RLCT.** Rationale: bite the
+"big citation bullet" (the meromorphic-continuation monument) for the honest multiplicity `m` — a *future-proofing*
+call — with a **pen-and-paper cross-check** to back the citation. (Chose A over the controller-recommended hybrid C
+and R0's value-first B.) Under A, R2a's threshold becomes the cite-free **connecting interface** (threshold = pole
+λ via a cited equivalence), so R2a is not wasted. Plan: `pp-zeta-cert` (pen-and-paper) certifies the definition +
+the exact cited-continuation statement + the pole=threshold=½codim soundness chain → a formaliser builds
+`Core/Analysis/RLCT/{Zeta,Cited}` against the certificate (R2b).
+
+**Cordon coverage finding.** The default gate (`scripts/cited`, `--ns DLNFibre`) does NOT audit first-party
+bare-namespace modules (`RLCT` + the L7 Mathlib-mirror namespaces); they audit clean only under an explicit
+`--ns RLCT`. Harmless now (R2a clean; DLN payoff transitively protected), but the cited continuation axiom will live
+in a `RLCT` `Cited.lean` — so the gate MUST be extended to first-party bare namespaces before that lands (around the
+R2a merge).
