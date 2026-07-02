@@ -12,6 +12,25 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint support
+
+Lean now has the with-following determinant-chart support theorem:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_detChartSet_eq_self_of_subset_detSector
+```
+
+This proves that if the restricted source set lies in
+`case2PassiveThetaWithFollowingFactorDetSector`, then the `Y` pushforward is
+unchanged by restricting to `topologyTupleDetChartSet`.
+
+Decision: this is the smallest support rung on Tesla's `Y` COV route.  It is
+not the endpoint Haar/reference equality and does not construct the
+with-following reference measure.  The next bedrock target is still the named
+with-following endpoint reference measure and the product COV combining
+passive identity coordinates, selected-entry `sourceDensity`, following-factor
+coordinates, and endpoint reindexing.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor raw-order bounded unit
 
 Lean now has the enlarged-source raw-order determinant bounded-unit sandwich:

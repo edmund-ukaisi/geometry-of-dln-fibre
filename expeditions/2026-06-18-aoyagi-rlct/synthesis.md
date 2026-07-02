@@ -70,6 +70,50 @@ focused module build for
 whitespace diff check passed; direct axiom probe reported `[propext,
 Classical.choice, Quot.sound]`.
 
+## A2 Enlarged Following-Factor Endpoint Determinant Support - 2026-07-02
+
+Lean now proves the with-following determinant-chart support layer for the
+enlarged endpoint topology-tuple map.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+The theorem is:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_detChartSet_eq_self_of_subset_detSector
+```
+
+For any source-domain measure restricted to a measurable set `Omega`, if
+`Omega` is contained in
+`case2PassiveThetaWithFollowingFactorDetSector`, then the pushforward under
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z
+```
+
+is unchanged after restricting the target to `topologyTupleDetChartSet`.
+This is the with-following analogue of the existing non-following support
+lemma and uses only a.e. map support plus
+`case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_mem_detChartSet`.
+
+This theorem does not identify the pushforward with determinant-chart Haar,
+does not prove the selected-entry weighted source-side COV, does not construct
+the with-following endpoint reference measure, and does not imply any raw-map
+pushforward, source-image coverage, normal crossings, pole order, or RLCT.
+Tesla's route scout marked it as the smallest safe support rung before the
+actual endpoint-reference/product-COV construction.
+
+Verification: direct elaboration of the touched file was warning-clean;
+focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit; the
+whitespace diff check passed; direct axiom probe reported `[propext,
+Classical.choice, Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Source-To-Raw Block Jacobian - 2026-07-02
 
 After the interruption recovery, the expedition branch was clean and even with

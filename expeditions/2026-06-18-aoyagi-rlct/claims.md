@@ -10,6 +10,44 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor endpoint determinant-chart support - 2026-07-02
+
+- **Statement.** If a localized enlarged following-factor Case 2 passive-theta
+  source set is contained in
+  `case2PassiveThetaWithFollowingFactorDetSector`, then the pushforward of
+  any source-domain measure restricted to that set under
+  `Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z` is
+  already supported on the retained-passive determinant chart
+  `topologyTupleDetChartSet`.
+- **Tier.** A2 endpoint support layer for the enlarged source-to-raw density
+  frontier.
+- **Status.** Lean proved as a support slice.
+- **Kill-condition.** The result is read as a `Y` source-side
+  change-of-variables theorem, determinant-chart Haar equality, a raw-map
+  pushforward, formal-product/source-image domination, source-image coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 and Case 2 pp. 19-21 provide the
+  local retained-passive/enlarged following-factor determinant-sector context.
+  The theorem itself is Lean support bookkeeping from determinant-sector
+  membership.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`,
+  Lean coordinate model and kill-condition sections.
+- **Reproduction check.** xhigh route scout `Tesla` recommended this as the
+  smallest non-overclaiming `Y`-route support slice before building the
+  endpoint reference/product COV.
+- **Lean target.**
+  `measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_detChartSet_eq_self_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+- **Proved.** Direct elaboration warning-clean; focused module build passed;
+  `lean/scripts/sorries` and `git diff --check` passed; direct axiom probe
+  reported `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No selected-entry weighted pushforward for `Y`, no
+  determinant-chart Haar equality, no raw-map pushforward, no target-side
+  density identity, no source-image coverage, no normal crossings, no pole
+  order, and no RLCT extraction is proved.
+
 ## Current A2 enlarged following-factor raw-order determinant bounded-unit slice - 2026-07-02
 
 - **Statement.** For the enlarged Case 2 passive-theta source, after composing
