@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Localized p.13 Chart-Piece Raw Patch Domination - 2026-07-02
+
+Lean now has localized with-following chart-piece sockets:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_patch_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_restrict_patch_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_restrict_patch_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+For a measurable p.13 `chartPiece`, the correct raw patch is
+
+```text
+rawSourceSet inter rawChart^{-1}(chartPiece).
+```
+
+The new theorems use an arbitrary `P` contained in `rawSourceSet` and containing
+that induced patch.  This is strictly weaker than requiring reverse domination
+on all of `rawSourceSet`, and it is the honest socket for downstream
+chart-piece localization.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-localized-chart-piece-raw-patch-domination.md
+```
+
+Boundary: this is still a conditional measure handoff.  It proves no
+determinant-Haar transport, source-density lower bound, original-prior
+transport, coverage, normal crossings, pole order, or RLCT extraction.
+
 ## A2 With-Following Raw-Order Reference From Endpoint Haar Patch - 2026-07-02
 
 Lean now has:
