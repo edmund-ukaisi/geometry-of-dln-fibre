@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 localized composed raw-order COV
+
+Lean now has:
+
+```text
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_image_of_subset_detChart
+```
+
+Decision: this is the compositional form of the localized retained-passive
+raw-order COV.  It upgrades the previous localized theorem from a bare
+raw-order image to:
+
+```text
+map (psi o rawOrder) ((m | Omega).withDensity formalProductAbsDet)
+  = map psi (m | rawOrder '' Omega).
+```
+
+for any null-measurable `Omega` inside the determinant chart and any
+a.e.-measurable post-map `psi` on the localized raw-order image.  This is the
+right reusable API for localized endpoint/raw comparison: downstream theorem
+statements can compose raw-order COV with source charts or readbacks without
+falling back to the whole determinant chart.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-localized-composed-retained-passive-raw-order-cov.md
+```
+
+Boundary: this is determinant-chart infrastructure only.  It proves no
+endpoint-Haar transport, no source-to-endpoint Haar comparison, no concrete
+Aoyagi raw-pushforward, no source-prior/original-prior transport, no coverage,
+no normal crossings, no pole order, and no RLCT.
+
+Verification passed through focused and full local builds, sorry audit, diff
+check, touched Lean-file forbidden-marker scan, and direct axiom probe.  The
+new theorem reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next A2 target, after xhigh scout review: do not add another raw-order
+reference wrapper.  Prove a localized endpoint/raw-image Haar comparison on an
+actual image patch, then push it through raw order and the source chart.  The
+target must restrict Haar to a patch such as `rawMap '' V` or a source-aligned
+subpatch, not to the full raw source or determinant chart.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image writeback factorization
 
 Lean now has:

@@ -6,6 +6,69 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Localized Composed Retained-Passive Raw-Order COV - 2026-07-02
+
+Lean now has:
+
+```text
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_image_of_subset_detChart
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobianMeasure.lean
+```
+
+This is the post-composed form of the localized retained-passive raw-order
+change of variables.  For additive Haar `m`, a null-measurable patch `Omega`
+inside `topologyTupleDetChartSet`, and a post-map `psi` a.e. measurable on the
+localized raw-order image, Lean proves:
+
+```text
+Measure.map (fun z => psi (topologyTupleEdgeRawOrder z))
+  ((m.restrict Omega).withDensity formalProductAbsDet)
+=
+Measure.map psi
+  (m.restrict (topologyTupleEdgeRawOrder '' Omega)).
+```
+
+The proof is pure measure bookkeeping after the localized COV.  The raw-order
+map is a.e. measurable on `(m | Omega).withDensity formalProductAbsDet`
+because it is continuous on the determinant chart and `Omega` is contained in
+that chart.  The localized COV identifies `map rawOrder` of the weighted
+patch with `m | rawOrder '' Omega`, and `AEMeasurable.map_map` composes with
+`psi`.
+
+This is the reusable API needed by localized endpoint/raw arguments: the
+downstream proof can post-compose the local raw-order COV with a source chart
+or readback without demanding Haar domination on the whole determinant chart.
+
+Boundary: no endpoint-Haar transport, source-to-endpoint Haar comparison,
+concrete Aoyagi raw-pushforward, source-prior/original-prior transport,
+coverage, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+Lean-file forbidden-marker scan, and direct axiom probe.  The new theorem
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+cd lean && ./scripts/sorries
+git diff --check
+cd lean && env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_local_composed_raw_order_axioms.lean
+```
+
+Xhigh read-only scout review after the proof agreed that this theorem is the
+right socket for the next layer.  The next theorem should not repackage the
+raw-order reference again; it should state a localized endpoint/raw-image Haar
+comparison on an actual image patch, then push that patch through raw order and
+the source chart.  The honest target remains a restricted patch such as
+`rawMap '' V` or a source-aligned subpatch, not Haar on the full raw source or
+determinant chart.
+
 ## A2 Endpoint Reference Image Writeback Factorization - 2026-07-02
 
 Lean now has:
