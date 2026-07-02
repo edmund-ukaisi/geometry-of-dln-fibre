@@ -11,7 +11,8 @@
 #     (f); CITED: the located cite + the misplaced cite; LOCATION: two untagged axioms + the misplaced
 #     cite), naming (c), (d), (f);
 #   * `--manifest` over the fixtures lists the two cite sources;
-#   * over `DLNFibre` (the real gate): exit 0 (the real library is clean — a regression tripwire).
+#   * over the first-party scope [DLNFibre, RLCT] (the real gate, default): exit 0 (the real library —
+#     incl. the bare-namespace RLCT modules — is clean; a regression tripwire).
 # Exits 0 iff every assertion holds. Deterministic.
 set -euo pipefail
 
@@ -93,11 +94,11 @@ rm -f "$SCRATCH2"
 check_exit "@[cited \"\"] fails to compile" 1 "$CODE_EMPTY"
 check "empty-source rejection message" "non-empty citation source" "$OUT_EMPTY"
 
-echo "== (C) audit the REAL DLNFibre namespace + the retrofit cite file (regression tripwire, must PASS) =="
+echo "== (C) audit the REAL first-party scope [DLNFibre, RLCT] + the retrofit cite file (regression tripwire, must PASS) =="
 set +e
-OUT_REAL="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited --ns DLNFibre 2>&1)"
+OUT_REAL="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited 2>&1)"
 CODE_REAL=$?
-OUT_REAL_MAN="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited --ns DLNFibre --manifest 2>&1)"
+OUT_REAL_MAN="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited --manifest 2>&1)"
 set -e
 echo "$OUT_REAL" | tail -4
 check_exit "real gate passes (no unaccounted, all cites located)" 0 "$CODE_REAL"

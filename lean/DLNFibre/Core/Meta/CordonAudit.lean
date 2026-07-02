@@ -35,8 +35,8 @@ inductive AxiomViolation where
 
 /-- The full report of a cordon run over a namespace. -/
 structure CordonReport where
-  /-- The namespace prefix audited (e.g. `DLNFibre`). -/
-  nsPrefix : Name
+  /-- The namespace prefixes audited (the first-party allowlist, e.g. `#[DLNFibre, RLCT]`). -/
+  nsPrefixes : Array Name
   /-- Number of public declarations scanned. -/
   scanned : Nat
   /-- Declarations with a non-empty UNACCOUNTED set (decl, its unaccounted axioms). -/
@@ -47,25 +47,27 @@ structure CordonReport where
   locationViolations : Array AxiomViolation
   deriving Inhabited
 
-/-- Does a name lie under the audited namespace prefix and is it a real (non-internal) declaration? -/
-def inScope (nsPrefix : Name) (n : Name) : Bool :=
-  nsPrefix.isPrefixOf n && !n.isInternalDetail
+/-- Does a name lie under **any** audited namespace prefix and is it a real (non-internal) decl?
+(The scope is a first-party allowlist — `#[DLNFibre, RLCT]` by default — so bare-namespace first-party
+modules like `RLCT` are covered, not just the `DLNFibre` namespace.) -/
+def inScope (nsPrefixes : Array Name) (n : Name) : Bool :=
+  nsPrefixes.any (·.isPrefixOf n) && !n.isInternalDetail
 
 /-- Enumerate the in-scope declaration names of the environment (deterministic order: sorted). -/
-def scopedDecls (env : Environment) (nsPrefix : Name) : Array Name := Id.run do
+def scopedDecls (env : Environment) (nsPrefixes : Array Name) : Array Name := Id.run do
   let mut r : Array Name := #[]
   for (n, _) in env.constants.toList do
-    if inScope nsPrefix n then
+    if inScope nsPrefixes n then
       r := r.push n
   r.qsort Name.lt
 
 /-- Enumerate **every** in-scope `axiom` declaration (sorted). Unlike `scopedDecls` this does NOT
 filter internal/generated names — the location+tag check must see *every* axiom under the namespace
 (a compiler-generated axiom, e.g. from a sneaked-in `native_decide`, is exactly what should surface). -/
-def scopedAxioms (env : Environment) (nsPrefix : Name) : Array Name := Id.run do
+def scopedAxioms (env : Environment) (nsPrefixes : Array Name) : Array Name := Id.run do
   let mut r : Array Name := #[]
   for (n, ci) in env.constants.toList do
-    if nsPrefix.isPrefixOf n && ci.isAxiom then
+    if nsPrefixes.any (·.isPrefixOf n) && ci.isAxiom then
       r := r.push n
   r.qsort Name.lt
 
@@ -75,9 +77,9 @@ constants), not O(decls × depth)) to get the *union* of axioms the public API r
 attribution of an unaccounted axiom is a targeted second pass, taken **only** when the union has an
 unaccounted axiom (a red gate — rare), so the common (green) path is a single traversal. The LOCATION +
 TAG check is a direct axiom scan. -/
-def buildReport (nsPrefix : Name) : CoreM CordonReport := do
+def buildReport (nsPrefixes : Array Name) : CoreM CordonReport := do
   let env ← getEnv
-  let decls := scopedDecls env nsPrefix
+  let decls := scopedDecls env nsPrefixes
   -- Check 1 (fast path): the UNION of transitive axioms of all in-scope decls, one shared traversal.
   let unionAxioms := collectAxiomsBatch env decls
   let mut citedSet : Std.HashMap Name String := {}
@@ -99,7 +101,7 @@ def buildReport (nsPrefix : Name) : CoreM CordonReport := do
         unaccounted := unaccounted.push (d, hits)
   -- Check 2: LOCATION + TAG over every in-scope axiom.
   let mut locationViolations : Array AxiomViolation := #[]
-  for a in scopedAxioms env nsPrefix do
+  for a in scopedAxioms env nsPrefixes do
     let mod := (sourceModule? env a).getD Name.anonymous
     match getCitedSource? env a with
     | none =>
@@ -109,7 +111,7 @@ def buildReport (nsPrefix : Name) : CoreM CordonReport := do
     | some src =>
       unless isInCitedFile env a do
         locationViolations := locationViolations.push (.misplaced a mod src)
-  pure { nsPrefix, scanned := decls.size, unaccounted, citedUsed, locationViolations }
+  pure { nsPrefixes, scanned := decls.size, unaccounted, citedUsed, locationViolations }
 
 /-- Is the report clean (all three checks pass)? -/
 def CordonReport.ok (r : CordonReport) : Bool :=

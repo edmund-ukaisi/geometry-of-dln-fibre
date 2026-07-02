@@ -24,6 +24,13 @@ The cite-free analytic foothill of the RLCT foundation: the definition-agnostic 
 >   The name is `integrabilityThreshold`, **not** `rlct`, exactly to not claim it IS the RLCT.
 >   Honest only in the bounded/pole regime (`sSup` in `ℝ` is junk `0` if no pole / unbounded set) — a
 >   documented scope, not a claim.
+> - **Faithfulness (scope of the RLCT reading).** `integrabilityThreshold K U` equals the *classical*
+>   RLCT integrability threshold precisely when `{x ∈ U | K x = 0}` is **null**: the ℝ-`negPow` collapses
+>   the pole at `{K=0}` to `0` (`Real.zero_rpow`), so if that set had positive measure the value reads too
+>   large (counterexample: `K = x` on `(0,1]`, `0` on `(1,2)` → ℝ-threshold `1` vs classical `0`). For the
+>   DLN germ `K^{DLN}_B = ‖mult−B‖²` this **holds** — `{K_B = 0} = mult⁻¹(B)` is a proper subvariety, hence
+>   null — so the reading is faithful where the payoff needs it. (Co-located per rev-r2a; the definition is
+>   correctly general — this scopes its RLCT *interpretation*.)
 > - **Status.** sorry-free
 
 ---

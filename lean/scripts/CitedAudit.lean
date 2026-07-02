@@ -25,7 +25,7 @@ open DLNFibre.Meta.CordonAudit
 /-- Parsed command-line configuration. -/
 structure Config where
   imports : Array Name := #[]
-  nsPrefix : Name := `DLNFibre
+  nsPrefixes : Array Name := #[]
   manifest : Bool := false
 
 /-- Parse argv into a `Config` (simple, order-independent flags). -/
@@ -33,10 +33,16 @@ def parseArgs (args : List String) : Except String Config := do
   let rec go (c : Config) : List String → Except String Config
     | [] => .ok c
     | "--manifest" :: rest => go { c with manifest := true } rest
-    | "--ns" :: v :: rest => go { c with nsPrefix := v.toName } rest
+    | "--ns" :: v :: rest => go { c with nsPrefixes := c.nsPrefixes.push v.toName } rest
     | "--import" :: v :: rest => go { c with imports := c.imports.push v.toName } rest
     | a :: _ => .error s!"unknown argument `{a}`"
   let c ← go {} args
+  -- Default namespace scope: the **first-party allowlist** — `DLNFibre` (main) + `RLCT` (the bare-
+  -- namespace analysis modules, no Mathlib overlap). A first-party bare namespace must be listed here
+  -- to be gate-covered: its modules live under `DLNFibre/**` but its decls are in a bare namespace, so
+  -- a `--ns DLNFibre` scan alone would miss them (where the cited continuation axiom will land). `--ns`
+  -- overrides (appends), so the harness's `--ns CordonFixtures` still targets the fixtures in isolation.
+  let c := if c.nsPrefixes.isEmpty then { c with nsPrefixes := #[`DLNFibre, `RLCT] } else c
   -- Default import set: the aggregator `DLNFibre` + the cite file `AoyagiCited` (which the
   -- single-writer aggregator does not yet import), so the gate sees the whole library AND its cites.
   .ok (if c.imports.isEmpty then
@@ -44,7 +50,8 @@ def parseArgs (args : List String) : Except String Config := do
 
 /-- The per-source manifest: for each `@[cited]` source, the axioms carrying it (sorted). -/
 def printManifest (r : CordonReport) : IO Unit := do
-  IO.println s!"-- cite manifest for namespace `{r.nsPrefix}` --"
+  let nsStr := String.intercalate ", " (r.nsPrefixes.toList.map (·.toString))
+  IO.println s!"-- cite manifest for namespaces {nsStr} --"
   if r.citedUsed.isEmpty then
     IO.println "  (no @[cited] axioms in use)"
   else
@@ -82,7 +89,7 @@ unsafe def main (args : List String) : IO UInt32 := do
   let imports := cfg.imports.map (fun m => { module := m : Import })
   let env ← Lean.importModules imports (opts := {}) (trustLevel := 0) (loadExts := true)
   try
-    let (report, _) ← (buildReport cfg.nsPrefix).toIO
+    let (report, _) ← (buildReport cfg.nsPrefixes).toIO
       { fileName := "<cited-audit>", fileMap := default } { env }
     -- One-line machine-parseable summary (always, to stdout).
     IO.println report.summaryLine

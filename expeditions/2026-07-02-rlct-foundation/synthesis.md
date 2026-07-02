@@ -149,7 +149,11 @@ claims" add the `{K=0}`-null precondition to statement-card Card 1 (report-only,
 **endorses the gate extension** — design: a **positive allowlist of first-party namespaces** (`DLNFibre`, `RLCT`, …),
 not "everything non-Mathlib" (so upstream deps don't trip it); the exe's `nsPrefix : Name := DLNFibre` becomes a list.
 
-**Integration queued (heavy build; for calmer box / operator bullet-ack):** merge `rlct-r2` → `rlct-foundation` +
-resolve aggregator conflict (cordon + Gap-1 + RLCT import blocks) + add the Card-1 fidelity note + extend the gate
-(first-party allowlist) + re-gate. Then R2b (build `Zeta`+`Cited` against the certificate) — held for the operator's
-confirmation of the bullet.
+**Integration LANDED (`62641cc6`+).** R2a merged (clean) into `rlct-foundation`; Card-1 fidelity note added
+(`{K=0}`-null precondition, holds for DLN — fibre is null); **cordon gate extended to the first-party namespace
+allowlist `[DLNFibre, RLCT]`** (`Config.nsPrefixes`, default; `--ns` still overrides for the fixture harness).
+Verified: full build green (3854), real gate `UNACCOUNTED=0 CITED=3 LOCATION=0` over **2248 decls** (was 2229 —
+the 19 RLCT decls now covered), `--ns RLCT` = 19, battle-test **17/17**, sorries 0. Residual (low-risk, noted):
+L7 Mathlib-mirror namespaces (`Matrix`/`Ideal`/…) not in the allowlist (a bare prefix would catch Mathlib);
+transitively covered, host no cites; module-provenance is the robust generalization if ever needed. **Only R2b
+remains** (build `Core/Analysis/RLCT/{Zeta,Cited}` against the certificate) — held for the operator's bullet-ack.

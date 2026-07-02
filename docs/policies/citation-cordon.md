@@ -68,8 +68,12 @@ Example (the DLN payoff's first real user — `DLNFibre/DLN/RLCT/AoyagiCited.lea
 
 ## The invariants (what `scripts/cited` enforces)
 
-The gate runs three independent, deterministic checks over the `DLNFibre` namespace and **exits
-nonzero** on any violation (unlike the informational `scripts/sorries`):
+The gate runs three independent, deterministic checks over the **first-party namespaces** (default
+`#[DLNFibre, RLCT]`) and **exits nonzero** on any violation (unlike the informational `scripts/sorries`).
+*First-party bare namespaces* (a module under `DLNFibre/**` whose declarations live in a bare
+Mathlib-mirror namespace, e.g. `RLCT`) must be listed in the allowlist (`Config.nsPrefixes` /
+`--ns`) to be covered — a namespace-prefix scan of `DLNFibre` alone would miss them, which is exactly
+where a cite could otherwise land unmonitored:
 
 1. **UNACCOUNTED = ∅** — no public declaration rests on an untagged, non-foundational axiom.
 2. **LOCATION + TAG** — every `axiom` under the namespace is `@[cited]` *and* declared in a located
@@ -83,7 +87,7 @@ nonzero** on any violation (unlike the informational `scripts/sorries`):
 | tool | what it is | when |
 |---|---|---|
 | `#audit_cited foo` | in-file command (mirrors `#print axioms`), shows `foo`'s UNACCOUNTED + CITED[sources] | the formaliser's inner loop, right where you prove |
-| `scripts/cited` | the repo **gate** — builds + runs `lake exe cited-audit` over `DLNFibre`, **nonzero on violation** | before commit / in CI, alongside `scripts/sorries` |
+| `scripts/cited` | the repo **gate** — builds + runs `lake exe cited-audit` over the first-party namespaces (`DLNFibre` + `RLCT`), **nonzero on violation** | before commit / in CI, alongside `scripts/sorries` |
 | `scripts/cited --manifest` | the per-source cite manifest | generating the README 🔵 status column / a `Cited.lean` header |
 | `scripts/cited-test` | battle-tests the cordon against the adversarial fixtures (`tests/CordonFixtures.lean`) | after any change to the cordon itself |
 
