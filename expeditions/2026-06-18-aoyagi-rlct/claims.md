@@ -10,6 +10,42 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A4 produced branch-data contract frontier - 2026-07-02
+
+- **Statement.** The remaining all-pivot recurrence-aware producer input is
+  `SelectedEntryAtlasProducedBranchData
+  (selectedEntryAllPivotAnalyticAtlasContext hcenter chartEquiv)
+  (AoyagiRecurrenceBranchState L n alpha)`.  A source-backed proof must supply
+  displayed Case 2 guards, three produced payloads, payload-state laws,
+  continuing child recurrence data, and separate actual-width-stopped and
+  row-exhausted-stopped terminal/suffix source data.
+- **Tier.** Aoyagi Case 2 blow-up/source-production.
+- **Status.** Frontier contract recorded; not formalisation-ready as a Lean
+  theorem.
+- **Kill-condition.** Any payload is a placeholder; source production is
+  filled by `SourceProductionObligation`; a fixed all-pivot center is used
+  while `(S,J)` varies without alignment; actual-width and row-exhausted
+  stopped data are merged; or progress data is treated as source realization.
+- **Evidence/source.** Aoyagi PDF pp. 19-22 for the displayed Case 2 pivot
+  chart, `b'_i = u b_i`, regular `Q/P` transformations, `C'_J = Q^-1 C_J`,
+  cleared `D'''`, and continue/stop prose.  The analytic produced-payload
+  record is not printed there and must be constructed.
+- **Pen-and-paper reproduction.**
+  `threads/04-blow-up-certificate/reproduction-a4-case2-all-pivot-produced-branch-data-contract.md`;
+  construction card at
+  `threads/04-blow-up-certificate/construction-card-a4-case2-all-pivot-produced-branch-data-contract.md`.
+- **Reproduction check.** xhigh read-only reviewer `Huygens` PASS at
+  `threads/04-blow-up-certificate/review-a4-case2-all-pivot-produced-branch-data-contract.md`.
+- **Lean target.** No theorem yet.  Eventual target is the `sourceProduction`
+  argument to
+  `selectedEntryAllPivotSuppliedAnalyticAtlasProducerWithRecurrenceTermination`.
+- **Proved.** No new theorem.  Existing all-pivot shell, recurrence
+  termination adapter, and displayed Case 2 progress bridges remain the proved
+  Lean layer.
+- **Nonclaims.** No source-production payload, analytic atlas construction,
+  chart-domain coverage, transition regularity, Jacobian/volume compatibility,
+  normal crossings, pole order, or RLCT extraction is proved.
+
 ## Current A2 formal-product/source-image comparison frontier - 2026-07-02
 
 - **Statement.** The remaining source-moving A2 comparison is the local

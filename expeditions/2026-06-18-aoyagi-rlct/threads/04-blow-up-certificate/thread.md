@@ -21,6 +21,40 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-07-02 A4 Case 2 all-pivot produced branch-data contract
+
+Construction card:
+`construction-card-a4-case2-all-pivot-produced-branch-data-contract.md`.
+Reproduction:
+`reproduction-a4-case2-all-pivot-produced-branch-data-contract.md`.
+Review:
+`review-a4-case2-all-pivot-produced-branch-data-contract.md`.
+
+The current all-pivot producer frontier is the `sourceProduction` field:
+
+```text
+SelectedEntryAtlasProducedBranchData
+  (selectedEntryAllPivotAnalyticAtlasContext hcenter chartEquiv)
+  (AoyagiRecurrenceBranchState L n alpha)
+```
+
+The packet pins the displayed Case 2 guards, the three branch payloads, the
+literal payload-state laws, the need for continuing child recurrence data, and
+the separation between actual-width-stopped and row-exhausted-stopped
+terminal/suffix payloads.
+
+It also records the fixed-center obstruction: the all-pivot atlas context has
+one fixed `center`, while a recurrence-wide Case 2 branch naturally uses
+`case2ResidualBlockPivotEntries n S J`.  A theorem over varying `(S,J)` needs
+an explicit center-alignment field or a dependent branch-indexed atlas
+interface.
+
+No Lean theorem is claimed.  Aoyagi pp. 19-22 support the local selected-pivot
+algebra and continue/stop split, not the analytic chart-domain/source-domain
+payload records needed by `SelectedEntryAtlasProducedBranchData`.
+
+Xhigh read-only review by `Huygens` passed with no findings.
+
 ## 2026-07-02 Lean all-pivot producer recurrence termination
 
 Reproduction:

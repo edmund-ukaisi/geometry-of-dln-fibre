@@ -15,6 +15,40 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A4 All-Pivot Produced Branch-Data Contract - 2026-07-02
+
+New A4 packet:
+
+```text
+threads/04-blow-up-certificate/construction-card-a4-case2-all-pivot-produced-branch-data-contract.md
+threads/04-blow-up-certificate/reproduction-a4-case2-all-pivot-produced-branch-data-contract.md
+threads/04-blow-up-certificate/review-a4-case2-all-pivot-produced-branch-data-contract.md
+```
+
+Conclusion: after the all-pivot shell and recurrence-termination adapter, the
+next source-moving A4 object is the actual
+`SelectedEntryAtlasProducedBranchData` field for
+`AoyagiRecurrenceBranchState L n alpha`.  The contract fixes the displayed
+Case 2 guards, requires non-placeholder produced payloads, keeps the actual-
+width-stopped and row-exhausted-stopped payloads separate, and records that
+continuing progress is not the same thing as source data realizing the child.
+
+The key new obstruction is center alignment.  The all-pivot context is built
+from one fixed `center`, while the natural Case 2 residual-block center is
+`case2ResidualBlockPivotEntries n S J`.  A recurrence-wide source-production
+theorem must either restrict to one fixed center, carry explicit alignment for
+all active states, or introduce a dependent branch-indexed atlas interface.
+
+No Lean theorem is claimed in this packet.  Aoyagi pp. 19-22 support the local
+selected-pivot algebra, regular `Q/P` transformations, cleared `D'''` block,
+and continue/stop prose, but they do not supply chart-domain witnesses,
+analytic source-domain membership, atlas coverage, overlap regularity, or the
+produced successor/terminal source-data records.
+
+Xhigh read-only reviewer `Huygens` passed the guard convention, fixed-center
+obstruction, source boundary, payload fields, and kill conditions with no
+concrete findings.
+
 ## A2 Formal-Product/Source-Image Comparison Frontier - 2026-07-02
 
 New A2 packet:

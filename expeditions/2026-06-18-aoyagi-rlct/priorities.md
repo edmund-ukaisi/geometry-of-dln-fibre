@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 produced branch-data contract
+
+New A4 packet:
+
+```text
+threads/04-blow-up-certificate/construction-card-a4-case2-all-pivot-produced-branch-data-contract.md
+threads/04-blow-up-certificate/reproduction-a4-case2-all-pivot-produced-branch-data-contract.md
+```
+
+Decision: the real remaining all-pivot producer field is exactly
+
+```text
+SelectedEntryAtlasProducedBranchData
+  (selectedEntryAllPivotAnalyticAtlasContext hcenter chartEquiv)
+  (AoyagiRecurrenceBranchState L n alpha)
+```
+
+Do not add another producer wrapper until this field is source-backed.  The
+contract must provide displayed Case 2 guards, three non-placeholder payloads,
+literal payload-state laws, continuing child recurrence data, and separate
+actual-width-stopped and row-exhausted-stopped terminal/suffix data.
+
+The fixed-center issue is now explicit: a recurrence-wide theorem cannot use
+one all-pivot center while branch states vary over `(S,J)` unless it supplies a
+center-alignment field or moves to a dependent branch-indexed atlas interface.
+
 ## Latest controller decision - 2026-07-02, A2 formal-product/source-image comparison
 
 New A2 packet:
