@@ -607,3 +607,12 @@ import DLNFibre.Core.CThetaSortClosedForm
 -- `ncard_topDimMinPrimes_fibre_eq_numTop` (normal-form target) + `_of_rank` (arbitrary `B` via the
 -- LANDED same-rank transport), arbitrary `d`; + `..._cTheta_dminus_sort` closed-form corollaries.
 import DLNFibre.Core.FibreThetaCountUnconditional
+-- rlct-r2a (RLCT foundation): the CITE-FREE analytic substrate of the real log-canonical threshold.
+-- `RLCT.Basic` = the loss germ `K : (Fin n → ℝ) → ℝ` and its negative power `negPow K c = K^(-c)`,
+-- with the admissible-exponent set `{c ≥ 0 | K^(-c) IntegrableOn U}`. `RLCT.Integrability` = the
+-- `integrabilityThreshold K U := sSup (admissibleExponents K U)` (the threshold VALUE, NOT the
+-- zeta-pole `(λ,m)` — that is deferred behind the cited continuation), the down-set + germ-
+-- monotonicity properties, and the 1-D witness `integrabilityThreshold_absGerm : ... = 1` (the power
+-- germ `|t|` has threshold exactly `1`, validating the formulation). Axiom-clean (no cites).
+import DLNFibre.Core.Analysis.RLCT.Basic
+import DLNFibre.Core.Analysis.RLCT.Integrability
