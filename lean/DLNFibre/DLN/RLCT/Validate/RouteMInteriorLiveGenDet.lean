@@ -2438,6 +2438,59 @@ theorem packStairGen_frame_fderiv_read (M : Fin (L + 1) → ℕ) (ha : StructAdm
     exact packRowSplitGen_kept_BparamsLeafGen M ha s y i j
   rw [hfeq]
 
+/-- **The lift block of the row-split of `Agen … s` is `Wblk_{s.val}`** — `(packRowSplitGen s (packRecast
+s (BparamsLeafGen y s))).2 = Wblk_{s.val}`. The lift analogue of `packRowSplitGen_kept_BparamsLeafGen`:
+the bottom `Wext−Text` rows of `chainA` are `W` (`chainA_apply_natAdd`). -/
+theorem packRowSplitGen_lift_BparamsLeafGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (y : Fin (routeMAmbient M) → ℝ)
+    (i : Fin (Wext M s.val - Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    (packRowSplitGen M ha s (packRecast M s (BparamsLeafGen M ha y s))).2 i j
+      = (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val i j := by
+  rw [packRowSplitGen_read_lift, packRecast_BparamsLeafGen, Agen, dif_pos s.isLt,
+    show (Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+        (finSumFinEquiv (Sum.inr i)))
+      = Fin.cast (genWidthEq M (tach M) (hleStruct M (tach M) ha) s.val s.isLt)
+        (Fin.natAdd _ i) from by rw [finSumFinEquiv_apply_right],
+    chainA_apply_natAdd]
+
+/-- **Lift read of `packStairGen (fderiv …)`** — the LIFT-block fderiv of layer `s` is read off the chain
+lift block: `(packRowSplitGen s (packRecast s (fderiv BparamsLeafGen y₀ d s))).2 = fderiv Wblk_{s.val}`.
+The lift analogue of `packStairGen_frame_fderiv_read` (`snd ∘ₗ packRowSplitGen` CLM through fderiv, base
+rewritten by `packRowSplitGen_lift_BparamsLeafGen`). -/
+theorem packStairGen_lift_fderiv_read (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (y₀ d : Fin (routeMAmbient M) → ℝ) :
+    (packRowSplitGen M ha s (packRecast M s ((fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀ d) s))).2
+      = fderiv ℝ (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) y₀ d := by
+  rw [BparamsLeafGen_fderiv_layer, packRecast_fderiv_layer]
+  set Φ : Matrix (Fin (Wext M s.val)) (Fin (Wext M (s.val + 1))) ℝ →L[ℝ]
+      Matrix (Fin (Wext M s.val - Text M (tach M) (s.val + 1))) (Fin (Wext M (s.val + 1))) ℝ :=
+    (ContinuousLinearMap.snd ℝ _ _).comp (packRowSplitGen M ha s).toContinuousLinearMap with hΦ
+  have hdiff : DifferentiableAt ℝ (fun y => Agen 1 M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀ :=
+    diffAt_Agen_liveGen' M ha y₀ s.val
+  have hcomp : HasFDerivAt (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val))
+      (Φ.comp (fderiv ℝ (fun y => Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀)) y₀ :=
+    Φ.hasFDerivAt.comp y₀ hdiff.hasFDerivAt
+  have hΦval : ∀ Mat, Φ Mat = (packRowSplitGen M ha s Mat).2 := fun _ => rfl
+  rw [← hΦval]
+  rw [show Φ (fderiv ℝ (fun y => Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val) y₀ d)
+      = fderiv ℝ (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)) y₀ d from
+    by rw [hcomp.fderiv]; rfl]
+  have hfeq : (fun y => Φ (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val))
+      = fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val := by
+    funext y
+    show (packRowSplitGen M ha s (Agen 1 M (tach M)
+        (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) s.val)).2 = _
+    rw [← packRecast_BparamsLeafGen M ha s y]
+    ext i j
+    exact packRowSplitGen_lift_BparamsLeafGen M ha s y i j
+  rw [hfeq]
+
 /-- **`piReindexOfSigma` entrywise-apply** — `(piReindexOfSigma d e σ g) s b = g (σ.symm ⟨s,b⟩).1
 (σ.symm ⟨s,b⟩).2`. The `piCurry.symm ≫ funCongrLeft σ.symm ≫ piCurry` composite is the `Sigma.uncurry`/
 `Sigma.curry` round-trip around the base reindex `σ.symm` — `rfl` (mirrors `isCoordLE_piReindexOfSigma`). -/
@@ -2656,6 +2709,57 @@ theorem stairProj_T_stairIncl_diag_fst (M : Fin (L + 1) → ℕ) (ha : StructAdm
   -- unfold `genF`'s interior frame block (`frameToSchurIncGen`-conjugated `schurFrameDeriv`).
   rw [genF, dif_pos s.isLt]
   rfl
+
+/-- **The DIAGONAL LIFT block** `(stairProj s (T (stairIncl s v))).2 = v.2` at an interior boundary `s`
+(`s.val + 1 < L`). The off-by-one gather (`stairProj_packStairGen_snd` + `piReindexOfSigma_apply` +
+`liftGatherFinL_symm_apply`) routes the `genV`-slot-`s` lift OUTPUT to layer `s+1`'s lift block
+(`packStairGen_lift_fderiv_read` at `⟨s+1,hs⟩` → `fderiv Wblk_{s+1}`); `Wblk_{s+1} = readW⟨s⟩`
+(`genBlkFlatLive_Wblk_succ`) reads the slot-`s` LIFT coord, so on `d = eInGen.symm (stairIncl s v)` it
+recovers `v.2` (`eInGen_symm_lift_read` + `stairProj_stairIncl_self`). The lift diagonal is `id`. -/
+theorem stairProj_T_stairIncl_diag_snd (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (s : Fin L) (hs : s.val + 1 < L) (v : genV M s.val) :
+    (stairProj (genV M) L s.val
+        (packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+            ((eInGen M ha).symm (stairIncl (genV M) L s.val v))))).2
+      = (genF M ha y₀ s.val v).2 := by
+  rw [genF, dif_pos s.isLt]
+  show _ = v.2
+  rw [stairProj_packStairGen_snd]
+  funext b
+  rw [piReindexOfSigma_apply]
+  rw [liftGatherFinL_symm_apply M ha ha.hL s hs b]
+  -- the base index `⟨s+1,hs⟩ : Fin L`; the lift-block fderiv reads `Wblk_{s+1} = readW⟨s⟩`.
+  dsimp only
+  rw [packStairGen_lift_fderiv_read M ha ⟨s.val + 1, hs⟩ y₀
+    ((eInGen M ha).symm (stairIncl (genV M) L s.val v))]
+  -- `Wblk_{s+1} = readW⟨s⟩` (`genBlkFlatLive_Wblk_succ`); its fderiv is the reader CLM (`hasFDerivAt_readW`).
+  rw [show (fun y => (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk (⟨s.val + 1, hs⟩ : Fin L).val)
+      = (fun y => (Matrix.of (fun i j => readW M (tach M) ha y s hs i j) :
+          Matrix (Fin (Wext M (s.val + 1) - Text M (tach M) (s.val + 2)))
+            (Fin (Wext M (s.val + 2))) ℝ)) from
+    funext fun y => genBlkFlatLive_Wblk_succ M (tach M) ha (rfinDirectGen M ha y) y s.val s.isLt hs]
+  rw [(hasFDerivAt_readW M ha s hs y₀).fderiv]
+  -- `flatMatLEGen.symm (Matrix.of (readWslot·)) (Fin.cast b)` decodes the flat index by `finProdFinEquiv`
+  -- (`flatMatLEGen`); each entry reads the slot-`s` lift coord (`readWslot`→`eInGen_symm_lift_read`), and
+  -- `stairProj_stairIncl_self` recovers `v.2`; the `liftSlotEquiv`/`finProdFinEquiv` reindex cancels.
+  show (flatMatLEGen (Wext M (s.val + 1) - Text M (tach M) (s.val + 2)) (Wext M (s.val + 2))).symm
+      (Matrix.of (fun i j => (eInGen M ha).symm (stairIncl (genV M) L s.val v) (readWslot M ha s hs i j)))
+      (Fin.cast (gatherShift M s.val (by omega)).symm b) = v.2 b
+  -- `flatMatLEGen = flatMatLE` (`rfl`), so `.symm = matChart` — decode the flat index by `finProdFinEquiv`.
+  rw [show (flatMatLEGen (Wext M (s.val + 1) - Text M (tach M) (s.val + 2)) (Wext M (s.val + 2))).symm
+        = matChart (Wext M (s.val + 1) - Text M (tach M) (s.val + 2)) (Wext M (s.val + 2)) from rfl,
+    matChart_apply]
+  simp only [Matrix.of_apply]
+  rw [readWslot, eInGen_symm_lift_read, stairProj_stairIncl_self (genV M) L s.val s.isLt v]
+  -- reindex cancel: `liftSlotEquiv.symm (finProdFinEquiv.symm (Fin.cast b)) = b`.
+  congr 1
+  rw [Prod.mk.eta]
+  rw [show (finProdFinEquiv.symm (Fin.cast (gatherShift M s.val (by omega)).symm b))
+      = (liftSlotEquiv M (tDesc M (tach M)) s.val hs) b from by
+    rw [liftSlotEquiv, Equiv.trans_apply]
+    congr 1]
+  rw [Equiv.symm_apply_apply]
 
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
