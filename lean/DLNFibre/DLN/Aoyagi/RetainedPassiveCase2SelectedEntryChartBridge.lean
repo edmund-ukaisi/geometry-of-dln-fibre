@@ -115,6 +115,43 @@ noncomputable def case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
   F3 := F3
 
 set_option linter.style.longLine false in
+/-- Passive-parameter selected-entry retained-passive datum with an independent
+post-pivot following factor.
+
+This is the enlarged coordinate object that frees the head active `C 0` block
+while keeping the tail `C 1` block in the selected-entry chart.  The supplied
+following-factor matrix is converted to the normalized pivot-first `C'` whose
+top row is zero.  This is finite coordinate data only; it does not construct a
+source image, inverse, measure transport, Jacobian theorem, normal crossings,
+pole order, or RLCT extraction. -/
+noncomputable def case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+    {ρ : Type*} {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (F : Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) where
+  A1passive := A1passive
+  F2 := F2
+  A3passive := A3passive
+  C := case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+    (case2SuccessorSelectedEntrySourceResidual n hS hnext yNext eNext)
+    (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont F)
+  Ctop := Ctop
+  F3 := F3
+
+set_option linter.style.longLine false in
 /-- The explicit selected-entry retained-passive datum lies in the finite
 retained-passive determinant chart for every coordinate vector `yNext`. -/
 theorem case2PostPivotSelectedEntryRetainedPassiveData_detChart
@@ -161,6 +198,37 @@ theorem case2PostPivotSelectedEntryRetainedPassiveDataWithPassive_detChart
   · simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassive] using hCtop
   · intro p
     simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassive] using
+      hA1passive p
+
+set_option linter.style.longLine false in
+/-- The passive-parameter following-factor enlarged datum lies in the
+determinant chart under the supplied active top-block and passive `A1` unit
+hypotheses. -/
+theorem case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor_detChart
+    {ρ : Type*} {τ : Type} [Fintype ρ] [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : Matrix ρ ρ ℝ)
+    (F3 : Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (yNext :
+      {p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)
+    (F : Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hCtop : IsUnit Ctop.det)
+    (hA1passive : ∀ p : Fin 1, IsUnit (A1passive p).det) :
+    (case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+      (ρ := ρ) n hS hcont hnext A1passive F2 A3passive Ctop F3
+      yNext F eNext).detChart := by
+  constructor
+  · simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor] using hCtop
+  · intro p
+    simpa [case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor] using
       hA1passive p
 
 set_option linter.style.longLine false in
@@ -379,6 +447,131 @@ theorem continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassive
                 (hF3_cont.comp continuous_fst)))))
   simpa [ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple,
     case2PostPivotSelectedEntryRetainedPassiveDataWithPassive, selectedData, kappa] using
+    (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_ofTopologyTuple
+      (K := ℝ) (ρ := ρ) (κ' := kappa)).comp htuple
+
+set_option linter.style.longLine false in
+/-- Passive-parameter following-factor enlarged retained-passive data are
+continuous when the passive fields are continuous, the selected-entry
+coordinates vary in the second component, and the following-factor matrix
+varies in the third component.
+
+This is coordinatewise/product-topology regularity only.  It does not prove
+determinant membership, source-image coverage, a measure pushforward, a
+Jacobian formula, normal crossings, pole order, or RLCT. -/
+theorem continuous_case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+    {η ρ : Type*} [TopologicalSpace η] {τ : Type} [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (A1passive : η → Fin 1 → Matrix ρ ρ ℝ)
+    (F2 : η → ∀ p : Fin 2,
+      Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+    (A3passive : η → ∀ p : Fin 1,
+      Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+    (Ctop : η → Matrix ρ ρ ℝ)
+    (F3 : η → Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (hA1passive_cont : Continuous A1passive)
+    (hF2_cont : Continuous F2)
+    (hA3passive_cont : Continuous A3passive)
+    (hCtop_cont : Continuous Ctop)
+    (hF3_cont : Continuous F3) :
+    Continuous
+      (fun z :
+          (η ×
+              ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+        case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor
+          (ρ := ρ) n hS hcont hnext
+          (A1passive z.1.1) (F2 z.1.1) (A3passive z.1.1)
+          (Ctop z.1.1) (F3 z.1.1) z.1.2 z.2 eNext) := by
+  let kappa : Fin 3 → Type := case2PostPivotTwoEdgeDomain n S J τ
+  have hC :
+      Continuous
+        (fun z :
+            (η ×
+                ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+              Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+          case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.2 eNext)
+            (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2)) := by
+    refine continuous_pi ?_
+    intro p
+    fin_cases p
+    · simpa [case2PostPivotFreeTwoEdgeFactorFamily,
+        case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor,
+        case2PostPivotTwoEdgeDomain] using
+        (continuous_snd :
+          Continuous
+            (fun z :
+                (η ×
+                    ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+                  Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+              z.2))
+    · have hM :
+          Continuous
+            (fun z :
+                (η ×
+                    ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+                  Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+              (case2SuccessorSelectedEntryMatrix n hS hnext z.1.2 eNext).submatrix
+                id eNext.symm) :=
+        (continuous_case2SuccessorSelectedEntryMatrix n hS hnext eNext).matrix_submatrix
+          id eNext.symm |>.comp (continuous_snd.comp continuous_fst)
+      have htarget :
+          (fun z :
+              (η ×
+                  ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+                Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+            case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+              (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.2 eNext)
+              (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2)
+              1) =
+          (fun z ↦
+            (case2SuccessorSelectedEntryMatrix n hS hnext z.1.2 eNext).submatrix
+              id eNext.symm) := by
+        funext z
+        ext i j
+        change
+          case2DisplayedPostPivotResidualBlock n hS hcont
+              (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.2 eNext) i j =
+            case2SuccessorSelectedEntryMatrix n hS hnext z.1.2 eNext i (eNext.symm j)
+        simp [case2SuccessorSelectedEntrySourceResidual,
+          case2DisplayedPostPivotSourceResidualOfMatrix,
+          case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+      change Continuous
+        (fun z :
+            (η ×
+                ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+              Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+          case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.2 eNext)
+            (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2) 1)
+      rw [htarget]
+      exact hM
+  have htuple :
+      Continuous
+        (fun z :
+            (η ×
+                ({p : ℕ × ℕ // p ∈ case2ResidualBlockPivotEntries n S (J + 1)} → ℝ)) ×
+              Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+          (A1passive z.1.1,
+            (F2 z.1.1,
+              (A3passive z.1.1,
+                (case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+                  (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.2 eNext)
+                  (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2),
+                  (Ctop z.1.1, F3 z.1.1)))))) := by
+    exact
+      (hA1passive_cont.comp (continuous_fst.comp continuous_fst)).prodMk
+        ((hF2_cont.comp (continuous_fst.comp continuous_fst)).prodMk
+          ((hA3passive_cont.comp (continuous_fst.comp continuous_fst)).prodMk
+            (hC.prodMk
+              ((hCtop_cont.comp (continuous_fst.comp continuous_fst)).prodMk
+                (hF3_cont.comp (continuous_fst.comp continuous_fst))))))
+  simpa [ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.ofTopologyTuple,
+    case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor, kappa] using
     (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_ofTopologyTuple
       (K := ℝ) (ρ := ρ) (κ' := kappa)).comp htuple
 
