@@ -417,6 +417,95 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The active-coordinate marginal of the named enlarged endpoint reference
+image is the product reference measure produced by the selected-entry active
+chart.
+
+This is a marginal/readout theorem for the endpoint image with `Ω = Set.univ`.
+It does not identify the full endpoint image measure with determinant-chart
+Haar measure and does not assert a raw-map pushforward. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_activeReadout_univ_eq_prod
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let passiveRef :=
+      case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+    let followingRef :=
+      matrixEntryReferenceMeasure
+        (Case2ResidualColIndex n S (J + 1)) τ
+    let endpointReferenceImage : Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+        Rres Set.univ
+    let activeReadout :
+        TopologyTuple ρ κ' ℝ →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout
+        n e
+    Measure.map activeReadout endpointReferenceImage =
+      ((passiveRef.prod
+        ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+            SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))).prod followingRef) := by
+  intro pivotNext passiveRef followingRef endpointReferenceImage activeReadout
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        TopologyTuple ρ κ' ℝ :=
+    fun z ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext z eNext e
+  have hactive : Measurable activeReadout := by
+    exact
+      (Case2PassiveThetaWithFollowingFactor.continuous_endpointTopologyTupleActiveReadout
+        (ρ := ρ) (τ := τ) n e).measurable
+  have hY : Measurable Y := by
+    exact
+      (continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext eNext e).measurable
+  calc
+    Measure.map activeReadout endpointReferenceImage =
+        Measure.map activeReadout (Measure.map Y (referenceSource.restrict Set.univ)) := by
+          simp [endpointReferenceImage,
+            case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+            referenceSource, Y]
+    _ = Measure.map (fun z ↦ activeReadout (Y z))
+        (referenceSource.restrict Set.univ) := by
+          rw [Measure.map_map hactive hY]
+          rfl
+    _ = Measure.map (fun z ↦ activeReadout (Y z)) referenceSource := by
+          simp
+    _ =
+      ((passiveRef.prod
+        ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+            SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))).prod followingRef) := by
+          simpa [activeReadout, Y, referenceSource, pivotNext, passiveRef, followingRef] using
+            measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_activeReadout_comp_referenceSource_eq_prod
+              (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The concrete enlarged passive-theta reference source is supported on the
 determinant chart after restricting to any measurable determinant-sector
 localization.

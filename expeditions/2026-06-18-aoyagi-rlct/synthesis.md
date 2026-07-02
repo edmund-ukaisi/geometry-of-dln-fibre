@@ -25,6 +25,71 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Endpoint Reference Image Active-Readout Marginal - 2026-07-02
+
+Lean now packages the previous active-readout bridge as a statement about the
+named endpoint reference image with unrestricted source domain.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New declarations:
+
+```text
+Case2PassiveThetaWithFollowingFactor.continuous_endpointTopologyTupleActiveReadout
+measure_map_case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_activeReadout_univ_eq_prod
+```
+
+The endpoint image is
+
+```text
+endpointReferenceImage =
+  case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+    ... Rres Set.univ.
+```
+
+Unfolding gives
+
+```text
+endpointReferenceImage = Measure.map Y (referenceSource.restrict Set.univ).
+```
+
+The continuity theorem makes `activeReadout` measurable, and the existing
+endpoint-map continuity makes `Y` measurable.  Therefore `Measure.map_map`
+reduces the active marginal of the endpoint image to the already-proved
+pushforward of `activeReadout o Y`; `restrict Set.univ` then disappears.  The
+result is the product measure
+
+```text
+(passiveRef.prod
+  (volume.restrict (chartMap pivotNext '' signedBoxSet Rres))).prod
+followingRef.
+```
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-active-readout-marginal.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-active-readout-marginal.md
+```
+
+Boundary: this is only the active-coordinate marginal of the named endpoint
+image for `Set.univ`.  It is not endpoint determinant-chart Haar equality, not
+full endpoint product COV, not a raw-map pushforward, not raw-order Jacobian
+transport, not formal-product/source-image domination, not source-image
+coverage, not normal crossings, not pole order, and not RLCT.
+
+Verification: direct warning-clean elaboration of the two touched Lean modules
+passed; focused builds for both modules passed, replaying only pre-existing
+warning noise from untouched modules; full local `lake build DLNFibre` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit;
+`git diff --check` passed; direct axiom probes for both declarations reported
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Endpoint Active Readout - 2026-07-02
 
 Lean now connects the endpoint topology tuple back to the active selected-entry

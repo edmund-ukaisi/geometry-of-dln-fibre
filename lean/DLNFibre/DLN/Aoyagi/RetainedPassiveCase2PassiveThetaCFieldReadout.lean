@@ -229,6 +229,107 @@ noncomputable def endpointTopologyTupleActiveReadout
       yChart F
 
 set_option linter.style.longLine false in
+/-- The active-coordinate readout from endpoint topology tuples is continuous.
+
+This is only continuity of finite coordinate projections and endpoint
+reindexing. -/
+theorem continuous_endpointTopologyTupleActiveReadout
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Continuous
+      (endpointTopologyTupleActiveReadout
+        (ρ := ρ) (τ := τ) n e) := by
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  let raw :
+      TopologyTuple ρ κ' ℝ →
+        RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+    fun T ↦
+      (ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') T).endpointTransport
+        (fun q ↦ (e q).symm)
+  let C1read :
+      TopologyTuple ρ κ' ℝ →
+        Matrix (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ℝ :=
+    fun T ↦
+      show Matrix (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ℝ from
+        by
+          simpa [case2PostPivotTwoEdgeDomain] using (raw T).C (1 : Fin 2)
+  let yRead :
+      TopologyTuple ρ κ' ℝ →
+        Case2PassiveTheta.Center n S J → ℝ :=
+    fun T i ↦
+      AoyagiResidualBlockCoordinateIndex.value (C1read T)
+        (residualCoordEquiv.symm i)
+  let Fread :
+      TopologyTuple ρ κ' ℝ →
+        Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ :=
+    fun T ↦
+      show Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ from
+        by
+          simpa [case2PostPivotTwoEdgeDomain] using (raw T).C (0 : Fin 2)
+  have hraw : Continuous raw := by
+    exact
+      (continuous_endpointTransport
+        (K := ℝ) (ρ := ρ) (κ := κ')
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ)
+        (fun q ↦ (e q).symm)).comp
+        (continuous_ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ'))
+  have hA1 : Continuous (fun T ↦ (raw T).A1passive) :=
+    continuous_pi (fun p ↦
+      (continuous_A1passive (K := ℝ) (ρ := ρ)
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ) p).comp hraw)
+  have hF2 : Continuous (fun T ↦ (raw T).F2) :=
+    continuous_pi (fun p ↦
+      (continuous_F2 (K := ℝ) (ρ := ρ)
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ) p).comp hraw)
+  have hA3 : Continuous (fun T ↦ (raw T).A3passive) :=
+    continuous_pi (fun p ↦
+      (continuous_A3passive (K := ℝ) (ρ := ρ)
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ) p).comp hraw)
+  have hCtop : Continuous (fun T ↦ (raw T).Ctop) :=
+    (continuous_Ctop (K := ℝ) (ρ := ρ)
+      (κ' := case2PostPivotTwoEdgeDomain n S J τ)).comp hraw
+  have hF3 : Continuous (fun T ↦ (raw T).F3) :=
+    (continuous_F3 (K := ℝ) (ρ := ρ)
+      (κ' := case2PostPivotTwoEdgeDomain n S J τ)).comp hraw
+  have hC1 : Continuous C1read := by
+    simpa [C1read, case2PostPivotTwoEdgeDomain] using
+      (continuous_C (K := ℝ) (ρ := ρ)
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ) (1 : Fin 2)).comp hraw
+  have hy : Continuous yRead := by
+    refine continuous_pi ?_
+    intro i
+    let c := residualCoordEquiv.symm i
+    simpa [yRead, AoyagiResidualBlockCoordinateIndex.value, c] using
+      ((continuous_apply c.2).comp ((continuous_apply c.1).comp hC1))
+  have hF : Continuous Fread := by
+    simpa [Fread, case2PostPivotTwoEdgeDomain] using
+      (continuous_C (K := ℝ) (ρ := ρ)
+        (κ' := case2PostPivotTwoEdgeDomain n S J τ) (0 : Fin 2)).comp hraw
+  have hpassive :
+      Continuous (fun T ↦ ((raw T).A1passive,
+        ((raw T).F2, ((raw T).A3passive, ((raw T).Ctop, (raw T).F3))))) :=
+    hA1.prodMk (hF2.prodMk (hA3.prodMk (hCtop.prodMk hF3)))
+  have htarget :
+      Continuous (fun T ↦ ((((raw T).A1passive,
+        ((raw T).F2, ((raw T).A3passive, ((raw T).Ctop, (raw T).F3)))),
+        yRead T), Fread T)) :=
+    (hpassive.prodMk hy).prodMk hF
+  change Continuous (fun T : TopologyTuple ρ κ' ℝ ↦ ((((raw T).A1passive,
+    ((raw T).F2, ((raw T).A3passive, ((raw T).Ctop, (raw T).F3)))),
+    yRead T), Fread T))
+  exact htarget
+
+set_option linter.style.longLine false in
 /-- The endpoint topology tuple of an enlarged passive-theta coordinate reads
 back to the active selected-entry source chart: passive coordinates are
 unchanged, the active `C 1` coordinates are `chartMap pivotNext z.1.yNext`,

@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint reference image active-readout marginal
+
+Lean now has the continuity/readout infrastructure needed to take the active
+coordinate marginal of the named with-following endpoint reference image:
+
+```text
+Case2PassiveThetaWithFollowingFactor.continuous_endpointTopologyTupleActiveReadout
+measure_map_case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_activeReadout_univ_eq_prod
+```
+
+The second theorem applies only to
+
+```text
+endpointReferenceImage =
+  case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure ... Rres Set.univ.
+```
+
+It unfolds this endpoint image as `Measure.map Y (referenceSource.restrict
+Set.univ)`, uses measurability from continuity and `Measure.map_map`, removes
+`restrict Set.univ`, and reuses the existing composite active-readout product
+COV.  Decision: this is the correct next endpoint-image-facing wrapper around
+the active selected-entry COV.  It is deliberately a marginal after
+`activeReadout`; it is not endpoint determinant-chart Haar equality, not a raw
+map pushforward, and not source-image coverage.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint active readout
 
 Lean now has a pointwise endpoint-coordinate readout connecting the endpoint
