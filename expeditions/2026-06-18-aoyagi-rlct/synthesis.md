@@ -6,6 +6,48 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Localized Endpoint-Patch Readback Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_restrict_le_smul_case2PassiveThetaWithFollowingFactor_rawMap_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This is the with-following determinant/source-density wrapper for the localized
+chart-piece patch.  For
+
+```text
+P = rawSourceSet inter rawChart^{-1}(chartPiece),
+Omega_P = rawDetChart inter rawOrderOnEndpoint^{-1}(P),
+```
+
+endpoint-patch domination on `Omega_P`, finite `Cdet`, and a positive finite
+source-density lower bound `epsilon` give same-shrink readback domination of
+`originalVolume.restrict chartPiece` by
+
+```text
+(((cHaar^{-1} : NNReal) : ENNReal) * (Cdet * epsilon^{-1}))
+```
+
+times the coordinate source measure on the outer set `G`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-endpoint-patch-readback-domination.md
+```
+
+Boundary: this is still a conditional localized handoff.  It proves no
+determinant-Haar transport, source-density positivity, original-prior
+transport, coverage, normal crossings, pole order, or RLCT extraction.
+
 ## A2 Localized p.13 Chart-Piece Raw Patch Domination - 2026-07-02
 
 Lean now has localized with-following chart-piece sockets:
