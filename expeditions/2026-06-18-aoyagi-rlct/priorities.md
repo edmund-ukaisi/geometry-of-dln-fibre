@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, formal-product domination from determinant domination and source-density lower bound
+
+Lean now proves the formal-product coordinate-source composition theorem:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_coordinateSourceReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+This theorem chooses a formal-product shrink, then a smaller same-shrink
+raw/source package.  It uses determinant-side reverse domination and a
+source-density lower bound to produce reverse raw-source domination for
+`coordinateSourceMeasure`, and feeds that into the existing p.13
+formal-product/source-reference domination theorem.  The scalar is the raw
+source-density scalar:
+
+```text
+Ddet = Cdet * epsilon^{-1}.
+```
+
+This is not a source-prior construction theorem.  The determinant-side
+reverse domination and source-density lower bound are still hypotheses, and
+`coordinateSourceMeasure` is the chart-produced measure
+`baseJ.withDensity sourceDensity`.  The remaining frontier is unchanged:
+prove determinant/source-prior transport or identify the concrete
+source/prior densities from Aoyagi-local data.  Do not claim determinant Haar
+transport, exact raw-Haar pushforward, raw-Haar normalization,
+source-image/source-rank coverage, original source-prior transport, normal
+crossings, pole order, or RLCT extraction from this theorem.
+
 ## Latest controller decision - 2026-07-02, density pullback continuity to eventual bounds
 
 Lean now proves the topological handoff helpers:

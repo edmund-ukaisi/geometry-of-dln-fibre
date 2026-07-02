@@ -82,6 +82,267 @@ set_option linter.unusedSectionVars false in
 set_option linter.unusedVariables false in
 set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
+-- This is the formal-product analogue of the determinant-domination source-reference bridge.
+/-- Formal-product chart pieces are dominated by the coordinate source
+reference under determinant-chart reverse domination and a lower
+source-density bound.
+
+This composes the same-shrink raw/source package with the conditional
+formal-product source-reference domination theorem.  The determinant-side
+reverse domination and source-density lower bound remain explicit hypotheses;
+no determinant Haar transport, original source-prior transport, source
+coverage, normal crossings, pole order, or RLCT extraction is proved. -/
+theorem exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_coordinateSourceReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [OpensMeasurableSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveTheta.PassiveFields
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveTheta
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀)
+    (sourceImageDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    (passiveMeasure :
+      Measure
+        (Case2PassiveTheta.PassiveFields
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (G :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let passiveSource :
+        Measure
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      passiveMeasure.prod weightedBox
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let Y :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        case2PassiveThetaEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let rawMap :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z)
+    let rawChart : RawTuple → EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let jacobianDensity :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    let baseJ :
+        Measure
+          (Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      passiveSource.withDensity jacobianDensity
+    let sourceChart :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      case2PassiveThetaEndpointSourceChart W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let sourceDensity :
+        Case2PassiveTheta
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦ sourceImageDensity (sourceChart z)
+    let coordinateSourceMeasure := baseJ.withDensity sourceDensity
+    let rawDetChart : Set RawTuple :=
+      topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+    let rawSourceSet : Set RawTuple :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    ∃ V :
+      Set
+        (Case2PassiveTheta
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+        ∀ chartPiece : Set EdgeFamily,
+        ∀ {Cdet ε : ℝ≥0∞},
+          chartPiece ⊆ p13SourceSet →
+            rawHaar.restrict rawDetChart ≤
+              Cdet • Measure.map Y (passiveSource.restrict V) →
+              Cdet < ∞ →
+                (∀ᵐ z ∂baseJ.restrict V, ε ≤ sourceDensity z) →
+                  ε ≠ 0 →
+                    ε ≠ ∞ →
+                      let Ddet := Cdet * ε⁻¹
+                      let formalProductMeasure : Measure EdgeFamily :=
+                        Measure.map
+                          (fun z : RawTuple ↦
+                            rawChart
+                              (topologyTupleEdgeRawOrder
+                                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                                (κ' := throughSubspaceEndpointComplementIndex
+                                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+                          ((rawHaar.restrict rawDetChart).withDensity
+                            (fun z : RawTuple ↦
+                              ENNReal.ofReal
+                                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                                  (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                                  (κ' := throughSubspaceEndpointComplementIndex
+                                    (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))
+                      let sourceRef := Measure.map sourceChart
+                        (coordinateSourceMeasure.restrict V)
+                      Ddet < ∞ ∧
+                        formalProductMeasure.restrict chartPiece ≤ Ddet • sourceRef := by
+  intro center pivotNext signedBox weightedBox passiveSource RawTuple
+    EdgeFamily Y rawMap rawChart jacobianDensity baseJ sourceChart
+    sourceDensity coordinateSourceMeasure rawDetChart rawSourceSet p13SourceSet
+  rcases
+      (by
+        simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawSourceSet,
+          p13SourceSet] using
+          exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveTheta_rawMap
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ G hGopen hz₀G) with
+    ⟨Vformal, hVformalopen, hz₀Vformal, hVformalG, hformal_dom⟩
+  rcases
+      (by
+        simpa [center, pivotNext, signedBox, weightedBox, passiveSource,
+          RawTuple, Y, jacobianDensity, baseJ, EdgeFamily, sourceChart,
+          sourceDensity, coordinateSourceMeasure, rawMap, rawDetChart,
+          rawSourceSet, p13SourceSet] using
+          exists_open_subset_case2PassiveTheta_sourceChart_rawMap_coordinateSourceMeasure_reverse_domination_package_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ sourceImageDensity passiveMeasure Rres Vformal
+            hVformalopen hz₀Vformal) with
+    ⟨V, hVopen, hz₀V, hV_formal, _hleftV, _hsource_injV,
+      _hsource_contOnV, _hsource_imageV, _himage_p13V, _hraw_memV,
+      _hrawMap_aemeas, _hmeasure_maps, hraw_dom_package⟩
+  have hVG : V ⊆ G := fun z hz ↦ hVformalG (hV_formal hz)
+  refine ⟨V, hVopen, hz₀V, hVG, ?_⟩
+  intro rawHaar _instRawHaar chartPiece Cdet ε hchartPiece_sub hdet_dom
+    hCdet hsource_lower hε_ne_zero hε_ne_top Ddet formalProductMeasure sourceRef
+  rcases (hraw_dom_package rawHaar hdet_dom hCdet hsource_lower hε_ne_zero
+    hε_ne_top) with
+    ⟨hDdet, hraw_dom⟩
+  have hrestrict_formal :
+      (coordinateSourceMeasure.restrict V).restrict Vformal =
+        coordinateSourceMeasure.restrict V :=
+    restrict_restrict_eq_self_of_subset hVopen.measurableSet hV_formal
+  have hraw_dom_bridge :
+      rawHaar.restrict rawSourceSet ≤
+        Ddet •
+          Measure.map rawMap ((coordinateSourceMeasure.restrict V).restrict Vformal) := by
+    simpa [RawTuple, rawMap, rawSourceSet, coordinateSourceMeasure, Ddet,
+      hrestrict_formal] using hraw_dom
+  have hformal_piece :
+      formalProductMeasure.restrict chartPiece ≤ Ddet • sourceRef := by
+    simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawDetChart,
+      rawSourceSet, p13SourceSet, rawChart, coordinateSourceMeasure,
+      formalProductMeasure, sourceRef, Ddet, hrestrict_formal] using
+      hformal_dom (coordinateSourceMeasure.restrict V) rawHaar chartPiece
+        (D := Ddet) hchartPiece_sub hraw_dom_bridge
+  exact ⟨by simpa [Ddet] using hDdet, hformal_piece⟩
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
 -- This composes several large Case 2 local-measure packages through nested `let` binders.
 /-- Same-shrink original-volume readback domination from determinant-chart
 reverse domination and a lower source-density bound.

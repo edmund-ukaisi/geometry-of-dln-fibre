@@ -10,6 +10,68 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Formal-Product Domination From Determinant Domination And Source-Density Lower Bound - 2026-07-02
+
+Lean now proves:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_coordinateSourceReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+The proof composes two existing APIs.  First, the formal-product theorem
+chooses a shrink `Vformal` and says that reverse raw-source domination implies
+p.13 formal-product domination by
+`Measure.map sourceChart (thetaReference.restrict Vformal)`.  Second, the
+same-shrink raw/source package chooses `V subset Vformal` and proves reverse
+raw-source domination for `coordinateSourceMeasure.restrict V` from:
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet • Measure.map Y (passiveSource.restrict V),
+
+forall-a.e. z with respect to baseJ.restrict V,
+  epsilon <= sourceDensity z.
+```
+
+Applying the formal-product theorem with
+`thetaReference = coordinateSourceMeasure.restrict V` and using
+`(coordinateSourceMeasure.restrict V).restrict Vformal =
+coordinateSourceMeasure.restrict V` gives:
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= (Cdet * epsilon^{-1}) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-formal-product-coordinate-source-domination-det-density.md
+threads/03-block-product-reduction/statement-card-a2-formal-product-coordinate-source-domination-det-density.md
+threads/03-block-product-reduction/review-a2-formal-product-coordinate-source-domination-det-density.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+reviewer `Dirac` passed the theorem-shape and nonclaim-boundary audit.
+
+Boundary: no determinant Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-density construction/identification, original
+source-prior transport, source-image/source-rank coverage, normal crossings,
+pole order, or RLCT extraction.  The theorem is a conditional composition and
+does not close the source-prior frontier.
+
 ## Density Pullback Continuity to Eventual Bounds - 2026-07-02
 
 Lean now proves:

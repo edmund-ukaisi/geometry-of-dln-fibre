@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 formal-product domination from determinant domination and source-density lower bound
+
+Reproduction:
+`reproduction-a2-formal-product-coordinate-source-domination-det-density.md`.
+Statement card:
+`statement-card-a2-formal-product-coordinate-source-domination-det-density.md`.
+Review:
+`review-a2-formal-product-coordinate-source-domination-det-density.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_coordinateSourceReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+The theorem composes the determinant-domination/source-density lower package
+with the p.13 formal-product source-reference domination theorem.  It removes
+the reverse raw-source domination socket for this formal-product conclusion,
+but keeps the determinant-side reverse domination and source-density lower
+bound explicit.  Focused direct elaboration and focused Lake module build
+passed, as did full local `lake build DLNFibre`, `scripts/sorries`, `git diff
+--check`, and direct axiom probing.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer `Dirac`
+passed the theorem-shape and nonclaim-boundary audit.
+
+Nonclaims: no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-density identification, source-image/source-rank
+coverage, original source-prior transport, normal crossings, pole order, or
+RLCT extraction.
+
 ## 2026-07-02 A2 density pullback continuity to eventual bounds
 
 Reproduction:
