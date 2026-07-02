@@ -19,6 +19,38 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, `ell=1` source-data rank-width removal
+
+Reproduction:
+`reproduction-definition3-ell-one-source-data-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-definition3-ell-one-rankwidth-removal.md`.
+Review:
+`review-definition3-ell-one-rankwidth-removal-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_ell_eq_one
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_general
+```
+
+For a supplied `S : AoyagiDefinition3SourceData L 1 H r C`, Definition 3's
+`ell=1` clauses imply the source-range rank-width hypothesis.  The proof uses
+the existing `ell=1` selected-value cover lemma and the two strict selected
+inequalities, which make both selected reduced widths positive.  Therefore
+the existing `ell=1` source-data finite Theorem 2 formula can be restated
+without a separate rank-width input.
+
+Focused local Lake build and warning-clean direct elaboration passed.
+Xhigh independent reviewer `Linnaeus` passed the source/math/API audit.
+
+Boundary: `ell=1` remains supplied.  This does not choose a canonical selected
+pair, assert a branch-independent formula for arbitrary Definition 3 data,
+construct Eq5 payloads or charts, prove normal crossings, or extract RLCT.
+The finite displayed order arithmetic is returned; no analytic pole-order
+identification is proved.
+
 ## 2026-06-24 source audit - Definition 3 branch selection
 
 Independent source auditor `Einstein the 3rd` checked Aoyagi Definition 3 and

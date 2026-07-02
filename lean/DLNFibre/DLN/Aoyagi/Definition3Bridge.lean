@@ -919,6 +919,38 @@ theorem reducedWidth_mem_selectedValueSet_of_ell_eq_one_rankWidth
         (fun j : Fin (1 + 1) ↦ aoyagiReducedWidthInt H r (C.cut j)) :=
   S.reducedWidth_mem_selectedValueSet_of_ell_eq_one hs1 hsL
 
+/-- For `ell = 1`, Definition 3 source data forces source-range rank-width.
+
+Every source-range reduced width is one of the two selected values, and the
+two strict selected inequalities make both selected values positive. -/
+theorem sourceRangeRankWidth_of_ell_eq_one
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 → r ≤ H s := by
+  intro s hs1 hsL
+  have h0pos : 0 < aoyagiReducedWidthInt H r (C.cut (0 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (1 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have h1pos : 0 < aoyagiReducedWidthInt H r (C.cut (1 : Fin (1 + 1))) := by
+    have hstrict := S.selected_strict (0 : Fin (1 + 1))
+    rw [Fin.sum_univ_two] at hstrict
+    norm_num at hstrict
+    omega
+  have hmem :=
+    S.reducedWidth_mem_selectedValueSet_of_ell_eq_one hs1 hsL
+  rcases Finset.mem_image.mp hmem with ⟨j, _hj, hjs⟩
+  have hnonneg : 0 ≤ aoyagiReducedWidthInt H r s := by
+    fin_cases j
+    · rw [← hjs]
+      exact le_of_lt h0pos
+    · rw [← hjs]
+      exact le_of_lt h1pos
+  unfold aoyagiReducedWidthInt at hnonneg
+  exact_mod_cast (sub_nonneg.mp hnonneg)
+
 /-- Constructor for `ell = 1` source data when the two selected values are
 positive and cover every source-range reduced-width value.
 
@@ -2454,6 +2486,39 @@ theorem exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general
   exact
     ⟨u, v, m, data, rfl, rfl, hm, hceil, haParam, horder, hnat, hnonneg,
       hstrict_m, hle, hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- A supplied `ell = 1` Definition 3 source datum gives the explicit finite
+Theorem 2 formula for its two selected widths, without a separate source-range
+rank-width hypothesis.
+
+For `ell = 1`, Definition 3 source data itself forces source-range
+rank-width; see `sourceRangeRankWidth_of_ell_eq_one`. -/
+theorem exists_ell_one_theorem2Formula_of_sourceData_general
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C) :
+    ∃ (u v : ℕ)
+        (m : Fin (1 + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData 1 m),
+      u = H (C.cut (0 : Fin (1 + 1))) - r ∧
+      v = H (C.cut (1 : Fin (1 + 1))) - r ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      data.ceilWidth = (u : ℤ) + (v : ℤ) ∧
+      data.aParam = 1 ∧
+      data.theorem2OrderFormula = 1 ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) ∧
+      m (0 : Fin (1 + 1)) = (u : ℤ) ∧
+      m (1 : Fin (1 + 1)) = (v : ℤ) ∧
+      aoyagiSelectedWidthPairSum 1 m = (u : ℚ) * (v : ℚ) ∧
+      aoyagiTheorem2Lambda_fromCeilData L 1 H r m data =
+        aoyagiTheorem2RegularTerm L H r + ((u : ℚ) * (v : ℚ)) / 2 :=
+  S.exists_ell_one_theorem2Formula_of_sourceData_rankWidth_general
+    S.sourceRangeRankWidth_of_ell_eq_one
 
 /-- For `L = 2` and an exposed `ell = 1` selected pair, a positive selected
 pair cover gives explicit Theorem 2 finite formula data with the `ell = 1`

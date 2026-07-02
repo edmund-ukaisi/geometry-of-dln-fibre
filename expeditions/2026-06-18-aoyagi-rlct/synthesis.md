@@ -10,6 +10,52 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Definition 3 `ell=1` Source-Data Rank-Width Removal - 2026-07-02
+
+Lean now proves:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_ell_eq_one
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_general
+```
+
+The first theorem removes the separate source-range rank-width input from the
+`ell=1` Definition 3 source-data lane.  Given
+`S : AoyagiDefinition3SourceData L 1 H r C`, every source-range reduced width
+lies in the selected value set by the existing `ell=1` cover lemma.  The two
+strict selected inequalities make the selected reduced widths positive, hence
+every source-range reduced width is nonnegative, so `r <= H s`.
+
+The second theorem delegates to the existing rank-width formula wrapper using
+that derived rank-width and returns the same finite formula fields:
+`ceilWidth = u+v`, `aParam = 1`, order `1`, pair sum `u*v`, and
+`lambda = regularTerm + u*v/2`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-ell-one-source-data-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-ell-one-rankwidth-removal.md
+threads/06-dln-translation/review-definition3-ell-one-rankwidth-removal-a6.md
+```
+
+Verification so far:
+
+```text
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Definition3Bridge
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+Xhigh independent reviewer `Linnaeus` passed.  Boundary: `ell=1` remains
+supplied; no canonical pair, branch-independent formula, Eq5 payload, chart
+production, normal crossings, or RLCT extraction is claimed.  The finite
+displayed order arithmetic is returned; no analytic pole-order/RLCT
+identification is proved.
+
 ## Source-Prior Density And Determinant-Haar Frontier Audit - 2026-07-02
 
 After the formal-product wrapper, the controller rechecked Aoyagi pp. 10-13

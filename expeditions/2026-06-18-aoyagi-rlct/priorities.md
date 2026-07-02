@@ -12,6 +12,25 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Definition 3 `ell=1` source-data rank-width removal
+
+Lean now proves:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_ell_eq_one
+AoyagiDefinition3SourceData.exists_ell_one_theorem2Formula_of_sourceData_general
+```
+
+This removes the separate source-range rank-width field from the supplied
+`ell=1` Definition 3 source-data formula.  For `ell=1`, the selected-value
+cover plus selected strictness force every source-range reduced width to be
+nonnegative, hence `r <= H s`.
+
+This is a small real field removal in A6, not a final theorem.  The branch
+choice `ell=1` remains supplied, and the result must not be read as a
+canonical branch choice, a branch-independent formula, Eq5 construction, chart
+production, normal crossings, or analytic pole-order/RLCT extraction.
+
 ## Latest controller decision - 2026-07-02, source-prior density and determinant-Haar frontier audit
 
 After the formal-product wrapper, xhigh read-only scouts `Dalton` and `Hegel`
