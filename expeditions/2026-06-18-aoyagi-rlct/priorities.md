@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following raw-image density handoff
+
+Lean now has the with-following analogue of the passive raw-image density
+handoff:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_of_jacobianDensity_ae_eq
+```
+
+On a local determinant/pivot shrink `V`, for any source-domain measure
+`sourceMeasure`, define
+
+```text
+baseJ = sourceMeasure.withDensity jacobianDensity
+```
+
+where `jacobianDensity` is the retained-passive formal raw-order product
+Jacobian evaluated at the enlarged endpoint topology tuple.  If a supplied raw
+density `rawDensity` is a.e.-measurable for the actual raw-image measure and
+`jacobianDensity z = rawDensity (rawMap z)` a.e. on `sourceMeasure.restrict V`,
+then
+
+```text
+Measure.map rawMap (baseJ.restrict V)
+=
+(Measure.map rawMap (sourceMeasure.restrict V)).withDensity rawDensity.
+```
+
+Decision: this is the next honest raw-image handoff after the source-chart
+density theorem.  It uses an arbitrary with-following `sourceMeasure` and does
+not invent a with-following product source prior.  xhigh read-only explorer
+`Beauvoir` independently confirmed the statement shape and warned not to fold
+the source-chart density theorem into this raw-image theorem.
+
+Boundary: this is still not the full local `Y` COV, not determinant-chart Haar
+equality, not endpoint Haar transport, not raw-order Haar transport, not a
+constructed Jacobian density, not source-image coverage, not normal crossings,
+not pole order, and not RLCT.
+
+Verification: direct warning-clean elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, and direct axiom probe passed; the
+theorem reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following raw-density handoff
 
 Lean now has the with-following analogue of the local raw-order/source-chart

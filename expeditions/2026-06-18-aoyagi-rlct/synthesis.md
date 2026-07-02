@@ -25,6 +25,83 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 With-Following Raw-Image Density Handoff - 2026-07-02
+
+Lean now has the with-following conditional raw-image density handoff.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+New declaration:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_of_jacobianDensity_ae_eq
+```
+
+The theorem starts from a determinant-sector, selected-pivot-nonzero
+with-following coordinate point and any open coordinate neighborhood `G`.
+Using the existing with-following raw-order/source-chart bridge, it produces
+an open `V ⊆ G` where the enlarged endpoint topology tuple lands in the
+retained-passive determinant chart.  Hence
+
+```text
+rawMap z = topologyTupleEdgeRawOrder (Y z)
+```
+
+is continuous on `V` and a.e.-measurable for any `sourceMeasure.restrict V`.
+
+For any with-following source-domain measure `sourceMeasure`, set
+
+```text
+baseJ = sourceMeasure.withDensity jacobianDensity
+```
+
+where `jacobianDensity` is the retained-passive formal raw-order product
+Jacobian evaluated at `Y z`.  For every supplied raw density `rawDensity`, if
+
+```text
+AEMeasurable rawDensity
+  (Measure.map rawMap (sourceMeasure.restrict V))
+
+jacobianDensity z = rawDensity (rawMap z)
+```
+
+for `sourceMeasure.restrict V`-a.e. `z`, then
+
+```text
+Measure.map rawMap (baseJ.restrict V)
+=
+(Measure.map rawMap (sourceMeasure.restrict V)).withDensity rawDensity.
+```
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-raw-image-density-handoff.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-raw-image-density-handoff.md
+```
+
+Boundary: this is only conditional density transport to the actual raw image.
+It is not local `Y` COV, not determinant-chart Haar equality, not endpoint
+Haar transport, not raw-order Haar transport, not a constructed raw density,
+not external source-prior identification, not source-image coverage, not normal
+crossings, not pole order, and not RLCT.
+
+Scout integration: xhigh read-only explorer `Beauvoir` independently confirmed
+the statement shape, imports/typeclass footprint, proof skeleton, and nonclaim
+boundary.  In particular, the previous with-following source-chart density
+handoff is a sibling/downstream statement after applying `rawChart`, not an
+input to this raw-image identity.
+
+Verification before banking: direct warning-clean elaboration of the touched
+Lean module, focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Raw-Order Source-Chart Density Handoff - 2026-07-02
 
 Lean now has the with-following conditional raw-density handoff from the
