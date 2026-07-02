@@ -445,14 +445,16 @@ theorem waist_carrier_data_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     omega
 
 /-- **The η-uniform `Λ₀`-entry bound.** `∃ Acc_Λ ≥ 0` such that for EVERY `0 ≤ η ≤ δ` there are `γ, nb`
-with `nb ≤ η·Acc_Λ`, `((r−1)·nb < (δ/2)^{L−1−q} − η·Acc_Λ → 0 < γ)`, and (if `γ > 0`) `|Lam0uG u a b| ≤
-(1/γ)·nb` for every front-carrier `u` with `det (P₁ᵀP₁) ≠ 0`. -/
+with `nb ≤ η·Acc_Λ`, the `u`-free γ lower bound `(δ/2)^{L−1−q} − η·Acc_Λ − (r−1)·nb ≤ γ`,
+`((r−1)·nb < (δ/2)^{L−1−q} − η·Acc_Λ → 0 < γ)`, and (if `γ > 0`) `|Lam0uG u a b| ≤ (1/γ)·nb` for every
+front-carrier `u` with `det (P₁ᵀP₁) ≠ 0`. -/
 theorem Lam0uG_entry_bound_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hrs : r + s = M ((deepLayer hL).castSucc)) {δ : ℝ} (hδ : 0 < δ) (hr : 0 < r)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
     ∃ Acc : ℝ, 0 ≤ Acc ∧ ∀ (η : ℝ), 0 ≤ η → η ≤ δ →
       ∃ (γ nb : ℝ), 0 ≤ nb ∧ nb ≤ η * Acc
+        ∧ (δ / 2) ^ (L - 1 - q) - η * Acc - ((r : ℝ) - 1) * nb ≤ γ
         ∧ (((r : ℝ) - 1) * nb < (δ / 2) ^ (L - 1 - q) - η * Acc → 0 < γ)
         ∧ (0 < γ → ∀ (u : Fin (routeMAmbient M) → ℝ),
             (∀ t : Fin L, q ≤ (t : ℕ) → (t : ℕ) < L - 1 → CarrierLayer (frontTupleG M u t) r δ η) →
@@ -462,7 +464,9 @@ theorem Lam0uG_entry_bound_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     waist_carrier_data_uniformEta M hL hrs hδ q hq hqL hMq hwidth
   refine ⟨Acc, hAcc0, fun η hη hηδ => ?_⟩
   obtain ⟨dlb, nb, hnb0, hnbA, hdlbA, hdataη⟩ := hdata η hη hηδ
-  refine ⟨dlb - ((r : ℝ) - 1) * nb, nb, hnb0, hnbA, ?_, ?_⟩
+  refine ⟨dlb - ((r : ℝ) - 1) * nb, nb, hnb0, hnbA, ?_, ?_, ?_⟩
+  · -- the γ lower bound `(δ/2)^ℓ − η·Acc − (r−1)·nb ≤ dlb − (r−1)·nb`
+    linarith [hdlbA]
   · intro hsmall
     have : ((r : ℝ) - 1) * nb < dlb := lt_of_lt_of_le hsmall hdlbA
     linarith
