@@ -25,6 +25,62 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 With-Following Source-Chart Image Support - 2026-07-02
+
+Lean now has the local source-chart image-support identity for chart-produced
+measures in the enlarged with-following endpoint source chart.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+New declaration:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_restrict_image_eq_self_readback_leftInverse
+```
+
+The theorem starts from a determinant-sector, selected-pivot-nonzero
+with-following coordinate point and any open coordinate neighborhood `G`.
+Using the existing local source-chart image theorem, it produces an open
+`V ⊆ G` where the source chart is continuous and injective, the image is
+measurable, and the readback is a left inverse.  For every theta-domain
+measure `thetaMeasure`, if
+
+```text
+mu = Measure.map sourceChart (thetaMeasure.restrict V),
+```
+
+then
+
+```text
+mu.restrict (sourceChart '' V) = mu.
+```
+
+This is the with-following analogue of the existing passive-theta image-support
+theorem.  It supplies support bookkeeping for local source-image contracts.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-source-chart-image-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-source-chart-image-support.md
+```
+
+Boundary: this is only support of chart-produced measures on the actual local
+image.  It is not local `Y` COV, not endpoint Haar transport, not an external
+source-prior identification, not source-image coverage beyond the actual image,
+not a density comparison, not raw-map pushforward, not normal crossings, not
+pole order, and not RLCT.
+
+Verification before banking: direct warning-clean elaboration of the touched
+Lean module, focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan,
+and direct axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Source-Chart Readback Source Reference - 2026-07-02
 
 Lean now has the local source-chart produced-measure readback identity for

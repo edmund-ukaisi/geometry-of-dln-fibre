@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following source-chart image support
+
+Lean now has the with-following analogue of the local chart-produced
+source-image support theorem:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_restrict_image_eq_self_readback_leftInverse
+```
+
+On a local open set `V` where the enlarged endpoint source chart is continuous,
+injective, has measurable image, and has a readback left inverse, every
+chart-produced measure
+
+```text
+Measure.map sourceChart (thetaMeasure.restrict V)
+```
+
+is supported on the actual local image `sourceChart '' V`, so restricting it
+to that image does not change it.
+
+Decision: this is a small source-image bookkeeping socket, not the local `Y`
+change-of-variables theorem.  It will help future bounded-density and
+source-image contracts avoid re-proving support of chart-produced measures.
+No endpoint Haar transport, no Jacobian formula, no external source-prior
+identification, and no source-image coverage beyond the actual image are
+claimed.
+
+Verification: direct warning-clean elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker scan, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following source-chart readback source reference
 
 Lean now has the with-following analogue of the local chart-produced
