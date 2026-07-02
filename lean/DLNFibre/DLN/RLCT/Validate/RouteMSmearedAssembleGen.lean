@@ -368,4 +368,54 @@ noncomputable def smearedChartDataGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 
       UunitG_hN_insertNth M hL hrs hr hc hN p hp z y]
   hUpos := hUpos
 
+/-- **The general-`L` `SmearedAchieverChart` for `M`.** Bundles the general-`L` chart maps
+(`psiMapG`/`RmapG`/`DmapG`, MP + a measurable embedding), the pivot `p`, radial exponent
+`r·M(deepLayer).succ − 1`, and the per-ε conditioned data supplier (`smearedChartDataGen`). The
+exponent field `hexp` uses the caller-supplied `minAdm` match `hminadm : r · M(deepLayer).succ =
+minAdm M` (from `minAdm_eq_deepRank_mul_last` at `r = deepRank`) with `1 ≤ minAdm M`, giving
+`(minAdm − 1) − minAdm = −1 ≤ −1`. -/
+noncomputable def smearedChartGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (dataGen : ∀ ε : ℝ, 0 < ε →
+      SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
+        (r * M ((deepLayer hL).succ) - 1) ε) :
+    SmearedAchieverChart M where
+  n := n
+  hN := hN
+  ψ := psiMapG M hL hrs
+  R := RmapG M hL hrs hr hc
+  D := DmapG M hL hrs hr hc
+  p := p
+  h := r * M ((deepLayer hL).succ) - 1
+  hmp := measurePreserving_psiMapG M hL hrs
+  hemb := measurableEmbedding_psiMapG M hL hrs
+  hexp := by
+    -- `(minAdm − 1) − 2·(minAdm/2) = −1 ≤ −1`
+    rw [hminadm]
+    have h1 : (1 : ℕ) ≤ minAdm M := hminpos
+    have : ((minAdm M - 1 : ℕ) : ℝ) = (minAdm M : ℝ) - 1 := by
+      rw [Nat.cast_sub h1]; norm_num
+    rw [this]; ring_nf; linarith
+  data := dataGen
+
+/-- **The spine's `hSmeared`, for `M`, from the general-`L` chart.** Given the structural data + the
+per-ε conditioned-data supplier, the boundary-smeared branch's `hSmeared` holds for `M`: for `2 ≤ L`
+and `BoundarySmeared M`, the achiever box integral diverges (`c' ≥ ½·minAdm M`, `ε > 0`). Feeds
+`smearedChartGen` into the already-∀L `hSmeared_of_smearedChart`. -/
+theorem hSmeared_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (dataGen : ∀ ε : ℝ, 0 < ε →
+      SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
+        (r * M ((deepLayer hL).succ) - 1) ε)
+    (c' : NNReal) (hc' : (minAdm M : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞)) (ε : ℝ) (hε : 0 < ε) :
+    (2 ≤ L) → BoundarySmeared M →
+      ∫⁻ x in cubeBox (routeMAmbient M) ε,
+        ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) = ⊤ :=
+  hSmeared_of_smearedChart M
+    (fun _ => smearedChartGen M hL hrs hr hc hN p hminadm hminpos dataGen) c' hc' ε hε
+
 end DLNFibre.DLN.RLCT
