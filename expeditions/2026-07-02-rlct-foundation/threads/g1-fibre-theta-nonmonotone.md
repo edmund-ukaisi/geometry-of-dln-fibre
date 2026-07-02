@@ -72,6 +72,38 @@ transfer construction was needed; no new cite; no new deep math.
 > - **Cited / Deferred.** as above.
 > - **Status.** sorry-free.
 
+## Closed form for arbitrary `d` (do-if-within-reach — DONE, perm-invariance was landed)
+
+Controller push: the computable closed form for non-monotone `d`. Verified on this branch that
+permutation invariance of `(C, θ)` is LANDED (`Core.CThetaPermInvariance.numTop_comp_sort`,
+`Tuple.monotone_sort` in Mathlib v4.29) — no new cite, no new math. Route:
+`numTop d r = numTop (d ∘ sort d) r` [Cor 5.10] `= cTheta ((d ∘ sort d) − r)` [Monotone closed form
+on the sorted monotone representative].
+
+> **Claim (combinatorial closed form, arbitrary `d`).** `numTop d r = cTheta ((d ∘ Tuple.sort d) − r)`
+> for any `d` with `r ≤ d k` everywhere and `1 ≤ N`.
+>
+> - **Lean:** `DLNFibre.Core.numTop_eq_cTheta_dminus_sort`
+>   (`lean/DLNFibre/Core/CThetaSortClosedForm.lean` @ `a9bbb786`)
+> - **Proved.** the closed form on the sorted vector, no monotonicity on `d`.
+> - **Assumed.** `hr : ∀ k, r ≤ d k`, `1 ≤ N` (the permutation-invariance lever's hypotheses),
+>   `(kostantPartitions d r).Nonempty`.
+> - **Cited.** none (perm invariance `numTop_comp_sort` is fully proved on-branch).
+> - **Deferred.** none.
+> - **Status.** sorry-free.
+
+> **Claim (fibre closed form, arbitrary `d`, normal-form & arbitrary-`B`).** The fibre
+> top-component count equals `cTheta ((d ∘ Tuple.sort d) − r)` for arbitrary `d`.
+>
+> - **Lean:** `DLNFibre.Core.ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` and
+>   `..._of_rank` (`lean/DLNFibre/Core/FibreThetaCountUnconditional.lean` @ `a9bbb786`)
+> - **Proved.** composes the `numTop`-endpoint fibre headlines with the combinatorial sorted closed
+>   form. For monotone `d` the sort is the identity, recovering the old `cTheta`-headline.
+> - **Assumed.** the `numTop`-headline hypotheses + `hr : ∀ i, r ≤ d i` (perm invariance needs it);
+>   `1 ≤ N + 1` is automatic (`Nat.succ_pos`). NOT `Monotone d`.
+> - **Cited / Deferred.** none.
+> - **Status.** sorry-free.
+
 ## Non-vacuity (bedrock: witness shown in-file)
 
 `dNonMono = ![1, 2, 1]` (`Fin 3`, so `N = 1`) is NOT monotone (`1 < 2 > 1`,
@@ -83,10 +115,11 @@ transfer construction was needed; no new cite; no new deep math.
 
 ## Gates
 
-- `scripts/lb DLNFibre` green (3835 jobs). `scripts/sorries` = `0 sorry / 0 #exit / 0 native_decide /
+- `scripts/lb DLNFibre` green (3836 jobs). `scripts/sorries` = `0 sorry / 0 #exit / 0 native_decide /
   0 axiom`.
-- All four theorems axiom-clean `[propext, Classical.choice, Quot.sound]` — no new axioms/cites. The
-  `decide` witnesses are kernel `decide`.
+- All theorems (the three `numTop`-endpoint headlines + the E0-geometric rung + the three closed-form
+  corollaries + both non-vacuity witnesses) axiom-clean `[propext, Classical.choice, Quot.sound]` — no
+  new axioms/cites. The `decide` witnesses are kernel `decide`.
 
 ## Integration note for the controller
 
