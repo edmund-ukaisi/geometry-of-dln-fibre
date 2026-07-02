@@ -2854,10 +2854,10 @@ theorem Cgen_leaf_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : Str
   -- `s.val + 1 = L` at the leaf; `Cgen … L = rfinDirectGen`, RHS = `schurFrameProd` collapses to `readE`.
   rw [flatBlock_schurFrameMap_eq_gen M (tach M) (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val)
       hr hc (slotReadGen M ha s y)]
-  -- REMAINING (leaf reconciliation, cast-heavy): `Cgen … (s+1) = Cgen … L = rfinDirectGen`
-  -- (`Cgen_live_leaf_eq_rfinDirectGen`, via `s.val+1 = L`), and `schurFrameProd` at `t = Text(L+1) = 0`
+  -- REMAINING (leaf reconciliation): `Cgen … (s+1) = Cgen … L = rfinDirectGen`
+  -- (`Cgen_live_leaf_eq_rfinDirectGen`, `s.val+1 = L`); `schurFrameProd` at `t = Text(L+1) = 0`
   -- collapses to the `E` block `= readE (L−1) = rfinDirectGen` — needs the `frameSplitEquiv` (readE) vs
-  -- `schurSlotEquiv` (leafSlot) index reconciliation at `t=0` (a new combinatorial slot-bridge lemma).
+  -- `schurSlotEquiv` (leafSlot) slot-index reconciliation at `t=0` (a new combinatorial bridge lemma).
   sorry
 
 /-- **The LEAF DIAGONAL FRAME** `(stairProj (L−1) (T (stairIncl (L−1) v))).1 = (genF (L−1) v).1` — at the
