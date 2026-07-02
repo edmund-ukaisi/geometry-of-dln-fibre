@@ -1112,6 +1112,37 @@ theorem diffAt_Cgen_liveGen' (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M
           = fun _ => 0 from by funext y; simp only [genBlkFlatLive, dif_neg hkL]]
       exact differentiableAt_const _
 
+/-- The live decoder's `Nblk k` is differentiable (`readN` interior, const `0` at `0`/off-range). The
+`Nblk`-factor of the `−N·W` correction's differentiability (`NblkWblk_fderiv_vanish`'s `fderiv_sub`). -/
+theorem diffAt_liveNblk_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (k : ℕ) :
+    DifferentiableAt ℝ (fun y =>
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk k) y₀ := by
+  show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Nblk k) y₀
+  match k with
+  | 0 => exact differentiableAt_const _
+  | (j + 1) =>
+    by_cases hj : j < L
+    · simp only [genBlkFlatStruct, dif_pos hj]; exact diffAt_readN M (tach M) ha ⟨j, hj⟩ y₀
+    · simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+
+/-- The live decoder's `Wblk k` is differentiable (`readW` deep interior, const `0` else). The
+`Wblk`-factor of the `−N·W` correction's differentiability. -/
+theorem diffAt_liveWblk_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (k : ℕ) :
+    DifferentiableAt ℝ (fun y =>
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk k) y₀ := by
+  show DifferentiableAt ℝ (fun y => (genBlkFlatStruct M (tach M) ha y).Wblk k) y₀
+  match k with
+  | 0 => exact differentiableAt_const _
+  | (j + 1) =>
+    by_cases hj : j < L
+    · by_cases hj2 : j + 1 < L
+      · simp only [genBlkFlatStruct, dif_pos hj, dif_pos hj2]
+        exact diffAt_readW M (tach M) ha ⟨j, hj⟩ hj2 y₀
+      · simp only [genBlkFlatStruct, dif_pos hj, dif_neg hj2]; exact differentiableAt_const _
+    · simp only [genBlkFlatStruct, dif_neg hj]; exact differentiableAt_const _
+
 /-- The per-layer differentiability of `BparamsLeafGen`'s chain (in-closure rebuild of the Hmap
 `diffAt_Agen_liveGen`, downstream of this module). Interior layers are `chainA (Nblk s)(Wblk s)
 (Cgen(s+1))` with `Nblk`/`Wblk` the dead structured readers and `Cgen(s+1)` differentiable. -/
@@ -2560,6 +2591,72 @@ theorem liftGatherFinL_symm_apply (M : Fin (L + 1) → ℕ) (ha : StructAdm M (t
     · -- val eq: `▸`/`Fin.cast` preserve `.val`, so both sides are `b.val`.
       simp
 
+/-- **`T` at a slot inclusion, projected to slot `s'`** — `stairProj s' (T (stairIncl s v))` reads the
+`fderiv BparamsLeafGen` (via `eihdT_gen_eq_packStairGen_fderiv`) at input `eInGen.symm (stairIncl s v)`.
+The building block of the per-slot diag/upper block facts (`.1` frame / `.2` lift computed separately). -/
+theorem stairProj_T_stairIncl (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (s s' : Fin L) (v : genV M s.val) :
+    stairProj (genV M) L s'.val
+        (((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+            ∘ₗ DtotGen M ha y₀
+            ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)))
+          (stairIncl (genV M) L s.val v))
+      = stairProj (genV M) L s'.val (packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+            ((eInGen M ha).symm (stairIncl (genV M) L s.val v)))) := by
+  rw [show (((eihdOutGen M ha : (Fin (routeMAmbient M) → ℝ) →ₗ[ℝ] StairProd (genV M) L)
+        ∘ₗ DtotGen M ha y₀
+        ∘ₗ ((eInGen M ha).symm : StairProd (genV M) L →ₗ[ℝ] (Fin (routeMAmbient M) → ℝ)))
+        (stairIncl (genV M) L s.val v))
+      = packStairGen M ha ha.hL (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+          ((eInGen M ha).symm (stairIncl (genV M) L s.val v))) from
+    eihdT_gen_eq_packStairGen_fderiv M ha y₀ (stairIncl (genV M) L s.val v)]
+
+/-- **The DIAGONAL FRAME block** `(stairProj s (T (stairIncl s v))).1 = (genF s v).1` at any boundary
+`s : Fin L`. The KEPT-block fderiv (`stairProj_packStairGen_fst` + `packStairGen_frame_fderiv_read`) is
+`fderiv (Cgen(s+1) − Nblk·Wblk)`; the `−N·W` vanishes on the slot-`s` input (`NblkWblk_fderiv_vanish`),
+`Cgen(s+1) = flatBlock (schurFrameMap (slotReadGen s))` (`Cgen_succ_eq_flatBlock_schurFrameMap`, interior)
+collapses to `schurFrameDeriv (slotReadGen s (eInGen.symm (stairIncl s v)))`
+(`schurFrameGenMap_fderiv_collapse`), and `slotReadGen_eInGen_symm` + `stairProj_stairIncl_self` recover
+the frame input `frameToSchurIncGen s v.1` — matching `genF s`'s conjugation. -/
+theorem stairProj_T_stairIncl_diag_fst (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (s : Fin L) (hs : s.val + 1 < L) (v : genV M s.val) :
+    (stairProj (genV M) L s.val
+        (packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+            ((eInGen M ha).symm (stairIncl (genV M) L s.val v))))).1
+      = (genF M ha y₀ s.val v).1 := by
+  rw [stairProj_packStairGen_fst, packStairGen_frame_fderiv_read]
+  set d := (eInGen M ha).symm (stairIncl (genV M) L s.val v) with hd
+  -- split the fderiv of the difference; the `−N·W` part vanishes on the slot-`s` input.
+  have hdiffC : DifferentiableAt ℝ (fun y => Cgen 1 M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) (s.val + 1)) y₀ :=
+    diffAt_Cgen_liveGen' M ha y₀ (s.val + 1)
+  have hdiffNW : DifferentiableAt ℝ (fun y =>
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+        * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) y₀ :=
+    DifferentiableAt.matMul (diffAt_liveNblk_gen M ha y₀ s.val)
+      (diffAt_liveWblk_gen M ha y₀ s.val)
+  rw [fderiv_fun_sub hdiffC hdiffNW]
+  simp only [ContinuousLinearMap.sub_apply, map_sub]
+  rw [NblkWblk_fderiv_vanish M ha s y₀ v, map_zero, sub_zero]
+  -- rewrite `Cgen(s+1)` under the fderiv to `flatBlock (schurFrameMap (slotReadGen s))`, then collapse.
+  have hr : Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+      = Text M (tach M) (s.val + 1) := by have := ha.hdesc s.val s.isLt; omega
+  have hc : Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+      = Wext M (s.val + 1) := by have := ha.hub s.val; omega
+  rw [show (fun y => Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+        (hleStruct M (tach M) ha) (s.val + 1))
+      = (fun y => flatBlock hr hc (schurFrameMap (slotReadGen M ha s y))) from
+    funext fun y => Cgen_succ_eq_flatBlock_schurFrameMap M ha s hs hr hc y]
+  rw [schurFrameGenMap_fderiv_collapse M ha s hr hc y₀ d]
+  -- `slotReadGen s d = frameToSchurIncGen s (stairProj s (stairIncl s v)).1 = frameToSchurIncGen s v.1`.
+  rw [hd, slotReadGen_eInGen_symm M ha (stairIncl (genV M) L s.val v) s,
+    stairProj_stairIncl_self (genV M) L s.val s.isLt v]
+  -- unfold `genF`'s interior frame block (`frameToSchurIncGen`-conjugated `schurFrameDeriv`).
+  rw [genF, dif_pos s.isLt]
+  rfl
+
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
 collected `genV` coords) is `genF k` (`schurFrameDeriv` on the frame ⊕ id on the lift); the couplings
@@ -2581,12 +2678,14 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
   rw [hcoupling]
   refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
-  -- ASSEMBLY RESIDUAL: the per-slot diag/upper block families (via `stairLowerTriDiag_of_blocks`),
-  -- threading `eihdT_gen_eq_packStairGen_fderiv` + block-aware `stairProj_packStairGen_fst`/`_snd` +
-  -- `packRowSplitGen_kept_BparamsLeafGen` + the product-rule `−N·W` vanishing (`readN/W_vanish`) +
-  -- `schurFrameGenMap_fderiv_collapse` + `slotReadGen_eInGen_symm`. Fix (i) made both sides block-aware
-  -- (genF's ORIGINAL `frameToSchurIncGen` conjugation matches directly — NO frameDecode2D/bridgePerm).
-  sorry
+  -- The two per-slot block families (via `stairLowerTriDiag_of_blocks`): diag `= genF s`, upper `= 0`.
+  refine stairLowerTriDiag_of_blocks (genV M) L (genF M ha y₀) T ?_ ?_
+  · -- DIAGONAL: `stairProj s ∘ T ∘ stairIncl s = genF s`, all `s : ℕ`.
+    intro s
+    sorry
+  · -- UPPER: `stairProj s' ∘ T ∘ stairIncl s = 0` for `s' < s`.
+    intro s s' hs'
+    sorry
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
