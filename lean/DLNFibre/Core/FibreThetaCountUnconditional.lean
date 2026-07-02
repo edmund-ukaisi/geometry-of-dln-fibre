@@ -120,6 +120,39 @@ theorem ncard_topDimMinPrimes_fibre_eq_numTop_of_rank [IsAlgClosed k] [CharZero 
       (normalForm (k := k) (d (Fin.last (N + 1))) (d 0) r hp hq) (hB.trans hrankE.symm)).trans
     (ncard_topDimMinPrimes_fibre_eq_numTop d r hp hq hN h)
 
+/-! ## Non-vacuity: the headline fires on a genuinely NON-monotone `d`
+
+The whole point of dropping `Monotone d` is that the count is now stated for dimension vectors the
+`cTheta`-gated headline could not even mention. The witness `dNonMono = ![1, 2, 1]` (`N = 1`, so
+`Fin (N + 2) = Fin 3`) is non-monotone (`1 < 2 > 1`), yet `kostantPartitions dNonMono 0` is nonempty
+(4 elements), so `ncard_topDimMinPrimes_fibre_eq_numTop` instantiates at it — impossible under the
+old `Monotone`-gated headline. -/
+
+/-- A non-monotone dimension vector `d : Fin 3 → ℕ` (`1 < 2 > 1`). -/
+def dNonMono : Fin 3 → ℕ := ![1, 2, 1]
+
+/-- `dNonMono` is NOT monotone (`d 1 = 2 > 1 = d 2`). -/
+theorem not_monotone_dNonMono : ¬ Monotone dNonMono := by decide
+
+/-- `kostantPartitions dNonMono 0` is nonempty — the fibre-`θ` headline's only real hypothesis holds
+for this non-monotone vector, `Monotone`-free (a `decide` witness). -/
+theorem kostantPartitions_dNonMono_zero_nonempty :
+    (kostantPartitions dNonMono 0).Nonempty := by decide
+
+/-- **Non-vacuity witness.** The `Monotone`-free fibre-`θ` headline
+`ncard_topDimMinPrimes_fibre_eq_numTop` fires on the NON-monotone `dNonMono = ![1, 2, 1]` at rank
+`0`: the top-dimensional-component count of the fibre over the normal form equals
+`numTop dNonMono 0`.
+The old `cTheta`-gated headline `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus` cannot even be stated
+here (`hd : Monotone dNonMono` is false, `not_monotone_dNonMono`). -/
+theorem ncard_topDimMinPrimes_fibre_dNonMono_eq_numTop :
+    (Ideal.TopDimMinPrimes (MvPolynomial (RepCoord dNonMono) (AlgebraicClosure ℚ)
+        ⧸ fibreGenIdeal dNonMono (normalForm (k := AlgebraicClosure ℚ)
+            (dNonMono (Fin.last 2)) (dNonMono 0) 0 (by decide) (by decide)))).ncard
+      = numTop dNonMono 0 kostantPartitions_dNonMono_zero_nonempty :=
+  ncard_topDimMinPrimes_fibre_eq_numTop dNonMono 0 (by decide) (by decide) (by decide)
+    kostantPartitions_dNonMono_zero_nonempty
+
 end UnivZero
 
 end DLNFibre.Core
