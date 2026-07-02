@@ -19,6 +19,37 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, fixed `ell=2` triangle formula dispatch
+
+Reproduction:
+`reproduction-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction.md`.
+Review:
+`review-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData_natWidths
+```
+
+For supplied `S : AoyagiDefinition3SourceData 2 2 H r C`, the dispatch
+returns only the odd/even triangle Theorem 2 branch disjunction.  It uses the
+fixed `ell=2` classifier to derive triangle inequalities, converts them
+through Nat-width identities, then splits on parity.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The two new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Euler the 2nd`
+passed.
+
+Boundary: finite fixed-`ell=2` Definition 3/Theorem 2 dispatch only; no
+arbitrary-`ell` branch choice, branch-independent formula, Eq5 construction,
+chart production, normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, `L=2`, `ell=2` source-data classifier
 
 Reproduction:

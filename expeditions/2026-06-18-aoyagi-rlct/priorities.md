@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, fixed `ell=2` triangle formula dispatch
+
+Lean now has fixed-`ell=2` source-data dispatch to the odd/even triangle
+Theorem 2 branch packages:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData_natWidths
+```
+
+Decision: this is a genuine A6 finite dispatch refinement.  Because `ell=2`
+is supplied, the conclusion omits the repeated-positive branch and returns
+only the odd/even triangle branch disjunction.  This is not a
+branch-independent formula theorem and does not choose a branch for arbitrary
+source data.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md
+```
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, direct axiom probe, and xhigh independent review passed.  The two new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `L=2`, `ell=2` classifier
 
 Lean now exposes the exact `ell=2` branch of the finite `L=2` Definition 3

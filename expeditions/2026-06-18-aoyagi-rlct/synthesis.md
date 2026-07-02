@@ -6,6 +6,51 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 Fixed `ell=2` Triangle Formula Dispatch - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData_natWidths
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+```
+
+For supplied `S : AoyagiDefinition3SourceData 2 2 H r C`, the first theorem
+dispatches to
+
+```text
+L2TriangleOddTheorem2FormulaBranch H r w1 w2 w3 ∨
+L2TriangleEvenTheorem2FormulaBranch H r w1 w2 w3
+```
+
+under Nat-width identities for the three source reduced widths.  The second
+theorem obtains those Nat witnesses from `S`.  This removes the
+repeated-positive branch from the conclusion only in the fixed-`ell=2` case.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-two-source-data-triangle-formula-disjunction-a6.md
+```
+
+Boundary: finite fixed-`ell=2` Definition 3/Theorem 2 dispatch only.  No
+arbitrary-`ell` branch choice, no branch-independent formula, no Eq5/chart
+construction, no normal crossings, no pole order, and no RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The two new
+declarations report only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+reviewer `Euler the 2nd` passed.
+
 ## A6 `L=2`, `ell=2` Source-Data Classifier - 2026-07-02
 
 Lean now has:

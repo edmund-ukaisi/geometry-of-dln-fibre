@@ -3347,6 +3347,84 @@ theorem exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
           horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hm2,
           hpair, hlambda⟩
 
+/-- A fixed `L=2`, `ell=2` Definition 3 source datum dispatches only to the
+odd/even all-source triangle finite Theorem 2 branches.
+
+This removes the repeated-positive branch from the conclusion only because
+`ell=2` is supplied.  It does not choose between the odd and even triangle
+branches except by the parity of the three natural reduced widths. -/
+theorem exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    {C : AoyagiSelectedCutpoints 2}
+    (S : AoyagiDefinition3SourceData 2 2 H r C)
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ)) :
+    L2TriangleOddTheorem2FormulaBranch H r w1 w2 w3 ∨
+      L2TriangleEvenTheorem2FormulaBranch H r w1 w2 w3 := by
+  classical
+  rcases
+      (exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+        (H := H) (r := r)).mp ⟨C, S⟩ with
+    ⟨htri1_z, htri2_z, htri3_z⟩
+  have htri1_z' :
+      (2 : ℤ) * (w1 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    simpa [hw1, hw2, hw3] using htri1_z
+  have htri2_z' :
+      (2 : ℤ) * (w2 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    simpa [hw1, hw2, hw3] using htri2_z
+  have htri3_z' :
+      (2 : ℤ) * (w3 : ℤ) < (w1 : ℤ) + (w2 : ℤ) + (w3 : ℤ) := by
+    simpa [hw1, hw2, hw3] using htri3_z
+  have htri1 : 2 * w1 < w1 + w2 + w3 := by exact_mod_cast htri1_z'
+  have htri2 : 2 * w2 < w1 + w2 + w3 := by exact_mod_cast htri2_z'
+  have htri3 : 2 * w3 < w1 + w2 + w3 := by exact_mod_cast htri3_z'
+  by_cases hodd : (w1 + w2 + w3) % 2 = 1
+  · rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_odd
+        (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+        hw1 hw2 hw3 htri1 htri2 htri3 hodd with
+      ⟨Ctri, m, data, hCtri, Stri, hm, hceil, haParam, horder, hnat, hnonneg,
+        hstrict_m, hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+    left
+    exact
+      ⟨htri1, htri2, htri3, hodd, Ctri, m, data, hCtri, Stri, hm, hceil,
+        haParam, horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1,
+        hm2, hpair, hlambda⟩
+  · have heven : (w1 + w2 + w3) % 2 = 0 := by
+      have hlt : (w1 + w2 + w3) % 2 < 2 := Nat.mod_lt _ (by norm_num)
+      omega
+    rcases exists_consecutive_three_widths_theorem2Formula_of_triangle_even
+        (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+        hw1 hw2 hw3 htri1 htri2 htri3 heven with
+      ⟨Ctri, m, data, hCtri, Stri, hm, hceil, haParam, horder, hnat, hnonneg,
+        hstrict_m, hle, hnatNonneg, hm0, hm1, hm2, hpair, hlambda⟩
+    right
+    exact
+      ⟨htri1, htri2, htri3, heven, Ctri, m, data, hCtri, Stri, hm, hceil,
+        haParam, horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1,
+        hm2, hpair, hlambda⟩
+
+/-- A fixed `L=2`, `ell=2` Definition 3 source datum supplies Nat-valued
+reduced widths and dispatches only to the odd/even triangle finite Theorem 2
+branches. -/
+theorem exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData_natWidths
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 2}
+    (S : AoyagiDefinition3SourceData 2 2 H r C) :
+    ∃ w1 w2 w3 : ℕ,
+      aoyagiReducedWidthInt H r 1 = (w1 : ℤ) ∧
+      aoyagiReducedWidthInt H r 2 = (w2 : ℤ) ∧
+      aoyagiReducedWidthInt H r 3 = (w3 : ℤ) ∧
+      (L2TriangleOddTheorem2FormulaBranch H r w1 w2 w3 ∨
+        L2TriangleEvenTheorem2FormulaBranch H r w1 w2 w3) := by
+  rcases exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+      ⟨2, C, S⟩ with
+    ⟨w1, w2, w3, hw1, hw2, hw3⟩
+  exact
+    ⟨w1, w2, w3, hw1, hw2, hw3,
+      exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
+        (H := H) (r := r) (C := C) S hw1 hw2 hw3⟩
+
 /-- Any `L=2` Definition 3 source-data witness supplies Nat-valued reduced
 widths and yields the existing finite Theorem 2 branch disjunction.
 
