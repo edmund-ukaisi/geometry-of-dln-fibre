@@ -25,6 +25,64 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Endpoint-Sector Domination Bookkeeping - 2026-07-02
+
+Lean now has the with-following endpoint-sector support/domination layer.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+New theorems:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+```
+
+For
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z
+```
+
+and a measurable source set `Ω`, the first theorem says
+`Measure.map Y (thetaMeasure.restrict Ω)` is supported on the named endpoint
+sector
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointSectorSet ... Ω = Y '' Ω.
+```
+
+The second theorem pushes a supplied source-side domination
+
+```text
+sourceMeasure.restrict Ω ≤ c • referenceMeasure.restrict Ω
+```
+
+through `Y` after restricting both target measures to the named endpoint
+sector.  The third theorem packages the same transfer from a supplied local
+a.e. density upper bound via `withDensity_mono`.
+
+This is image-measure bookkeeping.  It is not endpoint product COV, not
+determinant-chart Haar transport, not raw-map pushforward, and not
+source-image coverage beyond the named local image sector.  The next
+source-moving target remains the product `Y` COV/Haar-identification layer,
+where passive fields and following-factor coordinates are identity/reindexing
+factors and the selected-entry chart contributes `sourceDensity`.
+
+Verification: direct elaboration of the touched file passed warning-clean;
+focused build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure` passed,
+replaying only pre-existing warning noise from
+`ProductReductionStepRegularDensity`; `lean/scripts/sorries` reported zero
+sorry/axiom/native-decide/#exit; `git diff --check` passed; direct axiom
+probes for the three new declarations reported `[propext, Classical.choice,
+Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Reference Product Marginals - 2026-07-02
 
 Lean now has the product-measure API for the enlarged following-factor

@@ -10,6 +10,52 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor endpoint-sector domination bookkeeping - 2026-07-02
+
+- **Statement.** For the enlarged following-factor Case 2 passive-theta
+  endpoint map
+  `Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z`, a
+  restricted pushforward is supported on the named endpoint sector `Y '' Ω`.
+  Any finite-scalar domination between source-domain measures restricted to
+  `Ω` pushes forward to the same domination after restricting both target
+  measures to that endpoint sector.  A local a.e. upper bound on a supplied
+  theta-domain density gives the corresponding endpoint-sector pushforward
+  domination.
+- **Tier.** A2 endpoint image-measure bookkeeping for the enlarged
+  source-to-raw density frontier.
+- **Status.** Lean proved as image-support/domination API.
+- **Kill-condition.** The result is read as endpoint product COV,
+  determinant-chart Haar equality, raw-map pushforward, determinant/Jacobian
+  formula for `Y`, formal-product/source-image domination, source-image
+  coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** This is finite measure bookkeeping for the named Lean
+  endpoint sector attached to the Aoyagi pp. 10-13 and Case 2 pp. 19-21
+  coordinate context; Aoyagi does not print these endpoint-sector domination
+  lemmas.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`,
+  Lean coordinate model and measure convention sections.
+- **Reproduction check.** The endpoint sector is definitionally the image
+  `Y '' Ω`; the proof is support plus `map_le_smul_map_of_le_smul` and
+  `withDensity_mono`.
+- **Lean target.**
+  `measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_eq_self`,
+  `measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_le_smul`,
+  and
+  `measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`.
+- **Proved.** Direct elaboration of the touched file passed warning-clean;
+  focused module build passed, replaying only pre-existing warnings from
+  `ProductReductionStepRegularDensity`; `lean/scripts/sorries`,
+  `git diff --check`, and direct axiom probes passed.  Axiom footprint:
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-side weighted `Y` COV, no determinant-chart Haar
+  equality, no raw-map pushforward, no target-side density identity, no
+  finite/probability normalization, no source-image coverage beyond the named
+  local image sector, no normal crossings, no pole order, and no RLCT
+  extraction is proved.
+
 ## Current A2 enlarged following-factor reference product marginals - 2026-07-02
 
 - **Statement.** The finite matrix-entry coordinate reference measure is now

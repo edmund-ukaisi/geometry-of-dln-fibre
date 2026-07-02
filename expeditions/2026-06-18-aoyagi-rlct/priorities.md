@@ -12,6 +12,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint-sector domination bookkeeping
+
+Lean now has with-following analogues of the existing passive-theta
+endpoint-sector support/domination API:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_eq_self
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_restrict_endpointSectorSet_le_smul
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_withDensity_restrict_endpointSectorSet_le_smul_of_ae_le
+```
+
+These lemmas only say that `Measure.map Y (μ.restrict Ω)` is supported on
+the named image sector `Y '' Ω`, and that source-side domination or a supplied
+a.e. density upper bound survives pushforward after restricting to that image
+sector.
+
+Decision: this fills the generic endpoint-sector bookkeeping gap for the
+enlarged source, but it does not move the selected-entry Jacobian itself.  The
+next source-moving target remains the product `Y` COV/Haar-identification
+layer, where the old passive fields and following-factor coordinates move by
+identity/reindexing and `yNext` moves by the selected-entry chart with
+`sourceDensity`.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor reference product marginals
 
 Lean now exposes the product-measure API needed before the endpoint COV route:
