@@ -6,6 +6,39 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 `L=2` Pairwise-Distinct Classifier Rank-Width Removal - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.ell_eq_two_of_L_eq_two_pairwiseDistinct
+AoyagiDefinition3SourceData.exists_sourceData_iff_allSourceStrict_of_L_eq_two_pairwiseDistinct
+```
+
+These are no-`hr` wrappers around the already-reviewed pairwise-distinct
+`L=2` classifier.  The forward direction derives source-range rank-width from
+the chosen source datum via `S.sourceRangeRankWidth_of_L_eq_two_sourceData`.
+The reverse direction derives source-range rank-width from the all-source
+strict inequalities via `sourceRangeRankWidth_of_all_selected_strict`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-pairwise-distinct-rankwidth-removal.md
+threads/06-dln-translation/review-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md
+```
+
+Boundary: finite pairwise-distinct Definition 3 bookkeeping only.  No
+repeated-width classification, no canonical branch theorem, no
+branch-independent formula, no Eq5 construction, no chart production, no
+normal crossings, no pole order, and no RLCT extraction.
+
+Verification so far: focused direct elaboration, focused module build, and
+direct axiom probe passed.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Dalton the 2nd` passed.
+
 ## A6 `L=2` Triangle Constructor Rank-Width Removal - 2026-07-02
 
 Lean now has:

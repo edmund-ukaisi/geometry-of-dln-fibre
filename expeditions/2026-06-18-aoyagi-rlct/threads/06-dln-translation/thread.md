@@ -19,6 +19,34 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, `L=2` pairwise-distinct rank-width removal
+
+Reproduction:
+`reproduction-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-pairwise-distinct-rankwidth-removal.md`.
+Review:
+`review-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.ell_eq_two_of_L_eq_two_pairwiseDistinct
+AoyagiDefinition3SourceData.exists_sourceData_iff_allSourceStrict_of_L_eq_two_pairwiseDistinct
+```
+
+These remove a separate source-range rank-width input from the reviewed
+pairwise-distinct `L=2` classifier.  In the source-data direction,
+source-range rank-width is derived from the concrete source datum; in the
+all-source-strict direction it is derived from the strict inequalities.
+
+Focused direct elaboration, focused module build, and direct axiom probe
+passed.  Xhigh independent reviewer `Dalton the 2nd` passed.
+
+Boundary: finite Definition 3 pairwise-distinct bookkeeping only; no repeated
+width classifier, canonical branch choice, branch-independent formula, Eq5
+construction, chart production, normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, `L=2` triangle constructor rank-width removal
 
 Reproduction:

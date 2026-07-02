@@ -1735,6 +1735,53 @@ theorem sourceRangeRankWidth_of_L_eq_two_sourceData
     unfold aoyagiReducedWidthInt at hnonneg
     exact_mod_cast (sub_nonneg.mp hnonneg)
 
+/-- For `L=2`, pairwise distinct source-range reduced widths force any
+Definition 3 source-data choice to use `ell=2`.
+
+This removes the separate rank-width input from
+`ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct`; `L=2` source data already
+implies source-range rank-width. -/
+theorem ell_eq_two_of_L_eq_two_pairwiseDistinct
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C)
+    (h12 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 2)
+    (h13 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 3)
+    (h23 : aoyagiReducedWidthInt H r 2 ≠ aoyagiReducedWidthInt H r 3) :
+    ell = 2 :=
+  S.ell_eq_two_of_L_eq_two_rankWidth_pairwiseDistinct
+    S.sourceRangeRankWidth_of_L_eq_two_sourceData h12 h13 h23
+
+/-- For `L=2` and pairwise distinct source-range reduced widths, existence of
+Definition 3 source data is equivalent to the all-source strict selected
+inequalities, without a separately supplied source-range rank-width input.
+
+In the source-data direction, rank-width follows from the source datum.  In the
+all-source-strict direction, rank-width follows from the strict inequalities. -/
+theorem exists_sourceData_iff_allSourceStrict_of_L_eq_two_pairwiseDistinct
+    {H : ℕ → ℕ} {r : ℕ}
+    (h12 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 2)
+    (h13 : aoyagiReducedWidthInt H r 1 ≠ aoyagiReducedWidthInt H r 3)
+    (h23 : aoyagiReducedWidthInt H r 2 ≠ aoyagiReducedWidthInt H r 3) :
+    (∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+      AoyagiDefinition3SourceData 2 ell H r C) ↔
+      ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+        (2 : ℤ) * aoyagiReducedWidthInt H r s <
+          ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+  constructor
+  · rintro ⟨ell, C, S⟩
+    exact
+      (exists_sourceData_iff_allSourceStrict_of_L_eq_two_rankWidth_pairwiseDistinct
+        (H := H) (r := r) S.sourceRangeRankWidth_of_L_eq_two_sourceData
+        h12 h13 h23).mp ⟨ell, C, S⟩
+  · intro hstrict
+    exact
+      (exists_sourceData_iff_allSourceStrict_of_L_eq_two_rankWidth_pairwiseDistinct
+        (H := H) (r := r)
+        (sourceRangeRankWidth_of_all_selected_strict
+          (L := 2) (H := H) (r := r) (by norm_num) hstrict)
+        h12 h13 h23).mpr hstrict
+
 /-- For `L=2`, Definition 3 source-data existence supplies natural witnesses
 for the three source-range reduced widths. -/
 theorem exists_reducedWidthNatTriple_of_L_eq_two_sourceData

@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Definition 3 pairwise-distinct classifier rank-width removal
+
+Lean now removes the separate source-range rank-width input from the reviewed
+`L=2` pairwise-distinct classifier:
+
+```text
+AoyagiDefinition3SourceData.ell_eq_two_of_L_eq_two_pairwiseDistinct
+AoyagiDefinition3SourceData.exists_sourceData_iff_allSourceStrict_of_L_eq_two_pairwiseDistinct
+```
+
+The forward direction derives rank-width from the concrete source datum via
+`S.sourceRangeRankWidth_of_L_eq_two_sourceData`.  The reverse direction
+derives rank-width from all-source strict inequalities via
+`sourceRangeRankWidth_of_all_selected_strict`, then delegates to the existing
+`_rankWidth_pairwiseDistinct` theorem.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-pairwise-distinct-rankwidth-removal.md
+threads/06-dln-translation/review-definition3-l-eq-two-pairwise-distinct-rankwidth-removal-a6.md
+```
+
+Decision: this is a modest but real A6 public-field removal.  It is not a
+new branch classifier for repeated widths, not a canonical branch theorem, not
+a branch-independent formula theorem, not Eq5 construction, not chart
+production, not normal crossings, not pole order, and not RLCT extraction.
+Xhigh independent reviewer `Dalton the 2nd` passed.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `L=2` triangle constructor rank-width removal
 
 Lean now removes the separate source-range rank-width input from the
