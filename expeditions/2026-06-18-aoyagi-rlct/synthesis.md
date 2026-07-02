@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 `L=2`, `ell=2` Source-Data Classifier - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+```
+
+It exposes the exact `ell=2` case of the finite `L=2` Definition 3
+classification: there is an `ell=2` source datum iff the three all-source
+strict triangle inequalities hold.
+
+The forward proof uses `cut_eq_consecutive_of_L_eq_two` to identify the three
+selected cutpoints with source layers `1,2,3`, then reads the three triangle
+inequalities from `selected_strict`.  The reverse direction packages the
+displayed triangle inequalities as the all-source strict predicate and
+delegates to `exists_consecutive_of_all_selected_strict`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-two-classifier-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-two-classifier.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-two-classifier-a6.md
+```
+
+Boundary: finite Definition 3 arithmetic only.  No `L>2` theorem, no
+arbitrary-`ell` branch choice, no branch-independent Theorem 2 formula, no
+Eq5/chart construction, no normal crossings, no pole order, and no RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The two fixed branch
+classifiers and the refactored complete `L=2` classifier report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scout `Ptolemy the 2nd`
+passed the target shape and proof plan.
+
 ## A6 `L=2`, `ell=1` Source-Data Classifier - 2026-07-02
 
 Lean now has:

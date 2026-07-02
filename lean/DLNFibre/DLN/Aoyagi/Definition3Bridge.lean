@@ -1599,6 +1599,79 @@ theorem exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
       exists_ell_one_of_L_eq_two_positive_repeated
         (H := H) (r := r) hpos1 hpos2 hpos3 hrep
 
+/-- Exact `ell = 2` part of the complete finite `L=2` Definition 3
+classification.
+
+For three source layers, an `ell=2` source datum exists precisely when the
+three all-source strict triangle inequalities hold. -/
+theorem exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+    {H : ℕ → ℕ} {r : ℕ} :
+    (∃ C : AoyagiSelectedCutpoints 2,
+      AoyagiDefinition3SourceData 2 2 H r C) ↔
+      ((2 : ℤ) * aoyagiReducedWidthInt H r 1 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3 ∧
+        (2 : ℤ) * aoyagiReducedWidthInt H r 2 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3 ∧
+        (2 : ℤ) * aoyagiReducedWidthInt H r 3 <
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3) := by
+  constructor
+  · rintro ⟨C, S⟩
+    have hC : ∀ j : Fin (2 + 1), C.cut j = j.val + 1 :=
+      S.cut_eq_consecutive_of_L_eq_two
+    have hsum :
+        (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (C.cut j)) =
+          aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+            aoyagiReducedWidthInt H r 3 := by
+      rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+      simp [hC]
+      ring
+    constructor
+    · have hstrict := S.selected_strict (0 : Fin (2 + 1))
+      have hcut0 : C.cut (0 : Fin (2 + 1)) = 1 := by
+        simpa using hC (0 : Fin (2 + 1))
+      rw [hcut0, hsum] at hstrict
+      simpa using hstrict
+    constructor
+    · have hstrict := S.selected_strict (1 : Fin (2 + 1))
+      have hcut1 : C.cut (1 : Fin (2 + 1)) = 2 := by
+        simpa using hC (1 : Fin (2 + 1))
+      rw [hcut1, hsum] at hstrict
+      simpa using hstrict
+    · have hstrict := S.selected_strict (2 : Fin (2 + 1))
+      have hcut2 : C.cut (2 : Fin (2 + 1)) = 3 := by
+        simpa using hC (2 : Fin (2 + 1))
+      rw [hcut2, hsum] at hstrict
+      simpa using hstrict
+  · intro htri
+    have hstrict :
+        ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
+          (2 : ℤ) * aoyagiReducedWidthInt H r s <
+            ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
+      intro s hs1 hsL
+      have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+      have hsum :
+          (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
+            aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
+              aoyagiReducedWidthInt H r 3 := by
+        rw [Fin.sum_univ_succ, Fin.sum_univ_two]
+        norm_num
+        ring
+      rcases htri with ⟨htri1, htri2, htri3⟩
+      rcases hs with rfl | rfl | rfl
+      · rw [hsum]
+        exact htri1
+      · rw [hsum]
+        exact htri2
+      · rw [hsum]
+        exact htri3
+    rcases exists_consecutive_of_all_selected_strict
+        (L := 2) (H := H) (r := r) (by norm_num) hstrict with
+      ⟨C, _hC, S⟩
+    exact ⟨C, S⟩
+
 /-- Complete finite classification of Definition 3 source-data existence for
 `L=2`.
 
@@ -1660,62 +1733,19 @@ theorem exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
         (exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
           (H := H) (r := r)).mp ⟨C, S⟩
     · right
-      have hC : ∀ j : Fin (2 + 1), C.cut j = j.val + 1 :=
-        S.cut_eq_consecutive_of_L_eq_two
-      have hsum :
-          (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (C.cut j)) =
-            aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
-              aoyagiReducedWidthInt H r 3 := by
-        rw [Fin.sum_univ_succ, Fin.sum_univ_two]
-        simp [hC]
-        ring
-      constructor
-      · have hstrict := S.selected_strict (0 : Fin (2 + 1))
-        have hcut0 : C.cut (0 : Fin (2 + 1)) = 1 := by
-          simpa using hC (0 : Fin (2 + 1))
-        rw [hcut0, hsum] at hstrict
-        simpa using hstrict
-      constructor
-      · have hstrict := S.selected_strict (1 : Fin (2 + 1))
-        have hcut1 : C.cut (1 : Fin (2 + 1)) = 2 := by
-          simpa using hC (1 : Fin (2 + 1))
-        rw [hcut1, hsum] at hstrict
-        simpa using hstrict
-      · have hstrict := S.selected_strict (2 : Fin (2 + 1))
-        have hcut2 : C.cut (2 : Fin (2 + 1)) = 3 := by
-          simpa using hC (2 : Fin (2 + 1))
-        rw [hcut2, hsum] at hstrict
-        simpa using hstrict
+      exact
+        (exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+          (H := H) (r := r)).mp ⟨C, S⟩
   · rintro (hrep | htri)
     · rcases hrep with ⟨hpos1, hpos2, hpos3, hrep⟩
       rcases exists_ell_one_of_L_eq_two_positive_repeated
           (H := H) (r := r) hpos1 hpos2 hpos3 hrep with
         ⟨C, S⟩
       exact ⟨1, C, S⟩
-    · have hstrict :
-          ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 →
-            (2 : ℤ) * aoyagiReducedWidthInt H r s <
-              ∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1) := by
-        intro s hs1 hsL
-        have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
-        have hsum :
-            (∑ j : Fin (2 + 1), aoyagiReducedWidthInt H r (j.val + 1)) =
-              aoyagiReducedWidthInt H r 1 + aoyagiReducedWidthInt H r 2 +
-                aoyagiReducedWidthInt H r 3 := by
-          rw [Fin.sum_univ_succ, Fin.sum_univ_two]
-          norm_num
-          ring
-        rcases htri with ⟨htri1, htri2, htri3⟩
-        rcases hs with rfl | rfl | rfl
-        · rw [hsum]
-          exact htri1
-        · rw [hsum]
-          exact htri2
-        · rw [hsum]
-          exact htri3
-      rcases exists_consecutive_of_all_selected_strict
-          (L := 2) (H := H) (r := r) (by norm_num) hstrict with
-        ⟨C, _hC, S⟩
+    · rcases
+        (exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+          (H := H) (r := r)).mpr htri with
+        ⟨C, S⟩
       exact ⟨2, C, S⟩
 
 /-- For `L=2`, Definition 3 source data forces source-range rank-width.

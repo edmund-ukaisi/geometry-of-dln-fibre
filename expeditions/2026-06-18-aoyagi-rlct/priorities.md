@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Definition 3 `L=2`, `ell=2` classifier
+
+Lean now exposes the exact `ell=2` branch of the finite `L=2` Definition 3
+classifier:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+```
+
+This theorem proves that `ell=2` source data exists iff the three all-source
+strict triangle inequalities hold.  The complete finite `L=2` classifier now
+calls this theorem in its `ell=2` forward branch and triangle reverse branch.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-two-classifier-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-two-classifier.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-two-classifier-a6.md
+```
+
+Decision: this is a genuine A6 finite Definition 3 classifier extraction,
+not a branch-independent formula theorem.  It does not choose a canonical
+branch for arbitrary source data, construct Eq5 payloads or charts, prove
+normal crossings, identify pole order, or extract RLCT.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, direct axiom probe, and xhigh scout review passed.  The fixed branch
+classifiers and refactored complete classifier report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `L=2`, `ell=1` classifier
 
 Lean now exposes the exact `ell=1` branch of the finite `L=2` Definition 3

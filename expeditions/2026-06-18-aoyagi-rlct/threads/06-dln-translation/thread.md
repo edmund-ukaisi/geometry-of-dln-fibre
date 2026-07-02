@@ -19,6 +19,37 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, `L=2`, `ell=2` source-data classifier
+
+Reproduction:
+`reproduction-definition3-l-eq-two-ell-two-classifier-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-ell-two-classifier.md`.
+Review:
+`review-definition3-l-eq-two-ell-two-classifier-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_ell_two_sourceData_iff_triangle_of_L_eq_two
+```
+
+This exposes the exact `ell=2` part of the `L=2` Definition 3 finite
+classifier: such source data exists iff the three all-source strict triangle
+inequalities hold.  The complete `L=2` classifier now calls this theorem in
+its `ell=2` forward branch and in the triangle reverse branch.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The fixed branch classifiers and
+refactored complete classifier report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scout `Ptolemy the 2nd`
+passed the target shape and proof plan.
+
+Boundary: finite Definition 3 arithmetic only; no `L>2` classifier, canonical
+branch choice, branch-independent formula, Eq5 construction, chart
+production, normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, `L=2`, `ell=1` source-data classifier
 
 Reproduction:
