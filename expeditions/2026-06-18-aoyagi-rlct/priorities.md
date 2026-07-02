@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 branch-indexed continuing progress projection
+
+Lean now exposes the continuing source-data and progress projections after the
+fixed-current-center payload is wrapped as branch-indexed current-center data:
+
+```text
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_sourceData
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_child_progress
+```
+
+Decision: this is a small honest A4 projection.  It removes a nuisance
+readback through `Case2AllPivotCurrentCenterProducedPayload.of_continuing` and
+reuses the already-reviewed fixed-current-center progress theorem.  It does
+not construct source production for the fixed all-pivot producer.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case2-branch-indexed-continuing-progress-projection.md
+threads/04-blow-up-certificate/statement-card-a4-case2-branch-indexed-continuing-progress-projection.md
+threads/04-blow-up-certificate/review-a4-case2-branch-indexed-continuing-progress-projection.md
+```
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched-file forbidden-marker scan,
+direct axiom probe, and xhigh review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no `SelectedEntryAtlasProducedBranchData`, no fixed-center
+transport, no conversion to the recurrence-wide fixed all-pivot producer, no
+row-exhausted totalization, no source coverage, no transition/volume
+compatibility, no normal crossings, no pole order, and no RLCT.
+
+Frontier update: A5 remains parked; the missing item is the source-backed
+terminal classifier package, not another wrapper.  A2 should next proceed only
+on the `Y`-only endpoint-coordinate change-of-variables theorem for
+`case2PassiveThetaWithFollowingFactorEndpointTopologyTuple`; broader
+source-to-raw/Haar transport remains parked until that exists.
+
 ## Latest controller decision - 2026-07-02, equal-width positive-remainder formula wrapper
 
 Lean now removes the caller-supplied positive-remainder decomposition from the

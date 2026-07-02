@@ -242,6 +242,36 @@ def of_continuing
       input Cfollowing hguard chartEquiv
   payload_state := rfl
 
+@[simp]
+theorem of_continuing_payload_sourceData
+    (input : Case2AllPivotDisplayedSourceInput s t numerator leastValue)
+    (Cfollowing : ℕ → τ → ℝ)
+    (hguard : case2AllPivotContinuingGuard s)
+    (chartEquiv :
+      Fin (case2ResidualBlockPivotEntries n s.S s.J).card ≃
+        (case2ResidualBlockPivotEntries n s.S s.J : Type)) :
+    ((of_continuing input Cfollowing hguard chartEquiv).payload).sourceData =
+      Case2AllPivotContinuingProducedSourceData input Cfollowing :=
+  rfl
+
+/-- The branch-indexed continuing wrapper exposes the same child-progress
+projection as the fixed-current-center continuing payload it wraps. -/
+theorem of_continuing_payload_child_progress
+    (input : Case2AllPivotDisplayedSourceInput s t numerator leastValue)
+    (Cfollowing : ℕ → τ → ℝ)
+    (hguard : case2AllPivotContinuingGuard s)
+    (chartEquiv :
+      Fin (case2ResidualBlockPivotEntries n s.S s.J).card ≃
+        (case2ResidualBlockPivotEntries n s.S s.J : Type)) :
+    let produced :=
+      (of_continuing input Cfollowing hguard chartEquiv).payload.producedSourceData
+    AoyagiRecurrenceBranchState.progressStep L n ℝ
+      (AoyagiRecurrenceBranchState.sameStageChildWithRecurrence s produced.childRecurrence)
+      s := by
+  simpa [of_continuing] using
+    case2AllPivotContinuingProducedBranchPayload_child_progress
+      input Cfollowing hguard chartEquiv
+
 /-- Package the actual-width stopped fixed-current-center payload as
 branch-indexed current-center data. -/
 def of_actualWidthStopped

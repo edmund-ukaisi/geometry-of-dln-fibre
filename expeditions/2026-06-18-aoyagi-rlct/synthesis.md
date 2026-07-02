@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A4 Branch-Indexed Continuing Progress Projection - 2026-07-02
+
+Lean now has:
+
+```text
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_sourceData
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_child_progress
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotBranchIndexedPayloads.lean
+```
+
+These project the continuing source-data type and same-stage child progress
+proof through the branch-indexed current-center wrapper
+`Case2AllPivotCurrentCenterProducedPayload.of_continuing`.  The source-data
+projection is `rfl`; the child-progress proof unfolds the wrapper and reuses
+`case2AllPivotContinuingProducedBranchPayload_child_progress`.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case2-branch-indexed-continuing-progress-projection.md
+threads/04-blow-up-certificate/statement-card-a4-case2-branch-indexed-continuing-progress-projection.md
+threads/04-blow-up-certificate/review-a4-case2-branch-indexed-continuing-progress-projection.md
+```
+
+Boundary: projection infrastructure only.  No fixed-context producer,
+`SelectedEntryAtlasProducedBranchData`, fixed-center transport, conversion
+from branch-indexed payloads to the fixed all-pivot producer, row-exhausted
+totalization, source coverage, transition/volume compatibility, normal
+crossings, pole order, or RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched-file
+forbidden-marker scan, and direct axiom probe passed.  Both new declarations
+report `[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Cicero the
+2nd` passed.
+
+Frontier update: A5 remains parked; its scout found that another wrapper would
+not remove a real field.  A2 should proceed next only on the `Y`-only
+endpoint-coordinate change-of-variables theorem; raw/Haar transport remains
+parked until that theorem exists.
+
 ## A6 Equal-Width Positive-Remainder Formula Wrapper - 2026-07-02
 
 Lean now has:

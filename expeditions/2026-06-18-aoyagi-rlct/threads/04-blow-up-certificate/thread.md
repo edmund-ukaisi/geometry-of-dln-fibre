@@ -21,6 +21,45 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-07-02 A4 Case 2 branch-indexed continuing progress projection
+
+Reproduction:
+`reproduction-a4-case2-branch-indexed-continuing-progress-projection.md`.
+Statement card:
+`statement-card-a4-case2-branch-indexed-continuing-progress-projection.md`.
+Review:
+`review-a4-case2-branch-indexed-continuing-progress-projection.md`.
+
+Lean now adds:
+
+```text
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_sourceData
+Case2AllPivotCurrentCenterProducedPayload.of_continuing_payload_child_progress
+```
+
+in:
+
+```text
+SelectedEntryAllPivotBranchIndexedPayloads.lean
+```
+
+These lift the already-proved fixed-current-center continuing source-data and
+child-progress projections through the branch-indexed
+`Case2AllPivotCurrentCenterProducedPayload.of_continuing` wrapper.  The first
+theorem is definitional; the second unfolds `of_continuing` and reuses
+`case2AllPivotContinuingProducedBranchPayload_child_progress`.
+
+Boundary: this is projection infrastructure only.  It does not build
+`SelectedEntryAtlasProducedBranchData`, does not solve fixed-center transport,
+does not convert branch-indexed data to the fixed all-pivot producer, does not
+merge or totalize row-exhausted payloads, and proves no source coverage,
+transition or volume compatibility, normal crossings, pole order, or RLCT.
+
+Focused elaboration, focused module build, full local build, no-sorry audit,
+whitespace check, forbidden-marker scan, direct axiom probe, and xhigh review
+passed.  The direct axiom probe reported
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A4 Case 2 all-pivot continuing payload progress projection
 
 Reproduction:
