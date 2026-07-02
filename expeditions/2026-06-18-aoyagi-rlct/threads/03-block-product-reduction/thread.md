@@ -21,6 +21,51 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following raw-order reference image same-shrink package
+
+Reproduction:
+`reproduction-a2-case2-with-following-raw-order-reference-image-same-shrink.md`.
+Statement card:
+`statement-card-a2-case2-with-following-raw-order-reference-image-same-shrink.md`.
+Review:
+`review-a2-case2-with-following-raw-order-reference-image-same-shrink.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawOrderReference.lean
+```
+
+Lean now defines and proves:
+
+```text
+case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure
+exists_open_subset_case2PassiveThetaWithFollowingFactorRawOrderReferenceImage_same_shrink_package
+```
+
+The definition names the actual raw-order image of the enlarged reference
+source:
+
+```text
+Measure.map rawMap (referenceSource.restrict Ω).
+```
+
+The same-shrink theorem uses the existing with-following raw-order/source-chart
+bridge and packages, on one local open `V`, support on the raw-order
+source-recursive determinant chart, domination for arbitrary source measures
+dominated by the full enlarged reference source, endpoint-image-to-raw-image
+composition, source-chart composition, and raw-density transport.
+
+Boundary: actual image-measure bookkeeping only.  No raw-Haar theorem,
+determinant-chart Haar equality, Jacobian determinant formula, local
+change-of-variables theorem, source-prior transport, source-image coverage,
+formal-product domination, normal crossings, pole order, or RLCT is proved.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The new definition and theorem probes report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 formal-product/source-image theta-side density constructor
 
 Reproduction:

@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following raw-order actual-image package
+
+Lean now names the raw-order actual image of the enlarged Case 2 passive-theta
+reference source and packages the same-shrink handoffs:
+
+```text
+case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure
+exists_open_subset_case2PassiveThetaWithFollowingFactorRawOrderReferenceImage_same_shrink_package
+```
+
+Decision: this is the correct with-following analogue of the existing
+non-following raw-order reference-image package, but with domination stated for
+arbitrary source measures dominated by the full enlarged reference source.  It
+does not use the old passive-only domination shape, since that would omit the
+independent following-factor coordinate.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+threads/03-block-product-reduction/review-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom probe,
+and xhigh review passed.  The new definition and theorem probes report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: actual image-measure bookkeeping only.  No raw-Haar theorem, no
+determinant-chart Haar equality, no Jacobian determinant formula, no local
+change-of-variables theorem, no source-prior transport, no source-image
+coverage, no formal-product domination, no normal crossings, no pole order,
+and no RLCT.
+
+Next A2 target: use this package only as a socket for later density/source-image
+handoffs.  Do not promote it to determinant-chart Haar or source coverage.
+
 ## Latest controller decision - 2026-07-02, A2 theta-side density constructor
 
 Lean now converts a theta-side weighted source-chart pushforward identity into

@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Raw-Order Reference Image Same-Shrink Package - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure
+exists_open_subset_case2PassiveThetaWithFollowingFactorRawOrderReferenceImage_same_shrink_package
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawOrderReference.lean
+```
+
+The new definition is the actual raw-order image of the enlarged
+with-following reference source restricted to a local source set:
+
+```text
+Measure.map rawMap (referenceSource.restrict Ω),
+```
+
+where `rawMap` is `topologyTupleEdgeRawOrder` after the enlarged endpoint
+topology-tuple map.  The package uses the single shrink supplied by the
+with-following raw-order/source-chart bridge and records, on that same `V`,
+support on the raw-order source-recursive determinant chart, full
+enlarged-source domination, endpoint-image-to-raw-image composition,
+raw-chart-to-source-chart composition, and raw-density transport.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+threads/03-block-product-reduction/review-a2-case2-with-following-raw-order-reference-image-same-shrink.md
+```
+
+Boundary: actual image-measure bookkeeping only.  The result does not identify
+the raw-order reference image with raw Haar, determinant-chart Haar, original
+edge-volume, or an original/source prior.  It does not prove a Jacobian
+determinant formula, determinant-chart change of variables, source-image
+coverage, formal-product domination, normal crossings, pole order, or RLCT.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, direct axiom probe, and xhigh read-only review passed.  The new
+definition and theorem probes report `[propext, Classical.choice, Quot.sound]`.
+The focused module build replayed existing warnings from
+`ProductReductionStepRegularDensity`; the full build replayed the repository's
+existing warning profile.
+
 ## A2 Formal-Product Source-Image Theta-Side Density Constructor - 2026-07-02
 
 Lean now has:
