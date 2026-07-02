@@ -61,6 +61,58 @@ No such claim is formalisation-ready until both fields are filled.
   no Jacobian/volume compatibility, no normal crossings, no pole order, and no
   RLCT extraction is proved.
 
+## Current A4 fixed-center produced-payload layer - 2026-07-02
+
+- **Statement.** For displayed Case 2 all-pivot source production, the
+  continuing, actual-width stopped, row-exhausted terminal-last, and
+  row-exhausted source-suffix finite source-data records can be lifted to
+  fixed-current-center `SelectedEntryProducedBranchPayload` constructors over
+  `AoyagiRecurrenceBranchState L n Real`.  The constructors use a supplied
+  public chart equivalence for the current residual-block center and package
+  non-placeholder source data.
+- **Tier.** Aoyagi Case 2 blow-up/source-production support.
+- **Status.** Lean fixed-center payload layer proved.  This is not the final
+  all-pivot producer field.
+- **Kill-condition.** The result is read as
+  `SelectedEntryAtlasProducedBranchData`; the fixed center is used while
+  branch states vary over `(S,J)`; the source-suffix and terminal-last row
+  guards are treated as disjoint; row-exhausted semantic totality is claimed;
+  row-exhausted transported rows are replaced by original rows; or the payload
+  source data is replaced by `Unit`, `True`, `PUnit`, `Nonempty`, or
+  `SourceProductionObligation`.
+- **Evidence/source.** Aoyagi PDF pp. 19-22 for the displayed Case 2 pivot
+  chart, `b'_i = u b_i`, regular `Q/P` transformations, transported
+  following factor, cleared block, and continue/stop split.  The analytic
+  payload record is Lean atlas bookkeeping and is not printed there.
+- **Pen-and-paper reproduction.**
+  `threads/04-blow-up-certificate/reproduction-a4-case2-fixed-center-continuing-produced-payload.md`;
+  stopped subcases at
+  `threads/04-blow-up-certificate/reproduction-a4-case2-fixed-center-stopped-produced-payloads.md`;
+  statement cards at
+  `threads/04-blow-up-certificate/statement-card-a4-case2-fixed-center-continuing-produced-payload.md`
+  and
+  `threads/04-blow-up-certificate/statement-card-a4-case2-fixed-center-stopped-produced-payloads.md`.
+- **Reproduction check.** xhigh continuing-payload review by `Boyle` passed
+  during the continuing slice.  Stopped-payload xhigh review by `McClintock`
+  passed after renaming the source-suffix row source-data record and adding
+  the non-disjoint row-guard caveat:
+  `threads/04-blow-up-certificate/review-a4-case2-fixed-center-stopped-produced-payloads.md`.
+- **Lean target.** `SelectedEntryAllPivotProducedPayloads.lean` defines the
+  continuing, actual-width stopped, row-exhausted terminal-last, and
+  row-exhausted source-suffix fixed-center payload constructors.  The row
+  source-data record is named
+  `Case2AllPivotRowExhaustedSourceSuffixProducedSourceData` and stores
+  supplied rows/tails as data so it remains a `Type` package.
+- **Proved.** Focused builds and warning-clean direct elaboration for touched
+  modules passed; full local `lake build DLNFibre`, `lean/scripts/sorries`,
+  targeted placeholder-source-data grep, and `git diff --check` passed before
+  banking.
+- **Nonclaims.** No `SelectedEntryAtlasProducedBranchData`, no total semantic
+  row-exhausted payload, no stopped-guard exclusivity, no recurrence-wide
+  center alignment, no generic-`alpha` transport, no chart coverage, no
+  transition regularity, no Jacobian/volume compatibility, no normal crossings,
+  no pole order, and no RLCT extraction is proved.
+
 ## Current A4 produced branch-data contract frontier - 2026-07-02
 
 - **Statement.** The remaining all-pivot recurrence-aware producer input is

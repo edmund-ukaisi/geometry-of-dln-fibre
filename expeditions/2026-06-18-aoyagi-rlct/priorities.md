@@ -12,6 +12,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 fixed-center produced payloads
+
+Lean now has fixed-current-center `SelectedEntryProducedBranchPayload`
+constructors for the displayed Case 2 all-pivot subcases:
+
+```text
+case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput
+case2AllPivotActualWidthStoppedProducedBranchPayload_of_currentCenterSourceInput
+case2AllPivotRowExhaustedTerminalLastProducedBranchPayload_of_currentCenterSourceInput
+case2AllPivotRowExhaustedSourceSuffixProducedBranchPayload_of_currentCenterSourceInput
+```
+
+These are real-valued, fixed-center constructors using a supplied public
+`chartEquiv`.  They do not expose the private canonical finite-subtype chart
+equivalence.  The row-exhausted source-data records have been hardened so that
+they store the supplied row family and tail matrices as fields; otherwise
+their proposition-valued frontier payloads would make the records erase to
+`Prop`, which is unusable as `SelectedEntryProducedBranchPayload.sourceData`.
+
+This is still not `SelectedEntryAtlasProducedBranchData`: stopped subcases are
+separate, the row-exhausted semantic totality problem remains separate, and
+recurrence-wide center alignment is not solved.
+
 ## Latest controller decision - 2026-07-02, A4 active guards and finite source data
 
 Lean now proves the active-refined Case 2 source-production guard layer and a
@@ -28,7 +51,7 @@ Case2AllPivotDisplayedSourceInput
 Case2AllPivotContinuingProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData
 Case2AllPivotRowExhaustedTerminalLastProducedSourceData
-Case2AllPivotRowExhaustedStoppedProducedSourceData
+Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
 ```
 
 The branch records package existing displayed Case 2 frontier payloads:
@@ -37,7 +60,9 @@ frontier data, and row-exhausted transported-prefix source-suffix data.  The
 row-exhausted source-suffix record is guarded by the additional suffix
 condition `S + 1 <= L`; it is not total over every semantic row-exhausted
 stopped state.  The terminal-last row-exhausted record separately packages the
-no-suffix `S + 1 = L` terminal-last frontier payload.  The continuing record
+no-suffix `S + 1 = L` terminal-last frontier payload.  These two row APIs are
+not disjoint; the source-suffix guard can overlap the terminal-last equality.
+The continuing record
 also carries the recurrence child used by the progress bridge.
 
 This source-data layer is valued in the displayed coefficient ring `R`.  A

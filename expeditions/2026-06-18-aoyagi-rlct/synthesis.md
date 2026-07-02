@@ -15,6 +15,36 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A4 Fixed-Center Produced Payloads - 2026-07-02
+
+Lean now has fixed-current-center `SelectedEntryProducedBranchPayload`
+constructors for the displayed all-pivot Case 2 continuing branch, actual-width
+stopped branch, row-exhausted terminal-last subcase, and row-exhausted
+source-suffix subcase.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducedPayloads.lean
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducedSourceData.lean
+```
+
+The constructors are real-valued, take a public `chartEquiv`, use the displayed
+pivot chart at `(J+1,J+1)`, and package concrete stopped/continuing source data
+rather than `Unit`, `True`, `PUnit`, `Nonempty`, or `SourceProductionObligation`.
+
+The row-exhausted source-data records now store the supplied source rows and
+source-tail family as fields with definitional equality witnesses.  This is
+not cosmetic: their frontier payloads are proposition-valued, so without these
+data fields the records erase to `Prop` and cannot serve as payload
+`sourceData`.
+
+This layer still does not assemble `SelectedEntryAtlasProducedBranchData`, does
+not prove a total row-exhausted payload over the weaker semantic row-exhausted
+guard, and does not solve recurrence-wide center alignment, transition
+regularity, Jacobian/volume compatibility, normal crossings, pole order, or
+RLCT extraction.
+
 ## A4 Active Guards and Finite Source Data - 2026-07-02
 
 Lean now has the first non-placeholder A4 source-production support layer
@@ -39,7 +69,7 @@ branch records:
 Case2AllPivotContinuingProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData
 Case2AllPivotRowExhaustedTerminalLastProducedSourceData
-Case2AllPivotRowExhaustedStoppedProducedSourceData
+Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
 ```
 
 Their constructors call the existing displayed Case 2 frontier packages from
@@ -50,7 +80,9 @@ The row-exhausted source-suffix record uses the stronger
 is not total over all semantic row-exhausted stopped states.  The terminal-last
 row-exhausted record uses `case2AllPivotRowExhaustedTerminalLastGuard`, which
 includes `S + 1 = L`, and packages
-`RowExhaustedTerminalLastSourceChartFrontierPayload`.  The continuing record
+`RowExhaustedTerminalLastSourceChartFrontierPayload`.  These two row APIs are
+not disjoint; the source-suffix guard may overlap the terminal-last equality.
+The continuing record
 carries the concrete child recurrence and proves the recurrence-aware
 same-stage progress step.
 

@@ -302,6 +302,13 @@ structure Case2AllPivotRowExhaustedTerminalLastProducedSourceData
       (Nat.succ_le_succ (le_of_eq hLast))) → R)
     (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) where
   guard : case2AllPivotRowExhaustedTerminalLastGuard s
+  sourceRows :
+    ℕ → κ (sourceLayerIndex L (s.S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (s.S + 1)))
+      (Nat.succ_le_succ (le_of_eq hLast))) → R
+  sourceRows_eq : sourceRows = C
+  sourceTail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R
+  sourceTail_eq : sourceTail = Ctail
   frontier :
     RowExhaustedTerminalLastSourceChartFrontierPayload
       L n s.S s.J s.recurrence input.u input.residual s.stage_pos
@@ -344,6 +351,10 @@ def of_sourceInput
       input.active input.exponentPre input.levelInv input.leastValueGap
   refine
     { guard := hguard
+      sourceRows := C
+      sourceRows_eq := rfl
+      sourceTail := Ctail
+      sourceTail_eq := rfl
       frontier := ?_ }
   exact
     frontier.rowExhaustedStopped
@@ -356,14 +367,14 @@ def of_sourceInput
 
 end Case2AllPivotRowExhaustedTerminalLastProducedSourceData
 
-/-- Row-exhausted stopped finite source data for the all-pivot producer
+/-- Source-suffix row-exhausted finite source data for the all-pivot producer
 frontier.
 
-This is the source-suffix subcase of row exhaustion.  It keeps row exhaustion
-separate from actual-width stopping and requires a next source layer
-`s.S + 1 ≤ L`, because the transported-prefix source-suffix payload has that
-domain. -/
-structure Case2AllPivotRowExhaustedStoppedProducedSourceData
+This is the source-suffix package for row exhaustion.  Its guard is not
+disjoint from the terminal-last guard: when `s.S + 1 = L`, both
+`s.S + 1 ≤ L` and `s.S + 1 = L` may be available.  The distinction here is an
+API/data-package distinction, not a claim of exclusive branch cases. -/
+structure Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
     {R : Type u} [CommRing R]
     {L : ℕ} {n : ℕ → ℕ}
     {s : AoyagiRecurrenceBranchState L n R}
@@ -377,6 +388,13 @@ structure Case2AllPivotRowExhaustedStoppedProducedSourceData
       (Nat.succ_le_succ (Nat.zero_le (s.S + 1))) (Nat.succ_le_succ hSuffix)) → R)
     (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) where
   guard : case2AllPivotRowExhaustedSourceSuffixGuard s
+  sourceRows :
+    ℕ → κ (sourceLayerIndex L (s.S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (s.S + 1)))
+      (Nat.succ_le_succ hSuffix)) → R
+  sourceRows_eq : sourceRows = C
+  sourceTail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R
+  sourceTail_eq : sourceTail = Ctail
   frontier :
     RowExhaustedSourceSuffixTransportedPrefixPayload
       L n s.S s.J s.recurrence input.u input.residual s.stage_pos
@@ -389,7 +407,7 @@ structure Case2AllPivotRowExhaustedStoppedProducedSourceData
           AoyagiRecurrenceBranchState.toIntroducedState] using guard.1.2)
       κ hSuffix C Ctail
 
-namespace Case2AllPivotRowExhaustedStoppedProducedSourceData
+namespace Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
 
 variable {R : Type u} [CommRing R]
 variable {L : ℕ} {n : ℕ → ℕ}
@@ -401,14 +419,14 @@ variable {κ : Fin (L + 1) → Type u}
 variable [∀ i, Fintype (κ i)] [∀ i, DecidableEq (κ i)]
 variable {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
 
-/-- Construct row-exhausted stopped source data from the displayed source-chart
-input and the source-suffix row-exhausted guard. -/
+/-- Construct source-suffix row-exhausted source data from the displayed
+source-chart input and the source-suffix row-exhausted guard. -/
 def of_sourceInput
     (hguard : case2AllPivotRowExhaustedSourceSuffixGuard s)
     (C : ℕ → κ (sourceLayerIndex L (s.S + 2)
       (Nat.succ_le_succ (Nat.zero_le (s.S + 1)))
       (Nat.succ_le_succ hguard.2)) → R) :
-    Case2AllPivotRowExhaustedStoppedProducedSourceData
+    Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
       input κ hguard.2 C Ctail := by
   let frontier :
       SourceChartFrontierBoundaryPackages.{u, u, u, u, u, u, u}
@@ -419,6 +437,10 @@ def of_sourceInput
       input.active input.exponentPre input.levelInv input.leastValueGap
   refine
     { guard := hguard
+      sourceRows := C
+      sourceRows_eq := rfl
+      sourceTail := Ctail
+      sourceTail_eq := rfl
       frontier := ?_ }
   exact
     frontier.rowExhaustedSourceSuffix κ hguard.2 C Ctail (by
@@ -428,7 +450,7 @@ def of_sourceInput
         AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard,
         AoyagiRecurrenceBranchState.toIntroducedState] using hguard.1.2)
 
-end Case2AllPivotRowExhaustedStoppedProducedSourceData
+end Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
 
 end Aoyagi
 end DLN

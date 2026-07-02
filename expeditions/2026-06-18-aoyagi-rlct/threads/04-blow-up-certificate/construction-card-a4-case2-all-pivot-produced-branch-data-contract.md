@@ -243,7 +243,7 @@ with non-placeholder fields:
 ```text
 Case2AllPivotContinuingProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData
-Case2AllPivotRowExhaustedStoppedProducedSourceData
+Case2AllPivotRowExhaustedSourceSuffixProducedSourceData
 ```
 
 Only after those structures are inhabited source-faithfully should Lean build
