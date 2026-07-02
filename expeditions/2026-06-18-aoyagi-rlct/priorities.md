@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, density pullback continuity to eventual bounds
+
+Lean now proves the topological handoff helpers:
+
+```text
+eventually_const_le_of_continuousAt_lt
+eventually_le_const_of_continuousAt_lt
+eventually_sourceImageDensity_comp_lower_priorDensity_comp_upper_of_continuousAt
+```
+
+They turn continuity of `sourceImageDensity ∘ sourceChart` and
+`density ∘ sourceChart`, plus strict basepoint inequalities, into the two
+eventual hypotheses consumed by the full-image prior-domination
+eventual-pullback wrapper.
+
+This is the right next hardening layer after the eventual wrapper, but it is
+not a density-construction theorem.  The actual source-image density and
+original prior density are still supplied as external functions; their
+continuity and strict basepoint bounds remain hypotheses.  Xhigh scouts
+`Bacon` and `Wegener` both confirmed that the present API does not yet
+identify these densities from Aoyagi's source/prior data.
+
+Next priority: the real frontier is still a genuine source-measure/prior
+transport theorem or a concrete density-identification theorem.  Do not claim
+source-image density construction, prior-density transport, determinant-chart
+Haar transport, exact raw-Haar pushforward, raw-Haar normalization,
+source-image coverage, source-rank coverage, normal crossings, pole order, or
+RLCT extraction from these helpers.
+
 ## Latest controller decision - 2026-07-02, full-image prior domination from eventual pullback bounds
 
 Lean now proves the eventual-pullback wrapper:

@@ -50,6 +50,31 @@ theorem ae_restrict_upper_of_forall_mem
   filter_upwards [ae_restrict_mem hs] with x hx
   exact h x hx
 
+/-- A strict lower bound at a continuity point gives the corresponding
+eventual non-strict lower bound. -/
+theorem eventually_const_le_of_continuousAt_lt
+    {α : Type*} [TopologicalSpace α] {f : α → ℝ≥0∞} {x₀ : α}
+    {ε : ℝ≥0∞}
+    (hf : ContinuousAt f x₀) (hε : ε < f x₀) :
+    ∀ᶠ x in nhds x₀, ε ≤ f x := by
+  have hnbd : Set.Ioi ε ∈ nhds (f x₀) :=
+    isOpen_Ioi.mem_nhds hε
+  exact
+    (show ∀ᶠ x in nhds x₀, f x ∈ Set.Ioi ε from hf hnbd).mono
+      fun _ hx ↦ le_of_lt hx
+
+/-- A strict upper bound at a continuity point gives the corresponding
+eventual non-strict upper bound. -/
+theorem eventually_le_const_of_continuousAt_lt
+    {α : Type*} [TopologicalSpace α] {f : α → ℝ} {x₀ : α} {K : ℝ}
+    (hf : ContinuousAt f x₀) (hK : f x₀ < K) :
+    ∀ᶠ x in nhds x₀, f x ≤ K := by
+  have hnbd : Set.Iio K ∈ nhds (f x₀) :=
+    isOpen_Iio.mem_nhds hK
+  exact
+    (show ∀ᶠ x in nhds x₀, f x ∈ Set.Iio K from hf hnbd).mono
+      fun _ hx ↦ le_of_lt hx
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
@@ -1493,6 +1518,21 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le
   simpa [cHaar, Ddet, Dvol, Cprior] using
     hprior_package rawHaar hdet_dom hCdet hsource_input_lower' hε_ne_zero
       hε_ne_top (density := density) (Kprior := Kprior) hprior_input_upper'
+
+/-- Continuity of the two density pullbacks plus strict basepoint inequalities
+produces the eventual hypotheses consumed by the full prior-domination wrapper. -/
+theorem eventually_sourceImageDensity_comp_lower_priorDensity_comp_upper_of_continuousAt
+    {α β : Type*} [TopologicalSpace α] {sourceChart : α → β}
+    {sourceImageDensity : β → ℝ≥0∞} {density : β → ℝ}
+    {z₀ : α} {ε : ℝ≥0∞} {Kprior : ℝ}
+    (hsource_cont : ContinuousAt (fun z ↦ sourceImageDensity (sourceChart z)) z₀)
+    (hsource_lt : ε < sourceImageDensity (sourceChart z₀))
+    (hprior_cont : ContinuousAt (fun z ↦ density (sourceChart z)) z₀)
+    (hprior_lt : density (sourceChart z₀) < Kprior) :
+    (∀ᶠ z in nhds z₀, ε ≤ sourceImageDensity (sourceChart z)) ∧
+      (∀ᶠ z in nhds z₀, density (sourceChart z) ≤ Kprior) :=
+  ⟨eventually_const_le_of_continuousAt_lt hsource_cont hsource_lt,
+    eventually_le_const_of_continuousAt_lt hprior_cont hprior_lt⟩
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in

@@ -21,6 +21,41 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 density pullback continuity to eventual bounds
+
+Reproduction:
+`reproduction-a2-density-pullback-continuity-eventual-bounds.md`.
+Statement card:
+`statement-card-a2-density-pullback-continuity-eventual-bounds.md`.
+Review:
+`review-a2-density-pullback-continuity-eventual-bounds.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+eventually_const_le_of_continuousAt_lt
+eventually_le_const_of_continuousAt_lt
+eventually_sourceImageDensity_comp_lower_priorDensity_comp_upper_of_continuousAt
+```
+
+These helpers turn strict basepoint bounds plus continuity of the two density
+pullbacks into the eventual sockets consumed by the full prior-domination
+eventual-pullback wrapper.  Verification passed: direct elaboration, focused
+module build, direct axiom probe, and xhigh read-only route review.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no construction or identification of `sourceImageDensity`, no
+original prior-density transport, no proof of continuity or strict basepoint
+bounds, no determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image/source-rank coverage, normal crossings,
+pole order, or RLCT extraction.
+
 ## 2026-07-02 A2 Case 2 full-image prior domination from eventual pullback bounds
 
 Reproduction:

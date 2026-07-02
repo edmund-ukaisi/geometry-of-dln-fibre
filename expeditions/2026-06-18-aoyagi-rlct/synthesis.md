@@ -10,6 +10,60 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Density Pullback Continuity to Eventual Bounds - 2026-07-02
+
+Lean now proves:
+
+```text
+eventually_const_le_of_continuousAt_lt
+eventually_le_const_of_continuousAt_lt
+eventually_sourceImageDensity_comp_lower_priorDensity_comp_upper_of_continuousAt
+```
+
+The first two are generic order-topology helpers.  A strict lower bound at a
+continuity point for an `ENNReal`-valued function gives an eventual non-strict
+lower bound; a strict upper bound at a continuity point for a real-valued
+function gives an eventual non-strict upper bound.
+
+The paired helper applies these to:
+
+```text
+sourceImageDensity (sourceChart z)
+density (sourceChart z).
+```
+
+Thus downstream work can feed the eventual-pullback full prior wrapper from
+continuity of the two pullbacks and strict basepoint inequalities, without
+manually rebuilding the `Ioi`/`Iio` neighborhood argument.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-density-pullback-continuity-eventual-bounds.md
+threads/03-block-product-reduction/statement-card-a2-density-pullback-continuity-eventual-bounds.md
+threads/03-block-product-reduction/review-a2-density-pullback-continuity-eventual-bounds.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The declarations report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh scout `Bacon` passed the route and theorem-shape audit.  Xhigh scout
+`Wegener` separately confirmed that the current development does not yet
+construct or identify the `sourceImageDensity` or original prior `density`
+needed by the full source-image prior wrappers.
+
+Boundary: no density construction or identification; no proof of either
+continuity assumption or strict basepoint inequality; no determinant-chart
+Haar transport, exact raw-Haar pushforward, raw-Haar normalization,
+source-image or source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
 ## Full Source-Image Prior Domination From Eventual Pullback Bounds - 2026-07-02
 
 Lean now proves:
