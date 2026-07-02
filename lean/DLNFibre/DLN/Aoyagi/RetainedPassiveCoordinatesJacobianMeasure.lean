@@ -683,6 +683,159 @@ theorem map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_ma
             (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') '' Ω)) := by
           rw [hcov]
 
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- Patch-parametric solved-`A1` product-determinant retained-passive
+raw-order change of variables.
+
+If `P` is a raw-order source-recursive patch, the determinant-side patch
+`detChart ∩ rawOrder ⁻¹' P` pushes exactly to Haar restricted to `P`. -/
+theorem map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_patch_of_subset_rawSource
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    {P : Set (TopologyTuple ρ κ' ℝ)}
+    (hΩ :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ∩
+          topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') ⁻¹' P) m)
+    (hP :
+      P ⊆
+        topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    Measure.map
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ'))
+        ((m.restrict
+            (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ∩
+              topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') ⁻¹' P)).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+      m.restrict P := by
+  let Φ : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let T : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Ω : Set (TopologyTuple ρ κ' ℝ) := S ∩ Φ ⁻¹' P
+  have hΩdet : Ω ⊆ S := by
+    intro z hz
+    exact hz.1
+  have himage : Φ '' Ω = P := by
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      exact hz.2
+    · intro hy
+      let z : TopologyTuple ρ κ' ℝ :=
+        topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y
+      have hzS : z ∈ S := by
+        simpa [z, S, T] using
+          topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ') (z := y) (hP hy)
+      have hΦz : Φ z = y := by
+        simpa [z, Φ, T] using
+          topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+            (K := ℝ) (ρ := ρ) (κ' := κ') (z := y) (hP hy)
+      refine ⟨z, ?_, hΦz⟩
+      exact ⟨hzS, by simpa [hΦz] using hy⟩
+  have hcov :
+      Measure.map Φ
+          ((m.restrict Ω).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ =>
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := M) (ρ := ρ) (κ' := κ') z))) =
+        m.restrict (Φ '' Ω) := by
+    simpa [Φ, S, Ω] using
+      map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_image_of_subset_detChart
+        (M := M) (ρ := ρ) (κ' := κ') m hΩ hΩdet
+  simpa [Φ, S, Ω, himage] using hcov
+
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- Patch-parametric retained-passive raw-order COV composed with an arbitrary
+a.e.-measurable post-map on the raw-order source patch. -/
+theorem map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_patch_of_subset_rawSource
+    {M : ℕ} {ρ β : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [MeasurableSpace β]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    {P : Set (TopologyTuple ρ κ' ℝ)}
+    (ψ : TopologyTuple ρ κ' ℝ → β)
+    (hΩ :
+      NullMeasurableSet
+        (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ∩
+          topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') ⁻¹' P) m)
+    (hP :
+      P ⊆
+        topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ'))
+    (hψ : AEMeasurable ψ (m.restrict P)) :
+    Measure.map
+        (fun z : TopologyTuple ρ κ' ℝ =>
+          ψ (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') z))
+        ((m.restrict
+            (topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ∩
+              topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') ⁻¹' P)).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+      Measure.map ψ (m.restrict P) := by
+  let Φ : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let S : Set (TopologyTuple ρ κ' ℝ) :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Ω : Set (TopologyTuple ρ κ' ℝ) := S ∩ Φ ⁻¹' P
+  have hΩdet : Ω ⊆ S := by
+    intro z hz
+    exact hz.1
+  have himage : Φ '' Ω = P := by
+    ext y
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      exact hz.2
+    · intro hy
+      let z : TopologyTuple ρ κ' ℝ :=
+        topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y
+      have hzS : z ∈ S := by
+        simpa [z, S] using
+          topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ') (z := y) (hP hy)
+      have hΦz : Φ z = y := by
+        simpa [z, Φ] using
+          topologyTupleEdgeRawOrder_topologyTupleEdgeRawOrderInverse
+            (K := ℝ) (ρ := ρ) (κ' := κ') (z := y) (hP hy)
+      refine ⟨z, ?_, hΦz⟩
+      exact ⟨hzS, by simpa [hΦz] using hy⟩
+  have hψ_image : AEMeasurable ψ (m.restrict (Φ '' Ω)) := by
+    simpa [himage] using hψ
+  have hcov :
+      Measure.map
+          (fun z : TopologyTuple ρ κ' ℝ => ψ (Φ z))
+          ((m.restrict Ω).withDensity
+            (fun z : TopologyTuple ρ κ' ℝ =>
+              ENNReal.ofReal
+                (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                  (M := M) (ρ := ρ) (κ' := κ') z))) =
+        Measure.map ψ (m.restrict (Φ '' Ω)) := by
+    simpa [Φ, S, Ω] using
+      map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_image_of_subset_detChart
+        (M := M) (ρ := ρ) (κ' := κ') m (Ω := Ω) ψ hΩ hΩdet hψ_image
+  simpa [Φ, S, Ω, himage] using hcov
+
 private theorem map_comp_topologyTupleEdgeRawOrder_withDensity_eq_map_restrict_rawSourceChart_of_cov
     {M : ℕ} {ρ β : Type*} {κ' : Fin (M + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ]

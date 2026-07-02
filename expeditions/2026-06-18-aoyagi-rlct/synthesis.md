@@ -6,6 +6,77 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Patch-Parametric Retained-Passive Raw-Order COV - 2026-07-02
+
+Lean now has:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_patch_of_subset_rawSource
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_patch_of_subset_rawSource
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobianMeasure.lean
+```
+
+This is the target-patch form of the localized retained-passive raw-order
+change of variables.  If `P` is a patch inside
+`topologyTupleRawOrderSourceRecursiveDetChartSet`, and
+
+```text
+Omega = topologyTupleDetChartSet ∩ topologyTupleEdgeRawOrder ⁻¹' P,
+```
+
+then Lean proves:
+
+```text
+Measure.map topologyTupleEdgeRawOrder
+  ((m.restrict Omega).withDensity formalProductAbsDet)
+= m.restrict P.
+```
+
+The composed form proves the same after any post-map `psi` a.e. measurable on
+`m.restrict P`.
+
+The set calculation is elementary but important: for `y ∈ P`, the raw-order
+inverse lies in the determinant chart and maps back to `y`, because `P` is
+inside the source-recursive raw-order chart.  Hence
+`topologyTupleEdgeRawOrder '' Omega = P`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-raw-order-patch-cov.md
+```
+
+Boundary: this is still determinant-chart measure infrastructure.  It proves
+no endpoint-Haar transport, source-to-endpoint Haar comparison, concrete
+Aoyagi raw-pushforward, source-prior/original-prior transport, coverage,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused local module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+Lean-file forbidden-marker scan, and direct axiom probes.  Both new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+cd lean && ./scripts/sorries
+git diff --check
+cd lean && env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_patch_cov_axioms.lean
+```
+
+Xhigh scout direction after this layer: the next concrete target should use
+named endpoint/raw-order patches.  One path is a raw-order-reference theorem:
+if the endpoint reference image is a weighted local Haar patch, then the
+raw-order reference image, after an optional post-map, equals Haar restricted
+to the corresponding raw-order image patch.  The downstream package path is a
+localized reverse-domination callback using `endpointPatch` and `rawOrderPatch`
+instead of the full determinant and raw-source charts.
+
 ## A2 Localized Composed Retained-Passive Raw-Order COV - 2026-07-02
 
 Lean now has:

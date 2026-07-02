@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 patch-parametric raw-order COV
+
+Lean now has:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_patch_of_subset_rawSource
+map_comp_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_map_restrict_patch_of_subset_rawSource
+```
+
+Decision: local A2 endpoint/raw arguments should name the raw-order patch first
+and let the determinant-side patch be
+
+```text
+topologyTupleDetChartSet ∩ topologyTupleEdgeRawOrder ⁻¹' P.
+```
+
+When `P` lies inside the source-recursive raw-order chart, the inverse
+identities show that the raw-order image of this determinant-side patch is
+exactly `P`; the localized COV then gives Haar restricted to `P`, with an
+optional a.e.-measurable post-map.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-raw-order-patch-cov.md
+```
+
+Boundary: this proves no endpoint-Haar transport, no source-to-endpoint Haar
+comparison, no concrete Aoyagi raw-pushforward, no source-prior/original-prior
+transport, no coverage, no normal crossings, no pole order, and no RLCT.
+
+Verification passed through focused and full local builds, sorry audit, diff
+check, touched Lean-file forbidden-marker scan, and direct axiom probes.  Both
+new declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+Next A2 target: use the patch-parametric API in a concrete with-following
+raw-order-reference theorem, then in the downstream localized reverse
+domination package.  The honest targets are `endpointPatch` and
+`rawOrderPatch`, not the full `rawDetChart` and `rawSourceSet`.
+
 ## Latest controller decision - 2026-07-02, A2 localized composed raw-order COV
 
 Lean now has:
