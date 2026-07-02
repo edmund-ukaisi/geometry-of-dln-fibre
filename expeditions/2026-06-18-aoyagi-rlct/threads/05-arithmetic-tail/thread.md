@@ -19,6 +19,41 @@ This should be mostly finite arithmetic. If a proof becomes a long brittle
 calculation, consider a small exact certificate generator, but Lean remains the
 final authority.
 
+## 2026-07-02 Lemma 5 terminal-classifier bridge frontier
+
+Construction card:
+`construction-card-a5-lemma5-terminal-classifier-bridge.md`.
+Reproduction:
+`reproduction-lemma5-terminal-classifier-bridge-current-frontier-a5.md`.
+Review:
+`review-a5-lemma5-terminal-classifier-bridge-frontier.md`.
+
+The current reproduction rechecks Aoyagi Lemma 5, PDF pp. 24-27, against the
+Lean terminal-candidate API.  It concludes that the source currently supports
+the interval arithmetic and conditional classifier/cardinal-squeeze wrappers,
+but does not yet supply:
+
+```text
+TC.TerminalMinimumCountDatumClassifier
+TC.UpperBoundClassifier
+TC.TerminalMinimumCountDatumBackToBranchLabel
+Set.InjOn TC.branchLabel TC.fullBranches
+```
+
+The missing source fields are label-to-source-vector, minimum-to-lambda,
+deterministic counted datum, counted-datum injectivity, back-to-label/no-extra,
+and branch-label injectivity.  Lemma 4 is one-way, the Case 1(2) `J`-increase
+sentence is not an injection theorem, and equations `(3)`/`(4)` still carry
+the recorded guard and terminality obstructions.
+
+Xhigh source/API reviewer `Herschel` passed the construction/obstruction card
+direction and rejected attempting a Lean discharge from Aoyagi alone at the
+current frontier.
+
+Controller decision: no new A5 Lean wrapper here unless it removes a concrete
+supplied field.  Reopen A5 only with a pen-and-paper independent finite
+certificate for the bridge fields above.
+
 ## 2026-06-18 check result
 
 Draft reproduction: `reproduction-draft.md`. Independent checker: `Planck`,

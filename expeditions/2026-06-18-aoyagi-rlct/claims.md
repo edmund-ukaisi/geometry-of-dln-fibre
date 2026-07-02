@@ -10,6 +10,38 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A5 terminal-classifier bridge frontier - 2026-07-02
+
+- **Statement.** Aoyagi Lemma 5's interval-count paragraph does not yet
+  discharge the Lean terminal-classifier/no-extra fields.  A source-backed
+  proof would have to construct label-to-source-vector,
+  minimum-to-lambda, counted-datum maps-to, counted-datum injectivity,
+  back-to-label/no-extra, and branch-label injectivity data.
+- **Tier.** Aoyagi finite arithmetic/source reconstruction.
+- **Status.** Frontier packet recorded; not formalisation-ready as an
+  unconditional source theorem.
+- **Kill-condition.** Lemma 4 remains only a sufficient criterion; the Case
+  1(2) `J`-increase sentence cannot be made into finite injectivity; or
+  equations `(3)` and `(4)` require extra legality/terminality/index guards.
+- **Evidence/source.** Aoyagi Definition 3 and Theorem 2, PDF pp. 8-9;
+  Lemmas 3-5 and displayed families `(1)`--`(5)`, PDF pp. 24-27.
+- **Pen-and-paper reproduction.**
+  `threads/05-arithmetic-tail/reproduction-lemma5-terminal-classifier-bridge-current-frontier-a5.md`;
+  construction card at
+  `threads/05-arithmetic-tail/construction-card-a5-lemma5-terminal-classifier-bridge.md`.
+- **Reproduction check.** xhigh source/API review passed at
+  `threads/05-arithmetic-tail/review-a5-lemma5-terminal-classifier-bridge-frontier.md`.
+- **Lean target.** None yet.  Existing consumers are
+  `TC.TerminalMinimumCountDatumClassifier`, `TC.UpperBoundClassifier`,
+  `TC.TerminalMinimumCountDatumBackToBranchLabel`, and branch-label
+  injectivity in `lean/DLNFibre/DLN/Aoyagi/Lemma5TerminalBridge.lean`.
+- **Proved.** No new theorem.  Existing interval arithmetic and conditional
+  classifier/cardinal-squeeze wrappers remain the proved Lean layer.
+- **Nonclaims.** No source-backed counted-datum classifier, branch-label
+  injectivity, back-to-label map, no-extra terminal-minimum theorem, terminal
+  exactness, order count, pole-order statement, normal-crossing theorem, or
+  RLCT extraction is proved.
+
 ## Claim A0 - cited normal-crossing extraction interface
 
 - **Statement.** A suitable normal-crossing presentation of the transformed

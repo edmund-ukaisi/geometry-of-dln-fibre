@@ -15,6 +15,39 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## Lemma 5 Terminal-Classifier Bridge Frontier - 2026-07-02
+
+New A5 packet:
+
+```text
+threads/05-arithmetic-tail/construction-card-a5-lemma5-terminal-classifier-bridge.md
+threads/05-arithmetic-tail/reproduction-lemma5-terminal-classifier-bridge-current-frontier-a5.md
+```
+
+Conclusion: no source-backed A5 terminal classifier is ready for Lean.
+Aoyagi Lemma 5 gives the interval-count shape and states the upper bound using
+the Case 1(2) `J`-increase, but the current reproduction still lacks the Lean
+bridge fields:
+
+```text
+TC.TerminalMinimumCountDatumClassifier
+TC.UpperBoundClassifier
+TC.TerminalMinimumCountDatumBackToBranchLabel
+Set.InjOn TC.branchLabel TC.fullBranches
+```
+
+The missing steps are label-to-source-vector, minimum-to-lambda,
+deterministic counted datum, counted-datum injectivity, and
+back-to-label/no-extra.  Lemma 4 remains one-way, the `J`-increase sentence is
+not an injection theorem, and displayed families `(3)` and `(4)` still carry
+the guard/terminality obstructions recorded in the A5 blocked audit.
+
+Controller decision: freeze A5 wrapper work unless a concrete supplied field
+is removed.  If A5 is reopened, first build an independent finite source
+certificate for the fields above, with a pen-and-paper proof before Lean.
+Xhigh source/API reviewer `Herschel` passed this construction/obstruction
+direction and rejected attempting a Lean discharge from Aoyagi alone now.
+
 ## All-Pivot Producer Recurrence Termination - 2026-07-02
 
 Lean now proves:

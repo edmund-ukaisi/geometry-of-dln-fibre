@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Lemma 5 terminal-classifier bridge
+
+New A5 packet:
+
+```text
+threads/05-arithmetic-tail/construction-card-a5-lemma5-terminal-classifier-bridge.md
+threads/05-arithmetic-tail/reproduction-lemma5-terminal-classifier-bridge-current-frontier-a5.md
+```
+
+Decision: do not implement another conditional A5 Lean wrapper at this point.
+Aoyagi pp. 24-27 support the interval arithmetic and motivate the upper
+count, but they still do not provide a source-backed Lean classifier from
+`TC.terminalMinimumLabels` to counted data, an injection theorem from the
+Case 1(2) `J`-increase sentence, or a back-to-label/no-extra map into
+`TC.branchLabelImage`.
+
+The next source-moving A5 task, if reopened, is an independent finite
+certificate with explicit fields: label-to-source-vector,
+minimum-to-lambda, counted-datum maps-to, counted-datum injectivity,
+back-to-label/no-extra, and branch-label injectivity.  Until those fields have
+a pen-and-paper proof, A5 remains a supplied finite boundary, separate from
+the allowed analytic citation for normal-crossing-to-RLCT extraction.
+Xhigh reviewer `Herschel` passed this construction/obstruction direction and
+rejected a Lean discharge attempt at the current frontier.
+
 ## Latest controller decision - 2026-07-02, all-pivot producer recurrence termination
 
 Lean now proves:
