@@ -1171,6 +1171,112 @@ theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegra
   rw [hprod]
   exact hcompare
 
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Finite-side-mass p.13 product-residual integrability on a restricted
+following-factor patch whose points have uniformly bounded right inverses.
+
+This is the local-patch wrapper for the previous a.e. right-inverse theorem:
+the patch supplies finite following mass and the right-inverse socket almost
+everywhere after restriction. -/
+theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_restrict_followingPatch_of_forall_mem_rightInverse_squareSum_le
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [Fintype τ] [DecidableEq ρ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    (followingMeasure :
+      Measure (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))
+    [SFinite followingMeasure]
+    {followingPatch : Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)}
+    (hfollowingPatch_meas : MeasurableSet followingPatch)
+    (hfollowingPatch_lt_top : followingMeasure followingPatch < ∞)
+    {t K : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hpatch_right :
+      ∀ F ∈ followingPatch,
+        ∃ G : Matrix τ (Case2ResidualColIndex n S (J + 1)) ℝ,
+          F * G =
+            (1 :
+              Matrix (Case2ResidualColIndex n S (J + 1))
+                (Case2ResidualColIndex n S (J + 1)) ℝ) ∧
+            aoyagiCoordinateSquareSum
+              (fun ij : τ × Case2ResidualColIndex n S (J + 1) => G ij.1 ij.2) ≤ K) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal
+            (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      (passiveMeasure.prod weightedBox).prod
+        (followingMeasure.restrict followingPatch)
+    let productResidual :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+      fun z ij ↦
+        (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+          (ChartLocalSuffixState.residualFactorProduct
+            (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+              (ρ := ρ) n hS hcont hnext z eNext e).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+              (e (Fin.last 2)) (e 0)) ij.1 ij.2
+    (∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (productResidual z)) ∧
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+  intro center pivotNext signedBox weightedBox sourceMeasure productResidual
+  haveI : SFinite (followingMeasure.restrict followingPatch) := inferInstance
+  have hfollowing_restrict_lt_top :
+      followingMeasure.restrict followingPatch Set.univ < ∞ := by
+    simpa only [Measure.restrict_apply, MeasurableSet.univ, Set.univ_inter]
+      using hfollowingPatch_lt_top
+  refine
+    case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_followingFactor_rightInverse_squareSum_le
+      (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext
+      passiveMeasure hpassive_lt_top (followingMeasure.restrict followingPatch)
+      hfollowing_restrict_lt_top (t := t) (K := K) Rres ht hRres hcrit eNext e ?_
+  have hfollowing_ae :
+      ∀ᵐ F ∂ followingMeasure.restrict followingPatch,
+        ∃ G : Matrix τ (Case2ResidualColIndex n S (J + 1)) ℝ,
+          F * G =
+            (1 :
+              Matrix (Case2ResidualColIndex n S (J + 1))
+                (Case2ResidualColIndex n S (J + 1)) ℝ) ∧
+            aoyagiCoordinateSquareSum
+              (fun ij : τ × Case2ResidualColIndex n S (J + 1) => G ij.1 ij.2) ≤ K := by
+    exact
+      (ae_restrict_mem hfollowingPatch_meas).mono
+        (fun F hF => hpatch_right F hF)
+  exact
+    (Measure.quasiMeasurePreserving_snd
+      (μ := passiveMeasure.prod weightedBox)
+      (ν := followingMeasure.restrict followingPatch)).ae hfollowing_ae
+
 set_option linter.style.longLine false in
 /-- Composing the endpoint topology tuple with the finite active-coordinate
 readout gives the same reference-measure pushforward as the source-coordinate

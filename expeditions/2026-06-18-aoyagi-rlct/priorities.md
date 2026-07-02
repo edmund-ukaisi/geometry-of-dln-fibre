@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 finite following-factor patch wrapper
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_restrict_followingPatch_of_forall_mem_rightInverse_squareSum_le
+```
+
+Decision: the a.e. right-inverse socket for the p.13 product residual is now
+packaged as a finite local following-factor patch theorem.  If
+`followingPatch` is measurable, has finite following measure, and every
+`F ∈ followingPatch` has a right inverse `G` with `sq(G) <= K`, then the true
+product residual has a.e. positivity and finite negative-power integral over
+the source measure using `followingMeasure.restrict followingPatch`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-finite-following-factor-patch-wrapper.md
+```
+
+Boundary: this is not yet a construction of an open full-row-rank patch around
+a base following factor.  It assumes the measurable patch and its uniform
+right-inverse bound pointwise.  No source-prior/original-prior transport,
+normal crossings, pole order, or RLCT is proved.  The next local
+following-factor task is to construct or abstract an open neighborhood around a
+base right-invertible following factor with a uniform inverse bound, or thread
+this patch theorem into the downstream readback/prior finite-integral sockets.
+
 ## Latest controller decision - 2026-07-02, A2 product-residual finite integral under following-factor nondegeneracy
 
 Lean now has:

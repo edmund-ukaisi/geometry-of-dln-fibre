@@ -21,6 +21,59 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 finite following-factor patch wrapper
+
+Reproduction:
+`reproduction-a2-finite-following-factor-patch-wrapper.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_restrict_followingPatch_of_forall_mem_rightInverse_squareSum_le
+```
+
+This is the restricted following-patch wrapper around the previous a.e.
+right-inverse theorem.  A measurable patch `followingPatch` with finite
+following measure and a pointwise uniform right-inverse bound supplies the
+a.e. right-inverse socket after restricting the following factor measure.  The
+proof uses `ae_restrict_mem` on the following factor and
+`Measure.quasiMeasurePreserving_snd` for the product source.
+
+Boundary: this does not construct an open following-factor patch or prove
+right-invertibility/topological inverse bounds near a base factor.  It assumes
+the measurable finite patch and the pointwise uniform right-inverse bound.  No
+source-prior/original-prior transport, normal crossings, pole order, or RLCT is
+proved.
+
+Focused local build passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+```
+
+Full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, direct axiom probe, and xhigh review
+by `Dirac the 3rd` passed.  Xhigh API scout `Schrodinger the 3rd` confirmed
+the `ae_restrict_mem`/`Measure.quasiMeasurePreserving_snd` route and the need
+for a measurable patch.  The new declaration reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Post-interruption agent inventory: xhigh scout `Wegener the 3rd` found no
+edits needed and identified the next pure wrapper shape: combine the
+with-following `C 1` and `C 0` readouts with the generic residual-factor
+product theorem to expose the raw RHS as
+`case2DisplayedPostPivotResidualBlock ... * z.2`.  Xhigh scout
+`Rawls the 3rd` found no edits needed and restated the comparison theorem card:
+the correct local hypothesis is full-row-rank/right-invertible following
+factor with a uniform inverse bound; if the rank drops, choose nonzero `D` with
+`D * F = 0`, so no comparison can hold.
+
 ## 2026-07-02 A2 product-residual finite integral under following-factor nondegeneracy
 
 Reproduction:
