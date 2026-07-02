@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 product-residual finite integral under following-factor nondegeneracy
+
+Lean now has:
+
+```text
+Case2PassiveThetaWithFollowingFactor.displayedPostPivotResidualBlock_squareSum_eq_activeReadout_squareSum
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_const_mul_activeReadout_le
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_followingFactor_rightInverse_squareSum_le
+```
+
+Decision: the true p.13 product-residual finite-integral socket is now
+formalized conditionally.  The honest local hypothesis is an a.e. uniformly
+bounded right inverse for the following factor: `F * G = 1` and
+`sq(G) <= K`.  This supplies a single constant `c > 0` with
+
+```text
+c * sq(D(y)) <= sq(D(y) * F),
+```
+
+and the existing negative-power comparison transfers finite integrability from
+the active `C 1` readout to the actual two-edge product residual.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-product-residual-right-inverse-finite-integral.md
+```
+
+Boundary: this still does not construct the local following-factor patch or
+derive right-invertibility from endpoint topology.  It proves no source-prior
+or original-prior transport, no normal crossings, pole order, or RLCT.  The
+next p.13-facing task should construct or package a concrete finite local
+following-factor neighborhood whose reference measure satisfies the a.e.
+right-inverse bound, then thread this finite-integral bridge into the existing
+readback/prior domination sockets.
+
 ## Latest controller decision - 2026-07-02, A2 following-factor right-inverse product comparison
 
 Lean now has generic right-inverse coordinate-square-sum comparison:

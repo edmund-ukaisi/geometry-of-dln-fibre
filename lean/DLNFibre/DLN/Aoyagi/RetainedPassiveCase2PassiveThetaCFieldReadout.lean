@@ -249,6 +249,116 @@ theorem endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPiv
         rfl
 
 set_option linter.style.longLine false in
+/-- The displayed active residual block has the same coordinate square-sum as
+the active selected-entry chart readout.
+
+This is only finite reindexing between the residual block coordinates and the
+selected-entry center coordinates. -/
+theorem displayedPostPivotResidualBlock_squareSum_eq_activeReadout_squareSum
+    {ρ : Type*} {τ : Type}
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1)) :
+    aoyagiCoordinateSquareSum
+        (fun ij :
+            Case2ResidualRowIndex n S (J + 1) ×
+              Case2ResidualColIndex n S (J + 1) =>
+          (case2DisplayedPostPivotResidualBlock n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual
+              n hS hnext z.1.yNext eNext)) ij.1 ij.2) =
+      aoyagiCoordinateSquareSum
+        (SelectedEntrySignedBox.CenterCoord.chartMap
+          (case2PassiveThetaPivotNext n hS hnext) z.1.yNext) := by
+  classical
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) ℝ :=
+    case2DisplayedPostPivotResidualBlock n hS hcont
+      (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.yNext eNext)
+  have hD :
+      D =
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).submatrix
+          id eNext.symm := by
+    change
+      case2DisplayedPostPivotResidualBlock n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.yNext eNext) =
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).submatrix
+          id eNext.symm
+    simp [case2SuccessorSelectedEntrySourceResidual,
+      case2DisplayedPostPivotSourceResidualOfMatrix,
+      case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+  have hcoord :
+      AoyagiResidualBlockCoordinateIndex.value D =
+        fun c :
+            AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1))
+              (Case2ResidualColIndex n S (J + 1)) =>
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+            (residualCoordEquiv c) := by
+    funext c
+    let cτ :
+        AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1)) τ :=
+      (c.1, eNext.symm c.2)
+    have hequiv :
+        case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+            n S (J + 1) (Equiv.refl (Case2ResidualRowIndex n S (J + 1))) eNext
+            cτ =
+          residualCoordEquiv c := by
+      apply Subtype.ext
+      change (c.1.1, (eNext (eNext.symm c.2)).1) = (c.1.1, c.2.1)
+      simp
+    calc
+      AoyagiResidualBlockCoordinateIndex.value D c =
+          (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext)
+            c.1 (eNext.symm c.2) := by
+            rw [hD]
+            rfl
+      _ =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl (Case2ResidualRowIndex n S (J + 1))) eNext
+              cτ) := by
+            rfl
+      _ =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+            (residualCoordEquiv c) := by
+            rw [hequiv]
+  calc
+    aoyagiCoordinateSquareSum
+        (fun ij :
+            Case2ResidualRowIndex n S (J + 1) ×
+              Case2ResidualColIndex n S (J + 1) =>
+          (case2DisplayedPostPivotResidualBlock n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual
+              n hS hnext z.1.yNext eNext)) ij.1 ij.2) =
+        aoyagiCoordinateSquareSum (AoyagiResidualBlockCoordinateIndex.value D) := by
+          rfl
+    _ =
+        aoyagiCoordinateSquareSum
+          (fun c :
+              AoyagiResidualBlockCoordinateIndex
+                (Case2ResidualRowIndex n S (J + 1))
+                (Case2ResidualColIndex n S (J + 1)) =>
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+              (residualCoordEquiv c)) := by
+          rw [hcoord]
+    _ =
+        aoyagiCoordinateSquareSum
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext) :=
+          aoyagiCoordinateSquareSum_comp_equiv residualCoordEquiv
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext)
+
+set_option linter.style.longLine false in
 /-- If the supplied following factor has a right inverse, then the true
 endpoint residual-factor product controls the active displayed residual block
 up to a positive constant.

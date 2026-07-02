@@ -866,6 +866,311 @@ theorem case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_
     exact hfinite_map
   exact ⟨hpos_source, hfinite_source⟩
 
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Finite-side-mass p.13 product-residual integrability from an a.e. lower
+comparison with the active selected-entry readout.
+
+The comparison hypothesis is intentionally explicit: it is the local
+following-factor nondegeneracy socket needed to pass from the active `C 1`
+readout to the true two-edge residual product `C 1 * C 0`. -/
+theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_const_mul_activeReadout_le
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [Fintype τ] [DecidableEq ρ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    (followingMeasure :
+      Measure (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))
+    [SFinite followingMeasure]
+    (hfollowing_lt_top : followingMeasure Set.univ < ∞)
+    {t : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hcomp :
+      let center : Finset (ℕ × ℕ) :=
+        case2ResidualBlockPivotEntries n S (J + 1)
+      let pivotNext : center :=
+        case2PassiveThetaPivotNext n hS hnext
+      let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+        Measure.pi
+          (fun i : Case2PassiveTheta.Center n S J =>
+            volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+      let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+        signedBox.withDensity
+          (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+            ENNReal.ofReal
+              (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+      let sourceMeasure :
+          Measure
+            (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+        (passiveMeasure.prod weightedBox).prod followingMeasure
+      let activeResidual :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+            Case2PassiveTheta.Center n S J → ℝ :=
+        fun z ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+      let productResidual :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+            Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+        fun z ij ↦
+          (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+            (ChartLocalSuffixState.residualFactorProduct
+              (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                (ρ := ρ) n hS hcont hnext z eNext e).C
+              (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+                (e (Fin.last 2)) (e 0)) ij.1 ij.2
+      ∃ c : ℝ, 0 < c ∧
+        ∀ᵐ z ∂ sourceMeasure,
+          c * aoyagiCoordinateSquareSum (activeResidual z) ≤
+            aoyagiCoordinateSquareSum (productResidual z)) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal
+            (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      (passiveMeasure.prod weightedBox).prod followingMeasure
+    let productResidual :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+      fun z ij ↦
+        (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+          (ChartLocalSuffixState.residualFactorProduct
+            (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+              (ρ := ρ) n hS hcont hnext z eNext e).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+              (e (Fin.last 2)) (e 0)) ij.1 ij.2
+    (∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (productResidual z)) ∧
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+  intro center pivotNext signedBox weightedBox sourceMeasure productResidual
+  let activeResidual :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveTheta.Center n S J → ℝ :=
+    fun z ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+  have hactive :
+      (∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (activeResidual z)) ∧
+        (∫⁻ z :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum (activeResidual z)) ^ (-t))
+            ∂ sourceMeasure) < ∞ := by
+    simpa [center, pivotNext, signedBox, weightedBox, sourceMeasure,
+      activeResidual] using
+      case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_rpow_neg_prod_finiteMass
+        (ρ := ρ) (τ := τ) n hS hnext passiveMeasure hpassive_lt_top
+        followingMeasure hfollowing_lt_top Rres ht hRres hcrit
+  rcases hcomp with ⟨c, hc, hle⟩
+  have hpos :
+      ∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (productResidual z) := by
+    filter_upwards [hactive.1, hle] with z hzpos hzle
+    exact lt_of_lt_of_le (mul_pos hc hzpos) hzle
+  have hfinite :
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+    exact
+      lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le
+        (μ := sourceMeasure)
+        (a := fun z ↦ aoyagiCoordinateSquareSum (activeResidual z))
+        (b := fun z ↦ aoyagiCoordinateSquareSum (productResidual z))
+        (c := c) (t := t) hc ht hactive.1 hle hactive.2
+  exact ⟨hpos, hfinite⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Finite-side-mass p.13 product-residual integrability under an a.e.
+uniformly bounded right-inverse hypothesis for the following factor.
+
+This packages the local nondegeneracy socket for the independent following
+factor.  It does not construct such a patch or prove it from endpoint topology;
+those remain separate local chart obligations. -/
+theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_followingFactor_rightInverse_squareSum_le
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [Fintype τ] [DecidableEq ρ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    (followingMeasure :
+      Measure (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))
+    [SFinite followingMeasure]
+    (hfollowing_lt_top : followingMeasure Set.univ < ∞)
+    {t K : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (hright :
+      let center : Finset (ℕ × ℕ) :=
+        case2ResidualBlockPivotEntries n S (J + 1)
+      let pivotNext : center :=
+        case2PassiveThetaPivotNext n hS hnext
+      let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+        Measure.pi
+          (fun i : Case2PassiveTheta.Center n S J =>
+            volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+      let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+        signedBox.withDensity
+          (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+            ENNReal.ofReal
+              (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+      let sourceMeasure :
+          Measure
+            (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+        (passiveMeasure.prod weightedBox).prod followingMeasure
+      ∀ᵐ z ∂ sourceMeasure,
+        ∃ G : Matrix τ (Case2ResidualColIndex n S (J + 1)) ℝ,
+          z.2 * G =
+            (1 :
+              Matrix (Case2ResidualColIndex n S (J + 1))
+                (Case2ResidualColIndex n S (J + 1)) ℝ) ∧
+            aoyagiCoordinateSquareSum
+              (fun ij : τ × Case2ResidualColIndex n S (J + 1) => G ij.1 ij.2) ≤ K) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal
+            (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      (passiveMeasure.prod weightedBox).prod followingMeasure
+    let productResidual :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+      fun z ij ↦
+        (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+          (ChartLocalSuffixState.residualFactorProduct
+            (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+              (ρ := ρ) n hS hcont hnext z eNext e).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+              (e (Fin.last 2)) (e 0)) ij.1 ij.2
+    (∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (productResidual z)) ∧
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+  intro center pivotNext signedBox weightedBox sourceMeasure productResidual
+  refine
+    case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_const_mul_activeReadout_le
+      (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext
+      passiveMeasure hpassive_lt_top followingMeasure hfollowing_lt_top
+      Rres ht hRres hcrit eNext e ?_
+  let activeResidual :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveTheta.Center n S J → ℝ :=
+    fun z ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+  let rightInvertibleSet : Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) :=
+    {F | ∃ G : Matrix τ (Case2ResidualColIndex n S (J + 1)) ℝ,
+      F * G =
+        (1 :
+          Matrix (Case2ResidualColIndex n S (J + 1))
+            (Case2ResidualColIndex n S (J + 1)) ℝ) ∧
+        aoyagiCoordinateSquareSum
+          (fun ij : τ × Case2ResidualColIndex n S (J + 1) => G ij.1 ij.2) ≤ K}
+  rcases
+    exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_forall_exists_rightInverse_squareSum_le
+      (μ := Case2ResidualRowIndex n S (J + 1))
+      (s := rightInvertibleSet) (K := K)
+      (by
+        intro F hF
+        exact hF) with
+    ⟨c, hc, hc_le⟩
+  refine ⟨c, hc, ?_⟩
+  filter_upwards [hright] with z hzright
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) ℝ :=
+    case2DisplayedPostPivotResidualBlock n hS hcont
+      (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.yNext eNext)
+  let P : Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ :=
+    show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+      (ChartLocalSuffixState.residualFactorProduct
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+          (e (Fin.last 2)) (e 0)
+  have hzmem : z.2 ∈ rightInvertibleSet := by
+    simpa [rightInvertibleSet] using hzright
+  have hcompare :
+      c * aoyagiCoordinateSquareSum
+          (fun ij :
+              Case2ResidualRowIndex n S (J + 1) ×
+                Case2ResidualColIndex n S (J + 1) => D ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum
+          (fun ij : Case2ResidualRowIndex n S (J + 1) × τ =>
+            (D * z.2) ij.1 ij.2) := by
+    simpa [D] using hc_le z.2 hzmem D
+  have hactive_sq :
+      aoyagiCoordinateSquareSum
+          (fun ij :
+              Case2ResidualRowIndex n S (J + 1) ×
+                Case2ResidualColIndex n S (J + 1) => D ij.1 ij.2) =
+        aoyagiCoordinateSquareSum (activeResidual z) := by
+    simpa [D, activeResidual, pivotNext] using
+      Case2PassiveThetaWithFollowingFactor.displayedPostPivotResidualBlock_squareSum_eq_activeReadout_squareSum
+        (ρ := ρ) n hS hcont hnext z eNext
+  have hprod : P = D * z.2 := by
+    simpa [P, D] using
+      Case2PassiveThetaWithFollowingFactor.endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPivotResidualBlock_mul_followingFactor
+        (ρ := ρ) n hS hcont hnext z eNext e
+  change
+    c * aoyagiCoordinateSquareSum (activeResidual z) ≤
+      aoyagiCoordinateSquareSum (productResidual z)
+  rw [← hactive_sq]
+  change
+    c * aoyagiCoordinateSquareSum
+        (fun ij :
+            Case2ResidualRowIndex n S (J + 1) ×
+              Case2ResidualColIndex n S (J + 1) => D ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum
+        (fun ij : Case2ResidualRowIndex n S (J + 1) × τ => P ij.1 ij.2)
+  rw [hprod]
+  exact hcompare
+
 set_option linter.style.longLine false in
 /-- Composing the endpoint topology tuple with the finite active-coordinate
 readout gives the same reference-measure pushforward as the source-coordinate

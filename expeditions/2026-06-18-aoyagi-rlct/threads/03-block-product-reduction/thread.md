@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 product-residual finite integral under following-factor nondegeneracy
+
+Reproduction:
+`reproduction-a2-product-residual-right-inverse-finite-integral.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves the finite reindexing bridge:
+
+```text
+Case2PassiveThetaWithFollowingFactor.displayedPostPivotResidualBlock_squareSum_eq_activeReadout_squareSum
+```
+
+and the conditional p.13 product-residual finite-integral wrappers:
+
+```text
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_const_mul_activeReadout_le
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_of_ae_followingFactor_rightInverse_squareSum_le
+```
+
+The calculation is the expected one.  If the following factor `F` has a right
+inverse `G` with a uniform square-sum bound, then `D = (D * F) * G`, hence
+`c * sq(D) <= sq(D * F)` for a single `c > 0`.  Since `t >= 0`, this is the
+correct direction for transferring finite integrability from `sq(D)^(-t)` to
+`sq(D * F)^(-t)`.
+
+Boundary: the theorem assumes the a.e. right-inverse bound; it does not
+construct the following-factor patch, prove openness/nonzero singular-value
+control, perform source-prior or original-prior transport, prove normal
+crossings, compute pole order, or extract RLCT.
+
+Focused local build passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+```
+
+Full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, direct axiom probe, and xhigh review
+by `Darwin the 3rd` passed.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 following-factor right-inverse product comparison
 
 Reproduction:
