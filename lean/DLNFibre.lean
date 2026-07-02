@@ -651,5 +651,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBData222
 -- is the top; transitively pulls the staircase-det / flatBlock / projV0 / Agen+chain+reader fderiv-value
 -- substrate). CLEAN-THREE, S2-FREE — the cov-field input to the R1-LOWER cover_ge_div / NodeAchieverChart.
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
+-- General-`L` INTERIOR box-divergence atom (the general-`L` lift of the L=2 `routeMCore_box_diverges_
+-- interiorLive`): `routeMCore_box_diverges_interiorLiveGen` via the `interiorLiveNodeChartGen` bundle
+-- (staggered staircase-conjugated leaf Jacobian `DtotGen_abs_det` + the general-`L` injOn/analytic legs).
+-- Axiom footprint [propext, Classical.choice, Quot.sound, monomial_rlct] (the single permitted S2 axiom,
+-- identical to the L=2 analog); the bundle def `interiorLiveNodeChartGen` is clean-three. This single
+-- import (the Atom capstone) transitively pulls all 13 general-`L` interior Gen modules.
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
