@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCoordinatesJacobianMeasure
 
 /-!
 # Case 2 passive theta raw-order reference measure
@@ -153,6 +154,219 @@ noncomputable def case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeas
       topologyTupleEdgeRawOrder
         (K := ℝ) (ρ := ρ) (κ' := κ') (Y theta)
   Measure.map rawMap (referenceSource.restrict Ω)
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- If the enlarged endpoint reference image is a weighted determinant-side
+Haar patch, then the named raw-order reference image is Haar restricted to the
+corresponding raw-order image patch. -/
+theorem case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' : Fin 3 → Type :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+    let RawTuple := TopologyTuple ρ κ' ℝ
+    let Φ : RawTuple → RawTuple :=
+      fun y ↦ topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y
+    let Jprod : RawTuple → ℝ≥0∞ :=
+      fun y ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') y)
+    let endpointReferenceImage : Measure RawTuple :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres V
+    let rawOrderReferenceImage : Measure RawTuple :=
+      case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure
+        W₂ B₂ n hS hcont hnext eNext e Rres V
+    ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+      ∀ {Ω : Set RawTuple},
+        NullMeasurableSet Ω rawHaar →
+          Ω ⊆ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') →
+            endpointReferenceImage =
+                (rawHaar.restrict Ω).withDensity Jprod →
+              rawOrderReferenceImage =
+                rawHaar.restrict (Φ '' Ω) := by
+  intro ρ κ' RawTuple Φ Jprod endpointReferenceImage rawOrderReferenceImage
+    rawHaar _instRawHaar Ω hΩ hΩdet hendpoint
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        RawTuple :=
+    fun theta ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext theta eNext e
+  let rawMap :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        RawTuple :=
+    fun theta ↦ Φ (Y theta)
+  have hY :
+      AEMeasurable Y (referenceSource.restrict V) := by
+    have hYcont : Continuous Y := by
+      simpa [Y, RawTuple, ρ, κ'] using
+        continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext eNext e
+    exact hYcont.measurable.aemeasurable
+  have hΦ_restrict :
+      AEMeasurable Φ (rawHaar.restrict Ω) := by
+    refine ContinuousOn.aemeasurable₀ ?_ hΩ
+    intro y hy
+    exact
+      (differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') y (hΩdet hy)).continuousAt.continuousWithinAt
+  have hΦ_endpoint :
+      AEMeasurable Φ endpointReferenceImage := by
+    simpa [hendpoint, Jprod] using
+      hΦ_restrict.mono_ac (withDensity_absolutelyContinuous _ _)
+  have hmap_assoc :
+      Measure.map Φ endpointReferenceImage =
+        rawOrderReferenceImage := by
+    simpa [endpointReferenceImage, rawOrderReferenceImage,
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+      case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure,
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure,
+      referenceSource, Y, rawMap, Φ, RawTuple, ρ, κ', Function.comp_def] using
+      (AEMeasurable.map_map_of_aemeasurable
+        (μ := referenceSource.restrict V) (f := Y) (g := Φ) hΦ_endpoint hY)
+  have hcov :
+      Measure.map Φ ((rawHaar.restrict Ω).withDensity Jprod) =
+        rawHaar.restrict (Φ '' Ω) := by
+    simpa [Φ, Jprod, RawTuple, ρ, κ'] using
+      map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_image_of_subset_detChart
+        (M := 1) (ρ := ρ) (κ' := κ') rawHaar hΩ hΩdet
+  calc
+    rawOrderReferenceImage = Measure.map Φ endpointReferenceImage := hmap_assoc.symm
+    _ = Measure.map Φ ((rawHaar.restrict Ω).withDensity Jprod) := by
+          rw [hendpoint]
+    _ = rawHaar.restrict (Φ '' Ω) := hcov
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+/-- Post-composed form of
+`case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet`.
+-/
+theorem map_case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_map_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    {β : Type*} [MeasurableSpace β]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' : Fin 3 → Type :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+    let RawTuple := TopologyTuple ρ κ' ℝ
+    let Φ : RawTuple → RawTuple :=
+      fun y ↦ topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y
+    let Jprod : RawTuple → ℝ≥0∞ :=
+      fun y ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') y)
+    let endpointReferenceImage : Measure RawTuple :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres V
+    let rawOrderReferenceImage : Measure RawTuple :=
+      case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure
+        W₂ B₂ n hS hcont hnext eNext e Rres V
+    ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+      ∀ {Ω : Set RawTuple} (ψ : RawTuple → β),
+        NullMeasurableSet Ω rawHaar →
+          Ω ⊆ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') →
+            AEMeasurable ψ (rawHaar.restrict (Φ '' Ω)) →
+              endpointReferenceImage =
+                  (rawHaar.restrict Ω).withDensity Jprod →
+                Measure.map ψ rawOrderReferenceImage =
+                  Measure.map ψ (rawHaar.restrict (Φ '' Ω)) := by
+  intro ρ κ' RawTuple Φ Jprod endpointReferenceImage rawOrderReferenceImage
+    rawHaar _instRawHaar Ω ψ hΩ hΩdet _hψ hendpoint
+  have hraw :
+      rawOrderReferenceImage = rawHaar.restrict (Φ '' Ω) :=
+    case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet
+      W₂ B₂ n hS hcont hnext eNext e Rres V
+      rawHaar hΩ hΩdet hendpoint
+  rw [hraw]
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

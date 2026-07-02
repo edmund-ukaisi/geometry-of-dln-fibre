@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Raw-Order Reference From Endpoint Haar Patch - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet
+map_case2PassiveThetaWithFollowingFactorRawOrderReferenceImageMeasure_eq_map_restrict_image_of_endpointReferenceImageMeasure_eq_withDensity_formalProductAbsDet
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawOrderReference.lean
+```
+
+The first theorem says: if the with-following endpoint reference image on a
+local set `V` is equal to the formal-product weighted restriction of an
+additive Haar measure to a determinant-side patch `Omega`, then the named
+with-following raw-order reference image is additive Haar restricted to
+`topologyTupleEdgeRawOrder '' Omega`.
+
+The second theorem is the post-composed form for an arbitrary target map `psi`.
+It is included because downstream p.13 source-chart and readback comparisons
+consume maps out of the raw-order reference image, not only the raw-order
+measure itself.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-raw-order-reference-image-from-endpoint-haar-patch.md
+```
+
+Boundary: the endpoint Haar-patch equality is still a hypothesis.  The theorem
+does not prove endpoint-Haar transport, source-to-endpoint Haar comparison,
+source-density lower bounds, original prior transport, coverage, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused local module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+Lean-file forbidden-marker scan, and direct axiom probes.  Both new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawOrderReference
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+cd lean && ./scripts/sorries
+git diff --check
+cd lean && env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_with_following_raw_order_reference_axioms.lean
+```
+
 ## A2 Patch-Parametric Retained-Passive Raw-Order COV - 2026-07-02
 
 Lean now has:
