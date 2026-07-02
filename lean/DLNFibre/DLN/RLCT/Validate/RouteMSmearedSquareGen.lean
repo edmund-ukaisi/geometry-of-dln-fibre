@@ -133,34 +133,116 @@ theorem wideCarrierBound_suffix (A : Params M) {δ η : ℝ} (hδ : 0 < δ) (hη
           rw [show k + 1 - p = (k - p) + 1 by omega, pow_succ]
         nlinarith [hlow, hcross, hexp, mul_nonneg (mul_nonneg hM hpub0) hη, hAcc0, hη, hδ.le]
 
-/-! ## The flat-entry readoff `psiMapG (RmapG u) i = chartGenParams entry` -/
+/-! ## The flat-coord readoff `psiMapG (RmapG u) i = shearMBody … i` -/
 
-/-- **Each flat coord of `psiMapG (RmapG u)` is a `chartGenParams` entry.** From `genDecode_params`:
-`psiMapG (RmapG u) = paramsEquivFlat M (chartGenParams …)`, and `paramsEquivFlat_apply_equivFin` reads
-back the layer entry at the `equivFin.symm` slot. -/
-theorem psiMapG_RmapG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+/-- **`coordOfG (slotEquivG i) = i`** (the `slotEquivG`/`coordOfG` inverse round-trip). -/
+theorem coordOfG_slotEquivG (M : Fin (L + 1) → ℕ) (i : Fin (routeMAmbient M)) :
+    coordOfG M (slotEquivG M i) = i := by
+  rw [coordOfG]; exact (slotEquivG M).symm_apply_apply i
+
+/-- **The flat-coord readoff.** `psiMapG (RmapG u) i = shearMBody … (RmapG u) i` — the flat map is
+`paramsEquivFlat ∘ packM ∘ shearMBody`, and `packM`/`paramsEquivFlat` cancel back to the shear value at
+the coord `coordOfG (slotEquivG i) = i`. -/
+theorem psiMapG_RmapG_flat (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
-    (u : Fin (routeMAmbient M) → ℝ)
-    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
-    (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
-    (i : Fin (routeMAmbient M)) :
+    (u : Fin (routeMAmbient M) → ℝ) (i : Fin (routeMAmbient M)) :
     psiMapG M hL hrs (RmapG M hL hrs hr hc u) i
-      = chartGenParams M (frontTupleG M u) hL (hrsAtom_of_hrs hL hrs) (zuG M hL hrs hr hc u)
-          ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)
-          ((deepLayer_succ_width M hL) ▸ SbotuG M hL hrs u) (Lam0uG M hL hrs u) e1 e2
-          ((Fintype.equivFin (FlatIdx M)).symm i).1.1
-          ((Fintype.equivFin (FlatIdx M)).symm i).1.2
-          ((Fintype.equivFin (FlatIdx M)).symm i).2 := by
-  -- `psiMapG (RmapG u) = paramsEquivFlat M (chartGenParams …)` (the decode)
-  have hpsi : psiMapG M hL hrs (RmapG M hL hrs hr hc u)
-      = paramsEquivFlat M (chartGenParams M (frontTupleG M u) hL (hrsAtom_of_hrs hL hrs)
-          (zuG M hL hrs hr hc u) ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)
-          ((deepLayer_succ_width M hL) ▸ SbotuG M hL hrs u) (Lam0uG M hL hrs u) e1 e2) := by
-    simp only [psiMapG]
-    rw [genDecode_params M hL hrs hr hc u e1 e2]
-  rw [hpsi]
-  -- read off at `i` via the `equivFin` round-trip
+      = shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u) i := by
+  simp only [psiMapG]
   conv_lhs => rw [← Equiv.apply_symm_apply (Fintype.equivFin (FlatIdx M)) i]
   rw [paramsEquivFlat_apply_equivFin']
+  rw [packM_shearG_entry M hL hrs (RmapG M hL hrs hr hc u) ((Fintype.equivFin (FlatIdx M)).symm i)]
+  -- `coordOfG (slotEquivG i) = i`
+  rw [show ((Fintype.equivFin (FlatIdx M)).symm i) = slotEquivG M i from rfl, coordOfG_slotEquivG]
+
+/-! ## The `boxGen` readoff helpers (every non-pivot coord `∈ [−δ,δ]` when `η ≤ δ`) -/
+
+/-- **A `boxGen` coord is `≤ δ` in absolute value** (`η ≤ δ`; both `Icc` branches lie in `[−δ,δ]`). -/
+theorem boxGen_abs_le (hL : 0 < L) {q : FlatIdx M} {δ η : ℝ} (hδ : 0 < δ) (hη : η ≤ δ) {x : ℝ}
+    (hx : x ∈ slotBoxGen M hL r δ η q) : |x| ≤ δ := by
+  rw [slotBoxGen] at hx
+  split at hx <;> · rw [Set.mem_Icc] at hx; rw [abs_le]; constructor <;> linarith [hx.1, hx.2]
+
+/-- **A non-carrier `boxGen` coord is `≤ η` in absolute value.** If the diagonal branch is not taken
+(`q` not a front carrier-diagonal slot), the coord lies in `[−η,η]`. -/
+theorem boxGen_abs_le_eta (hL : 0 < L) {q : FlatIdx M} {δ η : ℝ} {x : ℝ}
+    (hnd : ¬ (q.1.1.val < L - 1 ∧ (q.1.2.val : ℕ) < r ∧ (q.2.val : ℕ) < r ∧ q.1.2.val = q.2.val))
+    (hx : x ∈ slotBoxGen M hL r δ η q) : |x| ≤ η := by
+  rw [slotBoxGen, if_neg hnd, Set.mem_Icc] at hx
+  rw [abs_le]; exact hx
+
+/-! ## The `Λ₀`-entry bound (route 4: `Λ₀ = Vρ⁻¹·Vσ`, `Vρ` dominant on the waist factor)
+
+`frontProd = U·V` at the width-`r` waist `q` (`M⟨q⟩ = r`), with `V` the suffix product `A^q·…·A^{L−2}`
+(exactly `r` rows after the cast). `WideCarrierBound V r` is an all-row statement, so:
+* `Vρ := V[:, deepWidthEquiv∘inl]` (`r×r`) has carrier diagonal `≥ dlb`, off-diagonal `≤ nb`;
+* `Vσ := V[:, deepWidthEquiv∘inr]` (`r×s`) has every entry `≤ nb` (residual cols are never carrier
+  diagonals).
+Then `Vρ` is `γ`-dominant (`γ = dlb − (r−1)·nb`), `Λ₀ = Vρ⁻¹·Vσ`, so `|Λ₀ a b| ≤ (1/γ)·nb`. -/
+
+/-- **The waist carrier data.** From the suffix carrier bound at the width-`r` waist `q`, extract the
+factorization `frontProd = U·V` (`V : r × M⟨L−1⟩` via the `Fin.cast M⟨q⟩=r`) together with a
+`CarrierBound` on `Vρ := V[:, ρ]` and a uniform bound on `Vσ := V[:, σ]`, all with the fused
+`nb ≤ η·Acc`, `(δ/2)^{L−1−q} − η·Acc ≤ dlb` invariant. -/
+theorem waist_carrier_data (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ)
+    (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
+    (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
+    (hlayers : ∀ t : Fin L, q ≤ (t : ℕ) → (t : ℕ) < L - 1 →
+      CarrierLayer (frontTupleG M u t) r δ η) :
+    ∃ (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ)
+      (dlb nb Acc : ℝ),
+      frontProd M (frontTupleG M u) hL = U * V
+        ∧ CarrierBound (V.submatrix (id : Fin r → Fin r)
+            (fun k : Fin r => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k))) dlb nb
+        ∧ (∀ i : Fin r, ∀ b : Fin s,
+            |(V.submatrix (id : Fin r → Fin r)
+              (fun j : Fin s => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inr j))) i b| ≤ nb)
+        ∧ 0 ≤ nb ∧ 0 ≤ Acc ∧ nb ≤ η * Acc
+        ∧ (δ / 2) ^ (L - 1 - q) - η * Acc ≤ dlb := by
+  -- suffix carrier bound `prodAux (L−1) = prodAux q * Y`, `WideCarrierBound Y r dlb nb pub`
+  obtain ⟨Y, dlb, nb, pub, Acc, hY, hWCB, hnb0, _, hAcc0, hnbA, hdlbA⟩ :=
+    wideCarrierBound_suffix (frontTupleG M u) hδ hη hηδ q hq hwidth hlayers (L - 1)
+      hqL (le_refl _) (by omega)
+  -- the recast `U := prodAux q · cast`, `V := cast · Y` (mirrors `frontProd_factorsThrough_waist`)
+  refine ⟨(prodAux M (frontTupleG M u) q hq).submatrix (id : _ → _) (Fin.cast hMq.symm),
+    Y.submatrix (Fin.cast hMq.symm) (id : _ → _), dlb, nb, Acc, ?_, ?_, ?_, hnb0, hAcc0, hnbA, ?_⟩
+  · -- `frontProd = U · V`
+    rw [frontProd, hY]
+    funext i j
+    rw [Matrix.mul_apply, Matrix.mul_apply]
+    refine Fintype.sum_equiv (finCongr hMq)
+      (fun a => (prodAux M (frontTupleG M u) q hq) i a * Y a j)
+      (fun k => (prodAux M (frontTupleG M u) q hq).submatrix (id : _ → _) (Fin.cast hMq.symm) i k
+        * Y.submatrix (Fin.cast hMq.symm) (id : _ → _) k j) (fun a => ?_)
+    simp only [Matrix.submatrix_apply, id_eq, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self]
+  · -- `CarrierBound Vρ dlb nb`
+    obtain ⟨hdiag, hnb, _⟩ := hWCB
+    refine ⟨fun i => ?_, fun i k hik => ?_⟩
+    · -- diagonal: `Vρ i i = Y (cast i) (deepWidthEquiv (inl i))`, both `.val = i < r`
+      rw [Matrix.submatrix_apply, id_eq, Matrix.submatrix_apply, id_eq]
+      refine hdiag (Fin.cast hMq.symm i) (by simp [Fin.cast])
+        (deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl i)) ?_
+      simp only [Fin.coe_cast, deepWidthEquiv, Equiv.trans_apply, finCongr_apply, Fin.coe_cast,
+        finSumFinEquiv_apply_left, Fin.coe_castAdd]
+    · -- off-diagonal: `Vρ i k = Y (cast i) (deepWidthEquiv (inl k))`, `.val i ≠ .val k`
+      rw [Matrix.submatrix_apply, id_eq, Matrix.submatrix_apply, id_eq]
+      refine hnb (Fin.cast hMq.symm i) (by simp [Fin.cast])
+        (deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k)) ?_
+      simp only [Fin.coe_cast, deepWidthEquiv, Equiv.trans_apply, finCongr_apply, Fin.coe_cast,
+        finSumFinEquiv_apply_left, Fin.coe_castAdd]
+      exact fun h => hik (Fin.ext h)
+  · -- `Vσ` uniform bound: col `deepWidthEquiv (inr b)` has `.val = r + b ≥ r ≠ .val i (< r)`
+    intro i b
+    rw [Matrix.submatrix_apply, id_eq]
+    obtain ⟨_, hnb, _⟩ := hWCB
+    refine hnb (Fin.cast hMq.symm i) (by simp [Fin.cast])
+      (deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inr b)) ?_
+    simp only [Fin.coe_cast, deepWidthEquiv, Equiv.trans_apply, finCongr_apply, Fin.coe_cast,
+      finSumFinEquiv_apply_right, Fin.coe_natAdd]
+    omega
+  · -- the invariant exponent `(δ/2)^{(L−1)−q}`
+    exact hdlbA
 
 end DLNFibre.DLN.RLCT
