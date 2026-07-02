@@ -10,6 +10,42 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor raw-order bridge - 2026-07-02
+
+- **Statement.** On a local determinant-sector, fixed-pivot-nonzero enlarged
+  following-factor Case 2 passive-theta source, the raw-order p.13 source
+  chart agrees pointwise with the direct endpoint source chart.  The source
+  family lies in the retained-passive local source, source-readback recovers
+  the retained data, the enlarged readback is a left inverse, and the
+  one-stage/two-stage raw-order pushforward presentations agree with the
+  direct source-chart pushforward for any restricted source-domain measure.
+- **Tier.** A2 retained-passive product-reduction source-chart support.
+- **Status.** Lean bridge proved.  This is not the density theorem.
+- **Kill-condition.** The result is read as raw-Haar transport, a Jacobian or
+  density identity, a bounded-density theorem, full Case 2 source-image
+  coverage, a finite pivot cover, normal crossings, pole order, or RLCT; or it
+  treats the formal `F` variable as Aoyagi's original untransformed following
+  matrix rather than the normalized retained/raw `C(0)` coordinate.
+- **Evidence/source.** Aoyagi Lemma 2/Theorem 3, PDF pp. 10-13 for the
+  retained-passive Schur/product chart.  Case 2 pp. 19-22 provide the local
+  selected-pivot/following-factor normalization context, but not the
+  pushforward or density theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-raw-density-frontier.md`;
+  source-fidelity caveats integrated after review.
+- **Reproduction check.** xhigh source-fidelity scout `Russell` found caveats
+  now recorded in the reproduction note; xhigh Lean/API scout `Kierkegaard`
+  identified this raw-order bridge as the clean next step and found no math
+  blocker.
+- **Lean target.**
+  `RetainedPassiveCase2PassiveThetaSourceMeasure.lean` proves
+  `exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse`.
+- **Proved.** Warning-clean direct elaboration of the touched Lean file,
+  focused module build, `lean/scripts/sorries`, and `git diff --check` passed.
+- **Nonclaims.** No raw-Haar transport, no Jacobian/density identity, no
+  density bound, no source-image coverage, no normal crossings, no pole order,
+  and no RLCT extraction is proved.
+
 ## Current A4 branch-indexed current-center payload layer - 2026-07-02
 
 - **Statement.** The fixed-current-center all-pivot Case 2 payload

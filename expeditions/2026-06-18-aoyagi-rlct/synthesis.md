@@ -20,6 +20,49 @@ contract-constructor slice was committed and pushed as `af292a3a`.  At the
 post-push reorientation point, the expedition worktree was clean and even with
 `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Raw-Order Bridge - 2026-07-02
+
+Lean now proves the local raw-order/source-chart bridge for the enlarged
+following-factor Case 2 passive theta source.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-raw-density-frontier.md
+```
+
+The theorem is:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse
+```
+
+It shrinks inside a prescribed open neighborhood of a determinant-sector,
+fixed-pivot-nonzero enlarged source point.  On that shrink it proves
+determinant-chart membership for the enlarged endpoint topology tuple,
+raw-order source-recursive determinant-chart membership, equality
+`rawChart (rawMap z) = sourceChart z`, local-source membership,
+source-readback recovery of the endpoint retained data, and the enlarged
+source-chart readback-left-inverse.  For any source-domain measure restricted
+to the shrink, it also proves that the one-stage raw-order pushforward and the
+two-stage raw-order pushforward both equal the direct source-chart pushforward.
+
+This is not the source-density theorem.  It does not identify raw Haar
+transport, construct the Jacobian or density of the enlarged coordinate map,
+prove a local density bound, cover the full Case 2 source image, prove normal
+crossings, pole order, or RLCT.  The current pen-and-paper frontier note was
+also corrected after source-fidelity review: `yNext`/`C(1)` and `F` are formal
+normalized retained-coordinate choices, not formulas printed verbatim by
+Aoyagi, and a fixed selected-entry chart is only a local pivot sector.
+
+Verification passed so far: warning-clean direct elaboration of the touched
+Lean file, focused Lake build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure`,
+`lean/scripts/sorries`, and `git diff --check`.  The focused build replayed
+pre-existing warning noise from `ProductReductionStepRegularDensity`; the
+touched file was warning-clean under direct elaboration.
+
 ## A2 Enlarged Following-Factor Contract Constructor - 2026-07-02
 
 Lean now packages the enlarged following-factor endpoint source chart into the

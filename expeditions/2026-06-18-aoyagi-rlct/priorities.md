@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor raw-order bridge
+
+Lean now has the with-following analogue of the raw-order/two-stage
+source-chart bridge:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse
+```
+
+On a shrink inside any prescribed open neighborhood of a determinant-sector,
+fixed-pivot-nonzero enlarged source point, it proves raw-order source-recursive
+determinant-chart membership, equality of the raw-order p.13 source chart with
+the direct enlarged endpoint source chart, local-source membership,
+source-readback recovery of the retained data, enlarged readback-left-inverse,
+and equality of the one-stage/two-stage raw-order pushforward presentations
+with the direct source-chart pushforward for any restricted source-domain
+measure.
+
+Decision: this is the correct bridge before attempting density.  It is still
+not raw-Haar transport, a Jacobian/density identity, a bounded-density theorem,
+source-image coverage, normal crossings, pole order, or RLCT.  The next A2
+source-moving target is the actual finite-dimensional change-of-variables
+calculation for the enlarged source map, with the source-side/target-side
+density convention checked explicitly.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor contract constructor
 
 Lean now packages the enlarged following-factor endpoint source-chart facts

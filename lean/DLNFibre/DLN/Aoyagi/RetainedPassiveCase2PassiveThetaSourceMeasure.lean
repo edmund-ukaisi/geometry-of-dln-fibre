@@ -1141,6 +1141,455 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- The raw-order two-stage proof composes several retained-passive local chart
+-- normalizations and follows the existing non-following bridge's footprint.
+/-- Relative local raw-order source-chart bridge for the enlarged
+following-factor Case 2 passive theta coordinates.
+
+Inside any prescribed open neighborhood of a determinant-sector,
+nonzero-pivot base point, there is a smaller open neighborhood `V` on which
+the raw-order p.13 source chart agrees with the direct enlarged endpoint
+source chart.  Consequently the one-stage and two-stage raw-order
+presentations of any restricted source-domain measure agree with the direct
+source-chart pushforward.
+
+This is only retained-passive source-chart bookkeeping.  It does not identify
+raw Haar measure, prove a Jacobian or density formula for the enlarged
+coordinate map, compare to the original source prior, prove source-image
+coverage, construct normal crossings, compute pole order, or extract an RLCT.
+-/
+theorem exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z
+    let readback : EdgeFamily →
+        Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    let rawMap :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦
+        topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+          (case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)
+    let rawChart :
+        TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ →
+          EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V,
+          case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+                (ρ := Fin (Module.finrank ℝ U₀))
+                n hS hcont hnext z eNext e ∈
+              topologyTupleDetChartSet
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ∧
+            rawMap z ∈
+              topologyTupleRawOrderSourceRecursiveDetChartSet
+                (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ∧
+            rawChart (rawMap z) = sourceChart z ∧
+            sourceChart z ∈
+              paperEndpointFixedBaseRetainedPassiveP13LocalSource
+                W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) ∧
+            (let E :=
+              paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun p : Fin 2 ↦
+                  (sourceChart z p :
+                    reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+            sourceReadback (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀)) E =
+              retainedData z) ∧
+            readback (sourceChart z) = z) ∧
+          ∀ [MeasurableSpace EdgeFamily] [BorelSpace EdgeFamily],
+            ∀ sourceMeasure :
+              Measure
+                (Case2PassiveThetaWithFollowingFactor
+                  (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+            let ν := sourceMeasure.restrict V
+            let μ := Measure.map sourceChart ν
+            let μrawComp :=
+              Measure.map (fun z ↦ rawChart (rawMap z)) ν
+            let μrawTwoStage :=
+              Measure.map rawChart (Measure.map rawMap ν)
+            μrawComp = μ ∧ μrawTwoStage = μ := by
+  intro EdgeFamily retainedData sourceChart readback rawMap rawChart
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let RawTuple := TopologyTuple ρ κ' ℝ
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        RawTuple :=
+    fun z ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext z eNext e
+  obtain ⟨Vread, hVread_open, hz₀Vread, hleft⟩ :=
+    (by
+      simpa [EdgeFamily, sourceChart, readback, ρ, κ'] using
+        exists_open_case2PassiveThetaWithFollowingFactorEndpointSourceChart_readback_leftInverse
+          W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+          z₀ hdet₀ hpivot₀)
+  let detSet : Set RawTuple :=
+    topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+  let D : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    Y ⁻¹' detSet
+  have hYcont : Continuous Y := by
+    change Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e)
+    exact
+      continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext eNext e
+  have hDopen : IsOpen D :=
+    hYcont.isOpen_preimage detSet
+      (by
+        simpa [detSet, ρ, κ'] using
+          isOpen_topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ'))
+  have hz₀D : z₀ ∈ D := by
+    have hY₀ :
+        Y z₀ ∈ detSet := by
+      simpa [Y, detSet, ρ, κ'] using
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_mem_detChartSet
+          (ρ := ρ) n hS hcont hnext z₀ eNext e hdet₀
+    simpa [D] using hY₀
+  let V : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    G ∩ (Vread ∩ D)
+  have hVopen : IsOpen V := hGopen.inter (hVread_open.inter hDopen)
+  have hz₀V : z₀ ∈ V := ⟨hz₀G, ⟨hz₀Vread, hz₀D⟩⟩
+  have hVG : V ⊆ G := Set.inter_subset_left
+  have hdet_of_mem : ∀ z ∈ V, Y z ∈ detSet := by
+    intro z hz
+    have hzD : z ∈ D := hz.2.2
+    simpa [D] using hzD
+  have hdetV : ∀ z ∈ V, (retainedData z).detChart := by
+    intro z hz
+    exact
+      (topologyTuple_mem_topologyTupleDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') (retainedData z)).1
+        (by simpa [Y, detSet, retainedData, κ'] using hdet_of_mem z hz)
+  have hleftV : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    have hzread_fields :
+        (Case2PassiveThetaWithFollowingFactor.mk
+            (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J)
+            z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+            z.1.yNext z.2) ∈ Vread := by
+      simpa [Case2PassiveThetaWithFollowingFactor.mk,
+        Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hz.2.1
+    simpa [sourceChart, readback,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart,
+      Case2PassiveThetaWithFollowingFactor.mk,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleft z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+        z.1.yNext z.2 hzread_fields
+  have hpoint :
+      ∀ z ∈ V,
+        Y z ∈ detSet ∧
+          rawMap z ∈
+            topologyTupleRawOrderSourceRecursiveDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ') ∧
+          rawChart (rawMap z) = sourceChart z ∧
+          sourceChart z ∈
+            paperEndpointFixedBaseRetainedPassiveP13LocalSource
+              W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) ∧
+          (let E :=
+            paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+              (fun p : Fin 2 ↦
+                (sourceChart z p :
+                  reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+          sourceReadback (K := ℝ) (ρ := ρ) E = retainedData z) ∧
+          readback (sourceChart z) = z := by
+    intro z hz
+    have hYz : Y z ∈ detSet := hdet_of_mem z hz
+    have hdet : (retainedData z).detChart := hdetV z hz
+    have hrawMem :
+        rawMap z ∈
+          topologyTupleRawOrderSourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ') := by
+      have hm :=
+        mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ') hYz
+      simpa [rawMap, Y, detSet, RawTuple, ρ, κ'] using hm
+    have hrawEq : rawChart (rawMap z) = sourceChart z := by
+      have h :=
+        paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_topologyTupleEdgeRawOrder_topologyTuple_eq_sourceEdgeFamilyOfData
+          (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀)
+          (data := retainedData z) hdet
+      simpa [rawMap, rawChart, sourceChart, retainedData, Y,
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple, ρ, κ'] using h
+    have hsource :
+        sourceChart z ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource
+            W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) := by
+      change
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun p : Fin 2 ↦
+              (sourceChart z p :
+                reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ)) ∈
+          sourceRecursiveDetChartSet
+            (K := ℝ) (ρ := ρ) (κ' := κ')
+      rw [show
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+              (fun p : Fin 2 ↦
+                (sourceChart z p :
+                  reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ)) =
+            (retainedData z).edgeMatrix by
+        simpa [sourceChart, retainedData,
+          case2PassiveThetaWithFollowingFactorEndpointSourceChart] using
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+            (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) (retainedData z)]
+      exact
+        (mem_sourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ') (retainedData z).edgeMatrix).2
+          (sourceRecursiveDetChart_edgeMatrix_of_detChart
+            (K := ℝ) (ρ := ρ) (κ' := κ') (retainedData z) hdet)
+    have hedge :
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun p : Fin 2 ↦
+              (sourceChart z p :
+                reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ)) =
+          (retainedData z).edgeMatrix := by
+      simpa [sourceChart, retainedData,
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart] using
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+          (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) (retainedData z)
+    have hread :
+        (let E :=
+          paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun p : Fin 2 ↦
+              (sourceChart z p :
+                reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+        sourceReadback (K := ℝ) (ρ := ρ) E = retainedData z) := by
+      simpa using
+        sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq
+          (K := ℝ) (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+          (Cedge := fun E : EdgeFamily ↦ E) (sourceChart z) (retainedData z)
+          hdet hedge
+    exact ⟨hYz, hrawMem, hrawEq, hsource, hread, hleftV z hz⟩
+  refine ⟨V, hVopen, hz₀V, hVG, ?_, ?_⟩
+  · intro z hz
+    have hzpoint := hpoint z hz
+    exact
+      ⟨by simpa [Y, detSet, ρ, κ'] using hzpoint.1,
+        by simpa [rawMap, ρ, κ'] using hzpoint.2.1,
+        by simpa [rawMap, rawChart, ρ, κ'] using hzpoint.2.2.1,
+        hzpoint.2.2.2.1, hzpoint.2.2.2.2.1, hzpoint.2.2.2.2.2⟩
+  · intro _ _ sourceMeasure ν μ μrawComp μrawTwoStage
+    let T : Set RawTuple :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    have hrawMapContOn : ContinuousOn rawMap V := by
+      rw [continuousOn_iff_continuous_restrict]
+      let Sdet : Set RawTuple :=
+        topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+      let toDetTuple : V → Sdet :=
+        fun z ↦ ⟨Y z.1, by simpa [Sdet, detSet] using hdet_of_mem z.1 z.2⟩
+      have hToDetTuple : Continuous toDetTuple := by
+        have hamb : Continuous (fun z : V ↦ Y z.1) :=
+          hYcont.comp continuous_subtype_val
+        exact hamb.subtype_mk _
+      have hrawDet :
+          Continuous
+            (fun y :
+                topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ↦
+              topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y.1) :=
+        continuous_topologyTupleEdgeRawOrder_detChart_subtype
+          (K := ℝ) (ρ := ρ) (κ' := κ')
+      simpa [rawMap, Y, toDetTuple, Sdet, RawTuple, ρ, κ'] using
+        hrawDet.comp hToDetTuple
+    have hrawMap : AEMeasurable rawMap ν := by
+      simpa [ν] using
+        ContinuousOn.aemeasurable₀ hrawMapContOn
+          hVopen.measurableSet.nullMeasurableSet
+    have hraw_mem : ∀ᵐ z ∂ν, rawMap z ∈ T := by
+      filter_upwards [ae_restrict_mem hVopen.measurableSet] with z hz
+      have hzpoint := hpoint z hz
+      simpa [rawMap, T, RawTuple, ρ, κ'] using hzpoint.2.1
+    have hT_meas : MeasurableSet T := by
+      simpa [T, RawTuple, ρ, κ'] using
+        (isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
+    have hraw_image_mem :
+        ∀ᵐ y ∂Measure.map rawMap ν, y ∈ T :=
+      (ae_map_iff hrawMap hT_meas).2 hraw_mem
+    have hrawChartContOn : ContinuousOn rawChart T := by
+      rw [continuousOn_iff_continuous_restrict]
+      let toDetChart :
+          T →
+            {data :
+              RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' //
+              data.detChart} :=
+        fun y ↦
+          ⟨ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y.1),
+            (mem_topologyTupleDetChartSet
+              (K := ℝ) (ρ := ρ) (κ' := κ')
+              (topologyTupleEdgeRawOrderInverse
+                (K := ℝ) (ρ := ρ) (κ' := κ') y.1)).1
+              (topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+                (K := ℝ) (ρ := ρ) (κ' := κ') y.2)⟩
+      have hInv :
+          Continuous
+            (fun y : T ↦
+              topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ') y.1) :=
+        continuous_topologyTupleEdgeRawOrderInverse_rawOrderSourceRecursiveDetChart_subtype
+          (K := ℝ) (ρ := ρ) (κ' := κ')
+      have hToDetChart : Continuous toDetChart := by
+        have hamb :
+            Continuous
+              (fun y : T ↦
+                ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')
+                  (topologyTupleEdgeRawOrderInverse
+                    (K := ℝ) (ρ := ρ) (κ' := κ') y.1)) :=
+          (continuous_ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')).comp hInv
+        exact hamb.subtype_mk _
+      have hchart :
+          Continuous
+            (fun data :
+                {data :
+                  RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' //
+                  data.detChart} ↦
+              paperEndpointFixedBaseRetainedPassiveP13SourceChart W₂ B₂ U₀ hU₀ data) :=
+        continuous_paperEndpointFixedBaseRetainedPassiveP13SourceChart
+          (K := ℝ) W₂ B₂ U₀ hU₀
+      simpa [rawChart, T, RawTuple,
+        paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart,
+        paperEndpointFixedBaseRetainedPassiveP13SourceChart,
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData,
+        toDetChart, ρ, κ'] using hchart.comp hToDetChart
+    have hrawChart_restrict :
+        AEMeasurable rawChart ((Measure.map rawMap ν).restrict T) :=
+      ContinuousOn.aemeasurable₀ hrawChartContOn hT_meas.nullMeasurableSet
+    have hraw_restrict_eq :
+        (Measure.map rawMap ν).restrict T = Measure.map rawMap ν :=
+      Measure.restrict_eq_self_of_ae_mem hraw_image_mem
+    have hrawChart :
+        AEMeasurable rawChart (Measure.map rawMap ν) := by
+      simpa [hraw_restrict_eq] using hrawChart_restrict
+    have hmap_assoc :
+        Measure.map rawChart (Measure.map rawMap ν) =
+          Measure.map (fun z ↦ rawChart (rawMap z)) ν := by
+      simpa [Function.comp_def] using
+        (AEMeasurable.map_map_of_aemeasurable
+          (μ := ν) (f := rawMap) (g := rawChart) hrawChart hrawMap)
+    have hcomp :
+        (fun z ↦ rawChart (rawMap z)) =ᵐ[ν] sourceChart := by
+      filter_upwards [ae_restrict_mem hVopen.measurableSet] with z hz
+      have hzpoint := hpoint z hz
+      simpa [rawMap, rawChart, ρ, κ'] using hzpoint.2.2.1
+    have hcomp_map : μrawComp = μ := by
+      simpa [ν, μ, μrawComp] using Measure.map_congr hcomp
+    have htwo_stage : μrawTwoStage = μ := by
+      calc
+        μrawTwoStage =
+            Measure.map (fun z ↦ rawChart (rawMap z)) ν := by
+          simpa [μrawTwoStage] using hmap_assoc
+        _ = μ := by
+          simpa [ν, μ, μrawComp] using hcomp_map
+    exact ⟨hcomp_map, htwo_stage⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The generic passive selected-entry source-measure theorem, specialized to
 the concrete full `Case2PassiveTheta` coordinate domain.
 
