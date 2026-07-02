@@ -306,4 +306,66 @@ theorem routeMCore_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
       zuG_hN_insertNth M hL hrs hr hc hN p hp z y,
       UunitG_hN_insertNth M hL hrs hr hc hN p hp z y]
 
+/-! ## The general-`L` `SmearedAchieverChart` builder + `hSmeared`
+
+`smearedChartGen`: build a `SmearedAchieverChart M` for arbitrary `L` from the structural data
+(`hrs`/`hr`/`hc`/`hp`, the exponent-matching split `r = deepRank`, `h = minAdm − 1`) + a per-ε
+conditioned-box-data supplier (the genuinely-conditioned analytic inputs — box radius, Field-A,
+cancellation, `U`-positivity — exactly what `smearedChartData231` supplies at L=2). The chart's
+generic maps and the peeled rate are DISCHARGED from the general-`L` machinery. Feeding this into the
+already-∀L `hSmeared_of_smearedChart` gives the spine's `hSmeared` for `M`. -/
+
+/-- **The per-ε conditioned chart data at general `L`** (the `SmearedChartData` for `psiMapG`/`RmapG`/
+`DmapG`, radial exponent `r·M(deepLayer).succ − 1`), built from the supplied conditioned box + its
+analytic inputs. The `hRate` field is discharged from the rate bridge + the `z`/`U` peel; `Uy :=
+UunitG (hN ▸ insertNth p 0 ·)` is the z-free unit, measurable via `measurable_UunitG`. -/
+noncomputable def smearedChartDataGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
+    (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
+    (ε : ℝ)
+    (δ₀ : ℝ) (box₀ : Fin (n + 1) → Set ℝ) (hδ₀ : 0 < δ₀)
+    (hSpre : condBox (hN ▸ p) (fun k => box₀ (hN ▸ k)) δ₀
+      ⊆ (fun u => psiMapG M hL hrs (RmapG M hL hrs hr hc u)) ⁻¹' (cubeBox (routeMAmbient M) ε))
+    (hRinj : Set.InjOn (RmapG M hL hrs hr hc) (condBox (hN ▸ p) (fun k => box₀ (hN ▸ k)) δ₀))
+    (hboxmeas : ∀ k, MeasurableSet (box₀ (p.succAbove k)))
+    (hboxmeasAll : ∀ k : Fin (routeMAmbient M), MeasurableSet ((fun k => box₀ (hN ▸ k)) k))
+    (hboxpos : 0 < (volume : Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n => box₀ (p.succAbove k))))
+    (hcancel : ∀ z ∈ Set.Ioo (0:ℝ) δ₀, ∀ y ∈ Set.univ.pi (fun k : Fin n => box₀ (p.succAbove k)),
+      P1uG M hL hrs (hN ▸ (Fin.insertNth p z y)) * Lam0uG M hL hrs (hN ▸ (Fin.insertNth p z y))
+        = P2uG M hL hrs (hN ▸ (Fin.insertNth p z y)))
+    (hUpos : ∀ y ∈ Set.univ.pi (fun k : Fin n => box₀ (p.succAbove k)),
+      0 < UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))) :
+    SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
+      (r * M ((deepLayer hL).succ) - 1) ε where
+  δ := δ₀
+  box := box₀
+  Uy := fun y => UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))
+  hδ := hδ₀
+  hSpre := hSpre
+  hRderiv := fun u _ => RmapG_hasFDerivWithinAt M hL hrs hr hc _ u
+  hRinj := hRinj
+  hRdet := fun u _ => by rw [DmapG_abs_det M hL hrs hr hc, hp]
+  hboxmeas := hboxmeas
+  hboxmeasAll := hboxmeasAll
+  hboxpos := hboxpos
+  hUmeas := (measurable_UunitG M hL hrs hr hc).comp (by
+    have key : ∀ (N : ℕ) (h : N = n + 1),
+        Measurable (fun y : Fin n → ℝ => (h ▸ (Fin.insertNth p (0:ℝ) y) : Fin N → ℝ)) := by
+      intro N h; subst h
+      exact measurable_pi_iff.2 (fun i => by
+        rcases Fin.eq_self_or_eq_succAbove p i with rfl | ⟨k, rfl⟩
+        · simp only [Fin.insertNth_apply_same]; exact measurable_const
+        · simp only [Fin.insertNth_apply_succAbove]; exact measurable_pi_apply k)
+    exact key _ hN)
+  hRate := fun z hz y hy => by
+    rw [routeMCore_psiMapG_RmapG M hL hrs hr hc _ e1 e2 (hcancel z hz y hy),
+      frobeniusSq_P1_Hbar_cast M hL hrs hr hc,
+      zuG_hN_insertNth M hL hrs hr hc hN p hp z y,
+      UunitG_hN_insertNth M hL hrs hr hc hN p hp z y]
+  hUpos := hUpos
+
 end DLNFibre.DLN.RLCT
