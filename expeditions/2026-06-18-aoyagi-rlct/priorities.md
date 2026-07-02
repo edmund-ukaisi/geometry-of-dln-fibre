@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-01, full-image prior domination from input-image bounds
+
+Lean now proves the input-image-bound wrapper:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_input_image_lower_priorDensity_input_image_upper
+```
+
+This wraps the returned-image-bound theorem and lets callers assume the
+pointwise density bounds on the known input image `sourceChart '' G` instead
+of the smaller returned image `sourceChart '' V`:
+
+```text
+forall E in sourceChart '' G, epsilon <= sourceImageDensity E
+forall E in sourceChart '' G, density E <= Kprior.
+```
+
+The proof uses only the returned containment `V subset G`, hence
+`sourceChart '' V subset sourceChart '' G`.  The conclusion remains the same
+finite scalar domination on `sourceChart '' V`, and the determinant-side
+reverse domination remains an explicit hypothesis on the returned `V`.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Lagrange` passed
+the reproduction and theorem-shape audit.
+
+Next priority: actual A2 progress now requires proving such input-image
+bounds or the determinant/source transport inputs from Aoyagi-local
+hypotheses.  Do not claim `sourceChart '' G` is a source-side open/measurable
+neighborhood, determinant-chart Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image coverage, source-rank coverage, normal
+crossings, pole order, or RLCT extraction from this wrapper.
+
 ## Latest controller decision - 2026-07-01, full-image prior domination from pointwise image bounds
 
 Lean now proves the density-frontier wrapper:

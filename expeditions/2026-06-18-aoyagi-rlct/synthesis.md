@@ -106,6 +106,59 @@ transport beyond this conditional wrapper, normal crossings, pole order, or
 RLCT extraction.  No converse from a.e. bounds to pointwise image bounds is
 claimed.
 
+## Full Source-Image Prior Domination From Input-Image Bounds - 2026-07-01
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceImageDensity_input_image_lower_priorDensity_input_image_upper
+```
+
+This is a wrapper around the returned-image-bound theorem.  Instead of asking
+for pointwise bounds on the smaller returned image `sourceChart '' V`, it asks
+for them on the caller's input image `sourceChart '' G`:
+
+```text
+forall E in sourceChart '' G, epsilon <= sourceImageDensity E
+forall E in sourceChart '' G, density E <= Kprior.
+```
+
+After the existing theorem returns `V`, it also returns `V subset G`.  Hence
+any `E in sourceChart '' V` is witnessed by some `z in V`, and the same `z`
+with `V subset G` witnesses `E in sourceChart '' G`.  This supplies the
+returned-image hypotheses and leaves the determinant-side reverse domination
+and finite scalar conclusion unchanged.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-full-image-prior-domination-input-image-bounds-wrapper.md
+threads/03-block-product-reduction/statement-card-a2-case2-full-image-prior-domination-input-image-bounds-wrapper.md
+threads/03-block-product-reduction/review-a2-case2-full-image-prior-domination-input-image-bounds-wrapper.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+checker `Lagrange` passed the reproduction and theorem-shape audit.
+
+Boundary: no proof that the input-image bounds hold, no proof that
+`sourceChart '' G` is measurable/open/convenient as a source-side
+neighborhood, no positivity/boundedness/identification of
+`sourceImageDensity`, no proof of the prior-density upper bound, no
+determinant-chart Haar transport, exact raw-Haar pushforward, raw-Haar
+normalization, source-image or source-rank coverage, normal crossings, pole
+order, or RLCT extraction.
+
 ## Full Source-Image Prior Domination Under Determinant Hypotheses - 2026-07-01
 
 Lean now proves:
