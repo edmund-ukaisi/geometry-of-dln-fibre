@@ -187,6 +187,7 @@ theorem exists_eta_margins {δ TG TL cG cΛ cF : ℝ} (hδ : 0 < δ) (hTG : 0 < 
 
 /-! ## The per-ε general-`L` smeared chart data (the box supplier) -/
 
+set_option maxHeartbeats 1600000 in
 /-- **The per-ε general-`L` smeared `SmearedChartData` from the box `boxGen`.** Given the structural
 data (`hrs`/`hr`/`hc`/`hp`), the width-`r` waist `q` (`hMq`/`hwidth`, from `smeared_waist`), and the
 width lower bounds `hr0`/`hrL`, builds the `SmearedChartData` at radial exponent `r·M(deepLayer).succ − 1`
@@ -275,21 +276,50 @@ theorem smearedChartData_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   rw [← h2δ]
   refine ⟨smearedChartDataGen_of_dets M hL hrs hr hc hN p e1 e2 hp q hq hqL hMq
     (2 * δ) δ box₀ hδ ?_ ?_ ?_ ?_ ?_ ?_ ?_ ?_⟩
-  · -- hSpre: via hSpre_gen fed the uniform hLam
-    sorry
-  · -- hRinj
-    sorry
-  · -- hboxmeas
-    sorry
+  · -- hSpre: via `hSpre_gen` fed the uniform `hLam` (from `hLamBound` + front-carrier layers + Gram)
+    have hmarginG : (r : ℝ) * (η * AccG) < (δ / 2) ^ (L - 1) := by nlinarith [hmG]
+    -- the uniform `hLam` over the condBox
+    have hLam : ∀ (u : Fin (routeMAmbient M) → ℝ),
+        u ∈ condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ →
+        ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb := by
+      intro u hu a b
+      have hlayers : ∀ t : Fin L, q ≤ (t : ℕ) → (t : ℕ) < L - 1 →
+          CarrierLayer (frontTupleG M u t) r δ η :=
+        fun t _ htL => condBox_boxGen_frontLayers M hL hrs hr hc hu.2 t htL
+      have hlayersAll : ∀ t : Fin L, (t : ℕ) < L - 1 →
+          CarrierLayer (frontTupleG M u t) r δ η :=
+        fun t htL => condBox_boxGen_frontLayers M hL hrs hr hc hu.2 t htL
+      have hgram := hGramEta η hηpos' hηδ hmarginG u hlayersAll
+      exact hLamBound hγpos u hlayers hgram a b
+    exact hSpre_gen M hL hrs hr hc hN p hp hδ hγpos hηδ hη1 hηpos' hnb0 hfieldA
+      (fun b j => coordOfG_botSlotG_ne_pivot M hL hrs hr hc b j) hLam
+  · -- hRinj: `RmapG` injective on the condBox (pivot ∈ Ioo 0 δ ⟹ ≠ 0)
+    exact RmapG_injOn_condBox M hL hrs hr hc (hN ▸ p) hp (fun k => box₀ (hN ▸ k)) δ
+  · -- hboxmeas: each `box₀ (p.succAbove k) = boxGen (hN ▸ p.succAbove k)`, measurable
+    intro k; rw [hbox₀def]; exact measurableSet_boxGen M hL r δ η _
   · -- hboxmeasAll
-    sorry
-  · -- hboxpos
-    sorry
-  · -- hGram
-    sorry
-  · -- hGram0
-    sorry
-  · -- hWaist
-    sorry
+    intro k; rw [hbox₀def]; exact measurableSet_boxGen M hL r δ η _
+  · -- hboxpos: `boxGen_pos` (both Icc branches nonempty for `0 < δ`, `0 < η`)
+    have := boxGen_pos (r := r) M hL hδ hηpos hN p
+    convert this using 3
+  · -- hGram: `gram_det_ne_uniformEta` at η*, fed the front-carrier layers of the peeled point
+    intro z hz y hy
+    have hmargin : (r : ℝ) * (η * AccG) < (δ / 2) ^ (L - 1) := by nlinarith [hmG]
+    have hfront := insertNth_hN_frontBox M hL hrs hr hc hN p hp z box₀ hbox₀eq hy
+    exact hGramEta η hηpos' hηδ hmargin (hN ▸ Fin.insertNth p z y)
+      (fun t htL => condBox_boxGen_frontLayers M hL hrs hr hc hfront t htL)
+  · -- hGram0: same at `z = 0` (which is in the closure but the front layers still land in boxGen)
+    intro y hy
+    have hmargin : (r : ℝ) * (η * AccG) < (δ / 2) ^ (L - 1) := by nlinarith [hmG]
+    have hfront := insertNth_hN_frontBox M hL hrs hr hc hN p hp (0:ℝ) box₀ hbox₀eq hy
+    exact hGramEta η hηpos' hηδ hmargin (hN ▸ Fin.insertNth p (0:ℝ) y)
+      (fun t htL => condBox_boxGen_frontLayers M hL hrs hr hc hfront t htL)
+  · -- hWaist: from the Gram det via `waist_det_ne_of_gram`
+    intro z hz y hy U V hUV
+    have hmargin : (r : ℝ) * (η * AccG) < (δ / 2) ^ (L - 1) := by nlinarith [hmG]
+    have hfront := insertNth_hN_frontBox M hL hrs hr hc hN p hp z box₀ hbox₀eq hy
+    have hgram := hGramEta η hηpos' hηδ hmargin (hN ▸ Fin.insertNth p z y)
+      (fun t htL => condBox_boxGen_frontLayers M hL hrs hr hc hfront t htL)
+    exact waist_det_ne_of_gram hL hrs (hN ▸ Fin.insertNth p z y) hgram U V hUV
 
 end DLNFibre.DLN.RLCT
