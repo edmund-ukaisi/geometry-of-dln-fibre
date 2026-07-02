@@ -25,6 +25,63 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 With-Following Source-Chart Readback Source Reference - 2026-07-02
+
+Lean now has the local source-chart produced-measure readback identity for
+the enlarged with-following endpoint source chart.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+New declaration:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_sourceReference_eq_self
+```
+
+The theorem starts from a determinant-sector, selected-pivot-nonzero
+with-following coordinate point and any open coordinate neighborhood `G`.
+Using the existing local source-chart image theorem, it produces an open
+`V ⊆ G` where the source chart is continuous and injective, the image is
+measurable, and the readback is a left inverse.  For every theta-domain
+measure `thetaReference`, if
+
+```text
+sourceRef = Measure.map sourceChart (thetaReference.restrict V),
+```
+
+then
+
+```text
+AEMeasurable readback sourceRef
+Measure.map readback sourceRef = thetaReference.restrict V.
+```
+
+This is the with-following analogue of the already-existing passive-theta
+source-reference readback theorem.  It supplies inverse-measure bookkeeping
+for local source-image contracts.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-source-chart-readback-source-reference.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-source-chart-readback-source-reference.md
+```
+
+Boundary: this is only chart-produced source-reference readback on the local
+image.  It is not local `Y` COV, not endpoint Haar transport, not an external
+source-prior identification, not source-image coverage, not a density
+comparison, not raw-map pushforward, not normal crossings, not pole order, and
+not RLCT.
+
+Verification before banking: direct warning-clean elaboration of the touched
+Lean module, focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, and direct axiom probe passed.  The
+direct axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Endpoint Reference Image Domination - 2026-07-02
 
 Lean now has source-domain domination transport through the full enlarged

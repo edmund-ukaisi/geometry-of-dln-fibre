@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following source-chart readback source reference
+
+Lean now has the with-following analogue of the local chart-produced
+source-reference readback theorem:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_sourceReference_eq_self
+```
+
+On a local open set `V` where the enlarged endpoint source chart is continuous,
+injective, has measurable image, and has `readback (sourceChart z) = z`, the
+chart-produced measure
+
+```text
+Measure.map sourceChart (thetaReference.restrict V)
+```
+
+pulls back exactly to `thetaReference.restrict V`.
+
+Decision: this fills an inverse-measure socket needed by future source-image
+contracts and the local `Y` COV path.  It is still not the full local `Y`
+change-of-variables theorem: no endpoint Haar transport, no Jacobian formula,
+no external source-prior identification, and no source-image coverage are
+claimed.
+
+Verification: direct warning-clean elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+axiom probe passed; the theorem reports only `[propext, Classical.choice,
+Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image domination
 
 Lean now has a source-to-endpoint image domination theorem for the enlarged
