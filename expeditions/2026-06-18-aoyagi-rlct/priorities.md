@@ -12,6 +12,61 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following active selected-entry chart local COV
+
+Lean now has:
+
+```text
+activeSelectedEntryChartMap_injOn_of_subset_pivotNonzero
+map_activeSelectedEntryChart_withDensity_sourceDensity_eq_restrict_image_of_subset_pivotNonzero
+```
+
+Decision: this is the source-space selected-entry COV for the enlarged
+with-following Case 2 active chart.  For any additive Haar source measure
+`mu`, any null-measurable patch `Omega` contained in the nonzero-pivot locus,
+and the active chart
+
+```text
+A((passive, y_next), F_follow) =
+  ((passive, chartMap pivotNext y_next), F_follow),
+```
+
+Lean proves:
+
+```text
+map A ((mu.restrict Omega).withDensity selectedEntrySourceDensity)
+  = mu.restrict (A '' Omega).
+```
+
+The proof uses the formal derivative determinant already reproduced from the
+triangular selected-entry calculation, plus injectivity of the selected-entry
+chart away from the pivot hyperplane.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-active-chart-local-cov.md
+```
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched Lean-file forbidden-marker scan, direct axiom
+probes, and xhigh explorer readouts passed.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is not endpoint-Haar transport.  It does not identify the bare
+with-following endpoint image with determinant Haar, prove raw-Haar transport,
+prove reverse raw-source domination, prove raw-Haar normalization, cover the
+raw determinant chart, prove source-rank coverage, normal crossings, pole
+order, or RLCT.  The exact named `unweightedSource` localized wrapper is
+bookkeeping because that named measure is already signed-box restricted; it
+needs a support/intersection rewrite or an additional source-box hypothesis.
+
+Next A2 target: do not add another wrapper unless it removes a real downstream
+field.  The genuine frontier is determinant/source COV on the actual localized
+endpoint/raw image, most likely `rawDetChart ∩ Y '' V`; a bare endpoint-map
+differentiability route first needs either a readout linear equivalence API or
+coordinatewise differentiability for endpoint packing/reindexing.
+
 ## Latest controller decision - 2026-07-02, A2 with-following inverse-Haar original-volume readback density socket
 
 Lean now has:

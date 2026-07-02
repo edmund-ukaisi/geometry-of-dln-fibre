@@ -19,6 +19,8 @@ proved here.
 
 noncomputable section
 
+open MeasureTheory
+open scoped ENNReal
 open scoped Matrix.Norms.Operator
 
 namespace DLNFibre
@@ -196,6 +198,125 @@ theorem fderiv_activeSelectedEntryChartMap
             (case2PassiveThetaPivotNext n hS hnext) z.1.2), z.2)) z =
       activeSelectedEntryChartMapFDeriv (ρ := ρ) (τ := τ) n hS hnext z :=
   (hasFDerivAt_activeSelectedEntryChartMap (ρ := ρ) (τ := τ) n hS hnext z).fderiv
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- The active selected-entry chart is injective on any source set contained
+in the nonzero-pivot locus.
+
+This is the source-space counterpart of the endpoint active-readout image
+injectivity: passive fields and the following factor are unchanged, while the
+selected-entry center chart is injective away from the pivot hyperplane. -/
+theorem activeSelectedEntryChartMap_injOn_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦
+        ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    Set.InjOn activeChart Ω := by
+  intro pivotNext activeChart z hz w hw hactive
+  have hpassive : z.1.1 = w.1.1 :=
+    congrArg (fun q ↦ q.1.1) hactive
+  have hchart :
+      SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext :=
+    congrArg (fun q ↦ q.1.2) hactive
+  have hfollowing : z.2 = w.2 :=
+    congrArg (fun q ↦ q.2) hactive
+  have hzPivot : z.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hΩpivot hz
+  have hwPivot : w.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hΩpivot hw
+  have hyNext : z.1.yNext = w.1.yNext :=
+    SelectedEntrySignedBox.CenterCoord.injOn_chartMap_pivot_ne_zero pivotNext
+      hzPivot hwPivot hchart
+  have htheta : z.1 = w.1 := by
+    apply Prod.ext
+    · exact hpassive
+    · simpa [Case2PassiveTheta.yNext] using hyNext
+  exact Prod.ext htheta hfollowing
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Local change of variables for the enlarged Case 2 active selected-entry
+source chart.
+
+For any source patch contained in the nonzero-pivot locus, pushing an additive
+Haar source measure weighted by the selected-entry source density through the
+active chart gives the same Haar measure restricted to the actual active-chart
+image.  This is a source-space COV theorem only: it does not identify the
+endpoint topology-tuple image with determinant Haar and does not include the
+retained-passive raw-order Jacobian. -/
+theorem map_activeSelectedEntryChart_withDensity_sourceDensity_eq_restrict_image_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    (μ :
+      Measure (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    [μ.IsAddHaarMeasure]
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : NullMeasurableSet Ω μ)
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦
+        ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    Measure.map activeChart
+        ((μ.restrict Ω).withDensity
+          (fun z ↦
+            ENNReal.ofReal
+              (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext))) =
+      μ.restrict (activeChart '' Ω) := by
+  intro pivotNext activeChart
+  have hdensity :
+      (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        ENNReal.ofReal
+          (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext)) =
+        fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+          ENNReal.ofReal
+            |LinearMap.det
+              ((activeSelectedEntryChartMapFDeriv
+                (ρ := ρ) (τ := τ) n hS hnext z :
+                  Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →L[ℝ]
+                    Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :
+                  Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →ₗ[ℝ]
+                    Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)| := by
+    funext z
+    rw [activeSelectedEntryChartMapFDeriv_absDet_eq_sourceDensity
+      (ρ := ρ) (τ := τ) n hS hnext z]
+    simp [pivotNext, Case2PassiveTheta.yNext]
+  rw [hdensity]
+  exact
+    MeasureTheory.map_withDensity_abs_det_fderiv_eq_addHaar
+      (μ := μ) hΩ
+      (fun z _hz =>
+        (hasFDerivAt_activeSelectedEntryChartMap
+          (ρ := ρ) (τ := τ) n hS hnext z).hasFDerivWithinAt)
+      (by
+        simpa [activeChart] using
+          activeSelectedEntryChartMap_injOn_of_subset_pivotNonzero
+            (ρ := ρ) (τ := τ) n hS hnext Ω hΩpivot)
 
 set_option linter.style.longLine false in
 set_option linter.unusedFintypeInType false in

@@ -6,6 +6,81 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Active Selected-Entry Chart Local COV - 2026-07-02
+
+Lean now has:
+
+```text
+activeSelectedEntryChartMap_injOn_of_subset_pivotNonzero
+map_activeSelectedEntryChart_withDensity_sourceDensity_eq_restrict_image_of_subset_pivotNonzero
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointDerivative.lean
+```
+
+This checkpoint formalizes the source-side local change of variables for the
+with-following Case 2 active selected-entry chart:
+
+```text
+A((passive, y_next), F_follow) =
+  ((passive, chartMap pivotNext y_next), F_follow).
+```
+
+For any additive Haar measure `mu` on the enlarged source space and any
+null-measurable patch `Omega` contained in the nonzero-pivot locus, Lean
+proves:
+
+```text
+Measure.map A
+  ((mu.restrict Omega).withDensity
+    (fun z => ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity
+      pivotNext z.1.yNext)))
+= mu.restrict (A '' Omega).
+```
+
+The pen-and-paper calculation is elementary: after putting the pivot
+coordinate first, the selected-entry derivative has block-triangular form
+
+```text
+[ 1   0      ]
+[ *   y_p I  ],
+```
+
+so its determinant is the selected-entry source density, and the passive and
+following identity factors contribute determinant `1`.  Injectivity on
+`Omega` follows because the selected-entry chart is injective away from
+`y_p = 0`.
+
+Explorer conclusions integrated here:
+
+- the exact named `unweightedSource` localized version is not yet a theorem;
+  it is presentation/bookkeeping because that named source is already
+  signed-box restricted;
+- the bare with-following endpoint map `Y` is not currently differentiable by
+  existing APIs; the clean route is likely a readout linear equivalence, with
+  coordinatewise differentiability as the larger fallback;
+- a generic same-space COV-to-`rawDetChart inter Y '' V` wrapper is easy, but
+  it only rewrites the image restriction and does not prove coverage.
+
+Boundary: this is source-space COV only.  It does not prove endpoint-Haar
+transport for `Y`, determinant-Haar/raw-order Haar transport, reverse
+raw-source domination, raw-Haar normalization, source-prior/original-prior
+transport, coverage of the raw determinant chart, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched Lean-file forbidden-marker scan, and
+direct axiom probes passed.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointDerivative
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+```
+
 ## A2 With-Following Inverse-Haar Original-Volume Readback Density Socket - 2026-07-02
 
 Lean now has:
