@@ -32,6 +32,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedHSmearedL2
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0Atom
 import DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
 
 /-!
 # Axiom-hygiene check
@@ -228,6 +229,15 @@ open DLNFibre.DLN.RLCT
 -- box-divergence atom's threshold, via `monomial_rlct`).
 #print axioms routeMCore_box_diverges_interiorLiveGen
 #print axioms interiorLiveNodeChartGen
+
+-- ★ GENERAL-`L` INTERIOR `hInterior` DISCHARGE on the `0 < deepRank` sub-stratum — the thin wire of the
+-- atom above into the achiever-dispatch spine's `hInterior` slot. `interiorLiveGen_hInterior_of_deepRank_pos`
+-- (the `∀ _ : 2 ≤ L`-shaped consumer form) + `routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos`
+-- (the uncurried atom application) must inherit the atom's footprint exactly:
+-- [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`. The `deepRank M = 0` sub-stratum
+-- (L ≥ 3) is the remaining general-`L` interior gap (banked at L = 2 only via `eDeepRank0`).
+#print axioms interiorLiveGen_hInterior_of_deepRank_pos
+#print axioms routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],

@@ -658,5 +658,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 -- identical to the L=2 analog); the bundle def `interiorLiveNodeChartGen` is clean-three. This single
 -- import (the Atom capstone) transitively pulls all 13 general-`L` interior Gen modules.
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
+-- General-`L` INTERIOR `hInterior` discharge on the `0 < deepRank` sub-stratum: wires the landed
+-- general-`L` LIVE-leaf atom into the achiever-dispatch spine's `hInterior` slot
+-- (`routeMCore_box_diverges_interiorLiveGen_of_deepRank_pos` + the `∀ _ : 2 ≤ L`-shaped consumer
+-- `interiorLiveGen_hInterior_of_deepRank_pos`). Thin bridge; inherits the atom's footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct]. The `deepRank M = 0` sub-stratum (L ≥ 3)
+-- is the remaining general-`L` interior gap (banked at L = 2 only).
+import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
