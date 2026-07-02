@@ -10,6 +10,46 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor source-to-raw block Jacobian - 2026-07-02
+
+- **Statement.** For the enlarged Case 2 passive-theta source map
+  `Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z`, the
+  local coordinate map decomposes as passive endpoint reindexing, the
+  selected-entry chart `yNext -> raw C(1)`, and the free following-factor
+  identity/reindexing `F -> raw C(0)`.  Hence the expected source-side
+  absolute determinant for `Y` is
+  `c_endpoint * SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext`,
+  with `c_endpoint = 1` for the current finite endpoint-reindexing model; the
+  full `rawMap = topologyTupleEdgeRawOrder o Y` also includes the factor
+  `retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)`.
+- **Tier.** A2 retained-passive source-to-raw density frontier.
+- **Status.** Pen-and-paper reproduction drafted; not yet Lean-proved.
+- **Kill-condition.** The result is read as a proved raw-map pushforward,
+  formal-product/source-image domination, full source-image coverage, a
+  two-sided bound across the pivot hyperplane, raw-Haar transport stated by
+  Aoyagi, normal crossings, pole order, or RLCT; or the normalized free `F`
+  is identified with Aoyagi's original untransformed following matrix.
+- **Evidence/source.** Aoyagi Lemma 2/Theorem 3, PDF pp. 10-13 for the
+  Schur/product coordinate split; PDF p. 15 for the monomial differential
+  convention; PDF pp. 19-21 for Case 2 selected-pivot coordinates, the
+  unitriangular following-factor transform, and the transformed following
+  block.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`.
+- **Reproduction check.** xhigh sidecar audit `Hooke` PASS, recorded at
+  `threads/03-block-product-reduction/review-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`.
+  The audit emphasized the source-side weighted pushforward as the primary COV
+  convention and the inverse-density convention only when target Haar is the
+  base measure.
+- **Lean target.** Prefer a `Y`-only COV into determinant topology-tuple
+  coordinates, using the existing selected-entry chart COV and finite product
+  identity/reindexing COVs; then compose with the existing raw-order COV.
+- **Proved.** Not yet.
+- **Nonclaims.** No raw-map pushforward, no formal-product/source-image
+  comparison, no density bound for the final contract, no source-image
+  coverage, no normal crossings, no pole order, and no RLCT extraction is
+  proved.
+
 ## Current A2 enlarged following-factor formal-product raw-map handoff - 2026-07-02
 
 - **Statement.** If the local enlarged following-factor raw map pushes

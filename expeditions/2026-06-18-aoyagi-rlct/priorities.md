@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor source-to-raw block Jacobian
+
+New pen-and-paper reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md
+```
+
+Decision: the next bedrock Lean route should be the `Y`-only source-to-det-
+tuple COV first, where
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z.
+```
+
+The reproduced block form is passive endpoint reindexing plus free following
+factor identity/reindexing plus the selected-entry chart
+`yNext -> C(1)`.  The expected source-side determinant is
+
+```text
+c_endpoint *
+SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext
+```
+
+with `c_endpoint = 1` for the current finite endpoint-reindexing model.  For
+the full raw map, multiply by
+`retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)`.
+
+This is not yet a Lean theorem and not yet an independent reviewed claim.
+Xhigh sidecar audit `Hooke` passed and is recorded at
+`threads/03-block-product-reduction/review-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`.
+Do not skip directly to a formal-product/source-image domination theorem that
+assumes the target comparison; first prove either this `Y` COV or an
+explicitly source-weighted raw-map COV.  Use the source-side weighted
+pushforward as the primary convention; inverse density appears only when
+target Haar/formal-product volume is the base measure for the unweighted
+source-image pushforward.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor formal-product raw-map handoff
 
 Lean now has the conditional with-following formal-product/source-reference

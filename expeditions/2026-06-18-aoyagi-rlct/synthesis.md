@@ -20,6 +20,50 @@ contract-constructor slice was committed and pushed as `af292a3a`.  At the
 post-push reorientation point, the expedition worktree was clean and even with
 `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Source-To-Raw Block Jacobian - 2026-07-02
+
+After the interruption recovery, the expedition branch was clean and even with
+`origin/expedition/aoyagi-rlct` at `a767794e`.  Remote refs were refreshed.
+Existing agent `Cicero` agreed that the next source-moving task is the
+finite-dimensional change of variables for the enlarged source-to-raw map,
+not another wrapper.
+
+New reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md
+```
+
+The reproduced calculation isolates
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z
+rawMap z = topologyTupleEdgeRawOrder (Y z).
+```
+
+For `Y`, passive fields are copied and endpoint-reindexed, `F` maps to raw
+`C(0)` by the free-following inverse, and `yNext` maps to raw `C(1)` by the
+selected-entry chart.  Therefore the expected source-side determinant is
+
+```text
+c_endpoint *
+SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext
+```
+
+with `c_endpoint = 1` for the present finite endpoint-reindexing model.  For
+`rawMap`, multiply by
+`retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)`.
+
+Decision: the next bedrock Lean slice should prove a `Y`-only source-side COV
+or an explicitly source-weighted raw-map COV.  The constant-density handoff
+from `a767794e` should be used only after this upstream COV supplies its raw
+pushforward hypothesis.  Xhigh sidecar audit `Hooke` passed; review recorded
+at
+`threads/03-block-product-reduction/review-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`.
+The audit sharpened the measure convention: source-side weighted pushforward
+is primary; inverse density appears only when target Haar/formal-product
+volume is used as the base measure for the unweighted source-image pushforward.
+
 ## A2 Enlarged Following-Factor Formal-Product Raw-Map Handoff - 2026-07-02
 
 Lean now has the conditional formal-product/source-reference handoff for the
