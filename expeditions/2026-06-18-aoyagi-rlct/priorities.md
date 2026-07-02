@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, all-pivot producer recurrence termination
+
+Lean now proves:
+
+```text
+selectedEntryAllPivotSuppliedAnalyticAtlasProducerWithRecurrenceTermination
+```
+
+This removes only the separate supplied `termination` input from the
+all-pivot selected-entry producer in the recurrence-aware branch-state case.
+The result fills that field with `selectedEntryRecurrenceBranchTerminationData`
+for the same all-pivot chart certificate.
+
+This is not source production.  The adapter still requires explicit
+`sourceProduction`, `hL : 1 <= L`, and
+`initialRecurrence : IntroducedLabelRecurrenceState L n 1 0 alpha`.
+
+Next A4 priority: do not add more producer wrappers unless they remove a
+concrete supplied field.  The real remaining A4 frontier is still
+source-production/atlas construction: produced successor/suffix data, guard
+coverage tied to produced payloads, and analytic atlas fields.
+
 ## Latest controller decision - 2026-07-02, final sockets source-data rank-width removal
 
 Lean now proves source-data wrappers for the supplied final-boundary and

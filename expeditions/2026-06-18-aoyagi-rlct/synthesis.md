@@ -6,9 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+Banking note, 2026-07-02: the all-pivot producer recurrence-termination
+adapter was committed and pushed as `278cd9c6`.  At the code-slice banking
+point, the expedition worktree was clean and even with
+`origin/expedition/aoyagi-rlct` at that commit.
+
 Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
+
+## All-Pivot Producer Recurrence Termination - 2026-07-02
+
+Lean now proves:
+
+```text
+selectedEntryAllPivotSuppliedAnalyticAtlasProducerWithRecurrenceTermination
+```
+
+This is the recurrence-aware all-pivot selected-entry producer adapter.  It
+uses the same chart certificate as `selectedEntryAllPivotSuppliedAnalyticAtlasProducer`,
+specializes the branch state to `AoyagiRecurrenceBranchState L n alpha`, and
+fills the producer's branch-termination field with:
+
+```text
+selectedEntryRecurrenceBranchTerminationData
+  (selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+    (K := Real) hcenter chartEquiv)
+  L n alpha hL initialRecurrence
+```
+
+The adapter keeps `sourceProduction`, `hL`, and `initialRecurrence` explicit.
+It removes only the separate supplied `termination` argument in this
+recurrence-aware all-pivot case.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-all-pivot-producer-recurrence-termination.md
+threads/04-blow-up-certificate/statement-card-a4-all-pivot-producer-recurrence-termination.md
+threads/04-blow-up-certificate/review-a4-all-pivot-producer-recurrence-termination.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotProducerTermination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+```
+
+The no-sorry audit reported `0 sorry, 0 #exit, 0 native_decide, 0 axiom`.
+Xhigh reviewer `Plato` passed the certificate/socket and nonclaim-boundary
+audit.  Boundary: no source-production data, branch guard coverage, continuing
+children, stopped-branch terminal payloads, successor or suffix production,
+normal crossings, pole order, or RLCT extraction.
 
 ## Definition 3 `L=2` Source-Data Nat Widths - 2026-07-02
 

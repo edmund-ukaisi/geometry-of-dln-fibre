@@ -21,6 +21,34 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-07-02 Lean all-pivot producer recurrence termination
+
+Reproduction:
+`reproduction-a4-all-pivot-producer-recurrence-termination.md`.
+Statement card:
+`statement-card-a4-all-pivot-producer-recurrence-termination.md`.
+Review:
+`review-a4-all-pivot-producer-recurrence-termination.md`.
+
+Lean now adds:
+
+```text
+selectedEntryAllPivotSuppliedAnalyticAtlasProducerWithRecurrenceTermination
+```
+
+This adapter specializes the all-pivot selected-entry producer to the
+recurrence-aware branch state
+`AoyagiRecurrenceBranchState L n alpha` and fills the producer's
+`branch_termination` field using `selectedEntryRecurrenceBranchTerminationData`.
+It keeps `sourceProduction`, `hL`, and `initialRecurrence` explicit.
+
+Focused build, full local build, no-sorry audit, whitespace check, and xhigh
+review passed.  The slice was committed and pushed as `278cd9c6`.
+
+Boundary: no source-production data, branch guard coverage, continuing child
+construction, stopped-branch terminal payloads, successor or suffix production,
+normal crossings, pole order, or RLCT extraction is proved.
+
 ## 2026-06-30 Lean recurrence-aware Case 2 branch progress
 
 Reproduction:

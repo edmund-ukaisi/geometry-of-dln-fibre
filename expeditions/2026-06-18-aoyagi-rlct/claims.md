@@ -14611,6 +14611,48 @@ Nonclaims: no analytic atlas construction, extraction hypothesis, proved
 Jacobian-density formula from `C.jacobianPrior`, normal crossings, pole order,
 RLCT, source-rank coverage, or final Theorem 2 statement is proved.
 
+## A4 all-pivot producer recurrence termination adapter
+
+Status: Proved in Lean; focused and full local builds passed; xhigh review
+passed.
+
+Claim: in the recurrence-aware branch-state case, the all-pivot
+selected-entry producer no longer needs a separate supplied branch-termination
+input.  It is filled by the existing recurrence-aware finite progress
+termination data.
+
+Lean declaration:
+
+```text
+selectedEntryAllPivotSuppliedAnalyticAtlasProducerWithRecurrenceTermination
+```
+
+Lean file:
+`lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducerTermination.lean`.
+
+Artifacts:
+`threads/04-blow-up-certificate/reproduction-a4-all-pivot-producer-recurrence-termination.md`,
+`threads/04-blow-up-certificate/statement-card-a4-all-pivot-producer-recurrence-termination.md`,
+and
+`threads/04-blow-up-certificate/review-a4-all-pivot-producer-recurrence-termination.md`.
+
+The adapter uses exactly the all-pivot certificate expected by
+`selectedEntryAllPivotSuppliedAnalyticAtlasProducer`:
+
+```text
+selectedEntryCenterSqFormalJacobianChartFamilyCertificate
+  (K := Real) hcenter chartEquiv
+```
+
+It specializes `BranchState` to `AoyagiRecurrenceBranchState L n alpha` and
+passes `selectedEntryRecurrenceBranchTerminationData` as the shell's
+termination datum.  The proof leaves `sourceProduction`, `hL`, and
+`initialRecurrence` explicit.
+
+Nonclaims: no source-production payloads, branch guard coverage, continuing
+child construction, stopped-branch terminal payloads, successor or suffix
+production, normal crossings, pole order, or RLCT extraction is proved.
+
 ## A4 Case 2 finite raw-pivot continuing successor boundary
 
 Status: Proved in Lean; focused module build passed; xhigh review passed.
