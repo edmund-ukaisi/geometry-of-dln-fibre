@@ -21,6 +21,56 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following original-volume readback from reverse raw-source domination
+
+Reproduction:
+`reproduction-a2-with-following-original-volume-readback-reverse-raw-source-domination.md`.
+Statement card:
+`statement-card-a2-with-following-original-volume-readback-reverse-raw-source-domination.md`.
+Review:
+`review-a2-with-following-original-volume-readback-reverse-raw-source-domination.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+```
+
+These are the with-following analogues of the existing non-following
+reverse-raw-source original-volume/readback bridges.  They consume a supplied
+finite domination
+
+```text
+rawHaar.restrict rawSourceSet <=
+  D • Measure.map rawMap (thetaReference.restrict V)
+```
+
+and transport it through the p.13 source chart to dominate restricted original
+edge-family volume, then through the local readback to dominate the readback
+pushforward by `((cHaar^-1) * D) • thetaReference.restrict G`.
+
+Boundary: reverse raw-source domination remains a hypothesis.  This is a
+consumer of the with-following reverse raw-source theorem, not determinant-Haar
+transport or source-density positivity.  It does not prove exact raw-Haar
+pushforward, source-prior/original-prior transport without the reverse
+domination input, p.13 coverage/equality, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Focused local module builds, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  The three declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following eventual source-density raw domination
 
 Reproduction:

@@ -6,6 +6,78 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Volume Readback from Reverse Raw-Source Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+The exported constants live under:
+
+```text
+DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData
+```
+
+These theorems are the with-following analogues of the existing non-following
+reverse-raw-source original-volume/readback bridge.  Given
+
+```text
+rawHaar.restrict rawSourceSet
+  <= D • Measure.map rawMap (thetaReference.restrict V),
+```
+
+the p.13 source chart gives
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= D • Measure.map sourceChart (thetaReference.restrict V),
+```
+
+and the p.13 scalar comparison gives
+
+```text
+originalVolume.restrict chartPiece
+  <= ((cHaar^-1) * D) • Measure.map sourceChart (thetaReference.restrict V).
+```
+
+The readback theorem then uses the local with-following source-chart left
+inverse to prove a.e. measurability of `readback` on
+`originalVolume.restrict chartPiece` and
+
+```text
+Measure.map readback (originalVolume.restrict chartPiece)
+  <= ((cHaar^-1) * D) • thetaReference.restrict G.
+```
+
+Boundary: the reverse raw-source domination remains a hypothesis.  This does
+not prove determinant-Haar transport for `Y`, exact raw-Haar pushforward,
+source-density positivity, source-prior/original-prior transport without the
+reverse-domination input, p.13 coverage/equality, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Scout conclusions after this step: arbitrary `sourceImageDensity` is still not
+identified or bounded below unless a downstream lane explicitly instantiates
+it with a concrete inverse-Haar density; and current endpoint-reference
+infrastructure still does not prove localized Haar comparison for the bare
+with-following endpoint map `Y`.
+
+Verification: focused local module builds, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probes, and xhigh review passed.  The three declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Eventual Source-Density Raw Domination - 2026-07-02
 
 Lean now has:

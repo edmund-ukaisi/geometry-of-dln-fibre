@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following original-volume readback from reverse raw-source domination
+
+Lean now has:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+```
+
+Decision: this is a useful consumer bridge for the latest with-following
+reverse raw-source domination theorem.  It replaces an exact raw-pushforward
+input in the original-volume/readback lane by a finite reverse raw-source
+domination input, and preserves the scalar `cHaar^-1 * D`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-reverse-raw-source-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-reverse-raw-source-domination.md
+threads/03-block-product-reduction/review-a2-with-following-original-volume-readback-reverse-raw-source-domination.md
+```
+
+Focused local module builds, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  The three declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is not determinant-Haar source production and not
+`sourceImageDensity` construction.  The reverse raw-source domination remains
+the substantive input, and the determinant-side reverse domination/source
+density lower-bound frontier remains where it was.
+
+Next A2 target: either compose this bridge into a downstream finite-integral
+consumer if it removes a real field, or attack one of the genuine frontiers:
+concrete source-density identification/positivity or localized endpoint COV
+for the bare with-following endpoint map.
+
 ## Latest controller decision - 2026-07-02, A2 with-following eventual source-density raw domination
 
 Lean now has:
