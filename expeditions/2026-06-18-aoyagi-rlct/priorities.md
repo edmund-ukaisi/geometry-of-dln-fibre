@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following original-volume domination
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+Decision: this is the next honest downstream use of the with-following
+constant-density formal-product/source-reference handoff.  It composes that
+handoff with the p.13 bounded-density original-volume bridge, giving
+original edge-family volume domination on measurable p.13 chart pieces
+contained in the actual with-following source-chart image.  The scalar remains
+the inverse tuple-side Haar scalar times the constant density bound `1`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-contract-original-volume-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-domination.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, targeted marker scan, and direct axiom probe
+passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the raw-pushforward equality, chart-piece measurability,
+`chartPiece subset sourceChart '' V`, and `chartPiece subset p13SourceSet`
+remain hypotheses.  This does not prove raw-Haar transport, determinant-chart
+Haar transport, source-image coverage, source-prior transport, density
+lower-bound removal, normal crossings, pole order, or RLCT.
+
+Next A2 target: connect this domination to the with-following readback/original
+prior finite-integral sockets only where the same explicit chart-piece and
+raw-pushforward hypotheses are already present.  Do not remove the
+raw-pushforward input without a genuine with-following endpoint determinant
+Haar/COV theorem.
+
 ## Latest controller decision - 2026-07-02, A2 with-following source-density composition and contract constructor
 
 Lean now has:

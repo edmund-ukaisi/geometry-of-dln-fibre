@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following original-volume domination
+
+Reproduction:
+`reproduction-a2-with-following-contract-original-volume-domination.md`.
+Statement card:
+`statement-card-a2-with-following-original-volume-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+This composes the with-following constant-density
+formal-product/source-reference handoff with the p.13 bounded-density
+original-volume bridge.  Under the supplied raw-pushforward equality, any
+measurable p.13 chart piece contained in the actual with-following source-chart
+image has original edge-family volume dominated by the enlarged source-image
+reference with scalar `((cHaar^-1 : NNReal) : ENNReal) * 1`.
+
+Boundary: raw-pushforward equality, chart-piece measurability,
+`chartPiece subset sourceChart '' V`, and `chartPiece subset p13SourceSet`
+remain hypotheses.  No raw Haar transport, determinant-chart Haar transport,
+source-image coverage, source-prior transport, density lower-bound removal,
+normal crossings, pole order, or RLCT is proved.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, targeted marker scan, and direct axiom probe
+passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following source-density composition and contract constructor
 
 Reproduction:
