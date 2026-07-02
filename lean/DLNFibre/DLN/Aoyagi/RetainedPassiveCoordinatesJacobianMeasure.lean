@@ -528,6 +528,87 @@ theorem map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restric
         map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_rawSourceChart_posTail
           (M := M) (ρ := ρ) (κ' := κ') m hs
 
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- Localized retained-passive raw-order change of variables with the solved
+`A1` product determinant density on any null-measurable patch inside the
+determinant chart. -/
+theorem map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_image_of_subset_detChart
+    {M : ℕ} {ρ : Type*} {κ' : Fin (M + 2) → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (m : Measure (TopologyTuple ρ κ' ℝ))
+    [m.IsAddHaarMeasure]
+    {Ω : Set (TopologyTuple ρ κ' ℝ)}
+    (hΩ : NullMeasurableSet Ω m)
+    (hΩdet :
+      Ω ⊆ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')) :
+    Measure.map
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ'))
+        ((m.restrict Ω).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+      m.restrict
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') '' Ω) := by
+  let Phi : TopologyTuple ρ κ' ℝ → TopologyTuple ρ κ' ℝ :=
+    topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+  let Jprod : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+    fun z ↦
+      ENNReal.ofReal
+        (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+          (M := M) (ρ := ρ) (κ' := κ') z)
+  let Jactual : TopologyTuple ρ κ' ℝ → ℝ≥0∞ :=
+    fun z ↦
+      ENNReal.ofReal
+        (topologyTupleEdgeRawOrderFDerivAbsDet
+          (M := M) (ρ := ρ) (κ' := κ') z)
+  have hfderiv :
+      ∀ z ∈ Ω,
+        HasFDerivWithinAt Phi
+          (fderiv ℝ Phi z) Ω z := by
+    intro z hz
+    exact
+      (differentiableAt_topologyTupleEdgeRawOrder_of_mem_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') z (hΩdet hz)).hasFDerivAt.hasFDerivWithinAt
+  have hinj :
+      Set.InjOn Phi Ω :=
+    (injOn_topologyTupleEdgeRawOrder_detChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')).mono hΩdet
+  have hcov_actual :
+      Measure.map Phi ((m.restrict Ω).withDensity Jactual) =
+        m.restrict (Phi '' Ω) := by
+    simpa [Phi, Jactual, topologyTupleEdgeRawOrderFDerivAbsDet] using
+      MeasureTheory.map_withDensity_abs_det_fderiv_eq_addHaar
+        (μ := m) (s := Ω) (f := Phi) (f' := fun z ↦ fderiv ℝ Phi z)
+        hΩ hfderiv hinj
+  have hJ :
+      Jprod =ᵐ[m.restrict Ω] Jactual := by
+    filter_upwards [ae_restrict_mem₀ hΩ] with z hz
+    simp [Jprod, Jactual,
+      retainedPassiveFormalRawOrderJacobianProductAbsDetAt_eq_topologyTupleEdgeRawOrderFDerivAbsDet_of_mem_topologyTupleDetChartSet
+        (M := M) (ρ := ρ) (κ' := κ') (hΩdet hz)]
+  calc
+    Measure.map
+        (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ'))
+        ((m.restrict Ω).withDensity
+          (fun z : TopologyTuple ρ κ' ℝ =>
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := M) (ρ := ρ) (κ' := κ') z))) =
+        Measure.map Phi ((m.restrict Ω).withDensity Jprod) := by
+          rfl
+    _ = Measure.map Phi ((m.restrict Ω).withDensity Jactual) := by
+          rw [withDensity_congr_ae hJ]
+    _ = m.restrict (Phi '' Ω) := hcov_actual
+    _ =
+        m.restrict
+          (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') '' Ω) := by
+          rfl
+
 private theorem map_comp_topologyTupleEdgeRawOrder_withDensity_eq_map_restrict_rawSourceChart_of_cov
     {M : ℕ} {ρ β : Type*} {κ' : Fin (M + 2) → Type*}
     [Fintype ρ] [DecidableEq ρ]

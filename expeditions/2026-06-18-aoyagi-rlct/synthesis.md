@@ -6,6 +6,48 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Localized Retained-Passive Raw-Order COV - 2026-07-02
+
+Lean now has:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_image_of_subset_detChart
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCoordinatesJacobianMeasure.lean
+```
+
+The theorem localizes the retained-passive raw-order product-determinant COV.
+For any additive Haar measure `m` and any null-measurable patch `Omega`
+contained in `topologyTupleDetChartSet`, pushing
+
+```text
+(m.restrict Omega).withDensity formalProductAbsDet
+```
+
+through `topologyTupleEdgeRawOrder` gives:
+
+```text
+m.restrict (topologyTupleEdgeRawOrder '' Omega).
+```
+
+The proof is the direct set-version Jacobian COV: differentiability and
+injectivity are inherited from the determinant chart, then the existing
+pointwise theorem replaces the Frechet absolute determinant by the solved
+`A1` product determinant on `Omega`.
+
+This closes a real scoping issue for the next frontier.  A small endpoint
+patch cannot dominate additive Haar on the whole determinant chart, so the
+determinant-side raw-order COV must be available on an actual local endpoint
+image patch.
+
+Boundary: no endpoint-Haar transport, source-to-endpoint Haar comparison,
+raw-pushforward for the Aoyagi source, source-prior/original-prior transport,
+coverage, normal crossings, pole order, or RLCT is proved.
+
 ## A2 With-Following Active Readout Writeback Factorization - 2026-07-02
 
 Lean now has:

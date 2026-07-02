@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 localized retained-passive raw-order COV
+
+Lean now has:
+
+```text
+map_topologyTupleEdgeRawOrder_withDensity_formalProductAbsDet_eq_restrict_image_of_subset_detChart
+```
+
+Decision: this is a needed determinant-chart localization, not a downstream
+wrapper.  The earlier raw-order COV identified the image of the whole
+retained-passive determinant chart.  The endpoint-source problem is local:
+the actual endpoint image of a small Aoyagi source patch cannot dominate Haar
+measure on the whole determinant chart.  This theorem lets us restrict
+additive Haar to any null-measurable `Omega` inside the determinant chart and
+push it through `topologyTupleEdgeRawOrder` with the solved product
+determinant density:
+
+```text
+map rawOrder ((m|Omega).withDensity formalProductAbsDet)
+  = m | rawOrder '' Omega.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-localized-retained-passive-raw-order-cov.md
+```
+
+Boundary: this proves no endpoint-Haar transport, no source-to-endpoint Haar
+comparison, no raw-pushforward for the Aoyagi source, no source-prior/original
+prior transport, no coverage, no normal crossings, no pole order, and no RLCT.
+
+Next A2 target: combine this localized determinant-side COV with the active
+writeback factorization to state the endpoint comparison on the actual local
+endpoint image, rather than the whole determinant chart.
+
 ## Latest controller decision - 2026-07-02, A2 with-following active readout writeback factorization
 
 Lean now has:
