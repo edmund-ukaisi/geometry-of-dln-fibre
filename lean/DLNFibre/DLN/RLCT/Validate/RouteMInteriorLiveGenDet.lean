@@ -2836,6 +2836,150 @@ theorem Cgen_live_leaf_eq_rfinDirectGen (M : Fin (L + 1) → ℕ) (ha : StructAd
   show (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin L = _
   simp only [genBlkFlatLive, dif_pos]
 
+/-! ### The leaf `readE` (frameSplitEquiv-E) ↔ `rfinDirectGen` (leafSlot) slot bridge
+
+At the leaf boundary `s.val = L−1` the schur frame degenerates: `Text(L+1) = 0` kills the `K/X/N`
+role dimensions, so the whole frame slot IS the `E` role. The E-block reader `readE`
+(`frameSplitEquiv (s.val+1)`, E-role `Sum.inr`) and the direct leaf reader `rfinDirectGen`
+(`schurSlotEquiv (L−1)`) then read the SAME flat coordinate. The `.val`-fidelity check: both decode
+to `finProdFinEquiv (i, j) = j + Wext(L)·i` (the frame `K+X+N` offset vanishes at `Text(L+1) = 0`),
+so no coordinate permutation is needed — the bridge is an identity. -/
+
+/-- `.val` of the E-role decode of `frameSplitEquiv`: `frameSplitEquiv.symm (Sum.inr v)` sits at
+`.val = (K + X + N dims) + v.val` (the E role is the outermost `Sum.inr`, at offset `dim(K)+dim(X)+dim(N)`). -/
+theorem frameSplitEquiv_symm_inr_val (M t : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M t (s + 1) ≤ Text M t s) (h2 : Text M t (s + 1) ≤ Wext M s)
+    (v : Fin ((Text M t s - Text M t (s + 1)) * (Wext M s - Text M t (s + 1)))) :
+    ((frameSplitEquiv M t s h1 h2).symm (Sum.inr v)).val
+      = (Text M t (s + 1) * Text M t (s + 1)
+          + (Text M t s - Text M t (s + 1)) * Text M t (s + 1)
+          + Text M t (s + 1) * (Wext M s - Text M t (s + 1))) + v.val := by
+  rw [frameSplitEquiv]
+  simp only [Equiv.symm_trans_apply, Equiv.sumCongr_symm, Equiv.refl_symm,
+    Equiv.sumCongr_apply, Sum.map_inr, Equiv.refl_apply, Equiv.symm_symm,
+    finSumFinEquiv_apply_right, finCongr_symm, finCongr_apply, Fin.val_cast, Fin.val_natAdd]
+
+/-- **The leaf E-slot ↔ leaf-slot bridge** — at the leaf boundary `s.val = L−1`, the E-block reader
+slot equals the direct leaf slot (both `chartIdxEquiv.symm ⟨⟨L−1⟩, Sum.inl (·)⟩`; the E-role decode of
+`frameSplitEquiv (s.val+1)` and the `schurSlotEquiv (L−1)` decode agree at `t = Text(L+1) = 0`). -/
+theorem activeSlotE_leaf_eq_leafSlot (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (hleaf : s.val = L - 1)
+    (i : Fin (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2)))
+    (j : Fin (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))) :
+    activeSlotE M (tach M) ha s i j
+      = leafSlot M (tach M) ha ha.hL
+          (Fin.cast (by
+            have hT0 : Text M (tach M) (s.val + 2) = 0 := by
+              rw [show s.val + 2 = L + 1 by omega]; exact Text_Lsucc_eq_zero M ha.hL
+            rw [hT0, Nat.sub_zero, show s.val + 1 = L by omega]) i)
+          (Fin.cast (by
+            have hT0 : Text M (tach M) (s.val + 2) = 0 := by
+              rw [show s.val + 2 = L + 1 by omega]; exact Text_Lsucc_eq_zero M ha.hL
+            rw [hT0, Nat.sub_zero, show s.val + 1 = L by omega]) j) := by
+  have hL : 0 < L := ha.hL
+  obtain ⟨sv, hsv⟩ := s
+  simp only at hleaf
+  subst hleaf
+  rw [activeSlotE, leafSlot]
+  refine congrArg _ ?_
+  refine Sigma.ext (Fin.ext rfl) ?_
+  refine heq_of_eq ?_
+  refine congrArg Sum.inl ?_
+  apply Fin.ext
+  rw [frameSplitEquiv_symm_inr_val]
+  -- RHS `.val`: `schurSlotEquiv.symm = finProdFinEquiv ≫ finCongr(.symm)`, so `.val = finProd(cast,cast).val`.
+  rw [schurSlotEquiv]
+  simp only [Equiv.symm_trans_apply, finCongr_symm, Equiv.symm_symm, finProdFinEquiv_apply_val,
+    finCongr_apply, Fin.val_cast]
+  -- the frame offset (K+X+N dims) all carry a `Text(L+1) = 0` factor and vanish.
+  have hT0' : Text M (tach M) (L - 1 + 1 + 1) = 0 := by
+    rw [show L - 1 + 1 + 1 = L + 1 by omega]; exact Text_Lsucc_eq_zero M hL
+  generalize (i : ℕ) = vi
+  generalize (j : ℕ) = vj
+  rw [hT0']
+  simp
+
+/-- `readE = y ∘ activeSlotE` (both are the same `chartIdxEquiv.symm` frame-E coordinate). -/
+theorem readE_eq_y_activeSlotE (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) (k : Fin L)
+    (i : Fin (Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2)))
+    (j : Fin (Wext M (k.val + 1) - Text M (tach M) (k.val + 2))) :
+    readE M (tach M) ha y k i j = y (activeSlotE M (tach M) ha k i j) := rfl
+
+/-- At the leaf (`Text(s+1) = 0`), `schurFrameProd` collapses to `rmatPad E` (the `bmatStack · chainQ`
+term is a matrix product over the empty middle index `Fin (Text(s+1)) = Fin 0`, hence `0`). -/
+theorem schurFrameProd_leaf_eq_rmatPad (M : Fin (L + 1) → ℕ) (s : ℕ)
+    (h1 : Text M (tach M) (s + 1) ≤ Text M (tach M) s) (h2 : Text M (tach M) (s + 1) ≤ Wext M s)
+    (hz : Text M (tach M) (s + 1) = 0)
+    (K : Matrix (Fin (Text M (tach M) (s + 1))) (Fin (Text M (tach M) (s + 1))) ℝ)
+    (X : Matrix (Fin (Text M (tach M) s - Text M (tach M) (s + 1))) (Fin (Text M (tach M) (s + 1))) ℝ)
+    (N : Matrix (Fin (Text M (tach M) (s + 1))) (Fin (Wext M s - Text M (tach M) (s + 1))) ℝ)
+    (E : Matrix (Fin (Text M (tach M) s - Text M (tach M) (s + 1)))
+        (Fin (Wext M s - Text M (tach M) (s + 1))) ℝ) :
+    schurFrameProd M (tach M) s h1 h2 1 K X N E = rmatPad M (tach M) s h1 h2 E := by
+  rw [schurFrameProd, one_smul]
+  have hbz : bmatStack M (tach M) s h1 K X
+      * chainQ (show Text M (tach M) (s + 1) + (Wext M s - Text M (tach M) (s + 1)) = Wext M s by omega) N
+      = 0 := by
+    ext a b
+    rw [Matrix.mul_apply]
+    apply Finset.sum_eq_zero
+    intro c _
+    exact absurd (hz ▸ c.isLt) (Nat.not_lt_zero c.val)
+  rw [hbz, zero_add]
+
+/-- The live leaf residual at the leaf boundary `s.val+1 = L`, entrywise: `Rfin (s.val+1) i j
+= y (leafSlot (cast i)(cast j))` (`Rfin = h ▸ rfinDirectGen`, and the transport reads the leaf slot). -/
+theorem genBlkFlatLive_Rfin_leaf_entry (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (hsL : s.val + 1 = L) (y : Fin (routeMAmbient M) → ℝ)
+    (i : Fin (Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin (s.val + 1) i j
+      = y (leafSlot M (tach M) ha ha.hL
+          (Fin.cast (by rw [hsL]) i) (Fin.cast (by rw [hsL]) j)) := by
+  obtain ⟨sv, hsv⟩ := s
+  simp only at hsL i j ⊢
+  simp only [genBlkFlatLive, dif_pos hsL]
+  subst hsL
+  rfl
+
+/-- The leaf `rmatPad(readE)` entry: at `Text(s+2) = 0` every row/col is in the bottom-right E block,
+so `rmatPad(readE) i j = y (activeSlotE (cast i)(cast j))`. -/
+theorem rmatPad_readE_leaf_entry (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (hleaf : s.val = L - 1) (y : Fin (routeMAmbient M) → ℝ)
+    (i : Fin (Text M (tach M) (s.val + 1))) (j : Fin (Wext M (s.val + 1))) :
+    rmatPad M (tach M) (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val)
+        (slotReadGen M ha s y).2.2.2 i j
+      = y (activeSlotE M (tach M) ha s
+          (Fin.cast (by
+            have hz : Text M (tach M) (s.val + 1 + 1) = 0 := by
+              rw [show s.val + 1 + 1 = L + 1 by omega]; exact Text_Lsucc_eq_zero M ha.hL
+            rw [hz, Nat.sub_zero]) i)
+          (Fin.cast (by
+            have hz : Text M (tach M) (s.val + 1 + 1) = 0 := by
+              rw [show s.val + 1 + 1 = L + 1 by omega]; exact Text_Lsucc_eq_zero M ha.hL
+            rw [hz, Nat.sub_zero]) j)) := by
+  have hz : Text M (tach M) (s.val + 1 + 1) = 0 := by
+    rw [show s.val + 1 + 1 = L + 1 by omega]; exact Text_Lsucc_eq_zero M ha.hL
+  -- write `i,j` in the `natAdd (Text(s+2))` block (`Text(s+2)=0`), hit `rmatPad_natAdd_natAdd`.
+  rw [show i = Fin.cast (show Text M (tach M) (s.val + 1 + 1)
+          + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 1 + 1)) = Text M (tach M) (s.val + 1)
+          by omega)
+        (Fin.natAdd (Text M (tach M) (s.val + 1 + 1))
+          (Fin.cast (by rw [hz, Nat.sub_zero]) i)) from by
+      apply Fin.ext; rw [Fin.val_cast, Fin.val_natAdd, Fin.val_cast, hz, Nat.zero_add],
+    show j = Fin.cast (show Text M (tach M) (s.val + 1 + 1)
+          + (Wext M (s.val + 1) - Text M (tach M) (s.val + 1 + 1)) = Wext M (s.val + 1)
+          by omega)
+        (Fin.natAdd (Text M (tach M) (s.val + 1 + 1))
+          (Fin.cast (by rw [hz, Nat.sub_zero]) j)) from by
+      apply Fin.ext; rw [Fin.val_cast, Fin.val_natAdd, Fin.val_cast, hz, Nat.zero_add]]
+  rw [rmatPad_natAdd_natAdd]
+  show readE M (tach M) ha y s _ _ = _
+  rw [readE_eq_y_activeSlotE]
+  -- reconcile the doubled casts on the activeSlotE index with the single casts in the statement.
+  congr 2 <;>
+    (apply Fin.ext; simp only [Fin.val_cast, Fin.val_natAdd, hz, Nat.zero_add])
+
 /-- **`Cgen 1 … L = flatBlock (schurFrameMap (slotReadGen (L−1)))`** at the leaf (`s.val = L−1`). The
 leaf variant of `Cgen_succ_eq_flatBlock_schurFrameMap`: `Cgen … L = rfinDirectGen`
 (`Cgen_live_leaf_eq_rfinDirectGen`); `flatBlock (schurFrameMap (slotReadGen)) = schurFrameProd`
@@ -2852,13 +2996,21 @@ theorem Cgen_leaf_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : Str
         (hleStruct M (tach M) ha) (s.val + 1)
       = flatBlock hr hc (schurFrameMap (slotReadGen M ha s y)) := by
   -- `s.val + 1 = L` at the leaf; `Cgen … L = rfinDirectGen`, RHS = `schurFrameProd` collapses to `readE`.
+  have hL : 0 < L := ha.hL
+  have hsL : s.val + 1 = L := by have := s.isLt; omega
+  have hz : Text M (tach M) (s.val + 1 + 1) = 0 := by
+    rw [show s.val + 1 + 1 = L + 1 by omega]; exact Text_Lsucc_eq_zero M hL
   rw [flatBlock_schurFrameMap_eq_gen M (tach M) (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val)
-      hr hc (slotReadGen M ha s y)]
-  -- REMAINING (leaf reconciliation): `Cgen … (s+1) = Cgen … L = rfinDirectGen`
-  -- (`Cgen_live_leaf_eq_rfinDirectGen`, `s.val+1 = L`); `schurFrameProd` at `t = Text(L+1) = 0`
-  -- collapses to the `E` block `= readE (L−1) = rfinDirectGen` — needs the `frameSplitEquiv` (readE) vs
-  -- `schurSlotEquiv` (leafSlot) slot-index reconciliation at `t=0` (a new combinatorial bridge lemma).
-  sorry
+      hr hc (slotReadGen M ha s y),
+    schurFrameProd_leaf_eq_rmatPad M (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val) hz]
+  -- LHS collapses to the leaf residual `Rfin (s.val+1)` (leaf arm, `¬ (s.val+1 < L)`).
+  rw [Cgen, dif_neg (by omega : ¬ s.val + 1 < L), one_smul]
+  -- entrywise: both sides read the SAME leaf flat coordinate `y (leafSlot (cast i)(cast j))`.
+  ext i j
+  rw [genBlkFlatLive_Rfin_leaf_entry M ha s hsL y i j, rmatPad_readE_leaf_entry M ha s hleaf y i j,
+    activeSlotE_leaf_eq_leafSlot M ha s hleaf _ _]
+  -- reconcile single vs double casts on the two leaf-slot indices (both collapse via `Fin.cast_trans`).
+  congr 2
 
 /-- **The LEAF DIAGONAL FRAME** `(stairProj (L−1) (T (stairIncl (L−1) v))).1 = (genF (L−1) v).1` — at the
 leaf boundary `s.val = L−1`, `t = Text(L+1) = 0` collapses the K/N/X roles; `Cgen(L) = flatBlock
