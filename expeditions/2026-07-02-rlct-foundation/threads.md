@@ -8,10 +8,11 @@ re-gates per [`loop-prompt.md`](loop-prompt.md). Branch `expedition/rlct-foundat
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| R1 | build (SWE/infra) | (dispatched) | 🔄 CRUX | citation cordon: `@[cited]` attr + `collectAxioms` accounting core + `#audit_cited` + `scripts/cited` gate + adversarial tests + `docs/policies/citation-cordon.md`; retrofit `RlctRealInterface`. **Battle-test (fixtures = spec, guard-first).** Sole builder in `rlct` worktree. Decorrelated review (controller-spawned). |
-| R0 | scout | (dispatched) | 🔄 read-only | Mathlib analytic-coverage recon + build-vs-cite reach (kill-questions in brief). Reports to controller; no edits. |
-| G1 | formaliser | — | ⏳ queued (next tick, own worktree) | non-monotone fibre `θ` — component-count fibration transfer + rank-locus corollary. No new math. Parallel once its worktree is set (avoids 2 builders in `rlct`). |
-| R2–R8 | — | — | ⛔ blocked on R1+R0 | the RLCT foundation + payoff rewire. |
+| R1 | build (SWE/infra) | r1-cordon | ✅ **LANDED** `82c3b006` | citation cordon shipped + **controller-verified** (build 3836 green · gate `UNACCOUNTED=0 CITED=3 LOCATION=0` · sorries `0/3-axiom` · fixtures **13/13**). Parametric `@[cited]` + `collectAxioms` accounting (forget-proof) + `#audit_cited` + enforcing `scripts/cited` + 13 adversarial fixtures; retrofit `AoyagiCited.lean` (3 cites + proved interface + corner-0 payoff); `docs/policies/citation-cordon.md` graduated. Perf: `collectAxiomsBatch` (per-decl timed out >590 s → ~20 s). Aggregator-wired (controller). Codex-xhigh on design; reviewer `rev-cordon` auditing. |
+| R0 | scout | r0-recon | ✅ **DONE** (recon delivered) | **GREENFIELD**: `rlctAt`/`rlctAtOn`/`weightedThreshold` are NOT on `dev` (cross-worktree only; ROADMAP §4b claim stale). Strong BUILD base (Mellin+`cpow` pole, `meromorphicOrderAt` arith, multidim CoV + integrability transport, rpow dichotomy, JapaneseBracket, parametric holomorphy); monuments confirmed absent (cite); coord-change invariance BUILDABLE. Value-vs-pole first-slice flag → operator. Codex CLI down (env). |
+| G1 | formaliser | g1-fibre-theta | 🔄 building | recon calibrated the gap: the count chain is already `Monotone`-free up to `numTop d r` (only the cosmetic `numTop = cTheta` step needs it). Delivering the arbitrary-`d` `= numTop d r` floor + `..._of_rank` transport; closed-form corollary IF `numTop` perm-invariance is landed on-branch. Own worktree `rlct-g1`. |
+| R2 | build | — | ⏳ ready — gated on **DEFINITION DECISION** (operator) | zeta-pole `(λ,m)` vs value-first-slice vs hybrid. R1 done ⟹ no longer R1-gated; awaiting operator's call (surfaced, non-blocking). |
+| R3–R8 | — | — | ⛔ blocked on R2 | the RLCT foundation + payoff rewire. |
 
 ## Concurrency rule (this expedition)
 At most one builder/committer in `.claude/worktrees/rlct` at a time (a second `lake build` corrupts `.lake`;

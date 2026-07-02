@@ -28,3 +28,13 @@ determinantal-atlas `lessons.md`, merged on `dev`):
 - **RLCT domain is real-analysis** (unlike prior algebra) — recon-first for Mathlib coverage; the buildable
   foothills (Mellin, normal-crossing) are established maths — build them boldly, don't defensively cite; cite
   only the genuine monuments (resolution, arbitrary-germ continuation, Aoyagi, Watanabe).
+- **R1a — `collectAxioms` per-decl over a whole library is O(decls × depth) and times out (>590 s).** A
+  library-wide axiom audit must traverse from ALL roots with ONE shared `visited` set (`collectAxiomsBatch`,
+  the union of transitive axioms) → O(reachable constants), ~20 s. Same completeness as `collectAxioms` (same
+  kernel constant graph). Relevant to any whole-namespace meta-audit, not just the cordon.
+- **R1b — an incremental `.lake` cache HIDES whole-file lint (longLine) warnings.** A "clean build" from a warm
+  cache re-lints only re-elaborated modules; editing a file forces its full re-lint and can surface
+  *pre-existing* warnings the cache masked (here: 4 dev-baseline longLines in `DLNFibre.lean` comments,
+  invisible until the aggregator was touched). Don't read "no warnings from warm cache" as "lint-clean"; a cold
+  re-elaboration is the real check. (Scope discipline: fix the warnings your edit is responsible for; a
+  pre-existing dev-baseline set is a separate hygiene pass, not silent scope-creep into an integration commit.)

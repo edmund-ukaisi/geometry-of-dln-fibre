@@ -546,9 +546,10 @@ import DLNFibre.Core.Matrix.RankMinors
 -- `Core.CotangentJacobian` into two network-free libraries. The localize-the-cotangent-space
 -- comparison `Ideal.finrank_cotangentSpace_localization_eq_cotangent` (ns `Ideal`, mirrors
 -- `Mathlib.RingTheory.Ideal.Cotangent`; `[CommRing k]`, no `Field`); and the rectangular point-
--- Jacobian cotangent-dimension headline `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`
--- (ns `MvPolynomial`, mirrors `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general
--- than Mathlib's smooth/square submersive Jacobian.
+-- Jacobian cotangent-dimension headline
+-- `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian` (ns `MvPolynomial`, mirrors
+-- `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general than Mathlib's
+-- smooth/square submersive Jacobian.
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
 -- det-atlas P2.b′: the `AlgEquiv` groupoid laws absent in Mathlib v4.29 — `trans_assoc`,
@@ -584,3 +585,12 @@ import DLNFibre.Core.RingTheory.Determinantal.LocalTriviality
 -- scheme cover). Axiom-clean ⟹ the non-vacuity proof. The open is load-bearing (a bundle over the
 -- closure Σ̄^r is false).
 import DLNFibre.Core.FibreZariskiLocalTriviality
+-- rlct-foundation R1: the citation cordon (accounted-axioms). `Core.Meta.Cited` = the
+-- `@[cited "src"]` attribute + `#audit_cited` command + `auditDecl` core (so `import DLNFibre`
+-- carries the attribute library-wide). `DLN.RLCT.AoyagiCited` = the DLN cites ON the cordon
+-- (the `@[cited]` Watanabe-upper / Aoyagi-lower / `rlctReal` axioms, the proved
+-- `aoyagiRlctRealInterface`, and the corner-0 payoff `rlct_lossDLN_zero_eq_half_cCodim_aoyagi`).
+-- Gate: `scripts/cited` (`UNACCOUNTED=0 CITED=3 LOCATION=0`). Policy:
+-- `docs/policies/citation-cordon.md`.
+import DLNFibre.Core.Meta.Cited
+import DLNFibre.DLN.RLCT.AoyagiCited

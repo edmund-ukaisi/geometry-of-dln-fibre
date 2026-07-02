@@ -8,9 +8,9 @@ cordon discipline (rung 1) gates everything. **Live status → [`threads.md`](th
 
 | # | rung | kind | depends on | notes |
 |---|------|------|-----------|-------|
-| **R1** | **Citation cordon** (`@[cited]` + `collectAxioms` accounting + `scripts/cited` gate + tests + policy doc) | **[build, SWE/UX]** | — | **FIRST. Battle-test.** Gates every later rung. A software problem: AI + humans are users. Retrofit `RlctRealInterface` onto it. → `docs/policies/citation-cordon.md`. |
-| R0 | **Recon** — Mathlib analytic-coverage map (Mellin / Meromorphic / integration CoV / AnalyticAt) + the build-vs-cite reach; kill-questions in `brief.md` | **[recon]** | — | runs alongside R1 (analysis, not tooling). Sizes the RLCT ladder + locks the cite boundary. |
-| R2 | **Zeta + `RLCTPair` definition** (`ζ_x(z)=∫K^z φ`; `(λ,m)` = leading pole + order) | **[build]** | R0 | the ROADMAP-decided definition (zeta-pole; gives honest `m`). |
+| ~~R1~~ | **Citation cordon** — ✅ LANDED `82c3b006`, verified (13/13 fixtures, gate `UNACCOUNTED=0 CITED=3`) | **[build, SWE/UX]** | — | Forget-proof `@[cited]`+`collectAxioms` gate + `#audit_cited` + `scripts/cited` + `docs/policies/citation-cordon.md`; `AoyagiCited` retrofit; aggregator-wired. Codex-xhigh + `rev-cordon` audit. |
+| ~~R0~~ | **Recon** — Mathlib coverage + build-vs-cite reach | **[recon]** | — | ✅ DONE. GREENFIELD (`rlctAt` cross-worktree, not on `dev`); strong BUILD base; monuments absent; coord-change BUILDABLE. Value-vs-pole flag → operator. |
+| R2 | **Zeta + `RLCTPair` definition** (`ζ_x(z)=∫K^z φ`; `(λ,m)` = leading pole + order) | **[build]** | R0✓ · **operator (def call)** | zeta-pole (operator's choice; needs cited continuation to be well-defined) vs value-first-slice (R0 rec; cite-free) vs hybrid (controller rec). **Gated on the operator's definition decision, not on R1.** |
 | R3 | **1-D Mellin continuation** `∫ t^{az+b}φ` (elementary; gamma-type poles) | **[build]** | R2 | the analytic foothill — build it, don't cite. |
 | R4 | **Normal-crossing pole formula** `λ=min(bᵢ+1)/aᵢ`, `m=#minimisers` (`2aᵢ` for squares) | **[build]** | R3 | combinatorial heart. |
 | R5 | **Invariances + quadratic block** (unit, coord-change[recon], `λ₀(Σx²)=c/2`) | **[build]** | R2 | coord-change recon-gated. |
