@@ -2825,6 +2825,41 @@ theorem stairProj_T_stairIncl_diag_snd_leaf (M : Fin (L + 1) → ℕ) (ha : Stru
     rw [h0]; infer_instance
   exact Subsingleton.elim _ _
 
+/-- **`Cgen 1 … L = rfinDirectGen`** — the leaf boundary value of the live decoder's transition
+(`Cgen … L = 1 • Rfin L`, `Rfin L = rfinDirectGen`). -/
+theorem Cgen_live_leaf_eq_rfinDirectGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y : Fin (routeMAmbient M) → ℝ) :
+    Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+        (hleStruct M (tach M) ha) L
+      = rfinDirectGen M ha y := by
+  rw [Cgen, dif_neg (lt_irrefl L), one_smul]
+  show (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Rfin L = _
+  simp only [genBlkFlatLive, dif_pos]
+
+/-- **`Cgen 1 … L = flatBlock (schurFrameMap (slotReadGen (L−1)))`** at the leaf (`s.val = L−1`). The
+leaf variant of `Cgen_succ_eq_flatBlock_schurFrameMap`: `Cgen … L = rfinDirectGen`
+(`Cgen_live_leaf_eq_rfinDirectGen`); `flatBlock (schurFrameMap (slotReadGen)) = schurFrameProd`
+(`flatBlock_schurFrameMap_eq_gen`), which at `t = Text(L+1) = 0` collapses to the `E` block
+`= readE (L−1) = rfinDirectGen` (`readE_leaf_eq_rfinDirectGen`). -/
+theorem Cgen_leaf_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (s : Fin L) (hleaf : s.val = L - 1)
+    (hr : Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Text M (tach M) (s.val + 1))
+    (hc : Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+        = Wext M (s.val + 1))
+    (y : Fin (routeMAmbient M) → ℝ) :
+    Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+        (hleStruct M (tach M) ha) (s.val + 1)
+      = flatBlock hr hc (schurFrameMap (slotReadGen M ha s y)) := by
+  -- `s.val + 1 = L` at the leaf; `Cgen … L = rfinDirectGen`, RHS = `schurFrameProd` collapses to `readE`.
+  rw [flatBlock_schurFrameMap_eq_gen M (tach M) (s.val + 1) (ha.hdesc s.val (by omega)) (ha.hub s.val)
+      hr hc (slotReadGen M ha s y)]
+  -- REMAINING (leaf reconciliation, cast-heavy): `Cgen … (s+1) = Cgen … L = rfinDirectGen`
+  -- (`Cgen_live_leaf_eq_rfinDirectGen`, via `s.val+1 = L`), and `schurFrameProd` at `t = Text(L+1) = 0`
+  -- collapses to the `E` block `= readE (L−1) = rfinDirectGen` — needs the `frameSplitEquiv` (readE) vs
+  -- `schurSlotEquiv` (leafSlot) index reconciliation at `t=0` (a new combinatorial slot-bridge lemma).
+  sorry
+
 /-- **The LEAF DIAGONAL FRAME** `(stairProj (L−1) (T (stairIncl (L−1) v))).1 = (genF (L−1) v).1` — at the
 leaf boundary `s.val = L−1`, `t = Text(L+1) = 0` collapses the K/N/X roles; `Cgen(L) = flatBlock
 (schurFrameMap (slotReadGen (L−1)))` still holds (`Cgen_leaf_eq_flatBlock_schurFrameMap`), so the SAME
@@ -2837,7 +2872,32 @@ theorem stairProj_T_stairIncl_diag_fst_leaf (M : Fin (L + 1) → ℕ) (ha : Stru
           (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
             ((eInGen M ha).symm (stairIncl (genV M) L s.val v))))).1
       = (genF M ha y₀ s.val v).1 := by
-  sorry
+  rw [stairProj_packStairGen_fst, packStairGen_frame_fderiv_read]
+  set d := (eInGen M ha).symm (stairIncl (genV M) L s.val v) with hd
+  have hdiffC : DifferentiableAt ℝ (fun y => Cgen 1 M (tach M)
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y) (hleStruct M (tach M) ha) (s.val + 1)) y₀ :=
+    diffAt_Cgen_liveGen' M ha y₀ (s.val + 1)
+  have hdiffNW : DifferentiableAt ℝ (fun y =>
+      (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Nblk s.val
+        * (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y).Wblk s.val) y₀ :=
+    DifferentiableAt.matMul (diffAt_liveNblk_gen M ha y₀ s.val)
+      (diffAt_liveWblk_gen M ha y₀ s.val)
+  rw [fderiv_fun_sub hdiffC hdiffNW]
+  simp only [ContinuousLinearMap.sub_apply, map_sub]
+  rw [NblkWblk_fderiv_vanish M ha s y₀ v, map_zero, sub_zero]
+  have hr : Text M (tach M) (s.val + 2) + (Text M (tach M) (s.val + 1) - Text M (tach M) (s.val + 2))
+      = Text M (tach M) (s.val + 1) := by have := ha.hdesc s.val s.isLt; omega
+  have hc : Text M (tach M) (s.val + 2) + (Wext M (s.val + 1) - Text M (tach M) (s.val + 2))
+      = Wext M (s.val + 1) := by have := ha.hub s.val; omega
+  rw [show (fun y => Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha (rfinDirectGen M ha y) y)
+        (hleStruct M (tach M) ha) (s.val + 1))
+      = (fun y => flatBlock hr hc (schurFrameMap (slotReadGen M ha s y))) from
+    funext fun y => Cgen_leaf_eq_flatBlock_schurFrameMap M ha s hleaf hr hc y]
+  rw [schurFrameGenMap_fderiv_collapse M ha s hr hc y₀ d]
+  rw [hd, slotReadGen_eInGen_symm M ha (stairIncl (genV M) L s.val v) s,
+    stairProj_stairIncl_self (genV M) L s.val s.isLt v]
+  rw [genF, dif_pos s.isLt]
+  rfl
 
 /-- **The UPPER-block FRAME** `(stairProj s' (T (stairIncl s v))).1 = 0` for an off-slot interior `s'`
 (`s' ≠ s`, `s'.val + 1 < L`). Same collapse as the diagonal frame, but the `slotReadGen s'` input reads
