@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 generic readback product finite-integral handoff
+
+Lean now has:
+
+```text
+lintegral_prod_lt_top_of_readback_map_le_smul
+```
+
+Decision: before building the localized with-following finite-integral wrapper,
+bank the generic measure lemma that honestly transfers finite lower integrals
+through a readback map.  The lemma consumes measurable readback, an a.e.
+right-inverse identity, finite scalar domination of `map readback mu`, and a
+finite source-side product integral.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-readback-product-finite-integral-handoff.md
+```
+
+Boundary: this is not yet the localized with-following finite-integral wrapper.
+The current concrete finite-integral wrappers are for `Case2PassiveTheta`, but
+the localized prior readback theorem is for
+`Case2PassiveThetaWithFollowingFactor`.  The next target is to bridge that
+type gap by proving either a with-following source-side finite-integral socket
+or an explicit projection/comparison into the passive-theta socket, while also
+supplying measurable readback for the with-following endpoint source chart.
+Do not silently call the passive-theta theorem with a with-following readback.
+
+Verification passed through focused local module build, full local `lake build
+DLNFibre`, no-sorry audit, whitespace check, targeted forbidden-marker scan,
+and direct axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following localized prior readback domination
 
 Lean now has:

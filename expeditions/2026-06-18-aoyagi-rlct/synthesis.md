@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Generic Readback Product Finite-Integral Handoff - 2026-07-02
+
+Lean now has:
+
+```text
+lintegral_prod_lt_top_of_readback_map_le_smul
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+This is a generic product-measure handoff for readback arguments.  If
+`readback : E -> Theta` is measurable, `sourceChart (readback x) = x` for
+`mu`-a.e. `x`, and
+
+```text
+Measure.map readback mu <= C • thetaMu,
+C < infinity,
+```
+
+then finite lower integral of the source-chart pullback
+
+```text
+Fsource(theta, beta) = F(sourceChart theta, beta)
+```
+
+over `thetaMu.prod eta` implies finite lower integral of `F` over
+`mu.prod eta`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-readback-product-finite-integral-handoff.md
+```
+
+Boundary: this is infrastructure only.  It does not prove the localized
+with-following finite-integral wrapper, because the existing concrete
+finite-integral sockets are for `Case2PassiveTheta`, while the localized prior
+readback theorem is for `Case2PassiveThetaWithFollowingFactor`.  The remaining
+with-following bridge needs either a with-following source-side finite-integral
+socket or an explicit projection/comparison theorem, plus measurable readback
+for the with-following endpoint source chart.  This proves no determinant-Haar
+transport, source-density positivity, original source-prior origin, coverage,
+normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local module build, full local `lake build
+DLNFibre`, `lean/scripts/sorries`, `git diff --check`, targeted forbidden-marker
+scan on the touched Lean file and new reproduction note, and direct axiom probe.
+The new theorem reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Localized Endpoint-Patch Prior Readback Domination - 2026-07-02
 
 Lean now has:
