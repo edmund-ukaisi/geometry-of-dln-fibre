@@ -24,7 +24,10 @@ branch owes, and de-risks the dispatch before filling the heavy charts.
     given its structural side-conditions (`hNo`, `hne`, `hMpos` — carried as spine hyps; the clean
     chart is the whole-deepest radial).
   - BOUNDARY-SMEARED (`deepRank < deepRows`) → `hSmeared` (the rational single-pivot atom, `#2`
-    verdict BOUNDED — assembled per-family via `routeMCore_box_diverges_smearedContract`).
+    verdict BOUNDED — assembled per-family via `routeMCore_box_diverges_smearedContract`). The
+    smeared branch's chart needs the width-`r` waist, which rests on `NoInteriorBothDrop` (the
+    interior Aoyagi blocks vanish); the spine HAS `hNo`, so the `hSmeared` slot threads it (the
+    smeared stratum is genuinely `BoundarySmeared ∧ NoInteriorBothDrop`).
 
 The dispatch itself is sorry-free; the open content is the TWO `2 ≤ L` branch atoms (INTERIOR,
 SMEARED — each a hypothesis here, to be discharged by its per-branch build). The spine's axioms are
@@ -79,7 +82,7 @@ theorem routeMCore_box_diverges_achiever_spine (M : Fin (L + 1) → ℕ) (hpos :
     (hne : ∀ hL : 0 < L, (deepestCoords M hL).Nonempty)
     (hNo : NoInteriorBothDrop M)
     (hInterior : ∀ _ : 2 ≤ L, InteriorDrop M → BoxDiverges M c' ε)
-    (hSmeared : ∀ _ : 2 ≤ L, BoundarySmeared M → BoxDiverges M c' ε) :
+    (hSmeared : ∀ _ : 2 ≤ L, BoundarySmeared M → NoInteriorBothDrop M → BoxDiverges M c' ε) :
     BoxDiverges M c' ε := by
   rcases Nat.lt_or_ge L 2 with hLlt | hL2
   · -- `L < 2`: either `L = 0` (vacuous) or `L = 1` (always boundary-clean → the banked discharge).
@@ -96,6 +99,6 @@ theorem routeMCore_box_diverges_achiever_spine (M : Fin (L + 1) → ℕ) (hpos :
     · -- BOUNDARY-CLEAN: the banked whole-deepest radial discharge.
       exact routeMCore_box_diverges_clean M (by omega) (hne (by omega)) hNo hClean.2 hpos hMpos
         c' hc' ε hε
-    · exact hSmeared hL2 hSmear
+    · exact hSmeared hL2 hSmear hNo
 
 end DLNFibre.DLN.RLCT

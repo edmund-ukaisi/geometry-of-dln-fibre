@@ -213,4 +213,68 @@ theorem Lam0uG_entry_bound_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     have hcol : ∀ i, |Vσ i b| ≤ nb := fun i => hVσbound i b
     exact hSRD.inv_mul_entry_bound Vσ b (Mj := nb) hcol a
 
+/-! ## The uniform Gram / waist determinants (`u`-free `Acc`, one small-`η` margin)
+
+The Gram carrier block is the `p = 0` suffix (`prodAux (L−1) = prodAux 0 · Y = Y`), so
+`wideCarrierBound_suffix_uniform` at `p = 0` gives a `u`-free `WideCarrierBound` on the whole front
+product — hence a `u`-free `Acc` for the Gram/waist small-`η` margins. -/
+
+/-- **The uniform WideCarrierBound on `frontProd`.** `frontProd = prodAux (L−1)` is the `p = 0` suffix,
+so the uniform suffix bound at `p = 0` gives `u`-free scalars `dlb, nb, pub, Acc` with a
+`WideCarrierBound (frontProd M (frontTupleG M u)) r dlb nb pub` for every all-front-carrier `u`. -/
+theorem wideCarrierBound_frontProd_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ)
+    (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
+    ∃ (dlb nb pub Acc : ℝ),
+      0 ≤ nb ∧ 0 ≤ pub ∧ 0 ≤ Acc ∧ nb ≤ η * Acc ∧ (δ / 2) ^ (L - 1) - η * Acc ≤ dlb
+      ∧ ∀ (u : Fin (routeMAmbient M) → ℝ),
+          (∀ t : Fin L, (t : ℕ) < L - 1 → CarrierLayer (frontTupleG M u t) r δ η) →
+          WideCarrierBound (frontProd M (frontTupleG M u) hL) r dlb nb pub := by
+  obtain ⟨dlb, nb, pub, Acc, hnb0, hpub0, hAcc0, hnbA, hdlbA, hfac⟩ :=
+    wideCarrierBound_suffix_uniform (M := M) (r := r) hδ hη hηδ 0 (by omega) hwidth
+      (L - 1) (by omega) (le_refl _) (by omega)
+  rw [Nat.sub_zero] at hdlbA
+  refine ⟨dlb, nb, pub, Acc, hnb0, hpub0, hAcc0, hnbA, hdlbA, fun u hlayers => ?_⟩
+  obtain ⟨Y, hY, hWCB⟩ := hfac (frontTupleG M u) (fun t _ htL => hlayers t htL)
+  -- `frontProd = prodAux (L−1) = prodAux 0 · Y = 1 · Y = Y` (`prodAux 0 = 1` definitionally)
+  have hfront : frontProd M (frontTupleG M u) hL = Y := by
+    rw [frontProd, hY]
+    simp only [prodAux]
+    exact Matrix.one_mul Y
+  rw [hfront]; exact hWCB
+
+/-- **The uniform Gram determinant.** For a fixed `δ` and the `u`-free `Acc`, if `r·(η·Acc) <
+(δ/2)^{L−1}` then every all-front-carrier `u` has `det ((P1uG u)ᵀ P1uG u) ≠ 0`. The uniform (`∀ u`)
+analog of `gram_det_ne_of_carrierLayers`. -/
+theorem gram_det_ne_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc))
+    {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
+    (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
+    (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
+    ∃ Acc : ℝ, 0 ≤ Acc ∧ ((r : ℝ) * (η * Acc) < (δ / 2) ^ (L - 1) →
+      ∀ (u : Fin (routeMAmbient M) → ℝ),
+        (∀ t : Fin L, (t : ℕ) < L - 1 → CarrierLayer (frontTupleG M u t) r δ η) →
+        ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0) := by
+  obtain ⟨dlb, nb, pub, Acc, hnb0, _hpub0, hAcc0, hnbA, hdlbA, hWCB⟩ :=
+    wideCarrierBound_frontProd_uniform M hL hδ hη hηδ hwidth
+  refine ⟨Acc, hAcc0, fun hsmall u hlayers => ?_⟩
+  have hdom := dominance_of_small_eta (L := L) (r := r) hr hη hAcc0 hnb0 hnbA hdlbA hsmall
+  -- the carrier block of `frontProd` has `det ≠ 0`
+  have hblock : (Matrix.of (fun i j : Fin r => prodAux M (frontTupleG M u) (L - 1) (by omega)
+      ⟨i, lt_of_lt_of_le i.isLt hr0⟩ ⟨j, lt_of_lt_of_le j.isLt hrL⟩)).det ≠ 0 := by
+    have hcb := ((hWCB u hlayers).carrierBlock hr0 hrL)
+    have hcb' : CarrierBound (Matrix.of (fun i j : Fin r => prodAux M (frontTupleG M u) (L - 1)
+        (by omega) ⟨i, lt_of_lt_of_le i.isLt hr0⟩ ⟨j, lt_of_lt_of_le j.isLt hrL⟩)) dlb nb := by
+      exact hcb
+    exact hcb'.det_ne_zero hdom
+  refine gram_det_ne_zero_of_submatrix_det_ne (P1uG M hL hrs u)
+    (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0))) (id : Fin r → Fin r) ?_
+  have hEq : (P1uG M hL hrs u).submatrix
+      (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0))) (id : Fin r → Fin r)
+      = Matrix.of (fun i j : Fin r => prodAux M (frontTupleG M u) (L - 1) (by omega)
+          ⟨i, lt_of_lt_of_le i.isLt hr0⟩ ⟨j, lt_of_lt_of_le j.isLt hrL⟩) := by
+    funext i j
+    exact P1uG_submatrix_eq_carrierBlock hL hrs u hr0 hrL i j
+  rw [hEq]; exact hblock
+
 end DLNFibre.DLN.RLCT
