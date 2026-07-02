@@ -417,4 +417,93 @@ theorem shearG_botSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     RmapG_spectator M hL hrs hr hc u (coordOfG_botSlotG_not_mem M hL hrs b j)]
   rfl
 
+/-- **The deep-row equiv bridge.** `finCongr e1 ∘ deepWidthEquiv hrsAtom = deepWidthEquiv hrs` — both
+map `Fin r ⊕ Fin s` to the (propositionally equal) deepest row types via the same `finSumFinEquiv`, so
+the underlying vals agree. Lets the atom's `hrsAtom`-split match the FlatIdx-natural `hrs`-split. -/
+theorem finCongr_e1_deepWidthEquiv (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
+    (x : Fin r ⊕ Fin s) :
+    ((finCongr e1) (deepWidthEquiv (hrsAtom_of_hrs hL hrs) x) : Fin (M ((deepLayer hL).castSucc)))
+      = deepWidthEquiv hrs x := by
+  apply Fin.ext
+  simp only [finCongr_apply, Fin.val_cast, deepWidthEquiv, Equiv.trans_apply, Fin.val_cast]
+
+/-- The `symm` form: `(deepWidthEquiv hrsAtom).symm ((finCongr e1).symm i) = (deepWidthEquiv hrs).symm i`. -/
+theorem deepWidthEquiv_symm_finCongr_e1 (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
+    (i : Fin (M ((deepLayer hL).castSucc))) :
+    (deepWidthEquiv (hrsAtom_of_hrs hL hrs)).symm ((finCongr e1).symm i)
+      = (deepWidthEquiv hrs).symm i := by
+  apply (deepWidthEquiv hrs).injective
+  rw [Equiv.apply_symm_apply, ← finCongr_e1_deepWidthEquiv M hL hrs e1, Equiv.apply_symm_apply,
+    Equiv.apply_symm_apply]
+
+/-- **Column-cast readback.** Reading a col-cast matrix `h ▸ X` at `k` equals reading `X` at
+`finCongr h.symm k` (`subst h; rfl`). -/
+theorem cast_col_apply {p w1 w2 : ℕ} (X : Matrix (Fin p) (Fin w1) ℝ) (h : w1 = w2)
+    (a : Fin p) (k : Fin w2) : (h ▸ X) a k = X a (finCongr h.symm k) := by
+  subst h; rfl
+
+/-! ## The Params-level DECODE `packM (shearMBody (R u)) = chartGenParams …` -/
+
+/-- **The Params-level DECODE.** `packM (shearMBody (R u)) = chartGenParams M (frontTupleG u) hL …`.
+The FRONT layers `t ≠ deepLayer` are the identity readoff (`frontTupleG`, coords `∉ topCoordsG`,
+shear-untouched); the deep layer `L−1` is the `deepWidthEquiv` row split (top `r` rows the
+radial-minus-shear `z·H̄_unit − Λ₀·S_bot`, bottom `s` rows the free residual `S_bot`). Dispatch by
+`layer = deepLayer?` (NOT `fin_cases` — `layer : Fin L` is opaque). -/
+theorem genDecode_params (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
+    (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ)) :
+    (flatEquivOf M (slotEquivG M)).symm
+        (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u))
+      = chartGenParams M (frontTupleG M u) hL (hrsAtom_of_hrs hL hrs) (zuG M hL hrs hr hc u)
+          ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)
+          ((deepLayer_succ_width M hL) ▸ SbotuG M hL hrs u) (Lam0uG M hL hrs u) e1 e2 := by
+  funext layer i j
+  rw [packM_shearG_entry M hL hrs (RmapG M hL hrs hr hc u) ⟨⟨layer, i⟩, j⟩]
+  by_cases hlayer : layer = deepLayer hL
+  · -- DEEP layer: the row split (top `r` radial-minus-shear, bottom `s` residual)
+    subst hlayer
+    -- evaluate `chartGenParams … (deepLayer) i j` = `reindex … chartGenDeep` at `(i,j)`
+    have hd : (deepLayer hL) = (⟨L - 1, by omega⟩ : Fin L) := rfl
+    rw [chartGenParams]
+    simp only [Function.update, hd, dif_pos]
+    rw [Matrix.reindex_apply, Matrix.submatrix_apply, chartGenDeep,
+      deepWidthEquiv_symm_finCongr_e1 M hL hrs e1]
+    -- split the row `i` via `deepWidthEquiv hrs`
+    rcases hsplit : (deepWidthEquiv hrs).symm i with a | b
+    · -- TOP row `i = deepWidthEquiv (inl a)`: the slot is `topSlotG a j`
+      have hi : i = deepWidthEquiv hrs (Sum.inl a) := by
+        rw [← hsplit, Equiv.apply_symm_apply]
+      have hslot : (⟨⟨deepLayer hL, i⟩, j⟩ : FlatIdx M) = topSlotG M hL hrs a j := by
+        rw [topSlotG, hi]
+      rw [hslot, shearG_topSlotG M hL hrs hr hc u a j, deepBlock, Sum.elim_inl]
+      -- reconcile the col cast: `(z•(h▸H) − Λ₀(h▸S)) a ((finCongr e2).symm j) = (z•H − Λ₀S) a j`
+      rw [Matrix.sub_apply, Matrix.sub_apply, Matrix.smul_apply, Matrix.smul_apply,
+        cast_col_apply, Matrix.mul_apply, Matrix.mul_apply]
+      congr 2
+      funext k
+      rw [cast_col_apply]
+      rfl
+    · -- BOTTOM row `i = deepWidthEquiv (inr b)`: the slot is `botSlotG b j`, the free residual
+      have hi : i = deepWidthEquiv hrs (Sum.inr b) := by
+        rw [← hsplit, Equiv.apply_symm_apply]
+      have hslot : (⟨⟨deepLayer hL, i⟩, j⟩ : FlatIdx M) = botSlotG M hL hrs b j := by
+        rw [botSlotG, hi]
+      rw [hslot, shearG_botSlotG M hL hrs hr hc u b j, deepBlock, Sum.elim_inr, cast_col_apply]
+      rfl
+  · -- FRONT layer: the identity readoff `frontTupleG`, coords `∉ topCoordsG`
+    have hlayer' : layer ≠ (⟨L - 1, by omega⟩ : Fin L) := by
+      intro h; exact hlayer (by rw [h]; rfl)
+    rw [chartGenParams, Function.update_of_ne hlayer']
+    show shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u)
+        (coordOfG M (frontSlotG M layer i j)) = frontTupleG M u layer i j
+    rw [shearMBody_apply_of_not_mem _ _ _ (coordOfG_frontSlotG_not_mem M hL hrs layer hlayer i j),
+      RmapG_spectator M hL hrs hr hc u (coordOfG_frontSlotG_not_mem M hL hrs layer hlayer i j)]
+    rfl
+
 end DLNFibre.DLN.RLCT
