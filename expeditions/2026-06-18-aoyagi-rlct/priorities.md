@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following reference-source reverse raw domination
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+Decision: this is a useful concrete adapter, not determinant-Haar source
+production.  It specializes the with-following reverse determinant/raw-order
+transport theorem to the actual enlarged reference source
+`case2PassiveThetaWithFollowingFactorReferenceSourceMeasure`, then uses the
+standard lower-density handoff to replace `baseJ` by
+`coordinateSourceMeasure = baseJ.withDensity sourceDensity`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-reference-source-reverse-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-reference-source-reverse-raw-domination.md
+```
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: determinant-chart reverse domination remains a hypothesis, and the
+lower bound on `sourceDensity` remains a hypothesis.  This does not prove exact
+raw-Haar pushforward, determinant-Haar transport, source-prior/original-prior
+transport, p.13 coverage/equality, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
+Next A2 target: either prove a genuine determinant-side endpoint image
+domination/equality for the concrete with-following reference source, or prove
+the explicit lower-density hypothesis for the source-image density on the
+local shrink.  Do not add more wrapper layers unless they remove a field
+consumed downstream.
+
 ## Latest controller decision - 2026-07-02, A2 with-following determinant/raw-order transport
 
 Lean now has:

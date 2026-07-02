@@ -6,6 +6,86 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Reference-Source Reverse Raw Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The exported constant lives under:
+
+```text
+DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData
+```
+
+This is the concrete with-following analogue of the older non-following
+source-density lower-bound adapter.  It fixes:
+
+```text
+referenceSource =
+  case2PassiveThetaWithFollowingFactorReferenceSourceMeasure n hS hnext Rres
+baseJ = referenceSource.withDensity jacobianDensity
+coordinateSourceMeasure = baseJ.withDensity sourceDensity
+```
+
+where:
+
+```text
+jacobianDensity z =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z))
+sourceDensity z = sourceImageDensity (sourceChart z).
+```
+
+The theorem assumes:
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet • Measure.map Y (referenceSource.restrict V)
+```
+
+and:
+
+```text
+∀ᵐ z ∂baseJ.restrict V, eps <= sourceDensity z.
+```
+
+It proves:
+
+```text
+rawHaar.restrict rawSourceSet
+  <= (Cdet * eps^-1) •
+       Measure.map rawMap (coordinateSourceMeasure.restrict V),
+```
+
+plus `(Cdet * eps^-1) < infinity`, assuming `Cdet < infinity` and `eps` is
+nonzero and finite.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-reference-source-reverse-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-reference-source-reverse-raw-domination.md
+```
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: determinant-chart reverse domination is still supplied by the
+caller, and the source-density lower bound is still supplied by the caller.
+No determinant-Haar transport/equality, exact raw-Haar pushforward, source
+prior/original prior transport, p.13 coverage/equality, source-rank coverage,
+normal crossings, pole order, or RLCT is proved.
+
 ## A2 With-Following Determinant/Raw-Order Transport - 2026-07-02
 
 Lean now has:

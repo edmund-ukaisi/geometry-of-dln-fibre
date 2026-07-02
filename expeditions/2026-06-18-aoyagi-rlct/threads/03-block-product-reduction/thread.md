@@ -21,6 +21,41 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following reference-source reverse raw domination
+
+Reproduction:
+`reproduction-a2-with-following-reference-source-reverse-raw-domination.md`.
+Statement card:
+`statement-card-a2-with-following-reference-source-reverse-raw-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+```
+
+This specializes the existing with-following reverse determinant/raw-order
+transport theorem to the concrete enlarged reference source
+`case2PassiveThetaWithFollowingFactorReferenceSourceMeasure`, then applies the
+lower-density adapter to pass from `baseJ` to
+`coordinateSourceMeasure = baseJ.withDensity sourceDensity`.
+
+Boundary: determinant-chart reverse domination and the lower bound on
+`sourceDensity` remain hypotheses.  No determinant-Haar transport/equality,
+exact raw-Haar pushforward, source-prior/original-prior transport, p.13
+coverage/equality, source-rank coverage, normal crossings, pole order, or RLCT
+is proved.
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following determinant/raw-order transport
 
 Reproductions:
