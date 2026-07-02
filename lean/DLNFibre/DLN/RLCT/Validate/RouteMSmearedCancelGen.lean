@@ -83,4 +83,58 @@ theorem hcancelG_of_waist (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (P1uG M hL hrs u) (P2uG M hL hrs u)
     (fun i k => rfl) (fun i j => rfl) (hVρ U V hUV) hdet
 
+/-! ## The `hUpos` reduction — `UunitG > 0` from the Gram determinant (tall `P₁`) -/
+
+/-- A finite double sum of squares is positive once one entry is nonzero. -/
+theorem frobeniusSq_pos_of_entry_ne' {ι κ : Type*} [Fintype ι] [Fintype κ]
+    (X : ι → κ → ℝ) {i₀ : ι} {j₀ : κ} (h : X i₀ j₀ ≠ 0) :
+    (0 : ℝ) < ∑ i, ∑ j, (X i j) ^ 2 := by
+  refine Finset.sum_pos' (fun i _ => Finset.sum_nonneg (fun j _ => sq_nonneg _)) ?_
+  exact ⟨i₀, Finset.mem_univ _, Finset.sum_pos' (fun j _ => sq_nonneg _)
+    ⟨j₀, Finset.mem_univ _, by positivity⟩⟩
+
+/-- **Full-column-rank left-injectivity.** If the Gram `P₁ᵀ P₁` is invertible (`det ≠ 0`), then
+`P₁ · X = 0 ⟹ X = 0` for any `X` — the tall-`P₁` analog of "left-mult by an invertible square matrix
+is injective". Proof: `P₁·X = 0 ⟹ (P₁ᵀP₁)·X = P₁ᵀ·(P₁·X) = 0 ⟹ X = (P₁ᵀP₁)⁻¹·(P₁ᵀP₁)·X = 0`. -/
+theorem mul_eq_zero_of_gram_det_ne {m0 r' t : ℕ} (P₁ : Matrix (Fin m0) (Fin r') ℝ)
+    (X : Matrix (Fin r') (Fin t) ℝ) (hdet : (P₁.transpose * P₁).det ≠ 0)
+    (hPX : P₁ * X = 0) : X = 0 := by
+  have hunit : IsUnit (P₁.transpose * P₁).det := isUnit_iff_ne_zero.mpr hdet
+  have hgram : (P₁.transpose * P₁) * X = 0 := by
+    rw [Matrix.mul_assoc, hPX, Matrix.mul_zero]
+  calc X = ((P₁.transpose * P₁)⁻¹ * (P₁.transpose * P₁)) * X := by
+            rw [Matrix.nonsing_inv_mul _ hunit, Matrix.one_mul]
+    _ = (P₁.transpose * P₁)⁻¹ * ((P₁.transpose * P₁) * X) := by rw [Matrix.mul_assoc]
+    _ = 0 := by rw [hgram, Matrix.mul_zero]
+
+/-- **`HbarUnitG` is a nonzero matrix.** Its pivot entry `(⟨0,hr⟩, ⟨0,hc⟩)` is the constant `1`. -/
+theorem HbarUnitG_ne_zero (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) : HbarUnitG M hL hrs hr hc u ≠ 0 := by
+  intro h0
+  have hpiv : HbarUnitG M hL hrs hr hc u ⟨0, hr⟩ ⟨0, hc⟩ = 1 := by
+    simp only [HbarUnitG, pivotCoordG, if_true]
+  rw [h0] at hpiv
+  exact one_ne_zero hpiv.symm
+
+/-- **`UunitG > 0` from the Gram determinant.** The `z`-free unit `U = ‖P₁·H̄_unit‖²` is positive once
+`det (P₁ᵀ P₁) ≠ 0` (`P₁` full column rank): `H̄_unit` is a nonzero matrix (pivot entry `1`), and full
+column rank makes `P₁·(·)` left-injective, so `P₁·H̄_unit ≠ 0`, hence its Frobenius sum is positive. The
+tall-`P₁` analog of the square `Uunit_pos_of_det_ne`. -/
+theorem UunitG_pos_of_gram_det_ne (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (hdet : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0) :
+    0 < UunitG M hL hrs hr hc u := by
+  -- `P₁·H̄_unit ≠ 0` (H̄ nonzero, `P₁` left-injective)
+  have hprodne : P1uG M hL hrs u * HbarUnitG M hL hrs hr hc u ≠ 0 := by
+    intro h0
+    exact HbarUnitG_ne_zero M hL hrs hr hc u
+      (mul_eq_zero_of_gram_det_ne (P1uG M hL hrs u) (HbarUnitG M hL hrs hr hc u) hdet h0)
+  -- some entry of the product is nonzero, so the sum of squares is positive
+  obtain ⟨i, hi⟩ := Function.ne_iff.mp hprodne
+  obtain ⟨j, hj⟩ := Function.ne_iff.mp hi
+  rw [UunitG]
+  exact frobeniusSq_pos_of_entry_ne' _ (by simpa using hj)
+
 end DLNFibre.DLN.RLCT
