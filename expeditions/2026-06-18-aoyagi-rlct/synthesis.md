@@ -6,6 +6,78 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Eventual Source-Density Raw Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The exported constant lives under:
+
+```text
+DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData
+```
+
+This is the topological wrapper around the previous concrete with-following
+lower-density theorem.  It fixes the same:
+
+```text
+referenceSource =
+  case2PassiveThetaWithFollowingFactorReferenceSourceMeasure n hS hnext Rres
+baseJ = referenceSource.withDensity jacobianDensity
+coordinateSourceMeasure = baseJ.withDensity sourceDensity
+sourceDensity z = sourceImageDensity (sourceChart z)
+```
+
+but replaces the previous a.e. lower-bound input by:
+
+```text
+forall-eventually z in nhds z0, eps <= sourceDensity z.
+```
+
+The proof extracts an open set `H` on which the lower bound holds, calls the
+previous theorem inside `G inter H`, returns `V subset G`, and uses
+`ae_restrict_mem` plus `V subset H` to supply the a.e. lower-bound hypothesis.
+
+The conclusion is unchanged: from supplied determinant-chart reverse
+domination on `V`, `Cdet < infinity`, and nonzero finite `eps`, it proves:
+
+```text
+rawHaar.restrict rawSourceSet
+  <= (Cdet * eps^-1) •
+       Measure.map rawMap (coordinateSourceMeasure.restrict V),
+```
+
+plus `(Cdet * eps^-1) < infinity`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-eventual-source-density-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-eventual-source-density-raw-domination.md
+threads/03-block-product-reduction/review-a2-with-following-eventual-source-density-raw-domination.md
+```
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: determinant-chart reverse domination and the eventual lower bound
+remain hypotheses.  No continuity, positivity, or concrete identification of
+`sourceImageDensity` is proved.  No determinant-Haar transport/equality, exact
+raw-Haar pushforward, source-prior/original-prior transport, p.13
+coverage/equality, source-rank coverage, normal crossings, pole order, or RLCT
+is proved.
+
 ## A2 With-Following Reference-Source Reverse Raw Domination - 2026-07-02
 
 Lean now has:

@@ -12,6 +12,59 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following eventual source-density raw domination
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+Decision: this is a small but useful field conversion, not a source-density
+positivity theorem.  It replaces the previous a.e. lower-bound input
+
+```text
+forall-ae z with respect to baseJ.restrict V,
+  eps <= sourceImageDensity (sourceChart z)
+```
+
+by the topological input:
+
+```text
+forall-eventually z in nhds z0,
+  eps <= sourceImageDensity (sourceChart z).
+```
+
+The proof extracts an open lower-bound neighborhood and applies the previous
+concrete with-following lower-density theorem inside its intersection with the
+caller's neighborhood.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-eventual-source-density-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-eventual-source-density-raw-domination.md
+threads/03-block-product-reduction/review-a2-with-following-eventual-source-density-raw-domination.md
+```
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: determinant-chart reverse domination remains a hypothesis, and the
+eventual lower bound on `sourceDensity` remains a hypothesis.  This does not
+prove continuity, positivity, concrete identification of `sourceImageDensity`,
+exact raw-Haar pushforward, determinant-Haar transport, source-prior/original
+prior transport, p.13 coverage/equality, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Next A2 target: do not add more lower-density wrappers unless they discharge a
+field consumed by a downstream theorem.  The genuine frontiers remain
+determinant-side endpoint image domination/equality for the concrete
+with-following reference source, or an actual proof of the eventual lower
+bound for the source-image density from concrete continuity and positive
+basepoint data.
+
 ## Latest controller decision - 2026-07-02, A2 with-following reference-source reverse raw domination
 
 Lean now has:

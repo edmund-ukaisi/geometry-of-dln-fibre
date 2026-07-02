@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following eventual source-density raw domination
+
+Reproduction:
+`reproduction-a2-with-following-eventual-source-density-raw-domination.md`.
+Statement card:
+`statement-card-a2-with-following-eventual-source-density-raw-domination.md`.
+Review:
+`review-a2-with-following-eventual-source-density-raw-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+This wraps the concrete with-following reference-source reverse raw-domination
+theorem by replacing its a.e. source-density lower-bound input with an
+eventual pullback lower bound near the base point.  The proof extracts an open
+lower-bound neighborhood `H`, applies the previous theorem inside `G inter H`,
+then uses `V subset H` and `ae_restrict_mem` to prove the a.e. lower bound on
+the returned shrink.
+
+Boundary: determinant-chart reverse domination and the eventual lower bound on
+`sourceDensity` remain hypotheses.  No continuity, positivity, or concrete
+identification of `sourceImageDensity` is proved.  No determinant-Haar
+transport/equality, exact raw-Haar pushforward, source-prior/original-prior
+transport, p.13 coverage/equality, source-rank coverage, normal crossings,
+pole order, or RLCT is proved.
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following reference-source reverse raw domination
 
 Reproduction:
