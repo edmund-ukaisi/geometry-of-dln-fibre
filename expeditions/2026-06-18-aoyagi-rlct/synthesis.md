@@ -25,6 +25,67 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Endpoint Active Readout - 2026-07-02
+
+Lean now connects the endpoint topology tuple back to the active selected-entry
+source-coordinate chart, without stepping into determinant-chart Haar or raw
+maps.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New declarations:
+
+```text
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_C_one_submatrix_eq_displayedPostPivotResidualBlock
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_C_zero_submatrix_eq_followingFactor
+Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout
+Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_activeReadout_comp_referenceSource_eq_prod
+```
+
+The pointwise theorem says that if
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple ... z,
+```
+
+then the endpoint active readout returns
+
+```text
+activeReadout (Y z)
+  = ((z.1.1, chartMap pivotNext z.1.yNext), z.2).
+```
+
+This is the expected finite-coordinate bridge: `C 1` reads as the already
+charted selected-entry successor residual coordinates, and `C 0` reads as the
+independent following matrix.  The measure corollary composes this readout
+with `Y` and recovers the product reference measure from the landed active
+selected-entry source-coordinate COV.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-active-readout.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-active-readout.md
+```
+
+Boundary: this is a finite endpoint-coordinate readout and composite
+pushforward only.  It is not endpoint determinant-chart Haar equality, not a
+raw-map pushforward, not a formal-product/source-image domination theorem, not
+source-image coverage, not normal crossings, not pole order, and not RLCT.
+
+Verification: direct warning-clean elaboration of the two touched Lean modules
+passed; focused builds for both modules passed, replaying only pre-existing
+warning noise from untouched modules; full local `lake build DLNFibre` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit;
+`git diff --check` passed; direct axiom probes for the new theorem
+declarations reported `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Active Selected-Entry Reference COV - 2026-07-02
 
 Lean now has a source-coordinate product COV for the enlarged with-following

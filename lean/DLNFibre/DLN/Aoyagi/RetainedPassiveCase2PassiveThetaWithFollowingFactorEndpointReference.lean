@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
 
 /-!
 # Case 2 passive theta with-following endpoint reference measure
@@ -317,6 +318,66 @@ theorem measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChar
     followingRef hactiveTheta_meas measurable_id]
   rw [hactiveTheta]
   simp
+
+set_option linter.style.longLine false in
+/-- Composing the endpoint topology tuple with the finite active-coordinate
+readout gives the same reference-measure pushforward as the source-coordinate
+active selected-entry chart.
+
+This is still only a coordinate readout of the endpoint image.  It does not
+identify the endpoint image measure with determinant-chart Haar measure and
+does not assert any raw-map pushforward. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_activeReadout_comp_referenceSource_eq_prod
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let passiveRef :=
+      case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+    let followingRef :=
+      matrixEntryReferenceMeasure
+        (Case2ResidualColIndex n S (J + 1)) τ
+    let activeReadout :
+        TopologyTuple ρ κ' ℝ →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout
+        n e
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e
+    Measure.map (fun z ↦ activeReadout (Y z))
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) =
+      ((passiveRef.prod
+        ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+            SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))).prod followingRef) := by
+  intro pivotNext passiveRef followingRef activeReadout Y
+  have hfun :
+      (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        activeReadout (Y z)) =
+        (fun z :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+          ((z.1.1,
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)) := by
+    funext z
+    simpa [activeReadout, Y, pivotNext] using
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+        (ρ := ρ) n hS hcont hnext z eNext e
+  rw [hfun]
+  simpa [pivotNext, passiveRef, followingRef] using
+    measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_eq_prod
+      (ρ := ρ) (τ := τ) n hS hnext Rres
 
 set_option linter.style.longLine false in
 /-- Endpoint topology-tuple image measure of the enlarged concrete

@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint active readout
+
+Lean now has a pointwise endpoint-coordinate readout connecting the endpoint
+topology tuple back to the active selected-entry source chart:
+
+```text
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_C_one_submatrix_eq_displayedPostPivotResidualBlock
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_C_zero_submatrix_eq_followingFactor
+Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout
+Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_activeReadout_comp_referenceSource_eq_prod
+```
+
+The readout theorem says that for
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple ... z,
+```
+
+one gets
+
+```text
+activeReadout (Y z)
+  = ((z.1.1, chartMap pivotNext z.1.yNext), z.2).
+```
+
+The measure corollary pushes the reference source by `activeReadout o Y` and
+recovers the same product measure as the active selected-entry source-coordinate
+COV.  Decision: this is the correct next bridge from endpoint tuples to the
+landed source-coordinate COV.  It deliberately avoids determinant-chart Haar
+identification: it reads a finite coordinate marginal of the endpoint tuple,
+not the full endpoint image measure.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor active selected-entry reference COV
 
 Lean now has the source-coordinate selected-entry product COV layer for the
