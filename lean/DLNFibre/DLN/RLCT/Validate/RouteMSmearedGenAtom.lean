@@ -4,8 +4,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedProjCancel
 /-!
 # `RouteMSmearedGenAtom` — the general-`L` smeared chart-eval `prod M chart = z•(P₁·H̄)`
 
-The general-`L` (`2 ≤ L`, arbitrary depth) discharge of the chart-eval, generalizing the L=2
+The general-`L` (`0 < L`, arbitrary depth) discharge of the chart-eval, generalizing the L=2
 `prod_chartL2Params` (`RouteMSmearedChartL2`) to a front PRODUCT of layers rather than a single `A⁰`.
+(At `L = 1` the front product is definitionally `prodAux M A 0 = 1`, so the collapse still holds;
+the SMEARED branch it feeds is gated on `2 ≤ L`, but the algebra here needs only `0 < L`.)
 
 The deepest factor `A^{L−1}` (size `M_{L−1} × M_L`) is row-split via `deepWidthEquiv (r + s = M_{L−1})`
 exactly as at L=2 (top `r` rows the radial-minus-shear `z·H̄ − Λ₀·S_bot`, bottom `s` rows the residual
