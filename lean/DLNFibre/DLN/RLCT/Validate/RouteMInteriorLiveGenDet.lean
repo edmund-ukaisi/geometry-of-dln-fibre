@@ -854,6 +854,45 @@ theorem stairLowerTriDiag_of_blocks (V : ℕ → Type) [∀ k, AddCommGroup (V k
           have := hupper (s + 1) (s' + 1) (by omega)
           simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
 
+/-- **`StairLowerTriDiag` from IN-RANGE per-slot block facts.** The bounded variant of
+`stairLowerTriDiag_of_blocks`: the diag/upper families are needed only for slots `s < n` (out-of-range
+slots `s ≥ n` have `stairIncl V n s = 0`, so they never constrain `f`). This is the usable form when
+`f s ≠ 0` for some `s ≥ n` (as here: `genF s = id` on the nonzero out-of-range `genV s`). Same
+recursion as `stairLowerTriDiag_of_blocks`, carrying the `< n` bound (every index used is reachable). -/
+theorem stairLowerTriDiag_of_blocks_lt (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
+    ∀ (n : ℕ) (f : (s : ℕ) → V s →ₗ[ℝ] V s) (T : StairProd V n →ₗ[ℝ] StairProd V n),
+      (∀ s, s < n → (stairProj V n s).comp (T.comp (stairIncl V n s)) = f s) →
+      (∀ s s', s' < s → s < n → (stairProj V n s').comp (T.comp (stairIncl V n s)) = 0) →
+      StairLowerTriDiag V n f T
+  | 0, _, _, _, _ => trivial
+  | (n + 1), f, T, hdiag, hupper => by
+      refine ⟨?_, ?_, ?_⟩
+      · exact hdiag 0 (by omega)
+      · apply LinearMap.ext
+        intro vt
+        show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+            (T ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt)) = 0
+        rw [show (LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n))
+              (T ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt))
+            = ((LinearMap.fst ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp T)
+                ((LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)) vt) from rfl,
+          stairInr_eq_sum_incl_proj V n vt, map_sum]
+        apply Finset.sum_eq_zero
+        intro j _
+        have hj := hupper (j.val + 1) 0 (by omega) (by omega)
+        have := congrFun (congrArg (fun (m : _ →ₗ[ℝ] _) => (m : _ → _)) hj)
+          (stairProj (fun k => V (k + 1)) n j.val vt)
+        simpa only [LinearMap.comp_apply, stairProj] using this
+      · refine stairLowerTriDiag_of_blocks_lt (fun k => V (k + 1)) n (fun s => f (s + 1))
+          ((LinearMap.snd ℝ (V 0) (StairProd (fun k => V (k + 1)) n)).comp
+            (T.comp (LinearMap.inr ℝ (V 0) (StairProd (fun k => V (k + 1)) n)))) ?_ ?_
+        · intro s hs
+          have := hdiag (s + 1) (by omega)
+          simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
+        · intro s s' hs' hs
+          have := hupper (s + 1) (s' + 1) (by omega) (by omega)
+          simpa only [stairProj, stairIncl, LinearMap.comp_assoc] using this
+
 /-- **Single-slot diagonal read** `stairProj s (stairIncl s v) = v` (for `s < n`). The slot proj/incl
 at the SAME slot round-trips (`inl`/`fst` at the head, recursing through `inr`/`snd` on the tail). -/
 theorem stairProj_stairIncl_self (V : ℕ → Type) [∀ k, AddCommGroup (V k)] [∀ k, Module ℝ (V k)] :
@@ -2771,6 +2810,35 @@ theorem stairProj_T_stairIncl_diag_snd (M : Fin (L + 1) → ℕ) (ha : StructAdm
     congr 1]
   rw [Equiv.symm_apply_apply]
 
+/-- **The LEAF DIAGONAL LIFT** `(stairProj (L−1) (T (stairIncl (L−1) v))).2 = (genF (L−1) v).2` — at the
+leaf boundary `s.val = L−1` the lift slot is empty (`liftDim (L−1) = 0`, `gatherLift_last`), so `genV
+(L−1).2 = Fin 0 → ℝ` is a `Subsingleton` and both sides agree. -/
+theorem stairProj_T_stairIncl_diag_snd_leaf (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (s : Fin L) (hleaf : s.val = L - 1) (v : genV M s.val) :
+    (stairProj (genV M) L s.val
+        (packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+            ((eInGen M ha).symm (stairIncl (genV M) L s.val v))))).2
+      = (genF M ha y₀ s.val v).2 := by
+  have h0 : liftDim M (tDesc M (tach M)) s.val = 0 := by rw [hleaf]; exact gatherLift_last M ha
+  haveI : Subsingleton (Fin (liftDim M (tDesc M (tach M)) s.val) → ℝ) := by
+    rw [h0]; infer_instance
+  exact Subsingleton.elim _ _
+
+/-- **The LEAF DIAGONAL FRAME** `(stairProj (L−1) (T (stairIncl (L−1) v))).1 = (genF (L−1) v).1` — at the
+leaf boundary `s.val = L−1`, `t = Text(L+1) = 0` collapses the K/N/X roles; `Cgen(L) = flatBlock
+(schurFrameMap (slotReadGen (L−1)))` still holds (`Cgen_leaf_eq_flatBlock_schurFrameMap`), so the SAME
+collapse (`schurFrameGenMap_fderiv_collapse` + `slotReadGen_eInGen_symm` + `stairProj_stairIncl_self`)
+threads through `genF`'s `frameToSchurIncGen` conjugation — uniformly with the interior. -/
+theorem stairProj_T_stairIncl_diag_fst_leaf (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+    (y₀ : Fin (routeMAmbient M) → ℝ) (s : Fin L) (hleaf : s.val = L - 1) (v : genV M s.val) :
+    (stairProj (genV M) L s.val
+        (packStairGen M ha ha.hL
+          (fderiv ℝ (fun y => BparamsLeafGen M ha y) y₀
+            ((eInGen M ha).symm (stairIncl (genV M) L s.val v))))).1
+      = (genF M ha y₀ s.val v).1 := by
+  sorry
+
 /-- **The UPPER-block FRAME** `(stairProj s' (T (stairIncl s v))).1 = 0` for an off-slot interior `s'`
 (`s' ≠ s`, `s'.val + 1 < L`). Same collapse as the diagonal frame, but the `slotReadGen s'` input reads
 slot `s' ≠ s` of `stairIncl s v` — `stairProj_stairIncl_ne` gives `0`, so `schurFrameDeriv (…) 0 = 0`. -/
@@ -2869,45 +2937,41 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   have hcoupling : eihdcGen M ha y₀ = stairCouplingOf (genV M) L T := rfl
   rw [hcoupling]
   refine stairMap_eq_of_lowerTriDiag (genV M) L (genF M ha y₀) T ?_
-  -- The two per-slot block families (via `stairLowerTriDiag_of_blocks`): diag `= genF s`, upper `= 0`.
-  refine stairLowerTriDiag_of_blocks (genV M) L (genF M ha y₀) T ?_ ?_
-  · -- DIAGONAL: `stairProj s ∘ T ∘ stairIncl s = genF s`, all `s : ℕ`.
-    intro s
-    by_cases hsL : s < L
-    · -- interior/leaf slot: `Prod.ext` on the frame `.1` and lift `.2`.
-      apply LinearMap.ext; intro v
-      apply Prod.ext
-      · -- frame `.1`: `stairProj_T_stairIncl` bridge + `_diag_fst` (interior) / leaf.
-        show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).1 = ((genF M ha y₀ s) v).1
-        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
-        by_cases hint : s + 1 < L
-        · exact stairProj_T_stairIncl_diag_fst M ha y₀ ⟨s, hsL⟩ hint v
-        · sorry
-      · -- lift `.2`: `_diag_snd` (interior) / leaf (`liftDim = 0`, subsingleton).
-        show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).2 = ((genF M ha y₀ s) v).2
-        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
-        by_cases hint : s + 1 < L
-        · exact stairProj_T_stairIncl_diag_snd M ha y₀ ⟨s, hsL⟩ hint v
-        · sorry
-    · -- `s ≥ L`: `genV s` is a subsingleton (out-of-range slot), so any two maps agree.
-      sorry
-  · -- UPPER: `stairProj s' ∘ T ∘ stairIncl s = 0` for `s' < s`.
-    intro s s' hs'
-    by_cases hsL : s < L
-    · -- both slots in range: `Prod.ext` on frame `.1` (`upper_fst`) and lift `.2` (`upper_snd`).
-      have hs'L : s' < L := by omega
-      have hs'1 : s' + 1 < L := by omega
-      have hne : (⟨s', hs'L⟩ : Fin L) ≠ ⟨s, hsL⟩ := Fin.ne_of_val_ne (by simp; omega)
-      apply LinearMap.ext; intro v
-      apply Prod.ext
-      · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).1 = (0 : genV M s').1
-        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
-        exact stairProj_T_stairIncl_upper_fst M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 (by omega) hne v
-      · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).2 = (0 : genV M s').2
-        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
-        exact stairProj_T_stairIncl_upper_snd M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 hne v
-    · -- `s ≥ L`: `stairIncl s = 0` (out-of-range), so `T (stairIncl s v) = 0` ⇒ `stairProj s' 0 = 0`.
-      sorry
+  -- IN-RANGE per-slot block families (`stairLowerTriDiag_of_blocks_lt`): out-of-range slots `s ≥ L`
+  -- have `stairIncl = 0` so never constrain `genF` (which is `id ≠ 0` on the nonzero out-of-range `genV s`).
+  refine stairLowerTriDiag_of_blocks_lt (genV M) L (genF M ha y₀) T ?_ ?_
+  · -- DIAGONAL: `stairProj s ∘ T ∘ stairIncl s = genF s`, `s < L`.
+    intro s hsL
+    -- `Prod.ext` on the frame `.1` and lift `.2`.
+    apply LinearMap.ext; intro v
+    apply Prod.ext
+    · -- frame `.1`: `stairProj_T_stairIncl` bridge + `_diag_fst` (interior) / leaf.
+      show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).1 = ((genF M ha y₀ s) v).1
+      rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
+      by_cases hint : s + 1 < L
+      · exact stairProj_T_stairIncl_diag_fst M ha y₀ ⟨s, hsL⟩ hint v
+      · have hleaf : (⟨s, hsL⟩ : Fin L).val = L - 1 := by simp only []; omega
+        exact stairProj_T_stairIncl_diag_fst_leaf M ha y₀ ⟨s, hsL⟩ hleaf v
+    · -- lift `.2`: `_diag_snd` (interior) / leaf (`liftDim = 0`, subsingleton).
+      show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).2 = ((genF M ha y₀ s) v).2
+      rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
+      by_cases hint : s + 1 < L
+      · exact stairProj_T_stairIncl_diag_snd M ha y₀ ⟨s, hsL⟩ hint v
+      · have hleaf : (⟨s, hsL⟩ : Fin L).val = L - 1 := by simp only []; omega
+        exact stairProj_T_stairIncl_diag_snd_leaf M ha y₀ ⟨s, hsL⟩ hleaf v
+  · -- UPPER: `stairProj s' ∘ T ∘ stairIncl s = 0` for `s' < s < L`.
+    intro s s' hs' hsL
+    have hs'L : s' < L := by omega
+    have hs'1 : s' + 1 < L := by omega
+    have hne : (⟨s', hs'L⟩ : Fin L) ≠ ⟨s, hsL⟩ := Fin.ne_of_val_ne (by simp; omega)
+    apply LinearMap.ext; intro v
+    apply Prod.ext
+    · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).1 = (0 : genV M s').1
+      rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
+      exact stairProj_T_stairIncl_upper_fst M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 (by omega) hne v
+    · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).2 = (0 : genV M s').2
+      rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
+      exact stairProj_T_stairIncl_upper_snd M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 hne v
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
