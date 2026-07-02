@@ -245,4 +245,59 @@ theorem waist_carrier_data (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   · -- the invariant exponent `(δ/2)^{(L−1)−q}`
     exact hdlbA
 
+/-- **The `Λ₀`-entry bound.** On the front-carrier box (`frontTupleG` layers are `CarrierLayer`s, small
+`η`), with the Gram det `≠ 0`, every entry `|Lam0uG u a b| ≤ (1/γ)·nb` with `γ = dlb − (r−1)·nb`. Route
+4: `Λ₀ = Vρ⁻¹·Vσ` (`front_factorsThrough_general` + `gram_routing_eq_factor`), `Vρ` is `γ`-dominant, so
+the Varah `inv_mul_entry_bound` bites with the residual column bound `nb`. The existential returns
+`γ, nb, Acc` so the box supplier can pick `η` to make `γ > 0`. -/
+theorem Lam0uG_entry_bound (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
+    (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
+    (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
+    (hlayers : ∀ t : Fin L, q ≤ (t : ℕ) → (t : ℕ) < L - 1 →
+      CarrierLayer (frontTupleG M u t) r δ η)
+    (hgram : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0) :
+    ∃ (γ nb Acc : ℝ), 0 ≤ nb ∧ 0 ≤ Acc ∧ nb ≤ η * Acc
+      ∧ (((r : ℝ) - 1) * nb < (δ / 2) ^ (L - 1 - q) - η * Acc → 0 < γ)
+      ∧ (0 < γ → ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb) := by
+  obtain ⟨U, V, dlb, nb, Acc, hUV, hVρbound, hVσbound, hnb0, hAcc0, hnbA, hdlbA⟩ :=
+    waist_carrier_data M hL hrs u hδ hη hηδ q hq hqL hMq hwidth hlayers
+  set Vρ : Matrix (Fin r) (Fin r) ℝ := V.submatrix (id : Fin r → Fin r)
+    (fun k : Fin r => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k)) with hVρdef
+  set Vσ : Matrix (Fin r) (Fin s) ℝ := V.submatrix (id : Fin r → Fin r)
+    (fun j : Fin s => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inr j)) with hVσdef
+  refine ⟨dlb - ((r : ℝ) - 1) * nb, nb, Acc, hnb0, hAcc0, hnbA, ?_, ?_⟩
+  · -- `γ > 0` from `(r−1)·nb < (δ/2)^ℓ − η·Acc ≤ dlb`
+    intro hsmall
+    have : ((r : ℝ) - 1) * nb < dlb := lt_of_lt_of_le hsmall hdlbA
+    linarith
+  · -- the bound `|Λ₀ a b| ≤ (1/γ)·nb`
+    intro hγpos a b
+    haveI : Nonempty (Fin r) := ⟨⟨0, hr⟩⟩
+    -- `Vρ` is `γ`-dominant, `γ = dlb − (↑r−1)·nb`
+    have hdomlt : ((r : ℝ) - 1) * nb < dlb := by linarith [hγpos]
+    have hSRD : StrictRowDominant Vρ (dlb - ((r : ℝ) - 1) * nb) :=
+      hVρbound.strictRowDominant hdomlt
+    -- `Λ₀ = Vρ⁻¹·Vσ` via `gram_routing_eq_factor` (Gram ≠ 0) + the factoring `P₂ = P₁·(Vρ⁻¹·Vσ)`
+    have hVρdet : Vρ.det ≠ 0 := hSRD.det_ne_zero
+    have hLamEq : Lam0uG M hL hrs u = Vρ⁻¹ * Vσ := by
+      -- `P₁ = U·Vρ` (banked) and `P₂ = U·Vσ` (analogous column-select), so `P₂ = P₁·(Vρ⁻¹·Vσ)`
+      have hP1 : P1uG M hL hrs u = U * Vρ := P1uG_eq_mul_Vrho hL hrs u U V hUV
+      have hP2 : P2uG M hL hrs u = U * Vσ := by
+        funext i j
+        rw [P2uG, hUV, Matrix.mul_apply, Matrix.mul_apply]
+        exact Finset.sum_congr rfl (fun a _ => by rw [hVσdef, Matrix.submatrix_apply]; rfl)
+      have hunitVρ : IsUnit Vρ.det := isUnit_iff_ne_zero.mpr hVρdet
+      have hfac : P2uG M hL hrs u = P1uG M hL hrs u * (Vρ⁻¹ * Vσ) := by
+        rw [hP2, hP1]
+        calc U * Vσ = U * (1 : Matrix (Fin r) (Fin r) ℝ) * Vσ := by rw [Matrix.mul_one]
+          _ = U * (Vρ * Vρ⁻¹) * Vσ := by rw [Matrix.mul_nonsing_inv _ hunitVρ]
+          _ = U * Vρ * (Vρ⁻¹ * Vσ) := by simp only [Matrix.mul_assoc]
+      rw [Lam0uG, hfac, gram_routing_eq_factor _ _ hgram]
+    rw [hLamEq]
+    -- Varah: `|Vρ⁻¹·Vσ a b| ≤ (1/γ)·nb`, γ = dlb − (r−1)·nb, column bound `nb`
+    have hcol : ∀ i, |Vσ i b| ≤ nb := fun i => hVσbound i b
+    exact hSRD.inv_mul_entry_bound Vσ b (Mj := nb) hcol a
+
 end DLNFibre.DLN.RLCT
