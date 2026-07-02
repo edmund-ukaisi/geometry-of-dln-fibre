@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 Fixed `ell=1` Repeated Formula Dispatch - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData_natWidths
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+```
+
+For supplied `S : AoyagiDefinition3SourceData 2 1 H r C`, the first theorem
+dispatches to:
+
+```text
+L2RepeatedPositiveTheorem2FormulaBranch H r w1 w2 w3
+```
+
+under Nat-width identities for the three source reduced widths.  The second
+theorem obtains those Nat witnesses from `S`.  This records the branch forced
+by a supplied fixed `ell=1` datum; it does not assert that triangle branch
+packages cannot also exist for overlapping width profiles.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md
+```
+
+Boundary: finite fixed-`ell=1` Definition 3/Theorem 2 dispatch only.  No
+triangle-overlap exclusion, no arbitrary-`ell` branch choice, no
+branch-independent formula, no Eq5/chart construction, no normal crossings,
+no pole order, and no RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The two new
+declarations report only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+reviewer `Copernicus the 2nd` passed.
+
 ## A6 Fixed `ell=2` Triangle Formula Dispatch - 2026-07-02
 
 Lean now has:

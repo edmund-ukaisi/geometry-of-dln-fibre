@@ -3425,6 +3425,80 @@ theorem exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sou
       exists_L_eq_two_ell_two_theorem2Formula_triangleBranchDisjunction_of_sourceData
         (H := H) (r := r) (C := C) S hw1 hw2 hw3⟩
 
+/-- A fixed `L=2`, `ell=1` Definition 3 source datum dispatches to the
+repeated-positive finite Theorem 2 branch.
+
+This records the branch forced by the supplied `ell=1` datum.  It does not
+claim that triangle branch packages cannot also exist for overlapping width
+profiles. -/
+theorem exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData
+    {H : ℕ → ℕ} {r w1 w2 w3 : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData 2 1 H r C)
+    (hw1 : aoyagiReducedWidthInt H r 1 = (w1 : ℤ))
+    (hw2 : aoyagiReducedWidthInt H r 2 = (w2 : ℤ))
+    (hw3 : aoyagiReducedWidthInt H r 3 = (w3 : ℤ)) :
+    L2RepeatedPositiveTheorem2FormulaBranch H r w1 w2 w3 := by
+  rcases
+      (exists_ell_one_sourceData_iff_repeatedPositive_of_L_eq_two
+        (H := H) (r := r)).mp ⟨C, S⟩ with
+    ⟨hw1_pos_z, hw2_pos_z, hw3_pos_z, hrep_z⟩
+  have hw1_pos_z' : (0 : ℤ) < (w1 : ℤ) := by
+    simpa [hw1] using hw1_pos_z
+  have hw2_pos_z' : (0 : ℤ) < (w2 : ℤ) := by
+    simpa [hw2] using hw2_pos_z
+  have hw3_pos_z' : (0 : ℤ) < (w3 : ℤ) := by
+    simpa [hw3] using hw3_pos_z
+  have hw1_pos : 0 < w1 := by exact_mod_cast hw1_pos_z'
+  have hw2_pos : 0 < w2 := by exact_mod_cast hw2_pos_z'
+  have hw3_pos : 0 < w3 := by exact_mod_cast hw3_pos_z'
+  have hrep : w1 = w2 ∨ w1 = w3 ∨ w2 = w3 := by
+    rcases hrep_z with h12 | h13 | h23
+    · left
+      have h12z : (w1 : ℤ) = (w2 : ℤ) := by
+        simpa [hw1, hw2] using h12
+      exact_mod_cast h12z
+    · right
+      left
+      have h13z : (w1 : ℤ) = (w3 : ℤ) := by
+        simpa [hw1, hw3] using h13
+      exact_mod_cast h13z
+    · right
+      right
+      have h23z : (w2 : ℤ) = (w3 : ℤ) := by
+        simpa [hw2, hw3] using h23
+      exact_mod_cast h23z
+  rcases exists_ell_one_theorem2Formula_of_L_eq_two_positive_repeated
+      (H := H) (r := r) (w1 := w1) (w2 := w2) (w3 := w3)
+      hw1 hw2 hw3 hw1_pos hw2_pos hw3_pos hrep with
+    ⟨Cbranch, u, v, m, data, hu_pos, hv_pos, Sbranch, hm, hceil, haParam,
+      horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hpair,
+      hlambda⟩
+  exact
+    ⟨hw1_pos, hw2_pos, hw3_pos, hrep, Cbranch, u, v, m, data, hu_pos, hv_pos,
+      Sbranch, hm, hceil, haParam, horder, hnat, hnonneg, hstrict_m, hle,
+      hnatNonneg, hm0, hm1, hpair, hlambda⟩
+
+/-- A fixed `L=2`, `ell=1` Definition 3 source datum supplies Nat-valued
+reduced widths and dispatches to the repeated-positive finite Theorem 2
+branch. -/
+theorem exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData_natWidths
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData 2 1 H r C) :
+    ∃ w1 w2 w3 : ℕ,
+      aoyagiReducedWidthInt H r 1 = (w1 : ℤ) ∧
+      aoyagiReducedWidthInt H r 2 = (w2 : ℤ) ∧
+      aoyagiReducedWidthInt H r 3 = (w3 : ℤ) ∧
+      L2RepeatedPositiveTheorem2FormulaBranch H r w1 w2 w3 := by
+  rcases exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+      ⟨1, C, S⟩ with
+    ⟨w1, w2, w3, hw1, hw2, hw3⟩
+  exact
+    ⟨w1, w2, w3, hw1, hw2, hw3,
+      exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData
+        (H := H) (r := r) (C := C) S hw1 hw2 hw3⟩
+
 /-- Any `L=2` Definition 3 source-data witness supplies Nat-valued reduced
 widths and yields the existing finite Theorem 2 branch disjunction.
 

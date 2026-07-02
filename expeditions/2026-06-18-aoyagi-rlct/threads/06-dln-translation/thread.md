@@ -19,6 +19,38 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, fixed `ell=1` repeated formula dispatch
+
+Reproduction:
+`reproduction-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch.md`.
+Review:
+`review-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData_natWidths
+```
+
+For supplied `S : AoyagiDefinition3SourceData 2 1 H r C`, the dispatch
+returns the repeated-positive Theorem 2 branch package.  It uses the fixed
+`ell=1` classifier to derive positive Nat widths and a repeated equality,
+then calls the repeated-positive finite formula constructor.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The two new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Copernicus the
+2nd` passed.
+
+Boundary: finite fixed-`ell=1` Definition 3/Theorem 2 dispatch only; no
+claim that triangle branch packages cannot overlap, no arbitrary-`ell` branch
+choice, branch-independent formula, Eq5 construction, chart production,
+normal crossings, pole order, or RLCT.
+
 ## Current slice - 2026-07-02, fixed `ell=2` triangle formula dispatch
 
 Reproduction:

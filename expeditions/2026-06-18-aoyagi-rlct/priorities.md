@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, fixed `ell=1` repeated formula dispatch
+
+Lean now has fixed-`ell=1` source-data dispatch to the repeated-positive
+Theorem 2 branch package:
+
+```text
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_ell_one_theorem2Formula_repeatedBranch_of_sourceData_natWidths
+```
+
+Decision: this is a genuine A6 finite dispatch refinement.  Because `ell=1`
+is supplied, the conclusion records the repeated-positive branch forced by
+that datum.  It does not claim that triangle branch packages cannot also
+exist for overlapping width profiles.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch.md
+threads/06-dln-translation/review-definition3-l-eq-two-ell-one-source-data-repeated-formula-branch-a6.md
+```
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The two new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Copernicus the 2nd` passed.
+
 ## Latest controller decision - 2026-07-02, fixed `ell=2` triangle formula dispatch
 
 Lean now has fixed-`ell=2` source-data dispatch to the odd/even triangle
