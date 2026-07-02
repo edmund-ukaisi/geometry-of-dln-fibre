@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Active Readout Writeback Factorization - 2026-07-02
+
+Lean now has:
+
+```text
+endpointTopologyTupleActiveWritebackRawData
+endpointTopologyTupleActiveWriteback
+endpointTopologyTupleActiveReadout_writeback
+endpointTopologyTupleActiveWriteback_readout
+case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_eq_activeWriteback_activeSelectedEntryChart
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+The new writeback reconstructs raw retained-passive data from charted active
+coordinates by keeping all passive fields, setting `C 0` equal to the supplied
+following factor, setting `C 1` to the residual-coordinate matrix associated
+to the charted center coordinate family, and endpoint-transporting by `e`.
+Lean proves both inverse identities with the existing endpoint-transport
+cancellation theorem and the elementary `value(matrix f) = f` calculation.
+
+The endpoint map now factors pointwise as:
+
+```text
+Y z =
+  activeWriteback
+    ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext),
+      z.2).
+```
+
+This is the clean structural separation needed for the next frontier: the
+nonlinear source part is exactly the selected-entry chart, while the endpoint
+topology tuple part is finite-coordinate repacking.
+
+Scout conclusions integrated here:
+
+- do not land a named `unweightedSource` localized active-chart wrapper unless
+  a downstream theorem needs it, because the honest statement needs signed-box
+  support or intersection bookkeeping;
+- the genuine non-wrapper target is localized determinant-chart measure
+  production for the bare endpoint image, not another source/readback wrapper;
+- a formal `LinearEquiv` wrapper around readout/writeback is feasible
+  mathematically but not necessary for this checkpoint, and Lean needs a small
+  additive/scalar API for `ofTopologyTuple` before it is clean.
+
+Boundary: no endpoint-Haar transport, determinant-Haar comparison, raw-map
+pushforward, raw-Haar normalization, source-prior/original-prior transport,
+coverage of the determinant chart, source-rank coverage, normal crossings,
+pole order, or RLCT is proved.
+
 ## A2 With-Following Active Selected-Entry Chart Local COV - 2026-07-02
 
 Lean now has:

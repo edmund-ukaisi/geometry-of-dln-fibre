@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following active readout writeback factorization
+
+Lean now has:
+
+```text
+endpointTopologyTupleActiveWritebackRawData
+endpointTopologyTupleActiveWriteback
+endpointTopologyTupleActiveReadout_writeback
+endpointTopologyTupleActiveWriteback_readout
+case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_eq_activeWriteback_activeSelectedEntryChart
+```
+
+Decision: this is useful endpoint-coordinate infrastructure.  It proves that
+the active endpoint readout has an explicit finite-coordinate writeback
+inverse, and packages the bare with-following endpoint map as:
+
+```text
+Y z = activeWriteback
+  ((z.passive, selectedEntryChart pivotNext z.yNext), z.following).
+```
+
+This isolates the nonlinear selected-entry chart from the endpoint
+topology-tuple repacking.  It should help the determinant-image frontier by
+making the bare endpoint image a writeback of the source active-chart image.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-active-readout-writeback-factorization.md
+```
+
+Boundary: this does not yet package a `LinearEquiv`; Lean would need a small
+API showing that `ofTopologyTuple` commutes with addition and scalar
+multiplication.  More importantly, it proves no endpoint-Haar transport,
+determinant-Haar comparison, raw-map pushforward, raw-Haar normalization,
+source-prior/original-prior transport, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
+Next A2 target: use this factorization to formulate the localized endpoint
+determinant-chart comparison on the actual endpoint image, rather than adding
+more source-side or readback wrappers.
+
 ## Latest controller decision - 2026-07-02, A2 with-following active selected-entry chart local COV
 
 Lean now has:

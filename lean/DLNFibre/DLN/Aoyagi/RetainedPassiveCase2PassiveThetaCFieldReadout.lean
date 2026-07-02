@@ -229,6 +229,129 @@ noncomputable def endpointTopologyTupleActiveReadout
       yChart F
 
 set_option linter.style.longLine false in
+/-- Raw retained-passive data written from charted active Case 2 coordinates.
+
+The input center coordinate is interpreted as the already-charted active
+`C 1` block, while the following factor supplies the active `C 0` block. -/
+noncomputable def endpointTopologyTupleActiveWritebackRawData
+    {ρ : Type*} {τ : Type}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :
+    RetainedPassiveNonredundantCoordinateData
+      (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  { A1passive := z.1.A1passive
+    F2 := z.1.F2
+    A3passive := z.1.A3passive
+    C := fun p ↦ by
+      classical
+      by_cases hp : p = 0
+      · subst p
+        simpa [case2PostPivotTwoEdgeDomain] using z.2
+      · have hp1 : p = 1 := Fin.eq_one_of_ne_zero p hp
+        subst p
+        exact
+          AoyagiResidualBlockCoordinateIndex.matrix
+            (fun c ↦ z.1.yNext (residualCoordEquiv c))
+    Ctop := z.1.Ctop
+    F3 := z.1.F3 }
+
+set_option linter.style.longLine false in
+/-- Write charted active Case 2 coordinates back into endpoint topology-tuple
+coordinates.
+
+This is the inverse coordinate map to `endpointTopologyTupleActiveReadout`.
+It is linear finite-coordinate repacking; it is not the nonlinear inverse of
+the selected-entry chart on original uncharted center coordinates. -/
+noncomputable def endpointTopologyTupleActiveWriteback
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+      TopologyTuple ρ κ' ℝ :=
+  fun z ↦
+    topologyTuple
+      ((endpointTopologyTupleActiveWritebackRawData
+        (ρ := ρ) (τ := τ) n z).endpointTransport e)
+
+set_option linter.style.longLine false in
+/-- Reading out after writing back charted active coordinates is the identity. -/
+theorem endpointTopologyTupleActiveReadout_writeback
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :
+    endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e
+      (endpointTopologyTupleActiveWriteback (ρ := ρ) (τ := τ) n e z) = z := by
+  classical
+  dsimp [endpointTopologyTupleActiveReadout, endpointTopologyTupleActiveWriteback]
+  simp [endpointTopologyTupleActiveWritebackRawData,
+    Case2PassiveThetaWithFollowingFactor.mk, Case2PassiveTheta.mk,
+    AoyagiResidualBlockCoordinateIndex.value, AoyagiResidualBlockCoordinateIndex.matrix,
+    Equiv.apply_symm_apply,
+    Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+    Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+    Case2PassiveTheta.F3, Case2PassiveTheta.yNext]
+
+set_option linter.style.longLine false in
+/-- Writing back after reading active coordinates from an endpoint tuple is the
+identity. -/
+theorem endpointTopologyTupleActiveWriteback_readout
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (T : TopologyTuple ρ κ' ℝ) :
+    endpointTopologyTupleActiveWriteback (ρ := ρ) (τ := τ) n e
+      (endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T) = T := by
+  classical
+  let data := ofTopologyTuple (K := ℝ) (ρ := ρ) (κ' := κ') T
+  let raw := data.endpointTransport (fun q ↦ (e q).symm)
+  have hraw :
+      endpointTopologyTupleActiveWritebackRawData
+          (ρ := ρ) (τ := τ) n
+          (endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T) =
+        raw := by
+    apply ext_fields
+    · rfl
+    · funext p
+      rfl
+    · funext p
+      rfl
+    · funext p
+      ext i j
+      fin_cases p
+      · simp [endpointTopologyTupleActiveReadout, endpointTopologyTupleActiveWritebackRawData,
+          raw, data, RetainedPassiveNonredundantCoordinateData.endpointTransport,
+          Matrix.submatrix_apply, Case2PassiveThetaWithFollowingFactor.mk,
+          Case2PassiveTheta.mk]
+      · simp [endpointTopologyTupleActiveReadout, endpointTopologyTupleActiveWritebackRawData,
+          raw, data, RetainedPassiveNonredundantCoordinateData.endpointTransport,
+          Matrix.submatrix_apply, AoyagiResidualBlockCoordinateIndex.value,
+          AoyagiResidualBlockCoordinateIndex.matrix,
+          Case2PassiveThetaWithFollowingFactor.mk, Case2PassiveTheta.mk,
+          Case2PassiveTheta.yNext]
+    · rfl
+    · rfl
+  calc
+    endpointTopologyTupleActiveWriteback (ρ := ρ) (τ := τ) n e
+        (endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T)
+        = topologyTuple (raw.endpointTransport e) := by
+          simp [endpointTopologyTupleActiveWriteback, hraw, raw]
+    _ = topologyTuple data := by
+          rw [show raw.endpointTransport e = data by
+            simpa [raw] using
+              endpointTransport_symm_endpointTransport
+                (K := ℝ) (ρ := ρ) (fun q ↦ (e q).symm) data]
+    _ = T := by
+          simp [data]
+
+set_option linter.style.longLine false in
 /-- The active-coordinate readout from endpoint topology tuples is continuous.
 
 This is only continuity of finite coordinate projections and endpoint
@@ -505,6 +628,49 @@ theorem endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelect
     · simpa [rawData, case2PassiveThetaWithFollowingFactorRetainedData,
         case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor,
         Case2PassiveThetaWithFollowingFactor.mk] using hF
+
+set_option linter.style.longLine false in
+/-- The enlarged Case 2 endpoint topology tuple is exactly the active
+writeback of the selected-entry active chart.
+
+This packages the endpoint map as a linear finite-coordinate repacking after
+the nonlinear selected-entry source chart.  It is a pointwise factorization,
+not a determinant-Haar or raw-map pushforward theorem. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_eq_activeWriteback_activeSelectedEntryChart
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦
+        ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e
+    Y z = endpointTopologyTupleActiveWriteback n e (activeChart z) := by
+  intro pivotNext activeChart Y
+  calc
+    Y z =
+        endpointTopologyTupleActiveWriteback n e
+          (endpointTopologyTupleActiveReadout n e (Y z)) := by
+      exact
+        (endpointTopologyTupleActiveWriteback_readout
+          (ρ := ρ) (τ := τ) n e (Y z)).symm
+    _ = endpointTopologyTupleActiveWriteback n e (activeChart z) := by
+      rw [show endpointTopologyTupleActiveReadout n e (Y z) = activeChart z by
+        simpa [Y, activeChart, pivotNext] using
+          endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+            (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e]
 
 set_option linter.style.longLine false in
 /-- The enlarged Case 2 endpoint topology-tuple map is injective on the locus
