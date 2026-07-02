@@ -632,6 +632,128 @@ theorem measurableSet_case2PassiveThetaWithFollowingFactorEndpointSectorSet_of_s
     hΩ.image_of_continuousOn_injOn hYcont hYinj
   simpa [Y, case2PassiveThetaWithFollowingFactorEndpointSectorSet] using himage
 
+set_option linter.style.longLine false in
+/-- The active endpoint readout sends the actual enlarged endpoint image of a
+source set to the active selected-entry source-chart image of the same source
+set.
+
+This is only an image-level finite-coordinate statement.  It does not compare
+the endpoint image measure to determinant Haar and does not assert any raw-map
+pushforward. -/
+theorem endpointTopologyTupleActiveReadout_image_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_image_eq_activeSelectedEntryChart_image
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e
+    let activeReadout :
+        TopologyTuple ρ κ' ℝ →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      endpointTopologyTupleActiveReadout n e
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦ ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    activeReadout '' (Y '' Ω) = activeChart '' Ω := by
+  intro pivotNext Y activeReadout activeChart
+  ext x
+  constructor
+  · rintro ⟨T, ⟨z, hzΩ, rfl⟩, rfl⟩
+    refine ⟨z, hzΩ, ?_⟩
+    simpa [activeReadout, activeChart, Y, pivotNext] using
+      (endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e
+      ).symm
+  · rintro ⟨z, hzΩ, rfl⟩
+    refine ⟨Y z, ⟨z, hzΩ, rfl⟩, ?_⟩
+    simpa [activeReadout, activeChart, Y, pivotNext] using
+      endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e
+
+set_option linter.style.longLine false in
+/-- On the actual enlarged endpoint image of any source set contained in the
+nonzero-pivot locus, the active endpoint readout is injective.
+
+This is the local-image form of the elementary Case 2 selected-entry
+calculation: the active readout recovers passive fields, selected-entry
+charted center coordinates, and the following factor; the selected-entry chart
+is injective away from the pivot hyperplane.  No determinant-Haar transport or
+raw-map pushforward is proved here. -/
+theorem endpointTopologyTupleActiveReadout_injOn_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_image_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}) :
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e
+    let activeReadout :
+        TopologyTuple ρ κ' ℝ →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      endpointTopologyTupleActiveReadout n e
+    Set.InjOn activeReadout (Y '' Ω) := by
+  intro Y activeReadout T hT T' hT' hread
+  rcases hT with ⟨z, hzΩ, rfl⟩
+  rcases hT' with ⟨w, hwΩ, rfl⟩
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  have hactive :
+      ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2) =
+        ((w.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext), w.2) := by
+    calc
+      ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2) =
+          activeReadout (Y z) := by
+            simpa [activeReadout, Y, pivotNext] using
+              (endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+                (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e).symm
+      _ = activeReadout (Y w) := hread
+      _ = ((w.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext), w.2) := by
+            simpa [activeReadout, Y, pivotNext] using
+              endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart
+                (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext w eNext e
+  have hpassive : z.1.1 = w.1.1 :=
+    congrArg (fun q ↦ q.1.1) hactive
+  have hchart :
+      SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext :=
+    congrArg (fun q ↦ q.1.2) hactive
+  have hfollowing : z.2 = w.2 :=
+    congrArg (fun q ↦ q.2) hactive
+  have hzPivot : z.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hΩpivot hzΩ
+  have hwPivot : w.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hΩpivot hwΩ
+  have hyNext : z.1.yNext = w.1.yNext :=
+    SelectedEntrySignedBox.CenterCoord.injOn_chartMap_pivot_ne_zero pivotNext
+      hzPivot hwPivot hchart
+  have htheta : z.1 = w.1 := by
+    apply Prod.ext
+    · exact hpassive
+    · simpa [Case2PassiveTheta.yNext] using hyNext
+  have hzw : z = w := Prod.ext htheta hfollowing
+  exact congrArg Y hzw
+
 end Case2PassiveThetaWithFollowingFactor
 
 end Aoyagi

@@ -19370,3 +19370,37 @@ direct axiom probe reported only `[propext, Classical.choice, Quot.sound]`.
 Next priority: prove the finite reverse raw-source domination for
 `coordinateSourceMeasure`, or isolate exactly which local change-of-variables
 and source-image coverage hypotheses imply it.
+
+## Latest controller decision - 2026-07-02, with-following endpoint active-readout local image
+
+After the determinant-Haar frontier recheck, the next useful non-wrapper
+supporting fact is the local endpoint image structure needed to lift
+source-side COV information back through the endpoint coordinates.  Lean now
+proves:
+
+```text
+endpointTopologyTupleActiveReadout_image_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_image_eq_activeSelectedEntryChart_image
+
+endpointTopologyTupleActiveReadout_injOn_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_image_of_subset_pivotNonzero
+```
+
+These state that the active endpoint readout maps the actual with-following
+endpoint image `Y '' Omega` to the active selected-entry source-chart image,
+and that it is injective on `Y '' Omega` whenever `Omega` is contained in the
+nonzero-pivot locus.  The proof is the elementary Aoyagi Case 2 calculation:
+`R(Y z)` reads the passive fields, `chartMap pivotNext z.yNext`, and the
+following factor; selected-entry `chartMap` is injective off the pivot
+hyperplane.
+
+Recorded reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-active-readout-local-image.md
+```
+
+Boundary: this still does not prove determinant-Haar transport, source-density
+identification, reverse raw-source domination, raw-Haar normalization, source
+coverage, normal crossings, pole order, or RLCT extraction.  It is a structural
+local-image input for the localized endpoint COV theorem; the next genuine
+measure target remains determinant/source COV on `rawDetChart ∩ Y '' V`, not
+the full determinant chart.

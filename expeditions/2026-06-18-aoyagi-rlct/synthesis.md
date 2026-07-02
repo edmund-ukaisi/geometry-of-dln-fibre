@@ -34221,3 +34221,18 @@ bound remain explicit hypotheses.  This does not prove determinant-chart Haar
 transport, exact raw-Haar pushforward, raw-Haar normalization, source-image
 coverage, source-rank coverage, original source-prior transport, normal
 crossings, pole order, or RLCT extraction.
+
+## 2026-07-02 with-following endpoint active-readout local image
+
+Lean now records the endpoint-image structure needed before attempting the
+localized endpoint COV lift.  In
+`RetainedPassiveCase2PassiveThetaCFieldReadout.lean`, the active endpoint
+readout sends `Y '' Omega` exactly to the active selected-entry chart image and
+is injective on `Y '' Omega` when `Omega` lies in the nonzero-pivot locus.
+
+The calculation is elementary: `R(Y z)` is
+`((passive fields, chartMap pivotNext z.yNext), followingFactor)`, and
+selected-entry `chartMap` is injective away from the pivot hyperplane.  This
+does not identify the endpoint image with determinant Haar; it only supplies
+the local-image coordinate fact needed for a future Haar/COV comparison on
+`rawDetChart ∩ Y '' V`.
