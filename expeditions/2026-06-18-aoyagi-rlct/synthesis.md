@@ -15,6 +15,58 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A4 Active Guards and Finite Source Data - 2026-07-02
+
+Lean now has the first non-placeholder A4 source-production support layer
+below `SelectedEntryAtlasProducedBranchData`.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryCase2ProducedGuards.lean
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducedSourceData.lean
+```
+
+The guard file defines active-refined displayed Case 2 guards for both
+introduced-label and recurrence-aware branch states and proves that they cover
+the displayed active region.  The stopped equalities are kept as frontier
+alternatives only after the active pivot guard has been assumed.
+
+The source-data file defines `Case2AllPivotDisplayedSourceInput` and three
+branch records:
+
+```text
+Case2AllPivotContinuingProducedSourceData
+Case2AllPivotActualWidthStoppedProducedSourceData
+Case2AllPivotRowExhaustedStoppedProducedSourceData
+```
+
+Their constructors call the existing displayed Case 2 frontier packages from
+`BlowupArithmetic`: continuing weighted successor-following, actual-width
+stopped terminal frontier, and row-exhausted transported-prefix source-suffix.
+The row-exhausted source-suffix record uses the stronger
+`case2AllPivotRowExhaustedSourceSuffixGuard`, which includes `S + 1 <= L`; it
+is not total over all semantic row-exhausted stopped states.  The continuing
+record carries the concrete child recurrence and proves the recurrence-aware
+same-stage progress step.
+
+This layer is recurrence-valued in the displayed coefficient ring `R`.  A
+future source-backed all-pivot producer must either specialize the generic
+branch state parameter `alpha` to this value type, eventually `ℝ`, or add an
+explicit transport from displayed pivot values into `alpha`.
+
+Verification passed: focused builds for both touched modules, warning-clean
+direct elaboration for both touched Lean files, full local `lake build
+DLNFibre`, `lean/scripts/sorries`, touched-file forbidden-marker search, and
+`git diff --check`.
+
+This is not the final A4 producer.  It has no chart token, produced point,
+chart-domain membership, source-domain membership, `SelectedEntryProducedBranchPayload`,
+`SelectedEntryAtlasProducedBranchData`, center-alignment field,
+generic-`alpha` transport, final-stage row-exhausted/no-suffix terminal data,
+transition regularity, Jacobian/volume compatibility, normal crossings, pole
+order, or RLCT consequence.
+
 ## A4 All-Pivot Produced Branch-Data Contract - 2026-07-02
 
 New A4 packet:
@@ -48,6 +100,21 @@ produced successor/terminal source-data records.
 Xhigh read-only reviewer `Huygens` passed the guard convention, fixed-center
 obstruction, source boundary, payload fields, and kill conditions with no
 concrete findings.
+
+Follow-up correction: the displayed stopped equalities should not be used by
+themselves as total `SelectedEntryAtlasProducedBranchData` payload guards.
+Producer payloads are required for every state satisfying the guard, and the
+bare stopped equalities do not imply the Case 2 pivot is present.  Use
+active-refined guards for source production:
+
+```text
+activeGuard s and continuingGuard s
+activeGuard s and actualWidthStoppedGuard s
+activeGuard s and rowExhaustedStoppedGuard s
+```
+
+The active-refined guards have the same coverage on the active branch region
+and avoid source-production obligations on inactive states.
 
 ## A2 Formal-Product/Source-Image Comparison Frontier - 2026-07-02
 

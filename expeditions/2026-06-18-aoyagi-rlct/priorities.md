@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 active guards and finite source data
+
+Lean now proves the active-refined Case 2 source-production guard layer and a
+finite all-pivot source-data layer below the analytic producer payloads:
+
+```text
+case2AllPivotContinuingGuard
+case2AllPivotActualWidthStoppedGuard
+case2AllPivotRowExhaustedStoppedGuard
+case2AllPivotRowExhaustedSourceSuffixGuard
+case2AllPivotGuards_complete
+Case2AllPivotDisplayedSourceInput
+Case2AllPivotContinuingProducedSourceData
+Case2AllPivotActualWidthStoppedProducedSourceData
+Case2AllPivotRowExhaustedStoppedProducedSourceData
+```
+
+The branch records package existing displayed Case 2 frontier payloads:
+continuing weighted successor-following data, actual-width stopped terminal
+frontier data, and row-exhausted transported-prefix source-suffix data.  The
+row-exhausted source-suffix record is guarded by the additional suffix
+condition `S + 1 <= L`; it is not total over every semantic row-exhausted
+stopped state.  The continuing record also carries the recurrence child used
+by the progress bridge.
+
+This source-data layer is valued in the displayed coefficient ring `R`.  A
+future source-backed producer must either specialize the recurrence branch
+state to this value type, eventually `ℝ` for the signed-box atlas, or add a
+transport from displayed pivot values into a generic `alpha`.
+
+This is a support layer only.  It deliberately does not instantiate
+`SelectedEntryAtlasProducedBranchData`, does not build
+`SelectedEntryProducedBranchPayload`, does not use `SourceProductionObligation`,
+and does not solve center alignment for the fixed all-pivot atlas context.
+The next A4 source-moving target remains the actual producer payload field with
+chart tokens, produced points, source-domain membership, state laws, center
+alignment, generic-value specialization/transport, and final-stage
+row-exhausted/no-suffix handling.
+
 ## Latest controller decision - 2026-07-02, A4 produced branch-data contract
 
 New A4 packet:
@@ -37,6 +76,11 @@ actual-width-stopped and row-exhausted-stopped terminal/suffix data.
 The fixed-center issue is now explicit: a recurrence-wide theorem cannot use
 one all-pivot center while branch states vary over `(S,J)` unless it supplies a
 center-alignment field or moves to a dependent branch-indexed atlas interface.
+
+Refinement: for actual `SelectedEntryAtlasProducedBranchData`, the stopped
+payload guards must be active-refined.  The bare stopped equalities are
+frontier alternatives after pivot validity has been assumed; by themselves
+they are too broad as total payload domains.
 
 ## Latest controller decision - 2026-07-02, A2 formal-product/source-image comparison
 

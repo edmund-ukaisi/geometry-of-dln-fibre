@@ -30,8 +30,8 @@ and continuing-child recurrence data needed by the branch-progress bridge.
 
 ## Guard Contract
 
-For a recurrence branch state `s`, use the displayed Case 2 guard split on the
-forgotten support state `s.toIntroducedState`:
+For a recurrence branch state `s`, start from the displayed Case 2 guard split
+on the forgotten support state `s.toIntroducedState`:
 
 ```text
 continuingGuard s :=
@@ -67,7 +67,24 @@ J + 1 <= prefixMinNat n (S + 1)
 ```
 
 and the existing finite frontier theorem supplies guard completeness from this
-active guard.  The stopped guards are not required to be exclusive.
+active guard.  For `SelectedEntryAtlasProducedBranchData`, use the
+active-refined guards:
+
+```text
+activeContinuingGuard s :=
+  activeGuard s and continuingGuard s
+
+activeActualWidthStoppedGuard s :=
+  activeGuard s and actualWidthStoppedGuard s
+
+activeRowExhaustedStoppedGuard s :=
+  activeGuard s and rowExhaustedStoppedGuard s
+```
+
+The active conjunct is required because producer payload functions are total
+over their guards.  The stopped equalities alone do not assert that the
+selected pivot is present.  The stopped guards are not required to be
+exclusive.
 
 ## Payload Contract
 
@@ -129,6 +146,15 @@ prefixMinNat n S = J + 1
 
 This is the branch where the current prefix block is exhausted.  Its payload
 must keep the row/column orientation and transported product data explicit.
+The transported source-suffix payload is only a suffix-refined subcase: it also
+requires `S + 1 <= L`.  A final-stage row-exhausted/no-suffix state needs a
+separate terminal treatment or a branch invariant excluding it.
+
+The displayed source-chart recurrence data is valued in the coefficient ring
+of the chart variables.  Therefore a source-backed recurrence producer must
+either specialize the generic branch parameter `alpha` to that value type,
+eventually `ℝ` for the signed-box atlas, or carry an explicit transport from
+displayed pivot values into `alpha`.
 
 ## Center Alignment
 

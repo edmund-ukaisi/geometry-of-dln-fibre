@@ -55,6 +55,49 @@ payload records needed by `SelectedEntryAtlasProducedBranchData`.
 
 Xhigh read-only review by `Huygens` passed with no findings.
 
+Follow-up active-guard correction:
+`reproduction-a4-case2-active-guard-source-production-totality.md`.
+The bare stopped equalities are frontier alternatives after the active pivot
+guard is assumed; they are too broad as total source-production payload
+domains.  Use active-refined guards for `SelectedEntryAtlasProducedBranchData`.
+
+Lean follow-up:
+`statement-card-a4-case2-active-guard-source-production-totality.md`.
+Review:
+`review-a4-case2-active-guard-source-production-totality.md`.
+
+Lean now adds the active-refined displayed Case 2 guards and finite all-pivot
+source-data records below analytic producer payloads:
+
+```text
+SelectedEntryCase2ProducedGuards.lean
+SelectedEntryAllPivotProducedSourceData.lean
+```
+
+The new source-data records package existing displayed Case 2 frontier
+payloads for the continuing, actual-width stopped, and row-exhausted stopped
+branches.  The row-exhausted source-suffix record is guarded by the stronger
+suffix-refined row guard including `S + 1 <= L`; it is not total over every
+bare row-exhausted stopped state.  The continuing record also stores the
+concrete child recurrence and connects it to the recurrence-aware progress
+bridge.
+
+The finite recurrence data is valued in the displayed coefficient ring `R`.
+A final generic `AoyagiRecurrenceBranchState L n alpha` producer must either
+specialize `alpha` to this value type, eventually `ℝ`, or add an explicit
+transport from displayed pivot values into `alpha`.
+
+Focused module builds, warning-clean direct Lean checks for both touched
+files, full local `lake build DLNFibre`, `lean/scripts/sorries`, touched-file
+forbidden-marker search, and `git diff --check` passed.
+
+Boundary: this still does not construct `SelectedEntryAtlasProducedBranchData`
+or `SelectedEntryProducedBranchPayload`.  There are no produced chart tokens,
+produced points, chart-domain/source-domain witnesses, center alignment,
+generic-`alpha` transport, final-stage row-exhausted/no-suffix terminal data,
+transition regularity, Jacobian/volume compatibility, normal crossings, pole
+order, or RLCT consequence.
+
 ## 2026-07-02 Lean all-pivot producer recurrence termination
 
 Reproduction:

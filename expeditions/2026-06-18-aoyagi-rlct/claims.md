@@ -10,22 +10,71 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A4 active-guard finite source-data layer - 2026-07-02
+
+- **Statement.** For displayed Case 2 source production, the total producer
+  guards must include the active pivot condition.  The active-refined
+  continuing, actual-width-stopped, and row-exhausted-stopped guards cover the
+  active region.  Below the analytic producer, branch-specific finite
+  source-data records can package the existing displayed Case 2 frontier
+  payloads and recurrence witnesses.  The row-exhausted source-suffix record
+  is total only over a suffix-refined row guard with `S + 1 <= L`.
+- **Tier.** Aoyagi Case 2 blow-up/source-production support.
+- **Status.** Lean support layer proved.  This is not the final all-pivot
+  producer field.
+- **Kill-condition.** The result is read as an inhabitant of
+  `SelectedEntryAtlasProducedBranchData`; it supplies chart tokens or
+  chart/source-domain membership; it uses `SourceProductionObligation`; it
+  merges actual-width stopped and row-exhausted stopped data; or it drops the
+  fixed-center alignment obstruction; it treats source-suffix row data as
+  total over every row-exhausted stopped state; or it treats the `R`-valued
+  recurrence data as generic `alpha` data without a specialization or
+  transport.
+- **Evidence/source.** Aoyagi PDF pp. 19-22 for the selected Case 2 pivot
+  chart, `b'_i = u b_i`, regular `Q/P` transformations, transported
+  following factor, cleared block, and continue/stop split.  The analytic
+  produced-payload fields are not printed there.
+- **Pen-and-paper reproduction.**
+  `threads/04-blow-up-certificate/reproduction-a4-case2-active-guard-source-production-totality.md`;
+  statement card at
+  `threads/04-blow-up-certificate/statement-card-a4-case2-active-guard-source-production-totality.md`.
+- **Reproduction check.** xhigh review by `Socrates` PASS after fixes at
+  `threads/04-blow-up-certificate/review-a4-case2-active-guard-source-production-totality.md`.
+- **Lean target.** `SelectedEntryCase2ProducedGuards.lean` defines the
+  active-refined introduced-label and recurrence-aware guards and proves
+  active-region completeness.  `SelectedEntryAllPivotProducedSourceData.lean`
+  defines `Case2AllPivotDisplayedSourceInput`, the continuing and
+  actual-width branch source-data records, the suffix-refined row-exhausted
+  source-suffix record, constructors from source input, and continuing child
+  progress.
+- **Proved.** Focused builds, warning-clean direct elaboration of touched Lean
+  files, full local `lake build DLNFibre`, `lean/scripts/sorries`, touched-file
+  forbidden-marker search, and `git diff --check` passed.
+- **Nonclaims.** No `SelectedEntryAtlasProducedBranchData`, no
+  `SelectedEntryProducedBranchPayload`, no produced chart/point, no chart- or
+  source-domain membership, no center alignment, no generic-`alpha` transport,
+  no final-stage row-exhausted/no-suffix terminal data, no transition
+  regularity, no Jacobian/volume compatibility, no normal crossings, no pole
+  order, and no RLCT extraction is proved.
+
 ## Current A4 produced branch-data contract frontier - 2026-07-02
 
 - **Statement.** The remaining all-pivot recurrence-aware producer input is
   `SelectedEntryAtlasProducedBranchData
   (selectedEntryAllPivotAnalyticAtlasContext hcenter chartEquiv)
   (AoyagiRecurrenceBranchState L n alpha)`.  A source-backed proof must supply
-  displayed Case 2 guards, three produced payloads, payload-state laws,
-  continuing child recurrence data, and separate actual-width-stopped and
-  row-exhausted-stopped terminal/suffix source data.
+  active-refined displayed Case 2 guards, three produced payloads,
+  payload-state laws, continuing child recurrence data, and separate
+  actual-width-stopped and row-exhausted-stopped terminal/suffix source data.
 - **Tier.** Aoyagi Case 2 blow-up/source-production.
 - **Status.** Frontier contract recorded; not formalisation-ready as a Lean
   theorem.
 - **Kill-condition.** Any payload is a placeholder; source production is
   filled by `SourceProductionObligation`; a fixed all-pivot center is used
   while `(S,J)` varies without alignment; actual-width and row-exhausted
-  stopped data are merged; or progress data is treated as source realization.
+  stopped data are merged; bare stopped equalities are used as total payload
+  domains without the active pivot guard; or progress data is treated as
+  source realization.
 - **Evidence/source.** Aoyagi PDF pp. 19-22 for the displayed Case 2 pivot
   chart, `b'_i = u b_i`, regular `Q/P` transformations, `C'_J = Q^-1 C_J`,
   cleared `D'''`, and continue/stop prose.  The analytic produced-payload
