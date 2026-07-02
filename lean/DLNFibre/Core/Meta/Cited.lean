@@ -77,7 +77,13 @@ initialize citedAttr : ParametricAttribute String ←
       unless (← getEnv).find? decl |>.any (·.isAxiom) do
         throwError "`@[cited]` may only tag a cited external result declared as `axiom` — `{decl}` is not one"
       match stx with
-      | `(attr| cited $s:str) => pure s.getString
+      | `(attr| cited $s:str) =>
+        let src := s.getString
+        -- A cite MUST carry a real source: the accounting is only meaningful if a human can review
+        -- the source string (green ≠ source-honesty). Reject an empty/whitespace-only source.
+        if src.all Char.isWhitespace then
+          throwError "`@[cited]` requires a non-empty citation source string (author, theorem, section)"
+        pure src
       | _ => throwError "`@[cited]` expects a string literal source, e.g. `@[cited \"Aoyagi Thm 1\"]`"
   }
 

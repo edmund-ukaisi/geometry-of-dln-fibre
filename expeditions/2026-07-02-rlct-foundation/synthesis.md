@@ -91,3 +91,17 @@ cosmetic E0 `numTop = cTheta` evaluation step. So:
 - **Verified:** build 3838 green; sorries `0`; the aggregate cordon gate stays `UNACCOUNTED=0 CITED=3` over 2229
   decls (G1 added zero axioms/cites — pure geometry); Codex reviewed (exit 0). Controller-reviewed fidelity +
   name=content; merged (aggregator conflict resolved: cordon + Gap-1 import blocks coexist).
+
+## rev-cordon audit + cordon hardening (2026-07-02)
+
+Independent adversarial review of the cordon (`rev-cordon`, empirical attack-test in a throwaway worktree +
+decorrelated Codex, which worked from its cwd). **Verdict: SOUND** — `collectAxiomsBatch` verified case-for-case
+identical to Lean stdlib `CollectAxioms.collect`; empirically caught `opaque`-hiding, `native_decide`, internal
+names all RED. AoyagiCited fidelity OK (signatures verbatim-match the interface fields; source strings match the
+paper; payoff honestly r=0-only). Policy doc accurate. The one green-passes-a-false-cite path is the
+*documented, inherent* "machine accounts / human reviews source" boundary — not a hole.
+**Hardening applied (controller, from rev-cordon's findings):** (i) fixed a stale count in the fixture docstring;
+(ii) added fixture **(f)** — an axiom hidden in an `opaque`'s value → UNACCOUNTED (regression guard for the
+custom batch's completeness, the load-bearing claim); (iii) `@[cited]` now **rejects an empty/whitespace source**
+at elaboration, with a `(B'')` test. Battle-test now **17/17** (was 13); real gate unchanged `UNACCOUNTED=0
+CITED=3`. Skipped the cosmetic test-only-allowlist nit (negligible).

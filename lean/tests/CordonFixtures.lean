@@ -17,12 +17,15 @@ Verdict map (asserted by the harness):
 * `(b)` `usesCite` — CITED[src] (UNACCOUNTED = ∅, CITED = {citedFixtureAxiom});
 * `(c)` `usesUntagged` — UNACCOUNTED = {untaggedFixtureAxiom}, gate FAILS;
 * `(d)` `misplacedCitedAxiom` — a `@[cited]` axiom NOT in a `…Cited.lean` file → LOCATION violation;
-* `(e)` `transitiveCite` — CITED (kernel transitivity: it uses `usesCite` which uses the cite).
+* `(e)` `transitiveCite` — CITED (kernel transitivity: it uses `usesCite` which uses the cite);
+* `(f)` `opaqueHider`/`usesOpaque` — an axiom hidden in an `opaque`'s value → still UNACCOUNTED (the
+  batch traverses `opaqueInfo.value`; the regression guard for the load-bearing completeness case).
 
-The whole namespace is a violating set (it deliberately contains (c) and (d)); running the gate over
-it must exit nonzero with `UNACCOUNTED=1 CITED=1 LOCATION=2` (the untagged axiom is BOTH an UNACCOUNTED
-source for `usesUntagged` AND itself an untagged-axiom LOCATION violation; the misplaced cited axiom is
-the second LOCATION violation).
+The whole namespace is a violating set (it deliberately contains (c), (d), (f)); running the gate over
+it must exit nonzero with `UNACCOUNTED=5 CITED=2 LOCATION=3`. UNACCOUNTED (5): the two untagged axioms
+(`untaggedFixtureAxiom`, `hiddenFixtureAxiom`) + the three decls resting on them (`usesUntagged`,
+`opaqueHider`, `usesOpaque`). CITED (2): the located cite + the misplaced cite. LOCATION (3): the two
+untagged axioms + the misplaced cited axiom.
 -/
 
 open DLNFibre.Meta.Cited
@@ -69,5 +72,24 @@ axiom misplacedCitedAxiom : ∀ n : Nat, 0 + n = n
 /-- (d) A theorem using the misplaced-but-tagged axiom → CITED for accounting, but the axiom triggers
 a LOCATION violation. -/
 theorem usesMisplaced : 0 + 5 = 5 := misplacedCitedAxiom 5
+
+/-! ### (f) An axiom hidden behind an `opaque` value → STILL UNACCOUNTED
+
+The completeness of the custom `collectAxiomsBatch` is the load-bearing claim (a missed traversal case
+= a false green). `opaque` is the subtle case: its value is stored but the constant is irreducible.
+The batch reads `opaqueInfo.value`'s used constants, so an axiom in that value is NOT concealed —
+this fixture is the regression guard for that traversal case. -/
+
+/-- (f) An untagged axiom (a proof), hidden inside an `opaque` value's erased Prop component. -/
+axiom hiddenFixtureAxiom : True
+
+/-- (f) An `opaque` definition carrying the hidden axiom in its (proof) component. Code generation
+erases the Prop proof, but `collectAxioms` / `collectAxiomsBatch` read the *kernel* term of
+`opaqueInfo.value`, so the opacity does not conceal the axiom. -/
+opaque opaqueHider : {n : Nat // True} := ⟨3, hiddenFixtureAxiom⟩
+
+/-- (f) A theorem using the opaque → transitively UNACCOUNTED (the hidden axiom surfaces through the
+opaque's value; the opacity does not hide it). -/
+theorem usesOpaque : opaqueHider.val = opaqueHider.val := rfl
 
 end CordonFixtures

@@ -50,7 +50,8 @@ the right theorem. Keep the caveat next to the claim, as always.
    result*, and the cordon rejects `@[cited]` on a non-`axiom`). State it at exactly the strength the
    source gives, with its scope guard in the same signature.
 2. Tag it `@[cited "<source>"]` — the source string is *structured data* (the manifest is auto-derived
-   from it), so make it a precise citation (author, theorem number, paper section).
+   from it), so make it a precise citation (author, theorem number, paper section). An empty/whitespace
+   source is rejected at elaboration (the accounting only means something if a human can review it).
 3. Put it in a **located cite file**: a module whose last name-component is exactly `Cited` (the generic
    `…/Cited.lean` convention) **or** whose full module name is in
    `DLNFibre.Meta.Cited.citedFileAllowlist` (extend that list, in one place, for a named cite file such
@@ -107,8 +108,14 @@ asserts the verdicts:
 - **(b)** a decl using a tagged + located cite → **CITED[source]**;
 - **(c)** a decl using an **untagged** axiom → **UNACCOUNTED**, gate **fails**;
 - **(d)** a `@[cited]` axiom **outside** a located cite file → **LOCATION** violation, gate **fails**;
-- **(e)** a **transitive** cite (`A` uses `B`, `B` cited) → **CITED** (kernel transitivity).
+- **(e)** a **transitive** cite (`A` uses `B`, `B` cited) → **CITED** (kernel transitivity);
+- **(f)** an axiom hidden in an **`opaque`**'s value → still **UNACCOUNTED** (the batch traverses
+  `opaqueInfo.value`) — the regression guard for the custom `collectAxiomsBatch`'s completeness.
 
-The load-bearing assertions are (c) and (d): the fixture namespace audits to
-`UNACCOUNTED=2 CITED=2 LOCATION=2` with exit 1, naming the untagged and misplaced axioms — the proof
-the gate genuinely catches a forgotten or misplaced cite.
+Plus two elaboration-time rejections (`scripts/cited-test` builds a scratch file and asserts it fails
+to compile): `@[cited]` on a non-`axiom`, and `@[cited ""]` with an empty/whitespace source (a cite
+must carry a reviewable source).
+
+The load-bearing assertions are (c), (d), (f): the fixture namespace audits to
+`UNACCOUNTED=5 CITED=2 LOCATION=3` with exit 1, naming the untagged / opaque-hidden / misplaced axioms
+— the proof the gate genuinely catches a forgotten, hidden, or misplaced cite.

@@ -38,3 +38,12 @@ determinantal-atlas `lessons.md`, merged on `dev`):
   invisible until the aggregator was touched). Don't read "no warnings from warm cache" as "lint-clean"; a cold
   re-elaboration is the real check. (Scope discipline: fix the warnings your edit is responsible for; a
   pre-existing dev-baseline set is a separate hygiene pass, not silent scope-creep into an integration commit.)
+- **R1c — testing an "`opaque` hides an axiom" cordon fixture: a computable `opaque` with an axiom-valued body
+  trips the code generator** (`not supported by code generator; mark noncomputable`). Hide the axiom in an
+  ERASED Prop component instead — `opaque h : {n : Nat // True} := ⟨3, axiomProof⟩` — codegen erases the proof
+  so it compiles, but `collectAxioms` reads the *kernel* term of `opaqueInfo.value` and still surfaces the
+  axiom (verified: `opaqueHider → hiddenFixtureAxiom` UNACCOUNTED). Also: `String.trim` is deprecated at v4.29
+  (returns a `String.Slice`); for an empty/whitespace check use `s.all Char.isWhitespace` (no deprecated API).
+- **R1d — MEASURE fixture-namespace audit counts empirically before asserting them.** Adding one adversarial
+  fixture case shifts the whole `UNACCOUNTED/CITED/LOCATION` summary (here `2/2/2 → 5/2/3`); run the audit,
+  read the actual counts, then set the harness assertion + docstrings to match — don't hand-predict.

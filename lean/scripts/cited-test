@@ -6,9 +6,10 @@
 #
 # The load-bearing proof that the cordon catches violations: a cordon unproven to catch (c)/(d) is
 # worthless. Builds the fixture library + the exe, runs the audit over BOTH namespaces, and asserts:
-#   * over `CordonFixtures` (the violating set): exit 1, summary `UNACCOUNTED=2 CITED=2 LOCATION=2`
-#     (UNACCOUNTED: the untagged axiom decl itself + the theorem using it; CITED: the located cite +
-#     the misplaced cite; LOCATION: the untagged axiom + the misplaced cite), naming (c) and (d);
+#   * over `CordonFixtures` (the violating set): exit 1, summary `UNACCOUNTED=5 CITED=2 LOCATION=3`
+#     (UNACCOUNTED: two untagged axioms + three decls resting on them, incl. the opaque-hidden case
+#     (f); CITED: the located cite + the misplaced cite; LOCATION: two untagged axioms + the misplaced
+#     cite), naming (c), (d), (f);
 #   * `--manifest` over the fixtures lists the two cite sources;
 #   * over `DLNFibre` (the real gate): exit 0 (the real library is clean — a regression tripwire).
 # Exits 0 iff every assertion holds. Deterministic.
@@ -43,10 +44,12 @@ CODE_FIX=$?
 set -e
 echo "$OUT_FIX"
 check_exit "fixtures gate fails" 1 "$CODE_FIX"
-check "summary line" "UNACCOUNTED=2 CITED=2 LOCATION=2" "$OUT_FIX"
+check "summary line" "UNACCOUNTED=5 CITED=2 LOCATION=3" "$OUT_FIX"
 check "(c) untagged axiom surfaced" "untaggedFixtureAxiom" "$OUT_FIX"
 check "(d) misplaced cited axiom surfaced" "misplacedCitedAxiom" "$OUT_FIX"
 check "(c) unaccounted decl named" "usesUntagged" "$OUT_FIX"
+check "(f) opaque-hidden axiom surfaced" "hiddenFixtureAxiom" "$OUT_FIX"
+check "(f) opaque-using decl unaccounted" "usesOpaque" "$OUT_FIX"
 
 echo "== (B) manifest over the fixtures (informational, exit 0) =="
 set +e
@@ -73,6 +76,22 @@ set -e
 rm -f "$SCRATCH"
 check_exit "@[cited] on a def fails to compile" 1 "$CODE_REJ"
 check "rejection message" "may only tag a cited external result declared as \`axiom\`" "$OUT_REJ"
+
+echo "== (B'') @[cited] with an EMPTY/whitespace source must be REJECTED at elaboration =="
+SCRATCH2="$(mktemp --suffix=.lean)"
+cat > "$SCRATCH2" <<'LEAN'
+import DLNFibre.Core.Meta.Cited
+open DLNFibre.Meta.Cited
+@[cited ""]
+axiom emptySourceAx : True
+LEAN
+set +e
+OUT_EMPTY="$(lake env lean "$SCRATCH2" 2>&1)"
+CODE_EMPTY=$?
+set -e
+rm -f "$SCRATCH2"
+check_exit "@[cited \"\"] fails to compile" 1 "$CODE_EMPTY"
+check "empty-source rejection message" "non-empty citation source" "$OUT_EMPTY"
 
 echo "== (C) audit the REAL DLNFibre namespace + the retrofit cite file (regression tripwire, must PASS) =="
 set +e
