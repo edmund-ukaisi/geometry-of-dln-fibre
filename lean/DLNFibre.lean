@@ -726,3 +726,4 @@ import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotProducedPayloads
 import DLNFibre.DLN.Aoyagi.SelectedEntryAllPivotBranchIndexedPayloads
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCoordinateInventory
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
