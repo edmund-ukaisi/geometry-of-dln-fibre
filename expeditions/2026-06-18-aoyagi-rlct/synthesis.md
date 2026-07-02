@@ -10,6 +10,47 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Source-Prior Density And Determinant-Haar Frontier Audit - 2026-07-02
+
+After the formal-product wrapper, the controller rechecked Aoyagi pp. 10-13
+and sent two xhigh read-only scouts over the current APIs.
+
+PDF result: pp. 10-13 prove Schur elimination, product reduction, and the loss
+split.  This supports the retained-passive chart and Jacobian infrastructure.
+It does not state an original/source-prior transport theorem or a determinant
+Haar transport theorem for the selected-entry passive-theta endpoint image.
+
+Density audit: the selected-entry residual density is real, but it is only the
+residual-center signed-box density already included in `weightedBox`.  It does
+not identify the later arbitrary `sourceImageDensity : EdgeFamily -> ENNReal`.
+The missing input remains a source-measure identification or bounded-density
+theorem producing a positive locally bounded density on `sourceChart '' V`.
+
+Determinant-Haar audit: the endpoint reference image measure is a legitimate
+chart-produced image reference:
+
+```text
+case2PassiveThetaEndpointReferenceImageMeasure
+  = Measure.map Y (referenceSource.restrict Omega).
+```
+
+It is not additive Haar on the full determinant chart.  Existing raw-order
+Haar transport starts from ambient raw-coordinate Haar; it does not prove that
+`Measure.map Y (passiveSource.restrict V)` dominates restricted determinant
+Haar.  The missing input is a local image/coverage plus Jacobian transport
+theorem for `Y`, or an equivalent bounded-density comparison with
+`rawHaar.restrict rawDetChart`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/source-audit-a2-source-prior-density-and-det-haar-frontier.md
+```
+
+Boundary: no Lean theorem; no density construction, determinant Haar
+transport, source-prior transport, source coverage, normal crossings, pole
+order, or RLCT extraction.
+
 ## Formal-Product Domination From Determinant Domination And Source-Density Lower Bound - 2026-07-02
 
 Lean now proves:

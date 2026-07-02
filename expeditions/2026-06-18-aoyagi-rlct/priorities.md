@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, source-prior density and determinant-Haar frontier audit
+
+After the formal-product wrapper, xhigh read-only scouts `Dalton` and `Hegel`
+rechecked the two real source-prior frontier fields.
+
+Density verdict: no current Aoyagi-only Lean route constructs or identifies
+the full `sourceImageDensity` used in
+`sourceDensity z = sourceImageDensity (sourceChart z)`, nor proves its
+positivity/continuity/lower bound from local definitions.  The concrete
+`SelectedEntrySignedBox.CenterCoord.sourceDensity` is only the residual-center
+signed-box density already folded into `weightedBox`; it is not the full
+edge-family source-image density.
+
+Determinant-Haar verdict: no current non-circular Lean route proves
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet • Measure.map Y (passiveSource.restrict V).
+```
+
+Endpoint reference image measures are legitimate chart-produced image
+references, not unrestricted additive Haar on the retained-passive determinant
+chart.  Using them as a replacement for `rawHaar.restrict rawDetChart` would
+be an image-reference substitute, not Haar transport.
+
+Recorded audit:
+
+```text
+threads/03-block-product-reduction/source-audit-a2-source-prior-density-and-det-haar-frontier.md
+```
+
+Next priority: do not add more conditional wrappers at this frontier unless
+they remove a real field.  The next genuine construction target must be a
+source-backed density-identification theorem, a determinant-chart transport
+theorem for the endpoint map `Y`, or a local image/coverage plus Jacobian
+comparison strong enough to imply one of those.  Keep determinant-side reverse
+domination and source-density lower bound explicit until then.
+
 ## Latest controller decision - 2026-07-02, formal-product domination from determinant domination and source-density lower bound
 
 Lean now proves the formal-product coordinate-source composition theorem:

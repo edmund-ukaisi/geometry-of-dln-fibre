@@ -21,6 +21,24 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 source-prior density and determinant-Haar frontier audit
+
+Audit:
+`source-audit-a2-source-prior-density-and-det-haar-frontier.md`.
+
+Two xhigh read-only scouts rechecked the frontier after the formal-product
+wrapper.  `Dalton` found no current route to construct or identify the full
+`sourceImageDensity` or prove its lower bound; the selected-entry residual
+density is only the residual signed-box factor already in `weightedBox`.
+`Hegel` found no current route to prove determinant-side reverse domination
+by the passive-theta endpoint image; endpoint reference measures are image
+references, not unrestricted determinant-chart Haar.
+
+Controller decision: no further conditional wrapper is proposed here.  The
+next non-wrapper progress must construct source/prior density transport,
+determinant-chart transport for `Y`, or local image/coverage plus Jacobian
+comparison strong enough to imply one of those.
+
 ## 2026-07-02 A2 formal-product domination from determinant domination and source-density lower bound
 
 Reproduction:
