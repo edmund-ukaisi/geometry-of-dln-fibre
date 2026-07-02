@@ -82,4 +82,42 @@ theorem condBox_boxGen_frontLayers (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     rw [abs_le]
     exact hmem
 
+/-! ## The peeled point lands in the `boxGen` condBox -/
+
+/-- **A peeled point's non-pivot coords lie in `boxGen`.** For `y ∈ pi (fun k => boxGen (hN ▸ p.succAbove
+k))` and `hp : hN ▸ p = pivotCoordG`, the point `u := hN ▸ insertNth p z y` satisfies `∀ k ≠ pivotCoordG,
+u k ∈ boxGen k`. (Off the pivot axis, `u` reads a `y`-coord in exactly the matching `boxGen` interval.) -/
+theorem insertNth_hN_frontBox {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
+    {δ η : ℝ} (z : ℝ) {y : Fin n → ℝ}
+    (box₀ : Fin (n + 1) → Set ℝ)
+    (hbox₀ : ∀ k : Fin (routeMAmbient M), boxGen M hL r δ η k = box₀ (hN ▸ k))
+    (hy : y ∈ Set.univ.pi (fun k : Fin n => box₀ (p.succAbove k))) :
+    ∀ k, k ≠ pivotCoordG M hL hrs hr hc →
+      (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ) k ∈ boxGen M hL r δ η k := by
+  simp only [Set.mem_pi, Set.mem_univ, true_implies] at hy
+  intro k hk
+  rw [hbox₀ k]
+  -- reduce to `Fin (n+1)`: `(hN ▸ insertNth p z y) k = insertNth p z y (hN ▸ k)`,
+  -- and `hN ▸ k ≠ p` (else `k = hN ▸ p = pivot`).
+  have hval : (hN ▸ (Fin.insertNth p z y) : Fin (routeMAmbient M) → ℝ) k
+      = (Fin.insertNth p z y : Fin (n + 1) → ℝ) (hN ▸ k) := by
+    have kk : ∀ (N : ℕ) (h : N = n + 1) (g : Fin (n + 1) → ℝ) (w : Fin N),
+        (h ▸ g : Fin N → ℝ) w = g (h ▸ w) := fun N h g w => by subst h; rfl
+    exact kk (routeMAmbient M) hN (Fin.insertNth p z y) k
+  rw [hval]
+  have hkne : (hN ▸ k : Fin (n + 1)) ≠ p := by
+    intro h
+    apply hk
+    rw [← hp, ← h]
+    have kk : ∀ (N : ℕ) (hh : N = n + 1) (w : Fin N), (hh ▸ (hh ▸ w : Fin (n + 1)) : Fin N) = w :=
+      fun N hh w => by subst hh; rfl
+    exact (kk (routeMAmbient M) hN k).symm
+  rcases Fin.eq_self_or_eq_succAbove p (hN ▸ k) with h | ⟨k', hk'⟩
+  · exact absurd h hkne
+  · rw [hk', @Fin.insertNth_apply_succAbove n (fun _ => ℝ) p z y k']
+    exact hy k'
+
 end DLNFibre.DLN.RLCT
