@@ -19,6 +19,39 @@ using Aoyagi's paper as the only mathematical source.
 Do not consult the Lehalleur-Rimanyi source for this translation. Any later
 comparison belongs outside this Aoyagi-only expedition.
 
+## Current slice - 2026-07-02, equal-width positive-remainder formula wrapper
+
+Reproduction:
+`reproduction-definition3-equal-width-positive-remainder-formula-a6.md`.
+Statement card:
+`statement-card-a6-definition3-equal-width-positive-remainder-formula.md`.
+Review:
+`review-definition3-equal-width-positive-remainder-formula-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3CeilData.exists_positiveRemainderDecomposition
+AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_pos
+```
+
+The first theorem constructs `q,a` with `0 < a <= L` and `w = L*q+a` from
+`0 < L` and `0 < w`, using Euclidean division of `w-1`.  The second theorem
+uses that decomposition to call the existing equal-width finite Theorem 2
+formula package, so callers no longer need to supply `q,a` manually.
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The helper reports
+`[propext, Quot.sound]`; the wrapper reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Aristotle the
+2nd` passed after a documentation source-wording fix.
+
+Boundary: finite equal-width Definition 3/Theorem 2 arithmetic only; no
+arbitrary branch choice, branch-independent formula, finite exponent
+certificate, Eq5 construction, chart production, normal crossings, pole order,
+or RLCT.
+
 ## Current slice - 2026-07-02, fixed `ell=1` repeated formula dispatch
 
 Reproduction:

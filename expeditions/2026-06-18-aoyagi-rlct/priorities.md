@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, equal-width positive-remainder formula wrapper
+
+Lean now removes the caller-supplied positive-remainder decomposition from the
+equal-width finite Theorem 2 formula package:
+
+```text
+AoyagiDefinition3CeilData.exists_positiveRemainderDecomposition
+AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_pos
+```
+
+Decision: this is a small but real A6 finite-arithmetic convenience.  For
+`0 < L` and `0 < w`, the helper chooses `q=(w-1)/L` and
+`a=(w-1)%L+1`, proving `0<a<=L` and `w=L*q+a`; the wrapper then delegates to
+the already-reviewed equal-width decomposition formula theorem.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-equal-width-positive-remainder-formula-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-equal-width-positive-remainder-formula.md
+threads/06-dln-translation/review-definition3-equal-width-positive-remainder-formula-a6.md
+```
+
+Focused direct elaboration, focused module build, full local `lake build
+DLNFibre`, no-sorry audit, diff check, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The helper reports
+`[propext, Quot.sound]`; the wrapper reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Aristotle the 2nd` passed after a documentation source-wording fix.
+
 ## Latest controller decision - 2026-07-02, fixed `ell=1` repeated formula dispatch
 
 Lean now has fixed-`ell=1` source-data dispatch to the repeated-positive

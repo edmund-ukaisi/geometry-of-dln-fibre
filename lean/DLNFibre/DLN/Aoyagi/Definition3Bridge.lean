@@ -121,6 +121,18 @@ def equalWidthOfDecomposition
   aParam_pos := ha_pos
   aParam_le := ha_le
 
+/-- Every positive width has a quotient/remainder decomposition with residue
+in `1, ..., L`. -/
+theorem exists_positiveRemainderDecomposition
+    {L w : ℕ} (hL : 0 < L) (hw : 0 < w) :
+    ∃ q a : ℕ, 0 < a ∧ a ≤ L ∧ w = L * q + a := by
+  refine ⟨(w - 1) / L, (w - 1) % L + 1, ?_, ?_, ?_⟩
+  · omega
+  · have hlt : (w - 1) % L < L := Nat.mod_lt _ hL
+    omega
+  · have hdiv := Nat.div_add_mod (w - 1) L
+    omega
+
 /-- Definition 3's ceiling datum has a positive selected-count parameter. -/
 theorem one_le_ell {ell : ℕ} {m : Fin (ell + 1) → ℤ}
     (data : AoyagiDefinition3CeilData ell m) :
@@ -3931,6 +3943,58 @@ theorem exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_d
   exact
     ⟨C, m, data, hC, S, hm, hmconst, hceil, haParam, horder, hnat, hnonneg,
       hstrict, hle, hnatNonneg, hpair, hlambda⟩
+
+/-- Equal-width source data with explicit finite Theorem 2 formula data,
+choosing the positive-remainder decomposition automatically.
+
+This removes the caller-supplied `w = L * q + a`, `0 < a <= L` input from the
+equal-width formula package. -/
+theorem exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_pos
+    {L : ℕ} {H : ℕ → ℕ} {r w : ℕ}
+    (hL : 0 < L) (hw_pos : 0 < w)
+    (hconst :
+      ∀ s : ℕ, 1 ≤ s → s ≤ L + 1 →
+        aoyagiReducedWidthInt H r s = (w : ℤ)) :
+    ∃ (q a : ℕ)
+        (C : AoyagiSelectedCutpoints L)
+        (m : Fin (L + 1) → ℤ)
+        (data : AoyagiDefinition3CeilData L m),
+      0 < a ∧
+      a ≤ L ∧
+      w = L * q + a ∧
+      (∀ j : Fin (L + 1), C.cut j = j.val + 1) ∧
+      AoyagiDefinition3SourceData L L H r C ∧
+      m = aoyagiSelectedReducedWidths H r C ∧
+      (∀ j : Fin (L + 1), m j = (w : ℤ)) ∧
+      data.ceilWidth = (w : ℤ) + (q : ℤ) + 1 ∧
+      data.aParam = a ∧
+      data.theorem2OrderFormula = a * (L - a) + 1 ∧
+      (∀ j : Fin (L + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (L + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (L + 1),
+        (L : ℤ) * m i < ∑ j : Fin (L + 1), m j) ∧
+      (∀ i : Fin (L + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat L m i) ∧
+      aoyagiSelectedWidthPairSum L m =
+        (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 2) ∧
+      aoyagiTheorem2Lambda_fromCeilData L L H r m data =
+        aoyagiTheorem2RegularTerm L H r +
+          ((a : ℚ) * ((L : ℚ) - (a : ℚ))) / (4 * (L : ℚ)) -
+          (((L : ℚ) * ((L : ℚ) - 1)) / 4) *
+            (((w : ℚ) + (q : ℚ) + 1) +
+              (((a : ℚ) - (L : ℚ)) / (L : ℚ))) ^ 2 +
+          (((((L + 1) * L : ℕ) : ℚ) * (w : ℚ)^2) / 4) := by
+  rcases AoyagiDefinition3CeilData.exists_positiveRemainderDecomposition
+      (L := L) (w := w) hL hw_pos with
+    ⟨q, a, ha_pos, ha_le, hw⟩
+  rcases exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition
+      (L := L) (H := H) (r := r) (w := w) (q := q) (a := a)
+      ha_pos ha_le hw hconst with
+    ⟨C, m, data, hC, S, hm, hmconst, hceil, haParam, horder, hnat, hnonneg,
+      hstrict, hle, hnatNonneg, hpair, hlambda⟩
+  exact
+    ⟨q, a, C, m, data, ha_pos, ha_le, hw, hC, S, hm, hmconst, hceil, haParam,
+      horder, hnat, hnonneg, hstrict, hle, hnatNonneg, hpair, hlambda⟩
 
 end AoyagiDefinition3SourceData
 

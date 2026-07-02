@@ -6,6 +6,55 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A6 Equal-Width Positive-Remainder Formula Wrapper - 2026-07-02
+
+Lean now has:
+
+```text
+AoyagiDefinition3CeilData.exists_positiveRemainderDecomposition
+AoyagiDefinition3SourceData.exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_pos
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+```
+
+The first theorem proves that `0 < L` and `0 < w` give
+
+```text
+q = (w - 1) / L,    a = (w - 1) % L + 1,
+0 < a,             a <= L,          w = L*q + a.
+```
+
+The second theorem applies this decomposition and delegates to the existing
+equal-width formula theorem
+`exists_consecutive_equalWidth_theorem2Formula_of_constant_reducedWidth_decomposition`.
+This removes a caller-side finite arithmetic input from the equal-width lane.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-equal-width-positive-remainder-formula-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-equal-width-positive-remainder-formula.md
+threads/06-dln-translation/review-definition3-equal-width-positive-remainder-formula-a6.md
+```
+
+Boundary: finite equal-width Definition 3/Theorem 2 arithmetic only.  The docs
+now say explicitly that `w=L*q+a` is the Lean positive-remainder translation
+of Aoyagi's printed equal-width ceiling/residue formulas, not literal source
+wording.  No arbitrary branch choice, branch-independent formula, finite
+exponent certificate, Eq5/chart construction, normal crossings, pole order, or
+RLCT.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  The helper reports
+`[propext, Quot.sound]`; the wrapper reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Aristotle the
+2nd` passed after a documentation source-wording fix.
+
 ## A6 Fixed `ell=1` Repeated Formula Dispatch - 2026-07-02
 
 Lean now has:
