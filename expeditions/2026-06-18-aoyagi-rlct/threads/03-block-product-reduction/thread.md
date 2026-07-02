@@ -20501,6 +20501,57 @@ determinant-chart Haar transport, no source-image/source-rank coverage, no
 original source-prior transport, no scalar normalization, no normal crossings,
 no pole order, and no RLCT extraction.
 
+## 2026-07-02 A2 with-following original-volume source-image inverse-Haar density
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceImageReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+The p.13 theorem reproduces the exact scalar calculation: the with-following
+raw-order/source-chart two-stage identity and a supplied exact raw-source
+pushforward give
+
+```text
+sourceRef = c • originalVolume.restrict p13SourceSet.
+```
+
+After restricting to a measurable p.13 chart piece and using `0 < c`, this
+becomes:
+
+```text
+originalVolume.restrict chartPiece =
+  (sourceRef.withDensity (fun _ => c^-1)).restrict chartPiece.
+```
+
+The source-image theorem shrinks through the existing with-following
+source-image support package, so chart pieces contained in `sourceChart '' V`
+automatically lie in the p.13 source set.  It also returns readback,
+injectivity, continuity, measurable image, and p.13 support on the final
+shrink.
+
+Artifacts:
+
+```text
+reproduction-a2-with-following-original-volume-source-image-invhaar-density.md
+statement-card-a2-with-following-original-volume-source-image-invhaar-density.md
+```
+
+Focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeBridge`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, direct axiom probes, and xhigh review
+passed.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: exact raw-pushforward remains a hypothesis.  This is not
+determinant-Haar transport, raw-Haar transport, source-prior/original-prior
+transport, arbitrary source-density positivity, global source-image coverage,
+source-rank coverage, normal crossings, pole order, or RLCT extraction.
+
 ## 2026-07-01 Case 2 reverse raw-source density lower adapter
 
 Lean now proves the generic lower-density adapter:

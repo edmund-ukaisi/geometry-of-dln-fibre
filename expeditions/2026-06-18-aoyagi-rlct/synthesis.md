@@ -6,6 +6,76 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Volume Source-Image Inverse-Haar Density - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceImageReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+```
+
+The first theorem is the p.13 chart-piece bridge.  On a local with-following
+Case 2 shrink, if:
+
+```text
+Measure.map rawMap (thetaReference.restrict V) =
+  rawHaar.restrict rawSourceSet,
+```
+
+then for every measurable p.13 chart piece:
+
+```text
+originalVolume.restrict chartPiece =
+  (sourceRef.withDensity invHaarDensity).restrict chartPiece,
+```
+
+where:
+
+```text
+sourceRef = Measure.map sourceChart (thetaReference.restrict V)
+c = (Measure.map rawOrderMatrixTupleEquiv rawHaar).addHaarScalarFactor
+      (originalTupleVolume d)
+invHaarDensity = fun _ => ((c^-1 : NNReal) : ENNReal)
+```
+
+The proof follows the non-following inverse-Haar calculation: the
+with-following two-stage source-chart identity rewrites the supplied raw
+pushforward as `sourceRef`; the p.13 raw-order source-chart Haar equality gives
+`sourceRef = c • originalVolume.restrict p13SourceSet`; restriction to the
+chart piece and positivity of `c` invert the scalar; constant-density
+simplification gives the `withDensity` form.
+
+The second theorem shrinks through the existing with-following local
+source-image support theorem, so it also returns:
+
+```text
+readback (sourceChart z) = z,
+Set.InjOn sourceChart V,
+ContinuousOn sourceChart V,
+MeasurableSet (sourceChart '' V),
+sourceChart '' V subset p13SourceSet.
+```
+
+Boundary: the exact raw-pushforward is still a hypothesis.  This can identify
+a concrete local source-image density only for downstream statements that
+instantiate `sourceImageDensity` as this constant inverse-Haar density.  It
+does not prove determinant-Haar transport, raw-Haar transport,
+source-prior/original-prior transport, arbitrary source-density positivity,
+source-image coverage beyond the local chart, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched Lean-file forbidden-marker scan,
+direct axiom probes, and xhigh review passed.  The two declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Original-Volume Readback from Reverse Raw-Source Domination - 2026-07-02
 
 Lean now has:

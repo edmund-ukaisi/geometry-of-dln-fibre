@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following original-volume source-image inverse-Haar density
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_sourceImageReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+Decision: this is the exact-density counterpart to the existing with-following
+original-volume domination bridge.  Under the same explicit raw-pushforward
+identity, it identifies the restricted original edge-family volume on a local
+source-image chart piece as the source-image reference with constant
+inverse-Haar density.  This gives a concrete local density only in the branch
+where `sourceImageDensity` is instantiated as that inverse-Haar constant.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-source-image-invhaar-density.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-source-image-invhaar-density.md
+threads/03-block-product-reduction/review-a2-with-following-original-volume-source-image-invhaar-density.md
+```
+
+Boundary: exact raw-pushforward remains a hypothesis.  This does not prove
+determinant-Haar transport, raw-Haar transport, source-prior/original-prior
+transport, arbitrary source-density positivity, source-image coverage beyond
+the local chart, source-rank coverage, normal crossings, pole order, or RLCT.
+
+Next A2 target: connect this exact-density socket only to consumers that can
+use the concrete inverse-Haar density.  Do not claim it discharges the
+external source-density frontier unless the downstream theorem explicitly
+chooses that density.
+
 ## Latest controller decision - 2026-07-02, A2 with-following original-volume readback from reverse raw-source domination
 
 Lean now has:
