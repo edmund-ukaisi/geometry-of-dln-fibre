@@ -25,6 +25,65 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Endpoint Reference Image Domination - 2026-07-02
+
+Lean now has source-domain domination transport through the full enlarged
+endpoint map `Y`, with target the named endpoint image measure.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New declaration:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure_restrict_le_smul_endpointReferenceImage_of_sourceMeasure_le_smul_referenceSource
+```
+
+If
+
+```text
+sourceMeasure <= d • referenceSource,
+```
+
+then for any source set `Omega`,
+
+```text
+Measure.map Y (sourceMeasure.restrict Omega)
+  <=
+d • case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+      ... Rres Omega.
+```
+
+The proof restricts the source domination to `Omega`, rewrites
+`(d • referenceSource).restrict Omega`, uses continuity of `Y` for
+a.e.-measurability, and applies the existing pushforward-domination adapter.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-domination.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-domination.md
+```
+
+Boundary: this is endpoint-image domination by the named image of the
+reference source.  It is not determinant-chart Haar domination, not endpoint
+Haar equality, not full local `Y` COV, not a raw-map pushforward, not
+raw-order Jacobian transport, not formal-product/source-image domination, not
+source-image coverage, not normal crossings, not pole order, and not RLCT.
+Hubble's xhigh scout report identifies the full local `Y` COV on a
+determinant-sector, selected-pivot-nonzero shrink as the next major
+mathematical frontier after these image-measure sockets.
+
+Verification: direct warning-clean elaboration of the touched Lean module
+passed; focused module build passed, replaying only pre-existing warning noise
+from untouched modules; full local `lake build DLNFibre` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit;
+`git diff --check` passed; direct axiom probe reported
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Restricted Endpoint Active-Readout Marginal - 2026-07-02
 
 Lean now packages the active-readout bridge for an arbitrary restricted source

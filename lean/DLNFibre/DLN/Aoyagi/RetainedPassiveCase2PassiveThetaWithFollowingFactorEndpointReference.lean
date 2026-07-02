@@ -698,6 +698,81 @@ theorem case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restri
     measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_detChartSet_eq_self_of_subset_detSector
       (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω hΩ hΩdet
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Source-measure domination by the concrete enlarged coordinate reference
+pushes forward to domination by the named endpoint reference image measure.
+
+This is a source-to-endpoint image-measure domination theorem.  It targets the
+actual endpoint image of the reference source, not determinant-chart Haar, and
+it does not assert a raw-map pushforward. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure_restrict_le_smul_endpointReferenceImage_of_sourceMeasure_le_smul_referenceSource
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (sourceMeasure :
+      Measure (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    {d : ℝ≥0∞}
+    (hsource :
+      sourceMeasure ≤
+        d • case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) :
+    let endpointReferenceImage :
+        Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    Measure.map Y (sourceMeasure.restrict Ω) ≤ d • endpointReferenceImage := by
+  intro endpointReferenceImage Y
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  have hrestrict :
+      sourceMeasure.restrict Ω ≤ d • referenceSource.restrict Ω := by
+    calc
+      sourceMeasure.restrict Ω ≤ (d • referenceSource).restrict Ω :=
+        Measure.restrict_mono Set.Subset.rfl hsource
+      _ = d • referenceSource.restrict Ω := by
+        rw [Measure.restrict_smul]
+  have hY :
+      AEMeasurable Y (referenceSource.restrict Ω) := by
+    have hYcont : Continuous Y := by
+      simpa [Y] using
+        continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext eNext e
+    exact hYcont.measurable.aemeasurable
+  have hmap :
+      Measure.map Y (sourceMeasure.restrict Ω) ≤
+        d • Measure.map Y (referenceSource.restrict Ω) :=
+    map_le_smul_map_of_le_smul_aemeasurable hY hrestrict
+  simpa [endpointReferenceImage,
+    case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+    referenceSource, Y] using hmap
+
 end Aoyagi
 end DLN
 end DLNFibre

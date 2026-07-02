@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint reference image domination
+
+Lean now has a source-to-endpoint image domination theorem for the enlarged
+with-following endpoint map:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure_restrict_le_smul_endpointReferenceImage_of_sourceMeasure_le_smul_referenceSource
+```
+
+If a source-domain measure is dominated by
+
+```text
+d • case2PassiveThetaWithFollowingFactorReferenceSourceMeasure ... Rres,
+```
+
+then after restricting to any source set `Omega` and pushing forward by
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple ... z,
+```
+
+it is dominated by `d` times the named endpoint image of the reference source
+restricted to the same `Omega`.
+
+Decision: this is a useful non-readout measure-transport rung.  It is not the
+full local `Y` COV that Hubble identified as the next major mathematical
+frontier: the target is still the actual named endpoint image measure, not
+determinant-chart Haar.  The next major frontier remains a local `Y`
+change-of-variables theorem on a determinant-sector, selected-pivot-nonzero
+shrink.
+
 ## Latest controller decision - 2026-07-02, A2 restricted endpoint active-readout marginal
 
 Lean now has the arbitrary-source-restriction version of the endpoint active
