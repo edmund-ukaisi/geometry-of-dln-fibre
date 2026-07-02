@@ -3572,6 +3572,164 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- The with-following specialization has the same proof shape as the
+-- passive-theta handoff but unfolds the enlarged endpoint tuple types.
+/-- Conditional local density transport from the raw-order p.13 chart to the
+enlarged with-following endpoint source chart.
+
+On a sufficiently small determinant/pivot sector, the raw-order p.13 source
+chart agrees pointwise with the enlarged with-following endpoint source chart.
+Consequently any raw density on the `rawMap` pushforward of
+`thetaReference.restrict V` transports to the same source-side measure as the
+composed theta-domain density.
+
+This theorem does not identify determinant-chart Haar measure, raw-order Haar
+measure, an original source prior, source-image coverage, source-rank coverage,
+normal crossings, pole order, or RLCT extraction. -/
+theorem exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpoint_rawOrderSourceChart_withDensity_eq_sourceChart_withDensity
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun theta ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e theta
+    let rawMap :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun theta ↦
+        topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+          (case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext theta eNext e)
+    let rawChart : RawTuple → EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, rawChart (rawMap z) = sourceChart z) ∧
+          ∀ [BorelSpace EdgeFamily],
+          ∀ thetaReference :
+            Measure
+              (Case2PassiveThetaWithFollowingFactor
+                (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+          ∀ rawDensity : RawTuple → ENNReal,
+            AEMeasurable rawMap (thetaReference.restrict V) →
+              AEMeasurable rawDensity
+                (Measure.map rawMap (thetaReference.restrict V)) →
+                Measure.map rawChart
+                  ((Measure.map rawMap
+                    (thetaReference.restrict V)).withDensity rawDensity) =
+                  Measure.map sourceChart
+                    ((thetaReference.withDensity
+                      (fun theta ↦ rawDensity (rawMap theta))).restrict V) := by
+  intro RawTuple EdgeFamily sourceChart rawMap rawChart
+  rcases
+      exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        z₀ hdet₀ hpivot₀ G hGopen hz₀G with
+    ⟨V, hVopen, hz₀V, hVG, hpoint, hmeasure_maps⟩
+  have hraw_source : ∀ z ∈ V, rawChart (rawMap z) = sourceChart z := by
+    intro z hz
+    simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawChart] using
+      (hpoint z hz).2.2.1
+  refine ⟨V, hVopen, hz₀V, hVG, hraw_source, ?_⟩
+  intro _instBorel thetaReference rawDensity hrawMap hrawDensity
+  have htwoStage :
+      Measure.map rawChart
+          (Measure.map rawMap
+            ((thetaReference.withDensity
+              (fun theta ↦ rawDensity (rawMap theta))).restrict V)) =
+        Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ rawDensity (rawMap theta))).restrict V) := by
+    have hmaps :=
+      hmeasure_maps
+        (sourceMeasure :=
+          thetaReference.withDensity
+            (fun theta ↦ rawDensity (rawMap theta)))
+    simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawChart] using hmaps.2
+  exact
+    DLNFibre.DLN.Aoyagi.measure_map_rawChart_restrict_withDensity_comp_eq_of_twoStage_restrict
+      (hV := hVopen.measurableSet) hrawMap hrawDensity htwoStage
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Pulling back the chart-produced passive-theta endpoint source-image
 reference recovers the restricted theta-domain reference measure.
 

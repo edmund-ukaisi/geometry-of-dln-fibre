@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following raw-density handoff
+
+Lean now has the with-following analogue of the local raw-order/source-chart
+density handoff:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpoint_rawOrderSourceChart_withDensity_eq_sourceChart_withDensity
+```
+
+On a local determinant/pivot shrink `V`, the raw-order p.13 source chart
+agrees pointwise with the enlarged endpoint source chart:
+
+```text
+rawChart (rawMap z) = sourceChart z.
+```
+
+For any supplied raw density `rawDensity`, assuming the explicit a.e.
+measurability of `rawMap` and `rawDensity`, the theorem identifies
+
+```text
+Measure.map rawChart
+  ((Measure.map rawMap (thetaReference.restrict V)).withDensity rawDensity)
+```
+
+with the direct source-chart pushforward of the theta-domain measure weighted
+by `rawDensity ∘ rawMap`.
+
+Decision: xhigh scouts `Rawls` and `Nietzsche` both identified this as the
+smallest honest next raw-image handoff before any Haar/COV claim.  It is still
+not the full local `Y` change-of-variables theorem, not a determinant-chart or
+raw-Haar transport theorem, and not a Jacobian construction.
+
+Verification: direct warning-clean elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched-file
+forbidden-marker scan, and direct axiom probe passed; the theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following source-chart image support
 
 Lean now has the with-following analogue of the local chart-produced

@@ -25,6 +25,81 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 With-Following Raw-Order Source-Chart Density Handoff - 2026-07-02
+
+Lean now has the with-following conditional raw-density handoff from the
+raw-order p.13 chart to the enlarged endpoint source chart.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+New declaration:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpoint_rawOrderSourceChart_withDensity_eq_sourceChart_withDensity
+```
+
+The theorem starts from a determinant-sector, selected-pivot-nonzero
+with-following coordinate point and any open coordinate neighborhood `G`.
+Using the existing with-following raw-order/source-chart bridge, it produces
+an open `V ⊆ G` where
+
+```text
+rawChart (rawMap z) = sourceChart z
+```
+
+for all `z ∈ V`.  For every theta-domain measure `thetaReference` and every
+raw density `rawDensity`, assuming
+
+```text
+AEMeasurable rawMap (thetaReference.restrict V)
+AEMeasurable rawDensity
+  (Measure.map rawMap (thetaReference.restrict V)),
+```
+
+it proves
+
+```text
+Measure.map rawChart
+  ((Measure.map rawMap (thetaReference.restrict V)).withDensity rawDensity)
+=
+Measure.map sourceChart
+  ((thetaReference.withDensity
+    (fun theta => rawDensity (rawMap theta))).restrict V).
+```
+
+This is the with-following analogue of the existing passive-theta raw-density
+handoff.  It inserts a supplied density through the already-formalised
+two-stage raw/source equality; it does not construct the density.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-raw-order-source-chart-density-handoff.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-raw-order-source-chart-density-handoff.md
+```
+
+Boundary: this is only conditional density transport through a local two-stage
+measure identity.  It is not local `Y` COV, not determinant-chart Haar
+equality, not endpoint Haar transport, not raw-order Haar transport, not a
+constructed Jacobian formula, not external source-prior identification, not
+source-image coverage, not normal crossings, not pole order, and not RLCT.
+
+Scout integration: xhigh source/API scouts agreed that the next full `Y` COV
+must avoid double-counting `SelectedEntrySignedBox.CenterCoord.sourceDensity`,
+because that factor is already folded into the named with-following reference
+source.  xhigh risk/API scouts identified this raw-density handoff as the
+smallest honest non-Haar preparatory theorem.
+
+Verification before banking: direct warning-clean elaboration of the touched
+Lean module, focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched-file forbidden-marker scan,
+and direct axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Source-Chart Image Support - 2026-07-02
 
 Lean now has the local source-chart image-support identity for chart-produced
