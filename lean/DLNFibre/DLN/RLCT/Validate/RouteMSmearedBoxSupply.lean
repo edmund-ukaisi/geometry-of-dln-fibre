@@ -322,4 +322,37 @@ theorem smearedChartData_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
       (fun t htL => condBox_boxGen_frontLayers M hL hrs hr hc hfront t htL)
     exact waist_det_ne_of_gram hL hrs (hN ▸ Fin.insertNth p z y) hgram U V hUV
 
+/-! ## The general-`L` smeared `hSmeared` from the box supplier -/
+
+/-- **The general-`L` smeared box-divergence `hSmeared`, from the box supplier + the width-`r` waist.**
+Given the structural data (`hrs`/`hr`/`hc`/`hN`/`p`/`hp`), the width-`r` waist `q` (`hMq`/`hwidth`,
+`smeared_waist`), the width lower bounds, and the `minAdm` match (`hminadm`/`hminpos`), the spine's
+boundary-smeared `hSmeared` holds: for `2 ≤ L` and `BoundarySmeared M`, the achiever box integral
+diverges (`c' ≥ ½·minAdm M`, `ε > 0`). Threads the per-ε `smearedChartData_boxGen` (via `Nonempty.some`)
+through `smearedChartGen` and the already-∀L `hSmeared_of_smearedChart`. -/
+theorem hSmeared_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
+    (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
+    (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
+    (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
+    (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t)
+    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (c' : NNReal) (hc' : (minAdm M : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞)) (ε : ℝ) (hε : 0 < ε) :
+    (2 ≤ L) → BoundarySmeared M →
+      ∫⁻ x in cubeBox (routeMAmbient M) ε,
+        ENNReal.ofReal (|routeMCore M x| ^ (-(c' : ℝ))) = ⊤ := by
+  classical
+  have e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc) := by
+    apply congrArg; apply Fin.ext; simp [Fin.castSucc]
+  have e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ) := by
+    apply congrArg; apply Fin.ext; simp only [Fin.val_succ, Fin.val_last]; omega
+  -- the per-ε chart data (via `Nonempty.some`)
+  have dataGen : ∀ ε' : ℝ, 0 < ε' →
+      SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
+        (r * M ((deepLayer hL).succ) - 1) ε' :=
+    fun ε' hε' =>
+      (smearedChartData_boxGen M hL hrs hr hc hN p e1 e2 hp q hq hqL hMq hr0 hrL hwidth ε' hε').some
+  exact hSmeared_smearedGen M hL hrs hr hc hN p hminadm hminpos dataGen c' hc' ε hε
+
 end DLNFibre.DLN.RLCT
