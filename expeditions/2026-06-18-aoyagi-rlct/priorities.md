@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following source-image p.13 discharge
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+```
+
+Decision: this is useful conditional-field cleanup, not a source-frontier
+theorem.  The first theorem proves that the actual with-following source-chart
+image is locally contained in the p.13 source edge-family set.  The two
+downstream wrappers use that support to remove the explicit
+`chartPiece subset p13SourceSet` caller hypothesis from original-volume
+domination and readback domination, whenever the caller already has
+`chartPiece subset sourceChart '' V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-chart-p13-support.md
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+threads/03-block-product-reduction/statement-card-a2-with-following-source-chart-p13-support.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+threads/03-block-product-reduction/review-a2-with-following-source-image-p13-discharge.md
+```
+
+Focused module builds, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  The three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this removes only the local p.13 chart-piece support field.  The
+raw-pushforward equality, chart-piece measurability, and actual source-image
+containment remain hypotheses.  This does not prove raw-Haar transport,
+determinant-chart Haar transport, p.13 source-image coverage/equality,
+source-prior/original-prior transport, density lower-bound removal, normal
+crossings, pole order, or RLCT.
+
+Next A2 target: stop spending effort on wrappers unless a downstream theorem
+actually consumes the removed support field.  The next frontier should be a
+genuine transport/source-production theorem, most likely raw/determinant Haar
+transport or source-prior/full-image construction.
+
 ## Latest controller decision - 2026-07-02, A2 with-following original-volume readback domination
 
 Lean now has:

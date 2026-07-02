@@ -21,6 +21,63 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following source-image p.13 discharge
+
+Reproductions:
+
+```text
+reproduction-a2-with-following-source-chart-p13-support.md
+reproduction-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+reproduction-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+```
+
+Statement cards:
+
+```text
+statement-card-a2-with-following-source-chart-p13-support.md
+statement-card-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+statement-card-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+```
+
+Review:
+
+```text
+review-a2-with-following-source-image-p13-discharge.md
+```
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+```
+
+This batch proves local one-way p.13 support for the actual with-following
+source-chart image, then uses it to discharge the explicit
+`chartPiece subset p13SourceSet` input from the original-volume domination and
+readback domination wrappers whenever `chartPiece subset sourceChart '' V` is
+already available.
+
+Boundary: raw-pushforward equality, chart-piece measurability, and actual
+source-image containment remain hypotheses.  No raw Haar transport,
+determinant-chart Haar transport, p.13 coverage/equality,
+source-prior/original-prior transport, density lower-bound removal, normal
+crossings, pole order, or RLCT is proved.
+
+Focused module builds, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, and direct axiom probes passed.
+The three declarations report `[propext, Classical.choice, Quot.sound]`.
+Xhigh reviewer `Avicenna the 2nd` passed with no findings.
+
 ## 2026-07-02 A2 with-following original-volume readback domination
 
 Reproduction:

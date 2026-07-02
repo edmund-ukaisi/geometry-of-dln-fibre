@@ -6,6 +6,82 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Image p.13 Discharge - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_sourceImage
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeBridge.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+The exported constants live under:
+
+```text
+DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData
+```
+
+The support theorem uses the existing with-following source-chart package and
+the fixed-base retained-passive p.13 source membership theorem to prove:
+
+```text
+forall E in sourceChart '' V, E in p13SourceSet.
+```
+
+The original-volume and readback wrappers first choose a support shrink `V0`,
+then apply the older conditional theorem inside `V0` to get `V subset V0`.
+Thus:
+
+```text
+chartPiece subset sourceChart '' V
+```
+
+implies:
+
+```text
+chartPiece subset p13SourceSet.
+```
+
+The readback wrapper additionally composes the older target
+`D • thetaReference.restrict V0` with `V0 subset G`, yielding the public target:
+
+```text
+D • thetaReference.restrict G.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-chart-p13-support.md
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+threads/03-block-product-reduction/statement-card-a2-with-following-source-chart-p13-support.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-domination-source-image-p13-discharge.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-source-image-p13-discharge.md
+threads/03-block-product-reduction/review-a2-with-following-source-image-p13-discharge.md
+```
+
+Verification: focused module builds, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, and direct axiom
+probes passed.  The three declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer
+`Avicenna the 2nd` passed with no findings.
+
+Boundary: only the local p.13 chart-piece support field is removed.  The
+raw-pushforward equality, chart-piece measurability, and actual source-image
+containment remain hypotheses.  No raw-Haar theorem, determinant-chart Haar
+theorem, p.13 coverage/equality, source-prior/original-prior transport, density
+lower-bound removal, normal crossings, pole order, or RLCT is proved.
+
 ## A2 With-Following Original-Volume Readback Domination - 2026-07-02
 
 Lean now has:
