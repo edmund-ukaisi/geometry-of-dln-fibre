@@ -238,10 +238,12 @@ by the value of $r_{0N}$.
 What this part does **not** do is measure the orbits. The codimension of an orbit
 closure — and hence the invariants $C$ and $\theta$ — comes from the normal slice
 $\operatorname{Ext}(M, M)$ (Cor 3.5 of the paper), and which orbit closures are
-components comes from the orbit-closure order (Thm 3.8). Those build directly on
-the classification established here, and lead to the paper's three computations of
-$(C, \theta)$ and the real-log-canonical-threshold payoff for deep linear
-networks. They are the subject of the chapters beyond this part.
+components comes from the orbit-closure order (Thm 3.8). Both build directly on
+the classification established here — and both are now formalised in the Core
+engine (`DLNFibre.Core.OrbitClosure` for the closure order, `Core.VoigtDischarge`
+/ `Core.OrbitCodim` for the $\operatorname{Ext}$ codimension). From these come the
+paper's three computations of $(C, \theta)$ and the real-log-canonical-threshold
+payoff for deep linear networks, the subject of the chapters beyond this part.
 
 ## Sources and cross-references
 
@@ -253,4 +255,7 @@ counterparts are `DLNFibre.Core.Orbit` (`orbit_of_rankPattern_eq`,
 `rankPattern_eq_iff_orbit`, `baseChange_normalForm`) and
 `DLNFibre.Core.OrbitKostant` (`orbitKostantEquiv`). The orbit-closure order
 (Thm 3.8) and the $\operatorname{Ext}$ codimension (Cor 3.5) used in Example 5.2
-are not yet formalised; they are cited to the paper.
+are also formalised in the Core engine: the closure order in
+`DLNFibre.Core.OrbitClosure`
+(`vanishingIdeal_orbitRankLocus_eq_orbitSet`), and the $\operatorname{Ext}$
+codimension in `Core.VoigtDischarge` / `Core.OrbitCodim`.

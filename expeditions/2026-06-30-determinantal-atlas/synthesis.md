@@ -127,9 +127,29 @@ faithful, no soundness/fidelity defect; cover lemma correct on both inclusions; 
   genuinely ill-typed without a target-side `awayTriple` object (Codex-confirmed (i)-(iv) sub-build) and is
   roadmapped to the **R1 global-gluing** track — NOT a blocker for the local-triviality predicate.
 
-## Pending at close (operator-gated)
-1. **`Base → TotalRing`/`AmbientRing` rename** in the capstone predicate — escalated (signature change; `Base` is
-   the total/source ring by AG convention, the fibration base is `BaseLoc`). Controller lean: keep `Base` (bare
-   `Algebra` mirror, `[Algebra k Base]` standard reading; docstrings flag it). Operator's call.
-2. **Phase-2 PR** `expedition/det-atlas-p2 → dev` — staged (tip pushed; clean 3-way merge, +959/−123 over 9 Lean
-   files; ready title/body in the controller signal). Opening/merging operator-gated.
+## Phase 2 refinements (P2.e–j) + PR #21 review — CLOSED (merged `ec463a9a`)
+- **Naming (was "pending"): resolved as a BRIDGE, not keep-vs-rename** (operator call). `Base`/`BaseLoc` kept
+  (ring-theory / Mathlib-`Algebra` mirror), plus the AG-facing `FibrationView` (P2.e): `totalSpace` /
+  `chartBaseSpace` / `fibreSpace` / `chartProjection` + the `Spec`-contravariance dictionary — the same object
+  honest in both worlds; the global projection stays R1.
+- **Triple cocycle (was P2.c′, roadmapped): BUILT** (operator override — "an atlas that stops at the pairwise
+  inverse law is an under-filled layer"). P2.f `tripleTransition_cocycle` (canonical) + P2.g naturality
+  (`restrict_overlapTransition_eq_tripleTransition` + the commuting square `restrictTriple_comp_overlapTransition`)
+  + the restricted-2-fold cocycle. The atlas now carries the full standard coherence package: cover · per-chart
+  product · pairwise inverse · triple cocycle **of the atlas's own transitions**.
+- **Product-API strengthen (P2.h):** `AtlasFibreChart` drops `extends`/`M` and DERIVES `trivK` from
+  `fibreModel.triv` — single source of truth, tie definitional (`trivK_eq_product`); the cocycles are genuine
+  over-base PRODUCT coherence (`overlapTransition_isProduct`), so `IsZariskiLocallyTrivialAffineProduct` earns
+  its name.
+- **Reroute (P2.j):** DLN transition defs delegate to the abstract atlas at `pivotAtlasChart` — single source of
+  truth; halved the concrete-named-theorem bump (800k→400k). The bump is INTRINSIC to a
+  concrete-`targetChartLoc`-typed theorem (statement-level `isDefEq` whnf of the trivialization; not removable
+  without the abstract/predicate type) — **accepted at 400k** (per-declaration, axiom-clean) as the honest cost
+  of the named concrete DLN API (`targetProductOverlapTransition_trans_symm`).
+- **PR #21 review (multi-round, source-only):** no theorem / math-fidelity / API defect found; resolved down to
+  stale docs + whitespace. All live "target-side cocycle R1 unbuilt" prose narrowed — the LOCAL cocycle
+  (P2.c/f/g) is BUILT; only the GLOBAL gluing / `Flat π` over `rankROpen` stays R1. Lessons **DA1–DA5** banked
+  in `lessons.md` (incl. DA4 fetch-latest-reviews-before-"resolved", DA5 the concrete-type whnf wall).
+- **Merged:** #21 → `dev` (`ec463a9a`), after #20 (Phase 1). Full aggregator green **3834**, sorries 0,
+  axiom-clean incl. both DLN payoffs — the determinantal engine + constructive pivot-chart atlas + Zariski
+  local-triviality capstone are banked in `dev`.

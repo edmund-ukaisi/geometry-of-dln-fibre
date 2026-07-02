@@ -2,8 +2,7 @@
 
 The programme-level map: the destination, the bundles of work toward it, and what each depends on. Written
 to be elementary; pick up a **bundle** only when it is *whole-in-reach*, rather than nibbling one lemma at a
-time. This is a **first cut**; the `core-quiver-engine` expedition sharpens the ladder and, via an opening recon,
-resolves the load-bearing unknown (what Mathlib already provides). Update at each expedition close.
+time. Update at each expedition close.
 
 ## The destination, plainly
 
@@ -36,13 +35,14 @@ multiplication map $\operatorname{mult}(A_\ast)=A_N\cdots A_1$, we want, in hone
 
 Everything above "rlct" is **network-free** → `DLNFibre.Core`. The loss + RLCT payoff → `DLNFibre.DLN`.
 
-## Top open question (resolve first)
+## What Mathlib provides (resolved)
 
 **What does Mathlib already provide?** Quiver representations, the type-A / `A_n` story, Gabriel's theorem,
 `Ext` for quiver reps / representations of a category, equivariant cohomology. The answer decides how much of
 the engine is *reuse* vs *build-from-scratch* — and the build-from-scratch part *is* the reusable asset, so
-getting its API right is high-value. **The `core-quiver-engine` expedition's opening recon resolves this.**
-Until it lands, the reachability tags below are estimates.
+getting its API right is high-value. **Resolved** (the Bundle sections below record the outcome): Mathlib
+had no type-A Gabriel classification, no `Ext`-codimension for these representations, and no orbit-closure
+order for the chains — the engine was built from scratch as `DLNFibre.Core`.
 
 ## The bundles
 
@@ -422,6 +422,56 @@ wall, the next expedition):**
    `rlct ≤ ½·codim` upper-bound local model; the equality needs a singular-locus lower bound
    (`rlct ≥ ½·codim` everywhere). This is the wall the `rlct = ½·codim` Cited axiom rests on; teed up,
    not closed.
+
+## Open edges — headline results not yet fully general (relative to L&R)
+
+The [formalisation-status table](README.md#formalisation-status) marks two rows short of the paper's full
+generality. What L&R establish that the Lean does not *yet* deliver, ranked by importance:
+
+### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` *(the substantive gap)*
+- **L&R:** the top-dim component count holds for arbitrary `d`, fibre included (reduced to the rank locus
+  via Lemma 4.6, itself arbitrary-`d`; `θ` drops out of the permutation-symmetric Poincaré series). Not open
+  for them.
+- **Lean:** `#comp(mult⁻¹(B)) = cTheta(d−r)` is proved **only for `Monotone d`**
+  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart). The
+  *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` is already arbitrary-`d` (`numTop_eq_ncard_topComponents`),
+  so the gap is specific to the fibre. NOT closable by perm-invariance (combinatorial-only; it cannot
+  transport a *geometric* count between the non-isomorphic ambient spaces `Rep_d`, `Rep_{d∘σ}`).
+- **Close route (no new mathematics; bounded, medium mechanical effort):** the codimension fibre-vs-`Σ`
+  shift (`codimRepCanonical_fibre_eq_cCodim_add_shift`) is already arbitrary-`d`; promote it to a
+  **component-count** transfer — the fibre over the rank-`r` normal form is (Zariski-locally) a product of
+  the irreducible exact-rank-`r` stratum with the shifted zero-product problem, so
+  `#comp(mult⁻¹(B)) = #comp(Σ⁰_{d−r}) = numTop(d,r)`, all arbitrary-`d`. Reuses the arbitrary-`d`
+  fibration/codim-shift content rather than the monotone sweep chart (`[IsAlgClosed]` + `Type 0` remain;
+  `Monotone d` goes). The **rank-locus** arbitrary-`d` count is itself *one stated corollary away*: compose
+  the three existing arbitrary-`d` inputs (`numTop_eq_ncard_topComponents` + perm-invariance +
+  `numTop_eq_cTheta_comp_sort`).
+
+### Gap 2 — field generality (an *unrealized* generality, not a mathematical restriction)
+The algebraic theorems carry `[CharZero] [Infinite]` (codim), plus `[IsAlgClosed]` + universe `Type 0`
+(counts); L&R state everything over an arbitrary field and **prove that generality on purpose**
+(`thm:base_field` §3.4 + Voigt's lemma: orbit reps are 0/1 partial-permutation matrices over the prime
+field, every orbit is `G/H` for split-connected `G = ∏ GLᵈⁱ`, hence geometrically irreducible;
+`codim(O_M) = dim Ext¹` with the Ext-dims combinatorial). So `C`, `θ` are field-independent — each Lean
+hypothesis is a **proof-route artifact**, not a truth condition. The codim theorems **already hold over any
+char-0 infinite field** (ℚ, ℝ, ℚ_p); the remaining pieces, by value/cost:
+- **(a) Counts over non-closed char-0 fields (ℝ, ℚ)** — `thm:base_field` is the tool: prove over `k̄`,
+  transport by the split-orbit-closure geometric-irreducibility bijection. Needs absolute irreducibility of
+  `orbitRankLocus` + a base-change bijection of top-dim minimal primes. Expedition-scale but bounded;
+  removes `[IsAlgClosed]` for counts.
+- **(b) Positive characteristic (drop `[CharZero]`)** — reprove `codim(O_M) = dim Ext¹` char-free via
+  `dim(orbit) = dim G − dim Stab`, `Stab = Aut(M) =` unit group of `End(M)` (smooth in every char) + the
+  Euler form; localized to the Voigt layer, medium effort. Gives char-`p` infinite fields.
+- **(c) Finite fields (drop `[Infinite]`)** — `[Infinite]` is baked into the *definition*
+  `codimRepCanonical = height(vanishingIdeal(coord '' Z))` (wrong object over finite `k`); needs a
+  scheme-theoretic redefinition + re-proving every codim theorem. Largest lift.
+Orthogonal to the DLN payoff (over ℝ/ℂ) → low priority.
+
+### Gaps 3–4 (minor)
+- **Explicit-formula syntactic shape:** `cValue` is proved `= codim`, not rendered in thm:main-codim's exact
+  `(m/2){S̃/m}(1−{S̃/m}) − …` fractional-part form. Semantically equivalent; the `θ` binomial is verbatim.
+- **Gabriel finiteness:** the orbit ↔ Kostant bijection is proved; "finitely many orbits" is not stated as a
+  `Finite`/`Fintype` theorem (implicit — the index `kostantPartitions` is a `Finset` by construction).
 
 ## Convention
 

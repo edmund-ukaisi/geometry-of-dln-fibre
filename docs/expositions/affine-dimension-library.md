@@ -16,7 +16,7 @@ lacks these standard facts: every headline below was grep-confirmed absent, and 
 particular is a commonly-requested missing piece.
 
 It is the programme's first **"build the buildable"** foundation (see
-[`../../docs/policies/library-building.md`](../policies/library-building.md)): well-established, detail-at-scale,
+[`library-building.md`](../policies/library-building.md)): well-established, detail-at-scale,
 Mathlib-absent mathematics *built* to upstream grade rather than cited. The only genuine monument here — the
 deep analytic singular-learning core behind `rlct = ½·codim` — stays cited. The DLN application's own
 codimension and orbit-dimension results now *tag to* this library rather than carrying bespoke proofs.
@@ -68,5 +68,5 @@ The module dependency graph is a clean acyclic DAG: `Basic`/`Integral` are roots
   (`[PerfectField]`, the clean sufficient hypothesis — not claimed as the absolute pointwise minimum).
 - **Extraction-ready.** The namespaces mirror `Mathlib.RingTheory.KrullDimension.*`,
   `Mathlib.AlgebraicGeometry.Codimension`, and `Mathlib.RingTheory.Smooth.Regular`; an actual mathlib4 PR is
-  future work (the build was internal-first and is not blocked on upstream review). A sibling
-  neuroalgebraic/ReLU programme is the anticipated second consumer.
+  future work (the build was internal-first and is not blocked on upstream review). The DLN/RLCT
+  application here is the first consumer; a Mathlib upstreaming is the anticipated second.

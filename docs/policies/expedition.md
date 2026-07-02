@@ -206,7 +206,7 @@ damage:
 - the expedition cannot CLOSE without a final controller integration deciding *close*.
 - a critical reviewer finding floors a review-to-equilibrium loop.
 - the **bedrock check is run by an independent `hardener`** ([`../../.agent-team/roles/hardener.md`](../../.agent-team/roles/hardener.md)), not only the controller — a decorrelated principles/taste pass (distinct from the correctness audit) at each gate and at step-back, surfacing overclaims, holes-vs-extensions, *and the right extensions* (→ Just-Do-It if within reach, else roadmap). The controller integrates its findings and holds precedence; a critical hardener finding floors a loop like a reviewer finding.
-- one blocking signal-and-wait: the close-phase PR — the expedition record (exposition + synthesis + Lean) becomes a shared artefact.
+- one blocking signal-and-wait: the close-phase PR **merge** — opening the close PR (≤ 1 per expedition) is controller-authorized, but the merge, at which the expedition record (exposition + synthesis + Lean) lands as a shared artefact, is operator-gated (see [`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline).
 
 ## Files
 
@@ -346,7 +346,9 @@ not stall.
 
 Final controller integration → finalise the exposition(s) (the human/paper-facing
 deliverable) and a last internal `synthesis.md` pass → commit on the expedition branch →
-signal-and-wait before opening any PR. The exposition is the markdown chunk that feeds the
+open the close PR (≤ 1 per expedition, controller-authorized per
+[`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline), then signal-and-wait for the
+operator-gated merge. The exposition is the markdown chunk that feeds the
 paper; the formalised claims are its anchors.
 
 ## Expositions

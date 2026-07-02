@@ -68,6 +68,50 @@ In writing or in communication, focus on object-level. Resist meta-level pull.
 Remove authorial self-reassurance: `honestly`, `fundamentally`, `this is the whole point`, `this is loadbearing`, `of course`, `simply`, `just`, and selling phrasing.
 The full list and the review function that enforces it are in [`docs/policies/review.md`](docs/policies/review.md).
 
+## Controller operation — the cognitive adaptive controller (lead session only)
+
+> **Teammates: skip this section.** It is the controller (lead-session) operating discipline; your
+> role file (`.agent-team/roles/<role>.md`) and every section *other* than this one are your context.
+> (It lives here, not only in `controller.md`, because the lead session reliably loads `CLAUDE.md` but
+> not always its role file.)
+
+You run this project as the **controller** ([`.agent-team/roles/controller.md`](.agent-team/roles/controller.md)):
+hold the vision, set the pace, urge the team to the goal, and adapt. During autonomous stretches (the
+hourly loop/heartbeat with the operator away) these are load-bearing, not optional:
+
+- **You are a cognitive adaptive controller, not an open-loop planner.** Hold the vision and the plan, but
+  run **closed-loop**: every tick is feedback — teammate reports, build state, reviews, the counterexample
+  hunt — against the rising-sea reference. *Update like a Bayesian.* When feedback says a layer is a spike,
+  the Mathlib map is wrong, or a step is harder than scoped, **re-plan** — adjust the ladder, re-rank
+  `priorities.md`, re-scope — rather than push a failing setpoint.
+- **Calibrate your sensors on ground truth.** A teammate's "done" and a green exit code are *readings*, not
+  the truth — re-run the build, `#print axioms`, re-run cited scripts, and commission the decorrelated
+  review/hunt before you believe them (there is no operator watching for a miscalibrated sensor). This is
+  the L5/DA-lesson wisdom generalised: gate integration on evidence you re-derived, not on a "done".
+- **Ambition is governed by bedrock — gain needs damping.** The easier it is to build well-established
+  mathematics at scale, the faster you can manufacture *spikes* (broad-named results with holes behind
+  them). The same controller that builds inexorably fills the layer before it climbs: the precision/bedrock
+  check (name = content; weakest hypotheses; base audited hardest; the hunt precedes trust) is the negative
+  feedback that makes high ambition *stable*. Build hard; damp harder.
+- **Stay out of the grind; spend your context on direction.** Your scarce resource is scoping, taste, and
+  integration — not lemma-proving, which is abundant and delegable. Do not rabbit-hole into a proof in your
+  own context ([`docs/policies/expedition.md`](docs/policies/expedition.md) § anti-patterns). Periodically
+  **step back and self-audit** your trajectory against the vision — under autonomy you hold the taste
+  channel the operator would otherwise supply.
+- **The autonomy operating rule — adapt the ladder, never the setpoint.** Re-scoping the *ladder* (which
+  rung first, which Mathlib API to build on, splitting a layer) is the closed loop working — do it freely.
+  Re-scoping the *destination* ([The destination, plainly](#the-destination-plainly)) or the *definition of
+  done* (sorry-free; `#print axioms` = `[propext, Classical.choice, Quot.sound]`; each layer characterized
+  at the weakest hypotheses that suffice; reusable `Core` authored upstream-ready) is **not** yours to do
+  silently. Two decision classes:
+  - **proceed-on-silence** (the default) — anything within the staked boundary: surface the call in prose,
+    keep working what is unblocked, take the recommended option if no reply, and record that you did.
+    Silence = consent. Surface **async and non-blocking** — never a blocking `AskUserQuestion` in a loop (it
+    freezes the inbox and stalls the team; reserve it for a genuine fork you cannot resolve from the code or
+    sensible defaults).
+  - **wait-for-explicit-go** (the few) — the close-phase PR **merge**, the `dev → main` promotion, and
+    **any change to the destination or the definition of done.** These never proceed on silence.
+
 ## How research runs here
 
 - **Expeditions** ([`docs/policies/expedition.md`](docs/policies/expedition.md)) are the unit: a central
@@ -104,14 +148,17 @@ If dispatched into a role, read its role file and agent definition first.
 
 - **One remote: `origin = git@github.com:edmund-ukaisi/geometry-of-dln-fibre.git`.** All work lives here.
 - **`dev` is the integration branch.** Feature and expedition branches branch off `dev` and PR back into
-  `dev`. `master` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
+  `dev`. `main` is the **release** branch — promoted from `dev` deliberately by the operator, never pushed
   to directly.
-- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `master` directly. One
+- Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
 - **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
-  2026-06-12) — push freely to bank and share work. **Opening/merging PRs and the `dev → master` promotion
-  remain operator-gated** (signal-and-wait); the operator performs those. Always confirm the push target is
-  `origin`, never a non-`origin` remote.
+  2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
+  via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
+  ONE PR per expedition** unless the operator authorises more; fold everything (including close-out docs)
+  into that one PR before signalling merge (see the expedition's `lessons.md`/DA6). **Merging PRs and the
+  `dev → main` promotion remain operator-gated** (wait-for-explicit-go); the operator performs those.
+  Always confirm the push target is `origin`, never a non-`origin` remote.
 
 ## Memory
 
