@@ -88,6 +88,15 @@ raw C(0) = F
 raw C(1) = selected-entry successor matrix built from yNext.
 ```
 
+This is the formal retained-passive coordinate construction, not a formula
+printed verbatim by Aoyagi.  In the PDF Case 2 calculation, the selected pivot
+chart is applied to the displayed current block and the following block is
+then transformed by the regular/unitriangular `Q` matrix.  The Lean
+`yNext`/`C(1)` readout is therefore a fixed-pivot local chart choice in the
+normalized retained data.  It must be justified by the existing entrywise
+readout lemmas, or carried under an explicit fixed-pivot nonzero/readout
+hypothesis; it is not source-image coverage by itself.
+
 The readback theorem already checks this distinction: it recovers `F` from
 raw `C(0)` and recovers `yNext` from raw `C(1)`, not from the product
 `C(1) * C(0)`.
@@ -112,10 +121,14 @@ same passive retained coordinates
 
 The selected-entry chart map is a local coordinate map from `yNext` to the
 raw `C(1)` block on the nonzero-pivot sector.  The following-factor component
-is the identity onto raw `C(0)`.  Therefore the source coordinate count
-matches the raw topology-tuple chart piece after the active `C` factors are
-split.  The old, non-enlarged theta chart was a graph/section in this active
-`C` tuple; the enlarged chart is the first dimension-matched candidate.
+is the identity onto raw `C(0)` only after the same normalization and
+endpoint/reindexing conventions used in the retained-data definition.  Thus
+`F` should be read as the normalized retained following-factor block, not as
+Aoyagi's untransformed full following matrix.  With that convention, the
+source coordinate count matches the raw topology-tuple chart piece after the
+active `C` factors are split.  The old, non-enlarged theta chart was a
+graph/section in this active `C` tuple; the enlarged chart is the first
+dimension-matched candidate.
 
 The existing Lean coordinate inventory records this split as
 
@@ -289,6 +302,15 @@ to raw retained-passive topology-tuple coordinates.
 - Do not rely verbatim on the ambiguous p.21 product line if it double-counts
   the blow-up scalar after defining `b'_q = u b_q`; use the algebraic
   normalization checked in the retained source definitions.
+- Do not treat one fixed selected-entry chart as covering the whole Case 2
+  blow-up/source image.  It is a local sector under a fixed-pivot nonzero
+  condition unless a finite pivot cover is separately constructed.
+- Do not read the formal following-factor variable `F` as Aoyagi's original
+  untransformed following matrix.  It is the normalized retained/raw `C(0)`
+  coordinate after the `Q`-transformation and endpoint/reindexing choices.
+- Do not use Aoyagi's displayed ratios such as `b'_i / b'_{J+1}` across the
+  exceptional divisor unless the common monomial factors have already been
+  cancelled or the relevant denominator/nonvanishing hypothesis is in force.
 - Do not call the result RLCT, pole order, or normal crossings.  The only
   allowed citation boundary remains normal-crossing-to-RLCT extraction.
 
