@@ -12,6 +12,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 branch-indexed current-center payloads
+
+Lean now has a branch-indexed support layer for the fixed-current-center Case
+2 payload constructors:
+
+```text
+case2AllPivotCurrentCenter
+case2AllPivotFixedCenterAligned
+case2ResidualBlockPivotEntries_ne_succ_of_cont
+case2AllPivotCurrentCenter_ne_sameStageChildWithRecurrence_of_continuing
+not_fixedCenterAligned_parent_and_sameStageChild_of_continuing
+Case2AllPivotCurrentCenterProducedPayload
+Case2AllPivotBranchIndexedProducedPayloadData
+```
+
+Decision: do not build a singleton/equality-guard
+`SelectedEntryAtlasProducedBranchData` now.  It would compile locally but
+would be too easy to misread as recurrence-wide source production.  The honest
+next support layer records the local current center and proves the elementary
+center-change obstruction along a continuing `J -> J+1` edge.
+
+The next source-moving route must either:
+
+- add explicit transport/alignment from branch-indexed current-center payloads
+  into one fixed context;
+- redesign the producer around a dependent branch-indexed atlas; or
+- restrict to a genuinely fixed-state/local theorem and label it as such.
+
 ## Latest controller decision - 2026-07-02, A4 fixed-center produced payloads
 
 Lean now has fixed-current-center `SelectedEntryProducedBranchPayload`

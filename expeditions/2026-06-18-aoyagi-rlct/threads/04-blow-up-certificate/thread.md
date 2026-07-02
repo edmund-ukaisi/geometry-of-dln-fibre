@@ -21,6 +21,32 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-07-02 A4 branch-indexed current-center payloads
+
+Reproduction:
+`reproduction-a4-case2-branch-indexed-current-center-payloads.md`.
+Statement card:
+`statement-card-a4-case2-branch-indexed-current-center-payloads.md`.
+Review:
+`review-a4-case2-branch-indexed-current-center-payloads.md`.
+
+Lean now adds a support layer for branch-indexed current-center payloads:
+
+```text
+SelectedEntryAllPivotBranchIndexedPayloads.lean
+```
+
+The current center for a branch state `s` is
+`case2ResidualBlockPivotEntries n s.S s.J`.  The file packages the four
+fixed-current-center payload constructors under this varying center and proves
+that the center changes along a continuing same-stage `J -> J+1` edge.
+
+Boundary: this is not `SelectedEntryAtlasProducedBranchData`.  It proves only
+that a fixed center cannot be aligned with both a continuing parent and its
+same-stage child when alignment means equality with the current residual-block
+center.  A recurrence-wide producer still needs explicit center transport,
+fixed-center alignment, or a dependent branch-indexed atlas.
+
 ## 2026-07-02 A4 Case 2 all-pivot produced branch-data contract
 
 Construction card:

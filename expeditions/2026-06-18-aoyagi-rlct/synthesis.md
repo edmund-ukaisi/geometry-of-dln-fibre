@@ -15,6 +15,36 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A4 Branch-Indexed Current-Center Payloads - 2026-07-02
+
+Lean now records the honest support interface after the fixed-current-center
+payload constructors.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotBranchIndexedPayloads.lean
+```
+
+The file defines the current center for a recurrence branch state as
+`case2ResidualBlockPivotEntries n s.S s.J`, packages the four fixed-current-
+center payload constructors as branch-indexed current-center payload data, and
+names the fixed-center alignment contract needed before such payloads can be
+used in one fixed all-pivot atlas context.
+
+It also proves the finite obstruction:
+
+```text
+case2ResidualBlockPivotEntries_ne_succ_of_cont
+not_fixedCenterAligned_parent_and_sameStageChild_of_continuing
+```
+
+Thus a single fixed center cannot be current-center aligned with both a
+continuing parent state and its same-stage child.  This is not a theorem that
+no `SelectedEntryAtlasProducedBranchData` can ever be supplied; it only blocks
+the overclaim that current-center payloads assemble recurrence-wide without
+alignment, transport, or a dependent branch-indexed atlas.
+
 ## A4 Fixed-Center Produced Payloads - 2026-07-02
 
 Lean now has fixed-current-center `SelectedEntryProducedBranchPayload`

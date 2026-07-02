@@ -10,6 +10,52 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A4 branch-indexed current-center payload layer - 2026-07-02
+
+- **Statement.** The fixed-current-center all-pivot Case 2 payload
+  constructors can be packaged as branch-indexed current-center payload data.
+  The current center attached to a recurrence state `s` is
+  `case2ResidualBlockPivotEntries n s.S s.J`.  Under a continuing same-stage
+  pivot, this center changes from `J` to `J+1`, so one fixed center cannot be
+  aligned with both parent and child without extra transport or a dependent
+  atlas interface.
+- **Tier.** Aoyagi Case 2 blow-up/source-production support.
+- **Status.** Lean support layer proved.  This is not the final all-pivot
+  producer field.
+- **Kill-condition.** The result is read as
+  `SelectedEntryAtlasProducedBranchData`; it claims no fixed-context producer
+  exists by logic alone; it uses the current-center package across varying
+  `(S,J)` without alignment; it merges terminal-last and source-suffix
+  row-exhausted payloads; or it fills source data with `Unit`, `True`,
+  `PUnit`, `Nonempty`, or `SourceProductionObligation`.
+- **Evidence/source.** Aoyagi PDF pp. 19-22 for the local Case 2 selected
+  pivot chart and continue/stop split.  The recurrence-wide fixed-center
+  alignment condition is not printed there; it is a Lean producer-interface
+  contract forced by the fixed `ctx` in `SelectedEntryAtlasProducedBranchData`.
+- **Pen-and-paper reproduction.**
+  `threads/04-blow-up-certificate/reproduction-a4-case2-branch-indexed-current-center-payloads.md`;
+  statement card at
+  `threads/04-blow-up-certificate/statement-card-a4-case2-branch-indexed-current-center-payloads.md`.
+- **Reproduction check.** xhigh source/API review by `Godel` and `Poincare`
+  passed with the requested finite center-change hardening, recorded at
+  `threads/04-blow-up-certificate/review-a4-case2-branch-indexed-current-center-payloads.md`.
+- **Lean target.** `SelectedEntryAllPivotBranchIndexedPayloads.lean` defines
+  `case2AllPivotCurrentCenter`, `case2AllPivotFixedCenterAligned`,
+  `Case2AllPivotFixedCenterAlignment`,
+  `Case2AllPivotCurrentCenterProducedPayload`, branch constructors from the
+  fixed-current-center payloads, and
+  `Case2AllPivotBranchIndexedProducedPayloadData`.  It also proves
+  `case2ResidualBlockPivotEntries_ne_succ_of_cont` and the no-parent-and-child
+  fixed-alignment theorem for continuing same-stage children.
+- **Proved.** Focused build, warning-clean direct elaboration of the touched
+  Lean file, full local `lake build DLNFibre`, `lean/scripts/sorries`, Lean
+  placeholder-source-data grep, and `git diff --check` passed.
+- **Nonclaims.** No `SelectedEntryAtlasProducedBranchData`, no full
+  row-exhausted semantic payload, no fixed-center recurrence-wide producer, no
+  generic-`alpha` transport, no transition regularity, no Jacobian/volume
+  compatibility, no normal crossings, no pole order, and no RLCT extraction is
+  proved.
+
 ## Current A4 active-guard finite source-data layer - 2026-07-02
 
 - **Statement.** For displayed Case 2 source production, the total producer
