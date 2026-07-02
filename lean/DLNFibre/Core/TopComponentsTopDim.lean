@@ -134,4 +134,17 @@ theorem ncard_topDimMinPrimes_sigma_eq_cTheta_dminus [IsAlgClosed k] [CharZero k
   rw [← ncard_topComponents_eq_ncard_topDimMinPrimes_sigma d r hr',
     ncard_topComponents_sigma_eq_cTheta_dminus hd hr h₀ hr']
 
+/-- **The `TopDimMinPrimes` count of `O(Σ̄^r)` is the combinatorial minimiser count `numTop d r`,
+UNCONDITIONALLY.** Stacks the `topComponents ↔ TopDimMinPrimes` bijection onto the *unconditional*
+geometric headline `Core.CCodimZeroStrict.numTop_eq_ncard_topComponents` — the `Monotone d`-free
+predecessor of `ncard_topDimMinPrimes_sigma_eq_cTheta_dminus`. This is the geometric half of the E0
+rung: the `numTop d r = cTheta (d − r)` closed form (the `Monotone d`-gated combinatorial step
+`numTop_eq_cTheta_dminus`) is *not* invoked, so no weak-monotonicity hypothesis is needed. -/
+theorem ncard_topDimMinPrimes_sigma_eq_numTop [IsAlgClosed k] [CharZero k]
+    {d : Fin (N + 1) → ℕ} {r : ℕ} (hr' : (kostantPartitions d r).Nonempty) :
+    (TopDimMinPrimes (MvPolynomial (RepCoord d) k ⧸ sigmaIdeal (k := k) d r)).ncard
+      = numTop d r hr' := by
+  rw [← ncard_topComponents_eq_ncard_topDimMinPrimes_sigma d r hr',
+    ← numTop_eq_ncard_topComponents d r hr']
+
 end DLNFibre.Core

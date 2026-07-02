@@ -594,3 +594,16 @@ import DLNFibre.Core.FibreZariskiLocalTriviality
 -- `docs/policies/citation-cordon.md`.
 import DLNFibre.Core.Meta.Cited
 import DLNFibre.DLN.RLCT.AoyagiCited
+-- rlct-g1 (Gap 1): the closed form `cTheta` for an ARBITRARY (non-monotone) `d`, via the LANDED
+-- permutation invariance of `(C, θ)`. `numTop_eq_cTheta_dminus_sort`: `numTop d r = cTheta((d ∘
+-- Tuple.sort d) − r)` — sort to the monotone representative (`numTop_comp_sort`,
+-- `Tuple.monotone_sort`), then the `Monotone` closed form. Carries `hr`/`1 ≤ N` (perm-invariance's
+-- hypotheses), not `Monotone`.
+import DLNFibre.Core.CThetaSortClosedForm
+-- rlct-g1 (Gap 1): the fibre-`θ` count headline WITHOUT `Monotone d`. `Monotone` enters the 7-rung
+-- count chain only at the E0 closed-form step `numTop d r = cTheta(d−r)`; stopping the headline at
+-- the minimiser count `numTop d r` (geometric E0 half `ncard_topDimMinPrimes_sigma_eq_numTop`, the
+-- unconditional `numTop_eq_ncard_topComponents`) drops the gate.
+-- `ncard_topDimMinPrimes_fibre_eq_numTop` (normal-form target) + `_of_rank` (arbitrary `B` via the
+-- LANDED same-rank transport), arbitrary `d`; + `..._cTheta_dminus_sort` closed-form corollaries.
+import DLNFibre.Core.FibreThetaCountUnconditional
