@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A4 continuing payload source/progress projection
+
+Lean now exposes the continuing current-center produced payload's finite
+source-data package and same-stage child progress proof:
+
+```text
+case2AllPivotContinuingPayload_sourceData
+case2AllPivotContinuingProducedBranchPayload_child_progress
+```
+
+The progress theorem applies
+`Case2AllPivotContinuingProducedSourceData.child_progress` to the
+`producedSourceData` field of
+`case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput`.
+It records that the child recurrence already stored in the produced source
+data gives a recurrence progress step from the parent state.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case2-all-pivot-continuing-payload-progress-projection.md
+threads/04-blow-up-certificate/statement-card-a4-case2-all-pivot-continuing-payload-progress-projection.md
+threads/04-blow-up-certificate/review-a4-case2-all-pivot-continuing-payload-progress-projection.md
+```
+
+Decision: this is useful A4 projection infrastructure only.  It does not
+construct `SelectedEntryAtlasProducedBranchData`, remove the
+`sourceProduction` field from the all-pivot producer, solve fixed-center
+transport, merge row-exhausted stopped payloads, prove analytic atlas/source
+coverage, normal crossings, pole order, or RLCT.
+Xhigh independent reviewer `Halley the 2nd` passed.
+
+## Latest controller decision - 2026-07-02, A2 source-to-raw frontier remains parked
+
+Xhigh scout `Hypatia the 2nd` rechecked the A2 source-to-raw frontier and
+found no small honest wrapper theorem that would advance it.  The existing
+raw-image handoff rewrites only against actual images, the determinant/raw
+source domination theorems still assume raw-Haar domination/source-density
+lower bounds, the formal-product/source-image contract stores the density
+identity and bound as fields, and the original-volume bridge still requires a
+raw pushforward identity.
+
+Decision: keep A2 parked until the expedition intentionally starts the real
+finite-dimensional local change-of-variables theorem for the enlarged
+endpoint map `Y`, followed by raw-order composition.  Do not add more
+determinant/source-density wrappers unless a downstream theorem needs exactly
+that conditional interface.
+
 ## Latest controller decision - 2026-07-02, Definition 3 pairwise-distinct classifier rank-width removal
 
 Lean now removes the separate source-range rank-width input from the reviewed

@@ -21,6 +21,44 @@ coordinate substitutions.
 This is likely the crux. Build small infrastructure if it reduces proof risk.
 Do not mimic prose geometry if a certificate gives a cleaner Lean target.
 
+## 2026-07-02 A4 Case 2 all-pivot continuing payload progress projection
+
+Reproduction:
+`reproduction-a4-case2-all-pivot-continuing-payload-progress-projection.md`.
+Statement card:
+`statement-card-a4-case2-all-pivot-continuing-payload-progress-projection.md`.
+Review:
+`review-a4-case2-all-pivot-continuing-payload-progress-projection.md`.
+
+Lean now adds:
+
+```text
+case2AllPivotContinuingPayload_sourceData
+case2AllPivotContinuingProducedBranchPayload_child_progress
+```
+
+in:
+
+```text
+SelectedEntryAllPivotProducedPayloads.lean
+```
+
+The first theorem is the continuing-source analogue of the existing stopped
+payload `sourceData` simp projections.  The second projects the same-stage
+child recurrence progress proof already present in
+`Case2AllPivotContinuingProducedSourceData.child_progress` through the
+current-center produced payload's `producedSourceData` field.
+
+Boundary: this is projection infrastructure only.  It is not
+`SelectedEntryAtlasProducedBranchData`, does not remove `sourceProduction`,
+does not solve fixed-center transport, does not merge the row-exhausted
+terminal/source-suffix APIs, and proves no analytic atlas coverage, normal
+crossings, pole order, or RLCT.
+
+Focused direct elaboration, focused module build, full local build, no-sorry
+audit, whitespace check, forbidden-marker scan, direct axiom probe, and xhigh
+review passed.
+
 ## 2026-07-02 A4 branch-indexed current-center payloads
 
 Reproduction:

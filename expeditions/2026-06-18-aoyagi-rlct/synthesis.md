@@ -6,6 +6,69 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A4 Continuing Payload Source/Progress Projection - 2026-07-02
+
+Lean now has:
+
+```text
+case2AllPivotContinuingPayload_sourceData
+case2AllPivotContinuingProducedBranchPayload_child_progress
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntryAllPivotProducedPayloads.lean
+```
+
+The first theorem is the missing continuing analogue of the stopped
+`sourceData` simp projections.  The second theorem exposes the recurrence
+progress proof already stored in
+`Case2AllPivotContinuingProducedSourceData`: the continuing produced payload's
+`producedSourceData.childRecurrence` gives a same-stage child satisfying
+`AoyagiRecurrenceBranchState.progressStep`.
+
+Artifacts:
+
+```text
+threads/04-blow-up-certificate/reproduction-a4-case2-all-pivot-continuing-payload-progress-projection.md
+threads/04-blow-up-certificate/statement-card-a4-case2-all-pivot-continuing-payload-progress-projection.md
+threads/04-blow-up-certificate/review-a4-case2-all-pivot-continuing-payload-progress-projection.md
+```
+
+Boundary: current-center payload projection only.  No fixed-context
+`SelectedEntryAtlasProducedBranchData`, no recurrence-wide source-production
+field, no fixed-center transport, no row-exhausted totalization, no analytic
+atlas coverage or overlap theorem, no normal crossings, no pole order, and no
+RLCT extraction.
+
+Verification: focused direct elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched-file forbidden-marker scan, and direct axiom probe passed.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+independent reviewer `Halley the 2nd` passed.
+
+## A2 Source-to-Raw Frontier Recheck - 2026-07-02
+
+Xhigh scout `Hypatia the 2nd` rechecked the A2 source-to-raw frontier and
+returned a park verdict.  There is no small buildable Aoyagi-only theorem that
+genuinely advances the frontier without starting the local weighted
+change-of-variables theorem for the enlarged endpoint map `Y`.
+
+Current boundary:
+
+- raw-image handoffs rewrite against actual images, not raw Haar;
+- determinant/raw-source domination still assumes raw-Haar domination and a
+  lower source-density bound;
+- the formal-product/source-image contract stores the density identity and
+  bound as fields;
+- the original-volume bridge still requires the raw pushforward identity.
+
+Next real A2 target remains a local COV theorem for `Y` on a determinant-sector
+shrink, then composition with `topologyTupleEdgeRawOrder`.  More wrappers
+around the current determinant/source-density assumptions should be avoided
+unless they remove a concrete downstream field.
+
 ## A6 `L=2` Pairwise-Distinct Classifier Rank-Width Removal - 2026-07-02
 
 Lean now has:

@@ -92,6 +92,46 @@ theorem case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput
       input Cfollowing hguard chartEquiv).branchState = s :=
   rfl
 
+@[simp]
+theorem case2AllPivotContinuingPayload_sourceData
+    {tau : Type} {L : ℕ} {n : ℕ → ℕ}
+    {s : AoyagiRecurrenceBranchState L n ℝ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (input : Case2AllPivotDisplayedSourceInput s t numerator leastValue)
+    (Cfollowing : ℕ → tau → ℝ)
+    (hguard : case2AllPivotContinuingGuard s)
+    (chartEquiv :
+      Fin (case2ResidualBlockPivotEntries n s.S s.J).card ≃
+        (case2ResidualBlockPivotEntries n s.S s.J : Type)) :
+    (case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput
+      input Cfollowing hguard chartEquiv).sourceData =
+      Case2AllPivotContinuingProducedSourceData input Cfollowing :=
+  rfl
+
+/-- The continuing produced payload exposes the source-data progress proof for
+the same-stage child recurrence carried by its produced source data. -/
+theorem case2AllPivotContinuingProducedBranchPayload_child_progress
+    {tau : Type} {L : ℕ} {n : ℕ → ℕ}
+    {s : AoyagiRecurrenceBranchState L n ℝ}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (input : Case2AllPivotDisplayedSourceInput s t numerator leastValue)
+    (Cfollowing : ℕ → tau → ℝ)
+    (hguard : case2AllPivotContinuingGuard s)
+    (chartEquiv :
+      Fin (case2ResidualBlockPivotEntries n s.S s.J).card ≃
+        (case2ResidualBlockPivotEntries n s.S s.J : Type)) :
+    AoyagiRecurrenceBranchState.progressStep L n ℝ
+      (AoyagiRecurrenceBranchState.sameStageChildWithRecurrence s
+        ((case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput
+          input Cfollowing hguard chartEquiv).producedSourceData).childRecurrence)
+      s := by
+  exact
+    Case2AllPivotContinuingProducedSourceData.child_progress
+      ((case2AllPivotContinuingProducedBranchPayload_of_currentCenterSourceInput
+        input Cfollowing hguard chartEquiv).producedSourceData)
+
 /-- Actual-width stopped all-pivot produced branch payload for the current
 Case 2 residual-block center. -/
 def case2AllPivotActualWidthStoppedProducedBranchPayload_of_currentCenterSourceInput
