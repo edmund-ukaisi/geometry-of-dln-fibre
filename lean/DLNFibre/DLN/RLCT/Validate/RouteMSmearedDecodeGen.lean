@@ -506,4 +506,85 @@ theorem genDecode_params (M : Fin (L + 1) → ℕ) (hL : 0 < L)
       RmapG_spectator M hL hrs hr hc u (coordOfG_frontSlotG_not_mem M hL hrs layer hlayer i j)]
     rfl
 
+/-! ## The radial blow-up `RmapG` fderiv / injectivity / det + the card -/
+
+/-- `topCoordsG` has card `r · M (deepLayer).succ` (the `r·c` deepest-top coords). -/
+theorem topCoordsG_card (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    (topCoordsG M hL hrs).card = r * M ((deepLayer hL).succ) := by
+  rw [topCoordsG, Finset.card_image_of_injective _ ?_, Finset.card_univ, Fintype.card_prod,
+    Fintype.card_fin, Fintype.card_fin]
+  · rintro ⟨a, j⟩ ⟨a', j'⟩ h
+    have hslot : topSlotG M hL hrs a j = topSlotG M hL hrs a' j' := coordOfG_injective M h
+    have hj : j = j' := Fin.ext (congrArg (fun q : FlatIdx M => (q.2.val : ℕ)) hslot)
+    have hrow : (deepWidthEquiv hrs (Sum.inl a) : Fin (M ((deepLayer hL).castSucc)))
+        = deepWidthEquiv hrs (Sum.inl a') :=
+      Fin.ext (congrArg (fun q : FlatIdx M => (q.1.2.val : ℕ)) hslot)
+    have ha : a = a' := Sum.inl_injective ((deepWidthEquiv hrs).injective hrow)
+    rw [ha, hj]
+
+/-- The fderiv carrier `DmapG u := pivotBlowupOnDeriv topCoordsG pivotCoordG u`. -/
+noncomputable def DmapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) :
+    (Fin (routeMAmbient M) → ℝ) →L[ℝ] (Fin (routeMAmbient M) → ℝ) :=
+  pivotBlowupOnDeriv (topCoordsG M hL hrs) (pivotCoordG M hL hrs hr hc) u
+
+/-- `RmapG` has fderiv `DmapG` on any set (`pivotBlowupOn_hasFDerivWithinAt`). -/
+theorem RmapG_hasFDerivWithinAt (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (S : Set (Fin (routeMAmbient M) → ℝ)) (u : Fin (routeMAmbient M) → ℝ) :
+    HasFDerivWithinAt (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc u) S u :=
+  pivotBlowupOn_hasFDerivWithinAt _ _ S u
+
+/-- `RmapG` is injective off `{u pivot = 0}` (`pivotBlowupOn_injOn`). -/
+theorem RmapG_injOn (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (S : Set (Fin (routeMAmbient M) → ℝ)) :
+    Set.InjOn (RmapG M hL hrs hr hc) (S \ {x | x (pivotCoordG M hL hrs hr hc) = 0}) :=
+  pivotBlowupOn_injOn _ _ S
+
+/-- `|det (DmapG u)| = |u pivot|^(r·M(deepLayer).succ − 1)` (`pivotBlowupOnDeriv_det`, card `= r·c`). -/
+theorem DmapG_abs_det (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) :
+    |(DmapG M hL hrs hr hc u).det|
+      = |u (pivotCoordG M hL hrs hr hc)| ^ (r * M ((deepLayer hL).succ) - 1) := by
+  rw [DmapG, pivotBlowupOnDeriv_det _ _ (pivotCoordG_mem M hL hrs hr hc), topCoordsG_card, abs_pow]
+
+/-! ## The general-`L` smeared rate `routeMCore M (ψ (R u)) = (zu u)²·‖P₁·H̄‖²` -/
+
+/-- **The general-`L` opaque-width smeared rate** `routeMCore M (psiMapG (RmapG u)) = (zuG u)²·U`,
+`U = ‖P₁·H̄_unit‖²`, off the shear cancellation `P₁·Λ₀ = P₂`. The DECODE (`genDecode_params`) says
+`(paramsEquivFlat M).symm (psiMapG (RmapG u)) = chartGenParams …`; the atom's chart-eval collapse
+(`prod_chartGen_collapse`, off the cancellation) gives `prod M (chartGenParams …) = z • (P₁·H̄)`; then
+`routeMCore_rate_of_prod_collapsed` reads off the rate. -/
+theorem routeMCore_psiMapG_RmapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
+    (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
+    (hcancel : P1uG M hL hrs u * Lam0uG M hL hrs u = P2uG M hL hrs u) :
+    routeMCore M (psiMapG M hL hrs (RmapG M hL hrs hr hc u))
+      = (zuG M hL hrs hr hc u) ^ 2
+        * ∑ i, ∑ j, ((P1uG M hL hrs u
+            * ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)) i j) ^ 2 := by
+  -- the decode: `(paramsEquivFlat M).symm (psiMapG (RmapG u)) = chartGenParams …`
+  have hdecode : (paramsEquivFlat M).symm (psiMapG M hL hrs (RmapG M hL hrs hr hc u))
+      = chartGenParams M (frontTupleG M u) hL (hrsAtom_of_hrs hL hrs) (zuG M hL hrs hr hc u)
+          ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)
+          ((deepLayer_succ_width M hL) ▸ SbotuG M hL hrs u) (Lam0uG M hL hrs u) e1 e2 := by
+    rw [psiMapG, MeasurableEquiv.symm_apply_apply]
+    exact genDecode_params M hL hrs hr hc u e1 e2
+  -- the chart-eval collapse `prod M (chartGenParams …) = z • (P₁·H̄)`
+  have hcollapse : prod M ((paramsEquivFlat M).symm (psiMapG M hL hrs (RmapG M hL hrs hr hc u)))
+      = (zuG M hL hrs hr hc u)
+        • (P1uG M hL hrs u * ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)) := by
+    rw [hdecode]
+    exact prod_chartGen_collapse M (frontTupleG M u) hL (hrsAtom_of_hrs hL hrs)
+      (zuG M hL hrs hr hc u) _ _ (Lam0uG M hL hrs u) e1 e2
+      (P1uG M hL hrs u) (P2uG M hL hrs u) (fun i k => rfl) (fun i k => rfl) hcancel
+  rw [routeMCore_rate_of_prod_collapsed M (psiMapG M hL hrs) (RmapG M hL hrs hr hc u)
+    (zuG M hL hrs hr hc u) _ hcollapse]
+
 end DLNFibre.DLN.RLCT
