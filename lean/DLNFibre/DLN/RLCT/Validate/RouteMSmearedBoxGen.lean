@@ -162,4 +162,53 @@ theorem carrierBlock_prodAux_det_ne (A : Params M) {δ η : ℝ} (hδ : 0 < δ) 
   have hdom := dominance_of_small_eta hr hη hAcc0 hnb0 hnbA hdlbA hsmall
   exact (hWCB.carrierBlock hr0 hrL).det_ne_zero hdom
 
+/-! ## The Gram determinant `hGram`/`hGram0` from the carrier-block det -/
+
+/-- **The `P1uG` carrier `r×r` minor is the `frontProd` carrier block.** `P1uG u i k =
+frontProd (frontTupleG u) i (deepWidthEquiv(inl k))`, and `deepWidthEquiv(inl k)` has `.val = k`, so
+selecting the first `r` rows and columns `deepWidthEquiv(inl)` gives exactly the first-`r×r` block of
+`frontProd = prodAux (L−1)`. -/
+theorem P1uG_submatrix_eq_carrierBlock (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
+    (i j : Fin r) :
+    (P1uG M hL hrs u).submatrix (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0)))
+        (id : Fin r → Fin r) i j
+      = prodAux M (frontTupleG M u) (L - 1) (by omega)
+          ⟨i, lt_of_lt_of_le i.isLt hr0⟩ ⟨j, lt_of_lt_of_le j.isLt hrL⟩ := by
+  rw [Matrix.submatrix_apply, id_eq, P1uG, frontProd]
+  -- the column `deepWidthEquiv(inl j)` equals `⟨j,_⟩` (val-preserving)
+  have hcol : deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl j)
+      = (⟨j, lt_of_lt_of_le j.isLt hrL⟩ : Fin (M (⟨L - 1, by omega⟩ : Fin (L + 1)))) := by
+    apply Fin.ext
+    simp [deepWidthEquiv, finSumFinEquiv_apply_left]
+  rw [hcol]
+
+/-- **`hGram` from the front-layer carrier structure.** When `frontTupleG u`'s layers are
+`CarrierLayer`s and `η` is small, the Gram `det ((P1uG u)ᵀ P1uG u) ≠ 0` — `P₁`'s carrier `r×r` minor
+(the `frontProd` carrier block) is nonzero (`carrierBlock_prodAux_det_ne`), so `P₁` has full column
+rank (`gram_det_ne_zero_of_submatrix_det_ne`). -/
+theorem gram_det_ne_of_carrierLayers (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
+    (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
+    (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
+    (hlayers : ∀ t : Fin L, CarrierLayer (frontTupleG M u t) r δ η) :
+    ∃ Acc : ℝ, 0 ≤ Acc ∧ ((r : ℝ) * (η * Acc) < (δ / 2) ^ (L - 1) →
+      ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0) := by
+  obtain ⟨Acc, hAcc0, hclose⟩ :=
+    carrierBlock_prodAux_det_ne (frontTupleG M u) hδ hη hηδ hr hr0 hrL hwidth hlayers
+  refine ⟨Acc, hAcc0, fun hsmall => ?_⟩
+  refine gram_det_ne_zero_of_submatrix_det_ne (P1uG M hL hrs u)
+    (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0))) (id : Fin r → Fin r) ?_
+  -- the submatrix det = the carrier-block det (entrywise equal matrices)
+  have hEq : (P1uG M hL hrs u).submatrix
+      (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0))) (id : Fin r → Fin r)
+      = Matrix.of (fun i j : Fin r => prodAux M (frontTupleG M u) (L - 1) (by omega)
+          ⟨i, lt_of_lt_of_le i.isLt hr0⟩ ⟨j, lt_of_lt_of_le j.isLt hrL⟩) := by
+    funext i j
+    exact P1uG_submatrix_eq_carrierBlock hL hrs u hr0 hrL i j
+  rw [hEq]
+  exact hclose hsmall
+
 end DLNFibre.DLN.RLCT
