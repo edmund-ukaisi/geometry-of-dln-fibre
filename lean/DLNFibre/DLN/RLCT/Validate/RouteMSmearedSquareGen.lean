@@ -374,7 +374,7 @@ theorem psiMapG_RmapG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 `|z·H̄| ≤ δ·1`, the shear `|(Λ₀·S_bot) a j| ≤ ∑_b |Λ₀ a b|·|S_bot b j| ≤ s·((1/γ)·nb)·η`. -/
 theorem deepTopG_entry_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
-    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η) (hnb0 : 0 ≤ nb)
+    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη1 : η ≤ 1) (_hηpos : 0 ≤ η) (hnb0 : 0 ≤ nb)
     {u : Fin (routeMAmbient M) → ℝ}
     (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ)
     (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
