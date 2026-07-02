@@ -821,4 +821,75 @@ theorem interiorLive_BdetMonomialGen_at (M : Fin (L + 1) → ℕ) (ha : StructAd
       simp only [g]; rw [hz, pow_zero]
   rw [hLHS, hRHS]
 
+/-! ## The chart Jacobian abs-det headline + the map factorization -/
+
+/-- **The map factorization** `eDeepRank0PhiGen = (fun y => BchartLeafGen (kLDU y)) ∘ pbo p₀` — from
+`hmap_EfpGen` (at `kLDU x`) + the commute `kLDU_pbo_commuteGen_at`. -/
+theorem eDeepRank0PhiGen_factor (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hk : k.val ≠ L - 1) (hdr0 : Text M (tach M) L = 0)
+    (hr : 0 < Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hc : 0 < Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hp1 : Text M (tach M) (k.val + 1 + 1) ≤ Text M (tach M) (k.val + 1))
+    (hp2 : Text M (tach M) (k.val + 1 + 1) ≤ Wext M (k.val + 1)) :
+    eDeepRank0PhiGen M ha k (eBlockPivotGen M ha k hr hc) hp1 hp2
+      = (fun y => BchartLeafGen M ha (kLDU M (tach M) ha y))
+        ∘ pivotBlowupOn (activeMGen M ha) (eBlockPivotGen M ha k hr hc) := by
+  set p₀ := eBlockPivotGen M ha k hr hc with hp₀
+  have hp₀mem : p₀ ∈ activeMGen M ha := eBlockPivotGen_mem_activeMGen M ha k hk hr hc
+  funext x
+  show phiEfpAt M ha k p₀ hp1 hp2 (kLDU M (tach M) ha x) = _
+  rw [hmap_EfpGen M ha k hk hdr0 hr hc hp1 hp2]
+  show BchartLeafGen M ha (pivotBlowupOn (activeMGen M ha) p₀ (kLDU M (tach M) ha x)) = _
+  rw [kLDU_pbo_commuteGen_at M ha p₀ hp₀mem x]
+  rfl
+
+/-- **The chart Jacobian abs-det** — `|det D(eDeepRank0PhiGen) u| = ∏_j |u_j|^{eDeepRank0_leafHGen p₀ j}`.
+The route-#1 radial split (`radialComp_abs_det_at` at `p₀ = eBlockPivotGen`) gives
+`|u p₀|^{minAdm−1} · |det D(BchartLeafGen ∘ kLDU)(pbo u)|`, and the boundary factor monomializes
+(`interiorLive_BdetMonomialGen_at`) to `∏_{j ≠ p₀} |u_j|^{leafHGen j}`; the radial fills the pivot
+slot (`eDeepRank0_leafHGen_pivot`). -/
+theorem eDeepRank0_abs_detGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hk : k.val ≠ L - 1) (hdr0 : Text M (tach M) L = 0)
+    (hr : 0 < Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hc : 0 < Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hp1 : Text M (tach M) (k.val + 1 + 1) ≤ Text M (tach M) (k.val + 1))
+    (hp2 : Text M (tach M) (k.val + 1 + 1) ≤ Wext M (k.val + 1))
+    (u : Fin (routeMAmbient M) → ℝ) :
+    |LinearMap.det (fderiv ℝ (eDeepRank0PhiGen M ha k (eBlockPivotGen M ha k hr hc) hp1 hp2) u).toLinearMap|
+      = ∏ j, |u j| ^ (eDeepRank0_leafHGen M ha (eBlockPivotGen M ha k hr hc) j) := by
+  set p₀ := eBlockPivotGen M ha k hr hc with hp₀
+  have hp₀mem : p₀ ∈ activeMGen M ha := eBlockPivotGen_mem_activeMGen M ha k hk hr hc
+  set B' := fun y => BchartLeafGen M ha (kLDU M (tach M) ha y) with hB'
+  have hmap : eDeepRank0PhiGen M ha k p₀ hp1 hp2 = B' ∘ pivotBlowupOn (activeMGen M ha) p₀ :=
+    eDeepRank0PhiGen_factor M ha k hk hdr0 hr hc hp1 hp2
+  have hasDB' : HasFDerivAt B'
+      (fderiv ℝ B' (pivotBlowupOn (activeMGen M ha) p₀ u))
+      (pivotBlowupOn (activeMGen M ha) p₀ u) :=
+    ((Bchart_differentiableAtGen M ha _).comp _
+      (differentiable_kLDUGen M (tach M) ha _)).hasFDerivAt
+  rw [radialComp_abs_det_at M (activeMGen M ha) p₀ hp₀mem
+    (activeMGen_card M ha) B' (eDeepRank0PhiGen M ha k p₀ hp1 hp2) u _ hmap hasDB',
+    interiorLive_BdetMonomialGen_at M ha p₀ hp₀mem u]
+  conv_rhs => rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => |u j| ^ (eDeepRank0_leafHGen M ha p₀ j))]
+  rw [Finset.prod_eq_mul_prod_diff_singleton_of_mem (Finset.mem_univ p₀)
+    (fun j => if j = p₀ then (1 : ℝ) else |u j| ^ (eDeepRank0_leafHGen M ha p₀ j))]
+  rw [if_pos rfl, one_mul, eDeepRank0_leafHGen_pivot M ha p₀]
+  congr 1
+  refine Finset.prod_congr rfl (fun j hj => ?_)
+  rw [if_neg (by simp at hj; exact hj : j ≠ p₀)]
+
+/-- **`eDeepRank0PhiGen` is differentiable** — the factorization + each factor differentiable. -/
+theorem eDeepRank0_diffGen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (k : Fin L)
+    (hk : k.val ≠ L - 1) (hdr0 : Text M (tach M) L = 0)
+    (hr : 0 < Text M (tach M) (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hc : 0 < Wext M (k.val + 1) - Text M (tach M) (k.val + 2))
+    (hp1 : Text M (tach M) (k.val + 1 + 1) ≤ Text M (tach M) (k.val + 1))
+    (hp2 : Text M (tach M) (k.val + 1 + 1) ≤ Wext M (k.val + 1)) :
+    Differentiable ℝ (eDeepRank0PhiGen M ha k (eBlockPivotGen M ha k hr hc) hp1 hp2) := by
+  rw [eDeepRank0PhiGen_factor M ha k hk hdr0 hr hc hp1 hp2]
+  refine Differentiable.comp ?_ (differentiable_pivotBlowupOnGen (activeMGen M ha) _)
+  exact fun y => ((fun u => Bchart_differentiableAtGen M ha u) _).comp y
+    (differentiable_kLDUGen M (tach M) ha y)
+
 end DLNFibre.DLN.RLCT
