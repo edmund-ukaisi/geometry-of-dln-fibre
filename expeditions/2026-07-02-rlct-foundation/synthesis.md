@@ -127,3 +127,29 @@ bare-namespace modules (`RLCT` + the L7 Mathlib-mirror namespaces); they audit c
 `--ns RLCT`. Harmless now (R2a clean; DLN payoff transitively protected), but the cited continuation axiom will live
 in a `RLCT` `Cited.lean` — so the gate MUST be extended to first-party bare namespaces before that lands (around the
 R2a merge).
+
+## pp-zeta-cert certificate + rev-r2a verdict (2026-07-02)
+
+**Zeta-pole certificate (pp-zeta-cert, decorrelated Codex gpt-5.4 exit 0):** the definition is SOUND + faithful to
+the paper (Atiyah attribution L1811). The **bullet = ONE bundled `@[cited]` continuation axiom** (Atiyah 1970 +
+Saito/SLT): `∫|F|^s φ` (smooth `φ`) continues meromorphically, poles ⊂ ℚ_{<0}, **largest pole `s₀ = −rlct_x`**
+(the threshold identity is IN the cite, not free from bare meromorphy — Codex sharpening). Built/proved: `λ=−s₀`/`m`
+extraction, R2a threshold, Link 3 (`codimRealFibre_eq_codimRepCanonical_baseChange`). Net: opaque `rlctReal` axiom →
+constructed object on 1 cite. 7 formaliser warnings (§6): sign `λ=−s₀`; `s=−c`; nonneg germ + **no 2nd ½** on the
+already-squared DLN loss; smooth `φ` not `1_U`; Link 1 bundled; local pair vs global payoff; `m≠θ` (paper L1933 "no
+simple relationship"). Two sound architectures — controller directs the **hybrid** (payoff rides cite-free threshold
++ Watanabe/Aoyagi; continuation cite buys `m` + the pole reading). Full spec: `threads/pp-zeta-cert/certificate.md`.
+
+**R2a review (rev-r2a): SURVIVED — merge-ready, axiom-clean (independent `#print axioms` on all 8 decls).** One
+fidelity note to land: `integrabilityThreshold` (ℝ-`IntegrableOn`) equals the classical RLCT threshold **only when
+`{K=0}∩U` is null** — else it reads too large (hand-counterexample: `K=x` on `(0,1]`, `0` on `(1,2)` → ℝ-threshold
+1 vs classical 0). The `Real.zero_rpow` collapse on `{K=0}` is faithful iff that set is null. **For the DLN germ this
+HOLDS** (`{K_B=0} = mult⁻¹(B)` is a proper subvariety, null), so the payoff is safe; but per "caveats next to
+claims" add the `{K=0}`-null precondition to statement-card Card 1 (report-only, no signature change). rev-r2a
+**endorses the gate extension** — design: a **positive allowlist of first-party namespaces** (`DLNFibre`, `RLCT`, …),
+not "everything non-Mathlib" (so upstream deps don't trip it); the exe's `nsPrefix : Name := DLNFibre` becomes a list.
+
+**Integration queued (heavy build; for calmer box / operator bullet-ack):** merge `rlct-r2` → `rlct-foundation` +
+resolve aggregator conflict (cordon + Gap-1 + RLCT import blocks) + add the Card-1 fidelity note + extend the gate
+(first-party allowlist) + re-gate. Then R2b (build `Zeta`+`Cited` against the certificate) — held for the operator's
+confirmation of the bullet.
