@@ -18,13 +18,17 @@ Lean now has:
 
 ```text
 lintegral_prod_lt_top_of_readback_map_le_smul
+lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul
 ```
 
 Decision: before building the localized with-following finite-integral wrapper,
 bank the generic measure lemma that honestly transfers finite lower integrals
-through a readback map.  The lemma consumes measurable readback, an a.e.
-right-inverse identity, finite scalar domination of `map readback mu`, and a
-finite source-side product integral.
+through a readback map.  The measurable lemma consumes measurable readback, an
+a.e. right-inverse identity, finite scalar domination of `map readback mu`, and
+a finite source-side product integral.  The a.e.-measurable variant weakens the
+readback hypothesis to `AEMeasurable readback mu`, using the measurable
+representative for the product pushforward identity and `lintegral_map'` for
+the lower-integral change of variables.
 
 Artifact:
 
@@ -37,13 +41,15 @@ The current concrete finite-integral wrappers are for `Case2PassiveTheta`, but
 the localized prior readback theorem is for
 `Case2PassiveThetaWithFollowingFactor`.  The next target is to bridge that
 type gap by proving either a with-following source-side finite-integral socket
-or an explicit projection/comparison into the passive-theta socket, while also
-supplying measurable readback for the with-following endpoint source chart.
-Do not silently call the passive-theta theorem with a with-following readback.
+or an explicit projection/comparison into the passive-theta socket.  The
+readback measurability side is now compatible with localized a.e.-measurable
+readback outputs, but the with-following source-side finite integral is still
+not supplied.  Do not silently call the passive-theta theorem with a
+with-following readback.
 
 Verification passed through focused local module build, full local `lake build
 DLNFibre`, no-sorry audit, whitespace check, targeted forbidden-marker scan,
-and direct axiom probe.  The theorem reports only
+and direct axiom probe.  The theorems report only
 `[propext, Classical.choice, Quot.sound]`.
 
 ## Latest controller decision - 2026-07-02, A2 with-following localized prior readback domination

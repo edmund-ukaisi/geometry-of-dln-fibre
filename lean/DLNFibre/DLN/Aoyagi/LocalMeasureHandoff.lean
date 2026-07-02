@@ -514,6 +514,90 @@ theorem lintegral_prod_lt_top_of_readback_map_le_smul
   simpa [hcongr]
     using hfinite_comp
 
+/-- Finite product lower integrals transfer through an a.e.-measurable
+readback map whose pushforward is dominated by a finite scalar multiple of a
+source measure.
+
+This is the same handoff as `lintegral_prod_lt_top_of_readback_map_le_smul`,
+with the measurability hypothesis weakened to the form returned by localized
+readback-domination theorems. -/
+theorem lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul
+    {Θ E β : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    [MeasurableSpace β]
+    {μ : Measure E} [SFinite μ] {θμ : Measure Θ} {η : Measure β}
+    [SFinite η] {readback : E → Θ} {sourceChart : Θ → E}
+    {C : ℝ≥0∞} {F : E × β → ℝ≥0∞}
+    (hreadback : AEMeasurable readback μ)
+    (hright : ∀ᵐ x ∂μ, sourceChart (readback x) = x)
+    (hmap : Measure.map readback μ ≤ C • θμ)
+    (hC : C < ∞)
+    (hFsource : Measurable (fun z : Θ × β ↦ F (sourceChart z.1, z.2)))
+    (hfinite :
+      (∫⁻ z : Θ × β, F (sourceChart z.1, z.2) ∂θμ.prod η) < ∞) :
+    (∫⁻ z : E × β, F z ∂μ.prod η) < ∞ := by
+  let Fsource : Θ × β → ℝ≥0∞ :=
+    fun z ↦ F (sourceChart z.1, z.2)
+  let readbackMk : E → Θ := hreadback.mk readback
+  let readbackProd : E × β → Θ × β := fun z ↦ (readback z.1, z.2)
+  let readbackProdMk : E × β → Θ × β := Prod.map readbackMk id
+  have hreadbackMk : Measurable readbackMk :=
+    hreadback.measurable_mk
+  have hmap_readback :
+      Measure.map readback μ = Measure.map readbackMk μ :=
+    Measure.map_congr hreadback.ae_eq_mk
+  have hreadbackProd_ae :
+      readbackProd =ᵐ[μ.prod η] readbackProdMk := by
+    have hfst :
+        ∀ᵐ z : E × β ∂μ.prod η, readback z.1 = readbackMk z.1 :=
+      (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := η)).ae
+        hreadback.ae_eq_mk
+    filter_upwards [hfst] with z hz
+    rcases z with ⟨x, y⟩
+    simp [readbackProd, readbackProdMk, hz]
+  have hmap_prod :
+      (Measure.map readback μ).prod η =
+        Measure.map readbackProd (μ.prod η) := by
+    calc
+      (Measure.map readback μ).prod η =
+          (Measure.map readbackMk μ).prod η := by
+        rw [hmap_readback]
+      _ = Measure.map readbackProdMk (μ.prod η) := by
+        simpa [readbackProdMk] using
+          (Measure.map_prod_map μ η hreadbackMk measurable_id)
+      _ = Measure.map readbackProd (μ.prod η) := by
+        exact (Measure.map_congr hreadbackProd_ae).symm
+  have hfinite_map :
+      (∫⁻ z : Θ × β, Fsource z ∂(Measure.map readback μ).prod η) < ∞ :=
+    lintegral_prod_lt_top_of_left_measure_le_smul
+      (η := η) hmap hC (by simpa [Fsource] using hfinite)
+  have hreadbackProd_aemeas :
+      AEMeasurable readbackProd (μ.prod η) := by
+    have hfst :
+        AEMeasurable (fun z : E × β ↦ readback z.1) (μ.prod η) :=
+      hreadback.comp_quasiMeasurePreserving
+        (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := η))
+    simpa [readbackProd] using hfst.prodMk measurable_snd.aemeasurable
+  have hfinite_comp :
+      (∫⁻ z : E × β, Fsource (readbackProd z) ∂μ.prod η) < ∞ := by
+    calc
+      (∫⁻ z : E × β, Fsource (readbackProd z) ∂μ.prod η) =
+          ∫⁻ z : Θ × β, Fsource z ∂Measure.map readbackProd (μ.prod η) := by
+        exact (lintegral_map' hFsource.aemeasurable hreadbackProd_aemeas).symm
+      _ = ∫⁻ z : Θ × β, Fsource z ∂(Measure.map readback μ).prod η := by
+        rw [← hmap_prod]
+      _ < ∞ := hfinite_map
+  have hright_prod :
+      ∀ᵐ z : E × β ∂μ.prod η, sourceChart (readback z.1) = z.1 :=
+    (Measure.quasiMeasurePreserving_fst (μ := μ) (ν := η)).ae hright
+  have hcongr :
+      (∫⁻ z : E × β, F z ∂μ.prod η) =
+        ∫⁻ z : E × β, Fsource (readbackProd z) ∂μ.prod η := by
+    refine lintegral_congr_ae ?_
+    filter_upwards [hright_prod] with z hz
+    simp [Fsource, readbackProd, hz]
+  simpa [hcongr]
+    using hfinite_comp
+
 /-- A measure domination by a scalar multiple remains true after mapping by a
 measurable function. -/
 theorem map_le_smul_map_of_le_smul

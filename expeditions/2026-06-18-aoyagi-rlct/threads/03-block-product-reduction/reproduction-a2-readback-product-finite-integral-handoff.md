@@ -115,14 +115,48 @@ and exposes the following hypotheses: measurable readback, the a.e.
 right-inverse identity, finite scalar map domination, measurability of the
 source-chart pullback integrand, and source-side finite integral.
 
+## A.e.-measurable readback variant
+
+The localized Aoyagi readback-domination theorems usually return
+`AEMeasurable readback` for the restricted source/prior piece, not a global
+`Measurable readback` theorem.  The same calculation still works.
+
+Let `readbackMk` be the measurable representative supplied by
+`AEMeasurable.mk`.  Since
+
+```text
+readback = readbackMk
+```
+
+for `mu`-a.e. points, the product maps
+
+```text
+(x, beta) |-> (readback x, beta),
+(x, beta) |-> (readbackMk x, beta)
+```
+
+agree for `mu.prod eta`-a.e. points.  Therefore their pushforward measures are
+equal.  The product pushforward identity is applied to the measurable
+representative, and `lintegral_map'` handles the final lower-integral change
+of variables through the original a.e.-measurable map.
+
+Lean formalizes this as:
+
+```text
+lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul
+```
+
+with the same hypotheses as the measurable version except that `readback` only
+needs to be `AEMeasurable readback mu`.
+
 ## Boundary
 
 This proves no localized with-following finite-integral wrapper by itself.  In
 particular it does not prove measurable readback for the
-`Case2PassiveThetaWithFollowingFactor` endpoint source chart, does not provide
-a with-following source-side finite-integral theorem, and does not compare
-with-following coordinate source measure to the older passive-theta finite
-integral sockets.
+`Case2PassiveThetaWithFollowingFactor` endpoint source chart beyond whatever
+a.e.-measurability a caller supplies, does not provide a with-following
+source-side finite-integral theorem, and does not compare with-following
+coordinate source measure to the older passive-theta finite-integral sockets.
 
 It also proves no determinant-Haar transport, source-density positivity,
 original source-prior origin, source/image coverage, normal crossings, pole
