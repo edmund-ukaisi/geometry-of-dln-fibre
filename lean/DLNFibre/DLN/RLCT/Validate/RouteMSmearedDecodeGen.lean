@@ -111,4 +111,188 @@ theorem frontSlotG_ne_botSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   intro h
   exact ht (congrArg (·.1.1) h)
 
+/-! ## The chart components read off `u` at the flat slots -/
+
+/-- **The front tuple** `frontTupleG u : Params M` — the identity readoff `A t i j =
+u (coordOfG (frontSlotG t i j))` at EVERY layer `t`. (The deep layer `L−1` is overridden by
+`chartGenParams`, so only the free front layers `0..L−2` matter downstream — their coords are all
+`∉ topCoordsG`, hence shear-untouched.) -/
+noncomputable def frontTupleG (M : Fin (L + 1) → ℕ) (u : Fin (routeMAmbient M) → ℝ) : Params M :=
+  fun t i j => u (coordOfG M (frontSlotG M t i j))
+
+/-- The deepest-top radial coords (`R`'s active set / the shear's Core slots): the `r·c` coords
+`coordOfG (topSlotG a j)`. -/
+noncomputable def topCoordsG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) : Finset (Fin (routeMAmbient M)) :=
+  Finset.image
+    (fun p : Fin r × Fin (M ((deepLayer hL).succ)) => coordOfG M (topSlotG M hL hrs p.1 p.2))
+    Finset.univ
+
+/-- The radial pivot coord (the `(0,0)` entry of the deepest-top block) — needs `0 < r`, `0 < M last`. -/
+noncomputable def pivotCoordG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r)
+    (hc : 0 < M ((deepLayer hL).succ)) : Fin (routeMAmbient M) :=
+  coordOfG M (topSlotG M hL hrs ⟨0, hr⟩ ⟨0, hc⟩)
+
+/-- The radial pivot value `z = u (pivotCoordG)`. -/
+noncomputable def zuG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) : ℝ :=
+  u (pivotCoordG M hL hrs hr hc)
+
+/-- The residual `S_bot b j = u (coordOfG (botSlotG b j))` (the free bottom block). -/
+noncomputable def SbotuG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin s) (Fin (M ((deepLayer hL).succ))) ℝ :=
+  fun b j => u (coordOfG M (botSlotG M hL hrs b j))
+
+/-- The angular UNIT block `H̄_unit a j`: the pivot entry `(⟨0⟩,⟨0⟩)` is fixed `= 1`, every other
+deepest-top entry is the free coord `u (coordOfG (topSlotG a j))`. -/
+noncomputable def HbarUnitG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) : Matrix (Fin r) (Fin (M ((deepLayer hL).succ))) ℝ :=
+  fun a j => if coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc then 1
+    else u (coordOfG M (topSlotG M hL hrs a j))
+
+/-- **The atom-shaped split hypothesis** `r + s = M (⟨L−1⟩ : Fin (L+1))`, obtained from the
+FlatIdx-natural `hrs : r + s = M (deepLayer hL).castSucc` by the width equality. The atom's
+`chartGenParams`/`prod_chartGen_collapse`/`frontProd` all index by `M (⟨L−1⟩ : Fin (L+1))`, so this
+is the single conversion point between the FlatIdx-natural split and the atom's split. -/
+theorem hrsAtom_of_hrs (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    r + s = M (⟨L - 1, by omega⟩ : Fin (L + 1)) :=
+  hrs.trans (deepLayer_castSucc_width M hL).symm
+
+/-- The rank-block front columns `P₁ i k = frontProd i (deepWidthEquiv (inl k))` (atom-shaped `hrs`). -/
+noncomputable def P1uG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin r) ℝ :=
+  fun i k => frontProd M (frontTupleG M u) hL i
+    (deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k))
+
+/-- The residual front columns `P₂ i k = frontProd i (deepWidthEquiv (inr k))`. -/
+noncomputable def P2uG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin (M 0)) (Fin s) ℝ :=
+  fun i k => frontProd M (frontTupleG M u) hL i
+    (deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inr k))
+
+/-- The rational routing `Λ₀ = (P₁ᵀP₁)⁻¹P₁ᵀP₂` (the smeared shear coefficient). -/
+noncomputable def Lam0uG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ) :
+    Matrix (Fin r) (Fin s) ℝ :=
+  ((P1uG M hL hrs u).transpose * P1uG M hL hrs u)⁻¹ * (P1uG M hL hrs u).transpose * P2uG M hL hrs u
+
+/-! ## `topCoordsG` membership + the radial blow-up `R` -/
+
+/-- `coordOfG (topSlotG a j) ∈ topCoordsG`. -/
+theorem coordOfG_topSlotG_mem (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    coordOfG M (topSlotG M hL hrs a j) ∈ topCoordsG M hL hrs := by
+  rw [topCoordsG, Finset.mem_image]
+  exact ⟨(a, j), Finset.mem_univ _, rfl⟩
+
+/-- Membership in `topCoordsG` is exactly "is the `coordOfG` of some top slot". -/
+theorem mem_topCoordsG_iff (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (m : Fin (routeMAmbient M)) :
+    m ∈ topCoordsG M hL hrs ↔
+      ∃ a : Fin r, ∃ j : Fin (M ((deepLayer hL).succ)), coordOfG M (topSlotG M hL hrs a j) = m := by
+  rw [topCoordsG, Finset.mem_image]
+  constructor
+  · rintro ⟨⟨a, j⟩, _, h⟩; exact ⟨a, j, h⟩
+  · rintro ⟨a, j, h⟩; exact ⟨(a, j), Finset.mem_univ _, h⟩
+
+/-- `coordOfG (frontSlotG t i jf) ∉ topCoordsG` when `t ≠ deepLayer` (a front slot is not a top slot). -/
+theorem coordOfG_frontSlotG_not_mem (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (t : Fin L) (ht : t ≠ deepLayer hL) (i : Fin (M t.castSucc)) (jf : Fin (M t.succ)) :
+    coordOfG M (frontSlotG M t i jf) ∉ topCoordsG M hL hrs := by
+  rw [mem_topCoordsG_iff]
+  rintro ⟨a, j, h⟩
+  exact frontSlotG_ne_topSlotG M hL hrs t ht i jf a j (coordOfG_injective M h.symm)
+
+/-- `coordOfG (botSlotG b j) ∉ topCoordsG` (a bottom slot is not a top slot). -/
+theorem coordOfG_botSlotG_not_mem (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    coordOfG M (botSlotG M hL hrs b j) ∉ topCoordsG M hL hrs := by
+  rw [mem_topCoordsG_iff]
+  rintro ⟨a, j', h⟩
+  exact topSlotG_ne_botSlotG M hL hrs a j' b j (coordOfG_injective M h)
+
+/-- The radial blow-up `R := pivotBlowupOn (topCoordsG) pivotCoordG`: fixes the pivot, scales the
+other deepest-top coords by the pivot, fixes the spectators (front + bottom). -/
+noncomputable def RmapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ)) :
+    (Fin (routeMAmbient M) → ℝ) → (Fin (routeMAmbient M) → ℝ) :=
+  pivotBlowupOn (topCoordsG M hL hrs) (pivotCoordG M hL hrs hr hc)
+
+/-- The pivot coord is in `topCoordsG`. -/
+theorem pivotCoordG_mem (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ)) :
+    pivotCoordG M hL hrs hr hc ∈ topCoordsG M hL hrs :=
+  coordOfG_topSlotG_mem M hL hrs ⟨0, hr⟩ ⟨0, hc⟩
+
+/-- `RmapG u m = u m` off `topCoordsG` (spectators: front + bottom; `pivot ∈ topCoordsG`). -/
+theorem RmapG_spectator (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) {m : Fin (routeMAmbient M)} (hm : m ∉ topCoordsG M hL hrs) :
+    RmapG M hL hrs hr hc u m = u m := by
+  have hmp : m ≠ pivotCoordG M hL hrs hr hc := fun h => hm (h ▸ pivotCoordG_mem M hL hrs hr hc)
+  simp only [RmapG, pivotBlowupOn, if_neg hmp, if_neg hm]
+
+/-- `RmapG u (coordOfG (topSlotG a j)) = zuG · HbarUnitG a j`. -/
+theorem RmapG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    RmapG M hL hrs hr hc u (coordOfG M (topSlotG M hL hrs a j))
+      = zuG M hL hrs hr hc u * HbarUnitG M hL hrs hr hc u a j := by
+  rw [RmapG, HbarUnitG, zuG, pivotBlowupOn]
+  by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
+  · rw [if_pos hpiv, if_pos hpiv, mul_one]
+  · have hmem := coordOfG_topSlotG_mem M hL hrs a j
+    rw [if_neg hpiv, if_pos hmem, if_neg hpiv]
+
+/-! ## The front tuple / `S_bot` / `Λ₀` read only `topCoordsGᶜ` (shear-spectator coords) -/
+
+/-- `frontTupleG v = frontTupleG w` if `v`, `w` agree off `topCoordsG` (the FRONT layers `t ≠ deepLayer`
+read `frontSlotG` coords, all `∉ topCoordsG`; the deep layer of `frontTupleG` is overridden downstream
+by `chartGenParams`, so its value there is irrelevant to `frontProd`). Stated on the front-relevant
+layers via `prodAux_congr_lt`; here for the full readoff we only need agreement off `topCoordsG` for the
+front layers, which this supplies. -/
+theorem frontTupleG_congr_front (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoordsG M hL hrs → v m = w m) (t : Fin L) (ht : t ≠ deepLayer hL) :
+    (frontTupleG M v) t = (frontTupleG M w) t := by
+  funext i jf
+  exact h _ (coordOfG_frontSlotG_not_mem M hL hrs t ht i jf)
+
+/-- The front PRODUCT `frontProd M (frontTupleG v) = frontProd M (frontTupleG w)` when `v`, `w` agree
+off `topCoordsG` — `frontProd = prodAux (L−1)` reads only the front layers `0..L−2`, all `≠ deepLayer`,
+which agree by `frontTupleG_congr_front`. -/
+theorem frontProd_frontTupleG_congr (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoordsG M hL hrs → v m = w m) :
+    frontProd M (frontTupleG M v) hL = frontProd M (frontTupleG M w) hL := by
+  rw [frontProd, frontProd]
+  refine prodAux_congr_lt M _ _ (L - 1) (by omega) (fun t ht => ?_)
+  have htne : t ≠ deepLayer hL := by
+    intro hteq; rw [hteq] at ht; simp only [deepLayer] at ht; omega
+  exact frontTupleG_congr_front M hL hrs h t htne
+
+/-- `SbotuG v = SbotuG w` if `v`, `w` agree off `topCoordsG` (`S_bot` reads bottom slots, `∉ topCoordsG`). -/
+theorem SbotuG_congr (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoordsG M hL hrs → v m = w m) : SbotuG M hL hrs v = SbotuG M hL hrs w := by
+  funext b j
+  exact h _ (coordOfG_botSlotG_not_mem M hL hrs b j)
+
+/-- `Lam0uG v = Lam0uG w` if `v`, `w` agree off `topCoordsG` (`Λ₀` is built from `frontProd`'s columns
+`P₁`/`P₂`, which are `frontProd`-invariant off `topCoordsG`). -/
+theorem Lam0uG_congr (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ∉ topCoordsG M hL hrs → v m = w m) : Lam0uG M hL hrs v = Lam0uG M hL hrs w := by
+  have hFP := frontProd_frontTupleG_congr M hL hrs h
+  have hP1 : P1uG M hL hrs v = P1uG M hL hrs w := by funext i a; simp only [P1uG, hFP]
+  have hP2 : P2uG M hL hrs v = P2uG M hL hrs w := by funext i b; simp only [P2uG, hFP]
+  rw [Lam0uG, Lam0uG, hP1, hP2]
+
 end DLNFibre.DLN.RLCT
