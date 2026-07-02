@@ -44,3 +44,23 @@ mirrors L=2 exactly (`routeMCore_box_diverges_interior_L2` uses `k=0`, `p*=1`).
   `routeMCore_box_diverges_eDeepRank0Gen` (the atom) / the consumer form.
 
 Aggregator import for the new atom module left for controller integration (single-writer discipline).
+
+## Close status (all gates green)
+- SHA `3d82ae10` on `origin/genm-dr0inj` (pushed).
+- Module `RouteMInteriorDeepRank0GenAtom.lean` (+824 LoC) builds green; `RouteMInteriorLiveGenInjRec.lean`
+  net +43 (step-a weakening). Both sorry-free (`scripts/sorries`: zero in these files).
+- **Full-lib green gate (Item 125): `lake build DLNFibre` = Build completed successfully (8690 jobs).**
+  Confirms the leaf-pivot caller still builds under the weakened canonical bricks.
+- Forced `#print axioms`:
+  - `routeMCore_box_diverges_eDeepRank0Gen` = `[propext, Classical.choice, Quot.sound, monomial_rlct]`.
+  - `interiorLiveGen_hInterior_of_deepRank_zero` = same.
+  - `BchartLeafGen_inj_of_detK` (step-a core) = `[propext, Classical.choice, Quot.sound]`.
+- Reviewer fidelity audit (independent + decorrelated Codex): all four checks SOUND — step-a weakening a
+  clean strict generalisation; atom carries its pivot-drop data honestly (no overclaim); `k=p*-1`
+  alignment index-exact; ae-pos anchored on a proven non-vanishing polynomial at the concrete witness.
+
+## Controller integration TODO
+Wire `import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom` at the end of `DLNFibre.lean`
+(single-writer aggregator). The consumer `interiorLiveGen_hInterior_of_deepRank_zero` complements
+`interiorLiveGen_hInterior_of_deepRank_pos` — together they cover the general-L interior stratum for the
+`hInterior` obligation (deepRank=0 and 0<deepRank).
