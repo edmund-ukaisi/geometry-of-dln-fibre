@@ -584,3 +584,10 @@ import DLNFibre.Core.RingTheory.Determinantal.LocalTriviality
 -- scheme cover). Axiom-clean ⟹ the non-vacuity proof. The open is load-bearing (a bundle over the
 -- closure Σ̄^r is false).
 import DLNFibre.Core.FibreZariskiLocalTriviality
+-- rlct-g1 (Gap 1): the fibre-`θ` count headline WITHOUT `Monotone d`. `Monotone` enters the 7-rung
+-- count chain only at the E0 closed-form step `numTop d r = cTheta(d−r)`; stopping the headline at
+-- the minimiser count `numTop d r` (geometric E0 half `ncard_topDimMinPrimes_sigma_eq_numTop`, the
+-- unconditional `numTop_eq_ncard_topComponents`) drops the gate.
+-- `ncard_topDimMinPrimes_fibre_eq_numTop` (normal-form target) + `_of_rank` (arbitrary `B` via the
+-- LANDED same-rank transport), arbitrary `d`.
+import DLNFibre.Core.FibreThetaCountUnconditional
