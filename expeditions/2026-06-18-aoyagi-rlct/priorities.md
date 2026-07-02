@@ -22,10 +22,12 @@ case2AllPivotContinuingGuard
 case2AllPivotActualWidthStoppedGuard
 case2AllPivotRowExhaustedStoppedGuard
 case2AllPivotRowExhaustedSourceSuffixGuard
+case2AllPivotRowExhaustedTerminalLastGuard
 case2AllPivotGuards_complete
 Case2AllPivotDisplayedSourceInput
 Case2AllPivotContinuingProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData
+Case2AllPivotRowExhaustedTerminalLastProducedSourceData
 Case2AllPivotRowExhaustedStoppedProducedSourceData
 ```
 
@@ -34,8 +36,9 @@ continuing weighted successor-following data, actual-width stopped terminal
 frontier data, and row-exhausted transported-prefix source-suffix data.  The
 row-exhausted source-suffix record is guarded by the additional suffix
 condition `S + 1 <= L`; it is not total over every semantic row-exhausted
-stopped state.  The continuing record also carries the recurrence child used
-by the progress bridge.
+stopped state.  The terminal-last row-exhausted record separately packages the
+no-suffix `S + 1 = L` terminal-last frontier payload.  The continuing record
+also carries the recurrence child used by the progress bridge.
 
 This source-data layer is valued in the displayed coefficient ring `R`.  A
 future source-backed producer must either specialize the recurrence branch

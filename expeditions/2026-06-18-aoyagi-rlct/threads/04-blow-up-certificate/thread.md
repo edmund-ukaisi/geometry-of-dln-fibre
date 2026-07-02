@@ -78,9 +78,10 @@ The new source-data records package existing displayed Case 2 frontier
 payloads for the continuing, actual-width stopped, and row-exhausted stopped
 branches.  The row-exhausted source-suffix record is guarded by the stronger
 suffix-refined row guard including `S + 1 <= L`; it is not total over every
-bare row-exhausted stopped state.  The continuing record also stores the
-concrete child recurrence and connects it to the recurrence-aware progress
-bridge.
+bare row-exhausted stopped state.  The terminal-last row-exhausted record
+separately packages the no-suffix `S + 1 = L` terminal-last frontier payload.
+The continuing record also stores the concrete child recurrence and connects
+it to the recurrence-aware progress bridge.
 
 The finite recurrence data is valued in the displayed coefficient ring `R`.
 A final generic `AoyagiRecurrenceBranchState L n alpha` producer must either
@@ -94,9 +95,9 @@ forbidden-marker search, and `git diff --check` passed.
 Boundary: this still does not construct `SelectedEntryAtlasProducedBranchData`
 or `SelectedEntryProducedBranchPayload`.  There are no produced chart tokens,
 produced points, chart-domain/source-domain witnesses, center alignment,
-generic-`alpha` transport, final-stage row-exhausted/no-suffix terminal data,
-transition regularity, Jacobian/volume compatibility, normal crossings, pole
-order, or RLCT consequence.
+generic-`alpha` transport, complete semantic row-domain coverage, transition
+regularity, Jacobian/volume compatibility, normal crossings, pole order, or
+RLCT consequence.
 
 ## 2026-07-02 Lean all-pivot producer recurrence termination
 

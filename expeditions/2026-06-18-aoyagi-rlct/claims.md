@@ -18,7 +18,9 @@ No such claim is formalisation-ready until both fields are filled.
   active region.  Below the analytic producer, branch-specific finite
   source-data records can package the existing displayed Case 2 frontier
   payloads and recurrence witnesses.  The row-exhausted source-suffix record
-  is total only over a suffix-refined row guard with `S + 1 <= L`.
+  is total only over a suffix-refined row guard with `S + 1 <= L`, and the
+  terminal-last row-exhausted record is total only over the guard
+  `S + 1 = L`.
 - **Tier.** Aoyagi Case 2 blow-up/source-production support.
 - **Status.** Lean support layer proved.  This is not the final all-pivot
   producer field.
@@ -36,6 +38,8 @@ No such claim is formalisation-ready until both fields are filled.
   produced-payload fields are not printed there.
 - **Pen-and-paper reproduction.**
   `threads/04-blow-up-certificate/reproduction-a4-case2-active-guard-source-production-totality.md`;
+  terminal-last row subcase at
+  `threads/04-blow-up-certificate/reproduction-a4-case2-row-exhausted-terminal-last-all-pivot-source-data.md`;
   statement card at
   `threads/04-blow-up-certificate/statement-card-a4-case2-active-guard-source-production-totality.md`.
 - **Reproduction check.** xhigh review by `Socrates` PASS after fixes at
@@ -45,17 +49,17 @@ No such claim is formalisation-ready until both fields are filled.
   active-region completeness.  `SelectedEntryAllPivotProducedSourceData.lean`
   defines `Case2AllPivotDisplayedSourceInput`, the continuing and
   actual-width branch source-data records, the suffix-refined row-exhausted
-  source-suffix record, constructors from source input, and continuing child
-  progress.
+  source-suffix record, the terminal-last row-exhausted record, constructors
+  from source input, and continuing child progress.
 - **Proved.** Focused builds, warning-clean direct elaboration of touched Lean
   files, full local `lake build DLNFibre`, `lean/scripts/sorries`, touched-file
   forbidden-marker search, and `git diff --check` passed.
 - **Nonclaims.** No `SelectedEntryAtlasProducedBranchData`, no
   `SelectedEntryProducedBranchPayload`, no produced chart/point, no chart- or
   source-domain membership, no center alignment, no generic-`alpha` transport,
-  no final-stage row-exhausted/no-suffix terminal data, no transition
-  regularity, no Jacobian/volume compatibility, no normal crossings, no pole
-  order, and no RLCT extraction is proved.
+  no complete semantic row-domain coverage theorem, no transition regularity,
+  no Jacobian/volume compatibility, no normal crossings, no pole order, and no
+  RLCT extraction is proved.
 
 ## Current A4 produced branch-data contract frontier - 2026-07-02
 

@@ -148,7 +148,10 @@ This is the branch where the current prefix block is exhausted.  Its payload
 must keep the row/column orientation and transported product data explicit.
 The transported source-suffix payload is only a suffix-refined subcase: it also
 requires `S + 1 <= L`.  A final-stage row-exhausted/no-suffix state needs a
-separate terminal treatment or a branch invariant excluding it.
+separate terminal treatment or a branch invariant excluding it.  The current
+finite source-data layer now exposes the existing terminal-last treatment for
+the subcase `S + 1 = L`; it is still not a complete
+`SelectedEntryProducedBranchPayload`.
 
 The displayed source-chart recurrence data is valued in the coefficient ring
 of the chart variables.  Therefore a source-backed recurrence producer must

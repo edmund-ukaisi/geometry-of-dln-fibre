@@ -35,8 +35,10 @@ case2AllPivotContinuingGuard
 case2AllPivotActualWidthStoppedGuard
 case2AllPivotRowExhaustedStoppedGuard
 case2AllPivotRowExhaustedSourceSuffixGuard
+case2AllPivotRowExhaustedTerminalLastGuard
 case2AllPivotGuards_complete
 case2AllPivotRowExhaustedStoppedGuard_of_sourceSuffixGuard
+case2AllPivotRowExhaustedStoppedGuard_of_terminalLastGuard
 
 Case2AllPivotDisplayedSourceInput
 Case2AllPivotDisplayedSourceInput.pivotValue
@@ -48,6 +50,8 @@ Case2AllPivotContinuingProducedSourceData.of_sourceInput
 Case2AllPivotContinuingProducedSourceData.child_progress
 Case2AllPivotActualWidthStoppedProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData.of_sourceInput
+Case2AllPivotRowExhaustedTerminalLastProducedSourceData
+Case2AllPivotRowExhaustedTerminalLastProducedSourceData.of_sourceInput
 Case2AllPivotRowExhaustedStoppedProducedSourceData
 Case2AllPivotRowExhaustedStoppedProducedSourceData.of_sourceInput
 ```
@@ -67,7 +71,8 @@ required by `SelectedEntryProducedBranchPayload`.
 
 The row-exhausted source-suffix record is total only over the suffix-refined
 guard, which includes `S + 1 <= L`.  It is not data for every bare
-row-exhausted stopped state.
+row-exhausted stopped state.  The terminal-last row-exhausted record is total
+only over the no-suffix guard `S + 1 = L`.
 
 The recurrence data is valued in the displayed coefficient ring `R`.  A final
 generic `AoyagiRecurrenceBranchState L n alpha` producer must specialize
@@ -78,6 +83,6 @@ displayed pivot values into `alpha`.
 
 No `SelectedEntryAtlasProducedBranchData`, `SelectedEntryProducedBranchPayload`,
 analytic atlas, source-domain membership, transition regularity,
-Jacobian/volume compatibility, generic-`alpha` transport, final-stage
-row-exhausted/no-suffix terminal data, normal crossing, pole order, or RLCT
-extraction is proved by this card.
+Jacobian/volume compatibility, generic-`alpha` transport, complete semantic
+row-domain coverage, normal crossing, pole order, or RLCT extraction is proved
+by this card.

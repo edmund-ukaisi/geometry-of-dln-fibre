@@ -58,6 +58,16 @@ def case2AllPivotRowExhaustedSourceSuffixGuard
     (s : AoyagiRecurrenceBranchState L n α) : Prop :=
   case2AllPivotRowExhaustedStoppedGuard s ∧ s.S + 1 ≤ L
 
+/-- Row-exhausted terminal-last guard.
+
+This is the no-suffix terminal-last row-exhausted subcase.  It is separate
+from the source-suffix row-exhausted package because the existing terminal-last
+frontier payload consumes the suffix through `S + 1 = L`. -/
+def case2AllPivotRowExhaustedTerminalLastGuard
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    (s : AoyagiRecurrenceBranchState L n α) : Prop :=
+  case2AllPivotRowExhaustedStoppedGuard s ∧ s.S + 1 = L
+
 /-- The active-refined all-pivot guards cover the displayed Case 2 active
 region. -/
 theorem case2AllPivotGuards_complete
@@ -78,6 +88,14 @@ theorem case2AllPivotRowExhaustedStoppedGuard_of_sourceSuffixGuard
     {L : ℕ} {n : ℕ → ℕ} {α : Type*}
     {s : AoyagiRecurrenceBranchState L n α}
     (h : case2AllPivotRowExhaustedSourceSuffixGuard s) :
+    case2AllPivotRowExhaustedStoppedGuard s :=
+  h.1
+
+/-- A terminal-last row-exhausted guard forgets to the semantic stopped guard. -/
+theorem case2AllPivotRowExhaustedStoppedGuard_of_terminalLastGuard
+    {L : ℕ} {n : ℕ → ℕ} {α : Type*}
+    {s : AoyagiRecurrenceBranchState L n α}
+    (h : case2AllPivotRowExhaustedTerminalLastGuard s) :
     case2AllPivotRowExhaustedStoppedGuard s :=
   h.1
 
@@ -262,6 +280,81 @@ def of_sourceInput
         AoyagiRecurrenceBranchState.toIntroducedState] using hguard.2)
 
 end Case2AllPivotActualWidthStoppedProducedSourceData
+
+/-- Row-exhausted terminal-last finite source data for the all-pivot producer
+frontier.
+
+This is the no-suffix row-exhausted subcase `s.S + 1 = L`.  It keeps the
+terminal-last transported-prefix payload separate from the source-suffix row
+payload and from actual-width stopping. -/
+structure Case2AllPivotRowExhaustedTerminalLastProducedSourceData
+    {R : Type u} [CommRing R]
+    {L : ℕ} {n : ℕ → ℕ}
+    {s : AoyagiRecurrenceBranchState L n R}
+    {t : ℕ → ℕ → ℕ → ℤ}
+    {numerator leastValue : ℕ → ℕ → ℤ}
+    (input : Case2AllPivotDisplayedSourceInput s t numerator leastValue)
+    (κ : Fin (L + 1) → Type u)
+    [∀ i, Finite (κ i)]
+    (hLast : s.S + 1 = L)
+    (C : ℕ → κ (sourceLayerIndex L (s.S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (s.S + 1)))
+      (Nat.succ_le_succ (le_of_eq hLast))) → R)
+    (Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R) where
+  guard : case2AllPivotRowExhaustedTerminalLastGuard s
+  frontier :
+    RowExhaustedTerminalLastSourceChartFrontierPayload
+      L n s.S s.J s.recurrence input.u input.residual s.stage_pos
+      input.active
+      (by
+        simpa [case2AllPivotRowExhaustedStoppedGuard,
+          case2AllPivotRowExhaustedTerminalLastGuard,
+          AoyagiRecurrenceBranchState.case2DisplayedActiveRowExhaustedStoppedGuard,
+          AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard,
+          AoyagiRecurrenceBranchState.toIntroducedState] using guard.1.2)
+      κ (le_of_eq hLast) C
+
+namespace Case2AllPivotRowExhaustedTerminalLastProducedSourceData
+
+variable {R : Type u} [CommRing R]
+variable {L : ℕ} {n : ℕ → ℕ}
+variable {s : AoyagiRecurrenceBranchState L n R}
+variable {t : ℕ → ℕ → ℕ → ℤ}
+variable {numerator leastValue : ℕ → ℕ → ℤ}
+variable {input : Case2AllPivotDisplayedSourceInput s t numerator leastValue}
+variable {κ : Fin (L + 1) → Type u}
+variable [∀ i, Finite (κ i)]
+variable {Ctail : ∀ p : Fin L, Matrix (κ p.castSucc) (κ p.succ) R}
+
+/-- Construct terminal-last row-exhausted source data from the displayed
+source-chart input and the terminal-last row-exhausted guard. -/
+def of_sourceInput
+    (hguard : case2AllPivotRowExhaustedTerminalLastGuard s)
+    (C : ℕ → κ (sourceLayerIndex L (s.S + 2)
+      (Nat.succ_le_succ (Nat.zero_le (s.S + 1)))
+      (Nat.succ_le_succ (le_of_eq hguard.2))) → R) :
+    Case2AllPivotRowExhaustedTerminalLastProducedSourceData
+      input κ hguard.2 C Ctail := by
+  let frontier :
+      SourceChartFrontierBoundaryPackages.{u, u, u, u, u, u, u}
+        R L n s.S s.J t numerator leastValue
+        s.recurrence input.u input.residual s.stage_pos input.active :=
+    sourceChartMap_frontierBoundaryPackages_withoutChartFamily
+      s.recurrence input.u input.residual s.stage_pos s.stage_le
+      input.active input.exponentPre input.levelInv input.leastValueGap
+  refine
+    { guard := hguard
+      frontier := ?_ }
+  exact
+    frontier.rowExhaustedStopped
+      κ (le_of_eq hguard.2) hguard.2 C Ctail (by
+        simpa [case2AllPivotRowExhaustedStoppedGuard,
+          case2AllPivotRowExhaustedTerminalLastGuard,
+          AoyagiRecurrenceBranchState.case2DisplayedActiveRowExhaustedStoppedGuard,
+          AoyagiIntroducedLabelBranchState.case2DisplayedRowExhaustedStoppedGuard,
+          AoyagiRecurrenceBranchState.toIntroducedState] using hguard.1.2)
+
+end Case2AllPivotRowExhaustedTerminalLastProducedSourceData
 
 /-- Row-exhausted stopped finite source data for the all-pivot producer
 frontier.

@@ -38,6 +38,7 @@ branch records:
 ```text
 Case2AllPivotContinuingProducedSourceData
 Case2AllPivotActualWidthStoppedProducedSourceData
+Case2AllPivotRowExhaustedTerminalLastProducedSourceData
 Case2AllPivotRowExhaustedStoppedProducedSourceData
 ```
 
@@ -46,8 +47,11 @@ Their constructors call the existing displayed Case 2 frontier packages from
 stopped terminal frontier, and row-exhausted transported-prefix source-suffix.
 The row-exhausted source-suffix record uses the stronger
 `case2AllPivotRowExhaustedSourceSuffixGuard`, which includes `S + 1 <= L`; it
-is not total over all semantic row-exhausted stopped states.  The continuing
-record carries the concrete child recurrence and proves the recurrence-aware
+is not total over all semantic row-exhausted stopped states.  The terminal-last
+row-exhausted record uses `case2AllPivotRowExhaustedTerminalLastGuard`, which
+includes `S + 1 = L`, and packages
+`RowExhaustedTerminalLastSourceChartFrontierPayload`.  The continuing record
+carries the concrete child recurrence and proves the recurrence-aware
 same-stage progress step.
 
 This layer is recurrence-valued in the displayed coefficient ring `R`.  A
@@ -63,9 +67,9 @@ DLNFibre`, `lean/scripts/sorries`, touched-file forbidden-marker search, and
 This is not the final A4 producer.  It has no chart token, produced point,
 chart-domain membership, source-domain membership, `SelectedEntryProducedBranchPayload`,
 `SelectedEntryAtlasProducedBranchData`, center-alignment field,
-generic-`alpha` transport, final-stage row-exhausted/no-suffix terminal data,
-transition regularity, Jacobian/volume compatibility, normal crossings, pole
-order, or RLCT consequence.
+generic-`alpha` transport, complete semantic row-domain coverage, transition
+regularity, Jacobian/volume compatibility, normal crossings, pole order, or
+RLCT consequence.
 
 ## A4 All-Pivot Produced Branch-Data Contract - 2026-07-02
 
