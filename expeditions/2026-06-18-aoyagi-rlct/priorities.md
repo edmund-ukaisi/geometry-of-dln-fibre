@@ -23,6 +23,20 @@ Theorem 2 theorem: finite minimum/order obligations, shifted extraction
 hypotheses, chart certificates where applicable, and the A0 analytic boundary
 remain supplied.
 
+## Latest controller decision - 2026-07-02, terminal/regular sockets source-data rank-width removal
+
+Lean now removes explicit source-range rank-width fields from the natural
+downstream terminal/Eq5/regular-suspension sockets:
+
+- terminal counted-datum classifier handoffs at `L=2`;
+- Eq5 endpoint payload handoffs at `L=2`;
+- supplied regular-suspension handoffs at `L=2` and `ell=1`.
+
+Do not add `ell=1` terminal/Eq5 wrappers unless a concrete caller needs the
+`n=0` specialization.  The current slice keeps terminal classifiers, Eq5
+payloads, regular-suspension certificates, active-ratio/chart-count facts, and
+A0 extraction supplied.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `L=2` source-data Nat widths
 
 Lean now proves:

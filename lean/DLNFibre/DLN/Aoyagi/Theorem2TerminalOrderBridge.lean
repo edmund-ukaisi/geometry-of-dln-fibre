@@ -1348,6 +1348,62 @@ theorem
         TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier
           data hp hratio hleRatio hchart hleChart hinj classifier)
 
+/-- `L=2` source data removes the separate source-range rank-width input from
+the terminal counted-datum classifier final-boundary handoff.
+
+The counted-datum classifier, branch-label injectivity, active-ratio
+certificate, displayed-ratio chart-count certificate, and A0 extraction
+hypothesis remain supplied for the produced `m,data`. -/
+theorem
+  exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+    {β : Type*} [DecidableEq β]
+    {D : AoyagiNormalCrossingExponentData}
+    {width : ℕ → ℕ} {Sfinal Jfinal n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    (Ssrc : AoyagiDefinition3SourceData 2 (n + 1) H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    (hPayload :
+      ∀ {m : Fin (n + 2) → ℤ}
+        (data : AoyagiDefinition3CeilData (n + 1) m),
+        m = aoyagiSelectedReducedWidths H r C →
+          ∃ (t : ℕ → ℕ → ℕ → ℤ)
+            (numerator leastValue : ℕ → ℕ → ℤ)
+            (TC :
+              AoyagiLemma5SuppliedTerminalCandidateFamily β 2 width
+                Sfinal Jfinal n data.aParam data.ceilWidth m t numerator
+                leastValue)
+            (_classifier : TC.TerminalMinimumCountDatumClassifier),
+            Set.InjOn TC.branchLabel ↑TC.fullBranches ∧
+              ∃ p : Fin D.numCharts × Fin D.numCoords,
+                p ∈ D.activePairs ∧
+                  D.ratioAt p =
+                    aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data ∧
+                  (∀ p' ∈ D.activePairs,
+                    aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data ≤
+                      D.ratioAt p') ∧
+                  ∃ c : Fin D.numCharts,
+                    D.countInChartAtRatio
+                        (aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data) c =
+                      TC.terminalMinimumLabels.card ∧
+                    ∀ c' : Fin D.numCharts,
+                      D.countInChartAtRatio
+                          (aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data) c' ≤
+                        TC.terminalMinimumLabels.card) :
+    ∃ (m : Fin (n + 2) → ℤ)
+      (data : AoyagiDefinition3CeilData (n + 1) m),
+      AoyagiTheorem2SuppliedFinalBoundary
+          D 2 (n + 1) H r C m data lambda poleOrder ∧
+      (∀ j : Fin (n + 2), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (n + 2), 0 ≤ m j) ∧
+      (∀ i : Fin (n + 2),
+        ((n + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (n + 2), m j) ∧
+      (∀ i : Fin (n + 2), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat (n + 1) m i) :=
+  Ssrc.exists_theorem2SuppliedFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier
+    Ssrc.sourceRangeRankWidth_of_L_eq_two_sourceData hNC hPayload
+
 /-- Chart-certificate version of the Definition 3 terminal counted-datum
 classifier final-boundary handoff.
 
@@ -1410,6 +1466,59 @@ theorem
       exact
         TC.theorem2FiniteExponentFormulaHypothesis_of_activePair_ratioCount_classifier
           data hp hratio hleRatio hchart hleChart hinj classifier)
+
+/-- Chart-certificate version of
+`exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier`. -/
+theorem
+  exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+    {Param R : Type*} [CommMonoid R]
+    {β : Type*} [DecidableEq β]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {width : ℕ → ℕ} {Sfinal Jfinal n : ℕ}
+    {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints (n + 1)}
+    (Ssrc : AoyagiDefinition3SourceData 2 (n + 1) H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    (hPayload :
+      ∀ {m : Fin (n + 2) → ℤ}
+        (data : AoyagiDefinition3CeilData (n + 1) m),
+        m = aoyagiSelectedReducedWidths H r C →
+          ∃ (t : ℕ → ℕ → ℕ → ℤ)
+            (numerator leastValue : ℕ → ℕ → ℤ)
+            (TC :
+              AoyagiLemma5SuppliedTerminalCandidateFamily β 2 width
+                Sfinal Jfinal n data.aParam data.ceilWidth m t numerator
+                leastValue)
+            (_classifier : TC.TerminalMinimumCountDatumClassifier),
+            Set.InjOn TC.branchLabel ↑TC.fullBranches ∧
+              ∃ p : Fin Cnc.numCharts × Fin Cnc.numCoords,
+                p ∈ Cnc.exponentData.activePairs ∧
+                  Cnc.exponentData.ratioAt p =
+                    aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data ∧
+                  (∀ p' ∈ Cnc.exponentData.activePairs,
+                    aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data ≤
+                      Cnc.exponentData.ratioAt p') ∧
+                  ∃ c : Fin Cnc.numCharts,
+                    Cnc.exponentData.countInChartAtRatio
+                        (aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data) c =
+                      TC.terminalMinimumLabels.card ∧
+                    ∀ c' : Fin Cnc.numCharts,
+                      Cnc.exponentData.countInChartAtRatio
+                          (aoyagiTheorem2Lambda_fromCeilData 2 (n + 1) H r m data) c' ≤
+                        TC.terminalMinimumLabels.card) :
+    ∃ (m : Fin (n + 2) → ℤ)
+      (data : AoyagiDefinition3CeilData (n + 1) m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cnc 2 (n + 1) H r C m data lambda poleOrder ∧
+      (∀ j : Fin (n + 2), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (n + 2), 0 ≤ m j) ∧
+      (∀ i : Fin (n + 2),
+        ((n + 1 : ℕ) : ℤ) * m i < ∑ j : Fin (n + 2), m j) ∧
+      (∀ i : Fin (n + 2), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat (n + 1) m i) :=
+  Ssrc.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_activePair_ratioCount_terminalMinimumCountDatumClassifier
+    Ssrc.sourceRangeRankWidth_of_L_eq_two_sourceData hNC hPayload
 
 set_option linter.style.longLine true
 

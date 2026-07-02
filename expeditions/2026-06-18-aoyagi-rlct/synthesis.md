@@ -104,6 +104,57 @@ payload, chart production, normal crossing construction, or RLCT extraction.
 The shifted extraction hypotheses and reduced finite formula obligations
 remain supplied.
 
+## Theorem 2 Terminal And Regular Sockets Source-Data Rank-Width Removal - 2026-07-02
+
+Lean now proves source-data wrappers that remove explicit source-range
+rank-width inputs from selected terminal-order, Eq5 terminal-order, and
+supplied regular-suspension handoffs:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_suppliedRegularSuspension
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData_suppliedRegularSuspension
+```
+
+The `L=2` wrappers delegate with
+`Ssrc.sourceRangeRankWidth_of_L_eq_two_sourceData`; the regular-suspension
+`ell=1` wrapper delegates with `S.sourceRangeRankWidth_of_ell_eq_one`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-theorem2-terminal-regular-sockets-source-data-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-theorem2-terminal-regular-sockets-source-data-rankwidth-removal.md
+threads/06-dln-translation/review-theorem2-terminal-regular-sockets-source-data-rankwidth-removal-a6.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Theorem2TerminalOrderBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Theorem2Eq5TerminalOrderBridge
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Theorem2RegularSuspensionFinalBridge
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Theorem2TerminalOrderBridge.lean
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Theorem2Eq5TerminalOrderBridge.lean
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Theorem2RegularSuspensionFinalBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The declarations report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh independent reviewer `Meitner` passed.  Boundary: terminal classifiers,
+Eq5 endpoint payloads, regular-suspension certificates, active-ratio and
+chart-count facts, and A0 extraction remain supplied.  No branch choice,
+branch-independent formula, normal-crossing construction, or RLCT extraction
+is claimed.  Do not add `ell=1` terminal/Eq5 variants without a real caller;
+those APIs are shaped as `n+1`, so the specialization is awkward and not a
+natural field removal.
+
 ## Definition 3 `ell=1` Source-Data Rank-Width Removal - 2026-07-02
 
 Lean now proves:

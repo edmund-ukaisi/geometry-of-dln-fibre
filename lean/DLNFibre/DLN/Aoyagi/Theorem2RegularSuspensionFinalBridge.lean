@@ -87,6 +87,102 @@ theorem exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_suppliedRegularSu
           data hcount hsource htarget
           (hminimum data hselected) (horder data hselected))
 
+/-- `L=2` source data removes the separate source-range rank-width input from
+the supplied regular-suspension chart-final handoff.
+
+The supplied full chart certificate, count equality, and reduced finite
+minimum/order obligations remain explicit. -/
+theorem exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_suppliedRegularSuspension
+    {ParamRed RRed ParamFull RFull : Type*}
+    [CommMonoid RRed] [CommMonoid RFull]
+    {Cred : AoyagiNormalCrossingChartCertificate.{uRed} ParamRed RRed}
+    {Cfull : AoyagiNormalCrossingChartCertificate.{uFull} ParamFull RFull}
+    {regularCount : ℕ}
+    {RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible :
+        AoyagiNormalCrossingChartCertificate.{uRed} ParamRed RRed →
+          AoyagiNormalCrossingChartCertificate.{uFull} ParamFull RFull →
+            ℕ → Prop}
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (Sreg : AoyagiSuppliedRegularSuspensionCertificate
+      Cred Cfull regularCount RegularChartSource RegularIdealTransport
+      RegularCoverage RegularJacobianCompatible lambda poleOrder)
+    (hcount :
+      regularCount = aoyagiTheorem2RegularVariableCount 2 H r)
+    (hminimum :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+          Cred.exponentData.exponentMinimum + aoyagiTheorem2RegularTerm 2 H r =
+            aoyagiTheorem2Lambda_fromCeilData 2 ell H r m data)
+    (horder :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+          Cred.exponentData.exponentOrder = data.theorem2OrderFormula) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cfull 2 ell H r C m data lambda poleOrder ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) :=
+  S.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_suppliedRegularSuspension
+    S.sourceRangeRankWidth_of_L_eq_two_sourceData Sreg hcount hminimum horder
+
+/-- `ell=1` source data removes the separate source-range rank-width input
+from the supplied regular-suspension chart-final handoff.
+
+The supplied full chart certificate, count equality, and reduced finite
+minimum/order obligations remain explicit. -/
+theorem exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData_suppliedRegularSuspension
+    {ParamRed RRed ParamFull RFull : Type*}
+    [CommMonoid RRed] [CommMonoid RFull]
+    {Cred : AoyagiNormalCrossingChartCertificate.{uRed} ParamRed RRed}
+    {Cfull : AoyagiNormalCrossingChartCertificate.{uFull} ParamFull RFull}
+    {regularCount : ℕ}
+    {RegularChartSource RegularIdealTransport RegularCoverage
+      RegularJacobianCompatible :
+        AoyagiNormalCrossingChartCertificate.{uRed} ParamRed RRed →
+          AoyagiNormalCrossingChartCertificate.{uFull} ParamFull RFull →
+            ℕ → Prop}
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (Sreg : AoyagiSuppliedRegularSuspensionCertificate
+      Cred Cfull regularCount RegularChartSource RegularIdealTransport
+      RegularCoverage RegularJacobianCompatible lambda poleOrder)
+    (hcount :
+      regularCount = aoyagiTheorem2RegularVariableCount L H r)
+    (hminimum :
+      ∀ {m : Fin (1 + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData 1 m),
+        m = aoyagiSelectedReducedWidths H r C →
+          Cred.exponentData.exponentMinimum + aoyagiTheorem2RegularTerm L H r =
+            aoyagiTheorem2Lambda_fromCeilData L 1 H r m data)
+    (horder :
+      ∀ {m : Fin (1 + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData 1 m),
+        m = aoyagiSelectedReducedWidths H r C →
+          Cred.exponentData.exponentOrder = data.theorem2OrderFormula) :
+    ∃ (m : Fin (1 + 1) → ℤ) (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cfull L 1 H r C m data lambda poleOrder ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) :=
+  S.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth_suppliedRegularSuspension
+    S.sourceRangeRankWidth_of_ell_eq_one Sreg hcount hminimum horder
+
 section SourceRank
 
 variable {K : Type u} [NontriviallyNormedField K] [CompleteSpace K]

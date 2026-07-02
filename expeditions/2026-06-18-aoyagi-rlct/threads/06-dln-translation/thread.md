@@ -125,6 +125,39 @@ certificates where applicable, and A0 analytic extraction boundary remain
 supplied.  It does not choose a branch, assert branch-independent formulas,
 construct Eq5 payloads or charts, prove normal crossings, or extract RLCT.
 
+## Current slice - 2026-07-02, terminal/regular sockets source-data rank-width removal
+
+Reproduction:
+`reproduction-theorem2-terminal-regular-sockets-source-data-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-terminal-regular-sockets-source-data-rankwidth-removal.md`.
+Review:
+`review-theorem2-terminal-regular-sockets-source-data-rankwidth-removal-a6.md`.
+
+Lean now removes explicit source-range rank-width inputs from:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_terminalMinimumCountDatumClassifier
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_activePair_ratioCount_suppliedEq5EndpointBlockWidthPayload
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_suppliedRegularSuspension
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData_suppliedRegularSuspension
+```
+
+Focused module builds, warning-clean direct elaboration, full local
+`DLNFibre` build, `lean/scripts/sorries`, whitespace check, and direct axiom
+probe passed.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Meitner` passed the source/API/nonclaim audit.
+
+Boundary: the payload obligations remain supplied: terminal counted-datum
+classifiers, Eq5 endpoint payloads, regular-suspension full certificates,
+active-ratio/chart-count data, and A0 extraction.  No branch choice,
+branch-independent formula, normal-crossing construction, or RLCT extraction is
+claimed.  Do not add `ell=1` terminal/Eq5 variants unless there is a real
+caller for the awkward `n=0` specialization.
+
 ## 2026-06-24 source audit - Definition 3 branch selection
 
 Independent source auditor `Einstein the 3rd` checked Aoyagi Definition 3 and
