@@ -55,6 +55,55 @@ lambda/order payload, Eq5 payload, chart production, normal crossings, or
 RLCT extraction is claimed.  The slice depends on the already-formalized
 `L=2` classifier; the new layer extracts Nat-width witnesses from it.
 
+## Theorem 2 Final Sockets Source-Data Rank-Width Removal - 2026-07-02
+
+Lean now proves source-data wrappers for final-boundary and regular-variable
+shifted final-boundary sockets in the two cases where Definition 3 source data
+already proves source-range rank-width:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData_regularVariableCountShift
+```
+
+The proofs delegate to the existing rank-width wrappers with either
+`S.sourceRangeRankWidth_of_L_eq_two_sourceData` or
+`S.sourceRangeRankWidth_of_ell_eq_one`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-theorem2-final-sockets-source-data-rankwidth-removal-a6.md
+threads/06-dln-translation/statement-card-a6-theorem2-final-sockets-source-data-rankwidth-removal.md
+threads/06-dln-translation/review-theorem2-final-sockets-source-data-rankwidth-removal-a6.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Theorem2FinalAssembly
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Theorem2RankWidthRegularShiftBridge
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Theorem2FinalAssembly.lean
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Theorem2RankWidthRegularShiftBridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The declarations report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh independent reviewer `Chandrasekhar` passed.  Boundary: no branch
+choice, branch-independent formula, finite minimum/order construction, Eq5
+payload, chart production, normal crossing construction, or RLCT extraction.
+The shifted extraction hypotheses and reduced finite formula obligations
+remain supplied.
+
 ## Definition 3 `ell=1` Source-Data Rank-Width Removal - 2026-07-02
 
 Lean now proves:

@@ -493,6 +493,65 @@ theorem exists_theorem2SuppliedFinalBoundary_of_rankWidth
       extractionHypothesis := hNC
       finiteExponentFormula := hFormula data hm }
 
+/-- `L=2` source data removes the separate source-range rank-width input from
+the supplied final-boundary socket.
+
+The finite exponent formula and A0 extraction hypotheses remain supplied, and
+the selected cutpoints are still the supplied `C`; this theorem only supplies
+rank-width from the finite `L=2` Definition 3 classification. -/
+theorem exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData
+    {D : AoyagiNormalCrossingExponentData}
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis D 2 ell H r m data) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      AoyagiTheorem2SuppliedFinalBoundary
+          D 2 ell H r C m data lambda poleOrder ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) :=
+  S.exists_theorem2SuppliedFinalBoundary_of_rankWidth
+    S.sourceRangeRankWidth_of_L_eq_two_sourceData hNC hFormula
+
+/-- `ell=1` source data removes the separate source-range rank-width input
+from the supplied final-boundary socket.
+
+The branch `ell=1` and selected cutpoints remain supplied.  The finite exponent
+formula and A0 extraction hypotheses remain supplied. -/
+theorem exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData
+    {D : AoyagiNormalCrossingExponentData}
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : AoyagiNormalCrossingExtractionHypothesis D lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (1 + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData 1 m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis D L 1 H r m data) :
+    ∃ (m : Fin (1 + 1) → ℤ) (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiTheorem2SuppliedFinalBoundary
+          D L 1 H r C m data lambda poleOrder ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) :=
+  S.exists_theorem2SuppliedFinalBoundary_of_rankWidth
+    S.sourceRangeRankWidth_of_ell_eq_one hNC hFormula
+
 /-- Chart-certificate version of
 `exists_theorem2SuppliedFinalBoundary_of_rankWidth`.
 
@@ -530,6 +589,62 @@ theorem exists_theorem2SuppliedChartFinalBoundary_of_rankWidth
     { selectedWidths_eq_reduced := hm
       extractionHypothesis := hNC
       finiteExponentFormula := hFormula data hm }
+
+/-- Chart-certificate version of
+`exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData`. -/
+theorem exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (ell + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData ell m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis
+          Cnc.exponentData 2 ell H r m data) :
+    ∃ (m : Fin (ell + 1) → ℤ) (data : AoyagiDefinition3CeilData ell m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cnc 2 ell H r C m data lambda poleOrder ∧
+      (∀ j : Fin (ell + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (ell + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (ell + 1),
+        (ell : ℤ) * m i < ∑ j : Fin (ell + 1), m j) ∧
+      (∀ i : Fin (ell + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat ell m i) :=
+  S.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth
+    S.sourceRangeRankWidth_of_L_eq_two_sourceData hNC hFormula
+
+/-- Chart-certificate version of
+`exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData`. -/
+theorem exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData
+    {Param R : Type*} [CommMonoid R]
+    {Cnc : AoyagiNormalCrossingChartCertificate Param R}
+    {L : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints 1}
+    (S : AoyagiDefinition3SourceData L 1 H r C)
+    {lambda : ℚ} {poleOrder : ℕ}
+    (hNC : Cnc.ExtractionHypothesis lambda poleOrder)
+    (hFormula :
+      ∀ {m : Fin (1 + 1) → ℤ}
+        (data : AoyagiDefinition3CeilData 1 m),
+        m = aoyagiSelectedReducedWidths H r C →
+        AoyagiTheorem2FiniteExponentFormulaHypothesis
+          Cnc.exponentData L 1 H r m data) :
+    ∃ (m : Fin (1 + 1) → ℤ) (data : AoyagiDefinition3CeilData 1 m),
+      AoyagiTheorem2SuppliedChartFinalBoundary
+          Cnc L 1 H r C m data lambda poleOrder ∧
+      (∀ j : Fin (1 + 1), m j = ((H (C.cut j) - r : ℕ) : ℤ)) ∧
+      (∀ j : Fin (1 + 1), 0 ≤ m j) ∧
+      (∀ i : Fin (1 + 1),
+        (1 : ℤ) * m i < ∑ j : Fin (1 + 1), m j) ∧
+      (∀ i : Fin (1 + 1), m i ≤ data.ceilWidth - 1) ∧
+      (∀ i : ℕ, 0 ≤ aoyagiSelectedWidthNat 1 m i) :=
+  S.exists_theorem2SuppliedChartFinalBoundary_of_rankWidth
+    S.sourceRangeRankWidth_of_ell_eq_one hNC hFormula
 
 end AoyagiDefinition3SourceData
 

@@ -88,6 +88,43 @@ or extract RLCT.  The slice depends on the already-formalized `L=2`
 classifier; the added layer only extracts Nat-width witnesses and preserves
 the disjunctive branch surface.
 
+## Current slice - 2026-07-02, final sockets source-data rank-width removal
+
+Reproduction:
+`reproduction-theorem2-final-sockets-source-data-rankwidth-removal-a6.md`.
+Statement card:
+`statement-card-a6-theorem2-final-sockets-source-data-rankwidth-removal.md`.
+Review:
+`review-theorem2-final-sockets-source-data-rankwidth-removal-a6.md`.
+
+Lean now has source-data wrappers for the supplied final-boundary and
+regular-variable shifted final-boundary sockets in the two cases where
+Definition 3 source data already supplies rank-width:
+
+```text
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_L_eq_two_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedFinalBoundary_of_ell_eq_one_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_L_eq_two_sourceData_regularVariableCountShift
+AoyagiDefinition3SourceData.exists_theorem2SuppliedChartFinalBoundary_of_ell_eq_one_sourceData_regularVariableCountShift
+```
+
+Focused module builds, warning-clean direct elaboration, full local
+`DLNFibre` build, `lean/scripts/sorries`, whitespace check, and direct axiom
+probe passed.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Chandrasekhar` passed the source/API/nonclaim audit.
+
+Boundary: this only removes the explicit source-range rank-width socket in the
+`ell=1` and `L=2` source-data cases.  The selected cutpoints/source data,
+finite minimum/order obligations, shifted extraction hypotheses, chart
+certificates where applicable, and A0 analytic extraction boundary remain
+supplied.  It does not choose a branch, assert branch-independent formulas,
+construct Eq5 payloads or charts, prove normal crossings, or extract RLCT.
+
 ## 2026-06-24 source audit - Definition 3 branch selection
 
 Independent source auditor `Einstein the 3rd` checked Aoyagi Definition 3 and

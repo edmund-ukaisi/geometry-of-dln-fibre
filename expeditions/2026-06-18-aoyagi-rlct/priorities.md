@@ -12,6 +12,17 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, final sockets source-data rank-width removal
+
+Lean now proves source-data wrappers for the supplied final-boundary and
+regular-variable shifted final-boundary sockets in the `ell=1` and `L=2`
+cases where Definition 3 source data already proves source-range rank-width.
+
+This removes an explicit rank-width field only.  It does not close the final
+Theorem 2 theorem: finite minimum/order obligations, shifted extraction
+hypotheses, chart certificates where applicable, and the A0 analytic boundary
+remain supplied.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `L=2` source-data Nat widths
 
 Lean now proves:
