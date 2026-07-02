@@ -10,6 +10,38 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 formal-product/source-image comparison frontier - 2026-07-02
+
+- **Statement.** The remaining source-moving A2 comparison is the local
+  change-of-variables domination
+  `muP13.restrict chartPiece <= D • Measure.map sourceChart
+  (thetaReference.restrict V)` for measurable chart pieces inside the Case 2
+  source-chart image.
+- **Tier.** Aoyagi product-reduction/source-measure transport.
+- **Status.** Frontier packet recorded; not formalisation-ready as a Lean
+  theorem.
+- **Kill-condition.** The source chart is lower-dimensional relative to the
+  p.13 formal-product chart measure; source-image coverage is only for
+  produced points; the density is not tied to an explicit Jacobian; or the
+  theorem still assumes the same comparison.
+- **Evidence/source.** Aoyagi Lemma 2 and Theorem 3, PDF pp. 10-13, for the
+  Schur/product coordinate formulas.  The measure theorem itself is not
+  printed there and must be constructed.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md`;
+  construction card at
+  `threads/03-block-product-reduction/construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md`.
+- **Reproduction check.** xhigh scout/review passed at
+  `threads/03-block-product-reduction/review-a2-case2-formal-product-source-image-local-change-of-variables.md`.
+- **Lean target.** None yet.  Existing consumer:
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_same_shrink_of_formalProductMeasure_le_smul_sourceReference`.
+- **Proved.** No new theorem.  Existing original-volume bridge remains the
+  downstream consumer once this comparison is proved.
+- **Nonclaims.** No formal-product/source-image comparison, original-volume
+  transport, original-prior transport, determinant Haar transport, raw-Haar
+  pushforward, source coverage, source-rank coverage, normal crossings, pole
+  order, or RLCT extraction is proved.
+
 ## Current A5 terminal-classifier bridge frontier - 2026-07-02
 
 - **Statement.** Aoyagi Lemma 5's interval-count paragraph does not yet

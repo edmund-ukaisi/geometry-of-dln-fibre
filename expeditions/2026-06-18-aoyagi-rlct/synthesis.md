@@ -15,6 +15,35 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A2 Formal-Product/Source-Image Comparison Frontier - 2026-07-02
+
+New A2 packet:
+
+```text
+threads/03-block-product-reduction/construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md
+threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md
+threads/03-block-product-reduction/review-a2-case2-formal-product-source-image-local-change-of-variables.md
+```
+
+Conclusion: the smallest useful A2 source-moving theorem is no longer an
+original-volume or finite-integral wrapper.  It is the local
+formal-product/source-image comparison:
+
+```text
+muP13.restrict chartPiece <=
+  D • Measure.map sourceChart (thetaReference.restrict V)
+```
+
+for measurable `chartPiece subset sourceChart '' V`.  The existing
+`exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_same_shrink_of_formalProductMeasure_le_smul_sourceReference`
+bridge consumes exactly this hypothesis and turns it into original-volume
+domination.  The pen-and-paper gates are coordinate dimension, image/inverse
+coverage, Jacobian density, and local boundedness.
+
+Xhigh scout `Pascal` passed this packet direction and warned against treating
+endpoint image references as determinant/raw Haar or ignoring the possible
+lower-dimensional fixed-section issue.
+
 ## Lemma 5 Terminal-Classifier Bridge Frontier - 2026-07-02
 
 New A5 packet:

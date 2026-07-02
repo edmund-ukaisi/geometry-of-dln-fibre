@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 formal-product/source-image comparison
+
+New A2 packet:
+
+```text
+threads/03-block-product-reduction/construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md
+threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md
+```
+
+Decision: the next source-moving A2 target is the local change-of-variables
+comparison
+
+```text
+muP13.restrict chartPiece <=
+  D • Measure.map sourceChart (thetaReference.restrict V)
+```
+
+for the p.13 formal-product chart measure against the concrete Case 2
+source-image reference.  The existing original-volume bridge already consumes
+this comparison.  Do not add another finite-integral or original-volume
+wrapper until this formal-product/source-image socket is addressed.
+
 ## Latest controller decision - 2026-07-02, Lemma 5 terminal-classifier bridge
 
 New A5 packet:

@@ -21,6 +21,35 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 formal-product/source-image local change-of-variables frontier
+
+Construction card:
+`construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md`.
+Reproduction:
+`reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md`.
+Review:
+`review-a2-case2-formal-product-source-image-local-change-of-variables.md`.
+
+The current source-moving A2 target is the missing comparison
+
+```text
+muP13.restrict chartPiece <=
+  D • Measure.map sourceChart (thetaReference.restrict V)
+```
+
+for measurable `chartPiece subset sourceChart '' V`.  The already-proved
+original-volume bridge consumes exactly this formal-product/source-image
+domination and turns it into the original-volume domination needed downstream.
+
+The packet records the pen-and-paper gates before Lean: coordinate/dimension
+check, source-image/inverse domain, Jacobian density, local boundedness, and
+the kill condition that a lower-dimensional selected section cannot dominate
+ambient p.13 formal-product measure.
+
+Xhigh A2 scout `Pascal` passed the packet direction and confirmed that the
+next Lean target should be the `muP13 <= D * sourceRef` socket, not another
+conditional wrapper.
+
 ## 2026-07-02 A2 source-prior density and determinant-Haar frontier audit
 
 Audit:
