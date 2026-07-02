@@ -624,4 +624,42 @@ theorem frobeniusSq_P1_Hbar_cast (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   rw [Matrix.mul_apply, Matrix.mul_apply]
   exact Finset.sum_congr rfl (fun k _ => by rw [cast_col_apply])
 
+/-! ## `UunitG` is `z`-free (does not read the radial pivot) -/
+
+/-- `HbarUnitG` does not read the pivot coord (the pivot entry is the constant `1`; the others are
+non-pivot). -/
+theorem HbarUnitG_congr_off_pivot (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ≠ pivotCoordG M hL hrs hr hc → v m = w m) :
+    HbarUnitG M hL hrs hr hc v = HbarUnitG M hL hrs hr hc w := by
+  funext a j
+  simp only [HbarUnitG]
+  by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
+  · rw [if_pos hpiv, if_pos hpiv]
+  · rw [if_neg hpiv, if_neg hpiv, h _ hpiv]
+
+/-- `UunitG` does not read the pivot coord (`z`-free): built from `frontProd` (front, `∉ {pivot}`) and
+`HbarUnitG` (pivot entry fixed). -/
+theorem UunitG_congr_off_pivot (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {v w : Fin (routeMAmbient M) → ℝ}
+    (h : ∀ m, m ≠ pivotCoordG M hL hrs hr hc → v m = w m) :
+    UunitG M hL hrs hr hc v = UunitG M hL hrs hr hc w := by
+  -- the front layers agree off `{pivot}` (a front slot coord `= pivot = coordOfG (topSlot ⟨0⟩⟨0⟩)`
+  -- would force `frontSlot = topSlot`, impossible), so `frontProd` (hence `P₁`) is unchanged
+  have hfront : ∀ (t : Fin L), t ≠ deepLayer hL → (frontTupleG M v) t = (frontTupleG M w) t := by
+    intro t ht
+    funext i jf
+    refine h _ (fun hcoord => ?_)
+    exact frontSlotG_ne_topSlotG M hL hrs t ht i jf ⟨0, hr⟩ ⟨0, hc⟩ (coordOfG_injective M hcoord)
+  have hFP : frontProd M (frontTupleG M v) hL = frontProd M (frontTupleG M w) hL := by
+    rw [frontProd, frontProd]
+    exact prodAux_congr_lt M _ _ (L - 1) (by omega) (fun t ht => hfront t (by
+      intro hteq; rw [hteq] at ht; simp only [deepLayer] at ht; omega))
+  have hP1 : P1uG M hL hrs v = P1uG M hL hrs w := by funext i a; simp only [P1uG, hFP]
+  have hHbar : HbarUnitG M hL hrs hr hc v = HbarUnitG M hL hrs hr hc w :=
+    HbarUnitG_congr_off_pivot M hL hrs hr hc h
+  rw [UunitG, UunitG, hP1, hHbar]
+
 end DLNFibre.DLN.RLCT
