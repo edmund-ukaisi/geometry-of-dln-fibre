@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor contract constructor
+
+Lean now packages the enlarged following-factor endpoint source-chart facts
+into the existing A2 bounded-density contract interface:
+
+```text
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart
+```
+
+The theorem supplies the local open `V`, determinant-chart membership,
+readback-left-inverse, source-chart injectivity, continuity, and measurable
+source-image facts from the enlarged source chart.  It constructs an
+`A2Case2FormalProductSourceImagePieceContract` only after the chart piece,
+restricted equality-with-density, and local a.e. density bound are supplied.
+
+Decision: this is support plumbing for the real p.13
+formal-product/source-image comparison.  It does not prove a Jacobian formula,
+formal-product/source density identity, density bound, determinant/raw Haar
+transport, normal crossings, pole order, or RLCT.  The next source-moving A2
+work is still the pen-and-paper coordinate-count/image/Jacobian reproduction
+needed to supply the contract fields.
+
 ## Latest controller decision - 2026-07-02, A2 formal-product/source-image bounded-density contract
 
 Lean now has an explicit contract layer for the p.13 formal-product/source-image

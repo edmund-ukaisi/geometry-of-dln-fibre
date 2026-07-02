@@ -206,11 +206,15 @@ No such claim is formalisation-ready until both fields are filled.
   contract packages the exact data needed to derive
   `formalProductMeasure.restrict chartPiece <= D • Measure.map sourceChart
   (thetaReference.restrict V)` for measurable chart pieces inside the Case 2
-  source-chart image.  The density identity and local a.e. density bound are
-  explicit fields.
+  source-chart image.  The enlarged following-factor endpoint source chart
+  supplies the local open, determinant-chart, readback-left-inverse,
+  injectivity, continuity, and measurable-image fields of this contract once
+  the chart piece, density identity, and local a.e. density bound are supplied.
 - **Tier.** Aoyagi product-reduction/source-measure transport.
-- **Status.** Lean contract/adaptor layer proved.  Producing the contract from
-  Aoyagi's coordinate formulas remains open.
+- **Status.** Lean contract/adaptor layer proved, and the enlarged
+  following-factor source-chart facts now construct the contract conditional
+  on the density inputs.  Producing those density inputs from Aoyagi's
+  coordinate formulas remains open.
 - **Kill-condition.** The source chart is lower-dimensional relative to the
   p.13 formal-product chart measure; source-image coverage is only for
   produced points; the density is not tied to an explicit Jacobian; or the
@@ -222,6 +226,8 @@ No such claim is formalisation-ready until both fields are filled.
   `threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md`;
   contract reproduction at
   `threads/03-block-product-reduction/reproduction-a2-formal-product-source-image-contract.md`;
+  enlarged following-factor constructor reproduction at
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-contract-constructor.md`;
   construction card at
   `threads/03-block-product-reduction/construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md`.
 - **Reproduction check.** xhigh scout/review passed at
@@ -233,11 +239,17 @@ No such claim is formalisation-ready until both fields are filled.
   `formalProductMeasure_restrict_le_smul_sourceRef` plus the readback
   domination adapter
   `aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_restrict`.
+  It also proves
+  `exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart`,
+  which packages the enlarged following-factor local source-image theorem into
+  the contract under supplied density hypotheses.
 - **Proved.** Warning-clean direct elaboration and focused Lake build passed
   for the new contract module.  Full local `lake build DLNFibre`,
   `lean/scripts/sorries`, `git diff --check`, forbidden-marker grep on the new
   Lean file, and direct axiom probe passed.  The two new theorems report only
-  `[propext, Classical.choice, Quot.sound]`.
+  `[propext, Classical.choice, Quot.sound]`.  For the enlarged constructor
+  recovery slice, warning-clean direct elaboration, focused module build,
+  `lean/scripts/sorries`, `git diff --check`, and staged diff checks passed.
 - **Nonclaims.** No construction of the density identity or density bound, no
   coordinate-count agreement, no source-image coverage, no original-volume
   transport beyond downstream consumption of the derived domination, no

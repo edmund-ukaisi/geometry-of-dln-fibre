@@ -15,6 +15,51 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+Banking note, 2026-07-02: the A2 enlarged following-factor
+contract-constructor slice was committed and pushed as `af292a3a`.  At the
+post-push reorientation point, the expedition worktree was clean and even with
+`origin/expedition/aoyagi-rlct`.
+
+## A2 Enlarged Following-Factor Contract Constructor - 2026-07-02
+
+Lean now packages the enlarged following-factor endpoint source chart into the
+A2 formal-product/source-image bounded-density contract, conditional on the
+still-missing density inputs.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-contract-constructor.md
+```
+
+The theorem is:
+
+```text
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart
+```
+
+It calls the enlarged following-factor local image theorem to obtain an open
+`V` inside a prescribed open `G`, determinant-chart membership on `V`,
+readback-left-inverse, source-chart injectivity, source-chart continuity, and
+measurability of `sourceChart '' V`.  Given a measurable chart piece inside
+that image, a supplied restricted equality with a `withDensity` source
+reference, and a supplied local a.e. density bound, it returns an
+`A2Case2FormalProductSourceImagePieceContract` with the record fields
+identified by equations.
+
+This is not a measure-comparison proof.  It does not construct the density
+identity, prove the density bound, prove a Jacobian formula, identify
+determinant/raw Haar transport, prove source-rank coverage, normal crossings,
+pole order, or RLCT extraction.  The next A2 source-moving work is still the
+pen-and-paper coordinate-count, image, Jacobian, and boundedness calculation
+needed to supply the explicit contract fields.
+
+Verification rerun after recovery: warning-clean direct elaboration of the
+touched Lean file, focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract`,
+`lean/scripts/sorries`, `git diff --check`, and staged diff checks passed.
+
 ## A2 Formal-Product/Source-Image Contract Layer - 2026-07-02
 
 Lean now records the honest bounded-density contract for the p.13
