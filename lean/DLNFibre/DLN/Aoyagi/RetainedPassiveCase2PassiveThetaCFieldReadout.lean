@@ -453,6 +453,131 @@ theorem continuous_endpointTopologyTupleActiveReadout
   exact htarget
 
 set_option linter.style.longLine false in
+/-- The active-coordinate writeback to endpoint topology tuples is continuous.
+
+This is only continuity of finite coordinate repacking and endpoint reindexing;
+it is not a determinant-Haar transport theorem. -/
+theorem continuous_endpointTopologyTupleActiveWriteback
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Continuous
+      (endpointTopologyTupleActiveWriteback
+        (ρ := ρ) (τ := τ) n e) := by
+  classical
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  let raw :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+    endpointTopologyTupleActiveWritebackRawData (ρ := ρ) (τ := τ) n
+  have htheta :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1) :=
+    continuous_fst
+  have hpassive :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.1) :=
+    continuous_fst.comp htheta
+  have hpassiveTail :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.1.2) :=
+    continuous_snd.comp hpassive
+  have hpassiveTailTail :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.1.2.2) :=
+    continuous_snd.comp hpassiveTail
+  have hCtopF3 :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.1.2.2.2) :=
+    continuous_snd.comp hpassiveTailTail
+  have hA1 :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.A1passive) := by
+    simpa [Case2PassiveTheta.A1passive] using continuous_fst.comp hpassive
+  have hF2 :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.F2) := by
+    simpa [Case2PassiveTheta.F2] using continuous_fst.comp hpassiveTail
+  have hA3 :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.A3passive) := by
+    simpa [Case2PassiveTheta.A3passive] using
+      continuous_fst.comp hpassiveTailTail
+  have hCtop :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.Ctop) := by
+    simpa [Case2PassiveTheta.Ctop] using continuous_fst.comp hCtopF3
+  have hF3 :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.F3) := by
+    simpa [Case2PassiveTheta.F3] using continuous_snd.comp hCtopF3
+  have hy :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        z.1.yNext) := by
+    simpa [Case2PassiveTheta.yNext] using continuous_snd.comp htheta
+  have hC :
+      Continuous (fun z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        (raw z).C) := by
+    refine continuous_pi ?_
+    intro p
+    by_cases hp : p = 0
+    · subst p
+      simpa [raw, endpointTopologyTupleActiveWritebackRawData,
+        case2PostPivotTwoEdgeDomain] using
+        (continuous_snd :
+          Continuous (fun z :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦ z.2))
+    · have hp1 : p = 1 := Fin.eq_one_of_ne_zero p hp
+      subst p
+      refine continuous_pi ?_
+      intro i
+      refine continuous_pi ?_
+      intro j
+      let c :
+          AoyagiResidualBlockCoordinateIndex
+            (Case2ResidualRowIndex n S (J + 1))
+            (Case2ResidualColIndex n S (J + 1)) := ⟨i, j⟩
+      have hcoord :
+          Continuous (fun z :
+              Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+            z.1.yNext (residualCoordEquiv c)) :=
+        (continuous_apply (residualCoordEquiv c)).comp hy
+      simpa [raw, endpointTopologyTupleActiveWritebackRawData,
+        AoyagiResidualBlockCoordinateIndex.matrix, c] using hcoord
+  have hraw : Continuous raw := by
+    apply continuous_induced_rng.2
+    change Continuous (fun z :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+      ((raw z).A1passive, ((raw z).F2, ((raw z).A3passive,
+        ((raw z).C, ((raw z).Ctop, (raw z).F3))))))
+    exact hA1.prodMk (hF2.prodMk (hA3.prodMk (hC.prodMk (hCtop.prodMk hF3))))
+  simpa [endpointTopologyTupleActiveWriteback, raw] using
+    (continuous_topologyTuple
+      (K := ℝ) (ρ := ρ) (κ' := κ')).comp
+      ((continuous_endpointTransport
+        (K := ℝ) (ρ := ρ)
+        (κ := case2PostPivotTwoEdgeDomain n S J τ) (κ' := κ') e).comp hraw)
+
+set_option linter.style.longLine false in
 /-- The endpoint topology tuple of an enlarged passive-theta coordinate reads
 back to the active selected-entry source chart: passive coordinates are
 unchanged, the active `C 1` coordinates are `chartMap pivotNext z.1.yNext`,

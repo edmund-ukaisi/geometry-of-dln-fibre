@@ -730,6 +730,110 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The named enlarged endpoint reference image factors through the active
+selected-entry chart and the finite active-coordinate writeback.
+
+This is only a pushforward factorization of the endpoint image measure.  It
+does not identify the endpoint image with determinant-chart Haar measure and
+does not assert any raw-order change-of-variables statement. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_eq_map_activeWriteback_activeSelectedEntryChart_restrict
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+    let endpointReferenceImage : Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+        Rres Ω
+    let activeWriteback :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveWriteback
+        n e
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦ ((z.1.1,
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    endpointReferenceImage =
+      Measure.map activeWriteback
+        (Measure.map activeChart (referenceSource.restrict Ω)) := by
+  intro pivotNext referenceSource endpointReferenceImage activeWriteback activeChart
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        TopologyTuple ρ κ' ℝ :=
+    fun z ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext z eNext e
+  let activeThetaChart :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J :=
+    fun theta ↦
+      (theta.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext theta.2)
+  have hW : Measurable activeWriteback := by
+    exact
+      (Case2PassiveThetaWithFollowingFactor.continuous_endpointTopologyTupleActiveWriteback
+        (ρ := ρ) (τ := τ) n e).measurable
+  have hactiveTheta : Measurable activeThetaChart := by
+    change Measurable
+      (Prod.map id (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext))
+    exact
+      measurable_id.prodMap
+        (SelectedEntrySignedBox.CenterCoord.measurable_chartMap pivotNext)
+  have hactive : Measurable activeChart := by
+    change Measurable (Prod.map activeThetaChart id)
+    exact hactiveTheta.prodMap measurable_id
+  have hfun :
+      Y =
+        (fun z :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+          activeWriteback (activeChart z)) := by
+    funext z
+    simpa [Y, activeWriteback, activeChart, pivotNext] using
+      Case2PassiveThetaWithFollowingFactor.case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_eq_activeWriteback_activeSelectedEntryChart
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e
+  calc
+    endpointReferenceImage =
+        Measure.map Y (referenceSource.restrict Ω) := by
+          simp [endpointReferenceImage,
+            case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+            referenceSource, Y]
+    _ =
+        Measure.map
+          (fun z :
+              Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+            activeWriteback (activeChart z))
+          (referenceSource.restrict Ω) := by
+          rw [hfun]
+    _ =
+        Measure.map activeWriteback
+          (Measure.map activeChart (referenceSource.restrict Ω)) := by
+          rw [Measure.map_map hW hactive]
+          rfl
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Source-side selected-entry change of variables for the enlarged endpoint
 reference image.
 

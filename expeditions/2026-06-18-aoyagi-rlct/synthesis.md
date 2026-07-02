@@ -6,6 +6,80 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Endpoint Reference Image Writeback Factorization - 2026-07-02
+
+Lean now has:
+
+```text
+continuous_endpointTopologyTupleActiveWriteback
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_eq_map_activeWriteback_activeSelectedEntryChart_restrict
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The first theorem supplies measurability for the active writeback by proving it
+continuous.  The proof is finite-coordinate bookkeeping: project the
+with-following source into passive fields, following factor, and charted center
+coordinates; rebuild raw retained-passive data; endpoint-transport; then pack
+as a topology tuple.
+
+The second theorem packages the named endpoint reference image as:
+
+```text
+endpointReferenceImage =
+  Measure.map activeWriteback
+    (Measure.map activeChart (referenceSource.restrict Omega)).
+```
+
+Here:
+
+```text
+activeChart ((passive, yNext), following) =
+  ((passive, chartMap pivotNext yNext), following).
+```
+
+The proof unfolds the endpoint reference image as `map Y (referenceSource |
+Omega)`, uses the pointwise factorization
+
+```text
+Y z = activeWriteback (activeChart z),
+```
+
+and finishes by `Measure.map_map`.  The full active chart is measurable by the
+existing selected-entry `measurable_chartMap` and product-map measurability;
+the writeback is measurable by the new continuity theorem.
+
+This is the missing measure-level companion to the pointwise writeback
+factorization.  It does not claim any Haar identification, but it puts the
+endpoint image in the right form for localized determinant-side comparison.
+
+Boundary: no endpoint-Haar transport, determinant-Haar comparison, raw-order
+change of variables for the endpoint image, raw-Haar normalization,
+source-prior/original-prior transport, coverage, normal crossings, pole order,
+or RLCT is proved.
+
+Verification: focused builds for both touched modules, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched Lean-file
+forbidden-marker scan, and direct axiom probe passed.  Both new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+cd lean && scripts/sorries
+git diff --check
+rg -n "\bsorry\b|\badmit\b|TODO|FIXME|native_decide|#exit|\baxiom\b" \
+  lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean \
+  lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+cd lean && env LEAN_NUM_THREADS=3 lake env lean /tmp/aoyagi_endpoint_writeback_axioms.lean
+```
+
 ## A2 Localized Retained-Passive Raw-Order COV - 2026-07-02
 
 Lean now has:

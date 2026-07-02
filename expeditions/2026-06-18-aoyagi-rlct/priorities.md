@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint reference image writeback factorization
+
+Lean now has:
+
+```text
+continuous_endpointTopologyTupleActiveWriteback
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_eq_map_activeWriteback_activeSelectedEntryChart_restrict
+```
+
+Decision: this is the honest endpoint-image packaging for the with-following
+Case 2 source.  The named endpoint reference image is now expressed as:
+
+```text
+endpointReferenceImage =
+  map activeWriteback (map activeChart (referenceSource | Omega)).
+```
+
+The source nonlinearity is exactly the selected-entry active chart, and the
+endpoint side is the finite-coordinate active writeback.  No measurability or
+image-support hypothesis on `Omega` is needed for this pure pushforward
+factorization.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-writeback-factorization.md
+```
+
+Boundary: this proves no endpoint-Haar transport, no determinant-Haar
+comparison, no raw-order change of variables for the endpoint image, no
+raw-Haar normalization, no source-prior/original-prior transport, no coverage,
+no normal crossings, no pole order, and no RLCT.
+
+Next A2 target: combine the localized retained-passive raw-order COV with this
+writeback factorization to formulate a local endpoint/raw determinant-side
+comparison on the actual image patch, not on the whole determinant chart.
+
 ## Latest controller decision - 2026-07-02, A2 localized retained-passive raw-order COV
 
 Lean now has:
