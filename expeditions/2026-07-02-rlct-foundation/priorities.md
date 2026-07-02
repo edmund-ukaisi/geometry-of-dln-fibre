@@ -17,7 +17,7 @@ cordon discipline (rung 1) gates everything. **Live status → [`threads.md`](th
 | R6 | **The `Cited.lean` monuments** (arbitrary-germ continuation, resolution, pole-from-resolution, zeta↔threshold; DLN: Aoyagi λ, Watanabe upper) | **[cite, via R1]** | R1 | the small, deep cite surface. |
 | R7 | **DLN germ link** (`K_B=‖mult−B‖²`; `K_B⁻¹(0)=mult⁻¹(B)`; connect to codim) | **[build]** | R2,R6 | reuse Proved algebraic `λ=½codim` + real↔complex transfer. |
 | R8 | **Rewire payoff** (`rlct(K_B)=½·codim`, cited bounds over the real germ, isolated) | **[build]** | R6,R7 | the honest end-state; cordon green. |
-| **G1** | **Gap 1 — non-monotone fibre `θ`** (component-count fibration transfer + rank-locus corollary) | **[build, geometry]** | — | **parallel, own thread.** No new math, no cite. Greens the status table. |
+| ~~G1~~ | **Gap 1 — non-monotone fibre `θ`** | **[build, geometry]** | — | ✅ **MERGED** `f596160f`. `Monotone d` dropped: `numTop d r` floor + `cTheta((d∘sort d)−r)` closed form for arbitrary `d` (perm-invariance was landed — no new cite), two non-monotone witnesses. Axiom-clean, Codex-reviewed. Greens the geometry side of the status table. |
 
 ## Crux / decorrelated review
 - **R1 correctness** — the cordon must provably catch violations (the adversarial fixtures ARE the proof); decorrelated review + Codex on the design.

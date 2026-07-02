@@ -70,3 +70,24 @@ JapaneseBracket quadratic-block precursor; parametric-integral holomorphy. Confi
   value as the buildable foundation the payoff rides + zeta-pole object behind the cited continuation). **R2 is
   now gated on this call, not on R1.**
 - Codex CLI hangs in this env (exit 143/144 at stdin) → decorrelation via reviewer agents, not teammate Codex.
+
+## Gap 1 (G1) CLOSED + merged (2026-07-02, `f596160f`)
+
+**`Monotone d` dropped from the fibre-`θ` = #components headline** — the paper's non-monotone-dimension case,
+now formalised for arbitrary `d`. G1's recon calibrated the brief: the anticipated "component-count fibration
+transfer" was NOT needed as new construction — the 7-rung count chain is already `Monotone`-free except the
+cosmetic E0 `numTop = cTheta` evaluation step. So:
+- **Floor:** `Core.FibreThetaCountUnconditional.ncard_topDimMinPrimes_fibre_eq_numTop` (+`_of_rank` via the
+  landed same-rank transport) — the fibre top-component count `= numTop d r` for arbitrary `d`; the E0
+  geometric half `Core.TopComponentsTopDim.ncard_topDimMinPrimes_sigma_eq_numTop` (bijection + the
+  unconditional `numTop_eq_ncard_topComponents`).
+- **Closed form (taste push paid off — perm-invariance was reachable, no new cite):**
+  `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` (+`_of_rank`) `= cTheta ((d ∘ Tuple.sort d) − r)` for
+  arbitrary `d`, via the new `Core.CThetaSortClosedForm.numTop_eq_cTheta_dminus_sort` (sort to the monotone
+  rep, then the `Monotone` closed form). Under `Monotone d` the sort is identity → recovers the old headline
+  exactly; no expressiveness lost, only the gate.
+- **Non-vacuity shown in-file:** two witnesses on `dNonMono = ![1,2,1]` (`not_monotone_dNonMono` by `decide`),
+  a vector the old `cTheta`-gated headline cannot even mention.
+- **Verified:** build 3838 green; sorries `0`; the aggregate cordon gate stays `UNACCOUNTED=0 CITED=3` over 2229
+  decls (G1 added zero axioms/cites — pure geometry); Codex reviewed (exit 0). Controller-reviewed fidelity +
+  name=content; merged (aggregator conflict resolved: cordon + Gap-1 import blocks coexist).
