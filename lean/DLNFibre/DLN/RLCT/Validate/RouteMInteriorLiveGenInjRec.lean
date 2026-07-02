@@ -185,7 +185,7 @@ private noncomputable def frameTuple (M : Fin (L + 1) → ℕ) (ha : StructAdm M
 matrices at the interior widths — the value bridge (the general-`k` lift of `flatBlock_schurFrameMap_eq`).
 Established block-by-block over the `castAdd/natAdd` split via the four banked `schurFrameProd_block_*`
 lemmas; `flatBlock` reshapes the tuple to the block-matrix type. -/
-private theorem flatBlock_schurFrameMap_eq_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
+private theorem flatBlock_schurFrameMap_eq_gen_inj (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
     (y : Fin (routeMAmbient M) → ℝ) (k : ℕ) (hk : k < L)
     (hr : Text M (tach M) (k + 2) + (Text M (tach M) (k + 1) - Text M (tach M) (k + 2))
         = Text M (tach M) (k + 1))
@@ -240,7 +240,7 @@ private theorem Cgen_eq_flatBlock_schurFrameMap (M : Fin (L + 1) → ℕ) (ha : 
     Cgen 1 M (tach M) (genBlkFlatLive M (tach M) ha rfin y) (hleStruct M (tach M) ha) (k + 1)
       = flatBlock hr hc (schurFrameMap (frameTuple M ha y k (by omega))) := by
   rw [Cgen_live_interior_eq_schurFrameProd M (tach M) ha rfin (1 : ℝ) y k hk1,
-    flatBlock_schurFrameMap_eq_gen M ha y k (by omega) hr hc]
+    flatBlock_schurFrameMap_eq_gen_inj M ha y k (by omega) hr hc]
   rfl
 
 /-- **The frame readers are recovered at an interior boundary** (`k+1 < L`), given `Cgen(k+1)`
