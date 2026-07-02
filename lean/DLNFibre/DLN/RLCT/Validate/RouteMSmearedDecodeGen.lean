@@ -587,4 +587,41 @@ theorem routeMCore_psiMapG_RmapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   rw [routeMCore_rate_of_prod_collapsed M (psiMapG M hL hrs) (RmapG M hL hrs hr hc u)
     (zuG M hL hrs hr hc u) _ hcollapse]
 
+/-- The `z`-free unit `U = ‖P₁·H̄_unit‖²_F` (the polynomial factor of the rate `F = z²·U`). Stated at
+the FlatIdx col width `M (deepLayer).succ` (no cast needed — `H̄_unit` and `P₁` live there natively). -/
+noncomputable def UunitG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) : ℝ :=
+  ∑ i, ∑ j, ((P1uG M hL hrs u * HbarUnitG M hL hrs hr hc u) i j) ^ 2
+
+/-- `UunitG ≥ 0` (a sum of squares). -/
+theorem UunitG_nonneg (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) : (0 : ℝ) ≤ UunitG M hL hrs hr hc u :=
+  frobeniusSq_nonneg _
+
+/-- The cast-cancelled `Frobenius` sum: `∑ (P₁·(h▸H))ᵢⱼ² = ∑ (P₁·H)ᵢⱼ² = UunitG`. The `▸` col-cast on
+`H̄` in the rate bridge does not change the sum of squares (`cast_col_apply` + reindex the `j` sum). -/
+theorem frobeniusSq_P1_Hbar_cast (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) :
+    (∑ i, ∑ j, ((P1uG M hL hrs u
+        * ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)) i j) ^ 2)
+      = UunitG M hL hrs hr hc u := by
+  rw [UunitG]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  -- match the LHS `j : Fin (M (last L))` sum with the RHS `j : Fin (M (deepLayer).succ)` sum via the
+  -- col-type equiv `finCongr (deepLayer_succ_width).symm`, matching each summand by `cast_col_apply`
+  refine Fintype.sum_equiv (finCongr (deepLayer_succ_width M hL).symm)
+    (fun j => ((P1uG M hL hrs u
+      * ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)) i j) ^ 2)
+    (fun j => ((P1uG M hL hrs u * HbarUnitG M hL hrs hr hc u) i j) ^ 2) (fun j => ?_)
+  show ((P1uG M hL hrs u
+        * ((deepLayer_succ_width M hL) ▸ HbarUnitG M hL hrs hr hc u)) i j) ^ 2
+      = ((P1uG M hL hrs u * HbarUnitG M hL hrs hr hc u) i
+          ((finCongr (deepLayer_succ_width M hL).symm) j)) ^ 2
+  congr 2
+  rw [Matrix.mul_apply, Matrix.mul_apply]
+  exact Finset.sum_congr rfl (fun k _ => by rw [cast_col_apply])
+
 end DLNFibre.DLN.RLCT
