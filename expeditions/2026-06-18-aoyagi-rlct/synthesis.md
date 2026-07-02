@@ -25,6 +25,60 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Active Selected-Entry Reference COV - 2026-07-02
+
+Lean now has a source-coordinate product COV for the enlarged with-following
+reference measure.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New declarations:
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image_prod
+SelectedEntrySignedBox.CenterCoord.map_prod_id_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_prod_restrict_image
+sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+sFinite_case2PassiveThetaReferenceSourceMeasure
+measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_eq_prod
+```
+
+The generic selected-entry product lemmas say that the existing one-factor
+weighted chart pushforward is stable under product with any s-finite side
+measure.  The Aoyagi wrapper applies this to
+
+```text
+((passive, yNext), F) |-> ((passive, chartMap pivotNext yNext), F)
+```
+
+for the enlarged source reference, producing
+
+```text
+(passiveRef.prod
+  (volume.restrict (chartMap pivotNext '' signedBoxSet Rres))).prod
+followingRef.
+```
+
+This is the first source-coordinate COV rung for the enlarged source.  It does
+not identify the endpoint topology-tuple image with determinant-chart Haar
+measure, does not prove raw-map pushforward, and does not insert the raw-order
+Jacobian factor.  The raw-order factor belongs to
+`topologyTupleEdgeRawOrder o Y`, not to this selected-entry `Y` source
+coordinate chart.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-active-selected-entry-chart-reference-cov.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-active-selected-entry-chart-reference-cov.md
+```
+
 ## A2 Enlarged Following-Factor Endpoint-Sector Domination Bookkeeping - 2026-07-02
 
 Lean now has the with-following endpoint-sector support/domination layer.

@@ -1128,6 +1128,63 @@ theorem map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_imag
           exact Measure.restrict_congr_set
             (chartMap_image_signedBoxSet_ae_eq_inter_pivot_ne_zero pivot R).symm
 
+/-- The selected-entry weighted chart pushforward is stable under product with
+an arbitrary s-finite side measure, with the side coordinate carried by the
+identity map. -/
+theorem map_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image_prod
+    {β : Type*} [MeasurableSpace β] {center : Finset ι} (pivot : center)
+    (R : center → ℝ) (ν : Measure β) [SFinite ν] :
+    Measure.map
+        (fun z : (center → ℝ) × β => (chartMap pivot z.1, z.2))
+        (((Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).prod ν) =
+      ((volume : Measure (center → ℝ)).restrict
+        (chartMap pivot '' signedBoxSet R)).prod ν := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+  have hchart : Measurable (chartMap pivot) :=
+    measurable_chartMap pivot
+  change
+    Measure.map (Prod.map (chartMap pivot) id) (weightedBox.prod ν) =
+      ((volume : Measure (center → ℝ)).restrict
+        (chartMap pivot '' signedBoxSet R)).prod ν
+  rw [← Measure.map_prod_map weightedBox ν hchart measurable_id]
+  rw [map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image]
+  simp
+
+/-- The selected-entry weighted chart pushforward is stable under product with
+an arbitrary s-finite left-side measure, with that coordinate carried by the
+identity map. -/
+theorem map_prod_id_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_prod_restrict_image
+    {β : Type*} [MeasurableSpace β] {center : Finset ι} (pivot : center)
+    (R : center → ℝ) (ν : Measure β) [SFinite ν] :
+    Measure.map
+        (fun z : β × (center → ℝ) => (z.1, chartMap pivot z.2))
+        (ν.prod
+          ((Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+            (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)))) =
+      ν.prod
+        ((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R)) := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+  have hchart : Measurable (chartMap pivot) :=
+    measurable_chartMap pivot
+  change
+    Measure.map (Prod.map id (chartMap pivot)) (ν.prod weightedBox) =
+      ν.prod
+        ((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R))
+  rw [← Measure.map_prod_map ν weightedBox measurable_id hchart]
+  rw [map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image]
+  simp
+
 /-- The weighted selected-entry signed-box source measure is nonzero when all
 source radii are positive. -/
 theorem signedBoxMeasure_withDensity_sourceDensity_ne_zero

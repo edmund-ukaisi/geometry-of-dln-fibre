@@ -92,6 +92,168 @@ noncomputable def case2PassiveThetaPassiveFieldReferenceMeasure
   A1Measure.prod (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure)))
 
 set_option linter.style.longLine false in
+/-- The coordinate-product reference measure on the passive fields is
+sigma-finite. -/
+theorem sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    SigmaFinite
+      (case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J) := by
+  dsimp [case2PassiveThetaPassiveFieldReferenceMeasure]
+  haveI hA1Entry :
+      ∀ _ : Fin 1, SigmaFinite (matrixEntryReferenceMeasure ρ ρ) := by
+    intro _
+    exact sigmaFinite_matrixEntryReferenceMeasure ρ ρ
+  have hA1 :
+      SigmaFinite (Measure.pi
+        (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)) := by
+    exact @MeasureTheory.Measure.pi.sigmaFinite
+      (Fin 1) (fun _ : Fin 1 => Matrix ρ ρ ℝ) _ _
+      (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ) hA1Entry
+  haveI hF2Entry :
+      ∀ p : Fin 2,
+        SigmaFinite
+          (matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)) := by
+    intro p
+    exact sigmaFinite_matrixEntryReferenceMeasure ρ
+      (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)
+  have hF2 :
+      SigmaFinite (Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))) := by
+    exact @MeasureTheory.Measure.pi.sigmaFinite
+      (Fin 2)
+      (fun p : Fin 2 =>
+        Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+      _ _
+      (fun p : Fin 2 =>
+        matrixEntryReferenceMeasure ρ
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))
+      hF2Entry
+  haveI hA3Entry :
+      ∀ p : Fin 1,
+        SigmaFinite
+          (matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ) := by
+    intro p
+    exact sigmaFinite_matrixEntryReferenceMeasure
+      (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ
+  have hA3 :
+      SigmaFinite (Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)) := by
+    exact @MeasureTheory.Measure.pi.sigmaFinite
+      (Fin 1)
+      (fun p : Fin 1 =>
+        Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+      _ _
+      (fun p : Fin 1 =>
+        matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)
+      hA3Entry
+  have hCtop :
+      SigmaFinite (matrixEntryReferenceMeasure ρ ρ) :=
+    sigmaFinite_matrixEntryReferenceMeasure ρ ρ
+  have hF3 :
+      SigmaFinite
+        (matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ) :=
+    sigmaFinite_matrixEntryReferenceMeasure
+      (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ
+  have hCtopF3 :
+      SigmaFinite
+        ((matrixEntryReferenceMeasure ρ ρ).prod
+          (matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)) := by
+    exact @MeasureTheory.Measure.prod.instSigmaFinite
+      _ _ inferInstance (matrixEntryReferenceMeasure ρ ρ) hCtop
+      inferInstance
+      (matrixEntryReferenceMeasure
+        (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ) hF3
+  have hA3Tail :
+      SigmaFinite
+        ((Measure.pi
+          (fun p : Fin 1 =>
+            matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+          ((matrixEntryReferenceMeasure ρ ρ).prod
+            (matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ))) := by
+    exact @MeasureTheory.Measure.prod.instSigmaFinite
+      _ _ inferInstance
+      (Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)) hA3
+      inferInstance
+      ((matrixEntryReferenceMeasure ρ ρ).prod
+        (matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)) hCtopF3
+  have hF2Tail :
+      SigmaFinite
+        ((Measure.pi
+          (fun p : Fin 2 =>
+            matrixEntryReferenceMeasure ρ
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))).prod
+          ((Measure.pi
+            (fun p : Fin 1 =>
+              matrixEntryReferenceMeasure
+                (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+            ((matrixEntryReferenceMeasure ρ ρ).prod
+              (matrixEntryReferenceMeasure
+                (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)))) := by
+    exact @MeasureTheory.Measure.prod.instSigmaFinite
+      _ _ inferInstance
+      (Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))) hF2
+      inferInstance
+      ((Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+        ((matrixEntryReferenceMeasure ρ ρ).prod
+          (matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ))) hA3Tail
+  exact @MeasureTheory.Measure.prod.instSigmaFinite
+    _ _ inferInstance
+    (Measure.pi (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)) hA1
+    inferInstance
+    ((Measure.pi
+      (fun p : Fin 2 =>
+        matrixEntryReferenceMeasure ρ
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))).prod
+      ((Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+        ((matrixEntryReferenceMeasure ρ ρ).prod
+          (matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)))) hF2Tail
+
+set_option linter.style.longLine false in
+/-- The coordinate-product reference measure on the passive fields is
+s-finite. -/
+theorem sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    SFinite
+      (case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J) := by
+  haveI :
+      SigmaFinite
+        (case2PassiveThetaPassiveFieldReferenceMeasure
+          (ρ := ρ) (τ := τ) n S J) :=
+    sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  infer_instance
+
+set_option linter.style.longLine false in
 /-- Selected-entry signed-box measure on the successor residual center
 coordinates. -/
 noncomputable def case2PassiveThetaCenterSignedBoxMeasure
@@ -129,6 +291,27 @@ noncomputable def case2PassiveThetaReferenceSourceMeasure
   (case2PassiveThetaPassiveFieldReferenceMeasure
       (ρ := ρ) (τ := τ) n S J).prod
     (case2PassiveThetaCenterWeightedBoxMeasure n hS hnext Rres)
+
+set_option linter.style.longLine false in
+/-- The concrete passive-theta product reference measure is s-finite. -/
+theorem sFinite_case2PassiveThetaReferenceSourceMeasure
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    SFinite
+      (case2PassiveThetaReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres) := by
+  haveI :
+      SFinite
+        (case2PassiveThetaPassiveFieldReferenceMeasure
+          (ρ := ρ) (τ := τ) n S J) :=
+    sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  dsimp [case2PassiveThetaReferenceSourceMeasure,
+    case2PassiveThetaCenterWeightedBoxMeasure,
+    case2PassiveThetaCenterSignedBoxMeasure]
+  infer_instance
 
 set_option linter.style.longLine false in
 /-- Endpoint topology-tuple image measure of the concrete passive-theta

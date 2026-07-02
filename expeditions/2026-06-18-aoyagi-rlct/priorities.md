@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor active selected-entry reference COV
+
+Lean now has the source-coordinate selected-entry product COV layer for the
+enlarged with-following reference measure:
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image_prod
+SelectedEntrySignedBox.CenterCoord.map_prod_id_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_prod_restrict_image
+sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+sFinite_case2PassiveThetaReferenceSourceMeasure
+measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_eq_prod
+```
+
+This proves that the map
+
+```text
+((passive, yNext), F) |-> ((passive, chartMap pivotNext yNext), F)
+```
+
+pushes the enlarged source reference to
+
+```text
+(passiveRef.prod
+  (volume.restrict (chartMap pivotNext '' signedBoxSet Rres))).prod
+followingRef.
+```
+
+Decision: this is the first honest source-coordinate weighted COV for the
+enlarged with-following source.  It stays before endpoint topology-tuple Haar
+transport: passive fields and following-factor coordinates are unchanged, and
+only `yNext` contributes the selected-entry `sourceDensity`.  The next target
+is to connect this coordinate-level COV to the endpoint topology-tuple map
+`Y`, still without asserting determinant-chart Haar or raw-map pushforward
+until those are actually proved.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint-sector domination bookkeeping
 
 Lean now has with-following analogues of the existing passive-theta

@@ -214,6 +214,111 @@ theorem quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_followingFac
       (ν := matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
 
 set_option linter.style.longLine false in
+/-- The enlarged reference source pushes through the selected-entry active
+coordinate chart as the product of unchanged passive fields, Lebesgue measure
+restricted to the selected-entry chart image, and unchanged following-factor
+coordinates.
+
+This is only a source-coordinate product change-of-variables statement.  It
+does not identify the endpoint topology-tuple image with Haar measure and does
+not assert any raw-map pushforward. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_eq_prod
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let passiveRef :=
+      case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+    let followingRef :=
+      matrixEntryReferenceMeasure
+        (Case2ResidualColIndex n S (J + 1)) τ
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦ ((z.1.1,
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.2), z.2)
+    Measure.map activeChart
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) =
+      ((passiveRef.prod
+        ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+            SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))).prod followingRef) := by
+  intro pivotNext passiveRef followingRef activeChart
+  haveI : SFinite passiveRef := by
+    exact
+      sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite followingRef :=
+    sFinite_matrixEntryReferenceMeasure
+      (Case2ResidualColIndex n S (J + 1)) τ
+  let activeThetaChart :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveTheta (ρ := ρ) (τ := τ) n S J :=
+    fun theta ↦
+      (theta.1,
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext theta.2)
+  have hactiveTheta_meas : Measurable activeThetaChart := by
+    change Measurable
+      (Prod.map id (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext))
+    exact
+      measurable_id.prodMap
+        (SelectedEntrySignedBox.CenterCoord.measurable_chartMap pivotNext)
+  have hactiveTheta :
+      Measure.map activeThetaChart
+        (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) =
+        passiveRef.prod
+          ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+              SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres)) := by
+    change
+      Measure.map
+          (fun z :
+              Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+                (Case2PassiveTheta.Center n S J → ℝ) ↦
+            (z.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.2))
+          (passiveRef.prod
+            (case2PassiveThetaCenterWeightedBoxMeasure n hS hnext Rres)) =
+        passiveRef.prod
+          ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+              SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))
+    simpa [case2PassiveThetaCenterWeightedBoxMeasure,
+      case2PassiveThetaCenterSignedBoxMeasure, passiveRef, pivotNext] using
+      (SelectedEntrySignedBox.CenterCoord.map_prod_id_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_prod_restrict_image
+        (β := Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+        pivotNext Rres passiveRef)
+  have hsource_sfinite :
+      SFinite
+        (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) := by
+    exact
+      sFinite_case2PassiveThetaReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+  letI :
+      SFinite
+        (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) :=
+    hsource_sfinite
+  change
+    Measure.map (Prod.map activeThetaChart id)
+        ((case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres).prod followingRef) =
+      ((passiveRef.prod
+        ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+          (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+            SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres))).prod followingRef)
+  rw [← Measure.map_prod_map
+    (case2PassiveThetaReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres)
+    followingRef hactiveTheta_meas measurable_id]
+  rw [hactiveTheta]
+  simp
+
+set_option linter.style.longLine false in
 /-- Endpoint topology-tuple image measure of the enlarged concrete
 passive-theta reference source restricted to a chosen local set.
 
