@@ -300,4 +300,180 @@ theorem Lam0uG_entry_bound (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     have hcol : ∀ i, |Vσ i b| ≤ nb := fun i => hVσbound i b
     exact hSRD.inv_mul_entry_bound Vσ b (Mj := nb) hcol a
 
+/-! ## The deepest-slot box readoffs (`z`, `H̄_unit`, `S_bot` on `boxGen`)
+
+A deepest-layer slot (`topSlotG`/`botSlotG`, layer `L−1`) is never a `slotBoxGen` carrier-diagonal
+slot (that needs layer `< L−1`), so its coord lies in `[−η,η]`. The pivot `z` is `∈ Ioo 0 δ`. -/
+
+/-- A deepest-top slot is not a `slotBoxGen` carrier-diagonal slot (it is at layer `L−1`). -/
+theorem topSlotG_not_carrierDiag (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    ¬ ((topSlotG M hL hrs a j).1.1.val < L - 1 ∧
+        ((topSlotG M hL hrs a j).1.2.val : ℕ) < r ∧ ((topSlotG M hL hrs a j).2.val : ℕ) < r
+        ∧ (topSlotG M hL hrs a j).1.2.val = (topSlotG M hL hrs a j).2.val) := by
+  rintro ⟨hlt, _, _, _⟩
+  simp only [topSlotG, deepLayer] at hlt; omega
+
+/-- A deepest-bottom slot is not a `slotBoxGen` carrier-diagonal slot (it is at layer `L−1`). -/
+theorem botSlotG_not_carrierDiag (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    ¬ ((botSlotG M hL hrs b j).1.1.val < L - 1 ∧
+        ((botSlotG M hL hrs b j).1.2.val : ℕ) < r ∧ ((botSlotG M hL hrs b j).2.val : ℕ) < r
+        ∧ (botSlotG M hL hrs b j).1.2.val = (botSlotG M hL hrs b j).2.val) := by
+  rintro ⟨hlt, _, _, _⟩
+  simp only [botSlotG, deepLayer] at hlt; omega
+
+/-- **`|z| ≤ δ`** on the box: the pivot value `z = u pivotCoordG ∈ Ioo 0 δ`. -/
+theorem zuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ : ℝ} {u : Fin (routeMAmbient M) → ℝ}
+    (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ) :
+    |zuG M hL hrs hr hc u| ≤ δ := by
+  rw [zuG, abs_le]; rw [Set.mem_Ioo] at hpivot; constructor <;> linarith [hpivot.1, hpivot.2]
+
+/-- **`|H̄_unit a j| ≤ 1`** on the box (`η ≤ 1`): the pivot entry is `1`, the others `∈ [−η,η]`. -/
+theorem HbarUnitG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ η : ℝ} (hη1 : η ≤ 1) {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
+    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    |HbarUnitG M hL hrs hr hc u a j| ≤ 1 := by
+  rw [HbarUnitG]
+  by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
+  · rw [if_pos hpiv]; norm_num
+  · rw [if_neg hpiv]
+    have hval := hrest (coordOfG M (topSlotG M hL hrs a j)) hpiv
+    rw [boxGen_coordOfG] at hval
+    exact le_trans (boxGen_abs_le_eta hL (topSlotG_not_carrierDiag M hL hrs a j) hval) hη1
+
+/-- **`|S_bot b j| ≤ η`** on the box (a deepest-bottom slot is `∈ [−η,η]`). -/
+theorem SbotuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ η : ℝ} {u : Fin (routeMAmbient M) → ℝ}
+    (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+      coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
+    (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    |SbotuG M hL hrs u b j| ≤ η := by
+  have hval := hrest (coordOfG M (botSlotG M hL hrs b j)) (hbotne b j)
+  rw [boxGen_coordOfG] at hval
+  exact boxGen_abs_le_eta hL (botSlotG_not_carrierDiag M hL hrs b j) hval
+
+/-! ## The flat-coord entry bound (each `|psiMapG (RmapG u) i| ≤ ε`) -/
+
+/-- **The top-slot decode value.** At a top-slot coord, `psiMapG (RmapG u) = (z•H̄ − Λ₀·S_bot) a j`. -/
+theorem psiMapG_RmapG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    psiMapG M hL hrs (RmapG M hL hrs hr hc u) (coordOfG M (topSlotG M hL hrs a j))
+      = (zuG M hL hrs hr hc u • HbarUnitG M hL hrs hr hc u
+          - Lam0uG M hL hrs u * SbotuG M hL hrs u) a j := by
+  rw [psiMapG_RmapG_flat, shearG_topSlotG]
+
+/-- **The deep-top entry bound.** `|(z•H̄ − Λ₀·S_bot) a j| ≤ δ + s·((1/γ)·nb)·η` on the box: the radial
+`|z·H̄| ≤ δ·1`, the shear `|(Λ₀·S_bot) a j| ≤ ∑_b |Λ₀ a b|·|S_bot b j| ≤ s·((1/γ)·nb)·η`. -/
+theorem deepTopG_entry_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η) (hnb0 : 0 ≤ nb)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ)
+    (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+      coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
+    (hLam : ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb)
+    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    |(zuG M hL hrs hr hc u • HbarUnitG M hL hrs hr hc u
+        - Lam0uG M hL hrs u * SbotuG M hL hrs u) a j|
+      ≤ δ + (s : ℝ) * ((1 / γ) * nb) * η := by
+  -- radial term `|z·H̄| ≤ δ·1 = δ`
+  have hz := zuG_abs_le_of_box M hL hrs hr hc hpivot
+  have hH := HbarUnitG_abs_le_of_box M hL hrs hr hc hη1 hrest a j
+  have hrad : |zuG M hL hrs hr hc u * HbarUnitG M hL hrs hr hc u a j| ≤ δ := by
+    rw [abs_mul]
+    calc |zuG M hL hrs hr hc u| * |HbarUnitG M hL hrs hr hc u a j|
+        ≤ δ * 1 := mul_le_mul hz hH (abs_nonneg _) hδ.le
+      _ = δ := by ring
+  -- shear term `|(Λ₀·S_bot) a j| ≤ s·((1/γ)·nb)·η`
+  have hshear : |(Lam0uG M hL hrs u * SbotuG M hL hrs u) a j| ≤ (s : ℝ) * ((1 / γ) * nb) * η := by
+    rw [Matrix.mul_apply]
+    calc |∑ b, Lam0uG M hL hrs u a b * SbotuG M hL hrs u b j|
+        ≤ ∑ b, |Lam0uG M hL hrs u a b * SbotuG M hL hrs u b j| := Finset.abs_sum_le_sum_abs _ _
+      _ ≤ ∑ _b : Fin s, ((1 / γ) * nb) * η := by
+          refine Finset.sum_le_sum (fun b _ => ?_)
+          rw [abs_mul]
+          refine mul_le_mul (hLam a b)
+            (SbotuG_abs_le_of_box M hL hrs hr hc hrest hbotne b j) (abs_nonneg _) ?_
+          positivity
+      _ = (s : ℝ) * ((1 / γ) * nb) * η := by
+          rw [Finset.sum_const, Finset.card_univ, Fintype.card_fin, nsmul_eq_mul]; ring
+  -- combine via the triangle inequality
+  rw [Matrix.sub_apply, Matrix.smul_apply, smul_eq_mul]
+  calc |zuG M hL hrs hr hc u * HbarUnitG M hL hrs hr hc u a j
+          - (Lam0uG M hL hrs u * SbotuG M hL hrs u) a j|
+      ≤ |zuG M hL hrs hr hc u * HbarUnitG M hL hrs hr hc u a j|
+          + |(Lam0uG M hL hrs u * SbotuG M hL hrs u) a j| := abs_sub _ _
+    _ ≤ δ + (s : ℝ) * ((1 / γ) * nb) * η := by linarith [hrad, hshear]
+
+/-- **The flat-coord entry bound `|psiMapG (RmapG u) i| ≤ 2δ`.** Classify the coord `i`:
+* `i ∈ topCoordsG` (a top slot `coordOfG (topSlotG a j)`): the deep-top entry, `≤ δ + s·((1/γ)nb)·η ≤ 2δ`
+  under the field-A margin `s·((1/γ)nb)·η ≤ δ`;
+* `i ∉ topCoordsG` (a front OR bottom slot, `psiMapG (RmapG u) i = u i`): a box coord, `≤ δ ≤ 2δ`. -/
+theorem psiMapG_RmapG_flat_le (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
+    {u : Fin (routeMAmbient M) → ℝ}
+    (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ)
+    (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+      coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
+    (hLam : ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb)
+    (i : Fin (routeMAmbient M)) :
+    |psiMapG M hL hrs (RmapG M hL hrs hr hc u) i| ≤ 2 * δ := by
+  by_cases hmem : i ∈ topCoordsG M hL hrs
+  · -- TOP slot: the deep-top entry `≤ δ + s·((1/γ)nb)·η ≤ 2δ`
+    obtain ⟨a, j, hij⟩ := (mem_topCoordsG_iff M hL hrs i).mp hmem
+    rw [← hij, psiMapG_RmapG_topSlotG]
+    have := deepTopG_entry_le_of_box M hL hrs hr hc hδ hγ hη1 hηpos hnb0 hpivot hrest hbotne hLam a j
+    linarith [hfieldA]
+  · -- SPECTATOR (front/bottom): `psiMapG (RmapG u) i = u i`, a box coord `≤ δ ≤ 2δ`
+    have hval : psiMapG M hL hrs (RmapG M hL hrs hr hc u) i = u i := by
+      rw [psiMapG_RmapG_flat, shearMBody_apply_of_not_mem _ _ _ hmem,
+        RmapG_spectator M hL hrs hr hc u hmem]
+    rw [hval]
+    -- `i ≠ pivot` (pivot ∈ topCoordsG), so `u i ∈ boxGen i`, `≤ δ`
+    have hine : i ≠ pivotCoordG M hL hrs hr hc :=
+      fun h => hmem (h ▸ pivotCoordG_mem M hL hrs hr hc)
+    have hbox := hrest i hine
+    rw [boxGen] at hbox
+    have := boxGen_abs_le hL hδ hη hbox
+    linarith
+
+/-! ## The Field-A containment `hSpre` (`condBox ⊆ (ψ∘R)⁻¹(cubeBox 2δ)`) -/
+
+/-- **The general-`L` Field-A containment (`ε = 2δ`).** On the conditioned box `boxGen` (pivot in
+`Ioo 0 δ`, front carrier-diagonals in `[δ/2,δ]`, everything else in `[−η,η]`), the decoded image lands
+in `cubeBox 2δ`: every flat coord `|psiMapG (RmapG u) i| ≤ 2δ` (`psiMapG_RmapG_flat_le`). Takes the
+`Λ₀`-entry bound `hLam` (from `Lam0uG_entry_bound` off small `η`) and the field-A margin
+`s·((1/γ)nb)·η ≤ δ` as inputs — both discharged by the box supplier's `η`-choice. The general-`L`
+analog of the L=2 `condBox_subset_preimage`. -/
+theorem condBox_subset_preimage_gen (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
+    (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+      coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
+    (hLam : ∀ (u : Fin (routeMAmbient M) → ℝ),
+      u ∈ condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ →
+      ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb) :
+    condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ
+      ⊆ (fun u => psiMapG M hL hrs (RmapG M hL hrs hr hc u))
+        ⁻¹' (cubeBox (routeMAmbient M) (2 * δ)) := by
+  intro u hu
+  rw [Set.mem_preimage, cubeBox, Set.mem_pi]
+  intro i _
+  rw [Set.mem_Icc, ← abs_le]
+  exact psiMapG_RmapG_flat_le M hL hrs hr hc hδ hγ hη hη1 hηpos hnb0 hfieldA hu.1
+    (fun k hk => hu.2 k hk) hbotne (hLam u hu) i
+
 end DLNFibre.DLN.RLCT
