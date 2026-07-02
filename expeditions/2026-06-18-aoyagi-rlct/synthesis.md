@@ -6,6 +6,74 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Inverse-Haar Original-Volume Readback Density Socket - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_and_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+This theorem consumes the exact with-following source-image inverse-Haar
+bridge rather than the older domination-only bridge.  On the same local shrink
+it returns the source-chart left inverse, injectivity, continuity, measurable
+source image, and p.13 support.  For any measurable chart piece contained in
+the local source image, if:
+
+```text
+Measure.map rawMap (thetaReference.restrict V) =
+  rawHaar.restrict rawSourceSet,
+```
+
+then with:
+
+```text
+c = (Measure.map rawOrderMatrixTupleEquiv rawHaar).addHaarScalarFactor
+      (originalTupleVolume d),
+sourceRef = Measure.map sourceChart (thetaReference.restrict V),
+invHaarDensity = fun _ => ((c^-1 : NNReal) : ENNReal),
+```
+
+it proves both:
+
+```text
+originalVolume.restrict chartPiece =
+  (sourceRef.withDensity invHaarDensity).restrict chartPiece
+```
+
+and:
+
+```text
+Measure.map readback (originalVolume.restrict chartPiece)
+  <= ((c^-1 : NNReal) : ENNReal) • thetaReference.restrict G.
+```
+
+The proof is the generic original-volume readback `withDensity` socket applied
+to the constant inverse-Haar density supplied by the previous bridge.  It is a
+useful consumer because downstream code can still see the exact density
+identity, not just a scalar domination.
+
+Boundary: the exact raw-pushforward identity remains a hypothesis.  No
+determinant-Haar transport, raw-Haar transport, source-prior/original-prior
+transport, source-image coverage beyond this local chart, source-rank
+coverage, normal crossings, pole order, or RLCT is proved.
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched Lean-file forbidden-marker scan,
+direct axiom probe, and xhigh review passed.  The declaration reports
+`[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadback
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+```
+
 ## A2 With-Following Original-Volume Source-Image Inverse-Haar Density - 2026-07-02
 
 Lean now has:

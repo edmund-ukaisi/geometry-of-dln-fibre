@@ -21,6 +21,59 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following inverse-Haar original-volume readback density socket
+
+Reproduction:
+`reproduction-a2-with-following-original-volume-invhaar-readback-density-socket.md`.
+Statement card:
+`statement-card-a2-with-following-original-volume-invhaar-readback-density-socket.md`.
+Review:
+`review-a2-with-following-original-volume-invhaar-readback-density-socket.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_and_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+This consumes the exact with-following source-image inverse-Haar bridge and
+the generic original-volume `withDensity` readback socket.  Under the supplied
+exact raw-pushforward identity, every measurable chart piece contained in the
+returned local source image gets both the exact restricted-volume identity
+
+```text
+originalVolume.restrict chartPiece =
+  (sourceRef.withDensity (fun _ => ((c^-1 : NNReal) : ENNReal))).restrict chartPiece
+```
+
+and the readback domination
+
+```text
+Measure.map readback (originalVolume.restrict chartPiece)
+  <= ((c^-1 : NNReal) : ENNReal) • thetaReference.restrict G.
+```
+
+Boundary: exact raw-pushforward remains a hypothesis.  No determinant-Haar
+transport, raw-Haar transport, source-prior/original-prior transport,
+source-image coverage beyond the local chart, source-rank coverage, normal
+crossings, pole order, or RLCT is proved.
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The declaration reports
+`[propext, Classical.choice, Quot.sound]`.
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadback
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+```
+
 ## 2026-07-02 A2 with-following original-volume readback from reverse raw-source domination
 
 Reproduction:

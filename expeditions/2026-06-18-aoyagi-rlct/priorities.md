@@ -12,6 +12,59 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following inverse-Haar original-volume readback density socket
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withDensity_invHaar_and_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+Decision: this is the first direct consumer of the new with-following
+inverse-Haar source-image bridge.  It packages, on one local shrink, both the
+exact restricted original-volume identity
+
+```text
+originalVolume | chartPiece =
+  (sourceRef.withDensity (fun _ => c^-1)) | chartPiece
+```
+
+and the readback consequence
+
+```text
+map readback (originalVolume | chartPiece)
+  <= c^-1 • thetaReference | G.
+```
+
+The proof applies the generic source-image `withDensity` readback socket with
+the concrete constant inverse-Haar density.  This is stronger than the older
+with-following readback wrapper because it keeps the exact density equality
+available to downstream consumers instead of exposing only domination.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-invhaar-readback-density-socket.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-invhaar-readback-density-socket.md
+threads/03-block-product-reduction/review-a2-with-following-original-volume-invhaar-readback-density-socket.md
+```
+
+Focused local module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probe, and xhigh
+review passed.  The declaration reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: exact raw-pushforward remains a hypothesis.  This does not prove
+determinant-Haar transport, raw-Haar transport, source-prior/original-prior
+transport, source-image coverage beyond the local chart, source-rank coverage,
+normal crossings, pole order, or RLCT.
+
+Next A2 target: the next non-wrapper frontier is still determinant-side
+endpoint/raw-order Haar transport or source-prior transport for the concrete
+with-following reference source.  A top finite-integral wrapper for the
+with-following source would be larger because the current top sockets are for
+the bare `Case2PassiveTheta` domain.
+
 ## Latest controller decision - 2026-07-02, A2 with-following original-volume source-image inverse-Haar density
 
 Lean now has:
