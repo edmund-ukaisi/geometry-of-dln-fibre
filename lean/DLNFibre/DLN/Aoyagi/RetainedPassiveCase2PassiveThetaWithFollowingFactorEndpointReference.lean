@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
 
 /-!
@@ -412,6 +413,130 @@ noncomputable def case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeas
       case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
         (ρ := ρ) n hS hcont hnext theta eNext e
   Measure.map Y (referenceSource.restrict Ω)
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The named enlarged endpoint reference image measure is supported on the
+actual image of the chosen source set.
+
+This is support for the endpoint image measure only.  It is not determinant
+chart Haar measure and does not assert a raw-map pushforward. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (himage :
+      MeasurableSet
+        ((fun theta ↦
+          case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e) '' Ω)) :
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let endpointReferenceImage : Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω
+    endpointReferenceImage.restrict (Y '' Ω) = endpointReferenceImage := by
+  intro Y endpointReferenceImage
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  have hY :
+      AEMeasurable Y (referenceSource.restrict Ω) := by
+    have hYcont : Continuous Y := by
+      simpa [Y] using
+        continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext eNext e
+    exact hYcont.measurable.aemeasurable
+  have himageY : MeasurableSet (Y '' Ω) := by
+    simpa [Y] using himage
+  simpa [endpointReferenceImage,
+    case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+    referenceSource, Y] using
+    measure_map_restrict_image_eq_self_of_aemeasurable
+      Y referenceSource Ω hΩ himageY hY
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The unfolded endpoint pushforward is the named endpoint reference image
+measure restricted to the actual endpoint image.
+
+The target measure is the named endpoint image of the same restricted source
+reference; this is not determinant-chart Haar measure. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (himage :
+      MeasurableSet
+        ((fun theta ↦
+          case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext theta eNext e) '' Ω)) :
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun theta ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let endpointReferenceImage : Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω
+    Measure.map Y (referenceSource.restrict Ω) =
+      endpointReferenceImage.restrict (Y '' Ω) := by
+  intro referenceSource Y endpointReferenceImage
+  have hsupp :=
+    case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self
+      (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω hΩ himage
+  symm
+  simpa [endpointReferenceImage,
+    case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure,
+    referenceSource, Y] using hsupp
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

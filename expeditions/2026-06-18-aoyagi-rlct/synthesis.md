@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Endpoint Reference Image Support - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The named endpoint reference image measure for the enlarged Case 2 endpoint
+map `Y` is already defined as
+`Measure.map Y (referenceSource.restrict Ω)`.  These theorems record that the
+measure is supported on the actual image `Y '' Ω`, assuming the source set and
+the image are measurable, and expose the unfolded equality with the same named
+endpoint image measure restricted to `Y '' Ω`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-support.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-reference-image-support.md
+```
+
+Boundary: actual-image support only.  No determinant-chart Haar equality,
+raw-Haar/raw-map transport, raw-order composition, source-image coverage beyond
+`Y '' Ω`, formal-product domination, normal crossings, pole order, or RLCT.
+
+Verification: focused warning-clean elaboration, focused module build, full
+local `lake build DLNFibre`, no-sorry audit, diff check, touched-file
+forbidden-marker scan, and direct axiom probe passed.  Both new declarations
+report `[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Hegel the
+2nd` passed.
+
+Frontier update: xhigh API scout `Banach the 2nd` mapped the next small A2
+theorem as with-following `Y` injectivity on the selected-pivot-nonzero locus,
+then measurable image for `Y '' Ω`.  The full `Y` COV remains larger because
+there is still no `Y` derivative/determinant theorem and no determinant-chart
+Haar/raw-Haar transport theorem.
+
 ## A4 Branch-Indexed Continuing Progress Projection - 2026-07-02
 
 Lean now has:

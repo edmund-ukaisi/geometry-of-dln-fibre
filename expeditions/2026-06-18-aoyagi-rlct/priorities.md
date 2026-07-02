@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint reference image support
+
+Lean now exposes actual-image support for the with-following endpoint
+reference image measure:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image
+```
+
+Decision: this is a small but honest A2 source-image support step.  The target
+measure remains the named endpoint reference image
+`Measure.map Y (referenceSource.restrict Ω)`, and the only image set claimed
+is `Y '' Ω`.  This prepares the path to a local endpoint-coordinate COV by
+making the actual endpoint image explicit.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-support.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-support.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-reference-image-support.md
+```
+
+Focused warning-clean elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, diff check, touched-file
+forbidden-marker scan, direct axiom probe, and xhigh review passed.  The two
+new declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no determinant-chart Haar equality, no raw-Haar/raw-map transport,
+no raw-order composition, no source-image coverage beyond `Y '' Ω`, no
+formal-product domination, no normal crossings, no pole order, and no RLCT.
+
+Next A2 target: prove with-following `Y` injectivity on the
+selected-pivot-nonzero locus, then measurable image for `Y '' Ω`.  Full `Y`
+COV is not immediate; it still needs a derivative/determinant theorem and must
+not be replaced by determinant-chart Haar or raw-Haar overclaims.
+
 ## Latest controller decision - 2026-07-02, A4 branch-indexed continuing progress projection
 
 Lean now exposes the continuing source-data and progress projections after the

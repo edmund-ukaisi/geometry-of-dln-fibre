@@ -21,6 +21,51 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following endpoint reference image support
+
+Reproduction:
+`reproduction-a2-case2-with-following-endpoint-reference-image-support.md`.
+Statement card:
+`statement-card-a2-case2-with-following-endpoint-reference-image-support.md`.
+Review:
+`review-a2-case2-with-following-endpoint-reference-image-support.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_image_eq_self
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_eq_endpointReferenceImageMeasure_restrict_image
+```
+
+These theorems say that the named endpoint reference image measure for the
+with-following endpoint map `Y` is supported on the actual image `Y '' Ω`,
+assuming `Ω` and `Y '' Ω` are measurable.  The unfolded theorem rewrites
+`Measure.map Y (referenceSource.restrict Ω)` as the same named endpoint image
+measure restricted to that actual image.
+
+Boundary: this is actual-image support only.  It does not prove
+determinant-chart Haar equality, raw-Haar transport, raw-order composition,
+source-image coverage beyond `Y '' Ω`, formal-product domination, normal
+crossings, pole order, or RLCT.
+
+Focused warning-clean elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, forbidden-marker
+scan, direct axiom probe, and xhigh review passed.  The two new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
+Frontier note: xhigh API scout `Banach the 2nd` identified the next small
+source-moving A2 theorem as with-following `Y` injectivity on the
+selected-pivot-nonzero locus, followed by measurable image for `Y '' Ω`.
+There is still no full `Y` derivative/determinant theorem, determinant-chart
+Haar equality, raw-Haar/raw-map transport, or endpoint coverage beyond actual
+local images.
+
 ## 2026-07-02 A2 formal-product/source-image bounded-density contract
 
 Reproduction:
