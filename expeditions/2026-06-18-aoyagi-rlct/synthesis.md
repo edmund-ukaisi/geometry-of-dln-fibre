@@ -25,6 +25,58 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Endpoint Reference Measure - 2026-07-02
+
+Lean now has a named coordinate-product reference measure for the enlarged
+following-factor endpoint source.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The definitions are:
+
+```text
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+```
+
+The source reference is the old `case2PassiveThetaReferenceSourceMeasure`
+times `matrixEntryReferenceMeasure` on the independent following-factor
+matrix.  The endpoint image reference is the actual pushforward of this
+source reference, restricted to a chosen local source set, under
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z.
+```
+
+The support theorems are:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_detChartSet_eq_self_of_subset_detSector
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_detChartSet_eq_self_of_subset_detSector
+```
+
+They say that determinant-sector localization makes the named endpoint image
+supported on `topologyTupleDetChartSet`.
+
+This is a naming/support layer only.  It does not prove the source-side
+weighted COV for `Y`, does not identify the endpoint image with determinant-
+chart Haar, and does not prove raw-map pushforward, source-image coverage,
+normal crossings, pole order, or RLCT.  The next real `Y`-route target is the
+finite product COV identifying this named endpoint image with the appropriate
+endpoint coordinate/Haar reference restricted to the exact local image, where
+the selected-entry `sourceDensity` is the nontrivial source-side Jacobian
+factor.
+
+Verification: the new module elaborated warning-clean; the focused module
+build passed; `DLNFibre.lean` elaborated warning-clean with the new import;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit; the
+whitespace diff check passed; direct axiom probes reported `[propext,
+Classical.choice, Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Raw-Order Bounded Unit - 2026-07-02
 
 Lean now proves the raw-order determinant bounded-unit support slice for the

@@ -10,6 +10,49 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor endpoint reference measure - 2026-07-02
+
+- **Statement.** The enlarged Case 2 passive-theta source now has a named
+  coordinate-product reference measure: the existing passive-theta reference
+  measure times coordinate-product Lebesgue measure on the independent
+  following-factor matrix.  Its endpoint image under
+  `case2PassiveThetaWithFollowingFactorEndpointTopologyTuple`, restricted to a
+  chosen local source set, is also named.  Under determinant-sector
+  localization, this named endpoint image is supported on
+  `topologyTupleDetChartSet`.
+- **Tier.** A2 endpoint reference/source-measure infrastructure for the
+  enlarged source-to-raw density frontier.
+- **Status.** Lean definitions and support theorems proved.
+- **Kill-condition.** The result is read as the product COV, endpoint Haar
+  equality, raw-map pushforward, determinant/Jacobian formula for `Y`,
+  formal-product/source-image domination, source-image coverage, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 and Case 2 pp. 19-21 provide the
+  local product-coordinate and following-factor context.  The reference
+  measure is a Lean coordinate-measure naming layer, not a printed theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`,
+  Lean coordinate model and measure convention sections.
+- **Reproduction check.** xhigh route scout `Tesla` identified a named
+  with-following reference measure as the next prerequisite before proving the
+  endpoint/product COV.
+- **Lean target.**
+  `case2PassiveThetaWithFollowingFactorReferenceSourceMeasure`,
+  `case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure`,
+  `measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_restrict_detChartSet_eq_self_of_subset_detSector`,
+  and
+  `case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_detChartSet_eq_self_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean`.
+- **Proved.** New module elaborates warning-clean; focused module build and
+  `DLNFibre.lean` elaboration passed; `lean/scripts/sorries` and the
+  whitespace diff check passed; direct axiom probes reported `[propext,
+  Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-side weighted `Y` COV, no determinant-chart Haar
+  equality, no raw-map pushforward, no target-side density identity, no
+  source-image coverage, no normal crossings, no pole order, and no RLCT
+  extraction is proved.
+
 ## Current A2 enlarged following-factor endpoint determinant-chart support - 2026-07-02
 
 - **Statement.** If a localized enlarged following-factor Case 2 passive-theta

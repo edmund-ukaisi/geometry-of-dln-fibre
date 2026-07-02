@@ -12,6 +12,28 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint reference
+
+Lean now has a named with-following endpoint reference layer:
+
+```text
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_detChartSet_eq_self_of_subset_detSector
+```
+
+The source reference is the old passive-theta reference measure times
+coordinate-product Lebesgue measure on the independent following-factor
+matrix.  The endpoint image is the actual `Y` image of that reference
+restricted to a chosen local source set.
+
+Decision: this removes the "name the source/reference measure" blocker from
+Tesla's route map.  It is still not the product COV or determinant-Haar
+transport.  The next bedrock target is the finite product COV identifying the
+named endpoint image with the appropriate endpoint coordinate/Haar reference
+restricted to the exact local image, with the selected-entry `sourceDensity`
+as the only nontrivial source-side Jacobian factor for `Y`.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint support
 
 Lean now has the with-following determinant-chart support theorem:
