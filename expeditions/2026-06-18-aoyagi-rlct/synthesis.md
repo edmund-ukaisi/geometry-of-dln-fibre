@@ -37,13 +37,16 @@ It also proves the finite obstruction:
 ```text
 case2ResidualBlockPivotEntries_ne_succ_of_cont
 not_fixedCenterAligned_parent_and_sameStageChild_of_continuing
+Case2AllPivotFixedCenterAlignment.not_alignment_of_continuing
 ```
 
 Thus a single fixed center cannot be current-center aligned with both a
-continuing parent state and its same-stage child.  This is not a theorem that
-no `SelectedEntryAtlasProducedBranchData` can ever be supplied; it only blocks
-the overclaim that current-center payloads assemble recurrence-wide without
-alignment, transport, or a dependent branch-indexed atlas.
+continuing parent state and its same-stage child, and an alignment record over
+all active states is incompatible with a continuing edge.  This is not a
+theorem that no `SelectedEntryAtlasProducedBranchData` can ever be supplied;
+it only blocks the overclaim that current-center payloads assemble
+recurrence-wide without alignment, transport, or a dependent branch-indexed
+atlas.
 
 ## A4 Fixed-Center Produced Payloads - 2026-07-02
 

@@ -44,8 +44,9 @@ that the center changes along a continuing same-stage `J -> J+1` edge.
 Boundary: this is not `SelectedEntryAtlasProducedBranchData`.  It proves only
 that a fixed center cannot be aligned with both a continuing parent and its
 same-stage child when alignment means equality with the current residual-block
-center.  A recurrence-wide producer still needs explicit center transport,
-fixed-center alignment, or a dependent branch-indexed atlas.
+center; in particular, an all-active fixed-center alignment record is
+incompatible with a continuing edge.  A recurrence-wide producer still needs
+explicit center transport or a dependent branch-indexed atlas.
 
 ## 2026-07-02 A4 Case 2 all-pivot produced branch-data contract
 

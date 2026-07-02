@@ -50,6 +50,9 @@ Pass, provided the Lean slice includes:
   `case2ResidualBlockPivotEntries n S (J+1)` under the Case 2 continuation
   bound;
 - a no-parent-and-child alignment theorem for a continuing same-stage child;
+- a theorem turning the continuing guard into active-guard data for the
+  same-stage child, so the all-active alignment record is visibly
+  incompatible with a continuing edge;
 - no conversion into `SelectedEntryAtlasProducedBranchData`.
 
 ## Nonclaims

@@ -79,6 +79,23 @@ theorem case2AllPivotCurrentCenter_ne_sameStageChildWithRecurrence_of_continuing
     AoyagiRecurrenceBranchState.sameStageChildWithRecurrence] using
     case2ResidualBlockPivotEntries_ne_succ_of_cont n s.stage_pos hguard.1
 
+/-- The same-stage child of a continuing Case 2 branch is itself Case 2
+active. -/
+theorem case2AllPivot_sameStageChild_active_of_continuing
+    {L : ℕ} {n : ℕ → ℕ}
+    (s : AoyagiRecurrenceBranchState L n ℝ)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S (s.J + 1) ℝ)
+    (hguard : case2AllPivotContinuingGuard s) :
+    AoyagiRecurrenceBranchState.case2DisplayedActiveGuard
+      (AoyagiRecurrenceBranchState.sameStageChildWithRecurrence
+        s recurrence) := by
+  simpa [case2AllPivotContinuingGuard,
+    AoyagiRecurrenceBranchState.case2DisplayedActiveContinuingGuard,
+    AoyagiIntroducedLabelBranchState.case2DisplayedContinuingGuard,
+    AoyagiRecurrenceBranchState.case2DisplayedActiveGuard,
+    AoyagiRecurrenceBranchState.sameStageChildWithRecurrence,
+    AoyagiRecurrenceBranchState.toIntroducedState] using hguard.2
+
 /-- A single fixed center cannot be current-center aligned with both a
 continuing state and its same-stage child. -/
 theorem not_fixedCenterAligned_parent_and_sameStageChild_of_continuing
@@ -155,6 +172,28 @@ theorem center_eq_of_rowExhaustedSourceSuffix
     (h : case2AllPivotRowExhaustedSourceSuffixGuard s) :
     center = case2ResidualBlockPivotEntries n s.S s.J :=
   A.center_eq_of_active s h.1.1
+
+/-- A fixed-center alignment over every active state is incompatible with a
+continuing same-stage edge.
+
+This is still only a current-center obstruction.  It does not rule out a
+separately supplied fixed-context producer whose payloads are transported by
+additional data. -/
+theorem not_alignment_of_continuing
+    (s : AoyagiRecurrenceBranchState L n ℝ)
+    (recurrence : IntroducedLabelRecurrenceState L n s.S (s.J + 1) ℝ)
+    (h : case2AllPivotContinuingGuard s) :
+    ¬ Case2AllPivotFixedCenterAlignment center L n := by
+  intro A
+  exact
+    not_fixedCenterAligned_parent_and_sameStageChild_of_continuing
+      (center := center) s recurrence h
+      ⟨A.center_eq_of_active s h.1,
+        A.center_eq_of_active
+          (AoyagiRecurrenceBranchState.sameStageChildWithRecurrence
+            s recurrence)
+          (case2AllPivot_sameStageChild_active_of_continuing
+            s recurrence h)⟩
 
 end Case2AllPivotFixedCenterAlignment
 

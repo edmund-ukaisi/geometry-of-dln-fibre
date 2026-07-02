@@ -46,7 +46,10 @@ No such claim is formalisation-ready until both fields are filled.
   fixed-current-center payloads, and
   `Case2AllPivotBranchIndexedProducedPayloadData`.  It also proves
   `case2ResidualBlockPivotEntries_ne_succ_of_cont` and the no-parent-and-child
-  fixed-alignment theorem for continuing same-stage children.
+  fixed-alignment theorem for continuing same-stage children.  The namespace
+  theorem `Case2AllPivotFixedCenterAlignment.not_alignment_of_continuing`
+  records that an all-active fixed-center alignment record is incompatible
+  with a continuing edge.
 - **Proved.** Focused build, warning-clean direct elaboration of the touched
   Lean file, full local `lake build DLNFibre`, `lean/scripts/sorries`, Lean
   placeholder-source-data grep, and `git diff --check` passed.
