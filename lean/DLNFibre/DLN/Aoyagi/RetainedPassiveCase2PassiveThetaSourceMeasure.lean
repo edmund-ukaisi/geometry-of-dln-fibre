@@ -598,6 +598,370 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The fixed-base p.13 source edge-family chart attached to an enlarged
+Case 2 passive-theta coordinate with an independent following factor. -/
+def case2PassiveThetaWithFollowingFactorEndpointSourceChart
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    [DecidableEq (Fin (Module.finrank ℝ U₀))]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ :=
+  paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData W₂ B₂ U₀ hU₀
+    (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Read the successor selected-entry coordinates directly from the `C 1`
+block of a retained-passive source-family readback.
+
+This readout intentionally does not use the old product `C 1 * C 0`: in the
+enlarged source the free following factor changes that product. -/
+def case2PassiveThetaWithFollowingFactorEndpointCOneReadout
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+      Case2PassiveTheta.Center n S J → ℝ :=
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  fun X : EdgeFamily ↦
+    let E :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+        (fun p : Fin 2 ↦
+          (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+    let data :=
+      sourceReadback
+        (K := ℝ) (ρ := ρ)
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E
+    let rawData := data.endpointTransport (fun j ↦ (e j).symm)
+    SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext
+      (fun i : Case2PassiveTheta.Center n S J ↦
+        AoyagiResidualBlockCoordinateIndex.value
+          (show
+            Matrix (Case2ResidualRowIndex n S (J + 1))
+              (Case2ResidualColIndex n S (J + 1)) ℝ from
+            by
+              simpa [case2PostPivotTwoEdgeDomain] using rawData.C (1 : Fin 2))
+          (residualCoordEquiv.symm i))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Read an enlarged passive theta coordinate back from an endpoint p.13
+source edge family.
+
+The passive fields are read from `sourceReadback`; `yNext` is read directly
+from the transported `C 1` block; and the independent following factor is read
+from the transported `C 0` block. -/
+def case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  fun X : EdgeFamily ↦
+    let E :=
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+        (fun p : Fin 2 ↦
+          (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+    let data :=
+      sourceReadback
+        (K := ℝ) (ρ := ρ)
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E
+    let rawData := data.endpointTransport (fun j ↦ (e j).symm)
+    let yNext :=
+      case2PassiveThetaWithFollowingFactorEndpointCOneReadout
+        W₂ B₂ n hS hnext hU₀ e X
+    let F :
+        Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ :=
+      show Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ from
+        by
+          simpa [case2PostPivotTwoEdgeDomain] using rawData.C (0 : Fin 2)
+    Case2PassiveThetaWithFollowingFactor.mk
+      (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J)
+      rawData.A1passive rawData.F2 rawData.A3passive rawData.Ctop rawData.F3
+      yNext F
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The enlarged source-family readback recovers the enlarged theta coordinate
+when `sourceReadback` recovers the endpoint retained data and the selected
+pivot coordinate is nonzero.
+
+This is pointwise finite coordinate algebra.  It does not assert local image
+measurability or any measure transport theorem. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_eq_of_sourceReadback_eq_retainedData
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hread :
+      let E :=
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+          (fun p : Fin 2 ↦
+            (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+      sourceReadback
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) E =
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)
+    (hpivot :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1) :
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e X = z := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let E :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+      (fun p : Fin 2 ↦
+        (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+  let data :=
+    sourceReadback (K := ℝ) (ρ := ρ) (κ' := κ') E
+  let rawData := data.endpointTransport (fun j ↦ (e j).symm)
+  have htransport :
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).endpointTransport
+            (fun j ↦ (e j).symm) =
+        case2PassiveThetaWithFollowingFactorRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext := by
+    dsimp [case2PassiveThetaWithFollowingFactorEndpointRetainedData]
+    exact
+      endpointTransport_symm_endpointTransport
+        (K := ℝ) (ρ := ρ) e
+        (case2PassiveThetaWithFollowingFactorRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext)
+  have hraw :
+      rawData =
+        case2PassiveThetaWithFollowingFactorRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext := by
+    subst rawData
+    subst data
+    rw [hread]
+    exact htransport
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  have hy :
+      case2PassiveThetaWithFollowingFactorEndpointCOneReadout
+          W₂ B₂ n hS hnext hU₀ e X =
+        z.1.yNext := by
+    change
+      SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext
+          (fun i : Case2PassiveTheta.Center n S J ↦
+            AoyagiResidualBlockCoordinateIndex.value
+              (show
+                Matrix (Case2ResidualRowIndex n S (J + 1))
+                  (Case2ResidualColIndex n S (J + 1)) ℝ from
+                by
+                  simpa [case2PostPivotTwoEdgeDomain] using rawData.C (1 : Fin 2))
+              (residualCoordEquiv.symm i)) =
+        z.1.yNext
+    rw [hraw]
+    have hvalue :
+        (fun i : Case2PassiveTheta.Center n S J ↦
+          AoyagiResidualBlockCoordinateIndex.value
+            (show
+              Matrix (Case2ResidualRowIndex n S (J + 1))
+                (Case2ResidualColIndex n S (J + 1)) ℝ from
+              by
+                simpa [case2PostPivotTwoEdgeDomain] using
+                  (case2PassiveThetaWithFollowingFactorRetainedData
+                    (ρ := ρ) n hS hcont hnext z eNext).C (1 : Fin 2))
+            (residualCoordEquiv.symm i)) =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext := by
+      funext i
+      let D :
+          Matrix (Case2ResidualRowIndex n S (J + 1))
+            (Case2ResidualColIndex n S (J + 1)) ℝ :=
+        show
+          Matrix (Case2ResidualRowIndex n S (J + 1))
+            (Case2ResidualColIndex n S (J + 1)) ℝ from
+          by
+            simpa [case2PostPivotTwoEdgeDomain] using
+              (case2PassiveThetaWithFollowingFactorRetainedData
+                (ρ := ρ) n hS hcont hnext z eNext).C (1 : Fin 2)
+      have hC1 :
+          D =
+            (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).submatrix
+              id eNext.symm := by
+        change
+          case2DisplayedPostPivotResidualBlock n hS hcont
+              (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.yNext eNext) =
+            (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).submatrix
+              id eNext.symm
+        simp [case2SuccessorSelectedEntrySourceResidual,
+          case2DisplayedPostPivotSourceResidualOfMatrix,
+          case2DisplayedPostPivotResidualBlock_sourceResidualBlockExtension]
+      let c :
+          AoyagiResidualBlockCoordinateIndex
+              (Case2ResidualRowIndex n S (J + 1))
+              (Case2ResidualColIndex n S (J + 1)) :=
+        residualCoordEquiv.symm i
+      have hcoord :
+          case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl (Case2ResidualRowIndex n S (J + 1))) eNext
+              (c.1, eNext.symm c.2) = i := by
+        apply Subtype.ext
+        change (c.1.1, (eNext (eNext.symm c.2)).1) = i.1
+        rw [Equiv.apply_symm_apply]
+        exact congrArg Subtype.val (Equiv.apply_symm_apply residualCoordEquiv i)
+      change AoyagiResidualBlockCoordinateIndex.value D (residualCoordEquiv.symm i) =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext i
+      rw [hC1]
+      change
+        case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext
+            (residualCoordEquiv.symm i).1 (eNext.symm (residualCoordEquiv.symm i).2) =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext i
+      change
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+            (case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+              n S (J + 1) (Equiv.refl (Case2ResidualRowIndex n S (J + 1))) eNext
+              (c.1, eNext.symm c.2)) =
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext i
+      rw [hcoord]
+    change
+      SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext
+          (fun i : Case2PassiveTheta.Center n S J ↦
+            AoyagiResidualBlockCoordinateIndex.value
+              (show
+                Matrix (Case2ResidualRowIndex n S (J + 1))
+                  (Case2ResidualColIndex n S (J + 1)) ℝ from
+                by
+                  simpa [case2PostPivotTwoEdgeDomain] using
+                    (case2PassiveThetaWithFollowingFactorRetainedData
+                      (ρ := ρ) n hS hcont hnext z eNext).C (1 : Fin 2))
+              (residualCoordEquiv.symm i)) =
+        z.1.yNext
+    rw [hvalue]
+    exact
+      SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero_chartMap
+        pivotNext z.1.yNext hpivot
+  have hF :
+      (show Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ from
+        by
+          simpa [case2PostPivotTwoEdgeDomain] using
+            (case2PassiveThetaWithFollowingFactorRetainedData
+              (ρ := ρ) n hS hcont hnext z eNext).C (0 : Fin 2)) =
+        z.2 := by
+    change
+      case2DisplayedPostPivotFreeFollowingFactor n hS hcont
+          (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2) =
+        z.2
+    exact case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor
+      n hS hcont z.2
+  change
+    Case2PassiveThetaWithFollowingFactor.mk
+        (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J)
+        rawData.A1passive rawData.F2 rawData.A3passive rawData.Ctop rawData.F3
+        (case2PassiveThetaWithFollowingFactorEndpointCOneReadout
+          W₂ B₂ n hS hnext hU₀ e X)
+        (show Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ from
+          by
+            simpa [case2PostPivotTwoEdgeDomain] using rawData.C (0 : Fin 2)) = z
+  rw [hraw, hy]
+  cases z with
+  | mk theta F =>
+    cases theta
+    apply Prod.ext
+    · rfl
+    · simpa [case2PassiveThetaWithFollowingFactorRetainedData,
+        case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor,
+        Case2PassiveThetaWithFollowingFactor.mk] using hF
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The generic passive selected-entry source-measure theorem, specialized to
 the concrete full `Case2PassiveTheta` coordinate domain.
 
