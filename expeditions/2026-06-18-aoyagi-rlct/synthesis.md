@@ -34665,3 +34665,78 @@ selected-entry `chartMap` is injective away from the pivot hyperplane.  This
 does not identify the endpoint image with determinant Haar; it only supplies
 the local-image coordinate fact needed for a future Haar/COV comparison on
 `rawDetChart ∩ Y '' V`.
+
+## 2026-07-02 with-following localized reverse domination base
+
+Lean now proves the patch-parametric with-following reverse handoff:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple
+```
+
+The old base theorem transported a global determinant-chart hypothesis to a
+global raw-source conclusion:
+
+```text
+rawHaar.restrict rawDetChart
+  <= c • Measure.map Y (sourceMeasure.restrict V)
+
+rawHaar.restrict rawSourceSet
+  <= c • Measure.map rawMap (baseJ.restrict V).
+```
+
+The new theorem is local.  For any raw-order patch `P subset rawSourceSet`, it
+assumes domination only on the endpoint determinant patch
+
+```text
+rawDetChart ∩ rawOrderOnEndpoint preimage P
+```
+
+and concludes:
+
+```text
+rawHaar.restrict P
+  <= c • Measure.map rawMap (baseJ.restrict V).
+```
+
+The pen-and-paper calculation is exactly the patch COV calculation.  Let
+`Phi = topologyTupleEdgeRawOrder`, let `J` be the retained-passive formal
+product determinant density, and let `baseJ = sourceMeasure.withDensity (J o
+Y)`.  The patch-parametric raw-order COV identifies
+
+```text
+Measure.map Phi
+  ((rawHaar.restrict (rawDetChart ∩ Phi preimage P)).withDensity J)
+= rawHaar.restrict P.
+```
+
+Weight the endpoint-patch domination hypothesis by `J` and push it through
+`Phi`; the right side becomes
+
+```text
+c • Measure.map (Phi o Y)
+    ((sourceMeasure.restrict V).withDensity (J o Y))
+= c • Measure.map rawMap (baseJ.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-reverse-domination-base.md
+threads/03-block-product-reduction/statement-card-a2-with-following-localized-reverse-domination-base.md
+threads/03-block-product-reduction/review-a2-with-following-localized-reverse-domination-base.md
+```
+
+Focused and full local builds, `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, direct axiom probe, and xhigh
+read-only review passed.  The new theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: endpoint-patch domination remains a hypothesis.  This does not prove
+endpoint-Haar transport, exact raw-Haar pushforward, raw-Haar normalization,
+source-density lower bounds, coordinate-source domination, source-image
+coverage, source-rank coverage, original source-prior transport, normal
+crossings, pole order, or RLCT extraction.  The downstream source-density
+wrapper still calls the older global raw-source theorem; the next target is a
+localized coordinate-source/source-density wrapper whose conclusion is over a
+caller-supplied raw-order patch.

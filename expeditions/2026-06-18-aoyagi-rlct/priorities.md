@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following localized reverse domination base
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple
+```
+
+Decision: the with-following reverse determinant/raw-order handoff should be
+patch-parametric.  For any raw-order patch `P` contained in `rawSourceSet`,
+the determinant-side hypothesis is now localized to
+
+```text
+rawDetChart ∩ rawOrderOnEndpoint preimage P
+```
+
+and the conclusion is domination of `rawHaar.restrict P`, not domination on
+the whole `rawSourceSet`.  This is the honest base layer for local endpoint
+charts, since a local endpoint Haar comparison cannot justify a global
+hypothesis over the entire determinant chart.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-reverse-domination-base.md
+threads/03-block-product-reduction/statement-card-a2-with-following-localized-reverse-domination-base.md
+threads/03-block-product-reduction/review-a2-with-following-localized-reverse-domination-base.md
+```
+
+Boundary: the endpoint-patch domination remains a hypothesis.  This proves no
+endpoint-Haar transport, no source-density lower bound, no coordinate-source
+localized wrapper, no original prior transport, no coverage, no normal
+crossings, no pole order, and no RLCT.  The current downstream
+source-density wrapper still uses the older global raw-source theorem; the
+next A2 target is a localized coordinate-source/source-density wrapper over a
+caller-chosen raw-order patch.
+
+Verification passed through focused and full local builds, sorry audit,
+whitespace check, touched Lean-file forbidden-marker scan, direct axiom probe,
+and xhigh read-only review.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following raw-order reference from endpoint Haar patch
 
 Lean now has:
