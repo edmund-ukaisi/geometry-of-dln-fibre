@@ -2873,10 +2873,41 @@ theorem eihd_hD_gen (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M))
   refine stairLowerTriDiag_of_blocks (genV M) L (genF M ha y₀) T ?_ ?_
   · -- DIAGONAL: `stairProj s ∘ T ∘ stairIncl s = genF s`, all `s : ℕ`.
     intro s
-    sorry
+    by_cases hsL : s < L
+    · -- interior/leaf slot: `Prod.ext` on the frame `.1` and lift `.2`.
+      apply LinearMap.ext; intro v
+      apply Prod.ext
+      · -- frame `.1`: `stairProj_T_stairIncl` bridge + `_diag_fst` (interior) / leaf.
+        show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).1 = ((genF M ha y₀ s) v).1
+        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
+        by_cases hint : s + 1 < L
+        · exact stairProj_T_stairIncl_diag_fst M ha y₀ ⟨s, hsL⟩ hint v
+        · sorry
+      · -- lift `.2`: `_diag_snd` (interior) / leaf (`liftDim = 0`, subsingleton).
+        show (stairProj (genV M) L s (T (stairIncl (genV M) L s v))).2 = ((genF M ha y₀ s) v).2
+        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s, hsL⟩ v]
+        by_cases hint : s + 1 < L
+        · exact stairProj_T_stairIncl_diag_snd M ha y₀ ⟨s, hsL⟩ hint v
+        · sorry
+    · -- `s ≥ L`: `genV s` is a subsingleton (out-of-range slot), so any two maps agree.
+      sorry
   · -- UPPER: `stairProj s' ∘ T ∘ stairIncl s = 0` for `s' < s`.
     intro s s' hs'
-    sorry
+    by_cases hsL : s < L
+    · -- both slots in range: `Prod.ext` on frame `.1` (`upper_fst`) and lift `.2` (`upper_snd`).
+      have hs'L : s' < L := by omega
+      have hs'1 : s' + 1 < L := by omega
+      have hne : (⟨s', hs'L⟩ : Fin L) ≠ ⟨s, hsL⟩ := Fin.ne_of_val_ne (by simp; omega)
+      apply LinearMap.ext; intro v
+      apply Prod.ext
+      · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).1 = (0 : genV M s').1
+        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
+        exact stairProj_T_stairIncl_upper_fst M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 (by omega) hne v
+      · show (stairProj (genV M) L s' (T (stairIncl (genV M) L s v))).2 = (0 : genV M s').2
+        rw [hT, stairProj_T_stairIncl M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ v]
+        exact stairProj_T_stairIncl_upper_snd M ha y₀ ⟨s, hsL⟩ ⟨s', hs'L⟩ hs'1 hne v
+    · -- `s ≥ L`: `stairIncl s = 0` (out-of-range), so `T (stairIncl s v) = 0` ⇒ `stairProj s' 0 = 0`.
+      sorry
 
 /-! ## The headline: `DtotGen_abs_det` -/
 
