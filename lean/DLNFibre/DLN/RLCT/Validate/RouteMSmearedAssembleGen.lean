@@ -79,6 +79,159 @@ theorem UunitG_hN_insertNth {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   UunitG_congr_off_pivot M hL hrs hr hc
     (hNG_insertNth_agree_off_pivot M hL hrs hr hc hN p hp z y)
 
+/-! ## Measurability of the general-`L` chart components (the mechanical polynomial residue) -/
+
+/-- **`prodAux` entry measurability.** For a `u`-parametrized `Params M` whose entries are measurable in
+`u`, each `prodAux` entry is measurable (matrix products of measurable-entry matrices). By induction on
+the layer count `k`. -/
+theorem measurable_prodAux_entry (M : Fin (L + 1) → ℕ)
+    (A : (Fin (routeMAmbient M) → ℝ) → Params M)
+    (hA : ∀ t i j, Measurable (fun u => A u t i j)) :
+    ∀ (k : ℕ) (hk : k < L + 1) (i : Fin (M 0)) (j : Fin (M ⟨k, hk⟩)),
+      Measurable (fun u => prodAux M (A u) k hk i j) := by
+  intro k
+  induction k with
+  | zero =>
+      intro hk i j
+      simp only [prodAux, Matrix.one_apply]
+      by_cases h : i = j <;> simp only [h, if_true, if_false] <;> exact measurable_const
+  | succ k ih =>
+      intro hk i j
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have e1 : M (⟨k, hk'⟩ : Fin (L + 1)) = M ((⟨k, hkL⟩ : Fin L).castSucc) := by
+        apply congrArg; apply Fin.ext; simp [Fin.castSucc]
+      have e2 : M (⟨k + 1, hk⟩ : Fin (L + 1)) = M ((⟨k, hkL⟩ : Fin L).succ) := by
+        apply congrArg; apply Fin.ext; simp [Fin.succ]
+      have hrw : ∀ u, prodAux M (A u) (k + 1) hk i j
+          = ((prodAux M (A u) k hk') * (Matrix.reindex (finCongr e1.symm) (finCongr e2.symm)
+              (A u ⟨k, hkL⟩))) i j := fun u => by rw [prodAux_succ M (A u) k hk e1 e2]
+      simp only [hrw, Matrix.mul_apply, Matrix.reindex_apply, Matrix.submatrix_apply]
+      exact Finset.measurable_sum _ (fun c _ => (ih hk' i c).mul (hA ⟨k, hkL⟩ _ _))
+
+/-- Each `frontTupleG` entry is a coordinate projection of `u` (measurable). -/
+theorem measurable_frontTupleG_entry (M : Fin (L + 1) → ℕ) (t : Fin L)
+    (i : Fin (M t.castSucc)) (j : Fin (M t.succ)) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => (frontTupleG M u) t i j) :=
+  measurable_pi_apply _
+
+/-- Each `frontProd` entry is measurable (`prodAux (L−1)` of the measurable `frontTupleG`). -/
+theorem measurable_frontProd_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (i : Fin (M 0)) (j : Fin (M (⟨L - 1, by omega⟩ : Fin (L + 1)))) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => frontProd M (frontTupleG M u) hL i j) := by
+  rw [show (fun u : Fin (routeMAmbient M) → ℝ => frontProd M (frontTupleG M u) hL i j)
+      = (fun u => prodAux M (frontTupleG M u) (L - 1) (by omega) i j) from rfl]
+  exact measurable_prodAux_entry M (fun u => frontTupleG M u)
+    (fun t i j => measurable_frontTupleG_entry M t i j) (L - 1) (by omega) i j
+
+/-- Each `P1uG` entry is measurable (a `frontProd` entry). -/
+theorem measurable_P1uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (i : Fin (M 0)) (a : Fin r) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => P1uG M hL hrs u i a) :=
+  measurable_frontProd_entry M hL i _
+
+/-- Each `P2uG` entry is measurable. -/
+theorem measurable_P2uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (i : Fin (M 0)) (b : Fin s) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => P2uG M hL hrs u i b) :=
+  measurable_frontProd_entry M hL i _
+
+/-- Each `Lam0uG` entry is measurable (the `(P₁ᵀP₁)⁻¹P₁ᵀP₂` chain via `measurable_lamEntry`). -/
+theorem measurable_Lam0uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (a : Fin r) (b : Fin s) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => Lam0uG M hL hrs u a b) :=
+  measurable_lamEntry (fun u => P1uG M hL hrs u) (fun u => P2uG M hL hrs u)
+    (fun i a => measurable_P1uG_entry M hL hrs i a)
+    (fun i b => measurable_P2uG_entry M hL hrs i b) a b
+
+/-- Each `SbotuG` entry is a coordinate projection (measurable). -/
+theorem measurable_SbotuG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => SbotuG M hL hrs u b j) :=
+  measurable_pi_apply _
+
+/-- Each `HbarUnitG` entry is measurable (a coordinate projection or the constant `1`). -/
+theorem measurable_HbarUnitG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => HbarUnitG M hL hrs hr hc u a j) := by
+  unfold HbarUnitG
+  by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
+  · simp only [if_pos hpiv]; exact measurable_const
+  · simp only [if_neg hpiv]; exact measurable_pi_apply _
+
+/-- `u ↦ UunitG M hL hrs hr hc u` is measurable (a finite sum of squares of `P₁·H̄_unit` entries). -/
+theorem measurable_UunitG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ)) :
+    Measurable (fun u : Fin (routeMAmbient M) → ℝ => UunitG M hL hrs hr hc u) := by
+  unfold UunitG
+  refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
+  refine Measurable.pow_const ?_ 2
+  simp only [Matrix.mul_apply]
+  exact Finset.measurable_sum _ (fun a _ =>
+    (measurable_P1uG_entry M hL hrs i a).mul (measurable_HbarUnitG_entry M hL hrs hr hc a j))
+
+/-- `u' ↦ shiftFullG M hL hrs u' m` is measurable (a finite signed sum of `Λ₀`/`S_bot` products). -/
+theorem measurable_shiftFullG_coord (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (m : Fin (routeMAmbient M)) :
+    Measurable (fun u' : Fin (routeMAmbient M) → ℝ => shiftFullG M hL hrs u' m) := by
+  unfold shiftFullG
+  refine (Finset.measurable_sum _ (fun a _ => Finset.measurable_sum _ (fun j _ => ?_))).neg
+  by_cases h : coordOfG M (topSlotG M hL hrs a j) = m
+  · simp only [if_pos h, Matrix.mul_apply]
+    exact Finset.measurable_sum _ (fun b _ =>
+      (measurable_Lam0uG_entry M hL hrs a b).mul (measurable_SbotuG_entry M hL hrs b j))
+  · simp only [if_neg h]; exact measurable_const
+
+/-- `shiftCoreG` is measurable (reconstruct via the `splitOfCoreSet.symm` ME, then `shiftFullG`). -/
+theorem measurable_shiftCoreG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) : Measurable (shiftCoreG M hL hrs) := by
+  apply measurable_pi_iff.2
+  intro jc
+  unfold shiftCoreG
+  have hrecon : Measurable (fun q : (Fin 0 → ℝ) × (Fin (topCoordsG M hL hrs)ᶜ.card → ℝ) =>
+      (splitOfCoreSet (topCoordsG M hL hrs)).symm
+        (q.1, ((0 : Fin (topCoordsG M hL hrs).card → ℝ), q.2))) :=
+    (splitOfCoreSet (topCoordsG M hL hrs)).symm.measurable.comp
+      (measurable_fst.prodMk (measurable_const.prodMk measurable_snd))
+  exact (measurable_shiftFullG_coord M hL hrs _).comp hrecon
+
+/-! ## `psiMapG` measure-preserving + a measurable embedding
+
+`psiMapG = paramsEquivFlat ∘ (flatEquivOf slotEquivG).symm ∘ shearMBody`: the two outer factors are
+banked measure-preserving `MeasurableEquiv`s; `shearMBody` is MP for the measurable `shiftCoreG`. -/
+
+/-- `psiMapG` is measure-preserving (the three-factor composition, `shearMBody` MP via
+`measurable_shiftCoreG`, the two flat `MeasurableEquiv`s MP). -/
+theorem measurePreserving_psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    MeasurePreserving (psiMapG M hL hrs)
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume := by
+  have hshear : MeasurePreserving (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs))
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume :=
+    measurePreserving_shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs)
+      (measurable_shiftCoreG M hL hrs)
+  have hpack : MeasurePreserving (⇑(flatEquivOf M (slotEquivG M)).symm)
+      (volume : Measure (Fin (routeMAmbient M) → ℝ)) (volume : Measure (Params M)) :=
+    (measurePreserving_flatEquivOf M (slotEquivG M)).symm _
+  exact (measurePreserving_paramsEquivFlat M).comp (hpack.comp hshear)
+
+/-- `psiMapG` is a measurable embedding (the composition of the shear `MeasurableEmbedding` and the two
+flat `MeasurableEquiv`s' embeddings). -/
+theorem measurableEmbedding_psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    MeasurableEmbedding (psiMapG M hL hrs) := by
+  have h1 : MeasurableEmbedding (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs)) :=
+    measurableEmbedding_shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs)
+      (measurable_shiftCoreG M hL hrs)
+  have h2 : MeasurableEmbedding (⇑(flatEquivOf M (slotEquivG M)).symm) :=
+    (flatEquivOf M (slotEquivG M)).symm.measurableEmbedding
+  have h3 : MeasurableEmbedding (⇑(paramsEquivFlat M)) := (paramsEquivFlat M).measurableEmbedding
+  have hpsi : psiMapG M hL hrs = (⇑(paramsEquivFlat M) ∘ ⇑(flatEquivOf M (slotEquivG M)).symm)
+      ∘ shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) := rfl
+  rw [hpsi]
+  exact (h3.comp h2).comp h1
+
 /-! ## The general-`L` smeared box-divergence assembly
 
 `routeMCore_smearedGen`: the general-`L` conditioned-box smeared box-divergence, assembled from the
