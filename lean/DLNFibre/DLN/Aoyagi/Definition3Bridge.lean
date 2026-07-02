@@ -1693,6 +1693,66 @@ theorem exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
         ⟨C, _hC, S⟩
       exact ⟨2, C, S⟩
 
+/-- For `L=2`, Definition 3 source data forces source-range rank-width.
+
+The proof dispatches through the finite `L=2` classification.  In the
+repeated-positive branch positivity is explicit; in the triangle branch, any
+two of the three strict inequalities force the remaining reduced width to be
+positive. -/
+theorem sourceRangeRankWidth_of_L_eq_two_sourceData
+    {ell : ℕ} {H : ℕ → ℕ} {r : ℕ}
+    {C : AoyagiSelectedCutpoints ell}
+    (S : AoyagiDefinition3SourceData 2 ell H r C) :
+    ∀ s : ℕ, 1 ≤ s → s ≤ 2 + 1 → r ≤ H s := by
+  have hsource :
+      ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+        AoyagiDefinition3SourceData 2 ell H r C :=
+    ⟨ell, C, S⟩
+  rcases
+      (exists_sourceData_iff_repeatedPositive_or_triangle_of_L_eq_two
+        (H := H) (r := r)).mp hsource with hrep | htri
+  · rcases hrep with ⟨hpos1, hpos2, hpos3, _hrep⟩
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    have hnonneg : 0 ≤ aoyagiReducedWidthInt H r s := by
+      rcases hs with rfl | rfl | rfl
+      · exact le_of_lt hpos1
+      · exact le_of_lt hpos2
+      · exact le_of_lt hpos3
+    unfold aoyagiReducedWidthInt at hnonneg
+    exact_mod_cast (sub_nonneg.mp hnonneg)
+  · rcases htri with ⟨htri1, htri2, htri3⟩
+    have hpos1 : 0 < aoyagiReducedWidthInt H r 1 := by omega
+    have hpos2 : 0 < aoyagiReducedWidthInt H r 2 := by omega
+    have hpos3 : 0 < aoyagiReducedWidthInt H r 3 := by omega
+    intro s hs1 hsL
+    have hs : s = 1 ∨ s = 2 ∨ s = 3 := by omega
+    have hnonneg : 0 ≤ aoyagiReducedWidthInt H r s := by
+      rcases hs with rfl | rfl | rfl
+      · exact le_of_lt hpos1
+      · exact le_of_lt hpos2
+      · exact le_of_lt hpos3
+    unfold aoyagiReducedWidthInt at hnonneg
+    exact_mod_cast (sub_nonneg.mp hnonneg)
+
+/-- For `L=2`, Definition 3 source-data existence supplies natural witnesses
+for the three source-range reduced widths. -/
+theorem exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+    {H : ℕ → ℕ} {r : ℕ}
+    (hsource :
+      ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+        AoyagiDefinition3SourceData 2 ell H r C) :
+    ∃ w1 w2 w3 : ℕ,
+      aoyagiReducedWidthInt H r 1 = (w1 : ℤ) ∧
+      aoyagiReducedWidthInt H r 2 = (w2 : ℤ) ∧
+      aoyagiReducedWidthInt H r 3 = (w3 : ℤ) := by
+  rcases hsource with ⟨ell, C, S⟩
+  have hr := S.sourceRangeRankWidth_of_L_eq_two_sourceData
+  refine ⟨H 1 - r, H 2 - r, H 3 - r, ?_, ?_, ?_⟩
+  · exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H (hr 1 (by norm_num) (by norm_num))
+  · exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H (hr 2 (by norm_num) (by norm_num))
+  · exact aoyagiReducedWidthInt_eq_natCast_sub_of_rank_le H (hr 3 (by norm_num) (by norm_num))
+
 /-- For three source layers (`L = 2`), the all-source selected constructor is
 controlled by the three strict triangle-type inequalities
 `2 w_i < w_1 + w_2 + w_3`.
@@ -3145,6 +3205,30 @@ theorem exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
         ⟨htri1, htri2, htri3, heven, C, m, data, hC, S, hm, hceil, haParam,
           horder, hnat, hnonneg, hstrict_m, hle, hnatNonneg, hm0, hm1, hm2,
           hpair, hlambda⟩
+
+/-- Any `L=2` Definition 3 source-data witness supplies Nat-valued reduced
+widths and yields the existing finite Theorem 2 branch disjunction.
+
+This theorem deliberately returns a disjunction rather than a branch-independent
+formula: Aoyagi's printed Definition 3 does not choose a canonical branch. -/
+theorem exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData_natWidths
+    {H : ℕ → ℕ} {r : ℕ}
+    (hsource :
+      ∃ (ell : ℕ) (C : AoyagiSelectedCutpoints ell),
+        AoyagiDefinition3SourceData 2 ell H r C) :
+    ∃ w1 w2 w3 : ℕ,
+      aoyagiReducedWidthInt H r 1 = (w1 : ℤ) ∧
+      aoyagiReducedWidthInt H r 2 = (w2 : ℤ) ∧
+      aoyagiReducedWidthInt H r 3 = (w3 : ℤ) ∧
+      (L2RepeatedPositiveTheorem2FormulaBranch H r w1 w2 w3 ∨
+        L2TriangleOddTheorem2FormulaBranch H r w1 w2 w3 ∨
+          L2TriangleEvenTheorem2FormulaBranch H r w1 w2 w3) := by
+  rcases exists_reducedWidthNatTriple_of_L_eq_two_sourceData hsource with
+    ⟨w1, w2, w3, hw1, hw2, hw3⟩
+  exact
+    ⟨w1, w2, w3, hw1, hw2, hw3,
+      exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData
+        hw1 hw2 hw3 hsource⟩
 
 /-- Diagnostic: the printed `L = 2` Definition 3 conditions can admit both the
 `ell = 1` repeated-positive branch and the `ell = 2` all-source triangle branch

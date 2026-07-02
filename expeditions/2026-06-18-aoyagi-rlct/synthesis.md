@@ -6,9 +6,54 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
-Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
-committed and pushed as `da154cdd`.  The current worktree is the dedicated
-expedition worktree, branch `expedition/aoyagi-rlct`.
+Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
+and pushed as `eb89c023`.  The current worktree is the dedicated expedition
+worktree, branch `expedition/aoyagi-rlct`.
+
+## Definition 3 `L=2` Source-Data Nat Widths - 2026-07-02
+
+Lean now proves:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData_natWidths
+```
+
+This removes the supplied Nat-width identities from the `L=2` branch
+disjunction surface.  Given source-data existence, the existing `L=2`
+classification gives either repeated-positive data or triangle inequalities.
+In the first branch, the reduced widths are already positive.  In the triangle
+branch, any two of the three strict inequalities imply positivity of the
+remaining reduced width.  Thus every source-range reduced width is
+nonnegative, hence `r <= H s`, and the three Nat witnesses can be chosen as
+`H 1-r`, `H 2-r`, and `H 3-r`.
+
+Artifacts:
+
+```text
+threads/06-dln-translation/reproduction-definition3-l-eq-two-source-data-nat-widths-a6.md
+threads/06-dln-translation/statement-card-a6-definition3-l-eq-two-source-data-nat-widths.md
+threads/06-dln-translation/review-definition3-l-eq-two-source-data-nat-widths-a6.md
+```
+
+Verification:
+
+```text
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.Definition3Bridge
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/Definition3Bridge.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The declarations report only `[propext, Classical.choice, Quot.sound]`.
+Xhigh independent reviewer `Kepler` passed.  Boundary: this preserves
+branch-disjunction discipline; no canonical branch, branch-independent
+lambda/order payload, Eq5 payload, chart production, normal crossings, or
+RLCT extraction is claimed.  The slice depends on the already-formalized
+`L=2` classifier; the new layer extracts Nat-width witnesses from it.
 
 ## Definition 3 `ell=1` Source-Data Rank-Width Removal - 2026-07-02
 

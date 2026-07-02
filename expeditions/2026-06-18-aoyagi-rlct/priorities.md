@@ -12,6 +12,21 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, Definition 3 `L=2` source-data Nat widths
+
+Lean now proves:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData_natWidths
+```
+
+This removes the separate Nat-width identity fields from the `L=2` branch
+disjunction by deriving them from supplied Definition 3 source-data existence.
+The conclusion remains a disjunction over finite branch packages.  Do not
+turn this into a canonical-branch or branch-independent lambda/order claim.
+
 ## Latest controller decision - 2026-07-02, Definition 3 `ell=1` source-data rank-width removal
 
 Lean now proves:

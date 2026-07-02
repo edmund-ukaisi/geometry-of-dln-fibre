@@ -51,6 +51,43 @@ construct Eq5 payloads or charts, prove normal crossings, or extract RLCT.
 The finite displayed order arithmetic is returned; no analytic pole-order
 identification is proved.
 
+## Current slice - 2026-07-02, `L=2` source-data Nat-width branch disjunction
+
+Reproduction:
+`reproduction-definition3-l-eq-two-source-data-nat-widths-a6.md`.
+Statement card:
+`statement-card-a6-definition3-l-eq-two-source-data-nat-widths.md`.
+Review:
+`review-definition3-l-eq-two-source-data-nat-widths-a6.md`.
+
+Lean now has:
+
+```text
+AoyagiDefinition3SourceData.sourceRangeRankWidth_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_reducedWidthNatTriple_of_L_eq_two_sourceData
+AoyagiDefinition3SourceData.exists_L_eq_two_theorem2Formula_branchDisjunction_of_sourceData_natWidths
+```
+
+For `L=2`, supplied Definition 3 source-data existence now produces natural
+reduced-width witnesses for the three source layers and then invokes the
+existing branch-disjunction theorem.  The proof uses the landed `L=2`
+classification: repeated-positive gives positivity directly, while the
+triangle branch forces each reduced width positive by adding the other two
+strict inequalities.
+
+Focused local Lake build, warning-clean direct elaboration, full local
+`DLNFibre` build, `lean/scripts/sorries`, whitespace check, and direct axiom
+probe passed.  The new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh independent reviewer
+`Kepler` passed the source/math/API audit.
+
+Boundary: this is still a disjunction over finite branch packages.  It does
+not choose a canonical branch, assert branch agreement or branch-independent
+lambda/order data, construct Eq5 payloads or charts, prove normal crossings,
+or extract RLCT.  The slice depends on the already-formalized `L=2`
+classifier; the added layer only extracts Nat-width witnesses and preserves
+the disjunctive branch surface.
+
 ## 2026-06-24 source audit - Definition 3 branch selection
 
 Independent source auditor `Einstein the 3rd` checked Aoyagi Definition 3 and
