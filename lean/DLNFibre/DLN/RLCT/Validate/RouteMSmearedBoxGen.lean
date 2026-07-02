@@ -278,4 +278,40 @@ theorem frontTupleG_carrierLayer_of_boxGen (M : Fin (L + 1) → ℕ) (hL : 0 < L
     show -η ≤ u (coordOfG M (frontSlotG M t i j)) ∧ u (coordOfG M (frontSlotG M t i j)) ≤ η
     exact hmem
 
+/-! ## `hWaist` from the Gram determinant (the certificate corollary) -/
+
+/-- **`P₁ = U · V_ρ` for the waist factorization.** For `frontProd u = U · V` (the width-`r` waist
+split), `P1uG u = U · (V.submatrix id ρ)` with `ρ = deepWidthEquiv ∘ inl`: `P1uG` selects the `ρ`
+columns of `frontProd = U·V`, i.e. `U` times `V`'s `ρ` columns. -/
+theorem P1uG_eq_mul_Vrho (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ)
+    (hUV : frontProd M (frontTupleG M u) hL = U * V) :
+    P1uG M hL hrs u
+      = U * V.submatrix (id : Fin r → Fin r)
+          (fun k : Fin r => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k)) := by
+  funext i k
+  rw [P1uG, hUV, Matrix.mul_apply, Matrix.mul_apply]
+  exact Finset.sum_congr rfl (fun a _ => by rw [Matrix.submatrix_apply, id_eq])
+
+/-- **`hWaist` from the Gram det.** If `det ((P1uG u)ᵀ P1uG u) ≠ 0` (`P₁` rank `r`) then for any
+width-`r` waist factorization `frontProd u = U · V`, the top-`r` block `V[:, ρ]` is invertible
+(`det ≠ 0`) — `P₁ = U · V_ρ` has rank `r`, so `V_ρ` (`r×r`) is a unit (`right_factor_det_ne_of_rank_eq`). -/
+theorem waist_det_ne_of_gram (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc))
+    (u : Fin (routeMAmbient M) → ℝ)
+    (hgram : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0)
+    (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ)
+    (hUV : frontProd M (frontTupleG M u) hL = U * V) :
+    (V.submatrix (id : Fin r → Fin r)
+      (fun k : Fin r => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k))).det ≠ 0 := by
+  -- `rank P₁ = r` from the Gram det (`rank(PᵀP)=rank P`, square full rank)
+  have hrankP1 : (P1uG M hL hrs u).rank = r := by
+    have hpp : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).rank = r := by
+      by_contra h
+      exact hgram (det_eq_zero_of_rank_lt _ (lt_of_le_of_ne
+        (by simpa using ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).rank_le_width) h))
+    rwa [Matrix.rank_transpose_mul_self] at hpp
+  exact right_factor_det_ne_of_rank_eq (P1uG M hL hrs u) U _
+    (P1uG_eq_mul_Vrho hL hrs u U V hUV) hrankP1
+
 end DLNFibre.DLN.RLCT

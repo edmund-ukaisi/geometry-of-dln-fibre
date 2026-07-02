@@ -83,4 +83,16 @@ theorem gram_det_ne_zero_of_submatrix_det_ne {m r : ℕ} (P : Matrix (Fin m) (Fi
   rw [Matrix.rank_transpose_mul_self]
   exact rank_eq_of_submatrix_det_ne P er ec hdet
 
+/-- **The right factor of a full-rank product is a unit.** If `P = U · W` with `P : Fin m × Fin r`
+of full column rank `r` and `W : Fin r × Fin r` square, then `det W ≠ 0`: `r = rank P ≤ rank W ≤ r`
+(`rank_mul_le_right` + width), so `rank W = r`. -/
+theorem right_factor_det_ne_of_rank_eq {m r : ℕ} (P : Matrix (Fin m) (Fin r) k)
+    (U : Matrix (Fin m) (Fin r) k) (W : Matrix (Fin r) (Fin r) k)
+    (hPUW : P = U * W) (hrank : P.rank = r) : W.det ≠ 0 := by
+  refine det_ne_zero_of_rank_eq _ (le_antisymm (by simpa using W.rank_le_width) ?_)
+  -- `r = rank P = rank (U·W) ≤ rank W`
+  have h := Matrix.rank_mul_le_right U W
+  rw [← hPUW, hrank] at h
+  exact h
+
 end DLNFibre.Core.Matrix
