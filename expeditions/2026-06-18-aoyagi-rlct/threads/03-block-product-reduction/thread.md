@@ -21,6 +21,54 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following determinant/raw-order transport
+
+Reproductions:
+
+```text
+reproduction-a2-with-following-forward-det-to-raw-domination.md
+reproduction-a2-with-following-reverse-det-to-raw-domination.md
+```
+
+Statement card:
+`statement-card-a2-with-following-determinant-raw-order-transport.md`.
+
+Review:
+`review-a2-with-following-determinant-raw-order-transport.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_le_smul_rawHaar_restrict_rawSource_of_endpointTopologyTuple_restrict_le_smul_detHaar
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+```
+
+These are the with-following analogues of the existing non-following
+determinant-to-raw-order transport theorems.  On the local determinant/pivot
+shrink, they compose the endpoint topology-tuple map `Y`, the raw-order map
+`Phi`, the formal retained-passive determinant density, and the raw-order COV
+identity.  The forward theorem transports endpoint-image domination by
+determinant Haar to raw-order domination by raw Haar.  The reverse theorem
+transports determinant Haar domination by the endpoint image to reverse
+raw-source domination by the Jacobian-weighted raw-order source image.
+
+Boundary: determinant-chart domination is still a hypothesis in each theorem.
+The source measure is arbitrary on the enlarged with-following theta domain.
+No source-prior/original-prior transport, exact raw-Haar pushforward,
+determinant-Haar source production, p.13 coverage/equality, source-rank
+coverage, normal crossings, pole order, or RLCT is proved.
+
+Focused module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  The two declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following source-image p.13 discharge
 
 Reproductions:

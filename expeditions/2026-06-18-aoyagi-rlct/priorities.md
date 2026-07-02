@@ -12,6 +12,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following determinant/raw-order transport
+
+Lean now has:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_le_smul_rawHaar_restrict_rawSource_of_endpointTopologyTuple_restrict_le_smul_detHaar
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+```
+
+Decision: this is genuine source-transport progress, not another wrapper.  The
+two theorems transport supplied determinant-chart domination through the
+retained-passive raw-order change-of-variables theorem for the enlarged
+with-following source domain.  The forward theorem sends
+`Measure.map Y (sourceMeasure.restrict V) <= c * det Haar` to raw-order
+domination by `rawHaar.restrict rawSourceSet`.  The reverse theorem sends
+`det Haar <= c * Measure.map Y (sourceMeasure.restrict V)` to the corresponding
+reverse raw-source domination.  In both cases
+`baseJ = sourceMeasure.withDensity jacobianDensity`, with `jacobianDensity`
+Aoyagi's retained-passive formal raw-order product determinant evaluated at
+the endpoint topology tuple.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-forward-det-to-raw-domination.md
+threads/03-block-product-reduction/reproduction-a2-with-following-reverse-det-to-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-determinant-raw-order-transport.md
+threads/03-block-product-reduction/review-a2-with-following-determinant-raw-order-transport.md
+```
+
+Focused module build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: the determinant-chart domination/equality is still supplied by the
+caller.  These theorems do not identify the source measure with the original
+DLN prior, do not prove exact raw-Haar pushforward, do not prove p.13
+source-image coverage or source-rank coverage, and do not prove normal
+crossings, pole order, or RLCT.
+
+Next A2 target: produce or dominate the determinant-side endpoint image for
+the actual with-following source/reference measure, or connect this transport
+pair to an existing source-prior theorem only when the determinant-side
+hypothesis is genuinely available.
+
 ## Latest controller decision - 2026-07-02, A2 with-following source-image p.13 discharge
 
 Lean now has:

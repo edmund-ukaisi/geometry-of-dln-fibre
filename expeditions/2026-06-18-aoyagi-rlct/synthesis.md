@@ -6,6 +6,94 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Determinant/Raw-Order Transport - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_le_smul_rawHaar_restrict_rawSource_of_endpointTopologyTuple_restrict_le_smul_detHaar
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The exported constants live under:
+
+```text
+DLNFibre.DLN.Aoyagi.PaperEndpointFixedBaseRegularCoordinateSourceData
+```
+
+The local with-following shrink supplies an open `V` on which the endpoint map
+`Y` lands in the retained-passive determinant chart.  Define:
+
+```text
+Phi y = topologyTupleEdgeRawOrder y
+formalDensity y =
+  ofReal (retainedPassiveFormalRawOrderJacobianProductAbsDetAt y)
+baseJ = sourceMeasure.withDensity (formalDensity o Y)
+rawMap z = Phi (Y z)
+```
+
+The retained-passive raw-order COV theorem gives:
+
+```text
+Measure.map Phi ((rawHaar.restrict rawDetChart).withDensity formalDensity)
+  = rawHaar.restrict rawSourceSet.
+```
+
+The forward theorem transports:
+
+```text
+Measure.map Y (sourceMeasure.restrict V)
+  <= c • rawHaar.restrict rawDetChart
+```
+
+to:
+
+```text
+Measure.map rawMap (baseJ.restrict V)
+  <= c • rawHaar.restrict rawSourceSet.
+```
+
+The reverse theorem transports:
+
+```text
+rawHaar.restrict rawDetChart
+  <= c • Measure.map Y (sourceMeasure.restrict V)
+```
+
+to:
+
+```text
+rawHaar.restrict rawSourceSet
+  <= c • Measure.map rawMap (baseJ.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-forward-det-to-raw-domination.md
+threads/03-block-product-reduction/reproduction-a2-with-following-reverse-det-to-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-determinant-raw-order-transport.md
+threads/03-block-product-reduction/review-a2-with-following-determinant-raw-order-transport.md
+```
+
+Verification: focused local module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probes, and xhigh review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: determinant-chart domination remains an explicit hypothesis in both
+directions.  `sourceMeasure` is arbitrary on the enlarged with-following
+domain.  No source-prior/original-prior transport, no exact raw-Haar
+pushforward, no determinant-Haar source production, no p.13 coverage/equality,
+no source-rank coverage, no normal crossings, no pole order, and no RLCT is
+proved.
+
 ## A2 With-Following Source-Image p.13 Discharge - 2026-07-02
 
 Lean now has:
