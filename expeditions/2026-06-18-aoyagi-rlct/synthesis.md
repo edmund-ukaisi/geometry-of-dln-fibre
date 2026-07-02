@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Endpoint Active-Readout Derivative Determinant - 2026-07-02
+
+Lean now has:
+
+```text
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv
+Case2PassiveThetaWithFollowingFactor.hasFDerivAt_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv_absDet_eq_sourceDensity
+Case2PassiveThetaWithFollowingFactor.fderiv_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.fderiv_endpointTopologyTupleActiveReadout_comp_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_absDet_eq_sourceDensity
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointDerivative.lean
+```
+
+The final theorem computes the Frechet derivative determinant of
+`endpointTopologyTupleActiveReadout n e o Y`, where
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple ... z.
+```
+
+This is a source-type endomorphism.  It is identity on passive fields and the
+normalized following factor, and it is the selected-entry chart map on
+`yNext`.  Two product determinant reductions leave only the selected-entry
+chart determinant, which is the existing source density
+`SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+```
+
+Boundary: not a theorem about `det (fderiv Y)`, not a local COV theorem, not
+endpoint Haar/reference-image equality, not determinant-chart Haar equality,
+not raw-Haar/raw-map transport, not source-image coverage, not formal-product
+domination, not normal crossings, not pole order, and not RLCT.  No
+selected-pivot-nonzero hypothesis is required for this determinant identity;
+pivot nonzero is still required downstream for inverse/local-COV uses.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, direct axiom probe, and xhigh read-only review passed.  The four theorem
+probes report `[propext, Classical.choice, Quot.sound]`.  The focused module
+build replayed existing warnings from `ProductReductionStepRegularDensity`;
+the full build replayed the existing repository warning profile.
+
 ## A2 With-Following Endpoint Reference Image Pivot-Measurable Support - 2026-07-02
 
 Lean now has:

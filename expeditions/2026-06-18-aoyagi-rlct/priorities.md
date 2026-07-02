@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint active-readout derivative determinant
+
+Lean now has the source-type derivative determinant for the enlarged Case 2
+endpoint active readout:
+
+```text
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv
+Case2PassiveThetaWithFollowingFactor.hasFDerivAt_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv_absDet_eq_sourceDensity
+Case2PassiveThetaWithFollowingFactor.fderiv_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.fderiv_endpointTopologyTupleActiveReadout_comp_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_absDet_eq_sourceDensity
+```
+
+Decision: this is the correct bedrock determinant calculation before any
+endpoint or raw change-of-variables theorem.  The theorem is for
+`endpointTopologyTupleActiveReadout n e o Y`, a source-type endomorphism; it
+does not claim a determinant for the bare endpoint topology-tuple map `Y`.
+Passive fields and the normalized following factor contribute determinant
+`1`, and the selected-entry chart contributes exactly
+`SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The four theorem probes report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no bare `Y` determinant, no local COV, no endpoint
+Haar/reference-image equality, no determinant-chart Haar equality, no raw-Haar
+transport, no raw-order determinant factor, no source-prior transport, no
+source-image coverage, no formal-product domination, no normal crossings, no
+pole order, and no RLCT.  Pivot nonzero is not needed for the determinant
+identity itself, but remains required for inverse/readback/local-COV uses and
+positive lower bounds.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image pivot-measurable support
 
 Lean now removes the separate endpoint-image measurability input from the

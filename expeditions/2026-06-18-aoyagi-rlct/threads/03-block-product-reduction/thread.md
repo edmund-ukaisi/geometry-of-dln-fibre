@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following endpoint active-readout derivative determinant
+
+Reproduction:
+`reproduction-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md`.
+Statement card:
+`statement-card-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md`.
+Review:
+`review-a2-case2-with-following-endpoint-active-readout-derivative-determinant.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointDerivative.lean
+```
+
+Lean now proves:
+
+```text
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv
+Case2PassiveThetaWithFollowingFactor.hasFDerivAt_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.activeSelectedEntryChartMapFDeriv_absDet_eq_sourceDensity
+Case2PassiveThetaWithFollowingFactor.fderiv_activeSelectedEntryChartMap
+Case2PassiveThetaWithFollowingFactor.fderiv_endpointTopologyTupleActiveReadout_comp_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_absDet_eq_sourceDensity
+```
+
+The final theorem computes the determinant of the source-type endomorphism
+obtained by composing the enlarged endpoint topology-tuple map `Y` with
+`endpointTopologyTupleActiveReadout`.  The derivative is identity on passive
+fields and the normalized following factor, and is the selected-entry chart
+derivative on `yNext`; hence the absolute determinant is exactly
+`SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext z.1.yNext`.
+
+Boundary: this is not a determinant theorem for the bare endpoint map `Y`.
+It is not a local change-of-variables theorem, determinant-chart
+Haar/reference-image equality, raw-Haar transport, raw-order composition,
+source-image coverage, formal-product domination, normal crossings, pole
+order, or RLCT.  No pivot-nonzero hypothesis is needed for the determinant
+identity itself; pivot nonzero remains a downstream hypothesis for inverse
+readback, injectivity, local COV, and positive lower bounds.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh read-only review passed.  The focused module build replayed
+existing warnings from `ProductReductionStepRegularDensity`; the full build
+replayed the existing repository warning profile.  The four theorem probes
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following endpoint reference image pivot-measurable support
 
 Reproduction:
