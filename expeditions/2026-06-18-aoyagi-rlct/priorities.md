@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 following-factor right-inverse product comparison
+
+Lean now has generic right-inverse coordinate-square-sum comparison:
+
+```text
+const_mul_matrixCoordinateSquareSum_le_mul_right_of_rightInverse_squareSum_le
+exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_mul_eq_one
+exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_forall_exists_rightInverse_squareSum_le
+```
+
+and with-following endpoint product residual wrappers:
+
+```text
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPivotResidualBlock_mul_followingFactor
+Case2PassiveThetaWithFollowingFactor.exists_pos_const_activeResidualSquareSum_le_endpointRetainedData_residualFactorProduct_of_followingFactor_mul_eq_one
+```
+
+Decision: the honest p.13-facing bridge is not finite following mass; it is a
+local following-factor nondegeneracy theorem.  The elementary algebra is now
+proved at the coordinate level: if `F` has a right inverse `G`, then
+`D = (D * F) * G`, so a Frobenius coordinate estimate gives a positive
+constant `c` with
+
+```text
+c * sq(D) <= sq(D * F).
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-following-factor-right-inverse-product-comparison.md
+```
+
+Boundary: this proves no local patch of right-invertible following factors,
+no uniform inverse bound from topology/measure, no negative-power integral
+transfer, no source-prior transport, no normal crossings, pole order, or RLCT.
+The next p.13-facing measure target should assume or construct a finite local
+following-factor patch with a.e. right inverse bound, then use
+`lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le` to transfer
+the active-readout finite integral to the true product residual.
+
 ## Latest controller decision - 2026-07-02, A2 with-following active-readout finite integral
 
 Lean now has:

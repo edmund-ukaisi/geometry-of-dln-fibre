@@ -345,6 +345,103 @@ theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul
       (L := L) (M := M) (Rmat := Rmat) (T := L * M * Rmat)
       hc_nonneg hcK hbound rfl
 
+/-- Right multiplication by a matrix with a bounded right inverse controls the
+original finite coordinate square-sum by the product square-sum. -/
+theorem const_mul_matrixCoordinateSquareSum_le_mul_right_of_rightInverse_squareSum_le
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [DecidableEq ι]
+    {D : Matrix μ ι ℝ} {F : Matrix ι ν ℝ} {G : Matrix ν ι ℝ} {c K : ℝ}
+    (hc_nonneg : 0 ≤ c)
+    (hcK : c * K ≤ 1)
+    (hGbound :
+      aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2) ≤ K)
+    (hFG : F * G = 1) :
+    c * aoyagiCoordinateSquareSum (fun ij : μ × ι => D ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (fun ij : μ × ν => (D * F) ij.1 ij.2) := by
+  classical
+  let SD := aoyagiCoordinateSquareSum (fun ij : μ × ι => D ij.1 ij.2)
+  let SDF := aoyagiCoordinateSquareSum (fun ij : μ × ν => (D * F) ij.1 ij.2)
+  let SG := aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2)
+  have hprod : SD ≤ SDF * SG := by
+    simpa [SD, SDF, SG, Matrix.mul_assoc, hFG] using
+      matrixCoordinateSquareSum_mul_le_mul (A := D * F) (B := G)
+  have hSDF_nonneg : 0 ≤ SDF := by
+    exact aoyagiCoordinateSquareSum_nonneg
+      (fun ij : μ × ν => (D * F) ij.1 ij.2)
+  have hbound : SDF * SG ≤ SDF * K :=
+    mul_le_mul_of_nonneg_left hGbound hSDF_nonneg
+  calc
+    c * SD ≤ c * (SDF * K) := by
+      exact mul_le_mul_of_nonneg_left (hprod.trans hbound) hc_nonneg
+    _ = (c * K) * SDF := by ring
+    _ ≤ 1 * SDF := by
+      exact mul_le_mul_of_nonneg_right hcK hSDF_nonneg
+    _ = SDF := one_mul SDF
+
+/-- A fixed right inverse gives a positive comparison constant for right
+multiplication. -/
+theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_mul_eq_one
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [DecidableEq ι]
+    {F : Matrix ι ν ℝ} {G : Matrix ν ι ℝ}
+    (hFG : F * G = 1) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ D : Matrix μ ι ℝ,
+        c * aoyagiCoordinateSquareSum (fun ij : μ × ι => D ij.1 ij.2) ≤
+          aoyagiCoordinateSquareSum (fun ij : μ × ν => (D * F) ij.1 ij.2) := by
+  classical
+  let K : ℝ :=
+    max 1 (aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2))
+  let c : ℝ := K⁻¹
+  have hK_pos : 0 < K :=
+    lt_of_lt_of_le zero_lt_one (le_max_left (1 : ℝ) _)
+  have hc_pos : 0 < c := inv_pos.mpr hK_pos
+  have hc_nonneg : 0 ≤ c := le_of_lt hc_pos
+  have hcK : c * K ≤ 1 := by
+    dsimp [c]
+    rw [inv_mul_cancel₀ (ne_of_gt hK_pos)]
+  have hGbound :
+      aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2) ≤ K :=
+    le_max_right (1 : ℝ) _
+  refine ⟨c, hc_pos, ?_⟩
+  intro D
+  exact
+    const_mul_matrixCoordinateSquareSum_le_mul_right_of_rightInverse_squareSum_le
+      (D := D) (F := F) (G := G) (c := c) (K := K)
+      hc_nonneg hcK hGbound hFG
+
+/-- Uniform right-inverse square-sum bounds give a single positive comparison
+constant on a following-factor patch. -/
+theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_forall_exists_rightInverse_squareSum_le
+    {ι μ ν : Type*} [Fintype ι] [Fintype μ] [Fintype ν] [DecidableEq ι]
+    {s : Set (Matrix ι ν ℝ)} {K : ℝ}
+    (h :
+      ∀ F ∈ s, ∃ G : Matrix ν ι ℝ,
+        F * G = 1 ∧
+          aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2) ≤ K) :
+    ∃ c : ℝ, 0 < c ∧
+      ∀ F ∈ s, ∀ D : Matrix μ ι ℝ,
+        c * aoyagiCoordinateSquareSum (fun ij : μ × ι => D ij.1 ij.2) ≤
+          aoyagiCoordinateSquareSum (fun ij : μ × ν => (D * F) ij.1 ij.2) := by
+  classical
+  let K' : ℝ := max 1 K
+  let c : ℝ := K'⁻¹
+  have hK'_pos : 0 < K' :=
+    lt_of_lt_of_le zero_lt_one (le_max_left (1 : ℝ) _)
+  have hc_pos : 0 < c := inv_pos.mpr hK'_pos
+  have hc_nonneg : 0 ≤ c := le_of_lt hc_pos
+  have hcK : c * K' ≤ 1 := by
+    dsimp [c]
+    rw [inv_mul_cancel₀ (ne_of_gt hK'_pos)]
+  refine ⟨c, hc_pos, ?_⟩
+  intro F hFs D
+  rcases h F hFs with ⟨G, hFG, hGbound⟩
+  have hGbound' :
+      aoyagiCoordinateSquareSum (fun ij : ν × ι => G ij.1 ij.2) ≤ K' :=
+    hGbound.trans (le_max_right (1 : ℝ) K)
+  exact
+    const_mul_matrixCoordinateSquareSum_le_mul_right_of_rightInverse_squareSum_le
+      (D := D) (F := F) (G := G) (c := c) (K := K')
+      hc_nonneg hcK hGbound' hFG
+
 /-- Changing finite bases in the domain and codomain compares the coordinate
 square-sum of a linear map up to a positive constant.
 

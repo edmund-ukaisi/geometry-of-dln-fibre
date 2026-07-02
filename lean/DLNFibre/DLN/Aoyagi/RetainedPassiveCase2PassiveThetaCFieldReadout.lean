@@ -186,6 +186,140 @@ theorem endpointRetainedData_C_zero_submatrix_eq_followingFactor
   exact hcancel.trans hbase
 
 set_option linter.style.longLine false in
+/-- The endpoint-transported enlarged passive-theta residual-factor product is
+the active displayed residual block multiplied by the independently supplied
+following factor.
+
+This is the finite p.13 product readout.  It is stronger than the active
+`C 1` readout but still purely algebraic: no measure transport, positivity,
+integrability, normal crossings, pole order, or RLCT extraction is proved. -/
+theorem endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPivotResidualBlock_mul_followingFactor
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    (ChartLocalSuffixState.residualFactorProduct
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+          (e (Fin.last 2)) (e 0) =
+      case2DisplayedPostPivotResidualBlock n hS hcont
+          (case2SuccessorSelectedEntrySourceResidual
+            n hS hnext z.1.yNext eNext) *
+        z.2 := by
+  classical
+  letI : Fintype τ :=
+    Fintype.ofEquiv (Case2ResidualColIndex n S (J + 1)) eNext.symm
+  calc
+    (ChartLocalSuffixState.residualFactorProduct
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+          (e (Fin.last 2)) (e 0) =
+        (show Matrix (κ' (Fin.last 2)) (κ' (1 : Fin 3)) ℝ from
+          by
+            simpa using
+              (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                (ρ := ρ) n hS hcont hnext z eNext e).C
+                (1 : Fin 2)).submatrix (e (Fin.last 2)) (e (1 : Fin 3)) *
+          (show Matrix (κ' (1 : Fin 3)) (κ' 0) ℝ from
+            by
+              simpa using
+                (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                  (ρ := ρ) n hS hcont hnext z eNext e).C
+                  (0 : Fin 2)).submatrix (e (1 : Fin 3)) (e 0) := by
+        simpa using
+          (ChartLocalSuffixState.residualFactorProduct_adjacent_two_submatrix_eq_mul
+            (K := ℝ)
+            ((case2PassiveThetaWithFollowingFactorEndpointRetainedData
+              (ρ := ρ) n hS hcont hnext z eNext e).C)
+            (0 : Fin 1)
+            (e (Fin.last 2)) (e (1 : Fin 3)) (e 0))
+    _ =
+        case2DisplayedPostPivotResidualBlock n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual
+              n hS hnext z.1.yNext eNext) *
+          z.2 := by
+        rw [endpointRetainedData_C_one_submatrix_eq_displayedPostPivotResidualBlock,
+          endpointRetainedData_C_zero_submatrix_eq_followingFactor]
+        rfl
+
+set_option linter.style.longLine false in
+/-- If the supplied following factor has a right inverse, then the true
+endpoint residual-factor product controls the active displayed residual block
+up to a positive constant.
+
+This is a pointwise finite-coordinate comparison.  It does not construct the
+right-invertible following-factor patch or prove a measure/integrability
+statement by itself. -/
+theorem exists_pos_const_activeResidualSquareSum_le_endpointRetainedData_residualFactorProduct_of_followingFactor_mul_eq_one
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ] [Fintype τ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (G : Matrix τ (Case2ResidualColIndex n S (J + 1)) ℝ)
+    (hFG : z.2 * G = 1) :
+    ∃ c : ℝ, 0 < c ∧
+      c * aoyagiCoordinateSquareSum
+        (fun ij :
+            Case2ResidualRowIndex n S (J + 1) ×
+              Case2ResidualColIndex n S (J + 1) =>
+          (case2DisplayedPostPivotResidualBlock n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual
+              n hS hnext z.1.yNext eNext)) ij.1 ij.2) ≤
+        aoyagiCoordinateSquareSum
+          (fun ij : Case2ResidualRowIndex n S (J + 1) × τ =>
+            (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+              (ChartLocalSuffixState.residualFactorProduct
+                (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                  (ρ := ρ) n hS hcont hnext z eNext e).C
+                (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+                  (e (Fin.last 2)) (e 0)) ij.1 ij.2) := by
+  classical
+  let D : Matrix (Case2ResidualRowIndex n S (J + 1))
+      (Case2ResidualColIndex n S (J + 1)) ℝ :=
+    case2DisplayedPostPivotResidualBlock n hS hcont
+      (case2SuccessorSelectedEntrySourceResidual
+        n hS hnext z.1.yNext eNext)
+  rcases
+    exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_mul_eq_one
+      (μ := Case2ResidualRowIndex n S (J + 1))
+      (F := z.2) (G := G) hFG with
+    ⟨c, hc_pos, hc⟩
+  refine ⟨c, hc_pos, ?_⟩
+  have hprod :=
+    endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPivotResidualBlock_mul_followingFactor
+      (ρ := ρ) n hS hcont hnext z eNext e
+  let P : Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ :=
+    (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+      (ChartLocalSuffixState.residualFactorProduct
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+          (e (Fin.last 2)) (e 0))
+  have hP : P = D * z.2 := by
+    simpa [P, D] using hprod
+  change
+    c * aoyagiCoordinateSquareSum (fun ij :
+        Case2ResidualRowIndex n S (J + 1) ×
+          Case2ResidualColIndex n S (J + 1) =>
+      D ij.1 ij.2) ≤
+      aoyagiCoordinateSquareSum (fun ij :
+          Case2ResidualRowIndex n S (J + 1) × τ =>
+        P ij.1 ij.2)
+  rw [hP]
+  exact hc D
+
+set_option linter.style.longLine false in
 /-- Read the active selected-entry chart coordinates directly from an
 endpoint topology tuple.
 

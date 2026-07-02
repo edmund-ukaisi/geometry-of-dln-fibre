@@ -21,6 +21,54 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 following-factor right-inverse product comparison
+
+Reproduction:
+`reproduction-a2-following-factor-right-inverse-product-comparison.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionCoordinates.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+Lean now proves the generic finite-coordinate right-inverse comparison:
+
+```text
+const_mul_matrixCoordinateSquareSum_le_mul_right_of_rightInverse_squareSum_le
+exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_mul_eq_one
+exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_forall_exists_rightInverse_squareSum_le
+```
+
+and the with-following endpoint product readout/comparison:
+
+```text
+Case2PassiveThetaWithFollowingFactor.endpointRetainedData_residualFactorProduct_submatrix_eq_displayedPostPivotResidualBlock_mul_followingFactor
+Case2PassiveThetaWithFollowingFactor.exists_pos_const_activeResidualSquareSum_le_endpointRetainedData_residualFactorProduct_of_followingFactor_mul_eq_one
+```
+
+The calculation is elementary: if the following factor `F` has a right inverse
+`G`, then `D = (D * F) * G`.  The existing Frobenius-style product estimate
+`sq(A * B) <= sq(A) * sq(B)` gives `sq(D) <= sq(D * F) * sq(G)`, hence a
+positive constant `c` with `c * sq(D) <= sq(D * F)`.
+
+Boundary: this is still pointwise algebra.  It does not construct a local
+following-factor patch, prove a uniform inverse bound on the actual reference
+measure, transfer negative-power integrability, identify a source-prior image,
+prove normal crossings, pole order, or RLCT.  The next p.13-facing measure
+target should combine this comparison with
+`lintegral_ofReal_rpow_neg_lt_top_of_ae_pos_of_ae_const_mul_le` and the
+active-readout finite-integral theorem, under a local finite following-factor
+patch with an a.e. right inverse bound.
+
+Focused local builds passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
+```
+
 ## 2026-07-02 A2 with-following active-readout finite integral and p.13 frontier
 
 Reproduction/frontier note:
