@@ -23,8 +23,40 @@ the boundary factor det is the SAME K-diagonal product as the leaf-pivot case. T
 commute threads via `kLDU`'s E-role identity arm (`kLDU_eq_on_activeMGen`) — cleaner than the leaf
 case, since an E-slot pivot IS an active slot.
 
-Axiom profile target: `routeMCore_box_diverges_eDeepRank0Gen` = `[propext, Classical.choice,
-Quot.sound, monomial_rlct]` (clean-three + the single S2 cited axiom).
+## Status (this module) — the re-pivot CORE is DONE sorry-free; injectivity is the remaining gate
+
+LANDED sorry-free (the novel content + the CAREFUL SPOT):
+* `readK_pbo_allGen_at` / `kLDU_pbo_commuteGen_at` — the pivot-generic `kLDU`/`pbo` commute for ANY
+  `p₀ ∈ activeMGen` (the CAREFUL SPOT; threads via the E-role identity arm `kLDU_eq_on_activeMGen`).
+* `readX/N/W_pbo_all_at` / `readE_pbo_all_ne` — pivot-generic spectator + E-scaling readers.
+* `eBlockPivotGen` (+ membership) / `EfixedReaderGen` / `genBlkFlatEfpGen` — the E-fixed decoder.
+* `phiEfpAt` / `eDeepRank0PhiGen` / `eDeepRank0UnitGen` — the kLDU-composed E-radial chart + unit.
+* `hC0_EfpGen` / `routeMCore_phiEfpAt` / `routeMCore_eDeepRank0PhiGen` — the rate `F∘φ = (u p₀)²·U`.
+* `EfixedReaderGen_pboE` + the `Cgen`/`Nblk`/`Wblk` matches → `hmap_EfpGen` — the E-slot MAP identity
+  `phiEfpAt = BchartLeafGen ∘ pbo p₀`.
+* `interiorLive_BdetMonomialGen_at` — the pivot-generic K-diagonal boundary-factor det (reuses
+  `Dtot_factor1`/`kLDU_ambient` factors at any `p₀`, NOT the L=2 `|det DB| = 1` shortcut).
+* `eDeepRank0_abs_detGen` — the headline `|det Dφ| = ∏_j |u_j|^{leafHGen p₀ j}`; `eDeepRank0_diffGen`.
+
+REMAINING (the injectivity gate for the change-of-variables → box-divergence atom): the cov field of
+`NodeAchieverChart` needs `Set.InjOn (eDeepRank0PhiGen …) {u | u p₀ ≠ 0 ∧ ∀ j, u j ≠ 0}`. Via the
+factorization this reduces to `BchartLeafGen ∘ kLDU` injective on the blowup image — the SAME per-
+boundary Schur-frame recovery as the leaf-pivot `BchartLeafGen_injOn_recover`
+(`RouteMInteriorLiveGenInjRec`), whose recovery bricks (`Cgen_succ_eq_of_BchartLeafGen_eq`,
+`frameReaders_eq`, …) take the domain hypothesis `hymem : y ∈ kLDU '' (pbo (leafPivot …) '' injDom)`
+ONLY to feed `detK_ne_zero_gen` (`det (readK y k) ≠ 0`). At `deepRank = 0` `leafPivot` does not exist,
+so the leaf-pivot `hymem` cannot be formed. UNBLOCK: a canonical-side hypothesis-weakening —
+re-state `detK_ne_zero_gen` + the recovery bricks to take `hdetK : ∀ k, (Matrix.of (readK y k)).det ≠ 0`
+directly (strictly weaker; the leaf case supplies it from `hymem`, this module supplies it from
+`readK_pbo_allGen_at` + the all-nonzero domain). The private helpers `frameTuple` / `Bof` /
+`readN_eq_of_frameTuple_eq` / `Nblk_eq_of_readN_eq` block a same-file-free re-derivation, so the clean
+route is the canonical weakening (or making those helpers non-private). Once injectivity lands, the
+cov / `NodeAchieverChart` / `routeMCore_box_diverges_eDeepRank0Gen` / the `deepRank = 0` consumer form
+follow mechanically (mirroring `RouteMInteriorDeepRank0Atom` at general `L`, feeding
+`routeMCore_box_diverges_of_nodeChart`).
+
+Axiom profile target (once complete): `routeMCore_box_diverges_eDeepRank0Gen` = `[propext,
+Classical.choice, Quot.sound, monomial_rlct]` (clean-three + the single S2 cited axiom).
 -/
 
 open MeasureTheory
