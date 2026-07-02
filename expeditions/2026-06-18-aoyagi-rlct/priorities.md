@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following localized prior readback domination
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_restrict_le_smul_case2PassiveThetaWithFollowingFactor_rawMap_sourceDensity_lower_priorDensity_upper
+```
+
+Decision: after localized original-volume readback domination has been proved,
+the honest next prior layer is only bounded-density bookkeeping.  A local
+`originalVolume`-a.e. upper bound on the fixed-basis prior density over the
+chart piece gives domination of the restricted original prior by
+`ofReal(Kprior)` times restricted original volume, and the existing readback
+handoff pushes that domination through the same localized source chart.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-endpoint-patch-prior-readback-domination.md
+```
+
+Boundary: endpoint-patch null-measurability, endpoint-patch domination,
+source-density lower bound, and prior-density upper bound remain explicit
+hypotheses.  This proves no endpoint-Haar transport, source-density
+positivity, original source-prior origin, source/image coverage, normal
+crossings, pole order, finite-integral transfer, or RLCT extraction.
+
+Verification passed through focused local build, full local `lake build
+DLNFibre`, no-sorry audit, whitespace check, direct axiom probe, and xhigh
+read-only review.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Next target: a localized endpoint-patch finite-integral wrapper consuming this
+prior readback theorem while preserving the same explicit measurability,
+determinant-domination, source-density, and prior-density sockets.
+
 ## Latest controller decision - 2026-07-02, A2 with-following localized source-density raw domination
 
 Lean now has:

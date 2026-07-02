@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Localized Endpoint-Patch Prior Readback Domination - 2026-07-02
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_restrict_le_smul_case2PassiveThetaWithFollowingFactor_rawMap_sourceDensity_lower_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This is the original-prior analogue of the localized with-following
+endpoint-patch readback theorem.  For a measurable p.13 chart piece,
+
+```text
+P = rawSourceSet inter rawChart^{-1}(chartPiece),
+Omega_P = rawDetChart inter rawOrderOnEndpoint^{-1}(P),
+```
+
+the theorem consumes the existing localized original-volume readback package,
+plus a local original-volume-a.e. prior-density upper bound
+`density(E) <= Kprior`.  It returns finite
+
+```text
+Cprior = ofReal(Kprior) *
+  (((cHaar^{-1} : NNReal) : ENNReal) * (Cdet * epsilon^{-1}))
+```
+
+and readback domination of `originalEdgeFamilyPrior density` restricted to
+`chartPiece` by `Cprior` times the coordinate source measure on `G`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-endpoint-patch-prior-readback-domination.md
+```
+
+Boundary: the endpoint-patch null-measurability, endpoint-patch domination,
+source-density lower bound, and prior-density upper bound remain explicit
+hypotheses.  This proves no endpoint-Haar transport, source-density
+positivity, source-prior origin, coverage, normal crossings, pole order,
+finite-integral transfer, or RLCT extraction.
+
 ## A2 With-Following Localized Endpoint-Patch Readback Domination - 2026-07-02
 
 Lean now has:
