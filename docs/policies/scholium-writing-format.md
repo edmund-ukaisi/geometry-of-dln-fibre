@@ -43,12 +43,10 @@ updated: "2026-06-12T00:00:00"
 ---
 ```
 
-Use scholium's status vocabulary:
-
-- `scratch`: rough capture, not yet shaped as exposition;
-- `draft`: coherent enough to read, still freely editable;
-- `polished`: human-read and blessed; edit carefully;
-- `archived`: retained for record, not actively maintained.
+Use `status: draft` (in progress, freely editable) or `status: stable` (human-read and
+blessed; edit carefully) — the repo-standard vocabulary shared with
+[`writing-style.md`](writing-style.md) and [`expedition.md`](expedition.md). (Legacy synonyms:
+`polished` ≈ `stable`; `scratch` = pre-`draft`; `archived` = retired/superseded.)
 
 ## Section Shape
 

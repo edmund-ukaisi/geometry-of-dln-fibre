@@ -1,6 +1,6 @@
 ---
 title: "Composable Matrix Chains and the Type-A Quiver Classification"
-status: archive
+status: archived
 source: exposition
 topics: [core-machinery, quiver-representations, gabriel, rank-pattern, kostant, orbit-classification]
 created: "2026-06-15"
@@ -14,7 +14,11 @@ updated: "2026-06-18"
     The **canonical** exposition is the numbered chapter series indexed in
     [`README.md`](README.md) (chapters 1–5). This file is kept as a continuous-read
     source/archive; it is not maintained in step with the chapters and is not linked
-    from the index. Prefer the numbered chapters.
+    from the index. Prefer the numbered chapters. In particular, the per-result
+    status claims in §6 / the Formalisation section (calling Cor 3.5, Thm 3.8, and
+    the $(C,\theta)$ computations "cited, not reproved") are **superseded** — those
+    are now Proved in `DLNFibre.Core`; see [`ROADMAP.md`](../../../ROADMAP.md) for
+    current status.
 
 Let $A_1, \ldots, A_N$ be composable matrices, $A_i$ of size $d_i \times
 d_{i-1}$, with product $A_N \cdots A_1$. We study the chains with a prescribed

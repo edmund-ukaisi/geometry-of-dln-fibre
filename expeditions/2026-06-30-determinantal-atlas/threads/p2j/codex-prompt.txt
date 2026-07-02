@@ -1,0 +1,27 @@
+Lean 4 + Mathlib v4.29 formalisation, design-review (decorrelated second opinion). Answer 3 questions.
+
+CONTEXT. There is an ABSTRACT constructive-atlas API in namespace `Algebra.AtlasChart` (over arbitrary k-algebras):
+- `overlapElt C D := algebraMap Base (Localization.Away C.chartElt) D.chartElt`
+- `@[reducible] def targetChartLoc C D : Type u := Localization.Away (C.trivK (overlapElt C D))`
+- `overlapTriv C D := Localization.awayCongr' C.trivK (overlapElt C D) (C.trivK (overlapElt C D)) rfl : awayOverlap C.chartElt D.chartElt ≃ₐ[k] targetChartLoc C D`
+- `overlapTransition C D := (overlapTriv C D).symm.trans ((chartOverlapTransitionK C D).trans (overlapTriv D C)) : targetChartLoc C D ≃ₐ[k] targetChartLoc D C`
+- `overlapTransition_trans_symm C D : (overlapTransition C D).trans (overlapTransition D C) = AlgEquiv.refl (R:=k)` (proved by AlgEquiv groupoid laws).
+
+There is a CONCRETE DLN instance `pivotAtlasChart I : Algebra.AtlasChart k (sweepSigmaRing k d r) M` with `chartElt := pivotElt I` (where `pivotElt I := chartDsigAt d r I.s I.t`, a plain `noncomputable def`, NOT reducible) and `trivK := (perPivotLocalTrivializationDatum ...).trivialization`.
+
+CHANGE MADE. The concrete DLN defs `overlapElt`, `targetChartLoc`, `overlapTriv`, `targetProductOverlapTransition` were previously RE-SPELLED (their bodies rewrote the abstract formula in concrete terms, e.g. concrete `overlapTriv` = `Localization.awayCongr' triv (concrete overlapElt) (...) rfl`). They have now been REDEFINED to LITERALLY delegate: e.g. `def targetProductOverlapTransition I J := Algebra.AtlasChart.overlapTransition (pivotAtlasChart I) (pivotAtlasChart J)`, and similarly for the other three. The named DLN theorem `targetProductOverlapTransition_trans_symm I J : (transition I J).trans (transition J I) = refl` previously needed `set_option maxHeartbeats 800000` (because lining up the RE-SPELLED concrete def with the abstract statement was a large whnf); now its proof is just `Algebra.AtlasChart.overlapTransition_trans_symm (pivotAtlasChart I) (pivotAtlasChart J)` and I removed the heartbeat bump.
+
+The concrete def `overlapElt I J` has ASCRIBED type `Localization.Away (chartDsigAt I.s I.t)`, but the abstract `AtlasChart.overlapElt (pivotAtlasChart I) (pivotAtlasChart J)` has type `Localization.Away (pivotElt I)`. These are defeq only by unfolding the non-reducible `pivotElt`.
+
+QUESTIONS.
+1. Does delegating the defs (instead of re-spelling) preserve the downstream DEFEQs that consumers rely on? Consumers: the P2.f/g triple layer builds `restrictTriple`, `restrictedOverlapTripleTransition` etc. on the ABSTRACT `targetChartLoc`/`overlapTriv` (NOT the DLN ones — confirmed by grep: the only file consuming the DLN `targetChartLoc`/`overlapTriv`/`targetProductOverlapTransition` is the DLN module itself). So the abstract layer is untouched. Is there any way delegating the DLN defs (which only this file consumes) could break unification/instance resolution vs the old re-spelled form, given the old form was ALREADY asserted defeq to the abstract?
+2. Is the `set_option maxHeartbeats 800000` genuinely eliminable now? The old bump was to whnf-align a re-spelled def with the abstract statement. If the def IS the abstract term by delegation, the theorem statement's LHS `(targetProductOverlapTransition I J).trans (...)` should unfold in one step to `(AtlasChart.overlapTransition ...).trans (...)`, matching the abstract lemma's conclusion up to the same one-step unfold. Reason about whether a residual whnf cost could remain (e.g. from the `@[reducible] targetChartLoc` still forcing the Localization.Away layer to reduce during elaboration of the equality type).
+3. The `overlapElt` type-ascription mismatch (`Away (chartDsigAt I.s I.t)` vs `Away (pivotElt I)`, defeq via unfolding a non-reducible `def`): any risk the ascription check fails, or should I change the ascription to `Localization.Away (pivotElt I)` to make it syntactic?
+
+Be concrete and terse. Flag anything I've missed.
+
+UPDATE — OBSERVED BEHAVIOUR. After delegating the four defs (passing `(k := k)` to pivotAtlasChart to pin the implicit), the four DEFS elaborate fine. But the named theorem `targetProductOverlapTransition_trans_symm` STILL hits `(deterministic) timeout at isDefEq, 200000 heartbeats`, EVEN with proof:
+  by simp only [targetProductOverlapTransition]; exact Algebra.AtlasChart.overlapTransition_trans_symm (pivotAtlasChart (k:=k) I) (pivotAtlasChart (k:=k) J)
+The timeout is at the `exact`. My diagnosis: the goal's RHS `AlgEquiv.refl (R := k)` is typed at `targetChartLoc I J ≃ₐ[k] targetChartLoc I J` where DLN `targetChartLoc` is `@[reducible]`; unifying that reducible type (which unfolds to `AtlasChart.targetChartLoc (pivotAtlasChart I) (pivotAtlasChart J)` = `Localization.Away (trivK (overlapElt ...))`) against the abstract lemma's `refl` type forces a heavy `whnf`/isDefEq through the localization + the per-pivot trivialization. The delegation did NOT make it a one-step unfold as hoped.
+
+REVISED QUESTION 2. Is the bump GENUINELY eliminable here, or is a raised maxHeartbeats intrinsic to lining up a `@[reducible]`-typed `AlgEquiv.refl` equality through the localization layer? If eliminable, what's the idiom — e.g. `show`-ing the goal in the abstract `targetChartLoc` presentation, `AlgEquiv.ext` + pointwise, `convert ... using N`, or restating so the reducible type never needs unfolding? Give the concrete Lean tactic. If NOT eliminable, say so plainly — I will keep a scoped bump and correct the brief's premise.
