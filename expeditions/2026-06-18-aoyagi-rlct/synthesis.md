@@ -25,6 +25,71 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Restricted Endpoint Active-Readout Marginal - 2026-07-02
+
+Lean now packages the active-readout bridge for an arbitrary restricted source
+set, without asserting a product marginal for that restricted set.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New declaration:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_activeReadout_eq_activeSelectedEntryChart_restrict
+```
+
+For an arbitrary source set `Omega`, the theorem unfolds
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure ... Rres Omega
+  =
+Measure.map Y (referenceSource.restrict Omega),
+```
+
+then applies `Measure.map_map` using continuity of `activeReadout` and `Y`,
+and finally uses the pointwise identity
+
+```text
+activeReadout (Y z)
+  = ((z.1.1, chartMap pivotNext z.1.yNext), z.2).
+```
+
+The result is exactly
+
+```text
+Measure.map activeReadout endpointReferenceImage
+  =
+Measure.map activeChart (referenceSource.restrict Omega).
+```
+
+This is the local-sector version of the previous unrestricted product
+corollary.  It is stronger than mere image support, but it does not turn an
+arbitrary restricted source piece into a product measure.
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-reference-image-active-readout-restricted-marginal.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-reference-image-active-readout-restricted-marginal.md
+```
+
+Boundary: no unrestricted product marginal for arbitrary `Omega`, no endpoint
+determinant-chart Haar equality, no full endpoint product COV, no raw-map
+pushforward, no raw-order Jacobian transport, no formal-product/source-image
+domination, no source-image coverage, no normal crossings, no pole order, and
+no RLCT.
+
+Verification: direct warning-clean elaboration of the touched Lean module
+passed; focused module build passed, replaying only pre-existing warning noise
+from untouched modules; full local `lake build DLNFibre` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit;
+`git diff --check` passed; direct axiom probe reported
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Endpoint Reference Image Active-Readout Marginal - 2026-07-02
 
 Lean now packages the previous active-readout bridge as a statement about the

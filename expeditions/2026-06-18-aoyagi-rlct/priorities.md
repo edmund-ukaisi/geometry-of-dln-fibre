@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 restricted endpoint active-readout marginal
+
+Lean now has the arbitrary-source-restriction version of the endpoint active
+readout marginal:
+
+```text
+measure_map_case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_activeReadout_eq_activeSelectedEntryChart_restrict
+```
+
+For any source set `Omega`, the theorem says
+
+```text
+Measure.map activeReadout
+  (case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure ... Rres Omega)
+  =
+Measure.map activeChart
+  (referenceSource.restrict Omega).
+```
+
+Decision: this is the right local-sector socket after the `Set.univ` product
+corollary.  It keeps arbitrary restrictions on the right as an active-chart
+pushforward and therefore does not manufacture a product marginal for
+non-rectangular source pieces.  This is useful for later localized Aoyagi
+sector arguments, while preserving the boundary: no endpoint Haar equality,
+no raw-map pushforward, no source-image coverage, and no RLCT claim.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image active-readout marginal
 
 Lean now has the continuity/readout infrastructure needed to take the active
