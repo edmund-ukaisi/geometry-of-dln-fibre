@@ -12,6 +12,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 determinant following-factor patch wrapper
+
+Lean now has:
+
+```text
+exists_rightInverse_squareSum_le_of_reindexed_det_isUnit_inverse_squareSum_le
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_restrict_followingPatch_of_forall_mem_reindexed_det_isUnit_inverse_squareSum_le
+```
+
+Decision: the finite following-factor patch theorem now has a determinant-chart
+input form.  Since `eNext : τ ≃ Case2ResidualColIndex n S (J+1)`, the
+following factor becomes square as `F.submatrix id eNext.symm`; if this square
+matrix has unit determinant and its reindexed inverse has uniformly bounded
+coordinate square-sum on the patch, then the required pointwise right inverse
+is automatic.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-determinant-following-factor-patch-wrapper.md
+```
+
+Boundary: this still assumes the measurable finite patch and the uniform
+inverse square-sum bound.  The next local following-factor task is the actual
+open finite-measure patch around a base factor with unit determinant, probably
+for `matrixEntryReferenceMeasure`, or the downstream source-chart residual
+source wrapper using the abstract patch theorem.
+
 ## Latest controller decision - 2026-07-02, A2 finite following-factor patch wrapper
 
 Lean now has:

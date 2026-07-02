@@ -21,6 +21,72 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 determinant following-factor patch wrapper
+
+Reproduction:
+`reproduction-a2-determinant-following-factor-patch-wrapper.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionCoordinates.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves the generic determinant-chart right-inverse constructor:
+
+```text
+exists_rightInverse_squareSum_le_of_reindexed_det_isUnit_inverse_squareSum_le
+```
+
+and the Case 2 p.13 finite-integral wrapper:
+
+```text
+case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_prod_restrict_followingPatch_of_forall_mem_reindexed_det_isUnit_inverse_squareSum_le
+```
+
+The calculation is: set `A(F) = F.submatrix id eNext.symm`, take
+`G(F) = A(F)^(-1).submatrix eNext id`, and use
+`Matrix.submatrix_mul_equiv` plus `A(F) * A(F)^(-1) = 1` to prove
+`F * G(F) = 1`.  The inverse square-sum bound is exactly the requested
+right-inverse bound.
+
+Boundary: this is a determinant-chart instantiation of the finite patch
+theorem, not a construction of an open finite-measure patch.  It assumes
+measurability, finite following mass, unit determinant on the reindexed square
+following factor, and a uniform inverse square-sum bound on the patch.  No
+source-prior/original-prior transport, normal crossings, pole order, or RLCT is
+proved.
+
+Focused local build passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+```
+
+Full verification passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+rg -n '\b(sorry|admit|axiom)\b|#exit|native_decide' touched Lean files
+```
+
+Direct axiom probe reports `[propext, Classical.choice, Quot.sound]` for both
+new declarations.
+
+Xhigh scouts `Peirce the 3rd` and `Mill the 3rd` mapped the next two
+directions.  `Peirce the 3rd` recommends the actual open
+`matrixEntryReferenceMeasure` finite patch around a base determinant-unit
+factor; `Mill the 3rd` recommends threading the abstract patch theorem into
+the with-following source-chart residual-source sockets.
+
+Xhigh reviewer `Meitner the 3rd` found no issues.  Review specifically checked
+the reindexing orientation, the right-inverse shape for the `D * F` comparison,
+and the nonclaim boundary that this theorem does not construct the patch and is
+separate from `case2PassiveThetaWithFollowingFactorDetSector`.
+
 ## 2026-07-02 A2 finite following-factor patch wrapper
 
 Reproduction:

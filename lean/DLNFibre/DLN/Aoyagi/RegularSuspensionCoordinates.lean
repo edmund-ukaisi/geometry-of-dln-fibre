@@ -408,6 +408,37 @@ theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_mul_eq
       (D := D) (F := F) (G := G) (c := c) (K := K)
       hc_nonneg hcK hGbound hFG
 
+/-- A square reindexing of a following factor with unit determinant supplies a
+right inverse, with the inverse square-sum bound inherited from the reindexed
+nonsingular inverse. -/
+theorem exists_rightInverse_squareSum_le_of_reindexed_det_isUnit_inverse_squareSum_le
+    {ι τ : Type*} [Fintype ι] [Fintype τ] [DecidableEq ι]
+    (e : τ ≃ ι) {F : Matrix ι τ ℝ} {K : ℝ}
+    (hdet : IsUnit ((F.submatrix id e.symm).det))
+    (hbound :
+      aoyagiCoordinateSquareSum
+          (fun ij : τ × ι =>
+            (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2) ≤ K) :
+    ∃ G : Matrix τ ι ℝ,
+      F * G = (1 : Matrix ι ι ℝ) ∧
+        aoyagiCoordinateSquareSum (fun ij : τ × ι => G ij.1 ij.2) ≤ K := by
+  classical
+  let A : Matrix ι ι ℝ := F.submatrix id e.symm
+  let G : Matrix τ ι ℝ := (A⁻¹).submatrix e id
+  have hmul : A * A⁻¹ = (1 : Matrix ι ι ℝ) :=
+    Matrix.mul_nonsing_inv A hdet
+  have hGsub : G.submatrix e.symm id = A⁻¹ := by
+    ext i j
+    simp [G]
+  have hsub : A * (G.submatrix e.symm id) = (F * G).submatrix id id := by
+    simp [A, Matrix.submatrix_mul_equiv F G id e.symm id]
+  have hFG : F * G = (1 : Matrix ι ι ℝ) := by
+    have hprod : (F * G).submatrix id id = (1 : Matrix ι ι ℝ) := by
+      rw [← hsub, hGsub, hmul]
+    simpa [Matrix.submatrix_id_id] using hprod
+  refine ⟨G, hFG, ?_⟩
+  simpa [A, G] using hbound
+
 /-- Uniform right-inverse square-sum bounds give a single positive comparison
 constant on a following-factor patch. -/
 theorem exists_pos_const_forall_matrixCoordinateSquareSum_le_mul_right_of_forall_exists_rightInverse_squareSum_le
