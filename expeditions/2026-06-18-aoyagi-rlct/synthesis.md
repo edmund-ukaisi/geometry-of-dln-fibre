@@ -25,6 +25,80 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Reference Product Marginals - 2026-07-02
+
+Lean now has the product-measure API for the enlarged following-factor
+reference source.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+New matrix-reference helpers:
+
+```text
+sigmaFinite_matrixEntryReferenceMeasure
+sFinite_matrixEntryReferenceMeasure
+```
+
+New with-following source-reference product/marginal API:
+
+```text
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_prod
+measure_map_case2PassiveThetaWithFollowingFactor_theta_referenceSource_eq_smul_reference
+quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_theta_referenceSource
+measure_map_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource_eq_smul_reference
+quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource
+```
+
+The source reference unfolds to
+
+```text
+case2PassiveThetaReferenceSourceMeasure.prod
+  (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+```
+
+The two marginal lemmas are exactly the `Measure.map_fst_prod` and
+`Measure.map_snd_prod` projections through the local names
+`Case2PassiveThetaWithFollowingFactor.theta` and
+`Case2PassiveThetaWithFollowingFactor.followingFactor`.  They keep the total
+mass scalars explicit:
+
+```text
+matrixEntryReferenceMeasure ... Set.univ
+case2PassiveThetaReferenceSourceMeasure ... Set.univ
+```
+
+No finite-total-mass or probability normalization is claimed.
+The QMP projection lemmas give the corresponding null-set transport to the
+unscaled factor reference measures, again without normalization.
+
+Xhigh read-only explorer `Helmholtz` independently identified this exact next
+API layer: the matrix-reference s-finiteness bridge, the definitional product
+theorem, the two scaled marginals, and the optional QMP projections.  The
+report also flagged the same caveat: arbitrary restrictions `Ω` do not have
+product marginals unless they are rectangular/product-structured.
+
+This is still not the endpoint product COV, determinant-chart Haar transport,
+raw-map pushforward, source-image coverage, normal crossings, pole order, or
+RLCT.  The next bedrock target remains the source-side weighted `Y` COV on a
+localized source set, with `SelectedEntrySignedBox.CenterCoord.sourceDensity`
+as the selected-entry Jacobian factor and the following-factor coordinates
+moving by identity/reindexing.
+
+Verification: direct elaboration of both touched files passed warning-clean
+after rebuilding the base endpoint-reference module; focused builds for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+passed, replaying only pre-existing warning noise from
+`ProductReductionStepRegularDensity`; `lean/scripts/sorries` reported zero
+sorry/axiom/native-decide/#exit; `git diff --check` passed; direct axiom
+probes for the new declarations reported `[propext, Classical.choice,
+Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Endpoint Reference Measure - 2026-07-02
 
 Lean now has a named coordinate-product reference measure for the enlarged

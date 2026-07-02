@@ -31,6 +31,32 @@ noncomputable def matrixEntryReferenceMeasure
   Measure.pi (fun _ : m => Measure.pi (fun _ : n => volume))
 
 set_option linter.style.longLine false in
+/-- The coordinate-product Lebesgue reference measure on a finite real matrix
+type is sigma-finite. -/
+theorem sigmaFinite_matrixEntryReferenceMeasure
+    (m n : Type*) [Fintype m] [Fintype n] :
+    SigmaFinite (matrixEntryReferenceMeasure m n) := by
+  change
+    SigmaFinite
+      (Measure.pi fun _ : m => Measure.pi fun _ : n => (volume : Measure ℝ))
+  have hinner :
+      ∀ _ : m, SigmaFinite (Measure.pi fun _ : n => (volume : Measure ℝ)) := by
+    intro _
+    exact Measure.pi.sigmaFinite (fun _ : n => (volume : Measure ℝ))
+  exact Measure.pi.sigmaFinite
+    (fun _ : m => Measure.pi fun _ : n => (volume : Measure ℝ))
+
+set_option linter.style.longLine false in
+/-- The coordinate-product Lebesgue reference measure on a finite real matrix
+type is s-finite. -/
+theorem sFinite_matrixEntryReferenceMeasure
+    (m n : Type*) [Fintype m] [Fintype n] :
+    SFinite (matrixEntryReferenceMeasure m n) := by
+  haveI : SigmaFinite (matrixEntryReferenceMeasure m n) :=
+    sigmaFinite_matrixEntryReferenceMeasure m n
+  infer_instance
+
+set_option linter.style.longLine false in
 /-- Coordinate-product reference measure on the passive fields suppressed by
 the reduced selected-entry section in Aoyagi Case 2. -/
 noncomputable def case2PassiveThetaPassiveFieldReferenceMeasure

@@ -38,6 +38,182 @@ noncomputable def case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
     (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
 
 set_option linter.style.longLine false in
+/-- The enlarged reference source is definitionally the product of the
+old passive-theta reference source and the independent following-factor
+matrix-entry reference measure. -/
+theorem case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_prod
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres =
+      (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres).prod
+        (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ) :=
+  rfl
+
+set_option linter.style.longLine false in
+/-- Projecting the enlarged reference source to its passive-theta component
+recovers the old passive-theta reference source, scaled by the total mass of
+the independent following-factor reference measure.
+
+The scalar is kept explicit: no finiteness or probability normalization is
+claimed here. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactor_theta_referenceSource_eq_smul_reference
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    Measure.map
+        (Case2PassiveThetaWithFollowingFactor.theta
+          (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J))
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) =
+      (matrixEntryReferenceMeasure
+          (Case2ResidualColIndex n S (J + 1)) τ Set.univ) •
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres := by
+  haveI :
+      SFinite
+        (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ) :=
+    sFinite_matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  change
+    Measure.map
+        (Prod.fst :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ →
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)
+        ((case2PassiveThetaReferenceSourceMeasure
+            (ρ := ρ) (τ := τ) n hS hnext Rres).prod
+          (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)) =
+      (matrixEntryReferenceMeasure
+          (Case2ResidualColIndex n S (J + 1)) τ Set.univ) •
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres
+  exact
+    Measure.map_fst_prod
+      (μ :=
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+      (ν := matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+
+set_option linter.style.longLine false in
+/-- Projection to the old passive-theta component is quasi-measure-preserving
+from the enlarged product reference source to the old passive-theta reference
+source.
+
+This avoids any normalization assumption on the independent following-factor
+reference measure. -/
+theorem quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_theta_referenceSource
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    Measure.QuasiMeasurePreserving
+        (Case2PassiveThetaWithFollowingFactor.theta
+          (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J))
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+        (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) := by
+  change
+    Measure.QuasiMeasurePreserving
+        (Prod.fst :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ →
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)
+        ((case2PassiveThetaReferenceSourceMeasure
+            (ρ := ρ) (τ := τ) n hS hnext Rres).prod
+          (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ))
+        (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+  exact
+    Measure.quasiMeasurePreserving_fst
+      (μ :=
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+      (ν := matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+
+set_option linter.style.longLine false in
+/-- Projecting the enlarged reference source to its following-factor component
+recovers the following-factor matrix-entry reference measure, scaled by the
+total mass of the old passive-theta reference source.
+
+The scalar is kept explicit: no finiteness or probability normalization is
+claimed here. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource_eq_smul_reference
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    Measure.map
+        (Case2PassiveThetaWithFollowingFactor.followingFactor
+          (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J))
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres) =
+      (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres Set.univ) •
+        matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ := by
+  haveI :
+      SFinite
+        (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ) :=
+    sFinite_matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  change
+    Measure.map
+        (Prod.snd :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ →
+          Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)
+        ((case2PassiveThetaReferenceSourceMeasure
+            (ρ := ρ) (τ := τ) n hS hnext Rres).prod
+          (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)) =
+      (case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres Set.univ) •
+        matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  exact
+    Measure.map_snd_prod
+      (μ :=
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+      (ν := matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+
+set_option linter.style.longLine false in
+/-- Projection to the independent following-factor component is
+quasi-measure-preserving from the enlarged product reference source to the
+following-factor matrix reference source.
+
+This avoids any normalization assumption on the old passive-theta reference
+source. -/
+theorem quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    Measure.QuasiMeasurePreserving
+        (Case2PassiveThetaWithFollowingFactor.followingFactor
+          (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J))
+        (case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+        (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ) := by
+  change
+    Measure.QuasiMeasurePreserving
+        (Prod.snd :
+          Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ →
+          Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)
+        ((case2PassiveThetaReferenceSourceMeasure
+            (ρ := ρ) (τ := τ) n hS hnext Rres).prod
+          (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ))
+        (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+  exact
+    Measure.quasiMeasurePreserving_snd
+      (μ :=
+        case2PassiveThetaReferenceSourceMeasure
+          (ρ := ρ) (τ := τ) n hS hnext Rres)
+      (ν := matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+
+set_option linter.style.longLine false in
 /-- Endpoint topology-tuple image measure of the enlarged concrete
 passive-theta reference source restricted to a chosen local set.
 

@@ -12,6 +12,33 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor reference product marginals
+
+Lean now exposes the product-measure API needed before the endpoint COV route:
+
+```text
+sigmaFinite_matrixEntryReferenceMeasure
+sFinite_matrixEntryReferenceMeasure
+case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_prod
+measure_map_case2PassiveThetaWithFollowingFactor_theta_referenceSource_eq_smul_reference
+quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_theta_referenceSource
+measure_map_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource_eq_smul_reference
+quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource
+```
+
+The marginal statements deliberately retain the exact total-mass scalar
+factors from `Measure.map_fst_prod` and `Measure.map_snd_prod`; they do not
+claim probability normalization or finiteness of either total mass.  The QMP
+projection lemmas record the corresponding null-set transfer without any
+normalization assumption.
+
+Decision: this fills a small but real API gap for the future finite product
+COV.  The next source-moving target is still the endpoint `Y` COV on a local
+source set, combining passive identity/reindexing coordinates, the
+selected-entry `sourceDensity`, following-factor identity/reindexing, and
+endpoint transport.  Do not reinterpret these product marginals as Haar
+transport or as a raw-map pushforward.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor endpoint reference
 
 Lean now has a named with-following endpoint reference layer:

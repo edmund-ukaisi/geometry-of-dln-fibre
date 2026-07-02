@@ -10,6 +10,59 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor reference product marginals - 2026-07-02
+
+- **Statement.** The finite matrix-entry coordinate reference measure is now
+  explicitly sigma-finite and s-finite.  The enlarged following-factor
+  reference source is named as the product of the old passive-theta reference
+  source and the independent following-factor matrix reference measure, and
+  its two coordinate projections have the exact Mathlib product marginals:
+  projection to `theta` gives the old passive-theta reference source scaled by
+  the total following-factor mass; projection to the following factor gives
+  the following-factor matrix reference measure scaled by the total old
+  passive-theta reference mass.  The same two projections are also
+  quasi-measure-preserving against the corresponding unscaled factor measures.
+- **Tier.** A2 endpoint reference/source-measure infrastructure for the
+  enlarged source-to-raw density frontier.
+- **Status.** Lean proved as product-measure API.
+- **Kill-condition.** The result is read as a probability normalization,
+  finite-total-mass statement, endpoint product COV, determinant-chart Haar
+  equality, raw-map pushforward, determinant/Jacobian formula for `Y`,
+  formal-product/source-image domination, source-image coverage, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** This is finite coordinate-product measure bookkeeping
+  for the Lean model of Aoyagi pp. 10-13 and Case 2 pp. 19-21; Aoyagi does
+  not print these marginal-measure lemmas.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`,
+  Lean coordinate model and measure convention sections.
+- **Reproduction check.** Product structure is exactly the Lean enlarged
+  source abbreviation
+  `Case2PassiveThetaWithFollowingFactor = Case2PassiveTheta × Matrix ...`.
+  Xhigh explorer `Helmholtz` independently identified the same s-finiteness
+  bridge, scaled marginals, and optional QMP projection lemmas.
+- **Lean target.**
+  `sigmaFinite_matrixEntryReferenceMeasure` and
+  `sFinite_matrixEntryReferenceMeasure` in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean`;
+  `case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_prod`,
+  `measure_map_case2PassiveThetaWithFollowingFactor_theta_referenceSource_eq_smul_reference`,
+  `quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_theta_referenceSource`,
+  `measure_map_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource_eq_smul_reference`,
+  and
+  `quasiMeasurePreserving_case2PassiveThetaWithFollowingFactor_followingFactor_referenceSource`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean`.
+- **Proved.** Direct elaboration of touched files passed warning-clean after
+  rebuilding the base endpoint reference module; focused module builds passed;
+  `lean/scripts/sorries`, `git diff --check`, and direct axiom probes passed.
+  Axiom footprint: `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-side weighted `Y` COV, no determinant-chart Haar
+  equality, no raw-map pushforward, no target-side density identity, no
+  finite/probability normalization of the product factors, no source-image
+  coverage, no normal crossings, no pole order, and no RLCT extraction is
+  proved.
+
 ## Current A2 enlarged following-factor endpoint reference measure - 2026-07-02
 
 - **Statement.** The enlarged Case 2 passive-theta source now has a named
