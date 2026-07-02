@@ -314,4 +314,35 @@ theorem waist_det_ne_of_gram (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castS
   exact right_factor_det_ne_of_rank_eq (P1uG M hL hrs u) U _
     (P1uG_eq_mul_Vrho hL hrs u U V hUV) hrankP1
 
+/-! ## Assembly helpers — `hRinj`, `hboxpos` for `boxGen` -/
+
+/-- **`hRinj` for any box (generic).** `RmapG` is injective on `condBox (hN▸p) … δ₀` — the pivot value
+lies in `Ioo 0 δ₀` (`> 0 ≠ 0`), so `condBox ⊆ S \ {pivot = 0}`, where `RmapG_injOn` applies (`hp`
+identifies `hN▸p` with `pivotCoordG`). -/
+theorem RmapG_injOn_condBox (M : Fin (L + 1) → ℕ) (hL : 0 < L)
+    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (pv : Fin (routeMAmbient M))
+    (hp : pv = pivotCoordG M hL hrs hr hc)
+    (box : Fin (routeMAmbient M) → Set ℝ) (δ₀ : ℝ) :
+    Set.InjOn (RmapG M hL hrs hr hc) (condBox pv box δ₀) := by
+  refine (RmapG_injOn M hL hrs hr hc (condBox pv box δ₀)).mono ?_
+  intro x hx
+  refine ⟨hx, ?_⟩
+  -- `x (pivotCoordG) = x pv ∈ Ioo 0 δ₀`, so `≠ 0`
+  simp only [Set.mem_setOf_eq]
+  rw [← hp]
+  exact ne_of_gt (Set.mem_Ioo.mp hx.1).1
+
+/-- **`hboxpos` for `boxGen`** (positive measure of the non-pivot product), given `0 < δ`, `0 < η`.
+Both `Icc` branches of `boxGen` are nonempty (`δ/2 < δ` needs `0 < δ`; `−η < η` needs `0 < η`), so the
+product measure is positive. -/
+theorem boxGen_pos {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L) {δ η : ℝ} (hδ : 0 < δ) (hη : 0 < η)
+    (hN : routeMAmbient M = n + 1) (p : Fin (n + 1)) :
+    0 < (MeasureTheory.volume : MeasureTheory.Measure (Fin n → ℝ))
+      (Set.univ.pi (fun k : Fin n => boxGen M hL r δ η (hN ▸ p.succAbove k))) := by
+  rw [MeasureTheory.volume_pi_pi]
+  refine CanonicallyOrderedAdd.prod_pos.mpr (fun k _ => ?_)
+  unfold boxGen slotBoxGen
+  split <;> · rw [Real.volume_Icc, ENNReal.ofReal_pos]; linarith
+
 end DLNFibre.DLN.RLCT
