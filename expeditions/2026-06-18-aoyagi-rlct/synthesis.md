@@ -25,6 +25,74 @@ checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
 was committed and pushed as `4553ddfb`.  At that point the worktree was clean
 and even with `origin/expedition/aoyagi-rlct`.
 
+## A2 With-Following Raw-Image Inverse-Readback Density - 2026-07-02
+
+Lean now has the with-following concrete inverse-readback specialization of
+the raw-image density handoff.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+New declaration:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_rawOrderInverse_jacobianDensity
+```
+
+For any with-following source-domain measure `sourceMeasure`, define
+
+```text
+baseJ = sourceMeasure.withDensity jacobianDensity
+
+rawDensity y =
+  ofReal
+    (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+      (topologyTupleEdgeRawOrderInverse y)).
+```
+
+The existing with-following raw-order bridge gives an open `V ⊆ G` where
+`Y z` is in the determinant chart and `rawMap z` is in the raw-order
+determinant source set.  On that raw-order determinant source set,
+`rawDensity` is continuous, and for `z ∈ V`,
+
+```text
+topologyTupleEdgeRawOrderInverse (rawMap z) = Y z.
+```
+
+Therefore the generic raw-image handoff applies and proves
+
+```text
+Measure.map rawMap (baseJ.restrict V)
+=
+(Measure.map rawMap (sourceMeasure.restrict V)).withDensity rawDensity.
+```
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-raw-image-inverse-readback-density.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-raw-image-inverse-readback-density.md
+```
+
+Boundary: this is only an actual-raw-image density identity.  It is not a raw
+Haar transport theorem, not a determinant-chart Haar theorem, not a
+target-side inverse Jacobian theorem, not a global Radon-Nikodym derivative,
+not source-image coverage, not normal crossings, not pole order, and not RLCT.
+
+Scout integration: xhigh read-only explorer `Confucius the 2nd` confirmed this
+as the safe with-following analogue of the passive inverse-readback density
+specialization and warned against product-source, Haar, and inverse-Jacobian
+overclaims.
+
+Verification before banking: direct warning-clean elaboration of the touched
+Lean module, focused module build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, and direct axiom probe passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Raw-Image Density Handoff - 2026-07-02
 
 Lean now has the with-following conditional raw-image density handoff.

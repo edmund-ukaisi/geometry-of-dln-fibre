@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following inverse-readback raw-image density
+
+Lean now has the with-following analogue of the passive raw-image
+inverse-readback density specialization:
+
+```text
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_rawOrderInverse_jacobianDensity
+```
+
+For any with-following source-domain measure `sourceMeasure`, the theorem uses
+the raw-side density
+
+```text
+rawDensity y =
+  ofReal
+    (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+      (topologyTupleEdgeRawOrderInverse y)).
+```
+
+On the local determinant/pivot shrink, `rawMap z` lies in the raw-order
+determinant source set and the raw-order inverse sends it back to `Y z`.
+Therefore the retained-passive formal product density factors through
+`rawMap`, giving
+
+```text
+Measure.map rawMap (baseJ.restrict V)
+=
+(Measure.map rawMap (sourceMeasure.restrict V)).withDensity rawDensity.
+```
+
+Decision: this is a concrete specialization of the conditional raw-image
+density handoff just banked.  It stays over the actual raw-image measure and
+does not name or claim a target-side inverse Jacobian density theorem.  xhigh
+read-only explorer `Confucius the 2nd` confirmed the statement shape and
+nonclaim boundary.
+
+Boundary: no determinant-chart Haar equality, no endpoint Haar transport, no
+raw-order Haar transport, no global Radon-Nikodym derivative, no source-image
+coverage, no normal crossings, no pole order, and no RLCT.
+
+Verification: direct warning-clean elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, and direct axiom probe passed; the
+theorem reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following raw-image density handoff
 
 Lean now has the with-following analogue of the passive raw-image density

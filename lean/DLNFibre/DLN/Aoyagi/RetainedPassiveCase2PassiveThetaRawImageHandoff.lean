@@ -432,6 +432,254 @@ set_option linter.unusedSectionVars false in
 set_option linter.unusedVariables false in
 set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
+-- The inverse-readback density is a concrete specialization of the conditional
+-- raw-image handoff.  It still targets the actual raw image, not raw Haar.
+/-- Concrete with-following raw-image density formula using raw-order inverse
+readback.
+
+This specializes
+`exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_of_jacobianDensity_ae_eq`
+to the raw-side density obtained by evaluating the retained-passive formal
+raw-order product determinant at `topologyTupleEdgeRawOrderInverse y`.
+
+This is not the target-side inverse Jacobian density.  The conclusion is still
+over the actual raw image `Measure.map rawMap (sourceMeasure.restrict V)`, not
+over raw Haar restricted to the raw-order source set. -/
+theorem exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_baseJ_restrict_eq_withDensity_rawImage_rawOrderInverse_jacobianDensity
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (sourceMeasure :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let jacobianDensity :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    let baseJ :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      sourceMeasure.withDensity jacobianDensity
+    let rawMap :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        topologyTupleEdgeRawOrder
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (κ' := throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z)
+    let rawDensity : RawTuple → ℝ≥0∞ :=
+      fun y ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+            (topologyTupleEdgeRawOrderInverse
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) y))
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        Measure.map rawMap (baseJ.restrict V) =
+          (Measure.map rawMap (sourceMeasure.restrict V)).withDensity
+            rawDensity := by
+  intro RawTuple Y jacobianDensity baseJ rawMap rawDensity
+  rcases
+      exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_rawOrderMap_twoStage_eq_sourceChart_readback_leftInverse
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        z₀ hdet₀ hpivot₀ G hGopen hz₀G with
+    ⟨V, hVopen, hz₀V, hVG, hpoint, _hmaps⟩
+  refine ⟨V, hVopen, hz₀V, hVG, ?_⟩
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let T : Set RawTuple :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hdet_of_mem :
+      ∀ z ∈ V, Y z ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    intro z hz
+    simpa [Y, RawTuple, ρ, κ'] using (hpoint z hz).1
+  have hrawMapContOn : ContinuousOn rawMap V := by
+    rw [continuousOn_iff_continuous_restrict]
+    let Sdet : Set RawTuple :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let toDetTuple : V → Sdet :=
+      fun z ↦ ⟨Y z.1, hdet_of_mem z.1 z.2⟩
+    have hToDetTuple : Continuous toDetTuple := by
+      have hamb : Continuous (fun z : V ↦ Y z.1) := by
+        change Continuous
+          (fun z : V ↦
+            case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+              (ρ := ρ) n hS hcont hnext z.1 eNext e)
+        exact
+          (continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext eNext e).comp continuous_subtype_val
+      exact hamb.subtype_mk _
+    have hrawDet :
+        Continuous
+          (fun y : topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ↦
+            topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y.1) :=
+      continuous_topologyTupleEdgeRawOrder_detChart_subtype
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    simpa [rawMap, Y, toDetTuple, Sdet, RawTuple, ρ, κ'] using
+      hrawDet.comp hToDetTuple
+  have hrawMap :
+      AEMeasurable rawMap (sourceMeasure.restrict V) := by
+    exact
+      ContinuousOn.aemeasurable₀ hrawMapContOn
+        hVopen.measurableSet.nullMeasurableSet
+  have hraw_mem :
+      ∀ᵐ z ∂sourceMeasure.restrict V, rawMap z ∈ T := by
+    filter_upwards [ae_restrict_mem hVopen.measurableSet] with z hz
+    simpa [rawMap, T, RawTuple, ρ, κ'] using (hpoint z hz).2.1
+  have hT_meas : MeasurableSet T := by
+    simpa [T, RawTuple, ρ, κ'] using
+      (isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
+  have hraw_image_mem :
+      ∀ᵐ y ∂Measure.map rawMap (sourceMeasure.restrict V), y ∈ T :=
+    (ae_map_iff hrawMap hT_meas).2 hraw_mem
+  have hrawDensityContOn : ContinuousOn rawDensity T := by
+    rw [continuousOn_iff_continuous_restrict]
+    rw [continuous_iff_continuousAt]
+    intro y
+    let invMap : T → RawTuple :=
+      fun y ↦ topologyTupleEdgeRawOrderInverse
+        (K := ℝ) (ρ := ρ) (κ' := κ') y.1
+    have hInv :
+        Continuous invMap :=
+      continuous_topologyTupleEdgeRawOrderInverse_rawOrderSourceRecursiveDetChart_subtype
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    have hpre :
+        invMap y ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+      simpa [invMap] using
+        topologyTupleEdgeRawOrderInverse_mem_topologyTupleDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ') y.2
+    have hreal :
+        ContinuousAt
+          (fun y : T ↦
+            retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+              (M := 1) (ρ := ρ) (κ' := κ') (invMap y)) y :=
+      (continuousAt_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_of_mem_topologyTupleDetChartSet
+        (M := 1) (ρ := ρ) (κ' := κ') (invMap y) hpre).comp hInv.continuousAt
+    simpa [rawDensity, invMap, RawTuple, ρ, κ'] using
+      ENNReal.continuous_ofReal.continuousAt.comp hreal
+  have hrawDensity_restrict :
+      AEMeasurable rawDensity
+        ((Measure.map rawMap (sourceMeasure.restrict V)).restrict T) :=
+    ContinuousOn.aemeasurable₀ hrawDensityContOn hT_meas.nullMeasurableSet
+  have hraw_restrict_eq :
+      (Measure.map rawMap (sourceMeasure.restrict V)).restrict T =
+        Measure.map rawMap (sourceMeasure.restrict V) :=
+    Measure.restrict_eq_self_of_ae_mem hraw_image_mem
+  have hrawDensity :
+      AEMeasurable rawDensity
+        (Measure.map rawMap (sourceMeasure.restrict V)) := by
+    simpa [hraw_restrict_eq] using hrawDensity_restrict
+  have hfactor :
+      ∀ᵐ z ∂sourceMeasure.restrict V,
+        jacobianDensity z = rawDensity (rawMap z) := by
+    filter_upwards [ae_restrict_mem hVopen.measurableSet] with z hz
+    have hInv :
+        topologyTupleEdgeRawOrderInverse (K := ℝ) (ρ := ρ) (κ' := κ')
+            (topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') (Y z)) =
+          Y z :=
+      topologyTupleEdgeRawOrderInverse_topologyTupleEdgeRawOrder
+        (K := ℝ) (ρ := ρ) (κ' := κ') (hdet_of_mem z hz)
+    simp [jacobianDensity, rawDensity, rawMap, RawTuple, ρ, κ', hInv]
+  simpa [baseJ] using
+    DLNFibre.DLN.Aoyagi.measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq
+      (thetaMeasure := sourceMeasure) (V := V) (rawMap := rawMap)
+      (thetaDensity := jacobianDensity) (rawDensity := rawDensity)
+      hVopen.measurableSet hrawMap hrawDensity hfactor
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
 -- The concrete Case 2 statement unfolds the passive-theta chart interface.
 /-- Passive-field domination transfers determinant-chart endpoint domination
 to the corresponding passive-product theta source.
