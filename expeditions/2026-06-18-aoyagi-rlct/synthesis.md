@@ -15,6 +15,53 @@ Banking note, 2026-07-02: the `ell=1` rank-width-removal slice was committed
 and pushed as `eb89c023`.  The current worktree is the dedicated expedition
 worktree, branch `expedition/aoyagi-rlct`.
 
+## A2 Formal-Product/Source-Image Contract Layer - 2026-07-02
+
+Lean now records the honest bounded-density contract for the p.13
+formal-product/source-image comparison.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+threads/03-block-product-reduction/reproduction-a2-formal-product-source-image-contract.md
+```
+
+The file defines:
+
+```text
+A2Case2FormalProductSourceImagePieceContract
+```
+
+and proves:
+
+```text
+A2Case2FormalProductSourceImagePieceContract.formalProductMeasure_restrict_le_smul_sourceRef
+A2Case2FormalProductSourceImagePieceContract.aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_restrict
+```
+
+The contract stores the local source-chart data, chart piece, formal-product
+measure, source-image density, equality-with-density, and local a.e. upper
+bound.  From these explicit fields it derives the formal-product/source-image
+domination needed by the same-shrink original-volume bridge, and the readback
+domination needed by p.13 readback finite-integral sockets.
+
+This is not the missing source-moving theorem.  It does not construct the
+density identity, prove the density bound, prove coordinate-count agreement,
+prove image coverage, identify determinant/raw Haar transport, transport the
+original prior, prove normal crossings, pole order, or RLCT extraction.  The
+next A2 step is to produce the contract from Aoyagi pp. 10-13: dimension/image
+first, then the Jacobian density and local boundedness.
+
+Verification passed: warning-clean direct elaboration of the new Lean file,
+focused Lake build, full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, forbidden-marker grep on the new Lean file, and direct
+axiom probes.  The two new theorems report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh post-Lean reviewer `Popper`
+reported no findings, with residual risk limited to explicit remaining fields:
+`bound` need not be finite, and source-image inclusion still has to be
+constructed.
+
 ## A4 Branch-Indexed Current-Center Payloads - 2026-07-02
 
 Lean now records the honest support interface after the fixed-current-center

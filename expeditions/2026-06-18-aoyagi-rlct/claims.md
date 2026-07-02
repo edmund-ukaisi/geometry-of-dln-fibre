@@ -200,37 +200,51 @@ No such claim is formalisation-ready until both fields are filled.
   chart-domain coverage, transition regularity, Jacobian/volume compatibility,
   normal crossings, pole order, or RLCT extraction is proved.
 
-## Current A2 formal-product/source-image comparison frontier - 2026-07-02
+## Current A2 formal-product/source-image contract layer - 2026-07-02
 
-- **Statement.** The remaining source-moving A2 comparison is the local
-  change-of-variables domination
-  `muP13.restrict chartPiece <= D • Measure.map sourceChart
+- **Statement.** A local p.13 formal-product/source-image bounded-density
+  contract packages the exact data needed to derive
+  `formalProductMeasure.restrict chartPiece <= D • Measure.map sourceChart
   (thetaReference.restrict V)` for measurable chart pieces inside the Case 2
-  source-chart image.
+  source-chart image.  The density identity and local a.e. density bound are
+  explicit fields.
 - **Tier.** Aoyagi product-reduction/source-measure transport.
-- **Status.** Frontier packet recorded; not formalisation-ready as a Lean
-  theorem.
+- **Status.** Lean contract/adaptor layer proved.  Producing the contract from
+  Aoyagi's coordinate formulas remains open.
 - **Kill-condition.** The source chart is lower-dimensional relative to the
   p.13 formal-product chart measure; source-image coverage is only for
   produced points; the density is not tied to an explicit Jacobian; or the
-  theorem still assumes the same comparison.
+  contract is read as proving its own density identity or bound.
 - **Evidence/source.** Aoyagi Lemma 2 and Theorem 3, PDF pp. 10-13, for the
   Schur/product coordinate formulas.  The measure theorem itself is not
   printed there and must be constructed.
 - **Pen-and-paper reproduction.**
   `threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-local-change-of-variables.md`;
+  contract reproduction at
+  `threads/03-block-product-reduction/reproduction-a2-formal-product-source-image-contract.md`;
   construction card at
   `threads/03-block-product-reduction/construction-card-a2-case2-formal-product-source-image-local-change-of-variables.md`.
 - **Reproduction check.** xhigh scout/review passed at
-  `threads/03-block-product-reduction/review-a2-case2-formal-product-source-image-local-change-of-variables.md`.
-- **Lean target.** None yet.  Existing consumer:
-  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_sourceReference_same_shrink_of_formalProductMeasure_le_smul_sourceReference`.
-- **Proved.** No new theorem.  Existing original-volume bridge remains the
-  downstream consumer once this comparison is proved.
-- **Nonclaims.** No formal-product/source-image comparison, original-volume
-  transport, original-prior transport, determinant Haar transport, raw-Haar
-  pushforward, source coverage, source-rank coverage, normal crossings, pole
-  order, or RLCT extraction is proved.
+  `threads/03-block-product-reduction/review-a2-case2-formal-product-source-image-local-change-of-variables.md`;
+  post-Lean xhigh review by `Popper` found no findings.
+- **Lean target.**
+  `RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean`
+  defines `A2Case2FormalProductSourceImagePieceContract` and proves
+  `formalProductMeasure_restrict_le_smul_sourceRef` plus the readback
+  domination adapter
+  `aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_restrict`.
+- **Proved.** Warning-clean direct elaboration and focused Lake build passed
+  for the new contract module.  Full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, forbidden-marker grep on the new
+  Lean file, and direct axiom probe passed.  The two new theorems report only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No construction of the density identity or density bound, no
+  coordinate-count agreement, no source-image coverage, no original-volume
+  transport beyond downstream consumption of the derived domination, no
+  original-prior transport, determinant Haar transport, raw-Haar pushforward,
+  source-rank coverage, normal crossings, pole order, or RLCT extraction is
+  proved.  The contract does not assert `bound < ∞`; finite-integral consumers
+  still need separate finiteness hypotheses.
 
 ## Current A5 terminal-classifier bridge frontier - 2026-07-02
 

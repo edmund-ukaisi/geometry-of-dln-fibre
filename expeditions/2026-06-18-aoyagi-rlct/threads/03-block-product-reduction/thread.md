@@ -21,6 +21,52 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 formal-product/source-image bounded-density contract
+
+Reproduction:
+`reproduction-a2-formal-product-source-image-contract.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+Lean now defines:
+
+```text
+A2Case2FormalProductSourceImagePieceContract
+```
+
+and proves:
+
+```text
+A2Case2FormalProductSourceImagePieceContract.formalProductMeasure_restrict_le_smul_sourceRef
+A2Case2FormalProductSourceImagePieceContract.aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_restrict
+```
+
+The record stores the local source-chart facts, the p.13 formal-product
+measure, the chart piece, the source-image reference, an explicit density, and
+the equality-with-density plus local a.e. upper-bound fields.  The first
+theorem derives exactly the formal-product/source-image domination consumed by
+the same-shrink original-volume bridge.  The second theorem feeds the readback
+domination socket over any theta set containing the local `V`.
+
+Boundary: this is bounded-density bookkeeping, not the Jacobian calculation.
+The contract does not construct the density identity, prove its bound, prove
+coordinate-count agreement, prove source-image coverage, identify determinant
+or raw Haar transport, transport the original prior, or prove normal crossings,
+pole order, or RLCT extraction.  It also does not assert `bound < infinity`;
+finite-integral users still carry separate finiteness hypotheses.
+
+Verification passed: warning-clean direct elaboration of the new Lean file,
+focused Lake build, full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, forbidden-marker grep on the new Lean file, and direct
+axiom probes for both new theorems.  The axiom footprint is
+`[propext, Classical.choice, Quot.sound]`.  Xhigh post-Lean reviewer `Popper`
+reported no findings; residual risk is exactly that source-image inclusion and
+bounded finite Jacobian density still have to be constructed.
+
 ## 2026-07-02 A2 formal-product/source-image local change-of-variables frontier
 
 Construction card:

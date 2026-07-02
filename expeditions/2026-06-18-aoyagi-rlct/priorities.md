@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 formal-product/source-image bounded-density contract
+
+Lean now has an explicit contract layer for the p.13 formal-product/source-image
+comparison:
+
+```text
+A2Case2FormalProductSourceImagePieceContract
+A2Case2FormalProductSourceImagePieceContract.formalProductMeasure_restrict_le_smul_sourceRef
+A2Case2FormalProductSourceImagePieceContract.aemeasurable_readback_and_map_readback_restrict_le_smul_thetaReference_restrict
+```
+
+The record packages the local chart facts, chart piece, formal-product measure,
+source-image reference, density, equality-with-density, and local a.e. density
+bound.  The first theorem derives the exact domination consumed by the
+same-shrink original-volume bridge; the second derives the readback domination
+used by p.13 finite-integral sockets.
+
+Decision: this is the right support interface for A2, but it is not the
+source-moving Jacobian theorem.  The next genuine A2 target remains production
+of this contract from Aoyagi's pp. 10-13 coordinate formulas: first the
+coordinate-count/image check, then the Jacobian density identity and local
+boundedness.  Do not add another original-volume or finite-integral wrapper
+unless it removes a real supplied field.
+
 ## Latest controller decision - 2026-07-02, A4 branch-indexed current-center payloads
 
 Lean now has a branch-indexed support layer for the fixed-current-center Case
