@@ -190,4 +190,61 @@ theorem prod_chartGen_collapse (M : Fin (L + 1) → ℕ) (A : Params M) (hL : 0 
   rw [Matrix.smul_apply, smul_eq_mul]
   convert hij using 2
 
+/-! ## The rank-`r` bottleneck front factorization `frontProd = C · [I_r | K]` (de-risk (b))
+
+The abstract matrix core of the general-`L` smeared front construction (Codex-reviewed, sympy-certified
+exact L=2..5). To force `rank(frontProd) = r` (so `col(P₂) ⊆ col(P₁)`) with `P₁` a FREE block — the
+`M 0 > r` rectangular case the L=2 square chart hides — the front factors as `frontProd = C · G` with
+`C : M 0 × r` free and `G = [I_r | K] : r × m₁`. Then the column split gives `P₁ = C` (free, so
+`det(P₁ᵀP₁) = det(CᵀC)` reduces to the SAME free-block diagonal dominance as L=2) and `P₂ = C · K =
+P₁ · K` (`col(P₂) ⊆ col(P₁)`), and the banked `proj_cancel_of_factorsThrough` fires off `det(CᵀC) ≠ 0`.
+
+Stated at the matrix level (a `C · G` factorization with `G`'s left `r×r` block the identity): the
+`prodAux` staircase-chain realization (`A⁰=[C|0]`, interiors `carry_r`, `A^{L−2}=[I_r|K;0]`) is a
+downstream instantiation; the column-split algebra + cancellation is width-generic and lives here. -/
+
+/-- **The identity-block row-join** `G := [I_r | K] : Matrix (Fin r) (Fin r ⊕ Fin s)`, `Sum.inl a ↦
+δ`, `Sum.inr b ↦ K a b`. The `r × m₁` front "gate" whose first `r` columns are the identity (so the
+front product's first `r` columns are exactly the free `C`). -/
+def idKGate {r s : ℕ} (K : Matrix (Fin r) (Fin s) ℝ) : Matrix (Fin r) (Fin r ⊕ Fin s) ℝ :=
+  fun a => Sum.elim (fun a' => if a = a' then 1 else 0) (fun b => K a b)
+
+/-- **The `idKGate` column split of a `C · [I_r|K]` front.** For `frontProd = C · idKGate K` (`C` the
+free `M 0 × r` rank block), the `Sum.inl a` columns recover `C` (`(C · G)[:, inl a] = C[:, a]`) and the
+`Sum.inr b` columns are `(C · K)[:, b]`. So `P₁ := (C·G)∘inl = C` and `P₂ := (C·G)∘inr = C · K = P₁·K`
+— `col(P₂) ⊆ col(P₁)` structurally, with `P₁ = C` free. -/
+theorem mul_idKGate_split {m0 r s : ℕ} (C : Matrix (Fin m0) (Fin r) ℝ) (K : Matrix (Fin r) (Fin s) ℝ) :
+    (∀ i a, (C * idKGate K) i (Sum.inl a) = C i a)
+      ∧ (∀ i b, (C * idKGate K) i (Sum.inr b) = (C * K) i b) := by
+  refine ⟨fun i a => ?_, fun i b => ?_⟩
+  · -- `(C·G)[i, inl a] = ∑_a' C[i,a']·(idKGate a' (inl a)) = ∑_a' C[i,a']·δ_{a' a} = C[i,a]`
+    rw [Matrix.mul_apply, Finset.sum_eq_single a]
+    · simp only [idKGate, Sum.elim_inl, ite_true, mul_one]
+    · intro a' _ hne
+      simp only [idKGate, Sum.elim_inl]
+      rw [if_neg hne, mul_zero]
+    · intro h; exact absurd (Finset.mem_univ a) h
+  · -- `(C·G)[i, inr b] = ∑_a C[i,a]·K[a,b] = (C·K)[i,b]`
+    rw [Matrix.mul_apply, Matrix.mul_apply]
+    exact Finset.sum_congr rfl (fun a _ => by simp only [idKGate, Sum.elim_inr])
+
+/-- **The rank-`r` bottleneck cancellation** `P₁·Λ₀ = P₂` for a `C·[I_r|K]` front, off `det(CᵀC) ≠ 0`.
+With `P₁ = C` (the free rank block) and `P₂ = C·K`, the factoring `P₂ = P₁·K` is structural
+(`mul_idKGate_split`), and `proj_cancel_of_factorsThrough` gives the shear cancellation off the free-block
+Gram pole `det(CᵀC) ≠ 0` — the SAME diagonal dominance as the L=2 `subBox_det_ne`. This is the de-risk
+(b) reduction made precise: the tall-`P₁` cancellation the smeared chart needs, on a FREE `P₁`. -/
+theorem staircase_cancel {m0 r s : ℕ} (C : Matrix (Fin m0) (Fin r) ℝ) (K : Matrix (Fin r) (Fin s) ℝ)
+    (P₁ : Matrix (Fin m0) (Fin r) ℝ) (P₂ : Matrix (Fin m0) (Fin s) ℝ)
+    (hP₁ : ∀ i a, P₁ i a = (C * idKGate K) i (Sum.inl a))
+    (hP₂ : ∀ i b, P₂ i b = (C * idKGate K) i (Sum.inr b))
+    (hdet : ((C.transpose * C).det ≠ 0)) :
+    P₁ * ((P₁.transpose * P₁)⁻¹ * P₁.transpose * P₂) = P₂ := by
+  obtain ⟨hsl, hsr⟩ := mul_idKGate_split C K
+  -- `P₁ = C` and `P₂ = C·K` (read off the split)
+  have hP1C : P₁ = C := by funext i a; rw [hP₁ i a, hsl i a]
+  have hP2CK : P₂ = C * K := by funext i b; rw [hP₂ i b, hsr i b]
+  -- the factoring `P₂ = P₁·K`, then the banked general projection cancellation
+  rw [hP1C]
+  refine proj_cancel_of_factorsThrough C P₂ K ?_ hdet
+  rw [hP2CK]
 end DLNFibre.DLN.RLCT
