@@ -2442,13 +2442,123 @@ theorem sigmaGather_symm_apply_castSucc (n : ℕ) (blk lift : Fin (n + 1) → �
 /-- **`sigmaCongrLeft'` apply** — `Equiv.sigmaCongrLeft' f ⟨a, x⟩ = ⟨f a, y⟩` with `y` the fiber
 transport of `x` (an `Eq.mpr`/`▸`). Proved by flipping via the forward `sigmaCongrLeft f.symm` (which
 has `@[simps apply]`): `⟨a, x⟩ = sigmaCongrLeft f.symm ⟨f a, y⟩ = ⟨f.symm (f a), y⟩ = ⟨a, x⟩`. -/
-theorem sigmaCongrLeft'_apply {α₁ α₂ : Type} {β : α₁ → Type} (f : α₁ ≃ α₂) (a : α₁) (x : β a) :
+theorem sigmaCongrLeft'_apply {α₁ α₂ : Type*} {β : α₁ → Type*} (f : α₁ ≃ α₂) (a : α₁) (x : β a) :
     Equiv.sigmaCongrLeft' f ⟨a, x⟩
       = ⟨f a, (Equiv.symm_apply_apply f a).symm ▸ x⟩ := by
   rw [Equiv.sigmaCongrLeft', Equiv.symm_apply_eq, Equiv.sigmaCongrLeft_apply]
   -- `⟨a, x⟩ = ⟨f.symm (f a), transport⟩` — first comp `a = f.symm (f a)`, second an `HEq` of casts.
   apply Sigma.ext (Equiv.symm_apply_apply f a).symm
   simp only [Equiv.symm_apply_apply, heq_eqRec_iff_heq, eqRec_heq_iff_heq, heq_eq_eq]
+
+/-- **`sigmaCongrLeft'` first-component** — `(sigmaCongrLeft' f p).1 = f p.1` (the base index maps by
+`f`, no fiber dependency). From `sigmaCongrLeft'_apply` on `p = ⟨p.1, p.2⟩` (`Sigma.eta`). -/
+theorem sigmaCongrLeft'_fst {α₁ α₂ : Type*} {β : α₁ → Type*} (f : α₁ ≃ α₂) (p : Σ a : α₁, β a) :
+    (Equiv.sigmaCongrLeft' f p).1 = f p.1 := by
+  obtain ⟨a, x⟩ := p
+  rw [sigmaCongrLeft'_apply]
+
+/-- **`sigmaCongrLeft'` second-component `HEq`** — `HEq (sigmaCongrLeft' f p).2 p.2` (the fiber is
+transported along `f`, so it is heterogeneously equal to the input fiber). From `sigmaCongrLeft'_apply`
++ the `▸`-transport `HEq`. -/
+theorem sigmaCongrLeft'_snd_heq {α₁ α₂ : Type*} {β : α₁ → Type*} (f : α₁ ≃ α₂) (p : Σ a : α₁, β a) :
+    HEq (Equiv.sigmaCongrLeft' f p).2 p.2 := by
+  obtain ⟨a, x⟩ := p
+  rw [sigmaCongrLeft'_apply]
+  exact eqRec_heq _ _
+
+/-- **`sigmaGather` `.1`-value at a `.succ` index** — the base index of `sigmaGather … ⟨j.succ, i⟩`
+has value `j.val` (`= j.castSucc`). Isolates the `.1`-projection so `liftGatherFinL_symm_apply` can
+prove the Fin index by `Fin.ext`/`omega` without touching the fiber cast. -/
+theorem sigmaGather_apply_val_succ (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) (j : Fin n) (i : Fin (blk j.succ)) :
+    (sigmaGather n blk lift h0 hlast hshift ⟨j.succ, i⟩).1.val = j.val := by
+  rw [sigmaGather_apply_succ]; rfl
+
+/-- **`sigmaGather` first-component value at a positive index** — for any base index `k` with
+`k.val = j + 1`, `(sigmaGather … ⟨k, i⟩).1.val = j`. `Fin.cases` on `k`: the `0` arm is impossible
+(`blk 0 = 0` empties the fiber), the `.succ` arm gives `.castSucc`. No index rewrite (motive-safe). -/
+theorem sigmaGather_apply_val_of_val (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) (k : Fin (n + 1)) (i : Fin (blk k))
+    (j : ℕ) (hk : k.val = j + 1) :
+    (sigmaGather n blk lift h0 hlast hshift ⟨k, i⟩).1.val = j := by
+  induction k using Fin.cases with
+  | zero => rw [h0] at i; exact i.elim0
+  | succ k' =>
+    rw [sigmaGather_apply_succ]
+    simp only [Fin.coe_castSucc]
+    simpa [Fin.val_succ] using hk
+
+/-- **`sigmaGather` second-component `HEq` at a positive index** — for any base index `k` with
+`k.val = j + 1`, `HEq (sigmaGather … ⟨k, i⟩).2 i` (the fiber is a `Fin.cast` of `i`, heterogeneously
+equal). `Fin.cases` on `k`; the `.succ` arm's fiber is `Fin.cast (hshift ·) i` (`HEq` of a cast). -/
+theorem sigmaGather_apply_snd_heq (n : ℕ) (blk lift : Fin (n + 1) → ℕ)
+    (h0 : blk 0 = 0) (hlast : lift (Fin.last n) = 0)
+    (hshift : ∀ i : Fin n, blk i.succ = lift i.castSucc) (k : Fin (n + 1)) (i : Fin (blk k))
+    (j : ℕ) (hk : k.val = j + 1) :
+    HEq (sigmaGather n blk lift h0 hlast hshift ⟨k, i⟩).2 i := by
+  induction k using Fin.cases with
+  | zero => rw [h0] at i; exact i.elim0
+  | succ k' =>
+    rw [sigmaGather_apply_succ]
+    exact (Fin.heq_ext_iff (hshift k').symm).mpr rfl
+
+/-- **The lift-gather inverse at an interior slot** — `liftGatherFinL.symm ⟨s, b⟩ = ⟨⟨s.val+1, hs⟩,
+Fin.cast (gatherShift ·).symm b⟩` for an interior boundary `s` (`hs : s.val + 1 < L`). The off-by-one
+stagger: the `genV`-lift slot `s` is the layer-`(s+1)` lift block. Proved by `Equiv.symm_apply_eq`
+(flip to the forward `liftGatherFinL` on the explicit `⟨s+1, cast b⟩`, avoiding the `sigmaCongrLeft'`
+`.symm` motive wall), then compute the three factors forward via `sigmaCongrLeft'_apply` /
+`sigmaGather_apply_succ`, closing the two Sigma components by `Sigma.ext` (`.1` `Fin.ext`/`omega`,
+`.2` `Fin.heq_ext_iff`). -/
+theorem liftGatherFinL_symm_apply (M : Fin (L + 1) → ℕ) (ha : StructAdm M (tach M)) (hL : 0 < L)
+    (s : Fin L) (hs : s.val + 1 < L)
+    (b : Fin (liftDim M (tDesc M (tach M)) s.val)) :
+    (liftGatherFinL M ha hL).symm ⟨s, b⟩
+      = ⟨⟨s.val + 1, hs⟩,
+          Fin.cast (gatherShift M s.val (by omega)).symm b⟩ := by
+  rw [Equiv.symm_apply_eq]
+  rw [liftGatherFinL]
+  simp only [Equiv.trans_apply]
+  -- forward `⟨s, b⟩ = last (mid (first ⟨⟨s+1,hs⟩, cast b⟩))`. Compute `first` (a literal `sigmaCongrLeft'`)
+  -- so `mid = sigmaGather` sees a literal `⟨finCongr ⟨s+1,hs⟩, X⟩` (index `.val = s+1`, so the
+  -- `_val_of_val` / `_snd_heq` gather lemmas fire without a `rw`-on-index motive failure). Close by
+  -- `Sigma.ext`: `.1` value chain, `.2` fiber `HEq` chain (three layers) back to `b`.
+  rw [sigmaCongrLeft'_apply]
+  -- the index of the sigmaGather argument now has value `s.val + 1`.
+  have hidx : (finCongr (show L = (L - 1) + 1 from (Nat.succ_pred_eq_of_pos hL).symm)
+      ⟨s.val + 1, hs⟩).val = s.val + 1 := by simp [finCongr_apply]
+  refine Sigma.ext ?_ ?_
+  · -- `.1`: `s = last.1 (mid …)`. `rw [sigmaCongrLeft'_fst]` won't match the OUTER `last` (its explicit
+    -- `β := …` defeats `rw`'s occurrence matcher — Codex-confirmed); force the shape with `change`
+    -- (defeq, no motive), then `sigmaCongrLeft'_fst` fires, then `sigmaGather_apply_val_of_val` (mid).
+    change s = ((Equiv.sigmaCongrLeft'
+      (β := fun k => Fin (liftDim M (tDesc M (tach M))
+        ((finCongr (show L = (L - 1) + 1 from (Nat.succ_pred_eq_of_pos hL).symm)).symm k).val))
+      (finCongr (show L = (L - 1) + 1 from (Nat.succ_pred_eq_of_pos hL).symm)).symm) _).fst
+    rw [sigmaCongrLeft'_fst]
+    apply Fin.ext
+    -- `↑s = ↑(ecast.symm (mid).1)`; `ecast.symm = Fin.cast` preserves `.val` (defeq), and
+    -- `(mid).1.val = s.val` (`sigmaGather_apply_val_of_val`, pure ℕ). `exact` unifies `?k ?i` defeq.
+    symm
+    exact sigmaGather_apply_val_of_val _ _ _ _ _ _ _ _ s.val hidx
+  · -- `.2`: `HEq b (last (mid ⟨idx, X⟩)).2`. Chain the fiber `HEq`s back to `b`: `snd_heq` (last),
+    -- `snd_heq` (mid, index val `s+1`), then `X = ▸ Fin.cast … b ≍ b` (`eqRec`/`Fin.cast` proof-irrel).
+    -- Force the OUTER `last` shape via `change` (explicit `β` — same `rw`-matcher issue as `.1`).
+    symm
+    refine HEq.trans (sigmaCongrLeft'_snd_heq
+      (β := fun k => Fin (liftDim M (tDesc M (tach M))
+        ((finCongr (show L = (L - 1) + 1 from (Nat.succ_pred_eq_of_pos hL).symm)).symm k).val))
+      (finCongr (show L = (L - 1) + 1 from (Nat.succ_pred_eq_of_pos hL).symm)).symm _) ?_
+    refine HEq.trans (sigmaGather_apply_snd_heq _ _ _ _ _ _ _ _ s.val hidx) ?_
+    -- residual `HEq ((symm_apply_apply …).symm ▸ Fin.cast (gatherShift …).symm b) b` — both are `Fin`s
+    -- with `.val = b.val` (`▸`/`Fin.cast` preserve val), so `Fin.heq_ext_iff` (val eq `rfl`) closes it.
+    refine (Fin.heq_ext_iff ?_).mpr ?_
+    · -- width eq: `(finCongr).symm ∘ (finCongr) = id`, then `gatherShift` (`s+1 < L`).
+      simp only [finCongr_symm, finCongr_apply, Fin.cast_cast, Fin.cast_eq_self]
+      exact gatherShift M s.val (by omega)
+    · -- val eq: `▸`/`Fin.cast` preserve `.val`, so both sides are `b.val`.
+      simp
 
 /-- **The block identity `eihd_hD_gen`** — `eihdOutGen ∘ DtotGen ∘ eInGen.symm = stairMap genV L genF`.
 The general-`L` lift of `RouteMEihdFreePoint.eihd_hD_free`: each diagonal block of `DtotGen` (in the
