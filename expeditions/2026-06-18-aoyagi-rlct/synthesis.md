@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Formal-Product Source-Image Theta-Side Density Constructor - 2026-07-02
+
+Lean now has:
+
+```text
+A2Case2FormalProductSourceImagePieceContract.formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity
+A2Case2FormalProductSourceImagePieceContract.exists_of_restrict_eq_map_sourceChart_withDensity
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+The first theorem converts a supplied theta-side weighted pushforward identity
+
+```text
+formalProductMeasure.restrict chartPiece =
+  (Measure.map sourceChart
+    ((thetaReference.withDensity (fun theta => density (sourceChart theta))).restrict V))
+    .restrict chartPiece
+```
+
+into the edge-side density identity used by the contract:
+
+```text
+formalProductMeasure.restrict chartPiece =
+  (((Measure.map sourceChart (thetaReference.restrict V)).withDensity density)
+    .restrict chartPiece)
+```
+
+The second theorem constructs the bounded-density contract from that converted
+identity plus the already-required local source-chart fields and supplied
+a.e. density bound.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-formal-product-source-image-theta-side-density-constructor.md
+threads/03-block-product-reduction/statement-card-a2-formal-product-source-image-theta-side-density-constructor.md
+threads/03-block-product-reduction/review-a2-formal-product-source-image-theta-side-density-constructor.md
+```
+
+Boundary: pure measure bookkeeping only.  No Jacobian density is constructed,
+no density bound is proved, and no formal-product/source-image domination
+follows without supplied equality and bound.  No raw-Haar transport,
+determinant-chart Haar equality, source-image coverage, original prior
+transport, normal crossings, pole order, or RLCT extraction is proved.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, direct axiom probe, and xhigh read-only review passed.  The two theorem
+probes report `[propext, Classical.choice, Quot.sound]`.  Reviewer nits about
+ambient topology assumptions and a missing dependency path were fixed.
+
+Next A2 rung: build the with-following raw-order actual-image same-shrink
+package from the existing with-following two-stage source-chart bridge.  The
+package should name the raw-order measure as an actual image, not raw Haar.
+
 ## A2 With-Following Endpoint Active-Readout Derivative Determinant - 2026-07-02
 
 Lean now has:

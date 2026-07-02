@@ -55,6 +55,57 @@ structure A2Case2FormalProductSourceImagePieceContract
 
 namespace A2Case2FormalProductSourceImagePieceContract
 
+/-- Convert a theta-side weighted source-chart pushforward into the
+edge-side `withDensity` equality expected by the contract.
+
+This is measure bookkeeping only: the theta-side equality and the density are
+still supplied hypotheses. -/
+theorem formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity
+    {Theta E : Type*} [MeasurableSpace Theta] [MeasurableSpace E]
+    (sourceChart : Theta → E) (thetaReference : Measure Theta)
+    (V : Set Theta) (targetPiece : Set E)
+    (formalProductMeasure : Measure E) (density : E → ℝ≥0∞)
+    (hV : MeasurableSet V)
+    (hsourceChart :
+      AEMeasurable sourceChart (thetaReference.restrict V))
+    (hdensity :
+      AEMeasurable density
+        (Measure.map sourceChart (thetaReference.restrict V)))
+    (heq :
+      formalProductMeasure.restrict targetPiece =
+        (Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+          targetPiece) :
+    formalProductMeasure.restrict targetPiece =
+      (((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+        density).restrict targetPiece) := by
+  have hfactor :
+      ∀ᵐ theta ∂thetaReference.restrict V,
+        (fun theta ↦ density (sourceChart theta)) theta =
+          density (sourceChart theta) :=
+    Filter.Eventually.of_forall fun _ ↦ rfl
+  have hpush :
+      Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V) =
+        (Measure.map sourceChart (thetaReference.restrict V)).withDensity
+          density :=
+    measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq
+      (thetaMeasure := thetaReference) (V := V) (rawMap := sourceChart)
+      (thetaDensity := fun theta ↦ density (sourceChart theta))
+      (rawDensity := density) hV hsourceChart hdensity hfactor
+  calc
+    formalProductMeasure.restrict targetPiece =
+        (Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+          targetPiece := heq
+    _ =
+        (((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+          density).restrict targetPiece) := by
+          rw [hpush]
+
 variable {Theta E : Type*} [MeasurableSpace Theta] [TopologicalSpace Theta]
   [MeasurableSpace E] [TopologicalSpace E]
 
@@ -62,6 +113,74 @@ variable {Theta E : Type*} [MeasurableSpace Theta] [TopologicalSpace Theta]
 def sourceRef
     (C : A2Case2FormalProductSourceImagePieceContract Theta E) : Measure E :=
   Measure.map C.sourceChart (C.thetaReference.restrict C.V)
+
+set_option linter.style.longLine false in
+/-- Build the bounded-density contract from a theta-side weighted
+source-chart pushforward identity.
+
+This is the constructor form of
+`formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity`.
+The weighted identity and the density bound remain supplied hypotheses. -/
+theorem exists_of_restrict_eq_map_sourceChart_withDensity
+    (sourceChart : Theta → E) (readback : E → Theta)
+    (thetaReference : Measure Theta) (V : Set Theta)
+    (chartPiece : Set E) (formalProductMeasure : Measure E)
+    (density : E → ℝ≥0∞) (bound : ℝ≥0∞)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (himage : MeasurableSet (sourceChart '' V))
+    (hchartPiece_sub : chartPiece ⊆ sourceChart '' V)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_injOn : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hsourceChart :
+      AEMeasurable sourceChart (thetaReference.restrict V))
+    (hdensity :
+      AEMeasurable density
+        (Measure.map sourceChart (thetaReference.restrict V)))
+    (heq :
+      formalProductMeasure.restrict chartPiece =
+        (Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+          chartPiece)
+    (hdensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (thetaReference.restrict V)).restrict
+        chartPiece, density E ≤ bound) :
+    ∃ C : A2Case2FormalProductSourceImagePieceContract Theta E,
+      C.sourceChart = sourceChart ∧
+        C.readback = readback ∧
+          C.thetaReference = thetaReference ∧
+            C.V = V ∧
+              C.chartPiece = chartPiece ∧
+                C.formalProductMeasure = formalProductMeasure ∧
+                  C.density = density ∧ C.bound = bound := by
+  have hformal :
+      formalProductMeasure.restrict chartPiece =
+        (((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+          density).restrict chartPiece) :=
+    formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity
+      sourceChart thetaReference V chartPiece formalProductMeasure density
+      hV hsourceChart hdensity heq
+  let C : A2Case2FormalProductSourceImagePieceContract Theta E :=
+    { sourceChart := sourceChart
+      readback := readback
+      thetaReference := thetaReference
+      V := V
+      chartPiece := chartPiece
+      formalProductMeasure := formalProductMeasure
+      density := density
+      bound := bound
+      measurable_V := hV
+      measurable_chartPiece := hchartPiece
+      measurable_image := himage
+      chartPiece_subset_image := hchartPiece_sub
+      source_contOn := hsource_contOn
+      source_injOn := hsource_injOn
+      left_inv := hleft
+      formalProduct_eq_withDensity := hformal
+      density_le_bound := hdensity_le }
+  refine ⟨C, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩ <;> rfl
 
 /-- The bounded-density contract gives the formal-product/source-image
 domination required by the same-shrink original-volume bridge. -/

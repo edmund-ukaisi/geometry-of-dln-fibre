@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 theta-side density constructor
+
+Lean now converts a theta-side weighted source-chart pushforward identity into
+the edge-side `withDensity` identity expected by the formal-product/source-image
+bounded-density contract:
+
+```text
+A2Case2FormalProductSourceImagePieceContract.formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity
+A2Case2FormalProductSourceImagePieceContract.exists_of_restrict_eq_map_sourceChart_withDensity
+```
+
+Decision: this is a narrow A2 socket hardening.  It does not compute the
+Jacobian density or prove a density bound.  It only removes a measure-bookkeeping
+mismatch between raw/source-chart handoffs, which usually produce
+`Measure.map sourceChart ((thetaReference.withDensity (density o sourceChart)).restrict V)`,
+and the existing contract, which stores
+`(Measure.map sourceChart (thetaReference.restrict V)).withDensity density`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-formal-product-source-image-theta-side-density-constructor.md
+threads/03-block-product-reduction/statement-card-a2-formal-product-source-image-theta-side-density-constructor.md
+threads/03-block-product-reduction/review-a2-formal-product-source-image-theta-side-density-constructor.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom probe,
+and xhigh review passed.  The two theorem probes report
+`[propext, Classical.choice, Quot.sound]`.  Reviewer nits about unnecessary
+topology hypotheses and a missing dependency path were fixed.
+
+Boundary: no Jacobian density construction, no density-bound proof, no
+formal-product/source-image domination without supplied equality and bound, no
+raw-Haar transport, no determinant-chart Haar equality, no source-image
+coverage, no original prior transport, no normal crossings, no pole order, and
+no RLCT.
+
+Next A2 target: the with-following raw-order actual-image same-shrink package,
+using the existing with-following two-stage source-chart bridge; do not call
+the raw-order reference image raw Haar.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint active-readout derivative determinant
 
 Lean now has the source-type derivative determinant for the enlarged Case 2

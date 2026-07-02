@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 formal-product/source-image theta-side density constructor
+
+Reproduction:
+`reproduction-a2-formal-product-source-image-theta-side-density-constructor.md`.
+Statement card:
+`statement-card-a2-formal-product-source-image-theta-side-density-constructor.md`.
+Review:
+`review-a2-formal-product-source-image-theta-side-density-constructor.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+Lean now proves:
+
+```text
+A2Case2FormalProductSourceImagePieceContract.formalProduct_restrict_eq_withDensity_of_restrict_eq_map_sourceChart_withDensity
+A2Case2FormalProductSourceImagePieceContract.exists_of_restrict_eq_map_sourceChart_withDensity
+```
+
+These theorems convert a supplied theta-side weighted source-chart pushforward
+identity into the edge-side `withDensity` equality expected by the
+formal-product/source-image contract, and then construct the contract from the
+same local source-chart fields plus a supplied a.e. density bound.
+
+Boundary: pure measure bookkeeping only.  No Jacobian density is constructed,
+no density bound is proved, and no formal-product/source-image domination
+follows without supplied equality and bound.  No raw-Haar transport,
+determinant-chart Haar equality, source-image coverage, original prior
+transport, normal crossings, pole order, or RLCT extraction is proved.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, touched-file marker scan, direct axiom
+probe, and xhigh review passed.  The two theorem probes report
+`[propext, Classical.choice, Quot.sound]`.  Reviewer nits about unnecessary
+topology scope and a missing dependency path were fixed.
+
+Frontier note: the next A2 source-moving target is the with-following raw-order
+actual-image same-shrink package.  The non-following package already exists;
+the with-following source-chart bridge exists, but the named raw-order
+reference image/package still needs to be built without calling it raw Haar.
+
 ## 2026-07-02 A2 with-following endpoint active-readout derivative determinant
 
 Reproduction:
