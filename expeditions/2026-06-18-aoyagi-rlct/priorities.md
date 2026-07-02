@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor formal-product raw-map handoff
+
+Lean now has the conditional with-following formal-product/source-reference
+handoff:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+These use the enlarged raw-order bridge to show that, if the local enlarged
+raw map pushes `thetaReference.restrict V` exactly to
+`rawHaar.restrict rawSourceSet`, then the p.13 formal-product chart measure
+restricted to any p.13 source chart piece is the chart-produced source
+reference.  The second theorem packages this in the bounded-density socket
+with constant density `1`.
+
+Decision: this is a useful reduction layer, not the raw-map density theorem.
+The remaining mathematical frontier is unchanged: prove the finite-dimensional
+change of variables for the enlarged source-to-raw map, with the correct
+source-side versus target-side density convention.  The pen-and-paper check
+must explicitly verify the block triangular Jacobian for `Y` before any Lean
+claim of raw-map pushforward.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor raw-order bridge
 
 Lean now has the with-following analogue of the raw-order/two-stage

@@ -10,6 +10,42 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor formal-product raw-map handoff - 2026-07-02
+
+- **Statement.** If the local enlarged following-factor raw map pushes
+  `thetaReference.restrict V` exactly to `rawHaar.restrict rawSourceSet`,
+  then the p.13 formal-product chart measure restricted to any p.13 source
+  chart piece equals the enlarged chart-produced source reference restricted
+  to that piece.  The same equality can be packaged in the bounded-density
+  socket with constant density `1`.
+- **Tier.** A2 retained-passive formal-product/source-reference reduction.
+- **Status.** Lean conditional handoff proved.  This is not the raw-map
+  density theorem.
+- **Kill-condition.** The result is read as proving the raw-map pushforward,
+  raw-map Jacobian, bounded density of the actual enlarged coordinates,
+  source-image coverage, raw-Haar transport from Aoyagi, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Aoyagi Lemma 2/Theorem 3, PDF pp. 10-13 for the
+  retained-passive Schur/product coordinate chart, with Case 2 pp. 19-22 for
+  the local selected-pivot/following-factor normalization context.  The
+  measure handoff itself is finite Lean measure bookkeeping; Aoyagi does not
+  print the raw-map pushforward theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-formal-product-raw-map-handoff.md`.
+- **Reproduction check.** xhigh pen-and-paper scout `Cicero` confirmed the
+  source boundary and that the remaining calculation is the block Jacobian of
+  the enlarged source-to-raw map, not this handoff.
+- **Lean target.**
+  `RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean` proves
+  `exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource`
+  and
+  `exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource`.
+- **Proved.** Warning-clean direct elaboration of the touched Lean file,
+  focused module build, `lean/scripts/sorries`, and `git diff --check` passed.
+- **Nonclaims.** No raw-map pushforward, no Jacobian/density identity, no
+  density bound for the actual source map, no source-image coverage, no normal
+  crossings, no pole order, and no RLCT extraction is proved.
+
 ## Current A2 enlarged following-factor raw-order bridge - 2026-07-02
 
 - **Statement.** On a local determinant-sector, fixed-pivot-nonzero enlarged

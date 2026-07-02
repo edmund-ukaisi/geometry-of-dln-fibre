@@ -20,6 +20,54 @@ contract-constructor slice was committed and pushed as `af292a3a`.  At the
 post-push reorientation point, the expedition worktree was clean and even with
 `origin/expedition/aoyagi-rlct`.
 
+## A2 Enlarged Following-Factor Formal-Product Raw-Map Handoff - 2026-07-02
+
+Lean now has the conditional formal-product/source-reference handoff for the
+enlarged following-factor source.
+
+Files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-formal-product-raw-map-handoff.md
+```
+
+The theorems are:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+exists_open_subset_formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource
+```
+
+They use the enlarged raw-order bridge plus the retained-passive raw-order
+formal-product theorem.  Under the explicit hypothesis
+
+```text
+Measure.map rawMap (thetaReference.restrict V) =
+  rawHaar.restrict rawSourceSet
+```
+
+the p.13 formal-product chart measure restricted to any chart piece contained
+in the fixed-base p.13 source edge-family set equals the enlarged
+chart-produced source reference restricted to that piece.  The second theorem
+packages the same equality in the bounded-density socket with constant
+density `1`.
+
+This is a reduction layer, not a density theorem.  It does not prove the
+raw-map pushforward identity, the raw-map Jacobian, a bounded density for the
+actual enlarged coordinates, source-image coverage, normal crossings, pole
+order, or RLCT.  The actual remaining density problem is the source-to-raw
+change of variables for
+`case2PassiveThetaWithFollowingFactorEndpointTopologyTuple` followed by
+`topologyTupleEdgeRawOrder`.
+
+Verification passed so far: warning-clean direct elaboration of the touched
+Lean file, focused Lake build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaFormalProductSourceReference`,
+`lean/scripts/sorries`, and `git diff --check`.  The focused build replayed
+pre-existing warning noise from unrelated modules; the touched file was
+warning-clean under direct elaboration.
+
 ## A2 Enlarged Following-Factor Raw-Order Bridge - 2026-07-02
 
 Lean now proves the local raw-order/source-chart bridge for the enlarged
