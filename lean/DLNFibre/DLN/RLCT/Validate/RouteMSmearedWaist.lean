@@ -70,6 +70,7 @@ theorem Text_tach_succ_le_M (M : Fin (L + 1) → ℕ) (hL : 0 < L) (t : ℕ) (ht
   match t with
   | 0 =>
       rw [Text_tach_succ M 0 (by omega), tach_mk_zero M (by omega)]
+      exact le_of_eq (by congr 1)
   | (k + 1) =>
       have := (structAdm_tach M hL).hub k
       rwa [Wext_apply M (k + 1) (by omega)] at this
@@ -83,40 +84,94 @@ theorem deepRank_le_M_front (M : Fin (L + 1) → ℕ) (hL : 0 < L) (t : ℕ) (ht
   have h2 : Text M (tach M) (t + 1) ≤ M ⟨t, by omega⟩ := Text_tach_succ_le_M M hL t ht
   rw [deepRank]; exact le_trans h1 h2
 
-/-! ## Part (B): the waist index `∃ q ≤ L−1, M ⟨q⟩ = deepRank` -/
+/-! ## Part (B): the waist index `∃ q ≤ L−1, M ⟨q⟩ = deepRank`
 
-/-- **The front-width minimum is attained.** There is a front layer `q < L` whose width `M ⟨q⟩` is
-minimal among `{M ⟨t⟩ | t < L}` (a nonempty finite set — `hL` gives `0 < L`). -/
-theorem exists_front_argmin (M : Fin (L + 1) → ℕ) (hL : 0 < L) :
-    ∃ q : ℕ, ∃ hq : q < L, ∀ t : ℕ, ∀ ht : t < L, M ⟨q, by omega⟩ ≤ M ⟨t, by omega⟩ := by
-  -- minimize `fun (t : Fin L) => M ⟨t, by omega⟩` over the nonempty `Fin L`
-  haveI : Nonempty (Fin L) := ⟨⟨0, hL⟩⟩
-  obtain ⟨q0, hq0⟩ := Finset.exists_min_image (Finset.univ : Finset (Fin L))
-    (fun t : Fin L => M ⟨t.val, by omega⟩) ⟨⟨0, hL⟩, Finset.mem_univ _⟩
-  refine ⟨q0.val, q0.isLt, fun t ht => ?_⟩
-  exact hq0.2 ⟨t, ht⟩ (Finset.mem_univ _)
+The MINIMAL-index argument (Codex-reconciled): let `k₀` be the least `k ≤ L` with `Text k = deepRank`
+(exists, `Text L = deepRank`). If `k₀ = 0`: `deepRank = Text 0 = Text 1 = M 0` (identity boundary), waist
+`q = 0`. If `k₀ ≥ 1`: `Text k₀ = deepRank` but `Text (k₀−1) > deepRank` (minimality), a genuine ROW drop
+at chain boundary `s = k₀−1 ∈ [1, L−1]`. `NoInteriorBothDrop` at `s` forbids BOTH drops, so the COLUMN
+does not drop: `¬ (Text s < Wext(s−1))`... actually the vanishing `rBlock (s−1)·cBlock (s−1) = 0` with
+`rBlock > 0` (row drop) forces `cBlock = 0`, i.e. `Wext(s−1) = Text s = deepRank`, waist `q = s−1`.
 
-/-- **The descent reaches `deepRank` at a boundary where the ambient width equals it.** The chain
-`Text 1 = M 0, Text 2, …, Text L = deepRank` weakly decreases; at the FIRST index `k+1` where
-`Text (k+1) = deepRank` the previous ambient width witnesses `M ⟨k⟩ ≥ Text (k+1) = deepRank`, and by
-(A) `deepRank ≤ M ⟨k⟩`, so `M ⟨k⟩ = deepRank`. More robustly: the front-width minimum `M ⟨q⟩` satisfies
-`deepRank ≤ M ⟨q⟩` (A) and `M ⟨q⟩ ≤ deepRank` (below), giving `=`. -/
+This rests on `NoInteriorBothDrop` (the interior Aoyagi blocks vanish) — the same hypothesis
+`minAdm_eq_deepRank_mul_last` and the whole smeared/clean chart assembly carry. The smeared `<` is NOT
+needed for attainment (holds under `NoInteriorBothDrop` + `0 < L` alone). -/
+
+/-- **The waist index `∃ q ≤ L−1, M ⟨q⟩ = deepRank`.** Least `k` with `Text k = deepRank` (exists,
+`k = L`). `k₀ = 0` ⟹ `M 0 = deepRank` (waist `q = 0`). `k₀ = 1` is impossible (identity boundary
+`Text 0 = Text 1` would give `k₀ = 0`). `k₀ ≥ 2` ⟹ the row drop `Text (k₀−1) > Text k₀ = deepRank` at
+chain boundary `j = ⟨k₀−2⟩` (`rBlock j = Text(k₀−1) − Text k₀ > 0`) forces, by `NoInteriorBothDrop`'s
+vanishing `rBlock j · cBlock j = 0`, `cBlock j = M(k₀−1) − Text k₀ = 0`, i.e. `M(k₀−1) = deepRank`
+(waist `q = k₀−1`). The vanishing needs `j.val = k₀−2 < L−1`, i.e. `k₀ ≤ L` (given). -/
 theorem exists_waist_eq_deepRank (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hsm : BoundarySmeared M) :
-    ∃ q : ℕ, q ≤ L - 1 ∧ ∃ hq : q < L, M ⟨q, by omega⟩ = deepRank M := by
-  sorry
+    (hNo : NoInteriorBothDrop M) :
+    ∃ q : ℕ, q ≤ L - 1 ∧ ∃ hq : q < L + 1, M ⟨q, hq⟩ = deepRank M := by
+  -- the least `k` with `Text k = deepRank` (exists: `k = L`)
+  have hex : ∃ k, Text M (tach M) k = deepRank M := ⟨L, rfl⟩
+  classical
+  set k₀ := Nat.find hex with hk₀def
+  have hk₀ : Text M (tach M) k₀ = deepRank M := Nat.find_spec hex
+  have hk₀L : k₀ ≤ L := Nat.find_min' hex (rfl : Text M (tach M) L = deepRank M)
+  -- `k₀ ≠ 1`: else `Text 0 = Text 1 = deepRank`, so `0` is in the set, contradicting minimality.
+  have hk₀ne1 : k₀ ≠ 1 := by
+    intro h1
+    have h0 : Text M (tach M) 0 = deepRank M := by
+      rw [Text_tach_zero_eq_one M hL, ← h1]; exact hk₀
+    exact absurd h0 (Nat.find_min hex (m := 0) (by omega))
+  rcases Nat.eq_zero_or_pos k₀ with hz | hpos
+  · -- `k₀ = 0`: `deepRank = Text 0 = M 0`, waist `q = 0`
+    refine ⟨0, by omega, by omega, ?_⟩
+    have h0 : Text M (tach M) 0 = deepRank M := by rw [← hk₀, hz]
+    rw [Text_zero] at h0
+    rw [show (⟨0, by omega⟩ : Fin (L + 1)) = 0 from rfl]; exact h0
+  · -- `k₀ ≥ 2`: the row drop at chain boundary `j = ⟨k₀−2⟩`
+    have hk₀2 : 2 ≤ k₀ := by omega
+    -- `Text (k₀−1) ≠ deepRank` (minimality) with `Text (k₀−1) ≥ Text k₀ = deepRank` ⟹ strict `>`
+    have hprev_ne : Text M (tach M) (k₀ - 1) ≠ deepRank M :=
+      Nat.find_min hex (m := k₀ - 1) (by omega)
+    have hprev_ge : Text M (tach M) k₀ ≤ Text M (tach M) (k₀ - 1) := by
+      have hkk : k₀ - 1 + 1 = k₀ := by omega
+      calc Text M (tach M) k₀ = Text M (tach M) ((k₀ - 1) + 1) := by rw [hkk]
+        _ ≤ Text M (tach M) (k₀ - 1) := Text_tach_step_le M hL (k₀ - 1) (by omega)
+    have hrow : Text M (tach M) k₀ < Text M (tach M) (k₀ - 1) := by
+      rw [hk₀] at hprev_ge ⊢; omega
+    -- the interior boundary `j = ⟨k₀−2,_⟩ : Fin L`; `j.val + 1 = k₀−1`, `j.val + 2 = k₀`
+    have hjlt : k₀ - 2 < L := by omega
+    set j : Fin L := ⟨k₀ - 2, hjlt⟩ with hjdef
+    have hjLm1 : j.val < L - 1 := by simp only [hjdef]; omega
+    have hvanish := rBlock_cBlock_interior_eq_zero M hNo j hjLm1
+    rw [rBlock_eq_Text, cBlock_eq_Wext] at hvanish
+    have hj1 : j.val + 1 = k₀ - 1 := by simp only [hjdef]; omega
+    have hj2 : j.val + 2 = k₀ := by simp only [hjdef]; omega
+    rw [hj1, hj2] at hvanish
+    -- `hvanish : (Text (k₀−1) − Text k₀) · (Wext (k₀−1) − Text k₀) = 0` over ℤ; row factor > 0.
+    have hrowZ : (0 : ℤ) < (Text M (tach M) (k₀ - 1) : ℤ) - (Text M (tach M) k₀ : ℤ) := by
+      have : (Text M (tach M) k₀ : ℤ) < (Text M (tach M) (k₀ - 1) : ℤ) := by exact_mod_cast hrow
+      linarith
+    have hcolZ : (Wext M (k₀ - 1) : ℤ) - (Text M (tach M) k₀ : ℤ) = 0 := by
+      rcases mul_eq_zero.mp hvanish with h | h
+      · exact absurd h (by linarith [hrowZ])
+      · exact h
+    -- `Wext (k₀−1) = Text k₀ = deepRank`, and `Wext (k₀−1) = M ⟨k₀−1,_⟩`
+    have hWq : Wext M (k₀ - 1) = deepRank M := by
+      have : (Wext M (k₀ - 1) : ℤ) = (Text M (tach M) k₀ : ℤ) := by linarith [hcolZ]
+      rw [← hk₀]; exact_mod_cast this
+    refine ⟨k₀ - 1, by omega, by omega, ?_⟩
+    rw [Wext_apply M (k₀ - 1) (by omega)] at hWq
+    exact hWq
 
 /-! ## The packaged waist lemma (the `hMq` + `hwidth` the box supplier consumes) -/
 
-/-- **THE width-`r` waist for a boundary-smeared `M`** (`r = deepRank M`). Produces the waist index
-`q ≤ L−1` with `M ⟨q⟩ = deepRank M`, together with the FRONT-width lower bound `∀ t < L, deepRank ≤
-M ⟨t⟩` — exactly the `hMq`/`hwidth` inputs the carrier-corridor det machinery consumes. -/
-theorem smeared_waist (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hsm : BoundarySmeared M) :
+/-- **THE width-`r` waist for a boundary `M`** (`r = deepRank M`), under `NoInteriorBothDrop` (the same
+hypothesis the smeared/clean chart assembly + `minAdm_eq_deepRank_mul_last` carry). Produces the waist
+index `q ≤ L−1` with `M ⟨q⟩ = deepRank M`, together with the FRONT-width lower bound `∀ t < L, deepRank
+≤ M ⟨t⟩` — exactly the `hMq`/`hwidth` inputs the carrier-corridor det machinery consumes. -/
+theorem smeared_waist (M : Fin (L + 1) → ℕ) (hL : 0 < L) (hNo : NoInteriorBothDrop M) :
     ∃ q : ℕ, ∃ hq : q < L + 1, q ≤ L - 1 ∧ M ⟨q, hq⟩ = deepRank M
       ∧ (∀ t : ℕ, t < L → deepRank M ≤ Wext M t) := by
-  obtain ⟨q, hqL1, hqL, hMq⟩ := exists_waist_eq_deepRank M hL hsm
+  obtain ⟨q, hqL, hqLt, hMq⟩ := exists_waist_eq_deepRank M hL hNo
   refine ⟨q, by omega, hqL, ?_, ?_⟩
-  · convert hMq using 2
+  · exact hMq
   · intro t ht
     rw [Wext_apply M t (by omega)]
     exact deepRank_le_M_front M hL t ht
