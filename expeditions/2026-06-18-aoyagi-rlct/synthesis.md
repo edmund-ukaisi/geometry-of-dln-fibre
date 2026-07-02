@@ -10,6 +10,64 @@ Banking note, 2026-07-01: the determinant-domination finite wrapper batch was
 committed and pushed as `da154cdd`.  The current worktree is the dedicated
 expedition worktree, branch `expedition/aoyagi-rlct`.
 
+## Full Source-Image Prior Domination From Eventual Pullback Bounds - 2026-07-02
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+This is a wrapper around the input-image-bound theorem.  It replaces the
+explicit open-neighborhood input-image bounds
+
+```text
+forall E in sourceChart '' G, epsilon <= sourceImageDensity E
+forall E in sourceChart '' G, density E <= Kprior
+```
+
+by two pullback bounds eventually near the base passive-theta point:
+
+```text
+forall-eventually z in nhds z0, epsilon <= sourceImageDensity (sourceChart z)
+forall-eventually z in nhds z0, density (sourceChart z) <= Kprior.
+```
+
+The proof route is pure topology/bookkeeping.  Combine the two eventual
+hypotheses, use `eventually_nhds_iff` to obtain an open `G` containing `z0`
+where both bounds hold, turn each `E in sourceChart '' G` into a witness
+`E = sourceChart z`, and apply the input-image-bound wrapper.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-full-image-prior-domination-eventual-pullback-bounds-wrapper.md
+threads/03-block-product-reduction/statement-card-a2-case2-full-image-prior-domination-eventual-pullback-bounds-wrapper.md
+threads/03-block-product-reduction/review-a2-case2-full-image-prior-domination-eventual-pullback-bounds-wrapper.md
+```
+
+Verification passed:
+
+```text
+env LEAN_NUM_THREADS=3 lake env lean -E warning DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+env LEAN_NUM_THREADS=3 lake build DLNFibre
+lean/scripts/sorries
+git diff --check
+env LEAN_NUM_THREADS=3 lake env lean --stdin  # direct #print axioms audit
+```
+
+The theorem reports only `[propext, Classical.choice, Quot.sound]`.  Xhigh
+checker `Ramanujan` passed the reproduction and theorem-shape audit.
+
+Boundary: no proof of the eventual pullback bounds; no positivity,
+boundedness, or concrete identification of `sourceImageDensity`; no proof of
+the prior-density upper bound; no determinant-chart Haar transport, exact
+raw-Haar pushforward, raw-Haar normalization, source-image or source-rank
+coverage, normal crossings, pole order, or RLCT extraction.  The returned
+`V` depends on the already fixed `epsilon`, `density`, `Kprior`, and eventual
+bound hypotheses.
+
 ## Reorientation After VM Interruption - 2026-07-01
 
 Current worktree:

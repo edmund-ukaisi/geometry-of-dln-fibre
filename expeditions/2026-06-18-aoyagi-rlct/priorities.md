@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, full-image prior domination from eventual pullback bounds
+
+Lean now proves the eventual-pullback wrapper:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+It wraps the input-image-bound theorem.  Instead of asking the caller to first
+produce an explicit open `G` with pointwise density bounds on
+`sourceChart '' G`, it assumes the two pullback bounds eventually near the
+base passive-theta point:
+
+```text
+forall-eventually z in nhds z0, epsilon <= sourceImageDensity (sourceChart z)
+forall-eventually z in nhds z0, density (sourceChart z) <= Kprior.
+```
+
+The proof combines the two eventual facts, uses `eventually_nhds_iff` to choose
+an open `G` containing `z0`, converts bounds on `G` into bounds on
+`sourceChart '' G` by image witnesses, and then applies the input-image-bound
+wrapper.  The returned shrink `V` is chosen after `epsilon`, `density`,
+`Kprior`, and the eventual-bound proofs are fixed; there is no uniformity
+claim in future density bounds.
+
+Verification passed through focused elaboration, focused module build, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and
+direct theorem axiom probe.  The theorem reports only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Ramanujan` passed
+the reproduction and theorem-shape audit.
+
+Next priority: this exposes the form of local density hypotheses downstream
+continuity/positivity arguments should feed.  It still does not prove those
+eventual bounds, determinant-chart Haar transport, exact raw-Haar
+pushforward, raw-Haar normalization, source-image coverage, source-rank
+coverage, normal crossings, pole order, or RLCT extraction.
+
 ## Latest controller decision - 2026-07-01, full-image prior domination from input-image bounds
 
 Lean now proves the input-image-bound wrapper:
