@@ -179,7 +179,7 @@ theorem wideCarrierBound_suffix_uniformEta (M : Fin (L + 1) → ℕ) {δ : ℝ} 
 EVERY front-carrier `u`. The width lower bound is over FRONT layers `t < L` only (the deepest `M ⟨L⟩` is
 not in the carrier corridor). -/
 theorem waist_carrier_data_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (hrs : r + s = M ((deepLayerS hL).castSucc))
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
@@ -240,7 +240,7 @@ Acc` from `waist_carrier_data_uniform`, set `γ := dlb − (r−1)·nb`. If `(r�
 (the small-`η` margin, `u`-free), then `γ > 0` and every front-carrier `u` with `det (P₁ᵀP₁) ≠ 0` has
 `|Lam0uG u a b| ≤ (1/γ)·nb`. The uniform (`∀ u`) analog of `Lam0uG_entry_bound`. -/
 theorem Lam0uG_entry_bound_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (hrs : r + s = M ((deepLayerS hL).castSucc))
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
@@ -318,7 +318,7 @@ theorem wideCarrierBound_frontProd_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L
 (δ/2)^{L−1}` then every all-front-carrier `u` has `det ((P1uG u)ᵀ P1uG u) ≠ 0`. The uniform (`∀ u`)
 analog of `gram_det_ne_of_carrierLayers`. -/
 theorem gram_det_ne_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (hrs : r + s = M ((deepLayerS hL).castSucc))
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
     (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
@@ -354,7 +354,7 @@ theorem gram_det_ne_uniform (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 `r·(η·Acc_G) < (δ/2)^{L−1}`, every all-front-carrier `u` (at that `η`) has `det ((P1uG u)ᵀ P1uG u) ≠ 0`.
 The η-free `Acc_G` lets the box supplier fix `η*` against it. -/
 theorem gram_det_ne_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc))
+    (hrs : r + s = M ((deepLayerS hL).castSucc))
     {δ : ℝ} (hδ : 0 < δ) (hr : 0 < r)
     (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
@@ -390,7 +390,7 @@ theorem gram_det_ne_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 `u`-free `nb ≤ η·Acc_Λ` and a `u`-free lower bound `dlb ≥ (δ/2)^{L−1−q} − η·Acc_Λ`, with the
 factorization + carrier bounds holding for every front-carrier `u` at that `η`. -/
 theorem waist_carrier_data_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) {δ : ℝ} (hδ : 0 < δ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) {δ : ℝ} (hδ : 0 < δ)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
     ∃ Acc : ℝ, 0 ≤ Acc ∧ ∀ (η : ℝ), 0 ≤ η → η ≤ δ →
@@ -449,7 +449,7 @@ with `nb ≤ η·Acc_Λ`, the `u`-free γ lower bound `(δ/2)^{L−1−q} − η
 `((r−1)·nb < (δ/2)^{L−1−q} − η·Acc_Λ → 0 < γ)`, and (if `γ > 0`) `|Lam0uG u a b| ≤ (1/γ)·nb` for every
 front-carrier `u` with `det (P₁ᵀP₁) ≠ 0`. -/
 theorem Lam0uG_entry_bound_uniformEta (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) {δ : ℝ} (hδ : 0 < δ) (hr : 0 < r)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) {δ : ℝ} (hδ : 0 < δ) (hr : 0 < r)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t) :
     ∃ Acc : ℝ, 0 ≤ Acc ∧ ∀ (η : ℝ), 0 ≤ η → η ≤ δ →

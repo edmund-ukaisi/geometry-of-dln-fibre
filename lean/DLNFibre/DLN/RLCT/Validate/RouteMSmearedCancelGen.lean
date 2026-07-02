@@ -67,7 +67,7 @@ theorem frontProd_factorsThrough_waist (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 Feeds the banked `frontShear_cancel_general` with `ρ = deepWidthEquiv ∘ inl`, `σ = deepWidthEquiv ∘ inr`
 (the atom-shaped `hrsAtom` split); `Lam0uG = (P₁ᵀP₁)⁻¹ P₁ᵀ P₂` is exactly the projection routing. -/
 theorem hcancelG_of_waist (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hVρ : ∀ (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ),
       frontProd M (frontTupleG M u) hL = U * V →
@@ -109,7 +109,7 @@ theorem mul_eq_zero_of_gram_det_ne {m0 r' t : ℕ} (P₁ : Matrix (Fin m0) (Fin 
 
 /-- **`HbarUnitG` is a nonzero matrix.** Its pivot entry `(⟨0,hr⟩, ⟨0,hc⟩)` is the constant `1`. -/
 theorem HbarUnitG_ne_zero (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (u : Fin (routeMAmbient M) → ℝ) : HbarUnitG M hL hrs hr hc u ≠ 0 := by
   intro h0
   have hpiv : HbarUnitG M hL hrs hr hc u ⟨0, hr⟩ ⟨0, hc⟩ = 1 := by
@@ -122,7 +122,7 @@ theorem HbarUnitG_ne_zero (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 column rank makes `P₁·(·)` left-injective, so `P₁·H̄_unit ≠ 0`, hence its Frobenius sum is positive. The
 tall-`P₁` analog of the square `Uunit_pos_of_det_ne`. -/
 theorem UunitG_pos_of_gram_det_ne (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (u : Fin (routeMAmbient M) → ℝ)
     (hdet : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0) :
     0 < UunitG M hL hrs hr hc u := by

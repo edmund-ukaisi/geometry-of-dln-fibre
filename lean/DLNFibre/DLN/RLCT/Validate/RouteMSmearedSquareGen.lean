@@ -13,7 +13,7 @@ decoded flat coord of `psiMapG (RmapG u)` by `ε` on the conditioned box `boxGen
 The decode (`genDecode_params`) says `(paramsEquivFlat M).symm (psiMapG (RmapG u)) = chartGenParams …`,
 so each flat coord is a `chartGenParams` entry. The three entry families:
 
-* **front layers** `t ≠ deepLayer`: `frontTupleG u t i j = u (coordOfG (frontSlotG t i j))`, a direct
+* **front layers** `t ≠ deepLayerS`: `frontTupleG u t i j = u (coordOfG (frontSlotG t i j))`, a direct
   box coord (`≤ δ`);
 * **deep-bottom rows** `S_bot b j = u (coordOfG (botSlotG b j))`, a direct box coord (`≤ η`);
 * **deep-top rows** `(z·H̄_unit − Λ₀·S_bot) a j`: the radial `z·H̄` (`≤ δ·1`) minus the shear
@@ -144,7 +144,7 @@ theorem coordOfG_slotEquivG (M : Fin (L + 1) → ℕ) (i : Fin (routeMAmbient M)
 `paramsEquivFlat ∘ packM ∘ shearMBody`, and `packM`/`paramsEquivFlat` cancel back to the shear value at
 the coord `coordOfG (slotEquivG i) = i`. -/
 theorem psiMapG_RmapG_flat (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (u : Fin (routeMAmbient M) → ℝ) (i : Fin (routeMAmbient M)) :
     psiMapG M hL hrs (RmapG M hL hrs hr hc u) i
       = shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs) (RmapG M hL hrs hr hc u) i := by
@@ -185,7 +185,7 @@ factorization `frontProd = U·V` (`V : r × M⟨L−1⟩` via the `Fin.cast M⟨
 `CarrierBound` on `Vρ := V[:, ρ]` and a uniform bound on `Vσ := V[:, σ]`, all with the fused
 `nb ≤ η·Acc`, `(δ/2)^{L−1−q} − η·Acc ≤ dlb` invariant. -/
 theorem waist_carrier_data (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
@@ -251,7 +251,7 @@ theorem waist_carrier_data (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 the Varah `inv_mul_entry_bound` bites with the residual column bound `nb`. The existential returns
 `γ, nb, Acc` so the box supplier can pick `η` to make `γ > 0`. -/
 theorem Lam0uG_entry_bound (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
@@ -307,25 +307,25 @@ slot (that needs layer `< L−1`), so its coord lies in `[−η,η]`. The pivot 
 
 /-- A deepest-top slot is not a `slotBoxGen` carrier-diagonal slot (it is at layer `L−1`). -/
 theorem topSlotG_not_carrierDiag (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (a : Fin r) (j : Fin (M ((deepLayerS hL).succ))) :
     ¬ ((topSlotG M hL hrs a j).1.1.val < L - 1 ∧
         ((topSlotG M hL hrs a j).1.2.val : ℕ) < r ∧ ((topSlotG M hL hrs a j).2.val : ℕ) < r
         ∧ (topSlotG M hL hrs a j).1.2.val = (topSlotG M hL hrs a j).2.val) := by
   rintro ⟨hlt, _, _, _⟩
-  simp only [topSlotG, deepLayer] at hlt; omega
+  simp only [topSlotG, deepLayerS] at hlt; omega
 
 /-- A deepest-bottom slot is not a `slotBoxGen` carrier-diagonal slot (it is at layer `L−1`). -/
 theorem botSlotG_not_carrierDiag (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayerS hL).succ))) :
     ¬ ((botSlotG M hL hrs b j).1.1.val < L - 1 ∧
         ((botSlotG M hL hrs b j).1.2.val : ℕ) < r ∧ ((botSlotG M hL hrs b j).2.val : ℕ) < r
         ∧ (botSlotG M hL hrs b j).1.2.val = (botSlotG M hL hrs b j).2.val) := by
   rintro ⟨hlt, _, _, _⟩
-  simp only [botSlotG, deepLayer] at hlt; omega
+  simp only [botSlotG, deepLayerS] at hlt; omega
 
 /-- **`|z| ≤ δ`** on the box: the pivot value `z = u pivotCoordG ∈ Ioo 0 δ`. -/
 theorem zuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ : ℝ} {u : Fin (routeMAmbient M) → ℝ}
     (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ) :
     |zuG M hL hrs hr hc u| ≤ δ := by
@@ -333,10 +333,10 @@ theorem zuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- **`|H̄_unit a j| ≤ 1`** on the box (`η ≤ 1`): the pivot entry is `1`, the others `∈ [−η,η]`. -/
 theorem HbarUnitG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η : ℝ} (hη1 : η ≤ 1) {u : Fin (routeMAmbient M) → ℝ}
     (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
-    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    (a : Fin r) (j : Fin (M ((deepLayerS hL).succ))) :
     |HbarUnitG M hL hrs hr hc u a j| ≤ 1 := by
   rw [HbarUnitG]
   by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
@@ -348,12 +348,12 @@ theorem HbarUnitG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- **`|S_bot b j| ≤ η`** on the box (a deepest-bottom slot is `∈ [−η,η]`). -/
 theorem SbotuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η : ℝ} {u : Fin (routeMAmbient M) → ℝ}
     (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
-    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayerS hL).succ)),
       coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
-    (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    (b : Fin s) (j : Fin (M ((deepLayerS hL).succ))) :
     |SbotuG M hL hrs u b j| ≤ η := by
   have hval := hrest (coordOfG M (botSlotG M hL hrs b j)) (hbotne b j)
   rw [boxGen_coordOfG] at hval
@@ -363,8 +363,8 @@ theorem SbotuG_abs_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- **The top-slot decode value.** At a top-slot coord, `psiMapG (RmapG u) = (z•H̄ − Λ₀·S_bot) a j`. -/
 theorem psiMapG_RmapG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
-    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
+    (u : Fin (routeMAmbient M) → ℝ) (a : Fin r) (j : Fin (M ((deepLayerS hL).succ))) :
     psiMapG M hL hrs (RmapG M hL hrs hr hc u) (coordOfG M (topSlotG M hL hrs a j))
       = (zuG M hL hrs hr hc u • HbarUnitG M hL hrs hr hc u
           - Lam0uG M hL hrs u * SbotuG M hL hrs u) a j := by
@@ -373,15 +373,15 @@ theorem psiMapG_RmapG_topSlotG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 /-- **The deep-top entry bound.** `|(z•H̄ − Λ₀·S_bot) a j| ≤ δ + s·((1/γ)·nb)·η` on the box: the radial
 `|z·H̄| ≤ δ·1`, the shear `|(Λ₀·S_bot) a j| ≤ ∑_b |Λ₀ a b|·|S_bot b j| ≤ s·((1/γ)·nb)·η`. -/
 theorem deepTopG_entry_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη1 : η ≤ 1) (_hηpos : 0 ≤ η) (hnb0 : 0 ≤ nb)
     {u : Fin (routeMAmbient M) → ℝ}
     (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ)
     (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
-    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayerS hL).succ)),
       coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
     (hLam : ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb)
-    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    (a : Fin r) (j : Fin (M ((deepLayerS hL).succ))) :
     |(zuG M hL hrs hr hc u • HbarUnitG M hL hrs hr hc u
         - Lam0uG M hL hrs u * SbotuG M hL hrs u) a j|
       ≤ δ + (s : ℝ) * ((1 / γ) * nb) * η := by
@@ -419,13 +419,13 @@ theorem deepTopG_entry_le_of_box (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   under the field-A margin `s·((1/γ)nb)·η ≤ δ`;
 * `i ∉ topCoordsG` (a front OR bottom slot, `psiMapG (RmapG u) i = u i`): a box coord, `≤ δ ≤ 2δ`. -/
 theorem psiMapG_RmapG_flat_le (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
     (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
     {u : Fin (routeMAmbient M) → ℝ}
     (hpivot : u (pivotCoordG M hL hrs hr hc) ∈ Set.Ioo (0 : ℝ) δ)
     (hrest : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
-    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayerS hL).succ)),
       coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
     (hLam : ∀ a : Fin r, ∀ b : Fin s, |Lam0uG M hL hrs u a b| ≤ (1 / γ) * nb)
     (i : Fin (routeMAmbient M)) :
@@ -459,10 +459,10 @@ in `cubeBox 2δ`: every flat coord `|psiMapG (RmapG u) i| ≤ 2δ` (`psiMapG_Rma
 `s·((1/γ)nb)·η ≤ δ` as inputs — both discharged by the box supplier's `η`-choice. The general-`L`
 analog of the L=2 `condBox_subset_preimage`. -/
 theorem condBox_subset_preimage_gen (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
     (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
-    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayerS hL).succ)),
       coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
     (hLam : ∀ (u : Fin (routeMAmbient M) → ℝ),
       u ∈ condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ →
@@ -492,12 +492,12 @@ with `box₀ := fun j => boxGen (hN ▸ j)`, `ε = 2δ`): `condBox (hN ▸ p) (f
 (ψ∘R)⁻¹(cubeBox 2δ)`, `hN ▸ p = pivotCoordG`. Restates `condBox_subset_preimage_gen` through the
 double-cast collapse. The `hSpre` input the general-`L` box supplier feeds `smearedChartDataGen_of_dets`. -/
 theorem hSpre_gen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
     {δ η γ nb : ℝ} (hδ : 0 < δ) (hγ : 0 < γ) (hη : η ≤ δ) (hη1 : η ≤ 1) (hηpos : 0 ≤ η)
     (hnb0 : 0 ≤ nb) (hfieldA : (s : ℝ) * ((1 / γ) * nb) * η ≤ δ)
-    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayer hL).succ)),
+    (hbotne : ∀ b : Fin s, ∀ j : Fin (M ((deepLayerS hL).succ)),
       coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc)
     (hLam : ∀ (u : Fin (routeMAmbient M) → ℝ),
       u ∈ condBox (pivotCoordG M hL hrs hr hc) (boxGen M hL r δ η) δ →

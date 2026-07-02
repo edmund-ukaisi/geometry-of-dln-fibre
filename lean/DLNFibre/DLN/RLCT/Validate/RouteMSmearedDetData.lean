@@ -37,7 +37,7 @@ peeled cancellation point AND at each `z=0` positivity point) and `hWaist` (the 
 cancellation point) are the two box conditions. All the mechanical chart fields (fderiv, det, `Uy`
 measurability, the rate) come from `smearedChartDataGen`. -/
 noncomputable def smearedChartDataGen_of_dets {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
     (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
@@ -63,7 +63,7 @@ noncomputable def smearedChartDataGen_of_dets {n : ℕ} (M : Fin (L + 1) → ℕ
           (V.submatrix (id : _ → _)
             (fun k : Fin r => deepWidthEquiv (hrsAtom_of_hrs hL hrs) (Sum.inl k))).det ≠ 0) :
     SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
-      (r * M ((deepLayer hL).succ) - 1) ε :=
+      (r * M ((deepLayerS hL).succ) - 1) ε :=
   smearedChartDataGen M hL hrs hr hc hN p e1 e2 hp ε δ₀ box₀ hδ₀ hSpre hRinj
     hboxmeas hboxmeasAll hboxpos
     (fun z hz y hy => hcancelG_of_waist M hL hrs (hN ▸ (Fin.insertNth p z y)) q hq hqL hMq

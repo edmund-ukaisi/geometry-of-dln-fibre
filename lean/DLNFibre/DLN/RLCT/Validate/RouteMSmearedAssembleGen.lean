@@ -18,10 +18,10 @@ conditioned analytic inputs — the cancellation `P₁·Λ₀ = P₂` on the box
   `z`/`U` peel (`zuG = z`, `Uy y := UunitG (hN ▸ insertNth p 0 y)` z-free) FOLDED in, so only the
   genuinely-analytic per-family inputs remain.
 
-The radial Jacobian exponent is `r · M (deepLayer).succ − 1 = deepRank · M_L − 1 = minAdm M − 1`
+The radial Jacobian exponent is `r · M (deepLayerS).succ − 1 = deepRank · M_L − 1 = minAdm M − 1`
 (via the banked `minAdm_eq_deepRank_mul_last`), with `r = deepRank M` — the FIDELITY constraint that
 exactly the `r·c` deepest-top coords are radial-active (K's coords are FREE spectators, sheared not
-radial). This module states `routeMCore_smearedGen` with `r` free (`h := r · M (deepLayer).succ − 1`);
+radial). This module states `routeMCore_smearedGen` with `r` free (`h := r · M (deepLayerS).succ − 1`);
 the `r = deepRank` specialization (matching `minAdm`) is the caller's choice at the chart bundle.
 -/
 
@@ -44,7 +44,7 @@ theorem hNG_cast_apply {n : ℕ} (M : Fin (L + 1) → ℕ) (hN : routeMAmbient M
 
 /-- **The `z`-readoff under the peel.** `zuG (hN ▸ insertNth p z y) = z` when `hN ▸ p = pivotCoordG`. -/
 theorem zuG_hN_insertNth {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
     zuG M hL hrs hr hc (hN ▸ (Fin.insertNth p z y)) = z := by
@@ -52,7 +52,7 @@ theorem zuG_hN_insertNth {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- The two peeled points `hN ▸ insertNth p z y` and `hN ▸ insertNth p 0 y` agree off `pivotCoordG`. -/
 theorem hNG_insertNth_agree_off_pivot {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
     ∀ m, m ≠ pivotCoordG M hL hrs hr hc →
@@ -71,7 +71,7 @@ theorem hNG_insertNth_agree_off_pivot {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 
 
 /-- **The `z`-free peeled unit** `UunitG (hN ▸ insertNth p z y) = UunitG (hN ▸ insertNth p 0 y)`. -/
 theorem UunitG_hN_insertNth {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc) (z : ℝ) (y : Fin n → ℝ) :
     UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p z y))
@@ -126,19 +126,19 @@ theorem measurable_frontProd_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- Each `P1uG` entry is measurable (a `frontProd` entry). -/
 theorem measurable_P1uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (i : Fin (M 0)) (a : Fin r) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (i : Fin (M 0)) (a : Fin r) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => P1uG M hL hrs u i a) :=
   measurable_frontProd_entry M hL i _
 
 /-- Each `P2uG` entry is measurable. -/
 theorem measurable_P2uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (i : Fin (M 0)) (b : Fin s) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (i : Fin (M 0)) (b : Fin s) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => P2uG M hL hrs u i b) :=
   measurable_frontProd_entry M hL i _
 
 /-- Each `Lam0uG` entry is measurable (the `(P₁ᵀP₁)⁻¹P₁ᵀP₂` chain via `measurable_lamEntry`). -/
 theorem measurable_Lam0uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (a : Fin r) (b : Fin s) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (a : Fin r) (b : Fin s) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => Lam0uG M hL hrs u a b) :=
   measurable_lamEntry (fun u => P1uG M hL hrs u) (fun u => P2uG M hL hrs u)
     (fun i a => measurable_P1uG_entry M hL hrs i a)
@@ -146,14 +146,14 @@ theorem measurable_Lam0uG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- Each `SbotuG` entry is a coordinate projection (measurable). -/
 theorem measurable_SbotuG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (b : Fin s) (j : Fin (M ((deepLayerS hL).succ))) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => SbotuG M hL hrs u b j) :=
   measurable_pi_apply _
 
 /-- Each `HbarUnitG` entry is measurable (a coordinate projection or the constant `1`). -/
 theorem measurable_HbarUnitG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
-    (a : Fin r) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
+    (a : Fin r) (j : Fin (M ((deepLayerS hL).succ))) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => HbarUnitG M hL hrs hr hc u a j) := by
   unfold HbarUnitG
   by_cases hpiv : coordOfG M (topSlotG M hL hrs a j) = pivotCoordG M hL hrs hr hc
@@ -162,7 +162,7 @@ theorem measurable_HbarUnitG_entry (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- `u ↦ UunitG M hL hrs hr hc u` is measurable (a finite sum of squares of `P₁·H̄_unit` entries). -/
 theorem measurable_UunitG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ)) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ)) :
     Measurable (fun u : Fin (routeMAmbient M) → ℝ => UunitG M hL hrs hr hc u) := by
   unfold UunitG
   refine Finset.measurable_sum _ (fun i _ => Finset.measurable_sum _ (fun j _ => ?_))
@@ -173,7 +173,7 @@ theorem measurable_UunitG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- `u' ↦ shiftFullG M hL hrs u' m` is measurable (a finite signed sum of `Λ₀`/`S_bot` products). -/
 theorem measurable_shiftFullG_coord (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (m : Fin (routeMAmbient M)) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (m : Fin (routeMAmbient M)) :
     Measurable (fun u' : Fin (routeMAmbient M) → ℝ => shiftFullG M hL hrs u' m) := by
   unfold shiftFullG
   refine (Finset.measurable_sum _ (fun a _ => Finset.measurable_sum _ (fun j _ => ?_))).neg
@@ -185,7 +185,7 @@ theorem measurable_shiftFullG_coord (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 
 /-- `shiftCoreG` is measurable (reconstruct via the `splitOfCoreSet.symm` ME, then `shiftFullG`). -/
 theorem measurable_shiftCoreG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) : Measurable (shiftCoreG M hL hrs) := by
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) : Measurable (shiftCoreG M hL hrs) := by
   apply measurable_pi_iff.2
   intro jc
   unfold shiftCoreG
@@ -204,7 +204,7 @@ banked measure-preserving `MeasurableEquiv`s; `shearMBody` is MP for the measura
 /-- `psiMapG` is measure-preserving (the three-factor composition, `shearMBody` MP via
 `measurable_shiftCoreG`, the two flat `MeasurableEquiv`s MP). -/
 theorem measurePreserving_psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) :
     MeasurePreserving (psiMapG M hL hrs)
       (volume : Measure (Fin (routeMAmbient M) → ℝ)) volume := by
   have hshear : MeasurePreserving (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs))
@@ -219,7 +219,7 @@ theorem measurePreserving_psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 /-- `psiMapG` is a measurable embedding (the composition of the shear `MeasurableEmbedding` and the two
 flat `MeasurableEquiv`s' embeddings). -/
 theorem measurableEmbedding_psiMapG (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) :
     MeasurableEmbedding (psiMapG M hL hrs) := by
   have h1 : MeasurableEmbedding (shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs)) :=
     measurableEmbedding_shearMBody (topCoordsG M hL hrs) (shiftCoreG M hL hrs)
@@ -243,12 +243,12 @@ the `Uy` measurability — the mechanical `psiMapG`/`UunitG` plumbing, isolated 
 (discharged per-family or by the `frontProd`-polynomial-measurability residue). -/
 
 /-- **The general-`L` conditioned-box boundary-smeared box-divergence.** For `M : Fin (L+1) → ℕ`,
-`0 < L`, the front-bottleneck split `r + s = M (deepLayer hL).castSucc`, `0 < r`, `0 < M
-(deepLayer).succ`, `routeMAmbient M = n + 1`, and the binding pivot `p` (`hN ▸ p = pivotCoordG`): the
+`0 < L`, the front-bottleneck split `r + s = M (deepLayerS hL).castSucc`, `0 < r`, `0 < M
+(deepLayerS).succ`, `routeMAmbient M = n + 1`, and the binding pivot `p` (`hN ▸ p = pivotCoordG`): the
 achiever box integral `∫⁻_{cubeBox N ε} |routeMCore M|^{−c'} = ⊤`, given
 
 * `ψ := psiMapG` measure-preserving + a measurable embedding (the mechanical shear-∘-reshape facts);
-* the exponent `(r·M(deepLayer).succ − 1 : ℝ) − 2c' ≤ −1` (`= minAdm − 1 − 2c'`, from `c' ≥ ½·minAdm`);
+* the exponent `(r·M(deepLayerS).succ − 1 : ℝ) − 2c' ≤ −1` (`= minAdm − 1 − 2c'`, from `c' ≥ ½·minAdm`);
 * the shear cancellation `P₁·Λ₀ = P₂` on each peeled point (off the pole — K-free-spectator);
 * `U`-positivity `0 < UunitG (hN ▸ insertNth p 0 y)` on the conditioned rest box;
 * FIELD-A containment + box measurability/positivity + `Uy` measurability.
@@ -256,7 +256,7 @@ achiever box integral `∫⁻_{cubeBox N ε} |routeMCore M|^{−c'} = ⊤`, give
 The chart facts (radial fderiv/injOn/det, the peeled rate's `z²·UunitG` form) are DISCHARGED from the
 general-`L` radial machinery + `routeMCore_psiMapG_RmapG`. -/
 theorem routeMCore_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1)) (box : Fin (n + 1) → Set ℝ)
     (c' ε δ : ℝ) (hδ : 0 < δ)
     (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
@@ -271,7 +271,7 @@ theorem routeMCore_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hboxmeasAll : ∀ k : Fin (routeMAmbient M), MeasurableSet ((fun k => box (hN ▸ k)) k))
     (hboxpos : 0 < (volume : Measure (Fin n → ℝ))
       (Set.univ.pi (fun k : Fin n => box (p.succAbove k))))
-    (hexp : ((r * M ((deepLayer hL).succ) - 1 : ℕ) : ℝ) - 2 * c' ≤ -1)
+    (hexp : ((r * M ((deepLayerS hL).succ) - 1 : ℕ) : ℝ) - 2 * c' ≤ -1)
     (hUmeas : Measurable
       (fun y : Fin n → ℝ => UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))))
     (hcancel : ∀ z ∈ Set.Ioo (0:ℝ) δ, ∀ y ∈ Set.univ.pi (fun k : Fin n => box (p.succAbove k)),
@@ -282,7 +282,7 @@ theorem routeMCore_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     ∫⁻ x in cubeBox (routeMAmbient M) ε,
       ENNReal.ofReal (|routeMCore M x| ^ (-c')) = ⊤ := by
   refine routeMCore_box_diverges_smearedL2 (M := M) (n := n) hN (psiMapG M hL hrs)
-    (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p box (r * M ((deepLayer hL).succ) - 1) c' ε δ
+    (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p box (r * M ((deepLayerS hL).succ) - 1) c' ε δ
     (fun y => UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))) hδ hmp hemb hSpre ?_ ?_ ?_
     hboxmeas hboxmeasAll hboxpos hUmeas hexp ?_ hUpos
   · -- `RmapG` fderiv on the box
@@ -296,7 +296,7 @@ theorem routeMCore_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
       simp only [Set.mem_setOf_eq, ← hp]
       exact ne_of_gt (Set.mem_Ioo.mp hpiv).1
     exact (RmapG_injOn M hL hrs hr hc Set.univ).mono (by rw [hp] at hsub ⊢; exact hsub)
-  · -- `|det (DmapG u)| = |u (hN ▸ p)|^(r·M(deepLayer).succ − 1)`
+  · -- `|det (DmapG u)| = |u (hN ▸ p)|^(r·M(deepLayerS).succ − 1)`
     intro u _
     rw [DmapG_abs_det M hL hrs hr hc, hp]
   · -- the PEELED RATE: `routeMCore M (psiMapG (RmapG (hN ▸ insertNth p z y))) = z²·UunitG`
@@ -316,11 +316,11 @@ generic maps and the peeled rate are DISCHARGED from the general-`L` machinery. 
 already-∀L `hSmeared_of_smearedChart` gives the spine's `hSmeared` for `M`. -/
 
 /-- **The per-ε conditioned chart data at general `L`** (the `SmearedChartData` for `psiMapG`/`RmapG`/
-`DmapG`, radial exponent `r·M(deepLayer).succ − 1`), built from the supplied conditioned box + its
+`DmapG`, radial exponent `r·M(deepLayerS).succ − 1`), built from the supplied conditioned box + its
 analytic inputs. The `hRate` field is discharged from the rate bridge + the `z`/`U` peel; `Uy :=
 UunitG (hN ▸ insertNth p 0 ·)` is the z-free unit, measurable via `measurable_UunitG`. -/
 noncomputable def smearedChartDataGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
     (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
@@ -340,7 +340,7 @@ noncomputable def smearedChartDataGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 
     (hUpos : ∀ y ∈ Set.univ.pi (fun k : Fin n => box₀ (p.succAbove k)),
       0 < UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))) :
     SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
-      (r * M ((deepLayer hL).succ) - 1) ε where
+      (r * M ((deepLayerS hL).succ) - 1) ε where
   δ := δ₀
   box := box₀
   Uy := fun y => UunitG M hL hrs hr hc (hN ▸ (Fin.insertNth p (0:ℝ) y))
@@ -370,17 +370,17 @@ noncomputable def smearedChartDataGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 
 
 /-- **The general-`L` `SmearedAchieverChart` for `M`.** Bundles the general-`L` chart maps
 (`psiMapG`/`RmapG`/`DmapG`, MP + a measurable embedding), the pivot `p`, radial exponent
-`r·M(deepLayer).succ − 1`, and the per-ε conditioned data supplier (`smearedChartDataGen`). The
-exponent field `hexp` uses the caller-supplied `minAdm` match `hminadm : r · M(deepLayer).succ =
+`r·M(deepLayerS).succ − 1`, and the per-ε conditioned data supplier (`smearedChartDataGen`). The
+exponent field `hexp` uses the caller-supplied `minAdm` match `hminadm : r · M(deepLayerS).succ =
 minAdm M` (from `minAdm_eq_deepRank_mul_last` at `r = deepRank`) with `1 ≤ minAdm M`, giving
 `(minAdm − 1) − minAdm = −1 ≤ −1`. -/
 noncomputable def smearedChartGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
-    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (hminadm : r * M ((deepLayerS hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
     (dataGen : ∀ ε : ℝ, 0 < ε →
       SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
-        (r * M ((deepLayer hL).succ) - 1) ε) :
+        (r * M ((deepLayerS hL).succ) - 1) ε) :
     SmearedAchieverChart M where
   n := n
   hN := hN
@@ -388,7 +388,7 @@ noncomputable def smearedChartGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < 
   R := RmapG M hL hrs hr hc
   D := DmapG M hL hrs hr hc
   p := p
-  h := r * M ((deepLayer hL).succ) - 1
+  h := r * M ((deepLayerS hL).succ) - 1
   hmp := measurePreserving_psiMapG M hL hrs
   hemb := measurableEmbedding_psiMapG M hL hrs
   hexp := by
@@ -405,12 +405,12 @@ per-ε conditioned-data supplier, the boundary-smeared branch's `hSmeared` holds
 and `BoundarySmeared M`, the achiever box integral diverges (`c' ≥ ½·minAdm M`, `ε > 0`). Feeds
 `smearedChartGen` into the already-∀L `hSmeared_of_smearedChart`. -/
 theorem hSmeared_smearedGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
-    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (hminadm : r * M ((deepLayerS hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
     (dataGen : ∀ ε : ℝ, 0 < ε →
       SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
-        (r * M ((deepLayer hL).succ) - 1) ε)
+        (r * M ((deepLayerS hL).succ) - 1) ε)
     (c' : NNReal) (hc' : (minAdm M : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞)) (ε : ℝ) (hε : 0 < ε) :
     (2 ≤ L) → BoundarySmeared M →
       ∫⁻ x in cubeBox (routeMAmbient M) ε,

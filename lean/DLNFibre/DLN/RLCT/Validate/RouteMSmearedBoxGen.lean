@@ -171,7 +171,7 @@ frontProd (frontTupleG u) i (deepWidthEquiv(inl k))`, and `deepWidthEquiv(inl k)
 selecting the first `r` rows and columns `deepWidthEquiv(inl)` gives exactly the first-`r×r` block of
 `frontProd = prodAux (L−1)`. -/
 theorem P1uG_submatrix_eq_carrierBlock (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
     (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
     (i j : Fin r) :
     (P1uG M hL hrs u).submatrix (fun a : Fin r => (⟨a, lt_of_lt_of_le a.isLt hr0⟩ : Fin (M 0)))
@@ -191,7 +191,7 @@ theorem P1uG_submatrix_eq_carrierBlock (hL : 0 < L)
 (the `frontProd` carrier block) is nonzero (`carrierBlock_prodAux_det_ne`), so `P₁` has full column
 rank (`gram_det_ne_zero_of_submatrix_det_ne`). -/
 theorem gram_det_ne_of_carrierLayers (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (u : Fin (routeMAmbient M) → ℝ)
     {δ η : ℝ} (hδ : 0 < δ) (hη : 0 ≤ η) (hηδ : η ≤ δ) (hr : 0 < r)
     (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
     (hwidth : ∀ t : ℕ, ∀ ht : t < L + 1, r ≤ M ⟨t, ht⟩)
@@ -283,7 +283,7 @@ theorem frontTupleG_carrierLayer_of_boxGen (M : Fin (L + 1) → ℕ) (hL : 0 < L
 /-- **`P₁ = U · V_ρ` for the waist factorization.** For `frontProd u = U · V` (the width-`r` waist
 split), `P1uG u = U · (V.submatrix id ρ)` with `ρ = deepWidthEquiv ∘ inl`: `P1uG` selects the `ρ`
 columns of `frontProd = U·V`, i.e. `U` times `V`'s `ρ` columns. -/
-theorem P1uG_eq_mul_Vrho (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc))
+theorem P1uG_eq_mul_Vrho (hL : 0 < L) (hrs : r + s = M ((deepLayerS hL).castSucc))
     (u : Fin (routeMAmbient M) → ℝ)
     (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ)
     (hUV : frontProd M (frontTupleG M u) hL = U * V) :
@@ -297,7 +297,7 @@ theorem P1uG_eq_mul_Vrho (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc)
 /-- **`hWaist` from the Gram det.** If `det ((P1uG u)ᵀ P1uG u) ≠ 0` (`P₁` rank `r`) then for any
 width-`r` waist factorization `frontProd u = U · V`, the top-`r` block `V[:, ρ]` is invertible
 (`det ≠ 0`) — `P₁ = U · V_ρ` has rank `r`, so `V_ρ` (`r×r`) is a unit (`right_factor_det_ne_of_rank_eq`). -/
-theorem waist_det_ne_of_gram (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castSucc))
+theorem waist_det_ne_of_gram (hL : 0 < L) (hrs : r + s = M ((deepLayerS hL).castSucc))
     (u : Fin (routeMAmbient M) → ℝ)
     (hgram : ((P1uG M hL hrs u).transpose * P1uG M hL hrs u).det ≠ 0)
     (U : Matrix (Fin (M 0)) (Fin r) ℝ) (V : Matrix (Fin r) (Fin (M ⟨L - 1, by omega⟩)) ℝ)
@@ -320,7 +320,7 @@ theorem waist_det_ne_of_gram (hL : 0 < L) (hrs : r + s = M ((deepLayer hL).castS
 lies in `Ioo 0 δ₀` (`> 0 ≠ 0`), so `condBox ⊆ S \ {pivot = 0}`, where `RmapG_injOn` applies (`hp`
 identifies `hN▸p` with `pivotCoordG`). -/
 theorem RmapG_injOn_condBox (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (pv : Fin (routeMAmbient M))
     (hp : pv = pivotCoordG M hL hrs hr hc)
     (box : Fin (routeMAmbient M) → Set ℝ) (δ₀ : ℝ) :

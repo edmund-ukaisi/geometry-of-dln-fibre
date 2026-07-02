@@ -32,22 +32,22 @@ variable {L : ℕ} {M : Fin (L + 1) → ℕ} {r s : ℕ}
 
 /-- **A deepest-bottom slot's coord is not the pivot** (bottom ∉ topCoords, pivot ∈ topCoords). -/
 theorem coordOfG_botSlotG_ne_pivot (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
-    (b : Fin s) (j : Fin (M ((deepLayer hL).succ))) :
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
+    (b : Fin s) (j : Fin (M ((deepLayerS hL).succ))) :
     coordOfG M (botSlotG M hL hrs b j) ≠ pivotCoordG M hL hrs hr hc := by
   intro heq
   have hmem : coordOfG M (botSlotG M hL hrs b j) ∈ topCoordsG M hL hrs := by
     rw [heq]; exact pivotCoordG_mem M hL hrs hr hc
   exact coordOfG_botSlotG_not_mem M hL hrs b j hmem
 
-/-- **The front-slot coord of a free layer `t.val < L−1` is not the pivot** (`t ≠ deepLayer`, so the
+/-- **The front-slot coord of a free layer `t.val < L−1` is not the pivot** (`t ≠ deepLayerS`, so the
 front slot is not a top slot, but the pivot IS a top slot). -/
 theorem coordOfG_frontSlotG_ne_pivot (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (t : Fin L) (ht : (t : ℕ) < L - 1) (i : Fin (M t.castSucc)) (j : Fin (M t.succ)) :
     coordOfG M (frontSlotG M t i j) ≠ pivotCoordG M hL hrs hr hc := by
-  have htd : t ≠ deepLayer hL := by
-    intro h; rw [h] at ht; simp only [deepLayer] at ht; omega
+  have htd : t ≠ deepLayerS hL := by
+    intro h; rw [h] at ht; simp only [deepLayerS] at ht; omega
   intro heq
   have hmem : coordOfG M (frontSlotG M t i j) ∈ topCoordsG M hL hrs := by
     rw [heq]; exact pivotCoordG_mem M hL hrs hr hc
@@ -58,7 +58,7 @@ r δ η k`, every free front layer `t.val < L−1` of `frontTupleG M u` is a `Ca
 layer each front slot's coord `≠ pivotCoordG` (`coordOfG_frontSlotG_ne_pivot`), so it lies in
 `boxGen = slotBoxGen`, whose diagonal / off-diagonal branches give the carrier structure. -/
 theorem condBox_boxGen_frontLayers (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     {δ η : ℝ} {u : Fin (routeMAmbient M) → ℝ}
     (hu : ∀ k, k ≠ pivotCoordG M hL hrs hr hc → u k ∈ boxGen M hL r δ η k)
     (t : Fin L) (ht : (t : ℕ) < L - 1) :
@@ -98,7 +98,7 @@ theorem condBox_boxGen_frontLayers (M : Fin (L + 1) → ℕ) (hL : 0 < L)
 k))` and `hp : hN ▸ p = pivotCoordG`, the point `u := hN ▸ insertNth p z y` satisfies `∀ k ≠ pivotCoordG,
 u k ∈ boxGen k`. (Off the pivot axis, `u` reads a `y`-coord in exactly the matching `boxGen` interval.) -/
 theorem insertNth_hN_frontBox {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
     {δ η : ℝ} (z : ℝ) {y : Fin n → ℝ}
@@ -190,13 +190,13 @@ theorem exists_eta_margins {δ TG TL cG cΛ cF : ℝ} (hδ : 0 < δ) (hTG : 0 < 
 set_option maxHeartbeats 1600000 in
 /-- **The per-ε general-`L` smeared `SmearedChartData` from the box `boxGen`.** Given the structural
 data (`hrs`/`hr`/`hc`/`hp`), the width-`r` waist `q` (`hMq`/`hwidth`, from `smeared_waist`), and the
-width lower bounds `hr0`/`hrL`, builds the `SmearedChartData` at radial exponent `r·M(deepLayer).succ − 1`
+width lower bounds `hr0`/`hrL`, builds the `SmearedChartData` at radial exponent `r·M(deepLayerS).succ − 1`
 for any `ε > 0`: sets `δ = ε/2`, picks a single `η*` (via `exists_eta_margins`) making the Gram/waist
 det margin, the `Λ₀`-dominance margin, and the Field-A margin all hold on `boxGen r δ η*`, then feeds the
 uniform det bounds (`gram_det_ne_uniformEta`) + the Field-A `hSpre_gen` (`Lam0uG_entry_bound_uniformEta`)
 into `smearedChartDataGen_of_dets`. -/
 theorem smearedChartData_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (e1 : M (⟨L - 1, by omega⟩ : Fin (L + 1)) = M ((⟨L - 1, by omega⟩ : Fin L).castSucc))
     (e2 : M (Fin.last L) = M ((⟨L - 1, by omega⟩ : Fin L).succ))
@@ -206,7 +206,7 @@ theorem smearedChartData_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t)
     (ε : ℝ) (hε : 0 < ε) :
     Nonempty (SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc)
-      (DmapG M hL hrs hr hc) p (r * M ((deepLayer hL).succ) - 1) ε) := by
+      (DmapG M hL hrs hr hc) p (r * M ((deepLayerS hL).succ) - 1) ε) := by
   classical
   set δ : ℝ := ε / 2 with hδdef
   have hδ : 0 < δ := by rw [hδdef]; linarith
@@ -331,13 +331,13 @@ boundary-smeared `hSmeared` holds: for `2 ≤ L` and `BoundarySmeared M`, the ac
 diverges (`c' ≥ ½·minAdm M`, `ε > 0`). Threads the per-ε `smearedChartData_boxGen` (via `Nonempty.some`)
 through `smearedChartGen` and the already-∀L `hSmeared_of_smearedChart`. -/
 theorem hSmeared_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
-    (hrs : r + s = M ((deepLayer hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayer hL).succ))
+    (hrs : r + s = M ((deepLayerS hL).castSucc)) (hr : 0 < r) (hc : 0 < M ((deepLayerS hL).succ))
     (hN : routeMAmbient M = n + 1) (p : Fin (n + 1))
     (hp : (hN ▸ p : Fin (routeMAmbient M)) = pivotCoordG M hL hrs hr hc)
     (q : ℕ) (hq : q < L + 1) (hqL : q ≤ L - 1) (hMq : M ⟨q, hq⟩ = r)
     (hr0 : r ≤ M 0) (hrL : r ≤ M (⟨L - 1, by omega⟩ : Fin (L + 1)))
     (hwidth : ∀ t : ℕ, t < L → r ≤ Wext M t)
-    (hminadm : r * M ((deepLayer hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
+    (hminadm : r * M ((deepLayerS hL).succ) = minAdm M) (hminpos : 1 ≤ minAdm M)
     (c' : NNReal) (hc' : (minAdm M : ℝ≥0∞) / 2 ≤ (c' : ℝ≥0∞)) (ε : ℝ) (hε : 0 < ε) :
     (2 ≤ L) → BoundarySmeared M →
       ∫⁻ x in cubeBox (routeMAmbient M) ε,
@@ -350,7 +350,7 @@ theorem hSmeared_boxGen {n : ℕ} (M : Fin (L + 1) → ℕ) (hL : 0 < L)
   -- the per-ε chart data (via `Nonempty.some`)
   have dataGen : ∀ ε' : ℝ, 0 < ε' →
       SmearedChartData M n hN (psiMapG M hL hrs) (RmapG M hL hrs hr hc) (DmapG M hL hrs hr hc) p
-        (r * M ((deepLayer hL).succ) - 1) ε' :=
+        (r * M ((deepLayerS hL).succ) - 1) ε' :=
     fun ε' hε' =>
       (smearedChartData_boxGen M hL hrs hr hc hN p e1 e2 hp q hq hqL hMq hr0 hrL hwidth ε' hε').some
   exact hSmeared_smearedGen M hL hrs hr hc hN p hminadm hminpos dataGen c' hc' ε hε
