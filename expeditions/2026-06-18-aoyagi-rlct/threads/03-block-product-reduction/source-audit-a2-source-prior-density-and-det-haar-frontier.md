@@ -5,6 +5,46 @@ Date: 2026-07-02.
 Status: controller source/API audit with xhigh read-only scouts `Dalton` and
 `Hegel`.  No Lean theorem is proposed from this audit.
 
+## 2026-07-02 Addendum after with-following eventual lower-bound adapter
+
+After landing:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+xhigh scouts `Godel the 2nd` and `Aquinas the 2nd` rechecked the two frontier
+directions.
+
+The determinant-side conclusion
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (referenceSource.restrict V)
+```
+
+is still not available.  Existing with-following endpoint-reference theorems
+give support on the image and on the determinant chart, plus active-readout
+marginals, but not domination of determinant Haar by the endpoint image.  For
+a small local `V`, the full `rawDetChart` left side is also mislocalized; a
+non-vacuous local COV theorem would first need to restrict the Haar side to a
+target patch such as `rawDetChart inter Y '' V`, or prove an actual local
+coverage/open-image theorem with Jacobian comparison.
+
+The density-side conclusion is also unchanged.  `sourceImageDensity` remains
+an external argument in the raw/prior sockets; there is no concrete Lean
+definition or standard instantiation to which continuity and positive
+basepoint lemmas can be applied.  `SelectedEntrySignedBox.CenterCoord.sourceDensity`
+and the retained-passive raw-order `jacobianDensity` are different densities
+already folded into other measures.  More continuity wrappers would therefore
+be conditional-only.
+
+Updated decision: do not add more lower-density wrappers unless they discharge
+a field consumed by an existing downstream theorem.  The next genuine theorem
+must identify a concrete source/original measure on the local source-chart
+image with a positive bounded density, or prove a localized endpoint COV/Haar
+comparison for the bare with-following endpoint map.
+
 ## Question
 
 After the formal-product determinant-domination wrapper, is there a current
