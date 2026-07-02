@@ -10,7 +10,7 @@ re-gates per [`loop-prompt.md`](loop-prompt.md). Branch `expedition/rlct-foundat
 |------|------|----------|--------|-------|
 | R1 | build (SWE/infra) | (dispatched) | 🔄 CRUX | citation cordon: `@[cited]` attr + `collectAxioms` accounting core + `#audit_cited` + `scripts/cited` gate + adversarial tests + `docs/policies/citation-cordon.md`; retrofit `RlctRealInterface`. **Battle-test (fixtures = spec, guard-first).** Sole builder in `rlct` worktree. Decorrelated review (controller-spawned). |
 | R0 | scout | (dispatched) | 🔄 read-only | Mathlib analytic-coverage recon + build-vs-cite reach (kill-questions in brief). Reports to controller; no edits. |
-| G1 | formaliser | — | ⏳ queued (next tick, own worktree) | non-monotone fibre `θ` — component-count fibration transfer + rank-locus corollary. No new math. Parallel once its worktree is set (avoids 2 builders in `rlct`). |
+| G1 | formaliser | g1-fibre-theta | ✅ DONE (awaiting reviewer) | non-monotone fibre `θ` — DROPPED `Monotone d` (+`hr`,`h₀`). `Monotone` was a thin E0-`cTheta` layer, not a fibration problem: headline now ends at `numTop d r`. `ncard_topDimMinPrimes_fibre_eq_numTop` (+`_of_rank`, arbitrary `B`) + E0-geometric rung `ncard_topDimMinPrimes_sigma_eq_numTop` + non-monotone witness `d=[1,2,1]`. Green, sorry-free, axiom-clean. `origin expedition/rlct-g1` @ `a98a4b76`. Card: [`threads/g1-fibre-theta-nonmonotone.md`](threads/g1-fibre-theta-nonmonotone.md). |
 | R2–R8 | — | — | ⛔ blocked on R1+R0 | the RLCT foundation + payoff rewire. |
 
 ## Concurrency rule (this expedition)
