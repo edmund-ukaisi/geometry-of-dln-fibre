@@ -21,6 +21,43 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following localized source-density raw domination
+
+Reproduction:
+`reproduction-a2-with-following-localized-source-density-raw-domination.md`.
+Statement card:
+`statement-card-a2-with-following-localized-source-density-raw-domination.md`.
+Review:
+`review-a2-with-following-localized-source-density-raw-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves localized source-density lower wrappers:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+They replace the old global target `rawHaar.restrict rawSourceSet` by
+`rawHaar.restrict P` for any raw-order patch `P subset rawSourceSet`, provided
+the corresponding endpoint patch is dominated and the same source-density
+lower bound is available.
+
+Boundary: endpoint-patch domination and source-density lower bounds remain
+explicit hypotheses.  No endpoint-Haar transport, exact raw-Haar pushforward,
+source-prior/original-prior transport, coverage, normal crossings, pole order,
+or RLCT is proved.
+
+Focused local build, full local `lake build DLNFibre`, no-sorry audit,
+whitespace check, touched-file marker scan, direct axiom probes, and xhigh
+review passed.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following inverse-Haar original-volume readback density socket
 
 Reproduction:

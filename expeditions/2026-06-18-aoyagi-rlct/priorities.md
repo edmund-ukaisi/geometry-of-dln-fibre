@@ -12,6 +12,49 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following localized source-density raw domination
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+Decision: the source-density lower-bound handoff should also be
+patch-parametric.  Once the endpoint determinant patch
+
+```text
+rawDetChart ∩ rawOrderOnEndpoint preimage P
+```
+
+is dominated by the endpoint image of the reference source, the lower-density
+adapter turns the localized base domination into domination of
+`rawHaar.restrict P` by the concrete coordinate source measure.  The
+eventual wrapper supplies the same localized conclusion after shrinking into
+an open source-density lower-bound neighborhood.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-source-density-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-localized-source-density-raw-domination.md
+threads/03-block-product-reduction/review-a2-with-following-localized-source-density-raw-domination.md
+```
+
+Boundary: endpoint-patch domination and source-density lower bounds remain
+explicit hypotheses.  This proves no endpoint-Haar transport, exact
+raw-Haar pushforward, raw-Haar normalization, source-image/source-rank
+coverage, original source-prior transport, normal crossings, pole order, or
+RLCT.  The next A2 target is to thread this localized source-density wrapper
+into downstream original-volume/readback consumers so their hypotheses can use
+raw-order patches instead of the whole `rawSourceSet`.
+
+Verification passed through focused and full local builds, sorry audit,
+whitespace check, touched Lean-file forbidden-marker scan, direct axiom probes,
+and xhigh read-only review.  Both declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-02, A2 with-following localized reverse domination base
 
 Lean now has:

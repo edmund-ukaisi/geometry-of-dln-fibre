@@ -34740,3 +34740,61 @@ crossings, pole order, or RLCT extraction.  The downstream source-density
 wrapper still calls the older global raw-source theorem; the next target is a
 localized coordinate-source/source-density wrapper whose conclusion is over a
 caller-supplied raw-order patch.
+
+## 2026-07-02 with-following localized source-density raw domination
+
+Lean now proves the patch-parametric coordinate-source lower wrappers:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_sourceDensity_lower
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_restrict_le_smul_endpointTopologyTuple_eventually_sourceDensity_lower
+```
+
+For a raw-order patch `P subset rawSourceSet`, the determinant-side input is:
+
+```text
+rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint preimage P)
+  <= Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+The localized base theorem first gives:
+
+```text
+rawHaar.restrict P
+  <= Cdet • Measure.map rawMap (baseJ.restrict V).
+```
+
+Then the existing lower-density adapter is applied with
+`target = rawHaar.restrict P`.  Under `Cdet < infinity`, `epsilon != 0`,
+`epsilon != infinity`, and the a.e. lower bound
+`epsilon <= sourceDensity z` on `baseJ.restrict V`, it concludes:
+
+```text
+rawHaar.restrict P
+  <= (Cdet * epsilon^{-1}) •
+     Measure.map rawMap (coordinateSourceMeasure.restrict V).
+```
+
+The eventual wrapper keeps the same patch-parametric conclusion, but obtains
+the a.e. lower-bound hypothesis by shrinking into an open neighborhood where
+the pullback source-density lower bound holds.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-localized-source-density-raw-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-localized-source-density-raw-domination.md
+threads/03-block-product-reduction/review-a2-with-following-localized-source-density-raw-domination.md
+```
+
+Focused and full local builds, `scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, direct axiom probes, and xhigh
+read-only review passed.  Both declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: endpoint-patch domination and source-density lower bounds remain
+explicit.  This proves no endpoint-Haar transport, exact raw-Haar pushforward,
+raw-Haar normalization, source-image/source-rank coverage, original
+source-prior transport, normal crossings, pole order, or RLCT extraction.
+The next target is to push the localized raw-patch hypothesis through the
+original-volume/readback consumers.
