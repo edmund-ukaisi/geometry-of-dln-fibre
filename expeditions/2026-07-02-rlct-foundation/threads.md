@@ -8,9 +8,9 @@ re-gates per [`loop-prompt.md`](loop-prompt.md). Branch `expedition/rlct-foundat
 
 | rung | seat | teammate | status | notes |
 |------|------|----------|--------|-------|
-| R1 | build (SWE) | — | ⏳ NEXT (crux) | citation cordon: `@[cited]` attr + `collectAxioms` accounting core + `#audit_cited` + `scripts/cited` gate + adversarial tests + `docs/policies/citation-cordon.md`; retrofit `RlctRealInterface`. **Battle-test.** Decorrelated review. |
-| R0 | scout | — | ⏳ (parallel) | Mathlib analytic-coverage recon + build-vs-cite reach (kill-questions in brief). |
-| G1 | formaliser | — | ⏳ (parallel) | non-monotone fibre `θ` — component-count fibration transfer + rank-locus corollary. No new math. |
+| R1 | build (SWE/infra) | (dispatched) | 🔄 CRUX | citation cordon: `@[cited]` attr + `collectAxioms` accounting core + `#audit_cited` + `scripts/cited` gate + adversarial tests + `docs/policies/citation-cordon.md`; retrofit `RlctRealInterface`. **Battle-test (fixtures = spec, guard-first).** Sole builder in `rlct` worktree. Decorrelated review (controller-spawned). |
+| R0 | scout | (dispatched) | 🔄 read-only | Mathlib analytic-coverage recon + build-vs-cite reach (kill-questions in brief). Reports to controller; no edits. |
+| G1 | formaliser | — | ⏳ queued (next tick, own worktree) | non-monotone fibre `θ` — component-count fibration transfer + rank-locus corollary. No new math. Parallel once its worktree is set (avoids 2 builders in `rlct`). |
 | R2–R8 | — | — | ⛔ blocked on R1+R0 | the RLCT foundation + payoff rewire. |
 
 ## Concurrency rule (this expedition)
