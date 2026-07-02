@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 endpoint Y injectivity and measurable image
+
+Lean now exposes the next endpoint-coordinate support facts for the
+with-following endpoint map `Y`:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_injOn_pivotNonzero
+measurableSet_case2PassiveThetaWithFollowingFactorEndpointSectorSet_of_subset_pivotNonzero
+```
+
+Decision: this is an honest A2 support step.  The injectivity is global on the
+selected-pivot-nonzero locus and follows from active endpoint readout plus the
+elementary selected-entry chart injectivity off the pivot hyperplane.  The
+measurable-image theorem is only the Lusin-Souslin consequence for measurable
+subsets of that locus, with the standard source Borel/Polish and target
+open-measurable T2 hypotheses explicit.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-y-injectivity.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-y-injectivity.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-y-injectivity.md
+```
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, code-only forbidden-marker scan, direct axiom
+probe, and xhigh review passed.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no local change-of-variables formula, no `Y` derivative or Jacobian
+determinant theorem, no determinant-chart Haar equality, no raw-Haar/raw-map
+transport, no raw-order composition, no source-image coverage beyond actual
+images, no formal-product domination, no normal crossings, no pole order, and
+no RLCT.
+
+Next A2 target: use this image/injectivity surface to remove the separate
+`himage` hypothesis from the endpoint reference image support theorem on
+measurable pivot-nonzero source sets, then reassess the real `Y` COV
+derivative/determinant statement.
+
 ## Latest controller decision - 2026-07-02, A2 endpoint reference image support
 
 Lean now exposes actual-image support for the with-following endpoint

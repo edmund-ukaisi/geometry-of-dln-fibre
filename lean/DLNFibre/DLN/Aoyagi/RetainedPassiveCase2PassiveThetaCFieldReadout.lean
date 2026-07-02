@@ -506,6 +506,132 @@ theorem endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelect
         case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor,
         Case2PassiveThetaWithFollowingFactor.mk] using hF
 
+set_option linter.style.longLine false in
+/-- The enlarged Case 2 endpoint topology-tuple map is injective on the locus
+where the successor selected-entry pivot coordinate is nonzero.
+
+The proof is pointwise: active readout recovers the passive fields, the
+selected-entry chart image of the successor center coordinates, and the
+following factor.  The selected-entry chart is injective away from the pivot
+hyperplane.  No measure transport or Jacobian statement is proved here. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_injOn_pivotNonzero
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Set.InjOn
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J =>
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e)
+      {z | case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1} := by
+  intro z hz w hw hY
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        TopologyTuple ρ κ' ℝ :=
+    fun u ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext u eNext e
+  have hread :
+      ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2) =
+        ((w.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext), w.2) := by
+    calc
+      ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2) =
+          endpointTopologyTupleActiveReadout n e (Y z) := by
+        rw [endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart]
+      _ = endpointTopologyTupleActiveReadout n e (Y w) := by
+        exact congrArg (endpointTopologyTupleActiveReadout n e) hY
+      _ = ((w.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext), w.2) := by
+        rw [endpointTopologyTupleActiveReadout_endpointTopologyTuple_eq_activeSelectedEntryChart]
+  have hpassive : z.1.1 = w.1.1 :=
+    congrArg (fun q ↦ q.1.1) hread
+  have hchart :
+      SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext =
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext w.1.yNext :=
+    congrArg (fun q ↦ q.1.2) hread
+  have hfollowing : z.2 = w.2 :=
+    congrArg (fun q ↦ q.2) hread
+  have hzPivot : z.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hz
+  have hwPivot : w.1.yNext ∈ {y : Case2PassiveTheta.Center n S J → ℝ |
+      y pivotNext ≠ 0} := by
+    simpa [pivotNext, case2PassiveThetaPivotNonzero] using hw
+  have hyNext : z.1.yNext = w.1.yNext :=
+    SelectedEntrySignedBox.CenterCoord.injOn_chartMap_pivot_ne_zero pivotNext
+      hzPivot hwPivot hchart
+  have htheta : z.1 = w.1 := by
+    apply Prod.ext
+    · exact hpassive
+    · simpa [Case2PassiveTheta.yNext] using hyNext
+  exact Prod.ext htheta hfollowing
+
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A measurable source subset contained in the selected-pivot-nonzero locus
+has a measurable image under the enlarged Case 2 endpoint topology-tuple map.
+
+This is only the measurable-image consequence of continuity and pivot-nonzero
+injectivity.  It does not identify the image measure with Haar measure and does
+not prove a Jacobian change-of-variables formula. -/
+theorem measurableSet_case2PassiveThetaWithFollowingFactorEndpointSectorSet_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [DecidableEq ρ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [T2Space (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}) :
+    MeasurableSet
+      (case2PassiveThetaWithFollowingFactorEndpointSectorSet
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Ω) := by
+  let Y :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        TopologyTuple ρ κ' ℝ :=
+    fun z ↦
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext z eNext e
+  have hYglobal : Continuous Y := by
+    simpa [Y] using
+      continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext eNext e
+  have hYcont : ContinuousOn Y Ω := hYglobal.continuousOn
+  have hYinj_pivot :
+      Set.InjOn Y
+        {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+          case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1} := by
+    simpa [Y] using
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_injOn_pivotNonzero
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+  have hYinj : Set.InjOn Y Ω := by
+    intro z hz w hw hYeq
+    exact hYinj_pivot (hΩpivot hz) (hΩpivot hw) hYeq
+  have himage : MeasurableSet (Y '' Ω) :=
+    hΩ.image_of_continuousOn_injOn hYcont hYinj
+  simpa [Y, case2PassiveThetaWithFollowingFactorEndpointSectorSet] using himage
+
 end Case2PassiveThetaWithFollowingFactor
 
 end Aoyagi

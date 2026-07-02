@@ -21,6 +21,55 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following endpoint Y injectivity and measurable image
+
+Reproduction:
+`reproduction-a2-case2-with-following-endpoint-y-injectivity.md`.
+Statement card:
+`statement-card-a2-case2-with-following-endpoint-y-injectivity.md`.
+Review:
+`review-a2-case2-with-following-endpoint-y-injectivity.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_injOn_pivotNonzero
+measurableSet_case2PassiveThetaWithFollowingFactorEndpointSectorSet_of_subset_pivotNonzero
+```
+
+The first theorem says that the enlarged with-following endpoint topology-tuple
+map `Y` is injective on the selected-pivot-nonzero locus.  The proof applies
+the active readout to `Y z = Y w`, recovers the passive fields, the following
+factor, and equality of the selected-entry chart images, then uses
+`SelectedEntrySignedBox.CenterCoord.injOn_chartMap_pivot_ne_zero` to recover
+`yNext`.
+
+The second theorem is the standard Lusin-Souslin measurable-image consequence:
+if `Ω` is measurable, the source coordinate type is Borel/Polish, the endpoint
+target has open-measurable T2 topology, and `Ω` is contained in the
+selected-pivot-nonzero locus, then `Y '' Ω` is measurable, written through the
+named endpoint sector set.
+
+Boundary: this is endpoint-coordinate injectivity and measurable actual-image
+support only.  It does not prove a local change-of-variables formula, Jacobian
+determinant theorem, determinant-chart Haar equality, raw-Haar transport,
+raw-order composition, source-image coverage beyond actual images,
+formal-product domination, normal crossings, pole order, or RLCT.
+
+Focused elaboration, focused module build, full local `lake build DLNFibre`,
+no-sorry audit, whitespace check, code-only forbidden-marker scan, direct axiom
+probe, and xhigh review passed.  The focused and full builds replay existing
+repository warnings, including in
+`lean/DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean`, not in the
+touched file.  The two new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 with-following endpoint reference image support
 
 Reproduction:

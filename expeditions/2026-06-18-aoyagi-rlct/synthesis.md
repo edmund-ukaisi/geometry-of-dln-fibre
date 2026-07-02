@@ -6,6 +6,53 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Endpoint Y Injectivity and Measurable Image - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_injOn_pivotNonzero
+measurableSet_case2PassiveThetaWithFollowingFactorEndpointSectorSet_of_subset_pivotNonzero
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+The injectivity theorem is pointwise finite-coordinate bookkeeping.  Applying
+the active readout to equality of endpoint topology tuples gives equality of
+passive fields, equality of following factors, and equality of selected-entry
+chart images.  The pivot-nonzero hypotheses match the domain of
+`SelectedEntrySignedBox.CenterCoord.injOn_chartMap_pivot_ne_zero`, so `yNext`
+is recovered and hence the full with-following source point is recovered.
+
+The measurable-image theorem uses continuity of `Y`, this injectivity restricted
+to `Ω`, and `MeasurableSet.image_of_continuousOn_injOn`.  It keeps the standard
+source `BorelSpace`/`PolishSpace` and target open-measurable T2 hypotheses
+explicit, as in the existing local endpoint image lemmas.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-with-following-endpoint-y-injectivity.md
+threads/03-block-product-reduction/statement-card-a2-case2-with-following-endpoint-y-injectivity.md
+threads/03-block-product-reduction/review-a2-case2-with-following-endpoint-y-injectivity.md
+```
+
+Boundary: endpoint-coordinate injectivity and measurable actual image only.  No
+local COV, no Jacobian determinant theorem, no determinant-chart Haar equality,
+no raw-Haar/raw-map transport, no raw-order composition, no source-image
+coverage beyond actual images, no formal-product domination, no normal
+crossings, no pole order, and no RLCT.
+
+Verification: focused elaboration, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, code-only
+forbidden-marker scan, direct axiom probe, and xhigh review passed.  The two
+new declarations report `[propext, Classical.choice, Quot.sound]`.  The builds
+replay existing repository warnings, not touched-file warnings.
+
 ## A2 With-Following Endpoint Reference Image Support - 2026-07-02
 
 Lean now has:
