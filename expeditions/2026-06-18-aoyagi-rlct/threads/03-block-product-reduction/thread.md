@@ -21,6 +21,41 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 with-following active-readout finite integral and p.13 frontier
+
+Reproduction/frontier note:
+`reproduction-a2-with-following-finite-local-source-residual-integrability-frontier.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_rpow_neg_prod_finiteMass
+```
+
+This is the finite-side-mass integrability theorem for the active
+selected-entry `C 1` readout of the enlarged with-following source
+coordinates.  It works over
+`(passiveMeasure.prod weightedBox).prod followingMeasure` and scales the
+selected-entry chart-image integral by the passive and following total masses.
+
+Boundary: the p.13 residual-coordinate map is still the full two-edge
+residual product `C 1 * C 0`, not this active `C 1` readout.  Finite following
+mass alone is not a p.13 residual-product bridge.  The next p.13-facing target
+needs either a local nondegeneracy/comparison for `D(y) * F` or a direct
+product-integrability theorem for the actual following-factor local measure.
+
+Focused local build passed:
+
+```text
+cd lean && env LEAN_NUM_THREADS=3 lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference
+```
+
 ## 2026-07-02 A2 with-following localized source-density raw domination
 
 Reproduction:

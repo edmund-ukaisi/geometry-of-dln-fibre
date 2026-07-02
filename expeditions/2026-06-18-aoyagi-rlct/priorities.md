@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 with-following active-readout finite integral
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_rpow_neg_prod_finiteMass
+```
+
+Decision: the with-following source-side finite-integral gap is not a
+rebracketing problem.  The p.13 residual coordinate map reads the full
+two-edge residual factor product `C 1 * C 0`, while the enlarged
+with-following source chart reads `yNext` from the active `C 1` block and
+keeps `C 0` as a free following factor.  Finite following mass alone does not
+turn the p.13 residual product into the selected-entry active readout.
+
+The landed theorem therefore proves only the active `C 1` selected-entry
+finite-integral statement: for
+`(passiveMeasure.prod weightedBox).prod followingMeasure`, finite passive mass
+and finite s-finite following mass imply positivity and finite negative-power
+integrability of
+
+```text
+z |-> CenterCoord.chartMap pivotNext z.1.yNext.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-finite-local-source-residual-integrability-frontier.md
+```
+
+Boundary: this is not the p.13 residual-product socket and does not discharge
+`residualNegPowerIntegrableOn` for the enlarged source chart.  The next honest
+p.13-facing target is a local comparison/nondegeneracy theorem controlling
+the full residual product `D(y) * F` by the active selected-entry block, or a
+direct product-integrability theorem for `(D,F)` under the actual local
+following-factor measure.
+
 ## Latest controller decision - 2026-07-02, A2 generic readback product finite-integral handoff
 
 Lean now has:

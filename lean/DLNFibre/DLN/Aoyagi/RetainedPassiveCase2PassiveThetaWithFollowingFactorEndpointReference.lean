@@ -632,6 +632,240 @@ theorem measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChar
   rw [hactiveTheta]
   simp
 
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Finite-side-mass active selected-entry integrability for the enlarged
+with-following source coordinates.
+
+The residual in this theorem is the active `C 1` selected-entry readout
+`chartMap pivotNext z.1.yNext`; it is not the p.13 residual-factor product
+`C 1 * C 0`.  Thus this theorem does not discharge the p.13
+`residualNegPowerIntegrableOn` socket without a further comparison between the
+full residual product and the active readout. -/
+theorem case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_rpow_neg_prod_finiteMass
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    (followingMeasure :
+      Measure (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))
+    [SFinite followingMeasure]
+    (hfollowing_lt_top : followingMeasure Set.univ < ∞)
+    {t : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let sourceMeasure :
+        Measure (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      (passiveMeasure.prod weightedBox).prod followingMeasure
+    let activeResidual :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveTheta.Center n S J → ℝ :=
+      fun z ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext
+    (∀ᵐ z ∂ sourceMeasure, 0 < aoyagiCoordinateSquareSum (activeResidual z)) ∧
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (activeResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+  intro center pivotNext signedBox weightedBox sourceMeasure activeResidual
+  let thetaMeasure :
+      Measure (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J) :=
+    passiveMeasure.prod weightedBox
+  let targetMeasure : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+    (volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict
+      (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+        SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres)
+  let thetaActive :
+      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveTheta.Center n S J → ℝ :=
+    fun theta ↦ SelectedEntrySignedBox.CenterCoord.chartMap pivotNext theta.yNext
+  have htarget :
+      (∀ᵐ y ∂ targetMeasure, 0 < aoyagiCoordinateSquareSum y) ∧
+        (∫⁻ y : Case2PassiveTheta.Center n S J → ℝ,
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum y) ^ (-t))
+            ∂ targetMeasure) < ∞ := by
+    simpa [center, pivotNext, targetMeasure] using
+      SelectedEntrySignedBox.CenterCoord.aoyagiCoordinateSquareSum_pos_ae_and_lintegral_rpow_neg_restrict_chartMap_image
+        pivotNext ht hRres hcrit
+  have hchart_meas :
+      Measurable (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext) :=
+    SelectedEntrySignedBox.CenterCoord.measurable_chartMap pivotNext
+  have hthetaActive : Measurable thetaActive := by
+    change Measurable
+      (fun theta :
+          Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+            (Case2PassiveTheta.Center n S J → ℝ) ↦
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext theta.2)
+    exact hchart_meas.comp measurable_snd
+  have hactiveResidual : Measurable activeResidual := by
+    change Measurable
+      (fun z :
+          (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+              (Case2PassiveTheta.Center n S J → ℝ)) ×
+            Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ ↦
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.2)
+    exact hthetaActive.comp measurable_fst
+  have hmap_theta_snd :
+      Measure.map
+          (Prod.snd :
+            Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+              (Case2PassiveTheta.Center n S J → ℝ) →
+            Case2PassiveTheta.Center n S J → ℝ)
+          thetaMeasure =
+        passiveMeasure Set.univ • weightedBox := by
+    simp [thetaMeasure]
+  have hmap_theta :
+      Measure.map thetaActive thetaMeasure =
+        passiveMeasure Set.univ • targetMeasure := by
+    calc
+      Measure.map thetaActive thetaMeasure =
+          Measure.map (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext)
+            (Measure.map
+              (Prod.snd :
+                Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+                  (Case2PassiveTheta.Center n S J → ℝ) →
+                Case2PassiveTheta.Center n S J → ℝ)
+              thetaMeasure) := by
+            simpa [thetaActive, Function.comp_def] using
+              (Measure.map_map
+                (μ := thetaMeasure)
+                (g := SelectedEntrySignedBox.CenterCoord.chartMap pivotNext)
+                (f :=
+                  (Prod.snd :
+                    Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+                      (Case2PassiveTheta.Center n S J → ℝ) →
+                    Case2PassiveTheta.Center n S J → ℝ))
+                hchart_meas measurable_snd).symm
+      _ =
+          Measure.map (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext)
+            (passiveMeasure Set.univ • weightedBox) := by
+            rw [hmap_theta_snd]
+      _ =
+          passiveMeasure Set.univ •
+            Measure.map (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext)
+              weightedBox := by
+            exact
+              Measure.map_smul (passiveMeasure Set.univ) weightedBox
+                (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext)
+      _ = passiveMeasure Set.univ • targetMeasure := by
+            rw [SelectedEntrySignedBox.CenterCoord.map_chartMap_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image]
+  have hmap_fst :
+      Measure.map
+          (Prod.fst :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+              Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)
+          sourceMeasure =
+        followingMeasure Set.univ • thetaMeasure := by
+    change
+      Measure.map
+          (Prod.fst :
+            (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J ×
+              Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) →
+              Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)
+          (thetaMeasure.prod followingMeasure) =
+        followingMeasure Set.univ • thetaMeasure
+    exact Measure.map_fst_prod (μ := thetaMeasure) (ν := followingMeasure)
+  have hmap_active :
+      Measure.map activeResidual sourceMeasure =
+        followingMeasure Set.univ •
+          (passiveMeasure Set.univ • targetMeasure) := by
+    calc
+      Measure.map activeResidual sourceMeasure =
+          Measure.map thetaActive
+            (Measure.map
+              (Prod.fst :
+                Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+                  Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)
+              sourceMeasure) := by
+            simpa [activeResidual, thetaActive, Function.comp_def] using
+              (Measure.map_map
+                (μ := sourceMeasure)
+                (g := thetaActive)
+                (f :=
+                  (Prod.fst :
+                    Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+                      Case2PassiveTheta (ρ := ρ) (τ := τ) n S J))
+                hthetaActive measurable_fst).symm
+      _ =
+          Measure.map thetaActive (followingMeasure Set.univ • thetaMeasure) := by
+            rw [hmap_fst]
+      _ =
+          followingMeasure Set.univ • Measure.map thetaActive thetaMeasure := by
+            exact
+              Measure.map_smul (followingMeasure Set.univ) thetaMeasure thetaActive
+      _ =
+          followingMeasure Set.univ •
+            (passiveMeasure Set.univ • targetMeasure) := by
+            rw [hmap_theta]
+  have hpos_meas :
+      MeasurableSet
+        {y : Case2PassiveTheta.Center n S J → ℝ |
+          0 < aoyagiCoordinateSquareSum y} := by
+    have hsquare :
+        Measurable
+          (fun y : Case2PassiveTheta.Center n S J → ℝ ↦
+            aoyagiCoordinateSquareSum y) :=
+      measurable_aoyagiCoordinateSquareSum measurable_id
+    simpa [Set.preimage] using hsquare measurableSet_Ioi
+  have hpos_map :
+      ∀ᵐ y ∂ Measure.map activeResidual sourceMeasure,
+        0 < aoyagiCoordinateSquareSum y := by
+    rw [hmap_active]
+    exact
+      Measure.ae_smul_measure
+        (Measure.ae_smul_measure htarget.1 (passiveMeasure Set.univ))
+        (followingMeasure Set.univ)
+  have hpos_source :
+      ∀ᵐ z ∂ sourceMeasure,
+        0 < aoyagiCoordinateSquareSum (activeResidual z) :=
+    (ae_map_iff hactiveResidual.aemeasurable hpos_meas).1 hpos_map
+  have hpow_meas :
+      Measurable
+        (fun y : Case2PassiveTheta.Center n S J → ℝ ↦
+          ENNReal.ofReal ((aoyagiCoordinateSquareSum y) ^ (-t))) := by
+    have hsquare :
+        Measurable
+          (fun y : Case2PassiveTheta.Center n S J → ℝ ↦
+            aoyagiCoordinateSquareSum y) :=
+      measurable_aoyagiCoordinateSquareSum measurable_id
+    fun_prop
+  have hfinite_map :
+      (∫⁻ y : Case2PassiveTheta.Center n S J → ℝ,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum y) ^ (-t))
+          ∂ Measure.map activeResidual sourceMeasure) < ∞ := by
+    rw [hmap_active, lintegral_smul_measure, lintegral_smul_measure]
+    exact
+      ENNReal.mul_lt_top hfollowing_lt_top
+        (ENNReal.mul_lt_top hpassive_lt_top htarget.2)
+  have hfinite_source :
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+        ENNReal.ofReal ((aoyagiCoordinateSquareSum (activeResidual z)) ^ (-t))
+          ∂ sourceMeasure) < ∞ := by
+    rw [← lintegral_map hpow_meas hactiveResidual]
+    exact hfinite_map
+  exact ⟨hpos_source, hfinite_source⟩
+
 set_option linter.style.longLine false in
 /-- Composing the endpoint topology tuple with the finite active-coordinate
 readout gives the same reference-measure pushforward as the source-coordinate
