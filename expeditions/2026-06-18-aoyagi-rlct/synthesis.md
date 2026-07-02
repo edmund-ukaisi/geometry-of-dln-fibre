@@ -20,6 +20,56 @@ contract-constructor slice was committed and pushed as `af292a3a`.  At the
 post-push reorientation point, the expedition worktree was clean and even with
 `origin/expedition/aoyagi-rlct`.
 
+Banking note, 2026-07-02: after the VM/session interruption, the reproduction
+checkpoint for the A2 enlarged following-factor source-to-raw block Jacobian
+was committed and pushed as `4553ddfb`.  At that point the worktree was clean
+and even with `origin/expedition/aoyagi-rlct`.
+
+## A2 Enlarged Following-Factor Raw-Order Bounded Unit - 2026-07-02
+
+Lean now proves the raw-order determinant bounded-unit support slice for the
+enlarged following-factor source.
+
+File:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+The theorem is:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure
+```
+
+For any source-domain measure and any determinant-sector base point `z0`, it
+shrinks to an open neighborhood `U` on which the raw-order factor
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+  (case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z)
+```
+
+is bounded above and below by positive constants in the corresponding
+`withDensity` measure sandwich.  The proof uses the existing continuity of the
+enlarged `Y`, determinant-sector membership for `Y z0`, the retained-passive
+raw-order continuity/positivity lemma, and the local a.e. measure sandwich
+helper.
+
+This is not the selected-entry `Y` change of variables: it deliberately omits
+the `SelectedEntrySignedBox.CenterCoord.sourceDensity` factor and does not
+prove any raw-map pushforward, raw-Haar transport, formal-product/source-image
+domination, source-image coverage, normal crossings, pole order, or RLCT.  It
+only shows that the raw-order determinant factor will behave as a bounded
+positive unit once the upstream source-side COV is supplied.
+
+Verification: direct elaboration of the touched file was warning-clean;
+focused module build for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaJacobianMeasure` passed;
+`lean/scripts/sorries` reported zero sorry/axiom/native-decide/#exit; the
+whitespace diff check passed; direct axiom probe reported `[propext,
+Classical.choice, Quot.sound]`.
+
 ## A2 Enlarged Following-Factor Source-To-Raw Block Jacobian - 2026-07-02
 
 After the interruption recovery, the expedition branch was clean and even with

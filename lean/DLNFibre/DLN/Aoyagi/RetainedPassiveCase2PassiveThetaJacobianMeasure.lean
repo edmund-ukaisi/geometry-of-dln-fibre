@@ -32,6 +32,134 @@ namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- For the enlarged following-factor theta source, the retained-passive
+raw-order Jacobian factor is a local positive bounded unit after composing
+with the endpoint topology-tuple map.
+
+This is deliberately only the raw-order determinant factor for
+`topologyTupleEdgeRawOrder` after the enlarged source has already been mapped
+to topology-tuple coordinates.  It does not prove the selected-entry
+source-side change of variables for `Y`, does not prove raw-map Haar
+transport, and does not compare to the original source prior, normal
+crossings, pole order, or RLCT. -/
+theorem exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (sourceMeasure :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)) :
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          TopologyTuple (Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    ∃ ε K : ℝ, 0 < ε ∧ 0 < K ∧
+      ∃ U :
+        Set
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+        IsOpen U ∧ z₀ ∈ U ∧
+          ENNReal.ofReal ε • sourceMeasure.restrict U ≤
+              (sourceMeasure.restrict U).withDensity
+                (fun z ↦
+                  ENNReal.ofReal
+                    (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                      (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                      (κ' := throughSubspaceEndpointComplementIndex
+                        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))) ∧
+            (sourceMeasure.restrict U).withDensity
+                (fun z ↦
+                  ENNReal.ofReal
+                    (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                      (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                      (κ' := throughSubspaceEndpointComplementIndex
+                        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))) ≤
+              ENNReal.ofReal K • sourceMeasure.restrict U := by
+  intro Y
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' : Fin 3 → Type :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  have hYcont : Continuous Y := by
+    change Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e)
+    exact
+      continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext eNext e
+  have hY₀ :
+      Y z₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    simpa [Y, ρ, κ'] using
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_mem_detChartSet
+        (ρ := ρ) n hS hcont hnext z₀ eNext e hdet₀
+  rcases
+      exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_comp
+        (M := 1) (ρ := ρ) (κ' := κ') (Y := Y) (a₀ := z₀)
+        hYcont.continuousAt hY₀ with
+    ⟨ε, K, hε_pos, hK_pos, hbounds⟩
+  rcases
+      exists_open_ae_restrict_of_eventually_nhds
+        (μ := sourceMeasure) (x₀ := z₀) hbounds with
+    ⟨U, hUopen, hz₀U, hU_bounds⟩
+  have hlower :
+      ∀ᵐ z ∂ sourceMeasure.restrict U,
+        ε ≤
+          retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') (Y z) :=
+    hU_bounds.mono fun _ hz ↦ hz.1
+  have hupper :
+      ∀ᵐ z ∂ sourceMeasure.restrict U,
+        retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') (Y z) ≤ K :=
+    hU_bounds.mono fun _ hz ↦ hz.2
+  rcases
+      withDensity_ofReal_sandwich_of_ae_bounds
+        (μ := sourceMeasure.restrict U)
+        (f := fun z ↦
+          retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') (Y z))
+        (ε := ε) (K := K) hlower hupper with
+    ⟨hlower_measure, hupper_measure⟩
+  exact ⟨ε, K, hε_pos, hK_pos, U, hUopen, hz₀U,
+    hlower_measure, hupper_measure⟩
+
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
 /-- The concrete `Case2PassiveTheta` passive-product selected-entry measure

@@ -10,6 +10,48 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 enlarged following-factor raw-order determinant bounded-unit slice - 2026-07-02
+
+- **Statement.** For the enlarged Case 2 passive-theta source, after composing
+  with
+  `Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z`, the
+  retained-passive raw-order Jacobian factor
+  `retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)` is locally
+  bounded above and below by positive constants on a small open neighborhood
+  of any determinant-sector base point, for any source-domain measure.  In
+  measure form, the `withDensity` perturbation by this factor is sandwiched
+  between positive scalar multiples of the restricted source measure.
+- **Tier.** A2 raw-order determinant support for the enlarged source-to-raw
+  density frontier.
+- **Status.** Lean proved as a support slice.
+- **Kill-condition.** The result is read as the selected-entry `Y`
+  change-of-variables theorem, a raw-map pushforward, raw-Haar transport, a
+  formal-product/source-image domination theorem, source-image coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** This is finite retained-passive raw-order determinant
+  bookkeeping built from existing Lean continuity/positivity lemmas.  It uses
+  the Aoyagi pp. 10-13 retained-passive product-coordinate context and the
+  Case 2 pp. 19-21 enlarged following-factor chart only to place the source
+  point in the determinant sector; it is not a theorem printed by Aoyagi.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`,
+  raw-order composition section.
+- **Reproduction check.** xhigh sidecar audit `Hooke` PASS at
+  `threads/03-block-product-reduction/review-a2-case2-enlarged-following-factor-source-to-raw-block-jacobian.md`;
+  the audit explicitly separates this raw-order factor from the `Y`
+  determinant.
+- **Lean target.**
+  `exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean`.
+- **Proved.** Direct elaboration warning-clean; focused module build passed;
+  `lean/scripts/sorries` and `git diff --check` passed; direct axiom probe
+  reported `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No selected-entry weighted pushforward for `Y`, no raw-map
+  pushforward, no determinant/raw Haar transport, no target-side density
+  identity, no source-image coverage, no normal crossings, no pole order, and
+  no RLCT extraction is proved.
+
 ## Current A2 enlarged following-factor source-to-raw block Jacobian - 2026-07-02
 
 - **Statement.** For the enlarged Case 2 passive-theta source map

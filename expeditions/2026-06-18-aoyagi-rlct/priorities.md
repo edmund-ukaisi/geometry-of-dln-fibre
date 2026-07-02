@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 enlarged following-factor raw-order bounded unit
+
+Lean now has the enlarged-source raw-order determinant bounded-unit sandwich:
+
+```text
+exists_pos_open_withDensity_sandwich_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_sourceMeasure
+```
+
+This theorem says that for
+
+```text
+Y z = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple z
+```
+
+the factor
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)
+```
+
+is locally bounded above and below by positive constants on a determinant-
+sector shrink, and therefore multiplying any restricted source-domain measure
+by this factor only changes it by bounded positive scalars.
+
+Decision: this is useful raw-order support, but it is not the missing
+source-side COV.  It deliberately does not contain the selected-entry
+`sourceDensity` factor and does not prove any raw-map pushforward.  The next
+bedrock target remains the `Y`-only source-side weighted pushforward, then
+composition with raw-order transport and the existing formal-product handoff.
+
 ## Latest controller decision - 2026-07-02, A2 enlarged following-factor source-to-raw block Jacobian
 
 New pen-and-paper reproduction:
