@@ -12,6 +12,60 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following source-rank readback and local intersection
+
+Lean now has:
+
+```text
+rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_zero_eq_followingFactor
+
+rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_one_eq_successorSelectedEntryMatrix
+
+case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_rank_eq_of_mem_p13SourceEdgeFamilySet_sourceRankStratum
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_rankEq_eq_p13SourceEdgeFamilySet_inter_readback_preimage_inter_sourceRankStratum
+```
+
+Decision: close the reverse source-rank readback direction for the enlarged
+with-following chart, then use it to identify the source-rank cut of the local
+p.13 image exactly as the image of the theta-side rank-equation locus:
+
+```text
+sourceChart '' (V inter rankEq)
+  = (p13SourceSet inter readback^{-1}(V)) inter sourceRankStratum.
+```
+
+The domain restriction to `rankEq` is essential.  We do not claim that the
+whole returned local image lies in the source-rank stratum without uniform rank
+equations on `V`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-rank-readback-intersection.md
+```
+
+Boundary: this is local p.13 chart-image intersection only.  It does not prove
+global source-rank coverage, finite atlas coverage, source-prior transport,
+Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; direct axiom probe; and xhigh read-only
+review by `Ampere the 4th`.  The four new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Scout notes for the next non-source-rank frontier: the raw-image/COV scout
+recommended replacing an explicit endpoint-patch domination input by active
+endpoint-image containment in
+`RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.  The
+formal-product/source-image scout recommended not attempting exact equality
+until the raw pushforward identity
+`Measure.map rawMap (thetaReference.restrict V) = rawHaar.restrict rawSourceSet`
+is proved or supplied; a formal-product readback-domination wrapper is the
+nearer buildable consumer.
+
 ## Latest controller decision - 2026-07-03, with-following source-rank pointwise and local support
 
 Lean now has:

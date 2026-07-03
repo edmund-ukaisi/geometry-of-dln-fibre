@@ -3331,6 +3331,105 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The first retained `C` block of the enlarged with-following endpoint datum
+has the rank of the independent following-factor coordinate.
+
+This is finite coordinate bookkeeping for the enlarged Case 2 chart.  It does
+not impose a full-rank condition on the following factor. -/
+theorem rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_zero_eq_followingFactor
+    {ρ : Type*} [DecidableEq ρ] {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    {κ' : Fin 3 → Type*}
+    [∀ q, Fintype (κ' q)]
+    [∀ q, DecidableEq (κ' q)]
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    ((case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e).C (0 : Fin 2)).rank =
+      z.2.rank := by
+  let rawData :
+      RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+    case2PassiveThetaWithFollowingFactorRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext
+  let data :
+      RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' :=
+    case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e
+  have hC0raw : (rawData.C (0 : Fin 2)).rank = z.2.rank := by
+    have hC0eq : rawData.C (0 : Fin 2) = z.2 := by
+      change
+        case2PostPivotFreeTwoEdgeFactorFamily n hS hcont
+            (case2SuccessorSelectedEntrySourceResidual n hS hnext z.1.yNext eNext)
+            (case2DisplayedPostPivotFreeCprimeOfFollowingFactor n hS hcont z.2)
+            (0 : Fin 2) =
+          z.2
+      exact
+        case2DisplayedPostPivotFreeFollowingFactor_freeCprimeOfFollowingFactor
+          n hS hcont z.2
+    simpa using congrArg Matrix.rank hC0eq
+  calc
+    (data.C (0 : Fin 2)).rank = (rawData.C (0 : Fin 2)).rank := by
+      simpa [data, rawData, case2PassiveThetaWithFollowingFactorEndpointRetainedData] using
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_endpointTransport_C
+          (K := ℝ) (ρ := ρ) e rawData (0 : Fin 2)
+    _ = z.2.rank := hC0raw
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The second retained `C` block of the enlarged with-following endpoint datum
+has the rank of the successor selected-entry matrix read from `yNext`.
+
+This is finite coordinate bookkeeping for the enlarged Case 2 chart. -/
+theorem rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_one_eq_successorSelectedEntryMatrix
+    {ρ : Type*} [DecidableEq ρ] {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    {κ' : Fin 3 → Type*}
+    [∀ q, Fintype (κ' q)]
+    [∀ q, DecidableEq (κ' q)]
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    ((case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e).C (1 : Fin 2)).rank =
+      (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank := by
+  let rawData :
+      RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) (case2PostPivotTwoEdgeDomain n S J τ) :=
+    case2PassiveThetaWithFollowingFactorRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext
+  let data :
+      RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' :=
+    case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e
+  have hC1raw :
+      (rawData.C (1 : Fin 2)).rank =
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank := by
+    simpa [rawData, case2PassiveThetaWithFollowingFactorRetainedData,
+      case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor,
+      case2SuccessorSelectedEntrySourceResidual] using
+      rank_case2DisplayedPostPivotResidualBlock_sourceResidualOfMatrix
+        n hS hcont
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext) eNext
+  calc
+    (data.C (1 : Fin 2)).rank = (rawData.C (1 : Fin 2)).rank := by
+      simpa [data, rawData, case2PassiveThetaWithFollowingFactorEndpointRetainedData] using
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.rank_endpointTransport_C
+          (K := ℝ) (ρ := ρ) e rawData (1 : Fin 2)
+    _ = (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank :=
+        hC1raw
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- A concrete enlarged with-following passive-theta endpoint source-chart
 point belongs to the named source-rank stratum when the base-product rank and
 the two residual-block rank equations are supplied.
@@ -3452,6 +3551,139 @@ theorem case2PassiveThetaWithFollowingFactorEndpointSourceChart_mem_sourceRankSt
           rw [hC1]
         _ = rEdge 1 := hr1
   simpa [case2PassiveThetaWithFollowingFactorEndpointSourceChart, data, EdgeFamily, ρ, κ'] using hmem
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Source-rank membership of a p.13 source family reads back to the two
+theta-side rank equations for the enlarged with-following chart.
+
+This is the reverse direction of the previous pointwise support theorem, but
+only on the retained-passive p.13 source set and under the selected-pivot
+nonzero condition needed by the with-following readback.  It does not prove
+global source-rank coverage, finite atlas coverage, Haar/Jacobian transport,
+normal crossings, pole order, or RLCT extraction. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_rank_eq_of_mem_p13SourceEdgeFamilySet_sourceRankStratum
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hsource :
+      X ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀)
+    (hsrc :
+      X ∈ paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := 2) W₂ B₂
+        (fun E :
+          ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ ↦
+          E) r rEdge)
+    (hpivot :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X).1) :
+    let z :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e X
+    r + z.2.rank = rEdge 0 ∧
+      r + (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank =
+        rEdge 1 := by
+  intro z
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let EMat :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+      (fun p : Fin 2 ↦
+        (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))
+  let data :=
+    sourceReadback (K := ℝ) (ρ := ρ) (κ' := κ') EMat
+  have hEMat_mem :
+      EMat ∈
+        sourceRecursiveDetChartSet
+          (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    simpa [EMat, ρ, κ',
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet] using hsource
+  have hEMat_chart :
+      sourceRecursiveDetChart (K := ℝ) (ρ := ρ) EMat :=
+    (mem_sourceRecursiveDetChartSet
+      (K := ℝ) (ρ := ρ) (κ' := κ') EMat).1 hEMat_mem
+  have hdetData : data.detChart := by
+    simpa [data, ρ, κ'] using
+      sourceReadback_detChart_of_sourceRecursiveDetChart
+        (K := ℝ) (ρ := ρ) EMat hEMat_chart
+  have hread :
+      case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e =
+        data := by
+    simpa [z, data, EMat, ρ, κ'] using
+      case2PassiveThetaWithFollowingFactorEndpointRetainedData_sourceChartReadback_eq_sourceReadback_of_pivotNonzero
+        W₂ B₂ n hS hcont hnext hU₀ eNext e X hpivot
+  have hright :
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ data =
+        X := by
+    simpa [data, EMat, ρ, κ'] using
+      (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_openPartialHomeomorph
+        (K := ℝ) W₂ B₂ U₀ hU₀).right_inv' hsource
+  have hsrcData :
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ data ∈
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := 2) W₂ B₂
+          (fun E :
+            ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ ↦
+            E) r rEdge := by
+    simpa [hright] using hsrc
+  have hC0data :
+      (data.C (0 : Fin 2)).rank = rEdge 0 - r :=
+    rank_C_of_retainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum
+      (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) data
+      hdetData hsrcData (0 : Fin 2)
+  have hC1data :
+      (data.C (1 : Fin 2)).rank = rEdge 1 - r :=
+    rank_C_of_retainedPassiveP13SourceEdgeFamilyOfData_mem_sourceRankStratum
+      (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) data
+      hdetData hsrcData (1 : Fin 2)
+  have hC0z :
+      (data.C (0 : Fin 2)).rank = z.2.rank := by
+    simpa [hread] using
+      rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_zero_eq_followingFactor
+        (ρ := ρ) n hS hcont hnext z eNext e
+  have hC1z :
+      (data.C (1 : Fin 2)).rank =
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank := by
+    simpa [hread] using
+      rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_one_eq_successorSelectedEntryMatrix
+        (ρ := ρ) n hS hcont hnext z eNext e
+  have hle0 : r ≤ rEdge 0 := hsrc.2.2 (0 : Fin 2)
+  have hle1 : r ≤ rEdge 1 := hsrc.2.2 (1 : Fin 2)
+  constructor
+  · have hzrank : z.2.rank = rEdge 0 - r := hC0z.symm.trans hC0data
+    omega
+  · have hzrank :
+        (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank =
+          rEdge 1 - r := hC1z.symm.trans hC1data
+    omega
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
@@ -6653,6 +6885,177 @@ theorem exists_open_subset_measure_map_case2PassiveThetaEndpointSourceChart_rest
       (η := thetaMeasure.restrict V) (sourceChart := sourceChart)
       (by simpa [EdgeFamily] using (continuous_id : Continuous (fun E : EdgeFamily ↦ E)))
       hsource_aemeas hchart_mem
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- After shrinking to the local p.13 image patch, the source-rank stratum
+cuts the enlarged with-following source-chart image exactly by the theta-side
+rank-equation locus.
+
+The domain is explicitly restricted to the two residual-rank equations.  This
+does not assert that the whole local image is contained in the source-rank
+stratum, nor that the global source-rank stratum is covered. -/
+theorem exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_rankEq_eq_p13SourceEdgeFamilySet_inter_readback_preimage_inter_sourceRankStratum
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G)
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hprod : Module.finrank ℝ (LinearMap.range (paperTotalMap W₂ B₂)) = r) :
+    let Θ :=
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData : Θ →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let sourceChart : Θ → EdgeFamily :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z
+    let readback : EdgeFamily → Θ :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let sourceStratum : Set EdgeFamily :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := 2) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+    let rankEq : Set Θ :=
+      {z |
+        r + z.2.rank = rEdge 0 ∧
+          r + (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank =
+            rEdge 1}
+    ∃ V : Set Θ,
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, (retainedData z).detChart) ∧
+          (∀ z ∈ V,
+            case2PassiveThetaPivotNonzero
+              (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1) ∧
+          (∀ z ∈ V, readback (sourceChart z) = z) ∧
+            Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+              MeasurableSet (sourceChart '' V) ∧
+                (∀ z ∈ V, sourceChart z ∈ sourceStratum ↔ z ∈ rankEq) ∧
+                  sourceChart '' (V ∩ rankEq) =
+                    (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum := by
+  intro Θ EdgeFamily retainedData sourceChart readback p13SourceSet sourceStratum rankEq
+  rcases
+      exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_eq_p13SourceEdgeFamilySet_inter_readback_preimage
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        z₀ hdet₀ hpivot₀ G hGopen hz₀G with
+    ⟨V, hVopen, hz₀V, hVG, hdetV, hpivotV, hleftV, hsource_inj,
+      hsource_contOn, hsource_image, himage_p13⟩
+  have hiff : ∀ z ∈ V, sourceChart z ∈ sourceStratum ↔ z ∈ rankEq := by
+    intro z hzV
+    constructor
+    · intro hzsrc
+      have hzpoint :
+          sourceChart z ∈ p13SourceSet := by
+        have hzimg : sourceChart z ∈ sourceChart '' V := ⟨z, hzV, rfl⟩
+        have hzrhs : sourceChart z ∈ p13SourceSet ∩ readback ⁻¹' V := by
+          rw [← himage_p13]
+          exact hzimg
+        exact hzrhs.1
+      have hread_alias : readback (sourceChart z) = z := by
+        simpa [readback, sourceChart] using hleftV z hzV
+      have hpivotRead :
+          case2PassiveThetaPivotNonzero
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext
+            (readback (sourceChart z)).1 := by
+        rw [hread_alias]
+        exact hpivotV z hzV
+      have hranks :
+          let zread := readback (sourceChart z)
+          r + zread.2.rank = rEdge 0 ∧
+            r + (case2SuccessorSelectedEntryMatrix
+              n hS hnext zread.1.yNext eNext).rank = rEdge 1 := by
+        exact
+          case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_rank_eq_of_mem_p13SourceEdgeFamilySet_sourceRankStratum
+            W₂ B₂ n hS hcont hnext hU₀ eNext e
+            (sourceChart z) hzpoint hzsrc (by simpa [readback] using hpivotRead)
+      simpa [rankEq, hread_alias] using hranks
+    · intro hzrank
+      exact
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart_mem_sourceRankStratum
+          W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+          z (hdetV z hzV) hprod hzrank.1 hzrank.2
+  have himage_rank :
+      sourceChart '' (V ∩ rankEq) =
+        (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum := by
+    ext E
+    constructor
+    · rintro ⟨z, hz, rfl⟩
+      rcases hz with ⟨hzV, hzrank⟩
+      have hzimg : sourceChart z ∈ sourceChart '' V := ⟨z, hzV, rfl⟩
+      have hzrhs : sourceChart z ∈ p13SourceSet ∩ readback ⁻¹' V := by
+        rw [← himage_p13]
+        exact hzimg
+      exact ⟨hzrhs, (hiff z hzV).2 hzrank⟩
+    · intro hE
+      have hEimage : E ∈ sourceChart '' V := by
+        rw [himage_p13]
+        exact hE.1
+      rcases hEimage with ⟨z, hzV, rfl⟩
+      exact ⟨z, ⟨hzV, (hiff z hzV).1 hE.2⟩, rfl⟩
+  exact
+    ⟨V, hVopen, hz₀V, hVG, hdetV, hpivotV, hleftV, hsource_inj,
+      hsource_contOn, hsource_image, hiff, himage_rank⟩
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 

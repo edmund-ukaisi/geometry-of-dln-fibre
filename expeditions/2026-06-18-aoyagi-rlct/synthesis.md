@@ -6,6 +6,71 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Rank Readback and Local Intersection - 2026-07-03
+
+Lean now has:
+
+```text
+rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_zero_eq_followingFactor
+
+rank_case2PassiveThetaWithFollowingFactorEndpointRetainedData_C_one_eq_successorSelectedEntryMatrix
+
+case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_rank_eq_of_mem_p13SourceEdgeFamilySet_sourceRankStratum
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_rankEq_eq_p13SourceEdgeFamilySet_inter_readback_preimage_inter_sourceRankStratum
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+if X is in the retained-passive p.13 source set and the source-rank stratum,
+let data = sourceReadback(edgeMatrixOfReverseEdges X) and
+z = withFollowingSourceChartReadback X;
+
+p.13 membership gives data.detChart, and pivot nonzero gives
+endpointRetainedData(z) = data;
+
+source-rank membership plus the retained-passive reverse rank lemma gives
+rank(data.C p) = rEdge p - r for p = 0,1;
+
+endpoint C0/C1 rank readout identifies rank(data.C0) with rank(z.2) and
+rank(data.C1) with rank(successorMatrix(z.1.yNext));
+
+the source-rank inequalities r <= rEdge p convert these to
+r + rank(z.2) = rEdge 0 and
+r + rank(successorMatrix(z.1.yNext)) = rEdge 1.
+```
+
+On the existing local p.13 equality patch this gives:
+
+```text
+sourceChart '' (V inter rankEq)
+  = (p13SourceSet inter readback^{-1}(V)) inter sourceRankStratum.
+```
+
+Boundary: the local image is cut by `rankEq`; no unqualified containment of
+the whole image in the stratum is asserted.  This is not global source-rank
+coverage, source-prior transport, Haar/Jacobian transport, normal crossings,
+pole order, or RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre`; `scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; direct axiom probe; and xhigh read-only
+review by `Ampere the 4th`.  The four new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Scout carry-forward: exact formal-product/source-image equality still needs
+the raw-pushforward identity.  The raw-image/COV lane has a buildable next
+target replacing explicit endpoint-patch domination by active endpoint-image
+containment in `RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.
+
 ## A2 With-Following Source-Rank Pointwise and Local Support - 2026-07-03
 
 Lean now has:
