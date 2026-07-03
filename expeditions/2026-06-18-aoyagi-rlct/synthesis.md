@@ -6,6 +6,51 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Local Source-Image Right Inverse - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_rightInverse
+
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_restrict_image_eq_self
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+E ∈ sourceChart '' V
+==> choose z ∈ V with E = sourceChart z,
+
+the local source-image package gives readback(sourceChart z) = z,
+
+therefore readback E = z ∈ V
+and sourceChart(readback E) = sourceChart z = E.
+
+For an external measure restricted to sourceChart '' V:
+candidate := map readback (externalMeasure.restrict (sourceChart '' V))
+is supported on V, and sourceChart is a.e. measurable for candidate because it
+is continuous on V.  The generic right-inverse measure-map lemma then gives
+map sourceChart candidate = externalMeasure.restrict (sourceChart '' V).
+```
+
+Boundary: this is a local two-sided inverse package over the already returned
+image only.  It does not prove p.13 source-set coverage, source-rank-stratum
+coverage, finite atlas coverage, original-prior support in the image,
+determinant Haar transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+Both new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Full Local Source-Image Finite Integral - 2026-07-03
 
 Lean now has:

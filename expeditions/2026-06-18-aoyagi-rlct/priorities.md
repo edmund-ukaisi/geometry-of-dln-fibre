@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following local source-image right inverse
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_rightInverse
+
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_map_readback_restrict_image_eq_self
+```
+
+Decision: upgrade the enlarged with-following local source-image package from
+left inverse on `V` to a two-sided inverse on the returned measurable image
+`sourceChart '' V`, and package the resulting restricted external-measure
+identity.  If `E = sourceChart z` with `z ∈ V`, then
+`readback E = z` and `sourceChart (readback E) = E`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-image-right-inverse.md
+```
+
+Boundary: this is only over the local image already returned by the chart.  It
+does not prove p.13 source-set coverage, source-rank-stratum coverage, finite
+atlas coverage, original-prior support in this image, determinant Haar
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+Both new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, full local source-image finite integral
 
 Lean now has:
