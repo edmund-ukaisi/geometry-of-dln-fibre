@@ -35,6 +35,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenWire
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHInterior
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedClose
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
 
 /-!
 # Axiom-hygiene check
@@ -256,6 +258,23 @@ open DLNFibre.DLN.RLCT
 -- slot `∀ _ : 2 ≤ L, InteriorDrop M → BoxDiverges M c' ε`, unconditionally on `InteriorDrop`. Must
 -- inherit both atoms' footprint: [propext, Classical.choice, Quot.sound, monomial_rlct], no sorry.
 #print axioms interiorLiveGen_hInterior
+
+-- ★ GENERAL-`L` BOUNDARY-SMEARED `hSmeared` OBLIGATION ∀L (the smeared counterpart of the interior
+-- capstone) — `hSmeared_smearedClose` (RouteMSmearedClose) fills the dispatch spine's `hSmeared` slot
+-- `(2 ≤ L) → BoundarySmeared M → NoInteriorBothDrop M → BoxDiverges M c' ε` unconditionally ∀L, all
+-- structural data derived from `BoundarySmeared ∧ NoInteriorBothDrop ∧ 1 ≤ minAdm`. Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: S2-FREE (the smeared box divergence is single-axis after
+-- the front shear, NOT via `monomial_rlct`), no `sorryAx`.
+#print axioms hSmeared_smearedClose
+
+-- ★★★ CAPSTONE — the general-`L` R1-LOWER achiever `hdiv`, ALL branches discharged ∀L:
+-- `routeMCore_box_diverges_achiever_full` feeds the dispatch spine its two open slot-dischargers
+-- (`interiorLiveGen_hInterior` + `hSmeared_smearedClose`), the clean branch handled in-spine. Given
+-- `hNo : NoInteriorBothDrop M` + the clean structural side-conditions, the achiever box integral
+-- diverges for EVERY `L`. Must be [propext, Classical.choice, Quot.sound, monomial_rlct], no `sorryAx`:
+-- the single permitted S2 citation enters through the interior slot; the smeared slot is clean-three
+-- and the spine adds none of its own.
+#print axioms routeMCore_box_diverges_achiever_full
 
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
