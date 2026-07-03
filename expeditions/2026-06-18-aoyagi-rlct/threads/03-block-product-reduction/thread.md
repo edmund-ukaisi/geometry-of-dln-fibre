@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 plain endpoint-density readback wrapper
+
+Reproduction:
+`reproduction-a2-plain-endpoint-density-readback-wrapper.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointTopologyTupleImage_eq_withDensity_formalProductAbsDet_rawDetChart_of_one_le_mul_density_sourceDensity_lower
+```
+
+This is the plain `Case2PassiveTheta` full determinant-chart readback wrapper:
+an explicit weighted-Haar identity for `Measure.map Y (passiveSource.restrict V)`
+and an explicit lower bound on the endpoint determinant density supply the
+determinant-domination socket used by the existing original-volume readback
+theorem.
+
+Boundary: no endpoint image identity, no determinant-density lower bound, no
+source-density lower bound, no patch-local p.13 endpoint theorem, no
+finite-integral corollary, no source-image coverage, original-prior transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; direct axiom probe; and xhigh
+read-only review by `Arendt the 3rd`.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Route note: xhigh explorer `Averroes the 3rd` found that the with-following
+prior readback finite-integral transfer cannot yet be composed into a concrete
+residual theorem, because the edge-family with-following product-residual
+readout/measurability identity is missing.
+
 ## 2026-07-03 A2 endpoint-density prior readback finite-integral transfer
 
 Reproduction:

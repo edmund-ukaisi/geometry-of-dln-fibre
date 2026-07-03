@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, plain endpoint-density readback wrapper
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointTopologyTupleImage_eq_withDensity_formalProductAbsDet_rawDetChart_of_one_le_mul_density_sourceDensity_lower
+```
+
+Decision: land the plain `Case2PassiveTheta` full determinant-chart
+endpoint-density readback wrapper, but do not restate the enormous
+finite-integral theorem yet.  The theorem fills the existing determinant
+domination socket from an explicit weighted-Haar identity for the actual
+endpoint image
+
+```text
+Measure.map Y (passiveSource.restrict V)
+```
+
+together with the explicit lower bound `1 <= Cdet * Jprod`; it then feeds the
+already proved original-volume readback theorem.  This is stronger than the
+p.13 patch-local target, but it is honest and directly reusable.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-plain-endpoint-density-readback-wrapper.md
+```
+
+Boundary: no endpoint image identity, no determinant-density lower bound, no
+source-density lower bound, no p.13 patch-local endpoint theorem, no
+finite-integral corollary, no source-image coverage, no source-rank coverage,
+no original-prior transport, no normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; direct axiom probe; and xhigh
+read-only review by `Arendt the 3rd`.  The new theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Route note from xhigh explorer `Averroes the 3rd`: the previously considered
+with-following product residual finite-integral composition is not ready.  The
+product-with-Dirac bridge is easy, but the needed edge-family with-following
+product-residual readout/measurability theorem is missing.  Do not compose the
+with-following prior readback transfer into a concrete residual integral until
+that readout identity exists.
+
 ## Latest controller decision - 2026-07-03, endpoint-density prior readback finite-integral transfer
 
 Lean now has:

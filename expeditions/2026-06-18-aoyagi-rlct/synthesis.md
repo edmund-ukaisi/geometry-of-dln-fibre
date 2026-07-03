@@ -6,6 +6,58 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Plain Endpoint-Density Readback Wrapper - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointTopologyTupleImage_eq_withDensity_formalProductAbsDet_rawDetChart_of_one_le_mul_density_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+Measure.map Y (passiveSource.restrict V)
+  = (rawHaar.restrict rawDetChart).withDensity Jprod,
+1 <= Cdet * Jprod a.e.,
+Cdet < infinity
+==>
+rawHaar.restrict rawDetChart
+  <= Cdet * Measure.map Y (passiveSource.restrict V),
+```
+
+then the existing determinant-domination original-volume readback theorem gives
+
+```text
+Measure.map readback (originalVolume.restrict chartPiece)
+  <= ((cHaar^{-1}) * (Cdet * epsilon^{-1}))
+       * coordinateSourceMeasure.restrict G.
+```
+
+Boundary: this is the full determinant-chart socket for plain
+`Case2PassiveTheta`, not the p.13 patch-local theorem and not a finite-integral
+restatement.  Endpoint image identity, endpoint determinant lower bound,
+source-density lower bound, source-image coverage, source-rank coverage,
+original-prior transport, normal crossings, pole order, and RLCT remain open.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; direct axiom probe; and xhigh read-only review
+by `Arendt the 3rd`.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Route constraint from `Averroes the 3rd`: the with-following readback transfer
+should not yet be composed with the source residual integral.  A product with a
+Dirac measure is routine, but the edge-family with-following product-residual
+readout/measurability theorem is missing.
+
 ## A2 Endpoint-Density Prior Readback Finite-Integral Transfer - 2026-07-03
 
 Lean now has:
