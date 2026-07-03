@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-02, A2 finite-passive source-cylinder following patch
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_productSourceMeasure_restrict_followingPatch_eq_prod_restrict
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_of_base_reindexed_det_isUnit
+```
+
+Decision: the matrix-entry following patch can be repackaged over the full
+with-following source as a following-patch cylinder, but only for a finite
+passive-side measure.  The global passive-field coordinate reference measure is
+not known finite, so this theorem deliberately keeps the existing
+`passiveMeasure Set.univ < ∞` hypothesis instead of specializing to the named
+global reference source.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-finite-passive-source-following-patch-integrability.md
+```
+
+Boundary: the determinant hypothesis remains a separate hypothesis on the base
+following factor `z₀.2`; it is not derived from
+`case2PassiveThetaWithFollowingFactorDetSector`.  This proves no open
+source-chart neighborhood, positive patch mass, determinant-Haar or raw-Haar
+transport, source-density or original-prior transport, normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-07-02, A2 matrix-entry following-factor local patch
 
 Lean now has:

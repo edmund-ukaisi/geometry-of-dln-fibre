@@ -21,6 +21,59 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-02 A2 finite-passive source-cylinder following patch
+
+Reproduction:
+`reproduction-a2-finite-passive-source-following-patch-integrability.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactor_productSourceMeasure_restrict_followingPatch_eq_prod_restrict
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_of_base_reindexed_det_isUnit
+```
+
+The first theorem is the product-measure bookkeeping for a following-patch
+cylinder:
+
+```text
+((passiveMeasure.prod weightedBox).prod followingRef)
+  .restrict {z | z.2 ∈ followingPatch}
+= (passiveMeasure.prod weightedBox).prod (followingRef.restrict followingPatch).
+```
+
+The second theorem is the source-point wrapper around the matrix-entry
+following patch.  It takes a full source point `z₀` and the separate following
+determinant hypothesis
+
+```text
+IsUnit ((z₀.2.submatrix id eNext.symm).det)
+```
+
+then returns a measurable finite following patch containing `z₀.2`, with
+determinant-unit and uniform inverse-square-sum bounds, and proves p.13
+product-residual a.e. positivity and finite negative-power integrability over
+the finite-passive product source restricted to the cylinder `{z | z.2 ∈
+followingPatch}`.
+
+Boundary: this intentionally keeps `passiveMeasure Set.univ < ∞`; the global
+passive-field coordinate reference measure is not known finite.  It does not
+derive the following determinant condition from
+`case2PassiveThetaWithFollowingFactorDetSector`, and proves no open
+source-chart neighborhood, positive patch mass, Haar/source-density/original
+prior transport, normal crossings, pole order, or RLCT.
+
+Focused local build, full local `lake build DLNFibre`, `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, direct axiom
+probe, and xhigh review by `Pasteur the 3rd` passed.  The two new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 matrix-entry following-factor local patch
 
 Reproduction:

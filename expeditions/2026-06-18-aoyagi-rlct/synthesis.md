@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Finite-Passive Source-Cylinder Following Patch - 2026-07-02
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_productSourceMeasure_restrict_followingPatch_eq_prod_restrict
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_of_base_reindexed_det_isUnit
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+This is the source-cylinder form of the matrix-entry following-factor local
+patch.  Given a full source point `z₀`, a separate determinant-unit hypothesis
+on the independent following factor `z₀.2`, and a finite passive-side measure,
+it constructs a measurable finite following patch containing `z₀.2` and proves
+p.13 product-residual a.e. positivity plus finite negative-power integrability
+over
+
+```text
+((passiveMeasure.prod weightedBox).prod followingRef)
+  .restrict {z | z.2 ∈ followingPatch}.
+```
+
+The bookkeeping lemma identifies this cylinder restriction with the earlier
+product source using `followingRef.restrict followingPatch`.  The finite
+passive-side hypothesis is essential for this theorem as stated: the global
+passive-field coordinate reference measure is not known finite, so this is not
+a theorem over the unrestricted named global reference source.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-finite-passive-source-following-patch-integrability.md
+```
+
+Boundary: this is still only a finite source-side patch theorem.  It does not
+construct an open source-chart neighborhood, prove positive patch mass, remove
+the finite passive-side measure hypothesis, identify determinant Haar/raw Haar,
+transport source density or original prior, prove source-image coverage,
+normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, direct axiom probe, and xhigh review.  Both new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Generic Readback Product Finite-Integral Handoff - 2026-07-02
 
 Lean now has:
