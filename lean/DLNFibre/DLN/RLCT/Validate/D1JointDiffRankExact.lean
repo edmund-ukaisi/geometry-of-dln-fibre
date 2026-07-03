@@ -313,4 +313,26 @@ theorem finrank_range_jointDiffL2_eq (H : Fin (2 + 1) → ℕ) (v : Params H) :
   rw [range_jointDiffL2_eq_sup H v, ← hR, ← hC]
   omega
 
+/-- **`jacFlatL2.rank = finrank (range (jointDiffL2 H v))`.** The flat Jacobian matrix represents
+`jointDiffL2 H v ∘ flatSymm` (`flatSymm` a linear iso), so its rank is the range-finrank of
+`jointDiffL2 H v` (precompose the surjective iso; same bridge as `nReg_le_jacFlatL2_rank`). -/
+theorem jacFlatL2_rank_eq_finrank_range (H : Fin (2 + 1) → ℕ) (v : Params H) :
+    (jacFlatL2 H v).rank = Module.finrank ℝ (LinearMap.range (jointDiffL2 H v)) := by
+  rw [jacFlatL2, Matrix.rank_eq_finrank_range_toLin _
+    (Matrix.stdBasis ℝ (Fin (H 0)) (Fin (H 2)))
+    (Pi.basisFun ℝ (Fin (flatDim H))), Matrix.toLin_toMatrix]
+  rw [LinearMap.range_comp, LinearEquiv.range, Submodule.map_top]
+
+/-- **The EXACT flat-Jacobian rank (b3, matrix form), UNCONDITIONAL in the two layer ranks.**
+
+    (jacFlatL2 H v).rank = H0·rank(v¹) + rank(v⁰)·H2 − rank(v⁰)·rank(v¹).
+
+The matrix-rank statement the `hrank₂` gate consumes (`finrank_range_jointDiffL2_eq` through the
+flat-Jacobian bridge). -/
+theorem jacFlatL2_rank_eq (H : Fin (2 + 1) → ℕ) (v : Params H) :
+    (jacFlatL2 H v).rank
+      = H 0 * (layer1 H v).rank + (layer0 H v).rank * H 2
+        - (layer0 H v).rank * (layer1 H v).rank := by
+  rw [jacFlatL2_rank_eq_finrank_range, finrank_range_jointDiffL2_eq]
+
 end DLNFibre.DLN.RLCT
