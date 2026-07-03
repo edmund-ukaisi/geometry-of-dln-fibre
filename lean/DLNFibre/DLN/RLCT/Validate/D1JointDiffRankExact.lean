@@ -313,6 +313,69 @@ theorem finrank_range_jointDiffL2_eq (H : Fin (2 + 1) → ℕ) (v : Params H) :
   rw [range_jointDiffL2_eq_sup H v, ← hR, ← hC]
   omega
 
+/-! ## Sylvester's rank inequality (needed for the `a + b ≤ H1 − r` gate constraint)
+
+`rank(A·B) ≥ rank A + rank B − (middle dim)`. Derived from rank–nullity on the restriction of
+`toLin A` to `range (toLin B)`: `range B = range(A·B) ⊕ (ker A ∩ range B)` in finrank, and
+`ker A ∩ range B ⊆ ker A` has `finrank ≤ (middle dim − rank A)`. -/
+
+/-- **Sylvester's rank inequality at the linear-map level.** For `f : U →ₗ V`, `g : V →ₗ W` over `ℝ`
+with `V` finite-dimensional:
+`finrank(range g) + finrank(range f) ≤ finrank(range (g ∘ f)) + finrank V`. -/
+theorem finrank_range_add_le_finrank_range_comp_add
+    {U V W : Type*} [AddCommGroup U] [Module ℝ U] [AddCommGroup V] [Module ℝ V]
+    [AddCommGroup W] [Module ℝ W] [FiniteDimensional ℝ V]
+    (f : U →ₗ[ℝ] V) (g : V →ₗ[ℝ] W) :
+    Module.finrank ℝ (LinearMap.range g) + Module.finrank ℝ (LinearMap.range f)
+      ≤ Module.finrank ℝ (LinearMap.range (g.comp f)) + Module.finrank ℝ V := by
+  classical
+  -- restrict `g` to `range f`: range = range(g∘f), ker = ker g ⊓ range f.
+  set gr : LinearMap.range f →ₗ[ℝ] W := g.domRestrict (LinearMap.range f) with hgr
+  have hrn := LinearMap.finrank_range_add_finrank_ker gr
+  -- `finrank (range f) = finrank (range gr) + finrank (ker gr)`.
+  have hdom : Module.finrank ℝ (LinearMap.range f) = Module.finrank ℝ (LinearMap.range gr)
+      + Module.finrank ℝ (LinearMap.ker gr) := hrn.symm
+  -- `range gr = range (g ∘ f)` as submodules.
+  have hrangeEq : LinearMap.range gr = LinearMap.range (g.comp f) := by
+    apply le_antisymm
+    · rintro _ ⟨⟨x, hx⟩, rfl⟩
+      obtain ⟨u, rfl⟩ := hx
+      exact ⟨u, rfl⟩
+    · rintro _ ⟨u, rfl⟩
+      exact ⟨⟨f u, ⟨u, rfl⟩⟩, rfl⟩
+  have hrange : Module.finrank ℝ (LinearMap.range gr)
+      = Module.finrank ℝ (LinearMap.range (g.comp f)) := by rw [hrangeEq]
+  -- `ker gr ↪ ker g` via the subtype: `finrank (ker gr) = finrank (map subtype (ker gr))`, and the
+  -- image lies in `ker g`, so `≤ finrank (ker g)`.
+  have hmapLe : (LinearMap.ker gr).map (LinearMap.range f).subtype ≤ LinearMap.ker g := by
+    rintro _ ⟨⟨x, hx⟩, hker0, rfl⟩
+    simp only [SetLike.mem_coe, LinearMap.mem_ker] at hker0 ⊢
+    exact hker0
+  have hker : Module.finrank ℝ (LinearMap.ker gr) ≤ Module.finrank ℝ (LinearMap.ker g) := by
+    rw [← Submodule.finrank_map_subtype_eq (LinearMap.range f) (LinearMap.ker gr)]
+    exact Submodule.finrank_mono hmapLe
+  -- `finrank (ker g) + finrank (range g) = finrank V` (rank–nullity for `g`).
+  have hg := LinearMap.finrank_range_add_finrank_ker g
+  omega
+
+/-- **Sylvester's rank inequality (matrix form).** For `A : l×m`, `B : m×n` over `ℝ`:
+`A.rank + B.rank ≤ (A*B).rank + m`. -/
+theorem rank_add_rank_le_rank_mul_add_middle {l m n : ℕ}
+    (A : Matrix (Fin l) (Fin m) ℝ) (B : Matrix (Fin m) (Fin n) ℝ) :
+    A.rank + B.rank ≤ (A * B).rank + m := by
+  have hmul : (A * B).mulVecLin = A.mulVecLin.comp B.mulVecLin := Matrix.mulVecLin_mul A B
+  have hkey := finrank_range_add_le_finrank_range_comp_add B.mulVecLin A.mulVecLin
+  rw [← hmul] at hkey
+  -- `A.rank = finrank (range A.mulVecLin)`, etc.; `finrank (Fin m → ℝ) = m`.
+  have hA : A.rank = Module.finrank ℝ (LinearMap.range A.mulVecLin) := rfl
+  have hB : B.rank = Module.finrank ℝ (LinearMap.range B.mulVecLin) := rfl
+  have hAB : (A * B).rank = Module.finrank ℝ (LinearMap.range (A * B).mulVecLin) := rfl
+  have hmid : Module.finrank ℝ (Fin m → ℝ) = m := by
+    rw [Module.finrank_fin_fun]
+  rw [hA, hB, hAB]
+  rw [hmid] at hkey
+  omega
+
 /-- **`jacFlatL2.rank = finrank (range (jointDiffL2 H v))`.** The flat Jacobian matrix represents
 `jointDiffL2 H v ∘ flatSymm` (`flatSymm` a linear iso), so its rank is the range-finrank of
 `jointDiffL2 H v` (precompose the surjective iso; same bridge as `nReg_le_jacFlatL2_rank`). -/
