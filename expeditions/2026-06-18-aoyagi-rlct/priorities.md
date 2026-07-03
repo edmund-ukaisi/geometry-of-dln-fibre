@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, active endpoint coordinate linear equivalence / Haar-scalar transport
+
+Lean now has:
+
+```text
+endpointTopologyTupleActiveReadout_map_add
+endpointTopologyTupleActiveReadout_map_smul
+endpointTopologyTupleActiveLinearEquiv
+endpointTopologyTupleActiveContinuousLinearEquiv
+map_endpointTopologyTupleActiveWriteback_restrict_eq_smul_rawHaar_restrict_image
+```
+
+Decision: package the active endpoint readout/writeback as a global continuous
+linear equivalence and land the generic additive-Haar restriction transport
+through active writeback, keeping the Haar normalization scalar explicit.
+This is a valid next layer because the finite coordinate repacking was already
+proved pointwise in both directions, and the measure statement is only
+uniqueness of additive Haar measure plus restriction compatibility.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-active-endpoint-coordinate-linear-equivalence.md
+```
+
+Next controller target: identify the active-coordinate product reference
+measure used by the selected-entry source COV as a restricted full additive
+Haar measure, then compose that identification with the selected-entry COV and
+the new active-writeback Haar-scalar theorem.
+
+Boundary: no scalar-`1` Haar normalization, no endpoint image identity, no
+determinant-Haar or weighted-Haar identity, no p.13 endpoint-patch image-set
+matching, no Jacobian formula, no source-image coverage, no original-prior
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, endpoint-patch density-domination handoff
 
 Lean now has:

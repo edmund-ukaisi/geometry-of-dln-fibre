@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Active Endpoint Coordinate Linear Equivalence / Haar-Scalar Transport - 2026-07-03
+
+Lean now has:
+
+```text
+endpointTopologyTupleActiveReadout_map_add
+endpointTopologyTupleActiveReadout_map_smul
+endpointTopologyTupleActiveLinearEquiv
+endpointTopologyTupleActiveContinuousLinearEquiv
+map_endpointTopologyTupleActiveWriteback_restrict_eq_smul_rawHaar_restrict_image
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+The pen-and-paper calculation is that active endpoint readout is only finite
+coordinate projection, reindexing, product rebracketing, and matrix entrywise
+reconstruction, hence it commutes with addition and scalar multiplication.
+Together with the existing pointwise inverse identities
+
+```text
+readout (writeback z) = z
+writeback (readout T) = T
+```
+
+this gives a continuous linear equivalence between endpoint topology tuples
+and active with-following coordinates.  Pushing an active-source additive Haar
+restriction through the inverse/writeback side gives:
+
+```text
+Measure.map W (sourceHaar.restrict Omega)
+  = ((Measure.map W sourceHaar).addHaarScalarFactor rawHaar) •
+      rawHaar.restrict (W '' Omega).
+```
+
+Boundary: the scalar is explicit; no scalar-`1` normalization, endpoint image
+identity, determinant-Haar or weighted-Haar identity, image-set matching with
+the p.13 determinant patch, Jacobian formula, source-image coverage,
+original-prior transport, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout` after
+resume; full local `lake build DLNFibre` before the interruption;
+`lean/scripts/sorries`; `git diff --check`; touched Lean-file marker scan; and
+direct axiom probe.  The five new declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Laplace the 3rd` found no soundness issue and flagged only the now-addressed
+documentation update plus a nonblocking overconstrained older `injOn` theorem.
+
+Next controller target: identify the active-coordinate product reference from
+the selected-entry COV as a restricted full additive Haar measure, then compose
+that with the new active-writeback Haar-scalar theorem.  Do not jump directly
+to the endpoint determinant-Haar identity until source-reference full-Haar
+restriction and image-set matching are proved.
+
 ## A2 Endpoint-Patch Density-Domination Handoff - 2026-07-03
 
 Lean now has:

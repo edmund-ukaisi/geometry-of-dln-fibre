@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 active endpoint coordinate linear equivalence / Haar-scalar transport
+
+Reproduction:
+`reproduction-a2-active-endpoint-coordinate-linear-equivalence.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaCFieldReadout.lean
+```
+
+Lean now proves:
+
+```text
+endpointTopologyTupleActiveReadout_map_add
+endpointTopologyTupleActiveReadout_map_smul
+endpointTopologyTupleActiveLinearEquiv
+endpointTopologyTupleActiveContinuousLinearEquiv
+map_endpointTopologyTupleActiveWriteback_restrict_eq_smul_rawHaar_restrict_image
+```
+
+The first four declarations upgrade the active readout/writeback pair from
+continuous inverse finite-coordinate maps to a continuous linear equivalence.
+The final theorem says that for active-source additive Haar `sourceHaar`,
+endpoint additive Haar `rawHaar`, active writeback `W`, and active-coordinate
+set `Omega`,
+
+```text
+Measure.map W (sourceHaar.restrict Omega)
+  = ((Measure.map W sourceHaar).addHaarScalarFactor rawHaar) •
+      rawHaar.restrict (W '' Omega).
+```
+
+Boundary: this is only generic Haar uniqueness and restriction compatibility
+for the active finite-coordinate equivalence.  It does not prove scalar `1`,
+endpoint image identity, determinant-Haar or weighted-Haar identity, image-set
+matching with the p.13 determinant patch, a Jacobian formula, source-image
+coverage, original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout` after
+resume; full local `lake build DLNFibre` before the interruption;
+`lean/scripts/sorries`; `git diff --check`; touched Lean-file marker scan; and
+direct axiom probe.  The five new declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Laplace the 3rd` found no soundness issue.
+
 ## 2026-07-03 A2 endpoint-patch density-domination handoff
 
 Reproduction:

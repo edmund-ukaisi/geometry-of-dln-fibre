@@ -19,6 +19,7 @@ namespace Aoyagi
 
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+open MeasureTheory
 
 namespace Case2PassiveTheta
 
@@ -820,6 +821,174 @@ theorem continuous_endpointTopologyTupleActiveWriteback
       ((continuous_endpointTransport
         (K := ℝ) (ρ := ρ)
         (κ := case2PostPivotTwoEdgeDomain n S J τ) (κ' := κ') e).comp hraw)
+
+set_option linter.style.longLine false in
+/-- The active endpoint readout is additive.
+
+This is only linearity of finite coordinate projections and reindexing; it is
+not a measure-transport statement. -/
+theorem endpointTopologyTupleActiveReadout_map_add
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (T U : TopologyTuple ρ κ' ℝ) :
+    endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e (T + U) =
+      endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T +
+        endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e U := by
+  classical
+  dsimp [endpointTopologyTupleActiveReadout]
+  ext <;> rfl
+
+set_option linter.style.longLine false in
+/-- The active endpoint readout commutes with scalar multiplication.
+
+This is only linearity of finite coordinate projections and reindexing; it is
+not a measure-transport statement. -/
+theorem endpointTopologyTupleActiveReadout_map_smul
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (a : ℝ) (T : TopologyTuple ρ κ' ℝ) :
+    endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e (a • T) =
+      a • endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T := by
+  classical
+  dsimp [endpointTopologyTupleActiveReadout]
+  ext <;> rfl
+
+set_option linter.style.longLine false in
+/-- Active endpoint coordinate readout as a linear equivalence.
+
+The inverse writes the active selected-entry coordinates and following factor
+back into the endpoint tuple.  This packages only a finite-coordinate linear
+repacking, not endpoint Haar transport or a Jacobian theorem. -/
+def endpointTopologyTupleActiveLinearEquiv
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    TopologyTuple ρ κ' ℝ ≃ₗ[ℝ]
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J where
+  toFun := endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e
+  invFun := endpointTopologyTupleActiveWriteback (ρ := ρ) (τ := τ) n e
+  map_add' := endpointTopologyTupleActiveReadout_map_add
+    (ρ := ρ) (τ := τ) n e
+  map_smul' := endpointTopologyTupleActiveReadout_map_smul
+    (ρ := ρ) (τ := τ) n e
+  left_inv := endpointTopologyTupleActiveWriteback_readout
+    (ρ := ρ) (τ := τ) n e
+  right_inv := endpointTopologyTupleActiveReadout_writeback
+    (ρ := ρ) (τ := τ) n e
+
+@[simp]
+theorem endpointTopologyTupleActiveLinearEquiv_apply
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (T : TopologyTuple ρ κ' ℝ) :
+    endpointTopologyTupleActiveLinearEquiv (ρ := ρ) (τ := τ) n e T =
+      endpointTopologyTupleActiveReadout (ρ := ρ) (τ := τ) n e T :=
+  rfl
+
+@[simp]
+theorem endpointTopologyTupleActiveLinearEquiv_symm_apply
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :
+    (endpointTopologyTupleActiveLinearEquiv
+        (ρ := ρ) (τ := τ) n e).symm z =
+      endpointTopologyTupleActiveWriteback (ρ := ρ) (τ := τ) n e z :=
+  rfl
+
+set_option linter.style.longLine false in
+/-- Active endpoint coordinate readout as a continuous linear equivalence.
+
+This is the topological-linear packaging of the active readout/writeback
+finite-coordinate inverse.  It is not a statement about the normalization of
+endpoint Haar measure under the equivalence. -/
+def endpointTopologyTupleActiveContinuousLinearEquiv
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    TopologyTuple ρ κ' ℝ ≃L[ℝ]
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J where
+  toLinearEquiv := endpointTopologyTupleActiveLinearEquiv
+    (ρ := ρ) (τ := τ) n e
+  continuous_toFun := continuous_endpointTopologyTupleActiveReadout
+    (ρ := ρ) (τ := τ) n e
+  continuous_invFun := continuous_endpointTopologyTupleActiveWriteback
+    (ρ := ρ) (τ := τ) n e
+
+set_option linter.style.longLine false in
+/-- Pushing a restricted active-source Haar measure through active writeback
+gives the corresponding endpoint restriction, up to the full-space Haar
+normalization scalar.
+
+This is restriction compatibility for the active finite-coordinate continuous
+linear equivalence.  It does not identify that scalar with `1`, does not
+compare the endpoint image with determinant-chart Haar, and does not include a
+Jacobian formula. -/
+theorem map_endpointTopologyTupleActiveWriteback_restrict_eq_smul_rawHaar_restrict_image
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [MeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [LocallyCompactSpace (TopologyTuple ρ κ' ℝ)]
+    [SecondCountableTopology (TopologyTuple ρ κ' ℝ)]
+    (sourceHaar :
+      Measure (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    [sourceHaar.IsAddHaarMeasure]
+    (rawHaar : Measure (TopologyTuple ρ κ' ℝ))
+    [rawHaar.IsAddHaarMeasure]
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)) :
+    let W :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ≃L[ℝ]
+          TopologyTuple ρ κ' ℝ :=
+      (endpointTopologyTupleActiveContinuousLinearEquiv
+        (ρ := ρ) (τ := τ) n e).symm
+    Measure.map W (sourceHaar.restrict Ω) =
+      ((Measure.map W sourceHaar).addHaarScalarFactor rawHaar) •
+        rawHaar.restrict (W '' Ω) := by
+  intro W
+  haveI : IsFiniteMeasureOnCompacts (Measure.map W sourceHaar) :=
+    MeasureTheory.Measure.IsFiniteMeasureOnCompacts.map
+      sourceHaar W.toHomeomorph
+  haveI : Measure.IsAddHaarMeasure (Measure.map W sourceHaar) :=
+    W.isAddHaarMeasure_map sourceHaar
+  have hfull :
+      Measure.map W sourceHaar =
+        (Measure.map W sourceHaar).addHaarScalarFactor rawHaar • rawHaar :=
+    MeasureTheory.Measure.isAddLeftInvariant_eq_smul
+      (Measure.map W sourceHaar) rawHaar
+  have hmap_restrict :
+      Measure.map W (sourceHaar.restrict Ω) =
+        (Measure.map W sourceHaar).restrict (W '' Ω) := by
+    have hrestrict :=
+      (W.toHomeomorph.toMeasurableEquiv.restrict_map
+        sourceHaar (W '' Ω)).symm
+    rw [Homeomorph.toMeasurableEquiv_coe,
+      ContinuousLinearEquiv.coe_toHomeomorph] at hrestrict
+    have hpre : W ⁻¹' (W '' Ω) = Ω :=
+      Set.preimage_image_eq Ω W.injective
+    simpa [hpre] using hrestrict
+  calc
+    Measure.map W (sourceHaar.restrict Ω) =
+        (Measure.map W sourceHaar).restrict (W '' Ω) := hmap_restrict
+    _ =
+        (((Measure.map W sourceHaar).addHaarScalarFactor rawHaar) • rawHaar).restrict
+          (W '' Ω) :=
+          congrArg
+            (fun μ : Measure (TopologyTuple ρ κ' ℝ) ↦ μ.restrict (W '' Ω))
+            hfull
+    _ =
+      ((Measure.map W sourceHaar).addHaarScalarFactor rawHaar) •
+        rawHaar.restrict (W '' Ω) := by
+          rw [Measure.restrict_smul]
 
 set_option linter.style.longLine false in
 /-- The endpoint topology tuple of an enlarged passive-theta coordinate reads
