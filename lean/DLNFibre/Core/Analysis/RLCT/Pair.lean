@@ -1,30 +1,29 @@
 import DLNFibre.Core.Analysis.RLCT.Cited
 
 /-!
-# `RLCT.Pair` — the zeta-pole RLCT pair `(λ, m)` and Link 1 (`λ = integrabilityThreshold`)
+# `RLCT.Pair` — the zeta-pole RLCT pair `(λ, m)` and the LOCAL Link 1 (`λ = rlctAt K x₀`)
 
-The **zeta-pole definition of the RLCT** (operator decision A; certificate §1.2): the RLCT of a germ
-`K` at `x₀` is the pair `(λ, m)` extracted from the largest pole `s₀` of the local zeta function
-`ζ_{K,φ}` (`RLCT.Zeta`), whose existence and pole structure are the ONE bundled monument
-(`RLCT.Cited`):
+The **zeta-pole definition of the RLCT** (operator decision A): the RLCT of a germ `K` at `x₀` is
+the pair `(λ, m)` extracted from the largest pole `s₀` of the local zeta `ζ_{K,φ}` (`RLCT.Zeta`),
+whose existence and pole structure are the ONE bundled **local** monument (`RLCT.Cited`):
 
-* **`λ := −s₀`** — the **positive** real (`= rlct_x(K)`), *minus* the (negative) largest pole
-  location. The sign flip is the load-bearing item (certificate §6.1): `λ` is `−s₀`, **not** the
-  pole `s₀` itself;
+* **`λ := −s₀`** — the **positive** real (`= rlctAt K x₀`), *minus* the (negative) largest pole
+  location. The sign flip is load-bearing: `λ` is `−s₀`, **not** the pole `s₀` itself;
 * **`m := poleOrder`** — the **order of that largest pole**, the honest RLCT multiplicity `rlcm`.
   Named `poleOrder`, **never** a count: `m` is the *analytic* pole order, and is **provably not**
   `θ` = the geometric top-component count (`DLNFibre.DLN.Aoyagi.ThetaOrderDistinction`; the paper
   itself, `main.tex` L1933, says "no simple relationship"). `m` is off the payoff's critical path.
 
-**Link 1 (certificate §3.1).** `λ = RLCT.integrabilityThreshold K U`: the zeta-pole `λ` equals
-R2a's cite-free integrability-threshold *value*. This is the hybrid tie — the value half
-(`integrabilityThreshold`, `RLCT.Integrability`, cite-free) *equals* the zeta-pole `λ` **by the
-bundled cite** (the identity `s₀ = −threshold` is inside the monument, not a free consequence of
-bare meromorphy — certificate §6.5). The eventual `½·codim` payoff rides this value (bracketed by
-the separate Watanabe/Aoyagi cites); the continuation cite buys `m` and the pole reading.
+**Link 1 — LOCAL (certificate §7.2/§7.5).** `λ = RLCT.rlctAt K x₀`: the zeta-pole `λ` equals the
+cite-free **local** RLCT of the germ at `x₀` (`RLCT.Local`), directly from the bundled cite (whose
+conclusion is `s₀ = −rlctAt K x₀`). This is the *local* identity — consistent (`s₀`, `rlctAt K x₀`
+are both germ-at-`x₀` data) and DLN-admissible. The connection to R2a's *regional*
+`integrabilityThreshold K U` is the separate, buildable **Bridge B**
+(`RLCT.integrabilityThreshold_eq_localRlct_of_worst`), not this cite; and the DLN `½·codim` payoff
+rides the *global* Watanabe/Aoyagi cites, not this axiom at `K_B`.
 
 All extraction here is `Classical.choose` on the one cite (`RLCT.Cited`): `#print axioms` on `λ`,
-`rlctPair`, `poleOrder` shows the continuation axiom (plus the foundational three), nothing else.
+`rlctPair`, `poleOrder` shows the local zeta-pole axiom (plus the foundational three), nothing else.
 
 Bare Mathlib-mirror namespace `RLCT` (network-free).
 -/
@@ -37,14 +36,15 @@ variable {n : ℕ}
 
 /-! ## The germ+cutoff data with the cite's hypotheses bundled
 
-`ZetaSetup` packages a germ `K`, cutoff `φ`, base point `x₀`, neighbourhood `U`, and the analytic /
-smoothness / nonnegativity / zero-at-`x₀` hypotheses the cited monument needs. Bundling lets the
-extraction (`Classical.choose` on the cite) take a single argument. -/
+`ZetaSetup` packages a germ `K`, cutoff `φ`, base point `x₀`, the localizing nbhd `U`, and the
+analytic / smoothness / nonnegativity / zero-at-`x₀` hypotheses the *local* cited monument needs.
+Bundling lets the extraction (`Classical.choose` on the cite) take a single argument. The `U` only
+localizes `φ`'s support — it carries **no** regional threshold (the cite is local; cert §7). -/
 
-/-- The data + hypotheses feeding the zeta-pole cite: a real-analytic nonnegative germ `K` with a
-zero at `x₀`, a smooth cutoff `φ` (`≥ 0`, `≠ 0` at `x₀`) supported inside a relatively compact open
-neighbourhood `U ∋ x₀` on which `K` is in the pole regime. Exactly the hypotheses of
-`cited_zeta_meromorphic_continuation` (locality + pole-regime included). -/
+/-- The data + hypotheses feeding the LOCAL zeta-pole cite: a real-analytic nonnegative germ `K`
+with a zero at `x₀`, and a smooth cutoff `φ` (`≥ 0`, `≠ 0` at `x₀`) supported in a small open nbhd
+`U ∋ x₀`. Exactly the hypotheses of `cited_local_zeta_pole` — purely local, **no** sole-zero /
+pole-regime / regional-threshold hypothesis (so it is DLN-admissible at any fibre point). -/
 structure ZetaSetup (n : ℕ) where
   /-- The nonnegative real-analytic loss germ. -/
   K : (Fin n → ℝ) → ℝ
@@ -52,7 +52,7 @@ structure ZetaSetup (n : ℕ) where
   φ : (Fin n → ℝ) → ℝ
   /-- The base point (a zero of the germ). -/
   x₀ : Fin n → ℝ
-  /-- The neighbourhood on which the integrability threshold is taken. -/
+  /-- The open nbhd localizing `φ`'s support (no threshold is read off it). -/
   U : Set (Fin n → ℝ)
   /-- `K` is real-analytic. -/
   hK : AnalyticOnNhd ℝ K Set.univ
@@ -68,24 +68,15 @@ structure ZetaSetup (n : ℕ) where
   hφnn : ∀ x, 0 ≤ φ x
   /-- `φ` does not vanish at `x₀`. -/
   hφx₀ : φ x₀ ≠ 0
-  /-- `x₀` lies in the neighbourhood `U`. -/
+  /-- `x₀` lies in the localizing nbhd `U`. -/
   hx₀U : x₀ ∈ U
   /-- `U` is open. -/
   hUopen : IsOpen U
-  /-- `U` is relatively compact (its closure is compact). -/
-  hUcpt : IsCompact (closure U)
-  /-- `φ` is supported inside `U` (ties the cutoff to the neighbourhood). -/
+  /-- `φ` is supported inside `U` (localizes the cutoff near `x₀`). -/
   hφU : tsupport φ ⊆ U
-  /-- `x₀` is the *only* zero of `K` on `closure U`. Load-bearing: it keeps the cite CONSISTENT —
-  without it the axiom proves `False` (the pinned continuation is holomorphic where `−threshold`
-  demands a pole; a second zero of `K` in `U` the zeta cannot see). -/
-  hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀
-  /-- The germ is in the pole regime on `U`: the admissible set is bounded above, so the threshold
-  is the honest `sSup`, not the `sSup ∅ = 0` junk. -/
-  hpole : BddAbove (admissibleExponents K U)
 
-/-- The bundled cite applied to a `ZetaSetup` — the existence statement whose witness the extraction
-chooses. -/
+/-- The bundled LOCAL cite applied to a `ZetaSetup` — the existence statement whose witness the
+extraction chooses. Conclusion is purely local: `s₀ = −rlctAt K x₀`. -/
 theorem ZetaSetup.cite (S : ZetaSetup n) :
     ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
       (∀ s : ℂ, 0 < s.re → Z s = zeta S.K S.φ s) ∧
@@ -94,9 +85,9 @@ theorem ZetaSetup.cite (S : ZetaSetup n) :
       (∀ s : ℂ, meromorphicOrderAt Z s < 0 → s.re ≤ s₀) ∧
       s₀ < 0 ∧ (∃ q : ℚ, s₀ = q) ∧ 1 ≤ m₀ ∧
       meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
-      s₀ = -(integrabilityThreshold S.K S.U) :=
-  cited_zeta_meromorphic_continuation S.K S.φ S.x₀ S.U S.hK S.hKnn S.hKx₀ S.hφ S.hφc S.hφnn S.hφx₀
-    S.hx₀U S.hUopen S.hUcpt S.hφU S.hUzero S.hpole
+      s₀ = -(rlctAt S.K S.x₀) :=
+  cited_local_zeta_pole S.K S.φ S.x₀ S.U S.hK S.hKnn S.hKx₀ S.hφ S.hφc S.hφnn S.hφx₀
+    S.hx₀U S.hUopen S.hφU
 
 /-! ## The extracted invariants (on the cite) -/
 
@@ -128,7 +119,7 @@ theorem cite_spec (S : ZetaSetup n) :
     largestPole S < 0 ∧ (∃ q : ℚ, largestPole S = q) ∧ 1 ≤ poleOrder S ∧
     meromorphicOrderAt (continuation S) ((largestPole S : ℝ) : ℂ)
       = ((-(poleOrder S : ℤ) : ℤ) : WithTop ℤ) ∧
-    largestPole S = -(integrabilityThreshold S.K S.U) :=
+    largestPole S = -(rlctAt S.K S.x₀) :=
   S.cite.choose_spec.choose_spec.choose_spec
 
 /-- **The continuation agrees with the built zeta on `{Re s > 0}`** (the half-plane where `zeta`
@@ -167,10 +158,11 @@ theorem meromorphicOrderAt_largestPole (S : ZetaSetup n) :
       = ((-(poleOrder S : ℤ) : ℤ) : WithTop ℤ) :=
   cite_spec S |>.2.2.2.2.2.2.2.1
 
-/-- **The bundled identity: `s₀ = −(integrabilityThreshold K U)`** — the largest pole equals minus
-the RLCT integrability threshold (the load-bearing conjunct of the cite; certificate §3.1). -/
-theorem largestPole_eq_neg_threshold (S : ZetaSetup n) :
-    largestPole S = -(integrabilityThreshold S.K S.U) :=
+/-- **The bundled LOCAL identity: `s₀ = −(rlctAt K x₀)`** — the largest pole equals minus the LOCAL
+RLCT of the germ at `x₀` (the load-bearing conjunct of the cite; certificate §7.5). Local, hence
+consistent and DLN-admissible. -/
+theorem largestPole_eq_neg_rlctAt (S : ZetaSetup n) :
+    largestPole S = -(rlctAt S.K S.x₀) :=
   cite_spec S |>.2.2.2.2.2.2.2.2
 
 /-! ## The RLCT pair `(λ, m)` -/
@@ -195,18 +187,20 @@ noncomputable def rlctPair (S : ZetaSetup n) : RLCTPair where
 
 @[simp] lemma rlctPair_poleOrder (S : ZetaSetup n) : (rlctPair S).poleOrder = poleOrder S := rfl
 
-/-! ## Link 1 — `λ = integrabilityThreshold` (the hybrid tie, from the cite) -/
+/-! ## Link 1 — LOCAL: `λ = rlctAt K x₀` (from the cite) -/
 
-/-- **Link 1 (certificate §3.1): `λ = integrabilityThreshold K U`.** The zeta-pole RLCT `λ = −s₀`
-equals R2a's cite-free integrability-threshold *value* — because the bundled cite carries
-`s₀ = −(integrabilityThreshold K U)`, so `λ = −s₀ = integrabilityThreshold K U`. The value half is
-cite-free and *equals* the pole-defined `λ` **by the monument** (not free from bare meromorphy). -/
-theorem rlctPair_lam_eq_integrabilityThreshold (S : ZetaSetup n) :
-    (rlctPair S).lam = integrabilityThreshold S.K S.U := by
-  rw [rlctPair_lam, largestPole_eq_neg_threshold, neg_neg]
+/-- **Link 1 (LOCAL; certificate §7.2/§7.5): `λ = rlctAt K x₀`.** The zeta-pole RLCT `λ = −s₀`
+equals the cite-free **local** RLCT of the germ at `x₀` (`RLCT.Local`) — the bundled cite carries
+`s₀ = −(rlctAt K x₀)`, so `λ = −s₀ = rlctAt K x₀`. This is the *local* tie: consistent (`s₀`,
+`rlctAt K x₀` are both germ-at-`x₀` data) and DLN-admissible (defined for a non-isolated zero set).
+The connection to R2a's *regional* `integrabilityThreshold K U` is the separate Bridge B
+(`integrabilityThreshold_eq_localRlct_of_worst`), not this cite. -/
+theorem rlctPair_lam_eq_rlctAt (S : ZetaSetup n) :
+    (rlctPair S).lam = rlctAt S.K S.x₀ := by
+  rw [rlctPair_lam, largestPole_eq_neg_rlctAt, neg_neg]
 
-/-- **`λ` is nonnegative.** From Link 1: `λ = integrabilityThreshold`, a supremum of the nonnegative
-admissible exponents (whenever nonempty). Here it follows directly: `λ = −s₀` with `s₀ < 0`. -/
+/-- **`λ` is positive.** `λ = −s₀` with `s₀ < 0` (the largest pole is negative). Equals the local
+RLCT `rlctAt K x₀` by Link 1. -/
 theorem rlctPair_lam_pos (S : ZetaSetup n) : 0 < (rlctPair S).lam := by
   rw [rlctPair_lam, neg_pos]
   exact largestPole_neg S
