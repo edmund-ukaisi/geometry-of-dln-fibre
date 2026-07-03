@@ -22273,6 +22273,39 @@ determinant-chart Haar transport, no source-image/source-rank coverage, no
 original source-prior transport, no scalar normalization, no normal crossings,
 no pole order, and no RLCT extraction.
 
+## 2026-07-03 with-following readback product-residual prior transfer
+
+Lean now proves:
+
+```text
+lintegral_prod_dirac_right
+lintegral_lt_top_of_forall_prod_transfer_unit
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+```
+
+The first two lemmas are generic measure bookkeeping: a product with a right
+Dirac mass integrates as the left-factor integral, and any arbitrary product
+finite-integral transfer can be specialized to a one-point factor.  The third
+lemma applies this to the with-following endpoint-source-chart readback product
+residual.
+
+Artifact:
+
+```text
+reproduction-a2-with-following-readback-product-residual-prior-transfer.md
+```
+
+Focused builds passed for the helper module and the determinant-domination
+module.  The remaining composition step is to call the source finite-integral
+theorem first, set the prior transfer's outer `G` to that returned open set,
+and use the left-inverse equality on `G` to rewrite the readback residual
+source integral to the source-side product residual integral.
+
+Nonclaims: the source-side measurability and finite integral are hypotheses;
+endpoint-density, source-density lower, and prior-density upper hypotheses
+remain explicit.  No determinant-Haar transport, source coverage, normal
+crossings, pole order, or RLCT extraction is proved here.
+
 ## 2026-07-02 A2 with-following original-volume source-image inverse-Haar density
 
 Lean now proves:

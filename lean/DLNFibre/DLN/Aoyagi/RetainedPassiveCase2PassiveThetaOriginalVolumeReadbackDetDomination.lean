@@ -1363,6 +1363,95 @@ theorem exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_o
       (by simpa [originalPriorPiece, Cprior] using hprior_readback.2)
       hCprior hFsource hfinite
 
+universe uβ
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Specialize a product finite-integral transfer continuation to the
+with-following readback product residual.
+
+This is only the final measure-bookkeeping step after a prior-readback theorem
+has produced a transfer continuation for arbitrary product integrands.  The
+source-side measurability and finite integral remain explicit hypotheses. -/
+theorem lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {Θ : Type*} [MeasurableSpace Θ]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    {sourceChart :
+      Θ →
+        ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ}
+    {θμ : Measure Θ}
+    {μ :
+      Measure
+        (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)}
+    [SFinite θμ] [SFinite μ] {t : ℝ}
+    (htransfer :
+      ∀ {β : Type uβ} [MeasurableSpace β] {ν : Measure β} [SFinite ν]
+        {F :
+          (∀ p : Fin 2,
+              reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) × β →
+            ℝ≥0∞},
+        Measurable (fun z : Θ × β ↦ F (sourceChart z.1, z.2)) →
+          (∫⁻ z : Θ × β, F (sourceChart z.1, z.2) ∂ θμ.prod ν) < ∞ →
+            (∫⁻ z :
+                (∀ p : Fin 2,
+                    reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) × β,
+              F z ∂ μ.prod ν) < ∞)
+    (hmeas :
+      Measurable
+        (fun z : Θ ↦
+          ENNReal.ofReal
+            ((aoyagiCoordinateSquareSum
+              (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+                W₂ B₂ n hS hcont hnext hU₀ eNext e (sourceChart z))) ^ (-t))))
+    (hfinite :
+      (∫⁻ z : Θ,
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+              W₂ B₂ n hS hcont hnext hU₀ eNext e (sourceChart z))) ^ (-t)) ∂ θμ) < ∞) :
+    (∫⁻ E :
+        (∀ p : Fin 2,
+          reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ),
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+            W₂ B₂ n hS hcont hnext hU₀ eNext e E)) ^ (-t)) ∂ μ) < ∞ := by
+  let residualIntegrand :
+      (∀ p : Fin 2,
+        reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞ :=
+    fun E ↦
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+            W₂ B₂ n hS hcont hnext hU₀ eNext e E)) ^ (-t))
+  exact
+    lintegral_lt_top_of_forall_prod_transfer_unit
+      (θμ := θμ) (μ := μ) (sourceChart := sourceChart)
+      (f := residualIntegrand) htransfer
+      (by simpa [residualIntegrand] using hmeas)
+      (by simpa [residualIntegrand] using hfinite)
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

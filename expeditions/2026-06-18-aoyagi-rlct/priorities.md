@@ -20981,3 +20981,31 @@ coverage, normal crossings, pole order, or RLCT extraction.  It is a structural
 local-image input for the localized endpoint COV theorem; the next genuine
 measure target remains determinant/source COV on `rawDetChart ∩ Y '' V`, not
 the full determinant chart.
+
+## Latest controller decision - 2026-07-03, with-following readback residual product transfer
+
+The arbitrary product-integrand prior transfer has now been specialized to the
+with-following readback product residual:
+
+```text
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+```
+
+It uses the new generic `lintegral_prod_dirac_right` and
+`lintegral_lt_top_of_forall_prod_transfer_unit` helpers to instantiate the
+transfer continuation at a one-point factor and collapse both product
+integrals.  The result keeps source-side measurability and finite
+readback-residual integral hypotheses explicit.
+
+Recorded reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-prior-transfer.md
+```
+
+Next priority: compose this with the source finite-integral theorem by taking
+the source theorem's `V` as the outer `G` for the prior-transfer theorem, then
+use the existing left-inverse identity on that `V` to rewrite the readback
+residual source integral to the product-residual integral.  Endpoint-density,
+source-density lower, and prior-density upper hypotheses must remain explicit
+until separate determinant/source COV work discharges them.

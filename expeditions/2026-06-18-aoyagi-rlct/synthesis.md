@@ -36297,3 +36297,35 @@ raw-Haar normalization, source-image/source-rank coverage, original
 source-prior transport, normal crossings, pole order, or RLCT extraction.
 The next target is to push the localized raw-patch hypothesis through the
 original-volume/readback consumers.
+
+## 2026-07-03 with-following readback product-residual transfer specialization
+
+Lean now proves the one-factor specialization needed to consume the arbitrary
+product-integrand continuation from the original-prior readback package:
+
+```text
+lintegral_prod_dirac_right
+lintegral_lt_top_of_forall_prod_transfer_unit
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+```
+
+The Aoyagi-specific theorem says: if the prior-readback package supplies the
+arbitrary product finite-integral transfer, and if the source-chart pullback of
+the readback product-residual negative-power integrand is measurable and has
+finite lower integral, then the same readback product-residual integrand has
+finite lower integral against the target edge-family measure.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-prior-transfer.md
+```
+
+Focused builds passed for `LocalMeasureHandoff` and
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`.
+
+Boundary: this is only product-measure bookkeeping plus the named
+with-following residual readout.  It does not prove the source-side finite
+integral, the left-inverse rewrite, endpoint-density identities, determinant
+Haar transport, source-density lower bounds, prior-density upper bounds,
+normal crossings, pole order, or RLCT extraction.

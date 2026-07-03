@@ -624,6 +624,55 @@ theorem lintegral_prod_lt_top_of_left_measure_le_smul
   lintegral_lt_top_of_measure_le_smul
     (prod_le_smul_prod_of_le_smul_left (η := η) hν) hc hfinite
 
+/-- The lower integral against a product with a right Dirac mass is the lower
+integral over the left factor with the right coordinate fixed. -/
+theorem lintegral_prod_dirac_right
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    [MeasurableSingletonClass β] (y : β) (μ : Measure α)
+    [SFinite μ]
+    (f : α × β → ℝ≥0∞) :
+    (∫⁻ z : α × β, f z ∂ μ.prod (Measure.dirac y)) =
+      ∫⁻ x : α, f (x, y) ∂ μ := by
+  rw [Measure.prod_dirac]
+  exact (measurableEmbedding_prod_mk_right y).lintegral_map (μ := μ) f
+
+universe uβ
+
+/-- Specialize an arbitrary product finite-integral transfer to the
+one-factor case by inserting a Dirac mass on a one-point type. -/
+theorem lintegral_lt_top_of_forall_prod_transfer_unit
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    {θμ : Measure Θ} {μ : Measure E} {sourceChart : Θ → E}
+    [SFinite θμ] [SFinite μ]
+    {f : E → ℝ≥0∞}
+    (htransfer :
+      ∀ {β : Type uβ} [MeasurableSpace β] {ν : Measure β} [SFinite ν]
+        {F : E × β → ℝ≥0∞},
+        Measurable (fun z : Θ × β ↦ F (sourceChart z.1, z.2)) →
+          (∫⁻ z : Θ × β, F (sourceChart z.1, z.2) ∂ θμ.prod ν) < ∞ →
+            (∫⁻ z : E × β, F z ∂ μ.prod ν) < ∞)
+    (hf_source : Measurable (fun z : Θ ↦ f (sourceChart z)))
+    (hfinite_source : (∫⁻ z : Θ, f (sourceChart z) ∂ θμ) < ∞) :
+    (∫⁻ z : E, f z ∂ μ) < ∞ := by
+  let F : E × PUnit.{uβ + 1} → ℝ≥0∞ := fun z ↦ f z.1
+  have hF_source :
+      Measurable
+        (fun z : Θ × PUnit.{uβ + 1} ↦ F (sourceChart z.1, z.2)) := by
+    simpa [F] using hf_source.comp measurable_fst
+  have hfinite_source_prod :
+      (∫⁻ z : Θ × PUnit.{uβ + 1}, F (sourceChart z.1, z.2) ∂
+        θμ.prod (Measure.dirac (PUnit.unit : PUnit.{uβ + 1}))) < ∞ := by
+    rw [lintegral_prod_dirac_right (PUnit.unit : PUnit.{uβ + 1})]
+    simpa [F] using hfinite_source
+  have hfinite_target_prod :
+      (∫⁻ z : E × PUnit.{uβ + 1}, F z ∂
+        μ.prod (Measure.dirac (PUnit.unit : PUnit.{uβ + 1}))) < ∞ :=
+    htransfer (β := PUnit.{uβ + 1})
+      (ν := Measure.dirac (PUnit.unit : PUnit.{uβ + 1}))
+      (F := F) hF_source hfinite_source_prod
+  rw [lintegral_prod_dirac_right (PUnit.unit : PUnit.{uβ + 1})] at hfinite_target_prod
+  simpa [F] using hfinite_target_prod
+
 /-- Finite product lower integrals transfer through a readback map whose
 pushforward is dominated by a finite scalar multiple of a source measure.
 
