@@ -679,5 +679,20 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
 -- unconditionally on `InteriorDrop`. Inherits both atoms' footprint
 -- [propext, Classical.choice, Quot.sound, monomial_rlct].
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHInterior
+-- General-`L` BOUNDARY-SMEARED `hSmeared` discharge ∀L + the co-import spine wire: brings the whole
+-- renamed smeared-Gen DECODE chain (via `deepLayerS`, deconflicted from the clean branch's `deepLayer`)
+-- into the aggregator alongside the interior chain. `hSmeared_smearedClose` (RouteMSmearedClose) fills
+-- the dispatch spine's `hSmeared` slot `(2 ≤ L) → BoundarySmeared M → NoInteriorBothDrop M →
+-- BoxDiverges M c' ε` unconditionally ∀L (all structural data derived from `BoundarySmeared ∧
+-- NoInteriorBothDrop ∧ 1 ≤ minAdm`). CLEAN-THREE, S2-FREE (single-axis after shear).
+import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSpineWire
+-- ★ CAPSTONE — the general-`L` achiever box-divergence with ALL branches discharged, ∀L:
+-- `routeMCore_box_diverges_achiever_full` feeds the dispatch spine its two open slot-dischargers
+-- (interior `interiorLiveGen_hInterior` + smeared `hSmeared_smearedClose`), the clean branch handled
+-- in-spine. Given `hNo : NoInteriorBothDrop M` + the clean structural side-conditions (`hMpos`/`hne`),
+-- the achiever box integral diverges for EVERY `L`. Axiom footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] (S2 enters via the interior slot; the smeared
+-- slot is clean-three). This is the general-`L` R1-LOWER achiever `hdiv`.
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
