@@ -36307,13 +36307,17 @@ product-integrand continuation from the original-prior readback package:
 lintegral_prod_dirac_right
 lintegral_lt_top_of_forall_prod_transfer_unit
 lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer_of_leftInverse
 ```
 
 The Aoyagi-specific theorem says: if the prior-readback package supplies the
 arbitrary product finite-integral transfer, and if the source-chart pullback of
 the readback product-residual negative-power integrand is measurable and has
 finite lower integral, then the same readback product-residual integrand has
-finite lower integral against the target edge-family measure.
+finite lower integral against the target edge-family measure.  The
+left-inverse variant replaces the source finite-integral hypothesis by the
+finite integral of the source-side product residual on a measurable local
+source set, using the pointwise source-chart readback identity already proved.
 
 Artifact:
 
@@ -36325,7 +36329,7 @@ Focused builds passed for `LocalMeasureHandoff` and
 `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`.
 
 Boundary: this is only product-measure bookkeeping plus the named
-with-following residual readout.  It does not prove the source-side finite
-integral, the left-inverse rewrite, endpoint-density identities, determinant
-Haar transport, source-density lower bounds, prior-density upper bounds,
-normal crossings, pole order, or RLCT extraction.
+with-following residual readout and the local left-inverse rewrite.  It does
+not prove the source-side finite integral, endpoint-density identities,
+determinant Haar transport, source-density lower bounds, prior-density upper
+bounds, normal crossings, pole order, or RLCT extraction.

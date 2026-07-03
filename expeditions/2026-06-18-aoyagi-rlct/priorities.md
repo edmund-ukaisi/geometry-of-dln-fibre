@@ -20989,13 +20989,16 @@ with-following readback product residual:
 
 ```text
 lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer_of_leftInverse
 ```
 
 It uses the new generic `lintegral_prod_dirac_right` and
 `lintegral_lt_top_of_forall_prod_transfer_unit` helpers to instantiate the
 transfer continuation at a one-point factor and collapse both product
-integrals.  The result keeps source-side measurability and finite
-readback-residual integral hypotheses explicit.
+integrals.  The left-inverse variant also rewrites the source pullback of the
+readback residual to the source-side product residual on a measurable local
+source set.  The result keeps source-side measurability and finite source
+product-residual integral hypotheses explicit.
 
 Recorded reproduction:
 
@@ -21004,8 +21007,7 @@ threads/03-block-product-reduction/reproduction-a2-with-following-readback-produ
 ```
 
 Next priority: compose this with the source finite-integral theorem by taking
-the source theorem's `V` as the outer `G` for the prior-transfer theorem, then
-use the existing left-inverse identity on that `V` to rewrite the readback
-residual source integral to the product-residual integral.  Endpoint-density,
-source-density lower, and prior-density upper hypotheses must remain explicit
-until separate determinant/source COV work discharges them.
+the source theorem's `V` as the outer `G` for the prior-transfer theorem.
+Endpoint-density, source-density lower, and prior-density upper hypotheses
+must remain explicit until separate determinant/source COV work discharges
+them.

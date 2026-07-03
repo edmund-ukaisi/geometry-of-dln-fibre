@@ -53,12 +53,34 @@ gives the named Aoyagi specialization
 lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
 ```
 
+If the local source chart satisfies the left-inverse identity on a measurable
+set `V`,
+
+```text
+readback (sourceChart z) = z    for z in V,
+```
+
+then the previously proved square-sum identity rewrites the source pullback of
+the readback residual to the source-side product residual.  Therefore a finite
+source integral for
+
+```text
+case2PassiveThetaWithFollowingFactorProductResidualReadout
+```
+
+gives the source-integral hypothesis needed by the preceding product-transfer
+specialization.  This adapter is now named
+
+```text
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer_of_leftInverse
+```
+
 ## Boundary
 
 The source-side measurability and finite integral are explicit hypotheses.
-This proves no source-side product-residual integrability, no pointwise
-identification with the source product residual, no endpoint-density theorem,
-no determinant-Haar transport, no original-prior density bound, no normal
-crossings, no pole order, and no RLCT extraction.  Its role is to consume the
-product-transfer continuation already produced by the prior readback package.
-
+The left-inverse adapter uses only `lintegral_congr_ae` and a measurable `V`.
+This proves no source-side product-residual integrability, no endpoint-density
+theorem, no determinant-Haar transport, no original-prior density bound, no
+normal crossings, no pole order, and no RLCT extraction.  Its role is to
+consume the product-transfer continuation already produced by the prior
+readback package.

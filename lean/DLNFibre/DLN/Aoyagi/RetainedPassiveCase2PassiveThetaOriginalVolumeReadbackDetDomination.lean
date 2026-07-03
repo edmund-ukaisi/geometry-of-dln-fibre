@@ -1452,6 +1452,150 @@ theorem lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbac
       (by simpa [residualIntegrand] using hmeas)
       (by simpa [residualIntegrand] using hfinite)
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Specialize the product-transfer continuation to the readback product
+residual using a source-chart left inverse and a finite source product-residual
+integral.
+
+This is still only a conditional handoff: the transfer continuation and the
+source-side measurability remain explicit hypotheses. -/
+theorem lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer_of_leftInverse
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)}
+    {θμ :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)}
+    {μ :
+      Measure
+        (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)}
+    [SFinite (θμ.restrict V)] [SFinite μ] {t : ℝ}
+    (hV : MeasurableSet V)
+    (hleft :
+      ∀ z ∈ V,
+        case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+            W₂ B₂ n hS hnext hU₀ e
+            (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+              W₂ B₂ n hS hcont hnext hU₀ eNext e z) = z)
+    (htransfer :
+      ∀ {β : Type uβ} [MeasurableSpace β] {ν : Measure β} [SFinite ν]
+        {F :
+          (∀ p : Fin 2,
+              reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) × β →
+            ℝ≥0∞},
+        Measurable
+          (fun z :
+              Case2PassiveThetaWithFollowingFactor
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J × β ↦
+            F
+              (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+                W₂ B₂ n hS hcont hnext hU₀ eNext e z.1, z.2)) →
+          (∫⁻ z :
+              Case2PassiveThetaWithFollowingFactor
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J × β,
+            F
+              (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+                W₂ B₂ n hS hcont hnext hU₀ eNext e z.1, z.2) ∂
+              (θμ.restrict V).prod ν) < ∞ →
+            (∫⁻ z :
+                (∀ p : Fin 2,
+                    reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) × β,
+              F z ∂ μ.prod ν) < ∞)
+    (hmeas :
+      Measurable
+        (fun z :
+            Case2PassiveThetaWithFollowingFactor
+              (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J ↦
+          ENNReal.ofReal
+            ((aoyagiCoordinateSquareSum
+              (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+                W₂ B₂ n hS hcont hnext hU₀ eNext e
+                (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+                  W₂ B₂ n hS hcont hnext hU₀ eNext e z))) ^ (-t))))
+    (hfinite_source :
+      (∫⁻ z :
+          Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J,
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorProductResidualReadout
+              (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)) ^ (-t)) ∂
+          θμ.restrict V) < ∞) :
+    (∫⁻ E :
+        (∀ p : Fin 2,
+          reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ),
+      ENNReal.ofReal
+        ((aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+            W₂ B₂ n hS hcont hnext hU₀ eNext e E)) ^ (-t)) ∂ μ) < ∞ := by
+  let Θ :=
+    Case2PassiveThetaWithFollowingFactor
+      (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let sourceChart : Θ → EdgeFamily :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChart
+      W₂ B₂ n hS hcont hnext hU₀ eNext e
+  have hfinite_readback :
+      (∫⁻ z : Θ,
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+              W₂ B₂ n hS hcont hnext hU₀ eNext e (sourceChart z))) ^ (-t)) ∂
+          θμ.restrict V) < ∞ := by
+    have hcongr :
+        (fun z : Θ ↦
+          ENNReal.ofReal
+            ((aoyagiCoordinateSquareSum
+              (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+                W₂ B₂ n hS hcont hnext hU₀ eNext e (sourceChart z))) ^ (-t))) =ᵐ[θμ.restrict V]
+          fun z : Θ ↦
+            ENNReal.ofReal
+              ((aoyagiCoordinateSquareSum
+                (case2PassiveThetaWithFollowingFactorProductResidualReadout
+                  (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e)) ^ (-t)) := by
+      filter_upwards [ae_restrict_mem hV] with z hz
+      rw [
+        aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z (hleft z hz)]
+    have heq :=
+      lintegral_congr_ae hcongr
+    rw [heq]
+    simpa [Θ] using hfinite_source
+  exact
+    lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+      W₂ B₂ n hS hcont hnext hU₀ eNext e
+      (sourceChart := sourceChart) (θμ := θμ.restrict V) (μ := μ)
+      htransfer (by simpa [Θ, EdgeFamily, sourceChart] using hmeas)
+      (by simpa [Θ, EdgeFamily, sourceChart] using hfinite_readback)
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

@@ -22281,13 +22281,16 @@ Lean now proves:
 lintegral_prod_dirac_right
 lintegral_lt_top_of_forall_prod_transfer_unit
 lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer
+lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_lt_top_of_forall_prod_transfer_of_leftInverse
 ```
 
 The first two lemmas are generic measure bookkeeping: a product with a right
 Dirac mass integrates as the left-factor integral, and any arbitrary product
 finite-integral transfer can be specialized to a one-point factor.  The third
 lemma applies this to the with-following endpoint-source-chart readback product
-residual.
+residual.  The left-inverse variant then rewrites the source pullback of this
+readback residual to the source-side product residual on a measurable local
+source set.
 
 Artifact:
 
@@ -22297,9 +22300,7 @@ reproduction-a2-with-following-readback-product-residual-prior-transfer.md
 
 Focused builds passed for the helper module and the determinant-domination
 module.  The remaining composition step is to call the source finite-integral
-theorem first, set the prior transfer's outer `G` to that returned open set,
-and use the left-inverse equality on `G` to rewrite the readback residual
-source integral to the source-side product residual integral.
+theorem first and set the prior transfer's outer `G` to that returned open set.
 
 Nonclaims: the source-side measurability and finite integral are hypotheses;
 endpoint-density, source-density lower, and prior-density upper hypotheses
