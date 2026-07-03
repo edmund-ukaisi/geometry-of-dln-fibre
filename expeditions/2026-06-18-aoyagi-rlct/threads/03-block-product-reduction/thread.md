@@ -21,6 +21,53 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 dominated target product-residual handoff
+
+Reproduction:
+`reproduction-a2-dominated-target-product-residual-handoff.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves the generic handoff:
+
+```text
+ae_and_lintegral_lt_top_of_measure_le_smul
+```
+
+and the Case 2 with-following endpoint wrapper:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+The generic handoff packages the two existing facts:
+`ae_of_measure_le_smul` and `lintegral_lt_top_of_measure_le_smul`.  The Case 2
+wrapper keeps the local finite following-patch source theorem as the base
+result and adds the conditional target conclusion
+
+```text
+forall targetMeasure C,
+  targetMeasure <= C • localSourceMeasure -> C < infinity -> ...
+```
+
+for p.13 product-residual a.e. positivity and finite negative-power
+integrability over `targetMeasure`.
+
+The target measure, scalar, and domination hypothesis are deliberately
+conditional and placed inside the existential package because
+`localSourceMeasure` depends on the constructed `followingPatch`.  This proves
+no domination for the coordinate source measure, Jacobian-weighted source
+measure, original volume, or original prior.  Those remain separate
+source-density/Jacobian/readback tasks.
+
+Focused local builds passed for `DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`.
+
 ## 2026-07-03 A2 finite-passive source-cylinder local restriction
 
 Reproduction:

@@ -12,6 +12,37 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, dominated target handoff
+
+Lean now has:
+
+```text
+ae_and_lintegral_lt_top_of_measure_le_smul
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+Decision: the next bridge after the local finite source-cylinder theorem is a
+dominated-target adapter, not a concrete source-density/Jacobian theorem.  If
+a target source measure is dominated by a finite scalar multiple of the
+following-patch local source measure returned by the finite-cylinder theorem,
+then p.13 product-residual a.e. positivity and finite negative-power
+integrability transfer to the target.  The target measure and scalar are
+quantified inside the existential witness package because downstream targets
+and constants may depend on the chosen following patch.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-dominated-target-product-residual-handoff.md
+```
+
+Boundary: this proves no concrete domination for
+`coordinateSourceMeasure.restrict V`, `baseJ`, `referenceSource.withDensity
+jacobianDensity`, original volume, or original prior.  Those remain genuine
+source-density/Jacobian/readback tasks.  The determinant hypothesis on
+`z₀.2`, finite passive mass, and following-patch construction boundary remain
+unchanged.
+
 ## Latest controller decision - 2026-07-03, A2 finite-passive source-cylinder local restriction
 
 Lean now has:

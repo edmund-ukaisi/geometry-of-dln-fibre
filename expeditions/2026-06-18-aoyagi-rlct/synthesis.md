@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Dominated Target Product-Residual Handoff - 2026-07-03
+
+Lean now has the generic measure handoff:
+
+```text
+ae_and_lintegral_lt_top_of_measure_le_smul
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+and the Case 2 with-following specialization:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The generic calculation is: if `nu <= C • mu` and `C < infinity`, then
+absolute continuity transfers any `mu`-a.e. property to `nu`, and
+monotonicity plus `lintegral_smul_measure` transfers finite lower integrals to
+`nu`.  No measurability of the integrand is required for this comparison.
+
+The Case 2 theorem applies this to the local source measure produced by the
+finite following-patch source-cylinder theorem.  It returns the same
+following-patch witnesses and the finite local source result, plus a
+conditional target result:
+
+```text
+forall targetMeasure C,
+  targetMeasure <= C • localSourceMeasure -> C < infinity -> ...
+```
+
+The target measure, scalar, and domination hypothesis live inside the
+existential package because `localSourceMeasure` depends on the chosen
+following patch, and downstream target measures/constants may depend on that
+patch.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-dominated-target-product-residual-handoff.md
+```
+
+Boundary: this is not yet the concrete coordinate-source or original-prior
+finite-integral theorem.  It proves no domination for
+`coordinateSourceMeasure.restrict V`, `baseJ`,
+`referenceSource.withDensity jacobianDensity`, original volume, or original
+prior.  Euler's downstream scan confirmed those modules already provide
+with-following source-chart/readback and original-volume/prior readback
+domination sockets, but their hard hypotheses remain determinant endpoint
+patch reverse domination, source-density lower bounds, chart-piece
+measurability/containment, and prior-density upper bounds.
+
 ## A2 Finite-Passive Source-Cylinder Local Restriction - 2026-07-03
 
 Lean now has:

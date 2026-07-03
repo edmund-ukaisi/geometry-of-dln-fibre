@@ -417,6 +417,19 @@ theorem lintegral_lt_top_of_measure_le_smul
     exact ENNReal.mul_lt_top hc hfinite
   exact hmono.trans_lt htarget
 
+/-- A.e. properties and finite lower integrals transfer together to any
+measure dominated by a finite scalar multiple of the original measure. -/
+theorem ae_and_lintegral_lt_top_of_measure_le_smul
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {p : α → Prop} {f : α → ℝ≥0∞}
+    (hν : ν ≤ c • μ)
+    (hc : c < ∞)
+    (hp : ∀ᵐ x ∂μ, p x)
+    (hfinite : (∫⁻ x, f x ∂μ) < ∞) :
+    (∀ᵐ x ∂ν, p x) ∧ (∫⁻ x, f x ∂ν) < ∞ :=
+  ⟨ae_of_measure_le_smul hν hp,
+    lintegral_lt_top_of_measure_le_smul hν hc hfinite⟩
+
 /-- Finite-scalar domination of the left measure lifts to product measures
 with any fixed s-finite right measure. -/
 theorem prod_le_smul_prod_of_le_smul_left
