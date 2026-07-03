@@ -65,6 +65,43 @@ full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
 The pure set lemma reports no axioms, while the concrete C-one support bridge
 and finite-integral wrappers report `[propext, Classical.choice, Quot.sound]`.
 
+## Latest controller decision - 2026-07-03, basepoint signed-box source-cylinder shrink
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.isOpen_signedBoxSet
+
+chartPiece_subset_sourceChart_image_inter_of_subset
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_z0_yNext_mem_signedBox_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Decision: when the basepoint selected-entry coordinate already lies in the
+signed box, shrink the source chart inside the open source cylinder.  This
+removes both the strong `chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`
+input and the pointwise C-one support input for this local case; callers only
+need `chartPiece ⊆ sourceChart '' V`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-cylinder-basepoint-signed-box-shrink.md
+```
+
+Boundary: this is a local basepoint-in-box shrink.  It does not prove global
+p.13 source-image coverage by one signed box, determinant Haar transport,
+prior-density continuity, normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused builds of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The pure set helper reports no axioms, while the signed-box openness lemma and
+the concrete finite-integral wrapper report `[propext, Classical.choice,
+Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, source-cylinder prior-density eventual bound
 
 Lean now has:
@@ -98,16 +135,9 @@ The two new declarations report `[propext, Classical.choice, Quot.sound]`.
 
 Boundary: this is still a conditional bounded-density handoff.  It does not
 construct Aoyagi's original prior density, prove its continuity, prove the
-source-cylinder chart-piece support, prove determinant Haar transport,
-source-image coverage, normal crossings, pole order, or RLCT extraction.
-
-Next controller target: the structural source-cylinder support frontier is now
-more promising than further density wrapping.  Xhigh read-only audit found the
-small missing bridge to be an inverse-readout theorem: if a chart piece is
-already supported where the inverse selected-entry readout lies in
-`signedBoxSet Rres`, and `inverseReadout (sourceChart z) = z.1.yNext` on the
-local source chart, then
-`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.
+source-cylinder chart-piece support except in the basepoint-in-box shrink
+above, prove determinant Haar transport, source-image coverage, normal
+crossings, pole order, or RLCT extraction.
 
 ## Latest controller decision - 2026-07-03, source-side readback product-residual measurability
 

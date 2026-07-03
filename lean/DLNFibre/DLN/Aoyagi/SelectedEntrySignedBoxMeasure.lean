@@ -443,6 +443,13 @@ theorem aemeasurable_chartMap {center : Finset ι} (pivot : center)
 def signedBoxSet {center : Finset ι} (R : center → ℝ) : Set (center → ℝ) :=
   Set.univ.pi fun i => Set.Ioo (-(R i)) (R i)
 
+omit [DecidableEq ι] in
+/-- Center-indexed signed boxes are open. -/
+theorem isOpen_signedBoxSet {center : Finset ι} (R : center → ℝ) :
+    IsOpen (signedBoxSet R) := by
+  rw [signedBoxSet]
+  exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_Ioo
+
 /-- The signed-box image of the finite selected-entry chart is the origin
 together with the nonzero-pivot horn described by the quotient coordinates. -/
 theorem mem_chartMap_image_signedBoxSet_iff {center : Finset ι} (pivot : center)

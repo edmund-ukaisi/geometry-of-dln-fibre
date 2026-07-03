@@ -62,6 +62,58 @@ full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
 The pure set lemma reports no axioms; the concrete support bridge and wrappers
 report `[propext, Classical.choice, Quot.sound]`.
 
+## A2 With-Following Source-Cylinder Basepoint Signed-Box Shrink - 2026-07-03
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.isOpen_signedBoxSet
+
+chartPiece_subset_sourceChart_image_inter_of_subset
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_z0_yNext_mem_signedBox_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+signedBoxSet Rres = finite product of open intervals,
+therefore signedBoxSet Rres is open,
+
+z ↦ z.1.yNext is continuous,
+therefore sourceCylinder = {z | z.1.yNext ∈ signedBoxSet Rres} is open,
+
+z0.1.yNext ∈ signedBoxSet Rres
+==> z0 ∈ sourceCylinder,
+
+run the source-cylinder continuous-at wrapper with G ∩ sourceCylinder
+==> returned V ⊆ sourceCylinder,
+
+chartPiece ⊆ sourceChart '' V and V ⊆ sourceCylinder
+==> chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
+```
+
+This removes the pointwise C-one support hypothesis in the common local case
+where the basepoint is already chosen in the selected-entry signed box.
+
+Boundary: this is not a global p.13 source-image coverage theorem and does
+not construct the original prior density or prove its continuity.
+
+Verification passed: focused builds of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The pure set helper reports no axioms; the signed-box openness lemma and
+concrete wrapper report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Source-Cylinder Prior-Density Eventual Bound - 2026-07-03
 
 Lean now has:
@@ -113,9 +165,8 @@ Current remaining frontier after the bridge is not another readout bridge, but
 natural support/coverage:
 
 ```text
-prove, from the actual p.13 source-image construction or a sharper local
-chart-piece definition, that the relevant chart pieces satisfy
-∀ E ∈ chartPiece, cOneReadout(E) ∈ signedBoxSet Rres.
+prove a global or finite-cover source-image statement explaining how arbitrary
+relevant p.13 chart pieces are assigned to signed boxes/basepoints.
 ```
 
 ## A2 With-Following Readback Product-Residual Source-Side Measurability - 2026-07-03
