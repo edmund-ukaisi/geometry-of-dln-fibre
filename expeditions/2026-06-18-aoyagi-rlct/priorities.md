@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, p.13 readback-preimage support finite integral
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_p13SourceSet_readback_preimage_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Decision: expose the new p.13 local image equality as a caller-facing support
+interface for finite integrability.  Instead of requiring a chart piece to be
+supplied directly inside `sourceChart '' V`, callers may now supply
+
+```text
+chartPiece subset p13SourceSet
+chartPiece subset readback^{-1}(V)
+```
+
+and the theorem converts this to `chartPiece subset sourceChart '' V` using
+`sourceChart '' V = p13SourceSet inter readback^{-1}(V)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-finite-integral-p13-readback-preimage-support.md
+```
+
+Boundary: this is still local.  It does not prove arbitrary p.13 chart pieces
+have readback in the returned neighborhood, global p.13 coverage,
+source-rank-stratum coverage, finite atlas coverage, Haar/Jacobian transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; direct axiom probe.  The
+new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, with-following p.13 local image equality
 
 Lean now has:
