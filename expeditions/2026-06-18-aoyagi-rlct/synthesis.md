@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Full Local Source-Image Finite Integral - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_sourceChart_image_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+the local package returns MeasurableSet (sourceChart '' V),
+
+the arbitrary-chart-piece theorem says:
+  chartPiece measurable and chartPiece ⊆ sourceChart '' V
+  ==> finite integral over originalPrior.restrict chartPiece,
+
+set chartPiece := sourceChart '' V,
+
+MeasurableSet (sourceChart '' V) is already returned,
+sourceChart '' V ⊆ sourceChart '' V is tautological,
+
+therefore the integral is finite over the full local source image.
+```
+
+Boundary: this is a local full-image specialization only.  It removes the
+arbitrary chart-piece parameter for the source image produced by this chart,
+but does not prove that arbitrary p.13 source points lie in it, that finitely
+many such images cover a neighborhood, or that the image equals an external
+source stratum.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Radius-Free Basepoint Signed-Box Shrink - 2026-07-03
 
 Lean now has:

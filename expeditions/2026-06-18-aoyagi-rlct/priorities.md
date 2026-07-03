@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, full local source-image finite integral
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_sourceChart_image_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Decision: specialize the radius-free chart-piece finite-integral theorem to
+the canonical local chart piece `sourceChart '' V`.  The local source-image
+package already returns `MeasurableSet (sourceChart '' V)` and p.13 support,
+and `sourceChart '' V ⊆ sourceChart '' V` is tautological.  This gives finite
+integrability over the whole returned local source image without carrying an
+arbitrary `chartPiece` parameter.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-full-local-source-image-finite-integral.md
+```
+
+Boundary: this is local full-image support for the chart image that the theorem
+itself returns.  It is not global p.13 source-image coverage, not a finite
+atlas cover, and not equality with an external source stratum.  Determinant
+Haar transport, original-prior transport, normal crossings, pole order, and
+RLCT remain downstream.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, radius-free basepoint signed-box shrink
 
 Lean now has:
