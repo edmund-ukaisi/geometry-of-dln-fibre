@@ -19,11 +19,11 @@ mu_P = (((passiveMeasure.prod weightedBox).prod followingRef)
 ```
 
 The source-chart construction in the next layer returns an open neighborhood
-`V` of the base source point.  The following patch `P` is not open and should
-not be used as the open set in that source-chart theorem.  The honest local
-measure is instead `mu_P.restrict V`, equivalently the original source
-restricted to the intersection of the cylinder and the open source-chart
-neighborhood.
+`V` of the base source point.  This local-restriction theorem does not need
+`P` to be open; after the later open-patch strengthening one may also shrink
+`V` by the open following-patch cylinder.  The honest local measure is
+`mu_P.restrict V`, equivalently the original source restricted to the
+intersection of the cylinder and the open source-chart neighborhood.
 
 ## Calculation
 
@@ -70,8 +70,7 @@ source-chart/readback theorem.
 
 This proves only local restriction stability of the already-constructed finite
 following-patch cylinder theorem.  It does not prove positive patch mass,
-openness of the following patch, determinant-Haar/raw-Haar transport,
-source-density or original-prior transport, normal crossings, pole order, or
-RLCT extraction.  The determinant hypothesis remains a separate hypothesis on
-the independent following factor `z0.2`, and finite passive-side mass remains
-explicit.
+determinant-Haar/raw-Haar transport, source-density or original-prior
+transport, normal crossings, pole order, or RLCT extraction.  The determinant
+hypothesis remains a separate hypothesis on the independent following factor
+`z0.2`, and finite passive-side mass remains explicit.

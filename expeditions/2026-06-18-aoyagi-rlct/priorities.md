@@ -12,6 +12,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, open finite following-factor patch
+
+Lean now has:
+
+```text
+isOpen_matrixEntryBox
+exists_matrixEntryReferenceMeasure_finite_open_followingPatch_of_reindexed_det_isUnit
+isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
+```
+
+Decision: the previous finite measurable matrix-entry following patch can be
+strengthened to an open finite patch around a base following factor with unit
+reindexed determinant.  This is useful for shrinking source-chart
+neighborhoods by intersecting with the following-patch cylinder.  Keep it as a
+separate topology/localization strengthening; do not fold it into the
+finite-integral theorem or the dominated-target handoff.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-matrix-entry-following-factor-local-patch.md
+```
+
+Boundary: this still does not prove positive patch mass, a concrete
+coordinate-source/original-prior domination theorem, determinant-Haar/raw-Haar
+transport, normal crossings, pole order, or RLCT.  The determinant condition
+remains a separate hypothesis on the independent following factor.
+
 ## Latest controller decision - 2026-07-03, dominated target handoff
 
 Lean now has:

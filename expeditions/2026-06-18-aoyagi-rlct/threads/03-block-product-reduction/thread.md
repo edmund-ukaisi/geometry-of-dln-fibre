@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 open finite following-factor patch
+
+Reproduction:
+`reproduction-a2-matrix-entry-following-factor-local-patch.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now strengthens the matrix-entry patch API:
+
+```text
+isOpen_matrixEntryBox
+exists_matrixEntryReferenceMeasure_finite_open_followingPatch_of_reindexed_det_isUnit
+isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
+```
+
+The generic theorem returns a following patch containing the base following
+factor, finite for `matrixEntryReferenceMeasure`, open, measurable, determinant
+unit on the patch, and with a uniform reindexed inverse square-sum bound.  The
+with-following helper proves the cylinder `{z | z.2 ∈ followingPatch}` is open,
+so later source-chart arguments can shrink an open neighborhood by intersecting
+with that cylinder.
+
+Boundary: this is only a topology/localization strengthening of the existing
+finite patch.  It proves no positive patch mass, concrete coordinate-source or
+original-prior domination, determinant-Haar/raw-Haar transport, normal
+crossings, pole order, or RLCT.  The determinant hypothesis remains separate on
+the independent following factor.
+
+Focused local build passed for
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre` passed as well.
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file marker scan, and
+direct axiom probes passed.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 dominated target product-residual handoff
 
 Reproduction:
@@ -98,11 +138,13 @@ the finite-integral theorem should not bundle them.  Downstream code should
 apply the source-chart theorem separately, then feed its open `V` to this
 arbitrary-local-set wrapper.
 
-Boundary: the following-factor patch is only measurable and finite, not open.
-The determinant hypothesis on `z₀.2` remains separate from the passive
-determinant sector.  Finite passive mass remains explicit.  This proves no
-positive patch mass, Haar/source-density/original-prior transport, normal
-crossings, pole order, or RLCT.
+Boundary: this local-restriction theorem itself does not require the following
+patch to be open, although a later open-patch strengthening now exists for the
+matrix-entry construction.  The determinant hypothesis on `z₀.2` remains
+separate from the passive determinant sector.  Finite passive mass remains
+explicit.  This proves no positive patch mass,
+Haar/source-density/original-prior transport, normal crossings, pole order, or
+RLCT.
 
 Focused local build, full local `lake build DLNFibre`, `scripts/sorries`,
 `git diff --check`, touched Lean-file forbidden-marker scan, direct axiom

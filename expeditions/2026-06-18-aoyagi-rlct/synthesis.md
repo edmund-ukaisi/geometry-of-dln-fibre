@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Open Finite Following-Factor Patch - 2026-07-03
+
+Lean now strengthens the matrix-entry following patch with:
+
+```text
+isOpen_matrixEntryBox
+exists_matrixEntryReferenceMeasure_finite_open_followingPatch_of_reindexed_det_isUnit
+isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The generic theorem constructs the same finite coordinate-product patch as
+before, but now records `IsOpen followingPatch`.  The proof uses the entrywise
+box openness, the open determinant-unit locus, and continuity at the base point
+of the inverse-square-sum map on the determinant-unit locus.  The with-following
+helper says the cylinder `{z | z.2 ∈ followingPatch}` is open whenever the
+following patch is open.
+
+This supports later source-chart shrinking by replacing `G` with
+`G ∩ {z | z.2 ∈ followingPatch}`.  It should remain a topology/localization
+strengthening, separate from the finite-integral and dominated-target measure
+handoffs.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file marker scan, and direct axiom probes.  The two new
+declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no positive patch mass, concrete coordinate-source/original-prior
+domination, determinant-Haar/raw-Haar transport, normal crossings, pole order,
+or RLCT extraction is proved.  The base following-factor determinant condition
+remains a separate hypothesis.
+
 ## A2 Dominated Target Product-Residual Handoff - 2026-07-03
 
 Lean now has the generic measure handoff:
@@ -111,12 +152,12 @@ integral theorem would make a large statement without improving the downstream
 measure handoff.  The next composition should pass the open `V` from the
 source-chart theorem into this arbitrary-local-set wrapper.
 
-Boundary: the following patch is only measurable and finite for
-`matrixEntryReferenceMeasure`, not open.  The determinant hypothesis stays a
-separate hypothesis on `z₀.2`.  Finite passive-side mass remains explicit.
-This proves no positive patch mass, determinant-Haar/raw-Haar transport,
-source-density or original-prior transport, normal crossings, pole order, or
-RLCT extraction.
+Boundary: this local-restriction theorem itself does not require the following
+patch to be open, although a later open-patch strengthening now exists for the
+matrix-entry construction.  The determinant hypothesis stays a separate
+hypothesis on `z₀.2`.  Finite passive-side mass remains explicit.  This proves
+no positive patch mass, determinant-Haar/raw-Haar transport, source-density or
+original-prior transport, normal crossings, pole order, or RLCT extraction.
 
 Verification passed: focused local build, full local `lake build DLNFibre`,
 `lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker

@@ -83,6 +83,7 @@ matrixEntryBox(F0, 1)
 Then:
 
 - `F0` lies in the patch;
+- the patch is open;
 - the patch is measurable;
 - its `matrixEntryReferenceMeasure` mass is finite, by monotonicity from the
   entrywise box;
@@ -100,10 +101,11 @@ The reusable matrix-entry box helpers are:
 matrixEntryBox
 mem_matrixEntryBox_self
 measurableSet_matrixEntryBox
+isOpen_matrixEntryBox
 matrixEntryReferenceMeasure_matrixEntryBox_lt_top
 ```
 
-The generic following-factor patch theorem is:
+The original generic following-factor patch theorem is:
 
 ```text
 exists_matrixEntryReferenceMeasure_finite_followingPatch_of_reindexed_det_isUnit
@@ -119,6 +121,27 @@ matrixEntryReferenceMeasure ι τ followingPatch < ∞
 ∀ F ∈ followingPatch, IsUnit ((F.submatrix id e.symm).det)
 ∀ F ∈ followingPatch, inverseSquareSum(F) ≤ K
 ```
+
+The open strengthening is:
+
+```text
+exists_matrixEntryReferenceMeasure_finite_open_followingPatch_of_reindexed_det_isUnit
+```
+
+It returns the same data and additionally:
+
+```text
+IsOpen followingPatch
+```
+
+The with-following cylinder helper is:
+
+```text
+isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
+```
+
+It allows later source-chart arguments to shrink an open set by the cylinder
+`{z | z.2 ∈ followingPatch}`.
 
 The Case 2 consumer wrapper is:
 
@@ -139,8 +162,8 @@ residual over the restricted following-patch source measure.
 ## Boundary
 
 This is not yet the source-chart/original-prior theorem.  It constructs a
-finite measurable following-factor patch from a base determinant-unit following
-factor, but it does not derive that determinant condition from
+finite open measurable following-factor patch from a base determinant-unit
+following factor, but it does not derive that determinant condition from
 `case2PassiveThetaWithFollowingFactorDetSector`.  That sector constrains the
 passive theta fields and imposes no determinant condition on the independent
 free following factor.

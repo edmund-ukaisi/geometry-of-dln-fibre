@@ -90,6 +90,28 @@ theorem measurableSet_matrixEntryBox
       exact hcoord
         (measurableSet_Ioo : MeasurableSet (Set.Ioo (F₀ i j - R) (F₀ i j + R)))
 
+set_option linter.unusedFintypeInType false in
+theorem isOpen_matrixEntryBox
+    {m n : Type*} [Fintype m] [Fintype n]
+    (F₀ : Matrix m n ℝ) (R : ℝ) :
+    IsOpen (matrixEntryBox F₀ R) := by
+  classical
+  have hbox :
+      matrixEntryBox F₀ R =
+        Set.pi Set.univ
+          (fun i : m =>
+            Set.pi Set.univ
+              (fun j : n => Set.Ioo (F₀ i j - R) (F₀ i j + R))) := by
+    ext F
+    constructor
+    · intro hF i _ j _
+      exact hF i j
+    · intro hF i j
+      exact hF i (Set.mem_univ i) j (Set.mem_univ j)
+  rw [hbox]
+  exact isOpen_set_pi Set.finite_univ fun i _ =>
+    isOpen_set_pi Set.finite_univ fun j _ => isOpen_Ioo
+
 set_option linter.style.longLine false in
 theorem matrixEntryReferenceMeasure_matrixEntryBox_lt_top
     {m n : Type*} [Fintype m] [Fintype n]
@@ -209,6 +231,103 @@ theorem exists_matrixEntryReferenceMeasure_finite_followingPatch_of_reindexed_de
     exact hF.1.2
   · intro F hF
     exact le_of_lt hF.2
+
+set_option linter.style.longLine false in
+/-- A base following factor whose square reindexing has unit determinant
+admits an open finite coordinate patch on which the determinant remains a unit
+and the reindexed inverse has a uniform coordinate square-sum bound.
+
+The open patch is chosen inside the finite entrywise box around the base
+factor and inside a local inverse-square-sum sublevel neighborhood. -/
+theorem exists_matrixEntryReferenceMeasure_finite_open_followingPatch_of_reindexed_det_isUnit
+    {ι τ : Type*} [Fintype ι] [Fintype τ] [DecidableEq ι]
+    (e : τ ≃ ι) (F₀ : Matrix ι τ ℝ)
+    (hF₀det : IsUnit ((F₀.submatrix id e.symm).det)) :
+    ∃ followingPatch : Set (Matrix ι τ ℝ), ∃ K : ℝ,
+      0 < K ∧
+        F₀ ∈ followingPatch ∧
+        IsOpen followingPatch ∧
+        MeasurableSet followingPatch ∧
+        matrixEntryReferenceMeasure ι τ followingPatch < ∞ ∧
+        (∀ F ∈ followingPatch, IsUnit ((F.submatrix id e.symm).det)) ∧
+        (∀ F ∈ followingPatch,
+          aoyagiCoordinateSquareSum
+              (fun ij : τ × ι =>
+                (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2) ≤ K) := by
+  classical
+  let inverseSquareSum : Matrix ι τ ℝ → ℝ := fun F =>
+    aoyagiCoordinateSquareSum
+      (fun ij : τ × ι =>
+        (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2)
+  let K : ℝ := inverseSquareSum F₀ + 1
+  have hsub_cont : Continuous (fun F : Matrix ι τ ℝ => F.submatrix id e.symm) :=
+    continuous_id.matrix_submatrix id e.symm
+  have hinv_cont :
+      ContinuousAt (fun F : Matrix ι τ ℝ => (F.submatrix id e.symm)⁻¹) F₀ :=
+    ContinuousAt.comp
+      (x := F₀)
+      (f := fun F : Matrix ι τ ℝ => F.submatrix id e.symm)
+      (g := fun A : Matrix ι ι ℝ => A⁻¹)
+      (continuousAt_matrix_inv_of_isUnit_det
+        (A := F₀.submatrix id e.symm) hF₀det)
+      hsub_cont.continuousAt
+  have hcoords_cont :
+      ContinuousAt
+        (fun F : Matrix ι τ ℝ =>
+          fun ij : τ × ι =>
+            (((F.submatrix id e.symm)⁻¹).submatrix e id) ij.1 ij.2) F₀ := by
+    refine continuousAt_pi.2 ?_
+    intro ij
+    exact
+      (continuous_apply ij.2).continuousAt.comp
+        ((continuous_apply (e ij.1)).continuousAt.comp hinv_cont)
+  have hinvSq_cont : ContinuousAt inverseSquareSum F₀ := by
+    simpa [inverseSquareSum] using
+      aoyagiCoordinateSquareSum_continuousAt hcoords_cont
+  have hF₀_bound : inverseSquareSum F₀ < K := by
+    dsimp [K]
+    linarith
+  have hsublevel_nhds : {F : Matrix ι τ ℝ | inverseSquareSum F < K} ∈ nhds F₀ :=
+    hinvSq_cont (isOpen_Iio.mem_nhds hF₀_bound)
+  rcases mem_nhds_iff.mp hsublevel_nhds with
+    ⟨Uinv, hUinv_sub, hUinv_open, hF₀_Uinv⟩
+  let followingPatch : Set (Matrix ι τ ℝ) :=
+    matrixEntryBox F₀ 1 ∩
+      {F : Matrix ι τ ℝ | IsUnit ((F.submatrix id e.symm).det)} ∩
+      Uinv
+  have hbox_open : IsOpen (matrixEntryBox F₀ 1) :=
+    isOpen_matrixEntryBox F₀ 1
+  have hdet_open :
+      IsOpen {F : Matrix ι τ ℝ | IsUnit ((F.submatrix id e.symm).det)} :=
+    ((continuous_id.matrix_submatrix id e.symm).matrix_det).isOpen_preimage
+      ({a : ℝ | IsUnit a}) isOpen_setOf_isUnit
+  have hpatch_open : IsOpen followingPatch :=
+    (hbox_open.inter hdet_open).inter hUinv_open
+  have hpatch_meas : MeasurableSet followingPatch :=
+    hpatch_open.measurableSet
+  have hpatch_lt_top : matrixEntryReferenceMeasure ι τ followingPatch < ∞ := by
+    have hsub : followingPatch ⊆ matrixEntryBox F₀ 1 := by
+      intro F hF
+      exact hF.1.1
+    exact
+      (measure_mono hsub).trans_lt
+        (matrixEntryReferenceMeasure_matrixEntryBox_lt_top F₀ 1)
+  have hF₀_box : F₀ ∈ matrixEntryBox F₀ 1 :=
+    mem_matrixEntryBox_self F₀ zero_lt_one
+  have hK_pos : 0 < K := by
+    have hnonneg : 0 ≤ inverseSquareSum F₀ := by
+      dsimp [inverseSquareSum]
+      exact aoyagiCoordinateSquareSum_nonneg _
+    dsimp [K]
+    linarith
+  refine
+    ⟨followingPatch, K, hK_pos, ?_, hpatch_open, hpatch_meas,
+      hpatch_lt_top, ?_, ?_⟩
+  · exact ⟨⟨hF₀_box, hF₀det⟩, hF₀_Uinv⟩
+  · intro F hF
+    exact hF.1.2
+  · intro F hF
+    exact le_of_lt (hUinv_sub hF.2)
 
 set_option linter.style.longLine false in
 /-- Coordinate-product reference measure on the passive fields suppressed by

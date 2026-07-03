@@ -1871,6 +1871,22 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
     ae_and_lintegral_lt_top_of_measure_le_smul htarget_dom hC
       hfinite.1 hfinite.2
 
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- The cylinder over an open following-factor patch is open in the enlarged
+with-following source. -/
+theorem isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
+    {ρ : Type*} {τ : Type} {n : ℕ → ℕ} {S J : ℕ}
+    [TopologicalSpace (Case2PassiveTheta (ρ := ρ) (τ := τ) n S J)]
+    [Fintype (Case2ResidualColIndex n S (J + 1))] [Fintype τ]
+    {followingPatch :
+      Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ)}
+    (hopen : IsOpen followingPatch) :
+    IsOpen
+      {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+        z.2 ∈ followingPatch} := by
+  simpa using (continuous_snd.isOpen_preimage followingPatch hopen)
+
 set_option linter.style.longLine false in
 /-- Composing the endpoint topology tuple with the finite active-coordinate
 readout gives the same reference-measure pushforward as the source-coordinate
