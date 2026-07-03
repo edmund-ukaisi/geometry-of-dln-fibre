@@ -16,6 +16,8 @@ chartPiece_subset_sourceChart_image_inter_preimage_of_readout_mem
 chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_inter_sourceCylinder_of_cOneReadout_mem
 
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_priorDensity_comp_sourceChart_upper
 ```
 
 in:
@@ -42,9 +44,10 @@ therefore chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
 ```
 
 The concrete finite-integral wrapper feeds this derived support into the
-existing source-cylinder active-endpoint wrapper.  It still leaves the
-chart-piece a.e. prior-density bound explicit; this is intentionally a support
-bridge, not a prior-density construction.
+existing source-cylinder active-endpoint wrapper.  The combined eventual-bound
+wrapper then feeds the same derived support into the source-cylinder
+prior-density eventual-bound theorem, so the caller no longer separately
+supplies the chart-piece a.e. prior-density bound.
 
 Boundary: this does not prove a natural chart-piece support theorem from p.13
 coverage alone.  It requires the pointwise C-one signed-box support hypothesis
@@ -54,7 +57,7 @@ Verification passed: focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
 full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
 `git diff --check`; touched Lean-file marker scan; and direct axiom probe.
-The pure set lemma reports no axioms; the concrete support bridge and wrapper
+The pure set lemma reports no axioms; the concrete support bridge and wrappers
 report `[propext, Classical.choice, Quot.sound]`.
 
 ## A2 With-Following Source-Cylinder Prior-Density Eventual Bound - 2026-07-03

@@ -22,6 +22,8 @@ chartPiece_subset_sourceChart_image_inter_preimage_of_readout_mem
 chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_inter_sourceCylinder_of_cOneReadout_mem
 
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_priorDensity_comp_sourceChart_upper
 ```
 
 Decision: for the enlarged with-following source chart, the right readout for
@@ -49,15 +51,16 @@ Boundary: this does not prove arbitrary p.13 source chart pieces satisfy the
 C-one signed-box support.  It converts that support into the exact
 source-cylinder hypothesis consumed by the active endpoint finite-integral
 route.  The current concrete wrapper still leaves the chart-piece a.e.
-prior-density bound explicit; it can be combined with the existing eventual
-prior-density wrapper in a later tightening.
+prior-density bound explicit, while the combined eventual-bound wrapper removes
+both the strong source-cylinder support hypothesis and the chart-piece a.e.
+prior-density hypothesis under a local bound for `density ∘ sourceChart`.
 
 Verification passed: focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
 full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
 `git diff --check`; touched Lean-file marker scan; and direct axiom probe.
 The pure set lemma reports no axioms, while the concrete C-one support bridge
-and finite-integral wrapper report `[propext, Classical.choice, Quot.sound]`.
+and finite-integral wrappers report `[propext, Classical.choice, Quot.sound]`.
 
 ## Latest controller decision - 2026-07-03, source-cylinder prior-density eventual bound
 
