@@ -18,6 +18,8 @@ chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
 
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_priorDensity_comp_sourceChart_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 in:
@@ -44,10 +46,10 @@ therefore chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
 ```
 
 The concrete finite-integral wrapper feeds this derived support into the
-existing source-cylinder active-endpoint wrapper.  The combined eventual-bound
-wrapper then feeds the same derived support into the source-cylinder
-prior-density eventual-bound theorem, so the caller no longer separately
-supplies the chart-piece a.e. prior-density bound.
+existing source-cylinder active-endpoint wrapper.  The combined
+eventual-bound and continuous-at wrappers then feed the same derived support
+into the source-cylinder prior-density boundedness theorem, so the caller no
+longer separately supplies the chart-piece a.e. prior-density bound.
 
 Boundary: this does not prove a natural chart-piece support theorem from p.13
 coverage alone.  It requires the pointwise C-one signed-box support hypothesis
@@ -107,14 +109,13 @@ full local `lake build DLNFibre` from `lean/`; `scripts/sorries`;
 `git diff --check`; touched Lean-file marker scan; and direct axiom probe.
 The two new declarations report `[propext, Classical.choice, Quot.sound]`.
 
-Next target from xhigh source-cylinder audit: build the inverse-readout bridge.
-The useful shape is:
+Current remaining frontier after the bridge is not another readout bridge, but
+natural support/coverage:
 
 ```text
-chartPiece ⊆ sourceChart '' V
-inverseReadout(sourceChart z) = z.1.yNext on V
-∀ E ∈ chartPiece, inverseReadout E ∈ signedBoxSet Rres
-==> chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
+prove, from the actual p.13 source-image construction or a sharper local
+chart-piece definition, that the relevant chart pieces satisfy
+∀ E ∈ chartPiece, cOneReadout(E) ∈ signedBoxSet Rres.
 ```
 
 ## A2 With-Following Readback Product-Residual Source-Side Measurability - 2026-07-03

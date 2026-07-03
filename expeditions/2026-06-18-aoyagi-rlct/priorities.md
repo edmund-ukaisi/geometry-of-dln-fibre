@@ -24,6 +24,8 @@ chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
 
 exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_priorDensity_comp_sourceChart_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 Decision: for the enlarged with-following source chart, the right readout for
@@ -51,9 +53,10 @@ Boundary: this does not prove arbitrary p.13 source chart pieces satisfy the
 C-one signed-box support.  It converts that support into the exact
 source-cylinder hypothesis consumed by the active endpoint finite-integral
 route.  The current concrete wrapper still leaves the chart-piece a.e.
-prior-density bound explicit, while the combined eventual-bound wrapper removes
-both the strong source-cylinder support hypothesis and the chart-piece a.e.
-prior-density hypothesis under a local bound for `density ∘ sourceChart`.
+prior-density bound explicit, while the combined eventual-bound and
+continuous-at wrappers remove both the strong source-cylinder support
+hypothesis and the chart-piece a.e. prior-density hypothesis under a local
+bound for `density ∘ sourceChart`.
 
 Verification passed: focused build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;

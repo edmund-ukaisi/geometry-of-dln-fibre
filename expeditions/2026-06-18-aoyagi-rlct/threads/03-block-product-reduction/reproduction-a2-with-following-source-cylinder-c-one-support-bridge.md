@@ -87,3 +87,14 @@ event, making `density(E) ≤ Kprior` pointwise on the chart piece.  The result
 is finite integrability of the original-prior readback product-residual
 integrand without separately assuming source-cylinder support or the
 chart-piece a.e. prior-density bound.
+
+If instead the caller has
+
+```text
+ContinuousAt (fun z => density(sourceChart z)) z0,
+density(sourceChart z0) < Kprior,
+```
+
+then the standard `eventually_le_const_of_continuousAt_lt` lemma supplies the
+same eventual upper bound.  The continuous-at wrapper is therefore only a thin
+consumer-facing form of the eventual-bound theorem.
