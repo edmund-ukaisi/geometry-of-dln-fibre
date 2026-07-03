@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Fixed-Following-Patch Coordinate-Source Finite Integral - 2026-07-03
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_of_followingPatch_passive_restrict_le_smul_and_density_bounds
+exists_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The new supplied-patch theorem consumes a fixed following patch with finite
+matrix-entry measure, determinant-unit data, and a uniform inverse-square-sum
+bound, plus passive local domination and the two a.e. density upper bounds.
+It then transfers p.13 product-residual positivity and finite negative-power
+integrability to the concrete coordinate source restricted to `V`.
+
+The new open wrapper constructs the open following patch first, shrinks the
+source-chart neighborhood into that same patch cylinder, inherits passive
+containment from the ambient open set `G`, and then calls the supplied-patch
+theorem.  Its source-domain opens-measurable, Borel, and Polish assumptions
+are explicit hypotheses for the canonical source-domain measurable structure,
+avoiding the noncanonical measurable-space split that would make the concrete
+reference-source measure ill-typed.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-fixed-following-patch-coordinate-source-finite-integral.md
+```
+
+Boundary: this proves no passive local comparison measure construction, no
+passive local-set existence theorem, no Jacobian-density upper bound, no
+source-density upper bound, no determinant-Haar/raw-Haar transport, no
+original-prior transport, no normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The two new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Open Coordinate-Source Finite-Integral Handoff - 2026-07-03
 
 Lean now has:
@@ -52,9 +98,12 @@ passive-cylinder shrinking, no Jacobian-density upper bound, no source-density
 upper bound, no determinant-Haar/raw-Haar transport, no original-prior
 transport, no normal crossings, pole order, or RLCT extraction.
 
-Verification so far: focused local builds of
+Verification passed: focused local builds of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
-and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`.
+and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched-file marker scan; and direct axiom probes.  The
+three new declarations report `[propext, Classical.choice, Quot.sound]`.
 
 Explorer findings: passive local comparison can be attacked separately by a
 finite passive local restrict-self measure plus passive-cylinder openness;

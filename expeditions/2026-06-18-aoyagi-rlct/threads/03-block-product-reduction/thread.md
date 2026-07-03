@@ -21,6 +21,48 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 fixed-following-patch coordinate-source finite integral
+
+Reproduction:
+`reproduction-a2-fixed-following-patch-coordinate-source-finite-integral.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_of_followingPatch_passive_restrict_le_smul_and_density_bounds
+exists_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+The first theorem is the supplied-patch coordinate-source finite-integral
+handoff: it consumes a fixed following patch with finite matrix-entry measure,
+unit determinant on the patch, and a uniform inverse-square-sum bound.  The
+second theorem constructs an open following patch first, shrinks the
+with-following source-chart neighborhood inside the same patch cylinder, and
+then calls the supplied-patch handoff.
+
+The source-domain opens-measurable, Borel, and Polish hypotheses in the open
+wrapper are explicit hypotheses for the canonical source-domain measurable
+structure.  They are not fresh arbitrary measurable-space binders, so the
+concrete reference-source measure remains on its canonical product measurable
+space.
+
+Boundary: still no passive local comparison measure construction, no passive
+local-set existence theorem, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The two new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 open coordinate-source finite-integral handoff
 
 Reproduction:
@@ -56,7 +98,9 @@ transport, no normal crossings, pole order, or RLCT.
 Focused local builds of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
 and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`
-passed.  Full build and final audits remain to run for this checkpoint.
+passed, as did full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, touched-file marker scan, and direct axiom probes.  The
+three new declarations report `[propext, Classical.choice, Quot.sound]`.
 
 Explorer notes: `Dalton the 3rd` confirmed the source-chart shrink shape;
 `Hegel the 3rd` identified finite passive local restrict-self comparison as

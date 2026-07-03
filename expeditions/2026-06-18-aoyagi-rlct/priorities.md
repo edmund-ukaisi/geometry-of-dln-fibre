@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, fixed-following-patch coordinate-source finite-integral handoff
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_of_followingPatch_passive_restrict_le_smul_and_density_bounds
+exists_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+Decision: factor the concrete coordinate-source finite-integral proof through
+a supplied following patch, then add the wrapper that constructs an open patch
+first and shrinks the with-following source-chart neighborhood into the same
+patch cylinder.  This removes the old caller-side continuation
+
+```text
+V subset {z | z.2 in followingPatch}
+```
+
+from the open-source-neighborhood wrapper: the returned `V` already satisfies
+it.  Passive comparison and the Jacobian/source-density upper bounds remain
+explicit inputs.
+
+The wrapper keeps the source-domain opens-measurable, Borel, and Polish facts
+as named hypotheses over the canonical source-domain measurable structure,
+not as arbitrary source-domain measurable-space binders.  This is necessary
+because the concrete reference-source measure is defined over the canonical
+product measurable space.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-fixed-following-patch-coordinate-source-finite-integral.md
+```
+
+Boundary: this proves no passive local comparison measure construction, no
+passive local-set existence theorem, no Jacobian-density upper bound, no
+source-density upper bound, no determinant-Haar/raw-Haar transport, no
+original-prior transport, no normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, open coordinate-source finite-integral handoff
 
 Lean now has:
