@@ -447,6 +447,55 @@ theorem prod_le_smul_prod_of_le_smul_left
     _ = c * ∫⁻ x, η (Prod.mk x ⁻¹' s) ∂μ := by
       simp [lintegral_smul_measure, f]
 
+/-- A local domination on the left factor of a two-level product lifts to a
+domination on any local set supported in the left-factor patch and in a
+right-factor cylinder. -/
+theorem prod_prod_restrict_le_smul_restrict_cylinder_of_left_restrict_le_smul_of_subset
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
+    {μ ν : Measure α} {η : Measure β} {κ : Measure γ}
+    [SFinite μ] [SFinite η] [SFinite κ]
+    {P : Set α} {Q : Set γ} {V : Set ((α × β) × γ)} {c : ℝ≥0∞}
+    (hleft : μ.restrict P ≤ c • ν)
+    (hV_left : V ⊆ {z : (α × β) × γ | z.1.1 ∈ P})
+    (hV_right : V ⊆ {z : (α × β) × γ | z.2 ∈ Q}) :
+    ((μ.prod η).prod κ).restrict V ≤
+      c • ((((ν.prod η).prod κ).restrict
+        {z : (α × β) × γ | z.2 ∈ Q}).restrict V) := by
+  have hprod_left :
+      (μ.restrict P).prod η ≤ c • ν.prod η :=
+    prod_le_smul_prod_of_le_smul_left (η := η) hleft
+  have hprod :
+      ((μ.restrict P).prod η).prod κ ≤
+        c • ((ν.prod η).prod κ) := by
+    simpa [Measure.smul_apply] using
+      prod_le_smul_prod_of_le_smul_left (η := κ) hprod_left
+  have hleftSet :
+      ({z : (α × β) × γ | z.1.1 ∈ P} : Set ((α × β) × γ)) =
+        (P ×ˢ Set.univ) ×ˢ Set.univ := by
+    ext z
+    simp
+  have hrestrict_left :
+      ((μ.prod η).prod κ).restrict {z : (α × β) × γ | z.1.1 ∈ P} =
+        ((μ.restrict P).prod η).prod κ := by
+    rw [hleftSet]
+    rw [← Measure.restrict_prod_eq_prod_univ
+      (μ := μ.prod η) (ν := κ) (s := P ×ˢ Set.univ)]
+    rw [← Measure.restrict_prod_eq_prod_univ (μ := μ) (ν := η) (s := P)]
+  calc
+    ((μ.prod η).prod κ).restrict V =
+        (((μ.prod η).prod κ).restrict
+          {z : (α × β) × γ | z.1.1 ∈ P}).restrict V := by
+          exact (Measure.restrict_restrict_of_subset hV_left).symm
+    _ = (((μ.restrict P).prod η).prod κ).restrict V := by
+          rw [hrestrict_left]
+    _ ≤ (c • ((ν.prod η).prod κ)).restrict V :=
+          Measure.restrict_mono Set.Subset.rfl hprod
+    _ = c • (((ν.prod η).prod κ).restrict V) := by
+          rw [Measure.restrict_smul]
+    _ = c • ((((ν.prod η).prod κ).restrict
+          {z : (α × β) × γ | z.2 ∈ Q}).restrict V) := by
+          rw [Measure.restrict_restrict_of_subset hV_right]
+
 /-- A property that holds a.e. for `μ.prod η` also holds a.e. after replacing
 the left measure by one dominated by a scalar multiple of `μ`, with `η`
 s-finite. -/

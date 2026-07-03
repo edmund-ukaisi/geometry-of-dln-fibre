@@ -6,6 +6,83 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Reference-Source Finite-Cylinder Base Domination - 2026-07-03
+
+Lean now has:
+
+```text
+prod_prod_restrict_le_smul_restrict_cylinder_of_left_restrict_le_smul_of_subset
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+and the concrete Aoyagi wrapper:
+
+```text
+case2PassiveThetaWithFollowingFactor_referenceSource_restrict_le_smul_sourceCylinder_restrict_of_passive_restrict_le_smul
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The calculation is:
+
+```text
+passiveRef.restrict passiveLocalSet <= Cpassive • passiveMeasure
+```
+
+lifts through the selected-center weighted box and the independent following
+matrix-entry reference measure.  If `V` is contained both in the passive-local
+cylinder `{z | z.1.1 in passiveLocalSet}` and in the following-patch cylinder
+`{z | z.2 in followingPatch}`, then the concrete with-following reference
+source satisfies
+
+```text
+referenceSource.restrict V <= Cpassive •
+  ((((passiveMeasure.prod weightedBox).prod followingMeasure).restrict
+    {z | z.2 in followingPatch}).restrict V).
+```
+
+This is the base-domination socket needed before applying the concrete
+coordinate-source two-density theorem.  The next composition should keep the
+quantifier order from the dominated-target finite-integral theorem: first get
+the existential following patch and local source measure, then prove the
+coordinate-source domination inside that witness package using this theorem
+plus the Jacobian/source-density upper bounds.
+
+Implementation note: the concrete with-following endpoint-reference theorem
+chain no longer carries arbitrary `[MeasurableSpace PassiveFields]` binders.
+Those binders split the passive-field measurable-space instance away from the
+canonical product instance used by `case2PassiveThetaPassiveFieldReferenceMeasure`
+and `case2PassiveThetaWithFollowingFactorReferenceSourceMeasure`.  The chain is
+now consistently over the canonical product measurable space.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-reference-source-finite-cylinder-base-domination.md
+```
+
+Boundary: this proves no passive local finite measure construction, no
+passive local support theorem, no Jacobian-density upper bound, no
+source-density upper bound, no concrete coordinate-source finite-integral
+theorem, no determinant-Haar/raw-Haar transport, no original-prior transport,
+no normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`; focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Concrete Coordinate-Source Two-Density Handoff - 2026-07-03
 
 Lean now has:

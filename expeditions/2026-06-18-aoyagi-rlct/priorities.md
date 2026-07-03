@@ -12,6 +12,44 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, reference-source finite-cylinder base domination
+
+Lean now has:
+
+```text
+prod_prod_restrict_le_smul_restrict_cylinder_of_left_restrict_le_smul_of_subset
+case2PassiveThetaWithFollowingFactor_referenceSource_restrict_le_smul_sourceCylinder_restrict_of_passive_restrict_le_smul
+```
+
+Decision: add the missing base-domination bridge from a local passive-field
+domination to domination of the concrete with-following reference source by
+the finite following-patch source cylinder.  This is the intended input for
+the concrete two-density coordinate-source handoff: after the source-chart
+local set `V` is known to lie in the passive local set and in the following
+patch cylinder, the theorem supplies
+
+```text
+referenceSource.restrict V <= Cpassive • localFiniteCylinder.
+```
+
+The proof is only product-measure restriction bookkeeping.  It also forced a
+small API correction: the concrete with-following endpoint-reference chain now
+uses the canonical passive-field product measurable space instead of carrying
+an arbitrary `[MeasurableSpace PassiveFields]` binder that conflicts with the
+named reference measures.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-reference-source-finite-cylinder-base-domination.md
+```
+
+Boundary: this proves no construction of the passive local comparison
+measure, no passive local support theorem, no Jacobian-density upper bound, no
+source-density upper bound, no coordinate-source finite-integral theorem by
+itself, no determinant-Haar/raw-Haar transport, no original-prior transport,
+no normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, concrete coordinate-source two-density handoff
 
 Lean now has:

@@ -646,8 +646,6 @@ theorem case2PassiveThetaWithFollowingFactor_activeReadout_pos_ae_and_lintegral_
     {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -881,8 +879,6 @@ theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegra
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1017,8 +1013,6 @@ theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegra
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1186,8 +1180,6 @@ theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegra
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1294,8 +1286,6 @@ theorem case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegra
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1382,8 +1372,6 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1478,8 +1466,6 @@ theorem case2PassiveThetaWithFollowingFactor_productSourceMeasure_restrict_follo
     {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     [SFinite passiveMeasure]
@@ -1545,6 +1531,97 @@ theorem case2PassiveThetaWithFollowingFactor_productSourceMeasure_restrict_follo
 
 set_option linter.unusedFintypeInType false in
 set_option linter.style.longLine false in
+/-- Base domination of the concrete with-following reference source by a
+finite following-patch cylinder, assuming a local passive-field domination and
+support of the local source set in both the passive patch and the following
+patch.
+
+This is only product-measure restriction bookkeeping.  It does not construct
+the passive comparison measure or prove the Jacobian/source-density bounds
+needed for the coordinate-source two-density handoff. -/
+theorem case2PassiveThetaWithFollowingFactor_referenceSource_restrict_le_smul_sourceCylinder_restrict_of_passive_restrict_le_smul
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    [SFinite passiveMeasure]
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (passiveLocalSet :
+      Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (followingPatch :
+      Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))
+    (V :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    {Cpassive : ℝ≥0∞}
+    (hpassive :
+      (case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J).restrict passiveLocalSet ≤
+          Cpassive • passiveMeasure)
+    (hV_passive :
+      V ⊆
+        {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+          z.1.1 ∈ passiveLocalSet})
+    (hV_following :
+      V ⊆
+        {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+          z.2 ∈ followingPatch}) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      case2PassiveThetaPivotNext n hS hnext
+    let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      Measure.pi
+        (fun i : Case2PassiveTheta.Center n S J =>
+          volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+    let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+      signedBox.withDensity
+        (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+          ENNReal.ofReal
+            (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+    let followingMeasure :=
+      matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+    let localFiniteCylinder :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      (((passiveMeasure.prod weightedBox).prod followingMeasure).restrict
+        {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+          z.2 ∈ followingPatch}).restrict V
+    referenceSource.restrict V ≤ Cpassive • localFiniteCylinder := by
+  intro center pivotNext signedBox weightedBox followingMeasure referenceSource
+    localFiniteCylinder
+  let passiveRef :=
+    case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite passiveRef := by
+    dsimp [passiveRef]
+    exact sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite weightedBox := by
+    dsimp [weightedBox, signedBox, case2PassiveThetaCenterWeightedBoxMeasure]
+    infer_instance
+  haveI : SFinite followingMeasure := by
+    dsimp [followingMeasure]
+    exact
+      sFinite_matrixEntryReferenceMeasure
+        (Case2ResidualColIndex n S (J + 1)) τ
+  simpa [referenceSource, localFiniteCylinder, passiveRef,
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure,
+    case2PassiveThetaReferenceSourceMeasure,
+    case2PassiveThetaCenterWeightedBoxMeasure, weightedBox, signedBox,
+    followingMeasure] using
+    prod_prod_restrict_le_smul_restrict_cylinder_of_left_restrict_le_smul_of_subset
+      (μ := passiveRef) (ν := passiveMeasure) (η := weightedBox)
+      (κ := followingMeasure) (P := passiveLocalSet) (Q := followingPatch)
+      (V := V) hpassive hV_passive hV_following
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
 /-- Source-point form of the matrix-entry following-factor patch theorem,
 with the finite-passive product source restricted to the following-patch
 cylinder.
@@ -1558,8 +1635,6 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1659,8 +1734,6 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)
@@ -1765,8 +1838,6 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
     (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
     (hcont : J + 1 ≤ prefixMinNat n (S + 1))
     (hnext : J + 2 ≤ prefixMinNat n (S + 1))
-    [MeasurableSpace
-      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
     (passiveMeasure :
       Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
     (hpassive_lt_top : passiveMeasure Set.univ < ∞)

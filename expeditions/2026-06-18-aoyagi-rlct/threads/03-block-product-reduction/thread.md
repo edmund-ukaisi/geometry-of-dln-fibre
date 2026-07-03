@@ -21,6 +21,67 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 reference-source finite-cylinder base domination
+
+Reproduction:
+`reproduction-a2-reference-source-finite-cylinder-base-domination.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+prod_prod_restrict_le_smul_restrict_cylinder_of_left_restrict_le_smul_of_subset
+case2PassiveThetaWithFollowingFactor_referenceSource_restrict_le_smul_sourceCylinder_restrict_of_passive_restrict_le_smul
+```
+
+The generic lemma lifts a left-factor local domination through a two-level
+product and then restricts to a set `V` supported in both the left-factor
+patch and a right-factor cylinder.  The concrete wrapper applies this to
+
+```text
+referenceSource = (passiveRef.prod weightedBox).prod followingMeasure
+```
+
+and proves:
+
+```text
+referenceSource.restrict V <= Cpassive • localFiniteCylinder
+```
+
+where `localFiniteCylinder` is the finite following-patch source cylinder
+restricted to `V`.
+
+This is the missing base-domination input for the concrete two-density
+coordinate-source handoff.  The next wrapper should be thin: after the
+following patch and local source measure are in scope, combine this theorem
+with the Jacobian/source-density upper bounds to dominate
+`coordinateSourceMeasure.restrict V`, then feed that domination into the
+existing dominated-target finite-integral theorem.
+
+Implementation note: the endpoint-reference chain now uses the canonical
+passive-field product measurable space.  Removing the arbitrary
+`[MeasurableSpace PassiveFields]` binders avoids a typeclass split between
+`passiveMeasure` and the concrete named reference measures.
+
+Boundary: this is only product-measure restriction bookkeeping.  It proves no
+passive local finite measure construction, no passive support theorem, no
+Jacobian-density upper bound, no source-density upper bound, no coordinate
+source finite-integral theorem by itself, no determinant-Haar/raw-Haar
+transport, no original-prior transport, no normal crossings, pole order, or
+RLCT.
+
+Focused local builds of `DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched-file marker scan, and direct axiom probes passed.  The new
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 concrete coordinate-source two-density handoff
 
 Reproduction:
