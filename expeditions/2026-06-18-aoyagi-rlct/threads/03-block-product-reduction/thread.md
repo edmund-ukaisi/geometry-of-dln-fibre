@@ -102,6 +102,47 @@ confirmed that this remains active-coordinate Haar transport up to an
 existential scalar, with no determinant-Haar, raw-order Haar, p.13 coverage,
 source-coverage, or RLCT claim.
 
+## 2026-07-03 A2 active endpoint image patch domination
+
+Reproduction:
+`reproduction-a2-active-endpoint-image-patch-domination.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+rawHaar_restrict_endpointPatch_le_smul_case2PassiveThetaWithFollowingFactorEndpointReferenceImage_of_subset_activeWriteback_activeSelectedEntryImage_inter_signedBox_of_subset_pivotNonzero
+```
+
+The calculation inverts the canonical positive active Haar scalar from the
+arbitrary source-patch endpoint theorem.  If `endpointPatch` is contained in
+
+```text
+activeWriteback '' (activeChart '' (Omega inter sourceCylinder)),
+```
+
+then `rawHaar.restrict endpointPatch` is dominated by a finite scalar multiple
+of the named endpoint reference image.
+
+Boundary: the endpoint-patch containment is an explicit hypothesis.  This does
+not identify a determinant-chart, raw-order, or p.13 patch with the active
+endpoint image.  The scalar is not normalized to `1`.  No raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+theorem reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only
+reviewer `Leibniz the 3rd` found no blocking issue and confirmed that the
+statement keeps endpoint-patch coverage as an explicit hypothesis and proves
+only finite-scalar domination.
+
 ## 2026-07-03 A2 endpoint reference image univ active Haar scalar
 
 Reproduction:
