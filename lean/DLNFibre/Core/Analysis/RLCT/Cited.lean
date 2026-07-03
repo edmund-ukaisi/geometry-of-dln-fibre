@@ -93,12 +93,17 @@ finite order `m₀ ≥ 1`, rational; and — the bundled identification — **`s
 *local* RLCT of the germ at `x₀`). This is the sole analytic monument under the zeta-pole `(λ, m)`
 definition; `λ`, `m` and the local Link 1 are *built* on it (`RLCT.RLCTPair`).
 
-**Purely local** — no regional / sole-zero / worst-in-`U` hypothesis (certificate §7): `s₀` and
-`rlctAt K x₀` are both germ-at-`x₀` data, so the identity is consistent (no far-away zero can break
-it) and DLN-admissible (defined for the non-isolated zero set of a connected fibre). The `U` only
-localizes `φ`'s support (`x₀ ∈ U`, `U` open, `tsupport φ ⊆ U`); it carries **no** threshold. The
-maximality conjunct (`∀ s, pole → s.re ≤ s₀`) makes `s₀` genuinely the *largest* pole (justifying
-`RLCT.largestPole`). -/
+**Local, with ONE worst-point hypothesis on `supp φ`** (certificate §7.5, round-5 fix): `s₀` is a
+`supp φ`-quantity — the zeta `∫ K^s φ` sees *all* of `supp φ`, so `s₀ = −inf_{x ∈ supp φ} rlct_x`. The
+hypothesis `hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x` (`x₀` a worst singularity **on
+`supp φ`**) makes that `inf` equal `rlctAt K x₀`, so the bundled `s₀ = −rlctAt K x₀` is *true*. Without
+it the cite is **inconsistent**: a wide `φ` covering a separate, sharper zero forces a pole `Z` does
+not have at `−rlctAt K x₀` (`K = x²(x−1)⁸`, `φ` over both zeros ⟹ `s₀ = −1/8 ≠ −1/2`). This is the
+paper's "`U` small enough" as a *threshold* condition on `supp φ` — **not** a sole-zero condition, so
+it **admits the DLN fibre**: at a smooth fibre point the local RLCT is (locally) constant along the
+connected fibre, so `hWorst` holds with equality and the cite fires at `K_B`. The `U` still only
+localizes `φ`'s support (`x₀ ∈ U`, `U` open, `tsupport φ ⊆ U`). The maximality conjunct
+(`∀ s, pole → s.re ≤ s₀`) makes `s₀` genuinely the *largest* pole (justifying `RLCT.largestPole`). -/
 @[cited "Atiyah 1970 (CPAM 23:145-150) + Saito/SLT (paper propdefn L1804): local ∫K^s φ continues meromorphically, poles ℚ_{<0}, largest pole = -rlct_{x₀}"]
 axiom cited_local_zeta_pole {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
     (x₀ : Fin n → ℝ) (U : Set (Fin n → ℝ))
@@ -106,7 +111,10 @@ axiom cited_local_zeta_pole {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
     (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
     (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
     -- `φ` is supported in a small open nbhd `U ∋ x₀` (localizes the cutoff; NO regional threshold);
-    (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U) :
+    (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U)
+    -- worst-point on `supp φ`: `x₀` has the smallest local RLCT over `tsupport φ`, so the pole `s₀`
+    -- (a `supp φ`-quantity) equals `−rlctAt K x₀`. Admits the DLN fibre (equal-threshold zeros are OK);
+    (hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x) :
     ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
       -- the continuation agrees with the built zeta on the convergent half-plane;
       (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧

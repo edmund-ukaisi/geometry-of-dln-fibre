@@ -74,8 +74,9 @@ sole zero). Fix: split into
 > **Claim (the monument, LOCAL).** For a real-analytic nonnegative germ `K` with `K x₀ = 0`, a smooth
 > `φ` (`φ ≥ 0`, `φ x₀ ≠ 0`) supported in a small open nbhd `U ∋ x₀`: `ζ_{K,φ}` continues
 > meromorphically to `ℂ`; poles in the left half-plane; a LARGEST pole `s₀ < 0` (maximal real part) of
-> finite order `m₀ ≥ 1`, rational; **and `s₀ = −rlctAt K x₀`** — minus the *local* RLCT. **No regional
-> / sole-zero / worst-in-U hypothesis** (certificate §7.5).
+> finite order `m₀ ≥ 1`, rational; **and `s₀ = −rlctAt K x₀`** — minus the *local* RLCT. **One
+> worst-point hypothesis on `supp φ`** (`hWorst`; certificate §7.5, round-5) — no regional / sole-zero
+> / worst-in-U condition.
 >
 > - **Lean (verbatim axiom):**
 >
@@ -85,7 +86,8 @@ sole zero). Fix: split into
 >           (hK : AnalyticOnNhd ℝ K Set.univ) (hKnn : ∀ x, 0 ≤ K x) (hKx₀ : K x₀ = 0)
 >           (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
 >           (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
->           (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U) :
+>           (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U)
+>           (hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x) :
 >           ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
 >             (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧
 >             MeromorphicOn Z Set.univ ∧
@@ -95,12 +97,16 @@ sole zero). Fix: split into
 >             meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
 >             s₀ = -(rlctAt K x₀)
 >
+> - **`hWorst` (worst-point on `supp φ`) is soundness-critical — without it the cite is `False`.** `s₀`
+>   is a `supp φ`-quantity (`Z` sees all of `supp φ`, so `s₀ = −inf_{x∈supp φ} rlct_x`); a wide `φ`
+>   covering a *separate sharper* zero forces a pole `Z` does not have at `−rlctAt K x₀`
+>   (`K = x²(x−1)⁸`, `φ` over both zeros ⟹ `s₀ = −1/8 ≠ −1/2`). `hWorst` makes that `inf = rlctAt K x₀`.
+>   It is the paper's "`U` small enough" as a *threshold* condition — **not** a sole-zero condition, so
+>   it **admits the DLN fibre**: at a smooth fibre point `rlct_x` is locally constant along the
+>   connected fibre, so `hWorst` holds with equality and the cite fires at `K_B` (non-vacuity witness).
 > - **The `U` carries NO threshold** — it only localizes `φ`'s support (`x₀ ∈ U`, `U` open,
->   `tsupport φ ⊆ U`). The conclusion is purely the germ-at-`x₀` datum `rlctAt K x₀`.
-> - **Consistency + DLN-admissibility.** `s₀` and `rlctAt K x₀` are both germ-at-`x₀`, so the identity
->   is a *local* fact no far-away zero can contradict (consistent — cures the earlier `False`); and
->   `rlctAt` is defined for a non-isolated zero set, so it instantiates at any DLN fibre point (no
->   sole-zero wall).
+>   `tsupport φ ⊆ U`). The conclusion is the germ-at-`x₀` datum `rlctAt K x₀`; `hWorst` is the only
+>   family-constraint, and it is over `supp φ`, not a region.
 > - **Cited — sources.** M. Atiyah, *Resolution of singularities and division of distributions*, CPAM
 >   **23**(2) (1970) 145–150 (continuation of `∫|F|^s`, poles `ℚ_{<0}`, real-analytic resolution — the
 >   paper's attribution L1811); "largest pole `= −rlct_x`" packaging: Saito arXiv:math/0702056;
@@ -162,10 +168,10 @@ sole zero). Fix: split into
 
 ---
 
-## Decorrelated review + the four-round hardening
+## Decorrelated review + the five-round hardening
 
-The cite was hardened across FOUR rounds before landing the correct local form (all pre-merge, via the
-careful-checkpoint + decorrelated review — controller + rev-r2b + Codex):
+The cite was hardened across FIVE rounds before landing the correct form (all pre-merge, via the
+careful-checkpoint + decorrelated review — controller + rev-r2b + pp-zeta-cert + Codex):
 
 1. **Codex (xhigh)** on the first form fixed 3 gaps — locality, maximality, pole-regime.
 2. **rev-r2b + Codex** found the regional cite **inconsistent** (`s₀ = −integrabilityThreshold K U`
@@ -173,9 +179,16 @@ careful-checkpoint + decorrelated review — controller + rev-r2b + Codex):
 3. **rev-r2b** found open-`U` still leaks (a `∂U` zero satisfies it vacuously but blows the `U`-integral
    from inside; `K=x²(x−1)⁸`). Tightened to `closure U`.
 4. **controller + pp-zeta-cert §7** found the sole-zero (any-U) fix, though consistent, **excludes the
-   DLN fibre** — altitude confusion. **Final fix: state the cite LOCALLY** (`s₀ = −rlctAt K x₀`, no
-   regional hyp), factor the regional tie into buildable Bridge B, route the DLN payoff through the
-   global Theorem C. Consistent + DLN-admissible + no reliance on the open local conjecture.
+   DLN fibre** — altitude confusion. **Restated the cite LOCALLY** (`s₀ = −rlctAt K x₀`, drop the
+   regional conclusion), factored the regional tie into buildable Bridge B, routed the DLN payoff
+   through the global Theorem C.
+5. **controller + pp-zeta-cert §7.5 (CONFIRMED, this round)** found the local form still loose: `s₀` is
+   a `supp φ`-quantity, so a wide `φ` covering a *separate sharper* zero breaks `s₀ = −rlctAt K x₀`
+   (`K=x²(x−1)⁸`, φ over both ⟹ `s₀=−1/8`). **Final fix: `hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤
+   rlctAt K x`** — a worst-point condition on `supp φ` (the paper's "U small enough"), admitting the
+   DLN fibre (equal-threshold zeros give `≤` with equality; not sole-zero). Consistent +
+   DLN-admissible + no reliance on the open local conjecture. Root cause (supp φ is itself a region)
+   now closed.
 
 **Lesson (in-repo).** The cordon accounts axioms but does **not** check their consistency; a cited
 `∃`-axiom needs a consistency review (hunt an instance satisfying every hypothesis where the conclusion
@@ -184,11 +197,13 @@ apparatus) — the split cures it at the root.
 
 ## Reviewer note (fidelity focus)
 
-Independent fidelity check requested. Confirm: (a) `λ = −s₀` positive; (b) the cite is stated **locally**
-(`s₀ = −rlctAt K x₀`), no regional/sole-zero hypothesis, hence consistent + DLN-admissible; (c)
-`m = poleOrder` the pole ORDER, never a count, off the payoff path; (d) Bridge B is axiom-clean, its
-worst-point hypothesis admits a connected fibre, and its two F1 facts are honestly named hypotheses (not
-sorry-ed, not baked as the equality); (e) `rlctAt` / `zetaIntegrand_integrable` cite-free.
+Independent fidelity check requested. Confirm: (a) `λ = −s₀` positive; (b) the cite is stated
+**locally** (`s₀ = −rlctAt K x₀`) with the single worst-point-on-`supp φ` hypothesis `hWorst`
+(no regional / sole-zero condition) — hence consistent (`hWorst` pins the `supp φ`-inf to `rlctAt K x₀`)
++ DLN-admissible (`hWorst` holds with equality on a connected fibre); (c) `m = poleOrder` the pole
+ORDER, never a count, off the payoff path; (d) Bridge B is axiom-clean, its `closure U` worst-point
+hypothesis admits a connected fibre, and its two F1 facts are honestly named hypotheses (not sorry-ed,
+not baked as the equality); (e) `rlctAt` / `zetaIntegrand_integrable` cite-free.
 
 **Gates (all green):** `scripts/lb DLNFibre` ✔; `scripts/cited` = `UNACCOUNTED=0 CITED=4 LOCATION=0`
 (3 Aoyagi + the 1 LOCAL cite `cited_local_zeta_pole`); `scripts/sorries` = `0 sorry, 4 axiom` (all

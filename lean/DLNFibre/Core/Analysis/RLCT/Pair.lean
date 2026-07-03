@@ -74,6 +74,10 @@ structure ZetaSetup (n : ℕ) where
   hUopen : IsOpen U
   /-- `φ` is supported inside `U` (localizes the cutoff near `x₀`). -/
   hφU : tsupport φ ⊆ U
+  /-- `x₀` is a *worst singularity* on `supp φ`: the local RLCT is smallest at `x₀` over `supp φ`.
+  Load-bearing for consistency — `s₀` is a `supp φ`-quantity, so a wide `φ` covering a sharper zero
+  would break `s₀ = −rlctAt K x₀`; this pins it. Admits the DLN fibre (equal-threshold zeros OK). -/
+  hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x
 
 /-- The bundled LOCAL cite applied to a `ZetaSetup` — the existence statement whose witness the
 extraction chooses. Conclusion is purely local: `s₀ = −rlctAt K x₀`. -/
@@ -87,7 +91,7 @@ theorem ZetaSetup.cite (S : ZetaSetup n) :
       meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
       s₀ = -(rlctAt S.K S.x₀) :=
   cited_local_zeta_pole S.K S.φ S.x₀ S.U S.hK S.hKnn S.hKx₀ S.hφ S.hφc S.hφnn S.hφx₀
-    S.hx₀U S.hUopen S.hφU
+    S.hx₀U S.hUopen S.hφU S.hWorst
 
 /-! ## The extracted invariants (on the cite) -/
 
