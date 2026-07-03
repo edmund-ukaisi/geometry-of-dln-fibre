@@ -143,6 +143,57 @@ reviewer `Leibniz the 3rd` found no blocking issue and confirmed that the
 statement keeps endpoint-patch coverage as an explicit hypothesis and proves
 only finite-scalar domination.
 
+## 2026-07-03 A2 endpoint density readback wrapper
+
+Reproduction:
+`reproduction-a2-endpoint-density-readback-wrapper.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower
+```
+
+The calculation fills the existing localized original-volume readback theorem's
+endpoint-patch domination socket.  For a p.13 chart piece, it sets
+
+```text
+P = rawSourceSet inter rawChart^{-1}(chartPiece)
+Q = rawDetChart inter rawOrderOnEndpoint^{-1}(P).
+```
+
+The p.13 measurability lemma gives null-measurability of `Q`, and the endpoint
+weighted-Haar handoff turns the explicit identity
+
+```text
+endpointReferenceImage = (rawHaar.restrict Q).withDensity Jprod
+```
+
+together with `Cdet < infinity` and the a.e. lower bound
+`1 <= Cdet * Jprod` into the determinant-side domination required by the
+readback theorem.
+
+Boundary: the endpoint image identity, endpoint Jacobian lower bound,
+source-density lower bound, and `epsilon` side conditions remain explicit
+hypotheses.  No determinant-Haar transport, raw-Haar transport, scalar `1`,
+source-image coverage, original-prior transport, normal crossings, pole order,
+or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Anscombe the 3rd` found no blocking issue and confirmed this is only a thin
+composition of p.13 null-measurability, endpoint `withDensity` domination, and
+the existing original-volume readback theorem.
+
 ## 2026-07-03 A2 endpoint reference image univ active Haar scalar
 
 Reproduction:
