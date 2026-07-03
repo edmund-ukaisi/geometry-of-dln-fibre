@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-cylinder C-one support bridge
+
+Lean now has:
+
+```text
+chartPiece_subset_sourceChart_image_inter_preimage_of_readout_mem
+
+chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_inter_sourceCylinder_of_cOneReadout_mem
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
+```
+
+Decision: for the enlarged with-following source chart, the right readout for
+the source-cylinder support bridge is not the old passive-theta inverse
+readout.  It is
+`case2PassiveThetaWithFollowingFactorEndpointCOneReadout`, the readout of the
+successor selected-entry `C 1` block.  The local readback left-inverse projects
+to
+
+```text
+cOneReadout(sourceChart z) = z.1.yNext.
+```
+
+Therefore a chart piece with `chartPiece ⊆ sourceChart '' V` and pointwise
+`cOneReadout E ∈ signedBoxSet Rres` is actually supported in
+`sourceChart '' (V ∩ sourceCylinder)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-cylinder-c-one-support-bridge.md
+```
+
+Boundary: this does not prove arbitrary p.13 source chart pieces satisfy the
+C-one signed-box support.  It converts that support into the exact
+source-cylinder hypothesis consumed by the active endpoint finite-integral
+route.  The current concrete wrapper still leaves the chart-piece a.e.
+prior-density bound explicit; it can be combined with the existing eventual
+prior-density wrapper in a later tightening.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The pure set lemma reports no axioms, while the concrete C-one support bridge
+and finite-integral wrapper report `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, source-cylinder prior-density eventual bound
 
 Lean now has:

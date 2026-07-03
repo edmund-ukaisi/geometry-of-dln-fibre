@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Cylinder C-One Support Bridge - 2026-07-03
+
+Lean now has:
+
+```text
+chartPiece_subset_sourceChart_image_inter_preimage_of_readout_mem
+
+chartPiece_subset_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_inter_sourceCylinder_of_cOneReadout_mem
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+readback(sourceChart z) = z
+and the with-following readback stores COneReadout(E) as the yNext field
+==> COneReadout(sourceChart z) = z.1.yNext,
+
+E ∈ chartPiece and chartPiece ⊆ sourceChart '' V
+==> E = sourceChart z for some z ∈ V,
+
+COneReadout(E) ∈ signedBox
+==> z.1.yNext ∈ signedBox
+==> z ∈ sourceCylinder,
+
+therefore chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
+```
+
+The concrete finite-integral wrapper feeds this derived support into the
+existing source-cylinder active-endpoint wrapper.  It still leaves the
+chart-piece a.e. prior-density bound explicit; this is intentionally a support
+bridge, not a prior-density construction.
+
+Boundary: this does not prove a natural chart-piece support theorem from p.13
+coverage alone.  It requires the pointwise C-one signed-box support hypothesis
+on the chart piece.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The pure set lemma reports no axioms; the concrete support bridge and wrapper
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Source-Cylinder Prior-Density Eventual Bound - 2026-07-03
 
 Lean now has:
