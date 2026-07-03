@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, radius-free basepoint signed-box shrink
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_pos_mem_signedBoxSet
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Decision: because the finite-integral conclusion does not mention the
+selected-entry radii, choose a signed box around the basepoint internally:
+`Rres i = |z0.1.yNext i| + 1`.  This removes the explicit `Rres`, positivity,
+and basepoint signed-box-membership inputs from the local continuous-at
+prior-density wrapper.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-cylinder-radius-free-basepoint-shrink.md
+```
+
+Boundary: this is only an ergonomic wrapper around the basepoint shrink.  The
+chosen box is large enough to contain the basepoint, not small.  Do not use
+this theorem where the signed-box radii occur in the conclusion, where the
+measure depends on the radii, or where a small-box hypothesis is needed.
+
+Verification passed: focused builds of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new radius lemma and concrete wrapper report `[propext,
+Classical.choice, Quot.sound]`.
+
+Next substantive frontier after the fan-out review: source-image/chart-piece
+coverage.  The radius-free wrapper does not prove that natural p.13 chart
+pieces are globally or finitely assigned to signed boxes/basepoints.  The next
+target should discharge natural `chartPiece ⊆ sourceChart '' V` hypotheses
+from the actual p.13 source-image construction, before returning to determinant
+Haar transport or prior transport.
+
 ## Latest controller decision - 2026-07-03, source-cylinder C-one support bridge
 
 Lean now has:

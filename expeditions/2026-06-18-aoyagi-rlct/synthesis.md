@@ -6,6 +6,55 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Radius-Free Basepoint Signed-Box Shrink - 2026-07-03
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.exists_pos_mem_signedBoxSet
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+given y : center -> R, set R i = |y i| + 1,
+
+0 <= |y i|
+==> 0 < R i,
+
+|y i| < |y i| + 1
+==> -R i < y i and y i < R i,
+==> y ∈ signedBoxSet R.
+```
+
+Apply this to `y = z0.1.yNext` and feed the resulting signed box into the
+basepoint signed-box shrink theorem.  Since the radii are absent from the
+finite-integral conclusion, they can remain internal.
+
+Boundary: this is not source-image coverage and not a small-box theorem.  Do
+not use the radius-free wrapper where the signed-box measure or selected-entry
+box appears in the conclusion, or where hypotheses require small radii.  The
+next substantive frontier is source-image/chart-piece coverage for natural
+p.13 pieces; determinant Haar transport and original-prior transport remain
+downstream of that support problem.
+
+Verification passed: focused builds of
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new radius lemma and concrete wrapper report `[propext,
+Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Source-Cylinder C-One Support Bridge - 2026-07-03
 
 Lean now has:

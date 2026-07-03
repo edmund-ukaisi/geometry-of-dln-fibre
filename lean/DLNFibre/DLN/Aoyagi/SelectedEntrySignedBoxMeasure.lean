@@ -450,6 +450,20 @@ theorem isOpen_signedBoxSet {center : Finset ι} (R : center → ℝ) :
   rw [signedBoxSet]
   exact isOpen_set_pi Set.finite_univ fun _ _ => isOpen_Ioo
 
+omit [DecidableEq ι] in
+/-- Every center-indexed point lies in a sufficiently large positive signed
+box. -/
+theorem exists_pos_mem_signedBoxSet {center : Finset ι} (y : center → ℝ) :
+    ∃ R : center → ℝ, (∀ i, 0 < R i) ∧ y ∈ signedBoxSet R := by
+  let R : center → ℝ := fun i ↦ |y i| + 1
+  refine ⟨R, ?_, ?_⟩
+  · intro i
+    have hnonneg : 0 ≤ |y i| := abs_nonneg (y i)
+    linarith
+  · rw [signedBoxSet]
+    intro i _hi
+    exact abs_lt.mp (by linarith [abs_nonneg (y i)])
+
 /-- The signed-box image of the finite selected-entry chart is the origin
 together with the nonzero-pivot horn described by the quotient coordinates. -/
 theorem mem_chartMap_image_signedBoxSet_iff {center : Finset ι} (pivot : center)
