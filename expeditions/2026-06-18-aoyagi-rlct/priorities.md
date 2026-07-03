@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-cylinder prior-density eventual bound
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_eventually_priorDensity_comp_sourceChart_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Decision: remove the chart-piece a.e. prior-density socket for the
+source-cylinder scalar-domination route when the prior density pulled back by
+the source chart is eventually bounded above near the base point.  The proof
+shrinks inside that event, then uses the source-cylinder support
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)` to turn each chart-piece
+point into `sourceChart z` with `z ∈ V`, hence into a pointwise density bound.
+`ae_restrict_upper_of_forall_mem` supplies the restricted a.e. input consumed
+by the existing wrapper.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-prior-density-eventual.md
+```
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The two new declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is still a conditional bounded-density handoff.  It does not
+construct Aoyagi's original prior density, prove its continuity, prove the
+source-cylinder chart-piece support, prove determinant Haar transport,
+source-image coverage, normal crossings, pole order, or RLCT extraction.
+
+Next controller target: the structural source-cylinder support frontier is now
+more promising than further density wrapping.  Xhigh read-only audit found the
+small missing bridge to be an inverse-readout theorem: if a chart piece is
+already supported where the inverse selected-entry readout lies in
+`signedBoxSet Rres`, and `inverseReadout (sourceChart z) = z.1.yNext` on the
+local source chart, then
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.
+
 ## Latest controller decision - 2026-07-03, source-side readback product-residual measurability
 
 Lean now has:

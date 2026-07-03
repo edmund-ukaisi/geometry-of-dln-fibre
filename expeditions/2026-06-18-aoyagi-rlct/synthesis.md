@@ -6,6 +6,63 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Cylinder Prior-Density Eventual Bound - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_eventually_priorDensity_comp_sourceChart_upper
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+∀ᶠ z in 𝓝 z0, density(sourceChart z) ≤ Kprior
+==> choose open Gprior ∋ z0 where the bound holds,
+
+run the source-cylinder finite-integral wrapper with G ∩ Gprior
+==> V ⊆ Gprior,
+
+E ∈ chartPiece and chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)
+==> E = sourceChart z for some z ∈ V,
+==> density(E) ≤ Kprior,
+
+pointwise on chartPiece
+==> a.e. on originalVolume.restrict chartPiece.
+```
+
+The continuous-at theorem just feeds the eventual theorem through
+`eventually_le_const_of_continuousAt_lt`.
+
+Boundary: this closes only the bounded-density handoff form.  It does not
+construct the Aoyagi prior density, prove prior-density continuity, prove the
+source-cylinder chart-piece support, prove determinant Haar transport,
+source-image coverage, normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre` from `lean/`; `scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The two new declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Next target from xhigh source-cylinder audit: build the inverse-readout bridge.
+The useful shape is:
+
+```text
+chartPiece ⊆ sourceChart '' V
+inverseReadout(sourceChart z) = z.1.yNext on V
+∀ E ∈ chartPiece, inverseReadout E ∈ signedBoxSet Rres
+==> chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder).
+```
+
 ## A2 With-Following Readback Product-Residual Source-Side Measurability - 2026-07-03
 
 Lean now has:
