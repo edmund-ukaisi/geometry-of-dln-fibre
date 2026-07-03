@@ -41,8 +41,8 @@ positive by `hMid`). So `hNo` is no longer a hypothesis of `r1_resolution_genera
   via `deepestCoords_card = M (deepLayer).castSucc · M (deepLayer).succ > 0`.
 - **Sub-A** (the guard-bridge, inline): `(∃ i, monomialThreshold (layer i) ≤ c') → ½·minAdm M ≤ c'`,
   from `iInf_le` + `routeLayerAtlas_value_eq_half_minAdm`.
-- **Sub-B** (`hdiv`): the general `hNo`-free achiever `routeMCore_box_diverges_achiever_full'` through
-  Sub-A, supplied `hMpos`/`hne` (no `hNo`).
+- **Sub-B** (`hdiv`): the general `hNo`-free achiever `routeMCore_box_diverges_achiever_full'`
+  through Sub-A, supplied `hMpos`/`hne` (no `hNo`).
 - **Sub-C** (`hfin`): `routeMLayerCover_hfin M hpos hbox`.
 - **Sub-D** (assemble): `routeMLayerCover_of_atoms` → `IsRouteMCover`; `routeM_rlctAtOn_eq_iInf` +
   `rlctAtOn_routeMCore_transport` → the params-side `⨅`-form; the value lane closes it.

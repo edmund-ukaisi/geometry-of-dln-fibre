@@ -7,8 +7,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMHNoBridge
 `routeMCore_box_diverges_achiever_full` (`RouteMAchieverFull.lean`) carries `hNo :
 NoInteriorBothDrop M` — consumed only in its CLEAN + SMEARED trichotomy branches (both reached under
 `¬InteriorDrop`); the INTERIOR branch (`interiorLiveGen_hInterior`) is unconditional. This module
-DROPS `hNo` from the caller-facing achiever by a bounded case split on `InteriorDrop M`, with NO edit
-to the existing achiever_full or the dispatch:
+DROPS `hNo` from the caller-facing achiever by a bounded case split on `InteriorDrop M`, with NO
+edit to the existing achiever_full or the dispatch:
 
 * **`InteriorDrop M`** — routes straight through the unconditional interior branch
   `interiorLiveGen_hInterior` (its `2 ≤ L` premise is forced by `InteriorDrop`'s
