@@ -194,6 +194,43 @@ reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
 composition of p.13 null-measurability, endpoint `withDensity` domination, and
 the existing original-volume readback theorem.
 
+## 2026-07-03 A2 endpoint density prior readback wrapper
+
+Reproduction:
+`reproduction-a2-endpoint-density-prior-readback-wrapper.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper
+```
+
+The calculation composes the endpoint-density original-volume readback wrapper
+with the existing prior-density upper-bound handoff.  The endpoint identity,
+endpoint Jacobian lower bound, source-density lower bound, nonzero finite
+`epsilon` side conditions, and local prior-density upper bound all remain
+explicit hypotheses.
+
+Boundary: this proves only finite-scalar domination for the readback of the
+restricted original-prior chart piece.  It does not prove endpoint Haar
+transport, raw-Haar transport, source-image coverage, original-prior transport,
+normal crossings, pole order, finite-integral transfer, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Nietzsche the 3rd` found no blocking issue and confirmed that this only
+composes the endpoint-density volume wrapper with the prior-density
+upper-bound handoff.
+
 ## 2026-07-03 A2 endpoint reference image univ active Haar scalar
 
 Reproduction:
