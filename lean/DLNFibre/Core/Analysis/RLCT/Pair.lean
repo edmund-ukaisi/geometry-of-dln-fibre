@@ -76,6 +76,9 @@ structure ZetaSetup (n : ℕ) where
   hUcpt : IsCompact (closure U)
   /-- `φ` is supported inside `U` (ties the cutoff to the neighbourhood). -/
   hφU : tsupport φ ⊆ U
+  /-- `x₀` is the *only* zero of `K` in `U`. Load-bearing: it pins the bundled identity
+  `s₀ = −threshold` (which is false when `U` holds a second, sharper zero the zeta cannot see). -/
+  hUzero : ∀ x ∈ U, K x = 0 → x = x₀
   /-- The germ is in the pole regime on `U`: the admissible set is bounded above, so the threshold
   is the honest `sSup`, not the `sSup ∅ = 0` junk. -/
   hpole : BddAbove (admissibleExponents K U)
@@ -92,7 +95,7 @@ theorem ZetaSetup.cite (S : ZetaSetup n) :
       meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
       s₀ = -(integrabilityThreshold S.K S.U) :=
   cited_zeta_meromorphic_continuation S.K S.φ S.x₀ S.U S.hK S.hKnn S.hKx₀ S.hφ S.hφc S.hφnn S.hφx₀
-    S.hx₀U S.hUopen S.hUcpt S.hφU S.hpole
+    S.hx₀U S.hUopen S.hUcpt S.hφU S.hUzero S.hpole
 
 /-! ## The extracted invariants (on the cite) -/
 

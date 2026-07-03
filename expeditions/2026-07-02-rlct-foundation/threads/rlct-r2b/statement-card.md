@@ -35,12 +35,12 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 
 > **Claim (the monument, as an `@[cited]` axiom).** For a real-analytic nonnegative germ `K` with
 > `K x₀ = 0`, a smooth `φ` (`φ ≥ 0`, `φ x₀ ≠ 0`) supported inside a relatively compact open nbhd
-> `U ∋ x₀` on which `K` is in the pole regime: `ζ_{K,φ}` continues meromorphically to `ℂ`; its poles
-> lie in the left half-plane; there is a LARGEST pole `s₀ < 0` (maximal real part) of finite order
-> `m₀ ≥ 1`, rational; **and `s₀ = −(integrabilityThreshold K U)`** (the bundled largest-pole = −rlct
-> identity).
+> `U ∋ x₀` on which `K` is in the pole regime **and `x₀` is the only zero of `K`**: `ζ_{K,φ}`
+> continues meromorphically to `ℂ`; its poles lie in the left half-plane; there is a LARGEST pole
+> `s₀ < 0` (maximal real part) of finite order `m₀ ≥ 1`, rational; **and
+> `s₀ = −(integrabilityThreshold K U)`** (the bundled largest-pole = −rlct identity).
 >
-> - **Lean (verbatim axiom, hardened per Codex — locality + maximality + pole-regime):**
+> - **Lean (verbatim axiom — hardened: locality + maximality + pole-regime + SINGLE-ZERO):**
 >
 >       @[cited "Atiyah 1970 (CPAM 23:145-150) + Saito/SLT: continuation of ∫|F|^s φ, poles ℚ_{<0}, largest pole = -rlct"]
 >       axiom cited_zeta_meromorphic_continuation {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
@@ -49,6 +49,7 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 >           (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
 >           (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
 >           (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hUcpt : IsCompact (closure U)) (hφU : tsupport φ ⊆ U)
+>           (hUzero : ∀ x ∈ U, K x = 0 → x = x₀)
 >           (hpole : BddAbove (admissibleExponents K U)) :
 >           ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
 >             (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧
@@ -59,6 +60,13 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 >             meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
 >             s₀ = -(integrabilityThreshold K U)
 >
+> - **`hUzero` (single-zero) is soundness-critical — the axiom is FALSE without it.** The zeta
+>   `∫ K^s φ` sees only `supp φ`, so `s₀` reflects the worst singularity near `x₀`; but
+>   `integrabilityThreshold K U` sees ALL of `U`. A second, sharper zero of `K` in `U` breaks
+>   `s₀ = −threshold` (counterexample `K = x²(x−1)⁴` on `U = (−½, 3⁄2)`, `φ` cut off near `0`:
+>   `s₀ = −½` but `threshold = ¼`). `hUzero : ∀ x ∈ U, K x = 0 → x = x₀` forces `K > 0` on `U \ {x₀}`,
+>   so both sides are governed by `x₀` alone and the identity holds — the local Atiyah/Saito "small
+>   `U`, `x₀` the only singularity" setup. (Controller-review finding, fixed before merge.)
 > - **Cited — sources.** M. Atiyah, *Resolution of singularities and division of distributions*, Comm.
 >   Pure Appl. Math. **23**(2) (1970) 145–150 (continuation of `∫|F|^s`, poles on `ℚ_{<0}`, via
 >   real-analytic resolution — the paper's attribution, `main.tex` L1811). The "largest pole = −rlct"
@@ -119,8 +127,12 @@ gaps in the axiom-as-first-written**, all now **fixed**:
 3. **Pole-regime guard.** `integrabilityThreshold` is junk `0` off the pole regime. FIXED: added
    `BddAbove (admissibleExponents K U)` (R2a's own `name = content` guard).
 
-These made the cite a *faithful* statement of the monument rather than an under-specified one — the
-bedrock discipline: a cite must state the real theorem. Post-fix, all gates still green (below).
+**Then a controller-review found a SOUNDNESS bug** (the cite was still *false as a universal*): the
+`s₀ = −threshold` conjunct fails when `U` contains a second zero of `K` sharper than `x₀` (the zeta
+sees only `supp φ`, the threshold sees all of `U`; counterexample `K = x²(x−1)⁴`, `φ` near `0`).
+FIXED: added `hUzero : ∀ x ∈ U, K x = 0 → x = x₀` (`x₀` the only zero in `U`) — Card 2. Both the
+Codex-hardening and this single-zero fix turn an under-specified/false statement into a *true* one:
+the bedrock discipline — a cite must state a theorem that is actually true. Post-fix, all gates green.
 
 ## Reviewer note (fidelity focus)
 
