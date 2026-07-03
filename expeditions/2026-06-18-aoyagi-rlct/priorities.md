@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, Jacobian eventual upper bound
+
+Lean now has:
+
+```text
+eventually_le_const_ennreal_of_continuousAt_lt
+exists_lt_top_eventually_le_of_continuousAt_lt_top
+exists_open_ae_restrict_le_of_continuousAt_lt_top
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_le_jacobianDensity_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+```
+
+Decision: close the Jacobian side of the eventual-density frontier by
+reusing the retained-passive real local-unit Jacobian theorem.  The endpoint
+topology-tuple map is continuous, determinant-sector membership at `z0` puts
+the base tuple in the retained-passive determinant chart, and the real upper
+bound lifts to an ENNReal eventual bound with `CJ = ENNReal.ofReal K`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-jacobian-eventual-upper-bound.md
+```
+
+Next controller target: source-density event bound.  Current source-image
+density is arbitrary, so this must be handled either by a theorem with an
+explicit continuity and finite/base-upper-bound hypothesis for
+`sourceImageDensity ∘ sourceChart`, or by constructing the concrete
+source-image density and proving its local boundedness.
+
+Boundary: no source-density upper bound, density construction,
+determinant-Haar/raw-Haar transport, original-prior transport, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, eventual upper-density coordinate-source finite-integral handoff
 
 Lean now has:

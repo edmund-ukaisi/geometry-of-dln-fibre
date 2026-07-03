@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Jacobian Eventual Upper Bound - 2026-07-03
+
+Lean now has:
+
+```text
+eventually_le_const_ennreal_of_continuousAt_lt
+exists_lt_top_eventually_le_of_continuousAt_lt_top
+exists_open_ae_restrict_le_of_continuousAt_lt_top
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_le_jacobianDensity_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+The generic ENNReal helpers say that an `ENNReal`-valued function continuous
+at a point is eventually bounded above by any strict upper bound at that
+point, and if its base value is finite then some finite eventual upper bound
+exists.  The a.e. corollary converts that finite eventual bound into a
+restricted-measure a.e. bound on a small open neighborhood.
+
+The Jacobian specialization applies the retained-passive real local-unit
+Jacobian bound to
+
+```text
+Y z =
+  case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+    n hS hcont hnext z eNext e.
+```
+
+Continuity of `Y` and determinant-sector membership at `z0` put `Y z0` in the
+retained-passive determinant chart.  The real local-unit theorem gives an
+eventual real bound by `K`; choosing `CJ = ENNReal.ofReal K` gives a finite
+eventual upper bound for the pulled-back Jacobian density.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-jacobian-eventual-upper-bound.md
+```
+
+Boundary: the source-density eventual upper bound is still not proved.  The
+current `sourceImageDensity` is an arbitrary argument, so the next honest
+source-side socket needs continuity plus a finite/base-upper-bound hypothesis
+for `sourceImageDensity` composed with the endpoint source chart, or a
+concrete source-image density construction.  No determinant-Haar/raw-Haar
+transport, original-prior transport, normal crossings, pole order, or RLCT
+extraction is proved here.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`,
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaJacobianMeasure`, and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The four probed
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Eventual Upper-Density Coordinate-Source Finite Integral - 2026-07-03
 
 Lean now has:

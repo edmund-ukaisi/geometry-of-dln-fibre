@@ -234,6 +234,37 @@ theorem exists_pos_radius_le_eventually_density_two_sided_bounds_of_continuousAt
         Metric.ball_subset_ball hR_le_R₀ hu
       exact le_of_lt (hUV ⟨hx, hR₀V huR₀⟩).2
 
+/-- A strict upper bound at a continuity point gives the corresponding
+eventual non-strict upper bound for an `ℝ≥0∞`-valued function. -/
+theorem eventually_le_const_ennreal_of_continuousAt_lt
+    {α : Type*} [TopologicalSpace α]
+    {f : α → ℝ≥0∞} {z₀ : α} {C : ℝ≥0∞}
+    (hf : ContinuousAt f z₀) (hC : f z₀ < C) :
+    ∀ᶠ z in nhds z₀, f z ≤ C := by
+  have hnbd : Set.Iio C ∈ nhds (f z₀) :=
+    isOpen_Iio.mem_nhds hC
+  exact
+    (show ∀ᶠ z in nhds z₀, f z ∈ Set.Iio C from hf hnbd).mono
+      fun _ hz ↦ le_of_lt hz
+
+/-- A finite `ℝ≥0∞` value of a continuous function has a finite eventual
+upper bound. -/
+theorem exists_lt_top_eventually_le_of_continuousAt_lt_top
+    {α : Type*} [TopologicalSpace α]
+    {f : α → ℝ≥0∞} {z₀ : α}
+    (hf : ContinuousAt f z₀) (hfinite : f z₀ < ∞) :
+    ∃ C : ℝ≥0∞, C < ∞ ∧ ∀ᶠ z in nhds z₀, f z ≤ C := by
+  let C : ℝ≥0∞ := f z₀ + 1
+  have hCfinite : C < ∞ := by
+    dsimp [C]
+    exact ENNReal.add_lt_top.2 ⟨hfinite, ENNReal.one_lt_top⟩
+  have hstrict : f z₀ < C := by
+    dsimp [C]
+    exact ENNReal.lt_add_right hfinite.ne (one_ne_zero : (1 : ℝ≥0∞) ≠ 0)
+  exact
+    ⟨C, hCfinite,
+      eventually_le_const_ennreal_of_continuousAt_lt hf hstrict⟩
+
 /-- Relative-neighborhood version of
 `exists_pos_radius_le_eventually_density_bounds_of_continuousAt_pos`. -/
 theorem exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
@@ -303,6 +334,21 @@ theorem exists_open_ae_restrict_of_eventually_nhds
     ⟨U, hUopen, hx₀U,
       ae_restrict_of_forall_mem hUopen.measurableSet
         (fun x hx => hUsub hx)⟩
+
+/-- A continuous `ℝ≥0∞` density finite at the base point is bounded a.e. after
+restricting to some open neighborhood of that point. -/
+theorem exists_open_ae_restrict_le_of_continuousAt_lt_top
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    {μ : Measure α} {f : α → ℝ≥0∞} {z₀ : α}
+    (hf : ContinuousAt f z₀) (hfinite : f z₀ < ∞) :
+    ∃ C : ℝ≥0∞, C < ∞ ∧ ∃ V : Set α,
+      IsOpen V ∧ z₀ ∈ V ∧ ∀ᵐ z ∂ μ.restrict V, f z ≤ C := by
+  rcases exists_lt_top_eventually_le_of_continuousAt_lt_top hf hfinite with
+    ⟨C, hCfinite, hCeventually⟩
+  rcases exists_open_ae_restrict_of_eventually_nhds
+      (μ := μ) (x₀ := z₀) hCeventually with
+    ⟨V, hVopen, hz₀V, hVae⟩
+  exact ⟨C, hCfinite, V, hVopen, hz₀V, hVae⟩
 
 /-- Product-measure version of
 `exists_open_ae_restrict_inter_of_eventually_nhdsWithin`: after the same base

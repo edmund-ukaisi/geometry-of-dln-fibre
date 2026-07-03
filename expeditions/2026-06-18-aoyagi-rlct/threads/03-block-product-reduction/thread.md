@@ -21,6 +21,52 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 Jacobian eventual upper bound
+
+Reproduction:
+`reproduction-a2-jacobian-eventual-upper-bound.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaJacobianMeasure.lean
+```
+
+Lean now proves generic ENNReal local boundedness helpers:
+
+```text
+eventually_le_const_ennreal_of_continuousAt_lt
+exists_lt_top_eventually_le_of_continuousAt_lt_top
+exists_open_ae_restrict_le_of_continuousAt_lt_top
+```
+
+and the with-following endpoint Jacobian specialization:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_le_jacobianDensity_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+```
+
+The Jacobian theorem composes endpoint-topology-tuple continuity, determinant
+sector membership at `z0`, and the retained-passive real local-unit Jacobian
+bound.  It chooses `CJ = ENNReal.ofReal K` and lifts the eventual real bound
+to `jacobianDensity z <= CJ` by monotonicity of `ENNReal.ofReal`.
+
+Boundary: this closes only the Jacobian-density eventual upper-bound input
+for the coordinate-source handoff.  The source-density eventual upper bound
+still needs an explicit continuity and finite/base-upper-bound hypothesis for
+`sourceImageDensity` composed with the endpoint source chart, or a concrete
+source-image density construction.  No determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`,
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaJacobianMeasure`, and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The four probed
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 eventual upper-density coordinate-source finite integral
 
 Reproduction:

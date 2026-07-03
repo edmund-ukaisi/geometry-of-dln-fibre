@@ -32,6 +32,66 @@ namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
 
+set_option maxRecDepth 2048 in
+set_option linter.style.longLine false in
+/-- For the enlarged following-factor theta source, the retained-passive
+raw-order Jacobian density has a finite eventual upper bound after composing
+with the endpoint topology-tuple map.
+
+This is the pointwise neighborhood version of the upper side of the local
+Jacobian-unit sandwich.  It only supplies the `jacobianDensity` eventual bound
+needed by the coordinate-source handoff; it does not construct or bound the
+source-image density. -/
+theorem exists_finite_eventually_le_jacobianDensity_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (z₀ : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := ρ) (τ := τ) n S J) :
+    let Y :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          TopologyTuple ρ κ' ℝ :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e
+    let jacobianDensity :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J → ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') (Y z))
+    ∃ CJ : ℝ≥0∞, CJ < ∞ ∧
+      ∀ᶠ z in nhds z₀, jacobianDensity z ≤ CJ := by
+  intro Y jacobianDensity
+  have hYcont : Continuous Y := by
+    change Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext z eNext e)
+    exact
+      continuous_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := ρ) n hS hcont hnext eNext e
+  have hY₀ :
+      Y z₀ ∈ topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+    simpa [Y] using
+      case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_mem_detChartSet
+        (ρ := ρ) n hS hcont hnext z₀ eNext e hdet₀
+  rcases
+      exists_pos_eventually_bounds_retainedPassiveFormalRawOrderJacobianProductAbsDetAt_comp
+        (M := 1) (ρ := ρ) (κ' := κ') (Y := Y) (a₀ := z₀)
+        hYcont.continuousAt hY₀ with
+    ⟨ε, K, hε_pos, hK_pos, hbounds⟩
+  refine ⟨ENNReal.ofReal K, ENNReal.ofReal_lt_top, ?_⟩
+  filter_upwards [hbounds] with z hz
+  exact ENNReal.ofReal_le_ofReal hz.2
+
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
