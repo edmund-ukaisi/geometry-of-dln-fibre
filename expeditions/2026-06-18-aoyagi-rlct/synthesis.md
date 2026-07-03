@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Passive-Self Open Coordinate-Source Finite Integral - 2026-07-03
+
+Lean now has:
+
+```text
+isOpen_case2PassiveThetaWithFollowingFactor_passiveFieldCylinder
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_density_bounds
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The new wrapper closes the passive-local comparison input for the concrete
+coordinate-source handoff.  It applies the passive-field
+coordinate-reference self-restriction theorem to `z0.1.1`, obtains an open
+finite passive local set with
+
+```text
+passiveRef.restrict passiveLocalSet <= 1 • passiveMeasure,
+```
+
+intersects the caller's ambient open set `G` with the passive cylinder, and
+then calls the supplied-passive open-following-patch coordinate-source
+finite-integral wrapper.
+
+The output still exposes the two real density frontiers as continuations on
+the returned open set `V`:
+
+```text
+forallᵐ z ∂ referenceSource.restrict V, jacobianDensity z <= CJ
+forallᵐ z ∂ baseJ.restrict V, sourceDensity z <= CS
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-self-open-coordinate-source-finite-integral.md
+```
+
+Boundary: this proves no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; direct axiom probes; and independent xhigh audit.
+The two new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Passive-Field Local Reference Self-Restriction - 2026-07-03
 
 Lean now has:

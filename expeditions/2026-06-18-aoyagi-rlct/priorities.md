@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, passive-self open coordinate-source finite-integral handoff
+
+Lean now has:
+
+```text
+isOpen_case2PassiveThetaWithFollowingFactor_passiveFieldCylinder
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_density_bounds
+```
+
+Decision: compose the passive-field coordinate-reference self-restriction
+with the open-following-patch coordinate-source finite-integral handoff, so
+the caller no longer supplies a passive local set or passive comparison
+measure.  The controller route is:
+
+```text
+choose passiveLocalSet around z0.1.1 by self-restriction;
+shrink G to G ∩ {z | z.1.1 in passiveLocalSet};
+call the supplied-passive open-following-patch handoff.
+```
+
+This closes the passive coordinate-reference local comparison input with
+scalar `1`.  It deliberately leaves the Jacobian-density and source-density
+upper bounds as continuations on the returned local set `V`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-self-open-coordinate-source-finite-integral.md
+```
+
+Next controller target: attack the two density continuations separately.
+The Jacobian side needs determinant-sector/local boundedness input.  The
+source-density side needs a local upper bound for `sourceImageDensity`
+composed with the endpoint source chart.  Haar/raw-Haar and original-prior
+transport remain separate later frontiers.
+
 ## Latest controller decision - 2026-07-03, passive-field local reference self-restriction
 
 Lean now has:

@@ -21,6 +21,52 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 passive-self open coordinate-source finite integral
+
+Reproduction:
+`reproduction-a2-passive-self-open-coordinate-source-finite-integral.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+isOpen_case2PassiveThetaWithFollowingFactor_passiveFieldCylinder
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_density_bounds
+```
+
+The topology lemma says the cylinder over an open passive-field patch is open
+in the enlarged with-following source.  The composed handoff uses the
+passive-field coordinate-reference self-restriction theorem to construct the
+passive local set internally, intersects the ambient open source set with its
+passive cylinder, and then calls the already proved supplied-passive
+open-following-patch coordinate-source finite-integral wrapper.
+
+The returned data include the open passive local set, the self-restricted
+passive measure, the open following patch, and an open source set `V` with
+`V subset G`, `V subset {z | z.1.1 in passiveLocalSet}`, and
+`V subset {z | z.2 in followingPatch}`.  The passive comparison is now the
+coordinate-reference self-domination
+
+```text
+passiveRef.restrict passiveLocalSet <= 1 • passiveMeasure.
+```
+
+Boundary: this still proves no Jacobian-density upper bound, no
+source-density upper bound, no determinant-Haar/raw-Haar transport, no
+original-prior transport, no normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; direct axiom probes; and independent xhigh audit.
+The two new declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 passive-field local reference self-restriction
 
 Reproduction:

@@ -2216,6 +2216,25 @@ theorem isOpen_case2PassiveThetaWithFollowingFactor_followingPatchCylinder
   simpa using (continuous_snd.isOpen_preimage followingPatch hopen)
 
 set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- The cylinder over an open passive-field patch is open in the enlarged
+with-following source. -/
+theorem isOpen_case2PassiveThetaWithFollowingFactor_passiveFieldCylinder
+    {ρ : Type*} {τ : Type} {n : ℕ → ℕ} {S J : ℕ}
+    [TopologicalSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    [TopologicalSpace (Case2PassiveTheta.Center n S J → ℝ)]
+    [Fintype (Case2ResidualColIndex n S (J + 1))] [Fintype τ]
+    {passiveLocalSet :
+      Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)}
+    (hopen : IsOpen passiveLocalSet) :
+    IsOpen
+      {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+        z.1.1 ∈ passiveLocalSet} := by
+  simpa using
+    ((continuous_fst.comp continuous_fst).isOpen_preimage passiveLocalSet hopen)
+
+set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
