@@ -12,6 +12,49 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, unit source-image density finite-integral wrapper
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceImageDensity_one
+```
+
+Decision: specialize the source-density continuity finite-integral endpoint
+to the unweighted chart-produced source-image measure.  With
+`sourceImageDensity = fun _ => 1`, the composed source density is constant
+`1`, so continuity and finite base value are discharged internally.  This is a
+real removal for the chart-produced unit-density endpoint, but not a
+construction of the arbitrary source-image density.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-unit-source-image-density-finite-integral-wrapper.md
+```
+
+Next controller target: localized determinant-Haar endpoint-patch domination.
+The remaining source-density/original-prior sockets are not best attacked by
+another continuity wrapper.  The useful next theorem should produce, for the
+natural patch
+
+```text
+P = rawSourceSet ∩ rawChart ⁻¹' chartPiece,
+```
+
+null-measurability and a finite scalar domination
+
+```text
+rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P)
+  <= Cdet • Measure.map Y (referenceSource.restrict V)
+```
+
+on a local with-following endpoint patch.
+
+Boundary: no arbitrary `sourceImageDensity` continuity theorem, no original
+DLN prior identification, no source-image coverage, no determinant-Haar or
+raw-Haar transport theorem, no normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, source-density continuity finite-integral wrapper
 
 Lean now has:

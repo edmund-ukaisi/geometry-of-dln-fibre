@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 unit source-image density finite-integral wrapper
+
+Reproduction:
+`reproduction-a2-unit-source-image-density-finite-integral-wrapper.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceImageDensity_one
+```
+
+This is the unit-density specialization of the source-density continuity
+finite-integral wrapper.  It fixes:
+
+```text
+sourceImageDensity E = 1
+sourceDensity z = 1
+```
+
+so the continuity and finite-base-value assumptions are discharged internally
+by constant continuity and `1 < top`.
+
+Boundary: this only proves the unweighted chart-produced coordinate-source
+case.  It does not identify an original DLN prior, construct an arbitrary
+source-image density, prove source-image coverage, determinant-Haar/raw-Haar
+transport, original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh read-only scouts separated the next frontier: there is no existing
+concrete arbitrary `sourceImageDensity` theorem beyond this unit-density
+specialization; the larger non-wrapper target is localized determinant-Haar
+endpoint-patch domination for the original-volume/readback layer.
+
 ## 2026-07-03 A2 source-density continuity finite-integral wrapper
 
 Reproduction:

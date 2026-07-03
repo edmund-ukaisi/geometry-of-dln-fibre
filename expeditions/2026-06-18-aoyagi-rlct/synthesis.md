@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Unit Source-Image Density Finite-Integral Wrapper - 2026-07-03
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceImageDensity_one
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+This is the unit-density specialization of the source-density continuity
+finite-integral endpoint.  It fixes `sourceImageDensity = fun _ => 1`, so the
+composed source density is the constant `1`; the continuity and finite
+base-value hypotheses are discharged internally.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-unit-source-image-density-finite-integral-wrapper.md
+```
+
+Boundary: this proves only the unweighted chart-produced coordinate-source
+case.  It does not identify an original DLN prior, construct an arbitrary
+source-image density, prove source-image coverage, prove determinant-Haar or
+raw-Haar transport, or touch normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
+Read-only xhigh scouts confirmed that arbitrary `sourceImageDensity` remains
+a real socket.  The next larger non-wrapper frontier is localized
+determinant-Haar endpoint-patch domination for the original-volume/readback
+layer.
+
 ## A2 Source-Density Continuity Finite-Integral Wrapper - 2026-07-03
 
 Lean now has:
