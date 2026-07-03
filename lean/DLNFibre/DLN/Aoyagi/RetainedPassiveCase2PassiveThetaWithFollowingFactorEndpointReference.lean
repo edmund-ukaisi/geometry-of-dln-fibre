@@ -1,6 +1,7 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointDerivative
 
 /-!
 # Case 2 passive theta with-following endpoint reference measure
@@ -209,6 +210,79 @@ theorem case2PassiveThetaWithFollowingFactor_activeSelectedEntryProductReference
           simp [Case2PassiveTheta.yNext]
 
 set_option linter.style.longLine false in
+/-- The unweighted enlarged Case 2 source is the full active-coordinate Haar
+measure restricted to the original selected-entry signed-box cylinder.
+
+This is source-side support bookkeeping before the active selected-entry
+chart.  The restriction set uses the original signed box, not its active-chart
+image. -/
+theorem case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure_eq_activeFullSourceHaar_restrict_signedBox
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    let signedBox :=
+      SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres
+    let activeFull :=
+      case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+        (ρ := ρ) (τ := τ) n S J
+    case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres =
+      activeFull.restrict
+        {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+          z.1.yNext ∈ signedBox} := by
+  intro signedBox activeFull
+  let passiveRef :=
+    case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  let centerRef : Measure (Case2PassiveTheta.Center n S J → ℝ) := volume
+  let followingRef :=
+    matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  haveI : SFinite passiveRef := by
+    dsimp [passiveRef]
+    exact sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite followingRef := by
+    dsimp [followingRef]
+    exact sFinite_matrixEntryReferenceMeasure
+      (Case2ResidualColIndex n S (J + 1)) τ
+  have hbase :
+      passiveRef.prod (centerRef.restrict signedBox) =
+        (passiveRef.prod centerRef).restrict (Set.univ ×ˢ signedBox) := by
+    have h := Measure.prod_restrict (μ := passiveRef) (ν := centerRef)
+      (Set.univ : Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+      signedBox
+    simpa [centerRef] using h
+  have hcenterBox :
+      case2PassiveThetaCenterSignedBoxMeasure n Rres =
+        centerRef.restrict signedBox := by
+    simpa [centerRef, signedBox, case2PassiveThetaCenterSignedBoxMeasure] using
+      (SelectedEntrySignedBox.CenterCoord.signedBoxMeasure_eq_volume_restrict Rres)
+  calc
+    case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres =
+        (passiveRef.prod (case2PassiveThetaCenterSignedBoxMeasure n Rres)).prod
+          followingRef := by
+          rfl
+    _ =
+        (passiveRef.prod (centerRef.restrict signedBox)).prod followingRef := by
+          rw [hcenterBox]
+    _ =
+        ((passiveRef.prod centerRef).restrict (Set.univ ×ˢ signedBox)).prod followingRef := by
+          rw [hbase]
+    _ =
+        ((passiveRef.prod centerRef).prod followingRef).restrict
+          ((Set.univ ×ˢ signedBox) ×ˢ
+            (Set.univ : Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))) := by
+          rw [Measure.restrict_prod_eq_prod_univ]
+    _ =
+        activeFull.restrict
+          {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+            z.1.yNext ∈ signedBox} := by
+          congr 1
+          ext z
+          simp [Case2PassiveTheta.yNext]
+
+set_option linter.style.longLine false in
 /-- The selected-entry source-density factor on the enlarged Case 2
 passive-theta source.  This is the `Y`-side Jacobian factor before composing
 with the retained-passive raw-order map. -/
@@ -305,6 +379,134 @@ theorem case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted
           (case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
             (ρ := ρ) (τ := τ) n hS hnext) := by
           rfl
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- On a measurable source patch contained in the nonzero-pivot locus, the
+active selected-entry chart pushes the restricted enlarged reference source to
+the full active-coordinate Haar measure restricted to the active-chart image of
+the signed-box-supported source patch.
+
+The intersection with `sourceCylinder` is part of the statement: the named
+reference source is supported on the original selected-entry signed box before
+the active chart. -/
+theorem measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_restrict_eq_activeFullSourceHaar_restrict_image_inter_signedBox_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω : Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1}) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let signedBox :=
+      SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres
+    let sourceCylinder :
+        Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      {z | z.1.yNext ∈ signedBox}
+    let referenceSource :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+    let activeFull :=
+      case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+        (ρ := ρ) (τ := τ) n S J
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦
+        ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    Measure.map activeChart (referenceSource.restrict Ω) =
+      activeFull.restrict (activeChart '' (Ω ∩ sourceCylinder)) := by
+  intro pivotNext signedBox sourceCylinder referenceSource activeFull activeChart
+  let selectedEntryDensity :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J → ℝ≥0∞ :=
+    case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity
+      (ρ := ρ) (τ := τ) n hS hnext
+  have hsourceCylinder_meas : MeasurableSet sourceCylinder := by
+    have hcenter :
+        Measurable
+          (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J =>
+            z.1.yNext) := by
+      have hcont : Continuous
+          (fun z :
+              Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J =>
+            z.1.yNext) := by
+        change Continuous
+          (fun z :
+              (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+                (Case2PassiveTheta.Center n S J → ℝ)) ×
+                Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ =>
+            z.1.2)
+        exact continuous_snd.comp continuous_fst
+      exact hcont.measurable
+    change MeasurableSet
+      ((fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J =>
+        z.1.yNext) ⁻¹' signedBox)
+    exact
+      (SelectedEntrySignedBox.CenterCoord.measurableSet_signedBoxSet Rres).preimage hcenter
+  have hΩsource_meas : MeasurableSet (Ω ∩ sourceCylinder) :=
+    hΩ.inter hsourceCylinder_meas
+  have hΩsource_pivot :
+      Ω ∩ sourceCylinder ⊆
+        {z |
+          case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1} := by
+    intro z hz
+    exact hΩpivot hz.1
+  haveI : activeFull.IsAddHaarMeasure := by
+    dsimp [activeFull]
+    exact
+      isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+        (ρ := ρ) (τ := τ) n S J
+  have hunweighted :
+      case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+        (ρ := ρ) (τ := τ) n S J Rres =
+          activeFull.restrict sourceCylinder := by
+    simpa [activeFull, sourceCylinder, signedBox] using
+      case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure_eq_activeFullSourceHaar_restrict_signedBox
+        (ρ := ρ) (τ := τ) n S J Rres
+  have hreference :
+      referenceSource.restrict Ω =
+        (activeFull.restrict (Ω ∩ sourceCylinder)).withDensity selectedEntryDensity := by
+    have hsource :
+        referenceSource =
+          (case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+            (ρ := ρ) (τ := τ) n S J Rres).withDensity selectedEntryDensity := by
+      simpa [referenceSource, selectedEntryDensity] using
+        case2PassiveThetaWithFollowingFactorReferenceSourceMeasure_eq_unweighted_withDensity_selectedEntrySourceDensity
+          (ρ := ρ) (τ := τ) n hS hnext Rres
+    calc
+      referenceSource.restrict Ω =
+          ((case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+            (ρ := ρ) (τ := τ) n S J Rres).withDensity selectedEntryDensity).restrict Ω := by
+            rw [hsource]
+      _ =
+          (((case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+            (ρ := ρ) (τ := τ) n S J Rres).restrict Ω).withDensity selectedEntryDensity) := by
+            simpa using
+              (restrict_withDensity
+                (μ := case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
+                  (ρ := ρ) (τ := τ) n S J Rres)
+                hΩ selectedEntryDensity)
+      _ =
+          (((activeFull.restrict sourceCylinder).restrict Ω).withDensity selectedEntryDensity) := by
+            rw [hunweighted]
+      _ =
+          (activeFull.restrict (Ω ∩ sourceCylinder)).withDensity selectedEntryDensity := by
+            rw [Measure.restrict_restrict hΩ]
+  have hcov :
+      Measure.map activeChart
+          ((activeFull.restrict (Ω ∩ sourceCylinder)).withDensity selectedEntryDensity) =
+        activeFull.restrict (activeChart '' (Ω ∩ sourceCylinder)) := by
+    simpa [activeChart, selectedEntryDensity, pivotNext, Case2PassiveTheta.yNext] using
+      Case2PassiveThetaWithFollowingFactor.map_activeSelectedEntryChart_withDensity_sourceDensity_eq_restrict_image_of_subset_pivotNonzero
+        (ρ := ρ) (τ := τ) n hS hnext activeFull (Ω ∩ sourceCylinder)
+        hΩsource_meas.nullMeasurableSet hΩsource_pivot
+  rw [hreference]
+  exact hcov
 
 set_option linter.style.longLine false in
 /-- The selected-entry source density is a.e. measurable for the unweighted
@@ -3235,6 +3437,120 @@ theorem case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_univ_e
     _ =
       ((Measure.map activeWriteback activeFull).addHaarScalarFactor rawHaar) •
         rawHaar.restrict (activeWriteback '' activeCylinder) := hhaar
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- On a measurable source patch contained in the nonzero-pivot locus, the
+named endpoint reference image is a scalar multiple of endpoint additive Haar
+restricted to the active-writeback image of the source-supported active-chart
+patch.
+
+The source support remains visible as `Ω ∩ sourceCylinder`, where
+`sourceCylinder` is the original signed-box cylinder before the active
+selected-entry chart.  The endpoint set is not identified with a determinant
+chart or p.13 raw-order patch. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_eq_smul_rawHaar_restrict_activeWriteback_activeSelectedEntryImage_inter_signedBox_of_subset_pivotNonzero
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [OpensMeasurableSpace (TopologyTuple ρ κ' ℝ)]
+    [BorelSpace (TopologyTuple ρ κ' ℝ)]
+    [LocallyCompactSpace (TopologyTuple ρ κ' ℝ)]
+    [SecondCountableTopology (TopologyTuple ρ κ' ℝ)]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (Ω :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hΩ : MeasurableSet Ω)
+    (hΩpivot :
+      Ω ⊆ {z |
+        case2PassiveThetaPivotNonzero (ρ := ρ) (τ := τ) n hS hnext z.1})
+    (rawHaar : Measure (TopologyTuple ρ κ' ℝ))
+    [rawHaar.IsAddHaarMeasure] :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let signedBox :=
+      SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres
+    let sourceCylinder :
+        Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+      {z | z.1.yNext ∈ signedBox}
+    let activeChart :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+          Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+      fun z ↦
+        ((z.1.1, SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+    let activePatchImage := activeChart '' (Ω ∩ sourceCylinder)
+    let endpointReferenceImage : Measure (TopologyTuple ρ κ' ℝ) :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e
+        Rres Ω
+    let activeWriteback :
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ≃L[ℝ]
+          TopologyTuple ρ κ' ℝ :=
+      (Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveContinuousLinearEquiv
+        (ρ := ρ) (τ := τ) n e).symm
+    ∃ c : ℝ≥0∞,
+      endpointReferenceImage =
+        c • rawHaar.restrict (activeWriteback '' activePatchImage) := by
+  intro pivotNext signedBox sourceCylinder activeChart activePatchImage
+    endpointReferenceImage activeWriteback
+  let referenceSource :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+      (ρ := ρ) (τ := τ) n hS hnext Rres
+  let activeFull :=
+    case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+      (ρ := ρ) (τ := τ) n S J
+  have hfactor :
+      endpointReferenceImage =
+        Measure.map activeWriteback
+          (Measure.map activeChart (referenceSource.restrict Ω)) := by
+    simpa [endpointReferenceImage, referenceSource, activeWriteback, activeChart, pivotNext,
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveContinuousLinearEquiv,
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveLinearEquiv,
+      Case2PassiveTheta.yNext] using
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_eq_map_activeWriteback_activeSelectedEntryChart_restrict
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres Ω
+  have hactive :
+      Measure.map activeChart (referenceSource.restrict Ω) =
+        activeFull.restrict activePatchImage := by
+    simpa [referenceSource, activeFull, activeChart, activePatchImage, sourceCylinder,
+      signedBox, pivotNext, Case2PassiveTheta.yNext] using
+      measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_restrict_eq_activeFullSourceHaar_restrict_image_inter_signedBox_of_subset_pivotNonzero
+        (ρ := ρ) (τ := τ) n hS hnext Rres Ω hΩ hΩpivot
+  haveI : activeFull.IsAddHaarMeasure := by
+    dsimp [activeFull]
+    exact
+      isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+        (ρ := ρ) (τ := τ) n S J
+  have hhaar :
+      Measure.map activeWriteback (activeFull.restrict activePatchImage) =
+        ((Measure.map activeWriteback activeFull).addHaarScalarFactor rawHaar) •
+          rawHaar.restrict (activeWriteback '' activePatchImage) := by
+    simpa [activeWriteback, activeFull, activePatchImage] using
+      Case2PassiveThetaWithFollowingFactor.map_endpointTopologyTupleActiveWriteback_restrict_eq_smul_rawHaar_restrict_image
+        (ρ := ρ) (τ := τ) (κ' := κ') n
+        activeFull rawHaar e activePatchImage
+  refine ⟨(Measure.map activeWriteback activeFull).addHaarScalarFactor rawHaar, ?_⟩
+  calc
+    endpointReferenceImage =
+        Measure.map activeWriteback
+          (Measure.map activeChart (referenceSource.restrict Ω)) := hfactor
+    _ = Measure.map activeWriteback (activeFull.restrict activePatchImage) := by
+          rw [hactive]
+    _ =
+      ((Measure.map activeWriteback activeFull).addHaarScalarFactor rawHaar) •
+        rawHaar.restrict (activeWriteback '' activePatchImage) := hhaar
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

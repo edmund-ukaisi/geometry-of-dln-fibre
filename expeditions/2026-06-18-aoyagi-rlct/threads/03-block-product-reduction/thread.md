@@ -21,6 +21,87 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 arbitrary source patch active-chart source cylinder
+
+Reproduction:
+`reproduction-a2-arbitrary-source-patch-active-chart-source-cylinder.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure_eq_activeFullSourceHaar_restrict_signedBox
+measure_map_case2PassiveThetaWithFollowingFactor_activeSelectedEntryChart_referenceSource_restrict_eq_activeFullSourceHaar_restrict_image_inter_signedBox_of_subset_pivotNonzero
+```
+
+The calculation keeps the signed-box source support visible.  For arbitrary
+measurable `Omega`, the active-chart image set is
+
+```text
+activeChart '' (Omega inter sourceCylinder),
+sourceCylinder = {z | z.1.yNext in signedBoxSet Rres}.
+```
+
+This avoids the false rewrite of `referenceSource.restrict Omega` as a
+restriction of unrestricted active Haar on all of `Omega`.
+
+Boundary: this is source-side only.  It does not assert endpoint determinant
+Haar, raw-Haar transport, scalar `1`, p.13 patch matching, source-image
+coverage, original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The two new
+source-side declarations report `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only reviewer `Socrates the 3rd` found no blocking issue and
+confirmed the signed-box support, pivot/measurability route, import dependency,
+and nonclaim boundary.
+
+## 2026-07-03 A2 arbitrary source patch endpoint active Haar scalar
+
+Reproduction:
+`reproduction-a2-arbitrary-source-patch-endpoint-active-haar-scalar.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_restrict_eq_smul_rawHaar_restrict_activeWriteback_activeSelectedEntryImage_inter_signedBox_of_subset_pivotNonzero
+```
+
+The calculation composes endpoint factorization, the arbitrary source-patch
+active-chart bridge, and active-writeback Haar transport.  The resulting
+endpoint support is
+
+```text
+activeWriteback '' (activeChart '' (Omega inter sourceCylinder)).
+```
+
+Boundary: the scalar is existential and the support is not identified with a
+determinant-chart or p.13 patch.  No scalar `1`, raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The endpoint
+scalar declaration reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only reviewer `Socrates the 3rd` found no blocking issue and
+confirmed that this remains active-coordinate Haar transport up to an
+existential scalar, with no determinant-Haar, raw-order Haar, p.13 coverage,
+source-coverage, or RLCT claim.
+
 ## 2026-07-03 A2 endpoint reference image univ active Haar scalar
 
 Reproduction:
