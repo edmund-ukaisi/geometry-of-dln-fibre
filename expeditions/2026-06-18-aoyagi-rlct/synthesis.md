@@ -6,6 +6,48 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Readback-Local Pivot Export - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_case2PassiveThetaWithFollowingFactorEndpointSourceChart_readback_leftInverse_pivotNonzero
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+the local readback construction sets V = Udet ∩ pivotSet,
+
+pivotSet = {z | case2PassiveThetaPivotNonzero z.1},
+
+therefore z ∈ V implies case2PassiveThetaPivotNonzero z.1,
+
+and the existing determinant/readback calculation still proves
+readback(sourceChart z) = z on the same V.
+```
+
+This fills one prerequisite identified by the source-image equality probe:
+future reverse inclusion for
+`sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` needs the selected-entry
+pivot hypothesis available on the local set.
+
+Boundary: this does not prove reverse inclusion for arbitrary p.13 source
+points.  It only exports a condition already built into the local readback
+construction.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure`; full
+local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Local Image P13 Chart Range - 2026-07-03
 
 Lean now has:

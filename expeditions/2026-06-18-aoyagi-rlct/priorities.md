@@ -12,6 +12,36 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following readback-local pivot export
+
+Lean now has:
+
+```text
+exists_open_case2PassiveThetaWithFollowingFactorEndpointSourceChart_readback_leftInverse_pivotNonzero
+```
+
+Decision: expose the selected-entry pivot condition already present in the
+lower-level with-following readback local construction.  The construction
+chooses `V = Udet ∩ pivotSet`, so the same `V` supports both
+`readback (sourceChart z) = z` and `case2PassiveThetaPivotNonzero z.1`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-local-pivot.md
+```
+
+Boundary: this is infrastructure for future reverse-image work only.  It does
+not prove that arbitrary `E ∈ p13SourceSet` is in the with-following image,
+nor source-rank coverage, finite atlas coverage, source-prior support,
+Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure`; full
+local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, with-following local image p.13 chart range
 
 Lean now has:
