@@ -35,9 +35,9 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 
 > **Claim (the monument, as an `@[cited]` axiom).** For a real-analytic nonnegative germ `K` with
 > `K x₀ = 0`, a smooth `φ` (`φ ≥ 0`, `φ x₀ ≠ 0`) supported inside a relatively compact open nbhd
-> `U ∋ x₀` on which `K` is in the pole regime **and `x₀` is the only zero of `K`**: `ζ_{K,φ}`
-> continues meromorphically to `ℂ`; its poles lie in the left half-plane; there is a LARGEST pole
-> `s₀ < 0` (maximal real part) of finite order `m₀ ≥ 1`, rational; **and
+> `U ∋ x₀` on which `K` is in the pole regime **and `x₀` is the only zero of `K` on `closure U`**:
+> `ζ_{K,φ}` continues meromorphically to `ℂ`; its poles lie in the left half-plane; there is a
+> LARGEST pole `s₀ < 0` (maximal real part) of finite order `m₀ ≥ 1`, rational; **and
 > `s₀ = −(integrabilityThreshold K U)`** (the bundled largest-pole = −rlct identity).
 >
 > - **Lean (verbatim axiom — hardened: locality + maximality + pole-regime + SINGLE-ZERO):**
@@ -49,7 +49,7 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 >           (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
 >           (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
 >           (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hUcpt : IsCompact (closure U)) (hφU : tsupport φ ⊆ U)
->           (hUzero : ∀ x ∈ U, K x = 0 → x = x₀)
+>           (hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀)
 >           (hpole : BddAbove (admissibleExponents K U)) :
 >           ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
 >             (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧
@@ -60,13 +60,21 @@ Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 >             meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
 >             s₀ = -(integrabilityThreshold K U)
 >
-> - **`hUzero` (single-zero) is soundness-critical — the axiom is FALSE without it.** The zeta
->   `∫ K^s φ` sees only `supp φ`, so `s₀` reflects the worst singularity near `x₀`; but
->   `integrabilityThreshold K U` sees ALL of `U`. A second, sharper zero of `K` in `U` breaks
->   `s₀ = −threshold` (counterexample `K = x²(x−1)⁴` on `U = (−½, 3⁄2)`, `φ` cut off near `0`:
->   `s₀ = −½` but `threshold = ¼`). `hUzero : ∀ x ∈ U, K x = 0 → x = x₀` forces `K > 0` on `U \ {x₀}`,
->   so both sides are governed by `x₀` alone and the identity holds — the local Atiyah/Saito "small
->   `U`, `x₀` the only singularity" setup. (Controller-review finding, fixed before merge.)
+> - **`hUzero` (single-zero on `closure U`) is soundness-critical — without it the axiom proves
+>   `False`, not merely over-strong.** The continuation `Z` is *pinned* to the unique analytic
+>   continuation of `∫ K^s φ` (conjunct (a) `Z = ζ` on `Re s > 0` + the identity theorem); since `φ`
+>   is supported near `x₀`, `Z` is holomorphic away from `x₀`'s pole line. But
+>   `integrabilityThreshold K U` sees ALL of `U`: a second, sharper zero of `K` in `U` makes
+>   `−threshold` a point where `Z` has NO pole, while the order conjunct (`= −m₀`, `m₀ ≥ 1`) demands
+>   one there — the `∃`-body is unsatisfiable, so the axiom = `False` (rev-r2b + decorrelated Codex,
+>   convergent counterexample `K = x²(x−2)⁶`, `φ` near `0`, `2 ∈ U`: `Z` holomorphic at `s = −1/6` but
+>   `threshold = 1/6` forces a pole). `hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀` (over the CLOSURE —
+>   forecloses boundary zeros) forces `K > 0` on `closure U \ {x₀}`, so both sides are governed by
+>   `x₀` alone and the identity holds — the local Atiyah/Saito "`U` small enough, `x₀` the sole
+>   singularity" setup. (Caught pre-merge by the careful-checkpoint; controller + rev-r2b + Codex
+>   converged on the same counterexample. The cordon passes an *inconsistent* `@[cited]` axiom green —
+>   it accounts axioms, it does not check consistency — so a cited `∃`-axiom needs a consistency
+>   review, hunting an instance satisfying every hypothesis where the conclusion fails.)
 > - **Cited — sources.** M. Atiyah, *Resolution of singularities and division of distributions*, Comm.
 >   Pure Appl. Math. **23**(2) (1970) 145–150 (continuation of `∫|F|^s`, poles on `ℚ_{<0}`, via
 >   real-analytic resolution — the paper's attribution, `main.tex` L1811). The "largest pole = −rlct"
@@ -127,12 +135,15 @@ gaps in the axiom-as-first-written**, all now **fixed**:
 3. **Pole-regime guard.** `integrabilityThreshold` is junk `0` off the pole regime. FIXED: added
    `BddAbove (admissibleExponents K U)` (R2a's own `name = content` guard).
 
-**Then a controller-review found a SOUNDNESS bug** (the cite was still *false as a universal*): the
-`s₀ = −threshold` conjunct fails when `U` contains a second zero of `K` sharper than `x₀` (the zeta
-sees only `supp φ`, the threshold sees all of `U`; counterexample `K = x²(x−1)⁴`, `φ` near `0`).
-FIXED: added `hUzero : ∀ x ∈ U, K x = 0 → x = x₀` (`x₀` the only zero in `U`) — Card 2. Both the
-Codex-hardening and this single-zero fix turn an under-specified/false statement into a *true* one:
-the bedrock discipline — a cite must state a theorem that is actually true. Post-fix, all gates green.
+**Then a controller-review + `rev-r2b` + decorrelated Codex found a SOUNDNESS bug — the cite proved
+`False`, not merely over-strong.** The pinned continuation `Z` (conjunct (a) + identity theorem) is
+holomorphic where `−threshold` demands a pole when `U` holds a second, sharper zero of `K` the zeta
+(supported near `x₀`) cannot see — the `∃`-body is unsatisfiable (convergent counterexample
+`K = x²(x−2)⁶`, `φ` near `0`, `2 ∈ U`: `Z` holomorphic at `−1/6`, `threshold = 1/6`). FIXED: added
+`hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀` (`x₀` the sole zero on the CLOSURE) — Card 2. The
+Codex-hardening + this single-zero fix turn an inconsistent statement into a *true* one: the bedrock
+discipline — a cite must state a theorem that is actually true; the cordon accounts axioms but does
+not check consistency, so a cited `∃`-axiom needs a consistency review. Post-fix, all gates green.
 
 ## Reviewer note (fidelity focus)
 

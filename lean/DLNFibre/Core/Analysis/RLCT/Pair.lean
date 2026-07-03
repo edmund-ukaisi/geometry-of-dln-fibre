@@ -76,9 +76,10 @@ structure ZetaSetup (n : ℕ) where
   hUcpt : IsCompact (closure U)
   /-- `φ` is supported inside `U` (ties the cutoff to the neighbourhood). -/
   hφU : tsupport φ ⊆ U
-  /-- `x₀` is the *only* zero of `K` in `U`. Load-bearing: it pins the bundled identity
-  `s₀ = −threshold` (which is false when `U` holds a second, sharper zero the zeta cannot see). -/
-  hUzero : ∀ x ∈ U, K x = 0 → x = x₀
+  /-- `x₀` is the *only* zero of `K` on `closure U`. Load-bearing: it keeps the cite CONSISTENT —
+  without it the axiom proves `False` (the pinned continuation is holomorphic where `−threshold`
+  demands a pole; a second zero of `K` in `U` the zeta cannot see). -/
+  hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀
   /-- The germ is in the pole regime on `U`: the admissible set is bounded above, so the threshold
   is the honest `sSup`, not the `sSup ∅ = 0` junk. -/
   hpole : BddAbove (admissibleExponents K U)

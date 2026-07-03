@@ -89,14 +89,18 @@ threshold agree on the *maximal* pole; without them `s₀ = −threshold` is not
 **maximality** conjunct (`∀ s, pole → s.re ≤ s₀`) makes `s₀` genuinely the *largest* pole (justifying
 `RLCT.largestPole`), not merely *a* pole.
 
-The **single-zero** hypothesis `hUzero` (`x₀` is the *only* zero of `K` in `U`) is what makes the
-bundled identity `s₀ = −(integrabilityThreshold K U)` *true* — not just plausible. Without it the
-axiom is **false as a universal**: the zeta `∫ K^s φ` sees only `supp φ`, so `s₀` reflects the worst
-singularity there (near `x₀`), while `integrabilityThreshold K U` sees *all* of `U` — so a second
-zero in `U` with a sharper local threshold would make `−threshold` smaller than `s₀` (e.g.
-`K = x²(x−1)⁴` on `U = (−½, 3⁄2)`, `φ` cut off near `0`: `s₀ = −½` but `threshold = ¼`). With `hUzero`,
-`K > 0` on `U \ {x₀}`, so both sides are governed solely by `x₀`'s local threshold and the identity
-holds — the faithful "small `U`, `x₀` the only singularity" setup of the local Atiyah/Saito theorem. -/
+The **single-zero** hypothesis `hUzero` (`x₀` is the *only* zero of `K` on `closure U`) is what keeps
+the axiom **consistent** — without it it yields `False`. The continuation `Z` is *pinned* by conjunct
+(a) (`Z = ζ` on `Re s > 0`) + the identity theorem, so it is literally the meromorphic continuation
+of `∫ K^s φ`; since `φ` is supported near `x₀`, `Z` is *holomorphic* away from `x₀`'s pole line. But
+`integrabilityThreshold K U` sees *all* of `U`: a second zero of `K` in `U` with a sharper threshold
+would make `−threshold` a value where `Z` has **no** pole, yet conjuncts (largest-pole order = `−m₀`,
+`m₀ ≥ 1`) demand a pole there — contradiction, so the existential is empty and the axiom proves `False`
+(rev-r2b + decorrelated Codex: convergent counterexample `K = x²(x−2)⁶`, `φ` near `0` — `Z` holomorphic
+at `s = −1/6` but `threshold = 1/6` forces a pole there). With `hUzero` over `closure U` (foreclosing
+boundary zeros too), `K > 0` on `closure U \ {x₀}`, so `s₀` and `integrabilityThreshold K U` are both
+governed solely by `x₀` and the identity holds — the local Atiyah/Saito "small `U`, `x₀` the sole
+singularity" setup. -/
 @[cited "Atiyah 1970 (CPAM 23:145-150) + Saito/SLT: continuation of ∫|F|^s φ, poles ℚ_{<0}, largest pole = -rlct"]
 axiom cited_zeta_meromorphic_continuation {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
     (x₀ : Fin n → ℝ) (U : Set (Fin n → ℝ))
@@ -105,8 +109,9 @@ axiom cited_zeta_meromorphic_continuation {n : ℕ} (K φ : (Fin n → ℝ) → 
     (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
     -- locality: `φ` is supported inside a relatively compact open nbhd `U` of the zero `x₀`;
     (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hUcpt : IsCompact (closure U)) (hφU : tsupport φ ⊆ U)
-    -- single zero: `x₀` is the ONLY zero of `K` in `U` — pins `s₀ = −threshold` (else false, see doc);
-    (hUzero : ∀ x ∈ U, K x = 0 → x = x₀)
+    -- single zero: `x₀` is the ONLY zero of `K` on `closure U` — keeps the cite CONSISTENT (else it
+    -- proves `False`: the pinned continuation is holomorphic where `−threshold` demands a pole);
+    (hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀)
     -- pole regime: the threshold on `U` is honest (admissible set bounded above), not the junk `0`;
     (hpole : BddAbove (admissibleExponents K U)) :
     ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
