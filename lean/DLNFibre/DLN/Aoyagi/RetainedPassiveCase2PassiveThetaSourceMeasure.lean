@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSector
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveSelectedEntrySourceMeasure
+import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaCFieldReadout
 
 /-!
 # Case 2 passive theta source-measure adapter
@@ -1219,6 +1220,231 @@ theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_eq_of_so
     · simpa [case2PassiveThetaWithFollowingFactorRetainedData,
         case2PostPivotSelectedEntryRetainedPassiveDataWithPassiveFollowingFactor,
         Case2PassiveThetaWithFollowingFactor.mk] using hF
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The retained-passive datum emitted by the enlarged with-following readback
+is the original p.13 source readback datum, provided the selected-entry pivot
+of the reconstructed source coordinate is nonzero.
+
+The proof factors the endpoint topology tuple through the active
+readout/writeback equivalence: the readback inverts the active `C 1`
+selected-entry chart, and the active writeback then recovers the original
+endpoint topology tuple.  This is pointwise coordinate algebra only; it does
+not prove source coverage, measure transport, normal crossings, pole order, or
+RLCT extraction. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointRetainedData_sourceChartReadback_eq_sourceReadback_of_pivotNonzero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hpivot :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X).1) :
+    case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X) eNext e =
+      sourceReadback
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+        (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+          (fun p : Fin 2 ↦
+            (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ]
+              reverseVertex W₂ p.succ))) := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let E :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+      (fun p : Fin 2 ↦
+        (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ]
+          reverseVertex W₂ p.succ))
+  let data := sourceReadback (K := ℝ) (ρ := ρ) (κ' := κ') E
+  let z :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+      W₂ B₂ n hS hnext hU₀ e X
+  let T : TopologyTuple ρ κ' ℝ := topologyTuple data
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (Case2ResidualRowIndex n S (J + 1))
+          (Case2ResidualColIndex n S (J + 1)) ≃
+        Case2PassiveTheta.Center n S J :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (Equiv.refl _) (Equiv.refl _)
+  let rawData := data.endpointTransport (fun j ↦ (e j).symm)
+  let yChart : Case2PassiveTheta.Center n S J → ℝ :=
+    fun i ↦
+      AoyagiResidualBlockCoordinateIndex.value
+        (show
+          Matrix (Case2ResidualRowIndex n S (J + 1))
+            (Case2ResidualColIndex n S (J + 1)) ℝ from
+          by
+            simpa [case2PostPivotTwoEdgeDomain] using rawData.C (1 : Fin 2))
+        (residualCoordEquiv.symm i)
+  have hz_y :
+      z.1.yNext =
+        SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+          pivotNext yChart := by
+    rfl
+  have hyPivot : yChart pivotNext ≠ 0 := by
+    have hzPivot : z.1.yNext pivotNext ≠ 0 := by
+      simpa [z, pivotNext, case2PassiveThetaPivotNonzero] using hpivot
+    simpa [hz_y, SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero] using
+      hzPivot
+  have hyChart :
+      SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext =
+        yChart := by
+    rw [hz_y]
+    exact
+      SelectedEntrySignedBox.CenterCoord.chartMap_preimageOfPivotNeZero
+        pivotNext yChart hyPivot
+  let activeReadout :
+      TopologyTuple ρ κ' ℝ →
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+    Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout n e
+  let activeChart :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J :=
+    fun z ↦
+      ((z.1.1,
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext), z.2)
+  have hactive : activeChart z = activeReadout T := by
+    change
+      ((z.1.1,
+          SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1.yNext),
+        z.2) =
+        activeReadout T
+    rw [hyChart]
+    rfl
+  have htop :
+      topologyTuple
+          (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+            (ρ := ρ) n hS hcont hnext z eNext e) =
+        topologyTuple data := by
+    calc
+      topologyTuple
+          (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+            (ρ := ρ) n hS hcont hnext z eNext e) =
+          case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+            (ρ := ρ) n hS hcont hnext z eNext e := rfl
+      _ = Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveWriteback
+            (ρ := ρ) (τ := τ) n e (activeChart z) := by
+          simpa [activeChart, pivotNext] using
+            Case2PassiveThetaWithFollowingFactor.case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_eq_activeWriteback_activeSelectedEntryChart
+              (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext z eNext e
+      _ = Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveWriteback
+            (ρ := ρ) (τ := τ) n e (activeReadout T) := by
+          rw [hactive]
+      _ = T := by
+          exact
+            Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveWriteback_readout
+              (ρ := ρ) (τ := τ) n e T
+      _ = topologyTuple data := rfl
+  exact topologyTuple_injective (K := ℝ) (ρ := ρ) (κ' := κ') htop
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Pointwise right inverse for the enlarged with-following endpoint source
+chart on the retained-passive p.13 source set, under the selected-entry
+nonzero-pivot condition on the readback point.
+
+This is not a source-image coverage theorem: it assumes the input source edge
+family is already in the named retained-passive p.13 source set and assumes
+the selected pivot of its with-following readback is nonzero. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChart_rightInverse_of_mem_p13SourceEdgeFamilySet
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hsource :
+      X ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀)
+    (hpivot :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X).1) :
+    case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X) =
+      X := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let E :=
+    paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+      (fun p : Fin 2 ↦
+        (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ]
+          reverseVertex W₂ p.succ))
+  let data := sourceReadback (K := ℝ) (ρ := ρ) (κ' := κ') E
+  let z :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+      W₂ B₂ n hS hnext hU₀ e X
+  have hread :
+      case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e =
+        data := by
+    simpa [z, data, E, ρ, κ'] using
+      case2PassiveThetaWithFollowingFactorEndpointRetainedData_sourceChartReadback_eq_sourceReadback_of_pivotNonzero
+        W₂ B₂ n hS hcont hnext hU₀ eNext e X hpivot
+  have hright :
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          (K := ℝ) W₂ B₂ U₀ hU₀ data =
+        X := by
+    simpa [data, E, ρ, κ'] using
+      (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamily_openPartialHomeomorph
+        (K := ℝ) W₂ B₂ U₀ hU₀).right_inv' hsource
+  change
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+        (K := ℝ) W₂ B₂ U₀ hU₀
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e) = X
+  rw [hread]
+  exact hright
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

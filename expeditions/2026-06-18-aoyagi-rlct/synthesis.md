@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following P13 Local Image Equality - 2026-07-03
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointRetainedData_sourceChartReadback_eq_sourceReadback_of_pivotNonzero
+
+case2PassiveThetaWithFollowingFactorEndpointSourceChart_rightInverse_of_mem_p13SourceEdgeFamilySet
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_eq_p13SourceEdgeFamilySet_inter_readback_preimage
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+for X in the retained-passive p.13 source set,
+let data := sourceReadback(edgeMatrix(X)) and z := withFollowingReadback(X);
+
+if the selected pivot of z is nonzero, the selected-entry preimage/readout
+calculation gives activeChart(z) = endpointActiveReadout(topologyTuple(data));
+
+active writeback then gives topologyTuple(withFollowingRetainedData(z))
+  = topologyTuple(data),
+
+so withFollowingRetainedData(z) = data,
+and the p.13 partial-homeomorphism right inverse gives
+sourceChart(readback X) = X.
+
+For the local image equality, shrink the requested neighborhood by the local
+pivot locus.  The forward inclusion uses the determinant datum
+<retainedData z, detChart proof> for z in V.  The reverse inclusion takes
+E in p13SourceSet with readback E in V; the shrink gives the pivot condition
+on readback E, and the pointwise right inverse gives sourceChart(readback E)
+= E.
+```
+
+Boundary: this identifies only the returned local image with
+`p13SourceSet inter readback^{-1}(V)`.  It does not prove global p.13
+source-set coverage, selected-pivot coverage on all p.13 points,
+source-rank-stratum coverage, finite atlas coverage, original-prior support,
+Haar/Jacobian transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean checks of the two touched modules; full
+local `lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; direct axiom probe; and
+xhigh read-only review.  The three new declarations report `[propext,
+Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Readback-Local Pivot Export - 2026-07-03
 
 Lean now has:

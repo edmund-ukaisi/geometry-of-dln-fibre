@@ -12,6 +12,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following p.13 local image equality
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointRetainedData_sourceChartReadback_eq_sourceReadback_of_pivotNonzero
+
+case2PassiveThetaWithFollowingFactorEndpointSourceChart_rightInverse_of_mem_p13SourceEdgeFamilySet
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_eq_p13SourceEdgeFamilySet_inter_readback_preimage
+```
+
+Decision: discharge the reverse inclusion identified by the prior p.13 range
+probe.  For arbitrary `X` in the retained-passive p.13 source set, the
+with-following readback recovers the original retained-passive source
+readback datum once the selected-entry pivot of the reconstructed point is
+nonzero.  Therefore the local chart image can be sharpened to
+
+```text
+sourceChart '' V = p13SourceSet inter readback^{-1}(V)
+```
+
+after shrinking inside the exported pivot-nonzero locus.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-p13-pointwise-right-inverse.md
+threads/03-block-product-reduction/reproduction-a2-with-following-local-image-p13-readback-preimage-equality.md
+threads/03-block-product-reduction/review-a2-with-following-local-image-p13-readback-preimage-equality.md
+```
+
+Boundary: this is a local equality against the readback preimage of the
+returned theta neighborhood.  It does not prove global p.13 source-set
+coverage, selected-pivot coverage on the whole p.13 set, source-rank-stratum
+coverage, finite atlas coverage, original-prior support, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean checks of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; direct axiom probe; and
+xhigh read-only review.  All three new declarations report `[propext,
+Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, with-following readback-local pivot export
 
 Lean now has:
