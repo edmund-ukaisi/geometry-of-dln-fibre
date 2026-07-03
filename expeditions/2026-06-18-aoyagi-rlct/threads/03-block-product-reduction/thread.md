@@ -21,6 +21,31 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 p.13 product-coordinate prior-density continuity
+
+Reproduction:
+`reproduction-a2-p13-product-coordinate-prior-density-continuity.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+Lean now has:
+
+```text
+continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+```
+
+This is the topological smooth-prior bridge for the p.13 product-coordinate
+map: continuity and positivity of `phi` at `CedgeProd (x0,u0)` imply
+continuity and positivity of `phi o CedgeProd` at `(x0,u0)`.
+
+Boundary: no measure transport, no local boundedness on a chart piece, no
+source-image identity, no source coverage, no determinant/raw Haar transport,
+normal crossings, pole order, or RLCT.
+
 ## 2026-07-03 A2 p.13 original-prior full-product domination
 
 Reproduction:

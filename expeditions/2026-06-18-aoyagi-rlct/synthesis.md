@@ -6,6 +6,42 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Product-Coordinate Prior-Density Continuity - 2026-07-03
+
+Lean now has:
+
+```text
+continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+The calculation is:
+
+```text
+CedgeProd is continuous at (x0,u0);
+prior density phi is continuous at CedgeProd(x0,u0);
+therefore phi o CedgeProd is continuous at (x0,u0).
+
+If 0 < phi(CedgeProd(x0,u0)), then the pulled-back density is positive at
+(x0,u0).
+```
+
+This is the Aoyagi p.5/p.8 smooth-positive-prior input in the p.13
+product-coordinate language.  It supplies the `hdensity_cont` and
+`hdensity_pos` hypotheses used by the existing full p.13 finite-integral
+theorems when the product-coordinate density is an original density composed
+with the explicit p.13 product-coordinate edge-family map.
+
+Boundary: no local boundedness on a measurable chart piece, no
+change-of-variables formula, no original-prior measure transport, no
+source-image identity, no source coverage, no source-rank coverage, no
+determinant/raw Haar transport, no normal crossings, pole order, or RLCT.
+
 ## A2 p.13 Original-Prior Full-Product Domination - 2026-07-03
 
 Lean now has:

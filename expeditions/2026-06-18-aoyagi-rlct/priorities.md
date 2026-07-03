@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, p.13 product-coordinate prior-density continuity
+
+Lean now has:
+
+```text
+continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+```
+
+Decision: discharge the p.13 product-coordinate continuity/positivity input
+for a density pulled back along the explicit self-base product-coordinate
+edge-family map.  This is the topological part of Aoyagi's smooth positive
+prior assumption:
+
+```text
+ContinuousAt phi (CedgeProd (x0,u0))
+0 < phi (CedgeProd (x0,u0))
+```
+
+gives:
+
+```text
+ContinuousAt (fun z => phi (CedgeProd z)) (x0,u0)
+0 < (fun z => phi (CedgeProd z)) (x0,u0).
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-product-coordinate-prior-density-continuity.md
+```
+
+Boundary: this is only a pointwise/topological density handoff.  It does not
+prove local boundedness on a chosen measurable chart piece, full
+change-of-variables, original-prior measure transport, source-image identity,
+source coverage, determinant/raw Haar transport, normal crossings, pole order,
+or RLCT.
+
 ## Latest controller decision - 2026-07-03, p.13 original-prior full-product domination
 
 Lean now has:

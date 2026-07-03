@@ -36,6 +36,64 @@ variable {N : ℕ}
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 set_option linter.unusedSectionVars false in
+/-- Pulling a locally positive continuous original density back along the
+explicit self-base p.13 product-coordinate edge-family map preserves the
+continuous-at and positive-at-base hypotheses required by the local
+finite-integral sockets.
+
+This is only a pointwise/topological density handoff.  It does not prove a
+measure change-of-variables formula or original-prior transport through the
+product-coordinate map. -/
+theorem continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (u₀ : EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    {density :
+      (∀ p : Fin (M + 2),
+        reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ) → ℝ} :
+    let Coord :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        V Bv U₀ hU₀ CedgeBase
+    ContinuousAt density (CedgeProd (x₀, u₀)) →
+      0 < density (CedgeProd (x₀, u₀)) →
+        ContinuousAt (fun z : α × EuclideanSpace ℝ Coord ↦ density (CedgeProd z)) (x₀, u₀) ∧
+          0 < (fun z : α × EuclideanSpace ℝ Coord ↦ density (CedgeProd z)) (x₀, u₀) := by
+  intro Coord CedgeProd hdensity_cont hdensity_pos
+  have hCedgeProd : ContinuousAt CedgeProd (x₀, u₀) := by
+    simpa [CedgeProd, Coord] using
+      continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀) (u₀ := u₀)
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+  exact ⟨hdensity_cont.comp hCedgeProd, hdensity_pos⟩
+
+set_option linter.unusedSectionVars false in
 /-- Local-source p.13 finite-integral handoff for the original
 square-Frobenius `lossDLN` of a chain-coordinate tuple.
 
