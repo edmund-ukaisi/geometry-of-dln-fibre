@@ -6,6 +6,50 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Eventual Upper-Density Coordinate-Source Finite Integral - 2026-07-03
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_eventually_density_bounds
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The new wrapper is a same-shrink topological conversion layer.  It assumes
+the two upper-density facts in eventual form near the base point:
+
+```text
+forall eventually z in nhds z0, jacobianDensity z <= CJ
+forall eventually z in nhds z0, sourceDensity z <= CS
+```
+
+It intersects the ambient open set `G` with the two neighborhoods, invokes
+the passive-self open coordinate-source finite-integral handoff on that
+smaller open set, and then turns the pointwise bounds on the returned `V`
+into the required restricted-measure a.e. bounds by `ae_restrict_mem`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-eventual-upper-density-coordinate-source-finite-integral.md
+```
+
+Boundary: this proves no continuity theorem for `jacobianDensity` or
+`sourceDensity`, no eventual upper bound, no determinant-Haar/raw-Haar
+transport, no original-prior transport, no normal crossings, pole order, or
+RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; direct axiom probe; and independent xhigh audit.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Passive-Self Open Coordinate-Source Finite Integral - 2026-07-03
 
 Lean now has:

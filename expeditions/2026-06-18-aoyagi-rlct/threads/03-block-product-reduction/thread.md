@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 eventual upper-density coordinate-source finite integral
+
+Reproduction:
+`reproduction-a2-eventual-upper-density-coordinate-source-finite-integral.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_eventually_density_bounds
+```
+
+The theorem takes the passive-self open coordinate-source finite-integral
+handoff and replaces its two a.e. upper-density continuations by eventual
+upper bounds near `z0`:
+
+```text
+forall eventually z in nhds z0, jacobianDensity z <= CJ
+forall eventually z in nhds z0, sourceDensity z <= CS
+```
+
+It shrinks the caller's ambient open set by the two eventual-bound
+neighborhoods, calls the passive-self handoff there, and then supplies the
+required a.e. bounds on the returned `V` via `ae_restrict_mem`.
+
+Boundary: this proves no continuity theorem for `jacobianDensity` or
+`sourceDensity` and no density upper bound by itself.  It also proves no
+determinant-Haar/raw-Haar transport, original-prior transport, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; direct axiom probe; and independent xhigh audit.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 passive-self open coordinate-source finite integral
 
 Reproduction:

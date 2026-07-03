@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, eventual upper-density coordinate-source finite-integral handoff
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_eventually_density_bounds
+```
+
+Decision: add the same-shrink wrapper that converts eventual upper bounds
+for the two coordinate-source densities into the a.e. bounds consumed by the
+passive-self finite-integral theorem.  This is the right next layer because
+it removes measure-theory plumbing from the density frontiers without
+pretending to prove the frontiers themselves.
+
+The next controller target splits:
+
+```text
+jacobianDensity event bound:
+  derive from existing retained-passive Jacobian local-unit infrastructure;
+
+sourceDensity event bound:
+  requires a continuity/finite-value hypothesis for sourceImageDensity
+  composed with the endpoint source chart, or a concrete source-image density.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-eventual-upper-density-coordinate-source-finite-integral.md
+```
+
+Boundary: no continuity theorem for `jacobianDensity` or `sourceDensity`, no
+density construction, no determinant-Haar or raw-Haar transport, no
+original-prior transport, no normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, passive-self open coordinate-source finite-integral handoff
 
 Lean now has:
