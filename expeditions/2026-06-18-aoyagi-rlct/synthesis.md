@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Source-Density Continuity Density-Bounds Package - 2026-07-03
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_jacobianDensity_sourceDensity_bounds_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_sourceDensity_continuousAt_lt_top
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+This is a narrow packaging theorem for the two density inputs of the
+eventual-density coordinate-source finite-integral handoff.  It obtains the
+Jacobian finite eventual upper bound from the endpoint determinant-sector
+Jacobian theorem, and obtains the source finite eventual upper bound from
+the generic ENNReal local boundedness lemma applied to
+
+```text
+sourceDensity z = sourceImageDensity (sourceChart z).
+```
+
+The source assumptions are intentionally local and explicit:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+because `sourceImageDensity` is still arbitrary at this interface.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-density-continuity-density-bounds-package.md
+```
+
+Boundary: this proves neither the finite-integral endpoint nor any
+construction, continuity, or finiteness theorem for the source-image density.
+No determinant-Haar/raw-Haar transport, original-prior transport, normal
+crossings, pole order, or RLCT extraction is proved here.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Jacobian Eventual Upper Bound - 2026-07-03
 
 Lean now has:

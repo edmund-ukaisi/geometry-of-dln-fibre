@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 source-density continuity density-bounds package
+
+Reproduction:
+`reproduction-a2-source-density-continuity-density-bounds-package.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_jacobianDensity_sourceDensity_bounds_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_sourceDensity_continuousAt_lt_top
+```
+
+The theorem packages the two finite eventual upper-density inputs expected by
+the eventual-density coordinate-source handoff.  The Jacobian side is
+discharged by the endpoint determinant-sector Jacobian theorem.  The source
+side is a deliberately explicit local boundedness socket:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+where `sourceDensity z = sourceImageDensity (sourceChart z)` and
+`sourceImageDensity` remains arbitrary.
+
+Boundary: this is only a density-bounds package.  It does not construct a
+source-image density, prove source-density continuity/finiteness, compose to
+the finite-integral endpoint, or prove determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 Jacobian eventual upper bound
 
 Reproduction:

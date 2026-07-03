@@ -2605,6 +2605,104 @@ theorem exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_ope
       sourceChart, sourceDensity, coordinateSourceMeasure, productResidual] using
       hfinite hJ hsource
 
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Under an explicit local boundedness source for the source-image density,
+both density inputs to the eventual-density coordinate-source handoff have
+finite eventual upper bounds.
+
+The Jacobian side is proved from the retained-passive local-unit theorem on
+the endpoint topology-tuple chart.  The source side is deliberately a socket:
+the current `sourceImageDensity` is arbitrary, so the theorem assumes
+continuity at the base point after composing it with the endpoint source
+chart, plus finiteness of the base value. -/
+theorem exists_finite_eventually_jacobianDensity_sourceDensity_bounds_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_sourceDensity_continuousAt_lt_top
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (sourceImageDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let jacobianDensity :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let sourceDensity :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦ sourceImageDensity (sourceChart z)
+    ContinuousAt sourceDensity z₀ →
+      sourceDensity z₀ < ∞ →
+        ∃ CJ CS : ℝ≥0∞, CJ < ∞ ∧ CS < ∞ ∧
+          (∀ᶠ z in nhds z₀, jacobianDensity z ≤ CJ) ∧
+            (∀ᶠ z in nhds z₀, sourceDensity z ≤ CS) := by
+  intro RawTuple Y jacobianDensity EdgeFamily sourceChart sourceDensity
+    hsource_cont hsource_finite
+  rcases
+      exists_finite_eventually_le_jacobianDensity_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+        (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+        n hS hcont hnext eNext e z₀ hdet₀ with
+    ⟨CJ, hCJfinite, hCJeventually⟩
+  rcases
+      exists_lt_top_eventually_le_of_continuousAt_lt_top
+        (f := sourceDensity) hsource_cont hsource_finite with
+    ⟨CS, hCSfinite, hCSeventually⟩
+  refine ⟨CJ, CS, hCJfinite, hCSfinite, ?_, ?_⟩
+  · simpa [Y, jacobianDensity] using hCJeventually
+  · simpa [sourceDensity] using hCSeventually
+
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in

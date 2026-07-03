@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-density continuity density-bounds package
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_finite_eventually_jacobianDensity_sourceDensity_bounds_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_sourceDensity_continuousAt_lt_top
+```
+
+Decision: add a density-package theorem, not another finite-integral wrapper.
+The Jacobian eventual bound is already proved by the endpoint
+determinant-sector theorem.  The source-density bound cannot be derived from
+the current arbitrary `sourceImageDensity`, so the theorem assumes exactly the
+local facts needed for ENNReal continuity-boundedness:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+where `sourceDensity z = sourceImageDensity (sourceChart z)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-density-continuity-density-bounds-package.md
+```
+
+Next controller target: compose this package with the existing
+eventual-density coordinate-source finite-integral handoff, choosing `CJ`
+and `CS` internally under the same explicit source-density continuity and
+finite-base-value assumptions.
+
+Boundary: no source-image density construction, no proof of source-density
+continuity or finiteness, no determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, Jacobian eventual upper bound
 
 Lean now has:
