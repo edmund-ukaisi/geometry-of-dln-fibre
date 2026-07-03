@@ -21,6 +21,44 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 source-density continuity finite-integral wrapper
+
+Reproduction:
+`reproduction-a2-source-density-continuity-finite-integral-wrapper.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceDensity_continuousAt_lt_top
+```
+
+The theorem composes the finite eventual-density package with the
+eventual-density coordinate-source finite-integral handoff.  It hides the
+choice of `CJ` and `CS`, requiring instead:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+where `sourceDensity z = sourceImageDensity (sourceChart z)`.
+
+Boundary: it does not construct `sourceImageDensity`, prove source-density
+continuity/finiteness, or prove determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 source-density continuity density-bounds package
 
 Reproduction:

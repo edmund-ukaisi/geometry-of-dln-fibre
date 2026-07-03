@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Source-Density Continuity Finite-Integral Wrapper - 2026-07-03
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceDensity_continuousAt_lt_top
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+This wrapper removes the caller-facing `CJ`, `CS`, and eventual-density
+bound assumptions from the coordinate-source finite-integral endpoint.  It
+first applies the source-density continuity density-bounds package to choose
+finite `CJ` and `CS`, then passes those witnesses to the existing
+eventual-density finite-integral handoff.
+
+The source-density assumptions remain explicit:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+where `sourceDensity z = sourceImageDensity (sourceChart z)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-density-continuity-finite-integral-wrapper.md
+```
+
+Boundary: this proves no construction, continuity, or finiteness theorem for
+the source-image density itself.  No determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT extraction is
+proved here.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The new theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Source-Density Continuity Density-Bounds Package - 2026-07-03
 
 Lean now has:

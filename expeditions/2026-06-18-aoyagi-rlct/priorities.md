@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-density continuity finite-integral wrapper
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceDensity_continuousAt_lt_top
+```
+
+Decision: compose the density selector with the existing eventual-density
+coordinate-source finite-integral handoff.  This is the right next layer
+because it closes the caller-facing density-bound constants `CJ` and `CS`
+without pretending that the arbitrary `sourceImageDensity` is already
+constructed or known to be continuous.
+
+The explicit remaining source-density socket is:
+
+```text
+ContinuousAt sourceDensity z0
+sourceDensity z0 < top
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-density-continuity-finite-integral-wrapper.md
+```
+
+Next controller target: decide whether to keep working on the source-density
+construction/provenance frontier or move sideways to determinant-Haar/raw-Haar
+and original-prior transport.  This wrapper no longer leaves any separate
+Jacobian-density upper-bound obligation at the coordinate-source endpoint.
+
+Boundary: no source-image density construction, no proof of source-density
+continuity or finite base value, no determinant-Haar/raw-Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, source-density continuity density-bounds package
 
 Lean now has:
