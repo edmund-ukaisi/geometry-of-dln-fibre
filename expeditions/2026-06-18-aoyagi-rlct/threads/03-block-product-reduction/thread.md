@@ -21,6 +21,54 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 coordinate-source finite integral from cylinder domination
+
+Reproduction:
+`reproduction-a2-coordinate-source-finite-integral-from-cylinder-domination.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+The theorem composes three existing sockets after the finite-source theorem
+returns its following patch:
+
+```text
+referenceSource.restrict V <= Cpassive • localSourceMeasure
+coordinateSourceMeasure.restrict V
+  <= (CS * (CJ * Cpassive)) • localSourceMeasure
+target domination -> p.13 positivity and finite negative-power integral
+```
+
+The following-patch containment is a continuation:
+
+```text
+V subset {z | z.2 in followingPatch} ->
+  finite-integral result for coordinateSourceMeasure.restrict V.
+```
+
+That avoids overclaiming: a later source-chart shrinking theorem should
+discharge the containment after the patch has been constructed.
+
+Boundary: this proves no passive local comparison measure construction, no
+passive support theorem, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT.
+
+Focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched-file marker scan, and direct axiom probe passed.  The new declaration
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 reference-source finite-cylinder base domination
 
 Reproduction:

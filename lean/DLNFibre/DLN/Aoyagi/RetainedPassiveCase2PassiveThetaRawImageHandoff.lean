@@ -1709,6 +1709,238 @@ theorem case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le
       (μ := referenceSource) (ν := ν) (J := jacobianDensity) (S := sourceDensity)
       hV hbase hJ hsource hCbase hCJ hCS
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- The statement unfolds the concrete coordinate-source stack and composes three long handoff theorems.
+/-- Conditional finite-integral handoff for the concrete with-following
+coordinate source measure.
+
+The finite following-patch source theorem first constructs the following patch.
+If the local set `V` is then known to lie in that following-patch cylinder,
+passive local domination and the two local upper-density bounds dominate the
+coordinate source by the finite source cylinder.  The dominated-target theorem
+then transfers p.13 product-residual a.e. positivity and finite negative-power
+integrability to `coordinateSourceMeasure.restrict V`.
+
+This theorem does not construct the passive comparison measure or prove the
+Jacobian/source-density upper bounds. -/
+theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (passiveMeasure :
+      Measure
+        (Case2PassiveTheta.PassiveFields
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    (sourceImageDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    {t : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (passiveLocalSet :
+      Set
+        (Case2PassiveTheta.PassiveFields
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    {Cpassive CJ CS : ℝ≥0∞}
+    (hV : MeasurableSet V)
+    (hpassive :
+      (case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J).restrict
+          passiveLocalSet ≤ Cpassive • passiveMeasure)
+    (hV_passive :
+      V ⊆
+        {z :
+          Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J |
+          z.1.1 ∈ passiveLocalSet})
+    (hCpassive : Cpassive < ∞)
+    (hCJ : CJ < ∞)
+    (hCS : CS < ∞)
+    (hF₀det : IsUnit ((z₀.2.submatrix id eNext.symm).det)) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext Rres
+    let jacobianDensity :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z))
+    let baseJ :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      referenceSource.withDensity jacobianDensity
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let sourceDensity :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          ℝ≥0∞ :=
+      fun z ↦ sourceImageDensity (sourceChart z)
+    let coordinateSourceMeasure := baseJ.withDensity sourceDensity
+    (∀ᵐ z ∂referenceSource.restrict V, jacobianDensity z ≤ CJ) →
+      (∀ᵐ z ∂baseJ.restrict V, sourceDensity z ≤ CS) →
+        ∃ followingPatch :
+            Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ), ∃ K : ℝ,
+          0 < K ∧
+            z₀.2 ∈ followingPatch ∧
+            MeasurableSet followingPatch ∧
+            matrixEntryReferenceMeasure
+              (Case2ResidualColIndex n S (J + 1)) τ followingPatch < ∞ ∧
+            (∀ F ∈ followingPatch, IsUnit ((F.submatrix id eNext.symm).det)) ∧
+            (∀ F ∈ followingPatch,
+              aoyagiCoordinateSquareSum
+                  (fun ij : τ × Case2ResidualColIndex n S (J + 1) =>
+                    (((F.submatrix id eNext.symm)⁻¹).submatrix eNext id)
+                      ij.1 ij.2) ≤ K) ∧
+            let productResidual :
+                Case2PassiveThetaWithFollowingFactor
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+                  Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+              fun z ij ↦
+                (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+                  (ChartLocalSuffixState.residualFactorProduct
+                    (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                      (ρ := Fin (Module.finrank ℝ U₀))
+                      n hS hcont hnext z eNext e).C
+                    (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+                      (e (Fin.last 2)) (e 0)) ij.1 ij.2
+            V ⊆
+                {z :
+                  Case2PassiveThetaWithFollowingFactor
+                    (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J |
+                  z.2 ∈ followingPatch} →
+              (∀ᵐ z ∂ coordinateSourceMeasure.restrict V,
+                0 < aoyagiCoordinateSquareSum (productResidual z)) ∧
+                (∫⁻ z :
+                    Case2PassiveThetaWithFollowingFactor
+                      (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J,
+                  ENNReal.ofReal
+                    ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+                    ∂ coordinateSourceMeasure.restrict V) < ∞ := by
+  intro RawTuple Y referenceSource jacobianDensity baseJ EdgeFamily sourceChart
+    sourceDensity coordinateSourceMeasure hJ hsource
+  classical
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  haveI : IsFiniteMeasure passiveMeasure := ⟨hpassive_lt_top⟩
+  rcases
+      exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext
+        passiveMeasure hpassive_lt_top (t := t) Rres ht hRres hcrit
+        eNext e z₀ V hF₀det with
+    ⟨followingPatch, K, hK_pos, hF₀_mem, hpatch_meas, hpatch_lt_top,
+      hpatch_det, hpatch_inv_bound, hfinite_target⟩
+  refine
+    ⟨followingPatch, K, hK_pos, hF₀_mem, hpatch_meas, hpatch_lt_top,
+      hpatch_det, hpatch_inv_bound, ?_⟩
+  intro productResidual hV_following
+  let center : Finset (ℕ × ℕ) :=
+    case2ResidualBlockPivotEntries n S (J + 1)
+  let pivotNext : center :=
+    case2PassiveThetaPivotNext n hS hnext
+  let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+    Measure.pi
+      (fun i : Case2PassiveTheta.Center n S J =>
+        volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+  let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+    signedBox.withDensity
+      (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+        ENNReal.ofReal
+          (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+  let followingMeasure :=
+    matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  let sourceMeasure :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    ((passiveMeasure.prod weightedBox).prod followingMeasure).restrict
+      {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+        z.2 ∈ followingPatch}
+  let localSourceMeasure :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+    sourceMeasure.restrict V
+  have hbase :
+      referenceSource.restrict V ≤ Cpassive • localSourceMeasure := by
+    simpa [ρ, referenceSource, localSourceMeasure, sourceMeasure,
+      followingMeasure, weightedBox, signedBox] using
+      case2PassiveThetaWithFollowingFactor_referenceSource_restrict_le_smul_sourceCylinder_restrict_of_passive_restrict_le_smul
+        (ρ := ρ) (τ := τ) n hS hnext passiveMeasure Rres
+        passiveLocalSet followingPatch V hpassive hV_passive hV_following
+  have hcoordinate :
+      (CS * (CJ * Cpassive)) < ∞ ∧
+        coordinateSourceMeasure.restrict V ≤
+          (CS * (CJ * Cpassive)) • localSourceMeasure := by
+    simpa [RawTuple, Y, referenceSource, jacobianDensity, baseJ, EdgeFamily,
+      sourceChart, sourceDensity, coordinateSourceMeasure, localSourceMeasure] using
+      case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul_of_lt_top
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
+        eNext e sourceImageDensity Rres V localSourceMeasure
+        (Cbase := Cpassive) (CJ := CJ) (CS := CS)
+        hV hbase hJ hsource hCpassive hCJ hCS
+  simpa [ρ, κ', productResidual] using
+    hfinite_target.2 (coordinateSourceMeasure.restrict V)
+      (CS * (CJ * Cpassive)) hcoordinate.2 hcoordinate.1
+
 -- The concrete with-following statement specializes the source measure to the reference source.
 /-- Conditional reverse raw-source domination for the concrete with-following
 coordinate source measure from determinant-chart reverse domination and a

@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Coordinate-Source Finite Integral From Cylinder Domination - 2026-07-03
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The calculation is:
+
+```text
+referenceSource.restrict V <= Cpassive • localSourceMeasure
+```
+
+from the reference-source cylinder domination, provided
+
+```text
+passiveRef.restrict passiveLocalSet <= Cpassive • passiveMeasure,
+V subset {z | z.1.1 in passiveLocalSet},
+V subset {z | z.2 in followingPatch}.
+```
+
+The concrete two-density theorem then gives:
+
+```text
+coordinateSourceMeasure.restrict V
+  <= (CS * (CJ * Cpassive)) • localSourceMeasure
+```
+
+from the Jacobian-density and source-density upper bounds.  The dominated
+target theorem transfers p.13 product-residual a.e. positivity and finite
+negative-power integrability to `coordinateSourceMeasure.restrict V`.
+
+The quantifier order is deliberate: `followingPatch` is constructed by the
+finite-source theorem, so containment in its cylinder is returned as a
+continuation after the patch is in scope.  A later source-chart shrinking
+theorem should discharge that continuation by intersecting with the open
+following-patch cylinder.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-coordinate-source-finite-integral-from-cylinder-domination.md
+```
+
+Boundary: this proves no passive local comparison measure construction, no
+passive support theorem, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probe.  The new declaration reports
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Reference-Source Finite-Cylinder Base Domination - 2026-07-03
 
 Lean now has:

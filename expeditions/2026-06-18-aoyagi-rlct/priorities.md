@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, coordinate-source finite integral from cylinder domination
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+```
+
+Decision: compose the finite following-patch source theorem, the
+reference-source finite-cylinder base domination, and the concrete
+two-density coordinate-source handoff into the first concrete
+coordinate-source finite-integral wrapper.
+
+The theorem keeps the quantifier order honest.  It first returns the
+following patch constructed by the finite source theorem, and only then asks
+for the continuation hypothesis
+
+```text
+V subset {z | z.2 in followingPatch}.
+```
+
+Under that containment, passive local domination and the Jacobian/source
+density upper bounds give
+
+```text
+coordinateSourceMeasure.restrict V
+  <= (CS * (CJ * Cpassive)) • localSourceMeasure,
+```
+
+so the dominated-target socket transfers p.13 product-residual a.e.
+positivity and finite negative-power integrability to the concrete coordinate
+source.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-coordinate-source-finite-integral-from-cylinder-domination.md
+```
+
+Boundary: this still proves no passive local comparison measure construction,
+no passive support theorem, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-07-03, reference-source finite-cylinder base domination
 
 Lean now has:
