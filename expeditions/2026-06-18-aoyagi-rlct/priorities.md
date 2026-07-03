@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following edge-family product-residual readout
+
+Lean now has pointwise with-following product-residual readout bridges:
+
+```text
+case2PassiveThetaWithFollowingFactorProductResidualReadout
+case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+```
+
+Decision: fill the smallest honest residual-readout gap before composing the
+with-following prior readback transfer.  The raw-edge theorem identifies the
+fixed-base p.13 residual-block coordinate map, reindexed by the endpoint
+equivalences `e (Fin.last 2)` and `e 0`, with the source-side product residual
+whenever the endpoint retained data is in the determinant chart.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-edge-family-product-residual-readout.md
+```
+
+Next controller target: prove the measurability/a.e.-measurability socket for
+the edge-family integrand or a local finite-integral transfer that uses this
+pointwise identity.  Do not yet claim original-prior finite integrability from
+the source residual theorem.
+
+Boundary: pointwise finite-coordinate algebra only.  No edge-family integrand
+measurability, original-prior finite-integral transfer, determinant-Haar
+transport, source-image coverage, normal crossings, pole order, or RLCT is
+proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; and direct axiom probe.  The four new public
+theorem/corollary declarations report `[propext, Classical.choice,
+Quot.sound]`.  Xhigh read-only review by `Boyle the 3rd` found no blocking
+issue; its naming precision point was addressed by the `_of_detChart` suffix on
+the raw readout theorem and square-sum corollary.
+
 ## Latest controller decision - 2026-07-03, plain endpoint-density readback wrapper
 
 Lean now has:

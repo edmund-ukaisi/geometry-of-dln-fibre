@@ -6,6 +6,44 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Edge-Family Product-Residual Readout - 2026-07-03
+
+Lean now has named source-side and edge-family readouts for the with-following
+Case 2 product residual in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+```
+
+The key theorem is:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+```
+
+It says that, at a determinant-chart source point, the raw fixed-base p.13
+residual-block coordinate map of the endpoint source chart agrees with the
+source-side product residual used by the coordinate-source finite-integral
+theorems.  The readout is indexed by
+`(e (Fin.last 2) ij.1, e 0 ij.2)`, so it is directly in the
+`Case2ResidualRowIndex n S (J+1) x tau` coordinates of the source theorem.
+There is also a square-sum corollary.
+
+Boundary: this is only pointwise finite-coordinate algebra.  It does not prove
+edge-family integrand measurability, any original-prior finite-integral
+transfer, determinant-Haar transport, source-image coverage, normal crossings,
+pole order, or RLCT.  The next honest step is the measurability/local transfer
+socket for the edge-family integrand.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; and direct axiom probe.  The four new public
+theorem/corollary declarations report `[propext, Classical.choice,
+Quot.sound]`.  Xhigh read-only review by `Boyle the 3rd` found no blocking
+issue.  The reviewer-suggested precision rename was applied: the raw readout
+theorem and square-sum corollary now end in `_of_detChart`.
+
 ## A2 Plain Endpoint-Density Readback Wrapper - 2026-07-03
 
 Lean now has:

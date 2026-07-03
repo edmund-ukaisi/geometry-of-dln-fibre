@@ -1403,6 +1403,347 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Source-side product residual readout for enlarged following-factor
+Case 2 passive-theta coordinates. -/
+def case2PassiveThetaWithFollowingFactorProductResidualReadout
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+  fun ij ↦
+    (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+      (ChartLocalSuffixState.residualFactorProduct
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := ρ) n hS hcont hnext z eNext e).C
+        (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+          (e (Fin.last 2)) (e 0)) ij.1 ij.2
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Edge-family product residual readout obtained by first applying the
+enlarged endpoint source-chart readback. -/
+def case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) :
+    Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+  case2PassiveThetaWithFollowingFactorProductResidualReadout
+    (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext
+    (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+      W₂ B₂ n hS hnext hU₀ e X)
+    eNext e
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- If the enlarged endpoint source-chart readback recovers `z`, then the
+edge-family residual readout agrees with the source-side product residual. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_eq_of_readback_eq
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hreadback :
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X = z) :
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+        W₂ B₂ n hS hcont hnext hU₀ eNext e X =
+      case2PassiveThetaWithFollowingFactorProductResidualReadout
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e := by
+  subst z
+  rfl
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Under a pointwise source-chart left-inverse hypothesis, the edge-family
+residual readout of `sourceChart z` is the source-side product residual of `z`. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hleft :
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z) = z) :
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z) =
+      case2PassiveThetaWithFollowingFactorProductResidualReadout
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e := by
+  exact
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_eq_of_readback_eq
+      W₂ B₂ n hS hcont hnext hU₀ eNext e z
+      (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e z) hleft
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The square-sum integrand obtained from the edge-family residual readout
+agrees with the source-side product residual square-sum under a pointwise
+source-chart left-inverse hypothesis. -/
+theorem aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hleft :
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z) = z) :
+    aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+          W₂ B₂ n hS hcont hnext hU₀ eNext e
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z)) =
+      aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorProductResidualReadout
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e) := by
+  rw [
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+      W₂ B₂ n hS hcont hnext hU₀ eNext e z hleft]
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The raw fixed-base residual-block coordinate readout, reindexed to the
+with-following Case 2 product-residual coordinates. -/
+def case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ}
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) :
+    Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+  fun ij ↦
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+      (K := ℝ) W₂ B₂ U₀ hU₀ (fun E :
+        (∀ p : Fin 2,
+          reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) ↦ E) X
+      (e (Fin.last 2) ij.1, e 0 ij.2)
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- On a determinant-chart source point, the raw fixed-base residual-block
+coordinate readout of the endpoint source chart is the source-side
+with-following product residual. -/
+theorem case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet :
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e).detChart) :
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout
+        W₂ B₂ n hU₀ e
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z) =
+      case2PassiveThetaWithFollowingFactorProductResidualReadout
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let retainedData :
+      RetainedPassiveNonredundantCoordinateData
+        (K := ℝ) (ρ := ρ) κ' :=
+    case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext z eNext e
+  let sourceChart : EdgeFamily :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChart
+      W₂ B₂ n hS hcont hnext hU₀ eNext e z
+  have hedge :
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+          (fun p : Fin 2 ↦
+            (sourceChart p :
+              reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ)) =
+        retainedData.edgeMatrix := by
+    simpa [sourceChart, retainedData,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart] using
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges_retainedPassiveP13SourceEdgeFamilyOfData_eq
+        (K := ℝ) W₂ B₂ (U₀ := U₀) (hU₀ := hU₀) retainedData
+  have hread :
+      sourceReadback (K := ℝ) (ρ := ρ)
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun p : Fin 2 ↦
+              (sourceChart p :
+                reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ))) =
+        retainedData := by
+    exact
+      sourceReadback_paperEndpointFixedBaseEdgeMatrix_eq_retainedPassiveData_of_edgeMatrix_eq
+        (K := ℝ) (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+        (Cedge := fun E : EdgeFamily ↦ E) sourceChart retainedData hdet hedge
+  funext ij
+  have hcoord :=
+    paperEndpointFixedBaseResidualBlockCoordinateMap_eq_sourceReadback_residualFactorProduct
+      (K := ℝ) (W := W₂) (B := B₂) U₀ hU₀
+      (fun E : EdgeFamily ↦ E) sourceChart
+  have hcoord_ij := congrFun hcoord (e (Fin.last 2) ij.1, e 0 ij.2)
+  simpa [
+    sourceChart, retainedData, ρ, κ',
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout,
+    case2PassiveThetaWithFollowingFactorProductResidualReadout, hread] using hcoord_ij
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Square-sum form of the raw fixed-base residual-block coordinate readout
+identity for a determinant-chart source point. -/
+theorem aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet :
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e).detChart) :
+    aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout
+          W₂ B₂ n hU₀ e
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z)) =
+      aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorProductResidualReadout
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e) := by
+  rw [
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+      W₂ B₂ n hS hcont hnext hU₀ eNext e z hdet]
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
 -- The raw-order two-stage proof composes several retained-passive local chart
 -- normalizations and follows the existing non-following bridge's footprint.
