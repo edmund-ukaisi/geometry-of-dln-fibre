@@ -37,6 +37,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMInteriorDeepRank0GenAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMInteriorLiveGenHInterior
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedClose
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
+import DLNFibre.DLN.RLCT.Validate.RouteMHNoBridge
+import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
 
 /-!
 # Axiom-hygiene check
@@ -276,6 +278,11 @@ open DLNFibre.DLN.RLCT
 -- and the spine adds none of its own.
 #print axioms routeMCore_box_diverges_achiever_full
 
+-- ★ hNo DE-CONDITIONALIZATION BRIDGE ∀L — `noInteriorBothDrop_of_not_interiorDrop`: for `0 < Wext M L`,
+-- `¬InteriorDrop M → NoInteriorBothDrop M` (argmin-exchange, pure combinatorics). Must be CLEAN-THREE
+-- [propext, Classical.choice, Quot.sound]: NO `monomial_rlct` (no analysis axiom), no `sorryAx`.
+#print axioms noInteriorBothDrop_of_not_interiorDrop
+
 -- ★ R1 RESOLUTION INTERFACE at L=2 — the LEAF-1 wiring discharging the L2 headline's `hR1_L2`.
 -- Must be CLEAN modulo the cited S2 axiom: [propext, Classical.choice, Quot.sound, monomial_rlct],
 -- no `sorryAx`. `r1_resolution_interface_L2` = `rlctAtOn(dlnLoss M 0) 0 = ofReal(lambdaCore M)`
@@ -283,6 +290,15 @@ open DLNFibre.DLN.RLCT
 -- as the two `routeMLayerCover_of_atoms` atoms + the value lane. On wiring,
 -- `aoyagi_learning_coefficient_L2`'s ONLY remaining `sorryAx` is the D1 wall (hD1ge_L2, Item-109).
 #print axioms r1_resolution_interface_L2
+
+-- ★ R1 RESOLUTION INTERFACE at general `L`, hNo-FREE — `r1_resolution_general`: for nondegenerate
+-- `M : Fin (L+1) → ℕ` (all layers `> 0`, `1 ≤ L`) and the named box-finiteness `hbox`, the deepest DLN
+-- core `dlnLoss M 0` at the origin has local RLCT `ofReal(lambdaCore M)`. `hNo` is DROPPED — discharged
+-- inside the achiever (`routeMCore_box_diverges_achiever_full'`) by the `InteriorDrop`/bridge case split.
+-- Conditional ONLY on `hbox` (the open R1-UPPER box-finiteness wall). Must be
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] — S2 still enters via the interior/value lane;
+-- the bridge adds none. No `sorryAx`.
+#print axioms r1_resolution_general
 
 -- D1 obligation (i) middle-stratum producer (square-deepest scope) — must be CLEAN-THREE
 -- [propext, Classical.choice, Quot.sound], no `sorryAx`: `extra_half_add_lambdaCore_Mprime_ge_square` is

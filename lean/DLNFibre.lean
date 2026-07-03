@@ -694,5 +694,19 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSpineWire
 -- [propext, Classical.choice, Quot.sound, monomial_rlct] (S2 enters via the interior slot; the smeared
 -- slot is clean-three). This is the general-`L` R1-LOWER achiever `hdiv`.
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
+-- hNo de-conditionalization bridge, ∀L: `noInteriorBothDrop_of_not_interiorDrop` — for `0 < Wext M L`,
+-- `¬InteriorDrop M → NoInteriorBothDrop M` (argmin-exchange; pure combinatorics). CLEAN-THREE, S2-FREE.
+import DLNFibre.DLN.RLCT.Validate.RouteMHNoBridge
+-- The general-`L` achiever box-divergence WITHOUT `hNo`: `routeMCore_box_diverges_achiever_full'`
+-- case-splits on `InteriorDrop M` — the interior branch (`interiorLiveGen_hInterior`) is unconditional,
+-- the `¬InteriorDrop` branch obtains `hNo` from the bridge. Inherits achiever_full's footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct] (the bridge adds none).
+import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFullHNoFree
+-- ★ The R1 resolution interface at general `L`, hNo-FREE: `r1_resolution_general` — for nondegenerate
+-- `M` (all layers `> 0`, `1 ≤ L`) and the named box-finiteness `hbox`, the deepest DLN core `dlnLoss M 0`
+-- at the origin has local RLCT `ofReal(lambdaCore M)`. Conditional ONLY on `hbox` (the open R1-UPPER
+-- box-finiteness wall); `hNo` discharged inside the achiever. Footprint
+-- [propext, Classical.choice, Quot.sound, monomial_rlct].
+import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
