@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-cylinder-supported active endpoint containment
+
+Lean now has:
+
+```text
+endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_priorDensity_upper
+```
+
+Decision: the p.13 endpoint-patch active-image containment should be proved
+from the source-cylinder-supported chart-piece hypothesis
+
+```text
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)
+```
+
+not from `chartPiece ⊆ sourceChart '' V`.  The signed-box source cylinder is
+visible in the active endpoint reference-image support, so the stronger
+hypothesis is the honest local statement.  Under it, the endpoint containment
+is pure set algebra: raw-chart injectivity on the p.13 raw-source set and
+raw-order injectivity on the determinant chart identify any endpoint-patch
+point with `Y z`, and the active factorization writes `Y z` as
+`activeWriteback (activeChart z)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-original-prior-source-cylinder-active-containment.md
+```
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The pure set lemma
+reports no axioms; the concrete wrapper reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: use this source-cylinder-supported original-prior
+finite-integral wrapper as the active endpoint route's clean consumer.  Do not
+try to recover the same conclusion from only `chartPiece ⊆ sourceChart '' V`
+unless a separate theorem proves `V ⊆ sourceCylinder` or an equivalent support
+statement.
+
 ## Latest controller decision - 2026-07-03, active endpoint-domination readback product residual
 
 Lean now has:

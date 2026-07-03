@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Product-Residual Readback, Source-Cylinder Active Containment - 2026-07-03
+
+Lean now has a pure endpoint containment lemma and a concrete finite-integral
+wrapper:
+
+```text
+endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_chartPiece_subset_sourceChart_image_inter_sourceCylinder_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+y ∈ rawDetChart ∩ rawOrderOnEndpoint^{-1}
+      (rawSourceSet ∩ rawChart^{-1} chartPiece)
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)
+==> choose z ∈ V ∩ sourceCylinder with
+    rawChart(rawOrderOnEndpoint y) = sourceChart z
+
+rawChart(rawOrderOnEndpoint(Y z)) = sourceChart z
+rawChart injective on rawSourceSet
+==> rawOrderOnEndpoint y = rawOrderOnEndpoint(Y z)
+
+rawOrderOnEndpoint injective on rawDetChart
+==> y = Y z
+
+Y z = activeWriteback(activeChart z)
+==> y ∈ activeWriteback '' (activeChart '' (V ∩ sourceCylinder)).
+```
+
+The concrete wrapper first shrinks by the existing raw/source compatibility
+theorem, then calls the active endpoint-domination finite-integral wrapper.
+The endpoint-patch containment required by that wrapper is discharged by the
+set lemma using the raw-order inverse theorem, the p.13 raw-chart
+homeomorphism, the with-following raw/source compatibility payload, and the
+active endpoint factorization.
+
+Boundary: the chart-piece support is strengthened to
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.  This is deliberate:
+the active endpoint reference source is supported on the signed-box cylinder,
+and no existing theorem gives `V ⊆ sourceCylinder`.  Prior-density upper bound
+and readback residual pullback measurability remain explicit.  No source-image
+coverage, normal crossings, pole order, or RLCT extraction is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The pure set lemma
+reports no axioms; the concrete wrapper reports
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Original-Prior Product-Residual Readback, Active Endpoint Domination - 2026-07-03
 
 Lean now has:
