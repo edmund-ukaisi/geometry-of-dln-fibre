@@ -11,6 +11,8 @@ local `lake build` / `lake env lean` instead of `scripts/lb`.
 Lean now has:
 
 ```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_eventually_sourceDensity_lower
+
 exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
 ```
 
@@ -51,6 +53,19 @@ The theorem still requires endpoint-patch null-measurability, the source-density
 lower bound by `epsilon`, and `epsilon != 0, infinity`.  The pivot containment
 of `V` is used internally and not exported.
 
+The eventual wrapper adds only the topological shrinking step:
+
+```text
+eventually z near z0, epsilon <= sourceDensity(z)
+
+choose H open around z0 with the inequality,
+apply the source-density theorem to G inter H,
+and use V subset H to get the a.e. lower bound on baseJ.restrict V.
+```
+
+The endpoint-patch side conditions and the active-containment hypothesis are
+unchanged.
+
 Boundary: local raw-patch domination only.  This is not exact raw-Haar
 pushforward, raw-Haar normalization, determinant-chart Haar transport,
 endpoint-patch null-measurability, source-density positivity, global source
@@ -64,7 +79,10 @@ touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
 declaration reports `[propext, Classical.choice, Quot.sound]`.  Xhigh
 read-only reviewer `Hilbert the 4th` found prose overclaim on the first pass;
 the docstring and reproduction were corrected.  No formal proof or
-mathematical composition issue was found.
+mathematical composition issue was found.  The eventual wrapper has passed
+focused Lean check, focused module build, `lean/scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe; it also reports `[propext, Classical.choice, Quot.sound]`.
 
 ## A2 With-Following Source-Rank Readback and Local Intersection - 2026-07-03
 

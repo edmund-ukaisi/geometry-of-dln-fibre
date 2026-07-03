@@ -17,6 +17,8 @@ The controller proposes this ranking; the operator may edit this file directly.
 Lean now has:
 
 ```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_eventually_sourceDensity_lower
+
 exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
 ```
 
@@ -41,10 +43,16 @@ null-measurability, a source-density lower bound by `epsilon`, and
 selected-pivot-nonzero locus so the active endpoint theorem can be applied
 with `Omega := V`; that pivot containment is not exported.
 
+Follow-up decision: add the topological wrapper converting an eventual
+source-density lower bound near `z0` to the a.e. lower bound on the returned
+neighborhood.  Endpoint-patch null-measurability, active containment, and
+`epsilon != 0, infinity` remain caller hypotheses.
+
 Artifact:
 
 ```text
 threads/03-block-product-reduction/reproduction-a2-with-following-raw-patch-active-containment-source-density.md
+threads/03-block-product-reduction/reproduction-a2-with-following-raw-patch-active-containment-eventual-source-density.md
 ```
 
 Boundary: local raw-patch domination only.  No exact raw-Haar pushforward,
@@ -60,7 +68,10 @@ touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
 declaration reports `[propext, Classical.choice, Quot.sound]`.  Xhigh
 read-only review by `Hilbert the 4th` initially caught prose overclaim around
 side conditions and exported pivot containment; the docstring and reproduction
-were corrected, with no formal proof issue found.
+were corrected, with no formal proof issue found.  The eventual wrapper has
+passed focused Lean check, focused module build, `lean/scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe; it also reports `[propext, Classical.choice, Quot.sound]`.
 
 ## Latest controller decision - 2026-07-03, with-following source-rank readback and local intersection
 
