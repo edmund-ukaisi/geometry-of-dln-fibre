@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, original-prior active-containment readback wrapper
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower_priorDensity_upper
+```
+
+Decision: add the bounded-prior-density handoff on top of the original-volume
+active-containment readback theorem.  The wrapper keeps active endpoint-image
+containment explicit:
+
+```text
+endpointPatch subset activeWriteback '' (activeChart '' (V inter sourceCylinder)),
+```
+
+and also keeps the a.e. source-density lower bound, `epsilon != 0, infinity`,
+and the a.e. original-prior density upper bound explicit.  It obtains the
+original-volume scalar
+
+```text
+Dvol = cHaar^{-1} * (Cdet * epsilon^{-1})
+```
+
+from the active original-volume wrapper, then multiplies by
+`ofReal Kprior` via the standard bounded-density/readback measure handoff:
+
+```text
+Cprior = ofReal Kprior * Dvol.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-readback-active-containment-source-density.md
+```
+
+Boundary: this does not prove active containment, source-cylinder support,
+C-one support, source-density positivity, prior-density boundedness,
+determinant-chart Haar transport, exact raw pushforward, Haar normalization,
+source coverage, source-rank coverage, original source-prior transport beyond
+the bounded-density comparison, finite-integral transfer, normal crossings,
+pole order, or RLCT.
+
+Verification passed: focused Lean file check; focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; direct axiom
+probe, reporting
+`[propext, Classical.choice, Quot.sound]`; xhigh theorem-shape scout
+`Aquinas the 4th`; and xhigh post-implementation review `Pasteur the 4th`.
+
 ## Latest controller decision - 2026-07-03, original-volume source-cylinder/C-one readback wrappers
 
 Lean now has:

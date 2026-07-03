@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Readback From Active Containment - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+apply the original-volume active-containment wrapper to get
+
+Cdet < infinity,
+Ddet = Cdet * epsilon^{-1} < infinity,
+readback_*(originalVolume.restrict chartPiece)
+  <= Dvol • coordinateSourceMeasure.restrict G,
+Dvol = cHaar^{-1} * Ddet;
+
+use the prior-density upper bound to get
+
+originalPrior.restrict chartPiece
+  <= ofReal(Kprior) • originalVolume.restrict chartPiece;
+
+apply the generic readback domination handoff to conclude
+
+readback_*(originalPrior.restrict chartPiece)
+  <= Cprior • coordinateSourceMeasure.restrict G,
+Cprior = ofReal(Kprior) * Dvol.
+```
+
+The scalar is finite because `Ddet < infinity`, `cHaar^{-1}` is finite as a
+coerced `NNReal`, and `ofReal Kprior < infinity`.
+
+Boundary: active containment, the a.e. source-density lower bound,
+`epsilon != 0, infinity`, and the a.e. prior-density upper bound all remain
+explicit.  This does not prove active containment, source-cylinder support,
+C-one signed-box support, source-density positivity, prior-density
+boundedness, determinant-chart Haar transport, exact raw-Haar pushforward,
+Haar normalization, source coverage, source-rank coverage, original
+source-prior transport beyond the bounded-density comparison, finite-integral
+transfer, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check, focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probe.  The declaration reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh theorem-shape scout
+`Aquinas the 4th` and xhigh post-implementation reviewer `Pasteur the 4th`
+both passed.
+
 ## A2 With-Following Original-Volume Readback From Source-Cylinder/C-One Support - 2026-07-03
 
 Lean now has:
