@@ -6,6 +6,54 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Original-Prior Full-Product Domination - 2026-07-03
+
+Lean now has:
+
+```text
+originalEdgeFamilyPrior_restrict_chartPiece_prod_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_prod
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+already proved one-factor domination:
+
+originalPrior.restrict chartPiece
+  <= (ofReal Kprior * cHaar^{-1}) • muP13;
+
+apply product monotonicity with an arbitrary s-finite right factor nu:
+
+(originalPrior.restrict chartPiece).prod nu
+  <= (ofReal Kprior * cHaar^{-1}) • (muP13.prod nu).
+```
+
+This is the full p.13 product-coordinate handoff: the right factor can be the
+Euclidean Haar measure on
+`AoyagiRegularBlockCoordinateIndex`, i.e. the regular variables
+`(Ctop - I, F2, F3)`.  It is not a full original-prior pullback identity:
+the prior-density upper bound, p.13 chart-piece containment, formal-product
+chart measure, and tuple-side Haar scalar remain explicit.
+
+Boundary: no source-image/reference identity, no exact full DLN prior
+transport through the product-coordinate map, no source-density positivity,
+no source coverage, no source-rank coverage, no determinant/raw Haar
+transport, no Haar scalar normalization, no normal crossings, pole order, or
+RLCT.
+
+Verification passed: focused Lean check of
+`OriginalEdgeFamilyP13SourceMeasureBridge.lean`; focused module build
+`DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; direct
+axiom probe reporting `[propext, Classical.choice, Quot.sound]`; and xhigh
+read-only review `Mencius the 4th`.
+
 ## A2 With-Following Original-Prior Readback From Source-Cylinder/C-One Support - 2026-07-03
 
 Lean now has:

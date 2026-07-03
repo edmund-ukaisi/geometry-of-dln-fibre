@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 p.13 original-prior full-product domination
+
+Reproduction:
+`reproduction-a2-p13-original-prior-full-product-domination.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+```
+
+Lean now has:
+
+```text
+originalEdgeFamilyPrior_restrict_chartPiece_prod_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_prod
+```
+
+This lifts the existing p.13 one-factor domination of restricted original
+prior by the formal-product chart measure through any s-finite right product
+factor.  The intended p.13 regular-coordinate right factor is the Euclidean
+Haar measure on `AoyagiRegularBlockCoordinateIndex`, carrying `(Ctop - I, F2,
+F3)`.
+
+Boundary: product-measure lift only.  No exact full original-prior pullback
+density, source-image identity, source-density positivity, source coverage,
+source-rank coverage, determinant/raw Haar transport, normal crossings, pole
+order, or RLCT.
+
+Verification: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, axiom probe
+`[propext, Classical.choice, Quot.sound]`, and xhigh review passed.
+
 ## 2026-07-03 A2 with-following edge-family product-residual readout
 
 Reproduction:

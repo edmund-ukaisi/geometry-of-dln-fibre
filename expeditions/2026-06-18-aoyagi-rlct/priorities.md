@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, p.13 original-prior full-product domination
+
+Lean now has:
+
+```text
+originalEdgeFamilyPrior_restrict_chartPiece_prod_le_smul_map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_prod
+```
+
+Decision: expose the full p.13 product-measure version of the original-prior
+formal-product domination.  The existing one-factor result gives
+
+```text
+originalPrior.restrict chartPiece
+  <= (ofReal Kprior * cHaar^{-1}) • muP13.
+```
+
+The new result lifts this through an arbitrary s-finite right factor:
+
+```text
+(originalPrior.restrict chartPiece).prod nu
+  <= (ofReal Kprior * cHaar^{-1}) • (muP13.prod nu).
+```
+
+This is useful because the p.13 regular variables `(Ctop - I, F2, F3)` enter
+downstream as a right product factor, typically additive Haar measure on
+`EuclideanSpace R (AoyagiRegularBlockCoordinateIndex ...)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-prior-full-product-domination.md
+```
+
+Boundary: this is product monotonicity from the existing p.13 one-factor
+domination.  It does not prove exact full source-prior pullback density,
+source-image/reference identity, source-density positivity, source coverage,
+source-rank coverage, determinant/raw Haar transport, Haar normalization,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean file check; focused module build
+`DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; direct
+axiom probe, reporting `[propext, Classical.choice, Quot.sound]`; and xhigh
+read-only review `Mencius the 4th`.
+
 ## Latest controller decision - 2026-07-03, original-prior source-cylinder/C-one readback wrappers
 
 Lean now has:
