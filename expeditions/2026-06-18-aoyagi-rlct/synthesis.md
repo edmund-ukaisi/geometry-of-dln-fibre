@@ -6,6 +6,69 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Volume Readback From Source-Cylinder/C-One Support - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper containment calculation is:
+
+```text
+take y in rawDetChart inter rawOrderOnEndpoint^{-1}
+  (rawSourceSet inter rawChart^{-1}(chartPiece));
+
+source-cylinder support gives z in V inter sourceCylinder with
+sourceChart z = rawChart(rawOrderOnEndpoint y);
+
+raw/source compatibility gives
+Y z in rawDetChart,
+rawOrderOnEndpoint(Y z) in rawSourceSet,
+rawChart(rawOrderOnEndpoint(Y z)) = sourceChart z;
+
+p.13 raw-chart injectivity on rawSourceSet gives
+rawOrderOnEndpoint y = rawOrderOnEndpoint(Y z);
+
+raw-order injectivity on rawDetChart gives y = Y z;
+
+active endpoint factorization gives
+Y z = activeWriteback(activeChart z).
+```
+
+Thus the endpoint patch is contained in
+`activeWriteback '' (activeChart '' (V inter sourceCylinder))`, exactly the
+hypothesis consumed by the original-volume active-containment wrapper.  The
+C-one wrapper only converts ordinary image support plus
+`cOneReadout E in signedBox` into the source-cylinder support by projecting the
+local readback identity to `yNext`.
+
+Boundary: the source-cylinder theorem requires source-cylinder support; the
+C-one theorem requires C-one signed-box support.  Neither theorem derives
+active containment from plain `chartPiece subset sourceChart '' V`.  Both keep
+the a.e. source-density lower bound and `epsilon != 0, infinity` explicit, and
+do not prove C-one support, source-density positivity, determinant-chart Haar
+transport, exact raw-Haar pushforward, Haar normalization, source coverage,
+source-rank coverage, original source-prior transport, normal crossings, pole
+order, or RLCT.
+
+Verification passed: focused Lean check, focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, and direct axiom
+probes.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer `Wegener the 4th`
+passed; no blocking formalisation/math inaccuracy or overclaim found.
+
 ## A2 With-Following Original-Volume Readback From Active Containment - 2026-07-03
 
 Lean now has:

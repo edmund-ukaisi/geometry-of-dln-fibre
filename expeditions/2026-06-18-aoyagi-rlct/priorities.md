@@ -12,6 +12,61 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, original-volume source-cylinder/C-one readback wrappers
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower
+```
+
+Decision: discharge the active endpoint-image containment hypothesis in the
+original-volume readback layer, but only under the support hypotheses that
+actually imply containment.  The first wrapper strengthens chart-piece support
+to
+
+```text
+chartPiece subset sourceChart '' (V inter sourceCylinder),
+```
+
+then proves the endpoint patch lies in
+
+```text
+activeWriteback '' (activeChart '' (V inter sourceCylinder))
+```
+
+using raw/source compatibility, raw-order injectivity, p.13 raw-chart
+injectivity, and active endpoint factorization.  The second wrapper obtains
+that source-cylinder support from ordinary image support plus
+
+```text
+forall E in chartPiece, cOneReadout E in signedBox.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-source-cylinder-active-containment-source-density.md
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-c-one-support-source-density.md
+```
+
+Boundary: plain `chartPiece subset sourceChart '' V` is still not enough.
+The new wrappers also leave the a.e. source-density lower bound and
+`epsilon != 0, infinity` explicit, and do not prove C-one support,
+source-density positivity, determinant-chart Haar transport, exact raw
+pushforward, Haar normalization, source coverage, source-rank coverage,
+original source-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean file check; focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; direct axiom
+probes for both declarations, reporting
+`[propext, Classical.choice, Quot.sound]`; and xhigh read-only review by
+`Wegener the 4th`, which passed with no blocking formalisation or scope issue.
+
 ## Latest controller decision - 2026-07-03, original-volume active-containment readback wrapper
 
 Lean now has:
