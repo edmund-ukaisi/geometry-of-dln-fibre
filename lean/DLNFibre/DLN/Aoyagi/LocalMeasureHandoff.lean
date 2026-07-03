@@ -1094,6 +1094,47 @@ theorem restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
     _ ≤ C • (c • ν) := hscale
     _ = (C * c) • ν := hsmul_assoc
 
+/-- Two successive locally bounded density perturbations preserve scalar
+domination of a restricted base measure.
+
+The second density is bounded almost everywhere for the once-weighted
+restricted measure, which is the measure against which that density is applied. -/
+theorem restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+    {α : Type*} [MeasurableSpace α]
+    {μ ν : Measure α} {J S : α → ℝ≥0∞} {V : Set α}
+    {Cbase CJ CS : ℝ≥0∞}
+    (hV : MeasurableSet V)
+    (hbase : μ.restrict V ≤ Cbase • ν)
+    (hJ : ∀ᵐ z ∂μ.restrict V, J z ≤ CJ)
+    (hS : ∀ᵐ z ∂(μ.withDensity J).restrict V, S z ≤ CS) :
+    ((μ.withDensity J).withDensity S).restrict V ≤
+      (CS * (CJ * Cbase)) • ν := by
+  have hJdom :
+      (μ.withDensity J).restrict V ≤ (CJ * Cbase) • ν :=
+    restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+      (μ := μ) (ν := ν) (f := J) hV hbase hJ
+  exact
+    restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+      (μ := μ.withDensity J) (ν := ν) (f := S) hV hJdom hS
+
+/-- Finite-scalar version of
+`restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le`. -/
+theorem restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le_of_lt_top
+    {α : Type*} [MeasurableSpace α]
+    {μ ν : Measure α} {J S : α → ℝ≥0∞} {V : Set α}
+    {Cbase CJ CS : ℝ≥0∞}
+    (hV : MeasurableSet V)
+    (hbase : μ.restrict V ≤ Cbase • ν)
+    (hJ : ∀ᵐ z ∂μ.restrict V, J z ≤ CJ)
+    (hS : ∀ᵐ z ∂(μ.withDensity J).restrict V, S z ≤ CS)
+    (hCbase : Cbase < ∞) (hCJ : CJ < ∞) (hCS : CS < ∞) :
+    (CS * (CJ * Cbase)) < ∞ ∧
+      ((μ.withDensity J).withDensity S).restrict V ≤
+        (CS * (CJ * Cbase)) • ν :=
+  ⟨ENNReal.mul_lt_top hCS (ENNReal.mul_lt_top hCJ hCbase),
+    restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+      hV hbase hJ hS⟩
+
 /-- Real-valued version of
 `restrict_withDensity_le_smul_of_restrict_le_smul_of_ae_le`, for priors
 written as `ENNReal.ofReal` of a locally bounded real density. -/

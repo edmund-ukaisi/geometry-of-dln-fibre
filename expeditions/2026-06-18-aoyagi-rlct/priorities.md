@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, two-density domination handoff
+
+Lean now has:
+
+```text
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le_of_lt_top
+```
+
+Decision: add the generic conditional adapter for two successive locally
+bounded density factors before building any concrete coordinate-source
+domination theorem.  This is the right interface for the later
+`referenceSource -> baseJ -> coordinateSourceMeasure` chain: the Jacobian
+density is bounded against `referenceSource.restrict V`, and the source
+density is bounded against `baseJ.restrict V`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-two-density-domination-handoff.md
+```
+
+Boundary: this proves no passive local domination, no Jacobian-density bound,
+no source-density bound, and no concrete coordinate-source/original-prior
+transport.  Those must be supplied separately.
+
 ## Latest controller decision - 2026-07-03, open finite following-factor patch
 
 Lean now has:

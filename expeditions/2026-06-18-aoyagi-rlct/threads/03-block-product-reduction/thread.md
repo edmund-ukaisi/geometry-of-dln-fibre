@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 two-density domination handoff
+
+Reproduction:
+`reproduction-a2-two-density-domination-handoff.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+Lean now proves:
+
+```text
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le_of_lt_top
+```
+
+The theorem composes the existing one-density bounded-density adapter twice.
+Given base domination `mu.restrict V <= Cbase • nu`, a first density bound
+`J <= CJ` a.e. against `mu.restrict V`, and a second density bound `S <= CS`
+a.e. against `(mu.withDensity J).restrict V`, it proves
+
+```text
+((mu.withDensity J).withDensity S).restrict V
+  <= (CS * (CJ * Cbase)) • nu.
+```
+
+The finite wrapper also proves the final scalar is finite from finite
+`Cbase`, `CJ`, and `CS`.
+
+Boundary: this is only the conditional measure-theory handoff.  It proves no
+passive local domination, no Jacobian-density upper bound, no source-density
+upper bound, no concrete coordinate-source/original-prior domination, no
+normal crossings, pole order, or RLCT.
+
+Focused local build of `DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+Lean-file marker scan, and direct axiom probes passed.  The new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 open finite following-factor patch
 
 Reproduction:

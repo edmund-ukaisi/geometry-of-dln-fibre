@@ -6,6 +6,50 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Two-Density Domination Handoff - 2026-07-03
+
+Lean now has:
+
+```text
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le
+restrict_two_withDensity_le_smul_of_restrict_le_smul_of_ae_le_of_lt_top
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+The theorem is the generic conditional adapter for the chain
+
+```text
+mu -> mu.withDensity J -> (mu.withDensity J).withDensity S.
+```
+
+If `mu.restrict V <= Cbase • nu`, `J <= CJ` a.e. on `mu.restrict V`, and
+`S <= CS` a.e. on `(mu.withDensity J).restrict V`, then
+
+```text
+((mu.withDensity J).withDensity S).restrict V
+  <= (CS * (CJ * Cbase)) • nu.
+```
+
+The finite wrapper records `CS * (CJ * Cbase) < infinity` from the three
+finite scalar hypotheses.  This is the intended measure-theory core for the
+future coordinate-source domination wrapper; the concrete passive domination
+and density upper bounds remain separate hypotheses.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file marker scan, and
+direct axiom probes.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no passive local domination, Jacobian-density bound,
+source-density bound, concrete coordinate-source domination, original-prior
+transport, normal crossings, pole order, or RLCT extraction is proved here.
+
 ## A2 Open Finite Following-Factor Patch - 2026-07-03
 
 Lean now strengthens the matrix-entry following patch with:
