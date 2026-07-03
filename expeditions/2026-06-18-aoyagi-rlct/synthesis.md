@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following P13 Readback-Slice Finite Integral - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+use the previous support wrapper, which returns V with
+sourceChart '' V = p13SourceSet inter readback^{-1}(V);
+
+rewrite p13SourceSet inter readback^{-1}(V) as sourceChart '' V to get
+measurability;
+
+then apply the support wrapper to chartPiece =
+p13SourceSet inter readback^{-1}(V), using the two projections from the
+intersection as the support hypotheses.
+```
+
+Boundary: this is only the canonical whole local readback slice.  It does not
+show that any source-side neighborhood lies in `readback^{-1}(V)`, nor global
+p.13 coverage, source-rank coverage, finite atlas coverage, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Verification so far: focused Lean check and focused module build of the
+touched module passed; `lean/scripts/sorries`, `git diff --check`, and the
+touched Lean-file marker scan passed; xhigh read-only review passed; full
+local `lake build DLNFibre` passed; and the direct axiom probe reports
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following P13 Readback-Preimage Finite Integral - 2026-07-03
 
 Lean now has:
