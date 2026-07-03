@@ -1644,6 +1644,113 @@ theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowin
       (ρ := ρ) (τ := τ) n hS hnext passiveMeasure Rres followingPatch
   ] using hfinite
 
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- Local-set restriction of the finite-passive following-patch source-cylinder
+theorem.
+
+The local set `V` is arbitrary: the intended use is to take `V` from the
+with-following source-chart/readback theorem.  This theorem does not require
+the following-factor patch itself to be open. -/
+theorem exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*}
+    [Fintype ρ] [Fintype τ] [DecidableEq ρ]
+    [∀ q, Fintype (κ' q)] [∀ q, DecidableEq (κ' q)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    [MeasurableSpace
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)]
+    (passiveMeasure :
+      Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+    (hpassive_lt_top : passiveMeasure Set.univ < ∞)
+    {t : ℝ}
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (ht : 0 ≤ t)
+    (hRres : ∀ i, 0 < Rres i)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)
+    (V :
+      Set (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J))
+    (hF₀det : IsUnit ((z₀.2.submatrix id eNext.symm).det)) :
+    ∃ followingPatch :
+        Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ), ∃ K : ℝ,
+      0 < K ∧
+        z₀.2 ∈ followingPatch ∧
+        MeasurableSet followingPatch ∧
+        matrixEntryReferenceMeasure
+          (Case2ResidualColIndex n S (J + 1)) τ followingPatch < ∞ ∧
+        (∀ F ∈ followingPatch, IsUnit ((F.submatrix id eNext.symm).det)) ∧
+        (∀ F ∈ followingPatch,
+          aoyagiCoordinateSquareSum
+              (fun ij : τ × Case2ResidualColIndex n S (J + 1) =>
+                (((F.submatrix id eNext.symm)⁻¹).submatrix eNext id)
+                  ij.1 ij.2) ≤ K) ∧
+        let center : Finset (ℕ × ℕ) :=
+          case2ResidualBlockPivotEntries n S (J + 1)
+        let pivotNext : center :=
+          case2PassiveThetaPivotNext n hS hnext
+        let signedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+          Measure.pi
+            (fun i : Case2PassiveTheta.Center n S J =>
+              volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))
+        let weightedBox : Measure (Case2PassiveTheta.Center n S J → ℝ) :=
+          signedBox.withDensity
+            (fun y : Case2PassiveTheta.Center n S J → ℝ =>
+              ENNReal.ofReal
+                (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+        let followingMeasure :=
+          matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+        let sourceMeasure :
+            Measure
+              (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+          ((passiveMeasure.prod weightedBox).prod followingMeasure).restrict
+            {z :
+              Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+              z.2 ∈ followingPatch}
+        let localSourceMeasure :
+            Measure
+              (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+          sourceMeasure.restrict V
+        let productResidual :
+            Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+              Case2ResidualRowIndex n S (J + 1) × τ → ℝ :=
+          fun z ij ↦
+            (show Matrix (Case2ResidualRowIndex n S (J + 1)) τ ℝ from
+              (ChartLocalSuffixState.residualFactorProduct
+                (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+                  (ρ := ρ) n hS hcont hnext z eNext e).C
+                (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))).submatrix
+                  (e (Fin.last 2)) (e 0)) ij.1 ij.2
+        (∀ᵐ z ∂ localSourceMeasure, 0 < aoyagiCoordinateSquareSum (productResidual z)) ∧
+          (∫⁻ z :
+              Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J,
+            ENNReal.ofReal
+              ((aoyagiCoordinateSquareSum (productResidual z)) ^ (-t))
+              ∂ localSourceMeasure) < ∞ := by
+  classical
+  rcases
+      exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_of_base_reindexed_det_isUnit
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext
+        passiveMeasure hpassive_lt_top (t := t) Rres ht hRres hcrit
+        eNext e z₀ hF₀det with
+    ⟨followingPatch, K, hK_pos, hF₀_mem, hpatch_meas, hpatch_lt_top,
+      hpatch_det, hpatch_inv_bound, hfinite⟩
+  refine
+    ⟨followingPatch, K, hK_pos, hF₀_mem, hpatch_meas, hpatch_lt_top,
+      hpatch_det, hpatch_inv_bound, ?_⟩
+  exact
+    ⟨ae_restrict_of_ae hfinite.1,
+      lt_of_le_of_lt
+        (lintegral_mono' Measure.restrict_le_self (le_refl _))
+        hfinite.2⟩
+
 set_option linter.style.longLine false in
 /-- Composing the endpoint topology tuple with the finite active-coordinate
 readout gives the same reference-measure pushforward as the source-coordinate

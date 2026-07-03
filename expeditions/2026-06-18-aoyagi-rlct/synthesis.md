@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Finite-Passive Source-Cylinder Local Restriction - 2026-07-03
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+This is the local-set version of the finite-passive following-patch cylinder
+source theorem.  Given an arbitrary set `V` in the full with-following source,
+the theorem constructs the same matrix-entry finite following patch around the
+base following factor and proves p.13 product-residual a.e. positivity plus
+finite negative-power integrability for
+
+```text
+((((passiveMeasure.prod weightedBox).prod followingRef)
+  .restrict {z | z.2 in followingPatch}).restrict V).
+```
+
+The calculation is only monotonicity under restriction: a.e. positivity passes
+by `ae_restrict_of_ae`, and finite lower integral passes because
+`mu.restrict V <= mu`.  No measurability or openness of `V` is needed for this
+measure-theoretic step.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-finite-passive-source-following-patch-local-restriction.md
+```
+
+Controller decision after two xhigh scouts: keep this as the boundary for now.
+The with-following source-chart/readback theorems already return local open
+sets and mapping identities; bundling those identities into this finite-source
+integral theorem would make a large statement without improving the downstream
+measure handoff.  The next composition should pass the open `V` from the
+source-chart theorem into this arbitrary-local-set wrapper.
+
+Boundary: the following patch is only measurable and finite for
+`matrixEntryReferenceMeasure`, not open.  The determinant hypothesis stays a
+separate hypothesis on `z₀.2`.  Finite passive-side mass remains explicit.
+This proves no positive patch mass, determinant-Haar/raw-Haar transport,
+source-density or original-prior transport, normal crossings, pole order, or
+RLCT extraction.
+
+Verification passed: focused local build, full local `lake build DLNFibre`,
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden-marker
+scan, direct axiom probe, and xhigh review by `Volta the 3rd`.  The new
+declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Finite-Passive Source-Cylinder Following Patch - 2026-07-02
 
 Lean now has:

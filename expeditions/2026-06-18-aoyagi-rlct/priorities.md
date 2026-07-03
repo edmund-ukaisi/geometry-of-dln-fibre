@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, A2 finite-passive source-cylinder local restriction
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+Decision: the finite following-patch cylinder source theorem is now stable
+under restriction to an arbitrary local source set `V`.  This is the correct
+interface for the with-following source-chart theorem: let that theorem return
+an open `V`, then restrict the finite cylinder source to `V`.  Do not require
+the following-factor patch itself to be open, and do not bundle source-chart,
+readback, or raw-map identities into this finite-integral theorem; those APIs
+already exist separately and downstream original-volume handoff should compose
+them later.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-finite-passive-source-following-patch-local-restriction.md
+```
+
+Boundary: the determinant hypothesis remains a separate hypothesis on the
+base following factor `z₀.2`; finite passive-side mass remains explicit.  This
+proves no positive patch mass, source-chart neighborhood by itself,
+determinant-Haar/raw-Haar transport, source-density/original-prior transport,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-02, A2 finite-passive source-cylinder following patch
 
 Lean now has:

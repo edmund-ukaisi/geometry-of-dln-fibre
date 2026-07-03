@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 finite-passive source-cylinder local restriction
+
+Reproduction:
+`reproduction-a2-finite-passive-source-following-patch-local-restriction.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+exists_matrixEntryReference_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+```
+
+This theorem takes an arbitrary local set `V` and localizes the previous
+finite-passive following-patch cylinder source theorem to
+`sourceMeasure.restrict V`.  The proof is pure measure monotonicity:
+`ae_restrict_of_ae` carries a.e. positivity to the restriction, and
+`lintegral_mono' Measure.restrict_le_self` carries finite negative-power
+integrability.
+
+Xhigh scouts `Bohr the 3rd` and `Cicero the 3rd` agreed on the boundary.  The
+source-chart/readback theorems already return open `V` and mapping identities;
+the finite-integral theorem should not bundle them.  Downstream code should
+apply the source-chart theorem separately, then feed its open `V` to this
+arbitrary-local-set wrapper.
+
+Boundary: the following-factor patch is only measurable and finite, not open.
+The determinant hypothesis on `z₀.2` remains separate from the passive
+determinant sector.  Finite passive mass remains explicit.  This proves no
+positive patch mass, Haar/source-density/original-prior transport, normal
+crossings, pole order, or RLCT.
+
+Focused local build, full local `lake build DLNFibre`, `scripts/sorries`,
+`git diff --check`, touched Lean-file forbidden-marker scan, direct axiom
+probe, and xhigh review by `Volta the 3rd` passed.  The new declaration
+reports `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-02 A2 finite-passive source-cylinder following patch
 
 Reproduction:
