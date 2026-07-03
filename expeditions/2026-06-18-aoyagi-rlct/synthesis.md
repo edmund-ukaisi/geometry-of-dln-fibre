@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Endpoint Reference Image Univ Active Haar Scalar - 2026-07-03
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_univ_eq_smul_rawHaar_restrict_activeWriteback_activeSelectedEntryImage
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+endpointReferenceImage
+  = map W (map activeChart referenceSource)
+  = map W (activeFull.restrict activeCylinder)
+  = c * rawHaar.restrict (W '' activeCylinder).
+```
+
+The first equality is the existing endpoint factorization through active
+writeback for `Omega = Set.univ`; the second equality is selected-entry COV
+plus the restricted-full-active-Haar identification; the third equality is
+active-writeback Haar transport.  The scalar is existential in the theorem
+statement because the concrete `addHaarScalarFactor` expression depends on
+local typeclass instances for the mapped full active Haar measure.
+
+Boundary: this is only the unrestricted source-reference endpoint image.  It
+does not rewrite arbitrary source restrictions through the active chart,
+normalize the scalar to `1`, match `W '' activeCylinder` with a determinant
+or p.13 raw-order patch, prove a determinant-Haar weighted image identity,
+Jacobian formula, raw-Haar transport, source-image coverage, original-prior
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+passed; full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; and direct axiom
+probe.  The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only route reviewer `Plato the 3rd` confirmed the statement shape,
+hypotheses, proof route, and nonclaim boundaries.
+
+Next controller target: the arbitrary-source-patch active-chart
+image/restriction bridge, or a principled decision to keep the univ active
+Haar-scalar theorem as the endpoint of this route until a pivot-nonzero
+injectivity/image theorem is available.
+
 ## A2 Active Product Reference Full Haar Restriction - 2026-07-03
 
 Lean now has:

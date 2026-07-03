@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, endpoint reference image univ active Haar scalar
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_univ_eq_smul_rawHaar_restrict_activeWriteback_activeSelectedEntryImage
+```
+
+Decision: compose the endpoint-image factorization through active writeback,
+the selected-entry active-chart COV, the restricted-full-active-Haar
+identification, and the active-writeback Haar transport for `Omega = Set.univ`.
+The public theorem uses an existential scalar rather than naming the internal
+`addHaarScalarFactor`, because that scalar depends on local finite-on-compacts
+instances for the mapped full active Haar measure.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-reference-image-univ-active-haar-scalar.md
+```
+
+Next controller target: decide the arbitrary-source-patch version.  The new
+univ theorem does not by itself handle `referenceSource.restrict Omega`;
+that needs an active-chart image/restriction bridge and probably an
+injectivity or pivot-nonzero image argument.
+
+Boundary: scalar is not normalized to `1`; the endpoint support is only the
+active writeback image of the selected-entry active-center cylinder, not a
+determinant-chart or p.13 patch.  No arbitrary `Omega` active-chart
+restriction rewrite, determinant-Haar weighted image identity, Jacobian
+formula, raw-Haar transport, source-image coverage, original-prior transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+passed; full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; and direct axiom
+probe.  The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only route reviewer `Plato the 3rd` confirmed the statement shape,
+hypotheses, proof route, and nonclaim boundaries.
+
 ## Latest controller decision - 2026-07-03, active product reference full Haar restriction
 
 Lean now has:

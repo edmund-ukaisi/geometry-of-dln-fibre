@@ -21,6 +21,49 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 endpoint reference image univ active Haar scalar
+
+Reproduction:
+`reproduction-a2-endpoint-reference-image-univ-active-haar-scalar.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure_univ_eq_smul_rawHaar_restrict_activeWriteback_activeSelectedEntryImage
+```
+
+For the unrestricted enlarged source reference, the endpoint reference image
+is a scalar multiple of endpoint additive Haar restricted to:
+
+```text
+activeWriteback '' {z | z.1.yNext in activeImage}.
+```
+
+This composes the endpoint active-writeback factorization, selected-entry
+active-chart COV, full-active-Haar restriction identification, and
+active-writeback Haar transport.
+
+Boundary: this theorem is only for `Omega = Set.univ`.  The scalar is
+existential and not normalized to `1`.  The support set is not identified with
+any determinant-chart or p.13 raw-order patch.  No arbitrary `Omega`
+active-chart restriction rewrite, determinant-Haar weighted image identity,
+Jacobian formula, raw-Haar transport, source-image coverage, original-prior
+transport, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+passed; full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; and direct axiom
+probe.  The new theorem reports `[propext, Classical.choice, Quot.sound]`.
+Xhigh read-only route reviewer `Plato the 3rd` confirmed the statement shape,
+hypotheses, proof route, and nonclaim boundaries.
+
 ## 2026-07-03 A2 active product reference full Haar restriction
 
 Reproduction:
