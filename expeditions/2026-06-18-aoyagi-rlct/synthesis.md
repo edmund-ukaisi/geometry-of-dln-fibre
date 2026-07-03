@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Source-Rank Pointwise and Local Support - 2026-07-03
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointSourceChart_mem_sourceRankStratum
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_sourceRankStratum
+
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_restrict_sourceRankStratum_eq_self
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+for z in the enlarged with-following chart, let data be the endpoint-transported
+retained-passive datum;
+
+endpoint transport preserves ranks of C 0 and C 1;
+
+before endpoint transport, C 0 is the independent following factor z.2 and
+C 1 is the displayed residual block of the successor selected-entry matrix;
+
+therefore supplied equations
+  r + rank(z.2) = rEdge 0
+  r + rank(successorMatrix(z.1.yNext)) = rEdge 1
+give the two C-rank equations required by the retained-passive source-rank
+membership lemma.
+```
+
+The local wrappers apply this pointwise theorem on the existing local source
+image `sourceChart '' V`, and the measure wrapper turns a.e. rank equations
+on `thetaMeasure.restrict V` into support of the pushed-forward
+chart-produced measure on the source-rank stratum.
+
+Boundary: these are one-way support statements only.  They do not prove
+source-rank coverage, equality with a source-rank stratum, finite atlas
+coverage, source-prior transport, Haar/Jacobian transport, normal crossings,
+pole order, or RLCT.  The free following factor is not assumed full-rank; its
+rank is an explicit hypothesis.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre`; `scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; direct axiom probe; and xhigh read-only
+review by `Hume the 4th`.  The three declarations live under
+`PaperEndpointFixedBaseRegularCoordinateSourceData` and report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following P13 Readback-Slice Finite Integral - 2026-07-03
 
 Lean now has:

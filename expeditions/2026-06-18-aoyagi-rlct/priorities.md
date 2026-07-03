@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following source-rank pointwise and local support
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactorEndpointSourceChart_mem_sourceRankStratum
+
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_sourceRankStratum
+
+exists_open_subset_measure_map_case2PassiveThetaWithFollowingFactorEndpointSourceChart_restrict_sourceRankStratum_eq_self
+```
+
+Decision: take the source-rank support rung for the enlarged with-following
+chart, not the direct non-following p.13 image-equality route.  The
+non-following equality would forget the independent following factor; the
+with-following chart keeps it as `z.2`.  Therefore the correct source-rank
+hypotheses are
+
+```text
+r + rank(z.2) = rEdge 0
+r + rank(successor selected-entry matrix from z.1.yNext) = rEdge 1.
+```
+
+The first equation is not replaced by `r + card tau = rEdge 0`; the enlarged
+determinant sector imposes no full-rank condition on `z.2`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-rank-pointwise-support.md
+```
+
+Boundary: one-way pointwise/local/measure support for chart-produced source
+families only.  No source-rank coverage, equality with a source-rank stratum,
+finite atlas coverage, source-prior transport, Haar/Jacobian transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; touched
+Lean-file forbidden-marker scan; direct axiom probe; and xhigh read-only
+review by `Hume the 4th`.  The three declarations live under
+`PaperEndpointFixedBaseRegularCoordinateSourceData` and report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, p.13 readback-slice finite integral
 
 Lean now has:
