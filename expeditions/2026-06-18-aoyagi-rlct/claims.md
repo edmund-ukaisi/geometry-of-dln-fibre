@@ -10,6 +10,45 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 endpoint-density prior readback finite-integral transfer - 2026-07-03
+
+- **Statement.** In the enlarged with-following Case 2 source chart, endpoint
+  reference-image equality with endpoint Haar weighted by the formal product
+  determinant density, endpoint determinant domination, source-density lower
+  bound, and local prior-density upper bound give a finite-scalar domination
+  for `Measure.map readback (originalPrior.restrict chartPiece)`.  If a product
+  integrand has measurable source-chart pullback and finite source-side product
+  integral, the same integrand has finite product integral over the restricted
+  original edge-family prior chart piece.
+- **Tier.** A2 readback finite-integral socket for the original-prior lane.
+- **Status.** Lean proved as a conditional transfer theorem.
+- **Kill-condition.** The result is read as proving the endpoint image identity,
+  endpoint determinant lower bound, source-density lower bound, prior-density
+  upper bound, source-side finite integral, plain `Case2PassiveTheta`
+  integrability, source-image coverage, original-prior transport, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 retained-passive p.13 coordinate/source
+  chart and pp. 19-22 Case 2 selected-entry with-following coordinates; the
+  proof itself is elementary measure-domination/readback transfer.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-endpoint-density-prior-readback-finite-integral-transfer.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Herschel the 3rd` confirmed
+  the reproduction note matches the Lean theorem and that the source-side
+  finite integral remains an explicit input.
+- **Lean target.**
+  `exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_of_case2PassiveThetaWithFollowingFactor_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** Focused local build of the target module passed; full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+  touched Lean-file forbidden-marker scan, and direct axiom probe passed.
+  Axiom footprint: `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No endpoint image identity, no endpoint determinant lower
+  bound, no source-density lower bound, no prior-density upper bound, no
+  source-side finite integral, no plain `Case2PassiveTheta` theorem, no
+  source-image coverage, no original-prior transport, no scalar-`1`
+  normalization, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 enlarged following-factor endpoint-sector domination bookkeeping - 2026-07-02
 
 - **Statement.** For the enlarged following-factor Case 2 passive-theta

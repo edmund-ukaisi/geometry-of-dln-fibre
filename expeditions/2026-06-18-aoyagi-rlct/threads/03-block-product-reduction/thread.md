@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 endpoint-density prior readback finite-integral transfer
+
+Reproduction:
+`reproduction-a2-endpoint-density-prior-readback-finite-integral-transfer.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now proves:
+
+```text
+exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_of_case2PassiveThetaWithFollowingFactor_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper
+```
+
+This is a transfer socket only: after the endpoint-density prior readback
+domination package supplies finite scalar domination of
+`map readback (originalPrior.restrict chartPiece)`, the generic product
+readback lemma transfers any explicitly finite source-side product integral
+to the restricted original prior chart piece.
+
+Boundary: endpoint reference-image equality, endpoint determinant lower bound,
+source-density lower bound, prior-density upper bound, and source-side finite
+integral remain inputs.  No plain `Case2PassiveTheta` theorem, source-image
+coverage, original-prior transport, scalar normalization, normal crossings,
+pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Herschel the 3rd` found no issue.
+
 ## 2026-07-03 A2 arbitrary source patch active-chart source cylinder
 
 Reproduction:

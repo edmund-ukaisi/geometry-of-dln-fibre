@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, endpoint-density prior readback finite-integral transfer
+
+Lean now has:
+
+```text
+exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_of_case2PassiveThetaWithFollowingFactor_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper
+```
+
+Decision: close the localized with-following prior readback finite-integral
+transfer as a transfer theorem only.  The source-side product integral remains
+an explicit hypothesis.  The proof composes the endpoint-density original-volume
+readback wrapper with the bounded prior-density handoff and the generic
+`lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul` lemma.  Local
+`SFinite` witnesses are only finite-dimensional coordinate-volume bookkeeping.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-density-prior-readback-finite-integral-transfer.md
+```
+
+Next controller target: do not stack another readback-only wrapper here.  Either
+feed this theorem with an actually proved with-following source-side finite
+integral and endpoint determinant-density package, or continue the endpoint
+image/Haar route that could supply those hypotheses.
+
+Boundary: endpoint reference-image equality, endpoint determinant lower bound,
+source-density lower bound, prior-density upper bound, and source-side finite
+integral are all inputs.  This proves no plain `Case2PassiveTheta` result,
+source-image coverage, original-prior transport, scalar normalization,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+theorem reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only
+reviewer `Herschel the 3rd` found no issue and confirmed that the source-side
+finite integral and all endpoint/density hypotheses remain explicit.
+
 ## Latest controller decision - 2026-07-03, endpoint reference image univ active Haar scalar
 
 Lean now has:

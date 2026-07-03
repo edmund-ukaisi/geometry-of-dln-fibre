@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Endpoint-Density Prior Readback Finite-Integral Transfer - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_of_case2PassiveThetaWithFollowingFactor_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+map readback (originalPrior.restrict chartPiece)
+  <= Cprior * coordinateSourceMeasure.restrict G,
+Cprior < infinity,
+sourceChart (readback E) = E on chartPiece,
+finite integral of F(sourceChart z, u) over coordinateSourceMeasure.restrict G
+==> finite integral of F(E, u) over originalPrior.restrict chartPiece.
+```
+
+The proof uses the with-following endpoint-density original-volume readback
+wrapper, the original-prior bounded-density domination, and the generic
+a.e.-measurable readback finite-integral transfer lemma.  The local `SFinite`
+instances unfold the original edge-family prior to finite-dimensional product
+coordinate volume; they add no analytic hypothesis.
+
+Boundary: the theorem does not prove the endpoint reference-image identity,
+endpoint determinant lower bound, source-density lower bound, prior-density
+upper bound, or source-side finite integral.  It does not bridge back to plain
+`Case2PassiveTheta`, identify the source integral with Aoyagi's p.13 residual
+product theorem, normalize Haar scalars to `1`, prove source-image coverage,
+original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Herschel the 3rd` found no issue and confirmed the transfer-only boundary.
+
+Next controller target: either supply the source-side finite-integral and
+endpoint-density hypotheses from the active endpoint/Haar route, or leave this
+as the honest readback socket while advancing the remaining endpoint-image
+transport obligations.
+
 ## A2 Endpoint Reference Image Univ Active Haar Scalar - 2026-07-03
 
 Lean now has:
