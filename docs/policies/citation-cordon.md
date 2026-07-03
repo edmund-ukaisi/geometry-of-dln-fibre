@@ -44,6 +44,17 @@ graph (the repo's style discipline bans them separately, and this project uses `
 **accounting** (every cite is a tracked, located axiom); a **human reviews** that the source string is
 the right theorem. Keep the caveat next to the claim, as always.
 
+**Green does NOT verify a cite is CONSISTENT.** The gate accounts an `@[cited]` axiom; it does not
+check that the axiom is *true* — or even *satisfiable*. An inconsistent cited axiom (one whose body is
+false at some instance satisfying its hypotheses) passes green and silently makes everything downstream
+vacuous. This is not hypothetical: the RLCT continuation cite passed the gate green while, as first
+written, proving `False` (an `∃`-body demanding a pole where the pinned continuation was holomorphic;
+caught only by counterexample-driven review, not the gate). So a `@[cited]` axiom needs a **consistency
+review** — not just source-faithfulness: hunt for an instance satisfying every hypothesis where the
+conclusion fails. An axiom that *pins a unique object* (e.g. `∀ …, Z = f` via an identity theorem) is
+especially prone — a later conjunct can contradict the pinned object. Consistency is a human/reviewer
+job; a concrete counterexample is the check.
+
 ## How to declare a cite
 
 1. Write the cited fact as an `axiom` (not a `theorem` with a `sorry` — a cite is an *assumed external
