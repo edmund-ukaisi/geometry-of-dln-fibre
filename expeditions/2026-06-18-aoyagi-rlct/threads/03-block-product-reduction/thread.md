@@ -21,6 +21,48 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 open coordinate-source finite-integral handoff
+
+Reproduction:
+`reproduction-a2-open-coordinate-source-finite-integral-from-cylinder-domination.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+exists_open_subset_continuousOn_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_leftInverse_subset_followingPatchCylinder
+```
+
+The first theorem preserves `IsOpen followingPatch` through the endpoint
+finite-source/dominated-target package.  The second theorem preserves that
+open witness through the concrete coordinate-source finite-integral wrapper.
+The third theorem shrinks a with-following source-chart neighborhood inside
+the open following-patch cylinder, returning both `V subset G` and
+`V subset {z | z.2 in followingPatch}`.
+
+Boundary: this proves no passive local comparison measure construction, no
+passive-cylinder shrinking, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT.
+
+Focused local builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`
+passed.  Full build and final audits remain to run for this checkpoint.
+
+Explorer notes: `Dalton the 3rd` confirmed the source-chart shrink shape;
+`Hegel the 3rd` identified finite passive local restrict-self comparison as
+the passive frontier; `Aristotle the 3rd` identified the missing determinant
+sector and continuity/finite-value hypotheses for density upper bounds.
+
 ## 2026-07-03 A2 coordinate-source finite integral from cylinder domination
 
 Reproduction:

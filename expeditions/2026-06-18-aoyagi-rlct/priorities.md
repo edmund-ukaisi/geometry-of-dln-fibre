@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, open coordinate-source finite-integral handoff
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+exists_open_subset_continuousOn_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_leftInverse_subset_followingPatchCylinder
+```
+
+Decision: carry `IsOpen followingPatch` through the finite source-cylinder
+and concrete coordinate-source handoffs, then add the source-chart shrinking
+wrapper that chooses `V` inside the open following-patch cylinder.  This is
+the smallest honest way to prepare the continuation
+
+```text
+V subset {z | z.2 in followingPatch}
+```
+
+for later discharge without pretending the caller knew the existential patch
+before it was constructed.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-open-coordinate-source-finite-integral-from-cylinder-domination.md
+```
+
+Boundary: this proves no passive local comparison measure construction, no
+passive-cylinder shrinking, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT.  Scout reviews identify
+the next separate frontiers as finite passive local restrict-self comparison,
+Jacobian a.e. upper bounds under determinant-sector hypotheses, and
+source-density upper bounds under continuity/finite-value hypotheses.
+
 ## Latest controller decision - 2026-07-03, coordinate-source finite integral from cylinder domination
 
 Lean now has:

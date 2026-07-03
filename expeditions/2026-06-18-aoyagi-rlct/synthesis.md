@@ -6,6 +6,62 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Open Coordinate-Source Finite-Integral Handoff - 2026-07-03
+
+Lean now has:
+
+```text
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_productResidual_pos_ae_and_lintegral_rpow_neg_of_measure_le_smul_restrict_sourceCylinder_restrict_of_base_reindexed_det_isUnit
+exists_matrixEntryReference_open_followingPatch_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_passive_restrict_le_smul_and_density_bounds
+exists_open_subset_continuousOn_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_readback_leftInverse_subset_followingPatchCylinder
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The endpoint theorem replays the finite following-patch source-cylinder and
+dominated-target argument using the open matrix-entry patch constructor, so
+the existential witness carries `IsOpen followingPatch`.  The concrete
+coordinate-source wrapper then repeats the previous domination calculation,
+but preserves that open witness.
+
+The source-chart theorem is a separate topological shrinking wrapper: given an
+ambient open `G`, an open following patch, and `z0.2` in the patch, it applies
+the existing with-following source-chart image theorem to
+
+```text
+G ∩ {z | z.2 in followingPatch}
+```
+
+and returns an open `V` with both `V subset G` and
+`V subset {z | z.2 in followingPatch}`.  This is the correct way to discharge
+the following-patch continuation after the patch is in scope.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-open-coordinate-source-finite-integral-from-cylinder-domination.md
+```
+
+Boundary: this proves no passive local comparison measure construction, no
+passive-cylinder shrinking, no Jacobian-density upper bound, no source-density
+upper bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, pole order, or RLCT extraction.
+
+Verification so far: focused local builds of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+and `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`.
+
+Explorer findings: passive local comparison can be attacked separately by a
+finite passive local restrict-self measure plus passive-cylinder openness;
+density bounds require extra hypotheses, namely determinant-sector input for
+the Jacobian bound and continuity/finite-value input for the source-density
+bound.
+
 ## A2 Coordinate-Source Finite Integral From Cylinder Domination - 2026-07-03
 
 Lean now has:
