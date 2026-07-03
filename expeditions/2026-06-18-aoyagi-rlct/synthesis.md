@@ -6,6 +6,77 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Product-Residual Readback, Direct Endpoint Domination - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_restrict_le_smul_endpointReferenceImage_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+unit source-image density
+  ==> finite source integral over coordinateSourceMeasure.restrict Vsource,
+
+readback(sourceChart z) = z on Vsource
+  ==> productResidual(z) = readbackProductResidual(sourceChart z),
+
+rawHaar.restrict endpointPatch <= Cdet * endpointReferenceImage
+  + prior-density upper bound
+  ==> map readback (originalPrior.restrict chartPiece)
+      <= Cprior * baseJ.restrict Vsource,
+
+right inverse on chartPiece and finite Cprior
+  ==> finite original-prior chart-piece integral.
+```
+
+The proof calls the same unit source-image-density source theorem as the
+previous wrapper, then calls the already proved direct endpoint-patch
+prior-domination package with `G := Vsource`.  Because `sourceDensity` is the
+constant `1`, the package simplifies the target source measure from
+`coordinateSourceMeasure` to `baseJ`; the final `PUnit` product integral is
+therefore transferred through
+`lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul` using
+`thetaMu := baseJ.restrict Vsource`.
+
+Controller route decision: prefer this scalar-domination consumer over the
+strong exact endpoint weighted-Haar identity.  Three xhigh audits agree on
+the boundary:
+
+- determinant-density lower bounds are local, coming from positivity and
+  continuity of `retainedPassiveFormalRawOrderJacobianProductAbsDetAt` after
+  shrinking around a determinant-chart point;
+- residual measurability should remain explicit for now, since current source
+  infrastructure gives local continuity/a.e.-measurability rather than the
+  theorem's global pullback measurability socket;
+- the active endpoint/Haar route already supplies scalar domination from an
+  active writeback image, but the missing honest step is containment of the
+  p.13 endpoint patch in that active writeback image.
+
+Boundary: endpoint scalar domination, prior-density upper bound, and
+measurability of the readback residual pullback remain explicit hypotheses.
+No endpoint Haar transport, active-image containment, determinant-density
+lower-bound shrink, source-image coverage, original-prior transport, normal
+crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: prove the local active-image containment for the p.13
+endpoint patch, or record it as the remaining scalar endpoint-domination
+hypothesis if it proves to be the real frontier.
+
 ## A2 With-Following Original-Prior Product-Residual Readback, Unit Source Density - 2026-07-03
 
 Lean now has:

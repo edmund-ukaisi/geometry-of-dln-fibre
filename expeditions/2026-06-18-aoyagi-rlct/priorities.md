@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, direct endpoint-domination original-prior readback product residual
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_restrict_le_smul_endpointReferenceImage_priorDensity_upper
+```
+
+Decision: keep the endpoint input as the weaker direct domination socket
+
+```text
+rawHaar.restrict endpointPatch <= Cdet * endpointReferenceImage
+```
+
+instead of forcing an endpoint `withDensity formalProductAbsDet` identity plus
+a determinant-density lower bound.  This is a better consumer for the active
+endpoint/Haar route, because the available active endpoint theorem already
+produces scalar domination once one proves the endpoint p.13 patch lies in the
+active writeback image.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-original-prior-direct-endpoint-domination.md
+```
+
+Next controller target: prove, after shrinking if necessary, the active-image
+containment for the p.13 endpoint patch, or keep that containment as the
+honest remaining local hypothesis.  Do not spend effort on the stronger exact
+endpoint weighted-Haar identity unless it becomes easier than the scalar route.
+
+Boundary: prior-density upper bound and global measurability of the readback
+residual pullback remain explicit.  The theorem does not prove endpoint Haar
+transport, active-image containment, determinant-density lower bounds,
+source-image coverage, normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, source-image unit original-prior readback product residual
 
 Lean now has:
