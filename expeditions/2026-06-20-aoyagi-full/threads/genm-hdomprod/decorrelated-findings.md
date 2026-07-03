@@ -50,3 +50,15 @@ The rectangular pieces are clean bounded generalizations, now certified decorrel
 m0 m2 a b := a·m2 + b·m0 − ab` is the object to introduce. Open geometry audit flagged by both
 seats: confirm the lambdaCore argument-order / M' width-assignment convention matches the
 (m0=H0−r, m2=H2−r) labelling (a one-line audit against the value chain).
+
+## Reviewer verdict (fidelity + soundness + decorrelated Codex) — SURVIVED
+
+A reviewer (with its own decorrelated Codex xhigh) audited the four built modules: all sorry-free,
+clean-three, mathematically faithful. `d1ge_L2_rect_two_peel` is a GENUINE reduction — the three gates
+(hrank₂, hRne, hInterface) are fed the chart's OWN facts as antecedents (the established non-laundering
+idiom), satisfiability witnessed inside; none is a disguised wall or a restatement of the conclusion;
+the `extra/2` gap is supplied by the honest quasi-split engine (not hInterface ⟹ not circular); the
+degraded-core value is a genuinely separate banked R1 result. The item-5 C² is real (bump at (n:=2) on
+a ContDiffOn ℝ 2 composite). The cross-paired extra confirmed the load-bearing one; non-vacuity
+tight-checked at (5,6,3,2,1). One precision note actioned: co-located an `a=b=0` non-vacuity caveat
+(the reduction is content-bearing only at a genuine middle stratum). NOTHING laundered.

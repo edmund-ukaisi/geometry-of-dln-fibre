@@ -59,7 +59,13 @@ the R1 degraded-core interface `hInterface`, the deepest point has `≤` local R
 The FIRST peel (`dln_hchart_residual_c2`, `C²` + slice-vanishing) is built INSIDE; its `hAtV` half
 (`rlctAt_ge_nReg_add_slice_of_residual`, `C¹`-downgraded) + the second-peel `hCore`
 (`hCoreRect_of_slice_data`) close through `deepest_le_of_optimal_via_L2_ge`. `M = fun s => H s − r`,
-`extra = extraCountRect (M 0) (M 2) a b` (cross-paired). -/
+`extra = extraCountRect (M 0) (M 2) a b` (cross-paired).
+
+CONTENT-BEARING only at a genuine MIDDLE stratum (`a`, `b` the actual layer-rank rises at `v`, so
+`extra > 0`). At `a = b = 0` (deepest-type `v`) it is sound but vacuous — `extra = 0`, the second peel
+adds no `extra/2`, and `hInterface` collapses to identifying the slice RLCT directly with
+`lambdaCore(H − r)`. The caller must instantiate `(a, b)` at the true rises at `v` (the `(m,a,b)`
+extraction — one of the three named gates), NOT treat the `a = b = 0` instance as the hard reduction. -/
 theorem d1ge_L2_rect_two_peel
     (H : Fin (2 + 1) → ℕ) (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
     (deepest v : Params H) (a b : ℕ)
