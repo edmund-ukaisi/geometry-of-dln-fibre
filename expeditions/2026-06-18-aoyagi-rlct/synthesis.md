@@ -6,6 +6,70 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Endpoint-Patch Null-Measurability - 2026-07-03
+
+Lean now has:
+
+```text
+nullMeasurableSet_inter_preimage_inter_of_aemeasurable_comp
+nullMeasurableSet_topologyTupleDetChart_inter_rawOrder_preimage_p13RawOrderSourceChart_chartPiece
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+```
+
+The generic helper converts a.e.-measurability of `χ ∘ φ` on `μ.restrict S`,
+a map condition `φ(S) ⊆ T`, and a measurable chart piece `C` into
+null-measurability of
+
+```text
+S ∩ φ ⁻¹' (T ∩ χ ⁻¹' C).
+```
+
+The p.13 specialization applies this with `S = rawDetChart`,
+`T = rawSourceSet`, `φ = rawOrderOnEndpoint`, and `χ = rawChart`.  For a
+measurable p.13 chart piece and
+
+```text
+P = rawSourceSet ∩ rawChart ⁻¹' chartPiece,
+```
+
+it proves `P ⊆ rawSourceSet` and
+
+```text
+NullMeasurableSet
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P) m.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-patch-null-measurability.md
+```
+
+Boundary: this closes only null-measurability for the natural localized
+endpoint patch.  It does not prove scalar domination by a source-reference
+image, determinant-Haar/raw-Haar transport, original-prior transport,
+source-image coverage, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`,
+`DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge`, and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The two new
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: the scalar domination half of the localized
+endpoint-patch socket.  The plausible route still needs an endpoint image
+density identity or an active-writeback/endpoint-embedding Haar transport
+theorem; the current source-density and raw-order wrappers do not by
+themselves prove determinant-Haar domination.
+
 ## A2 Unit Source-Image Density Finite-Integral Wrapper - 2026-07-03
 
 Lean now has:

@@ -60,6 +60,36 @@ theorem measure_map_withDensity_comp_of_aemeasurable
     _ = ∫⁻ y in t, g y ∂Measure.map f η := by
           rw [lintegral_indicator ht]
 
+/-- If a composite map is a.e. measurable on a restricted source set, then
+the source set intersected with a target-domain chart-piece preimage is
+null-measurable. -/
+theorem nullMeasurableSet_inter_preimage_inter_of_aemeasurable_comp
+    {α β γ : Type*} [MeasurableSpace α] [MeasurableSpace β] [MeasurableSpace γ]
+    {μ : Measure α} {S : Set α} {T : Set β} {φ : α → β} {χ : β → γ}
+    {C : Set γ}
+    (hS : NullMeasurableSet S μ)
+    (hcomp : AEMeasurable (fun x ↦ χ (φ x)) (μ.restrict S))
+    (hmaps : Set.MapsTo φ S T)
+    (hC : MeasurableSet C) :
+    NullMeasurableSet (S ∩ φ ⁻¹' (T ∩ χ ⁻¹' C)) μ := by
+  have hpre :
+      NullMeasurableSet ((fun x ↦ χ (φ x)) ⁻¹' C) (μ.restrict S) :=
+    hcomp.nullMeasurableSet_preimage hC
+  have hpre_lift :
+      NullMeasurableSet (((fun x ↦ χ (φ x)) ⁻¹' C) ∩ S) μ :=
+    (nullMeasurableSet_restrict hS).1 hpre
+  have hsets :
+      ((fun x ↦ χ (φ x)) ⁻¹' C) ∩ S =
+        S ∩ φ ⁻¹' (T ∩ χ ⁻¹' C) := by
+    ext x
+    constructor
+    · intro hx
+      exact ⟨hx.2, ⟨hmaps hx.2, hx.1⟩⟩
+    · intro hx
+      exact ⟨hx.2.2, hx.1⟩
+  rw [← hsets]
+  exact hpre_lift
+
 /-- Push a restricted weighted measure through a map when the source density
 factors through that map almost everywhere.
 

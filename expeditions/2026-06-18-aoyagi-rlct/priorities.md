@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, endpoint-patch null-measurability
+
+Lean now has:
+
+```text
+nullMeasurableSet_inter_preimage_inter_of_aemeasurable_comp
+nullMeasurableSet_topologyTupleDetChart_inter_rawOrder_preimage_p13RawOrderSourceChart_chartPiece
+```
+
+Decision: split the localized determinant-Haar endpoint-patch socket and
+land the natural patch's null-measurability first.  This is a valid layer
+because the existing p.13 raw-order source chart measurability and raw-order
+map continuity prove exactly the measurable-set side of the consumer
+interface, without assuming the harder measure-domination statement.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-patch-null-measurability.md
+```
+
+Remaining target: finite scalar domination for the same natural patch
+
+```text
+P = rawSourceSet ∩ rawChart ⁻¹' chartPiece,
+```
+
+namely a local theorem of the form
+
+```text
+rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P)
+  <= Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+The current route still lacks endpoint Haar/raw-Haar transport or an endpoint
+image density identity with a lower bound.  Do not mark determinant-Haar
+endpoint-patch domination closed from this null-measurability theorem.
+
+Boundary: no scalar domination, endpoint Haar transport, raw-Haar
+normalization, source-image coverage, original-prior transport, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, unit source-image density finite-integral wrapper
 
 Lean now has:

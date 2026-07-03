@@ -96,6 +96,8 @@ theorem paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_eq_tupleToEd
             (d := paperEndpointFixedBaseDim W B U₀) e y) := by
           rw [hmat]
 
+set_option maxHeartbeats 900000 in
+-- The statement expands several fixed-base endpoint tuple aliases in one proof.
 set_option linter.style.longLine false in
 /-- The public p.13 raw-order source chart is a.e. measurable on the
 raw-order source-recursive determinant chart.
@@ -172,6 +174,144 @@ theorem aemeasurable_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
           (W := W) (B := B) (U₀ := U₀) (hU₀ := hU₀) (y := y) hy
     exact hpoint.symm
   exact hpsi.congr hpsi_source
+
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- The statement expands several fixed-base endpoint tuple aliases in one proof.
+/-- Endpoint determinant patches cut out by a measurable p.13 raw-order chart
+piece are null-measurable.
+
+This is only the set-measurability half of the localized endpoint-patch socket:
+it does not prove any scalar domination by an endpoint reference image. -/
+theorem nullMeasurableSet_topologyTupleDetChart_inter_rawOrder_preimage_p13RawOrderSourceChart_chartPiece
+    {U₀ : Submodule ℝ (reverseVertex W 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W) (reverseEdge W B) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W) (reverseEdge W B) U₀) ℝ))
+    {chartPiece :
+      Set
+        (∀ p : Fin (M + 1),
+          reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ)}
+    (hchartPiece : MeasurableSet chartPiece) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W) (reverseEdge W B) U₀
+    let RawTuple := TopologyTuple ρ κ' ℝ
+    let EdgeFamily :=
+      ∀ p : Fin (M + 1),
+        reverseVertex W p.castSucc →L[ℝ] reverseVertex W p.succ
+    let rawOrderOnEndpoint : RawTuple → RawTuple :=
+      topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ')
+    let rawDetChart : Set RawTuple :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let rawSourceSet : Set RawTuple :=
+      topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')
+    let rawChart : RawTuple → EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W B U₀ hU₀
+    let P : Set RawTuple := rawSourceSet ∩ rawChart ⁻¹' chartPiece
+    P ⊆ rawSourceSet ∧
+      NullMeasurableSet (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P) m := by
+  intro ρ κ' RawTuple EdgeFamily rawOrderOnEndpoint rawDetChart
+    rawSourceSet rawChart P
+  change (rawSourceSet ∩ rawChart ⁻¹' chartPiece) ⊆ rawSourceSet ∧
+    NullMeasurableSet
+      (rawDetChart ∩
+        rawOrderOnEndpoint ⁻¹'
+          (rawSourceSet ∩ rawChart ⁻¹' chartPiece)) m
+  constructor
+  · intro y hy
+    exact hy.1
+  have hdet_null : NullMeasurableSet rawDetChart m := by
+    simpa [rawDetChart, RawTuple, ρ, κ'] using
+      nullMeasurableSet_topologyTupleDetChartSet
+        (ρ := ρ) (κ' := κ') m
+  have hdet_meas : MeasurableSet rawDetChart := by
+    simpa [rawDetChart, RawTuple, ρ, κ'] using
+      (isOpen_topologyTupleDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
+  have hrawSource_meas : MeasurableSet rawSourceSet := by
+    simpa [rawSourceSet, RawTuple, ρ, κ'] using
+      (isOpen_topologyTupleRawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ')).measurableSet
+  have hrawOrder_contOn : ContinuousOn rawOrderOnEndpoint rawDetChart := by
+    rw [continuousOn_iff_continuous_restrict]
+    change Continuous
+      (fun y : topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') ↦
+        topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y.1)
+    exact continuous_topologyTupleEdgeRawOrder_detChart_subtype
+      (K := ℝ) (ρ := ρ) (κ' := κ')
+  have hrawOrder_aemeas :
+      AEMeasurable rawOrderOnEndpoint (m.restrict rawDetChart) :=
+    ContinuousOn.aemeasurable₀ hrawOrder_contOn hdet_null
+  have hrawOrder_maps :
+      Set.MapsTo rawOrderOnEndpoint rawDetChart rawSourceSet := by
+    intro y hy
+    simpa [rawOrderOnEndpoint, rawSourceSet, RawTuple, ρ, κ'] using
+      mapsTo_topologyTupleEdgeRawOrder_detChartSet_rawOrderSourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') hy
+  have hrawOrder_mem :
+      ∀ᵐ y ∂m.restrict rawDetChart,
+        rawOrderOnEndpoint y ∈ rawSourceSet := by
+    filter_upwards [ae_restrict_mem hdet_meas] with y hy
+    exact hrawOrder_maps hy
+  have hrawOrder_image_mem :
+      ∀ᵐ y ∂Measure.map rawOrderOnEndpoint (m.restrict rawDetChart),
+        y ∈ rawSourceSet :=
+    (ae_map_iff hrawOrder_aemeas hrawSource_meas).2 hrawOrder_mem
+  have hrawOrder_image_support :
+      (Measure.map rawOrderOnEndpoint (m.restrict rawDetChart)).restrict
+          rawSourceSet =
+        Measure.map rawOrderOnEndpoint (m.restrict rawDetChart) :=
+    Measure.restrict_eq_self_of_ae_mem hrawOrder_image_mem
+  have hrawChart_restrict :
+      AEMeasurable rawChart
+        ((Measure.map rawOrderOnEndpoint (m.restrict rawDetChart)).restrict
+          rawSourceSet) := by
+    simpa [RawTuple, EdgeFamily, rawChart, rawSourceSet, ρ, κ'] using
+      aemeasurable_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_restrict_rawSourceSet
+        (W := W) (B := B) (M := M) (U₀ := U₀) (hU₀ := hU₀)
+        (Measure.map rawOrderOnEndpoint (m.restrict rawDetChart))
+  have hrawChart_map :
+      AEMeasurable rawChart
+        (Measure.map rawOrderOnEndpoint (m.restrict rawDetChart)) := by
+    simpa [hrawOrder_image_support] using hrawChart_restrict
+  have hcomp :
+      AEMeasurable
+        (fun y ↦ rawChart (rawOrderOnEndpoint y))
+        (m.restrict rawDetChart) :=
+    hrawChart_map.comp_aemeasurable hrawOrder_aemeas
+  exact
+    nullMeasurableSet_inter_preimage_inter_of_aemeasurable_comp
+      (μ := m) (S := rawDetChart) (T := rawSourceSet)
+      (φ := rawOrderOnEndpoint) (χ := rawChart) (C := chartPiece)
+      hdet_null hcomp hrawOrder_maps hchartPiece
 
 set_option linter.style.longLine false in
 /-- The p.13 raw-order source chart pushes the restricted raw-coordinate Haar

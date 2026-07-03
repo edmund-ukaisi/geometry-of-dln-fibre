@@ -21,6 +21,57 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 endpoint-patch null-measurability
+
+Reproduction:
+`reproduction-a2-endpoint-patch-null-measurability.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13SourceMeasureBridge.lean
+```
+
+Lean now proves the generic helper:
+
+```text
+nullMeasurableSet_inter_preimage_inter_of_aemeasurable_comp
+```
+
+and the p.13 endpoint-patch specialization:
+
+```text
+nullMeasurableSet_topologyTupleDetChart_inter_rawOrder_preimage_p13RawOrderSourceChart_chartPiece
+```
+
+For a measurable p.13 chart piece and the natural patch
+
+```text
+P = rawSourceSet ∩ rawChart ⁻¹' chartPiece,
+```
+
+the specialization proves `P ⊆ rawSourceSet` and
+
+```text
+NullMeasurableSet
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P) m.
+```
+
+Boundary: this is only the set/null-measurability half of the localized
+endpoint-patch socket.  It does not prove the finite scalar domination
+needed by the readback layer, endpoint Haar transport, raw-Haar
+normalization, source-image coverage, original-prior transport, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff`,
+`DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyP13SourceMeasureBridge`, and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The two new
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 unit source-image density finite-integral wrapper
 
 Reproduction:
