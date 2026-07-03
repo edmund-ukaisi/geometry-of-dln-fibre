@@ -1427,6 +1427,97 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The source-side product-residual readout is continuous in the enlarged
+following-factor theta coordinates. -/
+theorem continuous_case2PassiveThetaWithFollowingFactorProductResidualReadout
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q) :
+    Continuous
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        case2PassiveThetaWithFollowingFactorProductResidualReadout
+          (ρ := ρ) n hS hcont hnext z eNext e) := by
+  let retainedData :
+      Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J →
+        RetainedPassiveNonredundantCoordinateData
+          (K := ℝ) (ρ := ρ) κ' :=
+    fun z ↦
+      case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := ρ) n hS hcont hnext z eNext e
+  have hdata : Continuous retainedData :=
+    continuous_case2PassiveThetaWithFollowingFactorEndpointRetainedData
+      (ρ := ρ) n hS hcont hnext eNext e
+  have hres :
+      Continuous
+        (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+          ChartLocalSuffixState.residualFactorProduct
+            (K := ℝ) (κ := κ') (retainedData z).C
+            (Fin.last 2) 0 (Fin.zero_le (Fin.last 2))) := by
+    exact
+      (ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.continuous_residualFactorProduct_C
+        (M := 1) (ρ := ρ) (K := ℝ) (κ' := κ') 0
+        (Fin.zero_le (Fin.last 2))).comp hdata
+  refine continuous_pi ?_
+  intro ij
+  simpa [case2PassiveThetaWithFollowingFactorProductResidualReadout,
+    retainedData] using
+    (hres.matrix_elem (e (Fin.last 2) ij.1) (e 0 ij.2))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The negative-power source-side product-residual integrand is measurable
+on the enlarged following-factor theta coordinate space. -/
+theorem measurable_case2PassiveThetaWithFollowingFactorProductResidualIntegrand
+    {ρ : Type*} {τ : Type} {κ' : Fin 3 → Type*} [DecidableEq ρ]
+    [∀ j, Fintype (κ' j)] [∀ j, DecidableEq (κ' j)]
+    (n : ℕ → ℕ) {S J : ℕ}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J)]
+    [Fintype τ]
+    (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e : ∀ q : Fin 3, case2PostPivotTwoEdgeDomain n S J τ q ≃ κ' q)
+    {t : ℝ} :
+    Measurable
+      (fun z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J ↦
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorProductResidualReadout
+              (ρ := ρ) n hS hcont hnext z eNext e)) ^ (-t))) := by
+  have hres :
+      Measurable
+        (fun z : Case2PassiveThetaWithFollowingFactor
+            (ρ := ρ) (τ := τ) n S J ↦
+          case2PassiveThetaWithFollowingFactorProductResidualReadout
+            (ρ := ρ) n hS hcont hnext z eNext e) :=
+    (continuous_case2PassiveThetaWithFollowingFactorProductResidualReadout
+      (ρ := ρ) n hS hcont hnext eNext e).measurable
+  have hsq :
+      Measurable
+        (fun z : Case2PassiveThetaWithFollowingFactor
+            (ρ := ρ) (τ := τ) n S J ↦
+          aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorProductResidualReadout
+              (ρ := ρ) n hS hcont hnext z eNext e)) :=
+    measurable_aoyagiCoordinateSquareSum hres
+  exact ENNReal.measurable_ofReal.comp (hsq.pow_const (-t))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Edge-family product residual readout obtained by first applying the
 enlarged endpoint source-chart readback. -/
 def case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout

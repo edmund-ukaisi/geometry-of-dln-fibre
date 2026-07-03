@@ -1981,8 +1981,9 @@ unit source-image-density coordinate-source theorem.  The endpoint input is the
 weaker direct domination
 `rawHaar.restrict endpointPatch <= Cdet • endpointReferenceImage`, rather than
 an endpoint weighted-Haar identity plus determinant-density lower bound.  The
-prior-density upper bound and measurability of the readback residual integrand
-remain explicit hypotheses. -/
+prior-density upper bound remains explicit; source-side a.e.-measurability of
+the readback residual integrand is discharged from the local left-inverse and
+finite-coordinate product-residual measurability. -/
 theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_restrict_le_smul_endpointReferenceImage_priorDensity_upper
     (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
     [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
@@ -2122,7 +2123,6 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
           ((aoyagiCoordinateSquareSum
             (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
               W₂ B₂ n hS hcont hnext hU₀ eNext e E)) ^ (-t))
-    Measurable (fun z : Θ ↦ residualIntegrand (sourceChart z)) →
     ∃ V : Set Θ,
       IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
         (∀ z ∈ V, readback (sourceChart z) = z) ∧
@@ -2156,7 +2156,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
   intro Θ RawTuple EdgeFamily Y referenceSource jacobianDensity baseJ
     sourceChart readback sourceDensity coordinateSourceMeasure rawOrderOnEndpoint
     rawDetChart rawSourceSet p13SourceSet rawChart originalVolume
-    residualIntegrand hmeas
+    residualIntegrand
   rcases
       exists_open_passiveLocalSet_matrixEntryReference_open_followingPatch_open_subset_case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_productResidual_pos_ae_and_lintegral_rpow_neg_of_sourceImageDensity_one
         W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
@@ -2279,8 +2279,51 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
       simpa [Θ, EdgeFamily] using hfinite_source
     let F : EdgeFamily × PUnit.{1} → ℝ≥0∞ := fun z ↦ residualIntegrand z.1
     have hF_source :
-        Measurable (fun z : Θ × PUnit.{1} ↦ F (sourceChart z.1, z.2)) := by
-      simpa [F] using hmeas.comp measurable_fst
+        AEMeasurable (fun z : Θ × PUnit.{1} ↦ F (sourceChart z.1, z.2))
+          ((baseJ.restrict Vsource).prod
+            (Measure.dirac (PUnit.unit : PUnit.{1}))) := by
+      have hsource_product_meas :
+          Measurable
+            (fun z : Θ ↦
+              ENNReal.ofReal
+                ((aoyagiCoordinateSquareSum
+                  (case2PassiveThetaWithFollowingFactorProductResidualReadout
+                    (ρ := Fin (Module.finrank ℝ U₀))
+                    n hS hcont hnext z eNext e)) ^ (-t))) := by
+        simpa [Θ] using
+          measurable_case2PassiveThetaWithFollowingFactorProductResidualIntegrand
+            (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+            n hS hcont hnext eNext e (t := t)
+      have hsource_readback_ae :
+          AEMeasurable (fun z : Θ ↦ residualIntegrand (sourceChart z))
+            (baseJ.restrict Vsource) := by
+        have hcongr :
+            (fun z : Θ ↦
+              ENNReal.ofReal
+                ((aoyagiCoordinateSquareSum
+                  (case2PassiveThetaWithFollowingFactorProductResidualReadout
+                    (ρ := Fin (Module.finrank ℝ U₀))
+                    n hS hcont hnext z eNext e)) ^ (-t))) =ᵐ[
+                baseJ.restrict Vsource]
+              fun z : Θ ↦ residualIntegrand (sourceChart z) := by
+          filter_upwards [ae_restrict_mem hVsource_open.measurableSet] with z hz
+          have hsquare :=
+            aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout_sourceChart_eq_of_leftInverse
+              W₂ B₂ n hS hcont hnext hU₀ eNext e z (hleft_source z hz)
+          simpa [residualIntegrand, sourceChart] using
+            congrArg (fun x : ℝ => ENNReal.ofReal (x ^ (-t))) hsquare.symm
+        exact hsource_product_meas.aemeasurable.congr hcongr
+      have hfst :
+          AEMeasurable (fun z : Θ × PUnit.{1} ↦ residualIntegrand (sourceChart z.1))
+            ((baseJ.restrict Vsource).prod
+              (Measure.dirac (PUnit.unit : PUnit.{1}))) :=
+        hsource_readback_ae.comp_quasiMeasurePreserving
+          (Measure.quasiMeasurePreserving_fst
+            (μ := baseJ.restrict Vsource)
+            (ν := Measure.dirac (PUnit.unit : PUnit.{1})))
+      simpa [F] using hfst
     have hfinite_source_prod :
         (∫⁻ z : Θ × PUnit.{1}, F (sourceChart z.1, z.2) ∂
           (baseJ.restrict Vsource).prod
@@ -2299,7 +2342,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
     have htarget_prod :
         (∫⁻ z : EdgeFamily × PUnit.{1}, F z ∂
           priorPiece.prod (Measure.dirac (PUnit.unit : PUnit.{1}))) < ∞ :=
-      lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul
+      lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul_of_aemeasurable_source
         (Θ := Θ) (E := EdgeFamily) (β := PUnit.{1})
         (μ := priorPiece) (θμ := baseJ.restrict Vsource)
         (η := Measure.dirac (PUnit.unit : PUnit.{1})) (readback := readback)
@@ -2331,7 +2374,7 @@ The local set is first shrunk inside the selected-pivot nonzero locus, so the
 active endpoint theorem can be applied with `Omega := V`.  The only endpoint
 geometry still assumed is the containment of the p.13 endpoint patch in the
 active writeback image of the selected-entry active patch.  Prior-density
-upper bounds and readback residual measurability remain explicit hypotheses. -/
+upper bounds remain explicit. -/
 theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_priorDensity_upper
     (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
     [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
@@ -2484,7 +2527,6 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
     let activeWriteback : Θ ≃L[ℝ] RawTuple :=
       (Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveContinuousLinearEquiv
         (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n e).symm
-    Measurable (fun z : Θ ↦ residualIntegrand (sourceChart z)) →
     ∃ V : Set Θ,
       IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
         (∀ z ∈ V, readback (sourceChart z) = z) ∧
@@ -2512,7 +2554,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
     sourceChart readback sourceDensity coordinateSourceMeasure rawOrderOnEndpoint
     rawDetChart rawSourceSet p13SourceSet rawChart originalVolume
     residualIntegrand pivotNext signedBox sourceCylinder activeChart
-    activeWriteback hmeas
+    activeWriteback
   let pivotSet : Set Θ :=
     {z | case2PassiveThetaPivotNonzero
       (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1}
@@ -2533,7 +2575,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
       exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_restrict_le_smul_endpointReferenceImage_priorDensity_upper
         W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
         eNext e z₀ hdet₀ hpivot₀ hF₀det (t := t) Rres ht hRres hcrit
-        Gpivot hGpivot_open hz₀Gpivot hmeas with
+        Gpivot hGpivot_open hz₀Gpivot with
     ⟨V, hV_open, hz₀V, hVGpivot, hleft_V, hsource_inj_V,
       hsource_contOn_V, hsource_image_meas_V, himage_p13_V, hfinite_package⟩
   have hVG : V ⊆ G := by
@@ -2746,7 +2788,6 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
     let activeWriteback : Θ ≃L[ℝ] RawTuple :=
       (Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveContinuousLinearEquiv
         (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n e).symm
-    Measurable (fun z : Θ ↦ residualIntegrand (sourceChart z)) →
     ∃ V : Set Θ,
       IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
         (∀ z ∈ V, readback (sourceChart z) = z) ∧
@@ -2769,7 +2810,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
     sourceChart readback sourceDensity coordinateSourceMeasure rawOrderOnEndpoint
     rawDetChart rawSourceSet p13SourceSet rawChart originalVolume
     residualIntegrand pivotNext signedBox sourceCylinder activeChart
-    activeWriteback hmeas
+    activeWriteback
   rcases
       (by
         simpa [RawTuple, EdgeFamily, Y, sourceChart, readback,
@@ -2782,7 +2823,7 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
       exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_priorDensity_upper
         W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
         eNext e z₀ hdet₀ hpivot₀ hF₀det (t := t) Rres ht hRres hcrit
-        Vraw hVraw_open hz₀Vraw hmeas with
+        Vraw hVraw_open hz₀Vraw with
     ⟨V, hV_open, hz₀V, hV_Vraw, hleft_V, hsource_inj_V,
       hsource_contOn_V, hsource_image_meas_V, himage_p13_V, hfinite_package⟩
   have hVG : V ⊆ G := by

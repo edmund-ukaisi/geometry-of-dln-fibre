@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Readback Product-Residual Source-Side Measurability - 2026-07-03
+
+Lean now has:
+
+```text
+lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul_of_aemeasurable_source
+
+continuous_case2PassiveThetaWithFollowingFactorProductResidualReadout
+
+measurable_case2PassiveThetaWithFollowingFactorProductResidualIntegrand
+```
+
+and the direct endpoint-domination wrapper plus its active and source-cylinder
+consumers no longer require the caller to supply
+`Measurable (fun z : Θ => residualIntegrand (sourceChart z))`.
+
+The pen-and-paper calculation is:
+
+```text
+z ↦ productResidual(z) is finite-coordinate continuous/measurable,
+
+z ∈ Vsource and readback(sourceChart z) = z
+  ==> readbackProductResidual(sourceChart z) = productResidual(z),
+
+therefore residualIntegrand(sourceChart z) is a.e.-measurable on
+baseJ.restrict Vsource.
+```
+
+The generic measure-transfer lemma now asks for a.e.-measurability of the
+source-side product integrand with respect to `θμ.prod η`, not global
+measurability of the target pullback.  The concrete wrapper supplies this by
+combining the new finite-coordinate source-side measurability theorem with
+the local left-inverse equality on the `Vsource` returned by the unit
+source-image-density finite-integral theorem.
+
+Boundary: this closes the readback residual measurability socket only for the
+direct scalar-domination original-prior route and its active/source-cylinder
+consumers.  It does not prove global readback-pullback measurability, endpoint
+Haar transport, active-image containment, source-image coverage, normal
+crossings, pole order, or RLCT extraction.
+
+Verification passed: full local `lake build DLNFibre` from `lean/`;
+`scripts/sorries`; `git diff --check`; touched Lean-file marker scan; and
+direct axiom probe.  The probed declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Original-Prior Product-Residual Readback, Source-Cylinder Active Containment - 2026-07-03
 
 Lean now has a pure endpoint containment lemma and a concrete finite-integral
@@ -54,8 +100,10 @@ Boundary: the chart-piece support is strengthened to
 `chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.  This is deliberate:
 the active endpoint reference source is supported on the signed-box cylinder,
 and no existing theorem gives `V ⊆ sourceCylinder`.  Prior-density upper bound
-and readback residual pullback measurability remain explicit.  No source-image
-coverage, normal crossings, pole order, or RLCT extraction is proved.
+remains explicit; the readback residual pullback measurability needed by this
+scalar-domination route is now discharged internally from source-side
+a.e.-measurability.  No source-image coverage, normal crossings, pole order, or
+RLCT extraction is proved.
 
 Verification passed: focused local build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
@@ -104,10 +152,12 @@ bookkeeping, and local forward source-chart facts; what is missing is the
 reverse set-level containment for arbitrary endpoint points in
 `rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P`.
 
-Boundary: active-image containment, prior-density upper bound, and
-measurability of the readback residual pullback remain explicit.  No endpoint
-patch/source-image containment, determinant lower-bound shrink, source-image
-coverage, normal crossings, pole order, or RLCT is proved.
+Boundary: active-image containment and prior-density upper bound remain
+explicit.  The readback residual pullback measurability needed by this
+scalar-domination route is discharged internally from source-side
+a.e.-measurability.  No endpoint patch/source-image containment, determinant
+lower-bound shrink, source-image coverage, normal crossings, pole order, or
+RLCT is proved.
 
 Verification passed: focused local build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
@@ -163,18 +213,19 @@ the boundary:
 - determinant-density lower bounds are local, coming from positivity and
   continuity of `retainedPassiveFormalRawOrderJacobianProductAbsDetAt` after
   shrinking around a determinant-chart point;
-- residual measurability should remain explicit for now, since current source
-  infrastructure gives local continuity/a.e.-measurability rather than the
-  theorem's global pullback measurability socket;
+- the global readback-pullback measurability theorem remains unproved, but
+  this route avoids needing it by transferring with source-side
+  a.e.-measurability on `Vsource`;
 - the active endpoint/Haar route already supplies scalar domination from an
   active writeback image, but the missing honest step is containment of the
   p.13 endpoint patch in that active writeback image.
 
-Boundary: endpoint scalar domination, prior-density upper bound, and
-measurability of the readback residual pullback remain explicit hypotheses.
-No endpoint Haar transport, active-image containment, determinant-density
-lower-bound shrink, source-image coverage, original-prior transport, normal
-crossings, pole order, or RLCT is proved.
+Boundary: endpoint scalar domination and prior-density upper bound remain
+explicit hypotheses.  The theorem proves only the local source-side
+a.e.-measurability needed for the transfer, not a global readback-pullback
+measurability theorem.  No endpoint Haar transport, active-image containment,
+determinant-density lower-bound shrink, source-image coverage, original-prior
+transport, normal crossings, pole order, or RLCT is proved.
 
 Verification passed: focused local build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;

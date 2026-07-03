@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-side readback product-residual measurability
+
+Lean now has:
+
+```text
+lintegral_prod_lt_top_of_aemeasurable_readback_map_le_smul_of_aemeasurable_source
+
+continuous_case2PassiveThetaWithFollowingFactorProductResidualReadout
+
+measurable_case2PassiveThetaWithFollowingFactorProductResidualIntegrand
+```
+
+and the direct/active/source-cylinder original-prior readback product-residual
+wrappers no longer expose the hypothesis
+
+```text
+Measurable (fun z : Θ => residualIntegrand (sourceChart z))
+```
+
+Decision: close only the local source-side measurability socket needed by the
+scalar-domination route.  The proof does not assert a global readback-pullback
+measurability theorem.  It proves finite-coordinate source-side measurability,
+then uses the local left-inverse identity on `Vsource` to identify that
+integrand a.e. with `residualIntegrand (sourceChart z)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-measurability.md
+```
+
+Verification passed: full local `lake build DLNFibre` from `lean/`;
+`scripts/sorries`; `git diff --check`; touched Lean-file marker scan; and
+direct axiom probe.  The new handoff lemma, source-side continuity/
+measurability declarations, and the three strengthened wrappers report
+`[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: after this closure, the scalar-domination route's
+explicit sockets are geometric endpoint/source-cylinder containment and
+prior-density upper bound.  Do not reopen a global readback-measurability
+problem unless a later endpoint-density wrapper specifically needs it.
+
 ## Latest controller decision - 2026-07-03, source-cylinder-supported active endpoint containment
 
 Lean now has:
@@ -82,7 +124,9 @@ remains an explicit hypothesis.  Xhigh read-only audit found no existing Lean
 theorem proving this containment from `chartPiece ⊆ sourceChart '' V`; it is
 plausibly reachable only after strengthening the chart-piece/source-cylinder
 input or proving a new set-level source-image theorem.  Prior-density upper
-bound and readback residual pullback measurability remain explicit.
+bound remains explicit; the readback residual pullback measurability needed by
+this scalar-domination route is now discharged internally from source-side
+a.e.-measurability.
 
 Artifact:
 
@@ -132,10 +176,12 @@ containment for the p.13 endpoint patch, or keep that containment as the
 honest remaining local hypothesis.  Do not spend effort on the stronger exact
 endpoint weighted-Haar identity unless it becomes easier than the scalar route.
 
-Boundary: prior-density upper bound and global measurability of the readback
-residual pullback remain explicit.  The theorem does not prove endpoint Haar
-transport, active-image containment, determinant-density lower bounds,
-source-image coverage, normal crossings, pole order, or RLCT extraction.
+Boundary: prior-density upper bound remains explicit.  The theorem does not
+prove a global readback-pullback measurability theorem; it proves only the
+source-side a.e.-measurability needed on the local source set.  It does not
+prove endpoint Haar transport, active-image containment, determinant-density
+lower bounds, source-image coverage, normal crossings, pole order, or RLCT
+extraction.
 
 Verification passed: focused local build of
 `DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
