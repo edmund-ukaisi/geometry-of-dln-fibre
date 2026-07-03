@@ -21,6 +21,54 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 concrete coordinate-source two-density handoff
+
+Reproduction:
+`reproduction-a2-concrete-coordinate-source-two-density-handoff.md`.
+
+Lean file:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+Lean now proves:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul_of_lt_top
+```
+
+These are the concrete with-following wrappers around the generic
+two-density handoff.  They unfold the named Aoyagi source stack
+
+```text
+referenceSource -> baseJ -> coordinateSourceMeasure
+```
+
+and prove that base domination plus local upper bounds on the Jacobian density
+and source-image density imply
+
+```text
+coordinateSourceMeasure.restrict V
+  <= (CS * (CJ * Cbase)) • nu.
+```
+
+The comparison measure `nu` stays abstract so later work can instantiate it
+with the finite following-patch cylinder after proving the separate
+product-cylinder/passive-local base domination.
+
+Boundary: this proves no passive local domination, no finite-cylinder
+domination for `referenceSource.restrict V`, no Jacobian-density upper bound,
+no source-density upper bound, no determinant-Haar/raw-Haar transport, no
+original-prior transport, no normal crossings, pole order, or RLCT.
+
+Focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`, full
+local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched
+Lean-file marker scan, and direct axiom probes passed.  The new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-03 A2 two-density domination handoff
 
 Reproduction:

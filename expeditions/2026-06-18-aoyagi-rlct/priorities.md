@@ -12,6 +12,34 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, concrete coordinate-source two-density handoff
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul_of_lt_top
+```
+
+Decision: specialize the generic two-density adapter to the concrete
+with-following Aoyagi coordinate source measure, while keeping the comparison
+measure abstract.  Downstream code can instantiate that comparison measure
+with the finite following-patch cylinder, but this theorem does not fold in
+the passive product-cylinder domination proof.  This keeps the boundary
+honest: the concrete theorem consumes `referenceSource.restrict V <= Cbase •
+nu`, the Jacobian-density upper bound, and the source-density upper bound.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-concrete-coordinate-source-two-density-handoff.md
+```
+
+Boundary: this proves no passive local domination, no finite-cylinder
+domination for `referenceSource.restrict V`, no Jacobian-density bound, no
+source-density bound, no determinant-Haar/raw-Haar transport, no original-prior
+transport, no normal crossings, no pole order, and no RLCT.
+
 ## Latest controller decision - 2026-07-03, two-density domination handoff
 
 Lean now has:

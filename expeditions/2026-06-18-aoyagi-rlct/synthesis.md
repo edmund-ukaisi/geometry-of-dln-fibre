@@ -6,6 +6,61 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Concrete Coordinate-Source Two-Density Handoff - 2026-07-03
+
+Lean now has:
+
+```text
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul
+case2PassiveThetaWithFollowingFactor_coordinateSourceMeasure_restrict_le_smul_of_referenceSource_restrict_le_smul_of_lt_top
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+These theorems specialize the generic two-density measure handoff to the
+concrete with-following Aoyagi coordinate source stack:
+
+```text
+referenceSource
+  -> referenceSource.withDensity jacobianDensity = baseJ
+  -> baseJ.withDensity sourceDensity = coordinateSourceMeasure.
+```
+
+For any comparison measure `nu`, if `referenceSource.restrict V <= Cbase •
+nu`, `jacobianDensity <= CJ` a.e. on `referenceSource.restrict V`, and
+`sourceDensity <= CS` a.e. on `baseJ.restrict V`, then
+
+```text
+coordinateSourceMeasure.restrict V
+  <= (CS * (CJ * Cbase)) • nu.
+```
+
+The finite wrapper also records `CS * (CJ * Cbase) < infinity` from finite
+`Cbase`, `CJ`, and `CS`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-concrete-coordinate-source-two-density-handoff.md
+```
+
+Boundary: this is not yet the finite-integral theorem for the coordinate
+source.  It proves no passive local domination, no domination of
+`referenceSource.restrict V` by the finite following-patch cylinder, no
+Jacobian-density upper bound, no source-density upper bound, no
+determinant-Haar/raw-Haar transport, no original-prior transport, no normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`, full
+local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched
+Lean-file marker scan, and direct axiom probes.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Two-Density Domination Handoff - 2026-07-03
 
 Lean now has:
