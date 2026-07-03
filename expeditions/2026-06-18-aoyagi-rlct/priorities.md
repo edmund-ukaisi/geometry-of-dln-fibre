@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, active product reference full Haar restriction
+
+Lean now has:
+
+```text
+isAddHaarMeasure_matrixEntryReferenceMeasure
+measurableAdd_case2PassiveThetaPassiveFields
+isAddHaarMeasure_case2PassiveThetaPassiveFieldReferenceMeasure
+case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+case2PassiveThetaWithFollowingFactor_activeSelectedEntryProductReference_eq_activeFullSourceHaar_restrict
+```
+
+Decision: prove the full active-coordinate product reference is additive Haar
+and identify the selected-entry active product reference produced by the COV
+as its restriction to the active-center chart-image cylinder.  This is the
+right next layer because it fills the source-Haar input needed by the active
+writeback Haar-scalar theorem without asserting endpoint determinant-Haar
+transport.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-active-product-reference-full-haar-restriction.md
+```
+
+Next controller target: compose the selected-entry active-chart COV, this
+restricted-full-Haar identification, and the active-writeback Haar-scalar
+transport first for the clean `Omega = univ` endpoint-image case, then decide
+whether the arbitrary-source-patch version needs an injectivity/image bridge.
+
+Boundary: the restricted selected-entry product is not claimed Haar; no
+scalar-`1` normalization, endpoint determinant-Haar identity, weighted-Haar
+endpoint image identity, arbitrary `Omega` active-chart restriction rewrite,
+p.13 image-set matching, Jacobian formula, raw-Haar transport, source-image
+coverage, original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The six new
+declarations report `[propext, Classical.choice, Quot.sound]`.  Xhigh
+read-only reviewer `Erdos the 3rd` found no blocking issue and confirmed the
+restriction-cylinder shape and nonclaim boundaries.
+
 ## Latest controller decision - 2026-07-03, active endpoint coordinate linear equivalence / Haar-scalar transport
 
 Lean now has:

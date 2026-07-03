@@ -1,5 +1,7 @@
 import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceMeasure
+import Mathlib.MeasureTheory.Group.Prod
+import Mathlib.MeasureTheory.Measure.Lebesgue.EqHaar
 
 /-!
 # Case 2 passive theta endpoint reference measure
@@ -22,6 +24,23 @@ namespace Aoyagi
 
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+
+set_option linter.style.longLine false in
+/-- Product types inherit measurable additive translations from their two
+factors.  This local constructor keeps the Aoyagi coordinate-product Haar
+proofs explicit where Mathlib has no direct instance available at this pin. -/
+theorem measurableAdd_prod_of_measurableAdd
+    {α β : Type*} [MeasurableSpace α] [MeasurableSpace β]
+    [Add α] [Add β] [MeasurableAdd α] [MeasurableAdd β] :
+    MeasurableAdd (α × β) where
+  measurable_const_add c := by
+    change Measurable (fun x : α × β => (c.1 + x.1, c.2 + x.2))
+    exact ((measurable_const_add c.1).comp measurable_fst).prod
+      ((measurable_const_add c.2).comp measurable_snd)
+  measurable_add_const c := by
+    change Measurable (fun x : α × β => (x.1 + c.1, x.2 + c.2))
+    exact ((measurable_add_const c.1).comp measurable_fst).prod
+      ((measurable_add_const c.2).comp measurable_snd)
 
 /-- Coordinate-product Lebesgue reference measure on a real matrix type,
 aligned with the Pi measurable-space instance on matrix entries. -/
@@ -55,6 +74,24 @@ theorem sFinite_matrixEntryReferenceMeasure
   haveI : SigmaFinite (matrixEntryReferenceMeasure m n) :=
     sigmaFinite_matrixEntryReferenceMeasure m n
   infer_instance
+
+set_option linter.style.longLine false in
+/-- The full coordinate-product reference measure on a finite real matrix
+space is additive Haar. -/
+theorem isAddHaarMeasure_matrixEntryReferenceMeasure
+    (m n : Type*) [Fintype m] [Fintype n] :
+    (matrixEntryReferenceMeasure m n).IsAddHaarMeasure := by
+  change
+    (Measure.pi fun _ : m =>
+      Measure.pi fun _ : n => (volume : Measure ℝ)).IsAddHaarMeasure
+  haveI hrow :
+      ∀ _ : m,
+        (Measure.pi fun _ : n => (volume : Measure ℝ)).IsAddHaarMeasure := by
+    intro _
+    simpa [volume_pi] using (isAddHaarMeasure_volume_pi n)
+  exact
+    Measure.pi.isAddHaarMeasure
+      (fun _ : m => Measure.pi fun _ : n => (volume : Measure ℝ))
 
 /-- Entrywise open coordinate box around a real matrix.  This is the finite
 Pi-box replacement for metric balls on matrix types; it is tailored to the
@@ -444,6 +481,47 @@ noncomputable def case2PassiveThetaPassiveFieldReferenceMeasure
   A1Measure.prod (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure)))
 
 set_option linter.style.longLine false in
+set_option linter.unusedFintypeInType false in
+/-- The passive-field coordinate product has measurable additive
+translations. -/
+theorem measurableAdd_case2PassiveThetaPassiveFields
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    MeasurableAdd
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J) := by
+  change
+    MeasurableAdd
+      ((Fin 1 → Matrix ρ ρ ℝ) ×
+        ((∀ p : Fin 2,
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) ×
+          ((∀ p : Fin 1,
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) ×
+            (Matrix ρ ρ ℝ ×
+              Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ))))
+  haveI hCtopF3Meas :
+      MeasurableAdd
+        (Matrix ρ ρ ℝ ×
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ) :=
+    measurableAdd_prod_of_measurableAdd
+  haveI hA3RestMeas :
+      MeasurableAdd
+        ((∀ p : Fin 1,
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) ×
+          (Matrix ρ ρ ℝ ×
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)) :=
+    measurableAdd_prod_of_measurableAdd
+  haveI hF2RestMeas :
+      MeasurableAdd
+        ((∀ p : Fin 2,
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) ×
+          ((∀ p : Fin 1,
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) ×
+            (Matrix ρ ρ ℝ ×
+              Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ))) :=
+    measurableAdd_prod_of_measurableAdd
+  exact measurableAdd_prod_of_measurableAdd
+
+set_option linter.style.longLine false in
 /-- The coordinate-product reference measure on the passive fields is
 sigma-finite. -/
 theorem sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
@@ -604,6 +682,262 @@ theorem sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
     sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
       (ρ := ρ) (τ := τ) n S J
   infer_instance
+
+set_option linter.style.longLine false in
+/-- The full coordinate-product reference measure on the passive fields is
+additive Haar. -/
+theorem isAddHaarMeasure_case2PassiveThetaPassiveFieldReferenceMeasure
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J).IsAddHaarMeasure := by
+  dsimp [case2PassiveThetaPassiveFieldReferenceMeasure]
+  haveI hA1 :
+      (Measure.pi
+        (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)).IsAddHaarMeasure := by
+    let μ : Fin 1 → Measure (Matrix ρ ρ ℝ) :=
+      fun _ => matrixEntryReferenceMeasure ρ ρ
+    have hsigma : ∀ i : Fin 1, SigmaFinite (μ i) := by
+      intro _
+      exact sigmaFinite_matrixEntryReferenceMeasure ρ ρ
+    have hhaar : ∀ i : Fin 1, (μ i).IsAddHaarMeasure := by
+      intro _
+      exact isAddHaarMeasure_matrixEntryReferenceMeasure ρ ρ
+    exact
+      @Measure.pi.isAddHaarMeasure
+        (Fin 1) (fun _ : Fin 1 => Matrix ρ ρ ℝ) _ _ μ hsigma _ _ hhaar _
+  haveI hA1SF :
+      SFinite (Measure.pi
+        (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)) := by
+    haveI hA1Sigma :
+        SigmaFinite (Measure.pi
+          (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)) := by
+      have hsigma :
+          ∀ i : Fin 1,
+            SigmaFinite ((fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ) i) := by
+        intro _
+        exact sigmaFinite_matrixEntryReferenceMeasure ρ ρ
+      exact
+        @Measure.pi.sigmaFinite
+          (Fin 1) (fun _ : Fin 1 => Matrix ρ ρ ℝ) _ _
+          (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ) hsigma
+    infer_instance
+  haveI hF2 :
+      (Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))).IsAddHaarMeasure := by
+    let μ : (p : Fin 2) →
+        Measure (Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) :=
+      fun p =>
+        matrixEntryReferenceMeasure ρ
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)
+    have hsigma : ∀ p : Fin 2, SigmaFinite (μ p) := by
+      intro p
+      exact sigmaFinite_matrixEntryReferenceMeasure ρ
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)
+    have hhaar : ∀ p : Fin 2, (μ p).IsAddHaarMeasure := by
+      intro p
+      exact isAddHaarMeasure_matrixEntryReferenceMeasure ρ
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)
+    exact
+      @Measure.pi.isAddHaarMeasure
+        (Fin 2)
+        (fun p : Fin 2 =>
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+        _ _ μ hsigma _ _ hhaar _
+  haveI hF2SF :
+      SFinite (Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))) := by
+    haveI hF2Sigma :
+        SigmaFinite (Measure.pi
+          (fun p : Fin 2 =>
+            matrixEntryReferenceMeasure ρ
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))) := by
+      have hsigma :
+          ∀ p : Fin 2,
+            SigmaFinite
+              ((fun p : Fin 2 =>
+                matrixEntryReferenceMeasure ρ
+                  (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)) p) := by
+        intro p
+        exact sigmaFinite_matrixEntryReferenceMeasure ρ
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)
+      exact
+        @Measure.pi.sigmaFinite
+          (Fin 2)
+          (fun p : Fin 2 =>
+            Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ)
+          _ _
+          (fun p : Fin 2 =>
+            matrixEntryReferenceMeasure ρ
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc)) hsigma
+    infer_instance
+  haveI hA3 :
+      (Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).IsAddHaarMeasure := by
+    let μ : (p : Fin 1) →
+        Measure (Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) :=
+      fun p =>
+        matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ
+    have hsigma : ∀ p : Fin 1, SigmaFinite (μ p) := by
+      intro p
+      exact sigmaFinite_matrixEntryReferenceMeasure
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ
+    have hhaar : ∀ p : Fin 1, (μ p).IsAddHaarMeasure := by
+      intro p
+      exact isAddHaarMeasure_matrixEntryReferenceMeasure
+        (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ
+    exact
+      @Measure.pi.isAddHaarMeasure
+        (Fin 1)
+        (fun p : Fin 1 =>
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+        _ _ μ hsigma _ _ hhaar _
+  haveI hA3SF :
+      SFinite (Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)) := by
+    haveI hA3Sigma :
+        SigmaFinite (Measure.pi
+          (fun p : Fin 1 =>
+            matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)) := by
+      have hsigma :
+          ∀ p : Fin 1,
+            SigmaFinite
+              ((fun p : Fin 1 =>
+                matrixEntryReferenceMeasure
+                  (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ) p) := by
+        intro p
+        exact sigmaFinite_matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ
+      exact
+        @Measure.pi.sigmaFinite
+          (Fin 1)
+          (fun p : Fin 1 =>
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ)
+          _ _
+          (fun p : Fin 1 =>
+            matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ) hsigma
+    infer_instance
+  haveI hCtop : (matrixEntryReferenceMeasure ρ ρ).IsAddHaarMeasure :=
+    isAddHaarMeasure_matrixEntryReferenceMeasure ρ ρ
+  haveI hCtopSF : SFinite (matrixEntryReferenceMeasure ρ ρ) :=
+    sFinite_matrixEntryReferenceMeasure ρ ρ
+  haveI hF3 :
+      (matrixEntryReferenceMeasure
+        (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ).IsAddHaarMeasure :=
+    isAddHaarMeasure_matrixEntryReferenceMeasure
+      (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ
+  haveI hF3SF :
+      SFinite
+        (matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ) :=
+    sFinite_matrixEntryReferenceMeasure
+      (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ
+  let A1Measure : Measure (Fin 1 → Matrix ρ ρ ℝ) :=
+    Measure.pi (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)
+  let F2Measure :
+      Measure
+        (∀ p : Fin 2,
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) :=
+    Measure.pi
+      (fun p : Fin 2 =>
+        matrixEntryReferenceMeasure ρ
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))
+  let A3Measure :
+      Measure
+        (∀ p : Fin 1,
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) :=
+    Measure.pi
+      (fun p : Fin 1 =>
+        matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)
+  let CtopMeasure : Measure (Matrix ρ ρ ℝ) :=
+    matrixEntryReferenceMeasure ρ ρ
+  let F3Measure :
+      Measure
+        (Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ) :=
+    matrixEntryReferenceMeasure
+      (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ
+  change
+    (A1Measure.prod
+      (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure)))).IsAddHaarMeasure
+  haveI : A1Measure.IsAddHaarMeasure := by
+    dsimp [A1Measure]
+    infer_instance
+  haveI : SFinite A1Measure := by
+    dsimp [A1Measure]
+    infer_instance
+  haveI : F2Measure.IsAddHaarMeasure := by
+    dsimp [F2Measure]
+    infer_instance
+  haveI : SFinite F2Measure := by
+    dsimp [F2Measure]
+    infer_instance
+  haveI : A3Measure.IsAddHaarMeasure := by
+    dsimp [A3Measure]
+    infer_instance
+  haveI : SFinite A3Measure := by
+    dsimp [A3Measure]
+    infer_instance
+  haveI : CtopMeasure.IsAddHaarMeasure := by
+    exact hCtop
+  haveI : SFinite CtopMeasure := by
+    exact hCtopSF
+  haveI : F3Measure.IsAddHaarMeasure := by
+    exact hF3
+  haveI : SFinite F3Measure := by
+    exact hF3SF
+  haveI hCtopF3H : (CtopMeasure.prod F3Measure).IsAddHaarMeasure :=
+    Measure.prod.instIsAddHaarMeasure CtopMeasure F3Measure
+  haveI hCtopF3SF : SFinite (CtopMeasure.prod F3Measure) :=
+    Measure.prod.instSFinite
+  haveI hCtopF3Meas :
+      MeasurableAdd
+        (Matrix ρ ρ ℝ ×
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ) :=
+    measurableAdd_prod_of_measurableAdd
+  haveI hA3RestH :
+      (A3Measure.prod (CtopMeasure.prod F3Measure)).IsAddHaarMeasure :=
+    Measure.prod.instIsAddHaarMeasure A3Measure (CtopMeasure.prod F3Measure)
+  haveI hA3RestSF :
+      SFinite (A3Measure.prod (CtopMeasure.prod F3Measure)) :=
+    Measure.prod.instSFinite
+  haveI hA3RestMeas :
+      MeasurableAdd
+        ((∀ p : Fin 1,
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) ×
+          (Matrix ρ ρ ℝ ×
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ)) :=
+    measurableAdd_prod_of_measurableAdd
+  haveI hF2RestH :
+      (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure))).IsAddHaarMeasure :=
+    Measure.prod.instIsAddHaarMeasure F2Measure
+      (A3Measure.prod (CtopMeasure.prod F3Measure))
+  haveI hF2RestSF :
+      SFinite (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure))) :=
+    Measure.prod.instSFinite
+  haveI hF2RestMeas :
+      MeasurableAdd
+        ((∀ p : Fin 2,
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) ×
+        ((∀ p : Fin 1,
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) ×
+          (Matrix ρ ρ ℝ ×
+            Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ))) :=
+    measurableAdd_prod_of_measurableAdd
+  exact
+    Measure.prod.instIsAddHaarMeasure A1Measure
+      (F2Measure.prod (A3Measure.prod (CtopMeasure.prod F3Measure)))
 
 set_option linter.style.longLine false in
 /-- Entrywise product box around all passive Case 2 fields.  This is a

@@ -71,6 +71,144 @@ noncomputable def case2PassiveThetaWithFollowingFactorUnweightedSourceMeasure
     (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
 
 set_option linter.style.longLine false in
+/-- Full active-coordinate product reference measure on the enlarged Case 2
+source: passive fields, unrestricted selected-entry center coordinates, and
+the independent following-factor matrix. -/
+noncomputable def case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    Measure
+      (Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J) :=
+  ((case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J).prod
+    (volume : Measure (Case2PassiveTheta.Center n S J → ℝ))).prod
+    (matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ)
+
+set_option linter.style.longLine false in
+/-- The full active-coordinate product reference measure is additive Haar. -/
+theorem isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ) :
+    (case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+      (ρ := ρ) (τ := τ) n S J).IsAddHaarMeasure := by
+  let passiveRef :=
+    case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  let centerRef : Measure (Case2PassiveTheta.Center n S J → ℝ) := volume
+  let followingRef :=
+    matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+  change ((passiveRef.prod centerRef).prod followingRef).IsAddHaarMeasure
+  haveI : passiveRef.IsAddHaarMeasure := by
+    dsimp [passiveRef]
+    exact isAddHaarMeasure_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite passiveRef := by
+    dsimp [passiveRef]
+    exact sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI :
+      MeasurableAdd
+        (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J) :=
+    measurableAdd_case2PassiveThetaPassiveFields (ρ := ρ) (τ := τ) n S J
+  haveI : centerRef.IsAddHaarMeasure := by
+    dsimp [centerRef]
+    simpa [volume_pi] using
+      (isAddHaarMeasure_volume_pi (Case2PassiveTheta.Center n S J))
+  haveI : SFinite centerRef := by
+    dsimp [centerRef]
+    infer_instance
+  haveI : followingRef.IsAddHaarMeasure := by
+    dsimp [followingRef]
+    exact isAddHaarMeasure_matrixEntryReferenceMeasure
+      (Case2ResidualColIndex n S (J + 1)) τ
+  haveI : SFinite followingRef := by
+    dsimp [followingRef]
+    exact sFinite_matrixEntryReferenceMeasure
+      (Case2ResidualColIndex n S (J + 1)) τ
+  haveI :
+      MeasurableAdd
+        (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+          (Case2PassiveTheta.Center n S J → ℝ)) :=
+    measurableAdd_prod_of_measurableAdd
+  haveI hleft :
+      (passiveRef.prod centerRef).IsAddHaarMeasure :=
+    Measure.prod.instIsAddHaarMeasure passiveRef centerRef
+  haveI hleftSF : SFinite (passiveRef.prod centerRef) :=
+    Measure.prod.instSFinite
+  haveI :
+      MeasurableAdd
+        ((Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J ×
+          (Case2PassiveTheta.Center n S J → ℝ)) ×
+          Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ) :=
+    measurableAdd_prod_of_measurableAdd
+  exact Measure.prod.instIsAddHaarMeasure (passiveRef.prod centerRef) followingRef
+
+set_option linter.style.longLine false in
+/-- The selected-entry active product reference is the full active-coordinate
+Haar measure restricted to the cylinder over the selected-entry chart image.
+
+This is only product-measure bookkeeping.  The center-image restriction remains
+visible; no endpoint transport or determinant Haar statement is asserted. -/
+theorem case2PassiveThetaWithFollowingFactor_activeSelectedEntryProductReference_eq_activeFullSourceHaar_restrict
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    (Rres : Case2PassiveTheta.Center n S J → ℝ) :
+    let pivotNext := case2PassiveThetaPivotNext n hS hnext
+    let passiveRef :=
+      case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+    let followingRef :=
+      matrixEntryReferenceMeasure (Case2ResidualColIndex n S (J + 1)) τ
+    let activeImage :=
+      SelectedEntrySignedBox.CenterCoord.chartMap pivotNext ''
+        SelectedEntrySignedBox.CenterCoord.signedBoxSet Rres
+    let activeFull :=
+      case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+        (ρ := ρ) (τ := τ) n S J
+    ((passiveRef.prod
+      ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict activeImage)).prod
+      followingRef) =
+        activeFull.restrict
+          {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+            z.1.yNext ∈ activeImage} := by
+  intro pivotNext passiveRef followingRef activeImage activeFull
+  let centerRef : Measure (Case2PassiveTheta.Center n S J → ℝ) := volume
+  haveI : SFinite passiveRef := by
+    dsimp [passiveRef]
+    exact sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
+      (ρ := ρ) (τ := τ) n S J
+  haveI : SFinite followingRef := by
+    dsimp [followingRef]
+    exact sFinite_matrixEntryReferenceMeasure
+      (Case2ResidualColIndex n S (J + 1)) τ
+  have hbase :
+      passiveRef.prod (centerRef.restrict activeImage) =
+        (passiveRef.prod centerRef).restrict (Set.univ ×ˢ activeImage) := by
+    have h := Measure.prod_restrict (μ := passiveRef) (ν := centerRef)
+      (Set.univ : Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J))
+      activeImage
+    simpa [centerRef] using h
+  calc
+    ((passiveRef.prod
+      ((volume : Measure (Case2PassiveTheta.Center n S J → ℝ)).restrict activeImage)).prod
+      followingRef) =
+        ((passiveRef.prod centerRef).restrict (Set.univ ×ˢ activeImage)).prod followingRef := by
+          rw [hbase]
+    _ =
+        ((passiveRef.prod centerRef).prod followingRef).restrict
+          ((Set.univ ×ˢ activeImage) ×ˢ
+            (Set.univ : Set (Matrix (Case2ResidualColIndex n S (J + 1)) τ ℝ))) := by
+          rw [Measure.restrict_prod_eq_prod_univ]
+    _ =
+        activeFull.restrict
+          {z : Case2PassiveThetaWithFollowingFactor (ρ := ρ) (τ := τ) n S J |
+            z.1.yNext ∈ activeImage} := by
+          congr 1
+          ext z
+          simp [Case2PassiveTheta.yNext]
+
+set_option linter.style.longLine false in
 /-- The selected-entry source-density factor on the enlarged Case 2
 passive-theta source.  This is the `Y`-side Jacobian factor before composing
 with the retained-passive raw-order map. -/

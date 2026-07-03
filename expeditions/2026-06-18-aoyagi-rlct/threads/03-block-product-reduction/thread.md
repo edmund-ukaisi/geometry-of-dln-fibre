@@ -21,6 +21,65 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 active product reference full Haar restriction
+
+Reproduction:
+`reproduction-a2-active-product-reference-full-haar-restriction.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+Lean now proves:
+
+```text
+isAddHaarMeasure_matrixEntryReferenceMeasure
+measurableAdd_case2PassiveThetaPassiveFields
+isAddHaarMeasure_case2PassiveThetaPassiveFieldReferenceMeasure
+case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+case2PassiveThetaWithFollowingFactor_activeSelectedEntryProductReference_eq_activeFullSourceHaar_restrict
+```
+
+The full active-coordinate product reference is:
+
+```text
+((passiveRef.prod (volume : Measure CenterCoords)).prod followingRef).
+```
+
+The selected-entry active product reference produced by the chart COV is:
+
+```text
+((passiveRef.prod ((volume : Measure CenterCoords).restrict activeImage)).prod
+  followingRef),
+```
+
+and Lean identifies it with the restriction of the full active product Haar to
+the cylinder:
+
+```text
+{z | z.1.yNext in activeImage}.
+```
+
+Boundary: the restricted selected-entry product is not claimed Haar.  This
+does not prove scalar `1`, endpoint determinant-Haar identity, weighted-Haar
+endpoint image identity, arbitrary `Omega` active-chart restriction rewriting,
+p.13 image-set matching, a Jacobian formula, raw-Haar transport,
+source-image coverage, original-prior transport, normal crossings, pole
+order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+after the interruption; full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; and direct axiom
+probe.  The six new declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer `Erdos
+the 3rd` found no blocking issue and confirmed the product cylinder shape and
+the nonclaim boundary.
+
 ## 2026-07-03 A2 active endpoint coordinate linear equivalence / Haar-scalar transport
 
 Reproduction:

@@ -6,6 +6,58 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Active Product Reference Full Haar Restriction - 2026-07-03
+
+Lean now has:
+
+```text
+isAddHaarMeasure_matrixEntryReferenceMeasure
+measurableAdd_case2PassiveThetaPassiveFields
+isAddHaarMeasure_case2PassiveThetaPassiveFieldReferenceMeasure
+case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+isAddHaarMeasure_case2PassiveThetaWithFollowingFactorActiveFullSourceHaar
+case2PassiveThetaWithFollowingFactor_activeSelectedEntryProductReference_eq_activeFullSourceHaar_restrict
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference.lean
+```
+
+The pen-and-paper calculation is that matrix-entry coordinate products are
+finite products of Lebesgue measure, hence additive Haar.  The passive fields
+are a nested finite product of such matrix-entry product measures, and the
+with-following active coordinate source is the product of the passive-field
+reference, unrestricted center-coordinate Lebesgue measure, and the
+following-factor matrix-entry reference.  The selected-entry active COV
+produces the same product with the center factor restricted to
+`chartMap pivotNext '' signedBoxSet Rres`; product restriction bookkeeping
+identifies this as the restriction of the full active product Haar to
+`{z | z.1.yNext in activeImage}`.
+
+Boundary: this is only source-side product Haar/restriction bookkeeping.  It
+does not claim the restricted selected-entry product is Haar, identify a Haar
+normalization scalar with `1`, prove an endpoint image identity,
+determinant-Haar or weighted-Haar transport, arbitrary `Omega` active-chart
+restriction rewriting, p.13 image-set matching, a Jacobian formula,
+source-image coverage, original-prior transport, normal crossings, pole
+order, or RLCT.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaWithFollowingFactorEndpointReference`
+after the interruption; full local `lake build DLNFibre`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file forbidden-marker scan; and direct axiom
+probe.  The six new declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer `Erdos
+the 3rd` found no blocking issue and confirmed the product cylinder shape and
+the absence of endpoint/RLCT overclaims.
+
+Next controller target: compose the selected-entry active-chart COV, this
+restricted-full-Haar identification, and the active-writeback Haar-scalar
+transport for the `Omega = univ` endpoint-image case.
+
 ## A2 Active Endpoint Coordinate Linear Equivalence / Haar-Scalar Transport - 2026-07-03
 
 Lean now has:
