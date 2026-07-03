@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Product-Residual Readback, Active Endpoint Domination - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+direct finite-integral wrapper run on G ∩ pivotSet
+  ==> V open, z0 ∈ V, V ⊆ G, and V ⊆ pivotSet,
+
+endpointPatch ⊆ activeWriteback '' activePatchImage(V)
+  + V ⊆ pivotSet
+  ==> rawHaar.restrict endpointPatch
+      <= Cdet * endpointReferenceImage(V), Cdet < infinity,
+
+direct finite-integral wrapper continuation
+  ==> finite original-prior readback product-residual integral.
+```
+
+This removes the caller's need to provide an arbitrary endpoint scalar
+domination constant.  It does not remove the geometric containment: the p.13
+endpoint patch still must be shown to lie in the active writeback image of the
+selected-entry active patch.  Read-only xhigh containment audit by `Nash the
+3rd` found no existing theorem proving this from the current hypotheses.  The
+closest available facts are the pointwise active endpoint factorization
+`Y z = activeWriteback (activeChart z)`, raw-order inverse/homeomorphism
+bookkeeping, and local forward source-chart facts; what is missing is the
+reverse set-level containment for arbitrary endpoint points in
+`rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P`.
+
+Boundary: active-image containment, prior-density upper bound, and
+measurability of the readback residual pullback remain explicit.  No endpoint
+patch/source-image containment, determinant lower-bound shrink, source-image
+coverage, normal crossings, pole order, or RLCT is proved.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Original-Prior Product-Residual Readback, Direct Endpoint Domination - 2026-07-03
 
 Lean now has:

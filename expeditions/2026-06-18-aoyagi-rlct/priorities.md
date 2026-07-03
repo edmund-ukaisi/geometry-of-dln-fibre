@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, active endpoint-domination readback product residual
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_priorDensity_upper
+```
+
+Decision: compose the active endpoint/Haar scalar-domination theorem with the
+direct endpoint-domination original-prior product-residual finite-integral
+wrapper.  The local set is obtained by running the direct wrapper with
+`G ∩ pivotSet`, so the returned `V` is open, still lies in the caller's `G`,
+and is contained in the selected-pivot nonzero locus required by the active
+endpoint theorem.
+
+Boundary: the p.13 endpoint-patch containment
+
+```text
+rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P
+  ⊆ activeWriteback '' (activeChart '' (V ∩ sourceCylinder))
+```
+
+remains an explicit hypothesis.  Xhigh read-only audit found no existing Lean
+theorem proving this containment from `chartPiece ⊆ sourceChart '' V`; it is
+plausibly reachable only after strengthening the chart-piece/source-cylinder
+input or proving a new set-level source-image theorem.  Prior-density upper
+bound and readback residual pullback measurability remain explicit.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-original-prior-active-endpoint-domination.md
+```
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The theorem reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: attack the endpoint-patch active-image containment as
+the real geometric frontier, possibly under a strengthened local chart-piece
+hypothesis `chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)` or after
+shrinking into the source cylinder.
+
 ## Latest controller decision - 2026-07-03, direct endpoint-domination original-prior readback product residual
 
 Lean now has:
