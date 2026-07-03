@@ -38,7 +38,7 @@ theorem rlctAtOn_eq_of_contDiff_chart_rinv {E : Type*}
       (∀ᶠ w in 𝓝 wstar, Φ (Ψsymm w) = w) ∧
       rlctAtOn f wstar = rlctAtOn (fun w => f (Ψsymm w)) wstar := by
   obtain ⟨Ψ, Ψsymm, DΨ, DΨsymm, V, hVopen, hwV, hΨfix, hleft, hright, hΨcont, hsymmcont,
-    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ, hsymmCD⟩ :=
+    hderiv, hderivsymm, hdetmeas, hdetmeassymm, hbdd, hbddsymm, hΨΦ, hsymmCD, _⟩ :=
     exists_boundedUnit_chart_of_contDiffAt Φ wstar f' hΦ hΦ' hfix
   -- `Ψsymm wstar = wstar` (the left inverse at `wstar`, with `Ψ wstar = wstar`).
   have hsymmfix : Ψsymm wstar = wstar := by
