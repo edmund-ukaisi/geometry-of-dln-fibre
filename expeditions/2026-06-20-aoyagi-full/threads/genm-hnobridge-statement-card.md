@@ -51,7 +51,13 @@ achiever's CLEAN and SMEARED branches already carry — de-conditionalizing the 
 >   col-drops via the argmin-exchange contradiction against `Mval_tStar_eq_inf'` + `Finset.inf'_le`.
 >   Off-by-one warning honoured: the `tStar`-index raise block is `[q−1, b−2]` (`tStar(j)=Text(j+2)`),
 >   confirmed by an independent re-derivation and by two decorrelated Codex xhigh consults.
-> - **Status.** sorry-free (awaiting reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (fidelity PASS, `reviewer` @ 2026-07-03: exact/unweakened,
+>   witness genuinely `p = s₀`, tail discharged non-vacuously; all four soundness steps genuine, forced
+>   `#print axioms` = `[propext, Classical.choice, Quot.sound]`, `scripts/sorries` = 0; decorrelated
+>   Codex red-team agreed, the initial "off-by-one" flag cleared as a prompt-convention artefact —
+>   the honoured `tStar(j)=Text(j+2)` shift; independent numerics 62140/32779/736854 cases, 0
+>   violations). Reviewer Codex artefacts under
+>   `expeditions/2026-06-20-aoyagi-full/threads/genm-hnobridge/codex/`.
 
 ## Independent cross-checks (kill-condition re-derived, not trusted)
 
