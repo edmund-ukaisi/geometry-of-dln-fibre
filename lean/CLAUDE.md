@@ -201,3 +201,25 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   width-reindex over a product. (iii) Peel layer-products by **prefix-length induction reusing
   `prodAux_succ`**, not entrywise. This kernel transfers to any `prod`/`prodAux` reassociation (e.g. the
   L2/D1 `endpoint_telescoping`).
+
+## L2 D1 two-peel `hrank₂` — the core-geometry gate is TRUE+TIGHT, its OPEN part is reachability (thread `genm-d1gates`)
+The gate `hrank₂ : extraCountRect (H0−r) (H2−r) a b ≤ rank(jacResid (q(0,·)) t0)` of
+`d1ge_L2_rect_two_peel` (`D1RectHDomProducer.lean`) is the sole CORE-geometry content of LEAF 2.
+Front-loaded verdict (numeric certificate `expeditions/2026-06-20-aoyagi-full/threads/genm-d1gates/`
++ decorrelated Codex xhigh):
+- **The MATH does NOT wall.** `jacResid (q(0,·)) t0 = [Dg(v)=jointDiffL2 with the nReg selected er-rows
+  zeroed] ∘ (DΦ(0))⁻¹ ∘ [complement injection]`, and its rank `= extraCountRect` EXACTLY — uniformly
+  over all middle-strata (layer ranks `(rank v0, rank v1) = (r+b, r+a)`; `a`=row/output rise, `b`=col/input
+  rise, matching the cross-pairing), INCLUDING adversarial minor choices, ZERO fails. **NO constant-rank /
+  stratification DROP** (the #120/hRform failure mode does NOT recur here). The abstract identity
+  `rank([T er-rows-zeroed] ∘ (DΦ0)⁻¹ ∘ [compl inj]) = rank T − nReg` for ANY `T`/invertible-`nReg`-minor
+  is clean and provable (0/400 abstract fails).
+- **The OPEN part is FORMALISATION-reachability (verdict B, genuine new-module wall — NOT bounded
+  plumbing).** `dln_hchart_residual_c2` DISCARDS the chart derivative (outputs only the RLCT-transfer
+  EQUATION, which is measure-theoretic and CANNOT recover the Jacobian). Discharging `hrank₂` needs THREE
+  new pieces: (b1) a producer variant exposing `HasFDerivAt (q(0,·)) L t0` (re-thread the germ
+  `q =ᶠ rawResidVec∘Ψsymm∘splitHomeo.symm` + the internal `hsymm_hfderiv : dΨsymm 0 = f'.symm`); (b2) a
+  network-free `rank(L) = rank T − nReg` linear-algebra module (spirit of `nReg_le_finrank_range_jointDiffL2`,
+  at the residual/complement level; `rank_mul_le_left/right`, `rank_of_isUnit`, `rank_submatrix` exist at
+  the pin); (b3) the `(a,b)` extraction. `hInterface` + value-close finish once these land. Do NOT launder
+  `hrank₂` into a sorry or reduce it to another hypothesis (four hands have held this).
