@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, source-image unit original-prior readback product residual
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointReferenceImage_eq_withDensity_formalProductAbsDet_priorDensity_upper
+```
+
+Decision: compose the unit source-image-density coordinate-source
+product-residual finite-integral theorem with the existing original-prior
+readback transfer.  The proof uses the source theorem's `Vsource` for the
+finite source integral, then calls the prior-transfer theorem with
+`G := Vsource`; the returned smaller `V` is only the chart-piece domain for
+the original prior.  The product-transfer continuation is specialized to a
+Dirac `PUnit` factor, so the product integral collapses back to the concrete
+edge-family residual integrand.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-readback-product-residual-original-prior-unit-source-density.md
+```
+
+Next controller target: either prove the remaining endpoint reference-image
+weighted-Haar identity and determinant-density lower bound needed to use this
+wrapper, or continue the active endpoint/Haar route that is meant to supply
+those inputs.  Do not claim endpoint Haar transport or RLCT from this theorem.
+
+Boundary: the theorem still assumes endpoint reference-image identity,
+endpoint determinant-density lower bound, prior-density upper bound, and
+measurability of the readback residual pullback.  It does not prove endpoint
+Haar transport, source-image coverage, original-prior transport, normal
+crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+theorem reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, with-following edge-family product-residual readout
 
 Lean now has pointwise with-following product-residual readout bridges:

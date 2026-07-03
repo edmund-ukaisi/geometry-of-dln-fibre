@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Product-Residual Readback, Unit Source Density - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_endpointReferenceImage_eq_withDensity_formalProductAbsDet_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+unit source-image density
+  ==> finite source integral of productResidual(z)^{-t}
+      over coordinateSourceMeasure.restrict Vsource,
+
+readback(sourceChart z) = z on Vsource
+  ==> productResidual(z) = readbackProductResidual(sourceChart z),
+
+prior readback domination on a smaller V subset Vsource
+  ==> finite integral transfers from source to originalPrior.restrict chartPiece.
+```
+
+The proof keeps the two local sets separate.  `Vsource` is the source theorem's
+domain for the finite source integral.  The prior-transfer theorem is called
+with `G := Vsource` and returns a smaller `V` whose source-chart image controls
+the allowed chart pieces.  The source-density lower bound is discharged with
+`epsilon = 1`, because `sourceDensity` is definitionally the constant `1`.
+The final product-transfer continuation is specialized to `PUnit` with a
+Dirac measure; `lintegral_prod_dirac_right` collapses both source and target
+product integrals to the desired non-product residual integral.
+
+Boundary: endpoint reference-image identity, endpoint determinant-density
+lower bound, prior-density upper bound, and measurability of the readback
+residual pullback are still hypotheses.  This theorem supplies no endpoint
+Haar transport, determinant-density estimate, source-image coverage,
+source-rank coverage, original-prior transport, normal crossings, pole order,
+or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The theorem
+reports `[propext, Classical.choice, Quot.sound]`.
+
+Next controller target: produce or sharply delimit the endpoint weighted-Haar
+identity and determinant-density lower bound needed by this wrapper.  The
+active endpoint/Haar route remains the natural source of those inputs.
+
 ## A2 With-Following Edge-Family Product-Residual Readout - 2026-07-03
 
 Lean now has named source-side and edge-family readouts for the with-following
