@@ -47,3 +47,13 @@ determinantal-atlas `lessons.md`, merged on `dev`):
 - **R1d — MEASURE fixture-namespace audit counts empirically before asserting them.** Adding one adversarial
   fixture case shifts the whole `UNACCOUNTED/CITED/LOCATION` summary (here `2/2/2 → 5/2/3`); run the audit,
   read the actual counts, then set the harness assertion + docstrings to match — don't hand-predict.
+- **R2b — a cited `∃`-axiom that PINS a unique object can be INCONSISTENT, not merely over-strong; the cordon
+  does NOT catch this.** R2b's continuation cite pinned `Z` to the unique analytic continuation of `ζ` (conjunct
+  `∀ s, Re s>0 → Z s = ζ s` + the identity theorem), then a later conjunct demanded a pole of `Z` at a point
+  where that continuation is holomorphic — so at a valid instance (`K=x²(x−2)⁶`, φ near `0`, `U∋2`) the `∃`-body
+  is false and the axiom proves `False`. `scripts/cited` passes an inconsistent `@[cited]` axiom **green** (it
+  accounts axioms; it does not check their consistency). So a cited axiom needs a **consistency** review, not
+  just source-faithfulness: hunt for an instance satisfying every hypothesis where the conclusion fails. The
+  standard fix for a "localization" cite is a sole-singularity hypothesis (`∀ x ∈ closure U, K x = 0 → x = x₀`)
+  — matching the paper's "U small enough". Caught pre-merge by the careful-checkpoint + decorrelated review
+  (controller + rev-r2b + Codex converged on the same counterexample).
