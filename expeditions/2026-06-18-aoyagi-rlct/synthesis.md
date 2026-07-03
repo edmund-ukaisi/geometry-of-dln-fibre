@@ -6,6 +6,78 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Prior Readback From Source-Cylinder/C-One Support - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower_priorDensity_upper
+
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower_priorDensity_upper
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+for source-cylinder support, apply the original-volume source-cylinder wrapper:
+
+Cdet < infinity,
+Ddet = Cdet * epsilon^{-1} < infinity,
+readback_*(originalVolume.restrict chartPiece)
+  <= Dvol • coordinateSourceMeasure.restrict G,
+Dvol = cHaar^{-1} * Ddet;
+
+for C-one support, first convert
+
+chartPiece subset sourceChart '' V
+and cOneReadout E in signedBox on chartPiece
+
+into
+
+chartPiece subset sourceChart '' (V inter sourceCylinder),
+
+then use the same source-cylinder volume wrapper;
+
+in either case, use the prior-density upper bound to get
+
+originalPrior.restrict chartPiece
+  <= ofReal(Kprior) • originalVolume.restrict chartPiece;
+
+apply the generic readback domination handoff to conclude
+
+readback_*(originalPrior.restrict chartPiece)
+  <= Cprior • coordinateSourceMeasure.restrict G,
+Cprior = ofReal(Kprior) * Dvol.
+```
+
+The scalar is finite because `Ddet < infinity`, `cHaar^{-1}` is finite as a
+coerced `NNReal`, and `ofReal Kprior < infinity`.
+
+Boundary: source-cylinder support or C-one signed-box support, measurable
+`chartPiece`, the a.e. source-density lower bound, `epsilon != 0, infinity`,
+and the a.e. prior-density upper bound all remain explicit.  This does not
+prove source-cylinder support, C-one support, source-density positivity,
+prior-density boundedness, determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source coverage, source-rank coverage,
+original source-prior transport beyond the bounded-density comparison,
+finite-integral transfer, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check, focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+`lean/scripts/sorries`, `git diff --check`, touched-file forbidden-marker
+scan, and direct axiom probes.  Both declarations report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh theorem-shape reviewer
+`Fermat the 4th` passed.  Xhigh hardener `Halley the 4th` first failed the
+reproduction note for missing explicit measurability and kill conditions; after
+the note was hardened, the re-check passed.  Full local `lake build DLNFibre`
+passed.
+
 ## A2 With-Following Original-Prior Readback From Active Containment - 2026-07-03
 
 Lean now has:

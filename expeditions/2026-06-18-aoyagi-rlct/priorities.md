@@ -12,6 +12,60 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, original-prior source-cylinder/C-one readback wrappers
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower_priorDensity_upper
+
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower_priorDensity_upper
+```
+
+Decision: add the bounded-prior-density handoff on top of the already-proved
+original-volume source-cylinder and C-one wrappers.  The source-cylinder
+variant requires:
+
+```text
+MeasurableSet chartPiece,
+chartPiece subset sourceChart '' (V inter sourceCylinder),
+epsilon <= sourceDensity a.e. on baseJ.restrict V,
+epsilon != 0, infinity,
+density <= Kprior a.e. on originalVolume.restrict chartPiece.
+```
+
+The C-one variant requires ordinary support
+`chartPiece subset sourceChart '' V` plus pointwise
+`cOneReadout E in signedBox`, then uses the existing C-one support bridge to
+recover source-cylinder support.  Both variants use:
+
+```text
+Dvol = cHaar^{-1} * (Cdet * epsilon^{-1})
+Cprior = ofReal Kprior * Dvol.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-readback-source-cylinder-c-one-support-source-density.md
+```
+
+Boundary: these are measure-domination wrappers only.  They do not prove
+source-cylinder support, C-one signed-box support, source-density positivity,
+prior-density boundedness, determinant-chart Haar transport, exact
+raw-Haar pushforward, Haar normalization, source coverage, source-rank
+coverage, original source-prior transport beyond bounded-density comparison,
+finite-integral transfer, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean file check; focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`;
+`lean/scripts/sorries`; `git diff --check`; touched-file forbidden-marker
+scan; direct axiom probes, reporting `[propext, Classical.choice,
+Quot.sound]`; xhigh theorem-shape review `Fermat the 4th`; and xhigh
+bedrock/hardener review `Halley the 4th` after the reproduction note was
+hardened with explicit measurability hypotheses and kill conditions; and full
+local `lake build DLNFibre`.
+
 ## Latest controller decision - 2026-07-03, original-prior active-containment readback wrapper
 
 Lean now has:
