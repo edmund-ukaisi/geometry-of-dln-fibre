@@ -143,6 +143,85 @@ theorem matrixEntryReferenceMeasure_matrixEntryBox_lt_top
     rw [Real.volume_Ioo]
     exact ENNReal.ofReal_lt_top
 
+/-- Dependent finite Pi-box of matrix-entry boxes. -/
+def piMatrixEntryBox
+    {ι : Type*} {r c : ι → Type*}
+    (F₀ : ∀ i : ι, Matrix (r i) (c i) ℝ) (R : ℝ) :
+    Set (∀ i : ι, Matrix (r i) (c i) ℝ) :=
+  {F | ∀ i, F i ∈ matrixEntryBox (F₀ i) R}
+
+theorem mem_piMatrixEntryBox_self
+    {ι : Type*} {r c : ι → Type*}
+    (F₀ : ∀ i : ι, Matrix (r i) (c i) ℝ) {R : ℝ} (hR : 0 < R) :
+    F₀ ∈ piMatrixEntryBox F₀ R := by
+  intro i
+  exact mem_matrixEntryBox_self (F₀ i) hR
+
+set_option linter.unusedFintypeInType false in
+theorem isOpen_piMatrixEntryBox
+    {ι : Type*} [Fintype ι] {r c : ι → Type*}
+    [∀ i, Fintype (r i)] [∀ i, Fintype (c i)]
+    (F₀ : ∀ i : ι, Matrix (r i) (c i) ℝ) (R : ℝ) :
+    IsOpen (piMatrixEntryBox F₀ R) := by
+  classical
+  have hbox :
+      piMatrixEntryBox F₀ R =
+        Set.pi Set.univ (fun i : ι => matrixEntryBox (F₀ i) R) := by
+    ext F
+    constructor
+    · intro hF i _
+      exact hF i
+    · intro hF i
+      exact hF i (Set.mem_univ i)
+  rw [hbox]
+  exact isOpen_set_pi Set.finite_univ fun i _ =>
+    isOpen_matrixEntryBox (F₀ i) R
+
+set_option linter.unusedFintypeInType false in
+theorem measurableSet_piMatrixEntryBox
+    {ι : Type*} [Fintype ι] {r c : ι → Type*}
+    [∀ i, Fintype (r i)] [∀ i, Fintype (c i)]
+    (F₀ : ∀ i : ι, Matrix (r i) (c i) ℝ) (R : ℝ) :
+    MeasurableSet (piMatrixEntryBox F₀ R) := by
+  classical
+  have hbox :
+      piMatrixEntryBox F₀ R =
+        Set.pi Set.univ (fun i : ι => matrixEntryBox (F₀ i) R) := by
+    ext F
+    constructor
+    · intro hF i _
+      exact hF i
+    · intro hF i
+      exact hF i (Set.mem_univ i)
+  rw [hbox]
+  exact MeasurableSet.univ_pi fun i =>
+    measurableSet_matrixEntryBox (F₀ i) R
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+theorem piMatrixEntryReferenceMeasure_piMatrixEntryBox_lt_top
+    {ι : Type*} [Fintype ι] {r c : ι → Type*}
+    [∀ i, Fintype (r i)] [∀ i, Fintype (c i)]
+    (F₀ : ∀ i : ι, Matrix (r i) (c i) ℝ) (R : ℝ) :
+    (Measure.pi fun i : ι => matrixEntryReferenceMeasure (r i) (c i))
+      (piMatrixEntryBox F₀ R) < ∞ := by
+  classical
+  have hbox :
+      piMatrixEntryBox F₀ R =
+        Set.pi Set.univ (fun i : ι => matrixEntryBox (F₀ i) R) := by
+    ext F
+    constructor
+    · intro hF i _
+      exact hF i
+    · intro hF i
+      exact hF i (Set.mem_univ i)
+  haveI :
+      ∀ i : ι, SigmaFinite (matrixEntryReferenceMeasure (r i) (c i)) :=
+    fun i => sigmaFinite_matrixEntryReferenceMeasure (r i) (c i)
+  rw [hbox, Measure.pi_pi]
+  exact ENNReal.prod_lt_top fun i _ =>
+    matrixEntryReferenceMeasure_matrixEntryBox_lt_top (F₀ i) R
+
 set_option linter.style.longLine false in
 /-- A base following factor whose square reindexing has unit determinant admits
 a finite measurable coordinate patch on which the determinant remains a unit
@@ -525,6 +604,231 @@ theorem sFinite_case2PassiveThetaPassiveFieldReferenceMeasure
     sigmaFinite_case2PassiveThetaPassiveFieldReferenceMeasure
       (ρ := ρ) (τ := τ) n S J
   infer_instance
+
+set_option linter.style.longLine false in
+/-- Entrywise product box around all passive Case 2 fields.  This is a
+coordinate-reference local set only; it is not an original-prior or Haar
+localization. -/
+def case2PassiveThetaPassiveFieldBox
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+    (R : ℝ) :
+    Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J) :=
+  (piMatrixEntryBox theta0.1 R) ×ˢ
+    ((piMatrixEntryBox theta0.2.1 R) ×ˢ
+      ((piMatrixEntryBox theta0.2.2.1 R) ×ˢ
+        ((matrixEntryBox theta0.2.2.2.1 R) ×ˢ
+          (matrixEntryBox theta0.2.2.2.2 R))))
+
+set_option linter.style.longLine false in
+theorem mem_case2PassiveThetaPassiveFieldBox_self
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+    {R : ℝ} (hR : 0 < R) :
+    theta0 ∈ case2PassiveThetaPassiveFieldBox n S J theta0 R := by
+  exact
+    ⟨mem_piMatrixEntryBox_self theta0.1 hR,
+      mem_piMatrixEntryBox_self theta0.2.1 hR,
+      mem_piMatrixEntryBox_self theta0.2.2.1 hR,
+      mem_matrixEntryBox_self theta0.2.2.2.1 hR,
+      mem_matrixEntryBox_self theta0.2.2.2.2 hR⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+theorem isOpen_case2PassiveThetaPassiveFieldBox
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+    (R : ℝ) :
+    IsOpen (case2PassiveThetaPassiveFieldBox n S J theta0 R) := by
+  exact
+    (isOpen_piMatrixEntryBox theta0.1 R).prod
+      ((isOpen_piMatrixEntryBox theta0.2.1 R).prod
+        ((isOpen_piMatrixEntryBox theta0.2.2.1 R).prod
+          ((isOpen_matrixEntryBox theta0.2.2.2.1 R).prod
+            (isOpen_matrixEntryBox theta0.2.2.2.2 R))))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+theorem measurableSet_case2PassiveThetaPassiveFieldBox
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+    (R : ℝ) :
+    MeasurableSet (case2PassiveThetaPassiveFieldBox n S J theta0 R) := by
+  exact
+    (measurableSet_piMatrixEntryBox theta0.1 R).prod
+      ((measurableSet_piMatrixEntryBox theta0.2.1 R).prod
+        ((measurableSet_piMatrixEntryBox theta0.2.2.1 R).prod
+          ((measurableSet_matrixEntryBox theta0.2.2.2.1 R).prod
+            (measurableSet_matrixEntryBox theta0.2.2.2.2 R))))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+theorem case2PassiveThetaPassiveFieldReferenceMeasure_box_lt_top
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J)
+    (R : ℝ) :
+    case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+        (case2PassiveThetaPassiveFieldBox n S J theta0 R) < ∞ := by
+  classical
+  let A1Set : Set (Fin 1 → Matrix ρ ρ ℝ) :=
+    piMatrixEntryBox theta0.1 R
+  let F2Set :
+      Set
+        (∀ p : Fin 2,
+          Matrix ρ (case2PostPivotTwoEdgeDomain n S J τ p.castSucc) ℝ) :=
+    piMatrixEntryBox theta0.2.1 R
+  let A3Set :
+      Set
+        (∀ p : Fin 1,
+          Matrix (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ ℝ) :=
+    piMatrixEntryBox theta0.2.2.1 R
+  let CtopSet : Set (Matrix ρ ρ ℝ) :=
+    matrixEntryBox theta0.2.2.2.1 R
+  let F3Set :
+      Set
+        (Matrix (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ ℝ) :=
+    matrixEntryBox theta0.2.2.2.2 R
+  have hA1_lt :
+      (Measure.pi fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ) A1Set < ∞ := by
+    simpa [A1Set] using
+      piMatrixEntryReferenceMeasure_piMatrixEntryBox_lt_top theta0.1 R
+  have hF2_lt :
+      (Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))) F2Set < ∞ := by
+    simpa [F2Set] using
+      piMatrixEntryReferenceMeasure_piMatrixEntryBox_lt_top theta0.2.1 R
+  have hA3_lt :
+      (Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)) A3Set < ∞ := by
+    simpa [A3Set] using
+      piMatrixEntryReferenceMeasure_piMatrixEntryBox_lt_top theta0.2.2.1 R
+  have hCtop_lt :
+      matrixEntryReferenceMeasure ρ ρ CtopSet < ∞ := by
+    simpa [CtopSet] using
+      matrixEntryReferenceMeasure_matrixEntryBox_lt_top theta0.2.2.2.1 R
+  have hF3_lt :
+      matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ F3Set < ∞ := by
+    simpa [F3Set] using
+      matrixEntryReferenceMeasure_matrixEntryBox_lt_top theta0.2.2.2.2 R
+  have hCtopF3_lt :
+      ((matrixEntryReferenceMeasure ρ ρ).prod
+        (matrixEntryReferenceMeasure
+          (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ))
+          (CtopSet ×ˢ F3Set) < ∞ :=
+    lt_of_le_of_lt (Measure.prod_prod_le CtopSet F3Set)
+      (ENNReal.mul_lt_top hCtop_lt hF3_lt)
+  have hA3Tail_lt :
+      ((Measure.pi
+        (fun p : Fin 1 =>
+          matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+        ((matrixEntryReferenceMeasure ρ ρ).prod
+          (matrixEntryReferenceMeasure
+            (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)))
+          (A3Set ×ˢ (CtopSet ×ˢ F3Set)) < ∞ :=
+    lt_of_le_of_lt (Measure.prod_prod_le A3Set (CtopSet ×ˢ F3Set))
+      (ENNReal.mul_lt_top hA3_lt hCtopF3_lt)
+  have hF2Tail_lt :
+      ((Measure.pi
+        (fun p : Fin 2 =>
+          matrixEntryReferenceMeasure ρ
+            (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))).prod
+        ((Measure.pi
+          (fun p : Fin 1 =>
+            matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+          ((matrixEntryReferenceMeasure ρ ρ).prod
+            (matrixEntryReferenceMeasure
+              (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ))))
+          (F2Set ×ˢ (A3Set ×ˢ (CtopSet ×ˢ F3Set))) < ∞ :=
+    lt_of_le_of_lt
+      (Measure.prod_prod_le F2Set (A3Set ×ˢ (CtopSet ×ˢ F3Set)))
+      (ENNReal.mul_lt_top hF2_lt hA3Tail_lt)
+  have hA1Tail_lt :
+      ((Measure.pi (fun _ : Fin 1 => matrixEntryReferenceMeasure ρ ρ)).prod
+        ((Measure.pi
+          (fun p : Fin 2 =>
+            matrixEntryReferenceMeasure ρ
+              (case2PostPivotTwoEdgeDomain n S J τ p.castSucc))).prod
+          ((Measure.pi
+            (fun p : Fin 1 =>
+              matrixEntryReferenceMeasure
+                (case2PostPivotTwoEdgeDomain n S J τ p.castSucc.succ) ρ)).prod
+            ((matrixEntryReferenceMeasure ρ ρ).prod
+              (matrixEntryReferenceMeasure
+                (case2PostPivotTwoEdgeDomain n S J τ (Fin.last 2)) ρ)))))
+          (A1Set ×ˢ (F2Set ×ˢ (A3Set ×ˢ (CtopSet ×ˢ F3Set)))) < ∞ :=
+    lt_of_le_of_lt
+      (Measure.prod_prod_le A1Set (F2Set ×ˢ (A3Set ×ˢ (CtopSet ×ˢ F3Set))))
+      (ENNReal.mul_lt_top hA1_lt hF2Tail_lt)
+  simpa [case2PassiveThetaPassiveFieldReferenceMeasure,
+    case2PassiveThetaPassiveFieldBox, A1Set, F2Set, A3Set, CtopSet, F3Set]
+    using hA1Tail_lt
+
+set_option linter.unusedFintypeInType false in
+set_option linter.style.longLine false in
+/-- A finite open self-restriction of the passive-field coordinate reference
+measure around any passive-field point.
+
+The witness is an entrywise coordinate-product box and the comparison is the
+identity domination of the restricted reference measure by itself with scalar
+`1`.  This proves no original-prior, determinant-Haar, raw-Haar, density,
+normal-crossing, pole-order, or RLCT statement. -/
+theorem exists_open_passiveLocalSet_case2PassiveThetaPassiveFieldReferenceMeasure_restrict_self_le_smul
+    {ρ : Type*} {τ : Type} [Fintype ρ] [Fintype τ]
+    (n : ℕ → ℕ) (S J : ℕ)
+    (theta0 : Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J) :
+    let passiveRef :=
+      case2PassiveThetaPassiveFieldReferenceMeasure
+        (ρ := ρ) (τ := τ) n S J
+    ∃ passiveLocalSet :
+        Set (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J),
+    ∃ passiveMeasure :
+        Measure (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J),
+    ∃ Cpassive : ℝ≥0∞,
+      theta0 ∈ passiveLocalSet ∧
+        IsOpen passiveLocalSet ∧
+        MeasurableSet passiveLocalSet ∧
+        passiveMeasure = passiveRef.restrict passiveLocalSet ∧
+        passiveMeasure Set.univ < ∞ ∧
+        Cpassive = 1 ∧
+        Cpassive < ∞ ∧
+        passiveRef.restrict passiveLocalSet ≤ Cpassive • passiveMeasure := by
+  intro passiveRef
+  let passiveLocalSet :=
+    case2PassiveThetaPassiveFieldBox (ρ := ρ) (τ := τ) n S J theta0 1
+  let passiveMeasure : Measure
+      (Case2PassiveTheta.PassiveFields (ρ := ρ) (τ := τ) n S J) :=
+    passiveRef.restrict passiveLocalSet
+  let Cpassive : ℝ≥0∞ := 1
+  have hmem : theta0 ∈ passiveLocalSet := by
+    simpa [passiveLocalSet] using
+      mem_case2PassiveThetaPassiveFieldBox_self n S J theta0 zero_lt_one
+  have hopen : IsOpen passiveLocalSet := by
+    simpa [passiveLocalSet] using
+      isOpen_case2PassiveThetaPassiveFieldBox n S J theta0 1
+  have hmeas : MeasurableSet passiveLocalSet := by
+    simpa [passiveLocalSet] using
+      measurableSet_case2PassiveThetaPassiveFieldBox n S J theta0 1
+  have hlt_top : passiveMeasure Set.univ < ∞ := by
+    simpa [passiveMeasure, passiveLocalSet, passiveRef] using
+      case2PassiveThetaPassiveFieldReferenceMeasure_box_lt_top
+        (ρ := ρ) (τ := τ) n S J theta0 1
+  refine
+    ⟨passiveLocalSet, passiveMeasure, Cpassive, hmem, hopen, hmeas, rfl,
+      hlt_top, rfl, ENNReal.one_lt_top, ?_⟩
+  simp [Cpassive, passiveMeasure]
 
 set_option linter.style.longLine false in
 /-- Selected-entry signed-box measure on the successor residual center

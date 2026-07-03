@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, passive-field local reference self-restriction
+
+Lean now has:
+
+```text
+piMatrixEntryBox
+case2PassiveThetaPassiveFieldBox
+case2PassiveThetaPassiveFieldReferenceMeasure_box_lt_top
+exists_open_passiveLocalSet_case2PassiveThetaPassiveFieldReferenceMeasure_restrict_self_le_smul
+```
+
+Decision: close the passive local comparison input for the concrete
+coordinate-reference measure by a finite self-restriction, rather than leaving
+it as a supplied hypothesis.  The construction uses a radius-1 entrywise
+product box around the passive fields, sets
+`passiveMeasure = passiveRef.restrict passiveLocalSet`, and uses scalar
+`Cpassive = 1`.
+
+This intentionally does not address original-prior transport, determinant
+Haar/raw-Haar transport, Jacobian-density bounds, or source-density bounds.
+Those remain separate analytic/measure-transport frontiers.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-field-local-reference-self-restriction.md
+```
+
+Next controller target: combine this passive self-restriction with the
+existing with-following source-chart shrink/open following-patch handoff, then
+attack the two remaining density upper-bound continuations separately.
+
 ## Latest controller decision - 2026-07-03, fixed-following-patch coordinate-source finite-integral handoff
 
 Lean now has:

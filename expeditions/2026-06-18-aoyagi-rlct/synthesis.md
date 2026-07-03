@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Passive-Field Local Reference Self-Restriction - 2026-07-03
+
+Lean now has:
+
+```text
+piMatrixEntryBox
+case2PassiveThetaPassiveFieldBox
+case2PassiveThetaPassiveFieldReferenceMeasure_box_lt_top
+exists_open_passiveLocalSet_case2PassiveThetaPassiveFieldReferenceMeasure_restrict_self_le_smul
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaEndpointReference.lean
+```
+
+The new layer builds the finite open passive-local set needed by the
+coordinate-source handoff.  It defines a dependent Pi matrix-entry box,
+packages the five passive-field blocks into a nested product box, proves that
+this box has finite passive coordinate-reference mass, and then takes
+`passiveMeasure = passiveRef.restrict passiveLocalSet` with `Cpassive = 1`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-passive-field-local-reference-self-restriction.md
+```
+
+Boundary: this is only a finite coordinate-reference self-restriction around
+a passive-field point.  It proves no original-prior comparison,
+determinant-Haar/raw-Haar transport, Jacobian-density upper bound,
+source-density upper bound, normal crossings, pole order, or RLCT extraction.
+
+Verification passed: focused local build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaEndpointReference`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched-file marker scan; and direct axiom probes.  The two probed
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Fixed-Following-Patch Coordinate-Source Finite Integral - 2026-07-03
 
 Lean now has:
