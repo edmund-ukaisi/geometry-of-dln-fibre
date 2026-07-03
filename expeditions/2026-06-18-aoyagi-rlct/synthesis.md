@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Local Image P13 Chart Range - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceChart_range
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+z ∈ V
+==> (retainedData z).detChart,
+
+so detData_z := ⟨retainedData z, detChart proof⟩ is a p.13 determinant-chart
+datum,
+
+and by definition of the with-following endpoint source chart,
+  p13Chart(detData_z) = sourceChart z.
+
+If E ∈ sourceChart '' V, choose z ∈ V with E = sourceChart z and use the same
+witness.
+```
+
+The xhigh read-only probe for the stronger equality found no existing API
+proving
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V.
+```
+
+The missing pointwise input is reconstruction for arbitrary
+`E ∈ p13SourceSet`, with the selected-entry pivot condition for `readback E`
+available.  The current high-level local packages do not export the needed
+`∀ z ∈ V, pivotNonzero z.1` fact.
+
+Boundary: this theorem is local and one-way.  It provides actual p.13 chart
+witnesses for image points; it does not prove reverse inclusion, source-rank
+coverage, finite atlas coverage, original-prior support, Haar/Jacobian
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-Following Local Source-Image Right Inverse - 2026-07-03
 
 Lean now has:

@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, with-following local image p.13 chart range
+
+Lean now has:
+
+```text
+exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceChart_range
+```
+
+Decision: strengthen the local with-following source-image support theorem
+from `sourceChart '' V ⊆ p13SourceSet` to an explicit retained-passive p.13
+chart witness for each local image point.  For `z ∈ V`, the witness is
+`⟨retainedData z, hdetV z⟩`; for `E ∈ sourceChart '' V`, choose
+`E = sourceChart z`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-local-image-p13-chart-range.md
+```
+
+Boundary: this remains one-way local image information.  It does not prove
+the reverse inclusion from arbitrary p.13 source points into the with-following
+image, global p.13 source-set coverage, source-rank-stratum coverage, finite
+atlas coverage, original-prior support, Haar/Jacobian transport, normal
+crossings, pole order, or RLCT.  A read-only xhigh probe found that the
+stronger equality
+`sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` would need a new pointwise
+right-inverse theorem for arbitrary `E ∈ p13SourceSet`, plus an exported
+pivot condition on the local `V`.
+
+Verification passed: focused build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaSourceImage`; full local
+`lake build DLNFibre` from `lean/`; `lean/scripts/sorries`;
+`git diff --check`; touched Lean-file marker scan; and direct axiom probe.
+The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, with-following local source-image right inverse
 
 Lean now has:
