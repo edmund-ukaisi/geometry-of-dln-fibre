@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Raw Patch Active-Containment Handoff - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+for a patch P subset rawSourceSet, set
+endpointPatch = rawDetChart inter rawOrderOnEndpoint^{-1}(P);
+
+shrink G internally by the selected-pivot-nonzero open set and run the existing
+localized source-density raw-patch theorem on this smaller neighborhood,
+getting V subset G and V inside the pivot-nonzero locus;
+
+apply the active endpoint theorem with Omega := V, using V's measurability and
+pivot containment, plus the supplied containment
+endpointPatch subset activeWriteback '' (activeChart '' (V inter sourceCylinder));
+
+the active endpoint theorem returns a finite Cdet with
+rawHaar.restrict endpointPatch
+  <= Cdet * endpointReferenceImage(V);
+
+unfold endpointReferenceImage(V) as Measure.map Y (referenceSource.restrict V);
+
+feed this endpoint-patch domination into the existing source-density handoff to
+obtain
+rawHaar.restrict P
+  <= (Cdet * epsilon^{-1})
+       * Measure.map rawMap (coordinateSourceMeasure.restrict V).
+```
+
+The theorem still requires endpoint-patch null-measurability, the source-density
+lower bound by `epsilon`, and `epsilon != 0, infinity`.  The pivot containment
+of `V` is used internally and not exported.
+
+Boundary: local raw-patch domination only.  This is not exact raw-Haar
+pushforward, raw-Haar normalization, determinant-chart Haar transport,
+endpoint-patch null-measurability, source-density positivity, global source
+coverage, source-rank coverage, finite atlas coverage, normal crossings, pole
+order, or RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+declaration reports `[propext, Classical.choice, Quot.sound]`.  Xhigh
+read-only reviewer `Hilbert the 4th` found prose overclaim on the first pass;
+the docstring and reproduction were corrected.  No formal proof or
+mathematical composition issue was found.
+
 ## A2 With-Following Source-Rank Readback and Local Intersection - 2026-07-03
 
 Lean now has:

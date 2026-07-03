@@ -12,6 +12,56 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, raw patch active-containment handoff
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
+```
+
+Decision: lower the active endpoint-image containment composition into
+`RetainedPassiveCase2PassiveThetaRawImageHandoff.lean`.  Callers no longer
+need to supply the endpoint scalar
+
+```text
+rawHaar.restrict (rawDetChart inter rawOrderOnEndpoint^{-1}(P))
+  <= Cdet * Measure.map Y (referenceSource.restrict V)
+```
+
+when they can instead supply containment of the endpoint patch in
+
+```text
+activeWriteback '' (activeChart '' (V inter sourceCylinder)).
+```
+
+The theorem still explicitly requires `P subset rawSourceSet`, endpoint-patch
+null-measurability, a source-density lower bound by `epsilon`, and
+`epsilon != 0, infinity`.  The proof internally shrinks through the
+selected-pivot-nonzero locus so the active endpoint theorem can be applied
+with `Omega := V`; that pivot containment is not exported.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-raw-patch-active-containment-source-density.md
+```
+
+Boundary: local raw-patch domination only.  No exact raw-Haar pushforward,
+raw-Haar normalization, determinant-chart Haar transport, endpoint-patch
+null-measurability theorem, source-density positivity theorem, global source
+coverage, source-rank coverage, finite atlas, normal crossings, pole order, or
+RLCT.
+
+Verification passed: focused Lean check and focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawImageHandoff`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file forbidden-marker scan; and direct axiom probe.  The new
+declaration reports `[propext, Classical.choice, Quot.sound]`.  Xhigh
+read-only review by `Hilbert the 4th` initially caught prose overclaim around
+side conditions and exported pivot containment; the docstring and reproduction
+were corrected, with no formal proof issue found.
+
 ## Latest controller decision - 2026-07-03, with-following source-rank readback and local intersection
 
 Lean now has:
