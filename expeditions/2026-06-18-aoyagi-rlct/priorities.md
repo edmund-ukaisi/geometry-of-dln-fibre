@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, original-volume active-containment readback wrapper
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
+```
+
+Decision: push the active endpoint-image containment handoff one layer
+downstream into
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+For a measurable p.13 chart piece inside the returned local source image, the
+wrapper forms
+
+```text
+P = rawSourceSet inter rawChart^{-1}(chartPiece)
+endpointPatch = rawDetChart inter rawOrderOnEndpoint^{-1}(P)
+```
+
+and derives the raw-patch domination scalar from the concrete active
+containment
+
+```text
+endpointPatch subset activeWriteback '' (activeChart '' (V inter sourceCylinder)).
+```
+
+The original-volume readback bridge then consumes the resulting raw domination
+with `D = Cdet * epsilon^{-1}` and widens the final coordinate-source measure
+from the returned `V` to `G`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-active-containment-source-density.md
+```
+
+Boundary: active containment and the a.e. source-density lower bound remain
+explicit caller hypotheses.  This does not prove active containment from
+ordinary chart-piece support, determinant-chart Haar transport, exact raw
+pushforward, Haar normalization, source-density positivity, source coverage,
+source-rank coverage, original source-prior transport, normal crossings, pole
+order, or RLCT.
+
+Verification passed: focused Lean check, focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, and direct axiom probe.  The
+declaration reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Leibniz the 4th` found only documentation precision issues around scalar flow
+and `V`/`Vrb` notation; both were corrected.
+
 ## Latest controller decision - 2026-07-03, raw patch active-containment handoff
 
 Lean now has:

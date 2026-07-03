@@ -6,6 +6,65 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-Following Original-Volume Readback From Active Containment - 2026-07-03
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The pen-and-paper calculation is:
+
+```text
+start with the same-shrink original-volume readback bridge, obtaining Vrb and
+the transfer principle
+
+rawHaar.restrict P <= D * rawMap_*(thetaReference.restrict Vrb)
+  ==> readback_*(originalVolume.restrict chartPiece)
+      <= (cHaar^{-1} * D) * thetaReference.restrict G;
+
+run the active-containment raw-patch theorem inside Vrb, obtaining
+V subset Vrb and, for the concrete p.13 patch
+P = rawSourceSet inter rawChart^{-1}(chartPiece),
+
+rawHaar.restrict P
+  <= (Cdet * epsilon^{-1})
+       * rawMap_*(coordinateSourceMeasure.restrict V);
+
+rewrite this as a domination over
+(coordinateSourceMeasure.restrict V).restrict Vrb using V subset Vrb, feed it
+to the readback bridge with D = Cdet * epsilon^{-1}, and widen the final
+measure from V to G using V subset G.
+```
+
+The p.13 endpoint-patch null-measurability socket is discharged internally
+from `MeasurableSet chartPiece`; active containment, the a.e. lower bound
+`epsilon <= sourceDensity` on `baseJ.restrict V`, and
+`epsilon != 0, infinity` remain explicit.
+
+Boundary: this is a local original-volume/readback consumer of active
+endpoint-image containment.  It does not prove active containment from
+chart-piece support, determinant-chart Haar transport, exact raw-Haar
+pushforward, raw-Haar normalization, source-density positivity, global source
+coverage, source-rank coverage, original source-prior transport, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check, focused module build of
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+touched Lean-file forbidden-marker scan, and direct axiom probe.  The
+declaration reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Leibniz the 4th` found only documentation precision issues around scalar flow
+and `V`/`Vrb` notation; both were corrected.
+
 ## A2 With-Following Raw Patch Active-Containment Handoff - 2026-07-03
 
 Lean now has:
