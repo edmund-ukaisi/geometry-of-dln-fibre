@@ -288,6 +288,105 @@ set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Conditional endpoint-patch scalar domination from a determinant-side
+weighted-Haar endpoint image identity.
+
+This is deliberately only a handoff theorem.  It does not prove the endpoint
+image identity or the lower bound on the retained-passive formal product
+Jacobian; it says that, once those are supplied on the localized endpoint
+patch `detChart ∩ rawOrder ⁻¹' P`, the exact finite scalar domination required
+by the raw-order reverse-domination socket follows. -/
+theorem rawHaar_restrict_endpointPatch_le_smul_case2PassiveThetaWithFollowingFactorEndpointReferenceImage_of_eq_withDensity_formalProductAbsDet_of_one_le_mul_density
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ' : Fin 3 → Type :=
+      throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+    let RawTuple := TopologyTuple ρ κ' ℝ
+    let Φ : RawTuple → RawTuple :=
+      fun y ↦ topologyTupleEdgeRawOrder (K := ℝ) (ρ := ρ) (κ' := κ') y
+    let rawDetChart : Set RawTuple :=
+      topologyTupleDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ')
+    let Jprod : RawTuple → ℝ≥0∞ :=
+      fun y ↦
+        ENNReal.ofReal
+          (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+            (M := 1) (ρ := ρ) (κ' := κ') y)
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := ρ) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := ρ) (τ := τ) n hS hnext Rres
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+          (ρ := ρ) (τ := τ) n S J →
+          RawTuple :=
+      fun theta ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := ρ) n hS hcont hnext theta eNext e
+    let endpointReferenceImage : Measure RawTuple :=
+      case2PassiveThetaWithFollowingFactorEndpointReferenceImageMeasure
+        (ρ := ρ) (τ := τ) (κ' := κ') n hS hcont hnext eNext e Rres V
+    ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+      ∀ {P : Set RawTuple} {Cdet : ℝ≥0∞},
+        endpointReferenceImage =
+            (rawHaar.restrict (rawDetChart ∩ Φ ⁻¹' P)).withDensity Jprod →
+          Cdet < ∞ →
+            (∀ᵐ y ∂rawHaar.restrict (rawDetChart ∩ Φ ⁻¹' P),
+              1 ≤ Cdet * Jprod y) →
+              rawHaar.restrict (rawDetChart ∩ Φ ⁻¹' P) ≤
+                Cdet • Measure.map Y (referenceSource.restrict V) := by
+  intro ρ κ' RawTuple Φ rawDetChart Jprod referenceSource Y
+    endpointReferenceImage rawHaar _instRawHaar P Cdet hendpoint hCdet hlower
+  dsimp [RawTuple, ρ, κ'] at rawHaar endpointReferenceImage hendpoint hlower ⊢
+  simpa [endpointReferenceImage] using
+    (restrict_le_smul_of_eq_withDensity_of_one_le_mul_density
+      (μ := rawHaar) (ν := endpointReferenceImage) (f := Jprod)
+      (s := rawDetChart ∩ Φ ⁻¹' P) (C := Cdet)
+      hendpoint hCdet hlower)
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
 set_option linter.unusedVariables false in
 set_option linter.style.longLine false in
 /-- Post-composed form of

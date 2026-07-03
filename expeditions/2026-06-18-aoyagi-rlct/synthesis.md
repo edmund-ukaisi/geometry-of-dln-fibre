@@ -6,6 +6,72 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Endpoint-Patch Density-Domination Handoff - 2026-07-03
+
+Lean now has:
+
+```text
+restrict_le_smul_of_eq_withDensity_of_one_le_mul_density
+rawHaar_restrict_endpointPatch_le_smul_case2PassiveThetaWithFollowingFactorEndpointReferenceImage_of_eq_withDensity_formalProductAbsDet_of_one_le_mul_density
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawOrderReference.lean
+```
+
+The generic measure lemma proves:
+
+```text
+ν = (μ.restrict Ω).withDensity f
+C < ∞
+1 ≤ C * f x  a.e. on μ.restrict Ω
+```
+
+implies:
+
+```text
+μ.restrict Ω ≤ C • ν.
+```
+
+The with-following endpoint specialization instantiates
+
+```text
+Ω = rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P
+f = formalProductAbsDet
+ν = endpointReferenceImage
+```
+
+and returns exactly the determinant-side endpoint patch scalar domination
+against `Measure.map Y (referenceSource.restrict V)` under the explicit
+weighted-Haar endpoint image identity and density lower bound.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-patch-density-domination-handoff.md
+```
+
+Boundary: this is not endpoint Haar transport.  It does not prove
+`endpointReferenceImage = (rawHaar.restrict Ω).withDensity formalProductAbsDet`
+or the local lower bound `1 ≤ Cdet * formalProductAbsDet`; those are now the
+explicit remaining obligations for this route.  No source-image coverage,
+original-prior transport, normal crossings, pole order, or RLCT extraction is
+proved here.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawOrderReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The two new
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh read-only reviewer `Avicenna the 3rd` found no issue and confirmed the
+new wrapper does not assert endpoint Haar transport, raw-Haar transport,
+source-image coverage, or RLCT.
+
 ## A2 Endpoint-Patch Null-Measurability - 2026-07-03
 
 Lean now has:

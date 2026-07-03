@@ -21,6 +21,69 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 endpoint-patch density-domination handoff
+
+Reproduction:
+`reproduction-a2-endpoint-patch-density-domination-handoff.md`.
+
+Lean files:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawOrderReference.lean
+```
+
+Lean now proves the generic measure handoff:
+
+```text
+restrict_le_smul_of_eq_withDensity_of_one_le_mul_density
+```
+
+and the with-following endpoint-patch specialization:
+
+```text
+rawHaar_restrict_endpointPatch_le_smul_case2PassiveThetaWithFollowingFactorEndpointReferenceImage_of_eq_withDensity_formalProductAbsDet_of_one_le_mul_density
+```
+
+The calculation is:
+
+```text
+endpointReferenceImage =
+  (rawHaar.restrict Omega).withDensity Jprod
+1 <= Cdet * Jprod y  a.e. on rawHaar.restrict Omega
+Cdet < infinity
+```
+
+implies
+
+```text
+rawHaar.restrict Omega <= Cdet • endpointReferenceImage.
+```
+
+For the specialization,
+
+```text
+Omega = rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P.
+```
+
+Boundary: this is only the elementary scalar-domination consequence of a
+weighted endpoint-Haar image identity plus a lower density bound.  It does
+not prove the endpoint image identity, the density lower bound, endpoint
+Haar transport, raw-Haar normalization, source-image coverage,
+original-prior transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused local builds of
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaRawOrderReference`;
+full local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`;
+touched Lean-file marker scan; and direct axiom probe.  The two new
+declarations report `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh read-only reviewer `Avicenna the 3rd` found no issues: the endpoint
+wrapper assumes the endpoint image equality and lower-density bound explicitly
+and rewrites the RHS definitionally to the endpoint reference image, without
+asserting endpoint Haar transport.
+
 ## 2026-07-03 A2 endpoint-patch null-measurability
 
 Reproduction:

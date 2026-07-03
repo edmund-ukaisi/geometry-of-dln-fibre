@@ -433,6 +433,32 @@ theorem smul_restrict_le_restrict_withDensity_of_ae_le
   rw [← withDensity_const (μ := μ.restrict s) c]
   exact withDensity_mono hf
 
+/-- If a reference measure is a weighted restricted measure and the weight is
+bounded below up to a finite scalar, then the unweighted restricted measure is
+dominated by that scalar multiple of the reference measure.
+
+The lower bound is stated as `1 ≤ C * f x`, avoiding division in `ℝ≥0∞`.
+This is the scalar-domination handoff used when a future chart-Jacobian
+identity supplies an endpoint image measure as `(μ.restrict s).withDensity f`.
+-/
+theorem restrict_le_smul_of_eq_withDensity_of_one_le_mul_density
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {f : α → ℝ≥0∞}
+    {s : Set α} {C : ℝ≥0∞}
+    (hν : ν = (μ.restrict s).withDensity f)
+    (hC : C < ∞)
+    (hlower : ∀ᵐ x ∂μ.restrict s, 1 ≤ C * f x) :
+    μ.restrict s ≤ C • ν := by
+  rw [hν]
+  calc
+    μ.restrict s = (μ.restrict s).withDensity 1 := by
+      rw [withDensity_one]
+    _ ≤ (μ.restrict s).withDensity (fun x ↦ C * f x) := by
+      exact withDensity_mono hlower
+    _ = C • (μ.restrict s).withDensity f := by
+      have hC_ne_top : C ≠ ∞ := ne_of_lt hC
+      simpa [Pi.smul_apply, smul_eq_mul] using
+        (withDensity_smul' (μ := μ.restrict s) C f hC_ne_top)
+
 /-- A property that holds a.e. for `μ` also holds a.e. for any measure
 dominated by a scalar multiple of `μ`. -/
 theorem ae_of_measure_le_smul

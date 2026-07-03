@@ -12,6 +12,60 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, endpoint-patch density-domination handoff
+
+Lean now has:
+
+```text
+restrict_le_smul_of_eq_withDensity_of_one_le_mul_density
+rawHaar_restrict_endpointPatch_le_smul_case2PassiveThetaWithFollowingFactorEndpointReferenceImage_of_eq_withDensity_formalProductAbsDet_of_one_le_mul_density
+```
+
+Decision: land the elementary scalar-domination consequence of a
+weighted-Haar endpoint image identity, but keep the endpoint image identity
+and the local product-determinant lower bound explicit.  This is a valid
+layer because it isolates the remaining analytic/geometric endpoint transport
+obligation from pure measure bookkeeping.
+
+The closed handoff is:
+
+```text
+endpointReferenceImage =
+  (rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P)).withDensity Jprod
+Cdet < ∞
+1 ≤ Cdet * Jprod y  a.e.
+```
+
+implies:
+
+```text
+rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹' P)
+  <= Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-endpoint-patch-density-domination-handoff.md
+```
+
+Next controller target: prove or further decompose the endpoint reference
+image identity
+
+```text
+endpointReferenceImage =
+  (rawHaar.restrict Ω).withDensity formalProductAbsDet
+```
+
+for the with-following endpoint topology-tuple map, ideally by promoting the
+active readout/writeback finite-coordinate inverse into an appropriate
+Haar/linear transport statement, then combining it with the existing
+selected-entry source COV.
+
+Boundary: no endpoint image identity, no product-determinant lower bound on
+the patch, no endpoint Haar transport, source-image coverage, original-prior
+transport, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-03, endpoint-patch null-measurability
 
 Lean now has:
