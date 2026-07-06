@@ -10,6 +10,55 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following product-residual base handoff - 2026-07-06
+
+- **Statement.** On a determinant-chart with-following Case 2 source point,
+  the raw fixed-base p.13 residual square-sum of the endpoint source chart is
+  the square-sum of the with-following product residual.  The proof removes
+  only the finite endpoint reindexing between p.13 residual-block labels and
+  the Case 2 row/column labels.
+- **Statement.** A finite integral of the readback product-residual
+  negative-power integrand gives the fixed-base
+  `residualNegPowerIntegrableOn` predicate on the same measurable source set,
+  provided the fixed-base residual square-sum and readback product-residual
+  square-sum agree pointwise there.
+- **Tier.** A2 product-residual to fixed-base residual handoff.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving original `lossDLN`
+  integrability, residual positivity, density bounds, adapted-product lower
+  bounds, source coverage, source-rank/atlas coverage, source-prior transport,
+  determinant/raw Haar transport, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the elementary block-product
+  reduction and p.13 cleaned product term; existing Lean raw-edge product
+  residual equality and finite coordinate square-sum reindexing.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-product-residual-base-handoff.md`.
+- **Reproduction check.** Xhigh read-only scouts `Aquinas`, `Confucius`, and
+  `Hume` checked the product calculation, the smallest honest API target, and
+  the source-rank frontier.  Verdict: the product is the cleaned
+  `C_1 * C_0 = D(theta.yNext) * F` term with no index/order mismatch; the
+  Lean target should be only the residual-base adapter; source-rank is a later
+  local rank-cut adapter, not analytic atlas coverage.
+- **Lean target.**
+  `aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_case2PassiveThetaWithFollowingFactorEndpointSourceChart_eq_of_detChart`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean`,
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn_of_lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductResidualBridge.lean`.
+- **Proved.** Focused Lean checks and focused module builds passed before the
+  VM interruption.  The resumed final audit passed: focused Lean checks,
+  focused module builds, full local `lake build DLNFibre`, `lean/scripts/sorries`,
+  `git diff --check`, and direct axiom probes.  Both new declarations report
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No original loss comparison, no residual positivity, no
+  original/statistical prior identification, no source-prior transport, no
+  determinant/raw Haar transport, no source coverage, no source-rank coverage,
+  no analytic atlas coverage, no normal crossings, no pole order, and no RLCT
+  extraction.  Following-factor nondegeneracy remains an explicit later
+  hypothesis when zero-set comparison is needed.
+
 ## Current A2 Case 2 formal-product/source-image coordinate-count gate - 2026-07-06
 
 - **Statement.** Plain `Case2PassiveTheta` is lower-dimensional relative to

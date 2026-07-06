@@ -2460,6 +2460,104 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- On a determinant-chart source point, the raw fixed-base residual square-sum
+of the endpoint source chart is the with-following Case 2 product-residual
+square-sum.
+
+This removes only the finite endpoint reindexing between the raw p.13 residual
+block and the Case 2 row/column labels; it does not assert integrability,
+source coverage, Haar transport, normal crossings, pole order, or RLCT. -/
+theorem aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_case2PassiveThetaWithFollowingFactorEndpointSourceChart_eq_of_detChart
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet :
+      (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+        (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e).detChart) :
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W₂ B₂ U₀ hU₀
+          (fun E :
+              (∀ p : Fin 2,
+                reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) ↦ E)
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z)) =
+      aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorProductResidualReadout
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e) := by
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let sourceChart : EdgeFamily :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChart
+      W₂ B₂ n hS hcont hnext hU₀ eNext e z
+  let rawResidual :
+      AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) → ℝ :=
+    paperEndpointFixedBaseResidualBlockCoordinateMap
+      (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) sourceChart
+  let residualEndpointEquiv :
+      Case2ResidualRowIndex n S (J + 1) × τ ≃
+        AoyagiResidualBlockCoordinateIndex
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) :=
+    Equiv.prodCongr (e (Fin.last 2)) (e 0)
+  have hraw_reindex :
+      aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout
+            W₂ B₂ n hU₀ e sourceChart) =
+        aoyagiCoordinateSquareSum rawResidual := by
+    simpa [case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout,
+      rawResidual, residualEndpointEquiv] using
+      aoyagiCoordinateSquareSum_comp_equiv residualEndpointEquiv rawResidual
+  calc
+    aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W₂ B₂ U₀ hU₀
+          (fun E :
+              (∀ p : Fin 2,
+                reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) ↦ E)
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+            W₂ B₂ n hS hcont hnext hU₀ eNext e z)) =
+        aoyagiCoordinateSquareSum rawResidual := by
+          rfl
+    _ =
+        aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout
+            W₂ B₂ n hU₀ e sourceChart) := hraw_reindex.symm
+    _ =
+        aoyagiCoordinateSquareSum
+          (case2PassiveThetaWithFollowingFactorProductResidualReadout
+            (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e) := by
+      simpa [sourceChart] using
+        aoyagiCoordinateSquareSum_case2PassiveThetaWithFollowingFactorEndpointSourceChartRawEdgeProductResidualReadout_sourceChart_eq_of_detChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z hdet
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
 -- The raw-order two-stage proof composes several retained-passive local chart
 -- normalizations and follows the existing non-following bridge's footprint.

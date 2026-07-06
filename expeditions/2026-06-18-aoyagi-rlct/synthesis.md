@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following product-residual base handoff - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-product-residual-base-handoff.md
+```
+
+For `z = (theta, F)` in the with-following Case 2 source, the active cleaned
+p.13 factors are
+
+```text
+C_1(z) = D(theta.yNext)
+C_0(z) = F
+```
+
+and the cleaned product residual is `C_1 * C_0`.  This is exactly the p.13
+product term after the elementary block reduction, not the original
+transformed loss block.  The original loss comparison still belongs to the
+regular-suspension/product-difference layer.
+
+Lean now has the determinant-chart pointwise bridge:
+
+```text
+aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_case2PassiveThetaWithFollowingFactorEndpointSourceChart_eq_of_detChart
+```
+
+It takes the raw fixed-base p.13 residual-block coordinates of
+`sourceChart z`, reindexes them along the endpoint equivalence, and identifies
+their square-sum with the with-following source-side product-residual
+square-sum.
+
+Lean also now has the generic residual-base adapter:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn_of_lintegral_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidual_eq
+```
+
+It is only an a.e. congruence: a finite readback product-residual integral plus
+pointwise square-sum equality on a measurable source set gives the fixed-base
+`residualNegPowerIntegrableOn` predicate on that same set and measure.
+
+Next rung: compose the latest prior-density theorem over
+`p13SourceSet cap readback^{-1} V` with this adapter, supplying the pointwise
+equality on the returned determinant-sector patch.  Do not jump straight to
+`lossDLN`: residual positivity, adapted-product lower bounds, density bounds,
+base alignment, and following-factor nondegeneracy remain explicit gates.
+Source-rank can be added by a local rank-cut adapter; it is not analytic atlas
+coverage.
+
 ## A2 Case 2 formal-product/source-image coordinate-count gate - 2026-07-06
 
 The formal-product/source-image coordinate-count gate is reproduced and

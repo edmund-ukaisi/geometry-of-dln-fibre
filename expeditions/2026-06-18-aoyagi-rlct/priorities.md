@@ -12,6 +12,47 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, with-following product-residual base handoff
+
+Decision: land the residual-base handoff before attempting another `lossDLN`
+wrapper.  The with-following Case 2 product residual is the cleaned p.13
+product
+
+```text
+C_1 * C_0 = D(theta.yNext) * F.
+```
+
+This matches Aoyagi pp. 10-13 only at the level of the cleaned product term
+after the elementary block reduction.  It is not the original transformed loss
+block, and it must not be named or used as such.
+
+Lean now has a pointwise square-sum bridge from the raw fixed-base residual
+block of `sourceChart z` to the with-following product-residual square-sum on a
+determinant-chart source point, plus a generic a.e. congruence adapter from a
+finite readback product-residual integral to `residualNegPowerIntegrableOn`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-product-residual-base-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductResidualBridge.lean
+```
+
+Next mathematical rung: compose the latest prior-density finite-integral
+theorem on
+
+```text
+p13SourceSet cap readback^{-1} V
+```
+
+with this residual-base adapter by supplying the pointwise square-sum equality
+on the returned determinant-sector patch.  Keep `hpos_source`,
+determinant-sector control, source-data/base alignment, adapted-product lower
+bounds, density bounds, and following-factor nondegeneracy explicit before any
+`lossDLN` theorem.  Source-rank/rank-cut remains a local adapter, not analytic
+atlas coverage.
+
 ## Latest controller decision - 2026-07-06, Case 2 formal-product/source-image coordinate-count gate
 
 Decision: do not target ambient p.13 formal-product/source-image domination
