@@ -35,6 +35,10 @@ regular-coordinate ball.
 
 ## Boundary
 
+This is the image statement for the reduced p.13 raw section, not a full
+raw determinant-chart parameterisation.  The section fixes transverse raw
+coordinates, so it cannot by itself push a coordinate measure to full raw Haar.
+
 No full raw-Haar pushforward, no original source/prior transport, no source
 coverage, no density identification, no normal crossings, no pole order, and
 no RLCT.

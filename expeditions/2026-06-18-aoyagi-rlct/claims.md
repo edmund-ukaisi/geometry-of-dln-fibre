@@ -10,6 +10,46 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 p.13 product-coordinate readback left inverse - 2026-07-06
+
+- **Statement.** A supplied residual readback for the base source variables
+  extends to a product readback for the reduced p.13 product-coordinate edge
+  family.  If `baseReadback(residual(CedgeBase x)) = x` and `det Ctop(u)` is
+  a unit, then `productReadback(CedgeProd(x,u)) = (x,u)`.
+- **Statement.** After shrinking the regular-coordinate radius around `0`,
+  the determinant-unit condition holds throughout the ball, so the
+  product-coordinate map is injective on `source x ball(0,R)` whenever the
+  residual readback is a left inverse on `source`.
+- **Tier.** A2 pointwise/set-level inverse API for the reduced p.13
+  product-coordinate map.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as source-image coverage, image
+  measurability, product-coordinate measure transport, original-prior
+  transport, full raw-Haar pushforward, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 reduced product-coordinate formulas; the
+  proof uses existing Lean coordinate recovery for regular and residual
+  coordinates plus elementary product equality/injectivity.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-readback-left-inverse.md`.
+- **Reproduction check.** Xhigh explorer `Euclid` found no existing full
+  product-coordinate inverse API and recommended this residual-readback
+  left-inverse theorem.  Xhigh source scout `Arendt` reconstructed the p.13
+  reduced-section formulas and confirmed the raw-Haar obstruction.
+- **Lean target.**
+  `paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_productReadback_leftInverse_of_residualReadback`,
+  `paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback`,
+  and
+  `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback`
+  in `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean`.
+- **Proved.** Focused Lean file check, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+  Lean-file forbidden-marker scan, and direct axiom probes passed.  Axiom
+  footprint: `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No continuity-on-domain theorem, no image measurability, no
+  source-image equality or coverage, no product-coordinate measure pushforward,
+  no original-prior transport, no full raw-Haar pushforward, no normal
+  crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 with-following same-shrink p.13/readback contract - 2026-07-06
 
 - **Statement.** If a with-following p.13 image equality holds on `W`, then

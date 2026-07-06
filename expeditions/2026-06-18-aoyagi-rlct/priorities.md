@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, p.13 product-coordinate readback left inverse
+
+Lean now has:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_productReadback_leftInverse_of_residualReadback
+
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+```
+
+Decision: fill the inverse API gap for the actual reduced p.13
+product-coordinate map, but only at the pointwise/set level.  A supplied
+residual readback for the base source variables combines with the existing
+regular/residual coordinate recovery theorem to give
+
+```text
+productReadback(CedgeProd(x,u)) = (x,u).
+```
+
+The small-ball wrapper shrinks the regular coordinate radius so `det Ctop(u)`
+is a unit throughout the ball, yielding injectivity on
+`source x ball(0,R)`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-product-coordinate-readback-left-inverse.md
+```
+
+Boundary: no continuity-on-domain theorem, image measurability, source-image
+coverage, product-coordinate measure pushforward, original-prior transport,
+normal crossings, pole order, or RLCT.  This also does not revive the false
+raw-Haar pushforward claim from the reduced p.13 raw section.
+
+Verification passed: focused Lean file check, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, and direct axiom probes.  All three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Next genuine frontier: a product-coordinate weighted source/reference
+handoff for `CedgeProd` itself, with density
+`fun xu => ENNReal.ofReal (phi (CedgeProd xu))`, feeding the existing
+readback-domination socket.  Linnaeus identified this as the smallest
+non-thin measure bridge; continuity/positivity and local boundedness of
+`phi(CedgeProd(x,u))` are already handled elsewhere.
+
 ## Latest controller decision - 2026-07-06, with-following same-shrink p.13/readback contract
 
 Lean now has:

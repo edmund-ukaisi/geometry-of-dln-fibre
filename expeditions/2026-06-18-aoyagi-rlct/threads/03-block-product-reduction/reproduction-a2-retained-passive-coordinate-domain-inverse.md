@@ -293,6 +293,12 @@ matrix level.  It does not yet prove either field:
 - the reduced p.13 section remains lower-dimensional and is not being used as
   full raw Haar.
 
+Update 2026-07-06: the reduced fixed-base p.13 product-coordinate map now has
+a pointwise product-readback left inverse in Lean, conditional on a supplied
+residual readback for the base residual coordinates.  This lands the reduced
+regular/residual readout layer, not the retained-passive full-coordinate
+reconstruction or a measure pushforward theorem.
+
 ## First Lean Statement Shape
 
 The first useful Lean statement should not be a measure theorem.  It should be

@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Product-coordinate Readback Left Inverse - 2026-07-06
+
+Lean now has the product-coordinate readback/injectivity layer in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+```
+
+with declarations:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_productReadback_leftInverse_of_residualReadback
+
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+```
+
+The calculation is elementary.  The existing coordinate recovery theorem gives
+regular readback `u` and residual readback equal to the base residual
+coordinate.  If a supplied `baseReadback` is a left inverse for that base
+residual coordinate map on the source set, then
+`productReadback(CedgeProd(x,u)) = (x,u)`.  A small regular-coordinate ball
+supplies the determinant-unit hypothesis for `Ctop(u)` and hence gives local
+`Set.InjOn` for the product-coordinate map.
+
+Boundary: no continuity-on-domain theorem, image measurability, source-image
+coverage, product-coordinate measure pushforward, original-prior transport,
+normal crossings, pole order, or RLCT.  The reduced p.13 raw section still
+cannot push forward to full raw Haar, because it fixes transverse raw
+variables.
+
+Xhigh explorer `Euclid` found the inverse API gap and recommended this exact
+residual-readback theorem shape.  Xhigh source scout `Arendt` reconstructed
+the p.13 reduced-section formula and confirmed the raw-Haar obstruction.
+Xhigh measure scout `Linnaeus` identified the next non-thin measure target:
+a product-coordinate weighted source/reference handoff for `CedgeProd` with
+source-side density `ofReal (phi (CedgeProd xu))`, then application of the
+existing readback-domination socket.  That theorem still needs the actual
+weighted source/reference identity or domination as an explicit hypothesis.
+
+Verification passed: focused Lean file check, focused module build, full local
+`lake build DLNFibre`, no-sorry audit, whitespace check, touched-file marker
+scan, and direct axiom probes.  All three declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 With-following Same-shrink p.13/readback Contract - 2026-07-06
 
 Lean now has:

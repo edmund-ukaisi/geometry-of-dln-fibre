@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 p.13 product-coordinate readback left inverse
+
+Reproduction:
+
+```text
+reproduction-a2-product-coordinate-readback-left-inverse.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+```
+
+Lean now has:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_productReadback_leftInverse_of_residualReadback
+
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+```
+
+The pointwise theorem defines product readback by applying a supplied base
+residual readback to the residual coordinate map and applying the regular
+coordinate readback to the p.13 regular coordinates.  Existing coordinate
+recovery gives the residual coordinate of `CedgeProd(x,u)` as the base residual
+coordinate of `x` and the regular coordinate as `u`, so the product readback
+recovers `(x,u)`.  The small-ball wrapper supplies the determinant-unit
+condition and gives local injectivity.
+
+Boundary: pointwise/set-level inverse layer only.  No product-coordinate
+measure transport, source-image coverage, image measurability, normal
+crossings, pole order, or RLCT.
+
+Verification: focused Lean file check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes passed.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 with-following same-shrink p.13/readback contract
 
 Reproduction:

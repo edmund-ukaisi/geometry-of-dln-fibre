@@ -18,6 +18,14 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: p.13 product-coordinate readback left inverse landed.
+  A supplied base residual readback now combines with existing regular and
+  residual coordinate recovery to prove
+  `productReadback(CedgeProd(x,u)) = (x,u)`, plus injectivity on a source
+  product with a sufficiently small regular-coordinate ball.  This is not
+  source-image coverage, image measurability, product-coordinate measure
+  transport, original-prior transport, normal crossings, pole order, or RLCT.
+
 - 2026-07-06, Thread 03: with-following same-shrink p.13/readback contract
   landed.  The formal-product/source-image contract can now be returned on a
   local `V` that also satisfies
