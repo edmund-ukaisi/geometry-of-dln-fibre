@@ -1093,3 +1093,17 @@ no green-gate coverage). Caught one tide later when the next merge's aggregator 
 **verify `git show HEAD -- lean/DLNFibre.lean` contains the import** before pushing. A green full-build proves
 the working tree is consistent, NOT that the edit is committed. Prefer `git status --porcelain` = clean (no
 lingering ` M lean/DLNFibre.lean`) before every integration push.
+
+## 2026-07-06 — teammates must NOT touch the main checkout (2nd incident; recovery was clean because canonical is push-target-addressed)
+`phip1` (an isolation:worktree formaliser) "accidentally moved the main checkout onto a stray local
+`genm-phiexpl-p1`, then restored it to `genm-sjbase`" — i.e. it ran git ops in the controller's main checkout
+(`/home/ubuntu/workspace/geometry-of-dln-fibre`), not just its own worktree. Consequence: the main checkout
+drifted onto the wrong local branch, and the controller's subsequent `ff-only` + doc commit landed on that
+stray local pointer. **No canonical corruption** — the controller pushes via `git push origin
+HEAD:expedition/aoyagi-full` (push-target-addressed, independent of local branch name), so origin stayed
+correct; the damage was a stale/contaminated LOCAL pointer, fixed with `git checkout -B expedition/aoyagi-full
+origin/expedition/aoyagi-full` + `git branch -f genm-sjbase origin/genm-sjbase`. **Prevention:** (1) every
+teammate brief must say "work ONLY in your assigned worktree; NEVER `cd` to or run git in the main checkout";
+(2) controller keeps pushing via `HEAD:expedition/aoyagi-full` (never a bare `git push` that assumes the local
+branch), and verifies `git rev-parse --abbrev-ref HEAD` = `expedition/aoyagi-full` at the START of each
+integration. This is the 2nd such incident (the 1st was a prior session leaving the checkout on genm-inj-injon).
