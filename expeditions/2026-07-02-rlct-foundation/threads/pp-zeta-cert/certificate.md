@@ -9,6 +9,18 @@ the proved algebraic `λ = ½·codim` (`DLN/RlctPayoff.lean`); `DLN/Aoyagi/Theta
 
 ---
 
+> **UPDATE (re-adjudication §7, TWO rounds).** The R2b `hUzero` (x₀ sole zero in `closure U`) is too
+> strong (excludes the connected DLN fibre); and the round-5 over-correction ("Axiom A is purely local,
+> no worst-point hypothesis") is **inconsistent** — the pole `s₀` is a `supp φ` quantity, so a wide `φ`
+> spanning a worse zero makes `s₀ = −rlct_{x₀}` false (wide-φ counterexample `K=x²(x−1)⁸`, §7.2).
+> **Corrected three-way split (§7, authoritative over §§1–6):** (A) zeta pole `s₀ = −rlct_{x₀}` under
+> **`hWorst : ∀ x ∈ tsupport φ, rlct_{x₀} ≤ rlct_x`** (x₀ worst-threshold in the support — the paper's
+> "supp φ small enough"; admits the fibre, dischargeable at a smooth fibre point); (B) a SEPARATE
+> regional bridge (`U` boundary-regular + `x₀` worst over `\overline U`); (C) the GLOBAL DLN payoff via
+> the existing Watanabe/Aoyagi cites (the payoff's real path — no reliance on the paper's open local
+> conjecture). Decorrelated Codex confirmed the inconsistency, `hWorst`, DLN-admissibility, and an (F1)
+> boundary-regularity correction.
+
 ## 0. The one-paragraph verdict
 
 The zeta-pole definition is **sound and faithful to the paper**. The largest pole of the archimedean
@@ -337,13 +349,17 @@ genuine monument or named analytic theorem, each faithfully sourced.
 
 The zeta `propdefn` is *local* (`rlct_x`, one pole at one `x`). The payoff `rlct(K^{DLN}_B) = ½·codim`
 is the *global* `rlct = inf_x rlct_x` (paper Prop (iii)). For the DLN algebraic germ the inf is
-attained. **The formaliser should not need to formalise the `inf_x` explicitly** if it keeps the
-payoff-facing `rlct` as the value bracketed by Watanabe/Aoyagi (which are *global* statements,
-`eqn:rlct_upper_bound_glob`); the *local* zeta pair is the definitional object, and the global rlct is
-its inf. Keep the two typed apart (see §1.4 item 3). The current repo `RlctRealInterface.rlct` is
-already the global map `(Tuple → ℝ) → ℝ`; the zeta `RLCTPair` is local-at-`x` — R2b connects them by
-`rlct(F) = inf_x λ(RLCTPair_x F)`, or short-circuits via the cited *global* bounds (cleaner). This is a
-**definitional bookkeeping** point, not a mathematical gap.
+attained. **The formaliser should not route the payoff through the local zeta at a specific fibre
+point** — it should keep the payoff-facing `rlct` as the value bracketed by Watanabe/Aoyagi (which are
+*global* statements, `eqn:rlct_upper_bound_glob`); the *local* zeta pair is the definitional object, and
+the global rlct is its inf. Keep the two typed apart (see §1.4 item 3). The current repo
+`RlctRealInterface.rlct` is already the global map `(Tuple → ℝ) → ℝ`; the zeta `RLCTPair` is
+local-at-`x` — the payoff short-circuits via the cited *global* bounds (Theorem C in §7). **This is NOT
+mere bookkeeping (correcting my earlier framing): §7 shows that connecting the local pole at a
+*specific* fibre point to the global value rides the paper's OPEN local-rlct conjecture (L1937,
+"future work"), so it must NOT be smuggled into the payoff. The payoff uses the global cites; the local
+zeta stays definitional. See §7 for the full three-way split (local Axiom A / regional Bridge B /
+global Theorem C).**
 
 ---
 
@@ -449,3 +465,216 @@ separate names, separate types, off the payoff's critical path.
 "maximal pole = −rlct") for well-definedness of `(λ, m)` AND Link 1 + the TWO DLN evaluation cites
 (Watanabe, Aoyagi) already isolated. `λ`, `m` (extraction), the threshold value (R2a), and Link 3 are
 built/proved. This is the honest boundary the payoff should read.
+
+> **⚠ SUPERSEDED by §7 on one point.** §6 line "`λ_zeta = integrabilityThreshold (Link 1)` — CITED, in
+> the cite" is an over-simplification: the cite is a **LOCAL** statement `s₀ = −rlct_{x₀}(K)`, and the
+> passage to the **regional** `integrabilityThreshold K U` is a **separate** bridge (regularity of `U` +
+> `x₀` worst-in-`\overline U`), NOT part of the zeta axiom. The single-zero fix (`hUzero`) that broke
+> DLN-applicability was an attempt to force the regional conclusion into the local axiom. §7 gives the
+> corrected three-way split. Read §7 as the authoritative form; §§1–6 are the surrounding analysis.
+
+---
+
+## 7. RE-ADJUDICATION — the local cite, the regional bridge, and DLN-applicability
+
+_Controller flagged (correctly): the consistency fix `hUzero : ∀ x ∈ closure U, K x = 0 → x = x₀`
+(x₀ the sole zero) is **too strong** — it forbids the connected positive-dimensional DLN fibre
+`{K_B = 0} = mult⁻¹(B)`, so the cite can't be instantiated at `K_B`. This section adjudicates the
+correct hypothesis. Decorrelated Codex (gpt-5.4, high, full run exit 0) independently confirmed the
+shape and sharpened two points (a boundary-regularity correction to my (F1); the "don't smuggle
+local→global into the axiom" architecture)._
+
+### 7.0 Root cause — an altitude error that recurs at TWO scales
+
+The recurring bug is an **altitude confusion between where the pole lives and where the threshold is
+read**. The pole `s₀` of `Z_{K,φ} = ∫ K^s φ` is determined by the **worst singularity in `supp φ`** —
+`s₀ = −inf_{x ∈ supp φ} rlct_x(K)`. So `s₀ = −rlct_{x₀}` requires `x₀` to be that worst point *in the
+support*. The error appeared at two scales:
+
+1. **Region scale (rounds 1–4):** a *regional* conclusion `s₀ = −integrabilityThreshold K U` was forced
+   on the axiom; fixed by moving it to a separate Bridge B (worst over `\overline U`).
+2. **Support scale (round 5, this re-adjudication):** I then over-corrected to "Axiom A is *purely
+   local*, needs no worst-point hypothesis" — **wrong**, because `s₀` is a `supp φ` quantity, not a germ
+   quantity. `supp φ` is *itself* a region; the same worst-point condition is needed, now over
+   `tsupport φ`. The fix is `hWorst : ∀ x ∈ tsupport φ, rlct_{x₀}(K) ≤ rlct_x(K)`.
+
+`hUzero` (sole zero) was a brutal over-guarantee of "worst point" that excludes non-isolated zero sets.
+The right guarantee at both scales is the **worst-threshold inequality**, which admits the connected
+fibre. The architecture is still the three-way split; the correction is that **Axiom A is scoped by
+`hWorst` over `tsupport φ`** (not hypothesis-free).
+
+### 7.1 The two facts, corrected
+
+Fix `K ≥ 0` real-analytic on a nbhd of `\overline U`, `U` relatively compact open. Local RLCT
+`rlct_x(K) := sup{c ≥ 0 : K^{−c} loc. integrable at x}` (a **cite-free, local** notion; `= +∞` where
+`K(x) ≠ 0` by continuity; `∈ (0,∞)` where `K(x)=0`, paper Prop (i)).
+
+- **(F1), corrected — the easy direction is unconditional; the converse needs `U`-regularity.**
+  - `(∀ x ∈ \overline U, c < rlct_x(K)) ⟹ K^{−c} ∈ L¹(U)` — ALWAYS (finite subcover of `\overline U`).
+  - The converse — `K^{−c} ∈ L¹(U) ⟹ ∀ x ∈ \overline U, c < rlct_x(K)` — **FAILS for a thin/cusped
+    `U`** (decorrelated-Codex counterexample: `K = x²+y²`, `U = {0<x<1, 0<y<e^{−1/x²}}`; then
+    `(0,0) ∈ \overline U` has `rlct = 1`, yet `∫_U K^{−1} < ∞` because `U` pinches off exponentially
+    fast at the origin). So
+    $$\text{integrabilityThreshold}(K,U) = \inf_{x∈\overline U} \text{rlct}_x(K)\quad\textbf{only if } U \text{ is thick near } ∂U$$
+    (a ball/box/Lipschitz-domain / interior-cone condition suffices). The earlier open-U-leak
+    counterexample (`K=x²(x−1)⁸`, `U=(−1,1)`, zero at the boundary `x=1`) is the *other* face of the
+    same boundary issue — there the boundary zero is *seen* by a thick `U` and lowers the threshold; in
+    the cusp example a *thin* `U` fails to see the interior-boundary point. **Both say: the identity is
+    a `\overline U` statement AND needs `U` boundary-regular.** For the DLN formalisation just take
+    `U` = an open **ball/box** around `x₀` — regular by construction; the pathology never arises.
+- **(F2).** Given (F1) valid (regular `U`): `integrabilityThreshold K U = rlct_{x₀}(K)` **iff `x₀`
+  attains the min of `rlct_x` over `\overline U`** — i.e. `∀ x ∈ \overline U, rlct_{x₀}(K) ≤ rlct_x(K)`.
+  This is strictly weaker than "sole zero": it *admits other zeros* (a whole connected fibre), only
+  forbidding a **strictly worse-threshold** one.
+
+### 7.2 The corrected architecture — a THREE-way split (do NOT collapse it)
+
+**Axiom A (zeta pole — the cite, DLN-admissible).** At a point `x₀` with `K(x₀)=0`, smooth cutoff
+`φ ∈ C_c^∞`, `φ ≥ 0`, `φ(x₀) ≠ 0`, **and `x₀` a worst-threshold point of `tsupport φ`**:
+
+> **Hyp additionally:** `hWorst : ∀ x ∈ tsupport φ, rlct_{x₀}(K) ≤ rlct_x(K)`.
+> **Concl:** `Z_{K,φ}(s) := ∫ K^s φ` continues meromorphically; largest pole `s₀ < 0` of finite order
+> `m₀`; **`s₀ = −rlct_{x₀}(K)`** (the paper's `propdefn` with "U small enough"). `λ := −s₀ = rlct_{x₀}`,
+> `m := m₀`.
+
+> **⚠ CORRECTION (round 5, controller-caught, Codex-confirmed).** My earlier draft here said Axiom A
+> "carries NO worst-in-U hypothesis — it is a purely local germ statement." **THAT WAS WRONG** — the
+> same altitude error one scale down. `s₀` (the largest pole of `Z_{K,φ}`) is a **`supp φ` quantity, NOT
+> a germ-at-`x₀` quantity**: the integral `∫ K^s φ` runs over all of `supp φ`, and EVERY zero of `K` in
+> `supp φ` contributes poles. The largest pole is `s₀ = −inf_{x ∈ supp φ} rlct_x(K)` — the WORST
+> singularity in the support dominates. So `s₀ = −rlct_{x₀}` requires `x₀` to be that worst point:
+> **`hWorst` over `tsupport φ` is mandatory in the axiom.**
+>
+> **The wide-φ counterexample (proves the un-guarded axiom inconsistent):** `K = x²(x−1)⁸`, `x₀ = 0`,
+> `φ` a bump with `tsupport φ = [−½, 3⁄2] ∋ {0, 1}`, `φ(0) ≠ 0`. Then `rlct_0 = 1/2` (germ at 0), but
+> the zeta sees `x=1` (order-8 zero, `rlct_1 = 1/8`), so the largest (rightmost, closest-to-0) pole is
+> `s₀ = −min(1/2, 1/8) = −1/8`, while the un-guarded conclusion asserts `s₀ = −1/2`. `−1/8 ≠ −1/2` at a
+> valid instance ⟹ the un-guarded axiom proves `False`. `hWorst` fails here (`rlct_1 = 1/8 < 1/2`), so
+> the guarded axiom does not fire — excluded correctly.
+
+**`hWorst` IS "U/supp φ small enough" made precise, via lower-semicontinuity** of `x ↦ rlct_x(K)`
+(paper Prop `prop:rlct_elem`(ii)): where `x₀` is a *local* min of `rlct_·` (generic), a small enough
+`supp φ` has `rlct_x ≥ rlct_{x₀}` for all `x ∈ supp φ`, i.e. `hWorst` holds. So `hWorst` faithfully
+captures the paper's "for `U` small enough the poles are independent of `U`" clause. It **admits
+non-isolated zero sets** (a connected fibre of *equal* threshold satisfies `hWorst` with equality) — it
+forbids only a *strictly worse* zero in the support, exactly what the wide-φ counterexample has.
+DLN-admissibility is verified in §7.3.
+
+**Bridge B (REGIONAL — a separate lemma/hypothesis, cite-free in form).** To connect Axiom A's local
+`rlct_{x₀}` to R2a's regional `integrabilityThreshold K U`:
+
+> **Hyp:** `U` boundary-regular (a ball/box around `x₀` suffices), `x₀ ∈ U`, and
+> **`∀ x ∈ \overline U, rlct_{x₀}(K) ≤ rlct_x(K)`** (x₀ is a worst singularity in `\overline U`).
+> **Concl:** `integrabilityThreshold K U = rlct_{x₀}(K)`.
+
+Bridge B is **provable** from (F1)+(F2) *given* a formalised local-RLCT notion and the boundary-regular
+`U` — it is analysis, buildable, NOT a new cite (though R2b may take it as a hypothesis first and
+discharge later). It is **not circular** (Codex-confirmed): `rlct_x` is defined by *local* integrability,
+`integrabilityThreshold K U` by *regional* integrability — distinct objects; the hypothesis constrains
+the local family, the conclusion is the regional value. What WOULD be circular/useless is assuming
+`integrabilityThreshold K U = rlct_{x₀}` as a black-box hypothesis (candidate (ii)) — that bakes in the
+very bridge. Use the **worst-point inequality**, not the equality.
+
+**Theorem C (GLOBAL DLN payoff — the two DLN cites, already on the cordon).** `rlct(K_B) = ½·codim
+mult⁻¹(B)`, where `rlct(K_B) = inf_{x∈X} rlct_x` (global). This is Watanabe-upper ∧ Aoyagi-lower on
+`codimRealFibre` (paper `thm:aoyagi-rlct`, `eqn:rlct_upper_bound_glob` — **GLOBAL** statements). It does
+**NOT** go through instantiating Axiom A at a specific fibre point. **This is the key to DLN-soundness:
+the payoff is a separate GLOBAL citation; the zeta object is the definitional apparatus.**
+
+### 7.3 DLN-applicability — verified (Axiom A with `hWorst` fires at a smooth fibre point)
+
+**The decisive question:** can Axiom A (now carrying `hWorst` over `tsupport φ`) be instantiated at
+`K_B`, whose zero set is the connected positive-dim fibre? **YES — at a smooth fibre point, with a small
+`φ`.** The mechanism (my construction, decorrelated-Codex-confirmed):
+
+- At a **smooth point** `x₀` of a top-dimensional fibre component, some Jacobian minor of `F := mult − B`
+  of size `c = codim_{x₀} mult⁻¹(B)` is nonzero at `x₀`; **by continuity it stays nonzero on a
+  neighbourhood** `V ∋ x₀`, so every fibre point in `V` is smooth of the *same* codimension `c`. The
+  analytic **constant-rank theorem** gives local coordinates on `V` with `F(u,v) = (u_1,…,u_c,0,…,0)`,
+  hence `K_B = ‖F‖² ~ u_1² + … + u_c²` — the smooth quadratic block, `rlct_x(K_B) = c/2` (paper
+  `ex:rclts`) **locally constant** on `V`, and `rlct_x = +∞` off the fibre.
+- The **singular sublocus is closed and lower-dimensional**, so it **cannot accumulate at the smooth
+  `x₀`**: shrink `supp φ ⊆ V` to miss it entirely. Then `∀ x ∈ tsupport φ, rlct_x(K_B) ∈ {c/2, +∞} ≥
+  c/2 = rlct_{x₀}` — **`hWorst` holds (with equality on the fibre).** So Axiom A fires: `s₀ =
+  −rlct_{x₀}(K_B) = −c/2`.
+
+So Axiom A is DLN-admissible: the connected fibre is no obstruction, because `hWorst` is a
+*threshold* condition (a locally-constant-`c/2` fibre satisfies it with equality), NOT a zero-count
+condition. This is the whole point of the fix over `hUzero`.
+
+**But the DLN PAYOFF does not go through this local instantiation** — two reasons: (i) the local value
+`c/2` at a smooth point equals the *global* `½·codim` only under the paper's **open** local conjecture
+(L1937, "future work"); (ii) the payoff is a *global* statement. So:
+
+- **Recommended DLN wiring (avoids the open conjecture entirely):** the payoff `rlct(K_B) = ½·codim` is
+  **Theorem C** (global Watanabe ∧ Aoyagi on `codimRealFibre` — already proved-modulo-those-cites in the
+  repo, `rlct_lossDLN_eq_half_codimRealFibre`). The zeta object (Axiom A) is the **honest definition of
+  `rlct`** replacing the opaque `rlctReal` scalar; its DLN-instantiation (above) shows it is *not
+  vacuous* on `K_B` and gives the right local value `c/2` at a smooth point — a **non-vacuity witness**,
+  not the payoff's critical path. This keeps: (i) the zeta definition honest and DLN-admissible, (ii) the
+  payoff sound (Theorem C, global cites), (iii) no reliance on the open local conjecture, (iv) `hWorst`
+  discharged where it *is* dischargeable (the smooth fibre point), never asserted where it isn't.
+
+### 7.4 Counterexample-still-excluded check
+
+- **Wide-φ, `K = x²(x−1)⁸`, `tsupport φ = [−½, 3⁄2] ∋ {0,1}`, `x₀=0`.** True `s₀ = −min(rlct_0, rlct_1)
+  = −min(1/2, 1/8) = −1/8` (the zeta sees both zeros; the worse one at `x=1` dominates the rightmost
+  pole). Guarded Axiom A: **`hWorst` FAILS** (`rlct_1 = 1/8 < 1/2 = rlct_0` at `x=1 ∈ tsupport φ`), so
+  the axiom **does not fire** — the false conclusion `s₀ = −1/2` is never asserted. **Excluded
+  correctly**, and for the right reason: not "there is a second zero" but "there is a second zero of
+  *strictly worse threshold* inside the support." (With a *small* `supp φ ⊆ (−½, ½)` missing `x=1`,
+  `hWorst` holds and Axiom A correctly gives `s₀ = −1/2` — the paper's "U small enough.")
+- **DLN `K_B`, connected fibre.** Axiom A at a smooth fibre `x₀` with small `φ` (§7.3): `hWorst` holds
+  with equality on the fibre (locally-constant `rlct = c/2`), `+∞` off it — **fires, `s₀ = −c/2`.** The
+  connected fibre does not block it: `hWorst` is a *threshold* condition, satisfied by an equal-threshold
+  fibre. **Admitted correctly.** (The payoff still uses Theorem C, §7.3.)
+- **Consistency — cured, but NOT by "locality alone" (my earlier §7.4 claim was WRONG).** The regional
+  axiom `s₀ = −integrabilityThreshold K U` was inconsistent (rev-r2b). I *first* claimed the local axiom
+  is automatically consistent because "`s₀` and `rlct_{x₀}` are both germ-at-`x₀` data." **That is false:
+  `s₀` is a `supp φ` quantity** (§7.2 correction) — the wide-φ counterexample proves the *un-guarded*
+  local axiom is *also* inconsistent, one scale down. **The cure is `hWorst`:** with it, `x₀` is the worst
+  point in `supp φ`, so `inf_{x∈supp φ} rlct_x = rlct_{x₀}` and `s₀ = −rlct_{x₀}` becomes TRUE — no
+  contradiction. The consistency now rests on `hWorst`, not on a (false) germ-locality of `s₀`.
+
+### 7.5 The corrected axiom, as it should appear
+
+> **Axiom A — `cited_zeta_pole` (Atiyah 1970 + Saito/SLT; paper `propdefn` L1804, "U small enough").**
+> **Hyp:** `X` real-analytic manifold, `K : X → ℝ` real-analytic with `K ≥ 0`, `x₀ ∈ X` with `K x₀ = 0`,
+> `φ ∈ C_c^∞(X)` with `φ ≥ 0`, `φ x₀ ≠ 0`, **and `hWorst : ∀ x ∈ tsupport φ, rlct_{x₀}(K) ≤ rlct_x(K)`**
+> (x₀ is a worst-threshold point of the support — the precise form of "supp φ small enough", via l.s.c.
+> of `x ↦ rlct_x`).
+> **Concl:** `s ↦ ∫ K^s φ dvol` (holo for `Re s > 0`) continues meromorphically to `ℂ`, poles a discrete
+> subset of `ℚ_{<0}`; the largest pole `s₀ < 0` has finite order `m₀ ∈ ℕ₊` and satisfies
+> **`s₀ = −rlct_{x₀}(K)`**, where `rlct_{x₀}(K) = sup{c ≥ 0 : K^{−c} loc. integrable at x₀}` is the
+> (cite-free, local) integrability threshold at `x₀`.
+>
+> — **`hWorst` is mandatory** (the un-guarded axiom is inconsistent, §7.2 wide-φ counterexample). It
+> admits non-isolated zero sets (equal-threshold fibre ⟹ equality); DLN-dischargeable at a smooth fibre
+> point with small `φ` (§7.3). *Minimal-but-fussier alternative* (Codex): the φ-weighted
+> `∀ x ∈ supp φ, λ_x(K,φ) ≥ rlct_{x₀}(K)` where `λ_x(K,φ)` = local threshold of `K^{−c}φ` near `x`;
+> `hWorst` over `tsupport φ` is *sufficient* and cleaner (it is slightly stronger only when `φ` vanishes
+> at a strictly-worse zero inside `tsupport φ` — a pathological cutoff a formaliser avoids).
+
+> **Bridge B — `integrabilityThreshold_eq_localRlct_of_worst` (buildable analysis, NOT a cite).**
+> **Hyp:** `U` a ball/box (boundary-regular) around `x₀`, `∀ x ∈ \overline U, rlct_{x₀}(K) ≤ rlct_x(K)`.
+> **Concl:** `integrabilityThreshold K U = rlct_{x₀}(K)`. (Then with Axiom A: `s₀ = −integrabilityThreshold K U`.)
+> — Provable from (F1)+(F2); take as hypothesis first, discharge later. Not circular.
+
+> **Theorem C — the DLN payoff (GLOBAL; the two existing DLN cites).** `rlct(K_B) = ½·codim mult⁻¹(B)`,
+> from Watanabe-upper ∧ Aoyagi-lower on `codimRealFibre` (`main.tex` `thm:aoyagi-rlct`). Global; does not
+> instantiate Axiom A at a fibre point. **This is the DLN payoff's path** — keep it separate from A/B.
+
+### 7.6 One-line verdict for the controller
+
+**CONFIRMED: the landed Axiom A (no supp-φ hypothesis) is INCONSISTENT** — the wide-φ counterexample
+`K=x²(x−1)⁸`, `tsupport φ ∋ {0,1}` is correct (decorrelated-Codex confirmed); `s₀ = −1/8 ≠ −1/2`, the
+axiom proves `False`. **The fix is `hWorst : ∀ x ∈ tsupport φ, rlct_{x₀}(K) ≤ rlct_x(K)`** — the
+controller's proposed hypothesis is right and minimal-clean. It is the paper's "supp φ small enough"
+made precise via l.s.c.; it **admits the DLN fibre** (dischargeable at a smooth fibre point with small
+`φ`, `hWorst` holds with equality — §7.3) and **excludes the counterexample** (`rlct_1 = 1/8 < 1/2`).
+My earlier §7.4 "`s₀` is germ data, no hypothesis needed" was **WRONG** — `s₀` is a `supp φ` quantity;
+the altitude error recurred one scale down (region → support). The three-way split stands, with Axiom A
+now correctly **`supp φ`-scoped by `hWorst`** (not "purely local, no hypothesis"): (A) `s₀ = −rlct_{x₀}`
+under `hWorst`-over-`tsupport φ`; (B) Bridge B regional (worst over `\overline U` + boundary-regular);
+(C) global DLN payoff via the existing cites. **Merge unblocks once Axiom A carries `hWorst` over
+`tsupport φ`** (task #56); the DLN payoff still rides Theorem C, sidestepping the open local conjecture.
