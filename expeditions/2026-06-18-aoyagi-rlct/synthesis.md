@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 With-following Same-shrink p.13/readback Contract - 2026-07-06
+
+Lean now has:
+
+```text
+sourceChart_image_eq_p13_readback_preimage_of_subset
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+and:
+
+```text
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource_chartPiece_subset_p13_readback
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+The set calculation is:
+
+```text
+sourceChart '' W = p13SourceSet ∩ readback ⁻¹' W
+V subset W
+readback(sourceChart theta) = theta on W
+------------------------------------------------
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V.
+```
+
+The concrete contract wrapper first obtains a with-following p.13 image-equality
+shrink `W`, then shrinks to `V` for the raw-map formal-product/source-reference
+contract.  The generic shrink lemma transports the image equality to that same
+`V`, so the final continuation consumes
+`chartPiece ⊆ p13SourceSet` and `chartPiece ⊆ readback ⁻¹' V` and derives the
+contract's `chartPiece ⊆ sourceChart '' V` field internally.
+
+Boundary: the raw pushforward identity remains a hypothesis.  No raw Haar
+transport, determinant/raw Haar transport, source/product-coordinate prior
+transport, local product-coordinate readback domination, normal crossings, pole
+order, or RLCT is proved.
+
+Verification passed: focused Lean checks; focused module build; no-sorry
+audit; whitespace check; and direct axiom probes.  The set shrink lemma reports
+`[propext, Quot.sound]`; the concrete contract wrapper reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Xhigh scout `Newton` found that the analogous finite-integral p13/readback
+wrapper already exists and this mostly cleans/supports APIs there.  Xhigh
+scout `Kierkegaard` identified a possible theta-side weighted-pushforward
+finite-integral wrapper, but it is thin until a concrete upstream theta-side
+identity exists.  Xhigh measure audit `Schrodinger` is the main frontier
+signal: a full raw-Haar pushforward from the p.13 raw section is false in
+positive rank, and the real next target is a local readback domination theorem
+for the actual product-coordinate chart with density `phi(CedgeProd(x,u))`.
+
 ## A2 Same-shrink Source-image Adapters - 2026-07-06
 
 Lean now has:

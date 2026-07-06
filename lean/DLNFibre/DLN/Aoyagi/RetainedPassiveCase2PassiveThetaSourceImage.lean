@@ -69,6 +69,47 @@ theorem chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourc
   exact ⟨⟨hp13 hE, hread hE⟩, hsource hE⟩
 
 set_option linter.style.longLine false in
+/-- A p.13 source-image/readback equality is stable under shrinking the theta
+neighborhood, provided the readback is a left inverse on the larger
+neighborhood.
+
+This is pure set bookkeeping.  It does not prove the original image equality,
+source coverage, measure transport, normal crossings, pole order, or RLCT
+extraction. -/
+theorem sourceChart_image_eq_p13_readback_preimage_of_subset
+    {Θ E : Type*} {sourceChart : Θ → E} {readback : E → Θ}
+    {V W : Set Θ} {p13SourceSet : Set E}
+    (himage : sourceChart '' W = p13SourceSet ∩ readback ⁻¹' W)
+    (hVW : V ⊆ W)
+    (hleft : ∀ theta ∈ W, readback (sourceChart theta) = theta) :
+    sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V := by
+  ext E
+  constructor
+  · rintro ⟨theta, hthetaV, rfl⟩
+    have hthetaW : theta ∈ W := hVW hthetaV
+    constructor
+    · have hsourceW : sourceChart theta ∈ sourceChart '' W :=
+        ⟨theta, hthetaW, rfl⟩
+      rw [himage] at hsourceW
+      exact hsourceW.1
+    · change readback (sourceChart theta) ∈ V
+      rw [hleft theta hthetaW]
+      exact hthetaV
+  · intro hE
+    have hEW : E ∈ p13SourceSet ∩ readback ⁻¹' W :=
+      ⟨hE.1, hVW hE.2⟩
+    have hsourceW : E ∈ sourceChart '' W := by
+      rw [himage]
+      exact hEW
+    rcases hsourceW with ⟨theta, hthetaW, hthetaE⟩
+    refine ⟨readback E, hE.2, ?_⟩
+    calc
+      sourceChart (readback E) =
+          sourceChart (readback (sourceChart theta)) := by rw [hthetaE]
+      _ = sourceChart theta := by rw [hleft theta hthetaW]
+      _ = E := hthetaE
+
+set_option linter.style.longLine false in
 /-- A pushed-forward restricted measure is supported on the actual image of
 the restricting set, provided the map is a.e. measurable and the image is
 measurable. -/

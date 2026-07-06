@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 with-following same-shrink p.13/readback contract
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-formal-product-contract-p13-readback-same-shrink.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean
+```
+
+Lean now has:
+
+```text
+sourceChart_image_eq_p13_readback_preimage_of_subset
+
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource_chartPiece_subset_p13_readback
+```
+
+The generic set lemma transports a p.13/readback image equality from a
+larger theta neighborhood `W` to a smaller `V ⊆ W` when readback is a left
+inverse on `W`.  The concrete with-following wrapper returns one `V` carrying
+both this image equality and the formal-product/source-image contract.  Its
+chart-piece continuation takes p.13 containment plus readback-preimage
+containment and derives `chartPiece ⊆ sourceChart '' V` internally.
+
+Boundary: same-shrink support/contract plumbing only.  The raw pushforward
+identity remains explicit; no raw Haar transport, source/product-coordinate
+prior transport, local readback domination for `phi(CedgeProd(x,u))`, normal
+crossings, pole order, or RLCT is proved.
+
+Verification: focused Lean checks, focused module build, `scripts/sorries`,
+`git diff --check`, and direct axiom probes passed.  The set shrink lemma
+reports `[propext, Quot.sound]`; the concrete contract wrapper reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Xhigh audit: `Schrodinger` rules out a full raw-Haar pushforward from the p.13
+raw section as a target; the next genuine measure theorem is local readback
+domination for the actual product-coordinate chart carrying the prior density.
+
 ## 2026-07-06 A2 same-shrink source-image adapters
 
 Reproductions:

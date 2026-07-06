@@ -12,6 +12,50 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, with-following same-shrink p.13/readback contract
+
+Lean now has:
+
+```text
+sourceChart_image_eq_p13_readback_preimage_of_subset
+
+exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource_chartPiece_subset_p13_readback
+```
+
+Decision: package the with-following formal-product/source-image contract on a
+single shrink that also carries the p.13/readback image equality
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V.
+```
+
+Callers can now supply `chartPiece ⊆ p13SourceSet` and
+`chartPiece ⊆ readback ⁻¹' V`; the wrapper derives
+`chartPiece ⊆ sourceChart '' V` internally and stores the image equality next
+to the contract.  This avoids mixing image support from one local shrink with
+measure data from another.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-formal-product-contract-p13-readback-same-shrink.md
+```
+
+Boundary: this is same-shrink support/contract plumbing only.  The raw
+pushforward identity remains explicit, and there is no raw Haar transport,
+source/product-coordinate prior transport, local readback domination,
+normal-crossing construction, pole order, or RLCT extraction.
+
+Verification passed: focused Lean checks; focused module build; no-sorry
+audit; whitespace check; and direct axiom probes.  The set shrink lemma reports
+`[propext, Quot.sound]`; the concrete contract wrapper reports
+`[propext, Classical.choice, Quot.sound]`.
+
+Next genuine frontier: xhigh measure audit `Schrodinger` rules out a full
+raw-Haar pushforward from the p.13 raw section and identifies the real target
+as local readback domination for the actual product-coordinate chart carrying
+`phi(CedgeProd(x,u))`.
+
 ## Latest controller decision - 2026-07-06, same-shrink source-image adapters
 
 Lean now has two small source-image adapters:

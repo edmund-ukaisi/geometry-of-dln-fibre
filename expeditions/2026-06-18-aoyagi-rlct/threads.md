@@ -18,6 +18,16 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: with-following same-shrink p.13/readback contract
+  landed.  The formal-product/source-image contract can now be returned on a
+  local `V` that also satisfies
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V`; callers supply
+  `chartPiece ⊆ p13SourceSet` and `chartPiece ⊆ readback ⁻¹' V`, and the
+  wrapper derives image support internally.  This is not raw pushforward, Haar
+  transport, or source/product-coordinate prior transport.  Xhigh measure
+  audit rules out full raw-Haar pushforward from the p.13 raw section and
+  points next to local product-coordinate readback domination.
+
 - 2026-07-06, Thread 03: same-shrink source-image adapters landed.  Generic
   subset bridges convert a supplied with-following image equality
   `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` into the downstream

@@ -10,6 +10,53 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following same-shrink p.13/readback contract - 2026-07-06
+
+- **Statement.** If a with-following p.13 image equality holds on `W`, then
+  after shrinking to `V ⊆ W` the equality
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` still holds, provided
+  the readback is a left inverse on `W`.
+- **Statement.** The with-following formal-product/source-image contract can
+  be returned on one shrink `V` that also carries that p.13/readback image
+  equality.  Its chart-piece continuation therefore takes
+  `chartPiece ⊆ p13SourceSet` and `chartPiece ⊆ readback ⁻¹' V`, deriving
+  `chartPiece ⊆ sourceChart '' V` internally.
+- **Tier.** A2 same-shrink source-image/formal-product contract layer.
+- **Status.** Lean proved as set shrink-stability plus a concrete
+  with-following contract wrapper.
+- **Kill-condition.** The result is read as proving the raw pushforward
+  identity, raw Haar transport, determinant/raw Haar transport,
+  source/product-coordinate prior transport, local product-coordinate readback
+  domination, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 source-coordinate/readback setup motivates
+  the local image equality.  The proof itself is elementary set algebra plus
+  composition of existing with-following image-equality and raw-map contract
+  packages.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-formal-product-contract-p13-readback-same-shrink.md`.
+- **Reproduction check.** Xhigh scout `Newton` confirmed the existing
+  p13/readback finite-integral wrapper and located this as useful API support.
+  Xhigh scout `Kierkegaard` confirmed the theta-side weighted-pushforward
+  wrapper would be thin without an upstream identity.  Xhigh measure audit
+  `Schrodinger` ruled out full raw-Haar pushforward from the p.13 raw section
+  and identified local product-coordinate readback domination as the genuine
+  next target.
+- **Lean target.**
+  `sourceChart_image_eq_p13_readback_preimage_of_subset` in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`;
+  `exists_open_subset_a2FormalProductSourceImagePieceContract_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_rawMap_eq_restrict_rawSource_chartPiece_subset_p13_readback`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceImageContract.lean`.
+- **Proved.** Focused Lean checks and focused module build passed for both
+  touched Lean files; `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probes passed.  The set shrink lemma reports `[propext, Quot.sound]`;
+  the concrete contract wrapper reports
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No raw pushforward proof, no Haar transport, no
+  source/product-coordinate prior transport, no local readback domination for
+  `phi(CedgeProd(x,u))`, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 same-shrink source-image adapters - 2026-07-06
 
 - **Statement.** A chart piece contained in `p13SourceSet` whose readback lies
