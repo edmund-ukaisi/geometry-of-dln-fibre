@@ -6,6 +6,34 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Case 2 formal-product/source-image coordinate-count gate - 2026-07-06
+
+The formal-product/source-image coordinate-count gate is reproduced and
+checked:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md
+```
+
+Plain `Case2PassiveTheta` is not a full-dimensional source for ambient p.13
+`muP13`.  It contains the common passive fields and selected-entry coordinates
+for the active `C 1` block, but it omits the free active
+`C 0 : Matrix k1 k0 R`.  Therefore it is lower-dimensional by
+`card(k1) * card(k0)` and must not be used to state ambient
+`muP13 <= D * map plainSourceChart`.
+
+`Case2PassiveThetaWithFollowingFactor` adds `Matrix k1 tau R`, which is
+exactly the missing `C 0` block under `tau ~= k1`, so it is the viable
+full-dimensional source for the future local p.13 COV theorem.
+
+Remaining source-moving blockers: same-shrink image equality, endpoint
+image-reference equality, explicit Jacobian density, density lower/upper
+bounds after shrinking, and separate raw/determinant Haar or original-prior
+transport if those are later claimed.  Aoyagi pp. 10-13 provide the coordinate
+algebra, not the measure theorem.  Xhigh scout `Nash` checked the gate; the
+controller used field-by-field counting to avoid relying on a simplified
+dimension formula.
+
 ## A2 Case 2 concrete inverse-density finite integral on open support - 2026-07-06
 
 Lean now has the source-rank-supported restrict-open sibling of the concrete

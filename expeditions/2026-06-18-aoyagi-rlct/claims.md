@@ -10,6 +10,44 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 Case 2 formal-product/source-image coordinate-count gate - 2026-07-06
+
+- **Statement.** Plain `Case2PassiveTheta` is lower-dimensional relative to
+  the ambient p.13 formal-product coordinate tuple used by `muP13`: it has the
+  common passive fields and selected-entry coordinates for active `C 1`, but
+  no free active `C 0 : Matrix k1 k0 R`.
+- **Statement.** `Case2PassiveThetaWithFollowingFactor` adds
+  `Matrix k1 tau R`, which is exactly the missing `C 0` block under the
+  endpoint equivalence `tau ~= k1`; it passes the coordinate-count gate for a
+  future ambient p.13 formal-product/source-image local COV theorem.
+- **Tier.** A2 source-image/formal-product COV gate.
+- **Status.** Pen-and-paper reproduced; no Lean theorem claimed.
+- **Kill-condition.** The result is read as proving measure domination,
+  equality with density, source-image coverage, endpoint image equality,
+  raw/determinant Haar transport, original-prior transport, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 Schur/product-coordinate algebra and
+  p.13 product-difference display; Lean field definitions for
+  `Case2PassiveTheta`, `Case2PassiveThetaWithFollowingFactor`, and
+  `TopologyTuple`.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md`.
+- **Reproduction check.** Xhigh read-only scout `Nash` confirmed that plain
+  `Case2PassiveTheta` is missing the active `C 0` block and that
+  `Case2PassiveThetaWithFollowingFactor` is dimension-correct.  Controller
+  corrected the simplified dimension prose to field-by-field counting; the
+  conclusion is unchanged.
+- **Lean target.** None yet.  Future Lean should target a with-following local
+  COV/source-image theorem, not a plain-theta ambient `muP13` domination
+  theorem.
+- **Proved.** Documentation gate only; `git diff --check` is the relevant
+  verification for this update.
+- **Nonclaims.** No formal-product/source-image comparison, no source-image
+  coverage beyond produced-image hypotheses, no endpoint determinant/raw Haar
+  transport, no raw-map pushforward, no source-to-raw Jacobian theorem, no
+  original-prior transport, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 Case 2 selected-entry local-source continuous-density shrink - 2026-07-06
 
 - **Statement.** For the endpoint-transported Case 2 selected-entry p.13

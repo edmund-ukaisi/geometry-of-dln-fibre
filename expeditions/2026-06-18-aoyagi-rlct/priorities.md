@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 formal-product/source-image coordinate-count gate
+
+Decision: do not target ambient p.13 formal-product/source-image domination
+from plain `Case2PassiveTheta`.  The field-by-field count shows that plain
+`Case2PassiveTheta` contains the common passive fields and the selected-entry
+charted active `C 1` block, but it omits the free active
+`C 0 : Matrix k1 k0 R`.  Therefore it is lower-dimensional by
+`card(k1) * card(k0)` and cannot dominate ambient `muP13` on a full p.13 chart
+piece.
+
+The viable ambient target is the with-following source:
+
+```text
+Case2PassiveThetaWithFollowingFactor
+```
+
+Its extra `Matrix k1 tau R` is exactly the missing `C 0` block after the
+endpoint equivalence `tau ~= k1`.
+
+Next mathematical rung: prove a local with-following COV/source-image theorem,
+not another downstream wrapper.  The needed pieces are same-shrink image
+equality, endpoint image-reference equality, explicit Jacobian density,
+boundedness after shrinking, and only then formal-product domination.  Keep
+raw/determinant Haar transport and original-prior transport as separate
+nonclaims unless proved.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md
+```
+
+Xhigh read-only scout `Nash` independently checked the gate.  The controller
+corrected the simplified dimension prose to a field-by-field count; the
+conclusion is unchanged.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry local-source continuous-density shrink
 
 Lean now has:

@@ -18,6 +18,17 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the formal-product/source-image coordinate-count
+  gate is now reproduced and independently checked.  Plain
+  `Case2PassiveTheta` is lower-dimensional for ambient p.13 `muP13`: it has
+  the common passive fields and selected-entry coordinates for active `C 1`,
+  but no free active `C 0`.  The enlarged
+  `Case2PassiveThetaWithFollowingFactor` adds exactly this missing block under
+  `tau ~= Case2ResidualColIndex n S (J+1)` and is the viable
+  full-dimensional source for a future local COV theorem.  This is not measure
+  transport, source-image coverage, Haar transport, original-prior transport,
+  normal crossings, pole order, or RLCT.
+
 - 2026-07-06, Thread 03: continuous supplied-density local-source shrink
   landed for the Case 2 selected-entry product-coordinate readback.  Around a
   supplied source-coordinate base point `(y0,u0)`, continuity of

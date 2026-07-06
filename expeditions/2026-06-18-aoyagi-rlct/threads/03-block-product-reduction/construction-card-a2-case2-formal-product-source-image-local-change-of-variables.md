@@ -153,14 +153,36 @@ An equality-with-density theorem is preferable if the Jacobian calculation is
 available.  The one-way domination form is enough to feed the already-proved
 original-volume bridge.
 
+## Coordinate-Count Gate Update
+
+The coordinate-count gate was completed on 2026-07-06 in
+
+```text
+reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md
+```
+
+Plain `Case2PassiveTheta` is not a full-dimensional source for ambient
+`muP13`: it contains the common passive fields and the selected-entry charted
+successor active block `C 1`, but it omits the free active block
+`C 0 : Matrix k1 k0 R`.  Therefore it must not be used to dominate the full
+p.13 formal-product measure on an ambient chart piece.
+
+The enlarged `Case2PassiveThetaWithFollowingFactor` adds
+`Matrix k1 tau R`, which is the missing `C 0` block under `tau ~= k1`.
+Future local COV work for ambient `muP13` should target the with-following
+source chart, with the chart piece restricted to the produced same-shrink
+image.  The remaining work is image equality, explicit Jacobian density,
+local boundedness, and measure comparison; Aoyagi pp. 10-13 do not state
+those measure facts.
+
 ## Pen-And-Paper Obligations
 
 Before Lean implementation, reproduce the following.
 
-1. **Coordinate list and dimension check.**  List every coordinate in the
-   Case 2 p.13 source chart and compare it with the coordinate model for
-   `muP13`.  If the source chart is a fixed lower-dimensional section of the
-   p.13 formal-product chart, it cannot dominate the formal-product measure.
+1. **Coordinate list and dimension check.**  Completed 2026-07-06.  Plain
+   `Case2PassiveTheta` is lower-dimensional by the active `C 0` block;
+   `Case2PassiveThetaWithFollowingFactor` is dimension-correct for ambient
+   p.13 `muP13`.
 2. **Local inverse.**  Write the readback formulas and prove
    `readback (sourceChart theta)=theta` on the theta-domain shrink.  If a
    source-side right inverse is needed for the measure theorem, state its

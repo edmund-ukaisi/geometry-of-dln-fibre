@@ -21,6 +21,37 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 Case 2 formal-product/source-image coordinate-count gate
+
+Reproduction:
+
+```text
+reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md
+```
+
+The p.13 formal-product coordinate tuple has common passive fields plus two
+active `C` blocks:
+
+```text
+C 0 : Matrix k1 k0 R
+C 1 : Matrix k2 k1 R
+```
+
+Plain `Case2PassiveTheta` supplies the common passive fields and selected-entry
+coordinates for `C 1`, but no free `C 0`.  It is therefore
+lower-dimensional by `card(k1) * card(k0)` and cannot dominate ambient p.13
+formal-product measure on a full chart piece.
+
+`Case2PassiveThetaWithFollowingFactor` adds `Matrix k1 tau R`, exactly the
+missing `C 0` block under `tau ~= k1`, so it is the viable full-dimensional
+source for any future ambient p.13 formal-product/source-image local COV
+theorem.
+
+Xhigh read-only scout `Nash` checked the gate.  Remaining blockers are image
+equality/same-shrink support, endpoint image-reference equality, explicit
+Jacobian density, local density bounds, and separate determinant/raw Haar or
+original-prior transport if those are later claimed.
+
 ## 2026-07-06 A2 Case 2 concrete inverse-density finite integral on open support
 
 Reproduction:

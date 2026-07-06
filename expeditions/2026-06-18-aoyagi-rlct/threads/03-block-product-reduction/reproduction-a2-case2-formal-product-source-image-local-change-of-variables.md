@@ -114,6 +114,18 @@ cannot dominate the formal-product chart measure on an ambient p.13 chart
 piece.  The correct target would then require an enlarged retained-passive
 coordinate domain or a submanifold/source-stratum measure.
 
+Update, 2026-07-06: the coordinate-count gate is now reproduced separately in
+
+```text
+reproduction-a2-case2-formal-product-source-image-coordinate-count-gate.md
+```
+
+The result is that plain `Case2PassiveTheta` is lower-dimensional: it supplies
+the selected-entry charted active `C 1` block but has no free active `C 0`
+block.  The enlarged `Case2PassiveThetaWithFollowingFactor` adds exactly this
+missing matrix and is the only viable full-dimensional source for an ambient
+p.13 formal-product/source-image local change-of-variables theorem.
+
 ## Second Gate: Inverse And Image
 
 If the dimension check passes, prove that the chart is a genuine local
