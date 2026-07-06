@@ -24,9 +24,12 @@ differently-named sorry.
 
 ## Files
 
-- **NEW** `lean/DLNFibre/DLN/RLCT/Validate/D1L2SchurAssembly.lean` — the Route-A assembly. Controller
-  to wire into the aggregator `DLNFibre.lean` (single-writer) if desired; NOT yet consumed by the
-  headline (it plugs in once the step-5 chart is built).
+- **NEW** `lean/DLNFibre/DLN/RLCT/Validate/D1L2SchurAssembly.lean` — the Route-A assembly (steps 6–9).
+- **NEW** `lean/DLNFibre/Core/SchurProductFactor.lean` — the germ-preserving Schur factorisation
+  (steps 2–4); pure `CommRing` matrix algebra, converts the sympy-only `‖Δ‖ ≈ 1e-15` claim into an
+  exact Lean theorem.
+- Controller to wire both into the aggregator `DLNFibre.lean` (single-writer) if desired; NOT yet
+  consumed by the headline (they plug in once the step-5 chart map/Jacobian is built).
 
 ## Theorem delivered (sorry-free, clean-three)
 
@@ -66,9 +69,12 @@ Produce, at the real DLN loss for a general optimal `v`, an instance of the hypo
 on the slice, `A0red = W − Z X⁻¹ Y`, `A1red = V − U M11⁻¹ M12`, sympy-verified `‖Δ‖ ≈ 1e-15`).
 
 This is the general-`v` analogue of the deepest-point gauge chart (`DeepestGaugeChart` /
-`GeneralVChartL2`'s "genuinely-unbuilt analytic content"). Mathlib has `fromBlocks_multiply` +
-`fromBlocks_eq_of_invertible₁₁` (block LDU) for the Schur ALGEBRA; the chart-CERTIFICATION (local
-measurable chart + bounded Jacobian) is the painful part.
+`GeneralVChartL2`'s "genuinely-unbuilt analytic content"). The **Schur ALGEBRA (steps 2–4) is now
+DONE** as `DLNFibre.Core.schur_product_factor` (clean-three): the slice-residual factorisation
+`M22 − M21 M11⁻¹ M12 = A0red · A1red` is an exact Lean theorem, so `hfact`'s core identity is banked.
+What remains for `hfact`/`hchart` is the CHART-CERTIFICATION (step 5): the explicit rational map as a
+local measurable chart with bounded-unit Jacobian (`rlctAtOn_eq_of_contDiff_chart` with the explicit
+map + bump-globalised `C¹` residual), plus assembling `e`/`u`/`hRne` from it — the painful part.
 
 ## ∀-L lift note
 
