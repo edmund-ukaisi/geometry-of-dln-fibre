@@ -100,7 +100,23 @@ theorem aoyagi_learning_coefficient_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
         = ENNReal.ofReal (lambdaCore M : ℝ) :=
     fun M hMid => r1_resolution_interface_L2_generic hL2 hLlt M hMid
   -- ===== LEAF 2 (D1): the ∀-v per-point ≥-leg slot at `B'` (the second open obligation). =====
-  -- The per-`v` middle-stratum D1 producer; sequences on R1 but not closed by R1 alone. NOT here.
+  -- The per-`v` D1 producer. Core-geometry (`hrank₂`, via b3) is DONE
+  -- (`d1ge_L2_rect_two_peel_hrank_closed`, `D1RectTwoPeelClosed`); the residual is the two ANALYTIC
+  -- gates `hRne` (slice non-vanishing) + `hInterface` (R1 degraded core).
+  --
+  -- FINDING (genm-gatesclose2 tide, 2026-07-06, Codex xhigh corroborated): these gates are NOT
+  -- dischargeable through the ∀-`q` wire `hD1ge_L2_rect_of_gates` as literally stated:
+  --   * `hRne` (∀ `C²` `q` with the chart equation ⟹ slice a.e.-nonzero) is FALSE without an extra
+  --     `rlctAt v > nReg/2`: `q ≡ 0` satisfies the equation at a degenerate core, zero slice.
+  --     With that bound it needs a NEW cap lemma `slice_zero_set_caps_rlct_half`
+  --     (pos-measure slice zero-set ⟹ `rlctAtOn (∑s²+∑q²) ≤ nReg/2`).
+  --   * `hInterface` (∀ `C²` `q₂` ⟹ slice-RLCT `= lambdaCore(MprimeRect …)`) is FALSE ∀-`q₂`:
+  --     `R = x² + u⁴` peels to `q₂ = u²`, slice `u⁴`, `rlctAtOn = 1/4 ≠ lambdaCore M'` in general.
+  --     It needs a DLN model-identification of the built residual (`R₂ = unit · (dlnLoss M' 0)∘φ`).
+  -- The fix is architectural: bind `q`/`q₂` to the CONCRETE producer residual (where b3 gives
+  -- `rank(jacResid) = extraCountRect`, and the DLN structure gives the model-identification) rather
+  -- than route through the ∀-`q` gates. See the genm-gatesclose2 statement card for the 4 named
+  -- lemmas + the concrete-`q` re-architecture.
   have hD1ge_L2 : ∀ v ∈ optimalSet H B',
       rlctAt H (dlnLoss H B') (deepestPoint H r B' hB'_rank hr hL)
         ≤ rlctAt H (dlnLoss H B') v := by
