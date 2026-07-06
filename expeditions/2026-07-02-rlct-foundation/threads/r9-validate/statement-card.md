@@ -37,8 +37,9 @@ All files at `lean/DLNFibre/Core/Analysis/RLCT/` @ `c4110342`.
 > - **Proved.** Unconditional (modulo `1 ≤ C`). The global admissible set is `Ico 0 (C/2)`: at `0`
 >   the origin's pole caps it (`mem_localAdmissibleExponents_sumSq`, R7); at every `x ≠ 0` the germ
 >   is regular (`sumSq C x ≠ 0`, `continuous_sumSq`) so A1 imposes no constraint. `csSup_Ico` reads
->   off `C/2`. Non-vacuously exercises `RLCT.Global` (the value matches the local `rlctAt_sumSq` — the
->   Prop 8.3(iii) inf-over-zeros shape, single zero at `0`). `#print axioms = std-3`.
+>   off `C/2`. The global admissible set is established by **direct double-inclusion** (not via
+>   `rlctGlobal_le_rlctAt`); its value matches the local `rlctAt_sumSq` — the Prop 8.3(iii)
+>   inf-over-zeros shape, single zero at `0`. `#print axioms = std-3`.
 > - **Assumed.** `1 ≤ C` (carried).
 > - **Cited.** none (rides R7's `mem_localAdmissibleExponents_sumSq` + A1, both cite-free).
 > - **Deferred.** none.
