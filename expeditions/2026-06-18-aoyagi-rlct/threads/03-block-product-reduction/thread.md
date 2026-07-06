@@ -21,6 +21,42 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 Case 2 concrete inverse-density finite integral on open support
+
+Reproduction:
+
+```text
+reproduction-a2-case2-lossdln-product-step-inverse-density-restrict-open.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_restrict_open_of_sourceRankSupport
+```
+
+The theorem uses the source-rank support identity for the selected-entry
+chart-produced measure to replace the source-stratum-restricted integration
+measure by `(mu.restrict U).prod nu`.
+
+Boundary: support-restriction wrapper only.  No source-rank coverage,
+source/image equality, original-prior identification, raw-Haar transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 Case 2 lossDLN finite integral with concrete p.13 inverse density
 
 Reproduction:

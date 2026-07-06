@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 concrete inverse-density finite integral on open support
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_restrict_open_of_sourceRankSupport
+```
+
+Decision: add the source-rank-supported restrict-open sibling of the concrete
+p.13 inverse-density finite-integral theorem.  The new theorem uses the
+rank-support identity for the endpoint-transported selected-entry chart to
+rewrite
+
+```text
+mu.restrict (U cap sourceStratum) = mu.restrict U.
+```
+
+This removes the explicit source-stratum restriction from the integration
+measure once the rank equalities are supplied.
+
+Boundary: this is only a support-restriction wrapper.  It does not prove
+source-rank coverage, source/image equality, original-prior identification,
+raw-Haar or source/product-coordinate transport, normal crossings, pole order,
+or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-lossdln-product-step-inverse-density-restrict-open.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next target: move from finite-integral sockets to a same-radius image-measure
+corollary using the selected-entry domain-shaped product pushforward, or
+inspect whether the endpoint-cardinality wrappers should receive the same
+concrete-density specialization.
+
 ## Latest controller decision - 2026-07-06, Case 2 lossDLN finite integral with concrete p.13 inverse density
 
 Lean now has:
@@ -57,12 +102,6 @@ module build
 full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
 code-only forbidden-marker scan, and direct axiom probe.  The new declaration
 reports only `[propext, Classical.choice, Quot.sound]`.
-
-Next target: either add the source-rank-supported `_restrict_open` sibling for
-the same concrete inverse density, or use the domain-shaped selected-entry
-product pushforward as a same-radius image-measure corollary.  The
-source-rank-supported sibling is a direct wrapper over the theorem just added
-and the existing source-rank support theorem.
 
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry domain-shaped product pushforward
 
