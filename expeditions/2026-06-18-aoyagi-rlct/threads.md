@@ -18,6 +18,14 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: density-`1` local-source selected-entry readback
+  landed and was locally verified.  The supported local-domain weighted
+  readback theorem now has a density-free corollary for arbitrary measurable
+  `localSource` inside the nonzero-pivot locus and measurable `regularSet`
+  inside the chosen radius ball.  This is not original-prior transport, Haar
+  transport, source coverage, source-rank coverage, normal crossings, pole
+  order, or RLCT.
+
 - 2026-07-06, Thread 03: p.13 product-coordinate readback left inverse landed.
   A supplied base residual readback now combines with existing regular and
   residual coordinate recovery to prove

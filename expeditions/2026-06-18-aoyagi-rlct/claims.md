@@ -16633,3 +16633,40 @@ Boundary: this is a supported local product-coordinate measure/readback
 handoff.  It does not prove original prior/source-prior transport, raw Haar,
 determinant Haar, source coverage, source-rank coverage, normal crossings,
 pole order, or RLCT extraction.
+
+## 2026-07-06 - Selected-Entry Local-Source Density-One Readback
+
+Status: Proved in Lean and locally verified.
+
+Claim: the supported local-domain selected-entry readback theorem specializes
+at constant edge-family density `1`.  For any measurable
+`localSource` inside the nonzero-pivot source locus and any measurable
+`regularSet` inside the returned p.13 regular-coordinate ball, the selected
+entry product source measure itself satisfies
+
+```text
+map productReadback (map selectedEntryProductChart localSelectedEntrySource)
+  <= localValueReference.restrict localDomain.
+```
+
+Lean witness:
+
+```text
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_readback_le_localValueReference_restrict_localDomain
+```
+
+Kill conditions: using a local source outside the nonzero-pivot locus;
+forgetting the regular-set support inside the chosen radius ball; reading the
+chart-produced selected-entry source measure as an original prior or Haar
+transport; or treating the result as source coverage, source-rank coverage,
+normal-crossing content, pole-order content, or RLCT extraction.
+
+Current check: focused elaboration, focused module build, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, code-only
+forbidden-marker scan, direct axiom probe, and xhigh independent review all
+passed.  The direct axiom probe reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: density-`1` specialization only.  It does not construct or identify
+an original prior, raw Haar, determinant Haar, source coverage,
+source-rank coverage, normal crossings, pole order, or RLCT.

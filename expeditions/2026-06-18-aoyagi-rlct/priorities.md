@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry local-source density-one readback
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_readback_le_localValueReference_restrict_localDomain
+```
+
+Decision: add the density-`1` local-source specialization of the supported
+local-domain weighted readback theorem.  For arbitrary measurable
+`localSource ⊆ {value | value pivotNext != 0}` and measurable
+`regularSet ⊆ ball(0,R)`, the selected-entry product source measure itself
+pushes forward through the p.13 product readback to a measure dominated by the
+local value-reference product measure restricted to
+
+```text
+localDomain = chartMap pivotNext '' localSource × regularSet.
+```
+
+The proof is a direct specialization of the weighted theorem with
+`density = 1` and `c = 1`; `withDensity 1` and `1 • μ` are then erased.
+
+Boundary: this is only selected-entry product-coordinate bookkeeping on a
+supported local domain.  It does not construct or identify an original prior,
+Haar transport, source coverage, source-rank coverage, normal crossings, pole
+order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-local-source-readback-density-one.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh reviewer `Hilbert` passed the statement-scope and proof audit: this is
+exactly the constant-density specialization, `localSource` remains in source
+coordinates, `localDomain` uses `chartMap pivotNext '' localSource`, and no
+original-prior/Haar/source-coverage/RLCT claim slipped in.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry continuous edge-density local readback
 
 Lean now has:
