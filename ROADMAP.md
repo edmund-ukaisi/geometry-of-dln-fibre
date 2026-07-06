@@ -293,25 +293,27 @@ honesty win"; that is now done.)
 - **Payoff rewired** onto `rlctGlobal` (`DLN/RlctPayoff`, `DLN/RLCT/AoyagiCited`) via Watanabe-upper +
   Aoyagi-lower; `rlctReal` **retired**. The payoff's `#print axioms` = std-3 + those two DLN bounds ONLY (the
   ζ-continuation cite is off the value path — it enriches `(λ,m)` only).
+- **Foundation validated (R9, in PR #23):** the payoff's central object now carries an in-file witness
+  `rlctGlobal (sumSq C) = C/2` (`GlobalWitness`); the regular-point lemma
+  `localAdmissibleExponents K x = Set.Ici 0` (`K` cont., `K x ≠ 0` — no `0≤K` needed) records "regular point
+  ⟹ no pole" (`RegularPoint`); the `RLCT.Global.rlctAt = RLCT.rlctAt` `rfl` bridge closes the two-copies fork
+  (`GlobalBridge`); local down-set + germ-monotonicity (`LocalMono`); the power rule
+  `rlctAt (K^k) x = rlctAt K x / k` (`k≥1`, no `BddAbove`; hardens the "no second ½" trap — `PowerRule`); and
+  on-cite positivity `rlctAt S.K S.x₀ > 0` + the `zetaSetupSq.K = sumSq 1` coherence (cite-free `rlctAt = 1/2`
+  = cited `(rlctPair).lam` — `CiteCoherence`). Cite-free items std-3; the two on-cite items carry ONLY
+  `cited_local_zeta_pole` (off the payoff path).
 
 **REMAINS (roadmap; all off the payoff's critical path). Structured as the designed follow-on
 `rlct-invariance` (PR #23 reviewer addendum; operator scope call — roadmap, not scope-creep into the close-out
 PR). Deliverable = a complete invariance calculus for `rlctAt`/`rlctGlobal`, the substrate the eventual `K_B`
 constant-rank bridge consumes.**
 
-*Layer-completion (buildable now from what this expedition landed — highest-priority next commits):*
-- **[priority] `rlctGlobal` validation witness** `rlctGlobal (sumSq C) = C/2` (`1 ≤ C`) — the one foundation
-  definition still without an in-file witness (every other has one). Buildable from
-  `mem_localAdmissibleExponents_sumSq` + A1 below + `rlctGlobal_le_rlctAt` + `csSup_Ico`; exercises
-  `rlctGlobal_le_rlctAt` non-vacuously and instantiates the `hGlue` gluing shape on a real example.
-- **A1 — regular-point lemma** `localAdmissibleExponents K x = Set.Ici 0` (`K` continuous, `K≥0`, `K x ≠ 0`;
-  hence `¬BddAbove`) — turns "`rlctAt` = junk 0 at regular points" from prose into a citable lemma; the
-  off-zero half of the witness above; records *why* the `hWorst`/Bridge-B zero-guards exist.
-- **Invariance calculus (hardening):** `RLCT.Global.rlctAt = RLCT.rlctAt` (`rfl`-tier bridge, blocks a silent
-  fork of the two theories); local down-set + germ-monotonicity (parity with the regional API); bounded-unit
-  invariance (`0<c₁≤U≤c₂` near `x` ⟹ `rlctAt (U·K) x = rlctAt K x`); power rule `rlctAt (K^n) x = rlctAt K x /
-  n` (hardens the "no second ½ on the already-squared loss" trap, cert §6); on-cite positivity
-  `rlctAt S.K S.x₀ > 0` from any `ZetaSetup S` (honestly CITED; discharges pole-regime guards at analytic zeros).
+*Layer-completion — ✅ **LANDED (R9, in PR #23; see the LANDED block above)**: A (`rlctGlobal` witness),
+A1 (regular-point), B1 (`rfl` bridge), B2 (down-set + germ-monotonicity), B4 (power rule), B5 (on-cite
+positivity) + the coherence check. The one hardening item held back to the follow-on:*
+- **Bounded-unit invariance** `0<c₁≤U≤c₂` near `x` ⟹ `rlctAt (U·K) x = rlctAt K x` (B3) — two-sided
+  domination; the germ-invariance calculus proper (new substrate, not completion of what's staked). The first
+  lemma the Bridge-B discharge / germ surgery reach for.
 
 *The follow-on's analytic rungs (each a genuine build):*
 - **Fubini additivity** (LR Prop 8.3(iv)) `rlctAt (K₁(x)+K₂(y)) (x₀,y₀) = rlctAt K₁ x₀ + rlctAt K₂ y₀` for
