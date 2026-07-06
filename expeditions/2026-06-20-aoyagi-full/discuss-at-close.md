@@ -1897,3 +1897,29 @@ comparable in scale to the interior/smeared tides. The only genuine open obstruc
 grouped diffeo). So the fully-general headline is reachable but is a multi-campaign build; the honest ETA is
 "several multi-tide formalisation efforts," not a near-term close. No decision needed — recording the true
 remaining-work shape.
+
+## 45. Infra risk (2nd incident): teammates can reach into the controller's main checkout (2026-07-06).
+Twice now a teammate/session has moved the controller's main checkout (`/home/ubuntu/workspace/geometry-of-dln-fibre`)
+onto the wrong local branch (1st: a prior session left it on genm-inj-injon; 2nd: `phip1`, an isolation:worktree
+formaliser, "accidentally" ran git ops there). Both recovered cleanly with NO canonical corruption — because the
+controller pushes target-addressed (`git push origin HEAD:expedition/aoyagi-full`, independent of local branch
+name) and verifies its branch before each integration. Mitigations in place: teammate briefs now explicitly forbid
+touching the main checkout; the branch-check is a per-integration gate; the recovery recipe is in lessons.md. **For
+operator (optional, infra):** consider a harder guard (e.g. a git hook or a read-only main-checkout convention) so a
+teammate cannot move the main checkout's HEAD. Low-severity given the clean-recovery track record, but recurring.
+
+## 46. (S,J) peel + joint are multi-tide sub-mountains; the audit gate caught a false step (bedrock win) (2026-07-06).
+Refining #43's "(S,J) is a bounded (S,J) build": the 2 remaining (S,J) sorries are each multi-tide analytic
+SUB-builds. `sjBoundaryPeel` (the peel): OUTER half closed (front-split, reusable), but the INNER fibre bound needs
+general-dimension pivot-cover + Aoyagi Lemma-2 c.o.v. + radial blow-up — machinery not in the codebase (the L=2
+SchurCore is the template to generalize). `sjJointResolution` (the joint): depends on the peel + the minimal-a-cut
+caveat — also multi-tide. **Positive:** the audit discipline is demonstrably working — `sjpeel` proposed a false
+fixed-Q pointwise reduction (Real.rpow 0^neg=0 on the null {P_tail=0} locus); the fidelity reviewer + decorrelated
+Codex caught it via a Lean-checked counterexample; it was removed, not laundered. No bad Lean banked; the honest
+sorry preserved; the correct a.e. route pinned. **For operator (ETA, honest, no decision needed):** the
+fully-general headline is a large GRINDING bounded build — both the Φ_expl chain (globalise→germ→wiring) and the
+(S,J) chain (peel-inner→joint) are multi-tide analytic sub-builds, each banking reusable pieces per tide, all
+bounded (designed, templated, audited), no research wall except #120. Steady progress, not a near-term close.
+An OPTION to simplify the peel (flagged, not taken unilaterally): reformulate `jointPeelIntegral`'s singular factor
+via `ENNReal.rpow` (0^neg=+∞, the faithful RLCT-integrand model) — a shared-def signature change; the a.e. route
+avoids needing it, so deferred unless the a.e. route stalls.
