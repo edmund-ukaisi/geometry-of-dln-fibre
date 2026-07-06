@@ -320,6 +320,27 @@ theorem measurable_preimageOfPivotNeZero {center : Finset ι} (pivot : center) :
     rw [hfun]
     exact (measurable_pi_apply i).div (measurable_pi_apply pivot)
 
+/-- The fixed-pivot center-coordinate inverse is continuous at points with
+nonzero selected pivot. -/
+theorem continuousAt_preimageOfPivotNeZero {center : Finset ι} (pivot : center)
+    {value : center → ℝ} (hpivot : value pivot ≠ 0) :
+    ContinuousAt (preimageOfPivotNeZero pivot) value := by
+  rw [continuousAt_pi]
+  intro i
+  by_cases hi : i = pivot
+  · subst i
+    simpa [preimageOfPivotNeZero] using
+      (continuous_apply pivot).continuousAt
+  · have hfun :
+        (fun value : center → ℝ => preimageOfPivotNeZero pivot value i) =
+          fun value : center → ℝ => value i / value pivot := by
+      funext value
+      simp [preimageOfPivotNeZero, hi]
+    rw [hfun]
+    exact
+      (continuous_apply i).continuousAt.div
+        (continuous_apply pivot).continuousAt hpivot
+
 /-- Existence form of the fixed-pivot center-coordinate inverse. -/
 theorem exists_chartMap_eq_value_of_pivot_ne_zero {center : Finset ι}
     (pivot : center) (value : center → ℝ) (hpivot : value pivot ≠ 0) :

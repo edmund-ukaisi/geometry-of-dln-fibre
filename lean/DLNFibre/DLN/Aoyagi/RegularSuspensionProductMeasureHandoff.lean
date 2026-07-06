@@ -333,6 +333,171 @@ theorem exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdg
   exact hbridge thetaReference externalMeasure chartPiece density c
     hchartPiece hdensity heq hdensity_le
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Product-coordinate formal-product/source-reference domination for the
+reduced p.13 chart.
+
+After shrinking the regular-coordinate radius, a supplied weighted source-side
+identity for the actual product-coordinate chart and an image-side local
+density bound imply domination by the product-chart source reference
+`Measure.map CedgeProd (thetaReference.restrict domain)`.  This proves only
+the bounded-density comparison; the weighted identity remains an explicit
+hypothesis. -/
+theorem exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_formalProductMeasure_restrict_le_smul_sourceReference_of_sourceChart_withDensity_of_residualReadback
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α]
+    [BorelSpace α] [PolishSpace α]
+    [MeasurableSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    [T2Space
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {source : Set α} {Rmax : ℝ}
+    (hsource : MeasurableSet source)
+    (hRmax : 0 < Rmax)
+    (hCedgeBase : ∀ x ∈ source, ContinuousAt CedgeBase x)
+    (hchart : ∀ x ∈ source, ∀ (p : Fin (M + 2))
+        (hpj : p.succ ≤ (Fin.last (M + 2) : Fin (M + 3))),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+            (fun q : Fin (M + 2) ↦
+              (CedgeBase x q :
+                reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ))) p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun q : Fin (M + 2) ↦
+                (CedgeBase x q :
+                  reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ)))
+            (Fin.last (M + 2)) p.succ hpj)))
+    (baseReadback :
+      (AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) → ℝ) → α)
+    (hbaseReadback :
+      ∀ x ∈ source,
+        baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x) = x) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+      let EdgeFamily :=
+        ∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          V Bv U₀ hU₀ CedgeBase
+      let domain := source ×ˢ Metric.ball (0 : EuclideanSpace ℝ Coord) R
+      ∀ (thetaReference : Measure (α × EuclideanSpace ℝ Coord))
+          (formalProductMeasure : Measure EdgeFamily)
+          (chartPiece : Set EdgeFamily) (density : EdgeFamily → ℝ≥0∞)
+          (c : ℝ≥0∞),
+        MeasurableSet chartPiece →
+          AEMeasurable density
+            (Measure.map CedgeProd (thetaReference.restrict domain)) →
+          formalProductMeasure.restrict chartPiece =
+            (Measure.map CedgeProd
+              ((thetaReference.withDensity
+                (fun z ↦ density (CedgeProd z))).restrict
+                domain)).restrict chartPiece →
+          (∀ᵐ E ∂(Measure.map CedgeProd
+              (thetaReference.restrict domain)).restrict chartPiece,
+            density E ≤ c) →
+          formalProductMeasure.restrict chartPiece ≤
+            c • Measure.map CedgeProd (thetaReference.restrict domain) := by
+  rcases
+      exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+        (M := M) V Bv U₀ hU₀ CedgeBase (source := source) (Rmax := Rmax)
+        hsource hRmax hCedgeBase hchart baseReadback hbaseReadback with
+    ⟨R, hR, hRle, hpackage⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord EdgeFamily CedgeProd domain
+  let productReadback : EdgeFamily → α × EuclideanSpace ℝ Coord :=
+    fun E ↦
+      (baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+            (fun E' : EdgeFamily ↦ E') E),
+        (EuclideanSpace.equiv Coord ℝ).symm
+          (paperEndpointFixedBaseRegularBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+            (fun E' : EdgeFamily ↦ E') E))
+  have hpackage' :
+      (∀ z ∈ domain, productReadback (CedgeProd z) = z) ∧
+        Set.InjOn CedgeProd domain ∧
+          ContinuousOn CedgeProd domain ∧
+            (∀ thetaMeasure : Measure (α × EuclideanSpace ℝ Coord),
+              AEMeasurable CedgeProd (thetaMeasure.restrict domain)) ∧
+              MeasurableSet (CedgeProd '' domain) ∧
+                ∀ E ∈ CedgeProd '' domain,
+                  productReadback E ∈ domain ∧ CedgeProd (productReadback E) = E := by
+    simpa [ρ, κ, Coord, EdgeFamily, CedgeProd, productReadback, domain] using hpackage
+  rcases hpackage' with ⟨_hleft, _hinj, _hcont, haemeas, _himage, _hright⟩
+  have hdomain : MeasurableSet domain := by
+    simpa [ρ, κ, Coord, domain] using
+      hsource.prod
+        (Metric.isOpen_ball.measurableSet :
+          MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R))
+  intro thetaReference formalProductMeasure chartPiece density c
+    hchartPiece hdensity heq hdensity_le
+  have hpush :
+      Measure.map CedgeProd
+          ((thetaReference.withDensity
+            (fun z ↦ density (CedgeProd z))).restrict domain) =
+        (Measure.map CedgeProd (thetaReference.restrict domain)).withDensity
+          density := by
+    exact
+      measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq
+        (thetaMeasure := thetaReference) (V := domain)
+        (rawMap := CedgeProd)
+        (thetaDensity := fun z ↦ density (CedgeProd z))
+        (rawDensity := density)
+        hdomain (haemeas thetaReference) hdensity
+        (Filter.Eventually.of_forall fun _ ↦ rfl)
+  have hformal :
+      formalProductMeasure.restrict chartPiece =
+        ((Measure.map CedgeProd (thetaReference.restrict domain)).withDensity
+          density).restrict chartPiece := by
+    calc
+      formalProductMeasure.restrict chartPiece =
+          (Measure.map CedgeProd
+            ((thetaReference.withDensity
+              (fun z ↦ density (CedgeProd z))).restrict domain)).restrict
+            chartPiece := heq
+      _ =
+          ((Measure.map CedgeProd (thetaReference.restrict domain)).withDensity
+            density).restrict chartPiece := by
+            rw [hpush]
+  calc
+    formalProductMeasure.restrict chartPiece =
+        ((Measure.map CedgeProd (thetaReference.restrict domain)).withDensity
+          density).restrict chartPiece := hformal
+    _ ≤ c • Measure.map CedgeProd (thetaReference.restrict domain) := by
+        exact
+          restrict_withDensity_le_smul_of_ae_le
+            (μ := Measure.map CedgeProd (thetaReference.restrict domain))
+            (s := chartPiece) (f := density) (c := c)
+            hchartPiece hdensity_le
+
 end Aoyagi
 end DLN
 end DLNFibre

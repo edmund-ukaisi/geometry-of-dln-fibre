@@ -21,6 +21,61 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 selected-entry product source-reference domination
+
+Reproduction:
+
+```text
+reproduction-a2-case2-selected-entry-product-coordinate-handoff.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionProductMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.continuousAt_preimageOfPivotNeZero
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_formalProductMeasure_restrict_le_smul_sourceReference_of_sourceChart_withDensity_of_residualReadback
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_formalProductMeasure_restrict_le_smul_sourceReference_of_sourceChart_withDensity
+```
+
+The generic theorem proves a product-chart source-reference domination:
+from a supplied weighted product-chart identity and an a.e. density bound,
+`formalProductMeasure.restrict chartPiece` is bounded by
+`c • Measure.map CedgeProd (thetaReference.restrict domain)`.
+
+The Case 2 selected-entry theorem instantiates the generic p.13
+product-coordinate package with value coordinates on the fixed-pivot punctured
+locus.  It proves the concrete source measurability, continuity, determinant
+chart hypotheses, and residual-coordinate readback.  The base readback is
+
+```text
+coord |-> fun i => coord (residualCoordEquiv.symm i)
+```
+
+and the fixed-pivot inverse supplies the source chart
+
+```text
+value |-> sourceChart (preimageOfPivotNeZero pivotNext value).
+```
+
+Boundary: the weighted product-chart measure identity and density bound are
+still explicit hypotheses.  No original-prior transport, full raw-Haar
+transport, normal crossings, pole order, or RLCT extraction is proved.
+
+Verification: focused Lean checks, focused module builds, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes passed.  The new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 product-coordinate source-side withDensity handoff
 
 Reproduction:

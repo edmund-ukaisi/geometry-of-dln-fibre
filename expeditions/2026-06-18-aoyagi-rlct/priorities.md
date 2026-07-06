@@ -12,6 +12,64 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, selected-entry product source-reference domination
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.continuousAt_preimageOfPivotNeZero
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_formalProductMeasure_restrict_le_smul_sourceReference_of_sourceChart_withDensity_of_residualReadback
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_formalProductMeasure_restrict_le_smul_sourceReference_of_sourceChart_withDensity
+```
+
+Decision: fill the non-thin product-coordinate comparison before attempting an
+equality-with-density theorem.  The generic theorem takes the actual returned
+reduced p.13 product-coordinate chart `CedgeProd`, a source-domain
+`thetaReference`, a formal-product measure, a chart piece, and an edge-side
+density.  If the caller supplies the weighted source-side identity
+
+```text
+formalProductMeasure.restrict chartPiece =
+  (Measure.map CedgeProd
+    ((thetaReference.withDensity
+      (fun z => density(CedgeProd z))).restrict domain)).restrict chartPiece
+```
+
+and the density is a.e. bounded by `c` on the product-chart source reference,
+then
+
+```text
+formalProductMeasure.restrict chartPiece <=
+  c • Measure.map CedgeProd (thetaReference.restrict domain).
+```
+
+The selected-entry specialization uses value coordinates on the punctured
+fixed-pivot locus `value pivotNext != 0`.  It proves the selected-entry source
+set is measurable, the composed fixed-pivot inverse/source chart is continuous
+on that source, the retained-passive determinant-chart hypotheses hold, and
+the residual-coordinate readback recovers `value`.  This avoids the old
+mismatch where raw selected-entry coordinates read back as
+`chartMap pivotNext y`, not `y`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-coordinate-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Boundary: the weighted source-side identity, a.e. measurability of the
+edge-side density, and the density bound remain hypotheses.  This does not
+prove source/product measure transport for the original prior, ambient raw-Haar
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean checks, focused module builds, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes.  The three new declarations above report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-06, product-coordinate measure handoff
 
 Lean now has:
