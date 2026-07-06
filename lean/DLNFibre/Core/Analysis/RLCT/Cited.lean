@@ -16,10 +16,10 @@ transfer, in `Core`) or **proved**; this file isolates the one external analytic
 
 ## The monument — stated LOCALLY (certificate §7.5)
 
-The cite is the paper's `propdefn` (**Prop-Def 8.2**, `main.tex` L1803–1808), **as a purely local statement about the germ
-of `K` at one point `x₀`** — *not* a regional statement over a nbhd `U`. For a real-analytic
-nonnegative germ `K` with `K x₀ = 0`, a smooth compactly-supported cutoff `φ` (`φ ≥ 0`, `φ x₀ ≠ 0`,
-`supp φ` a small nbhd of `x₀`):
+The cite is the paper's `propdefn` (**Prop-Def 8.2**, `main.tex` L1803–1808), **as a purely local
+statement about the germ of `K` at one point `x₀`** — *not* a regional statement over a nbhd `U`.
+For a real-analytic nonnegative germ `K` with `K x₀ = 0`, a smooth compactly-supported cutoff `φ`
+(`φ ≥ 0`, `φ x₀ ≠ 0`, `supp φ` a small nbhd of `x₀`):
 
 * `ζ_{K,φ}(s) = ∫ K^s φ` (holomorphic on `{Re s > 0}`, built cite-free in `RLCT.Zeta`) **continues
   meromorphically** to all of `ℂ`;
@@ -93,28 +93,42 @@ finite order `m₀ ≥ 1`, rational; and — the bundled identification — **`s
 *local* RLCT of the germ at `x₀`). This is the sole analytic monument under the zeta-pole `(λ, m)`
 definition; `λ`, `m` and the local Link 1 are *built* on it (`RLCT.RLCTPair`).
 
-**Local, with ONE worst-point hypothesis on `supp φ`** (certificate §7.5, round-5 fix): `s₀` is a
-`supp φ`-quantity — the zeta `∫ K^s φ` sees *all* of `supp φ`, so `s₀ = −inf_{x ∈ supp φ} rlct_x`. The
-hypothesis `hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x` (`x₀` a worst singularity **on
-`supp φ`**) makes that `inf` equal `rlctAt K x₀`, so the bundled `s₀ = −rlctAt K x₀` is *true*. Without
-it the cite is **inconsistent**: a wide `φ` covering a separate, sharper zero forces a pole `Z` does
-not have at `−rlctAt K x₀` (`K = x²(x−1)⁸`, `φ` over both zeros ⟹ `s₀ = −1/8 ≠ −1/2`). This is the
-paper's "`U` small enough" as a *threshold* condition on `supp φ` — **not** a sole-zero condition, so
-it **admits the DLN fibre**: at a smooth fibre point the local RLCT is (locally) constant along the
-connected fibre, so `hWorst` holds with equality and the cite fires at `K_B`. The `U` still only
-localizes `φ`'s support (`x₀ ∈ U`, `U` open, `tsupport φ ⊆ U`). The maximality conjunct
-(`∀ s, pole → s.re ≤ s₀`) makes `s₀` genuinely the *largest* pole (justifying `RLCT.largestPole`). -/
+**Two hypothesis-satisfiability guards (round-7), both from `rlctAt`'s junk-`0` at regular points**
+(`rlctAt K x = sSup [0,∞) = 0` where `K x ≠ 0`, the paper's `rlct_x = +∞`):
+
+* **`hKne : ∃ x, K x ≠ 0`** — without it, at `K ≡ 0` every `rlctAt K · = 0`, so `hWorst` holds and the
+  conclusion forces `s₀ < 0 ∧ s₀ = −rlctAt K x₀ = 0` → **`False`**. (An analytic `K` on connected `ℝⁿ`
+  with `hKne` has `{K=0}` proper and null — what the Atiyah continuation needs anyway.)
+* **`hWorst` is guarded to ZEROS** (`K x = 0 → …`): `s₀` is a `supp φ`-quantity (the zeta `∫ K^s φ`
+  sees *all* of `supp φ`, `s₀ = −inf_{x ∈ supp φ} rlct_x`), so `x₀` must be a worst singularity there.
+  But `tsupport φ` also holds *regular* points with `rlctAt = 0` junk; an **unguarded**
+  `rlctAt K x₀ ≤ rlctAt K x` would demand `rlctAt K x₀ ≤ 0` at those points, **unsatisfiable** at a
+  genuine zero (`⟹ vacuity`, the cite never fires). Guarding to `K x = 0` reads "`x₀` is a worst
+  *zero* on `supp φ`" (regular points carry no pole), which makes `inf` over zeros `= rlctAt K x₀` so
+  `s₀ = −rlctAt K x₀` is *true* — and is *satisfiable* at a genuine germ (witness: `RLCT.zetaSetupSq`).
+
+This still excludes the wide-`φ` counterexample (`K = x²(x−1)⁸`, `φ` over both zeros: the zero at `1`
+has `rlctAt = 1/8 < 1/2 = rlctAt K 0`, so `hWorst` **fails**, cite does not fire) and **admits the DLN
+fibre**: at a smooth fibre point the local RLCT is (locally) constant along the connected fibre, so
+`hWorst` holds with equality and the cite fires at `K_B`. The `U` only localizes `φ`'s support
+(`x₀ ∈ U`, `U` open, `tsupport φ ⊆ U`). The maximality conjunct (`∀ s, pole → s.re ≤ s₀`) makes `s₀`
+genuinely the *largest* pole (justifying `RLCT.largestPole`). -/
 @[cited "Atiyah 1970 (CPAM 23:145-150): meromorphic continuation of local ∫K^s φ, poles ⊂ ℚ_{<0} (real-analytic resolution); Saito/SLT (Watanabe 2009; L&R Prop-Def 8.2, main.tex L1803-1808): largest pole = -rlct_{x₀}"]
 axiom cited_local_zeta_pole {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
     (x₀ : Fin n → ℝ) (U : Set (Fin n → ℝ))
     (hK : AnalyticOnNhd ℝ K Set.univ) (hKnn : ∀ x, 0 ≤ K x) (hKx₀ : K x₀ = 0)
+    -- `K` is not identically `0` (else `rlctAt K · = 0` everywhere and the conclusion `s₀ < 0 ∧
+    -- s₀ = −rlctAt K x₀ = 0` is `False`; analytic `K` ⟹ `{K=0}` proper + null, what Atiyah needs);
+    (hKne : ∃ x, K x ≠ 0)
     (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
     (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
     -- `φ` is supported in a small open nbhd `U ∋ x₀` (localizes the cutoff; NO regional threshold);
     (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U)
-    -- worst-point on `supp φ`: `x₀` has the smallest local RLCT over `tsupport φ`, so the pole `s₀`
-    -- (a `supp φ`-quantity) equals `−rlctAt K x₀`. Admits the DLN fibre (equal-threshold zeros are OK);
-    (hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x) :
+    -- worst-point among the ZEROS on `supp φ`: `x₀` has the smallest local RLCT over the zeros of `K`
+    -- in `tsupport φ`. Guarded to `K x = 0` because regular points have `rlctAt = 0` junk (no pole
+    -- there anyway) — an unguarded `≤` would force `rlctAt K x₀ ≤ 0`, unsatisfiable at a genuine zero
+    -- (⟹ vacuity). Admits the DLN fibre (equal-threshold zeros give `≤` with equality);
+    (hWorst : ∀ x ∈ tsupport φ, K x = 0 → rlctAt K x₀ ≤ rlctAt K x) :
     ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
       -- the continuation agrees with the built zeta on the convergent half-plane;
       (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧

@@ -9,7 +9,8 @@ namespace `RLCT` (network-free).
 
 Files (all `lean/DLNFibre/Core/Analysis/RLCT/`, @ `expedition/rlct-r2b`):
 `Zeta.lean` (built, cite-free) · `Local.lean` (cite-free local `rlctAt`) · `Cited.lean` (the one LOCAL
-cite) · `Pair.lean` (extraction + local Link 1) · `Bridge.lean` (Bridge B, buildable/roadmapped).
+cite) · `Pair.lean` (extraction + local Link 1) · `Bridge.lean` (Bridge B, buildable/roadmapped) ·
+`Witness.lean` (`zetaSetupSq`, the round-7 instantiability witness — non-vacuity at a build-time fact).
 
 ## The three-way split (certificate §7.2 — why LOCAL, not regional)
 
@@ -80,14 +81,15 @@ sole zero). Fix: split into
 >
 > - **Lean (verbatim axiom):**
 >
->       @[cited "Atiyah 1970 (CPAM 23:145-150) + Saito/SLT (paper propdefn L1804): local ∫K^s φ continues meromorphically, poles ℚ_{<0}, largest pole = -rlct_{x₀}"]
+>       @[cited "Atiyah 1970 (CPAM 23:145-150): meromorphic continuation of local ∫K^s φ, poles ⊂ ℚ_{<0} (real-analytic resolution); Saito/SLT (Watanabe 2009; L&R Prop-Def 8.2, main.tex L1803-1808): largest pole = -rlct_{x₀}"]
 >       axiom cited_local_zeta_pole {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
 >           (x₀ : Fin n → ℝ) (U : Set (Fin n → ℝ))
 >           (hK : AnalyticOnNhd ℝ K Set.univ) (hKnn : ∀ x, 0 ≤ K x) (hKx₀ : K x₀ = 0)
+>           (hKne : ∃ x, K x ≠ 0)
 >           (hφ : ContDiff ℝ ((⊤ : ℕ∞) : WithTop ℕ∞) φ) (hφc : HasCompactSupport φ)
 >           (hφnn : ∀ x, 0 ≤ φ x) (hφx₀ : φ x₀ ≠ 0)
 >           (hx₀U : x₀ ∈ U) (hUopen : IsOpen U) (hφU : tsupport φ ⊆ U)
->           (hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤ rlctAt K x) :
+>           (hWorst : ∀ x ∈ tsupport φ, K x = 0 → rlctAt K x₀ ≤ rlctAt K x) :
 >           ∃ (Z : ℂ → ℂ) (s₀ : ℝ) (m₀ : ℕ),
 >             (∀ s : ℂ, 0 < s.re → Z s = zeta K φ s) ∧
 >             MeromorphicOn Z Set.univ ∧
@@ -97,16 +99,22 @@ sole zero). Fix: split into
 >             meromorphicOrderAt Z (s₀ : ℂ) = ((-(m₀ : ℤ) : ℤ) : WithTop ℤ) ∧
 >             s₀ = -(rlctAt K x₀)
 >
-> - **`hWorst` (worst-point on `supp φ`) is soundness-critical — without it the cite is `False`.** `s₀`
->   is a `supp φ`-quantity (`Z` sees all of `supp φ`, so `s₀ = −inf_{x∈supp φ} rlct_x`); a wide `φ`
->   covering a *separate sharper* zero forces a pole `Z` does not have at `−rlctAt K x₀`
->   (`K = x²(x−1)⁸`, `φ` over both zeros ⟹ `s₀ = −1/8 ≠ −1/2`). `hWorst` makes that `inf = rlctAt K x₀`.
->   It is the paper's "`U` small enough" as a *threshold* condition — **not** a sole-zero condition, so
->   it **admits the DLN fibre**: at a smooth fibre point `rlct_x` is locally constant along the
->   connected fibre, so `hWorst` holds with equality and the cite fires at `K_B` (non-vacuity witness).
-> - **The `U` carries NO threshold** — it only localizes `φ`'s support (`x₀ ∈ U`, `U` open,
->   `tsupport φ ⊆ U`). The conclusion is the germ-at-`x₀` datum `rlctAt K x₀`; `hWorst` is the only
->   family-constraint, and it is over `supp φ`, not a region.
+> - **Two round-7 hypothesis-satisfiability guards** (both from `rlctAt`'s junk-`0` at regular points,
+>   `rlctAt K x = sSup[0,∞) = 0` where `K x ≠ 0`, vs the paper's `+∞`):
+>   - **`hKne : ∃ x, K x ≠ 0`** — at `K ≡ 0`, `rlctAt K · = 0` everywhere ⟹ `hWorst` holds ⟹ the
+>     conclusion forces `s₀ < 0 ∧ s₀ = −rlctAt K x₀ = 0` → **`False`**. (Analytic `K` + `hKne` ⟹ `{K=0}`
+>     proper + null — what Atiyah needs.)
+>   - **`hWorst` guarded to ZEROS** (`K x = 0 → …`): `s₀` is a `supp φ`-quantity (`Z` sees all of
+>     `supp φ`, `s₀ = −inf_{x∈supp φ} rlct_x`); a wide `φ` over a *separate sharper* zero breaks
+>     `s₀ = −rlctAt K x₀` (`K=x²(x−1)⁸`, φ over both ⟹ `s₀=−1/8`). But `tsupport φ` also holds *regular*
+>     points with `rlctAt = 0` junk; an **unguarded** `rlctAt K x₀ ≤ rlctAt K x` would demand
+>     `rlctAt K x₀ ≤ 0`, **unsatisfiable at a genuine zero** (⟹ vacuity — round-5 "fixed" the wide-φ case
+>     by vacuity, not truth). Guarding to `K x = 0` reads "`x₀` a worst *zero* on `supp φ`" (regular
+>     points carry no pole): makes `inf` over zeros `= rlctAt K x₀`, is *satisfiable* at a real germ
+>     (witness `RLCT.zetaSetupSq`, Card 5), still excludes the wide-φ case, and **admits the DLN fibre**
+>     (a smooth fibre point has `rlct_x` locally constant along the fibre ⟹ `hWorst` with equality).
+> - **The `U` carries NO threshold** — it only localizes `φ`'s support; the conclusion is the germ-at-`x₀`
+>   datum `rlctAt K x₀`.
 > - **Cited — sources.** M. Atiyah, *Resolution of singularities and division of distributions*, CPAM
 >   **23**(2) (1970) 145–150 (continuation of `∫|F|^s`, poles `ℚ_{<0}`, real-analytic resolution — the
 >   paper's attribution L1811); "largest pole `= −rlct_x`" packaging: Saito arXiv:math/0702056;
@@ -168,10 +176,32 @@ sole zero). Fix: split into
 
 ---
 
-## Decorrelated review + the five-round hardening
+## Card 5 — the instantiability witness `zetaSetupSq` (round-7 non-vacuity, BUILT)
 
-The cite was hardened across FIVE rounds before landing the correct form (all pre-merge, via the
-careful-checkpoint + decorrelated review — controller + rev-r2b + pp-zeta-cert + Codex):
+> **Claim.** A concrete `ZetaSetup 1` at the genuine singular germ `K = fun x ↦ (x 0)^2` (with a
+> `ContDiffBump` cutoff at `x₀ = 0`, `U = univ`) discharges **every** hypothesis of the local
+> zeta-pole cite. Its elaboration proves the cite's hypotheses are jointly satisfiable at a real germ
+> — **non-vacuity is a build-time fact** (the round-7 defect was a hypothesis set unsatisfiable at
+> every genuine germ, which passes the cordon green yet never fires).
+>
+> - **Lean:** `RLCT.zetaSetupSq` (`Witness.lean`), + `sqGerm`, `analyticOnNhd_sqGerm`,
+>   `sqGerm_eq_zero_iff`, `sqBump`.
+> - **Load-bearing discharges.** `hKne`: `K (fun _ ↦ 1) = 1 ≠ 0`. `hWorst` (zero-guarded): the *only*
+>   zero of `(x 0)^2` is `0 = x₀` (`sqGerm_eq_zero_iff`), so `K x = 0 → x = x₀` and the inequality is
+>   `rlctAt K x₀ ≤ rlctAt K x₀` by `le_refl` — **no `rlctAt` value computed** (the guard makes it
+>   trivial at a single-zero germ). `hK`: `x ↦ x 0` is `ContinuousLinearMap.proj 0` (analytic,
+>   `CPolynomial`), squared via `AnalyticOnNhd.pow`. `hφ`/`hφc`/`hφnn`/`hφx₀`: `ContDiffBump.contDiff`
+>   / `.hasCompactSupport` / `.nonneg` / `.one_of_mem_closedBall` (`sqBump 0 = 1 ≠ 0`).
+> - **Cited.** none — `#print axioms zetaSetupSq = [propext, Classical.choice, Quot.sound]`
+>   (the witness proves satisfiability *without* invoking the cite).
+> - **Status.** sorry-free.
+
+---
+
+## Decorrelated review + the seven-round hardening
+
+The cite was hardened across SEVEN rounds before landing the correct form (all pre-merge, via the
+careful-checkpoint + decorrelated review — controller + rev-r2b + rev-fidelity + pp-zeta-cert + Codex):
 
 1. **Codex (xhigh)** on the first form fixed 3 gaps — locality, maximality, pole-regime.
 2. **rev-r2b + Codex** found the regional cite **inconsistent** (`s₀ = −integrabilityThreshold K U`
@@ -182,18 +212,25 @@ careful-checkpoint + decorrelated review — controller + rev-r2b + pp-zeta-cert
    DLN fibre** — altitude confusion. **Restated the cite LOCALLY** (`s₀ = −rlctAt K x₀`, drop the
    regional conclusion), factored the regional tie into buildable Bridge B, routed the DLN payoff
    through the global Theorem C.
-5. **controller + pp-zeta-cert §7.5 (CONFIRMED, this round)** found the local form still loose: `s₀` is
-   a `supp φ`-quantity, so a wide `φ` covering a *separate sharper* zero breaks `s₀ = −rlctAt K x₀`
-   (`K=x²(x−1)⁸`, φ over both ⟹ `s₀=−1/8`). **Final fix: `hWorst : ∀ x ∈ tsupport φ, rlctAt K x₀ ≤
-   rlctAt K x`** — a worst-point condition on `supp φ` (the paper's "U small enough"), admitting the
-   DLN fibre (equal-threshold zeros give `≤` with equality; not sole-zero). Consistent +
-   DLN-admissible + no reliance on the open local conjecture. Root cause (supp φ is itself a region)
-   now closed.
+5. **controller + pp-zeta-cert §7.5** found the local form still loose: `s₀` is a `supp φ`-quantity,
+   so a wide `φ` over a *separate sharper* zero breaks `s₀ = −rlctAt K x₀` (`K=x²(x−1)⁸` ⟹ `s₀=−1/8`).
+   Added the worst-point-on-`supp φ` hypothesis `hWorst`.
+6. **rev-fidelity + Codex (operator-triggered)** corrected the paper refs (`Def 4.1` → `Def 8.1(ii)`;
+   `propdefn` → Prop-Def 8.2, L1803-1808) and split the per-conjunct attribution (rationality from
+   real-analytic resolution alone; largest-pole=−rlct to Saito/SLT). No conjunct over-claims.
+7. **independent reviewer + controller (CONFIRMED, this round)** found TWO blocking **hypothesis-
+   satisfiability** defects (the first six rounds all attacked the *conclusion*), both from `rlctAt`'s
+   junk-`0` at regular points: (i) inconsistent at `K ≡ 0` → add `hKne : ∃ x, K x ≠ 0`; (ii) `hWorst`
+   **unsatisfiable at every genuine germ** (regular points force `rlctAt x₀ ≤ 0`) — round-5 had fixed
+   the wide-φ case by *vacuity, not truth* → **guard `hWorst` to zeros** (`K x = 0 → …`), propagate to
+   `ZetaSetup` + Bridge B, and **ship an instantiability witness** (`zetaSetupSq`, Card 5) so vacuity
+   is a build-time failure.
 
-**Lesson (in-repo).** The cordon accounts axioms but does **not** check their consistency; a cited
-`∃`-axiom needs a consistency review (hunt an instance satisfying every hypothesis where the conclusion
-fails). Here the source of the contradiction was an *altitude* mismatch (regional conclusion, local
-apparatus) — the split cures it at the root.
+**Lessons (in-repo).** (a) The cordon accounts axioms but does **not** check consistency **or**
+hypothesis-satisfiability; a cited `∃`-axiom needs BOTH a consistency review (hunt `False`) AND an
+adversarial hypothesis-instantiation at the intended target (non-vacuity — ship a witness). (b) A total
+ℝ-valued proxy (`rlctAt`, `sSup[0,∞)=0`) of an `ℝ∪{∞}` invariant has a **junk value that inverts
+inequality hypotheses** — the root of both round-7 defects.
 
 ## Reviewer note (fidelity focus)
 

@@ -57,16 +57,19 @@ facts `hSubThreshold` (F1-easy) and `hIntegrableCap` (F1-converse, needs boundar
 the roadmapped analytic core (see the module docstring); given them, the equality is `csSup`
 antisymmetry.
 
-* `hworst` — `∀ x ∈ closure U, rlctAt K x₀ ≤ rlctAt K x` (worst-point; admits a connected fibre).
-* `hSubThreshold` — `∀ c ≥ 0, (∀ x ∈ closure U, c < rlctAt K x) → c ∈ admissibleExponents K U`.
+* `hworst` — `∀ x ∈ closure U, K x = 0 → rlctAt K x₀ ≤ rlctAt K x` (worst-point among the **zeros**;
+  admits a connected fibre). Guarded to `K x = 0` for the same reason as Axiom A's `hWorst`: regular
+  points have `rlctAt = 0` junk, so an unguarded `≤` is unsatisfiable at a real zero (`RLCT.Cited`).
+* `hSubThreshold` — sub-threshold at every zero of `closure U` makes `c ≥ 0` regionally admissible.
+  Its premise is likewise guarded to zeros (regular points carry no obstruction to integrability).
 * `hIntegrableCap` — `∀ c ∈ admissibleExponents K U, c ≤ rlctAt K x₀`.
 * `hbdd` — `BddAbove (admissibleExponents K U)` (pole regime; the regional `sSup` is honest).
 * `h0mem` — `(0 : ℝ) ∈ admissibleExponents K U` (`0` regionally admissible: `K^0 = 1` integrable on
   finite-measure `U`, `RLCT.zero_mem_admissibleExponents`) — pins `0 ≤ sSup`, handling `c < 0`. -/
 theorem integrabilityThreshold_eq_localRlct_of_worst {K : (Fin n → ℝ) → ℝ}
     {U : Set (Fin n → ℝ)} {x₀ : Fin n → ℝ}
-    (hworst : ∀ x ∈ closure U, rlctAt K x₀ ≤ rlctAt K x)
-    (hSubThreshold : ∀ c : ℝ, 0 ≤ c → (∀ x ∈ closure U, c < rlctAt K x) →
+    (hworst : ∀ x ∈ closure U, K x = 0 → rlctAt K x₀ ≤ rlctAt K x)
+    (hSubThreshold : ∀ c : ℝ, 0 ≤ c → (∀ x ∈ closure U, K x = 0 → c < rlctAt K x) →
       c ∈ admissibleExponents K U)
     (hIntegrableCap : ∀ c ∈ admissibleExponents K U, c ≤ rlctAt K x₀)
     (hbdd : BddAbove (admissibleExponents K U))
@@ -81,12 +84,13 @@ theorem integrabilityThreshold_eq_localRlct_of_worst {K : (Fin n → ℝ) → �
     rcases lt_or_ge c 0 with hcneg | hc0
     · -- `c < 0`: `0` is admissible, so `0 ≤ sSup`, hence `c < 0 ≤ sSup`.
       exact lt_of_lt_of_le hcneg (le_csSup hbdd h0mem)
-    · -- `0 ≤ c < rlctAt K x₀`: pick `c'` strictly between; `c' < rlctAt K x₀ ≤ rlctAt K x` on all
-      -- of `closure U`, so `hSubThreshold` makes `c'` admissible, giving `c < c' ≤ sSup`.
+    · -- `0 ≤ c < rlctAt K x₀`: pick `c'` strictly between; at each ZERO `x ∈ closure U`,
+      -- `c' < rlctAt K x₀ ≤ rlctAt K x` (`hworst`), so the zero-guarded `hSubThreshold` makes `c'`
+      -- admissible, giving `c < c' ≤ sSup`.
       obtain ⟨c', hcc', hc'r⟩ := exists_between hc
       have hc'0 : 0 ≤ c' := le_of_lt (lt_of_le_of_lt hc0 hcc')
       have hc'mem : c' ∈ admissibleExponents K U :=
-        hSubThreshold c' hc'0 (fun x hx ↦ lt_of_lt_of_le hc'r (hworst x hx))
+        hSubThreshold c' hc'0 (fun x hx hKx ↦ lt_of_lt_of_le hc'r (hworst x hx hKx))
       exact lt_of_lt_of_le hcc' (le_csSup hbdd hc'mem)
 
 end RLCT

@@ -49,8 +49,8 @@ lemma mem_localAdmissibleExponents {K : (Fin n → ℝ) → ℝ} {x : Fin n → 
     c ∈ localAdmissibleExponents K x ↔ 0 ≤ c ∧ IntegrableAtFilter (negPow K c) (𝓝 x) := Iff.rfl
 
 /-- The **local RLCT** `rlctAt K x`: the supremum of the locally-admissible exponents at `x` — the
-paper's `rlct_x(K)` (Def 8.1(ii)). Cite-free, local; the value the zeta-pole cite identifies with the
-largest pole (`s₀ = −rlctAt K x₀`, `RLCT.Cited`). Honest in the pole regime (bounded admissible
+paper's `rlct_x(K)` (Def 8.1(ii)). Cite-free, local; the value the zeta-pole cite identifies with
+the largest pole (`s₀ = −rlctAt K x₀`, `RLCT.Cited`). Honest in the pole regime (bounded admissible
 set); `sSup ∅ = 0` / unbounded is the documented out-of-scope, as for `integrabilityThreshold`. -/
 noncomputable def rlctAt (K : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ) : ℝ :=
   sSup (localAdmissibleExponents K x)
