@@ -12,6 +12,62 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 concrete inverse-density endpoint-cardinality wrappers
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_card_eq
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_chartProducedMeasure_restrict_open_of_sourceRankSupport_card_eq
+```
+
+Decision: add endpoint-cardinality wrappers for the concrete p.13
+inverse-density finite-integral theorems.  The only new construction is the
+noncanonical finite reindexing supplied by
+`case2EndpointTransportEquivs_of_card_eq`; after setting
+`eNext = equivs.1` and `e = equivs.2`, the source-stratum theorem calls the
+fixed-equivalence concrete inverse-density theorem, and the restrict-open
+sibling calls the rank-supported fixed-equivalence theorem.
+
+The p.13 density remains
+
+```text
+productReductionStepRawOrderInverseJacobianDensity
+  (paperEndpointFixedBaseP13RawOrderTuple
+    W2 B2 U0 hU0 (fun E => E) (x,u)).
+```
+
+The base map is deliberately `fun E => E`, not the selected-entry value chart.
+
+Boundary: this is packaging, not new analytic content.  It does not prove the
+cardinality equalities, preserve endpoint labels, identify original/source
+prior, prove raw-Haar or product-coordinate source transport, construct normal
+crossings, compute pole order, or extract RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-lossdln-product-step-inverse-density-cardinality-wrapper.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probes.  Both new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh audit: Noether confirmed the statement is meaningful and Lean-feasible
+as packaging only, with the exact same fixed-equivalence theorem calls and the
+identity edge-family base-map warning.  James identified the next low-risk
+target as a same-radius selected-entry product image/readback corollary using
+the domain-shaped product pushforward; the formal-product/source-image
+comparison remains high risk and should wait for an Aoyagi-only local
+change-of-variables/density reproduction.
+
 ## Latest controller decision - 2026-07-06, Case 2 concrete inverse-density finite integral on open support
 
 Lean now has:
