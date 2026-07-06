@@ -528,13 +528,14 @@ theorem rlct_lossDLN_zero_eq_half_iInf_orbitCodim_via_aoyagi (I : RlctRealInterf
   rw [rlct_lossDLN_zero_eq_half_codimFibre_via_aoyagi (K := K) (ι := ι) I hN,
     codimRepCanonical_fibre_zero_eq_iInf_orbitCodim]
 
-/-- **The RLCT payoff at `r = 0`: `rlct(K^DLN_0) = C/2`.** The rlct of the zero-product DLN loss equals
-half the combinatorial codimension `cCodim d 0 = C` (Lehalleur–Rimányi's `C`) — "DLNs are mildly
-singular". Combines the analytic equality (the two Cited bounds) + the PROVED real↔complex transfer
-(`rlct = ½·codim_K`) with bridge (b) (`codimRepCanonical_fibre_zero_eq_cCodim`, the geometric content
-`codim mult⁻¹(0) = C`, Proved). `via_aoyagi` names the cited source (the analytic rlct interface); the
-only Cited input is that interface. Requires the Kostant set nonempty (`h`) and the `0 < N` Cited scope;
-`[IsAlgClosed K] [CharZero K]` (the scope where `C` is the geometric codimension). -/
+/-- **The RLCT payoff at `r = 0`: `rlct(K^DLN_0) = C/2`.** The rlct of the zero-product DLN loss
+equals half the combinatorial codimension `cCodim d 0 = C` (Lehalleur–Rimányi's `C`) — "DLNs are
+mildly singular". Combines the analytic equality (the two Cited bounds) + the PROVED real↔complex
+transfer (`rlct = ½·codim_K`) with bridge (b) (`codimRepCanonical_fibre_zero_eq_cCodim`, the
+geometric content `codim mult⁻¹(0) = C`, Proved). `via_aoyagi` names the cited source (the analytic
+rlct interface); the only Cited input is that interface. Requires the Kostant set nonempty (`h`) and
+the `0 < N` Cited scope; `[IsAlgClosed K] [CharZero K]` (the scope where `C` is the geometric
+codimension). -/
 theorem rlct_lossDLN_zero_eq_half_cCodim_via_aoyagi (I : RlctRealInterface d) (hN : 0 < N)
     (h : (kostantPartitions d 0).Nonempty) :
     rlctGlobal (lossDLN d 0) = ((cCodim d 0 h).toNat : ℝ) / 2 := by
@@ -551,9 +552,9 @@ end R
 The worked example `d = (2,2,2)` (Lehalleur–Rimányi Ex 4.3): the combinatorial `C = cCodim d222 0
 = 3` (LANDED `Core.CTheta.cCodim_d222_zero`). Over the algebraically-closed char-`0` field, bridge
 (b) turns this into the geometric codimension of the zero-product fibre, and the Cited analytic
-interface + the PROVED real↔complex transfer into the RLCT value `3/2`. The codimension side is shown
-over `AlgebraicClosure ℚ`; the rlct payoff over `ℂ` (which carries the embedding `ℝ →+* ℂ` the
-transfer needs — there is no ring hom `ℝ →+* ℚ̄`). -/
+interface + the PROVED real↔complex transfer into the RLCT value `3/2`. The codimension side is
+shown over `AlgebraicClosure ℚ`; the rlct payoff over `ℂ` (which carries the embedding `ℝ →+* ℂ`
+the transfer needs — there is no ring hom `ℝ →+* ℚ̄`). -/
 
 section Witness
 
