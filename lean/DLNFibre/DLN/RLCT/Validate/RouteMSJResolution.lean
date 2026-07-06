@@ -32,8 +32,8 @@ and yields box-finiteness for ALL `M`. The wrapper carries NO analytic content (
 boundary peel `sjBoundaryPeel`) with pieces 4/5/7 (the joint resolution `sjJointResolution`): the peel
 bounds the `M` box integral by a finite sum of per-chart joint peeled integrals, each finite by the
 joint resolution. So the only sorries feeding the final `routeMBoxThresholdFinite_sjResolution` are the
-genuinely-new analytic pieces `sjBoundaryPeel` (3), `sjJointResolution` (4/5/7), and `sjBase1_freeMatrix`
-(the `L = 1` Morse base).
+genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointResolution` (4/5/7); the
+`L = 1` Morse base (`sjBase1_freeMatrix`) is now CLOSED.
 
 ## The 7 pieces (dependency order; CLOSED vs named-sorry)
 
@@ -50,9 +50,9 @@ genuinely-new analytic pieces `sjBoundaryPeel` (3), `sjJointResolution` (4/5/7),
 5. **Jacobian / charge-update** — `sjChargeUpdate_accum` (the additive `Mval` charge, CLOSED via banked
    `Mval_decompose`) + the exponent bookkeeping folded into `sjJointResolution`.
 6. **Charge-budget inequality** (combinatorial core) — `sjChargeBudget_recursion`/`_le`/`_binding`,
-   `sjSubordination`. CLOSED, reusing `LayerSplit_value_eq_minAdm` / `minAdmRec_eq_minAdm`, modulo the
-   ONE named residual `minAdm_leadWidth_mono` (leading-width monotonicity; a clean combinatorial fact,
-   numerically verified, deferred to a later tide).
+   `sjSubordination`. CLOSED, reusing `LayerSplit_value_eq_minAdm` / `minAdmRec_eq_minAdm`; the residual
+   leading-width monotonicity `minAdm_leadWidth_mono` is now PROVED (arity induction on the layer-peeling
+   recursion via `minAdm_cons_eq`), so all of piece 6 is sorry-free.
 7. **Monomial integrability assembly** (analytic endpoint) — `sjJointResolution` (bundles the
    monomialised finiteness). Named sorry. The generic monomial finiteness it consumes is banked
    (`Case222Cover.monomialIntegrand_integrable_of_lt`); the monomialisation is the new content.
@@ -60,7 +60,8 @@ genuinely-new analytic pieces `sjBoundaryPeel` (3), `sjJointResolution` (4/5/7),
 ## S2 / axiom hygiene
 The wrapper introduces NO measure-theoretic content of its own and NO new axiom. The deferred content
 sits in the named contracts; `#print axioms routeMBoxThresholdFinite_of_step` is clean-three. The final
-`routeMBoxThresholdFinite_sjResolution` carries exactly the three genuinely-new analytic sorries.
+`routeMBoxThresholdFinite_sjResolution` carries exactly the two remaining LOAD-BEARING analytic sorries
+(`sjBoundaryPeel`, `sjJointResolution`).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -102,7 +103,8 @@ theorem paramsBoxM_volume_lt_top (M : Fin (L + 1) → ℕ) (T : ℝ) :
 
 The combinatorial core: the accumulated per-boundary charge composes as the layer-peeling recursion,
 bottoming out at `minAdm M`. All banked in `RouteMLayerSplit` (`LayerSplit_value_eq_minAdm`,
-`minAdmRec_eq_minAdm`); the ONE residual is the leading-width monotonicity `minAdm_leadWidth_mono`. -/
+`minAdmRec_eq_minAdm`); the leading-width monotonicity `minAdm_leadWidth_mono` (the former residual) is
+now PROVED here (arity induction on `minAdm_cons_eq`), so the whole piece is sorry-free. -/
 
 /-- **The full remaining product chain `(M₁, M₂, …, M_L)`** — the coupling factor `P_full`'s chain
 (one fewer layer than `M`, but keeping the ORIGINAL leading width `M₁`, unlike `redChain t` which
@@ -166,15 +168,73 @@ theorem minAdm_le_minAdm_redChain_min (M : Fin (L + 1 + 1 + 1) → ℕ) :
     · rw [min_eq_right h10, Nat.sub_self, mul_zero]
   rw [ha, zero_add] at h; exact h
 
-/-- **Piece 6 — leading-width monotonicity of `minAdm` (the ONE named residual).** Increasing the
-leading width of a chain (all else fixed) does not decrease `minAdm`:
-`p ≤ q → minAdm (Fin.cons p rest) ≤ minAdm (Fin.cons q rest)`. Numerically verified (0 violations,
-`sj_check.py`); the recursion is NOT termwise (a larger leading width both raises the block terms and
-widens the admissible pivot range), so this is genuine — if modest — combinatorial work, deferred to a
-later tide. Everything else in piece 6 is banked. -/
+/-- `minAdm` of a two-width chain is the pivot-width product `M 0 · M 1` (the `minAdmRec` leaf). -/
+theorem minAdm_two_eq (M : Fin 2 → ℕ) : minAdm M = M 0 * M 1 := by
+  rw [← minAdmRec_eq_minAdm, minAdmRec_leaf]
+
+/-- `(Fin.cons p rest) 1 = rest 0` (the second entry of a cons is the head of the tail). -/
+theorem cons_one_eq {n : ℕ} (p : ℕ) (rest : Fin (n + 1) → ℕ) :
+    (Fin.cons p rest : Fin (n + 2) → ℕ) 1 = rest 0 := by
+  rw [show (1 : Fin (n + 2)) = Fin.succ 0 from rfl, Fin.cons_succ]
+
+/-- `redChain t (Fin.cons p rest) = Fin.cons t (Fin.tail rest)` — the reduced chain of a cons is
+independent of the leading width `p` (it drops `p`, installs the pivot `t`, keeps `Fin.tail rest`). -/
+theorem redChain_cons (t p : ℕ) (rest : Fin (L + 1 + 1) → ℕ) :
+    redChain t (Fin.cons p rest) = Fin.cons t (Fin.tail rest) := by
+  funext i
+  refine Fin.cases ?_ (fun j => ?_) i
+  · rw [redChain_zero, Fin.cons_zero]
+  · simp only [redChain_succ, Fin.cons_succ, Fin.tail]
+
+/-- **The leading-width recursion for `minAdm`** (arity `≥ 3`), with the reduced chain written in the
+`Fin.cons` form: `minAdm (cons p rest) = min_{t ≤ min(p, rest₀)} [(p−t)(rest₀−t) + minAdm (cons t
+(tail rest))]`. The `sjChargeBudget_recursion` (= banked `LayerSplit_value_eq_minAdm`) specialised at a
+cons chain, with `redChain t (cons p rest) = cons t (tail rest)` (`redChain_cons`). Both the pivot range
+and the block term depend on `p`; only the reduced chain is `p`-independent. -/
+theorem minAdm_cons_eq (p : ℕ) (rest : Fin (L + 1 + 1) → ℕ) :
+    minAdm (Fin.cons p rest)
+      = (Finset.range (min p (rest 0) + 1)).inf' (by simp)
+          (fun t => (p - t) * (rest 0 - t) + minAdm (Fin.cons t (Fin.tail rest))) := by
+  rw [← sjChargeBudget_recursion (Fin.cons p rest)]
+  simp only [Fin.cons_zero, cons_one_eq, redChain_cons]
+
+/-- **Piece 6 — leading-width monotonicity of `minAdm` (PROVED).** Increasing the leading width of a
+chain (all else fixed) does not decrease `minAdm`:
+`p ≤ q → minAdm (Fin.cons p rest) ≤ minAdm (Fin.cons q rest)`. Proven by induction on the chain arity via
+the leading-width recursion (`minAdm_cons_eq`): the reduced chains `cons t (tail rest)` are shared between
+the `p`- and `q`-sides (`redChain_cons`), so the two `inf'`s differ only in the pivot range and the block
+factor. It is NOT termwise (the larger leading width both raises the block terms and widens the pivot
+range `min(·, rest₀)`); the range-widening is handled by selecting the cut `t = p` (block charge `0`) and
+descending via the induction hypothesis on `tail rest` when the `q`-cut `t` exceeds `min(p, rest₀)`.
+Numerically corroborated (0 violations, `sj_check.py`). -/
 theorem minAdm_leadWidth_mono {L : ℕ} (p q : ℕ) (hpq : p ≤ q) (rest : Fin (L + 1) → ℕ) :
     minAdm (Fin.cons p rest) ≤ minAdm (Fin.cons q rest) := by
-  sorry
+  induction L generalizing p q with
+  | zero =>
+    rw [minAdm_two_eq, minAdm_two_eq, Fin.cons_zero, Fin.cons_zero, cons_one_eq, cons_one_eq]
+    gcongr
+  | succ L IH =>
+    rw [minAdm_cons_eq p rest, minAdm_cons_eq q rest]
+    refine Finset.le_inf' _ _ (fun t htmem => ?_)
+    rw [Finset.mem_range, Nat.lt_succ_iff] at htmem
+    have ht_rest : t ≤ rest 0 := le_trans htmem (min_le_right _ _)
+    by_cases hcaseA : t ≤ min p (rest 0)
+    · -- `t` lies in the `p`-pivot range: the shared cell is monotone in the leading width.
+      have hmemp : t ∈ Finset.range (min p (rest 0) + 1) := by rw [Finset.mem_range]; omega
+      refine le_trans (Finset.inf'_le _ hmemp) ?_
+      have hblk : (p - t) * (rest 0 - t) ≤ (q - t) * (rest 0 - t) := by gcongr
+      omega
+    · -- `min(p, rest₀) < t ≤ rest₀` forces `min(p, rest₀) = p` and `p < t`: cut at `t = p`
+      -- (block charge `0`), then descend by the IH on `tail rest`.
+      have hminp : min p (rest 0) = p := by omega
+      have hpt : p < t := by omega
+      have hmemp : p ∈ Finset.range (min p (rest 0) + 1) := by rw [Finset.mem_range]; omega
+      refine le_trans (Finset.inf'_le _ hmemp) ?_
+      have hmm : minAdm (Fin.cons p (Fin.tail rest)) ≤ minAdm (Fin.cons t (Fin.tail rest)) :=
+        IH p t (le_of_lt hpt) (Fin.tail rest)
+      have hz : (p - p) * (rest 0 - p) = 0 := by rw [Nat.sub_self, Nat.zero_mul]
+      rw [hz, Nat.zero_add]
+      exact le_trans hmm (Nat.le_add_left _ _)
 
 /-- **Piece 6 — `minAdm M ≤ minAdm (tailChain M)`** (the coupling chain dominates). If `M₁ ≤ M₀` the
 `t = M₁` cut gives it directly (`redChain M₁ M = tailChain M`, zero block charge); otherwise the
@@ -381,15 +441,70 @@ theorem routeMBoxThresholdFinite_of_step (hstep : SJStepHyp) (hbase1 : SJBaseHyp
       · intro M; exact hstep M (fun M' => ih (k + 1) (by omega) M')
   intro L M; exact key L M
 
-/-! ## `L = 1` base (single free matrix; named sorry — the free-matrix Morse integral) -/
+/-! ## `L = 1` base (single free matrix; the free-matrix Morse integral, PROVED) -/
 
-/-- **The `L = 1` (single free matrix) Morse base (named sorry).** For a two-width chain `M : Fin 2`,
-`prod M A = A₀` and the box integral is `∫_{A₀∈box} ‖A₀‖^{−2c'}` — finite for `c' < ½·M₀M₁ = ½·minAdm M`
-(the free-matrix Morse integral, `∫_{[−1,1]^d} |x|^{−2c'} < ∞ ⟺ 2c' < d = M₀M₁`). Reducible to the
-banked `sumSqND_box_lt_top` via a general `matBox M₀ M₁ ≃ᵐ morseBox (M₀·M₁)` reindex; the 2×2 template
-is `MatMulFibre.frobSq22_box_lt_top`. Clean bounded plumbing, deferred. -/
+/-- **The single free matrix loss is the sum of squares of its flat coordinates.** For a two-width chain
+`M : Fin 2`, `prod M A = A₀` (`prod_one_layer`), and the entries of `A₀` are exactly the flat coordinates
+`paramsEquivFlat M A` (`FlatIdx M` collapses to the single layer `s = 0`), so
+`frobSq (prod M A) = ∑ k, (paramsEquivFlat M A k)²`. -/
+theorem frobSq_prod_eq_flatSum (M : Fin 2 → ℕ) (A : Params M) :
+    frobSq (prod M A) = ∑ k, (paramsEquivFlat M A k) ^ 2 := by
+  have hflat : ∑ k, (paramsEquivFlat M A k) ^ 2
+      = ∑ idx : FlatIdx M, (A idx.1.1 idx.1.2 idx.2) ^ 2 := by
+    refine (Fintype.sum_equiv (Fintype.equivFin (FlatIdx M))
+      (fun idx => (A idx.1.1 idx.1.2 idx.2) ^ 2)
+      (fun k => (paramsEquivFlat M A k) ^ 2) (fun idx => ?_)).symm
+    dsimp only; rw [paramsEquivFlat_decodeM]
+  have hsig : ∑ idx : FlatIdx M, (A idx.1.1 idx.1.2 idx.2) ^ 2
+      = ∑ i : Fin (M 0), ∑ j : Fin (M (Fin.last 1)), (A 0 i j) ^ 2 := by
+    rw [Fintype.sum_sigma, Fintype.sum_sigma, Fin.sum_univ_one]; rfl
+  rw [hflat, hsig]
+  unfold frobSq
+  exact Finset.sum_congr rfl (fun i _ => Finset.sum_congr rfl (fun j _ => by
+    rw [prod_one_layer M A i j]))
+
+/-- **The Morse box integral is finite in any positive dimension below `N/2`.** The `Fin N`-form of the
+banked `sumSqND_box_lt_top` (which is stated at `Fin (m+1)`): `∫_{[−1,1]^N} (∑ᵢ xᵢ²)^{−c'} < ⊤` whenever
+`0 < N` and `c' < N/2`. Peels `N = m+1` (`0 < N`) and applies `sumSqND_box_lt_top`. -/
+theorem morseBox_sumSq_lt_top (N : ℕ) (hN : 0 < N) (c' : ℝ) (hc' : c' < (N : ℝ) / 2) :
+    ∫⁻ x in morseBox N 1, ENNReal.ofReal ((∑ i, (x i) ^ 2) ^ (-c')) < ⊤ := by
+  obtain ⟨m, rfl⟩ : ∃ m, N = m + 1 := ⟨N - 1, by omega⟩
+  exact sumSqND_box_lt_top m 1 one_pos c' (by push_cast at hc' ⊢; linarith)
+
+/-- **The `L = 1` (single free matrix) Morse base (PROVED).** For every two-width chain `M : Fin 2`,
+`RouteMBoxThresholdFinite M` holds: the box integral `∫_{A∈paramsBoxM M 1} frobSq(prod M A)^{−c'}` is
+finite for `c' < ½·minAdm M = ½·M₀M₁`. Since `prod M A = A₀`, the integrand is the free-matrix Morse
+integral `∫_{[−1,1]^{M₀M₁}} (∑ x²)^{−c'}`: transport the `Params M` box through the measure-preserving
+flattening `paramsEquivFlat M` (`frobSq_prod_eq_flatSum`, `flatDim M = M₀M₁`) to the `Fin (M₀M₁)` Morse
+box, finite by `morseBox_sumSq_lt_top` (threshold `M₀M₁/2`). The degenerate `M₀M₁ = 0` case is vacuous
+(the threshold `c' < 0` is unsatisfiable for `c' : NNReal`). -/
 theorem sjBase1_freeMatrix : SJBaseHyp := by
-  sorry
+  intro M c' hc'
+  rw [minAdm_two_eq] at hc'
+  rcases Nat.eq_zero_or_pos (M 0 * M 1) with hz | hpos
+  · rw [hz] at hc'; simp only [Nat.cast_zero, zero_div] at hc'
+    exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+  rw [routeMLayerBoxIntegral]
+  have hmpF := measurePreserving_paramsEquivFlat M
+  have hpre := hmpF.setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (paramsEquivFlat M))
+    (fun x => ENNReal.ofReal ((∑ k, (x k) ^ 2) ^ (-(c' : ℝ))))
+    (morseBox (flatDim M) 1)
+  have hbox : (paramsEquivFlat M) ⁻¹' (morseBox (flatDim M) 1) = paramsBoxM M 1 :=
+    paramsEquivFlat_preimage_paramsBoxM M 1
+  have hrw : ∫⁻ A in paramsBoxM M 1, ENNReal.ofReal ((frobSq (prod M A)) ^ (-(c' : ℝ)))
+      = ∫⁻ x in morseBox (flatDim M) 1, ENNReal.ofReal ((∑ k, (x k) ^ 2) ^ (-(c' : ℝ))) := by
+    calc ∫⁻ A in paramsBoxM M 1, ENNReal.ofReal ((frobSq (prod M A)) ^ (-(c' : ℝ)))
+        = ∫⁻ A in (paramsEquivFlat M) ⁻¹' (morseBox (flatDim M) 1),
+            ENNReal.ofReal ((∑ k, (paramsEquivFlat M A k) ^ 2) ^ (-(c' : ℝ))) := by
+          rw [hbox]
+          refine setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => ?_)
+          rw [frobSq_prod_eq_flatSum M A]
+      _ = ∫⁻ x in morseBox (flatDim M) 1, ENNReal.ofReal ((∑ k, (x k) ^ 2) ^ (-(c' : ℝ))) := hpre
+  rw [hrw]
+  have hfd : flatDim M = M 0 * M 1 := by rw [flatDim_eq, Fin.sum_univ_one]; rfl
+  refine morseBox_sumSq_lt_top (flatDim M) (by rw [hfd]; exact hpos) (c' : ℝ) ?_
+  rw [hfd]; exact hc'
 
 /-! ## The final assembly -/
 
