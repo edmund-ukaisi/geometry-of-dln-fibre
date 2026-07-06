@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.HeadlineRowColPermWLOG
 import DLNFibre.DLN.RLCT.Validate.R1ResolutionInterfaceL2
+import DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly` — the L = 2 headline ENDGAME scaffold
@@ -99,54 +100,25 @@ theorem aoyagi_learning_coefficient_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
           (fun _ => 0 : Params M)
         = ENNReal.ofReal (lambdaCore M : ℝ) :=
     fun M hMid => r1_resolution_interface_L2_generic hL2 hLlt M hMid
-  -- ===== LEAF 2 (D1): the ∀-v per-point ≥-leg slot at `B'` (the second open obligation). =====
-  -- The per-`v` D1 producer. Core-geometry (`hrank₂`, via b3) is DONE
-  -- (`d1ge_L2_rect_two_peel_hrank_closed`, `D1RectTwoPeelClosed`); the residual is the two ANALYTIC
-  -- gates `hRne` (slice non-vanishing) + `hInterface` (R1 degraded core).
-  --
-  -- FINDING (genm-gatesclose2 tide, 2026-07-06, Codex xhigh corroborated): these gates are NOT
-  -- dischargeable through the ∀-`q` wire `hD1ge_L2_rect_of_gates` as literally stated:
-  --   * `hRne` (∀ `C²` `q` with the chart equation ⟹ slice a.e.-nonzero) is FALSE without an extra
-  --     `rlctAt v > nReg/2`: `q ≡ 0` satisfies the equation at a degenerate core, zero slice.
-  --     With that bound it needs a NEW cap lemma `slice_zero_set_caps_rlct_half`
-  --     (pos-measure slice zero-set ⟹ `rlctAtOn (∑s²+∑q²) ≤ nReg/2`).
-  --   * `hInterface` (∀ `C²` `q₂` ⟹ slice-RLCT `= lambdaCore(MprimeRect …)`) is FALSE ∀-`q₂`:
-  --     `R = x² + u⁴` peels to `q₂ = u²`, slice `u⁴`, `rlctAtOn = 1/4 ≠ lambdaCore M'` in general.
-  --     It needs a DLN model-identification of the built residual (`R₂ = unit · (dlnLoss M' 0)∘φ`).
-  -- gatesclose2 proposed the fix: bind `q`/`q₂` to the CONCRETE producer residual (where b3 gives
-  -- `rank(jacResid) = extraCountRect`) and discharge the gates for THAT `q`.
-  --
-  -- FINDING (genm-d1l2close2 tide, 2026-07-06, Codex xhigh corroborated): binding to the concrete
-  -- `q₂` is NOT sufficient — the `hInterface` value gate is blocked at a deeper level than "∀-`q`".
-  -- The concrete `q₂` that `d1ge_L2_rect_two_peel_hrank_closed` constructs is the abstract IFT-peel
-  -- residual: BOTH peels route through `rlctAtOn_eq_of_contDiff_chart_rinv`, which REPLACES the
-  -- explicit DLN polynomial loss by `f ∘ Ψsymm` for an EXISTENCE-ONLY IFT inverse `Ψsymm` (no closed
-  -- form, no retained algebraic tie to `dlnLoss`). After two peels `q₂` is defined purely through
-  -- `Ψsymm`, `Ψsymm₂`, bump cutoffs. Only FIRST-ORDER data survives (`D1ResidualDerivExpose` exposes
-  -- the slice derivative; b3 gives its rank) — enough for `hRne` (slice a.e.-nonzero) but NOT for the
-  -- higher-order germ that PINS the RLCT value (`x² + u⁴` peels to slice `u⁴`, `rlctAtOn = 1/4`,
-  -- unpinned by first-order data). So `rlctAtOn(slice-of-q₂) = lambdaCore(M')` is UNPROVABLE from
-  -- what the producer retains — and the one-sided `lambdaCore(M') ≤ rlctAtOn(slice-of-q₂)` is equally
-  -- blocked (any nonzero value handle is absent). Strengthening the chart lemma to return more
-  -- derivatives does NOT fix it (finite-jet data do not pin the RLCT).
-  --
-  -- CORRECTED ROADMAP (Codex-recommended, matches the `genm-d1reduce-aoyagi` de-risk): retire the
-  -- two-IFT-peel producer for this leg and route through the EXPLICIT homogeneous core. The banked
-  -- `deepest_le_of_optimal_via_L2_ge` + banked `deepest_le_of_homogeneous_core` (DeepestMinRlct,
-  -- hypothesis-free: measurable + degree-`D` homogeneous ⟹ `rlctAtOn F 0 ≤ rlctAtOn F v`) reduce the
-  -- WHOLE leg to ONE new producer:
-  --     `hAtV : (nRegL2 H r)/2 + rlctAtOn (dlnLoss (H−r) 0) corePoint_v ≤ rlctAt H (dlnLoss H B') v`
-  -- — the Aoyagi Step-1 explicit iterated corner-elimination block reduction landing `rlctAt v` on
-  -- the EXPLICIT DLN core `dlnLoss (H−r) 0` (whose RLCT/homogeneity IS known: R1 + `deepest_le_of_
-  -- homogeneous_core`), at an explicit reduced-core point `corePoint_v`. Then `hCore` is the banked
-  -- homogeneity comparison, `coreDeepest = rlctAtOn (dlnLoss (H−r) 0) 0`, and NO residual-value
-  -- identity / R1-at-`M'` interface is needed. The new producer is a fresh ~600–1500-line tide
-  -- (the de-risk's estimate), NOT a gate-discharge for the existing `q₂`. See the genm-d1l2close2
-  -- statement card + `codex/crux-answer.md`.
+  -- ===== LEAF 2 (D1): the ∀-v per-point ≥-leg slot at `B'` — WIRED via the EXPLICIT core. =====
+  -- The corrected route (genm-d1l2close2 card → genm-hAtV tide): the two-IFT-peel producer is
+  -- retired (its second peel routes through the germ-discarding existence-only IFT inverse `Ψsymm`,
+  -- so `rlctAtOn(slice-of-q₂) = lambdaCore(M')` is unprovable — only first-order data survives). The
+  -- leg now routes through the EXPLICIT homogeneous core `dlnLoss (H−r) 0` (germ-preserving), assembled
+  -- by `d1ge_L2_deepestPoint_via_explicit_core_genL` (`D1L2ExplicitCoreProducer`) from THREE pieces:
+  --   * the deepest value (#44 `deepest_regular_core_normal_form_L2_front` + banked R1
+  --     `r1_resolution_interface_L2_generic`, hbox-free at L = 2);
+  --   * `core_zero_le_of_params` — Aoyagi Theorem 4 on the EXPLICIT core (Params-domain, discharged by
+  --     the degree-`2L`-homogeneity comparison `deepest_le_of_homogeneous_core`, NOT the blocked
+  --     residual-value identity) — the previously-blocked `hCore`;
+  --   * `d1ge_L2_hAtV_explicit` — the SOLE remaining crux: the Aoyagi Step-1 explicit corner-elimination
+  --     block reduction landing `rlctAt v` on `dlnLoss (H−r) 0` at an explicit reduced-core point.
+  -- `hv : v ∈ optimalSet H B'` is `prod H v = B'` definitionally, fed as the producer's `hopt`.
   have hD1ge_L2 : ∀ v ∈ optimalSet H B',
       rlctAt H (dlnLoss H B') (deepestPoint H r B' hB'_rank hr hL)
-        ≤ rlctAt H (dlnLoss H B') v := by
-    sorry
+        ≤ rlctAt H (dlnLoss H B') v :=
+    fun v hv => d1ge_L2_deepestPoint_via_explicit_core_genL H r B' hB'_rank hr hL hL2 hpos
+      hB'_top hB'_colfront hLlt v hv
   -- ===== STEP B: D1 reduction — ⨅ over `B'` = rlctAt at the constructed deepestPoint. =====
   rw [show (⨅ w ∈ optimalSet H B', rlctAt H (dlnLoss H B') w)
         = rlctAt H (dlnLoss H B') (deepestPoint H r B' hB'_rank hr hL) from
