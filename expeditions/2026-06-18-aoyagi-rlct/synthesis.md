@@ -6,6 +6,55 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Selected-entry Product Source Pushforward Composition - 2026-07-06
+
+Lean now has the selected-entry product source pushforward composition layer
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+```
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+```
+
+The calculation is the selected-entry change of variables, stable under a
+side product measure and under downstream measurable charts.  On the punctured
+signed box `S0 = signedBoxSet R cap {y | y pivot != 0}`, the weighted source
+measure
+
+```text
+((volume.restrict S0).withDensity sourceDensity).prod nu
+```
+
+pushes through `(y,u) |-> (chartMap pivot y,u)` to
+
+```text
+(volume.restrict (chartMap pivot '' S0)).prod nu.
+```
+
+If `F` is any measurable downstream chart, applying `Measure.map F` gives the
+same equality after composition.  This is the concrete source/reference
+identity that can be specialized to `CedgeProd`.
+
+Boundary: no formal-product Haar identity, no full determinant/raw Haar
+transport for the reduced p.13 section, no original-prior transport, no normal
+crossings, no pole order, and no RLCT.  The xhigh audits agreed that the p.13
+section is lower-dimensional (`C1 = I`, `A3 = 0`) and cannot be promoted to
+ambient raw-Haar transport.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure`, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, code-only
+forbidden-marker scan, and direct axiom probes.  The new declarations report
+only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Product-coordinate Source-side withDensity Handoff - 2026-07-06
 
 Lean now has:

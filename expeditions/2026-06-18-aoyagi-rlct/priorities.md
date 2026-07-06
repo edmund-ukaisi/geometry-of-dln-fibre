@@ -12,6 +12,49 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, selected-entry product source pushforward composition
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+```
+
+Decision: use the selected-entry chart change of variables as the concrete
+source/reference identity feeding the product-coordinate side.  The new
+theorems say that the weighted selected-entry signed-box source measure,
+including the nonzero-pivot restriction, pushes through
+`(y,u) |-> (chartMap pivot y,u)` to the value-coordinate reference measure,
+and the same equality remains true after applying any measurable downstream
+chart.
+
+This is the honest non-raw-Haar measure identity needed before specializing to
+`CedgeProd`.  It keeps the boundary explicit: no formal-product Haar identity,
+no determinant/raw Haar transport for the reduced p.13 section, no
+original-prior transport, no normal crossings, no pole order, and no RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-product-source-pushforward-composition.md
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure`, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, code-only
+forbidden-marker scan, and direct axiom probes.  The new declarations report
+only `[propext, Classical.choice, Quot.sound]`.
+
+Next target: either specialize this identity to the p.13 product chart with
+the local regular-coordinate ball and support restriction, or prove the local
+p.13 inverse/raw-order density bounds along product coordinates.
+
 ## Latest controller decision - 2026-07-06, selected-entry product source-reference domination
 
 Lean now has:

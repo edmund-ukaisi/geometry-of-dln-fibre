@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 selected-entry product source pushforward composition
+
+Reproduction:
+
+```text
+reproduction-a2-selected-entry-product-source-pushforward-composition.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+```
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+```
+
+The first theorem is the product version of the nonzero-pivot selected-entry
+change of variables: the weighted nonzero signed-box source measure pushes
+through `(y,u) |-> (chartMap pivot y,u)` to
+`(volume.restrict chartMap(nonzero signed box)).prod nu`.  The latter two
+theorems compose this selected-entry product pushforward with any measurable
+downstream chart `F`, including the future p.13 `CedgeProd` specialization.
+
+Boundary: this proves selected-entry source/reference transport only.  It
+does not identify formal-product Haar, determinant/raw Haar, original prior,
+normal crossings, pole order, or RLCT.  The three xhigh read-only audits all
+agree that promoting the reduced p.13 section to full raw-Haar transport would
+be structurally wrong because the section fixes transverse coordinates.
+
+Verification: focused `lake env lean
+DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure`, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, code-only
+forbidden-marker scan, and direct axiom probes passed.  The new declarations
+report only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 selected-entry product source-reference domination
 
 Reproduction:
