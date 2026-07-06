@@ -1107,3 +1107,16 @@ teammate brief must say "work ONLY in your assigned worktree; NEVER `cd` to or r
 (2) controller keeps pushing via `HEAD:expedition/aoyagi-full` (never a bare `git push` that assumes the local
 branch), and verifies `git rev-parse --abbrev-ref HEAD` = `expedition/aoyagi-full` at the START of each
 integration. This is the 2nd such incident (the 1st was a prior session leaving the checkout on genm-inj-injon).
+
+## 2026-07-06 — do NOT re-charge an agent on ambiguous 0-procs; wait for the completion notification (caused benign duplication)
+I diagnosed `sjpeel2` as stalled (pgrep-by-agent-ID = 0 live procs + intermediate "failed" build-markers in its
+output + no pushed branch) and re-charged a duplicate (`sjpeel3`). But `sjpeel2` was STILL RUNNING — 0 matching
+procs is the norm during an agent's reasoning/reading phase (the agent ID isn't in a lean/git proc cmdline then;
+verified twice — phip3 also showed 0-procs while completing). Both agents then built the same c.o.v. base
+concurrently. **No work lost** (sjpeel3 pushed incrementally per its brief; sjpeel2's uncommitted output was
+preserved to a branch) and the outputs were complementary, but effort was wasted. **Rules:** (1) `pgrep 'agentID'`
+= 0 does NOT mean dead — it means "not running a lean/git subprocess right now"; distinguish via worktree/.lake
+activity + the presence of ANY lean procs, not the ID-match. (2) "failed" in an agent's JSONL output is usually an
+intermediate build attempt, not a death. (3) The reliable death/completion signal is the harness task-notification —
+WAIT for it before re-charging. (4) If a genuine stall must be assumed (no notification after a long idle), prefer
+resuming the SAME agent via SendMessage over spawning a fresh duplicate.
