@@ -48,6 +48,81 @@ Xhigh read-only scout `Nash` independently checked the gate.  The controller
 corrected the simplified dimension prose to a field-by-field count; the
 conclusion is unchanged.
 
+## Latest controller decision - 2026-07-06, with-following Y-only source-side COV frontier
+
+Decision: keep the endpoint topology-tuple image measure and Haar measures
+separate.  For the with-following source, the named `referenceSource` already
+equals the unweighted coordinate-product source with the selected-entry source
+density.  Thus
+
+```text
+Measure.map Y (referenceSource.restrict V)
+```
+
+is the endpoint reference image of the same source restriction.  It is not
+determinant-chart Haar or raw-order Haar, and it must not be used as if it
+were.
+
+The retained-passive raw-order determinant
+
+```text
+retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)
+```
+
+is a separate factor for `topologyTupleEdgeRawOrder ∘ Y`; it is not part of
+the `Y`-only selected-entry density.
+
+The same-shrink with-following image equality already exists.  The next
+post-interruption check is that the raw endpoint-patch containment route is
+also already represented in Lean.  The generic set theorem is
+
+```text
+endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+```
+
+and it feeds the with-following wrappers ending in
+
+```text
+...chartPiece_subset_sourceChart_image_inter_sourceCylinder...
+...chartPiece_subset_p13SourceSet_readback_preimage...
+...restrict_p13SourceSet_inter_readback_preimage...
+```
+
+Do not duplicate that theorem.  The next Lean-facing target is the natural
+local-patch packaging around
+
+```text
+p13SourceSet cap readback^{-1} V
+```
+
+especially whether it can be exposed as an open neighborhood, or what precise
+weaker support hypothesis is needed.  This remains separate from exact
+raw-Haar pushforward, Haar normalization, and original-prior transport.
+
+Strongest current with-following original-prior theorem:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+Frontier ranking:
+
+1. Open-patch/local-neighborhood packaging for
+   `p13SourceSet cap readback^{-1} V`.  This first needs a pivot-guarded
+   local continuity theorem for the with-following source-chart readback,
+   because the selected-entry inverse is continuous only on the nonzero-pivot
+   locus.
+2. Instantiate the supplied original-prior density continuity/local-upper-bound
+   input.
+3. Bridge the readback product-residual integrand to the final loss statement.
+4. Carry local source-rank and atlas coverage into the eventual chart family.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-y-only-source-side-cov-frontier.md
+```
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry local-source continuous-density shrink
 
 Lean now has:

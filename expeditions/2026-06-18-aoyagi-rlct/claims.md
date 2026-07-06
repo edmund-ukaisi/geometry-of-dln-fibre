@@ -48,6 +48,58 @@ No such claim is formalisation-ready until both fields are filled.
   original-prior transport, no normal crossings, no pole order, and no RLCT
   extraction.
 
+## Current A2 with-following Y-only source-side COV frontier - 2026-07-06
+
+- **Statement.** For the with-following endpoint topology-tuple map `Y`, the
+  named `referenceSource` is already the unweighted coordinate-product source
+  with the selected-entry source density.  Its pushforward
+  `Measure.map Y (referenceSource.restrict V)` is the endpoint reference image
+  of that source restriction.
+- **Statement.** This endpoint reference image is an actual image measure, not
+  determinant-chart Haar or raw-order Haar.  The retained-passive raw-order
+  determinant factor belongs to the later composite
+  `topologyTupleEdgeRawOrder ∘ Y`, not to the `Y`-only selected-entry density.
+- **Tier.** A2 with-following formal-product/source-image COV gate.
+- **Status.** Pen-and-paper frontier reproduced; existing Lean inventory
+  rechecked after interruption; no new Lean theorem claimed.
+- **Kill-condition.** The endpoint reference image is read as determinant
+  Haar, raw Haar, exact raw pushforward, raw-Haar normalization, global source
+  coverage, original-prior transport, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 Schur/product-coordinate algebra; Lean
+  definitions of `case2PassiveThetaWithFollowingFactorReferenceSourceMeasure`,
+  `case2PassiveThetaWithFollowingFactorSelectedEntrySourceDensity`, and the
+  endpoint reference image pushforward theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-y-only-source-side-cov-frontier.md`.
+- **Reproduction check.** Xhigh scouts `Meitner` and `Epicurus` independently
+  checked the source boundary and the Lean frontier.  `Meitner` recommended
+  separating the `Y`-only selected-entry density from the retained-passive
+  raw-order determinant.  `Epicurus` identified same-shrink endpoint/raw patch
+  containment as the useful route; reorientation confirmed that this route is
+  already present in Lean.
+- **Lean target.** Do not duplicate
+  `endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder`
+  or the downstream
+  `...chartPiece_subset_p13SourceSet_readback_preimage...` wrappers.  Next
+  target: local-patch packaging for
+  `p13SourceSet ∩ readback ⁻¹' V`, especially open-neighborhood status or the
+  weakest replacement support hypothesis.
+- **Strongest current theorem.**
+  `exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper`
+  gives finite original-prior integrability on the natural p.13/readback patch
+  under the supplied prior-density continuity/local-upper-bound input.
+- **Remaining gates.** Open-patch packaging, actual-prior regularity
+  instantiation, loss-to-product-residual bridge, and local source-rank/atlas
+  coverage.  The open-patch gate first requires a pivot-guarded local
+  continuity theorem for the with-following readback; the selected-entry
+  inverse is only continuous on the nonzero-pivot locus.
+- **Proved.** Existing Lean route re-inventoried; this update is a
+  documentation correction.  `git diff --check` is the relevant verification.
+- **Nonclaims.** No formal-product/source-image domination, no determinant
+  Haar transport, no raw-Haar pushforward, no raw-Haar normalization, no
+  original-prior transport, no source-rank coverage, no global source-image
+  coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 Case 2 selected-entry local-source continuous-density shrink - 2026-07-06
 
 - **Statement.** For the endpoint-transported Case 2 selected-entry p.13

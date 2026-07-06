@@ -34,6 +34,62 @@ algebra, not the measure theorem.  Xhigh scout `Nash` checked the gate; the
 controller used field-by-field counting to avoid relying on a simplified
 dimension formula.
 
+## A2 with-following Y-only source-side COV frontier - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-y-only-source-side-cov-frontier.md
+```
+
+For the with-following endpoint topology-tuple map `Y`, the named
+`referenceSource` already equals the unweighted coordinate-product source with
+the selected-entry source density applied.  Its pushforward is therefore the
+endpoint reference image of the same source restriction:
+
+```text
+Measure.map Y (referenceSource.restrict V)
+```
+
+This endpoint reference image is an actual image measure.  It is not
+determinant Haar and not raw Haar.  The retained-passive raw-order determinant
+factor enters only in the later composite `topologyTupleEdgeRawOrder ∘ Y`.
+
+The same-shrink with-following source-image equality is already Lean-proved:
+
+```text
+sourceChart '' V = p13SourceSet cap readback^{-1} V.
+```
+
+Post-interruption reorientation found that the endpoint/raw patch containment
+route is already in Lean, through
+
+```text
+endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+```
+
+and the with-following finite-integral wrappers over
+`p13SourceSet cap readback^{-1} V`.  The live source-moving target is now the
+local-patch packaging: prove, or precisely bound, when that natural patch is an
+open neighborhood suitable for the final local-integrability statement.  Do
+not duplicate the raw endpoint-patch set theorem.
+
+The strongest proved theorem in this lane is:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+It gives finite original-prior integrability on the whole natural
+p.13/readback patch, under the local upper-bound/continuity input for the
+supplied prior density.  Remaining gates are: open-neighborhood packaging for
+that patch, instantiating the actual prior regularity hypotheses, bridging the
+readback product-residual integrand to the final loss statement, and later
+rank/atlas coverage.  The first gate requires a pivot-guarded local continuity
+theorem for `case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback`;
+there is no honest global continuity statement because the selected-entry
+inverse uses division by the pivot coordinate.
+
 ## A2 Case 2 concrete inverse-density finite integral on open support - 2026-07-06
 
 Lean now has the source-rank-supported restrict-open sibling of the concrete

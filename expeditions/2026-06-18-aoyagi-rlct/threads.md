@@ -18,6 +18,20 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the with-following `Y`-only source-side COV frontier
+  is now reproduced and checked by two xhigh scouts.  The named
+  with-following `referenceSource` already includes the selected-entry source
+  density, so its endpoint topology-tuple pushforward is an endpoint image
+  measure, not determinant Haar or raw Haar.  The retained-passive raw-order
+  determinant is a separate factor after composing with
+  `topologyTupleEdgeRawOrder`.  Same-shrink source-image equality and the
+  raw endpoint-patch containment route are already Lean-proved.  The live
+  target is now local-patch packaging around
+  `p13SourceSet cap readback^{-1} V`, especially open-neighborhood status or
+  the weakest replacement support hypothesis.  This is not exact raw-Haar
+  pushforward, raw-Haar normalization, original-prior transport, normal
+  crossings, pole order, or RLCT.
+
 - 2026-07-06, Thread 03: the formal-product/source-image coordinate-count
   gate is now reproduced and independently checked.  Plain
   `Case2PassiveTheta` is lower-dimensional for ambient p.13 `muP13`: it has

@@ -175,6 +175,33 @@ image.  The remaining work is image equality, explicit Jacobian density,
 local boundedness, and measure comparison; Aoyagi pp. 10-13 do not state
 those measure facts.
 
+## Y-Only Source-Side Convention Update
+
+The with-following `Y`-only convention was reproduced on 2026-07-06 in
+
+```text
+reproduction-a2-with-following-y-only-source-side-cov-frontier.md
+```
+
+For the endpoint topology-tuple map
+
+```text
+Y = case2PassiveThetaWithFollowingFactorEndpointTopologyTuple,
+```
+
+the named `referenceSource` already includes the selected-entry source
+density.  Thus `Measure.map Y (referenceSource.restrict V)` is the named
+endpoint reference image of the same source restriction.  It is not
+determinant Haar or raw Haar.
+
+The retained-passive raw-order determinant is a separate factor for
+`topologyTupleEdgeRawOrder ∘ Y`; it must not be folded into the `Y`-only
+selected-entry density.  Reorientation after the interruption confirmed that
+the same-shrink endpoint/raw patch containment route is already represented in
+Lean; the next geometric target is local-patch packaging for
+`p13SourceSet cap readback^{-1} V`, not another copy of the containment
+theorem.
+
 ## Pen-And-Paper Obligations
 
 Before Lean implementation, reproduce the following.
@@ -183,22 +210,28 @@ Before Lean implementation, reproduce the following.
    `Case2PassiveTheta` is lower-dimensional by the active `C 0` block;
    `Case2PassiveThetaWithFollowingFactor` is dimension-correct for ambient
    p.13 `muP13`.
-2. **Local inverse.**  Write the readback formulas and prove
+2. **Y-only source-side density convention.**  Completed 2026-07-06.  The
+   with-following `referenceSource` already includes the selected-entry
+   density, its endpoint topology-tuple pushforward is an image measure, and
+   the retained-passive raw-order determinant is separate.
+3. **Local inverse.**  Write the readback formulas and prove
    `readback (sourceChart theta)=theta` on the theta-domain shrink.  If a
    source-side right inverse is needed for the measure theorem, state its
    exact image-set hypothesis.
-3. **Image set.**  Identify the exact source-side image used by the theorem:
+4. **Image set.**  Identify the exact source-side image used by the theorem:
    `sourceChart '' V`, the p.13 source edge-family set, or a smaller chart
-   piece.  Prove measurability and containment of chart pieces.
-4. **Jacobian density.**  Compute the determinant of the coordinate change
+   piece.  Measurability, same-shrink p.13/readback image equality, and raw
+   patch containment are already available for the with-following route; the
+   remaining image-set question is open-neighborhood/local-patch packaging.
+5. **Jacobian density.**  Compute the determinant of the coordinate change
    from `thetaReference` to the p.13 formal-product chart measure.  Separate
    monomial/active factors from passive unit factors and prove the latter are
    locally positive and bounded.
-5. **Domination theorem.**  Decide whether the proof gives equality with
+6. **Domination theorem.**  Decide whether the proof gives equality with
    density, two-sided bounded-density equivalence, or one-way domination.
    The result must feed the `muP13 <= D * sourceRef` socket without assuming
    that same comparison.
-6. **Original-volume/prior payoff.**  Only after this comparison is proved,
+7. **Original-volume/prior payoff.**  Only after this comparison is proved,
    compose it with the existing original-volume bridge and then with the
    smooth-prior local boundedness wrappers.
 

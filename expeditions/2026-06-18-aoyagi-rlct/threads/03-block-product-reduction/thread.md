@@ -52,6 +52,65 @@ equality/same-shrink support, endpoint image-reference equality, explicit
 Jacobian density, local density bounds, and separate determinant/raw Haar or
 original-prior transport if those are later claimed.
 
+## 2026-07-06 A2 with-following Y-only source-side COV frontier
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-y-only-source-side-cov-frontier.md
+```
+
+The with-following endpoint topology-tuple map `Y` has a clean source-side
+density convention: the named `referenceSource` already equals the unweighted
+with-following coordinate-product measure with the selected-entry source
+density applied.  Therefore
+
+```text
+Measure.map Y (referenceSource.restrict V)
+```
+
+is the named endpoint reference image of the same source restriction.  It is
+an actual image measure, not determinant Haar or raw Haar.  The retained-
+passive raw-order determinant factor enters only after composing `Y` with
+`topologyTupleEdgeRawOrder`.
+
+The same-shrink with-following image equality is already in Lean:
+
+```text
+sourceChart '' V = p13SourceSet cap readback^{-1} V.
+```
+
+Xhigh scouts `Meitner` and `Epicurus` agree that the next useful Lean-facing
+frontier is not exact raw-Haar pushforward.  Post-interruption reorientation
+found that the raw endpoint-patch containment route is already present in
+Lean, via:
+
+```text
+endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+```
+
+and the downstream with-following wrappers over
+`p13SourceSet cap readback^{-1} V`.
+
+The live target is now local-patch packaging: determine whether the natural
+p.13/readback patch is an open neighborhood, or state the exact weaker support
+hypotheses needed for the final local-integrability theorem.
+
+The strongest proved with-following original-prior theorem is:
+
+```text
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+```
+
+It gives finite integrability on the whole natural p.13/readback patch, under
+the supplied prior-density continuity/local-upper-bound input.  Remaining
+gates: open-patch packaging, actual-prior regularity instantiation,
+loss-to-product-residual bridge, and source-rank/atlas coverage.
+
+Boundary: no exact raw-Haar pushforward, determinant-Haar transport, raw-Haar
+normalization, original-prior transport, normal crossings, pole order, or RLCT
+is claimed.
+
 ## 2026-07-06 A2 Case 2 concrete inverse-density finite integral on open support
 
 Reproduction:
