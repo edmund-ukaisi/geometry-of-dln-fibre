@@ -103,6 +103,28 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   same-rank ⟹ same-fibre-codim headline genuinely needs `N ≥ 1` (`hN : (0 : Fin (N+1)) ≠ Fin.last N`)
   — for `N = 0` `mult` is the constant `1`, the end vertices coincide, the action only conjugates, and
   the claim is false.
+- **RLCT / measure-theory analysis gotchas (from `Core.Analysis.RLCT.SumSq`, sum-of-squares RLCT).**
+  - **No ball-version polar reduction in v4.29.** Only the *global* `MeasureTheory.integrable_fun_norm_addHaar`
+    (`Integrable (f ∘ ‖·‖) μ ↔ IntegrableOn (fun y ↦ y^(dim E - 1) • f y) (Ioi 0)`) exists. For a
+    *local-at-0 / ball* threshold, cut off with a radial indicator `f := (Ioo 0 R).indicator (·^s)`;
+    for `s < 0` this makes `f ∘ ‖·‖` **pointwise equal** (not just a.e.) to `(ball 0 R).indicator (‖·‖^s)`
+    (the `x=0` point agrees via `Real.zero_rpow (s ≠ 0)`), sidestepping the sphere/`{0}` null-set bookkeeping.
+    Then `integrable_indicator_iff` / `integrableOn_indicator_iff` (`indicator s f` on `t` ↔ `f` on `s ∩ t`)
+    reduce to `intervalIntegral.integrableOn_Ioo_rpow_iff (ht : 0 < t)` (`x^s` on `Ioo 0 t` ↔ `-1 < s`).
+    (Codex hallucinated a `radial_ball_iff` repo lemma and a ball-version `integrableOn_fun_norm_addHaar`
+    — neither exists; verify before trusting.)
+  - **`intervalIntegral.integrableOn_Ioo_rpow_iff`** lives in the `intervalIntegral` namespace (bare name unknown).
+  - **`Set.indicator_of_notMem`** (v4.29 renamed `not_mem` → `notMem`); `Set.indicator_of_mem` unchanged.
+  - **`EuclideanSpace.measurableEquiv` is deprecated → `MeasurableEquiv.toLp 2 (ι → ℝ)`** (Pi → Euclidean;
+    `.symm` for Euclidean → Pi, coercion `= WithLp.ofLp`, `rfl`). Volume transport:
+    `PiLp.volume_preserving_ofLp ι : MeasurePreserving ofLp volume volume` (`.map_eq` for `volume.map ofLp = volume`).
+    Filter transport (`𝓝 0 ↦ 𝓝 0`): `(WithLp.linearEquiv 2 ℝ (ι→ℝ)).toContinuousLinearEquiv.toHomeomorph.map_nhds_eq 0`.
+    `IntegrableAtFilter` transports through `ofLp` via `MeasurableEmbedding.integrableAtFilter_map_iff`.
+    This carries a `rlctAt`/local-integrability question between the Pi type `Fin n → ℝ` (where `sumSq`/`rlctAt`
+    live) and `EuclideanSpace ℝ (Fin n)` (where `‖·‖` = ℓ², so the polar lemma applies); volumes agree,
+    only the norm instance differs.
+  - **`Real.rpow` at `0`:** `0^neg = 0` (`Real.zero_rpow (h : s ≠ 0)`), so a negative-power germ is `0`
+    *at* the zero, and any divergence must come from the punctured neighbourhood, never the value at `0`.
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
