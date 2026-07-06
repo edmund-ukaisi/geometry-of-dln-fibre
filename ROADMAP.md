@@ -267,13 +267,48 @@ $\operatorname{rlct}=C/2$ (Thm 8.6). The geometric codimension is Bundle 1/2 con
 $\operatorname{rlct}\le\tfrac12\operatorname{codim}$ is **Cited** (Aoyagi / Watanabe) — named as such, never
 folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
 
-### Bundle 4b — generic RLCT foundation (PLANNED programme — tracked, not yet built)
+### Bundle 4b — generic RLCT foundation (LARGELY LANDED · expedition `rlct-foundation`, 2026-07-06)
 
-**Status: roadmap only.** Folded in from the `determinantal-atlas` expedition (operator scope call: clean scope
-now, build later). The goal is to retire the current **honesty debt** in Bundle 4: today the payoff leans on an
-**opaque `rlct : Loss → ℝ`** *assumed* to satisfy two inequalities (Watanabe upper + Aoyagi lower). The RLCT
-foundation replaces that assumed function with a **defined** invariant + a clean proved/cited boundary. RLCT is
-**not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`, outside `DLN`.
+**Status: the headline honesty win is BANKED.** The payoff no longer leans on an opaque assumed
+`rlct : Loss → ℝ`: that map (`rlctReal`) is **retired**, and the payoff now reads a **defined, cite-free**
+invariant. RLCT is **not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`,
+outside `DLN`. (The caveat at the end of this bundle predicted exactly this first slice — "value-only
+integrability threshold + core invariances + quadratic block `λ=c/2` + axiom retirement is the headline
+honesty win"; that is now done.)
+
+**LANDED (cite-free unless noted; `Core/Analysis/RLCT/` + `DLN/`).**
+- **Citation cordon** (`@[cited]` attribute + the forget-proof `scripts/cited` accounting gate; `CITED=3`) —
+  every cited axiom named + located, and a cite's *non-vacuity* is a build-time obligation (round-7 lesson).
+- **Local RLCT value** `rlctAt K x = sSup{c≥0 : K^{-c} loc-integrable at x}` (`Local.lean`, Def 8.1(ii)) + the
+  **regional** threshold `integrabilityThreshold K U` (`Integrability.lean`).
+- **Global RLCT** `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c} loc-integrable}` (`Global.lean`, Def 8.1(i)); the
+  `rlctGlobal ≤ rlctAt` half + the inf-over-zero-locus characterization (Prop 8.3(iii)) as a clean conditional.
+- **Local zeta pair** `ζ_{K,φ}(s)=∫K^s φ` with cite-free convergence for `Re s>0` (`Zeta.lean`); the ONE
+  bundled **continuation monument** (`Cited.lean`, Atiyah 1970 + Saito/SLT): meromorphic continuation, poles
+  ⊂ ℚ_{<0}, largest pole `= −rlctAt K x₀` of order `m`; `RLCTPair (λ,m)` + Link 1 `λ = rlctAt` (`Pair.lean`).
+  `m` is **define-only** (pole order, NOT the DLN `θ` — that boundary is now stated, not smuggled). Cite
+  non-vacuity proven by the axiom-clean witness `zetaSetupSq` (`Witness.lean`, K=x²).
+- **Smooth quadratic block** `rlctAt(∑ᵢxᵢ²) 0 = C/2` (`SumSq.lean`, `rlctAt_sumSq`, `C≥1`) + the reusable ball
+  threshold `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball ⟺ `-dim < s`).
+- **Payoff rewired** onto `rlctGlobal` (`DLN/RlctPayoff`, `DLN/RLCT/AoyagiCited`) via Watanabe-upper +
+  Aoyagi-lower; `rlctReal` **retired**. The payoff's `#print axioms` = std-3 + those two DLN bounds ONLY (the
+  ζ-continuation cite is off the value path — it enriches `(λ,m)` only).
+
+**REMAINS (roadmap; all off the payoff's critical path).**
+- **`rlctAt` diffeo-invariance** `rlctAt K (φ x) = rlctAt (K∘φ) x` (local C¹ diffeo, `det φ'≠0`) — BUILDABLE
+  (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` present); a separate module of comparable scale.
+- **Constant-rank / Morse–Bott normal form** → the bridge `rlctAt K_B (smooth fibre pt) = C/2` — a **genuine
+  gap**: v4.29 has inverse+implicit FT but NO constant-rank theorem / Morse lemma (verified). Monument-adjacent
+  (future expedition, or a cite if it lands in Mathlib). The honest "the local def fires at the actual DLN
+  germ" statement; the payoff does not need it (it rides the global cites).
+- **Bridge B F1** (regional↔local unconditional) + the **`hGlue`** reverse inequality (inf-over-zero-locus half).
+- **Invariance suite** (bounded-unit · two-sided-comparability · spectator · sum-of-squares-generator), the
+  **normal-crossing atlas** + product pole formula, 1-D Mellin, and the cited **equivalences** (zeta-pole ↔
+  threshold ↔ volume-asymptotic).
+- **Namespace unification** — the bare-`RLCT` (`Fin n→ℝ`) theory vs the polymorphic `RLCT.Global`; a safe refactor.
+
+_The Canonical-definitions / BUILD / CITE lists below were the original plan; the LANDED list above is the
+shipped state (they overlap — treat the LANDED/REMAINS split as authoritative)._
 
 **Canonical definitions (generic, in `Core`).**
 - **Value, via the integrability threshold** (Lean-friendly; the repo already has `rlctAt` / `rlctAtOn` /
@@ -304,13 +339,14 @@ Watanabe codimension upper bound (if retained as a separate inequality).
 
 **Module split:**
 ```text
-Core/Analysis/RLCT/{Basic, Zeta, Integrability, NormalCrossing, Cited}.lean   -- generic foundation
-DLN/RLCT/{AoyagiCited, Payoff}.lean                                            -- DLN cited theorem + transport
+Core/Analysis/RLCT/{Basic, Integrability, Local, Zeta, Cited, Pair, Bridge, Witness, Global, SumSq}.lean
+DLN/{RlctPayoff, RlctPayoffGeneral}.lean · DLN/RLCT/{AoyagiCited, BundleShiftDischarge}.lean   -- shipped
 ```
-**Honest payoff reading (the boundary, after the lift):** *generic def* `RLCTPair` is zeta-pole data; *generic
-thm/cite* zeta-pole value = integrability threshold where needed; *DLN def* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved*
-`Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` = the Core algebraic codimension; *cited* Aoyagi:
-`RLCTPair(K_B|Z_B) = (codim_ℝ(Z_B)/2, θ_B)`; *therefore* the L&R/Aoyagi formulae.
+**Honest payoff reading (the boundary, now realized):** *defined* `rlctGlobal` (Def 8.1(i), cite-free);
+*defined* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved* `Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` =
+the Core algebraic codimension; *cited* Watanabe-upper + Aoyagi-lower: `rlctGlobal(K_B) = codim_ℝ(Z_B)/2`;
+*therefore* the L&R/Aoyagi `rlct = C/2`. The opaque assumed map is gone; those two DLN bounds are the only
+value-path cites (the ζ-continuation monument enriches `(λ,m)` only, off the value path).
 
 **Caveat — domain risk:** this is real-analysis (ζ, Mellin, integrability, meromorphic continuation), unlike the
 algebraic-geometry work so far; **Mathlib analysis coverage is the unknown.** Pick this up **recon-first** (map

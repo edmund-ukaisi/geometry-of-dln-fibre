@@ -157,3 +157,82 @@ the 19 RLCT decls now covered), `--ns RLCT` = 19, battle-test **17/17**, sorries
 L7 Mathlib-mirror namespaces (`Matrix`/`Ideal`/…) not in the allowlist (a bare prefix would catch Mathlib);
 transitively covered, host no cites; module-provenance is the robust generalization if ever needed. **Only R2b
 remains** (build `Core/Analysis/RLCT/{Zeta,Cited}` against the certificate) — held for the operator's bullet-ack.
+
+## R2b — the zeta-pole cite, hardened over 7 rounds → LANDED + merged (2026-07-06)
+
+**The object.** `Core/Analysis/RLCT/{Local,Zeta,Cited,Pair,Bridge,Witness}`: the cite-free LOCAL RLCT
+`rlctAt K x = sSup{c≥0 : K^{-c} loc-integrable at x}` (Def 8.1(ii)); the local zeta `ζ_{K,φ}(s)=∫K^s φ` with
+cite-free convergence for `Re s>0`; the ONE bundled `@[cited]` continuation monument; `RLCTPair (λ,m)` +
+Link 1 (`λ = rlctAt`); Bridge B (regional↔local, buildable, not a cite); and the axiom-clean instantiability
+witness `zetaSetupSq`.
+
+**The hardening (7 rounds — the expedition's central lesson).** The cited `∃`-axiom passed the cordon green
+at every round (the cordon accounts axioms; it does not check their *consistency* or their *hypotheses'
+satisfiability*). Independent + decorrelated review drove seven corrections:
+1–2. The *regional* form `s₀ = −integrabilityThreshold K U` is **inconsistent** (not just over-strong): the
+   unique continuation pinned by conjunct (a) is holomorphic where a later conjunct demands a pole
+   (`K=x²(x−2)⁶`, φ near 0 → the axiom proves `False`).
+3. The open-U single-zero patch still leaked (a ∂U zero blows up the integral from inside).
+4. A sole-zero hypothesis makes the cite CONSISTENT but **inapplicable to the connected DLN fibre**
+   (`{K_B=0}=mult⁻¹(B)` is positive-dimensional). Root cause: **altitude confusion** — a regional conclusion
+   forced into a local cite. Fix: the **three-way split** (local Axiom A / regional Bridge B / global Theorem C).
+5. The local Axiom A still broke under a wide φ spanning a worse zero (`s₀` is a `supp φ` quantity). Fix:
+   `hWorst : ∀ x ∈ tsupport φ, rlctAt x₀ ≤ rlctAt x`.
+6. **Fidelity audit** (operator-triggered by catching a fabricated "Def 4.1"): refs corrected to Def 8.1(ii) /
+   Prop-Def 8.2; per-conjunct attribution split; no conjunct over-claims (rationality from real-analytic
+   resolution alone, not Bernstein–Sato).
+7. **The hypotheses themselves** (independent reviewer): the first six rounds all attacked the *conclusion*;
+   two defects lived in the *hypotheses* — (i) inconsistent at `K≡0` (the `rlctAt` junk-0 forces `s₀<0 ∧ s₀=0`);
+   (ii) `hWorst` **unsatisfiable at genuine germs** (regular points in `tsupport φ` have `rlctAt` junk-0,
+   forcing `rlctAt x₀ ≤ 0`) — so round-5 had "fixed" wide-φ by **vacuity, not truth**. Fixes: `hKne : ∃x, Kx≠0`;
+   guard `hWorst` to zeros (`K x = 0 → …`); the axiom-clean witness `zetaSetupSq` makes non-vacuity a build-time
+   fact. **The durable lesson (now in `docs/policies/citation-cordon.md` + `lessons.md` R2b-vacuity): a cite
+   review has TWO obligations — derive `False` (consistency) AND adversarially instantiate the hypotheses at
+   the intended target (non-vacuity); ship an instantiability witness. Watch a total ℝ-valued proxy of an
+   ℝ∪{∞} invariant — its junk value inverts inequality hypotheses and breaks `⨅`.**
+
+Merged into `rlct-foundation` (`00002477`) + 6 modules wired; build 3890 green, `CITED=4`, witness axiom-clean.
+
+## R8 — payoff rewired onto the built object; `rlctReal` RETIRED (2026-07-06)
+
+`Core/Analysis/RLCT/Global.lean`: the cite-free GLOBAL RLCT `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c}
+loc-integrable}` (Def 8.1(i)) — the correct global object (not the naive `⨅_x rlctAt`, which is junk-0 at
+every regular point, decision-#2 amended). Prop 8.3(iii)'s `≤`-half proved; the `≥`-half a clean conditional
+(`hGlue`). The payoff (`DLN.RlctPayoff`, `DLN.RLCT.AoyagiCited`) is restated on `rlctGlobal` via Watanabe-upper
++ Aoyagi-lower; **the opaque `rlctReal` map axiom is retired**. Cite surface **4→3**. `rev-r8` fidelity audit:
+**SURVIVED** — Def-8.1(i) faithful; `hGlue` genuine + satisfiable (NOT an R2b-style junk-0 vacuity — `hne`+`hbdd`
+keep the `sInf` off junk-0, it is an inequality not a forced equality, and the payoff does not route through it);
+payoff name=content EXACT. Merged (`32bc91ba`); the payoff's `#print axioms` = std-3 + `cited_aoyagi_lower_ax`
++ `cited_watanabe_upper_ax` ONLY.
+
+## R7 — the canonical sum-of-squares RLCT (cite-free bedrock); DLN-germ bridge roadmapped (2026-07-06)
+
+`Core/Analysis/RLCT/SumSq.lean`: `rlctAt_sumSq (hC : 1 ≤ C) : rlctAt (∑ᵢ yᵢ²) 0 = C/2` — the textbook RLCT of
+a nondegenerate quadratic, validating the local machinery for arbitrary `C` (beyond `zetaSetupSq`'s `C=1`).
+Reusable: `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball ⟺ `-dim < s`, the polar/scaling
+threshold) + `mem_localAdmissibleExponents_sumSq` (admissible set = `Ico 0 (C/2)`, a name=content `iff`). All
+axiom-clean. The `1 ≤ C` non-vacuity guard is explicit + documented (round-7 discipline: `C=0 ⟹ Q≡0 ⟹` junk).
+**Bridge to the actual DLN germ `K_B` — assessed, roadmapped, NOT forced:** (a) `rlctAt` diffeo-invariance is
+BUILDABLE (a separate module); (b) the constant-rank / Morse–Bott normal form is a **genuine gap** (v4.29 lacks
+it — monument-adjacent). Landed + wired (`bfb1e820`).
+
+## CLOSE — the honest end-state (2026-07-06)
+
+**Central question answered.** The last thin cited scalar in the DLN payoff is replaced by a real, defined,
+cite-free RLCT foundation behind a machine-enforced, forget-proof citation cordon:
+- **Local** `rlctAt` (Def 8.1(ii)) + **global** `rlctGlobal` (Def 8.1(i)) — both cite-free `sSup`-of-local-
+  integrability; the **zeta pair** `(λ,m)` behind ONE isolated continuation monument (off the value path).
+- **The payoff** `rlctGlobal(K^DLN_0) = ½·codim mult⁻¹(0) = C/2` rests on exactly **two** DLN monuments
+  (Watanabe-upper, Aoyagi-lower) — verified by `#print axioms`. The **opaque assumed `rlct` map is gone.**
+- **Cordon** `CITED=3` (the two DLN bounds + the local ζ-continuation), every cite named + located; a cite's
+  non-vacuity is now a build-time obligation.
+- **Gap 1** (non-monotone fibre `θ`) closed as a side-deliverable; `rlctAt_sumSq` bedrock banked.
+
+**What remains (all off the payoff's critical path, roadmapped in ROADMAP § Bundle 4b):** the `K_B` constant-rank
+bridge (monument-adjacent), `rlctAt` diffeo-invariance (buildable), Bridge-B F1 + the `hGlue` reverse inequality,
+the invariance suite + normal-crossing atlas, and the `RLCT`/`RLCT.Global` namespace unification.
+
+**The load-bearing methodological lesson:** a green, sorry-free, cordon-clean build defeats *technical* slop but
+NOT *conceptual* slop. The zeta-pole cite was green at all 7 rounds while being, variously, inconsistent /
+DLN-inapplicable / vacuous. Correctness came from adversarial + decorrelated review attacking **both** the
+conclusion (consistency) and the hypotheses (satisfiability), with an instantiability witness as the durable guard.
