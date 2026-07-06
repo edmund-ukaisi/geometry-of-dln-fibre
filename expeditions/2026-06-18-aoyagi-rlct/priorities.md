@@ -12,6 +12,59 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry weighted product density and readback
+
+Lean now has:
+
+```text
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_withDensity_eq_map_valueReference_withDensity_restrict_domain
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_withDensity_readback_le_smul_valueReference_restrict_domain
+```
+
+Decision: add the selected-entry product-coordinate weighted density layer and
+its bounded-density readback corollary.  The generic selected-entry lemma says
+that the selected nonzero-pivot chart pushforward commutes with an additional
+downstream edge-family density.  The Case 2 wrapper applies this to the p.13
+product-coordinate chart using the same radius and the same support rewrite
+`valueReference.restrict domain = valueReference`.  The readback corollary
+then feeds the weighted source-side identity into the generic p.13 handoff:
+if the downstream density is a.e. bounded by `c` on a measurable chart piece,
+then the product readback of the weighted selected-entry image is dominated by
+`c • valueReference.restrict domain`.
+
+Boundary: this is still reduced selected-entry product-chart measure
+bookkeeping.  The density is supplied externally, and the theorem does not
+construct or bound an original prior density, identify formal-product Haar,
+determinant/raw Haar, original volume, original prior transport,
+normal-crossing data, pole order, or RLCT.  `Rbox` remains unconstrained, so no
+nonempty/positive-mass box claim is made.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-weighted-pushforward.md
+lean/DLNFibre/DLN/Aoyagi/SelectedEntrySignedBoxMeasure.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module builds for
+`DLNFibre.DLN.Aoyagi.SelectedEntrySignedBoxMeasure` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probes.  The three new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh reviewer `Bohr` passed the statement-scope and measure-reasoning audit:
+the three declarations are exactly selected-entry product-coordinate
+bookkeeping, the downstream `withDensity` pushforward and same-domain readback
+domination are sound, and the residual risk is only that later work must supply
+and bound any actual Aoyagi prior density.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry same-radius product readback
 
 Lean now has:

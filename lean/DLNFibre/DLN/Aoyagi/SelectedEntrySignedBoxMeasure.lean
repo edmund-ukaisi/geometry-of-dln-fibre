@@ -1422,6 +1422,108 @@ theorem map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDe
             (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν) := by
           rw [hprod]
 
+set_option linter.style.longLine false in
+/-- The selected-entry weighted nonzero-pivot product-source pushforward
+commutes with an additional downstream image density.
+
+This is the weighted version of
+`map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable`:
+the extra density is pulled back from the final image variable on both sides. -/
+theorem map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity
+    {β γ : Type*} [MeasurableSpace β] [MeasurableSpace γ]
+    {center : Finset ι} (pivot : center) (R : center → ℝ)
+    (ν : Measure β) [SFinite ν] {F : (center → ℝ) × β → γ}
+    {density : γ → ℝ≥0∞}
+    (hF :
+      AEMeasurable F
+        (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν))
+    (hdensity :
+      AEMeasurable density
+        (Measure.map F
+          (((volume : Measure (center → ℝ)).restrict
+            (chartMap pivot '' (signedBoxSet R ∩
+              {y : center → ℝ | y pivot ≠ 0}))).prod ν))) :
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        (((((volume : Measure (center → ℝ)).restrict
+          (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).prod ν).withDensity
+          (fun z : (center → ℝ) × β => density (F (chartMap pivot z.1, z.2)))) =
+      Measure.map F
+        ((((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' (signedBoxSet R ∩
+            {y : center → ℝ | y pivot ≠ 0}))).prod ν).withDensity
+          (fun z : (center → ℝ) × β => density (F z))) := by
+  let weightedBox : Measure (center → ℝ) :=
+    (((volume : Measure (center → ℝ)).restrict
+      (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)))
+  let sourceMeasure : Measure ((center → ℝ) × β) :=
+    weightedBox.prod ν
+  let valueReference : Measure ((center → ℝ) × β) :=
+    (((volume : Measure (center → ℝ)).restrict
+      (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν)
+  let chartProd : (center → ℝ) × β → (center → ℝ) × β :=
+    fun z ↦ (chartMap pivot z.1, z.2)
+  have hchartProd : Measurable chartProd := by
+    change Measurable (Prod.map (chartMap pivot) (fun x : β ↦ x))
+    exact (measurable_chartMap pivot).prodMap measurable_id
+  have hprod :
+      Measure.map chartProd sourceMeasure = valueReference := by
+    simpa [chartProd, sourceMeasure, weightedBox, valueReference] using
+      (map_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image_prod
+        (β := β) pivot R ν)
+  have hF_map :
+      AEMeasurable F (Measure.map chartProd sourceMeasure) := by
+    simpa [hprod, valueReference] using hF
+  have hF_comp :
+      AEMeasurable (fun z : (center → ℝ) × β => F (chartProd z)) sourceMeasure :=
+    hF_map.comp_aemeasurable hchartProd.aemeasurable
+  have hmap_unweighted :
+      Measure.map (fun z : (center → ℝ) × β => F (chartProd z)) sourceMeasure =
+        Measure.map F valueReference := by
+    calc
+      Measure.map (fun z : (center → ℝ) × β => F (chartProd z)) sourceMeasure =
+          Measure.map F (Measure.map chartProd sourceMeasure) := by
+            exact (AEMeasurable.map_map_of_aemeasurable
+              hF_map hchartProd.aemeasurable).symm
+      _ = Measure.map F valueReference := by
+            rw [hprod]
+  have hdensity_left :
+      AEMeasurable density
+        (Measure.map (fun z : (center → ℝ) × β => F (chartProd z)) sourceMeasure) := by
+    simpa [hmap_unweighted, valueReference] using hdensity
+  calc
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        (((((volume : Measure (center → ℝ)).restrict
+          (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).prod ν).withDensity
+          (fun z : (center → ℝ) × β => density (F (chartMap pivot z.1, z.2)))) =
+        Measure.map (fun z : (center → ℝ) × β => F (chartProd z))
+          (sourceMeasure.withDensity
+            (fun z : (center → ℝ) × β => density (F (chartProd z)))) := by
+          rfl
+    _ =
+        (Measure.map (fun z : (center → ℝ) × β => F (chartProd z)) sourceMeasure).withDensity
+          density := by
+          exact measure_map_withDensity_comp_of_aemeasurable hF_comp hdensity_left
+    _ = (Measure.map F valueReference).withDensity density := by
+          rw [hmap_unweighted]
+    _ =
+        Measure.map F
+          (valueReference.withDensity
+            (fun z : (center → ℝ) × β => density (F z))) := by
+          exact (measure_map_withDensity_comp_of_aemeasurable hF hdensity).symm
+    _ =
+        Measure.map F
+          ((((volume : Measure (center → ℝ)).restrict
+            (chartMap pivot '' (signedBoxSet R ∩
+              {y : center → ℝ | y pivot ≠ 0}))).prod ν).withDensity
+            (fun z : (center → ℝ) × β => density (F z))) := by
+          rfl
+
 /-- The selected-entry weighted chart pushforward is stable under product with
 an arbitrary s-finite left-side measure, with that coordinate carried by the
 identity map. -/
