@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
+import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJResolution` — the general-`L` R1-UPPER `(S,J)` resolution SKELETON
@@ -31,9 +33,16 @@ and yields box-finiteness for ALL `M`. The wrapper carries NO analytic content (
 `sjResolutionStep_proof : SJStepHyp` is NOT a bare sorry — it **genuinely composes** piece 3 (the
 boundary peel `sjBoundaryPeel`) with pieces 4/5/7 (the joint resolution `sjJointResolution`): the peel
 bounds the `M` box integral by a finite sum of per-chart joint peeled integrals, each finite by the
-joint resolution. So the only sorries feeding the final `routeMBoxThresholdFinite_sjResolution` are the
+joint resolution. Piece 3's OUTER measure-preserving reduction is now CLOSED (reusable, clean-three):
+`routeMLayerBoxIntegral_front_split` (the general-`L` `eParamsRRP` front-split `eFront` + the
+`prod_front_peel` integrand identity `frobSq_prod_front`) reduces the `M` box integral to the tail-outer
+iterated front-factor fibre integral `∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}`.
+`sjBoundaryPeel` itself remains a named sorry (its residual = the per-tail-parameter fibre bound; the
+naive fixed-`Q` pointwise lift is UNSOUND under the `Real.rpow` `0^{neg}=0` convention on the degenerate
+top-rows locus — see its docstring — so the discharge needs an `lintegral_mono_ae`/`ENNReal.rpow`
+treatment). So the only sorries feeding the final `routeMBoxThresholdFinite_sjResolution` are the
 genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointResolution` (4/5/7); the
-`L = 1` Morse base (`sjBase1_freeMatrix`) is now CLOSED.
+`L = 1` Morse base (`sjBase1_freeMatrix`) is CLOSED.
 
 ## The 7 pieces (dependency order; CLOSED vs named-sorry)
 
@@ -42,8 +51,14 @@ genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointReso
 2. **Pivot–Schur chart** — `sjPivotSchurChart_rrp` (the L=2 `(r,r,p)` instance, CLOSED via the banked
    `routeMBoxThresholdFinite_rrp`). The general-`L` chart is the internal change of variables of piece 3
    (`sjBoundaryPeel`), stated there — not duplicated as a standalone claim.
-3. **Boundary blow-up / peel** (LOAD-BEARING analytic core) — `sjBoundaryPeel`. Named sorry. The cert's
-   exact per-step identity `J ≍ P_tail^{−(c'−a/2)}·P_full^{−a/2}` at cut `t`, `a = (M₀−t)(M₁−t)`.
+3. **Boundary blow-up / peel** (LOAD-BEARING analytic core) — `sjBoundaryPeel`. Named sorry. Its OUTER
+   measure-preserving reduction is now CLOSED (reusable, clean-three): `routeMLayerBoxIntegral_front_split`
+   (+ `eFront` + `frobSq_prod_front`) reduces the `M` box integral to the tail-outer front-factor fibre
+   integral. The residual (this sorry) is the per-tail-parameter fibre bound = the cert's exact per-step
+   identity `J ≍ P_tail^{−(c'−a/2)}·P_full^{−a/2}` at cut `t`, `a = (M₀−t)(M₁−t)`, via the pivot-chart
+   cover + radial blow-up. FIDELITY CAVEAT: the naive fixed-`Q` pointwise lift is FALSE (`Real.rpow`
+   `0^{neg}=0` on the degenerate top-rows locus); the discharge needs `lintegral_mono_ae` (degenerate
+   locus null) or an `ENNReal.rpow` reformulation of `jointPeelIntegral` (escalate).
 4. **`(S,J)` normal-form invariant** — the block-dimension consequence `sjRunMin_antitone` (running-min
    corank `M(S)` monotone) is CLOSED; the full matrix-valued invariant needs the `[E_J|D_J]` carrier
    (`SJState`/`sjRunMin` stubs), folded into `sjJointResolution`, deferred to the mountain build.
@@ -61,7 +76,10 @@ genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointReso
 The wrapper introduces NO measure-theoretic content of its own and NO new axiom. The deferred content
 sits in the named contracts; `#print axioms routeMBoxThresholdFinite_of_step` is clean-three. The final
 `routeMBoxThresholdFinite_sjResolution` carries exactly the two remaining LOAD-BEARING analytic sorries
-(`sjBoundaryPeel`, `sjJointResolution`).
+(`sjBoundaryPeel`, `sjJointResolution`). The outer front-split plumbing
+(`routeMLayerBoxIntegral_front_split`, `eFront`, `frobSq_prod_front`, `measurable_frontIntegrand`,
+`measurable_jointPeelIntegrand`) is CLOSED clean-three `[propext, Classical.choice, Quot.sound]` and
+reusable for the eventual `sjBoundaryPeel` discharge.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -70,6 +88,26 @@ open MeasureTheory Set
 open scoped ENNReal BigOperators
 
 variable {L : ℕ}
+
+/-! ## `Params` measurability/topology instances (Pi structure through the `Params` def)
+
+`Params H = ∀ s, Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ` inherits `TopologicalSpace` /
+`MeasurableSpace` / `MeasureSpace` by `inferInstanceAs`, but instance search does NOT unfold the `def`
+to find the Pi-level `BorelSpace` / `SecondCountableTopology` / `SigmaFinite volume`. We expose them
+here (so `Continuous.measurable` and the product-measure Tonelli lemmas fire on `Params`). -/
+
+instance instSecondCountableParams {L : ℕ} (H : Fin (L + 1) → ℕ) :
+    SecondCountableTopology (Params H) :=
+  inferInstanceAs (SecondCountableTopology
+    (∀ s : Fin L, Fin (H s.castSucc) → Fin (H s.succ) → ℝ))
+
+instance instBorelSpaceParams {L : ℕ} (H : Fin (L + 1) → ℕ) : BorelSpace (Params H) :=
+  inferInstanceAs (BorelSpace (∀ s : Fin L, Fin (H s.castSucc) → Fin (H s.succ) → ℝ))
+
+instance instSigmaFiniteParams {L : ℕ} (H : Fin (L + 1) → ℕ) :
+    SigmaFinite (volume : Measure (Params H)) :=
+  inferInstanceAs (SigmaFinite
+    (volume : Measure (∀ s : Fin L, Fin (H s.castSucc) → Fin (H s.succ) → ℝ)))
 
 /-! ## Piece 1 — local comparability / units (CLOSED, pure measure theory) -/
 
@@ -279,6 +317,134 @@ theorem sjChargeUpdate_accum (M : Fin (L + 1 + 1 + 1) → ℕ) (T : Fin (L + 1 +
         + Mval (redChain (T 0) M) (Fin.tail T) :=
   Mval_decompose M T
 
+/-! ## Piece 3 (plumbing, CLOSED) — the measure-preserving front-split of the box integral
+
+The `M`-box integral factors through peeling the leftmost layer `A₀ : M₀×M₁` off the product
+(`prod M A = A₀ · prod(tailChain M)(tail A)`, `prod_front_peel`), reducing to the iterated
+front-factor fibre integral over the tail box (outer) and the `A₀`-box (inner). Pure measure-preserving
+plumbing — the general-`L` analog of `eParamsRRP` — the reusable OUTER half of `sjBoundaryPeel`; the
+genuinely-new analytic content (the per-tail-parameter inner fibre bound) stays inside `sjBoundaryPeel`. -/
+
+/-- **The front-split measurable equivalence** `Params M ≃ᵐ (M₀×M₁ matrix) × Params(tailChain M)`,
+peeling layer `0`. Definitionally `piFinSuccAbove` at index `0`: `Fin.succAbove 0 = Fin.succ` and the
+tail widths `tailChain M i = M i.succ` make the `succAbove 0`-reindexed factor family defeq to
+`Params (tailChain M)`. -/
+noncomputable def eFront (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    Params M ≃ᵐ (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) :=
+  MeasurableEquiv.piFinSuccAbove
+    (fun s : Fin (L + 1 + 1) => Fin (M s.castSucc) → Fin (M s.succ) → ℝ) 0
+
+/-- `eFront` is measure-preserving (it is `piFinSuccAbove`, banked MP). -/
+theorem measurePreserving_eFront (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    MeasurePreserving (eFront M) (volume : Measure (Params M)) volume :=
+  volume_preserving_piFinSuccAbove
+    (fun s : Fin (L + 1 + 1) => Fin (M s.castSucc) → Fin (M s.succ) → ℝ) 0
+
+/-- The first component of `eFront A` is the leading layer `A 0`. -/
+theorem eFront_fst (M : Fin (L + 1 + 1 + 1) → ℕ) (A : Params M) : (eFront M A).1 = A 0 := rfl
+
+/-- The second component of `eFront A` is the layer tuple `s ↦ A s.succ` (the tail chain). -/
+theorem eFront_snd_apply (M : Fin (L + 1 + 1 + 1) → ℕ) (A : Params M) (s : Fin (L + 1)) :
+    (eFront M A).2 s = A s.succ := rfl
+
+/-- The tail component of `eFront A` is `Atail M A` (the `prod_front_peel` tail). -/
+theorem eFront_snd_eq_Atail (M : Fin (L + 1 + 1 + 1) → ℕ) (A : Params M) :
+    (eFront M A).2 = Atail M A := by
+  funext s
+  have eA : M ((s.succ : Fin (L + 1 + 1)).castSucc) = Mtail M (s.castSucc) := rfl
+  have eB : M ((s.succ : Fin (L + 1 + 1)).succ) = Mtail M (s.succ) := rfl
+  rw [eFront_snd_apply, Atail_apply M A s eA eB,
+    show (finCongr eA) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr eB) = Equiv.refl _ from finCongr_refl _]
+  erw [Matrix.reindex_refl_refl]
+
+/-- **The box preimage** `eFront ⁻¹' (matBox M₀ M₁ 1 ×ˢ box(tail)) = paramsBoxM M 1`: the `M`-box is
+exactly the product of the leading-layer box and the tail box (`Fin.cases` on the layer index). -/
+theorem eFront_preimage_box (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    eFront M ⁻¹' (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1) = paramsBoxM M 1 := by
+  ext A
+  simp only [Set.mem_preimage, Set.mem_prod, matBox, paramsBoxM, Set.mem_setOf_eq]
+  constructor
+  · rintro ⟨h0, htail⟩ s
+    refine Fin.cases (fun i j => ?_) (fun s' i j => ?_) s
+    · exact h0 i j
+    · exact htail s' i j
+  · intro h
+    exact ⟨fun i j => h 0 i j, fun s' i j => h s'.succ i j⟩
+
+/-- **The front-peel integrand identity** `frobSq (prod M A) = frobSq (A₀ · prod(tailChain M)(tail A))`
+in raw-product (`rmatMul`) form. `prod_front_peel` peels `A 0` off; the reindex over the `rfl`-true
+widths collapses (`finCongr_refl` + `reindex_refl_refl`); `Matrix.mul_apply` matches the `Matrix`
+product to `rmatMul`, and `Mtail M = tailChain M`, `(eFront M A).2 = Atail M A` bridge the tail. -/
+theorem frobSq_prod_front (M : Fin (L + 1 + 1 + 1) → ℕ) (A : Params M) :
+    frobSq (prod M A)
+      = frobSq (rmatMul (eFront M A).1 (prod (tailChain M) (eFront M A).2)) := by
+  have emid : Mtail M (0 : Fin (L + 1 + 1)) = M ((0 : Fin (L + 1 + 1)).succ) := rfl
+  have ecol : Mtail M (Fin.last (L + 1)) = M (Fin.last (L + 1 + 1)) := rfl
+  rw [prod_front_peel M A emid ecol, eFront_fst, eFront_snd_eq_Atail,
+    show (finCongr emid) = Equiv.refl _ from finCongr_refl _,
+    show (finCongr ecol) = Equiv.refl _ from finCongr_refl _]
+  erw [Matrix.reindex_refl_refl]
+  congr 1
+
+/-- **Continuity of the front-factor Frobenius loss** `q ↦ frobSq (q.1 · prod(tailChain M) q.2)` (the
+tail product is continuous, `continuous_prod`; matrix product + sum of squares preserve continuity). -/
+theorem continuous_frontLoss (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    Continuous (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+      frobSq (rmatMul q.1 (prod (tailChain M) q.2))) := by
+  have hP : Continuous (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+      prod (tailChain M) q.2) := (continuous_prod (tailChain M)).comp continuous_snd
+  have hR : Continuous (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+      rmatMul q.1 (prod (tailChain M) q.2)) := by
+    unfold rmatMul
+    refine continuous_pi (fun i => continuous_pi (fun j => ?_))
+    refine continuous_finset_sum _ (fun k _ => Continuous.mul ?_ (hP.matrix_elem k j))
+    exact show Continuous (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+        q.1 i k) from (continuous_apply k).comp ((continuous_apply i).comp continuous_fst)
+  unfold frobSq
+  exact continuous_finset_sum _ (fun i _ => continuous_finset_sum _
+    (fun j _ => (hR.matrix_elem i j).pow 2))
+
+/-- **The measurability of the front-factor integrand** (`frobSq` loss through a fixed-exponent
+`rpow`, `ofReal`). -/
+theorem measurable_frontIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
+    Measurable (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+      ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c'))) := by
+  apply ENNReal.measurable_ofReal.comp
+  exact (Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+    (continuous_frontLoss M).measurable)
+
+/-- **The front-split of the box integral (CLOSED plumbing).** The `M`-box integral equals the tail-outer
+iterated integral of the front-factor fibre integrand `frobSq(A₀ · prod(tailChain M) A')^{−c'}` over the
+tail box (outer) and the leading-layer box (inner). Assembly: transport `∫_{paramsBoxM M}` via `eFront`
+(MP) + `eFront_preimage_box` + `frobSq_prod_front` onto the product box `matBox ×ˢ box(tail)`, then
+`setLIntegral_prod_symm` (Tonelli, reverse order) puts the tail integral outermost. -/
+theorem routeMLayerBoxIntegral_front_split (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
+    routeMLayerBoxIntegral M (c' : ℝ) 1
+      = ∫⁻ A' in paramsBoxM (tailChain M) 1, ∫⁻ A0 in matBox (M 0) (M 1) 1,
+          ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c')) := by
+  rw [routeMLayerBoxIntegral]
+  have hmp := measurePreserving_eFront M
+  have hpre := hmp.setLIntegral_comp_preimage_emb
+    (MeasurableEquiv.measurableEmbedding (eFront M))
+    (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+      ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c')))
+    (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1)
+  have hprodint : ∫⁻ A in paramsBoxM M 1, ENNReal.ofReal ((frobSq (prod M A)) ^ (-c'))
+      = ∫⁻ q in (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1),
+          ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c')) := by
+    calc ∫⁻ A in paramsBoxM M 1, ENNReal.ofReal ((frobSq (prod M A)) ^ (-c'))
+        = ∫⁻ A in eFront M ⁻¹' (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1),
+            ENNReal.ofReal
+              ((frobSq (rmatMul (eFront M A).1 (prod (tailChain M) (eFront M A).2))) ^ (-c')) := by
+          rw [eFront_preimage_box]
+          refine setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => ?_)
+          rw [frobSq_prod_front M A]
+      _ = ∫⁻ q in (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1),
+            ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-c')) := hpre
+  rw [hprodint, Measure.volume_eq_prod,
+    setLIntegral_prod_symm _ (measurable_frontIntegrand M c').aemeasurable]
+
 /-! ## Piece 3 — the boundary blow-up / peel (the joint peeled integral, LOAD-BEARING) -/
 
 /-- **The top-`t`-rows squared-Frobenius norm** `∑_{i<t} ∑_j Pᵢⱼ²`. For the tail product
@@ -308,14 +474,54 @@ noncomputable def jointPeelIntegral (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) 
       ((frobSqTopRows t (prod (tailChain M) A)) ^ (-(c' - (peelExp M t : ℝ) / 2))
         * (frobSq (prod (tailChain M) A)) ^ (-((peelExp M t : ℝ) / 2)))
 
+/-- **The joint-peel integrand is measurable** in the tail parameters `A'` (the tail product is
+continuous, `continuous_prod`; `frobSqTopRows`/`frobSq` are sums of squares of its entries; fixed-exponent
+`rpow` and `ofReal` preserve measurability). Needed to split the finite `t`-sum out of the integral. -/
+theorem measurable_jointPeelIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) (t : ℕ) :
+    Measurable (fun A' : Params (tailChain M) =>
+      ENNReal.ofReal ((frobSqTopRows t (prod (tailChain M) A'))
+          ^ (-(c' - (peelExp M t : ℝ) / 2))
+        * (frobSq (prod (tailChain M) A')) ^ (-((peelExp M t : ℝ) / 2)))) := by
+  have hP : Continuous (fun A' : Params (tailChain M) => prod (tailChain M) A') :=
+    continuous_prod (tailChain M)
+  have h1 : Continuous (fun A' : Params (tailChain M) =>
+      frobSqTopRows t (prod (tailChain M) A')) := by
+    unfold frobSqTopRows
+    refine continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ => ?_))
+    by_cases h : (i : ℕ) < t
+    · simp only [if_pos h]; exact (hP.matrix_elem i j).pow 2
+    · simp only [if_neg h]; exact continuous_const
+  have h2 : Continuous (fun A' : Params (tailChain M) => frobSq (prod (tailChain M) A')) := by
+    unfold frobSq
+    exact continuous_finset_sum _ (fun i _ => continuous_finset_sum _
+      (fun j _ => (hP.matrix_elem i j).pow 2))
+  refine ENNReal.measurable_ofReal.comp (Measurable.mul ?_ ?_)
+  · exact Measurable.comp (g := fun x : ℝ => x ^ (-(c' - (peelExp M t : ℝ) / 2)))
+      (by fun_prop) h1.measurable
+  · exact Measurable.comp (g := fun x : ℝ => x ^ (-((peelExp M t : ℝ) / 2)))
+      (by fun_prop) h2.measurable
+
 /-- **Piece 3 — the boundary peel (LOAD-BEARING analytic core; named sorry).** The `M` box integral is
 bounded by a FINITE constant times the finite sum, over pivot charts `t ≤ min(M₀,M₁)`, of the joint
-peeled integral. Content: on the pivot chart with a `t×t` invertible front block, Aoyagi's Lemma-2
-Jacobian-1 reduction `Q₁A₀Q₂ = diag(A₀^{[t]}, Γ)` exposes the corank block `Γ : (M₀−t)×(M₁−t)`; radial
-blow-up `Γ = zV` (Jacobian `z^{a−1}`) integrates out the front factor `A₀` and, using
-`g²+h² = ‖A₁·A₂···‖²`, collapses to `P_tail^{−(c'−a/2)}·P_full^{−a/2}` (`r1u_identity.py`, exact). The
-finite chart cover + the Beta constant `½·B(a/2,c'−a/2)` supply the finite `C`. The internal chart step
-is piece 2 (`sjPivotSchurChart`). -/
+peeled integral.
+
+**OUTER reduction CLOSED (reusable).** `routeMLayerBoxIntegral_front_split` (built on the MP front-split
+`eFront` + the `prod_front_peel` integrand identity `frobSq_prod_front`, all clean-three) reduces this to
+the tail-outer iterated front-factor fibre integral
+`∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}` — so the remaining content is the
+per-tail-parameter bound of the inner `A₀`-fibre integral.
+
+**RESIDUAL (this sorry).** On the pivot chart with a `t×t` invertible front block, Aoyagi's Lemma-2
+Jacobian-1 reduction exposes the corank block `Γ : (M₀−t)×(M₁−t)`; radial blow-up `Γ = zV`
+(Jacobian `z^{a−1}`) + the finite-cutoff `z`-integral collapse the fibre to `P_tail^{−(c'−a/2)}·P_full^{−a/2}`
+(`r1u_identity.py`, exact); the finite chart cover + Beta constant supply `C`. **Design caveat (fidelity
+review, `genm-sjpeel`):** the naive fixed-`Q` POINTWISE lift of this bound is FALSE — with `P_tail` computed
+as `Real.rpow` inside `ofReal`, `0^{neg} = 0` (not `+∞`), so on the degenerate locus `{P_tail = 0}` (e.g.
+`Q`'s top rows vanish, or the identically-empty `t = 0` top-rows) the RHS collapses to `0` while the LHS is
+positive. Under the OUTER `A'`-integral this locus is null (harmless to `jointPeelIntegral`'s VALUE), so the
+INTEGRATED conclusion here is sound, but the proof must use `lintegral_mono_ae` with the degenerate
+tail-product locus shown null (or reformulate `jointPeelIntegral`'s singular factor via `ENNReal.rpow` so
+`0^{neg} = ⊤` — a `jointPeelIntegral` signature change, to escalate). The internal chart step is piece 2. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧
@@ -512,8 +718,9 @@ theorem sjBase1_freeMatrix : SJBaseHyp := by
 7-piece `(S,J)` resolution discharges: the layer-product box integral is finite below the geometric
 threshold `½·minAdm M`, for an arbitrary width vector `M`. Assembled from the sorry-free wrapper applied
 to the step (`sjResolutionStep_proof`, = piece 3 ∘ pieces 4/5/7) and the `L = 1` base
-(`sjBase1_freeMatrix`). Carries exactly the three genuinely-new analytic sorries: `sjBoundaryPeel` (3),
-`sjJointResolution` (4/5/7), `sjBase1_freeMatrix` (`L = 1` Morse). Once these land, this discharges the
+(`sjBase1_freeMatrix`, CLOSED). Carries exactly the two remaining genuinely-new analytic sorries:
+`sjBoundaryPeel` (3, whose CLOSED outer front-split `routeMLayerBoxIntegral_front_split` leaves only the
+per-tail-parameter fibre bound) and `sjJointResolution` (4/5/7). Once these land, this discharges the
 bare sorry `routeMCore_threshold_lt_top` (`RouteMSchur.lean`) via `routeMCore_threshold_lt_top_of_box`. -/
 theorem routeMBoxThresholdFinite_sjResolution (M : Fin (L + 1) → ℕ) :
     RouteMBoxThresholdFinite M :=

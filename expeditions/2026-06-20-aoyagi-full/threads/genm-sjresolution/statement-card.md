@@ -25,6 +25,45 @@ content is confined to clearly-named sorries. Green in the full import closure o
 > LOAD-BEARING analytic pieces); `routeMBoxThresholdFinite_sjResolution` carries `sorryAx` via only those.
 > Full `scripts/lb DLNFibre` green. On `origin/genm-sjbase`.
 
+> **UPDATE (`genm-sjpeel` tide, base `origin/genm-sjbase @7d5dadc1`).** The **OUTER measure-preserving
+> reduction** of `sjBoundaryPeel` (piece 3) is now CLOSED sorry-free and reusable. `sjBoundaryPeel` ITSELF
+> remains a named sorry (its statement UNCHANGED) — the residual analytic content is the per-tail-parameter
+> fibre bound. New sorry-free plumbing (all force-`#print axioms` **clean-three** `[propext,
+> Classical.choice, Quot.sound]`):
+> - **`eFront`** — the general-`L` `eParamsRRP`: MP front-split `Params M ≃ᵐ (M₀×M₁ matrix) ×
+>   Params (tailChain M)` peeling layer `0` (`piFinSuccAbove` at `0`; tail widths `tailChain M i = M i.succ`
+>   make the reindexed factor family defeq to `Params (tailChain M)`). `measurePreserving_eFront` (banked
+>   `volume_preserving_piFinSuccAbove`), `eFront_fst`/`_snd_apply`/`_snd_eq_Atail`, `eFront_preimage_box`.
+> - **`frobSq_prod_front`** — the `prod_front_peel` integrand identity in raw-product form
+>   `frobSq (prod M A) = frobSq (rmatMul (A 0) (prod (tailChain M) (tail A)))` (reindex-over-`rfl`-widths
+>   collapse via `finCongr_refl` + `reindex_refl_refl`; `Matrix.mul` ≡ `rmatMul`).
+> - **`routeMLayerBoxIntegral_front_split`** — `routeMLayerBoxIntegral M c' 1 = ∫_{A'∈box(tail)}∫_{A₀∈box}`
+>   `frobSq(A₀·prod(tailChain M)A')^{−c'}` (transport via `eFront` + `eFront_preimage_box` +
+>   `frobSq_prod_front`, then `setLIntegral_prod_symm` puts the tail integral outermost).
+> - Support: `continuous_frontLoss`, `measurable_frontIntegrand`, `measurable_jointPeelIntegrand`, and the
+>   `Params` Pi-instances `instBorelSpaceParams` / `instSecondCountableParams` / `instSigmaFiniteParams`
+>   (expose the Pi `BorelSpace`/`SecondCountable`/`SigmaFinite volume` through the `Params` def so
+>   `Continuous.measurable` and the product-measure Tonelli lemmas fire).
+>
+> The module's remaining sorries are **exactly** `sjBoundaryPeel` + `sjJointResolution` (same names/count
+> as `genm-sjbase`); `sjBoundaryPeel`'s OUTER half is now banked as the CLOSED lemmas above. Full
+> `scripts/lb DLNFibre` green (8720 jobs). On `origin/genm-sjpeel`.
+>
+> **FIDELITY-REVIEW FINDING (why `sjBoundaryPeel` was NOT discharged this tide).** An interim attempt to
+> discharge `sjBoundaryPeel` via a FIXED-`Q` pointwise residual `sjFrontFactorPeel`
+> (`∫_{A₀∈matBox} frobSq(A₀·Q)^{−c'} ≤ ∑ₜ C · frobSqTopRows t Q^{−(c'−a/2)} · frobSq Q^{−a/2}`) was found
+> **FALSE** by the fidelity reviewer + decorrelated Codex (Lean-checked counterexample: `M=(1,2,1)`,
+> `c'=1/4`, `Q=[[0],[1]]` — LHS `= 8`, RHS `= 0`). Root cause: `P_tail = frobSqTopRows t Q` is raised via
+> `Real.rpow` inside `ofReal`, and `Real.zero_rpow` gives `0^{neg} = 0` (not `+∞`), so on the degenerate
+> locus `{P_tail = 0}` (top-`t` rows vanish; and the identically-empty `t=0` top-rows) the RHS collapses to
+> `0`. For a FIXED `Q` this locus is a real counterexample; under the OUTER `A'`-integral it is null
+> (harmless to `jointPeelIntegral`'s value), so the INTEGRATED `sjBoundaryPeel` conclusion is still sound.
+> The false lemma was **REMOVED** (not laundered). **Correct discharge (next tide):** use
+> `lintegral_mono_ae` with the degenerate tail-product locus shown null, OR reformulate `jointPeelIntegral`'s
+> singular factor via `ENNReal.rpow` (`0^{neg} = ⊤`) — a `jointPeelIntegral` signature change to escalate.
+> Reviewer verdict on this tide's output: the CLOSED front-split plumbing PASSES (clean-three, faithful);
+> the FAIL was localized to the removed pointwise residual.
+
 One new module: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJResolution.lean`. This is the FIRST tide of
 the R1-UPPER `(S,J)` mountain (design cert:
 `threads/genm-r1upper-design/design-cert.md`, its 7-piece build spec). It lays the honest 7-piece
@@ -86,15 +125,19 @@ pieces as named sorries.
 
 | Piece | Declaration | Kind |
 |---|---|---|
-| 3 (peel) | `sjBoundaryPeel` | genuinely-new analytic (LOAD-BEARING) |
+| 3 (peel) | `sjBoundaryPeel` | genuinely-new analytic (LOAD-BEARING) — the per-tail-parameter inner fibre bound; its OUTER front-split is now CLOSED (`genm-sjpeel`) |
 | 4/5/7 (joint resolution) | `sjJointResolution` | genuinely-new analytic (LOAD-BEARING) |
+| ~~3 outer (front-split)~~ | ~~`routeMLayerBoxIntegral_front_split`/`eFront`/`frobSq_prod_front`~~ | **CLOSED** (`genm-sjpeel`) — MP front-split + `prod_front_peel` identity + Tonelli; banked reusable for `sjBoundaryPeel`'s eventual discharge |
 | ~~6 residual~~ | ~~`minAdm_leadWidth_mono`~~ | **CLOSED** (`genm-sjbase`) — arity induction on `minAdm_cons_eq` |
 | ~~L=1 base~~ | ~~`sjBase1_freeMatrix`~~ | **CLOSED** (`genm-sjbase`) — free-matrix Morse via `paramsEquivFlat` |
 
-**Two** sorries remain (post-`genm-sjbase`), both genuinely hard LOAD-BEARING analytic pieces feeding
-the final `routeMBoxThresholdFinite_sjResolution`: `sjBoundaryPeel` (3) and `sjJointResolution` (4/5/7).
-The `L=1` base and the piece-6 residual are now closed sorry-free (see the UPDATE banner);
-`sjSubordination` / `minAdm_le_minAdm_tailChain` no longer carry `sorryAx`.
+**Two** sorries remain (post-`genm-sjpeel`, same names/count as `genm-sjbase`), both genuinely hard
+LOAD-BEARING analytic pieces feeding the final `routeMBoxThresholdFinite_sjResolution`: `sjBoundaryPeel`
+(3) and `sjJointResolution` (4/5/7). `sjBoundaryPeel`'s OUTER measure-preserving front-split is now
+CLOSED clean-three and banked (the reusable lemmas above); its residual is the per-tail-parameter inner
+fibre bound. An interim fixed-`Q` pointwise residual was found FALSE and REMOVED (see the UPDATE banner's
+FIDELITY-REVIEW FINDING). The `L=1` base and the piece-6 residual are closed sorry-free (see the UPDATE
+banners); `sjSubordination` / `minAdm_le_minAdm_tailChain` no longer carry `sorryAx`.
 
 **Fidelity note (self-caught, corrected).** Two candidate stubs were dropped as misleading: a
 `sjNormalFormInvariant` sorry stated as `sjRunMin (S+1) ≤ sjRunMin S` is *trivially true* (inf over a
@@ -134,8 +177,15 @@ the last residual, so `sjSubordination` / `minAdm_le_minAdm_tailChain` are now c
    `paramsEquivFlat`, not a bespoke `matBox ≃ᵐ morseBox` reindex).
 2. ~~**`minAdm_leadWidth_mono`**~~ — **DONE** (`genm-sjbase`; piece 6 now clean-three, subordination
    axiom-clean).
-3. **`sjBoundaryPeel`** (piece 3) — the load-bearing peel/exponent-shift; the general-`L` pivot-Schur
-   chart (Aoyagi Lemma 2, internal here) + radial blow-up. Consumes piece 1 comparability.
+3. **`sjBoundaryPeel`** (piece 3) — OUTER front-split now CLOSED (`genm-sjpeel`;
+   `routeMLayerBoxIntegral_front_split` + `eFront` + `frobSq_prod_front`, clean-three, banked reusable).
+   REMAINING = the per-tail-parameter inner fibre bound: the load-bearing peel/exponent-shift (general-`L`
+   pivot-Schur chart = Aoyagi Lemma 2, internal + radial blow-up). Consumes piece 1 comparability + banked
+   `radial_morse_residual_power_le`/`Cresid` (exponent-shift) + `SchurRecStep_p` (corank recursion). **DO
+   NOT** lift to a fixed-`Q` POINTWISE bound (`genm-sjpeel` found this FALSE — `Real.rpow` `0^{neg}=0` on
+   the degenerate top-rows locus): discharge via `lintegral_mono_ae` (degenerate tail-product locus null,
+   using `routeMLayerBoxIntegral_front_split`'s tail-outer form), OR reformulate `jointPeelIntegral`'s
+   singular factor via `ENNReal.rpow` (`0^{neg}=⊤`) — a `jointPeelIntegral` signature change to escalate.
 4. **`sjJointResolution`** (pieces 4/5/7) — the standing L≥3 wall: the `(S,J)` double induction (piece 4
    invariant over the `[E_J|D_J]` carrier — block-dim `sjRunMin_antitone` closed; piece 5 charge-update
    `sjChargeUpdate_accum`) + monomial assembly (piece 7), with subordination (`sjSubordination`) keeping
