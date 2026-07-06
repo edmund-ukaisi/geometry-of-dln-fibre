@@ -112,15 +112,31 @@ piece 6 is banked. This is the only residual keeping subordination from clean-th
 4. **`sjJointResolution`** (pieces 4/5/7) — the standing L≥3 wall: the `(S,J)` double induction (piece 4
    invariant over the `[E_J|D_J]` carrier — block-dim `sjRunMin_antitone` closed; piece 5 charge-update
    `sjChargeUpdate_accum`) + monomial assembly (piece 7), with subordination (`sjSubordination`) keeping
-   coupling exponents subordinate. Consumes the strong IH.
+   coupling exponents at or below threshold. Consumes the strong IH. **Gentle-cut caveat (reviewer +
+   decorrelated Codex):** subordination is `≤` (NON-strict); strict fails at some `a>0` binding cuts
+   (84/3875: `a = minAdm(tail)` exactly, e.g. `M=(1,1,1)` cut `t=0`), so this tide must select a favorable
+   minimal-`a` ("gentle") binding cut or exhibit slack elsewhere — it cannot assume strict slack from the
+   arbitrary minimiser `sjChargeBudget_binding` returns.
 
 Once 1,3,4 (+ base) land, `routeMBoxThresholdFinite_sjResolution` is sorry-free and discharges
 `routeMCore_threshold_lt_top`.
+
+## Reviewer verdict
+Fidelity audit (reviewer + decorrelated Codex, `d74066a1`): **PASS-WITH-NITS**. The skeleton faithfully
+encodes the cert's 7-piece spec + Aoyagi §5; `jointPeelIntegral` is a correct JOINT encoding (not the
+cert-proven-unsound independent-chain product); the recursion spine is sound and gap-free (`L=0` vacuous,
+`L=1` base, `L≥2` step, arity drops by one); the four sorries are all genuinely-new content under correct
+non-vacuous statements, final footprint exactly `{sjBoundaryPeel, sjJointResolution, sjBase1_freeMatrix}`.
+`minAdm_leadWidth_mono` confirmed a genuine non-trivial residual (0/5418; 318 cases where the range-
+widening beats termwise selection — so it does not chain). The one substantive nit (strict-subordination
+prose overclaim) is corrected above and in the module docstrings; the Lean statement was already sound
+(`≤`). `sjRunMin_antitone` confirmed honestly caveated (coarse consequence, not the matrix invariant).
 
 ## Instrument caveat
 The statements transcribe the design cert's 7-piece spec (3 decorrelated passes + Codex xhigh) and
 Aoyagi §5; the numeric grounding of the charge budget / subordination / leading-width monotonicity is
 `/tmp/sj_check.py` (exact, `minAdmRec == brute-force minAdm` 0/3000; `a(t*) ≤ minAdm M ≤ minAdm(tail)`
-0 violations). The analytic pieces (3, 4/5/7) are the box-integral-level contracts; their internal
-`(S,J)` carrier (`diag(b)·[E_J|D_J]·∏C^{(s)}`) is the mountain's core definitional work, deferred —
-`SJState`/`sjRunMin` are the minimal stubs the invariant is stated over.
+0 violations, non-strict — strict fails at 84/3875 `a>0` cuts). The analytic pieces (3, 4/5/7) are the
+box-integral-level contracts; their internal `(S,J)` carrier (`diag(b)·[E_J|D_J]·∏C^{(s)}`) is the
+mountain's core definitional work, deferred — `SJState`/`sjRunMin` are the minimal stubs the invariant
+is stated over.

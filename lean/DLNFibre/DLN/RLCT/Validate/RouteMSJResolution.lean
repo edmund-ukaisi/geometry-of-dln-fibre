@@ -193,9 +193,12 @@ theorem minAdm_le_minAdm_tailChain (M : Fin (L + 1 + 1 + 1) → ℕ) :
     rwa [← tailChain_eq_redChain] at hlift
 
 /-- **Piece 6 — subordination.** At the binding cut `t*`, the coupling exponent `a = (M₀−t*)(M₁−t*)`
-is subordinate to the coupling chain's RLCT budget: `a ≤ minAdm M ≤ minAdm (tailChain M)`. This is the
-fact that makes the coupling factor `P_full^{−a/2}` benign (below `½·minAdm(M₁,…,M_L)`) in the joint
-resolution. -/
+is subordinate to the coupling chain's RLCT budget: `a ≤ minAdm M ≤ minAdm (tailChain M)`, i.e.
+`a/2 ≤ ½·minAdm(M₁,…,M_L)` — the fact keeping the coupling factor `P_full^{−a/2}` at or below the tail's
+RLCT in the joint resolution. **Non-strict is the sharp form**: the design cert's "strict for `a > 0`"
+is FALSE at some binding cuts (e.g. `M = (1,1,1)`, cut `t = 0`: `a = 1 = minAdm(1,1)`), so the joint
+resolution CANNOT rely on strict slack from this — it must select a favorable (minimal-`a`, "gentle")
+binding cut, not the arbitrary minimiser `sjChargeBudget_binding` returns, or exhibit slack elsewhere. -/
 theorem sjSubordination (M : Fin (L + 1 + 1 + 1) → ℕ) :
     ∃ t, t ≤ min (M 0) (M 1) ∧
       (M 0 - t) * (M 1 - t) + minAdm (redChain t M) = minAdm M ∧
@@ -297,8 +300,9 @@ GIVEN box-finiteness for every one-shorter chain (the strong IH — in particula
 rank-flag `(S,J)` double induction (piece 4 invariant, whose block dimension is `sjRunMin_antitone`;
 piece 5 charge-update `sjChargeUpdate_accum`) monomialises `P_tail^{−(c'−a/2)}·P_full^{−a/2}` on a
 common resolution; the
-subordination `sjSubordination` (`a/2 ≤ ½·minAdm(tailChain M)`) keeps the coupling exponents below
-threshold on every shared divisor; the monomial integrability endpoint (piece 7) then gives finiteness
+subordination `sjSubordination` (`a/2 ≤ ½·minAdm(tailChain M)`, non-strict — see its caveat: strict
+fails at some `a>0` cuts, so a gentle minimal-`a` cut must be chosen) keeps the coupling exponents at or
+below threshold on the shared divisors; the monomial integrability endpoint (piece 7) then gives finiteness
 (`∫∏|uᵢ|^{αᵢ} < ∞ ⟺ αᵢ > −1`, banked as `monomialIntegrand_integrable_of_lt`). This is the standing
 L≥3 wall, now localised to this single statement. -/
 theorem sjJointResolution (M : Fin (L + 1 + 1 + 1) → ℕ)
