@@ -10,6 +10,51 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior local original-loss handoff - 2026-07-06
+
+- **Statement.** On the rank-cut p.13/readback source set returned by the
+  with-following residual-source theorem, if the fixed-base residual
+  square-sum zero locus has measure zero for the restricted original
+  edge-family prior, then the existing local-source original `lossDLN`
+  finite-integral socket applies under explicit source-data, endpoint-basis,
+  regular-Haar, adapted-product lower-bound, and regular-coordinate density
+  hypotheses.
+- **Tier.** A2 conditional local original-loss handoff from residual-source
+  hypotheses.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving residual zero-locus
+  nullity, adapted-product lower bounds, density comparison, statistical
+  prior transport, source-rank or analytic atlas coverage, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the cleaned p.13 residual context;
+  existing Lean rank-cut residual-source theorem; existing Lean local-source
+  original `lossDLN` finite-integral socket.  This is a Lean-local measure and
+  comparison handoff, not an additional source theorem from Aoyagi.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-local-source.md`.
+- **Reproduction check.** Controller checked the handoff before Lean
+  formalisation.  Xhigh scout `Godel` confirmed the honest theorem shape as a
+  conditional continuation.  Xhigh scout `Poincare` found no current API
+  proving the needed original-prior zero-locus nullity on the rank-cut source,
+  confirming that nullity must remain an explicit hypothesis here.  Xhigh
+  read-only reviewer `Maxwell` passed the final statement/proof audit: the
+  rank-cut source is used consistently for nullity, residual hypotheses, and
+  the final integral, and all remaining loss-side hypotheses are explicit.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_localSource_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean`, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+  axiom probe passed.  The new theorem reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual zero-locus-nullity proof, no adapted-product
+  lower-bound proof, no density comparison, no statistical prior
+  identification or transport, no source-rank coverage, no analytic atlas
+  coverage, no determinant/raw Haar transport, no normal crossings, no pole
+  order, and no RLCT extraction.
+
 ## Current A2 rank-cut original-prior residual source hypotheses - 2026-07-06
 
 - **Statement.** On the rank-cut p.13/readback source set returned by the

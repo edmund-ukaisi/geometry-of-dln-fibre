@@ -12,6 +12,43 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, rank-cut original-prior local original-loss handoff
+
+Decision: compose the rank-cut residual-source wrapper with the existing
+local-source original `lossDLN` finite-integral socket, but keep every
+loss-side and source-alignment input explicit.  The new theorem first returns
+the same theta-side shrink `V` and rank-cut source
+
+```text
+(p13SourceSet cap readback^{-1}(V)) cap sourceStratum.
+```
+
+Given residual zero-locus nullity for `originalEdgeFamilyPrior` restricted to
+that exact source, the continuation assumes source data at `sourceChart z0`,
+endpoint bases, regular Haar measure, an adapted-product lower bound, and
+regular-coordinate density nonnegativity/upper bounds.  It then returns a
+further open edge-family neighborhood `U` and finite lower integral of the
+displayed original `lossDLN` over
+
+```text
+(originalEdgeFamilyPrior.restrict (U cap rankCutSource)).prod nu.
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-local-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This is the first rank-cut original-loss bridge, but it is still conditional:
+it does not prove residual zero-locus nullity, adapted-product lower bounds,
+density comparison, source/prior transport, source-rank or analytic atlas
+coverage, normal crossings, pole order, or RLCT.  Xhigh scouts `Godel` and
+`Poincare` identified this conditional wrapper as the honest next rung and
+confirmed that no current API proves the needed original-prior zero-locus
+nullity on the rank-cut source.
+
 ## Latest controller decision - 2026-07-06, rank-cut original-prior residual source hypotheses
 
 Decision: add the zero-locus-nullity handoff as a conditional wrapper, not as a

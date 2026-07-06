@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local original-loss handoff - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-local-source.md
+```
+
+Lean now has a conditional original-loss finite-integral wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_localSource_bounds
+```
+
+It reuses the rank-cut residual-source theorem to obtain an open theta-side
+patch `V` and the rank-cut source
+
+```text
+(p13SourceSet cap readback^{-1} V) cap sourceStratum.
+```
+
+The returned continuation takes the residual zero-locus-nullity hypothesis on
+`originalEdgeFamilyPrior.restrict rankCutSource`, extracts residual a.e.
+positivity and `residualNegPowerIntegrableOn`, and feeds those into the
+existing local-source original `lossDLN` socket.  The continuation keeps
+explicit:
+
+```text
+sourceData at sourceChart z0 with base map fun E => E,
+endpoint bases b,
+regular Haar measure nu,
+the adapted-product lower bound,
+regular-coordinate density nonnegativity and upper bound.
+```
+
+Its conclusion is a further open edge-family neighborhood `U` of
+`sourceChart z0` and finite lower integral of the original `lossDLN` over
+
+```text
+(originalEdgeFamilyPrior.restrict (U cap rankCutSource)).prod nu.
+```
+
+This is not a proof of residual zero-locus nullity, adapted-product lower
+bounds, density comparison, statistical prior transport, source-rank or atlas
+coverage, normal crossings, pole order, or RLCT.  Xhigh scout `Poincare`
+confirmed separately that no current API proves the needed original-prior
+zero-locus nullity on this rank-cut source; that remains the next frontier
+unless the controller builds the conditional domination/transfer lemma.
+
+Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+touched-file marker scan, and direct axiom probe passed.  The theorem reports
+only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 rank-cut original-prior residual source hypotheses - 2026-07-06
 
 Reproduction:

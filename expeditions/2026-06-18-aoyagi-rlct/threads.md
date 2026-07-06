@@ -18,6 +18,19 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the rank-cut original-prior local original-loss
+  handoff landed.  It reuses the rank-cut residual-source theorem and the
+  existing local-source original `lossDLN` socket to prove a finite
+  original-loss lower integral over a further edge-family shrink of
+  `(p13SourceSet cap readback^{-1} V) cap sourceStratum`.  Residual
+  zero-locus nullity, source data at `sourceChart z0`, endpoint bases, regular
+  Haar measure, adapted-product lower bound, and regular-coordinate density
+  bounds remain explicit inputs.  It does not prove zero-locus nullity,
+  adapted-product lower bounds, density comparison, source/prior transport,
+  source-rank or analytic atlas coverage, normal crossings, pole order, or
+  RLCT.  Xhigh scouts `Godel` and `Poincare` identified the conditional wrapper
+  as the honest next rung and confirmed the nullity proof is still absent.
+
 - 2026-07-06, Thread 03: the rank-cut original-prior residual-source wrapper
   landed.  It assumes residual zero-locus nullity for
   `originalEdgeFamilyPrior` restricted to exactly
