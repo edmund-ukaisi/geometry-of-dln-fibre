@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry pointwise density-bound readback
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_withDensity_readback_le_smul_valueReference_restrict_domain_of_forall_density_comp_le
+```
+
+Decision: add the selected-entry product-coordinate pointwise-density adapter.
+The previous weighted readback theorem takes an image-side a.e. density bound
+on a measurable chart piece.  This wrapper uses the same radius, the same
+selected-entry weighted pushforward, and the p.13 product-coordinate readback
+package to accept the stronger but easier source-domain hypothesis
+
+```text
+forall z in domain, density(CedgeProd z) <= c.
+```
+
+It then returns the same a.e. measurability and domination conclusion:
+
+```text
+map productReadback weightedSelectedEntryImage <=
+  c • valueReference.restrict domain.
+```
+
+Boundary: the density and its pointwise domain bound are still supplied
+externally.  This theorem does not construct or bound an Aoyagi prior density,
+shrink a selected-entry residual box into a topological neighborhood, identify
+formal-product Haar, determinant/raw Haar, original volume, original-prior
+transport, source-rank coverage, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-pointwise-density-bound-readback.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh reviewer `Planck` passed the statement-scope and measure-reasoning
+audit: the theorem is exactly a pointwise-domain density-bound adapter; the
+support rewrite `valueReference.restrict domain = valueReference` and
+`withDensity` restriction step are used correctly; and the pointwise-to-a.e.
+conversion remains in the generic p.13 product bridge.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry weighted product density and readback
 
 Lean now has:
