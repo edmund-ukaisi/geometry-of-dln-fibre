@@ -8,19 +8,25 @@ import Mathlib.Data.Real.Basic
 The **change-of-variables base** for Aoyagi's boundary-0 pivot peel (the residual of `sjBoundaryPeel`,
 `RouteMSJResolution.lean`). Self-contained, network-free block-matrix algebra: **Aoyagi Lemma 2** — the
 unit-triangular change of variables. On a chart where the front factor's top-left `t × t` block `A` is
-invertible, unit-triangular `Q₁` (lower) and `Q₂` (upper) — each of determinant `1` (the Jacobian-`1`
-property) — conjugate the block matrix to block-diagonal form, exposing the **corank block** = the Schur
-complement `Γ = D − C A⁻¹ B`:
+invertible, unit-triangular `Q₁` (lower) and `Q₂` (upper) — each of determinant `1` (volume-preserving
+elementary row/column operations) — conjugate the block matrix to block-diagonal form, exposing the
+**corank block** = the Schur complement `Γ = D − C A⁻¹ B`:
 
     Q₁ · fromBlocks A B C D · Q₂ = fromBlocks A 0 0 Γ,   Γ = D − C · A⁻¹ · B.
 
-`schur_cov` (the identity), `det_schurLeft`/`det_schurRight` (Jacobian `1`), and `det_fromBlocks_cov`
+`schur_cov` (the identity), `det_schurLeft`/`det_schurRight` (`det Q = 1`), and `det_fromBlocks_cov`
 (`det = det A · det Γ`, the codimension-count bridge for a square front factor via `det_fromBlocks₁₁`).
+
+**On "Jacobian `1`".** What is proved here is the *algebraic* fact `det Q₁ = det Q₂ = 1`: the elementary
+factors are volume-preserving. This underpins — but is distinct from — the *integral* change-of-variables
+Jacobian the peel's assembly uses, namely that the coordinate substitution `(A, B, C, D) ↦ (A, B, C, Γ)`
+(a translation `D ↦ D − C A⁻¹ B` at fixed `(A, B, C)`) is separately unit-Jacobian. That integral
+substitution sits in the deferred measure-theoretic assembly (Scope), not here.
 
 ## The math
 
 Writing the front factor in blocks `A₀ = [[A, B], [C, D]]` with `A` the invertible `t × t` pivot, the
-elementary (unit-triangular, hence Jacobian-`1`) row/column operations
+elementary (unit-triangular, hence `det = 1`) row/column operations
 
     Q₁ = [[1, 0], [−C A⁻¹, 1]]   (clears the C block: row-reduce),
     Q₂ = [[1, −A⁻¹ B], [0, 1]]   (clears the B block: column-reduce)
@@ -32,7 +38,7 @@ re-proved directly by two `fromBlocks_multiply` and the pivot cancellations `⅟
 
 ## Scope
 
-This is the *reachable* c.o.v. base: the `Q₁, Q₂` unit-triangular reduction and its Jacobian-`1` /
+This is the *reachable* c.o.v. base: the `Q₁, Q₂` unit-triangular reduction and its `det Q = 1` /
 Schur-complement facts. The reindex-to-top-left-block bridge (permute a chosen pivot minor to the corner
 so `fromBlocks` applies) and the measure-theoretic assembly (radial blow-up + a.e. chart cover + `Beta`
 fibre bound) are the `sjBoundaryPeel` residual, LATER tides.
@@ -81,14 +87,15 @@ theorem schur_cov (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : Matrix a t ℝ)
     Matrix.neg_mul, Matrix.mul_assoc, invOf_mul_self, neg_add_cancel]
   rw [neg_add_eq_sub]
 
-/-- **Jacobian `1` (left factor).** `det Q₁ = 1` — `Q₁` is unit lower-triangular
-(`det = det 1 · det 1`). -/
+/-- **`det Q₁ = 1` (left factor is volume-preserving).** `Q₁` is unit lower-triangular
+(`det = det 1 · det 1`). The algebraic underpinning of the peel's integral Jacobian-`1` (the separate
+substitution `D ↦ Γ`, deferred to the measure-theoretic assembly — see the module header). -/
 theorem det_schurLeft (A : Matrix t t ℝ) (C : Matrix a t ℝ) [Invertible A] :
     (schurLeft A C).det = 1 := by
   unfold schurLeft
   rw [det_fromBlocks_zero₁₂, det_one, det_one, mul_one]
 
-/-- **Jacobian `1` (right factor).** `det Q₂ = 1` — `Q₂` is unit upper-triangular
+/-- **`det Q₂ = 1` (right factor is volume-preserving).** `Q₂` is unit upper-triangular
 (`det = det 1 · det 1`). -/
 theorem det_schurRight (A : Matrix t t ℝ) (B : Matrix t b ℝ) [Invertible A] :
     (schurRight A B).det = 1 := by
