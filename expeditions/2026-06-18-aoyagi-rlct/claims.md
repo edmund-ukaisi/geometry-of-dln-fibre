@@ -27,6 +27,10 @@ No such claim is formalisation-ready until both fields are filled.
   `externalMeasure.restrict chartPiece` and
   `Measure.map productReadback (externalMeasure.restrict chartPiece) <=
   c • thetaReference.restrict domain`.
+- **Statement.** The same conclusion follows from the source-domain pointwise
+  bound `density(CedgeProd z) <= c` for all `z in domain`, using measurable
+  support of the pushed source measure on the chart image and the product
+  readback right inverse there.
 - **Tier.** A2 product-coordinate measure-bookkeeping handoff.
 - **Status.** Lean proved.
 - **Kill-condition.** The result is read as proving the source-side weighted
@@ -45,14 +49,15 @@ No such claim is formalisation-ready until both fields are filled.
   measurability plus readback domination.
 - **Lean target.**
   `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback`
+  and
+  `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_forall_density_comp_le_of_residualReadback`
   in
   `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionProductMeasureHandoff.lean`.
 - **Proved.** Focused Lean check, focused module build, full local
   `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, new
-  Lean-file forbidden-marker scan, and direct axiom probe passed.  The direct
-  axiom probe reports `[propext, Classical.choice, Quot.sound]`.  A broader
-  touched-file marker scan hit only an old `sorry-free` prose comment in
-  `lean/DLNFibre.lean`.
+  Lean-file forbidden-marker scan, direct axiom probes, and xhigh read-only
+  audits passed.  Both declarations report
+  `[propext, Classical.choice, Quot.sound]`.
 - **Nonclaims.** No proof of the source-side weighted identity, no density
   bound, no determinant/raw Haar transport, no source/product-coordinate
   measure transport, no original-prior transport, no normal crossings, no pole

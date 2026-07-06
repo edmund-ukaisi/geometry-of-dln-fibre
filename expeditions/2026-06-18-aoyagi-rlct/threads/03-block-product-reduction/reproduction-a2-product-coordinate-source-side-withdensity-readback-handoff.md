@@ -63,6 +63,41 @@ Measure.map productReadback (externalMeasure.restrict chartPiece) <=
   c • thetaReference.restrict domain.
 ```
 
+## Source-domain bound variant
+
+The same conclusion follows from the pointwise source-domain bound
+
+```text
+density(CedgeProd z) <= c        for z in domain.
+```
+
+Indeed, the product-coordinate chart package gives
+
+```text
+CedgeProd(productReadback E) = E
+```
+
+for `E in CedgeProd '' domain`.  The image measure
+
+```text
+Measure.map CedgeProd (thetaReference.restrict domain)
+```
+
+is supported on `CedgeProd '' domain`, because `CedgeProd` is
+a.e.-measurable on `thetaReference.restrict domain` and the image is
+measurable.  Thus for almost every `E` in the restricted image measure,
+`E = CedgeProd(productReadback E)` with `productReadback E in domain`, so
+the pointwise source-domain bound gives
+
+```text
+density(E) <= c.
+```
+
+This is a bookkeeping upgrade, not a measure-transport theorem.  It lets
+future local continuity/shrink arguments supply a pointwise bound on
+`density(CedgeProd z)` over the source/product domain, rather than separately
+proving the corresponding image-side a.e. bound.
+
 ## Calculation
 
 The only measure-theoretic step is the already-proved generic bridge.  It

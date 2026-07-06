@@ -39,6 +39,8 @@ Lean now has:
 
 ```text
 exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_forall_density_comp_le_of_residualReadback
 ```
 
 The theorem composes the actual reduced p.13 product-coordinate
@@ -58,6 +60,11 @@ Measure.map productReadback (externalMeasure.restrict chartPiece) <=
   c • thetaReference.restrict domain.
 ```
 
+The second theorem accepts the source-domain pointwise bound
+`density(CedgeProd z) <= c` for all `z in domain` and derives the image-side
+a.e. bound using the measurable image support and the product readback right
+inverse.
+
 Boundary: handoff only.  No proof of the source-side weighted identity, no
 density bound, no determinant/raw Haar transport, no source/product-coordinate
 measure transport, no original-prior transport, no normal crossings, pole
@@ -65,10 +72,8 @@ order, or RLCT.
 
 Verification: focused Lean check, focused module build, full local
 `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, new Lean-file
-marker scan, direct axiom probe, and xhigh read-only audit passed.  The direct
-axiom probe reports `[propext, Classical.choice, Quot.sound]`.  The only
-touched-file marker-scan hit was a pre-existing `sorry-free` prose comment in
-`lean/DLNFibre.lean`.
+marker scan, direct axiom probes, and xhigh read-only audits passed.  Both
+declarations report `[propext, Classical.choice, Quot.sound]`.
 
 ## 2026-07-06 A2 product-coordinate chart package
 
