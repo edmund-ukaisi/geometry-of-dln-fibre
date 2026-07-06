@@ -1270,6 +1270,60 @@ theorem map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_
           rw [hprod]
 
 set_option linter.style.longLine false in
+/-- The selected-entry weighted product-source pushforward remains valid after
+composition with any downstream chart that is a.e. measurable on the
+value-coordinate reference measure. -/
+theorem map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+    {β γ : Type*} [MeasurableSpace β] [MeasurableSpace γ]
+    {center : Finset ι} (pivot : center) (R : center → ℝ)
+    (ν : Measure β) [SFinite ν] {F : (center → ℝ) × β → γ}
+    (hF :
+      AEMeasurable F
+        (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R)).prod ν)) :
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        (((Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).prod ν) =
+      Measure.map F
+        (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R)).prod ν) := by
+  let signedBox : Measure (center → ℝ) :=
+    Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(R i)) (R i)))
+  let weightedBox : Measure (center → ℝ) :=
+    signedBox.withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))
+  let chartProd : (center → ℝ) × β → (center → ℝ) × β :=
+    fun z ↦ (chartMap pivot z.1, z.2)
+  have hchartProd : Measurable chartProd := by
+    change Measurable (Prod.map (chartMap pivot) (fun x : β ↦ x))
+    exact (measurable_chartMap pivot).prodMap measurable_id
+  have hprod :
+      Measure.map chartProd (weightedBox.prod ν) =
+        ((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R)).prod ν := by
+    simpa [chartProd, signedBox, weightedBox] using
+      (map_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_restrict_image_prod
+        (β := β) pivot R ν)
+  have hFsrc :
+      AEMeasurable F (Measure.map chartProd (weightedBox.prod ν)) := by
+    simpa [hprod] using hF
+  calc
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        (weightedBox.prod ν) =
+        Measure.map (F ∘ chartProd) (weightedBox.prod ν) := by
+          rfl
+    _ = Measure.map F (Measure.map chartProd (weightedBox.prod ν)) := by
+          rw [← AEMeasurable.map_map_of_aemeasurable
+            hFsrc hchartProd.aemeasurable]
+    _ =
+        Measure.map F
+          (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' signedBoxSet R)).prod ν) := by
+          rw [hprod]
+
+set_option linter.style.longLine false in
 /-- The selected-entry weighted nonzero-pivot product-source pushforward
 remains valid after composition with any measurable downstream chart. -/
 theorem map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
@@ -1308,6 +1362,60 @@ theorem map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDe
         Measure.map F (Measure.map chartProd (weightedBox.prod ν)) := by
           rw [Measure.map_map hF hchartProd]
           rfl
+    _ =
+        Measure.map F
+          (((volume : Measure (center → ℝ)).restrict
+            (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν) := by
+          rw [hprod]
+
+set_option linter.style.longLine false in
+/-- The selected-entry weighted nonzero-pivot product-source pushforward
+remains valid after composition with any downstream chart that is a.e.
+measurable on the value-coordinate reference measure. -/
+theorem map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+    {β γ : Type*} [MeasurableSpace β] [MeasurableSpace γ]
+    {center : Finset ι} (pivot : center) (R : center → ℝ)
+    (ν : Measure β) [SFinite ν] {F : (center → ℝ) × β → γ}
+    (hF :
+      AEMeasurable F
+        (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν)) :
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        ((((volume : Measure (center → ℝ)).restrict
+          (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+          (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y))).prod ν) =
+      Measure.map F
+        (((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν) := by
+  let weightedBox : Measure (center → ℝ) :=
+    (((volume : Measure (center → ℝ)).restrict
+      (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0})).withDensity
+      (fun y : center → ℝ => ENNReal.ofReal (sourceDensity pivot y)))
+  let chartProd : (center → ℝ) × β → (center → ℝ) × β :=
+    fun z ↦ (chartMap pivot z.1, z.2)
+  have hchartProd : Measurable chartProd := by
+    change Measurable (Prod.map (chartMap pivot) (fun x : β ↦ x))
+    exact (measurable_chartMap pivot).prodMap measurable_id
+  have hprod :
+      Measure.map chartProd (weightedBox.prod ν) =
+        ((volume : Measure (center → ℝ)).restrict
+          (chartMap pivot '' (signedBoxSet R ∩ {y : center → ℝ | y pivot ≠ 0}))).prod ν := by
+    simpa [chartProd, weightedBox] using
+      (map_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_restrict_image_prod
+        (β := β) pivot R ν)
+  have hFsrc :
+      AEMeasurable F (Measure.map chartProd (weightedBox.prod ν)) := by
+    simpa [hprod] using hF
+  calc
+    Measure.map
+        (fun z : (center → ℝ) × β => F (chartMap pivot z.1, z.2))
+        (weightedBox.prod ν) =
+        Measure.map (F ∘ chartProd) (weightedBox.prod ν) := by
+          rfl
+    _ = Measure.map F (Measure.map chartProd (weightedBox.prod ν)) := by
+          rw [← AEMeasurable.map_map_of_aemeasurable
+            hFsrc hchartProd.aemeasurable]
     _ =
         Measure.map F
           (((volume : Measure (center → ℝ)).restrict

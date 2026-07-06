@@ -104,6 +104,11 @@ map (fun (y,u) => F (chartMap pivot y, u))
 map F ((volume.restrict I0).prod nu).
 ```
 
+For local p.13 charts, the downstream chart is often only packaged as
+a.e.-measurable on the local reference measure.  The same calculation uses
+`AEMeasurable.map_map_of_aemeasurable`: if `F` is a.e.-measurable with respect
+to `(volume.restrict I0).prod nu`, the composed identity remains valid.
+
 For the p.13 product chart, `F` will be the product-coordinate edge-family map
 `CedgeProd`.  Thus this identity supplies the selected-entry value-coordinate
 source/reference comparison.  It does not identify this pushed measure with
@@ -137,11 +142,16 @@ SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBo
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
 
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
 ```
 
 The first adds the punctured source version.  The latter two compose the
 selected-entry product pushforward with an arbitrary measurable downstream
-chart.
+chart, and the final two weaken this to a.e. measurability on the
+value-coordinate reference measure.
 
 ## Boundary
 

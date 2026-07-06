@@ -43,6 +43,10 @@ SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBo
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
 
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
 ```
 
 The first theorem is the product version of the nonzero-pivot selected-entry
@@ -50,7 +54,9 @@ change of variables: the weighted nonzero signed-box source measure pushes
 through `(y,u) |-> (chartMap pivot y,u)` to
 `(volume.restrict chartMap(nonzero signed box)).prod nu`.  The latter two
 theorems compose this selected-entry product pushforward with any measurable
-downstream chart `F`, including the future p.13 `CedgeProd` specialization.
+downstream chart `F`; the final two weaken this to a.e. measurability on the
+value-coordinate reference measure, which matches local p.13 chart packages
+such as the future `CedgeProd` specialization.
 
 Boundary: this proves selected-entry source/reference transport only.  It
 does not identify formal-product Haar, determinant/raw Haar, original prior,

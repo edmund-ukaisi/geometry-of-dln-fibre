@@ -22,6 +22,10 @@ SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBo
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
 
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
 ```
 
 Decision: use the selected-entry chart change of variables as the concrete
@@ -29,8 +33,9 @@ source/reference identity feeding the product-coordinate side.  The new
 theorems say that the weighted selected-entry signed-box source measure,
 including the nonzero-pivot restriction, pushes through
 `(y,u) |-> (chartMap pivot y,u)` to the value-coordinate reference measure,
-and the same equality remains true after applying any measurable downstream
-chart.
+and the same equality remains true after applying any downstream chart that is
+measurable, or merely a.e. measurable on the value-coordinate reference
+measure.
 
 This is the honest non-raw-Haar measure identity needed before specializing to
 `CedgeProd`.  It keeps the boundary explicit: no formal-product Haar identity,

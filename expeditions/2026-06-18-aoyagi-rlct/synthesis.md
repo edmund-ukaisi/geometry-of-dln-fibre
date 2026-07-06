@@ -21,6 +21,10 @@ SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_nonzeroSignedBo
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod
 
 SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_signedBoxMeasure_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
+
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_nonzeroSignedBox_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable
 ```
 
 The calculation is the selected-entry change of variables, stable under a
@@ -39,8 +43,10 @@ pushes through `(y,u) |-> (chartMap pivot y,u)` to
 ```
 
 If `F` is any measurable downstream chart, applying `Measure.map F` gives the
-same equality after composition.  This is the concrete source/reference
-identity that can be specialized to `CedgeProd`.
+same equality after composition.  The a.e.-measurable variants replace global
+measurability by a.e. measurability of `F` on the value-coordinate reference
+measure, which is the shape returned by local p.13 chart packages.  This is
+the concrete source/reference identity that can be specialized to `CedgeProd`.
 
 Boundary: no formal-product Haar identity, no full determinant/raw Haar
 transport for the reduced p.13 section, no original-prior transport, no normal
