@@ -108,4 +108,56 @@ theorem det_fromBlocks_cov (A : Matrix t t ℝ) (B : Matrix t a ℝ) (C : Matrix
 
 end AbstractCov
 
+/-! ## The pivot chart — the c.o.v. on an actual front factor
+
+A **pivot chart** for the front factor `A₀ : Matrix m n ℝ` is a choice of block-splitting equivs
+`e₀ : m ≃ t ⊕ a`, `e₁ : n ≃ t ⊕ b` (equivalently: which `t` rows and `t` columns are the pivot) on
+which the top-left `t × t` block of the reindexed matrix is invertible — equivalently the chosen
+`(e₀, e₁)`-pivot minor `A₀.submatrix (e₀⁻¹∘inl) (e₁⁻¹∘inl)` has nonzero determinant
+(`Matrix.invertibleOfIsUnitDet` turns that into the `Invertible` instance). There are finitely many
+block-splittings for each `t ≤ min m n`, so these charts form a finite family.
+
+On each chart the abstract `schur_cov` applies verbatim through `fromBlocks_toBlocks`: the front
+factor's reindexing is `fromBlocks` of its own blocks, top-left the (invertible) pivot minor. What is
+NOT proved here (the `sjBoundaryPeel` residual, LATER tides): the a.e. COVERING property — that every
+front factor of rank `t` lies in some rank-`t` chart (`rank ⟹ nonzero minor of that size`) — and the
+measure-theoretic finite-sum assembly (radial blow-up + `Beta` fibre bound). -/
+
+section PivotChart
+
+/-- **The pivot block is the chosen minor.** The top-left block of the block-split `A₀.reindex e₀ e₁`
+is exactly the `(e₀, e₁)`-pivot minor `A₀.submatrix (e₀⁻¹∘inl) (e₁⁻¹∘inl)` — so the chart condition
+"top-left block invertible" is literally "the chosen `t × t` pivot minor is nonsingular". -/
+theorem pivotBlock_reindex_eq_submatrix {m n t a b : Type*}
+    (A₀ : Matrix m n ℝ) (e₀ : m ≃ t ⊕ a) (e₁ : n ≃ t ⊕ b) :
+    (A₀.reindex e₀ e₁).toBlocks₁₁
+      = A₀.submatrix (fun i => e₀.symm (Sum.inl i)) (fun j => e₁.symm (Sum.inl j)) := by
+  ext i j; rfl
+
+variable {t a b : Type*} [Fintype t] [Fintype a] [Fintype b]
+  [DecidableEq t] [DecidableEq a] [DecidableEq b]
+
+/-- **The block-indexed change of variables.** For any block-indexed matrix `M'` with invertible
+top-left block, `Q₁ · M' · Q₂ = fromBlocks (M'₁₁) 0 0 Γ`. `schur_cov` transported through
+`fromBlocks_toBlocks` (`M'` is `fromBlocks` of its own blocks). This is the form the pivot chart uses:
+apply it at `M' = A₀.reindex e₀ e₁`. -/
+theorem schur_cov_toBlocks (M' : Matrix (t ⊕ a) (t ⊕ b) ℝ) [Invertible M'.toBlocks₁₁] :
+    schurLeft M'.toBlocks₁₁ M'.toBlocks₂₁ * M' * schurRight M'.toBlocks₁₁ M'.toBlocks₁₂
+      = fromBlocks M'.toBlocks₁₁ 0 0
+          (schurCompl M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂) := by
+  have h := schur_cov M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂
+  rwa [fromBlocks_toBlocks] at h
+
+/-- **The determinant factorises through the corank block (block-indexed, square).** For a square
+block-indexed matrix with invertible pivot block, `det M' = det(pivot) · det Γ` — the singular locus of
+the peeled factor is cut out by the Schur complement `Γ`. `det_fromBlocks_cov` through
+`fromBlocks_toBlocks`. -/
+theorem det_toBlocks_cov (M' : Matrix (t ⊕ a) (t ⊕ a) ℝ) [Invertible M'.toBlocks₁₁] :
+    M'.det = M'.toBlocks₁₁.det
+      * (schurCompl M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂).det := by
+  have h := det_fromBlocks_cov M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂
+  rwa [fromBlocks_toBlocks] at h
+
+end PivotChart
+
 end DLNFibre.DLN.RLCT
