@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry product-coordinate pushforward
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference
+```
+
+Decision: specialize the selected-entry a.e.-measurable product pushforward to
+the actual Case 2 p.13 product-coordinate map `CedgeProd`.  The result uses
+the p.13 source/readback package to obtain `0 < R <= Rmax` and a.e.
+measurability of `CedgeProd` on the value-reference measure supported in
+`source × ball(0,R)`.  It then applies the selected-entry nonzero signed-box
+composition theorem.
+
+Boundary: this is only the selected-entry weighted source/reference equality
+for the reduced p.13 product-coordinate chart.  It does not identify
+formal-product Haar, determinant/raw Haar, original prior, normal crossings,
+pole order, or RLCT.  The p.13 inverse-Jacobian density bounds remain a
+separate bounded-unit input.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-coordinate-pushforward.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-06, p.13 inverse-Jacobian density local bound
 
 Lean now has:

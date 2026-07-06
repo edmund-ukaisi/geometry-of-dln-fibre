@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Case 2 Selected-entry Product-coordinate Pushforward - 2026-07-06
+
+Lean now has the concrete selected-entry source/reference pushforward through
+the Case 2 p.13 product-coordinate chart:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference
+```
+
+For a selected-entry source box
+
+```text
+S0 = signedBoxSet Rbox cap {y | y pivotNext != 0}
+I0 = chartMap pivotNext '' S0,
+```
+
+the theorem chooses `0 < R <= Rmax` and proves
+
+```text
+map (fun (y,u) => CedgeProd(chartMap pivotNext y,u))
+  (((volume.restrict S0).withDensity sourceDensity).prod volume|ball(0,R))
+=
+map CedgeProd ((volume.restrict I0).prod volume|ball(0,R)).
+```
+
+The proof uses the p.13 product-coordinate source/readback package to show
+`CedgeProd` is a.e. measurable for the value-reference measure, whose support
+lies in `source × ball(0,R)`, then applies the selected-entry
+a.e.-measurable downstream composition theorem.
+
+Mathematical reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-coordinate-pushforward.md
+```
+
+Boundary: this is not formal-product Haar, determinant/raw Haar, original
+prior transport, normal crossings, pole order, or RLCT.  It is the concrete
+selected-entry source/reference equality feeding later bounded-density
+handoffs.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 p.13 Inverse-Jacobian Density Local Bound - 2026-07-06
 
 Lean now has a local bounded-unit handoff for the p.13 chart-side inverse

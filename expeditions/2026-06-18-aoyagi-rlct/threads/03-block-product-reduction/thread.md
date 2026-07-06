@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 Case 2 selected-entry product-coordinate pushforward
+
+Reproduction:
+
+```text
+reproduction-a2-case2-selected-entry-product-coordinate-pushforward.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference
+```
+
+The theorem specializes the selected-entry weighted nonzero signed-box
+pushforward to the actual endpoint-transported Case 2 p.13 product-coordinate
+chart.  It chooses a p.13 regular-coordinate radius `0 < R <= Rmax`; for any
+selected-entry box `Rbox`, it proves that pushing the weighted source
+coordinates `(y,u)` through `(chartMap pivotNext y,u)` and then `CedgeProd`
+equals pushing the value-reference measure through `CedgeProd`.
+
+Boundary: this is the selected-entry source/reference equality for the reduced
+p.13 product chart only.  It does not assert formal-product Haar, raw Haar,
+original-prior, normal-crossing, pole-order, or RLCT transport.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 p.13 inverse-Jacobian density local bound
 
 Reproduction:
