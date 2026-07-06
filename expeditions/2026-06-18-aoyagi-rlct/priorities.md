@@ -101,15 +101,19 @@ original-prior transport.
 Strongest current with-following original-prior theorem:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_of_continuousAt_priorDensity
 ```
 
 Frontier ranking:
 
-1. Instantiate the supplied original-prior density continuity/local-upper-bound
-   input.
+1. Identify or transport the actual statistical prior density into the supplied
+   edge-family density hypothesis.
 2. Bridge the readback product-residual integrand to the final loss statement.
 3. Carry local source-rank and atlas coverage into the eventual chart family.
+
+The prior-density adapter now derives the old pullback-continuity/local-upper
+socket from continuity of the supplied edge-family density at `sourceChart z0`.
+It does not construct the statistical prior density itself.
 
 The landed open-patch theorem is deliberately pivot-local: the selected-entry
 inverse is continuous only on the nonzero-pivot locus, so there is still no

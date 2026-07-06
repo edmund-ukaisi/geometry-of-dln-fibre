@@ -3127,6 +3127,93 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- The enlarged following-factor endpoint source chart is continuous at a
+determinant-sector, nonzero-pivot base point.
+
+This extracts a pointwise `ContinuousAt` fact from the local continuous-on
+source-chart package.  It is only a local chart-continuity statement; it does
+not assert source-prior transport, Haar/Jacobian transport, source-rank
+coverage, normal crossings, pole order, or RLCT extraction. -/
+theorem continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_detSector_pivotNonzero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1) :
+    ContinuousAt
+      (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e) z₀ := by
+  let Θ :=
+    Case2PassiveThetaWithFollowingFactor
+      (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let sourceChart : Θ → EdgeFamily :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChart
+      W₂ B₂ n hS hcont hnext hU₀ eNext e
+  let readback : EdgeFamily → Θ :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+      W₂ B₂ n hS hnext hU₀ e
+  rcases
+      (by
+        simpa [Θ, EdgeFamily, sourceChart, readback] using
+          exists_open_subset_measurableSet_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_subset_p13SourceEdgeFamilySet
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
+            eNext e z₀ hdet₀ hpivot₀ Set.univ isOpen_univ (Set.mem_univ z₀)) with
+    ⟨V, hpack⟩
+  have hVopen : IsOpen V := hpack.1
+  have hz₀V : z₀ ∈ V := hpack.2.1
+  have hsource_contOn : ContinuousOn sourceChart V :=
+    hpack.2.2.2.2.2.1
+  exact
+    (by
+      simpa [sourceChart, Θ, EdgeFamily] using
+        hsource_contOn.continuousAt (hVopen.mem_nhds hz₀V))
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- The local enlarged following-factor endpoint source-chart image has
 explicit retained-passive p.13 source-chart witnesses.
 

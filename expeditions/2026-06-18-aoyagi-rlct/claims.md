@@ -83,21 +83,22 @@ No such claim is formalisation-ready until both fields are filled.
   topology gate is now the landed pivot-guarded readback-continuity/open-patch
   package for `p13SourceSet ∩ readback ⁻¹' V`.
 - **Strongest current theorem.**
-  `exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper`
+  `exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_of_continuousAt_priorDensity`
   gives finite original-prior integrability on an open local
-  p.13/readback-preimage patch under the supplied prior-density
-  continuity/local-upper-bound input.
-- **Remaining gates.** Actual-prior regularity instantiation,
-  loss-to-product-residual bridge, and local source-rank/atlas coverage.  The
+  p.13/readback-preimage patch under continuity of the supplied edge-family
+  prior density at `sourceChart z₀`.
+- **Remaining gates.** Identify/transport the actual statistical prior
+  density, bridge from readback product-residual integrability to the final
+  `lossDLN` statement, and carry local source-rank/atlas coverage.  The
   selected-entry inverse still has only pivot-local continuity; there is no
   global readback-continuity claim.
 - **Proved.**
   `continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_mem_p13SourceEdgeFamilySet_pivotNonzero`,
   `isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero`,
   `exists_open_subset_measurableSet_isOpen_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_eq_p13SourceEdgeFamilySet_inter_readback_preimage`,
-  and the open finite-integral theorem above.  Focused Lean checks/builds and
-  direct axiom probes passed; all four declarations report
-  `[propext, Classical.choice, Quot.sound]`.
+  `continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_detSector_pivotNonzero`,
+  and the two open finite-integral theorems above.  Focused Lean checks/builds
+  passed for the new prior-density adapter.
 - **Nonclaims.** No formal-product/source-image domination, no determinant
   Haar transport, no raw-Haar pushforward, no raw-Haar normalization, no
   original-prior transport, no source-rank coverage, no global source-image

@@ -77,20 +77,20 @@ raw endpoint-patch set theorem.
 The strongest proved theorem in this lane is:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_of_continuousAt_priorDensity
 ```
 
 It gives finite original-prior integrability on the whole natural
-p.13/readback patch and exposes that patch as open, under the local
-upper-bound/continuity input for the supplied prior density.  The supporting
-Lean facts are the pivot-guarded continuity theorem for
+p.13/readback patch and exposes that patch as open, assuming continuity of the
+supplied edge-family prior density at `sourceChart z0`.  The supporting Lean
+facts are the pivot-guarded continuity theorem for
 `case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback`, the
-source-side open-preimage wrapper, and the source-image open-patch package.
-Remaining gates are: instantiating the actual prior regularity hypotheses,
-bridging the readback product-residual integrand to the final loss statement,
-and later rank/atlas coverage.  There is still no honest global continuity
-statement because the selected-entry inverse uses division by the pivot
-coordinate.
+source-chart `ContinuousAt` adapter, the source-side open-preimage wrapper,
+and the source-image open-patch package.  Remaining gates are: identifying or
+transporting the actual statistical prior density, bridging the readback
+product-residual integrand to the final loss statement, and later rank/atlas
+coverage.  There is still no honest global readback-continuity statement
+because the selected-entry inverse uses division by the pivot coordinate.
 
 ## A2 Case 2 concrete inverse-density finite integral on open support - 2026-07-06
 

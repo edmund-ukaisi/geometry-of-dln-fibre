@@ -298,9 +298,10 @@ the original edge-family prior restricted to the whole natural patch.
 
 The actual remaining gates, in order, are:
 
-1. **Actual-prior regularity input.**  The theorem assumes continuity, or an
-   upper-bound consequence, for the supplied prior density pulled back along
-   `sourceChart`.
+1. **Actual-prior density identification.**  The Lean adapter now derives the
+   old pullback-continuity/local-upper-bound socket from continuity of the
+   supplied edge-family density at `sourceChart z0`, but it still does not
+   construct or transport the statistical prior density itself.
 2. **Loss-to-product-residual bridge.**  The integrand is the with-following
    readback product-residual square-sum, not yet the final `lossDLN` statement.
 3. **Source-rank and atlas coverage.**  Rank-refined local equality exists, but
@@ -316,6 +317,10 @@ continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_
 isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero
   (hVopen : IsOpen V)
   (hVpivot : forall z in V, case2PassiveThetaPivotNonzero ... z.1)
+
+continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChart_of_detSector_pivotNonzero
+
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_of_continuousAt_priorDensity
 ```
 
 The finite-integral sibling performs that pivot shrink internally before

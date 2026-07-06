@@ -99,14 +99,15 @@ edge-family neighborhood.
 The strongest proved with-following original-prior theorem is:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_of_continuousAt_priorDensity
 ```
 
 It gives finite integrability on the whole natural p.13/readback patch, under
-the supplied prior-density continuity/local-upper-bound input, and exposes that
-patch as open.  Remaining gates: actual-prior regularity instantiation,
-loss-to-product-residual bridge, and source-rank/atlas coverage.  This is still
-pivot-local; no global readback continuity is claimed.
+continuity of the supplied edge-family prior density at `sourceChart z0`, and
+exposes that patch as open.  Remaining gates: identify/transport the actual
+statistical prior density, loss-to-product-residual bridge, and
+source-rank/atlas coverage.  This is still pivot-local; no global readback
+continuity is claimed.
 
 Boundary: no exact raw-Haar pushforward, determinant-Haar transport, raw-Haar
 normalization, original-prior transport, normal crossings, pole order, or RLCT
