@@ -39,11 +39,14 @@ genuinely-new analytic pieces `sjBoundaryPeel` (3), `sjJointResolution` (4/5/7),
 
 1. **Local comparability / units** — `sjLocalComparability`, `paramsBoxM_volume_lt_top`. CLOSED (pure
    measure theory + compactness). The banked L=2 fibre engine is `MatMulFibre.fibre_lintegral_mul_le`.
-2. **Pivot–Schur chart** — `sjPivotSchurChart` (general-L contract, sorry) + `sjPivotSchurChart_rrp`
-   (the L=2 `(r,r,p)` instance, CLOSED via the banked `routeMBoxThresholdFinite_rrp`).
+2. **Pivot–Schur chart** — `sjPivotSchurChart_rrp` (the L=2 `(r,r,p)` instance, CLOSED via the banked
+   `routeMBoxThresholdFinite_rrp`). The general-`L` chart is the internal change of variables of piece 3
+   (`sjBoundaryPeel`), stated there — not duplicated as a standalone claim.
 3. **Boundary blow-up / peel** (LOAD-BEARING analytic core) — `sjBoundaryPeel`. Named sorry. The cert's
    exact per-step identity `J ≍ P_tail^{−(c'−a/2)}·P_full^{−a/2}` at cut `t`, `a = (M₀−t)(M₁−t)`.
-4. **`(S,J)` normal-form invariant** — `sjNormalFormInvariant` (contract over `SJState`). Named sorry.
+4. **`(S,J)` normal-form invariant** — the block-dimension consequence `sjRunMin_antitone` (running-min
+   corank `M(S)` monotone) is CLOSED; the full matrix-valued invariant needs the `[E_J|D_J]` carrier
+   (`SJState`/`sjRunMin` stubs), folded into `sjJointResolution`, deferred to the mountain build.
 5. **Jacobian / charge-update** — `sjChargeUpdate_accum` (the additive `Mval` charge, CLOSED via banked
    `Mval_decompose`) + the exponent bookkeeping folded into `sjJointResolution`.
 6. **Charge-budget inequality** (combinatorial core) — `sjChargeBudget_recursion`/`_le`/`_binding`,
@@ -275,21 +278,25 @@ structure SJState (M : Fin (L + 1) → ℕ) where
 def sjRunMin (M : Fin (L + 1) → ℕ) (S : ℕ) : ℕ :=
   (Finset.range (S + 1)).inf' (by simp) (fun s => M ⟨min s L, by omega⟩)
 
-/-- **Piece 4 — the `(S,J)` normal-form invariant (contract; named sorry).** Aoyagi §5 (p.15): the
-product ideal is preserved under the resolution, `⟨∏_{s=1}^L C^{(s)}⟩ = ⟨diag(b₁,…,b_{M(S)})·[E_J | D_J]·
-∏_{s>S} C^{(s)}⟩`, across each within-layer rank-drop step `(S,J)→(S,J+1)` and layer transition
-`S→S+1`. Stated here at the level of the running-min block dimension being monotone non-increasing in
-`S` (the honest coarse consequence the full carrier refines); the matrix-valued invariant needs the
-`[E_J|D_J]` carrier, deferred to the mountain build. -/
-theorem sjNormalFormInvariant (M : Fin (L + 1) → ℕ) (S : ℕ) :
+/-- **Piece 4 — running-min corank monotonicity (CLOSED, the coarse dimensional consequence).** The
+running-minimum corank `M(S)` is monotone non-increasing in `S` (`M(S+1) ≤ M(S)`) — the block
+dimension of Aoyagi's `(S,J)` normal-form invariant `⟨∏_{s=1}^L C^{(s)}⟩ = ⟨diag(b₁,…,b_{M(S)})·[E_J |
+D_J]·∏_{s>S} C^{(s)}⟩` (§5, p.15) can only shrink as more layers are resolved. This is the honest
+dimensional shadow the full carrier refines; the matrix-valued invariant itself (the `[E_J|D_J]`
+carrier, preserved across `(S,J)→(S,J+1)` and `S→S+1`) needs the carrier type, deferred to the mountain
+build and represented here by the `SJState` / `sjRunMin` stubs. -/
+theorem sjRunMin_antitone (M : Fin (L + 1) → ℕ) (S : ℕ) :
     sjRunMin M (S + 1) ≤ sjRunMin M S := by
-  sorry
+  unfold sjRunMin
+  refine Finset.le_inf' _ _ (fun s hs => ?_)
+  exact Finset.inf'_le _ (by rw [Finset.mem_range] at hs ⊢; omega)
 
 /-- **Pieces 4/5/7 — the joint resolution (finiteness of the joint peeled integral; named sorry).**
 GIVEN box-finiteness for every one-shorter chain (the strong IH — in particular for `redChain t M` and
 `tailChain M`) and `c' < ½·minAdm M`, the joint peeled integral is finite. Content: the simultaneous
-rank-flag `(S,J)` double induction (piece 4 invariant `sjNormalFormInvariant`, piece 5 charge-update
-`sjChargeUpdate_accum`) monomialises `P_tail^{−(c'−a/2)}·P_full^{−a/2}` on a common resolution; the
+rank-flag `(S,J)` double induction (piece 4 invariant, whose block dimension is `sjRunMin_antitone`;
+piece 5 charge-update `sjChargeUpdate_accum`) monomialises `P_tail^{−(c'−a/2)}·P_full^{−a/2}` on a
+common resolution; the
 subordination `sjSubordination` (`a/2 ≤ ½·minAdm(tailChain M)`) keeps the coupling exponents below
 threshold on every shared divisor; the monomial integrability endpoint (piece 7) then gives finiteness
 (`∫∏|uᵢ|^{αᵢ} < ∞ ⟺ αᵢ > −1`, banked as `monomialIntegrand_integrable_of_lt`). This is the standing
@@ -301,27 +308,19 @@ theorem sjJointResolution (M : Fin (L + 1 + 1 + 1) → ℕ)
     jointPeelIntegral M t (c' : ℝ) < ⊤ := by
   sorry
 
-/-! ## Piece 2 — the pivot–Schur chart (L=2 CLOSED via banked `rrp`; general-L contract) -/
+/-! ## Piece 2 — the pivot–Schur chart (L=2 instance CLOSED via banked `rrp`) -/
 
 /-- **Piece 2 — the pivot–Schur chart, L=2 `(r,r,p)` instance (CLOSED).** The unit-triangular
-Jacobian-1 reduction closes the box-finiteness for the depth-2 `(r,r,p)` family — the banked
-`routeMBoxThresholdFinite_rrp`, which reshapes the box to the `SchurCore p r` two-matrix core and fires
-`core_schurGen_lt_top`. The witness that piece 2's chart reduction is inhabited at the base of the
-recursion. -/
+Jacobian-1 reduction `Q₁ C Q₂ = diag(pivot, Γ)` (Aoyagi Lemma 2 / Thm 3) closes the box-finiteness for
+the depth-2 `(r,r,p)` family — the banked `routeMBoxThresholdFinite_rrp`, which reshapes the box to the
+`SchurCore p r` two-matrix core and fires `core_schurGen_lt_top`. The witness that piece 2's chart
+reduction is inhabited at the base of the recursion. The general-`L` pivot-Schur chart (the
+correct-block-dimension `Q₁ C^{(s)} Q₂ = diag(pivot, Γ)` for each `s`) is NOT a standalone
+box-finiteness claim — it is the internal change of variables inside `sjBoundaryPeel` (piece 3); it is
+stated there rather than duplicated as a redundant restatement of the inductive step. -/
 theorem sjPivotSchurChart_rrp (r p : ℕ) :
     RouteMBoxThresholdFinite (![r, r, p] : Fin 3 → ℕ) :=
   routeMBoxThresholdFinite_rrp r p
-
-/-- **Piece 2 — the pivot–Schur chart, general-L (contract; named sorry).** Per rank/corank chart, the
-unit-triangular Jacobian-1 reduction `Q₁ C^{(s)} Q₂ = diag(pivot, Γ)` (Aoyagi Lemma 2 / Thm 3) with the
-correct block dimensions, packaged as the finiteness-preserving change of variables the boundary peel
-`sjBoundaryPeel` consumes. Stated as: box-finiteness of `M` reduces to that of the reduced chains
-`redChain t M` (via the strong IH), up to bounded units. The genuine content is the opaque-width block
-bookkeeping (mechanical plumbing per the cert). -/
-theorem sjPivotSchurChart (M : Fin (L + 1 + 1 + 1) → ℕ)
-    (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M') :
-    RouteMBoxThresholdFinite M := by
-  sorry
 
 /-! ## The recursion spine — the two contracts + the sorry-free wrapper -/
 
