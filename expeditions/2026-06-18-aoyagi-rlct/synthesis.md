@@ -6,6 +6,46 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior residual source hypotheses - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-residual-source-hypotheses.md
+```
+
+Lean now has a conditional residual-source wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It reuses the rank-cut original-prior residual-integrability theorem and adds
+one explicit hypothesis: the fixed-base residual square-sum zero locus has
+measure zero for `originalEdgeFamilyPrior` restricted to
+
+```text
+(p13SourceSet cap readback^{-1} V) cap sourceStratum.
+```
+
+Under that hypothesis it returns exactly the two residual-source hypotheses on
+the same rank-cut source set:
+
+```text
+ae residual square-sum positivity
+and residualNegPowerIntegrableOn.
+```
+
+This does not prove the zero-locus-nullity hypothesis.  It also remains short
+of original `lossDLN`: adapted-product lower bounds, density comparison,
+source/prior transport, source-rank or atlas coverage, normal crossings, pole
+order, and RLCT are still outside the theorem.
+
+Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+marker scan, and direct axiom probe passed.  Xhigh read-only reviewer `Ampere`
+passed the statement/proof-fidelity audit.
+
 ## A2 with-following rank-cut original-prior residual integrability - 2026-07-06
 
 Reproduction:

@@ -18,6 +18,16 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the rank-cut original-prior residual-source wrapper
+  landed.  It assumes residual zero-locus nullity for
+  `originalEdgeFamilyPrior` restricted to exactly
+  `(p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum`, then returns a.e.
+  residual positivity and `residualNegPowerIntegrableOn` on that same rank-cut
+  source set.  It does not prove the zero-locus-nullity hypothesis, original
+  `lossDLN`, adapted-product lower bounds, density comparison, source-rank or
+  atlas coverage, normal crossings, pole order, or RLCT.  Xhigh read-only
+  reviewer `Ampere` passed the statement/proof-fidelity audit.
+
 - 2026-07-06, Thread 03: the with-following `Y`-only source-side COV frontier
   is now reproduced and checked by two xhigh scouts.  The named
   with-following `referenceSource` already includes the selected-entry source

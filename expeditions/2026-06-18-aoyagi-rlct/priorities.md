@@ -12,6 +12,35 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, rank-cut original-prior residual source hypotheses
+
+Decision: add the zero-locus-nullity handoff as a conditional wrapper, not as a
+zero-locus theorem.  The theorem first obtains the rank-cut p.13/readback patch
+from the previous original-prior residual-integrability theorem, then assumes
+that the fixed-base residual zero locus is null for the restricted original
+prior on exactly
+
+```text
+(p13SourceSet cap readback^{-1}(V)) cap sourceStratum.
+```
+
+That hypothesis gives a.e. residual square-sum positivity on the same restricted
+measure; the finite residual negative-power integral is the previous theorem's
+output.  This is the residual-source package needed by downstream finite
+integral sockets, but it is still not a `lossDLN` theorem.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-residual-source-hypotheses.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Xhigh read-only reviewer `Ampere` passed the statement/proof-fidelity audit.
+The next gates remain proving or transporting residual zero-locus nullity,
+adapted-product lower bounds, density comparison, base/source-data alignment,
+statistical prior identification, and eventual source-rank/atlas coverage.
+
 ## Latest controller decision - 2026-07-06, with-following rank-cut original-prior residual integrability
 
 Decision: compose the local source-rank adapter with the original-prior

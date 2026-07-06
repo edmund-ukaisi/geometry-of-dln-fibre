@@ -10,6 +10,47 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior residual source hypotheses - 2026-07-06
+
+- **Statement.** On the rank-cut p.13/readback source set returned by the
+  with-following original-prior residual-integrability theorem, if the
+  fixed-base residual square-sum zero locus has measure zero for the restricted
+  original edge-family prior, then the residual square-sum is positive a.e. on
+  that same restricted measure and `residualNegPowerIntegrableOn` holds there.
+- **Tier.** A2 local residual-source hypotheses from explicit zero-locus
+  nullity.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving the zero-locus-nullity
+  hypothesis, proving original `lossDLN` integrability, proving adapted-product
+  lower bounds or density comparison, or proving source-rank/atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the cleaned p.13 residual context;
+  existing Lean rank-cut original-prior residual-integrability theorem; generic
+  Lean lemma `residualSourceHypotheses_mono_of_zero_set_null`, which turns a
+  null zero locus plus finite residual negative-power integrability into a.e.
+  positivity plus integrability.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-residual-source-hypotheses.md`.
+- **Reproduction check.** Controller checked the measure-theoretic handoff.
+  Xhigh read-only reviewer `Ampere` passed the final Lean statement/proof
+  audit: the nullity hypothesis is on exactly the restricted rank-cut original
+  prior, and the conclusion is only residual a.e. positivity plus
+  `residualNegPowerIntegrableOn`.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_continuousAt_priorDensity_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean`, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, marker scan, and direct axiom probe
+  passed.  The new theorem reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual zero-locus-nullity proof, no original `lossDLN`
+  comparison, no adapted-product lower bound, no density-bound comparison for
+  original loss, no source-rank coverage, no analytic atlas coverage, no
+  determinant/raw Haar transport, no normal crossings, no pole order, and no
+  RLCT extraction.
+
 ## Current A2 with-following rank-cut original-prior residual integrability - 2026-07-06
 
 - **Statement.** After shrinking inside the local with-following source-rank

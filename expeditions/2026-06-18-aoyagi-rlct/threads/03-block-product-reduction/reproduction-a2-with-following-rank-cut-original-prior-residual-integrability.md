@@ -88,10 +88,6 @@ Implemented in:
 lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
 ```
 
-```text
-lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
-```
-
 Theorem:
 
 ```text
