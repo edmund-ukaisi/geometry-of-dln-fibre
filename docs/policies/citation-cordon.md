@@ -55,6 +55,21 @@ conclusion fails. An axiom that *pins a unique object* (e.g. `∀ …, Z = f` vi
 especially prone — a later conjunct can contradict the pinned object. Consistency is a human/reviewer
 job; a concrete counterexample is the check.
 
+**Green does NOT verify the hypotheses are SATISFIABLE at the intended target — check both ends.** A
+cite can be consistent yet **vacuous**: if its hypotheses can't be met where you intend to use it, it
+never fires (and can *masquerade* as consistent — a "fix" may restore consistency only by making the
+hypotheses unsatisfiable). This bit the RLCT cite: a worst-point hypothesis `∀ x ∈ supp φ, rlct x₀ ≤
+rlct x` quantified over *regular* points where the ℝ-valued `rlct` returns a junk `0` (vs the true
+`+∞`), so it silently demanded `rlct x₀ ≤ 0` — unsatisfiable at any genuine singularity, and the only
+satisfiable instances were degenerate ones where the *conclusion* was false. Six review rounds all
+attacked the conclusion ("can `False` be forced"); none instantiated the hypotheses at the intended
+germ. So a cite review has **two** obligations: (1) *attempt to derive `False`* (consistency), and (2)
+*adversarially instantiate the hypotheses at the intended target* (non-vacuity). Make (2) a build-time
+check: ship an **instantiability witness** — a concrete term discharging every hypothesis at a genuine
+target germ (e.g. `K = x²` with a `ContDiffBump`) — so vacuity fails the build, the cordon philosophy
+applied to hypotheses rather than axioms. Watch especially for a total ℝ-valued proxy of an `ℝ∪{∞}`
+invariant: its junk value inverts inequality hypotheses.
+
 ## How to declare a cite
 
 1. Write the cited fact as an `axiom` (not a `theorem` with a `sorry` — a cite is an *assumed external

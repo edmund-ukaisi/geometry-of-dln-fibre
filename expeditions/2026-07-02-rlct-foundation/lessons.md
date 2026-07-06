@@ -57,3 +57,15 @@ determinantal-atlas `lessons.md`, merged on `dev`):
   standard fix for a "localization" cite is a sole-singularity hypothesis (`∀ x ∈ closure U, K x = 0 → x = x₀`)
   — matching the paper's "U small enough". Caught pre-merge by the careful-checkpoint + decorrelated review
   (controller + rev-r2b + Codex converged on the same counterexample).
+- **R2b-vacuity — a cited axiom's HYPOTHESES need adversarial instantiation, not just its conclusion.** Six
+  rounds all attacked the conclusion ("can `False` be forced"); an independent reviewer then found two defects
+  in the *hypotheses*: (1) inconsistent at `K ≡ 0` (`rlctAt` junk `0` ⟹ `s₀<0 ∧ s₀=−0=0`); (2) the worst-point
+  `hWorst` was **unsatisfiable at every genuine germ** — `tsupport φ` holds regular points where the ℝ-valued
+  `rlctAt` returns junk `0` (true value `+∞`), forcing `rlctAt x₀ ≤ 0`; so round-5 "fixed" the wide-φ case by
+  **vacuity, not truth** (the cite never fired at `K_B`). Fixes: `hKne : ∃ x, K x ≠ 0`; guard the quantifier to
+  zeros `∀ x ∈ tsupport φ, K x = 0 → …`; propagate to `ZetaSetup`/Bridge B; **ship an instantiability witness**
+  (a concrete `ZetaSetup` at `K=x²` discharging every hyp) so vacuity is a build-time failure. Root trap: a
+  **total ℝ-valued proxy** (`rlctAt : ℝ`, `sSup[0,∞)=0`) of an `ℝ∪{∞}` invariant — its junk value **inverts
+  inequality hypotheses** and **breaks `⨅`** (a bare `⨅_x rlctAt = 0` for every nontrivial `K`; the global RLCT
+  must be `sSup{c : ∀x, integrable}` = Def 8.1(i), not the naive inf). Checklist now: attempt `False` AND
+  adversarially instantiate the hypotheses at the intended target.
