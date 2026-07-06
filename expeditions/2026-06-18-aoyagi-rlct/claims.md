@@ -10,6 +10,54 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 product-coordinate source-side withDensity handoff - 2026-07-06
+
+- **Statement.** For the reduced p.13 product-coordinate edge-family map
+  `CedgeProd`, after shrinking the regular-coordinate radius the existing
+  chart package gives product readback left/right inverse data, injectivity,
+  continuity, measurable image, and a.e.-measurability on
+  `domain = source x ball(0,R)`.
+- **Statement.** On that same `domain`, if an external edge-family measure is
+  supplied by the source-side weighted identity
+  `externalMeasure.restrict chartPiece =
+  (Measure.map CedgeProd ((thetaReference.withDensity
+  (fun z => density(CedgeProd z))).restrict domain)).restrict chartPiece`,
+  and if `density` is a.e.-measurable and bounded by `c` a.e. on the restricted
+  source-image chart piece, then `productReadback` is a.e.-measurable against
+  `externalMeasure.restrict chartPiece` and
+  `Measure.map productReadback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict domain`.
+- **Tier.** A2 product-coordinate measure-bookkeeping handoff.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving the source-side weighted
+  identity, the density bound, determinant/raw Haar transport,
+  source/product-coordinate measure transport, original-prior transport,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 reduced product-coordinate variables; the
+  proof itself is Lean-local composition of the existing p.13
+  chart/readback package with the generic source-side `withDensity`
+  readback-domination bridge.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-side-withdensity-readback-handoff.md`.
+- **Reproduction check.** Xhigh read-only audit `Pascal` passed with no
+  findings.  It confirmed that the theorem keeps the weighted identity and
+  density bound as explicit hypotheses and proves only a.e. readback
+  measurability plus readback domination.
+- **Lean target.**
+  `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionProductMeasureHandoff.lean`.
+- **Proved.** Focused Lean check, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, new
+  Lean-file forbidden-marker scan, and direct axiom probe passed.  The direct
+  axiom probe reports `[propext, Classical.choice, Quot.sound]`.  A broader
+  touched-file marker scan hit only an old `sorry-free` prose comment in
+  `lean/DLNFibre.lean`.
+- **Nonclaims.** No proof of the source-side weighted identity, no density
+  bound, no determinant/raw Haar transport, no source/product-coordinate
+  measure transport, no original-prior transport, no normal crossings, no pole
+  order, and no RLCT extraction.
+
 ## Current A2 product-coordinate chart package - 2026-07-06
 
 - **Statement.** If `CedgeBase` is continuous at every base source point and
@@ -24,7 +72,7 @@ No such claim is formalisation-ready until both fields are filled.
   a left inverse to `CedgeProd`, is a right inverse on `CedgeProd '' domain`,
   and `CedgeProd` is a.e.-measurable for every measure restricted to `domain`.
 - **Tier.** A2 product-coordinate chart-hypothesis layer.
-- **Status.** Lean proved, pending final gate.
+- **Status.** Lean proved.
 - **Kill-condition.** The result is read as a pushforward identity, readback
   domination for an original prior, source/product-coordinate measure
   transport, normal crossings, pole order, or RLCT.

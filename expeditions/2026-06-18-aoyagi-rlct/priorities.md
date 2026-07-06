@@ -12,6 +12,62 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, product-coordinate measure handoff
+
+Lean now has:
+
+```text
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback
+```
+
+Decision: compose the reduced p.13 product-coordinate chart/readback package
+with the generic source-side `withDensity` readback-domination bridge.  After
+shrinking the regular-coordinate radius, the theorem returns the same local
+chart facts for `CedgeProd` on
+
+```text
+domain = source x ball(0,R),
+```
+
+and adds a continuation: for any `thetaReference`, `externalMeasure`,
+`chartPiece`, density, and scalar `c`, a supplied source-side weighted identity
+
+```text
+externalMeasure.restrict chartPiece =
+  (Measure.map CedgeProd
+    ((thetaReference.withDensity
+      (fun z => density(CedgeProd z))).restrict domain)).restrict
+    chartPiece
+```
+
+together with a.e. measurability and the a.e. bound `density <= c` gives:
+
+```text
+AEMeasurable productReadback (externalMeasure.restrict chartPiece)
+
+Measure.map productReadback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict domain.
+```
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-product-coordinate-source-side-withdensity-readback-handoff.md
+```
+
+Boundary: this is still a handoff socket.  It does not prove the source-side
+weighted identity, the density bound, determinant/raw Haar transport,
+source/product-coordinate measure transport, original-prior transport, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, new Lean-file
+marker scan, direct axiom probe, and xhigh read-only audit.  The direct axiom
+probe reports `[propext, Classical.choice, Quot.sound]`.  A touched-file
+marker scan also hit an old prose comment containing `sorry-free` in
+`lean/DLNFibre.lean`; `scripts/sorries` and the new-file marker scan are
+clean.
+
 ## Latest controller decision - 2026-07-06, product-coordinate chart package
 
 Lean now has:

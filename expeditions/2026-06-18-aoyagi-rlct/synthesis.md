@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Product-coordinate Source-side withDensity Handoff - 2026-07-06
+
+Lean now has:
+
+```text
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionProductMeasureHandoff.lean
+```
+
+This theorem specializes the generic source-side `withDensity`
+readback-domination bridge to the actual reduced p.13 product-coordinate map
+`CedgeProd`.  It first obtains a small regular-coordinate radius from the
+existing chart/readback package, so on
+
+```text
+domain = source x ball(0,R)
+```
+
+the theorem records the product readback left inverse on the domain,
+injectivity, continuity, a.e.-measurability for all restricted source
+measures, measurable image, and right inverse on the image.
+
+The new part is the continuation that consumes a supplied weighted source-side
+identity:
+
+```text
+externalMeasure.restrict chartPiece =
+  (Measure.map CedgeProd
+    ((thetaReference.withDensity
+      (fun z => density(CedgeProd z))).restrict domain)).restrict
+    chartPiece.
+```
+
+With `chartPiece` measurable, `density` a.e.-measurable against
+`Measure.map CedgeProd (thetaReference.restrict domain)`, and
+`density <= c` a.e. on the restricted chart piece, the continuation gives:
+
+```text
+AEMeasurable productReadback (externalMeasure.restrict chartPiece)
+
+Measure.map productReadback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict domain.
+```
+
+Boundary: no source/product-coordinate weighted identity is proved, no density
+bound is proved, and there is no determinant/raw Haar transport,
+original-prior transport, normal crossings, pole order, or RLCT extraction.
+This theorem only makes the future source-side weighted identity immediately
+usable by the existing readback-domination machinery.
+
+Verification passed: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, new Lean-file
+marker scan, direct axiom probe, and xhigh read-only audit.  The direct axiom
+probe reports `[propext, Classical.choice, Quot.sound]`.  The only
+touched-file marker-scan hit was a pre-existing `sorry-free` prose comment in
+`lean/DLNFibre.lean`.
+
 ## A2 Product-coordinate Chart Package - 2026-07-06
 
 Lean now has:

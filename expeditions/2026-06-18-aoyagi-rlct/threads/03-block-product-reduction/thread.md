@@ -21,6 +21,55 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 product-coordinate source-side withDensity handoff
+
+Reproduction:
+
+```text
+reproduction-a2-product-coordinate-source-side-withdensity-readback-handoff.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionProductMeasureHandoff.lean
+```
+
+Lean now has:
+
+```text
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_readback_le_smul_of_sourceChart_withDensity_of_residualReadback
+```
+
+The theorem composes the actual reduced p.13 product-coordinate
+chart/readback package with the generic source-side `withDensity`
+readback-domination bridge.  It returns a small radius `R` such that, on
+`domain = source x ball(0,R)`, the chart has the already-packaged
+continuity, injectivity, measurable image, a.e.-measurability, product
+readback left inverse, and product readback right inverse on the image.
+
+It then exposes a continuation: if `externalMeasure.restrict chartPiece` is
+supplied as the source-side weighted pushforward of `thetaReference` through
+`CedgeProd`, and if the image-side density is a.e.-measurable and a.e. bounded
+by `c` on the restricted chart piece, then
+
+```text
+Measure.map productReadback (externalMeasure.restrict chartPiece) <=
+  c • thetaReference.restrict domain.
+```
+
+Boundary: handoff only.  No proof of the source-side weighted identity, no
+density bound, no determinant/raw Haar transport, no source/product-coordinate
+measure transport, no original-prior transport, no normal crossings, pole
+order, or RLCT.
+
+Verification: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, new Lean-file
+marker scan, direct axiom probe, and xhigh read-only audit passed.  The direct
+axiom probe reports `[propext, Classical.choice, Quot.sound]`.  The only
+touched-file marker-scan hit was a pre-existing `sorry-free` prose comment in
+`lean/DLNFibre.lean`.
+
 ## 2026-07-06 A2 product-coordinate chart package
 
 Reproduction:
