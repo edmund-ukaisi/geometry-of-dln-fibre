@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, with-following rank-cut original-prior residual integrability
+
+Decision: compose the local source-rank adapter with the original-prior
+residual-integrability patch, but keep the result as a local rank cut.  The
+rank theorem is used first to get a theta neighborhood `Vrank`; the residual
+theorem is then applied on `G ∩ Vrank`, so the returned residual patch `V`
+inherits the rank equivalence.
+
+The returned image equality is exactly:
+
+```text
+sourceChart '' (V cap rankEq)
+  = (p13SourceSet cap readback^{-1} V) cap sourceStratum.
+```
+
+The residual negative-power predicate is then restricted from
+`p13SourceSet cap readback^{-1} V` to the right-hand rank-cut source set by
+lower-integral monotonicity.  This adds no residual positivity and no
+source-rank or analytic atlas coverage.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-residual-integrability.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+The next gates remain residual positivity/zero-locus nullity, adapted-product
+lower bounds, original-loss density comparison, base/source-data alignment,
+statistical prior identification, and following-factor nondegeneracy if a
+zero-set comparison is intended.
+
 ## Latest controller decision - 2026-07-06, original-prior residual integrability bridge
 
 Decision: compose the prior-density finite-integral theorem with the

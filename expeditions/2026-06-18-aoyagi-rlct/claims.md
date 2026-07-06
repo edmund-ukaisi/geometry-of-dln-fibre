@@ -10,6 +10,47 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following rank-cut original-prior residual integrability - 2026-07-06
+
+- **Statement.** After shrinking inside the local with-following source-rank
+  adapter, the rank equations on the theta side cut the p.13/readback source
+  patch exactly by the named fixed-base source-rank stratum, and the original
+  edge-family prior satisfies `residualNegPowerIntegrableOn` on that rank-cut
+  source set.
+- **Tier.** A2 local source-rank adapter for original-prior residual
+  integrability.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving source-rank coverage,
+  analytic atlas coverage, residual positivity, original `lossDLN`
+  integrability, adapted-product lower bounds, density comparison for original
+  loss, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the cleaned p.13 product residual;
+  existing Lean source-rank image theorem; existing original-prior
+  residual-integrability patch; elementary set shrink and lower-integral
+  monotonicity.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-residual-integrability.md`.
+- **Reproduction check.** Controller checked the set equality and measure
+  monotonicity directly before Lean formalisation.  Xhigh agents `McClintock`
+  and `Plato` independently confirmed the rank-cut wrapper shape, the
+  `residualNegPowerIntegrableOn_mono` helper, and the nonclaim boundary; they
+  made no edits.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualNegPowerIntegrableOn_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_continuousAt_priorDensity_of_subset_detSector`
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.residualNegPowerIntegrableOn_mono`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean`.
+- **Proved.** Focused Lean check for the new file, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, marker scan, and direct axiom
+  probes passed.  Both new declarations report
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual positivity, no original `lossDLN` comparison, no
+  adapted-product lower bound, no density-bound comparison for original loss,
+  no source-rank coverage, no analytic atlas coverage, no determinant/raw Haar
+  transport, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 with-following original-prior residual integrability bridge - 2026-07-06
 
 - **Statement.** On the open local p.13/readback-preimage patch returned by
