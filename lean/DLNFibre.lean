@@ -648,3 +648,18 @@ import DLNFibre.Core.Analysis.RLCT.Global
 -- admissible-set characterization `Ico 0 (C/2)`. The bridge to the DLN germ `K_B` (constant-rank
 -- normal form + `rlctAt` diffeo-invariance) is roadmapped, not built (v4.29 lacks constant-rank).
 import DLNFibre.Core.Analysis.RLCT.SumSq
+-- R9 (layer-completion, in-PR validation — PR #23 reviewer addendum): validate the foundation, not
+-- just define it. `RegularPoint` (A1) = `localAdmissibleExponents K x = Set.Ici 0` (K continuous,
+-- `Kx≠0` ⟹ no pole); `GlobalWitness` (A) = `rlctGlobal (sumSq C) = C/2` (the payoff's central
+-- object, validated end-to-end); `GlobalBridge` (B1) = `RLCT.Global.rlctAt = RLCT.rlctAt` (rfl —
+-- closes the two-copies fork); `LocalMono` (B2) = local down-set + germ-monotonicity; `PowerRule`
+-- (B4) = `rlctAt (K^k) x = rlctAt K x / k` (hardens the "no second ½" trap); `CiteCoherence` =
+-- on-cite positivity `rlctAt S.K S.x₀ > 0` + the `zetaSetupSq.K = sumSq 1` coherence (cite-free
+-- `rlct = 1/2` = cited `(rlctPair).lam`). The two CITED items carry ONLY `cited_local_zeta_pole`
+-- — off the payoff value path.
+import DLNFibre.Core.Analysis.RLCT.RegularPoint
+import DLNFibre.Core.Analysis.RLCT.LocalMono
+import DLNFibre.Core.Analysis.RLCT.PowerRule
+import DLNFibre.Core.Analysis.RLCT.GlobalBridge
+import DLNFibre.Core.Analysis.RLCT.GlobalWitness
+import DLNFibre.Core.Analysis.RLCT.CiteCoherence
