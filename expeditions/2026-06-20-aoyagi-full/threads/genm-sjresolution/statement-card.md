@@ -109,6 +109,17 @@ pieces as named sorries.
 > `sjBoundaryPeel` residual (LATER tides). This tide delivers exactly the `Q₁, Q₂` unit-triangular
 > reduction and its Jacobian-`1` / Schur-complement facts — the piece the peel's internal "general-`L`
 > pivot-Schur chart = Aoyagi Lemma 2" reduction (piece-3 next-tide item) names.
+>
+> **Status: sorry-free + reviewed.** Fidelity audit (reviewer + decorrelated Codex xhigh, module SHA
+> verified, all 7 lemmas `#print axioms` clean-three independently reproduced): **PASS-WITH-NITS**. All six
+> substantive checks PASS — `schur_cov` is the faithful Aoyagi-Lemma-2 statement (signs / `⅟A` placement
+> confirmed by hand + a concrete ℚ instance `diag(2,−1/2)`); `det_schurLeft`/`det_schurRight` non-vacuous;
+> `det_fromBlocks_cov` faithful + square-honestly-scoped; the three lift lemmas faithful; `[Invertible A]`
+> is the correct/weakest chart hypothesis; the honest-scope docstring accurate (rectangular-honest, no
+> hidden squareness). The one LOW nit — "Jacobian-`1`" named the *algebraic* `det Q = 1` (volume-preserving
+> elementary ops), the underpinning of but distinct from the integral c.o.v. substitution `D ↦ Γ` (deferred
+> to the assembly) — was folded into the docstrings (`det Q = 1` + a header clause; module SHA `eb761d29`,
+> no statement/proof change).
 
 ## The target
 
