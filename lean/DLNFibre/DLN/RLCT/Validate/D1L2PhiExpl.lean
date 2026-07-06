@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.D1HChartFlatten
+import DLNFibre.DLN.RLCT.Validate.D1HChartResidual
 import DLNFibre.DLN.RLCT.Foundations.S1InverseDerivEquiv
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 import DLNFibre.Core.CommonPivotL2
@@ -824,7 +825,333 @@ theorem schurChartRaw_contDiffOn :
   rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
   exact WithTop.coe_le_coe.mpr le_top
 
+/-- `schurChartRawInv` is `ContDiffAt ℝ ⊤` at each output-domain point (`det X ≠ 0`, `det M11 ≠ 0`
+where here `X = Q.toBlocks₁₁` of the first layer and `M11 = Q.toBlocks₁₁` of the second — both
+DIRECT coordinate blocks, unlike the forward chart's product pivot). Every output block entry is a
+`+/∗/⁻¹` combination of the `ContDiff` input coordinates, with the two pivot inverses `ContDiffAt`
+where their determinants are nonzero. -/
+theorem contDiffAt_schurChartRawInv (Q : BlockParamsL2 H r)
+    (hX : (Q.1.toBlocks₁₁).det ≠ 0) (hM11 : (Q.2.toBlocks₁₁).det ≠ 0) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (schurChartRawInv H r) Q := by
+  -- `X⁻¹` and `M11⁻¹` entry `ContDiffAt` (both direct coordinate blocks).
+  have hXinv : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun R : BlockParamsL2 H r => (R.1.toBlocks₁₁)⁻¹ a b) Q := fun a b =>
+    contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (A := fun R : BlockParamsL2 H r => R.1.toBlocks₁₁)
+      (fun c d => contDiff_bp_fst_entry (Sum.inl c) (Sum.inl d)) hX a b
+  have hMinv : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun R : BlockParamsL2 H r => (R.2.toBlocks₁₁)⁻¹ a b) Q := fun a b =>
+    contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (A := fun R : BlockParamsL2 H r => R.2.toBlocks₁₁)
+      (fun c d => contDiff_bp_snd_entry (Sum.inl c) (Sum.inl d)) hM11 a b
+  -- reusable entry-`ContDiffAt`s for the three composite blocks.
+  have hM21mA0redUu : ∀ (a : Fin (H 0 - r)) (k : Fin r), ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun R : BlockParamsL2 H r => (R.1.toBlocks₂₁ - R.1.toBlocks₂₂ * R.2.toBlocks₂₁) a k) Q := by
+    intro a k
+    have hrw : (fun R : BlockParamsL2 H r =>
+          (R.1.toBlocks₂₁ - R.1.toBlocks₂₂ * R.2.toBlocks₂₁) a k)
+        = fun R => R.1.toBlocks₂₁ a k - (R.1.toBlocks₂₂ * R.2.toBlocks₂₁) a k := by
+      funext R; rw [Matrix.sub_apply]
+    rw [hrw]
+    exact ((contDiff_bp_fst_entry (Sum.inr a) (Sum.inl k)).contDiffAt).sub
+      (contDiffAt_matrix_mul_entry
+        (fun a' k' => (contDiff_bp_fst_entry (Sum.inr a') (Sum.inr k')).contDiffAt)
+        (fun k' b' => (contDiff_bp_snd_entry (Sum.inr k') (Sum.inl b')).contDiffAt) a k)
+  have hM11mYUu : ∀ (k b : Fin r), ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun R : BlockParamsL2 H r => (R.2.toBlocks₁₁ - R.1.toBlocks₁₂ * R.2.toBlocks₂₁) k b) Q := by
+    intro k b
+    have hrw : (fun R : BlockParamsL2 H r =>
+          (R.2.toBlocks₁₁ - R.1.toBlocks₁₂ * R.2.toBlocks₂₁) k b)
+        = fun R => R.2.toBlocks₁₁ k b - (R.1.toBlocks₁₂ * R.2.toBlocks₂₁) k b := by
+      funext R; rw [Matrix.sub_apply]
+    rw [hrw]
+    exact ((contDiff_bp_snd_entry (Sum.inl k) (Sum.inl b)).contDiffAt).sub
+      (contDiffAt_matrix_mul_entry
+        (fun a' k' => (contDiff_bp_fst_entry (Sum.inl a') (Sum.inr k')).contDiffAt)
+        (fun k' b' => (contDiff_bp_snd_entry (Sum.inr k') (Sum.inl b')).contDiffAt) k b)
+  -- `V = A1red + Uu M11⁻¹ M12` entry-`ContDiffAt` (reused for snd₁₂ and snd₂₂).
+  have hV : ∀ (a : Fin (H 1 - r)) (b : Fin (H 2 - r)), ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun R : BlockParamsL2 H r =>
+        (R.2.toBlocks₂₂ + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂) a b) Q := by
+    intro a b
+    have hrw : (fun R : BlockParamsL2 H r =>
+          (R.2.toBlocks₂₂ + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂) a b)
+        = fun R => R.2.toBlocks₂₂ a b
+            + (R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂) a b := by
+      funext R; rw [Matrix.add_apply]
+    rw [hrw]
+    exact ((contDiff_bp_snd_entry (Sum.inr a) (Sum.inr b)).contDiffAt).add
+      (contDiffAt_matrix_mul_entry
+        (A := fun R : BlockParamsL2 H r => R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹)
+        (B := fun R => R.2.toBlocks₁₂)
+        (fun a' k' => contDiffAt_matrix_mul_entry
+          (fun a'' k'' => (contDiff_bp_snd_entry (Sum.inr a'') (Sum.inl k'')).contDiffAt)
+          (fun k'' b'' => hMinv k'' b'') a' k')
+        (fun k' b' => (contDiff_bp_snd_entry (Sum.inl k') (Sum.inr b')).contDiffAt) a b)
+  refine ContDiffAt.prodMk ?_ ?_
+  · -- first output matrix `fromBlocks X Y M21' A0red'`
+    refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
+    rcases i with i | i <;> rcases j with j | j
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).1.toBlocks₁₁ i j) Q
+      simp only [schurChartRawInv_fst_toBlocks₁₁]
+      exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inl j)).contDiffAt
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).1.toBlocks₁₂ i j) Q
+      simp only [schurChartRawInv_fst_toBlocks₁₂]
+      exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inr j)).contDiffAt
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).1.toBlocks₂₁ i j) Q
+      simp only [schurChartRawInv_fst_toBlocks₂₁]
+      exact contDiffAt_matrix_mul_entry
+        (A := fun R : BlockParamsL2 H r =>
+          (R.1.toBlocks₂₁ - R.1.toBlocks₂₂ * R.2.toBlocks₂₁) * R.2.toBlocks₁₁⁻¹)
+        (B := fun R => R.1.toBlocks₁₁)
+        (fun a k => contDiffAt_matrix_mul_entry
+          (fun a' k' => hM21mA0redUu a' k') (fun k' b' => hMinv k' b') a k)
+        (fun k b => (contDiff_bp_fst_entry (Sum.inl k) (Sum.inl b)).contDiffAt) i j
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).1.toBlocks₂₂ i j) Q
+      simp only [schurChartRawInv_fst_toBlocks₂₂, Matrix.add_apply]
+      refine ((contDiff_bp_fst_entry (Sum.inr i) (Sum.inr j)).contDiffAt).add ?_
+      exact contDiffAt_matrix_mul_entry
+        (A := fun R : BlockParamsL2 H r =>
+          (R.1.toBlocks₂₁ - R.1.toBlocks₂₂ * R.2.toBlocks₂₁) * R.2.toBlocks₁₁⁻¹)
+        (B := fun R => R.1.toBlocks₁₂)
+        (fun a k => contDiffAt_matrix_mul_entry
+          (fun a' k' => hM21mA0redUu a' k') (fun k' b' => hMinv k' b') a k)
+        (fun k b => (contDiff_bp_fst_entry (Sum.inl k) (Sum.inr b)).contDiffAt) i j
+  · -- second output matrix `fromBlocks S T Uu V`
+    refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
+    rcases i with i | i <;> rcases j with j | j
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).2.toBlocks₁₁ i j) Q
+      simp only [schurChartRawInv_snd_toBlocks₁₁]
+      exact contDiffAt_matrix_mul_entry
+        (A := fun R : BlockParamsL2 H r => R.1.toBlocks₁₁⁻¹)
+        (B := fun R => R.2.toBlocks₁₁ - R.1.toBlocks₁₂ * R.2.toBlocks₂₁)
+        (fun a k => hXinv a k) (fun k b => hM11mYUu k b) i j
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).2.toBlocks₁₂ i j) Q
+      simp only [schurChartRawInv_snd_toBlocks₁₂]
+      exact contDiffAt_matrix_mul_entry
+        (A := fun R : BlockParamsL2 H r => R.1.toBlocks₁₁⁻¹)
+        (B := fun R => R.2.toBlocks₁₂
+          - R.1.toBlocks₁₂ * (R.2.toBlocks₂₂ + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂))
+        (fun a k => hXinv a k)
+        (fun k b => by
+          have hrw : (fun R : BlockParamsL2 H r =>
+                (R.2.toBlocks₁₂
+                  - R.1.toBlocks₁₂
+                    * (R.2.toBlocks₂₂ + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂)) k b)
+              = fun R => R.2.toBlocks₁₂ k b
+                  - (R.1.toBlocks₁₂
+                      * (R.2.toBlocks₂₂
+                        + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂)) k b := by
+            funext R; rw [Matrix.sub_apply]
+          rw [hrw]
+          exact ((contDiff_bp_snd_entry (Sum.inl k) (Sum.inr b)).contDiffAt).sub
+            (contDiffAt_matrix_mul_entry
+              (A := fun R : BlockParamsL2 H r => R.1.toBlocks₁₂)
+              (B := fun R => R.2.toBlocks₂₂ + R.2.toBlocks₂₁ * R.2.toBlocks₁₁⁻¹ * R.2.toBlocks₁₂)
+              (fun a' k' => (contDiff_bp_fst_entry (Sum.inl a') (Sum.inr k')).contDiffAt)
+              (fun k' b' => hV k' b') k b)) i j
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).2.toBlocks₂₁ i j) Q
+      simp only [schurChartRawInv_snd_toBlocks₂₁]
+      exact (contDiff_bp_snd_entry (Sum.inr i) (Sum.inl j)).contDiffAt
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun R : BlockParamsL2 H r => (schurChartRawInv H r R).2.toBlocks₂₂ i j) Q
+      simp only [schurChartRawInv_snd_toBlocks₂₂]
+      exact hV i j
+
 end SchurChartContDiff
+
+/-! ## Piece 3 (this tide) — the global flat-coordinate chart with an invertible derivative
+
+`schurChart_global` conjugates the block chart `schurChartRaw` (a self-map on `BlockParamsL2 H r`)
+into an AFFINE-SHIFTED self-map on the flat space `Fin (flatDim H) → ℝ` that FIXES the origin:
+
+    Φ_raw w := b.symm (schurChartRaw (b w + P₀) − schurChartRaw P₀),    b := blockFlatEquiv_L2.
+
+At a base point `P₀` in the pivot domain (`det X ≠ 0`, `det M11 ≠ 0`), `Φ_raw 0 = 0`, and near `0`
+it is a rational diffeomorphism with the explicit inverse
+`Ψ_raw w := b.symm (schurChartRawInv (b w + C) − P₀)` (`C := schurChartRaw P₀`). Bump-globalising
+`Φ_raw` (`exists_contDiff_eventuallyEq_of_contDiffOn`) gives a GLOBAL `ContDiff ℝ 2` map `Φ`
+agreeing with `Φ_raw` near `0`; feeding the two mutual-inverse germs + the named derivatives into
+brick A (`derivEquiv_of_eventual_inverse`) yields an INVERTIBLE derivative `f'` at `0` — WITHOUT
+computing the block Jacobian determinant. This is the `(Φ, f', ContDiff, HasFDerivAt, fix, germ)`
+slot `rlctAtOn_eq_of_contDiff_chart` / `dln_hchart_flat` consume; the germ tide connects the exposed
+`Φ =ᶠ Φ_raw` to `lossFlatShift` (piece 7). -/
+
+section SchurChartGlobal
+open scoped Matrix.Norms.Elementwise
+open SchurChartC2 Filter
+
+variable {H : Fin (2 + 1) → ℕ} {r : ℕ}
+
+/-- **`schurChart_global`.** At a base point `P₀ : BlockParamsL2 H r` in the pivot domain
+(`det X ≠ 0`, `det M11 ≠ 0`), the block corner-elimination chart `schurChartRaw`, conjugated by
+`blockFlatEquiv_L2` and re-centred to fix the flat origin, has a global `ContDiff ℝ 2` chart
+`Φ` with `Φ 0 = 0` and an INVERTIBLE derivative `f'` at `0`, agreeing near `0` with the raw
+affine-shifted chart. Invertibility comes from the explicit rational two-sided inverse via brick A
+(`derivEquiv_of_eventual_inverse`), avoiding the block-Jacobian determinant entirely. -/
+theorem schurChart_global
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H 2))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (P₀ : BlockParamsL2 H r)
+    (hX : (P₀.1.toBlocks₁₁).det ≠ 0)
+    (hM11 : (P₀.1.toBlocks₁₁ * P₀.2.toBlocks₁₁ + P₀.1.toBlocks₁₂ * P₀.2.toBlocks₂₁).det ≠ 0) :
+    ∃ (Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+      (f' : (Fin (flatDim H) → ℝ) ≃L[ℝ] (Fin (flatDim H) → ℝ)),
+      ContDiff ℝ 2 Φ ∧
+      HasFDerivAt Φ (f' : (Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ))
+        (0 : Fin (flatDim H) → ℝ) ∧
+      Φ (0 : Fin (flatDim H) → ℝ) = 0 ∧
+      Φ =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)] fun w =>
+        (blockFlatEquiv_L2 H r I K J hI hK hJ).symm
+          (schurChartRaw H r ((blockFlatEquiv_L2 H r I K J hI hK hJ) w + P₀)
+            - schurChartRaw H r P₀) := by
+  classical
+  set b := blockFlatEquiv_L2 H r I K J hI hK hJ with hbdef
+  set C : BlockParamsL2 H r := schurChartRaw H r P₀ with hCdef
+  set Φraw : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) :=
+    fun w => b.symm (schurChartRaw H r (b w + P₀) - C) with hΦrawdef
+  set Ψraw : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ) :=
+    fun w => b.symm (schurChartRawInv H r (b w + C) - P₀) with hΨrawdef
+  -- order-of-smoothness helpers.
+  have hle2 : (2 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by
+    rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
+    exact WithTop.coe_le_coe.mpr le_top
+  -- `b 0 = 0` and readbacks of `C`'s pivot blocks.
+  have hb0 : b (0 : Fin (flatDim H) → ℝ) = 0 := map_zero b
+  have hbc : Continuous (b : (Fin (flatDim H) → ℝ) → BlockParamsL2 H r) := b.continuous
+  have hCfst : C.1.toBlocks₁₁ = P₀.1.toBlocks₁₁ := schurChartRaw_fst_toBlocks₁₁ P₀
+  have hCsnd : C.2.toBlocks₁₁
+      = P₀.1.toBlocks₁₁ * P₀.2.toBlocks₁₁ + P₀.1.toBlocks₁₂ * P₀.2.toBlocks₂₁ :=
+    schurChartRaw_snd_toBlocks₁₁ P₀
+  -- component continuity of `w ↦ b w + Q`.
+  have hcont1 : ∀ Q : BlockParamsL2 H r, Continuous (fun w => (b w + Q).1) :=
+    fun Q => continuous_fst.comp (hbc.add continuous_const)
+  have hcont2 : ∀ Q : BlockParamsL2 H r, Continuous (fun w => (b w + Q).2) :=
+    fun Q => continuous_snd.comp (hbc.add continuous_const)
+  -- the four domain-membership germs (dets nonzero near `0`).
+  have hdom1 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ), ((b w + P₀).1.toBlocks₁₁).det ≠ 0 := by
+    have hmat : Continuous (fun w => (b w + P₀).1.toBlocks₁₁) :=
+      continuous_matrix (fun i j => (hcont1 P₀).matrix_elem (Sum.inl i) (Sum.inl j))
+    have hval : ((b (0 : Fin (flatDim H) → ℝ) + P₀).1.toBlocks₁₁).det ≠ 0 := by
+      rw [hb0, zero_add]; exact hX
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  have hdom2 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ),
+      ((b w + P₀).1.toBlocks₁₁ * (b w + P₀).2.toBlocks₁₁
+        + (b w + P₀).1.toBlocks₁₂ * (b w + P₀).2.toBlocks₂₁).det ≠ 0 := by
+    have h11 : Continuous (fun w => (b w + P₀).1.toBlocks₁₁) :=
+      continuous_matrix (fun i j => (hcont1 P₀).matrix_elem (Sum.inl i) (Sum.inl j))
+    have h1S : Continuous (fun w => (b w + P₀).2.toBlocks₁₁) :=
+      continuous_matrix (fun i j => (hcont2 P₀).matrix_elem (Sum.inl i) (Sum.inl j))
+    have h12 : Continuous (fun w => (b w + P₀).1.toBlocks₁₂) :=
+      continuous_matrix (fun i j => (hcont1 P₀).matrix_elem (Sum.inl i) (Sum.inr j))
+    have h2U : Continuous (fun w => (b w + P₀).2.toBlocks₂₁) :=
+      continuous_matrix (fun i j => (hcont2 P₀).matrix_elem (Sum.inr i) (Sum.inl j))
+    have hmat : Continuous (fun w => (b w + P₀).1.toBlocks₁₁ * (b w + P₀).2.toBlocks₁₁
+        + (b w + P₀).1.toBlocks₁₂ * (b w + P₀).2.toBlocks₂₁) :=
+      (h11.matrix_mul h1S).add (h12.matrix_mul h2U)
+    have hval : ((b (0 : Fin (flatDim H) → ℝ) + P₀).1.toBlocks₁₁
+          * (b 0 + P₀).2.toBlocks₁₁
+        + (b 0 + P₀).1.toBlocks₁₂ * (b 0 + P₀).2.toBlocks₂₁).det ≠ 0 := by
+      simp only [hb0, zero_add]; exact hM11
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  have hdom3 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ), ((b w + C).1.toBlocks₁₁).det ≠ 0 := by
+    have hmat : Continuous (fun w => (b w + C).1.toBlocks₁₁) :=
+      continuous_matrix (fun i j => (hcont1 C).matrix_elem (Sum.inl i) (Sum.inl j))
+    have hval : ((b (0 : Fin (flatDim H) → ℝ) + C).1.toBlocks₁₁).det ≠ 0 := by
+      simp only [hb0, zero_add]; rw [hCfst]; exact hX
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  have hdom4 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ), ((b w + C).2.toBlocks₁₁).det ≠ 0 := by
+    have hmat : Continuous (fun w => (b w + C).2.toBlocks₁₁) :=
+      continuous_matrix (fun i j => (hcont2 C).matrix_elem (Sum.inl i) (Sum.inl j))
+    have hval : ((b (0 : Fin (flatDim H) → ℝ) + C).2.toBlocks₁₁).det ≠ 0 := by
+      simp only [hb0, zero_add]; rw [hCsnd]; exact hM11
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  -- `Φraw 0 = 0`, `Ψraw 0 = 0`.
+  have hΦraw0 : Φraw 0 = 0 := by
+    have h0 : b (0 : Fin (flatDim H) → ℝ) + P₀ = P₀ := by rw [hb0, zero_add]
+    simp only [hΦrawdef]
+    rw [h0, ← hCdef, sub_self, map_zero]
+  have hΨraw0 : Ψraw 0 = 0 := by
+    have h0 : b (0 : Fin (flatDim H) → ℝ) + C = C := by rw [hb0, zero_add]
+    have hinv : schurChartRawInv H r C = P₀ := by
+      rw [hCdef]; exact schurChartRawInv_schurChartRaw P₀ hX hM11
+    simp only [hΨrawdef]
+    rw [h0, hinv, sub_self, map_zero]
+  -- the two raw mutual-inverse germs near `0`.
+  have hΨΦraw : (Ψraw ∘ Φraw) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)] id := by
+    filter_upwards [hdom1, hdom2] with w hw1 hw2
+    have key : schurChartRawInv H r (schurChartRaw H r (b w + P₀)) = b w + P₀ :=
+      schurChartRawInv_schurChartRaw (b w + P₀) hw1 hw2
+    have e1 : (schurChartRaw H r (b w + P₀) - C) + C = schurChartRaw H r (b w + P₀) := by abel
+    have e2 : (b w + P₀) - P₀ = b w := by abel
+    change Ψraw (Φraw w) = id w
+    simp only [hΨrawdef, hΦrawdef, id_eq, ContinuousLinearEquiv.apply_symm_apply, e1, key, e2,
+      ContinuousLinearEquiv.symm_apply_apply]
+  have hΦΨraw : (Φraw ∘ Ψraw) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)] id := by
+    filter_upwards [hdom3, hdom4] with w hw3 hw4
+    have key : schurChartRaw H r (schurChartRawInv H r (b w + C)) = b w + C :=
+      schurChartRaw_schurChartRawInv (b w + C) hw3 hw4
+    have e1 : (schurChartRawInv H r (b w + C) - P₀) + P₀ = schurChartRawInv H r (b w + C) := by abel
+    have e2 : (b w + C) - C = b w := by abel
+    change Φraw (Ψraw w) = id w
+    simp only [hΦrawdef, hΨrawdef, id_eq, ContinuousLinearEquiv.apply_symm_apply, e1, key, e2,
+      ContinuousLinearEquiv.symm_apply_apply]
+  -- `Φraw`, `Ψraw` are `ContDiffAt ℝ ⊤` at `0`.
+  have hΦraw_cda : ContDiffAt ℝ (⊤ : ℕ∞) Φraw 0 := by
+    have haff : ContDiffAt ℝ (⊤ : ℕ∞) (fun w : Fin (flatDim H) → ℝ => b w + P₀) 0 :=
+      (b.contDiff.contDiffAt).add contDiffAt_const
+    have hsc : ContDiffAt ℝ (⊤ : ℕ∞) (schurChartRaw H r) (b 0 + P₀) := by
+      have h0 : b (0 : Fin (flatDim H) → ℝ) + P₀ = P₀ := by rw [hb0, zero_add]
+      rw [h0]; exact contDiffAt_schurChartRaw P₀ hX hM11
+    exact (b.symm.contDiff.contDiffAt).comp 0 ((hsc.comp 0 haff).sub contDiffAt_const)
+  have hΨraw_cda : ContDiffAt ℝ (⊤ : ℕ∞) Ψraw 0 := by
+    have haff : ContDiffAt ℝ (⊤ : ℕ∞) (fun w : Fin (flatDim H) → ℝ => b w + C) 0 :=
+      (b.contDiff.contDiffAt).add contDiffAt_const
+    have hsc : ContDiffAt ℝ (⊤ : ℕ∞) (schurChartRawInv H r) (b 0 + C) := by
+      have h0 : b (0 : Fin (flatDim H) → ℝ) + C = C := by rw [hb0, zero_add]
+      rw [h0]
+      exact contDiffAt_schurChartRawInv C (by rw [hCfst]; exact hX) (by rw [hCsnd]; exact hM11)
+    exact (b.symm.contDiff.contDiffAt).comp 0 ((hsc.comp 0 haff).sub contDiffAt_const)
+  -- bump-globalise `Φraw` to a global `ContDiff ℝ 2` map agreeing near `0`.
+  obtain ⟨u, hu_nhds, hΦraw_cdon⟩ := (hΦraw_cda.of_le hle2).contDiffOn le_rfl (by simp)
+  obtain ⟨V, hVu, hVopen, hV0⟩ := mem_nhds_iff.mp hu_nhds
+  obtain ⟨Φg, hΦg_cd, hΦg_eq⟩ :=
+    exists_contDiff_eventuallyEq_of_contDiffOn (n := (2 : ℕ∞)) hVopen hV0 (hΦraw_cdon.mono hVu)
+  -- `Φg` fixes `0`.
+  have hΦg0 : Φg 0 = 0 := by rw [hΦg_eq.self_of_nhds]; exact hΦraw0
+  -- named derivatives at `0`.
+  have hΦg' : HasFDerivAt Φg (fderiv ℝ Φg 0) 0 :=
+    ((hΦg_cd.differentiable (by norm_num)) 0).hasFDerivAt
+  have hΨraw' : HasFDerivAt Ψraw (fderiv ℝ Ψraw 0) 0 :=
+    (hΨraw_cda.differentiableAt (by simp)).hasFDerivAt
+  -- transfer the germs to `Φg`.
+  have hΨΦ : (Ψraw ∘ Φg) =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)] id := by
+    filter_upwards [hΦg_eq, hΨΦraw] with w hw hw2
+    change Ψraw (Φg w) = id w
+    rw [hw]; exact hw2
+  have hΨraw_tendsto : Tendsto Ψraw (𝓝 0) (𝓝 0) := by
+    have hct : Tendsto Ψraw (𝓝 0) (𝓝 (Ψraw 0)) :=
+      (hΨraw_cda.differentiableAt (by simp)).continuousAt
+    rwa [hΨraw0] at hct
+  have hΦΨ : (Φg ∘ Ψraw) =ᶠ[𝓝 (Φg 0)] id := by
+    rw [hΦg0]
+    filter_upwards [hΨraw_tendsto.eventually hΦg_eq, hΦΨraw] with w hw hw2
+    change Φg (Ψraw w) = id w
+    rw [hw]; exact hw2
+  -- feed brick A for the invertible derivative.
+  obtain ⟨f', hf'⟩ :=
+    derivEquiv_of_eventual_inverse Φg Ψraw 0 (fderiv ℝ Φg 0) (fderiv ℝ Ψraw 0) hΦg'
+      (by rw [hΦg0]; exact hΨraw') hΨΦ hΦΨ
+  exact ⟨Φg, f', hΦg_cd, hf', hΦg0, hΦg_eq⟩
+
+end SchurChartGlobal
 
 end DLNFibre.DLN.RLCT
 

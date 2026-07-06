@@ -333,3 +333,61 @@ bump-globalise (`exists_contDiff_eventuallyEq_of_contDiffOn`), and feed brick A
 Then the germ `schur_loss_germ_L2` [HIGH] (uses `reduced_core_zero_of_product_rank_le` +
 `schurChartRaw_snd_toBlocks₂₂` reading `A1red`), `qₑ`/`hRne`/`hfact` [Option A], and the final wiring
 into `d1ge_L2_hAtV_of_explicit_chart`.
+
+## TIDE 5 — `schurChart_global` (branch `genm-phiexpl-p3`)
+
+Closed **piece 3 of the next-tide order (`schurChart_global` / Codex piece 6 `l_global`)** — the global
+flat-coordinate chart with an invertible derivative — appended to
+`lean/DLNFibre/DLN/RLCT/Validate/D1L2PhiExpl.lean` (now also imports `…Validate.D1HChartResidual` for the
+bump lemma), sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]` (forced `#print axioms` on
+`schurChart_global` and `contDiffAt_schurChartRawInv`). Crux `d1ge_L2_hAtV_explicit` (in
+`D1L2ExplicitCoreProducer.lean`) **untouched** — not even in this module's import closure. Not yet wired
+into the aggregator (single-writer) — controller wires `D1L2PhiExpl` + banked `Core.CommonPivotL2` /
+`S1InverseDerivEquiv` (its closure now additionally pulls `D1HChartResidual`, already in the aggregator).
+
+### CLOSED this tide (▣)
+
+> **Claim (piece 3 — the global chart with an invertible derivative).** At a base point `P₀` in the pivot
+> domain, `schurChartRaw` conjugated by `blockFlatEquiv_L2` and re-centred to fix the flat origin has a
+> global `ContDiff ℝ 2` representative fixing `0` with an INVERTIBLE derivative at `0` — obtained via the
+> explicit rational inverse (brick A), NOT the block-Jacobian determinant.
+> - **Lean (all in `…/Validate/D1L2PhiExpl.lean`, branch `genm-phiexpl-p3`):**
+>   - `schurChart_global (I K J hI hK hJ) (P₀ : BlockParamsL2 H r) (hX : (P₀.1.toBlocks₁₁).det ≠ 0)`
+>     `(hM11 : (P₀.1.toBlocks₁₁ * P₀.2.toBlocks₁₁ + P₀.1.toBlocks₁₂ * P₀.2.toBlocks₂₁).det ≠ 0) :`
+>     `∃ (Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ)) (f' : … ≃L[ℝ] …),`
+>     `ContDiff ℝ 2 Φ ∧ HasFDerivAt Φ (↑f') 0 ∧ Φ 0 = 0 ∧`
+>     `Φ =ᶠ[𝓝 0] fun w => b.symm (schurChartRaw H r (b w + P₀) − schurChartRaw H r P₀)`
+>     (`b := blockFlatEquiv_L2 …`). The four output conjuncts are exactly the `ContDiff`/`HasFDerivAt`/`fix`
+>     slots of `rlctAtOn_eq_of_contDiff_chart` (`S1IFTChart`) / `dln_hchart_flat`; the fifth is the germ HOOK
+>     the germ tide (piece 4 `schur_loss_germ_L2`) connects to `lossFlatShift`.
+>   - `contDiffAt_schurChartRawInv (Q) (hX : (Q.1.toBlocks₁₁).det ≠ 0) (hM11 : (Q.2.toBlocks₁₁).det ≠ 0) :`
+>     `ContDiffAt ℝ ⊤ (schurChartRawInv H r) Q` — the inverse chart is `C^∞` on its output domain (both
+>     pivots here are DIRECT coordinate blocks; mirrors `contDiffAt_schurChartRaw`). Gives `Ψ_raw`'s named
+>     derivative for brick A.
+> - **Gloss / design (the affine shift is load-bearing).** The naive conjugation `b.symm ∘ schurChartRaw ∘ b`
+>   does NOT fix its base point (`schurChartRaw P₀ ≠ P₀`), so it fails `rlctAtOn_eq_of_contDiff_chart`'s
+>   `Φ wstar = wstar`. `Φ_raw w := b.symm (schurChartRaw (b w + P₀) − schurChartRaw P₀)` re-centres to fix
+>   `0` (`Φ_raw 0 = 0`); its explicit inverse is `Ψ_raw w := b.symm (schurChartRawInv (b w + C) − P₀)`,
+>   `C := schurChartRaw P₀`. `P₀` is kept ABSTRACT (any domain point); the germ tide instantiates it as the
+>   pivot-block decomposition of the optimum `v` (whence `hX`, `hM11` are the pivot-minor nondegeneracy from
+>   `exists_common_pivot_L2_at`), and `blockFlatEquiv_L2 (w + flat v) = b w + P₀` by linearity bridges the
+>   shift into `lossFlatShift`.
+> - **Proof route.** (i) `Φ_raw`, `Ψ_raw` are `ContDiffAt ℝ ⊤` at `0` (compose `contDiffAt_schurChartRaw` /
+>   `contDiffAt_schurChartRawInv` at `P₀`/`C` with the affine `b · + const` and the linear `b.symm`,
+>   `ContinuousLinearEquiv.contDiff`); (ii) two mutual-inverse germs near `0` from
+>   `schurChartRawInv_schurChartRaw` / `schurChartRaw_schurChartRawInv`, whose domain hypotheses hold
+>   `∀ᶠ` near `0` by `ContinuousAt.eventually_ne` on the pivot determinants (`Continuous.matrix_det`);
+>   (iii) bump-globalise `Φ_raw` (`ContDiffAt.contDiffOn` → open nbhd → `exists_contDiff_eventuallyEq_of_contDiffOn`);
+>   (iv) transfer the germs from `Φ_raw` to the global `Φ` (via `Φ =ᶠ Φ_raw` and `Ψ_raw`-continuity
+>   pullback with `Tendsto.eventually`); (v) feed brick A `derivEquiv_of_eventual_inverse` → invertible `f'`.
+> - **Assumed / Cited / Deferred.** none. (Brick A avoids the block-Jacobian determinant by design.)
+> - **Status.** sorry-free, clean-three (forced `#print axioms`).
+
+### OPEN pieces — remaining next-tide order
+
+Next: **`schur_loss_germ_L2`** [HIGH — highest line-count risk] — `lossFlatShift H B v =ᶠ[𝓝 0] F ∘ Φ_raw`,
+feeding the `Φ =ᶠ Φ_raw` hook of `schurChart_global`. Uses `reduced_core_zero_of_product_rank_le` (TIDE 2)
+to pin the slice residual + `schurChartRaw_snd_toBlocks₂₂` reading `A1red`, and the
+`paramsEquivFlatLinear ↔ paramsEquivFlat` bridge (`paramsEquivFlatLinear_symm_coe`) to reconcile the block
+equiv with `lossFlatShift`'s reconstruction. Then `qₑ`/`hRne`/`hfact` [Option A], final wiring into
+`d1ge_L2_hAtV_of_explicit_chart`.
