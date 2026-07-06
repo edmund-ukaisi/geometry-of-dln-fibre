@@ -461,27 +461,24 @@ wall, the next expedition):**
 
 ## Open edges — headline results not yet fully general (relative to L&R)
 
-The [formalisation-status table](README.md#formalisation-status) marks two rows short of the paper's full
-generality. What L&R establish that the Lean does not *yet* deliver, ranked by importance:
+The [formalisation-status table](README.md#formalisation-status) marks **one** row short of the paper's full
+generality (field generality, Gap 2). Gap 1 (below) is now **closed**. What remains:
 
-### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` *(the substantive gap)*
-- **L&R:** the top-dim component count holds for arbitrary `d`, fibre included (reduced to the rank locus
-  via Lemma 4.6, itself arbitrary-`d`; `θ` drops out of the permutation-symmetric Poincaré series). Not open
-  for them.
-- **Lean:** `#comp(mult⁻¹(B)) = cTheta(d−r)` is proved **only for `Monotone d`**
-  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart). The
-  *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` is already arbitrary-`d` (`numTop_eq_ncard_topComponents`),
-  so the gap is specific to the fibre. NOT closable by perm-invariance (combinatorial-only; it cannot
-  transport a *geometric* count between the non-isomorphic ambient spaces `Rep_d`, `Rep_{d∘σ}`).
-- **Close route (no new mathematics; bounded, medium mechanical effort):** the codimension fibre-vs-`Σ`
-  shift (`codimRepCanonical_fibre_eq_cCodim_add_shift`) is already arbitrary-`d`; promote it to a
-  **component-count** transfer — the fibre over the rank-`r` normal form is (Zariski-locally) a product of
-  the irreducible exact-rank-`r` stratum with the shifted zero-product problem, so
-  `#comp(mult⁻¹(B)) = #comp(Σ⁰_{d−r}) = numTop(d,r)`, all arbitrary-`d`. Reuses the arbitrary-`d`
-  fibration/codim-shift content rather than the monotone sweep chart (`[IsAlgClosed]` + `Type 0` remain;
-  `Monotone d` goes). The **rank-locus** arbitrary-`d` count is itself *one stated corollary away*: compose
-  the three existing arbitrary-`d` inputs (`numTop_eq_ncard_topComponents` + perm-invariance +
-  `numTop_eq_cTheta_comp_sort`).
+### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` — ✅ **CLOSED** (expedition `rlct-foundation`, 2026-07-06)
+- **Was:** `#comp(mult⁻¹(B)) = cTheta(d−r)` proved **only for `Monotone d`**
+  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart).
+- **Now (arbitrary `d`):** `Core.FibreThetaCountUnconditional.ncard_topDimMinPrimes_fibre_eq_numTop`
+  (+`_of_rank`) — the fibre top-dim component count `= numTop d r` for arbitrary `d`; and the closed form
+  `Core.CThetaSortClosedForm` → `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` (+`_of_rank`)
+  `= cTheta((d∘Tuple.sort d) − r)`. The **only** added hypothesis is the rank-feasibility `hr : ∀ i, r ≤ d i`
+  (disclosed); `Monotone d` is **gone**. Under `Monotone d` the sort recovers the old `cTheta(d−r)` headline.
+  Non-vacuity: witnesses on the non-monotone `d = ![1,2,1]` (`decide`, over `AlgebraicClosure ℚ`) — a vector
+  unstatable under the old gate. The *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` was already arbitrary-`d`
+  (`numTop_eq_ncard_topComponents`).
+- **Route (as this section predicted):** the Monotone-free `numTop_comp_sort` reroute + the already-landed
+  perm-invariance (no new cite; the anticipated *geometric* fibration transfer was **not** needed —
+  perm-invariance sufficed once the count chain was traced to be `Monotone`-free but for one cosmetic E0 step).
+  `[IsAlgClosed]` + `Type 0` remain — those are Gap 2, not this gap.
 
 ### Gap 2 — field generality (an *unrealized* generality, not a mathematical restriction)
 The algebraic theorems carry `[CharZero] [Infinite]` (codim), plus `[IsAlgClosed]` + universe `Type 0`

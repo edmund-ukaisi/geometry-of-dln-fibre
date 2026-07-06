@@ -108,6 +108,28 @@ where a cite could otherwise land unmonitored:
 3. **MANIFEST** (`--manifest`) — the per-source cite map, derived from the same `@[cited]` sources
    (informational; exit 0).
 
+### Scope of the checks (honest boundary)
+
+The **UNACCOUNTED** check is transitively complete for any covered root: the kernel tracks every axiom a
+covered declaration depends on, through *any* namespace (a cite hidden in `Matrix`/`Ideal`/… is caught the
+moment a `DLNFibre`/`RLCT` declaration uses it). But the **LOCATION + TAG** check and the **audit roots** are
+scoped by the namespace-prefix allowlist (`Config.nsPrefixes`, default `#[DLNFibre, RLCT]`). Consequences to
+be honest about:
+
+- The repo's other **first-party Mathlib-mirror namespaces** — `Matrix`, `Ideal`, `MvPolynomial`, `Aoyagi`,
+  … (modules under `DLNFibre/**` whose declarations live in a Mathlib-overlapping bare namespace) — are **not**
+  audit roots and are **not** subject to the location check. They are covered only **transitively** (via a
+  covered consumer). A `@[cited]` axiom placed directly in one of them, with no covered consumer, would evade
+  the quarantine-location invariant; a stray untagged axiom there is caught only if something covered uses it.
+  They are excluded because a bare `Matrix`/`Ideal` prefix would also sweep in Mathlib itself.
+- Today this is a **latent, unexploited** gap: a full-tree sweep confirms the only cites in the repo are the
+  covered three. The gate is correct *as run*; the advertised invariant is just weaker than a naive reading of
+  "every axiom is located" suggests.
+- **Roadmapped tightening: module-provenance scoping** — key the location/root checks on a declaration's
+  *source module* (`DLNFibre/**`) rather than its namespace prefix. That covers the Mathlib-mirror namespaces
+  without catching upstream Mathlib, closing the gap regardless of namespace. Adopt it if a cite ever needs to
+  live in one of those namespaces.
+
 ## The tooling
 
 | tool | what it is | when |
