@@ -9,7 +9,7 @@ sorry-free. The reusable analytic bedrock under the DLN `rlct = ½·codim` payof
 > at `0` is `rlctAt Q 0 = C/2`.
 >
 > - **Lean:** `RLCT.rlctAt_sumSq`
->   (`lean/DLNFibre/Core/Analysis/RLCT/SumSq.lean` @ `c34fa3ec`)
+>   (`lean/DLNFibre/Core/Analysis/RLCT/SumSq.lean` @ `0ad31152`)
 > - **Gloss.** With `sumSq C : (Fin C → ℝ) → ℝ := fun y ↦ ∑ i, (y i)^2` and the cite-free local RLCT
 >   `rlctAt K x = sSup (localAdmissibleExponents K x)` (Local.lean), the hypothesis `1 ≤ C` gives
 >   `rlctAt (sumSq C) 0 = (C : ℝ) / 2`.
