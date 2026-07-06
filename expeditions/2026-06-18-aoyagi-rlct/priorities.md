@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry same-radius product readback
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_readback_le_valueReference_restrict_domain
+```
+
+Decision: add the same-radius readback domination corollary for the reduced
+p.13 selected-entry product-coordinate pushforward.  The theorem reuses the
+same p.13 radius that supplies both the product-coordinate readback package and
+the selected-entry pushforward equality.  It feeds that equality into the
+generic source-side readback handoff with density `1`, so every measurable
+chart piece satisfies:
+
+```text
+AEMeasurable productReadback
+  ((map selectedEntryProductChart selectedEntrySource).restrict chartPiece)
+
+map productReadback
+  ((map selectedEntryProductChart selectedEntrySource).restrict chartPiece)
+  <= valueReference.restrict domain
+```
+
+Boundary: this is reduced selected-entry product-chart measure/readback
+bookkeeping only.  It does not identify formal-product Haar, determinant/raw
+Haar, original prior, source/product-coordinate transport for an external
+prior, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-readback-same-radius.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, direct axiom probe, and xhigh read-only review.
+The new declaration reports only `[propext, Classical.choice, Quot.sound]`.
+Reviewer `Harvey` passed the naming/scope audit and highlighted the residual
+risk that `Rbox` remains unconstrained, so this theorem is intentionally a
+bookkeeping domination statement and not a nonempty/positive-mass statement.
+
 ## Latest controller decision - 2026-07-06, Case 2 concrete inverse-density endpoint-cardinality wrappers
 
 Lean now has:
