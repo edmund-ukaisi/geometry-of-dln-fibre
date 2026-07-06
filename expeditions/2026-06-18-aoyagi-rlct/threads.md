@@ -16,6 +16,16 @@
 | 07-review-hardener | review/hardener | pending | Fidelity, precision, source, and bedrock pass over broad theorems and final assembly. |
 | 08-reproduction-checks | pen-and-paper/review | pending | Standing gate. Completed first block/product (`Ramanujan`), blow-up (`Copernicus`), and arithmetic-tail (`Planck`) checks, but every new substantial source calculation still needs its own reproduction artifact and independent checker verdict before formalisation. |
 
+## Recent addenda
+
+- 2026-07-03, Thread 03: p.13 original-prior density now has a
+  product-coordinate local-bounds bridge.  Continuity and positivity of the
+  original density at the self-base p.13 product-coordinate value give local
+  nonnegativity and an upper bound for `phi(CedgeProd (x,u))` after shrinking
+  the regular-coordinate radius below any supplied positive cap.  This is a
+  finite-integral socket input only; no measure transport, source-image
+  equality, source coverage, normal crossings, pole order, or RLCT is claimed.
+
 ## Execution notes
 
 - Run expedition work from

@@ -10,6 +10,40 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 p.13 product-coordinate prior-density local bounds - 2026-07-03
+
+- **Statement.** For the explicit self-base p.13 product-coordinate edge-family
+  map `CedgeProd`, if an original density `phi` is continuous and positive at
+  `CedgeProd (x0,0)`, then for every `Rmax > 0` there are `R,C` with
+  `0 < R`, `R <= Rmax`, and `0 <= C` such that eventually along
+  `nhdsWithin x0 source`, every regular coordinate `u` in `ball(0,R)` satisfies
+  `0 <= phi(CedgeProd (x,u))` and `phi(CedgeProd (x,u)) <= C`.
+- **Tier.** A2 p.13 product-coordinate density-bound socket for finite-integral
+  handoffs.
+- **Status.** Lean proved as a filter-level local-bounds theorem.
+- **Kill-condition.** The result is read as a chart-piece a.e. domination
+  theorem, change-of-variables formula, original-prior pushforward or pullback
+  theorem, determinant/raw Haar transport, source-image identity, source
+  coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.5 Definition 1 prior-density setup, p.8 smooth
+  positive prior assumption, and p.13 product-coordinate variables; the proof
+  is elementary continuity/local-boundedness topology.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-p13-product-coordinate-prior-density-local-bounds.md`.
+- **Reproduction check.** Xhigh source explorer `Sagan the 4th` and xhigh Lean
+  API explorer `Huygens the 4th` both identified this local-bounds theorem as
+  the right next socket and explicitly rejected a measure-transport reading.
+- **Lean target.**
+  `exists_pos_radius_le_eventually_nhdsWithin_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_bounds_of_continuousAt_pos`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean`.
+- **Proved.** Focused Lean file check, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probe passed.  Axiom footprint:
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No chart-piece a.e. domination, no source-prior measure
+  transport, no source-image equality, no source coverage, no determinant/raw
+  Haar transport, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 endpoint-density prior readback finite-integral transfer - 2026-07-03
 
 - **Statement.** In the enlarged with-following Case 2 source chart, endpoint

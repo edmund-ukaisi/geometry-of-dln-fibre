@@ -94,6 +94,75 @@ theorem continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoor
   exact ⟨hdensity_cont.comp hCedgeProd, hdensity_pos⟩
 
 set_option linter.unusedSectionVars false in
+/-- Pulling a positive continuous original density back along the explicit
+self-base p.13 product-coordinate edge-family map gives the local
+nonnegativity and upper-bound hypotheses consumed by the local finite-integral
+sockets, after shrinking the regular-coordinate radius below a supplied cap.
+
+This is still only a pointwise/topological density bound.  It does not prove a
+measure change-of-variables formula or original-prior transport through the
+product-coordinate map. -/
+theorem exists_pos_radius_le_eventually_nhdsWithin_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_bounds_of_continuousAt_pos
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    {source : Set α}
+    {density :
+      (∀ p : Fin (M + 2),
+        reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ) → ℝ}
+    {Rmax : ℝ} :
+    let Coord :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        V Bv U₀ hU₀ CedgeBase
+    ContinuousAt density
+      (CedgeProd (x₀, (0 : EuclideanSpace ℝ Coord))) →
+      0 < density (CedgeProd (x₀, (0 : EuclideanSpace ℝ Coord))) →
+        0 < Rmax →
+          ∃ R C : ℝ, 0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧
+            (∀ᶠ x in nhdsWithin x₀ source,
+              ∀ u : EuclideanSpace ℝ Coord,
+                u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+                  0 ≤ density (CedgeProd (x, u))) ∧
+            (∀ᶠ x in nhdsWithin x₀ source,
+              ∀ u : EuclideanSpace ℝ Coord,
+                u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+                  density (CedgeProd (x, u)) ≤ C) := by
+  intro Coord CedgeProd hdensity_cont hdensity_pos hRmax
+  rcases
+      continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (u₀ := (0 : EuclideanSpace ℝ Coord))
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+        (density := density) hdensity_cont hdensity_pos with
+    ⟨hcomp_cont, hcomp_pos⟩
+  simpa [CedgeProd, Coord] using
+    exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
+      (α := α) (E := EuclideanSpace ℝ Coord)
+      (density := fun z : α × EuclideanSpace ℝ Coord ↦ density (CedgeProd z))
+      (x₀ := x₀) (s := source) (Rmax := Rmax)
+      hcomp_cont hcomp_pos hRmax
+
+set_option linter.unusedSectionVars false in
 /-- Local-source p.13 finite-integral handoff for the original
 square-Frobenius `lossDLN` of a chain-coordinate tuple.
 

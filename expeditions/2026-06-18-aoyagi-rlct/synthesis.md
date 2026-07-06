@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Product-Coordinate Prior-Density Local Bounds - 2026-07-03
+
+Lean now has:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_bounds_of_continuousAt_pos
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+The calculation is:
+
+```text
+Phi(x,u) = phi(CedgeProd(x,u)).
+
+If CedgeProd is continuous at (x0,0), phi is continuous at
+CedgeProd(x0,0), and 0 < phi(CedgeProd(x0,0)), then Phi is continuous and
+positive at (x0,0).
+
+For every Rmax > 0, there are R and C with
+0 < R, R <= Rmax, 0 <= C, and eventually along nhdsWithin x0 source:
+
+  u in ball(0,R) -> 0 <= Phi(x,u)
+  u in ball(0,R) -> Phi(x,u) <= C.
+```
+
+This discharges the local nonnegativity and upper-bound density hypotheses
+for a p.13 product-coordinate density that is an original prior density
+composed with the explicit self-base product-coordinate edge-family map.
+Compact support is not used for this local bound; continuity and base
+positivity suffice.
+
+Boundary: no change-of-variables formula, no original-prior measure
+transport, no chart-piece a.e. domination theorem, no source-image identity,
+no source coverage, no determinant/raw Haar transport, no normal crossings,
+pole order, or RLCT.
+
+Verification passed: focused Lean check of `OriginalLossLocalMeasure.lean`;
+focused module build `DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure`; full
+local `lake build DLNFibre`; `lean/scripts/sorries`; `git diff --check`; and
+direct axiom probe, reporting `[propext, Classical.choice, Quot.sound]`.
+Xhigh pre-implementation source/API probes `Sagan the 4th` and `Huygens the
+4th` both selected this local-bounds socket and explicitly rejected a
+measure-transport reading.  A post-implementation xhigh review attempt failed
+because the agent backend credentials were expired; controller read-through
+found no formalisation or scope issue.
+
 ## A2 p.13 Product-Coordinate Prior-Density Continuity - 2026-07-03
 
 Lean now has:

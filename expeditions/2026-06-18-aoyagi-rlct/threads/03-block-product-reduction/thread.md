@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-03 A2 p.13 product-coordinate prior-density local bounds
+
+Reproduction:
+`reproduction-a2-p13-product-coordinate-prior-density-local-bounds.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+Lean now has:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_bounds_of_continuousAt_pos
+```
+
+This turns original-density continuity and positivity at the base edge-family
+value into the local nonnegativity and upper-bound hypotheses consumed by the
+p.13 product-coordinate finite-integral sockets, after shrinking the regular
+coordinate radius below any supplied positive cap.
+
+Boundary: no measure transport, no chart-piece a.e. domination, no source-image
+identity, no source coverage, no determinant/raw Haar transport, normal
+crossings, pole order, or RLCT.
+
+Verification: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, and direct axiom
+probe `[propext, Classical.choice, Quot.sound]` passed.  Xhigh source/API
+probes agreed this is the right local-bounds socket and not a measure-transport
+theorem.
+
 ## 2026-07-03 A2 p.13 product-coordinate prior-density continuity
 
 Reproduction:

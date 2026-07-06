@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-03, p.13 product-coordinate prior-density local bounds
+
+Lean now has:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_bounds_of_continuousAt_pos
+```
+
+Decision: use the just-landed p.13 product-coordinate density continuity
+bridge plus the existing generic local-density-bound helper to discharge the
+finite-integral socket hypotheses:
+
+```text
+u in ball(0,R) -> 0 <= phi(CedgeProd(x,u))
+u in ball(0,R) -> phi(CedgeProd(x,u)) <= C
+```
+
+eventually along `nhdsWithin x0 source`, for some `0 < R <= Rmax` and
+`0 <= C`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-product-coordinate-prior-density-local-bounds.md
+```
+
+Boundary: this is local pointwise bounded-density topology only.  It does not
+prove a change-of-variables formula, original-prior measure transport,
+chart-piece a.e. domination, source-image identity, source coverage,
+determinant/raw Haar transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check; focused module build; full local
+`lake build DLNFibre`; no-sorry audit; whitespace check; and direct axiom
+probe `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-03, p.13 product-coordinate prior-density continuity
 
 Lean now has:
