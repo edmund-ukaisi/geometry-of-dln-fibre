@@ -1915,6 +1915,405 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Local-domain selected-entry readback domination for an explicitly
+supported source piece.
+
+The local source set and regular-coordinate set are supplied as hypotheses.
+The theorem only uses the selected-entry chart-produced product measure on
+that supported piece; it does not identify an original prior density, Haar
+transport, normal crossings, pole order, or RLCT. -/
+theorem exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_readback_le_smul_localValueReference_restrict_localDomain
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun value ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀
+          (retainedData
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+              pivotNext value))
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          W₂ B₂ U₀ hU₀ sourceChart
+      let source : Set (center → ℝ) :=
+        {value | value pivotNext ≠ 0}
+      let residualCoordEquiv :
+          AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ≃ center :=
+        case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+          n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+      let baseReadback :
+          (AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) → ℝ) →
+            center → ℝ :=
+        fun coord i ↦ coord (residualCoordEquiv.symm i)
+      let productReadback : EdgeFamily → (center → ℝ) × EuclideanSpace ℝ Coord :=
+        fun E ↦
+          (baseReadback
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E),
+            (EuclideanSpace.equiv Coord ℝ).symm
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E))
+      ∀ (localSource : Set (center → ℝ))
+          (regularSet : Set (EuclideanSpace ℝ Coord)),
+        MeasurableSet localSource →
+          localSource ⊆ source →
+          MeasurableSet regularSet →
+          regularSet ⊆ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+          let localRegularMeasure :=
+            (volume : Measure (EuclideanSpace ℝ Coord)).restrict regularSet
+          let localValueImage :=
+            SelectedEntrySignedBox.CenterCoord.chartMap pivotNext '' localSource
+          let localDomain := localValueImage ×ˢ regularSet
+          let localSelectedEntrySource :=
+            ((((volume : Measure (center → ℝ)).restrict localSource).withDensity
+              (fun y : center → ℝ =>
+                ENNReal.ofReal
+                  (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))).prod
+              localRegularMeasure)
+          let selectedEntryProductChart :
+              (center → ℝ) × EuclideanSpace ℝ Coord → EdgeFamily :=
+            fun z ↦
+              CedgeProd
+                (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1, z.2)
+          let localValueReference :=
+            ((volume : Measure (center → ℝ)).restrict localValueImage).prod
+              localRegularMeasure
+          ∀ (density : EdgeFamily → ℝ≥0∞) (c : ℝ≥0∞),
+            AEMeasurable density
+              (Measure.map CedgeProd
+                (localValueReference.restrict localDomain)) →
+            (∀ z ∈ localDomain, density (CedgeProd z) ≤ c) →
+            AEMeasurable productReadback
+              (Measure.map selectedEntryProductChart
+                (localSelectedEntrySource.withDensity
+                  (fun z ↦ density (selectedEntryProductChart z)))) ∧
+            Measure.map productReadback
+              (Measure.map selectedEntryProductChart
+                (localSelectedEntrySource.withDensity
+                  (fun z ↦ density (selectedEntryProductChart z)))) ≤
+              c • localValueReference.restrict localDomain := by
+  intro center pivotNext EdgeFamily retainedData sourceChart
+  let source : Set (center → ℝ) :=
+    {value | value pivotNext ≠ 0}
+  let residualCoordEquiv :
+      AoyagiResidualBlockCoordinateIndex
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) ≃ center :=
+    case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+      n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+  let baseReadback :
+      (AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0) → ℝ) →
+        center → ℝ :=
+    fun coord i ↦ coord (residualCoordEquiv.symm i)
+  have hsource : MeasurableSet source := by
+    simpa [source] using
+      SelectedEntrySignedBox.CenterCoord.measurableSet_pivot_ne_zero pivotNext
+  have hsourceChart_direct :
+      Continuous
+        (fun yNext : center → ℝ ↦
+          paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+            W₂ B₂ U₀ hU₀ (retainedData yNext)) := by
+    simpa [center, EdgeFamily, retainedData] using
+      continuous_retainedPassiveP13SourceEdgeFamilyOfData_of_case2EndpointTransport
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+  have hCedgeBase :
+      ∀ value ∈ source, ContinuousAt sourceChart value := by
+    intro value hvalue
+    have hpre :
+        ContinuousAt
+          (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext)
+          value :=
+      SelectedEntrySignedBox.CenterCoord.continuousAt_preimageOfPivotNeZero
+        pivotNext (by simpa [source] using hvalue)
+    simpa [sourceChart] using
+      hsourceChart_direct.continuousAt.comp hpre
+  have hchart :
+      ∀ value ∈ source, ∀ (p : Fin 2)
+          (hpj : p.succ ≤ (Fin.last 2 : Fin 3)),
+        identityCornerDetChart
+          (ChartLocalSuffixState.transformedEdge
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+              (fun q : Fin 2 ↦
+                (sourceChart value q :
+                  reverseVertex W₂ q.castSucc →ₗ[ℝ] reverseVertex W₂ q.succ))) p
+            (ChartLocalSuffixState.suffixState
+              (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+                (fun q : Fin 2 ↦
+                  (sourceChart value q :
+                    reverseVertex W₂ q.castSucc →ₗ[ℝ] reverseVertex W₂ q.succ)))
+              (Fin.last 2) p.succ hpj)) := by
+    intro value _hvalue p hpj
+    have hpre :
+        sourceChart value ∈
+          paperEndpointFixedBaseRetainedPassiveP13LocalSource
+            W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) := by
+      have hlocal :=
+        (retainedPassiveP13LocalSource_mem_and_sourceReadback_residualFactorProduct_eq_matrix_of_case2EndpointTransport_sourceEdgeFamilyOfData
+          W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e).1
+          (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+            pivotNext value)
+      simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart] using
+        hlocal
+    have hrecursive :
+        ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData.sourceRecursiveDetChart
+          (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+            (fun q : Fin 2 ↦
+              (sourceChart value q :
+                reverseVertex W₂ q.castSucc →ₗ[ℝ] reverseVertex W₂ q.succ))) := by
+      simpa [paperEndpointFixedBaseRetainedPassiveP13LocalSource] using hpre
+    exact hrecursive p hpj
+  have hbaseReadback :
+      ∀ value ∈ source,
+        baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart value) =
+          value := by
+    intro value hvalue
+    funext i
+    have hresidual_id :
+        paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+            (fun E : EdgeFamily ↦ E) (sourceChart value) =
+          paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart value :=
+      paperEndpointFixedBaseResidualBlockCoordinateMap_congr_point
+        (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+        (Cedge := fun E : EdgeFamily ↦ E) (Cedge' := sourceChart)
+        (x := sourceChart value) (y := value) rfl
+    have hcoord :=
+      paperEndpointFixedBaseResidualBlockCoordinateMap_eq_selectedEntryCenter_value_of_case2EndpointTransport_sourceEdgeFamilyOfData_preimageOfPivotNeZero
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        value (by simpa [source] using hvalue) (residualCoordEquiv.symm i)
+    calc
+      baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart value) i =
+          paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ sourceChart value
+            (residualCoordEquiv.symm i) := by
+            rfl
+      _ =
+          paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+            (sourceChart value) (residualCoordEquiv.symm i) := by
+            rw [← congrFun hresidual_id (residualCoordEquiv.symm i)]
+      _ = value (residualCoordEquiv (residualCoordEquiv.symm i)) := by
+            simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart,
+              residualCoordEquiv] using hcoord
+      _ = value i := by
+            exact congrArg value (residualCoordEquiv.apply_symm_apply i)
+  rcases
+      exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+        (M := 0) W₂ B₂ U₀ hU₀ sourceChart (source := source) (Rmax := Rmax)
+        hsource hRmax hCedgeBase hchart baseReadback hbaseReadback with
+    ⟨R, hR, hRle, hpackage⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord CedgeProd source' residualCoordEquiv' baseReadback'
+    productReadback localSource regularSet hlocalSource_meas hlocalSource_sub
+    hregularSet_meas hregularSet_sub localRegularMeasure localValueImage
+    localDomain localSelectedEntrySource selectedEntryProductChart localValueReference
+    density c hdensity hbound
+  let fullDomain : Set ((center → ℝ) × EuclideanSpace ℝ Coord) :=
+    source' ×ˢ Metric.ball (0 : EuclideanSpace ℝ Coord) R
+  have hpackage' :
+      (∀ z ∈ fullDomain, productReadback (CedgeProd z) = z) ∧
+        Set.InjOn CedgeProd fullDomain ∧
+          ContinuousOn CedgeProd fullDomain ∧
+            (∀ thetaMeasure : Measure ((center → ℝ) × EuclideanSpace ℝ Coord),
+              AEMeasurable CedgeProd (thetaMeasure.restrict fullDomain)) ∧
+              MeasurableSet (CedgeProd '' fullDomain) ∧
+                ∀ E ∈ CedgeProd '' fullDomain,
+                  productReadback E ∈ fullDomain ∧ CedgeProd (productReadback E) = E := by
+    simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart, source,
+      residualCoordEquiv, baseReadback, ρ, κ, Coord, CedgeProd, productReadback,
+      fullDomain, residualCoordEquiv', baseReadback'] using hpackage
+  rcases hpackage' with ⟨hleft, hinj, hcont_prod, _haemeas_prod, _himage_prod, _hright⟩
+  have hdomain : MeasurableSet fullDomain := by
+    simpa [fullDomain, source'] using
+      hsource.prod
+        (Metric.isOpen_ball.measurableSet :
+          MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R))
+  have hlocalValueImage_meas : MeasurableSet localValueImage := by
+    simpa [localValueImage, source] using
+      SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_of_subset_pivot_ne_zero
+        pivotNext hlocalSource_meas hlocalSource_sub
+  have hlocalValueImage_subset_source : localValueImage ⊆ source' := by
+    intro value hvalue
+    rcases hvalue with ⟨y, hy, rfl⟩
+    exact
+      (SelectedEntrySignedBox.CenterCoord.chartMap_mem_pivot_ne_zero_iff pivotNext y).2
+        (by simpa [source] using hlocalSource_sub hy)
+  have hlocalDomain : MeasurableSet localDomain := by
+    simpa [localDomain] using hlocalValueImage_meas.prod hregularSet_meas
+  have hlocalDomain_sub_domain : localDomain ⊆ fullDomain := by
+    intro z hz
+    exact ⟨hlocalValueImage_subset_source hz.1, hregularSet_sub hz.2⟩
+  have hlocalValueReference_support_local :
+      localValueReference.restrict localDomain = localValueReference := by
+    have hleft_ae :
+        ∀ᵐ value ∂(volume : Measure (center → ℝ)).restrict localValueImage,
+          value ∈ localValueImage := by
+      exact ae_restrict_mem hlocalValueImage_meas
+    have hright_ae :
+        ∀ᵐ u ∂localRegularMeasure, u ∈ regularSet := by
+      simpa [localRegularMeasure] using
+        (ae_restrict_mem hregularSet_meas :
+          ∀ᵐ u ∂(volume : Measure (EuclideanSpace ℝ Coord)).restrict regularSet,
+            u ∈ regularSet)
+    have hmem : ∀ᵐ z ∂localValueReference, z ∈ localDomain := by
+      rw [Measure.ae_prod_mem_iff_ae_ae_mem hlocalDomain]
+      filter_upwards [hleft_ae] with value hvalue
+      filter_upwards [hright_ae] with u hu
+      exact ⟨hvalue, hu⟩
+    exact Measure.restrict_eq_self_of_ae_mem hmem
+  have hlocalValueReference_support_domain :
+      localValueReference.restrict fullDomain = localValueReference := by
+    have hmem_local : ∀ᵐ z ∂localValueReference, z ∈ localDomain := by
+      rw [← hlocalValueReference_support_local]
+      exact ae_restrict_mem hlocalDomain
+    exact Measure.restrict_eq_self_of_ae_mem
+      (hmem_local.mono fun z hz ↦ hlocalDomain_sub_domain hz)
+  have hcont_local : ContinuousOn CedgeProd localDomain :=
+    hcont_prod.mono hlocalDomain_sub_domain
+  have hinj_local : Set.InjOn CedgeProd localDomain :=
+    hinj.mono hlocalDomain_sub_domain
+  have hleft_local : ∀ z ∈ localDomain, productReadback (CedgeProd z) = z :=
+    fun z hz ↦ hleft z (hlocalDomain_sub_domain hz)
+  have hCedgeProd_localReference :
+      AEMeasurable CedgeProd localValueReference := by
+    exact
+      aemeasurable_of_continuousOn_of_measure_restrict_eq_self
+        (sourceChart := CedgeProd) (μ := localValueReference) (V := fullDomain)
+        hcont_prod hdomain hlocalValueReference_support_domain
+  have hdensity_value :
+      AEMeasurable density (Measure.map CedgeProd localValueReference) := by
+    simpa [hlocalValueReference_support_local] using hdensity
+  have hweighted :=
+    SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity_of_subset_pivot_ne_zero
+      (β := EuclideanSpace ℝ Coord) (γ := EdgeFamily)
+      pivotNext hlocalSource_meas.nullMeasurableSet
+      (by simpa [source] using hlocalSource_sub) localRegularMeasure
+      (F := CedgeProd) (density := density)
+      hCedgeProd_localReference hdensity_value
+  have heq :
+      (Measure.map selectedEntryProductChart
+        (localSelectedEntrySource.withDensity
+          (fun z ↦ density (selectedEntryProductChart z)))).restrict Set.univ =
+        (Measure.map CedgeProd
+          ((localValueReference.withDensity
+            (fun z ↦ density (CedgeProd z))).restrict localDomain)).restrict
+          Set.univ := by
+    calc
+      (Measure.map selectedEntryProductChart
+        (localSelectedEntrySource.withDensity
+          (fun z ↦ density (selectedEntryProductChart z)))).restrict Set.univ =
+          (Measure.map CedgeProd
+            (localValueReference.withDensity
+              (fun z ↦ density (CedgeProd z)))).restrict Set.univ := by
+            rw [hweighted]
+      _ =
+          (Measure.map CedgeProd
+            ((localValueReference.withDensity
+              (fun z ↦ density (CedgeProd z))).restrict localDomain)).restrict
+            Set.univ := by
+            rw [restrict_withDensity hlocalDomain, hlocalValueReference_support_local]
+  have hCedgeProd_local :
+      AEMeasurable CedgeProd (localValueReference.restrict localDomain) :=
+    hcont_local.aemeasurable hlocalDomain
+  have hlocalImage_meas : MeasurableSet (CedgeProd '' localDomain) := by
+    let CedgeLocal : localDomain → EdgeFamily := localDomain.restrict CedgeProd
+    have hlocalEmbedding : MeasurableEmbedding CedgeLocal :=
+      hcont_local.measurableEmbedding hlocalDomain hinj_local
+    simpa [CedgeLocal, Set.range, Set.image] using
+      hlocalEmbedding.measurableSet_range
+  have hmap_mem :
+      ∀ᵐ E ∂Measure.map CedgeProd (localValueReference.restrict localDomain),
+        E ∈ CedgeProd '' localDomain := by
+    have hpre :
+        ∀ᵐ z ∂localValueReference.restrict localDomain,
+          CedgeProd z ∈ CedgeProd '' localDomain := by
+      filter_upwards [ae_restrict_mem hlocalDomain] with z hz
+      exact ⟨z, hz, rfl⟩
+    exact (ae_map_iff hCedgeProd_local hlocalImage_meas).2 hpre
+  have hdensity_le :
+      ∀ᵐ E ∂(Measure.map CedgeProd
+          (localValueReference.restrict localDomain)).restrict Set.univ,
+        density E ≤ c := by
+    simpa only [Measure.restrict_univ] using
+      hmap_mem.mono fun E hE ↦ by
+        rcases hE with ⟨z, hz, rfl⟩
+        exact hbound z hz
+  have hreadback :=
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+      CedgeProd productReadback
+      (Measure.map selectedEntryProductChart
+        (localSelectedEntrySource.withDensity
+          (fun z ↦ density (selectedEntryProductChart z))))
+      localValueReference localDomain localDomain Set.univ density c
+      hlocalDomain MeasurableSet.univ (fun z hz ↦ hz)
+      hcont_local hinj_local hleft_local hdensity heq hdensity_le
+  simpa only [Measure.restrict_univ] using hreadback
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Same-radius readback domination for the selected-entry product-coordinate
 pushforward.
 

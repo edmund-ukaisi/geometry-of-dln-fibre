@@ -13281,6 +13281,45 @@ theorem, no source-image coverage, no source-rank coverage, no original
 source-prior transport, no scalar normalization, no normal crossings, no pole
 order, and no RLCT extraction.
 
+Latest A2 selected-entry local-domain product readback:
+`SelectedEntrySignedBoxMeasure.lean` proves the arbitrary-local-source
+selected-entry chart image and weighted product pushforward helpers
+
+```text
+SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_restrict_image_prod_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity_of_subset_pivot_ne_zero
+```
+
+and `RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean` proves
+
+```text
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+Reproduction:
+`threads/03-block-product-reduction/reproduction-a2-selected-entry-local-source-product-pushforward.md`.
+
+Ledger status: for any measurable local selected-entry source contained in
+the nonzero-pivot locus and any measurable regular-coordinate set contained
+in the returned radius ball, the selected-entry weighted product source
+pushes to the local value-reference product measure.  A pointwise bound on an
+edge-family density over `localDomain` gives a.e. readback measurability and
+readback domination by `c * localValueReference.restrict localDomain`.  The
+proof uses the generic p.13 readback package on the full radius domain and
+then restricts the lower-level handoff to `V = localDomain`.
+
+Focused elaboration, focused module builds for both touched modules, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+marker scan, direct axiom probes, and xhigh read-only API review passed.  The
+direct axiom probes report only `[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: no original prior/source-prior transport, no raw Haar or
+determinant Haar theorem, no source coverage, no source-rank coverage, no
+global bound over the whole punctured chart image, no normal crossings, no
+pole order, and no RLCT extraction.
+
 Latest A2 original-volume readback domination from reverse raw-source
 domination: `RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean`
 proves

@@ -23061,3 +23061,42 @@ the source theorem's `V` as the outer `G` for the prior-transfer theorem.
 Endpoint-density, source-density lower, and prior-density upper hypotheses
 must remain explicit until separate determinant/source COV work discharges
 them.
+
+## Latest controller decision - 2026-07-06, selected-entry local-domain product readback
+
+The supported local selected-entry product-coordinate handoff has landed:
+
+```text
+SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_restrict_image_prod_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity_of_subset_pivot_ne_zero
+
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+This is the honest local-source version of the selected-entry product
+pushforward/readback layer.  The theorem takes explicit measurable
+`localSource subset {value | value pivotNext != 0}` and measurable
+`regularSet subset ball(0,R)`, forms
+`localDomain = chartMap pivotNext '' localSource x regularSet`, and pulls a
+pointwise density bound on that local product domain through the p.13
+readback.  It uses the lower-level `V = localDomain` readback bridge, not a
+global punctured-box bound.
+
+Recorded reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-selected-entry-local-source-product-pushforward.md
+```
+
+Verification passed through focused elaboration, focused module builds for
+both touched modules, full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, marker scan, direct axiom probes, and xhigh read-only API
+review (`Chandrasekhar`).  The axiom probes report only
+`[propext, Classical.choice, Quot.sound]`.
+
+Next priority: feed this supported local-domain handoff with a concrete local
+density/source piece.  Do not promote it to original-prior transport: it still
+does not prove raw Haar, determinant Haar, source coverage, source-rank
+coverage, normal crossings, pole order, or RLCT extraction.

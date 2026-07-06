@@ -26,6 +26,15 @@
   source-image coverage, image measurability, product-coordinate measure
   transport, original-prior transport, normal crossings, pole order, or RLCT.
 
+- 2026-07-06, Thread 03: supported selected-entry local-domain product
+  readback landed.  The selected-entry source chart now has arbitrary
+  measurable local-source pushforward helpers, and the Case 2 product handoff
+  accepts explicit `localSource` and `regularSet` pieces supported inside the
+  nonzero-pivot source and returned radius ball.  A pointwise density bound on
+  `localDomain` pulls back to domination by the local value-reference product
+  measure.  This is not original-prior transport, raw/determinant Haar,
+  source coverage, source-rank coverage, normal crossings, pole order, or RLCT.
+
 - 2026-07-06, Thread 03: with-following same-shrink p.13/readback contract
   landed.  The formal-product/source-image contract can now be returned on a
   local `V` that also satisfies

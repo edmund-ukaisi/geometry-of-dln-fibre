@@ -16592,3 +16592,44 @@ the reverse raw-source domination, raw-Haar identification, raw-Haar
 pushforward, determinant-chart Haar transport, source-image coverage,
 source-rank coverage, original source-prior transport, scalar normalization,
 normal crossings, pole order, or RLCT.
+
+## 2026-07-06 - Selected-Entry Local-Domain Product Readback
+
+Status: Proved in Lean and locally verified.
+
+Claim: for the endpoint-transported Case 2 selected-entry product-coordinate
+chart, any measurable local source set inside the nonzero-pivot locus and any
+measurable regular-coordinate set inside the returned radius ball support a
+local weighted selected-entry product pushforward.  If an edge-family density
+is a.e. measurable on the local chart-produced image reference and is
+pointwise bounded by `c` on the local product domain, then the product
+readback of the weighted selected-entry image measure is dominated by
+`c` times the local value-reference product measure.
+
+Lean witnesses:
+
+```text
+SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_restrict_image_prod_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_eq_map_restrict_image_prod_of_aemeasurable_of_subset_pivot_ne_zero
+SelectedEntrySignedBox.CenterCoord.map_comp_prod_chartMap_id_restrict_withDensity_sourceDensity_withDensity_comp_eq_map_restrict_image_prod_withDensity_of_subset_pivot_ne_zero
+
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+Kill conditions: using the theorem with a local source not contained in the
+nonzero-pivot locus; replacing the explicit local-domain pointwise bound by a
+global claim near the pivot hyperplane; reading the selected-entry
+chart-produced measure as original prior or Haar transport; or dropping the
+regular-set support inside the chosen radius ball.
+
+Current check: focused elaboration, focused module builds for both touched
+modules, full local `lake build DLNFibre`, `lean/scripts/sorries`,
+`git diff --check`, marker scan, direct axiom probes, and xhigh read-only API
+review passed.  The direct axiom probes reported only
+`[propext, Classical.choice, Quot.sound]`.
+
+Boundary: this is a supported local product-coordinate measure/readback
+handoff.  It does not prove original prior/source-prior transport, raw Haar,
+determinant Haar, source coverage, source-rank coverage, normal crossings,
+pole order, or RLCT extraction.
