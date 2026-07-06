@@ -7,11 +7,17 @@ import DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer
 # `DLNFibre.DLN.RLCT.Validate.HeadlineL2Assembly` — the L = 2 headline ENDGAME scaffold
 
 This module SCAFFOLDS the `L = 2` instance of the headline
-`aoyagi_learning_coefficient` (`Skeleton.lean:1725`) from the L = 2-banked rungs, so that the day
-its remaining open leaf lands the headline closes in one step. It does NOT edit `Skeleton.lean`
-(single-writer); it states the `L = 2` headline as its own theorem `aoyagi_learning_coefficient_L2`,
-assembled from the banked pieces (now including the landed R1 interface) + exactly ONE clearly-named,
-route-independent `sorry` leaf — the D1 wall.
+`aoyagi_learning_coefficient` (`Skeleton.lean:1725`) from the L = 2-banked rungs. It does NOT edit
+`Skeleton.lean` (single-writer); it states the `L = 2` headline as its own theorem
+`aoyagi_learning_coefficient_L2`, assembled from the banked pieces. As of the `genm-hAtV` tide BOTH
+leaves are WIRED: the R1 interface (`hR1_L2`) is landed, and the D1 `≥`-leg (`hD1ge_L2`) is now routed
+through the EXPLICIT-core producer `d1ge_L2_deepestPoint_via_explicit_core_genL`
+(`D1L2ExplicitCoreProducer`), which reduces the whole leg to the SINGLE crux `d1ge_L2_hAtV_explicit`
+(the Aoyagi Step-1 explicit block reduction — the sole remaining `sorry`, living in that module, NOT
+here). `aoyagi_learning_coefficient_L2` axioms = `[propext, sorryAx, Classical.choice, Quot.sound,
+monomial_rlct]` — `sorryAx` = the crux only; NO `hbox` (L = 2 closes unconditionally: the deepest
+value uses the banked hbox-free R1, and the D1 leg dominates the core by Aoyagi Theorem 4, never
+computing an `M'`-degraded value).
 
 ## STEP-0 finding (the honest dependency graph — TWO open leaves, not one)
 
@@ -48,11 +54,13 @@ exactly ONE named leaf:
      `r1_resolution_interface_L2_generic` (`R1ResolutionInterfaceL2.lean`): the sorry-free
      `IsRouteMCover` assembly (`L = 2` achiever box divergence + depth-2 box finiteness) ∘ the
      cover→rlct bridge ∘ the flat↔params transport ∘ the layer-atlas value lane.
-  2. **`hD1ge_L2`** — the D1 `≥`-leg ∀-`v` per-point slot at the front-pivoted `B'` (the ONLY
-     remaining open obligation: the per-`v` middle-stratum chart producer, which sequences on R1 but
-     is not closed by R1 alone).
+  2. **`hD1ge_L2`** — the D1 `≥`-leg ∀-`v` per-point slot at the front-pivoted `B'`, now WIRED via
+     `d1ge_L2_deepestPoint_via_explicit_core_genL` (the corrected explicit-core route): the deepest
+     value (#44 + banked R1) + the Params-domain Aoyagi Theorem 4 (`core_zero_le_of_params`, PROVEN)
+     + the crux `d1ge_L2_hAtV_explicit` (the explicit Schur block reduction, the sole `sorry`).
 
-When `hD1ge_L2` lands, `aoyagi_learning_coefficient_L2` closes with no further work.
+When the crux `d1ge_L2_hAtV_explicit` lands, `aoyagi_learning_coefficient_L2` is sorry-free
+(clean-four `[propext, Classical.choice, Quot.sound, monomial_rlct]`).
 -/
 
 open MeasureTheory

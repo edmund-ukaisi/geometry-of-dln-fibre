@@ -172,18 +172,49 @@ theorem core_zero_le_of_params (M : Fin (L + 1) → ℕ) (P : Params M) :
 /-! ## The crux (SORRY): the explicit block-reduction producer -/
 
 /-- **The D1 `≥`-leg explicit-core producer (L = 2), the crux.** At a general optimal `v`
-(`prod H v = B`), Aoyagi's Step-1 explicit iterated corner-elimination block reduction lands the local
-RLCT of the loss at `v` on the EXPLICIT reduced core `dlnLoss (H − r) 0` at some explicit reduced-core
-point, plus the regular shift `nRegL2 H r / 2`:
+(`prod H v = B`), Aoyagi's Step-1 explicit corner-elimination block reduction lands the local RLCT of
+the loss at `v` on the EXPLICIT reduced core `dlnLoss (H − r) 0` at some explicit reduced-core point,
+plus the regular shift `nRegL2 H r / 2`:
 
     ∃ P : Params (H − r), nRegL2 H r / 2 + rlctAtOn (dlnLoss (H − r) 0) P ≤ rlctAt H (dlnLoss H B) v.
 
-The coordinate change is polynomial/rational (unit-Jacobian, germ-preserving), so — unlike the
-existence-only IFT inverse `Ψsymm` — it PRESERVES the higher-order germ that pins the RLCT value; the
-slice residual IS the explicit homogeneous core. This is the base case of the ∀-L Skeleton sorry
-`rlctAt_deepest_le_of_optimal` (same explicit-corner-elimination recursion), and is conditional on
-`hbox` exactly as R1 (`r1_resolution_general`) is — that enters via the core RLCT value, not as an
-axiom. -/
+TRUTH CONFIRMED (analytic, Codex xhigh + numeric, `genm-hAtV`, witness (4,4,4)/r=1, middle-stratum
+`v`): the explicit Schur reduction is EXACT and germ-preserving. Pick a common invertible `r×r` minor
+of the layers at `v` (exists since every partial product has `rank ≥ r`; front WLOG puts it top-left).
+Block `A0 = [[X,Y],[Z,W]]`, `A1 = [[S,T],[U,V]]`; on `{det X ≠ 0, det M11 ≠ 0}` (`Mᵢⱼ` the product
+blocks) the regular coordinates `p = (M11 − I, M12, M21)` (dimension `= nRegL2 H r`) separate, and the
+slice residual at `p = 0` is EXACTLY `‖A0red · A1red‖² = dlnLoss (H − r) 0 (A0red, A1red)`, with
+`A0red = W − Z X⁻¹ Y`, `A1red = V − U M11⁻¹ M12` the reduced `(H − r)`-core factors (Schur complement
+`M22 − M21 M11⁻¹ M12 = A0red A1red`, sympy-verified `‖Δ‖ ≈ 1e-15`). NO existence-only `Ψsymm`: the
+residual is polynomial in the entries + rational in `det X`, `det M11`. There is a genuine dimension
+gap (`flatDim − nReg − dimParams(H − r) = r(2 H1 − r)`, e.g. `7` at (4,4,4)/r=1): the reduction map is a
+SUBMERSION, not a diffeo — the extra directions are FLAT (the loss is constant along them).
+
+REDUCTION TO ONE REMAINING PIECE (all analytic bricks BANKED). The crux reduces — via the banked
+`rlctAt_ge_nReg_add_slice_of_residual` (the `nReg`-block quasi-split from a `C¹` slice residual) — to
+producing the EXPLICIT Schur chart transfer
+
+    hchart_explicit : rlctAt H (dlnLoss H B) v
+        = rlctAtOn (fun p => (∑ i, p.1 i ^ 2) + (∑ i, qₑ p i ^ 2)) (0, t0)
+
+with `qₑ` the EXPLICIT (Schur, `Ψsymm`-free) residual — the germ-preserving analogue of
+`dln_hchart_residual`. Given `hchart_explicit`, `hAtV` follows: the slice residual `∑ qₑ(0,·)²` equals
+`dlnLoss (H − r) 0 ∘ φ` (φ the Schur submersion onto the reduced core), so
+`rlctAtOn (∑ qₑ(0,·)²) t0 = rlctAtOn (dlnLoss (H − r) 0) P` for `P = φ_essential(t0)` by the BANKED
+`rlctAtOn_spectator_peel` (peels the flat directions — this IS the "flat-direction Fubini" brick, ALREADY
+in `S1Spectator`) + `rlctAtOn_comp_homeomorph` (the essential linear reindex) + `rlctAtOn_unit_invariant_aux`
+(the bounded Gram/Jacobian unit, non-vanishing per modelidwit's Gram-sandwich). The Params-domain
+Aoyagi Theorem 4 (`core_zero_le_of_params`, PROVEN above) then dominates any such `P`.
+
+THE WALL (isolated, honest): `hchart_explicit` itself — certifying the explicit rational corner-
+elimination map as a local measurable chart with the essential/flat coordinate split and the
+bounded-unit Jacobian (Codex-flagged step 5). This is the general-`v` analogue of the deepest-point
+`DeepestGaugeChart` multi-file build (which lands the same chart at the ORIGIN, for rank-`r`-exact
+layers); a fresh ~600–1500-line sub-tide, NOT a further gate on the abstract germ-discarded `Ψsymm`
+residual. UNCONDITIONAL at L = 2 (no `hbox`): the deepest value uses the banked hbox-free R1
+`r1_resolution_interface_L2_generic`, and this leg dominates the core by Theorem 4, never computing an
+`M'`-degraded value. Base case of the ∀-L `rlctAt_deepest_le_of_optimal` (Skeleton:1172, same
+recursion). -/
 theorem d1ge_L2_hAtV_explicit
     (H : Fin (2 + 1) → ℕ) (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
     (v : Params H) (hopt : prod H v = B) (hB : B.rank = r) :
