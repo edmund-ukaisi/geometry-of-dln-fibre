@@ -129,3 +129,22 @@ controller scope this as a dedicated build (this thread can continue via SendMes
 tide) rather than a single-sorry fill.
 
 Codex design consult: `codex/design-prompt.md` + `codex/design-answer.md`.
+
+---
+
+## REVIEW (independent reviewer, SHA 8e6485d2)
+
+All three deliverables **SOUND**; both bricks confirmed axiom-clean by forced `#print axioms`.
+- ITEM 1 (the `hpos` soundness fix): SOUND — falseness argument correct, `hpos` correct AND minimal
+  (endpoints `=r` empty the product index; the MIDDLE `=r`, e.g. `(2,1,2)/r=1 → (1,0,1)`, also forces
+  `A0red·A1red ≡ 0`), headline not weakened (already carries + threads `hpos`). Nothing false was ever
+  proved.
+- ITEMS 2, 3: SOUND, non-vacuous, axiom-clean.
+
+**Reviewer caveat (crux burden, not a statement gap).** Under `hpos`, the crux is true only if the
+produced witness `P` is a **zero** of the reduced core (a nonzero `P` gives `rlctAtOn (dlnLoss(H−r) 0)
+P = ⊤`, again `⊤ ≤` finite RHS). This is satisfied by the intended construction: `P` = core-coords of
+the optimal `v`, where `A0red·A1red = M22 − B22 = 0` (since `prod v = B` ⟹ `M = B`); and `hRne` says
+the core is not identically zero on a neighbourhood, giving the finite singular RLCT. So `P` must be
+`core(t0)`, NOT an arbitrary reduced-core point — a constraint the crux's germ/`hfact` construction
+must honour (it does, by design). No statement-level hypothesis is missing (`P` is existentially bound).
