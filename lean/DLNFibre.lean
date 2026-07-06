@@ -708,5 +708,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFullHNoFree
 -- box-finiteness wall); `hNo` discharged inside the achiever. Footprint
 -- [propext, Classical.choice, Quot.sound, monomial_rlct].
 import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
+-- Banked Core Schur bricks (D1 route-A): germ-preserving product factorisation + rank-r zero Schur complement.
+import DLNFibre.Core.SchurProductFactor
+import DLNFibre.Core.SchurRankZero
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
