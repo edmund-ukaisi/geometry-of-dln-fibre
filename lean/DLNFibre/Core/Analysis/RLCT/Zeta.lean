@@ -9,7 +9,7 @@ import Mathlib.Topology.Algebra.Support
 # `RLCT.Zeta` — the local archimedean zeta function `ζ_{K,φ}(s) = ∫ K^s φ`
 
 The **local archimedean zeta function** of a loss germ, the analytic object whose largest pole
-locates the RLCT (paper `propdefn`, `main.tex` L1804–1809; Watanabe SLT). For a nonnegative germ
+locates the RLCT (paper `propdefn` = Prop-Def 8.2, `main.tex` L1803–1808; Watanabe SLT). For a nonnegative germ
 `K : (Fin n → ℝ) → ℝ` (`K ≥ 0`, e.g. `K = |F|` for a real-analytic `F`, or the DLN square loss) and
 a **smooth compactly-supported cutoff** `φ : (Fin n → ℝ) → ℝ` with `φ ≥ 0` and `φ(x₀) ≠ 0`,
 

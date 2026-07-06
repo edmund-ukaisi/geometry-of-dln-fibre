@@ -10,7 +10,7 @@ The **local** integrability threshold of a loss germ `K` at a single point `x`:
 `rlctAt K x := sSup { c ≥ 0 | K^(-c) is locally integrable at x }`,
 
 where "locally integrable at `x`" is `IntegrableAtFilter (negPow K c) (𝓝 x)` — integrable on *some*
-neighbourhood of `x`. This is the paper's local `rlct_x(F)` (Def 4.1, `main.tex` L1787), a
+neighbourhood of `x`. This is the paper's local `rlct_x(F)` (Def 8.1(ii), `main.tex` L1787/L1796), a
 **cite-free, local** notion, distinct from R2a's **regional** `integrabilityThreshold K U` (a
 threshold on a fixed region `U`, `RLCT.Integrability`):
 
@@ -49,7 +49,7 @@ lemma mem_localAdmissibleExponents {K : (Fin n → ℝ) → ℝ} {x : Fin n → 
     c ∈ localAdmissibleExponents K x ↔ 0 ≤ c ∧ IntegrableAtFilter (negPow K c) (𝓝 x) := Iff.rfl
 
 /-- The **local RLCT** `rlctAt K x`: the supremum of the locally-admissible exponents at `x` — the
-paper's `rlct_x(K)` (Def 4.1). Cite-free, local; the value the zeta-pole cite identifies with the
+paper's `rlct_x(K)` (Def 8.1(ii)). Cite-free, local; the value the zeta-pole cite identifies with the
 largest pole (`s₀ = −rlctAt K x₀`, `RLCT.Cited`). Honest in the pole regime (bounded admissible
 set); `sSup ∅ = 0` / unbounded is the documented out-of-scope, as for `integrabilityThreshold`. -/
 noncomputable def rlctAt (K : (Fin n → ℝ) → ℝ) (x : Fin n → ℝ) : ℝ :=

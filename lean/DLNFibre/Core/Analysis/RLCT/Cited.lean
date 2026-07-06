@@ -16,7 +16,7 @@ transfer, in `Core`) or **proved**; this file isolates the one external analytic
 
 ## The monument — stated LOCALLY (certificate §7.5)
 
-The cite is the paper's `propdefn` (`main.tex` L1804), **as a purely local statement about the germ
+The cite is the paper's `propdefn` (**Prop-Def 8.2**, `main.tex` L1803–1808), **as a purely local statement about the germ
 of `K` at one point `x₀`** — *not* a regional statement over a nbhd `U`. For a real-analytic
 nonnegative germ `K` with `K x₀ = 0`, a smooth compactly-supported cutoff `φ` (`φ ≥ 0`, `φ x₀ ≠ 0`,
 `supp φ` a small nbhd of `x₀`):
@@ -104,7 +104,7 @@ it **admits the DLN fibre**: at a smooth fibre point the local RLCT is (locally)
 connected fibre, so `hWorst` holds with equality and the cite fires at `K_B`. The `U` still only
 localizes `φ`'s support (`x₀ ∈ U`, `U` open, `tsupport φ ⊆ U`). The maximality conjunct
 (`∀ s, pole → s.re ≤ s₀`) makes `s₀` genuinely the *largest* pole (justifying `RLCT.largestPole`). -/
-@[cited "Atiyah 1970 (CPAM 23:145-150) + Saito/SLT (paper propdefn L1804): local ∫K^s φ continues meromorphically, poles ℚ_{<0}, largest pole = -rlct_{x₀}"]
+@[cited "Atiyah 1970 (CPAM 23:145-150): meromorphic continuation of local ∫K^s φ, poles ⊂ ℚ_{<0} (real-analytic resolution); Saito/SLT (Watanabe 2009; L&R Prop-Def 8.2, main.tex L1803-1808): largest pole = -rlct_{x₀}"]
 axiom cited_local_zeta_pole {n : ℕ} (K φ : (Fin n → ℝ) → ℝ)
     (x₀ : Fin n → ℝ) (U : Set (Fin n → ℝ))
     (hK : AnalyticOnNhd ℝ K Set.univ) (hKnn : ∀ x, 0 ≤ K x) (hKx₀ : K x₀ = 0)
