@@ -70,6 +70,46 @@ the R1-UPPER `(S,J)` mountain (design cert:
 contract, CLOSES the pieces that reuse banked machinery, and pre-stages the genuinely-new analytic
 pieces as named sorries.
 
+> **UPDATE (`genm-sjpeel-cov` tide, base `origin/genm-sjpeel @300fe28d`).** The **inner change-of-variables
+> base** of `sjBoundaryPeel` (piece 3) — **Aoyagi Lemma 2** (the unit-triangular Jacobian-`1` reduction) —
+> is now built sorry-free in a NEW standalone module `DLNFibre/DLN/RLCT/Validate/RouteMSJPivotChart.lean`
+> (namespace `DLNFibre.DLN.RLCT`). `sjBoundaryPeel` ITSELF is UNCHANGED (still a named sorry); this is the
+> reusable c.o.v. base its eventual discharge consumes. **NOT yet imported by `RouteMSJResolution`** and
+> **NOT yet wired into `DLNFibre.lean`** (single-writer aggregator) — controller to add the imports. On
+> `origin/genm-sjpeel-cov @8e8ce87e`. All seven lemmas force-`#print axioms` **clean-three**
+> `[propext, Classical.choice, Quot.sound]`; `scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart`
+> green.
+>
+> **Deliverable 2 — the c.o.v. (the heart).** Front factor in blocks `A₀ = [[A, B], [C, D]]`, `A` the
+> invertible `t×t` pivot:
+> - **`schur_cov`** — `Q₁ · fromBlocks A B C D · Q₂ = fromBlocks A 0 0 Γ`, `Γ = D − C A⁻¹ B` the Schur
+>   complement (corank block), `Q₁ = schurLeft = [[1,0],[−CA⁻¹,1]]` (unit lower-tri),
+>   `Q₂ = schurRight = [[1,−A⁻¹B],[0,1]]` (unit upper-tri). Proof: two `Matrix.fromBlocks_multiply` + the
+>   pivot cancellations `⅟A·A = 1`, `A·⅟A = 1` (mirrors Mathlib's `fromBlocks_eq_of_invertible₁₁`).
+> - **`det_schurLeft` / `det_schurRight`** — `det Q₁ = det Q₂ = 1` (the **Jacobian-`1`** property, via
+>   `det_fromBlocks_zero₁₂`/`_zero₂₁`).
+> - **`det_fromBlocks_cov`** (square front factor) — `det [[A,B],[C,D]] = det A · det Γ`
+>   (`Matrix.det_fromBlocks₁₁`): the singular locus of the peeled factor is cut out by `Γ`.
+>
+> **Deliverable 1 — the pivot chart** (`schur_cov` on an actual front factor via a block-split reindex;
+> the chart is a block-splitting `e₀ : m ≃ t⊕a`, `e₁ : n ≃ t⊕b` on which the reindexed top-left block is
+> invertible):
+> - **`schur_cov_toBlocks`** — block-indexed c.o.v.: for any `M' : Matrix (t⊕a) (t⊕b) ℝ` with
+>   `[Invertible M'.toBlocks₁₁]`, `Q₁·M'·Q₂ = fromBlocks M'₁₁ 0 0 Γ` (via `fromBlocks_toBlocks`); apply at
+>   `M' = A₀.reindex e₀ e₁`.
+> - **`pivotBlock_reindex_eq_submatrix`** — the reindexed top-left block IS the chosen pivot minor
+>   `A₀.submatrix (e₀⁻¹∘inl) (e₁⁻¹∘inl)`, so "top-left invertible" = "chosen `t×t` minor nonsingular"
+>   (`Matrix.invertibleOfIsUnitDet` turns `det ≠ 0` into the `Invertible` instance).
+> - **`det_toBlocks_cov`** — `det M' = det(pivot)·det Γ` on a square block-indexed matrix.
+>
+> **HONEST SCOPE (documented in the module header).** The a.e. COVERING property — every rank-`t` front
+> factor lies in some rank-`t` chart (the classical `rank ⟹ nonzero minor of that size`, NOT in Mathlib
+> v4.29) — and the measure-theoretic finite-sum assembly (radial blow-up `Γ = zV` + finite-cutoff
+> `z`-integral + `Beta` fibre bound + `lintegral_mono_ae` over the null degenerate locus) remain the
+> `sjBoundaryPeel` residual (LATER tides). This tide delivers exactly the `Q₁, Q₂` unit-triangular
+> reduction and its Jacobian-`1` / Schur-complement facts — the piece the peel's internal "general-`L`
+> pivot-Schur chart = Aoyagi Lemma 2" reduction (piece-3 next-tide item) names.
+
 ## The target
 
 > **Claim.** For an arbitrary width vector `M : Fin (L+1) → ℕ`, the layer-product box integral
