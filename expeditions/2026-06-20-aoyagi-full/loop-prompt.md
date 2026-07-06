@@ -43,10 +43,13 @@ push the branch freely to origin (PR/merge operator-gated).
 ## Autonomous mode (operator away, from 2026-06-24)
 Operator mandate: CHARGE AHEAD ambitiously by default; decide autonomously; record items needing eventual
 operator review in `discuss-at-close.md` (don't block on them). Integrate landed tides yourself
-(bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build →
-commit → push `origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or
-switched the main checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`. PRs +
-dev/master remain operator-gated — hold them.
+(bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build **via
+`lean/scripts/lb`, NEVER bare `lake build`** [shared mathlib store + global worker semaphore; bare `lake`
+OOM/contends — see `lean/CLAUDE.md` + `docs/policies/lean-build-workflow.md`] → commit → push
+`origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or switched the main
+checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`; **state in every teammate
+brief: "build via `scripts/lb`; do not `lake exe cache get` in a worktree."** PRs + dev/master remain
+operator-gated — hold them.
 
 **Ambition calibration (operator, 2026-06-26).** Default to AMBITIOUS. My risk-estimates have frequently
 been too pessimistic — mapped-as-"too large/risky" pieces frequently are not. A build that LARGELY FOLLOWS

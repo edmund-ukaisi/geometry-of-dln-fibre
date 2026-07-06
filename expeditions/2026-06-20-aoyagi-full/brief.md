@@ -129,13 +129,21 @@ stranded as un-built bookkeeping). Guardrails:
 
 ## Build discipline (runtime mitigation)
 
-- **Mathlib cache always** (`lake exe cache get`); shared `.lake/packages` across worktrees → isolation
-  is cheap. Never rebuild Mathlib.
+- **Build via the wrapper `lean/scripts/lb`, NEVER bare `lake build`.** `lb` self-heals this worktree's
+  `.lake/packages` symlink to the shared rev-keyed mathlib store (mmap-shared, one resident copy) and
+  acquires a **global concurrency semaphore across all sessions** (the only thing that bounds total Lean
+  workers → prevents OOM/contention). Bare `lake build` bypasses both. **Do NOT `lake exe cache get` in a
+  worktree** — it re-clones ~7 GB and defeats the sharing (the store is built once by
+  `scripts/lake-store-setup <rev>`). Never rebuild Mathlib. Full rationale:
+  [`../../docs/policies/lean-build-workflow.md`](../../docs/policies/lean-build-workflow.md) + `lean/CLAUDE.md`.
+- **State the build tool in every teammate brief** ("build via `scripts/lb`; do not `lake exe cache get`
+  in a worktree") — the policy binds teammates too.
 - **Many small modules, not few big ones.** A stable `DLNFibre/DLN/RLCT/Foundations/*` layer (defs,
   Lemma 1, the cited interface, measure substrate) built once; heavy `MeasureTheory` imports isolated
   there. (The old 13.7K-line single file is the anti-pattern: any edit → full recompile.)
-- Iterate with `lake build <one module>`; full `lake build DLNFibre` only at integration; **long builds
-  run in the background** (never block a turn or serialize the team behind the controller's green-gate).
+- Iterate with `scripts/lb DLNFibre.<Module>`; full `scripts/lb` (whole library) only at integration —
+  the full-trunk build is the gate that catches orphans + FQN collisions a module build hides; **long
+  builds run in the background** (never block a turn or serialize the team behind the controller's green-gate).
 - **Tactic hygiene:** no `decide`/`norm_num`/`simp`-bombs on large terms; cap `maxHeartbeats`; structured
   proofs for heavy arithmetic; the clean closed form keeps terms small on purpose. `decide +kernel`,
   never `native_decide`. (See `lean/CLAUDE.md`.)

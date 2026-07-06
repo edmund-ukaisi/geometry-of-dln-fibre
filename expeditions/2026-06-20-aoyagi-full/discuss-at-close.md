@@ -1814,3 +1814,27 @@ With R1-LOWER fully done ∀L (the achiever `hdiv`, UPDATE-601) and R1's honest 
 **So the fully-general headline's two big remaining cruxes are:** (1) `hbox`/R1-UPPER — a monument (Item 133, cite-vs-build); (2) the D1 general-v chart cert — a large multi-tide build, possibly a 2nd monument (pending `d1chartderisk`). Everything else (R1 modulo hbox, the whole R1-LOWER/interior/smeared/value stack, the D1 downstream + Schur factorization + homogeneity comparison) is banked. **This is a genuine research program at its two chart/resolution cruxes — not the quick finish I over-claimed in UPDATE-618/619/622.** I've corrected each over-optimism as the front-loaded gates caught it (no false Lean banked). If BOTH cruxes are monuments, the honest fully-general headline is "the geometry from scratch + cite Aoyagi §5 for the two RLCT-analysis cruxes" — which is essentially the destination's existing cited-Aoyagi model, cleanly delineated. **The concrete `aoyagi_learning_coefficient_L2` milestone is reachable iff the D1 chart cert (step 5) is bounded** — that's the near-term go/no-go (d1chartderisk).
 
 **INFRA:** the Codex CLI is unavailable — `hchartexpl` reported `Not logged in` (operator-gated; I cannot fix). The decorrelated-Codex discipline (a core cross-check for de-risks/soundness) is **impaired** until you re-login. De-risk hands are currently falling back to exact-algebra + source-reading + prior banked Codex analyses. **Operator: please re-login the Codex CLI when convenient** to restore decorrelation.
+
+## 40. Build-tool + branch drift caught post-interruption (2026-07-06) — scaffold reconciled to policy; main-checkout branch flagged.
+Operator caught two drifts after the rate-limit interruption, both now understood:
+- **Build tool.** I had been green-gating with **bare `lake build`**, not the mandated wrapper
+  `lean/scripts/lb`. `lb` self-heals the shared rev-keyed mathlib symlink + holds a **global worker
+  semaphore across all sessions**; bare `lake` bypasses both (OOM/contention — plausibly a contributor to
+  the rate-limit/orphan episodes; killing a bare `lake build` also orphaned 4 `lean` workers, the Item-132
+  lesson again). **Root cause:** the expedition scaffold contradicted policy — `brief.md`'s build-discipline
+  said "iterate with `lake build`, `lake exe cache get` always" (the latter actively DEFEATS the sharing),
+  and neither `brief.md` nor `loop-prompt.md` named `scripts/lb`, though `lean/CLAUDE.md` +
+  `docs/policies/lean-build-workflow.md` mandate it. **Fixed:** `brief.md` + `loop-prompt.md` now mandate
+  `scripts/lb` (+ "state it in every teammate brief"). Going forward all green-gates use `scripts/lb`; teammate
+  briefs must state it.
+- **Main-checkout branch drift (FLAGGED, not auto-fixed).** The controller's main checkout
+  (`/home/ubuntu/workspace/geometry-of-dln-fibre`) is on **`genm-inj-injon`** (a pushed `genm-glift` feature
+  branch, 14 ahead / 82 behind canonical), NOT `expedition/aoyagi-full` as the brief prescribes. Consequence:
+  my in-session doc *reads* (priorities/brief/discuss/synthesis) came from that stale branch; my doc *flushes*
+  correctly targeted canonical via detached `/tmp` worktrees, and the d1chart integration analysis used
+  `origin/expedition/aoyagi-full` explicitly — so no false state banked, but grounding was stale. It's safe to
+  switch back (genm-inj-injon fully pushed; aoyagi-full checked out nowhere), but the main checkout carries
+  **uncommitted/untracked thread-note artifacts** (r1upper-derisk.md, several `threads/genm-*`,
+  `expeditions/2026-06-30-determinantal-atlas/`), so I did not switch unilaterally. **For operator:** confirm
+  whether to (a) commit/preserve those untracked notes then switch the main checkout to `expedition/aoyagi-full`,
+  or (b) leave it parked on `genm-inj-injon` (if intentional) and I keep flushing via canonical worktrees.
