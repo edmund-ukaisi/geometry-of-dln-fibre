@@ -16,6 +16,8 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+open MeasureTheory
+
 universe v
 
 set_option linter.unusedSectionVars false in
@@ -579,6 +581,308 @@ theorem exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdg
     paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
       (M := M) V Bv U₀ hU₀ CedgeBase (source := source) (R := R)
       baseReadback hbaseReadback hunit
+
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The p.13 product-coordinate edge-family map is continuous on a product
+domain when the base edge family is continuous at every base point in the
+source and the recursive determinant-chart hypotheses hold there.
+
+This only supplies the topological chart hypothesis for the reduced
+product-coordinate map. It does not prove injectivity, image measurability,
+source-prior transport, normal crossings, pole order, or RLCT extraction. -/
+theorem paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {source : Set α}
+    {regularDomain : Set (EuclideanSpace ℝ
+      (AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)))}
+    (hCedgeBase : ∀ x ∈ source, ContinuousAt CedgeBase x)
+    (hchart : ∀ x ∈ source, ∀ (p : Fin (M + 2))
+        (hpj : p.succ ≤ (Fin.last (M + 2) : Fin (M + 3))),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+            (fun q : Fin (M + 2) ↦
+              (CedgeBase x q :
+                reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ))) p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun q : Fin (M + 2) ↦
+                (CedgeBase x q :
+                  reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ)))
+            (Fin.last (M + 2)) p.succ hpj))) :
+    let ρ := Fin (Module.finrank ℝ U₀)
+    let κ := throughSubspaceEndpointComplementIndex
+      (reverseVertex V) (reverseEdge V Bv) U₀
+    let Coord :=
+      AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        V Bv U₀ hU₀ CedgeBase
+    ContinuousOn CedgeProd
+      (source ×ˢ (regularDomain : Set (EuclideanSpace ℝ Coord))) := by
+  intro ρ κ Coord CedgeProd xu hxu
+  exact
+    (continuousAt_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+      (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀) (x₀ := xu.1)
+      (u₀ := xu.2) (CedgeBase := CedgeBase) (hCedgeBase xu.1 hxu.1)
+      (by
+        intro p hpj
+        simpa [κ] using hchart xu.1 hxu.1 p hpj)).continuousWithinAt
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Small-ball product-coordinate chart package: after shrinking the regular
+coordinate radius, the reduced p.13 product-coordinate map is continuous,
+injective, and has measurable image on `source × ball(0,R)`.
+
+The theorem combines the local continuity criterion above, the previously
+proved residual-readback injectivity theorem, and Lusin-Souslin image
+measurability. It does not prove any measure pushforward identity, original
+prior transport, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_injOn_measurable_image_of_residualReadback
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α]
+    [BorelSpace α] [PolishSpace α]
+    [MeasurableSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {source : Set α} {Rmax : ℝ}
+    (hsource : MeasurableSet source)
+    (hRmax : 0 < Rmax)
+    (hCedgeBase : ∀ x ∈ source, ContinuousAt CedgeBase x)
+    (hchart : ∀ x ∈ source, ∀ (p : Fin (M + 2))
+        (hpj : p.succ ≤ (Fin.last (M + 2) : Fin (M + 3))),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+            (fun q : Fin (M + 2) ↦
+              (CedgeBase x q :
+                reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ))) p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun q : Fin (M + 2) ↦
+                (CedgeBase x q :
+                  reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ)))
+            (Fin.last (M + 2)) p.succ hpj)))
+    (baseReadback :
+      (AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) → ℝ) → α)
+    (hbaseReadback :
+      ∀ x ∈ source,
+        baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x) = x) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          V Bv U₀ hU₀ CedgeBase
+      let domain := source ×ˢ Metric.ball (0 : EuclideanSpace ℝ Coord) R
+      ContinuousOn CedgeProd domain ∧
+        Set.InjOn CedgeProd domain ∧
+          MeasurableSet (CedgeProd '' domain) := by
+  rcases
+      exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+        (M := M) V Bv U₀ hU₀ CedgeBase (source := source) (Rmax := Rmax)
+        hRmax baseReadback hbaseReadback with
+    ⟨R, hR, hRle, hinj⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord CedgeProd domain
+  have hcont : ContinuousOn CedgeProd domain := by
+    simpa [ρ, κ, Coord, CedgeProd, domain] using
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+        (M := M) V Bv U₀ hU₀ CedgeBase
+        (source := source)
+        (regularDomain := Metric.ball (0 : EuclideanSpace ℝ Coord) R)
+        hCedgeBase hchart
+  have hdomain : MeasurableSet domain := by
+    simpa [ρ, κ, Coord, domain] using
+      hsource.prod
+        (Metric.isOpen_ball.measurableSet :
+          MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R))
+  have himage : MeasurableSet (CedgeProd '' domain) :=
+    hdomain.image_of_continuousOn_injOn hcont (by simpa [ρ, κ, Coord, CedgeProd, domain] using hinj)
+  exact ⟨hcont, by simpa [ρ, κ, Coord, CedgeProd, domain] using hinj, himage⟩
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Small-ball product-coordinate source-chart/readback package.
+
+After shrinking the regular-coordinate radius, the reduced p.13
+product-coordinate map has the chart/readback hypotheses needed by local
+source-image measure handoffs: left inverse on the source domain, injectivity,
+continuity, a.e.-measurability for every restricted source measure, measurable
+image, and right inverse on that image.
+
+This is still only chart/readback plumbing. It does not prove a measure
+pushforward identity, original-prior transport, normal crossings, pole order,
+or RLCT extraction. -/
+theorem exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] [MeasurableSpace α]
+    [BorelSpace α] [PolishSpace α]
+    [MeasurableSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    [BorelSpace
+      (∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)]
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    {source : Set α} {Rmax : ℝ}
+    (hsource : MeasurableSet source)
+    (hRmax : 0 < Rmax)
+    (hCedgeBase : ∀ x ∈ source, ContinuousAt CedgeBase x)
+    (hchart : ∀ x ∈ source, ∀ (p : Fin (M + 2))
+        (hpj : p.succ ≤ (Fin.last (M + 2) : Fin (M + 3))),
+      identityCornerDetChart
+        (ChartLocalSuffixState.transformedEdge
+          (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+            (fun q : Fin (M + 2) ↦
+              (CedgeBase x q :
+                reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ))) p
+          (ChartLocalSuffixState.suffixState
+            (paperEndpointFixedBaseEdgeMatrixOfReverseEdges V Bv U₀ hU₀
+              (fun q : Fin (M + 2) ↦
+                (CedgeBase x q :
+                  reverseVertex V q.castSucc →ₗ[ℝ] reverseVertex V q.succ)))
+            (Fin.last (M + 2)) p.succ hpj)))
+    (baseReadback :
+      (AoyagiResidualBlockCoordinateIndex
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0) → ℝ) → α)
+    (hbaseReadback :
+      ∀ x ∈ source,
+        baseReadback
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase x) = x) :
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last (M + 2))) (κ 0)
+      let EdgeFamily :=
+        ∀ p : Fin (M + 2), reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          V Bv U₀ hU₀ CedgeBase
+      let productReadback : EdgeFamily → α × EuclideanSpace ℝ Coord :=
+        fun E ↦
+          (baseReadback
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E),
+            (EuclideanSpace.equiv Coord ℝ).symm
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E))
+      let domain := source ×ˢ Metric.ball (0 : EuclideanSpace ℝ Coord) R
+      (∀ z ∈ domain, productReadback (CedgeProd z) = z) ∧
+        Set.InjOn CedgeProd domain ∧
+          ContinuousOn CedgeProd domain ∧
+            (∀ thetaMeasure : Measure (α × EuclideanSpace ℝ Coord),
+              AEMeasurable CedgeProd (thetaMeasure.restrict domain)) ∧
+              MeasurableSet (CedgeProd '' domain) ∧
+                ∀ E ∈ CedgeProd '' domain,
+                  productReadback E ∈ domain ∧ CedgeProd (productReadback E) = E := by
+  rcases
+      AoyagiRegularBlockCoordinateIndex.exists_pos_radius_le_forall_isUnit_det_ctopMatrix_euclidean
+        (ι := Fin (Module.finrank ℝ U₀))
+        (μ := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (ν := throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+        hRmax with
+    ⟨R, hR, hRle, hunit⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord EdgeFamily CedgeProd productReadback domain
+  have hcont : ContinuousOn CedgeProd domain := by
+    simpa [ρ, κ, Coord, CedgeProd, domain] using
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+        (M := M) V Bv U₀ hU₀ CedgeBase
+        (source := source)
+        (regularDomain := Metric.ball (0 : EuclideanSpace ℝ Coord) R)
+        hCedgeBase hchart
+  have hinj : Set.InjOn CedgeProd domain := by
+    simpa [ρ, κ, Coord, CedgeProd, domain] using
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_injOn_of_residualReadback
+        (M := M) V Bv U₀ hU₀ CedgeBase (source := source) (R := R)
+        baseReadback hbaseReadback hunit
+  have hdomain : MeasurableSet domain := by
+    simpa [ρ, κ, Coord, domain] using
+      hsource.prod
+        (Metric.isOpen_ball.measurableSet :
+          MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R))
+  have haemeas : ∀ thetaMeasure : Measure (α × EuclideanSpace ℝ Coord),
+      AEMeasurable CedgeProd (thetaMeasure.restrict domain) := by
+    intro thetaMeasure
+    exact hcont.aemeasurable hdomain
+  have himage : MeasurableSet (CedgeProd '' domain) :=
+    hdomain.image_of_continuousOn_injOn hcont hinj
+  have hleft : ∀ z ∈ domain, productReadback (CedgeProd z) = z := by
+    intro z hz
+    cases z with
+    | mk x u =>
+        simpa [ρ, κ, Coord, EdgeFamily, CedgeProd, productReadback, domain] using
+          paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_productReadback_leftInverse_of_residualReadback
+            (M := M) V Bv U₀ hU₀ CedgeBase baseReadback x u
+            (hbaseReadback x hz.1) (hunit u hz.2)
+  have hright : ∀ E ∈ CedgeProd '' domain,
+      productReadback E ∈ domain ∧ CedgeProd (productReadback E) = E := by
+    intro E hE
+    rcases hE with ⟨z, hz, rfl⟩
+    constructor
+    · simpa [hleft z hz] using hz
+    · rw [hleft z hz]
+  exact ⟨hleft, hinj, hcont, haemeas, himage, hright⟩
 
 end Aoyagi
 end DLN

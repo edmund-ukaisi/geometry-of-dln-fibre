@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 product-coordinate chart package
+
+Reproduction:
+
+```text
+reproduction-a2-product-coordinate-continuous-injective-measurable-image.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+```
+
+Lean now has:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_injOn_measurable_image_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+```
+
+This packages the reduced p.13 product-coordinate map as a local chart:
+continuous on a product domain under pointwise base continuity and
+determinant-chart hypotheses, and after small-ball shrink continuous,
+injective, and image-measurable on `source x ball(0,R)`.  The final package
+also exposes the explicit product readback, its left inverse on the domain,
+right inverse on the image, and a.e.-measurability of the chart map on any
+measure restricted to the domain.
+
+Boundary: chart hypotheses only.  No product-coordinate measure pushforward,
+readback domination for an original prior, normal crossings, pole order, or
+RLCT.
+
+Verification: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes passed.  All three new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 source-side withDensity readback bridge
 
 Reproduction:

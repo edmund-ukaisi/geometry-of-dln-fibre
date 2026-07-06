@@ -10,6 +10,48 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 product-coordinate chart package - 2026-07-06
+
+- **Statement.** If `CedgeBase` is continuous at every base source point and
+  the determinant-chart hypotheses hold there, then the reduced p.13
+  product-coordinate edge-family map `CedgeProd` is continuous on
+  `source x regularDomain`.
+- **Statement.** If, additionally, the base source set is measurable and a
+  residual readback is a left inverse on it, then after shrinking the regular
+  coordinate ball there is a radius `R` such that `CedgeProd` is continuous,
+  injective, and has measurable image on `source x ball(0,R)`.
+- **Statement.** On the same shrunken domain, the explicit product readback is
+  a left inverse to `CedgeProd`, is a right inverse on `CedgeProd '' domain`,
+  and `CedgeProd` is a.e.-measurable for every measure restricted to `domain`.
+- **Tier.** A2 product-coordinate chart-hypothesis layer.
+- **Status.** Lean proved, pending final gate.
+- **Kill-condition.** The result is read as a pushforward identity, readback
+  domination for an original prior, source/product-coordinate measure
+  transport, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 reduced product-coordinate variables; the
+  proof uses existing Lean pointwise continuity, the previous residual-readback
+  small-ball injectivity theorem, and Lusin-Souslin image measurability.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-product-coordinate-continuous-injective-measurable-image.md`.
+- **Reproduction check.** Local controller calculation; xhigh explorer
+  `Averroes` is still running on the broader product-coordinate measure
+  frontier.
+- **Lean target.**
+  `paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base`
+  and
+  `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_injOn_measurable_image_of_residualReadback`
+  and
+  `exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback`
+  in `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean`.
+- **Proved.** Focused Lean check, focused module build, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+  Lean-file forbidden-marker scan, and direct axiom probes passed.  Axiom
+  footprint: `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No pushforward identity, no readback domination for an
+  original prior, no source/product-coordinate measure transport, no normal
+  crossings, no pole order, and no RLCT extraction.  The residual readback and
+  determinant-chart hypotheses remain explicit.
+
 ## Current A2 source-side withDensity readback bridge - 2026-07-06
 
 - **Statement.** A source-side weighted identity

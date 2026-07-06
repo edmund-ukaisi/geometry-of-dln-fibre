@@ -6,6 +6,64 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Product-coordinate Chart Package - 2026-07-06
+
+Lean now has:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_injOn_measurable_image_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionSourceReadback.lean
+```
+
+The first theorem is the product-domain version of the existing pointwise
+continuity theorem for the reduced p.13 product-coordinate edge-family map.
+At each `(x,u)` in `source x regularDomain`, continuity follows from
+`ContinuousAt CedgeBase x` and the determinant-chart hypotheses at `x`; hence
+`CedgeProd` is continuous on the whole product domain.
+
+The second theorem combines this continuous-on result with the already-landed
+residual-readback small-ball injectivity theorem.  After shrinking the regular
+coordinate radius below any supplied `Rmax > 0`, it returns:
+
+```text
+ContinuousOn CedgeProd (source x ball(0,R))
+Set.InjOn CedgeProd (source x ball(0,R))
+MeasurableSet (CedgeProd '' (source x ball(0,R)))
+```
+
+The image measurability step is Lusin-Souslin from a measurable product domain,
+continuous-on, and injectivity.
+
+The source-chart/readback package adds the explicit product readback
+
+```text
+productReadback(E) = (baseReadback(residual(E)), regularReadback(E))
+```
+
+on the same shrunken domain.  It records left inverse on the source domain,
+right inverse on `CedgeProd '' domain`, and a.e.-measurability of `CedgeProd`
+for every measure restricted to `domain`.
+
+Boundary: this is still not measure transport.  It does not prove a
+pushforward identity, readback domination for an original prior,
+source/product-coordinate measure transport, normal crossings, pole order, or
+RLCT.  It also keeps the residual readback and determinant-chart hypotheses as
+inputs.
+
+Verification passed: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes.  All three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Source-side withDensity Readback Bridge - 2026-07-06
 
 Lean now has two generic measure-bookkeeping theorems in:

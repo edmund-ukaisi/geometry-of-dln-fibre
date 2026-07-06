@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, product-coordinate chart package
+
+Lean now has:
+
+```text
+paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_of_forall_continuousAt_base
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_continuousOn_injOn_measurable_image_of_residualReadback
+
+exists_pos_radius_le_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_sourceChart_readback_package_of_residualReadback
+```
+
+Decision: fill the non-measure chart-hypothesis layer for the actual reduced
+p.13 product-coordinate map.  The first theorem promotes pointwise continuity
+of `CedgeProd` to `ContinuousOn` on `source x regularDomain`, assuming
+`ContinuousAt CedgeBase x` and the determinant-chart hypotheses at every
+`x in source`.  The second theorem combines this with the residual-readback
+small-ball injectivity theorem and Lusin-Souslin to get, after shrinking the
+regular coordinate radius, continuity, injectivity, and measurable image on
+`source x ball(0,R)`.  The third theorem adds the explicit product readback,
+left inverse on the source domain, right inverse on the image, and
+a.e.-measurability of `CedgeProd` for every measure restricted to the same
+domain.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-product-coordinate-continuous-injective-measurable-image.md
+```
+
+Boundary: chart package only.  No pushforward identity, readback domination for
+an original prior, source/product-coordinate measure transport, normal
+crossings, pole order, or RLCT.  The residual readback and determinant-chart
+hypotheses remain explicit inputs.
+
+Verification passed: focused Lean check, focused module build, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes.  All three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-06, source-side withDensity readback bridge
 
 Lean now has:
