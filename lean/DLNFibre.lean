@@ -616,3 +616,18 @@ import DLNFibre.Core.FibreThetaCountUnconditional
 -- germ `|t|` has threshold exactly `1`, validating the formulation). Axiom-clean (no cites).
 import DLNFibre.Core.Analysis.RLCT.Basic
 import DLNFibre.Core.Analysis.RLCT.Integrability
+-- R2b: the zeta-pole RLCT definition (operator decision A). `RLCT.Local` = the cite-free LOCAL RLCT
+-- `rlctAt K x = sSup{c≥0 | K^(-c) loc-integrable at x}` (paper Def 8.1(ii)); `RLCT.Zeta` = the local
+-- archimedean zeta `∫K^s φ` + its cite-free convergence for `Re s>0`; `RLCT.Cited` = the ONE bundled
+-- `@[cited]` continuation monument (Atiyah 1970 + Saito/SLT, Prop-Def 8.2): local `ζ` continues
+-- meromorphically, poles ⊂ ℚ_{<0}, largest pole `s₀ = −rlctAt K x₀` (hyps `hKne` + zero-guarded
+-- `hWorst`); `RLCT.Pair` = `RLCTPair (λ=−s₀>0, poleOrder=m)` + local Link 1 `λ = rlctAt K x₀`;
+-- `RLCT.Bridge` = the buildable regional bridge `integrabilityThreshold K U = rlctAt K x₀` (F1
+-- roadmapped); `RLCT.Witness` = the axiom-clean `zetaSetupSq` (K=x²) proving the cite's hypotheses are
+-- satisfiable at a genuine germ — non-vacuity as a build-time fact. Cordon: `CITED=4`.
+import DLNFibre.Core.Analysis.RLCT.Local
+import DLNFibre.Core.Analysis.RLCT.Zeta
+import DLNFibre.Core.Analysis.RLCT.Cited
+import DLNFibre.Core.Analysis.RLCT.Pair
+import DLNFibre.Core.Analysis.RLCT.Bridge
+import DLNFibre.Core.Analysis.RLCT.Witness
