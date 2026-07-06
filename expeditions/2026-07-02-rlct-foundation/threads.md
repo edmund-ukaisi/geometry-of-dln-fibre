@@ -22,6 +22,29 @@ re-gates per [`loop-prompt.md`](loop-prompt.md). Branch `expedition/rlct-foundat
 
 **Cordon coverage — DONE (`62641cc6`+):** the gate now scopes to a first-party namespace allowlist (`Config.nsPrefixes`, default `[DLNFibre, RLCT]`), so the bare-namespace `RLCT` modules ARE covered (2248 decls; `--ns` still overrides for the fixture harness, 17/17). Residual (low-risk, noted): the L7 Mathlib-mirror namespaces (`Matrix`/`Ideal`/… — first-party modules whose decls sit in a Mathlib-overlapping namespace) are NOT in the allowlist (a `Matrix` prefix would catch Mathlib too); they host no cites and are transitively covered via their `DLNFibre` consumers. A module-provenance scan (source-module under `DLNFibre/**`) is the fully-robust generalization if a cite ever needs to live in one.
 
+## Post-review follow-ups (PR #23 §6 — non-blocking; operator "file as issues")
+
+Captured here (in-repo, durable). None gate the merge; all are hardening/hygiene. Open as GitHub issues if the
+operator prefers external tracking.
+- **Module-provenance scoping for the cordon** — key the LOCATION/root checks on source-module (`DLNFibre/**`)
+  not namespace prefix; closes the latent Mathlib-mirror gap regardless of namespace. (Now also documented in
+  `docs/policies/citation-cordon.md` § Scope of the checks + ROADMAP § Bundle 4b.)
+- **`sorryAx` fixture + `CITED=3` manifest assertion** — the fixture harness currently asserts only the
+  Aoyagi/Watanabe *sources*; add a `sorryAx` case and assert the third cite (the local ζ-continuation) on the
+  real gate.
+- **`RLCT` / `RLCT.Global` bridging lemma** — the two term-identical `negPow`/`rlctAt` (zeta-side `Fin n→ℝ` vs
+  polymorphic global) lack a `rfl`-flavoured bridge; fold into the roadmapped namespace unification, and
+  **re-check joint cite consistency** once the two `rlctAt`s become interchangeable.
+- **CLI / comment drifts** (`CitedAudit.lean:47–49`): stale "aggregator does not yet import" comment + redundant
+  default `--import`; trailing `--ns` with no operand; "`--ns` overrides (appends)" wording (behaviour:
+  non-empty set replaces default, repeats accumulate).
+- **Attribution vs batch collector** — an axiom reachable only via another axiom's *type* appears in the batch
+  union but is un-attributable in the per-decl summary; either drop the axiom-type edge (match stdlib exactly)
+  or document the superset as intentional.
+- **Wire `scripts/cited` into a pre-merge/CI check** — enforcement is currently manual.
+- **Docstring nit** (`CThetaSortClosedForm.lean`): "for monotone `d` the sort is the identity" — with ties only
+  `d ∘ Tuple.sort d = d`, not `Tuple.sort d = id`.
+
 ## Concurrency rule (this expedition)
 At most one builder/committer in `.claude/worktrees/rlct` at a time (a second `lake build` corrupts `.lake`;
 two `git commit`s race the index). Read-only auditors may run alongside one builder. Rungs on the same file
