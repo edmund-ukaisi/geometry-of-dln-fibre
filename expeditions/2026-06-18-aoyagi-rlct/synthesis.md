@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local loss with continuous pulled-back density - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-density-continuity.md
+```
+
+Lean now has a downstream wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_density
+```
+
+It reuses the adapted-lower rank-cut local original-loss bridge, but produces
+the regular-coordinate density nonnegativity and upper-bound inputs from
+continuity and positivity of an edge-family density pulled back along the p.13
+product-coordinate map:
+
+```text
+(E,u) |-> edgeDensity(CedgeProd(E,u)).
+```
+
+The continuity/positivity assumptions are at the actual product-coordinate
+base `CedgeProd(sourceChart z0, 0)`, not merely at `sourceChart z0`.  The proof
+first obtains `Rden <= Rmax` and an upper bound `C` from the self-base density
+helper, then calls the adapted-lower wrapper with cap `Rden`; the final radius
+`R` is reported with `R <= Rmax` by transitivity.
+
+This discharges only the explicit density-bound hypotheses for this pulled-back
+density form.  Residual zero-locus nullity, fixed-base centering, source data,
+endpoint bases, raw Haar, regular Haar, statistical prior transport,
+determinant/raw Haar transport, source-rank or atlas coverage, normal
+crossings, pole order, and RLCT extraction remain explicit or outside the
+theorem.
+
+Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+touched-file marker scan, quiver-reference scan, and direct axiom probe passed.
+The new theorem reports only `[propext, Classical.choice, Quot.sound]`.
+Xhigh scout `Darwin` passed the theorem-shape route; xhigh reviewer `Banach`
+passed the final statement/proof/reproduction audit.
+
 ## A2 rank-cut original-prior local loss with produced adapted lower bound - 2026-07-06
 
 Reproduction:

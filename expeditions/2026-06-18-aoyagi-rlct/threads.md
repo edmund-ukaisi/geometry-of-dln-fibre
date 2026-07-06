@@ -19,6 +19,19 @@
 ## Recent addenda
 
 - 2026-07-06, Thread 03: the rank-cut original-prior local loss wrapper now
+  produces the regular-coordinate density bounds for pulled-back edge-family
+  densities.  Given continuity and positivity of `edgeDensity` at
+  `CedgeProd(sourceChart z0, 0)`, it first chooses `Rden <= Rmax` and an upper
+  bound `C`, then calls the adapted-lower bridge under cap `Rden`.  The final
+  finite original-loss integral uses density
+  `(E,u) |-> edgeDensity(CedgeProd(E,u))` and returns `R <= Rmax`.  This still
+  assumes residual zero-locus nullity, fixed-base centering, source data,
+  endpoint bases, raw Haar, and regular Haar; it does not prove source/prior
+  transport, determinant/raw Haar transport, source-rank or analytic atlas
+  coverage, normal crossings, pole order, or RLCT.  Xhigh scouts `Darwin` and
+  `Banach` passed the shape and final proof-boundary audit.
+
+- 2026-07-06, Thread 03: the rank-cut original-prior local loss wrapper now
   produces the adapted-product lower-bound radius and constant.  Under the
   explicit fixed-base centering equality `sourceChart z0 = reverseEdge`, and
   a positive cap `Rmax`, it chooses `R <= Rmax` and `c > 0` from the self-base

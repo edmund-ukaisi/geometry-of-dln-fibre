@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with continuous pulled-back density
+
+Decision: remove the explicit regular-coordinate density nonnegativity and
+upper-bound hypotheses from the rank-cut original-prior local loss bridge, but
+only for densities of the form
+
+```text
+(E,u) |-> edgeDensity(CedgeProd(E,u)).
+```
+
+The new theorem assumes continuity and positivity of `edgeDensity` at the
+fixed-base p.13 product-coordinate base
+
+```text
+CedgeProd(sourceChart z0, 0).
+```
+
+It first uses the self-base density-continuity helper to choose a density
+radius `Rden <= Rmax` and upper bound `C`, then calls the adapted-lower bridge
+with cap `Rden`.  The final radius satisfies `R <= Rmax` by transitivity.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-density-continuity.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This is still conditional: it does not prove residual zero-locus nullity, the
+fixed-base centering equality, source data, statistical prior transport,
+determinant/raw Haar transport, source-rank or analytic atlas coverage, normal
+crossings, pole order, or RLCT.  Xhigh scouts `Darwin` and `Banach` passed the
+theorem shape and final proof-boundary audit.
+
 ## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with produced adapted lower bound
 
 Decision: remove the explicit adapted-product lower-bound hypothesis from the
