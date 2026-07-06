@@ -18,6 +18,14 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: p.13 original edge-family density now has a
+  finite-integral consumer wrapper.  For a density
+  `phi(CedgeProd (x,u))`, continuity and positivity of `phi` at the self-base
+  p.13 product-coordinate value discharge the abstract density inputs to the
+  signed-box original-loss finite-integral front end.  This is not measure
+  transport.  Xhigh probes identify source-image/chart-piece coverage or a
+  product-source/reference measure bridge as the next real frontier.
+
 - 2026-07-03, Thread 03: p.13 original-prior density now has a
   product-coordinate local-bounds bridge.  Continuity and positivity of the
   original density at the self-base p.13 product-coordinate value give local

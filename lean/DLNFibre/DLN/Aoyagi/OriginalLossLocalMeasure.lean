@@ -1485,6 +1485,150 @@ theorem exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg
       by simpa [ρ, sourceStratum, CedgeProd, target] using hfinite⟩
 
 set_option linter.unusedSectionVars false in
+/-- Measurable-edge-matrix original-loss local finite-integral handoff for an
+edge-family density pulled back along the explicit self-base p.13
+product-coordinate family.
+
+This removes only the abstract product-coordinate density
+continuity/positivity hypotheses from
+`exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase_continuousAt_pos_density`.
+The signed-box source chart, weighted pushforward, residual monomial lower
+bound, source-density bounds, local product-family construction, and original
+loss comparison through the fixed endpoint bases remain delegated to that
+parent original-loss wrapper. -/
+theorem exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_edgeFamilyDensity_comp_multiEdgeProductCoordinateEdgeFamily_selfBase_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α ι : Type*} [TopologicalSpace α] [MeasurableSpace α] [OpensMeasurableSpace α]
+    [Fintype ι] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    {CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ}
+    {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin (M + 2) → ℕ}
+    (sourceData :
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) (N := M + 2) V Bv U₀ hU₀ x₀ CedgeBase H r rEdge)
+    {d : Fin (M + 3) → ℕ}
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (reverseVertex V j))
+    {μ : Measure α}
+    {ν : Measure
+      (EuclideanSpace ℝ
+        (AoyagiRegularBlockCoordinateIndex
+          (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex V) (reverseEdge V Bv) U₀ 0)))}
+    [ν.IsAddHaarMeasure]
+    {sourceChart : (ι → ℝ) → α} {sourceDensity : (ι → ℝ) → ℝ}
+    {edgeFamilyDensity :
+      (∀ p : Fin (M + 2),
+        reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ) → ℝ}
+    {t Rmax cres Cres : ℝ}
+    {Rres : ι → ℝ} {hres kres : ι → ℕ}
+    (hRmax : 0 < Rmax) (ht : 0 < t)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    (hEdgeMatrix :
+      Measurable (fun x : α ↦
+        paperEndpointFixedBaseEdgeMatrixOfReverseEdges
+          (K := ℝ) (N := M + 2) V Bv U₀ hU₀
+          (fun p : Fin (M + 2) ↦
+            (CedgeBase x p :
+              reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ))))
+    (hsourceDensity_aemeas :
+      AEMeasurable (fun y : ι → ℝ => ENNReal.ofReal (sourceDensity y))
+        (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hsourceChart : AEMeasurable sourceChart
+      (Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))))
+    (hmap :
+      μ.restrict (paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge) =
+        Measure.map sourceChart
+          ((Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+            (fun y : ι → ℝ => ENNReal.ofReal (sourceDensity y))))
+    (hcres : 0 < cres) (hCres : 0 ≤ Cres) (hRres : ∀ i, 0 < Rres i)
+    (hcrit : ∀ i, 2 * t * (kres i : ℝ) < (hres i : ℝ) + 1)
+    (hres_lower : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      cres * ∏ i, (|y i|) ^ (2 * (kres i : ℝ)) ≤
+        aoyagiCoordinateSquareSum
+          (paperEndpointFixedBaseResidualBlockCoordinateMap
+            (K := ℝ) (N := M + 2) V Bv U₀ hU₀ CedgeBase (sourceChart y)))
+    (hsourceDensity_nonneg : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      0 ≤ sourceDensity y)
+    (hsourceDensity_le : ∀ᵐ y : ι → ℝ
+      ∂Measure.pi (fun i : ι => volume.restrict (Set.Ioo (-(Rres i)) (Rres i))),
+      sourceDensity y ≤ Cres * ∏ i, (|y i|) ^ (hres i : ℝ)) :
+    let ρ :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let sourceStratum :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := M + 2) V Bv CedgeBase r rEdge
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        V Bv U₀ hU₀ CedgeBase
+    let target :=
+      LinearMap.toMatrix (b 0) (b (Fin.last (M + 2)))
+        (chainMap (reverseVertex V) (reverseEdge V Bv)
+          0 (Fin.last (M + 2)) (Fin.zero_le (Fin.last (M + 2))))
+    ContinuousAt edgeFamilyDensity (CedgeProd (x₀, (0 : EuclideanSpace ℝ ρ))) →
+      0 < edgeFamilyDensity (CedgeProd (x₀, (0 : EuclideanSpace ℝ ρ))) →
+        ∃ R C : ℝ, ∃ U : Set α,
+          0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ x₀ ∈ U ∧
+            (∫⁻ z : α × EuclideanSpace ℝ ρ,
+              ENNReal.ofReal
+                ((Metric.ball (0 : EuclideanSpace ℝ ρ) R).indicator
+                  (fun u =>
+                    (lossDLN d target
+                      (chainMapMatrixTuple b
+                        (fun p : Fin (M + 2) =>
+                          (CedgeProd (z.1, u) p :
+                            reverseVertex V p.castSucc →ₗ[ℝ] reverseVertex V p.succ)))) ^
+                      (-(t + (aoyagiTheorem2RegularVariableCount (M + 2) H r : ℝ) / 2)) *
+                    edgeFamilyDensity (CedgeProd (z.1, u))) z.2) ∂
+                (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  intro ρ sourceStratum CedgeProd target hdensity_cont hdensity_pos
+  classical
+  let densityProd : α × EuclideanSpace ℝ ρ → ℝ :=
+    fun z ↦ edgeFamilyDensity (CedgeProd z)
+  have hdensityProd :
+      ContinuousAt densityProd (x₀, 0) ∧ 0 < densityProd (x₀, 0) := by
+    simpa [densityProd, ρ, CedgeProd] using
+      continuousAt_pos_density_comp_paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (u₀ := (0 : EuclideanSpace ℝ ρ))
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+        (density := edgeFamilyDensity) hdensity_cont hdensity_pos
+  simpa [densityProd, ρ, sourceStratum, CedgeProd, target] using
+    exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix_multiEdgeProductCoordinateEdgeFamily_selfBase_continuousAt_pos_density
+      (V := V) (Bv := Bv) U₀ hU₀ sourceData b
+      (μ := μ) (ν := ν)
+      (sourceChart := sourceChart) (sourceDensity := sourceDensity)
+      (density := densityProd)
+      (t := t) (Rmax := Rmax) (cres := cres) (Cres := Cres)
+      (Rres := Rres) (hres := hres) (kres := kres)
+      hRmax ht hCedgeBase hbase hEdgeMatrix
+      hsourceDensity_aemeas hsourceChart hmap
+      hcres hCres hRres hcrit hres_lower
+      hsourceDensity_nonneg hsourceDensity_le
+      hdensityProd.1 hdensityProd.2
+
+set_option linter.unusedSectionVars false in
 /-- Measurable-edge-matrix version of the original-loss local finite-integral
 handoff with the concrete chart-side inverse product-step Jacobian density.
 

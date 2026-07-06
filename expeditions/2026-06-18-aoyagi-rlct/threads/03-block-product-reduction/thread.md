@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 p.13 original-density composed finite integral
+
+Reproduction:
+`reproduction-a2-p13-original-density-composed-finite-integral.md`.
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+Lean now has:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_edgeFamilyDensity_comp_multiEdgeProductCoordinateEdgeFamily_selfBase_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+This specializes the existing signed-box original-loss p.13 finite-integral
+front end to a density of the form
+
+```text
+phi(CedgeProd (x,u)).
+```
+
+The only discharged hypotheses are the abstract product-coordinate density
+continuity and positivity inputs, via the previous `phi o CedgeProd`
+continuity bridge.
+
+Boundary: no measure transport, no chart-piece a.e. domination, no source-image
+identity, no source coverage, no determinant/raw Haar transport, no normal
+crossings, pole order, or RLCT.  The source-image/measure frontier remains the
+next real bottleneck.
+
+Verification: focused Lean check, focused module build after one transient Lake
+artifact failure, `scripts/sorries`, `git diff --check`, direct axiom probe
+`[propext, Classical.choice, Quot.sound]`, and xhigh post-implementation review
+`Wegener` passed.  Xhigh probes `Herschel` and `Volta` both identified
+source-image/chart-piece coverage or product-source measure transport as the
+next genuine target.
+
 ## 2026-07-03 A2 p.13 product-coordinate prior-density local bounds
 
 Reproduction:

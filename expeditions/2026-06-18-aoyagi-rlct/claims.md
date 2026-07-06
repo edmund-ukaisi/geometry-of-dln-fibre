@@ -10,6 +10,41 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 p.13 original-density composed finite integral - 2026-07-06
+
+- **Statement.** For the explicit self-base p.13 product-coordinate edge-family
+  map `CedgeProd`, if an edge-family density `phi` is continuous and positive
+  at `CedgeProd (x0,0)`, then the existing signed-box original-loss p.13
+  finite-integral theorem applies to the product-coordinate density
+  `fun (x,u) => phi (CedgeProd (x,u))`.
+- **Tier.** A2 local finite-integral consumer for the p.13 product-coordinate
+  density bridge.
+- **Status.** Lean proved as a wrapper around the existing original-loss
+  signed-box finite-integral front end.
+- **Kill-condition.** The result is read as a chart-piece a.e. domination
+  theorem, change-of-variables formula, original-prior pushforward or pullback
+  theorem, determinant/raw Haar transport, source-image identity, source
+  coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.5 Definition 1 prior-density setup, p.8 smooth
+  positive prior assumption, and p.13 product-coordinate variables; the proof
+  is elementary composition plus an already-proved finite-integral handoff.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-p13-original-density-composed-finite-integral.md`.
+- **Reproduction check.** Xhigh post-implementation reviewer `Wegener` passed
+  the theorem and note.  Xhigh probes `Herschel` and `Volta` independently
+  warned that source-image/chart-piece coverage or product-source measure
+  transport remains the next genuine frontier.
+- **Lean target.**
+  `exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_edgeFamilyDensity_comp_multiEdgeProductCoordinateEdgeFamily_selfBase_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean`.
+- **Proved.** Focused Lean file check, focused module build after one transient
+  Lake artifact failure, `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probe passed.  Axiom footprint:
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No chart-piece a.e. domination, no source-prior measure
+  transport, no source-image equality, no source coverage, no determinant/raw
+  Haar transport, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 p.13 product-coordinate prior-density local bounds - 2026-07-03
 
 - **Statement.** For the explicit self-base p.13 product-coordinate edge-family

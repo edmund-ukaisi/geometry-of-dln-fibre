@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, p.13 original-density composed finite integral
+
+Lean now has:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_edgeFamilyDensity_comp_multiEdgeProductCoordinateEdgeFamily_selfBase_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+Decision: add the narrow finite-integral consumer for an original edge-family
+density composed with the explicit self-base p.13 product-coordinate map:
+
+```text
+density(x,u) = phi(CedgeProd(x,u)).
+```
+
+Continuity and positivity of `phi` at `CedgeProd(x0,0)` discharge the abstract
+`ContinuousAt density (x0,0)` and `0 < density (x0,0)` inputs to the existing
+signed-box original-loss finite-integral front end.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-original-density-composed-finite-integral.md
+```
+
+Boundary: this is a local finite-integral wrapper only.  It does not prove
+original-prior measure transport, a change-of-variables formula, chart-piece
+a.e. domination, source-image identity, source coverage, determinant/raw Haar
+transport, normal crossings, pole order, or RLCT.
+
+Next genuine frontier: xhigh probes `Herschel` and `Volta` both identify
+source-image/chart-piece coverage or a product-source/reference measure bridge
+as the next real target.  More density wrappers are thin unless they remove a
+specific downstream hypothesis.
+
+Verification passed: focused Lean check; focused module build after one
+transient Lake artifact failure; no-sorry audit; whitespace check; direct axiom
+probe `[propext, Classical.choice, Quot.sound]`; and xhigh post-implementation
+review `Wegener`.
+
 ## Latest controller decision - 2026-07-03, p.13 product-coordinate prior-density local bounds
 
 Lean now has:

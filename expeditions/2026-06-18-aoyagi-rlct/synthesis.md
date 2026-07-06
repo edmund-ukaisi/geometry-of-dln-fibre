@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Original Density Composed Finite Integral - 2026-07-06
+
+Lean now has:
+
+```text
+exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_edgeFamilyDensity_comp_multiEdgeProductCoordinateEdgeFamily_selfBase_p13RegularCoordinates_lt_top_of_residualSource_signedBox_withDensity_monomialLower_edgeMatrix
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalLossLocalMeasure.lean
+```
+
+The calculation is:
+
+```text
+Phi(x,u) = phi(CedgeProd(x,u)).
+
+If phi is continuous and positive at CedgeProd(x0,0), then the previous
+composition theorem gives Phi continuous and positive at (x0,0).
+
+The existing original-loss signed-box finite-integral front end applies to
+Phi and yields the same local finite integral with density
+phi(CedgeProd(x,u)).
+```
+
+This is a narrow consumer wrapper: it removes the abstract
+product-coordinate density continuity/positivity hypotheses from the
+signed-box original-loss finite-integral theorem when the density is an
+edge-family density composed with the explicit self-base p.13
+product-coordinate map.
+
+Boundary: the signed-box source chart, weighted pushforward, residual
+monomial lower bound, source-density bounds, local product-family
+construction, and fixed-basis edge-matrix measurability remain explicit.
+There is no change-of-variables formula, original-prior measure transport,
+chart-piece a.e. domination, source-image identity, source coverage,
+determinant/raw Haar transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean check of `OriginalLossLocalMeasure.lean`;
+focused module build `DLNFibre.DLN.Aoyagi.OriginalLossLocalMeasure` after a
+transient Lake artifact failure on the first attempt; `lean/scripts/sorries`;
+`git diff --check`; and direct axiom probe, reporting
+`[propext, Classical.choice, Quot.sound]`.  Xhigh API/source scouts
+`Herschel` and `Volta` both warned that this is not the real frontier; the
+next genuine target is source-image/chart-piece coverage or a
+product-source/reference measure bridge.  Xhigh post-implementation reviewer
+`Wegener` passed the theorem and reproduction note.
+
 ## A2 p.13 Product-Coordinate Prior-Density Local Bounds - 2026-07-03
 
 Lean now has:
