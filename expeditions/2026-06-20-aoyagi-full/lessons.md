@@ -1093,3 +1093,45 @@ no green-gate coverage). Caught one tide later when the next merge's aggregator 
 **verify `git show HEAD -- lean/DLNFibre.lean` contains the import** before pushing. A green full-build proves
 the working tree is consistent, NOT that the edit is committed. Prefer `git status --porcelain` = clean (no
 lingering ` M lean/DLNFibre.lean`) before every integration push.
+
+## 2026-07-06 — teammates must NOT touch the main checkout (2nd incident; recovery was clean because canonical is push-target-addressed)
+`phip1` (an isolation:worktree formaliser) "accidentally moved the main checkout onto a stray local
+`genm-phiexpl-p1`, then restored it to `genm-sjbase`" — i.e. it ran git ops in the controller's main checkout
+(`/home/ubuntu/workspace/geometry-of-dln-fibre`), not just its own worktree. Consequence: the main checkout
+drifted onto the wrong local branch, and the controller's subsequent `ff-only` + doc commit landed on that
+stray local pointer. **No canonical corruption** — the controller pushes via `git push origin
+HEAD:expedition/aoyagi-full` (push-target-addressed, independent of local branch name), so origin stayed
+correct; the damage was a stale/contaminated LOCAL pointer, fixed with `git checkout -B expedition/aoyagi-full
+origin/expedition/aoyagi-full` + `git branch -f genm-sjbase origin/genm-sjbase`. **Prevention:** (1) every
+teammate brief must say "work ONLY in your assigned worktree; NEVER `cd` to or run git in the main checkout";
+(2) controller keeps pushing via `HEAD:expedition/aoyagi-full` (never a bare `git push` that assumes the local
+branch), and verifies `git rev-parse --abbrev-ref HEAD` = `expedition/aoyagi-full` at the START of each
+integration. This is the 2nd such incident (the 1st was a prior session leaving the checkout on genm-inj-injon).
+
+## 2026-07-06 — do NOT re-charge an agent on ambiguous 0-procs; wait for the completion notification (caused benign duplication)
+I diagnosed `sjpeel2` as stalled (pgrep-by-agent-ID = 0 live procs + intermediate "failed" build-markers in its
+output + no pushed branch) and re-charged a duplicate (`sjpeel3`). But `sjpeel2` was STILL RUNNING — 0 matching
+procs is the norm during an agent's reasoning/reading phase (the agent ID isn't in a lean/git proc cmdline then;
+verified twice — phip3 also showed 0-procs while completing). Both agents then built the same c.o.v. base
+concurrently. **No work lost** (sjpeel3 pushed incrementally per its brief; sjpeel2's uncommitted output was
+preserved to a branch) and the outputs were complementary, but effort was wasted. **Rules:** (1) `pgrep 'agentID'`
+= 0 does NOT mean dead — it means "not running a lean/git subprocess right now"; distinguish via worktree/.lake
+activity + the presence of ANY lean procs, not the ID-match. (2) "failed" in an agent's JSONL output is usually an
+intermediate build attempt, not a death. (3) The reliable death/completion signal is the harness task-notification —
+WAIT for it before re-charging. (4) If a genuine stall must be assumed (no notification after a long idle), prefer
+resuming the SAME agent via SendMessage over spawning a fresh duplicate.
+
+## 2026-07-06 — a `lake` orchestrator's low CPU is NOT a stall; and stop over-diagnosing builds (2nd misjudgment)
+I killed the phip4 full-`DLNFibre` green-gate reading its `lake` proc's low CPU (1m52s over 46min elapsed) as
+"stalled." WRONG: the `lake` orchestrator legitimately WAITS (on the global semaphore) + delegates CPU to `lean`
+WORKER subprocesses — its own CPU stays low even while the build progresses. Its workers were in fact active (6GB,
+recent, high-CPU). The 46min was semaphore-WAIT under heavy contention (I had 2–3 concurrent full-lib green-gates +
+foreign builds sharing ~6 slots), then it got slots + compiled. I killed a progressing build (no work lost — the
+tide was committed — but wasteful). **Rules:** (1) judge a `lake`/`scripts/lb` build's liveness by its `lean`
+WORKER procs' CPU/etime, NOT the orchestrator's. (2) High elapsed + low orchestrator CPU = waiting on the
+semaphore (contention), which is NORMAL and SAFE — not a stall. (3) **Cadence: do not run a full `scripts/lb
+DLNFibre` green-gate per integration when 2 formaliser builds are already live** — it triggers 40+ min semaphore
+waits. Verify a tide via `scripts/lb <Module>` (module build) + force-`#print axioms` + `rg` new top-level names vs
+siblings; batch ONE full-lib gate when the farm is clear. (4) This is the 2nd build-status misjudgment in one
+session (after sjpeel2 "stalled"→duplication) — the meta-lesson: be conservative about declaring a build
+stalled/dead; wait for the harness notification; never kill/re-charge on ambiguous signals.
