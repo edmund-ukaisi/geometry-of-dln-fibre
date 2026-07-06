@@ -113,10 +113,36 @@ theorem aoyagi_learning_coefficient_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   --   * `hInterface` (∀ `C²` `q₂` ⟹ slice-RLCT `= lambdaCore(MprimeRect …)`) is FALSE ∀-`q₂`:
   --     `R = x² + u⁴` peels to `q₂ = u²`, slice `u⁴`, `rlctAtOn = 1/4 ≠ lambdaCore M'` in general.
   --     It needs a DLN model-identification of the built residual (`R₂ = unit · (dlnLoss M' 0)∘φ`).
-  -- The fix is architectural: bind `q`/`q₂` to the CONCRETE producer residual (where b3 gives
-  -- `rank(jacResid) = extraCountRect`, and the DLN structure gives the model-identification) rather
-  -- than route through the ∀-`q` gates. See the genm-gatesclose2 statement card for the 4 named
-  -- lemmas + the concrete-`q` re-architecture.
+  -- gatesclose2 proposed the fix: bind `q`/`q₂` to the CONCRETE producer residual (where b3 gives
+  -- `rank(jacResid) = extraCountRect`) and discharge the gates for THAT `q`.
+  --
+  -- FINDING (genm-d1l2close2 tide, 2026-07-06, Codex xhigh corroborated): binding to the concrete
+  -- `q₂` is NOT sufficient — the `hInterface` value gate is blocked at a deeper level than "∀-`q`".
+  -- The concrete `q₂` that `d1ge_L2_rect_two_peel_hrank_closed` constructs is the abstract IFT-peel
+  -- residual: BOTH peels route through `rlctAtOn_eq_of_contDiff_chart_rinv`, which REPLACES the
+  -- explicit DLN polynomial loss by `f ∘ Ψsymm` for an EXISTENCE-ONLY IFT inverse `Ψsymm` (no closed
+  -- form, no retained algebraic tie to `dlnLoss`). After two peels `q₂` is defined purely through
+  -- `Ψsymm`, `Ψsymm₂`, bump cutoffs. Only FIRST-ORDER data survives (`D1ResidualDerivExpose` exposes
+  -- the slice derivative; b3 gives its rank) — enough for `hRne` (slice a.e.-nonzero) but NOT for the
+  -- higher-order germ that PINS the RLCT value (`x² + u⁴` peels to slice `u⁴`, `rlctAtOn = 1/4`,
+  -- unpinned by first-order data). So `rlctAtOn(slice-of-q₂) = lambdaCore(M')` is UNPROVABLE from
+  -- what the producer retains — and the one-sided `lambdaCore(M') ≤ rlctAtOn(slice-of-q₂)` is equally
+  -- blocked (any nonzero value handle is absent). Strengthening the chart lemma to return more
+  -- derivatives does NOT fix it (finite-jet data do not pin the RLCT).
+  --
+  -- CORRECTED ROADMAP (Codex-recommended, matches the `genm-d1reduce-aoyagi` de-risk): retire the
+  -- two-IFT-peel producer for this leg and route through the EXPLICIT homogeneous core. The banked
+  -- `deepest_le_of_optimal_via_L2_ge` + banked `deepest_le_of_homogeneous_core` (DeepestMinRlct,
+  -- hypothesis-free: measurable + degree-`D` homogeneous ⟹ `rlctAtOn F 0 ≤ rlctAtOn F v`) reduce the
+  -- WHOLE leg to ONE new producer:
+  --     `hAtV : (nRegL2 H r)/2 + rlctAtOn (dlnLoss (H−r) 0) corePoint_v ≤ rlctAt H (dlnLoss H B') v`
+  -- — the Aoyagi Step-1 explicit iterated corner-elimination block reduction landing `rlctAt v` on
+  -- the EXPLICIT DLN core `dlnLoss (H−r) 0` (whose RLCT/homogeneity IS known: R1 + `deepest_le_of_
+  -- homogeneous_core`), at an explicit reduced-core point `corePoint_v`. Then `hCore` is the banked
+  -- homogeneity comparison, `coreDeepest = rlctAtOn (dlnLoss (H−r) 0) 0`, and NO residual-value
+  -- identity / R1-at-`M'` interface is needed. The new producer is a fresh ~600–1500-line tide
+  -- (the de-risk's estimate), NOT a gate-discharge for the existing `q₂`. See the genm-d1l2close2
+  -- statement card + `codex/crux-answer.md`.
   have hD1ge_L2 : ∀ v ∈ optimalSet H B',
       rlctAt H (dlnLoss H B') (deepestPoint H r B' hB'_rank hr hL)
         ≤ rlctAt H (dlnLoss H B') v := by
