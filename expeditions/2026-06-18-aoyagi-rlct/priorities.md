@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, same-shrink source-image adapters
+
+Lean now has two small source-image adapters:
+
+```text
+chartPiece_subset_sourceChart_image_of_subset_p13_readback
+
+chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourceStratum
+```
+
+and two same-shrink formal-product/source-reference measure adapters:
+
+```text
+formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+
+formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+```
+
+Decision: factor the reusable set and measure bookkeeping that the xhigh
+source-image and measure probes identified.  The set adapters turn a supplied
+local with-following image equality
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V
+```
+
+into the downstream support hypothesis `chartPiece ⊆ sourceChart '' V`.  The
+measure adapters turn same-`V` raw-source pushforward and two-stage
+source-chart identities into the bounded-density source-reference socket with
+constant density `1`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-subset-bridges.md
+threads/03-block-product-reduction/reproduction-a2-formal-product-source-reference-same-shrink-bridge.md
+```
+
+Boundary: these are adapters only.  They do not prove the local image equality,
+raw pushforward identity, determinant/raw Haar transport, source/product
+coordinate measure transport, original-prior transport, source-rank coverage,
+normal crossings, pole order, or RLCT.
+
+Next genuine frontier: Dirac's xhigh measure probe identifies the source-image
+bounded-density front end as the closest socket, but the actual mathematical
+blocker remains proving a source/product-coordinate measure identity or
+domination for the original density layer.
+
 ## Latest controller decision - 2026-07-06, p.13 original-density composed finite integral
 
 Lean now has:

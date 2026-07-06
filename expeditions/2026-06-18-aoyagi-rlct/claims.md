@@ -10,6 +10,56 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 same-shrink source-image adapters - 2026-07-06
+
+- **Statement.** A chart piece contained in `p13SourceSet` whose readback lies
+  in `V` is contained in `sourceChart '' V`, provided the local image equality
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` is supplied.  The rank-cut
+  variant adds `chartPiece ⊆ sourceStratum` and consumes the corresponding
+  rank-cut image equality.
+- **Statement.** On a fixed local neighborhood `V`, if the formal-product
+  measure is the raw-chart image of `rawHaar.restrict rawSourceSet`, the theta
+  raw map pushes `thetaReference.restrict V` to that same raw-source
+  restriction, and the two-stage rawChart/rawMap pushforward equals the
+  sourceChart pushforward, then the formal-product measure restricted to any
+  `chartPiece ⊆ p13SourceSet` equals the source-reference restriction.  The
+  same statement has bounded-density socket form with density `1`.
+- **Tier.** A2 source-image and source-reference adapter layer.
+- **Status.** Lean proved as generic set and measure bookkeeping lemmas.
+- **Kill-condition.** The result is read as proving the local image equality,
+  raw pushforward identity, determinant/raw Haar transport, source/product
+  coordinate measure transport, original-prior transport, source-rank coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 source-coordinate formulas motivate the
+  image/readback setup; the proofs here are elementary set and measure
+  restriction algebra from already-supplied equalities.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-source-image-chart-piece-subset-bridges.md`
+  and
+  `threads/03-block-product-reduction/reproduction-a2-formal-product-source-reference-same-shrink-bridge.md`.
+- **Reproduction check.** Xhigh pen-and-paper scout `Dalton` verified that
+  p.13 local source-image/right-inverse is elementary and independent of
+  normal-crossing extraction.  Xhigh explorer `Sagan` identified the
+  with-following image equality as the strongest existing coverage API.  Xhigh
+  explorer `Dirac` identified the source-image bounded-density socket and the
+  remaining raw/source-product measure-transport blocker.
+- **Lean target.**
+  `chartPiece_subset_sourceChart_image_of_subset_p13_readback` and
+  `chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourceStratum`
+  in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`;
+  `formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage`
+  and
+  `formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage`
+  in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean`.
+- **Proved.** Focused Lean checks and focused module builds passed for both
+  touched Lean files; `lean/scripts/sorries`, `git diff --check`, and direct
+  axiom probes passed.  The set adapters are axiom-free; the measure adapters
+  report `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No local image equality proof, no raw pushforward proof, no
+  determinant/raw Haar transport, no source/product-coordinate measure
+  transport, no original-prior transport, no source-rank coverage, no normal
+  crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 p.13 original-density composed finite integral - 2026-07-06
 
 - **Statement.** For the explicit self-base p.13 product-coordinate edge-family

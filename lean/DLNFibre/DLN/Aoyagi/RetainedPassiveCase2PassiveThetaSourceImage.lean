@@ -28,6 +28,47 @@ open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
 set_option linter.style.longLine false in
+/-- A chart piece lies in the local source-chart image if it lies in the named
+p.13 source set and its readback lies in the chosen theta neighborhood, under
+the local image equality
+`sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V`.
+
+This is pure set bookkeeping.  It does not prove the image equality, source
+coverage, measure transport, normal crossings, pole order, or RLCT extraction. -/
+theorem chartPiece_subset_sourceChart_image_of_subset_p13_readback
+    {Θ E : Type*} {sourceChart : Θ → E} {readback : E → Θ}
+    {V : Set Θ} {p13SourceSet chartPiece : Set E}
+    (himage : sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V)
+    (hp13 : chartPiece ⊆ p13SourceSet)
+    (hread : chartPiece ⊆ readback ⁻¹' V) :
+    chartPiece ⊆ sourceChart '' V := by
+  intro E hE
+  rw [himage]
+  exact ⟨hp13 hE, hread hE⟩
+
+set_option linter.style.longLine false in
+/-- Rank-cut version of
+`chartPiece_subset_sourceChart_image_of_subset_p13_readback`.
+
+If the source-chart image of `V ∩ rankEq` is exactly the intersection of the
+p.13 source set, the readback preimage of `V`, and a source-rank stratum, then
+a chart piece satisfying those three inclusions lies in the rank-cut image.
+This is only set bookkeeping. -/
+theorem chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourceStratum
+    {Θ E : Type*} {sourceChart : Θ → E} {readback : E → Θ}
+    {V rankEq : Set Θ} {p13SourceSet sourceStratum chartPiece : Set E}
+    (himage :
+      sourceChart '' (V ∩ rankEq) =
+        (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum)
+    (hp13 : chartPiece ⊆ p13SourceSet)
+    (hread : chartPiece ⊆ readback ⁻¹' V)
+    (hsource : chartPiece ⊆ sourceStratum) :
+    chartPiece ⊆ sourceChart '' (V ∩ rankEq) := by
+  intro E hE
+  rw [himage]
+  exact ⟨⟨hp13 hE, hread hE⟩, hsource hE⟩
+
+set_option linter.style.longLine false in
 /-- A pushed-forward restricted measure is supported on the actual image of
 the restricting set, provided the map is a.e. measurable and the image is
 measurable. -/

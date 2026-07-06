@@ -32,6 +32,120 @@ namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
 
+set_option linter.style.longLine false in
+/-- Restricting the p.13 formal-product chart measure to a chart piece agrees
+with the chart-produced source reference when the whole formal-product measure
+is the raw-chart image of the raw source set, the theta raw map pushes to that
+same raw source set, and the raw chart/source chart two-stage map agrees on the
+same theta reference.
+
+This is shrink-compatible measure bookkeeping.  It does not prove the raw
+pushforward identity, the two-stage source-chart identity, source coverage,
+Haar transport, normal crossings, pole order, or RLCT extraction. -/
+theorem formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+    {Theta RawTuple EdgeFamily : Type*}
+    [MeasurableSpace Theta] [MeasurableSpace RawTuple]
+    [MeasurableSpace EdgeFamily]
+    {sourceChart : Theta → EdgeFamily}
+    {rawMap : Theta → RawTuple}
+    {rawChart : RawTuple → EdgeFamily}
+    {thetaReference : Measure Theta}
+    {rawHaar : Measure RawTuple}
+    {formalProductMeasure : Measure EdgeFamily}
+    {V : Set Theta}
+    {rawSourceSet : Set RawTuple}
+    {p13SourceSet chartPiece : Set EdgeFamily}
+    (hformal_whole :
+      formalProductMeasure =
+        (Measure.map rawChart (rawHaar.restrict rawSourceSet)).restrict p13SourceSet)
+    (hraw_push :
+      Measure.map rawMap (thetaReference.restrict V) =
+        rawHaar.restrict rawSourceSet)
+    (htwo_stage :
+      Measure.map rawChart (Measure.map rawMap (thetaReference.restrict V)) =
+        Measure.map sourceChart (thetaReference.restrict V))
+    (hchartPiece_sub : chartPiece ⊆ p13SourceSet) :
+    formalProductMeasure.restrict chartPiece =
+      (Measure.map sourceChart (thetaReference.restrict V)).restrict chartPiece := by
+  have hformal_source :
+      formalProductMeasure =
+        (Measure.map sourceChart (thetaReference.restrict V)).restrict p13SourceSet := by
+    calc
+      formalProductMeasure =
+          (Measure.map rawChart (rawHaar.restrict rawSourceSet)).restrict
+            p13SourceSet := hformal_whole
+      _ =
+          (Measure.map rawChart
+            (Measure.map rawMap (thetaReference.restrict V))).restrict
+            p13SourceSet := by
+            rw [← hraw_push]
+      _ =
+          (Measure.map sourceChart (thetaReference.restrict V)).restrict
+            p13SourceSet := by
+            rw [htwo_stage]
+  calc
+    formalProductMeasure.restrict chartPiece =
+        ((Measure.map sourceChart (thetaReference.restrict V)).restrict
+          p13SourceSet).restrict chartPiece := by
+          rw [hformal_source]
+    _ =
+        (Measure.map sourceChart (thetaReference.restrict V)).restrict chartPiece :=
+          Measure.restrict_restrict_of_subset hchartPiece_sub
+
+set_option linter.style.longLine false in
+/-- Bounded-density socket form of
+`formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage`,
+with constant density `1`.
+
+This is only the same-shrink measure conversion from an exact source-reference
+identity to the bounded-density interface. -/
+theorem formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+    {Theta RawTuple EdgeFamily : Type*}
+    [MeasurableSpace Theta] [MeasurableSpace RawTuple]
+    [MeasurableSpace EdgeFamily]
+    {sourceChart : Theta → EdgeFamily}
+    {rawMap : Theta → RawTuple}
+    {rawChart : RawTuple → EdgeFamily}
+    {thetaReference : Measure Theta}
+    {rawHaar : Measure RawTuple}
+    {formalProductMeasure : Measure EdgeFamily}
+    {V : Set Theta}
+    {rawSourceSet : Set RawTuple}
+    {p13SourceSet chartPiece : Set EdgeFamily}
+    (hformal_whole :
+      formalProductMeasure =
+        (Measure.map rawChart (rawHaar.restrict rawSourceSet)).restrict p13SourceSet)
+    (hraw_push :
+      Measure.map rawMap (thetaReference.restrict V) =
+        rawHaar.restrict rawSourceSet)
+    (htwo_stage :
+      Measure.map rawChart (Measure.map rawMap (thetaReference.restrict V)) =
+        Measure.map sourceChart (thetaReference.restrict V))
+    (hchartPiece_sub : chartPiece ⊆ p13SourceSet) :
+    let sourceRef := Measure.map sourceChart (thetaReference.restrict V)
+    let oneDensity : EdgeFamily → ℝ≥0∞ := fun _ ↦ 1
+    formalProductMeasure.restrict chartPiece =
+        (sourceRef.withDensity oneDensity).restrict chartPiece ∧
+      (∀ᵐ E ∂sourceRef.restrict chartPiece, oneDensity E ≤ (1 : ℝ≥0∞)) := by
+  intro sourceRef oneDensity
+  have hpiece :
+      formalProductMeasure.restrict chartPiece = sourceRef.restrict chartPiece := by
+    simpa [sourceRef] using
+      formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+        (sourceChart := sourceChart) (rawMap := rawMap) (rawChart := rawChart)
+        (thetaReference := thetaReference) (rawHaar := rawHaar)
+        (formalProductMeasure := formalProductMeasure) (V := V)
+        (rawSourceSet := rawSourceSet) (p13SourceSet := p13SourceSet)
+        (chartPiece := chartPiece)
+        hformal_whole hraw_push htwo_stage hchartPiece_sub
+  constructor
+  · calc
+      formalProductMeasure.restrict chartPiece =
+          sourceRef.restrict chartPiece := hpiece
+      _ = (sourceRef.withDensity oneDensity).restrict chartPiece := by
+            simp [oneDensity]
+  · exact Filter.Eventually.of_forall fun _ ↦ le_rfl
+
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in

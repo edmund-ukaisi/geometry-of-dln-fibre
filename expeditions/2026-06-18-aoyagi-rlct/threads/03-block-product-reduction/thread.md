@@ -21,6 +21,55 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 same-shrink source-image adapters
+
+Reproductions:
+
+```text
+reproduction-a2-source-image-chart-piece-subset-bridges.md
+reproduction-a2-formal-product-source-reference-same-shrink-bridge.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+```
+
+Lean now has:
+
+```text
+chartPiece_subset_sourceChart_image_of_subset_p13_readback
+chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourceStratum
+
+formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+```
+
+The source-image adapters consume a supplied local image equality, such as
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V,
+```
+
+and produce the downstream support hypothesis `chartPiece ⊆ sourceChart '' V`
+from p.13-set containment plus readback-preimage containment.  The
+source-reference adapters consume same-`V` raw-source pushforward and
+two-stage source-chart identities and produce the formal-product
+source-reference restriction equality, plus the constant-density `1` socket.
+
+Boundary: adapter layer only.  No local image equality, raw pushforward,
+determinant/raw Haar transport, source/product-coordinate prior transport,
+source-rank coverage, normal crossings, pole order, or RLCT is proved.
+
+Verification: focused Lean checks and focused module builds passed for both
+touched Lean files; `scripts/sorries`, `git diff --check`, and direct axiom
+probes passed.  The set adapters are axiom-free; the measure adapters report
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scouts `Dalton`, `Sagan`,
+and `Dirac` agree the actual mathematical blocker is still raw/source-product
+measure transport, not these adapters.
+
 ## 2026-07-06 A2 p.13 original-density composed finite integral
 
 Reproduction:

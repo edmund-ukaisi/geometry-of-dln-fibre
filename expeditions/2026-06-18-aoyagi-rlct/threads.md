@@ -18,6 +18,15 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: same-shrink source-image adapters landed.  Generic
+  subset bridges convert a supplied with-following image equality
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` into the downstream
+  `chartPiece ⊆ sourceChart '' V` support hypothesis, with a rank-cut variant.
+  Generic measure bridges convert same-`V` raw-source pushforward plus
+  two-stage source-chart identity into a formal-product/source-reference
+  restriction equality and constant-density `1` socket.  These are not raw
+  pushforward, Haar transport, or source/product-coordinate prior transport.
+
 - 2026-07-06, Thread 03: p.13 original edge-family density now has a
   finite-integral consumer wrapper.  For a density
   `phi(CedgeProd (x,u))`, continuity and positivity of `phi` at the self-base

@@ -6,6 +6,85 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Same-shrink Source-image Adapters - 2026-07-06
+
+Lean now has:
+
+```text
+chartPiece_subset_sourceChart_image_of_subset_p13_readback
+
+chartPiece_subset_sourceChart_image_rankCut_of_subset_p13_readback_sourceStratum
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+and:
+
+```text
+formalProductMeasure_restrict_chartPiece_eq_sourceReference_restrict_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+
+formalProductMeasure_restrict_chartPiece_eq_withDensity_one_sourceReference_of_formal_whole_eq_restrict_sourceSet_of_raw_push_of_twoStage
+```
+
+in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaFormalProductSourceReference.lean
+```
+
+The source-image calculation is pure subset algebra:
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V
+chartPiece subset p13SourceSet
+chartPiece subset readback ⁻¹' V
+--------------------------------
+chartPiece subset sourceChart '' V.
+```
+
+The measure calculation is same-shrink bookkeeping:
+
+```text
+formalProduct =
+  (map rawChart (rawHaar.restrict rawSourceSet)).restrict p13SourceSet
+
+map rawMap (thetaReference.restrict V) =
+  rawHaar.restrict rawSourceSet
+
+map rawChart (map rawMap (thetaReference.restrict V)) =
+  map sourceChart (thetaReference.restrict V)
+```
+
+imply:
+
+```text
+formalProduct.restrict chartPiece =
+  (map sourceChart (thetaReference.restrict V)).restrict chartPiece
+```
+
+for `chartPiece subset p13SourceSet`, and the equivalent bounded-density
+socket with density `fun _ => 1`.
+
+Boundary: the new lemmas do not prove the source-image equality, raw
+pushforward identity, two-stage map identity, determinant/raw Haar transport,
+source/product-coordinate measure transport, original-prior transport,
+source-rank coverage, normal crossings, pole order, or RLCT.  They only prevent
+future wrappers from mixing independently chosen local neighborhoods.
+
+Verification passed: focused Lean checks and focused module builds passed for
+both touched Lean files; `lean/scripts/sorries`; `git diff --check`; and direct
+axiom probes passed.  The set-adapter declarations are axiom-free; the measure
+adapter declarations report `[propext, Classical.choice, Quot.sound]`.
+Xhigh pen-and-paper scout `Dalton` and xhigh source-image explorer `Sagan`
+both identified the with-following image equality as the correct coverage API.
+Xhigh measure explorer `Dirac` identified the source-image bounded-density
+front end as the nearest socket, with raw/source-product measure transport as
+the remaining mathematical blocker.
+
 ## A2 p.13 Original Density Composed Finite Integral - 2026-07-06
 
 Lean now has:
