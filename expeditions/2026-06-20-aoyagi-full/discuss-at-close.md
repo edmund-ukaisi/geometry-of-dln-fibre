@@ -1883,3 +1883,17 @@ estimate on the first coupled L=3 case) is running before the big commit; on con
 **For operator:** no decision needed here — recording that the earlier "possible wall / maybe cite" concern resolved
 to "bounded, build it" per your standing directive. The genuine remaining operator item stays #120 (the ∀-L grouped
 diffeo, D1 side) if it turns out unbounded.
+
+## 44. L=2 Φ_expl re-scoped to a dedicated multi-tide build + a soundness fix (2026-07-06).
+`phiexpl` returned honest: the L=2 crux `d1ge_L2_hAtV_explicit` is NOT a bounded fill — a genuine
+~600–1500-line multi-file build (the general-width block reparametrization). NO Mathlib wall (splitwit's
+de-risk holds; Cauchy–Binet avoided, Schur bricks banked, Option-A packaging trivial) — it's labour, not a
+wall. Banked toward it: a soundness fix (the crux statement was FALSE without `hpos : ∀ s, r < H s` — the
+interior condition; counterexample H=(1,1,1),r=1; Codex+reviewer confirmed; no headline weakening) + 2
+clean-three foundation bricks (common pivot without Cauchy–Binet; inverse-germ chart derivative). **Executive
+picture for the operator:** the two big remaining pieces — L=2 `Φ_expl` and general-L R1-UPPER `(S,J)` — are
+now both confirmed large-but-BOUNDED multi-tide formalisation campaigns (established math, no research walls),
+comparable in scale to the interior/smeared tides. The only genuine open obstruction left is #120 (the D1 ∀-L
+grouped diffeo). So the fully-general headline is reachable but is a multi-campaign build; the honest ETA is
+"several multi-tide formalisation efforts," not a near-term close. No decision needed — recording the true
+remaining-work shape.
