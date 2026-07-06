@@ -1838,3 +1838,14 @@ Operator caught two drifts after the rate-limit interruption, both now understoo
   `expeditions/2026-06-30-determinantal-atlas/`), so I did not switch unilaterally. **For operator:** confirm
   whether to (a) commit/preserve those untracked notes then switch the main checkout to `expedition/aoyagi-full`,
   or (b) leave it parked on `genm-inj-injon` (if intentional) and I keep flushing via canonical worktrees.
+
+## 41. CORRECTION to the "cite Aoyagi" decision (Items 39/133) — R1-UPPER is the mountain to BUILD, not cite (2026-07-06).
+Retracting the "hbox/R1-UPPER = monument, cite Aoyagi §5 vs build" framing (operator-discussed). Two errors:
+(1) it mis-cited — "Watanabe's universal `rlct ≤ ½·codim`" is the wrong direction+quantity (`λ ≤ d/2`, regular-model
+ceiling, not fibre codim); the only citation delivering `rlct ≥ ½·codim` is Aoyagi's exact `rlct = ½·codim` =
+`cited_aoyagi_dln`. (2) That is the pre-expedition destination's EXISTING citation — the hero expedition exists to
+REMOVE it by building R1 from scratch (cite only S2). So "cite R1-UPPER" = abandoning the quest's core, not a
+fallback. **Decision: BUILD the general-L simultaneous rank-flag resolution** (established math; no shortcut — 2
+decorrelated exact-algebra passes; 2× undershoot at (3,3,3,3)), decomposed (a)/(b)/(c), design-first
+(`r1upperdesign` in flight). Escalation trigger: if design (a)/(b) surface genuinely NEW math (not labour), that is
+a real wall to surface — build-first reveals it early. Grounded record: `r1upper-derisk.md`, `r1upper-wall-review.md`.
