@@ -641,3 +641,10 @@ import DLNFibre.Core.Analysis.RLCT.Witness
 -- roadmapped). The DLN payoff (`DLN.RlctPayoff`, `DLN.RLCT.AoyagiCited`) is restated on this built
 -- object; the opaque `rlctReal` axiom is retired.
 import DLNFibre.Core.Analysis.RLCT.Global
+-- R7 (germ non-vacuity, off the payoff path): the canonical sum-of-squares RLCT
+-- `RLCT.rlctAt_sumSq : rlctAt (∑ yᵢ²) 0 = C/2` (`C ≥ 1`), cite-free bedrock validating the local
+-- machinery for arbitrary `C` (beyond `zetaSetupSq`'s `C=1`). Ships the reusable ball threshold
+-- `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball iff `-dim < s`) + the
+-- admissible-set characterization `Ico 0 (C/2)`. The bridge to the DLN germ `K_B` (constant-rank
+-- normal form + `rlctAt` diffeo-invariance) is roadmapped, not built (v4.29 lacks constant-rank).
+import DLNFibre.Core.Analysis.RLCT.SumSq
