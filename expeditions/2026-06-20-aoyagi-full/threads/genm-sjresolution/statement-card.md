@@ -121,6 +121,45 @@ pieces as named sorries.
 > to the assembly) — was folded into the docstrings (`det Q = 1` + a header clause; module SHA `eb761d29`,
 > no statement/proof change).
 
+> **UPDATE (`genm-sjpeel-cov` CONSOLIDATION tide, module SHA `4d2cb58a`).** A controller mis-diagnosis
+> had produced TWO parallel c.o.v.-base implementations (`genm-sjpeel-cov`'s `schur_cov` conjugation
+> algebra + reindex bridge, and `genm-sjpeel-cov-alt`'s `aoyagi_ldu` LDU algebra + a pivot-chart cover +
+> a measure shear). This tide MERGES them into ONE base module `RouteMSJPivotChart.lean`: the base's
+> `schur_cov` conjugation form is the single Aoyagi-Lemma-2 algebra, and the DUPLICATE LDU form
+> (`aoyagi_ldu`/`aoyagiLower`/`aoyagiUpper`) was DROPPED. The unified c.o.v. base now has FOUR parts, all
+> sorry-free, force-`#print axioms` **clean-three** `[propext, Classical.choice, Quot.sound]`:
+> - **§A the unit-triangular algebra** — `schur_cov` + `det_schurLeft`/`det_schurRight` (`det Q = 1`) +
+>   `det_fromBlocks_cov` (unchanged; the base tide's).
+> - **§B the reindex → pivot-minor bridge** — `pivotBlock_reindex_eq_submatrix`, `schur_cov_toBlocks`,
+>   `det_toBlocks_cov` (unchanged).
+> - **§C the pivot-chart COVER (NEW, ported from `origin/genm-sjpeel-cov-alt @985e102c`).**
+>   `pivotLocus_eq_iUnion : {A | t ≤ A.rank} = ⋃ (ρ, κ) pivotChart ρ κ` — the finite cover of the
+>   rank-`≥ t` front-factor locus by the charts where some `t×t` minor is a unit. Reverse direction
+>   `exists_nonsingular_submatrix_of_le_rank` from the banked `Core.exists_pivot_cols_of_rank` (via the
+>   size-`t` column selection `exists_indep_cols_of_le_rank`); forward `isUnit_submatrix_le_rank` from
+>   submatrix-rank monotonicity `rank_submatrix_le'`/`rank_submatrix_id_col_le`/`_row_le`. **CLOSES the
+>   "a.e. COVERING property"** the base tide flagged as residual.
+> - **§D the Jacobian-`1` (measure) c.o.v. (NEW, same alt branch).** `measurePreserving_shearSub` — the
+>   block shear `(x, D) ↦ (x, D − K x)` (`K = C A⁻¹ B`, exposing `Γ = D − K`) is measure-preserving (a
+>   det-`1` `skew_product` fibre translation). This is the MEASURE form of the `D ↦ Γ` substitution —
+>   **facet (ii) of "Jacobian `1`" that the base tide had DEFERRED, now in-file.** The banked
+>   function-space instance `measurePreserving_coreShear` is pinned as the peel's ready tool.
+>
+> New imports: `Core.Matrix.RankNormalForm` (§C) + `Foundations.CoreShearMP` (§D). **No FQN clash** — all
+> §C/§D declaration names verified globally unique across `DLNFibre/` (rg), and the module builds green in
+> its own import closure (a large subset of the aggregator's `DLN.RLCT` namespace). Still **NOT wired into
+> `DLNFibre.lean`** (orphan; controller to add the import). `sjBoundaryPeel`/`sjJointResolution` UNCHANGED
+> (their honest sorries untouched). Preserves the reviewer's `det Q = 1`-vs-integral-Jacobian precision
+> fixes (§A docstrings). On `origin/genm-sjpeel-cov`.
+>
+> **NEXT peel sub-piece (the `sjBoundaryPeel` residual, built on THIS base).** Radial blow-up `Γ = z·V`
+> (`z ∈ [0, ∞)`, `V` on the unit sphere; Jacobian `z^{a−1}`, `a = (M₀−t)(M₁−t)`) reducing the corank-block
+> `Γ`-integral to a 1-D `z`-integral → the finite-cutoff `Beta` fibre bound (`∫₀ᵀ z^{a−1}·(z²)^{−(c'−…)} dz`
+> finite for `c'` below the per-chart threshold) → the a.e. finite-sum assembly over the §C chart cover
+> (`lintegral_mono_ae` on the null degenerate locus) into `sjBoundaryPeel`. §A `schur_cov` exposes `Γ`; §C
+> `pivotLocus_eq_iUnion` indexes the sum; §D `measurePreserving_shearSub` is the `D ↦ Γ` c.o.v. the
+> blow-up rides on.
+
 ## The target
 
 > **Claim.** For an arbitrary width vector `M : Fin (L+1) → ℕ`, the layer-product box integral
