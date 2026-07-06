@@ -588,8 +588,9 @@ import DLNFibre.Core.FibreZariskiLocalTriviality
 -- rlct-foundation R1: the citation cordon (accounted-axioms). `Core.Meta.Cited` = the
 -- `@[cited "src"]` attribute + `#audit_cited` command + `auditDecl` core (so `import DLNFibre`
 -- carries the attribute library-wide). `DLN.RLCT.AoyagiCited` = the DLN cites ON the cordon
--- (the `@[cited]` Watanabe-upper / Aoyagi-lower / `rlctReal` axioms, the proved
--- `aoyagiRlctRealInterface`, and the corner-0 payoff `rlct_lossDLN_zero_eq_half_cCodim_aoyagi`).
+-- (the two `@[cited]` Watanabe-upper / Aoyagi-lower axioms — now bounding the BUILT `rlctGlobal`,
+-- the opaque `rlctReal` map axiom RETIRED by R8 — the proved `aoyagiRlctRealInterface`, and the
+-- corner-0 payoff `rlct_lossDLN_zero_eq_half_cCodim_aoyagi`).
 -- Gate: `scripts/cited` (`UNACCOUNTED=0 CITED=3 LOCATION=0`). Policy:
 -- `docs/policies/citation-cordon.md`.
 import DLNFibre.Core.Meta.Cited
@@ -624,10 +625,19 @@ import DLNFibre.Core.Analysis.RLCT.Integrability
 -- `hWorst`); `RLCT.Pair` = `RLCTPair (λ=−s₀>0, poleOrder=m)` + local Link 1 `λ = rlctAt K x₀`;
 -- `RLCT.Bridge` = the buildable regional bridge `integrabilityThreshold K U = rlctAt K x₀` (F1
 -- roadmapped); `RLCT.Witness` = the axiom-clean `zetaSetupSq` (K=x²) proving the cite's hypotheses are
--- satisfiable at a genuine germ — non-vacuity as a build-time fact. Cordon: `CITED=4`.
+-- satisfiable at a genuine germ — non-vacuity as a build-time fact. Cordon: `CITED=3` (after R8:
+-- the opaque `rlctReal` map axiom is retired, so the cite surface is the local continuation +
+-- Watanabe + Aoyagi).
 import DLNFibre.Core.Analysis.RLCT.Local
 import DLNFibre.Core.Analysis.RLCT.Zeta
 import DLNFibre.Core.Analysis.RLCT.Cited
 import DLNFibre.Core.Analysis.RLCT.Pair
 import DLNFibre.Core.Analysis.RLCT.Bridge
 import DLNFibre.Core.Analysis.RLCT.Witness
+-- R8 (payoff rewire): the cite-free GLOBAL RLCT. `RLCT.Global` = `rlctGlobal K = sSup{c≥0 | K^(-c)
+-- globally loc-integrable}` (paper Def 8.1(i)), polymorphic in the parameter space so it names the
+-- DLN loss `lossDLN d B : Rep_d → ℝ` directly; the elementary `rlctGlobal ≤ rlctAt` half of
+-- Prop 8.3(iii) + the full inf-over-zero-locus characterization as a clean conditional (gluing lift
+-- roadmapped). The DLN payoff (`DLN.RlctPayoff`, `DLN.RLCT.AoyagiCited`) is restated on this built
+-- object; the opaque `rlctReal` axiom is retired.
+import DLNFibre.Core.Analysis.RLCT.Global
