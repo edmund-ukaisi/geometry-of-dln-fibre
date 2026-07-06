@@ -217,7 +217,8 @@ residual. UNCONDITIONAL at L = 2 (no `hbox`): the deepest value uses the banked 
 recursion). -/
 theorem d1ge_L2_hAtV_explicit
     (H : Fin (2 + 1) → ℕ) (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
-    (v : Params H) (hopt : prod H v = B) (hB : B.rank = r) :
+    (v : Params H) (hopt : prod H v = B) (hB : B.rank = r)
+    (hpos : ∀ s : Fin (2 + 1), r < H s) :
     ∃ P : Params (fun s => H s - r),
       (nRegL2 H r : ℝ≥0∞) / 2
           + rlctAtOn (fun A : Params (fun s => H s - r) =>
@@ -260,7 +261,7 @@ theorem d1ge_L2_deepestPoint_via_explicit_core
     deepest_regular_core_normal_form_L2_front H r B hB hr hL (le_refl 2) hpos htop hcolfront
       (by norm_num) hR1
   -- the explicit-core producer supplies the reduced-core point + the `hAtV` lower bound.
-  obtain ⟨P, hAtV⟩ := d1ge_L2_hAtV_explicit H r B v hopt hB
+  obtain ⟨P, hAtV⟩ := d1ge_L2_hAtV_explicit H r B v hopt hB hpos
   -- `hCore : ofReal(lambdaCore M) ≤ rlctAtOn (dlnLoss M 0) P` — R1 ▸ Params-domain Theorem 4.
   have hCore : ENNReal.ofReal (lambdaCore M : ℝ)
       ≤ rlctAtOn (fun A : Params M =>
