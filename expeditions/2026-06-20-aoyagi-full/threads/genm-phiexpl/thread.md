@@ -391,3 +391,65 @@ to pin the slice residual + `schurChartRaw_snd_toBlocks₂₂` reading `A1red`, 
 `paramsEquivFlatLinear ↔ paramsEquivFlat` bridge (`paramsEquivFlatLinear_symm_coe`) to reconcile the block
 equiv with `lossFlatShift`'s reconstruction. Then `qₑ`/`hRne`/`hfact` [Option A], final wiring into
 `d1ge_L2_hAtV_of_explicit_chart`.
+
+## TIDE 6 — `schur_loss_germ_L2` [HIGH analytic piece] (branch `genm-phiexpl-p4`)
+
+Closed **piece 4 of the next-tide order — the loss germ** — appended to
+`lean/DLNFibre/DLN/RLCT/Validate/D1L2PhiExpl.lean`, sorry-free, axiom-clean
+`[propext, Classical.choice, Quot.sound]` (forced `#print axioms` after deleting the olean, on all six
+new results). Crux `d1ge_L2_hAtV_explicit` (in `D1L2ExplicitCoreProducer.lean`) **untouched** — not in
+this module's import closure. Not yet wired into the aggregator (single-writer).
+
+### CLOSED this tide (▣)
+
+> **Claim (piece 4 — the L = 2 Schur loss germ).** In the `schurChart_global` coordinates the flat-shifted
+> loss equals a sum-of-squares readout `F ∘ Φ` near the flat origin.
+> - **Lean (all in `…/Validate/D1L2PhiExpl.lean`, branch `genm-phiexpl-p4`):**
+>   - `recoverProduct H r Q` — rebuild the reindexed layer product from the corner-elimination chart
+>     OUTPUT: the three regular corners `M11 = Q.snd₁₁`, `M12 = Q.snd₁₂`, `M21 = Q.fst₂₁` read directly,
+>     the eliminated `M22` corner Schur-rebuilt `M21·M11⁻¹·M12 + A0red·A1red` (`A0red = Q.fst₂₂`,
+>     `A1red = Q.snd₂₂`).
+>   - `recoverProduct_schurChartRaw` — `recoverProduct (schurChartRaw P) = P.1 * P.2` on the pivot domain
+>     (`det X ≠ 0`, `det M11 ≠ 0`): 3 regular blocks by `fromBlocks_multiply`, the `₂₂` corner by the banked
+>     `Core.schur_product_factor`; the `⅟`/`⁻¹` bridge (`invertibleOfDetNeZero`,
+>     `Matrix.invOf_eq_nonsing_inv`) is confined here.
+>   - `blockFlatEquiv_L2_mul` — `(b x).1 * (b x).2 = (prod H (flatSymm x)).submatrix (sumSplit I)(sumSplit J)`
+>     (entrywise, middle `Fin (H 1)` reindexed by `sumSplit K` via `prod_apply_two_factor_L2`; sidesteps the
+>     dependent-`Fin` `HMul` snag).
+>   - `sum_sq_reindex` — the Frobenius sum is reindex-invariant (`Equiv.sum_comp` ×2).
+>   - `schurReadoutF_L2 H r I K J … C Br` — the NAMED post-chart loss readout `F` (a `def`, so the next tide
+>     has a definitional handle): `x ↦ ∑_{a,b} ((recoverProduct (b x + C) − Br)_{ab})²`. The three regular
+>     `M11,M12,M21` block entries are the `∑ p²` directions; the `₂₂` block `= (mult − B)₂₂` is `qₑ` — the
+>     split the next tide performs.
+>   - `schur_loss_germ_L2_at_pivot` — pivot-parametric: given the two invertible-pivot dets at
+>     `P₀ = blockFlatEquiv_L2 (flat v)`, `∃ Φ f', ContDiff ℝ 2 Φ ∧ HasFDerivAt Φ f' 0 ∧ Φ 0 = 0 ∧
+>     lossFlatShift H B v =ᶠ[𝓝 0] fun w => schurReadoutF_L2 … (Φ w)` (`Φ` from `schurChart_global`).
+>   - `schur_loss_germ_L2` — the wrapper from `prod H v = B`, `B.rank = r` alone (the common pivot
+>     `exists_common_pivot_L2_at` supplies the dets; `blockFlatEquiv_L2_toBlocks₁₁_fst` + `blockFlatEquiv_L2_mul`
+>     convert them to the `P₀`-block form).
+>   - `schur_loss_germ_L2_rlct` — the RLCT corollary via the banked `dln_hchart_flat`:
+>     `rlctAt H (dlnLoss H B) v = rlctAtOn (schurReadoutF_L2 …) 0`.
+> - **Proved.** Fully. The germ math is `recoverProduct ∘ schurChartRaw = (·.1 * ·.2)` on the pivot domain
+>   (`schur_product_factor` for the eliminated corner) + reindex-invariance of the Frobenius sum.
+> - **Design note (H2 vs H(last 2)).** `blockFlatEquiv_L2` uses `H 2`, the loss/`prod`/`B` use
+>   `H (Fin.last 2)` (defeq, `Fin.last 2 = 2` by `rfl`). `J : Fin r → Fin (H (Fin.last 2))` throughout the new
+>   lemmas (matches the loss `j`-index AND `exists_common_pivot_L2_at`); passed to `blockFlatEquiv_L2` by defeq.
+>   The germ's final sum-index defeq (`Fin (H(last 2)−r)` vs `Fin (H 2−r)`) closes by default-transparency
+>   `rfl`; one column `sumSplit_inl` in the wrapper needs a defeq-tolerant `congrArg` (`rw`/`simp` can't match
+>   `Sum.inl` across the `H2`/`H(last 2)` motive).
+> - **Assumed / Cited / Deferred.** none.
+> - **Status.** sorry-free, clean-three (forced `#print axioms`).
+
+Codex xhigh design consult (`codex/loss-germ-prompt.md` + `codex/loss-germ-answer.md`) confirmed the
+statement shape (name `F` via `def`; single Frobenius sum this tide; `recoverProduct` route; `rlct` as a
+separate corollary).
+
+### OPEN pieces — remaining next-tide order
+
+Next: **`qₑ` / `hchart` [Option A]** — reindex `F = schurReadoutF_L2 …` into the consumer's
+`(Fin (nRegL2 H r) → ℝ) × Y ↦ (∑ p²) + (∑ qₑ²)` shape (`splitHomeo`-style MP reindex separating the
+three regular `M11,M12,M21` blocks (`nReg = r(H0+H2−r)`) from the `₂₂` block `qₑ = (mult − B)₂₂`), so
+`schur_loss_germ_L2_rlct` feeds `d1ge_L2_hAtV_of_explicit_chart` (`D1L2SchurAssembly`). On `{p = 0}`,
+`qₑ(0,·) = A0red·A1red` by the banked `reduced_core_zero_of_product_rank_le` (the `hfact` content), and
+`hRne` wraps `dlnLoss_deepest_core_ae_ne_zero` under `hpos`. Then the final wiring
+`d1ge_L2_hAtV_of_explicit_chart` closes the crux `d1ge_L2_hAtV_explicit`.

@@ -1153,5 +1153,306 @@ theorem schurChart_global
 
 end SchurChartGlobal
 
+/-! ## Piece 4 (this tide) — the loss germ `schur_loss_germ_L2`
+
+The loss germ: in the `schurChart_global` coordinates, the flat-shifted loss `lossFlatShift` equals
+a sum-of-squares readout `F ∘ Φ` near the flat origin. `F` reads the corner-elimination chart OUTPUT
+and reconstructs the reindexed layer product (`recoverProduct` — the three regular corners
+`M11, M12, M21` are read directly; the eliminated `M22` corner is rebuilt Schur-style
+`M21·M11⁻¹·M12 + A0red·A1red`), so the Frobenius loss `‖prod − B‖²` reads off as
+`∑_{a,b} ((recoverProduct(chart) − B)_{ab})²`. The germ identity is
+`recoverProduct ∘ schurChartRaw = (·.1 * ·.2)` on the pivot domain plus reindex-invariance of the
+Frobenius sum. This is the germ `rlctAtOn_eq_of_contDiff_chart` transports through the chart. -/
+
+section SchurLossGerm
+open scoped Matrix.Norms.Elementwise
+open Filter
+
+variable {H : Fin (2 + 1) → ℕ} {r : ℕ}
+
+/-- **Reconstruct the reindexed layer product from the corner-elimination chart OUTPUT.** The three
+regular corners `M11 = Q.snd₁₁`, `M12 = Q.snd₁₂`, `M21 = Q.fst₂₁` are read directly; the eliminated
+`M22` corner is rebuilt Schur-style `M21·M11⁻¹·M12 + A0red·A1red` (`A0red = Q.fst₂₂`,
+`A1red = Q.snd₂₂`). On the pivot domain this recovers `P.1 * P.2` exactly
+(`recoverProduct_schurChartRaw`). -/
+noncomputable def recoverProduct (H : Fin (2 + 1) → ℕ) (r : ℕ) (Q : BlockParamsL2 H r) :
+    Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ :=
+  Matrix.fromBlocks Q.2.toBlocks₁₁ Q.2.toBlocks₁₂ Q.1.toBlocks₂₁
+    (Q.1.toBlocks₂₁ * Q.2.toBlocks₁₁⁻¹ * Q.2.toBlocks₁₂ + Q.1.toBlocks₂₂ * Q.2.toBlocks₂₂)
+
+/-- **`recoverProduct ∘ schurChartRaw = (·.1 * ·.2)` on the pivot domain.** The corner-elimination
+chart output, fed back through `recoverProduct`, recovers the original layer product exactly: three
+regular corners are `fromBlocks_multiply` corners, and the eliminated `M22` corner is rebuilt by the
+banked `Core.schur_product_factor` (the Schur complement of the product IS the reduced-core factor).
+The `⅟`/`⁻¹` bridge is confined here (`invertibleOfDetNeZero` + `Matrix.invOf_eq_nonsing_inv`). -/
+theorem recoverProduct_schurChartRaw (P : BlockParamsL2 H r)
+    (hX : (P.1.toBlocks₁₁).det ≠ 0)
+    (hM11 : (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁).det ≠ 0) :
+    recoverProduct H r (schurChartRaw H r P) = P.1 * P.2 := by
+  letI := invertibleOfDetNeZero hX
+  letI := invertibleOfDetNeZero hM11
+  -- `P.1 * P.2` in block form via `fromBlocks_multiply`.
+  have hprod : P.1 * P.2
+      = Matrix.fromBlocks (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁)
+          (P.1.toBlocks₁₁ * P.2.toBlocks₁₂ + P.1.toBlocks₁₂ * P.2.toBlocks₂₂)
+          (P.1.toBlocks₂₁ * P.2.toBlocks₁₁ + P.1.toBlocks₂₂ * P.2.toBlocks₂₁)
+          (P.1.toBlocks₂₁ * P.2.toBlocks₁₂ + P.1.toBlocks₂₂ * P.2.toBlocks₂₂) := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks P.1, ← Matrix.fromBlocks_toBlocks P.2]
+    rw [Matrix.fromBlocks_multiply]
+  rw [hprod]
+  simp only [recoverProduct, schurChartRaw_snd_toBlocks₁₁, schurChartRaw_snd_toBlocks₁₂,
+    schurChartRaw_fst_toBlocks₂₁, schurChartRaw_fst_toBlocks₂₂, schurChartRaw_snd_toBlocks₂₂]
+  -- only the `₂₂` corner differs; rewrite it by `schur_product_factor` (⅟ → ⁻¹).
+  have hSPF := Core.schur_product_factor P.1.toBlocks₁₁ P.1.toBlocks₁₂ P.1.toBlocks₂₁ P.1.toBlocks₂₂
+    P.2.toBlocks₁₁ P.2.toBlocks₁₂ P.2.toBlocks₂₁ P.2.toBlocks₂₂
+  rw [Matrix.invOf_eq_nonsing_inv P.1.toBlocks₁₁,
+    Matrix.invOf_eq_nonsing_inv (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁)]
+    at hSPF
+  have h22 : (P.1.toBlocks₂₁ * P.2.toBlocks₁₁ + P.1.toBlocks₂₂ * P.2.toBlocks₂₁)
+        * (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁)⁻¹
+        * (P.1.toBlocks₁₁ * P.2.toBlocks₁₂ + P.1.toBlocks₁₂ * P.2.toBlocks₂₂)
+      + (P.1.toBlocks₂₂ - P.1.toBlocks₂₁ * P.1.toBlocks₁₁⁻¹ * P.1.toBlocks₁₂)
+        * (P.2.toBlocks₂₂ - P.2.toBlocks₂₁
+            * (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁)⁻¹
+            * (P.1.toBlocks₁₁ * P.2.toBlocks₁₂ + P.1.toBlocks₁₂ * P.2.toBlocks₂₂))
+      = P.1.toBlocks₂₁ * P.2.toBlocks₁₂ + P.1.toBlocks₂₂ * P.2.toBlocks₂₂ := by
+    rw [← hSPF]; abel
+  rw [h22]
+
+/-- **The reindexed layer product IS the block-chart layer product.** The two `blockFlatEquiv_L2`
+block-layers multiply to the pivot-reindexed multiplication-map matrix: `(b x).1 * (b x).2 =
+(prod H (flatSymm x)).submatrix (sumSplit I) (sumSplit J)`. Proved entrywise (the middle `Fin (H 1)`
+index reindexed by `sumSplit K`, via `prod_apply_two_factor_L2`), sidestepping the dependent-`Fin`
+`HMul` snag that raw `submatrix_mul_equiv` on the layers would hit. -/
+theorem blockFlatEquiv_L2_mul (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1))
+    (J : Fin r → Fin (H (Fin.last 2)))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (x : Fin (flatDim H) → ℝ) :
+    (blockFlatEquiv_L2 H r I K J hI hK hJ x).1 * (blockFlatEquiv_L2 H r I K J hI hK hJ x).2
+      = (prod H ((paramsEquivFlatLinear H).symm x)).submatrix (sumSplit I hI) (sumSplit J hJ) := by
+  ext a bb
+  rw [Matrix.mul_apply, Matrix.submatrix_apply]
+  have hfst : ∀ k, (blockFlatEquiv_L2 H r I K J hI hK hJ x).1 a k
+      = ((paramsEquivFlatLinear H).symm x 0) (sumSplit I hI a) (sumSplit K hK k) := by
+    intro k
+    rw [blockFlatEquiv_L2_fst, Matrix.reindex_apply, Matrix.submatrix_apply]; rfl
+  have hsnd : ∀ k, (blockFlatEquiv_L2 H r I K J hI hK hJ x).2 k bb
+      = ((paramsEquivFlatLinear H).symm x 1) (sumSplit K hK k) (sumSplit J hJ bb) := by
+    intro k
+    rw [blockFlatEquiv_L2_snd, Matrix.reindex_apply, Matrix.submatrix_apply]; rfl
+  simp_rw [hfst, hsnd]
+  rw [Equiv.sum_comp (sumSplit K hK)
+    (fun m => ((paramsEquivFlatLinear H).symm x 0) (sumSplit I hI a) m
+      * ((paramsEquivFlatLinear H).symm x 1) m (sumSplit J hJ bb)),
+    prod_apply_two_factor_L2]
+
+/-- **The Frobenius sum is reindex-invariant** (row split `sumSplit I`, column split `sumSplit J`):
+`∑_{i,j} ((M − B) i j)² = ∑_{a,b} ((M.submatrix sI sJ − B.submatrix sI sJ) a b)²`. Two uses of
+`Equiv.sum_comp`; the summand identity is `submatrix`/`sub` entry unfolding. -/
+theorem sum_sq_reindex (M B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
+    (I : Fin r → Fin (H 0)) (J : Fin r → Fin (H (Fin.last 2)))
+    (hI : Function.Injective I) (hJ : Function.Injective J) :
+    (∑ i, ∑ j, ((M - B) i j) ^ 2)
+      = ∑ a : Fin r ⊕ Fin (H 0 - r), ∑ bb : Fin r ⊕ Fin (H (Fin.last 2) - r),
+          ((M.submatrix (sumSplit I hI) (sumSplit J hJ)
+            - B.submatrix (sumSplit I hI) (sumSplit J hJ)) a bb) ^ 2 := by
+  rw [← Equiv.sum_comp (sumSplit I hI) (fun i => ∑ j, ((M - B) i j) ^ 2)]
+  refine Finset.sum_congr rfl (fun a _ => ?_)
+  rw [← Equiv.sum_comp (sumSplit J hJ) (fun j => ((M - B) (sumSplit I hI a) j) ^ 2)]
+  refine Finset.sum_congr rfl (fun bb _ => ?_)
+  rw [Matrix.sub_apply, Matrix.sub_apply, Matrix.submatrix_apply, Matrix.submatrix_apply]
+
+/-- **The post-chart loss readout `F` (named, for the next tide to split).** The block-chart Frob.
+readout on the flat space: from the corner-elimination chart OUTPUT `blockFlatEquiv_L2 x + C`
+(`C` the base-point chart value), `recoverProduct` rebuilds the reindexed product, and `F` is the
+squared Frobenius distance to the reindexed target `Br`. At the germ instantiation
+`C = schurChartRaw P₀`, `Br = B.submatrix (sumSplit I)(sumSplit J)`, `F ∘ Φ` reads the DLN loss
+(`schur_loss_germ_L2_at_pivot`).
+The three regular `M11, M12, M21` block entries are the `∑ p²` directions; the `₂₂` block
+`= (mult − B)₂₂` is `qₑ` — the split the next tide performs. -/
+noncomputable def schurReadoutF_L2 (H : Fin (2 + 1) → ℕ) (r : ℕ)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H (Fin.last 2)))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (C : BlockParamsL2 H r)
+    (Br : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ) :
+    (Fin (flatDim H) → ℝ) → ℝ :=
+  fun x =>
+    ∑ a : Fin r ⊕ Fin (H 0 - r), ∑ bb : Fin r ⊕ Fin (H 2 - r),
+      ((recoverProduct H r (blockFlatEquiv_L2 H r I K J hI hK hJ x + C) - Br) a bb) ^ 2
+
+/-- **The L = 2 Schur loss germ (pivot-parametric).** At a base point with invertible pivot minors
+(`hX`: the first-layer pivot `X` at `P₀ = blockFlatEquiv_L2 (flat v)`; `hM11`: the product pivot),
+the `schurChart_global` chart `Φ` (`ContDiff ℝ 2`, invertible derivative, fixing `0`) carries the
+flat-shifted loss to the block-chart Frobenius readout `F` near the flat origin:
+
+    lossFlatShift H B v =ᶠ[𝓝 0] fun w => schurReadoutF_L2 … (Φ w).
+
+Near `0`, `blockFlatEquiv_L2 (Φ w) + schurChartRaw P₀ = schurChartRaw (blockFlatEquiv_L2 (w+fv))`
+(`fv = flat v`), so `recoverProduct` recovers the reindexed product (`recoverProduct_schurChartRaw`,
+`blockFlatEquiv_L2_mul`), and reindex-invariance of the Frobenius sum (`sum_sq_reindex`) identifies
+the readout with the loss. This is the germ `rlctAtOn_eq_of_contDiff_chart` transports
+(see `schur_loss_germ_L2_rlct`). -/
+theorem schur_loss_germ_L2_at_pivot
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H (Fin.last 2)))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (hX : ((blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₁).det ≠ 0)
+    (hM11 : ((blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₁
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₁₁
+        + (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₂
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₂₁).det ≠ 0) :
+    ∃ (Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+      (f' : (Fin (flatDim H) → ℝ) ≃L[ℝ] (Fin (flatDim H) → ℝ)),
+      ContDiff ℝ 2 Φ ∧
+      HasFDerivAt Φ (f' : (Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ))
+        (0 : Fin (flatDim H) → ℝ) ∧
+      Φ (0 : Fin (flatDim H) → ℝ) = 0 ∧
+      lossFlatShift H B v =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+        fun w => schurReadoutF_L2 H r I K J hI hK hJ
+          (schurChartRaw H r (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)))
+          (B.submatrix (sumSplit I hI) (sumSplit J hJ)) (Φ w) := by
+  classical
+  set P₀ := blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v) with hP0def
+  obtain ⟨Φ, f', hΦcd, hΦ', hΦ0, hΦeq⟩ := schurChart_global I K J hI hK hJ P₀ hX hM11
+  refine ⟨Φ, f', hΦcd, hΦ', hΦ0, ?_⟩
+  have hb0 : blockFlatEquiv_L2 H r I K J hI hK hJ (0 : Fin (flatDim H) → ℝ) = 0 :=
+    map_zero (blockFlatEquiv_L2 H r I K J hI hK hJ)
+  have hbc : Continuous (fun w => blockFlatEquiv_L2 H r I K J hI hK hJ w) :=
+    (blockFlatEquiv_L2 H r I K J hI hK hJ).continuous
+  have hcont1 : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1) :=
+    continuous_fst.comp (hbc.add continuous_const)
+  have hcont2 : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2) :=
+    continuous_snd.comp (hbc.add continuous_const)
+  have hdom1 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ),
+      ((blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₁).det ≠ 0 := by
+    have hmat : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₁) :=
+      continuous_matrix (fun i j => hcont1.matrix_elem (Sum.inl i) (Sum.inl j))
+    have hval : ((blockFlatEquiv_L2 H r I K J hI hK hJ (0 : Fin (flatDim H) → ℝ)
+        + P₀).1.toBlocks₁₁).det ≠ 0 := by rw [hb0, zero_add]; exact hX
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  have hdom2 : ∀ᶠ w in 𝓝 (0 : Fin (flatDim H) → ℝ),
+      ((blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₁
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₁₁
+        + (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₂
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₂₁).det ≠ 0 := by
+    have h11 : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₁) :=
+      continuous_matrix (fun i j => hcont1.matrix_elem (Sum.inl i) (Sum.inl j))
+    have h1S : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₁₁) :=
+      continuous_matrix (fun i j => hcont2.matrix_elem (Sum.inl i) (Sum.inl j))
+    have h12 : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₂) :=
+      continuous_matrix (fun i j => hcont1.matrix_elem (Sum.inl i) (Sum.inr j))
+    have h2U : Continuous (fun w => (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₂₁) :=
+      continuous_matrix (fun i j => hcont2.matrix_elem (Sum.inr i) (Sum.inl j))
+    have hmat : Continuous (fun w =>
+        (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₁
+            * (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₁₁
+          + (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).1.toBlocks₁₂
+            * (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀).2.toBlocks₂₁) :=
+      (h11.matrix_mul h1S).add (h12.matrix_mul h2U)
+    have hval : ((blockFlatEquiv_L2 H r I K J hI hK hJ (0 : Fin (flatDim H) → ℝ)
+            + P₀).1.toBlocks₁₁ * (blockFlatEquiv_L2 H r I K J hI hK hJ 0 + P₀).2.toBlocks₁₁
+        + (blockFlatEquiv_L2 H r I K J hI hK hJ 0 + P₀).1.toBlocks₁₂
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ 0 + P₀).2.toBlocks₂₁).det ≠ 0 := by
+      simp only [hb0, zero_add]; exact hM11
+    exact hmat.matrix_det.continuousAt.eventually_ne hval
+  filter_upwards [hΦeq, hdom1, hdom2] with w hΦw hw1 hw2
+  -- the reindexed-product identity from the chart output.
+  have hrecov : recoverProduct H r
+        (blockFlatEquiv_L2 H r I K J hI hK hJ (Φ w) + schurChartRaw H r P₀)
+      = (prod H ((paramsEquivFlatLinear H).symm (w + (paramsEquivFlat H) v))).submatrix
+          (sumSplit I hI) (sumSplit J hJ) := by
+    have hbΦ : blockFlatEquiv_L2 H r I K J hI hK hJ (Φ w) + schurChartRaw H r P₀
+        = schurChartRaw H r (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀) := by
+      rw [hΦw, ContinuousLinearEquiv.apply_symm_apply]; abel
+    rw [hbΦ, recoverProduct_schurChartRaw (blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀) hw1 hw2,
+      show blockFlatEquiv_L2 H r I K J hI hK hJ w + P₀
+          = blockFlatEquiv_L2 H r I K J hI hK hJ (w + (paramsEquivFlat H) v) from by
+        rw [hP0def, ← map_add]]
+    exact blockFlatEquiv_L2_mul I K J hI hK hJ (w + (paramsEquivFlat H) v)
+  -- match both sides through `sum_sq_reindex`.
+  rw [lossFlatShift, dlnLoss, ← paramsEquivFlatLinear_symm_coe]
+  rw [sum_sq_reindex (prod H ((paramsEquivFlatLinear H).symm (w + (paramsEquivFlat H) v)))
+    B I J hI hJ]
+  simp only [schurReadoutF_L2]
+  rw [hrecov]
+  rfl
+
+/-- **The L = 2 Schur loss germ (at an optimal `v`).** From `prod H v = B`, `B.rank = r` alone the
+common pivot (`exists_common_pivot_L2_at`) supplies an invertible first-layer minor `X` and product
+pivot `M11` at `P₀ = blockFlatEquiv_L2 (flat v)`, so `schur_loss_germ_L2_at_pivot` applies: a
+`ContDiff ℝ 2` chart `Φ` (invertible derivative, fixing `0`) carrying the flat-shifted loss to the
+block-chart Frobenius readout near the flat origin. -/
+theorem schur_loss_germ_L2 (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    (hopt : prod H v = B) (hB : B.rank = r) :
+    ∃ (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H (Fin.last 2)))
+      (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+      (Φ : (Fin (flatDim H) → ℝ) → (Fin (flatDim H) → ℝ))
+      (f' : (Fin (flatDim H) → ℝ) ≃L[ℝ] (Fin (flatDim H) → ℝ)),
+      ContDiff ℝ 2 Φ ∧
+      HasFDerivAt Φ (f' : (Fin (flatDim H) → ℝ) →L[ℝ] (Fin (flatDim H) → ℝ))
+        (0 : Fin (flatDim H) → ℝ) ∧
+      Φ (0 : Fin (flatDim H) → ℝ) = 0 ∧
+      lossFlatShift H B v =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+        fun w => schurReadoutF_L2 H r I K J hI hK hJ
+          (schurChartRaw H r (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)))
+          (B.submatrix (sumSplit I hI) (sumSplit J hJ)) (Φ w) := by
+  classical
+  obtain ⟨I, K, J, hI, hK, hJ, hMdet, hXdet⟩ := exists_common_pivot_L2_at H r v B hopt hB
+  have hvsymm : (paramsEquivFlatLinear H).symm ((paramsEquivFlat H) v) = v := by
+    rw [paramsEquivFlatLinear_symm_coe]; exact (paramsEquivFlat H).symm_apply_apply v
+  -- the first-layer pivot `X` is the `₁₁` block of `P₀`.
+  have hXeq : (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₁
+      = (v 0).submatrix I K := by
+    rw [blockFlatEquiv_L2_toBlocks₁₁_fst, hvsymm]
+  -- the product pivot `M11` is the `₁₁` block of the reindexed product `= (prod v).submatrix I J`.
+  have hMeq : (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₁
+        * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₁₁
+      + (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₂
+        * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₂₁
+      = (prod H v).submatrix I J := by
+    have hblk :
+        (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₁
+            * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₁₁
+          + (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1.toBlocks₁₂
+            * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2.toBlocks₂₁
+        = ((blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1
+            * (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2).toBlocks₁₁ := by
+      conv_rhs =>
+        rw [← Matrix.fromBlocks_toBlocks
+              (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).1,
+          ← Matrix.fromBlocks_toBlocks
+              (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)).2]
+      rw [Matrix.fromBlocks_multiply, Matrix.toBlocks_fromBlocks₁₁]
+    rw [hblk, blockFlatEquiv_L2_mul, hvsymm]
+    ext i j
+    simp only [Matrix.toBlocks₁₁, Matrix.submatrix_apply, Matrix.of_apply]
+    rw [sumSplit_inl]
+    exact congrArg (prod H v (I i)) (sumSplit_inl J hJ j)
+  obtain ⟨Φ, f', hcd, hfd, hfix, hg⟩ := schur_loss_germ_L2_at_pivot B v I K J hI hK hJ
+    (by rw [hXeq]; exact hXdet) (by rw [hMeq]; exact hMdet)
+  exact ⟨I, K, J, hI, hK, hJ, Φ, f', hcd, hfd, hfix, hg⟩
+
+/-- **The chart-transferred RLCT (L = 2 Schur).** Feeding `schur_loss_germ_L2`'s chart + germ into
+the banked flat-space `hchart` (`dln_hchart_flat`) gives the local RLCT of the DLN loss at `v` as
+that of the block-chart Frobenius readout `F` at the flat origin:
+
+    rlctAt H (dlnLoss H B) v = rlctAtOn F 0.
+
+The next tide reindexes `F = schurReadoutF_L2 …` into the consumer's
+`(Fin nReg → ℝ) × Y ↦ ∑ p² + ∑ qₑ²`. -/
+theorem schur_loss_germ_L2_rlct (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ) (v : Params H)
+    (hopt : prod H v = B) (hB : B.rank = r) :
+    ∃ (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H (Fin.last 2)))
+      (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J),
+      rlctAt H (dlnLoss H B) v
+        = rlctAtOn (schurReadoutF_L2 H r I K J hI hK hJ
+            (schurChartRaw H r (blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v)))
+            (B.submatrix (sumSplit I hI) (sumSplit J hJ))) (0 : Fin (flatDim H) → ℝ) := by
+  obtain ⟨I, K, J, hI, hK, hJ, Φ, f', hcd, hfd, hfix, hg⟩ := schur_loss_germ_L2 B v hopt hB
+  exact ⟨I, K, J, hI, hK, hJ,
+    dln_hchart_flat H B v _ Φ f' hcd hfd hfix hg⟩
+
+end SchurLossGerm
+
 end DLNFibre.DLN.RLCT
 
