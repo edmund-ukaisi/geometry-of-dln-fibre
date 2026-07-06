@@ -294,18 +294,44 @@ honesty win"; that is now done.)
   Aoyagi-lower; `rlctReal` **retired**. The payoff's `#print axioms` = std-3 + those two DLN bounds ONLY (the
   ζ-continuation cite is off the value path — it enriches `(λ,m)` only).
 
-**REMAINS (roadmap; all off the payoff's critical path).**
+**REMAINS (roadmap; all off the payoff's critical path). Structured as the designed follow-on
+`rlct-invariance` (PR #23 reviewer addendum; operator scope call — roadmap, not scope-creep into the close-out
+PR). Deliverable = a complete invariance calculus for `rlctAt`/`rlctGlobal`, the substrate the eventual `K_B`
+constant-rank bridge consumes.**
+
+*Layer-completion (buildable now from what this expedition landed — highest-priority next commits):*
+- **[priority] `rlctGlobal` validation witness** `rlctGlobal (sumSq C) = C/2` (`1 ≤ C`) — the one foundation
+  definition still without an in-file witness (every other has one). Buildable from
+  `mem_localAdmissibleExponents_sumSq` + A1 below + `rlctGlobal_le_rlctAt` + `csSup_Ico`; exercises
+  `rlctGlobal_le_rlctAt` non-vacuously and instantiates the `hGlue` gluing shape on a real example.
+- **A1 — regular-point lemma** `localAdmissibleExponents K x = Set.Ici 0` (`K` continuous, `K≥0`, `K x ≠ 0`;
+  hence `¬BddAbove`) — turns "`rlctAt` = junk 0 at regular points" from prose into a citable lemma; the
+  off-zero half of the witness above; records *why* the `hWorst`/Bridge-B zero-guards exist.
+- **Invariance calculus (hardening):** `RLCT.Global.rlctAt = RLCT.rlctAt` (`rfl`-tier bridge, blocks a silent
+  fork of the two theories); local down-set + germ-monotonicity (parity with the regional API); bounded-unit
+  invariance (`0<c₁≤U≤c₂` near `x` ⟹ `rlctAt (U·K) x = rlctAt K x`); power rule `rlctAt (K^n) x = rlctAt K x /
+  n` (hardens the "no second ½ on the already-squared loss" trap, cert §6); on-cite positivity
+  `rlctAt S.K S.x₀ > 0` from any `ZetaSetup S` (honestly CITED; discharges pole-regime guards at analytic zeros).
+
+*The follow-on's analytic rungs (each a genuine build):*
+- **Fubini additivity** (LR Prop 8.3(iv)) `rlctAt (K₁(x)+K₂(y)) (x₀,y₀) = rlctAt K₁ x₀ + rlctAt K₂ y₀` for
+  nonnegative product germs — with `rlctAt_sumSq` it evaluates any `Σqᵢ² + core` germ; the `≥` direction is not
+  AM-GM-cheap. The single most valuable next analytic theorem.
 - **`rlctAt` diffeo-invariance** `rlctAt K (φ x) = rlctAt (K∘φ) x` (local C¹ diffeo, `det φ'≠0`) — BUILDABLE
-  (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` present); a separate module of comparable scale.
-- **Constant-rank / Morse–Bott normal form** → the bridge `rlctAt K_B (smooth fibre pt) = C/2` — a **genuine
-  gap**: v4.29 has inverse+implicit FT but NO constant-rank theorem / Morse lemma (verified). Monument-adjacent
-  (future expedition, or a cite if it lands in Mathlib). The honest "the local def fires at the actual DLN
-  germ" statement; the payoff does not need it (it rides the global cites).
-- **Bridge B F1** (regional↔local unconditional) + the **`hGlue`** reverse inequality (inf-over-zero-locus half).
-- **Invariance suite** (bounded-unit · two-sided-comparability · spectator · sum-of-squares-generator), the
+  (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` present).
+- **Bridge B F1** (regional↔local unconditional, ball/box: the `hSubThreshold`/cap analytic core) + the
+  **`hGlue`** reverse inequality (Prop 8.3(iii) as an equality where the payoff lives; de-risked by the witness).
+- **Invariance suite tail** (two-sided-comparability · spectator · sum-of-squares-generator), the
   **normal-crossing atlas** + product pole formula, 1-D Mellin, and the cited **equivalences** (zeta-pole ↔
   threshold ↔ volume-asymptotic).
-- **Namespace unification** — the bare-`RLCT` (`Fin n→ℝ`) theory vs the polymorphic `RLCT.Global`; a safe refactor.
+
+*The eventual consumer (monument-adjacent — a genuine gap, not this follow-on):*
+- **Constant-rank / Morse–Bott normal form** → `rlctAt K_B (smooth fibre pt) = C/2`: v4.29 has inverse+implicit
+  FT but NO constant-rank theorem / Morse lemma (verified). Once built, the payoff's cited bracket becomes a
+  computation `rlctGlobal(K_B) = nReg/2 + rlct(core)` with no new analytic machinery. The payoff does not need
+  it today (it rides the global cites).
+- **Namespace unification** — bare-`RLCT` (`Fin n→ℝ`) vs polymorphic `RLCT.Global`; includes the `rfl` bridge
+  above, and a re-check of joint cite consistency once the two `rlctAt`s become interchangeable. A safe refactor.
 
 _The Canonical-definitions / BUILD / CITE lists below were the original plan; the LANDED list above is the
 shipped state (they overlap — treat the LANDED/REMAINS split as authoritative)._

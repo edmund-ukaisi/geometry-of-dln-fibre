@@ -22,10 +22,13 @@ re-gates per [`loop-prompt.md`](loop-prompt.md). Branch `expedition/rlct-foundat
 
 **Cordon coverage — DONE (`62641cc6`+):** the gate now scopes to a first-party namespace allowlist (`Config.nsPrefixes`, default `[DLNFibre, RLCT]`), so the bare-namespace `RLCT` modules ARE covered (2248 decls; `--ns` still overrides for the fixture harness, 17/17). Residual (low-risk, noted): the L7 Mathlib-mirror namespaces (`Matrix`/`Ideal`/… — first-party modules whose decls sit in a Mathlib-overlapping namespace) are NOT in the allowlist (a `Matrix` prefix would catch Mathlib too); they host no cites and are transitively covered via their `DLNFibre` consumers. A module-provenance scan (source-module under `DLNFibre/**`) is the fully-robust generalization if a cite ever needs to live in one.
 
-## Post-review follow-ups (PR #23 §6 — non-blocking; operator "file as issues")
+## Post-review follow-ups (PR #23 — non-blocking)
 
-Captured here (in-repo, durable). None gate the merge; all are hardening/hygiene. Open as GitHub issues if the
-operator prefers external tracking.
+Captured in-repo (durable). None gate the merge. **The analytic + invariance theorems** (reviewer addendum
+**A** `rlctGlobal (sumSq C)=C/2` witness, **A1** regular-point lemma, **B1–B5** invariance calculus, and the
+**`rlct-invariance` follow-on C** — Fubini additivity / diffeo-invariance / Bridge-B F1 / `hGlue`) **are
+roadmapped in `ROADMAP.md` § Bundle 4b REMAINS** — operator scope call (2026-07-06): roadmap, don't scope-creep
+the close-out PR. The **cordon-tooling hygiene** items below stay here; open any as GitHub issues if preferred.
 - **Module-provenance scoping for the cordon** — key the LOCATION/root checks on source-module (`DLNFibre/**`)
   not namespace prefix; closes the latent Mathlib-mirror gap regardless of namespace. (Now also documented in
   `docs/policies/citation-cordon.md` § Scope of the checks + ROADMAP § Bundle 4b.)
