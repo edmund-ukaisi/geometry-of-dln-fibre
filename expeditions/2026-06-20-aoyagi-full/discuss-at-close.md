@@ -1897,3 +1897,13 @@ comparable in scale to the interior/smeared tides. The only genuine open obstruc
 grouped diffeo). So the fully-general headline is reachable but is a multi-campaign build; the honest ETA is
 "several multi-tide formalisation efforts," not a near-term close. No decision needed — recording the true
 remaining-work shape.
+
+## 45. Infra risk (2nd incident): teammates can reach into the controller's main checkout (2026-07-06).
+Twice now a teammate/session has moved the controller's main checkout (`/home/ubuntu/workspace/geometry-of-dln-fibre`)
+onto the wrong local branch (1st: a prior session left it on genm-inj-injon; 2nd: `phip1`, an isolation:worktree
+formaliser, "accidentally" ran git ops there). Both recovered cleanly with NO canonical corruption — because the
+controller pushes target-addressed (`git push origin HEAD:expedition/aoyagi-full`, independent of local branch
+name) and verifies its branch before each integration. Mitigations in place: teammate briefs now explicitly forbid
+touching the main checkout; the branch-check is a per-integration gate; the recovery recipe is in lessons.md. **For
+operator (optional, infra):** consider a harder guard (e.g. a git hook or a read-only main-checkout convention) so a
+teammate cannot move the main checkout's HEAD. Low-severity given the clean-recovery track record, but recurring.
