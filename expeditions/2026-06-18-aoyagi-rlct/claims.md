@@ -10,6 +10,59 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 Case 2 selected-entry local-source continuous-density shrink - 2026-07-06
+
+- **Statement.** For the endpoint-transported Case 2 selected-entry p.13
+  product-coordinate map, `CedgeProd` is continuous on the nonzero-pivot
+  value-source cylinder.
+- **Statement.** Given a supplied continuous real edge-family density
+  `phi : EdgeFamily -> Real`, a measurable local source-coordinate parent
+  `localSource ⊆ {y | y pivotNext != 0}`, a measurable regular-coordinate
+  parent `regularSet ⊆ ball(0,R)`, and a source-coordinate base point
+  `(y0,u0) ∈ localSource × regularSet`, there are measurable shrinks
+  `localSource' ⊆ localSource` and `regularSet' ⊆ regularSet`, still
+  containing `(y0,u0)`, and a finite `c : ENNReal` such that
+  `ENNReal.ofReal (phi (CedgeProd z)) <= c` on
+  `chartMap pivotNext '' localSource' × regularSet'`; the weighted local
+  selected-entry source image then has product readback dominated by
+  `c • localValueReference'.restrict localDomain'`.
+- **Tier.** A2 selected-entry local-source bounded-density/readback
+  bookkeeping.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as a uniform bound on the unshrunk
+  parent product, positive-measure/nonempty shrink theorem beyond the supplied
+  base point, an identification of `phi` with Aoyagi's original prior density,
+  original-prior transport, determinant/raw Haar transport, source coverage,
+  source-rank coverage, residual integrability, normal crossings, pole order,
+  or RLCT.
+- **Evidence/source.** Aoyagi p.13 reduced product-coordinate variables and
+  pp.19-21 selected nonzero-pivot chart.  The proof is elementary topology
+  and measure bookkeeping after the selected-entry local-source change of
+  variables and p.13 readback package have already been formalized.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-local-source-continuous-density-shrink.md`.
+- **Reproduction check.** Xhigh read-only audit `Turing` passed with no
+  findings.  It confirmed the source-coordinate base point, product-shaped
+  shrink, continuity-to-finite-bound step, measurable shrinks, and use of the
+  existing weighted local-domain theorem.
+- **Lean target.**
+  `exists_measurableSet_prod_subset_of_mem_nhds_prod` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`; and
+  `continuousOn_case2EndpointTransport_selectedEntryValue_productCoordinate_CedgeProd_source_univ`
+  plus
+  `exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`.
+- **Proved.** Focused Lean checks, focused module builds, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+  Lean-file forbidden-marker scan, direct axiom probes, and xhigh read-only
+  audit passed.  All three new declarations report
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No constructed or identified original prior density, no
+  original-prior transport, no determinant/raw Haar transport, no source
+  coverage, no source-rank coverage, no residual integrability, no normal
+  crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 product-coordinate source-side withDensity handoff - 2026-07-06
 
 - **Statement.** For the reduced p.13 product-coordinate edge-family map

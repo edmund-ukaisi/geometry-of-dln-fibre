@@ -18,6 +18,16 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: continuous supplied-density local-source shrink
+  landed for the Case 2 selected-entry product-coordinate readback.  Around a
+  supplied source-coordinate base point `(y0,u0)`, continuity of
+  `phi(CedgeProd(chartMap y,u))` gives a finite bound on a measurable product
+  shrink; the value-side domain remains
+  `chartMap pivotNext '' localSource' × regularSet'`, so the existing
+  weighted local-domain readback theorem applies.  This is not original-prior
+  identification or transport, Haar transport, source coverage, source-rank
+  coverage, residual integrability, normal crossings, pole order, or RLCT.
+
 - 2026-07-06, Thread 03: density-`1` local-source selected-entry readback
   landed and was locally verified.  The supported local-domain weighted
   readback theorem now has a density-free corollary for arbitrary measurable

@@ -12,6 +12,62 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry local-source continuous-density shrink
+
+Lean now has:
+
+```text
+exists_measurableSet_prod_subset_of_mem_nhds_prod
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.continuousOn_case2EndpointTransport_selectedEntryValue_productCoordinate_CedgeProd_source_univ
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+Decision: add the local-source version of continuous supplied-density
+boundedness.  The base point is a selected-entry source-coordinate pair
+`(y0,u0)`, not an arbitrary value-coordinate point.  Continuity is applied to
+
+```text
+(y,u) |-> ENNReal.ofReal (phi (CedgeProd (chartMap pivotNext y,u))).
+```
+
+A measurable product neighborhood is then intersected with the parent
+`localSource` and `regularSet`.  The value-side domain remains product-shaped:
+
+```text
+localDomain' = chartMap pivotNext '' localSource' × regularSet'.
+```
+
+On that shrunken local domain, the existing weighted local-domain theorem gives
+the selected-entry weighted readback domination by
+`c • localValueReference'.restrict localDomain'`.
+
+Boundary: `phi` is a supplied continuous real edge-family density.  The theorem
+does not identify `phi` with Aoyagi's original prior, prove original-prior
+transport, Haar transport, source coverage, positive-mass shrinks,
+source-rank coverage, residual integrability, normal crossings, pole order, or
+RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-local-source-continuous-density-shrink.md
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean` for both touched Lean files,
+focused module builds for both touched modules, full local
+`lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, code-only
+forbidden-marker scan, and direct axiom probes.  The three new declarations
+report only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh reviewer `Turing` passed the source/value-coordinate, product-shrink,
+continuity, measurability, weighted-theorem-use, theorem-scope, and nonclaim
+audit.  Residual risk is only that the helper could later be generalized from
+`BorelSpace` to an opens-measurable-space hypothesis if reuse demands it.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry local-source density-one readback
 
 Lean now has:

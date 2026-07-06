@@ -28,6 +28,26 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+/-- A product-neighborhood event contains a measurable product neighborhood.
+
+This is useful when a pointwise bound is known eventually at a product point
+and a downstream measure theorem needs rectangular source pieces. -/
+theorem exists_measurableSet_prod_subset_of_mem_nhds_prod
+    {α β : Type*} [TopologicalSpace α] [TopologicalSpace β]
+    [MeasurableSpace α] [BorelSpace α] [MeasurableSpace β] [BorelSpace β]
+    {a : α} {b : β} {S : Set (α × β)}
+    (hS : S ∈ nhds (a, b)) :
+    ∃ U : Set α, ∃ V : Set β,
+      MeasurableSet U ∧ MeasurableSet V ∧
+        a ∈ U ∧ b ∈ V ∧ U ×ˢ V ⊆ S := by
+  rcases mem_nhds_prod_iff.mp hS with ⟨U, hU, V, hV, hUV⟩
+  rcases mem_nhds_iff.mp hU with ⟨U₀, hU₀_sub, hU₀_open, haU₀⟩
+  rcases mem_nhds_iff.mp hV with ⟨V₀, hV₀_sub, hV₀_open, hbV₀⟩
+  refine ⟨U₀, V₀, hU₀_open.measurableSet, hV₀_open.measurableSet,
+    haU₀, hbV₀, ?_⟩
+  intro z hz
+  exact hUV ⟨hU₀_sub hz.1, hV₀_sub hz.2⟩
+
 /-- Push a density depending only on the image variable through a measurable
 map.
 
