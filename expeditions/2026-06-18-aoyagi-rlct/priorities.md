@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry continuous edge-density local readback
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_withDensity_ofReal_continuousEdgeDensity_readback_le_smul_valueReference_restrict_domain
+```
+
+Decision: add the selected-entry continuous edge-density local image wrapper.
+Given a supplied continuous real density `phi : EdgeFamily -> Real`, the
+theorem applies `ENNReal.ofReal` and, for every source point `z0` in the
+returned product-coordinate domain, produces a finite constant `c` and an open
+chart piece containing `CedgeProd z0`.  On that chart piece the existing
+weighted selected-entry readback theorem gives domination by
+`c • valueReference.restrict domain`.
+
+The proof is deliberately image-side: continuity gives an a.e. bound on
+
+```text
+(map CedgeProd (valueReference.restrict domain)).restrict chartPiece
+```
+
+via `exists_open_ae_restrict_le_of_continuousAt_lt_top`, and that bound is fed
+unchanged into the weighted readback theorem.
+
+Boundary: `phi` is supplied externally.  This theorem does not assert that
+`phi` is Aoyagi's original prior density, does not prove source/product
+coordinate transport for such a prior, does not shrink the selected-entry
+residual box into a source neighborhood, and does not identify formal-product
+Haar, determinant/raw Haar, original volume, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-continuous-edge-density-local-readback.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh reviewer `Dewey` passed the statement-scope and measure-reasoning audit:
+the theorem is local/image-side, the continuity-to-bound step is valid, and
+the a.e. bound is passed to the older readback theorem on exactly the required
+pushed restricted measure.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry pointwise density-bound readback
 
 Lean now has:
