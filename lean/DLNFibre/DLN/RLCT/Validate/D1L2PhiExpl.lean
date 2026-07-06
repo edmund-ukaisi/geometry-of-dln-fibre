@@ -741,15 +741,15 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
   · -- first output matrix `fromBlocks X Y M21 A0red`
     refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
     rcases i with i | i <;> rcases j with j | j
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₁₁ i j) P
       simp only [schurChartRaw_fst_toBlocks₁₁]
       exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inl j)).contDiffAt
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₁₂ i j) P
       simp only [schurChartRaw_fst_toBlocks₁₂]
       exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inr j)).contDiffAt
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₂₁ i j) P
       simp only [schurChartRaw_fst_toBlocks₂₁, Matrix.add_apply]
       exact (contDiffAt_matrix_mul_entry
@@ -758,7 +758,7 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
         (contDiffAt_matrix_mul_entry
           (fun a k => (contDiff_bp_fst_entry (Sum.inr a) (Sum.inr k)).contDiffAt)
           (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inl b)).contDiffAt) i j)
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₂₂ i j) P
       simp only [schurChartRaw_fst_toBlocks₂₂, Matrix.sub_apply]
       refine ((contDiff_bp_fst_entry (Sum.inr i) (Sum.inr j)).contDiffAt).sub ?_
@@ -772,7 +772,7 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
   · -- second output matrix `fromBlocks M11 M12 Uu A1red`
     refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
     rcases i with i | i <;> rcases j with j | j
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₁₁ i j) P
       simp only [schurChartRaw_snd_toBlocks₁₁, Matrix.add_apply]
       exact (contDiffAt_matrix_mul_entry
@@ -781,7 +781,7 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
         (contDiffAt_matrix_mul_entry
           (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inr k)).contDiffAt)
           (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inl b)).contDiffAt) i j)
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₁₂ i j) P
       simp only [schurChartRaw_snd_toBlocks₁₂, Matrix.add_apply]
       exact (contDiffAt_matrix_mul_entry
@@ -790,11 +790,11 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
         (contDiffAt_matrix_mul_entry
           (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inr k)).contDiffAt)
           (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inr b)).contDiffAt) i j)
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₂₁ i j) P
       simp only [schurChartRaw_snd_toBlocks₂₁]
       exact (contDiff_bp_snd_entry (Sum.inr i) (Sum.inl j)).contDiffAt
-    · show ContDiffAt ℝ (⊤ : ℕ∞)
+    · change ContDiffAt ℝ (⊤ : ℕ∞)
           (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₂₂ i j) P
       simp only [schurChartRaw_snd_toBlocks₂₂, Matrix.sub_apply]
       refine ((contDiff_bp_snd_entry (Sum.inr i) (Sum.inr j)).contDiffAt).sub ?_
@@ -814,8 +814,8 @@ theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
 
 /-- **`schurChartRaw` is `ContDiffOn ℝ 2` on the pivot domain** `{det X ≠ 0} ∩ {det M11 ≠ 0}`. The
 piece-2 deliverable: the explicit rational corner-elimination chart is `C²` where the two pivot
-determinants are nonzero (the reduced core `A0red · A1red` and the regular corners are all rational in
-`det X`, `det M11`). -/
+determinants are nonzero (the reduced core `A0red · A1red` and the regular corners are all
+rational in `det X`, `det M11`). -/
 theorem schurChartRaw_contDiffOn :
     ContDiffOn ℝ 2 (schurChartRaw H r) (schurChartDom H r) := by
   intro P hP
