@@ -716,5 +716,7 @@ import DLNFibre.Core.CommonPivotL2
 import DLNFibre.DLN.RLCT.Foundations.S1InverseDerivEquiv
 -- General-L R1-UPPER (S,J) resolution skeleton: `RouteMBoxThresholdFinite` ∀L reduced to 4 named analytic pieces.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
+-- L=2 Φ_expl foundation (D1 crux, pieces 1/2/8-algebra): two-factor product bridge + common pivot + reduced-core-zero.
+import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
