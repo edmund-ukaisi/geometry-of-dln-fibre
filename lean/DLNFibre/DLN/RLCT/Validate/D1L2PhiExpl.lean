@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.D1HChartFlatten
 import DLNFibre.DLN.RLCT.Foundations.S1InverseDerivEquiv
+import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 import DLNFibre.Core.CommonPivotL2
 import DLNFibre.Core.SchurProductFactor
 import DLNFibre.Core.SchurRankZero
@@ -161,6 +162,109 @@ theorem reduced_core_zero_of_product_rank_le {r p q p' : ℕ}
   have hzero := Core.schur_complement_zero_of_rank_le
     (X * S + Y * Uu) (X * T + Y * V) (Z * S + W * Uu) (Z * T + W * V) hrank
   rw [← hfac, hzero, sub_self]
+
+/-! ## Piece 3 — the block-reindexing coordinate equiv `blockFlatEquiv_L2` (THE cost driver)
+
+The general-width block reparametrisation: the flat coordinates `Fin (flatDim H) → ℝ` are
+identified — by a CONTINUOUS ℝ-LINEAR equiv — with the two layer matrices reindexed so that the `r`
+pivot rows/columns (selected by the common pivot `I, K, J` of `exists_common_pivot_L2_at`) sit in
+the top-left `Fin r ⊕ Fin (H_s − r)` block. This localises all `Fin r ⊕ Fin (H_s − r)` block-index
+casts in ONE equiv, whose `toBlocks₁₁` reads exactly the pivot minor
+(`blockFlatEquiv_L2_toBlocks₁₁_fst`), so the Schur bricks (`schur_product_factor`,
+`schur_complement_zero_of_rank_le`) apply to the chart image with no further index bookkeeping. It is
+a pure REINDEX (no nonlinear chart yet) — the rational corner-elimination `Φ_expl` rides on this.
+
+Characterisations are stated against the LINEAR flatten-inverse `(paramsEquivFlatLinear H).symm`; it
+agrees with the measurable `(paramsEquivFlat H).symm` as a function
+(`paramsEquivFlatLinear_symm_coe`, `D1HChartRank`), so the germ connecting to `lossFlatShift` bridges
+by that one rewrite. -/
+
+/-- **Split a finite index by an injection.** From an injection `σ : Fin r → Fin n`, the equiv
+`Fin r ⊕ Fin (n − r) ≃ Fin n` sending the left summand onto the image of `σ` (`sumSplit_inl`) and
+the right summand onto the complement. Built from `Equiv.ofInjective` on the image and a cardinality
+equiv `Fin (n − r) ≃ ↥(range σ)ᶜ` glued by `Equiv.Set.sumCompl`. The distinguished left `Fin r`
+block is the pivot placement the Schur chart consumes. -/
+noncomputable def sumSplit {r n : ℕ} (σ : Fin r → Fin n) (hσ : Function.Injective σ) :
+    Fin r ⊕ Fin (n - r) ≃ Fin n :=
+  (Equiv.sumCongr (Equiv.ofInjective σ hσ)
+      (Fintype.equivOfCardEq (by
+        have hcard : Fintype.card ↥(Set.range σ) = r := by
+          rw [Fintype.card_congr (Equiv.ofInjective σ hσ).symm]; exact Fintype.card_fin r
+        rw [Fintype.card_fin, Fintype.card_compl_set, Fintype.card_fin, hcard]))).trans
+    (Equiv.Set.sumCompl (Set.range σ))
+
+/-- `sumSplit` sends the left summand `Sum.inl a` to `σ a` — the defining property. -/
+@[simp] theorem sumSplit_inl {r n : ℕ} (σ : Fin r → Fin n) (hσ : Function.Injective σ) (a : Fin r) :
+    sumSplit σ hσ (Sum.inl a) = σ a := by
+  simp only [sumSplit, Equiv.trans_apply, Equiv.sumCongr_apply, Sum.map_inl,
+    Equiv.Set.sumCompl_apply_inl]
+  rfl
+
+/-- The block-decomposed L = 2 parameter type at a rank-`r` pivot: the two layer matrices reindexed
+so the `r` pivot rows/columns sit in the top-left `Fin r ⊕ Fin (H_s − r)` block. -/
+abbrev BlockParamsL2 (H : Fin (2 + 1) → ℕ) (r : ℕ) : Type :=
+  Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 1 - r)) ℝ ×
+  Matrix (Fin r ⊕ Fin (H 1 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ
+
+/-- **The L = 2 layer split** `Params H ≃ₗ[ℝ] (v 0) × (v 1)`, at literal widths (the `def` return
+type pins `(0 : Fin 2).castSucc = 0`, `.succ = 1`, `(1 : Fin 2).castSucc = 1`, `.succ = 2`). The
+dependent `Fin 2` product `LinearEquiv.piFinTwo`, ascribed to the clean layer types. -/
+noncomputable def paramsSplitL2 (H : Fin (2 + 1) → ℕ) :
+    Params H ≃ₗ[ℝ] (Matrix (Fin (H 0)) (Fin (H 1)) ℝ) × (Matrix (Fin (H 1)) (Fin (H 2)) ℝ) :=
+  LinearEquiv.piFinTwo ℝ (fun s : Fin 2 => Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ)
+
+/-- **`blockFlatEquiv_L2` — the general-width block-reindexing coordinate model (piece 3).** A
+CONTINUOUS ℝ-linear equiv `(Fin (flatDim H) → ℝ) ≃L[ℝ] BlockParamsL2 H r`: flatten-inverse (linear)
+`≫` layer split `≫` per-layer reindex by the pivot injections `I, K, J` (each `Fin (H_s) ≃ Fin r ⊕
+Fin (H_s − r)` via `sumSplit`). Continuous by `LinearEquiv.toContinuousLinearEquiv` (all spaces are
+finite-dimensional). The two layer blocks read off via `blockFlatEquiv_L2_fst` / `_snd`; the pivot
+`r × r` minor is `blockFlatEquiv_L2_toBlocks₁₁_fst`. -/
+noncomputable def blockFlatEquiv_L2 (H : Fin (2 + 1) → ℕ) (r : ℕ)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H 2))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J) :
+    (Fin (flatDim H) → ℝ) ≃L[ℝ] BlockParamsL2 H r :=
+  ((paramsEquivFlatLinear H).symm.trans
+    ((paramsSplitL2 H).trans
+      ((Matrix.reindexLinearEquiv ℝ ℝ (sumSplit I hI).symm (sumSplit K hK).symm).prodCongr
+        (Matrix.reindexLinearEquiv ℝ ℝ (sumSplit K hK).symm
+          (sumSplit J hJ).symm)))).toContinuousLinearEquiv
+
+/-- The first block of `blockFlatEquiv_L2 x` is the pivot-reindexed first layer of the (linear)
+flatten-inverse of `x`. -/
+theorem blockFlatEquiv_L2_fst (H : Fin (2 + 1) → ℕ) (r : ℕ)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H 2))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (x : Fin (flatDim H) → ℝ) :
+    (blockFlatEquiv_L2 H r I K J hI hK hJ x).1
+      = Matrix.reindex (sumSplit I hI).symm (sumSplit K hK).symm
+          ((paramsEquivFlatLinear H).symm x 0) := by
+  rw [blockFlatEquiv_L2]; rfl
+
+/-- The second block of `blockFlatEquiv_L2 x` is the pivot-reindexed second layer of the (linear)
+flatten-inverse of `x`. -/
+theorem blockFlatEquiv_L2_snd (H : Fin (2 + 1) → ℕ) (r : ℕ)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H 2))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (x : Fin (flatDim H) → ℝ) :
+    (blockFlatEquiv_L2 H r I K J hI hK hJ x).2
+      = Matrix.reindex (sumSplit K hK).symm (sumSplit J hJ).symm
+          ((paramsEquivFlatLinear H).symm x 1) := by
+  rw [blockFlatEquiv_L2]; rfl
+
+/-- **The pivot `r × r` block is the pivot minor.** The `toBlocks₁₁` corner of the first block of
+`blockFlatEquiv_L2 x` is exactly the first-layer minor at the pivot rows `I`, columns `K` — the
+invertible pivot `X` the Schur reparametrisation consumes (invertibility from
+`exists_common_pivot_L2_at`). -/
+theorem blockFlatEquiv_L2_toBlocks₁₁_fst (H : Fin (2 + 1) → ℕ) (r : ℕ)
+    (I : Fin r → Fin (H 0)) (K : Fin r → Fin (H 1)) (J : Fin r → Fin (H 2))
+    (hI : Function.Injective I) (hK : Function.Injective K) (hJ : Function.Injective J)
+    (x : Fin (flatDim H) → ℝ) :
+    (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₁₁
+      = ((paramsEquivFlatLinear H).symm x 0).submatrix I K := by
+  rw [blockFlatEquiv_L2_fst]
+  ext a b
+  simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, sumSplit_inl]
 
 /-! ## Interface contract — the shape the OPEN pieces (3–7) must hit (durable next-tide target)
 

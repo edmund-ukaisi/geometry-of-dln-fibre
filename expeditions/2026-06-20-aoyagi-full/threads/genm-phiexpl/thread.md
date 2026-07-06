@@ -236,3 +236,48 @@ be *wrong statements* (the anti-pattern). They are the next tides, in order:
 (this tide), `derivEquiv_of_eventual_inverse` (brick A), `dln_hchart_flat` (D1HChartFlatten),
 `dlnLoss_deepest_core_ae_ne_zero` (DeepestCoreNonvanishing), `d1ge_L2_hAtV_of_explicit_chart`
 (D1L2SchurAssembly).
+
+## TIDE 3 — `blockFlatEquiv_L2` coordinate model (branch `genm-phiexpl-p1`)
+
+Closed **piece 1 of the next-tide order — `blockFlatEquiv_L2`, THE cost driver** — appended to the same
+module `lean/DLNFibre/DLN/RLCT/Validate/D1L2PhiExpl.lean` (now also imports `…Foundations.ParamsFlatLinear`),
+sorry-free, axiom-clean `[propext, Classical.choice, Quot.sound]` (forced `#print axioms` on all six new
+constants). Crux `d1ge_L2_hAtV_explicit` still an honest untouched `sorry`. Not yet wired into the aggregator
+(single-writer) — controller wires `D1L2PhiExpl` + the banked `Core.CommonPivotL2` / `S1InverseDerivEquiv`
+(and its closure now pulls `ParamsFlatLinear`, already in the aggregator via `D1HChartRank`).
+
+### CLOSED this tide (▣)
+
+> **Claim (piece 1 of next-tide order — the block coordinate model).** The flat parameter coordinates are
+> a CONTINUOUS ℝ-linear equiv away from the two layers block-decomposed at the common pivot, with the pivot
+> `r × r` minor in the top-left corner.
+> - **Lean:** `DLNFibre.DLN.RLCT.blockFlatEquiv_L2` (`…/Validate/D1L2PhiExpl.lean`, branch `genm-phiexpl-p1`).
+> - **Gloss.** For `H : Fin 3 → ℕ`, `r : ℕ`, and injections `I : Fin r → Fin (H 0)`, `K : Fin r → Fin (H 1)`,
+>   `J : Fin r → Fin (H 2)` (the common pivot from `exists_common_pivot_L2_at`),
+>   `blockFlatEquiv_L2 : (Fin (flatDim H) → ℝ) ≃L[ℝ] BlockParamsL2 H r`, where
+>   `BlockParamsL2 H r = Matrix (Fin r ⊕ Fin (H 0 − r)) (Fin r ⊕ Fin (H 1 − r)) ℝ × Matrix (Fin r ⊕ Fin (H 1 − r)) (Fin r ⊕ Fin (H 2 − r)) ℝ`.
+>   Definition: (linear) flatten-inverse `(paramsEquivFlatLinear H).symm` `≫` layer split `paramsSplitL2`
+>   (`LinearEquiv.piFinTwo`) `≫` per-layer `Matrix.reindexLinearEquiv` by the pivot splits; continuous by
+>   `LinearEquiv.toContinuousLinearEquiv` (all spaces finite-dim).
+> - **Supporting lemmas (all sorry-free, clean-three):**
+>   - `sumSplit σ hσ : Fin r ⊕ Fin (n − r) ≃ Fin n` (from an injection; `sumSplit_inl : sumSplit σ hσ (inl a) = σ a`)
+>     — the reusable index split placing the `r` selected coordinates in the left block.
+>   - `blockFlatEquiv_L2_fst` / `_snd` — each block is the pivot-reindexed layer of `(paramsEquivFlatLinear H).symm x`.
+>   - `blockFlatEquiv_L2_toBlocks₁₁_fst` — the top-left `r × r` block is exactly the pivot minor
+>     `((paramsEquivFlatLinear H).symm x 0).submatrix I K` (the invertible `X` the Schur bricks consume).
+>   - `paramsSplitL2`, `BlockParamsL2` — the literal-width layer split and the block target type.
+> - **Proved.** Fully. Design choice made (card left the target type open): `BlockParamsL2` is a PRODUCT of
+>   the two reindexed layer matrices (not a dependent `Fin 2` pi) so downstream reads blocks by
+>   `Matrix.toBlocks₁₁/₁₂/₂₁/₂₂` directly. Characterisations stated against the LINEAR `paramsEquivFlatLinear.symm`
+>   (agrees with the measurable `paramsEquivFlat.symm` by `paramsEquivFlatLinear_symm_coe`, `D1HChartRank`),
+>   keeping the module's imports minimal; the germ bridges to `lossFlatShift` by that one rewrite.
+> - **Assumed / Cited / Deferred.** none.
+> - **Status.** sorry-free.
+
+### OPEN pieces — remaining next-tide order (unchanged, minus the closed piece 1)
+
+Next: **`Φ_expl` + `schurChartRaw_contDiffOn`** [med] — the explicit rational corner-elimination forward map
+`(p | A0red, A1red | X, Y, U)`, `ContDiffOn ℝ 2` on `{det X ≠ 0} ∩ {det M11 ≠ 0}` (`ContDiffOn.inv` on the
+pivot minors, C² of polynomial entries), bump-globalised via `exists_contDiff_eventuallyEq_of_contDiffOn`.
+It rides on `blockFlatEquiv_L2` (this tide). Then `schurChart_global`, `schur_loss_germ_L2` (uses
+`reduced_core_zero_of_product_rank_le` + `blockFlatEquiv_L2_toBlocks₁₁_fst`), `qₑ`/`hRne`/`hfact`, final wiring.
