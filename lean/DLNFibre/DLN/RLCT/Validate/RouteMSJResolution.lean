@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
+import DLNFibre.DLN.RLCT.Foundations.PivotSchurChart
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJResolution` — the general-`L` R1-UPPER `(S,J)` resolution SKELETON
@@ -49,8 +50,13 @@ genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointReso
 1. **Local comparability / units** — `sjLocalComparability`, `paramsBoxM_volume_lt_top`. CLOSED (pure
    measure theory + compactness). The banked L=2 fibre engine is `MatMulFibre.fibre_lintegral_mul_le`.
 2. **Pivot–Schur chart** — `sjPivotSchurChart_rrp` (the L=2 `(r,r,p)` instance, CLOSED via the banked
-   `routeMBoxThresholdFinite_rrp`). The general-`L` chart is the internal change of variables of piece 3
-   (`sjBoundaryPeel`), stated there — not duplicated as a standalone claim.
+   `routeMBoxThresholdFinite_rrp`). The **general-dimension c.o.v. base is now CLOSED** in
+   `Foundations.PivotSchurChart` (clean-three, network-free): the pivot-chart cover
+   (`pivotLocus_eq_iUnion`: rank `≥ t` ⟺ some `t×t` minor of the front factor is a unit), the Aoyagi
+   Lemma-2 unit-triangular LDU exposing `Γ` (`aoyagi_ldu`, det-1 factors `aoyagiLower_det`/`_det`), and
+   the Jacobian-1 measure-preserving block shear (`measurePreserving_shearSub`). These are the c.o.v.
+   base the residual of piece 3 (`sjBoundaryPeel`) consumes on each chart; the radial blow-up + 1-D Beta
+   fibre bound + a.e. assembly that USE them are LATER tides.
 3. **Boundary blow-up / peel** (LOAD-BEARING analytic core) — `sjBoundaryPeel`. Named sorry. Its OUTER
    measure-preserving reduction is now CLOSED (reusable, clean-three): `routeMLayerBoxIntegral_front_split`
    (+ `eFront` + `frobSq_prod_front`) reduces the `M` box integral to the tail-outer front-factor fibre
@@ -521,7 +527,16 @@ as `Real.rpow` inside `ofReal`, `0^{neg} = 0` (not `+∞`), so on the degenerate
 positive. Under the OUTER `A'`-integral this locus is null (harmless to `jointPeelIntegral`'s VALUE), so the
 INTEGRATED conclusion here is sound, but the proof must use `lintegral_mono_ae` with the degenerate
 tail-product locus shown null (or reformulate `jointPeelIntegral`'s singular factor via `ENNReal.rpow` so
-`0^{neg} = ⊤` — a `jointPeelIntegral` signature change, to escalate). The internal chart step is piece 2. -/
+`0^{neg} = ⊤` — a `jointPeelIntegral` signature change, to escalate). The internal chart step is piece 2.
+
+**C.O.V. BASE LANDED (`Foundations.PivotSchurChart`, clean-three, this tide).** The pivot-chart cover
++ Aoyagi Lemma-2 c.o.v. this residual invokes are now built and reusable: `pivotLocus_eq_iUnion` (the
+finite pivot-chart cover of the rank-`≥ t` front-factor locus by `{A₀ | some t×t minor a unit}`),
+`aoyagi_ldu` (the unit-triangular `A₀ = L · diag(P, Γ) · U` exposing `Γ = D − C P⁻¹ B`, det-1 factors
+`aoyagiLower_det`/`aoyagiUpper_det`), and `measurePreserving_shearSub` (the Jacobian-1 measure-preserving
+block shear `D ↦ D − K` exposing `Γ`). What remains for THIS sorry is the ANALYTIC assembly on top of
+that base — the radial blow-up `Γ = zV` (Jacobian `z^{a−1}`), the finite-cutoff 1-D Beta `z`-integral,
+and the `lintegral_mono_ae` a.e. gluing over the chart cover — LATER tides. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧
@@ -750,6 +765,21 @@ example (M : Fin (L + 1) → ℕ) : minAdmRec M = minAdm M := minAdmRec_eq_minAd
 example (m : ℕ) (T : ℝ) (hT : 0 < T) (c' : ℝ) (hc' : c' < (m + 1) / 2) :
     ∫⁻ x in morseBox (m + 1) T, ENNReal.ofReal ((∑ i, (x i) ^ 2) ^ (-c')) < ⊤ :=
   sumSqND_box_lt_top m T hT c' hc'
+
+-- Piece 2 c.o.v. base (LANDED, `Foundations.PivotSchurChart`): the pivot-chart cover of the front
+-- factor by charts with a `t×t` invertible minor — the peel's residual sums over this finite cover.
+example (t : ℕ) (M : Fin (L + 1 + 1 + 1) → ℕ) :
+    {A₀ : Matrix (Fin (M 0)) (Fin (M 1)) ℝ | t ≤ A₀.rank}
+      = ⋃ (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)), pivotChart ρ κ :=
+  pivotLocus_eq_iUnion t
+
+-- Piece 2 c.o.v. base: Aoyagi's Lemma-2 unit-triangular LDU exposing `Γ` on a pivot chart (`P` the
+-- invertible `t×t` block; `L`, `U` det-1), at the front-factor block dimensions.
+example (t a b : ℕ) (P : Matrix (Fin t) (Fin t) ℝ) [Invertible P]
+    (B : Matrix (Fin t) (Fin b) ℝ) (C : Matrix (Fin a) (Fin t) ℝ) (D : Matrix (Fin a) (Fin b) ℝ) :
+    Matrix.fromBlocks P B C D
+      = aoyagiLower P C * Matrix.fromBlocks P 0 0 (aoyagiSchur P B C D) * aoyagiUpper P B :=
+  aoyagi_ldu P B C D
 
 end APIPins
 
