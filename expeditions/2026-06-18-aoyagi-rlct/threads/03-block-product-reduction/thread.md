@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 p.13 inverse-Jacobian density local bound
+
+Reproduction:
+
+```text
+reproduction-a2-p13-inverse-jacobian-density-local-bound.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean
+```
+
+Lean now has:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+
+exists_pos_radius_le_open_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+```
+
+The first theorem proves that the p.13 chart-side inverse product-step
+Jacobian density, composed with `paperEndpointFixedBaseP13RawOrderTuple`, is
+eventually nonnegative and bounded above on a small regular-coordinate ball,
+relative to any supplied source set.  The second theorem unwraps the eventual
+statement to an explicit open neighborhood `U` of the self-base point.
+
+Boundary: this is a bounded-unit result along the reduced p.13 section only.
+It does not assert raw-Haar, formal-product Haar, selected-entry source,
+original-prior, normal-crossing, pole-order, or RLCT transport.  The section
+still fixes transverse variables (`C1 = I`, `A3 = 0`).
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probes.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 selected-entry product source pushforward composition
 
 Reproduction:

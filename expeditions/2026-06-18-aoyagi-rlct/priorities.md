@@ -12,6 +12,45 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, p.13 inverse-Jacobian density local bound
+
+Lean now has:
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+
+exists_pos_radius_le_open_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+```
+
+Decision: prove the p.13 chart-side inverse product-step Jacobian factor is a
+local bounded nonnegative unit along the reduced p.13 section.  The theorem
+uses the already-proved continuity of
+`paperEndpointFixedBaseP13RawOrderTuple` at the self-base point and positivity
+of `productReductionStepRawOrderInverseJacobianDensity` there, then applies
+the elementary continuous-positive-density handoff from
+`LocalMeasureHandoff`.
+
+Boundary: this is deliberately not a measure-transport theorem.  The p.13
+section fixes transverse raw variables (`C1 = I`, `A3 = 0`), so the result is
+only a local bound for the chart-side inverse density evaluated along that
+section.  It does not identify formal-product Haar, determinant/raw Haar,
+selected-entry source measure, original prior, normal crossings, pole order,
+or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-inverse-jacobian-density-local-bound.md
+lean/DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probes.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
 ## Latest controller decision - 2026-07-06, selected-entry product source pushforward composition
 
 Lean now has:

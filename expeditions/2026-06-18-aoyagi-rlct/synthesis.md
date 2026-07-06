@@ -6,6 +6,60 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 p.13 Inverse-Jacobian Density Local Bound - 2026-07-06
+
+Lean now has a local bounded-unit handoff for the p.13 chart-side inverse
+product-step Jacobian density in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean
+```
+
+```text
+exists_pos_radius_le_eventually_nhdsWithin_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+
+exists_pos_radius_le_open_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+```
+
+For
+
+```text
+density(x,u) =
+  productReductionStepRawOrderInverseJacobianDensity
+    (paperEndpointFixedBaseP13RawOrderTuple V Bv U0 hU0 CedgeBase (x,u)),
+```
+
+the theorem gives `0 < R <= Rmax` and `0 <= C` such that, for `x`
+eventually in `nhdsWithin x0 source` and all `u in ball(0,R)`,
+
+```text
+0 <= density(x,u)
+density(x,u) <= C.
+```
+
+The open-neighborhood variant packages the same bounds on some open
+neighborhood `U` of `x0`, for all `x in U cap source`.
+
+Mathematical reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-p13-inverse-jacobian-density-local-bound.md
+```
+
+Boundary: this is only local boundedness of the chart-side inverse density
+along the reduced p.13 section.  It uses continuity plus positivity at the
+self-base point.  It does not identify formal-product Haar, ambient raw Haar,
+selected-entry source measure, original prior, normal crossings, pole order,
+or RLCT.  The p.13 section still fixes transverse raw variables `C1 = I` and
+`A3 = 0`.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/ProductReductionStepRegularDensity.lean`, focused
+`lake build DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity`, full
+local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probes.  The new
+declarations report only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 Selected-entry Product Source Pushforward Composition - 2026-07-06
 
 Lean now has the selected-entry product source pushforward composition layer

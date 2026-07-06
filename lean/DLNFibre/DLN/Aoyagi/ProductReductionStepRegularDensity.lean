@@ -1,5 +1,6 @@
 import DLNFibre.DLN.Aoyagi.ProductReductionStepSuffixDensity
 import DLNFibre.DLN.Aoyagi.RegularSuspensionCoordinates
+import DLNFibre.DLN.Aoyagi.LocalMeasureHandoff
 
 /-!
 # Product-step inverse density along Aoyagi's p. 13 regular coordinates
@@ -2521,6 +2522,147 @@ theorem paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center
       (paperEndpointFixedBaseP13RawOrderTuple_mem_rawDetChartSet_center
         (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
         (CedgeBase := CedgeBase) x₀)
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
+/-- Along the p. 13 raw-shaped target tuple, the chart-side inverse product-step
+Jacobian density is locally nonnegative and bounded above on a small
+regular-coordinate ball, relative to any supplied source set. -/
+theorem exists_pos_radius_le_eventually_nhdsWithin_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    {source : Set α} {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let Coord :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let density : α × EuclideanSpace ℝ Coord → ℝ := fun xu ↦
+      productReductionStepRawOrderInverseJacobianDensity
+        (paperEndpointFixedBaseP13RawOrderTuple V Bv U₀ hU₀ CedgeBase xu)
+    ∃ R C : ℝ, 0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧
+      (∀ᶠ x in nhdsWithin x₀ source,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            0 ≤ density (x, u)) ∧
+      (∀ᶠ x in nhdsWithin x₀ source,
+        ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+            density (x, u) ≤ C) := by
+  classical
+  let Coord :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+  let density : α × EuclideanSpace ℝ Coord → ℝ := fun xu ↦
+    productReductionStepRawOrderInverseJacobianDensity
+      (paperEndpointFixedBaseP13RawOrderTuple V Bv U₀ hU₀ CedgeBase xu)
+  have hdensity : ContinuousAt density (x₀, (0 : EuclideanSpace ℝ Coord)) := by
+    simpa [density, Coord] using
+      continuousAt_paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_selfBase
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+  have hpos : 0 < density (x₀, (0 : EuclideanSpace ℝ Coord)) := by
+    simpa [density, Coord] using
+      paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) x₀
+  simpa [density, Coord] using
+    exists_pos_radius_le_eventually_nhdsWithin_density_bounds_of_continuousAt_pos
+      (α := α) (E := EuclideanSpace ℝ Coord) (density := density)
+      (x₀ := x₀) (s := source) (Rmax := Rmax)
+      hdensity hpos hRmax
+
+set_option linter.style.longLine false in
+set_option linter.unusedSectionVars false in
+/-- Open-neighborhood form of the local p. 13 inverse-Jacobian density bound.
+
+This is only a local bounded-unit statement for the chart-side inverse density
+along the reduced p. 13 section; it is not a raw-Haar or source-prior transport
+statement. -/
+theorem exists_pos_radius_le_open_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+    {M : ℕ}
+    (V : Fin (M + 3) → Type v) [∀ i, AddCommGroup (V i)]
+    [∀ i, TopologicalSpace (V i)] [∀ i, IsTopologicalAddGroup (V i)]
+    [∀ i, T2Space (V i)] [∀ i, Module ℝ (V i)]
+    [∀ i, ContinuousSMul ℝ (V i)]
+    (Bv : ∀ i : Fin (M + 2), V i.succ →ₗ[ℝ] V i.castSucc)
+    [∀ j, FiniteDimensional ℝ (V j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule ℝ (reverseVertex V 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap V Bv)))
+    (CedgeBase : α → ∀ p : Fin (M + 2),
+      reverseVertex V p.castSucc →L[ℝ] reverseVertex V p.succ)
+    (hCedgeBase : ContinuousAt CedgeBase x₀)
+    (hbase :
+      CedgeBase x₀ =
+        fun p : Fin (M + 2) ↦ LinearMap.toContinuousLinearMap (reverseEdge V Bv p))
+    {source : Set α} {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let Coord :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+    let density : α × EuclideanSpace ℝ Coord → ℝ := fun xu ↦
+      productReductionStepRawOrderInverseJacobianDensity
+        (paperEndpointFixedBaseP13RawOrderTuple V Bv U₀ hU₀ CedgeBase xu)
+    ∃ R C : ℝ, ∃ U : Set α,
+      0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ x₀ ∈ U ∧
+        (∀ x ∈ U ∩ source, ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R → 0 ≤ density (x, u)) ∧
+        (∀ x ∈ U ∩ source, ∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R → density (x, u) ≤ C) := by
+  classical
+  let Coord :=
+    AoyagiRegularBlockCoordinateIndex
+      (Fin (Module.finrank ℝ U₀))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ (Fin.last (M + 2)))
+      (throughSubspaceEndpointComplementIndex
+        (reverseVertex V) (reverseEdge V Bv) U₀ 0)
+  let density : α × EuclideanSpace ℝ Coord → ℝ := fun xu ↦
+    productReductionStepRawOrderInverseJacobianDensity
+      (paperEndpointFixedBaseP13RawOrderTuple V Bv U₀ hU₀ CedgeBase xu)
+  rcases
+      exists_pos_radius_le_eventually_nhdsWithin_productReductionStepRawOrderInverseJacobianDensity_paperEndpointFixedBaseP13RawOrderTuple_selfBase_bounds
+        (V := V) (Bv := Bv) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := CedgeBase) hCedgeBase hbase
+        (source := source) hRmax with
+    ⟨R, C, hR, hRle, hC, hnonneg, hle⟩
+  have hboth :
+      ∀ᶠ x in nhdsWithin x₀ source,
+        (∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R → 0 ≤ density (x, u)) ∧
+        (∀ u : EuclideanSpace ℝ Coord,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R → density (x, u) ≤ C) :=
+    hnonneg.and hle
+  rcases mem_nhdsWithin.1 hboth with ⟨U, hUopen, hx₀U, hUsub⟩
+  refine ⟨R, C, U, hR, hRle, hC, hUopen, hx₀U, ?_, ?_⟩
+  · intro x hx u hu
+    exact (hUsub hx).1 u hu
+  · intro x hx u hu
+    exact (hUsub hx).2 u hu
 
 end Aoyagi
 end DLN
