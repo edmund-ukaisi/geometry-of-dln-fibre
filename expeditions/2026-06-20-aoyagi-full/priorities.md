@@ -1,43 +1,43 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class.
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-06** (superseded the
+Rung-0b era content). Live integrative read: `synthesis.md`; operator-review items: `discuss-at-close.md`.
 
 ## Now (ranked)
 
-1. **[pursue] Rung 0b — encode the foundations + goal skeleton in Lean.** Design landed & reviewed
-   (`threads/01-…/design-spec.md`, bedrock-quality, Codex-audited faithful). Encode
-   `DLNFibre.DLN.RLCT.Foundations.*` (`dlnLoss`/`optimalSet`/`rlctAt`/`rlctOrderAt`/`aoyagiλ` via
-   `½·min over Adm`) + the named-`sorry` skeleton (§8 of the spec) + the single S2 axiom. Small modular
-   files; build-once Foundations layer.
-2. **[de-risked → reframed] Spine obligation.** thread 03 (pp + decorrelated Codex) found the set-equality
-   "R1 charts = Adm" is FALSE but the **value-match** `min chart-ratio = ½·min_{T∈Adm} Mval(T)` holds
-   (L=2). `T` ↔ rank-incidence stratum, `Mval = codim` ⇒ `λ_core = ½·min_strata codim`. The R1 obligation
-   is now the value-match (Theorem 3 + resolution existence), not a bijection. **New top-open:** general-L
-   `Mval = codim(nested-rank stratum)` (L=2 done; pp on L=3 `(2,2,2,2)`). Possibly a cleaner R1
-   architecture (`½·min_strata codim`) than chart enumeration — assess on pp's L=3 report.
-3. **[pursue · GATE] Validate the smallest case end-to-end.** Build R1's charts for the smallest case
-   (single matrix; then L=2, r=0), read off the literal exponents, confirm `= Adm`, run the chain to λ.
-   This is both the anti-treadmill gate and the probe for the spine risk (item 2). Do before generalising.
-4. **[pursue] Rung 0c — hardener + reviewer fidelity pass on the ENCODED Lean.** Gate before S1/L1/…
-   build on the definitions: name=content; `aoyagiλ` is the min-over-Adm (no smuggled ℓ-form); the S2
-   axiom is exactly the minimal cited monomial fact; `#print axioms` shows only S2. (Folds the bedrock
-   check; Codex already did the decorrelated faithfulness audit of the design.)
-5. **[park-unclear] θ analytic seam.** `rlctOrderAt` (pole order) needs meromorphic continuation Mathlib
-   lacks; plan: combinatorial `aoyagiθ=a(ℓ−a)+1` (A2) + the analytic=chart-count equality riding inside
-   S2. λ unaffected. At-risk per standing decision 6.
-6. **[park-unclear] D1 scope.** Read `entropy-15-03714.pdf`; scope exactly the deepest-point reduction
-   (Thm 4) the headline infimum needs.
+1. **[LONG POLE · charge design-first] R1-UPPER = the mountain.** General-L box-finiteness
+   `RouteMBoxThresholdFinite M` (= `rlct ≥ ½·codim`). BUILT: L=2 ∀M, `(r,r,p)` ∀r∀p, some L≥3. The open
+   piece (multi-active-boundary staircases, paradigm `(3,3,3,3)`) has **no shortcut** (2 decorrelated
+   exact-algebra passes; two-matrix machinery undershoots `½·minAdm` by 2×). Needs Aoyagi's genuine
+   simultaneous rank-flag blow-up — ESTABLISHED math ⇒ **build, do NOT cite** (cite = `cited_aoyagi_dln`
+   = the pre-expedition state; R1-from-scratch IS the hero deliverable). Decomposed (a)/(b)/(c). This is
+   the highest executive-VOI: it determines whether the fully-general from-scratch headline is reachable.
+   **Action:** design pass on (a) [arity-recursive shifted-exponent layer-peel], Codex-decorrelated, then
+   formalise. `r1upper-derisk.md` + `r1upper-wall-review.md` are the grounded scoping.
+2. **[CONSOLIDATE] Integration debt → canonical.** The D1 route-A lineage (`genm-d1chart`, 4500 LoC,
+   clean-additive, refines the L=2 sorry to the `Φ_expl` crux) + `genm-dr0inj`'s
+   `RouteMInteriorDeepRank0GenAtom` (+824, sorry-free) are banked but NOT on canonical. Canonical must
+   reflect the true banked state (the "green ≠ integrated" confusion cost a tick). Green-gate via
+   `scripts/lb`, wire the aggregator (single-writer), push.
+3. **[MILESTONE · bounded] L=2 headline unconditional.** `Φ_expl` (`d1ge_L2_hAtV_explicit`) — ~500 LoC,
+   splitwit-verified bounded. Closes `aoyagi_learning_coefficient_L2` sorry-free (no hbox). Charge a
+   formaliser off the integrated D1 lineage.
+4. **[genuine open] #120** — the L≥3 grouped diffeo / `deepest_gauge_squeeze_exists`; gates the D1 ∀-L
+   ≥-leg lift. Re-assess (bounded vs wall) once the L=2 chart machinery is validated.
+5. **[park-at-risk] θ analytic seam** — combinatorial `θ=a(ℓ−a)+1` landable; the analytic
+   (pole-multiplicity) identity needs meromorphic continuation Mathlib lacks. Standing decision 6: land
+   combinatorial, flag the analytic seam. λ unaffected.
 
 ## Watching (suspicion / risks)
 
-- **Topology:** controller session is inside a worktree (`rung0-defs`) → spawned isolation-worktrees
-  collapse onto it ⇒ **teammates run serially** (one editor at a time). Fine for the sequential early
-  rungs. For the parallel middle phase (L1/L2/A1/D1/R1) the operator may relaunch the controller from
-  the main checkout to unlock true isolation-parallelism (surfaced; non-blocking).
-- Treadmill recurrence — every file on the critical path to a named sorry; sorry-count trends down.
-- Definitional infidelity — guarded by Rung 0c (encoded-Lean review) + the ground-truth cross-check.
-- Build-time — small modules, shared `.lake/packages`, background builds, tactic hygiene.
+- **R1-UPPER climbability.** The math is known, but if design (a)/(b) surface a *new* obstruction (not
+  labour), that is a real escalation point — build-first will reveal it early. Not expected, but watched.
+- **Speed/cadence** (operator 2026-07-06): consolidate + focus the 1–2 real builds; don't spin many
+  exploratory threads; honor the ≥20-min heartbeat; resist reflexive doc-churn.
+- **Branch hygiene** (fixed 2026-07-06): controller stays in the main checkout ON `expedition/aoyagi-full`;
+  never let WIP land on the local expedition branch. Build via `scripts/lb` (never bare `lake`).
+- Treadmill: every live file on the critical path to a named sorry; sorry-count trends down.
 
 ## Operator notes
 

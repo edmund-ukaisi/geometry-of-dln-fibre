@@ -43,10 +43,13 @@ push the branch freely to origin (PR/merge operator-gated).
 ## Autonomous mode (operator away, from 2026-06-24)
 Operator mandate: CHARGE AHEAD ambitiously by default; decide autonomously; record items needing eventual
 operator review in `discuss-at-close.md` (don't block on them). Integrate landed tides yourself
-(bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build →
-commit → push `origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or
-switched the main checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`. PRs +
-dev/master remain operator-gated — hold them.
+(bedrock/vacuity review — green ≠ right, inhabitant-test, no trap-iii fabrication → green-gate build **via
+`lean/scripts/lb`, NEVER bare `lake build`** [shared mathlib store + global worker semaphore; bare `lake`
+OOM/contends — see `lean/CLAUDE.md` + `docs/policies/lean-build-workflow.md`] → commit → push
+`origin/expedition/aoyagi-full`; recover cleanly if a teammate left work uncommitted or switched the main
+checkout's branch). Spawn fresh lean-formalisers with `isolation: worktree`; **state in every teammate
+brief: "build via `scripts/lb`; do not `lake exe cache get` in a worktree."** PRs + dev/master remain
+operator-gated — hold them.
 
 **Ambition calibration (operator, 2026-06-26).** Default to AMBITIOUS. My risk-estimates have frequently
 been too pessimistic — mapped-as-"too large/risky" pieces frequently are not. A build that LARGELY FOLLOWS
@@ -55,12 +58,30 @@ adapt with state" reach — do NOT defer it. Reserve "roadmap + operator" for GE
 unargued extensions, not for large-but-standard builds. When I catch myself thinking "too big to start,"
 that is the cue to break it down and START, not to hold. Be ambitious.
 
-**Current critical path (A, de-risked 2026-06-26).** R1-general LOWER leg (BUILD-READY: the general
-`NodeAchieverChart M` via the descent-path `φ_M` + the banked telescoping det `Spike/GeneralComposedDet`
-+ the finite-family cov — the (3,3,3,3) pattern generalized); R1-general UPPER leg (the depth-`r`
-WellFounded hfin recursion, `RouteMSchur:284`/N2b:164); the L2 general-`L` interior
-(`deepest_gauge_construction` 3118/3123/3289 + the (1a) `IsDeepLayers` strengthening); D1 (the ≥-leg, then
-global assembly); the general headline. **No research walls — all bounded builds.**
+**Current critical path (A, re-grounded 2026-07-06 — corrects the stale "no research walls" map).**
+- **L=2 headline milestone (near-term, bounded).** Reduces sorry-free to ONE crux: the explicit chart
+  `Φ_expl` (`d1ge_L2_hAtV_explicit`, `D1L2ExplicitCoreProducer.lean`) — a ~500 LoC build,
+  splitwit-verified bounded (split trivial `u≡1`; `hchart` Φ a bounded monomial-Jacobian diffeo,
+  `det J_Φ = ±detX·detM11³`). The D1 route-A body (SchurProductFactor/SchurRankZero/b1-b3/D1L2 assembly)
+  is BANKED but **un-integrated on canonical** (on the `genm-d1chart` lineage) — integration debt.
+- **General-L R1-UPPER = THE MOUNTAIN (the long pole).** `RouteMBoxThresholdFinite M` ∀L
+  (= `rlct ≥ ½·codim`). BUILT: L=2 ∀M, the `(r,r,p)` corank family ∀r∀p, some L≥3 (`(4,4,2,2)`). The open
+  piece — general-L multi-active-boundary staircases (paradigm `(3,3,3,3)`, codim `[1,2,3]`) — has **NO
+  shortcut** (two decorrelated exact-algebra passes: the two-matrix machinery undershoots `½·minAdm` by a
+  factor of 2). It needs Aoyagi's genuine **simultaneous rank-flag blow-up**. This is ESTABLISHED
+  mathematics ⇒ **BUILD it, do NOT cite** (citing = `cited_aoyagi_dln`, which is the pre-expedition state —
+  R1 from-scratch IS the hero deliverable). Decomposed: (a) arity-recursive shifted-exponent layer-peel
+  mirroring `minAdmRec`; (b) joint no-double-count domination reaching additive `½·minAdm`; (c) the
+  cross-boundary measure handle. Design-first (Codex-decorrelated), then formalise; the single hardest build.
+- **General-L R1-LOWER:** bounded (genm-l3interior verdict BOUNDED; interior is a monomial generalization);
+  being charged. **D1 ∀-L ≥-leg:** the chart machinery lifts modulo **#120** (the L≥3 grouped diffeo /
+  `deepest_gauge_squeeze_exists`) — a genuine open. **Then** global assembly → the general headline.
+
+**Speed / executive cadence (operator, 2026-07-06).** Be THOUGHTFUL about pace; match cadence to real
+progress. At this stage (much banked + de-risked; clarity high; the central hard builds R1-UPPER/Φ_expl
+big) the move is CONSOLIDATE (integrate banked work to canonical — canonical must reflect the true state)
++ FOCUS the 1–2 genuine builds, NOT spin many exploratory threads. Spend ticks thinking at the executive
+level; honor the ≥20-min idle heartbeat; resist reflexive doc-churn. Fewer, higher-signal ticks.
 
 ## Flush before yielding
 Land new state in synthesis.md / priorities.md (thread progress in thread.md). **In-repo only — never
