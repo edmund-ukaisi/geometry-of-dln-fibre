@@ -21,6 +21,52 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 Case 2 lossDLN finite integral with concrete p.13 inverse density
+
+Reproduction:
+
+```text
+reproduction-a2-case2-lossdln-product-step-inverse-density-finite-integral.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+```
+
+The theorem specializes the existing Case 2 endpoint-`lossDLN`
+finite-integral handoff by replacing the arbitrary positive continuous density
+with the concrete p.13 product-step inverse-Jacobian factor
+
+```text
+productReductionStepRawOrderInverseJacobianDensity
+  (paperEndpointFixedBaseP13RawOrderTuple
+    W2 B2 U0 hU0 (fun E => E) (x,u)).
+```
+
+The proof uses the p.13 continuity and positivity lemmas for that raw-order
+tuple.  The base edge-family map is `fun E => E`, not the selected-entry
+value-coordinate source chart.
+
+Boundary: concrete density finite-integral handoff only.  No original-prior
+identification, source/product-coordinate transport, raw-Haar transport,
+normal crossings, pole order, or RLCT.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 Case 2 selected-entry domain-shaped product pushforward
 
 Reproduction:

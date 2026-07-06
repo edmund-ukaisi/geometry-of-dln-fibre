@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 lossDLN finite integral with concrete p.13 inverse density
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+```
+
+Decision: specialize the Case 2 selected-entry endpoint-`lossDLN`
+finite-integral theorem to the actual p.13 product-step inverse-Jacobian
+density
+
+```text
+productReductionStepRawOrderInverseJacobianDensity
+  (paperEndpointFixedBaseP13RawOrderTuple
+    W2 B2 U0 hU0 (fun E => E) (x,u)).
+```
+
+The proof discharges the previous arbitrary-density hypotheses
+`ContinuousAt density (base,0)` and `0 < density(base,0)` from the p.13
+raw-order tuple density lemmas.  The edge-family base map is deliberately
+`fun E => E`; this is the chart-side p.13 density attached to the edge-family
+finite-integral theorem, not the selected-entry value-coordinate source chart.
+
+Boundary: this removes only the supplied density regularity hypotheses from
+the selected-entry chart-produced finite-integral handoff.  It still assumes
+the selected-entry source-chart measure, source-data/rank-stratum package,
+positive selected-entry radii, and the selected-entry critical inequality.  It
+does not identify original prior, source/product-coordinate measure transport,
+raw Haar, normal crossings, pole order, or RLCT.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-lossdln-product-step-inverse-density-finite-integral.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next target: either add the source-rank-supported `_restrict_open` sibling for
+the same concrete inverse density, or use the domain-shaped selected-entry
+product pushforward as a same-radius image-measure corollary.  The
+source-rank-supported sibling is a direct wrapper over the theorem just added
+and the existing source-rank support theorem.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry domain-shaped product pushforward
 
 Lean now has:
@@ -59,11 +111,6 @@ focused module build
 full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
 code-only forbidden-marker scan, and direct axiom probe.  The new declaration
 reports only `[propext, Classical.choice, Quot.sound]`.
-
-Next target: Curie's audit recommends specializing the Case 2 selected-entry
-finite-integral theorem by hard-coding the p.13 product-step inverse-Jacobian
-density, thereby removing the abstract density continuity/positivity
-hypotheses while keeping the local loss and source-density hypotheses explicit.
 
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry product-coordinate pushforward
 

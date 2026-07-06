@@ -1,4 +1,5 @@
 import DLNFibre.DLN.Aoyagi.EndpointLossComparison
+import DLNFibre.DLN.Aoyagi.ProductReductionStepRegularDensity
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryChartBridge
 import DLNFibre.DLN.Aoyagi.RetainedPassiveLocalJacobianMeasure
 
@@ -7120,6 +7121,145 @@ theorem exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg
     ⟨U, hUopen, hbaseU, hfinite⟩
   refine ⟨R, C, U, hR, hR_le_Rden.trans hRden_le, hC, hUopen, hbaseU, ?_⟩
   simpa [rhoReg, CedgeProd, target, target', originalLoss, sourceMeasure, μ, sourceStratum] using hfinite
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Endpoint-transported explicit Case 2 chart-produced finite-integral
+handoff for original endpoint square-Frobenius `lossDLN`, with the concrete
+p.13 product-step inverse-Jacobian density.
+
+This is the concrete-density specialization of
+`exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density`.
+The continuity and positivity of the density are discharged by the p.13
+raw-order tuple density lemmas. -/
+theorem exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let base : EdgeFamily :=
+      fun p ↦ LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p)
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun yNext ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀ (retainedData yNext)
+    let rhoReg :=
+      AoyagiRegularBlockCoordinateIndex
+        (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ (Fin.last 2))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ 0)
+    let CedgeProd :=
+      paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+        W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E)
+    ∀ [MeasurableSpace EdgeFamily] [OpensMeasurableSpace EdgeFamily]
+      [BorelSpace EdgeFamily],
+    ∀ {H : ℕ → ℕ} {r : ℕ} {rEdge : Fin 2 → ℕ},
+      PaperEndpointFixedBaseRegularCoordinateSourceData
+        (K := ℝ) W₂ B₂ U₀ hU₀ base (fun E : EdgeFamily ↦ E) H r rEdge →
+    ∀ {d : Fin 3 → ℕ},
+      (b : ∀ j, Module.Basis (Fin (d j)) ℝ (reverseVertex W₂ j)) →
+    ∀ {ν : Measure (EuclideanSpace ℝ rhoReg)}, ν.IsAddHaarMeasure →
+    ∀ {t Rmax : ℝ} {Rres : center → ℝ},
+      0 < Rmax → 0 < t →
+      (∀ i, 0 < Rres i) →
+      2 * t < ((center.erase pivotNext.1).card : ℝ) + 1 →
+      let invJacDensity : EdgeFamily × EuclideanSpace ℝ rhoReg → ℝ :=
+        fun xu ↦
+          productReductionStepRawOrderInverseJacobianDensity
+            (paperEndpointFixedBaseP13RawOrderTuple
+              W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) xu)
+      let sourceMeasure :=
+        (Measure.pi (fun i : center => volume.restrict (Set.Ioo (-(Rres i)) (Rres i)))).withDensity
+          (fun y : center → ℝ =>
+            ENNReal.ofReal (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))
+      let μ := Measure.map sourceChart sourceMeasure
+      let sourceStratum :=
+        paperEndpointFixedBaseSourceRankStratum
+          (K := ℝ) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+      let target :=
+        LinearMap.toMatrix (b 0) (b (Fin.last 2))
+          (chainMap (reverseVertex W₂) (reverseEdge W₂ B₂)
+            0 (Fin.last 2) (Fin.zero_le (Fin.last 2)))
+      ∃ R C : ℝ, ∃ U : Set EdgeFamily,
+        0 < R ∧ R ≤ Rmax ∧ 0 ≤ C ∧ IsOpen U ∧ base ∈ U ∧
+        (∫⁻ z : EdgeFamily × EuclideanSpace ℝ rhoReg,
+          ENNReal.ofReal
+            ((Metric.ball (0 : EuclideanSpace ℝ rhoReg) R).indicator
+              (fun u =>
+                (lossDLN d target
+                    (chainMapMatrixTuple b
+                      (fun p : Fin 2 =>
+                        (CedgeProd (z.1, u) p :
+                          reverseVertex W₂ p.castSucc →ₗ[ℝ] reverseVertex W₂ p.succ)))) ^
+                    (-(t + (aoyagiTheorem2RegularVariableCount 2 H r : ℝ) / 2)) *
+                  invJacDensity (z.1, u)) z.2) ∂
+            (μ.restrict (U ∩ sourceStratum)).prod ν) < ∞ := by
+  intro center pivotNext EdgeFamily base retainedData sourceChart rhoReg CedgeProd
+    _ _ _ H r rEdge sourceData d b ν hν t Rmax Rres
+    hRmax ht hRres hcrit_pivot invJacDensity sourceMeasure μ sourceStratum target
+  classical
+  have hCedgeBase :
+      ContinuousAt (fun E : EdgeFamily ↦ E) base := by
+    simpa using (continuous_id : Continuous (fun E : EdgeFamily ↦ E)).continuousAt
+  have hbase :
+      (fun E : EdgeFamily ↦ E) base =
+        fun p : Fin 2 ↦ LinearMap.toContinuousLinearMap (reverseEdge W₂ B₂ p) := by
+    rfl
+  have hdensity_cont :
+      ContinuousAt invJacDensity (base, (0 : EuclideanSpace ℝ rhoReg)) := by
+    simpa [invJacDensity, rhoReg] using
+      continuousAt_paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_selfBase
+        (M := 0) (V := W₂) (Bv := B₂) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := fun E : EdgeFamily ↦ E) hCedgeBase hbase
+  have hdensity_pos :
+      0 < invJacDensity (base, (0 : EuclideanSpace ℝ rhoReg)) := by
+    simpa [invJacDensity, rhoReg] using
+      paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center
+        (M := 0) (V := W₂) (Bv := B₂) (U₀ := U₀) (hU₀ := hU₀)
+        (CedgeBase := fun E : EdgeFamily ↦ E) base
+  simpa [invJacDensity, sourceMeasure, μ, sourceStratum, target] using
+    exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_density_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure_continuousAt_pos_density
+      W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+      (H := H) (r := r) (rEdge := rEdge) sourceData b (ν := ν) hν
+      (density := invJacDensity)
+      (t := t) (Rmax := Rmax) (Rres := Rres)
+      hRmax ht hRres hcrit_pivot hdensity_cont hdensity_pos
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in

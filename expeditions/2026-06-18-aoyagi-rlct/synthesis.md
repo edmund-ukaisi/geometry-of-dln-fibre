@@ -6,6 +6,72 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Case 2 lossDLN finite integral with concrete p.13 inverse density - 2026-07-06
+
+Lean now has the concrete-density Case 2 selected-entry finite-integral
+handoff:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean
+```
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_radius_open_lintegral_ofReal_lossDLN_chainMapMatrixTuple_rpow_neg_mul_productStepInverseJacobianDensity_p13RegularCoordinates_lt_top_of_case2EndpointTransport_sourceEdgeFamilyOfData_selectedEntryCenter_signedBox_withDensity_sourceStratum_bounds_chartProducedMeasure
+```
+
+It specializes the existing endpoint-`lossDLN` theorem with arbitrary positive
+continuous density to
+
+```text
+invJacDensity(x,u) =
+  productReductionStepRawOrderInverseJacobianDensity
+    (paperEndpointFixedBaseP13RawOrderTuple
+      W2 B2 U0 hU0 (fun E => E) (x,u)).
+```
+
+The proof uses the p.13 raw-order tuple density facts:
+
+```text
+continuousAt_paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_selfBase
+paperEndpointFixedBaseP13RawOrderTuple_inverseJacobianDensity_pos_center
+```
+
+with `CedgeBase = fun E => E`, so the arbitrary hypotheses
+`ContinuousAt density (base,0)` and `0 < density(base,0)` disappear from the
+caller-facing theorem.
+
+The conclusion is the same finite integral over
+
+```text
+(mu.restrict (U cap sourceStratum)).prod nu
+```
+
+but with the concrete p.13 inverse-Jacobian factor multiplying the negative
+power of endpoint `lossDLN`.
+
+Mathematical reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-lossdln-product-step-inverse-density-finite-integral.md
+```
+
+Boundary: this is still a chart-produced selected-entry finite-integral
+handoff.  It does not identify an original source prior, prove
+source/product-coordinate or raw-Haar measure transport, construct normal
+crossings, compute pole order, or extract RLCT.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2LocalJacobianMeasure.lean`, focused
+module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2LocalJacobianMeasure`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next narrow wrapper: add the source-rank-supported `_restrict_open` sibling
+with the same concrete density by composing with the existing source-rank
+support theorem.  This should not introduce new math.
+
 ## A2 Case 2 Selected-entry Domain-shaped Product Pushforward - 2026-07-06
 
 Lean now has the domain-shaped version of the concrete selected-entry
@@ -68,14 +134,6 @@ focused module build
 full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
 code-only forbidden-marker scan, and direct axiom probe.  The new declaration
 reports only `[propext, Classical.choice, Quot.sound]`.
-
-Next finite-integral target, from Curie's xhigh audit: in
-`RetainedPassiveCase2LocalJacobianMeasure.lean`, specialize the existing Case
-2 selected-entry finite-integral theorem by replacing the arbitrary integrand
-density with
-`productReductionStepRawOrderInverseJacobianDensity` composed with
-`paperEndpointFixedBaseP13RawOrderTuple`, discharging density
-continuity/positivity from the p.13 inverse-Jacobian facts.
 
 ## A2 Case 2 Selected-entry Product-coordinate Pushforward - 2026-07-06
 
