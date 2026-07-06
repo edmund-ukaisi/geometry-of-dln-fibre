@@ -1868,3 +1868,18 @@ is now known (the R1-UPPER capstone is a multi-month (S,J) resolution build). Th
 available for the general-L upper bound IF you reconsider given that cost — but per #41 that abandons the R1
 from-scratch deliverable, so the standing decision is build-as-capstone. Confirm or redirect. Discriminator
 ((2,2,2,2) tail) running to make the "commit the mountain" call solid (confirm-or-crack) before any big commit.
+
+## 43. R1-UPPER scope RESOLVED — the (S,J) build is BOUNDED, chargeable; cite retreat not needed (2026-07-06, softens #42).
+The discriminator (#42's decisive test) settled it exactly. Per-step identity `J ≍ P_tail^{−(c'−a/2)}·P_full^{−a/2}`;
+the coupling `P_full` (full remaining product loss) is ALWAYS SUBORDINATE (`a/2 < ½·minAdm(M₁,…)`), so the value is
+exactly `½·minAdm` AND Aoyagi's `(S,J)` construction goes through ⟹ the joint resolution is **BOUNDED** — a large
+multi-tide joint-blow-up build (style of the interior/smeared tides), NOT an unbounded research wall. It genuinely
+does not reduce to a single chain at L≥3 (shared deeper factors → coupled divisors), which is exactly why the built
+`SchurCore` stops at L=2. **Net: the "build R1-UPPER" decision (#41) is now on FIRM footing — it's a large-but-bounded
+established-math build, so per the mandate it is CHARGED (not cited, not operator-gated as a wall).** Retracting #42's
+"multi-month monolith, maybe reconsider cite" worry: the cite retreat is NOT needed. Scope: large joint build,
+sequenced with the L=2 milestone (`phiexpl`, in flight). A final cheap overturn test (Codex's uniform-multiplier
+estimate on the first coupled L=3 case) is running before the big commit; on confirm I charge the `(S,J)` design→build.
+**For operator:** no decision needed here — recording that the earlier "possible wall / maybe cite" concern resolved
+to "bounded, build it" per your standing directive. The genuine remaining operator item stays #120 (the ∀-L grouped
+diffeo, D1 side) if it turns out unbounded.
