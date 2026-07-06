@@ -12,6 +12,63 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, source-side withDensity readback bridge
+
+Lean now has:
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity
+
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+```
+
+Decision: add the missing source-side weighted-measure adapter.  A supplied
+identity of the form
+
+```text
+externalMeasure.restrict chartPiece =
+  (Measure.map sourceChart
+    ((thetaReference.withDensity
+      (fun theta => density(sourceChart theta))).restrict V)).restrict
+    chartPiece
+```
+
+is converted to the edge-side source-image form consumed by the existing
+readback-domination socket:
+
+```text
+externalMeasure.restrict chartPiece =
+  ((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+    density).restrict chartPiece.
+```
+
+The p.13 wrapper exposes this for the formal-product raw-order chart measure,
+so callers can supply the theta-side weighted identity directly and obtain
+readback domination by `D • coordinateSourceMeasure.restrict W`.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-side-withdensity-readback-bridge.md
+```
+
+Boundary: this is measure bookkeeping only.  It does not prove the theta-side
+weighted identity, density bound, source-image coverage, determinant/raw Haar
+transport, source/product-coordinate measure transport, original-prior
+transport, normal crossings, pole order, or RLCT.
+
+Verification passed: focused Lean checks, focused module builds, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes.  All three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
+Next genuine frontier: supply the actual source/product-coordinate weighted
+identity or domination for the product-coordinate chart carrying
+`phi(CedgeProd(x,u))`.  This bridge makes that input usable but does not
+construct it.
+
 ## Latest controller decision - 2026-07-06, p.13 product-coordinate readback left inverse
 
 Lean now has:

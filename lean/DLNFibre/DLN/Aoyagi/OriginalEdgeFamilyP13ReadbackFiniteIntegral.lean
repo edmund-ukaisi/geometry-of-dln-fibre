@@ -2020,6 +2020,115 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- A theta-side weighted source-chart identity for the p.13 formal-product
+chart measure gives the readback hypotheses needed by the formal-product
+readback finite-integral wrapper.
+
+This is the source-side `withDensity` variant of
+`map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_withDensity_of_continuousOn_injOn`.
+It only transports the supplied source-side density identity to the existing
+source-image-reference form; it does not prove the identity, density bound,
+source coverage, source-rank coverage, Haar transport, a Jacobian formula,
+normal crossings, pole order, or RLCT extraction. -/
+theorem map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    {Θ : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (m :
+      Measure
+        (TopologyTuple (Fin (Module.finrank ℝ U₀))
+          (throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ))
+    (sourceChart : Θ →
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (readback :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) → Θ)
+    (coordinateSourceMeasure : Measure Θ)
+    (V W : Set Θ)
+    (chartPiece : Set
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ))
+    (formalDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ≥0∞)
+    (D : ℝ≥0∞)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hVW : V ⊆ W)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let formalProductMeasure : Measure EdgeFamily :=
+      Measure.map
+        (fun z : RawTuple ↦
+          paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+            (K := ℝ) W₂ B₂ U₀ hU₀
+            (topologyTupleEdgeRawOrder
+              (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+              (κ' := throughSubspaceEndpointComplementIndex
+                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+        ((m.restrict
+          (topologyTupleDetChartSet
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (κ' := throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀))).withDensity
+          (fun z : RawTuple ↦
+            ENNReal.ofReal
+              (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                (κ' := throughSubspaceEndpointComplementIndex
+                  (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))
+    AEMeasurable formalDensity
+        (Measure.map sourceChart (coordinateSourceMeasure.restrict V)) →
+      formalProductMeasure.restrict chartPiece =
+        (Measure.map sourceChart
+          ((coordinateSourceMeasure.withDensity
+            (fun theta ↦ formalDensity (sourceChart theta))).restrict V)).restrict
+          chartPiece →
+        (∀ᵐ E ∂(Measure.map sourceChart (coordinateSourceMeasure.restrict V)).restrict
+            chartPiece,
+          formalDensity E ≤ D) →
+          AEMeasurable readback (formalProductMeasure.restrict chartPiece) ∧
+            Measure.map readback (formalProductMeasure.restrict chartPiece) ≤
+              D • coordinateSourceMeasure.restrict W := by
+  intro RawTuple EdgeFamily formalProductMeasure hformalDensity hformal_eq
+    hformalDensity_le
+  simpa [RawTuple, EdgeFamily, formalProductMeasure] using
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+      sourceChart readback formalProductMeasure coordinateSourceMeasure V W
+      chartPiece formalDensity D hV hchartPiece hVW hsource_contOn
+      hsource_inj hleft hformalDensity hformal_eq hformalDensity_le
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- A bounded-density identification of the restricted original edge-family
 volume with a local source-image reference gives the readback hypotheses needed
 by the direct original-volume readback finite-integral wrapper.

@@ -801,6 +801,133 @@ theorem aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_re
       sourceChart readback externalMeasure thetaReference V W chartPiece density c
       hV hchartPiece hVW hsource hreadback hleft heq hdensity_le
 
+set_option linter.style.longLine false in
+/-- Theta-side weighted source-chart identities give readback domination after
+transporting the weight to the chart-produced source-image reference.
+
+This is the non-topological source-side `withDensity` version of
+`aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity`.
+It assumes the restricted external measure is already supplied as the pushforward
+of `(thetaReference.withDensity (density ∘ sourceChart)).restrict V`; the theorem
+only performs the measure bookkeeping and then invokes the existing local
+readback-domination socket.  It does not prove the weighted identity, density
+bound, source coverage, Haar transport, normal crossings, pole order, or RLCT
+extraction. -/
+theorem aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (externalMeasure : Measure E) (thetaReference : Measure Θ)
+    (V W : Set Θ) (chartPiece : Set E) (density : E → ENNReal) (c : ENNReal)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hVW : V ⊆ W)
+    (hsource : AEMeasurable sourceChart (thetaReference.restrict V))
+    (hreadback :
+      AEMeasurable readback
+        (Measure.map sourceChart (thetaReference.restrict V)))
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hdensity :
+      AEMeasurable density
+        (Measure.map sourceChart (thetaReference.restrict V)))
+    (heq :
+      externalMeasure.restrict chartPiece =
+        (Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+          chartPiece)
+    (hdensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (thetaReference.restrict V)).restrict chartPiece,
+        density E ≤ c) :
+    AEMeasurable readback (externalMeasure.restrict chartPiece) ∧
+      Measure.map readback (externalMeasure.restrict chartPiece) ≤
+        c • thetaReference.restrict W := by
+  have hfactor :
+      ∀ᵐ theta ∂thetaReference.restrict V,
+        (fun theta ↦ density (sourceChart theta)) theta =
+          density (sourceChart theta) :=
+    Filter.Eventually.of_forall fun _ ↦ rfl
+  have hpush :
+      Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V) =
+        (Measure.map sourceChart (thetaReference.restrict V)).withDensity
+          density :=
+    measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq
+      (thetaMeasure := thetaReference) (V := V) (rawMap := sourceChart)
+      (thetaDensity := fun theta ↦ density (sourceChart theta))
+      (rawDensity := density) hV hsource hdensity hfactor
+  have heq_edge :
+      externalMeasure.restrict chartPiece =
+        ((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+          density).restrict chartPiece := by
+    calc
+      externalMeasure.restrict chartPiece =
+          (Measure.map sourceChart
+            ((thetaReference.withDensity
+              (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+            chartPiece := heq
+      _ =
+          ((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+            density).restrict chartPiece := by
+            rw [hpush]
+  exact
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity
+      sourceChart readback externalMeasure thetaReference V W chartPiece density c
+      hV hchartPiece hVW hsource hreadback hleft heq_edge hdensity_le
+
+set_option linter.style.longLine false in
+/-- Theta-side weighted source-chart identities give readback domination after
+transporting the weight to the chart-produced source-image reference.
+
+This is the source-side `withDensity` version of
+`aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_withDensity_of_continuousOn_injOn`.
+It assumes the restricted external measure is already supplied as the pushforward
+of `(thetaReference.withDensity (density ∘ sourceChart)).restrict V`; the theorem
+only performs the measure bookkeeping and then invokes the existing local
+readback-domination socket.  It does not prove the weighted identity, density
+bound, source coverage, Haar transport, normal crossings, pole order, or RLCT
+extraction. -/
+theorem aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+    {Θ E : Type*} [MeasurableSpace Θ] [TopologicalSpace Θ]
+    [BorelSpace Θ] [PolishSpace Θ]
+    [MeasurableSpace E] [TopologicalSpace E] [BorelSpace E] [T2Space E]
+    (sourceChart : Θ → E) (readback : E → Θ)
+    (externalMeasure : Measure E) (thetaReference : Measure Θ)
+    (V W : Set Θ) (chartPiece : Set E) (density : E → ENNReal) (c : ENNReal)
+    (hV : MeasurableSet V)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hVW : V ⊆ W)
+    (hsource_contOn : ContinuousOn sourceChart V)
+    (hsource_inj : Set.InjOn sourceChart V)
+    (hleft : ∀ theta ∈ V, readback (sourceChart theta) = theta)
+    (hdensity :
+      AEMeasurable density
+        (Measure.map sourceChart (thetaReference.restrict V)))
+    (heq :
+      externalMeasure.restrict chartPiece =
+        (Measure.map sourceChart
+          ((thetaReference.withDensity
+            (fun theta ↦ density (sourceChart theta))).restrict V)).restrict
+          chartPiece)
+    (hdensity_le :
+      ∀ᵐ E ∂(Measure.map sourceChart (thetaReference.restrict V)).restrict chartPiece,
+        density E ≤ c) :
+    AEMeasurable readback (externalMeasure.restrict chartPiece) ∧
+      Measure.map readback (externalMeasure.restrict chartPiece) ≤
+        c • thetaReference.restrict W := by
+  have hsource :
+      AEMeasurable sourceChart (thetaReference.restrict V) :=
+    hsource_contOn.aemeasurable hV
+  have hreadback :
+      AEMeasurable readback
+        (Measure.map sourceChart (thetaReference.restrict V)) :=
+    aemeasurable_readback_map_sourceChart_restrict_of_continuousOn_injOn_leftInverse
+      sourceChart readback thetaReference V hV hsource_contOn hsource_inj hleft
+  exact
+    aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity
+      sourceChart readback externalMeasure thetaReference V W chartPiece density c
+      hV hchartPiece hVW hsource hreadback hleft hdensity heq hdensity_le
+
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v

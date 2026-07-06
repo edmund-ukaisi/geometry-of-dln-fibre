@@ -6,6 +6,71 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Source-side withDensity Readback Bridge - 2026-07-06
+
+Lean now has two generic measure-bookkeeping theorems in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+```
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity
+
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+```
+
+and one p.13-facing wrapper in:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean
+```
+
+```text
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+```
+
+The calculation is pure measure bookkeeping.  If
+
+```text
+externalMeasure.restrict chartPiece =
+  (Measure.map sourceChart
+    ((thetaReference.withDensity
+      (fun theta => density(sourceChart theta))).restrict V)).restrict
+    chartPiece,
+```
+
+then restricted `withDensity` pushforward gives
+
+```text
+externalMeasure.restrict chartPiece =
+  ((Measure.map sourceChart (thetaReference.restrict V)).withDensity
+    density).restrict chartPiece.
+```
+
+The existing readback-domination socket then gives a.e. measurability of
+`readback` on the restricted external measure and domination by
+`c • thetaReference.restrict W`.
+
+The p.13 wrapper specializes `externalMeasure` to the formal-product raw-order
+chart measure and consumes a theta-side weighted identity against
+`coordinateSourceMeasure`.  This removes a thin downstream conversion step for
+future source/product-coordinate measure inputs.
+
+Boundary: no theta-side weighted identity is proved, and neither is the a.e.
+density bound.  There is no source-image coverage, determinant/raw Haar
+transport, product-coordinate measure transport, original-prior transport,
+normal crossings, pole order, or RLCT extraction here.
+
+Xhigh explorer `Boyle` independently recommended the non-topological generic
+sibling and confirmed this should live as a generic measure lemma, with a
+specialized p.13 wrapper only as caller-facing API.
+
+Verification passed: focused Lean checks, focused module builds, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes.  All three new declarations report
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 p.13 Product-coordinate Readback Left Inverse - 2026-07-06
 
 Lean now has the product-coordinate readback/injectivity layer in:

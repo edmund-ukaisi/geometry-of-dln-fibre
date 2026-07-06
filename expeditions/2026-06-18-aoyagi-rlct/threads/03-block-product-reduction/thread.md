@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 source-side withDensity readback bridge
+
+Reproduction:
+
+```text
+reproduction-a2-source-side-withdensity-readback-bridge.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean
+```
+
+Lean now has:
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity
+
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+
+map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_map_sourceChart_withDensity_of_continuousOn_injOn
+```
+
+The generic theorem converts a supplied theta-side weighted source-chart
+pushforward identity into the edge-side source-image `withDensity` identity
+expected by the existing readback-domination socket.  The p.13 theorem exposes
+the same conversion for the formal-product raw-order chart measure.
+
+Boundary: bookkeeping only.  It does not prove the weighted identity, density
+bound, source-image coverage, determinant/raw Haar transport, source/product
+coordinate measure transport, original-prior transport, normal crossings, pole
+order, or RLCT.
+
+Verification: focused Lean checks, focused module builds, full local
+`lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched-file
+marker scan, and direct axiom probes passed.  All three new declarations
+report `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 p.13 product-coordinate readback left inverse
 
 Reproduction:

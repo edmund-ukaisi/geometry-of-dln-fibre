@@ -10,6 +10,50 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 source-side withDensity readback bridge - 2026-07-06
+
+- **Statement.** A source-side weighted identity
+  `externalMeasure.restrict chartPiece =
+  (Measure.map sourceChart ((thetaReference.withDensity
+  (fun theta => density(sourceChart theta))).restrict V)).restrict chartPiece`
+  converts to the edge-side source-image `withDensity` identity consumed by the
+  existing readback-domination socket.
+- **Statement.** In the p.13 formal-product raw-order chart, the same
+  conversion lets callers supply a theta-side weighted identity against
+  `coordinateSourceMeasure` and obtain readback domination by
+  `D • coordinateSourceMeasure.restrict W`.
+- **Tier.** A2 measure-bookkeeping adapter for the source-image/readback
+  finite-integral layer.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving the theta-side weighted
+  identity, a.e. density bound, source-image coverage, determinant/raw Haar
+  transport, source/product-coordinate measure transport, original-prior
+  transport, normal crossings, pole order, or RLCT.
+- **Evidence/source.** This is not a paper-supplied analytic fact.  It is
+  elementary restricted `withDensity` pushforward bookkeeping plus the
+  existing local readback-domination theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-source-side-withdensity-readback-bridge.md`.
+- **Reproduction check.** Xhigh explorer `Boyle` independently recommended the
+  non-topological generic sibling, confirmed the proof route through
+  `measure_map_restrict_withDensity_eq_withDensity_map_of_ae_eq`, and advised
+  that this should be generic measure API with only a thin p.13 wrapper.
+- **Lean target.**
+  `aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity`
+  and
+  `aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_superset_of_restrict_eq_map_sourceChart_withDensity_of_continuousOn_injOn`
+  in `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaSourceImage.lean`;
+  `map_paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart_withDensity_formalProductAbsDet_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_of_sourceImageReference_eq_map_sourceChart_withDensity_of_continuousOn_injOn`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyP13ReadbackFiniteIntegral.lean`.
+- **Proved.** Focused Lean checks, focused module builds, full local
+  `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`, touched
+  Lean-file forbidden-marker scan, and direct axiom probes passed.  Axiom
+  footprint: `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No proof of the theta-side weighted identity, no density
+  bound, no source-image coverage, no determinant/raw Haar transport, no
+  source/product-coordinate measure transport, no original-prior transport, no
+  normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 p.13 product-coordinate readback left inverse - 2026-07-06
 
 - **Statement.** A supplied residual readback for the base source variables
