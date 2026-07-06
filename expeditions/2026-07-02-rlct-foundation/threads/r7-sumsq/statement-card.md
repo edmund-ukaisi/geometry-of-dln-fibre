@@ -56,7 +56,7 @@ sorry-free. The reusable analytic bedrock under the DLN `rlct = ½·codim` payof
 ## Secondary target — constant-rank bridge to `K_B` (ASSESSED, roadmapped, NOT built)
 
 The brief asked to assess whether v4.29 Mathlib lets the sum-of-squares kernel connect to the DLN
-germ at a smooth fibre point. Reach, honestly:
+germ at a smooth fibre point. Assessment of reach:
 
 - **Bridge (a) — `rlctAt` invariance under a local `C¹` diffeomorphism.** *Buildable*, high reuse.
   Tool present: `MeasureTheory.integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` (Jacobian

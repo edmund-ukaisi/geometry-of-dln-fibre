@@ -13,10 +13,13 @@ for `Q y = ∑ i, (y i)^2 = ‖y‖²_{ℓ²}` on `ℝ^C`,
 
 `rlctAt Q 0 = C / 2`.
 
-This is the reusable analytic **bedrock** underneath the DLN payoff: at a smooth codim-`C` point of
-a fibre, the square-Frobenius loss is a nondegenerate sum of `C` squares in local coordinates, so
-its local RLCT is `C/2` — the geometric content behind the cited Aoyagi `rlct = ½·codim` equality,
-here established directly for the model quadratic (no cite).
+This is the reusable analytic **bedrock** underneath the DLN payoff, established directly for the
+**model quadratic** (no cite). It is motivated by the normal form one *expects* at a smooth
+codim-`C` fibre point — where the square-Frobenius loss `K_B = ‖mult − B‖²` should, in suitable
+local coordinates, be a nondegenerate sum of `C` squares, giving local RLCT `C/2` (the geometric
+reading of the cited Aoyagi `rlct = ½·codim` equality). That bridge to the actual DLN germ (the
+constant-rank normal form + `rlctAt` diffeomorphism-invariance) is **deferred**, not proved here;
+this file proves only the model-quadratic value.
 
 ## Route
 
