@@ -69,26 +69,28 @@ endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subs
 ```
 
 and the with-following finite-integral wrappers over
-`p13SourceSet cap readback^{-1} V`.  The live source-moving target is now the
-local-patch packaging: prove, or precisely bound, when that natural patch is an
-open neighborhood suitable for the final local-integrability statement.  Do
-not duplicate the raw endpoint-patch set theorem.
+`p13SourceSet cap readback^{-1} V`.  The local-patch topology gate is now
+landed: on a theta-side open set contained in the nonzero selected-pivot locus,
+the corresponding p.13/readback-preimage patch is open.  Do not duplicate the
+raw endpoint-patch set theorem.
 
 The strongest proved theorem in this lane is:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 It gives finite original-prior integrability on the whole natural
-p.13/readback patch, under the local upper-bound/continuity input for the
-supplied prior density.  Remaining gates are: open-neighborhood packaging for
-that patch, instantiating the actual prior regularity hypotheses, bridging the
-readback product-residual integrand to the final loss statement, and later
-rank/atlas coverage.  The first gate requires a pivot-guarded local continuity
-theorem for `case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback`;
-there is no honest global continuity statement because the selected-entry
-inverse uses division by the pivot coordinate.
+p.13/readback patch and exposes that patch as open, under the local
+upper-bound/continuity input for the supplied prior density.  The supporting
+Lean facts are the pivot-guarded continuity theorem for
+`case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback`, the
+source-side open-preimage wrapper, and the source-image open-patch package.
+Remaining gates are: instantiating the actual prior regularity hypotheses,
+bridging the readback product-residual integrand to the final loss statement,
+and later rank/atlas coverage.  There is still no honest global continuity
+statement because the selected-entry inverse uses division by the pivot
+coordinate.
 
 ## A2 Case 2 concrete inverse-density finite integral on open support - 2026-07-06
 

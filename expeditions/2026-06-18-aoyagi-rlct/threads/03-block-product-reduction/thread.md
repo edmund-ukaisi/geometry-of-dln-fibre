@@ -92,20 +92,21 @@ endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subs
 and the downstream with-following wrappers over
 `p13SourceSet cap readback^{-1} V`.
 
-The live target is now local-patch packaging: determine whether the natural
-p.13/readback patch is an open neighborhood, or state the exact weaker support
-hypotheses needed for the final local-integrability theorem.
+The local-patch topology gate is now landed: after shrinking inside the
+selected-pivot nonzero locus, the natural p.13/readback patch is an open
+edge-family neighborhood.
 
 The strongest proved with-following original-prior theorem is:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 It gives finite integrability on the whole natural p.13/readback patch, under
-the supplied prior-density continuity/local-upper-bound input.  Remaining
-gates: open-patch packaging, actual-prior regularity instantiation,
-loss-to-product-residual bridge, and source-rank/atlas coverage.
+the supplied prior-density continuity/local-upper-bound input, and exposes that
+patch as open.  Remaining gates: actual-prior regularity instantiation,
+loss-to-product-residual bridge, and source-rank/atlas coverage.  This is still
+pivot-local; no global readback continuity is claimed.
 
 Boundary: no exact raw-Haar pushforward, determinant-Haar transport, raw-Haar
 normalization, original-prior transport, normal crossings, pole order, or RLCT

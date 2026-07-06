@@ -60,8 +60,8 @@ No such claim is formalisation-ready until both fields are filled.
   determinant factor belongs to the later composite
   `topologyTupleEdgeRawOrder ∘ Y`, not to the `Y`-only selected-entry density.
 - **Tier.** A2 with-following formal-product/source-image COV gate.
-- **Status.** Pen-and-paper frontier reproduced; existing Lean inventory
-  rechecked after interruption; no new Lean theorem claimed.
+- **Status.** Pen-and-paper frontier reproduced; pivot-guarded readback
+  continuity and open local p.13/readback patch now Lean-proved.
 - **Kill-condition.** The endpoint reference image is read as determinant
   Haar, raw Haar, exact raw pushforward, raw-Haar normalization, global source
   coverage, original-prior transport, normal crossings, pole order, or RLCT.
@@ -79,22 +79,25 @@ No such claim is formalisation-ready until both fields are filled.
   already present in Lean.
 - **Lean target.** Do not duplicate
   `endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder`
-  or the downstream
-  `...chartPiece_subset_p13SourceSet_readback_preimage...` wrappers.  Next
-  target: local-patch packaging for
-  `p13SourceSet ∩ readback ⁻¹' V`, especially open-neighborhood status or the
-  weakest replacement support hypothesis.
+  or the downstream endpoint/raw containment wrappers.  The local-patch
+  topology gate is now the landed pivot-guarded readback-continuity/open-patch
+  package for `p13SourceSet ∩ readback ⁻¹' V`.
 - **Strongest current theorem.**
-  `exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper`
-  gives finite original-prior integrability on the natural p.13/readback patch
-  under the supplied prior-density continuity/local-upper-bound input.
-- **Remaining gates.** Open-patch packaging, actual-prior regularity
-  instantiation, loss-to-product-residual bridge, and local source-rank/atlas
-  coverage.  The open-patch gate first requires a pivot-guarded local
-  continuity theorem for the with-following readback; the selected-entry
-  inverse is only continuous on the nonzero-pivot locus.
-- **Proved.** Existing Lean route re-inventoried; this update is a
-  documentation correction.  `git diff --check` is the relevant verification.
+  `exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper`
+  gives finite original-prior integrability on an open local
+  p.13/readback-preimage patch under the supplied prior-density
+  continuity/local-upper-bound input.
+- **Remaining gates.** Actual-prior regularity instantiation,
+  loss-to-product-residual bridge, and local source-rank/atlas coverage.  The
+  selected-entry inverse still has only pivot-local continuity; there is no
+  global readback-continuity claim.
+- **Proved.**
+  `continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_mem_p13SourceEdgeFamilySet_pivotNonzero`,
+  `isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero`,
+  `exists_open_subset_measurableSet_isOpen_case2PassiveThetaWithFollowingFactorEndpointSourceChart_image_eq_p13SourceEdgeFamilySet_inter_readback_preimage`,
+  and the open finite-integral theorem above.  Focused Lean checks/builds and
+  direct axiom probes passed; all four declarations report
+  `[propext, Classical.choice, Quot.sound]`.
 - **Nonclaims.** No formal-product/source-image domination, no determinant
   Haar transport, no raw-Haar pushforward, no raw-Haar normalization, no
   original-prior transport, no source-rank coverage, no global source-image

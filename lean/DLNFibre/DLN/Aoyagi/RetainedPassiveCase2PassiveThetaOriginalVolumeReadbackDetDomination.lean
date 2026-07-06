@@ -6854,6 +6854,217 @@ set_option linter.unusedSectionVars false in
 set_option linter.unusedVariables false in
 set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
+-- Reuses the high-heartbeat finite-integral package while adding open-patch bookkeeping.
+/-- With-following readback product-residual finite integrability over an
+open local p.13/readback-preimage chart piece.
+
+This strengthens
+`exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper`
+only by shrinking inside the selected-pivot-nonzero locus and exposing that
+the same p.13/readback-preimage support is open.  It does not prove global
+p.13 source coverage, determinant-chart Haar transport, raw-order Haar
+transport, original source-prior transport, normal crossings, pole order, or
+RLCT extraction. -/
+theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [LocallyCompactSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [SecondCountableTopology
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (hF₀det : IsUnit ((z₀.2.submatrix id eNext.symm).det))
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    {density :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ}
+    {Kprior : ℝ}
+    (hprior_cont :
+      ContinuousAt
+        (fun z : Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J ↦
+          density
+            (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+              W₂ B₂ n hS hcont hnext hU₀ eNext e z)) z₀)
+    (hprior_lt :
+      density
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z₀) < Kprior)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let Θ :=
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart : Θ → EdgeFamily :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let readback : EdgeFamily → Θ :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let residualIntegrand : EdgeFamily → ℝ≥0∞ :=
+      fun E ↦
+        ENNReal.ofReal
+          ((aoyagiCoordinateSquareSum
+            (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadbackProductResidualReadout
+              W₂ B₂ n hS hcont hnext hU₀ eNext e E)) ^ (-t))
+    ∃ V : Set Θ,
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, readback (sourceChart z) = z) ∧
+          Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+            MeasurableSet (p13SourceSet ∩ readback ⁻¹' V) ∧
+              IsOpen (p13SourceSet ∩ readback ⁻¹' V) ∧
+                sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V ∧
+                  ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+                    (∫⁻ E : EdgeFamily, residualIntegrand E ∂
+                      (originalEdgeFamilyPrior
+                        (V := reverseVertex W₂)
+                        (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
+                        density).restrict (p13SourceSet ∩ readback ⁻¹' V)) < ∞ := by
+  intro Θ RawTuple EdgeFamily sourceChart readback p13SourceSet residualIntegrand
+  let pivotSet : Set Θ :=
+    {z | case2PassiveThetaPivotNonzero
+      (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1}
+  have hpivotSet_open : IsOpen pivotSet := by
+    have hpivot_cont :
+        Continuous
+          (fun z : Θ ↦
+            z.1.yNext (case2PassiveThetaPivotNext n hS hnext)) := by
+      simpa [Θ, Case2PassiveTheta.yNext] using
+        ((continuous_apply (case2PassiveThetaPivotNext n hS hnext)).comp
+          (continuous_snd.comp
+            (continuous_fst : Continuous (fun z : Θ ↦ z.1))))
+    simpa [pivotSet, case2PassiveThetaPivotNonzero] using
+      (isOpen_ne.preimage hpivot_cont)
+  let Gpivot : Set Θ := G ∩ pivotSet
+  have hGpivot_open : IsOpen Gpivot := hGopen.inter hpivotSet_open
+  have hz₀Gpivot : z₀ ∈ Gpivot := by
+    exact ⟨hz₀G, by simpa [pivotSet] using hpivot₀⟩
+  rcases
+      (by
+        simpa [Θ, RawTuple, EdgeFamily, sourceChart, readback, p13SourceSet,
+          residualIntegrand, Gpivot] using
+          exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
+            eNext e z₀ hdet₀ hpivot₀ hF₀det (t := t) ht hcrit
+            (density := density) (Kprior := Kprior) hprior_cont hprior_lt
+            Gpivot hGpivot_open hz₀Gpivot) with
+    ⟨V, hVopen, hz₀V, hVGpivot, hleft, hsource_inj, hsource_contOn,
+      hpiece_meas, himage_eq, hfinite⟩
+  have hVG : V ⊆ G := fun z hz ↦ hVGpivot.1 hz
+  have hVpivot : ∀ z ∈ V,
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1 := by
+    intro z hz
+    exact hVGpivot.2 hz
+  have hleft' : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    have hz_fields :
+        (Case2PassiveThetaWithFollowingFactor.mk
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) (n := n) (S := S) (J := J)
+            z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+            z.1.yNext z.2) ∈ V := by
+      simpa [Case2PassiveThetaWithFollowingFactor.mk,
+        Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hz
+    simpa [sourceChart, readback,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart,
+      Case2PassiveThetaWithFollowingFactor.mk,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleft z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+        z.1.yNext z.2 hz_fields
+  have hpatch_open : IsOpen (p13SourceSet ∩ readback ⁻¹' V) := by
+    simpa [EdgeFamily, readback, p13SourceSet] using
+      isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero
+        W₂ B₂ n hS hnext hU₀ e hVopen hVpivot
+  exact
+    ⟨V, hVopen, hz₀V, hVG, hleft', hsource_inj, hsource_contOn,
+      hpiece_meas, hpatch_open, himage_eq, hfinite⟩
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
 -- This wrapper composes the endpoint-density volume wrapper with the prior-density handoff.
 /-- Same-shrink with-following original-prior readback domination from a
 localized endpoint-image weighted-Haar identity, a lower endpoint density bound,

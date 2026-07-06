@@ -269,22 +269,21 @@ pen-and-paper gate:
 4. Same-shrink image equality and the raw/endpoint patch-containment route are
    already available in Lean.
 
-The smallest Lean-facing next theorem should therefore not duplicate Route A.
-The live local-integrability frontier is to expose the natural patch
+The smallest Lean-facing theorem after this reproduction did not duplicate
+Route A.  It exposed the natural patch
 
 ```text
 p13SourceSet cap readback^{-1} V
 ```
 
-as an actual local/open neighborhood when possible, or to record the exact
-weakest open-neighborhood support hypotheses needed.  Separately, any future
-source/product-coordinate COV should keep the `Y`-only image measure separate
-from determinant/raw Haar transport.
+as an actual local/open neighborhood after shrinking inside the selected-pivot
+nonzero locus.  Separately, any future source/product-coordinate COV should
+keep the `Y`-only image measure separate from determinant/raw Haar transport.
 
 The strongest currently proved with-following original-prior theorem is
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 It returns an open theta-neighborhood `V`, proves
@@ -293,43 +292,35 @@ It returns an open theta-neighborhood `V`, proves
 sourceChart '' V = p13SourceSet cap readback^{-1} V,
 ```
 
-proves measurability of that natural patch, and proves finite integral of the
-with-following readback product-residual negative power against the original
-edge-family prior restricted to the whole natural patch.
+proves measurability and openness of that natural patch, and proves finite
+integral of the with-following readback product-residual negative power against
+the original edge-family prior restricted to the whole natural patch.
 
 The actual remaining gates, in order, are:
 
-1. **Open-patch/local-neighborhood packaging.**  The natural patch is
-   measurable and locally image-equal, but not yet exposed as an edge-family
-   open neighborhood.  This is not a bare wrapper: the with-following readback
-   contains the selected-entry inverse
-   `preimageOfPivotNeZero`, which is continuous only at nonzero-pivot target
-   values.  The honest next Lean layer is therefore a pivot-guarded local
-   continuity theorem for
-   `case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback`, followed
-   by an open-patch wrapper.
-2. **Actual-prior regularity input.**  The theorem assumes continuity, or an
+1. **Actual-prior regularity input.**  The theorem assumes continuity, or an
    upper-bound consequence, for the supplied prior density pulled back along
    `sourceChart`.
-3. **Loss-to-product-residual bridge.**  The integrand is the with-following
+2. **Loss-to-product-residual bridge.**  The integrand is the with-following
    readback product-residual square-sum, not yet the final `lossDLN` statement.
-4. **Source-rank and atlas coverage.**  Rank-refined local equality exists, but
+3. **Source-rank and atlas coverage.**  Rank-refined local equality exists, but
 global source-rank/chart-family coverage belongs to the later atlas layer.
 
-Recommended Lean shapes:
+Landed Lean shapes:
 
 ```text
-continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_mem_p13SourceEdgeFamilySet_pivotNonzero
   (hE : E in p13SourceSet)
   (hpivot : case2PassiveThetaPivotNonzero ... (readback E).1)
 
-isOpen_p13SourceSet_inter_readback_preimage_of_subset_pivot
+isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero
   (hVopen : IsOpen V)
   (hVpivot : forall z in V, case2PassiveThetaPivotNonzero ... z.1)
 ```
 
-or, if the caller should not expose `hVpivot`, prove the weaker open set with
-`V` replaced by `V cap {z | case2PassiveThetaPivotNonzero ... z.1}`.
+The finite-integral sibling performs that pivot shrink internally before
+returning the open p.13/readback patch.  There is intentionally no global
+readback-continuity claim.
 
 ## Nonclaims
 

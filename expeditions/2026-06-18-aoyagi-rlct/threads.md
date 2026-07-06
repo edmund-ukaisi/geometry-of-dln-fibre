@@ -25,12 +25,12 @@
   measure, not determinant Haar or raw Haar.  The retained-passive raw-order
   determinant is a separate factor after composing with
   `topologyTupleEdgeRawOrder`.  Same-shrink source-image equality and the
-  raw endpoint-patch containment route are already Lean-proved.  The live
-  target is now local-patch packaging around
-  `p13SourceSet cap readback^{-1} V`, especially open-neighborhood status or
-  the weakest replacement support hypothesis.  This is not exact raw-Haar
-  pushforward, raw-Haar normalization, original-prior transport, normal
-  crossings, pole order, or RLCT.
+  raw endpoint-patch containment route are already Lean-proved.  The
+  pivot-guarded readback-continuity/open-patch package for
+  `p13SourceSet cap readback^{-1} V` has now landed, including an open
+  finite-integral sibling for the natural p.13/readback patch.  This is not
+  exact raw-Haar pushforward, raw-Haar normalization, original-prior transport,
+  global source coverage, normal crossings, pole order, or RLCT.
 
 - 2026-07-06, Thread 03: the formal-product/source-image coordinate-count
   gate is now reproduced and independently checked.  Plain

@@ -72,8 +72,8 @@ retainedPassiveFormalRawOrderJacobianProductAbsDetAt (Y z)
 is a separate factor for `topologyTupleEdgeRawOrder ∘ Y`; it is not part of
 the `Y`-only selected-entry density.
 
-The same-shrink with-following image equality already exists.  The next
-post-interruption check is that the raw endpoint-patch containment route is
+The same-shrink with-following image equality already exists.  The
+post-interruption check found that the raw endpoint-patch containment route is
 also already represented in Lean.  The generic set theorem is
 
 ```text
@@ -88,34 +88,32 @@ and it feeds the with-following wrappers ending in
 ...restrict_p13SourceSet_inter_readback_preimage...
 ```
 
-Do not duplicate that theorem.  The next Lean-facing target is the natural
-local-patch packaging around
+Do not duplicate that theorem.  The natural local-patch topology gate around
 
 ```text
 p13SourceSet cap readback^{-1} V
 ```
 
-especially whether it can be exposed as an open neighborhood, or what precise
-weaker support hypothesis is needed.  This remains separate from exact
-raw-Haar pushforward, Haar normalization, and original-prior transport.
+is now Lean-proved under the honest selected-pivot nonzero guard.  This remains
+separate from exact raw-Haar pushforward, Haar normalization, and
+original-prior transport.
 
 Strongest current with-following original-prior theorem:
 
 ```text
-exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
+exists_open_lintegral_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_readbackProductResidual_of_sourceImageDensity_one_continuousAt_priorDensity_comp_sourceChart_upper
 ```
 
 Frontier ranking:
 
-1. Open-patch/local-neighborhood packaging for
-   `p13SourceSet cap readback^{-1} V`.  This first needs a pivot-guarded
-   local continuity theorem for the with-following source-chart readback,
-   because the selected-entry inverse is continuous only on the nonzero-pivot
-   locus.
-2. Instantiate the supplied original-prior density continuity/local-upper-bound
+1. Instantiate the supplied original-prior density continuity/local-upper-bound
    input.
-3. Bridge the readback product-residual integrand to the final loss statement.
-4. Carry local source-rank and atlas coverage into the eventual chart family.
+2. Bridge the readback product-residual integrand to the final loss statement.
+3. Carry local source-rank and atlas coverage into the eventual chart family.
+
+The landed open-patch theorem is deliberately pivot-local: the selected-entry
+inverse is continuous only on the nonzero-pivot locus, so there is still no
+global readback-continuity claim.
 
 Artifact:
 

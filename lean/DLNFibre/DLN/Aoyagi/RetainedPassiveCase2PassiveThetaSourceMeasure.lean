@@ -15,7 +15,7 @@ crossings, pole order, or RLCT.
 noncomputable section
 
 open MeasureTheory
-open scoped ENNReal
+open scoped ENNReal Topology
 
 namespace DLNFibre
 namespace DLN
@@ -1004,6 +1004,219 @@ def case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
       (ρ := ρ) (τ := τ) (n := n) (S := S) (J := J)
       rawData.A1passive rawData.F2 rawData.A3passive rawData.Ctop rawData.F3
       yNext F
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- The enlarged with-following source readback is continuous at a p.13 source
+edge family whose reconstructed selected-entry pivot is nonzero.
+
+The p.13 hypothesis supplies the recursive determinant-chart condition needed
+for `sourceReadback`; the pivot hypothesis is exactly the local condition
+under which the selected-entry inverse on the `C 1` block is continuous. -/
+theorem continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_mem_p13SourceEdgeFamilySet_pivotNonzero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (X₀ :
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)
+    (hsource :
+      X₀ ∈ paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀)
+    (hpivot :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e X₀).1) :
+    ContinuousAt
+      (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e) X₀ := by
+  let ρ := Fin (Module.finrank ℝ U₀)
+  let κ' :=
+    throughSubspaceEndpointComplementIndex
+      (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let Θ :=
+    Case2PassiveThetaWithFollowingFactor
+      (ρ := ρ) (τ := τ) n S J
+  let EMat : EdgeFamily →
+      ∀ p : Fin 2, Matrix (ρ ⊕ κ' p.succ) (ρ ⊕ κ' p.castSucc) ℝ :=
+    fun X ↦
+      paperEndpointFixedBaseEdgeMatrixOfReverseEdges W₂ B₂ U₀ hU₀
+        (fun p : Fin 2 ↦
+          (X p : reverseVertex W₂ p.castSucc →ₗ[ℝ]
+            reverseVertex W₂ p.succ))
+  let dataMap : EdgeFamily →
+      RetainedPassiveNonredundantCoordinateData (K := ℝ) (ρ := ρ) κ' :=
+    fun X ↦ sourceReadback (K := ℝ) (ρ := ρ) (κ' := κ') (EMat X)
+  let TMap : EdgeFamily → TopologyTuple ρ κ' ℝ :=
+    fun X ↦ topologyTuple (dataMap X)
+  let charted : EdgeFamily → Θ :=
+    fun X ↦
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout
+        (ρ := ρ) (τ := τ) n e (TMap X)
+  let pivotNext := case2PassiveThetaPivotNext n hS hnext
+  have hEMat_cont : ContinuousAt EMat X₀ := by
+    simpa [EMat, EdgeFamily, ρ, κ'] using
+      (paperEndpointFixedBaseEdgeMatrixOfReverseEdges_continuous
+        (K := ℝ) W₂ B₂ U₀ hU₀).continuousAt
+  have hEMat_chart :
+      sourceRecursiveDetChart (K := ℝ) (ρ := ρ) (κ' := κ') (EMat X₀) := by
+    have hmem :
+        EMat X₀ ∈
+          sourceRecursiveDetChartSet (K := ℝ) (ρ := ρ) (κ' := κ') := by
+      simpa [EMat, EdgeFamily, ρ, κ',
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet] using
+        hsource
+    exact
+      (mem_sourceRecursiveDetChartSet
+        (K := ℝ) (ρ := ρ) (κ' := κ') (EMat X₀)).1 hmem
+  have hdata_cont : ContinuousAt dataMap X₀ := by
+    simpa [dataMap] using
+      continuousAt_sourceReadback
+        (K := ℝ) (ρ := ρ) (κ' := κ') (E := EMat)
+        hEMat_cont hEMat_chart
+  have hT_cont : ContinuousAt TMap X₀ := by
+    exact
+      (continuous_topologyTuple (K := ℝ) (ρ := ρ) (κ' := κ')).continuousAt.comp
+        hdata_cont
+  have hcharted_cont : ContinuousAt charted X₀ := by
+    exact
+      (Case2PassiveThetaWithFollowingFactor.continuous_endpointTopologyTupleActiveReadout
+        (ρ := ρ) (τ := τ) (κ' := κ') n e).continuousAt.comp hT_cont
+  have htheta_cont : ContinuousAt (fun X : EdgeFamily ↦ (charted X).1) X₀ :=
+    continuous_fst.continuousAt.comp hcharted_cont
+  have hpassive_cont :
+      ContinuousAt (fun X : EdgeFamily ↦ (charted X).1.1) X₀ :=
+    continuous_fst.continuousAt.comp htheta_cont
+  have hy_chart_cont :
+      ContinuousAt (fun X : EdgeFamily ↦ (charted X).1.yNext) X₀ := by
+    simpa [Case2PassiveTheta.yNext] using
+      continuous_snd.continuousAt.comp htheta_cont
+  have hfollowing_cont :
+      ContinuousAt (fun X : EdgeFamily ↦ (charted X).2) X₀ :=
+    continuous_snd.continuousAt.comp hcharted_cont
+  have hchart_pivot :
+      (charted X₀).1.yNext pivotNext ≠ 0 := by
+    simpa [charted, TMap, dataMap, EMat, ρ, κ', pivotNext,
+      Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback,
+      case2PassiveThetaWithFollowingFactorEndpointCOneReadout,
+      Case2PassiveThetaWithFollowingFactor.mk, Case2PassiveTheta.mk,
+      Case2PassiveTheta.yNext, case2PassiveThetaPivotNonzero,
+      SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero] using hpivot
+  have hy_cont :
+      ContinuousAt
+        (fun X : EdgeFamily ↦
+          SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+            pivotNext (charted X).1.yNext) X₀ := by
+    exact
+      ContinuousAt.comp
+        (x := X₀)
+        (f := fun X : EdgeFamily ↦ (charted X).1.yNext)
+        (g := SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero pivotNext)
+        (SelectedEntrySignedBox.CenterCoord.continuousAt_preimageOfPivotNeZero
+          pivotNext hchart_pivot)
+        hy_chart_cont
+  have hinverse_cont :
+      ContinuousAt
+        (fun X : EdgeFamily ↦
+          (((charted X).1.1,
+              SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+                pivotNext (charted X).1.yNext),
+            (charted X).2)) X₀ :=
+    (hpassive_cont.prodMk hy_cont).prodMk hfollowing_cont
+  simpa [charted, TMap, dataMap, EMat, ρ, κ', pivotNext,
+    Case2PassiveThetaWithFollowingFactor.endpointTopologyTupleActiveReadout,
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback,
+    case2PassiveThetaWithFollowingFactorEndpointCOneReadout,
+    Case2PassiveThetaWithFollowingFactor.mk, Case2PassiveTheta.mk,
+    Case2PassiveTheta.yNext] using hinverse_cont
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- A p.13 source patch cut out by an open readback target contained in the
+selected-pivot-nonzero locus is open.
+
+This is a topological local-neighborhood wrapper only.  It does not assert
+global p.13 coverage, measure transport, determinant-Haar normalization,
+normal crossings, pole order, or RLCT extraction. -/
+theorem isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet_inter_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_preimage_of_subset_pivotNonzero
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂)))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)}
+    (hVopen : IsOpen V)
+    (hVpivot :
+      ∀ z ∈ V,
+        case2PassiveThetaPivotNonzero
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z.1) :
+    IsOpen
+      (paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+          (K := ℝ) W₂ B₂ U₀ hU₀ ∩
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+          W₂ B₂ n hS hnext hU₀ e) ⁻¹' V) := by
+  let EdgeFamily :=
+    ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+  let readback : EdgeFamily →
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J :=
+    case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+      W₂ B₂ n hS hnext hU₀ e
+  let p13SourceSet : Set EdgeFamily :=
+    paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+      (K := ℝ) W₂ B₂ U₀ hU₀
+  have hp13_open : IsOpen p13SourceSet := by
+    simpa [p13SourceSet, EdgeFamily] using
+      isOpen_paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+  rw [isOpen_iff_mem_nhds]
+  intro X hX
+  have hcont : ContinuousAt readback X := by
+    exact
+      continuousAt_case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback_of_mem_p13SourceEdgeFamilySet_pivotNonzero
+        W₂ B₂ n hS hnext hU₀ e X
+        (by simpa [p13SourceSet, EdgeFamily] using hX.1)
+        (by simpa [readback] using hVpivot (readback X) hX.2)
+  have hp13_mem : p13SourceSet ∈ 𝓝 X :=
+    hp13_open.mem_nhds (by simpa [p13SourceSet, EdgeFamily] using hX.1)
+  have hpre_mem : readback ⁻¹' V ∈ 𝓝 X :=
+    hcont.preimage_mem_nhds (hVopen.mem_nhds (by simpa [readback] using hX.2))
+  simpa [p13SourceSet, readback, EdgeFamily] using
+    Filter.inter_mem hp13_mem hpre_mem
 
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
