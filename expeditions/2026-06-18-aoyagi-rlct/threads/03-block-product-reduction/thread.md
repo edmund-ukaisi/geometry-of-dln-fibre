@@ -21,6 +21,58 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-06 A2 Case 2 selected-entry domain-shaped product pushforward
+
+Reproduction:
+
+```text
+reproduction-a2-case2-selected-entry-product-coordinate-domain-pushforward.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference_restrict_domain
+```
+
+The theorem rewrites the right side of the selected-entry p.13 product-chart
+pushforward into the generic source-domain handoff shape.  With
+
+```text
+domain = {value | value pivotNext != 0} x ball(0,R),
+valueReference = (volume.restrict valueImage).prod (volume.restrict ball(0,R)),
+```
+
+it proves
+
+```text
+map selectedEntryProductChart selectedEntrySource =
+  map CedgeProd (valueReference.restrict domain).
+```
+
+The support calculation is elementary: the selected-entry chart image lies in
+the nonzero-pivot value source, and the regular-coordinate measure is already
+restricted to the ball.  The radius is the same radius produced by the landed
+p.13 pushforward theorem.
+
+Boundary: selected-entry source/reference support only.  No formal-product
+Haar, raw Haar, original-prior, normal-crossing, pole-order, or RLCT
+transport.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
 ## 2026-07-06 A2 Case 2 selected-entry product-coordinate pushforward
 
 Reproduction:

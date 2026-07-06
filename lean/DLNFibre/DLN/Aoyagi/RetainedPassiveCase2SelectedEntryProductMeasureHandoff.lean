@@ -537,6 +537,158 @@ theorem exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCo
       (β := EuclideanSpace ℝ Coord) (γ := EdgeFamily)
       pivotNext Rbox regularMeasure (F := CedgeProd) hCedgeProd)
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+/-- Domain-shaped version of the selected-entry product-coordinate pushforward.
+
+The value-reference product measure is already supported on the p.13 source
+domain `source × ball(0,R)`, so the right side can be written in the generic
+source-reference handoff form `Measure.map CedgeProd (valueReference.restrict
+domain)`. -/
+theorem exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference_restrict_domain
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun value ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀
+          (retainedData
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+              pivotNext value))
+    ∀ Rbox : center → ℝ,
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          W₂ B₂ U₀ hU₀ sourceChart
+      let regularMeasure :=
+        (volume : Measure (EuclideanSpace ℝ Coord)).restrict
+          (Metric.ball (0 : EuclideanSpace ℝ Coord) R)
+      let sourceSet :=
+        SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩
+          {y : center → ℝ | y pivotNext ≠ 0}
+      let valueImage :=
+        SelectedEntrySignedBox.CenterCoord.chartMap pivotNext '' sourceSet
+      let source : Set (center → ℝ) :=
+        {value | value pivotNext ≠ 0}
+      let domain := source ×ˢ Metric.ball (0 : EuclideanSpace ℝ Coord) R
+      let selectedEntrySource :=
+        ((((volume : Measure (center → ℝ)).restrict sourceSet).withDensity
+          (fun y : center → ℝ =>
+            ENNReal.ofReal
+              (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))).prod
+          regularMeasure)
+      let selectedEntryProductChart :
+          (center → ℝ) × EuclideanSpace ℝ Coord → EdgeFamily :=
+        fun z ↦
+          CedgeProd
+            (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1, z.2)
+      let valueReference :=
+        ((volume : Measure (center → ℝ)).restrict valueImage).prod regularMeasure
+      Measure.map selectedEntryProductChart selectedEntrySource =
+        Measure.map CedgeProd (valueReference.restrict domain) := by
+  intro center pivotNext EdgeFamily retainedData sourceChart Rbox
+  rcases
+      exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀)
+        eNext e (Rmax := Rmax) hRmax Rbox with
+    ⟨R, hR, hRle, hmap⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord CedgeProd regularMeasure sourceSet valueImage source domain
+    selectedEntrySource selectedEntryProductChart valueReference
+  have hsource : MeasurableSet source := by
+    simpa [source] using
+      SelectedEntrySignedBox.CenterCoord.measurableSet_pivot_ne_zero pivotNext
+  have hdomain : MeasurableSet domain := by
+    simpa [domain] using
+      hsource.prod
+        (Metric.isOpen_ball.measurableSet :
+          MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R))
+  have hvalueImage_meas : MeasurableSet valueImage := by
+    simpa [sourceSet, valueImage] using
+      SelectedEntrySignedBox.CenterCoord.measurableSet_chartMap_image_signedBoxSet_inter_pivot_ne_zero
+        pivotNext Rbox
+  have hvalueImage_subset_source : valueImage ⊆ source := by
+    intro value hvalue
+    rcases hvalue with ⟨y, hy, rfl⟩
+    exact
+      (SelectedEntrySignedBox.CenterCoord.chartMap_mem_pivot_ne_zero_iff pivotNext y).2
+        hy.2
+  have hvalueReference_support : valueReference.restrict domain = valueReference := by
+    have hleft_ae :
+        ∀ᵐ value ∂(volume : Measure (center → ℝ)).restrict valueImage,
+          value ∈ source := by
+      filter_upwards [ae_restrict_mem hvalueImage_meas] with value hvalue
+      exact hvalueImage_subset_source hvalue
+    have hright_ae :
+        ∀ᵐ u ∂regularMeasure,
+          u ∈ Metric.ball (0 : EuclideanSpace ℝ Coord) R := by
+      simpa [regularMeasure] using
+        (ae_restrict_mem
+          (Metric.isOpen_ball.measurableSet :
+            MeasurableSet (Metric.ball (0 : EuclideanSpace ℝ Coord) R)))
+    have hmem : ∀ᵐ z ∂valueReference, z ∈ domain := by
+      rw [Measure.ae_prod_mem_iff_ae_ae_mem hdomain]
+      filter_upwards [hleft_ae] with value hvalue
+      filter_upwards [hright_ae] with u hu
+      exact ⟨hvalue, hu⟩
+    exact Measure.restrict_eq_self_of_ae_mem hmem
+  calc
+    Measure.map selectedEntryProductChart selectedEntrySource =
+        Measure.map CedgeProd valueReference := by
+          simpa [ρ, κ, Coord, CedgeProd, regularMeasure, sourceSet,
+            valueImage, selectedEntrySource, selectedEntryProductChart,
+            valueReference] using hmap
+    _ = Measure.map CedgeProd (valueReference.restrict domain) := by
+          rw [hvalueReference_support]
+
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
 end Aoyagi

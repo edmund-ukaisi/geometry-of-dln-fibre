@@ -12,6 +12,59 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, Case 2 selected-entry domain-shaped product pushforward
+
+Lean now has:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference_restrict_domain
+```
+
+Decision: expose the support calculation hidden inside the previous
+selected-entry product-coordinate pushforward.  For a selected-entry source box
+`S0` and value image `I0`, the p.13 radius `0 < R <= Rmax` gives
+
+```text
+domain = {value | value pivotNext != 0} x ball(0,R)
+valueReference = (volume.restrict I0).prod (volume.restrict ball(0,R)).
+```
+
+Since `I0` lies in the nonzero-pivot value source and the regular factor is
+supported on `ball(0,R)`, Lean proves
+`valueReference.restrict domain = valueReference` and rewrites the landed
+pushforward as
+
+```text
+map selectedEntryProductChart selectedEntrySource =
+  map CedgeProd (valueReference.restrict domain).
+```
+
+Boundary: this is only the same-radius source-reference shape for the reduced
+p.13 selected-entry chart.  It does not identify formal-product Haar,
+determinant/raw Haar, original prior, normal crossings, pole order, or RLCT.
+It also deliberately avoids composing independently radius-shrinking
+existential handoffs.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-coordinate-domain-pushforward.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next target: Curie's audit recommends specializing the Case 2 selected-entry
+finite-integral theorem by hard-coding the p.13 product-step inverse-Jacobian
+density, thereby removing the abstract density continuity/positivity
+hypotheses while keeping the local loss and source-density hypotheses explicit.
+
 ## Latest controller decision - 2026-07-06, Case 2 selected-entry product-coordinate pushforward
 
 Lean now has:

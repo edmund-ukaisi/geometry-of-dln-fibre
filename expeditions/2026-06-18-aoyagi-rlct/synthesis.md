@@ -6,6 +6,77 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 Case 2 Selected-entry Domain-shaped Product Pushforward - 2026-07-06
+
+Lean now has the domain-shaped version of the concrete selected-entry
+product-coordinate pushforward:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_selectedEntrySource_eq_map_valueReference_restrict_domain
+```
+
+For a selected-entry source box
+
+```text
+S0 = signedBoxSet Rbox cap {y | y pivotNext != 0}
+I0 = chartMap pivotNext '' S0,
+```
+
+the theorem chooses the same p.13 regular-coordinate radius `0 < R <= Rmax`
+as the landed pushforward and proves
+
+```text
+map (fun (y,u) => CedgeProd(chartMap pivotNext y,u)) selectedEntrySource
+  =
+map CedgeProd (valueReference.restrict domain),
+```
+
+where
+
+```text
+domain = {value | value pivotNext != 0} x ball(0,R)
+valueReference = (volume.restrict I0).prod (volume.restrict ball(0,R)).
+```
+
+The new content is the support identity
+`valueReference.restrict domain = valueReference`: `I0` is contained in the
+nonzero-pivot value source, and the regular-coordinate factor is already
+restricted to the ball.  This exposes the exact
+`Measure.map CedgeProd (thetaReference.restrict domain)` shape consumed by
+the product-coordinate handoff without composing independent existential
+radius choices.
+
+Mathematical reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-case2-selected-entry-product-coordinate-domain-pushforward.md
+```
+
+Boundary: no formal-product Haar, determinant/raw Haar, original-prior
+transport, normal crossings, pole order, or RLCT.  This is only the
+same-radius selected-entry source/reference pushforward through the reduced
+p.13 chart.
+
+Verification passed: focused `lake env lean
+DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`,
+focused module build
+`lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+full local `lake build DLNFibre`, `lean/scripts/sorries`, `git diff --check`,
+code-only forbidden-marker scan, and direct axiom probe.  The new declaration
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Next finite-integral target, from Curie's xhigh audit: in
+`RetainedPassiveCase2LocalJacobianMeasure.lean`, specialize the existing Case
+2 selected-entry finite-integral theorem by replacing the arbitrary integrand
+density with
+`productReductionStepRawOrderInverseJacobianDensity` composed with
+`paperEndpointFixedBaseP13RawOrderTuple`, discharging density
+continuity/positivity from the p.13 inverse-Jacobian facts.
+
 ## A2 Case 2 Selected-entry Product-coordinate Pushforward - 2026-07-06
 
 Lean now has the concrete selected-entry source/reference pushforward through
