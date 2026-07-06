@@ -16,3 +16,19 @@ rev = "v4.29.0"
 
 [[lean_lib]]
 name = "DLNFibre"
+
+# The citation-cordon gate executable (`lake exe cited-audit`); wrapper `scripts/cited`.
+# Root lives in `scripts/CitedAudit.lean`; imports `DLNFibre.Core.Meta.CordonAudit`.
+[[lean_exe]]
+name = "cited-audit"
+srcDir = "scripts"
+root = "CitedAudit"
+supportInterpreter = true
+
+# Adversarial cordon fixtures (the SPEC — known-expected verdicts). A SEPARATE library in the bare
+# `CordonFixtures` namespace so the real gate (`--ns DLNFibre`) never sees its intentional violations;
+# the harness `scripts/cited-test` audits it under `--ns CordonFixtures`. NOT a default target.
+[[lean_lib]]
+name = "CordonFixtures"
+srcDir = "tests"
+globs = ["CordonFixtures", "FixtureCited"]

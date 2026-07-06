@@ -28,9 +28,13 @@ networks are "mildly singular." A full map is in
 ## Formalisation status
 
 Verified against the Lean **source** (theorem signatures, not docstrings) at `dev` (@ `f5c1c6b7`,
-Phase 1 — the headline results are unchanged by the later determinantal-atlas work). Integrity: **zero
-`sorry` / `admit` / custom `axiom`** in `lean/DLNFibre/**`. Legend: ✅ Proved · 🟡 Proved (scoped beyond
-the paper) · 🔵 Cited (an explicit interface/hypothesis, not a global axiom).
+Phase 1 — the headline results are unchanged by the later determinantal-atlas work); the `rlct` and
+fibre-`θ` rows reflect the `rlct-foundation` branch (landing with this PR — the payoff now reads the
+**defined** `rlctGlobal`, and the fibre component-count drops `Monotone d`). Integrity: **zero `sorry` /
+`admit`** in `lean/DLNFibre/**`; the only axioms are the
+cordon-accounted `@[cited]` monuments (`scripts/cited`: `CITED=3` — Watanabe-upper, Aoyagi-lower, and the
+local ζ-continuation). Legend: ✅ Proved · 🟡 Proved (scoped beyond the paper) · 🔵 Cited (an explicit
+interface/hypothesis, not a global axiom).
 
 | Paper result | | Generality vs paper | Lean name |
 |---|:--:|---|---|
@@ -40,15 +44,16 @@ the paper) · 🔵 Cited (an explicit interface/hypothesis, not a global axiom).
 | Explicit closed form for `C`, `θ` | ✅ ᵃ | arbitrary `d,r` | `qipMin_eq_cValue`, `cTheta` |
 | Poincaré series + `P_d = Σ qᶜᵒᵈⁱᵐ P_m` | ✅ | general `N` | `thm55`, `fivegon` |
 | `θ` combinatorial (`= C(m, \|δ\|)`) | ✅ | arbitrary `d` | `cTheta`, `numTop` |
-| `θ` = #top-dim irreducible components | ✅ / 🟡 ᵇ | rank locus: arbitrary `d`; fibre: monotone `d` | `numTop_eq_ncard_topComponents` |
+| `θ` = #top-dim irreducible components | ✅ | arbitrary `d` (rank locus + fibre) | `numTop_eq_ncard_topComponents`, `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` |
 | Permutation invariance of `(C,θ)` (Cor 5.10) | ✅ | arbitrary `σ`, `d` | `cCodim_comp_perm`, `numTop_comp_perm` |
-| `rlct(Kᴰᴸᴺ_B) = ½·codim mult⁻¹(B)` | 🔵 / ✅ ᶜ | conditional on the Aoyagi/Watanabe interface | `rlct_lossDLN_eq_half_codimFibre_of_transfer` |
+| `rlct(Kᴰᴸᴺ_B) = ½·codim mult⁻¹(B)` | 🔵 / ✅ ᶜ | on the **defined** `rlctGlobal` (Def 8.1(i)); opaque map retired | `rlct_lossDLN_eq_half_codimFibre_of_transfer` |
 
 *ᵃ* proved *equal to* the codimension, and the `θ` binomial matches verbatim, but the exact
 fractional-part `{S̃/m}` syntactic shape of the paper's formula is not reproduced. &nbsp;
-*ᵇ* the fibre component-count at **non-monotone** `d` is the one open edge (→ [ROADMAP](ROADMAP.md)). &nbsp;
-*ᶜ* everything but the two analytic bounds is Proved (including the paper's own algebraic step, Aoyagi's
-`λ = ½·codim`); those bounds — resolution of singularities / integrability — are Cited to Aoyagi + Watanabe.
+*ᶜ* the RLCT is now the **defined, cite-free** `rlctGlobal` (paper Def 8.1(i)) — the opaque assumed `rlct`
+map is **retired** (expedition `rlct-foundation`). Everything but the two analytic bounds is Proved (including
+the paper's own algebraic step, Aoyagi's `λ = ½·codim`); the payoff's only value-path cites are those two
+bounds (Watanabe-upper + Aoyagi-lower). The `r=0` headline's `#print axioms` = std-3 + those two cites only.
 
 **Proof-route notes** — how the Lean relates to L&R's methods (same statements, sometimes different means):
 
@@ -61,10 +66,11 @@ fractional-part `{S̃/m}` syntactic shape of the paper's formula is not reproduc
   closure = expected codim `dim Ext¹`), proved unconditionally in char 0.
 - **θ = #components:** the combinatorial count and the geometric top-dim-component count of the *actual*
   rank-locus ideal are reconciled by a proven **catenarity bridge**.
-- **rlct:** the paper's own new algebraic step (Aoyagi's `λ = ½·codim`) is **Proved**; only the analytic
-  bounds are Cited — labelled `_via_aoyagi` / `cited_*` throughout.
+- **rlct:** the RLCT is a **defined** invariant `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c} loc-integrable}`
+  (Def 8.1(i), cite-free) — the opaque assumed map is retired. The paper's own new algebraic step (Aoyagi's
+  `λ = ½·codim`) is **Proved**; only the two analytic bounds are Cited — labelled `_via_aoyagi` / `cited_*`.
 
-*Open edges and generalization routes (field generality; non-monotone fibre `θ`) are tracked in
+*Open edges and generalization routes (field generality) are tracked in
 [`ROADMAP.md`](ROADMAP.md). Re-verify this table against the Lean source — not docstrings — when updating.*
 
 ## Layout

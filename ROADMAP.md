@@ -267,13 +267,76 @@ $\operatorname{rlct}=C/2$ (Thm 8.6). The geometric codimension is Bundle 1/2 con
 $\operatorname{rlct}\le\tfrac12\operatorname{codim}$ is **Cited** (Aoyagi / Watanabe) — named as such, never
 folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
 
-### Bundle 4b — generic RLCT foundation (PLANNED programme — tracked, not yet built)
+### Bundle 4b — generic RLCT foundation (LARGELY LANDED · expedition `rlct-foundation`, 2026-07-06)
 
-**Status: roadmap only.** Folded in from the `determinantal-atlas` expedition (operator scope call: clean scope
-now, build later). The goal is to retire the current **honesty debt** in Bundle 4: today the payoff leans on an
-**opaque `rlct : Loss → ℝ`** *assumed* to satisfy two inequalities (Watanabe upper + Aoyagi lower). The RLCT
-foundation replaces that assumed function with a **defined** invariant + a clean proved/cited boundary. RLCT is
-**not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`, outside `DLN`.
+**Status: the headline honesty win is BANKED.** The payoff no longer leans on an opaque assumed
+`rlct : Loss → ℝ`: that map (`rlctReal`) is **retired**, and the payoff now reads a **defined, cite-free**
+invariant. RLCT is **not** DLN-specific — only Aoyagi's computation is — so the foundation lives in `Core`,
+outside `DLN`. (The caveat at the end of this bundle predicted exactly this first slice — "value-only
+integrability threshold + core invariances + quadratic block `λ=c/2` + axiom retirement is the headline
+honesty win"; that is now done.)
+
+**LANDED (cite-free unless noted; `Core/Analysis/RLCT/` + `DLN/`).**
+- **Citation cordon** (`@[cited]` attribute + the forget-proof `scripts/cited` accounting gate; `CITED=3`) —
+  every cited axiom named + located, and a cite's *non-vacuity* is a build-time obligation (round-7 lesson).
+- **Local RLCT value** `rlctAt K x = sSup{c≥0 : K^{-c} loc-integrable at x}` (`Local.lean`, Def 8.1(ii)) + the
+  **regional** threshold `integrabilityThreshold K U` (`Integrability.lean`).
+- **Global RLCT** `rlctGlobal K = sSup{c≥0 : ∀x, K^{-c} loc-integrable}` (`Global.lean`, Def 8.1(i)); the
+  `rlctGlobal ≤ rlctAt` half + the inf-over-zero-locus characterization (Prop 8.3(iii)) as a clean conditional.
+- **Local zeta pair** `ζ_{K,φ}(s)=∫K^s φ` with cite-free convergence for `Re s>0` (`Zeta.lean`); the ONE
+  bundled **continuation monument** (`Cited.lean`, Atiyah 1970 + Saito/SLT): meromorphic continuation, poles
+  ⊂ ℚ_{<0}, largest pole `= −rlctAt K x₀` of order `m`; `RLCTPair (λ,m)` + Link 1 `λ = rlctAt` (`Pair.lean`).
+  `m` is **define-only** (pole order, NOT the DLN `θ` — that boundary is now stated, not smuggled). Cite
+  non-vacuity proven by the axiom-clean witness `zetaSetupSq` (`Witness.lean`, K=x²).
+- **Smooth quadratic block** `rlctAt(∑ᵢxᵢ²) 0 = C/2` (`SumSq.lean`, `rlctAt_sumSq`, `C≥1`) + the reusable ball
+  threshold `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball ⟺ `-dim < s`).
+- **Payoff rewired** onto `rlctGlobal` (`DLN/RlctPayoff`, `DLN/RLCT/AoyagiCited`) via Watanabe-upper +
+  Aoyagi-lower; `rlctReal` **retired**. The payoff's `#print axioms` = std-3 + those two DLN bounds ONLY (the
+  ζ-continuation cite is off the value path — it enriches `(λ,m)` only).
+- **Foundation validated (R9, in PR #23):** the payoff's central object now carries an in-file witness
+  `rlctGlobal (sumSq C) = C/2` (`GlobalWitness`); the regular-point lemma
+  `localAdmissibleExponents K x = Set.Ici 0` (`K` cont., `K x ≠ 0` — no `0≤K` needed) records "regular point
+  ⟹ no pole" (`RegularPoint`); the `RLCT.Global.rlctAt = RLCT.rlctAt` `rfl` bridge closes the two-copies fork
+  (`GlobalBridge`); local down-set + germ-monotonicity (`LocalMono`); the power rule
+  `rlctAt (K^k) x = rlctAt K x / k` (`k≥1`, no `BddAbove`; hardens the "no second ½" trap — `PowerRule`); and
+  on-cite positivity `rlctAt S.K S.x₀ > 0` + the `zetaSetupSq.K = sumSq 1` coherence (cite-free `rlctAt = 1/2`
+  = cited `(rlctPair).lam` — `CiteCoherence`). Cite-free items std-3; the two on-cite items carry ONLY
+  `cited_local_zeta_pole` (off the payoff path).
+
+**REMAINS (roadmap; all off the payoff's critical path). Structured as the designed follow-on
+`rlct-invariance` (PR #23 reviewer addendum; operator scope call — roadmap, not scope-creep into the close-out
+PR). Deliverable = a complete invariance calculus for `rlctAt`/`rlctGlobal`, the substrate the eventual `K_B`
+constant-rank bridge consumes.**
+
+*Layer-completion — ✅ **LANDED (R9, in PR #23; see the LANDED block above)**: A (`rlctGlobal` witness),
+A1 (regular-point), B1 (`rfl` bridge), B2 (down-set + germ-monotonicity), B4 (power rule), B5 (on-cite
+positivity) + the coherence check. The one hardening item held back to the follow-on:*
+- **Bounded-unit invariance** `0<c₁≤U≤c₂` near `x` ⟹ `rlctAt (U·K) x = rlctAt K x` (B3) — two-sided
+  domination; the germ-invariance calculus proper (new substrate, not completion of what's staked). The first
+  lemma the Bridge-B discharge / germ surgery reach for.
+
+*The follow-on's analytic rungs (each a genuine build):*
+- **Fubini additivity** (LR Prop 8.3(iv)) `rlctAt (K₁(x)+K₂(y)) (x₀,y₀) = rlctAt K₁ x₀ + rlctAt K₂ y₀` for
+  nonnegative product germs — with `rlctAt_sumSq` it evaluates any `Σqᵢ² + core` germ; the `≥` direction is not
+  AM-GM-cheap. The single most valuable next analytic theorem.
+- **`rlctAt` diffeo-invariance** `rlctAt K (φ x) = rlctAt (K∘φ) x` (local C¹ diffeo, `det φ'≠0`) — BUILDABLE
+  (`integrableOn_image_iff_integrableOn_abs_det_fderiv_smul` present).
+- **Bridge B F1** (regional↔local unconditional, ball/box: the `hSubThreshold`/cap analytic core) + the
+  **`hGlue`** reverse inequality (Prop 8.3(iii) as an equality where the payoff lives; de-risked by the witness).
+- **Invariance suite tail** (two-sided-comparability · spectator · sum-of-squares-generator), the
+  **normal-crossing atlas** + product pole formula, 1-D Mellin, and the cited **equivalences** (zeta-pole ↔
+  threshold ↔ volume-asymptotic).
+
+*The eventual consumer (monument-adjacent — a genuine gap, not this follow-on):*
+- **Constant-rank / Morse–Bott normal form** → `rlctAt K_B (smooth fibre pt) = C/2`: v4.29 has inverse+implicit
+  FT but NO constant-rank theorem / Morse lemma (verified). Once built, the payoff's cited bracket becomes a
+  computation `rlctGlobal(K_B) = nReg/2 + rlct(core)` with no new analytic machinery. The payoff does not need
+  it today (it rides the global cites).
+- **Namespace unification** — bare-`RLCT` (`Fin n→ℝ`) vs polymorphic `RLCT.Global`; includes the `rfl` bridge
+  above, and a re-check of joint cite consistency once the two `rlctAt`s become interchangeable. A safe refactor.
+
+_The Canonical-definitions / BUILD / CITE lists below were the original plan; the LANDED list above is the
+shipped state (they overlap — treat the LANDED/REMAINS split as authoritative)._
 
 **Canonical definitions (generic, in `Core`).**
 - **Value, via the integrability threshold** (Lean-friendly; the repo already has `rlctAt` / `rlctAtOn` /
@@ -304,13 +367,14 @@ Watanabe codimension upper bound (if retained as a separate inequality).
 
 **Module split:**
 ```text
-Core/Analysis/RLCT/{Basic, Zeta, Integrability, NormalCrossing, Cited}.lean   -- generic foundation
-DLN/RLCT/{AoyagiCited, Payoff}.lean                                            -- DLN cited theorem + transport
+Core/Analysis/RLCT/{Basic, Integrability, Local, Zeta, Cited, Pair, Bridge, Witness, Global, SumSq}.lean
+DLN/{RlctPayoff, RlctPayoffGeneral}.lean · DLN/RLCT/{AoyagiCited, BundleShiftDischarge}.lean   -- shipped
 ```
-**Honest payoff reading (the boundary, after the lift):** *generic def* `RLCTPair` is zeta-pole data; *generic
-thm/cite* zeta-pole value = integrability threshold where needed; *DLN def* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved*
-`Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` = the Core algebraic codimension; *cited* Aoyagi:
-`RLCTPair(K_B|Z_B) = (codim_ℝ(Z_B)/2, θ_B)`; *therefore* the L&R/Aoyagi formulae.
+**Honest payoff reading (the boundary, now realized):** *defined* `rlctGlobal` (Def 8.1(i), cite-free);
+*defined* `K_B(A) = ‖A_N…A_1 − B‖_F²`; *proved* `Z_B = K_B^{-1}(0) = mult^{-1}(B)`; *proved* `codim_ℝ(Z_B)` =
+the Core algebraic codimension; *cited* Watanabe-upper + Aoyagi-lower: `rlctGlobal(K_B) = codim_ℝ(Z_B)/2`;
+*therefore* the L&R/Aoyagi `rlct = C/2`. The opaque assumed map is gone; those two DLN bounds are the only
+value-path cites (the ζ-continuation monument enriches `(λ,m)` only, off the value path).
 
 **Caveat — domain risk:** this is real-analysis (ζ, Mellin, integrability, meromorphic continuation), unlike the
 algebraic-geometry work so far; **Mathlib analysis coverage is the unknown.** Pick this up **recon-first** (map
@@ -425,27 +489,24 @@ wall, the next expedition):**
 
 ## Open edges — headline results not yet fully general (relative to L&R)
 
-The [formalisation-status table](README.md#formalisation-status) marks two rows short of the paper's full
-generality. What L&R establish that the Lean does not *yet* deliver, ranked by importance:
+The [formalisation-status table](README.md#formalisation-status) marks **one** row short of the paper's full
+generality (field generality, Gap 2). Gap 1 (below) is now **closed**. What remains:
 
-### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` *(the substantive gap)*
-- **L&R:** the top-dim component count holds for arbitrary `d`, fibre included (reduced to the rank locus
-  via Lemma 4.6, itself arbitrary-`d`; `θ` drops out of the permutation-symmetric Poincaré series). Not open
-  for them.
-- **Lean:** `#comp(mult⁻¹(B)) = cTheta(d−r)` is proved **only for `Monotone d`**
-  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart). The
-  *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` is already arbitrary-`d` (`numTop_eq_ncard_topComponents`),
-  so the gap is specific to the fibre. NOT closable by perm-invariance (combinatorial-only; it cannot
-  transport a *geometric* count between the non-isomorphic ambient spaces `Rep_d`, `Rep_{d∘σ}`).
-- **Close route (no new mathematics; bounded, medium mechanical effort):** the codimension fibre-vs-`Σ`
-  shift (`codimRepCanonical_fibre_eq_cCodim_add_shift`) is already arbitrary-`d`; promote it to a
-  **component-count** transfer — the fibre over the rank-`r` normal form is (Zariski-locally) a product of
-  the irreducible exact-rank-`r` stratum with the shifted zero-product problem, so
-  `#comp(mult⁻¹(B)) = #comp(Σ⁰_{d−r}) = numTop(d,r)`, all arbitrary-`d`. Reuses the arbitrary-`d`
-  fibration/codim-shift content rather than the monotone sweep chart (`[IsAlgClosed]` + `Type 0` remain;
-  `Monotone d` goes). The **rank-locus** arbitrary-`d` count is itself *one stated corollary away*: compose
-  the three existing arbitrary-`d` inputs (`numTop_eq_ncard_topComponents` + perm-invariance +
-  `numTop_eq_cTheta_comp_sort`).
+### Gap 1 — geometric `θ` for the fibre `mult⁻¹(B)` at non-monotone `d` — ✅ **CLOSED** (expedition `rlct-foundation`, 2026-07-06)
+- **Was:** `#comp(mult⁻¹(B)) = cTheta(d−r)` proved **only for `Monotone d`**
+  (`ncard_topDimMinPrimes_fibre_eq_cTheta_dminus`, via the sorted Schur/localization chart).
+- **Now (arbitrary `d`):** `Core.FibreThetaCountUnconditional.ncard_topDimMinPrimes_fibre_eq_numTop`
+  (+`_of_rank`) — the fibre top-dim component count `= numTop d r` for arbitrary `d`; and the closed form
+  `Core.CThetaSortClosedForm` → `ncard_topDimMinPrimes_fibre_eq_cTheta_dminus_sort` (+`_of_rank`)
+  `= cTheta((d∘Tuple.sort d) − r)`. The **only** added hypothesis is the rank-feasibility `hr : ∀ i, r ≤ d i`
+  (disclosed); `Monotone d` is **gone**. Under `Monotone d` the sort recovers the old `cTheta(d−r)` headline.
+  Non-vacuity: witnesses on the non-monotone `d = ![1,2,1]` (`decide`, over `AlgebraicClosure ℚ`) — a vector
+  unstatable under the old gate. The *rank-locus* count `#comp(Σ̄ʳ) = numTop d r` was already arbitrary-`d`
+  (`numTop_eq_ncard_topComponents`).
+- **Route (as this section predicted):** the Monotone-free `numTop_comp_sort` reroute + the already-landed
+  perm-invariance (no new cite; the anticipated *geometric* fibration transfer was **not** needed —
+  perm-invariance sufficed once the count chain was traced to be `Monotone`-free but for one cosmetic E0 step).
+  `[IsAlgClosed]` + `Type 0` remain — those are Gap 2, not this gap.
 
 ### Gap 2 — field generality (an *unrealized* generality, not a mathematical restriction)
 The algebraic theorems carry `[CharZero] [Infinite]` (codim), plus `[IsAlgClosed]` + universe `Type 0`

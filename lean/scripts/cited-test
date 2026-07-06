@@ -1,0 +1,110 @@
+#!/usr/bin/env bash
+# cited-test — battle-test the citation cordon against the adversarial fixtures.
+#
+#   docs/policies/citation-cordon.md   (the mechanism)
+#   tests/CordonFixtures.lean          (the fixtures + their expected verdicts, THE spec)
+#
+# The load-bearing proof that the cordon catches violations: a cordon unproven to catch (c)/(d) is
+# worthless. Builds the fixture library + the exe, runs the audit over BOTH namespaces, and asserts:
+#   * over `CordonFixtures` (the violating set): exit 1, summary `UNACCOUNTED=5 CITED=2 LOCATION=3`
+#     (UNACCOUNTED: two untagged axioms + three decls resting on them, incl. the opaque-hidden case
+#     (f); CITED: the located cite + the misplaced cite; LOCATION: two untagged axioms + the misplaced
+#     cite), naming (c), (d), (f);
+#   * `--manifest` over the fixtures lists the two cite sources;
+#   * over the first-party scope [DLNFibre, RLCT] (the real gate, default): exit 0 (the real library —
+#     incl. the bare-namespace RLCT modules — is clean; a regression tripwire).
+# Exits 0 iff every assertion holds. Deterministic.
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+LEAN_DIR="$(dirname "$SCRIPT_DIR")"
+cd "$LEAN_DIR"
+
+pass=0 ; fail=0
+check() { # check <label> <expected-substring> <actual>
+  if printf '%s' "$3" | grep -qF -- "$2"; then
+    echo "  PASS: $1"; pass=$((pass+1))
+  else
+    echo "  FAIL: $1"; echo "        expected to contain: $2"; echo "        got: $3"; fail=$((fail+1))
+  fi
+}
+check_exit() { # check_exit <label> <expected-code> <actual-code>
+  if [ "$3" = "$2" ]; then echo "  PASS: $1 (exit $3)"; pass=$((pass+1));
+  else echo "  FAIL: $1 (expected exit $2, got $3)"; fail=$((fail+1)); fi
+}
+
+echo "== building fixtures + exe (throttled) =="
+"$SCRIPT_DIR/lb" CordonFixtures >&2
+"$SCRIPT_DIR/lb" cited-audit >&2
+source "$HOME/.elan/env" 2>/dev/null || true
+
+echo "== (A) audit the fixture namespace (must FAIL) =="
+set +e
+OUT_FIX="$(lake exe cited-audit --import CordonFixtures --ns CordonFixtures 2>&1)"
+CODE_FIX=$?
+set -e
+echo "$OUT_FIX"
+check_exit "fixtures gate fails" 1 "$CODE_FIX"
+check "summary line" "UNACCOUNTED=5 CITED=2 LOCATION=3" "$OUT_FIX"
+check "(c) untagged axiom surfaced" "untaggedFixtureAxiom" "$OUT_FIX"
+check "(d) misplaced cited axiom surfaced" "misplacedCitedAxiom" "$OUT_FIX"
+check "(c) unaccounted decl named" "usesUntagged" "$OUT_FIX"
+check "(f) opaque-hidden axiom surfaced" "hiddenFixtureAxiom" "$OUT_FIX"
+check "(f) opaque-using decl unaccounted" "usesOpaque" "$OUT_FIX"
+
+echo "== (B) manifest over the fixtures (informational, exit 0) =="
+set +e
+OUT_MAN="$(lake exe cited-audit --import CordonFixtures --ns CordonFixtures --manifest 2>&1)"
+CODE_MAN=$?
+set -e
+echo "$OUT_MAN"
+check_exit "manifest exit 0" 0 "$CODE_MAN"
+check "(b) cite source listed" "Fixture Source B" "$OUT_MAN"
+check "(b) cite axiom listed" "citedFixtureAxiom" "$OUT_MAN"
+
+echo "== (B') @[cited] on a non-axiom must be REJECTED at elaboration =="
+SCRATCH="$(mktemp --suffix=.lean)"
+cat > "$SCRATCH" <<'LEAN'
+import DLNFibre.Core.Meta.Cited
+open DLNFibre.Meta.Cited
+@[cited "wrong target"]
+def notAnAxiom : Nat := 0
+LEAN
+set +e
+OUT_REJ="$(lake env lean "$SCRATCH" 2>&1)"
+CODE_REJ=$?
+set -e
+rm -f "$SCRATCH"
+check_exit "@[cited] on a def fails to compile" 1 "$CODE_REJ"
+check "rejection message" "may only tag a cited external result declared as \`axiom\`" "$OUT_REJ"
+
+echo "== (B'') @[cited] with an EMPTY/whitespace source must be REJECTED at elaboration =="
+SCRATCH2="$(mktemp --suffix=.lean)"
+cat > "$SCRATCH2" <<'LEAN'
+import DLNFibre.Core.Meta.Cited
+open DLNFibre.Meta.Cited
+@[cited ""]
+axiom emptySourceAx : True
+LEAN
+set +e
+OUT_EMPTY="$(lake env lean "$SCRATCH2" 2>&1)"
+CODE_EMPTY=$?
+set -e
+rm -f "$SCRATCH2"
+check_exit "@[cited \"\"] fails to compile" 1 "$CODE_EMPTY"
+check "empty-source rejection message" "non-empty citation source" "$OUT_EMPTY"
+
+echo "== (C) audit the REAL first-party scope [DLNFibre, RLCT] + the retrofit cite file (regression tripwire, must PASS) =="
+set +e
+OUT_REAL="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited 2>&1)"
+CODE_REAL=$?
+OUT_REAL_MAN="$(lake exe cited-audit --import DLNFibre --import DLNFibre.DLN.RLCT.AoyagiCited --manifest 2>&1)"
+set -e
+echo "$OUT_REAL" | tail -4
+check_exit "real gate passes (no unaccounted, all cites located)" 0 "$CODE_REAL"
+check "(retrofit) Aoyagi cite classified" "Aoyagi" "$OUT_REAL_MAN"
+check "(retrofit) Watanabe cite classified" "Watanabe" "$OUT_REAL_MAN"
+
+echo ""
+echo "cited-test: $pass passed, $fail failed."
+[ "$fail" = 0 ]
