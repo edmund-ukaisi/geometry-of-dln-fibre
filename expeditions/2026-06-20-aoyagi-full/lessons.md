@@ -1120,3 +1120,18 @@ activity + the presence of ANY lean procs, not the ID-match. (2) "failed" in an 
 intermediate build attempt, not a death. (3) The reliable death/completion signal is the harness task-notification —
 WAIT for it before re-charging. (4) If a genuine stall must be assumed (no notification after a long idle), prefer
 resuming the SAME agent via SendMessage over spawning a fresh duplicate.
+
+## 2026-07-06 — a `lake` orchestrator's low CPU is NOT a stall; and stop over-diagnosing builds (2nd misjudgment)
+I killed the phip4 full-`DLNFibre` green-gate reading its `lake` proc's low CPU (1m52s over 46min elapsed) as
+"stalled." WRONG: the `lake` orchestrator legitimately WAITS (on the global semaphore) + delegates CPU to `lean`
+WORKER subprocesses — its own CPU stays low even while the build progresses. Its workers were in fact active (6GB,
+recent, high-CPU). The 46min was semaphore-WAIT under heavy contention (I had 2–3 concurrent full-lib green-gates +
+foreign builds sharing ~6 slots), then it got slots + compiled. I killed a progressing build (no work lost — the
+tide was committed — but wasteful). **Rules:** (1) judge a `lake`/`scripts/lb` build's liveness by its `lean`
+WORKER procs' CPU/etime, NOT the orchestrator's. (2) High elapsed + low orchestrator CPU = waiting on the
+semaphore (contention), which is NORMAL and SAFE — not a stall. (3) **Cadence: do not run a full `scripts/lb
+DLNFibre` green-gate per integration when 2 formaliser builds are already live** — it triggers 40+ min semaphore
+waits. Verify a tide via `scripts/lb <Module>` (module build) + force-`#print axioms` + `rg` new top-level names vs
+siblings; batch ONE full-lib gate when the farm is clear. (4) This is the 2nd build-status misjudgment in one
+session (after sjpeel2 "stalled"→duplication) — the meta-lesson: be conservative about declaring a build
+stalled/dead; wait for the harness notification; never kill/re-charge on ambiguous signals.
