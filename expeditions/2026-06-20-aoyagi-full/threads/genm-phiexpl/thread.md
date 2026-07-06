@@ -281,3 +281,55 @@ Next: **`Φ_expl` + `schurChartRaw_contDiffOn`** [med] — the explicit rational
 pivot minors, C² of polynomial entries), bump-globalised via `exists_contDiff_eventuallyEq_of_contDiffOn`.
 It rides on `blockFlatEquiv_L2` (this tide). Then `schurChart_global`, `schur_loss_germ_L2` (uses
 `reduced_core_zero_of_product_rank_le` + `blockFlatEquiv_L2_toBlocks₁₁_fst`), `qₑ`/`hRne`/`hfact`, final wiring.
+
+## TIDE 4 — `Φ_expl` (`schurChartRaw`) + `schurChartRaw_contDiffOn` (branch `genm-phiexpl-p2`)
+
+Closed **piece 2 of the next-tide order** — the explicit rational corner-elimination chart, its exact
+two-sided rational inverse, the block readbacks, the det→`Invertible` bridge, and its `C²`-ness — all
+appended to `lean/DLNFibre/DLN/RLCT/Validate/D1L2PhiExpl.lean`, sorry-free, axiom-clean
+`[propext, Classical.choice, Quot.sound]` (forced `#print axioms` after deleting the olean, on all three
+load-bearing results). Crux `d1ge_L2_hAtV_explicit` (in `D1L2ExplicitCoreProducer.lean`) **untouched** —
+not even in this module's import closure. Not yet wired into the aggregator (single-writer).
+
+### CLOSED this tide (▣)
+
+> **Claim (piece 2 — the corner-elimination chart `Φ_expl`).** In the `blockFlatEquiv_L2` coordinates, the
+> two block-layers `A0 = [[X,Y],[Z,W]]`, `A1 = [[S,T],[Uu,V]]` reparametrise to
+> `(X, Y, Uu | M11, M12, M21 | A0red, A1red)`, a rational two-sided diffeomorphism on
+> `{det X ≠ 0} ∩ {det M11 ≠ 0}` that is `C²` there.
+> - **Lean (all in `…/Validate/D1L2PhiExpl.lean`, branch `genm-phiexpl-p2`):**
+>   - `schurChartRaw` — the forward map `BlockParamsL2 H r → BlockParamsL2 H r`,
+>     `(fromBlocks X Y M21 A0red, fromBlocks M11 M12 Uu A1red)` with `M11 = X S + Y Uu`, `M12 = X T + Y V`,
+>     `M21 = Z S + W Uu`, `A0red = W − Z X⁻¹ Y`, `A1red = V − Uu M11⁻¹ M12` (nonsing `Matrix.inv`).
+>   - `schurChartRawInv` — the explicit rational inverse `Ψ_expl` (reconstructs `S,V,T,Z,W` rationally in
+>     `det X`, `det M11`).
+>   - `schurChartRaw_{fst,snd}_toBlocks{₁₁,₁₂,₂₁,₂₂}` + `schurChartRawInv_…` — the 16 block readbacks
+>     (all `rfl`, `@[simp]`); `schurChartRaw_snd_toBlocks₂₂` reads the reduced-core factor `A1red`, etc.
+>   - `invertibleOfDetNeZero` — det≠0 ⟹ `Invertible` (bridges `⅟X = X⁻¹` for the Schur bricks).
+>   - `schurChartRawInv_schurChartRaw` : `Ψ_expl ∘ Φ_expl = id` on `{det X ≠ 0, det M11 ≠ 0}`.
+>   - `schurChartRaw_schurChartRawInv` : `Φ_expl ∘ Ψ_expl = id` on the same domain.
+>   - `schurChartDom` — the domain set `{det X ≠ 0} ∩ {det M11 ≠ 0}` (M11 = `X S + Y Uu`).
+>   - `schurChartRaw_contDiffOn` : `ContDiffOn ℝ 2 (schurChartRaw H r) (schurChartDom H r)`.
+> - **Proved.** Fully. Two-sided inverse = pure block matrix algebra via 10 abstract reconstruction lemmas
+>   (`recon_S/V/T/Z/W`, `reconOut_M11/M12/M21/A0red/A1red`) + the four `X⁻¹X=1`, `X X⁻¹=1`, `M11⁻¹M11=1`,
+>   `M11 M11⁻¹=1` cancellations (`Matrix.nonsing_inv_mul`/`mul_nonsing_inv` from `isUnit_iff_ne_zero`).
+>   `C²` = entrywise `contDiffAt_pi` + copied generic matrix-`ContDiff` helpers (`SchurChartC2`, from
+>   `DeepestSchurSmooth` — controller: dedup to a shared Foundations module).
+> - **Design choice (norm).** `ContDiffOn` needs a `NormedAddCommGroup` on `BlockParamsL2`; Mathlib's
+>   elementwise matrix norm is NOT global, so `schurChartRaw_contDiffOn` and its section
+>   **`open scoped Matrix.Norms.Elementwise`** (its topology is defeq to the Pi/product topology
+>   `blockFlatEquiv_L2` uses — no diamond, Codex-confirmed xhigh). **Downstream consumers must reopen that
+>   scope.** The two-sided-inverse lemmas and the readbacks are norm-free (usable without the scope).
+> - **Assumed / Cited / Deferred.** none.
+> - **Status.** sorry-free, clean-three (forced `#print axioms`).
+
+### OPEN pieces — remaining next-tide order
+
+Next: **`schurChart_global`** [med] — conjugate `schurChartRaw` to a flat self-map `Φ` via
+`blockFlatEquiv_L2` (`ContinuousLinearEquiv.contDiffOn_comp_iff` &c., under the elementwise-norm scope),
+bump-globalise (`exists_contDiff_eventuallyEq_of_contDiffOn`), and feed brick A
+`derivEquiv_of_eventual_inverse` the two germ identities from `schurChartRawInv_schurChartRaw` /
+`schurChartRaw_schurChartRawInv` (restrict the `EqOn`-on-domain to `=ᶠ[𝓝 0]` on the open pivot domain).
+Then the germ `schur_loss_germ_L2` [HIGH] (uses `reduced_core_zero_of_product_rank_le` +
+`schurChartRaw_snd_toBlocks₂₂` reading `A1red`), `qₑ`/`hRne`/`hfact` [Option A], and the final wiring
+into `d1ge_L2_hAtV_of_explicit_chart`.

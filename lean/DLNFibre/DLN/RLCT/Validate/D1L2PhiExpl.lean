@@ -4,6 +4,8 @@ import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 import DLNFibre.Core.CommonPivotL2
 import DLNFibre.Core.SchurProductFactor
 import DLNFibre.Core.SchurRankZero
+import Mathlib.Analysis.Calculus.ContDiff.Operations
+import Mathlib.Analysis.Matrix.Normed
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl` — foundation for the L = 2 explicit Schur chart crux
@@ -284,4 +286,545 @@ example (H : Fin (L + 1) → ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L)))
     rlctAt H (dlnLoss H B) v = rlctAtOn F (0 : Fin (flatDim H) → ℝ) :=
   dln_hchart_flat H B v F Φ f' hΦ hΦ' hfix hgerm
 
+/-! ## Piece 2 of the next-tide order — the explicit rational corner-elimination chart `Φ_expl`
+
+The block corner-elimination forward map on `BlockParamsL2 H r`, its explicit rational two-sided
+inverse, the block readbacks, and the det→`Invertible` bridge. `schurChartRaw` is the raw
+(un-globalised) chart `Φ_expl` in the `blockFlatEquiv_L2` coordinates.
+
+Given the two layer matrices blocked at the common pivot as `A0 = [[X,Y],[Z,W]]`,
+`A1 = [[S,T],[Uu,V]]` (blocks read by `toBlocks₁₁/₁₂/₂₁/₂₂`), the chart reparametrises to
+`(X, Y, Uu | M11, M12, M21 | A0red, A1red)`, where the product corners
+`M11 = X S + Y Uu`, `M12 = X T + Y V`, `M21 = Z S + W Uu` are the regular directions and
+`A0red = W − Z X⁻¹ Y`, `A1red = V − Uu M11⁻¹ M12` the reduced-core factors (the Schur bricks read
+these). Both `X⁻¹` and `M11⁻¹` are the Mathlib nonsingular inverse (`Matrix.inv`), rational in the
+pivot determinants — so the map and its inverse are `C²` on `{det X ≠ 0} ∩ {det M11 ≠ 0}`.
+
+Output placement: first matrix `= fromBlocks X Y M21 A0red`, second `= fromBlocks M11 M12 Uu A1red`
+(so the whole output is again a `BlockParamsL2 H r`, and `A0red, A1red` are the `toBlocks₂₂` corners). -/
+
+/-- **The block corner-elimination forward map** (the raw chart `Φ_expl` in block coordinates). -/
+noncomputable def schurChartRaw (H : Fin (2 + 1) → ℕ) (r : ℕ) :
+    BlockParamsL2 H r → BlockParamsL2 H r := fun P =>
+  let X := P.1.toBlocks₁₁; let Y := P.1.toBlocks₁₂; let Z := P.1.toBlocks₂₁; let W := P.1.toBlocks₂₂
+  let S := P.2.toBlocks₁₁; let T := P.2.toBlocks₁₂; let Uu := P.2.toBlocks₂₁; let V := P.2.toBlocks₂₂
+  let M11 := X * S + Y * Uu
+  let M12 := X * T + Y * V
+  (Matrix.fromBlocks X Y (Z * S + W * Uu) (W - Z * X⁻¹ * Y),
+   Matrix.fromBlocks M11 M12 Uu (V - Uu * M11⁻¹ * M12))
+
+/-- **The explicit rational inverse** `Ψ_expl` of the corner-elimination chart. Reading the output
+coordinates `(X, Y, M21, A0red | M11, M12, Uu, A1red)`, it reconstructs the layer blocks by
+`S = X⁻¹(M11 − Y Uu)`, `V = A1red + Uu M11⁻¹ M12`, `T = X⁻¹(M12 − Y V)`,
+`Z = (M21 − A0red Uu) M11⁻¹ X`, `W = A0red + (M21 − A0red Uu) M11⁻¹ Y` — rational in `det X`,
+`det M11`. -/
+noncomputable def schurChartRawInv (H : Fin (2 + 1) → ℕ) (r : ℕ) :
+    BlockParamsL2 H r → BlockParamsL2 H r := fun Q =>
+  let X := Q.1.toBlocks₁₁; let Y := Q.1.toBlocks₁₂; let M21 := Q.1.toBlocks₂₁; let A0red := Q.1.toBlocks₂₂
+  let M11 := Q.2.toBlocks₁₁; let M12 := Q.2.toBlocks₁₂; let Uu := Q.2.toBlocks₂₁; let A1red := Q.2.toBlocks₂₂
+  let V := A1red + Uu * M11⁻¹ * M12
+  (Matrix.fromBlocks X Y ((M21 - A0red * Uu) * M11⁻¹ * X) (A0red + (M21 - A0red * Uu) * M11⁻¹ * Y),
+   Matrix.fromBlocks (X⁻¹ * (M11 - Y * Uu)) (X⁻¹ * (M12 - Y * V)) Uu V)
+
+/-! ### Block readbacks (all `rfl` — `toBlocks (fromBlocks …)` is definitional) -/
+
+variable {H : Fin (2 + 1) → ℕ} {r : ℕ}
+
+@[simp] theorem schurChartRaw_fst_toBlocks₁₁ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).1.toBlocks₁₁ = P.1.toBlocks₁₁ := rfl
+
+@[simp] theorem schurChartRaw_fst_toBlocks₁₂ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).1.toBlocks₁₂ = P.1.toBlocks₁₂ := rfl
+
+@[simp] theorem schurChartRaw_fst_toBlocks₂₁ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).1.toBlocks₂₁
+      = P.1.toBlocks₂₁ * P.2.toBlocks₁₁ + P.1.toBlocks₂₂ * P.2.toBlocks₂₁ := rfl
+
+@[simp] theorem schurChartRaw_fst_toBlocks₂₂ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).1.toBlocks₂₂
+      = P.1.toBlocks₂₂ - P.1.toBlocks₂₁ * P.1.toBlocks₁₁⁻¹ * P.1.toBlocks₁₂ := rfl
+
+@[simp] theorem schurChartRaw_snd_toBlocks₁₁ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).2.toBlocks₁₁
+      = P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁ := rfl
+
+@[simp] theorem schurChartRaw_snd_toBlocks₁₂ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).2.toBlocks₁₂
+      = P.1.toBlocks₁₁ * P.2.toBlocks₁₂ + P.1.toBlocks₁₂ * P.2.toBlocks₂₂ := rfl
+
+@[simp] theorem schurChartRaw_snd_toBlocks₂₁ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).2.toBlocks₂₁ = P.2.toBlocks₂₁ := rfl
+
+@[simp] theorem schurChartRaw_snd_toBlocks₂₂ (P : BlockParamsL2 H r) :
+    (schurChartRaw H r P).2.toBlocks₂₂
+      = P.2.toBlocks₂₂ - P.2.toBlocks₂₁
+          * (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁)⁻¹
+          * (P.1.toBlocks₁₁ * P.2.toBlocks₁₂ + P.1.toBlocks₁₂ * P.2.toBlocks₂₂) := rfl
+
+@[simp] theorem schurChartRawInv_fst_toBlocks₁₁ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).1.toBlocks₁₁ = Q.1.toBlocks₁₁ := rfl
+
+@[simp] theorem schurChartRawInv_fst_toBlocks₁₂ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).1.toBlocks₁₂ = Q.1.toBlocks₁₂ := rfl
+
+@[simp] theorem schurChartRawInv_fst_toBlocks₂₁ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).1.toBlocks₂₁
+      = (Q.1.toBlocks₂₁ - Q.1.toBlocks₂₂ * Q.2.toBlocks₂₁) * Q.2.toBlocks₁₁⁻¹ * Q.1.toBlocks₁₁ := rfl
+
+@[simp] theorem schurChartRawInv_fst_toBlocks₂₂ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).1.toBlocks₂₂
+      = Q.1.toBlocks₂₂ + (Q.1.toBlocks₂₁ - Q.1.toBlocks₂₂ * Q.2.toBlocks₂₁) * Q.2.toBlocks₁₁⁻¹ * Q.1.toBlocks₁₂ := rfl
+
+@[simp] theorem schurChartRawInv_snd_toBlocks₁₁ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).2.toBlocks₁₁
+      = Q.1.toBlocks₁₁⁻¹ * (Q.2.toBlocks₁₁ - Q.1.toBlocks₁₂ * Q.2.toBlocks₂₁) := rfl
+
+@[simp] theorem schurChartRawInv_snd_toBlocks₁₂ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).2.toBlocks₁₂
+      = Q.1.toBlocks₁₁⁻¹ * (Q.2.toBlocks₁₂
+          - Q.1.toBlocks₁₂ * (Q.2.toBlocks₂₂ + Q.2.toBlocks₂₁ * Q.2.toBlocks₁₁⁻¹ * Q.2.toBlocks₁₂)) := rfl
+
+@[simp] theorem schurChartRawInv_snd_toBlocks₂₁ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).2.toBlocks₂₁ = Q.2.toBlocks₂₁ := rfl
+
+@[simp] theorem schurChartRawInv_snd_toBlocks₂₂ (Q : BlockParamsL2 H r) :
+    (schurChartRawInv H r Q).2.toBlocks₂₂
+      = Q.2.toBlocks₂₂ + Q.2.toBlocks₂₁ * Q.2.toBlocks₁₁⁻¹ * Q.2.toBlocks₁₂ := rfl
+
+/-! ### det → `Invertible` transport
+
+On the chart domain `det X ≠ 0`, `det M11 ≠ 0`; over ℝ (a field) these give `IsUnit` of the
+determinant, hence the nonsingular-inverse cancellations `X * X⁻¹ = 1` etc. and, when the Schur
+bricks need it, an `Invertible` instance with `⅟X = X⁻¹` (`Matrix.invOf_eq_nonsing_inv`). -/
+
+/-- A square real matrix with nonzero determinant is `Invertible` (its `⅟` is `Matrix.inv`). -/
+@[reducible] noncomputable def invertibleOfDetNeZero {n : ℕ} {A : Matrix (Fin n) (Fin n) ℝ}
+    (h : A.det ≠ 0) : Invertible A :=
+  A.invertibleOfIsUnitDet (isUnit_iff_ne_zero.mpr h)
+
+/-! ### The exact rational two-sided inverse
+
+`schurChartRawInv` is a genuine two-sided inverse of `schurChartRaw` on
+`{det X ≠ 0} ∩ {det M11 ≠ 0}` — the coordinates form a rational diffeomorphism there. The two
+identities are pure block matrix algebra (the four cancellations `X⁻¹X = 1`, `X X⁻¹ = 1`,
+`M11⁻¹ M11 = 1`, `M11 M11⁻¹ = 1` from the two determinant hypotheses). The `blockFlatEquiv_L2`
+conjugation + germ restriction (piece 3, next tide) turns these into the `=ᶠ[𝓝 0]` identities
+`derivEquiv_of_eventual_inverse` (brick A) consumes for the invertible chart derivative. -/
+
+/-! #### Abstract block-algebra reconstructions (`Ψ ∘ Φ = id`)
+
+The five nontrivial block equalities for `schurChartRawInv (schurChartRaw P) = P`, stated over abstract
+blocks `X, Y, Z, W, S, T, Uu, V` with the two determinant `IsUnit` hypotheses. Pure matrix algebra
+(the `X⁻¹X = 1`, `M11⁻¹M11 = 1`, `X X⁻¹ = 1`, `M11 M11⁻¹ = 1` cancellations + additive rearrangement). -/
+
+section ReconInv
+variable {p q p' : ℕ}
+variable {X : Matrix (Fin r) (Fin r) ℝ} {Y : Matrix (Fin r) (Fin p) ℝ}
+  {Z : Matrix (Fin q) (Fin r) ℝ} {W : Matrix (Fin q) (Fin p) ℝ}
+  {S : Matrix (Fin r) (Fin r) ℝ} {T : Matrix (Fin r) (Fin p') ℝ}
+  {Uu : Matrix (Fin p) (Fin r) ℝ} {V : Matrix (Fin p) (Fin p') ℝ}
+
+/-- Reconstruct `S` from `M11 = X S + Y Uu`: `X⁻¹(M11 − Y Uu) = S`. -/
+theorem recon_S (hXu : IsUnit X.det) :
+    X⁻¹ * ((X * S + Y * Uu) - Y * Uu) = S := by
+  have h1 : (X * S + Y * Uu) - Y * Uu = X * S := by abel
+  rw [h1, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul X hXu, Matrix.one_mul]
+
+/-- Reconstruct `V` from `A1red = V − Uu M11⁻¹ M12`: `(V − Uu M11⁻¹ M12) + Uu M11⁻¹ M12 = V`. -/
+theorem recon_V :
+    (V - Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V))
+      + Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V) = V := by
+  abel
+
+/-- Reconstruct `T` from `M12 = X T + Y V` (after `V` is recovered): `X⁻¹(M12 − Y V) = T`. -/
+theorem recon_T (hXu : IsUnit X.det) :
+    X⁻¹ * ((X * T + Y * V)
+        - Y * ((V - Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V))
+          + Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V))) = T := by
+  have hV : (V - Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V))
+      + Uu * (X * S + Y * Uu)⁻¹ * (X * T + Y * V) = V := by abel
+  rw [hV]
+  have h2 : (X * T + Y * V) - Y * V = X * T := by abel
+  rw [h2, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul X hXu, Matrix.one_mul]
+
+/-- Reconstruct `Z` from `M21 = Z S + W Uu`, `A0red = W − Z X⁻¹ Y`:
+`(M21 − A0red Uu) M11⁻¹ X = Z`. -/
+theorem recon_Z (hXu : IsUnit X.det) (hMu : IsUnit (X * S + Y * Uu).det) :
+    ((Z * S + W * Uu) - (W - Z * X⁻¹ * Y) * Uu) * (X * S + Y * Uu)⁻¹ * X = Z := by
+  have hZXX : Z * X⁻¹ * X = Z := by
+    rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul X hXu, Matrix.mul_one]
+  have expand : Z * X⁻¹ * (X * S + Y * Uu) = Z * S + Z * X⁻¹ * Y * Uu := by
+    rw [Matrix.mul_add, ← Matrix.mul_assoc (Z * X⁻¹) X S, hZXX, ← Matrix.mul_assoc (Z * X⁻¹) Y Uu]
+  have hL : (Z * S + W * Uu) - (W - Z * X⁻¹ * Y) * Uu = Z * X⁻¹ * (X * S + Y * Uu) := by
+    rw [expand, Matrix.sub_mul]; abel
+  rw [hL, Matrix.mul_assoc (Z * X⁻¹) (X * S + Y * Uu) (X * S + Y * Uu)⁻¹,
+    Matrix.mul_nonsing_inv _ hMu, Matrix.mul_one, hZXX]
+
+/-- Reconstruct `W` from `A0red = W − Z X⁻¹ Y`:
+`A0red + (M21 − A0red Uu) M11⁻¹ Y = W`. -/
+theorem recon_W (hXu : IsUnit X.det) (hMu : IsUnit (X * S + Y * Uu).det) :
+    (W - Z * X⁻¹ * Y)
+      + ((Z * S + W * Uu) - (W - Z * X⁻¹ * Y) * Uu) * (X * S + Y * Uu)⁻¹ * Y = W := by
+  have hZXX : Z * X⁻¹ * X = Z := by
+    rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul X hXu, Matrix.mul_one]
+  have expand : Z * X⁻¹ * (X * S + Y * Uu) = Z * S + Z * X⁻¹ * Y * Uu := by
+    rw [Matrix.mul_add, ← Matrix.mul_assoc (Z * X⁻¹) X S, hZXX, ← Matrix.mul_assoc (Z * X⁻¹) Y Uu]
+  have hL : (Z * S + W * Uu) - (W - Z * X⁻¹ * Y) * Uu = Z * X⁻¹ * (X * S + Y * Uu) := by
+    rw [expand, Matrix.sub_mul]; abel
+  have hsnd : ((Z * S + W * Uu) - (W - Z * X⁻¹ * Y) * Uu) * (X * S + Y * Uu)⁻¹ * Y = Z * X⁻¹ * Y := by
+    rw [hL, Matrix.mul_assoc (Z * X⁻¹) (X * S + Y * Uu) (X * S + Y * Uu)⁻¹,
+      Matrix.mul_nonsing_inv _ hMu, Matrix.mul_one]
+  rw [hsnd]; abel
+
+end ReconInv
+
+/-! #### Abstract block-algebra recomputations (`Φ ∘ Ψ = id`)
+
+The five nontrivial block equalities for `schurChartRaw (schurChartRawInv Q) = Q`, over abstract output
+coordinates `X, Y, M21, A0red, M11, M12, Uu, A1red` with `IsUnit X.det`, `IsUnit M11.det`. -/
+
+section ReconFwd
+variable {p q p' : ℕ}
+variable {X : Matrix (Fin r) (Fin r) ℝ} {Y : Matrix (Fin r) (Fin p) ℝ}
+  {M21 : Matrix (Fin q) (Fin r) ℝ} {A0red : Matrix (Fin q) (Fin p) ℝ}
+  {M11 : Matrix (Fin r) (Fin r) ℝ} {M12 : Matrix (Fin r) (Fin p') ℝ}
+  {Uu : Matrix (Fin p) (Fin r) ℝ} {A1red : Matrix (Fin p) (Fin p') ℝ}
+
+/-- Recompute `M11` from the reconstruction `S = X⁻¹(M11 − Y Uu)`: `X S + Y Uu = M11`. -/
+theorem reconOut_M11 (hXu : IsUnit X.det) :
+    X * (X⁻¹ * (M11 - Y * Uu)) + Y * Uu = M11 := by
+  rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv X hXu, Matrix.one_mul]; abel
+
+/-- Recompute `M12` from `T = X⁻¹(M12 − Y V)`, `V = A1red + Uu M11⁻¹ M12`: `X T + Y V = M12`. -/
+theorem reconOut_M12 (hXu : IsUnit X.det) :
+    X * (X⁻¹ * (M12 - Y * (A1red + Uu * M11⁻¹ * M12))) + Y * (A1red + Uu * M11⁻¹ * M12) = M12 := by
+  rw [← Matrix.mul_assoc, Matrix.mul_nonsing_inv X hXu, Matrix.one_mul]; abel
+
+/-- Recompute `A0red` from `W = A0red + (M21 − A0red Uu) M11⁻¹ Y`, `Z = (M21 − A0red Uu) M11⁻¹ X`:
+`W − Z X⁻¹ Y = A0red`. -/
+theorem reconOut_A0red (hXu : IsUnit X.det) :
+    (A0red + (M21 - A0red * Uu) * M11⁻¹ * Y) - ((M21 - A0red * Uu) * M11⁻¹ * X) * X⁻¹ * Y = A0red := by
+  have hR : ((M21 - A0red * Uu) * M11⁻¹ * X) * X⁻¹ * Y = (M21 - A0red * Uu) * M11⁻¹ * Y := by
+    rw [Matrix.mul_assoc ((M21 - A0red * Uu) * M11⁻¹) X X⁻¹, Matrix.mul_nonsing_inv X hXu,
+      Matrix.mul_one]
+  rw [hR]; abel
+
+/-- Recompute `M21` from `Z, W, S`: `Z S + W Uu = M21`. -/
+theorem reconOut_M21 (hXu : IsUnit X.det) (hMu : IsUnit M11.det) :
+    ((M21 - A0red * Uu) * M11⁻¹ * X) * (X⁻¹ * (M11 - Y * Uu))
+      + (A0red + (M21 - A0red * Uu) * M11⁻¹ * Y) * Uu = M21 := by
+  have hfst : ((M21 - A0red * Uu) * M11⁻¹ * X) * (X⁻¹ * (M11 - Y * Uu))
+      = (M21 - A0red * Uu) * M11⁻¹ * (M11 - Y * Uu) := by
+    rw [← Matrix.mul_assoc, Matrix.mul_assoc ((M21 - A0red * Uu) * M11⁻¹) X X⁻¹,
+      Matrix.mul_nonsing_inv X hXu, Matrix.mul_one]
+  have hRM11 : (M21 - A0red * Uu) * M11⁻¹ * M11 = M21 - A0red * Uu := by
+    rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul M11 hMu, Matrix.mul_one]
+  rw [hfst, Matrix.mul_sub, Matrix.add_mul, hRM11, ← Matrix.mul_assoc ((M21 - A0red * Uu) * M11⁻¹) Y Uu]
+  abel
+
+/-- Recompute `A1red` from the reconstruction (using `M11`, `M12` recomputed): `V − Uu M11⁻¹ M12 =
+A1red`. -/
+theorem reconOut_A1red (hXu : IsUnit X.det) :
+    (A1red + Uu * M11⁻¹ * M12)
+      - Uu * (X * (X⁻¹ * (M11 - Y * Uu)) + Y * Uu)⁻¹
+        * (X * (X⁻¹ * (M12 - Y * (A1red + Uu * M11⁻¹ * M12))) + Y * (A1red + Uu * M11⁻¹ * M12))
+      = A1red := by
+  rw [reconOut_M11 hXu, reconOut_M12 hXu]; abel
+
+end ReconFwd
+
+/-! #### Assembly of the two-sided inverse -/
+
+/-- **`Ψ_expl ∘ Φ_expl = id`** on `{det X ≠ 0} ∩ {det M11 ≠ 0}`: the inverse chart reconstructs the
+original layer blocks exactly. -/
+theorem schurChartRawInv_schurChartRaw (P : BlockParamsL2 H r)
+    (hX : (P.1.toBlocks₁₁).det ≠ 0)
+    (hM11 : (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁).det ≠ 0) :
+    schurChartRawInv H r (schurChartRaw H r P) = P := by
+  have hXu : IsUnit (P.1.toBlocks₁₁).det := isUnit_iff_ne_zero.mpr hX
+  have hMu : IsUnit (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁).det :=
+    isUnit_iff_ne_zero.mpr hM11
+  rw [Prod.ext_iff]
+  refine ⟨?_, ?_⟩
+  · rw [Matrix.ext_iff_blocks]
+    refine ⟨rfl, rfl, ?_, ?_⟩
+    · simp only [schurChartRawInv_fst_toBlocks₂₁, schurChartRaw_fst_toBlocks₁₁,
+        schurChartRaw_fst_toBlocks₂₁, schurChartRaw_fst_toBlocks₂₂,
+        schurChartRaw_snd_toBlocks₁₁, schurChartRaw_snd_toBlocks₂₁]
+      exact recon_Z hXu hMu
+    · simp only [schurChartRawInv_fst_toBlocks₂₂,
+        schurChartRaw_fst_toBlocks₁₂, schurChartRaw_fst_toBlocks₂₁, schurChartRaw_fst_toBlocks₂₂,
+        schurChartRaw_snd_toBlocks₁₁, schurChartRaw_snd_toBlocks₂₁]
+      exact recon_W hXu hMu
+  · rw [Matrix.ext_iff_blocks]
+    refine ⟨?_, ?_, rfl, ?_⟩
+    · simp only [schurChartRawInv_snd_toBlocks₁₁, schurChartRaw_fst_toBlocks₁₁,
+        schurChartRaw_fst_toBlocks₁₂, schurChartRaw_snd_toBlocks₁₁, schurChartRaw_snd_toBlocks₂₁]
+      exact recon_S hXu
+    · simp only [schurChartRawInv_snd_toBlocks₁₂, schurChartRaw_fst_toBlocks₁₁,
+        schurChartRaw_fst_toBlocks₁₂, schurChartRaw_snd_toBlocks₁₁, schurChartRaw_snd_toBlocks₁₂,
+        schurChartRaw_snd_toBlocks₂₁, schurChartRaw_snd_toBlocks₂₂]
+      exact recon_T hXu
+    · simp only [schurChartRawInv_snd_toBlocks₂₂, schurChartRaw_snd_toBlocks₁₁,
+        schurChartRaw_snd_toBlocks₁₂, schurChartRaw_snd_toBlocks₂₁, schurChartRaw_snd_toBlocks₂₂]
+      exact recon_V
+
+/-- **`Φ_expl ∘ Ψ_expl = id`** on `{det X ≠ 0} ∩ {det M11 ≠ 0}` (reading the output coordinates): the
+forward chart recomputes the regular corners and reduced factors from a reconstruction. -/
+theorem schurChartRaw_schurChartRawInv (Q : BlockParamsL2 H r)
+    (hX : (Q.1.toBlocks₁₁).det ≠ 0) (hM11 : (Q.2.toBlocks₁₁).det ≠ 0) :
+    schurChartRaw H r (schurChartRawInv H r Q) = Q := by
+  have hXu : IsUnit (Q.1.toBlocks₁₁).det := isUnit_iff_ne_zero.mpr hX
+  have hMu : IsUnit (Q.2.toBlocks₁₁).det := isUnit_iff_ne_zero.mpr hM11
+  rw [Prod.ext_iff]
+  refine ⟨?_, ?_⟩
+  · rw [Matrix.ext_iff_blocks]
+    refine ⟨rfl, rfl, ?_, ?_⟩
+    · simp only [schurChartRaw_fst_toBlocks₂₁,
+        schurChartRawInv_fst_toBlocks₂₁, schurChartRawInv_fst_toBlocks₂₂,
+        schurChartRawInv_snd_toBlocks₁₁, schurChartRawInv_snd_toBlocks₂₁]
+      exact reconOut_M21 hXu hMu
+    · simp only [schurChartRaw_fst_toBlocks₂₂, schurChartRawInv_fst_toBlocks₁₁,
+        schurChartRawInv_fst_toBlocks₁₂, schurChartRawInv_fst_toBlocks₂₁,
+        schurChartRawInv_fst_toBlocks₂₂]
+      exact reconOut_A0red hXu
+  · rw [Matrix.ext_iff_blocks]
+    refine ⟨?_, ?_, rfl, ?_⟩
+    · simp only [schurChartRaw_snd_toBlocks₁₁, schurChartRawInv_fst_toBlocks₁₁,
+        schurChartRawInv_fst_toBlocks₁₂, schurChartRawInv_snd_toBlocks₁₁,
+        schurChartRawInv_snd_toBlocks₂₁]
+      exact reconOut_M11 hXu
+    · simp only [schurChartRaw_snd_toBlocks₁₂, schurChartRawInv_fst_toBlocks₁₁,
+        schurChartRawInv_fst_toBlocks₁₂, schurChartRawInv_snd_toBlocks₁₂,
+        schurChartRawInv_snd_toBlocks₂₂]
+      exact reconOut_M12 hXu
+    · simp only [schurChartRaw_snd_toBlocks₂₂, schurChartRawInv_fst_toBlocks₁₁,
+        schurChartRawInv_fst_toBlocks₁₂, schurChartRawInv_snd_toBlocks₁₁,
+        schurChartRawInv_snd_toBlocks₁₂, schurChartRawInv_snd_toBlocks₂₁,
+        schurChartRawInv_snd_toBlocks₂₂]
+      exact reconOut_A1red hXu
+
+/-! ## `schurChartRaw` is `C²` on the pivot domain (`schurChartRaw_contDiffOn`)
+
+`schurChartRaw` is a rational map (matrix `+, *, ⁻¹`), so `ContDiffOn ℝ 2` on
+`{det X ≠ 0} ∩ {det M11 ≠ 0}` follows entrywise from the smoothness of matrix determinant / adjugate /
+inverse / product. This needs a `NormedAddCommGroup` on `BlockParamsL2 H r`; Mathlib does not make the
+elementwise matrix norm a global instance, so we `open scoped Matrix.Norms.Elementwise` — SAFE because
+its topology is DEFINITIONALLY the product/Pi topology `blockFlatEquiv_L2` already uses (no diamond).
+**Consumers of `schurChartRaw_contDiffOn` must also `open scoped Matrix.Norms.Elementwise`.**
+
+The generic entrywise matrix-`ContDiff` helpers (`SchurChartC2`) are copied from
+`DeepestSchurSmooth`'s (`contDiff_matrix_det_of_entries` &c.); controller: dedup into a shared
+Foundations module on a later pass. -/
+
+namespace SchurChartC2
+
+variable {𝕏 : Type*} [NormedAddCommGroup 𝕏] [NormedSpace ℝ 𝕏]
+variable {n : Type*} [Fintype n] [DecidableEq n]
+
+/-- The determinant of an entrywise-`ContDiff` matrix family is `ContDiff`. -/
+theorem contDiff_matrix_det_of_entries {A : 𝕏 → Matrix n n ℝ}
+    (hA : ∀ i j, ContDiff ℝ (⊤ : ℕ∞) (fun x => A x i j)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun x => (A x).det) := by
+  have heq : (fun x => (A x).det)
+      = fun x => ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ i, A x (σ i) i := by
+    funext x; rw [Matrix.det_apply]
+  rw [heq]
+  exact ContDiff.sum (fun σ _ => ContDiff.const_smul _ (contDiff_prod (fun i _ => hA (σ i) i)))
+
+/-- Each adjugate entry of an entrywise-`ContDiff` matrix family is `ContDiff`. -/
+theorem contDiff_matrix_adjugate_entry_of_entries {A : 𝕏 → Matrix n n ℝ}
+    (hA : ∀ i j, ContDiff ℝ (⊤ : ℕ∞) (fun x => A x i j)) (i j : n) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun x => (A x).adjugate i j) := by
+  have heq : (fun x => (A x).adjugate i j)
+      = fun x => ((A x).updateRow j (Pi.single i 1)).det := by
+    funext x; rw [Matrix.adjugate_apply]
+  rw [heq]
+  refine contDiff_matrix_det_of_entries (fun a b => ?_)
+  by_cases hab : a = j
+  · subst hab
+    have : (fun x => ((A x).updateRow a (Pi.single i 1)) a b)
+        = fun _ : 𝕏 => (Pi.single i (1 : ℝ) : n → ℝ) b := by
+      funext x; rw [Matrix.updateRow_self]
+    rw [this]; exact contDiff_const
+  · have : (fun x => ((A x).updateRow j (Pi.single i 1)) a b) = fun x => A x a b := by
+      funext x; rw [Matrix.updateRow_ne hab]
+    rw [this]; exact hA a b
+
+/-- Each entry of the inverse of an entrywise-`ContDiff` matrix family is `ContDiffAt x` when
+`det (A x) ≠ 0`. -/
+theorem contDiffAt_matrix_inv_entry_of_det_ne_zero {A : 𝕏 → Matrix n n ℝ}
+    (hA : ∀ i j, ContDiff ℝ (⊤ : ℕ∞) (fun x => A x i j)) {x : 𝕏}
+    (hdet : (A x).det ≠ 0) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y)⁻¹ i j) x := by
+  have hentry : (fun y => (A y)⁻¹ i j)
+      = fun y => (A y).det⁻¹ * (A y).adjugate i j := by
+    funext y
+    rw [Matrix.inv_def, Matrix.smul_apply, Ring.inverse_eq_inv', smul_eq_mul]
+  rw [hentry]
+  exact (((contDiff_matrix_det_of_entries hA).contDiffAt).inv hdet).mul
+    (contDiff_matrix_adjugate_entry_of_entries hA i j).contDiffAt
+
+/-- Entrywise `ContDiffAt` matrix multiplication. -/
+theorem contDiffAt_matrix_mul_entry {mm nn pp : Type*} [Fintype nn]
+    {A : 𝕏 → Matrix mm nn ℝ} {B : 𝕏 → Matrix nn pp ℝ} {x : 𝕏}
+    (hA : ∀ i k, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i k) x)
+    (hB : ∀ k j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => B y k j) x) (i : mm) (j : pp) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y * B y) i j) x := by
+  have heq : (fun y => (A y * B y) i j) = fun y => ∑ k, A y i k * B y k j := by
+    funext y; rw [Matrix.mul_apply]
+  rw [heq]
+  exact ContDiffAt.sum (fun k _ => (hA i k).mul (hB k j))
+
+/-- Entrywise (global) `ContDiff` matrix multiplication. -/
+theorem contDiff_matrix_mul_entry {mm nn pp : Type*} [Fintype nn]
+    {A : 𝕏 → Matrix mm nn ℝ} {B : 𝕏 → Matrix nn pp ℝ}
+    (hA : ∀ i k, ContDiff ℝ (⊤ : ℕ∞) (fun y => A y i k))
+    (hB : ∀ k j, ContDiff ℝ (⊤ : ℕ∞) (fun y => B y k j)) (i : mm) (j : pp) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun y => (A y * B y) i j) := by
+  have heq : (fun y => (A y * B y) i j) = fun y => ∑ k, A y i k * B y k j := by
+    funext y; rw [Matrix.mul_apply]
+  rw [heq]
+  exact ContDiff.sum (fun k _ => (hA i k).mul (hB k j))
+
+end SchurChartC2
+
+section SchurChartContDiff
+open scoped Matrix.Norms.Elementwise
+open SchurChartC2
+
+variable {H : Fin (2 + 1) → ℕ} {r : ℕ}
+
+/-- Each entry of the first block matrix is a `ContDiff` coordinate of `BlockParamsL2 H r`. -/
+theorem contDiff_bp_fst_entry (a : Fin r ⊕ Fin (H 0 - r)) (b : Fin r ⊕ Fin (H 1 - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun P : BlockParamsL2 H r => P.1 a b) :=
+  (contDiff_apply_apply (𝕜 := ℝ) (n := (⊤ : ℕ∞)) (E := ℝ) a b).comp contDiff_fst
+
+/-- Each entry of the second block matrix is a `ContDiff` coordinate of `BlockParamsL2 H r`. -/
+theorem contDiff_bp_snd_entry (a : Fin r ⊕ Fin (H 1 - r)) (b : Fin r ⊕ Fin (H 2 - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun P : BlockParamsL2 H r => P.2 a b) :=
+  (contDiff_apply_apply (𝕜 := ℝ) (n := (⊤ : ℕ∞)) (E := ℝ) a b).comp contDiff_snd
+
+/-- The chart domain `{det X ≠ 0} ∩ {det M11 ≠ 0}` in the block coordinates (`X = ₁₁` of the first
+layer, `M11 = X S + Y Uu` the product pivot). -/
+def schurChartDom (H : Fin (2 + 1) → ℕ) (r : ℕ) : Set (BlockParamsL2 H r) :=
+  {P | (P.1.toBlocks₁₁).det ≠ 0 ∧
+    (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁).det ≠ 0}
+
+/-- `schurChartRaw` is `ContDiffAt ℝ ⊤` at each point of the pivot domain: every output block entry is
+a `+/∗/⁻¹` combination of the `ContDiff` input coordinates, with the two pivot inverses `ContDiffAt`
+where their determinants are nonzero. -/
+theorem contDiffAt_schurChartRaw (P : BlockParamsL2 H r)
+    (hX : (P.1.toBlocks₁₁).det ≠ 0)
+    (hM11 : (P.1.toBlocks₁₁ * P.2.toBlocks₁₁ + P.1.toBlocks₁₂ * P.2.toBlocks₂₁).det ≠ 0) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (schurChartRaw H r) P := by
+  -- `X⁻¹` entry `ContDiffAt` (det X ≠ 0).
+  have hXinv : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun Q : BlockParamsL2 H r => (Q.1.toBlocks₁₁)⁻¹ a b) P := fun a b =>
+    contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (A := fun Q : BlockParamsL2 H r => Q.1.toBlocks₁₁)
+      (fun c d => contDiff_bp_fst_entry (Sum.inl c) (Sum.inl d)) hX a b
+  -- `M11⁻¹` entry `ContDiffAt` (det M11 ≠ 0).
+  have hMinv : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun Q : BlockParamsL2 H r =>
+        (Q.1.toBlocks₁₁ * Q.2.toBlocks₁₁ + Q.1.toBlocks₁₂ * Q.2.toBlocks₂₁)⁻¹ a b) P := fun a b =>
+    contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (A := fun Q : BlockParamsL2 H r =>
+        Q.1.toBlocks₁₁ * Q.2.toBlocks₁₁ + Q.1.toBlocks₁₂ * Q.2.toBlocks₂₁)
+      (fun c d => (contDiff_matrix_mul_entry
+          (fun a' k' => contDiff_bp_fst_entry (Sum.inl a') (Sum.inl k'))
+          (fun k' b' => contDiff_bp_snd_entry (Sum.inl k') (Sum.inl b')) c d).add
+        (contDiff_matrix_mul_entry
+          (fun a' k' => contDiff_bp_fst_entry (Sum.inl a') (Sum.inr k'))
+          (fun k' b' => contDiff_bp_snd_entry (Sum.inr k') (Sum.inl b')) c d)) hM11 a b
+  refine ContDiffAt.prodMk ?_ ?_
+  · -- first output matrix `fromBlocks X Y M21 A0red`
+    refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
+    rcases i with i | i <;> rcases j with j | j
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₁₁ i j) P
+      simp only [schurChartRaw_fst_toBlocks₁₁]
+      exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inl j)).contDiffAt
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₁₂ i j) P
+      simp only [schurChartRaw_fst_toBlocks₁₂]
+      exact (contDiff_bp_fst_entry (Sum.inl i) (Sum.inr j)).contDiffAt
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₂₁ i j) P
+      simp only [schurChartRaw_fst_toBlocks₂₁, Matrix.add_apply]
+      exact (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inr a) (Sum.inl k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inl k) (Sum.inl b)).contDiffAt) i j).add
+        (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inr a) (Sum.inr k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inl b)).contDiffAt) i j)
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).1.toBlocks₂₂ i j) P
+      simp only [schurChartRaw_fst_toBlocks₂₂, Matrix.sub_apply]
+      refine ((contDiff_bp_fst_entry (Sum.inr i) (Sum.inr j)).contDiffAt).sub ?_
+      exact contDiffAt_matrix_mul_entry
+        (A := fun Q : BlockParamsL2 H r => Q.1.toBlocks₂₁ * Q.1.toBlocks₁₁⁻¹)
+        (B := fun Q => Q.1.toBlocks₁₂)
+        (fun a k => contDiffAt_matrix_mul_entry
+          (fun a' k' => (contDiff_bp_fst_entry (Sum.inr a') (Sum.inl k')).contDiffAt)
+          (fun k' b' => hXinv k' b') a k)
+        (fun k b => (contDiff_bp_fst_entry (Sum.inl k) (Sum.inr b)).contDiffAt) i j
+  · -- second output matrix `fromBlocks M11 M12 Uu A1red`
+    refine contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_))
+    rcases i with i | i <;> rcases j with j | j
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₁₁ i j) P
+      simp only [schurChartRaw_snd_toBlocks₁₁, Matrix.add_apply]
+      exact (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inl k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inl k) (Sum.inl b)).contDiffAt) i j).add
+        (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inr k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inl b)).contDiffAt) i j)
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₁₂ i j) P
+      simp only [schurChartRaw_snd_toBlocks₁₂, Matrix.add_apply]
+      exact (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inl k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inl k) (Sum.inr b)).contDiffAt) i j).add
+        (contDiffAt_matrix_mul_entry
+          (fun a k => (contDiff_bp_fst_entry (Sum.inl a) (Sum.inr k)).contDiffAt)
+          (fun k b => (contDiff_bp_snd_entry (Sum.inr k) (Sum.inr b)).contDiffAt) i j)
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₂₁ i j) P
+      simp only [schurChartRaw_snd_toBlocks₂₁]
+      exact (contDiff_bp_snd_entry (Sum.inr i) (Sum.inl j)).contDiffAt
+    · show ContDiffAt ℝ (⊤ : ℕ∞)
+          (fun P : BlockParamsL2 H r => (schurChartRaw H r P).2.toBlocks₂₂ i j) P
+      simp only [schurChartRaw_snd_toBlocks₂₂, Matrix.sub_apply]
+      refine ((contDiff_bp_snd_entry (Sum.inr i) (Sum.inr j)).contDiffAt).sub ?_
+      exact contDiffAt_matrix_mul_entry
+        (A := fun Q : BlockParamsL2 H r =>
+          Q.2.toBlocks₂₁ * (Q.1.toBlocks₁₁ * Q.2.toBlocks₁₁ + Q.1.toBlocks₁₂ * Q.2.toBlocks₂₁)⁻¹)
+        (B := fun Q => Q.1.toBlocks₁₁ * Q.2.toBlocks₁₂ + Q.1.toBlocks₁₂ * Q.2.toBlocks₂₂)
+        (fun a k => contDiffAt_matrix_mul_entry
+          (fun a' k' => (contDiff_bp_snd_entry (Sum.inr a') (Sum.inl k')).contDiffAt)
+          (fun k' b' => hMinv k' b') a k)
+        (fun k b => (contDiffAt_matrix_mul_entry
+          (fun a' k' => (contDiff_bp_fst_entry (Sum.inl a') (Sum.inl k')).contDiffAt)
+          (fun k' b' => (contDiff_bp_snd_entry (Sum.inl k') (Sum.inr b')).contDiffAt) k b).add
+          (contDiffAt_matrix_mul_entry
+            (fun a' k' => (contDiff_bp_fst_entry (Sum.inl a') (Sum.inr k')).contDiffAt)
+            (fun k' b' => (contDiff_bp_snd_entry (Sum.inr k') (Sum.inr b')).contDiffAt) k b)) i j
+
+/-- **`schurChartRaw` is `ContDiffOn ℝ 2` on the pivot domain** `{det X ≠ 0} ∩ {det M11 ≠ 0}`. The
+piece-2 deliverable: the explicit rational corner-elimination chart is `C²` where the two pivot
+determinants are nonzero (the reduced core `A0red · A1red` and the regular corners are all rational in
+`det X`, `det M11`). -/
+theorem schurChartRaw_contDiffOn :
+    ContDiffOn ℝ 2 (schurChartRaw H r) (schurChartDom H r) := by
+  intro P hP
+  obtain ⟨hX, hM11⟩ := hP
+  refine ((contDiffAt_schurChartRaw P hX hM11).of_le ?_).contDiffWithinAt
+  rw [show (2 : WithTop ℕ∞) = ((2 : ℕ∞) : WithTop ℕ∞) from rfl]
+  exact WithTop.coe_le_coe.mpr le_top
+
+end SchurChartContDiff
+
 end DLNFibre.DLN.RLCT
+
