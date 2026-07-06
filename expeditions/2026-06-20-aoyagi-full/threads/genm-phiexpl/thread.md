@@ -148,3 +148,91 @@ the optimal `v`, where `A0red·A1red = M22 − B22 = 0` (since `prod v = B` ⟹ 
 the core is not identically zero on a neighbourhood, giving the finite singular RLCT. So `P` must be
 `core(t0)`, NOT an arbitrary reduced-core point — a constraint the crux's germ/`hfact` construction
 must honour (it does, by design). No statement-level hypothesis is missing (`P` is existentially bound).
+
+---
+
+## TIDE 2 — Φ_expl FOUNDATION (branch `genm-phiexpl-crux`, SHA `5d662680`)
+
+First dedicated build-tide of the crux. Landed the reachable **pure-algebra foundation** (Codex
+decomposition pieces 1, 2, and the algebraic core of piece 8) in a new module
+`lean/DLNFibre/DLN/RLCT/Validate/D1L2PhiExpl.lean`, sorry-free, axiom-clean
+`[propext, Classical.choice, Quot.sound]` (forced `#print axioms`). NOT yet wired into the aggregator
+(single-writer) — controller wires `D1L2PhiExpl` + the banked `Core.CommonPivotL2` /
+`S1InverseDerivEquiv`.
+
+### CLOSED this tide (▣)
+
+> **Claim (piece 1, bridge).** The L = 2 multiplication map is the two-factor matrix product of its
+> layers.
+> - **Lean:** `DLNFibre.DLN.RLCT.prod_two_factor_L2` (`…/Validate/D1L2PhiExpl.lean` @ `5d662680`)
+>   (with `prod_apply_two_factor_L2` the entrywise form, and helpers `layer0_L2`/`layer1_L2` the
+>   width-pinned layers).
+> - **Gloss.** `prod H v = layer0_L2 H v * layer1_L2 H v` for `H : Fin 3 → ℕ`, where `layer{0,1}_L2` are
+>   `v {0,1}` retyped at the literal widths `H 0×H 1`, `H 1×H 2`.
+> - **Proved.** Fully. The width-pinning defs are the way past the dependent-`Fin` `HMul` snag
+>   (`H (Fin.succ 0)` vs `H (Fin.castSucc 1)` defeq but not syntactically equal — a type ascription is
+>   stripped for instance search, a `def` return type is not).
+> - **Assumed / Cited / Deferred.** none.
+> - **Status.** sorry-free.
+
+> **Claim (piece 1, width bounds).** A rank-`r` two-layer product forces every width `≥ r`.
+> - **Lean:** `DLNFibre.DLN.RLCT.rank_le_widths_of_prod_L2` (@ `5d662680`).
+> - **Gloss.** `(prod H v).rank = r ⟹ r ≤ H 0 ∧ r ≤ H 1 ∧ r ≤ H 2`.
+> - **Proved.** Fully (via `rank_mul_le_left/right` + `rank_le_height/width` at the pinned widths).
+> - **Status.** sorry-free. (The crux already carries the stronger `hpos : ∀ s, r < H s`; this is the
+>   standalone bound from the rank alone.)
+
+> **Claim (piece 2, common pivot at `v`).** At an optimal `v`, a shared row set gives an invertible
+> minor of both the product and the first layer.
+> - **Lean:** `DLNFibre.DLN.RLCT.exists_common_pivot_L2_at` (@ `5d662680`).
+> - **Gloss.** `prod H v = B`, `B.rank = r` ⟹ `∃ I K J` (injective, size `r`) with
+>   `((prod H v).submatrix I J).det ≠ 0` (the invertible product pivot `M11`) and
+>   `((v 0).submatrix I K).det ≠ 0` (the invertible first-factor pivot `X`).
+> - **Proved.** Fully — wraps the banked `Core.exists_common_pivot_two_factor` (no Cauchy–Binet) at the
+>   actual layers via the piece-1 bridge.
+> - **Status.** sorry-free.
+
+> **Claim (piece 8, algebraic core).** A rank-`≤ r` blocked product has vanishing reduced-core factor.
+> - **Lean:** `DLNFibre.DLN.RLCT.reduced_core_zero_of_product_rank_le` (@ `5d662680`).
+> - **Gloss.** For blocks `A0 = [[X,Y],[Z,W]]`, `A1 = [[S,T],[Uu,V]]` with `X` and `M11 = X·S+Y·Uu`
+>   invertible, if the reblocked product `fromBlocks M11 (X·T+Y·V) (Z·S+W·Uu) (Z·T+W·V)` has rank `≤ r`
+>   then `(W − Z·⅟X·Y) · (V − Uu·⅟M11·(X·T+Y·V)) = 0`.
+> - **Proved.** Fully — combines the two banked Schur bricks (`schur_product_factor` = Schur cplt of
+>   product; `schur_complement_zero_of_rank_le` = Schur cplt `= 0` at rank `≤ r`). This is the
+>   reviewer-caveat fact "`P` is a ZERO of the reduced core at the optimum", at the block level.
+> - **Status.** sorry-free.
+
+Plus one **interface contract** (an `example` referencing the banked `dln_hchart_flat`) pinning the
+flat chart-transfer assembly point the open analytic pieces (3–7) must produce.
+
+### OPEN pieces — recommended next-tide order (dependency order)
+
+The crux `d1ge_L2_hAtV_explicit` itself is **untouched** (its correctly-stated `sorry` stands — not
+laundered, not reduced to an equivalent single sorry). The remaining pieces need the coordinate model,
+so their precise Lean statements are NOT yet fixable — pinning them as fabricated named sorries would
+be *wrong statements* (the anti-pattern). They are the next tides, in order:
+
+1. **`blockFlatEquiv_L2`** [med — THE cost driver]. `(Fin (flatDim H) → ℝ) ≃L[ℝ]` the block-structured
+   product type at the pivot `(I, K, J)` from `exists_common_pivot_L2_at`. Localizes all
+   `Fin r ⊕ Fin (H_s − r)` casts in one place (Codex Q3: `LinearEquiv.toContinuousLinearEquiv` +
+   `ContinuousLinearEquiv.prodCongr`). **Recommended FIRST next tide** — everything else sits on it.
+2. **`Φ_expl` + `schurChartRaw_contDiffOn`** [med]. The explicit rational corner-elimination forward
+   map `(p | A0red, A1red | X, Y, U)`; `ContDiffOn ℝ 2` on `{det X ≠ 0} ∩ {det M11 ≠ 0}`
+   (`ContDiffOn.inv` on the pivot minors, C² of polynomial entries), bump-globalised via
+   `exists_contDiff_eventuallyEq_of_contDiffOn`.
+3. **`schurChart_global`** [med]. Assemble the global `Φ` + its invertible `f'` (feed the banked brick A
+   `derivEquiv_of_eventual_inverse` the two Schur two-sided inverse germ identities) + `hfix`.
+4. **`schur_loss_germ_L2`** [HIGH — highest line-count risk]. `lossFlatShift H B v =ᶠ[𝓝 0] F ∘ Φ`.
+   Uses `reduced_core_zero_of_product_rank_le` (closed) to pin the slice residual.
+5. **`qₑ` definition + `hq : ContDiff ℝ 1 qₑ`**, then the `qₑ`-shaped restatements: `hchart` (via
+   `dln_hchart_flat` + the flat→product reindex), `hRne` (wrap the banked
+   `dlnLoss_deepest_core_ae_ne_zero` under `hpos`), `hfact` (Option A: `e = refl`, `u ≡ 1`, from the
+   Schur bricks).
+6. **Final wiring** [low]. `d1ge_L2_hAtV_explicit` via `d1ge_L2_hAtV_of_explicit_chart`
+   (`D1L2SchurAssembly`, banked).
+
+**Banked bricks the open pieces consume** (do not re-derive): `exists_common_pivot_L2_at` (this tide),
+`Core.schur_product_factor` / `schur_complement_zero_of_rank_le` (Core), `reduced_core_zero_of_product_rank_le`
+(this tide), `derivEquiv_of_eventual_inverse` (brick A), `dln_hchart_flat` (D1HChartFlatten),
+`dlnLoss_deepest_core_ae_ne_zero` (DeepestCoreNonvanishing), `d1ge_L2_hAtV_of_explicit_chart`
+(D1L2SchurAssembly).
