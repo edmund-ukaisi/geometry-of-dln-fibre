@@ -718,5 +718,7 @@ import DLNFibre.DLN.RLCT.Foundations.S1InverseDerivEquiv
 import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 -- L=2 Φ_expl foundation (D1 crux, pieces 1/2/8-algebra): two-factor product bridge + common pivot + reduced-core-zero.
 import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
+-- (S,J) peel c.o.v. base: Aoyagi Lemma-2 c.o.v. (schur_cov) + reindex bridge + pivot-chart cover + measure shear.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
