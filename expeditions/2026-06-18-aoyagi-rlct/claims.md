@@ -10,6 +10,47 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior local loss with produced adapted lower bound - 2026-07-06
+
+- **Statement.** On the rank-cut p.13/readback source set returned by the
+  with-following local original-loss handoff, the adapted-product lower-bound
+  input can be produced from the fixed-base self-base p.13 product-coordinate
+  lower-bound theorem, assuming the edge-family base point is the fixed
+  reverse-edge family.
+- **Tier.** A2 conditional local original-loss handoff with produced adapted
+  lower-bound radius.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving residual zero-locus
+  nullity, the fixed-base centering equality, density comparison, density
+  bounds, statistical prior transport, source-rank or analytic atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the fixed-base p.13
+  product-coordinate context; existing Lean rank-cut local original-loss
+  handoff; existing Lean self-base adapted-product lower-bound theorem
+  `exists_pos_radius_pos_const_residual_add_regular_squareSum_eventually_le_adaptedProductDifferenceSquareSum_multiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean_selfBase_nhdsWithin_source`.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-adapted-lower.md`.
+- **Reproduction check.** Controller checked the restriction from source
+  stratum to rank-cut source.  Xhigh scout `Faraday` passed the theorem shape
+  under the explicit base equality and positive `Rmax`, and identified the
+  density-bound restriction from `Rmax` to the produced radius `R` as the
+  correct interface.  Xhigh read-only reviewer `Raman` passed the final
+  statement/proof audit.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_density_bounds`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean`, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+  axiom probe passed.  The new theorem reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual zero-locus-nullity proof, no proof of
+  `sourceChart z0 = reverseEdge`, no density comparison, no density-bound
+  proof, no statistical prior identification or transport, no source-rank
+  coverage, no analytic atlas coverage, no determinant/raw Haar transport, no
+  normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 rank-cut original-prior local original-loss handoff - 2026-07-06
 
 - **Statement.** On the rank-cut p.13/readback source set returned by the

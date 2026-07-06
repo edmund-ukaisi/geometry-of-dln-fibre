@@ -6,6 +6,43 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local loss with produced adapted lower bound - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-adapted-lower.md
+```
+
+Lean now has a downstream wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_density_bounds
+```
+
+It reuses the previous rank-cut local original-loss handoff, but produces the
+adapted-product lower-bound input.  The new explicit centering hypothesis is
+
+```text
+sourceChart z0 =
+  fun p => LinearMap.toContinuousLinearMap (reverseEdge W2 B2 p).
+```
+
+Given a positive cap `Rmax`, the fixed-base self-base p.13
+product-coordinate lower-bound theorem supplies a smaller `R` and positive
+`c`.  The proof restricts the eventual source-stratum lower bound to the
+rank-cut source and restricts the regular-coordinate density bounds from
+`ball(0,Rmax)` to `ball(0,R)`.
+
+This discharges only the adapted-product lower-bound hypothesis.  Residual
+zero-locus nullity, fixed-base centering, source data, endpoint bases, regular
+Haar, and density bounds remain explicit.  There is still no density
+comparison, statistical prior transport, source-rank or atlas coverage, normal
+crossings, pole order, or RLCT extraction.
+
+Focused `lake env lean` and focused module build passed.  Full-library and
+axiom-clean verification are recorded in the claim ledger once run.
+
 ## A2 rank-cut original-prior local original-loss handoff - 2026-07-06
 
 Reproduction:

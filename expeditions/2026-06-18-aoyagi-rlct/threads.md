@@ -18,6 +18,19 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the rank-cut original-prior local loss wrapper now
+  produces the adapted-product lower-bound radius and constant.  Under the
+  explicit fixed-base centering equality `sourceChart z0 = reverseEdge`, and
+  a positive cap `Rmax`, it chooses `R <= Rmax` and `c > 0` from the self-base
+  p.13 product-coordinate lower-bound theorem, restricts the source-stratum
+  eventual lower bound to the rank-cut source, and restricts density bounds
+  from `ball(0,Rmax)` to `ball(0,R)`.  It still assumes residual zero-locus
+  nullity, source data, endpoint bases, regular Haar, and density bounds; it
+  does not prove base centering, density comparison, source/prior transport,
+  source-rank or analytic atlas coverage, normal crossings, pole order, or
+  RLCT.  Xhigh scout `Faraday` passed the theorem shape under these explicit
+  hypotheses.
+
 - 2026-07-06, Thread 03: the rank-cut original-prior local original-loss
   handoff landed.  It reuses the rank-cut residual-source theorem and the
   existing local-source original `lossDLN` socket to prove a finite

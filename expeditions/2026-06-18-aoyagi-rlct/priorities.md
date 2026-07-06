@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with produced adapted lower bound
+
+Decision: remove the explicit adapted-product lower-bound hypothesis from the
+rank-cut local original-loss handoff, but only under an explicit fixed-base
+centering equality:
+
+```text
+sourceChart z0 =
+  fun p => LinearMap.toContinuousLinearMap (reverseEdge W2 B2 p).
+```
+
+The new theorem calls the fixed-base self-base p.13 product-coordinate
+lower-bound theorem to choose `R` and `c` with `0 < R`, `R <= Rmax`, and
+`0 < c`, then restricts that eventual source-stratum lower bound to
+
+```text
+(p13SourceSet cap readback^{-1}(V)) cap sourceStratum.
+```
+
+Density nonnegativity and upper-bound hypotheses are now supplied on the
+larger cap `Rmax` and are restricted internally to the produced radius `R`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-adapted-lower.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This is still conditional: it does not prove residual zero-locus nullity, the
+fixed-base centering equality, density comparison, source/prior transport,
+source-rank or analytic atlas coverage, normal crossings, pole order, or
+RLCT.  Xhigh scout `Faraday` confirmed the wrapper is provable with the
+explicit base equality and a caller-supplied positive `Rmax`.
+
 ## Latest controller decision - 2026-07-06, rank-cut original-prior local original-loss handoff
 
 Decision: compose the rank-cut residual-source wrapper with the existing
