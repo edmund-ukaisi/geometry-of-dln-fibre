@@ -12,6 +12,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, original-prior residual integrability bridge
+
+Decision: compose the prior-density finite-integral theorem with the
+residual-base adapter, but keep the result at
+`residualNegPowerIntegrableOn`.  The theorem requires an open theta-side
+`G` contained in the with-following determinant sector, so every returned
+`z ∈ V` has the determinant-chart hypothesis needed for the pointwise
+fixed-base/product-residual square-sum bridge.
+
+Artifact:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-residual-integrability-bridge.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualBridge.lean
+```
+
+The generic adapter remains in
+`RetainedPassiveCase2PassiveThetaProductResidualBridge.lean`; it does not
+import the prior-density layer.  Do not call this a `lossDLN` theorem.  The
+next rung still needs residual positivity, adapted-product lower bounds,
+base/source-data alignment, density comparison, and following-factor
+nondegeneracy if zero-set comparison is intended.
+
 ## Latest controller decision - 2026-07-06, with-following product-residual base handoff
 
 Decision: land the residual-base handoff before attempting another `lossDLN`

@@ -6,6 +6,40 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-prior residual integrability bridge - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-residual-integrability-bridge.md
+```
+
+Lean now has a downstream composition theorem:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualNegPowerIntegrableOn_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It calls the prior-density finite-integral theorem, then uses the returned
+image equality
+
+```text
+sourceChart '' V = p13SourceSet cap readback^{-1} V
+```
+
+to write each edge family in the patch as `sourceChart z`.  Since `V ⊆ G` and
+`G` is assumed contained in the with-following determinant sector, the
+pointwise fixed-base/product-residual square-sum theorem applies.  The
+returned left-inverse rewrites product residual at `z` to readback product
+residual at `sourceChart z`, and the generic adapter gives
+`residualNegPowerIntegrableOn`.
+
+This is not a `lossDLN` theorem.  It gives the fixed-base residual-power
+predicate for the original edge-family prior on the local patch.  The next
+gates remain residual positivity, adapted-product lower bounds, base/source
+alignment, density comparison, and following-factor nondegeneracy if a zero-set
+comparison is later claimed.
+
 ## A2 with-following product-residual base handoff - 2026-07-06
 
 Reproduction:

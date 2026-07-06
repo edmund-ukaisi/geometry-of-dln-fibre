@@ -10,6 +10,42 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following original-prior residual integrability bridge - 2026-07-06
+
+- **Statement.** On the open local p.13/readback-preimage patch returned by
+  the with-following prior-density finite-integral theorem, the original
+  edge-family prior satisfies the fixed-base
+  `residualNegPowerIntegrableOn` predicate, provided the supplied open
+  theta-side set `G` is contained in the with-following determinant sector.
+- **Tier.** A2 prior-density finite integral to fixed-base residual
+  integrability.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving original `lossDLN`
+  integrability, residual positivity, adapted-product lower bounds, density
+  bounds for original loss, source-rank/atlas coverage, Haar transport, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the cleaned p.13 product residual;
+  existing Lean prior-density finite-integral theorem, local p.13/readback
+  image equality, pointwise determinant-chart residual square-sum bridge, and
+  generic residual-base adapter.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-residual-integrability-bridge.md`.
+- **Reproduction check.** Xhigh read-only scouts `Plato` and `McClintock`
+  checked the pointwise patch equality, determinant-sector requirement, API
+  placement, and nonclaim boundary.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_residualNegPowerIntegrableOn_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_isOpen_case2PassiveThetaWithFollowingFactor_of_continuousAt_priorDensity_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualBridge.lean`.
+- **Proved.** Focused Lean check for the new file passed; final module build
+  for the generic and downstream modules, full local `lake build DLNFibre`,
+  `lean/scripts/sorries`, `git diff --check`, and a direct axiom probe passed.
+  The new declaration reports `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual positivity, no original `lossDLN` comparison, no
+  adapted-product lower bound, no density-bound comparison for original loss,
+  no source-rank coverage, no analytic atlas coverage, no determinant/raw Haar
+  transport, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 with-following product-residual base handoff - 2026-07-06
 
 - **Statement.** On a determinant-chart with-following Case 2 source point,
