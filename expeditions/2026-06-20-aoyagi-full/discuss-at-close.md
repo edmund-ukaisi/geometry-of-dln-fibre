@@ -1849,3 +1849,22 @@ fallback. **Decision: BUILD the general-L simultaneous rank-flag resolution** (e
 decorrelated exact-algebra passes; 2× undershoot at (3,3,3,3)), decomposed (a)/(b)/(c), design-first
 (`r1upperdesign` in flight). Escalation trigger: if design (a)/(b) surface genuinely NEW math (not labour), that is
 a real wall to surface — build-first reveals it early. Grounded record: `r1upper-derisk.md`, `r1upper-wall-review.md`.
+
+## 42. R1-UPPER scope sharpened — the shortcut is dead; from-scratch = Aoyagi's full (S,J) resolution (multi-month) (2026-07-06).
+Following #41 (build R1-UPPER, don't cite): a design pass (`r1upperdesign`, + decorrelated Codex xhigh) tested the
+cheapest from-scratch route — an arity-recursive shifted-exponent layer-peel decomposing R1-UPPER into independent
+per-boundary 1-D integrals. VERDICT: the exponent-shift is a real ingredient (reproduces minAdm exactly), but the
+DECOMPOSITION is UNSOUND — the front-peel spectator couples to the tail through the box's finite cutoff (exact
+counterexample at (2,2,1), Codex-found). The honest per-step object is a JOINT integral = the built SchurCore at
+L=2, but at L≥3 = Aoyagi's full (S,J) double-induction simultaneous rank-flag resolution (the standing wall,
+re-derived). **Implication for the "build it" decision (#41, stands):** building R1-UPPER general-L from scratch =
+formalising Aoyagi §5's full (S,J) resolution — established math (the ½·minAdm VALUE is Aoyagi-established), but the
+genuine monolithic MOUNTAIN, a multi-month capstone, NOT a decomposable shortcut. **Controller recommendation
+(executive):** the "build it" decision stands (per mandate: established math ⇒ build, not cite); SEQUENCE the (S,J)
+mountain as the CAPSTONE — land the bounded milestones first (L=2 headline via `phiexpl`, in flight; then R1-LOWER,
+D1 ∀-L modulo #120, assembly), then commit the (S,J) design+build. Do NOT sink a multi-month monolith now while the
+L=2 headline is one bounded build away. **For operator:** the true cost of the fully-general from-scratch headline
+is now known (the R1-UPPER capstone is a multi-month (S,J) resolution build). The `cited_aoyagi_dln` retreat remains
+available for the general-L upper bound IF you reconsider given that cost — but per #41 that abandons the R1
+from-scratch deliverable, so the standing decision is build-as-capstone. Confirm or redirect. Discriminator
+((2,2,2,2) tail) running to make the "commit the mountain" call solid (confirm-or-crack) before any big commit.
