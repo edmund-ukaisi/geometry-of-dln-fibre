@@ -10,6 +10,52 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following original-volume source-cylinder handoff - 2026-07-07
+
+- **Statement.** On a local with-following Case 2 p.13 source-cylinder patch,
+  the original edge-family volume restricted to a chart piece is dominated by
+  a finite scalar multiple of the coordinate-source image measure, assuming an
+  explicit lower bound for the source density on the same theta shrink.
+- **Tier.** A2 local original-volume/source-density measure handoff.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The theorem is read as determinant-chart Haar transport,
+  exact raw-Haar pushforward, Haar normalization, source-density positivity,
+  source-image coverage, source-rank coverage, original-prior transport,
+  readback domination, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 supply the retained-passive block
+  coordinate algebra and p.13 source-chart shape.  The original-volume
+  domination is Lean-local measure packaging: formal-product source-cylinder
+  domination feeds the p.13 inverse-Haar original-volume bridge, while p.13
+  source-set support is derived internally from the local source-image shrink.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-source-cylinder-handoff.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Kepler the 2nd` found no
+  source-fidelity issue and confirmed the theorem is scalar bookkeeping over
+  the formal-product handoff.  Xhigh Lean-route reviewer `Feynman the 2nd`
+  found the placement/proof route correct and no structurally needed helper.
+  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-original-volume-source-cylinder-handoff.md`.
+- **Lean target.**
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** The theorem returns an open shrink `V` and finite `Cdet` for
+  measurable chart pieces supported by `sourceChart '' (V ∩ sourceCylinder)`,
+  proving domination of `originalVolume.restrict chartPiece` by
+  `(((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+  Measure.map sourceChart (coordinateSourceMeasure.restrict V)` under
+  `ε <= sourceDensity` a.e. on `baseJ.restrict V`, with `ε ≠ 0` and
+  `ε ≠ ∞`.  Focused `lake env lean`, targeted module build, local citation
+  audit, `git diff --check`, `lean/scripts/sorries`, touched-Lean
+  forbidden-marker scan, direct axiom probe, and direct `#audit_cited` probe
+  passed.  The declaration reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No determinant-chart Haar transport, no exact raw-Haar
+  pushforward, no Haar normalization, no source-density positivity, no
+  source-image coverage, no source-rank coverage, no original-prior transport,
+  no readback domination, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 with-following formal-product source-cylinder handoff - 2026-07-07
 
 - **Statement.** On a local with-following Case 2 p.13 source-cylinder patch,

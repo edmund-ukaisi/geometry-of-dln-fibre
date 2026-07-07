@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-volume source-cylinder handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-source-cylinder-handoff.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+```
+
+The theorem localizes the p.13 original-volume/source-reference handoff to
+chart pieces supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+After shrinking around a determinant-sector, nonzero-pivot with-following base
+point, if `sourceDensity` is bounded below by `ε` on `baseJ.restrict V`, with
+`ε ≠ 0` and `ε ≠ ∞`, then for every additive `rawHaar` and measurable chart
+piece supported as above there is finite `Cdet` such that
+
+```text
+originalVolume.restrict chartPiece
+  <= (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+The proof chooses a local p.13 source-image shrink, runs the formal-product
+source-cylinder theorem inside it, derives `chartPiece ⊆ p13SourceSet`
+internally from the source-cylinder support, and then applies the p.13
+inverse-Haar original-volume bridge.  The extra scalar is only the inverse
+raw-tuple Haar comparison scalar; no normalization to `1` is used.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+git diff --check
+lean/scripts/sorries
+```
+
+`scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and only
+the existing three cited axioms.  The local citation executable reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and `#audit_cited` classifies
+the theorem as FORMALISED.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+Haar-scalar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, readback domination, normal
+crossings, pole order, or RLCT extraction.  Xhigh source-fidelity and
+Lean-route reviews passed.
+
 ## A2 with-following formal-product source-cylinder handoff - 2026-07-07
 
 Reproduction:

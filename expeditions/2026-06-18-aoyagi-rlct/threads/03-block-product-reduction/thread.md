@@ -21,6 +21,72 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 with-following original-volume source-cylinder handoff
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-original-volume-source-cylinder-handoff.md
+```
+
+Statement card:
+
+```text
+statement-card-a2-with-following-original-volume-source-cylinder-handoff.md
+```
+
+Review:
+
+```text
+review-a2-with-following-original-volume-source-cylinder-handoff.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+```
+
+The theorem proves localized original-volume/source-reference domination for
+actual p.13 chart pieces.  After shrinking, if
+
+```text
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder),
+```
+
+and `ε <= sourceDensity` a.e. on `baseJ.restrict V`, with `ε` neither zero nor
+infinite, then for every additive `rawHaar` there is finite `Cdet` such that
+
+```text
+originalVolume.restrict chartPiece
+  <= (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Proof spine: choose a local p.13 source-image shrink, run the formal-product
+source-cylinder theorem inside it, derive p.13 support internally from
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`, and apply the p.13
+inverse-Haar original-volume bridge.
+
+Boundary: this is not determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, readback domination, normal
+crossings, pole order, or RLCT.
+
+Verification passed: focused `lake env lean`, targeted `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+local `lake exe cited-audit`, `git diff --check`, `lean/scripts/sorries`,
+touched-Lean forbidden-marker scan, direct axiom probe, and direct
+`#audit_cited` probe.  The declaration reports only `[propext,
+Classical.choice, Quot.sound]` and is classified as FORMALISED.  Xhigh
+source-fidelity and Lean-route reviews passed.
+
 ## 2026-07-07 A2 with-following formal-product source-cylinder handoff
 
 Reproduction:

@@ -18,6 +18,20 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following original-volume
+  source-cylinder handoff now has a direct theorem.  For measurable chart
+  pieces supported by `sourceChart '' (V ∩ sourceCylinder)`, and under an
+  explicit lower bound `ε <= sourceDensity` on `baseJ.restrict V`, Lean
+  produces finite `Cdet` and dominates `originalVolume.restrict chartPiece`
+  by `(((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+  Measure.map sourceChart (coordinateSourceMeasure.restrict V)`.  P.13
+  source-set support is derived internally from the local source-image shrink,
+  and the only new scalar is the inverse Haar comparison scalar from the
+  existing p.13 original-volume bridge.  This adds no determinant/raw Haar
+  transport, Haar normalization, source-density positivity, source
+  coverage/rank coverage, original-prior transport, readback domination,
+  normal crossings, pole order, or RLCT result.
+
 - 2026-07-07, Thread 03: the with-following formal-product source-cylinder
   handoff now has a direct theorem.  For measurable chart pieces supported by
   `sourceChart '' (V ∩ sourceCylinder)`, and under an explicit lower bound

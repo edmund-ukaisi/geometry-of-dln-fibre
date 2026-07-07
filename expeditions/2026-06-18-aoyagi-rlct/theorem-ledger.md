@@ -4,6 +4,31 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original-volume source-cylinder handoff note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower`.
+After a local with-following determinant-sector/pivot-nonzero shrink, if a
+p.13 chart piece is supported by `sourceChart '' (V ∩ sourceCylinder)` and
+`sourceDensity` is bounded below by `ε` on `baseJ.restrict V`, with
+`ε ≠ 0` and `ε ≠ ∞`, then there is finite `Cdet` such that
+
+```text
+originalVolume.restrict chartPiece
+  ≤ (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+      Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+The proof composes the formal-product source-cylinder theorem with the p.13
+inverse-Haar original-volume bridge, deriving p.13 support internally from the
+local source-image shrink.  Aoyagi pp. 10-13 support the retained-passive
+source-chart algebra and p.13 product measure bridge; the final step is local
+Lean measure scalar bookkeeping.  This is not determinant-chart Haar
+transport, exact raw-Haar pushforward, Haar-scalar normalization,
+source-density positivity, source-image/source-rank coverage, original-prior
+transport, readback domination, normal crossings, pole order, or RLCT
+extraction.
+
 Formal-product source-cylinder handoff note, 2026-07-07:
 `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
 proves

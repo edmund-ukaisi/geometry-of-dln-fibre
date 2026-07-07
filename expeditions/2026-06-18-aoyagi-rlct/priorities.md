@@ -12,6 +12,52 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-volume source-cylinder handoff
+
+Decision: consume the source-cylinder formal-product wrapper at the p.13
+original-volume interface.
+
+The new theorem proves that after a local with-following shrink, any
+measurable chart piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+and carrying an explicit lower bound `ε <= sourceDensity` on
+`baseJ.restrict V` gives finite `Cdet` and
+
+```text
+originalVolume.restrict chartPiece
+  <= (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-source-cylinder-handoff.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-source-cylinder-handoff.md
+threads/03-block-product-reduction/review-a2-with-following-original-volume-source-cylinder-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The proof composes the source-cylinder formal-product theorem with the p.13
+inverse-Haar original-volume bridge.  P.13 support is derived internally from
+the local source-image shrink, so the public support hypothesis remains
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.  The inverse Haar scalar
+is retained explicitly; this is not a normalization to `1`.
+
+This is not determinant-chart Haar transport, exact raw-Haar pushforward,
+Haar normalization, source-density positivity, source-image/source-rank
+coverage, original-prior transport, readback domination, normal crossings,
+pole order, or RLCT extraction.
+
+Next frontier: connect this original-volume source-cylinder domination to the
+existing original-prior/readback finite-integral layers, or attack the
+remaining source-density positivity/source-prior identification hypotheses.
+Do not drop the `V ∩ sourceCylinder` condition in downstream wrappers.
+
 ## Latest controller decision - 2026-07-07, formal-product source-cylinder handoff
 
 Decision: consume the source-cylinder raw-patch domination at the p.13
