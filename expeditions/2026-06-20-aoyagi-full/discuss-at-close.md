@@ -2067,3 +2067,23 @@ honestly dominated by these two mountains (the R1-UPPER carrier ~multi-week + th
 ~multi-tide) + R1-LOWER + assembly. NO scope-call (build, not cite — the math is bounded, templates exist); this
 is a timeline flag, not a wall. The design-first discipline is keeping the closes honest (three confounds caught
 cheaply before big builds), which is why the ETA is longer than the optimistic "germs are trivial" reads.
+
+## 55. R1-UPPER corank-≥2 core UNDER ADJUDICATION — may re-open the bounded-vs-wall / build-vs-cite scope-call (#52/#53). (2026-07-07)
+Building the R1-UPPER carrier, `sjcarrier2` (honest escalation, bedrock — refused to bank a half-baked
+diag(b) carrier) surfaced that STEP-2's general corank-≥2 core may be Aoyagi's coupled `diag(b)` resolution
+with SHARED exceptional variables — "genuinely-new resolution-of-singularities, NOT measure-plumbing labor"
+(the OUTER cert's "THE WALL"), refuting a naive per-layer descent (the repo certificates verify-r1-diagb-334
+etc. show per-row/one-blow-up UNDERCOUNTS at corank ≥ 2: (3,3,4) 4→3). This REOPENS the tension between the
+de-risking probe (verdict A: the single-radial-per-block model reaches normal crossing, validated ∀-widths in
+Lean on the corank-2 case (3,3,3,4) — controller-re-ran) and the OUTER cert (coupled diag(b) is the wall).
+**What still stands:** the STEP-1 normal-crossing terminal (`RouteMSJTerminal`, reviewer-cleared, route-agnostic)
++ STEP-3 + corankStep + all other R1-UPPER bricks — only the corank-≥2 CORE (reaching the terminal at
+arbitrary shared-support) is in question. **Adjudication charged** (`sjcorankadj` = sjjointdesign + decorrelated
+Codex, leaning-withheld): is the general corank-≥2 shared-support recursion (a) the validated
+single-radial-per-block model iterated [BOUNDED — the multi-week carrier + shared-support bookkeeping], or (b)
+a genuinely-new simultaneous principalisation [a WALL]? **For operator (the honest flag):** IF the adjudication
+returns (b), the "R1-UPPER bounded-A, no scope-call" of #52/#53 RE-OPENS for the corank-≥2 stratum — a genuine
+build-vs-cite call (build the shared-support res-of-sing from scratch [multi-week+, possibly its own effort] vs
+cite Aoyagi's principalisation for that stratum). IF (a), it's the multi-week carrier (labor). Non-blocking (I
+am adjudicating, not halting); the design-first discipline surfaced this BEFORE a wasted multi-week carrier
+build. The D1 #120 leg (hstep2, the Ψ_conj coupled bulk on a verified target) is unaffected + in flight.
