@@ -258,6 +258,23 @@ theorem minAdm_cons_eq (p : ℕ) (rest : Fin (L + 1 + 1) → ℕ) :
   rw [← sjChargeBudget_recursion (Fin.cons p rest)]
   simp only [Fin.cons_zero, cons_one_eq, redChain_cons]
 
+/-- **`minAdm` of a chain led by a zero width is `0`.** A chain `Fin.cons 0 rest` has the zero product
+(rank forced to `0` through the width-`0` vertex), so its generic fibre is everything — codim `0`. Proved
+by arity induction via the leading-width recursion `minAdm_cons_eq`: the pivot range `t ≤ min(0, rest₀) =
+0` forces the single cut `t = 0` (block charge `0`), descending to `cons 0 (tail rest)`. Used for the
+`min(M₀,M₁) = 0` edge of `sjBoundaryPeel` (there `minAdm M = 0`, so the threshold is unsatisfiable). -/
+theorem minAdm_cons_zero {L : ℕ} (rest : Fin (L + 1) → ℕ) :
+    minAdm (Fin.cons 0 rest) = 0 := by
+  induction L with
+  | zero => simp [minAdm_two_eq, Fin.cons_zero]
+  | succ L IH =>
+    rw [minAdm_cons_eq 0 rest]
+    refine Nat.le_antisymm ?_ (Nat.zero_le _)
+    refine le_trans (Finset.inf'_le _
+      (show (0 : ℕ) ∈ Finset.range (min 0 (rest 0) + 1) by rw [Finset.mem_range]; omega)) ?_
+    simp only [Nat.zero_sub, Nat.zero_mul, Nat.zero_add]
+    exact le_of_eq (IH (Fin.tail rest))
+
 /-- **Piece 6 — leading-width monotonicity of `minAdm` (PROVED).** Increasing the leading width of a
 chain (all else fixed) does not decrease `minAdm`:
 `p ≤ q → minAdm (Fin.cons p rest) ≤ minAdm (Fin.cons q rest)`. Proven by induction on the chain arity via
@@ -524,6 +541,36 @@ theorem pivotChartCover_lintegral_le_sum {m n : ℕ} (t : ℕ)
     _ ≤ ∑ ρ : Fin t ↪ Fin m, ∑' κ : Fin t ↪ Fin n, ∫⁻ A in pivotChart ρ κ, f A :=
         Finset.sum_le_sum (fun ρ _ => lintegral_iUnion_le _ _)
     _ = ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n, ∫⁻ A in pivotChart ρ κ, f A :=
+        Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
+
+/-- **Piece 3 (sub-lemma 1′) — the `matBox`-restricted pivot-chart cover (CLOSED, banked plumbing).**
+The `matBox ∩`-restricted analog of `pivotChartCover_lintegral_le_sum`: the box integral over the
+rank-`≥ t` locus is bounded by the finite sum, over pivot charts `(ρ, κ)`, of the per-chart box integrals
+`∫_{matBox ∩ pivotChart ρ κ} f` — exactly the domains `gammaPeelIntegral` integrates. Same proof:
+distribute `matBox ∩` over the finite union (`pivotLocus_eq_iUnion` + `Set.inter_iUnion`), then
+`lintegral_iUnion_le` + `tsum_fintype`. -/
+theorem pivotChartCover_matBox_le_sum {m n : ℕ} (t : ℕ) (T : ℝ)
+    (f : Matrix (Fin m) (Fin n) ℝ → ℝ≥0∞) :
+    ∫⁻ A in matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}, f A
+      ≤ ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n,
+          ∫⁻ A in matBox m n T ∩ pivotChart ρ κ, f A := by
+  have hcov : {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}
+      = ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), pivotChart ρ κ := pivotLocus_eq_iUnion t
+  have hdist : (⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), matBox m n T ∩ pivotChart ρ κ)
+      = matBox m n T ∩ ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), pivotChart ρ κ := by
+    simp only [Set.inter_iUnion]
+  have hset : matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}
+      = ⋃ (ρ : Fin t ↪ Fin m) (κ : Fin t ↪ Fin n), matBox m n T ∩ pivotChart ρ κ :=
+    (congrArg (fun s => matBox m n T ∩ s) hcov).trans hdist.symm
+  rw [hset]
+  calc ∫⁻ A in ⋃ ρ : Fin t ↪ Fin m, ⋃ κ : Fin t ↪ Fin n, matBox m n T ∩ pivotChart ρ κ, f A
+      ≤ ∑' ρ : Fin t ↪ Fin m, ∫⁻ A in ⋃ κ : Fin t ↪ Fin n, matBox m n T ∩ pivotChart ρ κ, f A :=
+        lintegral_iUnion_le _ _
+    _ = ∑ ρ : Fin t ↪ Fin m, ∫⁻ A in ⋃ κ : Fin t ↪ Fin n, matBox m n T ∩ pivotChart ρ κ, f A :=
+        tsum_fintype _
+    _ ≤ ∑ ρ : Fin t ↪ Fin m, ∑' κ : Fin t ↪ Fin n, ∫⁻ A in matBox m n T ∩ pivotChart ρ κ, f A :=
+        Finset.sum_le_sum (fun ρ _ => lintegral_iUnion_le _ _)
+    _ = ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n, ∫⁻ A in matBox m n T ∩ pivotChart ρ κ, f A :=
         Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
 
 /-- **Piece 3 — the per-`(t,ρ,κ)` boundary peel (re-scoped 2026-07-07; a pure COVER inequality).** The
