@@ -34,8 +34,14 @@
 >   fully-unfolded function-form `F'` so the global `Pi.normedAddCommGroup` synthesizes); per-layer feed
 >   the banked bilinear scaffold; compose the CLE round-trip; `prodMk` the three components;
 >   `ContinuousLinearMap.ext` to identify the total with `id`.
-> - **Status.** sorry-free (module + full `DLNFibre` green-gated, name-clash gate passed); pending
->   reviewer fidelity check.
+> - **Status.** sorry-free + reviewed. Full `DLNFibre` green-gated (EXIT=0, name-clash gate passed).
+>   Reviewer fidelity check: **PASS (survived)**, corroborated by decorrelated Codex xhigh — statement
+>   faithful, hypotheses honest and non-vacuous (in-Lean witnesses `K = 0` and `K_s q = φ(q)·1` shown),
+>   no over/under-claim, axiom-clean (force-recompiled `#print axioms`). Reviewer nuance (not a defect):
+>   `∀ s, K_s 0 = 0` is the clean/usable hypothesis, not literally weakest — the derivative only needs
+>   `K_s 0` to left-annihilate the layer's core matrices, which collapses to `K_s 0 = 0` whenever the
+>   reduced output width `H(s.succ) − r ≥ 1` and is immaterial otherwise; it matches the informal claim
+>   and the concrete DLN coupling (pieces 4–5) supplies exactly it.
 
 ## Notes
 
