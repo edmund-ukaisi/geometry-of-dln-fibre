@@ -27,11 +27,11 @@ networks are "mildly singular." A full map is in
 
 ## Formalisation status
 
-Verified against the Lean **source** (theorem signatures, not docstrings) at `dev` (@ `f5c1c6b7`,
-Phase 1 — the headline results are unchanged by the later determinantal-atlas work); the `rlct` and
-fibre-`θ` rows reflect the `rlct-foundation` branch (landing with this PR — the payoff now reads the
-**defined** `rlctGlobal`, and the fibre component-count drops `Monotone d`). Integrity: **zero `sorry` /
-`admit`** in `lean/DLNFibre/**`; the only axioms are the
+Verified against the Lean **source** (theorem signatures, not docstrings) on `dev` — the algebraic
+headline results (@ `f5c1c6b7`, Phase 1) plus the **RLCT foundation** merged via PR #23 (`0863fccf`),
+which is what the `rlct` and fibre-`θ` rows reflect (the payoff now reads the **defined** `rlctGlobal`,
+and the fibre component-count drops `Monotone d`). Integrity: **zero `sorry` / `admit`** in
+`lean/DLNFibre/**`; the only axioms are the
 cordon-accounted `@[cited]` monuments (`scripts/cited`: `CITED=3` — Watanabe-upper, Aoyagi-lower, and the
 local ζ-continuation). Legend: ✅ Proved · 🟡 Proved (scoped beyond the paper) · 🔵 Cited (an explicit
 interface/hypothesis, not a global axiom).

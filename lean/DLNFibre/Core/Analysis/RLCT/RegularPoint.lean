@@ -5,7 +5,7 @@ import Mathlib.Analysis.SpecialFunctions.Pow.Continuity
 /-!
 # `RLCT.RegularPoint` — the regular-point lemma (A1): `rlctAt K x = +∞` at a nonzero point
 
-**A regular point carries no pole.** For a continuous nonnegative germ `K` and a point `x` with
+**A regular point carries no pole.** For a continuous germ `K` and a point `x` with
 `K x ≠ 0`, **every** exponent `c ≥ 0` is locally admissible: `K^(-c)` is continuous near `x`
 (the base `K` is continuous and stays away from `0` on the open set `{K ≠ 0} ∋ x`, so the germ
 `y ↦ (K y)^(-c)` is continuous there), hence locally integrable at `x`. So
@@ -38,7 +38,7 @@ lemma continuousOn_negPow_ne_zero {K : (Fin n → ℝ) → ℝ} (hK : Continuous
   intro y hy
   refine ((hK.continuousAt).rpow_const (Or.inl hy)).continuousWithinAt
 
-/-- **A regular point is locally admissible at every exponent.** For a continuous nonnegative germ
+/-- **A regular point is locally admissible at every exponent.** For a continuous germ
 `K` with `K x ≠ 0`, every `c ≥ 0` lies in `localAdmissibleExponents K x`: `negPow K c` is continuous
 on the open set `{K ≠ 0} ∋ x` (`continuousOn_negPow_ne_zero`), hence locally integrable there, so
 integrable on some neighbourhood of `x`. -/
@@ -56,7 +56,7 @@ lemma mem_localAdmissibleExponents_of_ne_zero {K : (Fin n → ℝ) → ℝ} {x :
   rwa [hVopen.nhdsWithin_eq hxV] at this
 
 /-- **The regular-point lemma (A1): `localAdmissibleExponents K x = Set.Ici 0`.** For a continuous
-nonnegative germ `K` with `K x ≠ 0` (a *regular* point), the locally-admissible exponents are
+germ `K` with `K x ≠ 0` (a *regular* point), the locally-admissible exponents are
 *exactly* `[0, ∞)`: membership is `0 ≤ c` (always, `mem_localAdmissibleExponents_of_ne_zero`), and
 conversely every admissible exponent is `≥ 0` by definition. No pole at `x`. -/
 theorem localAdmissibleExponents_of_ne_zero {K : (Fin n → ℝ) → ℝ} {x : Fin n → ℝ}

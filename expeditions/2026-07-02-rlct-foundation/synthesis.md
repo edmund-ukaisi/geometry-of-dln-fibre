@@ -236,3 +236,14 @@ the invariance suite + normal-crossing atlas, and the `RLCT`/`RLCT.Global` names
 NOT *conceptual* slop. The zeta-pole cite was green at all 7 rounds while being, variously, inconsistent /
 DLN-inapplicable / vacuous. Correctness came from adversarial + decorrelated review attacking **both** the
 conclusion (consistency) and the hypotheses (satisfiability), with an instantiability witness as the durable guard.
+
+## MERGED to `dev` (2026-07-06, PR #23 `0863fccf`)
+
+The expedition is closed: `expedition/rlct-foundation → dev` merged after two review rounds (both
+**READY TO MERGE**) — the cited-axiom red-team (three cites kernel-independent, consistent, non-vacuous)
+and the R9 re-review (foundation validated, not just defined; the two hypothesis relaxations verified
+against the Mathlib v4.29 source). Post-merge hygiene (this commit): dropped the stale "landing with
+this PR" wording in the README (now on `dev`), and corrected the `RegularPoint` docstrings that still
+said "nonnegative germ" after the `0≤K` hypothesis was dropped (re-review nit). Roadmapped forward
+(ROADMAP § Bundle 4b): the `rlct-invariance` follow-on (B3 + Fubini/diffeo/Bridge-B F1/`hGlue`) and the
+constant-rank `K_B` bridge.
