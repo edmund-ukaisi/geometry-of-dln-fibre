@@ -104,4 +104,19 @@ The `(a)`-BOUNDED verdict is robust; the barrier is SIZE (this descent is genuin
   checkout's `DLNFibre.lean`.
 - `scripts/sorries`: 20 sorry / 0 #exit / 0 native_decide / 1 axiom — **unchanged from baseline**
   (this tide adds a sorry-free module; `sjJointResolution` untouched).
-- LoC: +~150 (`RouteMSJChartWeld.lean`) + aggregator import.
+- LoC: +161 (`RouteMSJChartWeld.lean`) + aggregator import.
+
+## Transferable Lean-idiom findings (for the controller to fold into `lean/CLAUDE.md`)
+
+- **A combining-tilde identifier `Q̃` (`Q` + U+0303) is NOT a valid Lean binder** — the parser rejects it
+  with "expected token" (analogous to the existing `φ` lexer-reject note). Use ASCII (`Qt`) for binders;
+  `Q̃` is fine in docstrings/comments.
+- **`⅟`-form Schur split → `⁻¹`-form for a `lintegral` integrand.** A banked block identity stated with
+  `[Invertible M'.toBlocks₁₁]` (`⅟`) can be turned into a plain function of `M'` (no per-point instance,
+  usable inside a `∫⁻ B …` integrand) via `haveI := hU.invertible` (`IsUnit.invertible`) then
+  `simp only [schurCompl, invOf_eq_nonsing_inv]` (`⅟ = ⁻¹`) — see `frobSq_schur_split_inv`.
+- **Measurability of `{B | IsUnit (Matrix.toBlocks₁₁ B)}`**: rewrite to `{B | det B.toBlocks₁₁ ≠ 0}` via
+  `Matrix.isUnit_iff_isUnit_det` + `isUnit_iff_ne_zero` (a clean `Iff.trans`, NOT `simp` — `rw` on the
+  `preimage`-membership form is finicky), then it is `(continuous det ∘ toBlocks₁₁).measurable` applied to
+  `(measurableSet_singleton 0).compl`. `genBox` measurability is the finite `⋂ᵢₖ` of `Icc`-preimages
+  (`measurable_pi_apply` composed twice) — needs only `[Finite α] [Finite β]`, not `Fintype`.
