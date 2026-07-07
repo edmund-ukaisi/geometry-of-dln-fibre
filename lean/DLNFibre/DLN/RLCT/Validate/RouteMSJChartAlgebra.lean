@@ -83,8 +83,8 @@ theorem topRows_eq_mul_QtildeP (A : Matrix t t ℝ) (B : Matrix t b ℝ) [Invert
     Matrix.one_mul]
 
 /-- **The corank bottom-block reveals the cross-coupling `C · Q̃_p + Γ · Q_b`.**
-`C · Q_p + D · Q_b = C · (Q_p + A⁻¹ B Q_b) + (D − C A⁻¹ B) · Q_b` — the `C·Q̃_p` cross term is genuine,
-`Γ = schurCompl A B C D`. Expand `C·Q̃_p` and cancel the `± C A⁻¹ B Q_b` pair. -/
+`C · Q_p + D · Q_b = C · (Q_p + A⁻¹ B Q_b) + (D − C A⁻¹ B) · Q_b` — the `C·Q̃_p` cross term is
+genuine, `Γ = schurCompl A B C D`. Expand `C·Q̃_p` and cancel the `± C A⁻¹ B Q_b` pair. -/
 theorem botRows_eq_cross (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : Matrix a t ℝ)
     (D : Matrix a b ℝ) [Invertible A] (Qp : Matrix t n ℝ) (Qb : Matrix b n ℝ) :
     C * Qp + D * Qb
@@ -94,8 +94,8 @@ theorem botRows_eq_cross (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : Matrix a
   abel
 
 /-- **The exact post-shear Frobenius block identity (design cert ADDENDUM 4).** With `A` the
-invertible `t × t` pivot block of the front factor `A₀ = fromBlocks A B C D`, and the tail product `Q`
-split by rows into `Q_p = Q.submatrix Sum.inl id` (pivot columns) and `Q_b = Q.submatrix Sum.inr id`:
+invertible `t × t` pivot block of the front factor `A₀ = fromBlocks A B C D`, and the tail product
+`Q` split by rows into `Q_p = Q.submatrix Sum.inl id` (pivot cols), `Q_b = Q.submatrix Sum.inr id`:
 
     frobSq (A₀ · Q) = frobSq (A · Q̃_p) + frobSq (C · Q̃_p + Γ · Q_b),
 
@@ -113,10 +113,10 @@ theorem frobSq_schur_block_split (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : 
   rw [frobSq_row_split (fromBlocks A B C D * Q), fromBlocks_mul_topRows, fromBlocks_mul_botRows,
     topRows_eq_mul_QtildeP A B, botRows_eq_cross A B C D]
 
-/-- **The block identity in `toBlocks` form** — the shape the pivot chart consumes. For a block-indexed
-front factor `M'` with invertible top-left (pivot) block, `frobSq (M' · Q)` splits into the pivot-block
-energy `frobSq (P · Q̃_p)` and the corank energy `frobSq (C · Q̃_p + Γ · Q_b)`, `P = M'.toBlocks₁₁`,
-`Γ = schurCompl …`. The `M' = A₀.reindex e₀ e₁` form of `frobSq_schur_block_split` (via
+/-- **The block identity in `toBlocks` form** — the shape the pivot chart consumes. For a
+block-indexed front factor `M'` with invertible top-left (pivot) block, `frobSq (M' · Q)` splits into
+the pivot-block energy `frobSq (P · Q̃_p)` and the corank energy `frobSq (C · Q̃_p + Γ · Q_b)`,
+`P = M'.toBlocks₁₁`, `Γ = schurCompl …`. The `M' = A₀.reindex e₀ e₁` form of `frobSq_schur_block_split` (via
 `fromBlocks_toBlocks`), matching the banked `schur_cov_toBlocks` interface. -/
 theorem frobSq_schur_toBlocks_split (M' : Matrix (t ⊕ a) (t ⊕ b) ℝ) [Invertible M'.toBlocks₁₁]
     (Q : Matrix (t ⊕ b) n ℝ) :

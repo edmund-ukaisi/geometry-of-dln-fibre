@@ -720,5 +720,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 -- (S,J) peel c.o.v. base: Aoyagi Lemma-2 c.o.v. (schur_cov) + reindex bridge + pivot-chart cover + measure shear.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
+-- (S,J) peel algebra core: exact post-shear cross-coupled Frobenius block identity (frobSq_schur_block_split).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartAlgebra
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
