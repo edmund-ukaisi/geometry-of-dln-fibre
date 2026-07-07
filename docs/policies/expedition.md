@@ -199,6 +199,29 @@ damage:
 - **Throttle cadence while a hold is outstanding** — a stream of fast follow-ups is where crossing
   compounds.
 
+### Hub-and-spoke — the finished-agent discipline
+
+Peer-to-peer coordination among *finished* agents is where async crossing turns into a self-sustaining
+noise cascade. In a past endgame ~7 done agents stayed alive and cross-messaged to re-confirm committed
+work, de-conflict, and chase misattributed relays; with queue-lag and task-replays each stale message
+triggered defensive cross-checks that themselves landed stale — zero new work, real token/cycle cost, the
+committed tree intact throughout. The shape that holds:
+
+- **Done → report + stand down.** A teammate that has delivered and committed its piece reports completion
+  to the controller and then stands down / requests shutdown. It does **not** stay on-call by default — the
+  on-call value (a possible later review) rarely exceeds the noise, and a fresh seat re-spawns turnkey when
+  a specific need arises (context lives in the committed code + docs).
+- **The controller shuts down done agents** rather than leaving them idle-on-call.
+- **All coordination routes through the controller (the hub).** No teammate↔teammate cross-talk — the sole
+  sanctioned spoke-to-spoke channel is a *tight live collaboration* (a builder and its reviewer on one
+  in-flight piece).
+- **Break a cascade with an artifact ID, not more prose.** When queue-lagged messages replay a settled
+  reconciliation, one broadcast of the committed **SHA / file md5** ends it — an artifact identity is
+  independently verifiable and timeless; "it's done, trust me" is not.
+- **Verify a serious relayed claim on ground truth before acting.** "landed" / "fabricated" / "clobbered"
+  from a peer is checked against disk/git first; a claim that contradicts established ground truth is
+  reconciled before it is believed. Never relay-and-act.
+
 ## Gates (non-skippable)
 
 - formalisation cannot reach done without AUDIT; infra cannot without TEST. The controller reads the AUDIT alongside a **precision + bedrock check** (§ Supervising the formaliser): the name/statement denotes exactly what is proved, the load-bearing step is proved or named as the open target, and the result clears the bedrock bar ([`bedrock.md`](bedrock.md) — non-vacuous, hygienic, characterized, fenced). A green, sorry-free, axiom-clean build is necessary, never sufficient.
