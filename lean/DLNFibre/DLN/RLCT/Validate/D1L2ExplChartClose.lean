@@ -295,4 +295,58 @@ theorem splitMP_core (x : Fin (flatDim H) → ℝ) (j : Fin (flatDim (fun s => H
 theorem splitMP_spec (x : Fin (flatDim H) → ℝ) (k : Fin (specDim H r)) :
     (splitMP I K J hI hK hJ x).2.2 k = x (e_idx I K J hI hK hJ (Sum.inr (Sum.inr k))) := rfl
 
+/-- `e_idx` on the core slot: `= equivFin ∘ roleToFlat ∘ inr∘inl ∘ coreE.symm` (definitional). -/
+theorem e_idx_core (n : Fin (flatDim (fun s => H s - r))) :
+    e_idx I K J hI hK hJ (Sum.inr (Sum.inl n))
+      = Fintype.equivFin (FlatIdx H)
+          (roleToFlat I K J hI hK hJ (Sum.inr (Sum.inl ((Fintype.equivFin (CoreIdx H r)).symm n)))) :=
+  rfl
+
+/-! ## The core-block readback (linchpin for `hfact`)
+
+The `splitMP` core block, decoded by `paramsEquivFlat (H − r)`, is exactly the two `blockFlatEquiv_L2`
+`₂₂` corners `(A0red, A1red)` of the flat point `x` — the reduced `(H − r)` layers. -/
+
+/-- The reduced-core parameter read off the two `₂₂` corners of `blockFlatEquiv_L2 x`. -/
+noncomputable def coreParams (x : Fin (flatDim H) → ℝ) : Params (fun s => H s - r) :=
+  Fin.cases (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₂
+    (fun y => Fin.cases (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₂₂ (fun e => e.elim0) y)
+
+@[simp] theorem coreParams_zero (x : Fin (flatDim H) → ℝ) :
+    coreParams I K J hI hK hJ x 0 = (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₂ := rfl
+
+@[simp] theorem coreParams_one (x : Fin (flatDim H) → ℝ) :
+    coreParams I K J hI hK hJ x 1 = (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₂₂ := rfl
+
+/-- **Core-block readback.** `(paramsEquivFlat (H − r)).symm ((splitMP x).2.1) = coreParams x`. -/
+theorem paramsEquivFlat_symm_splitMP_core (x : Fin (flatDim H) → ℝ) :
+    (paramsEquivFlat (fun s => H s - r)).symm ((splitMP I K J hI hK hJ x).2.1)
+      = coreParams I K J hI hK hJ x := by
+  funext s
+  refine Fin.cases (motive := fun s =>
+      (paramsEquivFlat (fun s => H s - r)).symm ((splitMP I K J hI hK hJ x).2.1) s
+        = coreParams I K J hI hK hJ x s)
+      ?_ (fun y => Fin.cases ?_ (fun e => e.elim0) y) s
+  · -- layer 0
+    funext i j
+    rw [coreParams_zero, paramsEquivFlat_symm_entry, splitMP_core, e_idx_core,
+      Equiv.symm_apply_apply]
+    simp only [roleToFlat, rowSplit_zero, colSplit_zero]
+    rw [blockFlatEquiv_L2_fst]
+    simp only [Matrix.toBlocks₂₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+      Equiv.symm_symm, paramsEquivFlatLinear_symm_coe]
+    exact (paramsEquivFlat_symm_entry H x 0 (sumSplit I hI (Sum.inr i))
+      (sumSplit K hK (Sum.inr j))).symm
+  · -- layer 1
+    simp only [Fin.succ_zero_eq_one]
+    funext i j
+    rw [coreParams_one, paramsEquivFlat_symm_entry, splitMP_core, e_idx_core,
+      Equiv.symm_apply_apply]
+    simp only [roleToFlat, rowSplit_one, colSplit_one]
+    rw [blockFlatEquiv_L2_snd]
+    simp only [Matrix.toBlocks₂₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+      Equiv.symm_symm, paramsEquivFlatLinear_symm_coe]
+    exact (paramsEquivFlat_symm_entry H x 1 (sumSplit K hK (Sum.inr i))
+      (sumSplit J hJ (Sum.inr j))).symm
+
 end DLNFibre.DLN.RLCT
