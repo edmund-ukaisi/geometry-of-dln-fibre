@@ -10,6 +10,45 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 original coordinate prior source-image domination - 2026-07-07
+
+- **Statement.** The existing conditional source-image domination theorem for
+  the original edge-family prior can be restated for the original flattened
+  coordinate prior pushed through coordinate unflattening and fixed-basis
+  edge-family reconstruction, restricted to the preimage of the returned
+  chart image `sourceChart '' V`.
+- **Tier.** A2 finite-dimensional original prior transport at the
+  source-image domination interface.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as constructing a source-image
+  density, identifying a chart-produced prior with Aoyagi's prior, computing a
+  retained-passive Jacobian, normalizing Haar scalars, proving
+  determinant/raw Haar transport, proving source-rank or atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 3 and 7-8 for the original matrix-parameter
+  prior setting, p. 8 for the squared product-difference target, and pp. 10-13
+  for the original matrix-coordinate block/product reduction.  The bridge
+  itself is Lean-local finite-dimensional measure transport plus an existing
+  conditional source-image domination theorem.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-source-image-domination.md`.
+- **Reproduction check.** Controller checked the substitution
+  `Fcoord(Fcoord^{-1}(sourceChart '' V)) = sourceChart '' V` using the
+  previous preimage transport theorem and then applied the existing
+  source-image domination statement with the induced edge density.
+- **Lean target.**
+  `exists_open_subset_map_originalCoordinatePrior_restrict_sourceChart_preimage_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorSourceImageBridge.lean`.
+- **Proved.** Focused `lake env lean` and focused module build passed for
+  `OriginalCoordinatePriorSourceImageBridge`.  `lake env lean DLNFibre.lean`,
+  `lean/scripts/sorries`, `git diff --check`, touched Lean-file forbidden
+  marker scan, and direct axiom probe passed.  The new declaration reports
+  only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-image density construction, no source-chart prior
+  identification, no retained-passive Jacobian computation, no Haar scalar
+  normalization, no determinant/raw Haar transport, no source-rank or analytic
+  atlas coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 coordinate prior edge-family preimage transport - 2026-07-07
 
 - **Statement.** If `C` is a measurable fixed-basis edge-family set, then the

@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 original coordinate prior source-image domination
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-source-image-domination.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorSourceImageBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_map_originalCoordinatePrior_restrict_sourceChart_preimage_le_smul_sourceImageReference_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+It calls the existing edge-family source-image domination theorem with the
+induced edge density
+`E |-> coordDensity (canonicalCoord d (edgeFamilyMatrixTuple b E))`, then use
+the coordinate-prior preimage transport theorem to replace the restricted
+edge-family prior by the pushed restricted flattened-coordinate prior.
+
+Boundary: this is a coordinate-side restatement of an existing conditional
+domination theorem.  It does not identify or construct `sourceImageDensity`,
+prove determinant/raw Haar transport, normalize Haar scalars, prove source-rank
+or atlas coverage, construct normal crossings, compute pole order, or extract
+RLCT.
+
 ## 2026-07-07 A2 coordinate prior edge-family preimage transport
 
 Reproduction:

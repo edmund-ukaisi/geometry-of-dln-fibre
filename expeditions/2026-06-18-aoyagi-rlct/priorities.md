@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original coordinate prior source-image domination
+
+Decision: expose the existing conditional source-image domination theorem from
+the original flattened-coordinate prior side.
+
+The new bridge uses the preimage-form finite-dimensional prior transport to
+rewrite the source-image prior domination on `sourceChart '' V`
+as a domination for
+
+```text
+Measure.map
+  (fun x => tupleToEdgeFamily b ((canonicalCoord d).symm x))
+  ((originalCoordinatePrior d coordDensity).restrict
+    ((fun x => tupleToEdgeFamily b ((canonicalCoord d).symm x)) ⁻¹'
+      (sourceChart '' V))).
+```
+
+The edge density fed into the old theorem is
+`E |-> coordDensity (canonicalCoord d (edgeFamilyMatrixTuple b E))`.  The only
+new hypothesis is the a.e.-measurability required by the coordinate
+transport theorem on the tuple-side preimage of `sourceChart '' V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-source-image-domination.md
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorSourceImageBridge.lean
+```
+
+This is still conditional finite-dimensional prior transport plus an existing
+source-image domination theorem.  It does not construct a source-image
+density, identify a chart-produced prior with Aoyagi's prior, compute
+retained-passive Jacobians, normalize Haar scalars, prove determinant/raw Haar
+transport, source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, coordinate prior edge-family preimage transport
 
 Decision: add the edge-family-set preimage form of coordinate-prior transport.

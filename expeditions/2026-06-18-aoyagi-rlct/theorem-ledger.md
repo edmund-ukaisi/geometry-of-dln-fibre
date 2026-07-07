@@ -4,6 +4,27 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original coordinate prior source-image domination note, 2026-07-07: the new
+bridge exposes the existing conditional source-image domination theorem from
+the original flattened-coordinate prior side.  With
+`d = paperEndpointFixedBaseDim W2 B2 U0`,
+`b = paperEndpointFixedBaseFinBasis W2 B2 U0 hU0`, and
+`Fcoord x = tupleToEdgeFamily b ((canonicalCoord d).symm x)`, the
+preimage-form transport theorem identifies
+`Measure.map Fcoord ((originalCoordinatePrior d coordDensity).restrict
+(Fcoord ⁻¹' (sourceChart '' V)))` with the original edge-family prior
+restricted to `sourceChart '' V` for the induced density
+`E |-> coordDensity (canonicalCoord d (edgeFamilyMatrixTuple b E))`.  The
+existing source-image domination theorem then gives the same scalar domination
+by the chart-produced source-image reference measure.  Lean proved this in
+`OriginalCoordinatePriorSourceImageBridge`, with only the tuple-side
+a.e.-measurability needed by the transport equality added to the final
+domination package.  This is conditional finite-dimensional prior transport
+plus an existing domination theorem; it does not construct source-image
+density, identify a chart-produced prior with Aoyagi's prior, compute
+retained-passive Jacobians, normalize Haar scalars, prove determinant/raw Haar
+transport, source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 Coordinate prior edge-family preimage transport note, 2026-07-07: the
 coordinate-to-edge-family original prior transport now has a preimage
 restriction form.  For an edge-family measurable set `C`, pushing the original
