@@ -504,4 +504,59 @@ theorem bChart_slice_reg_zero
     rw [← reg_entry_M21 I K J hI hK hJ _ a k]
     exact reg_zero_of_slice I K J hI hK hJ t (Sum.inl (a, k))
 
+/-- The reduced-core shift `(A0red₀, A1red₀)` read off the two `₂₂` corners of `C₀`. -/
+noncomputable def coreShiftParam (C₀ : BlockParamsL2 H r) : Params (fun s => H s - r) :=
+  Fin.cases C₀.1.toBlocks₂₂ (fun y => Fin.cases C₀.2.toBlocks₂₂ (fun e => e.elim0) y)
+
+/-- **The slice value of `qResidMat`** at `p = 0`: the regular residuals vanish (reg block `= 0`, the
+Schur complement `Br₂₁ Br₁₁⁻¹ Br₁₂ − Br₂₂ = 0`), leaving the reduced-core product `A0red·A1red`, i.e.
+`prod (H−r) (coreParams + coreShiftParam)`. -/
+theorem qResid_slice_value (C₀ : BlockParamsL2 H r)
+    (Br : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (hGeval : G (C₀.2.toBlocks₁₁) = (C₀.2.toBlocks₁₁)⁻¹)
+    (h11 : C₀.2.toBlocks₁₁ = Br.toBlocks₁₁) (h12 : C₀.2.toBlocks₁₂ = Br.toBlocks₁₂)
+    (h21 : C₀.1.toBlocks₂₁ = Br.toBlocks₂₁)
+    (hschur : Br.toBlocks₂₂ = Br.toBlocks₂₁ * (Br.toBlocks₁₁)⁻¹ * Br.toBlocks₁₂)
+    (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ)) :
+    qResidMat I K J hI hK hJ C₀ Br.toBlocks₂₂ G ((0 : Fin (nRegL2 H r) → ℝ), t)
+      = prod (fun s => H s - r)
+          (coreParams I K J hI hK hJ ((splitHomeoL2 I K J hI hK hJ).symm
+            ((0 : Fin (nRegL2 H r) → ℝ), t)) + coreShiftParam C₀) := by
+  obtain ⟨hz11, hz12, hz21⟩ := bChart_slice_reg_zero I K J hI hK hJ t
+  have hQ11 : (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).2.toBlocks₁₁
+      = C₀.2.toBlocks₁₁ := by
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).2.toBlocks₁₁
+        + C₀.2.toBlocks₁₁ = _
+    rw [hz11, zero_add]
+  have hQ12 : (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).2.toBlocks₁₂
+      = C₀.2.toBlocks₁₂ := by
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).2.toBlocks₁₂
+        + C₀.2.toBlocks₁₂ = _
+    rw [hz12, zero_add]
+  have hQ21 : (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).1.toBlocks₂₁
+      = C₀.1.toBlocks₂₁ := by
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).1.toBlocks₂₁
+        + C₀.1.toBlocks₂₁ = _
+    rw [hz21, zero_add]
+  simp only [qResidMat, qBlock]
+  rw [hQ11, hQ12, hQ21, hGeval, h11, h12, h21, ← hschur, prod_two_factor_L2]
+  show Br.toBlocks₂₂
+      + (blockFlatEquiv_L2 H r I K J hI hK hJ
+          ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).1.toBlocks₂₂
+        * (blockFlatEquiv_L2 H r I K J hI hK hJ
+            ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).2.toBlocks₂₂
+      - Br.toBlocks₂₂
+    = (blockFlatEquiv_L2 H r I K J hI hK hJ
+          ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).1.toBlocks₂₂
+        * (blockFlatEquiv_L2 H r I K J hI hK hJ
+            ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).2.toBlocks₂₂
+  abel
+
 end DLNFibre.DLN.RLCT
