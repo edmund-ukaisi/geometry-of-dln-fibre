@@ -39,6 +39,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSmearedClose
 import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
 import DLNFibre.DLN.RLCT.Validate.RouteMHNoBridge
 import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
 
 /-!
 # Axiom-hygiene check
@@ -382,3 +383,12 @@ open DLNFibre.DLN.RLCT
 -- (full `DLNFibre` green + force-recompiled `#print axioms`). This line stays clean-four henceforth —
 -- a regression that reintroduces `sorryAx` here is a broken headline.
 #print axioms aoyagi_learning_coefficient_L2
+
+-- ★ D1 ∀-L runway, sub-lemma 1 (2026-07-07). `schur_product_ldu_rec` (the L-factor recursive
+-- Schur-product LDU identity F2, `DeepestSchurRecursion`) — the algebraic core the ∀-L
+-- deepest-gauge diffeo (#120) lifts from. Sorry-free over any `CommRing`, cite-NOTHING: forced
+-- `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
+-- `blockSchur_partProd_succ` is the single-step handle sub-lemmas 3–4 consume. Kept axiom-gated
+-- here so a stale-olean `sorryAx` regression on the D1-runway foundation is caught on every build.
+#print axioms schur_product_ldu_rec
+#print axioms blockSchur_partProd_succ
