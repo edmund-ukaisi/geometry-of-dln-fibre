@@ -26,8 +26,12 @@
 >   the tail bottom-rows `Q_bot`) — this atom is the isotropic special case `Q_bot = isometry`;
 >   recovering the anisotropic form is a linear c.o.v. `Γ ↦ Γ·Q_bot` whose Jacobian is the coupling
 >   factor, the (S,J)-resolution content.
-> - **Status.** sorry-free; axiom-clean `[propext, Classical.choice, Quot.sound]` (forced
->   `#print axioms`). Not yet reviewer-confirmed for fidelity.
+> - **Status.** sorry-free + **reviewed**; axiom-clean `[propext, Classical.choice, Quot.sound]`
+>   (forced `#print axioms`, reviewer-reconfirmed under fresh recompile). Fidelity SURVIVES (reviewer,
+>   `genm-sjpeel-blow`): statement faithful, hypotheses honest (`w>0`, `c'>pq/2` load-bearing; `T>0` a
+>   harmless mild over-restriction), reduction sound, no overclaim (isotropic scope caveated). The
+>   finding was independently CONFIRMED (reviewer + decorrelated Codex xhigh; in-range `c'∈[1,1.5)` at
+>   `M=(2,2,2,2)`).
 
 ## Finding — the pointwise `lintegral_mono_ae` route for `sjBoundaryPeel` is UNSOUND
 
