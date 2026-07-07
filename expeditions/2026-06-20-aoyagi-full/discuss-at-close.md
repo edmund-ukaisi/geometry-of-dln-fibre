@@ -1992,3 +1992,20 @@ measure-plumbing + #120's dependent-width Schur-LDU cast-grind), not by any unre
 both legs (sjbpeel + sjldu). The one residual analytic unknown that remains genuinely open is the R1-UPPER
 peel's `sjJointResolution` general-L finiteness (bounded, consuming the banked block identity + corank atom,
 but the deepest grind) — NOT a wall, but the slowest piece.
+
+## 51. The R1-UPPER leg's LAST piece is the genuine (S,J) double-induction — bounded, not a wall, but a real build (2026-07-07).
+Design-first (sjjointdesign: exact algebra + hypothesis-withheld Codex xhigh + the prior overturn test = three
+independent lines) established that `sjJointResolution` — the single remaining peel sorry after sjbpeel closed
+`sjBoundaryPeel` — is NOT a plumbing close. It is Aoyagi's genuine **(S,J) double induction**: at L≥3 the Gram
+divisor `{det(Q_b Q_bᵀ)=0}` and the reduced-core divisor SHARE the deeper product `Z=A₂···A_{L−1}`, their
+orders ADD on the shared divisor, and as `c'→½minAdm` the exponent saturates the reduced-chain IH threshold —
+so NO black-box shorter-chain (Hölder/subordination) call closes it; it needs the joint resolution. **All three
+lines agree it is BOUNDED (established Aoyagi math; subordination `a≤minAdm(tail)` verified; additive `½minAdm`
+passes on (3,3,3,3)), NOT a research wall.** Per the mission (build established math, don't cite) this stays a
+BUILD. **Plan (charging):** stage 1 — land the bridge + the anisotropic Γ-atom + the 94/480-chart branch as a
+sorry-free lemma reducing `sjJointResolution` to a single precise "L≥1 outer-residual finiteness" sorry, and
+discharge the decoupled L=0 (depth-2) base; then design + build the L≥1 double induction (the genuine deepest
+remaining construction). **For operator (awareness, non-blocking):** this is the honest bottom of the R1-UPPER
+mountain — the general-L `rlct ≥ ½·codim` leg's last piece is a real (S,J) double-induction build, not a
+finish-line plumbing sorry. It corrects any "peel = 1 sorry, almost done" read. No wall; a genuine multi-stage
+grind. The D1 leg (#120) is in better shape (sub-lemma 1 banked, interior frames closing, hstep2 the crux).
