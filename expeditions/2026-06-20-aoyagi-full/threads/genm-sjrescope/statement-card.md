@@ -3,7 +3,7 @@
 **Status:** re-scoped contract landed sorry-free where it is plumbing; the two LOAD-BEARING analytic
 pieces remain named sorries with faithful statements. Green in the full import closure of
 `RouteMSJResolution` (`scripts/lb`, 8302 jobs). Branch `origin/genm-sjrescope`, base
-`origin/genm-sjpeel-p3b @10ed54f0`, commit `d8cce785`. `RouteMSJChartAlgebra` now WIRED into
+`origin/genm-sjpeel-p3b @10ed54f0`, commit `1d12e867`. `RouteMSJChartAlgebra` now WIRED into
 `DLNFibre.lean` (aggregator) and imported by the peel file.
 
 ## What this tide did (the triple-confirmed fix)
@@ -32,7 +32,7 @@ the finite chart count is the explicit `∑_ρ ∑_κ`, not absorbed into a cons
 > **Def.** `gammaPeelIntegral M t ρ κ c' := ∫_{A'∈paramsBoxM(tailChain M)1} ∫_{A₀ ∈ matBox(M₀)(M₁)1 ∩ pivotChart ρ κ} ofReal(frobSq(rmatMul A₀ (prod(tailChain M) A'))^{−c'})`
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.gammaPeelIntegral`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJResolution.lean` @ `d8cce785`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJResolution.lean` @ `1d12e867`)
 > - **Gloss.** The tail-outer front-factor fibre integral of the front-split integrand, with the inner
 >   front factor `A₀` restricted to the pivot chart `matBox ∩ pivotChart ρ κ` (box matrices whose `t×t`
 >   `(ρ,κ)`-minor is a unit). The EXACT `(t,ρ,κ)`-chart contribution to the box integral — no dropped
@@ -83,8 +83,12 @@ the finite chart count is the explicit `∑_ρ ∑_κ`, not absorbed into a cons
   `sjJointResolution` proof; NOT on this branch (named in the docstring only).
 
 ## Sorry inventory
-`scripts/sorries` / `grep`: **exactly 2** `sorry` in `RouteMSJResolution.lean` — `sjBoundaryPeel` (L~597),
-`sjJointResolution` (L~625). No other sorries introduced; the two banked helpers + the spine are sorry-free.
+`scripts/sorries` / `grep`: **exactly 2** `sorry` in `RouteMSJResolution.lean` — `sjBoundaryPeel` (L615, theorem L607),
+`sjJointResolution` (L674, theorem L668). No other sorries introduced; the two banked helpers + the spine are sorry-free.
 
-**Status.** sorry-free (spine + banked helpers) / two faithful named sorries (analytic pieces) — awaiting
-fidelity review.
+**Status.** sorry-free (spine + banked helpers) / two faithful named sorries (analytic pieces) —
+**fidelity-reviewed PASS-WITH-NOTES** (all 6 checks PASS; decorrelated Codex xhigh confirmed
+`sjBoundaryPeel` TRUE-provable; the only notes were card SHA/line drift, now corrected). The reviewer
+independently verified: `gammaPeelIntegral` faithful (raw chart contribution, no dropped cross-term / clean
+box), `t = 1..min` excludes the circular `t = 0`, both contracts non-circular and non-vacuous, the wrapper
+`routeMBoxThresholdFinite_of_step` clean-three, and Candidate B a legitimate faithful ladder re-scope.
