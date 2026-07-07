@@ -1,5 +1,4 @@
 import DLNFibre.DLN.RLCT.Validate.D1IFTResidualProducer
-import DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer
 import DLNFibre.DLN.RLCT.Foundations.S1Spectator
 import DLNFibre.DLN.RLCT.Foundations.S1Fubini
 import DLNFibre.DLN.RLCT.Foundations.S1Local
