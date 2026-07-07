@@ -731,5 +731,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
 -- (S,J) integral-level corank-block morse peel: the per-step charge (Γ-integral) via the Γ-atom.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPeel
+-- (S,J) PURE joint corank-block Morse peel: isotropic joint terminal + intermediate exponent-shift peel.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPure
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
