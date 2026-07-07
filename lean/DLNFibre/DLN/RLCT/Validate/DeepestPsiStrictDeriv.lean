@@ -1,4 +1,7 @@
 import Mathlib.Analysis.Calculus.FDeriv.Bilinear
+import Mathlib.Data.Matrix.Bilinear
+import Mathlib.Analysis.Matrix.Normed
+import Mathlib.Analysis.Normed.Module.FiniteDimension
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestPsiStrictDeriv` — the strict-derivative scaffold for the
@@ -24,7 +27,7 @@ cites nothing.
 
 namespace DLNFibre.DLN.RLCT
 
-open ContinuousLinearMap
+open ContinuousLinearMap Matrix
 
 variable {𝕜 : Type*} [NontriviallyNormedField 𝕜]
   {X E F G : Type*}
@@ -56,5 +59,37 @@ theorem hasStrictFDerivAt_bilinear_of_right_zero
       IsBoundedBilinearMap.deriv_apply, hf0, map_zero, add_zero]
   rw [hEq]
   exact hcomp
+
+/-! ## The rectangular matrix-multiplication bounded-bilinear map
+
+The left factor of the absorbing shear is a square matrix acting by left multiplication on the
+rectangular core block. `matMulCLM` packages rectangular matrix multiplication as a
+`ContinuousLinearMap`-valued `ContinuousLinearMap` (bounded bilinear, since the matrix spaces are
+finite-dimensional), so the scaffold above applies with `B = matMulCLM`. At the identity left factor
+it is the identity map (`matMulCLM_one`), which turns the scaffold's `(B (g x)).comp f'` into `f'`. -/
+
+/-- **Rectangular matrix multiplication as a bounded-bilinear `ContinuousLinearMap`**:
+`matMulCLM a b c P Q = P * Q`. Built from the matrix-multiplication bilinear `LinearMap` via the
+finite-dimensional `LinearMap.toContinuousLinearMap` equivalence on the inner and outer factors. -/
+noncomputable def matMulCLM (a b c : ℕ) :
+    Matrix (Fin a) (Fin b) ℝ →L[ℝ] Matrix (Fin b) (Fin c) ℝ →L[ℝ] Matrix (Fin a) (Fin c) ℝ :=
+  LinearMap.toContinuousLinearMap
+    ((LinearMap.toContinuousLinearMap :
+        (Matrix (Fin b) (Fin c) ℝ →ₗ[ℝ] Matrix (Fin a) (Fin c) ℝ)
+          ≃ₗ[ℝ] (Matrix (Fin b) (Fin c) ℝ →L[ℝ] Matrix (Fin a) (Fin c) ℝ)).toLinearMap.comp
+      (mulLinearMap ℝ))
+
+/-- `matMulCLM` computes matrix multiplication. -/
+@[simp] theorem matMulCLM_apply {a b c : ℕ} (P : Matrix (Fin a) (Fin b) ℝ)
+    (Q : Matrix (Fin b) (Fin c) ℝ) : matMulCLM a b c P Q = P * Q := by
+  simp only [matMulCLM, LinearMap.coe_toContinuousLinearMap, LinearMap.coe_comp,
+    Function.comp_apply]
+  rfl
+
+/-- Left multiplication by the identity matrix is the identity map: `matMulCLM 1 = id`. -/
+theorem matMulCLM_one (a c : ℕ) :
+    matMulCLM a a c 1 = ContinuousLinearMap.id ℝ (Matrix (Fin a) (Fin c) ℝ) := by
+  refine ContinuousLinearMap.ext fun Q => ?_
+  rw [matMulCLM_apply, Matrix.one_mul, ContinuousLinearMap.id_apply]
 
 end DLNFibre.DLN.RLCT
