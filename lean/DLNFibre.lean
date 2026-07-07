@@ -720,6 +720,23 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJResolution
 import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 -- (S,J) peel c.o.v. base: Aoyagi Lemma-2 c.o.v. (schur_cov) + reindex bridge + pivot-chart cover + measure shear.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
+-- (S,J) peel algebra core: exact post-shear cross-coupled Frobenius block identity (frobSq_schur_block_split).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartAlgebra
+-- (S,J) peel corank atoms: isotropic box + full-space residual atoms, and the anisotropic Γ-atom cov crux.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGammaAtom
+-- (S,J) Γ-atom piece (a): the inverse Gram square-root normaliser (CFC.sqrt-based).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
+-- (S,J) relative corank-step invariant: single-radial blow-up ∘ Schur block-elimination + prefactor.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
+-- (S,J) integral-level corank-block morse peel: the per-step charge (Γ-integral) via the Γ-atom.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPeel
+-- (S,J) PURE joint corank-block Morse peel: isotropic joint terminal + intermediate exponent-shift peel.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPure
+-- (S,J) STEP-3 unit block-elimination (general widths): det-1 unit factorisation + block-diag row/col split.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStep3
+-- (S,J) STEP-1 terminal (general widths): monomial × (unit ≥ 1) endpoint + its d-generic finiteness (option a).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTerminal
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
 
