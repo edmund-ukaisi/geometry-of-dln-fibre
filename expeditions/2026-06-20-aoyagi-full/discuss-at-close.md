@@ -1952,3 +1952,16 @@ the cite-only-S2 machinery is proven to close a full headline. The FULLY-GENERAL
 R1-UPPER peel #47 + D1 ∀-L modulo #120), but the hard "does the from-scratch approach even work end-to-end"
 question is now answered YES, in honest verified Lean. Given this, a possible close-phase option (operator's call):
 land the L=2 headline as a citable milestone result (PR to dev?) independent of the longer general-L grind.
+
+## 49. Peel faithful-def fork adjudicated to Candidate B (ladder re-scope, destination unchanged, proceed-on-silence).
+The (S,J)-peel's `gammaPeelIntegral` def had a fork: (A) the controller's literal point-3 — bake the shear-image
+domain into the per-step def; vs (B) `sjrescope`'s choice — the RAW per-chart contribution `∫∫ frobSq(A₀·Q)^{−c'}`
+over `matBox ∩ pivotChart ρ κ`, with the cross-coupled shear form kept as the SEPARATE banked bridge
+`frobSq_schur_block_split`. A decorrelated Codex xhigh consult + the fidelity reviewer independently adjudicated
+toward **B**: it is faithful and definable, and it makes `sjBoundaryPeel` a closable pure-cover inequality, whereas
+A risks making `sjBoundaryPeel` false-as-stated or unstatable. This is a **ladder re-scope** (how the peel's
+per-step object is defined), NOT a destination change — the peel still proves `RouteMBoxThresholdFinite M` ∀L =
+`rlct ≥ ½·minAdm`, and the cross-coupling is preserved (as the bridge, not dropped). **For operator:** flagged for
+awareness; I judged B correct and am proceeding (proceed-on-silence). No soundness risk — both the reviewer and a
+decorrelated model confirmed B is a legitimate faithful re-scope; the two named sorries (`sjBoundaryPeel`,
+`sjJointResolution`) carry faithful statements.
