@@ -21,6 +21,40 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 active-containment rank-cut residual-source bridge
+
+Reproduction:
+
+```text
+reproduction-a2-active-containment-rank-cut-residual-source.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has active-containment siblings of the endpoint-prior rank-cut
+residual-source wrappers:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower_priorDensity_upper_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower_priorDensity_upper_of_sourceDensity_continuousAt_lt_top_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+The active endpoint-patch containment is on the outer shrink `W`; the
+rank-cut residual-source result lives on the inner shrink `V ⊆ W`.  The
+strict wrapper now leaves active containment as the geometric terminal input
+and produces theta-side positivity plus source/prior density bounds.
+
+Boundary: active containment, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, and RLCT remain outside this rung.
+
 ## 2026-07-07 A2 active-containment prior readback same-shrink adapter
 
 Reproduction:

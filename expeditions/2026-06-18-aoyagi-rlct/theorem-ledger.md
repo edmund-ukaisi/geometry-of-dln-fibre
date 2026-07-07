@@ -4,6 +4,20 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Active-containment rank-cut residual-source note, 2026-07-07: the rank-cut
+residual-source bridge now has active-containment siblings.  The base sibling
+uses explicit
+`endpointPatch ⊆ activeWriteback '' (activeChart '' (W ∩ sourceCylinder))`
+on the outer shrink `W`, obtains a finite determinant scalar from the active
+prior-readback adapter, sharpens the readback domination to the inner rank-cut
+shrink `V`, and feeds the existing residual-source socket.  The produced
+product-positivity sibling constructs a positivity shrink first; the strict
+density sibling also produces the source-density lower and prior-density upper
+a.e. bounds from continuity and strict basepoint inequalities.  Active
+containment itself, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, and RLCT remain
+outside this rung.
+
 Active-containment prior readback same-shrink note, 2026-07-07: the active
 endpoint-patch containment prior readback theorem now has a same-shrink
 adapter targeting the returned `coordinateSourceMeasure.restrict V`.  The

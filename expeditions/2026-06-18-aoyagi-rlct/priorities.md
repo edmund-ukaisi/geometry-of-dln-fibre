@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, active-containment rank-cut residual-source bridge
+
+Decision: replace the endpoint-reference equality socket in the rank-cut
+residual-source wrappers by an explicit active endpoint-patch containment
+socket, while keeping the endpoint/reference transport claim out of scope.
+
+The new wrappers use the active same-shrink prior-readback adapter on the
+outer shrink `W`, then use rank-cut support
+`rankCutSource ⊆ sourceChart '' V` with `V ⊆ W` to feed the existing
+rank-cut residual-source handoff on the inner shrink `V`.  Two produced
+wrappers remove the theta-side product-residual positivity input and then the
+terminal source/prior density-bound inputs.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-active-containment-rank-cut-residual-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional on active containment.  It does not prove active
+containment, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, active-containment prior readback same-shrink adapter
 
 Decision: before adding another rank-cut wrapper, remove the local measure-
