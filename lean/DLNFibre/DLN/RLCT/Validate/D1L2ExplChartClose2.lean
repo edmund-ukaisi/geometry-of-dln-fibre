@@ -314,4 +314,129 @@ theorem contDiff_qResid (C₀ : BlockParamsL2 H r)
   rw [hfun]
   exact (hProd1.add hProd2).sub contDiff_const
 
+/-! ## `qResid` readbacks feeding the germ -/
+
+/-- Coordinate readback: `qResid` at `i` is the `₂₂`-residual matrix at `finProdFinEquiv.symm i`. -/
+theorem qResid_apply (C₀ : BlockParamsL2 H r) (Br022 : Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (py : (Fin (nRegL2 H r) → ℝ)
+      × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))) (i) :
+    (qResid I K J hI hK hJ C₀ Br022 G py) i
+      = qResidMat I K J hI hK hJ C₀ Br022 G py
+          (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2 := rfl
+
+/-- `∑ᵢ qResid² = ∑_{a,b} (qResidMat a b)²` (flatten reindex by `finProdFinEquiv`). -/
+theorem qResid_sq_sum (C₀ : BlockParamsL2 H r) (Br022 : Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (py : (Fin (nRegL2 H r) → ℝ)
+      × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))) :
+    ∑ i, (qResid I K J hI hK hJ C₀ Br022 G py) i ^ 2
+      = ∑ a : Fin (H 0 - r), ∑ b : Fin (H 2 - r),
+          (qResidMat I K J hI hK hJ C₀ Br022 G py a b) ^ 2 := by
+  simp_rw [qResid_apply]
+  rw [Equiv.sum_comp finProdFinEquiv.symm
+    (fun p : Fin (H 0 - r) × Fin (H 2 - r) =>
+      (qResidMat I K J hI hK hJ C₀ Br022 G py p.1 p.2) ^ 2), Fintype.sum_prod_type]
+
+/-- `qBlock` at a split point `splitMP x` re-centres to `blockFlatEquiv_L2 x + C₀`. -/
+theorem qBlock_splitMP (C₀ : BlockParamsL2 H r) (x : Fin (flatDim H) → ℝ) :
+    qBlock I K J hI hK hJ C₀ (splitMP I K J hI hK hJ x)
+      = blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀ := by
+  rw [qBlock, ← splitHomeoL2_apply, Homeomorph.symm_apply_apply]
+
+/-! ## The `hchart` germ (the wall): `F =ᶠ ∑p² + ∑qₑ²` after the split reindex -/
+
+/-- **The Schur readout germ.** Near the flat origin, the block-chart Frobenius readout `F` splits into
+the regular `∑p²` (the three regular blocks = the `splitMP` reg coordinates, `reg_readback`, shifts
+zero via the corner facts) plus the `₂₂` Schur residual `∑qₑ²` (the `M11⁻¹ → G` swap is valid near the
+base, where the product pivot is close to `M11₀ = C₀.2.toBlocks₁₁`). -/
+theorem schurReadout_germ_eq (C₀ : BlockParamsL2 H r)
+    (Br : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (hGinv : G =ᶠ[𝓝 (C₀.2.toBlocks₁₁)] (fun M => M⁻¹))
+    (h11 : C₀.2.toBlocks₁₁ = Br.toBlocks₁₁)
+    (h12 : C₀.2.toBlocks₁₂ = Br.toBlocks₁₂)
+    (h21 : C₀.1.toBlocks₂₁ = Br.toBlocks₂₁) :
+    schurReadoutF_L2 H r I K J hI hK hJ C₀ Br
+      =ᶠ[𝓝 (0 : Fin (flatDim H) → ℝ)]
+        fun x => (∑ i, (splitMP I K J hI hK hJ x).1 i ^ 2)
+          + ∑ i, (qResid I K J hI hK hJ C₀ Br.toBlocks₂₂ G (splitMP I K J hI hK hJ x)) i ^ 2 := by
+  -- the `M11` block of `blockFlatEquiv_L2 x + C₀` is continuous and equals `C₀.2.toBlocks₁₁` at `0`.
+  have hbc : Continuous (fun x => blockFlatEquiv_L2 H r I K J hI hK hJ x) :=
+    (blockFlatEquiv_L2 H r I K J hI hK hJ).continuous
+  have hcont2 : Continuous (fun x => (blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀).2) :=
+    continuous_snd.comp (hbc.add continuous_const)
+  have hM11cont : Continuous
+      (fun x => (blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀).2.toBlocks₁₁) :=
+    continuous_matrix (fun i j => hcont2.matrix_elem (Sum.inl i) (Sum.inl j))
+  have hM11val : (blockFlatEquiv_L2 H r I K J hI hK hJ (0 : Fin (flatDim H) → ℝ)
+      + C₀).2.toBlocks₁₁ = C₀.2.toBlocks₁₁ := by rw [map_zero, zero_add]
+  have hswap : ∀ᶠ x in 𝓝 (0 : Fin (flatDim H) → ℝ),
+      G ((blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀).2.toBlocks₁₁)
+        = ((blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀).2.toBlocks₁₁)⁻¹ := by
+    exact (hM11cont.tendsto' _ _ hM11val).eventually hGinv
+  -- a generic `Sum × Sum` sum-of-squares split.
+  have hsplit : ∀ (M : Matrix (Fin r ⊕ Fin (H 0 - r)) (Fin r ⊕ Fin (H 2 - r)) ℝ),
+      (∑ A, ∑ BB, (M A BB) ^ 2)
+        = (∑ k : Fin r, ∑ k' : Fin r, (M (Sum.inl k) (Sum.inl k')) ^ 2)
+          + (∑ k : Fin r, ∑ b : Fin (H 2 - r), (M (Sum.inl k) (Sum.inr b)) ^ 2)
+          + ((∑ a : Fin (H 0 - r), ∑ k : Fin r, (M (Sum.inr a) (Sum.inl k)) ^ 2)
+            + (∑ a : Fin (H 0 - r), ∑ b : Fin (H 2 - r), (M (Sum.inr a) (Sum.inr b)) ^ 2)) := by
+    intro M
+    rw [Fintype.sum_sum_type]
+    simp only [Fintype.sum_sum_type]
+    rw [Finset.sum_add_distrib, Finset.sum_add_distrib]
+  filter_upwards [hswap] with x hx
+  set Q := blockFlatEquiv_L2 H r I K J hI hK hJ x + C₀ with hQ
+  -- the `₂₂` residual sum, via `qResid_sq_sum` + `qBlock_splitMP` + the swap `hx`.
+  have hq22 : ∑ i, (qResid I K J hI hK hJ C₀ Br.toBlocks₂₂ G (splitMP I K J hI hK hJ x)) i ^ 2
+      = ∑ a : Fin (H 0 - r), ∑ b : Fin (H 2 - r),
+          ((Q.1.toBlocks₂₁ * Q.2.toBlocks₁₁⁻¹ * Q.2.toBlocks₁₂
+            + Q.1.toBlocks₂₂ * Q.2.toBlocks₂₂ - Br.toBlocks₂₂) a b) ^ 2 := by
+    rw [qResid_sq_sum]
+    refine Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ => ?_
+    simp only [qResidMat, qBlock_splitMP, ← hQ, hx]
+  -- the four block entries of `recoverProduct Q − Br` (reg = raw entry via shift-zero; `₂₂` = residual).
+  have hRw11 : ∀ (k k' : Fin r),
+      (recoverProduct H r Q - Br) (Sum.inl k) (Sum.inl k')
+        = (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₁ k k' := fun k k' => by
+    rw [Matrix.sub_apply, recoverProduct, Matrix.fromBlocks_apply₁₁,
+      show Br (Sum.inl k) (Sum.inl k') = C₀.2.toBlocks₁₁ k k' from
+        (congrFun (congrFun h11.symm k) k')]
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₁ k k' + C₀.2.toBlocks₁₁ k k'
+        - C₀.2.toBlocks₁₁ k k' = _
+    ring
+  have hRw12 : ∀ (k : Fin r) (b : Fin (H 2 - r)),
+      (recoverProduct H r Q - Br) (Sum.inl k) (Sum.inr b)
+        = (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b := fun k b => by
+    rw [Matrix.sub_apply, recoverProduct, Matrix.fromBlocks_apply₁₂,
+      show Br (Sum.inl k) (Sum.inr b) = C₀.2.toBlocks₁₂ k b from
+        (congrFun (congrFun h12.symm k) b)]
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b + C₀.2.toBlocks₁₂ k b
+        - C₀.2.toBlocks₁₂ k b = _
+    ring
+  have hRw21 : ∀ (a : Fin (H 0 - r)) (k : Fin r),
+      (recoverProduct H r Q - Br) (Sum.inr a) (Sum.inl k)
+        = (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₁ a k := fun a k => by
+    rw [Matrix.sub_apply, recoverProduct, Matrix.fromBlocks_apply₂₁,
+      show Br (Sum.inr a) (Sum.inl k) = C₀.1.toBlocks₂₁ a k from
+        (congrFun (congrFun h21.symm a) k)]
+    show (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₁ a k + C₀.1.toBlocks₂₁ a k
+        - C₀.1.toBlocks₂₁ a k = _
+    ring
+  have hRw22 : ∀ (a : Fin (H 0 - r)) (b : Fin (H 2 - r)),
+      (recoverProduct H r Q - Br) (Sum.inr a) (Sum.inr b)
+        = (Q.1.toBlocks₂₁ * Q.2.toBlocks₁₁⁻¹ * Q.2.toBlocks₁₂
+            + Q.1.toBlocks₂₂ * Q.2.toBlocks₂₂ - Br.toBlocks₂₂) a b := fun a b => by
+    rw [Matrix.sub_apply, recoverProduct, Matrix.fromBlocks_apply₂₂,
+      show Br (Sum.inr a) (Sum.inr b) = Br.toBlocks₂₂ a b from rfl, ← Matrix.sub_apply]
+  -- assemble.
+  have hM12 : (∑ k : Fin r, ∑ b : Fin (H (Fin.last 2) - r),
+        ((blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b) ^ 2)
+      = ∑ k : Fin r, ∑ b : Fin (H 2 - r),
+        ((blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b) ^ 2 := rfl
+  rw [schurReadoutF_L2, ← hQ, hsplit (recoverProduct H r Q - Br), hq22, reg_readback, hM12]
+  simp only [hRw11, hRw12, hRw21, hRw22]
+  abel
+
 end DLNFibre.DLN.RLCT
