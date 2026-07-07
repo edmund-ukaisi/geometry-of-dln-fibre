@@ -18,6 +18,18 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the rank-cut residual-source theorem now has a
+  readback-domination sibling.  Its continuation replaces explicit residual
+  zero-locus nullity by readback a.e.-measurability, domination of the
+  readback pushforward by `coordinateSourceMeasure.restrict V`, and
+  theta-side product-residual positivity a.e. on the same returned shrink.
+  The proof derives the zero-locus implication from source-image containment,
+  local left inverse, and determinant-chart fixed/product residual equality.
+  Concrete original-prior readback domination, same-shrink domination,
+  theta-side positivity, determinant/raw Haar transport, product-zero density
+  hypotheses, source-rank or analytic atlas coverage, normal crossings, pole
+  order, and RLCT remain outside this rung.
+
 - 2026-07-07, Thread 03: a generic map/readback zero-locus nullity handoff
   landed in `LocalMeasureHandoff`.  If `readback` is a.e.-measurable,
   `Measure.map readback μ` is scalar-dominated by a theta-side reference

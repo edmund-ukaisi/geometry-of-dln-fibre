@@ -6,6 +6,44 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut residual-source readback nullity wrapper - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-readback-nullity-wrapper.md
+```
+
+Lean now has the rank-cut residual-source wrapper:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_readback_map_le_smul_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It has the same returned rank-cut source data as the earlier
+`of_zero_set_null` theorem, but its continuation no longer asks for explicit
+zero-locus nullity.  Instead it asks for readback a.e.-measurability, readback
+pushforward domination by `coordinateSourceMeasure.restrict V`, and theta-side
+product-residual positivity a.e. on the same `V`.
+
+The proof uses a lightweight generic source-image helper to obtain the
+a.e. zero-locus implication from `rankCutSource ⊆ sourceChart '' V`, the local
+left inverse, and the fixed/product residual square-sum equality on
+determinant-chart source points.  It then applies the readback zero-locus
+socket and the existing residual-source-hypotheses wrapper.
+
+This still does not prove the concrete original-prior readback domination,
+same-shrink domination against `coordinateSourceMeasure.restrict V`,
+theta-side positivity, determinant/raw Haar transport, product-zero density
+hypotheses, source-rank or analytic atlas coverage, normal crossings, pole
+order, or RLCT extraction.
+
+Focused `lake env lean` for the touched file passed.  Focused module builds
+passed for the touched residual rank-cut bridge and downstream local-loss
+rank-cut bridge.  `scripts/sorries`, `git diff --check`, touched Lean-file
+marker scan, and direct axiom probes passed.  All three new declarations
+report only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 map/readback zero-locus nullity handoff - 2026-07-07
 
 Reproduction:

@@ -10,6 +10,49 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut residual-source readback nullity wrapper - 2026-07-07
+
+- **Statement.** The rank-cut residual-source theorem can replace its explicit
+  residual zero-locus-nullity continuation input by explicit readback
+  a.e.-measurability, readback pushforward domination by
+  `coordinateSourceMeasure.restrict V`, and theta-side product-residual
+  positivity a.e. on the same returned shrink.
+- **Tier.** A2 conditional residual-source handoff for the rank-cut
+  original-prior source.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as proving concrete original-prior
+  readback domination, same-shrink domination against
+  `coordinateSourceMeasure.restrict V`, theta-side product-residual
+  positivity, determinant/raw Haar transport, product-zero density hypotheses,
+  source-rank or analytic atlas coverage, normal crossings, pole order, or
+  RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for fixed-base p.13 residual
+  bookkeeping and Case 2 pp. 19-21 for the with-following product-residual
+  chart context.  The new proof is Lean-local measure and source-image
+  bookkeeping using existing residual comparison and rank-cut image theorems.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-readback-nullity-wrapper.md`.
+- **Reproduction check.** Controller checked the source-image/left-inverse
+  zero-locus implication.  Xhigh scouts `Gauss`, `Kuhn`, and `Ptolemy`
+  identified the exact hzero consumer, the pointwise zero-locus implication
+  route, and the remaining same-shrink domination gap.
+- **Lean targets.**
+  `originalEdgeFamilyPrior_rankCut_residual_zero_set_eq_zero_of_readback_map_le_smul_productResidual_pos_ae`,
+  `zero_set_ae_le_readback_preimage_zero_set_of_source_subset_image`, and
+  `exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_readback_map_le_smul_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean` for the touched file passed.  Focused
+  module builds passed for the touched residual rank-cut bridge and downstream
+  local-loss rank-cut bridge.  `scripts/sorries`, `git diff --check`, touched
+  Lean-file marker scan, and direct axiom probes passed.  All three
+  declarations report only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No original-prior readback-domination theorem, no
+  same-shrink domination theorem, no theta-side positivity theorem, no
+  determinant/raw Haar transport, no source/prior transport, no source-rank or
+  analytic atlas coverage, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 map/readback zero-locus nullity handoff - 2026-07-07
 
 - **Statement.** If `readback` is a.e.-measurable, the readback pushforward of

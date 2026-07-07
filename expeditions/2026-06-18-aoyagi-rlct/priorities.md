@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut residual-source readback nullity wrapper
+
+Decision: replace the explicit residual zero-locus-nullity input in the
+rank-cut residual-source wrapper by explicit readback-domination and
+theta-side product-residual positivity inputs.
+
+The new theorem still asks callers for:
+
+```text
+AEMeasurable readback (μprior.restrict rankCutSource),
+Measure.map readback (μprior.restrict rankCutSource)
+  <= Cread • coordinateSourceMeasure.restrict V,
+forall^ae z with respect to coordinateSourceMeasure.restrict V,
+  0 < productResidual(z).
+```
+
+It derives the zero-locus implication internally from the returned local image
+equality, local left inverse, and determinant-chart fixed/product residual
+comparison, then applies the readback zero-locus handoff and the existing
+residual-source wrapper.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-readback-nullity-wrapper.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional.  It does not prove concrete original-prior readback
+domination, same-shrink domination against `coordinateSourceMeasure.restrict V`,
+theta-side product-residual positivity, determinant/raw Haar transport,
+product-zero density hypotheses, source-rank or analytic atlas coverage,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, map/readback zero-locus nullity handoff
 
 Decision: extend the dominated zero-locus socket across the readback map before

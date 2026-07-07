@@ -64,6 +64,133 @@ theorem residualNegPowerIntegrableOn_mono
             (K := ℝ) W B U₀ hU₀ Cedge x)) ^ (-t))))).trans_lt
       (by simpa [residualNegPowerIntegrableOn] using hbase)
 
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+/-- Rank-cut original-prior residual zero-locus nullity from readback
+domination and theta-side product-residual positivity.
+
+This is only the exact Aoyagi-specialized socket for the rank-cut source.  The
+readback domination, theta-side positivity, and zero-locus implication are
+still explicit inputs. -/
+theorem originalEdgeFamilyPrior_rankCut_residual_zero_set_eq_zero_of_readback_map_le_smul_productResidual_pos_ae
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)]
+    [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [MeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {priorDensity :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ}
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    {coordinateSourceMeasure :
+      Measure
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)}
+    {c : ℝ≥0∞} :
+    let Θ :=
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let readback : EdgeFamily → Θ :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let sourceStratum : Set EdgeFamily :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := 2) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+    let rankCutSource : Set EdgeFamily :=
+      (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum
+    let μprior : Measure EdgeFamily :=
+      originalEdgeFamilyPrior
+        (V := reverseVertex W₂)
+        (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
+        priorDensity
+    let fixedResidual : EdgeFamily → ℝ := fun E ↦
+      aoyagiCoordinateSquareSum
+        (paperEndpointFixedBaseResidualBlockCoordinateMap
+          (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) E)
+    let productResidual : Θ → ℝ := fun z ↦
+      aoyagiCoordinateSquareSum
+        (case2PassiveThetaWithFollowingFactorProductResidualReadout
+          n hS hcont hnext z eNext e)
+    AEMeasurable readback (μprior.restrict rankCutSource) →
+    Measure.map readback (μprior.restrict rankCutSource) ≤
+      c • coordinateSourceMeasure.restrict V →
+    (∀ᵐ z ∂ coordinateSourceMeasure.restrict V, 0 < productResidual z) →
+    {E | fixedResidual E = 0} ≤ᵐ[μprior.restrict rankCutSource]
+      readback ⁻¹' {z | productResidual z = 0} →
+    (μprior.restrict rankCutSource) {E | fixedResidual E = 0} = 0 := by
+  intro Θ EdgeFamily readback p13SourceSet sourceStratum rankCutSource μprior
+    fixedResidual productResidual hread hmap hpos hzero_imp
+  exact
+    measure_zero_set_eq_zero_of_map_le_smul_of_ae_pos_of_ae_zero_imp
+      (μ := μprior.restrict rankCutSource)
+      (θμ := coordinateSourceMeasure.restrict V)
+      (c := c)
+      (readback := readback)
+      (f := fixedResidual)
+      (g := productResidual)
+      hread hmap hpos hzero_imp
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+/-- Source-image residual equality gives the a.e. zero-locus implication
+needed by the readback zero-locus handoff.
+
+The statement is deliberately measure/set theoretic: the Aoyagi-specific
+residual equality is supplied as `hsq`, so this helper does not force Lean to
+normalize the large Case 2 coordinate types. -/
+theorem zero_set_ae_le_readback_preimage_zero_set_of_source_subset_image
+    {Θ E : Type*} [MeasurableSpace E] {μ : Measure E}
+    {V : Set Θ} {source : Set E}
+    {sourceChart : Θ → E} {readback : E → Θ}
+    {f : E → ℝ} {g : Θ → ℝ}
+    (hsource_meas : MeasurableSet source)
+    (hsource_image : source ⊆ sourceChart '' V)
+    (hleft : ∀ z ∈ V, readback (sourceChart z) = z)
+    (hsq : ∀ z ∈ V, f (sourceChart z) = g z) :
+    {E | f E = 0} ≤ᵐ[μ.restrict source] readback ⁻¹' {z | g z = 0} := by
+  filter_upwards [ae_restrict_mem hsource_meas] with E hE hEzero
+  rcases hsource_image hE with ⟨z, hzV, rfl⟩
+  have hg_zero : g z = 0 := by
+    rw [← hsq z hzV]
+    exact hEzero
+  change g (readback (sourceChart z)) = 0
+  rw [hleft z hzV]
+  exact hg_zero
+
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
@@ -575,6 +702,283 @@ theorem exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p1
       (by intro E hE; exact hE)
       hzero
       (hresidual_rank rawHaar)
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.unusedVariables false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- This proof composes the zero-set readback socket with the existing residual-source wrapper.
+/-- With-following residual source hypotheses on the rank-cut
+p.13/readback-preimage patch, using readback domination and theta-side
+product-residual positivity instead of an explicit zero-locus-nullity input.
+
+The theorem still keeps the actual readback domination, theta-side positivity,
+and zero-locus implication as inputs to the returned continuation.  It does
+not prove prior transport, determinant/raw Haar transport, residual equality,
+source-rank coverage, normal crossings, pole order, or RLCT extraction. -/
+theorem exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_readback_map_le_smul_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [PolishSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [LocallyCompactSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [SecondCountableTopology
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (hF₀det : IsUnit ((z₀.2.submatrix id eNext.symm).det))
+    {t : ℝ}
+    (ht : 0 ≤ t)
+    (hcrit :
+      2 * t <
+        (((case2ResidualBlockPivotEntries n S (J + 1)).erase
+          (J + 2, J + 2)).card : ℝ) + 1)
+    {density :
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ) →
+        ℝ}
+    (hprior_cont :
+      ContinuousAt density
+        (case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z₀))
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G)
+    (hGdet :
+      G ⊆
+        case2PassiveThetaWithFollowingFactorDetSector
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    {r : ℕ} {rEdge : Fin 2 → ℕ}
+    (hprod : Module.finrank ℝ (LinearMap.range (paperTotalMap W₂ B₂)) = r) :
+    let Θ :=
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let sourceChart : Θ → EdgeFamily :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e
+    let readback : EdgeFamily → Θ :=
+      case2PassiveThetaWithFollowingFactorEndpointSourceChartReadback
+        W₂ B₂ n hS hnext hU₀ e
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let sourceStratum : Set EdgeFamily :=
+      paperEndpointFixedBaseSourceRankStratum
+        (K := ℝ) (N := 2) W₂ B₂ (fun E : EdgeFamily ↦ E) r rEdge
+    let rankEq : Set Θ :=
+      {z |
+        r + z.2.rank = rEdge 0 ∧
+          r + (case2SuccessorSelectedEntryMatrix n hS hnext z.1.yNext eNext).rank =
+            rEdge 1}
+    ∃ V : Set Θ,
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        (∀ z ∈ V, readback (sourceChart z) = z) ∧
+          Set.InjOn sourceChart V ∧ ContinuousOn sourceChart V ∧
+            MeasurableSet (p13SourceSet ∩ readback ⁻¹' V) ∧
+              IsOpen (p13SourceSet ∩ readback ⁻¹' V) ∧
+                sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V ∧
+                  MeasurableSet ((p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum) ∧
+                    (∀ z ∈ V, sourceChart z ∈ sourceStratum ↔ z ∈ rankEq) ∧
+                      sourceChart '' (V ∩ rankEq) =
+                        (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum ∧
+                        ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+                          let rankCutSource : Set EdgeFamily :=
+                            (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum
+                          let μprior : Measure EdgeFamily :=
+                            originalEdgeFamilyPrior
+                              (V := reverseVertex W₂)
+                              (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
+                              density
+                          let fixedResidual : EdgeFamily → ℝ := fun E ↦
+                            aoyagiCoordinateSquareSum
+                              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                                (K := ℝ) W₂ B₂ U₀ hU₀
+                                (fun E : EdgeFamily ↦ E) E)
+                          let productResidual : Θ → ℝ := fun z ↦
+                            aoyagiCoordinateSquareSum
+                              (case2PassiveThetaWithFollowingFactorProductResidualReadout
+                                n hS hcont hnext z eNext e)
+                          ∀ (coordinateSourceMeasure : Measure Θ) (Cread : ℝ≥0∞),
+                            AEMeasurable readback (μprior.restrict rankCutSource) →
+                            Measure.map readback (μprior.restrict rankCutSource) ≤
+                              Cread • coordinateSourceMeasure.restrict V →
+                            (∀ᵐ z ∂ coordinateSourceMeasure.restrict V,
+                              0 < productResidual z) →
+                            (∀ᵐ E ∂ μprior.restrict rankCutSource,
+                              0 < fixedResidual E) ∧
+                              residualNegPowerIntegrableOn
+                                (W := W₂) (B := B₂) (U₀ := U₀) (hU₀ := hU₀)
+                                (fun E : EdgeFamily ↦ E)
+                                rankCutSource μprior t := by
+  intro Θ RawTuple EdgeFamily sourceChart readback p13SourceSet sourceStratum rankEq
+  rcases
+      (by
+        simpa [Θ, RawTuple, EdgeFamily, p13SourceSet, sourceStratum, rankEq] using
+          exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_restrict_p13SourceSet_inter_readback_preimage_inter_sourceRankStratum_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_continuousAt_priorDensity_of_subset_detSector
+            (τ := τ) W₂ B₂ n (S := S) (J := J) hS hcont hnext
+            (U₀ := U₀) (hU₀ := hU₀) eNext e z₀ hpivot₀ hF₀det
+            (t := t) ht hcrit (density := density) hprior_cont
+            G hGopen hz₀G hGdet (r := r) (rEdge := rEdge) hprod) with
+    ⟨V, hVopen, hz₀V, hVG, hleft, hsource_inj, hsource_contOn,
+      hpiece_meas, hpiece_open, himage, hrankPiece_meas, hiffV,
+      himage_rank, hresidual_source⟩
+  have hleft' : ∀ z ∈ V, readback (sourceChart z) = z := by
+    intro z hz
+    have hz_fields :
+        (Case2PassiveThetaWithFollowingFactor.mk
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) (n := n) (S := S) (J := J)
+            z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+            z.1.yNext z.2) ∈ V := by
+      simpa [Case2PassiveThetaWithFollowingFactor.mk,
+        Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hz
+    simpa [sourceChart, readback,
+      case2PassiveThetaWithFollowingFactorEndpointSourceChart,
+      Case2PassiveThetaWithFollowingFactor.mk,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hleft z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+        z.1.yNext z.2 hz_fields
+  have hiffV' : ∀ z ∈ V, sourceChart z ∈ sourceStratum ↔ z ∈ rankEq := by
+    intro z hz
+    have hz_fields :
+        (Case2PassiveThetaWithFollowingFactor.mk
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) (n := n) (S := S) (J := J)
+            z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+            z.1.yNext z.2) ∈ V := by
+      simpa [Case2PassiveThetaWithFollowingFactor.mk,
+        Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+        Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+        Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using hz
+    simpa [sourceChart, sourceStratum, rankEq,
+      Case2PassiveThetaWithFollowingFactor.mk,
+      Case2PassiveTheta.A1passive, Case2PassiveTheta.F2,
+      Case2PassiveTheta.A3passive, Case2PassiveTheta.Ctop,
+      Case2PassiveTheta.F3, Case2PassiveTheta.yNext] using
+      hiffV z.1.A1passive z.1.F2 z.1.A3passive z.1.Ctop z.1.F3
+        z.1.yNext z.2 hz_fields
+  refine
+    ⟨V, hVopen, hz₀V, hVG, hleft', hsource_inj, hsource_contOn,
+      hpiece_meas, hpiece_open, himage, hrankPiece_meas, hiffV',
+      himage_rank, ?_⟩
+  intro rawHaar hrawHaar
+  dsimp only
+  intro coordinateSourceMeasure Cread hread hread_map_le hproductResidual_pos_ae
+  let rankCutSource : Set EdgeFamily :=
+    (p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum
+  let μprior : Measure EdgeFamily :=
+    originalEdgeFamilyPrior
+      (V := reverseVertex W₂)
+      (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
+      density
+  let fixedResidual : EdgeFamily → ℝ := fun E ↦
+    aoyagiCoordinateSquareSum
+      (paperEndpointFixedBaseResidualBlockCoordinateMap
+        (K := ℝ) W₂ B₂ U₀ hU₀ (fun E : EdgeFamily ↦ E) E)
+  let productResidual : Θ → ℝ := fun z ↦
+    aoyagiCoordinateSquareSum
+      (case2PassiveThetaWithFollowingFactorProductResidualReadout
+        n hS hcont hnext z eNext e)
+  have hsource_subset_image : rankCutSource ⊆ sourceChart '' V := by
+    intro E hE
+    rw [himage]
+    exact hE.1
+  have hsq : ∀ z ∈ V, fixedResidual (sourceChart z) = productResidual z := by
+    intro z hzV
+    have hdet_z :
+        (case2PassiveThetaWithFollowingFactorEndpointRetainedData
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e).detChart := by
+      exact
+        case2PassiveThetaWithFollowingFactorEndpointRetainedData_detChart
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+          (hGdet (hVG hzV))
+    simpa [sourceChart, fixedResidual, productResidual] using
+      aoyagiCoordinateSquareSum_paperEndpointFixedBaseResidualBlockCoordinateMap_case2PassiveThetaWithFollowingFactorEndpointSourceChart_eq_of_detChart
+        W₂ B₂ n hS hcont hnext hU₀ eNext e z hdet_z
+  have hfixed_zero_imp_product_zero_ae :
+      {E | fixedResidual E = 0} ≤ᵐ[μprior.restrict rankCutSource]
+        readback ⁻¹' {z | productResidual z = 0} :=
+    zero_set_ae_le_readback_preimage_zero_set_of_source_subset_image
+      (μ := μprior) (V := V) (source := rankCutSource)
+      (sourceChart := sourceChart) (readback := readback)
+      (f := fixedResidual) (g := productResidual)
+      hrankPiece_meas hsource_subset_image hleft' hsq
+  have hzero :
+      (μprior.restrict rankCutSource) {E | fixedResidual E = 0} = 0 := by
+    simpa [rankCutSource, μprior, fixedResidual, productResidual] using
+      originalEdgeFamilyPrior_rankCut_residual_zero_set_eq_zero_of_readback_map_le_smul_productResidual_pos_ae
+        (τ := τ) W₂ B₂ n (S := S) (J := J) hS hcont hnext
+        (U₀ := U₀) (hU₀ := hU₀) eNext e
+        (priorDensity := density) (r := r) (rEdge := rEdge) V
+        (coordinateSourceMeasure := coordinateSourceMeasure) (c := Cread)
+        hread hread_map_le hproductResidual_pos_ae hfixed_zero_imp_product_zero_ae
+  simpa [rankCutSource, μprior, fixedResidual] using
+    hresidual_source rawHaar hzero
 
 end PaperEndpointFixedBaseRegularCoordinateSourceData
 
