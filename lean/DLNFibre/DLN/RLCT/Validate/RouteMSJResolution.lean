@@ -683,8 +683,8 @@ per-`A'` integral measurability): (1) `routeMLayerBoxIntegral_front_split`, then
 `volume ((matBox ∩ {rank < 1}) ×ˢ box) = 0`; (3) `iUnion_prod_const` + `lintegral_iUnion_le` at the
 product level → `∑_{ρ,κ:t=1} ∫_{(matBox ∩ pivotChart) ×ˢ box}`; (4) `setLIntegral_prod_symm` back =
 `∑ gammaPeelIntegral M 1 ρ κ`; (5) `Finset.single_le_sum` embeds the `t = 1` term into the `Icc 1 min`
-sum (`1 ∈ Icc 1 min` from `min ≥ 1`). Left a sorry here to avoid an unfinished-plumbing broken build;
-the statement is faithful and the path is closed to the two banked lemmas. -/
+sum (`1 ∈ Icc 1 min` from `min ≥ 1`). CLOSED 2026-07-07 (`genm-sjbpeel`): the product route above, atop
+the banked `frontBox_pivotCover_le` + `minAdm_cons_zero`. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     routeMLayerBoxIntegral M (c' : ℝ) 1
