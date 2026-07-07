@@ -58,24 +58,27 @@ adapt with state" reach — do NOT defer it. Reserve "roadmap + operator" for GE
 unargued extensions, not for large-but-standard builds. When I catch myself thinking "too big to start,"
 that is the cue to break it down and START, not to hold. Be ambitious.
 
-**Current critical path (A, re-grounded 2026-07-06 — corrects the stale "no research walls" map).**
-- **L=2 headline milestone (near-term, bounded).** Reduces sorry-free to ONE crux: the explicit chart
-  `Φ_expl` (`d1ge_L2_hAtV_explicit`, `D1L2ExplicitCoreProducer.lean`) — a ~500 LoC build,
-  splitwit-verified bounded (split trivial `u≡1`; `hchart` Φ a bounded monomial-Jacobian diffeo,
-  `det J_Φ = ±detX·detM11³`). The D1 route-A body (SchurProductFactor/SchurRankZero/b1-b3/D1L2 assembly)
-  is BANKED but **un-integrated on canonical** (on the `genm-d1chart` lineage) — integration debt.
-- **General-L R1-UPPER = THE MOUNTAIN (the long pole).** `RouteMBoxThresholdFinite M` ∀L
-  (= `rlct ≥ ½·codim`). BUILT: L=2 ∀M, the `(r,r,p)` corank family ∀r∀p, some L≥3 (`(4,4,2,2)`). The open
-  piece — general-L multi-active-boundary staircases (paradigm `(3,3,3,3)`, codim `[1,2,3]`) — has **NO
-  shortcut** (two decorrelated exact-algebra passes: the two-matrix machinery undershoots `½·minAdm` by a
-  factor of 2). It needs Aoyagi's genuine **simultaneous rank-flag blow-up**. This is ESTABLISHED
-  mathematics ⇒ **BUILD it, do NOT cite** (citing = `cited_aoyagi_dln`, which is the pre-expedition state —
-  R1 from-scratch IS the hero deliverable). Decomposed: (a) arity-recursive shifted-exponent layer-peel
-  mirroring `minAdmRec`; (b) joint no-double-count domination reaching additive `½·minAdm`; (c) the
-  cross-boundary measure handle. Design-first (Codex-decorrelated), then formalise; the single hardest build.
-- **General-L R1-LOWER:** bounded (genm-l3interior verdict BOUNDED; interior is a monomial generalization);
-  being charged. **D1 ∀-L ≥-leg:** the chart machinery lifts modulo **#120** (the L≥3 grouped diffeo /
-  `deepest_gauge_squeeze_exists`) — a genuine open. **Then** global assembly → the general headline.
+**Current critical path (A, re-grounded 2026-07-07 — L=2 headline DONE; #120 de-risked; NO research wall remains).**
+- **L=2 headline — ✅ DONE (UPDATE-646).** `aoyagi_learning_coefficient_L2` PROVEN sorry-free, unconditional,
+  cite-only-S2, controller-verified (clean-four `#print axioms` = `[propext, Classical.choice, Quot.sound,
+  monomial_rlct]`). The whole D1 + `Φ_expl` + S2 + value chain closes end-to-end at L=2 ∀ widths/ranks; the
+  `d1ge_L2_hAtV_explicit` crux is closed. This is the validated template the general-L legs lift from.
+- **General-L R1-UPPER = THE MOUNTAIN (the long pole).** `RouteMBoxThresholdFinite M` ∀L (= `rlct ≥ ½·codim`),
+  via the (S,J) integrated blow-up peel. Contract RE-SCOPED sorry-free (UPDATE-647: t=0 circularity killed +
+  per-`(t,ρ,κ)` signature + faithful integrand; cover + exact block identity + corank atom banked). TWO named
+  sorries: `sjBoundaryPeel` (cover+measure-plumbing, Codex-confirmed TRUE, sharp 5-step route — IN FLIGHT
+  `sjbpeel`) + `sjJointResolution` (per-`(t,ρ,κ)` finiteness — the DEEPEST remaining grind, consumes the block
+  identity + corank atom into the general-L recursion). Established math (Aoyagi's simultaneous rank-flag
+  blow-up) ⇒ BUILD, do NOT cite.
+- **D1 ∀-L ≥-leg — #120 RE-ADJUDICATED: NOT a wall (UPDATE-648, controller-verified).**
+  `deepest_gauge_squeeze_exists` is a bounded structural lift, provable AS WRITTEN via the IFT route
+  (`dΨ(0)=I` re-verified L=3 scalar/non-scalar + L=4; the L≥3 core-dependent `K_k` doesn't block it). Gap =
+  3 named sorries (`DeepestL2Wiring` 913/916 interior frames + 1058 `hstep2`) + a 4-sub-lemma runway (RLCT
+  bridge `rlctAtOn_comp_localDiffeo` ALREADY exists; loss-side sorry-free ∀L). Sub-lemma 1 (L-factor recursive
+  Schur LDU) IN FLIGHT `sjldu`. The cited-Aoyagi D1 fallback is NOT needed.
+- **General-L R1-LOWER:** bounded (interior monomial generalization). **Then** global assembly → the general
+  headline. **No flagged research wall remains** — the honest ETA is formalisation LABOR (the peel's
+  measure-plumbing + #120's dependent-width Schur-LDU cast-grind), not unresolved mathematics.
 
 **Speed / executive cadence (operator, 2026-07-06).** Be THOUGHTFUL about pace; match cadence to real
 progress. At this stage (much banked + de-risked; clarity high; the central hard builds R1-UPPER/Φ_expl
