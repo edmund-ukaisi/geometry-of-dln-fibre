@@ -21,6 +21,47 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 source-cylinder rank-cut residual-source bridge
+
+Reproduction:
+
+```text
+reproduction-a2-source-cylinder-rank-cut-residual-source.md
+reproduction-a2-c-one-rank-cut-residual-source.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has a source-cylinder support sibling of the active-containment
+rank-cut residual-source bridge and a C-one support sibling over it:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower_priorDensity_upper_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_cOneReadout_mem_signedBox_sourceDensity_lower_priorDensity_upper_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It replaces the explicit endpoint-patch active-containment socket by
+
+```text
+rankCutSource subset sourceChart '' (W cap sourceCylinder).
+```
+
+The existing source-cylinder prior readback package proves the raw endpoint
+containment internally, and the rank-cut proof then sharpens the resulting
+readback domination from the ambient source-neighborhood target to the inner
+rank-cut shrink `V`.  The C-one wrapper derives this support from pointwise
+`cOneReadout E in signedBox` on `rankCutSource`, using the local left inverse
+and the rank-cut image equality.
+
+Boundary: this does not prove source-cylinder support, C-one signed-box
+support, determinant/raw Haar transport, source-prior transport, source-rank
+or atlas coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-07-07 A2 active-containment rank-cut residual-source bridge
 
 Reproduction:

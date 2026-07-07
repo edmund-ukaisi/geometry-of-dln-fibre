@@ -4,6 +4,22 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Source-cylinder/C-one rank-cut residual-source note, 2026-07-07: the rank-cut
+residual-source bridge now has a sibling whose terminal support socket is
+`rankCutSource ⊆ sourceChart '' (W ∩ sourceCylinder)`.  The proof uses the
+existing source-cylinder original-prior readback package on the outer shrink
+`W`, which discharges the raw endpoint active-containment step internally.
+The resulting readback domination is over the ambient source-neighborhood
+target; the rank-cut image equality gives `rankCutSource ⊆ sourceChart '' V`,
+and `V ⊆ W ⊆ G` lets the generic support-sharpening lemma retarget it to
+`coordinateSourceMeasure.restrict V`.  A C-one sibling derives source-cylinder
+support from a supplied pointwise condition
+`∀ E ∈ rankCutSource, cOneReadout E ∈ signedBox`, using the rank-cut image
+equality, the local left inverse, and `V ⊆ W`.  Source-cylinder support
+itself, C-one signed-box support, determinant/raw Haar transport, source-prior
+transport, source-rank/atlas coverage, normal crossings, pole order, and RLCT
+remain outside this rung.
+
 Active-containment rank-cut residual-source note, 2026-07-07: the rank-cut
 residual-source bridge now has active-containment siblings.  The base sibling
 uses explicit

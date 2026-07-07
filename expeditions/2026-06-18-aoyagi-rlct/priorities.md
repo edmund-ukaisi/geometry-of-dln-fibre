@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, source-cylinder rank-cut residual-source bridge
+
+Decision: add a rank-cut residual-source wrapper whose terminal support input
+is direct source-cylinder support for the rank-cut chart piece, rather than
+explicit endpoint-patch active containment, plus a C-one support wrapper over
+that source-cylinder bridge.
+
+The new wrapper asks for
+
+```text
+rankCutSource subset sourceChart '' (W cap sourceCylinder)
+```
+
+on the outer shrink `W`.  It calls the existing source-cylinder prior readback
+package, which internally proves the raw endpoint active-containment step, and
+then sharpens the readback domination to the inner rank-cut shrink `V` using
+the rank-cut image equality and `V subset W subset G`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-cylinder-rank-cut-residual-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional on source-cylinder support.  It does not prove the
+C-one signed-box condition, determinant/raw Haar transport, source-prior
+transport, source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+The C-one wrapper proves only the conversion from a supplied pointwise
+`cOneReadout E in signedBox` condition on `rankCutSource` to source-cylinder
+support.
+
 ## Latest controller decision - 2026-07-07, active-containment rank-cut residual-source bridge
 
 Decision: replace the endpoint-reference equality socket in the rank-cut
