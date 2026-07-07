@@ -26,22 +26,32 @@ condition `IsUnit (A₀.submatrix ρ κ)` becomes the abstract-chart condition `
   Given `er.symm (Sum.inl i) = ρ i`, `ec.symm (Sum.inl j) = κ j`, the block `(A₀.reindex er ec).toBlocks₁₁`
   equals `A₀.submatrix ρ κ`; hence `IsUnit`-membership transfers between the two chart forms
   (`isUnit_toBlocks₁₁_reindex_iff`).
-* **`chartLoss_schur_split`** — the composed per-chart pointwise identity: on the pivot chart (the
-  reindexed pivot block invertible), the raw loss decomposes into the pivot energy `frobSq (A · Q̃_p)`
-  plus the cross-coupled corank residual `frobSq (C · Q̃_p + Γ · Q_b)`, `Γ = schurCompl` the corank
-  block — the banked `frobSq_schur_toBlocks_split` transported to the raw front factor.
+* **`matReindexEquiv` / `measurePreserving_matReindexEquiv` / `matReindexEquiv_preimage_chart`** — the
+  MEASURE half. The measure-preserving matrix block-reindex `(Fin M₀ → Fin M₁ → ℝ) ≃ᵐ (ρ-block →
+  κ-block → ℝ)` (`arrowCongr'` on rows/columns, MP by `volume_preserving_arrowCongr'`) and the chart
+  preimage: `matReindexEquiv ⁻¹' (genBox ∩ {IsUnit toBlocks₁₁}) = matBox ∩ pivotChart ρ κ`.
+* **`chartInner_blockReindex_eq`** — the per-chart `lintegral` transport (the substantive measure
+  result). The inner front-factor chart integral of `gammaPeelIntegral` (over `matBox ∩ pivotChart ρ κ`,
+  fixed tail product `Q`) equals the block-coordinate integral over `genBox ∩ {IsUnit toBlocks₁₁}` of the
+  block-matrix loss `frobSq (B · Q.submatrix ec.symm id)^{−c'}` — via the MP block-reindex + the
+  integrand identity. `chartInner_blockReindex_eq_of_emb` is the `ρ,κ`-instantiated form (no supplied
+  equivs, via `blockSplitEquiv`).
 
-## What is NOT here (piece 2 remainder + pieces 3+, deferred — reported precisely)
+## What is NOT here (pieces 2-rest + 3, deferred — reported precisely)
 
-The MEASURE-level transport (the measure-preserving matrix block-reindex `Matrix (Fin M₀) (Fin M₁) ≃ᵐ
-Matrix ρ-block κ-block`, the box/chart domain transport, and the resulting
-`gammaPeelIntegral_blockReindex_eq`) is the remaining half of piece 2, deferred to the next tide. The
-`ρ,κ → er,ec` instantiation via the banked `sumSplit` is the piece-2 wrapper; the shear + block Fubini,
-the corank peel wired to the IH, and the `(S,J)` descent are pieces 3+. `sjJointResolution`
-(`RouteMSJResolution`) stays the single named sorry, UNTOUCHED.
+The pointwise Schur split composes at the call site (`frobSq_rmatMul_reindex` then the banked
+`frobSq_schur_toBlocks_split`, invertible pivot on `{IsUnit toBlocks₁₁}`) — it is not restated as a
+standalone lemma here (a giant explicit RHS over the `Matrix`/function defeq buys fragility, not
+content). What remains for later tides: welding that Schur split + the measure-preserving shear `D ↦ Γ`
+(`measurePreserving_shearSub`) + the corank-block radial peel (`matBox_corank_*`) onto
+`chartInner_blockReindex_eq` to expose and integrate `Γ`; the `(S,J)` `Nat`-measure descent to the
+monomial terminal (`sjLoss_terminal_lintegral_lt_top`); wiring the reduced coupling to the strong IH
+(`redChain t M`); and `gammaPeelIntegral < ⊤` itself. `sjJointResolution` (`RouteMSJResolution`) stays
+the single named sorry, UNTOUCHED.
 
-S2-FREE: pure matrix algebra (`frobSq`, `rmatMul`, `Matrix.mul_apply`, `Equiv.sum_comp`) + the banked
-Schur split; no measure theory, no `monomial_rlct`. Axiom footprint: the clean three
+S2-FREE: matrix algebra (`frobSq`, `rmatMul`, `Matrix.mul_apply`, `Equiv.sum_comp`) + the
+measure-preserving `arrowCongr'` reindex (`volume_preserving_arrowCongr'`,
+`setLIntegral_comp_preimage_emb`); no `monomial_rlct`. Axiom footprint: the clean three
 `[propext, Classical.choice, Quot.sound]`.
 -/
 
