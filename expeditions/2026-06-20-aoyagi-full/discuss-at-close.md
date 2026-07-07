@@ -2087,3 +2087,19 @@ build-vs-cite call (build the shared-support res-of-sing from scratch [multi-wee
 cite Aoyagi's principalisation for that stratum). IF (a), it's the multi-week carrier (labor). Non-blocking (I
 am adjudicating, not halting); the design-first discipline surfaced this BEFORE a wasted multi-week carrier
 build. The D1 #120 leg (hstep2, the Ψ_conj coupled bulk on a verified target) is unaffected + in flight.
+
+**RESOLVED → (a) BOUNDED — no scope-call; #52/#53 STAND (2026-07-07, `sjcorankadj` + decorrelated Codex xhigh,
+IDENTICAL verdict).** The general corank-≥2 shared-support recursion is the validated single-radial-per-block
+model ITERATED with a shared-divisor LEDGER, NOT a genuinely-new simultaneous principalisation. Aoyagi's coupled
+`diag(b)` resolution = a finite sequence of EXPLICIT single-radial blow-up charts (Cases 1&2, each already banked
+as `corankStep`/the pure peels) threaded by a SUPPORT MAP recording which exceptional variable `u` divides which
+generator — the ledger is the load-bearing bookkeeping (a naive fresh-variable-per-block descent UNDERCOUNTS, e.g.
+(3,3,4) 4→3; the shared ledger is exactly what fixes the undercount). This is NOT resolution-of-singularities from
+scratch: every chart is explicit and banked; the only new content is the ledger data structure + its no-undercount
+invariant. The `sjcarrier2` escalation was the ATOM-ROUTE hazard (the res-of-sing wall lives on the degenerate
+`gammaAtom` strata the atom route hits) over-generalised to the whole corank-≥2 core — the pure R-BLOWUP route
+does not touch it. **Net: the "R1-UPPER bounded-A, no scope-call" of #52/#53 is CONFIRMED and STANDS; the corank-≥2
+core is multi-week LABOR (the native SJState carrier + the shared-divisor ledger), not a build-vs-cite wall.** No
+operator action needed. `sjcarrier3` is charged on the native carrier WITH the shared-divisor ledger → close
+`sjJointResolution`. The design-first discipline again surfaced-and-retired the risk BEFORE any wasted multi-week
+build (this is the fourth route-confound caught cheaply — cf. lessons.md).
