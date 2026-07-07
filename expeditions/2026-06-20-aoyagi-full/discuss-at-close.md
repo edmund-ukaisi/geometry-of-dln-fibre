@@ -2048,3 +2048,22 @@ res-of-sing, templates+value banked) — the honest ETA-driver; (ii) STRATEGIC H
 the anisotropic Γ-atom is for the CLEAN full-rank slice ONLY; the degenerate strata MUST route to R-BLOWUP,
 never the atom's Gram principalisation (that path hits the B-wall). The in-flight R1ResolutionGeneral is the
 correct (A) architecture.
+
+## 54. Honest ETA: both final gates are multi-tide/multi-week mountains — bounded, but LONG (2026-07-07).
+Both remaining legs are down to their final sorry, both re-architected today onto CORRECT/validated routes, but
+both closes are substantial:
+- **R1-UPPER (`sjJointResolution`):** the pure R-BLOWUP is confirmed (verdict A, chart-algebra green-lit in
+  Lean, terminal = MONOMIAL×UNIT the (2,2,2) mechanism). STEP-3 banked. But the SJState recursion CARRIER
+  bookkeeping is a **MULTI-WEEK mountain** (Codex) — the biggest remaining piece.
+- **D1 #120 (`hstep2`):** the two-step `Θ∘Ψ_conj` is validated + lifts (Step Θ half-banked). Remaining: the
+  conj reg-absorb + Step Ψ_conj (the coupled bulk) + compose — a multi-tide.
+- Plus R1-LOWER (bounded, not yet charged this session) + the global assembly.
+**THREE route-refinements today** (R1-UPPER: Gram-c.o.v.→STEP-3, then STEP-3-isotropises→terminal-MONOMIAL×UNIT;
+D1: single-Ψ→two-step) were ALL caught by design-first/derivation/satisfiability checks — **NO bad Lean banked**;
+each re-aligned onto an accepted template (the (2,2,2) MONOMIAL×UNIT; the L2 two-step). So the closes are SUBTLE
+but BOUNDED (no wall; all deepest bricks built + verified; all risks/mis-architectures retired). **For operator
+(awareness, non-blocking — I am charging per GO-THE-DISTANCE):** the general headline's remaining ETA is now
+honestly dominated by these two mountains (the R1-UPPER carrier ~multi-week + the hstep2 conjugate bulk
+~multi-tide) + R1-LOWER + assembly. NO scope-call (build, not cite — the math is bounded, templates exist); this
+is a timeline flag, not a wall. The design-first discipline is keeping the closes honest (three confounds caught
+cheaply before big builds), which is why the ETA is longer than the optimistic "germs are trivial" reads.
