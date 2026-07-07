@@ -21,6 +21,40 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 rank-cut residual-source endpoint-prior produced density bounds
+
+Reproduction:
+
+```text
+reproduction-a2-rank-cut-residual-source-endpoint-prior-produced-density-bounds.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has a sibling to the produced-product-positivity bridge:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It fixes `epsilon` and `Kprior` before the shrink, uses continuity and strict
+basepoint inequalities to shrink into a neighborhood where the source lower
+and prior upper bounds hold, then applies the previous endpoint-prior bridge.
+The returned `W` gives the source lower a.e. bound on `baseJ.restrict W`; the
+returned rank-cut image equality gives `rankCutSource ⊆ sourceChart '' V`, so
+`V subset W` transfers the prior upper bound to the original-volume restricted
+rank-cut source.
+
+Boundary: endpoint-reference transport, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, and RLCT are still explicit or outside this rung.  The theorem still
+requires `epsilon != 0`; `epsilon != infinity` is derived from the strict
+lower bound and finite base source-density value.
+
 ## 2026-07-07 A2 rank-cut residual-source endpoint-prior produced product positivity
 
 Reproduction:

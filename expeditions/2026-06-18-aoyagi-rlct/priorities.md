@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior with produced density bounds
+
+Decision: fix `epsilon` and `Kprior` before choosing the local shrink and use
+continuity plus strict basepoint inequalities to produce the source-density
+lower and prior-density upper a.e. hypotheses consumed by the endpoint-prior
+rank-cut residual-source bridge.
+
+The proof shrinks the ambient open set to `G ∩ Gbounds`, where `Gbounds`
+comes from the eventual lower/upper bounds for
+`sourceImageDensity ∘ sourceChart` and `density ∘ sourceChart`.  The returned
+outer shrink `W` lies in `Gbounds`, so the source lower bound holds a.e. for
+`baseJ.restrict W`.  The returned inner shrink `V` satisfies
+`rankCutSource ⊆ sourceChart '' V`; combined with `V ⊆ W ⊆ Gbounds`, this
+gives the pointwise prior upper bound on the rank-cut source and hence the
+required a.e. bound for `originalVolume.restrict rankCutSource`.
+
+The theorem keeps endpoint-reference identity, determinant lower domination,
+and `epsilon ≠ 0` explicit.  The previous `epsilon ≠ ∞` input is derived from
+`epsilon < sourceImageDensity(sourceChart z0) < ∞`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-endpoint-prior-produced-density-bounds.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional.  It still does not prove endpoint-reference
+transport, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, or RLCT.  The next
+frontier should be endpoint/reference transport or source-prior transport only
+after a separate source-side calculation identifies the exact set-containment
+or measure identity being claimed.
+
 ## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior with produced product positivity
 
 Decision: compose the coordinate-source product-residual positivity theorem

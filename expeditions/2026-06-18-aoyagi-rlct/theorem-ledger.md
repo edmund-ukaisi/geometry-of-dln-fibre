@@ -4,6 +4,19 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Rank-cut endpoint-prior produced density-bounds note, 2026-07-07: the strongest
+endpoint-prior rank-cut residual-source bridge now has a sibling that produces
+the terminal source-density lower and prior-density upper a.e. hypotheses from
+continuity and strict basepoint inequalities.  The theorem fixes `ε` and
+`Kprior` before the shrink, obtains a neighborhood where
+`ε ≤ sourceImageDensity(sourceChart z)` and
+`density(sourceChart z) ≤ Kprior`, then calls the previous produced-product-
+positivity bridge inside `G ∩ Gbounds`.  The returned `W ⊆ Gbounds` gives the
+source lower a.e. bound, and `rankCutSource ⊆ sourceChart '' V` with
+`V ⊆ W ⊆ Gbounds` gives the prior upper a.e. bound.  Endpoint transport,
+determinant/raw Haar transport, source-prior transport, source-rank/atlas
+coverage, normal crossings, pole order, and RLCT remain outside this rung.
+
 Rank-cut endpoint-prior produced product-positivity note, 2026-07-07: the
 endpoint-prior rank-cut residual-source bridge now has a sibling that produces
 the theta-side product-residual positivity hypothesis internally.  It first
