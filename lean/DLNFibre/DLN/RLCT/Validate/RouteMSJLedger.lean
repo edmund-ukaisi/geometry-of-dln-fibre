@@ -39,17 +39,29 @@ The **common-divisor extraction** and its bridge to the banked terminal:
 * `sjLoss_terminal_lintegral_lt_top` : consequently, below the monomial threshold and given a
   dehomogenised chart generator (`∃ i₀, residual = 0`), the terminal loss integrand is `< ⊤`.
 
+## The Case-2 ledger step (grounded Phase-2 slice, `prependColumn`)
+
+The single-radial factor of the `(S,J)` step, lifted to the GENERATOR level (`prependColumn`,
+`genMonomial_prependColumn`, `sjLoss_prependColumn_one`): a fresh divisor `u₀` enters each generator
+to order `a i` (Case-2 full block `a ≡ 1`: every generator shares `u₀`), so the loss factors
+`sjLoss = u₀²·(reduced)` — the generator-level form of `corankStep`'s `frobSq((u•Δ)·Q) = u²·frobSq`,
+now with the sharing RECORDED (`sharedDivisorExp_prependColumn_one_zero`: fresh exponent `= 1`) and
+old divisors PRESERVED (`sharedDivisorExp_prependColumn_succ`: the passive-prefactor invariant) —
+answering Codex's "frobSq too coarse" for the radial-factor sub-step (the shared divisor IS visible
+at the generator level).
+
 ## What is NOT here (Phase 2/3, deferred — reported precisely)
 
-This module supplies the carrier and its terminal endpoint. It does NOT build the **relative
-corank-step invariant** — the pointwise `(S,J)` step that, at opaque widths, produces this support
-map from the raw loss (blow up one radial, unit block-eliminate, append the fresh divisor column to
-the ledger, preserving the passive-prefactor invariant). Decorrelated Codex (this thread) flagged
-the sharp risk: the banked frobSq-level bricks (`corankStep_prefactor`: `pref·frobSq =
-pref·u²·residual`) are TOO COARSE to recover the support matrix — shared-divisor faithfulness must
-be tracked **generator-by-generator**, not at the `frobSq` sum-of-squares level. That
-generator-level step, its recursion to this terminal, and the measure-theoretic assembly into
-`gammaPeelIntegral < ⊤` are the remaining mountain.
+This module supplies the carrier, its terminal endpoint, and the Case-2 radial ledger step. It does
+NOT build the block-elimination half of the step (the `Z`-independent unit reduction
+`Case111`/`Case222` at opaque widths, at the generator level — the corank DECREMENT that transforms
+the generators, not merely factors the radial), the Case-1 partial-block merge, the RECURSION down
+the `(S,J)` profile to the terminal, nor the measure assembly into `gammaPeelIntegral < ⊤`.
+Decorrelated Codex (this thread) flagged the sharp risk on those: the banked frobSq-level bricks
+(`corankStep_prefactor`: `pref·frobSq = pref·u²·residual`) are TOO COARSE to recover the support
+matrix through the block elimination — shared-divisor faithfulness there must be tracked
+**generator-by-generator**. That block-elimination step, the recursion, and the assembly are the
+remaining mountain.
 
 S2-FREE: pure monomial algebra + the banked terminal measure bricks (no `monomial_rlct`). Axiom
 footprint: the clean three `[propext, Classical.choice, Quot.sound]`.
@@ -253,6 +265,69 @@ theorem sjLoss_terminal_lintegral_lt_top (e : SJSupport ι d) (h : Fin d → ℕ
   · refine setLIntegral_congr_fun (by exact MeasurableSet.univ_pi (fun _ => measurableSet_Icc))
       (fun u _ => ?_)
     rw [sjLoss_terminal_integrand e h (c' : ℝ) u]
+
+/-! ## The generator-level radial step (Aoyagi Case-2 ledger update — grounded Phase-2 slice)
+
+The single-radial factor of the pure `(S,J)` step, LIFTED to the generator level (where the banked
+frobSq bricks are too coarse — decorrelated Codex, this thread). A fresh exceptional divisor `u₀`
+enters each generator `bᵢ` to order `a i` (Case-2 full block: `a ≡ 1`, every generator SHARES `u₀`;
+Case-1 partial block: `a i ∈ {0,1}`). The ledger update `prependColumn` records exactly which
+generators share the fresh divisor — the datum the `frobSq`-level `corankStep` loses. -/
+
+/-- **Prepend a fresh exceptional column with active-set pattern `a`.** The ledger update of a
+single radial blow-up: the fresh divisor `u₀` (new index `0`) divides `bᵢ` to order `a i`; old
+divisors shift to `Fin.succ` and are PRESERVED (the passive-prefactor invariant). -/
+def prependColumn (a : ι → ℕ) (e : SJSupport ι d) : SJSupport ι (d + 1) :=
+  fun i => Fin.cons (a i) (e i)
+
+omit [Fintype ι] [Nonempty ι] in
+/-- **The fresh divisor factors out of each generator.**
+`genMonomial (prependColumn a e) i (u₀ ::: u) = |u₀|^{a i} · genMonomial e i u`. -/
+theorem genMonomial_prependColumn (a : ι → ℕ) (e : SJSupport ι d) (i : ι)
+    (u₀ : ℝ) (u : Fin d → ℝ) :
+    genMonomial (prependColumn a e) i (Fin.cons u₀ u) = |u₀| ^ (a i) * genMonomial e i u := by
+  unfold genMonomial prependColumn
+  rw [Fin.prod_univ_succ]
+  simp only [Fin.cons_zero, Fin.cons_succ]
+
+/-- **The fresh divisor's shared exponent = the active-set minimum** `⨅ᵢ a i`. In Case-2 (`a ≡ 1`)
+this is `1` (fully shared); the ledger records the sharing that `frobSq` cannot see. -/
+theorem sharedDivisorExp_prependColumn_zero (a : ι → ℕ) (e : SJSupport ι d) :
+    sharedDivisorExp (prependColumn a e) 0 = Finset.univ.inf' Finset.univ_nonempty a := by
+  have hfun : (fun i : ι => prependColumn a e i 0) = a := by
+    funext i; simp only [prependColumn, Fin.cons_zero]
+  unfold sharedDivisorExp
+  rw [hfun]
+
+/-- **Old divisors are preserved (the passive-prefactor invariant).** The shared exponent of an old
+divisor `u_ℓ` is unchanged by the fresh blow-up: `sharedDivisorExp (prependColumn a e) ℓ.succ =
+sharedDivisorExp e ℓ`. The earlier exceptional coordinates are passive — never divided. -/
+theorem sharedDivisorExp_prependColumn_succ (a : ι → ℕ) (e : SJSupport ι d) (ℓ : Fin d) :
+    sharedDivisorExp (prependColumn a e) ℓ.succ = sharedDivisorExp e ℓ := by
+  have hfun : (fun i : ι => prependColumn a e i ℓ.succ) = (fun i => e i ℓ) := by
+    funext i; simp only [prependColumn, Fin.cons_succ]
+  unfold sharedDivisorExp
+  rw [hfun]
+
+/-- **The Case-2 fresh divisor is fully shared** (`a ≡ 1`): its common-divisor exponent is `1`, so
+it enters the terminal common monomial `g` to order exactly `1` — shared by all generators. The
+shared-divisor datum, recorded at the generator level (the provenance of `corankStep`'s `u²`). -/
+theorem sharedDivisorExp_prependColumn_one_zero (e : SJSupport ι d) :
+    sharedDivisorExp (prependColumn (fun _ => 1) e) 0 = 1 := by
+  rw [sharedDivisorExp_prependColumn_zero]; simp only [Finset.inf'_const]
+
+omit [Nonempty ι] in
+/-- **The Case-2 radial factor at the generator level** (`a ≡ 1`, the full block). The fresh radial
+`u₀`, shared by EVERY generator, factors the terminal loss as `u₀² · (reduced loss)` — the
+generator-level form of `corankStep`'s `frobSq((u•Δ)·Q) = u²·frobSq(Δ·Q)`, now with the sharing
+recorded (`sharedDivisorExp_prependColumn_one_zero`). -/
+theorem sjLoss_prependColumn_one (e : SJSupport ι d) (u₀ : ℝ) (u : Fin d → ℝ) :
+    sjLoss (prependColumn (fun _ => 1) e) (Fin.cons u₀ u) = u₀ ^ 2 * sjLoss e u := by
+  unfold sjLoss
+  rw [Finset.mul_sum]
+  refine Finset.sum_congr rfl (fun i _ => ?_)
+  rw [genMonomial_prependColumn]
+  simp only [pow_one, mul_pow, sq_abs]
 
 /-! ## Non-vacuity — the load-bearing shared-vs-fresh distinction (DATA-A) -/
 

@@ -1,7 +1,7 @@
 # Statement card — SJState shared-divisor SUPPORT MAP + terminal bridge (STEP-2 carrier, part 1)
 
 Thread `genm-sjcarrier3` (tide, off `origin/genm-sjcarrier2` @ `b05302d5`). Branch `genm-sjcarrier3`.
-Module: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLedger.lean` (291 LoC, new).
+Module: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJLedger.lean` (366 LoC, new).
 The R1-UPPER final gate → `sjJointResolution` (`RouteMSJResolution.lean:803`), pure R-BLOWUP route.
 
 > **Claim.** The `SJState` recursion carrier's **shared-divisor SUPPORT MAP** — the ledger the
@@ -41,6 +41,20 @@ The R1-UPPER final gate → `sjJointResolution` (`RouteMSJResolution.lean:803`),
   = 1` (shared `δ`) with `= 0` off it, and `sharedDivisorExp suppFresh ℓ = 0 ∀ℓ` (fresh). Witnesses
   `suppShared` (`[[1,1,0],[1,0,1]]`), `suppFresh` (`[[1,0,1,0],[0,1,0,1]]`) exhibited in-file.
 
+### The Case-2 generator-level radial step (grounded Phase-2 slice)
+
+- **`prependColumn a e`** : the ledger update of a single radial blow-up — a fresh divisor `u₀` (new
+  index `0`) divides `bᵢ` to order `a i`; old divisors shift to `Fin.succ`.
+- **`genMonomial_prependColumn`** : `genMonomial (prependColumn a e) i (u₀ ::: u) = |u₀|^{a i} ·
+  genMonomial e i u` (the fresh divisor factors out of each generator).
+- **`sjLoss_prependColumn_one`** : Case-2 full block (`a ≡ 1`) — `sjLoss (prependColumn (fun _ ↦ 1) e)
+  (u₀ ::: u) = u₀² · sjLoss e u`, the GENERATOR-level form of `corankStep`'s `frobSq((u•Δ)·Q) =
+  u²·frobSq(Δ·Q)`, with the sharing now recorded.
+- **`sharedDivisorExp_prependColumn_one_zero`** : the Case-2 fresh divisor's common-divisor exponent
+  `= 1` (fully shared) — the shared-divisor datum `frobSq` cannot see, at the generator level.
+- **`sharedDivisorExp_prependColumn_succ`** : old divisors' shared exponents are PRESERVED (the
+  passive-prefactor invariant — earlier exceptionals never divided).
+
 ## Proved / Assumed / Cited / Deferred
 
 - **Proved.** All the above, sorry-free. Forced `#print axioms` (scratch, force-elaborated):
@@ -54,12 +68,12 @@ The R1-UPPER final gate → `sjJointResolution` (`RouteMSJResolution.lean:803`),
   one generator; the terminal exponent `= Mval ≥ minAdm`, banked `minAdmRec_eq_minAdm`).
 - **Cited.** none new. Rides the banked `monomialIntegrand`/`monomialThreshold` (`Skeleton`),
   `terminal_monomial_mul_unit_lintegral_lt_top` (`RouteMSJTerminal`) — all clean-three.
-- **Deferred (Phase 2/3 — the remaining mountain, reported precisely).** The **relative corank-step
-  invariant** at opaque widths: the pointwise `(S,J)` step that PRODUCES this support map from the raw
-  loss (blow up one radial, `Z`-independent unit block-elimination, append the fresh divisor column to
-  the ledger, preserving the passive-prefactor invariant), its recursion to this terminal, and the
-  measure-theoretic assembly into `gammaPeelIntegral < ⊤`. **`sjJointResolution` UNTOUCHED** (still the
-  single named sorry at `RouteMSJResolution.lean:803`).
+- **Deferred (Phase 2/3 — the remaining mountain, reported precisely).** The **block-elimination
+  half** of the `(S,J)` step (the `Z`-independent unit reduction `Case111`/`Case222` at opaque widths,
+  at the GENERATOR level — the corank DECREMENT transforming the generators, not merely factoring the
+  radial), the Case-1 partial-block merge, the RECURSION down the `(S,J)` profile to this terminal, and
+  the measure-theoretic assembly into `gammaPeelIntegral < ⊤`. **`sjJointResolution` UNTOUCHED** (still
+  the single named sorry at `RouteMSJResolution.lean:803`).
 
 ## The precise remaining step (Phase 2 — the hardest bounded brick)
 
@@ -67,13 +81,20 @@ Decorrelated Codex (this thread, xhigh, `codex/carrier-design-{prompt,answer}.md
 encoding and named the sharp risk: **the banked frobSq-level bricks (`corankStep_prefactor`:
 `pref·frobSq = pref·u²·residual`, `RouteMSJCorankStep`) are TOO COARSE to recover the support matrix.**
 A sum-of-squares (`frobSq`) equality does NOT certify which generators share a divisor `u`;
-shared-divisor faithfulness must be tracked **generator-by-generator**. So Phase 2 must build a
-GENERATOR-LEVEL step lemma (shape, per Codex): a computable `radialUpdate : SJState → StepData →
-SJState` whose support copies old columns monotonically (old exponents never decrease — the
-passive-prefactor invariant) and appends exactly one fresh divisor column (the blown-up radial),
-asserting `loss_after = ∑ᵢ (genMonomial state'.support i u')²` with the recursion measure decreasing.
-Lifting `Case111`/`Case222` (the `(2,2,2)` block-elimination templates) to opaque widths at the
-GENERATOR level — not the `frobSq` level — is the true test.
+shared-divisor faithfulness must be tracked **generator-by-generator**.
+
+- **DONE this tide (the radial-factor sub-step):** `prependColumn` + `sjLoss_prependColumn_one` +
+  `sharedDivisorExp_prependColumn_{one_zero,succ}` are exactly that generator-level step FOR THE RADIAL
+  FACTOR — the fresh `u₀` shared across all generators gives `u₀²`, sharing recorded, old columns
+  preserved. This is the ledger-update shape Codex asked for, for the radial half.
+- **REMAINING (the block-elimination half):** the generator MAP under the `Z`-independent unit
+  reduction — how the corank block's Plücker/generator coordinates transform when `Case111`/`Case222`'s
+  det-1 row/col transforms reduce `D_J → [[1,O],[O,D_{J+1}]]` at opaque widths. This is the corank
+  DECREMENT (new generators from the Schur-reduced block), NOT the radial factor. Then: the `(S,J)`
+  RECURSION driving the ledger down to the terminal (`sjLoss_terminal_lintegral_lt_top`), and the
+  measure assembly bounding `gammaPeelIntegral` by the finite sum over charts of these terminal
+  integrals (via banked `pivotChartCover_matBox_le_sum` / `radial_morse_residual_power_le`). Lifting
+  `Case111`/`Case222` at the GENERATOR level (not `frobSq`) is the true test.
 
 ## Status
 
