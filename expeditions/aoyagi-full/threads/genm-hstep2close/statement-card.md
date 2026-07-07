@@ -14,8 +14,9 @@
 >   coordinates and, on the core (`.2.1`), decodes to the reduced-core tuple, left-shears each layer
 >   `S_s ↦ (1 − K_s q)·S_s`, and re-encodes. `contDiff_deepestPsiCoreShear`: given each `K_s` globally
 >   `ContDiff ⊤`, `Ψ` is globally `ContDiff ⊤`. `deepestPsiCoreShear_isLocalDiffeoAt`: given `K` also
->   vanishing at `0` (`hK0`) and strictly differentiable at `0` (`hKderiv`, existence only), packages the
->   three-way conjunction feeding `rlctAtOn_comp_localDiffeo`.
+>   vanishing at `0` (`hK0`), packages the three-way conjunction feeding `rlctAtOn_comp_localDiffeo`.
+>   (The strict-differentiability piece-3-apply needs is derived internally from `hKcd` via
+>   `ContDiffAt.hasStrictFDerivAt`, so the interface carries only `hKcd` + `hK0` — weakest usable form.)
 > - **Proved.** Both statements, unconditionally on `L`/`H`/`r`/`nGauge`, given the named `K` hypotheses.
 >   Route: rewrite `Ψ` to fully-CLE form (`paramsEquivFlatCLE_coe` + the inline `hsymm` coe-bridge — same
 >   as piece-3-apply); reg/spec ⇒ `contDiff_fst`, `contDiff_snd.comp contDiff_snd`; per-layer core shear
@@ -23,18 +24,23 @@
 >   left factor (`(matMulCLM …).contDiff.comp (const.sub (hKcd s))`) and the decoded-layer projection;
 >   `contDiff_pi'` assembles over layers; the CLE flattening re-encodes; `contDiff_fst.prodMk (… .prodMk …)`
 >   assembles the three coordinates. The capstone is a `⟨_, _, _⟩` of piece 2, piece-3-apply, basepoint.
-> - **Assumed.** `hKcd : ∀ s, ContDiff ℝ ⊤ (K_s ·)` (piece 2); additionally `hK0`, `hKderiv` (capstone).
->   All three are discharged by the concrete DLN cutoff coupling at assembly (pieces 4–5). `hKcd` is the
->   global-smoothness hypothesis the concrete cutoff `Kcoup` (bump × matrix-inverse coupling) supplies.
+> - **Assumed.** `hKcd : ∀ s, ContDiff ℝ ⊤ (K_s ·)` (piece 2); additionally `hK0 : ∀ s, K_s 0 = 0`
+>   (capstone). Both are discharged by the concrete DLN cutoff coupling at assembly (pieces 4–5). `hKcd`
+>   is the global-smoothness hypothesis the concrete cutoff `Kcoup` (bump × matrix-inverse coupling)
+>   supplies; the derivative-existence piece-3-apply needs is derived from `hKcd`, not assumed.
 > - **Cited.** None. Forced `#print axioms` (force-recompiled scratch) of both = `[propext,
 >   Classical.choice, Quot.sound]` (clean-three), no `sorryAx`.
-> - **Deferred.** The concrete DLN cutoff coupling `K` (piece 4) discharging `hKcd`/`hK0`/`hKderiv`, and
->   the `hstep2` assembly (piece 5) — the untwisting `Score = coreΦ ∘ coreAbsorb ∘ Ψ` via
+> - **Deferred.** The concrete DLN cutoff coupling `K` (piece 4) discharging `hKcd`/`hK0`, and the
+>   `hstep2` assembly (piece 5) — the untwisting `Score = coreΦ ∘ coreAbsorb ∘ Ψ` via
 >   `schur_product_ldu_rec` + the `Fin (H k)` reindex, composed through `rlctAtOn_comp_localDiffeo`.
 >   These two do NOT touch the `hstep2` sorry in `DeepestL2Wiring` yet — see the remaining-work note.
-> - **Status.** sorry-free; name-clash `rg`-gated (both names unique across `DLNFibre/`). NOT yet in the
->   aggregator `DLNFibre.lean` (single-writer — controller wires the import after `DeepestPsiApply`).
->   Awaiting reviewer fidelity check.
+>   `deepest_gauge_construction` therefore still carries `sorryAx` (the L≥3 `hstep2` sorry is unchanged).
+> - **Status.** sorry-free + **reviewed (fidelity PASS)**, corroborated by decorrelated Codex — both
+>   statements faithful, `hKcd` non-vacuous (in-Lean witness `K = 0`), axiom-clean-three (force-recompiled
+>   `#print axioms`, no `sorryAx`), card honest (does not claim `hstep2` closed; the sorry is unchanged).
+>   The reviewer's minimality nit (`hKderiv` redundant) is **applied** — the capstone now carries only
+>   `hKcd` + `hK0`. Name-clash `rg`-gated (both names unique across `DLNFibre/`). NOT yet in the aggregator
+>   `DLNFibre.lean` (single-writer — controller wires the import after `DeepestPsiApply`).
 
 ## Remaining work for `hstep2` (pieces 4 + 5) — the corrected architecture
 
@@ -68,7 +74,8 @@ cast), where `C q` is the framed DLN chain read off the split point `q` — the 
 `fromBlocks (A_s) (Y_s) (Z_s) (T_s)` structure that `Score`'s `Mw` decomposes into (via
 `framedParamsPivot`/`deepestEFull`/`gaugeReadX/Y/Z`). Cutoff by the established bump so it is globally
 `ContDiff` (`hKcd`). `hK0`: at `q = 0` the off-pivot blocks `Y_s`, `Z_s` vanish, so `(P_k)₁₂(0) = 0` and
-`K_s 0 = 0`. `hKderiv`: from `hKcd` via `.contDiffAt.hasStrictFDerivAt`.
+`K_s 0 = 0`. (These `hKcd` + `hK0` are the only two the capstone consumes — the derivative existence is
+already derived from `hKcd` inside `deepestPsiCoreShear_isLocalDiffeoAt`.)
 
 **Piece 5 (untwisting).** `deepestCoreF (Ψ (coreAbsorb q)).2.1 = Score` reduces to
 `prod (deepestM) (fun s => (1−K_s)·S_s) = coreProd (C q) L = blockSchur (partProd (C q) L)` — the banked

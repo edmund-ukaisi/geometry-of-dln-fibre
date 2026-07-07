@@ -96,23 +96,23 @@ theorem contDiff_deepestPsiCoreShear (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
 /-- **The absorbing shear `Ψ` is a local diffeomorphism at the split basepoint** — the exact triple
 `rlctAtOn_comp_localDiffeo` consumes: globally `ContDiff ℝ ⊤` (piece 2), strict Fréchet derivative
 the identity at `0` (piece 3-apply, `dΨ(0) = I`), and fixing `0` (`deepestPsiCoreShear_basepoint`).
-Given a coupling `K` globally `ContDiff` (`hKcd`), vanishing at the basepoint (`hK0`), and strictly
-differentiable there (`hKderiv`, existence only — the value is absorbed). Packages the analytic input
-to the RLCT-invariance bridge; the assembly (#120 `hstep2`, piece 5) supplies the concrete cutoff
-`Kcoup` for `hKcd`/`hK0`/`hKderiv` plus the untwisting `Score = coreΦ ∘ coreAbsorb ∘ Ψ`. -/
+Given a coupling `K` globally `ContDiff` (`hKcd`) and vanishing at the basepoint (`hK0`). The strict
+differentiability of `K` at `0` that piece-3-apply needs is derived internally from `hKcd`
+(`ContDiffAt.hasStrictFDerivAt`), so the interface carries only the two essential hypotheses — the
+derivative VALUE is absorbed by piece-3-apply's vanishing right factor. Packages the analytic input to
+the RLCT-invariance bridge; the assembly (#120 `hstep2`, piece 5) supplies the concrete cutoff `Kcoup`
+for `hKcd`/`hK0` plus the untwisting `Score = coreΦ ∘ coreAbsorb ∘ Ψ`. -/
 theorem deepestPsiCoreShear_isLocalDiffeoAt (H : Fin (L + 1) → ℕ) (r nGauge : ℕ)
     (K : DeepestCoupling H r nGauge)
     (hKcd : ∀ s, ContDiff ℝ (⊤ : ℕ∞) (fun q => K s q))
-    (hK0 : ∀ s, K s 0 = 0)
-    (hKderiv : ∀ s, ∃ K' : DeepestSplit H r nGauge →L[ℝ]
-        Matrix (Fin (deepestM H r s.castSucc)) (Fin (deepestM H r s.castSucc)) ℝ,
-        HasStrictFDerivAt (fun q => K s q) K' 0) :
+    (hK0 : ∀ s, K s 0 = 0) :
     ContDiff ℝ (⊤ : ℕ∞) (deepestPsiCoreShear H r nGauge K) ∧
       HasStrictFDerivAt (deepestPsiCoreShear H r nGauge K)
         (ContinuousLinearMap.id ℝ (DeepestSplit H r nGauge)) 0 ∧
       deepestPsiCoreShear H r nGauge K 0 = 0 :=
   ⟨contDiff_deepestPsiCoreShear H r nGauge K hKcd,
-    hasStrictFDerivAt_deepestPsiCoreShear H r nGauge K hK0 hKderiv,
+    hasStrictFDerivAt_deepestPsiCoreShear H r nGauge K hK0
+      (fun s => ⟨fderiv ℝ (fun q => K s q) 0, ((hKcd s).contDiffAt).hasStrictFDerivAt (by simp)⟩),
     deepestPsiCoreShear_basepoint H r nGauge K⟩
 
 end DLNFibre.DLN.RLCT
