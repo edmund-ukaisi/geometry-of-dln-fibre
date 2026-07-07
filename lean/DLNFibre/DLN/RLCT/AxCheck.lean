@@ -43,6 +43,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMAchieverFull
 import DLNFibre.DLN.RLCT.Validate.RouteMHNoBridge
 import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLedger
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 
 /-!
 # Axiom-hygiene check
@@ -428,3 +430,18 @@ open DLNFibre.DLN.RLCT
 #print axioms hasStrictFDerivAt_deepestGConjFlat
 #print axioms deepestGConjFlat_fixpoint
 #print axioms deepest_diffeo_bridge_gen_impl
+
+-- ★ R1-UPPER (S,J) native blow-up carrier (2026-07-07, `sjJointResolution` Phase 1–2). The
+-- shared-divisor ledger (`RouteMSJLedger`: the terminal endpoint `sjLoss_terminal_lintegral_lt_top`
+-- + the Case-2 radial `sjLoss_prependColumn_one`) + the linear-generator carrier (`RouteMSJLinGen`:
+-- the base `loss_ofMatrix_product`, the carrier-level radial `loss_radialStep`, the block-elimination
+-- row-mix `gen_rowMix_const`). The (S,J) recursion / matrix-box→ledger change-of-variables that
+-- consumes these into `gammaPeelIntegral < ⊤` (`sjJointResolution`) is the deferred BULK — NOT closed
+-- here; its sorry is untouched. Cite-NOTHING (S2-free): forced `#print axioms` = [propext,
+-- Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`). Axiom-gated so a stale-olean
+-- regression on the SJ carrier is caught on every build across the multi-tide R1-UPPER close.
+#print axioms sjLoss_terminal_lintegral_lt_top
+#print axioms sjLoss_prependColumn_one
+#print axioms SJLinGenState.loss_ofMatrix_product
+#print axioms SJLinGenState.loss_radialStep
+#print axioms SJLinGenState.gen_rowMix_const

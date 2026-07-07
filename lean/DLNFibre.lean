@@ -774,3 +774,11 @@ import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
 -- assembled bridge's abstract `psi` consumes, for ANY raw split-move `psiSplitRaw` fixing the origin
 -- with `ContDiffAt` on a bump support and `D(psiSplitRaw − id)(0) = 0`. Abstracts the L=2 `psiL2Conj`.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
+-- R1-UPPER `(S,J)` Phase-2 piece 1 (thread `genm-sjcarrier4`): the non-terminal linear-generator
+-- carrier `SJLinGenState` (`supp` monomial prefix + `coeff` linear residual) + the support-faithful
+-- block-elimination row-mix (`gen_rowMix`, `loss_rowMix`, `sharedDivisorExp_rowMix_const` — the
+-- generator-by-generator faithfulness `pref·frobSq` cannot recover) + the Case-2 radial step
+-- (`loss_radialStep`, generalising `sjLoss_prependColumn_one`) + the base connection
+-- (`loss_ofMatrix_product`: `frobSq(A₀·Q)` IS a carrier loss) + the corank split (`loss_blockSplit`).
+-- `sjJointResolution` UNTOUCHED — the matrix-box→ledger change-of-variables (pieces 2–3) is deferred.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
