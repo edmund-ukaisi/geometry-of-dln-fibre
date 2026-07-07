@@ -728,3 +728,11 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
 -- — the absorbing shear `Ψ = deepestPsiCoreShear` has `dΨ(0) = I`. Transitively wires the banked
 -- `DeepestPsi` (Ψ + basepoint) and `DeepestPsiStrictDeriv` (matMulCLM + bilinear scaffold).
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiApply
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, piece 2 + local-diffeo capstone):
+-- `contDiff_deepestPsiCoreShear` / `deepestPsiCoreShear_isLocalDiffeoAt` — `Ψ` is globally
+-- `ContDiff ⊤` and (given `hKcd`+`hK0`) a local diffeo at the split basepoint.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiContDiff
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, piece 5c): `deepest_diffeo_bridge_gen_impl` — the
+-- conjugate flat diffeo `split⁻¹∘coreAbsorb⁻¹∘Ψ∘coreAbsorb∘split` reduces the `hstep2` RLCT equality
+-- to two geometric germs (Schur untwisting + reg-preservation), via `rlctAtOn_diffeo_bridge_of`.
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGen
