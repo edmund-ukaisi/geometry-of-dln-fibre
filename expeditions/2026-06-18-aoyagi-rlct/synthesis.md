@@ -6,6 +6,65 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local loss with prior density at product-zero - 2026-07-06
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero.md
+```
+
+Lean now has a specialization wrapper:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero
+```
+
+It calls the continuous pulled-back density theorem with
+
+```text
+edgeDensity := priorDensity.
+```
+
+The measure remains the original edge-family prior
+
+```text
+originalEdgeFamilyPrior ... priorDensity.
+```
+
+The integrand density factor is the same scalar function evaluated after the
+p.13 product-coordinate edge-family map:
+
+```text
+priorDensity(CedgeProd(E,u)).
+```
+
+This is a specialization of the integrand density, not a product-coordinate
+change-of-variables theorem for the prior.  The wrapper keeps
+`ContinuousAt priorDensity (sourceChart z0)` for upstream original-prior
+measure handoffs, and separately assumes continuity and positivity at
+`CedgeProd(sourceChart z0, 0)` for the pulled-back loss-density theorem.
+
+Do not derive the product-zero assumptions from continuity at `sourceChart z0`.
+The equality `CedgeProd(sourceChart z0, 0) = sourceChart z0` is not available
+and is not expected in general: the product-zero constructor has zero
+upper-right active blocks, while a fixed source base can have nonzero
+upper-right edge blocks.
+
+Residual zero-locus nullity, fixed-base centering, source data, endpoint bases,
+raw Haar, regular Haar, statistical prior transport, determinant/raw Haar
+transport, source-rank or atlas coverage, normal crossings, pole order, and
+RLCT extraction remain explicit or outside the theorem.
+
+Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+touched-file marker scan, Aoyagi-only source-reference scan, and direct axiom
+probe passed.
+The new theorem reports only `[propext, Classical.choice, Quot.sound]`.
+Xhigh scout `Popper` found no base-at-zero equality and recommended direct
+product-zero hypotheses.  Xhigh reviewer `Aristotle` passed the statement and
+proof boundary.
+
 ## A2 rank-cut original-prior local loss with continuous pulled-back density - 2026-07-06
 
 Reproduction:
@@ -44,7 +103,8 @@ theorem.
 
 Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
 full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
-touched-file marker scan, quiver-reference scan, and direct axiom probe passed.
+touched-file marker scan, Aoyagi-only source-reference scan, and direct axiom
+probe passed.
 The new theorem reports only `[propext, Classical.choice, Quot.sound]`.
 Xhigh scout `Darwin` passed the theorem-shape route; xhigh reviewer `Banach`
 passed the final statement/proof/reproduction audit.

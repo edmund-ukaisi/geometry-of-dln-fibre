@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with prior density at product-zero
+
+Decision: specialize the rank-cut continuous pulled-back density theorem to
+the same scalar density that defines the original edge-family prior:
+
+```text
+edgeDensity = priorDensity.
+```
+
+The final integrand now contains
+
+```text
+priorDensity(CedgeProd(E,u)).
+```
+
+The wrapper keeps the original continuity assumption at `sourceChart z0`,
+because upstream original-prior and residual-source handoffs still use it.
+The loss-density theorem also assumes continuity and positivity of
+`priorDensity` at the actual p.13 product-coordinate zero representative
+
+```text
+CedgeProd(sourceChart z0, 0).
+```
+
+Do not replace these product-zero hypotheses by continuity at `sourceChart z0`.
+The equality `CedgeProd(sourceChart z0, 0) = sourceChart z0` is neither
+available nor expected in general: product-zero coordinates force zero
+upper-right active blocks edgewise, while the fixed source base can retain
+edgewise upper-right blocks.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This is still conditional: it does not prove residual zero-locus nullity,
+the fixed-base centering equality, source data, endpoint bases, raw Haar,
+regular Haar, statistical prior transport, determinant/raw Haar transport,
+source-rank or analytic atlas coverage, normal crossings, pole order, or
+RLCT.  Xhigh scout `Popper` found no base-at-zero equality and identified the
+direct product-zero hypotheses as the right boundary; xhigh reviewer
+`Aristotle` passed the wrapper shape and nonclaim boundary.
+
 ## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with continuous pulled-back density
 
 Decision: remove the explicit regular-coordinate density nonnegativity and

@@ -18,6 +18,18 @@
 
 ## Recent addenda
 
+- 2026-07-06, Thread 03: the rank-cut continuous pulled-back density local-loss
+  theorem is now specialized to the original prior density itself.  The final
+  integrand has density `priorDensity(CedgeProd(E,u))`, while the measure
+  remains `originalEdgeFamilyPrior ... priorDensity`; this is not prior
+  transport through p.13 coordinates.  Continuity at `sourceChart z0` remains
+  available for the upstream original-prior pipeline, and the product-coordinate
+  theorem separately assumes continuity and positivity at
+  `CedgeProd(sourceChart z0, 0)`.  Do not replace these by a base-at-zero
+  equality: no such equality is available or expected in general.  Xhigh scout
+  `Popper` found the equality likely false; xhigh reviewer `Aristotle` passed
+  the wrapper boundary.
+
 - 2026-07-06, Thread 03: the rank-cut original-prior local loss wrapper now
   produces the regular-coordinate density bounds for pulled-back edge-family
   densities.  Given continuity and positivity of `edgeDensity` at

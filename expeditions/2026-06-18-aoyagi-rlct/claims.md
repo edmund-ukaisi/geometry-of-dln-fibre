@@ -10,6 +10,53 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior local loss with prior density at product-zero - 2026-07-06
+
+- **Statement.** On the rank-cut p.13/readback source set returned by the
+  continuous pulled-back density local original-loss theorem, the edge-family
+  density in the final loss integrand can be specialized to the same scalar
+  function that defines the original edge-family prior:
+  `edgeDensity := priorDensity`.  The final integrand contains
+  `priorDensity(CedgeProd(E,u))`, while the measure remains
+  `originalEdgeFamilyPrior ... priorDensity`.
+- **Tier.** A2 conditional rank-cut local original-loss handoff with produced
+  adapted-product lower bound, produced local density bounds, and specialized
+  loss density.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving
+  `CedgeProd(sourceChart z0, 0) = sourceChart z0`, deriving product-zero
+  continuity from continuity at `sourceChart z0`, proving residual
+  zero-locus nullity, source data, statistical prior transport,
+  determinant/raw Haar transport, source-rank or analytic atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the fixed-base p.13
+  product-coordinate context; existing Lean continuous pulled-back density
+  theorem; direct Lean specialization `edgeDensity := priorDensity`.  The
+  product-zero basepoint distinction is Lean-local p.13 coordinate
+  bookkeeping, not a new cited source result.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero.md`.
+- **Reproduction check.** Controller checked the specialization and product-zero
+  basepoint boundary before Lean formalisation.  Xhigh scout `Popper` found no
+  theorem proving the base-at-zero equality and judged it likely false in
+  general.  Xhigh reviewer `Aristotle` passed the wrapper shape and boundary:
+  use direct continuity/positivity hypotheses at `CedgeProd(sourceChart z0, 0)`.
+- **Lean target.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean`, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, touched-file marker scan,
+  Aoyagi-only source-reference scan, and direct axiom probe passed.  The new
+  theorem reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No base-at-zero equality, no derivation of product-zero
+  continuity from continuity at `sourceChart z0`, no residual
+  zero-locus-nullity proof, no proof of `sourceChart z0 = reverseEdge`, no
+  sourceData construction, no statistical prior identification or transport,
+  no determinant/raw Haar transport, no source-rank coverage, no analytic atlas
+  coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 rank-cut original-prior local loss with continuous pulled-back density - 2026-07-06
 
 - **Statement.** On the rank-cut p.13/readback source set returned by the
@@ -43,8 +90,8 @@ No such claim is formalisation-ready until both fields are filled.
 - **Proved.** Focused `lake env lean`, focused module build,
   `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
   `scripts/sorries`, `git diff --check`, touched-file marker scan,
-  quiver-reference scan, and direct axiom probe passed.  The new theorem
-  reports only `[propext, Classical.choice, Quot.sound]`.
+  Aoyagi-only source-reference scan, and direct axiom probe passed.  The new
+  theorem reports only `[propext, Classical.choice, Quot.sound]`.
 - **Nonclaims.** No residual zero-locus-nullity proof, no proof of
   `sourceChart z0 = reverseEdge`, no sourceData construction, no statistical
   prior identification or transport, no determinant/raw Haar transport, no
