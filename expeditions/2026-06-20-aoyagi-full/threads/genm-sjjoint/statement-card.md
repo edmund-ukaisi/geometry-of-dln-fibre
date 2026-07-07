@@ -22,23 +22,29 @@ Both wired into the stack aggregator `DLNFibre.lean` (with the merged `RouteMSJC
 
 **Remaining for the full anisotropic atom** `∫_{ℝ^{p×q}}(w+‖ΓR+S‖²)^{−c'} = det(RRᵀ)^{−p/2}·Cresid(pq)c'·
 (w+‖S(I−P_R)‖²)^{−(c'−pq/2)}` (R full row-rank, w>0, pq/2<c'), via the cov `M = G^{−1/2}`, `G = RRᵀ`:
-1. **posdef sqrt** of `G = RRᵀ` (`R` full row rank ⟹ `G` posdef): `G^{−1/2}` invertible,
-   `G^{−1/2} G G^{−1/2} = I`, `det G^{−1/2} = (det G)^{−1/2}`. **ASSESSED — NOT a rabbit hole
-   (2026-07-07).** Mathlib v4.29 has NO `Matrix.PosSemidef.sqrt`, but `Analysis/Matrix/Order.lean`
-   provides the CFC matrix sqrt with exactly the needed lemmas (over `[RCLike 𝕜]`, ℝ qualifies):
-   `CFC.sqrt A`, `CFC.sq_sqrt A` (`sqrt A ^ 2 = A`), `Matrix.det_sqrt` (`(CFC.sqrt A).det =
-   RCLike.sqrt A.det`), `Matrix.inv_sqrt` (`(CFC.sqrt A)⁻¹ = CFC.sqrt A⁻¹`), `CFC.sqrt_nonneg`. So
-   `G^{1/2} = CFC.sqrt G`, `G^{−1/2} = (CFC.sqrt G)⁻¹`, `det G^{−1/2} = (RCLike.sqrt (det G))⁻¹ =
-   (det G)^{−1/2}` (det G > 0). PosDef-of-`RRᵀ` via `Matrix.mul_conjTranspose_self` (needs
-   `R.vecMul` injective = full row rank); `PosDef.isUnit` for invertibility. Cost: the CFC route
-   needs the heavy `Analysis/Matrix/Order` (CStarAlgebra CFC) import + real CFC-API wielding
-   (`RCLike`, `cfc` lemmas) — a bounded-but-new sub-brick, ~80–120 lines. (LDLᵀ/Cholesky is ALSO
-   absent from v4.29, so `CFC.sqrt` is the available route.)
-2. **the frobSq orthogonal decomposition** `‖ΓU+S‖² = ‖Γ+SUᵀ‖² + ‖S(I−UᵀU)‖²`, `U = G^{−1/2}R`
-   (`UUᵀ=I`) — the matrix-algebra crux of the assembly.
-3. **translation-invariance** `∫ (w'+‖Γ+S'‖²)^{−c'} = ∫ (w'+frobSq Γ)^{−c'}` (`measurePreserving_add`),
-   then the banked isotropic endpoint `matBox_corank_residual_fullSpace_eq` at core `w' = w+‖S(I−P)‖²`.
-4. **assemble** via `lintegral_comp_rightMulₚ p G^{−1/2}` (Jacobian `|det G^{−1/2}|^p = (det G)^{−p/2}`).
+1. **posdef sqrt / Gram normaliser — DONE (2026-07-07, `exists_gram_normalizer`,
+   `RouteMSJGramSqrt.lean`, sorry-free + axiom-clean).** For `G` posdef, `∃` symmetric `M = G^{−1/2}`
+   with `M G Mᵀ = 1`, `det M ≠ 0`, `|det M| = (√ det G)⁻¹ = (det G)^{−1/2}`. Built from the CFC matrix
+   sqrt (`Analysis/Matrix/Order`, `open scoped MatrixOrder`): `CFC.sqrt_mul_sqrt_self`,
+   `Matrix.PosSemidef.det_sqrt` + `RCLike.sqrt_real`, `nonsing_inv_mul`/`mul_nonsing_inv`,
+   `Matrix.det_nonsing_inv` + `Ring.inverse_eq_inv`, `conjTranspose_eq_transpose_of_trivial`. The
+   feared rabbit hole did NOT materialise — the CFC route worked in ~40 lines. For the atom, take
+   `M` = the normaliser for `G = R Rᵀ` (posdef when `R` full row rank, via
+   `Matrix.mul_conjTranspose_self` + `PosDef.isUnit`), and `U = M R` has `U Uᵀ = M G Mᵀ = 1`.
+2. **the frobSq orthogonal decomposition (piece C, TODO) — full recipe.** Target:
+   `frobSq (Γ * U + S) = frobSq (Γ + S * Uᵀ) + frobSq (S * (1 − Uᵀ * U))` for `U * Uᵀ = 1`
+   (Γ:p×q, U:q×n, S:p×n). Route: first the bridge `frobSq X = (X * Xᵀ).trace` (over ℝ; `frobSq` is
+   the entry-sum `∑ᵢⱼ Xᵢⱼ²`, and `(X Xᵀ).trace = ∑ᵢ ∑ⱼ Xᵢⱼ² ` — prove by `Matrix.trace`/`mul_apply`
+   unfold, ~15 lines, reusable). Then the identity is pure trace algebra: expand both sides via
+   `(A+B)ᵀ`, `trace` linearity + `Matrix.trace_mul_comm` (cyclic), use `U Uᵀ = 1` and the idempotence
+   `(1 − UᵀU)(1 − UᵀU)ᵀ = 1 − UᵀU` (`UᵀU` symmetric idempotent since `UUᵀ=1`); the cross terms match
+   and `trace(S UᵀU Sᵀ)` cancels. Worked out (LHS = `tr(ΓΓᵀ + ΓUSᵀ + SUᵀΓᵀ + SSᵀ)` using `UUᵀ=1`; RHS
+   term1 `tr(ΓΓᵀ+ΓUSᵀ+SUᵀΓᵀ+SUᵀUSᵀ)`, term2 `tr(SSᵀ) − tr(SUᵀUSᵀ)`; sum = LHS). ~80–120 lines.
+3. **translation-invariance** `∫ (w'+‖Γ+S'‖²)^{−c'} = ∫ (w'+frobSq Γ)^{−c'}` (`measurePreserving_add`
+   / `lintegral_add_right`-type, `Γ ↦ Γ + S'`, `S' = S Uᵀ`), then the banked isotropic endpoint
+   `matBox_corank_residual_fullSpace_eq` at core `w' = w + frobSq (S (1 − UᵀU))`.
+4. **assemble** via `lintegral_comp_rightMulₚ p M` (Jacobian `|det M|^p = (det G)^{−p/2}`,
+   from `exists_gram_normalizer`'s `|det M| = (det G)^{−1/2}`).
 
 ## What this tide BANKED (sorry-free, axiom-clean)
 
