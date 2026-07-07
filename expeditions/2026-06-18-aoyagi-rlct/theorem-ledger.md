@@ -4,6 +4,26 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Source-cylinder/C-one produced and strict rank-cut residual-source note,
+2026-07-07: the source-cylinder and C-one rank-cut residual-source bridges now
+have produced-product and strict-density siblings.  The produced-product
+source-cylinder wrapper constructs an open product-residual positivity shrink
+using the coordinate-source finite-integral theorem, runs the source-cylinder
+bridge inside that shrink, and transfers positivity down to the final inner
+rank-cut shrink by absolute continuity of restricted measures.  The
+strict-density source-cylinder wrapper fixes `epsilon` and `Kprior` before
+shrinking, obtains local source-density lower and prior-density upper bounds
+from continuity and strict basepoint inequalities, derives
+`epsilon != infinity` from the finite base source-density value, and feeds the
+produced-product wrapper.  The C-one siblings add only the support conversion
+from `forall E in rankCutSource, cOneReadout E in signedBox` to
+`rankCutSource subset sourceChart '' (W cap sourceCylinder)` via the rank-cut
+image equality, local left inverse, and `V subset W`.  Source-cylinder support
+itself, C-one signed-box support, source-density basepoint positivity,
+prior-density strict basepoint upper bounds, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, and RLCT remain outside this rung.
+
 Source-cylinder/C-one rank-cut residual-source note, 2026-07-07: the rank-cut
 residual-source bridge now has a sibling whose terminal support socket is
 `rankCutSource ⊆ sourceChart '' (W ∩ sourceCylinder)`.  The proof uses the

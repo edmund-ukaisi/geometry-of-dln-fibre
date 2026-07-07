@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, source-cylinder/C-one produced and strict rank-cut residual-source wrappers
+
+Decision: lift the source-cylinder and C-one rank-cut residual-source bridges
+to the same produced-product and strict-density strength as the earlier
+active-containment wrappers.
+
+The produced-product source-cylinder wrapper removes the terminal
+theta-side product-residual positivity input by first constructing an open
+positivity shrink and then transferring positivity to the returned inner
+rank-cut shrink `V`.  The strict-density source-cylinder wrapper fixes
+`epsilon` and `Kprior` before shrinking, uses continuity and strict basepoint
+inequalities to produce the source-density lower and prior-density upper
+inputs, and derives `epsilon != infinity` from the finite source-density value.
+
+The C-one produced-product and strict-density wrappers compose the same
+theorems with the existing support conversion:
+
+```text
+forall E in rankCutSource, cOneReadout E in signedBox
+  => rankCutSource subset sourceChart '' (W cap sourceCylinder).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-source-cylinder-c-one-produced-strict-rank-cut-residual-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional on the geometric/source support route.  It does not
+prove source-cylinder support, C-one signed-box support, positivity of the
+source density at the basepoint, prior-density strict upper bounds at the
+basepoint, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, source-cylinder rank-cut residual-source bridge
 
 Decision: add a rank-cut residual-source wrapper whose terminal support input

@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 source-cylinder/C-one produced and strict rank-cut residual-source wrappers
+
+Reproduction:
+
+```text
+reproduction-a2-source-cylinder-c-one-produced-strict-rank-cut-residual-source.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has produced-product and strict-density siblings for the
+source-cylinder and C-one rank-cut residual-source routes:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower_priorDensity_upper_of_sourceDensity_continuousAt_lt_top_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_cOneReadout_mem_signedBox_sourceDensity_lower_priorDensity_upper_of_sourceDensity_continuousAt_lt_top_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_subset_sourceChart_image_inter_sourceCylinder_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_rankCutSource_cOneReadout_mem_signedBox_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+The produced-product wrapper builds a product-residual positivity shrink and
+transfers positivity to the final rank-cut shrink.  The strict-density wrapper
+uses continuity and strict basepoint inequalities to produce the source lower
+and prior upper a.e. bounds, deriving `epsilon != infinity` internally.  The
+C-one wrappers only convert pointwise `cOneReadout E in signedBox` support
+into source-cylinder support, first over `V` and then over `W`.
+
+Boundary: source-cylinder support, C-one signed-box support, source-density
+basepoint positivity, prior-density strict basepoint upper bounds,
+determinant/raw Haar transport, source-prior transport, source-rank or atlas
+coverage, normal crossings, pole order, and RLCT remain outside this rung.
+
 ## 2026-07-07 A2 source-cylinder rank-cut residual-source bridge
 
 Reproduction:
