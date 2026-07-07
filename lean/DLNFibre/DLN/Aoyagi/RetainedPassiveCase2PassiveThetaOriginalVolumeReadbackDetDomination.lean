@@ -24,12 +24,53 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+open DLNFibre.Core
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
+
+private instance instIsTopologicalAddGroup_tupleReal
+    {N : ℕ} (d : Fin (N + 1) → ℕ) :
+    IsTopologicalAddGroup (Tuple (k := ℝ) d) := by
+  change IsTopologicalAddGroup
+    (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+  infer_instance
+
+private instance instBorelSpace_tupleReal
+    {N : ℕ} (d : Fin (N + 1) → ℕ) :
+    BorelSpace (Tuple (k := ℝ) d) := by
+  change BorelSpace
+    (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+  infer_instance
+
+private noncomputable def originalTupleVolumeHaarScalarOfMap
+    {N : ℕ} {E : Type*} [AddCommGroup E] [Module ℝ E]
+    [TopologicalSpace E] [IsTopologicalAddGroup E]
+    [MeasurableSpace E] [BorelSpace E]
+    (d : Fin (N + 1) → ℕ)
+    (L : E ≃L[ℝ] Tuple (k := ℝ) d)
+    (m : Measure E) [m.IsAddHaarMeasure] : NNReal := by
+  haveI : IsTopologicalAddGroup (Tuple (k := ℝ) d) :=
+    instIsTopologicalAddGroup_tupleReal d
+  haveI : BorelSpace (Tuple (k := ℝ) d) := by
+    change BorelSpace
+      (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+    infer_instance
+  haveI : Measure.IsAddHaarMeasure (originalTupleVolume d) :=
+    isAddHaarMeasure_originalTupleVolume d
+  let hMapHaar : Measure.IsAddHaarMeasure (Measure.map L m) :=
+    L.isAddHaarMeasure_map m
+  exact
+    @Measure.addHaarScalarFactor
+      (Tuple (k := ℝ) d) _ _ _ _ _
+      (Measure.map L m)
+      (originalTupleVolume d)
+      (isAddHaarMeasure_originalTupleVolume d)
+      hMapHaar.toIsFiniteMeasureOnCompacts
+      hMapHaar.toIsAddLeftInvariant
 
 /-- A pointwise lower bound on the image of a restricted set gives the
 corresponding a.e. lower bound after restricting any measure to that set. -/
@@ -435,10 +476,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                               ε ≠ 0 →
                                 ε ≠ ∞ →
                                   let cHaar :=
-                                    ((Measure.map
+                                    (originalTupleVolumeHaarScalarOfMap d
                                       (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                        W₂ B₂ U₀)
-                                      rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                        W₂ B₂ U₀) rawHaar)
                                   let D := Cdet * ε⁻¹
                                   D < ∞ ∧
                                     AEMeasurable readback
@@ -790,10 +830,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                               ∃ Cdet : ℝ≥0∞,
                                 Cdet < ∞ ∧
                                   let cHaar :=
-                                    ((Measure.map
+                                    (originalTupleVolumeHaarScalarOfMap d
                                       (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                        W₂ B₂ U₀)
-                                      rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                        W₂ B₂ U₀) rawHaar)
                                   let D := Cdet * ε⁻¹
                                   D < ∞ ∧
                                     AEMeasurable readback
@@ -881,9 +920,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
   refine ⟨Cdet, hCdet, ?_⟩
   dsimp only
   let cHaar :=
-    ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+    (originalTupleVolumeHaarScalarOfMap d
+      (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+        W₂ B₂ U₀) rawHaar)
   let D := Cdet * ε⁻¹
   have hrestrict_vrb :
       (coordinateSourceMeasure.restrict V).restrict Vrb =
@@ -1118,10 +1157,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                             ∃ Cdet : ℝ≥0∞,
                               Cdet < ∞ ∧
                                 let cHaar :=
-                                  ((Measure.map
+                                  (originalTupleVolumeHaarScalarOfMap d
                                     (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                      W₂ B₂ U₀)
-                                    rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                      W₂ B₂ U₀) rawHaar)
                                 let D := Cdet * ε⁻¹
                                 D < ∞ ∧
                                   AEMeasurable readback
@@ -1365,9 +1403,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
   refine ⟨Cdet, hCdet, ?_⟩
   dsimp only
   let cHaar :=
-    ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+    (originalTupleVolumeHaarScalarOfMap d
+      (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+        W₂ B₂ U₀) rawHaar)
   let D := Cdet * ε⁻¹
   refine ⟨by simpa [D] using hDfinite, hreadback_meas, ?_⟩
   have hVraw_le_G :
@@ -1547,10 +1585,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                               ∃ Cdet : ℝ≥0∞,
                                 Cdet < ∞ ∧
                                   let cHaar :=
-                                    ((Measure.map
+                                    (originalTupleVolumeHaarScalarOfMap d
                                       (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                        W₂ B₂ U₀)
-                                      rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                        W₂ B₂ U₀) rawHaar)
                                   let D := Cdet * ε⁻¹
                                   D < ∞ ∧
                                     AEMeasurable readback
@@ -1832,10 +1869,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                               ε ≠ 0 →
                                 ε ≠ ∞ →
                                   let cHaar :=
-                                    ((Measure.map
+                                    (originalTupleVolumeHaarScalarOfMap d
                                       (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                        W₂ B₂ U₀)
-                                      rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                        W₂ B₂ U₀) rawHaar)
                                   let D := Cdet * ε⁻¹
                                   D < ∞ ∧
                                     AEMeasurable readback
@@ -2119,10 +2155,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                     (∀ᵐ E ∂ originalVolume.restrict chartPiece,
                                       density E ≤ Kprior) →
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -2449,10 +2484,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                   ∃ Cdet : ℝ≥0∞,
                                     Cdet < ∞ ∧
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -2516,9 +2550,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
         hchartPiece_sub_image hpatch hsource_lower hε_ne_zero hε_ne_top with
     ⟨Cdet, hCdet, hDdet, hreadback_volume, hvolume_readback_dom⟩
   let cHaar :=
-    ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+    (originalTupleVolumeHaarScalarOfMap d
+      (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+        W₂ B₂ U₀) rawHaar)
   let Ddet := Cdet * ε⁻¹
   let Dvol := (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
   let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -2796,10 +2830,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                     (∀ᵐ E ∂ originalVolume.restrict chartPiece,
                                       density E ≤ Kprior) →
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -3112,10 +3145,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                 ∃ Cdet : ℝ≥0∞,
                                   Cdet < ∞ ∧
                                     let cHaar :=
-                                      ((Measure.map
+                                      (originalTupleVolumeHaarScalarOfMap d
                                         (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                          W₂ B₂ U₀)
-                                        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                          W₂ B₂ U₀) rawHaar)
                                     let Ddet := Cdet * ε⁻¹
                                     let Dvol :=
                                       (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -3179,9 +3211,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
         hchartPiece_sub_cylinder hsource_lower hε_ne_zero hε_ne_top with
     ⟨Cdet, hCdet, hDdet, hreadback_volume, hvolume_readback_dom⟩
   let cHaar :=
-    ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+    (originalTupleVolumeHaarScalarOfMap d
+      (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+        W₂ B₂ U₀) rawHaar)
   let Ddet := Cdet * ε⁻¹
   let Dvol := (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
   let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -3390,10 +3422,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                   ∃ Cdet : ℝ≥0∞,
                                     Cdet < ∞ ∧
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -3692,10 +3723,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                   ∃ Cdet : ℝ≥0∞,
                                     Cdet < ∞ ∧
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -3759,9 +3789,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
         hchartPiece_sub_image hpatch hsource_lower hε_ne_zero hε_ne_top with
     ⟨Cdet, hCdet, hDdet, hreadback_volume, hvolume_readback_dom⟩
   let cHaar :=
-    ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+    (originalTupleVolumeHaarScalarOfMap d
+      (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+        W₂ B₂ U₀) rawHaar)
   let Ddet := Cdet * ε⁻¹
   let Dvol := (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
   let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -4020,10 +4050,9 @@ theorem exists_open_lintegral_prod_originalEdgeFamilyPrior_restrict_chartPiece_o
                                     (∀ᵐ E ∂ originalVolume.restrict chartPiece,
                                       density E ≤ Kprior) →
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -4956,9 +4985,9 @@ theorem exists_open_lintegral_originalEdgeFamilyPrior_restrict_chartPiece_case2P
         hdet_dom
     let d := paperEndpointFixedBaseDim W₂ B₂ U₀
     let cHaar :=
-      ((Measure.map
-        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv W₂ B₂ U₀)
-        rawHaar).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) rawHaar)
     let Ddet := Cdet * (1 : ℝ≥0∞)⁻¹
     let Dvol := (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
     let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -8135,10 +8164,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_
                                     (∀ᵐ E ∂ originalVolume.restrict chartPiece,
                                       density E ≤ Kprior) →
                                       let cHaar :=
-                                        ((Measure.map
+                                        (originalTupleVolumeHaarScalarOfMap d
                                           (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                            W₂ B₂ U₀)
-                                          rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                            W₂ B₂ U₀) rawHaar)
                                       let Ddet := Cdet * ε⁻¹
                                       let Dvol :=
                                         (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet)
@@ -8501,6 +8529,214 @@ set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
+set_option maxHeartbeats 900000 in
+-- This is the with-following reference-source analogue of the formal-product
+-- determinant-domination bridge.
+/-- With-following formal-product chart pieces are dominated by the reference
+source under determinant-chart reverse domination.
+
+This composes the formal-product/source-reference socket with the raw
+reference-source handoff.  The determinant-side reverse domination remains an
+explicit hypothesis; the only extra scalar is the finite local upper bound for
+the retained-passive raw-order Jacobian density.  No determinant Haar
+transport, exact raw-Haar pushforward, original source-prior transport,
+source coverage, normal crossings, pole order, or RLCT extraction is proved. -/
+theorem exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_referenceSource_of_detHaar_restrict_le_smul_endpointTopologyTuple
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    [OpensMeasurableSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [BorelSpace
+      (Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)]
+    [MeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [OpensMeasurableSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [BorelSpace
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [T2Space
+      (TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [OpensMeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    (z₀ :
+      Case2PassiveThetaWithFollowingFactor
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hdet₀ :
+      z₀ ∈ case2PassiveThetaWithFollowingFactorDetSector
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J)
+    (hpivot₀ :
+      case2PassiveThetaPivotNonzero
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext z₀.1)
+    (Rres : Case2PassiveTheta.Center n S J → ℝ)
+    (G :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J))
+    (hGopen : IsOpen G)
+    (hz₀G : z₀ ∈ G) :
+    let RawTuple :=
+      TopologyTuple (Fin (Module.finrank ℝ U₀))
+        (throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) ℝ
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let Y :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          RawTuple :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointTopologyTuple
+          (ρ := Fin (Module.finrank ℝ U₀)) n hS hcont hnext z eNext e
+    let referenceSource :
+        Measure
+          (Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J) :=
+      case2PassiveThetaWithFollowingFactorReferenceSourceMeasure
+        (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n hS hnext Rres
+    let sourceChart :
+        Case2PassiveThetaWithFollowingFactor
+            (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+          EdgeFamily :=
+      fun z ↦
+        case2PassiveThetaWithFollowingFactorEndpointSourceChart
+          W₂ B₂ n hS hcont hnext hU₀ eNext e z
+    let rawDetChart : Set RawTuple :=
+      topologyTupleDetChartSet
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+    let p13SourceSet : Set EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilySet
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    let rawChart : RawTuple → EdgeFamily :=
+      paperEndpointFixedBaseRetainedPassiveP13RawOrderSourceChart
+        (K := ℝ) W₂ B₂ U₀ hU₀
+    ∃ V :
+      Set
+        (Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J),
+      IsOpen V ∧ z₀ ∈ V ∧ V ⊆ G ∧
+        ∃ CJ : ℝ≥0∞, CJ < ∞ ∧
+          ∀ (rawHaar : Measure RawTuple) [rawHaar.IsAddHaarMeasure],
+          ∀ chartPiece : Set EdgeFamily,
+          ∀ {Cdet : ℝ≥0∞},
+            chartPiece ⊆ p13SourceSet →
+              rawHaar.restrict rawDetChart ≤
+                Cdet • Measure.map Y (referenceSource.restrict V) →
+                Cdet < ∞ →
+                  let Ddet := Cdet * CJ
+                  let formalProductMeasure : Measure EdgeFamily :=
+                    Measure.map
+                      (fun z : RawTuple ↦
+                        rawChart
+                          (topologyTupleEdgeRawOrder
+                            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+                            (κ' := throughSubspaceEndpointComplementIndex
+                              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z))
+                      ((rawHaar.restrict rawDetChart).withDensity
+                        (fun z : RawTuple ↦
+                          ENNReal.ofReal
+                            (retainedPassiveFormalRawOrderJacobianProductAbsDetAt
+                              (M := 1) (ρ := Fin (Module.finrank ℝ U₀))
+                              (κ' := throughSubspaceEndpointComplementIndex
+                                (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) z)))
+                  let sourceRef := Measure.map sourceChart (referenceSource.restrict V)
+                  Ddet < ∞ ∧
+                    formalProductMeasure.restrict chartPiece ≤ Ddet • sourceRef := by
+  intro RawTuple EdgeFamily Y referenceSource sourceChart rawDetChart
+    p13SourceSet rawChart
+  let rawMap :
+      Case2PassiveThetaWithFollowingFactor
+          (ρ := Fin (Module.finrank ℝ U₀)) (τ := τ) n S J →
+        RawTuple :=
+    fun z ↦
+      topologyTupleEdgeRawOrder
+        (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+        (κ' := throughSubspaceEndpointComplementIndex
+          (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) (Y z)
+  let rawSourceSet : Set RawTuple :=
+    topologyTupleRawOrderSourceRecursiveDetChartSet
+      (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+      (κ' := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀)
+  rcases
+      (by
+        simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawDetChart,
+          rawSourceSet, p13SourceSet, rawChart] using
+          exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_sourceReference_of_restrict_rawSource_le_smul_case2PassiveThetaWithFollowingFactor_rawMap
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ G hGopen hz₀G) with
+    ⟨Vformal, hVformalopen, hz₀Vformal, hVformalG, hformal_dom⟩
+  rcases
+      (by
+        simpa [RawTuple, Y, referenceSource, rawMap, rawDetChart,
+          rawSourceSet] using
+          exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_referenceSource_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+            W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+            z₀ hdet₀ hpivot₀ Rres Vformal hVformalopen hz₀Vformal) with
+    ⟨V, hVopen, hz₀V, hV_formal, CJ, hCJ, hraw_dom_package⟩
+  have hVG : V ⊆ G := fun z hz ↦ hVformalG (hV_formal hz)
+  refine ⟨V, hVopen, hz₀V, hVG, CJ, hCJ, ?_⟩
+  intro rawHaar _instRawHaar chartPiece Cdet hchartPiece_sub hdet_dom hCdet
+    Ddet formalProductMeasure sourceRef
+  rcases hraw_dom_package rawHaar hdet_dom hCdet with
+    ⟨hDdet, hraw_dom⟩
+  have hrestrict_formal :
+      (referenceSource.restrict V).restrict Vformal =
+        referenceSource.restrict V :=
+    restrict_restrict_eq_self_of_subset hVopen.measurableSet hV_formal
+  have hraw_dom_bridge :
+      rawHaar.restrict rawSourceSet ≤
+        Ddet •
+          Measure.map rawMap ((referenceSource.restrict V).restrict Vformal) := by
+    simpa [RawTuple, rawMap, rawSourceSet, referenceSource, Ddet,
+      hrestrict_formal] using hraw_dom
+  have hformal_piece :
+      formalProductMeasure.restrict chartPiece ≤ Ddet • sourceRef := by
+    simpa [RawTuple, EdgeFamily, sourceChart, rawMap, rawDetChart,
+      rawSourceSet, p13SourceSet, rawChart, referenceSource,
+      formalProductMeasure, sourceRef, Ddet, hrestrict_formal] using
+      hformal_dom (referenceSource.restrict V) rawHaar chartPiece
+        (D := Ddet) hchartPiece_sub hraw_dom_bridge
+  exact ⟨by simpa [Ddet] using hDdet, hformal_piece⟩
+
+set_option maxRecDepth 2048 in
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
 set_option linter.unusedVariables false in
 set_option linter.style.longLine false in
 set_option maxHeartbeats 900000 in
@@ -8698,10 +8934,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                             ε ≠ 0 →
                               ε ≠ ∞ →
                                 let c :=
-                                  ((Measure.map
+                                  (originalTupleVolumeHaarScalarOfMap d
                                     (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                      W₂ B₂ U₀)
-                                    rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                      W₂ B₂ U₀) rawHaar)
                                 let D := Cdet * ε⁻¹
                                 AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                                   Measure.map readback (originalVolume.restrict chartPiece) ≤
@@ -9012,10 +9247,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                               ε ≠ 0 →
                                 ε ≠ ∞ →
                                   let c :=
-                                    ((Measure.map
+                                    (originalTupleVolumeHaarScalarOfMap d
                                       (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                        W₂ B₂ U₀)
-                                      rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                        W₂ B₂ U₀) rawHaar)
                                   let D := Cdet * ε⁻¹
                                   D < ∞ ∧
                                     AEMeasurable readback
@@ -9280,10 +9514,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le
                               (∀ᵐ E ∂originalVolume.restrict
                                 (sourceChart '' V), density E ≤ Kprior) →
                                 let cHaar :=
-                                  ((Measure.map
+                                  (originalTupleVolumeHaarScalarOfMap d
                                     (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                      W₂ B₂ U₀)
-                                    rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                      W₂ B₂ U₀) rawHaar)
                                 let Ddet := Cdet * ε⁻¹
                                 let Dvol := ((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet
                                 let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -9598,10 +9831,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le
                             ∀ {density : EdgeFamily → ℝ} {Kprior : ℝ},
                               (∀ E ∈ sourceChart '' V, density E ≤ Kprior) →
                                 let cHaar :=
-                                  ((Measure.map
+                                  (originalTupleVolumeHaarScalarOfMap d
                                     (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                      W₂ B₂ U₀)
-                                    rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                      W₂ B₂ U₀) rawHaar)
                                 let Ddet := Cdet * ε⁻¹
                                 let Dvol := ((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet
                                 let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -9865,10 +10097,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le
                             ∀ {density : EdgeFamily → ℝ} {Kprior : ℝ},
                               (∀ E ∈ sourceChart '' G, density E ≤ Kprior) →
                                 let cHaar :=
-                                  ((Measure.map
+                                  (originalTupleVolumeHaarScalarOfMap d
                                     (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                      W₂ B₂ U₀)
-                                    rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                      W₂ B₂ U₀) rawHaar)
                                 let Ddet := Cdet * ε⁻¹
                                 let Dvol := ((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet
                                 let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -10141,10 +10372,9 @@ theorem exists_open_subset_originalEdgeFamilyPrior_restrict_sourceChart_image_le
                           ε ≠ 0 →
                             ε ≠ ∞ →
                               let cHaar :=
-                                ((Measure.map
+                                (originalTupleVolumeHaarScalarOfMap d
                                   (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                    W₂ B₂ U₀)
-                                  rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                    W₂ B₂ U₀) rawHaar)
                               let Ddet := Cdet * ε⁻¹
                               let Dvol := ((cHaar⁻¹ : NNReal) : ℝ≥0∞) * Ddet
                               let Cprior := ENNReal.ofReal Kprior * Dvol
@@ -10462,10 +10692,9 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       originalEdgeFamilyVolume (V := reverseVertex W₂)
         (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
     let cHaar :=
-      ((Measure.map
-          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-            W₂ B₂ U₀)
-          m).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) m)
     (∀ᶠ x in nhdsWithin base sourceStratum,
       ∀ u : EuclideanSpace ℝ ρreg,
         u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
@@ -10861,10 +11090,9 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       originalEdgeFamilyVolume (V := reverseVertex W₂)
         (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
     let cHaar :=
-      ((Measure.map
-          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-            W₂ B₂ U₀)
-          m).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) m)
     (∀ᶠ x in nhdsWithin base sourceStratum,
       ∀ u : EuclideanSpace ℝ ρreg,
         u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
@@ -11218,10 +11446,9 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       originalEdgeFamilyVolume (V := reverseVertex W₂)
         (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
     let cHaar :=
-      ((Measure.map
-          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-            W₂ B₂ U₀)
-          m).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) m)
     (∀ᶠ x in nhdsWithin base sourceStratum,
       ∀ u : EuclideanSpace ℝ ρreg,
         u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →

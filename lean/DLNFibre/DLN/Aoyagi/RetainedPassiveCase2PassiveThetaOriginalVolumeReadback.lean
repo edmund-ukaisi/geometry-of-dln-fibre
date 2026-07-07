@@ -22,12 +22,53 @@ namespace DLNFibre
 namespace DLN
 namespace Aoyagi
 
+open DLNFibre.Core
 open ChartLocalSuffixState
 open ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
 
 namespace PaperEndpointFixedBaseRegularCoordinateSourceData
 
 universe v
+
+private instance instIsTopologicalAddGroup_tupleReal
+    {N : ℕ} (d : Fin (N + 1) → ℕ) :
+    IsTopologicalAddGroup (Tuple (k := ℝ) d) := by
+  change IsTopologicalAddGroup
+    (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+  infer_instance
+
+private instance instBorelSpace_tupleReal
+    {N : ℕ} (d : Fin (N + 1) → ℕ) :
+    BorelSpace (Tuple (k := ℝ) d) := by
+  change BorelSpace
+    (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+  infer_instance
+
+private noncomputable def originalTupleVolumeHaarScalarOfMap
+    {N : ℕ} {E : Type*} [AddCommGroup E] [Module ℝ E]
+    [TopologicalSpace E] [IsTopologicalAddGroup E]
+    [MeasurableSpace E] [BorelSpace E]
+    (d : Fin (N + 1) → ℕ)
+    (L : E ≃L[ℝ] Tuple (k := ℝ) d)
+    (m : Measure E) [m.IsAddHaarMeasure] : NNReal := by
+  haveI : IsTopologicalAddGroup (Tuple (k := ℝ) d) :=
+    instIsTopologicalAddGroup_tupleReal d
+  haveI : BorelSpace (Tuple (k := ℝ) d) := by
+    change BorelSpace
+      (∀ i : Fin N, Fin (d i.succ) → Fin (d i.castSucc) → ℝ)
+    infer_instance
+  haveI : Measure.IsAddHaarMeasure (originalTupleVolume d) :=
+    isAddHaarMeasure_originalTupleVolume d
+  let hMapHaar : Measure.IsAddHaarMeasure (Measure.map L m) :=
+    L.isAddHaarMeasure_map m
+  exact
+    @Measure.addHaarScalarFactor
+      (Tuple (k := ℝ) d) _ _ _ _ _
+      (Measure.map L m)
+      (originalTupleVolume d)
+      (isAddHaarMeasure_originalTupleVolume d)
+      hMapHaar.toIsFiniteMeasureOnCompacts
+      hMapHaar.toIsAddLeftInvariant
 
 set_option maxRecDepth 2048 in
 set_option linter.unusedFintypeInType false in
@@ -179,10 +220,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_eq_withD
                       Measure.map rawMap (thetaReference.restrict V) =
                         rawHaar.restrict rawSourceSet →
                         let c :=
-                          ((Measure.map
+                          (originalTupleVolumeHaarScalarOfMap d
                             (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                              W₂ B₂ U₀)
-                            rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                              W₂ B₂ U₀) rawHaar)
                         let sourceRef :=
                           Measure.map sourceChart (thetaReference.restrict V)
                         let invHaarDensity : EdgeFamily → ℝ≥0∞ :=
@@ -417,10 +457,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                       Measure.map rawMap (thetaReference.restrict V) =
                         rawHaar.restrict rawSourceSet →
                         let c :=
-                          ((Measure.map
+                          (originalTupleVolumeHaarScalarOfMap d
                             (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                              W₂ B₂ U₀)
-                            rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                              W₂ B₂ U₀) rawHaar)
                         let D : ℝ≥0∞ := ((c⁻¹ : NNReal) : ℝ≥0∞)
                         AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                           Measure.map readback (originalVolume.restrict chartPiece) ≤
@@ -630,10 +669,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                       rawHaar.restrict rawSourceSet ≤
                         D • Measure.map rawMap (thetaReference.restrict V) →
                         let c :=
-                          ((Measure.map
+                          (originalTupleVolumeHaarScalarOfMap d
                             (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                              W₂ B₂ U₀)
-                            rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                              W₂ B₂ U₀) rawHaar)
                         AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                           Measure.map readback (originalVolume.restrict chartPiece) ≤
                             ((((c⁻¹ : NNReal) : ℝ≥0∞) * D) •
@@ -898,10 +936,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                           rawHaar.restrict P ≤
                             D • Measure.map rawMap (thetaReference.restrict V) →
                           let c :=
-                            ((Measure.map
+                            (originalTupleVolumeHaarScalarOfMap d
                               (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                W₂ B₂ U₀)
-                              rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                W₂ B₂ U₀) rawHaar)
                           AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                             Measure.map readback (originalVolume.restrict chartPiece) ≤
                               ((((c⁻¹ : NNReal) : ℝ≥0∞) * D) •
@@ -1165,10 +1202,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                         Measure.map rawMap (thetaReference.restrict V) =
                           rawHaar.restrict rawSourceSet →
                           let c :=
-                            ((Measure.map
+                            (originalTupleVolumeHaarScalarOfMap d
                               (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                W₂ B₂ U₀)
-                              rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                W₂ B₂ U₀) rawHaar)
                           let D : ℝ≥0∞ := ((c⁻¹ : NNReal) : ℝ≥0∞) * (1 : ℝ≥0∞)
                           AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                             Measure.map readback (originalVolume.restrict chartPiece) ≤
@@ -1418,10 +1454,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                         Measure.map rawMap (thetaReference.restrict V) =
                           rawHaar.restrict rawSourceSet →
                           let c :=
-                            ((Measure.map
+                            (originalTupleVolumeHaarScalarOfMap d
                               (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                W₂ B₂ U₀)
-                              rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                W₂ B₂ U₀) rawHaar)
                           let D : ℝ≥0∞ := ((c⁻¹ : NNReal) : ℝ≥0∞) * (1 : ℝ≥0∞)
                           AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                             Measure.map readback (originalVolume.restrict chartPiece) ≤
@@ -1656,10 +1691,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                           Measure.map rawMap (thetaReference.restrict V) =
                             rawHaar.restrict rawSourceSet →
                             let c :=
-                              ((Measure.map
+                              (originalTupleVolumeHaarScalarOfMap d
                                 (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                                  W₂ B₂ U₀)
-                                rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                                  W₂ B₂ U₀) rawHaar)
                             let D : ℝ≥0∞ := ((c⁻¹ : NNReal) : ℝ≥0∞) * (1 : ℝ≥0∞)
                             AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                               Measure.map readback (originalVolume.restrict chartPiece) ≤
@@ -1906,10 +1940,9 @@ theorem exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback
                       rawHaar.restrict rawSourceSet ≤
                         D • Measure.map rawMap (thetaReference.restrict V) →
                         let c :=
-                          ((Measure.map
+                          (originalTupleVolumeHaarScalarOfMap d
                             (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-                              W₂ B₂ U₀)
-                            rawHaar).addHaarScalarFactor (originalTupleVolume d))
+                              W₂ B₂ U₀) rawHaar)
                         AEMeasurable readback (originalVolume.restrict chartPiece) ∧
                           Measure.map readback (originalVolume.restrict chartPiece) ≤
                             ((((c⁻¹ : NNReal) : ℝ≥0∞) * D) •
@@ -2263,10 +2296,9 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       originalEdgeFamilyVolume (V := reverseVertex W₂)
         (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
     let cHaar :=
-      ((Measure.map
-          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-            W₂ B₂ U₀)
-          m).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) m)
     (∀ᶠ x in nhdsWithin base sourceStratum,
       ∀ u : EuclideanSpace ℝ ρreg,
         u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
@@ -2669,10 +2701,9 @@ theorem exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_
       originalEdgeFamilyVolume (V := reverseVertex W₂)
         (paperEndpointFixedBaseFinBasis W₂ B₂ U₀ hU₀)
     let cHaar :=
-      ((Measure.map
-          (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
-            W₂ B₂ U₀)
-          m).addHaarScalarFactor (originalTupleVolume d))
+      (originalTupleVolumeHaarScalarOfMap d
+        (paperEndpointFixedBaseRawOrderMatrixTupleContinuousLinearEquiv
+          W₂ B₂ U₀) m)
     (∀ᶠ x in nhdsWithin base sourceStratum,
       ∀ u : EuclideanSpace ℝ ρreg,
         u ∈ Metric.ball (0 : EuclideanSpace ℝ ρreg) R →
