@@ -696,7 +696,7 @@ theorem deepest_gauge_construction_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
                 + deepestCoreF H r (coreAbsorb (split x)).2.1)
             ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
-      hP22one, hQ22one⟩ :=
+      hP22one, hQ22one, _⟩ :=
     deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
   exact deepest_gauge_construction_L2_ofBundle H r B hB hr hL hL2 hpos htop hLlt
     Jb Pf Qf hJtri hPunit hQunit hQf0 hPfL hNF hQf22b hcorner hPtri hQtri hP22one hQ22one
@@ -787,7 +787,7 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- `hJfront`), `hPtri`, `hQtri`. The frame facts the body consumes are frame-generic, so the switch is a
     -- drop-in; `hPtri`/`hQtri` feed the L=2 diffeo bridge.
     obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
-        hP22one, hQ22one⟩ :=
+        hP22one, hQ22one, hInterior⟩ :=
       deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
     -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
     -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).
@@ -909,11 +909,13 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
       · rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
         · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
           rw [hsf]; exact hQf0
-        · -- SCOPED GAP (L ≥ 3 interior `Qf s`), roadmapped #120.
-          sorry
+        · -- Strict-interior layer `s` (`0 < s`, `s+1 < L`): the chosen frame is the identity.
+          exact (hInterior s hspos hs).2
       · rcases Nat.lt_or_ge ((s : ℕ) + 1) (L - 1) with hint | hbdy
-        · -- SCOPED GAP (L ≥ 3 interior `Pf (s+1)`), roadmapped #120.
-          sorry
+        · -- Strict-interior layer `s+1` (`0 < s+1`, `s+2 < L` from `hint`): the frame is the identity.
+          have h1 : 0 < (s : ℕ) + 1 := by omega
+          have h2 : (s : ℕ) + 1 + 1 < L := by omega
+          exact (hInterior ⟨(s : ℕ) + 1, by omega⟩ h1 h2).1
         · have hsf : (⟨(s : ℕ) + 1, by omega⟩ : Fin L) = lastLayer hL :=
             Fin.ext (by simp only [lastLayer]; omega)
           rw [hsf]; exact hPfL
