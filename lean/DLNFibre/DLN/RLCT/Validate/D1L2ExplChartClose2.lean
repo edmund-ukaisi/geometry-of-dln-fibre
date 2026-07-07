@@ -439,4 +439,69 @@ theorem schurReadout_germ_eq (C₀ : BlockParamsL2 H r)
   simp only [hRw11, hRw12, hRw21, hRw22]
   abel
 
+/-! ## The crux close — wiring the germ + slice into the banked consumer -/
+
+/-- A regular flat coordinate of `splitHomeoL2.symm ((0), t)` is `0` (its reg block is `0`). -/
+theorem reg_zero_of_slice (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))
+    (ρ : RegIdx H r) :
+    (splitHomeoL2 I K J hI hK hJ).symm
+        ((0 : Fin (nRegL2 H r) → ℝ), t)
+        (Fintype.equivFin (FlatIdx H) (roleToFlat I K J hI hK hJ (Sum.inl ρ))) = 0 := by
+  have hround : splitMP I K J hI hK hJ
+      ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))
+      = ((0 : Fin (nRegL2 H r) → ℝ), t) := by
+    have := (splitHomeoL2 I K J hI hK hJ).apply_symm_apply
+      ((0 : Fin (nRegL2 H r) → ℝ), t)
+    rw [splitHomeoL2_apply] at this; exact this
+  have hkey := splitMP_reg I K J hI hK hJ
+    ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))
+    (regEquivFin I J hI hJ |>.symm ρ)
+  rw [e_idx_reg, Equiv.apply_symm_apply] at hkey
+  rw [← hkey, hround]
+  rfl
+
+/-- `(A * B)` top-left block. -/
+theorem mul_toBlocks₁₁ {n₁ n₂ m₁ m₂ p₁ p₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (A : Matrix (n₁ ⊕ n₂) (m₁ ⊕ m₂) ℝ) (B : Matrix (m₁ ⊕ m₂) (p₁ ⊕ p₂) ℝ) :
+    (A * B).toBlocks₁₁ = A.toBlocks₁₁ * B.toBlocks₁₁ + A.toBlocks₁₂ * B.toBlocks₂₁ := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks A, ← Matrix.fromBlocks_toBlocks B,
+    Matrix.fromBlocks_multiply]
+  rw [Matrix.toBlocks_fromBlocks₁₁]
+
+/-- `(A * B)` top-right block. -/
+theorem mul_toBlocks₁₂ {n₁ n₂ m₁ m₂ p₁ p₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (A : Matrix (n₁ ⊕ n₂) (m₁ ⊕ m₂) ℝ) (B : Matrix (m₁ ⊕ m₂) (p₁ ⊕ p₂) ℝ) :
+    (A * B).toBlocks₁₂ = A.toBlocks₁₁ * B.toBlocks₁₂ + A.toBlocks₁₂ * B.toBlocks₂₂ := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks A, ← Matrix.fromBlocks_toBlocks B,
+    Matrix.fromBlocks_multiply]
+  rw [Matrix.toBlocks_fromBlocks₁₂]
+
+/-- `(A * B)` bottom-left block. -/
+theorem mul_toBlocks₂₁ {n₁ n₂ m₁ m₂ p₁ p₂ : Type*} [Fintype m₁] [Fintype m₂]
+    (A : Matrix (n₁ ⊕ n₂) (m₁ ⊕ m₂) ℝ) (B : Matrix (m₁ ⊕ m₂) (p₁ ⊕ p₂) ℝ) :
+    (A * B).toBlocks₂₁ = A.toBlocks₂₁ * B.toBlocks₁₁ + A.toBlocks₂₂ * B.toBlocks₂₁ := by
+  conv_lhs => rw [← Matrix.fromBlocks_toBlocks A, ← Matrix.fromBlocks_toBlocks B,
+    Matrix.fromBlocks_multiply]
+  rw [Matrix.toBlocks_fromBlocks₂₁]
+
+/-- The three regular blocks of `blockFlatEquiv_L2 (splitHomeoL2.symm ((0), t))` vanish. -/
+theorem bChart_slice_reg_zero
+    (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ)) :
+    (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).2.toBlocks₁₁ = 0
+    ∧ (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).2.toBlocks₁₂ = 0
+    ∧ (blockFlatEquiv_L2 H r I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))).1.toBlocks₂₁ = 0 := by
+  refine ⟨?_, ?_, ?_⟩
+  · funext k k'
+    rw [← reg_entry_M11 I K J hI hK hJ _ k k']
+    exact reg_zero_of_slice I K J hI hK hJ t (Sum.inr (k, Sum.inl k'))
+  · funext k b
+    rw [← reg_entry_M12 I K J hI hK hJ _ k b]
+    exact reg_zero_of_slice I K J hI hK hJ t (Sum.inr (k, Sum.inr b))
+  · funext a k
+    rw [← reg_entry_M21 I K J hI hK hJ _ a k]
+    exact reg_zero_of_slice I K J hI hK hJ t (Sum.inl (a, k))
+
 end DLNFibre.DLN.RLCT
