@@ -21,6 +21,40 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 original coordinate prior source-image finite-integral bridge
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-source-image-finite-integral.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean
+```
+
+Lean now has:
+
+```text
+aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_of_le_smul_sourceImageReference_restrict_image
+
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_sourceChart_preimage_chartPiece_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+The generic helper turns scalar domination by a chart-produced source-image
+reference on `sourceChart '' V` into the readback-domination hypothesis on a
+chart piece supported in `sourceChart '' (V ∩ W)`.  The main theorem uses this
+helper to feed the pushed original coordinate prior into the existing p.13
+external-source finite-integral socket.
+
+Boundary: this is a finite-integral consumer for an already-conditional
+source-image domination theorem.  It does not construct source-image density,
+identify a source-chart prior, prove determinant/raw Haar transport, prove
+source-rank or atlas coverage, construct normal crossings, compute pole order,
+or extract RLCT.
+
 ## 2026-07-07 A2 original coordinate prior source-image domination
 
 Reproduction:
@@ -43,7 +77,7 @@ exists_open_subset_map_originalCoordinatePrior_restrict_sourceChart_preimage_le_
 
 It calls the existing edge-family source-image domination theorem with the
 induced edge density
-`E |-> coordDensity (canonicalCoord d (edgeFamilyMatrixTuple b E))`, then use
+`E |-> coordDensity (canonicalCoord d (edgeFamilyMatrixTuple b E))`, then uses
 the coordinate-prior preimage transport theorem to replace the restricted
 edge-family prior by the pushed restricted flattened-coordinate prior.
 

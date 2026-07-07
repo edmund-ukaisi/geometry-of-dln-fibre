@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original coordinate prior source-image finite-integral bridge
+
+Decision: consume the pushed original-coordinate source-image domination in
+the existing p.13 external-source finite-integral socket.
+
+The new theorem keeps the loss shrink `W` from the finite-integral socket and
+the coordinate-prior source-image shrink `V` from the prior bridge separate.
+The caller supplies a measurable chart piece supported in
+`sourceChart '' (V ∩ W)`.  This proves that `readback` lands in `W`, while the
+source-image domination on `sourceChart '' V` gives the scalar readback
+domination required by the finite-integral socket.  The final measure is the
+pushed coordinate prior
+
+```text
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' (sourceChart '' V)))
+```
+
+restricted to the caller's chart piece.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-source-image-finite-integral.md
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean
+lean/DLNFibre.lean
+```
+
+This is only a conditional measure-composition finite-integral bridge.  It
+does not construct `sourceImageDensity`, identify a source-chart prior, prove
+determinant/raw Haar transport, prove source-rank or atlas coverage, construct
+normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, original coordinate prior source-image domination
 
 Decision: expose the existing conditional source-image domination theorem from

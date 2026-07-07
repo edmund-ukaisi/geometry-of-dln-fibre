@@ -10,6 +10,49 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 original coordinate prior source-image finite-integral bridge - 2026-07-07
+
+- **Statement.** The pushed original flattened-coordinate prior returned by
+  the coordinate-prior source-image domination bridge can be used as the
+  external edge-family measure in the existing p.13 readback finite-integral
+  socket, on measurable chart pieces contained in `sourceChart '' (V ∩ W)`.
+- **Tier.** A2 finite-dimensional original prior transport at the
+  source-image finite-integral interface.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as constructing a source-image
+  density, identifying a chart-produced source prior with Aoyagi's prior,
+  proving determinant/raw Haar transport, proving source-rank or atlas
+  coverage, constructing normal crossings, computing pole order, or extracting
+  RLCT.
+- **Evidence/source.** Aoyagi pp. 3 and 7-8 for the original matrix prior
+  setting, p. 8 for the squared product-difference target, and pp. 10-13 for
+  the p.13 product reduction.  The new theorem itself is Lean-local
+  composition of the pushed-coordinate-prior source-image domination theorem
+  with the existing source-image finite-integral socket.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-source-image-finite-integral.md`.
+- **Reproduction check.** Controller checked that support in
+  `sourceChart '' (V ∩ W)` makes `readback(chartPiece) ⊆ W`, while the
+  coordinate-prior bridge domination on `sourceChart '' V` supplies the
+  scalar readback domination needed by the finite-integral socket.
+- **Lean targets.**
+  `aemeasurable_readback_and_measure_map_readback_restrict_piece_le_smul_restrict_of_le_smul_sourceImageReference_restrict_image`
+  and
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_sourceChart_preimage_chartPiece_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean`.
+- **Proved.** Focused `lake env lean` passed for the new Lean file and
+  `DLNFibre.lean`; focused module build passed for
+  `DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge`.
+  `lean/scripts/sorries`, `git diff --check`, touched Lean-file
+  forbidden-marker scan, direct axiom probes, and xhigh read-only review
+  passed.  Both new declarations report only `[propext, Classical.choice,
+  Quot.sound]`.
+- **Nonclaims.** No source-image density construction, no source-chart prior
+  identification, no determinant/raw Haar transport, no source-rank or
+  analytic atlas coverage, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 original coordinate prior source-image domination - 2026-07-07
 
 - **Statement.** The existing conditional source-image domination theorem for

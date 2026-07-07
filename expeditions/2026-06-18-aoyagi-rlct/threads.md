@@ -18,6 +18,16 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the pushed original-coordinate prior now feeds the
+  p.13 external-source finite-integral socket.  The theorem keeps the
+  coordinate-prior source-image shrink `V` separate from the finite-integral
+  shrink `W`, and requires chart-piece support inside `sourceChart '' (V ∩ W)`
+  so readback lands in `W`.  The final integral is over the pushed coordinate
+  prior restricted to that chart piece.  Source-image density construction,
+  source-chart prior identification, determinant/raw Haar transport,
+  source-rank or analytic atlas coverage, normal crossings, pole order, and
+  RLCT remain outside this rung.
+
 - 2026-07-07, Thread 03: the original-prior readback domination frontier now
   has a same-shrink theorem targeting `coordinateSourceMeasure.restrict V`.
   It keeps the existing endpoint-reference identity, endpoint lower bound,

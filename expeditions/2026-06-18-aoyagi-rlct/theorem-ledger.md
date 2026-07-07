@@ -4,6 +4,23 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original coordinate prior source-image finite-integral note, 2026-07-07: the
+pushed flattened-coordinate prior now has a direct finite-integral consumer.
+The theorem composes the coordinate-prior source-image domination bridge with
+the generic external-source p.13 finite-integral socket.  If the loss socket
+returns `W` and the coordinate-prior bridge returns `V`, the final chart piece
+is required to lie in `sourceChart '' (V ∩ W)`.  This support condition proves
+the readback lands in `W`; the existing chart-produced source-image reference
+pullback and the source-image domination scalar then supply the finite
+readback-domination hypothesis.  The conclusion is a finite p.13 regular
+coordinate lower integral against
+`((Measure.map toEdge ((originalCoordinatePrior d coordDensity).restrict
+(toEdge ⁻¹' (sourceChart '' V)))).restrict chartPiece).prod ν`.
+This is a project-internal measure-composition theorem.  It does not construct
+source-image density, identify a chart-produced prior with Aoyagi's prior,
+prove determinant/raw Haar transport, source-rank/atlas coverage, normal
+crossings, pole order, or RLCT.
+
 Original coordinate prior source-image domination note, 2026-07-07: the new
 bridge exposes the existing conditional source-image domination theorem from
 the original flattened-coordinate prior side.  With

@@ -6,6 +6,57 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 original coordinate prior source-image finite-integral bridge - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-source-image-finite-integral.md
+```
+
+Lean now has a finite-integral consumer for the pushed original
+flattened-coordinate prior:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_sourceChart_preimage_chartPiece_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+The theorem composes the coordinate-prior source-image domination bridge with
+the existing p.13 external-source finite-integral socket.  The loss socket
+returns `W`; the coordinate-prior bridge returns `V`.  A caller-supplied
+chart piece must be measurable, contained in the finite socket's
+`sourceLocal`, and contained in `sourceChart '' (V ∩ W)`.  That support
+condition gives the readback/right-inverse input on `W`; the prior bridge
+supplies the finite scalar domination by the source-image reference on
+`sourceChart '' V`.
+
+The finite integral is over the image measure
+
+```text
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' (sourceChart '' V)))
+```
+
+restricted to the chart piece and multiplied by the regular-coordinate Haar
+measure `ν`.  This deliberately does not claim an equality with the coordinate
+prior restricted to `toEdge ⁻¹' chartPiece`.
+
+This still does not construct source-image density, identify a chart-produced
+source prior with Aoyagi's prior, prove determinant/raw Haar transport,
+source-rank or analytic atlas coverage, normal crossings, pole order, or RLCT.
+
+Focused `lake env lean` passed for the new module and for `DLNFibre.lean`.
+Focused module build passed for
+`DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge`.
+`lean/scripts/sorries`, `git diff --check`, touched Lean-file
+forbidden-marker scan, and direct axiom probes passed.  Both new declarations
+report only `[propext, Classical.choice, Quot.sound]`.  Xhigh read-only
+reviewer `Singer the 2nd` passed the theorem-boundary audit: the `V/W`
+support condition is explicit, source-image/Haar/prior/source-rank hypotheses
+remain inputs, and the final measure is the pushed prior restricted after
+mapping rather than an unproved coordinate-domain chart-piece restriction.
+
 ## A2 same-shrink original-prior readback domination - 2026-07-07
 
 Reproduction:
