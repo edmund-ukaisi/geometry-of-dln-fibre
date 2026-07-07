@@ -4,6 +4,20 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Signed-box local selected-entry source continuous-density shrink note,
+2026-07-07: the selected-entry local-source continuous-density readback theorem
+now has a concrete signed-box source-parent specialization.  For
+`source = {value | value pivotNext != 0}`, the wrapper sets
+`sourceBox = signedBoxSet Rbox ∩ source`, proves `MeasurableSet sourceBox`
+using `measurableSet_signedBoxSet_inter_pivot_ne_zero`, and proves
+`sourceBox ⊆ source` by intersection projection.  It then delegates to the
+parent theorem, returning measurable local shrinks, a finite supplied-density
+bound, and scalar readback domination for the weighted selected-entry local
+source image.  This is only selected-entry signed-box local-source
+bookkeeping: no original-prior identification or transport, no determinant/raw
+Haar transport, no source or source-rank coverage, no residual integrability,
+normal crossings, pole order, or RLCT.
+
 Original coordinate prior direct chart-piece finite-integral note,
 2026-07-07: the pushed-coordinate-prior p.13 finite-integral bridge now has a
 direct chart-piece form.  Under the same support hypothesis

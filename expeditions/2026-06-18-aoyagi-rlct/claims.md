@@ -10,6 +10,48 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 signed-box local selected-entry source continuous-density shrink - 2026-07-07
+
+- **Statement.** The Case 2 selected-entry local-source
+  continuous-density shrink theorem specializes to the concrete source parent
+  `SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩
+  {value | value pivotNext ≠ 0}`.  For any supplied continuous edge-family
+  density `phi`, any measurable regular-coordinate parent inside the returned
+  p.13 ball, and any base point in this signed-box source times that regular
+  parent, Lean returns measurable local shrinks, a finite scalar bound, and
+  selected-entry product-readback domination by the shrunken value-reference
+  measure.
+- **Tier.** A2 selected-entry signed-box local-source bounded-density/readback
+  bookkeeping.
+- **Status.** Lean proved and checkpoint-verified.
+- **Kill-condition.** The result is read as identifying `phi` with Aoyagi's
+  original prior density, proving original-prior transport, determinant/raw
+  Haar transport, source coverage, source-rank coverage, residual
+  integrability, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi p.13 reduced product-coordinate variables and
+  pp.19-21 selected nonzero-pivot chart.  The new theorem is the
+  Lean-local specialization of the already reproduced local-source
+  continuous-density theorem to the measurable signed-box parent.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-signed-box-local-selected-entry-source-continuous-density-shrink.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Peirce the 2nd` passed:
+  the wrapper only supplies `sourceBox`, proves its measurability by
+  `measurableSet_signedBoxSet_inter_pivot_ne_zero`, proves
+  `sourceBox ⊆ source` by intersection projection, and then delegates to the
+  parent theorem.
+- **Lean target.**
+  `exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_signedBoxLocalSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean`.
+- **Proved.** Focused `lake env lean` and focused module build passed for the
+  touched Lean file/module.  `scripts/sorries`, `git diff --check`, tab scan,
+  direct axiom probe, and xhigh read-only review passed.  The new declaration
+  reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No constructed or identified original prior density, no
+  original-prior transport, no determinant/raw Haar transport, no source
+  coverage, no source-rank coverage, no residual integrability, no normal
+  crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 direct chart-piece coordinate-prior finite-integral wrapper - 2026-07-07
 
 - **Statement.** The pushed original flattened-coordinate prior p.13 finite

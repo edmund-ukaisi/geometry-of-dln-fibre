@@ -18,6 +18,15 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the selected-entry local-source
+  continuous-density readback theorem now has a concrete signed-box source
+  specialization.  It sets the source parent to
+  `signedBoxSet Rbox ∩ {value | value pivotNext != 0}`, discharges
+  measurability and subset hypotheses, and delegates to the existing
+  local-source theorem.  This adds no original-prior identification,
+  determinant/raw Haar transport, source or source-rank coverage, residual
+  integrability, normal-crossing, pole-order, or RLCT result.
+
 - 2026-07-07, Thread 03: the pushed original-coordinate prior p.13
   finite-integral bridge now has a direct chart-piece form.  The final measure
   is `map toEdge ((originalCoordinatePrior d coordDensity).restrict

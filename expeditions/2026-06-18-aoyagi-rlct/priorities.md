@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, signed-box local selected-entry source continuous-density shrink
+
+Decision: specialize the local-source continuous supplied-density theorem to
+the concrete selected-entry signed-box source parent.
+
+The new theorem fixes
+
+```text
+sourceBox = SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩
+  {value | value pivotNext != 0}
+```
+
+and feeds it to the parent local-source theorem.  The only new inputs needed
+are the existing measurability lemma for the signed box with the pivot
+hyperplane removed and the trivial subset `sourceBox ⊆ {pivotNext != 0}`.
+The result returns the same kind of local shrinks and readback domination as
+the parent theorem, but downstream callers no longer have to carry an
+arbitrary `localSource` when they are already working inside a selected-entry
+signed box.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-signed-box-local-selected-entry-source-continuous-density-shrink.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+This is only signed-box local-source bookkeeping.  It does not identify the
+supplied density with the original prior, prove original-prior transport,
+determinant/raw Haar transport, source coverage, source-rank coverage,
+residual integrability, normal crossings, pole order, or RLCT.  Do not add a
+density-one sibling unless a concrete caller needs that exact API; the next
+substantive frontier remains source/prior transport and source-image coverage.
+
 ## Latest controller decision - 2026-07-07, direct chart-piece coordinate-prior finite integral
 
 Decision: compose the pushed-coordinate-prior p.13 finite-integral bridge with

@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 signed-box local selected-entry source continuous-density shrink
+
+Reproduction:
+
+```text
+reproduction-a2-signed-box-local-selected-entry-source-continuous-density-shrink.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2SelectedEntryProductMeasureHandoff.lean
+```
+
+Lean now has:
+
+```text
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_signedBoxLocalSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+The theorem specializes the already proved local-source
+continuous-density/readback package to
+`SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩ {value |
+value pivotNext != 0}`.  The proof only supplies signed-box measurability and
+the subset into the pivot-nonzero source before delegating to the parent
+local-source theorem.
+
+Boundary: this is selected-entry signed-box local-source bookkeeping.  It does
+not identify an original prior density, prove original-prior transport,
+determinant/raw Haar transport, source or source-rank coverage, residual
+integrability, normal crossings, pole order, or RLCT.
+
+Verification: focused `lake env lean` and focused local `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`
+passed; `scripts/sorries` reports `0 sorry, 0 #exit, 0 native_decide,
+0 axiom`; `git diff --check` and tab scan passed; direct axiom probe reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Peirce the 2nd` passed the theorem-boundary and reproduction audit.
+
 ## 2026-07-07 A2 direct chart-piece coordinate-prior finite integral
 
 Reproduction:

@@ -2883,6 +2883,171 @@ set_option linter.unusedFintypeInType false in
 set_option linter.unusedDecidableInType false in
 set_option linter.unusedSectionVars false in
 set_option linter.style.longLine false in
+/-- Signed-box local-domain specialization of the continuous selected-entry
+readback domination theorem.
+
+The source-coordinate set is the selected-entry signed box with the pivot
+hyperplane removed.  The proof only supplies this concrete measurable source
+set to the local-domain theorem above; it does not identify an original prior
+density, Haar transport, source coverage, source-rank coverage, residual
+integrability, normal crossings, pole order, or RLCT. -/
+theorem exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_signedBoxLocalSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain
+    (W₂ : Fin 3 → Type v) [∀ i, AddCommGroup (W₂ i)]
+    [∀ i, TopologicalSpace (W₂ i)] [∀ i, IsTopologicalAddGroup (W₂ i)]
+    [∀ i, T2Space (W₂ i)] [∀ i, Module ℝ (W₂ i)]
+    [∀ i, ContinuousSMul ℝ (W₂ i)]
+    (B₂ : ∀ i : Fin 2, W₂ i.succ →ₗ[ℝ] W₂ i.castSucc)
+    [∀ j, FiniteDimensional ℝ (W₂ j)]
+    [MeasurableSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [BorelSpace
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    [T2Space
+      (∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ)]
+    {τ : Type} [Fintype τ] [DecidableEq τ]
+    (n : ℕ → ℕ) {S J : ℕ} (hS : 1 ≤ S)
+    (hcont : J + 1 ≤ prefixMinNat n (S + 1))
+    (hnext : J + 2 ≤ prefixMinNat n (S + 1))
+    {U₀ : Submodule ℝ (reverseVertex W₂ 0)}
+    {hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W₂ B₂))}
+    (eNext : τ ≃ Case2ResidualColIndex n S (J + 1))
+    (e :
+      ∀ q : Fin 3,
+        case2PostPivotTwoEdgeDomain n S J τ q ≃
+          throughSubspaceEndpointComplementIndex
+            (reverseVertex W₂) (reverseEdge W₂ B₂) U₀ q)
+    {Rmax : ℝ} (hRmax : 0 < Rmax) :
+    let center : Finset (ℕ × ℕ) :=
+      case2ResidualBlockPivotEntries n S (J + 1)
+    let pivotNext : center :=
+      ⟨(J + 2, J + 2),
+        case2_displayedPivot_mem_residualBlockPivotEntries_of_cont
+          n hS hnext⟩
+    let EdgeFamily :=
+      ∀ p : Fin 2, reverseVertex W₂ p.castSucc →L[ℝ] reverseVertex W₂ p.succ
+    let retainedData :
+        (center → ℝ) →
+          ChartLocalSuffixState.RetainedPassiveNonredundantCoordinateData
+            (K := ℝ) (ρ := Fin (Module.finrank ℝ U₀))
+            (throughSubspaceEndpointComplementIndex
+              (reverseVertex W₂) (reverseEdge W₂ B₂) U₀) :=
+      fun yNext ↦
+        (case2PostPivotSelectedEntryRetainedPassiveData
+          (ρ := Fin (Module.finrank ℝ U₀))
+          n hS hcont hnext yNext eNext).endpointTransport e
+    let sourceChart : (center → ℝ) → EdgeFamily :=
+      fun value ↦
+        paperEndpointFixedBaseRetainedPassiveP13SourceEdgeFamilyOfData
+          W₂ B₂ U₀ hU₀
+          (retainedData
+            (SelectedEntrySignedBox.CenterCoord.preimageOfPivotNeZero
+              pivotNext value))
+    ∀ (phi : EdgeFamily → ℝ), Continuous phi →
+    ∀ Rbox : center → ℝ,
+    ∃ R : ℝ, 0 < R ∧ R ≤ Rmax ∧
+      let ρ := Fin (Module.finrank ℝ U₀)
+      let κ := throughSubspaceEndpointComplementIndex
+        (reverseVertex W₂) (reverseEdge W₂ B₂) U₀
+      let Coord :=
+        AoyagiRegularBlockCoordinateIndex ρ (κ (Fin.last 2)) (κ 0)
+      let CedgeProd :=
+        paperEndpointFixedBaseMultiEdgeProductCoordinateEdgeFamilyOfBaseEdgeFamilyEuclidean
+          W₂ B₂ U₀ hU₀ sourceChart
+      let source : Set (center → ℝ) :=
+        {value | value pivotNext ≠ 0}
+      let sourceBox :=
+        SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩ source
+      let residualCoordEquiv :
+          AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) ≃ center :=
+        case2ResidualBlockCoordinateIndexEquivPivotEntriesOfEquivs
+          n S (J + 1) (e (Fin.last 2)).symm ((e 0).symm.trans eNext)
+      let baseReadback :
+          (AoyagiResidualBlockCoordinateIndex (κ (Fin.last 2)) (κ 0) → ℝ) →
+            center → ℝ :=
+        fun coord i ↦ coord (residualCoordEquiv.symm i)
+      let productReadback : EdgeFamily → (center → ℝ) × EuclideanSpace ℝ Coord :=
+        fun E ↦
+          (baseReadback
+              (paperEndpointFixedBaseResidualBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E),
+            (EuclideanSpace.equiv Coord ℝ).symm
+              (paperEndpointFixedBaseRegularBlockCoordinateMap
+                (K := ℝ) (N := 2) W₂ B₂ U₀ hU₀
+                (fun E' : EdgeFamily ↦ E') E))
+      ∀ regularSet : Set (EuclideanSpace ℝ Coord),
+        MeasurableSet regularSet →
+          regularSet ⊆ Metric.ball (0 : EuclideanSpace ℝ Coord) R →
+          ∀ y0 ∈ sourceBox, ∀ u0 ∈ regularSet,
+            ∃ c : ℝ≥0∞, c < ∞ ∧
+              ∃ localSource' : Set (center → ℝ),
+              ∃ regularSet' : Set (EuclideanSpace ℝ Coord),
+                MeasurableSet localSource' ∧
+                  localSource' ⊆ sourceBox ∧
+                  y0 ∈ localSource' ∧
+                  MeasurableSet regularSet' ∧
+                  regularSet' ⊆ regularSet ∧
+                  u0 ∈ regularSet' ∧
+                  let localRegularMeasure' :=
+                    (volume : Measure (EuclideanSpace ℝ Coord)).restrict regularSet'
+                  let localValueImage' :=
+                    SelectedEntrySignedBox.CenterCoord.chartMap pivotNext '' localSource'
+                  let localDomain' := localValueImage' ×ˢ regularSet'
+                  let localSelectedEntrySource' :=
+                    ((((volume : Measure (center → ℝ)).restrict localSource').withDensity
+                      (fun y : center → ℝ =>
+                        ENNReal.ofReal
+                          (SelectedEntrySignedBox.CenterCoord.sourceDensity pivotNext y))).prod
+                      localRegularMeasure')
+                  let selectedEntryProductChart' :
+                      (center → ℝ) × EuclideanSpace ℝ Coord → EdgeFamily :=
+                    fun z ↦
+                      CedgeProd
+                        (SelectedEntrySignedBox.CenterCoord.chartMap pivotNext z.1, z.2)
+                  let localValueReference' :=
+                    ((volume : Measure (center → ℝ)).restrict localValueImage').prod
+                      localRegularMeasure'
+                  (∀ z ∈ localDomain',
+                    ENNReal.ofReal (phi (CedgeProd z)) ≤ c) ∧
+                  AEMeasurable productReadback
+                    (Measure.map selectedEntryProductChart'
+                      (localSelectedEntrySource'.withDensity
+                        (fun z ↦
+                          ENNReal.ofReal (phi (selectedEntryProductChart' z))))) ∧
+                  Measure.map productReadback
+                    (Measure.map selectedEntryProductChart'
+                      (localSelectedEntrySource'.withDensity
+                        (fun z ↦
+                          ENNReal.ofReal (phi (selectedEntryProductChart' z))))) ≤
+                    c • localValueReference'.restrict localDomain' := by
+  intro center pivotNext EdgeFamily retainedData sourceChart phi hphi Rbox
+  rcases
+      exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_localSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain
+        W₂ B₂ n hS hcont hnext (U₀ := U₀) (hU₀ := hU₀) eNext e
+        hRmax phi hphi with
+    ⟨R, hR, hRle, hpackage⟩
+  refine ⟨R, hR, hRle, ?_⟩
+  intro ρ κ Coord CedgeProd source sourceBox residualCoordEquiv
+    baseReadback productReadback regularSet hregularSet_meas
+    hregularSet_sub y0 hy0 u0 hu0
+  have hsourceBox_meas : MeasurableSet sourceBox := by
+    simpa [sourceBox, source] using
+      SelectedEntrySignedBox.CenterCoord.measurableSet_signedBoxSet_inter_pivot_ne_zero
+        pivotNext Rbox
+  have hsourceBox_sub : sourceBox ⊆ source := by
+    intro y hy
+    exact hy.2
+  have hresult :=
+    hpackage sourceBox regularSet hsourceBox_meas hsourceBox_sub
+      hregularSet_meas hregularSet_sub y0 hy0 u0 hu0
+  simpa [center, pivotNext, EdgeFamily, retainedData, sourceChart, ρ, κ,
+    Coord, CedgeProd, source, sourceBox, residualCoordEquiv, baseReadback,
+    productReadback] using hresult
+
+set_option linter.unusedFintypeInType false in
+set_option linter.unusedDecidableInType false in
+set_option linter.unusedSectionVars false in
+set_option linter.style.longLine false in
 /-- Same-radius readback domination for the selected-entry product-coordinate
 pushforward.
 

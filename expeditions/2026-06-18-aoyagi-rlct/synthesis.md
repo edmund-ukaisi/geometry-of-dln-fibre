@@ -6,6 +6,50 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 signed-box local selected-entry source continuous-density shrink - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-signed-box-local-selected-entry-source-continuous-density-shrink.md
+```
+
+Lean now has:
+
+```text
+exists_pos_radius_le_case2EndpointTransport_selectedEntryValue_productCoordinate_map_signedBoxLocalSelectedEntrySource_withDensity_ofReal_continuousEdgeDensity_exists_shrink_readback_le_smul_localValueReference_restrict_localDomain
+```
+
+This is the concrete signed-box specialization of the selected-entry
+local-source continuous-density theorem.  It sets
+
+```text
+sourceBox = SelectedEntrySignedBox.CenterCoord.signedBoxSet Rbox ∩
+  {value | value pivotNext != 0}
+```
+
+and applies the parent theorem with `localSource = sourceBox`.  The new proof
+only discharges `MeasurableSet sourceBox` using the existing signed-box
+measurability lemma and `sourceBox ⊆ source` by projection from the
+intersection.
+
+The returned package is unchanged in substance: a finite bound for
+`ENNReal.ofReal (phi (CedgeProd z))` on the shrunken value-side product, plus
+a.e. measurability and scalar readback domination for the weighted
+selected-entry local source image.
+
+This does not identify `phi` with Aoyagi's original prior, prove
+original-prior transport, determinant/raw Haar transport, source coverage,
+source-rank coverage, residual integrability, normal crossings, pole order,
+or RLCT.
+
+Verification passed by focused `lake env lean`, focused local `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2SelectedEntryProductMeasureHandoff`,
+`scripts/sorries`, `git diff --check`, tab scan, and direct axiom probe for
+the new theorem (`[propext, Classical.choice, Quot.sound]`).  Xhigh
+read-only reviewer `Peirce the 2nd` passed the theorem-boundary and
+reproduction audit.
+
 ## A2 direct chart-piece coordinate-prior finite-integral wrapper - 2026-07-07
 
 Reproduction:
