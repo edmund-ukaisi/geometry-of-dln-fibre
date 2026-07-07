@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, dominated zero-locus nullity handoff
+
+Decision: build the reusable measure-theory socket for the residual
+zero-locus frontier before trying to specialize it to the original prior.
+
+The new generic lemmas prove:
+
+```text
+nu <= c • mu -> mu s = 0 -> nu s = 0
+nu <= c • mu -> (forall^ae x with respect to mu, 0 < f x)
+  -> nu {x | f x = 0} = 0.
+```
+
+This is the abstract piece needed to turn source-side residual positivity plus
+domination into a zero-locus-nullity hypothesis.  It does not by itself
+produce the original-prior domination, align the edge-family residual with the
+source-side residual, or prove residual positivity for the original prior.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-dominated-zero-locus-nullity-handoff.md
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
 ## Latest controller decision - 2026-07-07, rank-cut original-prior local loss source data from rank equations
 
 Decision: remove the opaque `sourceData` argument from the strongest

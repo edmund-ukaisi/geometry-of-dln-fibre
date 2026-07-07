@@ -18,6 +18,16 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: a generic dominated zero-locus nullity handoff landed
+  in `LocalMeasureHandoff`.  Scalar domination transfers nullity of sets, and
+  if a real function is positive a.e. for the reference measure then every
+  scalar-dominated target gives zero mass to its zero locus.  This is only the
+  reusable measure socket for the residual zero-locus frontier; concrete
+  original-prior domination, readback/residual alignment, source-side
+  positivity for the relevant restricted piece, source-rank coverage, prior
+  transport, determinant/raw Haar transport, normal crossings, pole order, and
+  RLCT remain outside this rung.
+
 - 2026-07-07, Thread 03: the strongest rank-cut original-prior local loss
   handoff now has a source-data-free specialization.  The returned
   continuation no longer asks for

@@ -489,6 +489,38 @@ theorem ae_of_measure_le_smul
     ∀ᵐ x ∂ν, p x :=
   (Measure.absolutelyContinuous_of_le_smul hν).ae_le hp
 
+/-- Nullity of a set transfers to any measure dominated by a scalar multiple
+of the reference measure. -/
+theorem measure_zero_of_measure_le_smul_of_measure_zero
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {s : Set α}
+    (hν : ν ≤ c • μ)
+    (hzero : μ s = 0) :
+    ν s = 0 := by
+  have hle : ν s ≤ (c • μ) s := hν s
+  have htarget : (c • μ) s = 0 := by
+    simp [Measure.smul_apply, hzero]
+  exact le_antisymm (by simpa [htarget] using hle) bot_le
+
+/-- If a real-valued function is positive a.e. for a reference measure, then
+any scalar-dominated measure gives zero mass to its zero locus. -/
+theorem measure_zero_set_eq_zero_of_measure_le_smul_of_ae_pos
+    {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : ℝ≥0∞}
+    {f : α → ℝ}
+    (hν : ν ≤ c • μ)
+    (hpos : ∀ᵐ x ∂μ, 0 < f x) :
+    ν {x | f x = 0} = 0 := by
+  have hzero_ref : μ {x | f x = 0} = 0 := by
+    rw [ae_iff] at hpos
+    exact
+      measure_mono_null
+        (fun x hx ↦ by
+          change ¬ 0 < f x
+          rw [hx]
+          exact not_lt_of_ge le_rfl)
+        hpos
+  exact measure_zero_of_measure_le_smul_of_measure_zero hν hzero_ref
+
 /-- Invert a nonzero `ℝ≥0` scalar equality of measures. -/
 theorem measure_eq_inv_smul_of_eq_nnreal_smul
     {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : NNReal}

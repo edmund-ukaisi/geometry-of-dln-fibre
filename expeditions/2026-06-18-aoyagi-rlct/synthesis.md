@@ -6,6 +6,36 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 dominated zero-locus nullity handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-dominated-zero-locus-nullity-handoff.md
+```
+
+Lean now has two generic measure lemmas in `LocalMeasureHandoff.lean`:
+
+```text
+measure_zero_of_measure_le_smul_of_measure_zero
+
+measure_zero_set_eq_zero_of_measure_le_smul_of_ae_pos
+```
+
+They prove that scalar domination transfers nullity of a set, and that if a
+real function is positive a.e. for the reference measure then every
+scalar-dominated target measure gives zero mass to its zero locus.
+
+This is only the abstract measure socket for the rank-cut residual zero-locus
+frontier.  It does not prove the concrete original-prior domination, the
+readback/source residual equality on the needed restricted piece, or source
+positivity for the original-prior measure itself.
+
+Focused `lake env lean` and focused module build passed for
+`LocalMeasureHandoff.lean`.  `scripts/sorries`, `git diff --check`,
+touched-file marker scan, and direct axiom probes passed.  Both declarations
+report only `[propext, Classical.choice, Quot.sound]`.
+
 ## A2 rank-cut original-prior local loss source data from rank equations - 2026-07-07
 
 Reproduction:
