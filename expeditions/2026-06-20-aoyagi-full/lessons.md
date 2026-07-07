@@ -1168,3 +1168,17 @@ germ SATISFIABILITY / route-alignment (a small numeric discriminator or design p
 germ-build; a reviewer verifying a reduction should check BOTH faithfulness AND satisfiability. The design-first
 / honest-partial discipline (refuse to build the germ on an unsatisfiable/wrong-route target) is what made both
 catches cheap (a scoping tide, not a wasted ~300-line build).
+
+## A teammate's "isolated green" can be a STALE-OLEAN cache hit masking a parse error — controller MUST force-recompile on integration (2026-07-07)
+`hstep2germs2` reported "isolated green (2677 jobs)" for `DeepestPsiSplitGenMoved.lean`, but on integration the
+FULL build hit a **parse error** (`unexpected token 'omit'; expected 'lemma'`) — the module never actually
+compiled with that content. Root cause: a `/-- … -/` docstring placed BEFORE `omit [Inst] in` (the docstring has
+no declaration to attach to); the correct order is `omit [Inst] in` THEN the docstring THEN the `theorem` (cf.
+the working `S1QuasiSplit`/`OrbitCodim`). The teammate's reported green was a shared-store olean cache hit
+(content-hash keyed) that bypassed re-parsing — exactly the `lean/CLAUDE.md` stale-olean hazard.
+**How to apply:** on integrating ANY tide, the controller force-recompiles (touch the module / green-gate the
+FULL `scripts/lb DLNFibre`, never trust the teammate's reported isolated exit-0) — for a new leaf module,
+`touch <module> && scripts/lb <module>` reproduces the true parse/elaboration state. This is a companion to the
+`#print axioms`-not-exit-status rule: exit-0 (even a teammate's) masks BOTH a persisted `sorryAx` AND a persisted
+parse error via a stale olean. The fix was a mechanical 2-line reorder (docstring after `omit`), banked into the
+merge commit; the teammate's math was sound.

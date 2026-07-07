@@ -782,3 +782,9 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
 -- (`loss_ofMatrix_product`: `frobSq(A₀·Q)` IS a carrier loss) + the corank split (`loss_blockSplit`).
 -- `sjJointResolution` UNTOUCHED — the matrix-box→ledger change-of-variables (pieces 2–3) is deferred.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
+-- D1 #120 `hstep2` germ-bulk (thread `genm-hstep2germs2`): the abstract joint move `movedC` (pivots
+-- fixed, up-edit all layers, `Z₀` override, cores) + Invariant B (`blockSchur_movedC`,
+-- `prodSchurCore_eq_blockSchur_partProd` = `hsub4core`) + the top-row half of Invariant A
+-- (`topRow_movedC` = `hsub3reg` up-half). `hstep2` UNTOUCHED — the left-column lemma + concrete
+-- instantiation + diffeo triple + compose are deferred.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved

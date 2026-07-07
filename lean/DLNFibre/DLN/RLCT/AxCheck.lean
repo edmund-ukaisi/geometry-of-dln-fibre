@@ -45,6 +45,7 @@ import DLNFibre.DLN.RLCT.Validate.R1ResolutionGeneral
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLedger
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
 
 /-!
 # Axiom-hygiene check
@@ -445,3 +446,15 @@ open DLNFibre.DLN.RLCT
 #print axioms SJLinGenState.loss_ofMatrix_product
 #print axioms SJLinGenState.loss_radialStep
 #print axioms SJLinGenState.gen_rowMix_const
+
+-- ★ D1 ∀-L #120 `hstep2` germ-bulk abstract invariants (2026-07-07, `genm-hstep2germs2`). The joint
+-- move `movedC` + Invariant B (`blockSchur_movedC`, `prodSchurCore_eq_blockSchur_partProd` = the
+-- `hsub4core` core-untwist, via banked `schur_product_ldu_rec`) + the top-row half of Invariant A
+-- (`topRow_movedC` = `hsub3reg` up-half, preserving `(P11,P12)` of every partial product). The
+-- left-column half + concrete `psiSplitRawGen` instantiation + diffeo triple + compose into
+-- `DeepestL2Wiring:1060` are the deferred BULK — `hstep2` sorry untouched. Cite-NOTHING: forced
+-- `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`). Axiom-gated so a stale-olean
+-- regression on the reusable joint-move invariants is caught across the multi-tide D1 close.
+#print axioms blockSchur_movedC
+#print axioms prodSchurCore_eq_blockSchur_partProd
+#print axioms topRow_movedC
