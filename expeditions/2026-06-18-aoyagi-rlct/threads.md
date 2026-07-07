@@ -18,6 +18,21 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following original-prior
+  source-cylinder handoff now has a direct theorem.  For measurable chart
+  pieces supported by `sourceChart '' (V ∩ sourceCylinder)`, under an
+  explicit lower bound `ε <= sourceDensity` on `baseJ.restrict V` and an
+  a.e. prior-density upper bound on `originalVolume.restrict chartPiece`,
+  Lean produces finite `Cdet` and dominates
+  `originalPrior.restrict chartPiece` by
+  `(ofReal Kprior * (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹))) •
+  Measure.map sourceChart (coordinateSourceMeasure.restrict V)`.  This is
+  bounded-density bookkeeping over the original-volume source-cylinder
+  theorem; it adds no determinant/raw Haar transport, Haar normalization,
+  source-density positivity, prior-density boundedness, source coverage/rank
+  coverage, source-prior or original-prior transport, readback domination,
+  finite-integral transfer, normal crossings, pole order, or RLCT result.
+
 - 2026-07-07, Thread 03: the with-following original-volume
   source-cylinder handoff now has a direct theorem.  For measurable chart
   pieces supported by `sourceChart '' (V ∩ sourceCylinder)`, and under an

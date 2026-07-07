@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-prior source-cylinder handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-source-cylinder-handoff.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower_priorDensity_upper
+```
+
+The theorem localizes bounded original-prior domination to chart pieces
+supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+After shrinking around a determinant-sector, nonzero-pivot with-following base
+point, if `sourceDensity` is bounded below by `ε` on `baseJ.restrict V`, with
+`ε ≠ 0` and `ε ≠ ∞`, and if the original prior density is bounded above by
+`Kprior` a.e. on `originalVolume.restrict chartPiece`, then for every
+additive `rawHaar` there is finite `Cdet` such that
+
+```text
+originalPrior.restrict chartPiece
+  <= (ofReal Kprior *
+      (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹))) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+The proof is bounded-density bookkeeping over the original-volume
+source-cylinder theorem: it applies
+`restrict_withDensity_ofReal_le_smul_of_restrict_le_smul_of_ae_le` to the
+original prior density and composes the scalar domination.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+git diff --check
+lean/scripts/sorries
+```
+
+`scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and only
+the existing three cited axioms.  The local citation executable reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and `#audit_cited` classifies
+the theorem as FORMALISED.
+
+Boundary: no determinant-chart Haar transport, exact raw-Haar pushforward,
+Haar-scalar normalization, source-density positivity, prior-density
+boundedness, source-image or source-rank coverage, source-prior or
+original-prior transport, readback domination, finite-integral transfer,
+normal crossings, pole order, or RLCT extraction.  Xhigh source-boundary and
+Lean-route reviews passed.
+
 ## A2 with-following original-volume source-cylinder handoff - 2026-07-07
 
 Reproduction:

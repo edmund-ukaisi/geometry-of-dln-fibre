@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-prior source-cylinder handoff
+
+Decision: add the bounded original-prior density handoff to the direct
+source-cylinder original-volume domination.
+
+The new theorem proves that after a local with-following shrink, any
+measurable chart piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+with an explicit lower bound `ε <= sourceDensity` on `baseJ.restrict V` and
+an a.e. upper bound `density <= Kprior` on
+`originalVolume.restrict chartPiece` gives finite `Cdet` and
+
+```text
+originalPrior.restrict chartPiece
+  <= (ofReal Kprior *
+      (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹))) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-source-cylinder-handoff.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-prior-source-cylinder-handoff.md
+threads/03-block-product-reduction/review-a2-with-following-original-prior-source-cylinder-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The proof composes the original-volume source-cylinder theorem with the
+generic real-density restriction helper for the original prior.  It does not
+identify the original prior with a chart-produced source prior.
+
+This is not determinant-chart Haar transport, exact raw-Haar pushforward,
+Haar normalization, source-density positivity, prior-density boundedness,
+source-image/source-rank coverage, source-prior or original-prior transport,
+readback domination, finite-integral transfer, normal crossings, pole order,
+or RLCT extraction.
+
+Next frontier: connect this direct prior domination to finite-integral/readback
+layers only where readback support and residual transfer are explicitly
+available, or attack the remaining source-density positivity/source-prior
+identification hypotheses.
+
 ## Latest controller decision - 2026-07-07, original-volume source-cylinder handoff
 
 Decision: consume the source-cylinder formal-product wrapper at the p.13
