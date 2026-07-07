@@ -6,6 +6,53 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 original coordinate prior chart-piece restriction cleanup - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-chartpiece-restriction-cleanup.md
+```
+
+Lean now has:
+
+```text
+map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset
+
+lintegral_prod_map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_chartPiece_lt_top_of_lintegral_prod_restrict_preimage_superset_restrict_chartPiece_lt_top
+```
+
+The first lemma says that if `chartPiece ⊆ Cset`, then pushing the coordinate
+prior restricted to `toEdge ⁻¹' Cset` and restricting the image measure to
+`chartPiece` equals pushing the coordinate prior restricted directly to
+`toEdge ⁻¹' chartPiece`.  The proof applies the existing coordinate-to-edge
+preimage transport theorem to both sets and identifies both sides with the
+same restricted edge-family prior.
+
+The second lemma transfers any finite product lower integral across that
+measure equality.  This is the cleanup needed after the source-image
+finite-integral bridge: the theorem can now be read on a direct coordinate
+preimage of the chosen chart piece, once the chart-piece support condition is
+available.
+
+This remains finite-dimensional restriction bookkeeping.  It does not
+identify a source-chart prior, construct source-image density, prove
+determinant/raw Haar transport, source-rank or analytic atlas coverage,
+normal crossings, pole order, or RLCT.
+
+Checkpoint verification passed: focused `lake env lean` on
+`OriginalEdgeFamilyRawOrderMeasureBridge`, focused `lake build
+DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge`, aggregator
+`lake env lean DLNFibre.lean`, `lean/scripts/sorries`, `git diff --check`,
+text-artifact scan, and direct axiom probes for both new declarations
+returning only `[propext, Classical.choice, Quot.sound]`.
+
+Xhigh read-only reviewer `Faraday the 2nd` passed the cleanup, confirming that
+the Lean theorem proves exactly the chart-piece restriction identity, that the
+smaller a.e.-measurability transfer is correctly obtained by
+restricted-measure monotonicity/absolute continuity, and that the docs do not
+overclaim source-chart prior identification or analytic RLCT content.
+
 ## A2 original coordinate prior source-image finite-integral bridge - 2026-07-07
 
 Reproduction:

@@ -10,6 +10,51 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 original coordinate prior chart-piece restriction cleanup - 2026-07-07
+
+- **Statement.** If `chartPiece ⊆ Cset`, then pushing the original
+  coordinate prior restricted to `toEdge ⁻¹' Cset` and restricting the
+  resulting edge-family measure to `chartPiece` equals pushing the original
+  coordinate prior restricted directly to `toEdge ⁻¹' chartPiece`.  The
+  corresponding finite product integral transfers across this equality.
+- **Tier.** A2 finite-dimensional original prior coordinate transport.
+- **Status.** Lean proved and checkpoint-verified.
+- **Kill-condition.** The result is read as identifying a source-chart prior,
+  constructing source-image density, proving determinant/raw Haar transport,
+  proving source-rank or atlas coverage, normal crossings, pole order, or
+  RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the original matrix-coordinate
+  setting.  The proof is Lean-local measure transport through the existing
+  flattened-coordinate to edge-family prior theorem, applied to `Cset` and to
+  `chartPiece`.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-chartpiece-restriction-cleanup.md`.
+- **Reproduction check.** Controller checked the calculation
+  `(edgePrior.restrict Cset).restrict chartPiece = edgePrior.restrict
+  chartPiece` under `chartPiece ⊆ Cset`, and the smaller a.e.-measurability
+  hypothesis by absolute continuity of restricted tuple volume.
+- **Lean targets.**
+  `map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset`
+  and
+  `lintegral_prod_map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_chartPiece_lt_top_of_lintegral_prod_restrict_preimage_superset_restrict_chartPiece_lt_top`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean`.
+- **Proved.** Verification passed by focused `lake env lean` on the
+  touched Lean file, focused `lake build
+  DLNFibre.DLN.Aoyagi.OriginalEdgeFamilyRawOrderMeasureBridge`, aggregator
+  `lake env lean DLNFibre.lean`, `lean/scripts/sorries`, `git diff --check`,
+  text-artifact scan, and direct axiom probes for both new declarations
+  returning only `[propext, Classical.choice, Quot.sound]`.
+- **Review.** Xhigh read-only reviewer `Faraday the 2nd` passed the cleanup:
+  the statement proves exactly the chart-piece restriction identity, the
+  smaller a.e.-measurability transfer is correct by restricted-measure
+  monotonicity/absolute continuity, and the docs do not cross the analytic
+  source-boundary.
+- **Nonclaims.** No source-chart prior identification, no source-image
+  density construction, no retained-passive Jacobian computation, no Haar
+  scalar normalization, no determinant/raw Haar transport, no source-rank or
+  analytic atlas coverage, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 original coordinate prior source-image finite-integral bridge - 2026-07-07
 
 - **Statement.** The pushed original flattened-coordinate prior returned by

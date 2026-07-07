@@ -18,6 +18,15 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: original coordinate-prior transport now has a
+  chart-piece restriction cleanup.  If `chartPiece ⊆ Cset`, then the pushed
+  prior restricted after mapping to `chartPiece` equals the pushforward of the
+  coordinate prior restricted directly to `toEdge ⁻¹' chartPiece`; finite
+  product integrals transfer across this equality.  This is only
+  finite-dimensional coordinate-prior bookkeeping, not source-chart prior
+  identification, source-image density construction, determinant/raw Haar
+  transport, source-rank coverage, normal crossings, pole order, or RLCT.
+
 - 2026-07-07, Thread 03: the pushed original-coordinate prior now feeds the
   p.13 external-source finite-integral socket.  The theorem keeps the
   coordinate-prior source-image shrink `V` separate from the finite-integral

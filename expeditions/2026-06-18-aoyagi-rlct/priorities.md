@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original coordinate prior chart-piece restriction cleanup
+
+Decision: add the finite-dimensional restriction cleanup needed after the
+pushed coordinate-prior finite-integral bridge.
+
+If `chartPiece ⊆ Cset`, the pushed coordinate prior restricted to `Cset` and
+then restricted to `chartPiece` is equal to the pushed coordinate prior
+restricted directly to `chartPiece`:
+
+```text
+(Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict (toEdge ⁻¹' Cset)))
+  .restrict chartPiece
+=
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' chartPiece)).
+```
+
+There is also a finite-product-integral transfer corollary across this
+equality.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-chartpiece-restriction-cleanup.md
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+This is only finite-dimensional coordinate-prior restriction bookkeeping.  It
+does not identify a source-chart prior, construct source-image density, prove
+determinant/raw Haar transport, prove source-rank or atlas coverage, construct
+normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, original coordinate prior source-image finite-integral bridge
 
 Decision: consume the pushed original-coordinate source-image domination in

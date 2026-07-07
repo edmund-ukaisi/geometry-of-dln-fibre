@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 original coordinate prior chart-piece restriction cleanup
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-chartpiece-restriction-cleanup.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+Lean now has:
+
+```text
+map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset
+
+lintegral_prod_map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_chartPiece_lt_top_of_lintegral_prod_restrict_preimage_superset_restrict_chartPiece_lt_top
+```
+
+The first theorem rewrites a pushed coordinate prior restricted after mapping
+to a chart piece as the pushforward of the coordinate prior restricted
+directly to the chart-piece preimage.  The second transfers finite product
+integrals across this equality.
+
+Boundary: this is finite-dimensional coordinate-prior transport cleanup.  It
+does not identify a source-chart prior, construct source-image density, prove
+determinant/raw Haar transport, prove source-rank or atlas coverage, construct
+normal crossings, compute pole order, or extract RLCT.
+
 ## 2026-07-07 A2 original coordinate prior source-image finite-integral bridge
 
 Reproduction:

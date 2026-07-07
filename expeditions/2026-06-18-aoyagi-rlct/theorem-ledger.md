@@ -4,6 +4,29 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original coordinate prior chart-piece restriction cleanup note, 2026-07-07:
+finite-dimensional coordinate-prior transport now has a chart-piece
+restriction cleanup.  For `toEdge x = tupleToEdgeFamily b
+((canonicalCoord d).symm x)`, if `chartPiece ⊆ Cset`, then
+
+```text
+(Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict (toEdge ⁻¹' Cset)))
+  .restrict chartPiece
+=
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' chartPiece)).
+```
+
+The proof applies the preimage transport theorem to `Cset` and `chartPiece`
+and uses `(edgePrior.restrict Cset).restrict chartPiece =
+edgePrior.restrict chartPiece`.  The smaller density a.e.-measurability
+hypothesis follows by absolute continuity of restricted tuple volume.  A
+companion finite-product-integral lemma rewrites finite integrals across this
+equality.  This is not source-chart prior identification, source-image
+density construction, Haar transport, normal crossings, pole order, or RLCT.
+
 Original coordinate prior source-image finite-integral note, 2026-07-07: the
 pushed flattened-coordinate prior now has a direct finite-integral consumer.
 The theorem composes the coordinate-prior source-image domination bridge with

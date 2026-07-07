@@ -538,6 +538,166 @@ theorem map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restri
           rw [hF_image]
 
 set_option linter.style.longLine false in
+/-- Restricting a pushed coordinate prior to a smaller edge-family chart
+piece is the same as pushing the coordinate prior restricted to the preimage of
+that chart piece.
+
+This is finite-dimensional transport bookkeeping over the established
+coordinate-to-edge-family equivalence.  It does not identify an Aoyagi source
+chart measure, construct source-image densities, prove Haar transport, normal
+crossings, pole order, or RLCT. -/
+theorem map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    {density : (RepCoord d → ℝ) → ℝ}
+    {Cset chartPiece : Set
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)}
+    (hCset : MeasurableSet Cset)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hsubset : chartPiece ⊆ Cset)
+    (hdensity :
+      AEMeasurable
+        (fun A : Tuple (k := ℝ) d ↦
+          ENNReal.ofReal (density (canonicalCoord d A)))
+        ((originalTupleVolume d).restrict
+          ((tupleToEdgeFamily (V := V) b) ⁻¹' Cset))) :
+    (Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict
+          ((fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+              Cset))).restrict chartPiece =
+      Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict
+          ((fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+              chartPiece)) := by
+  let edgeDensity :
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) → ℝ :=
+    fun E ↦ density
+      (canonicalCoord d (edgeFamilyMatrixTuple (V := V) b E))
+  let toEdge : (RepCoord d → ℝ) →
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    fun x ↦ tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)
+  have hpre_subset :
+      (tupleToEdgeFamily (V := V) b) ⁻¹' chartPiece ⊆
+        (tupleToEdgeFamily (V := V) b) ⁻¹' Cset := by
+    intro A hA
+    exact hsubset hA
+  have hrestrict_le :
+      (originalTupleVolume d).restrict
+          ((tupleToEdgeFamily (V := V) b) ⁻¹' chartPiece) ≤
+        (originalTupleVolume d).restrict
+          ((tupleToEdgeFamily (V := V) b) ⁻¹' Cset) :=
+    Measure.restrict_mono hpre_subset le_rfl
+  have hdensity_piece :
+      AEMeasurable
+        (fun A : Tuple (k := ℝ) d ↦
+          ENNReal.ofReal (density (canonicalCoord d A)))
+        ((originalTupleVolume d).restrict
+          ((tupleToEdgeFamily (V := V) b) ⁻¹' chartPiece)) :=
+    hdensity.mono_ac (Measure.absolutelyContinuous_of_le hrestrict_le)
+  have hbig :
+      Measure.map toEdge
+          ((originalCoordinatePrior d density).restrict (toEdge ⁻¹' Cset)) =
+        (originalEdgeFamilyPrior (V := V) b edgeDensity).restrict Cset := by
+    simpa [toEdge, edgeDensity] using
+      map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_eq_originalEdgeFamilyPrior_restrict
+        (V := V) (d := d) b (density := density) (Cset := Cset)
+        hCset hdensity
+  have hsmall :
+      Measure.map toEdge
+          ((originalCoordinatePrior d density).restrict
+            (toEdge ⁻¹' chartPiece)) =
+        (originalEdgeFamilyPrior (V := V) b edgeDensity).restrict
+          chartPiece := by
+    simpa [toEdge, edgeDensity] using
+      map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_eq_originalEdgeFamilyPrior_restrict
+        (V := V) (d := d) b (density := density) (Cset := chartPiece)
+        hchartPiece hdensity_piece
+  calc
+    (Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict
+          ((fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+              Cset))).restrict chartPiece =
+        ((originalEdgeFamilyPrior (V := V) b edgeDensity).restrict Cset).restrict
+          chartPiece := by
+          simpa [toEdge] using congrArg (fun μ ↦ μ.restrict chartPiece) hbig
+    _ =
+        (originalEdgeFamilyPrior (V := V) b edgeDensity).restrict chartPiece := by
+          exact Measure.restrict_restrict_of_subset hsubset
+    _ =
+        Measure.map
+          (fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+          ((originalCoordinatePrior d density).restrict
+            ((fun x : RepCoord d → ℝ ↦
+              tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+                chartPiece)) := by
+          simpa [toEdge] using hsmall.symm
+
+set_option linter.style.longLine false in
+/-- A finite product integral over a pushed coordinate prior restricted after
+mapping transfers to the directly restricted coordinate prior on the chart
+piece.
+
+This is the integral form of
+`map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset`.
+It is finite-dimensional measure bookkeeping and carries no analytic
+normal-crossing or RLCT content. -/
+theorem lintegral_prod_map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_chartPiece_lt_top_of_lintegral_prod_restrict_preimage_superset_restrict_chartPiece_lt_top
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    {density : (RepCoord d → ℝ) → ℝ}
+    {Cset chartPiece : Set
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)}
+    (hCset : MeasurableSet Cset)
+    (hchartPiece : MeasurableSet chartPiece)
+    (hsubset : chartPiece ⊆ Cset)
+    (hdensity :
+      AEMeasurable
+        (fun A : Tuple (k := ℝ) d ↦
+          ENNReal.ofReal (density (canonicalCoord d A)))
+        ((originalTupleVolume d).restrict
+          ((tupleToEdgeFamily (V := V) b) ⁻¹' Cset)))
+    {β : Type*} [MeasurableSpace β] (ν : Measure β)
+    {F :
+      ((∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) × β) →
+        ℝ≥0∞}
+    (hfinite :
+      (∫⁻ z, F z ∂
+        (((Measure.map
+          (fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+          ((originalCoordinatePrior d density).restrict
+            ((fun x : RepCoord d → ℝ ↦
+              tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+                Cset))).restrict chartPiece).prod ν)) < ∞) :
+    (∫⁻ z, F z ∂
+      ((Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict
+          ((fun x : RepCoord d → ℝ ↦
+            tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) ⁻¹'
+              chartPiece))).prod ν)) < ∞ := by
+  have hmeasure :=
+    map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_restrict_eq_restrict_preimage_of_subset
+      (V := V) (d := d) b (density := density) (Cset := Cset)
+      (chartPiece := chartPiece) hCset hchartPiece hsubset hdensity
+  simpa [hmeasure] using hfinite
+
+set_option linter.style.longLine false in
 /-- Pushing a restricted raw-coordinate Haar measure through the raw-order
 readout and then reconstructing fixed-basis continuous edge families gives the
 corresponding restriction of `originalEdgeFamilyVolume`, up to the same
