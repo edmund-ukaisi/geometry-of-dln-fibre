@@ -1965,3 +1965,30 @@ per-step object is defined), NOT a destination change — the peel still proves 
 awareness; I judged B correct and am proceeding (proceed-on-silence). No soundness risk — both the reviewer and a
 decorrelated model confirmed B is a legitimate faithful re-scope; the two named sorries (`sjBoundaryPeel`,
 `sjJointResolution`) carry faithful statements.
+
+## 50. 🎯 #120 RE-ADJUDICATED: NOT a research wall — the general headline has no flagged wall left (2026-07-07, controller-verified).
+The one D1-side item repeatedly flagged as a "genuine open / possible research wall" — #120
+`deepest_gauge_squeeze_exists` (the ∀-L L≥3 grouped deepest-gauge diffeo, `DeepestGaugeChart.lean:353`) —
+was re-adjudicated by `gauge120` (pen-and-paper + decorrelated Codex xhigh) to **VERDICT A: bounded
+structural lift, high confidence**, and I VERIFIED every load-bearing claim myself (not on the teammate's
+word):
+- **Reachable AS WRITTEN, no reshaping:** the `DeepestGaugeChart` structure fields are RLCT equalities (no
+  field bakes in the L=2 explicit inverse); the consumer needs only `Nonempty`. No signature/consumer churn.
+- **Gap = exactly 3 named sorries** (verified via rg): `DeepestL2Wiring.lean:913/916` (interior frames,
+  bounded engineering) + `:1058` (`hstep2`, the diffeo bridge). The general-L loss-side
+  (`DeepestGaugeConstruction.lean`) is sorry-free.
+- **The RLCT bridge already exists general enough** (verified): `rlctAtOn_comp_localDiffeo`
+  (`DeepestRegAbsorbIFT.lean:283`), universe-polymorphic, global-ContDiff + invertible-strict-deriv →
+  RLCT invariance. Sub-lemma 4 is NOT new interface.
+- **The `dΨ(0)=I` crux is DATA I re-ran** (True at L=3 scalar, L=3 non-scalar 2×2, L=4 scalar) — the
+  core-dependent `K_k` at L≥3 does not block it (vanishing `S_i(0)=0` factors); IFT replaces the L=2
+  explicit inverse (proof-packaging, not new math).
+**Consequence for the mission:** the fully-general `aoyagi_learning_coefficient` now has NO flagged research
+wall. Both remaining legs are BOUNDED formalisation grinds — D1 ∀-L (#120: 3 sorries + a 4-sub-lemma runway,
+each with an L=2 template) and R1-UPPER (the (S,J) peel). This supersedes the earlier "#120 = the standing
+L≥3 wall / cited-fallback" framing (items #41/#47, the RLCT-runway memory): the cited-Aoyagi fallback for the
+D1 side is NOT needed. **For operator:** the honest ETA is now dominated by formalisation LABOR (the peel's
+measure-plumbing + #120's dependent-width Schur-LDU cast-grind), not by any unresolved mathematics. Charging
+both legs (sjbpeel + sjldu). The one residual analytic unknown that remains genuinely open is the R1-UPPER
+peel's `sjJointResolution` general-L finiteness (bounded, consuming the banked block identity + corank atom,
+but the deepest grind) — NOT a wall, but the slowest piece.
