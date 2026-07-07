@@ -10,6 +10,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiApply
 import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
@@ -392,3 +393,11 @@ open DLNFibre.DLN.RLCT
 -- here so a stale-olean `sorryAx` regression on the D1-runway foundation is caught on every build.
 #print axioms schur_product_ldu_rec
 #print axioms blockSchur_partProd_succ
+
+-- ★ D1 ∀-L runway, deepest-gauge diffeo `dΨ(0) = I` (2026-07-07, #120 `hstep2` piece 3-apply).
+-- `hasStrictFDerivAt_deepestPsiCoreShear` (`DeepestPsiApply`) — the general-`L` absorbing shear `Ψ`
+-- has strict Fréchet derivative the identity at the split basepoint (given `K_s 0 = 0` + strict
+-- differentiability of `K`). Pure analysis, cite-NOTHING: forced `#print axioms` =
+-- [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`). Axiom-gated here so a
+-- stale-olean regression on the diffeo-derivative runway is caught on every build.
+#print axioms hasStrictFDerivAt_deepestPsiCoreShear

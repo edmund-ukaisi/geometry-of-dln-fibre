@@ -724,3 +724,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
 import DLNFibre.DLN.RLCT.AxCheck
 
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, pieces 1 + 3): the absorbing shear `Ψ = deepestPsiCoreShear`
+-- + its `dΨ(0) = I` strict-derivative fact (`hasStrictFDerivAt_deepestPsiCoreShear`). Transitively wires
+-- the banked pieces `DeepestPsi` (Ψ + basepoint) and `DeepestPsiStrictDeriv` (matMulCLM + bilinear scaffold).
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiApply
