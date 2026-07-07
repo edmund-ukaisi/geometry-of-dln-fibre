@@ -21,6 +21,41 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 original coordinate prior to edge-family prior transport
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-to-edge-family-prior-transport.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalPrior.lean
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+Lean now has:
+
+```text
+map_canonicalCoord_symm_originalCoordinatePrior_restrict_eq_originalTuplePrior_restrict_image
+
+map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image
+```
+
+The first theorem transports a restricted flattened-coordinate original prior
+through `(canonicalCoord d).symm` to the corresponding tuple prior.  The second
+composes this with the existing tuple-to-edge-family transport to obtain the
+fixed-basis edge-family prior with density
+`E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.
+
+Boundary: this is finite-dimensional coordinate/tuple/fixed-basis edge-family
+prior transport only.  It does not identify a source-chart image measure,
+construct source-image density, prove determinant/raw Haar transport,
+normalize Haar scalars, prove source-rank or atlas coverage, construct normal
+crossings, compute pole order, or extract RLCT.
+
 ## 2026-07-07 A2 upper original-loss stack with produced residual-source hypotheses
 
 Reproduction:

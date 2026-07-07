@@ -10,6 +10,48 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 original coordinate prior to edge-family prior transport - 2026-07-07
+
+- **Statement.** A restricted original coordinate prior pushes through
+  `(canonicalCoord d).symm` to the corresponding restricted tuple prior, and
+  then through fixed-basis `tupleToEdgeFamily b` to the corresponding
+  restricted edge-family prior with density
+  `E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.
+- **Tier.** A2 finite-dimensional original prior coordinate transport.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as identifying an Aoyagi source-chart
+  image measure, constructing a source-image density, computing a
+  retained-passive Jacobian, normalizing Haar scalars, proving determinant/raw
+  Haar transport, proving source-rank or atlas coverage, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the original matrix-coordinate
+  setting.  The new proof is Lean-local finite-dimensional measure transport
+  through the canonical flattening equivalence and fixed-basis edge-family
+  equivalence.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-to-edge-family-prior-transport.md`.
+- **Reproduction check.** Controller checked the density pullback
+  `density(canonicalCoord((canonicalCoord).symm x)) = density(x)` and the
+  two restricted measurable-equivalence image steps.  Xhigh scout
+  `Hilbert the 2nd` audited the existing terrain, confirmed these two
+  transport statements as the right rung, and identified the preimage-form
+  edge-family restriction as the next useful corollary.
+- **Lean targets.**
+  `map_canonicalCoord_symm_originalCoordinatePrior_restrict_eq_originalTuplePrior_restrict_image`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalPrior.lean`, and
+  `map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean`.
+- **Proved.** Focused `lake env lean` checks passed for both touched Lean
+  files.  Focused module builds passed for `OriginalPrior` and
+  `OriginalEdgeFamilyRawOrderMeasureBridge`.  `lake env lean DLNFibre.lean`,
+  `scripts/sorries`, `git diff --check`, touched Lean-file marker scan, and
+  direct axiom probes passed.  Both new declarations report only `[propext,
+  Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-chart prior identification, no source-image density
+  construction, no retained-passive Jacobian computation, no Haar scalar
+  normalization, no determinant/raw Haar transport, no source-rank or analytic
+  atlas coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 rank-cut original-loss upper stack with produced residual source - 2026-07-07
 
 - **Statement.** The upper rank-cut original-loss convenience stack can be

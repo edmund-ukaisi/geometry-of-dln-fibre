@@ -328,6 +328,107 @@ theorem map_tupleToEdgeFamily_originalTuplePrior_restrict_eq_originalEdgeFamilyP
             edgeFamilyMatrixTupleLinearEquiv] using hright.symm
 
 set_option linter.style.longLine false in
+/-- Transporting a restricted original coordinate prior through canonical
+entry unflattening and fixed-basis edge-family reconstruction gives the
+corresponding restricted edge-family prior.
+
+This is only finite-dimensional coordinate/tuple/edge-family prior transport.
+It does not identify an Aoyagi source-chart image measure, compute a
+retained-passive Jacobian, normalize Haar scalars, prove source-rank coverage,
+construct normal crossings, compute a pole order, or extract an RLCT. -/
+theorem map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    {density : (RepCoord d → ℝ) → ℝ}
+    {S : Set (RepCoord d → ℝ)}
+    (hS : MeasurableSet S)
+    (hdensity :
+      AEMeasurable
+        (fun A : Tuple (k := ℝ) d ↦
+          ENNReal.ofReal (density (canonicalCoord d A)))
+        (Measure.map (canonicalCoord d).symm
+          ((originalCoordinateVolume d).restrict S))) :
+    Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict S) =
+      (originalEdgeFamilyPrior (V := V) b
+        (fun E ↦ density
+          (canonicalCoord d (edgeFamilyMatrixTuple (V := V) b E)))).restrict
+        ((fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) '' S) := by
+  let C : (RepCoord d → ℝ) ≃ᵐ Tuple (k := ℝ) d :=
+    { toEquiv := (canonicalCoord d).symm
+      measurable_toFun := measurable_canonicalCoord_symm d
+      measurable_invFun := measurable_canonicalCoord d }
+  let T : Tuple (k := ℝ) d →
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    tupleToEdgeFamily (V := V) b
+  let tupleDensity : Tuple (k := ℝ) d → ℝ :=
+    fun A ↦ density (canonicalCoord d A)
+  have hcoord :
+      Measure.map C ((originalCoordinatePrior d density).restrict S) =
+        (originalTuplePrior d tupleDensity).restrict (C '' S) := by
+    simpa [C, tupleDensity] using
+      map_canonicalCoord_symm_originalCoordinatePrior_restrict_eq_originalTuplePrior_restrict_image
+        (d := d) (density := density) hS hdensity
+  have hS_tuple : MeasurableSet (C '' S) :=
+    (C.measurableSet_image).2 hS
+  have hcoord_volume :
+      Measure.map C ((originalCoordinateVolume d).restrict S) =
+        (originalTupleVolume d).restrict (C '' S) := by
+    have hrestrict :=
+      (C.restrict_map (originalCoordinateVolume d) (C '' S)).symm
+    have hpre : C ⁻¹' (C '' S) = S :=
+      Set.preimage_image_eq S C.injective
+    simpa [hpre, originalTupleVolume, C] using hrestrict
+  have hcoord_volume_explicit :
+      Measure.map (canonicalCoord d).symm
+          ((originalCoordinateVolume d).restrict S) =
+        (originalTupleVolume d).restrict (C '' S) := by
+    simpa [C] using hcoord_volume
+  have htuple_density :
+      AEMeasurable
+        (fun A : Tuple (k := ℝ) d ↦ ENNReal.ofReal (tupleDensity A))
+        ((originalTupleVolume d).restrict (C '' S)) := by
+    simpa [hcoord_volume_explicit, tupleDensity] using hdensity
+  have hedge :
+      Measure.map T ((originalTuplePrior d tupleDensity).restrict (C '' S)) =
+        (originalEdgeFamilyPrior (V := V) b
+          (fun E ↦ tupleDensity (edgeFamilyMatrixTuple (V := V) b E))).restrict
+          (T '' (C '' S)) := by
+    simpa [T, tupleDensity] using
+      map_tupleToEdgeFamily_originalTuplePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image
+        (V := V) (d := d) b hS_tuple htuple_density
+  calc
+    Measure.map
+        (fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x))
+        ((originalCoordinatePrior d density).restrict S) =
+        Measure.map T (Measure.map C
+          ((originalCoordinatePrior d density).restrict S)) := by
+          rw [Measure.map_map]
+          · rfl
+          · exact measurable_tupleToEdgeFamily (V := V) b
+          · exact C.measurable
+    _ = Measure.map T ((originalTuplePrior d tupleDensity).restrict (C '' S)) := by
+          rw [hcoord]
+    _ =
+        (originalEdgeFamilyPrior (V := V) b
+          (fun E ↦ tupleDensity (edgeFamilyMatrixTuple (V := V) b E))).restrict
+          (T '' (C '' S)) := hedge
+    _ =
+      (originalEdgeFamilyPrior (V := V) b
+        (fun E ↦ density
+          (canonicalCoord d (edgeFamilyMatrixTuple (V := V) b E)))).restrict
+        ((fun x : RepCoord d → ℝ ↦
+          tupleToEdgeFamily (V := V) b ((canonicalCoord d).symm x)) '' S) := by
+          rw [Set.image_image]
+          rfl
+
+set_option linter.style.longLine false in
 /-- Pushing a restricted raw-coordinate Haar measure through the raw-order
 readout and then reconstructing fixed-basis continuous edge families gives the
 corresponding restriction of `originalEdgeFamilyVolume`, up to the same

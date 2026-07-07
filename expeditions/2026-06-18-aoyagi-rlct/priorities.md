@@ -12,6 +12,32 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original coordinate prior to edge-family prior transport
+
+Decision: close the finite-dimensional original prior transport from flattened
+coordinates through tuple coordinates to fixed-basis edge families.
+
+The coordinate-to-tuple theorem pushes a restricted original coordinate prior
+through `(canonicalCoord d).symm` and identifies it with the corresponding
+restricted tuple prior whose density is pulled back by `canonicalCoord d`.
+The coordinate-to-edge-family theorem composes this with the existing
+tuple-to-edge-family prior transport, yielding edge density
+`E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-to-edge-family-prior-transport.md
+lean/DLNFibre/DLN/Aoyagi/OriginalPrior.lean
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+This is only finite-dimensional coordinate/tuple/fixed-basis edge-family prior
+transport.  It does not identify a source-chart image measure, construct a
+source-image density, compute a retained-passive Jacobian, normalize Haar
+scalars, prove determinant/raw Haar transport, prove source-rank/atlas
+coverage, construct normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, upper original-loss stack with produced residual-source hypotheses
 
 Decision: propagate the produced residual-source handoff through the upper

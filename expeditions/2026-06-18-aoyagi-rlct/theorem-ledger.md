@@ -4,6 +4,21 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original coordinate prior to edge-family prior transport note, 2026-07-07:
+finite-dimensional original prior transport now starts at flattened
+coordinates.  For a measurable coordinate-side set `S`, pushing
+`(originalCoordinatePrior d density).restrict S` through `(canonicalCoord d).symm`
+gives the tuple prior with density
+`A |-> density (canonicalCoord d A)`, restricted to the tuple image.  Composing
+with the existing fixed-basis tuple-to-edge-family prior transport gives the
+edge-family prior with density
+`E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`, restricted to
+the edge-family image.  This removes a finite-dimensional prior-coordinate
+gap, but it does not identify an Aoyagi source-chart image measure, construct
+source-image density, compute retained-passive Jacobians, normalize Haar
+scalars, prove determinant/raw Haar transport, source-rank/atlas coverage,
+normal crossings, pole order, or RLCT.
+
 Upper original-loss stack with produced residual-source hypotheses note,
 2026-07-07: the rank-cut original-loss bridge now has a parallel upper
 convenience stack whose continuations no longer ask for residual zero-locus
