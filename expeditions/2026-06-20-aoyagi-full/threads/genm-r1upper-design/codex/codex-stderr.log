@@ -1,0 +1,185 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f37bd-facb-7b80-b08c-2331ccbfa5f7
+--------
+user
+<task>
+Red-team an analytic design for a real-log-canonical-threshold (RLCT) lower bound of a
+deep-linear-network zero-product locus. Judge whether the mechanism is SOUND and whether the
+from-scratch route is BOUNDED LABOUR or hits a genuine new obstruction. Do NOT rubber-stamp.
+
+SETTING (exact). Widths M = (M_0, ..., M_L), integer >= 0. Free real matrices A_s of size
+M_s x M_{s+1}, s=0..L-1, each entry in the box [-1,1] (a neighbourhood of the all-zero tuple).
+Product P(A) = A_0 A_1 ... A_{L-1} (size M_0 x M_L). ||.|| = Frobenius norm. We must prove:
+
+   I(c') := ∫_{box} ||P(A)||^{-2c'} dA  <  ∞    for all c' < (1/2) minAdm(M).
+
+Here minAdm(M) is the minimal admissible codimension, PROVEN equal to the layer-peeling recursion
+   minAdm(M_0,...,M_L) = min_{0<=t<=min(M_0,M_1)} [ (M_0-t)(M_1-t) + minAdm(t, M_2,...,M_L) ],
+   base minAdm(a,b) = a*b.
+This is Aoyagi's exact learning coefficient for DLNs (Aoyagi 2023, "learning efficiency of
+multiple-layered linear networks"), λ = (1/2) minAdm. So I(c')<∞ for c'<λ IS the RLCT lower bound.
+
+WHAT IS ALREADY BUILT (and its LIMIT). A banked "iterated-fibre" lemma bounds, for FIXED Y,
+   ∫_{X in box} ||X Y||^{-2c'} dX  <=  C(p) * ||Y||^{-2c'},   valid only for c' < p/2  (p = rows of X),
+and it PRESERVES the exponent c' on Y (same c' on the residual). Iterating over layers therefore caps
+the reachable c' at min_s (width_s)/2 — the SINGLE most-binding boundary — undershooting the SUM
+(1/2)minAdm by up to a factor of 2. Paradigm failure: M=(3,3,3,3): minAdm=6 so target c'<3, but the
+exponent-preserving peel reaches only c'<3/2. This is the wall.
+
+PROPOSED MECHANISM ("shifted-exponent arity peel"). Cover the box by rank-cut charts of the FRONT
+factor A_0 (pivot on an invertible t x t block; Schur-reduce A_0 to blockdiag(A0^[t], Γ) via
+unit-triangular Jacobian-1 changes of variables Q1 A0 Q2, so Γ = (M_0-t)x(M_1-t) corank block).
+Radially blow up Γ = z·V (z>=0, V on the unit sphere), Jacobian z^{a-1} dz dσ(V), a=(M_0-t)(M_1-t).
+Block-diagonality gives
+   ||A_0 Q||^2  ≍  ||Q_top||^2 + z^2 ||V Q_bot||^2  =: g^2 + z^2 h^2,
+where g = ||Q_top|| is the tail chain of widths (t, M_2,...,M_L) (an (L-1)-factor product) and
+h = ||V Q_bot|| is a spectator. Do the z-integral EXACTLY:
+   ∫_0^∞ (g^2+z^2 h^2)^{-c'} z^{a-1} dz = (1/2)B(a/2, c'-a/2) · h^{-a} · g^{-2(c'-a/2)}   for c' > a/2.
+So the tail integrand is g^{-2 c''} with SHIFTED exponent c'' = c' - a/2 = c' - (1/2)(M_0-t)(M_1-t),
+times a spectator h^{-a}. Recurse on the tail chain (t,M_2,...,M_L) at the reduced budget c''.
+Chart-t converges iff c'' < (1/2)minAdm(t,M_2,...), i.e. c' < (1/2)[(M_0-t)(M_1-t)+minAdm(t,...)];
+box = union of charts => converges up to the MIN over t = (1/2)minAdm(M). Base L=1: single free
+t x M_L matrix, ∫ ||X||^{-2c'} finite iff c' < (t·M_L)/2 = (1/2)minAdm(t,M_L).
+
+The spectator h = ||V Q_bot||: claimed benign because if Q_bot has full row rank then
+h >= σ_min(Q_bot) > 0 on the sphere (so h^{-a} bounded); h→0 only on a deeper tail rank-drop stratum
+already inside minAdm(t,M_2,...).
+</task>
+
+<grounding_rules>
+- Reason from the stated math only. If you need a fact not given, name it as an assumption.
+- Keep inference separate from assertion. Flag anything you cannot verify from the setup.
+- The 1-D Beta integral, the minAdm recursion, and the reach comparison are given as facts (verified
+  by exact algebra by the requester); focus your scrutiny on the MECHANISM's soundness and gaps.
+</grounding_rules>
+
+<output_contract>
+1. VERDICT: is the shifted-exponent peel a SOUND resolution route (SOUND / SOUND-WITH-GAPS / BROKEN)?
+   And is completing it BOUNDED LABOUR or does it hit a genuine NEW obstruction (not mere labour)?
+2. The single WEAKEST point in the mechanism. Be concrete: name the step and the exact condition that
+   could fail. Candidates to weigh: (i) the spectator h^{-a} at L>=3 where g and h SHARE the deeper
+   factors A_2.. (are g,h jointly resolvable without double-counting codim?); (ii) the Q_2 coordinate
+   change mixing into the tail measure (is the tail still a clean box/product after Q_2^{-1}?);
+   (iii) the covering by rank-cut charts (does the union of charts actually exhaust the box, and is the
+   MIN-over-t the correct combination — could a chart the design omits diverge earlier?);
+   (iv) whether the two z-integral regimes (c'>a/2 vs c'<a/2) both stay controlled up to (1/2)minAdm.
+3. For the weakest point: the single cheapest DISCRIMINATING test (exact-algebra / small case) that
+   would confirm-or-kill it.
+4. Does this differ from Aoyagi's own recursive-blow-up proof in a way that INTRODUCES risk, or is it
+   the same resolution re-organised as an arity recursion? One paragraph.
+</output_contract>
+
+codex
+I’ll treat this as a red-team of the proposed proof skeleton, not a proof attempt. I’m going to separate what the mechanism genuinely establishes from what it would still need to show.
+codex
+**1. Verdict**
+
+**BROKEN as stated.** The shifted-exponent idea is plausible, but the stated mechanism loses essential coupling when it replaces the finite chart integral
+
+```math
+\int_0^R (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+```
+
+by the infinite Beta integral and then treats the resulting `h^{-a}` as benign.
+
+That `h^{-a}` factor is not automatically integrable, and its bad locus is not necessarily already paid for by the tail recursion on `g`. So this is not just a missing constant or chart bookkeeping issue.
+
+Completing the route from scratch is therefore **not bounded labour in the present form**. It requires a genuine new joint-integrability lemma for the pair `(g,h)` with the finite-interval cutoff retained. That is essentially the hard part of a recursive resolution proof.
+
+**2. Weakest Point**
+
+The weakest point is the spectator step:
+
+```math
+\int_0^\infty (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+\sim h^{-a} g^{-2(c'-a/2)}
+```
+
+followed by the claim that `h^{-a}` is benign.
+
+The exact condition that can fail is:
+
+```math
+h = \|VQ_{\mathrm{bot}}\| \to 0
+```
+
+while `g = \|Q_{\mathrm{top}}\|` does not vanish deeply enough, or does not vanish at all. Then `h^{-a}` may be non-integrable in the bottom-tail variables. The finite `z` integral has a cutoff depending on `Rh/g`; the infinite Beta integral discards that cutoff and can create a false divergence.
+
+The correct finite formula has the form
+
+```math
+\int_0^R (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+=
+g^{a-2c'} h^{-a}
+\Phi(Rh/g),
+```
+
+where
+
+```math
+\Phi(T)=\int_0^T u^{a-1}(1+u^2)^{-c'}\,du.
+```
+
+When `h/g` is small, `\Phi(Rh/g)` cancels the dangerous `h^{-a}`. The proposed proof throws away exactly that cancellation.
+
+**3. Cheapest Discriminating Test**
+
+Use the small case
+
+```math
+M=(2,2,1), \quad L=2, \quad t=1.
+```
+
+Then `a=(2-1)(2-1)=1`, and
+
+```math
+\minAdm(2,2,1)=2,
+\qquad
+\lambda=1.
+```
+
+So the target allows any `c' < 1`; take for example `c'=3/4`.
+
+In the `t=1` chart, write the tail vector as `(u,v)`, so
+
+```math
+g=|u|,\qquad h=|v|.
+```
+
+The infinite Beta step gives the residual bound
+
+```math
+|v|^{-1}|u|^{1-2c'}.
+```
+
+For `c'=3/4`, this is
+
+```math
+|v|^{-1}|u|^{-1/2},
+```
+
+which is non-integrable in `v`.
+
+But the original finite integral
+
+```math
+\int_{|z|\le R} (u^2+z^2v^2)^{-3/4}\,dz
+```
+
+is integrable over `(u,v)` near `(0,0)`. Thus the proposed Beta-extension/spectator argument fails even before any `L>=3` sharing of deeper factors appears.
+
+**4. Relation To Aoyagi**
+
+This differs from Aoyagi’s recursive blow-up proof in a risk-introducing way. A full resolution keeps track of exceptional variables and rank-drop strata jointly; it does not simply integrate out `z` to infinity and then ignore the induced spectator singularity. If the proposed arity recursion is repaired by retaining the incomplete-Beta cutoff and proving joint resolution of `(g,h)`, it may become a reorganization of Aoyagi’s proof. But in its current form, the simplification introduces a real proof obstruction.
+tokens used
+16,069

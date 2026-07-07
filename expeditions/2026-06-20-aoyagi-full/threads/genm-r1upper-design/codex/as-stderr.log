@@ -1,0 +1,162 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f3a2c-6e69-7193-a1bc-556a5278203e
+--------
+user
+<task>
+Design-review the INTEGRATED-blow-up assembly for a Lean lemma `sjBoundaryPeel` in a DLN RLCT proof,
+and adjudicate one exact structural finding. Do NOT rubber-stamp.
+
+GOAL. Prove (Lean): routeMLayerBoxIntegral M c' 1 ≤ ∑_{t≤min(M0,M1)} C_t · jointPeelIntegral M t c'.
+BANKED, CLOSED: an MP front-split gives
+   routeMLayerBoxIntegral M c' 1 = ∫_{A'∈box(tail)} ∫_{A0∈matBox(M0,M1)} frobSq(A0·Q)^{-c'},  Q:=prod(tail)A' (M1×n).
+BANKED reusable: (i) schur_cov + measurePreserving_shearSub (Jacobian-1 block shear on the t-pivot chart,
+A0=[[A,B],[C,D]], A t×t invertible → corank block Γ=D−CA⁻¹B, (M0−t)×(M1−t)); (ii) pivotLocus_eq_iUnion
+(rank-≥t locus of A0 = ⋃ pivot-minor charts); (iii) matBox_corank_residual_le (ISOTROPIC corank atom):
+   ∫_{D∈matBox(p,q)} (frobSq D + w)^{−c'} dD ≤ Cresid(pq)·w^{−(c'−pq/2)},  for w>0, c'>pq/2.
+jointPeelIntegral M t c' := ∫_{A'} P_tail^{−(c'−a/2)}·P_full^{−a/2}, a=(M0−t)(M1−t),
+P_tail=frobSqTopRows t (Q) (top-t-rows loss), P_full=frobSq(Q) (FULL product loss).
+
+TWO POINTWISE ROUTES ARE DEAD (proven): (1) fixed-Q pointwise lift: Real.rpow 0^neg=0 on {P_tail=0};
+(2) pointwise inner bound ∫_{A0}frobSq(A0 Q)^{−c'} ≤ C·(joint integrand)(Q): FALSE — for rank-deficient
+Q the inner integral = +∞ (since {A0 Q=0} has codim M0·rank(Q), so ∫_{A0} converges iff c'<M0·rank(Q)/2;
+e.g. (2,2,2,2), c'∈[1,1.5), rank(Q)=1 → +∞), while the joint integrand is FINITE there — no uniform C.
+The {det Q=0} locus is NULL in A' (codim 1), so the box integral is finite, but not pointwise-provable.
+
+EXACT FINDING (my analysis, numerically checked). After schur on the t-pivot chart,
+   frobSq(A0·Q) ≍ ‖A_pivot·Q̃_top‖² + ‖Γ·Q_b‖²,   Q_b = the (M1−t) rows of Q at A0's NON-pivot columns
+(the bottom rows are unsheared: Q̃_b=Q_b). The corank Γ enters ANISOTROPICALLY as frobSq(Γ·Q_b), NOT
+frobSq(Γ). Isotropizing via Γ↦Γ·Q_b (Q_b full row rank) has Jacobian ∝ det(Q_b Q_bᵀ)^{(M0−t)/2}, so the
+corank atom gives per-chart residual det(Q_b Q_bᵀ)^{−(M0−t)/2}·P_tail^{−(c'−a/2)} — a GRAM DETERMINANT of
+the non-pivot tail rows, pointwise ≥ P_full^{−a/2}=‖Q‖^{−a}. So the honest per-chart residual ≠
+jointPeelIntegral's P_full^{−a/2}. (Aoyagi's D_J block is a determinant, matching the Gram, not frobSq.)
+
+<grounding_rules>
+- Reason from the stated banked lemmas + the exact block finding. Separate inference from assertion.
+- The dead routes and the block identity are established; judge the assembly design + the residual finding.
+</grounding_rules>
+
+<output_contract>
+1. Do you AGREE the honest per-chart residual is the Gram det(Q_b Q_bᵀ)^{−(M0−t)/2} (not P_full^{−a/2}),
+   so jointPeelIntegral as defined is not the reachable reduction target? BOUNDED to fix or a real problem?
+2. RECOMMEND the cleaner split: (A) keep the corank Γ EXPLICIT in sjBoundaryPeel (piece 3 = pure MP+cover
+   reduction to ∑_κ ∫_{A'}∫_Γ (P_tail+frobSq(Γ·Q_b))^{−c'}, deferring the atom/isotropization to the
+   finiteness pieces 4/5/7), OR (B) apply the atom IN piece 3 with the honest Gram residual (redefine
+   jointPeelIntegral). Which is more formalisable, and why?
+3. The ordered lemma sequence for the chosen split: how to (a) do the per-chart radial/block blow-up
+   INTEGRATED over each chart, (b) isotropize frobSq(Γ·Q_b)→ the atom (the Gram c.o.v.; what it needs of
+   Q_b), (c) assemble over the pivotLocus_eq_iUnion cover with the rank-deficient {det Q_b=0} locus NULL
+   per-chart (a.e.), before summing. 5–7 lemmas, dependency order, flag load-bearing vs plumbing.
+4. The single biggest risk in the chosen split, and the cheapest exact check to de-risk it.
+</output_contract>
+
+codex
+**1. Finding**
+
+Yes. On a fixed `t`-pivot chart, after the Schur shear the corank variable appears as
+
+```text
+frobSq(A0 Q) ~ pivot_part(Q) + frobSq(Γ Q_b),
+```
+
+not as `pivot_part(Q) + frobSq Γ`.
+
+For `p = M0 - t`, `q = M1 - t`, `a = pq`, and `rank Q_b = q`, the map
+
+```text
+Γ ↦ Γ Q_b
+```
+
+has Jacobian factor
+
+```text
+det(Q_b Q_bᵀ)^(p/2),
+```
+
+so the atom produces
+
+```text
+det(Q_b Q_bᵀ)^(-p/2) · P_tail^(-(c' - a/2)).
+```
+
+That is the honest residual. It is not bounded above by a constant times `P_full^(-a/2)`. For instance, take `q = 1`, `P_tail ≃ 1`, and `‖Q_b‖ = ε`; then the Gram residual is `ε^(-p)` while `P_full^(-a/2) ≃ 1`. So this is a real structural problem for the current `jointPeelIntegral` target, not a constant-factor repair.
+
+**2. Recommendation**
+
+Choose **A**: keep `Γ` explicit in `sjBoundaryPeel`.
+
+Define the piece-3 target chartwise as something like
+
+```text
+gammaPeelIntegral κ t c' :=
+  ∫ A' ∫ Γ (P_tailκ(Q(A')) + frobSq(Γ Q_bκ(A')))^(-c')
+```
+
+and prove
+
+```text
+routeMLayerBoxIntegral M c' 1
+  ≤ ∑_{t,κ} C_{t,κ} · gammaPeelIntegral κ t c'.
+```
+
+This is cleaner in Lean because piece 3 then uses only the closed MP/front-split, Schur shear, chart cover, and integrated block/radial reduction. The rank condition on `Q_b`, the Gram determinant Jacobian, and the null exceptional set all belong to the later finiteness/isotropization pieces.
+
+Option **B** is honest only if `jointPeelIntegral` is redefined with the Gram determinant. But it mixes the hard a.e. determinant change-of-variables into `sjBoundaryPeel`, and it still does not recover the currently defined `P_full^(-a/2)` target.
+
+**3. Lemma Sequence**
+
+1. `pivotChartCover_lintegral_le_sum` — plumbing.  
+   Use `pivotLocus_eq_iUnion` and finite subadditivity to bound the `A0` integral by a sum over `t` and pivot charts `κ`.
+
+2. `schurShear_chart_lintegral` — load-bearing.  
+   On chart `κ`, apply `measurePreserving_shearSub` and `schur_cov` to rewrite the chart contribution with `Γ = D - C A⁻¹B`.
+
+3. `chartRadialBlock_to_gammaPeel` — load-bearing.  
+   Integrated over `A'` and chart variables, prove the per-chart blow-up bound
+
+   ```text
+   chartContribution κ
+     ≤ Cκ ∫ A' ∫ Γ
+          (P_tailκ(Q(A')) + frobSq(Γ Q_bκ(A')))^(-c').
+   ```
+
+   This must be integrated, not a fixed-`Q` pointwise inner estimate.
+
+4. `sjBoundaryPeel_explicitGamma` — plumbing theorem.  
+   Assemble 1–3:
+
+   ```text
+   routeMLayerBoxIntegral M c' 1
+     ≤ ∑_{t,κ} C_{t,κ} · gammaPeelIntegral κ t c'.
+   ```
+
+5. `rightMul_gramJacobian` — load-bearing.  
+   If `rank Q_b = q`, prove the Jacobian for `Γ ↦ Γ Q_b` is `det(Q_b Q_bᵀ)^(p/2)`. Handle `p = 0` or `q = 0` as trivial edge cases.
+
+6. `gammaAtom_fullRank_gramResidual` — load-bearing.  
+   For `0 < w`, `rank Q_b = q`, and `c' > pq/2`:
+
+   ```text
+   ∫ Γ (w + frobSq(Γ Q_b))^(-c')
+     ≤ C · det(Q_b Q_bᵀ)^(-p/2) · w^(-(c' - pq/2)).
+   ```
+
+7. `gammaPeel_le_gramPeel_ae` — load-bearing.  
+   Per chart, prove `{det(Q_b Q_bᵀ)=0}` is null, also handle `{P_tail=0}` if the atom needs `w>0`, then apply 6 by `lintegral_congr_ae` before summing over charts.
+
+**4. Biggest Risk**
+
+The biggest risk is the a.e. full-row-rank proof for the actual tail product map, not for an abstract matrix `Q`. If `det(Q_b Q_bᵀ)` is identically zero for some chart because of a dimension bottleneck or tail architecture constraint, the Gram atom is unavailable.
+
+Cheapest exact check: for every `(t, κ)`, exhibit one tail configuration inside the box with `rank Q_bκ = M1 - t` and `P_tailκ > 0`. That proves the determinant and tail-loss polynomials are not identically zero, so their zero loci are null.
+tokens used
+17,098
