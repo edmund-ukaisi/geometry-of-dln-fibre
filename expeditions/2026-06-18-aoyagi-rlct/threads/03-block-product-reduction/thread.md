@@ -21,6 +21,69 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 with-following formal-product source-cylinder handoff
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-formal-product-source-cylinder-handoff.md
+```
+
+Statement card:
+
+```text
+statement-card-a2-with-following-formal-product-source-cylinder-handoff.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+```
+
+The theorem proves localized formal-product/source-reference domination for
+actual p.13 chart pieces.  After shrinking, if
+
+```text
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder),
+```
+
+and `ε <= sourceDensity` a.e. on `baseJ.restrict V`, with `ε` neither zero nor
+infinite, then for every additive `rawHaar` there is finite `Cdet` such that
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= (Cdet * ε⁻¹) • Measure.map sourceChart
+       (coordinateSourceMeasure.restrict V).
+```
+
+Proof spine: choose the formal-product socket shrink; shrink again to get
+local p.13 source-image support; shrink once more using the source-cylinder
+raw-patch theorem.  P.13 support is derived internally from
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`, and the raw-patch
+domination is fed to the formal-product patch socket.
+
+Boundary: this is not determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, normal crossings, pole order,
+or RLCT.
+
+Verification passed: focused `lake env lean`, targeted `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+local `lake exe cited-audit`, `git diff --check`, `lean/scripts/sorries`,
+touched-Lean forbidden-marker scan, direct axiom probe, and direct
+`#audit_cited` probe.  The declaration reports only `[propext,
+Classical.choice, Quot.sound]` and is classified as FORMALISED.  Xhigh
+source/API and Lean-boundary reviews passed.  The strongest residual risk is
+upstream: the active-endpoint finite Haar scalar is domination, not exact
+raw-Haar transport.
+
 ## 2026-07-07 A2 with-following source-cylinder raw-patch handoff
 
 Reproduction:

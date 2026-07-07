@@ -18,6 +18,19 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following formal-product source-cylinder
+  handoff now has a direct theorem.  For measurable chart pieces supported by
+  `sourceChart '' (V ∩ sourceCylinder)`, and under an explicit lower bound
+  `ε <= sourceDensity` on `baseJ.restrict V`, Lean produces finite `Cdet` and
+  dominates `formalProductMeasure.restrict chartPiece` by
+  `(Cdet * ε⁻¹) • Measure.map sourceChart
+  (coordinateSourceMeasure.restrict V)`.  P.13 source-set support is derived
+  internally from the local source-image shrink; the public support hypothesis
+  remains the source-cylinder condition.  This adds no determinant/raw Haar
+  transport, Haar normalization, source-density positivity, source
+  coverage/rank coverage, original-prior transport, normal crossings, pole
+  order, or RLCT result.
+
 - 2026-07-07, Thread 03: the with-following source-cylinder raw-patch handoff
   now has a direct theorem.  For measurable chart pieces supported by
   `sourceChart '' (V ∩ sourceCylinder)`, and under an explicit lower bound

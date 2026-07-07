@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, formal-product source-cylinder handoff
+
+Decision: consume the source-cylinder raw-patch domination at the p.13
+formal-product interface.
+
+The new theorem proves that after a local with-following shrink, any
+measurable chart piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+and carrying an explicit lower bound `ε <= sourceDensity` on
+`baseJ.restrict V` gives finite `Cdet` and
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= (Cdet * ε⁻¹) • Measure.map sourceChart
+       (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-formal-product-source-cylinder-handoff.md
+threads/03-block-product-reduction/statement-card-a2-with-following-formal-product-source-cylinder-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The proof composes the source-cylinder raw-patch theorem with the localized
+formal-product patch socket.  P.13 source-set support is derived internally
+from the local source-image shrink; it is not exposed as a replacement for the
+source-cylinder hypothesis.  This is not determinant-chart Haar transport,
+exact raw-Haar pushforward, Haar normalization, source-density positivity,
+source-image/source-rank coverage, original-prior transport, normal crossings,
+pole order, or RLCT extraction.
+
+Next frontier: decide whether to thread this formal-product wrapper into an
+original-volume/source-prior consumer, or attack the remaining source-density
+positivity/source-prior identification hypotheses.  Do not drop the
+`V ∩ sourceCylinder` condition in downstream wrappers.
+
 ## Latest controller decision - 2026-07-07, source-cylinder raw-patch handoff
 
 Decision: lift the source-cylinder endpoint-patch comparison through the
