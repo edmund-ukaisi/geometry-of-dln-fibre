@@ -33,17 +33,30 @@ Lean module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeGenConj.lean` (
 > - **Lean:** `DLNFibre.DLN.RLCT.deepest_diffeo_bridge_gen_assembled`.
 > - **Proof.** `rw [deepest_diffeo_bridge_gen_conj_impl …]; exact link2_at_wstar_gaugeReg_gen …`. Mirrors
 >   `deepest_diffeo_bridge_L2_assembled`. Θ's frame data (`J = frontEmbed`, per-layer `hPtri`/`hQtri`,
->   `hbdy`, endpoint units) enter as hypotheses (all wire-dischargeable).
+>   `hbdy`, `hDA`, endpoint units) enter as hypotheses. **Not** all trivially wire-dischargeable at general
+>   `L` (reviewer note): the L=2 arm derives `hDA`/`hbdy` from `_of_L2`-specialised helpers, and no landed
+>   general lemma covers the INTERIOR-layer `hbdy : ∀ s : Fin L, deepBlkY s = 0 ∨ deepBlkZ s = 0` (only the
+>   layer-0 / last-layer `deepBlkY_layer0_zero`/`deepBlkZ_layerLast_zero` exist). See item 4 below.
 
 - **Proved.** Both theorems sorry-free at general `L`, axiom footprint `[propext, Classical.choice, Quot.sound]`
   (clean-three, forced `#print axioms`, no `sorryAx`).
-- **Assumed (explicit hypotheses — the coupled bulk, NOT laundering).** The concrete `psi`/`psiSplitRaw`
-  (the general Ψ_conj) + the diffeo triple + the split-compat germ + `hsub3reg`/`hsub4core`. These isolate
-  the RLCT/diffeo plumbing from the genuinely hard construction; Codex (xhigh) vetted this as a faithful
-  reduction. The analogous NAIVE reduction `deepest_diffeo_bridge_gen_impl` (already banked) has the same shape.
+- **Assumed (explicit hypotheses — the coupled bulk, NOT laundering).** The abstract `psi`/`psiSplitRaw`
+  (the general Ψ_conj) + the diffeo triple (`ContDiff`/strict-fderiv-id/fixpoint) + the split-compat germ
+  `hsplitPsi` + `hsub3reg`/`hsub4core`. These isolate the RLCT/diffeo plumbing from the genuinely hard
+  construction; Codex (xhigh) + an independent reviewer vetted this as a faithful, non-vacuous reduction.
+  **Precision (reviewer note):** this impl is MORE abstract than the templates — the L=2
+  `deepest_diffeo_bridge_L2_conj_impl` and the naive `deepest_diffeo_bridge_gen_impl` both CONSTRUCT their
+  concrete diffeo (`psiL2Conj` / `deepestGConjFlat K`) and DERIVE the triple + split-compat, assuming only
+  the two germs. Here the triple + split-compat are assumed. Net new content over the banked
+  `rlctAtOn_diffeo_bridge_of` is the germ composition `hcomp` + specialization to Θ's exact conjugate target
+  — real, but thinner than the templates; the follow-on must DISCHARGE the triple by constructing the joint move.
 - **Cited.** none new. Reuses banked `rlctAtOn_diffeo_bridge_of` + the LANDED unconditional general Step Θ
   `link2_at_wstar_gaugeReg_gen`.
-- **Status.** sorry-free (pending fidelity review).
+- **Status.** sorry-free; **reviewed** — independent reviewer verdict `survived` (all four fidelity
+  questions PASS: conclusion matches the `hstep2` goal up to `hca_def`/`hwstar`; conj target is byte-for-byte
+  Θ's LHS; composition genuine, each germ load-bearing; faithful, non-vacuous, not laundering). Two
+  report-only precision notes folded into this card (the diffeo-triple abstraction above; the general-`L`
+  frame-data burden in item 4 below).
 
 ## Key finding (steers the remaining work): the general Ψ_conj is a JOINT move, not a pure conjugation
 
@@ -76,6 +89,13 @@ at `DeepestL2Wiring:1060` and discharge (Θ's frame data is already in scope the
 3. **`hsub3reg` (reg preservation).** The general reg-invariance of the joint move — the general lift of
    `hsub3reg_conj_germ` (L=2, `DeepestL2ConjReg`), whose L=2 proof is the residual-block algebra
    `resid_regBlocks_eq_of_mid_agree` / `conj_hm_triple` / `deepestEFull_sq_sum_of_resid_blocks`.
+4. **Θ's general-`L` frame data at the wire site.** To instantiate `deepest_diffeo_bridge_gen_assembled`
+   at `DeepestL2Wiring:1060`, the L≥3 arm must ALSO supply Θ's `hDA` (each `deepBlkA_s` a unit) and the
+   INTERIOR-layer `hbdy` — neither currently in scope there, and the L=2 discharge uses `_of_L2`-specialised
+   helpers (`deepBlkA_isUnit_of_L2`, `deepBlk_boundary_of_L2`). Only the layer-0/last-layer boundary
+   lemmas are general; the interior `hbdy` is UNCOVERED at general `L` (a genuine additional gap, not just
+   plumbing). (Reviewer-flagged; independent of what the two banked theorems prove — they correctly take
+   `hDA`/`hbdy` as explicit hypotheses.)
 
 ## Build status
 - Isolated green: `scripts/lb DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenConj` ✓ (2749 jobs).
