@@ -154,7 +154,7 @@ theorem chartInner_schurWeld_eq_of_emb {p n q t : ℕ}
       = ∫⁻ B in genBox (Fin t ⊕ Fin (p - t)) (Fin t ⊕ Fin (n - t)) T
             ∩ {B | IsUnit (Matrix.toBlocks₁₁ B)},
           ENNReal.ofReal
-            ((schurLoss (Matrix.of B) (Q.submatrix (blockSplitEquiv κ).symm.symm id)) ^ (-c')) := by
+            ((schurLoss (Matrix.of B) (Q.submatrix (blockSplitEquiv κ) id)) ^ (-c')) := by
   rw [chartInner_blockReindex_eq_of_emb ρ κ Q c' T]
   exact chartInner_schurSplit_eq (Q.submatrix (blockSplitEquiv κ).symm.symm id) c' T
 

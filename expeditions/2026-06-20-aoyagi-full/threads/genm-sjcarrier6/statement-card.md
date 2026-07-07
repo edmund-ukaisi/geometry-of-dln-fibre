@@ -53,7 +53,7 @@ wiring) do NOT land — they are the documented ~65–75% genuinely-new construc
 > `t`-element `(ρ, κ)` pivot and a fixed tail product `Q`,
 > `∫⁻ A₀ in matBox p n T ∩ pivotChart ρ κ, ofReal (frobSq (rmatMul A₀ Q))^{−c'}`
 > `= ∫⁻ B in genBox (Fin t ⊕ Fin (p−t)) (Fin t ⊕ Fin (n−t)) T ∩ {B | IsUnit (toBlocks₁₁ B)},`
-> `    ofReal (schurLoss (Matrix.of B) (Q.submatrix (blockSplitEquiv κ).symm.symm id))^{−c'}`.
+> `    ofReal (schurLoss (Matrix.of B) (Q.submatrix (blockSplitEquiv κ) id))^{−c'}`.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.chartInner_schurWeld_eq_of_emb`
 >   (composes `chartInner_blockReindex_eq_of_emb` (transport) + `chartInner_schurSplit_eq` (split)).
