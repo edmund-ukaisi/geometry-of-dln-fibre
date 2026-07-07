@@ -21,6 +21,74 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 with-following source-cylinder raw-patch handoff
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-source-cylinder-raw-patch-handoff.md
+```
+
+Statement card:
+
+```text
+statement-card-a2-with-following-source-cylinder-raw-patch-handoff.md
+```
+
+Review:
+
+```text
+review-a2-with-following-source-cylinder-raw-patch-handoff.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+```
+
+The theorem proves a localized raw-patch/source-density domination for the
+actual p.13 chart patch.  After shrinking, if
+
+```text
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder),
+```
+
+and `ε <= sourceDensity` a.e. on `baseJ.restrict V`, with `ε` neither zero nor
+infinite, then for every additive `rawHaar` there is finite `Cdet` such that
+
+```text
+rawHaar.restrict (rawSourceSet ∩ rawChart ⁻¹' chartPiece)
+  <= (Cdet * ε⁻¹) • Measure.map rawMap
+       (coordinateSourceMeasure.restrict V).
+```
+
+Proof spine: local raw/source compatibility and source-cylinder support give
+endpoint-patch containment in the active selected-entry endpoint image; the
+existing active-containment raw-patch theorem then supplies finite scalar
+domination after using the explicit source-density lower bound.
+
+Boundary: this is not full determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, normal crossings, pole order,
+or RLCT.
+
+Verification passed: focused `lake env lean`, targeted `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+local `lake build cited-audit`, local `lake exe cited-audit`, `git diff
+--check`, `lean/scripts/sorries`, forbidden-marker scan, direct axiom probe,
+and direct `#audit_cited` probe.  The declaration reports only `[propext,
+Classical.choice, Quot.sound]` and is classified as FORMALISED.  Xhigh
+read-only scouts `Halley the 2nd` and `Planck the 2nd` found no source
+fidelity or theorem-boundary issues; `Boole the 2nd` identified the next API
+rung as a formal-product source-cylinder wrapper.
+
 ## 2026-07-07 A2 with-following endpoint-patch reference domination
 
 Reproduction:

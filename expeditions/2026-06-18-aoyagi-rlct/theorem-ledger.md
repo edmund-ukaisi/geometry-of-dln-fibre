@@ -4,6 +4,30 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Source-cylinder raw-patch handoff note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower`.
+After a local with-following determinant-sector/pivot-nonzero shrink, if a
+p.13 chart piece is supported by `sourceChart '' (V ∩ sourceCylinder)` and
+`sourceDensity` is bounded below by `ε` on `baseJ.restrict V`, with
+`ε ≠ 0` and `ε ≠ ∞`, then there is finite `Cdet` such that
+
+```text
+rawHaar.restrict (rawSourceSet ∩ rawChart ⁻¹' chartPiece)
+  ≤ (Cdet * ε⁻¹) • Measure.map rawMap
+       (coordinateSourceMeasure.restrict V).
+```
+
+The proof composes the source-cylinder endpoint-patch containment calculation
+with the active-containment raw-patch/source-density theorem.  Aoyagi pp.
+10-13 support the retained-passive block-elimination/source-chart algebra; the
+measure domination is a local Lean wrapper over already formalized Haar and
+density hypotheses.  This is not full determinant-chart Haar transport, exact
+raw-Haar pushforward, Haar-scalar normalization, source-density positivity,
+source-image/source-rank coverage, original-prior transport, normal crossings,
+pole order, or RLCT extraction.
+
 Original-volume readback p.13/readback-preimage support note, 2026-07-07: the
 with-following original-volume readback bridge now has a p.13/readback-preimage
 support form.  Lean first obtains a local equality

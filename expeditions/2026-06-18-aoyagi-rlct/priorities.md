@@ -12,6 +12,53 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, source-cylinder raw-patch handoff
+
+Decision: lift the source-cylinder endpoint-patch comparison through the
+coordinate-source density handoff.
+
+The new theorem proves that after a local with-following shrink, any chart
+piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+and carrying an explicit lower bound
+
+```text
+ε <= sourceDensity
+```
+
+on `baseJ.restrict V` gives a finite scalar `Cdet` with
+
+```text
+rawHaar.restrict (rawSourceSet ∩ rawChart ⁻¹' chartPiece)
+  <= (Cdet * ε⁻¹) • Measure.map rawMap
+       (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-cylinder-raw-patch-handoff.md
+threads/03-block-product-reduction/statement-card-a2-with-following-source-cylinder-raw-patch-handoff.md
+threads/03-block-product-reduction/review-a2-with-following-source-cylinder-raw-patch-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This composes the endpoint-patch containment calculation with the existing
+active-containment raw-patch/source-density theorem.  It is not full
+determinant-chart Haar transport, exact raw-Haar pushforward, Haar-scalar
+normalization, source-density positivity, source-image/source-rank coverage,
+original-prior transport, normal crossings, pole order, or RLCT extraction.
+
+Next frontier: add the formal-product source-cylinder wrapper that consumes
+this raw-patch theorem, keeping the public support hypothesis as
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)`.  Derive p.13 image support
+internally; do not replace the source-cylinder condition by plain
+`chartPiece ⊆ p13SourceSet`.
+
 ## Latest controller decision - 2026-07-07, endpoint-patch reference domination
 
 Decision: expose the actual p.13 endpoint-patch determinant/reference

@@ -6,6 +6,68 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following source-cylinder raw-patch handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-source-cylinder-raw-patch-handoff.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_patch_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_coordinateSourceMeasure_restrict_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder_sourceDensity_lower
+```
+
+The theorem localizes the raw-patch/source-density handoff to p.13 chart
+pieces supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+After shrinking around a determinant-sector, nonzero-pivot with-following base
+point, if `sourceDensity` is bounded below by `ε` on `baseJ.restrict V`, with
+`ε ≠ 0` and `ε ≠ ∞`, then for every additive `rawHaar` and measurable chart
+piece supported as above there is finite `Cdet` such that
+
+```text
+rawHaar.restrict (rawSourceSet ∩ rawChart ⁻¹' chartPiece)
+  <= (Cdet * ε⁻¹) • Measure.map rawMap
+       (coordinateSourceMeasure.restrict V).
+```
+
+The proof first obtains the local raw/source compatibility shrink, then uses
+source-cylinder support to prove endpoint-patch containment in the active
+selected-entry endpoint image.  The existing active-containment raw-patch
+theorem supplies the measure domination after applying the explicit lower
+source-density bound.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake build cited-audit
+lake exe cited-audit
+git diff --check
+lean/scripts/sorries
+```
+
+`scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and only
+the existing three cited axioms.  The local citation executable reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and `#audit_cited` classifies
+the theorem as FORMALISED.
+
+Boundary: no full determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar-scalar normalization, source-density positivity,
+source-image or source-rank coverage, original-prior transport, normal
+crossings, pole order, or RLCT extraction.  The next useful theorem is the
+formal-product source-cylinder wrapper that consumes this raw-patch theorem
+without dropping the `V ∩ sourceCylinder` support condition.
+
 ## A2 with-following endpoint-patch reference domination - 2026-07-07
 
 Reproduction:

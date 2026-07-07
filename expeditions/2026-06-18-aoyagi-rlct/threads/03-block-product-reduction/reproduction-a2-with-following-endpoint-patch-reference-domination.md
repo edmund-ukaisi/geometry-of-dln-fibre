@@ -168,7 +168,7 @@ rawHaar.restrict Omega_P
   <= Cdet * Measure.map Y (referenceSource.restrict V)
 ```
 
-for a finite Haar-normalization scalar `Cdet`.
+for a finite scalar `Cdet` supplied by the active endpoint Haar comparison.
 
 ## Boundary
 

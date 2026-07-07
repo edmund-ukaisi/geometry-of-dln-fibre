@@ -18,6 +18,21 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following source-cylinder raw-patch handoff
+  now has a direct theorem.  For measurable chart pieces supported by
+  `sourceChart '' (V ∩ sourceCylinder)`, and under an explicit lower bound
+  `ε <= sourceDensity` on `baseJ.restrict V`, Lean produces finite `Cdet` and
+  dominates `rawHaar.restrict (rawSourceSet ∩ rawChart ⁻¹' chartPiece)` by
+  `(Cdet * ε⁻¹) • Measure.map rawMap
+  (coordinateSourceMeasure.restrict V)`.  This composes the endpoint-patch
+  containment calculation with the active-containment raw-patch theorem.  It
+  is still local raw-patch domination only: no determinant-chart Haar
+  transport, exact raw-Haar pushforward, Haar normalization, source-density
+  positivity, source-image/source-rank coverage, original-prior transport,
+  normal crossings, pole order, or RLCT is added.  Next source-measure frontier:
+  a formal-product source-cylinder wrapper that keeps the same public
+  `V ∩ sourceCylinder` support condition.
+
 - 2026-07-07, Thread 03: the with-following endpoint-patch
   determinant/reference domination is now exposed directly for the actual p.13
   raw patch.  If a chart piece is supported by
