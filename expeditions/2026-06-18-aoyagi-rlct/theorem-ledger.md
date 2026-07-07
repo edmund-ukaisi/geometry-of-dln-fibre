@@ -4,6 +4,20 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Upper original-loss stack with produced residual-source hypotheses note,
+2026-07-07: the rank-cut original-loss bridge now has a parallel upper
+convenience stack whose continuations no longer ask for residual zero-locus
+nullity.  The new stack starts from the base produced residual-source loss
+wrapper, then reproduces the adapted-lower, pulled-back-density, prior-density
+product-zero, finBasis, volume, and rank-equation/source-data specializations.
+The new top theorem carries explicit source-image-density
+continuity/finite/strict-lower data and a strict prior-density upper bound at
+`sourceChart z0`.  It still assumes product-zero prior-density
+continuity/positivity, fixed-base centering, the two rank equations, and raw
+Haar data.  Source-image density construction, source-chart prior
+identification, determinant/raw Haar transport, source-rank/atlas coverage,
+normal crossings, pole order, and RLCT remain outside this rung.
+
 Base original-loss wrapper with produced residual-source hypotheses note,
 2026-07-07: the rank-cut original-loss bridge now has a base wrapper whose
 continuation no longer asks for residual zero-locus nullity.  It calls the

@@ -21,6 +21,40 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 upper original-loss stack with produced residual-source hypotheses
+
+Reproduction:
+
+```text
+reproduction-a2-original-loss-upper-stack-produced-residual-source.md
+```
+
+Lean targets:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossProducedRankCutBridge.lean
+lean/DLNFibre.lean
+```
+
+Lean now has a parallel produced-residual-source stack.  The top theorem is:
+
+```text
+exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_rank_eq_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume
+```
+
+The old zero-nullity stack remains available.  The new stack propagates the
+base produced residual-source handoff through adapted-lower radius production,
+continuous pulled-back density bounds, prior-density product-zero
+specialization, finBasis specialization, volume specialization, and source-data
+construction from rank equations.  Its continuations no longer ask for
+residual zero-locus nullity.
+
+Boundary: this is still a local-loss stack.  It does not construct
+source-image density, identify a source-chart prior, prove determinant/raw
+Haar transport, prove fixed-base centering or the two rank equations, prove
+product-zero density hypotheses, prove source-rank or atlas coverage,
+construct normal crossings, compute pole order, or extract RLCT.
+
 ## 2026-07-07 A2 base original-loss wrapper with produced residual-source hypotheses
 
 Reproduction:

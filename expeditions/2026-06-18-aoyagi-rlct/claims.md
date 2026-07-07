@@ -10,6 +10,47 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-loss upper stack with produced residual source - 2026-07-07
+
+- **Statement.** The upper rank-cut original-loss convenience stack can be
+  reproduced without exposing residual zero-locus nullity: adapted-lower,
+  pulled-back density, prior-density product-zero, finBasis, volume, and
+  rank-equation/source-data wrappers now call the produced residual-source
+  base loss theorem and carry the strict source-image-density and prior-density
+  inputs needed by that producer.
+- **Tier.** A2 local original-loss handoff for the rank-cut p.13/readback
+  source.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as constructing the source-image
+  density, identifying a source-chart prior, proving determinant/raw Haar
+  transport, proving fixed-base centering or the two rank equations, proving
+  product-zero density hypotheses, proving source-rank or atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for fixed-base p.13 product-coordinate
+  bookkeeping and Case 2 pp. 19-21 for the with-following chart context.  The
+  new proof is Lean-local propagation of the previously produced residual
+  positivity/integrability package through existing local-loss wrappers.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-loss-upper-stack-produced-residual-source.md`.
+- **Reproduction check.** Controller checked the wrapper-chain calculation;
+  xhigh reviewer `Euclid the 2nd` confirmed the added strict residual-source
+  hypotheses, removed `hzero` sites, product-zero-density boundary, and
+  overclaim risks.
+- **Lean targets.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_rank_eq_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume`
+  and its lower siblings in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossProducedRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean` passed for the new module.  Focused
+  module build passed.  `lake env lean DLNFibre.lean`, `scripts/sorries`,
+  `git diff --check`, touched Lean-file marker scan, and direct top-theorem
+  axiom probe passed.  The top declaration reports only `[propext,
+  Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-image density construction, no source-chart prior
+  identification, no determinant/raw Haar transport, no fixed-base centering
+  proof, no proof of the two rank equations, no product-zero density proof, no
+  source-rank or analytic atlas coverage, no normal crossings, no pole order,
+  and no RLCT extraction.
+
 ## Current A2 same-shrink original-prior readback domination - 2026-07-07
 
 - **Statement.** The conditional original-prior readback domination theorem

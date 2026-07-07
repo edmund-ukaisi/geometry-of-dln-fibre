@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, upper original-loss stack with produced residual-source hypotheses
+
+Decision: propagate the produced residual-source handoff through the upper
+rank-cut original-loss convenience stack.
+
+The new parallel stack keeps the old zero-nullity APIs intact, but adds
+produced-residual-source siblings from adapted-lower through the top
+rank-equation/source-data specialization.  These theorems carry the explicit
+source-image-density continuity/finite/strict-lower inputs and strict
+prior-density upper input, and their returned continuations no longer ask for
+residual zero-locus nullity.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-loss-upper-stack-produced-residual-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossProducedRankCutBridge.lean
+lean/DLNFibre.lean
+```
+
+This does not construct the source-image density, identify a source-chart
+prior, prove determinant/raw Haar transport, prove fixed-base centering or the
+rank equations, prove product-zero density hypotheses, prove source-rank/atlas
+coverage, construct normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, base original-loss wrapper with produced residual-source hypotheses
 
 Decision: propagate the radius-free residual-source package one step into the
