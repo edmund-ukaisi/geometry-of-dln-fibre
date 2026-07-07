@@ -1,0 +1,201 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-adc9004659a73e6f0/expeditions/2026-06-20-aoyagi-full/threads/genm-sjcarrier3/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f3de2-464e-7f40-ae4e-f046764934a8
+--------
+user
+# Consult: Lean encoding of the SJState carrier + shared-divisor support map (DLN R1-UPPER)
+
+You are a decorrelated design reviewer for a Lean 4 + Mathlib (v4.29) formalisation. I want a
+red-team on ONE Lean encoding decision and ONE lemma statement. Exact-algebra + Lean-idiom review.
+Do NOT re-litigate the underlying mathematics (it is separately adjudicated); focus on whether my
+Lean encoding is FAITHFUL, NON-VACUOUS, and USABLE, and flag the sharpest risk.
+
+## Background (the adjudicated math, taken as given)
+
+We are proving finiteness of an integral `∫ frobSq(A0·Q)^{-c'}` (`c' < ½·minAdm`) via Aoyagi's
+`(S,J)` normal-crossing resolution by a SEQUENCE of explicit single-radial blow-up charts (the "pure
+R-BLOWUP" route — NOT the atom/Gram change-of-variables, which hits a res-of-sing wall). On each
+terminal chart the loss becomes `∑_i b_i(u)²` where each `b_i` is a MONOMIAL in exceptional variables
+`u_1,…,u_D`: `b_i(u) = ∏_ℓ |u_ℓ|^{e(i,ℓ)}`. Finiteness of `∫ (∑ b_i²)^{-c'}·(Jacobian ∏|u_ℓ|^{h_ℓ})`
+is governed by the common monomial divisor `g = ∏_ℓ |u_ℓ|^{k_ℓ}`, `k_ℓ = min_i e(i,ℓ)`: factoring,
+`∑ b_i² = g²·U`, `U ≥ 1` (one residual monomial is the chart's dehomogenised unit coordinate = 1), so
+the integrand is `monomialIntegrand d k h c'·|U|^{-c'}`, integrable iff `c' < monomialThreshold d k h
+= min_ℓ (h_ℓ+1)/(2 k_ℓ)`.
+
+THE LOAD-BEARING DATUM (the adjudication's key correction): the map `e : Gen → Exc → ℕ` (which
+exceptional `u_ℓ` divides which generator `b_i`, and to what order) is NECESSARY, not optional. Two
+generators SHARING a divisor `u` give a different value than fresh-per-generator divisors:
+`⟨δx, δy⟩` (shared δ, so `e = [[1,1,0],[1,0,1]]` over vars `[δ,x,y]`, `k_δ = min(1,1) = 1`) yields
+`g = δ`, `∑b² = δ²(x²+y²)`, RLCT ½; whereas `⟨δ₁x, δ₂y⟩` (fresh, `k_{δ₁}=k_{δ₂}=0`) yields `g = 1`,
+`∑b² = δ₁²x²+δ₂²y²`, RLCT 1. The `min_i` over the exponent matrix is exactly what separates them.
+
+The banked Lean `monomialIntegrand d k h c u = (∏_j |u_j|^{h_j})·(∏_j |u_j|^{2 k_j})^{-c}` and
+`monomialThreshold d k h` already exist and are consumed downstream.
+
+## My proposed Lean encoding (the thing to red-team)
+
+```lean
+/-- The shared-divisor support map: exponent of exceptional var `ℓ` in generator `i`. -/
+def SJSupport (numGen numExc : ℕ) := Fin numGen → Fin numExc → ℕ
+
+/-- The common-divisor exponent of `u_ℓ`: `min_i e(i,ℓ)`. The `k` fed to `monomialIntegrand`. -/
+def sharedDivisorExp {numGen numExc : ℕ} (e : SJSupport numGen numExc) (ℓ : Fin numExc) : ℕ :=
+  ⨅ i, e i ℓ    -- Finset.inf' over the (nonempty) Fin numGen, or 0 if numGen = 0
+
+/-- The generator monomial `b_i(u) = ∏_ℓ |u_ℓ|^{e(i,ℓ)}`. -/
+def genMonomial {numGen numExc : ℕ} (e : SJSupport numGen numExc) (i : Fin numGen)
+    (u : Fin numExc → ℝ) : ℝ := ∏ ℓ, |u ℓ| ^ (e i ℓ)
+
+/-- The common divisor `g(u) = ∏_ℓ |u_ℓ|^{k_ℓ}`, `k_ℓ = sharedDivisorExp`. -/
+def commonDivisor {numGen numExc : ℕ} (e : SJSupport numGen numExc) (u : Fin numExc → ℝ) : ℝ :=
+  ∏ ℓ, |u ℓ| ^ (sharedDivisorExp e ℓ)
+```
+
+Target FACTORIZATION lemma (Phase 1 headline):
+
+```lean
+-- ∑_i b_i(u)² = g(u)² · (∑_i (b_i/g)²), with each b_i/g a genuine monomial (nonneg exponents).
+theorem sumSq_genMonomial_eq_commonDivisor_sq_mul (e : SJSupport numGen numExc)
+    (u : Fin numExc → ℝ) :
+    (∑ i, (genMonomial e i u)^2)
+      = (commonDivisor e u)^2 * (∑ i, (genMonomial (residualSupport e) i u)^2)
+```
+where `residualSupport e i ℓ = e i ℓ - sharedDivisorExp e ℓ` (nonneg since `k_ℓ ≤ e(i,ℓ)`).
+
+## Questions (answer each; ≤ 250 words each)
+
+1. **Is `e : Fin numGen → Fin numExc → ℕ` with `k_ℓ = ⨅_i e i ℓ` the RIGHT faithful minimal encoding
+   of the shared-divisor support map?** Or is there a subtlety it misses (e.g. does faithfulness need
+   more than the exponent matrix — the actual blow-up centres, the ORDER of blow-ups, sign data)? Is
+   `min_i` (not, say, a per-pair gcd) the correct common-divisor operation for the `∑ b_i²` Newton
+   polyhedron / `monomialThreshold`? The DATA-A `⟨δx,δy⟩` vs `⟨δ₁x,δ₂y⟩` distinction must come out
+   right — confirm my `k` values (`k_δ=1` shared vs `k=0` fresh) are what the encoding produces.
+
+2. **The factorization lemma.** `b_i(u) = ∏_ℓ|u_ℓ|^{e(i,ℓ)}`, `g = ∏_ℓ|u_ℓ|^{k_ℓ}`. Is
+   `∑ b_i² = g²·∑(b_i/g)²` with `b_i/g = ∏_ℓ|u_ℓ|^{e(i,ℓ)-k_ℓ}` correct AND cleanly Lean-provable
+   with `|u_ℓ|^{e} = |u_ℓ|^{k}·|u_ℓ|^{e-k}` (since `k ≤ e`, `pow_add`+`Nat.sub_add_cancel`)? Any trap
+   when some `u_ℓ = 0` (then `|u_ℓ|^k` and `|u_ℓ|^{e-k}` factor fine for nat powers — confirm)?
+
+3. **Connecting to `monomialIntegrand`.** With the residual sum `U = ∑(b_i/g)²`, the terminal
+   integrand `(∑ b_i²)^{-c'}·(∏|u_ℓ|^{h_ℓ}) = (∏|u_ℓ|^{h_ℓ})·(∏|u_ℓ|^{2k_ℓ})^{-c'}·|U|^{-c'}
+   = monomialIntegrand d k h c'·|U|^{-c'}` where `k = sharedDivisorExp e`. Is this identity exact
+   (`(g²)^{-c'} = (∏|u_ℓ|^{k_ℓ})^{2·(-c')}` — watch `rpow`/`pow` and the `2k` vs `k` doubling)? Is
+   the map `k_ℓ := sharedDivisorExp e ℓ` the correct `k` argument, i.e. is `commonDivisor² = ∏|u_ℓ|^{2k_ℓ}`?
+
+4. **The relative chart lemma (Phase 2, the hardest bounded brick).** One `(S,J)` step: a single
+   radial blow-up `Δ ↦ u•Δ` of the current corank block, plus a Z-independent unit block-elimination
+   (banked: `frobSq_smul_mul`, `frobSq_schur_block_split`, `step3_blockFactor`). The NEW content is the
+   LEDGER UPDATE: appending the fresh `u` to the support map and preserving the passive-prefactor
+   invariant (earlier `u`'s multiply in, never divide). Given the pointwise `pref·frobSq((u•Δ)·Q) =
+   (pref·u²)·residual` is already banked (`corankStep_prefactor`), what is the RIGHT shape for the
+   ledger-update statement so it (a) stays faithful to "shared divisor across generators", (b) composes
+   into a terminating recursion, (c) is provable? Flag the single sharpest risk in this step.
+
+Answer concisely, question by question. If any encoding choice is WRONG, say so and give the fix.
+
+codex
+I’ll check the local Lean definitions for `monomialIntegrand` and related support conventions so the review is grounded in the repo’s actual idioms, then I’ll answer point by point.
+exec
+/bin/bash -lc "ls -la && sed -n '1,220p' CLAUDE.md && sed -n '1,180p' README.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-adc9004659a73e6f0/expeditions/2026-06-20-aoyagi-full/threads/genm-sjcarrier3/codex
+exec
+/bin/bash -lc 'pwd && rg -n "monomialIntegrand|monomialThreshold|SJSupport|sharedDivisor|residualSupport|corankStep_prefactor|frobSq_smul_mul|step3_blockFactor" -S .' in /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-adc9004659a73e6f0/expeditions/2026-06-20-aoyagi-full/threads/genm-sjcarrier3/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-adc9004659a73e6f0/expeditions/2026-06-20-aoyagi-full/threads/genm-sjcarrier3/codex
+./carrier-design-run.log:31:the integrand is `monomialIntegrand d k h c'·|U|^{-c'}`, integrable iff `c' < monomialThreshold d k h
+./carrier-design-run.log:41:The banked Lean `monomialIntegrand d k h c u = (∏_j |u_j|^{h_j})·(∏_j |u_j|^{2 k_j})^{-c}` and
+./carrier-design-run.log:42:`monomialThreshold d k h` already exist and are consumed downstream.
+./carrier-design-run.log:48:def SJSupport (numGen numExc : ℕ) := Fin numGen → Fin numExc → ℕ
+./carrier-design-run.log:50:/-- The common-divisor exponent of `u_ℓ`: `min_i e(i,ℓ)`. The `k` fed to `monomialIntegrand`. -/
+./carrier-design-run.log:51:def sharedDivisorExp {numGen numExc : ℕ} (e : SJSupport numGen numExc) (ℓ : Fin numExc) : ℕ :=
+./carrier-design-run.log:55:def genMonomial {numGen numExc : ℕ} (e : SJSupport numGen numExc) (i : Fin numGen)
+./carrier-design-run.log:58:/-- The common divisor `g(u) = ∏_ℓ |u_ℓ|^{k_ℓ}`, `k_ℓ = sharedDivisorExp`. -/
+./carrier-design-run.log:59:def commonDivisor {numGen numExc : ℕ} (e : SJSupport numGen numExc) (u : Fin numExc → ℝ) : ℝ :=
+./carrier-design-run.log:60:  ∏ ℓ, |u ℓ| ^ (sharedDivisorExp e ℓ)
+./carrier-design-run.log:67:theorem sumSq_genMonomial_eq_commonDivisor_sq_mul (e : SJSupport numGen numExc)
+./carrier-design-run.log:70:      = (commonDivisor e u)^2 * (∑ i, (genMonomial (residualSupport e) i u)^2)
+./carrier-design-run.log:72:where `residualSupport e i ℓ = e i ℓ - sharedDivisorExp e ℓ` (nonneg since `k_ℓ ≤ e(i,ℓ)`).
+./carrier-design-run.log:80:   polyhedron / `monomialThreshold`? The DATA-A `⟨δx,δy⟩` vs `⟨δ₁x,δ₂y⟩` distinction must come out
+./carrier-design-run.log:88:3. **Connecting to `monomialIntegrand`.** With the residual sum `U = ∑(b_i/g)²`, the terminal
+./carrier-design-run.log:90:   = monomialIntegrand d k h c'·|U|^{-c'}` where `k = sharedDivisorExp e`. Is this identity exact
+./carrier-design-run.log:92:   the map `k_ℓ := sharedDivisorExp e ℓ` the correct `k` argument, i.e. is `commonDivisor² = ∏|u_ℓ|^{2k_ℓ}`?
+./carrier-design-run.log:96:   (banked: `frobSq_smul_mul`, `frobSq_schur_block_split`, `step3_blockFactor`). The NEW content is the
+./carrier-design-run.log:99:   (pref·u²)·residual` is already banked (`corankStep_prefactor`), what is the RIGHT shape for the
+./carrier-design-run.log:106:I’ll check the local Lean definitions for `monomialIntegrand` and related support conventions so the review is grounded in the repo’s actual idioms, then I’ll answer point by point.
+./carrier-design-prompt.md:17:the integrand is `monomialIntegrand d k h c'·|U|^{-c'}`, integrable iff `c' < monomialThreshold d k h
+./carrier-design-prompt.md:27:The banked Lean `monomialIntegrand d k h c u = (∏_j |u_j|^{h_j})·(∏_j |u_j|^{2 k_j})^{-c}` and
+./carrier-design-prompt.md:28:`monomialThreshold d k h` already exist and are consumed downstream.
+./carrier-design-prompt.md:34:def SJSupport (numGen numExc : ℕ) := Fin numGen → Fin numExc → ℕ
+./carrier-design-prompt.md:36:/-- The common-divisor exponent of `u_ℓ`: `min_i e(i,ℓ)`. The `k` fed to `monomialIntegrand`. -/
+./carrier-design-prompt.md:37:def sharedDivisorExp {numGen numExc : ℕ} (e : SJSupport numGen numExc) (ℓ : Fin numExc) : ℕ :=
+./carrier-design-prompt.md:41:def genMonomial {numGen numExc : ℕ} (e : SJSupport numGen numExc) (i : Fin numGen)
+./carrier-design-prompt.md:44:/-- The common divisor `g(u) = ∏_ℓ |u_ℓ|^{k_ℓ}`, `k_ℓ = sharedDivisorExp`. -/
+./carrier-design-prompt.md:45:def commonDivisor {numGen numExc : ℕ} (e : SJSupport numGen numExc) (u : Fin numExc → ℝ) : ℝ :=
+./carrier-design-prompt.md:46:  ∏ ℓ, |u ℓ| ^ (sharedDivisorExp e ℓ)
+./carrier-design-prompt.md:53:theorem sumSq_genMonomial_eq_commonDivisor_sq_mul (e : SJSupport numGen numExc)
+./carrier-design-prompt.md:56:      = (commonDivisor e u)^2 * (∑ i, (genMonomial (residualSupport e) i u)^2)
+./carrier-design-prompt.md:58:where `residualSupport e i ℓ = e i ℓ - sharedDivisorExp e ℓ` (nonneg since `k_ℓ ≤ e(i,ℓ)`).
+./carrier-design-prompt.md:66:   polyhedron / `monomialThreshold`? The DATA-A `⟨δx,δy⟩` vs `⟨δ₁x,δ₂y⟩` distinction must come out
+./carrier-design-prompt.md:74:3. **Connecting to `monomialIntegrand`.** With the residual sum `U = ∑(b_i/g)²`, the terminal
+./carrier-design-prompt.md:76:   = monomialIntegrand d k h c'·|U|^{-c'}` where `k = sharedDivisorExp e`. Is this identity exact
+./carrier-design-prompt.md:78:   the map `k_ℓ := sharedDivisorExp e ℓ` the correct `k` argument, i.e. is `commonDivisor² = ∏|u_ℓ|^{2k_ℓ}`?
+./carrier-design-prompt.md:82:   (banked: `frobSq_smul_mul`, `frobSq_schur_block_split`, `step3_blockFactor`). The NEW content is the
+./carrier-design-prompt.md:85:   (pref·u²)·residual` is already banked (`corankStep_prefactor`), what is the RIGHT shape for the
+
+ exited 2 in 0ms:
+total 24
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jul  7 18:41 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jul  7 18:38 ..
+-rw-rw-r-- 1 ubuntu ubuntu 6261 Jul  7 18:38 carrier-design-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 7031 Jul  7 18:41 carrier-design-run.log
+sed: can't read CLAUDE.md: No such file or directory
+
+codex
+1. **Encoding.** Yes, for the terminal monomial carrier, `e : Fin numGen → Fin numExc → ℕ` is the right minimal datum. Shared versus fresh divisors are exactly column identity: for `⟨δx, δy⟩`, rows `[1,1,0]`, `[1,0,1]` give `k = [1,0,0]`; for fresh `δ₁,δ₂`, the `δ₁` and `δ₂` columns have minima `0`. Signs, blow-up order, and centers are not needed to consume the terminal support matrix, though they are needed to prove that the matrix was produced faithfully. Two Lean cautions: require `0 < numGen` or `[NeZero numGen]`; and define the minimum with `Finset.univ.inf'`, not an empty-default `0`, except in quarantined degenerate code.
+
+2. **Factorization Lemma.** Correct, and Lean-provable. State it using `residualSupport`, not literal division by `g`; division fails semantically at `g = 0`. For each `i, ℓ`, prove `sharedDivisorExp e ℓ ≤ e i ℓ`, then
+   `|u ℓ| ^ e(i,ℓ) = |u ℓ| ^ kℓ * |u ℓ| ^ (e(i,ℓ)-kℓ)`
+   by `pow_add` plus the Nat subtraction lemma. Zero coordinates are fine: this is Nat-power algebra in a semiring, so `0^k` causes no trap, including exponent `0`. Then use product distributivity and pull the common square out of the finite sum.
+
+3. **`monomialIntegrand`.** Yes: pass `kℓ := sharedDivisorExp e ℓ`, not `2*k`. One proves
+   `commonDivisor e u ^ 2 = ∏ ℓ, |u ℓ| ^ (2 * k ℓ)`
+   using `Finset.prod_pow`, `pow_mul`, and `Nat.mul_comm`. For the real-power split, prefer the shape
+   `(G * U) ^ (-c') = G ^ (-c') * U ^ (-c')`
+   with `0 ≤ G` and `0 ≤ U`; if you have the terminal unit witness, `1 ≤ U`, even better. Also ensure the banked threshold treats `kℓ = 0` as imposing no bound; otherwise fresh-only columns become misleading.
+
+4. **Relative Chart Lemma.** Make the step theorem generator-level, not merely Frobenius-square-level. The useful shape is: define a computable `radialUpdate : SJState → StepData → SJState` whose support is old columns copied/incremented monotonically and one fresh column appended, with value `1` on active descendants and `0` on passive rows, or the explicit multiplicity if not always `1`.
+
+The lemma should assert:
+`loss_after = ∑ i, genMonomial state'.support i u' ^ 2`,
+old exceptional exponents never decrease, the fresh column is exactly the radial ledger column, the unit/residual witness is preserved or updated, and the recursion measure decreases.
+
+Sharpest risk: `pref · frobSq = pref · u² · residual` is too coarse to recover the support matrix. Shared-divisor faithfulness must be proved row-by-row for generators; a sum-of-squares equality alone does not certify which generators share `u`.
+tokens used
+20,587
+1. **Encoding.** Yes, for the terminal monomial carrier, `e : Fin numGen → Fin numExc → ℕ` is the right minimal datum. Shared versus fresh divisors are exactly column identity: for `⟨δx, δy⟩`, rows `[1,1,0]`, `[1,0,1]` give `k = [1,0,0]`; for fresh `δ₁,δ₂`, the `δ₁` and `δ₂` columns have minima `0`. Signs, blow-up order, and centers are not needed to consume the terminal support matrix, though they are needed to prove that the matrix was produced faithfully. Two Lean cautions: require `0 < numGen` or `[NeZero numGen]`; and define the minimum with `Finset.univ.inf'`, not an empty-default `0`, except in quarantined degenerate code.
+
+2. **Factorization Lemma.** Correct, and Lean-provable. State it using `residualSupport`, not literal division by `g`; division fails semantically at `g = 0`. For each `i, ℓ`, prove `sharedDivisorExp e ℓ ≤ e i ℓ`, then
+   `|u ℓ| ^ e(i,ℓ) = |u ℓ| ^ kℓ * |u ℓ| ^ (e(i,ℓ)-kℓ)`
+   by `pow_add` plus the Nat subtraction lemma. Zero coordinates are fine: this is Nat-power algebra in a semiring, so `0^k` causes no trap, including exponent `0`. Then use product distributivity and pull the common square out of the finite sum.
+
+3. **`monomialIntegrand`.** Yes: pass `kℓ := sharedDivisorExp e ℓ`, not `2*k`. One proves
+   `commonDivisor e u ^ 2 = ∏ ℓ, |u ℓ| ^ (2 * k ℓ)`
+   using `Finset.prod_pow`, `pow_mul`, and `Nat.mul_comm`. For the real-power split, prefer the shape
+   `(G * U) ^ (-c') = G ^ (-c') * U ^ (-c')`
+   with `0 ≤ G` and `0 ≤ U`; if you have the terminal unit witness, `1 ≤ U`, even better. Also ensure the banked threshold treats `kℓ = 0` as imposing no bound; otherwise fresh-only columns become misleading.
+
+4. **Relative Chart Lemma.** Make the step theorem generator-level, not merely Frobenius-square-level. The useful shape is: define a computable `radialUpdate : SJState → StepData → SJState` whose support is old columns copied/incremented monotonically and one fresh column appended, with value `1` on active descendants and `0` on passive rows, or the explicit multiplicity if not always `1`.
+
+The lemma should assert:
+`loss_after = ∑ i, genMonomial state'.support i u' ^ 2`,
+old exceptional exponents never decrease, the fresh column is exactly the radial ledger column, the unit/residual witness is preserved or updated, and the recursion measure decreases.
+
+Sharpest risk: `pref · frobSq = pref · u² · residual` is too coarse to recover the support matrix. Shared-divisor faithfulness must be proved row-by-row for generators; a sum-of-squares equality alone does not certify which generators share `u`.
