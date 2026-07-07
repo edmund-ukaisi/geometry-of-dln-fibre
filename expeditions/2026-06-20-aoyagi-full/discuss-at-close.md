@@ -2120,3 +2120,21 @@ branch for provenance vs delete them to keep canonical's sorry-count honest, say
 consolidation.)
 
 **UPDATE (2026-07-07, r1lowerscope): ADD the R1-LOWER line-133 orphan to this cleanup.** `routeMCore_box_diverges_achiever` (`RouteMLayerCoverGE.lean:133`) + its consumer `layerCover_hdiv` are ALSO orphaned — the LIVE R1-LOWER leg (`r1_resolution_general`, sorry-free ∀L) builds `hdiv` inline via the 4-way stratified dispatch (`routeMCore_box_diverges_achiever_full'`), NOT via line-133. Nothing consumes `layerCover_hdiv`. Superseded by the stratified build; remove (or restate with `hMpos`/`hne` + wire `_full'`, ~3 lines) at the same consolidation pass. Same category as the interiorLDU trio (dead-sorry, sorry-count honesty). Also in this bucket: `RouteMRecursion.lean:257` — a superseded value-arm whose removal is the ChainDimSplit→routeLayerAtlas MIGRATION (staged surgery, distinct from a pure delete).
+
+## 57. MILESTONE — both remaining walls confirmed LABOR (no research wall on the general headline). (2026-07-07)
+Both satisfiability risks on the two genuine open walls are now RETIRED, each via a design-first
+pen-and-paper pass + a decorrelated Codex (hypothesis-withheld), BEFORE the heavy formaliser builds:
+- **R1-UPPER** (box-finiteness, Skeleton:1234): BOUNDED-(a) (#55/UPDATE-676, sjcorankadj) — the corank-≥2 core
+  is Aoyagi's coupled diag(b) = iterated EXPLICIT single-radial blow-up charts WITH a shared-divisor ledger,
+  NOT res-of-sing. Formaliser: `sjcarrier4` (Phase 2 recursion).
+- **D1 #120** (deepest normal form + ≥-leg, Skeleton:1131+1177): SATISFIABLE (UPDATE-681, d1psidesign) — the
+  general-L `psiSplitRawGen` joint move exists EXACTLY (Invariant A/B verified L≤5, m≤3, r≤2; the move: pivots
+  fixed + up-edits all layers + one Z_0 down-edit + cores). Formaliser: `hstep2germs2`.
+So the **honest ETA on the fully-general `aoyagi_learning_coefficient` = formalisation LABOR on two validated
+routes**, not unresolved mathematics. R1-LOWER is closed (UPDATE-679); the value flows through the sorry-free
+`routeLayerAtlas` (UPDATE-680); θ is secondary. The remaining risk is Lean-labor risk (the L-recursive
+identities: R1-UPPER's shared-divisor ledger recursion + D1's left-column/Ŵ-accumulator lemma) + the
+dependent-width cast grind — multi-tide, but no flagged research wall. (Operator: no action — a scope-status
+milestone. The design-first discipline retired FOUR route-confounds + now BOTH walls' satisfiability risks at
+bounded cost, zero bad Lean banked. If you want a written go/no-go on the multi-week labor ETA vs a
+scoped-intermediate deliverable, say so; default is CHARGE per the GO-THE-DISTANCE mandate.)
