@@ -25,7 +25,7 @@ Single-writer: NOT in the aggregator; the controller wires `D1L2ExplChartClose2`
 -/
 
 open Matrix MeasureTheory
-open scoped ENNReal Topology BigOperators
+open scoped ENNReal Topology BigOperators Matrix.Norms.Elementwise
 namespace DLNFibre.DLN.RLCT
 
 variable {H : Fin (2 + 1) → ℕ} {r : ℕ}
@@ -182,5 +182,136 @@ theorem reg_readback (x : Fin (flatDim H) → ℝ) :
       (roleToFlat I K J hI hK hJ (Sum.inl ρ)))) ^ 2)]
   simp only [Fintype.sum_sum_type, Fintype.sum_prod_type, reg_entry_M21, reg_entry_M11, reg_entry_M12]
   rw [Finset.sum_add_distrib]
+
+/-! ## The explicit residual `qₑ` (the `₂₂` Schur residual, bump-globalised inverse `G`) -/
+
+variable {N : WithTop ℕ∞}
+
+/-- Entry of a `ContDiff` matrix-valued map is `ContDiff`. -/
+theorem contDiff_matrixEntry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    {mm nn : Type*} [Fintype mm] [Fintype nn]
+    {f : X → Matrix mm nn ℝ} (hf : ContDiff ℝ N f) (i : mm) (j : nn) :
+    ContDiff ℝ N (fun x => f x i j) :=
+  (contDiff_apply ℝ ℝ j).comp ((contDiff_apply ℝ (nn → ℝ) i).comp hf)
+
+/-- A matrix-valued map is `ContDiff` iff each entry is (elementwise-norm = Pi topology). -/
+theorem contDiff_matrix_of_entries {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    {mm nn : Type*} [Fintype mm] [Fintype nn]
+    {f : X → Matrix mm nn ℝ} (h : ∀ i j, ContDiff ℝ N (fun x => f x i j)) :
+    ContDiff ℝ N f :=
+  contDiff_pi.mpr fun i => contDiff_pi.mpr fun j => h i j
+
+/-- Global entrywise `ContDiff` matrix multiplication (the `ContDiff` analogue of
+`contDiffAt_matrix_mul_entry`). -/
+theorem contDiff_matrix_mul_entry {X mm nn pp : Type*}
+    [NormedAddCommGroup X] [NormedSpace ℝ X] [Fintype nn]
+    {A : X → Matrix mm nn ℝ} {B : X → Matrix nn pp ℝ}
+    (hA : ∀ i k, ContDiff ℝ N (fun x => A x i k))
+    (hB : ∀ k j, ContDiff ℝ N (fun x => B x k j)) (i : mm) (j : pp) :
+    ContDiff ℝ N (fun x => (A x * B x) i j) := by
+  have heq : (fun x => (A x * B x) i j) = fun x => ∑ k, A x i k * B x k j := by
+    funext x; rw [Matrix.mul_apply]
+  rw [heq]; exact ContDiff.sum (fun k _ => (hA i k).mul (hB k j))
+
+/-- The block chart `blockFlatEquiv_L2 ∘ splitHomeoL2.symm` is `C^∞` (a CLE precomposed with the
+`C^∞` split inverse). -/
+theorem contDiff_bChart :
+    ContDiff ℝ (⊤ : ℕ∞) (fun py => blockFlatEquiv_L2 H r I K J hI hK hJ
+      ((splitHomeoL2 I K J hI hK hJ).symm py)) :=
+  (blockFlatEquiv_L2 H r I K J hI hK hJ).contDiff.comp (contDiff_splitMP_symm I K J hI hK hJ)
+
+/-- The block matrix `Q py = blockFlatEquiv_L2 (splitHomeoL2.symm py) + C₀`, whose `₂₂` Schur residual
+(with the bump-globalised inverse `G`) is `qResid`. -/
+noncomputable def qBlock (C₀ : BlockParamsL2 H r)
+    (py : (Fin (nRegL2 H r) → ℝ)
+      × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))) : BlockParamsL2 H r :=
+  blockFlatEquiv_L2 H r I K J hI hK hJ ((splitHomeoL2 I K J hI hK hJ).symm py) + C₀
+
+/-- The first-layer block of `qBlock` is entrywise `C^∞`. -/
+theorem contDiff_qBlock_fst_entry (C₀ : BlockParamsL2 H r)
+    (i : Fin r ⊕ Fin (H 0 - r)) (j : Fin r ⊕ Fin (H 1 - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun py => (qBlock I K J hI hK hJ C₀ py).1 i j) :=
+  contDiff_matrixEntry
+    (contDiff_fst.comp ((contDiff_bChart I K J hI hK hJ).add contDiff_const)) i j
+
+/-- The second-layer block of `qBlock` is entrywise `C^∞`. -/
+theorem contDiff_qBlock_snd_entry (C₀ : BlockParamsL2 H r)
+    (i : Fin r ⊕ Fin (H 1 - r)) (j : Fin r ⊕ Fin (H (Fin.last 2) - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun py => (qBlock I K J hI hK hJ C₀ py).2 i j) :=
+  contDiff_matrixEntry
+    (contDiff_snd.comp ((contDiff_bChart I K J hI hK hJ).add contDiff_const)) i j
+
+/-- The `₂₂` Schur residual MATRIX (bump-globalised inverse `G`):
+`M21·G(M11)·M12 + A0red·A1red − Br₂₂` read off `qBlock`. -/
+noncomputable def qResidMat (C₀ : BlockParamsL2 H r)
+    (Br022 : Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (py : (Fin (nRegL2 H r) → ℝ)
+      × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))) :
+    Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ :=
+  (qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₁ * G (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₁
+      * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₂
+    + (qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₂ * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₂₂
+    - Br022
+
+/-- **The explicit `₂₂` Schur residual `qₑ`** (bump-globalised inverse `G`): the flattened
+`qResidMat`, as a `EuclideanSpace` vector. -/
+noncomputable def qResid (C₀ : BlockParamsL2 H r)
+    (Br022 : Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) :
+    (Fin (nRegL2 H r) → ℝ) × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ))
+      → EuclideanSpace ℝ (Fin ((H 0 - r) * (H 2 - r))) := fun py =>
+  (EuclideanSpace.equiv (Fin ((H 0 - r) * (H 2 - r))) ℝ).symm
+    (fun i => qResidMat I K J hI hK hJ C₀ Br022 G py
+      (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2)
+
+/-- **`qResid` is globally `ContDiff ℝ 1`** (given `G` is `ContDiff ℝ 1`). The three regular blocks are
+`C^∞` in `py` (`qBlock` entries); `G(M11)` is the `C¹` `G` composed with the `C^∞` `M11` block; the
+two matrix products and the constant `Br₂₂` assemble entrywise. -/
+theorem contDiff_qResid (C₀ : BlockParamsL2 H r)
+    (Br022 : Matrix (Fin (H 0 - r)) (Fin (H 2 - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) (hG : ContDiff ℝ 1 G) :
+    ContDiff ℝ 1 (qResid I K J hI hK hJ C₀ Br022 G) := by
+  have h1top : (1 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by exact_mod_cast le_top
+  refine contDiff_euclidean.mpr fun i => ?_
+  -- `G(M11)` block entries are `C¹`.
+  have hGM11 : ∀ k k' : Fin r,
+      ContDiff ℝ 1 (fun py => (G (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₁) k k') := by
+    intro k k'
+    have hM11 : ContDiff ℝ 1 (fun py => (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₁) :=
+      contDiff_matrix_of_entries fun i' j' =>
+        (contDiff_qBlock_snd_entry I K J hI hK hJ C₀ (Sum.inl i') (Sum.inl j')).of_le h1top
+    exact contDiff_matrixEntry (hG.comp hM11) k k'
+  -- the two matrix products, entrywise `C¹`.
+  set a := (finProdFinEquiv.symm i).1
+  set b := (finProdFinEquiv.symm i).2
+  have hProd1 : ContDiff ℝ 1 (fun py =>
+      ((qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₁ * G (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₁
+        * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₂) a b) := by
+    refine contDiff_matrix_mul_entry
+      (fun i' k' => contDiff_matrix_mul_entry
+        (fun a' k'' => (contDiff_qBlock_fst_entry I K J hI hK hJ C₀ (Sum.inr a') (Sum.inl k'')).of_le
+          h1top) (fun k'' k''' => hGM11 k'' k''') i' k') ?_ a b
+    intro k' j'
+    exact (contDiff_qBlock_snd_entry I K J hI hK hJ C₀ (Sum.inl k') (Sum.inr j')).of_le h1top
+  have hProd2 : ContDiff ℝ 1 (fun py =>
+      ((qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₂ * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₂₂) a b) :=
+    contDiff_matrix_mul_entry
+      (fun a' k' => (contDiff_qBlock_fst_entry I K J hI hK hJ C₀ (Sum.inr a') (Sum.inr k')).of_le
+        h1top)
+      (fun k' b' => (contDiff_qBlock_snd_entry I K J hI hK hJ C₀ (Sum.inr k') (Sum.inr b')).of_le
+        h1top) a b
+  have hfun : (fun py => qResid I K J hI hK hJ C₀ Br022 G py i)
+      = fun py => ((qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₁
+            * G (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₁
+            * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₁₂) a b
+          + ((qBlock I K J hI hK hJ C₀ py).1.toBlocks₂₂
+            * (qBlock I K J hI hK hJ C₀ py).2.toBlocks₂₂) a b
+          - Br022 a b := by
+    funext py
+    show qResidMat I K J hI hK hJ C₀ Br022 G py a b = _
+    simp only [qResidMat, Matrix.sub_apply, Matrix.add_apply]
+  rw [hfun]
+  exact (hProd1.add hProd2).sub contDiff_const
 
 end DLNFibre.DLN.RLCT
