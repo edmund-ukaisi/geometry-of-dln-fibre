@@ -729,5 +729,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGammaAtom
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
 -- (S,J) relative corank-step invariant: single-radial blow-up ∘ Schur block-elimination + prefactor.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
+-- (S,J) integral-level corank-block morse peel: the per-step charge (Γ-integral) via the Γ-atom.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPeel
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
