@@ -10,6 +10,50 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following original-prior C-one continuous pullback bounds - 2026-07-07
+
+- **Statement.** On a local with-following Case 2 p.13 chart patch,
+  continuity of the two pulled-back density functions and strict basepoint
+  inequalities imply the eventual pullback bounds needed for direct
+  original-prior C-one domination.
+- **Tier.** A2 local original-prior/continuity-to-density-bound wrapper.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The theorem is read as proving continuity,
+  source-density positivity or finiteness, prior-density positivity or
+  boundedness without the strict basepoint hypotheses, C-one signed-box
+  support, source-prior or original-prior transport, readback domination,
+  finite-integral transfer, determinant-chart Haar transport, exact raw-Haar
+  pushforward, Haar normalization, source-image/source-rank coverage, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** This is Lean-local continuity-neighborhood
+  bookkeeping over the already proved eventual-pullback C-one theorem.  It
+  uses no quiver source evidence.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Arendt the 2nd` passed
+  the source-boundary route.  Xhigh Lean-route reviewer `Ptolemy the 2nd`
+  supplied the proof skeleton and identified only let-unfolding support
+  friction.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md`.
+- **Lean target.**
+  `exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_of_continuousAt_sourceImageDensity_comp_sourceChart_strict_lower_continuousAt_priorDensity_comp_sourceChart_strict_upper`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** The theorem uses the generic continuity helper to
+  produce the two eventual density bounds, then calls the existing
+  eventual-pullback C-one theorem.  Focused `lake env lean`, targeted module
+  build, local citation audit, `lean/scripts/sorries`, `git diff --check`,
+  direct axiom probe, and direct `#audit_cited` probe passed.  The declaration
+  reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No continuity of either pullback, no source-density
+  positivity or finiteness, no prior-density positivity or boundedness without
+  the strict basepoint hypotheses, no C-one signed-box support for arbitrary
+  chart pieces, no source-prior or original-prior transport, no readback
+  domination, no finite-integral transfer, no determinant-chart Haar
+  transport, no exact raw-Haar pushforward, no Haar normalization, no
+  source-image/source-rank coverage, no normal crossings, no pole order, and
+  no RLCT extraction.
+
 ## Current A2 with-following original-prior C-one eventual pullback bounds - 2026-07-07
 
 - **Statement.** On a local with-following Case 2 p.13 chart patch, supplied

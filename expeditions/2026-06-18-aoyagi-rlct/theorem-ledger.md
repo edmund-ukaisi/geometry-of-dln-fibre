@@ -4,6 +4,28 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original-prior C-one continuous pullback bounds note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_of_continuousAt_sourceImageDensity_comp_sourceChart_strict_lower_continuousAt_priorDensity_comp_sourceChart_strict_upper`.
+After a local with-following determinant-sector/pivot-nonzero basepoint, if
+the pulled-back source-image density and original-prior density are continuous
+at `z0` and satisfy strict inequalities
+
+```text
+eps < sourceImageDensity (sourceChart z0)
+density (sourceChart z0) < Kprior,
+```
+
+then the direct original-prior C-one domination package is available.  The
+proof first obtains the two eventual pullback bounds by
+`eventually_sourceImageDensity_comp_lower_priorDensity_comp_upper_of_continuousAt`
+and then calls the eventual-pullback C-one theorem.  This is not a proof of
+continuity, source-density positivity or finiteness, prior-density positivity
+or boundedness without the strict basepoint hypotheses, source/prior
+transport, readback domination, determinant/raw Haar transport, normal
+crossings, pole order, or RLCT extraction.
+
 Original-prior C-one eventual pullback bounds note, 2026-07-07:
 `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
 proves

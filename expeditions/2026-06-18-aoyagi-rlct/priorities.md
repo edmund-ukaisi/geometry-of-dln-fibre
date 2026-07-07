@@ -12,6 +12,58 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-prior C-one continuous pullback bounds
+
+Decision: add the direct non-readback C-one original-prior wrapper that
+derives the eventual pullback density bounds from continuity and strict
+basepoint inequalities.
+
+The new theorem fixes `eps`, the original-prior density, and `Kprior`, assumes
+
+```text
+ContinuousAt (fun z => sourceImageDensity (sourceChart z)) z0
+eps < sourceImageDensity (sourceChart z0)
+ContinuousAt (fun z => density (sourceChart z)) z0
+density (sourceChart z0) < Kprior,
+```
+
+then calls the existing eventual-pullback C-one theorem.  The caller still
+supplies chart-piece measurability, support in `sourceChart '' V`, pointwise
+C-one signed-box support, and `eps != 0`, `eps != infinity` when using the
+returned domination package.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md
+threads/03-block-product-reduction/review-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+lean/scripts/sorries
+git diff --check
+```
+
+`lean/scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and
+only the existing three cited axioms.  The citation audit reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and direct `#audit_cited`
+classifies the theorem as FORMALISED.
+
+This is not a proof of continuity, source-density positivity or finiteness,
+prior-density positivity or boundedness without the strict basepoint
+hypotheses, source/prior transport, readback domination, finite-integral
+transfer, determinant/raw Haar transport, Haar normalization,
+source-image/source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
 ## Latest controller decision - 2026-07-07, original-prior C-one eventual pullback bounds
 
 Decision: add the direct non-readback C-one original-prior wrapper that

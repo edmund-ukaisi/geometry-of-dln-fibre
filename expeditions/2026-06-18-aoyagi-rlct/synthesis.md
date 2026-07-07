@@ -6,6 +6,49 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-prior C-one continuous pullback bounds - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-cOne-continuous-pullback-bounds.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_of_continuousAt_sourceImageDensity_comp_sourceChart_strict_lower_continuousAt_priorDensity_comp_sourceChart_strict_upper
+```
+
+The theorem is a direct non-readback continuity-to-eventual wrapper.  It fixes
+`eps`, the original-prior density, and `Kprior`, assumes continuity at `z0` of
+the two pulled-back densities and strict basepoint inequalities, then uses the
+generic continuity helper to produce the two eventual pullback bounds consumed
+by the existing C-one eventual-pullback theorem.
+
+Boundary: no continuity of the pullbacks is proved, no source-density
+positivity or finiteness is proved, no prior-density positivity or boundedness
+is proved without the explicit strict basepoint hypotheses, and no
+source/prior transport, readback domination, finite-integral transfer,
+determinant/raw Haar transport, scalar normalization, source/source-rank
+coverage, normal crossings, pole order, or RLCT extraction is added.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+lean/scripts/sorries
+git diff --check
+```
+
+`lean/scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and
+only the existing three cited axioms.  The citation audit reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and direct `#audit_cited`
+classifies the theorem as FORMALISED.
+
 ## A2 with-following original-prior C-one eventual pullback bounds - 2026-07-07
 
 Reproduction:
