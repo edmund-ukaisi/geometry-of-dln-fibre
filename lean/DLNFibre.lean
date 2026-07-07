@@ -722,3 +722,5 @@ import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
+
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
