@@ -5,15 +5,20 @@ import DLNFibre.DLN.RLCT.Validate.Case222Cover
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJTerminal` — the general-width `monomial × (unit ≥ 1)` terminal
 
 **STEP-1 of the `SJState` recursion carrier** (`genm-sjcarrier2`; the R1-UPPER final gate). This module
-verifies **option (a)** of the route-correction finding
-(`expeditions/2026-06-20-aoyagi-full/threads/genm-sjclose/statement-card.md`): the `(2,2,2)`
-`monomial × (unit ≥ 1)` terminal (`Case222Resolution.blockForm_step3` + `step3_unit_ge_one` +
-`Case222Cover.integrableOn_monomial_mul_unit_iff`) **LIFTS to general (opaque `Fintype`) widths**.
+lifts to general (opaque `Fintype`) widths the **terminal ENDPOINT + its finiteness** of the `(2,2,2)`
+`monomial × (unit ≥ 1)` mechanism (`Case222Resolution.blockForm_step3` + `step3_unit_ge_one` +
+`Case222Cover.integrableOn_monomial_mul_unit_iff`) — the shape a fully-resolved corank block lands on.
+The bricks are **conditional** (they carry a pinned-entry + bounded-unit hypothesis); whether the
+general degenerate strata (corank ≥ 2 / `L ≥ 3`) actually REDUCE to this endpoint is NOT established
+here — that is the coupled `diag(b)` resolution, deferred (see the SCOPE CAVEAT below). Route-correction
+finding: `expeditions/2026-06-20-aoyagi-full/threads/genm-sjclose/statement-card.md`.
 
-The terminal of the pure `(S,J)` recursion — reached once the corank layers have been driven down by
-`corankStep` — is a single accumulated radial monomial times a unit bounded below by a positive
-constant, NOT the isotropic `frobSq Δ + W` peel (that needs the dead anisotropy-removing atom). The
-three ingredients and their general-width status:
+The **terminal ENDPOINT** the pure `(S,J)` recursion lands on — once a corank block has been fully
+resolved to normal-crossing form — is a single accumulated radial monomial times a unit bounded below
+by a positive constant, NOT the isotropic `frobSq Δ + W` peel (that needs the dead anisotropy-removing
+atom). This module supplies **that endpoint and its finiteness at general widths**; it does NOT show the
+general degenerate strata reduce to it (see the SCOPE caveat below). The three ingredients and their
+general-width status:
 
 * **Monomial factoring** — `frobSq ((u • M) · Q) = u² · frobSq (M · Q)` (`RouteMSJCorankStep.frobSq_smul_mul`,
   banked, ALREADY general widths) and its accumulated-prefactor form (`corankStep_prefactor`).
@@ -29,12 +34,24 @@ three ingredients and their general-width status:
   `monomialIntegrand_integrable_of_lt` (below-threshold monomial finiteness). Both banked lemmas are
   `d`-generic, so this half lifts to general widths UNCHANGED.
 
-**VERDICT (STEP-1): option (a) LIFTS.** The monomial factoring is banked general-width; the unit lower
-bound generalises cleanly as `frobSq X ≥ (entry)²`; the finiteness endpoint is `d`-generic. What is NOT
-here — and is the STEP-2 carrier (the multi-week mountain) — is DRIVING `corankStep` down the layers to
-REACH a terminal chart on which an entry of the residual is pinned to a unit (resolving the
-rank-deficient-`Q_b` charts, the standing `L ≥ 3` recursion). This module supplies the terminal these
-recursion charts land on and its finiteness; it does not itself perform the recursion.
+**VERDICT (STEP-1): the terminal ENDPOINT + its finiteness lift to general widths (conditional bricks).**
+The monomial factoring is banked general-width; the unit lower bound generalises cleanly as
+`frobSq X ≥ (entry)²`; the finiteness endpoint is `d`-generic. The `(2,2,2)` case these subsume binds at
+**corank 1** (residual `Δ` a scalar), so what lifts cleanly is the **corank-≤1 / clean-branch** terminal.
+
+**SCOPE CAVEAT (what is NOT established — escalated to the controller, reviewer + Codex + repo
+certificates).** These bricks are *conditional*: they carry a pin hypothesis (`c₀ ≤ |(M·Q) i j|`) and a
+bounded-unit hypothesis. Discharging them for the **general degenerate strata (corank ≥ 2 / L ≥ 3)** is
+NOT "labor driving `corankStep` down the layers": the repo's own pen-and-paper certificates show a naive
+per-layer reduction to this endpoint FAILS there —
+`theory/aoyagi-2023-reproduction/verify-r1-shortcut.md` (the "one blow-up ⟹ `u²·unit`" shortcut is false
+for `L ≥ 3`; `(2,2,2,2)` `t=(1,0,0)` leaves a fresh lower-depth non-unit core), and
+`verify-r1-diagb-334.md` (`(3,3,4)` binding corank-2 has true `rlct = 4` but a threshold-only /
+per-row model undercounts to `3`, at a stratum that SETS the RLCT). The correct general-width target is
+Aoyagi's **coupled `diag(b)` resolution with shared exceptional variables** (the `outer-construction-cert.md`
+"THE WALL" — genuinely-new resolution-of-singularities content), whose normal-crossing OUTPUT is the
+monomial × unit endpoint this module supplies. So STEP-2 is that coupled resolution (not a naive
+per-layer descent), and it remains deferred. This module does not itself perform any recursion.
 
 S2-FREE: `frobSq_ge_sq_entry`/`frobSq_ge_of_entry`/the factoring are pure algebra;
 `terminal_monomial_mul_unit_integrable` rides only the banked measure-theoretic bricks (no

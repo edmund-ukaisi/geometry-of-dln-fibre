@@ -1,15 +1,21 @@
-# Statement card — STEP-1 terminal: `monomial × (unit ≥ 1)` lifts to general widths (option a)
+# Statement card — STEP-1 terminal: `monomial × (unit ≥ 1)` ENDPOINT lifts to general widths
 
 Thread `genm-sjcarrier2` (tide, off `origin/genm-sjclose` @963a76de). Branch `genm-sjcarrier2`.
 Module: `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJTerminal.lean`. First sub-tide of the `SJState`
 recursion carrier (the R1-UPPER final gate → `sjJointResolution`, `RouteMSJResolution.lean:803`).
 
-> **Claim (STEP-1 verdict).** The `(2,2,2)` `monomial × (unit ≥ 1)` terminal
-> (`Case222Resolution.blockForm_step3` + `step3_unit_ge_one` +
-> `Case222Cover.integrableOn_monomial_mul_unit_iff`) — **option (a)** of the route-correction finding
-> — **LIFTS to general (opaque `Fintype`) widths**. The three ingredients are general-width or
-> `d`-generic; the only remaining work is the STEP-2 carrier that DRIVES the recursion to a terminal
-> chart (not the terminal itself).
+> **Claim (STEP-1).** The **terminal ENDPOINT + its finiteness** of the `(2,2,2)`
+> `monomial × (unit ≥ 1)` mechanism (`Case222Resolution.blockForm_step3` + `step3_unit_ge_one` +
+> `Case222Cover.integrableOn_monomial_mul_unit_iff`) **LIFTS to general (opaque `Fintype`) widths** as
+> **conditional bricks** (carrying a pinned-entry + bounded-unit hypothesis). The three ingredients are
+> general-width or `d`-generic. The `(2,2,2)` case they subsume binds at **corank 1**.
+>
+> **Scope (NOT claimed; escalated).** These bricks do NOT establish that the general degenerate strata
+> (corank ≥ 2 / `L ≥ 3`) reduce to this endpoint. The repo's certificates
+> (`verify-r1-shortcut.md`: one-blow-up ⟹ `u²·unit` false for `L ≥ 3`; `verify-r1-diagb-334.md`:
+> `(3,3,4)` corank-2 undercount at a binding stratum) show that needs Aoyagi's coupled `diag(b)`
+> resolution with shared exceptional variables — genuinely-new (`outer-construction-cert.md` "THE WALL"),
+> deferred. This endpoint is what that resolution's normal-crossing OUTPUT lands on.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.frobSq_ge_sq_entry`, `frobSq_ge_of_entry`,
 >   `frobSq_ge_one_of_entry_eq_one`, `frobSq_terminal_radial`, `frobSq_terminal_radial_prefactor`,
@@ -39,24 +45,23 @@ recursion carrier (the R1-UPPER final gate → `sjJointResolution`, `RouteMSJRes
 >   `frobSq_ge_one_of_entry_eq_one` recovers its `≥ 1`. `#print axioms` = `[propext, Classical.choice,
 >   Quot.sound]` (clean-three) for all eight; S2-free; **no `monomial_rlct`** (forced `#print axioms`
 >   confirms no S2 axiom entered).
-> - **Assumed.** none beyond the pin hypothesis (`c₀ ≤ |(M·Q) i j|`) and the standard unit bound
->   (`a ≤ |unit| ≤ b`, `0 < a`) the terminal statements carry. Those hypotheses are DISCHARGED, on a
->   terminal chart, by the STEP-2 carrier (which resolves rank-deficiencies until an entry is pinned).
+> - **Assumed.** the pin hypothesis (`c₀ ≤ |(M·Q) i j|`) and the standard unit bound
+>   (`a ≤ |unit| ≤ b`, `0 < a`) the terminal statements carry. These are DISCHARGED (on the
+>   normal-crossing output chart) by the deferred coupled `diag(b)` resolution — NOT by a naive
+>   per-layer descent (see SCOPE below); for corank ≥ 2 the naive descent fails.
 > - **Cited.** none new. Rides the banked `frobSq_smul_mul`/`corankStep_prefactor`
 >   (`RouteMSJCorankStep`), `integrableOn_monomial_mul_unit_iff`/`monomialIntegrand_integrable_of_lt`
 >   (`Case222Cover`) — all in-repo, clean-three.
-> - **Deferred.** The `SJState` recursion carrier (STEP 2) — driving `corankStep` + STEP-3's
->   block-elimination down the layers (accumulating `∏ uⱼ²`), resolving the rank-deficient-`Q_b`
->   charts (the standing `L ≥ 3` recursion), to REACH a terminal chart with a pinned entry — and
->   `sjJointResolution` (`RouteMSJResolution.lean:803`) itself, UNTOUCHED. This is the multi-week
->   mountain; this module supplies only the terminal it lands on and the terminal's finiteness.
-> - **Status.** sorry-free (awaiting fidelity review).
+> - **Deferred.** The `SJState` recursion carrier (STEP 2) — Aoyagi's coupled `diag(b)` resolution with
+>   shared exceptional variables (`outer-construction-cert.md` "THE WALL"; genuinely-new for corank ≥ 2,
+>   NOT a naive per-layer `corankStep` descent) — and `sjJointResolution` (`RouteMSJResolution.lean:803`)
+>   itself, UNTOUCHED. This module supplies only the normal-crossing terminal that resolution's output
+>   lands on, and the terminal's finiteness.
+> - **Status.** sorry-free; Lean reviewed SURVIVED; verdict prose re-scoped after the fidelity finding.
 
-## STEP-1 verdict — option (a) LIFTS
+## What STEP-1 establishes (the terminal ENDPOINT, general widths)
 
-The route-correction finding left the controller to re-decide between (a) the `monomial × unit`
-terminal and (b) the pure isotropic peel for a post-identity-channel free-matrix layer. This tide
-verifies **(a) lifts**. Evidence, ingredient by ingredient:
+The three ingredients of the `monomial × (unit ≥ 1)` endpoint, and why each lifts:
 
 1. **Monomial factoring — banked, ALREADY general widths.** `frobSq ((u • M) · Q) = u² · frobSq (M · Q)`
    is `RouteMSJCorankStep.frobSq_smul_mul` (opaque `Fintype`); the accumulated `∏ bᵢ²` prefactor rides
@@ -67,22 +72,32 @@ verifies **(a) lifts**. Evidence, ingredient by ingredient:
    No width dependence.
 3. **Terminal finiteness — `d`-generic.** `integrableOn_monomial_mul_unit_iff` (unit-factor
    threshold-invariance) and `monomialIntegrand_integrable_of_lt` (below-threshold monomial
-   finiteness) are both stated for arbitrary `d`; `terminal_monomial_mul_unit_integrable` composes
-   them. The exceptional-divisor exponents summing to `≥ minAdm` is the banked charge-budget
-   (`minAdmRec_eq_minAdm`, piece 6, sorry-free), so `c' < ½·minAdm ⟹ c' < monomialThreshold` on the
-   terminal chart.
+   finiteness) are both stated for arbitrary `d`; `terminal_monomial_mul_unit_integrable` (+ its
+   lintegral form) composes them. Given the exceptional-divisor exponents sum to `≥ minAdm` (the banked
+   charge-budget `minAdmRec_eq_minAdm`, piece 6, sorry-free), `c' < ½·minAdm ⟹ c' < monomialThreshold`.
 
-**No option-b fallback needed.** The `(2,2,2)` mechanism is the isotropic-blind terminal that survives
-at general widths; the pure isotropic peel (`RouteMSJCorankPure`) is retained only for the
-identity-channel / full-rank sub-charts (per the route-correction), not the general degenerate strata.
+## SCOPE — what STEP-1 does NOT establish (fidelity finding, escalated to the controller)
 
-## What STEP-1 does NOT do (the STEP-2 carrier — the mountain)
+The reviewer (SURVIVED on the Lean; clean-three, `sjJointResolution` untouched) flagged that the
+earlier verdict prose ("option (a) lifts for the general degenerate strata; no option-b needed")
+OVERCLAIMED. Corrected:
 
-The terminal statements carry a **pin hypothesis** (`c₀ ≤ |(M·Q) i j|`) and the **bounded-unit
-hypothesis**. On the general degenerate strata these are NOT free: when the non-pivot rows `Q_b` of the
-downstream product are rank-deficient (the standing `L ≥ 3` wall, 750/5440 charts per the
-`sjJointResolution` docstring), the residual entry can vanish and the pin is lost — those charts
-recurse to a deeper `corankStep`. The STEP-2 carrier is exactly the machinery that drives the recursion
-(accumulating `∏ uⱼ²` via `corankStep_prefactor`, block-eliminating via STEP-3) down the layers until a
-terminal chart with a pinned entry is reached, on which this module's terminal + finiteness fire. That
-carrier is the multi-week mountain; it is UNTOUCHED here (this is the first sub-tide).
+- The terminal bricks are **conditional** — they carry the pin hypothesis (`c₀ ≤ |(M·Q) i j|`) and the
+  bounded-unit hypothesis. The `(2,2,2)` case they subsume binds at **corank 1** (residual `Δ` a scalar).
+- For the **general degenerate strata (corank ≥ 2 / `L ≥ 3`)**, discharging those hypotheses is NOT a
+  naive per-layer descent. The repo's own pen-and-paper certificates refute the naive reduction:
+  `theory/aoyagi-2023-reproduction/verify-r1-shortcut.md` (one-blow-up ⟹ `u²·unit` FALSE for `L ≥ 3`;
+  `(2,2,2,2)` `t=(1,0,0)` leaves a fresh lower-depth non-unit core), `verify-r1-diagb-334.md`
+  (`(3,3,4)` binding corank-2: true `rlct = 4` but a threshold-only / per-row model undercounts to `3`,
+  at a stratum that SETS the RLCT), `verify-r1-light-recursion.md` (per-row model holds only corank ≤ 1).
+- The correct general-width target is Aoyagi's **coupled `diag(b)` resolution with shared exceptional
+  variables** (`outer-construction-cert.md` "THE WALL" — genuinely-new resolution-of-singularities
+  content, NOT measure-plumbing labor). Its normal-crossing OUTPUT (`∑ bᵢ²` on a chart where one `b_i`
+  divides the rest) IS a monomial × (unit ≥ 1) — the endpoint this module supplies. So the endpoint is
+  route-agnostic and correct; REACHING it is the deferred coupled resolution.
+- **CONTROLLER RE-DECIDE.** The mission premised STEP-2 on "drive `corankStep` down the layers, apply the
+  terminal at the bottom" (a per-layer descent). The certificates say corank ≥ 2 needs the coupled
+  `diag(b)` (shared support), which is genuinely-new. STEP-2 should be scoped to that coupled resolution,
+  not a naive descent. `sjJointResolution` (`RouteMSJResolution.lean:803`) is UNTOUCHED (this is the
+  first sub-tide); the carrier is the multi-week mountain, and its corank-≥2 core is a genuine wall, not
+  labor. Codex (decorrelated) concurred with this re-scope.
