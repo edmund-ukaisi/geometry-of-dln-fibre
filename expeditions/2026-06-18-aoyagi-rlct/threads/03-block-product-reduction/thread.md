@@ -21,6 +21,39 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 base original-loss wrapper with produced residual-source hypotheses
+
+Reproduction:
+
+```text
+reproduction-a2-original-loss-base-wrapper-produced-residual-source.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_open_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_localSource_bounds
+```
+
+It calls the radius-free strict rank-cut residual-source theorem, destructs the
+returned residual-source package into a.e. residual positivity and
+`residualNegPowerIntegrableOn`, and feeds those two facts into the local
+`lossDLN` finite-integral socket.  The continuation no longer asks for
+residual zero-locus nullity.
+
+Boundary: this is the base wrapper only; the higher convenience stack still has
+older zero-nullity variants until propagated.  The new wrapper does not
+construct source-image density, identify a source-chart prior, prove
+determinant/raw Haar transport, produce source data or adapted-product lower
+bounds, prove source-rank or atlas coverage, construct normal crossings,
+compute pole order, or extract RLCT.
+
 ## 2026-07-07 A2 original tuple prior to edge-family prior transport
 
 Reproduction:

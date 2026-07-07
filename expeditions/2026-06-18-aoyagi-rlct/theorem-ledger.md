@@ -4,6 +4,18 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Base original-loss wrapper with produced residual-source hypotheses note,
+2026-07-07: the rank-cut original-loss bridge now has a base wrapper whose
+continuation no longer asks for residual zero-locus nullity.  It calls the
+radius-free strict rank-cut residual-source theorem, which produces residual
+positivity a.e. and `residualNegPowerIntegrableOn` for the same rank-cut
+source under explicit source-image-density continuity/finite/strict-lower data
+and strict prior-density upper data.  These two produced residual facts are
+then fed into the local-source `lossDLN` finite-integral socket.  Source-image
+density construction, source-chart prior identification, determinant/raw Haar
+transport, source data, adapted-product lower bounds, source-rank/atlas
+coverage, normal crossings, pole order, and RLCT remain outside this rung.
+
 Original tuple prior to edge-family prior transport note, 2026-07-07: the
 finite-dimensional fixed-basis transport now handles the original prior
 density, not only volume.  For measurable tuple set `S`, if

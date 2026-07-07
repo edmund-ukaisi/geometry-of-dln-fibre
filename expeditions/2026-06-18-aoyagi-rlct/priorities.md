@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, base original-loss wrapper with produced residual-source hypotheses
+
+Decision: propagate the radius-free residual-source package one step into the
+base original-loss handoff.
+
+The new base loss wrapper calls the strongest rank-cut residual-source theorem
+and receives residual positivity and negative-power integrability for the
+rank-cut source directly.  It then feeds those two facts into the local
+`lossDLN` finite-integral socket.  This removes the residual zero-locus-nullity
+continuation from this base wrapper, while adding the honest strict
+source-image-density and prior-density inputs needed by the residual-source
+producer.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-loss-base-wrapper-produced-residual-source.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This does not construct the source-image density, identify a source-chart
+prior, prove determinant/raw Haar transport, produce source data or
+adapted-product lower bounds, prove source-rank/atlas coverage, construct
+normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, original tuple prior to edge-family prior transport
 
 Decision: move the source-prior frontier by proving the finite-dimensional
