@@ -6,6 +6,56 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local loss with finBasis and volume - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero-finbasis.md
+```
+
+Lean now has two downstream convenience wrappers:
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis
+
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume
+```
+
+The first fixes only the endpoint `lossDLN` matrix dimensions and bases to
+
+```text
+d j := Module.finrank R (reverseVertex W2 j)
+b j := Module.finBasis R (reverseVertex W2 j).
+```
+
+This is Lean's chosen finite-dimensional basis, not a canonical basis.  It
+does not change the original prior: the measure still uses
+`paperEndpointFixedBaseFinBasis`, not `Module.finBasis` coordinates.
+
+The second wrapper instantiates the regular-coordinate Haar measure with
+
+```text
+volume : Measure (EuclideanSpace R rhoReg).
+```
+
+The raw Haar measure remains explicit.  The proof uses Lean's standard
+additive-Haar instance for `EuclideanSpace` volume; no definitional equality
+with product volume is asserted.
+
+Residual zero-locus nullity, fixed-base centering, source data, product-zero
+continuity/positivity, raw Haar, statistical prior transport, determinant/raw
+Haar transport, source-rank or atlas coverage, normal crossings, pole order,
+and RLCT extraction remain explicit or outside the theorem.
+
+Focused `lake env lean`, focused module build, `lake env lean DLNFibre.lean`,
+full local `lake build DLNFibre`, `scripts/sorries`, `git diff --check`,
+touched-file marker scan, and direct axiom probe passed.  Both new theorems
+report only `[propext, Classical.choice, Quot.sound]`.  Xhigh reviewer
+`Jason` passed the `finBasis` wrapper and recommended the regular-volume
+sibling; xhigh reviewer `Carver` found no overclaim or theorem-boundary issue
+in the final diff.
+
 ## A2 rank-cut original-prior local loss with prior density at product-zero - 2026-07-06
 
 Reproduction:

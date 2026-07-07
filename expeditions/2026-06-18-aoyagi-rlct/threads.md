@@ -18,6 +18,20 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the rank-cut original-prior local loss theorem with
+  prior density at product-zero now has two convenience specializations.  The
+  first fixes the displayed `lossDLN` endpoint dimensions and bases to
+  `Module.finrank` and `Module.finBasis`; this is not a canonical-basis claim
+  and does not put the original prior in `Module.finBasis` coordinates.  The
+  second fixes only the regular-coordinate Haar measure to
+  `volume : Measure (EuclideanSpace R rhoReg)` using the standard
+  Euclidean-space additive-Haar instance.  Raw Haar, residual zero-locus
+  nullity, source data, fixed-base centering, product-zero density hypotheses,
+  prior transport, determinant/raw Haar transport, source-rank or analytic
+  atlas coverage, normal crossings, pole order, and RLCT remain explicit or
+  outside the theorem.  Xhigh reviewers `Jason` and `Carver` passed the
+  theorem-boundary audit.
+
 - 2026-07-06, Thread 03: the rank-cut continuous pulled-back density local-loss
   theorem is now specialized to the original prior density itself.  The final
   integrand has density `priorDensity(CedgeProd(E,u))`, while the measure

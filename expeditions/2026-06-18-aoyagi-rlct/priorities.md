@@ -12,6 +12,51 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut original-prior local loss with finBasis and volume
+
+Decision: add convenience specializations on top of the prior-density
+product-zero theorem, without changing the mathematical boundary of the
+handoff.
+
+First, fix the endpoint dimensions and bases that only feed the displayed
+`lossDLN` matrices to Lean's finite-dimensional choices:
+
+```text
+d j := Module.finrank R (reverseVertex W2 j)
+b j := Module.finBasis R (reverseVertex W2 j).
+```
+
+This is a `Module.finBasis` specialization, not a canonical-basis claim for
+abstract vector spaces.  The original prior measure still uses
+`paperEndpointFixedBaseFinBasis`, so do not describe the prior as being in
+`Module.finBasis` coordinates.
+
+Second, specialize only the regular-coordinate Haar input to
+
+```text
+volume : Measure (EuclideanSpace R rhoReg).
+```
+
+The raw endpoint Haar measure remains explicit because it belongs to the p.13
+source-measure comparison and determinant/raw-Haar normalization layer.  The
+volume proof uses the standard additive-Haar instance for `EuclideanSpace`
+volume, not a definitional rewrite to product volume.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero-finbasis.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This remains conditional: it does not prove residual zero-locus nullity,
+the fixed-base centering equality, source data, product-zero continuity from
+continuity at `sourceChart z0`, prior transport, determinant/raw Haar
+transport, raw Haar specialization, source-rank or analytic atlas coverage,
+normal crossings, pole order, or RLCT.  Xhigh reviewer `Jason` passed the
+`finBasis` wrapper and recommended the safe regular-volume sibling; xhigh
+reviewer `Carver` passed the final theorem-boundary and wording audit.
+
 ## Latest controller decision - 2026-07-06, rank-cut original-prior local loss with prior density at product-zero
 
 Decision: specialize the rank-cut continuous pulled-back density theorem to

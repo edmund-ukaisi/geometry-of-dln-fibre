@@ -10,6 +10,56 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior local loss with finBasis and volume - 2026-07-07
+
+- **Statement.** The prior-density product-zero rank-cut local original-loss
+  handoff can be specialized so the displayed `lossDLN` endpoint dimensions
+  and bases are `Module.finrank` and `Module.finBasis` for the three reverse
+  vertices.  A further sibling wrapper can instantiate the regular-coordinate
+  Haar measure with `volume : Measure (EuclideanSpace R rhoReg)`.
+- **Tier.** A2 conditional rank-cut local original-loss handoff convenience
+  specialization.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as asserting a canonical basis for
+  abstract vector spaces, putting the original prior in `Module.finBasis`
+  coordinates, specializing raw Haar, proving residual zero-locus nullity,
+  proving `sourceChart z0 = reverseEdge`, constructing source data, deriving
+  product-zero density hypotheses, transporting the statistical prior through
+  p.13 coordinates, transporting determinant/raw Haar, proving source-rank or
+  analytic atlas coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** This is a Lean-local specialization of the already
+  proved prior-density product-zero theorem.  Aoyagi pp. 10-13 remain the
+  source context for the fixed-base p.13 product-coordinate setup; the basis
+  and volume choices are local finite-dimensional Lean bookkeeping, not new
+  source claims.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-prior-density-product-zero-finbasis.md`.
+- **Reproduction check.** Controller checked that `Module.finBasis` only
+  affects the `lossDLN` matrix display and that regular `volume` only
+  instantiates the existing `∀ {ν}, ν.IsAddHaarMeasure ->` input.  Xhigh
+  reviewer `Jason` passed the `finBasis` wrapper, warned not to describe it as
+  canonical or as the prior's coordinate basis, and recommended the safe
+  regular-volume sibling.  Xhigh reviewer `Carver` passed the final
+  theorem-boundary and wording audit.
+- **Lean targets.**
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis`
+  and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean`, focused module build,
+  `lake env lean DLNFibre.lean`, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, touched-file marker scan, and direct
+  axiom probe passed.  Both new theorems report only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No canonical-basis claim, no statement that the prior uses
+  `Module.finBasis` coordinates, no raw Haar specialization, no residual
+  zero-locus-nullity proof, no proof of `sourceChart z0 = reverseEdge`, no
+  sourceData construction, no derivation of product-zero continuity or
+  positivity, no statistical prior identification or transport, no
+  determinant/raw Haar transport, no source-rank coverage, no analytic atlas
+  coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 rank-cut original-prior local loss with prior density at product-zero - 2026-07-06
 
 - **Statement.** On the rank-cut p.13/readback source set returned by the
