@@ -1082,3 +1082,56 @@ The R1-LOWER interior cov wants a pure-monomial Jacobian det. genm-r1lower (char
 Spawning a background lean-formaliser `genm-d1forall` with `isolation: worktree` (brief's first step: `git checkout -b genm-d1forall origin/genm-l2asm`) resulted in the branch `genm-d1forall` being created in — and as the HEAD of — the CONTROLLER'S MAIN checkout (`/home/ubuntu/workspace/geometry-of-dln-fibre`), switching it off `expedition/aoyagi-full`. The agent itself got its own locked isolation worktree (so the agent was fine + isolated) — but the main checkout was left on `genm-d1forall`. My next controller commit (UPDATE-525 + Item 107) therefore landed on `genm-d1forall` at a STALE UPDATE-519 synthesis base (the genm-l2asm scaffold's base), and my synthesis Edits failed "File modified since read" (the working tree had been swapped under me). **No data lost** — expedition/aoyagi-full (local + origin) was safe at the last-pushed UPDATE-524, and the cone-merge Lean was independently validated green (8657 jobs, clean #print) — recovery was `git checkout -f expedition/aoyagi-full`, re-checkout the cone-merge files from origin/genm-l2asm, re-apply the docs. **Rule:** this is the banked worktree-collision class recurring at the SPAWN level (not via a teammate's later git-op). After ANY `isolation: worktree` spawn — and ALWAYS immediately before a controller commit — run `git branch --show-current` in the main checkout and confirm it is still `expedition/aoyagi-full`; if not, `git checkout -f expedition/aoyagi-full` first. Treat an unexpected "Edit failed: file modified since read" on a synthesis/doc file as a RED FLAG that the branch may have switched under you — STOP and check the branch, do not just re-Read+retry. (One `git branch` call to detect; a wrong-branch commit on a stale base to miss.)
 
 **ROOT-CAUSE FIX (2026-06-30, the genm-eihdfree RECURRENCE — same class, 2nd time): NEVER put `git checkout -b <name> <base>` in an `isolation: worktree` brief; base via `git reset --hard origin/<base>` instead.** Despite the banked detection-rule above, the collision recurred: I spawned `genm-eihdfree` (isolation:worktree) with a brief whose first step was `git checkout -b genm-eihdfree origin/expedition/genm-r1lower` — which AGAIN switched the MAIN checkout off `expedition/aoyagi-full` onto `genm-eihdfree`, and I did NOT run the post-spawn branch-guard (I went straight to messaging + editing). It surfaced exactly as the banked red flag predicted — an Edit refused "file modified since read" + a grep showed the LIVE tag had reverted to UPDATE-492 — and I recognized it + recovered (expedition/aoyagi-full @3346312d safe = origin; `git checkout expedition/aoyagi-full` restored, no tracked loss). The DEEPER fix than "detect after": the `checkout -b <base>` is the CAUSE — in a shared-`.git` multi-worktree repo, creating+checking-out a branch off a remote base reaches the main checkout. So (a) **briefs for isolation:worktree hands must NOT contain `git checkout -b`** — the isolation worktree already exists on its own branch; to base it on a specific branch, instruct `git fetch origin && git reset --hard origin/<base>` (this moves ONLY the worktree's own branch, never the main checkout); (b) the agent then `git push origin HEAD:<clean-name>` to publish under a tidy remote name without a local `checkout -b`; (c) the post-spawn `git branch --show-current` in the main checkout is STILL mandatory (defense-in-depth) — I skipped it and paid a recovery cycle. Note the collision also leaves the agent's OWN worktree on the spawn-time base (here expedition/aoyagi-full, MISSING the genm-r1lower eihd machinery), so the agent must re-base anyway — another reason `reset --hard origin/<base>` belongs in the brief from the start. (Two occurrences now; this is the standing brief-template rule, not a per-incident note.)
+
+## 2026-07-06 — aggregator edit must be COMMITTED, not just present in the working tree (integration slip)
+Integrating a landed tide, I `Edit`ed `DLNFibre.lean` to wire 2 new banked bricks, green-gated the full build
+(which read the working-tree edit → green), then committed with `git add <docs only>` — the `DLNFibre.lean`
+edit stayed UNCOMMITTED and did NOT push. Result: the brick FILES landed on canonical (they were in committed
+brick-file commits) but the aggregator did NOT import them → orphaned (not compiled by `lake build DLNFibre`,
+no green-gate coverage). Caught one tide later when the next merge's aggregator tail lacked the imports.
+**Rule:** after wiring the aggregator, `git add lean/DLNFibre.lean` explicitly (or `git add -A lean/`) and
+**verify `git show HEAD -- lean/DLNFibre.lean` contains the import** before pushing. A green full-build proves
+the working tree is consistent, NOT that the edit is committed. Prefer `git status --porcelain` = clean (no
+lingering ` M lean/DLNFibre.lean`) before every integration push.
+
+## 2026-07-06 — teammates must NOT touch the main checkout (2nd incident; recovery was clean because canonical is push-target-addressed)
+`phip1` (an isolation:worktree formaliser) "accidentally moved the main checkout onto a stray local
+`genm-phiexpl-p1`, then restored it to `genm-sjbase`" — i.e. it ran git ops in the controller's main checkout
+(`/home/ubuntu/workspace/geometry-of-dln-fibre`), not just its own worktree. Consequence: the main checkout
+drifted onto the wrong local branch, and the controller's subsequent `ff-only` + doc commit landed on that
+stray local pointer. **No canonical corruption** — the controller pushes via `git push origin
+HEAD:expedition/aoyagi-full` (push-target-addressed, independent of local branch name), so origin stayed
+correct; the damage was a stale/contaminated LOCAL pointer, fixed with `git checkout -B expedition/aoyagi-full
+origin/expedition/aoyagi-full` + `git branch -f genm-sjbase origin/genm-sjbase`. **Prevention:** (1) every
+teammate brief must say "work ONLY in your assigned worktree; NEVER `cd` to or run git in the main checkout";
+(2) controller keeps pushing via `HEAD:expedition/aoyagi-full` (never a bare `git push` that assumes the local
+branch), and verifies `git rev-parse --abbrev-ref HEAD` = `expedition/aoyagi-full` at the START of each
+integration. This is the 2nd such incident (the 1st was a prior session leaving the checkout on genm-inj-injon).
+
+## 2026-07-06 — do NOT re-charge an agent on ambiguous 0-procs; wait for the completion notification (caused benign duplication)
+I diagnosed `sjpeel2` as stalled (pgrep-by-agent-ID = 0 live procs + intermediate "failed" build-markers in its
+output + no pushed branch) and re-charged a duplicate (`sjpeel3`). But `sjpeel2` was STILL RUNNING — 0 matching
+procs is the norm during an agent's reasoning/reading phase (the agent ID isn't in a lean/git proc cmdline then;
+verified twice — phip3 also showed 0-procs while completing). Both agents then built the same c.o.v. base
+concurrently. **No work lost** (sjpeel3 pushed incrementally per its brief; sjpeel2's uncommitted output was
+preserved to a branch) and the outputs were complementary, but effort was wasted. **Rules:** (1) `pgrep 'agentID'`
+= 0 does NOT mean dead — it means "not running a lean/git subprocess right now"; distinguish via worktree/.lake
+activity + the presence of ANY lean procs, not the ID-match. (2) "failed" in an agent's JSONL output is usually an
+intermediate build attempt, not a death. (3) The reliable death/completion signal is the harness task-notification —
+WAIT for it before re-charging. (4) If a genuine stall must be assumed (no notification after a long idle), prefer
+resuming the SAME agent via SendMessage over spawning a fresh duplicate.
+
+## 2026-07-06 — a `lake` orchestrator's low CPU is NOT a stall; and stop over-diagnosing builds (2nd misjudgment)
+I killed the phip4 full-`DLNFibre` green-gate reading its `lake` proc's low CPU (1m52s over 46min elapsed) as
+"stalled." WRONG: the `lake` orchestrator legitimately WAITS (on the global semaphore) + delegates CPU to `lean`
+WORKER subprocesses — its own CPU stays low even while the build progresses. Its workers were in fact active (6GB,
+recent, high-CPU). The 46min was semaphore-WAIT under heavy contention (I had 2–3 concurrent full-lib green-gates +
+foreign builds sharing ~6 slots), then it got slots + compiled. I killed a progressing build (no work lost — the
+tide was committed — but wasteful). **Rules:** (1) judge a `lake`/`scripts/lb` build's liveness by its `lean`
+WORKER procs' CPU/etime, NOT the orchestrator's. (2) High elapsed + low orchestrator CPU = waiting on the
+semaphore (contention), which is NORMAL and SAFE — not a stall. (3) **Cadence: do not run a full `scripts/lb
+DLNFibre` green-gate per integration when 2 formaliser builds are already live** — it triggers 40+ min semaphore
+waits. Verify a tide via `scripts/lb <Module>` (module build) + force-`#print axioms` + `rg` new top-level names vs
+siblings; batch ONE full-lib gate when the farm is clear. (4) This is the 2nd build-status misjudgment in one
+session (after sjpeel2 "stalled"→duplication) — the meta-lesson: be conservative about declaring a build
+stalled/dead; wait for the harness notification; never kill/re-charge on ambiguous signals.

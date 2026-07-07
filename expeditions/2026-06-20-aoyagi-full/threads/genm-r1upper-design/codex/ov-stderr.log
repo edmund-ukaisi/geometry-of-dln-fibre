@@ -1,0 +1,414 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+Downloading inspect-ai (35.1MiB)
+ Downloaded inspect-ai
+Installed 85 packages in 834ms
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f37f6-8238-7193-88f5-e8867c3a7fd6
+--------
+user
+<task>
+Corroborate or refute a sharp result from an exact-algebra pass, and sanity-check the resulting
+build decision for a deep-linear-network RLCT formalisation. Do NOT rubber-stamp.
+
+CONTEXT. Box integral ∫_box ‖A0···A_{L-1}‖^{-2c'} finite for c'<½minAdm(M) (Aoyagi's exact DLN
+learning coefficient). The boundary-0 peel at cut t (charge a=(M0-t)(M1-t)) was shown to collapse
+EXACTLY to a per-step integrand J ≍ P_tail^{-(c'-a/2)} · P_full^{-a/2}, where P_tail=(t,M2,…,ML)
+reduced-chain loss and P_full=(M1,…,ML) FULL-remaining-product loss (coupling factor), sharing the
+deeper factors B:=A2···A_{L-1}. Question was: does this reduce to a black-box tail-chain call, or need
+Aoyagi's joint (S,J) double induction?
+
+THE OVERTURN TEST just run (integrate out the spectator rows Y = bottom M1-t rows of A1 first):
+    M(X,B) := ∫_Y P_full^{-a/2} dY = ∫_Y (‖XB‖^2 + ‖YB‖^2)^{-a/2} dY,   g:=‖XB‖=√P_tail.
+EXACT NUMERICAL RESULT (GL quadrature + MC, clean slopes):
+  M(X,B) ≍ bounded/log(1/g)              when  a ≤ (M1-t)·rank(B)
+  M(X,B) ≍ g^{-(a-(M1-t)·rank(B))} (POWER) when a > (M1-t)·rank(B).
+So the coupling is benign (only a log, harmless to the RLCT) on the GENERIC full/high-rank shared
+factor, but LOSES A POWER on the shared factor's LOW-RANK strata. Confirmed e.g. M=(4,4,4,4), cut t=2
+(a=4, spectator 2×4): at rank(B)=1 the multiplier ~ g^{-2}. At full-rank-B, a ≤ (M1-t)M2 holds at
+ALL binding cuts (0 violations / 5440 chains). A uniformly-"gentle" binding path (a ≤ M1-t at every
+L≥3 peel, which would confine power loss to rank(B)=0 only) does NOT always exist (1966/5440 chains
+force a non-gentle cut at some level).
+
+INTERPRETATION I reached: the power loss on the shared factor's low-rank divisors = exactly the
+deeper boundary's rank drop; absorbing it needs cross-level charge transfer = Aoyagi's accumulating
+diag(b) / D_J bookkeeping. A black-box single-chain recursion (opaque tail-finiteness hypothesis)
+cannot do this transfer. Verdict: JOINT (S,J) needed, BOUNDED (all charges sum to minAdm; coupling
+always subordinate so the value is exactly ½minAdm). The multiplier finding SHARPENS the wall:
+coupling benign except on shared-factor rank-drop divisors, localizing the (S,J) blow-up's work.
+
+<grounding_rules>
+- Treat the exact identity and the numerically-verified multiplier criterion (a vs (M1-t)·rank(B)) as
+  given facts. Judge the INTERPRETATION and the build decision. Separate inference from assertion.
+</grounding_rules>
+
+<output_contract>
+1. Do you AGREE the power loss on the shared factor's low-rank strata blocks a black-box single-chain
+   reduction and requires the joint (S,J) resolution? BOUNDED or new obstruction? One line.
+2. Is there a lighter escape I am missing: e.g. a resolution that ALWAYS chooses a gentle cut where the
+   deeper factor is generic, handling low-rank-B strata by a SEPARATE (cheaper) sub-induction rather than
+   the full (S,J)? Or is the cross-level transfer genuinely irreducible? Be concrete.
+3. Briefly: the minimal formalisable pieces of Aoyagi's diag(b)·[E_J|D_J]·∏C^{(s)} double induction
+   (S=layer, J=within-layer rank-drop counter) — list the ~5-7 lemmas a Lean build would need, in
+   dependency order, flagging which is the load-bearing analytic core vs mechanical plumbing.
+</output_contract>
+
+codex
+I’ll sanity-check this against the local notes/source structure first, especially the exact role of the `diag(b)`, `E_J`, and `D_J` bookkeeping, then separate what follows from your multiplier criterion from what would still need proof.
+exec
+/bin/bash -lc "find . -maxdepth 3 -name 'CLAUDE.md' -o -name 'README.md' -o -name '*.tex' | head -200" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+ succeeded in 0ms:
+total 60
+drwxrwxr-x 2 ubuntu ubuntu 4096 Jul  6 15:05 .
+drwxrwxr-x 3 ubuntu ubuntu 4096 Jul  6 15:05 ..
+-rw-rw-r-- 1 ubuntu ubuntu 8479 Jul  6 14:07 codex-stderr.log
+-rw-rw-r-- 1 ubuntu ubuntu 6545 Jul  6 14:46 disc-stderr.log
+-rw-rw-r-- 1 ubuntu ubuntu 2041 Jul  6 14:46 discriminator-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 3745 Jul  6 14:42 discriminator-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 2979 Jul  6 14:07 exponent-shift-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu 4741 Jul  6 14:02 exponent-shift-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 4210 Jul  6 15:05 ov-stderr.log
+-rw-rw-r-- 1 ubuntu ubuntu 3340 Jul  6 15:05 overturn-prompt.md
+
+exec
+/bin/bash -lc "rg -n \"diag\\(b\\)|E_J|D_J|minAdm|Aoyagi|learning coefficient|double induction|rank-drop|rank drop|admiss\" ." in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+ succeeded in 0ms:
+./ov-stderr.log:22:CONTEXT. Box integral ∫_box ‖A0···A_{L-1}‖^{-2c'} finite for c'<½minAdm(M) (Aoyagi's exact DLN
+./ov-stderr.log:23:learning coefficient). The boundary-0 peel at cut t (charge a=(M0-t)(M1-t)) was shown to collapse
+./ov-stderr.log:27:Aoyagi's joint (S,J) double induction?
+./ov-stderr.log:42:deeper boundary's rank drop; absorbing it needs cross-level charge transfer = Aoyagi's accumulating
+./ov-stderr.log:43:diag(b) / D_J bookkeeping. A black-box single-chain recursion (opaque tail-finiteness hypothesis)
+./ov-stderr.log:44:cannot do this transfer. Verdict: JOINT (S,J) needed, BOUNDED (all charges sum to minAdm; coupling
+./ov-stderr.log:45:always subordinate so the value is exactly ½minAdm). The multiplier finding SHARPENS the wall:
+./ov-stderr.log:46:coupling benign except on shared-factor rank-drop divisors, localizing the (S,J) blow-up's work.
+./ov-stderr.log:59:3. Briefly: the minimal formalisable pieces of Aoyagi's diag(b)·[E_J|D_J]·∏C^{(s)} double induction
+./ov-stderr.log:60:   (S=layer, J=within-layer rank-drop counter) — list the ~5-7 lemmas a Lean build would need, in
+./ov-stderr.log:65:I’ll sanity-check this against the local notes/source structure first, especially the exact role of the `diag(b)`, `E_J`, and `D_J` bookkeeping, then separate what follows from your multiplier criterion from what would still need proof.
+./overturn-prompt.md:5:CONTEXT. Box integral ∫_box ‖A0···A_{L-1}‖^{-2c'} finite for c'<½minAdm(M) (Aoyagi's exact DLN
+./overturn-prompt.md:6:learning coefficient). The boundary-0 peel at cut t (charge a=(M0-t)(M1-t)) was shown to collapse
+./overturn-prompt.md:10:Aoyagi's joint (S,J) double induction?
+./overturn-prompt.md:25:deeper boundary's rank drop; absorbing it needs cross-level charge transfer = Aoyagi's accumulating
+./overturn-prompt.md:26:diag(b) / D_J bookkeeping. A black-box single-chain recursion (opaque tail-finiteness hypothesis)
+./overturn-prompt.md:27:cannot do this transfer. Verdict: JOINT (S,J) needed, BOUNDED (all charges sum to minAdm; coupling
+./overturn-prompt.md:28:always subordinate so the value is exactly ½minAdm). The multiplier finding SHARPENS the wall:
+./overturn-prompt.md:29:coupling benign except on shared-factor rank-drop divisors, localizing the (S,J) blow-up's work.
+./overturn-prompt.md:42:3. Briefly: the minimal formalisable pieces of Aoyagi's diag(b)·[E_J|D_J]·∏C^{(s)} double induction
+./overturn-prompt.md:43:   (S=layer, J=within-layer rank-drop counter) — list the ~5-7 lemmas a Lean build would need, in
+./discriminator-prompt.md:9:Product P=A0···A_{L-1}. Frobenius ‖·‖. Target: ∫_box ‖P‖^{-2c'} dA < ∞ for c' < (1/2)minAdm(M),
+./discriminator-prompt.md:10:where minAdm is Aoyagi's exact learning coefficient (=2λ), obeying the proven recursion
+./discriminator-prompt.md:11:minAdm(M0,...,ML)=min_{t≤min(M0,M1)}[(M0-t)(M1-t)+minAdm(t,M2,...,ML)], base minAdm(a,b)=ab.
+./discriminator-prompt.md:28:- At every BINDING cut t (achieving minAdm), the coupling exponent a/2 is ≤ RLCT(P_full)=(1/2)minAdm(M1,...,ML),
+./discriminator-prompt.md:34:  (matching Aoyagi's diag(b1,...,b_{M(S)}) monomial and his D_J double-induction).
+./discriminator-prompt.md:46:   (Aoyagi's construction goes through) or a genuine NEW obstruction?
+./discriminator-answer.md:1:**VERDICT:** For `L >= 3` and `a > 0`, the peel requires a joint resolution of `{P_tail=0}` and `{P_full=0}`; this is bounded labour via Aoyagi’s `(S,J)`/`D_J` bookkeeping, not a new obstruction.
+./discriminator-answer.md:23:which would bound the mixed integrand by `P_tail^{-c'}`. At a binding cut, `c'` may be above the RLCT of the reduced tail chain, so that bound is too crude. The L=2 case is different because the relevant row blocks are independent/free; the subordinate factor does not ride on the same deeper rank-drop divisors.
+./exponent-shift-prompt.md:10:   I(c') := ∫_{box} ||P(A)||^{-2c'} dA  <  ∞    for all c' < (1/2) minAdm(M).
+./exponent-shift-prompt.md:12:Here minAdm(M) is the minimal admissible codimension, PROVEN equal to the layer-peeling recursion
+./exponent-shift-prompt.md:13:   minAdm(M_0,...,M_L) = min_{0<=t<=min(M_0,M_1)} [ (M_0-t)(M_1-t) + minAdm(t, M_2,...,M_L) ],
+./exponent-shift-prompt.md:14:   base minAdm(a,b) = a*b.
+./exponent-shift-prompt.md:15:This is Aoyagi's exact learning coefficient for DLNs (Aoyagi 2023, "learning efficiency of
+./exponent-shift-prompt.md:16:multiple-layered linear networks"), λ = (1/2) minAdm. So I(c')<∞ for c'<λ IS the RLCT lower bound.
+./exponent-shift-prompt.md:22:(1/2)minAdm by up to a factor of 2. Paradigm failure: M=(3,3,3,3): minAdm=6 so target c'<3, but the
+./exponent-shift-prompt.md:36:Chart-t converges iff c'' < (1/2)minAdm(t,M_2,...), i.e. c' < (1/2)[(M_0-t)(M_1-t)+minAdm(t,...)];
+./exponent-shift-prompt.md:37:box = union of charts => converges up to the MIN over t = (1/2)minAdm(M). Base L=1: single free
+./exponent-shift-prompt.md:38:t x M_L matrix, ∫ ||X||^{-2c'} finite iff c' < (t·M_L)/2 = (1/2)minAdm(t,M_L).
+./exponent-shift-prompt.md:41:h >= σ_min(Q_bot) > 0 on the sphere (so h^{-a} bounded); h→0 only on a deeper tail rank-drop stratum
+./exponent-shift-prompt.md:42:already inside minAdm(t,M_2,...).
+./exponent-shift-prompt.md:48:- The 1-D Beta integral, the minAdm recursion, and the reach comparison are given as facts (verified
+./exponent-shift-prompt.md:61:   (iv) whether the two z-integral regimes (c'>a/2 vs c'<a/2) both stay controlled up to (1/2)minAdm.
+./exponent-shift-prompt.md:64:4. Does this differ from Aoyagi's own recursive-blow-up proof in a way that INTRODUCES risk, or is it
+./disc-stderr.log:23:Product P=A0···A_{L-1}. Frobenius ‖·‖. Target: ∫_box ‖P‖^{-2c'} dA < ∞ for c' < (1/2)minAdm(M),
+./disc-stderr.log:24:where minAdm is Aoyagi's exact learning coefficient (=2λ), obeying the proven recursion
+./disc-stderr.log:25:minAdm(M0,...,ML)=min_{t≤min(M0,M1)}[(M0-t)(M1-t)+minAdm(t,M2,...,ML)], base minAdm(a,b)=ab.
+./disc-stderr.log:42:- At every BINDING cut t (achieving minAdm), the coupling exponent a/2 is ≤ RLCT(P_full)=(1/2)minAdm(M1,...,ML),
+./disc-stderr.log:48:  (matching Aoyagi's diag(b1,...,b_{M(S)}) monomial and his D_J double-induction).
+./disc-stderr.log:60:   (Aoyagi's construction goes through) or a genuine NEW obstruction?
+./disc-stderr.log:71:**VERDICT:** For `L >= 3` and `a > 0`, the peel requires a joint resolution of `{P_tail=0}` and `{P_full=0}`; this is bounded labour via Aoyagi’s `(S,J)`/`D_J` bookkeeping, not a new obstruction.
+./disc-stderr.log:93:which would bound the mixed integrand by `P_tail^{-c'}`. At a binding cut, `c'` may be above the RLCT of the reduced tail chain, so that bound is too crude. The L=2 case is different because the relevant row blocks are independent/free; the subordinate factor does not ride on the same deeper rank-drop divisors.
+./codex-stderr.log:24:   I(c') := ∫_{box} ||P(A)||^{-2c'} dA  <  ∞    for all c' < (1/2) minAdm(M).
+./codex-stderr.log:26:Here minAdm(M) is the minimal admissible codimension, PROVEN equal to the layer-peeling recursion
+./codex-stderr.log:27:   minAdm(M_0,...,M_L) = min_{0<=t<=min(M_0,M_1)} [ (M_0-t)(M_1-t) + minAdm(t, M_2,...,M_L) ],
+./codex-stderr.log:28:   base minAdm(a,b) = a*b.
+./codex-stderr.log:29:This is Aoyagi's exact learning coefficient for DLNs (Aoyagi 2023, "learning efficiency of
+./codex-stderr.log:30:multiple-layered linear networks"), λ = (1/2) minAdm. So I(c')<∞ for c'<λ IS the RLCT lower bound.
+./codex-stderr.log:36:(1/2)minAdm by up to a factor of 2. Paradigm failure: M=(3,3,3,3): minAdm=6 so target c'<3, but the
+./codex-stderr.log:50:Chart-t converges iff c'' < (1/2)minAdm(t,M_2,...), i.e. c' < (1/2)[(M_0-t)(M_1-t)+minAdm(t,...)];
+./codex-stderr.log:51:box = union of charts => converges up to the MIN over t = (1/2)minAdm(M). Base L=1: single free
+./codex-stderr.log:52:t x M_L matrix, ∫ ||X||^{-2c'} finite iff c' < (t·M_L)/2 = (1/2)minAdm(t,M_L).
+./codex-stderr.log:55:h >= σ_min(Q_bot) > 0 on the sphere (so h^{-a} bounded); h→0 only on a deeper tail rank-drop stratum
+./codex-stderr.log:56:already inside minAdm(t,M_2,...).
+./codex-stderr.log:62:- The 1-D Beta integral, the minAdm recursion, and the reach comparison are given as facts (verified
+./codex-stderr.log:75:   (iv) whether the two z-integral regimes (c'>a/2 vs c'<a/2) both stay controlled up to (1/2)minAdm.
+./codex-stderr.log:78:4. Does this differ from Aoyagi's own recursive-blow-up proof in a way that INTRODUCES risk, or is it
+./codex-stderr.log:146:\minAdm(2,2,1)=2,
+./codex-stderr.log:181:**4. Relation To Aoyagi**
+./codex-stderr.log:183:This differs from Aoyagi’s recursive blow-up proof in a risk-introducing way. A full resolution keeps track of exceptional variables and rank-drop strata jointly; it does not simply integrate out `z` to infinity and then ignore the induced spectator singularity. If the proposed arity recursion is repaired by retaining the incomplete-Beta cutoff and proving joint resolution of `(g,h)`, it may become a reorganization of Aoyagi’s proof. But in its current form, the simplification introduces a real proof obstruction.
+./exponent-shift-answer.md:62:\minAdm(2,2,1)=2,
+./exponent-shift-answer.md:97:**4. Relation To Aoyagi**
+./exponent-shift-answer.md:99:This differs from Aoyagi’s recursive blow-up proof in a risk-introducing way. A full resolution keeps track of exceptional variables and rank-drop strata jointly; it does not simply integrate out `z` to infinity and then ignore the induced spectator singularity. If the proposed arity recursion is repaired by retaining the incomplete-Beta cutoff and proving joint resolution of `(g,h)`, it may become a reorganization of Aoyagi’s proof. But in its current form, the simplification introduces a real proof obstruction.
+
+ succeeded in 143ms:
+codex
+The local thread contains earlier discriminator and exponent-shift passes rather than the full paper tree, so I’m using those as local trace material plus your stated multiplier criterion. The key check is whether the low-rank multiplier can be hidden inside an ordinary tail RLCT hypothesis, and that is exactly where the answer changes.
+exec
+/bin/bash -lc "sed -n '1,220p' discriminator-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+ succeeded in 0ms:
+**VERDICT:** For `L >= 3` and `a > 0`, the peel requires a joint resolution of `{P_tail=0}` and `{P_full=0}`; this is bounded labour via Aoyagi’s `(S,J)`/`D_J` bookkeeping, not a new obstruction.
+
+The decisive point is that `P_full^{-a/2}` is subordinate only as a standalone zeta factor. That does not make it benign against the near-critical measure
+
+```text
+P_tail^{-(c' - a/2)} dA.
+```
+
+On a common resolution one must check, divisor by divisor,
+
+```text
+(c' - a/2) ord_E(P_tail) + (a/2) ord_E(P_full) < jacobian threshold_E.
+```
+
+A black-box tail-chain theorem only checks the first term. A black-box full-chain theorem only checks the second term. Since for `L >= 3` the deeper variables `A2,...,A_{L-1}` are shared, there are exceptional divisors where both orders are positive. The exponents add there.
+
+The nesting `P_full >= P_tail` does not save the reduction. It only gives
+
+```text
+P_full^{-a/2} <= P_tail^{-a/2},
+```
+
+which would bound the mixed integrand by `P_tail^{-c'}`. At a binding cut, `c'` may be above the RLCT of the reduced tail chain, so that bound is too crude. The L=2 case is different because the relevant row blocks are independent/free; the subordinate factor does not ride on the same deeper rank-drop divisors.
+
+Accumulation across later peels strengthens the joint verdict. Even if each `P_full^{(k)}` factor is individually below its own RLCT, their orders can pile up on the same shared deeper divisor. A single tail recursion cannot see those summed contributions. That is exactly what the joint `(S,J)` bookkeeping tracks.
+
+Cheapest exact test that could overturn this: prove a no-loss uniform multiplier estimate in the first genuinely coupled `L=3` case. Writing `A1 = (X;Y)` and `B=A2...`, one would need something like
+
+```text
+∫_Y (||XB||^2 + ||YB||^2)^(-a/2) dY <= C · log^N(1/||XB||)
+```
+
+with `C,N` uniform as `B` drops rank. Any positive power loss in `B`’s singular values or in `||XB||` means the coupling has created joint divisor data, so the black-box single-chain reduction fails.
+exec
+/bin/bash -lc "sed -n '1,180p' exponent-shift-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+ succeeded in 0ms:
+**1. Verdict**
+
+**BROKEN as stated.** The shifted-exponent idea is plausible, but the stated mechanism loses essential coupling when it replaces the finite chart integral
+
+```math
+\int_0^R (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+```
+
+by the infinite Beta integral and then treats the resulting `h^{-a}` as benign.
+
+That `h^{-a}` factor is not automatically integrable, and its bad locus is not necessarily already paid for by the tail recursion on `g`. So this is not just a missing constant or chart bookkeeping issue.
+
+Completing the route from scratch is therefore **not bounded labour in the present form**. It requires a genuine new joint-integrability lemma for the pair `(g,h)` with the finite-interval cutoff retained. That is essentially the hard part of a recursive resolution proof.
+
+**2. Weakest Point**
+
+The weakest point is the spectator step:
+
+```math
+\int_0^\infty (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+\sim h^{-a} g^{-2(c'-a/2)}
+```
+
+followed by the claim that `h^{-a}` is benign.
+
+The exact condition that can fail is:
+
+```math
+h = \|VQ_{\mathrm{bot}}\| \to 0
+```
+
+while `g = \|Q_{\mathrm{top}}\|` does not vanish deeply enough, or does not vanish at all. Then `h^{-a}` may be non-integrable in the bottom-tail variables. The finite `z` integral has a cutoff depending on `Rh/g`; the infinite Beta integral discards that cutoff and can create a false divergence.
+
+The correct finite formula has the form
+
+```math
+\int_0^R (g^2+z^2h^2)^{-c'} z^{a-1}\,dz
+=
+g^{a-2c'} h^{-a}
+\Phi(Rh/g),
+```
+
+where
+
+```math
+\Phi(T)=\int_0^T u^{a-1}(1+u^2)^{-c'}\,du.
+```
+
+When `h/g` is small, `\Phi(Rh/g)` cancels the dangerous `h^{-a}`. The proposed proof throws away exactly that cancellation.
+
+**3. Cheapest Discriminating Test**
+
+Use the small case
+
+```math
+M=(2,2,1), \quad L=2, \quad t=1.
+```
+
+Then `a=(2-1)(2-1)=1`, and
+
+```math
+\minAdm(2,2,1)=2,
+\qquad
+\lambda=1.
+```
+
+So the target allows any `c' < 1`; take for example `c'=3/4`.
+
+In the `t=1` chart, write the tail vector as `(u,v)`, so
+
+```math
+g=|u|,\qquad h=|v|.
+```
+
+The infinite Beta step gives the residual bound
+
+```math
+|v|^{-1}|u|^{1-2c'}.
+```
+
+For `c'=3/4`, this is
+
+```math
+|v|^{-1}|u|^{-1/2},
+```
+
+which is non-integrable in `v`.
+
+But the original finite integral
+
+```math
+\int_{|z|\le R} (u^2+z^2v^2)^{-3/4}\,dz
+```
+
+is integrable over `(u,v)` near `(0,0)`. Thus the proposed Beta-extension/spectator argument fails even before any `L>=3` sharing of deeper factors appears.
+
+**4. Relation To Aoyagi**
+
+This differs from Aoyagi’s recursive blow-up proof in a risk-introducing way. A full resolution keeps track of exceptional variables and rank-drop strata jointly; it does not simply integrate out `z` to infinity and then ignore the induced spectator singularity. If the proposed arity recursion is repaired by retaining the incomplete-Beta cutoff and proving joint resolution of `(g,h)`, it may become a reorganization of Aoyagi’s proof. But in its current form, the simplification introduces a real proof obstruction.
+exec
+/bin/bash -lc "sed -n '1,140p' discriminator-prompt.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1upper-design/codex
+ succeeded in 0ms:
+<task>
+Adjudicate ONE structural question about a per-step lemma in a deep-linear-network RLCT proof.
+Decide: does the boundary-0 peel REDUCE to a black-box use of a single "tail chain" finiteness
+result, or does it genuinely require a simultaneous ("joint") resolution of TWO coupled loci?
+This decides whether a multi-month formalisation should commit to a joint double-induction build
+or hunt for a lighter single-chain recursion. Do NOT rubber-stamp; attack the reduction claim.
+
+SETTING. Widths M=(M0,...,ML), free real matrices A_s : M_s×M_{s+1} in a box around 0.
+Product P=A0···A_{L-1}. Frobenius ‖·‖. Target: ∫_box ‖P‖^{-2c'} dA < ∞ for c' < (1/2)minAdm(M),
+where minAdm is Aoyagi's exact learning coefficient (=2λ), obeying the proven recursion
+minAdm(M0,...,ML)=min_{t≤min(M0,M1)}[(M0-t)(M1-t)+minAdm(t,M2,...,ML)], base minAdm(a,b)=ab.
+
+THE PEEL (boundary 0, cut t). Pivot-chart Schur reduction (Jacobian 1) of A0 exposes its corank
+block Γ=(M0-t)×(M1-t); radial blow-up Γ=z·V, Jacobian z^{a-1}dz dσ(V), a=(M0-t)(M1-t). Block
+diagonality gives ‖A0·Q‖² ≍ g² + z²h², where Q=A1···A_{L-1} is the tail product,
+g=‖(top t rows of the tail product)‖, h=‖V·(bottom M1-t rows of the tail product)‖.
+
+EXACT FACT I DERIVED AND VERIFIED (0 numerical error). Doing the finite z-integral (a=1 case shown,
+general a analogous) and using g²+h²=‖A1·A2···A_{L-1}‖² exactly, the per-step integrand collapses to
+
+    J ≍ P_tail^{-(c'-a/2)} · P_full^{-a/2},
+
+where P_tail = ‖(top t rows)·A2···‖² is the REDUCED TAIL CHAIN (t,M2,...,ML) loss, and
+      P_full = ‖A1·A2···A_{L-1}‖²    is the FULL REMAINING PRODUCT (M1,...,ML) loss.
+The loci are nested: {P_full=0} ⊂ {P_tail=0}, and P_full = P_tail + ‖(bottom rows)·A2···‖² ≥ P_tail.
+
+FURTHER EXACT FACTS.
+- At every BINDING cut t (achieving minAdm), the coupling exponent a/2 is ≤ RLCT(P_full)=(1/2)minAdm(M1,...,ML),
+  strictly < when a>0. So the binding factor is P_tail (its exponent hits RLCT(P_tail)); P_full is subordinate.
+- L=2: P_tail and P_full are DISJOINT ROW-BLOCKS of a single FREE matrix A1 (no deeper factors), hence
+  INDEPENDENT; on {P_tail=0} P_full is bounded below. (This case is already fully proved via a corank recursion.)
+- L≥3: P_tail and P_full SHARE the deeper factors A2,...,A_{L-1}; both degenerate together when a shared
+  factor drops rank. Each further peel introduces ANOTHER P_full^{(k)-a_k/2} on the shared variables
+  (matching Aoyagi's diag(b1,...,b_{M(S)}) monomial and his D_J double-induction).
+</task>
+
+<grounding_rules>
+- Reason from the stated facts. Treat the exact identity J ≍ P_tail^{-(c'-a/2)}·P_full^{-a/2} and the
+  order/nesting facts as given (numerically verified). Focus on the reduce-vs-joint judgement.
+- Separate inference from assertion. Name any extra assumption you use.
+</grounding_rules>
+
+<output_contract>
+1. VERDICT (one line): does the per-step lemma REDUCE to a black-box "tail chain finiteness" call, or
+   does it REQUIRE a joint/simultaneous resolution of {P_tail=0} and {P_full=0}? And: BOUNDED labour
+   (Aoyagi's construction goes through) or a genuine NEW obstruction?
+2. The decisive reason, in terms of the coupling factor P_full^{-a/2}: why the subordinate order does or
+   does not let it be treated as an independent benign factor at L≥3 (vs the L=2 independent-row-blocks case).
+3. Does the ACCUMULATION of P_full^{(k)} coupling factors across successive peels change the answer? i.e.
+   even if each is individually subordinate, is their product on shared variables controllable by a black-box
+   recursion, or does it force the joint (S,J) bookkeeping?
+4. One cheapest exact test that could still overturn your verdict.
+
+web search: 
+web search: Aoyagi learning efficiency multiple-layered linear networks diag(b) D_J E_J
+web search: 
+web search: https://arxiv.org/abs/2501.12747
+web search: 
+web search: "D_J" "Aoyagi" "learning coefficient" "linear"
+web search: 
+web search: https://arxiv.org/pdf/2501.12747
+web search: 
+web search: 'D_J' in https://arxiv.org/pdf/2501.12747
+web search: 
+web search: https://arxiv.org/pdf/2501.12747
+web search: 
+web search: 'Main Theorem' in https://arxiv.org/pdf/2501.12747
+codex
+1. **Agree:** the low-rank-`B` power loss blocks an opaque black-box tail-chain reduction; this is **bounded**, not a new obstruction, provided the build uses Aoyagi’s joint `(S,J)` charge bookkeeping.
+
+2. The lighter escape is not a true escape. You can present the proof as “generic `B` first, low-rank `B` separately,” but the low-rank branch must remember the inherited deficit
+`δ = (a - (M1-t) rank(B))_+`.
+That deficit changes the effective exponent from roughly `c' - a/2` to `c' - (M1-t)rank(B)/2` on the shared tail. A plain tail theorem has no parameter for that inherited charge, so it cannot certify the branch. A rank-stratified sub-induction would need to carry exactly this extra charge into deeper exceptional variables. That is Aoyagi’s `D_J`/`diag(b)` mechanism under another name.
+
+Concrete caveat: “the power loss is exactly the deeper boundary’s rank drop” is right as a proof heuristic, but not literally a single divisor statement until the rank-`B` stratum is resolved into layer-wise rank-drop divisors. The formal statement should be: the multiplier creates an inherited charge supported on deeper product-rank strata, and the double induction proves that this charge is paid by their Jacobian/codimension surplus.
+
+3. Minimal Lean build pieces, in dependency order:
+
+1. **Local Comparability / Units**  
+   Frobenius product losses, entry ideals, bounded analytic changes of variables, and finite chart covers preserve local `L¹` integrability.  
+   Type: plumbing.
+
+2. **Pivot-Schur Chart Lemma**  
+   On each rank/corank chart, reduce the current layer to the block form giving `P ≍ P_tail + Γ`-part, with correct block dimensions and bounded Jacobian.  
+   Type: algebraic plumbing.
+
+3. **Boundary Blow-Up / Peel Lemma**  
+   For `Γ = zV`, prove the Jacobian `z^{a-1}` and the per-step mixed integrand
+   `P_tail^{-(c'-a/2)} P_full^{-a/2}` up to harmless constants/logs.  
+   Type: local analytic core.
+
+4. **`(S,J)` Normal-Form Invariant**  
+   Formalize the chart invariant
+   `diag(b) · [E_J | D_J] · ∏ C^{(s)}`: after each within-layer rank-drop step, the transformed product has the promised diagonal exceptional factors and residual deeper product.  
+   Type: main structural plumbing.
+
+5. **Jacobian / Charge Update Lemma**  
+   Each `(S,J) -> (S,J+1)` or layer transition updates exceptional exponents by the stated codimension/rank-loss amount, matching the accumulated coupling charge.  
+   Type: mechanical but load-bearing for correctness.
+
+6. **Charge Budget Inequality**  
+   The accumulated inherited charges on every exceptional divisor are bounded by the admissible codimension budget, equivalently the `minAdm` recursion/subordination inequality.  
+   Type: load-bearing combinatorial core.
+
+7. **Monomial Integrability Assembly**  
+   Once losses and Jacobians are monomialized, apply the real box criterion `∫ ∏ |u_i|^{α_i} < ∞ iff α_i > -1`; logs are harmless under strict `c' < ½ minAdm`; finite charts assemble the global result.  
+   Type: load-bearing analytic endpoint.
+
+So the build decision should be: do the joint `(S,J)` formalisation. A “separate low-rank induction” is viable only if it is a weighted/rank-stratified induction carrying inherited charges, which is essentially the same proof obligation.
+tokens used
+44,136
