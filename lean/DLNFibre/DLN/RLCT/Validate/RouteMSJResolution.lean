@@ -588,13 +588,30 @@ covered by the pivot charts at `t = 1`: `{A₀ = 0}` (rank `0`) is a single null
 the higher `t = 2..min` terms are extra nonnegative slack. The `t = 0` whole-box term is EXCLUDED — that
 is the fix for the circularity (its `sjJointResolution` instance was the induction goal). The faithful
 cross-coupled Schur form (`frobSq_schur_block_split`) and the shear are NOT needed here — they live in
-`sjJointResolution` (finiteness), which the raw chart integrand feeds. -/
+`sjJointResolution` (finiteness), which the raw chart integrand feeds.
+
+**RESIDUAL (this named sorry) — the measure-plumbing assembly.** The two mathematical hearts are BANKED:
+`pivotChartCover_matBox_le_sum` (the `t = 1` cover of the inner `A₀`-box, above) and `minAdm_cons_zero`
+(the `min(M₀,M₁) = 0` edge: there `minAdm M ≤ minAdm (redChain 0 M) = minAdm (Fin.cons 0 _) = 0`, so `hc'`
+is unsatisfiable). What remains is standard measure plumbing, cleanest via the PRODUCT route (avoids
+per-`A'` integral measurability): (1) `routeMLayerBoxIntegral_front_split`, then
+`setLIntegral_prod_symm` to `∫_{matBox ×ˢ box(tail)} frontIntegrand`; (2) the null rank-`0` point — needs
+`A.rank = 0 → A = 0` (Mathlib v4.29 has only `Matrix.rank_zero`, the converse; provable via
+`rank_eq_finrank_span_cols` + `finrank = 0 → span = ⊥` + `Submodule.mem_bot`) and `NoAtoms` on the matrix
+`volume` (nested-Pi instance, needs `Nonempty (Fin M₀)`, `Nonempty (Fin M₁)` from `min ≥ 1`), giving
+`volume ((matBox ∩ {rank < 1}) ×ˢ box) = 0`; (3) `iUnion_prod_const` + `lintegral_iUnion_le` at the
+product level → `∑_{ρ,κ:t=1} ∫_{(matBox ∩ pivotChart) ×ˢ box}`; (4) `setLIntegral_prod_symm` back =
+`∑ gammaPeelIntegral M 1 ρ κ`; (5) `Finset.single_le_sum` embeds the `t = 1` term into the `Icc 1 min`
+sum (`1 ∈ Icc 1 min` from `min ≥ 1`). Left a sorry here to avoid an unfinished-plumbing broken build;
+the statement is faithful and the path is closed to the two banked lemmas. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     routeMLayerBoxIntegral M (c' : ℝ) 1
       ≤ ∑ t ∈ Finset.Icc 1 (min (M 0) (M 1)),
           ∑ ρ : Fin t ↪ Fin (M 0), ∑ κ : Fin t ↪ Fin (M 1),
             gammaPeelIntegral M t ρ κ (c' : ℝ) := by
+  -- RESIDUAL: product-route measure plumbing atop the banked `pivotChartCover_matBox_le_sum`
+  -- (`t = 1` cover) + `minAdm_cons_zero` (`min = 0` edge). See the docstring for the exact 5 steps.
   sorry
 
 /-! ## Pieces 4/5/7 — the joint resolution (finiteness of the joint peeled integral; named sorry) -/
