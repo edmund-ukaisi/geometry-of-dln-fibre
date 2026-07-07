@@ -116,4 +116,71 @@ theorem splitHomeoL2_zero :
     · funext j; exact splitMP_core I K J hI hK hJ 0 j
     · funext k; exact splitMP_spec I K J hI hK hJ 0 k
 
+/-! ## The regular readback (piece 1): `∑ p² = ∑ M21² + ∑ M11² + ∑ M12²`
+
+Each regular flat coordinate `x (e_idx (inl ρ))` equals the corresponding `blockFlatEquiv_L2` block
+entry (M21 for the `L0.₂₁` role, M11/M12 for the `L1.₁₁,₁₂` roles) — the same per-role decode as
+`paramsEquivFlat_symm_splitMP_core`. No constant shift (the reg residuals are the RAW block entries). -/
+
+/-- The M21 regular role decodes to the `L0.₂₁` block entry. -/
+theorem reg_entry_M21 (x : Fin (flatDim H) → ℝ) (a : Fin (H 0 - r)) (k : Fin r) :
+    x (Fintype.equivFin (FlatIdx H) (roleToFlat I K J hI hK hJ (Sum.inl (Sum.inl (a, k)))))
+      = (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₁ a k := by
+  have hL : roleToFlat I K J hI hK hJ (Sum.inl (Sum.inl (a, k)))
+      = ⟨⟨(0 : Fin 2), sumSplit I hI (Sum.inr a)⟩, sumSplit K hK (Sum.inl k)⟩ := rfl
+  rw [hL, blockFlatEquiv_L2_fst]
+  simp only [Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe]
+  exact (paramsEquivFlat_symm_entry H x 0 (sumSplit I hI (Sum.inr a)) (sumSplit K hK (Sum.inl k))).symm
+
+/-- The M11 regular role decodes to the `L1.₁₁` block entry. -/
+theorem reg_entry_M11 (x : Fin (flatDim H) → ℝ) (k k' : Fin r) :
+    x (Fintype.equivFin (FlatIdx H) (roleToFlat I K J hI hK hJ (Sum.inl (Sum.inr (k, Sum.inl k')))))
+      = (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₁ k k' := by
+  have hL : roleToFlat I K J hI hK hJ (Sum.inl (Sum.inr (k, Sum.inl k')))
+      = ⟨⟨(1 : Fin 2), sumSplit K hK (Sum.inl k)⟩, sumSplit J hJ (Sum.inl k')⟩ := rfl
+  rw [hL, blockFlatEquiv_L2_snd]
+  simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe]
+  exact (paramsEquivFlat_symm_entry H x 1 (sumSplit K hK (Sum.inl k)) (sumSplit J hJ (Sum.inl k'))).symm
+
+/-- The M12 regular role decodes to the `L1.₁₂` block entry. -/
+theorem reg_entry_M12 (x : Fin (flatDim H) → ℝ) (k : Fin r) (b : Fin (H (Fin.last 2) - r)) :
+    x (Fintype.equivFin (FlatIdx H) (roleToFlat I K J hI hK hJ (Sum.inl (Sum.inr (k, Sum.inr b)))))
+      = (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b := by
+  have hL : roleToFlat I K J hI hK hJ (Sum.inl (Sum.inr (k, Sum.inr b)))
+      = ⟨⟨(1 : Fin 2), sumSplit K hK (Sum.inl k)⟩, sumSplit J hJ (Sum.inr b)⟩ := rfl
+  rw [hL, blockFlatEquiv_L2_snd]
+  simp only [Matrix.toBlocks₁₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe]
+  exact (paramsEquivFlat_symm_entry H x 1 (sumSplit K hK (Sum.inl k)) (sumSplit J hJ (Sum.inr b))).symm
+
+/-- `e_idx` on the reg slot: `= equivFin ∘ roleToFlat ∘ inl ∘ regEquivFin`. -/
+theorem e_idx_reg (i : Fin (nRegL2 H r)) :
+    e_idx I K J hI hK hJ (Sum.inl i)
+      = Fintype.equivFin (FlatIdx H)
+          (roleToFlat I K J hI hK hJ (Sum.inl (regEquivFin I J hI hJ i))) := rfl
+
+/-- **The regular readback.** The sum of squares of the `nRegL2` regular flat coordinates equals the
+sum of squares of the three regular blocks `M21` (`L0.₂₁`), `M11` (`L1.₁₁`), `M12` (`L1.₁₂`) of
+`blockFlatEquiv_L2 x`. Pure coordinate reindex (`regEquivFin` + the `RegIdx` sum split), no shift. -/
+theorem reg_readback (x : Fin (flatDim H) → ℝ) :
+    ∑ i, (splitMP I K J hI hK hJ x).1 i ^ 2
+      = (∑ a : Fin (H 0 - r), ∑ k : Fin r,
+            ((blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₁ a k) ^ 2)
+        + ((∑ k : Fin r, ∑ k' : Fin r,
+              ((blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₁ k k') ^ 2)
+          + (∑ k : Fin r, ∑ b : Fin (H (Fin.last 2) - r),
+              ((blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₁₂ k b) ^ 2)) := by
+  have hstep : ∀ i : Fin (nRegL2 H r), (splitMP I K J hI hK hJ x).1 i
+      = x (Fintype.equivFin (FlatIdx H)
+          (roleToFlat I K J hI hK hJ (Sum.inl (regEquivFin I J hI hJ i)))) := by
+    intro i; rw [splitMP_reg, e_idx_reg]
+  simp_rw [hstep]
+  rw [Equiv.sum_comp (regEquivFin I J hI hJ)
+    (fun ρ => (x (Fintype.equivFin (FlatIdx H)
+      (roleToFlat I K J hI hK hJ (Sum.inl ρ)))) ^ 2)]
+  simp only [Fintype.sum_sum_type, Fintype.sum_prod_type, reg_entry_M21, reg_entry_M11, reg_entry_M12]
+  rw [Finset.sum_add_distrib]
+
 end DLNFibre.DLN.RLCT
