@@ -774,3 +774,4 @@ import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
 -- assembled bridge's abstract `psi` consumes, for ANY raw split-move `psiSplitRaw` fixing the origin
 -- with `ContDiffAt` on a bump support and `D(psiSplitRaw − id)(0) = 0`. Abstracts the L=2 `psiL2Conj`.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
