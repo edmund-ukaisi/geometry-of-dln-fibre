@@ -109,7 +109,7 @@ theorem rlct_lossDLN_eq_half_cCodim_add_shift
     (I : RlctRealInterface d)
     {B : Matrix (Fin (d (Fin.last N))) (Fin (d 0)) ℝ} {r : ℕ}
     (hN : 0 < N) (hB : B.rank = r) (hr : ∀ k', r ≤ d k') (h : (kostantPartitions d r).Nonempty) :
-    I.rlct (lossDLN d B)
+    RLCT.Global.rlctGlobal (lossDLN d B)
       = (((cCodim d r h).toNat : ℝ) + (r * (d 0 + d (Fin.last N) - r) : ℕ)) / 2 :=
   rlct_lossDLN_eq_half_cCodim_add_shift_via_aoyagi (K := K) (ι := ι) I (bundleShift_of_core d K ι)
     hN hB hr h
@@ -129,7 +129,7 @@ singular. `(2,2,2)` has `N = 2 > 0`. -/
 theorem rlct_lossDLN_d222_one_eq_two
     (I : RlctRealInterface Core.d222)
     {B : Matrix (Fin (Core.d222 (Fin.last 2))) (Fin (Core.d222 0)) ℝ} (hB : B.rank = 1) :
-    I.rlct (lossDLN Core.d222 B) = 2 := by
+    RLCT.Global.rlctGlobal (lossDLN Core.d222 B) = 2 := by
   have hr : ∀ k', (1 : ℕ) ≤ Core.d222 k' := Core.d222_one_le
   rw [rlct_lossDLN_eq_half_cCodim_add_shift (K := ℂ) (ι := Complex.ofRealHom) I (by norm_num) hB hr
     Core.kostantPartitions_d222_one_nonempty, Core.cCodim_d222_one]

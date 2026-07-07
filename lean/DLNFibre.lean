@@ -637,9 +637,10 @@ import DLNFibre.Core.Matrix.RankMinors
 -- `Core.CotangentJacobian` into two network-free libraries. The localize-the-cotangent-space
 -- comparison `Ideal.finrank_cotangentSpace_localization_eq_cotangent` (ns `Ideal`, mirrors
 -- `Mathlib.RingTheory.Ideal.Cotangent`; `[CommRing k]`, no `Field`); and the rectangular point-
--- Jacobian cotangent-dimension headline `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian`
--- (ns `MvPolynomial`, mirrors `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general
--- than Mathlib's smooth/square submersive Jacobian.
+-- Jacobian cotangent-dimension headline
+-- `MvPolynomial.finrank_cotangentSpace_eq_finrank_ker_jacobian` (ns `MvPolynomial`, mirrors
+-- `Mathlib.RingTheory.Kaehler.Polynomial`) — no smoothness, more general than Mathlib's
+-- smooth/square submersive Jacobian.
 import DLNFibre.Core.RingTheory.Ideal.CotangentLocalization
 import DLNFibre.Core.RingTheory.MvPolynomial.CotangentJacobian
 -- det-atlas P2.b′: the `AlgEquiv` groupoid laws absent in Mathlib v4.29 — `trans_assoc`,
@@ -738,3 +739,81 @@ import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalPriorLossRank
 import DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalPriorLossProducedRankCutBridge
 import DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorSourceImageBridge
 import DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge
+-- rlct-foundation R1: the citation cordon (accounted-axioms). `Core.Meta.Cited` = the
+-- `@[cited "src"]` attribute + `#audit_cited` command + `auditDecl` core (so `import DLNFibre`
+-- carries the attribute library-wide). `DLN.RLCT.AoyagiCited` = the DLN cites ON the cordon
+-- (the two `@[cited]` Watanabe-upper / Aoyagi-lower axioms — now bounding the BUILT `rlctGlobal`,
+-- the opaque `rlctReal` map axiom RETIRED by R8 — the proved `aoyagiRlctRealInterface`, and the
+-- corner-0 payoff `rlct_lossDLN_zero_eq_half_cCodim_aoyagi`).
+-- Gate: `scripts/cited` (`UNACCOUNTED=0 CITED=3 LOCATION=0`). Policy:
+-- `docs/policies/citation-cordon.md`.
+import DLNFibre.Core.Meta.Cited
+import DLNFibre.DLN.RLCT.AoyagiCited
+-- rlct-g1 (Gap 1): the closed form `cTheta` for an ARBITRARY (non-monotone) `d`, via the LANDED
+-- permutation invariance of `(C, θ)`. `numTop_eq_cTheta_dminus_sort`: `numTop d r = cTheta((d ∘
+-- Tuple.sort d) − r)` — sort to the monotone representative (`numTop_comp_sort`,
+-- `Tuple.monotone_sort`), then the `Monotone` closed form. Carries `hr`/`1 ≤ N` (perm-invariance's
+-- hypotheses), not `Monotone`.
+import DLNFibre.Core.CThetaSortClosedForm
+-- rlct-g1 (Gap 1): the fibre-`θ` count headline WITHOUT `Monotone d`. `Monotone` enters the 7-rung
+-- count chain only at the E0 closed-form step `numTop d r = cTheta(d−r)`; stopping the headline at
+-- the minimiser count `numTop d r` (geometric E0 half `ncard_topDimMinPrimes_sigma_eq_numTop`, the
+-- unconditional `numTop_eq_ncard_topComponents`) drops the gate.
+-- `ncard_topDimMinPrimes_fibre_eq_numTop` (normal-form target) + `_of_rank` (arbitrary `B` via the
+-- LANDED same-rank transport), arbitrary `d`; + `..._cTheta_dminus_sort` closed-form corollaries.
+import DLNFibre.Core.FibreThetaCountUnconditional
+-- rlct-r2a (RLCT foundation): the CITE-FREE analytic substrate of the real log-canonical threshold.
+-- `RLCT.Basic` = the loss germ `K : (Fin n → ℝ) → ℝ` and its negative power `negPow K c = K^(-c)`,
+-- with the admissible-exponent set `{c ≥ 0 | K^(-c) IntegrableOn U}`. `RLCT.Integrability` = the
+-- `integrabilityThreshold K U := sSup (admissibleExponents K U)` (the threshold VALUE, NOT the
+-- zeta-pole `(λ,m)` — that is deferred behind the cited continuation), the down-set + germ-
+-- monotonicity properties, and the 1-D witness `integrabilityThreshold_absGerm : ... = 1` (the
+-- power germ `|t|` has threshold exactly `1`, validating the formulation). Axiom-clean (no cites).
+import DLNFibre.Core.Analysis.RLCT.Basic
+import DLNFibre.Core.Analysis.RLCT.Integrability
+-- R2b: the zeta-pole RLCT definition (operator decision A). `RLCT.Local` = the cite-free LOCAL
+-- RLCT `rlctAt K x = sSup{c≥0 | K^(-c) loc-integrable at x}` (paper Def 8.1(ii)); `RLCT.Zeta` =
+-- the local archimedean zeta `∫K^s φ` + its cite-free convergence for `Re s>0`; `RLCT.Cited` =
+-- the ONE bundled `@[cited]` continuation monument (Atiyah 1970 + Saito/SLT, Prop-Def 8.2): local
+-- `ζ` continues meromorphically, poles ⊂ ℚ_{<0}, largest pole `s₀ = −rlctAt K x₀` (hyps `hKne` +
+-- zero-guarded `hWorst`); `RLCT.Pair` = `RLCTPair (λ=−s₀>0, poleOrder=m)` + local Link 1
+-- `λ = rlctAt K x₀`; `RLCT.Bridge` = the buildable regional bridge `integrabilityThreshold K U =
+-- rlctAt K x₀` (F1 roadmapped); `RLCT.Witness` = the axiom-clean `zetaSetupSq` (K=x²) proving the
+-- cite's hypotheses are satisfiable at a genuine germ — non-vacuity as a build-time fact. Cordon:
+-- `CITED=3` (after R8: the opaque `rlctReal` map axiom is retired, so the cite surface is the
+-- local continuation + Watanabe + Aoyagi).
+import DLNFibre.Core.Analysis.RLCT.Local
+import DLNFibre.Core.Analysis.RLCT.Zeta
+import DLNFibre.Core.Analysis.RLCT.Cited
+import DLNFibre.Core.Analysis.RLCT.Pair
+import DLNFibre.Core.Analysis.RLCT.Bridge
+import DLNFibre.Core.Analysis.RLCT.Witness
+-- R8 (payoff rewire): the cite-free GLOBAL RLCT. `RLCT.Global` = `rlctGlobal K = sSup{c≥0 | K^(-c)
+-- globally loc-integrable}` (paper Def 8.1(i)), polymorphic in the parameter space so it names the
+-- DLN loss `lossDLN d B : Rep_d → ℝ` directly; the elementary `rlctGlobal ≤ rlctAt` half of
+-- Prop 8.3(iii) + the full inf-over-zero-locus characterization as a clean conditional (gluing lift
+-- roadmapped). The DLN payoff (`DLN.RlctPayoff`, `DLN.RLCT.AoyagiCited`) is restated on this built
+-- object; the opaque `rlctReal` axiom is retired.
+import DLNFibre.Core.Analysis.RLCT.Global
+-- R7 (germ non-vacuity, off the payoff path): the canonical sum-of-squares RLCT
+-- `RLCT.rlctAt_sumSq : rlctAt (∑ yᵢ²) 0 = C/2` (`C ≥ 1`), cite-free bedrock validating the local
+-- machinery for arbitrary `C` (beyond `zetaSetupSq`'s `C=1`). Ships the reusable ball threshold
+-- `integrableOn_ball_norm_rpow_iff` (‖x‖^s integrable on a ball iff `-dim < s`) + the
+-- admissible-set characterization `Ico 0 (C/2)`. The bridge to the DLN germ `K_B` (constant-rank
+-- normal form + `rlctAt` diffeo-invariance) is roadmapped, not built (v4.29 lacks constant-rank).
+import DLNFibre.Core.Analysis.RLCT.SumSq
+-- R9 (layer-completion, in-PR validation — PR #23 reviewer addendum): validate the foundation, not
+-- just define it. `RegularPoint` (A1) = `localAdmissibleExponents K x = Set.Ici 0` (K continuous,
+-- `Kx≠0` ⟹ no pole); `GlobalWitness` (A) = `rlctGlobal (sumSq C) = C/2` (the payoff's central
+-- object, validated end-to-end); `GlobalBridge` (B1) = `RLCT.Global.rlctAt = RLCT.rlctAt` (rfl —
+-- closes the two-copies fork); `LocalMono` (B2) = local down-set + germ-monotonicity; `PowerRule`
+-- (B4) = `rlctAt (K^k) x = rlctAt K x / k` (hardens the "no second ½" trap); `CiteCoherence` =
+-- on-cite positivity `rlctAt S.K S.x₀ > 0` + the `zetaSetupSq.K = sumSq 1` coherence (cite-free
+-- `rlct = 1/2` = cited `(rlctPair).lam`). The two CITED items carry ONLY `cited_local_zeta_pole`
+-- — off the payoff value path.
+import DLNFibre.Core.Analysis.RLCT.RegularPoint
+import DLNFibre.Core.Analysis.RLCT.LocalMono
+import DLNFibre.Core.Analysis.RLCT.PowerRule
+import DLNFibre.Core.Analysis.RLCT.GlobalBridge
+import DLNFibre.Core.Analysis.RLCT.GlobalWitness
+import DLNFibre.Core.Analysis.RLCT.CiteCoherence
