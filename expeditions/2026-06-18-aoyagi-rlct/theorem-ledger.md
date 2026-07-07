@@ -4,6 +4,20 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Basepoint signed-box rank-cut residual-source shrink note, 2026-07-07: the
+strict source-cylinder rank-cut residual-source bridge now has a local wrapper
+that removes the terminal source-cylinder support hypothesis when the chosen
+basepoint lies in the selected-entry signed box.  The proof uses the openness
+of `signedBoxSet Rres` and continuity of `z ↦ z.1.yNext` to shrink the input
+open set to `G ∩ sourceCylinder`.  The returned `W` is then contained in the
+source cylinder, so `rankCutSource ⊆ sourceChart '' V` and `V ⊆ W` produce
+`rankCutSource ⊆ sourceChart '' (W ∩ sourceCylinder)`.  For fixed `Rres`,
+the hypothesis `z0.1.yNext ∈ signedBoxSet Rres` remains explicit; radii
+positivity alone is not enough.  Source-density basepoint positivity,
+prior-density strict basepoint upper bounds, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, and RLCT remain outside this rung.
+
 Source-cylinder/C-one produced and strict rank-cut residual-source note,
 2026-07-07: the source-cylinder and C-one rank-cut residual-source bridges now
 have produced-product and strict-density siblings.  The produced-product

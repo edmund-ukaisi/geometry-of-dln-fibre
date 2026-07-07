@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 basepoint signed-box rank-cut residual-source shrink
+
+Reproduction:
+
+```text
+reproduction-a2-rank-cut-residual-source-basepoint-signed-box-shrink.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_z0_yNext_mem_signedBox_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It wraps the strict source-cylinder rank-cut residual-source theorem by
+shrinking inside `G cap sourceCylinder` when
+`z0.1.yNext in signedBoxSet Rres`.  Since the returned `W` lies in the source
+cylinder, the rank-cut image equality `rankCutSource subset sourceChart '' V`
+and `V subset W` discharge the source-cylinder support socket automatically.
+
+Boundary: for fixed `Rres`, basepoint membership in the signed box remains an
+explicit hypothesis.  This does not prove source-density positivity,
+prior-density strict upper bounds, determinant/raw Haar transport,
+source-prior transport, source-rank or atlas coverage, normal crossings, pole
+order, or RLCT.
+
 ## 2026-07-07 A2 source-cylinder/C-one produced and strict rank-cut residual-source wrappers
 
 Reproduction:

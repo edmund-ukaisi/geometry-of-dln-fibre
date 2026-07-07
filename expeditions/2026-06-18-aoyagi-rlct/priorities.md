@@ -12,6 +12,33 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, basepoint signed-box rank-cut residual-source shrink
+
+Decision: remove the terminal source-cylinder support hypothesis from the
+strict rank-cut residual-source bridge in the local case where the basepoint
+selected-entry coordinate already lies in the chosen signed box.
+
+The proof shrinks the input open neighborhood to `G ∩ sourceCylinder`.  Since
+the signed box is open and `z ↦ z.1.yNext` is continuous, this is an open
+neighborhood of `z0` under the explicit hypothesis
+`z0.1.yNext in signedBoxSet Rres`.  The returned `W` lies in the source
+cylinder; the rank-cut image equality gives `rankCutSource ⊆ sourceChart '' V`;
+and `V ⊆ W` upgrades this to the support socket
+`rankCutSource ⊆ sourceChart '' (W ∩ sourceCylinder)`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-basepoint-signed-box-shrink.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This is a local support discharge only.  For fixed `Rres`, it still requires
+basepoint membership in the signed box; it does not prove source-density
+positivity, prior-density strict upper bounds, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, source-cylinder/C-one produced and strict rank-cut residual-source wrappers
 
 Decision: lift the source-cylinder and C-one rank-cut residual-source bridges
