@@ -10,6 +10,49 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following original-prior C-one eventual pullback bounds - 2026-07-07
+
+- **Statement.** On a local with-following Case 2 p.13 chart patch, supplied
+  eventual pullback bounds for source-image density and original-prior density
+  imply the a.e. density hypotheses needed for direct original-prior C-one
+  domination.
+- **Tier.** A2 local original-prior/density-bound wrapper.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The theorem is read as proving the C-one signed-box
+  condition, source-density positivity, prior-density boundedness from
+  continuity, source-prior or original-prior transport, readback domination,
+  finite-integral transfer, determinant-chart Haar transport, exact raw-Haar
+  pushforward, Haar normalization, source-image/source-rank coverage, normal
+  crossings, pole order, or RLCT.
+- **Evidence/source.** This is Lean-local neighborhood and measure-restriction
+  bookkeeping over the already proved direct original-prior C-one
+  source-support theorem.  It uses no quiver source evidence.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Popper the 2nd` passed
+  the source-boundary route.  Xhigh Lean-route reviewer `Bacon the 2nd`
+  supplied the proof skeleton and identified only let-unfolding support
+  friction.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md`.
+- **Lean target.**
+  `exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** The theorem returns an open shrink `V` with the same
+  source-chart local facts as the direct C-one theorem.  It shrinks into the
+  supplied eventual event and uses pointwise image/chart-piece membership to
+  discharge the a.e. source-density lower bound and original-prior density
+  upper bound.  Focused `lake env lean`, targeted module build, local
+  citation audit, `lean/scripts/sorries`, `git diff --check`, direct axiom
+  probe, and direct `#audit_cited` probe passed.  The declaration reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No C-one support for arbitrary chart pieces, no
+  source-density positivity, no prior-density boundedness from continuity, no
+  source-prior or original-prior transport, no readback domination, no
+  finite-integral transfer, no determinant-chart Haar transport, no exact
+  raw-Haar pushforward, no Haar normalization, no source-image/source-rank
+  coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 with-following original-volume C-one source-support handoff - 2026-07-07
 
 - **Statement.** On a local with-following Case 2 p.13 chart patch, ordinary

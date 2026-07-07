@@ -4,6 +4,33 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original-prior C-one eventual pullback bounds note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper`.
+After a local with-following determinant-sector/pivot-nonzero shrink, if
+`eps <= sourceImageDensity (sourceChart z)` and
+`density (sourceChart z) <= Kprior` hold eventually near `z0`, then the
+direct original-prior C-one domination package is available on an open
+`V subset G`.  For any measurable chart piece supported by `sourceChart '' V`
+and satisfying pointwise C-one signed-box support, with `eps != 0` and
+`eps != infinity`, Lean produces finite `Cdet` and
+
+```text
+originalPrior.restrict chartPiece
+  <= (ofReal Kprior *
+      (((cHaar^-1 : NNReal) : ENNReal) * (Cdet * eps^-1))) •
+      Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+The proof shrinks into the common eventual event, then uses pointwise image
+membership and chart-piece containment to discharge the a.e. density
+hypotheses of the direct C-one theorem.  This is not C-one support for
+arbitrary chart pieces, source-density positivity, prior-density boundedness
+from continuity, source-prior/original-prior transport, readback domination,
+finite-integral transfer, determinant/raw Haar transport, source/source-rank
+coverage, normal crossings, pole order, or RLCT extraction.
+
 Original-prior C-one source-support handoff note, 2026-07-07:
 Original-volume C-one source-support handoff note, 2026-07-07:
 `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`

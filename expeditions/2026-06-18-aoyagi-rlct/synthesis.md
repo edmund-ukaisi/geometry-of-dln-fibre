@@ -6,6 +6,54 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-prior C-one eventual pullback bounds - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+The theorem is a direct non-readback density-bound wrapper.  It fixes `eps`,
+the original-prior density, and `Kprior`, assumes eventual bounds near `z0`
+for `sourceImageDensity (sourceChart z)` from below and
+`density (sourceChart z)` from above, then shrinks into the common event and
+applies the direct original-prior C-one source-support theorem.
+
+For the returned `V`, pointwise membership in `sourceChart '' V` gives the
+source-density lower bound, and chart-piece containment in `sourceChart '' V`
+gives the prior-density upper bound on the chart piece.  Existing generic
+restrict helpers convert both pointwise facts into the a.e. facts required by
+the direct C-one theorem.
+
+Boundary: no C-one support for arbitrary chart pieces, no source-density
+positivity, no prior-density boundedness from continuity, no source/prior
+transport, no readback domination, no finite-integral transfer, no
+determinant or raw Haar transport, no scalar normalization, no source/source
+rank coverage, no normal crossings, no pole order, and no RLCT extraction.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+lean/scripts/sorries
+git diff --check
+```
+
+`lean/scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and
+only the existing three cited axioms.  The citation audit reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and direct `#audit_cited`
+classifies the theorem as FORMALISED.
+
 ## A2 with-following original-volume C-one source-support handoff - 2026-07-07
 
 Reproduction:

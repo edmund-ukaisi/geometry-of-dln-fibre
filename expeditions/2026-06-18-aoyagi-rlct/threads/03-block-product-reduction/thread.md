@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 With-following original-prior C-one eventual pullback bounds
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+This is a direct non-readback wrapper over the original-prior C-one
+source-support handoff.  It fixes `eps`, `density`, and `Kprior`, shrinks into
+the supplied eventual pullback bounds
+
+```text
+eventually z near z0, eps <= sourceImageDensity (sourceChart z)
+eventually z near z0, density (sourceChart z) <= Kprior,
+```
+
+and converts those pointwise bounds on the returned local image into the
+a.e. density hypotheses consumed by the direct C-one theorem.
+
+Artifacts:
+
+```text
+reproduction-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md
+statement-card-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md
+review-a2-with-following-original-prior-cOne-eventual-pullback-bounds.md
+```
+
+Focused elaboration, targeted module build, local `lake exe cited-audit`,
+`lean/scripts/sorries`, `git diff --check`, direct axiom probe, and direct
+`#audit_cited` probe passed.  The declaration reports only `[propext,
+Classical.choice, Quot.sound]` and is classified as FORMALISED.
+
+Nonclaims: no C-one support for arbitrary chart pieces, no source-density
+positivity, no prior-density boundedness from continuity, no source/prior
+transport, no readback domination, no finite-integral transfer, no
+determinant/raw Haar transport, no Haar normalization, no source/source-rank
+coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## 2026-07-07 With-following original-volume C-one source-support handoff
 
 Lean now proves:
