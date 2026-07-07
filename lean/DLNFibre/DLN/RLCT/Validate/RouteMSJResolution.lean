@@ -573,6 +573,87 @@ theorem pivotChartCover_matBox_le_sum {m n : ℕ} (t : ℕ) (T : ℝ)
     _ = ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n, ∫⁻ A in matBox m n T ∩ pivotChart ρ κ, f A :=
         Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
 
+/-- **Piece 3 (sub-lemma 1″) — the PRODUCT-level `t = 1` pivot-chart cover (CLOSED, banked plumbing).**
+For the front-factor `A₀ : Matrix (Fin m) (Fin n) ℝ` (with `m, n ≥ 1`) times a tail set `s ⊆ β`, the
+`matBox ×ˢ s` product integral is bounded by the finite sum, over the `t = 1` pivot charts `(ρ, κ)`, of
+the `(matBox ∩ pivotChart ρ κ) ×ˢ s` integrals. Two measure-theoretic hearts: (i) the `{rank = 0} =
+{A₀ = 0}` locus is a single volume-null point (`NoAtoms` on the matrix `volume`, needing `Nonempty`
+both `Fin m`, `Fin n`), so `matBox ×ˢ s =ᵐ (matBox ∩ {1 ≤ rank}) ×ˢ s`; (ii) `{1 ≤ rank} = ⋃_{ρ,κ}
+pivotChart ρ κ` (`pivotLocus_eq_iUnion 1`), distributed over `×ˢ s` (`Set.iUnion_prod_const`) and bounded
+by subadditivity (`lintegral_iUnion_le` + `tsum_fintype`). The `A₀.rank = 0 → A₀ = 0` step is proved
+locally (Mathlib v4.29 has only the converse `Matrix.rank_zero`): `finrank (range mulVecLin) = 0 ⟹
+range = ⊥` (`Submodule.finrank_eq_zero`) `⟹ mulVecLin = 0` (`LinearMap.range_eq_bot`) `⟹ A₀ = 0`
+(`Matrix.toLin'` is a `LinearEquiv`, hence injective). Reusable bedrock for the boundary peel's
+front-factor stratification at the product level. -/
+theorem frontBox_pivotCover_le {m n : ℕ} (hm : 0 < m) (hn : 0 < n)
+    {β : Type*} [MeasureSpace β] [SigmaFinite (volume : Measure β)]
+    (T : ℝ) (s : Set β)
+    (f : (Fin m → Fin n → ℝ) × β → ℝ≥0∞) (hf : Measurable f) :
+    ∫⁻ q in matBox m n T ×ˢ s, f q
+      ≤ ∑ ρ : Fin 1 ↪ Fin m, ∑ κ : Fin 1 ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q := by
+  haveI : Nonempty (Fin m) := ⟨⟨0, hm⟩⟩
+  haveI : Nonempty (Fin n) := ⟨⟨0, hn⟩⟩
+  -- `A.rank = 0 → A = 0` over `ℝ` (v4.29 ships only the converse `Matrix.rank_zero`).
+  have hrank0 : ∀ A : Matrix (Fin m) (Fin n) ℝ, A.rank = 0 → A = 0 := by
+    intro A hA
+    have hbot : LinearMap.range A.mulVecLin = ⊥ := Submodule.finrank_eq_zero.mp hA
+    have hml : A.mulVecLin = 0 := LinearMap.range_eq_bot.mp hbot
+    have hlin : Matrix.toLin' A = Matrix.toLin' (0 : Matrix (Fin m) (Fin n) ℝ) := by
+      rw [Matrix.toLin'_apply', Matrix.toLin'_apply', hml, Matrix.mulVecLin_zero]
+    exact Matrix.toLin'.injective hlin
+  -- (i) the `{rank = 0} = {0}` point is null, so the box integral is the `{1 ≤ rank}` integral.
+  have hae : (matBox m n T ×ˢ s)
+      =ᵐ[volume] ((matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | 1 ≤ A.rank}) ×ˢ s) := by
+    rw [ae_eq_set]
+    refine ⟨?_, ?_⟩
+    · -- `(matBox ×ˢ s) \ ((matBox ∩ {1 ≤ rank}) ×ˢ s) ⊆ {0} ×ˢ s`, which is null.
+      have hsub : (matBox m n T ×ˢ s)
+          \ ((matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | 1 ≤ A.rank}) ×ˢ s)
+          ⊆ ({(0 : Fin m → Fin n → ℝ)} : Set _) ×ˢ s := by
+        rintro ⟨A0, b⟩ hq
+        rw [Set.mem_diff, Set.mem_prod, Set.mem_prod, Set.mem_inter_iff] at hq
+        obtain ⟨⟨hA0, hb⟩, hnot⟩ := hq
+        have hr0 : Matrix.rank A0 = 0 := by
+          by_contra hne
+          exact hnot ⟨⟨hA0, Nat.one_le_iff_ne_zero.mpr hne⟩, hb⟩
+        have hz : A0 = 0 := hrank0 A0 hr0
+        rw [Set.mem_prod]
+        exact ⟨by rw [hz]; exact Set.mem_singleton _, hb⟩
+      have hnull : volume (({(0 : Fin m → Fin n → ℝ)} : Set _) ×ˢ s) = 0 := by
+        rw [Measure.volume_eq_prod, Measure.prod_prod, measure_singleton, zero_mul]
+      exact measure_mono_null hsub hnull
+    · -- `((matBox ∩ {1 ≤ rank}) ×ˢ s) \ (matBox ×ˢ s) = ∅`.
+      rw [Set.diff_eq_empty.mpr (Set.prod_mono Set.inter_subset_left (subset_refl s))]
+      exact measure_empty
+  -- (ii) cover `{1 ≤ rank}` by the `t = 1` pivot charts, distributed over `×ˢ s`.
+  -- (`congrArg` under `matBox ∩ ·`, as in `pivotChartCover_matBox_le_sum`, to sidestep the
+  -- `rw`-under-binder matching failure on `{A | 1 ≤ A.rank}`.)
+  have hcov : {A : Matrix (Fin m) (Fin n) ℝ | 1 ≤ A.rank}
+      = ⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), pivotChart ρ κ := pivotLocus_eq_iUnion 1
+  have hdist : (⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), matBox m n T ∩ pivotChart ρ κ)
+      = matBox m n T ∩ ⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), pivotChart ρ κ := by
+    simp only [Set.inter_iUnion]
+  have hset : matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | 1 ≤ A.rank}
+      = ⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), matBox m n T ∩ pivotChart ρ κ :=
+    (congrArg (fun st => matBox m n T ∩ st) hcov).trans hdist.symm
+  have hcover : (matBox m n T ∩ {A : Matrix (Fin m) (Fin n) ℝ | 1 ≤ A.rank}) ×ˢ s
+      = ⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), (matBox m n T ∩ pivotChart ρ κ) ×ˢ s := by
+    rw [hset]; simp only [Set.iUnion_prod_const]
+  rw [setLIntegral_congr hae, hcover]
+  calc ∫⁻ q in ⋃ (ρ : Fin 1 ↪ Fin m) (κ : Fin 1 ↪ Fin n), (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q
+      ≤ ∑' ρ : Fin 1 ↪ Fin m,
+          ∫⁻ q in ⋃ κ : Fin 1 ↪ Fin n, (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        lintegral_iUnion_le _ _
+    _ = ∑ ρ : Fin 1 ↪ Fin m,
+          ∫⁻ q in ⋃ κ : Fin 1 ↪ Fin n, (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q := tsum_fintype _
+    _ ≤ ∑ ρ : Fin 1 ↪ Fin m, ∑' κ : Fin 1 ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        Finset.sum_le_sum (fun ρ _ => lintegral_iUnion_le _ _)
+    _ = ∑ ρ : Fin 1 ↪ Fin m, ∑ κ : Fin 1 ↪ Fin n,
+          ∫⁻ q in (matBox m n T ∩ pivotChart ρ κ) ×ˢ s, f q :=
+        Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
+
 /-- **Piece 3 — the per-`(t,ρ,κ)` boundary peel (re-scoped 2026-07-07; a pure COVER inequality).** The
 `M` box integral is bounded by the finite sum, over pivot cuts `t = 1..min(M₀,M₁)` and pivot charts
 `(ρ,κ)`, of the per-chart peeled integrals `gammaPeelIntegral M t ρ κ c'` (constant `1`: the raw chart
@@ -610,9 +691,57 @@ theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
       ≤ ∑ t ∈ Finset.Icc 1 (min (M 0) (M 1)),
           ∑ ρ : Fin t ↪ Fin (M 0), ∑ κ : Fin t ↪ Fin (M 1),
             gammaPeelIntegral M t ρ κ (c' : ℝ) := by
-  -- RESIDUAL: product-route measure plumbing atop the banked `pivotChartCover_matBox_le_sum`
-  -- (`t = 1` cover) + `minAdm_cons_zero` (`min = 0` edge). See the docstring for the exact 5 steps.
-  sorry
+  rcases Nat.eq_zero_or_pos (min (M 0) (M 1)) with hmin0 | hminpos
+  · -- `min(M₀,M₁) = 0` ⟹ `minAdm M = 0`, so the threshold `hc'` is unsatisfiable.
+    exfalso
+    have hred : redChain 0 M = Fin.cons (0 : ℕ) (Fin.tail (Fin.tail M)) := by
+      conv_lhs => rw [← Fin.cons_self_tail M]
+      rw [redChain_cons]
+    have hMz : minAdm M = 0 := by
+      have hle := minAdm_le_minAdm_redChain_min M
+      rw [hmin0, hred, minAdm_cons_zero] at hle
+      exact Nat.le_zero.mp hle
+    rw [hMz] at hc'
+    simp only [Nat.cast_zero, zero_div] at hc'
+    exact absurd hc' (not_lt.mpr c'.coe_nonneg)
+  · -- `min(M₀,M₁) ≥ 1`: the pure product-level cover inequality.
+    have hM0 : 0 < M 0 := lt_of_lt_of_le hminpos (min_le_left _ _)
+    have hM1 : 0 < M 1 := lt_of_lt_of_le hminpos (min_le_right _ _)
+    -- The `M` box integral IS the product integral over `matBox ×ˢ box(tail)` (MP front-split).
+    have hLHS : routeMLayerBoxIntegral M (c' : ℝ) 1
+        = ∫⁻ q in matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1,
+            ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-(c' : ℝ))) := by
+      rw [routeMLayerBoxIntegral]
+      have hpre := (measurePreserving_eFront M).setLIntegral_comp_preimage_emb
+        (MeasurableEquiv.measurableEmbedding (eFront M))
+        (fun q : (Fin (M 0) → Fin (M 1) → ℝ) × Params (tailChain M) =>
+          ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-(c' : ℝ))))
+        (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1)
+      calc ∫⁻ A in paramsBoxM M 1, ENNReal.ofReal ((frobSq (prod M A)) ^ (-(c' : ℝ)))
+          = ∫⁻ A in eFront M ⁻¹' (matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1),
+              ENNReal.ofReal ((frobSq (rmatMul (eFront M A).1
+                (prod (tailChain M) (eFront M A).2))) ^ (-(c' : ℝ))) := by
+            rw [eFront_preimage_box]
+            refine setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => ?_)
+            rw [frobSq_prod_front M A]
+        _ = ∫⁻ q in matBox (M 0) (M 1) 1 ×ˢ paramsBoxM (tailChain M) 1,
+              ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-(c' : ℝ))) := hpre
+    -- Each `t = 1` product-chart integral IS `gammaPeelIntegral M 1 ρ κ` (`setLIntegral_prod_symm`).
+    have hgamma : ∀ (ρ : Fin 1 ↪ Fin (M 0)) (κ : Fin 1 ↪ Fin (M 1)),
+        ∫⁻ q in (matBox (M 0) (M 1) 1 ∩ pivotChart ρ κ) ×ˢ paramsBoxM (tailChain M) 1,
+            ENNReal.ofReal ((frobSq (rmatMul q.1 (prod (tailChain M) q.2))) ^ (-(c' : ℝ)))
+          = gammaPeelIntegral M 1 ρ κ (c' : ℝ) := by
+      intro ρ κ
+      unfold gammaPeelIntegral
+      rw [Measure.volume_eq_prod (Fin (M 0) → Fin (M 1) → ℝ) (Params (tailChain M)),
+        setLIntegral_prod_symm _ (measurable_frontIntegrand M (c' : ℝ)).aemeasurable]
+    rw [hLHS]
+    refine le_trans (frontBox_pivotCover_le hM0 hM1 1 (paramsBoxM (tailChain M) 1)
+      _ (measurable_frontIntegrand M (c' : ℝ))) ?_
+    simp only [hgamma]
+    exact Finset.single_le_sum
+      (f := fun t => ∑ ρ : Fin t ↪ Fin (M 0), ∑ κ : Fin t ↪ Fin (M 1), gammaPeelIntegral M t ρ κ (c' : ℝ))
+      (fun t _ => zero_le _) (Finset.mem_Icc.mpr ⟨le_refl 1, hminpos⟩)
 
 /-! ## Pieces 4/5/7 — the joint resolution (finiteness of the joint peeled integral; named sorry) -/
 
