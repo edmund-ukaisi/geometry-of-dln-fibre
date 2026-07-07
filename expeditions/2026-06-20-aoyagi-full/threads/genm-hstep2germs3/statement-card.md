@@ -6,7 +6,8 @@ override, cores) preserves the bottom-left block `(partProd)₂₁` of the full 
 of Invariant A. Together with the banked top-row half (`topRow_movedC`) this is the abstract heart of the
 reg-preservation germ `hsub3reg` (`deepestEFull` invariant under the move).
 
-Module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenLeftCol.lean` (branch `genm-hstep2germs3`).
+Module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenLeftCol.lean`
+(branch `genm-hstep2germs3` @ `9abecfaa`).
 
 ## The headline result
 
