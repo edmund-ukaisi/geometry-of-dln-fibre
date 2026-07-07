@@ -240,12 +240,17 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (Q (lastLayer hL))).toBlocks₂₂
-        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) ∧
+      -- **Strict-interior frames ARE the identity** (interior deepest layers are the corner; the
+      -- layer-0 override + last-layer pivot twist are endpoint-only, so interior arms stay identity).
+      (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+        P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+          Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) := by
   classical
   -- The (now block-upper-aware) producer bundle — use `.choose`/`.choose_spec` so the output `J` IS
   -- the producer's `.choose` pivot, and the threaded `hJfront` (about `.choose`) is its front-identity.
   set J := (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose with hJ_def
-  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper, hQf22one⟩ :=
+  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper, hQf22one, hInt0⟩ :=
     (deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose_spec
   -- The block-LOWER layer-0 frame (htop-conditional).
   obtain ⟨P0new, hP0new_unit, hP0new_tri, hP0new_nf, hP0new_22one⟩ :=
@@ -255,7 +260,7 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
     intro h; have := congrArg Fin.val h; simp only [firstLayer, lastLayer] at this; omega
   -- The new frame family: `P0` with layer-0 overridden by the block-lower frame.
   refine ⟨J, Function.update P0 (firstLayer hL) P0new, Q0, hJfront, ?_, hQunit0, hQf0, ?_, ?_, hQf22,
-    hcorner, ?_, hQUpper, ?_, hQf22one⟩
+    hcorner, ?_, hQUpper, ?_, hQf22one, ?_⟩
   · -- `IsUnit (P s)`: `P0new` at firstLayer, `P0` elsewhere.
     intro s
     by_cases hs : s = firstLayer hL
@@ -275,5 +280,13 @@ theorem deepestPoint_frame_pivot_triangular_exists (H : Fin (L + 1) → ℕ) (r 
     rw [Function.update_self]; exact hP0new_tri
   · -- `hP22one`: `P firstLayer = P0new` has identity ₂₂-block.
     rw [Function.update_self]; exact hP0new_22one
+  · -- Strict-interior frames are identity: interior `s ≠ firstLayer`, so `P s = P0 s = 1`
+    -- (`Function.update_of_ne` + `hInt0`); `Q s = Q0 s = 1` (`hInt0`).
+    intro s hpos hlt
+    have hsf : s ≠ firstLayer hL := by
+      intro h; subst h; simp only [firstLayer] at hpos; omega
+    obtain ⟨hP1, hQ1⟩ := hInt0 s hpos hlt
+    refine ⟨?_, hQ1⟩
+    rw [Function.update_of_ne hsf]; exact hP1
 
 end DLNFibre.DLN.RLCT

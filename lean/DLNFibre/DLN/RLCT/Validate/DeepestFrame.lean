@@ -49,7 +49,12 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
           ∧ (2 ≤ L → (s : ℕ) = 0 →
               Q = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ))
           ∧ (2 ≤ L → (s : ℕ) + 1 = L →
-              P = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)) := by
+              P = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ))
+          -- **Strict-interior frame IS the identity.** The interior deepest layer is already the
+          -- corner block (`deepestPoint_isDeep`'s interior clause), so `P = Q = 1` carries it to `corM`.
+          ∧ (0 < (s : ℕ) → (s : ℕ) + 1 < L →
+              P = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+                Q = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) := by
   intro s
   have hrank : (deepestPoint H r B hB hr hL s).rank = r :=
     (deepestPoint_isDeep H r B hB hr hL).2.1 s
@@ -61,10 +66,11 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       fun i j hj => (deepestPoint_isDeep H r B hB hr hL).2.2.2.1 s hL2 hs0 i j hj
     obtain ⟨P, hP, hPeq⟩ :=
       Core.Matrix.rank_normal_form_left_only (deepestPoint H r B hB hr hL s) hrank htail
-    refine ⟨P, 1, hP, isUnit_one, ?_, ?_, ?_⟩
+    refine ⟨P, 1, hP, isUnit_one, ?_, ?_, ?_, ?_⟩
     · rw [Matrix.mul_one]; exact hPeq
     · intro _ _; rfl
     · intro _ hsL; omega
+    · intro hpos _; omega
   · by_cases hlast : 2 ≤ L ∧ (s : ℕ) + 1 = L
     · -- Boundary layer `L-1` (`2 ≤ L`): tail ROWS vanish, so a RIGHT-only frame `Q` with `P = 1`.
       obtain ⟨hL2, hsL⟩ := hlast
@@ -73,16 +79,29 @@ theorem deepestPoint_frame_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
         fun i j hi => (deepestPoint_isDeep H r B hB hr hL).2.2.2.2 s hL2 hsL i j hi
       obtain ⟨Q, hQ, hQeq⟩ :=
         Core.Matrix.rank_normal_form_right_only (deepestPoint H r B hB hr hL s) hrank htail
-      refine ⟨1, Q, isUnit_one, hQ, ?_, ?_, ?_⟩
+      refine ⟨1, Q, isUnit_one, hQ, ?_, ?_, ?_, ?_⟩
       · rw [Matrix.one_mul]; exact hQeq
       · intro _ hs0; omega
       · intro _ _; rfl
-    · -- Interior layer (or `L = 1`): the generic two-sided frame; both boundary conjuncts vacuous.
-      obtain ⟨P, Q, hP, hQ, hPQeq⟩ :=
-        Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
-      refine ⟨P, Q, hP, hQ, hPQeq, ?_, ?_⟩
-      · intro hL2 hs0; exact absurd ⟨hL2, hs0⟩ hfirst
-      · intro hL2 hsL; exact absurd ⟨hL2, hsL⟩ hlast
+      · intro _ hlt; omega
+    · by_cases hint : 0 < (s : ℕ) ∧ (s : ℕ) + 1 < L
+      · -- Strict interior: the deepest layer IS the corner (`deepestPoint_isDeep`'s interior clause),
+        -- so the IDENTITY frame `P = Q = 1` carries it to `corM`.
+        obtain ⟨hpos, hlt⟩ := hint
+        refine ⟨1, 1, isUnit_one, isUnit_one, ?_, ?_, ?_, ?_⟩
+        · rw [Matrix.one_mul, Matrix.mul_one]
+          exact (deepestPoint_isDeep H r B hB hr hL).2.2.1 s hpos hlt
+        · intro _ hs0; omega
+        · intro _ hsL; omega
+        · intro _ _; exact ⟨rfl, rfl⟩
+      · -- `L = 1` (or otherwise non-strict-interior): the generic two-sided frame; all three guarded
+        -- conjuncts vacuous.
+        obtain ⟨P, Q, hP, hQ, hPQeq⟩ :=
+          Core.Matrix.rank_normal_form_exists (deepestPoint H r B hB hr hL s) hrank
+        refine ⟨P, Q, hP, hQ, hPQeq, ?_, ?_, ?_⟩
+        · intro hL2 hs0; exact absurd ⟨hL2, hs0⟩ hfirst
+        · intro hL2 hsL; exact absurd ⟨hL2, hsL⟩ hlast
+        · intro hpos hlt; exact absurd ⟨hpos, hlt⟩ hint
 
 /-- **Interior layers ARE the block-normal corner** (#95, the (iii) fix). On every strict-interior
 layer (`0 < s ∧ s+1 < L`), the constructed deepest point equals the corner block `diag(I_r, 0)`
@@ -199,6 +218,20 @@ theorem deepestPoint_frame_Pf_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
     (deepestPoint_frame H r B hB hr hL s).1
       = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) :=
   (Classical.choose_spec
-    (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.2.2 hL2 hsL
+    (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.2.2.1 hL2 hsL
+
+/-- **Strict-interior gauge frame IS the identity** (#120 interior-frame gap). On a strict-interior
+layer (`0 < s ∧ s+1 < L`) the deepest layer is already the corner block, so the chosen frame is
+`P_s = Q_s = 1` — the interior-frame triviality the deepest-gauge loss squeeze consumes. -/
+theorem deepestPoint_frame_interior_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    (deepestPoint_frame H r B hB hr hL s).1
+        = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+      ∧ (deepestPoint_frame H r B hB hr hL s).2
+        = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :=
+  (Classical.choose_spec
+    (Classical.choose_spec (deepestPoint_frame_exists H r B hB hr hL s))).2.2.2.2.2 hpos hlt
 
 end DLNFibre.DLN.RLCT

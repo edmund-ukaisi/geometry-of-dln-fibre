@@ -379,7 +379,13 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (Q (lastLayer hL))).toBlocks₂₂
-        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) ∧
+      -- **Strict-interior frames ARE the identity** (the interior deepest layer is already the corner;
+      -- `deepestPoint_frame_interior_eq_one`). The pivot twist is last-layer-only, so interior arms are
+      -- unchanged from `deepestPoint_frame`.
+      (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+        P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+          Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) := by
   classical
   -- The abstract pivot frame for the deepest point's last layer.
   obtain ⟨J, QL, hQLunit, hB22, hcorner, hQUpper, hB22one⟩ :=
@@ -396,7 +402,7 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     simp only [hQpiv, dif_pos rfl]
   refine ⟨J,
     fun s => (deepestPoint_frame H r B hB hr hL s).1, Qpiv,
-    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · -- `IsUnit (P s)`: the first arm is always `deepestPoint_frame.1`.
     intro s; exact (deepestPoint_frame_invertible H r B hB hr hL s).1
   · -- `IsUnit (Q s)`: pivot `QL` on the last layer, `deepestPoint_frame.2` elsewhere.
@@ -426,5 +432,13 @@ theorem deepestPoint_frame_pivot_exists (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [hQlast]; exact hQUpper
   · -- ₂₂-block `= 1` last-layer frame. `Qpiv (lastLayer) = QL`, then `hB22one`.
     rw [hQlast]; exact hB22one
+  · -- Strict-interior frames are identity: `P s = deepestPoint_frame.1 = 1`, and (interior `s` is not
+    -- the last layer, so `Qpiv s = deepestPoint_frame.2`) `Q s = deepestPoint_frame.2 = 1`.
+    intro s hpos hlt
+    have hsl : s ≠ lastLayer hL := by
+      intro h; subst h; simp only [lastLayer] at hlt; omega
+    obtain ⟨hP1, hQ1⟩ := deepestPoint_frame_interior_eq_one H r B hB hr hL s hpos hlt
+    refine ⟨hP1, ?_⟩
+    simp only [hQpiv, dif_neg hsl]; exact hQ1
 
 end DLNFibre.DLN.RLCT
