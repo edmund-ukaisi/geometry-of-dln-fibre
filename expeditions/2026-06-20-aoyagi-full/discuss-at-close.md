@@ -1939,3 +1939,16 @@ GO-THE-DISTANCE mission):** the fully-general headline's ETA is dominated by thi
 also multi-tide) + the D1 ∀-L lift (modulo #120). If you'd prefer to prioritize the L=2 milestone (nearer) and
 sequence the general-L peel-plumbing later, or accept the cited-Aoyagi fallback for general-L R1-UPPER after all
 (#41 stands: build, but the true cost is now visible), say so; else I continue grinding the peel + crux in parallel.
+
+## 48. 🎯 MILESTONE: the L=2 headline is PROVEN, unconditional, cite-only-S2, verified (2026-07-07).
+`aoyagi_learning_coefficient_L2` is sorry-free on canonical @61cb2cc2, controller-verified: full `scripts/lb
+DLNFibre` green (8726 jobs, no clash) + independent force-recompiled `#print axioms` = `[propext,
+Classical.choice, Quot.sound, monomial_rlct]` (the mission clean-four; no sorryAx/native_decide/hbox). Reviewer
+SOUND + decorrelated-Codex FAITHFUL. This is the FIRST complete, from-scratch, cite-only-S2 anchor of the whole
+ladder — the entire D1(deepest-point) + R1(explicit resolution chart Φ_expl) + S2(RLCT extraction) + value chain
+works end-to-end at L=2 for ALL widths and ranks. It exceeds the brief's "smallest case validated end-to-end"
+closing criterion (general-L=2, not just (2,2,2)). **For operator:** a major validation of the whole approach —
+the cite-only-S2 machinery is proven to close a full headline. The FULLY-GENERAL headline remains (general-L
+R1-UPPER peel #47 + D1 ∀-L modulo #120), but the hard "does the from-scratch approach even work end-to-end"
+question is now answered YES, in honest verified Lean. Given this, a possible close-phase option (operator's call):
+land the L=2 headline as a citable milestone result (PR to dev?) independent of the longer general-L grind.
