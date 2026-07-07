@@ -725,5 +725,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartAlgebra
 -- (S,J) peel corank atoms: isotropic box + full-space residual atoms, and the anisotropic Γ-atom cov crux.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGammaAtom
+-- (S,J) Γ-atom piece (a): the inverse Gram square-root normaliser (CFC.sqrt-based).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
