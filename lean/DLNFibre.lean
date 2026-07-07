@@ -733,5 +733,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPeel
 -- (S,J) PURE joint corank-block Morse peel: isotropic joint terminal + intermediate exponent-shift peel.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPure
+-- (S,J) STEP-3 unit block-elimination (general widths): det-1 unit factorisation + block-diag row/col split.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJStep3
+-- (S,J) STEP-1 terminal (general widths): monomial × (unit ≥ 1) endpoint + its d-generic finiteness (option a).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTerminal
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
