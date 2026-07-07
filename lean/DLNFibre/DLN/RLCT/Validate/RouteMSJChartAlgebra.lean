@@ -113,4 +113,21 @@ theorem frobSq_schur_block_split (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : 
   rw [frobSq_row_split (fromBlocks A B C D * Q), fromBlocks_mul_topRows, fromBlocks_mul_botRows,
     topRows_eq_mul_QtildeP A B, botRows_eq_cross A B C D]
 
+/-- **The block identity in `toBlocks` form** — the shape the pivot chart consumes. For a block-indexed
+front factor `M'` with invertible top-left (pivot) block, `frobSq (M' · Q)` splits into the pivot-block
+energy `frobSq (P · Q̃_p)` and the corank energy `frobSq (C · Q̃_p + Γ · Q_b)`, `P = M'.toBlocks₁₁`,
+`Γ = schurCompl …`. The `M' = A₀.reindex e₀ e₁` form of `frobSq_schur_block_split` (via
+`fromBlocks_toBlocks`), matching the banked `schur_cov_toBlocks` interface. -/
+theorem frobSq_schur_toBlocks_split (M' : Matrix (t ⊕ a) (t ⊕ b) ℝ) [Invertible M'.toBlocks₁₁]
+    (Q : Matrix (t ⊕ b) n ℝ) :
+    frobSq (M' * Q)
+      = frobSq (M'.toBlocks₁₁ *
+          (Q.submatrix Sum.inl id + ⅟M'.toBlocks₁₁ * M'.toBlocks₁₂ * Q.submatrix Sum.inr id))
+        + frobSq (M'.toBlocks₂₁ *
+            (Q.submatrix Sum.inl id + ⅟M'.toBlocks₁₁ * M'.toBlocks₁₂ * Q.submatrix Sum.inr id)
+          + schurCompl M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂
+              * Q.submatrix Sum.inr id) := by
+  have h := frobSq_schur_block_split M'.toBlocks₁₁ M'.toBlocks₁₂ M'.toBlocks₂₁ M'.toBlocks₂₂ Q
+  rwa [fromBlocks_toBlocks] at h
+
 end DLNFibre.DLN.RLCT
