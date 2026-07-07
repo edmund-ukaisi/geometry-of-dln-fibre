@@ -5,7 +5,7 @@ unconditional general-`L` Step Θ `link2_at_wstar_gaugeReg_gen` + `Kcoup_zero`).
 `hstep2` via `hstep2 = Step Θ ∘ Step Ψ_conj`. This card covers the **LINK-1 analytic reduction
 skeleton** + the **assembled compose** (pieces 2-plumbing + 3), and reports the remaining coupled bulk.
 
-Branch `origin/genm-hstep2psiconj` @ `<SHA pending push>`.
+Branch `origin/genm-hstep2psiconj` @ `490887df`.
 Lean module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestDiffeoBridgeGenConj.lean` (new, ~200 LoC, sorry-free).
 
 ## What lands here (sorry-free, clean-three)
