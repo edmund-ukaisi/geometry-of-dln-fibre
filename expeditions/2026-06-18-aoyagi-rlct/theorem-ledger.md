@@ -4,6 +4,23 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original tuple prior to edge-family prior transport note, 2026-07-07: the
+finite-dimensional fixed-basis transport now handles the original prior
+density, not only volume.  For measurable tuple set `S`, if
+`A |-> ENNReal.ofReal (density A)` is a.e. measurable on
+`(originalTupleVolume d).restrict S`, then pushing
+`(originalTuplePrior d density).restrict S` through `tupleToEdgeFamily b`
+equals the edge-family prior with density
+`E |-> density (edgeFamilyMatrixTuple b E)`, restricted to
+`tupleToEdgeFamily b '' S`.  The proof combines the existing restricted
+volume transport with `measure_map_withDensity_comp_of_aemeasurable` and the
+inverse identity `edgeFamilyMatrixTuple_tupleToEdgeFamily`.  This removes a
+real source-prior gap at the fixed-basis tuple/edge-family interface, but it
+does not identify an Aoyagi source-chart image measure, compute a
+retained-passive Jacobian, prove determinant/raw Haar transport, construct
+source density, prove source-rank/atlas coverage, normal crossings, pole
+order, or RLCT.
+
 Radius-free signed-box rank-cut residual-source shrink note, 2026-07-07: the
 strict rank-cut residual-source support-auto wrapper now has a radius-free API.
 The proof uses

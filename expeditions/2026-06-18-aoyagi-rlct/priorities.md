@@ -12,6 +12,31 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original tuple prior to edge-family prior transport
+
+Decision: move the source-prior frontier by proving the finite-dimensional
+fixed-basis transport from original tuple prior to original edge-family prior.
+
+For a measurable tuple-side set `S`, the existing volume theorem transports
+`(originalTupleVolume d).restrict S` through `tupleToEdgeFamily b` to
+`(originalEdgeFamilyVolume b).restrict (tupleToEdgeFamily b '' S)`.  The new
+theorem adds the prior density: if `A |-> ofReal (density A)` is a.e.
+measurable on the restricted tuple-volume measure, then pushing
+`(originalTuplePrior d density).restrict S` through `tupleToEdgeFamily b`
+equals the edge-family prior with density
+`E |-> density (edgeFamilyMatrixTuple b E)`, restricted to the image.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-tuple-prior-to-edge-family-prior-transport.md
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+This is not determinant/raw Haar transport and not source-chart transport.  It
+does not construct the source density, prove source-rank/atlas coverage,
+construct normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, radius-free signed-box rank-cut residual-source shrink
 
 Decision: remove the fixed selected-entry signed-box radius from the strongest

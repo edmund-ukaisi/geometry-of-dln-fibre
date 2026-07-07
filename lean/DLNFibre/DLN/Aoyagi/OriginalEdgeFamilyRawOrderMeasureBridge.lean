@@ -226,6 +226,108 @@ theorem map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamily
     using hrestrict'
 
 set_option linter.style.longLine false in
+/-- Transporting a restricted original tuple prior through fixed-basis edge
+family reconstruction gives the corresponding restricted edge-family prior.
+
+This is only finite-dimensional fixed-basis prior transport.  It does not
+identify an Aoyagi source-chart image measure, compute a retained-passive
+Jacobian, normalize Haar scalars, prove source-rank coverage, construct normal
+crossings, compute a pole order, or extract an RLCT. -/
+theorem map_tupleToEdgeFamily_originalTuplePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image
+    [MeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [OpensMeasurableSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    [BorelSpace (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ)]
+    (b : ∀ j, Module.Basis (Fin (d j)) ℝ (V j))
+    {density : Tuple (k := ℝ) d → ℝ}
+    {S : Set (Tuple (k := ℝ) d)}
+    (hS : MeasurableSet S)
+    (hdensity :
+      AEMeasurable (fun A : Tuple (k := ℝ) d ↦ ENNReal.ofReal (density A))
+        ((originalTupleVolume d).restrict S)) :
+    Measure.map (tupleToEdgeFamily (V := V) b)
+        ((originalTuplePrior d density).restrict S) =
+      (originalEdgeFamilyPrior (V := V) b
+        (fun E ↦ density (edgeFamilyMatrixTuple (V := V) b E))).restrict
+        ((tupleToEdgeFamily (V := V) b) '' S) := by
+  let T : Tuple (k := ℝ) d ≃L[ℝ]
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) :=
+    (edgeFamilyMatrixTupleContinuousLinearEquiv (V := V) b).symm
+  let edgeDensity :
+      (∀ p : Fin (M + 1), V p.castSucc →L[ℝ] V p.succ) → ℝ≥0∞ :=
+    fun E ↦ ENNReal.ofReal (density (edgeFamilyMatrixTuple (V := V) b E))
+  have hS_image : MeasurableSet (T '' S) := by
+    exact (T.toHomeomorph.toMeasurableEquiv.measurableSet_image).2 hS
+  have hcomp_density :
+      (fun A : Tuple (k := ℝ) d ↦ edgeDensity (T A)) =
+        fun A ↦ ENNReal.ofReal (density A) := by
+    funext A
+    dsimp [edgeDensity]
+    rw [show T A = tupleToEdgeFamily (V := V) b A by
+      rfl]
+    rw [edgeFamilyMatrixTuple_tupleToEdgeFamily]
+  have hleft :
+      (originalTuplePrior d density).restrict S =
+        ((originalTupleVolume d).restrict S).withDensity
+          (fun A ↦ edgeDensity (T A)) := by
+    rw [originalTuplePrior, restrict_withDensity hS]
+    rw [hcomp_density]
+  have hright :
+      (originalEdgeFamilyPrior (V := V) b
+          (fun E ↦ density (edgeFamilyMatrixTuple (V := V) b E))).restrict
+          (T '' S) =
+        ((originalEdgeFamilyVolume (V := V) b).restrict (T '' S)).withDensity
+          edgeDensity := by
+    rw [originalEdgeFamilyPrior, restrict_withDensity hS_image]
+  have hT_meas :
+      AEMeasurable T ((originalTupleVolume d).restrict S) :=
+    T.continuous.measurable.aemeasurable
+  have hedgeDensity :
+      AEMeasurable edgeDensity
+        (Measure.map T ((originalTupleVolume d).restrict S)) := by
+    change AEMeasurable edgeDensity
+      (Measure.map T.toHomeomorph.toMeasurableEquiv
+        ((originalTupleVolume d).restrict S))
+    rw [T.toHomeomorph.toMeasurableEquiv.measurableEmbedding.aemeasurable_map_iff]
+    change AEMeasurable (fun A : Tuple (k := ℝ) d ↦ edgeDensity (T A))
+      ((originalTupleVolume d).restrict S)
+    rw [hcomp_density]
+    exact hdensity
+  have hweighted :
+      Measure.map T
+          (((originalTupleVolume d).restrict S).withDensity
+            (fun A ↦ edgeDensity (T A))) =
+        (Measure.map T ((originalTupleVolume d).restrict S)).withDensity
+          edgeDensity := by
+    exact
+      measure_map_withDensity_comp_of_aemeasurable
+        (η := (originalTupleVolume d).restrict S)
+        (f := T) (g := edgeDensity) hT_meas hedgeDensity
+  have hvolume :
+      Measure.map T ((originalTupleVolume d).restrict S) =
+        (originalEdgeFamilyVolume (V := V) b).restrict (T '' S) := by
+    simpa [T, edgeFamilyMatrixTupleContinuousLinearEquiv,
+      edgeFamilyMatrixTupleLinearEquiv] using
+      map_tupleToEdgeFamily_originalTupleVolume_restrict_eq_originalEdgeFamilyVolume_restrict_image
+        (V := V) b S
+  calc
+    Measure.map (tupleToEdgeFamily (V := V) b)
+        ((originalTuplePrior d density).restrict S) =
+        Measure.map T
+          (((originalTupleVolume d).restrict S).withDensity
+            (fun A ↦ edgeDensity (T A))) := by
+          rw [hleft]
+          rfl
+    _ = (Measure.map T ((originalTupleVolume d).restrict S)).withDensity
+          edgeDensity := hweighted
+    _ = ((originalEdgeFamilyVolume (V := V) b).restrict (T '' S)).withDensity
+          edgeDensity := by rw [hvolume]
+    _ = (originalEdgeFamilyPrior (V := V) b
+          (fun E ↦ density (edgeFamilyMatrixTuple (V := V) b E))).restrict
+          ((tupleToEdgeFamily (V := V) b) '' S) := by
+          simpa [T, edgeFamilyMatrixTupleContinuousLinearEquiv,
+            edgeFamilyMatrixTupleLinearEquiv] using hright.symm
+
+set_option linter.style.longLine false in
 /-- Pushing a restricted raw-coordinate Haar measure through the raw-order
 readout and then reconstructing fixed-basis continuous edge families gives the
 corresponding restriction of `originalEdgeFamilyVolume`, up to the same

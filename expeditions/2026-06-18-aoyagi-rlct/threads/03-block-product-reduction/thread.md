@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 original tuple prior to edge-family prior transport
+
+Reproduction:
+
+```text
+reproduction-a2-original-tuple-prior-to-edge-family-prior-transport.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+Lean now has:
+
+```text
+map_tupleToEdgeFamily_originalTuplePrior_restrict_eq_originalEdgeFamilyPrior_restrict_image
+```
+
+For a measurable tuple-side set `S`, and an a.e.-measurable tuple prior
+density on `(originalTupleVolume d).restrict S`, this theorem identifies the
+pushforward of `(originalTuplePrior d density).restrict S` under
+`tupleToEdgeFamily b` with the corresponding restricted
+`originalEdgeFamilyPrior b (density o edgeFamilyMatrixTuple b)`.
+
+Boundary: this is fixed-basis tuple/edge-family prior transport only.  It does
+not identify a source-chart image measure, compute a retained-passive
+Jacobian, prove determinant/raw Haar transport, construct source density,
+prove source-rank or atlas coverage, construct normal crossings, compute pole
+order, or extract RLCT.
+
 ## 2026-07-07 A2 radius-free signed-box rank-cut residual-source shrink
 
 Reproduction:
