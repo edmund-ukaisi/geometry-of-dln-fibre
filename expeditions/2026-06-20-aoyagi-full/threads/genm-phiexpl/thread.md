@@ -453,3 +453,75 @@ three regular `M11,M12,M21` blocks (`nReg = r(H0+H2−r)`) from the `₂₂` blo
 `qₑ(0,·) = A0red·A1red` by the banked `reduced_core_zero_of_product_rank_le` (the `hfact` content), and
 `hRne` wraps `dlnLoss_deepest_core_ae_ne_zero` under `hpos`. Then the final wiring
 `d1ge_L2_hAtV_of_explicit_chart` closes the crux `d1ge_L2_hAtV_explicit`.
+
+## TIDE 7 — `e_idx` reindex core + core readback (branch `genm-phiexpl-close`, from `9bdd5f3b`)
+
+The coordinate/measure PLUMBING sub-tide (the "phip5" scope). Landed the reindex FOUNDATION in a new
+module `lean/DLNFibre/DLN/RLCT/Validate/D1L2ExplChartClose.lean`, sorry-free, axiom-clean
+`[propext, Classical.choice, Quot.sound]` (forced `#print axioms` on `e_idx`, `measurePreserving_splitMP`).
+Crux `d1ge_L2_hAtV_explicit` (in `D1L2ExplicitCoreProducer`) **UNTOUCHED** — still its correctly-stated
+`sorry`; `aoyagi_learning_coefficient_L2` axiom footprint UNCHANGED (still `sorryAx` from the crux —
+NOT closed, NOT laundered). Pushed to `origin/genm-phiexpl-close` (`89f94746`).
+
+### CLOSED this tide (▣, all in `D1L2ExplChartClose.lean`)
+
+> **The `e_idx` reindex core** (Codex-validated architecture, `codex/eidx-close-{prompt,answer}.md`).
+> - `RegIdx / CoreIdx / SpecIdx` — the semantic role-index types. `CoreIdx := FlatIdx (H−r)` (so the
+>   core slot is `paramsEquivFlat (H−r)`-ordered — no separate decode needed). `card_RegIdx = nRegL2`.
+> - `roleToFlat` (explicit forward) + `flatToRole0/1` (classifier) + `roleToFlat_leftInv` (injective)
+>   + `card_role_eq` (card = flatDim H) ⟹ `roleEquiv : RegIdx ⊕ (CoreIdx ⊕ SpecIdx) ≃ FlatIdx H`
+>   (via `Equiv.ofBijective` — forward is explicit, so readbacks are `rfl`-clean; layer dispatch by
+>   nested `Fin.cases` fully eliminating `s : Fin 2` to concrete `0`/`1`).
+> - `e_idx : Fin nReg ⊕ (Fin (flatDim (H−r)) ⊕ Fin specDim) ≃ Fin (flatDim H)` (roleEquiv ▸ equivFin's),
+>   `splitMP` (= `CoreSplitMP.splitOfPartition e_idx`, `measurePreserving_splitMP`), raw readbacks
+>   `splitMP_reg/core/spec`, and `e_idx_core` (core-slot reduction, `rfl`).
+> - **`paramsEquivFlat_symm_splitMP_core`** (the linchpin): `(paramsEquivFlat (H−r)).symm ((splitMP x).2.1)
+>   = coreParams x`, where `coreParams x` reads the two `₂₂` corners `((b x).1.toBlocks₂₂,
+>   (b x).2.toBlocks₂₂)` = the reduced `(H−r)` layers. Connects the MP split's core slot to
+>   `blockFlatEquiv_L2`.
+> - **`dlnLoss_coreParams`**: `dlnLoss (H−r) 0 (coreParams x) = ∑∑ (((b x).1₂₂ · (b x).2₂₂) i j)²`
+>   (via `prod_two_factor_L2` at the reduced widths) — the `hfact` value.
+
+### KEY FINDING (de-risks `hchart` — the remaining wall)
+
+**The three regular-block shifts are ZERO.** `F x = ∑_{a,bb} ((recoverProduct (b x + C₀) − Br₀) a bb)²`
+with `C₀ = schurChartRaw (b (flat v))`, `Br₀ = B.submatrix …`. The regular residuals are
+`M11 − Br₁₁ = (b x).2.toBlocks₁₁`, `M12 − Br₁₂ = (b x).2.toBlocks₁₂`, `M21 − Br₂₁ = (b x).1.toBlocks₂₁`
+— i.e. **the RAW `b x` block entries, with NO constant shift**, because at the optimum `prod v = B` the
+product-pivot corners of `C₀` equal the corresponding corners of `Br₀` (`C₀.2₁₁ = Br₁₁` etc., since
+both `= (prod v).submatrix I J`). So `∑ p²` (the regular directions) is a **pure coordinate reindex** of
+`F`'s regular part — `hchart` needs NO translation on the reg block (only the CORE needs the shift by
+`(A0red₀, A1red₀)`, which lives in the consumer's `e`, a translation). Each `b x` block entry is a single
+flat coord (`(b x).2 a b = (paramsEquivFlat H).symm x 1 (sumSplit K a)(sumSplit J b) = x (equivFin ⟨⟨1,
+sumSplit K a⟩, sumSplit J b⟩)`), so the reg readback is a clean sum-reindex over `regEquivFin`.
+
+### OPEN — remaining pieces to close the crux (in order; hchart is the wall)
+
+1. **Reg readback** [med]: `∑ i, (splitMP x).1 i ^ 2 = ∑_{M11}(b x).2₁₁² + ∑_{M12}(b x).2₁₂² +
+   ∑_{M21}(b x).1₂₁²` — a sum-reindex over `regEquivFin`/`roleToFlat` (analogous to the core readback,
+   but 3 sub-blocks). Shifts are zero (finding above), so no translation.
+2. **`qₑ`** [med]: `qₑ (p, t) : EuclideanSpace ℝ (Fin ((H0−r)(H2−r)))` = the flattened `₂₂` residual
+   `M21 · G(M11) · M12 + A0red · A1red − Br₂₂`, reading `M11 = p_{M11} + Br₁₁` (etc.) from `p` and
+   `A0red = (core of t) + A0red₀`, `A1red = (core of t) + A1red₀` from `t`, with `G` = banked bump-`G`
+   (`exists_contDiff_matrixInv_eventuallyEq` at `M11₀ = Br₁₁`). `ContDiff ℝ 1 qₑ` from `contDiff_matrix_*`.
+   On `p = 0`, `M21 G(M11) M12 − Br₂₂ = Br₂₁ Br₁₁⁻¹ Br₁₂ − Br₂₂ = 0` (Schur cplt of `Br₀`, rank ≤ r,
+   `Core.schur_complement_zero_of_rank_le`), so `qₑ(0,t) = A0red · A1red = (W'+A0red₀)(V'+A1red₀)`.
+3. **`splitHomeo`** [low]: a `Homeomorph` with `splitMP`'s `toEquiv` (needed for `rlctAtOn_comp_homeomorph`,
+   which wants `≃ₜ`, not `≃ᵐ`) — build from `Homeomorph.piCongrLeft` + the `sumPiEquivProdPi`/`prodCongr`
+   homeomorphs (mirror `CoreSplitMP.splitOfPartition`), or reuse an existing `splitHomeo` pattern
+   (`D1HChartResidual`).
+4. **`hchart`** [HIGH — the wall]: `rlctAt H (dlnLoss H B) v = rlctAtOn (∑p² + ∑qₑ²) ((0), t0)` via the
+   germ `schur_loss_germ_L2_rlct` (`rlctAt = rlctAtOn F 0`) ▸ `rlctAtOn_comp_homeomorph` (splitHomeo,
+   MP) ▸ `rlctAtOn_congr_germ` (`F ∘ splitHomeo.symm =ᶠ ∑p² + ∑qₑ²` near `splitHomeo 0 = (0, t0)`; the
+   `M11⁻¹ → G` swap is valid only NEAR the base, hence `=ᶠ`). Split `F`'s 4-block sum into reg (= ∑p²,
+   reg readback) + `₂₂` (= ∑qₑ², germ). `t0 := (splitMP (flat v ... 0)).2` with reg component 0.
+5. **`hfact`** [low, from `dlnLoss_coreParams` + core readback]: with `e` = translation by
+   `coreShift := paramsEquivFlat (H−r) (paramsSplitL2⁻¹ (A0red₀, A1red₀))`, `u ≡ 1`.
+6. **`hRne`** [low]: wrap `dlnLoss_deepest_core_ae_ne_zero` (under `hpos`) transported through `e`.
+7. **Final wiring**: `d1ge_L2_hAtV_of_explicit_chart` (banked consumer) with `Y := (Fin (flatDim (H−r))
+   → ℝ) × (Fin specDim → ℝ)`, `e = translation`, `u ≡ 1`; then `D1L2ExplicitCoreProducer` imports
+   `D1L2ExplChartClose` and `d1ge_L2_hAtV_explicit`'s body becomes the wiring (removes the sorry).
+
+**Honest scope read.** The reusable coordinate/measure core (pieces landed above) is banked. The
+remaining is the `hchart` germ (piece 4, the wall) + the mechanical `qₑ`/`splitHomeo`/`hfact`/`hRne`/wiring
+around it — a focused follow-up. The crux stays an HONEST `sorry` until piece 4 lands (not laundered).
