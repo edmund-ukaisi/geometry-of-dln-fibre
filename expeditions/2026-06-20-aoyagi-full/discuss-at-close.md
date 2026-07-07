@@ -2035,3 +2035,16 @@ narrower construction. The mission says BUILD not cite; but this specific brick 
 tradeoff is a genuine scope call rather than "just labor." The D1 ∀-L leg (#120) has no such brick — it
 closes as bounded IFT labor (hstep2 in flight). This item is the honest ETA-determining question for the
 R1-UPPER leg.
+
+## 53. RESOLVED — #52's R1-UPPER scope-question → BOUNDED-A via R-BLOWUP (no operator scope-call needed). (2026-07-07)
+The buildability assessment (sjjointdesign + a decorrelated Codex xhigh, IDENTICAL verdict) resolves #52: the
+product-Gram principalisation (the feared B / resolution-of-singularities wall) is AVOIDED entirely by
+routing the degenerate strata through Aoyagi's native single-radial R-BLOWUP (the hard determinantal object
+never forms), and R-BLOWUP is A (break-it-down-buildable) — chart algebra on the BANKED radial engine +
+monomial endpoint + (2,2,2) templates + banked charge budget. So R1-UPPER charges as BOUNDED LABOR, not an
+operator build-vs-cite scope-call — consistent with the mission (build, don't cite). Two caveats for close:
+(i) the deepest sub-brick is the general-(L,S,J) single-radial blow-up chart lemma (large formalisation, NOT
+res-of-sing, templates+value banked) — the honest ETA-driver; (ii) STRATEGIC HAZARD (recorded in lessons):
+the anisotropic Γ-atom is for the CLEAN full-rank slice ONLY; the degenerate strata MUST route to R-BLOWUP,
+never the atom's Gram principalisation (that path hits the B-wall). The in-flight R1ResolutionGeneral is the
+correct (A) architecture.

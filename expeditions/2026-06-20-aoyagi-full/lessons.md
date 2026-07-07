@@ -1135,3 +1135,18 @@ waits. Verify a tide via `scripts/lb <Module>` (module build) + force-`#print ax
 siblings; batch ONE full-lib gate when the farm is clear. (4) This is the 2nd build-status misjudgment in one
 session (after sjpeel2 "stalled"→duplication) — the meta-lesson: be conservative about declaring a build
 stalled/dead; wait for the harness notification; never kill/re-charge on ambiguous signals.
+
+## Fresh lean-formalisers MUST be spawned with `isolation: worktree` (2026-07-07, atombuild incident)
+Spawning a fresh lean-formaliser via the Agent tool WITHOUT `isolation: worktree` runs it in the
+controller's MAIN checkout cwd. If its setup does `git checkout -b <branch>` (as instructed), it SWITCHES
+THE MAIN CHECKOUT's branch — hijacking the controller checkout (observed: main checkout → genm-atom
+@2e334df6, working tree reverted to old peel-stack content). The loop-prompt already mandates
+`isolation: worktree` for fresh formalisers; I violated it for `atombuild`.
+**Why:** the controller must stay on expedition/aoyagi-full in the main checkout to integrate; a formaliser
+that switches that branch breaks the controller's workflow (this is the #45 risk, now realized on MY branch).
+**How to apply:** (a) ALWAYS pass `isolation: worktree` when spawning a fresh lean-formaliser via Agent;
+(b) instruct teammates to `git worktree add` / operate in their OWN worktree, never a bare `git checkout -b`
+in a shared cwd; (c) recovery = TaskStop the mis-homed agent → `git checkout expedition/aoyagi-full` (canonical
+is safe on origin; remove any duplicate-untracked files blocking the switch first, preserving genuinely-new
+untracked artefacts) → re-spawn with isolation. Pen-and-paper teammates (docs-only, no branch ops) sharing the
+main checkout is tolerable, but they must NOT run git branch operations there.
