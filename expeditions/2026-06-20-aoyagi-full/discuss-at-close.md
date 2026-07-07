@@ -2118,3 +2118,5 @@ of live work is ~10 lower than the raw total. Recommend removal at a consolidati
 (Operator: no action — a goal-distance transparency note. If you'd rather I keep dead exploratory routes on the
 branch for provenance vs delete them to keep canonical's sorry-count honest, say so; default is remove at next
 consolidation.)
+
+**UPDATE (2026-07-07, r1lowerscope): ADD the R1-LOWER line-133 orphan to this cleanup.** `routeMCore_box_diverges_achiever` (`RouteMLayerCoverGE.lean:133`) + its consumer `layerCover_hdiv` are ALSO orphaned — the LIVE R1-LOWER leg (`r1_resolution_general`, sorry-free ∀L) builds `hdiv` inline via the 4-way stratified dispatch (`routeMCore_box_diverges_achiever_full'`), NOT via line-133. Nothing consumes `layerCover_hdiv`. Superseded by the stratified build; remove (or restate with `hMpos`/`hne` + wire `_full'`, ~3 lines) at the same consolidation pass. Same category as the interiorLDU trio (dead-sorry, sorry-count honesty). Also in this bucket: `RouteMRecursion.lean:257` — a superseded value-arm whose removal is the ChainDimSplit→routeLayerAtlas MIGRATION (staged surgery, distinct from a pure delete).
