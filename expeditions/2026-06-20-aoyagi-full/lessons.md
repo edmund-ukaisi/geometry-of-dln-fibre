@@ -1150,3 +1150,21 @@ in a shared cwd; (c) recovery = TaskStop the mis-homed agent → `git checkout e
 is safe on origin; remove any duplicate-untracked files blocking the switch first, preserving genuinely-new
 untracked artefacts) → re-spawn with isolation. Pen-and-paper teammates (docs-only, no branch ops) sharing the
 main checkout is tolerable, but they must NOT run git branch operations there.
+
+## A reduction-to-germs' germ SATISFIABILITY is load-bearing — not just the faithful implication (2026-07-07)
+Two "reduce the last sorry to germs/peels" steps this expedition were banked + (for hstep2) reviewer-PASSED
+as FAITHFUL implications (`germs ⟹ goal`), yet had germs that were UNSATISFIABLE or on the WRONG route —
+caught only when the NEXT tide tried to BUILD the germ:
+- **hstep2**: `deepest_diffeo_bridge_gen_impl` (single-Ψ-step, NAIVE coreAbsorb) — faithful implication, but
+  the germ `huntwist` is unsatisfiable (naive cores `S^naive` ≠ honest `S^conj` at first order; a left-shear
+  can't bridge them). Fix: the two-step `Step Θ ∘ Step Ψ_conj` (mirror the accepted L2). Caught by
+  hstep2chain's satisfiability numeric + the repo's own L2 docstring + Codex.
+- **R1-UPPER**: the "Gram c.o.v. `Γ↦Γ·Q_b`" anisotropy-removal — the atom/dead route (produces the full-space
+  `det^{−p/2}` wall), not the pure route. Caught by sjcarrier (algebra + certs + Codex).
+**Why:** a reduction can be a faithful *sufficient* condition whose hypothesis cannot be met (vacuous) or is on
+a dead route — the implication-check (does discharging the germs close the goal?) does NOT catch this.
+**How to apply:** when banking a reduction-to-germs, the immediately-next step (or the reviewer) MUST check the
+germ SATISFIABILITY / route-alignment (a small numeric discriminator or design pass) BEFORE committing the big
+germ-build; a reviewer verifying a reduction should check BOTH faithfulness AND satisfiability. The design-first
+/ honest-partial discipline (refuse to build the germ on an unsatisfiable/wrong-route target) is what made both
+catches cheap (a scoping tide, not a wasted ~300-line build).
