@@ -518,10 +518,15 @@ Jacobian-1 reduction exposes the corank block `Γ : (M₀−t)×(M₁−t)`; rad
 review, `genm-sjpeel`):** the naive fixed-`Q` POINTWISE lift of this bound is FALSE — with `P_tail` computed
 as `Real.rpow` inside `ofReal`, `0^{neg} = 0` (not `+∞`), so on the degenerate locus `{P_tail = 0}` (e.g.
 `Q`'s top rows vanish, or the identically-empty `t = 0` top-rows) the RHS collapses to `0` while the LHS is
-positive. Under the OUTER `A'`-integral this locus is null (harmless to `jointPeelIntegral`'s VALUE), so the
-INTEGRATED conclusion here is sound, but the proof must use `lintegral_mono_ae` with the degenerate
-tail-product locus shown null (or reformulate `jointPeelIntegral`'s singular factor via `ENNReal.rpow` so
-`0^{neg} = ⊤` — a `jointPeelIntegral` signature change, to escalate). The internal chart step is piece 2. -/
+positive. **Sharper (finding, `genm-sjpeel-blow`): the pointwise route fails MORE broadly than the
+`{P_tail=0}` null locus, so `lintegral_mono_ae` on a pointwise inner bound is UNSOUND.** The pointwise
+bound `∫_{A₀∈box} frobSq(A₀·Q)^{−c'} ≤ C·∑_t P_tail^{−(c'−a/2)}·P_full^{−a/2}` (uniform `C`) is FALSE for
+`c' ≥ M₀/2` near the rank-deficient-`Q` locus: there the LHS DIVERGES (`∫‖A₀·u‖^{−2c'}` over the rank
+direction `u` is non-integrable once `2c' ≥ M₀`) while the RHS stays finite, so the ratio `→ ∞` and no
+uniform `C` exists (that neighbourhood is NOT null). `sjBoundaryPeel` IS true, but its honest proof is the
+per-pivot-chart radial blow-up INTEGRATED over each chart (coupling `A₀` and `A'` — the `(S,J)` content),
+consuming the isotropic corank atom `matBox_corank_residual_le` (`RouteMSJCorankResidual.lean`) after the
+anisotropy is removed. The internal chart step is piece 2. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧
