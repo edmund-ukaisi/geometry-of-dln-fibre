@@ -12,6 +12,46 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-volume readback p.13/readback-preimage support
+
+Decision: expose the with-following original-volume readback bridge on
+p.13/readback-preimage chart pieces.
+
+The new theorem first obtains a local image equality
+
+```text
+sourceChart '' W = p13SourceSet ∩ readback ⁻¹' W,
+```
+
+then applies the existing original-volume readback bridge inside `W`, producing
+`V ⊆ W`.  The generic image-shrink lemma transfers the equality to `V`, so
+the caller may supply
+
+```text
+chartPiece ⊆ p13SourceSet
+chartPiece ⊆ readback ⁻¹' V
+```
+
+instead of a direct `chartPiece ⊆ sourceChart '' V` proof.  The readback
+domination returned by the old bridge over `thetaReference.restrict W` is
+composed with `W ⊆ G` to target `thetaReference.restrict G`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-p13-readback-preimage-support.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-readback-p13-readback-preimage-support.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean
+```
+
+This is support conversion only.  It does not prove raw-Haar transport,
+determinant-chart Haar transport, source-prior or original-prior transport,
+source-image coverage beyond the local with-following chart, source-rank
+coverage, normal crossings, pole order, or RLCT.  The next substantive
+frontier remains the with-following local COV/formal-product-vs-source-image
+comparison or the source-prior/full-image bridge, not another finite-integral
+adapter.
+
 ## Latest controller decision - 2026-07-07, signed-box local selected-entry source continuous-density shrink
 
 Decision: specialize the local-source continuous supplied-density theorem to

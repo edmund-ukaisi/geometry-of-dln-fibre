@@ -18,6 +18,15 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following original-volume readback bridge
+  now has a p.13/readback-preimage support form.  The theorem exposes
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` and consumes chart
+  pieces satisfying p.13 support plus readback-preimage support, deriving the
+  direct source-image containment internally.  The raw-pushforward equality
+  remains explicit; no raw-Haar transport, determinant-chart Haar transport,
+  source-prior/original-prior transport, source-image or source-rank coverage,
+  normal-crossing, pole-order, or RLCT result is added.
+
 - 2026-07-07, Thread 03: the selected-entry local-source
   continuous-density readback theorem now has a concrete signed-box source
   specialization.  It sets the source parent to

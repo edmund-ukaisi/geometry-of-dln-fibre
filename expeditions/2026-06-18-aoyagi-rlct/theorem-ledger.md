@@ -4,6 +4,21 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original-volume readback p.13/readback-preimage support note, 2026-07-07: the
+with-following original-volume readback bridge now has a p.13/readback-preimage
+support form.  Lean first obtains a local equality
+`sourceChart '' W = p13SourceSet ∩ readback ⁻¹' W`, then applies the existing
+conditional original-volume readback bridge inside `W`, returning `V ⊆ W`.
+The generic image-shrink lemma gives
+`sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V`; hence
+`chartPiece ⊆ p13SourceSet` and `chartPiece ⊆ readback ⁻¹' V` imply
+`chartPiece ⊆ sourceChart '' V`.  The old readback bridge then supplies
+a.e. measurability and domination, and restriction monotonicity upgrades the
+target from `thetaReference.restrict W` to `thetaReference.restrict G`.  This
+is local support conversion only: no raw-Haar transport, determinant-chart
+Haar transport, source-prior/original-prior transport, source-image coverage,
+source-rank coverage, normal crossings, pole order, or RLCT is proved.
+
 Signed-box local selected-entry source continuous-density shrink note,
 2026-07-07: the selected-entry local-source continuous-density readback theorem
 now has a concrete signed-box source-parent specialization.  For

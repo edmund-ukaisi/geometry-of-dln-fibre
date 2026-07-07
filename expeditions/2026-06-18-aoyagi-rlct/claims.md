@@ -10,6 +10,45 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 original-volume readback p.13/readback-preimage support - 2026-07-07
+
+- **Statement.** The with-following original-volume readback bridge can consume
+  measurable chart pieces satisfying `chartPiece ⊆ p13SourceSet` and
+  `chartPiece ⊆ readback ⁻¹' V`, rather than requiring a separate direct proof
+  of `chartPiece ⊆ sourceChart '' V`.  The returned local shrink exposes
+  `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V`.
+- **Tier.** A2 with-following local source-image support conversion for the
+  original-volume readback socket.
+- **Status.** Lean proved and checkpoint-verified.
+- **Kill-condition.** The theorem is read as proving raw-Haar transport,
+  determinant-chart Haar transport, source-prior or original-prior transport,
+  source-image coverage beyond the local with-following chart, source-rank
+  coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 retained-passive p.13 source chart and
+  pp. 19-22 selected-pivot Case 2 coordinates justify the local chart shape.
+  The proof is Lean-local support bookkeeping using the already formalised
+  p.13/readback image equality and the existing original-volume readback
+  bridge.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-p13-readback-preimage-support.md`.
+- **Reproduction check.** Xhigh read-only reviewer
+  `Chandrasekhar the 2nd` found one documentation-only status issue and
+  otherwise passed the theorem-boundary audit after the statement card was
+  updated.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-original-volume-readback-p13-readback-preimage-support.md`.
+- **Lean target.**
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_p13SourceSet_readback_preimage`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadback.lean`.
+- **Proved.** Focused `lake env lean` and focused module build passed for the
+  touched Lean file/module.  `scripts/sorries`, `git diff --check`, diff-local
+  tab scan, direct axiom probe, and xhigh read-only review passed.  The new
+  declaration reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No raw-Haar transport, no determinant-chart Haar transport,
+  no source-prior or original-prior transport, no source-image coverage beyond
+  the local with-following chart, no source-rank coverage, no normal crossings,
+  no pole order, and no RLCT extraction.
+
 ## Current A2 signed-box local selected-entry source continuous-density shrink - 2026-07-07
 
 - **Statement.** The Case 2 selected-entry local-source

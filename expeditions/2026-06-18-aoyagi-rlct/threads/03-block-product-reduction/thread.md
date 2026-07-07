@@ -23738,6 +23738,51 @@ determinant-chart Haar transport, no source-image/source-rank coverage, no
 original source-prior transport, no scalar normalization, no normal crossings,
 no pole order, and no RLCT extraction.
 
+## 2026-07-07 A2 with-following original-volume readback p.13/readback-preimage support
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-original-volume-readback-p13-readback-preimage-support.md
+```
+
+Statement card:
+
+```text
+statement-card-a2-with-following-original-volume-readback-p13-readback-preimage-support.md
+```
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_p13SourceSet_readback_preimage
+```
+
+The theorem first gets a local with-following p.13/readback image equality on
+`W`, then applies the existing original-volume readback bridge inside `W`,
+returning `V subset W`.  The image-shrink lemma gives
+
+```text
+sourceChart '' V = p13SourceSet inter readback^{-1}(V).
+```
+
+Thus chart-piece p.13 support plus readback-preimage support implies the
+direct `chartPiece subset sourceChart '' V` hypothesis required by the older
+bridge.  The old domination target `thetaReference.restrict W` is then
+composed to `thetaReference.restrict G` by restriction monotonicity.
+
+Focused `lake env lean` and focused module build passed for
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadback`.  `scripts/sorries`,
+`git diff --check`, diff-local tab scan, direct axiom probe, and xhigh
+read-only review passed.  The declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
+Nonclaims: this is local support conversion only.  It keeps the raw-pushforward
+equality explicit and proves no raw-Haar transport, determinant-chart Haar
+transport, source-prior or original-prior transport, source-image coverage
+beyond the local with-following chart, source-rank coverage, normal crossings,
+pole order, or RLCT.
+
 ## 2026-07-03 with-following readback product-residual prior transfer
 
 Lean now proves:

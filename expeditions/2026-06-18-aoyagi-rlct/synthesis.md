@@ -6,6 +6,52 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 original-volume readback p.13/readback-preimage support - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-readback-p13-readback-preimage-support.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_readback_le_smul_sourceReference_same_shrink_of_case2PassiveThetaWithFollowingFactor_rawMap_eq_restrict_rawSource_of_chartPiece_subset_p13SourceSet_readback_preimage
+```
+
+This is the p.13/readback-preimage support form of the with-following
+original-volume readback bridge.  The proof first shrinks to `W` with
+
+```text
+sourceChart '' W = p13SourceSet ∩ readback ⁻¹' W,
+```
+
+then applies the existing raw-pushforward conditional readback bridge inside
+`W`, yielding `V ⊆ W`.  The existing image-shrink lemma gives
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V,
+```
+
+so p.13 support plus readback-preimage support implies actual source-image
+support for the old bridge.  The returned domination is composed from
+`thetaReference.restrict W` to `thetaReference.restrict G`.
+
+This removes a live direct source-image containment hypothesis for callers
+working on p.13/readback-preimage patches.  It still assumes the raw-source
+pushforward equality.  It does not prove raw-Haar transport, determinant-chart
+Haar transport, source-prior or original-prior transport, source-image
+coverage beyond the local with-following chart, source-rank coverage, normal
+crossings, pole order, or RLCT.
+
+Focused `lake env lean` and focused local `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadback`
+passed.  `scripts/sorries`, `git diff --check`, diff-local tab scan, direct
+axiom probe, and xhigh read-only review passed.  The declaration reports only
+`[propext, Classical.choice, Quot.sound]`.  Reviewer `Chandrasekhar the 2nd`
+found only the now-fixed statement-card status issue.
+
 ## A2 signed-box local selected-entry source continuous-density shrink - 2026-07-07
 
 Reproduction:
