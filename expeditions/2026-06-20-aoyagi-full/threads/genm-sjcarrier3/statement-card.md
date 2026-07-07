@@ -101,4 +101,14 @@ shared-divisor faithfulness must be tracked **generator-by-generator**.
 sorry-free; clean-three; `scripts/sorries` = 0 for the module; full aggregator NOT yet wired
 (`DLNFibre.lean` is single-writer — controller to add `import DLNFibre.DLN.RLCT.Validate.RouteMSJLedger`
 at the end). No name clashes with siblings (`rg`-checked). Isolated `scripts/lb
-DLNFibre.DLN.RLCT.Validate.RouteMSJLedger` green (2709 jobs). Awaiting reviewer fidelity check.
+DLNFibre.DLN.RLCT.Validate.RouteMSJLedger` green (2709 jobs). 379 LoC.
+
+**Reviewer: SURVIVED** (independent fidelity + soundness audit, decorrelated Codex xhigh corroborated
+Q1 faithfulness + Q5 overclaim). All six checks pass: `sharedDivisorExp = ⨅ᵢ` faithful (monomial-gcd,
+not pairwise); terminal bridge EXACT with `k = sharedDivisorExp` (not `2k`); H1/H2 hypotheses honest
+(satisfiable, not vacuous, not hiding the hard part); Case-2 step matches `frobSq_smul_mul`'s `u²`;
+scope honest (`sjJointResolution` untouched); forced-recompile `#print axioms` clean-three, no
+`monomial_rlct`/`sorryAx`. Two LOW observations, both addressed: (1) added the in-file H1-path witness
+`suppDehom = [[1,0],[1,1]]` + its `∃ i₀` example (the finiteness hypothesis is genuinely satisfiable);
+(2) the DATA-A RLCT values (½ / 1) are cited-motivation (attributed to DATA-A), not in-file theorems —
+the module proves only the `k`-exponents, correctly.

@@ -363,4 +363,17 @@ example (u : Fin 3 → ℝ) :
       = (commonDivisor suppShared u) ^ 2 * sjLoss (residualSupport suppShared) u :=
   sjLoss_factor suppShared u
 
+/-- A support with a **dehomogenised generator** (`bᵢ₀ = g`): `e = [[1,0],[1,1]]`. -/
+def suppDehom : SJSupport (Fin 2) 2 := fun i => ![![1, 0], ![1, 1]] i
+
+/-- **Non-vacuity of the terminal-finiteness hypothesis H1** (`sjLoss_terminal_lintegral_lt_top`'s
+`∃ i₀, ∀ℓ, e i₀ ℓ = sharedDivisorExp e ℓ`). On `suppDehom` generator `0` is the dehomogenised
+coordinate — `suppDehom 0 = [1,0]` equals `sharedDivisorExp suppDehom = [min 1 1, min 0 1] = [1,0]`
+at every `ℓ` — so its residual monomial is `1` (`sjLoss_residual_ge_one` fires) and the H1 path is
+inhabited (`b₀ = g`): the finiteness endpoint's hypothesis is genuinely satisfiable. -/
+example : ∃ i₀ : Fin 2, ∀ ℓ : Fin 2, suppDehom i₀ ℓ = sharedDivisorExp suppDehom ℓ := by
+  refine ⟨0, fun ℓ => ?_⟩
+  rw [sharedDivisorExp_fin_two]
+  fin_cases ℓ <;> rfl
+
 end DLNFibre.DLN.RLCT
