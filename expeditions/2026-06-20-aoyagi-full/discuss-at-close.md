@@ -2009,3 +2009,29 @@ remaining construction). **For operator (awareness, non-blocking):** this is the
 mountain — the general-L `rlct ≥ ½·codim` leg's last piece is a real (S,J) double-induction build, not a
 finish-line plumbing sorry. It corrects any "peel = 1 sorry, almost done" read. No wall; a genuine multi-stage
 grind. The D1 leg (#120) is in better shape (sub-lemma 1 banked, interior frames closing, hstep2 the crux).
+
+## 52. The R1-UPPER summit's deepest brick is PRODUCT-GRAM PRINCIPALISATION (resolution-of-singularities) — bounded-math, NON-STANDARD formalisation. Scope-check. (2026-07-07)
+sjjointdesign + a decorrelated Codex xhigh (construction withheld, independently reproduced everything)
+established that the R1-UPPER outer-residual finiteness CLOSES at c'<½minAdm — it is Aoyagi's coupled
+diag(b) (S,J) resolution (mapped to the paper, value-certified general-L). So there is **no math wall**.
+BUT the honest bottom of the leg is now precisely located, and it is NOT the "large-but-standard" build the
+ambition mandate targets:
+- The recursion needs a DECORATED statement `I_π(s)=∫ W_π·F_π^{−s}` (rank-profile-indexed, carrying the
+  Gram weight + a divisor-support table); the plain `sjJointResolution` can't recurse. Bounded (arity
+  induction, threshold monotonicity verified 0/171) — a re-scope, not a wall.
+- THE deepest brick: joint **principalisation** of `det(Q_b Q_bᵀ)=‖∧^q Q_b‖²` of the matrix PRODUCT
+  `Q_b=A·Z`, tracking shared divisor support at corank≥2. This is **resolution-of-singularities /
+  principalisation of a product** — Mathlib largely lacks this machinery; a clean CoV+Fubini+monomial route
+  does NOT suffice. sjjointdesign explicitly does NOT label it "bounded-standard."
+**This corrects my earlier "no research wall" read** (precision): there is no MATH wall (Aoyagi's
+resolution, value-certified, decorrelated), but ONE genuine-new NON-STANDARD-FORMALISATION brick at the
+R1-UPPER summit. **For operator (the scope question, non-blocking — I am charging the bounded scaffold to
+ISOLATE this brick, and commissioned a BUILDABILITY assessment [Mathlib recon: exterior-power det /
+polar-rank / product monomialization — break-it-down-buildable à la #120, or from-scratch
+resolution-of-singularities?]):** once isolated + the buildability verdict is in, the decision is
+build-the-brick-from-scratch (a major, possibly multi-expedition formalisation of product principalisation)
+vs a scoped citation of THIS ONE brick (the finiteness of the resolved product integral, Aoyagi-cited) vs a
+narrower construction. The mission says BUILD not cite; but this specific brick is the one place that
+tradeoff is a genuine scope call rather than "just labor." The D1 ∀-L leg (#120) has no such brick — it
+closes as bounded IFT labor (hstep2 in flight). This item is the honest ETA-determining question for the
+R1-UPPER leg.
