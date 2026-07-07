@@ -6,9 +6,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartAlgebra
 The single hardest sub-brick of the general-`(L,S,J)` single-radial blow-up chart lemma (the R-BLOWUP
 route; `expeditions/2026-06-20-aoyagi-full/threads/genm-sjjoint-design/chart-lemma-probe.md`), at
 **general (opaque) widths**. It composes two exact identities into one corank-decrementing step and
-proves the *sequential-independence* invariant the design (and decorrelated Codex) named as the crux:
-the introduced radials/chart-vars factor out as an overall scalar prefix, and the deeper term is
-radial-free — this is why the resolution is sequential, not simultaneous.
+proves the *sequential-independence* invariant the design (and decorrelated Codex) identified as the
+hardest bounded sub-brick to formalise: the introduced radials/chart-vars factor out as an overall
+scalar prefix, and the deeper term is radial-free — so the resolution is sequential, not simultaneous.
 
 The step, for a corank block `Δ = fromBlocks A B C D` (`A` the invertible `t × t` pivot) coupled to any
 downstream product `Q`, under Aoyagi's Case-2 single radial blow-up `Δ ↦ u • Δ`:
@@ -27,9 +27,9 @@ The **prefactor-preserving** form (`corankStep_prefactor`) carries an accumulate
 `pref` (Aoyagi's `∏ bᵢ²`) through: `pref · frobSq((u • Δ)·Q) = (pref · u²) · residual`. The radial `u`
 and `pref` factor out as the single scalar `pref · u²`; the residual is `u`-free and `pref`-free — so a
 *later* downstream blow-up multiplies a fresh `u'²` in without ever dividing the earlier prefix
-(`corankStep_sequential`, the two-step accumulation witness). This is the exact algebraic realisation of
-steps 1 + 3 of the chart-lemma probe; the measure-theoretic Morse peel of the pivot energy
-`frobSq (A · Q̃)` (step 2's integration) is the banked `radial_morse_residual_power_le`, NOT part of this
+(`corankStep_sequential`, the two-step accumulation witness). This is the exact algebraic content of the
+chart-lemma probe's single-radial factoring and prefactor preservation; the measure-theoretic Morse peel
+of the pivot energy `frobSq (A · Q̃)` is the banked `radial_morse_residual_power_le`, NOT part of this
 pointwise identity.
 
 S2-FREE: pure matrix algebra (`frobSq`, `smul_mul`, the Schur split); axiom-clean
@@ -99,9 +99,9 @@ single scalar `pref · u²`, and the residual is BOTH `u`-free and `pref`-free:
 
     pref · frobSq ((u • fromBlocks A B C D) · Q) = (pref · u²) · ( residual ).
 
-This is the load-bearing "relative resolution invariant": the earlier exceptional coordinates are
-passive scalar prefixes on the active residual, never divided by the downstream resolution — the reason
-the `(S,J)` resolution is sequential, not simultaneous. -/
+This is the "relative resolution invariant": the earlier exceptional coordinates are passive scalar
+prefixes on the active residual, never divided by the downstream resolution — so the `(S,J)` resolution
+is sequential, not simultaneous. -/
 theorem corankStep_prefactor (pref u : ℝ) (A : Matrix t t ℝ) (B : Matrix t b ℝ) (C : Matrix a t ℝ)
     (D : Matrix a b ℝ) [Invertible A] (Q : Matrix (t ⊕ b) n ℝ) :
     pref * frobSq ((u • fromBlocks A B C D) * Q)
