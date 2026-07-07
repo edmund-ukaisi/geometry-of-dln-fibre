@@ -47,7 +47,12 @@ NOT the atom). Branch `genm-rblowuppure`, off `origin/genm-rblowup2` @9818b832.
 >   step); `lintegral_congr` over `z` then reduces the goal to the banked flat abstract-`Z` dominance
 >   `radial_morse_dominates_absZ_lt_top` (the `z`-independent inner bound `Kbound (pq) c' T` pulled out
 >   against `μ Z`). ~60 LoC, S2-free.
-> - **Status.** sorry-free (pending reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (independent reviewer @ `genm-rblowuppure`: **FAITHFUL** — signature
+>   faithful, non-vacuous, threshold `c' < pq/2` tight/load-bearing (via `W z = 0` ⟹ `|D|^{−2c'}`), name
+>   honest (finiteness only), Proved/Deferred split correct, S2-free re-confirmed by forced `#print axioms`.
+>   Two notes flagged as INFERENCE not defect: the `pq = (M₀−t)(M₁−t)` DLN-charge wiring is interpretation
+>   the Lean object doesn't carry; "Verdict A holds at the chart-algebra level, in Lean" is supported for the
+>   per-step algebra + terminal but the full recursion closing is deferred — both correctly hedged in-card).
 
 ## Supporting lemma (same module)
 
