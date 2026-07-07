@@ -10,6 +10,43 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following loss dominates readback product residual - 2026-07-07
+
+- **Statement.** On a local with-following p.13/readback rank-cut patch, the
+  original fixed-basis square-Frobenius `lossDLN` dominates the
+  with-following readback product-residual square-sum up to a positive scalar.
+- **Tier.** A2 local analytic-algebraic loss/product-residual comparison.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The result is read as source coverage, source-rank atlas
+  coverage, source-prior or original-prior transport, determinant/raw Haar
+  transport, residual integrability, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 provide the fixed p.13 product
+  reduction and pp. 19-22 provide the selected-pivot Case 2 coordinate shape.
+  The proof composes existing Lean facts: the fixed-base endpoint `lossDLN`
+  lower bound, determinant-sector equality of the fixed p.13 residual block
+  with the with-following product residual, the local source-chart left
+  inverse, and nonnegativity of finite coordinate square-sums.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-loss-dominates-readback-product-residual.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Aquinas the 2nd` found no
+  theorem-boundary or proof-scope issues, confirmed source fidelity against the
+  reproduction, and marked the statement card ready.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-loss-dominates-readback-product-residual.md`.
+- **Lean target.**
+  `exists_pos_const_eventually_readbackProductResidual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_rankCut_of_sourceChart_image_eq`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductResidualBridge.lean`.
+- **Proved.** The theorem produces `c > 0` and an eventual inequality on
+  `(p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum`, under explicit local
+  image, left-inverse, determinant-sector, fixed-source-datum, centering, and
+  endpoint-basis hypotheses.  Focused `lake env lean`, focused module build,
+  `DLNFibre.lean` elaboration, `scripts/sorries`, whitespace checks,
+  forbidden-marker scan, direct axiom probe, and xhigh review passed.  The
+  declaration reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source coverage, no source-rank atlas coverage, no
+  source-prior/original-prior transport, no determinant/raw Haar transport, no
+  residual integrability, no normal crossings, no pole order, and no RLCT.
+
 ## Current A2 original-volume readback p.13/readback-preimage support - 2026-07-07
 
 - **Statement.** The with-following original-volume readback bridge can consume

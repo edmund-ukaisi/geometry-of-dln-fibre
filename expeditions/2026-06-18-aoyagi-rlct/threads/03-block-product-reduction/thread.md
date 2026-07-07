@@ -21,6 +21,50 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 with-following loss dominates readback product residual
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-loss-dominates-readback-product-residual.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductResidualBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_pos_const_eventually_readbackProductResidual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_rankCut_of_sourceChart_image_eq
+```
+
+The theorem proves that, under explicit local image, left-inverse,
+determinant-sector, fixed-source-datum, centering, and endpoint-basis
+hypotheses, the original fixed-basis `lossDLN` dominates a positive scalar
+multiple of the with-following readback product-residual square-sum eventually
+on `(p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum`.
+
+Boundary: this is only a local function comparison.  It does not prove source
+coverage, source-rank atlas coverage, source-prior or original-prior
+transport, determinant/raw Haar transport, residual integrability, normal
+crossings, pole order, or RLCT.
+
+Verification: focused `lake env lean` passed.  Focused module build,
+`DLNFibre.lean` elaboration, no-sorry audit, whitespace checks,
+forbidden-marker scan, direct axiom probe, and xhigh review passed.  The
+declaration reports only `[propext, Classical.choice, Quot.sound]`; reviewer
+`Aquinas the 2nd` marked the statement card ready.
+
+Scout frontier update: xhigh prior-transport review says the next substantive
+source/prior target is a with-following local COV/source-measure comparison
+between the p.13 formal-product measure and
+`Measure.map sourceChart (referenceSource.restrict V)`.  Xhigh coverage review
+identified a useful local rank-cut chart-piece coverage corollary from the
+landed image theorem, but not a global atlas theorem.
+
 ## 2026-07-07 A2 signed-box local selected-entry source continuous-density shrink
 
 Reproduction:

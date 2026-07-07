@@ -12,6 +12,54 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, loss dominates readback product residual
+
+Decision: expose the local with-following `lossDLN` comparison against the
+readback product-residual square-sum.
+
+The new theorem assumes a local set `V` with:
+
+```text
+readback(sourceChart z) = z
+sourceChart '' V = p13SourceSet ∩ readback^{-1}(V)
+V subset determinant sector.
+```
+
+For a fixed source-rank stratum and fixed-base source datum, it produces
+`c > 0` such that eventually on
+
+```text
+(p13SourceSet ∩ readback^{-1}(V)) ∩ sourceStratum
+```
+
+the original fixed-basis square-Frobenius loss dominates
+`c * squareSum(readback product residual)`.  This removes a live local
+function-comparison gap before measure/integrability handoffs.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-loss-dominates-readback-product-residual.md
+threads/03-block-product-reduction/statement-card-a2-with-following-loss-dominates-readback-product-residual.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaProductResidualBridge.lean
+```
+
+This is not source coverage, source-rank atlas coverage, source-prior or
+original-prior transport, determinant/raw Haar transport, residual
+integrability, normal crossings, pole order, or RLCT.
+
+Scout consensus on next substantive frontier: prioritize the with-following
+local COV/source-measure comparison
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= D * Measure.map sourceChart (referenceSource.restrict V)
+```
+
+or its bounded-density equality form on the p.13/readback patch.  The local
+rank-cut coverage corollary from the landed image theorem is useful support
+cleanup, but it should not replace the COV/source-measure target.
+
 ## Latest controller decision - 2026-07-07, original-volume readback p.13/readback-preimage support
 
 Decision: expose the with-following original-volume readback bridge on

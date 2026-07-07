@@ -6,6 +6,66 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following loss dominates readback product residual - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-loss-dominates-readback-product-residual.md
+```
+
+Lean now has:
+
+```text
+exists_pos_const_eventually_readbackProductResidual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_rankCut_of_sourceChart_image_eq
+```
+
+This theorem closes a local function-comparison gap between the fixed-basis
+original `lossDLN` and the with-following readback product residual.  Given a
+local set `V` with readback left inverse, image equality
+
+```text
+sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V,
+```
+
+and determinant-sector support, it proves that on the rank-cut p.13/readback
+patch
+
+```text
+(p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum
+```
+
+there is a positive scalar `c` such that, eventually at `sourceChart z0`,
+
+```text
+c * squareSum(readback product residual of E) <= lossDLN(E).
+```
+
+The proof restricts the existing fixed-base endpoint loss lower bound from the
+source stratum to the rank-cut patch, uses the determinant-sector p.13 residual
+equality and the local left inverse to identify the fixed residual square-sum
+with the readback product-residual square-sum, then drops the nonnegative
+regular square-sum term.
+
+This is only a function comparison.  It does not prove source coverage,
+source-rank atlas coverage, source-prior/original-prior transport,
+determinant/raw Haar transport, residual integrability, normal crossings, pole
+order, or RLCT.  Focused `lake env lean`, focused module build, `DLNFibre.lean`
+elaboration, `scripts/sorries`, whitespace checks, forbidden-marker scan,
+direct axiom probe, and xhigh read-only review passed.  The declaration
+reports only `[propext, Classical.choice, Quot.sound]`.  Reviewer
+`Aquinas the 2nd` found no theorem-boundary or proof-scope issues and marked
+the statement card ready.
+
+Next-frontier read after xhigh scouts: the actual-prior/source-prior route
+still hinges on a with-following local COV/source-measure comparison, namely
+dominating or identifying the p.13 formal-product measure on
+`p13SourceSet ∩ readback ⁻¹' V` by the chart-produced source reference
+`Measure.map sourceChart (referenceSource.restrict V)`.  Smoothness of
+Aoyagi's prior only gives local boundedness after such a transport theorem.
+The coverage scout identified a useful local rank-cut chart-piece coverage
+corollary, but not a global atlas theorem.
+
 ## A2 original-volume readback p.13/readback-preimage support - 2026-07-07
 
 Reproduction:

@@ -19,6 +19,24 @@ is local support conversion only: no raw-Haar transport, determinant-chart
 Haar transport, source-prior/original-prior transport, source-image coverage,
 source-rank coverage, normal crossings, pole order, or RLCT is proved.
 
+Loss dominates readback product residual note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaProductResidualBridge.lean` proves
+`exists_pos_const_eventually_readbackProductResidual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_rankCut_of_sourceChart_image_eq`.
+Under a local left inverse, the p.13/readback image equality
+`sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V`, determinant-sector
+support for `V`, a fixed source-rank stratum/source datum, and the fixed-base
+centering equality at `sourceChart z0`, the theorem produces `c > 0` such
+that eventually on
+`(p13SourceSet ∩ readback ⁻¹' V) ∩ sourceStratum`, the original fixed-basis
+`lossDLN` dominates `c` times the square-sum of the with-following readback
+product residual.  The proof restricts the existing endpoint `lossDLN` lower
+bound to the rank-cut patch, uses the determinant-sector residual equality and
+readback left inverse to identify residual square-sums, and drops the
+nonnegative regular square-sum.  This is only a local function comparison: no
+source/prior measure transport, source or source-rank coverage, residual
+integrability, Haar transport, normal crossings, pole order, or RLCT is
+proved.
+
 Signed-box local selected-entry source continuous-density shrink note,
 2026-07-07: the selected-entry local-source continuous-density readback theorem
 now has a concrete signed-box source-parent specialization.  For

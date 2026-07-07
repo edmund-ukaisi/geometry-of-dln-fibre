@@ -18,6 +18,20 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following loss/readback-residual comparison
+  now has a named local theorem.  Under explicit local image, left-inverse,
+  determinant-sector, fixed-source-datum, centering, and endpoint-basis
+  hypotheses, `lossDLN` dominates a positive scalar multiple of the
+  with-following readback product-residual square-sum eventually on the
+  rank-cut p.13/readback patch.  This is a function comparison only: no source
+  coverage, source-rank atlas coverage, source-prior/original-prior transport,
+  determinant/raw Haar transport, residual integrability, normal crossings,
+  pole order, or RLCT result is added.  Xhigh scouts agree the next
+  substantive source/prior frontier is a with-following local COV/source-measure
+  comparison between the p.13 formal-product measure and the chart-produced
+  source reference; a local rank-cut chart-piece coverage corollary is useful
+  support cleanup but not a substitute for that COV theorem.
+
 - 2026-07-07, Thread 03: the with-following original-volume readback bridge
   now has a p.13/readback-preimage support form.  The theorem exposes
   `sourceChart '' V = p13SourceSet ∩ readback ⁻¹' V` and consumes chart
