@@ -116,6 +116,21 @@ noncomputable def Kcoup (C : (s : ℕ) → Matrix (r ⊕ m s) (r ⊕ m (s + 1)) 
     Matrix (m k) (m k) α :=
   (C k).toBlocks₂₁ * Ring.inverse (partProd C (k + 1)).toBlocks₁₁ * (partProd C k).toBlocks₁₂
 
+/-- The `(1,2)` block of the identity `2×2`-blocked matrix is `0`. -/
+theorem toBlocks₁₂_one {a b : Type*} [DecidableEq a] [DecidableEq b] :
+    (1 : Matrix (a ⊕ b) (a ⊕ b) α).toBlocks₁₂ = 0 := by
+  rw [← Matrix.fromBlocks_one, Matrix.toBlocks_fromBlocks₁₂]
+
+/-- **The zeroth coupling vanishes** (`Kcoup C 0 = 0`). `partProd C 0 = 1` and the `(1,2)` block of
+the identity is `0`, so the correction `(C 0)₂₁·((P₁)₁₁)⁻¹·(P₀)₁₂` has a zero right factor. Hence
+the `coreProd` front factor is `1 − Kcoup C 0 = 1`, so `coreProd C L = S_0·(1−K_1)·S_1·…` (the
+interspersed corrections effectively start at `k = 1`), and the per-layer product `∏_s (1−K_s)·S_s`
+telescopes to `coreProd C L`. -/
+theorem Kcoup_zero (C : (s : ℕ) → Matrix (r ⊕ m s) (r ⊕ m (s + 1)) α) :
+    Kcoup C 0 = 0 := by
+  unfold Kcoup
+  rw [show partProd C 0 = 1 from rfl, toBlocks₁₂_one, Matrix.mul_zero]
+
 /-- The ordered product of per-layer Schur cores interspersed with the unipotent corrections:
 `coreProd C k = S_0·(1−K_1)·S_1·…·(1−K_{k−1})·S_{k−1}`, of shape `(m 0) × (m k)`
 (`coreProd C 0 = 1`). -/
