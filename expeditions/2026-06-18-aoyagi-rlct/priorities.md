@@ -12,6 +12,29 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, coordinate prior edge-family preimage transport
+
+Decision: add the edge-family-set preimage form of coordinate-prior transport.
+
+The previous direct coordinate-to-edge theorem restricted the target prior to
+the image of a coordinate-side set.  The new corollary takes the coordinate
+restriction to be the preimage of an edge-family set `C`, so the pushed
+coordinate prior is exactly the edge-family prior restricted to `C`.  The
+density is still `E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-edge-family-preimage-transport.md
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+This is only finite-dimensional fixed-basis prior transport.  It does not
+identify a source-chart image measure, construct a source-image density,
+compute a retained-passive Jacobian, normalize Haar scalars, prove
+determinant/raw Haar transport, prove source-rank/atlas coverage, construct
+normal crossings, compute pole order, or extract RLCT.
+
 ## Latest controller decision - 2026-07-07, original coordinate prior to edge-family prior transport
 
 Decision: close the finite-dimensional original prior transport from flattened

@@ -10,6 +10,42 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 coordinate prior edge-family preimage transport - 2026-07-07
+
+- **Statement.** If `C` is a measurable fixed-basis edge-family set, then the
+  original coordinate prior restricted to the preimage of `C` under
+  `x |-> tupleToEdgeFamily b ((canonicalCoord d).symm x)` pushes forward to
+  the original edge-family prior restricted exactly to `C`, with density
+  `E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.
+- **Tier.** A2 finite-dimensional original prior coordinate transport.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as identifying an Aoyagi source-chart
+  image measure, constructing a source-image density, computing a
+  retained-passive Jacobian, normalizing Haar scalars, proving determinant/raw
+  Haar transport, proving source-rank or atlas coverage, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the original matrix-coordinate
+  setting.  The new proof is Lean-local support bookkeeping over the
+  finite-dimensional coordinate-to-edge-family equivalence.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-edge-family-preimage-transport.md`.
+- **Reproduction check.** Controller checked the image identity
+  `F(F^{-1}(C)) = C` using the inverse `canonicalCoord d (edgeFamilyMatrixTuple b E)`;
+  xhigh scout `Hilbert the 2nd` identified this preimage form as the next
+  useful downstream corollary.
+- **Lean target.**
+  `map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_eq_originalEdgeFamilyPrior_restrict`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean`.
+- **Proved.** Focused `lake env lean` and focused module build passed for the
+  touched Lean file.  Resumed-run audits also passed:
+  `lake env lean DLNFibre.lean`, `lean/scripts/sorries`, `git diff --check`,
+  touched Lean-file forbidden-marker scan, and direct axiom probe.  The
+  declaration reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No source-chart prior identification, no source-image density
+  construction, no retained-passive Jacobian computation, no Haar scalar
+  normalization, no determinant/raw Haar transport, no source-rank or analytic
+  atlas coverage, no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 original coordinate prior to edge-family prior transport - 2026-07-07
 
 - **Statement.** A restricted original coordinate prior pushes through

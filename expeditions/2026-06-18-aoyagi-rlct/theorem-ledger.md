@@ -4,6 +4,19 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Coordinate prior edge-family preimage transport note, 2026-07-07: the
+coordinate-to-edge-family original prior transport now has a preimage
+restriction form.  For an edge-family measurable set `C`, pushing the original
+coordinate prior restricted to
+`x |-> tupleToEdgeFamily b ((canonicalCoord d).symm x) ∈ C` gives the
+fixed-basis edge-family prior restricted exactly to `C`, with density
+`E |-> density (canonicalCoord d (edgeFamilyMatrixTuple b E))`.  The proof is
+finite-dimensional support bookkeeping using surjectivity of the composed
+coordinate-to-edge-family equivalence.  This does not identify an Aoyagi
+source-chart image measure, construct source-image density, compute
+retained-passive Jacobians, normalize Haar scalars, prove determinant/raw Haar
+transport, source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 Original coordinate prior to edge-family prior transport note, 2026-07-07:
 finite-dimensional original prior transport now starts at flattened
 coordinates.  For a measurable coordinate-side set `S`, pushing

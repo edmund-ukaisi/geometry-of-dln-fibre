@@ -21,6 +21,37 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 coordinate prior edge-family preimage transport
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-edge-family-preimage-transport.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalEdgeFamilyRawOrderMeasureBridge.lean
+```
+
+Lean now has:
+
+```text
+map_canonicalCoord_symm_tupleToEdgeFamily_originalCoordinatePrior_restrict_preimage_eq_originalEdgeFamilyPrior_restrict
+```
+
+It takes an edge-family set `C`, restricts the coordinate prior to the preimage
+of `C` under coordinate unflattening followed by fixed-basis reconstruction,
+and identifies the pushforward with the edge-family prior restricted exactly
+to `C`.
+
+Boundary: this is finite-dimensional fixed-basis prior transport only.  It
+does not identify a source-chart image measure, construct source-image
+density, prove determinant/raw Haar transport, normalize Haar scalars, prove
+source-rank or atlas coverage, construct normal crossings, compute pole order,
+or extract RLCT.
+
 ## 2026-07-07 A2 original coordinate prior to edge-family prior transport
 
 Reproduction:
