@@ -4,6 +4,18 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Active-containment prior readback same-shrink note, 2026-07-07: the active
+endpoint-patch containment prior readback theorem now has a same-shrink
+adapter targeting the returned `coordinateSourceMeasure.restrict V`.  The
+proof first uses the existing active-containment original-volume theorem,
+adds the bounded-density original-prior handoff, and then sharpens the
+readback domination from `coordinateSourceMeasure.restrict G` to
+`coordinateSourceMeasure.restrict V` using chart-piece support in
+`sourceChart '' V`, the local left inverse, and `V ⊆ G`.  The active
+containment itself, source-density positivity, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, and RLCT remain outside this rung.
+
 Rank-cut endpoint-prior produced density-bounds note, 2026-07-07: the strongest
 endpoint-prior rank-cut residual-source bridge now has a sibling that produces
 the terminal source-density lower and prior-density upper a.e. hypotheses from

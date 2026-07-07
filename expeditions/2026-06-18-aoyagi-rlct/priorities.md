@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, active-containment prior readback same-shrink adapter
+
+Decision: before adding another rank-cut wrapper, remove the local measure-
+target mismatch in the existing active-containment prior readback theorem.
+
+The active-containment prior package already produces readback domination from
+an explicit endpoint-patch containment, but its target is the ambient
+`coordinateSourceMeasure.restrict G`.  The new adapter uses chart-piece
+support in `sourceChart '' V`, the returned local left inverse, and `V ⊆ G` to
+sharpen the target to `coordinateSourceMeasure.restrict V`.  This matches the
+target expected by the rank-cut residual-source wrapper.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-active-containment-prior-readback-same-shrink.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This remains an adapter only.  It does not prove the active endpoint-patch
+containment, source-density positivity, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior with produced density bounds
 
 Decision: fix `epsilon` and `Kprior` before choosing the local shrink and use

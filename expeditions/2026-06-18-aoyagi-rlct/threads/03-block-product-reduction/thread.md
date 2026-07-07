@@ -21,6 +21,37 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 active-containment prior readback same-shrink adapter
+
+Reproduction:
+
+```text
+reproduction-a2-active-containment-prior-readback-same-shrink.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_same_shrink_of_endpointPatch_subset_activeWriteback_activeSelectedEntryImage_sourceDensity_lower_priorDensity_upper
+```
+
+It consumes the existing active endpoint-patch containment socket and returns
+original-prior readback domination against the returned
+`coordinateSourceMeasure.restrict V`, not only the ambient input restriction.
+The proof is support bookkeeping: `chartPiece subset sourceChart '' V` and
+the returned left inverse force the readback pushforward to live on `V`.
+
+Boundary: this is an adapter only.  Active containment, source-density
+positivity, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, and RLCT remain
+outside this rung.
+
 ## 2026-07-07 A2 rank-cut residual-source endpoint-prior produced density bounds
 
 Reproduction:
