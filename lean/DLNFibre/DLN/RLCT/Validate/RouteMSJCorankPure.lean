@@ -105,4 +105,46 @@ theorem matBox_corank_dominates_absZ_lt_top {p q : ℕ} (hp : 0 < p) (hq : 0 < q
     _ < ⊤ := radial_morse_dominates_absZ_lt_top μ c' (by rw [hbridge]; exact hc') hc0 T hT
         W hWnn Z hZ
 
+/-- **The PURE intermediate-layer corank peel — the per-step exponent shift (S2-FREE).** For a
+`p × q` corank block `Δ` (`p, q ≥ 1`) coupled to an outer parameter `z ∈ Z` through a
+STRICTLY-POSITIVE additive core `W z > 0`, ABOVE the block Morse threshold `pq/2`, the joint
+integral is bounded by the shifted-core integral:
+
+    ∫_{z∈Z} ∫_{Δ∈matBox p q T} (frobSq Δ + W z)^{−c'} dΔ dz
+        ≤ Cresid(pq) c' · ∫_{z∈Z} (W z)^{−(c' − pq/2)} dz      (pq/2 < c').
+
+This is Aoyagi's per-layer exponent shift `c' ↦ c' − ½·pq` at block dimension `pq = (M₀−t)(M₁−t)`
+(`peelExp`): the corank block peels (charge `pq`), leaving the deeper core `W z` at the SHIFTED
+exponent `c' − pq/2` — the outer integral `∫_z (W z)^{−(c'−pq/2)}` the `(S,J)` recursion hands to
+the strong IH (box finiteness of the STRICTLY-shorter chain at the shifted exponent). The banked
+isotropic corank atom `matBox_corank_residual_le` per `z` (needs `W z > 0` — its
+`w^{−(c'−pq/2)}` residual power), then `lintegral_mono` + the finite constant `Cresid` pulled out
+(`lintegral_const_mul'`,
+`ENNReal.ofReal_ne_top`).
+
+The strict `W z > 0` is the honest hypothesis here: at an INTERMEDIATE layer the deeper loss is
+strictly positive on the chart; the LAST layer, where the core can VANISH (`W z ≥ 0`), is instead
+closed by `matBox_corank_dominates_absZ_lt_top` (Morse dominance, `c' < pq/2`). Together the two
+bricks cover the two regimes of the pure peel — intermediate exponent-shift (`c' > pq/2`, `W > 0`)
+and terminal Morse dominance (`c' < pq/2`, `W ≥ 0`). -/
+theorem matBox_corank_residual_absZ_le {p q : ℕ} (hp : 0 < p) (hq : 0 < q)
+    {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω)
+    (c' : ℝ) (hc' : (p * q : ℝ) / 2 < c') (T : ℝ) (hT : 0 < T)
+    (W : Ω → ℝ) (hWpos : ∀ z, 0 < W z) (Z : Set Ω) :
+    ∫⁻ z in Z, (∫⁻ D in matBox p q T,
+        ENNReal.ofReal ((frobSq D + W z) ^ (-c')) ∂volume) ∂μ
+      ≤ ENNReal.ofReal (Cresid (p * q) c')
+          * ∫⁻ z in Z, ENNReal.ofReal ((W z) ^ (-(c' - (p * q : ℝ) / 2))) ∂μ := by
+  calc ∫⁻ z in Z, (∫⁻ D in matBox p q T,
+          ENNReal.ofReal ((frobSq D + W z) ^ (-c')) ∂volume) ∂μ
+      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (p * q) c'
+          * (W z) ^ (-(c' - (p * q : ℝ) / 2))) ∂μ :=
+        lintegral_mono (fun z => matBox_corank_residual_le p q hp hq c' hc' T hT (W z) (hWpos z))
+    _ = ∫⁻ z in Z, ENNReal.ofReal (Cresid (p * q) c')
+          * ENNReal.ofReal ((W z) ^ (-(c' - (p * q : ℝ) / 2))) ∂μ :=
+        lintegral_congr (fun z => by rw [ENNReal.ofReal_mul (Cresid_nonneg _ _)])
+    _ = ENNReal.ofReal (Cresid (p * q) c')
+          * ∫⁻ z in Z, ENNReal.ofReal ((W z) ^ (-(c' - (p * q : ℝ) / 2))) ∂μ :=
+        lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+
 end DLNFibre.DLN.RLCT
