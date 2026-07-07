@@ -6,6 +6,113 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-volume reference-source domination - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-dominated-by-reference-source-from-det-domination.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_referenceSource_of_detHaar_restrict_le_smul_endpointTopologyTuple
+```
+
+This theorem is a direct consumer of the reference-source formal-product
+comparison.  It keeps determinant-side reverse domination, `Cdet < infinity`,
+chart-piece measurability, and `chartPiece subset p13SourceSet` explicit.  It
+first obtains the raw-source domination by the unweighted reference source,
+feeds it to the formal-product/source-reference socket, and then applies the
+p.13 original-volume bridge.  The resulting scalar is
+
+```text
+Dvol = ((cHaar^-1 : NNReal) : ENNReal) * (Cdet * CJ),
+```
+
+and the conclusion is
+
+```text
+originalVolume.restrict chartPiece
+  <= Dvol • Measure.map sourceChart (referenceSource.restrict V).
+```
+
+Focused `lake env lean` on
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+passed.  This does not prove exact raw-Haar pushforward, determinant Haar
+transport, source-image/source-rank coverage, source-prior or original-prior
+transport, readback domination, normal crossings, pole order, or RLCT
+extraction.
+
+Scout read after this checkpoint: the next non-wrapper A2 frontier is the
+determinant/reference transport hypothesis itself, ideally localized to the
+actual p.13/readback patch.  Further finite-integral wrappers should wait
+until that transport or a genuinely new construction field is available.
+
+## A2 with-following reference-source formal-product domination - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-formal-product-dominated-by-reference-source-from-det-domination.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_referenceSource_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple
+
+exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_referenceSource_of_detHaar_restrict_le_smul_endpointTopologyTuple
+```
+
+The raw theorem composes the existing determinant-to-weighted-source handoff
+with a local upper bound on the retained-passive raw-order Jacobian density.
+After shrinking, the weighted source
+
+```text
+baseJ = referenceSource.withDensity jacobianDensity
+```
+
+is dominated by `CJ • referenceSource.restrict V`, and the raw map is locally
+a.e. measurable, so the weighted raw image is dominated by the unweighted
+reference-source raw image.  Thus determinant-chart reverse domination
+
+```text
+rawHaar.restrict rawDetChart
+  <= Cdet • Measure.map Y (referenceSource.restrict V)
+```
+
+implies
+
+```text
+rawHaar.restrict rawSourceSet
+  <= (Cdet * CJ) • Measure.map rawMap (referenceSource.restrict V).
+```
+
+The formal-product theorem runs the formal-product/source-reference socket on
+the same shrink and returns
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= (Cdet * CJ) • Measure.map sourceChart (referenceSource.restrict V)
+```
+
+for every `chartPiece subset p13SourceSet`.
+
+This is an honest conditional COV/source-measure comparison, not an exact Haar
+transport theorem.  Determinant-side reverse domination remains a hypothesis.
+The theorem does not prove exact raw-Haar pushforward, determinant Haar
+normalization, source-image/source-rank coverage, source-prior or
+original-prior transport, normal crossings, pole order, or RLCT extraction.
+
+Verification passed by targeted local `lake build` for the raw handoff,
+original-volume readback, and determinant-domination readback modules; focused
+local `lake build` for `OriginalEdgeFamilyP13ReadbackFiniteIntegral`;
+`git diff --check`; and `lean/scripts/sorries` reporting `0 sorry`, `0 #exit`,
+`0 native_decide`, and only the existing three cited axioms.  Pushed as
+commit `b495a9ab`.
+
 ## A2 with-following loss dominates readback product residual - 2026-07-07
 
 Reproduction:

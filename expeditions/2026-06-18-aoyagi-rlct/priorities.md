@@ -12,6 +12,89 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-volume reference-source domination
+
+Decision: consume the reference-source formal-product comparison at the p.13
+original-volume interface.
+
+The new theorem composes the determinant-to-reference-source raw handoff and
+the formal-product/source-reference socket directly with the existing p.13
+original-volume bridge.  Under determinant-side reverse domination and
+measurable p.13 chart-piece support, it returns
+
+```text
+originalVolume.restrict chartPiece
+  <= Dvol • Measure.map sourceChart (referenceSource.restrict V)
+```
+
+where
+
+```text
+Dvol = ((cHaar^-1 : NNReal) : ENNReal) * (Cdet * CJ).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-dominated-by-reference-source-from-det-domination.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This is still a source-measure consumer, not determinant/reference transport.
+It does not prove exact raw-Haar pushforward, determinant Haar transport,
+source-image coverage, source-rank coverage, source-prior or original-prior
+transport, readback domination, normal crossings, pole order, or RLCT
+extraction.  Scout consensus after this checkpoint: the next non-wrapper A2
+frontier is to discharge the determinant-side reverse domination hypothesis
+for the actual p.13/readback patch, or a carefully localized patch version of
+that statement.
+
+## Latest controller decision - 2026-07-07, reference-source formal-product domination
+
+Decision: package the with-following determinant-domination route to the
+unweighted reference-source formal-product comparison, while keeping the
+determinant-side reverse domination explicit.
+
+The new raw handoff first uses the existing weighted-source determinant bridge
+for
+
+```text
+baseJ = referenceSource.withDensity jacobianDensity,
+```
+
+then shrinks to a neighborhood where `jacobianDensity <= CJ` for finite `CJ`.
+Mapping this bounded-density domination through the raw-order map gives
+
+```text
+rawHaar.restrict rawSourceSet
+  <= (Cdet * CJ) • Measure.map rawMap (referenceSource.restrict V).
+```
+
+The formal-product wrapper feeds this raw-source domination into the existing
+formal-product/source-reference socket and concludes, for every
+`chartPiece subset p13SourceSet`,
+
+```text
+formalProductMeasure.restrict chartPiece
+  <= (Cdet * CJ) • Measure.map sourceChart (referenceSource.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-formal-product-dominated-by-reference-source-from-det-domination.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaRawImageHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This is still conditional source-measure transport.  It does not prove exact
+raw-Haar pushforward, determinant Haar transport, source coverage,
+source-rank coverage, source-prior or original-prior transport, normal
+crossings, pole order, or RLCT extraction.  The next substantive frontier
+should consume this comparison to remove a live source-measure hypothesis, or
+else attack one of the remaining construction fields directly rather than add
+another measure-wrapper variant.
+
 ## Latest controller decision - 2026-07-07, loss dominates readback product residual
 
 Decision: expose the local with-following `lossDLN` comparison against the

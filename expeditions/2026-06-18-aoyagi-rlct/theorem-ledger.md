@@ -19,6 +19,39 @@ is local support conversion only: no raw-Haar transport, determinant-chart
 Haar transport, source-prior/original-prior transport, source-image coverage,
 source-rank coverage, normal crossings, pole order, or RLCT is proved.
 
+Original-volume reference-source domination note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_referenceSource_of_detHaar_restrict_le_smul_endpointTopologyTuple`.
+The theorem keeps determinant-side reverse domination and `Cdet < infinity`
+live, requires `MeasurableSet chartPiece` and `chartPiece ⊆ p13SourceSet`,
+and concludes
+`originalVolume.restrict chartPiece ≤ Dvol • Measure.map sourceChart
+(referenceSource.restrict V)`, with
+`Dvol = ((cHaar^-1 : NNReal) : ENNReal) * (Cdet * CJ)`.  The proof composes
+the raw reference-source handoff, the formal-product/source-reference socket,
+and the p.13 original-volume bridge.  This is not exact raw-Haar pushforward,
+Haar normalization, source coverage, source-rank coverage, source-prior or
+original-prior transport, readback domination, normal crossings, pole order,
+or RLCT extraction.
+
+Reference-source formal-product domination note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaRawImageHandoff.lean` proves
+`exists_open_subset_rawHaar_restrict_rawSource_le_smul_measure_map_case2PassiveThetaWithFollowingFactor_rawMap_referenceSource_restrict_of_detHaar_restrict_le_smul_endpointTopologyTuple`.
+The theorem keeps determinant-chart reverse domination live and converts the
+existing weighted-source raw-image domination for
+`referenceSource.withDensity jacobianDensity` to domination by the unweighted
+`referenceSource` using a finite local upper bound `CJ` for
+`jacobianDensity`.  `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+then proves
+`exists_open_subset_formalProductMeasure_restrict_chartPiece_le_smul_referenceSource_of_detHaar_restrict_le_smul_endpointTopologyTuple`
+by feeding the raw-source domination into the formal-product/source-reference
+socket.  The conclusion dominates `formalProductMeasure.restrict chartPiece`
+by `(Cdet * CJ) • Measure.map sourceChart (referenceSource.restrict V)` for
+`chartPiece ⊆ p13SourceSet`.  This is not exact raw-Haar pushforward, Haar
+normalization, source coverage, source-rank coverage, source-prior or
+original-prior transport, normal crossings, pole order, or RLCT extraction.
+
 Loss dominates readback product residual note, 2026-07-07:
 `RetainedPassiveCase2PassiveThetaProductResidualBridge.lean` proves
 `exists_pos_const_eventually_readbackProductResidual_squareSum_le_lossDLN_chainMapMatrixTuple_selfBase_nhdsWithin_rankCut_of_sourceChart_image_eq`.
