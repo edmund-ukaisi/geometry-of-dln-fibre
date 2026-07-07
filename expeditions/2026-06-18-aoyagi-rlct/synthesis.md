@@ -6,6 +6,47 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 direct chart-piece coordinate-prior finite-integral wrapper - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-direct-chartpiece-finite-integral.md
+```
+
+Lean now has:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_chartPiece_preimage_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+This theorem applies the existing pushed-coordinate-prior p.13 finite-integral
+bridge, then uses the chart-piece restriction cleanup to move from the
+larger source-image preimage to the direct chart-piece preimage.  The support
+condition is unchanged: `chartPiece ⊆ sourceChart '' (V ∩ W)`.
+
+The new conclusion is the finite integral over
+
+```text
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' chartPiece)).
+```
+
+All source-image density, determinant/Haar domination, local prior-density
+upper bounds, and coordinate-density measurability hypotheses remain explicit.
+This is not source-chart prior identification, source-image density
+construction, source-rank or analytic atlas coverage, normal crossings, pole
+order, or RLCT.
+
+Verification passed by direct `lake env lean` elaboration of
+`OriginalCoordinatePriorP13FiniteIntegralBridge`, focused local `lake build
+DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge`,
+`lean/scripts/sorries`, `git diff --check`, and direct axiom probe for the
+new theorem (`[propext, Classical.choice, Quot.sound]`).  Xhigh read-only
+reviewer `Einstein the 2nd` passed the theorem-boundary audit and confirmed
+the reproduction note is sufficient for this narrow measure rewrite.
+
 ## A2 original coordinate prior chart-piece restriction cleanup - 2026-07-07
 
 Reproduction:

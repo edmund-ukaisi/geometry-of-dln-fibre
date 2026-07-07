@@ -21,6 +21,45 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 direct chart-piece coordinate-prior finite integral
+
+Reproduction:
+
+```text
+reproduction-a2-original-coordinate-prior-direct-chartpiece-finite-integral.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_chartPiece_preimage_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper
+```
+
+The theorem composes the existing pushed-coordinate-prior p.13 finite-integral
+bridge with the chart-piece restriction cleanup.  The p.13 support hypothesis
+remains `chartPiece ⊆ sourceChart '' (V ∩ W)`, but the conclusion is now
+stated over the direct coordinate prior restriction to `toEdge ⁻¹'
+chartPiece`.
+
+Boundary: this is finite-dimensional measure packaging.  It does not identify
+a source-chart prior, construct source-image density, prove determinant/raw
+Haar transport, prove source-rank or atlas coverage, construct normal
+crossings, compute pole order, or extract RLCT.
+
+Verification: direct `lake env lean` elaboration of the touched file passed;
+focused local `lake build
+DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge` passed;
+`scripts/sorries` reports `0 sorry, 0 #exit, 0 native_decide, 0 axiom`;
+`git diff --check` passed; direct axiom probe reports
+`[propext, Classical.choice, Quot.sound]`.  Xhigh read-only reviewer
+`Einstein the 2nd` passed the theorem-boundary and reproduction audit.
+
 ## 2026-07-07 A2 original coordinate prior chart-piece restriction cleanup
 
 Reproduction:

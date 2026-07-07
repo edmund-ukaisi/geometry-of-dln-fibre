@@ -12,6 +12,40 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, direct chart-piece coordinate-prior finite integral
+
+Decision: compose the pushed-coordinate-prior p.13 finite-integral bridge with
+the chart-piece restriction cleanup once, narrowly.
+
+The new wrapper changes only the final measure.  Instead of ending with
+
+```text
+(map toEdge ((originalCoordinatePrior d coordDensity).restrict
+  (toEdge ⁻¹' (sourceChart '' V)))).restrict chartPiece,
+```
+
+it ends with
+
+```text
+map toEdge ((originalCoordinatePrior d coordDensity).restrict
+  (toEdge ⁻¹' chartPiece)).
+```
+
+The support hypothesis remains `chartPiece ⊆ sourceChart '' (V ∩ W)`, so the
+readback/right-inverse input still comes from the same p.13 shrink.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-direct-chartpiece-finite-integral.md
+lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean
+```
+
+This is the last intended wrapper on this coordinate-prior cleanup path.  The
+next substantive frontier remains source coverage/density transport: prove or
+isolate the local source-image/original-volume comparison instead of adding
+more finite-integral packaging.
+
 ## Latest controller decision - 2026-07-07, original coordinate prior chart-piece restriction cleanup
 
 Decision: add the finite-dimensional restriction cleanup needed after the

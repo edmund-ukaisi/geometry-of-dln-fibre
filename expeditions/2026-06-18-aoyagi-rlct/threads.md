@@ -18,6 +18,14 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the pushed original-coordinate prior p.13
+  finite-integral bridge now has a direct chart-piece form.  The final measure
+  is `map toEdge ((originalCoordinatePrior d coordDensity).restrict
+  (toEdge ⁻¹' chartPiece))`, using the existing support
+  `chartPiece ⊆ sourceChart '' (V ∩ W)` and the chart-piece restriction
+  cleanup.  This adds no source-image density, source-chart prior, Haar,
+  source-rank, normal-crossing, pole-order, or RLCT result.
+
 - 2026-07-07, Thread 03: original coordinate-prior transport now has a
   chart-piece restriction cleanup.  If `chartPiece ⊆ Cset`, then the pushed
   prior restricted after mapping to `chartPiece` equals the pushforward of the

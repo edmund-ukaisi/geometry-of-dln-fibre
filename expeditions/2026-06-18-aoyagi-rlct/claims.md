@@ -10,6 +10,45 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 direct chart-piece coordinate-prior finite-integral wrapper - 2026-07-07
+
+- **Statement.** The pushed original flattened-coordinate prior p.13 finite
+  integral can be stated with the coordinate prior restricted directly to
+  `toEdge ⁻¹' chartPiece`, rather than restricted first to
+  `toEdge ⁻¹' (sourceChart '' V)` and then restricted after mapping.
+- **Tier.** A2 finite-dimensional original prior coordinate transport at the
+  p.13 finite-integral socket.
+- **Status.** Lean proved and checkpoint-verified.
+- **Kill-condition.** The theorem is read as constructing
+  `sourceImageDensity`, identifying a source-chart prior, proving
+  determinant/raw Haar transport, proving source-rank or atlas coverage,
+  normal crossings, pole order, or RLCT.
+- **Evidence/source.** This is Lean-local measure transport: the existing
+  p.13 finite-integral bridge supplies finiteness over the larger pushed
+  prior restricted after mapping, and the chart-piece restriction cleanup
+  transfers the integral to the directly restricted coordinate prior because
+  `chartPiece ⊆ sourceChart '' (V ∩ W)` implies
+  `chartPiece ⊆ sourceChart '' V`.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-original-coordinate-prior-direct-chartpiece-finite-integral.md`.
+- **Reproduction check.** Controller checked the subset projection
+  `sourceChart '' (V ∩ W) ⊆ sourceChart '' V` and the measure rewrite through
+  the previously verified chart-piece restriction cleanup.
+- **Lean target.**
+  `exists_open_lintegral_ofReal_loss_rpow_neg_p13RegularCoordinates_lt_top_of_case2PassiveThetaEndpointSourceChart_map_originalCoordinatePrior_restrict_chartPiece_preimage_of_detHaar_restrict_le_smul_endpointTopologyTuple_eventually_sourceImageDensity_comp_sourceChart_lower_priorDensity_comp_sourceChart_upper`
+  in `lean/DLNFibre/DLN/Aoyagi/OriginalCoordinatePriorP13FiniteIntegralBridge.lean`.
+- **Proved.** Verification passed by direct `lake env lean` elaboration of
+  the touched Lean file, focused `lake build
+  DLNFibre.DLN.Aoyagi.OriginalCoordinatePriorP13FiniteIntegralBridge`,
+  `lean/scripts/sorries`, `git diff --check`, direct axiom probe
+  (`[propext, Classical.choice, Quot.sound]`), and xhigh read-only reviewer
+  `Einstein the 2nd`.
+- **Nonclaims.** No source-chart prior identification, no source-image
+  density construction, no retained-passive Jacobian computation, no Haar
+  scalar normalization, no determinant/raw Haar transport, no source-rank or
+  analytic atlas coverage, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 original coordinate prior chart-piece restriction cleanup - 2026-07-07
 
 - **Statement.** If `chartPiece ⊆ Cset`, then pushing the original

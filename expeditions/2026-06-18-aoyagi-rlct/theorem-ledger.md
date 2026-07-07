@@ -4,6 +4,23 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Original coordinate prior direct chart-piece finite-integral note,
+2026-07-07: the pushed-coordinate-prior p.13 finite-integral bridge now has a
+direct chart-piece form.  Under the same support hypothesis
+`chartPiece ⊆ sourceChart '' (V ∩ W)`, the final finite integral is over
+
+```text
+Measure.map toEdge
+  ((originalCoordinatePrior d coordDensity).restrict
+    (toEdge ⁻¹' chartPiece)).
+```
+
+The proof first gets finiteness for the already proved larger measure
+restricted after mapping, then applies the chart-piece restriction cleanup
+with `Cset = sourceChart '' V`.  No source-image density, source-chart prior,
+Haar transport, source-rank coverage, normal-crossing, pole-order, or RLCT
+content is added.
+
 Original coordinate prior chart-piece restriction cleanup note, 2026-07-07:
 finite-dimensional coordinate-prior transport now has a chart-piece
 restriction cleanup.  For `toEdge x = tupleToEdgeFamily b
