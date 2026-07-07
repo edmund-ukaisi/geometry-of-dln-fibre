@@ -21,6 +21,46 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 rank-cut residual-source endpoint-prior produced product positivity
+
+Reproduction:
+
+```text
+reproduction-a2-rank-cut-residual-source-endpoint-prior-produced-product-positivity.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has a sibling to the endpoint-prior rank-cut residual-source bridge:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper_of_sourceDensity_continuousAt_lt_top_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It removes the terminal continuation
+
+```text
+forall^ae z with respect to coordinateSourceMeasure.restrict V,
+  0 < productResidual(z)
+```
+
+by first producing an open positivity shrink `Vpos` from the
+coordinate-source finite-integral theorem, then running the endpoint-prior
+two-shrink theorem inside `Vpos`.  Since the returned rank-cut shrink satisfies
+`V subset W subset Vpos`, product-residual positivity transfers to `V` by
+absolute continuity of the restricted measures.
+
+Boundary: the theorem adds the honest source-side inputs needed by that
+producer: `Rres_i > 0`, continuity of `sourceImageDensity o sourceChart` at
+`z0`, and finite source-density value at `z0`.  It still does not prove
+endpoint-reference transport, determinant/raw Haar transport, source-prior
+transport, source-density lower bounds, prior-density upper bounds,
+source-rank/atlas coverage, normal crossings, pole order, or RLCT.
+
 ## 2026-07-07 A2 rank-cut residual-source endpoint-prior readback composition
 
 Reproduction:

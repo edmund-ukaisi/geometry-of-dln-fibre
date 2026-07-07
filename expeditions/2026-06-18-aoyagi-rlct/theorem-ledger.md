@@ -4,6 +4,20 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Rank-cut endpoint-prior produced product-positivity note, 2026-07-07: the
+endpoint-prior rank-cut residual-source bridge now has a sibling that produces
+the theta-side product-residual positivity hypothesis internally.  It first
+uses the coordinate-source product-residual finite-integral theorem to obtain
+an open positivity shrink `Vpos`, then runs the endpoint-prior two-shrink
+bridge inside `Vpos`.  Since the final rank-cut shrink satisfies
+`V ⊆ W ⊆ Vpos`, `Measure.restrict_mono` and absolute-continuity transfer move
+the a.e. positivity from `coordinateSourceMeasure.restrict Vpos` to
+`coordinateSourceMeasure.restrict V`.  This removes only the explicit
+theta-side positivity continuation; endpoint transport, determinant/raw Haar
+transport, source-prior transport, source-density lower bounds, prior-density
+upper bounds, source-rank/atlas coverage, normal crossings, pole order, and
+RLCT remain outside this rung.
+
 Dominated zero-locus nullity note, 2026-07-07: `LocalMeasureHandoff` now has
 the generic measure socket needed by the residual zero-locus frontier.  Scalar
 domination transfers nullity of sets, and source/reference a.e. positivity of

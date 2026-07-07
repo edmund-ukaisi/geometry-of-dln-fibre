@@ -12,6 +12,41 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior with produced product positivity
+
+Decision: compose the coordinate-source product-residual positivity theorem
+with the endpoint-prior rank-cut residual-source bridge, so callers no longer
+have to supply theta-side product-residual positivity on the final inner
+rank-cut shrink.
+
+The proof first constructs an open shrink `Vpos` on which
+`coordinateSourceMeasure.restrict Vpos` sees product-residual positivity and
+finite negative-power integrability.  It then runs the endpoint-prior
+two-shrink theorem with ambient set `Vpos`, obtaining `V subset W subset Vpos`.
+Absolute continuity of
+`coordinateSourceMeasure.restrict V` with respect to
+`coordinateSourceMeasure.restrict Vpos` transfers the a.e. positivity to the
+final rank-cut shrink.
+
+New honest inputs are the ones required by the coordinate-source producer:
+positive residual radii `Rres`, continuity of
+`sourceImageDensity o sourceChart` at `z0`, and finite source-density value at
+`z0`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-endpoint-prior-produced-product-positivity.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional.  It still does not prove endpoint-reference
+transport, determinant/raw Haar transport, source-prior transport,
+source-density lower bounds, prior-density upper bounds, source-rank or
+analytic-atlas coverage, normal crossings, pole order, or RLCT.  The next
+frontier should be a genuine density-bound producer or a set-containment input
+for the endpoint patch, not another cosmetic wrapper.
+
 ## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior readback composition
 
 Decision: compose the same-shrink original-prior readback domination theorem
