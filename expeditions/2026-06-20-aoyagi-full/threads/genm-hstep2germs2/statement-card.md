@@ -15,7 +15,7 @@ top-row half of Invariant A.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.blockSchur_movedC` (per layer) and
 >   `DLNFibre.DLN.RLCT.prodSchurCore_eq_blockSchur_partProd` (global)
->   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenMoved.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenMoved.lean` @ `4f3e52a5`)
 > - **Gloss.** `blockSchur_movedC`: `blockSchur (movedC C Z0edit s) = schurTilde C s` where
 >   `movedC` is the joint move (pivots `A_s` fixed, up-edit `Y'_s = Y_s + ΔY_s`, `Z₀` override, core
 >   `T'_s = S̃_s + Z'_s A_s⁻¹ Y'_s`) and `schurTilde C s = (1 − Kcoup C s)·blockSchur (C s)`.
@@ -35,7 +35,7 @@ top-row half of Invariant A.
 > this is `(P'11, P'12) = (P11, P12)` — the clean half of `deepestEFull` invariance.
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.topRow_movedC`
->   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenMoved.lean` @ `<SHA>`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenMoved.lean` @ `4f3e52a5`)
 > - **Gloss.** `(partProd (movedC C Z0edit) s)₁₁ = (partProd C s)₁₁ ∧ (partProd (movedC C Z0edit) s)₁₂ = (partProd C s)₁₂`,
 >   for all `s`, any `Z0edit`, given `∀ s, IsUnit (partProd C s)₁₁` and `∀ s, IsUnit (nMix C s)` (`N_s = I + u_s V_s`).
 > - **Proved.** Unconditionally (mod the `IsUnit` hyps), by induction on `s`: the pivot block via
