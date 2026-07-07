@@ -23,7 +23,17 @@ Both wired into the stack aggregator `DLNFibre.lean` (with the merged `RouteMSJC
 **Remaining for the full anisotropic atom** `∫_{ℝ^{p×q}}(w+‖ΓR+S‖²)^{−c'} = det(RRᵀ)^{−p/2}·Cresid(pq)c'·
 (w+‖S(I−P_R)‖²)^{−(c'−pq/2)}` (R full row-rank, w>0, pq/2<c'), via the cov `M = G^{−1/2}`, `G = RRᵀ`:
 1. **posdef sqrt** of `G = RRᵀ` (`R` full row rank ⟹ `G` posdef): `G^{−1/2}` invertible,
-   `G^{−1/2} G G^{−1/2} = I`, `det G^{−1/2} = (det G)^{−1/2}`. (Mathlib `Matrix.PosDef`/Hermitian sqrt.)
+   `G^{−1/2} G G^{−1/2} = I`, `det G^{−1/2} = (det G)^{−1/2}`. **ASSESSED — NOT a rabbit hole
+   (2026-07-07).** Mathlib v4.29 has NO `Matrix.PosSemidef.sqrt`, but `Analysis/Matrix/Order.lean`
+   provides the CFC matrix sqrt with exactly the needed lemmas (over `[RCLike 𝕜]`, ℝ qualifies):
+   `CFC.sqrt A`, `CFC.sq_sqrt A` (`sqrt A ^ 2 = A`), `Matrix.det_sqrt` (`(CFC.sqrt A).det =
+   RCLike.sqrt A.det`), `Matrix.inv_sqrt` (`(CFC.sqrt A)⁻¹ = CFC.sqrt A⁻¹`), `CFC.sqrt_nonneg`. So
+   `G^{1/2} = CFC.sqrt G`, `G^{−1/2} = (CFC.sqrt G)⁻¹`, `det G^{−1/2} = (RCLike.sqrt (det G))⁻¹ =
+   (det G)^{−1/2}` (det G > 0). PosDef-of-`RRᵀ` via `Matrix.mul_conjTranspose_self` (needs
+   `R.vecMul` injective = full row rank); `PosDef.isUnit` for invertibility. Cost: the CFC route
+   needs the heavy `Analysis/Matrix/Order` (CStarAlgebra CFC) import + real CFC-API wielding
+   (`RCLike`, `cfc` lemmas) — a bounded-but-new sub-brick, ~80–120 lines. (LDLᵀ/Cholesky is ALSO
+   absent from v4.29, so `CFC.sqrt` is the available route.)
 2. **the frobSq orthogonal decomposition** `‖ΓU+S‖² = ‖Γ+SUᵀ‖² + ‖S(I−UᵀU)‖²`, `U = G^{−1/2}R`
    (`UUᵀ=I`) — the matrix-algebra crux of the assembly.
 3. **translation-invariance** `∫ (w'+‖Γ+S'‖²)^{−c'} = ∫ (w'+frobSq Γ)^{−c'}` (`measurePreserving_add`),
