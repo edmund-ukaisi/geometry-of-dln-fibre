@@ -349,4 +349,23 @@ theorem paramsEquivFlat_symm_splitMP_core (x : Fin (flatDim H) → ℝ) :
     exact (paramsEquivFlat_symm_entry H x 1 (sumSplit K hK (Sum.inr i))
       (sumSplit J hJ (Sum.inr j))).symm
 
+/-- **The reduced-core loss of `coreParams`** is the squared-Frobenius of the two `₂₂` corners'
+product: `dlnLoss (H − r) 0 (coreParams x) = ‖ (b x).1.toBlocks₂₂ · (b x).2.toBlocks₂₂ ‖²`. From the
+L = 2 two-factor product bridge (`prod_two_factor_L2` at the reduced widths) — the `hfact` value once
+the core shift is absorbed by the consumer's `e`. -/
+theorem dlnLoss_coreParams (x : Fin (flatDim H) → ℝ) :
+    dlnLoss (fun s => H s - r)
+        (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ)
+        (coreParams I K J hI hK hJ x)
+      = ∑ i, ∑ j, (((blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₂
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₂₂) i j) ^ 2 := by
+  unfold dlnLoss
+  have hprod : prod (fun s => H s - r) (coreParams I K J hI hK hJ x)
+      = (blockFlatEquiv_L2 H r I K J hI hK hJ x).1.toBlocks₂₂
+          * (blockFlatEquiv_L2 H r I K J hI hK hJ x).2.toBlocks₂₂ := by
+    rw [prod_two_factor_L2 (fun s => H s - r) (coreParams I K J hI hK hJ x)]
+    rfl
+  simp only [hprod, sub_zero]
+  rfl
+
 end DLNFibre.DLN.RLCT
