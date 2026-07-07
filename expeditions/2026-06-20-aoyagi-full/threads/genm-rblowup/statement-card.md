@@ -16,7 +16,7 @@ invariant**, at general (opaque) widths. Design source:
 
 - **Lean:** `DLNFibre.DLN.RLCT.corankStep`, `…corankStep_prefactor`, `…corankStep_sequential`
   (+ the radial pieces `frobSq_smul`, `frobSq_smul_mul`, `frobSq_smul_fun`)
-  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankStep.lean` @ `<commit-sha>`)
+  (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankStep.lean` @ `633635d6`)
 - **Gloss.**
   - `frobSq_smul_mul (u M Q) : frobSq ((u • M) * Q) = u² * frobSq (M * Q)` — the single radial factors
     cleanly out of the coupled product, for ANY downstream `Q` and ANY (opaque `Fintype`) widths
