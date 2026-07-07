@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut original-prior local loss source data from rank equations
+
+Decision: remove the opaque `sourceData` argument from the strongest
+rank-cut original-prior local-loss handoff, but only by replacing it with the
+explicit source-side hypotheses that construct it.
+
+The new continuation asks for:
+
+```text
+H(k+1) = finrank(W2 k),
+r + rank(z0.2) = rEdge 0,
+r + rank(successorSelectedEntryMatrix(z0)) = rEdge 1,
+sourceChart z0 = reverseEdge(W2,B2).
+```
+
+The source-side map for the regular-coordinate data is the identity on the
+edge-family source space, so its continuity is `continuousAt_id`.  The
+source-stratum basepoint is supplied by the Case 2 source-chart rank theorem
+under determinant-sector data from `hGdet hz0G` and the two explicit rank
+equations.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-source-data-from-rank-eq.md
+lean/DLNFibre/DLN/Aoyagi/RegularSuspensionCoordinates.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean
+```
+
+This remains conditional: it does not prove residual zero-locus nullity, the
+fixed-base centering equality, the two rank equations, product-zero density
+hypotheses, prior transport, determinant/raw Haar transport, raw Haar
+specialization, source-rank or analytic atlas coverage, normal crossings, pole
+order, or RLCT.  Xhigh scouts `Beauvoir`, `Russell`, and `Huygens` passed the
+source-side construction and theorem-boundary audit.
+
 ## Latest controller decision - 2026-07-07, rank-cut original-prior local loss with finBasis and volume
 
 Decision: add convenience specializations on top of the prior-density

@@ -10,6 +10,54 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 rank-cut original-prior local loss source data from rank equations - 2026-07-07
+
+- **Statement.** The strongest `finBasis_volume` rank-cut local original-loss
+  handoff can remove the explicit `sourceData` continuation argument by
+  constructing `PaperEndpointFixedBaseRegularCoordinateSourceData` from the
+  p.13 dimension convention, the two Case 2 residual-block rank equations at
+  `z0`, and the same fixed-base centering equality as before.
+- **Tier.** A2 conditional rank-cut local original-loss handoff convenience
+  specialization.
+- **Status.** Lean proved.
+- **Kill-condition.** The result is read as proving residual zero-locus
+  nullity, proving `sourceChart z0 = reverseEdge`, proving the two rank
+  equations, deriving product-zero density hypotheses, changing the original
+  prior coordinates, specializing raw Haar, transporting the statistical prior
+  through p.13 coordinates, transporting determinant/raw Haar, proving
+  source-rank or analytic atlas coverage, normal crossings, pole order, or
+  RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the fixed-base p.13
+  product-coordinate context.  The new work is Lean-local source-side
+  bookkeeping: identity-source continuity, source-stratum membership from the
+  Case 2 rank theorem, and the fixed-complement regular-coordinate source-data
+  constructor.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-source-data-from-rank-eq.md`.
+- **Reproduction check.** Controller checked the source-side construction.
+  Xhigh scout `Beauvoir` passed the mathematical boundary as a source-side
+  p.13 coordinate certificate.  Xhigh scout `Russell` passed the Lean route and
+  identified `continuousAt_id` as the correct source-side continuity input.
+  Xhigh scout `Huygens` passed the overclaim-risk audit.
+- **Lean targets.**
+  `paperEndpointFixedBaseRegularCoordinateSourceData_of_local_source_basepoint`
+  and `paperEndpointFixedBaseRegularCoordinateSourceData_of_isCompl_of_rank_eq`
+  in `lean/DLNFibre/DLN/Aoyagi/RegularSuspensionCoordinates.lean`, and
+  `PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_rank_eq_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+- **Proved.** Focused `lake env lean` checks and focused module builds passed
+  for both touched Lean modules.  `lake env lean DLNFibre.lean`, full local
+  `lake build DLNFibre`, `scripts/sorries`, `git diff --check`, touched
+  Lean/reproduction marker scan, and direct axiom probes passed.  All three
+  new declarations report only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No residual zero-locus-nullity proof, no proof of
+  `sourceChart z0 = reverseEdge`, no proof of the two rank equations, no
+  product-zero density proof, no statistical prior identification or transport,
+  no determinant/raw Haar transport, no raw Haar specialization, no source-rank
+  coverage, no analytic atlas coverage, no normal crossings, no pole order,
+  and no RLCT extraction.
+
 ## Current A2 rank-cut original-prior local loss with finBasis and volume - 2026-07-07
 
 - **Statement.** The prior-density product-zero rank-cut local original-loss

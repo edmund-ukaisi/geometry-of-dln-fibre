@@ -6767,6 +6767,74 @@ theorem regularCoordinateSourceData
 end PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
 
 set_option linter.unusedSectionVars false in
+/-- A supplied fixed-base source-stratum base point gives regular/residual
+coordinate source data for a supplied total-kernel complement.
+
+This constructor keeps the caller's chosen `U₀` and replaces global edge-rank
+equalities by the exact local source-stratum membership of `x₀`.  It is still
+only a source-side regular-coordinate package: no chart, Jacobian,
+normal-crossing certificate, pole-order computation, or RLCT extraction is
+constructed. -/
+theorem paperEndpointFixedBaseRegularCoordinateSourceData_of_local_source_basepoint
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (H : ℕ → ℕ) (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hsource :
+      x₀ ∈ paperEndpointFixedBaseSourceRankStratum
+        (K := K) W B Cedge r rEdge)
+    (hH : ∀ k : Fin (N + 1),
+      H (k.val + 1) = Module.finrank K (W k)) :
+    PaperEndpointFixedBaseRegularCoordinateSourceData
+      W B U₀ hU₀ x₀ Cedge H r rEdge :=
+  ({ localCertificate :=
+      paperEndpointFixedBaseCanonicalProductDifferenceLocalCertificate_of_isCompl
+        W B U₀ hU₀ Cedge r rEdge hCedge hbase
+     source_basepoint := hsource } :
+    PaperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate
+      W B U₀ hU₀ x₀ Cedge r rEdge).regularCoordinateSourceData
+      (W := W) (B := B) hH
+
+set_option linter.unusedSectionVars false in
+/-- Source rank data based at `B` produce fixed-base regular/residual coordinate
+source data for a supplied total-kernel complement.
+
+This is the fixed-complement form of
+`exists_paperEndpointFixedBaseRegularCoordinateSourceData_of_rank_eq`; it keeps
+the caller's chosen `U₀` and `hU₀`.  It still only constructs the source-side
+regular-coordinate package, not a chart, Jacobian, normal-crossing
+certificate, pole-order computation, or RLCT extraction. -/
+theorem paperEndpointFixedBaseRegularCoordinateSourceData_of_isCompl_of_rank_eq
+    [∀ j, FiniteDimensional K (W j)]
+    {α : Type*} [TopologicalSpace α] {x₀ : α}
+    (U₀ : Submodule K (reverseVertex W 0))
+    (hU₀ : IsCompl U₀ (LinearMap.ker (paperTotalMap W B)))
+    (Cedge : α → ∀ p : Fin N,
+      reverseVertex W p.castSucc →L[K] reverseVertex W p.succ)
+    (H : ℕ → ℕ) (r : ℕ) (rEdge : Fin N → ℕ)
+    (hCedge : ContinuousAt Cedge x₀)
+    (hbase :
+      Cedge x₀ = fun p : Fin N ↦ LinearMap.toContinuousLinearMap (reverseEdge W B p))
+    (hprod :
+      Module.finrank K (LinearMap.range (paperTotalMap W B)) = r)
+    (hedge :
+      ∀ p : Fin N,
+        Module.finrank K (LinearMap.range (reverseEdge W B p)) = rEdge p)
+    (hH : ∀ k : Fin (N + 1),
+      H (k.val + 1) = Module.finrank K (W k)) :
+    PaperEndpointFixedBaseRegularCoordinateSourceData
+      W B U₀ hU₀ x₀ Cedge H r rEdge :=
+  (paperEndpointFixedBaseCanonicalProductDifferenceLocalSourceCertificate_of_isCompl_of_rank_eq
+    W B U₀ hU₀ Cedge r rEdge hCedge hbase hprod hedge).regularCoordinateSourceData
+      (W := W) (B := B) hH
+
+set_option linter.unusedSectionVars false in
 /-- Source rank data based at `B` produce fixed-base regular/residual coordinate
 source data after choosing a total-kernel complement.
 

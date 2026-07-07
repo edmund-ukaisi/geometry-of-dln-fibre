@@ -6,6 +6,59 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 rank-cut original-prior local loss source data from rank equations - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-rank-cut-original-prior-loss-source-data-from-rank-eq.md
+```
+
+Lean now has two fixed-complement source-data constructors:
+
+```text
+paperEndpointFixedBaseRegularCoordinateSourceData_of_local_source_basepoint
+
+paperEndpointFixedBaseRegularCoordinateSourceData_of_isCompl_of_rank_eq
+```
+
+The first keeps the caller's supplied total-kernel complement `U0 hU0` and
+builds `PaperEndpointFixedBaseRegularCoordinateSourceData` from source-side
+continuity, the fixed-base equality, source-stratum membership at the
+basepoint, and the p.13 dimension convention.  The second is the corresponding
+fixed-complement global-rank-equation constructor.
+
+The downstream local-loss theorem
+
+```text
+PaperEndpointFixedBaseRegularCoordinateSourceData.exists_open_radius_lintegral_lossDLN_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_zero_set_null_of_rank_eq_of_source_base_of_continuousAt_pos_priorDensity_product_zero_finBasis_volume
+```
+
+removes the explicit `sourceData` argument from the previous strongest
+`finBasis_volume` handoff.  Its continuation now assumes the dimension
+convention, the two Case 2 residual-block rank equations at `z0`, and the same
+fixed-base centering equality as before.  The source data are constructed with
+`Cedge := fun E => E`, so the continuity proof is `continuousAt_id`; the
+source-stratum membership comes from
+`case2PassiveThetaWithFollowingFactorEndpointSourceChart_mem_sourceRankStratum`
+using determinant-sector data from `hGdet hz0G`.
+
+Residual zero-locus nullity, fixed-base centering, the rank equations,
+product-zero continuity/positivity, raw Haar, statistical prior transport,
+determinant/raw Haar transport, source-rank or atlas coverage, normal
+crossings, pole order, and RLCT extraction remain explicit or outside the
+theorem.
+
+Focused `lake env lean` checks passed for `RegularSuspensionCoordinates.lean`
+and `RetainedPassiveCase2PassiveThetaOriginalPriorLossRankCutBridge.lean`.
+Focused module builds passed for both touched modules.  `lake env lean
+DLNFibre.lean`, full local `lake build DLNFibre`, `scripts/sorries`,
+`git diff --check`, touched Lean/reproduction marker scan, and direct axiom
+probes passed.  All three new declarations report only
+`[propext, Classical.choice, Quot.sound]`.  Xhigh scouts `Beauvoir`,
+`Russell`, and `Huygens` passed the mathematical boundary, Lean-route, and
+overclaim-risk audits.
+
 ## A2 rank-cut original-prior local loss with finBasis and volume - 2026-07-07
 
 Reproduction:

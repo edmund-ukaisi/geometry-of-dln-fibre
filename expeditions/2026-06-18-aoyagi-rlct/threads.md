@@ -18,6 +18,22 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the strongest rank-cut original-prior local loss
+  handoff now has a source-data-free specialization.  The returned
+  continuation no longer asks for
+  `PaperEndpointFixedBaseRegularCoordinateSourceData`; instead it asks for the
+  p.13 dimension convention, the two Case 2 residual-block rank equations at
+  `z0`, and the same fixed-base centering equality
+  `sourceChart z0 = reverseEdge`.  The constructed source data use
+  `Cedge := fun E => E`, so the continuity input is `continuousAt_id`; the
+  source-stratum basepoint comes from the Case 2 source-chart rank theorem
+  under determinant-sector data from `hGdet hz0G`.  Residual zero-locus
+  nullity, fixed-base centering, the rank equations, product-zero density
+  hypotheses, raw Haar, source/prior transport, determinant/raw Haar
+  transport, source-rank or analytic atlas coverage, normal crossings, pole
+  order, and RLCT remain explicit or outside the theorem.  Xhigh scouts
+  `Beauvoir`, `Russell`, and `Huygens` passed the boundary audit.
+
 - 2026-07-07, Thread 03: the rank-cut original-prior local loss theorem with
   prior density at product-zero now has two convenience specializations.  The
   first fixes the displayed `lossDLN` endpoint dimensions and bases to
