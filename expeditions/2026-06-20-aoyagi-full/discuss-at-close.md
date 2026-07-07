@@ -2103,3 +2103,18 @@ core is multi-week LABOR (the native SJState carrier + the shared-divisor ledger
 operator action needed. `sjcarrier3` is charged on the native carrier WITH the shared-divisor ledger → close
 `sjJointResolution`. The design-first discipline again surfaced-and-retired the risk BEFORE any wasted multi-week
 build (this is the fourth route-confound caught cheaply — cf. lessons.md).
+
+## 56. Dead interiorLDU route (orphaned, ~10 sorries) — removal candidate (goal-distance cleanup). (2026-07-07)
+Goal-distance check this tick surfaced that `RouteMInteriorLDUContract.lean` (9 sorries) +
+`RouteMInteriorLDUCov.lean` (1 sorry) + `RouteMInteriorLDULeafH.lean` are **fully orphaned** — imported by
+NOTHING in the aggregator (`DLNFibre.lean`), only cross-importing each other. They are the **DEAD interiorLDU
+route** for R1-LOWER (Item-103: `interiorLDU_injOn` is FALSE — the radial `u` enters only as `u•Rmat` with no
+additive anchor, non-injective on the cov domain; + a false pivot-fixing claim). R1-LOWER instead routes
+through the LIVE `NodeAchieverChart M` (via `routeMCore_box_diverges_of_nodeChart`, sorry-free). So these ~10
+sorries are NOT open work on the critical path — they inflate the apparent sorry-count of a dead branch.
+**Controller call:** FLAG not delete (teammate-created; I didn't author them; surface-before-delete per
+disposition). They cost nothing (unwired, don't build, don't affect the headline), but the honest sorry-count
+of live work is ~10 lower than the raw total. Recommend removal at a consolidation pass (recoverable from git).
+(Operator: no action — a goal-distance transparency note. If you'd rather I keep dead exploratory routes on the
+branch for provenance vs delete them to keep canonical's sorry-count honest, say so; default is remove at next
+consolidation.)
