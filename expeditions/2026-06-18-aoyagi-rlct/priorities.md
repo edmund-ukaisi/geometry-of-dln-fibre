@@ -12,6 +12,39 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, map/readback zero-locus nullity handoff
+
+Decision: extend the dominated zero-locus socket across the readback map before
+trying to specialize it to the rank-cut original prior.
+
+The new generic lemma proves:
+
+```text
+AEMeasurable readback mu
+Measure.map readback mu <= c • thetaMu
+(forall^ae z with respect to thetaMu, 0 < g z)
+{E | f E = 0} <=^ae[mu] readback^{-1} {z | g z = 0}
+  -> mu {E | f E = 0} = 0.
+```
+
+This is the exact measure-theory socket for transporting theta-side product
+residual positivity back to an edge-side zero-locus nullity statement, once
+the concrete Aoyagi hypotheses have been aligned.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-map-readback-zero-locus-nullity-handoff.md
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+```
+
+This remains infrastructure only.  It does not prove the concrete
+original-prior readback domination, the a.e. zero-locus implication from
+fixed-base/product-residual equality, same-shrink domination targeting
+`coordinateSourceMeasure.restrict V`, determinant/raw Haar transport,
+product-zero density hypotheses, source-rank or analytic atlas coverage,
+normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, dominated zero-locus nullity handoff
 
 Decision: build the reusable measure-theory socket for the residual

@@ -18,6 +18,19 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: a generic map/readback zero-locus nullity handoff
+  landed in `LocalMeasureHandoff`.  If `readback` is a.e.-measurable,
+  `Measure.map readback μ` is scalar-dominated by a theta-side reference
+  measure, the theta-side residual is positive a.e., and the edge-side zero
+  locus is a.e. contained in the readback preimage of the theta-side zero
+  locus, then the edge-side zero locus is `μ`-null.  This is only the
+  readback transport socket for the rank-cut residual frontier; concrete
+  original-prior readback domination, same-shrink domination against
+  `coordinateSourceMeasure.restrict V`, the fixed-base/product-residual
+  zero-locus implication, determinant/raw Haar transport, product-zero density
+  hypotheses, source-rank or analytic atlas coverage, normal crossings, pole
+  order, and RLCT remain outside this rung.
+
 - 2026-07-07, Thread 03: a generic dominated zero-locus nullity handoff landed
   in `LocalMeasureHandoff`.  Scalar domination transfers nullity of sets, and
   if a real function is positive a.e. for the reference measure then every

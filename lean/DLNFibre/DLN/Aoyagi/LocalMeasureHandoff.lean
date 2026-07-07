@@ -521,6 +521,33 @@ theorem measure_zero_set_eq_zero_of_measure_le_smul_of_ae_pos
         hpos
   exact measure_zero_of_measure_le_smul_of_measure_zero hν hzero_ref
 
+/-- Pull back zero-locus nullity across a readback map.
+
+If the readback pushforward of an edge-side measure is dominated by a scalar
+multiple of a theta-side reference measure, the theta-side residual is positive
+a.e., and the edge-side zero locus maps into the theta-side zero locus a.e.,
+then the edge-side zero locus is null. -/
+theorem measure_zero_set_eq_zero_of_map_le_smul_of_ae_pos_of_ae_zero_imp
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    {μ : Measure E} {θμ : Measure Θ} {c : ℝ≥0∞}
+    {readback : E → Θ} {f : E → ℝ} {g : Θ → ℝ}
+    (hread : AEMeasurable readback μ)
+    (hmap : Measure.map readback μ ≤ c • θμ)
+    (hpos : ∀ᵐ z ∂θμ, 0 < g z)
+    (hzero_imp : {E | f E = 0} ≤ᵐ[μ] readback ⁻¹' {z | g z = 0}) :
+    μ {E | f E = 0} = 0 := by
+  have htarget_zero :
+      μ (readback ⁻¹' {z | g z = 0}) = 0 := by
+    have hmap_zero :
+        (Measure.map readback μ) {z | g z = 0} = 0 :=
+      measure_zero_set_eq_zero_of_measure_le_smul_of_ae_pos hmap hpos
+    have hle :
+        μ (readback ⁻¹' {z | g z = 0}) ≤
+          (Measure.map readback μ) {z | g z = 0} :=
+      Measure.le_map_apply hread {z | g z = 0}
+    exact le_antisymm (by simpa [hmap_zero] using hle) bot_le
+  exact measure_mono_null_ae hzero_imp htarget_zero
+
 /-- Invert a nonzero `ℝ≥0` scalar equality of measures. -/
 theorem measure_eq_inv_smul_of_eq_nnreal_smul
     {α : Type*} [MeasurableSpace α] {μ ν : Measure α} {c : NNReal}

@@ -10,6 +10,40 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 map/readback zero-locus nullity handoff - 2026-07-07
+
+- **Statement.** If `readback` is a.e.-measurable, the readback pushforward of
+  an edge-side measure is scalar-dominated by a theta-side reference measure,
+  a theta-side residual is positive a.e., and the edge-side zero locus is
+  a.e. contained in the readback preimage of the theta-side zero locus, then
+  the edge-side zero locus is null.
+- **Tier.** A2 reusable measure-theory infrastructure for the residual
+  zero-locus frontier.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as proving concrete original-prior
+  readback domination, same-shrink domination targeting
+  `coordinateSourceMeasure.restrict V`, the fixed-base/product-residual
+  zero-locus implication, theta-side positivity, source-rank or analytic atlas
+  coverage, prior transport, determinant/raw Haar transport, normal crossings,
+  pole order, or RLCT.
+- **Evidence/source.** Elementary measure theory; this is not an additional
+  cited analytic result from Aoyagi.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-map-readback-zero-locus-nullity-handoff.md`.
+- **Reproduction check.** Controller checked the readback-preimage nullity
+  calculation before Lean formalisation.
+- **Lean target.**
+  `measure_zero_set_eq_zero_of_map_le_smul_of_ae_pos_of_ae_zero_imp` in
+  `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`.
+- **Proved.** Focused module build, full local `lake build DLNFibre`,
+  `scripts/sorries`, `git diff --check`, touched Lean-file marker scan, and
+  direct axiom probe passed.  The declaration reports only
+  `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No original-prior zero-locus theorem, no concrete domination
+  theorem, no residual readback alignment, no source/prior transport, no
+  determinant/raw Haar transport, no source-rank or analytic atlas coverage,
+  no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 dominated zero-locus nullity handoff - 2026-07-07
 
 - **Statement.** Scalar domination transfers nullity of sets, and if a real

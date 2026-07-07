@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 map/readback zero-locus nullity handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-map-readback-zero-locus-nullity-handoff.md
+```
+
+Lean now has the generic readback transport lemma in
+`LocalMeasureHandoff.lean`:
+
+```text
+measure_zero_set_eq_zero_of_map_le_smul_of_ae_pos_of_ae_zero_imp
+```
+
+It consumes a.e. measurability of `readback`, domination
+`Measure.map readback μ ≤ c • θμ`, theta-side a.e. positivity of `g`, and an
+a.e. implication from the edge-side zero locus of `f` into the readback
+preimage of the theta-side zero locus of `g`.  It returns
+`μ {E | f E = 0} = 0`.
+
+The proof first applies the same-domain dominated zero-locus lemma to
+`Measure.map readback μ`, then uses `Measure.le_map_apply` to make the
+readback preimage null for `μ`, and finally uses `measure_mono_null_ae` with
+the supplied a.e. zero-locus implication.
+
+This is only the map/readback socket for the concrete rank-cut nullity proof.
+The remaining mathematical work is to produce same-shrink original-prior
+readback domination against `coordinateSourceMeasure.restrict V` and prove the
+a.e. zero-locus implication from the fixed-base residual/product-residual
+comparison on the rank-cut source.  It does not prove determinant/raw Haar
+transport, product-zero density hypotheses, source-rank or analytic atlas
+coverage, normal crossings, pole order, or RLCT extraction.
+
+Focused module build, full local `lake build DLNFibre`, `scripts/sorries`,
+`git diff --check`, touched Lean-file marker scan, and direct axiom probe
+passed.  The new declaration reports only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 dominated zero-locus nullity handoff - 2026-07-07
 
 Reproduction:
