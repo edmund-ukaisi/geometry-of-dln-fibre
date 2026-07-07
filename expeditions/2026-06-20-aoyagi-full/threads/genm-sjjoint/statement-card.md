@@ -1,8 +1,34 @@
 # Thread `genm-sjjoint` — sjJointResolution staged wins (tide report + statement card)
 
-Branch `origin/genm-sjjoint` @ `375abcf4` (off `origin/genm-sjbpeel` @ 83976c60 + merge of
+Branch `origin/genm-sjjoint` (off `origin/genm-sjbpeel` @ 83976c60 + merge of
 `origin/genm-sjpeel-blow`). Target: the `sjJointResolution` mountain (last analytic sorry of the
 general-`L` R1-UPPER `(S,J)`-peel). Design cert: `genm-sjjoint-design/cert.md`.
+
+## ATOM TIDE update (`RouteMSJGammaAtom.lean`) — the step-2 Γ-atom crux + cov (sorry-free, axiom-clean)
+
+Building the anisotropic Γ-atom on the banked full-space endpoint. Two gating pieces landed
+(`[propext, Classical.choice, Quot.sound]`, forced `#print axioms`):
+
+- **`det_rightMulₚ`** — the cov Jacobian crux: `det (Γ ↦ Γ · M) = (det M)^p` on `Fin p → Fin q → ℝ`.
+  Realised `Γ↦Γ·M` as the `p`-fold diagonal `LinearMap.pi (fun i ↦ Mᵀ.mulVecLin ∘ proj i)` (each row
+  `v ↦ v ᵥ* M = Mᵀ.mulVecLin v`), then `LinearMap.det_pi` + `LinearMap.det_toLin'` +
+  `Matrix.det_transpose`. (No `Matrix`-as-normed-space instance friction — works on the clean Pi type.)
+- **`lintegral_comp_rightMulₚ`** — the `∫⁻` change of variables: for `det M ≠ 0`,
+  `∫⁻ Γ, g (fun i ↦ Γ i ᵥ* M) = ofReal(|det M|^p)⁻¹ · ∫⁻ Γ, g Γ`, via
+  `Measure.map_linearMap_addHaar_eq_smul_addHaar volume` (the general finite-dim Haar linear cov) +
+  `lintegral_map` + `lintegral_smul_measure`. The feared-hardest piece (the pq-dim Gram cov) is clean.
+
+Both wired into the stack aggregator `DLNFibre.lean` (with the merged `RouteMSJCorankResidual`).
+
+**Remaining for the full anisotropic atom** `∫_{ℝ^{p×q}}(w+‖ΓR+S‖²)^{−c'} = det(RRᵀ)^{−p/2}·Cresid(pq)c'·
+(w+‖S(I−P_R)‖²)^{−(c'−pq/2)}` (R full row-rank, w>0, pq/2<c'), via the cov `M = G^{−1/2}`, `G = RRᵀ`:
+1. **posdef sqrt** of `G = RRᵀ` (`R` full row rank ⟹ `G` posdef): `G^{−1/2}` invertible,
+   `G^{−1/2} G G^{−1/2} = I`, `det G^{−1/2} = (det G)^{−1/2}`. (Mathlib `Matrix.PosDef`/Hermitian sqrt.)
+2. **the frobSq orthogonal decomposition** `‖ΓU+S‖² = ‖Γ+SUᵀ‖² + ‖S(I−UᵀU)‖²`, `U = G^{−1/2}R`
+   (`UUᵀ=I`) — the matrix-algebra crux of the assembly.
+3. **translation-invariance** `∫ (w'+‖Γ+S'‖²)^{−c'} = ∫ (w'+frobSq Γ)^{−c'}` (`measurePreserving_add`),
+   then the banked isotropic endpoint `matBox_corank_residual_fullSpace_eq` at core `w' = w+‖S(I−P)‖²`.
+4. **assemble** via `lintegral_comp_rightMulₚ p G^{−1/2}` (Jacobian `|det G^{−1/2}|^p = (det G)^{−p/2}`).
 
 ## What this tide BANKED (sorry-free, axiom-clean)
 
