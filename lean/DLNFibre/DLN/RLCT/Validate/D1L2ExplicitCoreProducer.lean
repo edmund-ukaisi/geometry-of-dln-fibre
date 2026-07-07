@@ -4,6 +4,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.R1ResolutionInterfaceL2
 import DLNFibre.DLN.RLCT.Foundations.S1NodeFlatHomog
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
+import DLNFibre.DLN.RLCT.Validate.D1L2ExplChartClose2
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.D1L2ExplicitCoreProducer` — the D1 `≥`-leg via the EXPLICIT core
@@ -225,8 +226,8 @@ theorem d1ge_L2_hAtV_explicit
               dlnLoss (fun s => H s - r)
                 (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ) A)
               P
-        ≤ rlctAt H (dlnLoss H B) v := by
-  sorry
+        ≤ rlctAt H (dlnLoss H B) v :=
+  d1ge_L2_hAtV_explicit_close H r B v hopt hB hpos
 
 /-! ## The `HeadlineL2Assembly.hD1ge_L2` drop-in -/
 
