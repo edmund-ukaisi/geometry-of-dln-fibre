@@ -12,6 +12,57 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, original-volume C-one source-support handoff
+
+Decision: add the direct non-readback C-one support wrapper for the
+original-volume source-cylinder domination theorem.
+
+The new theorem proves that after a local with-following shrink, any
+measurable chart piece with ordinary support
+
+```text
+chartPiece ⊆ sourceChart '' V
+```
+
+and pointwise signed-box support
+
+```text
+∀ E ∈ chartPiece, cOneReadout E ∈ signedBox
+```
+
+inherits the direct original-volume domination conclusion of the
+source-cylinder theorem, under the same explicit lower source-density bound:
+
+```text
+originalVolume.restrict chartPiece
+  <= (((cHaar⁻¹ : NNReal) : ℝ≥0∞) * (Cdet * ε⁻¹)) •
+       Measure.map sourceChart (coordinateSourceMeasure.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-cOne-source-support-handoff.md
+threads/03-block-product-reduction/statement-card-a2-with-following-original-volume-cOne-source-support-handoff.md
+threads/03-block-product-reduction/review-a2-with-following-original-volume-cOne-source-support-handoff.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+The proof first gets an outer local source-chart left-inverse and p.13 support
+shrink, then runs the direct source-cylinder volume theorem inside that
+shrink.  The C-one support bridge converts ordinary support plus C-one
+signed-box support into source-cylinder support for the returned inner `V`.
+
+This is not C-one support for arbitrary chart pieces, source-density
+positivity, original-prior transport, readback domination, finite-integral
+transfer, determinant/raw Haar transport, Haar normalization,
+source-image/source-rank coverage, normal crossings, pole order, or RLCT
+extraction.
+
+Next frontier: discharge source-density lower bounds in honest local
+situations, or connect direct volume/prior domination to finite-integral front
+ends only where readback support is explicitly available.
+
 ## Latest controller decision - 2026-07-07, original-prior C-one source-support handoff
 
 Decision: add the direct non-readback C-one support wrapper for the

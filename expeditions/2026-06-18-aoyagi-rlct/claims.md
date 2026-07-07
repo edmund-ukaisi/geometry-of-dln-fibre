@@ -10,6 +10,48 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following original-volume C-one source-support handoff - 2026-07-07
+
+- **Statement.** On a local with-following Case 2 p.13 chart patch, ordinary
+  source-chart support plus pointwise C-one signed-box support implies the
+  source-cylinder support needed for direct original-volume domination.
+- **Tier.** A2 local original-volume/source-support wrapper.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The theorem is read as proving the C-one signed-box
+  condition, source-density positivity, original-prior transport, readback
+  domination, finite-integral transfer, determinant-chart Haar transport,
+  exact raw-Haar pushforward, Haar normalization, source-image/source-rank
+  coverage, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 supply the retained-passive p.13
+  source-chart algebra already formalized in the source-image and C-one
+  support bridge.  This wrapper adds only Lean-local support conversion.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-cOne-source-support-handoff.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Godel the 2nd` passed the
+  source-boundary route.  Xhigh Lean-route reviewer `Franklin the 2nd`
+  supplied the proof skeleton and identified only the expected eta-sensitive
+  field-normalization points.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-original-volume-cOne-source-support-handoff.md`.
+- **Lean target.**
+  `exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** The theorem returns an open shrink `V` with source-chart
+  left-inverse, injectivity, continuity, measurable image, and p.13 image
+  support.  For measurable chart pieces supported by `sourceChart '' V` and
+  pointwise C-one signed-box support, it proves the same finite-scalar direct
+  original-volume domination as the source-cylinder theorem under an explicit
+  source-density lower bound.  Focused `lake env lean`, targeted module build,
+  local citation audit, `git diff --check`, `lean/scripts/sorries`, direct
+  axiom probe, and direct `#audit_cited` probe passed.  The declaration
+  reports only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No C-one support for arbitrary chart pieces, no
+  source-density positivity, no original-prior transport, no readback
+  domination, no finite-integral transfer, no determinant-chart Haar
+  transport, no exact raw-Haar pushforward, no Haar normalization, no
+  source-image/source-rank coverage, no normal crossings, no pole order, and
+  no RLCT extraction.
+
 ## Current A2 with-following original-prior C-one source-support handoff - 2026-07-07
 
 - **Statement.** On a local with-following Case 2 p.13 chart patch, ordinary

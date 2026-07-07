@@ -6,6 +6,51 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following original-volume C-one source-support handoff - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-original-volume-cOne-source-support-handoff.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower
+```
+
+The theorem is a direct non-readback support-conversion wrapper.  It first
+gets an outer source-chart shrink with local readback left-inverse and p.13
+image support, then calls the direct original-volume source-cylinder theorem
+inside that shrink.  For the returned inner `V`, ordinary support
+`chartPiece ⊆ sourceChart '' V` plus pointwise
+`cOneReadout E ∈ signedBox` is converted to
+`chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder)` by the existing C-one
+support bridge.
+
+Boundary: no C-one support for arbitrary chart pieces, no source-density
+positivity, no original-prior transport, no readback domination, no
+finite-integral transfer, no determinant or raw Haar transport, no scalar
+normalization, no source/source-rank coverage, no normal crossings, no pole
+order, and no RLCT extraction.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+lake exe cited-audit
+git diff --check
+lean/scripts/sorries
+```
+
+`scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and only
+the existing three cited axioms.  The local citation executable reports
+`UNACCOUNTED=0`, `CITED=2`, and `LOCATION=0`.  A direct axiom probe reports
+only `[propext, Classical.choice, Quot.sound]`, and `#audit_cited` classifies
+the theorem as FORMALISED.
+
 ## A2 with-following original-prior C-one source-support handoff - 2026-07-07
 
 Reproduction:

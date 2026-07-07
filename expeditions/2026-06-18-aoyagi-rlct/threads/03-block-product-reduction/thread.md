@@ -21,6 +21,41 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 With-following original-volume C-one source-support handoff
+
+Lean now proves:
+
+```text
+exists_open_subset_originalEdgeFamilyVolume_restrict_chartPiece_le_smul_coordinateSourceReference_of_chartPiece_subset_sourceChart_image_cOneReadout_mem_signedBox_sourceDensity_lower
+```
+
+This is a direct non-readback support wrapper over the original-volume
+source-cylinder handoff.  The proof first obtains a local source-chart
+left-inverse and p.13 image-support shrink, then runs the direct
+source-cylinder volume theorem inside it.  On the returned inner shrink,
+ordinary support `chartPiece subset sourceChart '' V` plus pointwise
+`cOneReadout E in signedBox` gives the needed
+`chartPiece subset sourceChart '' (V inter sourceCylinder)`.
+
+Artifacts:
+
+```text
+reproduction-a2-with-following-original-volume-cOne-source-support-handoff.md
+statement-card-a2-with-following-original-volume-cOne-source-support-handoff.md
+review-a2-with-following-original-volume-cOne-source-support-handoff.md
+```
+
+Focused elaboration, targeted module build, local `lake exe cited-audit`,
+`lean/scripts/sorries`, `git diff --check`, direct axiom probe, and direct
+`#audit_cited` probe passed.  The declaration reports only `[propext,
+Classical.choice, Quot.sound]` and is classified as FORMALISED.
+
+Nonclaims: no C-one support for arbitrary chart pieces, no source-density
+positivity, no original-prior transport, no readback domination, no
+finite-integral transfer, no determinant/raw Haar transport, no Haar
+normalization, no source/source-rank coverage, no normal crossings, no pole
+order, and no RLCT extraction.
+
 ## 2026-07-07 With-following original-prior C-one source-support handoff
 
 Lean now proves:
