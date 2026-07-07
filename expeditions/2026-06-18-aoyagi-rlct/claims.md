@@ -10,6 +10,46 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 same-shrink original-prior readback domination - 2026-07-07
+
+- **Statement.** The conditional original-prior readback domination theorem
+  can target `coordinateSourceMeasure.restrict V` on the returned shrink,
+  provided the same endpoint-reference identity, endpoint lower bound,
+  source-density lower bound, prior-density upper bound, and chart-piece image
+  hypotheses as the existing `G`-target theorem.
+- **Tier.** A2 conditional original-prior readback domination for local Case 2
+  p.13/readback source pieces.
+- **Status.** Lean proved and locally verified.
+- **Kill-condition.** The result is read as proving determinant/raw Haar
+  transport, source-prior transport, source-density lower bounds, prior-density
+  upper bounds, source-rank or analytic atlas coverage, theta-side residual
+  positivity, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 for the fixed-base p.13 coordinate
+  context and Case 2 pp. 19-21 for the with-following chart context.  The new
+  proof is Lean-local support bookkeeping on a returned chart.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-same-shrink-original-prior-readback-domination.md`.
+- **Reproduction check.** Controller checked that
+  `chartPiece ⊆ sourceChart '' V` and the returned left inverse force
+  `readback(chartPiece) ⊆ V`; xhigh scouts `Bacon` and `Locke` audited the
+  existing theorem shape and the map-support sharpening obligation.
+- **Lean targets.**
+  `measure_map_restrict_source_subset_image_le_smul_restrict_of_le_smul_restrict_superset`
+  in `lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean`, and
+  `exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_same_shrink_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** Focused `lake env lean` passed for both touched Lean files.
+  Focused module builds passed for `LocalMeasureHandoff` and the
+  determinant-domination module.  `scripts/sorries`, `git diff --check`,
+  touched Lean-file marker scan, and direct axiom probes passed.  Both new
+  declarations report only `[propext, Classical.choice, Quot.sound]`.
+- **Nonclaims.** No determinant/raw Haar transport theorem, no source-prior
+  transport theorem, no source-density lower-bound theorem, no prior-density
+  upper-bound theorem, no source-rank or analytic atlas coverage, no theta-side
+  positivity theorem, no normal crossings, no pole order, and no RLCT
+  extraction.
+
 ## Current A2 rank-cut residual-source readback nullity wrapper - 2026-07-07
 
 - **Statement.** The rank-cut residual-source theorem can replace its explicit

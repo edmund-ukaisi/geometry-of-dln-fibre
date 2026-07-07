@@ -12,6 +12,38 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, same-shrink original-prior readback domination
+
+Decision: expose a conditional original-prior readback domination theorem
+whose final target is the returned shrink
+`coordinateSourceMeasure.restrict V`, not the larger ambient
+`coordinateSourceMeasure.restrict G`.
+
+The proof uses only support bookkeeping:
+
+```text
+chartPiece ⊆ sourceChart '' V,
+readback(sourceChart z) = z for z ∈ V,
+V ⊆ G.
+```
+
+Together these show the mapped restricted prior is supported on `V`, so an
+existing domination by `coordinateSourceMeasure.restrict G` sharpens to the
+same scalar domination by `coordinateSourceMeasure.restrict V`.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-same-shrink-original-prior-readback-domination.md
+lean/DLNFibre/DLN/Aoyagi/LocalMeasureHandoff.lean
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This remains conditional.  It does not prove determinant/raw Haar transport,
+source-prior transport, source-density lower bounds, prior-density upper
+bounds, source-rank or analytic atlas coverage, theta-side positivity, normal
+crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, rank-cut residual-source readback nullity wrapper
 
 Decision: replace the explicit residual zero-locus-nullity input in the

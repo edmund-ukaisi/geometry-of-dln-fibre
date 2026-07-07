@@ -6,6 +6,45 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 same-shrink original-prior readback domination - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-same-shrink-original-prior-readback-domination.md
+```
+
+Lean now has a conditional original-prior readback domination theorem targeting
+the returned coordinate-source shrink:
+
+```text
+exists_open_subset_originalEdgeFamilyPrior_restrict_chartPiece_readback_le_smul_coordinateSourceMeasure_restrict_same_shrink_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper
+```
+
+It keeps the existing endpoint-reference identity, endpoint lower bound,
+source-density lower bound, prior-density upper bound, and chart-piece image
+hypotheses.  The final domination conclusion is now by
+`Cprior • coordinateSourceMeasure.restrict V`.
+
+The proof adds a generic map-support helper: if a restricted source piece lies
+inside `sourceChart '' V` and `readback(sourceChart z) = z` on `V`, then a
+readback-map domination by a larger restricted target sharpens to the same
+scalar domination on `V`.  This is the exact same-shrink input expected by the
+rank-cut residual-source readback-nullity wrapper.
+
+This still does not prove determinant/raw Haar transport, source-prior
+transport, source-density lower bounds, prior-density upper bounds,
+source-rank or analytic atlas coverage, theta-side positivity, normal
+crossings, pole order, or RLCT extraction.
+
+Focused `lake env lean` passed for `LocalMeasureHandoff.lean` and for the
+determinant-domination file.  Focused module builds passed for
+`DLNFibre.DLN.Aoyagi.LocalMeasureHandoff` and
+`DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`.
+`scripts/sorries`, `git diff --check`, touched Lean-file marker scan, and
+direct axiom probes passed.  Both new declarations report only
+`[propext, Classical.choice, Quot.sound]`.
+
 ## A2 rank-cut residual-source readback nullity wrapper - 2026-07-07
 
 Reproduction:

@@ -18,6 +18,17 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the original-prior readback domination frontier now
+  has a same-shrink theorem targeting `coordinateSourceMeasure.restrict V`.
+  It keeps the existing endpoint-reference identity, endpoint lower bound,
+  source-density lower bound, prior-density upper bound, and chart-piece image
+  hypotheses; the new proof only shows that the readback pushforward is
+  supported on `V` and sharpens the previous `G`-target domination.  It does
+  not prove determinant/raw Haar transport, source-prior transport,
+  source-density lower bounds, prior-density upper bounds, source-rank or
+  analytic atlas coverage, theta-side positivity, normal crossings, pole
+  order, or RLCT.
+
 - 2026-07-07, Thread 03: the rank-cut residual-source theorem now has a
   readback-domination sibling.  Its continuation replaces explicit residual
   zero-locus nullity by readback a.e.-measurability, domination of the

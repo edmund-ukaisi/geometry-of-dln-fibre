@@ -1380,6 +1380,41 @@ theorem measure_le_smul_restrict_of_le_smul_of_restrict_eq_self
     _ = c • (μ.restrict U) s := by rw [Measure.restrict_apply hs]
     _ = (c • μ.restrict U) s := by rw [Measure.smul_apply]
 
+/-- A readback-map domination by a larger restricted target sharpens to the
+same scalar domination on a smaller returned chart when the restricted source
+piece maps back into that chart. -/
+theorem measure_map_restrict_source_subset_image_le_smul_restrict_of_le_smul_restrict_superset
+    {Θ E : Type*} [MeasurableSpace Θ] [MeasurableSpace E]
+    {source : Set E} {V G : Set Θ}
+    {sourceChart : Θ → E} {readback : E → Θ}
+    {μ : Measure E} {θμ : Measure Θ} {c : ℝ≥0∞}
+    (hsource_meas : MeasurableSet source)
+    (hV_meas : MeasurableSet V)
+    (hsource_subset : source ⊆ sourceChart '' V)
+    (hleft : ∀ z ∈ V, readback (sourceChart z) = z)
+    (hVG : V ⊆ G)
+    (hread : AEMeasurable readback (μ.restrict source))
+    (hmapG : Measure.map readback (μ.restrict source) ≤ c • θμ.restrict G) :
+    Measure.map readback (μ.restrict source) ≤ c • θμ.restrict V := by
+  have hmap_support :
+      (Measure.map readback (μ.restrict source)).restrict V =
+        Measure.map readback (μ.restrict source) := by
+    exact
+      Measure.restrict_eq_self_of_ae_mem
+        ((ae_map_iff hread hV_meas).2
+          (by
+            filter_upwards [ae_restrict_mem hsource_meas] with E hE
+            rcases hsource_subset hE with ⟨z, hzV, rfl⟩
+            simpa [hleft z hzV] using hzV))
+  have hmapV :
+      Measure.map readback (μ.restrict source) ≤
+        c • (θμ.restrict G).restrict V :=
+    measure_le_smul_restrict_of_le_smul_of_restrict_eq_self hmapG hmap_support
+  have hrestrict :
+      (θμ.restrict G).restrict V = θμ.restrict V :=
+    Measure.restrict_restrict_of_subset hVG
+  simpa [hrestrict] using hmapV
+
 /-- Restricting a measure to a set and then to a containing set does not
 change the already restricted measure. -/
 theorem restrict_restrict_eq_self_of_subset
