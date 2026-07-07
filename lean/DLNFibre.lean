@@ -727,5 +727,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGammaAtom
 -- (S,J) Γ-atom piece (a): the inverse Gram square-root normaliser (CFC.sqrt-based).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramSqrt
+-- (S,J) relative corank-step invariant: single-radial blow-up ∘ Schur block-elimination + prefactor.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
