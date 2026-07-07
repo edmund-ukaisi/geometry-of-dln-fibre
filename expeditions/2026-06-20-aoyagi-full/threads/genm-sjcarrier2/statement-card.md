@@ -30,11 +30,15 @@ recursion carrier (the R1-UPPER final gate → `sjJointResolution`, `RouteMSJRes
 >     `IntegrableOn (unitBox d)` for `c' < monomialThreshold d k h` (`0 < c'`, `unit` bounded in
 >     `[a,b]`, `0 < a`) — the `d`-generic finiteness endpoint, composing the banked
 >     `integrableOn_monomial_mul_unit_iff` + `monomialIntegrand_integrable_of_lt`.
-> - **Proved.** All six, sorry-free. Non-vacuity in-file: the packaged `frobSq_terminal_radial` at
+>   - `terminal_monomial_mul_unit_lintegral_lt_top` : the `∫⁻ … ENNReal.ofReal (monomialIntegrand · |unit|^{−c'}) < ⊤`
+>     form of the above (via `lintegral_ofReal_ne_top_iff_integrable`) — the `∫⁻`-shape the recursion's
+>     inner integral actually lands on. `monomialIntegrand_nonneg` supports it.
+> - **Proved.** All eight, sorry-free. Non-vacuity in-file: the packaged `frobSq_terminal_radial` at
 >   `Fin 2` (`M̂ = [[1,a1],[a2,a3]]`, `Q = [[1,0],[0,1]]`, pinned `(0,0)` entry `= 1`); the `(2,2,2)`
 >   `step3_unit_ge_one` residual `= frobSq [[1,a1],[q+a2,q·a1+a3]]` with `(0,0) = 1`, so
 >   `frobSq_ge_one_of_entry_eq_one` recovers its `≥ 1`. `#print axioms` = `[propext, Classical.choice,
->   Quot.sound]` (clean-three) for all six; S2-free; **no `monomial_rlct`**.
+>   Quot.sound]` (clean-three) for all eight; S2-free; **no `monomial_rlct`** (forced `#print axioms`
+>   confirms no S2 axiom entered).
 > - **Assumed.** none beyond the pin hypothesis (`c₀ ≤ |(M·Q) i j|`) and the standard unit bound
 >   (`a ≤ |unit| ≤ b`, `0 < a`) the terminal statements carry. Those hypotheses are DISCHARGED, on a
 >   terminal chart, by the STEP-2 carrier (which resolves rank-deficiencies until an entry is pinned).

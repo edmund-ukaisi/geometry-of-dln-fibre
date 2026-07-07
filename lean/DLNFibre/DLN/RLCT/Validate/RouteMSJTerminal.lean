@@ -126,6 +126,34 @@ theorem terminal_monomial_mul_unit_integrable (d : ℕ) (k h : Fin d → ℕ)
   (integrableOn_monomial_mul_unit_iff d k h unit (unitBox d) (c' : ℝ) a b ha hmeas hunit).mpr
     (monomialIntegrand_integrable_of_lt d k h c' hc'0 hthr)
 
+/-- **`monomialIntegrand` is nonnegative.** `monomialIntegrand d k h c u = (∏|uⱼ|^hⱼ)·(∏|uⱼ|^{2kⱼ})^{−c}`
+is a product of a nonneg monomial and a nonneg `rpow`. -/
+theorem monomialIntegrand_nonneg (d : ℕ) (k h : Fin d → ℕ) (c : ℝ) (u : Fin d → ℝ) :
+    0 ≤ monomialIntegrand d k h c u := by
+  unfold monomialIntegrand
+  exact mul_nonneg (Finset.prod_nonneg (fun j _ => pow_nonneg (abs_nonneg _) _))
+    (Real.rpow_nonneg (Finset.prod_nonneg (fun j _ => pow_nonneg (abs_nonneg _) _)) _)
+
+/-- **The terminal chart lintegral is finite below the monomial threshold (general `d`).** The
+`ℝ≥0∞`-integral of the resolved terminal integrand `monomialIntegrand d k h c' · |unit|^{−c'}` over the
+unit box is `< ⊤` for `c' < monomialThreshold d k h`. The lintegral form of
+`terminal_monomial_mul_unit_integrable` (via `lintegral_ofReal_ne_top_iff_integrable`) — the `∫⁻`-shape
+the pure `(S,J)` recursion's inner integral lands on (the recursion produces `∫⁻ ENNReal.ofReal (…)`,
+not a Bochner integral). -/
+theorem terminal_monomial_mul_unit_lintegral_lt_top (d : ℕ) (k h : Fin d → ℕ)
+    (unit : (Fin d → ℝ) → ℝ) (c' : NNReal) (a b : ℝ) (ha : 0 < a) (hc'0 : 0 < c')
+    (hmeas : Measurable unit)
+    (hunit : ∀ᵐ u ∂(volume.restrict (unitBox d)), a ≤ |unit u| ∧ |unit u| ≤ b)
+    (hthr : (c' : ℝ≥0∞) < monomialThreshold d k h) :
+    ∫⁻ u in unitBox d,
+        ENNReal.ofReal (monomialIntegrand d k h (c' : ℝ) u * |unit u| ^ (-(c' : ℝ))) < ⊤ := by
+  have hint := terminal_monomial_mul_unit_integrable d k h unit c' a b ha hc'0 hmeas hunit hthr
+  rw [lt_top_iff_ne_top]
+  refine (lintegral_ofReal_ne_top_iff_integrable hint.aestronglyMeasurable ?_).mpr hint
+  filter_upwards [] with u
+  exact mul_nonneg (monomialIntegrand_nonneg d k h (c' : ℝ) u)
+    (Real.rpow_nonneg (abs_nonneg _) _)
+
 /-! ## Non-vacuity witnesses (the terminal mechanism is inhabited at general widths) -/
 
 /-- **Non-vacuity of the packaged `frobSq_terminal_radial`** at the smallest genuine width (`Fin 2`),
