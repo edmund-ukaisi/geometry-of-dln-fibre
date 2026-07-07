@@ -4,6 +4,19 @@ This table is controller memory. Every source theorem or lemma that can affect
 the final statement gets one row. Keep source references page-pinned; avoid
 holding PDF line numbers only in context.
 
+Radius-free signed-box rank-cut residual-source shrink note, 2026-07-07: the
+strict rank-cut residual-source support-auto wrapper now has a radius-free API.
+The proof uses
+`SelectedEntrySignedBox.CenterCoord.exists_pos_mem_signedBoxSet z0.1.yNext`
+to choose positive selected-entry radii with the basepoint in the signed box,
+then delegates to the fixed-radius basepoint signed-box theorem.  The chosen
+radii remain proof-local because the conclusion exposes only the rank-cut
+residual-source package, not the `Rres`-dependent source cylinder or source
+measure.  Source-density basepoint positivity, prior-density strict basepoint
+upper bounds, determinant/raw Haar transport, source-prior transport,
+source-rank/atlas coverage, normal crossings, pole order, and RLCT remain
+outside this rung.
+
 Basepoint signed-box rank-cut residual-source shrink note, 2026-07-07: the
 strict source-cylinder rank-cut residual-source bridge now has a local wrapper
 that removes the terminal source-cylinder support hypothesis when the chosen

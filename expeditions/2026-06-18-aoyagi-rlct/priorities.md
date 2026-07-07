@@ -12,6 +12,30 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, radius-free signed-box rank-cut residual-source shrink
+
+Decision: remove the fixed selected-entry signed-box radius from the strongest
+rank-cut residual-source support-auto API.
+
+The finite-coordinate signed-box lemma gives positive radii `Rres` with
+`z0.1.yNext in signedBoxSet Rres`.  The proof chooses these radii internally
+and then applies the fixed-radius basepoint signed-box theorem.  This is
+legitimate because the final returned package does not expose the
+`Rres`-dependent source cylinder, reference source, base measure, or
+coordinate source measure.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-radius-free-signed-box-shrink.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This is a wrapper only.  It does not prove source-density positivity,
+prior-density strict upper bounds, determinant/raw Haar transport,
+source-prior transport, source-rank/atlas coverage, normal crossings, pole
+order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, basepoint signed-box rank-cut residual-source shrink
 
 Decision: remove the terminal source-cylinder support hypothesis from the

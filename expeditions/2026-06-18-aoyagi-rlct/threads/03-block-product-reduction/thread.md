@@ -21,6 +21,38 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 radius-free signed-box rank-cut residual-source shrink
+
+Reproduction:
+
+```text
+reproduction-a2-rank-cut-residual-source-radius-free-signed-box-shrink.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_sourceDensity_continuousAt_lt_top_strict_sourceDensity_lower_strict_priorDensity_upper_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+It chooses positive signed-box radii containing `z0.1.yNext` using
+`SelectedEntrySignedBox.CenterCoord.exists_pos_mem_signedBoxSet`, then calls
+the fixed-radius basepoint signed-box theorem.  The selected-entry radii remain
+proof-local because the conclusion exposes only the rank-cut residual-source
+package, not the source cylinder or any `Rres`-dependent source measure.
+
+Boundary: this removes fixed `Rres`, `hRres`, and `z0.1.yNext in
+signedBoxSet Rres` from the returned API only.  It does not prove
+source-density positivity, prior-density strict upper bounds, determinant/raw
+Haar transport, source-prior transport, source-rank or atlas coverage, normal
+crossings, pole order, or RLCT.
+
 ## 2026-07-07 A2 basepoint signed-box rank-cut residual-source shrink
 
 Reproduction:
