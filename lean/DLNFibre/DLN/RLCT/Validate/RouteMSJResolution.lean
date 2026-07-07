@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxThresholdRRP
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeel
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
 import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
@@ -31,18 +32,29 @@ and yields box-finiteness for ALL `M`. The wrapper carries NO analytic content (
 `core_schurGen_lt_top`); the deferred content is confined to the two contracts.
 
 `sjResolutionStep_proof : SJStepHyp` is NOT a bare sorry — it **genuinely composes** piece 3 (the
-boundary peel `sjBoundaryPeel`) with pieces 4/5/7 (the joint resolution `sjJointResolution`): the peel
-bounds the `M` box integral by a finite sum of per-chart joint peeled integrals, each finite by the
-joint resolution. Piece 3's OUTER measure-preserving reduction is now CLOSED (reusable, clean-three):
-`routeMLayerBoxIntegral_front_split` (the general-`L` `eParamsRRP` front-split `eFront` + the
-`prod_front_peel` integrand identity `frobSq_prod_front`) reduces the `M` box integral to the tail-outer
-iterated front-factor fibre integral `∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}`.
-`sjBoundaryPeel` itself remains a named sorry (its residual = the per-tail-parameter fibre bound; the
-naive fixed-`Q` pointwise lift is UNSOUND under the `Real.rpow` `0^{neg}=0` convention on the degenerate
-top-rows locus — see its docstring — so the discharge needs an `lintegral_mono_ae`/`ENNReal.rpow`
-treatment). So the only sorries feeding the final `routeMBoxThresholdFinite_sjResolution` are the
-genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointResolution` (4/5/7); the
-`L = 1` Morse base (`sjBase1_freeMatrix`) is CLOSED.
+Γ-explicit boundary peel `sjBoundaryPeel`) with pieces 4/5/7 (the joint resolution `sjJointResolution`):
+the peel bounds the `M` box integral by a finite sum of per-cut Γ-explicit peeled integrals
+(`gammaPeelIntegral`), each finite by the joint resolution. Piece 3's OUTER measure-preserving reduction
+is CLOSED (reusable, clean-three): `routeMLayerBoxIntegral_front_split` (the general-`L` front-split
+`eFront` + the `prod_front_peel` integrand identity `frobSq_prod_front`) reduces the `M` box integral to
+the tail-outer iterated front-factor fibre integral
+`∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}`, and the finite pivot-chart cover
+`pivotChartCover_lintegral_le_sum` (CLOSED here, reusing banked `pivotLocus_eq_iUnion`) splits the inner
+`A₀`-integral over rank levels.
+
+**SPLIT (A) — the Γ-explicit per-step object (2026-07-07 recalibration).** `jointPeelIntegral`'s
+collapsed `P_tail^{−(c'−a/2)}·P_full^{−a/2}` is NOT the reachable reduction target: the honest per-chart
+residual is a **Gram determinant** (anisotropic), so the peel keeps the corank `Γ` EXPLICIT —
+`gammaPeelIntegral M t c' = ∫_{A'} ∫_{Γ∈matBox} (P_tail + frobSq(Γ·Q_b))^{−c'}` (Γ an integration
+variable, exponent `−c'` unshifted; the shift + Gram emerge only from the inner `Γ`-integral, in
+`sjJointResolution`). **`sjBoundaryPeel` remains a named sorry — its residual (the per-chart Γ-bound) is
+IRREDUCIBLE analytic, NOT banked plumbing** (decorrelated Codex xhigh + block algebra, 2026-07-07): the
+exact post-shear integrand is `(‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²)^{−c'}` (NOT `(P_tail + ‖Γ·Q_b‖²)^{−c'}`),
+and the step to `gammaPeelIntegral` integrates a negative power over the pivot variables `(A,B,C)`, which
+genuinely shifts the exponent (radial blow-up / Beta). So the only sorries feeding the final
+`routeMBoxThresholdFinite_sjResolution` are the LOAD-BEARING analytic pieces `sjBoundaryPeel` (3, the
+per-chart Γ-bound) and `sjJointResolution` (4/5/7, `gammaPeelIntegral` finiteness); the `L = 1` Morse
+base (`sjBase1_freeMatrix`) and the pivot-chart cover are CLOSED.
 
 ## The 7 pieces (dependency order; CLOSED vs named-sorry)
 
@@ -52,13 +64,14 @@ genuinely-new LOAD-BEARING analytic pieces `sjBoundaryPeel` (3) and `sjJointReso
    `routeMBoxThresholdFinite_rrp`). The general-`L` chart is the internal change of variables of piece 3
    (`sjBoundaryPeel`), stated there — not duplicated as a standalone claim.
 3. **Boundary blow-up / peel** (LOAD-BEARING analytic core) — `sjBoundaryPeel`. Named sorry. Its OUTER
-   measure-preserving reduction is now CLOSED (reusable, clean-three): `routeMLayerBoxIntegral_front_split`
+   measure-preserving reduction is CLOSED (reusable, clean-three): `routeMLayerBoxIntegral_front_split`
    (+ `eFront` + `frobSq_prod_front`) reduces the `M` box integral to the tail-outer front-factor fibre
-   integral. The residual (this sorry) is the per-tail-parameter fibre bound = the cert's exact per-step
-   identity `J ≍ P_tail^{−(c'−a/2)}·P_full^{−a/2}` at cut `t`, `a = (M₀−t)(M₁−t)`, via the pivot-chart
-   cover + radial blow-up. FIDELITY CAVEAT: the naive fixed-`Q` pointwise lift is FALSE (`Real.rpow`
-   `0^{neg}=0` on the degenerate top-rows locus); the discharge needs `lintegral_mono_ae` (degenerate
-   locus null) or an `ENNReal.rpow` reformulation of `jointPeelIntegral` (escalate).
+   integral; the finite pivot-chart cover `pivotChartCover_lintegral_le_sum` (CLOSED) splits the inner
+   `A₀`-integral over rank levels. The residual (this sorry) is the per-chart Γ-bound
+   `chart(t) ≤ C·gammaPeelIntegral M t c'` — IRREDUCIBLE analytic (radial blow-up / Beta / Gram
+   determinant), NOT banked plumbing (2026-07-07 recalibration, Codex xhigh): the exact post-shear
+   integrand is `(‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²)^{−c'}` and integrating out the pivot variables shifts the
+   exponent. Deferred to the mountain's pieces 4/5/7.
 4. **`(S,J)` normal-form invariant** — the block-dimension consequence `sjRunMin_antitone` (running-min
    corank `M(S)` monotone) is CLOSED; the full matrix-valued invariant needs the `[E_J|D_J]` carrier
    (`SJState`/`sjRunMin` stubs), folded into `sjJointResolution`, deferred to the mountain build.
@@ -77,9 +90,9 @@ The wrapper introduces NO measure-theoretic content of its own and NO new axiom.
 sits in the named contracts; `#print axioms routeMBoxThresholdFinite_of_step` is clean-three. The final
 `routeMBoxThresholdFinite_sjResolution` carries exactly the two remaining LOAD-BEARING analytic sorries
 (`sjBoundaryPeel`, `sjJointResolution`). The outer front-split plumbing
-(`routeMLayerBoxIntegral_front_split`, `eFront`, `frobSq_prod_front`, `measurable_frontIntegrand`,
-`measurable_jointPeelIntegrand`) is CLOSED clean-three `[propext, Classical.choice, Quot.sound]` and
-reusable for the eventual `sjBoundaryPeel` discharge.
+(`routeMLayerBoxIntegral_front_split`, `eFront`, `frobSq_prod_front`, `measurable_frontIntegrand`) and the
+finite pivot-chart cover (`pivotChartCover_lintegral_le_sum`) are CLOSED clean-three
+`[propext, Classical.choice, Quot.sound]` and reusable for the eventual `sjBoundaryPeel` discharge.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -108,6 +121,14 @@ instance instSigmaFiniteParams {L : ℕ} (H : Fin (L + 1) → ℕ) :
     SigmaFinite (volume : Measure (Params H)) :=
   inferInstanceAs (SigmaFinite
     (volume : Measure (∀ s : Fin L, Fin (H s.castSucc) → Fin (H s.succ) → ℝ)))
+
+/-- The `Matrix (Fin m) (Fin n) ℝ` measure space, inherited from the underlying `Fin m → Fin n → ℝ`
+Pi structure (`Matrix` is a `def` synonym, so instance search does not unfold it on its own). Exposed
+so the pivot-chart cover integral (`pivotChartCover_lintegral_le_sum`, over `pivotChart : Set (Matrix
+…)`) elaborates its `∫⁻` against the matrix front factor. Defeq to the Pi volume — no new content. -/
+noncomputable instance instMeasureSpaceMatrixFinFin {m n : ℕ} :
+    MeasureSpace (Matrix (Fin m) (Fin n) ℝ) :=
+  inferInstanceAs (MeasureSpace (Fin m → Fin n → ℝ))
 
 /-! ## Piece 1 — local comparability / units (CLOSED, pure measure theory) -/
 
@@ -459,74 +480,89 @@ theorem frobSqTopRows_nonneg (t : ℕ) {m n : ℕ} (P : Fin m → Fin n → ℝ)
   refine Finset.sum_nonneg (fun i _ => Finset.sum_nonneg (fun j _ => ?_))
   split <;> positivity
 
-/-- **The joint peeled box integral at cut `t`, exponent `c'`** — the cert's exact per-step object.
-Over the tail parameters `A ∈ paramsBoxM (tailChain M) 1`, the JOINT integrand
+/-- **The bottom-`(m − t)`-rows selection** `gammaTailRows t P i j = P ⟨t + i, _⟩ j` — the
+`(M₁ − t)` NON-pivot-column rows of the tail product `Q = prod (tailChain M) A'` (indexed after the
+top `t` pivot rows). This is the design cert's `Q_b`: the tail rows the corank block `Γ` multiplies.
+The row-convention here is the FIRST-`t`-pivot chart (`κ = id`); a general column-selection chart
+differs by a `frobSq`-preserving row permutation of `Q`, absorbed in the per-chart reduction. -/
+noncomputable def gammaTailRows (t : ℕ) {m n : ℕ} (P : Fin m → Fin n → ℝ) :
+    Fin (m - t) → Fin n → ℝ :=
+  fun i j => P ⟨t + (i : ℕ), by have := i.isLt; omega⟩ j
 
-    P_tail^{−(c'−a/2)} · P_full^{−a/2},   a = (M₀−t)(M₁−t),
+/-- **The Γ-EXPLICIT peeled box integral at cut `t`, exponent `c'`** (design cert ADDENDUM 3, split A).
+Over the tail parameters `A ∈ paramsBoxM (tailChain M) 1` AND the corank block
+`Γ ∈ matBox (M₀−t) (M₁−t) 1`, the integrand
 
-with `P_tail = frobSqTopRows t (prod (tailChain M) A)` the reduced tail-chain loss (top `t` rows of the
-tail product) and `P_full = frobSq (prod (tailChain M) A)` the FULL remaining product loss (the coupling
-factor). Crucially the two factors read the SAME parameters `A` — the object is JOINT, NOT the (unsound)
-product of independent single-chain integrals (design-cert §3, §ADDENDUM). -/
-noncomputable def jointPeelIntegral (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (c' : ℝ) : ℝ≥0∞ :=
+    (P_tail(Q) + frobSq (Γ · Q_b(Q)))^{−c'},   Q = prod (tailChain M) A,
+
+with `P_tail = frobSqTopRows t Q` the reduced tail-chain loss (top `t` rows of the tail product) and
+`Q_b = gammaTailRows t Q` the `(M₁−t)` non-pivot-column tail rows. **Γ is kept EXPLICIT** — an
+INTEGRATION variable over its box, at the unshifted exponent `−c'`. This replaces `jointPeelIntegral`'s
+collapsed `P_tail^{−(c'−a/2)}·P_full^{−a/2}`: the design-cert §ADDENDUM-3 structural finding is that the
+honest per-chart residual is a **Gram determinant** (anisotropic in `Q_b`), NOT `P_full^{−a/2}`, so the
+reduction must keep `Γ` explicit rather than collapse it pointwise (both pointwise routes are proven
+dead). The exponent shift `c' ↦ c'−½·(M₀−t)(M₁−t)` and the Gram determinant emerge only when the inner
+`Γ`-box integral is done — that is the finiteness content (`gammaPeel_lt_top`, pieces 4/5/7), NOT this
+definition. -/
+noncomputable def gammaPeelIntegral (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (c' : ℝ) : ℝ≥0∞ :=
   ∫⁻ A in paramsBoxM (tailChain M) 1,
-    ENNReal.ofReal
-      ((frobSqTopRows t (prod (tailChain M) A)) ^ (-(c' - (peelExp M t : ℝ) / 2))
-        * (frobSq (prod (tailChain M) A)) ^ (-((peelExp M t : ℝ) / 2)))
+    ∫⁻ Γ in matBox (M 0 - t) (M 1 - t) 1,
+      ENNReal.ofReal
+        ((frobSqTopRows t (prod (tailChain M) A)
+            + frobSq (rmatMul Γ (gammaTailRows t (prod (tailChain M) A)))) ^ (-c'))
 
-/-- **The joint-peel integrand is measurable** in the tail parameters `A'` (the tail product is
-continuous, `continuous_prod`; `frobSqTopRows`/`frobSq` are sums of squares of its entries; fixed-exponent
-`rpow` and `ofReal` preserve measurability). Needed to split the finite `t`-sum out of the integral. -/
-theorem measurable_jointPeelIntegrand (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) (t : ℕ) :
-    Measurable (fun A' : Params (tailChain M) =>
-      ENNReal.ofReal ((frobSqTopRows t (prod (tailChain M) A'))
-          ^ (-(c' - (peelExp M t : ℝ) / 2))
-        * (frobSq (prod (tailChain M) A')) ^ (-((peelExp M t : ℝ) / 2)))) := by
-  have hP : Continuous (fun A' : Params (tailChain M) => prod (tailChain M) A') :=
-    continuous_prod (tailChain M)
-  have h1 : Continuous (fun A' : Params (tailChain M) =>
-      frobSqTopRows t (prod (tailChain M) A')) := by
-    unfold frobSqTopRows
-    refine continuous_finset_sum _ (fun i _ => continuous_finset_sum _ (fun j _ => ?_))
-    by_cases h : (i : ℕ) < t
-    · simp only [if_pos h]; exact (hP.matrix_elem i j).pow 2
-    · simp only [if_neg h]; exact continuous_const
-  have h2 : Continuous (fun A' : Params (tailChain M) => frobSq (prod (tailChain M) A')) := by
-    unfold frobSq
-    exact continuous_finset_sum _ (fun i _ => continuous_finset_sum _
-      (fun j _ => (hP.matrix_elem i j).pow 2))
-  refine ENNReal.measurable_ofReal.comp (Measurable.mul ?_ ?_)
-  · exact Measurable.comp (g := fun x : ℝ => x ^ (-(c' - (peelExp M t : ℝ) / 2)))
-      (by fun_prop) h1.measurable
-  · exact Measurable.comp (g := fun x : ℝ => x ^ (-((peelExp M t : ℝ) / 2)))
-      (by fun_prop) h2.measurable
+/-- **Piece 3 (sub-lemma 1) — the finite pivot-chart cover subadditivity (CLOSED, banked plumbing).**
+For any `ℝ≥0∞`-valued integrand `f` on the front factor `A₀ : Matrix (Fin m) (Fin n) ℝ`, the integral
+over the rank-`≥ t` locus is bounded by the finite sum, over all `t`-element row/column pivot selections
+`(ρ, κ)`, of the per-chart integrals. Pure measure theory: the banked cover `pivotLocus_eq_iUnion`
+(`{t ≤ rank} = ⋃_{ρ,κ} pivotChart ρ κ`, over a field) rewrites the domain to the finite union, then
+`lintegral_iUnion_le` (countable subadditivity) + `tsum_fintype` (the embedding types
+`Fin t ↪ Fin m/n` are finite) collapse the two `tsum`s to `Finset.sum`s. No disjointness needed (the
+charts overlap; subadditivity is the right tool). Reusable bedrock for the peel's inner `A₀`-fibre
+stratification. -/
+theorem pivotChartCover_lintegral_le_sum {m n : ℕ} (t : ℕ)
+    (f : Matrix (Fin m) (Fin n) ℝ → ℝ≥0∞) :
+    ∫⁻ A in {A : Matrix (Fin m) (Fin n) ℝ | t ≤ A.rank}, f A
+      ≤ ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n, ∫⁻ A in pivotChart ρ κ, f A := by
+  rw [pivotLocus_eq_iUnion t]
+  calc ∫⁻ A in ⋃ ρ : Fin t ↪ Fin m, ⋃ κ : Fin t ↪ Fin n, pivotChart ρ κ, f A
+      ≤ ∑' ρ : Fin t ↪ Fin m, ∫⁻ A in ⋃ κ : Fin t ↪ Fin n, pivotChart ρ κ, f A :=
+        lintegral_iUnion_le _ _
+    _ = ∑ ρ : Fin t ↪ Fin m, ∫⁻ A in ⋃ κ : Fin t ↪ Fin n, pivotChart ρ κ, f A := tsum_fintype _
+    _ ≤ ∑ ρ : Fin t ↪ Fin m, ∑' κ : Fin t ↪ Fin n, ∫⁻ A in pivotChart ρ κ, f A :=
+        Finset.sum_le_sum (fun ρ _ => lintegral_iUnion_le _ _)
+    _ = ∑ ρ : Fin t ↪ Fin m, ∑ κ : Fin t ↪ Fin n, ∫⁻ A in pivotChart ρ κ, f A :=
+        Finset.sum_congr rfl (fun ρ _ => tsum_fintype _)
 
-/-- **Piece 3 — the boundary peel (LOAD-BEARING analytic core; named sorry).** The `M` box integral is
-bounded by a FINITE constant times the finite sum, over pivot charts `t ≤ min(M₀,M₁)`, of the joint
-peeled integral.
+/-- **Piece 3 — the Γ-explicit boundary peel (LOAD-BEARING analytic core; named sorry).** The `M` box
+integral is bounded by a FINITE constant times the finite sum, over pivot cuts `t ≤ min(M₀,M₁)`, of the
+Γ-explicit peeled integral `gammaPeelIntegral M t c'`.
 
 **OUTER reduction CLOSED (reusable).** `routeMLayerBoxIntegral_front_split` (built on the MP front-split
-`eFront` + the `prod_front_peel` integrand identity `frobSq_prod_front`, all clean-three) reduces this to
-the tail-outer iterated front-factor fibre integral
-`∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}` — so the remaining content is the
-per-tail-parameter bound of the inner `A₀`-fibre integral.
+`eFront` + the `prod_front_peel` integrand identity `frobSq_prod_front`, all clean-three) reduces the LHS
+to the tail-outer iterated front-factor fibre integral
+`∫_{A'∈box(tail)} ∫_{A₀∈box} frobSq(A₀·prod(tailChain M)A')^{−c'}`. The **finite pivot-chart cover** of the
+inner `A₀`-integral (`pivotChartCover_lintegral_le_sum`, CLOSED here, reusing the banked
+`pivotLocus_eq_iUnion`) then bounds it by a finite sum over the rank levels `t` and pivot charts.
 
-**RESIDUAL (this sorry).** On the pivot chart with a `t×t` invertible front block, Aoyagi's Lemma-2
-Jacobian-1 reduction exposes the corank block `Γ : (M₀−t)×(M₁−t)`; radial blow-up `Γ = zV`
-(Jacobian `z^{a−1}`) + the finite-cutoff `z`-integral collapse the fibre to `P_tail^{−(c'−a/2)}·P_full^{−a/2}`
-(`r1u_identity.py`, exact); the finite chart cover + Beta constant supply `C`. **Design caveat (fidelity
-review, `genm-sjpeel`):** the naive fixed-`Q` POINTWISE lift of this bound is FALSE — with `P_tail` computed
-as `Real.rpow` inside `ofReal`, `0^{neg} = 0` (not `+∞`), so on the degenerate locus `{P_tail = 0}` (e.g.
-`Q`'s top rows vanish, or the identically-empty `t = 0` top-rows) the RHS collapses to `0` while the LHS is
-positive. Under the OUTER `A'`-integral this locus is null (harmless to `jointPeelIntegral`'s VALUE), so the
-INTEGRATED conclusion here is sound, but the proof must use `lintegral_mono_ae` with the degenerate
-tail-product locus shown null (or reformulate `jointPeelIntegral`'s singular factor via `ENNReal.rpow` so
-`0^{neg} = ⊤` — a `jointPeelIntegral` signature change, to escalate). The internal chart step is piece 2. -/
+**RESIDUAL (this sorry) — the per-chart Γ-bound, IRREDUCIBLE analytic (NOT banked plumbing; verdict
+recorded 2026-07-07, decorrelated Codex xhigh + block algebra).** On the pivot chart with a `t×t`
+invertible front block `A`, writing `A₀ = [[A,B],[C,D]]`, `Q = [Q_p ; Q_b]`, the EXACT integrand after
+the Jacobian-1 shear `D ↦ Γ = D − C A⁻¹ B` (`schurShear_chart_lintegral`, below) is
+`(‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²)^{−c'}`, `Q̃_p := Q_p + A⁻¹B·Q_b` — NOT `(P_tail + ‖Γ·Q_b‖²)^{−c'}` (the
+top block carries the invertible-but-near-singular `A`; the bottom retains the `C·Q̃_p` cross term). The
+step to `C_κ·gammaPeelIntegral` INTEGRATES a NEGATIVE power over the pivot variables `(A,B,C)`: since
+`frobSq(A₀·Q)` vanishes on a positive-codim `(A,B,C)`-locus there is NO uniform pointwise lower bound, and
+the `(A,B,C)`-integration genuinely SHIFTS the exponent `c' ↦ c'−½(M₀−t)(M₁−t)` — the radial blow-up /
+Beta integral (`chartRadialBlock_to_gammaPeel`, below), whose honest residual is a **Gram determinant**
+`det(Q_b Q_bᵀ)^{−(M₀−t)/2}` (design-cert ADDENDUM 3). Both fixed-`Q` pointwise routes are proven dead
+(`rpow 0^{neg}=0` on `{P_tail=0}`; inner `∫_{A₀}` diverges on the null `{det Q=0}`). This content is the
+mountain's pieces 4/5/7, deferred; `pivotChartCover_lintegral_le_sum` (cover) IS closed. -/
 theorem sjBoundaryPeel (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
     ∃ C : ℝ≥0∞, C ≠ ⊤ ∧
       routeMLayerBoxIntegral M (c' : ℝ) 1
-        ≤ ∑ t ∈ Finset.range (min (M 0) (M 1) + 1), C * jointPeelIntegral M t (c' : ℝ) := by
+        ≤ ∑ t ∈ Finset.range (min (M 0) (M 1) + 1), C * gammaPeelIntegral M t (c' : ℝ) := by
   sorry
 
 /-! ## Pieces 4/5/7 — the joint resolution (finiteness of the joint peeled integral; named sorry) -/
@@ -560,22 +596,27 @@ theorem sjRunMin_antitone (M : Fin (L + 1) → ℕ) (S : ℕ) :
   refine Finset.le_inf' _ _ (fun s hs => ?_)
   exact Finset.inf'_le _ (by rw [Finset.mem_range] at hs ⊢; omega)
 
-/-- **Pieces 4/5/7 — the joint resolution (finiteness of the joint peeled integral; named sorry).**
+/-- **Pieces 4/5/7 — the joint resolution (finiteness of the Γ-explicit peeled integral; named sorry).**
 GIVEN box-finiteness for every one-shorter chain (the strong IH — in particular for `redChain t M` and
-`tailChain M`) and `c' < ½·minAdm M`, the joint peeled integral is finite. Content: the simultaneous
-rank-flag `(S,J)` double induction (piece 4 invariant, whose block dimension is `sjRunMin_antitone`;
-piece 5 charge-update `sjChargeUpdate_accum`) monomialises `P_tail^{−(c'−a/2)}·P_full^{−a/2}` on a
-common resolution; the
-subordination `sjSubordination` (`a/2 ≤ ½·minAdm(tailChain M)`, non-strict — see its caveat: strict
-fails at some `a>0` cuts, so a gentle minimal-`a` cut must be chosen) keeps the coupling exponents at or
-below threshold on the shared divisors; the monomial integrability endpoint (piece 7) then gives finiteness
-(`∫∏|uᵢ|^{αᵢ} < ∞ ⟺ αᵢ > −1`, banked as `monomialIntegrand_integrable_of_lt`). This is the standing
-L≥3 wall, now localised to this single statement. -/
+`tailChain M`) and `c' < ½·minAdm M`, the Γ-explicit peeled integral `gammaPeelIntegral M t c'` is finite.
+Content: the INNER `Γ`-box integral is done by the Gram change of variables `Γ ↦ Γ·Q_b` + the isotropic
+corank atom `matBox_corank_residual_le` (banked, `origin/genm-sjpeel-blow`), producing — a.e. in `A'`,
+where `{det(Q_b Q_bᵀ)=0}` and `{P_tail=0}` are null — the Gram residual
+`det(Q_b Q_bᵀ)^{−(M₀−t)/2}·P_tail^{−(c'−a/2)}`, `a=(M₀−t)(M₁−t)` (the exponent shift, now anisotropic).
+The remaining OUTER `A'`-integral of that Gram residual is the simultaneous rank-flag `(S,J)` double
+induction (piece 4 invariant, whose block dimension is `sjRunMin_antitone`; piece 5 charge-update
+`sjChargeUpdate_accum`), monomialised on a common resolution; the subordination `sjSubordination`
+(`a/2 ≤ ½·minAdm(tailChain M)`, non-strict — see its caveat) keeps the coupling exponents at or below
+threshold; the monomial integrability endpoint (piece 7) gives finiteness (`∫∏|uᵢ|^{αᵢ} < ∞ ⟺ αᵢ > −1`,
+banked `monomialIntegrand_integrable_of_lt`). The one risk (design-cert ADDENDUM 3, `r1u_qb_rank.py`):
+for the 750/5440 charts with `M₁−t > min(deeper widths)`, `Q_b` is FORCED rank-deficient and the chart
+recurses (its rank drop is a deeper boundary's = the `(S,J)` coupling). This is the standing L≥3 wall,
+localised to this single statement. -/
 theorem sjJointResolution (M : Fin (L + 1 + 1 + 1) → ℕ)
     (hIH : ∀ M' : Fin (L + 1 + 1) → ℕ, RouteMBoxThresholdFinite M')
     (t : ℕ) (ht : t ≤ min (M 0) (M 1)) (c' : NNReal)
     (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
-    jointPeelIntegral M t (c' : ℝ) < ⊤ := by
+    gammaPeelIntegral M t (c' : ℝ) < ⊤ := by
   sorry
 
 /-! ## Piece 2 — the pivot–Schur chart (L=2 instance CLOSED via banked `rrp`) -/
