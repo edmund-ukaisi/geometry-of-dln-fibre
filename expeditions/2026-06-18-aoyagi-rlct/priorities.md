@@ -12,6 +12,48 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, endpoint-patch reference domination
+
+Decision: expose the actual p.13 endpoint-patch determinant/reference
+domination produced by the active selected-entry endpoint image route.
+
+The new theorem proves that after a local with-following shrink, any chart
+piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+has a finite scalar `Cdet` with
+
+```text
+rawHaar.restrict
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+    (rawSourceSet ∩ rawChart ⁻¹' chartPiece))
+  ≤ Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-endpoint-patch-reference-domination.md
+threads/03-block-product-reduction/statement-card-a2-with-following-endpoint-patch-reference-domination.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+This is a localized endpoint-patch comparison, not full determinant-chart
+Haar transport.  It removes the need to treat the p.13 endpoint-patch
+reference domination as an opaque supplied hypothesis when the caller has
+source-cylinder chart-piece support.  It still does not prove exact raw-Haar
+pushforward, Haar-scalar normalization, source-density positivity,
+source-image/source-rank coverage, original-prior transport, normal crossings,
+pole order, or RLCT extraction.
+
+Next frontier: thread this theorem into the formal-product/original-volume
+reference-source consumers for source-cylinder chart pieces, then use the
+existing basepoint-in-signed-box and C-one support wrappers to remove
+source-cylinder support where the local signed-box hypotheses apply.
+
 ## Latest controller decision - 2026-07-07, original-volume reference-source domination
 
 Decision: consume the reference-source formal-product comparison at the p.13

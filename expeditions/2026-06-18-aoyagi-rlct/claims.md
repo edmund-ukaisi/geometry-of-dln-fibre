@@ -10,6 +10,47 @@ For every substantial Aoyagi-specific calculation, add:
 
 No such claim is formalisation-ready until both fields are filled.
 
+## Current A2 with-following endpoint-patch reference domination - 2026-07-07
+
+- **Statement.** On a local with-following Case 2 p.13 source-cylinder patch,
+  additive Haar restricted to the endpoint determinant patch is dominated by a
+  finite scalar multiple of the endpoint topology-tuple image of the concrete
+  reference source.
+- **Tier.** A2 local determinant/reference endpoint-patch comparison.
+- **Status.** Lean proved, checkpoint-verified, and xhigh reviewed.
+- **Kill-condition.** The theorem is read as full determinant-chart Haar
+  transport, exact raw-Haar pushforward, Haar normalization, source-density
+  positivity, source-image coverage, source-rank coverage, original-prior
+  transport, normal crossings, pole order, or RLCT.
+- **Evidence/source.** Aoyagi pp. 10-13 supply the retained-passive block
+  coordinate algebra and p.13 source-chart shape.  The measure domination
+  itself is Lean-local: the active selected-entry endpoint Haar theorem
+  supplies finite scalar domination once the endpoint patch is contained in the
+  active endpoint image.
+- **Pen-and-paper reproduction.**
+  `threads/03-block-product-reduction/reproduction-a2-with-following-endpoint-patch-reference-domination.md`.
+- **Reproduction check.** Xhigh read-only reviewer `Darwin the 2nd` found no
+  issues.  Review saved at
+  `threads/03-block-product-reduction/review-a2-with-following-endpoint-patch-reference-domination.md`.
+- **Lean target.**
+  `exists_open_subset_rawHaar_restrict_endpointPatch_le_smul_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder`
+  in
+  `lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`.
+- **Proved.** The theorem returns an open shrink `V` and finite `Cdet` for
+  chart pieces supported by `sourceChart '' (V ∩ sourceCylinder)`, proving
+  domination of
+  `rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+  (rawSourceSet ∩ rawChart ⁻¹' chartPiece))` by
+  `Cdet • Measure.map Y (referenceSource.restrict V)`.  Focused
+  `lake env lean`, targeted module build, `git diff --check`,
+  `lean/scripts/sorries`, forbidden-marker scan, and direct axiom probe
+  passed.  The declaration reports only `[propext, Classical.choice,
+  Quot.sound]`.
+- **Nonclaims.** No full determinant-chart Haar transport, no exact raw-Haar
+  pushforward, no Haar normalization, no source-density positivity, no
+  source-image coverage, no source-rank coverage, no original-prior transport,
+  no normal crossings, no pole order, and no RLCT extraction.
+
 ## Current A2 with-following loss dominates readback product residual - 2026-07-07
 
 - **Statement.** On a local with-following p.13/readback rank-cut patch, the

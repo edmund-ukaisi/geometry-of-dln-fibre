@@ -6,6 +6,63 @@ and branch/integration decisions.
 Build-policy note for this expedition worktree: the operator asked to use
 local `lake build` / `lake env lean` instead of `scripts/lb`.
 
+## A2 with-following endpoint-patch reference domination - 2026-07-07
+
+Reproduction:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-with-following-endpoint-patch-reference-domination.md
+```
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_endpointPatch_le_smul_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+```
+
+The theorem localizes the determinant/reference domination hypothesis to the
+actual p.13 raw patch.  After shrinking around a determinant-sector,
+nonzero-pivot with-following base point, any chart piece supported by
+
+```text
+sourceChart '' (V ∩ sourceCylinder)
+```
+
+gives finite `Cdet` and
+
+```text
+rawHaar.restrict
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+    (rawSourceSet ∩ rawChart ⁻¹' chartPiece))
+  <= Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+The proof uses the existing raw/source compatibility package to prove
+endpoint-patch containment in the active selected-entry endpoint image, then
+applies the active endpoint Haar domination theorem.  This is not global
+determinant Haar transport and not exact raw-Haar pushforward.
+
+Verification passed:
+
+```text
+lake env lean DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+lake build DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination
+git diff --check
+lean/scripts/sorries
+```
+
+`lean/scripts/sorries` reports `0 sorry`, `0 #exit`, `0 native_decide`, and
+only the existing three cited axioms.  A direct axiom probe for the new theorem
+reports only `[propext, Classical.choice, Quot.sound]`.
+
+Boundary: no full determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, normal crossings, pole order,
+or RLCT extraction.  The next useful step is to thread this theorem through
+the reference-source formal-product/original-volume consumers on
+source-cylinder chart pieces, and then use signed-box/C-one support wrappers to
+reduce ordinary local chart-piece hypotheses to source-cylinder support.
+
 ## A2 with-following original-volume reference-source domination - 2026-07-07
 
 Reproduction:

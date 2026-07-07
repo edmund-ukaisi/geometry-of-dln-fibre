@@ -19,6 +19,28 @@ is local support conversion only: no raw-Haar transport, determinant-chart
 Haar transport, source-prior/original-prior transport, source-image coverage,
 source-rank coverage, normal crossings, pole order, or RLCT is proved.
 
+Endpoint-patch reference domination note, 2026-07-07:
+`RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
+proves
+`exists_open_subset_rawHaar_restrict_endpointPatch_le_smul_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder`.
+After a local with-following determinant-sector/pivot-nonzero shrink, if a
+p.13 chart piece is supported by `sourceChart '' (V ∩ sourceCylinder)`, then
+for every additive `rawHaar` there is finite `Cdet` such that
+
+```text
+rawHaar.restrict
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+    (rawSourceSet ∩ rawChart ⁻¹' chartPiece))
+  ≤ Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+The proof combines the source-cylinder endpoint-patch containment calculation
+with the active selected-entry endpoint Haar domination theorem.  This is the
+localized p.13 endpoint/reference comparison, not full determinant-chart Haar
+transport, exact raw-Haar pushforward, Haar normalization, source-density
+positivity, source-image/source-rank coverage, original-prior transport,
+normal crossings, pole order, or RLCT extraction.
+
 Original-volume reference-source domination note, 2026-07-07:
 `RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean`
 proves

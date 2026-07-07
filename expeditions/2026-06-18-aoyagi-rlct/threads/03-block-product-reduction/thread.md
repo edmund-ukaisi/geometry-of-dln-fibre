@@ -21,6 +21,64 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 with-following endpoint-patch reference domination
+
+Reproduction:
+
+```text
+reproduction-a2-with-following-endpoint-patch-reference-domination.md
+```
+
+Statement card:
+
+```text
+statement-card-a2-with-following-endpoint-patch-reference-domination.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination.lean
+```
+
+Lean now has:
+
+```text
+exists_open_subset_rawHaar_restrict_endpointPatch_le_smul_measure_map_case2PassiveThetaWithFollowingFactorEndpointTopologyTuple_referenceSource_of_chartPiece_subset_sourceChart_image_inter_sourceCylinder
+```
+
+The theorem proves a localized determinant/reference domination for the actual
+p.13 endpoint patch.  After shrinking, if
+
+```text
+chartPiece ⊆ sourceChart '' (V ∩ sourceCylinder),
+```
+
+then for every additive `rawHaar` there is finite `Cdet` such that
+
+```text
+rawHaar.restrict
+  (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+    (rawSourceSet ∩ rawChart ⁻¹' chartPiece))
+  <= Cdet • Measure.map Y (referenceSource.restrict V).
+```
+
+Proof spine: source-cylinder support plus local raw/source compatibility gives
+endpoint-patch containment in the active selected-entry endpoint image; the
+existing active endpoint Haar theorem gives finite scalar domination by the
+named endpoint reference image.
+
+Boundary: this is not full determinant-chart Haar transport, exact raw-Haar
+pushforward, Haar normalization, source-density positivity, source-image or
+source-rank coverage, original-prior transport, normal crossings, pole order,
+or RLCT.
+
+Verification passed: focused `lake env lean`, targeted `lake build
+DLNFibre.DLN.Aoyagi.RetainedPassiveCase2PassiveThetaOriginalVolumeReadbackDetDomination`,
+`git diff --check`, `lean/scripts/sorries`, forbidden-marker scan, and direct
+axiom probe.  The theorem reports only `[propext, Classical.choice,
+Quot.sound]`.
+
 ## 2026-07-07 A2 with-following loss dominates readback product residual
 
 Reproduction:

@@ -18,6 +18,20 @@
 
 ## Recent addenda
 
+- 2026-07-07, Thread 03: the with-following endpoint-patch
+  determinant/reference domination is now exposed directly for the actual p.13
+  raw patch.  If a chart piece is supported by
+  `sourceChart '' (V ∩ sourceCylinder)`, Lean produces finite `Cdet` and
+  dominates
+  `rawHaar.restrict (rawDetChart ∩ rawOrderOnEndpoint ⁻¹'
+  (rawSourceSet ∩ rawChart ⁻¹' chartPiece))` by
+  `Cdet • Measure.map Y (referenceSource.restrict V)`.  This packages the
+  active selected-entry endpoint Haar route and the raw/source containment
+  calculation.  It is local endpoint-patch domination only: no full
+  determinant-chart Haar transport, exact raw-Haar pushforward, Haar
+  normalization, source-density positivity, source-image/source-rank coverage,
+  original-prior transport, normal crossings, pole order, or RLCT is added.
+
 - 2026-07-07, Thread 03: the with-following loss/readback-residual comparison
   now has a named local theorem.  Under explicit local image, left-inverse,
   determinant-sector, fixed-source-datum, centering, and endpoint-basis
