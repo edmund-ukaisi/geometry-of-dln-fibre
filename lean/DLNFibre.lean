@@ -722,5 +722,8 @@ import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotChart
 -- (S,J) peel algebra core: exact post-shear cross-coupled Frobenius block identity (frobSq_schur_block_split).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartAlgebra
+-- (S,J) peel corank atoms: isotropic box + full-space residual atoms, and the anisotropic Γ-atom cov crux.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGammaAtom
 -- Axiom-hygiene check: emits `#print axioms` for the load-bearing results on every build.
 import DLNFibre.DLN.RLCT.AxCheck
