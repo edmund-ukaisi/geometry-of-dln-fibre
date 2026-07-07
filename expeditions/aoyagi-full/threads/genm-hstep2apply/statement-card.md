@@ -6,7 +6,7 @@
 > differentiable there (`∀ s, ∃ K'_s, HasStrictFDerivAt (K_s) K'_s 0`).
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.hasStrictFDerivAt_deepestPsiCoreShear`
->   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiApply.lean` @ `<SHA — fill on push>`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiApply.lean` @ `4a99a2e8`, branch `genm-hstep2apply`)
 > - **Gloss.** For a coupling family `K` with `K_s 0 = 0` (per layer `s`) and each `K_s` strictly
 >   differentiable at `0`, the map `Ψ : DeepestSplit → DeepestSplit` that keeps the regular (`.1`) and
 >   spectator (`.2.2`) coordinates and, on the core (`.2.1`), decodes to the reduced tuple, left-shears
