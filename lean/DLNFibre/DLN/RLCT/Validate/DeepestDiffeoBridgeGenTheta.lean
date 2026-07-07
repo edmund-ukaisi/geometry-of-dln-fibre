@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurShiftConj
+import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbConjGen
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenTheta` — the general-`L` Step Θ (naive↔conj MP bridge)
@@ -25,18 +26,21 @@ local RLCT at `wstar`. The L=2 route (mirrored here):
   `deepestEFull_bare_hTilde_exists`; its body used only general lemmas.)
 * `regAbsorbPeel_bare_gen`, `regAbsorb_bare_gen` — the general bare reg-absorb (straighten
   `deepestEFull` reg to gauge reg), via `rlctAtOn_comp_localDiffeo` + `rlctAtOn_regAbsorb_reduce2`.
-* `link2_at_zero_gaugeReg_gen` — the gauge-`0` Step Θ, discharging bare (built) + the banked Θ-peel,
-  taking the CONJ reg-absorb `regAbsorb_conj` as the single hypothesis `hRegAbsorbConj`.
-* `link2_at_wstar_gaugeReg_gen` — the chart-`wstar` Step Θ (split transport).
+* `link2_at_zero_gaugeReg_gen` — the gauge-`0` Step Θ, discharging bare (built) + the banked Θ-peel +
+  the CONJ reg-absorb via `regAbsorb_conj_gen` (`DeepestRegAbsorbConjGen`, now landed general-`L`).
+* `link2_at_wstar_gaugeReg_gen` — the chart-`wstar` Step Θ (split transport). **UNCONDITIONAL** at
+  general `L` (rides `hJfront`/`hPtri`/`hQtri`, all wire-dischargeable — strict-interior frames are the
+  identity, `deepestPoint_frame_pivot_triangular_exists`'s `hInterior`).
 
-## The single remaining Step-Θ piece (the CONJ reg-absorb, threaded as `hRegAbsorbConj`)
+## The CONJ reg-absorb (LANDED general `L`, `DeepestRegAbsorbConjGen`)
 The conjugate absorb `deepestCoreAbsorbConj` has a NONZERO shift derivative (the "value-fold atom"), so
-`D(conjAbsorb.symm)(0) ≠ id`; the conj π̃'s reg-reg block stays invertible only via
-`∂deepestEFull/∂core(0) = 0` (the general lift of the `Fin 3` `deepestEFull_coreConstant` — LABOR,
-not a wall: it is the deepest-point corner factorization
-`prod(framed)|_{reg=0} = fromBlocks 1 0 0 junk`, core-independent in its `{11,12,21}` blocks). Until
-that general atom lands, the conj reg-absorb enters as `hRegAbsorbConj`. (LINK-1, Step Ψ_conj — the
-honest chain `Ĉ` + `psiSplitRawL2CoreConj` general — is the separate coupled bulk, not touched here.)
+`D(conjAbsorb.symm)(0) ≠ id`; the conj π̃'s reg-reg block stays invertible via
+`∂deepestEFull/∂core(0) = 0` — the general lift `deepestEFull_coreConstant_gen` of the `Fin 3`
+`deepestEFull_coreConstant`. It is the deepest-point corner factorization
+`prod(framed)|_{reg=0} = fromBlocks 1 0 0 junk` (core-independent in its `{11,12,21}` blocks), proved by a
+`prodAux` prefix corner-telescoping (`prod_framedParamsPivot_zeroReg_eq_corner_gen`). This makes
+`link2_at_wstar_gaugeReg_gen` unconditional. (LINK-1, Step Ψ_conj — the honest chain `Ĉ` +
+`psiSplitRawL2CoreConj` general — is the separate coupled bulk, not touched here.)
 -/
 
 open MeasureTheory Topology Matrix
@@ -199,7 +203,7 @@ theorem link2_at_zero_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
     (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
-    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
@@ -208,19 +212,12 @@ theorem link2_at_zero_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         (Qf (lastLayer hL))).toBlocks₂₂))
+    (hPtri : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
-    (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
-    (hRegAbsorbConj :
-      rlctAtOn
-          (fun q : DeepestSplit H r (deepestNGauge H r) =>
-            (∑ i, deepestEFull H r hr hL J Pf Qf q i ^ 2)
-              + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
-          (0 : DeepestSplit H r (deepestNGauge H r))
-        = rlctAtOn
-            (fun q : DeepestSplit H r (deepestNGauge H r) =>
-              (∑ i, q.1 i ^ 2)
-                + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
-            (0 : DeepestSplit H r (deepestNGauge H r))) :
+    (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q) :
     rlctAtOn
         (fun q : DeepestSplit H r (deepestNGauge H r) =>
           (∑ i, (regStraighten q).1 i ^ 2)
@@ -232,7 +229,8 @@ theorem link2_at_zero_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
               + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1)
           (0 : DeepestSplit H r (deepestNGauge H r)) := by
   simp only [hregval]
-  rw [hRegAbsorbConj,
+  rw [regAbsorb_conj_gen H r B hB hr hL hL2 hDA hbdy J hJfront Pf Qf hPf hQf hQf0 hPfL hQf22
+      hPtri hQtri,
     ← rlctAtOn_coreF_bareAbsorb_eq_conjAbsorb H r B hB hr hL hDA hbdy,
     ← regAbsorb_bare_gen H r hr hL hL2 J Pf Qf hPf hQf hQf0 hPfL hQf22]
 
@@ -245,7 +243,7 @@ theorem link2_at_wstar_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s))
     (hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0)
-    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (hPf : IsUnit (Pf (firstLayer hL))) (hQf : IsUnit (Qf (lastLayer hL)))
@@ -254,19 +252,12 @@ theorem link2_at_wstar_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
         (Qf (lastLayer hL))).toBlocks₂₂))
+    (hPtri : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0)
+    (hQtri : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0)
     (regStraighten : DeepestSplit H r (deepestNGauge H r) → DeepestSplit H r (deepestNGauge H r))
     (hregval : ∀ q, (regStraighten q).1 = deepestEFull H r hr hL J Pf Qf q)
-    (hRegAbsorbConj :
-      rlctAtOn
-          (fun q : DeepestSplit H r (deepestNGauge H r) =>
-            (∑ i, deepestEFull H r hr hL J Pf Qf q i ^ 2)
-              + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
-          (0 : DeepestSplit H r (deepestNGauge H r))
-        = rlctAtOn
-            (fun q : DeepestSplit H r (deepestNGauge H r) =>
-              (∑ i, q.1 i ^ 2)
-                + deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA q).2.1)
-            (0 : DeepestSplit H r (deepestNGauge H r)))
     (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
     (hsplit_mp : MeasurePreserving split volume volume)
     (wstar : Fin (flatDim H) → ℝ)
@@ -291,7 +282,7 @@ theorem link2_at_wstar_gaugeReg_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
         + deepestCoreF H r (deepestCoreAbsorb H r hr hL q).2.1) wstar
   rw [hsplit_wstar] at hconj hbare
   rw [hconj, hbare]
-  exact link2_at_zero_gaugeReg_gen H r B hB hr hL hL2 hDA hbdy J Pf Qf hPf hQf hQf0 hPfL hQf22
-    regStraighten hregval hRegAbsorbConj
+  exact link2_at_zero_gaugeReg_gen H r B hB hr hL hL2 hDA hbdy J hJfront Pf Qf hPf hQf hQf0 hPfL
+    hQf22 hPtri hQtri regStraighten hregval
 
 end DLNFibre.DLN.RLCT

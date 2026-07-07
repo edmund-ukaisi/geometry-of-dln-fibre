@@ -736,3 +736,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiContDiff
 -- conjugate flat diffeo `split⁻¹∘coreAbsorb⁻¹∘Ψ∘coreAbsorb∘split` reduces the `hstep2` RLCT equality
 -- to two geometric germs (Schur untwisting + reg-preservation), via `rlctAtOn_diffeo_bridge_of`.
 import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGen
+-- ∀-L CONJ reg-absorb (#120 `hstep2`, Step Θ piece 1): `regAbsorb_conj_gen` — the general-`L` lift of the
+-- `Fin 3` value-fold atom `deepestEFull_coreConstant` (corner factorization) + the conj reg-absorb chain.
+import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbConjGen
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, Step Θ = LINK-2): `link2_at_wstar_gaugeReg_gen` — the
+-- naive↔conjugate core-absorb RLCT bridge (the Θ half of `hstep2 = Step Θ ∘ Step Ψ_conj`), now
+-- UNCONDITIONAL (the CONJ reg-absorb `hRegAbsorbConj` discharged via `regAbsorb_conj_gen`).
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenTheta
