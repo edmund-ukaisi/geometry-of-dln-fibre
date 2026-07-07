@@ -12,6 +12,42 @@ The controller proposes this ranking; the operator may edit this file directly.
 - Current build choice for this expedition worktree: use local
   `lake build` / `lake env lean`, not `scripts/lb`.
 
+## Latest controller decision - 2026-07-07, rank-cut residual-source endpoint-prior readback composition
+
+Decision: compose the same-shrink original-prior readback domination theorem
+with the rank-cut residual-source readback-nullity wrapper, exposing both
+shrinks.
+
+The outer shrink `W` is where callers state the endpoint-reference
+weighted-Haar identity, endpoint lower bound, source-density lower bound, and
+prior-density upper bound.  The inner shrink `V subset W` is the rank-cut
+source chart where residual-source positivity and negative-power integrability
+are concluded.
+
+The proof is support bookkeeping:
+
+```text
+rankCutSource subset sourceChart '' V subset sourceChart '' W,
+readback(sourceChart z) = z for z in V.
+```
+
+The same-shrink prior package gives readback domination against
+`coordinateSourceMeasure.restrict W`; support sharpening moves the target to
+`coordinateSourceMeasure.restrict V`; the rank-cut residual-source wrapper
+then consumes that domination and theta-side product-residual positivity.
+
+Artifacts:
+
+```text
+threads/03-block-product-reduction/reproduction-a2-rank-cut-residual-source-endpoint-prior-readback-composition.md
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+This remains conditional.  It does not prove endpoint-reference transport,
+determinant/raw Haar transport, source-prior transport, source-density lower
+bounds, prior-density upper bounds, theta-side product-residual positivity,
+source-rank or analytic atlas coverage, normal crossings, pole order, or RLCT.
+
 ## Latest controller decision - 2026-07-07, same-shrink original-prior readback domination
 
 Decision: expose a conditional original-prior readback domination theorem

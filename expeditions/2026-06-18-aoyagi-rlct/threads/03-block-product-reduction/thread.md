@@ -21,6 +21,39 @@ Read `lean/CLAUDE.md` before Lean work. Keep Aoyagi/DLN application code out of
 Build-policy override for this expedition worktree: use local `lake build` and
 `lake env lean`, not `scripts/lb`.
 
+## 2026-07-07 A2 rank-cut residual-source endpoint-prior readback composition
+
+Reproduction:
+
+```text
+reproduction-a2-rank-cut-residual-source-endpoint-prior-readback-composition.md
+```
+
+Lean target:
+
+```text
+lean/DLNFibre/DLN/Aoyagi/RetainedPassiveCase2PassiveThetaOriginalPriorResidualRankCutBridge.lean
+```
+
+Lean now has a two-shrink wrapper:
+
+```text
+exists_open_residualSourceHypotheses_originalEdgeFamilyPrior_rankCutP13Readback_case2PassiveThetaWithFollowingFactor_of_endpointReferenceImage_eq_withDensity_formalProductAbsDet_of_one_le_mul_density_sourceDensity_lower_priorDensity_upper_productResidual_pos_ae_of_continuousAt_priorDensity_of_subset_detSector
+```
+
+The outer shrink `W` carries the endpoint-reference identity and density-bound
+inputs.  The inner shrink `V subset W` is the rank-cut p.13/readback patch.
+The proof applies the same-shrink original-prior package to
+`rankCutSource`, sharpens the resulting readback domination from
+`coordinateSourceMeasure.restrict W` to `coordinateSourceMeasure.restrict V`,
+and feeds it into the rank-cut residual-source readback-nullity wrapper.
+
+Boundary: endpoint-reference transport, determinant/raw Haar transport,
+source-prior transport, source-density lower bounds, prior-density upper
+bounds, theta-side product-residual positivity, source-rank/atlas coverage,
+normal crossings, pole order, and RLCT are still explicit or outside this
+rung.
+
 ## 2026-07-06 A2 Case 2 formal-product/source-image coordinate-count gate
 
 Reproduction:
