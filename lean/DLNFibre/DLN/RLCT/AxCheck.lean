@@ -10,6 +10,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSchurRectCapB
 import DLNFibre.DLN.RLCT.Validate.RouteMHDtotEihd
 import DLNFibre.DLN.RLCT.Validate.RouteMSmearedSquareL2
 import DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiApply
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiContDiff
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGen
 import DLNFibre.DLN.RLCT.Validate.DeepestLastBlock
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGauge
 import DLNFibre.DLN.RLCT.Validate.DeepestNormalFormFrontPivotL2
@@ -392,3 +395,36 @@ open DLNFibre.DLN.RLCT
 -- here so a stale-olean `sorryAx` regression on the D1-runway foundation is caught on every build.
 #print axioms schur_product_ldu_rec
 #print axioms blockSchur_partProd_succ
+
+-- ★ D1 ∀-L runway, deepest-gauge diffeo `dΨ(0) = I` (2026-07-07, #120 `hstep2` piece 3-apply).
+-- `hasStrictFDerivAt_deepestPsiCoreShear` (`DeepestPsiApply`) — the general-`L` absorbing shear `Ψ`
+-- has strict Fréchet derivative the identity at the split basepoint (given `K_s 0 = 0` + strict
+-- differentiability of `K`). Pure analysis, cite-NOTHING: forced `#print axioms` =
+-- [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`). Axiom-gated here so a
+-- stale-olean regression on the diffeo-derivative runway is caught on every build.
+#print axioms hasStrictFDerivAt_deepestPsiCoreShear
+
+-- ★ D1 ∀-L runway, deepest-gauge diffeo `Ψ` globally `ContDiff ⊤` + local-diffeo capstone
+-- (2026-07-07, #120 `hstep2` pieces 2 + local-diffeo). `contDiff_deepestPsiCoreShear` /
+-- `deepestPsiCoreShear_isLocalDiffeoAt` (`DeepestPsiContDiff`) — given `K` globally `ContDiff ⊤`
+-- (+ vanishing at `0` for the capstone), `Ψ` is globally `ContDiff ⊤` and packages the analytic
+-- triple `rlctAtOn_comp_localDiffeo` consumes. Pure analysis, cite-NOTHING: forced `#print axioms`
+-- = [propext, Classical.choice, Quot.sound] (no `sorryAx`). Axiom-gated here so a stale-olean
+-- regression on the diffeo-smoothness runway is caught on every build.
+#print axioms contDiff_deepestPsiCoreShear
+#print axioms deepestPsiCoreShear_isLocalDiffeoAt
+
+-- ★ D1 ∀-L runway, deepest-gauge conjugate diffeo bridge (2026-07-07, #120 `hstep2` piece 5c).
+-- `deepest_diffeo_bridge_gen_impl` (`DeepestDiffeoBridgeGen`) — the conjugate flat diffeo
+-- `split⁻¹∘coreAbsorb⁻¹∘Ψ∘coreAbsorb∘split` reduces the `hstep2` RLCT equality to two geometric germs
+-- (`huntwist`, `hreginv`), plus the chain-independent diffeo triple `contDiff_deepestGConjFlat` /
+-- `hasStrictFDerivAt_deepestGConjFlat` / `deepestGConjFlat_fixpoint` and the forward
+-- `hasStrictFDerivAt_coreShearHomeo_zero`. Pure analysis, cite-NOTHING: forced `#print axioms` =
+-- [propext, Classical.choice, Quot.sound] (no `sorryAx`). Axiom-gated so a stale-olean regression on
+-- the conjugate-bridge runway is caught on every build. (The two germs are the deferred geometric
+-- BULK — pieces 4 + 5a/5b — NOT closed here; the `hstep2` sorry is untouched.)
+#print axioms hasStrictFDerivAt_coreShearHomeo_zero
+#print axioms contDiff_deepestGConjFlat
+#print axioms hasStrictFDerivAt_deepestGConjFlat
+#print axioms deepestGConjFlat_fixpoint
+#print axioms deepest_diffeo_bridge_gen_impl

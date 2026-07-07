@@ -741,3 +741,36 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTerminal
 import DLNFibre.DLN.RLCT.AxCheck
 
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, pieces 1 + 3): `hasStrictFDerivAt_deepestPsiCoreShear`
+-- — the absorbing shear `Ψ = deepestPsiCoreShear` has `dΨ(0) = I`. Transitively wires the banked
+-- `DeepestPsi` (Ψ + basepoint) and `DeepestPsiStrictDeriv` (matMulCLM + bilinear scaffold).
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiApply
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, piece 2 + local-diffeo capstone):
+-- `contDiff_deepestPsiCoreShear` / `deepestPsiCoreShear_isLocalDiffeoAt` — `Ψ` is globally
+-- `ContDiff ⊤` and (given `hKcd`+`hK0`) a local diffeo at the split basepoint.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiContDiff
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, piece 5c): `deepest_diffeo_bridge_gen_impl` — the
+-- conjugate flat diffeo `split⁻¹∘coreAbsorb⁻¹∘Ψ∘coreAbsorb∘split` reduces the `hstep2` RLCT equality
+-- to two geometric germs (Schur untwisting + reg-preservation), via `rlctAtOn_diffeo_bridge_of`.
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGen
+-- ∀-L CONJ reg-absorb (#120 `hstep2`, Step Θ piece 1): `regAbsorb_conj_gen` — the general-`L` lift of the
+-- `Fin 3` value-fold atom `deepestEFull_coreConstant` (corner factorization) + the conj reg-absorb chain.
+import DLNFibre.DLN.RLCT.Validate.DeepestRegAbsorbConjGen
+-- ∀-L deepest-gauge diffeo (#120 `hstep2`, Step Θ = LINK-2): `link2_at_wstar_gaugeReg_gen` — the
+-- naive↔conjugate core-absorb RLCT bridge (the Θ half of `hstep2 = Step Θ ∘ Step Ψ_conj`), now
+-- UNCONDITIONAL (the CONJ reg-absorb `hRegAbsorbConj` discharged via `regAbsorb_conj_gen`).
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenTheta
+-- ∀-L Step Ψ_conj LINK-1 reduction (#120 `hstep2`): `deepest_diffeo_bridge_gen_conj_impl` /
+-- `deepest_diffeo_bridge_gen_assembled` — the abstract flat-diffeo bridge reducing `hstep2` to the
+-- Ψ_conj diffeo triple + `psiSplitRaw` + the two coupled germs (reg-preservation + core=Score),
+-- composed with Step Θ into the bare canonical target the `hstep2` sorry consumes.
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenConj
+-- ∀-L deepest-block boundary (#120 `hstep2`, Θ item 4): `deepBlk_boundary_gen` / `deepBlkA_isUnit_gen`
+-- — the general-`L` `hbdy`/`hDA` the assembled bridge consumes: interior deepest layers are the corner
+-- `diag(I_r,0)` (`deepBlkY_s = 0`, `deepBlkA_s = I_r`), plus the two boundary-layer lemmas.
+import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
+-- ∀-L cutoff→flat-diffeo plumbing (#120 `hstep2`, item 1 analytic half): `deepestPsiFlatCut` +
+-- `contDiff_`/`hasStrictFDerivAt_`/`_fixpoint`/`_split_germ` — the diffeo triple + split-compat the
+-- assembled bridge's abstract `psi` consumes, for ANY raw split-move `psiSplitRaw` fixing the origin
+-- with `ContDiffAt` on a bump support and `D(psiSplitRaw − id)(0) = 0`. Abstracts the L=2 `psiL2Conj`.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
