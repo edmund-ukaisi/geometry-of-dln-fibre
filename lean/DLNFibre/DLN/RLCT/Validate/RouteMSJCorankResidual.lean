@@ -137,4 +137,72 @@ theorem matBox_corank_residual_le (p q : ℕ) (hp : 0 < p) (hq : 0 < q) (c' : �
     _ = ENNReal.ofReal (Cresid (p * q) c' * w ^ (-(c' - (p * q : ℝ) / 2))) := by
         rw [hm, hbridge]
 
+/-! ## The FULL-SPACE isotropic corank atom — the radial endpoint of the anisotropic Γ-atom
+
+The `sjJointResolution` route (`genm-sjjoint-design` cert, step 1) enlarges the corank `D`-box to all
+of `ℝ^{p×q}` *before* the measure-preserving shear `D ↦ Γ` (the shear is clean only on the full space,
+where translation is trivially MP; on the box it maps to an awkward `(A,B,C)`-dependent sheared box).
+After the shear the inner `Γ`-integral is over the FULL space. This is the **exact** full-space
+isotropic value — the `R = I`, `S = 0` special case of the anisotropic-shifted atom the cert's step 2
+needs; the remaining anisotropic content is the Gram change of variables `Γ ↦ Γ·G^{-1/2}` (Jacobian
+`det(RRᵀ)^{-p/2}`) reducing the general `‖Γ·R + S‖²` form to this isotropic endpoint. -/
+
+/-- **The full-space isotropic corank-block residual-power atom (EXACT).** Over ALL of `ℝ^{p×q}` (not
+a box), for `c'` above the block Morse threshold `pq/2` and a strictly-positive core `w > 0`, the
+isotropic corank integral has the exact residual-power value
+
+    ∫_{Γ ∈ ℝ^{p×q}} (frobSq Γ + w)^{−c'} dΓ  =  Cresid (p·q) c' · w^{−(c' − pq/2)}.
+
+The `p × q → Fin (p·q)` measure-preserving flatten (`eMatFlat`, `frobSq_eq_flatSum`) then the
+`Fin (p·q) → ℝ ≃ EuclideanSpace` isometry-MP (`PiLp.volume_preserving_toLp`) transport this to the
+banked full-space radial value `integral_core_full_eq`; `ofReal_integral_eq_lintegral_ofReal` bridges
+the nonnegative Bochner integral to the `∫⁻`. This is the shifted-exponent endpoint `c' ↦ c' − ½·pq`
+at block dimension `a = p·q = (M₀−t)(M₁−t)` (`peelExp`) — the full-space analogue of the box atom
+`matBox_corank_residual_le`, and the radial core the anisotropic Γ-atom reduces to. -/
+theorem matBox_corank_residual_fullSpace_eq (p q : ℕ) (c' : ℝ)
+    (hc' : (p * q : ℝ) / 2 < c') (w : ℝ) (hw : 0 < w) :
+    ∫⁻ Γ : Fin p → Fin q → ℝ, ENNReal.ofReal ((frobSq Γ + w) ^ (-c'))
+      = ENNReal.ofReal (Cresid (p * q) c' * w ^ (-(c' - (p * q : ℝ) / 2))) := by
+  have hcastn : ((p * q : ℕ) : ℝ) / 2 < c' := by rw [Nat.cast_mul]; exact hc'
+  have hmpF := measurePreserving_eMatFlat p q
+  have hmpL : MeasurePreserving
+      (WithLp.toLp 2 : (Fin (p * q) → ℝ) → EuclideanSpace ℝ (Fin (p * q))) :=
+    PiLp.volume_preserving_toLp (Fin (p * q))
+  -- integrand measurability on the flat / EuclideanSpace side
+  have hmeasFlat : Measurable
+      (fun P : Fin (p * q) → ℝ => ENNReal.ofReal ((∑ i, (P i) ^ 2 + w) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    exact Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+      (by fun_prop : Measurable (fun P : Fin (p * q) → ℝ => ∑ i, (P i) ^ 2 + w))
+  have hmeasE : Measurable
+      (fun y : EuclideanSpace ℝ (Fin (p * q)) => ENNReal.ofReal ((‖y‖ ^ 2 + w) ^ (-c'))) := by
+    apply ENNReal.measurable_ofReal.comp
+    exact Measurable.comp (g := fun t : ℝ => t ^ (-c')) (by fun_prop)
+      ((continuous_norm.pow 2).add continuous_const).measurable
+  -- the norm identity `∑ (P i)² + w = ‖toLp P‖² + w`
+  have hnorm : ∀ x : Fin (p * q) → ℝ,
+      (∑ i, (x i) ^ 2 + w) = ‖(WithLp.toLp 2 x : EuclideanSpace ℝ (Fin (p * q)))‖ ^ 2 + w := by
+    intro x; congr 1
+    rw [EuclideanSpace.norm_eq, Real.sq_sqrt (by positivity)]
+    exact Finset.sum_congr rfl (fun i _ => by rw [Real.norm_eq_abs, sq_abs])
+  calc ∫⁻ Γ : Fin p → Fin q → ℝ, ENNReal.ofReal ((frobSq Γ + w) ^ (-c'))
+      = ∫⁻ P : Fin (p * q) → ℝ, ENNReal.ofReal ((∑ i, (P i) ^ 2 + w) ^ (-c')) := by
+        rw [lintegral_congr (fun Γ => by rw [frobSq_eq_flatSum p q Γ] :
+          ∀ Γ : Fin p → Fin q → ℝ, ENNReal.ofReal ((frobSq Γ + w) ^ (-c'))
+            = (fun P : Fin (p * q) → ℝ => ENNReal.ofReal ((∑ i, (P i) ^ 2 + w) ^ (-c')))
+                (eMatFlat p q Γ))]
+        exact hmpF.lintegral_comp hmeasFlat
+    _ = ∫⁻ y : EuclideanSpace ℝ (Fin (p * q)), ENNReal.ofReal ((‖y‖ ^ 2 + w) ^ (-c')) := by
+        rw [lintegral_congr (fun P => by rw [hnorm P] :
+          ∀ P : Fin (p * q) → ℝ, ENNReal.ofReal ((∑ i, (P i) ^ 2 + w) ^ (-c'))
+            = (fun y : EuclideanSpace ℝ (Fin (p * q)) => ENNReal.ofReal ((‖y‖ ^ 2 + w) ^ (-c')))
+                (WithLp.toLp 2 P))]
+        exact hmpL.lintegral_comp hmeasE
+    _ = ENNReal.ofReal (∫ y : EuclideanSpace ℝ (Fin (p * q)), ((‖y‖ ^ 2 + w) ^ (-c'))) := by
+        rw [← ofReal_integral_eq_lintegral_ofReal (integrable_core_w (p * q) c' hcastn w hw)
+          (Filter.Eventually.of_forall (fun y => Real.rpow_nonneg (by positivity) _))]
+    _ = ENNReal.ofReal (Cresid (p * q) c' * w ^ (-(c' - (p * q : ℝ) / 2))) := by
+        rw [integral_core_full_eq (p * q) c' w hw, Nat.cast_mul,
+          show ((p : ℝ) * q / 2 - c') = -(c' - (p : ℝ) * q / 2) by ring, mul_comm]
+
 end DLNFibre.DLN.RLCT
