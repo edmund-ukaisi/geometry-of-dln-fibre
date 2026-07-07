@@ -41,16 +41,21 @@ variables, `ι` the generators.
   (`supp ↦ prependColumn (fun _ ↦ 1) supp`). The generator-level form of `corankStep`'s
   `frobSq((u•Δ)·Q) = u²·frobSq(Δ·Q)`, now with the divisor visible per-generator — generalises the
   ledger's `sjLoss_prependColumn_one`.
-* **`gen_rowMix` / `sharedDivisorExp_rowMix`** — the **support-faithful row-mix** (the faithfulness core
-  Codex named): under the `Z`-independent det-1 unit block-elimination the generators are linearly mixed
-  by a matrix `R`; IF the mix is *support-homogeneous* (each new generator combines only old generators
-  sharing its support vector — the passive-prefactor invariant), then `gen G' j = ∑ᵢ R j i · gen G i`
-  row-by-row and the shared-divisor exponents are PRESERVED. This is exactly what `pref·frobSq = …` cannot
-  see; the monomial factors out of the mix cleanly because the mixed generators share a monomial.
-* **`loss_blockSplit`** — the corank decrement at the loss level: partitioning the generators over a
-  sum-type index `ι_p ⊕ ι_c` splits the carrier loss additively (`= loss_pivot + loss_corank`), the
-  generator-level shadow of `frobSq_blockDiag_split` (`RouteMSJStep3`). The pivot block is the freed
-  Morse directions; the corank block recurses.
+* **`gen_rowMix` / `gen_rowMix_const` / `sharedDivisorExp_rowMix_const`** — the row-mix generator
+  identity. Under the `Z`-independent det-1 unit block-elimination the generators are linearly mixed by a
+  matrix `R`; `gen_rowMix` is the CONDITIONAL identity `gen G' j = ∑ᵢ R j i · gen G i` under the
+  support-homogeneity side condition `hsh` (each new generator combines only old generators sharing its
+  target support). **The content is entirely inside `hsh`** — this is the honest reduction
+  "block-elimination faithfulness ⟺ `hsh` on the step matrix", NOT a proof that a real Step-3 matrix
+  satisfies `hsh` (deferred to the recursion; it fails for arbitrary `R`). `gen_rowMix_const` discharges
+  `hsh` UNCONDITIONALLY at a fresh block (common support — the post-radial state the elimination acts on).
+  This is the datum `pref·frobSq = …` (`corankStep_prefactor`) cannot express (it never reads which
+  generators share a divisor); `sharedDivisorExp_rowMix_const` is the constant-support consistency read-back.
+* **`loss_blockSplit`** — the loss under a generator index-partition: partitioning over a sum-type index
+  `ι_p ⊕ ι_c` splits the carrier loss additively (`= ∑ pivot² + ∑ corank²`). This is the SHAPE of
+  `frobSq_blockDiag_split` (`RouteMSJStep3`) — an additive split over a sum-type index, holding for any
+  sum-indexed state; it carries none of that lemma's Schur-complement content (the actual reindexing into
+  pivot/corank blocks is the deferred recursion). The shape the corank decrement lands on.
 
 ## What is NOT here (Phase 2/3 — the remaining mountain, reported precisely)
 
@@ -213,13 +218,17 @@ theorem residual_rowMix (R : ι' → ι → ℝ) (s' : SJSupport ι' d) (G : SJL
   rw [Finset.mul_sum]
   exact Finset.sum_congr rfl (fun v _ => by ring)
 
-/-- **The support-faithful row-mix (the faithfulness core).** IF the mix is *support-homogeneous* —
-each new generator `j` combines only old generators `i` whose support row equals `j`'s target support
-(`R j i ≠ 0 → G.supp i = s' j`) — THEN the generators mix row-by-row: `gen (rowMix R s' G) j = ∑ᵢ
-R j i · gen G i`. This is what `pref·frobSq = pref·u²·residual` (`corankStep_prefactor`) CANNOT
-certify: the monomial prefix factors cleanly out of the mix precisely because the mixed generators
-share a monomial (decorrelated Codex, `genm-sjcarrier3/codex`: "shared-divisor faithfulness must be
-proved row-by-row for generators"). -/
+/-- **The row-mix generator identity, CONDITIONAL on support-homogeneity.** IF the mix is
+*support-homogeneous* — each new generator `j` combines only old generators `i` whose support row
+equals `j`'s declared target support (`hsh : R j i ≠ 0 → G.supp i = s' j`) — THEN the generators mix
+row-by-row: `gen (rowMix R s' G) j = ∑ᵢ R j i · gen G i`, the monomial prefix factoring cleanly out of
+the mix (because the mixed generators share a monomial). **The content is entirely inside `hsh`**: this
+lemma is the elementary packaging (factor one asserted-equal monomial scalar out of a finite linear
+combination), not a proof that a real block-elimination matrix `R` (`invSchurLeft`/`invSchurRight`,
+`RouteMSJStep3`) satisfies `hsh`. That discharge — showing the actual `Z`-independent unit reduction
+mixes only same-support generators — is deferred to the `(S,J)` recursion (which synchronises supports
+per fresh block); it is the substantive obligation, and it does NOT hold for an arbitrary `R`. What is
+established here is the honest reduction: block-elimination faithfulness ⟺ `hsh` on the step matrix. -/
 theorem gen_rowMix (R : ι' → ι → ℝ) (s' : SJSupport ι' d) (G : SJLinGenState ζ ν ι d)
     (hsh : ∀ j i, R j i ≠ 0 → ∀ ℓ, G.supp i ℓ = s' j ℓ)
     (u : Fin d → ℝ) (z : ζ) (x : ν → ℝ) (j : ι') :
@@ -233,10 +242,21 @@ theorem gen_rowMix (R : ι' → ι → ℝ) (s' : SJSupport ι' d) (G : SJLinGen
       genMonomial_congr_supp (fun ℓ => (hsh j i h ℓ).symm) u
     rw [hsupp]; ring
 
-/-- **The carrier loss under a support-faithful row-mix** is the mixed quadratic form `∑ⱼ (∑ᵢ R j i ·
-genᵢ)²`. The honest statement of the block-elimination at the loss level — it is NOT claimed to equal
-the old loss for arbitrary `R` (only the specific det-1 absorbing units preserve it, via
-`frobSq_step3_absorb`), but the generators mix faithfully with the support tracked. -/
+/-- **The row-mix at a FRESH block is UNCONDITIONALLY faithful.** When every generator carries the same
+accumulated support `s` (`hconst : ∀ i, G.supp i = s` — the state right after a shared radial step, the
+only configuration Aoyagi's block-elimination is applied to), `hsh` holds for FREE for any `R`, so the
+generators mix row-by-row with no side condition: `gen (rowMix R (fun _ ↦ s) G) j = ∑ᵢ R j i · gen G i`.
+This is the genuinely-usable form for the recursion — the passive-prefactor invariant at the generator
+level, discharging `gen_rowMix`'s `hsh` at the constant-support step. -/
+theorem gen_rowMix_const (R : ι' → ι → ℝ) (s : Fin d → ℕ) (G : SJLinGenState ζ ν ι d)
+    (hconst : ∀ i, G.supp i = s) (u : Fin d → ℝ) (z : ζ) (x : ν → ℝ) (j : ι') :
+    (rowMix R (fun _ => s) G).gen u z x j = ∑ i, R j i * G.gen u z x i :=
+  gen_rowMix R (fun _ => s) G (fun _ i _ ℓ => congrFun (hconst i) ℓ) u z x j
+
+/-- **The carrier loss under a support-homogeneous row-mix** is the mixed quadratic form `∑ⱼ (∑ᵢ R j i ·
+genᵢ)²`. NOT claimed to equal the old loss for arbitrary `R` (only the specific det-1 absorbing units
+preserve it, via `frobSq_step3_absorb`, once absorbed into adjacent factors); the statement is that the
+generators mix, with the support tracked. Content conditional on `hsh` (see `gen_rowMix`). -/
 theorem loss_rowMix [Fintype ι'] (R : ι' → ι → ℝ) (s' : SJSupport ι' d) (G : SJLinGenState ζ ν ι d)
     (hsh : ∀ j i, R j i ≠ 0 → ∀ ℓ, G.supp i ℓ = s' j ℓ)
     (u : Fin d → ℝ) (z : ζ) (x : ν → ℝ) :
@@ -244,11 +264,13 @@ theorem loss_rowMix [Fintype ι'] (R : ι' → ι → ℝ) (s' : SJSupport ι' d
   unfold loss
   exact Finset.sum_congr rfl (fun j _ => by rw [gen_rowMix R s' G hsh u z x j])
 
-/-- **The shared-divisor exponents are PRESERVED by a constant-support row-mix** (the passive-prefactor
-invariant). At a fresh block every generator carries the same accumulated support `s`; the
-block-elimination keeps `supp ≡ s`, so `sharedDivisorExp` is unchanged. This is the ledger datum the
-recursion needs to keep faithful across the `(S,J)` step — the generator-level
-`sharedDivisorExp_prependColumn_succ`. -/
+/-- **Constant-support consistency of `sharedDivisorExp` across the row-mix.** At a fresh block (common
+support `s`) the row-mix targets the same constant support (`fun _ ↦ s`), so both sides reduce to `s ℓ`:
+`sharedDivisorExp (rowMix R (fun _ ↦ s) G).supp ℓ = sharedDivisorExp G.supp ℓ`. This is a consistency
+read-back on the CONSTANT target field (it does not inspect `R`) — the generator-level statement that a
+constant monomial prefix is its own shared divisor, in the `sharedDivisorExp_prependColumn_succ` family.
+It does NOT by itself prove a general block-elimination preserves the support (that is the deferred
+`hsh` discharge of `gen_rowMix`). -/
 theorem sharedDivisorExp_rowMix_const [Nonempty ι] [Nonempty ι'] [Fintype ι']
     (R : ι' → ι → ℝ) (s : Fin d → ℕ) (G : SJLinGenState ζ ν ι d) (hconst : ∀ i, G.supp i = s)
     (ℓ : Fin d) :
@@ -256,13 +278,15 @@ theorem sharedDivisorExp_rowMix_const [Nonempty ι] [Nonempty ι'] [Fintype ι']
   rw [sharedDivisorExp_const (e := (rowMix R (fun _ => s) G).supp) (fun _ => rfl) ℓ,
     sharedDivisorExp_const hconst ℓ]
 
-/-! ## The corank decrement at the loss level (block split) -/
+/-! ## The loss under a generator index-partition (the block-split shape) -/
 
-/-- **The corank decrement splits the loss additively.** Partitioning the generators over a sum-type
-index `ι_p ⊕ ι_c` (pivot block ⊕ corank block) splits the carrier loss into the pivot energy and the
-corank residual — the generator-level shadow of `frobSq_blockDiag_split` (`RouteMSJStep3`). The pivot
-block is the freed Morse directions (dehomogenised units); the corank block, dimension decremented,
-recurses. -/
+/-- **The carrier loss splits additively over a sum-type generator index.** Partitioning the generators
+over `ι_p ⊕ ι_c` (pivot block ⊕ corank block) splits the loss into `∑ pivot² + ∑ corank²`. This is the
+index-partition shape of `frobSq_blockDiag_split` (`RouteMSJStep3`) — an additive split of a
+sum-of-squares over a sum-type index; it holds for ANY sum-indexed state and carries none of
+`frobSq_blockDiag_split`'s Schur-complement content (the zero off-diagonal, the corank block `Γ`). Its
+role: the SHAPE the corank decrement lands on once the generators have been reindexed into pivot/corank
+blocks (that reindexing, from the actual block-diagonalisation, is the deferred recursion). -/
 theorem loss_blockSplit {ιp ιc : Type*} [Fintype ιp] [Fintype ιc]
     (G : SJLinGenState ζ ν (ιp ⊕ ιc) d) (u : Fin d → ℝ) (z : ζ) (x : ν → ℝ) :
     G.loss u z x
@@ -273,10 +297,11 @@ theorem loss_blockSplit {ιp ιc : Type*} [Fintype ιp] [Fintype ιc]
 
 /-! ## Non-vacuity — the row-mix at a genuine shear (the `(2,2,2)` Case-2 unit factor) -/
 
-/-- **Non-vacuity of the support-faithful row-mix.** Two generators sharing a common support `s`,
-mixed by the unit-triangular shear `R = [[1,0],[c,1]]` (a det-1 `(2,2,2)` Case-2 factor): the new
-generator `gen'₁ = c·gen₀ + gen₁` is a genuine non-trivial mix, and the shared-divisor exponents are
-PRESERVED. Witnesses that the faithfulness core fires on the actual `(2,2,2)` mechanism. -/
+/-- **Non-vacuity of the fresh-block row-mix.** Two generators sharing a common support `s`, mixed by
+the unit-triangular shear `R = [[1,0],[c,1]]` (a det-1 `(2,2,2)` Case-2 factor): the new generator
+`gen'₁ = c·gen₀ + gen₁` is a genuine non-trivial mix, and the constant-support consistency holds. A
+concrete witness that the row-mix identity fires unconditionally on a fresh block (`gen_rowMix_const`
+would apply directly); the shear here mixes DIFFERENT-index generators, so `R` is genuinely off-diagonal. -/
 example (c : ℝ) (s : Fin 1 → ℕ) (G : SJLinGenState Unit Unit (Fin 2) 1)
     (hconst : ∀ i, G.supp i = s) (u : Fin 1 → ℝ) (x : Unit → ℝ) (ℓ : Fin 1) :
     (rowMix (![![1, 0], ![c, 1]] : Fin 2 → Fin 2 → ℝ) (fun _ => s) G).gen u () x 1

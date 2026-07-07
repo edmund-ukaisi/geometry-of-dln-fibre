@@ -33,20 +33,27 @@ The R1-UPPER final gate → `sjJointResolution` (`RouteMSJResolution.lean:803`),
   loss by `u₀²`: `loss (radialStep G) (u₀ ::: u) = u₀² · loss G u`. The generator-level form of
   `corankStep`'s `frobSq((u•Δ)·Q) = u²·frobSq(Δ·Q)`, the divisor now visible PER GENERATOR (generalises
   the ledger's `sjLoss_prependColumn_one` from monomial generators to linear ones).
-- **`rowMix` / `residual_rowMix` / `gen_rowMix` / `loss_rowMix`** (the faithfulness core): under the
-  `Z`-independent det-1 unit block-elimination the generators mix by a matrix `R`. IF the mix is
-  *support-homogeneous* (`R j i ≠ 0 → G.supp i = s' j` — each new generator combines only old
-  generators sharing its support), THEN `gen (rowMix R s' G) j = ∑ᵢ R j i · gen G i` row-by-row and
-  `loss (rowMix R s' G) = ∑ⱼ (∑ᵢ R j i · genᵢ)²`. The monomial prefix factors cleanly out of the mix
-  because the mixed generators share a monomial — precisely what `pref·frobSq = pref·u²·residual`
-  (`corankStep_prefactor`) cannot see.
-- **`sharedDivisorExp_rowMix_const`** (the passive-prefactor invariant): at a fresh block (common
-  support `s`), the block-elimination PRESERVES the shared-divisor exponents
-  (`sharedDivisorExp (rowMix …).supp = sharedDivisorExp G.supp`) — the generator-level
-  `sharedDivisorExp_prependColumn_succ`.
-- **`loss_blockSplit`** (the corank decrement): partitioning the generators over a sum-type index
-  `ι_p ⊕ ι_c` splits the carrier loss additively (pivot Morse energy + corank residual) — the
-  generator-level shadow of `frobSq_blockDiag_split` (`RouteMSJStep3`).
+- **`rowMix` / `residual_rowMix` / `gen_rowMix` / `gen_rowMix_const` / `loss_rowMix`** (the block-elim
+  row-mix, precision-scoped after review): under the `Z`-independent det-1 unit block-elimination the
+  generators mix by a matrix `R`. `gen_rowMix` is the CONDITIONAL identity `gen (rowMix R s' G) j = ∑ᵢ
+  R j i · gen G i` under the support-homogeneity side condition `hsh : R j i ≠ 0 → G.supp i = s' j`.
+  **The content is entirely inside `hsh`** — the lemma is the honest reduction "block-elim faithfulness
+  ⟺ `hsh` on the step matrix", NOT a proof that a real Step-3 matrix (`invSchurLeft`/`invSchurRight`)
+  satisfies `hsh` (that fails for arbitrary `R` and is deferred to the recursion, which synchronises
+  supports per fresh block). `gen_rowMix_const` discharges `hsh` UNCONDITIONALLY at a fresh block
+  (common support `s` — the post-radial state the elimination acts on): there any `R` mixes only
+  equal-support generators. This is the datum `pref·frobSq = …` (`corankStep_prefactor`) cannot read
+  (which generators share a divisor). `loss_rowMix`: the loss under the (conditional) mix is `∑ⱼ (∑ᵢ
+  R j i · genᵢ)²`.
+- **`sharedDivisorExp_rowMix_const`** (constant-support consistency read-back): at a fresh block, both
+  sides reduce to `s ℓ` (`sharedDivisorExp (rowMix R (fun _↦s) G).supp = sharedDivisorExp G.supp`). It
+  does NOT inspect `R` — it is the generator-level statement that a constant monomial prefix is its own
+  shared divisor (the `sharedDivisorExp_prependColumn_succ` family), not a proof that a general
+  block-elimination preserves the support (that is the deferred `hsh` discharge).
+- **`loss_blockSplit`** (the block-split shape): partitioning the generators over a sum-type index
+  `ι_p ⊕ ι_c` splits the loss additively (`∑ pivot² + ∑ corank²`). This is the index-partition SHAPE of
+  `frobSq_blockDiag_split` (`RouteMSJStep3`) — true for any sum-indexed state; it carries none of that
+  lemma's Schur-complement content (the reindexing into pivot/corank blocks is the deferred recursion).
 - **Non-vacuity (in-file `example`).** The row-mix at the genuine `(2,2,2)` Case-2 unit-triangular
   shear `R = [[1,0],[c,1]]`: `gen'₁ = c·gen₀ + gen₁` (a genuine non-trivial mix) with the
   shared-divisor exponents PRESERVED. The faithfulness core fires on the actual mechanism.
@@ -58,10 +65,15 @@ The R1-UPPER final gate → `sjJointResolution` (`RouteMSJResolution.lean:803`),
   `loss_ofMatrix_product`, `loss_blockSplit`, `genMonomial_congr_supp`, `sharedDivisorExp_const` all =
   `[propext, Classical.choice, Quot.sound]` (clean-three). **S2-FREE — no `monomial_rlct`, no measure
   theory** (pure algebra: `genMonomial`, `frobSq`, finite sums).
-- **Assumed (carried as hypotheses, honest).** `gen_rowMix`/`loss_rowMix` carry the support-homogeneity
-  hypothesis `R j i ≠ 0 → G.supp i = s' j` — the "mixes only same-support generators" condition Codex
-  named; it is DISCHARGED at a fresh block (constant support), which is the state the recursion enters
-  each `(S,J)` step (`sharedDivisorExp_rowMix_const` handles that case unconditionally).
+- **Assumed (carried as hypotheses, honest — this is where the real difficulty sits).**
+  `gen_rowMix`/`loss_rowMix` carry the support-homogeneity hypothesis `hsh : R j i ≠ 0 → G.supp i = s'
+  j`. **The reviewer + a fresh decorrelated Codex (`codex/review-rowmix-answer.md`) both flag that `hsh`
+  contains the ENTIRE "does the real block-elimination preserve shared divisors" obligation** — a real
+  Step-3 matrix generically mixes rows of differing support and does NOT satisfy `hsh` unless the
+  recursion has already synchronised supports. So `gen_rowMix` is the honest REDUCTION (faithfulness ⟺
+  `hsh`), not a discharge. `gen_rowMix_const` discharges `hsh` UNCONDITIONALLY only at a fresh block
+  (constant support — the post-radial state); proving a general `(S,J)` step reaches/preserves that
+  configuration is the deferred recursion (piece 2).
 - **Cited.** none new. Reuses the banked ledger (`RouteMSJLedger`: `genMonomial`, `sharedDivisorExp`,
   `prependColumn`, `genMonomial_prependColumn`) and `frobSq`/`rmatMul` (`MatMulFibre`).
 - **Deferred (Phase 2/3 — the remaining mountain, reported precisely; decorrelated-Codex-confirmed).**
@@ -87,13 +99,28 @@ share a divisor" bookkeeping the design green-lit, and it is now proved at opaqu
 verdict is robust (Codex Q3: "I do not see a new stratum obstruction"). The sole barrier is the SIZE of
 the unbanked CoV construction (deferred item 2), NOT a mathematical wall.
 
+## Reviewer
+
+**SURVIVED** (independent fidelity + soundness audit, decorrelated Codex xhigh corroborated). No
+fidelity mismatch, no soundness break, `sjJointResolution` confirmed untouched (still `sorry` at
+`RouteMSJResolution.lean:803`, not laundered). Forced-recompile `#print axioms` reproduced clean-three
+on all named results (no `sorryAx`, no `monomial_rlct`). One substantive precision FINDING (addressed
+this tide, in-file + card): the original "the faithfulness core / PRESERVES / proved at opaque widths"
+language OVERSHOT — `gen_rowMix`'s content is conditional on `hsh` (the real block-elim obligation is
+smuggled there), `sharedDivisorExp_rowMix_const` is a constant-support consistency read-back (does not
+read `R`), and `loss_blockSplit` is an index-partition tautology (no Schur content). All three docstrings
++ the card were precision-edited to state the conditionality plainly, and `gen_rowMix_const` was added as
+the honestly-unconditional fresh-block form. The math was correct and sorry-free throughout; the finding
+was naming/overclaim, now corrected.
+
 ## Status
 
 sorry-free; clean-three; `scripts/sorries` = 0 for the module. Isolated
 `scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen` green (2710 jobs); FULL `scripts/lb DLNFibre`
-green-gated (no name clashes with siblings — `rg`-checked). Aggregator wired (import added at the end,
-worktree copy). AxCheck: the load-bearing results' forced `#print axioms` confirmed clean-three
-externally; NOT added to `AxCheck.lean` (controller-owned single-writer) — **controller to add
-`gen_rowMix` / `sharedDivisorExp_rowMix_const` / `loss_radialStep` / `loss_ofMatrix_product` to
-`AxCheck.lean` at integration** (and, if wiring the SJ chain's axiom gate, `RouteMSJLedger`/`Terminal`
-too — currently absent from AxCheck). Branch pushed to `origin/genm-sjcarrier4`.
+green-gated (8748 jobs, no name clashes with siblings — `rg`-checked). Aggregator wired (import added at
+the end, worktree copy). ~317 LoC. AxCheck: the load-bearing results' forced `#print axioms` confirmed
+clean-three externally (twice — before and after the precision edits); NOT added to `AxCheck.lean`
+(controller-owned single-writer) — **controller to add `gen_rowMix` / `gen_rowMix_const` /
+`sharedDivisorExp_rowMix_const` / `loss_radialStep` / `loss_ofMatrix_product` to `AxCheck.lean` at
+integration** (and, if wiring the SJ chain's axiom gate, `RouteMSJLedger`/`Terminal` too — currently
+absent from AxCheck). Branch pushed to `origin/genm-sjcarrier4`.
