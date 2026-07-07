@@ -46,6 +46,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurRecursion
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLedger
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
 
 /-!
 # Axiom-hygiene check
@@ -458,3 +459,13 @@ open DLNFibre.DLN.RLCT
 #print axioms blockSchur_movedC
 #print axioms prodSchurCore_eq_blockSchur_partProd
 #print axioms topRow_movedC
+
+-- ★ R1-UPPER (S,J) CoV Phase-2 piece 2 (2026-07-07, `genm-sjcarrier5`). The per-chart block-reindex
+-- bridge: the raw front-factor chart integral of `gammaPeelIntegral` transports measure-preservingly to
+-- a block-coordinate integral over `genBox ∩ {IsUnit toBlocks₁₁}` (`chartInner_blockReindex_eq`, via the
+-- MP `matReindexEquiv`). The Schur/shear/corank-peel weld + the (S,J) descent to the monomial terminal
+-- + the `redChain t M` IH (piece 2 rest + piece 3) that consume this into `sjJointResolution` are the
+-- deferred BULK — its sorry untouched. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice,
+-- Quot.sound] (no `sorryAx`, no `monomial_rlct`). Axiom-gated across the multi-tide R1-UPPER close.
+#print axioms chartInner_blockReindex_eq
+#print axioms chartInner_blockReindex_eq_of_emb

@@ -788,3 +788,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 -- (`topRow_movedC` = `hsub3reg` up-half). `hstep2` UNTOUCHED — the left-column lemma + concrete
 -- instantiation + diffeo triple + compose are deferred.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
+-- The per-chart block-reindex bridge (Phase-2 piece 2, thread `genm-sjcarrier5`): the raw front-factor
+-- loss IS a block-matrix loss (`frobSq_rmatMul_reindex`), the pivot-chart condition transfers to the
+-- reindexed top-left block (`isUnit_toBlocks₁₁_reindex_iff`), and — the measure half — the inner
+-- front-factor chart integral of `gammaPeelIntegral` transports measure-preservingly to a
+-- block-coordinate integral over `genBox ∩ {IsUnit toBlocks₁₁}` (`chartInner_blockReindex_eq`, via the
+-- MP block-reindex `matReindexEquiv`). The Schur/shear/corank-peel + `(S,J)` descent are pieces 2 (rest)
+-- and 3; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
