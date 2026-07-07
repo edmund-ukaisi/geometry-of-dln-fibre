@@ -54,6 +54,37 @@ NOT the atom). Branch `genm-rblowuppure`, off `origin/genm-rblowup2` @9818b832.
 >   the Lean object doesn't carry; "Verdict A holds at the chart-algebra level, in Lean" is supported for the
 >   per-step algebra + terminal but the full recursion closing is deferred — both correctly hedged in-card).
 
+## Companion brick — the intermediate-layer exponent-shift peel
+
+> **Claim.** For a `p × q` corank block `Δ` coupled to an outer parameter `z ∈ Z` through a
+> STRICTLY-POSITIVE core `W z > 0`, ABOVE the block Morse threshold (`c' > pq/2`), the joint integral is
+> bounded by the shifted-core integral — the per-layer recursion step.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.matBox_corank_residual_absZ_le`
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCorankPure.lean` @ `56a3cf15`)
+> - **Gloss.** `∫_{z∈Z} ∫_{Δ∈matBox p q T} ofReal((frobSq Δ + W z)^{−c'}) ≤ ofReal(Cresid (p*q) c') *
+>   ∫_{z∈Z} ofReal((W z)^{−(c'−pq/2)})`, given `0<p`, `0<q`, `pq/2 < c'`, `0<T`, `∀z, 0 < W z`. Aoyagi's
+>   per-layer exponent shift `c' ↦ c' − ½·pq` at block dimension `pq = (M₀−t)(M₁−t)`: the corank block
+>   peels (charge `pq`), leaving the deeper core `W z` at the shifted exponent.
+> - **Proved.** The `≤` bound, general `p × q`, arbitrary outer domain. Axiom-clean `[propext,
+>   Classical.choice, Quot.sound]` (S2-free).
+> - **Assumed.** `W z > 0` STRICTLY (the isotropic corank atom `matBox_corank_residual_le` needs a
+>   positive core for its `w^{−(c'−pq/2)}` residual power). Honest caveat: intermediate layers have a
+>   strictly-positive deeper core; the LAST layer, where the core can vanish (`W z ≥ 0`), is instead the
+>   `c' < pq/2` Morse-dominance terminal `matBox_corank_dominates_absZ_lt_top` above. The two bricks cover
+>   the two regimes of the pure peel.
+> - **Cited.** None external. Rides banked `matBox_corank_residual_le`, `Cresid_nonneg`
+>   (`RadialResidualPower`) + Mathlib `lintegral_mono`/`lintegral_const_mul'`/`ENNReal.ofReal_mul`.
+> - **Deferred.** Same as the terminal (anisotropy removal; recursion carrier; `sjJointResolution`). The
+>   outer `∫_z (W z)^{−(c'−pq/2)}` is what the recursion feeds to the strong IH — the recursion wiring
+>   itself is deferred.
+> - **Route.** `lintegral_mono` with the per-`z` banked `matBox_corank_residual_le`; `ENNReal.ofReal_mul`
+>   splits `Cresid`; `lintegral_const_mul'` pulls the finite `Cresid` constant out. ~15 LoC.
+> - **Status.** sorry-free + S2-free; **NOT yet independently fidelity-reviewed** (added AFTER the
+>   reviewer pass — the reviewer vetted the terminal + module, not this companion). Same module,
+>   technique, and banked atoms as the reviewed terminal, with no new external dependency; a follow-up
+>   reviewer pass should cover it.
+
 ## Supporting lemma (same module)
 
 > **`DLNFibre.DLN.RLCT.matBox_frobSq_add_lintegral_eq`** — `∫_{matBox p q T} (frobSq D + w)^{−c'} =
@@ -65,10 +96,13 @@ NOT the atom). Branch `genm-rblowuppure`, off `origin/genm-rblowup2` @9818b832.
 
 - `scripts/lb DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPure` — green (8285 jobs), zero errors, zero
   `sorry` in the module, zero long-line warnings.
-- Forced `#print axioms` on both theorems: `[propext, Classical.choice, Quot.sound]` (clean-three;
-  **S2-free**, `monomial_rlct` absent — the chart-geometry hygiene the guarded watch requires).
+- Forced `#print axioms` on all three theorems (`matBox_frobSq_add_lintegral_eq`,
+  `matBox_corank_dominates_absZ_lt_top`, `matBox_corank_residual_absZ_le`):
+  `[propext, Classical.choice, Quot.sound]` (clean-three; **S2-free**, `monomial_rlct` absent — the
+  chart-geometry hygiene the guarded watch requires).
 - Name-clash: `matBox_frobSq_add_lintegral_eq`, `matBox_corank_dominates_absZ_lt_top`,
-  `RouteMSJCorankPure` all unique across `DLNFibre/` (`rg`, no clash). NOT wired into the single-writer
+  `matBox_corank_residual_absZ_le`, `RouteMSJCorankPure` all unique across `DLNFibre/` (`rg`, no clash).
+  NOT wired into the single-writer
   `DLNFibre.lean` — **controller to wire** `import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankPure` after
   the `RouteMSJCorankPeel` import (before `AxCheck`).
 
