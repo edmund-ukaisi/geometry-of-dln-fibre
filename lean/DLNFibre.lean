@@ -752,3 +752,8 @@ import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenConj
 -- — the general-`L` `hbdy`/`hDA` the assembled bridge consumes: interior deepest layers are the corner
 -- `diag(I_r,0)` (`deepBlkY_s = 0`, `deepBlkA_s = I_r`), plus the two boundary-layer lemmas.
 import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
+-- ∀-L cutoff→flat-diffeo plumbing (#120 `hstep2`, item 1 analytic half): `deepestPsiFlatCut` +
+-- `contDiff_`/`hasStrictFDerivAt_`/`_fixpoint`/`_split_germ` — the diffeo triple + split-compat the
+-- assembled bridge's abstract `psi` consumes, for ANY raw split-move `psiSplitRaw` fixing the origin
+-- with `ContDiffAt` on a bump support and `D(psiSplitRaw − id)(0) = 0`. Abstracts the L=2 `psiL2Conj`.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
