@@ -559,4 +559,151 @@ theorem qResid_slice_value (C₀ : BlockParamsL2 H r)
             ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t)) + C₀).2.toBlocks₂₂
   abel
 
+/-! ## The crux close -/
+
+/-- **The L = 2 crux, CLOSED.** At a general optimal `v`, the explicit Schur corner-elimination chart
+lands the local RLCT of the DLN loss on the explicit reduced core plus the regular `nReg/2` shift.
+Wires the germ `schurReadout_germ_eq` (the `hchart`), the slice value `qResid_slice_value` (the
+`hfact`), the core-nonvanishing `dlnLoss_deepest_core` (the `hRne`) into the banked consumer
+`d1ge_L2_hAtV_of_explicit_chart`. Only the reduced-core RLCT bound `S2` (Aoyagi Theorem 4) is cited
+downstream. -/
+theorem d1ge_L2_hAtV_explicit_close
+    (H : Fin (2 + 1) → ℕ) (r : ℕ) (B : Matrix (Fin (H 0)) (Fin (H (Fin.last 2))) ℝ)
+    (v : Params H) (hopt : prod H v = B) (hB : B.rank = r)
+    (hpos : ∀ s : Fin (2 + 1), r < H s) :
+    ∃ P : Params (fun s => H s - r),
+      (nRegL2 H r : ℝ≥0∞) / 2
+          + rlctAtOn (fun A : Params (fun s => H s - r) =>
+              dlnLoss (fun s => H s - r)
+                (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ) A)
+              P
+        ≤ rlctAt H (dlnLoss H B) v := by
+  classical
+  obtain ⟨I, K, J, hI, hK, hJ, hMdet, hXdet⟩ := exists_common_pivot_L2_at H r v B hopt hB
+  have hMpos : ∀ s, 1 ≤ H s - r := fun s => Nat.sub_pos_of_lt (hpos s)
+  have hvsymm : (paramsEquivFlatLinear H).symm ((paramsEquivFlat H) v) = v := by
+    rw [paramsEquivFlatLinear_symm_coe]; exact (paramsEquivFlat H).symm_apply_apply v
+  set P₀ := blockFlatEquiv_L2 H r I K J hI hK hJ ((paramsEquivFlat H) v) with hP0
+  have hX : (P₀.1.toBlocks₁₁).det ≠ 0 := by
+    rw [hP0, blockFlatEquiv_L2_toBlocks₁₁_fst, hvsymm]; exact hXdet
+  have hPB : P₀.1 * P₀.2 = B.submatrix (sumSplit I hI) (sumSplit J hJ) := by
+    rw [hP0, blockFlatEquiv_L2_mul, hvsymm, hopt]
+  have hBr11 : (B.submatrix (sumSplit I hI) (sumSplit J hJ)).toBlocks₁₁
+      = (prod H v).submatrix I J := by
+    funext i j
+    simp only [Matrix.toBlocks₁₁, Matrix.submatrix_apply, Matrix.of_apply, sumSplit_inl, hopt]
+  have hM11 : (P₀.1.toBlocks₁₁ * P₀.2.toBlocks₁₁ + P₀.1.toBlocks₁₂ * P₀.2.toBlocks₂₁).det ≠ 0 := by
+    have e : P₀.1.toBlocks₁₁ * P₀.2.toBlocks₁₁ + P₀.1.toBlocks₁₂ * P₀.2.toBlocks₂₁
+        = (prod H v).submatrix I J := by rw [← mul_toBlocks₁₁, hPB]; exact hBr11
+    rw [e]; exact hMdet
+  obtain ⟨Φ, f', hcd, hfd, hfix, hg⟩ := schur_loss_germ_L2_at_pivot B v I K J hI hK hJ hX hM11
+  rw [← hP0] at hg
+  set C₀ := schurChartRaw H r P₀ with hC0
+  set Br₀ := B.submatrix (sumSplit I hI) (sumSplit J hJ) with hBr0
+  have hrlct : rlctAt H (dlnLoss H B) v = rlctAtOn (schurReadoutF_L2 H r I K J hI hK hJ C₀ Br₀) 0 :=
+    dln_hchart_flat H B v _ Φ f' hcd hfd hfix hg
+  -- corner facts.
+  have h11 : C₀.2.toBlocks₁₁ = Br₀.toBlocks₁₁ := by
+    rw [hC0, schurChartRaw_snd_toBlocks₁₁, ← mul_toBlocks₁₁]; exact congrArg Matrix.toBlocks₁₁ hPB
+  have h12 : C₀.2.toBlocks₁₂ = Br₀.toBlocks₁₂ := by
+    rw [hC0, schurChartRaw_snd_toBlocks₁₂, ← mul_toBlocks₁₂]; exact congrArg Matrix.toBlocks₁₂ hPB
+  have h21 : C₀.1.toBlocks₂₁ = Br₀.toBlocks₂₁ := by
+    rw [hC0, schurChartRaw_fst_toBlocks₂₁, ← mul_toBlocks₂₁]; exact congrArg Matrix.toBlocks₂₁ hPB
+  have hBr11det : (Br₀.toBlocks₁₁).det ≠ 0 := by
+    rw [← h11, hC0, schurChartRaw_snd_toBlocks₁₁]; exact hM11
+  -- the bump-globalised inverse `G`.
+  obtain ⟨G, hGcd, hGeq⟩ := exists_contDiff_matrixInv_eventuallyEq C₀.2.toBlocks₁₁
+    (by rw [h11]; exact hBr11det)
+  have hGeval : G (C₀.2.toBlocks₁₁) = (C₀.2.toBlocks₁₁)⁻¹ := hGeq.eq_of_nhds
+  -- schur-zero for `Br₀`.
+  have hrank : (Matrix.fromBlocks Br₀.toBlocks₁₁ Br₀.toBlocks₁₂ Br₀.toBlocks₂₁ Br₀.toBlocks₂₂).rank
+      ≤ r := by
+    rw [Matrix.fromBlocks_toBlocks, hBr0, Matrix.rank_submatrix, hB]
+  letI : Invertible (Br₀.toBlocks₁₁) := invertibleOfDetNeZero hBr11det
+  have hschur : Br₀.toBlocks₂₂ = Br₀.toBlocks₂₁ * (Br₀.toBlocks₁₁)⁻¹ * Br₀.toBlocks₁₂ := by
+    have := Core.schur_complement_zero_of_rank_le Br₀.toBlocks₁₁ Br₀.toBlocks₁₂ Br₀.toBlocks₂₁
+      Br₀.toBlocks₂₂ hrank
+    rwa [Matrix.invOf_eq_nonsing_inv] at this
+  -- the residual `qₑ` and its `ContDiff`.
+  set Y := (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDim H r) → ℝ) with hY
+  set qₑ := qResid I K J hI hK hJ C₀ Br₀.toBlocks₂₂ G with hqe
+  have hq : ContDiff ℝ 1 qₑ := contDiff_qResid I K J hI hK hJ C₀ Br₀.toBlocks₂₂ G hGcd
+  -- the core translation `e`.
+  set eshift := paramsEquivFlat (fun s => H s - r) (coreShiftParam C₀) with heshift
+  set e : Y ≃ₜ Y :=
+    (Homeomorph.addRight eshift).prodCongr (Homeomorph.refl (Fin (specDim H r) → ℝ)) with he_def
+  have he_mp : MeasurePreserving e (volume : Measure Y) volume := by
+    rw [he_def]
+    exact (measurePreserving_add_right volume eshift).prod (MeasurePreserving.id volume)
+  have he_emb : MeasurableEmbedding e := e.measurableEmbedding
+  -- the `e`-connection: `psymm (e t).1 = coreParams (split.symm ((0),t)) + coreShiftParam C₀`.
+  have hEconn : ∀ t : Y, (paramsEquivFlat (fun s => H s - r)).symm (e t).1
+      = coreParams I K J hI hK hJ ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))
+          + coreShiftParam C₀ := by
+    intro t
+    have hround : splitMP I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))
+        = ((0 : Fin (nRegL2 H r) → ℝ), t) := by
+      have := (splitHomeoL2 I K J hI hK hJ).apply_symm_apply ((0 : Fin (nRegL2 H r) → ℝ), t)
+      rw [splitHomeoL2_apply] at this; exact this
+    have hcp : coreParams I K J hI hK hJ
+        ((splitHomeoL2 I K J hI hK hJ).symm ((0 : Fin (nRegL2 H r) → ℝ), t))
+        = (paramsEquivFlat (fun s => H s - r)).symm t.1 := by
+      rw [← paramsEquivFlat_symm_splitMP_core, hround]
+    rw [hcp]
+    have hlin : ∀ y : Fin (flatDim (fun s => H s - r)) → ℝ,
+        (paramsEquivFlat (fun s => H s - r)).symm y
+          = (paramsEquivFlatLinear (fun s => H s - r)).symm y :=
+      fun y => by rw [paramsEquivFlatLinear_symm_coe]
+    show (paramsEquivFlat (fun s => H s - r)).symm (t.1 + eshift)
+        = (paramsEquivFlat (fun s => H s - r)).symm t.1 + coreShiftParam C₀
+    rw [hlin (t.1 + eshift), hlin t.1, map_add, heshift, ← paramsEquivFlatLinear_coe,
+      (paramsEquivFlatLinear (fun s => H s - r)).symm_apply_apply]
+  -- the slice value in `dlnLoss` form (feeds `hfact` and `hRne`).
+  have hslicez : ∀ t : Y, (∑ i, qₑ ((0 : Fin (nRegL2 H r) → ℝ), t) i ^ 2)
+      = dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm (e t).1) := by
+    intro t
+    have hqm := qResid_slice_value I K J hI hK hJ C₀ Br₀ G hGeval h11 h12 h21 hschur t
+    rw [hqe, qResid_sq_sum, hEconn t]
+    unfold dlnLoss
+    simp only [sub_zero]
+    exact Finset.sum_congr rfl fun a _ => Finset.sum_congr rfl fun b _ =>
+      congrArg (· ^ 2) (congrFun (congrFun hqm a) b)
+  -- assemble the consumer inputs.
+  refine d1ge_L2_hAtV_of_explicit_chart H r B v qₑ hq (0 : Y) ?_ ?_ e he_mp he_emb
+    (fun _ => 1) measurable_const 1 1 (by norm_num)
+    ⟨Set.univ, Filter.univ_mem, fun _ _ => by norm_num⟩ (fun t => by rw [hslicez t, one_mul])
+  · -- hchart
+    rw [hrlct, rlctAtOn_congr_germ _ _ _
+      (schurReadout_germ_eq I K J hI hK hJ C₀ Br₀ G hGeq h11 h12 h21)]
+    have hcomp := rlctAtOn_comp_homeomorph (splitHomeoL2 I K J hI hK hJ)
+      (measurePreserving_splitHomeoL2 I K J hI hK hJ) (measurableEmbedding_splitHomeoL2 I K J hI hK hJ)
+      (fun p : (Fin (nRegL2 H r) → ℝ) × Y => (∑ i, p.1 i ^ 2) + (∑ i, qₑ p i ^ 2))
+      (0 : Fin (flatDim H) → ℝ)
+    rw [splitHomeoL2_zero] at hcomp
+    exact hcomp
+  · -- hRne
+    refine ⟨Set.univ, Filter.univ_mem, ?_⟩
+    rw [Measure.restrict_univ]
+    have hcore : ∀ᵐ w ∂(volume : Measure (Fin (flatDim (fun s => H s - r)) → ℝ)),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm w) ≠ 0 := by
+      obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness (fun s => H s - r) hMpos
+      have hP_ne : corePoly (fun s => H s - r) ≠ 0 := by
+        intro hP0'; apply hA
+        have := eval_corePoly (fun s => H s - r) ((paramsEquivFlat (fun s => H s - r)) A)
+        rw [hP0'] at this; simpa using this.symm
+      have hae := MvPolynomial.ae_eval_ne_zero (corePoly (fun s => H s - r)) hP_ne
+      exact hae.mono fun z hz => by rw [← eval_corePoly (fun s => H s - r) z]; exact hz
+    have hprodY : ∀ᵐ w ∂(volume : Measure Y),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last 2))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm w.1) ≠ 0 := by
+      exact Measure.quasiMeasurePreserving_fst.ae hcore
+    have hae_z := he_mp.quasiMeasurePreserving.ae hprodY
+    exact hae_z.mono fun z hz => by rw [hslicez z]; exact hz
+
 end DLNFibre.DLN.RLCT
