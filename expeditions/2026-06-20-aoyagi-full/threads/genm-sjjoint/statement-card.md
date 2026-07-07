@@ -20,7 +20,37 @@ Building the anisotropic Γ-atom on the banked full-space endpoint. Two gating p
 
 Both wired into the stack aggregator `DLNFibre.lean` (with the merged `RouteMSJCorankResidual`).
 
-**Remaining for the full anisotropic atom** `∫_{ℝ^{p×q}}(w+‖ΓR+S‖²)^{−c'} = det(RRᵀ)^{−p/2}·Cresid(pq)c'·
+## ATOM COMPLETE — `gammaAtom_aniso_shifted_eq` (branch `genm-atombuild`, sorry-free + axiom-clean)
+
+The full anisotropic-shifted Γ-atom is now PROVED (2026-07-07, `RouteMSJGammaAtom.lean`, clean-slice
+full-rank scope):
+
+> **`DLNFibre.DLN.RLCT.gammaAtom_aniso_shifted_eq`** — for `R : Matrix (Fin q) (Fin n) ℝ`,
+> `S : Matrix (Fin p) (Fin n) ℝ`, `hG : (R * Rᵀ).PosDef`, `hc' : (p*q:ℝ)/2 < c'`, `hw : 0 < w`:
+>
+>     ∫⁻ Γ : Fin p → Fin q → ℝ, ofReal ((w + frobSq (Matrix.of Γ * R + S)) ^ (-c'))
+>       = ofReal ((R*Rᵀ).det ^ (-(p:ℝ)/2) * Cresid (p*q) c'
+>           * (w + frobSq (S * (1 - Rᵀ * (R*Rᵀ)⁻¹ * R))) ^ (-(c' - (p*q:ℝ)/2)))
+>
+> - **Hypothesis fidelity.** `(R*Rᵀ).PosDef` is exactly the full-row-rank condition (weakest form used);
+>   the residual factor `‖S(I−P_R)‖²` is realised with the honest orthogonal projector
+>   `P_R = Rᵀ (R Rᵀ)⁻¹ R` onto the row space (proved `Uᵀ U = Rᵀ (R Rᵀ)⁻¹ R` from `M M = (R Rᵀ)⁻¹`).
+> - **Axiom-clean** `[propext, Classical.choice, Quot.sound]` (forced `#print axioms`); cites nothing.
+>   `p ≥ 1` NOT needed (weakest hypotheses); the endpoint/cov hold for all `p,q`.
+> - **Route as built.** (a) `exists_gram_normalizer` gives `M = G^{−1/2}`, `U := M R` orthonormal-rowed;
+>   (b) `frobSq_mul_orthonormal_add` (below); (c) cov `lintegral_comp_rightMulₚ p M` (factor
+>   `|det M|^p = det(RRᵀ)^{−p/2}` via `Real.sqrt_eq_rpow`/`rpow_neg`/`rpow_natCast`/`rpow_mul`),
+>   translation `lintegral_add_right_eq_self`, banked endpoint `matBox_corank_residual_fullSpace_eq`.
+> - **Reusable helper:** `frobSq_eq_trace : frobSq X = (X * Xᵀ).trace`.
+
+**Piece (b) as built — the orthonormal-shear decomposition** `frobSq_mul_orthonormal_add`:
+`frobSq (A * U + B) = frobSq A + frobSq B` for `U Uᵀ = 1` and `B Uᵀ = 0`. Cleaner than the
+idempotent route in the recipe below: set `A = Γ + S Uᵀ`, `B = S (1 − Uᵀ U)`; then `A U + B = Γ U + S`
+and `B Uᵀ = 0`, so BOTH trace cross-terms vanish (`U Bᵀ = (B Uᵀ)ᵀ = 0`), no `(1−UᵀU)` idempotence
+needed. `hstep`/cov beta-form matching handled via `set g` (opaque integrand) + `change`.
+
+**(Original recipe, superseded by the completed atom above)** the full anisotropic atom
+`∫_{ℝ^{p×q}}(w+‖ΓR+S‖²)^{−c'} = det(RRᵀ)^{−p/2}·Cresid(pq)c'·
 (w+‖S(I−P_R)‖²)^{−(c'−pq/2)}` (R full row-rank, w>0, pq/2<c'), via the cov `M = G^{−1/2}`, `G = RRᵀ`:
 1. **posdef sqrt / Gram normaliser — DONE (2026-07-07, `exists_gram_normalizer`,
    `RouteMSJGramSqrt.lean`, sorry-free + axiom-clean).** For `G` posdef, `∃` symmetric `M = G^{−1/2}`
