@@ -62,12 +62,24 @@ the keystone `hLayer`/`hPart`/`hMid11inv`; `IsUnit ↔ Nonempty Invertible` conv
 `absorbedCoreConj_eq_blockSchur_synthetic` in `lean/DLNFibre/DLN/RLCT/Validate/DeepestHsub4coreHCGen.lean`
 — the generic reduction `coreRead pc s + schurCorrectionConj pg s = blockSchur(fromBlocks (deepBlkA+X)
 (deepBlkY+Y) (deepBlkZ+Z) coreRead)` (pure algebra, `nonsing_inv_eq_ringInverse`). Confirms `M_s`.
-Remaining (all banked pieces, no new math, ~250-400 L): exact next-lemma list —
-1. `deepestChain_toBlocks₁₂/₂₁/₂₂_eq_layer` (mirror the Piece-2 `…₁₁…` bridge);
-2. `blockSchur_deepestChain_framed_eq_decode` (interior via (1) + interior-deepBlk = corM; boundary via
-   `blockSchur_lowerFrame_left`/`_rightUpper_right`);
-3. `Kcoup_framed_eq_decode` (crux; `partProd(F) = lowerFrame·partProd(D)` + `Kcoup_zero` + last-layer pivot);
-4. assemble hC = step-A ▸ (2)-on-`schurTilde` ▸ `psiSplitRawGen_deepestChain_hmove` ▸ (3) + width casts.
+**DELIVERED so far (green, 0 warnings, pushed):** step-A `absorbedCoreConj_eq_blockSchur_synthetic`
+AND **lemma-1** `deepestChain_toBlocks₁₂_eq_layer` / `…₂₁…` / `…₂₂…` (the off-diagonal/core analogues
+of the Piece-2 `…₁₁…` bridge, matching the framed-block reindex convention).
+
+**Remaining (all banked pieces, no new math, ~200-300 L) — precise lemma list + proof sketch:**
+2. interior-vanishing helpers `deepBlkZ_interior_zero` / `deepBlkT_interior_zero` (~10 L each; mirror the
+   banked `deepBlkY_interior_zero`; `deepBlkZ` via `deepestPoint_interior_eq_corM` + `if_neg` on row `≥ r`,
+   `deepBlkT` via `deepestPoint_interior_cols_vanish`).
+3. `deepestChain_framed_eq_decode_interior` — for interior `s` (`0<s`, `s+1<L`, `Pf s = Qf s = 1`),
+   `deepestChain(framedParamsPivot(split x)) s = deepestChain(decode x) s` (both chain-width, SAME type;
+   `← fromBlocks_toBlocks` + 4 block equalities: framed via `deepestChain_framedParamsPivot_blocks_of_frame_one`,
+   decode via lemma-1 + `reindex_decode_blocks_split`, matched by interior `deepBlkA=1`/`deepBlkY=Z=T=0`).
+4. `blockSchur_deepestChain_framed_eq_decode` (per-`s`): interior via (3); boundary (`s∈{0,L-1}`) via
+   `blockSchur_lowerFrame_left`/`_rightUpper_right` (banked) — framed layer = endpoint-frame · decode-layer.
+5. `Kcoup_framed_eq_decode` (the crux; `partProd(F) = lowerFrame·partProd(D)` factoring so `P11` cancels,
+   + `Kcoup_zero` at k=0, + last-layer pivot). Then `schurTilde F s = schurTilde D s` from (4)+(5).
+6. assemble hC = step-A ▸ (4)+(5)-via-`schurTilde`(Invariant B) ▸ `psiSplitRawGen_deepestChain_hmove`
+   + the width-cast reconciliation (`blockSchur` naturality under the `finCongr` outer-block relabel).
 
 ### The Codex route (verified derivation, kept below)
 
