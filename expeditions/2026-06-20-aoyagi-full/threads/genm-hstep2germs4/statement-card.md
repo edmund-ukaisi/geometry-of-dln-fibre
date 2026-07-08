@@ -26,11 +26,16 @@ no name clashes with siblings (clash-scan clean). **NOT wired into `DLNFibre.lea
   `reindexECol_regBlocks_eq_of_chain_movedC`, `reindex_mul_split_gen` +
   scaffold defs `deepestChainWidth`, `deepestChain`, `deepestChainSplit`, `deepestChainCol`,
   `deepestChainLayer` (+ width lemmas `deepestChainWidth_castSucc/_succ`, `H_eq_deepestChainWidth`,
-  `r_le_deepestChainWidth`).
+  `r_le_deepestChainWidth`) + the tail witness `deepestChain_tail_toBlocks₁₁`.
 - **Gloss.**
   - `deepestChain H r hr A s` = the `s`-th DLN layer reindexed into `r ⊕ (deepestChainWidth · − r)` block
-    shape (an `ℕ`-indexed, cast-free chain over the min-clamped width `deepestChainWidth H s := H ⟨min s L, ·⟩`;
-    junk `0` beyond the last layer, never read by `partProd … L`).
+    shape (an `ℕ`-indexed, cast-free chain over the min-clamped width `deepestChainWidth H s := H ⟨min s L, ·⟩`).
+    Beyond the last layer (`s ≥ L`) the default is the **block-normal corner** `diag(I_r, 0)` (`corM`-shape),
+    NOT `0`: its threshold-`(1,1)` block is `I_r` (`deepestChain_tail_toBlocks₁₁`) and its `(2,1)` block is
+    `0`, so off the used prefix the partial-product `(1,1)` pivots and the pivot-mix `nMix` stay units. The
+    tail is never read by `partProd … L` (fold bridge unaffected); it exists to keep the `regBlocks_movedC`
+    `∀ k`-unit hypotheses satisfiable in the reduced-rank `r ≥ 1` regime. (The deepest-point interior is
+    itself this corner — `deepestPoint_interior_eq_corM`.)
   - `reindex_mul_split_gen` : the `DeepestBlockDecomp.reindex_mul_split` shared-middle cancel, freed of the
     `Fin r ⊕ Fin (· − r)` middle shape (needs only `[Fintype μ]`), so the abstract chain's
     `Fin r ⊕ Fin (deepestChainWidth · − r)` middle applies.
@@ -40,10 +45,14 @@ no name clashes with siblings (clash-scan clean). **NOT wired into `DLNFibre.lea
     pivot/partial-pivot/pivot-mix `IsUnit` hypotheses on the base chain, the three reg-residual blocks
     (`{11,12,21}`) of `reindex (rThr 0) (deepestChainCol L) (prod H A·)` agree between `Aψ` and `Aq`.
     Combines the bridge with the banked `regBlocks_movedC`.
-- **Proved.** All four theorems + the scaffold, sorry-free; forced `#print axioms` on the three keystones
+- **Proved.** All theorems + the scaffold, sorry-free; forced `#print axioms` on the four named results
   reports `[propext, Classical.choice, Quot.sound]` (no `sorryAx`).
-- **Assumed.** In the conditional transport: the `IsUnit` hypotheses (hold near the deepest point, every
-  pivot `= I` ⟹ `nMix = 1`) and the abstract move identity (the concrete `psiSplitRawGen` design, Item 2).
+- **Assumed.** In the conditional transport: the `∀ k` `IsUnit` hypotheses on the base chain's layer /
+  partial-pivot `(1,1)` blocks and `nMix` — **satisfiable** near the deepest point (the interior/tail are the
+  corner `diag(I_r,0)`, so `(1,1) = I_r`, `(2,1) = 0 ⟹ nMix = 1`, and the prefix pivots are units in a
+  neighbourhood where the framed product is the corner) — and the abstract move identity (the concrete
+  `psiSplitRawGen` design, Item 2). (A prior draft's `else 0` tail made these `∀ k` hypotheses
+  *unsatisfiable* for `r ≥ 1`; the `corM`-corner tail — reviewer-flagged fix — restores satisfiability.)
 - **Cited.** None. Pure `Matrix`/`Ring`/`Equiv` algebra over `ℝ`; builds on the banked `partProd`/`movedC`/
   `regBlocks_movedC` (`DeepestPsiSplitGen*`) and `prodAux_succ` (`Foundations.Loss`).
 - **Deferred (the precise remaining path to `hsub3reg`, then `hstep2`).**
@@ -65,4 +74,8 @@ no name clashes with siblings (clash-scan clean). **NOT wired into `DLNFibre.lea
   5. **`psiSplitRawGen` diffeo triple** (feed the banked `DeepestPsiFlatCutGen`) + **compose** via
      `deepest_diffeo_bridge_gen_assembled` (`hDA`/`hbdy` discharged by the banked `DeepestDeepBlkBoundaryGen`;
      frames from the L≥3-arm bundle) → close `DeepestL2Wiring:1060`.
-- **Status.** sorry-free. `hstep2` UNTOUCHED (not laundered). Pending controller AxCheck / reviewer fidelity.
+- **Status.** sorry-free. `hstep2` UNTOUCHED (not laundered). Independent fidelity review (decorrelated
+  Codex): the two unconditional bridges SURVIVED; it flagged a vacuity defect in the conditional transport
+  (the `else 0` tail made the `∀ k`-unit hypotheses unsatisfiable for `r ≥ 1`) + a matching card overclaim —
+  **both addressed** here (the `corM`-corner tail + `deepestChain_tail_toBlocks₁₁`; the "Assumed" bullet
+  corrected). Pending controller AxCheck (wire into `DLNFibre.lean`).

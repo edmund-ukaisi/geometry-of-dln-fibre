@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 import DLNFibre.DLN.RLCT.Validate.DeepestSplitReindex
+import DLNFibre.DLN.RLCT.Validate.DeepestFrameRaw
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen` — the `Fin`-side product bridge (#120 `hstep2`, Item 1)
@@ -78,19 +79,26 @@ noncomputable def deepestChainCol (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ 
     (k : ℕ) (hk : k < L + 1) : Fin (H ⟨k, hk⟩) ≃ Fin r ⊕ Fin (deepestChainWidth H k - r) :=
   (finCongr (H_eq_deepestChainWidth H k hk)).trans (deepestChainSplit H r hr k)
 
-/-- The `s`-th layer of `A`, recast to the `deepestChainWidth` running widths (junk `0` beyond the last layer). -/
-noncomputable def deepestChainLayer (H : Fin (L + 1) → ℕ) (A : Params H) (s : ℕ) :
+/-- The `s`-th layer of `A`, recast to the `deepestChainWidth` running widths. Beyond the last layer
+(`s ≥ L`, the widths there are all `H (last)`) the default is the block-normal corner `diag(I_r, 0)`
+(`corM`-shape), NOT `0`: its threshold-`(1,1)` block is `I_r` (a unit) and its `(2,1)` block is `0`, so the
+partial-product `(1,1)` pivots and the pivot-mix `nMix` stay units off the used prefix. (`partProd … L`
+only reads layers `< L`, so this tail default is invisible to the fold bridge; it exists solely to keep the
+`regBlocks_movedC` `∀ k`-unit hypotheses satisfiable in the reduced-rank `r ≥ 1` regime — the deepest-point
+interior is itself this corner, `deepestPoint_interior_eq_corM`.) -/
+noncomputable def deepestChainLayer (H : Fin (L + 1) → ℕ) (r : ℕ) (A : Params H) (s : ℕ) :
     Matrix (Fin (deepestChainWidth H s)) (Fin (deepestChainWidth H (s + 1))) ℝ :=
   if hs : s < L then
     Matrix.reindex (finCongr (deepestChainWidth_castSucc H s hs)) (finCongr (deepestChainWidth_succ H s hs)) (A ⟨s, hs⟩)
-  else 0
+  else
+    Matrix.of (fun i j => if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)
 
 /-- **The abstract chain of `A`**: layer `s` is the DLN layer reindexed into `r ⊕ (deepestChainWidth · − r)` block
 shape. Feeds the `DeepestPsiSplitGenMoved` / `DeepestSchurRecursion` `partProd`/`movedC` framework. -/
 noncomputable def deepestChain (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s)
     (A : Params H) (s : ℕ) :
     Matrix (Fin r ⊕ Fin (deepestChainWidth H s - r)) (Fin r ⊕ Fin (deepestChainWidth H (s + 1) - r)) ℝ :=
-  Matrix.reindex (deepestChainSplit H r hr s) (deepestChainSplit H r hr (s + 1)) (deepestChainLayer H A s)
+  Matrix.reindex (deepestChainSplit H r hr s) (deepestChainSplit H r hr (s + 1)) (deepestChainLayer H r A s)
 
 /-! ## The general shared-middle split and the fold bridge -/
 
@@ -134,6 +142,21 @@ theorem reindex_prodAux_eq_partProd (H : Fin (L + 1) → ℕ) (r : ℕ)
       rw [deepestChain, deepestChainLayer, dif_pos hkL]
       simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix]
       congr 1
+
+/-- **The tail default is the block-normal corner** (`s ≥ L`): `(deepestChain … s).toBlocks₁₁ = I_r`, a
+unit. The threshold split sends `Sum.inl` to the first `r` indices (`rThresholdSplit_symm_inl`), where the
+`corM`-corner is the identity. This is why the `∀ k`-unit hypotheses of `regBlocks_movedC` are satisfiable
+for the chain — the tail never obstructs. -/
+theorem deepestChain_tail_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (s : ℕ) (hs : ¬ s < L) :
+    (deepestChain H r hr A s).toBlocks₁₁ = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  funext i j
+  rw [deepestChain, deepestChainLayer, dif_neg hs]
+  simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, deepestChainSplit,
+    rThresholdSplit_symm_inl, Matrix.of_apply, Matrix.one_apply, Fin.coe_castLE]
+  rcases eq_or_ne i j with h | h
+  · subst h; simp [i.isLt]
+  · simp [Fin.val_inj, h]
 
 /-- **The full-product bridge** (`k = L`). `reindex (rThr 0) (deepestChainCol L) (prod H A) = partProd (deepestChain …) L`.
 The `k = L` case of `reindex_prodAux_eq_partProd`, unfolding `prod = prodAux … L`. -/
