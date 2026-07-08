@@ -103,6 +103,19 @@ theorem deepestChain_toBlocks₂₂_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
     rThresholdSplit_symm_inr, finCongr_symm, finCongr_apply]
   congr 1
 
+/-- Decode-chain layer `(1,1)` block (in-file copy; the InvGerm one is not imported to keep the closure
+light). The pivot `(1,1)` block carries no reduced-width relabel. -/
+theorem deepestChain_toBlocks₁₁_eq_layer_hc (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr A k).toBlocks₁₁
+      = (Matrix.reindex (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).castSucc) (hr _))
+          (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).succ) (hr _)) (A ⟨k, hk⟩)).toBlocks₁₁ := by
+  funext i j
+  simp only [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    deepestChain, deepestChainLayer, dif_pos hk, deepestChainSplit, rThresholdSplit_symm_inl,
+    finCongr_symm, finCongr_apply]
+  congr 1
+
 /-! ## Interior-vanishing of the deepest `(2,1)` and `(2,2)` blocks (lemma 2)
 
 The `deepBlkZ` / `deepBlkT` analogues of the banked `deepBlkY_interior_zero`: at a strict-interior layer
@@ -757,5 +770,27 @@ theorem psiFrame0_mul_deepestChain_deepestPoint_eq_corM (H : Fin (L + 1) → ℕ
   exact deepestChain_corner_eq_corM H r hr (framedParamsPivot H r hr hL J Pf Qf 0)
     (firstLayer hL : ℕ) (firstLayer hL).isLt
     (framedParamsPivot_zero_eq_corner H r hr hL J hJfront Pf Qf (firstLayer hL : ℕ) (firstLayer hL).isLt)
+
+/-- **The deepest chain layer as reduced-relabelled `fromBlocks`.** `deepestChain(deepestPoint) s` is the
+reduced-width relabel of the deepest layer's four threshold blocks (`deepBlkA/Y/Z` + the deepest `(2,2)`
+block). Via the four `deepestChain_toBlocks·_eq_layer` bridges. -/
+theorem deepestChain_deepestPoint_eq_fromBlocks (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L) :
+    deepestChain H r hr (deepestPoint H r B hB hr hL) (s : ℕ)
+      = Matrix.fromBlocks (deepBlkA H r B hB hr hL s)
+          (Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r s))
+            (deepBlkY H r B hB hr hL s))
+          (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (Equiv.refl (Fin r))
+            (deepBlkZ H r B hB hr hL s))
+          (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+            (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+              (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂) := by
+  rw [← Matrix.fromBlocks_toBlocks (deepestChain H r hr (deepestPoint H r B hB hr hL) (s : ℕ)),
+    deepestChain_toBlocks₁₁_eq_layer_hc H r hr (deepestPoint H r B hB hr hL) (s : ℕ) s.isLt,
+    deepestChain_toBlocks₁₂_eq_layer H r hr (deepestPoint H r B hB hr hL) (s : ℕ) s.isLt,
+    deepestChain_toBlocks₂₁_eq_layer H r hr (deepestPoint H r B hB hr hL) (s : ℕ) s.isLt,
+    deepestChain_toBlocks₂₂_eq_layer H r hr (deepestPoint H r B hB hr hL) (s : ℕ) s.isLt]
+  rfl
 
 end DLNFibre.DLN.RLCT
