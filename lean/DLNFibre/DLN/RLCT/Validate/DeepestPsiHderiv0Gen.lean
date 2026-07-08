@@ -720,10 +720,250 @@ theorem genMovedZ_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
           (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (n + 1)).toBlocks₂₁ i b := rfl
     rw [heq]; exact genChain_contDiffAt H r hr hL J Pf Qf (n + 1) (Sum.inr i) (Sum.inl b)
 
+/-! ### Value lemmas for the `hTermLC` germ (the `(blockSchur(partProd) − wHatAccum)` factor) -/
+
+/-- `partProd (C 0) (m+1) = corM` (`m + 1 ≤ L`; each factor is `corM`, and `corM · corM = corM`). -/
+theorem genPartProd_zero_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    ∀ (m : ℕ), m + 1 ≤ L →
+      partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (m + 1)
+        = Matrix.fromBlocks 1 0 0 0 := by
+  intro m
+  induction m with
+  | zero =>
+    intro _
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) 1
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) 0
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) 0 from rfl,
+      show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) 0 = 1 from rfl,
+      Matrix.one_mul, genChain_zero_eq_corM H r hr hL J hJfront Pf Qf 0 (by omega)]
+  | succ n ih =>
+    intro hm
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (n + 1 + 1)
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (n + 1)
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) (n + 1) from rfl,
+      ih (by omega), genChain_zero_eq_corM H r hr hL J hJfront Pf Qf (n + 1) (by omega),
+      Matrix.fromBlocks_multiply]
+    simp
+
+/-- `wHatAccum (C 0) (m+1) = 0` (`schurTilde (C 0) · = 0` is the right factor). -/
+theorem genWHatAccum_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (m : ℕ) :
+    wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (m + 1) = 0 := by
+  rw [show wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (m + 1)
+      = wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) m
+        * (1 - Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) m)
+        * schurTilde (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) m from rfl,
+    genSchurTilde_zero H r hr hL J hJfront Pf Qf m, Matrix.mul_zero]
+
+/-- `blockSchur (partProd (C 0) j) − wHatAccum (C 0) j = 0` (`j ≤ L`): `j = 0` both are `1`; `j ≥ 1`
+both are `0`. The `(bS(partProd) − Ŵ)` factor of `hTermLC` vanishes at the origin. -/
+theorem genBlockSchurPartProd_sub_wHatAccum_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (j : ℕ) (hj : j ≤ L) :
+    blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j = 0 := by
+  rcases Nat.eq_zero_or_pos j with hj0 | hjpos
+  · subst hj0
+    rw [blockSchur_partProd_zero,
+      show wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) 0 = 1 from rfl,
+      sub_self]
+  · obtain ⟨m, rfl⟩ : ∃ m, j = m + 1 := ⟨j - 1, by omega⟩
+    rw [genWHatAccum_zero H r hr hL J hJfront Pf Qf m, sub_zero,
+      genPartProd_zero_eq_corM H r hr hL J hJfront Pf Qf m (by omega), blockSchur,
+      Matrix.toBlocks_fromBlocks₂₂, Matrix.toBlocks_fromBlocks₂₁, Matrix.zero_mul, Matrix.zero_mul,
+      sub_zero]
+
+/-- `deltaV0 (C 0) L = 0` (each `hTermLC` summand has the `vDown (C 0) · = 0` factor). -/
+theorem genDeltaV0_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) L = 0 := by
+  rw [deltaV0]
+  refine Finset.sum_eq_zero (fun j _ => ?_)
+  rw [hTermLC, genVDown_zero H r hr hL J hJfront Pf Qf j, Matrix.mul_zero, Matrix.zero_mul,
+    Matrix.zero_mul]
+
+/-- `upEdit (C 0) k = 0` (`k ≤ L`; the `uNorm (C 0) = 0` factor). -/
+theorem genUpEdit_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k ≤ L) :
+    upEdit (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [upEdit, genUNorm_zero H r hr hL J hJfront Pf Qf k hk, Matrix.mul_zero, Matrix.zero_mul]
+
+/-- `movedY (C 0) k = 0` (`k < L`; `(C 0 k)₁₂ = 0` and `upEdit (C 0) k = 0`). -/
+theorem genMovedY_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k < L) :
+    movedY (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [movedY, genChain_zero_toBlocks₁₂ H r hr hL J hJfront Pf Qf k hk,
+    genUpEdit_zero H r hr hL J hJfront Pf Qf k (le_of_lt hk), add_zero]
+
+/-- `movedZ (C 0) (Z0edit0 (C 0) L) k = 0` (`(C 0)₂₁ = 0` and `deltaV0 (C 0) = 0`). -/
+theorem genMovedZ_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0))
+      (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) L) k = 0 := by
+  cases k with
+  | zero =>
+    show Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) L = 0
+    rw [Z0edit0, genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf 0,
+      genDeltaV0_zero H r hr hL J hJfront Pf Qf, Matrix.zero_mul, add_zero]
+  | succ n => exact genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf (n + 1)
+
 /-! ## Pieces (b)+(c) — the read-deltas have strict derivative `0`
 
 Both read-deltas equal `forcedDecode(frame)(movedC − C)` (piece (b), the `(★)` read-recovery)
 and vanish to second order at the origin (piece (c), the moved-chain germ). -/
+
+/-- **(c) germ, ₁₂ block.** `upEdit (C q) k` entries have strict derivative `0` (`k < L`): the product
+`(inv(nMix)·uNorm)·(blockSchur − schurTilde)` has both factors vanishing at the origin. -/
+theorem hasStrictFDerivAt_genUpEdit_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k < L)
+    (i : Fin r) (j : Fin (deepestChainWidth H (k + 1) - r)) :
+    HasStrictFDerivAt
+      (fun q => upEdit (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  unfold upEdit
+  refine hasStrictFDerivAt_matrix_mul_entry_zero_of_both_zero i j (fun c => ?_) (fun c => ?_)
+    (fun c => ?_) (fun c => ?_)
+  · exact contDiffAt_matrix_mul_entry
+      (fun d e => genInvNMix_contDiffAt H r hr hL J hJfront Pf Qf k (le_of_lt hk) d e)
+      (fun d e => genUNorm_contDiffAt H r hr hL J hJfront Pf Qf k (le_of_lt hk) d e) i c
+  · exact (genBlockSchur_contDiffAt H r hr hL J hJfront Pf Qf k c j).sub
+      (genSchurTilde_contDiffAt H r hr hL J hJfront Pf Qf k hk c j)
+  · rw [genUNorm_zero H r hr hL J hJfront Pf Qf k (le_of_lt hk), Matrix.mul_zero, Matrix.zero_apply]
+  · rw [genBlockSchur_zero H r hr hL J hJfront Pf Qf k,
+      genSchurTilde_zero H r hr hL J hJfront Pf Qf k, sub_self, Matrix.zero_apply]
+
+/-- **(c) germ, `hTermLC` summand.** `hTermLC (C q) j` entries have strict derivative `0` (`j < L`):
+`(bS(partProd) − Ŵ)·vDown·inv(nMix)·inv(partProd₁₁)` has its two left factors vanishing. -/
+theorem hasStrictFDerivAt_genHTermLC_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (j : ℕ) (hj : j < L)
+    (i : Fin (deepestChainWidth H 0 - r)) (b : Fin r) :
+    HasStrictFDerivAt
+      (fun q => hTermLC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j i b)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have hA0 : blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j = 0 :=
+    genBlockSchurPartProd_sub_wHatAccum_zero H r hr hL J hJfront Pf Qf j (le_of_lt hj)
+  have hAB0 : (blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      * vDown (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j = 0 := by
+    rw [hA0, Matrix.zero_mul]
+  have hABC0 : ((blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      * vDown (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j)
+      * Ring.inverse (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) j) = 0 := by
+    rw [hAB0, Matrix.zero_mul]
+  have hAB : ∀ (d : Fin r), HasStrictFDerivAt
+      (fun q => ((blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+          - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+        * vDown (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j) i d)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := fun d =>
+    hasStrictFDerivAt_matrix_mul_entry_zero_of_both_zero i d
+      (fun e => (genBlockSchurPartProd_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) i e).sub
+        (genWHatAccum_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) i e))
+      (fun e => genVDown_contDiffAt H r hr hL J hJfront Pf Qf j e d)
+      (fun e => by rw [hA0, Matrix.zero_apply])
+      (fun e => by rw [genVDown_zero H r hr hL J hJfront Pf Qf j, Matrix.zero_apply])
+  have hABC : ∀ (c : Fin r), HasStrictFDerivAt
+      (fun q => (((blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+            - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+          * vDown (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+        * Ring.inverse (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)) i c)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := fun c =>
+    hasStrictFDerivAt_matrix_mul_entry_of_left_zero i c hAB
+      (fun d => by rw [hAB0, Matrix.zero_apply])
+      (fun d => genInvNMix_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) d c)
+  unfold hTermLC
+  exact hasStrictFDerivAt_matrix_mul_entry_of_left_zero i b hABC
+    (fun c => by rw [hABC0, Matrix.zero_apply])
+    (fun c => genInvPartProd11_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) c b)
+
+/-- **(c) germ, `deltaV0`.** `deltaV0 (C q) L` entries have strict derivative `0` (a finite sum of
+the `hTermLC` germs). -/
+theorem hasStrictFDerivAt_genDeltaV0_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (i : Fin (deepestChainWidth H 0 - r)) (b : Fin r) :
+    HasStrictFDerivAt
+      (fun q => deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L i b)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L i b)
+      = ∑ j ∈ Finset.range L,
+          (fun q => hTermLC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j i b) := by
+    funext q; rw [deltaV0, Matrix.sum_apply, Finset.sum_apply]
+  rw [heq]
+  have hsum := HasStrictFDerivAt.sum (u := Finset.range L) (fun j hj =>
+    hasStrictFDerivAt_genHTermLC_entry_zero H r hr hL J hJfront Pf Qf j (Finset.mem_range.mp hj) i b)
+  simpa using hsum
+
+/-- **(c) germ, ₂₁ block.** `(movedZ (C q) (Z0edit0 …) k − (C q k)₂₁)` entries have strict derivative
+`0`: at `k = 0` it is `deltaV0 · (C 0)₁₁` (the `deltaV0` germ), and it is `0` at `k ≥ 1`. -/
+theorem hasStrictFDerivAt_genMovedZsub_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ)
+    (i : Fin (deepestChainWidth H k - r)) (b : Fin r) :
+    HasStrictFDerivAt (fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁) i b)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  cases k with
+  | zero =>
+    have heq : (fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) 0
+          - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₂₁) i b)
+        = fun q => (deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₁₁) i b := by
+      funext q
+      show ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₂₁
+          + deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₁₁
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₂₁) i b = _
+      rw [add_sub_cancel_left]
+    rw [heq]
+    exact hasStrictFDerivAt_matrix_mul_entry_of_left_zero i b
+      (fun c => hasStrictFDerivAt_genDeltaV0_entry_zero H r hr hL J hJfront Pf Qf i c)
+      (fun c => by rw [genDeltaV0_zero H r hr hL J hJfront Pf Qf, Matrix.zero_apply])
+      (fun c => genChain_contDiffAt H r hr hL J Pf Qf 0 (Sum.inl c) (Sum.inl b))
+  | succ n =>
+    have heq : (fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) (n + 1)
+          - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (n + 1)).toBlocks₂₁) i b)
+        = fun _ => (0 : ℝ) := by
+      funext q
+      show ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (n + 1)).toBlocks₂₁
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (n + 1)).toBlocks₂₁) i b = _
+      rw [sub_self, Matrix.zero_apply]
+    rw [heq]; exact hasStrictFDerivAt_const _ _
 
 /-- **Pieces (b)+(c), gauge slot.** The gauge read-delta has strict derivative `0` at the origin. -/
 theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
