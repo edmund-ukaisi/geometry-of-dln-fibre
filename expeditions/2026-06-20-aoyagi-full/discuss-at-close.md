@@ -2432,3 +2432,34 @@ NO.** The complete open-leaf map:
   escalate)? Relates to the banked `rlct-runway-target` note (singular-locus lower bound = the hard direction). If a
   research wall, THIS is the genuine escalation. Recorded here for the operator: the fully-general coefficient needs
   **THREE** D1 builds (=-diffeo hstep2, ≤-leg chart-at-v, + the skeleton assembly) + R1-UPPER, not two.
+
+## 69. ✅ #68 RETRACTED — D1 ≥-leg is BOUNDED, not a wall; L=2 headline is DONE (cite-only-S2). critpathmap conflated a DEAD route with the LIVE one. Kill-condition witness charged. (2026-07-08)
+`dgeleg` (read-only scout + decorrelated Codex xhigh red-team) resolved the #68 uncovered-gap alarm — **BOUNDED, no
+escalation.** #68's "new-module wall even at L=2 / Morse-with-parameters (Item-109)" was a correct diagnosis of a DEAD
+route that critpathmap mistook for the live one:
+- **DEAD/retired:** `deepest_le_of_optimal_chart` (D1ChartProducer:100) ← the existence-only Ψsymm first-peel
+  `dln_hchart_residual` + rect two-peel `hrank₂` (b1/b2/b3). The IFT-inverse discards the germ ⟹ a genuine Morse part
+  at middle strata ⟹ the Mathlib-lacking Morse-Bott split. This route is retired.
+- **LIVE:** `d1ge_L2_deepestPoint_via_explicit_core_genL` (D1L2ExplicitCoreProducer:282) ← the EXPLICIT Schur
+  corner-elimination `d1ge_L2_hAtV_explicit_close` (D1L2ExplChartClose2:570, a complete 709 L proof). It AVOIDS the
+  Morse wall: common invertible r×r pivot ⟹ regular coords separate as squares ⟹ slice residual = reduced (H−r)-core
+  loss ∘ a SUBMERSION with a FLAT extra fibre ⟹ `rlctAtOn(residual) = reduced-core RLCT` by banked homogeneity
+  (`core_zero_le_of_params`, PROVEN ∀L), NOT a Morse split. Direction = fibre-MONOTONICITY (easy chart+homogeneity),
+  NOT the `rlct-runway-target` singular-locus lower bound.
+- **VERIFIED in canonical:** `aoyagi_learning_coefficient_L2` (HeadlineL2Assembly:87) is PROVEN sorry-free cite-only-S2
+  (AxCheck:408 `#print axioms = [propext, Classical.choice, Quot.sound, monomial_rlct]`, no sorryAx/hbox — the FIRST
+  complete cite-only-S2 anchor; BOTH leaves incl. the D1 ∀-v ≥-leg discharged). `schur_product_ldu_rec`
+  (DeepestSchurRecursion:160, AxCheck:419) — the ∀-L D1 runway spine "#120 lifts from" — built sorry-free. The
+  AxCheck:324 "Item-109 wall" comment is STALE (superseded by :408). map.md/#68 are stale on the route conflation.
+- **General-L ≥-leg = NOT an independent third wall:** it is the SAME general-L block-LDU (`schur_product_ldu_rec`
+  spine, built) as #44/#120 applied at a general v; #44 is it at the origin. hCore banked ∀L; hDeepest = #44 (shared).
+  Sequenced WITH #44/#120, not after a separate wall. Build = rung-1-comparable multi-tide (port the L=2 model; primary
+  risk = nested-Schur-denominator + opaque-width cast/ContDiff bookkeeping, NOT a math wall).
+- **KILL-CONDITION (front-loaded, dgeleg + Codex):** bounded is killed IF at some L≥3 middle stratum the iterated Schur
+  elimination fails to leave a FLAT fibre — a non-removable degree-2 Morse coupling between NON-ADJACENT layers,
+  re-forcing the Morse-with-parameters split. Codex's telescoping derivation (`Aₖ=Lₖ·diag(I,Sₖ)·Uₖ`, affine unipotents ⟹
+  flat) + the sorry-free LDU spine argue it does NOT fail, but the exact-algebra flatness tests were NOT run.
+  **Charged `dgeflat`** (pen-and-paper witness): verify flatness at L=3,r=1,(2,2,2,2) [Y₀Z₁ vs Y₁Z₂ cross-coupling] +
+  r=2,(4,4,4,4) [non-commuting unipotents] BEFORE the ≥-leg tide. If flat → confirmed bounded (charge the tide when a
+  slot frees). If a non-removable coupling → THAT is the genuine wall (re-escalate). (Operator: NO action — #68's
+  possible-escalation is WITHDRAWN; the ≥-leg is bounded pending the light flatness check.)
