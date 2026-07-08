@@ -229,4 +229,78 @@ theorem invLayerSucc_schurChartRawGen
   rw [hA, hB, hE]
   exact Matrix.fromBlocks_toBlocks (C (t + 1))
 
+/-- **`Ψ∘Φ = id`** on layers `0…last` (prefix-pivot domain): `schurChartRawInvGen` inverts
+`schurChartRawGen` on the left. Layers `s = t+1` are `invLayerSucc_schurChartRawGen`; layer `0` uses
+the front-peel `partProd C (last+1) = C 0 · S`, the suffix identification `γ = S₂₁`, and the
+pivot cancellations. -/
+theorem schurChartRawInvGen_schurChartRawGen
+    (C : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (last : ℕ)
+    (hPart : ∀ k, k ≤ last + 1 → Invertible (partProd C k).toBlocks₁₁) :
+    ∀ s, s ≤ last → schurChartRawInvGen (schurChartRawGen C (last + 1)) last s = C s := by
+  rintro (_ | t) _
+  · -- layer 0.
+    have hP1 : partProd C 1 = C 0 := by simp only [partProd, Matrix.one_mul]
+    letI hi1 : Invertible (C 0).toBlocks₁₁ := hP1 ▸ hPart 1 (by omega)
+    letI hiL := hPart (last + 1) le_rfl
+    have hu0 : IsUnit ((C 0).toBlocks₁₁).det :=
+      (Matrix.isUnit_iff_isUnit_det _).mp (isUnit_of_invertible _)
+    have huL : IsUnit ((partProd C (last + 1)).toBlocks₁₁).det :=
+      (Matrix.isUnit_iff_isUnit_det _).mp (isUnit_of_invertible _)
+    set S := partProd (fun t => C (t + 1)) last with hSdef
+    have hfront : partProd C (last + 1) = C 0 * S := partProd_front_peel C last
+    -- the pivot cancellation `(C 0)₂₁·(C 0)₁₁⁻¹·(C 0)₁₁ = (C 0)₂₁`.
+    have hcancel : (C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹ * (C 0).toBlocks₁₁ = (C 0).toBlocks₂₁ := by
+      rw [Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu0, Matrix.mul_one]
+    -- `redFactorGen C 0` in the clean `⁻¹` form (handles the `0+1`).
+    have hR0 : redFactorGen C 0 = (C 0).toBlocks₂₂
+        - (C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹ * (C 0).toBlocks₁₂ := by
+      have hP1' : partProd C (0 + 1) = C 0 := hP1
+      rw [redFactorGen, hP1', Ring.inverse_invertible, Matrix.invOf_eq_nonsing_inv (C 0).toBlocks₁₁]
+    -- block reads of `C 0 · S`.
+    have hblk : C 0 * S = Matrix.fromBlocks
+        ((C 0).toBlocks₁₁ * S.toBlocks₁₁ + (C 0).toBlocks₁₂ * S.toBlocks₂₁)
+        ((C 0).toBlocks₁₁ * S.toBlocks₁₂ + (C 0).toBlocks₁₂ * S.toBlocks₂₂)
+        ((C 0).toBlocks₂₁ * S.toBlocks₁₁ + (C 0).toBlocks₂₂ * S.toBlocks₂₁)
+        ((C 0).toBlocks₂₁ * S.toBlocks₁₂ + (C 0).toBlocks₂₂ * S.toBlocks₂₂) := by
+      conv_lhs => rw [← Matrix.fromBlocks_toBlocks (C 0), ← Matrix.fromBlocks_toBlocks S]
+      rw [Matrix.fromBlocks_multiply]
+    have hpL : (partProd C (last + 1)).toBlocks₁₁
+        = (C 0).toBlocks₁₁ * S.toBlocks₁₁ + (C 0).toBlocks₁₂ * S.toBlocks₂₁ := by
+      rw [hfront, hblk, Matrix.toBlocks_fromBlocks₁₁]
+    have hellL : (partProd C (last + 1)).toBlocks₂₁
+        = (C 0).toBlocks₂₁ * S.toBlocks₁₁ + (C 0).toBlocks₂₂ * S.toBlocks₂₁ := by
+      rw [hfront, hblk, Matrix.toBlocks_fromBlocks₂₁]
+    -- `γ = S₂₁`.
+    have hchain : ∀ u, u < last → invLayerSucc (schurChartRawGen C (last + 1)) u = C (u + 1) :=
+      fun u _ => invLayerSucc_schurChartRawGen C (last + 1) u
+        (hPart (u + 1) (by omega)) (hPart (u + 1 + 1) (by omega))
+    have hγ : (partProd (fun u => invLayerSucc (schurChartRawGen C (last + 1)) u) last).toBlocks₂₁
+        = S.toBlocks₂₁ := by rw [partProd_congr _ (fun u => C (u + 1)) last hchain]
+    -- `ellL − R₀·γ = (C 0)₂₁·(C 0)₁₁⁻¹·P_L₁₁`.
+    have hStep : (partProd C (last + 1)).toBlocks₂₁ - redFactorGen C 0 * S.toBlocks₂₁
+        = (C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹ * (partProd C (last + 1)).toBlocks₁₁ := by
+      rw [hellL, hR0, hpL, Matrix.mul_add, Matrix.sub_mul,
+        ← Matrix.mul_assoc ((C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹) (C 0).toBlocks₁₁ S.toBlocks₁₁,
+        hcancel,
+        ← Matrix.mul_assoc ((C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹) (C 0).toBlocks₁₂ S.toBlocks₂₁]
+      abel
+    -- `D₀ = (C 0)₂₁`.
+    have hD0 : ((partProd C (last + 1)).toBlocks₂₁ - redFactorGen C 0 * S.toBlocks₂₁)
+        * (partProd C (last + 1)).toBlocks₁₁⁻¹ * (partProd C 1).toBlocks₁₁ = (C 0).toBlocks₂₁ := by
+      rw [hStep, Matrix.mul_assoc ((C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹)
+          (partProd C (last + 1)).toBlocks₁₁ (partProd C (last + 1)).toBlocks₁₁⁻¹,
+        Matrix.mul_nonsing_inv _ huL, Matrix.mul_one, hP1, hcancel]
+    -- `E₀`: `redFactorGen C 0 + (C 0)₂₁·(C 0)₁₁⁻¹·(C 0)₁₂ = (C 0)₂₂`.
+    have hE0 : redFactorGen C 0
+        + (C 0).toBlocks₂₁ * (C 0).toBlocks₁₁⁻¹ * (C 0).toBlocks₁₂ = (C 0).toBlocks₂₂ := by
+      rw [hR0]; abel
+    rw [schurChartRawInvGen]
+    simp only [schurChartRawGen_toBlocks₁₁, schurChartRawGen_toBlocks₁₂,
+      schurChartRawGen_toBlocks₂₂, schurChartRawGen_toBlocks₂₁_zero, hγ]
+    rw [hD0, hP1, hE0]
+    exact Matrix.fromBlocks_toBlocks (C 0)
+  · -- layer `s = t+1`: local reconstruction.
+    exact invLayerSucc_schurChartRawGen C (last + 1) t (hPart (t + 1) (by omega))
+      (hPart (t + 1 + 1) (by omega))
+
 end DLNFibre.DLN.RLCT
