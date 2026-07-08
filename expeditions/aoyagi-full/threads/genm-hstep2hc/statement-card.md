@@ -56,7 +56,20 @@ building blocks; the bundled forms remove the assembler's finite-intersection st
 the keystone `hLayer`/`hPart`/`hMid11inv`; `IsUnit ↔ Nonempty Invertible` conversion faithful; base,
 `hDA`/`J`/`hJfront` honest; non-vacuous). Card confirmed accurate.
 
-## Piece 1 — `hC` (the core-side move readback) — WALL, precise sub-gap handed back
+## Piece 1 — `hC` (the core-side move readback) — step-A BANKED; remaining grind scoped (bounded)
+
+**Update (controller re-scoped as bounded — build it):** `hC` step-A is DELIVERED, green, 0 warnings:
+`absorbedCoreConj_eq_blockSchur_synthetic` in `lean/DLNFibre/DLN/RLCT/Validate/DeepestHsub4coreHCGen.lean`
+— the generic reduction `coreRead pc s + schurCorrectionConj pg s = blockSchur(fromBlocks (deepBlkA+X)
+(deepBlkY+Y) (deepBlkZ+Z) coreRead)` (pure algebra, `nonsing_inv_eq_ringInverse`). Confirms `M_s`.
+Remaining (all banked pieces, no new math, ~250-400 L): exact next-lemma list —
+1. `deepestChain_toBlocks₁₂/₂₁/₂₂_eq_layer` (mirror the Piece-2 `…₁₁…` bridge);
+2. `blockSchur_deepestChain_framed_eq_decode` (interior via (1) + interior-deepBlk = corM; boundary via
+   `blockSchur_lowerFrame_left`/`_rightUpper_right`);
+3. `Kcoup_framed_eq_decode` (crux; `partProd(F) = lowerFrame·partProd(D)` + `Kcoup_zero` + last-layer pivot);
+4. assemble hC = step-A ▸ (2)-on-`schurTilde` ▸ `psiSplitRawGen_deepestChain_hmove` ▸ (3) + width casts.
+
+### The Codex route (verified derivation, kept below)
 
 **Verdict (Codex xhigh, `codex/hc-route-{prompt,answer}.md`):** `hC` is REACHABLE for the chart-specialised
 `q = split x`, but its core is a substantial UNBANKED lemma. NOT built (no sorry-scaffold, per discipline).
