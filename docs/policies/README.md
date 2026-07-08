@@ -13,6 +13,7 @@ work.
 - [`bedrock.md`](bedrock.md) — the bar above the sorry-gate: building results worth standing on (non-vacuity, hygiene, characterization, fenced interfaces); defeats *conceptual* slop, not just technical; the controller judges against this taste.
 - [`library-building.md`](library-building.md) — when to build a well-established-maths library vs cite a monument (the build-vs-cite test), Mathlib-grade API discipline, foundation-first execution, and the extraction trigger.
 - [`lean-build-workflow.md`](lean-build-workflow.md) — running `lake` across many worktrees/sessions: the shared rev-keyed dependency store, the `scripts/lb` wrapper, and the global build-concurrency cap.
+- [`worktree-branch-hygiene.md`](worktree-branch-hygiene.md) — the flat, slug-prefixed branch/worktree naming convention (ownership + lifecycle legible from a name), the "`origin` is the bank" invariant, and safe close-out cleanup.
 - [`codex-consultation.md`](codex-consultation.md) — when and how to consult Codex as the independent second model.
 - [`statement-cards.md`](statement-cards.md) — linking a formalised claim to its Lean theorem in markdown.
 - [`citation-cordon.md`](citation-cordon.md) — the machine-enforced, forget-proof Proved-vs-Cited invariant: `@[cited]` axioms in located `…Cited.lean` files, `collectAxioms − foundational − @[cited] = ∅` as the `scripts/cited` gate, `#audit_cited` in-file, the adversarial fixtures.
