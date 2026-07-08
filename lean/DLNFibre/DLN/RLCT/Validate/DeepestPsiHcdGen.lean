@@ -498,4 +498,164 @@ theorem genMovedT_contDiffAt_at (H : Fin (L + 1) → ℕ) (r : ℕ)
     (fun c d => genMovedZ_contDiffAt_at H r hr hL J Pf Qf k q₀ hq₀ c d)
     (fun c d => genInvC11_contDiffAt_at H r hr hL J Pf Qf k q₀ hq₀ c d) a b
 
+/-! ## (ii) Top-level assembly: `psiTargetD → forcedDecode → psiGhat → psiReadBlk → psiSplitRawGen`
+
+Never built even at the origin. The generic `forcedDecode` entry lemmas abstract the constant-frame
+(`Ring.inverse` of a `q`-independent corner) times `ContDiffAt` block entries pattern. -/
+
+variable {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+
+/-- **`forcedDecodeRight` entry `ContDiffAt`** — for a `q`-independent right frame `Q` and a family `D`
+with `ContDiffAt` entries: the decoded blocks are products/differences of `D`'s blocks with the
+constant frame pieces. -/
+theorem contDiffAt_forcedDecodeRight_entry {rr aa bb : Type*}
+    [Fintype rr] [DecidableEq rr] [Fintype bb] [DecidableEq bb]
+    (Q : Matrix (rr ⊕ bb) (rr ⊕ bb) ℝ) (D : X → Matrix (rr ⊕ aa) (rr ⊕ bb) ℝ) (x : X)
+    (hD : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => D q a b) x) (a : rr ⊕ aa) (b : rr ⊕ bb) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => forcedDecodeRight Q (D q) a b) x := by
+  have h11 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₁₁ i j) x :=
+    fun i j => hD (Sum.inl i) (Sum.inl j)
+  have h12 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₁₂ i j) x :=
+    fun i j => hD (Sum.inl i) (Sum.inr j)
+  have h21 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₂₁ i j) x :=
+    fun i j => hD (Sum.inr i) (Sum.inl j)
+  have h22 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₂₂ i j) x :=
+    fun i j => hD (Sum.inr i) (Sum.inr j)
+  unfold forcedDecodeRight
+  rcases a with i | i <;> rcases b with j | j <;>
+    simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+      Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply]
+  · exact contDiffAt_matrix_mul_entry (B := fun _ => Ring.inverse Q.toBlocks₁₁)
+      h11 (fun _ _ => contDiffAt_const) i j
+  · refine (h12 i j).sub ?_
+    exact contDiffAt_matrix_mul_entry (B := fun _ => Q.toBlocks₁₂)
+      (fun a b => contDiffAt_matrix_mul_entry (B := fun _ => Ring.inverse Q.toBlocks₁₁)
+        h11 (fun _ _ => contDiffAt_const) a b)
+      (fun _ _ => contDiffAt_const) i j
+  · exact contDiffAt_matrix_mul_entry (B := fun _ => Ring.inverse Q.toBlocks₁₁)
+      h21 (fun _ _ => contDiffAt_const) i j
+  · refine (h22 i j).sub ?_
+    exact contDiffAt_matrix_mul_entry (B := fun _ => Q.toBlocks₁₂)
+      (fun a b => contDiffAt_matrix_mul_entry (B := fun _ => Ring.inverse Q.toBlocks₁₁)
+        h21 (fun _ _ => contDiffAt_const) a b)
+      (fun _ _ => contDiffAt_const) i j
+
+/-- **`forcedDecodeLeft` entry `ContDiffAt`** — for a `q`-independent left frame `F` and a family `D`
+with `ContDiffAt` entries. -/
+theorem contDiffAt_forcedDecodeLeft_entry {rr aa bb : Type*}
+    [Fintype rr] [DecidableEq rr] [Fintype aa] [DecidableEq aa]
+    (F : Matrix (rr ⊕ aa) (rr ⊕ aa) ℝ) (D : X → Matrix (rr ⊕ aa) (rr ⊕ bb) ℝ) (x : X)
+    (hD : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => D q a b) x) (a : rr ⊕ aa) (b : rr ⊕ bb) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => forcedDecodeLeft F (D q) a b) x := by
+  have h11 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₁₁ i j) x :=
+    fun i j => hD (Sum.inl i) (Sum.inl j)
+  have h12 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₁₂ i j) x :=
+    fun i j => hD (Sum.inl i) (Sum.inr j)
+  have h21 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₂₁ i j) x :=
+    fun i j => hD (Sum.inr i) (Sum.inl j)
+  have h22 : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun q => (D q).toBlocks₂₂ i j) x :=
+    fun i j => hD (Sum.inr i) (Sum.inr j)
+  unfold forcedDecodeLeft
+  rcases a with i | i <;> rcases b with j | j <;>
+    simp only [Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+      Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply]
+  · exact contDiffAt_matrix_mul_entry (A := fun _ => Ring.inverse F.toBlocks₁₁)
+      (fun _ _ => contDiffAt_const) h11 i j
+  · exact contDiffAt_matrix_mul_entry (A := fun _ => Ring.inverse F.toBlocks₁₁)
+      (fun _ _ => contDiffAt_const) h12 i j
+  · refine (h21 i j).sub ?_
+    exact contDiffAt_matrix_mul_entry (A := fun _ => F.toBlocks₂₁)
+      (fun _ _ => contDiffAt_const)
+      (fun a b => contDiffAt_matrix_mul_entry (A := fun _ => Ring.inverse F.toBlocks₁₁)
+        (fun _ _ => contDiffAt_const) h11 a b) i j
+  · refine (h22 i j).sub ?_
+    exact contDiffAt_matrix_mul_entry (A := fun _ => F.toBlocks₂₁)
+      (fun _ _ => contDiffAt_const)
+      (fun a b => contDiffAt_matrix_mul_entry (A := fun _ => Ring.inverse F.toBlocks₁₁)
+        (fun _ _ => contDiffAt_const) h12 a b) i j
+
+/-- `psiTargetD (C q) k` entries are `ContDiffAt` at `q₀` (`movedC − corM`, block-cased). -/
+theorem genPsiTargetD_contDiffAt_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ)
+    (q₀ : DeepestSplit H r (deepestNGauge H r))
+    (hq₀ : psiInvBundle H r hr hL J Pf Qf q₀)
+    (a : Fin r ⊕ Fin (deepestChainWidth H k - r)) (b : Fin r ⊕ Fin (deepestChainWidth H (k + 1) - r)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => psiTargetD H r hr hL J Pf Qf q k a b) q₀ := by
+  have heq : (fun q => psiTargetD H r hr hL J Pf Qf q k a b)
+      = fun q => movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k a b
+          - (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) a b := by
+    funext q; rw [psiTargetD, Matrix.sub_apply]
+  rw [heq]
+  refine ContDiffAt.sub ?_ contDiffAt_const
+  rcases a with i | i <;> rcases b with j | j <;>
+    simp only [movedC, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+      Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂]
+  · exact genChain_contDiffAt_at H r hr hL J Pf Qf k q₀ (Sum.inl i) (Sum.inl j)
+  · exact genMovedY_contDiffAt_at H r hr hL J Pf Qf k q₀ hq₀ i j
+  · exact genMovedZ_contDiffAt_at H r hr hL J Pf Qf k q₀ hq₀ i j
+  · exact genMovedT_contDiffAt_at H r hr hL J Pf Qf k q₀ hq₀ i j
+
+/-- `psiGhat (C q) s` entries are `ContDiffAt` at `q₀` (dispatch: last/first layer forced decode, else
+`psiTargetD`). -/
+theorem genPsiGhat_contDiffAt_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L)
+    (q₀ : DeepestSplit H r (deepestNGauge H r))
+    (hq₀ : psiInvBundle H r hr hL J Pf Qf q₀)
+    (a : Fin r ⊕ Fin (deepestChainWidth H (s : ℕ) - r))
+    (b : Fin r ⊕ Fin (deepestChainWidth H ((s : ℕ) + 1) - r)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => psiGhat H r hr hL J Pf Qf q s a b) q₀ := by
+  by_cases hlast : s = lastLayer hL
+  · subst hlast
+    have hgeq : ∀ q, psiGhat H r hr hL J Pf Qf q (lastLayer hL)
+        = forcedDecodeRight (psiFrameLast H r hr hL Qf)
+            (psiTargetD H r hr hL J Pf Qf q (lastLayer hL : ℕ)) :=
+      fun q => by unfold psiGhat; rw [dif_pos rfl]
+    simp only [hgeq]
+    exact contDiffAt_forcedDecodeRight_entry (psiFrameLast H r hr hL Qf)
+      (fun q => psiTargetD H r hr hL J Pf Qf q (lastLayer hL : ℕ)) q₀
+      (fun c d => genPsiTargetD_contDiffAt_at H r hr hL J Pf Qf (lastLayer hL : ℕ) q₀ hq₀ c d) a b
+  · by_cases hfirst : s = firstLayer hL
+    · subst hfirst
+      have hgeq : ∀ q, psiGhat H r hr hL J Pf Qf q (firstLayer hL)
+          = forcedDecodeLeft (psiFrame0 H r hr hL Pf)
+              (psiTargetD H r hr hL J Pf Qf q (firstLayer hL : ℕ)) :=
+        fun q => by unfold psiGhat; rw [dif_neg hlast, dif_pos rfl]
+      simp only [hgeq]
+      exact contDiffAt_forcedDecodeLeft_entry (psiFrame0 H r hr hL Pf)
+        (fun q => psiTargetD H r hr hL J Pf Qf q (firstLayer hL : ℕ)) q₀
+        (fun c d => genPsiTargetD_contDiffAt_at H r hr hL J Pf Qf (firstLayer hL : ℕ) q₀ hq₀ c d) a b
+    · have hgeq : ∀ q, psiGhat H r hr hL J Pf Qf q s
+          = psiTargetD H r hr hL J Pf Qf q (s : ℕ) :=
+        fun q => by unfold psiGhat; rw [dif_neg hlast, dif_neg hfirst]
+      simp only [hgeq]
+      exact genPsiTargetD_contDiffAt_at H r hr hL J Pf Qf (s : ℕ) q₀ hq₀ a b
+
+/-- `psiReadBlk (C q) s` entries are `ContDiffAt` at `q₀` (submatrix of `psiGhat`). -/
+theorem genPsiReadBlk_contDiffAt_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (s : Fin L)
+    (q₀ : DeepestSplit H r (deepestNGauge H r))
+    (hq₀ : psiInvBundle H r hr hL J Pf Qf q₀)
+    (a : Fin r ⊕ Fin (H s.castSucc - r)) (b : Fin r ⊕ Fin (H s.succ - r)) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => psiReadBlk H r hr hL J Pf Qf q s a b) q₀ := by
+  have heq : (fun q => psiReadBlk H r hr hL J Pf Qf q s a b)
+      = fun q => psiGhat H r hr hL J Pf Qf q s
+          (Sum.map id (finCongr (chainWidth_castSucc_sub H r s)) a)
+          (Sum.map id (finCongr (chainWidth_succ_sub H r s)) b) := by
+    funext q; rfl
+  rw [heq]
+  exact genPsiGhat_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ _ _
+
 end DLNFibre.DLN.RLCT
