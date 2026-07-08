@@ -1182,3 +1182,19 @@ FULL `scripts/lb DLNFibre`, never trust the teammate's reported isolated exit-0)
 `#print axioms`-not-exit-status rule: exit-0 (even a teammate's) masks BOTH a persisted `sorryAx` AND a persisted
 parse error via a stale olean. The fix was a mechanical 2-line reorder (docstring after `omit`), banked into the
 merge commit; the teammate's math was sound.
+
+## A connection-cutoff "death" may RESURRECT + complete — check the branch before re-charging a duplicate (2026-07-08)
+`sjbuild` reported "API Error: Connection closed mid-response" (task status: completed) with a `<1k`-token
+stub result + 0 pushed commits, so the controller treated it as dead and re-charged `sjbuild2` (identical
+mission). But `sjbuild` in fact RESUMED and ran to completion, producing a full DUPLICATE scaffold
+(`RouteMSJDecoratedRec.lean` vs sjbuild2's `RouteMSJDecorated.lean`) — a wasted heavy slot.
+**How to apply:** a connection-cutoff completion is NOT necessarily a death — before re-charging an
+identical mission, (a) `git fetch` + check the agent's branch for late pushes, and (b) prefer resuming via
+SendMessage over spawning a duplicate when the prior agent may still hold context. Salvage value here: the
+resurrected agent's independent reviewer CAUGHT a real overclaim in the duplicate's STEP-0 (a "GATE PASS"
+doc-claim that was an idealized-single-divisor value, not the actual multi-divisor bridge — the bridge is a
+numerically-true INEQUALITY but an OPEN Lean obligation). Second lesson: a design-pass "GATE PASS" doc-claim
+is NOT a Lean theorem — verify whether the gate's content is discharged or is a downstream proof obligation.
+Also (recurring): sjbuild `cd`'d into the controller's main checkout for builds (isolation break) + left a
+stray module + `.lake`; it `rm`'d them, controller verified clean. Isolation-break remains the top teammate
+hazard — brief every heavy tide to check `git rev-parse --show-toplevel` is a worktree path.
