@@ -1201,7 +1201,159 @@ theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (
     (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1) :
     HasStrictFDerivAt (psiSplitGaugeDeltaGen H r hr hL J Pf Qf)
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
-  sorry
+  have hpsiunit : IsUnit (psiFrame0 H r hr hL Pf) := by
+    rw [psiFrame0]; simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hPunit)
+  have hpflunit : IsUnit (psiFrameLast H r hr hL Qf) := by
+    rw [psiFrameLast]; simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hQunit)
+  refine hasStrictFDerivAt_pi'.2 (fun idx => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  obtain ⟨s, rest⟩ := idx
+  by_cases hlast : s = lastLayer hL
+  · subst hlast
+    rcases rest with (rest | rest)
+    · rcases rest with ⟨i, j⟩ | ⟨i, j⟩
+      · sorry
+      · sorry
+    · obtain ⟨i, j⟩ := rest
+      sorry
+  · by_cases hfirst : s = firstLayer hL
+    · subst hfirst
+      rcases rest with (rest | rest)
+      · rcases rest with ⟨i, j⟩ | ⟨i, j⟩
+        · sorry
+        · sorry
+      · obtain ⟨i, j⟩ := rest
+        sorry
+    · have hpos : 0 < (s : ℕ) := by
+        rcases Nat.eq_zero_or_pos (s : ℕ) with h0 | h0
+        · exact absurd (Fin.ext (by simp [firstLayer, h0]) : s = firstLayer hL) hfirst
+        · exact h0
+      have hlt : (s : ℕ) + 1 < L := by
+        rcases Nat.lt_or_ge ((s : ℕ) + 1) L with h | h
+        · exact h
+        · exact absurd (Fin.ext (by simp only [lastLayer]; have := s.isLt; omega) : s = lastLayer hL)
+            hlast
+      obtain ⟨hP, hQ⟩ := hInterior s hpos hlt
+      rcases rest with (rest | rest)
+      · rcases rest with ⟨i, j⟩ | ⟨i, j⟩
+        · -- interior, X tag
+          have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+                ⟨s, Sum.inl (Sum.inl (i, j))⟩)
+              = fun q => (deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inl i) (Sum.inl j) := by
+            funext q
+            have hpsi := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf
+              (psiSplitRawGen H r hr hL J Pf Qf q) s hlast hP hQ).1
+            have hq := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf q s
+              hlast hP hQ).1
+            show gaugeReadX H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                  (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s i j
+                - gaugeReadX H r hr hL (q.1, q.2.2) s i j = _
+            rw [Matrix.sub_apply]
+            have e1 : (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                  (Sum.inl i) (Sum.inl j)
+                = (1 + gaugeReadX H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                    (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s) i j := by
+              rw [← hpsi]; rfl
+            have e2 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inl i) (Sum.inl j)
+                = (1 + gaugeReadX H r hr hL (q.1, q.2.2) s) i j := by
+              rw [← hq]; rfl
+            rw [e1, e2, Matrix.add_apply, Matrix.add_apply, add_sub_add_left_eq_sub]
+          rw [heq]
+          exact hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0 hPfL
+            hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (s : ℕ) s.isLt (Sum.inl i) (Sum.inl j)
+        · -- interior, Y tag
+          have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+                ⟨s, Sum.inl (Sum.inr (i, j))⟩)
+              = fun q => (deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r s) j)) := by
+            funext q
+            have hpsi := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf
+              (psiSplitRawGen H r hr hL J Pf Qf q) s hlast hP hQ).2.1
+            have hq := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf q s
+              hlast hP hQ).2.1
+            show gaugeReadY H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                  (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s i j
+                - gaugeReadY H r hr hL (q.1, q.2.2) s i j = _
+            rw [Matrix.sub_apply]
+            have e1 : (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                  (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                = gaugeReadY H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                    (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s i j := by
+              rw [show (deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                    (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                  = (deepestChain H r hr
+                      (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                      (s : ℕ)).toBlocks₁₂ i (finCongr (chainWidth_succ_sub H r s) j) from rfl, hpsi]
+              simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+                Equiv.refl_apply, Equiv.symm_apply_apply]
+            have e2 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                = gaugeReadY H r hr hL (q.1, q.2.2) s i j := by
+              rw [show (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                    (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                  = (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ)).toBlocks₁₂ i
+                      (finCongr (chainWidth_succ_sub H r s) j) from rfl, hq]
+              simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+                Equiv.refl_apply, Equiv.symm_apply_apply]
+            rw [e1, e2]
+          rw [heq]
+          exact hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0 hPfL
+            hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (s : ℕ) s.isLt (Sum.inl i)
+            (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+      · obtain ⟨i, j⟩ := rest
+        -- interior, Z tag
+        have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q ⟨s, Sum.inr (i, j)⟩)
+            = fun q => (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ)
+                - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j) := by
+          funext q
+          have hpsi := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) s hlast hP hQ).2.2.1
+          have hq := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf q s
+            hlast hP hQ).2.2.1
+          show gaugeReadZ H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s i j
+              - gaugeReadZ H r hr hL (q.1, q.2.2) s i j = _
+          rw [Matrix.sub_apply]
+          have e1 : (deepestChain H r hr
+                (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j)
+              = gaugeReadZ H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                  (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s i j := by
+            rw [show (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                  (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j)
+                = (deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                    (s : ℕ)).toBlocks₂₁ (finCongr (chainWidth_castSucc_sub H r s) i) j from rfl, hpsi]
+            simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+              Equiv.refl_apply, Equiv.symm_apply_apply]
+          have e2 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j)
+              = gaugeReadZ H r hr hL (q.1, q.2.2) s i j := by
+            rw [show (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j)
+                = (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ)).toBlocks₂₁
+                    (finCongr (chainWidth_castSucc_sub H r s) i) j from rfl, hq]
+            simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+              Equiv.refl_apply, Equiv.symm_apply_apply]
+          rw [e1, e2]
+        rw [heq]
+        exact hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0 hPfL
+          hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (s : ℕ) s.isLt
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i)) (Sum.inl j)
 
 /-- **Pieces (b)+(c) for the core slot.** The encoded core read-delta has strict derivative `0`. -/
 theorem hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
