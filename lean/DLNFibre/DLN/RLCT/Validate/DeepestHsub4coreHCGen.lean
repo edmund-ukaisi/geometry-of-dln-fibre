@@ -1,6 +1,9 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
 import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
+import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
+import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen` — the general-`L` `hC` core-side move readback
@@ -96,5 +99,48 @@ theorem deepestChain_toBlocks₂₂_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
     deepestChain, deepestChainLayer, dif_pos hk, deepestChainSplit,
     rThresholdSplit_symm_inr, finCongr_symm, finCongr_apply]
   congr 1
+
+/-! ## Interior-vanishing of the deepest `(2,1)` and `(2,2)` blocks (lemma 2)
+
+The `deepBlkZ` / `deepBlkT` analogues of the banked `deepBlkY_interior_zero`: at a strict-interior layer
+the deepest point is the corner `diag(I_r, 0)` (`deepestPoint_interior_eq_corM`), whose rows `≥ r` all
+vanish; `toBlocks₂₁` reads rows `≥ r`, cols `< r` and `toBlocks₂₂` reads rows `≥ r`, cols `≥ r`. -/
+
+/-- **`deepBlkZ_s = 0` at interior layers** (`0 < s`, `s+1 < L`): `toBlocks₂₁` reads rows `≥ r`, which
+the corner `diag(I_r, 0)` kills (the `(i = j ∧ i < r)` guard fails since `i ≥ r`). -/
+theorem deepBlkZ_interior_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    deepBlkZ H r B hB hr hL s = 0 := by
+  funext i j
+  change (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inl j)) = 0
+  rw [deepestPoint_interior_eq_corM H r B hB hr hL s hpos hlt,
+    rThresholdSplit_symm_inr, rThresholdSplit_symm_inl]
+  simp only [Matrix.of_apply]
+  rw [if_neg]
+  rintro ⟨_, hlt'⟩
+  omega
+
+/-- **`deepBlkT_s = 0` at interior layers** (`0 < s`, `s+1 < L`): the deepest `(2,2)` block reads rows
+`≥ r`, killed by the corner exactly as `deepBlkZ`. -/
+theorem deepBlkT_interior_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ)) (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0 := by
+  funext i j
+  show (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inr j)) = 0
+  rw [deepestPoint_interior_eq_corM H r B hB hr hL s hpos hlt,
+    rThresholdSplit_symm_inr, rThresholdSplit_symm_inr]
+  simp only [Matrix.of_apply]
+  rw [if_neg]
+  rintro ⟨_, hlt'⟩
+  omega
 
 end DLNFibre.DLN.RLCT
