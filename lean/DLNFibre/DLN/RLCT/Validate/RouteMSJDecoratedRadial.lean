@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedMeas
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial` — the radial-attach integral factoring
@@ -13,8 +14,12 @@ the 1-D Jacobian factor, unblocked by the `residualMeas` field (via `RouteMSJDec
 ## What lands here
 
 * **`radialFactor j₀ c' = ∫⁻_{u₀∈[0,1]} |u₀|^{j₀}·(u₀²)^{−c'}`** — the 1-D radial Jacobian factor of one
-  Case-2 divisor with accumulated Jacobian exponent `j₀`. Finite iff `j₀ − 2c' > −1`, i.e. `c' < (j₀+1)/2`
-  (the per-divisor Morse threshold; not proved here — this module is the EQUALITY).
+  Case-2 divisor with accumulated Jacobian exponent `j₀`.
+
+* **`radialFactor_lt_top`** — the per-divisor finiteness: `radialFactor j₀ c' < ⊤` when `−1 < j₀ − 2c'`
+  (i.e. `c' < (j₀+1)/2`, the per-divisor Morse threshold). Via the banked 1-D
+  `abs_rpow_lintegral_Ioo_lt_top` (`RouteMSJMonomialLower`), after collapsing `|u₀|^{j₀}·(u₀²)^{−c'}` to
+  `|u₀|^{j₀−2c'}` on `(0,1]` (`Ioo_ae_eq_Icc`).
 
 * **`SJDecoration.radialAttach_integral`** — the factoring, UNCONDITIONAL in `c'`:
 
@@ -52,6 +57,23 @@ variable {L : ℕ}
 `∫⁻_{u₀∈[0,1]} |u₀|^{j₀}·(u₀²)^{−c'} du₀`. (Finite iff `c' < (j₀+1)/2`; that threshold is not proved here.) -/
 noncomputable def radialFactor (j₀ : ℕ) (c' : ℝ) : ℝ≥0∞ :=
   ∫⁻ u₀ in Set.Icc (0 : ℝ) 1, ENNReal.ofReal (|u₀| ^ j₀ * (u₀ ^ 2) ^ (-c'))
+
+/-- **The per-divisor Morse threshold — `radialFactor` is finite below it.** `radialFactor j₀ c' < ⊤`
+whenever `−1 < j₀ − 2c'` (equivalently `c' < (j₀+1)/2`): on `(0,1]` the integrand collapses to the pure
+monomial `|u₀|^{j₀−2c'}`, finite by the banked 1-D `abs_rpow_lintegral_Ioo_lt_top`. -/
+theorem radialFactor_lt_top (j₀ : ℕ) (c' : ℝ) (hc : -1 < (j₀ : ℝ) - 2 * c') :
+    radialFactor j₀ c' < ⊤ := by
+  unfold radialFactor
+  rw [setLIntegral_congr (Ioo_ae_eq_Icc (a := (0 : ℝ)) (b := 1)).symm,
+    setLIntegral_congr_fun measurableSet_Ioo
+      (g := fun u₀ => ENNReal.ofReal (|u₀| ^ ((j₀ : ℝ) - 2 * c'))) (fun u₀ hu => ?_)]
+  · exact abs_rpow_lintegral_Ioo_lt_top ((j₀ : ℝ) - 2 * c') 1 one_pos hc
+  · have hpos : 0 < |u₀| := abs_pos.mpr (ne_of_gt hu.1)
+    congr 1
+    rw [show u₀ ^ 2 = |u₀| ^ 2 from (sq_abs u₀).symm,
+      ← Real.rpow_natCast |u₀| j₀, ← Real.rpow_natCast |u₀| 2,
+      ← Real.rpow_mul (le_of_lt hpos), ← Real.rpow_add hpos]
+    congr 1; push_cast; ring
 
 /-- **The radial-attach integral factoring (unconditional in `c'`).** Attaching a fresh fully-shared
 Case-2 divisor factors the decorated box-integral into the 1-D radial Jacobian factor times the parent:
