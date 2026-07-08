@@ -67,7 +67,12 @@ noncomputable def SJDecoration.rowMix {M : Fin (L + 1) → ℕ} (D : SJDecoratio
     Z := D.Z
     mZ := D.mZ
     ctx := D.ctx
-    dom := D.dom }
+    dom := D.dom
+    residualMeas := by
+      intro j
+      simp only [SJLinGenState.residual_rowMix]
+      exact Finset.measurable_sum Finset.univ
+        (fun i _ => (D.residualMeas i).const_mul (R j i)) }
 
 /-- **The row-mix preserves the exceptional count.** `(D.rowMix R s).d = D.d`. -/
 @[simp] theorem SJDecoration.rowMix_d {M : Fin (L + 1) → ℕ} (D : SJDecoration M)
