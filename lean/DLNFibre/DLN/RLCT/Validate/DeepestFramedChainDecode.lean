@@ -72,7 +72,8 @@ theorem framedParamsPivot_frame_one_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
 
 /-- Index image (`inl` side): the threshold split absorbs the `deepestChainSplit`/`finCongr` prefix on
 the first `r` block. `rThr_a (finCongr.symm (rThr_b.symm (inl i))) = inl i` for equal widths `a = b`. -/
-theorem rThr_finCongr_split_inl {a b : ℕ} (r : ℕ) (ha : r ≤ a) (hb : r ≤ b) (hab : a = b) (i : Fin r) :
+theorem rThr_finCongr_split_inl {a b : ℕ} (r : ℕ) (ha : r ≤ a) (hb : r ≤ b) (hab : a = b)
+    (i : Fin r) :
     (rThresholdSplit r a ha) ((finCongr hab).symm ((rThresholdSplit r b hb).symm (Sum.inl i)))
       = Sum.inl i := by
   have harg : (finCongr hab).symm ((rThresholdSplit r b hb).symm (Sum.inl i)) = i.castLE ha := by
@@ -121,7 +122,7 @@ theorem deepestChain_framedParamsPivot_blocks_of_frame_one (H : Fin (L + 1) → 
     (funext i j
      simp only [Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.toBlocks₂₂,
        Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
-       Equiv.refl_apply, id_eq]
+       Equiv.refl_apply]
      rw [deepestChain]
      simp only [Matrix.reindex_apply, Matrix.submatrix_apply]
      rw [deepestChainLayer, dif_pos s.isLt, hlayer]
