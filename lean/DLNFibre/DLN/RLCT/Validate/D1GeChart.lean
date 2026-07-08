@@ -146,4 +146,65 @@ noncomputable def schurChartRawInvGen {r₀ : ℕ} {n : ℕ → ℕ}
       Matrix.fromBlocks p1 q1 D0 (R0 + D0 * p1⁻¹ * q1)
   | t + 1 => invLayerSucc Q t
 
+/-! ## Rung 6b — the inverse identities -/
+
+variable {r₀ : ℕ} {n : ℕ → ℕ}
+
+/-- **Local reconstruction is exact** (the `s ≥ 1` half of `Ψ∘Φ = id`). With the prefix pivots
+`(partProd C (t+1))₁₁`, `(partProd C (t+2))₁₁` invertible, `invLayerSucc (schurChartRawGen C L) t
+= C (t+1)`. Via the block-mult identities `partProd C (t+2) = partProd C (t+1) · C (t+1)` and the
+pivot cancellations (the reduced-factor `R` term cancels in `E`). -/
+theorem invLayerSucc_schurChartRawGen
+    (C : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (L t : ℕ)
+    (hp1 : Invertible (partProd C (t + 1)).toBlocks₁₁)
+    (hp2 : Invertible (partProd C (t + 1 + 1)).toBlocks₁₁) :
+    invLayerSucc (schurChartRawGen C L) t = C (t + 1) := by
+  letI := hp1; letI := hp2
+  have hu1 : IsUnit ((partProd C (t + 1)).toBlocks₁₁).det :=
+    (Matrix.isUnit_iff_isUnit_det _).mp (isUnit_of_invertible _)
+  -- block-mult identities for `partProd C (t+1+1) = partProd C (t+1) · C (t+1)`.
+  have hblk : partProd C (t + 1 + 1) = Matrix.fromBlocks
+      ((partProd C (t + 1)).toBlocks₁₁ * (C (t + 1)).toBlocks₁₁
+        + (partProd C (t + 1)).toBlocks₁₂ * (C (t + 1)).toBlocks₂₁)
+      ((partProd C (t + 1)).toBlocks₁₁ * (C (t + 1)).toBlocks₁₂
+        + (partProd C (t + 1)).toBlocks₁₂ * (C (t + 1)).toBlocks₂₂)
+      ((partProd C (t + 1)).toBlocks₂₁ * (C (t + 1)).toBlocks₁₁
+        + (partProd C (t + 1)).toBlocks₂₂ * (C (t + 1)).toBlocks₂₁)
+      ((partProd C (t + 1)).toBlocks₂₁ * (C (t + 1)).toBlocks₁₂
+        + (partProd C (t + 1)).toBlocks₂₂ * (C (t + 1)).toBlocks₂₂) := by
+    conv_lhs => rw [show partProd C (t + 1 + 1) = partProd C (t + 1) * C (t + 1) from rfl,
+      ← Matrix.fromBlocks_toBlocks (partProd C (t + 1)), ← Matrix.fromBlocks_toBlocks (C (t + 1))]
+    rw [Matrix.fromBlocks_multiply]
+  have h11 : (partProd C (t + 1 + 1)).toBlocks₁₁
+      = (partProd C (t + 1)).toBlocks₁₁ * (C (t + 1)).toBlocks₁₁
+        + (partProd C (t + 1)).toBlocks₁₂ * (C (t + 1)).toBlocks₂₁ := by
+    rw [hblk, Matrix.toBlocks_fromBlocks₁₁]
+  have h12 : (partProd C (t + 1 + 1)).toBlocks₁₂
+      = (partProd C (t + 1)).toBlocks₁₁ * (C (t + 1)).toBlocks₁₂
+        + (partProd C (t + 1)).toBlocks₁₂ * (C (t + 1)).toBlocks₂₂ := by
+    rw [hblk, Matrix.toBlocks_fromBlocks₁₂]
+  -- the reduced factor cancels: `E = R + D·p₂⁻¹·q₂ = (C_{t+1})₂₂`.
+  have hE : redFactorGen C (t + 1)
+      + (C (t + 1)).toBlocks₂₁ * (partProd C (t + 1 + 1)).toBlocks₁₁⁻¹
+        * (partProd C (t + 1 + 1)).toBlocks₁₂ = (C (t + 1)).toBlocks₂₂ := by
+    rw [redFactorGen, Ring.inverse_invertible,
+      Matrix.invOf_eq_nonsing_inv (partProd C (t + 1 + 1)).toBlocks₁₁]
+    abel
+  -- A-block: `p₁⁻¹·((P_{t+2})₁₁ − q₁·D) = (C_{t+1})₁₁`.
+  have hA : (partProd C (t + 1)).toBlocks₁₁⁻¹
+      * ((partProd C (t + 1 + 1)).toBlocks₁₁
+        - (partProd C (t + 1)).toBlocks₁₂ * (C (t + 1)).toBlocks₂₁) = (C (t + 1)).toBlocks₁₁ := by
+    rw [h11, add_sub_cancel_right, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu1, Matrix.one_mul]
+  -- B-block: simplify `E` by `hE`, then like the A-block via `h12`.
+  have hB : (partProd C (t + 1)).toBlocks₁₁⁻¹
+      * ((partProd C (t + 1 + 1)).toBlocks₁₂ - (partProd C (t + 1)).toBlocks₁₂
+        * (redFactorGen C (t + 1) + (C (t + 1)).toBlocks₂₁ * (partProd C (t + 1 + 1)).toBlocks₁₁⁻¹
+          * (partProd C (t + 1 + 1)).toBlocks₁₂)) = (C (t + 1)).toBlocks₁₂ := by
+    rw [hE, h12, add_sub_cancel_right, ← Matrix.mul_assoc, Matrix.nonsing_inv_mul _ hu1,
+      Matrix.one_mul]
+  simp only [invLayerSucc, schurChartRawGen_toBlocks₁₁, schurChartRawGen_toBlocks₁₂,
+    schurChartRawGen_toBlocks₂₁_succ, schurChartRawGen_toBlocks₂₂]
+  rw [hA, hB, hE]
+  exact Matrix.fromBlocks_toBlocks (C (t + 1))
+
 end DLNFibre.DLN.RLCT
