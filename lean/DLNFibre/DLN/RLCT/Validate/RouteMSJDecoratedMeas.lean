@@ -43,6 +43,23 @@ theorem continuous_jacMonomial {d : ℕ} (jac : Fin d → ℕ) :
     Continuous (fun u : Fin d → ℝ => ∏ ℓ, |u ℓ| ^ (jac ℓ)) := by
   fun_prop
 
+/-- **The decorated loss is nonnegative** (a sum of squares of the carrier generators). -/
+theorem SJDecoration.decLoss_nonneg {M : Fin (L + 1) → ℕ} (D : SJDecoration M)
+    (u : Fin D.d → ℝ) (z : D.Z) : 0 ≤ D.decLoss u z := by
+  letI := D.fν; letI := D.fι
+  exact D.carrier.loss_nonneg u (D.ctx z).1 (D.ctx z).2
+
+/-- **The decorated loss is continuous in the exceptional coordinates (each deeper parameter fixed).**
+`u ↦ decLoss u z` is continuous: for fixed `z` each generator `genMonomial supp i u · residual (ctx z) i`
+is a (continuous monomial) times a constant, so the sum of squares is continuous — no measurability of
+the residual is needed here (the residual is a fixed real). -/
+theorem SJDecoration.continuous_decLoss_right {M : Fin (L + 1) → ℕ} (D : SJDecoration M) (z : D.Z) :
+    Continuous (fun u : Fin D.d → ℝ => D.decLoss u z) := by
+  letI := D.fν; letI := D.fι
+  unfold SJDecoration.decLoss SJLinGenState.loss SJLinGenState.gen
+  refine continuous_finset_sum _ (fun i _ => (Continuous.mul ?_ continuous_const).pow 2)
+  exact continuous_genMonomial D.carrier.supp i
+
 /-- **The decorated loss is measurable in the deeper parameter (each exceptional coordinate fixed).**
 `z ↦ decLoss u z` is measurable: `decLoss u z = ∑ᵢ (genMonomial supp i u · residual (ctx z) i)²`, a
 finite sum of squares of `(constant-in-z) · (residualMeas i)`. -/
@@ -83,5 +100,47 @@ theorem SJDecoration.measurable_integrand {M : Fin (L + 1) → ℕ} (D : SJDecor
   refine Measurable.mul ?_ ?_
   · exact ((continuous_jacMonomial D.jac).measurable).comp measurable_snd
   · exact (by fun_prop : Measurable (fun t : ℝ => t ^ (-c'))).comp D.measurable_decLoss_uncurry
+
+/-! ## The `unitBox` head-coordinate split (the radial-attach Tonelli step) -/
+
+/-- **Split coordinate `0` off a `unitBox (d+1)` lower-integral.** For measurable `F`,
+`∫⁻_{unitBox (d+1)} F = ∫⁻_{u₀∈[0,1]} ∫⁻_{u∈unitBox d} F(u₀ ::: u)`. The measure-preserving
+`piFinSuccAbove 0` equiv (`ee.symm (u₀, u) = Fin.cons u₀ u`) transports `unitBox (d+1)` onto
+`[0,1] ×ˢ unitBox d`, then `setLIntegral_prod` (Tonelli) puts the head integral outermost — the
+reusable step the decorated radial peel consumes. -/
+theorem lintegral_unitBox_succ_cons {d : ℕ} (F : (Fin (d + 1) → ℝ) → ℝ≥0∞) (hF : Measurable F) :
+    ∫⁻ v in unitBox (d + 1), F v
+      = ∫⁻ u₀ in Set.Icc (0 : ℝ) 1, ∫⁻ u in unitBox d, F (Fin.cons u₀ u) := by
+  set ee := MeasurableEquiv.piFinSuccAbove (fun _ : Fin (d + 1) => ℝ) 0 with hee
+  have hsymapp : ∀ (x : ℝ) (y : Fin d → ℝ), ee.symm (x, y) = Fin.cons x y := by
+    intro x y
+    rw [hee, MeasurableEquiv.piFinSuccAbove_symm_apply]
+    show Fin.insertNthEquiv (fun _ : Fin (d + 1) => ℝ) 0 (x, y) = Fin.cons x y
+    rw [Fin.insertNthEquiv_zero]; rfl
+  have hmpS : MeasurePreserving ee.symm (volume : Measure (ℝ × (Fin d → ℝ))) volume := by
+    have h := (volume_preserving_piFinSuccAbove (fun _ : Fin (d + 1) => ℝ) 0).symm
+    rwa [show (volume : Measure (ℝ × (Fin d → ℝ))) = (volume : Measure ℝ).prod volume from
+      Measure.volume_eq_prod _ _] at h
+  have hpre : ee.symm ⁻¹' (unitBox (d + 1)) = (Set.Icc (0 : ℝ) 1) ×ˢ unitBox d := by
+    ext p; obtain ⟨x, y⟩ := p
+    simp only [unitBox, Set.mem_preimage, Set.mem_pi, Set.mem_univ, true_implies,
+      Set.mem_prod, hsymapp]
+    constructor
+    · intro hall
+      exact ⟨by have := hall 0; rwa [Fin.cons_zero] at this,
+        fun k => by have := hall k.succ; rwa [Fin.cons_succ] at this⟩
+    · rintro ⟨h0, hrest⟩ j
+      refine Fin.cases ?_ (fun k => ?_) j
+      · rwa [Fin.cons_zero]
+      · rw [Fin.cons_succ]; exact hrest k
+  have htrans := hmpS.setLIntegral_comp_preimage_emb (MeasurableEquiv.measurableEmbedding _)
+    F (unitBox (d + 1))
+  rw [hpre] at htrans
+  rw [← htrans, Measure.volume_eq_prod]
+  change ∫⁻ a in (Set.Icc (0 : ℝ) 1 ×ˢ unitBox d), (F ∘ ⇑ee.symm) a
+      ∂((volume : Measure ℝ).prod volume) = _
+  rw [setLIntegral_prod _ (hF.comp ee.symm.measurable).aemeasurable]
+  simp only [Function.comp_apply]
+  simp_rw [hsymapp]
 
 end DLNFibre.DLN.RLCT
