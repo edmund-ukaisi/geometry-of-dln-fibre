@@ -793,4 +793,221 @@ theorem deepestChain_deepestPoint_eq_fromBlocks (H : Fin (L + 1) → ℕ) (r : �
     deepestChain_toBlocks₂₂_eq_layer H r hr (deepestPoint H r B hB hr hL) (s : ℕ) s.isLt]
   rfl
 
+/-- **`(chain deepest_{L−1}) · psiFrameLast = corM`** (last-layer mirror of
+`psiFrame0_mul_deepestChain_deepestPoint_eq_corM`). At the basepoint `split w0 = 0` the framed chain is the
+pure corner, so the chain-reindexed deepest last layer times the right endpoint frame collapses to `corM`. -/
+theorem deepestChain_deepestPoint_mul_psiFrameLast_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) :
+    deepestChain H r hr (deepestPoint H r B hB hr hL) (lastLayer hL : ℕ) * psiFrameLast H r hr hL Qf
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+  set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
+  have h1 := deepestChain_framed_lastLayer_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner w0
+  rw [show (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL from by
+    rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _] at h1
+  rw [← h1, (deepestSplit_mp_basepoint H r hr hL w0).2]
+  exact deepestChain_corner_eq_corM H r hr (framedParamsPivot H r hr hL J Pf Qf 0)
+    (lastLayer hL : ℕ) (lastLayer hL).isLt
+    (framedParamsPivot_zero_eq_corner H r hr hL J hJfront Pf Qf (lastLayer hL : ℕ) (lastLayer hL).isLt)
+
+/-! ## Claim-C boundary — the moved-point conjugated core reads back as `blockSchur` of the framed
+moved-chain layer at the boundary layers `0` / `L−1`
+
+At the boundary the frame is nontrivial. The generic step-A (`absorbedCoreConj_eq_blockSchur_synthetic`)
+reduces the reindexed conjugated core to `blockSchur N₀` where `N₀` is the reduced-relabel of the synthetic
+layer. The boundary chain-width decode (`deepestChain_framedParamsPivot_firstLayer`) plus the corner
+identity fold `F' 0 = psiFrame0 · N₀`; the lower frame is `blockSchur`-invisible
+(`blockSchur_lowerFrame_of_blocks`), needing the moved pivot `IsUnit` (threaded as `hMovedA0`). -/
+
+/-- **Claim-C, layer 0.** For the boundary layer `0`, the reindexed conjugated absorbed core of the moved
+point equals the `blockSchur` of the framed moved-chain layer. -/
+theorem coreAbsorbConj_reindex_eq_blockSchur_framed_layer0 (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hQf0 : Qf (firstLayer hL) = 1)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL)))
+    (x : Fin (flatDim H) → ℝ)
+    (hMovedA0 : IsUnit ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (psiSplitRawGen H r hr hL J Pf Qf
+          (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)))
+        (firstLayer hL : ℕ)).toBlocks₁₁))
+    (s : Fin L) (hs0 : (s : ℕ) = 0) :
+    Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+        ((paramsEquivFlat (deepestM H r)).symm
+            (psiSplitRawGen H r hr hL J Pf Qf
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.1 s
+          + schurCorrectionConj H r B hB hr hL
+              ((psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).1,
+                (psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.2) s)
+      = blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+          (psiSplitRawGen H r hr hL J Pf Qf
+            (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))) (s : ℕ)) := by
+  set q := psiSplitRawGen H r hr hL J Pf Qf
+    (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x) with hqdef
+  have hsf : s = firstLayer hL := by apply Fin.ext; rw [hs0]; rfl
+  subst hsf
+  rw [absorbedCoreConj_eq_blockSchur_synthetic H r B hB hr hL q.2.1 (q.1, q.2.2) (firstLayer hL),
+    ← blockSchur_reindex_reduced (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)))
+      (finCongr (chainWidth_succ_sub H r (firstLayer hL)))
+      (deepBlkA H r B hB hr hL (firstLayer hL) + gaugeReadX H r hr hL (q.1, q.2.2) (firstLayer hL))
+      (deepBlkY H r B hB hr hL (firstLayer hL) + gaugeReadY H r hr hL (q.1, q.2.2) (firstLayer hL))
+      (deepBlkZ H r B hB hr hL (firstLayer hL) + gaugeReadZ H r hr hL (q.1, q.2.2) (firstLayer hL))
+      ((paramsEquivFlat (deepestM H r)).symm q.2.1 (firstLayer hL))]
+  set N0 := Matrix.fromBlocks
+      (deepBlkA H r B hB hr hL (firstLayer hL) + gaugeReadX H r hr hL (q.1, q.2.2) (firstLayer hL))
+      (Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r (firstLayer hL)))
+        (deepBlkY H r B hB hr hL (firstLayer hL) + gaugeReadY H r hr hL (q.1, q.2.2) (firstLayer hL)))
+      (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r (firstLayer hL))) (Equiv.refl (Fin r))
+        (deepBlkZ H r B hB hr hL (firstLayer hL) + gaugeReadZ H r hr hL (q.1, q.2.2) (firstLayer hL)))
+      (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)))
+        (finCongr (chainWidth_succ_sub H r (firstLayer hL)))
+        ((paramsEquivFlat (deepestM H r)).symm q.2.1 (firstLayer hL))) with hN0def
+  obtain ⟨hPl12, hPl22, hPl11⟩ := psiFrame0_blocks H r hr hL Pf hPtri hP22 hPunit
+  have hfold : deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (firstLayer hL : ℕ)
+      = psiFrame0 H r hr hL Pf * N0 := by
+    rw [deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf q hQf0,
+      ← psiFrame0_mul_deepestChain_deepestPoint_eq_corM H r B hB hr hL J hJfront Pf Qf hNF hPfL
+        hcorner hQf0, ← Matrix.mul_add]
+    congr 1
+    rw [hN0def, deepestChain_deepestPoint_eq_fromBlocks H r B hB hr hL (firstLayer hL),
+      deepBlkT_layer0_zero H r B hB hr hL hL2 (firstLayer hL) rfl]
+    ext i j
+    rcases i with i | i <;> rcases j with j | j <;>
+      simp only [Matrix.add_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+        Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.reindex_apply,
+        Matrix.submatrix_apply, Matrix.zero_apply, add_zero, zero_add]
+  have hpiv1 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)
+      (firstLayer hL : ℕ)).toBlocks₁₁ = (psiFrame0 H r hr hL Pf).toBlocks₁₁ * N0.toBlocks₁₁ := by
+    rw [hfold, toBlocks₁₁_mul, hPl12, Matrix.zero_mul, add_zero]
+  have hN011 : IsUnit N0.toBlocks₁₁ := by
+    have hu : IsUnit ((psiFrame0 H r hr hL Pf).toBlocks₁₁ * N0.toBlocks₁₁) := hpiv1 ▸ hMovedA0
+    letI := hPl11.invertible
+    have hrw : N0.toBlocks₁₁
+        = ⅟(psiFrame0 H r hr hL Pf).toBlocks₁₁ * ((psiFrame0 H r hr hL Pf).toBlocks₁₁ * N0.toBlocks₁₁) := by
+      rw [← Matrix.mul_assoc, invOf_mul_self, Matrix.one_mul]
+    rw [hrw]; exact (isUnit_of_invertible _).mul hu
+  rw [hfold, blockSchur_lowerFrame_of_blocks (psiFrame0 H r hr hL Pf) N0 hPl12 hPl22 hPl11 hN011]
+
+/-- **Claim-C, layer (L−1).** Mirror of `coreAbsorbConj_reindex_eq_blockSchur_framed_layer0` on the last
+layer: the framed moved-chain layer is the reduced synthetic layer times the upper frame `psiFrameLast`
+(`blockSchur`-invisible via `blockSchur_upperFrame_of_blocks`). -/
+theorem coreAbsorbConj_reindex_eq_blockSchur_framed_lastLayer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hQunit : IsUnit (Qf (lastLayer hL)))
+    (x : Fin (flatDim H) → ℝ)
+    (hMovedAL : IsUnit ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (psiSplitRawGen H r hr hL J Pf Qf
+          (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)))
+        (lastLayer hL : ℕ)).toBlocks₁₁))
+    (s : Fin L) (hsL : (s : ℕ) + 1 = L) :
+    Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+        ((paramsEquivFlat (deepestM H r)).symm
+            (psiSplitRawGen H r hr hL J Pf Qf
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.1 s
+          + schurCorrectionConj H r B hB hr hL
+              ((psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).1,
+                (psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.2) s)
+      = blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+          (psiSplitRawGen H r hr hL J Pf Qf
+            (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))) (s : ℕ)) := by
+  set q := psiSplitRawGen H r hr hL J Pf Qf
+    (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x) with hqdef
+  have hlv : (lastLayer hL : ℕ) = L - 1 := rfl
+  have hsf : s = lastLayer hL := by apply Fin.ext; omega
+  subst hsf
+  rw [absorbedCoreConj_eq_blockSchur_synthetic H r B hB hr hL q.2.1 (q.1, q.2.2) (lastLayer hL),
+    ← blockSchur_reindex_reduced (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)))
+      (finCongr (chainWidth_succ_sub H r (lastLayer hL)))
+      (deepBlkA H r B hB hr hL (lastLayer hL) + gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+      (deepBlkY H r B hB hr hL (lastLayer hL) + gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL))
+      (deepBlkZ H r B hB hr hL (lastLayer hL) + gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL))
+      ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))]
+  set NL := Matrix.fromBlocks
+      (deepBlkA H r B hB hr hL (lastLayer hL) + gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL))
+      (Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r (lastLayer hL)))
+        (deepBlkY H r B hB hr hL (lastLayer hL) + gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL)))
+      (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r (lastLayer hL))) (Equiv.refl (Fin r))
+        (deepBlkZ H r B hB hr hL (lastLayer hL) + gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL)))
+      (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)))
+        (finCongr (chainWidth_succ_sub H r (lastLayer hL)))
+        ((paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL))) with hNLdef
+  obtain ⟨hQu21, hQu22, hQu11⟩ := psiFrameLast_blocks H r hr hL Qf hQtri hQ22 hQunit
+  have hfold : deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (lastLayer hL : ℕ)
+      = NL * psiFrameLast H r hr hL Qf := by
+    rw [deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf q hPfL,
+      ← deepestChain_deepestPoint_mul_psiFrameLast_eq_corM H r B hB hr hL J hJfront Pf Qf hNF hPfL
+        hcorner, ← Matrix.add_mul]
+    congr 1
+    rw [hNLdef, deepestChain_deepestPoint_eq_fromBlocks H r B hB hr hL (lastLayer hL),
+      deepBlkT_layerLast_zero H r B hB hr hL hL2 (lastLayer hL) (by omega)]
+    ext i j
+    rcases i with i | i <;> rcases j with j | j <;>
+      simp only [Matrix.add_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₂,
+        Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₂, Matrix.reindex_apply,
+        Matrix.submatrix_apply, Matrix.zero_apply, add_zero, zero_add]
+  have hpivL : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)
+      (lastLayer hL : ℕ)).toBlocks₁₁ = NL.toBlocks₁₁ * (psiFrameLast H r hr hL Qf).toBlocks₁₁ := by
+    rw [hfold, toBlocks₁₁_mul, hQu21, Matrix.mul_zero, add_zero]
+  have hNL11 : IsUnit NL.toBlocks₁₁ := by
+    have hu : IsUnit (NL.toBlocks₁₁ * (psiFrameLast H r hr hL Qf).toBlocks₁₁) := hpivL ▸ hMovedAL
+    letI := hQu11.invertible
+    have hrw : NL.toBlocks₁₁
+        = (NL.toBlocks₁₁ * (psiFrameLast H r hr hL Qf).toBlocks₁₁)
+          * ⅟(psiFrameLast H r hr hL Qf).toBlocks₁₁ := by
+      rw [Matrix.mul_assoc, mul_invOf_self, Matrix.mul_one]
+    rw [hrw]; exact hu.mul (isUnit_of_invertible _)
+  rw [hfold, blockSchur_upperFrame_of_blocks NL (psiFrameLast H r hr hL Qf) hQu21 hQu22 hQu11 hNL11]
+
 end DLNFibre.DLN.RLCT
