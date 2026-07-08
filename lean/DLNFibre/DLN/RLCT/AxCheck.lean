@@ -676,6 +676,9 @@ open DLNFibre.DLN.RLCT
 #print axioms eventually_isUnit_deepestChain_decode_toBlocks₁₁
 #print axioms eventually_isUnit_partProd_deepestChain_decode_toBlocks₁₁
 #print axioms eventually_isUnit_prod_decode_pivot_toBlocks₁₁
+-- + the bundled `∀ᶠ x, ∀ k, IsUnit …` forms (drop-in for the assembly's finite-intersection step).
+#print axioms eventually_all_isUnit_deepestChain_decode_toBlocks₁₁
+#print axioms eventually_all_isUnit_partProd_deepestChain_decode_toBlocks₁₁
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
