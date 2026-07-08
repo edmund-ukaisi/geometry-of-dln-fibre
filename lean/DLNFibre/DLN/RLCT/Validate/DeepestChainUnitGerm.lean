@@ -467,4 +467,176 @@ theorem eventually_isUnit_partProd_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r :
     Matrix.det_one]
   exact one_ne_zero
 
+/-! ## The `nMix` eventual-unit germ -/
+
+/-- Determinant of an entrywise-`ContDiffAt` matrix family is `ContDiffAt` (the `ContDiffAt` analog of
+`contDiff_matrix_det_of_entries`). -/
+theorem contDiffAt_matrix_det_of_entries_at {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    {n : Type*} [Fintype n] [DecidableEq n] {A : X → Matrix n n ℝ} {x : X}
+    (hA : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => A y i j) x) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => (A y).det) x := by
+  have heq : (fun y => (A y).det)
+      = fun y => ∑ σ : Equiv.Perm n, Equiv.Perm.sign σ • ∏ i, A y (σ i) i := by
+    funext y; rw [Matrix.det_apply]
+  rw [heq]
+  exact ContDiffAt.sum (fun σ _ => (contDiffAt_prod (fun i _ => hA (σ i) i)).const_smul _)
+
+/-- The base-chain pivot-mix `nMix` is the identity off the used prefix (`k ≥ L`): the corner-default
+tail has `(C k)₂₁ = 0`, so `vDown = 0` and `nMix = 1`. Holds for every parameter. -/
+theorem nMix_tail_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (k : ℕ) (hLk : L ≤ k) :
+    nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  rw [nMix, vDown, deepestChain_tail_toBlocks₂₁ H r hr _ k (by omega), Matrix.zero_mul,
+    Matrix.mul_zero, add_zero]
+
+/-- The base-chain pivot-mix is the identity at the deepest basepoint (`k < L`): `(C k)₂₁ = 0` there. -/
+theorem nMix_wstar_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (k : ℕ) (hk : k < L) :
+    nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))) ) k
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  rw [nMix, vDown, deepestChain_wstar_toBlocks₂₁_eq_zero H r B hB hr hL J hJfront' Pf Qf hNF hPfL
+    hcorner' split hsplit k hk, Matrix.zero_mul, Matrix.mul_zero, add_zero]
+
+/-- Each `nMix` entry of the base chain is `ContDiffAt` at the deepest basepoint (`k < L`): expand
+`nMix = 1 + (P₁₁⁻¹ · P₁₂)·(Z · A₁₁⁻¹)` entrywise; the inverse entries are `ContDiffAt` there because
+`P₁₁` and `A₁₁` are units at the basepoint (`nonsing_inv_eq_ringInverse` + the entry inverse brick). -/
+theorem contDiffAt_nMix_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (k : ℕ) (hk : k < L) (i j : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i j)
+      (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))) := by
+  set q₀ := split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) with hq₀
+  have hdetP : (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q₀)) k).toBlocks₁₁.det ≠ 0 := by
+    rw [partProd_wstar_toBlocks₁₁_eq_one H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k,
+      Matrix.det_one]; exact one_ne_zero
+  have hdetA : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q₀) k).toBlocks₁₁.det ≠ 0 := by
+    rw [deepestChain_wstar_toBlocks₁₁_eq_one H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k hk,
+      Matrix.det_one]; exact one_ne_zero
+  -- `P₁₁⁻¹` entries `ContDiffAt` at `q₀`.
+  have hRP : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun q =>
+      Ring.inverse ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁) a b) q₀ := by
+    intro a b
+    have hconv : (fun q =>
+        Ring.inverse ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁) a b)
+        = fun q =>
+          ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁)⁻¹ a b := by
+      funext q; rw [Matrix.nonsing_inv_eq_ringInverse]
+    rw [hconv]
+    exact contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (fun c d => contDiff_partProd_entry H r hr hL J Pf Qf k (Sum.inl c) (Sum.inl d)) hdetP a b
+  -- `A₁₁⁻¹` entries `ContDiffAt` at `q₀`.
+  have hRA : ∀ a b, ContDiffAt ℝ (⊤ : ℕ∞) (fun q =>
+      Ring.inverse ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁) a b) q₀ := by
+    intro a b
+    have hconv : (fun q =>
+        Ring.inverse ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁) a b)
+        = fun q =>
+          ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁)⁻¹ a b := by
+      funext q; rw [Matrix.nonsing_inv_eq_ringInverse]
+    rw [hconv]
+    exact contDiffAt_matrix_inv_entry_of_det_ne_zero
+      (fun c d => contDiff_deepestChain_framedParamsPivot_entry H r hr hL J Pf Qf k (Sum.inl c) (Sum.inl d))
+      hdetA a b
+  -- Assemble `nMix = 1 + (P₁₁⁻¹ · P₁₂) · (Z · A₁₁⁻¹)` entrywise.
+  have heq : (fun q => (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i j)
+      = fun q => (1 : Matrix (Fin r) (Fin r) ℝ) i j
+        + ((Ring.inverse ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁)
+              * (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₂)
+            * ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁
+              * Ring.inverse ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁))) i j := by
+    funext q; rw [nMix, uNorm, vDown, Matrix.add_apply]
+  rw [heq]
+  refine contDiffAt_const.add ?_
+  refine contDiffAt_matrix_mul_entry ?_ ?_ i j
+  · exact fun a l => contDiffAt_matrix_mul_entry hRP
+      (fun m l' => (contDiff_partProd_entry H r hr hL J Pf Qf k (Sum.inl m) (Sum.inr l')).contDiffAt) a l
+  · exact fun l b => contDiffAt_matrix_mul_entry
+      (fun l' m => (contDiff_deepestChain_framedParamsPivot_entry H r hr hL J Pf Qf k
+        (Sum.inr l') (Sum.inl m)).contDiffAt) hRA l b
+
+/-- The base-chain pivot-mix `nMix` is a unit, at every layer, near the basepoint. -/
+theorem eventually_isUnit_nMix (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w) (k : ℕ) :
+    ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      IsUnit (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k) := by
+  by_cases hk : k < L
+  · -- `k < L`: eventual via `det (nMix ·)` continuous at the basepoint (`ContDiffAt` entries) + value `1`.
+    have hcont : ContinuousAt (fun x =>
+        (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k).det)
+        ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+      have hdet : ContDiffAt ℝ (⊤ : ℕ∞) (fun q =>
+          (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).det)
+          (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))) :=
+        contDiffAt_matrix_det_of_entries_at (fun i j =>
+          contDiffAt_nMix_entry H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k hk i j)
+      have hsplitAt : ContinuousAt (fun x => split x)
+          ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := split.continuous.continuousAt
+      exact (hdet.continuousAt).comp hsplitAt
+    refine eventually_isUnit_of_continuousAt_det _ _ hcont ?_
+    rw [nMix_wstar_eq_one H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k hk,
+      Matrix.det_one]
+    exact one_ne_zero
+  · filter_upwards with x
+    rw [nMix_tail_eq_one H r hr hL J Pf Qf (split x) k (by omega)]
+    exact isUnit_one
+
 end DLNFibre.DLN.RLCT
