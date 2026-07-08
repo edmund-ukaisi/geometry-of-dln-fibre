@@ -46,4 +46,23 @@ theorem derivEquiv_of_left_inverse {E : Type*}
       : E →L[ℝ] E) = A := by ext x; rfl
   rw [hcoe]; exact hΦ'
 
+/-! ## Rung 7 prep — ContDiff of the partial products -/
+
+`k`, peeling the last factor with the banked entrywise matrix-mult `ContDiff`
+`k`, peeling the last factor with the banked entrywise matrix-multiplication `ContDiff`
+output blocks are `+`/`∗`/`⁻¹` combinations of `partProd` entries. -/
+output blocks are `+`/`∗`/`⁻¹` combinations of `partProd` entries. -/
+theorem contDiff_partProd_entry {𝕏 : Type*} [NormedAddCommGroup 𝕏] [NormedSpace ℝ 𝕏]
+    {r₀ : ℕ} {n : ℕ → ℕ}
+    (C : 𝕏 → (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ)
+    (hC : ∀ s i j, ContDiff ℝ (⊤ : ℕ∞) (fun x => C x s i j)) :
+    ∀ (k : ℕ) (i j), ContDiff ℝ (⊤ : ℕ∞) (fun x => (partProd (C x) k) i j) := by
+  intro k
+  induction k with
+  | zero => intro i j; simp only [partProd]; exact contDiff_const
+  | succ k ih =>
+      intro i j
+      change ContDiff ℝ (⊤ : ℕ∞) (fun x => (partProd (C x) k * C x k) i j)
+      exact SchurChartC2.contDiff_matrix_mul_entry (fun a b => ih a b) (fun a b => hC k a b) i j
+
 end DLNFibre.DLN.RLCT
