@@ -72,4 +72,48 @@ theorem lintegral_eq_sphereProd [NeZero N] (h : EuclideanSpace ℝ (Fin N) → �
           ∂((volume : Measure (EuclideanSpace ℝ (Fin N))).toSphere.prod
               (volumeIoiPow (Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1))) := hcomp
 
+/-- **The `∫⁻` spherical blow-up (iterated polar form, Jacobian exposed).** For a MEASURABLE
+nonnegative integrand `h`, the whole-space lower integral equals the iterated sphere-then-radial
+integral of `ofReal (r^{N-1}) · h (r • ω)`, exposing the radial Jacobian `r^{N-1}` explicitly. This
+is the exponent-shift shape the pure peel consumes: after the block loss factors as `u²·(residual)`,
+the `r`-integral `∫ r^{N-1}·(r²·residual)^{-c'}` descends the exponent by `N/2`. Tonelli
+(`lintegral_prod`) + the `withDensity` unfold of `volumeIoiPow (N−1)` + the `Ioi 0` subtype
+restriction, on top of `lintegral_eq_sphereProd`. -/
+theorem lintegral_eq_polar [NeZero N] (h : EuclideanSpace ℝ (Fin N) → ℝ≥0∞)
+    (hh : Measurable h) :
+    ∫⁻ x, h x
+      = ∫⁻ ω : sphere (0 : EuclideanSpace ℝ (Fin N)) 1,
+          ∫⁻ r in Ioi (0 : ℝ),
+            ENNReal.ofReal (r ^ (Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1))
+              * h (r • (ω : EuclideanSpace ℝ (Fin N)))
+          ∂(volume : Measure ℝ)
+          ∂((volume : Measure (EuclideanSpace ℝ (Fin N))).toSphere) := by
+  rw [lintegral_eq_sphereProd h]
+  -- Tonelli: split the product measure into sphere-then-radial.
+  have hfmeas : Measurable
+      (fun p : sphere (0 : EuclideanSpace ℝ (Fin N)) 1 × Ioi (0 : ℝ) =>
+        h ((homeomorphUnitSphereProd (EuclideanSpace ℝ (Fin N))).symm p)) :=
+    hh.comp ((continuous_subtype_val.comp
+      (homeomorphUnitSphereProd (EuclideanSpace ℝ (Fin N))).symm.continuous).measurable)
+  rw [lintegral_prod _ hfmeas.aemeasurable]
+  refine lintegral_congr (fun ω => ?_)
+  -- inner: rewrite `symm (ω, r) = r • ω`, unfold `volumeIoiPow` (withDensity), drop the subtype.
+  have hinner :
+      (fun r : Ioi (0 : ℝ) =>
+        h ((homeomorphUnitSphereProd (EuclideanSpace ℝ (Fin N))).symm (ω, r)))
+      = (fun r : Ioi (0 : ℝ) => h ((r : ℝ) • (ω : EuclideanSpace ℝ (Fin N)))) := by
+    funext r; rw [homeomorphUnitSphereProd_symm_apply_coe]
+  rw [hinner, Measure.volumeIoiPow,
+    lintegral_withDensity_eq_lintegral_mul (Measure.comap Subtype.val volume)
+      (f := fun r : ↥(Ioi (0 : ℝ)) =>
+        ENNReal.ofReal ((r : ℝ) ^ (Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1)))
+      (by fun_prop)
+      (g := fun r : ↥(Ioi (0 : ℝ)) => h ((r : ℝ) • (ω : EuclideanSpace ℝ (Fin N))))
+      (hh.comp (measurable_subtype_coe.smul_const (ω : EuclideanSpace ℝ (Fin N))))]
+  simp only [Pi.mul_apply]
+  -- `∫⁻ r : Ioi 0, (fun r ↦ ofReal(r.1^n)·h(r.1•ω)) ∂(comap ↑) = ∫⁻ r in Ioi 0, … ∂volume`
+  rw [lintegral_subtype_comap measurableSet_Ioi
+    (fun y : ℝ => ENNReal.ofReal (y ^ (Module.finrank ℝ (EuclideanSpace ℝ (Fin N)) - 1))
+      * h (y • (ω : EuclideanSpace ℝ (Fin N))))]
+
 end DLNFibre.DLN.RLCT
