@@ -948,3 +948,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
 -- additionally needs `hC` (general core-side move readback, new ~300–600 L) + decode-chain invertibility
 -- germs + the `hq` eventual-ball germ (now: `psiSplitRawGen 0 = 0` banked ✓, continuity from Producer 1).
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
+-- `DeepestHsub4coreInvGerm` — D1 #120 Item-3 piece (2): the decode-chain invertibility germs discharging the
+-- keystone's `hLayer`/`hPart`/`hMid11inv` hyps over a nbhd of the basepoint (Producer-1-FREE, `∀ᶠ x, IsUnit …`):
+-- `eventually_isUnit_deepestChain_decode_toBlocks₁₁` (hLayer) / `_partProd_deepestChain_decode_toBlocks₁₁`
+-- (hPart) / `_prod_decode_pivot_toBlocks₁₁` (hMid11inv). Basepoint values are `deepBlkA` products (units by
+-- hDA) via `partProd_deepestChain_deepestPoint_toBlocks₁₁_isUnit`. Item-3 remaining: `hC` (in flight) + the
+-- `hq` eventual-ball germ (Producer-1 continuity) + the small assembly.
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm

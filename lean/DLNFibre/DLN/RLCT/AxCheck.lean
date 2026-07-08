@@ -69,6 +69,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 
 /-!
 # Axiom-hygiene check
@@ -666,6 +667,15 @@ open DLNFibre.DLN.RLCT
 -- (`psiSplitRawGen 0 = 0` banked ✓; continuity from Producer 1).
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart
+
+-- ★ D1 ∀-L #120 `hstep2` — Item-3 piece (2): decode-chain INVERTIBILITY GERMS (2026-07-08, `genm-hstep2hc`),
+-- discharging the keystone's `hLayer`/`hPart`/`hMid11inv` hyps over a nbhd of the basepoint, Producer-1-FREE
+-- (`∀ᶠ x, IsUnit …`; basepoint values `deepBlkA` products, units by hDA). Item-3 remaining: `hC` (in flight)
+-- + the `hq` eventual-ball germ (Producer-1 continuity) + the small assembly.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms eventually_isUnit_deepestChain_decode_toBlocks₁₁
+#print axioms eventually_isUnit_partProd_deepestChain_decode_toBlocks₁₁
+#print axioms eventually_isUnit_prod_decode_pivot_toBlocks₁₁
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

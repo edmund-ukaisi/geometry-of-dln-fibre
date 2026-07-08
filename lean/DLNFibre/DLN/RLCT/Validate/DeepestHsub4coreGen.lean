@@ -35,14 +35,15 @@ The FULL germ `∀ᶠ x, deepestCoreF (coreAbsorbConj (psiSplitRawGen (split x))
 `hsub4core` hypothesis of `deepest_diffeo_bridge_gen_assembled`) additionally needs the cutoff-ball
 `hq` peeled over a NEIGHBOURHOOD of the basepoint — i.e. `∀ᶠ x, psiSplitRawGen (split x) ∈
 closedBall 0 (cutoffBumpConj …).rIn`. That germ needs `Tendsto (fun x => psiSplitRawGen (split x))
-(𝓝 base) (𝓝 0)` (equivalently `psiSplitRawGen 0 = 0` + continuity at the basepoint), which is
-**Producer 1** (the un-built `psiSplitRawGen` diffeo triple — only building blocks toward
-`psiSplitRawGen 0 = 0` exist, in `DeepestPsiTripleGen`; no continuity is banked). So the full germ
-**sequences after Producer 1**, unlike the cutoff-free reg germ `hsub3reg_gen_germ` (whose identity
-is pointwise-algebraic). This asymmetry (the core side carries the cutoff, the reg side does not) is
-the WATCH finding of this thread; Codex-corroborated (xhigh). The germ closes as a small assembly
-once Producer 1 supplies the eventual-ball, `hC` is discharged (the general core-side move readback,
-new math), and the decode-chain invertibility germs land.
+(𝓝 base) (𝓝 0)` (equivalently `psiSplitRawGen 0 = 0` + continuity at the basepoint). The value part
+`psiSplitRawGen 0 = 0` IS now banked (`psiSplitRawGen_zero`, `DeepestPsiHraw0Gen`); the remaining
+**Producer-1** blocker is CONTINUITY of `psiSplitRawGen` at the basepoint. So the full germ
+**sequences after Producer 1's continuity**, unlike the cutoff-free reg germ `hsub3reg_gen_germ` (whose
+identity is pointwise-algebraic). This asymmetry (the core side carries the cutoff, the reg side does
+not) is the WATCH finding of this thread; Codex-corroborated (xhigh). The germ closes as a small
+assembly once Producer 1 supplies the eventual-ball (continuity) and `hC` is discharged (the general
+core-side move readback, new math); the decode-chain invertibility germs have LANDED
+(`DeepestHsub4coreInvGerm`: `eventually_isUnit_deepestChain_decode_toBlocks₁₁` etc.).
 -/
 
 open MeasureTheory Topology Matrix
