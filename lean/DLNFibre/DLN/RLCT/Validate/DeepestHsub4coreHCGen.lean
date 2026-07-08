@@ -358,4 +358,92 @@ theorem deepestChain_framed_eq_decode_interior (H : Fin (L + 1) → ℕ) (r : �
         (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
         ⟨(s : ℕ), s.isLt⟩ = ((paramsEquivFlat H).symm x) ⟨(s : ℕ), s.isLt⟩ from hframe]
 
+/-! ## Boundary decompositions — the framed chain as a one-sided frame times the decode chain
+
+At layer `0` the right frame is trivial (`Qf firstLayer = 1`), so `framedParamsPivot … (split x) 0 =
+Pf 0 · (decode x) 0` and the framed chain layer is `psiFrame0 · (decode-chain layer)` (the reindex
+distributes over the product, `reindex_mul`). Symmetric at the last layer with the left frame trivial. -/
+
+/-- **Layer-0 framed = `psiFrame0` · decode.** -/
+theorem deepestChain_framed_layer0_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hQf0 : Qf (firstLayer hL) = 1) (x : Fin (flatDim H) → ℝ) :
+    deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))
+        (firstLayer hL : ℕ)
+      = psiFrame0 H r hr hL Pf
+        * deepestChain H r hr ((paramsEquivFlat H).symm x) (firstLayer hL : ℕ) := by
+  have hframe := framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner x
+    (firstLayer hL)
+  rw [hQf0, Matrix.mul_one] at hframe
+  rw [deepestChain, deepestChainLayer, dif_pos (firstLayer hL).isLt,
+    show framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
+        ⟨(firstLayer hL : ℕ), (firstLayer hL).isLt⟩
+      = Pf (firstLayer hL) * ((paramsEquivFlat H).symm x) (firstLayer hL) from hframe,
+    reindex_mul (finCongr (deepestChainWidth_castSucc H (firstLayer hL : ℕ) (firstLayer hL).isLt))
+      (finCongr (deepestChainWidth_castSucc H (firstLayer hL : ℕ) (firstLayer hL).isLt))
+      (finCongr (deepestChainWidth_succ H (firstLayer hL : ℕ) (firstLayer hL).isLt))
+      (Pf (firstLayer hL)) (((paramsEquivFlat H).symm x) (firstLayer hL)),
+    reindex_mul (deepestChainSplit H r hr (firstLayer hL : ℕ))
+      (deepestChainSplit H r hr (firstLayer hL : ℕ))
+      (deepestChainSplit H r hr ((firstLayer hL : ℕ) + 1)) _ _]
+  congr 1
+  rw [deepestChain, deepestChainLayer, dif_pos (firstLayer hL).isLt]
+
+/-- **Last-layer framed = decode · `psiFrameLast`.** -/
+theorem deepestChain_framed_lastLayer_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (x : Fin (flatDim H) → ℝ) :
+    deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))
+        (lastLayer hL : ℕ)
+      = deepestChain H r hr ((paramsEquivFlat H).symm x) (lastLayer hL : ℕ)
+        * psiFrameLast H r hr hL Qf := by
+  have hframe := framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner x
+    (lastLayer hL)
+  rw [hPfL, Matrix.one_mul] at hframe
+  rw [deepestChain, deepestChainLayer, dif_pos (lastLayer hL).isLt,
+    show framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
+        ⟨(lastLayer hL : ℕ), (lastLayer hL).isLt⟩
+      = ((paramsEquivFlat H).symm x) (lastLayer hL) * Qf (lastLayer hL) from hframe,
+    reindex_mul (finCongr (deepestChainWidth_castSucc H (lastLayer hL : ℕ) (lastLayer hL).isLt))
+      (finCongr (deepestChainWidth_succ H (lastLayer hL : ℕ) (lastLayer hL).isLt))
+      (finCongr (deepestChainWidth_succ H (lastLayer hL : ℕ) (lastLayer hL).isLt))
+      (((paramsEquivFlat H).symm x) (lastLayer hL)) (Qf (lastLayer hL)),
+    reindex_mul (deepestChainSplit H r hr (lastLayer hL : ℕ))
+      (deepestChainSplit H r hr ((lastLayer hL : ℕ) + 1))
+      (deepestChainSplit H r hr ((lastLayer hL : ℕ) + 1)) _ _]
+  congr 1
+  rw [deepestChain, deepestChainLayer, dif_pos (lastLayer hL).isLt]
+
 end DLNFibre.DLN.RLCT
