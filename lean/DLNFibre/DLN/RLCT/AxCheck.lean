@@ -58,6 +58,8 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
+import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
 
 /-!
 # Axiom-hygiene check
@@ -568,6 +570,17 @@ open DLNFibre.DLN.RLCT
 -- triple + Schur→Score telescope + compose remain — `hstep2` untouched. Cite-NOTHING: forced `#print
 -- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms psiSplitRawGen_deepestChain_interior
+
+-- ★ R1-UPPER decorated-route reduction bricks (2026-07-08, `genm-sjbuild3`, reviewer-PASS). The subset
+-- bound `gammaPeelIntegral_le_boxIntegral` + `sjJointResolution_of_boxThresholdFinite` (`RouteMBoxThresholdFinite
+-- M → sjJointResolution M` — non-circular: the decorated route proves box-finiteness independently via
+-- `decoratedBoxThresholdFinite_trivial_iff`, this transports it as a corollary) + the clear-first generator-mix
+-- `SJDecoration.rowMix_decLoss`. The decorated recursion (the monument) remains — `sjJointResolution` untouched.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no S2, no
+-- `cited_aoyagi_dln`).
+#print axioms gammaPeelIntegral_le_boxIntegral
+#print axioms sjJointResolution_of_boxThresholdFinite
+#print axioms SJDecoration.rowMix_decLoss
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

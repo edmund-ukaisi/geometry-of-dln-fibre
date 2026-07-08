@@ -875,3 +875,12 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGen
 -- decode — validates the def is correct, not laundered). `hstep2` UNTOUCHED — the boundary decode + funext
 -- assembly + triple + Schur→Score telescope + compose remain.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
+-- R1-UPPER decorated-route REDUCTION bricks (thread `genm-sjbuild3`, reviewer-PASS): the subset bound
+-- `gammaPeelIntegral_le_boxIntegral` (inner `matBox ∩ pivotChart ⊆ matBox`) + `sjJointResolution_of_boxThresholdFinite`
+-- (`RouteMBoxThresholdFinite M → sjJointResolution M` — NON-CIRCULAR: the DECORATED route proves box-finiteness
+-- independently via `decoratedBoxThresholdFinite_trivial_iff`, so this transports it to the old `sjJointResolution`
+-- form as a corollary, superseding the exhausted plain-IH step). `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
+-- R1-UPPER decorated peel-step brick: `SJDecoration.rowMix_decLoss` — the clear-first scalar Schur
+-- generator-mix at CONSTANT support (does NOT claim loss-preservation), the (a) half of `decorated_peel_step`.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
