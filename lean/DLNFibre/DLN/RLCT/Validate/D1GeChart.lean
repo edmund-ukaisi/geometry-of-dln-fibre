@@ -114,4 +114,36 @@ theorem recoverProductGen_schurChartRawGen {r₀ : ℕ} {n : ℕ → ℕ}
   rw [Ring.inverse_invertible, Matrix.invOf_eq_nonsing_inv (partProd C (last + 1)).toBlocks₁₁]
   abel
 
+/-! ## Rung 6 — the rational inverse map -/
+
+/-- **Reconstruct the `(t+1)`-th layer** `C_{t+1}` from the chart output, locally (reads slots `t`,
+`t+1`). With `p_{t+1}=(Q t)₁₁`, `q_{t+1}=(Q t)₁₂`, `p_{t+2}=(Q (t+1))₁₁`, `q_{t+2}=(Q (t+1))₁₂`,
+`D = (Q (t+1))₂₁`, `R = (Q (t+1))₂₂`:
+`E = R + D·p_{t+2}⁻¹·q_{t+2}`, `A = p_{t+1}⁻¹(p_{t+2}−q_{t+1}D)`, `B = p_{t+1}⁻¹(q_{t+2}−q_{t+1}E)`,
+`C_{t+1} = fromBlocks A B D E`. Rational in the prefix pivots `p_{t+1}, p_{t+2}`. -/
+noncomputable def invLayerSucc {r₀ : ℕ} {n : ℕ → ℕ}
+    (Q : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (t : ℕ) :
+    Matrix (Fin r₀ ⊕ Fin (n (t + 1))) (Fin r₀ ⊕ Fin (n (t + 2))) ℝ :=
+  let pt1 := (Q t).toBlocks₁₁; let qt1 := (Q t).toBlocks₁₂
+  let pt2 := (Q (t + 1)).toBlocks₁₁; let qt2 := (Q (t + 1)).toBlocks₁₂
+  let D := (Q (t + 1)).toBlocks₂₁; let R := (Q (t + 1)).toBlocks₂₂
+  let E := R + D * pt2⁻¹ * qt2
+  Matrix.fromBlocks (pt1⁻¹ * (pt2 - qt1 * D)) (pt1⁻¹ * (qt2 - qt1 * E)) D E
+
+/-- **`schurChartRawInvGen`** — the rational inverse of the chart over `last + 1` layers. Layers
+`s = t+1 ≥ 1` are reconstructed locally by `invLayerSucc`; layer 0 uses the full-product
+`(P_L)₂₁ = (Q 0)₂₁` and the suffix product `γ = (C_1·…·C_last)₂₁` (a `partProd` of the reconstructed
+suffix `invLayerSucc Q ·`): `D_0 = ((P_L)₂₁ − R_0·γ)·p_L⁻¹·p_1`, `E_0 = R_0 + D_0·p_1⁻¹·q_1`.
+analogue of `schurChartRawInv`; prefix-pivots-only. -/
+noncomputable def schurChartRawInvGen {r₀ : ℕ} {n : ℕ → ℕ}
+    (Q : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (last : ℕ) :
+    (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ
+  | 0 =>
+      let γ := (partProd (fun t => invLayerSucc Q t) last).toBlocks₂₁
+      let R0 := (Q 0).toBlocks₂₂; let pL := (Q last).toBlocks₁₁
+      let p1 := (Q 0).toBlocks₁₁; let q1 := (Q 0).toBlocks₁₂; let ellL := (Q 0).toBlocks₂₁
+      let D0 := (ellL - R0 * γ) * pL⁻¹ * p1
+      Matrix.fromBlocks p1 q1 D0 (R0 + D0 * p1⁻¹ * q1)
+  | t + 1 => invLayerSucc Q t
+
 end DLNFibre.DLN.RLCT
