@@ -165,4 +165,51 @@ noncomputable def forcedDecodeRightCLM {r a b : Type*} [Fintype r] [DecidableEq 
     ⇑(forcedDecodeRightCLM (a := a) Q) = fun D => forcedDecodeRight Q D :=
   rfl
 
+/-! ## The moved chain is fixed where the down-blocks vanish (`hraw0` core / the germ value at `0`)
+
+At the deepest point every chain layer has `toBlocks₂₁ = 0` (banked
+`deepestChain_wstar_toBlocks₂₁_eq_zero`). Then the whole edit collapses: `vDown = 0` ⟹ `nMix = 1`,
+`Kcoup = 0` ⟹ `schurTilde = blockSchur = toBlocks₂₂`, `upEdit = 0`, `hTermLC = 0` ⟹ `deltaV0 = 0` ⟹
+`Z0edit0 = 0`, so `movedC C (Z0edit0 C L) = C`. This is the VALUE of the `movedC − C` germ at `0`
+(vanishing to order ≥ 3 there per the de-risk cert) and the algebraic core of `psiSplitRawGen 0 = 0`. -/
+
+section MovedFixed
+variable {r : Type*} [Fintype r] [DecidableEq r] {α : Type*} [CommRing α]
+  {m : ℕ → Type*} [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)]
+
+/-- **The moved chain is fixed on a `toBlocks₂₁ = 0` chain.** If every layer of `C` has zero
+down-block (`(C k).toBlocks₂₁ = 0`), the whole moved-chain edit is trivial: `movedC C (Z0edit0 C L) s
+= C s` for every `s`. -/
+theorem movedC_eq_self_of_toBlocks₂₁_zero
+    (C : (s : ℕ) → Matrix (r ⊕ m s) (r ⊕ m (s + 1)) α) (L : ℕ)
+    (hZ : ∀ k, (C k).toBlocks₂₁ = 0) (s : ℕ) :
+    movedC C (Z0edit0 C L) s = C s := by
+  have hvDown : ∀ k, vDown C k = 0 := fun k => by
+    simp only [vDown, hZ k, Matrix.zero_mul]
+  have hKcoup : ∀ k, Kcoup C k = 0 := fun k => by
+    simp only [Kcoup, hZ k, Matrix.zero_mul]
+  have hblockSchur : ∀ k, blockSchur (C k) = (C k).toBlocks₂₂ := fun k => by
+    simp only [blockSchur, hZ k, Matrix.zero_mul, sub_zero]
+  have hschurTilde : ∀ k, schurTilde C k = blockSchur (C k) := fun k => by
+    simp only [schurTilde, hKcoup k, sub_zero, Matrix.one_mul]
+  have hupEdit : ∀ k, upEdit C k = 0 := fun k => by
+    simp only [upEdit, hschurTilde k, sub_self, Matrix.mul_zero]
+  have hmovedY : ∀ k, movedY C k = (C k).toBlocks₁₂ := fun k => by
+    simp only [movedY, hupEdit k, add_zero]
+  have hTermLC0 : ∀ j, hTermLC C j = 0 := fun j => by
+    simp only [hTermLC, hvDown j, Matrix.mul_zero, Matrix.zero_mul]
+  have hdeltaV0 : deltaV0 C L = 0 := by
+    simp only [deltaV0]; exact Finset.sum_eq_zero (fun j _ => hTermLC0 j)
+  have hZ0edit0 : Z0edit0 C L = 0 := by
+    simp only [Z0edit0, hZ 0, hdeltaV0, Matrix.zero_mul, add_zero]
+  have hmovedZ : ∀ k, movedZ C (Z0edit0 C L) k = (C k).toBlocks₂₁ := fun k => by
+    cases k with
+    | zero => rw [hZ 0]; exact hZ0edit0
+    | succ n => rfl
+  have hmovedT : ∀ k, movedT C (Z0edit0 C L) k = (C k).toBlocks₂₂ := fun k => by
+    simp only [movedT, hmovedZ k, hZ k, Matrix.zero_mul, add_zero, hschurTilde k, hblockSchur k]
+  rw [movedC, hmovedY s, hmovedZ s, hmovedT s, Matrix.fromBlocks_toBlocks]
+
+end MovedFixed
+
 end DLNFibre.DLN.RLCT
