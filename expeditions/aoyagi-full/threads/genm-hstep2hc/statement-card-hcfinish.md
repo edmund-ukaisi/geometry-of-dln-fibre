@@ -1,4 +1,17 @@
-# Statement card — genm-hcfinish (hC lemmas 2–5 + Claim-C interior + machinery)
+# Statement card — genm-hcfinish (hC COMPLETE)
+
+## ✅ hC COMPLETE (2026-07-08) — `coreAbsorbConj_reindex_eq_blockSchur_movedC_decode`
+
+The full keystone `hC` for `q = split x`, green, sorry-free, forced
+`#print axioms = [propext, Classical.choice, Quot.sound]` (no `sorryAx`/`native`/cited). Its conclusion
+matches the keystone `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart`'s `hC` hypothesis
+verbatim (at `q = split x`). Boundary + assembly landed via option (b): the moved-framed-pivot unit is
+derived via hmove inside the assembly (`(F' 0)₁₁ = (F 0)₁₁ = P11·(D 0)₁₁`), so hC's hypothesis set stays
+the keystone's expected set (no new hyp). **Controller: wire the module into `DLNFibre.lean` + AxCheck, and
+green-gate the full `lake build DLNFibre` (isolated build does not catch aggregate name clashes; I rg-checked
+my new top-level names — none clash).** Route detail below is the historical record.
+
+---
 
 **Branch:** `origin/genm-hcfinish` (pushed). **Base:** `origin/genm-hstep2hc` @ `0c04d285`.
 **File:** `lean/DLNFibre/DLN/RLCT/Validate/DeepestHsub4coreHCGen.lean` (extended in place; NOT yet wired
