@@ -135,6 +135,170 @@ theorem psiSplitDeltaGen_eq_payload (H : Fin (L + 1) → ℕ) (r : ℕ)
   · rfl
   · rw [Prod.snd_sub, Prod.snd_sub, hgg, Prod.snd_sub]
 
+/-! ## Piece (c) prep — the base chain at the split origin, and `Ring.inverse` smoothness
+
+At `q = 0` the framed chain is the corner `corM = fromBlocks 1 0 0 0` on every layer `< L`
+(`framedParamsPivot_zero_eq_corner` + `deepestChain_corner_eq_corM`), so all the moved-chain data
+(`blockSchur`, `Kcoup`, `uNorm`, `vDown`, `nMix`, `wHatAccum`, `deltaV0`, …) collapses. Smoothness in
+`q` is the banked `contDiff_deepestChain_framedParamsPivot_entry` / `contDiff_partProd_entry`. -/
+
+/-- Entrywise `ContDiffAt` of `Ring.inverse (M q)` on the `det ≠ 0` locus (via `Ring.inverse = (·)⁻¹`). -/
+theorem contDiffAt_ringInverse_entry {X : Type*} [NormedAddCommGroup X] [NormedSpace ℝ X]
+    {n : Type*} [Fintype n] [DecidableEq n] {M : X → Matrix n n ℝ} {x : X}
+    (hM : ∀ i j, ContDiffAt ℝ (⊤ : ℕ∞) (fun y => M y i j) x) (hdet : (M x).det ≠ 0) (i j : n) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun y => Ring.inverse (M y) i j) x := by
+  have heq : (fun y => Ring.inverse (M y) i j) = fun y => (M y)⁻¹ i j := by
+    funext y; rw [← Matrix.nonsing_inv_eq_ringInverse]
+  rw [heq]; exact contDiffAt_matrix_inv_entry_of_det_ne_zero_at hM hdet i j
+
+/-- The base chain at the split origin is the corner `corM` on every layer `< L`. -/
+theorem genChain_zero_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (k : ℕ) (hk : k < L) :
+    deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 :=
+  deepestChain_corner_eq_corM H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k hk
+    (framedParamsPivot_zero_eq_corner H r hr hL J hJfront Pf Qf k hk)
+
+/-- The base chain's down-block vanishes at the origin, on every layer (corner for `k < L`, tail else). -/
+theorem genChain_zero_toBlocks₂₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k).toBlocks₂₁ = 0 := by
+  rcases lt_or_ge k L with hk | hk
+  · rw [genChain_zero_eq_corM H r hr hL J hJfront Pf Qf k hk]; exact Matrix.toBlocks_fromBlocks₂₁ _ _ _ _
+  · exact deepestChain_tail_toBlocks₂₁ H r hr _ k (not_lt.mpr hk)
+
+/-- `(C 0 k)₁₁ = 1` (corner for `k < L`, tail-identity for `k ≥ L`). -/
+theorem genChain_zero_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k).toBlocks₁₁
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  rcases lt_or_ge k L with hk | hk
+  · rw [genChain_zero_eq_corM H r hr hL J hJfront Pf Qf k hk]; exact Matrix.toBlocks_fromBlocks₁₁ _ _ _ _
+  · exact deepestChain_tail_toBlocks₁₁ H r hr _ k (not_lt.mpr hk)
+
+/-- `(C 0 k)₁₂ = 0` (corner, `k < L`). -/
+theorem genChain_zero_toBlocks₁₂ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k).toBlocks₁₂ = 0 := by
+  rw [genChain_zero_eq_corM H r hr hL J hJfront Pf Qf k hk]; exact Matrix.toBlocks_fromBlocks₁₂ _ _ _ _
+
+/-- `(C 0 k)₂₂ = 0` (corner for `k < L`, tail for `k ≥ L`). -/
+theorem genChain_zero_toBlocks₂₂ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k).toBlocks₂₂ = 0 := by
+  rcases lt_or_ge k L with hk | hk
+  · rw [genChain_zero_eq_corM H r hr hL J hJfront Pf Qf k hk]; exact Matrix.toBlocks_fromBlocks₂₂ _ _ _ _
+  · exact deepestChain_tail_toBlocks₂₂ H r hr _ k (not_lt.mpr hk)
+
+/-- `(partProd (C 0) k)₁₁ = 1` (`k ≤ L`; induction, the `(C 0 ·)₂₁ = 0` kills the mixed term). -/
+theorem genPartProd_zero_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k ≤ L) :
+    (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k).toBlocks₁₁
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  induction k with
+  | zero => rw [show partProd _ 0 = 1 from rfl, toBlocks₁₁_one]
+  | succ n ih =>
+    have hn : n < L := by omega
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (n + 1)
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) n
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) n from rfl,
+      toBlocks₁₁_mul, ih (by omega), genChain_zero_toBlocks₁₁ H r hr hL J hJfront Pf Qf n,
+      genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf n, Matrix.mul_zero, add_zero, Matrix.one_mul]
+
+/-- `(partProd (C 0) k)₁₂ = 0` (`k ≤ L`; the corner `(C 0 ·)₁₂ = (C 0 ·)₂₂ = 0`). -/
+theorem genPartProd_zero_toBlocks₁₂ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k ≤ L) :
+    (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k).toBlocks₁₂ = 0 := by
+  cases k with
+  | zero => rw [show partProd _ 0 = 1 from rfl, toBlocks₁₂_one]
+  | succ n =>
+    have hn : n < L := by omega
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) (n + 1)
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) n
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) n from rfl,
+      toBlocks₁₂_mul, genChain_zero_toBlocks₁₂ H r hr hL J hJfront Pf Qf n hn,
+      genChain_zero_toBlocks₂₂ H r hr hL J hJfront Pf Qf n, Matrix.mul_zero, Matrix.mul_zero, add_zero]
+
+/-! ### The moved-chain data collapses at the origin -/
+
+/-- `blockSchur (C 0 k) = 0` (the down-block `(C 0 k)₂₁ = 0` kills the correction, `(C 0 k)₂₂ = 0`). -/
+theorem genBlockSchur_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k) = 0 := by
+  rw [blockSchur, genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf k, Matrix.zero_mul,
+    Matrix.zero_mul, sub_zero, genChain_zero_toBlocks₂₂ H r hr hL J hJfront Pf Qf k]
+
+/-- `Kcoup (C 0) k = 0` (the down-block `(C 0 k)₂₁ = 0` is the left factor). -/
+theorem genKcoup_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [Kcoup, genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf k, Matrix.zero_mul, Matrix.zero_mul]
+
+/-- `schurTilde (C 0) k = 0` (`= (1 − Kcoup)·blockSchur` and `blockSchur = 0`). -/
+theorem genSchurTilde_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    schurTilde (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [schurTilde, genBlockSchur_zero H r hr hL J hJfront Pf Qf k, Matrix.mul_zero]
+
+/-- `vDown (C 0) k = 0` (the down-block is the left factor). -/
+theorem genVDown_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) :
+    vDown (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [vDown, genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf k, Matrix.zero_mul]
+
+/-- `uNorm (C 0) k = 0` (`k ≤ L`; the `(partProd)₁₂ = 0` is the right factor). -/
+theorem genUNorm_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k ≤ L) :
+    uNorm (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k = 0 := by
+  rw [uNorm, genPartProd_zero_toBlocks₁₂ H r hr hL J hJfront Pf Qf k hk, Matrix.mul_zero]
+
+/-- `nMix (C 0) k = 1` (`k ≤ L`; `= 1 + uNorm·vDown` and `uNorm = 0`). -/
+theorem genNMix_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k ≤ L) :
+    nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0)) k
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  rw [nMix, genUNorm_zero H r hr hL J hJfront Pf Qf k hk, Matrix.zero_mul, add_zero]
+
 /-! ## Pieces (b)+(c) — the read-deltas have strict derivative `0`
 
 Both read-deltas equal `forcedDecode(frame)(movedC − C)` (piece (b), the `(★)` read-recovery)
