@@ -920,3 +920,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
 -- + the reduced-core `Fin↔ℕ` fold bridge + frame-strip. Feeds `hsub4core`. `hstep2` UNTOUCHED — the compose
 -- (`hsub4core` germ, needs Producer 1 too) remains.
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
+-- R1-UPPER `decorated_peel_step` FOUNDATION (thread `genm-sjassembly`): the carrier `ctx`-measurability field
+-- `SJDecoration.residualMeas` + the measurability primitives (`RouteMSJDecoratedMeas`: `measurable_decLoss`/
+-- `_uncurry`, `measurable_integrand`, `decLoss_nonneg`, `continuous_decLoss_right`, `lintegral_unitBox_succ_cons`)
+-- + the single-divisor radial-attach integral factoring (`RouteMSJDecoratedRadial`: `SJDecoration.radialAttach_integral`
+-- + `radialAttachFactor_lt_top`). The anisotropic-corank DESCENT (the spherical r-blow-up crux, ~65-75% new) +
+-- recursion + close-out remain; `sjJointResolution` UNTOUCHED (sole remaining R1-UPPER sorry).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedMeas
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial

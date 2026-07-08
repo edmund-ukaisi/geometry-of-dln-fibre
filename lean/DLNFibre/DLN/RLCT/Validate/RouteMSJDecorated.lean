@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
+import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated` — the decorated finiteness predicate (R1-UPPER)
@@ -110,6 +111,16 @@ structure SJDecoration {L : ℕ} (M : Fin (L + 1) → ℕ) : Type 1 where
   ctx : Z → ζ × (ν → ℝ)
   /-- The chart domain of the resolved-so-far coordinates. -/
   dom : Set Z
+  /-- **Measurability of the carrier residual in the deeper parameter.** For each generator `i`, the
+  linear-residual value `residual (ctx z).1 (ctx z).2 i` is a measurable function of `z`. The spectator
+  index type `ζ` carries no measurable structure and `coeff : ζ → ι → ν → ℝ` is arbitrary, so this must
+  be recorded on the carrier — it is the honest measurability datum the decorated box-integral factoring
+  (Tonelli / `lintegral_const_mul`) needs; from it the decorated loss `decLoss` is jointly measurable in
+  `(z, u)` (the exceptional monomial prefix is continuous in `u`). -/
+  residualMeas :
+    letI : MeasureSpace Z := mZ
+    letI : Fintype ν := fν
+    ∀ i : ι, Measurable (fun z : Z => carrier.residual (ctx z).1 (ctx z).2 i)
 
 /-- **The decorated loss at a point** — the carrier loss `SJLinGenState.loss` evaluated at the
 exceptional coordinates `u`, in the deeper-param context `z` (via `ctx`). Faithful by construction: it
@@ -156,6 +167,13 @@ noncomputable def SJDecoration.trivial (M : Fin (L + 1) → ℕ) : SJDecoration 
   mZ := inferInstance
   ctx := fun A => ((), fun ik => prod M A ik.1 ik.2)
   dom := paramsBoxM M 1
+  residualMeas := by
+    haveI : OpensMeasurableSpace (Params M) :=
+      inferInstanceAs (OpensMeasurableSpace
+        (∀ s : Fin L, Fin (M s.castSucc) → Fin (M s.succ) → ℝ))
+    intro ik
+    simp only [SJLinGenState.residual_ofMatrix]
+    exact ((continuous_prod M).matrix_elem ik.1 ik.2).measurable
 
 /-- **The trivial decoration's loss IS the product loss.** `decLoss (trivial M) u A =
 frobSq (prod M A)` for every `A` — the `ofMatrix` carrier at the product entries collapses (support
@@ -234,6 +252,7 @@ noncomputable def SJDecoration.radialAttach (D : SJDecoration M) (j₀ : ℕ) : 
   mZ := D.mZ
   ctx := D.ctx
   dom := D.dom
+  residualMeas := D.residualMeas
 
 /-- **The radial attach multiplies the decorated loss by `u₀²`.** `(radialAttach D j₀).decLoss
 (u₀ ::: u) z = u₀² · D.decLoss u z` — the generator-level `loss_radialStep` lifted to the

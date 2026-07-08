@@ -65,6 +65,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
 import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 
 /-!
 # Axiom-hygiene check
@@ -626,6 +627,17 @@ open DLNFibre.DLN.RLCT
 -- reading back as the moved Schur cores). Feeds `hsub4core`; the compose (which also needs Producer 1)
 -- remains. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms prod_deepestM_eq_schur_ldu_readback_gen
+
+-- ★ R1-UPPER `decorated_peel_step` foundation (2026-07-08, `genm-sjassembly`, reviewer-PASS). The carrier
+-- `ctx`-measurability field (`SJDecoration.residualMeas`) unblocks `SJDecoration.integral` factoring:
+-- `measurable_integrand` (`RouteMSJDecoratedMeas`) + the single-divisor radial-attach integral factoring
+-- `SJDecoration.radialAttach_integral` (`(radialAttach D j₀).integral c' = radialAttachFactor j₀ c' * D.integral c'`)
+-- + `radialAttachFactor_lt_top` (per-divisor threshold `c'<(j₀+1)/2`). The anisotropic-corank descent (the
+-- spherical r-blow-up crux) + recursion remain. Cite-NOTHING: forced `#print axioms` = [propext,
+-- Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`, no `cited_aoyagi_dln`).
+#print axioms SJDecoration.radialAttach_integral
+#print axioms radialAttachFactor_lt_top
+#print axioms SJDecoration.measurable_integrand
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
