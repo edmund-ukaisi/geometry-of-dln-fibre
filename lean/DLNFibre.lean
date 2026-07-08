@@ -891,3 +891,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
 -- (sjbuild4 STOPPED on the monument: the banked `SJDecoration` carrier can't express the Z-block-peel /
 --  chain-descent — the monument needs a chain-descending carrier re-scope; see synthesis UPDATE-702.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
+-- D1 #120 `hstep2` — the framed-chain BOUNDARY decode (thread `genm-hstep2germs10`): first/last-layer
+-- `psiSplitRawGen_deepestChain_firstLayer`/`_lastLayer` (boundary frames reconstruct `movedC`, `J=frontEmbed`
+-- pivot→threshold collapse) + the reusable reindex machinery (`reindexChain_fromBlocks`, `frame_mul_reindex`).
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryDecode
+-- D1 #120 `hstep2` — the FULL move identity (thread `genm-hstep2germs10`): `psiSplitRawGen_deepestChain_hmove`
+-- (`funext s; by_cases s<L`: interior + both boundary halves + tail) — BYTE-MATCHES the `hmove` hypothesis
+-- of the banked `deepestEFull_sq_sum_eq_of_chain_movedC` (the pure-algebra crux, deferred germs5-9, DONE).
+-- `hstep2` UNTOUCHED — the remaining gap is ANALYTIC: the diffeo triple + IsUnit germs + Schur→Score
+-- telescope + compose.
+import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen

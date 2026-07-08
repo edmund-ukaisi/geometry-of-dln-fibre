@@ -61,6 +61,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
 import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
+import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
 
 /-!
 # Axiom-hygiene check
@@ -591,6 +592,14 @@ open DLNFibre.DLN.RLCT
 -- `monomial_rlct`, no `cited_aoyagi_dln`) — CONFIRMS it is genuinely S2-free.
 #print axioms iInf_axisRatio_le_monomialThreshold
 #print axioms monomialIntegrand_integrableOn_of_lt_axisRatio
+
+-- ★ D1 ∀-L #120 `hstep2` — the FULL move identity (2026-07-08, `genm-hstep2germs10`, reviewer-SURVIVED).
+-- `psiSplitRawGen_deepestChain_hmove` — `deepestChain(framedParamsPivot(psiSplitRawGen q)) = movedC(…)` by
+-- `funext s; by_cases s<L` (interior + first/last boundary decode + tail), BYTE-MATCHING the `hmove`
+-- hypothesis of the banked `deepestEFull_sq_sum_eq_of_chain_movedC`. The pure-algebra crux (deferred
+-- germs5-9) DONE; the remaining `hstep2` gap is ANALYTIC (triple + IsUnit germs + telescope + compose).
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms psiSplitRawGen_deepestChain_hmove
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
