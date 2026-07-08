@@ -55,6 +55,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
 
 /-!
 # Axiom-hygiene check
@@ -551,6 +552,12 @@ open DLNFibre.DLN.RLCT
 #print axioms fromBlocks_rightUpper_mul_forcedDecode
 #print axioms blockSchur_lowerFrame_left
 #print axioms blockSchur_rightUpper_right
+
+-- ★ D1 ∀-L #120 `hstep2` interior framed-chain decode (2026-07-08, `genm-hstep2germs8`).
+-- `deepestChain_framedParamsPivot_blocks_of_frame_one` — the interior branch of `hmove`: at a layer with
+-- `Pf s = Qf s = 1` (triangular bundle), the framed chain-layer decodes to the four gauge/core reads on
+-- the reduced-width relabel. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms deepestChain_framedParamsPivot_blocks_of_frame_one
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,

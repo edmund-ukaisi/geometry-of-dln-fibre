@@ -852,3 +852,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 -- The germs6 frame-correction, now IN Lean. `hstep2` UNTOUCHED — `psiSplitRawGen` def + move-identity DLN
 -- wiring + the `∏ blockSchur → Score` telescope + compose remain.
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
+-- D1 #120 `hstep2` interior framed-chain decode (thread `genm-hstep2germs8`):
+-- `deepestChain_framedParamsPivot_blocks_of_frame_one` — at an INTERIOR layer (`Pf s=Qf s=1` via the
+-- triangular bundle), the framed chain-layer decodes to the four gauge/core reads `(1+gaugeReadX,
+-- gaugeReadY, gaugeReadZ, coreRead)` on the reduced-width relabel (the interior branch of `hmove`'s
+-- `funext s; by_cases s<L`). `hstep2` UNTOUCHED — the `psiSplitRawGen` def + boundary `hmove` + telescope
+-- + compose remain.
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
