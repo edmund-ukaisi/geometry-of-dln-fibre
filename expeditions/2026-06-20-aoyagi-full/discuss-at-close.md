@@ -2463,3 +2463,29 @@ route that critpathmap mistook for the live one:
   r=2,(4,4,4,4) [non-commuting unipotents] BEFORE the ≥-leg tide. If flat → confirmed bounded (charge the tide when a
   slot frees). If a non-removable coupling → THAT is the genuine wall (re-escalate). (Operator: NO action — #68's
   possible-escalation is WITHDRAWN; the ≥-leg is bounded pending the light flatness check.)
+
+## 70. ⚠ R1-UPPER route CORRECTION (r1transfer): FrontPeelStep analytic route = WALL (addlongest); KEEP the layer-peel. The front-peel is COMBINATORICS-only. Remaining R1 analytic piece = SchurRecStep general-corank (the one bounded-vs-wall still OPEN). (2026-07-08)
+`r1transfer` (read-only scout + decorrelated Codex xhigh, neutral) — the FrontPeelStep analytic build I was holding is the
+WRONG route: front-peeling gives `frobSq(A₀·P)=frobSq(Δ·V)`, a SINGLE ANISOTROPIC Gram term (V·Vᵀ), NO additive core;
+both banked corank bricks (`matBox_corank_residual_absZ_le`/`_dominates_absZ_lt_top`) REQUIRE the isotropic-additive form
+`frobSqΔ + W` (Δ-independent nonneg core). Removing the V-anisotropy needs `Δ↦Δ·L` with Jacobian `det(VVᵀ)^{−M₀/2}`
+that BLOWS UP as `rank P` drops (the "dead anisotropic pointwise route"); recursing the tail-product-rank locus
+`{rank(A₁···A_{L−1})≤q}` as a shifted product needs the abstract measure-theoretic **`addlongest`** normal-slice iso —
+Mathlib LACKS it, banked bricks don't supply it. **Decisive comparative point:** the existing R1-UPPER (`RouteMSJResolution`,
+`sjJointResolution`:803) is on the **layer-peel** (redChain/Schur/Q_b), which is CONCRETE — redChain reduces only the LEADING
+width (→ pivot rank) via a pivot chart, deeper widths are literal deeper parameters, NO `addlongest`. Switching the sole R1
+leaf to the front-peel would TRADE the concrete route for the abstract-iso wall = net REGRESSION.
+- **RETRACTED the FrontPeelStep-build plan** (gating on r1transfer saved the wasted heavy build). The front-peel identity
+  stays COMBINATORICS-only (`minAdm_eq_frontPeel`, banked sorry-free, reviewed — no rep-theory, fine).
+- **The one R1-UPPER bounded-vs-wall still OPEN:** the layer-peel is concrete, BUT its `SchurRecStep`/`core_schurGen_lt_top`
+  brick consumes `SchurRecStep` as a hyp whose proof is a deferred sorry (`schurRecStep4_stub`; corank-2 CLOSED, corank-3 in
+  flight, higher open) — r1transfer flags "its core is part of the same wall". So R1-UPPER's real remaining analytic piece =
+  **`SchurRecStep` at general corank** (the concrete-but-entangled layer-peel core). UNLIKE the D1 ≥-leg (confirmed bounded
+  via Gauss–Newton), this is genuinely UNRESOLVED — could be a bounded corank induction OR a wall at higher corank.
+- **CHARGED `r1layerpeel`** (scout): (a) verify r1transfer's recommended (3,3,3,4) q=1 check — the layer-peel's nested-corank
+  recursion reaches ½·minAdm with NO shifted chain (concrete route closes); (b) scope `SchurRecStep` general-corank
+  (schurRecStep4_stub state, corank induction bounded-vs-wall). Decisive for R1-UPPER's final status. (Operator: NO action —
+  the front-peel wall is AVOIDED by staying on the concrete layer-peel; the OPEN question is whether SchurRecStep general-
+  corank is a bounded induction [likely, it's concrete] or a wall — r1layerpeel adjudicates. IF a wall, THAT is the genuine
+  R1-UPPER escalation. Honest correction to UPDATE-728's "no research wall outstanding": D1 is wall-free; R1-UPPER has this
+  one open bounded-vs-wall at its analytic core.)
