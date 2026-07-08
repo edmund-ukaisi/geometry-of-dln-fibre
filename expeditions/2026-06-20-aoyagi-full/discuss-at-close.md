@@ -2399,3 +2399,36 @@ on `genm-r1frontcharge`). **Mitigation taken:** (i) nudged `hderiv0b` to commit+
 resets never affected canonical. **No work lost.** This is an Agent-Teams worktree-assignment/cwd coordination bug
 (two agents → one dir) — flagging for the operator in case it needs a substrate/config fix; it recurred as the
 persistent "Shell cwd was reset" notifications this session. Not blocking; the mission continues.
+
+## 68. ⚠ CRITICAL-PATH RECALIBRATION (critpathmap): hstep2 is NOT sufficient for D1 #120 — an UNCOVERED third major D1 build surfaced (the general-L ≥-leg IFT residual-chart-at-optimal-v producer). (2026-07-08)
+`critpathmap` (read-only scout) traced the full `sorryAx`-dependency tree from `aoyagi_learning_coefficient`
+(Skeleton:1725 = `deepest_point_reduction ▸ product_reduction`). Decisive verdict: **hstep2 sufficient for D1 #120?
+NO.** The complete open-leaf map:
+- **D1 "=" side** (Skeleton:1131 `deepest_regular_core_normal_form`, via product_reduction): closed by the hstep2
+  chain. **Q1 confirmed: hstep2 (DeepestL2Wiring:1060) is the ONLY open sorry in `deepest_gauge_construction`'s
+  L≥3 branch** — the "four named obligations / hinterface / folded-core π̃/PIN1" comments are STALE (hinterface
+  discharged from `hInterior`; the gap discharged by the `hTilde` block via `deepestEFull_deriv`; hstep1 sorry-free;
+  all called lemmas sorry-free). So hderiv0✓ + hC (hcfinish) + hcd (hcd tide) + the "=" assembly ⟹ Skeleton:1131,
+  via the FRONT-PIVOT chain (`deepest_gauge_construction` → `_chart_construct` → `_squeeze_exists_frontPivot` →
+  `_reduces_frontPivot` → `_normal_form_of_value_frontPivot` → `aoyagi_learning_coefficient_frontPivot`
+  @DeepestNormalFormFrontPivot:125). ✅ ON TRACK.
+- **R1-UPPER** (via r1_resolution_general → hbox): **`sjJointResolution` (RouteMSJResolution:803) is the SOLE R1
+  leaf** (`routeMBoxThresholdFinite_sjResolution` = of_step(sjResolutionStep_proof)(sjBase1_freeMatrix); boundaryPeel
+  + base1 sorry-free). Covered by the held FrontPeelStep tide (combinatorics done, UPDATE-722). ✅ COVERED.
+- **⚠ D1 "≤" side** (Skeleton:1177 `rlctAt_deepest_le_of_optimal`, via deepest_point_reduction — the `le_iInf₂`
+  half of a `le_antisymm`, NO shortcut): engine `deepest_le_of_optimal_chart` (D1ChartProducer:100) needs `hDeepest`
+  (SHARED w/ hstep2 ✓) PLUS **`hchart` (IFT residual chart at ARBITRARY optimal v: `rlctAt(dlnLoss) v =
+  rlctAtOn(∑s²+∑q²)(0,t0)`) + `hCore` (leading-form comparison)**. **UNCOVERED — no in-flight tide.** Every D1
+  ≥-producer is L=2-ONLY (`dln_hchart_residual` @D1HChartResidual:343 uses `H 2`/`nRegL2`/`jacFlatL2`; all D1*.lean
+  are `Fin 3`). lean/CLAUDE.md's "L2 D1 two-peel hrank₂" note flags even L=2 as a new-module wall (b1 fderiv-exposing
+  producer + b2 rank module + b3 (a,b) extraction); the general-L analog is UNBUILT. hstep2 does NOT touch it (hstep2
+  = deepest-point grouped diffeo; this = v-parameterized residual chart). **THIS IS THE THIRD MAJOR D1 BUILD.**
+- Minor leaf: `hGne` (reduced-core germ-nonvanishing, a.e., dischargeable ∀L). Off-path: `aoyagiTheta_eq`
+  (Skeleton:1707, θ-count, NOT in the headline term). DEAD (don't chase): `DeepestGaugeChart:357` stub (route via
+  _frontPivot not general-B); the 9 `RouteMInteriorLDUContract` + `RouteMSchur:429`/`RouteMRecursion:257`/etc. legacy
+  alt-route R1 targets (not imported, "do not leak"); `Skeleton:1234 resolution_charts` likely bypassed on the value
+  path (headline needs r1_resolution_general VALUE, not the chart-EXISTENCE rung — verify before spending).
+- **ACTION:** charged a scout to assess the ≥-leg — bounded-large (charge it) vs genuine research wall (roadmap/
+  escalate)? Relates to the banked `rlct-runway-target` note (singular-locus lower bound = the hard direction). If a
+  research wall, THIS is the genuine escalation. Recorded here for the operator: the fully-general coefficient needs
+  **THREE** D1 builds (=-diffeo hstep2, ≤-leg chart-at-v, + the skeleton assembly) + R1-UPPER, not two.
