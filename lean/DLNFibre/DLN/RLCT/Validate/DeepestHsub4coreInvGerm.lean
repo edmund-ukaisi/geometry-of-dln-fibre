@@ -250,4 +250,41 @@ theorem eventually_isUnit_prod_decode_pivot_toBlocks₁₁ (H : Fin (L + 1) → 
       (partProd_deepestChain_deepestPoint_toBlocks₁₁_isUnit
         H r B hB hr hL hDA L (le_refl L))).ne_zero
 
+/-! ## Bundled germs (the `∀ k` form the `filter_upwards` assembly consumes directly)
+
+The per-`k` germs above intersect over the finite index range into one eventual set carrying all
+layers at once — the `∀ k` form `hLayer`/`hPart` are consumed in, at a fixed `x`, after the
+`IsUnit → Invertible` conversion. `Finset.eventually_all` over `range L` / `range (L+1)`. -/
+
+/-- **Bundled `hLayer` germ.** All layers `k < L` are simultaneously eventually-unit. -/
+theorem eventually_all_isUnit_deepestChain_decode_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      ∀ k, k < L → IsUnit ((deepestChain H r hr ((paramsEquivFlat H).symm x) k).toBlocks₁₁) := by
+  have hper : ∀ k ∈ Finset.range L, ∀ᶠ x in
+      nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        IsUnit ((deepestChain H r hr ((paramsEquivFlat H).symm x) k).toBlocks₁₁) :=
+    fun k hk => eventually_isUnit_deepestChain_decode_toBlocks₁₁ H r B hB hr hL hDA k
+      (Finset.mem_range.mp hk)
+  filter_upwards [(Finset.range L).eventually_all.mpr hper] with x hx k hkL
+  exact hx k (Finset.mem_range.mpr hkL)
+
+/-- **Bundled `hPart` germ.** All prefixes `k ≤ L` are simultaneously eventually-unit. -/
+theorem eventually_all_isUnit_partProd_deepestChain_decode_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s)) :
+    ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      ∀ k, k ≤ L →
+        IsUnit ((partProd (deepestChain H r hr ((paramsEquivFlat H).symm x)) k).toBlocks₁₁) := by
+  have hper : ∀ k ∈ Finset.range (L + 1), ∀ᶠ x in
+      nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        IsUnit ((partProd (deepestChain H r hr ((paramsEquivFlat H).symm x)) k).toBlocks₁₁) :=
+    fun k hk => eventually_isUnit_partProd_deepestChain_decode_toBlocks₁₁ H r B hB hr hL hDA k
+      (Nat.lt_succ_iff.mp (Finset.mem_range.mp hk))
+  filter_upwards [(Finset.range (L + 1)).eventually_all.mpr hper] with x hx k hkL
+  exact hx k (Finset.mem_range.mpr (Nat.lt_succ_of_le hkL))
+
 end DLNFibre.DLN.RLCT
