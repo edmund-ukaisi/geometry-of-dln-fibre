@@ -24,6 +24,7 @@ is never reached). No re-scope.
 | `carrierThreshold_shift` | `carrierThreshold M − ½·peelCharge M u ≤ carrierThreshold (redChain u M)` (piece 4, the peel-charge soundness cast; = banked `half_minAdm_sub_half_peelCharge_le`) | proved |
 | `binding_334` | `(3,3,4)` binding cut `t=1`: `peelCharge + minAdm(redChain) = 8 = minAdm` (non-vacuity W1) | proved (`decide`) |
 | `binding_2222` | `(2,2,2,2)` binding cut `t=1`: `1 + 2 = 3 = minAdm` (non-vacuity W2) | proved (`decide`) |
+| `binding_3334` | `(3,3,3,4)` front binding cut `t=1`: `4 + 3 = 7 = minAdm` (non-vacuity W3, the STEP-0 deeper-product anchor) | proved (`decide`) |
 | `carrierThreshold_334` / `_2222` | the anchor budgets `= 4` / `= 3/2` | proved |
 | `SJDecoration N` | the decoration: banked `SJLinGenState` carrier (shared-divisor support + linear residual) + Jacobian exponents `jac` + chart domain (pieces 2) | structure (shape pinned) |
 | `DecoratedBoxThresholdFinite N D` | the decorated finiteness predicate `∀ c' < carrierThreshold N, ∫_dom ∫_{unitBox d} (∏u^{jac})·(carrier.loss)^{−c'} < ⊤` (piece 3, the load-bearing inductive object; GENERATOR-CARRIER loss, NOT a separable Gram weight) | def (shape pinned) |
