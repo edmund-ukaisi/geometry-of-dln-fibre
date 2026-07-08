@@ -11,21 +11,28 @@ Is `½·minAdm(remChain π) ≤ monomialThreshold d (sharedDivisorExp) jac` **UN
 terminals** (all Case-1/Case-2 chart sequences)? Checked exactly on `(3,3,4)`, `(2,2,2,2)`, `(3,3,3,4)`.
 If NOT uniform → the decoration must enter the threshold (a re-scope).
 
-## VERDICT — GATE PASS
+## VERDICT — GATE PASS for the NARROW decision (the decoration does NOT enter the threshold)
 
-**On the three named anchors the bridge is uniform — VACUOUSLY, because the monomial terminal
-`sjLoss_terminal` is NEVER reached.** Every chart the recursion visits on these three chains is closed
-by regime A (full-rank exponent shift) + regime B (Morse dominance) + the free-matrix base, at threshold
-**exactly `½·minAdm`** (the soundness gate `minAdm ≤ peelCharge + minAdm(redChain)` makes the shift land).
-The decorated recursion may still be BUILT with the monomial terminal (the pinned design), but the bridge
-statement it discharges cannot fall below `½·minAdm` on any terminal these anchors reach.
+The pinned cert's sharp question was: does the carrier threshold need to become
+`½·min(minAdm(remChain), <a decoration-dependent quantity>)`, i.e. must the decoration enter the threshold?
+**Answer: no.** `carrierThreshold N = ½·minAdm N` (decoration-free) is sound, on two grounds:
 
-**Decorrelated Codex (xhigh, model+verdict withheld) reached the SAME finding independently** — derived the
-load-bearing condition from scratch (identical to mine), confirmed no load-bearing chart on the three
-anchors, and confirmed the bridge holds on a genuine load-bearing chart. Two decorrelated analyses
-converged.
+1. **The three named anchors never reach the monomial terminal.** Every chart the recursion visits on
+   `(3,3,4)`, `(2,2,2,2)`, `(3,3,3,4)` is closed by regime A (full-rank exponent shift) + regime B (Morse
+   dominance) + the free-matrix base, at threshold **exactly `½·minAdm`** (the soundness gate
+   `minAdm ≤ peelCharge + minAdm(redChain)` makes the shift land). So on the NAMED anchors the bridge holds
+   **vacuously** — a vacuous test of the sharp risk, which is why the load-bearing case below matters.
+2. **On the load-bearing charts (where the monomial terminal IS reached), the bridge is an INEQUALITY
+   `½·minAdm ≤ threshold` with no counterexample** across 23358 sweep charts (`step0_ineq.py`). The
+   decoration does not lower the threshold below `½·minAdm`.
 
-**PROCEED to the multi-tide build.** No re-scope; the decoration does NOT need to enter the threshold.
+**Decorrelated Codex (xhigh, model+verdict withheld) reached the SAME model + load-bearing condition
+independently**, and confirmed no load-bearing chart on the three anchors. On the general uniformity it
+returned a CONCERN (as did the fidelity reviewer): the inequality has no counterexample, but a rigorous
+proof for the ACTUAL multi-divisor terminal is not yet banked — it is the piece-6 obligation.
+
+**PROCEED to the multi-tide build.** No re-scope of the threshold. The remaining obligation
+(actual-terminal `monomialThreshold ≥ ½·minAdm`) lives in `decorated_base` (piece 6), NOT in the predicate.
 
 ## The model (the three regimes + the two terminals)
 
@@ -70,17 +77,29 @@ For the three NAMED anchors: every chart has `q = N₁−t ≤ τ` (or `p = 0`),
 regimes A/B tile every `c'`, no monomial terminal reached. Codex verified this per chart independently
 (Q3). `(4,4,2,2)` has a rank-deficient chart but regime B still covers it (`p·r = 6 ≥ minAdm = 4`).
 
-## The genuine load-bearing case IS uniform too (spot-check `(3,4,2)`)
+## The genuine load-bearing case — an INEQUALITY, no counterexample (corrected post-review)
 
 Load-bearing charts DO exist for general chains (5990 in the arity-3/4/5, widths-1..6 sweep) — e.g.
-`(3,4,2)` at `t=1`: `p=2, q=3, r=min(3,2)=2, p·r=4 < 6 = minAdm`, so `c' ∈ (2,3)` is uncovered by
-regimes A/B. There the bridge STILL holds (Codex Q4, decorrelated): on the `rank(Q_b)=2` chart the loss is
-the JOINT block `‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²`; the pivot-coupled `Q̃_p` contributes `t·M_last = 1·2 = 2`
-dimensions and the block image `Γ·Q_b` contributes `p·r = 4`, for total Morse dimension `2 + 4 = 6 =
-minAdm(3,4,2)` — threshold `3 = ½·minAdm`. So the count↔monomial threshold `= ½·minAdm` on this leaf too.
-The general uniformity is banked at the model level by `routeLayerAtlas_value`
-(`⨅ over route leaves monomialThreshold = ½·minAdm`, sorry-free, UNCONDITIONAL) ⟹ every leaf's threshold
-`≥ ½·minAdm`.
+`(3,4,2)` at `t=1`: `p=2, q=3, r=min(3,2)=2, p·r=4 < 6 = minAdm`, so `c' ∈ (2,3)` is uncovered by regimes
+A/B and the monomial terminal IS reached. **What is established there is the bridge INEQUALITY
+`½·minAdm ≤ threshold`, NOT a tight equality** (the earlier tight-`=` framing of `(3,4,2)` was an
+example-specific coincidence — corrected on review). On the `rank(Q_b)=2` chart the loss is the JOINT block
+`‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖²` (an isotropic Morse), whose dimension is bounded below by
+`t·N_last + (N_0−t)·τ` (`τ = min` deeper widths), so its threshold is `≥ ½·(t·N_last + (N_0−t)·τ)`.
+
+**Numeric check (`step0_ineq.py`, decisive):** across ALL `23358` load-bearing charts in the sweep, both
+`N_0·τ ≥ minAdm(N)` and `t·N_last + (N_0−t)·τ ≥ minAdm(N)` hold with **ZERO** violations — so the bridge
+inequality `½·minAdm ≤ threshold` has **no counterexample**. It is **NOT** always tight: `(3,4,2)` is tight
+(`6 = 6`), `(4,4,2) t=1` is not (`8 > 7 = minAdm`).
+
+**What is and is NOT banked (the reviewer's CONCERN, accepted).** `routeLayerAtlas_value`
+(`RouteMLayerSplit.lean:616`, sorry-free) proves `⨅ over leaves monomialThreshold = ½·minAdm` for the
+IDEALIZED SINGLE-DIVISOR atlas (each leaf = `foldDivisors [path-total]`, one divisor). It is **NOT** the
+bridge on the actual accumulated MULTI-divisor terminal `monomialThreshold d (sharedDivisorExp) jac`; the
+step "the actual multi-divisor threshold ≥ the idealized single-divisor value" is UNPROVEN and is the
+**piece-6 obligation** (`decorated_base`). So the general uniformity is supported NUMERICALLY (the
+inequality, 23358 charts, no counterexample) but is **not yet a banked Lean theorem for the actual
+terminal**.
 
 ## Load-bearing caveats carried into the build (NOT hand-waves)
 
@@ -103,17 +122,23 @@ The general uniformity is banked at the model level by `routeLayerAtlas_value`
 The three named STEP-0 anchors are ALL regime-A/B clean — they do NOT exercise the monomial terminal.
 So STEP 0's literal check is a **vacuous PASS** on them (uniform because no monomial terminal is reached).
 The genuine monomial-terminal bridge is load-bearing only on rank-deficient chains with a small deeper
-width (e.g. `(3,4,2)`, `(3,3,1)`), verified uniform on a spot-check + banked at the model level by
-`routeLayerAtlas_value`. Two consequences:
+width (e.g. `(3,4,2)`, `(3,3,1)`); there the bridge INEQUALITY `½·minAdm ≤ threshold` has no counterexample
+across 23358 sweep charts (`step0_ineq.py`), but a Lean proof for the ACTUAL multi-divisor terminal is NOT
+banked (`routeLayerAtlas_value` is the idealized single-divisor model, not the actual bridge). Two
+consequences:
 - The predicate/decoration/peel-step build (pieces 1–5, 7) is numerically independent of the bridge value
-  and proceeds unblocked.
-- `decorated_base` (piece 6) carries the real bridge obligation, discharged against `routeLayerAtlas_value`,
-  not against a numeric non-uniformity (there is none).
+  and proceeds unblocked; the threshold-definition decision (decoration-free `½·minAdm`) is sound.
+- `decorated_base` (piece 6) carries the REAL, UNPROVEN bridge obligation: prove the actual-terminal
+  `monomialThreshold d (sharedDivisorExp) jac ≥ ½·minAdm`. The numeric evidence (no counterexample) says
+  this is TRUE, but it is not yet a theorem; do not treat `routeLayerAtlas_value` as discharging it.
 
 ## DATA index (exact)
 - `step0_bridge.py` — per-stratum layer trace (regime classification, terminal chain, charges = minAdm).
 - `step0_recurse.py` — full recursive chart enumeration; rank-deficiency flag per `(chain, cut)`.
 - `step0_sweep.py` — the load-bearing condition swept over arity 3/4/5, widths 1..6; named-anchor + witness
   confirmation (all 0).
+- `step0_ineq.py` — the bridge INEQUALITY check on the 23358 load-bearing charts (`N_0·τ ≥ minAdm` and the
+  joint bound `t·N_last + (N_0−t)·τ ≥ minAdm`, both 0 violations); the tightness spread (not always tight).
 - `codex/step0-{prompt,answer}.md` — decorrelated consult (model+verdict withheld; independent convergence
-  on the load-bearing condition, the named-anchor verdict, and the `(3,4,2)` bridge).
+  on the load-bearing condition, the named-anchor verdict, and the `(3,4,2)` bridge — the latter tight only
+  for that example, per the post-review correction).

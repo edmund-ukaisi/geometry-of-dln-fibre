@@ -38,8 +38,11 @@ discharges `sjJointResolution`). Those consume the banked bricks pinned in the `
 **STEP-0 finding carried here (build-plan-relevant):** the three named anchors `(3,3,4)`, `(2,2,2,2)`,
 `(3,3,3,4)` are ENTIRELY regime-A/B + free-matrix (no rank-deficient chart), so the monomial terminal
 `sjLoss_terminal` is never reached on them — the bridge holds vacuously, threshold EXACTLY `½·minAdm`.
-The monomial terminal is load-bearing only on rank-deficient chains (e.g. `(3,4,2)`); there the bridge
-is banked at the model level by `routeLayerAtlas_value` (`⨅ over leaves monomialThreshold = ½·minAdm`).
+The monomial terminal is load-bearing only on rank-deficient chains (e.g. `(3,4,2)`); there the bridge is
+the INEQUALITY `½·minAdm ≤ threshold` (no counterexample across 23358 sweep charts, `step0_ineq.py`), but a
+Lean proof for the ACTUAL multi-divisor terminal is the UNPROVEN piece-6 obligation (`decorated_base`);
+`routeLayerAtlas_value` is the idealized single-divisor value, NOT that bridge (fidelity review, `d5030719`).
+The threshold-DEFINITION decision — `carrierThreshold = ½·minAdm`, decoration-free — is what STEP-0 settled.
 
 S2-FREE: pure order algebra on `minAdm`/`peelCharge` + the carrier definitions; axiom-clean
 `[propext, Classical.choice, Quot.sound]`. No `monomial_rlct`, no `cited_aoyagi_dln`.
@@ -79,29 +82,31 @@ theorem carrierThreshold_shift (M : Fin (L + 1 + 1 + 1) → ℕ) (u : ℕ)
 
 /-! ## Non-vacuity — the binding-cut charge decompositions (STEP-0 arithmetic, Lean-certified) -/
 
-/-- **Non-vacuity W1 — `(3,3,4)` binding cut `t = 1`.** The front peel emits block charge
-`peelCharge = 4` (a genuine `2×2` corank block, `pq = 4`) and reduces to `(1,4)` with `minAdm = 4`; the
-sum `4 + 4 = 8 = minAdm (3,3,4)` is the binding equality (the soundness gate is TIGHT here). The primary
-inhabitant: a genuine `pq = 4` block, the regime-A exponent shift, a free-matrix terminal. -/
+/-- **Soundness-gate tightness W1 — `(3,3,4)` cut `t = 1`.** Proves ONLY the binding-cut arithmetic:
+`peelCharge = (3−1)(3−1) = 4` and `minAdm (redChain 1 (3,3,4)) = minAdm (1,4) = 4`, so
+`4 + 4 = 8 = minAdm (3,3,4)` — the soundness gate `minAdm ≤ peelCharge + minAdm(redChain)` is an EQUALITY
+(TIGHT) at this cut, so `carrierThreshold_shift` is not slack here. (It does NOT establish the route
+content — the regime-A shift, the free-matrix terminal — nor inhabitation of `DecoratedBoxThresholdFinite`;
+those are the unbuilt pieces 5–7.) -/
 theorem binding_334 :
     peelCharge (![3, 3, 4] : Fin 3 → ℕ) 1 + minAdm (redChain 1 (![3, 3, 4] : Fin 3 → ℕ)) = 8
       ∧ minAdm (![3, 3, 4] : Fin 3 → ℕ) = 8 := by
   refine ⟨?_, by decide⟩
   decide
 
-/-- **Non-vacuity W2 — `(2,2,2,2)` front binding cut `t = 1`.** The front peel emits block charge
-`peelCharge = 1` (`1×1` corank) and reduces to `(1,2,2)` with `minAdm = 2`; `1 + 2 = 3 = minAdm (2,2,2,2)`
-is binding. The multi-peel depth witness (two nested peels to a Morse leaf). -/
+/-- **Soundness-gate tightness W2 — `(2,2,2,2)` cut `t = 1`.** The binding-cut arithmetic only:
+`peelCharge = 1`, `minAdm (redChain 1 (2,2,2,2)) = minAdm (1,2,2) = 2`, so `1 + 2 = 3 = minAdm (2,2,2,2)`
+— the gate is TIGHT. (Does NOT establish the two-nested-peel route or predicate inhabitation.) -/
 theorem binding_2222 :
     peelCharge (![2, 2, 2, 2] : Fin 4 → ℕ) 1 + minAdm (redChain 1 (![2, 2, 2, 2] : Fin 4 → ℕ)) = 3
       ∧ minAdm (![2, 2, 2, 2] : Fin 4 → ℕ) = 3 := by
   refine ⟨?_, by decide⟩
   decide
 
-/-- **Non-vacuity W3 — `(3,3,3,4)` front binding cut `t = 1`** (the STEP-0 deeper-product anchor). The
-front peel emits block charge `peelCharge = 4` (a genuine `2×2` corank) and reduces to `(1,3,4)` with
-`minAdm = 3`; `4 + 3 = 7 = minAdm (3,3,3,4)` is binding. STEP-0 verdict: this chain is regime-A/B clean
-(no rank-deficient chart), so its recursion never reaches the monomial terminal. -/
+/-- **Soundness-gate tightness W3 — `(3,3,3,4)` cut `t = 1`** (the STEP-0 deeper-product anchor). The
+binding-cut arithmetic only: `peelCharge = 4`, `minAdm (redChain 1 (3,3,3,4)) = minAdm (1,3,4) = 3`, so
+`4 + 3 = 7 = minAdm (3,3,3,4)` — the gate is TIGHT. STEP-0 finding: this chain is regime-A/B clean (no
+rank-deficient chart), so its recursion never reaches the monomial terminal (see `step0-terminal-bridge.md`). -/
 theorem binding_3334 :
     peelCharge (![3, 3, 3, 4] : Fin 4 → ℕ) 1 + minAdm (redChain 1 (![3, 3, 3, 4] : Fin 4 → ℕ)) = 7
       ∧ minAdm (![3, 3, 3, 4] : Fin 4 → ℕ) = 7 := by

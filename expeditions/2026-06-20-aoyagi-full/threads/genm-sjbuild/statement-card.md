@@ -22,9 +22,9 @@ is never reached). No re-scope.
 | `carrierThreshold N` | `½·minAdm N` — the count-level RLCT budget of the remaining chain | def |
 | `carrierThreshold_nonneg` | `0 ≤ carrierThreshold N` | proved |
 | `carrierThreshold_shift` | `carrierThreshold M − ½·peelCharge M u ≤ carrierThreshold (redChain u M)` (piece 4, the peel-charge soundness cast; = banked `half_minAdm_sub_half_peelCharge_le`) | proved |
-| `binding_334` | `(3,3,4)` binding cut `t=1`: `peelCharge + minAdm(redChain) = 8 = minAdm` (non-vacuity W1) | proved (`decide`) |
-| `binding_2222` | `(2,2,2,2)` binding cut `t=1`: `1 + 2 = 3 = minAdm` (non-vacuity W2) | proved (`decide`) |
-| `binding_3334` | `(3,3,3,4)` front binding cut `t=1`: `4 + 3 = 7 = minAdm` (non-vacuity W3, the STEP-0 deeper-product anchor) | proved (`decide`) |
+| `binding_334` | `(3,3,4)` cut `t=1`: `peelCharge + minAdm(redChain) = 4+4 = 8 = minAdm` — soundness-gate TIGHTNESS (NOT predicate inhabitation) | proved (`decide`) |
+| `binding_2222` | `(2,2,2,2)` cut `t=1`: `1 + 2 = 3 = minAdm` — soundness-gate tightness | proved (`decide`) |
+| `binding_3334` | `(3,3,3,4)` cut `t=1`: `4 + 3 = 7 = minAdm` — soundness-gate tightness (STEP-0 deeper-product anchor) | proved (`decide`) |
 | `carrierThreshold_334` / `_2222` | the anchor budgets `= 4` / `= 3/2` | proved |
 | `SJDecoration N` | the decoration: banked `SJLinGenState` carrier (shared-divisor support + linear residual) + Jacobian exponents `jac` + chart domain (pieces 2) | structure (shape pinned) |
 | `DecoratedBoxThresholdFinite N D` | the decorated finiteness predicate `∀ c' < carrierThreshold N, ∫_dom ∫_{unitBox d} (∏u^{jac})·(carrier.loss)^{−c'} < ⊤` (piece 3, the load-bearing inductive object; GENERATOR-CARRIER loss, NOT a separable Gram weight) | def (shape pinned) |
@@ -41,6 +41,22 @@ is never reached). No re-scope.
 - **The predicate's loss IS `SJLinGenState.loss`** (the r1predicate HEADLINE, decorrelated-confirmed) —
   generator-by-generator monomial-prefix × linear-residual — NOT the separable
   `Wπ(u)·frobSq(prod(remChain))^{−c'}` (the divergent pointwise route on the rank-deficient-`Q_b` locus).
+- **`SJDecoration` omits the cert's `meas`/`domFin` fields.** `dom` carries no measurability/finiteness
+  constraint yet; those enter as hypotheses in the unbuilt proofs (pieces 5–7). Acceptable for a shape pin;
+  flagged by the fidelity review.
+
+## Fidelity review (`d5030719`, reviewer + decorrelated Codex): SURVIVED, one CONCERN, no defect
+
+- **Predicate + axioms + naming: SOUND / CLEAN.** Loss is the generator-carrier (headline honored); `dom :
+  Set (ζ × (ν→ℝ))` is a fidelity fix over the cert's `Set (ζ × ν)`; forced `#print axioms` clean-three on all
+  results; `sjJointResolution` untouched.
+- **CONCERN (accepted, artifacts corrected):** the STEP-0 "uniform over ALL terminals" headline overclaimed.
+  Corrected to: the NARROW threshold-definition decision (`carrierThreshold = ½·minAdm`, decoration-free) is
+  sound; on load-bearing charts the bridge is an INEQUALITY `½·minAdm ≤ threshold` with no counterexample
+  (23358 charts, `step0_ineq.py`), NOT a tight equality (`(4,4,2)`: 8 > 7), and NOT yet a banked Lean theorem
+  for the actual multi-divisor terminal — `routeLayerAtlas_value` is the idealized single-divisor model, and
+  the actual-terminal bridge is the UNPROVEN piece-6 obligation. The `binding_*` docstrings were narrowed to
+  the arithmetic they prove (soundness-gate tightness, not route content / inhabitation).
 
 ## NOT delivered (the mountain — reported, not laundered)
 
