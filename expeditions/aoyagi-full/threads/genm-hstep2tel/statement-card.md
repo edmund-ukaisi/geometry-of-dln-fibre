@@ -3,9 +3,13 @@
 **Status:** Producer 3 (the general-`L` Schur→Score telescope) **COMPLETE, sorry-free, axiom-clean**
 `[propext, Classical.choice, Quot.sound]` (forced `#print axioms
 prod_deepestM_eq_schur_ldu_readback_gen` loses `sorryAx`; the other three delivered results are equally
-clean). Independent of Producer 1 (the diffeo triple) — no `psiSplitRawGen` differentiability, no
-`deepestSplit` analysis. `hstep2` (`DeepestL2Wiring:1060`, L ≥ 3 arm) **LEFT UNTOUCHED** (the compose is a
-separate step needing Producer 1 too).
+clean). **Fidelity REVIEWED — SURVIVED** (independent reviewer thread + decorrelated Codex xhigh: all 5
+questions PASS — statement mirrors the L=2 template `Fin 3 → Fin (L+1)` and equals the wire's L≥3 `Score`
+matrix; `hC` faithfully generalises `hC0`/`hC1` via `schurTilde`/`Kcoup_zero`; non-vacuous, no laundering;
+`score_eq_unframedSchur_prodDecode_gen` body identical to the banked L=2 modulo dropping the vestigial
+`hL2`; forced `#print axioms` reproduced clean-three, 0 sorries). Independent of Producer 1 (the diffeo
+triple) — no `psiSplitRawGen` differentiability, no `deepestSplit` analysis. `hstep2`
+(`DeepestL2Wiring:1060`, L ≥ 3 arm) **LEFT UNTOUCHED** (the compose is a separate step needing Producer 1 too).
 
 Branch: `genm-hstep2tel` (pushed, @ `a30f2a13`). Base: `origin/expedition/aoyagi-full` @ `51a3dbdb`.
 
@@ -43,7 +47,7 @@ Branch: `genm-hstep2tel` (pushed, @ `a30f2a13`). Base: `origin/expedition/aoyagi
 > - **Deferred.** the discharge of `hC`/`hLayer`/`hPart` at the concrete `psiSplitRawGen`-moved point (the
 >   general readback dictionary — `absorbedCoreConj_eq_schurCore` generalized — and the near-deepest-point
 >   unit germs) belongs to the compose / Producer 1, not here.
-> - **Status.** sorry-free (pending reviewer fidelity check).
+> - **Status.** sorry-free + reviewed (fidelity SURVIVED).
 
 ## Supporting results delivered (one line each, all sorry-free, axiom-clean)
 
