@@ -102,4 +102,108 @@ theorem coreRead_psiSplitRawGen (H : Fin (L + 1) → ℕ) (r : ℕ)
         (fun s => (psiReadBlk H r hr hL J Pf Qf q s).toBlocks₂₂)) s = _
   rw [(paramsEquivFlat (deepestM H r)).symm_apply_apply]
 
+/-! ## The wrapped reads equal the `psiGhat` blocks (round-trip + `psiReadBlk` collapse) -/
+
+/-- The `X`-read equals `psiGhat`'s `(1,1)` block (`psiReadBlk`'s `inl/inl` submatrix is `id`). -/
+theorem gaugeReadX_psiSplitRawGen_eq_psiGhat (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    gaugeReadX H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+        (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s
+      = (psiGhat H r hr hL J Pf Qf q s).toBlocks₁₁ := by
+  rw [gaugeReadX_psiSplitRawGen]
+  funext i j
+  simp only [psiReadBlk, Matrix.toBlocks₁₁, Matrix.submatrix_apply, Matrix.of_apply,
+    Sum.map_inl, id_eq]
+
+/-- The `Y`-read (with its interior-decode reindex) equals `psiGhat`'s `(1,2)` block. -/
+theorem gaugeReadY_psiSplitRawGen_eq_psiGhat (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r s))
+        (gaugeReadY H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+          (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s)
+      = (psiGhat H r hr hL J Pf Qf q s).toBlocks₁₂ := by
+  rw [gaugeReadY_psiSplitRawGen]
+  funext i j
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+    psiReadBlk, Matrix.toBlocks₁₂, Matrix.of_apply, Sum.map_inl, Sum.map_inr, id_eq,
+    Equiv.apply_symm_apply]
+
+/-- The `Z`-read (with its interior-decode reindex) equals `psiGhat`'s `(2,1)` block. -/
+theorem gaugeReadZ_psiSplitRawGen_eq_psiGhat (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (Equiv.refl (Fin r))
+        (gaugeReadZ H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+          (psiSplitRawGen H r hr hL J Pf Qf q).2.2) s)
+      = (psiGhat H r hr hL J Pf Qf q s).toBlocks₂₁ := by
+  rw [gaugeReadZ_psiSplitRawGen]
+  funext i j
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm, Equiv.refl_apply,
+    psiReadBlk, Matrix.toBlocks₂₁, Matrix.of_apply, Sum.map_inl, Sum.map_inr, id_eq,
+    Equiv.apply_symm_apply]
+
+/-- The core-read (with its interior-decode reindex) equals `psiGhat`'s `(2,2)` block. -/
+theorem coreRead_psiSplitRawGen_eq_psiGhat (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L) :
+    Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+        ((paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1 s)
+      = (psiGhat H r hr hL J Pf Qf q s).toBlocks₂₂ := by
+  rw [coreRead_psiSplitRawGen]
+  funext i j
+  simp only [Matrix.reindex_apply, Matrix.submatrix_apply, psiReadBlk, Matrix.toBlocks₂₂,
+    Matrix.of_apply, Sum.map_inr, Equiv.apply_symm_apply]
+
+/-! ## The interior-layer move identity -/
+
+/-- **Interior half of `hmove`.** For an interior layer (`s ∉ {firstLayer, lastLayer}`,
+frame-trivial `Pf s = 1`, `Qf s = 1`), the framed abstract chain of `psiSplitRawGen q` at layer `s`
+equals the moved chain: `deepestChain (framedParamsPivot (psiSplitRawGen q)) (s) = movedC
+(deepestChain (framedParamsPivot q)) (Z0edit0 …) (s)`. The banked interior decode gives the four LHS
+blocks; the read round-trips rewrite them to `psiGhat`'s blocks; interior `psiGhat = movedC − corM`,
+so `fromBlocks`-reassembling and adding back the `corM`-corner recovers `movedC`. -/
+theorem psiSplitRawGen_deepestChain_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (s : Fin L)
+    (hfirst : s ≠ firstLayer hL) (hlast : s ≠ lastLayer hL) (hP : Pf s = 1) (hQ : Qf s = 1) :
+    deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+        (s : ℕ)
+      = movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) (s : ℕ) := by
+  obtain ⟨d11, d12, d21, d22⟩ :=
+    deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf
+      (psiSplitRawGen H r hr hL J Pf Qf q) s hlast hP hQ
+  have hpsigh : psiGhat H r hr hL J Pf Qf q s = psiTargetD H r hr hL J Pf Qf q (s : ℕ) := by
+    rw [psiGhat, dif_neg hlast, dif_neg hfirst]
+  have hmc : movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+      (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) (s : ℕ)
+      = psiGhat H r hr hL J Pf Qf q s + Matrix.fromBlocks 1 0 0 0 := by
+    rw [hpsigh, psiTargetD]; abel
+  rw [← Matrix.fromBlocks_toBlocks (deepestChain H r hr
+    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ)),
+    d11, d12, d21, d22, gaugeReadX_psiSplitRawGen_eq_psiGhat,
+    gaugeReadY_psiSplitRawGen_eq_psiGhat, gaugeReadZ_psiSplitRawGen_eq_psiGhat,
+    coreRead_psiSplitRawGen_eq_psiGhat, hmc,
+    ← Matrix.fromBlocks_toBlocks (psiGhat H r hr hL J Pf Qf q s), Matrix.fromBlocks_add]
+  simp only [Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, add_zero]
+  rw [add_comm (1 : Matrix (Fin r) (Fin r) ℝ) (psiGhat H r hr hL J Pf Qf q s).toBlocks₁₁]
+
 end DLNFibre.DLN.RLCT
