@@ -67,6 +67,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
 
 /-!
 # Axiom-hygiene check
@@ -648,6 +649,13 @@ open DLNFibre.DLN.RLCT
 #print axioms forcedDecodeLeft_lowerFrame_mul
 #print axioms movedC_eq_self_of_toBlocks₂₁_zero
 #print axioms framedLayer_zero
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer-1 diffeo-triple leaf #1/3 COMPLETE (2026-07-08, `genm-hstep2triple2`).
+-- `psiSplitRawGen_zero` (`psiSplitRawGen 0 = 0` — the split origin is a fixed point of the general-L joint
+-- move; the hraw0 producer). hderiv0 (the general-L mirror of the ~2600 L L=2 DeepestDiffeoBridgeL2Conj
+-- apparatus: payload + (★)-recovery + degree-2 germ + compose) + hcd + the triple compose remain.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms psiSplitRawGen_zero
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

@@ -33,10 +33,9 @@ theorem paramsEquivFlat_zero (M : Fin (L + 1) → ℕ) :
     (congrFun (paramsEquivFlatLinear_coe M) 0).symm
   rw [h, map_zero]
 
-/-- `paramsEquivFlat.symm` maps the zero flat vector to the zero parameter tuple. -/
-theorem paramsEquivFlat_symm_zero (M : Fin (L + 1) → ℕ) :
-    (paramsEquivFlat M).symm (0 : Fin (flatDim M) → ℝ) = 0 := by
-  rw [← paramsEquivFlat_zero M, MeasurableEquiv.symm_apply_apply]
+-- (The symm direction `paramsEquivFlat.symm 0 = 0` is already provided general-`L` by
+-- `DeepestDiffeoBridgeL2.paramsEquivFlat_symm_zero`; we do not redeclare it here — the one local use
+-- below derives it inline from `paramsEquivFlat_zero` to avoid importing the L=2 apparatus.)
 
 /-- `regGaugeSlotEquiv.symm` maps the zero read-function to the zero `(reg, gauge)` pair (from the
 banked `regGaugeSlotEquiv_zero`). -/
@@ -108,8 +107,10 @@ private theorem split_zero_readpair (H : Fin (L + 1) → ℕ) (r : ℕ) :
 private theorem split_zero_coreRead (H : Fin (L + 1) → ℕ) (r : ℕ) (s : Fin L) :
     (paramsEquivFlat (deepestM H r)).symm
         (0 : DeepestSplit H r (deepestNGauge H r)).2.1 s = 0 := by
+  have hsymm : (paramsEquivFlat (deepestM H r)).symm (0 : Fin (flatDim (deepestM H r)) → ℝ) = 0 := by
+    rw [← paramsEquivFlat_zero (deepestM H r), MeasurableEquiv.symm_apply_apply]
   rw [show (0 : DeepestSplit H r (deepestNGauge H r)).2.1
-      = (0 : Fin (flatDim (deepestM H r)) → ℝ) from rfl, paramsEquivFlat_symm_zero]
+      = (0 : Fin (flatDim (deepestM H r)) → ℝ) from rfl, hsymm]
   rfl
 
 /-- **The framed chain parameter at the split origin is the corner shape** (`k < L`). Frame-independent:

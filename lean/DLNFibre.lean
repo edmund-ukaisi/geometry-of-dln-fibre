@@ -934,3 +934,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 -- VALUE at 0 = hraw0 core), `framedLayer_zero` (hraw0 foundation). The triple assembly (hraw0/hderiv0/hcd) +
 -- compose remain; `hstep2` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
+-- `DeepestPsiHraw0Gen` — hraw0 COMPLETE: `psiSplitRawGen_zero` (`psiSplitRawGen 0 = 0`, the split origin is a
+-- fixed point of the general-L joint move), green + axiom-clean [propext, Classical.choice, Quot.sound].
+-- Producer-1 diffeo-triple leaf #1 of 3 (hderiv0 + hcd remain — hderiv0 re-scoped as a fresh full-budget
+-- tide, the general-L mirror of the L=2 DeepestDiffeoBridgeL2Conj apparatus). Banks the reusable substrate
+-- (paramsEquivFlat_zero, framedParamsPivot_zero_eq_corner, forcedDecodeLeft/Right_zero, …). `hstep2` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
