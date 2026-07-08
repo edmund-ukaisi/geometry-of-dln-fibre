@@ -1214,18 +1214,167 @@ theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (
   · subst hlast
     rcases rest with (rest | rest)
     · rcases rest with ⟨i, j⟩ | ⟨i, j⟩
-      · sorry
-      · sorry
+      · -- lastLayer, X tag
+        have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+              ⟨lastLayer hL, Sum.inl (Sum.inl (i, j))⟩)
+            = fun q => ((deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                    (lastLayer hL : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (lastLayer hL : ℕ))
+                * Ring.inverse (psiFrameLast H r hr hL Qf)) (Sum.inl i) (Sum.inl j) := by
+          funext q
+          have hpsi := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) hPfL
+          have hq := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf q hPfL
+          show gaugeReadX H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (lastLayer hL) i j
+              - gaugeReadX H r hr hL (q.1, q.2.2) (lastLayer hL) i j = _
+          conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.sub_mul, Matrix.mul_assoc,
+            Ring.mul_inverse_cancel _ hpflunit, Matrix.mul_one]
+          rw [Matrix.sub_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₁]
+        rw [heq]
+        exact hasStrictFDerivAt_matrix_mul_const_entry_zero (Ring.inverse (psiFrameLast H r hr hL Qf))
+          (Sum.inl i) (Sum.inl j)
+          (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+            hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (lastLayer hL : ℕ) (lastLayer hL).isLt
+            (Sum.inl i) c)
+      · -- lastLayer, Y tag
+        have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+              ⟨lastLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+            = fun q => ((deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                    (lastLayer hL : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (lastLayer hL : ℕ))
+                * Ring.inverse (psiFrameLast H r hr hL Qf)) (Sum.inl i)
+                (Sum.inr (finCongr (chainWidth_succ_sub H r (lastLayer hL)) j)) := by
+          funext q
+          have hpsi := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) hPfL
+          have hq := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf q hPfL
+          show gaugeReadY H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (lastLayer hL) i j
+              - gaugeReadY H r hr hL (q.1, q.2.2) (lastLayer hL) i j = _
+          conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.sub_mul, Matrix.mul_assoc,
+            Ring.mul_inverse_cancel _ hpflunit, Matrix.mul_one]
+          rw [Matrix.sub_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₁₂]
+          simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+            Equiv.refl_apply, Equiv.symm_apply_apply]
+        rw [heq]
+        exact hasStrictFDerivAt_matrix_mul_const_entry_zero (Ring.inverse (psiFrameLast H r hr hL Qf))
+          (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r (lastLayer hL)) j))
+          (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+            hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (lastLayer hL : ℕ) (lastLayer hL).isLt
+            (Sum.inl i) c)
     · obtain ⟨i, j⟩ := rest
-      sorry
+      -- lastLayer, Z tag
+      have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q ⟨lastLayer hL, Sum.inr (i, j)⟩)
+          = fun q => ((deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                  (lastLayer hL : ℕ)
+                - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (lastLayer hL : ℕ))
+              * Ring.inverse (psiFrameLast H r hr hL Qf))
+              (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i)) (Sum.inl j) := by
+        funext q
+        have hpsi := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf
+          (psiSplitRawGen H r hr hL J Pf Qf q) hPfL
+        have hq := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf q hPfL
+        show gaugeReadZ H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+              (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (lastLayer hL) i j
+            - gaugeReadZ H r hr hL (q.1, q.2.2) (lastLayer hL) i j = _
+        conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.sub_mul, Matrix.mul_assoc,
+          Ring.mul_inverse_cancel _ hpflunit, Matrix.mul_one]
+        rw [Matrix.sub_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₁]
+        simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+          Equiv.refl_apply, Equiv.symm_apply_apply]
+      rw [heq]
+      exact hasStrictFDerivAt_matrix_mul_const_entry_zero (Ring.inverse (psiFrameLast H r hr hL Qf))
+        (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i)) (Sum.inl j)
+        (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+          hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (lastLayer hL : ℕ) (lastLayer hL).isLt
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i)) c)
   · by_cases hfirst : s = firstLayer hL
     · subst hfirst
       rcases rest with (rest | rest)
       · rcases rest with ⟨i, j⟩ | ⟨i, j⟩
-        · sorry
-        · sorry
+        · -- firstLayer, X tag
+          have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+                ⟨firstLayer hL, Sum.inl (Sum.inl (i, j))⟩)
+              = fun q => (Ring.inverse (psiFrame0 H r hr hL Pf)
+                  * (deepestChain H r hr
+                        (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                        (firstLayer hL : ℕ)
+                    - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (firstLayer hL : ℕ)))
+                  (Sum.inl i) (Sum.inl j) := by
+            funext q
+            have hpsi := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf
+              (psiSplitRawGen H r hr hL J Pf Qf q) hQf0
+            have hq := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf q hQf0
+            show gaugeReadX H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                  (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (firstLayer hL) i j
+                - gaugeReadX H r hr hL (q.1, q.2.2) (firstLayer hL) i j = _
+            conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.mul_sub, ← Matrix.mul_assoc,
+              Ring.inverse_mul_cancel _ hpsiunit, Matrix.one_mul]
+            rw [Matrix.sub_apply, Matrix.fromBlocks_apply₁₁, Matrix.fromBlocks_apply₁₁]
+          rw [heq]
+          exact hasStrictFDerivAt_const_matrix_mul_entry_zero (Ring.inverse (psiFrame0 H r hr hL Pf))
+            (Sum.inl i) (Sum.inl j)
+            (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+              hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (firstLayer hL : ℕ)
+              (firstLayer hL).isLt c (Sum.inl j))
+        · -- firstLayer, Y tag
+          have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q
+                ⟨firstLayer hL, Sum.inl (Sum.inr (i, j))⟩)
+              = fun q => (Ring.inverse (psiFrame0 H r hr hL Pf)
+                  * (deepestChain H r hr
+                        (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                        (firstLayer hL : ℕ)
+                    - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (firstLayer hL : ℕ)))
+                  (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j)) := by
+            funext q
+            have hpsi := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf
+              (psiSplitRawGen H r hr hL J Pf Qf q) hQf0
+            have hq := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf q hQf0
+            show gaugeReadY H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                  (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (firstLayer hL) i j
+                - gaugeReadY H r hr hL (q.1, q.2.2) (firstLayer hL) i j = _
+            conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.mul_sub, ← Matrix.mul_assoc,
+              Ring.inverse_mul_cancel _ hpsiunit, Matrix.one_mul]
+            rw [Matrix.sub_apply, Matrix.fromBlocks_apply₁₂, Matrix.fromBlocks_apply₁₂]
+            simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+              Equiv.refl_apply, Equiv.symm_apply_apply]
+          rw [heq]
+          exact hasStrictFDerivAt_const_matrix_mul_entry_zero (Ring.inverse (psiFrame0 H r hr hL Pf))
+            (Sum.inl i) (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j))
+            (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+              hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (firstLayer hL : ℕ)
+              (firstLayer hL).isLt c (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j)))
       · obtain ⟨i, j⟩ := rest
-        sorry
+        -- firstLayer, Z tag
+        have heq : (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q ⟨firstLayer hL, Sum.inr (i, j)⟩)
+            = fun q => (Ring.inverse (psiFrame0 H r hr hL Pf)
+                * (deepestChain H r hr
+                      (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                      (firstLayer hL : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (firstLayer hL : ℕ)))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)) i)) (Sum.inl j) := by
+          funext q
+          have hpsi := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) hQf0
+          have hq := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf q hQf0
+          show gaugeReadZ H r hr hL ((psiSplitRawGen H r hr hL J Pf Qf q).1,
+                (psiSplitRawGen H r hr hL J Pf Qf q).2.2) (firstLayer hL) i j
+              - gaugeReadZ H r hr hL (q.1, q.2.2) (firstLayer hL) i j = _
+          conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.mul_sub, ← Matrix.mul_assoc,
+            Ring.inverse_mul_cancel _ hpsiunit, Matrix.one_mul]
+          rw [Matrix.sub_apply, Matrix.fromBlocks_apply₂₁, Matrix.fromBlocks_apply₂₁]
+          simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.refl_symm,
+            Equiv.refl_apply, Equiv.symm_apply_apply]
+        rw [heq]
+        exact hasStrictFDerivAt_const_matrix_mul_entry_zero (Ring.inverse (psiFrame0 H r hr hL Pf))
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)) i)) (Sum.inl j)
+          (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+            hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (firstLayer hL : ℕ)
+            (firstLayer hL).isLt c (Sum.inl j))
     · have hpos : 0 < (s : ℕ) := by
         rcases Nat.eq_zero_or_pos (s : ℕ) with h0 | h0
         · exact absurd (Fin.ext (by simp [firstLayer, h0]) : s = firstLayer hL) hfirst
