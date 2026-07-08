@@ -212,4 +212,33 @@ theorem movedC_eq_self_of_toBlocks₂₁_zero
 
 end MovedFixed
 
+/-! ## Zero-read building blocks toward `hraw0` (`psiSplitRawGen 0 = 0`)
+
+At the split origin `0` all reads vanish, so the additive framing `framedLayer = reindex(corM) +
+P·reindex(rawDev)·Q` collapses to the pure corner `reindex(corM)`. These are the frame-independent
+foundations of `psiSplitRawGen 0 = 0`. -/
+
+/-- **`framedLayer` at zero reads is the pure corner** (`reindex(fromBlocks 1 0 0 0)`): the additive
+frame-wrapped deviation `P·reindex(fromBlocks 0 0 0 0)·Q` vanishes. Frame-independent. -/
+theorem framedLayer_zero {L : ℕ} (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (s : Fin L)
+    (P : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Q : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    framedLayer H r hr s P Q 0 0 0 0
+      = Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+          (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+          (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) := by
+  have h0 : Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+      (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+      (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+      = (0 : Matrix (Fin (H s.castSucc)) (Fin (H s.succ)) ℝ) := by
+    rw [Matrix.fromBlocks_zero]
+    ext i j
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.zero_apply]
+  have hframe : P * Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm
+      (rThresholdSplit r (H s.succ) (hr s.succ)).symm
+      (Matrix.fromBlocks (0 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) * Q = 0 := by
+    rw [h0, Matrix.mul_zero, Matrix.zero_mul]
+  rw [framedLayer, hframe, add_zero]
+
 end DLNFibre.DLN.RLCT
