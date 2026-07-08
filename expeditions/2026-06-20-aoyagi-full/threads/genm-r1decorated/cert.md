@@ -52,6 +52,15 @@ The decision is **from-scratch-purity (BUILD, multi-week) vs status-quo-cite (CI
 cite-footprint expansion. Both keep the headline; the difference is whether R1-UPPER box-finiteness is
 proved geometrically or rests on the same Aoyagi citation the payoff already uses.
 
+**No contradiction with `r1upper-derisk.md` / `r1upper-wall-review.md` (a scope clarification).** Those
+docs correctly show the **two-matrix corank scaffold** (`SchurCore Δ·S`, WellFounded on *corank*)
+cannot reach the additive `½·minAdm` sum threshold for `L ≥ 3` — a factor-of-2 undershoot at
+`(3,3,3,3)`. Their own §3 names the missing piece as "**a new WellFounded recursion on the ARITY `L`,
+not on corank**." That arity recursion IS the native R-BLOWUP depth recursion this cert adjudicates as
+`A`/buildable. So the two verdicts compose: *corank scaffold walls* (wall-review) → *the arity/depth
+R-BLOWUP recursion is the buildable route* (this cert), matching `minAdmRec`'s layer descent. The
+decorated `I_π(s)` induction (A) is exactly that arity recursion made into an inductive statement.
+
 ---
 
 ## (A) The decorated `I_π(s)` contract — Lean-ready shapes
