@@ -47,6 +47,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLedger
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
 
 /-!
 # Axiom-hygiene check
@@ -469,3 +470,14 @@ open DLNFibre.DLN.RLCT
 -- Quot.sound] (no `sorryAx`, no `monomial_rlct`). Axiom-gated across the multi-tide R1-UPPER close.
 #print axioms chartInner_blockReindex_eq
 #print axioms chartInner_blockReindex_eq_of_emb
+
+-- ★ R1-UPPER (S,J) CoV Phase-2 piece 2-rest (2026-07-07, `genm-sjcarrier6`). The Schur-split weld:
+-- the pointwise split `frobSq_schur_split_inv` (`IsUnit toBlocks₁₁ → frobSq(M'·Q) = schurLoss M' Q`,
+-- cross-coupled `Γ = D − C·P⁻¹·B` exposed) + the headline `chartInner_schurWeld_eq_of_emb` (the raw
+-- front-factor chart integral = the Schur cross-coupled block integral over `genBox ∩ {IsUnit
+-- toBlocks₁₁}`, Γ exposed inside the integrand — upstream-usable to close `sjJointResolution`). The
+-- MP shear `D↦Γ` + corank radial peel + the (S,J) outer descent (piece 2-rest + 3) are the deferred
+-- SIZE barrier — `sjJointResolution` untouched. Cite-NOTHING: forced `#print axioms` = [propext,
+-- Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
+#print axioms frobSq_schur_split_inv
+#print axioms chartInner_schurWeld_eq_of_emb

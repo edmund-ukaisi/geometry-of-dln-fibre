@@ -796,3 +796,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
 -- MP block-reindex `matReindexEquiv`). The Schur/shear/corank-peel + `(S,J)` descent are pieces 2 (rest)
 -- and 3; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
+-- R1-UPPER Phase-2 piece 2-rest (thread `genm-sjcarrier6`): the Schur-split WELD onto the block-reindex
+-- transport. On the pivot chart the block loss `frobSq (B · Q̃)` becomes the exact cross-coupled Schur
+-- form `frobSq (P·Q̃ₚ') + frobSq (C·Q̃ₚ' + Γ·Q_b)`, the corank block `Γ` EXPOSED inside the integral
+-- (`chartInner_schurWeld_eq_of_emb`, composing `chartInner_blockReindex_eq_of_emb` +
+-- `chartInner_schurSplit_eq`). The shear + corank radial peel + `(S,J)` descent are the remaining
+-- pieces; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
