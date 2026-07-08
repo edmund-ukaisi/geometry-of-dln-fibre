@@ -37,7 +37,9 @@ must be the L=2 **joint move** — a core shear plus a canonical reg/gauge fibre
 `deepestEFull` exactly invariant while the core-edit realises the Schur untwisting to `Score`. This
 reduction states `psi`, `psiSplitRaw`, the diffeo triple, the split-compatibility germ, and the two germs
 as explicit hypotheses (Codex-vetted as a faithful reduction, not laundering: it does not pretend the hard
-construction is done). The `hstep2` sorry is therefore LEFT UNTOUCHED pending the coupled bulk.
+construction is done). [UPDATE 2026-07-08: the `hstep2` sorry (`DeepestL2Wiring`, L≥3 arm) is now CLOSED — the
+caller discharges these germs from the completed Producer-1 diffeo triple + Item-3 hC; `deepest_gauge_construction`
+is clean. This docstring's "LEFT UNTOUCHED" is historical.]
 -/
 
 open MeasureTheory Topology Matrix

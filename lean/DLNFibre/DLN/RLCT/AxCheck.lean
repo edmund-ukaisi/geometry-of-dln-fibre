@@ -74,6 +74,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen
+import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
+import DLNFibre.DLN.RLCT.Validate.D1GeCommonPivot
+import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
+import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 
 /-!
 # Axiom-hygiene check
@@ -744,3 +748,23 @@ open DLNFibre.DLN.RLCT
 #print axioms reindex_prodAux_eq_partProd
 #print axioms reindex_prod_eq_partProd
 #print axioms reindexECol_regBlocks_eq_of_chain_movedC
+
+-- ★★ D1 ∀-L #120 "=" SIDE CLOSED (2026-07-08, `genm-eqassembly`). `hstep2` (DeepestL2Wiring:1070) filled inline
+-- ⟹ `deepest_gauge_construction` (general L) is CLEAN (hstep2 was its sole L≥3 obligation) ⟹ the front-pivot
+-- chain `aoyagi_learning_coefficient_frontPivot` (DeepestNormalFormFrontPivot:125) is axiom-clean → Skeleton:1131
+-- D1 "=". Assembly = the Producer-1 diffeo triple (hraw0/hderiv0/hcd) + Item-3 hC + the hq eventual-ball germ +
+-- the small-χ discharge (tsupport χ ⊆ invertibility region via `eventually_psiInvBundle`). Fidelity-reviewed PASS.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`/`cited_aoyagi_dln`/
+-- `monomial_rlct`).
+#print axioms deepest_gauge_construction
+#print axioms aoyagi_learning_coefficient_frontPivot
+
+-- ★ D1 ∀-L #120 "≤"-leg (general-L) — the explicit-Schur route (2026-07-08, `genm-dgelegbuild`/`genm-geleg1`).
+-- INTERFACE `d1ge_deepestPoint_of_explicit_chart_genL` (chart-data + `hDeepest` ⟹ `rlctAt deepest ≤ rlctAt v`,
+-- matching Skeleton:1172; reviewed PASS) + chart-data (i) `exists_common_pivot_gen` (general-L common prefix pivot)
+-- + (ii) `reindex_prod_eq_genPartProd` (block-product↔DLN-`prod` bridge). Remaining chart-data = (iii) corner-elim
+-- chart Φ + (iv) Schur residual/slice (bounded, dgeflat FLAT). Cite-NOTHING: forced `#print axioms` = [propext,
+-- Classical.choice, Quot.sound].
+#print axioms d1ge_deepestPoint_of_explicit_chart_genL
+#print axioms exists_common_pivot_gen
+#print axioms reindex_prod_eq_genPartProd

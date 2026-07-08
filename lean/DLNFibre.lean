@@ -985,3 +985,13 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
 -- diffeo triple hraw0 ✓ + hderiv0 ✓ + hcd ✓ is now COMPLETE** — `hstep2` still needs Item-3 hC (hcfinish) + the
 -- triple/frontPivot assembly.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen
+-- D1 #120 "≤"-leg (general-L) — the explicit-Schur route to `rlctAt_deepest_le_of_optimal` (Skeleton:1172).
+-- `D1GeBlockModel` (general-L block coordinate model `blockFlatEquivGen`) + `D1GeCommonPivot`
+-- (`exists_common_pivot_gen` — general-L common PREFIX pivot, chart-data (i)) + `D1GeBlockProd`
+-- (`reindex_prod_eq_genPartProd` — block-product↔DLN-`prod` bridge, chart-data (ii)) + `D1GeLegGenL`
+-- (the reviewed INTERFACE: `d1ge_deepestPoint_of_explicit_chart_genL`, chart-data + hDeepest ⟹ ≥-leg).
+-- Remaining ≥-leg = chart-data (iii) [corner-elim chart Φ] + (iv) [Schur residual/slice] (bounded, dgeflat FLAT).
+import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
+import DLNFibre.DLN.RLCT.Validate.D1GeCommonPivot
+import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
+import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL

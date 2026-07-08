@@ -1,0 +1,7 @@
+1. **VERDICT:** State **(A) prefix-only** as the right piece-(i) deliverable; treat **(B)** as a stronger optional lemma, not the current gate.
+
+2. **Reasoning:** Yes, `hLayer` is avoidable if the general-`L` chart is built by iterating the asymmetric two-factor `schur_product_factor`. At step `s`, apply it to `P_s * v_s = P_{s+1}`; its invertibility hypotheses are exactly the prefix pivot of `P_s` and the prefix pivot of `P_{s+1}`. It never inverts `(v_s).toBlocks₁₁`. Fact: the existing `schur_product_ldu_rec` path does require `hLayer`; inference/design judgment: that is an artifact of using the symmetric LDU recursion, not a mathematical necessity for the asymmetric chart.
+
+3. If you insist on feeding `schur_product_ldu_rec` unchanged, then **(B)** is needed. I would treat Cauchy-Binet, or an equivalent common-basis/matroid-intersection lemma, as unavoidable for that route: the two-factor subproblem is exactly “from `det(A*B) ≠ 0`, find `K` with both `det A[:,K] ≠ 0` and `det B[K,:] ≠ 0`.” A rank squeeze alone gives one side, not both.
+
+4. **Claim (A) risk:** mathematically sound. The only Lean risks are bookkeeping: handle `r = 0`, express the suffix factor with the right `submatrix_mul`, and use the extraction lemma in the exact `rank ≥ r` form. The “rank exactly `r`” hypothesis is stronger than needed for (A); `rank prod ≥ r` plus the chosen full-product minor suffices.
