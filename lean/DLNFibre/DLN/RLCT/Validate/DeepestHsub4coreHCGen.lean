@@ -1,0 +1,51 @@
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
+import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
+import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
+
+/-!
+# `DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen` — the general-`L` `hC` core-side move readback
+(#120 `hstep2`, item 3, Piece 1)
+
+The `hC` hypothesis the general-`L` keystone in `DeepestHsub4coreGen` consumes: at the chart point
+`q = split x`, the conjugated absorbed core of the moved point `psiSplitRawGen … q`, reindexed,
+equals the moved Schur core of the **decode** chain of `x`.
+
+## Building blocks (bottom-up)
+
+* `absorbedCoreConj_eq_blockSchur_synthetic` — the GENERIC algebraic reduction: the conjugated
+  absorbed core `coreRead + schurCorrectionConj` is the `(1,1)`-Schur complement of the synthetic
+  layer `fromBlocks (deepBlkA+X) (deepBlkY+Y) (deepBlkZ+Z) coreRead`. Pure `Matrix`/`Ring` algebra
+  (`nonsing_inv_eq_ringInverse` bridges the `⁻¹` to `blockSchur`'s `Ring.inverse`).
+-/
+
+open Matrix
+namespace DLNFibre.DLN.RLCT
+
+set_option linter.unusedSectionVars false
+
+variable {L : ℕ}
+
+/-! ## The generic conjugated-absorbed-core = synthetic-layer Schur complement -/
+
+/-- **The conjugated absorbed core is a `(1,1)`-Schur complement.** For any core slot `pc`, gauge
+slot `pg`, `coreRead pc s + schurCorrectionConj pg s` equals `blockSchur` of the synthetic layer
+with blocks the deepest constants plus the gauge/core reads (`(1,1)=deepBlkA+gaugeReadX`,
+`(1,2)=deepBlkY+gaugeReadY`, `(2,1)=deepBlkZ+gaugeReadZ`, `(2,2)=coreRead`). Pure algebra
+(`blockSchur (fromBlocks A' Y' Z' T') = T'−Z'·(A')⁻¹·Y'`, via `nonsing_inv_eq_ringInverse`). -/
+theorem absorbedCoreConj_eq_blockSchur_synthetic (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (pc : Fin (flatDim (deepestM H r)) → ℝ)
+    (pg : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) (s : Fin L) :
+    (paramsEquivFlat (deepestM H r)).symm pc s + schurCorrectionConj H r B hB hr hL pg s
+      = blockSchur (Matrix.fromBlocks
+          (deepBlkA H r B hB hr hL s + gaugeReadX H r hr hL pg s)
+          (deepBlkY H r B hB hr hL s + gaugeReadY H r hr hL pg s)
+          (deepBlkZ H r B hB hr hL s + gaugeReadZ H r hr hL pg s)
+          ((paramsEquivFlat (deepestM H r)).symm pc s)) := by
+  rw [blockSchur, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, schurCorrectionConj,
+    ← Matrix.nonsing_inv_eq_ringInverse]
+  rw [Matrix.neg_mul, Matrix.neg_mul, ← sub_eq_add_neg]
+
+end DLNFibre.DLN.RLCT
