@@ -11,7 +11,8 @@ the bottom-left block `(partProd)₂₁` of the full product.
 
 The banked top-row half (`topRow_movedC`) fixes `(P₁₁, P₁₂)` for **any** `Z₀` override; here the specific
 `Z₀` (the `deltaV0` accumulator) makes `(partProd (movedC C (Z0edit0 C L)) L)₂₁ = (partProd C L)₂₁`,
-completing the reg-preservation germ `hsub3reg` at the abstract level.
+supplying the abstract half of the reg-preservation germ `hsub3reg` (the concrete `deepestEFull`
+instantiation is downstream — see the module's closing note).
 
 ## The mechanism (cert §1, re-derived clean for Lean)
 
@@ -350,6 +351,33 @@ theorem regBlocks_movedC (C : (s : ℕ) → Matrix (r ⊕ m s) (r ⊕ m (s + 1))
       ∧ (partProd (movedC C (Z0edit0 C L)) L).toBlocks₂₁ = (partProd C L).toBlocks₂₁ :=
   ⟨(topRow_movedC C (Z0edit0 C L) hP hN L).1, (topRow_movedC C (Z0edit0 C L) hP hN L).2,
     leftCol_movedC C L hP hA hN hL⟩
+
+/-! ## Non-vacuity witness
+
+The hypotheses of `leftCol_movedC` are satisfiable and the identity applies: for the constant chain of
+identity layers (`r = Fin 1`, core `Fin 1`, over `ℚ`) every layer pivot is `1`, every partial-product
+pivot is `1`, and every pivot-mix `nMix` is `1` (the down blocks vanish), so all three `IsUnit`
+hypotheses hold and `leftCol_movedC` fires at `L = 3`. This rules out vacuity-by-unsatisfiable-hypotheses.
+(For this constant chain `ΔV₀ = 0`; the genuine `ΔV₀ ≠ 0` regime at `L ≥ 3` is the theorem's content,
+exact-verified `L ≤ 5, m ≤ 3` in the cert.) -/
+example :
+    let C : (s : ℕ) →
+        Matrix (Fin 1 ⊕ (fun _ : ℕ => Fin 1) s) (Fin 1 ⊕ (fun _ : ℕ => Fin 1) (s + 1)) ℚ :=
+      fun _ => 1
+    (partProd (movedC C (Z0edit0 C 3)) 3).toBlocks₂₁ = (partProd C 3).toBlocks₂₁ := by
+  intro C
+  have hone : ∀ k, partProd C k = 1 := by
+    intro k
+    induction k with
+    | zero => rfl
+    | succ n ih => rw [partProd, ih, one_mul]
+  have hN1 : ∀ k, nMix C k = 1 := by
+    intro k
+    rw [nMix, vDown, show C k = 1 from rfl, toBlocks₂₁_one, Matrix.zero_mul, Matrix.mul_zero, add_zero]
+  refine leftCol_movedC C 3 (fun k => ?_) (fun k => ?_) (fun k => ?_) (by norm_num)
+  · rw [hone k, toBlocks₁₁_one]; exact isUnit_one
+  · rw [show C k = 1 from rfl, toBlocks₁₁_one]; exact isUnit_one
+  · rw [hN1 k]; exact isUnit_one
 
 end
 end DLNFibre.DLN.RLCT
