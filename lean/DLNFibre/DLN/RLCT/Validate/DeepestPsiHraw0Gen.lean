@@ -97,4 +97,52 @@ theorem deepestChain_corner_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
     deepestChainLayer_corner_toBlocks₂₁ H r hr A k hk hcor,
     deepestChainLayer_corner_toBlocks₂₂ H r hr A k hk hcor]
 
+/-! ## The framed chain at the split origin is the corner (frame-independent) -/
+
+/-- At the split origin, the read-pair `(q.1, q.2.2)` is the zero pair. -/
+private theorem split_zero_readpair (H : Fin (L + 1) → ℕ) (r : ℕ) :
+    ((0 : DeepestSplit H r (deepestNGauge H r)).1, (0 : DeepestSplit H r (deepestNGauge H r)).2.2)
+      = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) := rfl
+
+/-- The core read at the split origin vanishes (`paramsEquivFlat.symm 0 = 0`). -/
+private theorem split_zero_coreRead (H : Fin (L + 1) → ℕ) (r : ℕ) (s : Fin L) :
+    (paramsEquivFlat (deepestM H r)).symm
+        (0 : DeepestSplit H r (deepestNGauge H r)).2.1 s = 0 := by
+  rw [show (0 : DeepestSplit H r (deepestNGauge H r)).2.1
+      = (0 : Fin (flatDim (deepestM H r)) → ℝ) from rfl, paramsEquivFlat_symm_zero]
+  rfl
+
+/-- **The framed chain parameter at the split origin is the corner shape** (`k < L`). Frame-independent:
+at `0` all reads vanish, so the additive framing collapses to the pure corner (`framedLayer_zero`, and
+for the last layer the pivot column collapses to `rThr` under `J = frontEmbed`). -/
+theorem framedParamsPivot_zero_eq_corner (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (k : ℕ) (hk : k < L) :
+    framedParamsPivot H r hr hL J Pf Qf 0 ⟨k, hk⟩
+      = Matrix.of (fun (i : Fin (H (⟨k, hk⟩ : Fin L).castSucc)) (j : Fin (H (⟨k, hk⟩ : Fin L).succ)) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  by_cases hlast : (⟨k, hk⟩ : Fin L) = lastLayer hL
+  · -- last layer: the pivot column collapses to `rThr` under `J = frontEmbed`.
+    rw [hlast, framedParamsPivot_last, split_zero_readpair, gaugeReadX_zero H r hr hL,
+      gaugeReadY_zero H r hr hL, gaugeReadZ_zero H r hr hL, split_zero_coreRead, Matrix.fromBlocks_zero]
+    have hz : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+        (pivotThresholdSplit r (H (lastLayer hL).succ) (hr _) (pivotJSucc H r hL J)).symm
+        (0 : Matrix (Fin r ⊕ Fin (H (lastLayer hL).castSucc - r))
+          (Fin r ⊕ Fin (H (lastLayer hL).succ - r)) ℝ) = 0 := by
+      ext i j; simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.zero_apply]
+    rw [hz, Matrix.mul_zero, Matrix.zero_mul, add_zero]
+    subst hJfront
+    rw [pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL]
+    exact reindex_symm_fromBlocks_one_eq_corner r (H (lastLayer hL).castSucc) (H (lastLayer hL).succ)
+      (hr _) (hr _)
+  · -- interior/first layer: `framedParamsPivot = framedParams`, then `framedLayer_zero`.
+    rw [framedParamsPivot_of_ne_last H r hr hL J Pf Qf 0 ⟨k, hk⟩ hlast]
+    simp only [framedParams, split_zero_readpair, gaugeReadX_zero H r hr hL, gaugeReadY_zero H r hr hL,
+      gaugeReadZ_zero H r hr hL, split_zero_coreRead, framedLayer_zero]
+    exact reindex_symm_fromBlocks_one_eq_corner r (H (⟨k, hk⟩ : Fin L).castSucc)
+      (H (⟨k, hk⟩ : Fin L).succ) (hr _) (hr _)
+
 end DLNFibre.DLN.RLCT
