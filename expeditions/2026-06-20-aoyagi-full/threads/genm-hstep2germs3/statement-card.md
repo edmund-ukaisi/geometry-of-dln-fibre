@@ -7,7 +7,8 @@ of Invariant A. Together with the banked top-row half (`topRow_movedC`) this is 
 reg-preservation germ `hsub3reg` (`deepestEFull` invariant under the move).
 
 Module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenLeftCol.lean`
-(branch `genm-hstep2germs3` @ `9abecfaa`).
+(branch `genm-hstep2germs3` @ `4fbde093`; result landed at `9abecfaa`). Ships an in-file non-vacuity
+witness (constant identity chain, `L = 3`). Full `scripts/lb DLNFibre` green (8750 jobs, no clashes).
 
 ## The headline result
 
@@ -55,4 +56,8 @@ Module: `lean/DLNFibre/DLN/RLCT/Validate/DeepestPsiSplitGenLeftCol.lean`
   preserving `P₂₁` reduces to `leftAccum (moved) L = leftAccum C L`; the moved chain's increments differ
   from `C`'s only by `blockSchur → Ŵ` (via the Schur recursion) and the `s = 0` down-edit, and the `Z₀`
   accumulator `Z0edit0` is defined to make the telescoped difference vanish.
-- **Status.** sorry-free (pending reviewer fidelity check).
+- **Status.** sorry-free + reviewed. Independent reviewer (`genm-hstep2germs3` fidelity, decorrelated
+  Codex) verdict: **fidelity SURVIVED** — `leftCol_movedC`/`regBlocks_movedC` faithfully encode the cert's
+  Invariant-A left-column claim (`Z0edit0 = Z_0 + ΔV_0·A_0`, `deltaV0 = a_L − ã_L`), no overclaim
+  (`hstep2` untouched, concrete germ correctly Deferred), `Ŵ` genuinely `Z₀`-independent (not circular),
+  axiom-clean via forced `#print axioms`.
