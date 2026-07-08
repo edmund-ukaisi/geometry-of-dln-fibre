@@ -737,4 +737,114 @@ theorem hcd_psiSplitRawGen (H : Fin (L + 1) → ℕ) (r : ℕ)
       ContDiffAt ℝ (⊤ : ℕ∞) (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q) q :=
   fun q hq => contDiffAt_psiSplitDeltaGen_at H r hr hL J Pf Qf q (hχ q hq)
 
+/-! ### The invertibility region is a neighbourhood of the split origin
+
+`psiInvBundle` holds at `0` (all three families `= 1`, `gen*_zero`) and — by continuity of the
+determinant families (chain/partProd entries globally `ContDiff`; `nMix` entries `ContDiffAt` at `0`)
+— on a neighbourhood. The `∀ k` collapses to a finite range plus the trivial tail
+(`deepestChain_tail_toBlocks₁₁` / `partProd_toBlocks₁₁_stabilize` / `nMix_tail_eq_one`), mirroring
+`hsub3reg_gen_germ`. This lets the Producer-1 top-level discharge `hcd_psiSplitRawGen`'s `hχ` for a
+bump chosen with small enough radius. -/
+
+/-- **The invertibility bundle holds at the split origin** — all three determinant families are `1`. -/
+theorem psiInvBundle_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    psiInvBundle H r hr hL J Pf Qf 0 := by
+  refine ⟨fun k => ?_, fun k => ?_, fun k => ?_⟩
+  · rw [genChain_zero_toBlocks₁₁ H r hr hL J hJfront Pf Qf k, Matrix.det_one]; exact one_ne_zero
+  · rcases Nat.lt_or_ge k (L + 1) with hk | hk
+    · rw [genPartProd_zero_toBlocks₁₁ H r hr hL J hJfront Pf Qf k (by omega), Matrix.det_one]
+      exact one_ne_zero
+    · rw [partProd_toBlocks₁₁_stabilize H r hr hL J Pf Qf 0 k (by omega),
+        genPartProd_zero_toBlocks₁₁ H r hr hL J hJfront Pf Qf L le_rfl, Matrix.det_one]
+      exact one_ne_zero
+  · rcases Nat.lt_or_ge k L with hk | hk
+    · rw [genNMix_zero H r hr hL J hJfront Pf Qf k (by omega), Matrix.det_one]; exact one_ne_zero
+    · rw [nMix_tail_eq_one H r hr hL J Pf Qf 0 k hk, Matrix.det_one]; exact one_ne_zero
+
+/-- **The invertibility region is a neighbourhood of `0`.** -/
+theorem eventually_psiInvBundle (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      psiInvBundle H r hr hL J Pf Qf q := by
+  have hb0 := psiInvBundle_zero H r hr hL J hJfront Pf Qf
+  -- per-`k` nbhds
+  have hAk : ∀ k, ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁).det ≠ 0 := by
+    intro k
+    have hcont : Continuous
+        (fun q => ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁).det) :=
+      (continuous_matrix (fun a b =>
+        (contDiff_deepestChain_framedParamsPivot_entry H r hr hL J Pf Qf k
+          (Sum.inl a) (Sum.inl b)).continuous)).matrix_det
+    exact hcont.continuousAt.preimage_mem_nhds (isOpen_ne.mem_nhds (hb0.1 k))
+  have hPk : ∀ k, ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁).det
+        ≠ 0 := by
+    intro k
+    have hcont : Continuous
+        (fun q =>
+          ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁).det) :=
+      (continuous_matrix (fun a b =>
+        (contDiff_partProd_entry H r hr hL J Pf Qf k (Sum.inl a) (Sum.inl b)).continuous)).matrix_det
+    exact hcont.continuousAt.preimage_mem_nhds (isOpen_ne.mem_nhds (hb0.2.1 k))
+  have hNk : ∀ k, ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).det ≠ 0 := by
+    intro k
+    have hmat : ContinuousAt
+        (fun q => nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k)
+        (0 : DeepestSplit H r (deepestNGauge H r)) :=
+      continuousAt_pi' (fun i => continuousAt_pi' (fun j =>
+        (genNMix_contDiffAt_at H r hr hL J Pf Qf k 0 hb0 i j).continuousAt))
+    have hcont : ContinuousAt
+        (fun q => (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).det)
+        (0 : DeepestSplit H r (deepestNGauge H r)) :=
+      (Continuous.matrix_det continuous_id).continuousAt.comp hmat
+    exact hcont.preimage_mem_nhds (isOpen_ne.mem_nhds (hb0.2.2 k))
+  -- collapse the `∀ k` to a finite range + trivial tail
+  have hA : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      ∀ k, ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁).det ≠ 0 := by
+    have hfin : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+        ∀ k ∈ Finset.range L,
+          ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁).det ≠ 0 :=
+      (Filter.eventually_all_finset _).mpr (fun k _ => hAk k)
+    filter_upwards [hfin] with q hq
+    intro k
+    rcases lt_or_ge k L with hk | hk
+    · exact hq k (Finset.mem_range.mpr hk)
+    · rw [deepestChain_tail_toBlocks₁₁ H r hr _ k (by omega), Matrix.det_one]; exact one_ne_zero
+  have hP : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      ∀ k, ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁).det
+        ≠ 0 := by
+    have hfin : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+        ∀ k ∈ Finset.range (L + 1),
+          ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁).det
+            ≠ 0 :=
+      (Filter.eventually_all_finset _).mpr (fun k _ => hPk k)
+    filter_upwards [hfin] with q hq
+    intro k
+    rcases Nat.lt_or_ge k (L + 1) with hkL | hLk
+    · exact hq k (Finset.mem_range.mpr hkL)
+    · rw [partProd_toBlocks₁₁_stabilize H r hr hL J Pf Qf q k (by omega)]
+      exact hq L (Finset.mem_range.mpr (by omega))
+  have hN : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+      ∀ k, (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).det ≠ 0 := by
+    have hfin : ∀ᶠ q in nhds (0 : DeepestSplit H r (deepestNGauge H r)),
+        ∀ k ∈ Finset.range L,
+          (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).det ≠ 0 :=
+      (Filter.eventually_all_finset _).mpr (fun k _ => hNk k)
+    filter_upwards [hfin] with q hq
+    intro k
+    rcases lt_or_ge k L with hk | hk
+    · exact hq k (Finset.mem_range.mpr hk)
+    · rw [nMix_tail_eq_one H r hr hL J Pf Qf q k (by omega), Matrix.det_one]; exact one_ne_zero
+  filter_upwards [hA, hP, hN] with q hqA hqP hqN
+  exact ⟨hqA, hqP, hqN⟩
+
 end DLNFibre.DLN.RLCT
