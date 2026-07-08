@@ -7,7 +7,7 @@
 > (cert `expeditions/2026-06-20-aoyagi-full/threads/genm-r1substratum/cert.md` §C.)
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.minAdm_eq_frontPeel`, `DLNFibre.DLN.RLCT.frontCharge_ge_minAdm`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMFrontPeelCharge.lean` @ `fc6514a2`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMFrontPeelCharge.lean` @ `89d4823c`)
 >   - supporting: `twoVar_min_eq` (the 2-variable min keystone), `tailMin`, `frontCharge`,
 >     `inf'_univ_sub_right`, `le_tailMin_iff`, `tailMin_split`.
 > - **Gloss.**
