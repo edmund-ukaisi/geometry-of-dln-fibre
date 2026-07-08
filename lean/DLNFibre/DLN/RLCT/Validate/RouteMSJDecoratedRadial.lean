@@ -13,17 +13,17 @@ the 1-D Jacobian factor, unblocked by the `residualMeas` field (via `RouteMSJDec
 
 ## What lands here
 
-* **`radialFactor j₀ c' = ∫⁻_{u₀∈[0,1]} |u₀|^{j₀}·(u₀²)^{−c'}`** — the 1-D radial Jacobian factor of one
+* **`radialAttachFactor j₀ c' = ∫⁻_{u₀∈[0,1]} |u₀|^{j₀}·(u₀²)^{−c'}`** — the 1-D radial Jacobian factor of one
   Case-2 divisor with accumulated Jacobian exponent `j₀`.
 
-* **`radialFactor_lt_top`** — the per-divisor finiteness: `radialFactor j₀ c' < ⊤` when `−1 < j₀ − 2c'`
+* **`radialAttachFactor_lt_top`** — the per-divisor finiteness: `radialAttachFactor j₀ c' < ⊤` when `−1 < j₀ − 2c'`
   (i.e. `c' < (j₀+1)/2`, the per-divisor Morse threshold). Via the banked 1-D
   `abs_rpow_lintegral_Ioo_lt_top` (`RouteMSJMonomialLower`), after collapsing `|u₀|^{j₀}·(u₀²)^{−c'}` to
   `|u₀|^{j₀−2c'}` on `(0,1]` (`Ioo_ae_eq_Icc`).
 
 * **`SJDecoration.radialAttach_integral`** — the factoring, UNCONDITIONAL in `c'`:
 
-      (radialAttach D j₀).integral c'  =  radialFactor j₀ c' · D.integral c'.
+      (radialAttach D j₀).integral c'  =  radialAttachFactor j₀ c' · D.integral c'.
 
   Proof: split coordinate `0` off `unitBox (d+1)` (`lintegral_unitBox_succ_cons`, the `piFinSuccAbove`
   Tonelli step); the radial-attach integrand factors pointwise
@@ -36,7 +36,7 @@ the 1-D Jacobian factor, unblocked by the `residualMeas` field (via `RouteMSJDec
 
 The single-divisor factoring the decorated recursion's Case-2 RADIAL step consumes. The equality is
 unconditional (holds even where both sides are `⊤`). It does NOT: (i) supply the finiteness of
-`radialFactor` (the `c' < (j₀+1)/2` threshold, a separate 1-D monomial-integrability fact); (ii) perform
+`radialAttachFactor` (the `c' < (j₀+1)/2` threshold, a separate 1-D monomial-integrability fact); (ii) perform
 the ANISOTROPIC-corank descent (the spherical blow-up `lintegral_eq_polar` exposing the `r^{pq−1}`
 Jacobian on the pivot chart — that is the genuine crux, a different coordinate structure); (iii) discharge
 the recursion. It is the reusable radial-attach factoring, validating the `residualMeas` measurability
@@ -55,15 +55,15 @@ variable {L : ℕ}
 
 /-- **The 1-D radial Jacobian factor** of one Case-2 divisor at accumulated exponent `j₀`, exponent `c'`:
 `∫⁻_{u₀∈[0,1]} |u₀|^{j₀}·(u₀²)^{−c'} du₀`. (Finite iff `c' < (j₀+1)/2`; that threshold is not proved here.) -/
-noncomputable def radialFactor (j₀ : ℕ) (c' : ℝ) : ℝ≥0∞ :=
+noncomputable def radialAttachFactor (j₀ : ℕ) (c' : ℝ) : ℝ≥0∞ :=
   ∫⁻ u₀ in Set.Icc (0 : ℝ) 1, ENNReal.ofReal (|u₀| ^ j₀ * (u₀ ^ 2) ^ (-c'))
 
-/-- **The per-divisor Morse threshold — `radialFactor` is finite below it.** `radialFactor j₀ c' < ⊤`
+/-- **The per-divisor Morse threshold — `radialAttachFactor` is finite below it.** `radialAttachFactor j₀ c' < ⊤`
 whenever `−1 < j₀ − 2c'` (equivalently `c' < (j₀+1)/2`): on `(0,1]` the integrand collapses to the pure
 monomial `|u₀|^{j₀−2c'}`, finite by the banked 1-D `abs_rpow_lintegral_Ioo_lt_top`. -/
-theorem radialFactor_lt_top (j₀ : ℕ) (c' : ℝ) (hc : -1 < (j₀ : ℝ) - 2 * c') :
-    radialFactor j₀ c' < ⊤ := by
-  unfold radialFactor
+theorem radialAttachFactor_lt_top (j₀ : ℕ) (c' : ℝ) (hc : -1 < (j₀ : ℝ) - 2 * c') :
+    radialAttachFactor j₀ c' < ⊤ := by
+  unfold radialAttachFactor
   rw [setLIntegral_congr (Ioo_ae_eq_Icc (a := (0 : ℝ)) (b := 1)).symm,
     setLIntegral_congr_fun measurableSet_Ioo
       (g := fun u₀ => ENNReal.ofReal (|u₀| ^ ((j₀ : ℝ) - 2 * c'))) (fun u₀ hu => ?_)]
@@ -77,11 +77,11 @@ theorem radialFactor_lt_top (j₀ : ℕ) (c' : ℝ) (hc : -1 < (j₀ : ℝ) - 2 
 
 /-- **The radial-attach integral factoring (unconditional in `c'`).** Attaching a fresh fully-shared
 Case-2 divisor factors the decorated box-integral into the 1-D radial Jacobian factor times the parent:
-`(radialAttach D j₀).integral c' = radialFactor j₀ c' · D.integral c'`. The integral-level realization of
+`(radialAttach D j₀).integral c' = radialAttachFactor j₀ c' · D.integral c'`. The integral-level realization of
 the pointwise `radialAttach_decLoss` and the combinatorial `carrierThreshold_shift`. -/
 theorem SJDecoration.radialAttach_integral {M : Fin (L + 1) → ℕ} (D : SJDecoration M) (j₀ : ℕ)
     (c' : ℝ) :
-    (D.radialAttach j₀).integral c' = radialFactor j₀ c' * D.integral c' := by
+    (D.radialAttach j₀).integral c' = radialAttachFactor j₀ c' * D.integral c' := by
   letI := D.mZ
   have hA : Measurable (fun u₀ : ℝ => ENNReal.ofReal (|u₀| ^ j₀ * (u₀ ^ 2) ^ (-c'))) := by fun_prop
   have hBz : ∀ z : D.Z, Measurable (fun u : Fin D.d → ℝ =>
@@ -99,7 +99,7 @@ theorem SJDecoration.radialAttach_integral {M : Fin (L + 1) → ℕ} (D : SJDeco
       (∫⁻ v in unitBox (D.d + 1), ENNReal.ofReal
         ((∏ ℓ, |v ℓ| ^ ((Fin.cons j₀ D.jac : Fin (D.d + 1) → ℕ) ℓ))
           * ((D.radialAttach j₀).decLoss v z) ^ (-c')))
-      = radialFactor j₀ c'
+      = radialAttachFactor j₀ c'
         * ∫⁻ u in unitBox D.d, ENNReal.ofReal ((∏ ℓ, |u ℓ| ^ (D.jac ℓ)) * (D.decLoss u z) ^ (-c')) := by
     intro z
     have hFz : Measurable (fun v : Fin (D.d + 1) → ℝ => ENNReal.ofReal
@@ -138,9 +138,9 @@ theorem SJDecoration.radialAttach_integral {M : Fin (L + 1) → ℕ} (D : SJDeco
   change (∫⁻ z in D.dom, ∫⁻ v in unitBox (D.d + 1), ENNReal.ofReal
       ((∏ ℓ, |v ℓ| ^ ((Fin.cons j₀ D.jac : Fin (D.d + 1) → ℕ) ℓ))
         * ((D.radialAttach j₀).decLoss v z) ^ (-c')))
-    = radialFactor j₀ c' * ∫⁻ z in D.dom, ∫⁻ u in unitBox D.d,
+    = radialAttachFactor j₀ c' * ∫⁻ z in D.dom, ∫⁻ u in unitBox D.d,
         ENNReal.ofReal ((∏ ℓ, |u ℓ| ^ (D.jac ℓ)) * (D.decLoss u z) ^ (-c'))
-  trans (∫⁻ z in D.dom, radialFactor j₀ c'
+  trans (∫⁻ z in D.dom, radialAttachFactor j₀ c'
       * ∫⁻ u in unitBox D.d, ENNReal.ofReal ((∏ ℓ, |u ℓ| ^ (D.jac ℓ)) * (D.decLoss u z) ^ (-c')))
   · exact lintegral_congr key
   · rw [lintegral_const_mul _ hID]
