@@ -286,7 +286,7 @@ theorem Kcoup_frame_endpoints (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕
     (hPl12 : PL.toBlocks₁₂ = 0) (hPl11 : IsUnit PL.toBlocks₁₁)
     (hQu21 : QU.toBlocks₂₁ = 0) (hQu11 : IsUnit QU.toBlocks₁₁)
     (hCf0 : Cf 0 = PL * Cd 0) (hInt : ∀ k, 1 ≤ k → k < M → Cf k = Cd k) (hLast : Cf M = Cd M * QU)
-    (hPd : ∀ k, IsUnit (partProd Cd k).toBlocks₁₁) (s : ℕ) (hs : s < M + 1) :
+    (hPd : ∀ k, k ≤ M + 1 → IsUnit (partProd Cd k).toBlocks₁₁) (s : ℕ) (hs : s < M + 1) :
     Kcoup Cf s = Kcoup Cd s := by
   rcases Nat.eq_zero_or_pos s with hs0 | hspos
   · subst hs0; rw [Kcoup_zero, Kcoup_zero]
@@ -304,7 +304,7 @@ theorem Kcoup_frame_endpoints (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕
           Matrix.zero_mul, add_zero]
       rw [Kcoup, Kcoup, hcf21, hppS11, hpp12,
         ← conj_ringInverse_cancel PL.toBlocks₁₁ (partProd Cd (s + 1)).toBlocks₁₁ QU.toBlocks₁₁
-          hPl11 (hPd (s + 1)) hQu11]
+          hPl11 (hPd (s + 1) (by omega)) hQu11]
       simp only [Matrix.mul_assoc]
     · -- interior layer `1 ≤ s < M`: only the left frame enters; `leftFrame_ringInverse_cancel`.
       have hsltM : s < M := lt_of_le_of_ne (by omega) hslast
@@ -316,7 +316,7 @@ theorem Kcoup_frame_endpoints (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕
         rw [partProd_frame_pre Cd Cf M PL hCf0 hInt s hspos (by omega), toBlocks₁₂_mul, hPl12,
           Matrix.zero_mul, add_zero]
       rw [Kcoup, Kcoup, hInt s hspos hsltM, hppS11, hpp12,
-        ← leftFrame_ringInverse_cancel PL.toBlocks₁₁ (partProd Cd (s + 1)).toBlocks₁₁ hPl11 (hPd (s + 1))]
+        ← leftFrame_ringInverse_cancel PL.toBlocks₁₁ (partProd Cd (s + 1)).toBlocks₁₁ hPl11 (hPd (s + 1) (by omega))]
       simp only [Matrix.mul_assoc]
 
 end AbstractFrame
@@ -445,5 +445,149 @@ theorem deepestChain_framed_lastLayer_eq (H : Fin (L + 1) → ℕ) (r : ℕ)
       (deepestChainSplit H r hr ((lastLayer hL : ℕ) + 1)) _ _]
   congr 1
   rw [deepestChain, deepestChainLayer, dif_pos (lastLayer hL).isLt]
+
+/-! ## The chain-level endpoint-frame block conditions -/
+
+/-- **`psiFrame0` is block-lower with unit corner.** From the threshold-block conditions on the layer-0
+frame `Pf (firstLayer)` (`hPtri`/`hP22`) and its invertibility (`hPunit`), via `reindexChainSq_fromBlocks`. -/
+theorem psiFrame0_blocks (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL))) :
+    (psiFrame0 H r hr hL Pf).toBlocks₁₂ = 0 ∧ (psiFrame0 H r hr hL Pf).toBlocks₂₂ = 1
+      ∧ IsUnit (psiFrame0 H r hr hL Pf).toBlocks₁₁ := by
+  set Pt := Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+      (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL)) with hPtdef
+  have hpf0 : psiFrame0 H r hr hL Pf
+      = Matrix.fromBlocks Pt.toBlocks₁₁ 0
+          (Matrix.reindex (finCongr (chainWidth_castSucc_sub H r (firstLayer hL))) (Equiv.refl (Fin r))
+            Pt.toBlocks₂₁) 1 := by
+    have hPtlow : Pt = Matrix.fromBlocks Pt.toBlocks₁₁ 0 Pt.toBlocks₂₁ 1 := by
+      conv_lhs => rw [← Matrix.fromBlocks_toBlocks Pt]
+      rw [hPtri, hP22]
+    have hPf_eq : Pf (firstLayer hL)
+        = Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm
+            (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)).symm Pt := by
+      rw [hPtdef, ← Matrix.reindex_symm]
+      exact ((Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))).symm_apply_apply _).symm
+    rw [psiFrame0, hPf_eq]
+    nth_rewrite 1 [hPtlow]
+    rw [reindexChainSq_fromBlocks H r hr (firstLayer hL) Pt.toBlocks₁₁ 0 Pt.toBlocks₂₁ 1]
+    simp
+  have h12 : (psiFrame0 H r hr hL Pf).toBlocks₁₂ = 0 := by rw [hpf0, Matrix.toBlocks_fromBlocks₁₂]
+  have h22 : (psiFrame0 H r hr hL Pf).toBlocks₂₂ = 1 := by rw [hpf0, Matrix.toBlocks_fromBlocks₂₂]
+  refine ⟨h12, h22, ?_⟩
+  have hpsiunit : IsUnit (psiFrame0 H r hr hL Pf) := by
+    rw [psiFrame0]
+    simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hPunit)
+  have hdet : (psiFrame0 H r hr hL Pf).det = (psiFrame0 H r hr hL Pf).toBlocks₁₁.det := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (psiFrame0 H r hr hL Pf)]
+    rw [h12, h22, Matrix.det_fromBlocks_zero₁₂, Matrix.det_one, mul_one]
+  refine (Matrix.isUnit_iff_isUnit_det _).mpr ?_
+  rw [← hdet]; exact (Matrix.isUnit_iff_isUnit_det _).mp hpsiunit
+
+/-- **`psiFrameLast` is block-upper with unit corner.** Mirror of `psiFrame0_blocks` on the succ side. -/
+theorem psiFrameLast_blocks (H : Fin (L + 1) → ℕ) (r : ℕ) (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hQunit : IsUnit (Qf (lastLayer hL))) :
+    (psiFrameLast H r hr hL Qf).toBlocks₂₁ = 0 ∧ (psiFrameLast H r hr hL Qf).toBlocks₂₂ = 1
+      ∧ IsUnit (psiFrameLast H r hr hL Qf).toBlocks₁₁ := by
+  set Qt := Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+      (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL)) with hQtdef
+  have hpfl : psiFrameLast H r hr hL Qf
+      = Matrix.fromBlocks Qt.toBlocks₁₁
+          (Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r (lastLayer hL)))
+            Qt.toBlocks₁₂) 0 1 := by
+    have hQtup : Qt = Matrix.fromBlocks Qt.toBlocks₁₁ Qt.toBlocks₁₂ 0 1 := by
+      conv_lhs => rw [← Matrix.fromBlocks_toBlocks Qt]
+      rw [hQtri, hQ22]
+    have hQf_eq : Qf (lastLayer hL)
+        = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
+            (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm Qt := by
+      rw [hQtdef, ← Matrix.reindex_symm]
+      exact ((Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _))).symm_apply_apply _).symm
+    rw [psiFrameLast, hQf_eq]
+    nth_rewrite 1 [hQtup]
+    rw [reindexChainSq_succ_fromBlocks H r hr (lastLayer hL) Qt.toBlocks₁₁ Qt.toBlocks₁₂ 0 1]
+    simp
+  have h21 : (psiFrameLast H r hr hL Qf).toBlocks₂₁ = 0 := by rw [hpfl, Matrix.toBlocks_fromBlocks₂₁]
+  have h22 : (psiFrameLast H r hr hL Qf).toBlocks₂₂ = 1 := by rw [hpfl, Matrix.toBlocks_fromBlocks₂₂]
+  refine ⟨h21, h22, ?_⟩
+  have hpflunit : IsUnit (psiFrameLast H r hr hL Qf) := by
+    rw [psiFrameLast]
+    simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hQunit)
+  have hdet : (psiFrameLast H r hr hL Qf).det = (psiFrameLast H r hr hL Qf).toBlocks₁₁.det := by
+    conv_lhs => rw [← Matrix.fromBlocks_toBlocks (psiFrameLast H r hr hL Qf)]
+    rw [h21, h22, Matrix.det_fromBlocks_zero₂₁, Matrix.det_one, mul_one]
+  refine (Matrix.isUnit_iff_isUnit_det _).mpr ?_
+  rw [← hdet]; exact (Matrix.isUnit_iff_isUnit_det _).mp hpflunit
+
+/-! ## Lemma 5 (crux) — `Kcoup` of the framed chain equals `Kcoup` of the decode chain -/
+
+/-- **Endpoint frames preserve `Kcoup` (DLN).** For `q = split x`, the framed chain and the decode chain
+have the same off-pivot coupling at every layer. Instantiates the abstract `Kcoup_frame_endpoints` with the
+chain-level endpoint frames `psiFrame0`/`psiFrameLast` and the three chain decompositions. -/
+theorem Kcoup_framed_eq_decode (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (hQf0 : Qf (firstLayer hL) = 1)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL)))
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hQunit : IsUnit (Qf (lastLayer hL))) (x : Fin (flatDim H) → ℝ)
+    (hPart : ∀ k, k ≤ L →
+      Invertible (partProd (deepestChain H r hr ((paramsEquivFlat H).symm x)) k).toBlocks₁₁)
+    (s : ℕ) (hs : s < L) :
+    Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))) s
+      = Kcoup (deepestChain H r hr ((paramsEquivFlat H).symm x)) s := by
+  obtain ⟨hPl12, _, hPl11⟩ := psiFrame0_blocks H r hr hL Pf hPtri hP22 hPunit
+  obtain ⟨hQu21, _, hQu11⟩ := psiFrameLast_blocks H r hr hL Qf hQtri hQ22 hQunit
+  have hlv : (lastLayer hL : ℕ) = L - 1 := rfl
+  refine Kcoup_frame_endpoints (deepestChain H r hr ((paramsEquivFlat H).symm x))
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+      (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)))
+    (lastLayer hL : ℕ) (by omega) (psiFrame0 H r hr hL Pf) (psiFrameLast H r hr hL Qf)
+    hPl12 hPl11 hQu21 hQu11 ?_ ?_ ?_ ?_ s (by omega)
+  · exact deepestChain_framed_layer0_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner hQf0 x
+  · intro k hk1 hkM
+    have hkL : k < L := by omega
+    have hlt' : k + 1 < L := by omega
+    exact deepestChain_framed_eq_decode_interior H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner
+      hInterior x ⟨k, hkL⟩ hk1 hlt'
+  · exact deepestChain_framed_lastLayer_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner x
+  · intro k hk
+    exact @isUnit_of_invertible _ _ _ (hPart k (by omega))
 
 end DLNFibre.DLN.RLCT
