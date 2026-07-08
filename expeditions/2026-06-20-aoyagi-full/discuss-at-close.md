@@ -2275,3 +2275,14 @@ bounded build, which I'm charging per the mandate. I flip-flopped the R1-UPPER v
 research-grade → #60 bounded]; the honest stable read is BOUNDED-via-pure-route, the atom route being the
 recurring avoidable confound. If you'd rather redirect the large labour to the footprint-neutral cite to save
 budget, say so; else I charge the build to the distance.)
+
+## 61. Codex-auth intermittency — decorrelation via reviewers+compiler when Codex is down (2026-07-08, low-priority flag).
+`sjassembly` reported Codex was NOT logged in for its whole run (could not fire the local-codex-consult); it fell
+back to the compiler + an independent reviewer as its decorrelation, and surfaced the outage per policy. Earlier
+same-day tides (r1flip, r1carrier) DID reach Codex, so it's intermittent (session/auth-specific), not a hard
+outage. Impact: the decorrelated-Codex discipline (codex-consultation.md) degrades to reviewer+compiler for any
+tide that hits the un-authed state. Both remain sound gates (reviewers are independent teammates); the loss is
+the SECOND decorrelated model. (Operator: no action required — flagging for awareness; if you want reliable Codex
+decorrelation, a re-auth (`/design-login` / codex auth) would restore it. The controller continues to require an
+independent reviewer on every load-bearing tide regardless, so no gate is dropped — only the Codex cross-check is
+best-effort when auth is present.)
