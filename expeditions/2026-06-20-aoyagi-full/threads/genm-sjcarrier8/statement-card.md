@@ -63,6 +63,27 @@ Honest-partial multi-tide progress.
 > - **Cited.** none.
 > - **Status.** sorry-free (clean-three, forced `#print axioms`).
 
+> **Claim 3 (the atom-inapplicable bounded branch — item 1(c)).** For a fixed outer triple `x` and tail
+> `Q`, over ANY FINITE-measure domain `s`, the freed corank integral `∫_{Γ∈s} (freedSchurLoss x Γ Q)^{−c'}`
+> is finite for ANY exponent `c' ≥ 0` — NO Morse threshold, NO coupling `PosDef` — provided only the pivot
+> energy `frobSq (P·Q̃ₚ)` is strictly positive.
+>
+> - **Lean:** `DLNFibre.DLN.RLCT.freedSchurLoss_inner_bounded_lt_top`.
+> - **Gloss.** The pivot energy lower-bounds `freedSchurLoss` for EVERY `Γ` (drop the nonneg corank term),
+>   so the integrand is bounded by the constant `(frobSq (P·Q̃ₚ))^{−c'}`
+>   (`Real.rpow_le_rpow_of_nonpos`, `-c' ≤ 0`), whose integral over the finite box is
+>   `(frobSq (P·Q̃ₚ))^{−c'}·volume s < ⊤` (`setLIntegral_const` + `ENNReal.mul_lt_top`). The shear-image
+>   box is a translate of a box, hence finite measure, so this applies to the actual peel domain.
+> - **Proved.** The `< ⊤`, conditionally. This is the branch the descent uses on the ≈94/480 charts where
+>   `c' < ½·minAdm M` does not force `c' > a·b/2` (the atom is inapplicable). Strictly weaker hypotheses
+>   than Claim 2 (only `hpiv` + `0 ≤ c'` + `volume s < ⊤`); the atom branch (Claim 2) is genuinely needed
+>   only when integrating over the FULL Γ-space (infinite measure), for the exponent-shift VALUE the outer
+>   descent's convergence needs.
+> - **Assumed (EXPOSED, NOT asserted).** `hpiv : 0 < frobSq (P·Q̃ₚ)` (fails pointwise — supplied by the
+>   outer descent), `hc0 : 0 ≤ c'`, `hs : volume s < ⊤`.
+> - **Cited.** none.
+> - **Status.** sorry-free (clean-three, forced `#print axioms`).
+
 > **Deferred (named, NOT done — the standing mountain).** Items 2/3: the `(S,J)` OUTER `A'`-descent
 > supplying the three interface hypotheses of Claim 2 as a measure statement, by integrating the outer
 > tail parameters `A'` and descending through the `SJLinGenState` carrier (`gen_rowMix_const`

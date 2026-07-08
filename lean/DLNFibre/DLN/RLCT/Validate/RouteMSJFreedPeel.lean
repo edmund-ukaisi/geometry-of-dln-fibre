@@ -30,6 +30,11 @@ the banked corank atom (`corankBlock_morsePeel_lt_top`, `RouteMSJCorankPeel`) on
   at `w := frobSq (P·Q̃ₚ)`, `Apiv := 0`, `Ccross := C·Q̃ₚ`, `Qb := Q_b` — so the held pivot energy plays
   the atom's strictly-positive core. Sorry-free; the hypotheses are EXPOSED as the interface.
 
+* **`freedSchurLoss_inner_bounded_lt_top`** — the atom-inapplicable branch (item 1(c)). Over ANY
+  FINITE-measure domain, core positivity `0 < frobSq (P·Q̃ₚ)` alone (no threshold, no `PosDef`) makes the
+  freed inner `Γ`-integral finite for any `c' ≥ 0` (the pivot energy lower-bounds the loss, so the
+  integrand is bounded). The branch the descent uses on the `≈94/480` charts where `c' ≤ a·b/2`.
+
 ## What is NOT here (the standing mountain — reported precisely)
 
 The three interface hypotheses of `freedSchurLoss_inner_peel_lt_top` do NOT hold pointwise for a fixed
@@ -134,5 +139,40 @@ theorem freedSchurLoss_inner_peel_lt_top {t a b q : ℕ}
     rw [frobSq_empty_rows]
     unfold freedSchurLoss
     ring
+
+/-- **The freed inner-`Γ` integral is finite on a finite-measure domain from core positivity alone
+(item 1(c), the atom-inapplicable branch).** For a fixed outer triple `x` and tail `Q`, over ANY
+FINITE-measure domain `s`, the freed corank integral `∫_{Γ∈s} (freedSchurLoss x Γ Q)^{−c'}` is finite
+for ANY exponent `c' ≥ 0` — no Morse threshold, no coupling `PosDef` — provided only the pivot energy
+`frobSq (P·Q̃ₚ)` is strictly positive. This is the branch the `(S,J)` descent uses on the `≈94/480`
+charts where `c' < ½·minAdm M` does not force `c' > a·b/2` (the atom is inapplicable): the pivot energy
+lower-bounds `freedSchurLoss` for EVERY `Γ` (drop the nonneg corank term), so the integrand is bounded
+by the constant `(frobSq (P·Q̃ₚ))^{−c'}` (`Real.rpow_le_rpow_of_nonpos`, `-c' ≤ 0`), whose integral over
+the finite box is `(frobSq (P·Q̃ₚ))^{−c'} · volume s < ⊤`. The shear-image box
+`{Γ | Γ + schurShift x ∈ genBox}` is a translate of a box, hence finite measure, so this applies to the
+actual peel domain. As with `freedSchurLoss_inner_peel_lt_top`, the pivot-energy positivity is EXPOSED
+as the interface the outer descent supplies (it fails pointwise), not asserted. -/
+theorem freedSchurLoss_inner_bounded_lt_top {t a b q : ℕ}
+    (x : SJOuter t a b) (Q : Matrix (Fin t ⊕ Fin b) (Fin q) ℝ) (c' : ℝ) (hc0 : 0 ≤ c')
+    (hpiv : 0 < frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+        + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id)))
+    (s : Set (Fin a → Fin b → ℝ)) (hs : volume s < ⊤) :
+    ∫⁻ Γ in s, ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c')) < ⊤ := by
+  have hle : ∀ Γ : Fin a → Fin b → ℝ,
+      frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+          + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))
+        ≤ freedSchurLoss x Γ Q := by
+    intro Γ
+    unfold freedSchurLoss
+    exact le_add_of_nonneg_right (frobSq_nonneg _)
+  calc ∫⁻ Γ in s, ENNReal.ofReal ((freedSchurLoss x Γ Q) ^ (-c'))
+      ≤ ∫⁻ _Γ in s, ENNReal.ofReal ((frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+            + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))) ^ (-c')) := by
+        refine lintegral_mono (fun Γ => ENNReal.ofReal_le_ofReal ?_)
+        exact Real.rpow_le_rpow_of_nonpos hpiv (hle Γ) (neg_nonpos.mpr hc0)
+    _ = ENNReal.ofReal ((frobSq (Matrix.of x.1.1 * (Q.submatrix Sum.inl id
+            + (Matrix.of x.1.1)⁻¹ * Matrix.of x.1.2 * Q.submatrix Sum.inr id))) ^ (-c'))
+          * volume s := setLIntegral_const s _
+    _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hs
 
 end DLNFibre.DLN.RLCT
