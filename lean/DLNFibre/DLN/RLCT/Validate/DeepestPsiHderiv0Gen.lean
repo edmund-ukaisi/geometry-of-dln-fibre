@@ -965,6 +965,84 @@ theorem hasStrictFDerivAt_genMovedZsub_entry_zero (H : Fin (L + 1) → ℕ) (r :
       rw [sub_self, Matrix.zero_apply]
     rw [heq]; exact hasStrictFDerivAt_const _ _
 
+/-- **(c) germ, ₂₂ block.** `(movedT (C q) (Z0edit0 …) k − (C q k)₂₂)` entries have strict derivative
+`0` (`k < L`): via `movedT − (C)₂₂ = movedZ·inv·movedY − Kcoup·blockSchur − (C)₂₁·inv·(C)₁₂`, each
+summand a product with vanishing outer/paired factors. -/
+theorem hasStrictFDerivAt_genMovedTsub_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k < L)
+    (i : Fin (deepestChainWidth H k - r)) (j : Fin (deepestChainWidth H (k + 1) - r)) :
+    HasStrictFDerivAt (fun q => (movedT (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₂) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have hid : ∀ q, movedT (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₂
+      = movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+          * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+          * movedY (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+        - Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+          * blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k)
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁
+          * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+          * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₂ := by
+    intro q
+    have hC22 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₂
+        = blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k)
+          + (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁
+            * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₂ := by
+      rw [blockSchur]; abel
+    rw [movedT, schurTilde, hC22, Matrix.sub_mul, Matrix.one_mul]; abel
+  have heq : (fun q => (movedT (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+        - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₂) i j)
+      = fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+              (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+            * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+            * movedY (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i j
+          - (Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+            * blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k)) i j
+          - ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁
+            * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₂) i j := by
+    funext q; rw [hid q, Matrix.sub_apply, Matrix.sub_apply]
+  rw [heq]
+  have ha : HasStrictFDerivAt (fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+        * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+        * movedY (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_triple_mul_entry_zero i j
+      (fun a b => genMovedZ_contDiffAt H r hr hL J hJfront Pf Qf k a b)
+      (fun a b => genInvC11_contDiffAt H r hr hL J hJfront Pf Qf k a b)
+      (fun a b => genMovedY_contDiffAt H r hr hL J hJfront Pf Qf k hk a b)
+      (fun a b => by rw [genMovedZ_zero H r hr hL J hJfront Pf Qf k, Matrix.zero_apply])
+      (fun a b => by rw [genMovedY_zero H r hr hL J hJfront Pf Qf k hk, Matrix.zero_apply])
+  have hb : HasStrictFDerivAt (fun q => (Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+        * blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k)) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_mul_entry_zero_of_both_zero i j
+      (fun c => genKcoup_contDiffAt H r hr hL J hJfront Pf Qf k hk i c)
+      (fun c => genBlockSchur_contDiffAt H r hr hL J hJfront Pf Qf k c j)
+      (fun c => by rw [genKcoup_zero H r hr hL J hJfront Pf Qf k, Matrix.zero_apply])
+      (fun c => by rw [genBlockSchur_zero H r hr hL J hJfront Pf Qf k, Matrix.zero_apply])
+  have hc : HasStrictFDerivAt (fun q => ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁
+        * Ring.inverse (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₁
+        * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₁₂) i j)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 :=
+    hasStrictFDerivAt_matrix_triple_mul_entry_zero i j
+      (fun a b => genChain_contDiffAt H r hr hL J Pf Qf k (Sum.inr a) (Sum.inl b))
+      (fun a b => genInvC11_contDiffAt H r hr hL J hJfront Pf Qf k a b)
+      (fun a b => genChain_contDiffAt H r hr hL J Pf Qf k (Sum.inl a) (Sum.inr b))
+      (fun a b => by rw [genChain_zero_toBlocks₂₁ H r hr hL J hJfront Pf Qf k, Matrix.zero_apply])
+      (fun a b => by rw [genChain_zero_toBlocks₁₂ H r hr hL J hJfront Pf Qf k hk, Matrix.zero_apply])
+  simpa using (ha.sub hb).sub hc
+
 /-- **Pieces (b)+(c), gauge slot.** The gauge read-delta has strict derivative `0` at the origin. -/
 theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
