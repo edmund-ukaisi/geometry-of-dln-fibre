@@ -3,6 +3,16 @@ import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeL2
 import DLNFibre.DLN.RLCT.Validate.DeepestPivotFrameTriangular
 import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 import DLNFibre.DLN.RLCT.Validate.DeepestL2ConjSub4
+import DLNFibre.DLN.RLCT.Validate.DeepestDiffeoBridgeGenConj
+import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiFlatCutGen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen
+import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestL2Wiring` — the L=2 final-wiring top file (R-A home)
@@ -1057,7 +1067,220 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
               (∑ i, (regStraighten (split x)).1 i ^ 2)
                 + deepestCoreF H r (coreAbsorb (split x)).2.1)
             ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
-      sorry
+      -- ===== L ≥ 3 diffeo bridge (general Ψ_conj joint move), banked-leaf assembly =====
+      -- (0) hDA / hbdy (general-`L` pivot-unit + boundary), and `hQUpper` feeding `hDA`.
+      have hQUpper : (Matrix.reindex
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+          (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+          (Qf (lastLayer hL))).toBlocks₂₁ = 0 := by rw [hpivJ]; exact hQtri
+      have hDA : ∀ s : Fin L, IsUnit (deepBlkA H r B hB hr hL s) :=
+        deepBlkA_isUnit_gen H r B hB hr hL hL2 htop J hJfront' Qf hcorner' hQUpper
+      have hbdy : ∀ s : Fin L, deepBlkY H r B hB hr hL s = 0 ∨ deepBlkZ H r B hB hr hL s = 0 :=
+        deepBlk_boundary_gen H r B hB hr hL hL2
+      -- (1) per-layer block-triangularity (∀ s : Fin L) the assembled bridge / Step Θ consume.
+      have hPtri2 : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+          (rThresholdSplit r (H s.castSucc) (hr s.castSucc)) (Pf s)).toBlocks₁₂ = 0 := by
+        intro s
+        rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+        · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
+          rw [hsf]; exact hPtri
+        · rcases Nat.lt_or_ge ((s : ℕ) + 1) L with hlt | hge
+          · rw [(hInterior s hspos hlt).1]; exact reindex_one_toBlocks₁₂_zero _
+          · have hsf : s = lastLayer hL := by
+              apply Fin.ext; simp only [lastLayer]; have := s.isLt; omega
+            rw [hsf, hPfL]; exact reindex_one_toBlocks₁₂_zero _
+      have hQtri2 : ∀ s : Fin L, (Matrix.reindex (rThresholdSplit r (H s.succ) (hr s.succ))
+          (rThresholdSplit r (H s.succ) (hr s.succ)) (Qf s)).toBlocks₂₁ = 0 := by
+        intro s
+        rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+        · have hsf : s = firstLayer hL := Fin.ext (by simp [firstLayer, hs0])
+          rw [hsf, hQf0]; exact reindex_one_toBlocks₂₁_zero _
+        · rcases Nat.lt_or_ge ((s : ℕ) + 1) L with hlt | hge
+          · rw [(hInterior s hspos hlt).2]; exact reindex_one_toBlocks₂₁_zero _
+          · have hsf : s = lastLayer hL := by
+              apply Fin.ext; simp only [lastLayer]; have := s.isLt; omega
+            rw [hsf]
+            have h := hQtri
+            rw [← hpivJ, hJfront', pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL] at h
+            exact h
+      -- (2) the `rThr`-form last-layer facts (bundle `Jb`-pivot → `rThr` via front-embed) and the
+      -- endpoint (`endpointP0` / `endpointQL`) block facts the keystone consumes.
+      have hQtriR : (Matrix.reindex (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+          (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+          (Qf (lastLayer hL))).toBlocks₂₁ = 0 := by
+        have h := hQtri
+        rw [← hpivJ, hJfront', pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL] at h
+        exact h
+      have hQ22R : (Matrix.reindex (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+          (rThresholdSplit r (H ((lastLayer hL).succ)) (hr _))
+          (Qf (lastLayer hL))).toBlocks₂₂ = 1 := by
+        have h := hQ22one
+        rw [← hpivJ, hJfront', pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL] at h
+        exact h
+      have hfl : (firstLayer hL : Fin L) = ⟨0, by omega⟩ := Fin.ext (by simp [firstLayer])
+      have hcastQ : ((lastLayer hL).succ) = Fin.last L :=
+        Fin.ext (by simp only [lastLayer, Fin.succ, Fin.last]; omega)
+      have hPtri' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf)).toBlocks₁₂ = 0 := by
+        simpa only [endpointP0, hfl] using hPtri
+      have hP22' : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+          (endpointP0 H hL Pf)).toBlocks₂₂ = 1 := by
+        simpa only [endpointP0, hfl] using hP22one
+      have hQtri' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointQL H hL Qf)).toBlocks₂₁ = 0 := by
+        rw [hJfront', pivotThresholdSplit_frontEmbed H r hr]
+        show (Matrix.reindex (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (hcastQ ▸ Qf (lastLayer hL))).toBlocks₂₁ = 0
+        exact reindex_rThr_toBlocks21_zero_cast H r hr hcastQ (Qf (lastLayer hL)) hQtriR
+      have hQ22' : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointQL H hL Qf)).toBlocks₂₂ = 1 := by
+        rw [hJfront', pivotThresholdSplit_frontEmbed H r hr]
+        show (Matrix.reindex (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)))
+            (hcastQ ▸ Qf (lastLayer hL))).toBlocks₂₂ = 1
+        exact reindex_rThr_toBlocks22_one_cast H r hr hcastQ (Qf (lastLayer hL)) hQ22R
+      have hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+        have hBprod : B = prod H (deepestPoint H r B hB hr hL) :=
+          (deepestPoint_isDeep H r B hB hr hL).1.symm
+        have hframe0 : ∀ s : Fin L,
+            framedParamsPivot H r hr hL J Pf Qf (split wstar) s
+              = Pf s * (deepestPoint H r B hB hr hL) s * Qf s := by
+          intro s
+          have hdecode : (paramsEquivFlat H).symm wstar = deepestPoint H r B hB hr hL := by
+            rw [hwstar]; exact (paramsEquivFlat H).symm_apply_apply _
+          rw [hsplit wstar, ← hdecode]
+          exact framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL
+            hcorner' wstar s
+        have htel : prod H (framedParamsPivot H r hr hL J Pf Qf (split wstar))
+            = endpointP0 H hL Pf * prod H (deepestPoint H r B hB hr hL) * endpointQL H hL Qf :=
+          endpoint_telescoping_eq H hL (deepestPoint H r B hB hr hL)
+            (framedParamsPivot H r hr hL J Pf Qf (split wstar)) Pf Qf hframe0 hinterface
+        have hsplit0 : split wstar = (0 : DeepestSplit H r (deepestNGauge H r)) := hsplit_base
+        rw [hBprod, ← htel, hsplit0,
+          show (0 : DeepestSplit H r (deepestNGauge H r))
+            = (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (flatDim (deepestM H r)) → ℝ),
+                (0 : Fin (deepestNGauge H r) → ℝ)) : DeepestSplit H r (deepestNGauge H r)) from rfl,
+          framedParamsPivot_coreZero H r hr hL J Pf Qf 0 0,
+          show (((0 : Fin (deepestNReg H r) → ℝ), (0 : Fin (deepestNGauge H r) → ℝ))
+              : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))
+            = (0 : (Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ)) from rfl]
+        exact reindex_prodAux_framedParamsRegPivot_zero H r hr hL hL2 J Pf Qf
+      have hP11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf)).toBlocks₁₁ :=
+        endpoint_toBlocks₁₁_invertible_of_blockTri (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf))
+          ((Matrix.isUnit_submatrix_equiv _ _).mpr (isUnit_endpointP0 H hL Pf hPf)) hP22'
+          (Or.inl hPtri')
+      have hQ11inv : Invertible (Matrix.reindex
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (endpointQL H hL Qf)).toBlocks₁₁ :=
+        endpoint_toBlocks₁₁_invertible_of_blockTri (Matrix.reindex
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+          (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (endpointQL H hL Qf))
+          ((Matrix.isUnit_submatrix_equiv _ _).mpr (isUnit_endpointQL H hL Qf hQf)) hQ22'
+          (Or.inr hQtri')
+      -- (3) the flat cutoff diffeo `psi = split⁻¹ ∘ (χ-cutoff psiSplitRawGen) ∘ split`. Pick a
+      -- small-radius bump χ whose support sits inside the (open) invertibility region.
+      obtain ⟨ε, hεpos, hεsub⟩ :=
+        Metric.mem_nhds_iff.mp (eventually_psiInvBundle H r hr hL J hJfront' Pf Qf)
+      set χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)) :=
+        ⟨ε / 4, ε / 2, by linarith, by linarith⟩ with hχdef
+      have hχsub : ∀ q ∈ tsupport (fun y => ((χ y : ℝ))),
+          psiInvBundle H r hr hL J Pf Qf q := by
+        have hts : tsupport (fun y => ((χ y : ℝ))) = Metric.closedBall 0 χ.rOut := χ.tsupport_eq
+        intro q hq
+        rw [hts] at hq
+        have hlt : χ.rOut < ε := by rw [hχdef]; show ε / 2 < ε; linarith
+        exact hεsub (Metric.closedBall_subset_ball hlt hq)
+      have hraw0 : psiSplitRawGen H r hr hL J Pf Qf 0 = 0 :=
+        psiSplitRawGen_zero H r hr hL J hJfront' Pf Qf
+      have hderiv0 : HasStrictFDerivAt (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
+          (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 :=
+        hasStrictFDerivAt_psiSplitDeltaGen_zero H r hr hL hL2 J hJfront' Pf Qf hQf0 hPfL hPf hQf
+          hPtri hP22one hQtriR hQ22R hInterior
+      have hbase : deepestSplit H r hr hL wstar wstar = 0 := hsplit_base
+      have hcontdiff : ContDiff ℝ (⊤ : ℕ∞)
+          (deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar) :=
+        contDiff_deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ
+          (hcd_psiSplitRawGen H r hr hL J Pf Qf χ hχsub) wstar
+      have hderiv : HasStrictFDerivAt
+          (deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar)
+          (ContinuousLinearMap.id ℝ (Fin (flatDim H) → ℝ)) wstar :=
+        hasStrictFDerivAt_deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ
+          hraw0 hderiv0 wstar hbase
+      have hfix : deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar wstar
+          = wstar :=
+        deepestPsiFlatCut_fixpoint H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ hraw0 wstar hbase
+      have hsplitPsi : ∀ᶠ x : (Fin (flatDim H) → ℝ) in nhds wstar,
+          split (deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar x)
+            = psiSplitRawGen H r hr hL J Pf Qf (split x) := by
+        have hg := deepestPsiFlatCut_split_germ H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar
+          hbase
+        filter_upwards [hg] with x hx
+        rw [hsplit, hsplit]; exact hx
+      -- (4) hsub3reg (reg-energy preservation) via the banked general germ + the reg-slot value.
+      have hsub3reg : ∀ᶠ x : (Fin (flatDim H) → ℝ) in nhds wstar,
+          (∑ i, (regStraighten (psiSplitRawGen H r hr hL J Pf Qf (split x))).1 i ^ 2)
+            = ∑ i, (regStraighten (split x)).1 i ^ 2 := by
+        have hg := hsub3reg_gen_germ H r B hB hr hL hL2 J hJfront' Pf Qf hNF hQf0 hPfL hPf hQf
+          hPtri hP22one hQtriR hQ22R hInterior hcorner' split hsplit
+        filter_upwards [hg] with x hx
+        simp only [hra_regval]; exact hx
+      -- (5) hsub4core (core untwisting to `Score`) — lift the pointwise keystone to a germ over the
+      -- basepoint neighbourhood (eventual corner-invertibility of chain / partProd / prod + the
+      -- eventual cutoff-ball), discharging the readback `hC` per `x` via the banked decode.
+      have hsub4core : ∀ᶠ x : (Fin (flatDim H) → ℝ) in nhds wstar,
+          deepestCoreF H r (deepestCoreAbsorbConj H r B hB hr hL hDA
+            (psiSplitRawGen H r hr hL J Pf Qf (split x))).2.1 = Score x := by
+        have hqgerm : ∀ᶠ x : (Fin (flatDim H) → ℝ) in nhds wstar,
+            psiSplitRawGen H r hr hL J Pf Qf (split x)
+              ∈ Metric.closedBall (0 : DeepestSplit H r (deepestNGauge H r))
+                ((cutoffBumpConj H r B hB hr hL hDA).rIn) := by
+          have hpc : ContinuousAt (psiSplitRawGen H r hr hL J Pf Qf) (split wstar) := by
+            rw [hsplit_base]
+            have hd := hderiv0.hasFDerivAt.continuousAt
+            have hs : ContinuousAt (fun q => (psiSplitRawGen H r hr hL J Pf Qf q - q) + q)
+                (0 : DeepestSplit H r (deepestNGauge H r)) := hd.add continuousAt_id
+            simpa using hs
+          have hcont : ContinuousAt (fun x => psiSplitRawGen H r hr hL J Pf Qf (split x)) wstar :=
+            hpc.comp split.continuous.continuousAt
+          have hval : psiSplitRawGen H r hr hL J Pf Qf (split wstar) = 0 := by
+            rw [hsplit_base]; exact hraw0
+          have htend : Filter.Tendsto (fun x => psiSplitRawGen H r hr hL J Pf Qf (split x))
+              (nhds wstar) (nhds 0) := by rw [← hval]; exact hcont
+          exact htend (Metric.closedBall_mem_nhds 0 (cutoffBumpConj H r B hB hr hL hDA).rIn_pos)
+        have hMidgerm :=
+          eventually_isUnit_prod_decode_pivot_toBlocks₁₁ H r B hB hr hL hDA J hJfront'
+        have hLayergerm := eventually_all_isUnit_deepestChain_decode_toBlocks₁₁ H r B hB hr hL hDA
+        have hPartgerm :=
+          eventually_all_isUnit_partProd_deepestChain_decode_toBlocks₁₁ H r B hB hr hL hDA
+        filter_upwards [hqgerm, hMidgerm, hLayergerm, hPartgerm] with x hq hMid hLayerU hPartU
+        have hLayerI : ∀ k, k < L →
+            Invertible (deepestChain H r hr ((paramsEquivFlat H).symm x) k).toBlocks₁₁ :=
+          fun k hk => (hLayerU k hk).invertible
+        have hPartI : ∀ k, k ≤ L →
+            Invertible (partProd (deepestChain H r hr ((paramsEquivFlat H).symm x)) k).toBlocks₁₁ :=
+          fun k hk => (hPartU k hk).invertible
+        have hC := coreAbsorbConj_reindex_eq_blockSchur_movedC_decode H r B hB hr hL hL2 J hJfront'
+          Pf Qf hNF hPfL hcorner' hQf0 hPtri hP22one hPf hQtriR hQ22R hQf hInterior x hLayerI hPartI
+        exact deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart H r B hB hr hL hDA J
+          hJfront' Pf Qf (split x) x hq hPtri' hQtri' hP22' hQ22' hS3b hP11inv hQ11inv
+          hMid.invertible hC hLayerI hPartI Score hScoreDef
+      -- (6) assemble: LINK-1 (Ψ_conj analytic reduction) + LINK-2 (Step Θ) via the banked bridge.
+      rw [show coreAbsorb = deepestCoreAbsorb H r hr hL from hca_def,
+        show (paramsEquivFlat H) (deepestPoint H r B hB hr hL) = wstar from hwstar.symm]
+      exact deepest_diffeo_bridge_gen_assembled H r B hB hr hL hL2 hDA hbdy J hJfront' Pf Qf
+        hPf hQf hQf0 hPfL hQf22 hPtri2 hQtri2 split hsplit_mp regStraighten hra_regval
+        (deepestPsiFlatCut H r hr hL (psiSplitRawGen H r hr hL J Pf Qf) χ wstar)
+        (psiSplitRawGen H r hr hL J Pf Qf) wstar hsplit_base hcontdiff hderiv hfix hsplitPsi
+        hsub3reg Score hsub4core Φscore hΦscore
     rw [hstep1, hstep2]
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
