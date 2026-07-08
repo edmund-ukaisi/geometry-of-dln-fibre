@@ -2548,3 +2548,26 @@ escalation. Cert: `threads/genm-r1subgenwall/cert.md`.
   closing hstep2), D1 "≤" (the ≥-leg: interface done+reviewed, chart-data (i)-(iv) bounded), R1-UPPER generic +
   combinatorics + SchurRecStep (all done). When the operator picks (A) or (B), R1-UPPER's sub-generic closes and the
   fully-general headline follows. This is the SINGLE genuine research wall of the expedition.
+
+## 73. D1 "=" capstone BEDROCK-reviewed PASS (revd1eq) + a report-only PRECISION item: the conditional assembly-node naming. (2026-07-08)
+`revd1eq` (bedrock/precision/taste lens + decorrelated Codex xhigh) on the D1 "=" capstone @9a9ae4c7: **PASS on the
+close.** BUILD (fresh-worktree recompile 8647, deepest_gauge_construction + aoyagi_learning_coefficient_frontPivot
+clean-three, 0 sorry in the "=" cone), LAUNDERING (honest reduction; χ-discharge airtight; the historically
+numerically-certified chain identity IS now in Lean via hC), BEDROCK/THE-WAY (hstep2 was genuinely the SOLE L≥3
+obligation — the refine supplies the other 15 fields from the SAME banked lemmas the clean L=2 arm uses, none relaxed;
+front-pivot is the clean route), NON-VACUITY (hyp set satisfiable; only hJfront deferred = the known KC1 gate) — all PASS.
+- **PRECISION CONCERN (report-only, borderline — for the OPERATOR's naming decision / a consolidation pass, NOT a
+  soundness/vacuity/laundering break):** `aoyagi_learning_coefficient_frontPivot` (DeepestNormalFormFrontPivot:125)
+  concludes the FULL value `⨅ optimalSet = ofReal(aoyagiLambda)` — but CONDITIONALLY, taking `hRValue` (R1 core value,
+  still sorry @Skeleton:1228) + `hD1` (the D1 reduction `⨅ = rlctAt deepestPoint`, ≥-leg, still sorry @Skeleton:1172) as
+  EXPLICIT hypotheses. So it's a CONDITIONAL ASSEMBLY NODE; the genuinely-NEW bedrock hstep2 established is the **L≥3
+  deepest-point front-pivot gauge NORMAL FORM** (`rlctAt deepestPoint = regShift + coreΦ`), not the coefficient. Per
+  CLAUDE.md precision (name = exactly what's proven; the recurring "impressive-name" trap), the unqualified
+  "learning_coefficient" reads bigger than the content — a scope-tagged name (e.g.
+  `..._of_deepestInf_of_coreValue`) would be cleaner. DEFENSIBLE as-is (hyps explicit + docstring co-locates
+  Assumed/Cited/Deferred + the UNCONDITIONAL `aoyagi_learning_coefficient` stays honestly flagged sorryAx @AxCheck:412
+  — nothing is dressed as done), so I did NOT rename mid-flight (naming convention = operator's domain + moderate churn
+  on a headline node). Plus a minor docstring slip: `hD1`'s docstring calls it "the D1 ≥-leg" but it's the FULL
+  equality. **Operator: pick the naming convention for conditional assembly nodes; I'll rename + fix the docstring on
+  your word (or at the full-headline consolidation).** Codex artefacts at `threads/genm-revd1eq/codex/`. The D1 "="
+  MATH is bedrock-sound; this is purely a name-precision taste-call.
