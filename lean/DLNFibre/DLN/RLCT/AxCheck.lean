@@ -781,3 +781,8 @@ open DLNFibre.DLN.RLCT
 -- rungs 4–5: the chart MAP `schurChartRawGen` + its VALIDATION `recoverProductGen_schurChartRawGen` (the packing
 -- rebuilds the product). Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms recoverProductGen_schurChartRawGen
+-- rung 6a+6b LEFT inverse: `schurChartRawInvGen` (the rational inverse map) + `schurChartRawInvGen_
+-- schurChartRawGen` (Ψ∘Φ=id, the LEFT inverse — s≥1 via local reconstruction `invLayerSucc_schurChartRawGen`,
+-- s=0 via front-peel + the D₀/E₀ cancellations). The algebra ceiling of (iii) cracked. Φ∘Ψ=id (reverse) +
+-- ContDiff + germ remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms schurChartRawInvGen_schurChartRawGen
