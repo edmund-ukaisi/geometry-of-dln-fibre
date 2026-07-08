@@ -810,3 +810,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
 -- restores `(partProd)₂₁`. `regBlocks_movedC` packages both halves = abstract `hsub3reg`. `hstep2`
 -- UNTOUCHED — the concrete `DeepestSplit` instantiation + diffeo triple + compose are deferred.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
+-- R1-UPPER Phase-2 piece 2-rest (thread `genm-sjcarrier7`): the measure-preserving shear `D↦Γ` freeing
+-- the corank block. `chartInner_schurShearFree_eq` rewrites the Schur block chart integral as
+-- `∫ outer x ∫ inner Γ (freedSchurLoss)^{−c'}` with Γ an INDEPENDENT integration variable (a clean
+-- equality, no branch condition), via the MP block decomposition `blockSplitD` + the shift
+-- `D = Γ + C·P⁻¹·B₁₂`. The corank radial peel (gated on `w>0`) + the `(S,J)` outer `A'`-descent (the
+-- monomial/normal-form double induction — the mountain) that consume this into `sjJointResolution` are
+-- the deferred BULK; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear

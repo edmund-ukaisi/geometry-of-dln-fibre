@@ -49,6 +49,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 
 /-!
 # Axiom-hygiene check
@@ -493,3 +494,12 @@ open DLNFibre.DLN.RLCT
 -- = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms leftCol_movedC
 #print axioms regBlocks_movedC
+
+-- ★ R1-UPPER (S,J) CoV Phase-2 shear (2026-07-08, `genm-sjcarrier7`). The measure-preserving shear
+-- `D↦Γ` freeing the corank block: `chartInner_schurShearFree_eq` rewrites the Schur block chart integral
+-- as `∫ outer x ∫ inner Γ (freedSchurLoss x Γ Q)^{−c'}`, Γ an independent variable (clean equality), via
+-- the MP `blockSplitD` + the shift `D = Γ + C·P⁻¹·B₁₂`. The corank radial peel (gated on the outer
+-- `w>0`) + the `(S,J)` outer descent (the monomial double induction) consuming this into
+-- `sjJointResolution` are the deferred mountain — its sorry untouched. Cite-NOTHING: forced `#print
+-- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
+#print axioms chartInner_schurShearFree_eq
