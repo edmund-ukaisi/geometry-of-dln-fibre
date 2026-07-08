@@ -676,4 +676,48 @@ theorem blockSchur_reindex_reduced {ρ a a' b b' : Type*}
     Matrix.toBlocks_fromBlocks₂₂]
   congr 1
 
+/-! ## Claim-C — the moved-point conjugated core reads back as the framed moved-chain Schur core
+
+At interior layers the framed moved-chain layer decodes into `1 + gaugeReadX`, etc.
+(`deepestChain_framedParamsPivot_blocks_of_frame_one`), and the synthetic layer of step-A collapses to the
+same (interior deepest blocks: `deepBlkA = 1`, `deepBlkY = deepBlkZ = 0`); `blockSchur` then commutes with the
+reduced-width relabel (`blockSchur_reindex_reduced`). -/
+
+/-- **Claim-C, interior.** For an interior layer, the reindexed conjugated absorbed core of the moved point
+equals the `blockSchur` of the framed moved-chain layer. -/
+theorem coreAbsorbConj_reindex_eq_blockSchur_framed_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (x : Fin (flatDim H) → ℝ) (s : Fin L) (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+        ((paramsEquivFlat (deepestM H r)).symm
+            (psiSplitRawGen H r hr hL J Pf Qf
+              (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.1 s
+          + schurCorrectionConj H r B hB hr hL
+              ((psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).1,
+                (psiSplitRawGen H r hr hL J Pf Qf
+                  (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)).2.2) s)
+      = blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+          (psiSplitRawGen H r hr hL J Pf Qf
+            (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x))) (s : ℕ)) := by
+  set q := psiSplitRawGen H r hr hL J Pf Qf
+    (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x) with hq
+  have hne : s ≠ lastLayer hL := by
+    intro h; have := congrArg Fin.val h; simp only [lastLayer] at this; omega
+  obtain ⟨hP1, hQ1⟩ := hInterior s hpos hlt
+  obtain ⟨hb11, hb12, hb21, hb22⟩ :=
+    deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf q s hne hP1 hQ1
+  rw [absorbedCoreConj_eq_blockSchur_synthetic H r B hB hr hL q.2.1 (q.1, q.2.2) s,
+    ← Matrix.fromBlocks_toBlocks (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ)),
+    hb11, hb12, hb21, hb22, blockSchur_reindex_reduced]
+  congr 1
+  rw [deepBlkA_interior_eq_one H r B hB hr hL s hpos hlt,
+    deepBlkY_interior_zero H r B hB hr hL s hpos hlt,
+    deepBlkZ_interior_zero H r B hB hr hL s hpos hlt]
+  simp only [zero_add]
+
 end DLNFibre.DLN.RLCT
