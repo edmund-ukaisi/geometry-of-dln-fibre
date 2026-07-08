@@ -2214,3 +2214,41 @@ box-finiteness BUILD is a substantial sub-expedition [the carrier + double induc
 surfacing more carrier infra; if r1carrier's (B) returns "genuinely res-of-sing / beyond break-it-down Lean
 reach", I escalate the footprint-neutral build-vs-cite for your call. D1 #120 is UNAFFECTED — its algebraic
 mountain is DONE [full hmove proven]; only bounded analytic work remains.)
+
+## 59. ★ OPERATOR DECISION — R1-UPPER corank-≥2 shared-product-tail regime is RESEARCH-GRADE: genuine build-vs-CITE (2026-07-08, r1carrier, 3 decorrelated lines). This is the sharpest scope call of the expedition.
+`r1carrier` (exact Cauchy-Binet/Plücker algebra + deepest-layer escape RUN+closed + decorrelated Codex xhigh,
+all THREE agreeing) settled the R1-UPPER `peelZBlock` step: turning the anisotropic coupled corank block
+`‖C·Qp+Γ·Qb‖²` into the isotropic `‖Δ‖²+W(z)` the banked regime atoms need IS the **embedded principalisation
+of the Cauchy-Binet/Plücker maximal-minor ideal `I_q(A_{1,b}·A₂·…)` of a matrix PRODUCT** — a
+resolution-of-singularities theorem the measure-CoV route does NOT reach and **Mathlib lacks**. Concrete
+obstruction: `det(QbQbᵀ)=pᵀGp` is 450-term irreducible (gcd=1, NOT monomial×unit) with a DENSE-TORUS rank-drop
+witness `[[1,1,2,1],[1,1,2,1]]` invisible to every coordinate blow-up center → a NON-coordinate center is
+forced (which the coordinate carriers — SJDecoration, and any single-radial ledger — cannot express; this is
+exactly why sjbuild4's carrier couldn't peel).
+**SCOPE (by true scope):** BOUNDED for corank 1 (toric) OR a free single-matrix tail (depth≤3, SchurCore
+escape); **RESEARCH-GRADE for corank≥2 AND a shared product tail (depth≥4)**. Smallest research-grade anchor:
+`(3,3,3,4) t=1` corank-2.
+**★ CORRECTION (honest):** the earlier "(A) BUILD viable" (#58/UPDATE-692, r1decorated) + the STEP-0 GATE PASS
+(sjnative) were tested on **`(3,3,4)`** — which r1carrier identifies as the *bounded* depth-3 free-tail case,
+NOT the research-grade `(3,3,3,4)` corank-2 product anchor. So the prior "de-risked / BUILD viable" was on the
+WRONG (bounded) regime. And #55's "(a) BOUNDED" is refuted for the product-tail regime by the concrete
+coordinate-blow-up hole (the dense-torus witness). This is the confound behind the repeated build-time
+carrier-insufficiencies (r1predicate separable-form; sjbuild4 SJDecoration-can't-peel).
+**THE DECISION (yours):** (A) BUILD the embedded principalisation of a matrix-product's Plücker minor ideal
+from scratch — a research-grade res-of-sing formalisation Mathlib lacks (its own MAJOR effort, likely
+infeasible at v4.29 without a new Mathlib contribution); honors from-scratch-cite-only-S2 for this regime. vs
+(B) CITE Aoyagi's DLN principalisation for the corank-≥2 product regime — FOOTPRINT-NEUTRAL (rests on the
+already-carried `RlctInterface.cited_aoyagi_dln`, the rlct=½·codim citation the payoff already needs); the
+BOUNDED regimes (corank-1, free-tail depth≤3) stay built-from-scratch; the headline closes modulo the cited
+res-of-sing for exactly the corank-≥2 product stratum. **Per the ambition mandate, "reserve roadmap+operator
+for GENUINE research walls" — this IS one (3 decorrelated lines + Mathlib-lacking res-of-sing), so I am
+escalating rather than charging the research-grade build blindly.** I have NOT decided; I charged `r1flip` for
+the LAST decorrelated refutation (hunt the DLN-global fact that would flip to BUILD) + to FIRM the precise CITE
+interface (Aoyagi §ssec:blowup determinantal center). Deliverable A (the `ChainDecoration` carrier re-scope,
+r1carrier) is Lean-ready + isolates ALL difficulty to this ONE step — so whichever you choose, R1-UPPER reduces
+to a single clean named interface. **D1 #120 is UNAFFECTED + on its bounded analytic close** (`hstep2germs11`).
+(Operator: this is the call. My read: (B) CITE is the honest default for the corank-≥2 product regime unless
+r1flip finds the flip-fact — the from-scratch BUILD is a res-of-sing sub-expedition beyond "large-but-standard",
+and the cite is footprint-neutral. But it changes the deliverable's character [geometry CITED, not built, for
+that stratum], so it's yours. If you want (A) BUILD regardless, say so and I charge it as a dedicated
+sub-expedition.)
