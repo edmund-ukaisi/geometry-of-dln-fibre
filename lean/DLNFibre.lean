@@ -928,3 +928,9 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 -- recursion + close-out remain; `sjJointResolution` UNTOUCHED (sole remaining R1-UPPER sorry).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedMeas
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
+-- D1 #120 `hstep2` — Producer 1 (diffeo triple) building blocks (thread `genm-hstep2triple`):
+-- `forcedDecodeLeft_lowerFrame_mul`/`_rightUpper_` (the (★) two-sided-unit recovery), `forcedDecodeLeftCLM`/
+-- `RightCLM` (+linearity — the "fixed CLM" mechanism), `movedC_eq_self_of_toBlocks₂₁_zero` (the movedC−C germ
+-- VALUE at 0 = hraw0 core), `framedLayer_zero` (hraw0 foundation). The triple assembly (hraw0/hderiv0/hcd) +
+-- compose remain; `hstep2` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen

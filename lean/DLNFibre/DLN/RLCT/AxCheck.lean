@@ -66,6 +66,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
 import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 
 /-!
 # Axiom-hygiene check
@@ -638,6 +639,15 @@ open DLNFibre.DLN.RLCT
 #print axioms SJDecoration.radialAttach_integral
 #print axioms radialAttachFactor_lt_top
 #print axioms SJDecoration.measurable_integrand
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer 1 (diffeo triple) building blocks (2026-07-08, `genm-hstep2triple`).
+-- `forcedDecodeLeft_lowerFrame_mul` (the (★) two-sided-unit recovery), `movedC_eq_self_of_toBlocks₂₁_zero`
+-- (the `movedC−C` germ VALUE at 0 = the `hraw0` core), `framedLayer_zero` (hraw0 foundation). The triple
+-- assembly (hraw0 read-packing + hderiv0 degree-2 germ + hcd `ContDiffAt` bulk) + compose remain.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms forcedDecodeLeft_lowerFrame_mul
+#print axioms movedC_eq_self_of_toBlocks₂₁_zero
+#print axioms framedLayer_zero
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
