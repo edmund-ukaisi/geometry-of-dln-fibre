@@ -1198,3 +1198,21 @@ is NOT a Lean theorem — verify whether the gate's content is discharged or is 
 Also (recurring): sjbuild `cd`'d into the controller's main checkout for builds (isolation break) + left a
 stray module + `.lake`; it `rm`'d them, controller verified clean. Isolation-break remains the top teammate
 hazard — brief every heavy tide to check `git rev-parse --show-toplevel` is a worktree path.
+
+## Route-adjudication briefs must pose the NEUTRAL math question — anchoring on a route's machinery biases the decorrelated Codex (2026-07-08)
+`r1carrier` certified the R1-UPPER `peelZBlock` step RESEARCH-GRADE (a matrix-product Plücker principalisation
+Mathlib lacks) — and its decorrelated Codex AGREED. This drove an erroneous operator build-vs-cite escalation
+(#59). `r1flip` (fresh, un-anchored) FLIPPED it: the obstruction is the ATOM route (the Gram CoV `Δ=Γ·Qb`,
+`det(QbQbᵀ)^{−p/2}`), which the PURE R-BLOWUP route (coordinate radial + det-1 unit Schur-clear = the banked
+`corankStep`) NEVER forms; r1carrier's decisive dense-torus witness is a POSITIVE-loss point the RLCT resolution
+never touches (Aoyagi Thm 4). ROOT CAUSE: r1carrier's Codex prompt posed "map `‖C·Qp+Γ·Qb‖²` to the shape
+*required by the regime atoms (A)/(B)*" — which IS the Gram CoV, so the "decorrelated" Codex was ANCHORED on the
+atom route and could only confirm the atom-route wall. (The anchoring came partly from the controller's brief,
+which framed (B) as "bounded composition of the banked regime atoms OR res-of-sing" — atom-referencing.)
+**How to apply:** for a bounded-vs-wall / build-vs-cite route adjudication, pose the decorrelated Codex the
+NEUTRAL math question (does object X have property Y?), NEVER "map X to the shape required by [route-R
+machinery]" — that pre-commits to route R. Cross-check any "research-grade/wall" verdict against the EARLIER
+route consensus before escalating to the operator (here #55/r1decorated/pure-vs-atom-adj already classed the
+Gram route as the avoidable atom route). The atom-vs-pure route confusion has now recurred 3×
+(sjcarrier Gram-c.o.v.; hstep2 single-step; this) — atom-route framing is the persistent R1-UPPER confound.
+Cost here: bounded (2 pen-and-paper passes + one flip-flopped operator note, no bad Lean, no wasted heavy build).

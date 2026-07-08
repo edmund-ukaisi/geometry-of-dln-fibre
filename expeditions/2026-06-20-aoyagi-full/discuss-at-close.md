@@ -2252,3 +2252,26 @@ r1flip finds the flip-fact — the from-scratch BUILD is a res-of-sing sub-exped
 and the cite is footprint-neutral. But it changes the deliverable's character [geometry CITED, not built, for
 that stratum], so it's yours. If you want (A) BUILD regardless, say so and I charge it as a dedicated
 sub-expedition.)
+
+## 59 → CORRECTED (2026-07-08, r1flip, 4+ decorrelated lines): the "research-grade" was an ATOM-ROUTE ARTIFACT — R1-UPPER is a LARGE-but-BOUNDED BUILD. NO math-forced operator call; NO cite-footprint change. (De-escalates #59.)
+`r1flip` (fresh un-anchored pen-and-paper + Codex) refuted #59's research-grade verdict: r1carrier's obstruction
+(the embedded principalisation of `det(QbQbᵀ)`) is the MEASURE-ATOM route (integrate `Γ` out via the Gram CoV);
+the PURE R-BLOWUP route (coordinate radial + det-1 unit Schur-clear = the banked S2-free `corankStep`) NEVER forms
+that ideal. Decisive: (F1, exact) r1carrier's decisive dense-torus witness `[[1,1,2,1],[1,1,2,1]]` is a
+POSITIVE-loss point (min-loss 12/7 > 0, off `{∏C=0}`) — by Aoyagi Thm 4 the RLCT resolves ONLY `{∏C=0}` at the
+deepest point, so `{rank Qb ≤ 1}` is NEVER touched; `det(QbQbᵀ)` is an atom-route object only. (F2) the peel is a
+coordinate blow-up + unit Schur-clear → monomials in k peels. (F3) Aoyagi is FRONT-first (r1carrier's escape
+tested deepest-first, wrong order). (F4) Aoyagi §ssec:blowup uses COORDINATE centers, not a determinantal one →
+NO new interface to cite; `cited_aoyagi_dln` footprint-neutral. Root cause: r1carrier's Codex was ATOM-ANCHORED
+by its prompt (lesson banked). FOUR+ lines now agree BOUNDED (r1flip algebra + earlier buildability/chart-lemma/
+pure-vs-atom certs + the PROVEN `corankStep` + r1flip's un-anchored Codex), restoring the pre-r1carrier consensus.
+**CORRECTED DECISION:** R1-UPPER is a LARGE-but-BOUNDED from-scratch BUILD (coordinate/smooth centers only, no
+missing theorem) — per the ambition mandate ("large-but-established-math builds are within break-it-down reach,
+do NOT defer"), the DEFAULT is BUILD, decided AUTONOMOUSLY. The ONLY residual operator dimension is a
+LABOUR-BUDGET preference (the build is a large multi-module (S,J)-recursion-carrier effort) — NOT math-forced,
+NOT a cite-footprint change. **I've CHARGED the pure-route build (`sjpure`, R-BLOWUP peel via `corankStep`, STEP-0
+verify-first on (3,3,3,4)); #59's escalation is WITHDRAWN.** (Operator: NO action needed — #59 is CORRECTED to a
+bounded build, which I'm charging per the mandate. I flip-flopped the R1-UPPER verdict twice [#55 bounded → #59
+research-grade → #60 bounded]; the honest stable read is BOUNDED-via-pure-route, the atom route being the
+recurring avoidable confound. If you'd rather redirect the large labour to the footprint-neutral cite to save
+budget, say so; else I charge the build to the distance.)
