@@ -1,0 +1,66 @@
+# Statement card — genm-hcfinish (hC lemmas 2–5 + Claim-C interior + machinery)
+
+**Branch:** `origin/genm-hcfinish` (pushed). **Base:** `origin/genm-hstep2hc` @ `0c04d285`.
+**File:** `lean/DLNFibre/DLN/RLCT/Validate/DeepestHsub4coreHCGen.lean` (extended in place; NOT yet wired
+into `DLNFibre.lean` — controller wires, single-writer). Green, `scripts/sorries` = 0.
+**Forced `#print axioms`** (olean deleted, re-elaborated) on the load-bearing lemmas = `[propext,
+Classical.choice, Quot.sound]` — no `sorryAx`, no `native_decide`, no `monomial_rlct`, no `cited_aoyagi_dln`.
+No name clashes vs siblings.
+
+## Delivered (all green, axiom-clean)
+
+- **Lemma 2** `deepBlkZ_interior_zero`, `deepBlkT_interior_zero` — interior deepest `(2,1)`/`(2,2)` blocks
+  vanish (corner `diag(I_r,0)` kills rows `≥ r`).
+- **Abstract frame machinery** (the core-side counterpart of the reg-side `regBlocks_movedC`, decoupled
+  from reindex bookkeeping):
+  - `leftFrame_ringInverse_cancel`, `rightFrame_ringInverse_cancel`, `conj_ringInverse_cancel` —
+    `Ring.inverse` cancels through unit frames (via `invOf`).
+  - `blockSchur_lowerFrame_of_blocks`, `blockSchur_upperFrame_of_blocks` — a one-sided block-triangular
+    frame (identity `₂₂`, unit `₁₁`) is `blockSchur`-invisible (direct block algebra).
+  - `partProd_frame_pre` / `partProd_frame_last` — the partial-product telescope
+    (`partProd Cf k = PL·partProd Cd k` for `1≤k≤M`; `partProd Cf (M+1) = PL·partProd Cd (M+1)·QU`).
+  - **`Kcoup_frame_endpoints`** — endpoint frames preserve `Kcoup` (`Kcoup Cf s = Kcoup Cd s`); the crux
+    abstract lemma. `P11`/`Q11` cancel through `Kcoup`'s inverse (interior `leftFrame`, last `conj`).
+- **Lemma 3** `deepestChain_framed_eq_decode_interior` — interior framed chain = decode chain (frames = 1).
+- **Boundary decompositions** `deepestChain_framed_layer0_eq` (`F 0 = psiFrame0·D0`),
+  `deepestChain_framed_lastLayer_eq` (`F M = D M·psiFrameLast`) — via `framedParamsPivot_eq_frame_of_front`
+  + `reindex_mul`.
+- **Block-condition helpers** `psiFrame0_blocks` (`₁₂=0`,`₂₂=1`,unit `₁₁`), `psiFrameLast_blocks`
+  (`₂₁=0`,`₂₂=1`,unit `₁₁`) — via `reindexChainSq_fromBlocks`.
+- **Lemma 5 (the crux, DLN)** `Kcoup_framed_eq_decode` — `Kcoup(framedChain(split x)) s =
+  Kcoup(decodeChain x) s`. Instantiates `Kcoup_frame_endpoints` with `psiFrame0`/`psiFrameLast` +
+  the three decompositions. **This is the load-bearing content the controller flagged as bounded-substantial.**
+- **Lemma 4** `blockSchur_framed_eq_decode` — per-layer `blockSchur(F s) = blockSchur(D s)` (interior via
+  lemma 3; boundary via the frame-invisibility helpers).
+- **`blockSchur_reindex_reduced`** — `blockSchur` commutes with a reduced-width relabel (naturality; by
+  defeq after unfolding).
+- **Claim-C interior** `coreAbsorbConj_reindex_eq_blockSchur_framed_interior` — for interior `s`,
+  `reindex(cc,ss)(coreRead_moved + schurCorrectionConj_moved) = blockSchur(F' s)` (F' = moved framed chain).
+  Via step-A (`absorbedCoreConj_eq_blockSchur_synthetic`, banked) + `deepestChain_framedParamsPivot_blocks_of_frame_one`
+  + interior deepBlk + `blockSchur_reindex_reduced`.
+
+## Remaining to close the keystone's `hC` (the "step-6 wall", scoped-separate)
+
+The keystone `hC` (for `q = split x`) is, per `s : Fin L`:
+`reindex(cc,ss)(coreRead_moved s + schurCorrectionConj_moved s) = blockSchur(movedC D (Z0edit0 D L) (s:ℕ))`.
+
+**Assembly reduction (worked out, uniform):** RHS `= blockSchur(movedC D … s) = schurTilde D s
+= (1−Kcoup D s)·blockSchur(D s) = (1−Kcoup F s)·blockSchur(F s)` [lemma 5 + lemma 4] `= schurTilde F s
+= blockSchur(movedC F … s) = blockSchur(F' s)` [`psiSplitRawGen_deepestChain_hmove` + `blockSchur_movedC`].
+So **`hC ⟺ Claim-C` (`LHS = blockSchur(F' s)`) for all `s`.**
+
+**What is left:**
+1. **Claim-C boundary** (layers `0`, `L−1`): `reindex(cc,ss)(coreRead_moved + schurCorrectionConj_moved)
+   = blockSchur(F' s)`. Route (Codex-confirmed): `deepestChain_framedParamsPivot_firstLayer` gives
+   `F' 0 = corM + psiFrame0·(chain reads)`; with `corM = psiFrame0·(chain-reindexed deepest_0)`
+   (from `hNF` at `firstLayer` + `reindexChainSq_fromBlocks`) this is `psiFrame0·(reduced-relabel M_0^m)`
+   (`deepBlkT_layer0_zero` folds the `(2,2)`); then `blockSchur_lowerFrame_of_blocks` + `blockSchur_reindex_reduced`.
+   Symmetric at `L−1` (`_lastLayer`, `psiFrameLast`, `blockSchur_upperFrame_of_blocks`,
+   `deepBlkZ_layerLast_zero`). **Interfaces with `psiGhat`/`psiTargetD`/`forcedDecodeLeft` banked machinery.**
+   Est. ~120 L (2 cases).
+2. **Assembly** (`hC` for all `s`): dispatch interior (Claim-C interior) / boundary (Claim-C boundary),
+   then RHS `= blockSchur(F' s)` via the reduction above. Est. ~50 L.
+
+**No wall** — the route is fully worked out and Codex-confirmed; the remainder is bounded reindex-readback
+plumbing (the statement card's original "step-6, est. 200–400 L, own focused tide"). NOT laundered into a
+sorry.
