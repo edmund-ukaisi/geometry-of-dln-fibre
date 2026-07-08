@@ -78,6 +78,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
 import DLNFibre.DLN.RLCT.Validate.D1GeCommonPivot
 import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
 import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
+import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
 
 /-!
 # Axiom-hygiene check
@@ -768,3 +769,11 @@ open DLNFibre.DLN.RLCT
 #print axioms d1ge_deepestPoint_of_explicit_chart_genL
 #print axioms exists_common_pivot_gen
 #print axioms reindex_prod_eq_genPartProd
+
+-- ★ ≥-leg chart-data (iii) rungs 1–3 — the asymmetric Schur telescope (2026-07-08, `genm-geleg1`). Discharges IN
+-- LEAN the load-bearing ≥-leg design risk (general-L chart avoids hLayer/Cauchy-Binet): `blockSchur_partProd_
+-- asym_fold` (`blockSchur(partProd C L) = ∏ R_k` from prefix pivots alone, via `schur_product_factor`) +
+-- `prefixPivotDomGen` (all partial-product pivots invertible). Rungs 4–8 (chart Φ + inverse + ContDiff + germ)
+-- remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms blockSchur_partProd_asym_fold
+#print axioms prefixPivotDomGen

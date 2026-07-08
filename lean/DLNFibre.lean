@@ -995,3 +995,10 @@ import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
 import DLNFibre.DLN.RLCT.Validate.D1GeCommonPivot
 import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
 import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
+-- `D1GeSchurTelescope` — ≥-leg chart-data (iii) rungs 1–3 (the asymmetric Schur telescope, the algebraic heart):
+-- `prefixPivotDomGen` (all partial-product pivots invertible from (i)+(ii)) + `blockSchur_partProd_succ_asym`
+-- (single-step `Sch(P_{k+1}) = Sch(P_k)·R_k` via `schur_product_factor`, needing ONLY left+product prefix pivots)
+-- + `blockSchur_partProd_asym_fold` (the telescope `blockSchur(partProd C L) = ∏ R_k` from prefix pivots ALONE).
+-- Discharges IN LEAN the load-bearing ≥-leg design risk: the general-L chart avoids hLayer/Cauchy-Binet.
+-- Remaining chart-data (iii) rungs 4–8 (chart map Φ + inverse + ContDiff + germ) + (iv) — a further session.
+import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
