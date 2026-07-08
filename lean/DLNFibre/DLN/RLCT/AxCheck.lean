@@ -52,6 +52,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 
 /-!
 # Axiom-hygiene check
@@ -516,6 +517,15 @@ open DLNFibre.DLN.RLCT
 #print axioms gammaPeelIntegral_schurShearFree_eq
 #print axioms freedSchurLoss_inner_peel_lt_top
 #print axioms freedSchurLoss_inner_bounded_lt_top
+
+-- ★ D1 ∀-L #120 `hstep2` concrete `hsub3reg` (2026-07-08, `genm-hstep2germs5`).
+-- `deepestEFull_sq_sum_eq_of_chain_movedC` — the concrete reg-preservation germ: at `J = frontEmbed`,
+-- given the move identity `deepestChain (framedParamsPivot (psi q)) = movedC (deepestChain …) (Z0edit0 …)`
+-- + base-chain `IsUnit` hyps, `∑ deepestEFull q₁² = ∑ deepestEFull q₂²` (direct-residual route via
+-- `deepestEFull_sq_sum_eq_blocks`, consuming the banked `regBlocks_movedC`). Consumed verbatim by the
+-- compose once the move identity (the final D1 piece) lands. Cite-NOTHING: forced `#print axioms` =
+-- [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms deepestEFull_sq_sum_eq_of_chain_movedC
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,

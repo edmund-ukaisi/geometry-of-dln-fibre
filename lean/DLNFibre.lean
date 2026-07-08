@@ -832,3 +832,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 -- `c'≤a/2`). The `(S,J)` outer descent supplying `w>0` (the double-induction mountain) is the SINGLE
 -- remaining R1-UPPER piece; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
+-- D1 #120 `hstep2` concrete `hsub3reg` (thread `genm-hstep2germs5`): `deepestEFull_sq_sum_eq_of_chain_movedC`
+-- — for `J = frontEmbed`, given the move identity `deepestChain (framedParamsPivot (psi q)) = movedC …`
+-- + base-chain `IsUnit` hyps, `∑ deepestEFull q₁² = ∑ deepestEFull q₂²` (the direct-residual route, reading
+-- the residual off the framed product). The concrete reg-preservation germ of the bridge. `hstep2`
+-- UNTOUCHED — the move identity (`psiSplitRawGen` def, ~1200-2200 lines, Codex: no obstruction) + triple +
+-- compose are the final D1 piece.
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
