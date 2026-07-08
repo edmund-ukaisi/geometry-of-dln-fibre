@@ -53,6 +53,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 
 /-!
 # Axiom-hygiene check
@@ -526,6 +527,17 @@ open DLNFibre.DLN.RLCT
 -- compose once the move identity (the final D1 piece) lands. Cite-NOTHING: forced `#print axioms` =
 -- [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms deepestEFull_sq_sum_eq_of_chain_movedC
+
+-- ★ R1-UPPER native R-BLOWUP decorated-recursion peel-charge soundness (2026-07-08, `genm-sjnative`, after
+-- the STEP-0 (3,3,3,4) shared-support GATE PASS). `minAdm_le_peelCharge_add_redChain` (= the cert's
+-- `carrierThreshold_mono` — the peel charge + reduced-chain minAdm dominates minAdm, the combinatorial gate
+-- of `decorated_peel_step`) + `half_minAdm_sub_half_peelCharge_le` (ℝ exponent-shift) + `exists_binding_cut`
+-- (non-vacuity). The analytic measure-CoV peel + the decorated predicate + base + consumer are the remaining
+-- CoV mountain — `sjJointResolution` untouched. Cite-NOTHING: forced `#print axioms` = [propext,
+-- Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`, no `cited_aoyagi_dln`).
+#print axioms minAdm_le_peelCharge_add_redChain
+#print axioms half_minAdm_sub_half_peelCharge_le
+#print axioms exists_binding_cut
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,

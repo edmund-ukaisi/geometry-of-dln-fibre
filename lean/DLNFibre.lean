@@ -839,3 +839,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 -- UNTOUCHED — the move identity (`psiSplitRawGen` def, ~1200-2200 lines, Codex: no obstruction) + triple +
 -- compose are the final D1 piece.
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
+-- R1-UPPER native R-BLOWUP decorated-recursion peel-charge SOUNDNESS (thread `genm-sjnative`, after the
+-- STEP-0 gate PASS): the combinatorial gate of `decorated_peel_step` — `minAdm_le_peelCharge_add_redChain`
+-- (= `carrierThreshold_mono`: the peel charge + reduced-chain minAdm dominates minAdm) + the ℝ
+-- exponent-shift + `exists_binding_cut` (non-vacuity). The analytic peel (measure CoV) + the decorated
+-- predicate/carrier + base + `π=∅` consumer are the remaining CoV mountain; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
