@@ -49,6 +49,16 @@ manufactures `det(Q_b Q_bᵀ)`, divergent on rank-deficient `Q_b`). The spherica
 the box and resolves its origin radially — the pure route. So this brick is the primitive the pure
 route needs and the scaling route cannot supply.
 
+## Review status: `reviewed` (fidelity AUDIT PASSED)
+
+Independent reviewer (isolated worktree, forced build + forced `#print axioms`, decorrelated `codex
+exec` concur): **FIDELITY MATCHES** for both lemmas — no stronger, no weaker than the `∫⁻` polar CoV
+claim. Confirmed: Jacobian exponent `= finrank − 1 = N − 1` (Mathlib-faithful, no fudge); `volumeIoiPow
+(N−1)` is the `r^{N−1}·dr` density; `[NeZero N]` is the honest minimal hypothesis (statement genuinely
+FALSE at `N = 0` — `toSphere = 0` there); `Measurable h` (polar form) honestly stated + needed
+(Tonelli), correctly absent from the raw form; no vacuity; naming = content. Soundness: forced green,
+zero warnings, forced `#print axioms` clean-three on both. No action required.
+
 ## What remains — `decorated_peel_step` (items 2–4): the multi-tide bulk (NO new obstruction found)
 
 Confirmed by an independent trace through the actual Lean interfaces, matching sjpure/r1flip/sjcarrier4's
