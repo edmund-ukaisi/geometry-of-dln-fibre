@@ -2369,3 +2369,18 @@ top component is FREQUENTLY sub-generic — the sub-generic strata are exactly W
   def) — fill-the-layer, feeds the build, a green proof independently hardens closure. (b) HOLDING the heavy analytic
   FrontPeelStep build for the next freed heavy slot (at 2-heavy budget with D1's hderiv0 + hstep2hc), front-loading the
   transfer risk when charged. R1-UPPER truth-value = triple-confirmed bounded; only the Lean-analytic primitive remains.
+
+## 66. D1 Item-3 `hC` reduces to ONE bounded sub-gap (Kcoup frame-invariance across framed-split vs decode chains) — NOT a research wall; hstep2hc directed to continue. (2026-07-08)
+`hstep2hc` scoped `hC` (the core-side move readback) via a 7-step route (Codex xhigh, `threads/genm-hstep2hc/`), 6
+steps banked/clear, and correctly STOPPED at step 6 rather than sorry-scaffold, handing back a precise sub-gap:
+`blockSchur_movedC_framedSplit_eq_decode` — equiv. `schurTilde(framedChain(split x)) s = schurTilde(decodeChain x) s`.
+The content: `schurTilde` carries the global `(1−Kcoup C s)` factor, and `Kcoup` reads the PARTIAL PRODUCTS, which
+differ between the framed-split and decode base chains by the endpoint frames (`framedParamsPivot_eq_frame_of_front`
+gives `Pf·decode·Qf`, not `decode`). So the real new content is **`Kcoup`/schurTilde frame-invariance through the
+boundary frames**. **Controller adjudication: BOUNDED, not a research wall** — DLN-specific algebra with a BANKED
+ANALOGUE to mirror (`regBlocks_movedC` / Invariant A is the reg-side counterpart; step 6 is its core-side twin), no
+Mathlib gap, ~200-400 L. Per mission (charge bounded builds at full clip), **directed `hstep2hc` to CONTINUE and
+build it** (it owns the 7-step route + the analogue pointer; resume-not-duplicate per the banked lesson). Docs (card +
+Codex verdict) merged to the record. (Operator: NO action — a bounded sub-gap build, the anticipated framed-vs-decode
+reconciliation, now pinpointed to a single mirror-of-`regBlocks_movedC` lemma. The one thing I'd escalate: if the
+Kcoup invariance turns out to need math beyond the reg-side analogue — not expected.)
