@@ -53,10 +53,15 @@ clashes with siblings (clash-scan clean). **NOT wired into `DLNFibre.lean`** —
 
 - **Proved.** `deepestEFull_sq_sum_eq_of_chain_movedC` + the six reconciliation lemmas, sorry-free; forced
   `#print axioms deepestEFull_sq_sum_eq_of_chain_movedC` reports `[propext, Classical.choice, Quot.sound]`
-  (no `sorryAx`). Non-vacuity: the hypotheses are satisfiable near the deepest point (the `corM`-corner
-  tail keeps `hP`/`hA`/`hN` satisfiable in the reduced-rank `r ≥ 1` regime — the banked
-  `deepestChain_tail_toBlocks₁₁`), and `J = frontEmbed` holds throughout the `deepest_gauge_construction`
-  pipeline (`hJfront'`).
+  (no `sorryAx`). Non-vacuity — scoped: the base-chain hypotheses `hP`/`hA`/`hN` are satisfiable near the
+  deepest point (the `corM`-corner tail keeps them satisfiable in the reduced-rank `r ≥ 1` regime — the
+  banked `deepestChain_tail_toBlocks₁₁`; this is a plausibility argument, not proved in-module), and
+  `J = frontEmbed` holds throughout the `deepest_gauge_construction` pipeline (`hJfront'`). The FULL
+  non-vacuity — that `hmove` is JOINTLY satisfiable by a genuine `(q₁, q₂) : DeepestSplit`, i.e. that
+  `movedC (deepestChain (framedParamsPivot … q₂))` lies in the image of
+  `q ↦ deepestChain (framedParamsPivot … q)` — is EXACTLY Item 2 (the `psiSplitRawGen` construction) and
+  is NOT established here. The theorem is a sound conditional; its content is discharged by the proven
+  `regBlocks_movedC`, and the one deferred geometric fact is carried honestly as `hmove`.
 - **Assumed (the precise remaining path — Item 2, the crux).** The abstract move identity `hmove`, i.e.
   the concrete `psiSplitRawGen` design + its move identity
   `deepestChain (framedParamsPivot (psiSplitRawGen q)) = movedC (deepestChain (framedParamsPivot q)) (Z0edit0 …)`.
@@ -83,6 +88,10 @@ clashes with siblings (clash-scan clean). **NOT wired into `DLNFibre.lean`** —
     (`DeepestDeepBlkBoundaryGen`) → close the `hstep2` sorry.
 
 ## Status
-sorry-free. `hstep2` UNTOUCHED (not laundered). Pending controller AxCheck (wire into `DLNFibre.lean`) +
-independent fidelity review (does `deepestEFull_sq_sum_eq_of_chain_movedC` faithfully capture the
-`hsub3reg` reg-preservation claim?).
+sorry-free; **reviewed** (independent `reviewer`, decorrelated Codex): verdict SURVIVED — fidelity OK on
+the germ-object match, the `hmove` encoding (discharged by the proven `regBlocks_movedC`, not laundered),
+and the three `pivotFront·_eq_chainCol` reconciliation lemmas (true, `{12}` relabel direction correct);
+axiom footprint confirmed `[propext, Classical.choice, Quot.sound]`. The one finding — a card
+over-read on non-vacuity — is addressed above (the Non-vacuity bullet is now scoped: `hmove`'s joint
+satisfiability is Item 2, not settled here). `hstep2` UNTOUCHED (not laundered). Pending controller
+AxCheck (wire into `DLNFibre.lean`).
