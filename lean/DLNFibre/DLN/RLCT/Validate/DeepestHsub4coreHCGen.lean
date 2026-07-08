@@ -647,4 +647,33 @@ theorem blockSchur_framed_eq_decode (H : Fin (L + 1) → ℕ) (r : ℕ)
     · rw [deepestChain_framed_eq_decode_interior H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner
         hInterior x s hspos (by omega)]
 
+/-! ## `blockSchur`/`reindex` naturality (reduced-width relabels) -/
+
+/-- **`blockSchur` commutes with a reduced-width relabel of the off-diagonal/core blocks.** For a synthetic
+layer whose `₁₂/₂₁/₂₂` blocks are relabelled by `e1`/`e2` (pivot `₁₁` untouched), `blockSchur` is the
+relabel of the un-relabelled `blockSchur`. The `Ring.inverse` pivot is on the fixed `ρ`-block, so only the
+`Z·A⁻¹·Y` correction relabels, via `reindex_mul`. -/
+theorem blockSchur_reindex_reduced {ρ a a' b b' : Type*}
+    [Fintype ρ] [DecidableEq ρ] [Fintype a] [DecidableEq a] [Fintype a'] [DecidableEq a']
+    [Fintype b] [DecidableEq b] [Fintype b'] [DecidableEq b']
+    (e1 : a ≃ a') (e2 : b ≃ b')
+    (A : Matrix ρ ρ ℝ) (Bm : Matrix ρ b ℝ) (Cm : Matrix a ρ ℝ) (Dm : Matrix a b ℝ) :
+    blockSchur (Matrix.fromBlocks A (Matrix.reindex (Equiv.refl ρ) e2 Bm)
+        (Matrix.reindex e1 (Equiv.refl ρ) Cm) (Matrix.reindex e1 e2 Dm))
+      = Matrix.reindex e1 e2 (blockSchur (Matrix.fromBlocks A Bm Cm Dm)) := by
+  have hsub : Matrix.reindex e1 e2 (Matrix.fromBlocks A Bm Cm Dm).toBlocks₂₂
+      - Matrix.reindex e1 e2 ((Matrix.fromBlocks A Bm Cm Dm).toBlocks₂₁
+          * Ring.inverse (Matrix.fromBlocks A Bm Cm Dm).toBlocks₁₁
+          * (Matrix.fromBlocks A Bm Cm Dm).toBlocks₁₂)
+      = Matrix.reindex e1 e2 ((Matrix.fromBlocks A Bm Cm Dm).toBlocks₂₂
+          - (Matrix.fromBlocks A Bm Cm Dm).toBlocks₂₁
+              * Ring.inverse (Matrix.fromBlocks A Bm Cm Dm).toBlocks₁₁
+              * (Matrix.fromBlocks A Bm Cm Dm).toBlocks₁₂) :=
+    ((Matrix.reindexLinearEquiv ℝ ℝ e1 e2).map_sub _ _).symm
+  rw [blockSchur, blockSchur, Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂,
+    Matrix.toBlocks_fromBlocks₂₁, Matrix.toBlocks_fromBlocks₂₂, ← hsub,
+    Matrix.toBlocks_fromBlocks₁₁, Matrix.toBlocks_fromBlocks₁₂, Matrix.toBlocks_fromBlocks₂₁,
+    Matrix.toBlocks_fromBlocks₂₂]
+  congr 1
+
 end DLNFibre.DLN.RLCT
