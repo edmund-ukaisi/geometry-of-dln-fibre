@@ -639,4 +639,93 @@ theorem eventually_isUnit_nMix (H : Fin (L + 1) → ℕ) (r : ℕ)
     rw [nMix_tail_eq_one H r hr hL J Pf Qf (split x) k (by omega)]
     exact isUnit_one
 
+/-! ## The concrete general-`L` reg-preservation germ `hsub3reg` -/
+
+/-- **The concrete general-`L` reg-preservation germ (`hsub3reg`).** Near the deepest basepoint the joint
+move `psiSplitRawGen` preserves the `deepestEFull²`-sum reg energy. Assembles the banked pure-algebra
+`deepestEFull_sq_sum_eq_of_chain_movedC` (which consumes the move identity + the `∀ k` base-chain unit
+hypotheses `hP`/`hA`/`hN`) with the banked move identity `psiSplitRawGen_deepestChain_hmove` and the three
+eventual-unit germs of this module (the `∀ k` collapses to a finite range: off the used prefix the chain
+layer is the fixed corner default, so `nMix = 1` / `(C)₁₁ = 1` unconditionally and `partProd₁₁` stabilises).
+This is the `hsub3reg` input of `deepest_diffeo_bridge_gen_assembled` (via `hregval`). -/
+theorem hsub3reg_gen_germ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hQf0 : Qf (firstLayer hL) = 1)
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hPunit : IsUnit (Pf (firstLayer hL))) (hQunit : IsUnit (Qf (lastLayer hL)))
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w) :
+    ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      (∑ i, (deepestEFull H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf (split x)) i) ^ 2)
+        = ∑ i, (deepestEFull H r hr hL J Pf Qf (split x) i) ^ 2 := by
+  -- `∀ k` chain-layer units: finite range `L` + tail (`(C k)₁₁ = 1`).
+  have hA_all : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      ∀ k, IsUnit ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x)) k).toBlocks₁₁) := by
+    have hfin : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ k ∈ Finset.range L,
+          IsUnit ((deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x)) k).toBlocks₁₁) :=
+      (Filter.eventually_all_finset _).mpr (fun k _ =>
+        eventually_isUnit_deepestChain_toBlocks₁₁ H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k)
+    filter_upwards [hfin] with x hx
+    intro k
+    rcases lt_or_ge k L with hk | hk
+    · exact hx k (Finset.mem_range.mpr hk)
+    · rw [deepestChain_tail_toBlocks₁₁ H r hr _ k (by omega)]; exact isUnit_one
+  -- `∀ k` partProd units: finite range `L + 1` + stabilisation for `k > L`.
+  have hP_all : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      ∀ k, IsUnit ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k).toBlocks₁₁) := by
+    have hfin : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ k ∈ Finset.range (L + 1),
+          IsUnit ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k).toBlocks₁₁) :=
+      (Filter.eventually_all_finset _).mpr (fun k _ =>
+        eventually_isUnit_partProd_toBlocks₁₁ H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k)
+    filter_upwards [hfin] with x hx
+    intro k
+    rcases Nat.lt_or_ge k (L + 1) with hkL | hLk
+    · exact hx k (Finset.mem_range.mpr hkL)
+    · rw [partProd_toBlocks₁₁_stabilize H r hr hL J Pf Qf (split x) k (by omega)]
+      exact hx L (Finset.mem_range.mpr (by omega))
+  -- `∀ k` nMix units: finite range `L` + tail (`nMix k = 1`).
+  have hN_all : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      ∀ k, IsUnit (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k) := by
+    have hfin : ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+        ∀ k ∈ Finset.range L,
+          IsUnit (nMix (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k) :=
+      (Filter.eventually_all_finset _).mpr (fun k _ =>
+        eventually_isUnit_nMix H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k)
+    filter_upwards [hfin] with x hx
+    intro k
+    rcases lt_or_ge k L with hk | hk
+    · exact hx k (Finset.mem_range.mpr hk)
+    · rw [nMix_tail_eq_one H r hr hL J Pf Qf (split x) k (by omega)]; exact isUnit_one
+  filter_upwards [hA_all, hP_all, hN_all] with x hA hP hN
+  exact deepestEFull_sq_sum_eq_of_chain_movedC H r hr hL J hJfront' Pf Qf
+    (psiSplitRawGen H r hr hL J Pf Qf (split x)) (split x)
+    (psiSplitRawGen_deepestChain_hmove H r hr hL hL2 J hJfront' Pf Qf (split x)
+      hQf0 hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior)
+    hP hA hN
+
 end DLNFibre.DLN.RLCT
