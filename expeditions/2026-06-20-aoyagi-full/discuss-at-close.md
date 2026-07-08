@@ -2138,3 +2138,41 @@ dependent-width cast grind — multi-tide, but no flagged research wall. (Operat
 milestone. The design-first discipline retired FOUR route-confounds + now BOTH walls' satisfiability risks at
 bounded cost, zero bad Lean banked. If you want a written go/no-go on the multi-week labor ETA vs a
 scoped-intermediate deliverable, say so; default is CHARGE per the GO-THE-DISTANCE mandate.)
+
+## 58. R1-UPPER close RE-SCOPED + build-vs-cite RE-OPENED — the measure route is exhausted; the close needs a decorated contract + a genuine-new product-Gram principalisation (sharpens #52/#53/#55). (2026-07-08)
+**Honest recalibration (I flag my own over-optimism).** Across UPDATE-682→689 I integrated the R1-UPPER
+measure-route pieces (block-reindex transport, Schur weld, MP shear freeing Γ, the corank freed-Γ peel) —
+each sound, reviewer-FAITHFUL, clean-three, AxCheck-gated — under the framing "one bounded piece from close,
+no wall." **`sjcarrier9` (the (S,J) outer-descent tide) hit its designed STOP-condition and surfaced that
+framing as too optimistic**, giving a THIRD decorrelated confirmation (after `outer-construction-cert.md` +
+its Codex) that the plain-IH contract CANNOT close: at the binding cut `minAdm M = a + minAdm(redChain t* M)`
+the residual exponent EXACTLY saturates the reduced-chain threshold (0/4000), leaving zero budget for the Gram
+coupling `det(Q_b Q_bᵀ)^{−p/2}` (`Q_b = A_{k,b}·Z`, a matrix PRODUCT). The current `sjJointResolution`
+(`RouteMSJResolution.lean:797`, IH = plain `∀M' RouteMBoxThresholdFinite M'`) is on the exhausted lane.
+**The banked measure pieces are NOT wasted** — they are the complete, correct steps-1–2 inventory the decorated
+recursion slots under; but they do not compose to the close via plain-IH.
+**What the close actually needs (two pieces):** (1) a CONTROLLER contract RE-SCOPE to a DECORATED induction
+`I_π(s)` over partial rank profiles carrying the Gram-weight + a symbolic exceptional-divisor support table
+(the plain-IH `sjJointResolution` becomes its `π=∅` consumer); (2) a GENUINE-NEW brick — the joint
+principalisation of `det(Q_b Q_bᵀ)=‖∧^q Q_b‖²` for the matrix PRODUCT `Q_b = A_{k,b}·Z` at corank ≥ 2, tracking
+shared divisor support. Per `outer-construction-cert.md` (pen-and-paper + decorrelated Codex): the VALUE is
+certified general-L (Aoyagi + 3 methods + RRR) — **NOT a mathematical wall** — but the brick is "genuine-new,
+non-standard, un-banked... where a formalisation stalls" (res-of-sing / Plücker normal form of a product's
+maximal minors; the measure-theoretic CoV+Fubini+monomial route provably does NOT reach it).
+**This SHARPENS #55's "(a) BOUNDED, no scope-call":** true that the value is bounded (not a math wall), but the
+FORMALISATION needs a contract re-scope + a genuine-new principalisation build — not measure-plumbing labor.
+**OPERATOR DECISION POINT (build-vs-cite, sharpening #55's flagged fallback):** (A) BUILD the product-Gram
+principalisation from scratch (iterated explicit Plücker/blow-up charts — established math per the mandate, but
+a genuine multi-week+ construction, possibly its OWN sub-expedition; keeps the deliverable cite-only-S2), vs
+(B) CITE Aoyagi's product principalisation as a second named interface (like the S2 `monomial_rlct` axiom) —
+the headline then closes modulo TWO cited classical inputs, not one. **Per the GO-THE-DISTANCE + cite-only-S2
+mandate the default is (A) BUILD**, and I am NOT halting — I charged `r1decorated` (pen-and-paper + decorrelated
+Codex) to (i) pin the decorated `I_π(s)` contract Lean-ready and (ii) adjudicate (A)-vs-(B) tractability on the
+smallest coupled case `(2,2,2,2) t=1` → corank-2 `(3,3,4)`. Its verdict will make this operator call crisp. IF
+it returns "(B) cite-only-reachable" (measure route provably insufficient + the principalisation beyond
+break-it-down Lean reach at v4.29), that is a genuine cite-footprint change for your call. **D1 #120 is
+UNAFFECTED + genuinely bounded** (the abstract layer is proven ∀CommRing; the concrete instantiation mirrors
+the already-BUILT L=2 conj machinery — `hstep2germs5` in flight). (Operator: a real recalibration + a
+build-vs-cite decision, recorded per the autonomous mandate; I default to BUILD + am adjudicating tractability
+first, not blocking — but if you want to pre-empt with "cite Aoyagi's principalisation for the corank-≥2
+stratum," that collapses the R1-UPPER long pole to a named interface.)
