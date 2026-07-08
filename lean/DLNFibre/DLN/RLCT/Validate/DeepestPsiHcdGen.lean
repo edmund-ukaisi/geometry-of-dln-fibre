@@ -658,4 +658,83 @@ theorem genPsiReadBlk_contDiffAt_at (H : Fin (L + 1) → ℕ) (r : ℕ)
   rw [heq]
   exact genPsiGhat_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ _ _
 
+/-! ## (iii) The deviation smoothness at a general `q₀`, and the consumer-shape `hcd`
+
+The payload lens `psiSplitDeltaGen_eq_payload` packs `psiSplitRawGen q − q` as
+`(regGaugeSlotCLE.symm (gaugeΔ q)).1 , paramsEquivFlatCLE (coreΔ q) , (…).2`. The gauge/core deltas
+are read-backs of `psiReadBlk` (banked `regGaugeSlotEquiv_psiSplitRawGen` /
+`paramsEquivFlatCLE_psiSplitCoreDeltaGen_eq`), `ContDiffAt` at `q₀` by the assembly above; the fixed
+CLEs are smooth. -/
+
+/-- **The deviation `q ↦ psiSplitRawGen q − q` is `ContDiffAt ℝ ⊤` at any `q₀` in the invertibility
+region.** The payload lens + the `psiReadBlk` smoothness assembly + the smooth packing CLEs. -/
+theorem contDiffAt_psiSplitDeltaGen_at (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q₀ : DeepestSplit H r (deepestNGauge H r))
+    (hq₀ : psiInvBundle H r hr hL J Pf Qf q₀) :
+    ContDiffAt ℝ (⊤ : ℕ∞) (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q) q₀ := by
+  -- gauge delta `ContDiffAt`
+  have hgaugeΔ : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => psiSplitGaugeDeltaGen H r hr hL J Pf Qf q) q₀ := by
+    unfold psiSplitGaugeDeltaGen
+    simp only [regGaugeSlotEquiv_psiSplitRawGen]
+    refine ContDiffAt.sub ?_ ?_
+    · refine contDiffAt_pi.mpr (fun idx => ?_)
+      rcases idx with ⟨s, (⟨i, j⟩ | ⟨i, j⟩) | ⟨i, j⟩⟩
+      · exact genPsiReadBlk_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ (Sum.inl i) (Sum.inl j)
+      · exact genPsiReadBlk_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ (Sum.inl i) (Sum.inr j)
+      · exact genPsiReadBlk_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ (Sum.inr i) (Sum.inl j)
+    · exact (contDiff_regGaugeSlotEquiv H r hr hL).contDiffAt.comp q₀
+        (contDiffAt_fst.prodMk (contDiffAt_snd.comp q₀ contDiffAt_snd))
+  -- core delta (encoded) `ContDiffAt`
+  have hcs : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q)) q₀ := by
+    have heq : (fun q => paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q))
+        = fun q => (psiSplitRawGen H r hr hL J Pf Qf q).2.1 - q.2.1 := by
+      funext q; exact paramsEquivFlatCLE_psiSplitCoreDeltaGen_eq H r hr hL J Pf Qf q
+    rw [heq]
+    refine ContDiffAt.sub ?_ (contDiffAt_fst.comp q₀ contDiffAt_snd)
+    have hcore21 : (fun q => (psiSplitRawGen H r hr hL J Pf Qf q).2.1)
+        = fun q => paramsEquivFlatCLE (deepestM H r)
+            (fun s => (psiReadBlk H r hr hL J Pf Qf q s).toBlocks₂₂) := by
+      funext q
+      show paramsEquivFlat (deepestM H r)
+          (fun s => (psiReadBlk H r hr hL J Pf Qf q s).toBlocks₂₂)
+        = paramsEquivFlatCLE (deepestM H r)
+          (fun s => (psiReadBlk H r hr hL J Pf Qf q s).toBlocks₂₂)
+      rw [paramsEquivFlatCLE_coe]
+    rw [hcore21]
+    refine (paramsEquivFlatCLE (deepestM H r)).contDiff.contDiffAt.comp q₀ ?_
+    refine contDiffAt_pi.mpr (fun s => contDiffAt_pi.mpr (fun i => contDiffAt_pi.mpr (fun j => ?_)))
+    exact genPsiReadBlk_contDiffAt_at H r hr hL J Pf Qf s q₀ hq₀ (Sum.inr i) (Sum.inr j)
+  -- assemble via the payload lens
+  have hpay : (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
+      = fun q => (((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q),
+            ((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).2)) := by
+    funext q; exact psiSplitDeltaGen_eq_payload H r hr hL J Pf Qf q
+  rw [hpay]
+  have hgs : ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => (regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)) q₀ :=
+    (regGaugeSlotCLE H r hr hL).symm.contDiff.contDiffAt.comp q₀ hgaugeΔ
+  exact (contDiffAt_fst.comp q₀ hgs).prodMk (hcs.prodMk (contDiffAt_snd.comp q₀ hgs))
+
+/-- **`hcd` — the consumer-shape smoothness leaf.** For a cutoff bump `χ` whose support lies in the
+invertibility region (`hχ`), the deviation `q ↦ psiSplitRawGen q − q` is `ContDiffAt ℝ ⊤` at every
+point of `tsupport χ` — exactly the hypothesis `contDiff_deepestPsiCutRaw` / `contDiff_deepestPsiFlatCut`
+(`DeepestPsiFlatCutGen`) consume to build the flat diffeo of the Producer-1 diffeo triple. -/
+theorem hcd_psiSplitRawGen (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (χ : ContDiffBump (0 : DeepestSplit H r (deepestNGauge H r)))
+    (hχ : ∀ q ∈ tsupport (fun y => ((χ y : ℝ))), psiInvBundle H r hr hL J Pf Qf q) :
+    ∀ q ∈ tsupport (fun y => ((χ y : ℝ))),
+      ContDiffAt ℝ (⊤ : ℕ∞) (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q) q :=
+  fun q hq => contDiffAt_psiSplitDeltaGen_at H r hr hL J Pf Qf q (hχ q hq)
+
 end DLNFibre.DLN.RLCT
