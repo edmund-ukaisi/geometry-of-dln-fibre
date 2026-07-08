@@ -968,3 +968,11 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 -- `psiSplitRawGen_deepestChain_hmove`'s (satisfied by the normal-form frames). Producer 1 = hraw0✓ +
 -- hderiv0✓ + hcd (remaining). `hstep2` still needs Item-3 hC (hcfinish) + the triple assembly + compose.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
+-- `DeepestPsiHcdGen` — hcd COMPLETE (D1 #120 Producer-1 diffeo-triple leaf #3/3, sorry-free, clean-three):
+-- `hcd_psiSplitRawGen` (the consumer shape `∀ q ∈ tsupport χ, ContDiffAt ℝ ⊤ (psiSplitRawGen · − ·) q` under
+-- `hχ : ∀ q ∈ tsupport χ, psiInvBundle … q`) + `contDiffAt_psiSplitDeltaGen_at` (at a q₀ in the invertibility
+-- region) + `eventually_psiInvBundle` (`∀ᶠ q in 𝓝 0`, discharges `hχ` for a small-radius χ) + `psiInvBundle_zero`.
+-- `hχ` is a GENUINE region condition (psiSplitRawGen isn't globally smooth), NOT laundering. **The Producer-1
+-- diffeo triple hraw0 ✓ + hderiv0 ✓ + hcd ✓ is now COMPLETE** — `hstep2` still needs Item-3 hC (hcfinish) + the
+-- triple/frontPivot assembly.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen

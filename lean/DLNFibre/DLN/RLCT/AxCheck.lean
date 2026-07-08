@@ -70,6 +70,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 
@@ -678,6 +679,17 @@ open DLNFibre.DLN.RLCT
 -- `psiSplitRawGen_deepestChain_hmove`'s (satisfied by the normal-form frames). hcd (leaf #3) + the triple
 -- compose remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms hasStrictFDerivAt_psiSplitDeltaGen_zero
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer-1 diffeo-triple leaf #3/3 COMPLETE (2026-07-08, `genm-hcd`). The
+-- SMOOTHNESS leaf: `hcd_psiSplitRawGen` (`∀ q ∈ tsupport χ, ContDiffAt ℝ ⊤ (psiSplitRawGen · − ·) q` under
+-- `hχ : ∀ q ∈ tsupport χ, psiInvBundle q`; the exact `contDiff_deepestPsiFlatCut` hcd arg) +
+-- `contDiffAt_psiSplitDeltaGen_at` (at q₀ in the invertibility region) + `eventually_psiInvBundle`
+-- (`∀ᶠ q in 𝓝 0`, discharges `hχ` for a small-radius χ). `hχ` GENUINE (psiSplitRawGen not globally smooth),
+-- NOT laundering. **Diffeo triple hraw0 ✓ + hderiv0 ✓ + hcd ✓ COMPLETE.** Cite-NOTHING: forced `#print
+-- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms hcd_psiSplitRawGen
+#print axioms contDiffAt_psiSplitDeltaGen_at
+#print axioms eventually_psiInvBundle
 
 -- ★ D1 ∀-L #120 `hstep2` — Item-3 (`hsub4core` germ) KEYSTONE (2026-07-08, `genm-hstep2hsub4`), the
 -- Producer-1-free per-`x` content. `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart` — chains
