@@ -150,6 +150,28 @@ noncomputable def schurChartRawInvGen {r₀ : ℕ} {n : ℕ → ℕ}
 
 variable {r₀ : ℕ} {n : ℕ → ℕ}
 
+/-- **`partProd` reads only its first `k` layers.** If two chains agree on layers `0,…,k−1`, their
+`partProd` at `k` agree. Induction on `k`. -/
+theorem partProd_congr {ρ : Type*} [Fintype ρ] [DecidableEq ρ] {m : ℕ → Type*}
+    [∀ i, Fintype (m i)] [∀ i, DecidableEq (m i)] {α : Type*} [CommRing α]
+    (C C' : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕ m (s + 1)) α) (k : ℕ) (h : ∀ t, t < k → C t = C' t) :
+    partProd C k = partProd C' k := by
+  induction k with
+  | zero => rfl
+  | succ k ih => rw [partProd, partProd, ih (fun t ht => h t (by omega)), h k (by omega)]
+
+/-- **Front-peel of `partProd`.** The left-associated fold peels its FIRST factor:
+`partProd C (k+1) = C 0 · partProd (C ∘ succ) k`, where `C ∘ succ = fun t => C (t+1)` is the suffix
+chain. Induction on `k` (base `partProd C 1 = C 0`; step by `Matrix.mul_assoc`). Used to relate the
+full product to the reconstructed suffix in the `s = 0` inverse case. -/
+theorem partProd_front_peel
+    (C : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (k : ℕ) :
+    partProd C (k + 1) = C 0 * partProd (fun t => C (t + 1)) k := by
+  induction k with
+  | zero => simp only [partProd, Matrix.one_mul, Matrix.mul_one]
+  | succ k ih =>
+      rw [partProd, ih, partProd, Matrix.mul_assoc]
+
 /-- **Local reconstruction is exact** (the `s ≥ 1` half of `Ψ∘Φ = id`). With the prefix pivots
 `(partProd C (t+1))₁₁`, `(partProd C (t+2))₁₁` invertible, `invLayerSucc (schurChartRawGen C L) t
 = C (t+1)`. Via the block-mult identities `partProd C (t+2) = partProd C (t+1) · C (t+1)` and the
