@@ -27,10 +27,13 @@ Schur blocks:
   `(partProd 0)₁₂ = 0`, `blockSchur(corM) = 0`, `wHatAccum(0) = 0`);
 * **(d) compose** the strict-deriv-`0` of `gaugeΔ`/`coreΔ` through the fixed CLEs into `hderiv0`.
 
-## Status (WIP)
-The target `hasStrictFDerivAt_psiSplitDeltaGen_zero` is **proven modulo two `sorry` sub-lemmas**
+## Status (COMPLETE, sorry-free)
+The target `hasStrictFDerivAt_psiSplitDeltaGen_zero` is **proven sorry-free**, axiom-clean
+`[propext, Classical.choice, Quot.sound]`. Both delta sub-lemmas
 (`hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero`,
-`hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero`).
+`hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero`) are closed under the `Pf`/`Qf`
+structural hypotheses of `psiSplitRawGen_deepestChain_hmove` (`hL2`, `hQf0`, `hPfL`, `hPunit`, `hQunit`,
+`hPtri`, `hP22`, `hQtri`, `hQ22`, `hInterior`), which the target carries and threads through piece (d).
 
 Landed + axiom-clean: pieces (a) [`psiSplitDeltaGen_eq_payload`] and (d) [the target's proof], the
 pair-mul keystone, and **the whole of piece (c)** —
@@ -41,15 +44,22 @@ pair-mul keystone, and **the whole of piece (c)** —
   InvNMix,SchurTilde,InvC11,InvPartProd11,BlockSchurPartProd,UpEdit,MovedY,WHatAccum,HTermLC,DeltaV0,
   MovedZ}_contDiffAt`);
 * the four `movedC(C q) Z0edit − C q` germ blocks strict-deriv `0` at the origin
-  (`hasStrictFDerivAt_gen{UpEdit,HTermLC,DeltaV0,MovedZsub,MovedTsub}_entry_zero`).
+  (`hasStrictFDerivAt_gen{UpEdit,HTermLC,DeltaV0,MovedZsub,MovedTsub}_entry_zero`), unified over the
+  `Sum` index by `hasStrictFDerivAt_genMovedCsub_entry_zero`.
 
-Remaining = **piece (b) only** (bounded recovery plumbing, no math wall): the two `sorry` sub-lemmas.
-Each `gaugeΔ`/`coreΔ` entry equals `forcedDecode(frame_s)(movedC − C)`_block, reduced to a piece-(c)
-germ block — interior via `deepestChain_framedParamsPivot_blocks_of_frame_one` (needs `Pf s = 1 ∧
-Qf s = 1`), boundary via the banked `deepestChain_framedParamsPivot_firstLayer`/`_lastLayer` +
-`forcedDecodeLeft/Right_*Frame_mul` (★). The two sub-lemmas + the target will gain the `Pf`/`Qf`
-structural hypotheses of `psiSplitRawGen_deepestChain_hmove` (`hL2`, `hQf0`, `hPfL`, `hPunit`, `hQunit`,
-`hPtri`, `hP22`, `hQtri`, `hQ22`, `hInterior`).
+**Piece (b) — the read-recovery.** The single building block is
+`hasStrictFDerivAt_genChainDelta_entry_zero`: every entry of `C(fpp (psiSplitRawGen q)) − C(fpp q)` at a
+layer `< L` has strict derivative `0` (via `hmove` → the unified `movedC − C` germ). Each `gaugeΔ`/`coreΔ`
+entry reduces to this:
+* INTERIOR (`Pf s = 1 ∧ Qf s = 1` from `hInterior`, `s ≠ lastLayer`): the block decode
+  `deepestChain_framedParamsPivot_blocks_of_frame_one` for both `psiSplitRawGen q` and `q` makes the
+  read-delta equal the chain-delta block entry directly.
+* BOUNDARY: subtract the two whole-matrix decodes `deepestChain_framedParamsPivot_firstLayer` /
+  `_lastLayer` (`corM` cancels), leaving `frame · (readΔ fromBlocks)` — so the read-delta is a block of
+  `Ring.inverse(psiFrame0) · (chainΔ)` (first layer, left frame) or `(chainΔ) · Ring.inverse(psiFrameLast)`
+  (last layer, right frame). The constant frame-inverse commutes through the strict derivative
+  (`hasStrictFDerivAt_const_matrix_mul_entry_zero` / `_matrix_mul_const_entry_zero`), landing on the
+  chain-delta germ. (The `forcedDecodeLeft/Right` `(★)` identities are not needed for this route.)
 -/
 
 open Matrix Topology
@@ -1524,7 +1534,144 @@ theorem hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero (H : Fin 
     HasStrictFDerivAt
       (fun q => paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q))
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
-  sorry
+  have hpsiunit : IsUnit (psiFrame0 H r hr hL Pf) := by
+    rw [psiFrame0]; simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hPunit)
+  have hpflunit : IsUnit (psiFrameLast H r hr hL Qf) := by
+    rw [psiFrameLast]; simp only [Matrix.reindex_apply]
+    exact (Matrix.isUnit_submatrix_equiv _ _).mpr ((Matrix.isUnit_submatrix_equiv _ _).mpr hQunit)
+  -- The core read-delta entry (all layers) has strict derivative `0`: the ₂₂ block reduction.
+  have hcore_entry : ∀ (s : Fin L) (i : Fin (deepestM H r s.castSucc)) (j : Fin (deepestM H r s.succ)),
+      HasStrictFDerivAt (fun q =>
+          (paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1 s i j
+        - (paramsEquivFlat (deepestM H r)).symm q.2.1 s i j)
+        (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+    intro s i j
+    by_cases hlast : s = lastLayer hL
+    · subst hlast
+      have heq : (fun q =>
+            (paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1
+                (lastLayer hL) i j
+          - (paramsEquivFlat (deepestM H r)).symm q.2.1 (lastLayer hL) i j)
+          = fun q => ((deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                  (lastLayer hL : ℕ)
+                - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (lastLayer hL : ℕ))
+              * Ring.inverse (psiFrameLast H r hr hL Qf))
+              (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i))
+              (Sum.inr (finCongr (chainWidth_succ_sub H r (lastLayer hL)) j)) := by
+        funext q
+        have hpsi := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf
+          (psiSplitRawGen H r hr hL J Pf Qf q) hPfL
+        have hq := deepestChain_framedParamsPivot_lastLayer H r hr hL hL2 J hJfront Pf Qf q hPfL
+        conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.sub_mul, Matrix.mul_assoc,
+          Ring.mul_inverse_cancel _ hpflunit, Matrix.mul_one]
+        rw [Matrix.sub_apply, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₂₂]
+        simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
+      rw [heq]
+      exact hasStrictFDerivAt_matrix_mul_const_entry_zero (Ring.inverse (psiFrameLast H r hr hL Qf))
+        (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i))
+        (Sum.inr (finCongr (chainWidth_succ_sub H r (lastLayer hL)) j))
+        (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+          hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (lastLayer hL : ℕ) (lastLayer hL).isLt
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r (lastLayer hL)) i)) c)
+    · by_cases hfirst : s = firstLayer hL
+      · subst hfirst
+        have heq : (fun q =>
+              (paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1
+                  (firstLayer hL) i j
+            - (paramsEquivFlat (deepestM H r)).symm q.2.1 (firstLayer hL) i j)
+            = fun q => (Ring.inverse (psiFrame0 H r hr hL Pf)
+                * (deepestChain H r hr
+                      (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                      (firstLayer hL : ℕ)
+                  - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (firstLayer hL : ℕ)))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)) i))
+                (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j)) := by
+          funext q
+          have hpsi := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) hQf0
+          have hq := deepestChain_framedParamsPivot_firstLayer H r hr hL hL2 J Pf Qf q hQf0
+          conv_rhs => rw [hpsi, hq, add_sub_add_left_eq_sub, ← Matrix.mul_sub, ← Matrix.mul_assoc,
+            Ring.inverse_mul_cancel _ hpsiunit, Matrix.one_mul]
+          rw [Matrix.sub_apply, Matrix.fromBlocks_apply₂₂, Matrix.fromBlocks_apply₂₂]
+          simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
+        rw [heq]
+        exact hasStrictFDerivAt_const_matrix_mul_entry_zero (Ring.inverse (psiFrame0 H r hr hL Pf))
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r (firstLayer hL)) i))
+          (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j))
+          (fun c => hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0
+            hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (firstLayer hL : ℕ)
+            (firstLayer hL).isLt c
+            (Sum.inr (finCongr (chainWidth_succ_sub H r (firstLayer hL)) j)))
+      · have hpos : 0 < (s : ℕ) := by
+          rcases Nat.eq_zero_or_pos (s : ℕ) with h0 | h0
+          · exact absurd (Fin.ext (by simp [firstLayer, h0]) : s = firstLayer hL) hfirst
+          · exact h0
+        have hlt : (s : ℕ) + 1 < L := by
+          rcases Nat.lt_or_ge ((s : ℕ) + 1) L with h | h
+          · exact h
+          · exact absurd
+              (Fin.ext (by simp only [lastLayer]; have := s.isLt; omega) : s = lastLayer hL) hlast
+        obtain ⟨hP, hQ⟩ := hInterior s hpos hlt
+        have heq : (fun q =>
+              (paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1 s i j
+            - (paramsEquivFlat (deepestM H r)).symm q.2.1 s i j)
+            = fun q => (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ)
+                - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+                (Sum.inr (finCongr (chainWidth_succ_sub H r s) j)) := by
+          funext q
+          have hpsi := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf
+            (psiSplitRawGen H r hr hL J Pf Qf q) s hlast hP hQ).2.2.2
+          have hq := (deepestChain_framedParamsPivot_blocks_of_frame_one H r hr hL J Pf Qf q s
+            hlast hP hQ).2.2.2
+          rw [Matrix.sub_apply]
+          have e1 : (deepestChain H r hr
+                (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+                (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+              = (paramsEquivFlat (deepestM H r)).symm (psiSplitRawGen H r hr hL J Pf Qf q).2.1 s i j := by
+            rw [show (deepestChain H r hr
+                  (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) (s : ℕ))
+                  (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+                  (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                = (deepestChain H r hr
+                    (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q))
+                    (s : ℕ)).toBlocks₂₂ (finCongr (chainWidth_castSucc_sub H r s) i)
+                    (finCongr (chainWidth_succ_sub H r s) j) from rfl, hpsi]
+            simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
+          have e2 : (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+                (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+              = (paramsEquivFlat (deepestM H r)).symm q.2.1 s i j := by
+            rw [show (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ))
+                  (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+                  (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+                = (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (s : ℕ)).toBlocks₂₂
+                    (finCongr (chainWidth_castSucc_sub H r s) i)
+                    (finCongr (chainWidth_succ_sub H r s) j) from rfl, hq]
+            simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Equiv.symm_apply_apply]
+          rw [e1, e2]
+        rw [heq]
+        exact hasStrictFDerivAt_genChainDelta_entry_zero H r hr hL hL2 J hJfront Pf Qf hQf0 hPfL
+          hPunit hQunit hPtri hP22 hQtri hQ22 hInterior (s : ℕ) s.isLt
+          (Sum.inr (finCongr (chainWidth_castSucc_sub H r s) i))
+          (Sum.inr (finCongr (chainWidth_succ_sub H r s) j))
+  -- Assemble: strict-deriv `0` at each flat coordinate via `hcore_entry`.
+  refine hasStrictFDerivAt_pi'.2 (fun k => ?_)
+  rw [ContinuousLinearMap.comp_zero]
+  set d := (Fintype.equivFin (FlatIdx (deepestM H r))).symm k with hd
+  have hcoord : (fun q =>
+        paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q) k)
+      = fun q => psiSplitCoreDeltaGen H r hr hL J Pf Qf q d.1.1 d.1.2 d.2 := by
+    funext q
+    rw [show (⇑(paramsEquivFlatCLE (deepestM H r)) : Params (deepestM H r) → _)
+        = ⇑(paramsEquivFlat (deepestM H r)) from paramsEquivFlatCLE_coe (deepestM H r)]
+    rfl
+  rw [hcoord]
+  exact hcore_entry d.1.1 d.1.2 d.2
 
 /-! ## The target -/
 
