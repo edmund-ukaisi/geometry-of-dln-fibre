@@ -1224,3 +1224,19 @@ Cost here: bounded (2 pen-and-paper passes + one flip-flopped operator note, no 
 **Caught + resolved cheaply:** `hstep2hc`'s next checkpoint (step-A green, same filename) revealed it was alive + further along. I STOPPED `hcstep6` (it had pushed nothing — no branch, no conflict, no lost work) and confirmed `hstep2hc` as sole owner. Cost: near-zero (one just-started tide stopped before any push).
 **Why the branch-check didn't save me:** I DID check the branch for sub-gap code before charging `hcstep6` and found none — but that was a RACE (hstep2hc hadn't pushed step-A yet), and the real signal was that the agent was still RUNNING (reactivated), which a branch-code grep doesn't show.
 **How to apply:** before charging a replacement/fresh tide for work a teammate reported "done/handed-off," if you EVER sent that teammate a continue/resume directive that could still be in flight, treat its running state as UNKNOWN — verify it's actually stopped (idle_notification / TaskStop-confirms-not-running / an explicit "standing down" like hderiv0's), NOT just "its last narrative message said done" and NOT just "its branch has no code yet." A crossed continue-directive + a stale completion message = live duplicate risk. When in doubt, resume-the-owner (SendMessage) rather than spawn fresh. Refines the earlier resurrected-agent lesson (check branch before duplicating) — add: check LIVENESS, and branch-code-absence can be a race not a fact.
+
+---
+
+## `scripts/lb` has a GLOBAL worker cap — >2 concurrent heavy build-tides thrash (validates ≤2-heavy) (2026-07-08, hcfinish contention)
+`hcfinish` reported its incremental builds spiking from ~5-7 s to 12+ min (one killed at ~12 min) when 3 build-load
+hands ran concurrently (hcfinish + dgelegbuild [both heavy formaliser builds] + a reviewer's force-recompile
+build-check). Cause: `scripts/lb` shares a GLOBAL worker pool across all worktrees/tides — N concurrent heavy builds
+each get ~pool/N workers, so build latency scales ~linearly with concurrent heavy builds. A reindex-heavy tide that
+needs several build-debug iterations (1-3 tries/lemma) becomes impractical at 12 min/build.
+**How to apply:** hold the ≤2-concurrent-heavy-BUILD discipline STRICTLY (it's not just coordination overhead — it's a
+hard throughput constraint). Count build-load, not just "tides": a `reviewer`'s forced-recompile build-check IS a heavy
+build (transient, but it counts while running); a `scout`/`pen-and-paper` (read-only + exact-algebra + Codex) is LIGHT
+(minimal `lb` load). When a CRITICAL-PATH build needs a calm window: (i) hold the controller's own green-gates (a full
+DLNFibre aggregate build is heavy) until it lands, (ii) charge NO new heavy tides, (iii) let transient heavy hands
+(reviewer builds) finish, (iv) if still contended, actively pause/stop a non-critical competing heavy tide (only if it
+has PUSHED its progress — else you lose its work). Prioritize the near-done critical-path build.
