@@ -845,3 +845,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 -- exponent-shift + `exists_binding_cut` (non-vacuity). The analytic peel (measure CoV) + the decorated
 -- predicate/carrier + base + `π=∅` consumer are the remaining CoV mountain; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+-- D1 #120 `hstep2` frame-correction abstract core (thread `genm-hstep2germs7`): the two boundary-layer
+-- move-identity block lemmas (`fromBlocks_lowerFrame_mul_forcedDecode` + last-layer mirror — the corrected
+-- frame-DEPENDENT reads reconstruct `movedC` under the endpoint `₂₂=1` frames) + the two Schur-invisibility
+-- lemmas (`blockSchur_lowerFrame_left` + mirror — one-sided `₂₂=1` frames don't move the `Score` product).
+-- The germs6 frame-correction, now IN Lean. `hstep2` UNTOUCHED — `psiSplitRawGen` def + move-identity DLN
+-- wiring + the `∏ blockSchur → Score` telescope + compose remain.
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove

@@ -54,6 +54,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 
 /-!
 # Axiom-hygiene check
@@ -538,6 +539,18 @@ open DLNFibre.DLN.RLCT
 #print axioms minAdm_le_peelCharge_add_redChain
 #print axioms half_minAdm_sub_half_peelCharge_le
 #print axioms exists_binding_cut
+
+-- ★ D1 ∀-L #120 `hstep2` frame-correction abstract core (2026-07-08, `genm-hstep2germs7`). The
+-- boundary-layer move-identity block lemmas `fromBlocks_lowerFrame_mul_forcedDecode` (+ last-layer
+-- `_rightUpper_` mirror): the corrected frame-DEPENDENT reads reconstruct `movedC` blockwise under the
+-- endpoint `₂₂=1` frames; and the Schur-invisibility `blockSchur_lowerFrame_left` (+ mirror): a one-sided
+-- `₂₂=1` frame doesn't move the `Score` product. Discharges in Lean the two facts the germs6 correction
+-- rested on. `hstep2` untouched. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice,
+-- Quot.sound] (no `sorryAx`).
+#print axioms fromBlocks_lowerFrame_mul_forcedDecode
+#print axioms fromBlocks_rightUpper_mul_forcedDecode
+#print axioms blockSchur_lowerFrame_left
+#print axioms blockSchur_rightUpper_right
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,
