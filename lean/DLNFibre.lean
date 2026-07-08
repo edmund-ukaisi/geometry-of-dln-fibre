@@ -818,3 +818,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 -- monomial/normal-form double induction — the mountain) that consume this into `sjJointResolution` are
 -- the deferred BULK; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
+-- D1 #120 `hstep2` concrete-instantiation Item 1 (thread `genm-hstep2germs4`): the `Fin`-side product
+-- bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,
+-- isolating the opaque-width cast grind once) + `reindexECol_regBlocks_eq_of_chain_movedC` (transports
+-- the banked `regBlocks_movedC` to the reindexed DLN products, tail = `corM` corner so the `∀k IsUnit`
+-- hyps are satisfiable near the deepest point). Feeds the concrete `hsub3reg`. `hstep2` UNTOUCHED — the
+-- pivot-col reconciliation + concrete `psiSplitRawGen` + diffeo triple + compose are deferred.
+import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen

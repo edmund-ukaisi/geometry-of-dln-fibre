@@ -50,6 +50,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
+import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 
 /-!
 # Axiom-hygiene check
@@ -503,3 +504,15 @@ open DLNFibre.DLN.RLCT
 -- `sjJointResolution` are the deferred mountain — its sorry untouched. Cite-NOTHING: forced `#print
 -- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
 #print axioms chartInner_schurShearFree_eq
+
+-- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
+-- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,
+-- the opaque-width cast grind isolated once via `prodAux_succ` + `reindex_mul_split_gen` + finCongr
+-- collapse) + `reindex_prod_eq_partProd` (k=L) + `reindexECol_regBlocks_eq_of_chain_movedC` (transports
+-- `regBlocks_movedC` to reindexed DLN products; corM-corner tail ⟹ `∀k IsUnit` hyps SATISFIABLE near the
+-- deepest point — reviewer-hardened, non-vacuous). Feeds concrete `hsub3reg`. The pivot-col
+-- reconciliation + `psiSplitRawGen` + triple + compose are deferred — `hstep2` untouched. Cite-NOTHING:
+-- forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms reindex_prodAux_eq_partProd
+#print axioms reindex_prod_eq_partProd
+#print axioms reindexECol_regBlocks_eq_of_chain_movedC
