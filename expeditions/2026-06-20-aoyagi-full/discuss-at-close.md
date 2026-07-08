@@ -2518,3 +2518,33 @@ leaf to the front-peel would TRADE the concrete route for the abstract-iso wall 
   and r1layerpeel just showed a stale read is possible). If it DISSOLVES (concrete/structural route, no addlongest) →
   bounded, no escalation. If it CONFIRMS → this escalation stands, operator picks (A) or (B). (Autonomous mode: recorded
   here, NOT blocking; continuing the D1 close + the ≥-leg + the stress-test meanwhile.)
+
+## 72. ★★ #71 FINALIZED — R1-UPPER sub-generic wall CONFIRMED (dissolution FAILED decisively). OPERATOR DECISION: (A) BUILD `addlongest` vs (B) CITE it. No third option. (2026-07-08)
+`r1subgenwall` ran the dgeflat-style dissolution stress-test on the #71 wall — it FAILED, decisively, confirming the
+escalation. Cert: `threads/genm-r1subgenwall/cert.md`.
+- **SchurRecStep CLOSED (ground truth):** `#print axioms schurRecStep_p` = clean-three, sorry-free ∀p ∀corank
+  (`schurCoreP_directMorse` + `schurCoreP_capA`, riding `core_schurGen_lt_top`); `schurRecStep4_stub` has ZERO ilean
+  usages (dead). r1transfer's #70 "corank-3 in flight" was stale. NOT the gap.
+- **The wall is GENUINE (decisive exact-algebra):** on the smallest genuine case `(3,3,3,4)` binding cut t=1, after
+  the front-boundary Schur+shear the Γ-integral's Gram coupling `det(Q_bQ_bᵀ)^{−a/2}` has exponent `a/2 = 1` sitting
+  EXACTLY at its own free-matrix integrability threshold `(n−p+1)/2 = 1` (verified 2 ways: SVD Jacobian + symbolic
+  transverse Hessian — isotropic quadratic in the 2 transverse dims near a rank-1 point), WHILE the post-Γ residual
+  exponent `3/2` EXACTLY saturates `½·minAdm(1,3,4) = 3/2`. **Both saturate simultaneously ⟹ ZERO slack** — the precise
+  OPPOSITE of dgeflat (there: Gauss–Newton residual degree ≥3 = strict slack; here: transverse degree = exactly 2 =
+  Morse = zero slack). The two borderline factors share the deeper variables (Fubini-out ⟹ log divergence) ⟹ need JOINT
+  principalisation of the product rank-drop locus = the shifted chain `(M₁−q,…,M_N−q) = addlongest`, provably NOT any
+  `redChain t M`. All 3 dissolution angles fail concretely (pivot-cover relocates not removes; det⁺ IH covers only
+  product-ZERO loci; tightness+saturation = zero domination margin). Decorrelated Codex (xhigh, neutral, conclusion
+  withheld) CORROBORATED — identical computation, same rejections, independently reconstructed the shifted chain.
+  **FIVE decorrelated lines converge** (r1transfer + r1substratum + r1layerpeel + UPDATE-690/sjcarrier9 + this probe).
+- **★ THE OPERATOR DECISION** (gates the fully-general L≥3 `aoyagi_learning_coefficient`; the L=2 headline is DONE +
+  UNAFFECTED — no sub-generic strata at L=2): **(A) BUILD `addlongest`** = the product-rank normal-slice iso / joint
+  principalisation of `det(Q_bQ_bᵀ)` at corank ≥2, a genuine new-module analytic/AG build Mathlib lacks (keeps
+  cite-only-S2), **OR (B) CITE `addlongest`** for the sub-generic upper bound = one more citation, relaxing "cite-only-S2"
+  to "cite S2 + addlongest" (parallel to the already-Cited Aoyagi `rlct=½·codim`). **No third option:** even a future
+  "concrete dissolution" (a cleverer joint CoV) IS a concrete encoding of `addlongest` = option (A) — it never collapses
+  to "no escalation". So build-vs-cite is the whole decision.
+- **Autonomous-mode posture (NOT blocking):** everything ELSE is bounded and being driven to done — D1 "=" (eqassembly,
+  closing hstep2), D1 "≤" (the ≥-leg: interface done+reviewed, chart-data (i)-(iv) bounded), R1-UPPER generic +
+  combinatorics + SchurRecStep (all done). When the operator picks (A) or (B), R1-UPPER's sub-generic closes and the
+  fully-general headline follows. This is the SINGLE genuine research wall of the expedition.
