@@ -1,0 +1,9 @@
+**VERDICT:** multi-tide new construction.
+
+**Load-bearing reason:** From the banked pieces, I can derive only pointwise algebra plus isotropic peels for a block appearing as `frobSq Δ`. The actual chart term is `frobSq(C·Q̃ + Γ·Q_b)`, so the free variable `Γ` enters through a `Q_b`-dependent seminorm and an additive cross term. Removing that is not a measure-preserving consequence of `corankStep`; it needs either the Gram change-of-variables `Γ ↦ Γ·Q_b` or the pure-route blow-up/Jacobian mechanism. That is my inference from the stated contracts, not a Lean-source derivation.
+
+**Most-central unbanked sub-brick:** a chartwise coordinate blow-up/change-of-variables lemma for the residual block center `{Γ = 0}`, roughly `Γ = u • Γ'`, with Jacobian `|u|^{pq-1}` and compatibility with the Schur-cleared loss so that the integral descends to `redChain t M` with exponent `c' - pq/2`.
+
+I would rate this **BOUNDED but substantial**, not Mathlib-resolution-theorem research-grade, if the pure route really uses only explicit coordinate centers and finitely many standard charts. It is still new measure theory in Lean: nonlinear CoV, domain bookkeeping, Jacobian powers, and the pivot/corank recursion carrier.
+
+**Sanity check:** Building the pure-route recursion carrier with `peelStep soundness` as a named Prop-hypothesis is genuine bedrock progress if it fixes the exact interface, induction shape, exponent ledger, and all non-measure-theory algebra/combinatorics sorry-free. It is not merely laundering if the new contract is strictly localized to this one unbanked CoV/blow-up lemma. It would be laundering only if `peelStep soundness` restates essentially the full theorem rather than the local chartwise reduction.
