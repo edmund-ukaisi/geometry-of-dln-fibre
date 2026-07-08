@@ -83,4 +83,5 @@ frame-strip + `−B` corner)→ `ScoreIntegrand x`.
   (`psiSplitRawGen` `ContinuousAt` + the near-deepest-point unit germs) + the general readback dictionary.
 - Build discipline: force-recompiled green (`touch` + `scripts/lb`); forced `#print axioms` clean-three; no
   sibling name clashes (`rg`-checked). `hstep2:1060` left UNTOUCHED (not laundered).
-- ~19 `linter.style.longLine` warnings remain (verbose 12+-hypothesis signatures, inherent; non-blocking).
+- The verbose 12+-hypothesis signatures carry some long lines (`linter.style.longLine`, inherent to
+  mirroring the L=2 template's signature; non-blocking). No errors / unused-variable warnings from the module.
