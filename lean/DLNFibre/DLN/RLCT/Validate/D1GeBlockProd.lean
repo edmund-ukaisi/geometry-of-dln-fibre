@@ -1,5 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
-import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
+import DLNFibre.DLN.RLCT.Validate.D1L2PhiExpl
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.D1GeBlockProd` — piece (ii): block-layer-product ↔ DLN `prod` bridge
