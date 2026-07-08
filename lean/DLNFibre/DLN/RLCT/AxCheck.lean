@@ -57,6 +57,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
 
 /-!
 # Axiom-hygiene check
@@ -559,6 +560,14 @@ open DLNFibre.DLN.RLCT
 -- `Pf s = Qf s = 1` (triangular bundle), the framed chain-layer decodes to the four gauge/core reads on
 -- the reduced-width relabel. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms deepestChain_framedParamsPivot_blocks_of_frame_one
+
+-- ★ D1 ∀-L #120 `hstep2` — the concrete `psiSplitRawGen` definition + its INTERIOR move identity
+-- (2026-07-08, `genm-hstep2germs9`, item 1 deferred 4 tides). `psiSplitRawGen_deepestChain_interior` —
+-- the interior layer of `hmove` decodes to `movedC` (via the banked interior decode); the interior half
+-- being sorry-free VALIDATES the def is correct (not laundered). The boundary decode + funext assembly +
+-- triple + Schur→Score telescope + compose remain — `hstep2` untouched. Cite-NOTHING: forced `#print
+-- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms psiSplitRawGen_deepestChain_interior
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

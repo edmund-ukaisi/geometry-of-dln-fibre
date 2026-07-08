@@ -866,3 +866,12 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
 -- predicate LITERALLY recovers `RouteMBoxThresholdFinite`). The `decorated_peel_step` chart-CoV (the
 -- ~65-75% mountain) + `decorated_base` + the well-founded recursion remain; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
+-- D1 #120 `hstep2` — the concrete `psiSplitRawGen` DEFINITION (thread `genm-hstep2germs9`, item 1, deferred
+-- 4 tides): the general-L joint move `DeepestSplit → DeepestSplit` packing `psiReadBlk` via
+-- `regGaugeSlotEquiv.symm` + `paramsEquivFlat` (mirroring L=2 `psiSplitRawL2Core`) + the reads round-trips.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGen
+-- D1 #120 `hstep2` — `psiSplitRawGen`'s INTERIOR move identity (thread `genm-hstep2germs9`):
+-- `psiSplitRawGen_deepestChain_interior` (interior layer decodes to `movedC`, via the banked interior
+-- decode — validates the def is correct, not laundered). `hstep2` UNTOUCHED — the boundary decode + funext
+-- assembly + triple + Schur→Score telescope + compose remain.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
