@@ -590,4 +590,61 @@ theorem Kcoup_framed_eq_decode (H : Fin (L + 1) → ℕ) (r : ℕ)
   · intro k hk
     exact @isUnit_of_invertible _ _ _ (hPart k (by omega))
 
+/-! ## Lemma 4 — per-layer `blockSchur` of the framed chain equals that of the decode chain -/
+
+/-- **Endpoint frames are `blockSchur`-invisible (DLN, per layer).** Interior: framed = decode
+(`deepestChain_framed_eq_decode_interior`). Boundary: the one-sided frame `psiFrame0`/`psiFrameLast` is
+`blockSchur`-invisible. -/
+theorem blockSchur_framed_eq_decode (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (hQf0 : Qf (firstLayer hL) = 1)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL)))
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hQunit : IsUnit (Qf (lastLayer hL))) (x : Fin (flatDim H) → ℝ)
+    (hLayer : ∀ k, k < L → Invertible (deepestChain H r hr ((paramsEquivFlat H).symm x) k).toBlocks₁₁)
+    (s : Fin L) :
+    blockSchur (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)) (s : ℕ))
+      = blockSchur (deepestChain H r hr ((paramsEquivFlat H).symm x) (s : ℕ)) := by
+  have hlv : (lastLayer hL : ℕ) = L - 1 := rfl
+  rcases Nat.eq_zero_or_pos (s : ℕ) with hs0 | hspos
+  · rw [show (s : ℕ) = (firstLayer hL : ℕ) from hs0,
+      deepestChain_framed_layer0_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner hQf0 x]
+    obtain ⟨h12, h22, h11⟩ := psiFrame0_blocks H r hr hL Pf hPtri hP22 hPunit
+    exact blockSchur_lowerFrame_of_blocks (psiFrame0 H r hr hL Pf)
+      (deepestChain H r hr ((paramsEquivFlat H).symm x) (firstLayer hL : ℕ)) h12 h22 h11
+      (@isUnit_of_invertible _ _ _ (hLayer (firstLayer hL : ℕ) (by omega)))
+  · by_cases hslast : (s : ℕ) + 1 = L
+    · rw [show (s : ℕ) = (lastLayer hL : ℕ) from by omega,
+        deepestChain_framed_lastLayer_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner x]
+      obtain ⟨h21, h22, h11⟩ := psiFrameLast_blocks H r hr hL Qf hQtri hQ22 hQunit
+      exact blockSchur_upperFrame_of_blocks
+        (deepestChain H r hr ((paramsEquivFlat H).symm x) (lastLayer hL : ℕ))
+        (psiFrameLast H r hr hL Qf) h21 h22 h11
+        (@isUnit_of_invertible _ _ _ (hLayer (lastLayer hL : ℕ) (by omega)))
+    · rw [deepestChain_framed_eq_decode_interior H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner
+        hInterior x s hspos (by omega)]
+
 end DLNFibre.DLN.RLCT
