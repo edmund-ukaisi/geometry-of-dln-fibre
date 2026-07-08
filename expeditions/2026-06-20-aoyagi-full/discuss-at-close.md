@@ -2339,3 +2339,33 @@ SEQUENCES after a SMALL part of Producer 1 (continuity, weaker than the full hde
   file; controller VERIFIED the checkout clean (empty git status, no stray `DeepestHsub4coreGen.lean`, no git writes).
 - **D1 re-plan (no action):** Producer 1 (hraw0✓ + hderiv0 building + hcd held) is the long pole; Item-3 parallel
   content (hC + invertibility germs) charged/chargeable now independent of it. D1 = a multi-tide grind, all bounded.
+
+## 65. R1-UPPER sub-generic strata CLOSE — combinatorics triple-settled; descent primitive re-scoped ab→a·s→FRONT-PEEL; sole remaining risk = the normal-slice/Σ⁰ transfer analytic soundness in Lean. (2026-07-08)
+`r1substratum` (cert `threads/genm-r1substratum/cert.md`, `origin/genm-r1substratum`, OBSTRUCTION seat + neutral
+decorrelated Codex) returned **CLOSURE, no counterexample.** The #63-flagged sub-generic under-count was a strawman
+(two exact-resolved errors: it compared to the generic per-cut charge `8` not the real target `minAdm(4,4,2)=7`, and
+used the free-matrix codim instead of the matrix-PRODUCT rank-drop codim `minAdm(tail−s′)`). The correct per-stratum
+charge is `M₀·s′ + minAdm((M₁..M_L)−s′)` (ENTANGLED, not additive — shares the deeper matrices), `t`-independent, and
+closes via a NEW exact peeling identity — the **front-peel** `minAdm(M) = min_q [M₀·q + minAdm((M₁..M_L)−q)]`,
+verified 0-fail exhaustively (~12k chains) + 18-chain adversarial + permutation-invariant + **term-by-term equal to
+the paper's Voight/Ext orbit codimension** (independent Kostant-partition route, matches paper examples). The binding
+top component is FREQUENTLY sub-generic — the sub-generic strata are exactly WHERE minAdm is realised, not a threat.
+- **The descent PRIMITIVE re-scoped again** (ab [sjdescent] → a·s [r1rankcharge] → **front-peel** [r1substratum]):
+  the sound + CLEAN primitive is the FRONT-PEEL `FrontPeelStep` — peel `A₀` against the whole tail product `P` via the
+  measure-preserving surjection `A₀↦A₀·U` (U = full-col-rank basis of `im P`), shift `M₀·q/2` on `{rank P=q}` (kernel
+  dim `M₀·(M₁−q)`), recurse on the tail-rank locus. **No Schur complement, no `Q_b` coupling** — uses the banked corank
+  bricks (`matBox_corank_residual_absZ_le`/`_dominates_absZ_lt_top` at block `M₀·q`, `pivotLocus_eq_iUnion`,
+  `SchurRecStep`) DIRECTLY, and dissolves the sub-generic case (r1rankcharge's rank-split is stratum-BLIND: 5<7 on
+  (3,3,3,4)@t=1,s′=1). This SUPERSEDES r1rankcharge's rank-split pin for the build — the FrontPeelStep brief must use §C.
+- **Sole remaining risk (the one I'd escalate if it's a Mathlib gap):** purely analytic — whether the front-peel's
+  `A₀↦A₀·U` shift + the tail-rank-locus recursion compose soundly to `½·minAdm` IN LEAN. The load-bearing input is the
+  normal-slice isomorphism (paper Thm `addlongest`, line 688) that lets `{rank P≤q}` recurse as a shifted `Σ⁰`. LIKELY
+  bounded (the banked corank bricks are the concrete tools that presumably deliver the transfer WITHOUT the abstract
+  iso; "normal-slice iso" is the conceptual gloss), but UNVERIFIED — if the bricks genuinely can't reach it and it needs
+  the abstract iso (Mathlib-lacking singularity theory), THAT is a genuine analytic wall I'd escalate. To be surfaced by
+  the FrontPeelStep build's first milestone (the concrete (3,3,3,4) q∈{1,2} case), front-loading the transfer.
+- **Plan (no operator action):** combinatorics is SETTLED (3 ways) — no more design probing. (a) Banking the front-peel
+  ℕ identity now as a light Lean lemma (`minAdm_eq_frontPeel` + `frontCharge_ge_minAdm`, about the existing `minAdm`
+  def) — fill-the-layer, feeds the build, a green proof independently hardens closure. (b) HOLDING the heavy analytic
+  FrontPeelStep build for the next freed heavy slot (at 2-heavy budget with D1's hderiv0 + hstep2hc), front-loading the
+  transfer risk when charged. R1-UPPER truth-value = triple-confirmed bounded; only the Lean-analytic primitive remains.
