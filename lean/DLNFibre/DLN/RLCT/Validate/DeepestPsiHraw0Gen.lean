@@ -145,4 +145,98 @@ theorem framedParamsPivot_zero_eq_corner (H : Fin (L + 1) → ℕ) (r : ℕ)
     exact reindex_symm_fromBlocks_one_eq_corner r (H (⟨k, hk⟩ : Fin L).castSucc)
       (H (⟨k, hk⟩ : Fin L).succ) (hr _) (hr _)
 
+/-! ## `psiSplitRawGen 0 = 0` -/
+
+/-- The layer-0 forced decode fixes the zero target (a `ℝ`-linear map, `map_zero`). -/
+theorem forcedDecodeLeft_zero {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [DecidableEq a] (F : Matrix (r ⊕ a) (r ⊕ a) ℝ) :
+    forcedDecodeLeft F (0 : Matrix (r ⊕ a) (r ⊕ b) ℝ) = 0 :=
+  (IsLinearMap.mk' _ (forcedDecodeLeft_isLinear (b := b) F)).map_zero
+
+/-- The last-layer forced decode fixes the zero target (a `ℝ`-linear map, `map_zero`). -/
+theorem forcedDecodeRight_zero {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype b] [DecidableEq b] (Q : Matrix (r ⊕ b) (r ⊕ b) ℝ) :
+    forcedDecodeRight Q (0 : Matrix (r ⊕ a) (r ⊕ b) ℝ) = 0 :=
+  (IsLinearMap.mk' _ (forcedDecodeRight_isLinear (a := a) Q)).map_zero
+
+/-- **`psiSplitRawGen 0 = 0`** — the split origin is a fixed point of the general joint move. All reads
+`psiReadBlk 0 s` vanish (`psiTargetD 0 = 0` via the corner chain + `movedC_eq_self`; boundary decodes are
+linear so fix `0`), and packing zeros back through the two `0`-preserving equivalences gives `0`. Frame-
+independent apart from `J = frontEmbed` (the last-layer pivot collapse). -/
+theorem psiSplitRawGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    psiSplitRawGen H r hr hL J Pf Qf 0 = 0 := by
+  set C₀ := deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf 0) with hC₀
+  -- `C₀ k = corM` for `k < L`, hence `(C₀ k)₂₁ = 0` for all `k`.
+  have hcorner : ∀ (k : ℕ) (hk : k < L),
+      C₀ k = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := fun k hk =>
+    deepestChain_corner_eq_corM H r hr (framedParamsPivot H r hr hL J Pf Qf 0) k hk
+      (framedParamsPivot_zero_eq_corner H r hr hL J hJfront Pf Qf k hk)
+  have hZ21 : ∀ k, (C₀ k).toBlocks₂₁ = 0 := by
+    intro k
+    rcases lt_or_ge k L with hk | hk
+    · rw [hcorner k hk]; exact Matrix.toBlocks_fromBlocks₂₁ _ _ _ _
+    · exact deepestChain_tail_toBlocks₂₁ H r hr _ k (not_lt.mpr hk)
+  -- `psiTargetD 0 k = 0` for `k < L`.
+  have htarget : ∀ (k : ℕ), k < L → psiTargetD H r hr hL J Pf Qf 0 k = 0 := by
+    intro k hk
+    rw [psiTargetD, ← hC₀, movedC_eq_self_of_toBlocks₂₁_zero C₀ L hZ21 k, hcorner k hk, sub_self]
+  -- `psiGhat 0 s = 0`.
+  have hghat : ∀ s : Fin L, psiGhat H r hr hL J Pf Qf 0 s = 0 := by
+    intro s
+    rw [psiGhat]
+    split_ifs with hlast hfirst
+    · cases hlast
+      show forcedDecodeRight (psiFrameLast H r hr hL Qf)
+          (psiTargetD H r hr hL J Pf Qf 0 (lastLayer hL : ℕ)) = 0
+      rw [htarget _ (lastLayer hL).isLt, forcedDecodeRight_zero]
+    · cases hfirst
+      show forcedDecodeLeft (psiFrame0 H r hr hL Pf)
+          (psiTargetD H r hr hL J Pf Qf 0 (firstLayer hL : ℕ)) = 0
+      rw [htarget _ (firstLayer hL).isLt, forcedDecodeLeft_zero]
+    · exact htarget s s.isLt
+  -- `psiReadBlk 0 s = 0`.
+  have hblk : ∀ s : Fin L, psiReadBlk H r hr hL J Pf Qf 0 s = 0 := by
+    intro s
+    rw [psiReadBlk, hghat s]
+    ext i j
+    simp only [Matrix.submatrix_apply, Matrix.zero_apply]
+  -- pack zeros back through the two `0`-preserving equivalences.
+  have hg' : (fun idx : RegGaugeIdx H r =>
+      match idx with
+      | ⟨s, Sum.inl (Sum.inl (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₁ i j
+      | ⟨s, Sum.inl (Sum.inr (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₂ i j
+      | ⟨s, Sum.inr (i, j)⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₁ i j)
+      = 0 := by
+    funext idx
+    obtain ⟨s, x⟩ := idx
+    rcases x with (⟨i, j⟩ | ⟨i, j⟩) | ⟨i, j⟩ <;>
+      simp only [hblk s, Matrix.toBlocks₁₁, Matrix.toBlocks₁₂, Matrix.toBlocks₂₁, Matrix.of_apply,
+        Matrix.zero_apply, Pi.zero_apply]
+  have hcore' : paramsEquivFlat (deepestM H r)
+      (fun s => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₂) = 0 := by
+    have hz : (fun s => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₂) = (0 : Params (deepestM H r)) := by
+      funext s; rw [hblk s]; rfl
+    rw [hz, paramsEquivFlat_zero]
+  -- `psiSplitRawGen 0` def-unfolds to the packed tuple; rewrite the pieces to `0`.
+  have hkey : psiSplitRawGen H r hr hL J Pf Qf 0
+      = (((regGaugeSlotEquiv H r hr hL).symm
+            (fun idx : RegGaugeIdx H r => match idx with
+              | ⟨s, Sum.inl (Sum.inl (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₁ i j
+              | ⟨s, Sum.inl (Sum.inr (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₂ i j
+              | ⟨s, Sum.inr (i, j)⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₁ i j)).1,
+          (paramsEquivFlat (deepestM H r)
+              (fun s => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₂),
+            ((regGaugeSlotEquiv H r hr hL).symm
+              (fun idx : RegGaugeIdx H r => match idx with
+                | ⟨s, Sum.inl (Sum.inl (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₁ i j
+                | ⟨s, Sum.inl (Sum.inr (i, j))⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₁₂ i j
+                | ⟨s, Sum.inr (i, j)⟩ => (psiReadBlk H r hr hL J Pf Qf 0 s).toBlocks₂₁ i j)).2)) :=
+    rfl
+  rw [hkey, hg', regGaugeSlotEquiv_symm_zero, hcore']
+  rfl
+
 end DLNFibre.DLN.RLCT
