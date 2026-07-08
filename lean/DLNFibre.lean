@@ -1008,3 +1008,10 @@ import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
 -- (schurChartRawGen C (last+1)) last = partProd C (last+1)`, via the rung-3 telescope). Chart defined + correctness
 -- confirmed in Lean. Remaining (iii) rungs 6–8 = inverse + ContDiff + the global germ producer.
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
+-- `D1GeChartGlobal` — ≥-leg chart-data (iii) rungs 6b-enabler + 7: `derivEquiv_of_left_inverse` (finite-dim:
+-- `Ψ∘Φ=id` ⟹ DΦ injective ⟹ bijective ⟹ ContinuousLinearEquiv — gives the invertible derivative from the LEFT
+-- inverse ALONE, eliminating the reverse `Φ∘Ψ`) + `contDiffAt_schurChartRawGen_entry` (rung 7: each chart output
+-- block entry is ContDiffAt on the prefix-pivot domain, via `contDiff_gen_partProd_entry` + `contDiffAt_redFactorGen
+-- _entry` + the generic matrix-inv ContDiff). Rungs 1–7 of (iii) done; rung 8 (globalise via blockFlatEquivGen + the
+-- chain↔BlockParamsGen bridge → the ∃Φ producer) remains → then (iii) closes the ≥-leg interface.
+import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal

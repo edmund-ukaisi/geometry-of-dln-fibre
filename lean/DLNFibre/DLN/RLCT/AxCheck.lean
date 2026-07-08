@@ -80,6 +80,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
 import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
+import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
 
 /-!
 # Axiom-hygiene check
@@ -786,3 +787,9 @@ open DLNFibre.DLN.RLCT
 -- s=0 via front-peel + the D₀/E₀ cancellations). The algebra ceiling of (iii) cracked. Φ∘Ψ=id (reverse) +
 -- ContDiff + germ remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms schurChartRawInvGen_schurChartRawGen
+-- rung 6b-enabler + 7: `derivEquiv_of_left_inverse` (finite-dim shortcut — invertible derivative from Ψ∘Φ alone,
+-- eliminates the reverse) + `contDiffAt_schurChartRawGen_entry` (rung 7 — chart entrywise ContDiffAt on the
+-- prefix-pivot domain). Rungs 1–7 of (iii) done; only rung 8 (globalise/germ) remains.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms derivEquiv_of_left_inverse
+#print axioms contDiffAt_schurChartRawGen_entry
