@@ -1240,3 +1240,9 @@ build (transient, but it counts while running); a `scout`/`pen-and-paper` (read-
 DLNFibre aggregate build is heavy) until it lands, (ii) charge NO new heavy tides, (iii) let transient heavy hands
 (reviewer builds) finish, (iv) if still contended, actively pause/stop a non-critical competing heavy tide (only if it
 has PUSHED its progress — else you lose its work). Prioritize the near-done critical-path build.
+
+---
+
+## Crossed-handoff duplicate (recurred 3×): a teammate "recommends a fresh tide" but keeps banking — base the fresh tide on the teammate's LATEST branch, not canonical (2026-07-08, geleg1/geleg8)
+Pattern (hcfinish/hcfin2, hstep2hc/hcstep6, now geleg1/geleg8): a marathon teammate says "handing off — recommend a fresh tide," so the controller charges a fresh tide off CANONICAL; but the teammate then banks one more increment (its "handoff" isn't a hard stop), so the fresh tide re-derives what the teammate just banked = duplicate. Each caught + resolved cheaply, but avoidable.
+**Fix (applied, works):** when a teammate recommends a fresh tide WHILE actively banking increments, do NOT base the fresh tide on canonical — base it on the **teammate's LATEST branch/commit** (`git checkout -B <fresh> origin/<teammate-branch>@<latest>`), so any crossed continuation is BUILT-UPON, not duplicated; and explicitly STAND THE TEAMMATE DOWN ("do not resume; the fresh tide owns X") in the same tick. Alternative (slower): wait one cycle for the teammate to confirm idle + no-new-push before charging. Refines the earlier liveness lesson: it's not just "verify stopped" — it's "base the replacement on the latest banked state so a race is harmless." Cost across all 3: near-zero (redirects/stops, no lost work, no bad Lean).
