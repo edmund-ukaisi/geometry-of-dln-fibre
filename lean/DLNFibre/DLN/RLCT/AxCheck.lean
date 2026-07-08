@@ -54,6 +54,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
@@ -554,6 +555,16 @@ open DLNFibre.DLN.RLCT
 #print axioms minAdm_le_peelCharge_add_redChain
 #print axioms half_minAdm_sub_half_peelCharge_le
 #print axioms exists_binding_cut
+
+-- ★ R1-UPPER FRONT-PEEL identity for `minAdm` (2026-07-08, `genm-r1frontcharge`) — the Lean-verified closure
+-- of the descent combinatorics (triple-settled: r1rankcharge generic + r1substratum sub-generic + paper
+-- Voight/Ext). `minAdm_eq_frontPeel` (`minAdm M = min_{q≤tailMin} [M₀·q + minAdm((M₁..)−q)]`, ≥3-width domain
+-- `Fin (L+1+1+1)`; FALSE at 2 widths, faithful per the cert geometry) + `frontCharge_ge_minAdm` (≥ at every q)
+-- + the `twoVar_min_eq` keystone. The combinatorial gate the FrontPeelStep analytic build consumes.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms minAdm_eq_frontPeel
+#print axioms frontCharge_ge_minAdm
+#print axioms twoVar_min_eq
 
 -- ★ D1 ∀-L #120 `hstep2` frame-correction abstract core (2026-07-08, `genm-hstep2germs7`). The
 -- boundary-layer move-identity block lemmas `fromBlocks_lowerFrame_mul_forcedDecode` (+ last-layer

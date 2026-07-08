@@ -845,6 +845,12 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 -- exponent-shift + `exists_binding_cut` (non-vacuity). The analytic peel (measure CoV) + the decorated
 -- predicate/carrier + base + `π=∅` consumer are the remaining CoV mountain; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
+-- `RouteMFrontPeelCharge` — R1-UPPER FRONT-PEEL identity for `minAdm` (thread `genm-r1frontcharge`): the
+-- Lean-verified closure of the descent combinatorics. `minAdm_eq_frontPeel` (`minAdm M = min_{q≤tailMin}
+-- [M₀·q + minAdm((M₁..)−q)]`, ≥3-width domain `Fin (L+1+1+1)`; false at 2 widths) + `frontCharge_ge_minAdm`
+-- (≥ at every q) + the `twoVar_min_eq` keystone. The combinatorial gate the FrontPeelStep analytic build
+-- consumes; term-by-term = the paper's Voight/Ext orbit codim. Axiom-clean.
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
 -- D1 #120 `hstep2` frame-correction abstract core (thread `genm-hstep2germs7`): the two boundary-layer
 -- move-identity block lemmas (`fromBlocks_lowerFrame_mul_forcedDecode` + last-layer mirror — the corrected
 -- frame-DEPENDENT reads reconstruct `movedC` under the endpoint `₂₂=1` frames) + the two Schur-invisibility
