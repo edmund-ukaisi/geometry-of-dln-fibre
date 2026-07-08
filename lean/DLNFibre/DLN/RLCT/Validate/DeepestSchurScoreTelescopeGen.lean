@@ -48,9 +48,9 @@ proof body never used its `hL2 : L = 2` hypothesis (it only invoked the general
 (over the framed `prod(decode x) − B`, pivot `(M₁₁+1)⁻¹`) equals the unframed `(1,1)`-Schur complement of
 `reindex(prod (decode x))` over its own `(1,1)`-block pivot. -/
 theorem score_eq_unframedSchur_prodDecode_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (_hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
-    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (_hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
     (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
@@ -201,5 +201,121 @@ theorem reindex_prodAux_deepestM_eq_prodSchurCore (H : Fin (L + 1) → ℕ) (r :
       rw [← hC ⟨k, hkL⟩]
       simp only [Matrix.reindex_apply, Matrix.submatrix_submatrix]
       congr 1
+
+/-! ## Sublemma 4 — the chain-lock (product of moved Schur cores = unframed decode Schur)
+
+The product of the moved Schur cores equals the unframed `(1,1)`-Schur complement of the reindexed decode
+product `reindex (rThr 0) (deepestChainCol L) (prod H A)`. Immediate from the banked Invariant B
+`prodSchurCore_eq_blockSchur_partProd` + the full-product bridge `reindex_prod_eq_partProd`. -/
+theorem prodSchurCore_deepestChain_eq_blockSchur_reindex (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H)
+    (hLayer : ∀ k, k < L → Invertible (deepestChain H r hr A k).toBlocks₁₁)
+    (hPart : ∀ k, k ≤ L → Invertible (partProd (deepestChain H r hr A) k).toBlocks₁₁) :
+    prodSchurCore (deepestChain H r hr A) (Z0edit0 (deepestChain H r hr A) L) L
+      = blockSchur (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+          (deepestChainCol H r hr L (Nat.lt_succ_self L)) (prod H A)) := by
+  rw [prodSchurCore_eq_blockSchur_partProd (deepestChain H r hr A)
+        (Z0edit0 (deepestChain H r hr A) L) L hLayer hPart]
+  exact congrArg blockSchur (reindex_prod_eq_partProd H r hr A).symm
+
+/-- `Ring.inverse X = X⁻¹` for an invertible matrix (bridging `blockSchur`'s `Ring.inverse` pivot to the
+`nonsing_inv` spelling the Score integrand carries). -/
+theorem ring_inverse_eq_nonsing_inv {n : Type*} [Fintype n] [DecidableEq n]
+    (X : Matrix n n ℝ) [Invertible X] : Ring.inverse X = X⁻¹ := by
+  rw [Ring.inverse_invertible, invOf_eq_nonsing_inv]
+
+/-! ## The headline — the general-`L` Schur→Score telescope
+
+Mirrors the banked L=2 `prod_deepestM_eq_schur_ldu_readback`. Given a reduced-core tuple `C` whose
+reindexed layers read back as the moved Schur cores (`hC`), and the chain / frame / product-pivot
+invertibility facts, the reduced-core product `prod (deepestM H r) C` equals the Score `(1,1)`-Schur
+integrand over the framed `prod(decode x) − B`. Chains the fold bridge + chain-lock (giving `prod (deepestM)
+C = (blockSchur (reindex … deepestChainCol L … (prod (decode x)))).submatrix …`), the pivot-front column
+reconciliation, and `score_eq_unframedSchur_prodDecode_gen`. -/
+theorem prod_deepestM_eq_schur_ldu_readback_gen (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₁ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H 0) (hr 0)) (rThresholdSplit r (H 0) (hr 0))
+        (endpointP0 H hL Pf)).toBlocks₂₂ = 1)
+    (hQ22 : (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointQL H hL Qf)).toBlocks₂₂ = 1)
+    (x : Fin (flatDim H) → ℝ)
+    (hS3b : Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (endpointP0 H hL Pf * B * endpointQL H hL Qf)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hP11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (rThresholdSplit r (H 0) (hr 0)) (endpointP0 H hL Pf)).toBlocks₁₁)
+    (hQ11inv : Invertible (Matrix.reindex (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J) (endpointQL H hL Qf)).toBlocks₁₁)
+    (hMid11inv : Invertible (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+        (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+        (prod H ((paramsEquivFlat H).symm x))).toBlocks₁₁)
+    (C : Params (deepestM H r))
+    (hC : ∀ s : Fin L,
+      Matrix.reindex (finCongr (chainWidth_castSucc_sub H r s)) (finCongr (chainWidth_succ_sub H r s))
+          (C s)
+        = blockSchur (movedC (deepestChain H r hr ((paramsEquivFlat H).symm x))
+            (Z0edit0 (deepestChain H r hr ((paramsEquivFlat H).symm x)) L) (s : ℕ)))
+    (hLayer : ∀ k, k < L →
+      Invertible (deepestChain H r hr ((paramsEquivFlat H).symm x) k).toBlocks₁₁)
+    (hPart : ∀ k, k ≤ L →
+      Invertible (partProd (deepestChain H r hr ((paramsEquivFlat H).symm x)) k).toBlocks₁₁) :
+    prod (deepestM H r) C
+      = (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+            (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+            (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+              * endpointQL H hL Qf)).toBlocks₂₂
+          - (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+              (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+              (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                * endpointQL H hL Qf)).toBlocks₂₁
+            * ((Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₁ + 1)⁻¹
+            * (Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+                (pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J)
+                (endpointP0 H hL Pf * (prod H ((paramsEquivFlat H).symm x) - B)
+                  * endpointQL H hL Qf)).toBlocks₁₂ := by
+  set A := (paramsEquivFlat H).symm x with hA
+  set N := Matrix.reindex (rThresholdSplit r (H 0) (hr 0))
+      (deepestChainCol H r hr L (Nat.lt_succ_self L)) (prod H A) with hN
+  -- LHS chain: `prod (deepestM) C = submatrix (blockSchur N) e f`.
+  have hfold := reindex_prodAux_deepestM_eq_prodSchurCore H r hr A C hC L (Nat.lt_succ_self L)
+  rw [prodSchurCore_deepestChain_eq_blockSchur_reindex H r hr A hLayer hPart, ← hN] at hfold
+  have hpe : prod (deepestM H r) C = prodAux (deepestM H r) C L (Nat.lt_succ_self L) := rfl
+  rw [hpe, (Matrix.reindex (finCongr (deepestM_zero_eq_chainWidth_sub H r))
+      (finCongr (deepestM_eq_chainWidth_sub H r L (Nat.lt_succ_self L)))).eq_symm_apply.mpr hfold,
+    Matrix.reindex_symm, Matrix.reindex_apply, Equiv.symm_symm, Equiv.symm_symm]
+  -- Now goal: `(blockSchur N).submatrix e f = <Score integrand>`.
+  -- Reduce the Score integrand to `N`-blocks; then match.
+  have heC : pivotThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) J
+      = rThresholdSplit r (H (Fin.last L)) (hr (Fin.last L)) := by
+    rw [hJfront]; exact pivotThresholdSplit_frontEmbed H r hr
+  rw [score_eq_unframedSchur_prodDecode_gen H r B hB hr hL J hJfront Pf Qf hPtri hQtri hP22 hQ22 x
+      hS3b hP11inv hQ11inv hMid11inv, heC]
+  -- transport the product-pivot invertibility to the `deepestChainCol` split.
+  letI hN11 : Invertible N.toBlocks₁₁ := by
+    have h := hMid11inv
+    rw [heC, pivotFront_toBlocks₁₁_eq_chainCol H r hr A] at h
+    exact h
+  rw [pivotFront_toBlocks₂₂_eq_chainCol H r hr A, pivotFront_toBlocks₂₁_eq_chainCol H r hr A,
+    pivotFront_toBlocks₁₁_eq_chainCol H r hr A, pivotFront_toBlocks₁₂_eq_chainCol H r hr A, ← hN]
+  rw [blockSchur, ring_inverse_eq_nonsing_inv N.toBlocks₁₁,
+    show finCongr (deepestM_zero_eq_chainWidth_sub H r) = Equiv.refl _ from finCongr_refl _]
+  -- `submatrix` distributes over the Schur `−` and the right factor definitionally; the row equiv is the
+  -- identity (`Equiv.refl`) and the two column casts are proof-irrelevant `Fin.cast`s of the same width
+  -- equality, so both sides are definitionally equal.
+  rfl
 
 end DLNFibre.DLN.RLCT
