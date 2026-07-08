@@ -276,6 +276,49 @@ theorem partProd_frame_last (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕ m
     show partProd Cd (M + 1) = partProd Cd M * Cd M from rfl]
   simp only [Matrix.mul_assoc]
 
+/-- **Endpoint frames preserve `Kcoup`** (the core-side `regBlocks_movedC` analogue). A block-lower frame
+`PL` at layer `0` and a block-upper frame `QU` at the last layer `M` (each identity `₂₂`-block, unit
+`₁₁`-corner) leave every off-pivot coupling unchanged: `Kcoup Cf s = Kcoup Cd s`. The partial products
+telescope (`partProd_frame_pre`/`_last`); the `P11`/`Q11` factors cancel through `Kcoup`'s inverse
+(`leftFrame_ringInverse_cancel` interior, `conj_ringInverse_cancel` last layer). -/
+theorem Kcoup_frame_endpoints (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕ m (s + 1)) ℝ) (M : ℕ) (hM : 1 ≤ M)
+    (PL : Matrix (ρ ⊕ m 0) (ρ ⊕ m 0) ℝ) (QU : Matrix (ρ ⊕ m (M + 1)) (ρ ⊕ m (M + 1)) ℝ)
+    (hPl12 : PL.toBlocks₁₂ = 0) (hPl11 : IsUnit PL.toBlocks₁₁)
+    (hQu21 : QU.toBlocks₂₁ = 0) (hQu11 : IsUnit QU.toBlocks₁₁)
+    (hCf0 : Cf 0 = PL * Cd 0) (hInt : ∀ k, 1 ≤ k → k < M → Cf k = Cd k) (hLast : Cf M = Cd M * QU)
+    (hPd : ∀ k, IsUnit (partProd Cd k).toBlocks₁₁) (s : ℕ) (hs : s < M + 1) :
+    Kcoup Cf s = Kcoup Cd s := by
+  rcases Nat.eq_zero_or_pos s with hs0 | hspos
+  · subst hs0; rw [Kcoup_zero, Kcoup_zero]
+  · by_cases hslast : s = M
+    · -- last layer `s = M`: both endpoint frames enter; `conj_ringInverse_cancel`.
+      subst hslast
+      have hcf21 : (Cf s).toBlocks₂₁ = (Cd s).toBlocks₂₁ * QU.toBlocks₁₁ := by
+        rw [hLast, toBlocks₂₁_mul, hQu21, Matrix.mul_zero, add_zero]
+      have hppS11 : (partProd Cf (s + 1)).toBlocks₁₁
+          = PL.toBlocks₁₁ * (partProd Cd (s + 1)).toBlocks₁₁ * QU.toBlocks₁₁ := by
+        rw [partProd_frame_last Cd Cf s hM PL QU hCf0 hInt hLast, toBlocks₁₁_mul, hQu21,
+          Matrix.mul_zero, add_zero, toBlocks₁₁_mul, hPl12, Matrix.zero_mul, add_zero]
+      have hpp12 : (partProd Cf s).toBlocks₁₂ = PL.toBlocks₁₁ * (partProd Cd s).toBlocks₁₂ := by
+        rw [partProd_frame_pre Cd Cf s PL hCf0 hInt s hspos le_rfl, toBlocks₁₂_mul, hPl12,
+          Matrix.zero_mul, add_zero]
+      rw [Kcoup, Kcoup, hcf21, hppS11, hpp12,
+        ← conj_ringInverse_cancel PL.toBlocks₁₁ (partProd Cd (s + 1)).toBlocks₁₁ QU.toBlocks₁₁
+          hPl11 (hPd (s + 1)) hQu11]
+      simp only [Matrix.mul_assoc]
+    · -- interior layer `1 ≤ s < M`: only the left frame enters; `leftFrame_ringInverse_cancel`.
+      have hsltM : s < M := lt_of_le_of_ne (by omega) hslast
+      have hppS11 : (partProd Cf (s + 1)).toBlocks₁₁
+          = PL.toBlocks₁₁ * (partProd Cd (s + 1)).toBlocks₁₁ := by
+        rw [partProd_frame_pre Cd Cf M PL hCf0 hInt (s + 1) (by omega) (by omega), toBlocks₁₁_mul,
+          hPl12, Matrix.zero_mul, add_zero]
+      have hpp12 : (partProd Cf s).toBlocks₁₂ = PL.toBlocks₁₁ * (partProd Cd s).toBlocks₁₂ := by
+        rw [partProd_frame_pre Cd Cf M PL hCf0 hInt s hspos (by omega), toBlocks₁₂_mul, hPl12,
+          Matrix.zero_mul, add_zero]
+      rw [Kcoup, Kcoup, hInt s hspos hsltM, hppS11, hpp12,
+        ← leftFrame_ringInverse_cancel PL.toBlocks₁₁ (partProd Cd (s + 1)).toBlocks₁₁ hPl11 (hPd (s + 1))]
+      simp only [Matrix.mul_assoc]
+
 end AbstractFrame
 
 end DLNFibre.DLN.RLCT
