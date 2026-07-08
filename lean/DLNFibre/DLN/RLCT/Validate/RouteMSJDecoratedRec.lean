@@ -98,6 +98,16 @@ theorem binding_2222 :
   refine ⟨?_, by decide⟩
   decide
 
+/-- **Non-vacuity W3 — `(3,3,3,4)` front binding cut `t = 1`** (the STEP-0 deeper-product anchor). The
+front peel emits block charge `peelCharge = 4` (a genuine `2×2` corank) and reduces to `(1,3,4)` with
+`minAdm = 3`; `4 + 3 = 7 = minAdm (3,3,3,4)` is binding. STEP-0 verdict: this chain is regime-A/B clean
+(no rank-deficient chart), so its recursion never reaches the monomial terminal. -/
+theorem binding_3334 :
+    peelCharge (![3, 3, 3, 4] : Fin 4 → ℕ) 1 + minAdm (redChain 1 (![3, 3, 3, 4] : Fin 4 → ℕ)) = 7
+      ∧ minAdm (![3, 3, 3, 4] : Fin 4 → ℕ) = 7 := by
+  refine ⟨?_, by decide⟩
+  decide
+
 /-- **The carrier threshold at the anchors** (the `c' <` budgets the recursion runs against). -/
 theorem carrierThreshold_334 : carrierThreshold (![3, 3, 4] : Fin 3 → ℕ) = 4 := by
   unfold carrierThreshold; rw [show minAdm (![3, 3, 4] : Fin 3 → ℕ) = 8 from by decide]; norm_num
