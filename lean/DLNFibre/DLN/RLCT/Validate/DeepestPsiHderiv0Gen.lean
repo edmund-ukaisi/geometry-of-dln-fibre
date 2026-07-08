@@ -26,6 +26,24 @@ Schur blocks:
   block of `movedC − C` is a product with two factors vanishing at the origin (`(C 0)₂₁ = 0`,
   `(partProd 0)₁₂ = 0`, `blockSchur(corM) = 0`, `wHatAccum(0) = 0`);
 * **(d) compose** the strict-deriv-`0` of `gaugeΔ`/`coreΔ` through the fixed CLEs into `hderiv0`.
+
+## Status (WIP)
+The target `hasStrictFDerivAt_psiSplitDeltaGen_zero` is **proven modulo two `sorry` sub-lemmas**
+(`hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero`,
+`hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero`). Landed + axiom-clean:
+* pieces (a) [`psiSplitDeltaGen_eq_payload`] and (d) [the target's proof], + the pair-mul keystone;
+* piece (c) value-at-origin collapse (`genChain_zero_*`, `genPartProd_zero_*`, `genBlockSchur_zero`,
+  `genKcoup_zero`, `genSchurTilde_zero`, `genVDown_zero`, `genUNorm_zero`, `genNMix_zero`);
+* piece (c) smoothness helpers (`contDiffAt_ringInverse_entry`, `genChain_contDiffAt`,
+  `genPartProd_contDiffAt`, `genBlockSchur_contDiffAt`).
+
+Remaining (all inputs banked — bounded plumbing, no math wall):
+* the rest of piece (c) smoothness (`uNorm`/`vDown`/`Kcoup`/`schurTilde`/`Ring.inverse nMix`/
+  `movedZ`/`movedY`/`movedT`/`wHatAccum`/`hTermLC`/`deltaV0` entries `ContDiffAt`);
+* the piece (c) germ (`upEdit`, `movedZ − (C)₂₁`, `movedT − (C)₂₂` blocks, via the entry keystones);
+* piece (b), the `(★)` read-recovery linking `gaugeΔ`/`coreΔ` to `forcedDecode(movedC − C)` —
+  interior via `deepestChain_framedParamsPivot_blocks_of_frame_one`, boundary via the banked
+  `deepestChain_framedParamsPivot_firstLayer`/`_lastLayer` + `forcedDecodeLeft/Right_*Frame_mul`.
 -/
 
 open Matrix Topology
