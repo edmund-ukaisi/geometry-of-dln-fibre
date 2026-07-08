@@ -961,6 +961,15 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 -- hDA) via `partProd_deepestChain_deepestPoint_toBlocks₁₁_isUnit`. Item-3 remaining: `hC` (in flight) + the
 -- `hq` eventual-ball germ (Producer-1 continuity) + the small assembly.
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
+-- `DeepestHsub4coreHCGen` — D1 #120 Item-3 `hC` COMPLETE (the core-side move readback, sorry-free, clean-three):
+-- `coreAbsorbConj_reindex_eq_blockSchur_movedC_decode` discharges the keystone's `hC` hyp VERBATIM at q=split x
+-- (`∀ s, reindex(coreRead_moved s + schurCorrectionConj_moved s) = blockSchur(movedC (deepestChain(decode x)) …
+-- s)`). Route: step-A synthetic reduction → uniform RHS via hmove + `Kcoup_framed_eq_decode` (the Kcoup-invariance
+-- crux, core-side twin of `regBlocks_movedC`) + `blockSchur_framed_eq_decode` → per-layer Claim-C (interior via
+-- `blockSchur_reindex_reduced`; boundary via `F'=frame·N0` + corM identity + `blockSchur_lowerFrame/_upperFrame`).
+-- Moved-pivot `IsUnit(N0₁₁)` derived via hmove INSIDE the assembly (no new hC hyp). Item-3 = keystone✓ + piece(2)✓
+-- + hC✓; remaining for `hstep2` = the `hq` eventual-ball germ (Producer-1 continuity) + the small assembly.
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen
 -- `DeepestPsiHderiv0Gen` — hderiv0 COMPLETE (D1 #120 Producer-1 diffeo-triple leaf #2/3, sorry-free,
 -- clean-three): `hasStrictFDerivAt_psiSplitDeltaGen_zero` — the deviation `q ↦ psiSplitRawGen q − q` has
 -- strict Fréchet derivative `0` at the split origin (i.e. `D(psiSplitRawGen)(0) = id`). Piece (c) analytic

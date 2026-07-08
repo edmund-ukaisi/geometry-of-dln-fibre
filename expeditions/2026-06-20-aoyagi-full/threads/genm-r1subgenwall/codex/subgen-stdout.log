@@ -1,0 +1,327 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-r1subgenwall
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f42fc-7888-76c1-9a6b-efeabc6ebd32
+--------
+user
+<task>
+I am formalising (Lean 4 + Mathlib) a real-log-canonical-threshold finiteness bound for deep linear
+networks. I need an independent adjudication of ONE analytic sub-question about a change-of-variables.
+Please reason from scratch; do NOT assume my framing is right or wrong.
+
+SETUP (exact objects).
+- A chain of widths M = (M_0, M_1, ..., M_N), N >= 3 (so at least 4 widths). Matrices A_0 (M_0 x M_1),
+  A_1 (M_1 x M_2), ..., A_{N-1} (M_{N-1} x M_N), each ranging over a bounded box [-T,T]^{entries}.
+- prod = A_0 · A_1 · ... · A_{N-1}, an M_0 x M_N matrix. frobSq = squared Frobenius norm.
+- TARGET: show J := ∫_{all A_i in box} frobSq(A_0 · A_1 ··· A_{N-1})^{-c'} d(A) < ∞ for every
+  real c' < (1/2)·minAdm(M), where minAdm(M) is a known integer given by the "layer-peel" recursion
+  minAdm(M_0,...,M_N) = min_{0<=t<=min(M_0,M_1)} [ (M_0 - t)(M_1 - t) + minAdm(t, M_2, ..., M_N) ],
+  minAdm(a,b) = a·b.  (This value is proven correct; treat it as given.)
+
+THE PROVEN INDUCTIVE MACHINE (what I already have, sorry-free in Lean).
+- Strong induction on the number of widths. The IH gives J' < ∞ (below (1/2)·minAdm) for EVERY chain
+  with strictly fewer widths.
+- A per-corank "Schur" engine for the TWO-matrix case: ∫∫ frobSq(Δ·S)^{-c'} dΔ dS < ∞ below its
+  threshold, Δ square r×r free, S free r×p, by a WellFounded recursion on the corank of Δ (proven ∀r,p).
+
+THE STEP I AM STUCK ON (the front-boundary peel).
+- Fix a t×t invertible pivot minor of A_0 (rows ρ, cols κ). Block A_0 = [[A,B],[C,D]], A invertible t×t.
+  Split the tail product P := A_1···A_{N-1} (an M_1 x M_N matrix) into its κ-rows Q_p (t rows) and
+  the other rows Q_b ((M_1 - t) rows). The banked EXACT Schur identity rewrites the integrand as
+  ( ‖A·Q̃_p‖² + ‖C·Q̃_p + Γ·Q_b‖² )^{-c'},  Q̃_p = Q_p + A⁻¹B·Q_b,  Γ = D − C A⁻¹ B free (M_0−t)×(M_1−t),
+  after a measure-preserving shear D ↦ Γ.
+- Integrating out the free block Γ: because Γ enters only through Γ·Q_b, and Q_b is a MATRIX PRODUCT
+  (rows of A_1, times the deeper product A_2···A_{N-1}), the rank s' := rank(Q_b) can DROP below its
+  generic value on a proper subvariety of the deeper matrices. Doing the Γ-integral by the Gram change
+  Γ ↦ Γ·Q_b produces a Jacobian prefactor det(Q_b Q_bᵀ)^{-(M_0−t)/2} times a residual with exponent
+  shifted by (M_0−t)·s'/2, and det(Q_b Q_bᵀ) → 0 as rank(Q_b) drops.
+
+SUB-QUESTION (the ONE thing I need adjudicated).
+Is there a route to finish this step — i.e. to prove J < ∞ below (1/2)·minAdm(M) at N>=3 — that stays
+inside "concrete/elementary" measure theory: measure-preserving linear changes of variables, pivot
+charts, the two-matrix Schur/corank engine above, Fubini, bounded-Jacobian substitutions, and the
+strong IH on shorter chains — WITHOUT invoking an abstract "normal-slice / determinantal-locus
+isomorphism" that identifies the product-rank-deficient locus {rank(A_1···A_{N-1}) <= q} (bounded-
+Jacobian, measure-preserving) with the box of a SHIFTED chain (M_1 − q, M_2 − q, ..., M_N − q)?
+
+Concretely, three candidate routes I want you to evaluate on their merits (accept, repair, or refute
+each, with reasons):
+ (i)  Cover {rank(product) = q} by pivot charts of the product and Schur-decompose the product itself,
+      reducing det(Q_b Q_bᵀ)^{-…} concretely via a Schur complement — no abstract iso.
+ (ii) A degree/structure argument: the det(Q_b Q_bᵀ)^{-(M_0−t)/2} prefactor and the residual core
+      together form an integrand the shorter-chain IH already covers (i.e. the shifted chain arises
+      "for free" from the concrete algebra, not from an abstract reparametrisation).
+ (iii) Domination: the rank-deficient strata are higher codimension, so their contribution is dominated
+      by the generic threshold and needs no separate charge (finiteness there is IMPLIED).
+
+Also: is det(Q_b Q_bᵀ)^{-(M_0−t)/2} integrated over the deeper matrices a "clean" (elementary) integral,
+or does its finiteness genuinely require resolving the determinantal ideal of a matrix PRODUCT (i.e.
+computing the RLCT of a product-rank-deficiency locus)? A worked micro-example: M = (3,3,3,4), t=1, so
+(M_0−t) = 2, and Q_b = W·A_2 with W a free 2×3 matrix (two rows of A_1) and A_2 a 3×4 matrix. What is
+the exact convergence threshold of ∫ det(Q_b Q_bᵀ)^{-1} over that data, and does it sit strictly inside,
+at, or outside the budget left by c' < (1/2)·minAdm(3,3,3,4) = 7/2?
+</task>
+
+<output_contract>
+- A direct verdict on the SUB-QUESTION: is a concrete/elementary route plausible (sketch it), or does
+  the step genuinely require the abstract product-rank normal-slice isomorphism (say why each of (i)/(ii)/(iii)
+  fails or succeeds).
+- For the micro-example: the exact integrability threshold of ∫ det(W A_2 (W A_2)ᵀ)^{-1} and whether it
+  is inside / at / outside the c' < 7/2 budget. Show the computation.
+- Separate what you can PROVE from what you conjecture. Flag anything you are unsure of.
+- Do not write code to a repo; hand-reasoning + (if useful) a short standalone script I will run myself.
+</output_contract>
+
+<grounding_rules>
+- These are real bounded-box Lebesgue integrals over real matrices; frobSq and det(·(·)ᵀ) are the real
+  squared Frobenius norm and Gram determinant. "RLCT" = real log canonical threshold (the sup of c such
+  that ∫ f^{-c} < ∞ locally). Integrability near a zero locus is governed by that locus's codimension
+  weighted by the vanishing order.
+- The two-matrix Schur/corank engine is proven ∀ corank; the OPEN part is composing it across the
+  ≥3 layers (the arity recursion), specifically the product-rank-deficient strata of the deeper product.
+- Be concrete and exact where you can (this is exact algebra, not heuristics).
+</grounding_rules>
+
+codex
+I’ll treat this as a local integrability question, not as a Lean implementation problem. I’m going to separate the tempting Gram-change intuition from what it actually proves, because that is where the product-rank strata matter.
+codex
+**Verdict**
+
+The obstruction is real. A proof can stay “elementary” only if it includes an explicit pivot-chart normal-slice lemma for product-rank strata. If that lemma is forbidden, the front peel does not close from the listed tools alone.
+
+The reason is that after the full-rank Gram change the factor
+\[
+\det(Q_bQ_b^T)^{-(M_0-t)/2}
+\]
+is singular on product-rank-deficient loci, and those singularities are not automatically dominated by codimension. They are exactly determinantal singularities of a matrix product.
+
+**Candidate Routes**
+
+(i) **Product pivot charts:** repairable, but only by proving the normal-slice content in coordinates.
+
+If \(Q_b=A_1'\cdots A_{N-1}\) has rank \(q\), a pivot chart for \(Q_b\) gives a Schur complement \(\Omega(Q_b)\). But to integrate over the original layer variables, one must identify
+\[
+\Omega(Q_b)
+\]
+with the product of Schur complements of the individual layers, up to bounded invertible factors:
+\[
+\Omega(Q_b)\sim \Gamma_1\Gamma_2\cdots \Gamma_{N-1},
+\]
+with shifted widths
+\[
+(M_1-t-q,\; M_2-q,\;\dots,\;M_N-q).
+\]
+That is precisely the product-rank normal-slice isomorphism, just written concretely. So (i) works only in this repaired form.
+
+(ii) **“IH covers the prefactor for free”:** false as stated.
+
+The determinant factor vanishes when \(Q_b\) drops rank, not only when \(Q_b=0\). The shorter-chain IH controls integrals of
+\[
+\| \text{product} \|^{-2c}
+\]
+near product-zero loci. It does not control inverse Gram determinants near nonzero rank-deficient products. To make IH relevant, one must pass to the Schur complement normal product, i.e. the shifted chain. Again, this is the normal-slice step.
+
+(iii) **Domination by higher codimension:** false.
+
+Higher codimension is not enough; one must compare codimension with vanishing order. In the micro-example below, the rank-deficient locus has codimension \(2\) and the Gram determinant vanishes quadratically, giving threshold \(1\). The exponent appearing from the Gram change is also \(1\), so the integral is logarithmically divergent. There is no spare domination margin.
+
+**Micro-Example**
+
+Let
+\[
+W\in \mathbb R^{2\times 3},\qquad A\in\mathbb R^{3\times 4},\qquad Q=WA,
+\]
+and consider
+\[
+I_\alpha=\int \det(QQ^T)^{-\alpha}\,dW\,dA.
+\]
+
+The exact threshold is
+\[
+I_\alpha<\infty \quad\Longleftrightarrow\quad \alpha<1.
+\]
+
+Divergence at \(\alpha\ge 1\): take \(A\) near \([I_3\;0]\). Then
+\[
+\det(WAA^TW^T)\asymp \det(WW^T).
+\]
+Near
+\[
+W=\begin{pmatrix}1&0&0\\ u&x&y\end{pmatrix},
+\]
+we have
+\[
+\det(WW^T)=x^2+y^2.
+\]
+Thus the local integral contains
+\[
+\int (x^2+y^2)^{-\alpha}\,dx\,dy,
+\]
+which diverges exactly for \(\alpha\ge 1\).
+
+Finiteness for \(\alpha<1\): the sharp chart is the rank-one product chart. Choose compatible \(1\times1\) pivots in \(W\) and \(A\). The Schur complements have sizes
+\[
+W^\sharp\in\mathbb R^{1\times2},\qquad A^\sharp\in\mathbb R^{2\times3},
+\]
+and the Schur complement of \(WA\) is, up to bounded invertible factors,
+\[
+W^\sharp A^\sharp.
+\]
+On that chart,
+\[
+\det(WA(WA)^T)\asymp \|W^\sharp A^\sharp\|^2.
+\]
+The threshold for
+\[
+\int \|wB\|^{-2\alpha}\,dw\,dB,\qquad w\in\mathbb R^{1\times2},\ B\in\mathbb R^{2\times3},
+\]
+is
+\[
+\alpha<\frac12\minAdm(1,2,3)=\frac12\cdot 2=1.
+\]
+Other rank charts give thresholds \(\ge 1\), so the global threshold is exactly \(1\).
+
+For your concrete exponent,
+\[
+(M_0-t)/2=(3-1)/2=1,
+\]
+so
+\[
+\int \det(WA_2(WA_2)^T)^{-1}\,dW\,dA_2
+\]
+is exactly critical and diverges logarithmically.
+
+Thus the determinant prefactor is **at** the threshold, not strictly inside it. Since convergence is strict, it is outside the usable finiteness range. The budget
+\[
+c'<\frac12\minAdm(3,3,3,4)=7/2
+\]
+does not by itself make this prefactor integrable.
+
+What I can prove: the micro-example threshold is exactly \(1\), and the naive full-rank Gram prefactor cannot be integrated independently.
+
+What I would not claim as a theorem: that no possible proof exists outside this framework. But for the specific tools listed, the missing ingredient is exactly a product-rank normal-slice analysis, whether stated abstractly or encoded by explicit Schur pivot charts.
+tokens used
+30,170
+**Verdict**
+
+The obstruction is real. A proof can stay “elementary” only if it includes an explicit pivot-chart normal-slice lemma for product-rank strata. If that lemma is forbidden, the front peel does not close from the listed tools alone.
+
+The reason is that after the full-rank Gram change the factor
+\[
+\det(Q_bQ_b^T)^{-(M_0-t)/2}
+\]
+is singular on product-rank-deficient loci, and those singularities are not automatically dominated by codimension. They are exactly determinantal singularities of a matrix product.
+
+**Candidate Routes**
+
+(i) **Product pivot charts:** repairable, but only by proving the normal-slice content in coordinates.
+
+If \(Q_b=A_1'\cdots A_{N-1}\) has rank \(q\), a pivot chart for \(Q_b\) gives a Schur complement \(\Omega(Q_b)\). But to integrate over the original layer variables, one must identify
+\[
+\Omega(Q_b)
+\]
+with the product of Schur complements of the individual layers, up to bounded invertible factors:
+\[
+\Omega(Q_b)\sim \Gamma_1\Gamma_2\cdots \Gamma_{N-1},
+\]
+with shifted widths
+\[
+(M_1-t-q,\; M_2-q,\;\dots,\;M_N-q).
+\]
+That is precisely the product-rank normal-slice isomorphism, just written concretely. So (i) works only in this repaired form.
+
+(ii) **“IH covers the prefactor for free”:** false as stated.
+
+The determinant factor vanishes when \(Q_b\) drops rank, not only when \(Q_b=0\). The shorter-chain IH controls integrals of
+\[
+\| \text{product} \|^{-2c}
+\]
+near product-zero loci. It does not control inverse Gram determinants near nonzero rank-deficient products. To make IH relevant, one must pass to the Schur complement normal product, i.e. the shifted chain. Again, this is the normal-slice step.
+
+(iii) **Domination by higher codimension:** false.
+
+Higher codimension is not enough; one must compare codimension with vanishing order. In the micro-example below, the rank-deficient locus has codimension \(2\) and the Gram determinant vanishes quadratically, giving threshold \(1\). The exponent appearing from the Gram change is also \(1\), so the integral is logarithmically divergent. There is no spare domination margin.
+
+**Micro-Example**
+
+Let
+\[
+W\in \mathbb R^{2\times 3},\qquad A\in\mathbb R^{3\times 4},\qquad Q=WA,
+\]
+and consider
+\[
+I_\alpha=\int \det(QQ^T)^{-\alpha}\,dW\,dA.
+\]
+
+The exact threshold is
+\[
+I_\alpha<\infty \quad\Longleftrightarrow\quad \alpha<1.
+\]
+
+Divergence at \(\alpha\ge 1\): take \(A\) near \([I_3\;0]\). Then
+\[
+\det(WAA^TW^T)\asymp \det(WW^T).
+\]
+Near
+\[
+W=\begin{pmatrix}1&0&0\\ u&x&y\end{pmatrix},
+\]
+we have
+\[
+\det(WW^T)=x^2+y^2.
+\]
+Thus the local integral contains
+\[
+\int (x^2+y^2)^{-\alpha}\,dx\,dy,
+\]
+which diverges exactly for \(\alpha\ge 1\).
+
+Finiteness for \(\alpha<1\): the sharp chart is the rank-one product chart. Choose compatible \(1\times1\) pivots in \(W\) and \(A\). The Schur complements have sizes
+\[
+W^\sharp\in\mathbb R^{1\times2},\qquad A^\sharp\in\mathbb R^{2\times3},
+\]
+and the Schur complement of \(WA\) is, up to bounded invertible factors,
+\[
+W^\sharp A^\sharp.
+\]
+On that chart,
+\[
+\det(WA(WA)^T)\asymp \|W^\sharp A^\sharp\|^2.
+\]
+The threshold for
+\[
+\int \|wB\|^{-2\alpha}\,dw\,dB,\qquad w\in\mathbb R^{1\times2},\ B\in\mathbb R^{2\times3},
+\]
+is
+\[
+\alpha<\frac12\minAdm(1,2,3)=\frac12\cdot 2=1.
+\]
+Other rank charts give thresholds \(\ge 1\), so the global threshold is exactly \(1\).
+
+For your concrete exponent,
+\[
+(M_0-t)/2=(3-1)/2=1,
+\]
+so
+\[
+\int \det(WA_2(WA_2)^T)^{-1}\,dW\,dA_2
+\]
+is exactly critical and diverges logarithmically.
+
+Thus the determinant prefactor is **at** the threshold, not strictly inside it. Since convergence is strict, it is outside the usable finiteness range. The budget
+\[
+c'<\frac12\minAdm(3,3,3,4)=7/2
+\]
+does not by itself make this prefactor integrable.
+
+What I can prove: the micro-example threshold is exactly \(1\), and the naive full-rank Gram prefactor cannot be integrated independently.
+
+What I would not claim as a theorem: that no possible proof exists outside this framework. But for the specific tools listed, the missing ingredient is exactly a product-rank normal-slice analysis, whether stated abstractly or encoded by explicit Schur pivot charts.

@@ -73,6 +73,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHcdGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen
 
 /-!
 # Axiom-hygiene check
@@ -711,6 +712,14 @@ open DLNFibre.DLN.RLCT
 -- + the bundled `∀ᶠ x, ∀ k, IsUnit …` forms (drop-in for the assembly's finite-intersection step).
 #print axioms eventually_all_isUnit_deepestChain_decode_toBlocks₁₁
 #print axioms eventually_all_isUnit_partProd_deepestChain_decode_toBlocks₁₁
+
+-- ★ D1 ∀-L #120 `hstep2` — Item-3 `hC` COMPLETE (2026-07-08, `genm-hcfinish`). The core-side move readback:
+-- `coreAbsorbConj_reindex_eq_blockSchur_movedC_decode` discharges the keystone's `hC` hyp VERBATIM at q=split x
+-- (`∀ s, reindex(coreRead_moved + schurCorrectionConj_moved) = blockSchur(movedC(deepestChain(decode x))… s)`),
+-- via the Kcoup-invariance crux `Kcoup_framed_eq_decode` (core-side twin of `regBlocks_movedC`) + `blockSchur_
+-- framed_eq_decode` + per-layer Claim-C (interior/boundary; moved-pivot IsUnit via hmove, NO new hC hyp). Item-3 =
+-- keystone✓ + piece(2)✓ + hC✓. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms coreAbsorbConj_reindex_eq_blockSchur_movedC_decode
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
