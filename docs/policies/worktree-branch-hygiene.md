@@ -51,24 +51,42 @@ one thing cleanup actually lacked — *ownership derivable from the name* — wi
 
 ## The bank invariant
 
-- **The `→ dev` PR is the bank.** Once an expedition's PR merges, its root and every thread branch merged
-  into that root are ancestors of `dev` *by construction* — so closeout needs no per-branch forensic audit;
-  the merge already established that the content is banked.
-- **Bank before you rely on it.** Push expedition and thread branches to `origin` so no tip is local-only.
-  Audit one worktree with `git for-each-ref --contains <tip> refs/remotes/origin/` — empty output means that
-  worktree holds the *only* copy of its work.
+`origin` is the bank at **two levels** — a running one inside the expedition, and the final one at close:
 
-## Cleanup at close (a controller job)
+- **Within the expedition — the root branch is the running bank.** As each thread lands, the controller
+  merges it into the expedition root `expedition/<slug>` and **pushes to `origin/expedition/<slug>`**. That
+  pushed root is the authoritative store of the expedition's completed work: a thread worktree can then be
+  lost without losing its work, and `origin/expedition/<slug>` always reflects what is done. The controller
+  keeps the root synced to remote and pushes often — the worst case is then a stale worktree, never lost
+  work. (This is the day-to-day meaning of "`origin` is the bank", not only the close-out PR.)
+- **At close — the `→ dev` PR is the final bank.** Because completed threads are already merged into the
+  root, once the root's PR merges to `dev` its whole history is an ancestor of `dev` *by construction* —
+  closeout needs no per-branch forensic audit.
+- **Never local-only.** No tip should live only in a worktree. Audit one with
+  `git for-each-ref --contains <tip> refs/remotes/origin/` — empty output means that worktree holds the
+  *only* copy of its work.
 
-After the expedition's PR merges:
+## Close-out — the last motions of an expedition (a controller job)
 
-1. **Remove the expedition's worktrees** — `git worktree list | grep "/<slug>/"`, then `git worktree remove`
-   each. Prefer plain `remove` (it *refuses* on uncommitted/untracked changes — the safety you want); reach
-   for `--force` only after confirming the sole obstruction is the gitignored `.lake` symlink (which points
-   at the shared store and is not touched by removal).
-2. **Delete the merged branches, local and remote** — `git branch -D` and `git push origin --delete` — but
-   only those that are ancestors of `origin/dev` (or absorbed into a banked parent). Run the per-branch
-   preflight first and *show it*; at scale, print only the exceptions, not every row.
+Cleanup is a **pre-merge** step: tidy first, then merge. The merge to `dev` is the expedition's *final*
+motion — so most of the cleanup is a set of final commits on the root, done before signalling readiness.
+
+**Before signalling "ready to merge"** (all on the expedition root):
+
+1. **Tidy sub-branches into the root.** Each landed thread is merged into `expedition/<slug>`; then reclaim
+   its now-redundant worktree (`git worktree remove` — plain, which *refuses* on uncommitted/untracked
+   changes; `--force` only once the sole obstruction is confirmed to be the gitignored `.lake` symlink) and
+   delete its absorbed sub-branch **local + remote** (safe — its commits are in the root).
+2. **Fold close-out docs into the root** (synthesis, README/ROADMAP status, lessons) as the final
+   cleanup commits, and **push the root to `origin`**. `origin/expedition/<slug>` now holds the complete,
+   banked expedition.
+3. **Signal "ready to merge"** — operator-gated (the PR merge; see [`expedition.md`](expedition.md) § Gates).
+
+**After the `→ dev` PR merges** (the final motion):
+
+4. Delete the expedition **root** branch (local + remote) and remove the **root** worktree — these can only
+   go once the root has merged (it was the PR head). `git worktree list | grep "/<slug>/"` is then empty.
+   The per-branch preflight (ancestor of `origin/dev`) is run and *shown*; at scale, print only exceptions.
 
 ## Guard rails
 

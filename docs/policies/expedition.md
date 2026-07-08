@@ -215,6 +215,10 @@ committed tree intact throughout. The shape that holds:
 - **All coordination routes through the controller (the hub).** No teammate↔teammate cross-talk — the sole
   sanctioned spoke-to-spoke channel is a *tight live collaboration* (a builder and its reviewer on one
   in-flight piece).
+- **A teammate's *requests* route through the hub too.** In the rare case a teammate needs to coordinate
+  with another thread, or judges that a new teammate should be spawned for a different piece, it raises that
+  with the controller — it does not reach across to a peer or spawn on its own. The controller decides and
+  dispatches.
 - **Break a cascade with an artifact ID, not more prose.** When queue-lagged messages replay a settled
   reconciliation, one broadcast of the committed **SHA / file md5** ends it — an artifact identity is
   independently verifiable and timeless; "it's done, trust me" is not.

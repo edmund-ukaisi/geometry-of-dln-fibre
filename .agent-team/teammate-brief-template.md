@@ -30,7 +30,9 @@ worktree, the gates, the report shape.
 >   after. (Authorized tasks are fine to run.)
 >
 > **Report back:** `<the exact final statement(s) + their #print axioms; any obstruction stated precisely
-> rather than forced; any new gotcha for lean/CLAUDE.md>`.
+> rather than forced; any new gotcha for lean/CLAUDE.md>`. Then, **free-form, anything noteworthy you
+> found** — a cleaner route, an unexpected obstruction, a reusable lemma, a wrong assumption in this brief,
+> a lead worth a future thread. The structured items are the floor, not a cap; surface the interesting.
 
 ## Notes for the dispatcher (controller)
 
