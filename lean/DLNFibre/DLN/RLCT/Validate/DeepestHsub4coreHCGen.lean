@@ -5,6 +5,8 @@ import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 import DLNFibre.DLN.RLCT.Validate.DeepestGaugeConstruction
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestSplitConcrete
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen` — the general-`L` `hC` core-side move readback
@@ -719,5 +721,41 @@ theorem coreAbsorbConj_reindex_eq_blockSchur_framed_interior (H : Fin (L + 1) �
     deepBlkY_interior_zero H r B hB hr hL s hpos hlt,
     deepBlkZ_interior_zero H r B hB hr hL s hpos hlt]
   simp only [zero_add]
+
+/-! ## Boundary corner identities — `frame · (chain deepest) = corM`
+
+At the basepoint `split w0 = 0` (`deepestSplit_mp_basepoint`), the framed chain is the pure corner, so the
+endpoint frame times the chain-reindexed deepest layer collapses to `corM`. Used to fold the deepest part
+of the boundary synthetic layer through the frame. -/
+
+/-- **`psiFrame0 · (chain deepest_0) = corM`.** -/
+theorem psiFrame0_mul_deepestChain_deepestPoint_eq_corM (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hQf0 : Qf (firstLayer hL) = 1) :
+    psiFrame0 H r hr hL Pf * deepestChain H r hr (deepestPoint H r B hB hr hL) (firstLayer hL : ℕ)
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0 := by
+  set w0 := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hw0
+  have hbp : deepestSplit H r hr hL w0 w0 = 0 := (deepestSplit_mp_basepoint H r hr hL w0).2
+  have h1 := deepestChain_framed_layer0_eq H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner hQf0 w0
+  rw [hbp, show (paramsEquivFlat H).symm w0 = deepestPoint H r B hB hr hL from by
+    rw [hw0]; exact (paramsEquivFlat H).symm_apply_apply _] at h1
+  rw [← h1]
+  exact deepestChain_corner_eq_corM H r hr (framedParamsPivot H r hr hL J Pf Qf 0)
+    (firstLayer hL : ℕ) (firstLayer hL).isLt
+    (framedParamsPivot_zero_eq_corner H r hr hL J hJfront Pf Qf (firstLayer hL : ℕ) (firstLayer hL).isLt)
 
 end DLNFibre.DLN.RLCT
