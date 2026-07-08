@@ -38,12 +38,12 @@ open scoped ENNReal
 
 variable {N : ℕ}
 
-/-- **The `∫⁻` spherical blow-up (raw measure-preserving form).** For a measurable-free nonnegative
-integrand `h` on `EuclideanSpace ℝ (Fin N)`, the whole-space lower integral equals the integral of
-`h` precomposed with the inverse polar map `(ω, r) ↦ r • ω`, against the product of the sphere
-measure
-and the radial density `volumeIoiPow (N−1)`. Rides `measurePreserving_homeomorphUnitSphereProd`
-(the origin is null under Haar `volume`, so `{0}ᶜ` restriction is free). -/
+/-- **The `∫⁻` spherical blow-up (raw measure-preserving form).** For a nonnegative integrand `h` on
+`EuclideanSpace ℝ (Fin N)` (no measurability needed), the whole-space lower integral equals the
+integral of `h` precomposed with the inverse polar map `(ω, r) ↦ r • ω`, against the product of the
+sphere measure `volume.toSphere` and the radial density `volumeIoiPow (N−1)`. Rides
+`measurePreserving_homeomorphUnitSphereProd` (the origin is null under Haar `volume`, so the `{0}ᶜ`
+restriction is free). -/
 theorem lintegral_eq_sphereProd [NeZero N] (h : EuclideanSpace ℝ (Fin N) → ℝ≥0∞) :
     ∫⁻ x, h x
       = ∫⁻ p, h ((homeomorphUnitSphereProd (EuclideanSpace ℝ (Fin N))).symm p)
