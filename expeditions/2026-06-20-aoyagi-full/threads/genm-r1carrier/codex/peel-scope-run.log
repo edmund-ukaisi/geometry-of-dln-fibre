@@ -1,0 +1,250 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (fa7351f6ef4773f536ee4975c3251325eb9c44df)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/.claude/worktrees/agent-a98cac20fd601e609
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f40ac-490d-70d1-91e0-6059254e5241
+--------
+user
+<task>
+Adjudicate ONE truth-value about a formalisation step in a resolution-of-singularities / RLCT
+computation (Watanabe singular learning theory; Aoyagi's deep-linear-network log-canonical threshold).
+Withhold nothing about the math; reason from scratch. I am NOT telling you my current leaning.
+
+## The concrete setting
+
+We compute the real log-canonical threshold of the squared loss of a deep linear network by resolving
+the singularities of a "layer-product" loss. After a front-layer pivot chart and a Schur block split,
+the loss on one chart is (matrix norms; `‖·‖` = Frobenius):
+
+    L = ‖A·Qp‖²  +  ‖C·Qp + Γ·Qb‖²
+
+where:
+- `Γ` (the "freed corank block") is a `p×q` matrix, `p = M0−t`, `q = M1−t`, `t` the pivot rank;
+- `Qp` = the pivot (top-t) rows of the deeper tail product `Q = A_1 · A_2 · … · A_{L-1}`;
+- `Qb` = the NON-pivot (bottom `q'`) rows of `Q`, so `Qb = A_{1,b} · A_2 · … · A_{L-1}` is a
+  MATRIX PRODUCT (for chain length L≥3 the tail is a genuine product of ≥2 free matrices);
+- `A`, `C` are further blocks of the front layer.
+
+We integrate `∫ L^{-c'}` (an ℝ≥0∞ Lebesgue integral) over a box of all free parameters, and want
+finiteness for every real `c' < ½·minAdm`, where `minAdm` is an explicit integer (the codimension).
+
+## The banked "regime atoms" (what is already proved and available)
+
+Two isotropic corank-block Morse lemmas, over an arbitrary outer measurable parameter `z ∈ Z`, with a
+NON-NEGATIVE ADDITIVE core `W(z)` (`Δ` is a free `p×q` box matrix, `frobSq Δ = ‖Δ‖²`):
+
+  (A) high-exponent shift  (c' > pq/2, W>0 strictly):
+        ∫_Z ∫_{Δ∈box} (‖Δ‖² + W(z))^{-c'} dΔ dz  ≤  Cresid(pq,c') · ∫_Z W(z)^{-(c'-pq/2)} dz
+  (B) block dominance      (c' < pq/2, W≥0):
+        ∫_Z ∫_{Δ∈box} (‖Δ‖² + W(z))^{-c'} dΔ dz  <  ∞
+
+Also banked: a "radialAttach" op (prepend a fresh fully-shared radial divisor u0, multiplying the loss
+pointwise by u0²), and a "rowMix" op (linearly mix the sum-of-squares generators by a matrix R at
+constant monomial support). Both keep the deeper parameter space Z FIXED and are pointwise-loss
+identities. Also banked: a shared-divisor "support ledger" tracking which generators share which
+exceptional divisor, and a terminal monomial finiteness endpoint (`∫ (Σ monomials²)^{-c'} · Jacobian`
+finite below a per-axis threshold).
+
+## The step in question ("peelZBlock")
+
+To run the induction we need ONE operation that takes the loss above and, in one peel:
+  (i)   maps a "z-block" of Z (the leading matrix factor of the tail product) into fresh exceptional
+        `u`-coordinates via a single-radial blow-up change of variables,
+  (ii)  integrates out the freed corank block `Γ` via regime atom (A) or (B),
+  (iii) descends to a strictly-shorter tail product (one fewer layer),
+so that after finitely many peels the loss becomes a z-INDEPENDENT sum of monomials (the terminal).
+
+## The precise obstruction I want you to weigh
+
+The regime atoms (A)/(B) require the block to enter ISOTROPICALLY as `‖Δ‖²` plus an ADDITIVE core
+`W(z)`. But in `L` the corank block enters ANISOTROPICALLY and COUPLED: `‖C·Qp + Γ·Qb‖²`, i.e. `Γ`
+is multiplied by `Qb` on the right (a right-anisotropy) with a cross term `C·Qp`. Turning
+`‖…+ Γ·Qb‖²` into `‖Δ‖² + W(z)` requires a change of variables `Δ = Γ·(something built from Qb)`
+that removes the right factor `Qb`. The naive Gram change of variables `Γ ↦ Γ·Qb` has Jacobian
+`det(Qb Qbᵀ)^{-p/2}`, which introduces a Gram determinant of the PRODUCT `Qb = A_{1,b}·A_2·…`.
+`det(Qb Qbᵀ) = ‖∧^q Qb‖²` (sum of squares of the maximal minors / Plücker coordinates of the product).
+
+## The specific instance to adjudicate
+
+Chain widths `M = (3,3,3,4)`, front pivot rank `t = 1`, so `p = q = 2` (corank-2). After the front
+peel the tail is `Z = A_1 · A_2` with `A_1` 3×3, `A_2` 3×4; `Qb = A_{1,b}·A_2` is a 2×4 PRODUCT
+(`A_{1,b}` = bottom 2 rows of `A_1`, a 2×3 matrix). So `det(Qb Qbᵀ) = ‖∧²(A_{1,b}·A_2)‖²`, the
+squared 2×2 minors of a 2×4 matrix product.
+
+</task>
+
+<output_contract>
+Answer these, in order, tersely, each with the reasoning that forces it:
+
+Q1. Is the map from `‖C·Qp + Γ·Qb‖²` (anisotropic, product `Qb`) to the isotropic `‖Δ‖² + W(z)`
+    shape required by regime atoms (A)/(B) something you can build by COMPOSING the banked pieces
+    (radialAttach + rowMix + a finite coordinate/chart cover + atoms (A)/(B)), or does it require a
+    genuinely-new construction those pieces do not contain? Name what is missing if so.
+
+Q2. For the corank-2 PRODUCT `Qb = A_{1,b}·A_2` at the concrete widths above: is monomializing
+    `det(Qb Qbᵀ) = ‖∧²(A_{1,b}·A_2)‖²` (to a normal-crossing "monomial × unit" on a finite chart
+    cover) achievable by a SEQUENCE of coordinate/toric single-radial blow-ups (centers = coordinate
+    subspaces, i.e. inside already-existing exceptional divisors), OR does it force a blow-up whose
+    center is a NON-coordinate (e.g. determinantal / minor / Plücker) locus? Give the reason (e.g.
+    Cauchy–Binet structure, Plücker relations, whether the minor ideal is monomial in toric charts).
+
+Q3. VERDICT, one of:
+      BOUNDED — peelZBlock is a large-but-buildable composition of the banked atoms + a finite chart
+                cover + bounded chart algebra (no new resolution-of-singularities theorem); OR
+      RESEARCH-GRADE — peelZBlock needs a genuinely-new principalisation / resolution result that the
+                measure-theoretic atoms do not reach and that a Mathlib-based formalisation currently
+                lacks.
+    If RESEARCH-GRADE, state EXACTLY what theorem would have to be either built or CITED
+    (name the mathematical object: principalisation of the minor ideal of a matrix product, etc.).
+
+Q4. The single cheapest exact-algebra check that would DISCRIMINATE your Q2/Q3 answer from its
+    opposite (something I can run in sympy/sage in a few minutes).
+</output_contract>
+
+<grounding_rules>
+- Distinguish clearly what you assert as mathematical FACT vs INFERENCE/judgement.
+- Do not assume the answer I want; I have deliberately not told you my leaning.
+- "Bounded but very large" and "needs a genuinely new theorem" are DIFFERENT verdicts — pick one and
+  defend it; do not hedge into "it depends" without saying what it depends on.
+- Cauchy–Binet: minors of a product `AB` are bilinear in (minors of A, minors of B). Use this.
+- The pure route (keep Γ a chart coordinate, blow up its radial in the box, resolve Qb via the deeper
+  layers) and the atom route (integrate Γ out over full space → Gram det) may differ; say whether the
+  pure route escapes the Gram-det principalisation or merely relocates it.
+</grounding_rules>
+
+codex
+I’ll treat this as a math/formalisation adjudication rather than a code task. I’m going to check only the relevant external facts about principalisation/resolution terminology, then give the concrete algebraic verdict from the displayed loss.
+web search: 
+web search: principalization of ideals Hironaka resolution of singularities monomial normal crossings
+web search: 
+web search: Bierstone Milman canonical desingularization principalization ideal normal crossings
+codex
+Q1. **Genuinely new construction.**  
+Fact: `rowMix` and `radialAttach` preserve the existing parameter space and only change shared monomial support / linear generator coordinates. They do not contain a parameter-dependent right-linear change
+\[
+\Gamma \mapsto \Delta=\Gamma Q_b
+\]
+nor the associated Jacobian
+\[
+d\Gamma = \det(Q_bQ_b^T)^{-p/2}\,d\Delta
+\]
+on full-rank charts. The missing piece is an **anisotropic corank-block Morse/integration lemma with variable right factor**, including rank stratification and principalisation/log-resolution of the Gram/minor ideal of `Qb`.
+
+The “pure route” keeping `Γ` as a coordinate does not escape this. It avoids writing the Gram determinant explicitly, but then the terminal sum-of-squares ideal contains the entries of `Γ Qb + C Qp`; resolving its rank-drop/incidence locus has the same product-minor geometry relocated into a larger ideal.
+
+Q2. **It forces a non-coordinate center.**  
+For `Qb = B C`, with `B` a `2×3` matrix and `C` a `3×4` matrix, each `2×2` minor of `BC` is
+\[
+D_J=\sum_{K\in { [3]\choose 2}} \det(B_{[2],K})\det(C_{K,J})
+\]
+by Cauchy-Binet. Thus the ideal `I_2(BC)` is not a monomial ideal in the entries of `B,C`; it is a bilinear Plücker/Cauchy-Binet ideal in minors of the factors. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Binet_formula?utm_source=openai))
+
+Coordinate/toric blow-ups only principalise monomial data supported on coordinate strata. But `V(I_2(BC))` has rank-drop points in the dense torus where every matrix entry is nonzero. Such points are invisible to coordinate-subspace centers, so a toric sequence cannot make
+\[
+\det(Q_bQ_b^T)=\sum_J D_J^2
+\]
+into `monomial × unit` on a finite cover. One needs to blow up a determinantal/incidence/Plücker locus.
+
+Q3. **VERDICT: RESEARCH-GRADE.**  
+The required theorem is:
+
+**Principalisation/log-resolution, with normal crossings relative to existing exceptional divisors, of the maximal-minor ideal**
+\[
+I_2(A_{1,b}A_2)
+\]
+**of a matrix product**, equivalently the Cauchy-Binet/Plücker ideal generated by the `2×2` minors of `Qb`.
+
+In ordinary mathematics this is covered by characteristic-zero embedded principalisation/log-resolution machinery, but that is a genuine resolution theorem, not a composition of the banked measure atoms. Hironaka/Bierstone-Milman-style results provide the ambient kind of theorem; formalising the specific product-minor principalisation in a Mathlib setting would be new substantial infrastructure. ([arxiv.org](https://arxiv.org/abs/alg-geom/9508005?utm_source=openai))
+
+Q4. **Cheapest exact check.**  
+Check that `I_2(BC)` has zeros in the dense torus by saturating by the product of all entries:
+\[
+(I_2(BC) : (\prod b_{ij}\prod c_{ij})^\infty) \neq (1).
+\]
+If non-unit, the rank-drop locus is not contained in coordinate strata, so coordinate blow-ups cannot suffice.
+
+Even cheaper witness:
+
+\[
+B=\begin{pmatrix}1&1&1\\1&2&3\end{pmatrix},\quad
+C=\begin{pmatrix}
+3&4&5&5\\
+-4&-6&-6&-8\\
+2&3&3&4
+\end{pmatrix}.
+\]
+
+All entries are nonzero, but
+\[
+BC=\begin{pmatrix}1&1&2&1\\1&1&2&1\end{pmatrix},
+\]
+so every `2×2` minor of `BC` vanishes. That single torus point rules out a purely coordinate/toric principalisation route.
+tokens used
+20,810
+Q1. **Genuinely new construction.**  
+Fact: `rowMix` and `radialAttach` preserve the existing parameter space and only change shared monomial support / linear generator coordinates. They do not contain a parameter-dependent right-linear change
+\[
+\Gamma \mapsto \Delta=\Gamma Q_b
+\]
+nor the associated Jacobian
+\[
+d\Gamma = \det(Q_bQ_b^T)^{-p/2}\,d\Delta
+\]
+on full-rank charts. The missing piece is an **anisotropic corank-block Morse/integration lemma with variable right factor**, including rank stratification and principalisation/log-resolution of the Gram/minor ideal of `Qb`.
+
+The “pure route” keeping `Γ` as a coordinate does not escape this. It avoids writing the Gram determinant explicitly, but then the terminal sum-of-squares ideal contains the entries of `Γ Qb + C Qp`; resolving its rank-drop/incidence locus has the same product-minor geometry relocated into a larger ideal.
+
+Q2. **It forces a non-coordinate center.**  
+For `Qb = B C`, with `B` a `2×3` matrix and `C` a `3×4` matrix, each `2×2` minor of `BC` is
+\[
+D_J=\sum_{K\in { [3]\choose 2}} \det(B_{[2],K})\det(C_{K,J})
+\]
+by Cauchy-Binet. Thus the ideal `I_2(BC)` is not a monomial ideal in the entries of `B,C`; it is a bilinear Plücker/Cauchy-Binet ideal in minors of the factors. ([en.wikipedia.org](https://en.wikipedia.org/wiki/Cauchy%E2%80%93Binet_formula?utm_source=openai))
+
+Coordinate/toric blow-ups only principalise monomial data supported on coordinate strata. But `V(I_2(BC))` has rank-drop points in the dense torus where every matrix entry is nonzero. Such points are invisible to coordinate-subspace centers, so a toric sequence cannot make
+\[
+\det(Q_bQ_b^T)=\sum_J D_J^2
+\]
+into `monomial × unit` on a finite cover. One needs to blow up a determinantal/incidence/Plücker locus.
+
+Q3. **VERDICT: RESEARCH-GRADE.**  
+The required theorem is:
+
+**Principalisation/log-resolution, with normal crossings relative to existing exceptional divisors, of the maximal-minor ideal**
+\[
+I_2(A_{1,b}A_2)
+\]
+**of a matrix product**, equivalently the Cauchy-Binet/Plücker ideal generated by the `2×2` minors of `Qb`.
+
+In ordinary mathematics this is covered by characteristic-zero embedded principalisation/log-resolution machinery, but that is a genuine resolution theorem, not a composition of the banked measure atoms. Hironaka/Bierstone-Milman-style results provide the ambient kind of theorem; formalising the specific product-minor principalisation in a Mathlib setting would be new substantial infrastructure. ([arxiv.org](https://arxiv.org/abs/alg-geom/9508005?utm_source=openai))
+
+Q4. **Cheapest exact check.**  
+Check that `I_2(BC)` has zeros in the dense torus by saturating by the product of all entries:
+\[
+(I_2(BC) : (\prod b_{ij}\prod c_{ij})^\infty) \neq (1).
+\]
+If non-unit, the rank-drop locus is not contained in coordinate strata, so coordinate blow-ups cannot suffice.
+
+Even cheaper witness:
+
+\[
+B=\begin{pmatrix}1&1&1\\1&2&3\end{pmatrix},\quad
+C=\begin{pmatrix}
+3&4&5&5\\
+-4&-6&-6&-8\\
+2&3&3&4
+\end{pmatrix}.
+\]
+
+All entries are nonzero, but
+\[
+BC=\begin{pmatrix}1&1&2&1\\1&1&2&1\end{pmatrix},
+\]
+so every `2×2` minor of `BC` vanishes. That single torus point rules out a purely coordinate/toric principalisation route.
