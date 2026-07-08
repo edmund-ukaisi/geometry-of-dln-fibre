@@ -60,6 +60,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
 import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 
 /-!
 # Axiom-hygiene check
@@ -581,6 +582,15 @@ open DLNFibre.DLN.RLCT
 #print axioms gammaPeelIntegral_le_boxIntegral
 #print axioms sjJointResolution_of_boxThresholdFinite
 #print axioms SJDecoration.rowMix_decLoss
+
+-- ★ R1-UPPER piece-6 terminal prerequisite (2026-07-08, `genm-sjbuild4`). `iInf_axisRatio_le_monomialThreshold`
+-- (`⨅ axisRatio ≤ monomialThreshold`) — the S2-FREE LOWER bound / FINITENESS HALF on the monomial RLCT
+-- threshold (from Mathlib, general d/(k,h); generalises the (1,1,1) `Case111Bridge`). NOT the S2 value
+-- equality (that stays CITED as `monomial_rlct`). + `monomialIntegrand_integrableOn_of_lt_axisRatio`.
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no
+-- `monomial_rlct`, no `cited_aoyagi_dln`) — CONFIRMS it is genuinely S2-free.
+#print axioms iInf_axisRatio_le_monomialThreshold
+#print axioms monomialIntegrand_integrableOn_of_lt_axisRatio
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

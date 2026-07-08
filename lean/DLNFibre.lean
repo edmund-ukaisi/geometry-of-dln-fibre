@@ -884,3 +884,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 -- R1-UPPER decorated peel-step brick: `SJDecoration.rowMix_decLoss` — the clear-first scalar Schur
 -- generator-mix at CONSTANT support (does NOT claim loss-preservation), the (a) half of `decorated_peel_step`.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
+-- R1-UPPER piece-6 terminal PREREQUISITE (thread `genm-sjbuild4`): the S2-FREE LOWER bound
+-- `iInf_axisRatio_le_monomialThreshold` (`⨅ axisRatio ≤ monomialThreshold`, general d/(k,h)) — the
+-- FINITENESS HALF (from Mathlib, generalising the (1,1,1) `Case111Bridge`); NOT the S2 value equality
+-- (which stays CITED). Supplies the terminal integrability the decorated `decorated_base` needs, S2-free.
+-- (sjbuild4 STOPPED on the monument: the banked `SJDecoration` carrier can't express the Z-block-peel /
+--  chain-descent — the monument needs a chain-descending carrier re-scope; see synthesis UPDATE-702.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
