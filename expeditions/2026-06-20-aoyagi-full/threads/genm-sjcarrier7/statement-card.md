@@ -87,6 +87,16 @@ sorry). Honest-partial multi-tide progress.
 
 ---
 
+## Review status
+
+**Fidelity reviewed — FAITHFUL (no mismatch).** Independent `reviewer` (with decorrelated Codex xhigh)
+confirmed all six fidelity questions PASS: (1) LHS matches the banked weld output schema; (2)
+`freedSchurLoss`/`schurShift` correctly encode "Γ freed" and the substitution witness collapses the
+complement to Γ (`ring`); (3) `blockSplitD` MP + reconstruction places the blocks correctly
+(P=₁₁, B₁₂=₁₂, C=₂₁, D=₂₂); (4) `outerDom` + preimage correct; (5) NO overclaim — no `w>0` / PosDef /
+branch condition, `…_eq` (not `…_lt_top`) is honest, `sjJointResolution` untouched; (6) no
+`sorry`/`axiom`/`native_decide` in code. All three claims: **sorry-free + reviewed**.
+
 ## Fidelity notes (for the reviewer)
 
 - The three claims are all **EQUALITIES / measure facts**, carrying no analytic strength beyond the
