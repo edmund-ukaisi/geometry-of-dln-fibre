@@ -605,6 +605,121 @@ theorem genMovedY_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
   exact (genChain_contDiffAt H r hr hL J Pf Qf k (Sum.inl i) (Sum.inr j)).add
     (genUpEdit_contDiffAt H r hr hL J hJfront Pf Qf k hk i j)
 
+/-- `wHatAccum (C q) k` entries are `ContDiffAt` at `0` (`k ≤ L`; induction on the prefix). -/
+theorem genWHatAccum_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    ∀ (k : ℕ), k ≤ L → ∀ (i : Fin (deepestChainWidth H 0 - r)) (j : Fin (deepestChainWidth H k - r)),
+      ContDiffAt ℝ (⊤ : ℕ∞)
+        (fun q => wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k i j) 0 := by
+  intro k
+  induction k with
+  | zero =>
+    intro _ i j
+    have heq : (fun q => wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) 0 i j)
+        = fun _ => (1 : Matrix (Fin (deepestChainWidth H 0 - r))
+            (Fin (deepestChainWidth H 0 - r)) ℝ) i j := rfl
+    rw [heq]; exact contDiffAt_const
+  | succ n ih =>
+    intro hk i j
+    have hn : n < L := by omega
+    have heq : (fun q => wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (n + 1) i j)
+        = fun q => (wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) n
+            * ((1 : Matrix (Fin (deepestChainWidth H n - r)) (Fin (deepestChainWidth H n - r)) ℝ)
+              - Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) n)
+            * schurTilde (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) n) i j := rfl
+    rw [heq]
+    refine contDiffAt_matrix_mul_entry (fun a b => ?_)
+      (fun a b => genSchurTilde_contDiffAt H r hr hL J hJfront Pf Qf n hn a b) i j
+    refine contDiffAt_matrix_mul_entry (fun c d => ih (by omega) c d) (fun c d => ?_) a b
+    have hsub : (fun q => ((1 : Matrix (Fin (deepestChainWidth H n - r))
+            (Fin (deepestChainWidth H n - r)) ℝ)
+          - Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) n) c d)
+        = fun q => (1 : Matrix (Fin (deepestChainWidth H n - r))
+            (Fin (deepestChainWidth H n - r)) ℝ) c d
+          - Kcoup (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) n c d := by
+      funext q; rw [Matrix.sub_apply]
+    rw [hsub]
+    exact contDiffAt_const.sub (genKcoup_contDiffAt H r hr hL J hJfront Pf Qf n hn c d)
+
+/-- `hTermLC (C q) j` entries are `ContDiffAt` at `0` (`j < L`). -/
+theorem genHTermLC_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (j : ℕ) (hj : j < L)
+    (i : Fin (deepestChainWidth H 0 - r)) (b : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => hTermLC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j i b) 0 := by
+  unfold hTermLC
+  refine contDiffAt_matrix_mul_entry (fun a c => ?_)
+    (fun a c => genInvPartProd11_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) a c) i b
+  refine contDiffAt_matrix_mul_entry (fun a' c' => ?_)
+    (fun a' c' => genInvNMix_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) a' c') a c
+  refine contDiffAt_matrix_mul_entry (fun a'' c'' => ?_)
+    (fun a'' c'' => genVDown_contDiffAt H r hr hL J hJfront Pf Qf j a'' c'') a' c'
+  have hsub : (fun q =>
+        (blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j)
+          - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j) a'' c'')
+      = fun q =>
+        blockSchur (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j) a'' c''
+        - wHatAccum (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j a'' c'' := by
+    funext q; rw [Matrix.sub_apply]
+  rw [hsub]
+  exact (genBlockSchurPartProd_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) a'' c'').sub
+    (genWHatAccum_contDiffAt H r hr hL J hJfront Pf Qf j (le_of_lt hj) a'' c'')
+
+/-- `deltaV0 (C q) L` entries are `ContDiffAt` at `0`. -/
+theorem genDeltaV0_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (i : Fin (deepestChainWidth H 0 - r)) (b : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L i b) 0 := by
+  have heq : (fun q => deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L i b)
+      = fun q => ∑ j ∈ Finset.range L,
+          hTermLC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) j i b := by
+    funext q; rw [deltaV0, Matrix.sum_apply]
+  rw [heq]
+  exact ContDiffAt.sum (fun j hj =>
+    genHTermLC_contDiffAt H r hr hL J hJfront Pf Qf j (Finset.mem_range.mp hj) i b)
+
+/-- `movedZ (C q) (Z0edit0 (C q) L) k` entries are `ContDiffAt` at `0`. -/
+theorem genMovedZ_contDiffAt (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ)
+    (i : Fin (deepestChainWidth H k - r)) (b : Fin r) :
+    ContDiffAt ℝ (⊤ : ℕ∞)
+      (fun q => movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+        (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k i b) 0 := by
+  cases k with
+  | zero =>
+    have heq : (fun q => movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) 0 i b)
+        = fun q => (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₂₁ i b
+          + (deltaV0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) 0).toBlocks₁₁) i b := by
+      funext q
+      show (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) i b = _
+      rw [Z0edit0, Matrix.add_apply]
+    rw [heq]
+    exact (genChain_contDiffAt H r hr hL J Pf Qf 0 (Sum.inr i) (Sum.inl b)).add
+      (contDiffAt_matrix_mul_entry (fun a c => genDeltaV0_contDiffAt H r hr hL J hJfront Pf Qf a c)
+        (fun a c => genChain_contDiffAt H r hr hL J Pf Qf 0 (Sum.inl a) (Sum.inl c)) i b)
+  | succ n =>
+    have heq : (fun q => movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+          (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) (n + 1) i b)
+        = fun q =>
+          (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) (n + 1)).toBlocks₂₁ i b := rfl
+    rw [heq]; exact genChain_contDiffAt H r hr hL J Pf Qf (n + 1) (Sum.inr i) (Sum.inl b)
+
 /-! ## Pieces (b)+(c) — the read-deltas have strict derivative `0`
 
 Both read-deltas equal `forcedDecode(frame)(movedC − C)` (piece (b), the `(★)` read-recovery)
