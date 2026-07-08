@@ -2,15 +2,16 @@
 
 Thread: `genm-sjcarrier8` (formalisation tide). Branch: pushed to `genm-sjcarrier8` (off
 `expedition/aoyagi-full` @ `5f749d54`). Module:
-`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJFreedPeel.lean` (138 LoC, new leaf; imports
+`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJFreedPeel.lean` (178 LoC, new leaf; imports
 `RouteMSJResolution`, `RouteMSJChartShear`, `RouteMSJCorankPeel`).
 
-This tide lands **mission item 1 — the peel on the freed Γ-integral**. The banked chain (block-reindex
-→ Schur weld → MP shear freeing Γ) had rewritten the RAW inner chart integral to the freed cross-coupled
-Schur form as an EQUALITY *inside* the inner fibre. This module (a) composes that whole chain onto
-`gammaPeelIntegral` itself — landing the freed-Γ triple integral as a sorry-free EQUALITY — and (b) welds
-the banked corank atom (`corankBlock_morsePeel_lt_top`) onto the freed loss, banking the inner-Γ
-finiteness as a CONDITIONAL that exposes the exact 3-hypothesis interface the outer descent must supply.
+This tide lands **mission item 1 — the peel on the freed Γ-integral (all three sub-parts a/b/c)**. The
+banked chain (block-reindex → Schur weld → MP shear freeing Γ) had rewritten the RAW inner chart integral
+to the freed cross-coupled Schur form as an EQUALITY *inside* the inner fibre. This module (a) composes
+that whole chain onto `gammaPeelIntegral` itself — landing the freed-Γ triple integral as a sorry-free
+EQUALITY — and (b/c) welds the banked corank atom (`corankBlock_morsePeel_lt_top`) onto the freed loss,
+banking the inner-Γ finiteness as CONDITIONALS (an atom branch `c' > a·b/2` + an atom-inapplicable
+bounded branch `c' ≤ a·b/2`) that expose the exact interface hypotheses the outer descent must supply.
 Mission items 2/3 (the `(S,J)` OUTER `A'`-descent supplying that interface as a measure statement, the
 matrix-box→blow-up change of variables, and the redChain IH wiring) do NOT land — they are the genuine
 unbuilt mountain (design cert `genm-sjjoint-design/cert.md`: the IH saturates at the binding cut).
@@ -91,18 +92,30 @@ Honest-partial multi-tide progress.
 > wiring the reduced coupling to the strong IH (`redChain t M`). Per the design cert
 > (`genm-sjjoint-design/cert.md`, 3 decorrelated lines + Codex xhigh): at the binding cut
 > `minAdm M = a + minAdm (redChain t* M)` the residual exponent EXACTLY saturates the reduced-chain IH
-> threshold (0/4000) — Hölder-infeasible — so the strong IH is insufficient as a black box, and the
-> matrix-box→blow-up change of variables is ~65–75% genuinely-new resolution-of-singularities content
-> (the `RouteMSJLinGen`/`RouteMSJLedger`/`RouteMSJTerminal` headers concur; the terminal header cites
-> concrete `L ≥ 3` counterexamples showing a naive per-layer descent FAILS). This is NOT closable from
-> the banked inventory by composition — STOP + report, do not launder.
+> threshold (0/4000) — Hölder-infeasible — so the strong IH is insufficient as a black box (design cert).
+> The `RouteMSJLinGen`/`RouteMSJLedger`/`RouteMSJTerminal` headers concur that the matrix-box→blow-up
+> change of variables + the recursion are unbuilt; the "~65–75% genuinely-new construction" figure is the
+> `RouteMSJLinGen` header's (its decorrelated Codex `scope-answer.md` Q1), NOT the design cert — the cert
+> states "bounded, not a wall, unbuilt `(S,J)` double induction" without a percentage. The terminal header
+> cites concrete `L ≥ 3` counterexamples showing a naive per-layer descent FAILS. This is NOT closable
+> from the banked inventory by composition — STOP + report, do not launder.
 
 ---
 
 ## Review status
 
-**Fidelity: pending reviewer.** Requested via `REQUEST_SPAWN` (leaf executor does not review own
-fidelity).
+**Fidelity reviewed — FAITHFUL (no mismatch).** Independent `reviewer` (with decorrelated Codex xhigh)
+returned FAITHFUL on all THREE theorems: (1) `gammaPeelIntegral_schurShearFree_eq` an honest EQUALITY with
+no hidden hypothesis (RHS = verbatim weld→shear composition under `lintegral_congr` over `A'`); (2)
+`freedSchurLoss_inner_peel_lt_top` a genuine CONDITIONAL with `hc'`/`hG`/`hpiv` exposed, atom
+instantiation faithful (`SJOuter` block shapes confirm atom-`(p,q)=(a,b)`, threshold `(a·b)/2 =
+peelExp/2`); (3) `freedSchurLoss_inner_bounded_lt_top` a genuine CONDITIONAL, `Real.rpow_le_rpow_of_nonpos`
+sound, `hpiv` exposed. `sjJointResolution` UNTOUCHED (empty diff on `RouteMSJResolution.lean`); all four
+decls clean-three by forced `#print axioms`; deferred-gap narrative faithful to the design cert (figures
+94/480, 750/5440, 0/4000 cross-checked). Three MINOR non-fidelity notes actioned: card LoC 138→178 +
+item 1(c) mention; the "~65–75%" figure re-attributed to the `RouteMSJLinGen` header (its Codex
+`scope-answer.md`), not the cert; the full-aggregator name-clash gate remains for the controller at wiring
+(reviewer + I both `rg`-confirmed no sibling clash). All three claims: **sorry-free + reviewed**.
 
 ## Fidelity notes (for the reviewer)
 

@@ -47,10 +47,11 @@ carrier (`gen_rowMix_const` block-elim + `loss_radialStep` radial) to the monomi
 is the `(S,J)` monomial/normal-form DOUBLE INDUCTION. Per the design certificate
 (`.../genm-sjjoint-design/cert.md`, 3 decorrelated lines + Codex xhigh): at the binding cut
 `minAdm M = a + minAdm (redChain t* M)` the residual exponent EXACTLY saturates the reduced-chain IH
-threshold — Hölder-infeasible — so the strong IH is insufficient as a black box, and the
-matrix-box→blow-up change of variables is ~65–75% genuinely-new resolution-of-singularities content.
-`sjJointResolution` (`RouteMSJResolution`) stays the single named sorry, UNTOUCHED — this tide adds a
-sorry-free module and precisely isolates the remaining gap to the outer descent.
+threshold — Hölder-infeasible — so the strong IH is insufficient as a black box (the cert's verdict:
+"bounded, not a wall, unbuilt `(S,J)` double induction"). The `RouteMSJLinGen` header separately scopes
+the matrix-box→blow-up change of variables as ~65–75% genuinely-new construction (its decorrelated Codex
+`scope-answer.md` Q1 — not the cert). `sjJointResolution` (`RouteMSJResolution`) stays the single named
+sorry, UNTOUCHED — this tide adds a sorry-free module and isolates the remaining gap to the outer descent.
 
 S2-FREE: measure-preserving weld/shear (banked) + the banked corank atom
 (`corankBlock_morsePeel_lt_top`, itself S2-free); no `monomial_rlct`. Axiom footprint: the clean three
