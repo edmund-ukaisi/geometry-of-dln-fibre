@@ -961,3 +961,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 -- hDA) via `partProd_deepestChain_deepestPoint_toBlocks₁₁_isUnit`. Item-3 remaining: `hC` (in flight) + the
 -- `hq` eventual-ball germ (Producer-1 continuity) + the small assembly.
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
+-- `DeepestPsiHderiv0Gen` — hderiv0 COMPLETE (D1 #120 Producer-1 diffeo-triple leaf #2/3, sorry-free,
+-- clean-three): `hasStrictFDerivAt_psiSplitDeltaGen_zero` — the deviation `q ↦ psiSplitRawGen q − q` has
+-- strict Fréchet derivative `0` at the split origin (i.e. `D(psiSplitRawGen)(0) = id`). Piece (c) analytic
+-- heart (smoothness + the 4 `movedC−C` degree-2 germ blocks) + piece (b) read-recovery. Pf/Qf hyps =
+-- `psiSplitRawGen_deepestChain_hmove`'s (satisfied by the normal-form frames). Producer 1 = hraw0✓ +
+-- hderiv0✓ + hcd (remaining). `hstep2` still needs Item-3 hC (hcfinish) + the triple assembly + compose.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen

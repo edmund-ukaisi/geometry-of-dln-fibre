@@ -69,6 +69,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiHderiv0Gen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 
@@ -669,6 +670,14 @@ open DLNFibre.DLN.RLCT
 -- apparatus: payload + (★)-recovery + degree-2 germ + compose) + hcd + the triple compose remain.
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms psiSplitRawGen_zero
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer-1 diffeo-triple leaf #2/3 COMPLETE (2026-07-08, `genm-hderiv0`+`hderiv0b`).
+-- `hasStrictFDerivAt_psiSplitDeltaGen_zero` — the deviation `q ↦ psiSplitRawGen q − q` has strict Fréchet
+-- derivative `0` at the split origin (D(psiSplitRawGen)(0) = id). The genuinely-analytic degree-2 germ content
+-- (piece c: smoothness + the 4 movedC−C block germs) + piece b read-recovery. Pf/Qf hyps =
+-- `psiSplitRawGen_deepestChain_hmove`'s (satisfied by the normal-form frames). hcd (leaf #3) + the triple
+-- compose remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms hasStrictFDerivAt_psiSplitDeltaGen_zero
 
 -- ★ D1 ∀-L #120 `hstep2` — Item-3 (`hsub4core` germ) KEYSTONE (2026-07-08, `genm-hstep2hsub4`), the
 -- Producer-1-free per-`x` content. `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart` — chains
