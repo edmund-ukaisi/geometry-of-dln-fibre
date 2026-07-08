@@ -321,4 +321,41 @@ theorem Kcoup_frame_endpoints (Cd Cf : (s : ℕ) → Matrix (ρ ⊕ m s) (ρ ⊕
 
 end AbstractFrame
 
+/-! ## Lemma 3 — the interior framed chain equals the decode chain
+
+At a strict-interior layer both gauge frames are trivial (`Pf s = Qf s = 1`), so
+`framedParamsPivot … (split x) s = (decode x) s` (`framedParamsPivot_eq_frame_of_front`), and the two
+`deepestChain` layers coincide. -/
+
+/-- **Interior framed = decode chain.** For interior `s`, the framed chain of `split x` and the decode
+chain of `x` agree at layer `s`. -/
+theorem deepestChain_framed_eq_decode_interior (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (J : Fin r ↪ Fin (H (Fin.last L)))
+    (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (x : Fin (flatDim H) → ℝ) (s : Fin L) (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)) (s : ℕ)
+      = deepestChain H r hr ((paramsEquivFlat H).symm x) (s : ℕ) := by
+  have hframe := framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront Pf Qf hNF hPfL hcorner x s
+  obtain ⟨hP1, hQ1⟩ := hInterior s hpos hlt
+  rw [hP1, hQ1, Matrix.one_mul, Matrix.mul_one] at hframe
+  rw [deepestChain, deepestChain, deepestChainLayer, deepestChainLayer, dif_pos s.isLt, dif_pos s.isLt,
+    show framedParamsPivot H r hr hL J Pf Qf
+        (deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) x)
+        ⟨(s : ℕ), s.isLt⟩ = ((paramsEquivFlat H).symm x) ⟨(s : ℕ), s.isLt⟩ from hframe]
+
 end DLNFibre.DLN.RLCT
