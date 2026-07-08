@@ -2489,3 +2489,32 @@ leaf to the front-peel would TRADE the concrete route for the abstract-iso wall 
   corank is a bounded induction [likely, it's concrete] or a wall — r1layerpeel adjudicates. IF a wall, THAT is the genuine
   R1-UPPER escalation. Honest correction to UPDATE-728's "no research wall outstanding": D1 is wall-free; R1-UPPER has this
   one open bounded-vs-wall at its analytic core.)
+
+## 71. ★ OPERATOR ESCALATION (pending final stress-test): R1-UPPER's sub-generic strata (L≥3) hit a GENUINE research wall — the product-rank normal-slice iso (`addlongest`), Mathlib-missing. SchurRecStep is CLOSED (r1transfer's #70 read was stale). (2026-07-08)
+`r1layerpeel` corrected #70 and pinpointed R1-UPPER's real remaining piece:
+- **SchurRecStep is DONE, not the gap:** `schurRecStep_p (p) : SchurRecStep p (schurLambdaP p)` is sorry-free ∀p AND
+  ∀corank r (via `schurCoreP_directMorse` cap-B + `schurCoreP_capA` + the ∀r carve, riding `core_schurGen_lt_top`),
+  force-`#print axioms`-verified AxCheck:151 (clean-three). `schurRecStep4_stub` (RouteMSchurGeneral:144) is a DEAD
+  vestige (consumed by nobody). r1transfer (#70) read the stub + missed RouteMSchurRecStepP — its "corank-3 in flight"
+  was stale. The corank induction did NOT wall (uniform in r, WellFounded).
+- **The REAL wall = `sjJointResolution` (RouteMSJResolution:797/803, the SOLE R1-UPPER sorry) at the SUB-GENERIC
+  strata** (product-rank-deficient `{rank(A₁···A_{L−1}) ≤ q}`, L≥3): certifying box-finiteness up to `c' < ½·minAdm`
+  there REQUIRES the product-rank normal-slice / determinantal-locus parametrization = paper's `addlongest` (Thm ~line
+  688) — a measure-preserving/bounded-Jacobian CoV `{rank ≤ q} ↔ shifted-chain box (M₁−q,…,M_L−q)` — Mathlib-MISSING.
+  **Not avoided by ANY route:** the layer-peel's entangled `(‡)` deeper recursion produces shifted chains `(M₂..M_L)−r`
+  exactly where the front-peel produces `(M₁..M_L)−q`. Generic stratum + combinatorics BOTH bounded; only the
+  sub-generic ANALYTIC box-finiteness needs `addlongest`. Sub-generic strata ARE binding (realize minAdm) ⟹ on the
+  critical path, not scope-away-able. `(3,3,3,4)` t=1,s′=1: stratum-BLIND `a·s′+minAdm(redChain)=5 < 7`; stratum-AWARE
+  `M₀·s′+minAdm(shifted (2,2,3))=7` reaches ½·minAdm but REQUIRES the shifted chain (needs `addlongest`). Four
+  decorrelated lines converge (r1transfer, r1substratum "most likely to break", r1layerpeel, Codex); kill-condition
+  stress-tested (blind under-counts across the L≥3 battery).
+- **THE OPERATOR DECISION (two options):** (A) BUILD `addlongest` (the product-rank normal-slice iso) from scratch — a
+  genuine new-module analytic/AG build (hrank₂-class, Mathlib-missing), OR (B) CITE `addlongest` for the sub-generic
+  upper bound — one more citation, relaxing the mission's "cite-only-S2" to "cite S2 + addlongest" (parallel to the
+  already-Cited Aoyagi `rlct=½·codim`). This is the FIRST genuine research wall of the expedition; it gates the
+  fully-general (L≥3) `aoyagi_learning_coefficient`. The L=2 headline is DONE (no sub-generic strata at L=2).
+- **NOT YET FINAL — stress-testing before escalating:** charged `r1subgenwall` (pen-and-paper, dissolve-or-confirm) to
+  attempt a dgeflat-style STRUCTURAL dissolution (the D1 ≥-leg's converged "Morse wall" dissolved under Gauss–Newton;
+  and r1layerpeel just showed a stale read is possible). If it DISSOLVES (concrete/structural route, no addlongest) →
+  bounded, no escalation. If it CONFIRMS → this escalation stands, operator picks (A) or (B). (Autonomous mode: recorded
+  here, NOT blocking; continuing the D1 close + the ≥-leg + the stress-test meanwhile.)
