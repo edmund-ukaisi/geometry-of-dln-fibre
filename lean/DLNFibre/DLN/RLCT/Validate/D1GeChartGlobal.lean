@@ -48,9 +48,9 @@ theorem derivEquiv_of_left_inverse {E : Type*}
 
 /-! ## Rung 7 prep — ContDiff of the partial products -/
 
+/-- **Each `partProd` entry is `ContDiff`** in the parameter, given each layer entry is. Induction on
 `k`, peeling the last factor with the banked entrywise matrix-mult `ContDiff`
-`k`, peeling the last factor with the banked entrywise matrix-multiplication `ContDiff`
-output blocks are `+`/`∗`/`⁻¹` combinations of `partProd` entries. -/
+(`SchurChartC2.contDiff_matrix_mul_entry`). The core of the chart's smoothness: `schurChartRawGen`'s
 output blocks are `+`/`∗`/`⁻¹` combinations of `partProd` entries. -/
 theorem contDiff_partProd_entry {𝕏 : Type*} [NormedAddCommGroup 𝕏] [NormedSpace ℝ 𝕏]
     {r₀ : ℕ} {n : ℕ → ℕ}
