@@ -7,9 +7,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 **Thread `genm-sjassembly`, R1-UPPER.** The integral-level realization of the decorated Case-2 radial
 step: attaching a fresh fully-shared exceptional divisor `u₀` (`SJDecoration.radialAttach`, `RouteMSJDecorated`)
 FACTORS the decorated box-integral into a 1-D radial factor times the parent integral. This is the
-integral-level companion of the pointwise `radialAttach_decLoss` (`decLoss (u₀ ::: u) z = u₀²·decLoss u z`)
-and the combinatorial `carrierThreshold_shift` — the exponent shift `c' ↦ c' − ½·(j₀+1)` acting through
-the 1-D Jacobian factor, unblocked by the `residualMeas` field (via `RouteMSJDecoratedMeas`).
+integral-level companion of the pointwise `radialAttach_decLoss` (`decLoss (u₀ ::: u) z = u₀²·decLoss u z`).
+The factoring itself carries NO exponent shift (it is a clean equality in `c'`); the per-divisor Morse
+threshold `c' < (j₀+1)/2` enters only through the FINITENESS of the 1-D factor (`radialAttachFactor_lt_top`).
+Unblocked by the `residualMeas` field (via `RouteMSJDecoratedMeas`).
 
 ## What lands here
 
