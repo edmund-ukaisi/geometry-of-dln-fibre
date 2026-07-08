@@ -243,4 +243,228 @@ theorem eventually_isUnit_deepestChain_toBlocks₁₁ (H : Fin (L + 1) → ℕ) 
     rw [deepestChain_tail_toBlocks₁₁ H r hr _ k hk]
     exact isUnit_one
 
+/-! ## The `partProd` `toBlocks₁₁` eventual-unit germ -/
+
+/-- The reindexed corner-normal-form `toBlocks₂₁` is zero (the corner has no support below the diagonal). -/
+theorem deepestChainLayer_corner_toBlocks₂₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (k : ℕ) (hk : k < L)
+    (hcor : A ⟨k, hk⟩ = Matrix.of (fun (i : Fin (H (⟨k, hk⟩ : Fin L).castSucc))
+        (j : Fin (H (⟨k, hk⟩ : Fin L).succ)) => if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0)) :
+    (deepestChain H r hr A k).toBlocks₂₁ = (0 : Matrix (Fin (deepestChainWidth H k - r)) (Fin r) ℝ) := by
+  funext i j
+  rw [Matrix.toBlocks₂₁, Matrix.of_apply, deepestChain, Matrix.reindex_apply, Matrix.submatrix_apply,
+    deepestChainSplit, deepestChainSplit, rThresholdSplit_symm_inr, rThresholdSplit_symm_inl,
+    deepestChainLayer, dif_pos hk, Matrix.reindex_apply, Matrix.submatrix_apply, hcor, Matrix.of_apply,
+    finCongr_symm, finCongr_symm, finCongr_apply, finCongr_apply, Matrix.zero_apply]
+  simp only [Fin.coe_cast, Fin.coe_castLE]
+  rw [if_neg]; rintro ⟨hval, hlt⟩; omega
+
+/-- The framed layer at the deepest basepoint is the split corner shape, at every `k < L`. -/
+theorem framedParamsPivot_wstar_eq_corner (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (k : ℕ) (hk : k < L) :
+    framedParamsPivot H r hr hL J Pf Qf
+        (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))) ⟨k, hk⟩
+      = Matrix.of (fun (i : Fin (H (⟨k, hk⟩ : Fin L).castSucc)) (j : Fin (H (⟨k, hk⟩ : Fin L).succ)) =>
+          if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0) := by
+  set wstar := (paramsEquivFlat H) (deepestPoint H r B hB hr hL) with hwstar
+  have hframe : framedParamsPivot H r hr hL J Pf Qf (split wstar) ⟨k, hk⟩
+      = Pf ⟨k, hk⟩ * deepestPoint H r B hB hr hL ⟨k, hk⟩ * Qf ⟨k, hk⟩ := by
+    rw [hsplit wstar,
+      framedParamsPivot_eq_frame_of_front H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' wstar ⟨k, hk⟩,
+      show (paramsEquivFlat H).symm wstar = deepestPoint H r B hB hr hL from
+        (paramsEquivFlat H).symm_apply_apply _]
+  rw [hframe]
+  by_cases hlast : (k : ℕ) + 1 = L
+  · have hkl : (⟨k, hk⟩ : Fin L) = lastLayer hL := Fin.ext (by simp only [lastLayer]; omega)
+    subst hJfront'
+    rw [pivotThresholdSplit_pivotJSucc_frontEmbed H r hr hL] at hcorner'
+    rw [hkl, hPfL, Matrix.one_mul]
+    rw [show deepestPoint H r B hB hr hL (lastLayer hL) * Qf (lastLayer hL)
+        = Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _)).symm
+            (rThresholdSplit r (H (lastLayer hL).succ) (hr _)).symm
+            (Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0) from by
+        rw [← Matrix.reindex_symm, ← hcorner', Equiv.symm_apply_apply],
+      reindex_symm_fromBlocks_one_eq_corner]
+  · exact hNF ⟨k, hk⟩ hlast
+
+/-- Each `partProd` entry of the base chain is `ContDiff ⊤` in the split parameter (induction on the
+prefix length; each step is a matrix multiplication of `ContDiff` families). -/
+theorem contDiff_partProd_entry (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ)
+    (i : Fin r ⊕ Fin (deepestChainWidth H 0 - r)) (j : Fin r ⊕ Fin (deepestChainWidth H k - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun q : DeepestSplit H r (deepestNGauge H r) =>
+      (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i j) := by
+  induction k with
+  | zero =>
+    have heq : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) 0) i j)
+        = fun _ => (1 : Matrix (Fin r ⊕ Fin (deepestChainWidth H 0 - r))
+            (Fin r ⊕ Fin (deepestChainWidth H 0 - r)) ℝ) i j := rfl
+    rw [heq]; exact contDiff_const
+  | succ k ih =>
+    have heq : (fun q : DeepestSplit H r (deepestNGauge H r) =>
+        (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) (k + 1)) i j)
+        = fun q => ∑ l, (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k) i l
+            * (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) l j := by
+      funext q
+      rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) (k + 1)
+          = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+            * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k from rfl, Matrix.mul_apply]
+    rw [heq]
+    exact ContDiff.sum (fun l _ => (ih l).mul
+      (contDiff_deepestChain_framedParamsPivot_entry H r hr hL J Pf Qf k l j))
+
+/-- Continuity of the base-chain `partProd` `toBlocks₁₁` determinant. -/
+theorem continuous_partProd_toBlocks₁₁_det (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r)) (k : ℕ) :
+    Continuous (fun x =>
+      (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k).toBlocks₁₁.det) := by
+  apply Continuous.matrix_det
+  refine continuous_matrix (fun i j => ?_)
+  exact ((contDiff_partProd_entry H r hr hL J Pf Qf k (Sum.inl i) (Sum.inl j)).continuous.comp
+    split.continuous)
+
+/-- The base-chain `toBlocks₂₁` at the deepest basepoint vanishes, at every layer `k < L`. -/
+theorem deepestChain_wstar_toBlocks₂₁_eq_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))) k).toBlocks₂₁
+      = (0 : Matrix (Fin (deepestChainWidth H k - r)) (Fin r) ℝ) :=
+  deepestChainLayer_corner_toBlocks₂₁ H r hr _ k hk
+    (framedParamsPivot_wstar_eq_corner H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k hk)
+
+/-- The base-chain `partProd` `toBlocks₁₁` at the deepest basepoint is the identity, at every prefix
+length `k` (induction: each layer contributes `(C j)₁₁ = 1`, `(C j)₂₁ = 0`). -/
+theorem partProd_wstar_toBlocks₁₁_eq_one (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w)
+    (k : ℕ) :
+    (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+        (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))) ) k).toBlocks₁₁
+      = (1 : Matrix (Fin r) (Fin r) ℝ) := by
+  induction k with
+  | zero => rw [show partProd _ 0 = 1 from rfl, toBlocks₁₁_one]
+  | succ k ih =>
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+          (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))))) (k + 1)
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+            (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL))))) k
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf
+            (split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)))) k from rfl,
+      toBlocks₁₁_mul, ih]
+    rcases lt_or_ge k L with hk | hk
+    · rw [deepestChain_wstar_toBlocks₁₁_eq_one H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
+          split hsplit k hk,
+        deepestChain_wstar_toBlocks₂₁_eq_zero H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner'
+          split hsplit k hk, Matrix.mul_zero, add_zero, Matrix.mul_one]
+    · rw [deepestChain_tail_toBlocks₁₁ H r hr _ k (by omega),
+        deepestChain_tail_toBlocks₂₁ H r hr _ k (by omega),
+        Matrix.mul_zero, add_zero, Matrix.mul_one]
+
+/-- The `partProd` `toBlocks₁₁` stabilises off the used prefix (`k ≥ L`): the corner-default tail
+layers (`(C j)₁₁ = 1`, `(C j)₂₁ = 0`) leave the `(1,1)` block unchanged. Holds for every parameter. -/
+theorem partProd_toBlocks₁₁_stabilize (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (q : DeepestSplit H r (deepestNGauge H r)) (k : ℕ) (hLk : L ≤ k) :
+    (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k).toBlocks₁₁
+      = (partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L).toBlocks₁₁ := by
+  induction k, hLk using Nat.le_induction with
+  | base => rfl
+  | succ k hLk ih =>
+    rw [show partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) (k + 1)
+        = partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k
+          * deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k from rfl,
+      toBlocks₁₁_mul, deepestChain_tail_toBlocks₁₁ H r hr _ k (by omega),
+      deepestChain_tail_toBlocks₂₁ H r hr _ k (by omega), Matrix.mul_zero, add_zero, Matrix.mul_one, ih]
+
+/-- The base-chain `partProd` `toBlocks₁₁` is a unit, at every prefix length, near the basepoint. -/
+theorem eventually_isUnit_partProd_toBlocks₁₁ (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront' : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+      Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+        = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+            if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hPfL : Pf (lastLayer hL)
+      = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hcorner' : Matrix.reindex (rThresholdSplit r (H (lastLayer hL).castSucc) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (pivotJSucc H r hL J))
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+        = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r (deepestNGauge H r))
+    (hsplit : ∀ w, split w
+      = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w) (k : ℕ) :
+    ∀ᶠ x in nhds ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)),
+      IsUnit ((partProd (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf (split x))) k).toBlocks₁₁) := by
+  refine eventually_isUnit_of_continuousAt_det _ _
+    (continuous_partProd_toBlocks₁₁_det H r hr hL J Pf Qf split k).continuousAt ?_
+  rw [partProd_wstar_toBlocks₁₁_eq_one H r B hB hr hL J hJfront' Pf Qf hNF hPfL hcorner' split hsplit k,
+    Matrix.det_one]
+  exact one_ne_zero
+
 end DLNFibre.DLN.RLCT
