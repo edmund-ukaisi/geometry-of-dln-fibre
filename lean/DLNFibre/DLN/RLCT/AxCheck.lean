@@ -68,6 +68,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadial
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
 
 /-!
 # Axiom-hygiene check
@@ -656,6 +657,15 @@ open DLNFibre.DLN.RLCT
 -- apparatus: payload + (★)-recovery + degree-2 germ + compose) + hcd + the triple compose remain.
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms psiSplitRawGen_zero
+
+-- ★ D1 ∀-L #120 `hstep2` — Item-3 (`hsub4core` germ) KEYSTONE (2026-07-08, `genm-hstep2hsub4`), the
+-- Producer-1-free per-`x` content. `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart` — chains
+-- the cutoff-strip (given `hq`) with the Producer-3 telescope: conjugated absorbed-core energy of the moved
+-- point `= Score x`. `hq`/frames/invertibility carried as EXPLICIT hyps (honest reduction, NOT laundered).
+-- The full germ additionally needs `hC` + decode-chain invertibility germs + the `hq` eventual-ball germ
+-- (`psiSplitRawGen 0 = 0` banked ✓; continuity from Producer 1).
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

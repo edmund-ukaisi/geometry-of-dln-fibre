@@ -2304,3 +2304,38 @@ adjudicate whether the rank-corrected `a·s` charge sums to `½·minAdm` ∀ the
 verdict; D1 given both heavy slots meanwhile (its close is nearer). (Operator: NO action — a bounded re-scope,
 recorded for honesty; if `r1rankcharge` refutes the `a·s` closure [unlikely given the (2,4,1) equality], THAT
 would be a genuine gap I'd escalate. Else the descent re-scopes to rank-stratified + rebuilds, still cite-free.)
+
+## 63. R1-UPPER rank-corrected descent CONFIRMED bounded (r1rankcharge, decorrelated + 43k brute-validated); residual = sub-generic-stratum bookkeeping, probe charged. (2026-07-08)
+`r1rankcharge` (cert `threads/genm-r1rankcharge/cert.md`, branch `origin/genm-r1rankcharge @52c5bc49`) resolved #62's open
+question decisively: the rank-corrected `a·s/2` descent (`s=rank Q_b=min(M₁−t, min(M₂..M_L))`) sums to **exactly
+`½·minAdm M`** on the **generic stratum** (full measure) — `minAdmRank = minAdm` on 43,334 chains, 0 fails; 4,764
+brute-validated against the faithful `Adm`/`Mval`; exactly tight (`a·s` minimal, `a·b` slack); all four anchors close;
+decorrelated Codex xhigh (conclusion withheld) independently TRUE/TRUE/PROVED with a cleaner mechanism (leading-width
+Lipschitz + `u=min(M₀,M₁)` reference-cut + operator-commutation perm-invariance), re-verified. **R1-UPPER is BOUNDED,
+not a research wall** — the descent re-scopes to rank-stratified at `a·s/2`, cite-free. The load-bearing gate: ∀ chain
+M (L≥2), ∀ cut t, `(M₀−t)·min(M₁−t, min(M₂..M_L)) + minAdm(redChain t M) ≥ minAdm M` (stronger than the banked
+`minAdm_le_peelCharge_add_redChain` — needs `≥` at EVERY chart, the box being a finite pivot-chart cover).
+- **Residual (the cert's flagged "sharpest thing to verify in the build"):** (A) certifies the generic stratum; the
+  **sub-generic strata** `{rank Q_b = s′ < min(b,n)}` need correct per-stratum accounting, and the crude heuristic
+  `a·s′+(b−s′)(n−s′)` UNDER-counts ((4,4,2) s′=1: 7<8). Not a truth-value risk (RLCT=½·minAdm cited; lower strata are
+  higher-codim so less binding), but R1-UPPER builds box-finiteness CITE-FREE so it is load-bearing for the honest
+  proof. **Charged `r1substratum`** (pen-and-paper OBSTRUCTION seat + neutral decorrelated Codex): try to break closure
+  on a sub-generic stratum with the CORRECT accounting (`SchurRecStep`-at-`q=s′` + determinantal stratum codim); if
+  none, hand back the correct stratum-charge formula + the `RankStratPeelStep` Lean shape. R1-UPPER heavy descent-build
+  HELD pending this probe. (Operator: NO action — bounded, design-first de-risk before the heavy build; the one
+  outcome I'd escalate is r1substratum finding a genuine sub-generic stratum where the pure route under-counts.)
+
+## 64. D1 Item-3 (`hsub4core` germ) — keystone landed; core germ is NOT parallel to Producer 1 (WATCH, Codex-confirmed); D1 re-planned. (2026-07-08)
+`hstep2hsub4` delivered the Producer-1-free **keystone** `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart`
+(136 L, 0 sorry, clean-three, integrated) — the general-L per-`x` chaining of the cutoff-strip with the Producer-3
+telescope, `hq`/frames/invertibility carried as EXPLICIT hyps (honest reduction). **WATCH finding** (decorrelated Codex
+xhigh V1/V2/V3): Item 3 was premised as Producer-1-independent — TRUE for the reg germ, FALSE for the core germ. The
+core germ's `hq` (moved point in the cutoff inner ball, over a nbhd) needs `Tendsto (psiSplitRawGen∘split) (𝓝 base)
+(𝓝 0)` = `psiSplitRawGen 0 = 0` (**now banked via hraw0 ✓**) + continuity-at-basepoint (Producer 1). So the full germ
+SEQUENCES after a SMALL part of Producer 1 (continuity, weaker than the full hderiv0 strict-deriv). Remaining path:
+(1) `hC` general core-side move readback [new ~300–600 L, PARALLEL], (2) decode-chain invertibility germs over a nbhd
+[Producer-1-free, new, PARALLEL], (3) `hq` germ [=0 banked, continuity from Producer 1], (4) assembly [small].
+- **Infra:** the teammate self-reported accidentally `cd`-ing into the controller checkout + creating/removing a stray
+  file; controller VERIFIED the checkout clean (empty git status, no stray `DeepestHsub4coreGen.lean`, no git writes).
+- **D1 re-plan (no action):** Producer 1 (hraw0✓ + hderiv0 building + hcd held) is the long pole; Item-3 parallel
+  content (hC + invertibility germs) charged/chargeable now independent of it. D1 = a multi-tide grind, all bounded.

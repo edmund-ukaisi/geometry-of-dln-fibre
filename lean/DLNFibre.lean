@@ -940,3 +940,11 @@ import DLNFibre.DLN.RLCT.Validate.DeepestPsiTripleGen
 -- tide, the general-L mirror of the L=2 DeepestDiffeoBridgeL2Conj apparatus). Banks the reusable substrate
 -- (paramsEquivFlat_zero, framedParamsPivot_zero_eq_corner, forcedDecodeLeft/Right_zero, …). `hstep2` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiHraw0Gen
+-- `DeepestHsub4coreGen` — D1 #120 `hstep2` Item-3 (`hsub4core` germ) KEYSTONE (the Producer-1-free content):
+-- `deepestCoreF_coreAbsorbConj_psiSplitRawGen_eq_score_at_chart` — the general-L per-`x` chaining of the
+-- cutoff-strip (`deepestCoreF_coreAbsorbConj_eq_prodSchur`, given `hq`) with the Producer-3 telescope
+-- (`prod_deepestM_eq_schur_ldu_readback_gen`), proving the conjugated absorbed-core energy of the moved
+-- point `= Score x`. `hq`/frames/invertibility carried as EXPLICIT hyps (honest reduction). The full germ
+-- additionally needs `hC` (general core-side move readback, new ~300–600 L) + decode-chain invertibility
+-- germs + the `hq` eventual-ball germ (now: `psiSplitRawGen 0 = 0` banked ✓, continuity from Producer 1).
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreGen
