@@ -88,7 +88,7 @@ noncomputable def psiSplitGaugeDeltaGen (H : Fin (L + 1) → ℕ) (r : ℕ)
       (psiSplitRawGen H r hr hL J Pf Qf q).2.2)
     - regGaugeSlotEquiv H r hr hL (q.1, q.2.2)
 
-/-- The core read-delta: `(paramsEquivFlat).symm(core of psiSplitRawGen q) − (paramsEquivFlat).symm(core q)`. -/
+/-- The core read-delta: `paramsEquivFlat.symm` reads of `psiSplitRawGen q` minus those of `q`. -/
 noncomputable def psiSplitCoreDeltaGen (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L)))
@@ -135,10 +135,38 @@ theorem psiSplitDeltaGen_eq_payload (H : Fin (L + 1) → ℕ) (r : ℕ)
   · rfl
   · rw [Prod.snd_sub, Prod.snd_sub, hgg, Prod.snd_sub]
 
+/-! ## Pieces (b)+(c) — the read-deltas have strict derivative `0`
+
+Both read-deltas equal `forcedDecode(frame)(movedC − C)` (piece (b), the `(★)` read-recovery)
+and vanish to second order at the origin (piece (c), the moved-chain germ). -/
+
+/-- **Pieces (b)+(c), gauge slot.** The gauge read-delta has strict derivative `0` at the origin. -/
+theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    HasStrictFDerivAt (psiSplitGaugeDeltaGen H r hr hL J Pf Qf)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
+  sorry
+
+/-- **Pieces (b)+(c) for the core slot.** The encoded core read-delta has strict derivative `0`. -/
+theorem hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    HasStrictFDerivAt
+      (fun q => paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
+  sorry
+
 /-! ## The target -/
 
 /-- **`hderiv0` — the general-`L` strict Fréchet derivative of the joint move at the split origin.**
-The deviation `q ↦ psiSplitRawGen q − q` has strict derivative `0` at `0`. -/
+The deviation `q ↦ psiSplitRawGen q − q` has strict derivative `0` at `0`. Piece (d): the payload
+lens decomposes the delta into the two read-deltas, each with strict derivative `0`; compose through
+the fixed packing CLEs (`regGaugeSlotCLE.symm`, `paramsEquivFlatCLE`) and `prodMk`. -/
 theorem hasStrictFDerivAt_psiSplitDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
@@ -146,6 +174,36 @@ theorem hasStrictFDerivAt_psiSplitDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : �
     (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
     HasStrictFDerivAt (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 := by
-  sorry
+  have heq : (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
+      = fun q => (((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).1,
+          (paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q),
+            ((regGaugeSlotCLE H r hr hL).symm
+              (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).2)) := by
+    funext q; exact psiSplitDeltaGen_eq_payload H r hr hL J Pf Qf q
+  rw [heq]
+  have hrg : HasStrictFDerivAt
+      (fun q => (regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q))
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ]
+        ((Fin (deepestNReg H r) → ℝ) × (Fin (deepestNGauge H r) → ℝ))) 0 := by
+    have hcle := ((regGaugeSlotCLE H r hr hL).symm.toContinuousLinearMap).hasStrictFDerivAt
+      (x := psiSplitGaugeDeltaGen H r hr hL J Pf Qf 0)
+    have hcomp := hcle.comp 0
+      (hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero H r hr hL J hJfront Pf Qf)
+    simpa using hcomp
+  have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero H r hr hL J hJfront
+    Pf Qf
+  have h1 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).1)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.fst ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  have h3 : HasStrictFDerivAt
+      (fun q => ((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).2)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNGauge H r) → ℝ)) 0 := by
+    have := (ContinuousLinearMap.snd ℝ (Fin (deepestNReg H r) → ℝ)
+      (Fin (deepestNGauge H r) → ℝ)).hasStrictFDerivAt.comp 0 hrg
+    simpa using this
+  exact h1.prodMk (hcore.prodMk h3)
 
 end DLNFibre.DLN.RLCT
