@@ -48,4 +48,53 @@ theorem absorbedCoreConj_eq_blockSchur_synthetic (H : Fin (L + 1) → ℕ) (r : 
     ← Matrix.nonsing_inv_eq_ringInverse]
   rw [Matrix.neg_mul, Matrix.neg_mul, ← sub_eq_add_neg]
 
+/-! ## The `toBlocks₁₂/₂₁/₂₂` decode-chain layer bridges (`k < L`)
+
+The `₁₂/₂₁/₂₂` analogues of the banked `deepestChain_toBlocks₁₁_eq_layer`: the off-diagonal / core
+blocks of the decode-chain layer are the `rThresholdSplit`-layer blocks of `A ⟨k, hk⟩`, up to the
+reduced-width `finCongr` relabel — matching the reindex convention of the framed-chain block lemma
+`deepestChain_framedParamsPivot_blocks_of_frame_one`. -/
+
+/-- Decode-chain layer `(1,2)` block. -/
+theorem deepestChain_toBlocks₁₂_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr A k).toBlocks₁₂
+      = Matrix.reindex (Equiv.refl (Fin r)) (finCongr (chainWidth_succ_sub H r ⟨k, hk⟩))
+          (Matrix.reindex (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).castSucc) (hr _))
+            (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).succ) (hr _)) (A ⟨k, hk⟩)).toBlocks₁₂ := by
+  funext i j
+  simp only [Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    Equiv.refl_symm, Equiv.refl_apply, deepestChain, deepestChainLayer, dif_pos hk,
+    deepestChainSplit, rThresholdSplit_symm_inl, rThresholdSplit_symm_inr, finCongr_symm,
+    finCongr_apply]
+  congr 1
+
+/-- Decode-chain layer `(2,1)` block. -/
+theorem deepestChain_toBlocks₂₁_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr A k).toBlocks₂₁
+      = Matrix.reindex (finCongr (chainWidth_castSucc_sub H r ⟨k, hk⟩)) (Equiv.refl (Fin r))
+          (Matrix.reindex (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).castSucc) (hr _))
+            (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).succ) (hr _)) (A ⟨k, hk⟩)).toBlocks₂₁ := by
+  funext i j
+  simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    Equiv.refl_symm, Equiv.refl_apply, deepestChain, deepestChainLayer, dif_pos hk,
+    deepestChainSplit, rThresholdSplit_symm_inl, rThresholdSplit_symm_inr, finCongr_symm,
+    finCongr_apply]
+  congr 1
+
+/-- Decode-chain layer `(2,2)` block. -/
+theorem deepestChain_toBlocks₂₂_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (A : Params H) (k : ℕ) (hk : k < L) :
+    (deepestChain H r hr A k).toBlocks₂₂
+      = Matrix.reindex (finCongr (chainWidth_castSucc_sub H r ⟨k, hk⟩))
+          (finCongr (chainWidth_succ_sub H r ⟨k, hk⟩))
+          (Matrix.reindex (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).castSucc) (hr _))
+            (rThresholdSplit r (H (⟨k, hk⟩ : Fin L).succ) (hr _)) (A ⟨k, hk⟩)).toBlocks₂₂ := by
+  funext i j
+  simp only [Matrix.toBlocks₂₂, Matrix.of_apply, Matrix.reindex_apply, Matrix.submatrix_apply,
+    deepestChain, deepestChainLayer, dif_pos hk, deepestChainSplit,
+    rThresholdSplit_symm_inr, finCongr_symm, finCongr_apply]
+  congr 1
+
 end DLNFibre.DLN.RLCT
