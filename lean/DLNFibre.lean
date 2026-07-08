@@ -803,3 +803,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
 -- `chartInner_schurSplit_eq`). The shear + corank radial peel + `(S,J)` descent are the remaining
 -- pieces; `sjJointResolution` UNTOUCHED.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
+-- D1 #120 `hstep2` germ-bulk (thread `genm-hstep2germs3`): the left-column half of Invariant A
+-- (`leftCol_movedC`) — the genuinely `L`-recursive down-half. The clean recursions `B_{s+1}=B_s N_s A_s`
+-- and `D_{s+1}=D_s N_s A_s + blockSchur(Q_s) Z_s`, the closed form `D_L = leftAccum·B_L`, the moved-chain
+-- data agreement (`Kcoup`/`nMix`/`blockSchur` = `wHatAccum`), and the `Z₀` accumulator `Z0edit0` that
+-- restores `(partProd)₂₁`. `regBlocks_movedC` packages both halves = abstract `hsub3reg`. `hstep2`
+-- UNTOUCHED — the concrete `DeepestSplit` instantiation + diffeo triple + compose are deferred.
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol

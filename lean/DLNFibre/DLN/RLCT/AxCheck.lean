@@ -48,6 +48,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLinGen
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenMoved
 import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
+import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 
 /-!
 # Axiom-hygiene check
@@ -481,3 +482,14 @@ open DLNFibre.DLN.RLCT
 -- Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
 #print axioms frobSq_schur_split_inv
 #print axioms chartInner_schurWeld_eq_of_emb
+
+-- ★ D1 ∀-L #120 `hstep2` germ-bulk — the LEFT-COLUMN half of Invariant A (2026-07-08,
+-- `genm-hstep2germs3`, the flagged genuinely-new L-recursive identity). The clean Woodbury-free
+-- recursions `partProd_toBlocks₁₁_succ` / `partProd_toBlocks₂₁_succ`, the `Z₀`-accumulator restoring
+-- `(partProd)₂₁` (`leftCol_movedC`), and `regBlocks_movedC` (all three reg-residual blocks preserved =
+-- the abstract `hsub3reg`). Proved sorry-free over ANY `CommRing` (retires the one risk the cert's exact
+-- L≤5 checks could have missed). The concrete `DeepestSplit` instantiation + diffeo triple + compose
+-- (the ~2700-line labor) are deferred — `hstep2` sorry untouched. Cite-NOTHING: forced `#print axioms`
+-- = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms leftCol_movedC
+#print axioms regBlocks_movedC
