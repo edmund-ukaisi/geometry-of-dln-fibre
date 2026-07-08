@@ -51,6 +51,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitGenLeftCol
 import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
 
 /-!
 # Axiom-hygiene check
@@ -504,6 +505,17 @@ open DLNFibre.DLN.RLCT
 -- `sjJointResolution` are the deferred mountain — its sorry untouched. Cite-NOTHING: forced `#print
 -- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
 #print axioms chartInner_schurShearFree_eq
+
+-- ★ R1-UPPER (S,J) CoV peel on the freed Γ-integral (2026-07-08, `genm-sjcarrier8`). At the
+-- `gammaPeelIntegral` level: the shear-freed equality `gammaPeelIntegral_schurShearFree_eq` + the two
+-- inner-Γ finiteness branches — the corank atom branch `freedSchurLoss_inner_peel_lt_top` (gated on the
+-- outer `w>0` + `Q_b Q_bᵀ` PosDef, via `corankBlock_morsePeel_setLE`) and the bounded branch
+-- `freedSchurLoss_inner_bounded_lt_top` (`c'≤a/2`). The `(S,J)` outer double-induction descent supplying
+-- `w>0` is the single remaining piece — `sjJointResolution` untouched. Cite-NOTHING: forced `#print
+-- axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`).
+#print axioms gammaPeelIntegral_schurShearFree_eq
+#print axioms freedSchurLoss_inner_peel_lt_top
+#print axioms freedSchurLoss_inner_bounded_lt_top
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,

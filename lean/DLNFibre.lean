@@ -825,3 +825,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 -- hyps are satisfiable near the deepest point). Feeds the concrete `hsub3reg`. `hstep2` UNTOUCHED — the
 -- pivot-col reconciliation + concrete `psiSplitRawGen` + diffeo triple + compose are deferred.
 import DLNFibre.DLN.RLCT.Validate.DeepestFinBridgeGen
+-- R1-UPPER Phase-2 peel on the freed Γ-integral (thread `genm-sjcarrier8`): at the
+-- `gammaPeelIntegral` level, the shear-freed equality (`gammaPeelIntegral_schurShearFree_eq`) + the two
+-- inner-Γ finiteness branches — the corank atom branch (`freedSchurLoss_inner_peel_lt_top`, gated on the
+-- outer `w>0` + `Q_b Q_bᵀ` PosDef) and the bounded branch (`freedSchurLoss_inner_bounded_lt_top`,
+-- `c'≤a/2`). The `(S,J)` outer descent supplying `w>0` (the double-induction mountain) is the SINGLE
+-- remaining R1-UPPER piece; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFreedPeel
