@@ -85,4 +85,84 @@ theorem forcedDecodeRight_upperFrame_mul {r a b : Type*} [Fintype r] [DecidableE
   conv_rhs => rw [hR]
   congr 1 <;> abel
 
+/-! ## The boundary forced-decode is a FIXED `ℝ`-linear map of the target
+
+The cert's mechanism crux: with a `q`-INDEPENDENT frame `F`/`Q` (evaluated at wstar), the boundary
+decode `D ↦ forcedDecodeLeft F D` / `D ↦ forcedDecodeRight Q D` is `ℝ`-linear in the target `D`
+(coefficients `Ring.inverse F₁₁`, `F₂₁`, … are constants), hence a `ContinuousLinearMap`. Applied to
+the `O(‖q‖²)` germ `movedC − C`, a fixed CLM contributes no first-order term — which is how
+`HasStrictFDerivAt (psiSplitRawGen − id) 0 0` inherits the interior degree-2 vanishing at the boundary. -/
+
+/-- `forcedDecodeLeft F` is `ℝ`-linear in the target `D` (fixed frame `F`). -/
+theorem forcedDecodeLeft_isLinear {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [DecidableEq a]
+    (F : Matrix (r ⊕ a) (r ⊕ a) ℝ) :
+    IsLinearMap ℝ (fun D : Matrix (r ⊕ a) (r ⊕ b) ℝ => forcedDecodeLeft F D) := by
+  refine ⟨fun D D' => ?_, fun c D => ?_⟩
+  · show forcedDecodeLeft F (D + D') = forcedDecodeLeft F D + forcedDecodeLeft F D'
+    rw [forcedDecodeLeft, forcedDecodeLeft, forcedDecodeLeft, Matrix.fromBlocks_add]
+    have e11 : (D + D').toBlocks₁₁ = D.toBlocks₁₁ + D'.toBlocks₁₁ := rfl
+    have e12 : (D + D').toBlocks₁₂ = D.toBlocks₁₂ + D'.toBlocks₁₂ := rfl
+    have e21 : (D + D').toBlocks₂₁ = D.toBlocks₂₁ + D'.toBlocks₂₁ := rfl
+    have e22 : (D + D').toBlocks₂₂ = D.toBlocks₂₂ + D'.toBlocks₂₂ := rfl
+    rw [e11, e12, e21, e22]
+    congr 1 <;> simp only [Matrix.mul_add] <;> abel
+  · show forcedDecodeLeft F (c • D) = c • forcedDecodeLeft F D
+    rw [forcedDecodeLeft, forcedDecodeLeft, Matrix.fromBlocks_smul]
+    have e11 : (c • D).toBlocks₁₁ = c • D.toBlocks₁₁ := rfl
+    have e12 : (c • D).toBlocks₁₂ = c • D.toBlocks₁₂ := rfl
+    have e21 : (c • D).toBlocks₂₁ = c • D.toBlocks₂₁ := rfl
+    have e22 : (c • D).toBlocks₂₂ = c • D.toBlocks₂₂ := rfl
+    rw [e11, e12, e21, e22]
+    congr 1 <;> simp only [Matrix.mul_smul, smul_sub]
+
+/-- `forcedDecodeRight Q` is `ℝ`-linear in the target `D` (fixed frame `Q`). -/
+theorem forcedDecodeRight_isLinear {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype b] [DecidableEq b]
+    (Q : Matrix (r ⊕ b) (r ⊕ b) ℝ) :
+    IsLinearMap ℝ (fun D : Matrix (r ⊕ a) (r ⊕ b) ℝ => forcedDecodeRight Q D) := by
+  refine ⟨fun D D' => ?_, fun c D => ?_⟩
+  · show forcedDecodeRight Q (D + D') = forcedDecodeRight Q D + forcedDecodeRight Q D'
+    rw [forcedDecodeRight, forcedDecodeRight, forcedDecodeRight, Matrix.fromBlocks_add]
+    have e11 : (D + D').toBlocks₁₁ = D.toBlocks₁₁ + D'.toBlocks₁₁ := rfl
+    have e12 : (D + D').toBlocks₁₂ = D.toBlocks₁₂ + D'.toBlocks₁₂ := rfl
+    have e21 : (D + D').toBlocks₂₁ = D.toBlocks₂₁ + D'.toBlocks₂₁ := rfl
+    have e22 : (D + D').toBlocks₂₂ = D.toBlocks₂₂ + D'.toBlocks₂₂ := rfl
+    rw [e11, e12, e21, e22]
+    congr 1 <;> simp only [Matrix.add_mul] <;> abel
+  · show forcedDecodeRight Q (c • D) = c • forcedDecodeRight Q D
+    rw [forcedDecodeRight, forcedDecodeRight, Matrix.fromBlocks_smul]
+    have e11 : (c • D).toBlocks₁₁ = c • D.toBlocks₁₁ := rfl
+    have e12 : (c • D).toBlocks₁₂ = c • D.toBlocks₁₂ := rfl
+    have e21 : (c • D).toBlocks₂₁ = c • D.toBlocks₂₁ := rfl
+    have e22 : (c • D).toBlocks₂₂ = c • D.toBlocks₂₂ := rfl
+    rw [e11, e12, e21, e22]
+    congr 1 <;> simp only [Matrix.smul_mul, smul_sub]
+
+/-- The layer-0 forced-decode as a `ContinuousLinearMap` (fixed frame `F`). -/
+noncomputable def forcedDecodeLeftCLM {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [DecidableEq a] [Fintype b]
+    (F : Matrix (r ⊕ a) (r ⊕ a) ℝ) :
+    Matrix (r ⊕ a) (r ⊕ b) ℝ →L[ℝ] Matrix (r ⊕ a) (r ⊕ b) ℝ :=
+  LinearMap.toContinuousLinearMap ((forcedDecodeLeft_isLinear F).mk' _)
+
+/-- The last-layer forced-decode as a `ContinuousLinearMap` (fixed frame `Q`). -/
+noncomputable def forcedDecodeRightCLM {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [Fintype b] [DecidableEq b]
+    (Q : Matrix (r ⊕ b) (r ⊕ b) ℝ) :
+    Matrix (r ⊕ a) (r ⊕ b) ℝ →L[ℝ] Matrix (r ⊕ a) (r ⊕ b) ℝ :=
+  LinearMap.toContinuousLinearMap ((forcedDecodeRight_isLinear Q).mk' _)
+
+@[simp] theorem coe_forcedDecodeLeftCLM {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [DecidableEq a] [Fintype b]
+    (F : Matrix (r ⊕ a) (r ⊕ a) ℝ) :
+    ⇑(forcedDecodeLeftCLM (b := b) F) = fun D => forcedDecodeLeft F D :=
+  rfl
+
+@[simp] theorem coe_forcedDecodeRightCLM {r a b : Type*} [Fintype r] [DecidableEq r]
+    [Fintype a] [Fintype b] [DecidableEq b]
+    (Q : Matrix (r ⊕ b) (r ⊕ b) ℝ) :
+    ⇑(forcedDecodeRightCLM (a := a) Q) = fun D => forcedDecodeRight Q D :=
+  rfl
+
 end DLNFibre.DLN.RLCT
