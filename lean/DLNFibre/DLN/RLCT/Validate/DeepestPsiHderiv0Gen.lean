@@ -30,20 +30,26 @@ Schur blocks:
 ## Status (WIP)
 The target `hasStrictFDerivAt_psiSplitDeltaGen_zero` is **proven modulo two `sorry` sub-lemmas**
 (`hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero`,
-`hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero`). Landed + axiom-clean:
-* pieces (a) [`psiSplitDeltaGen_eq_payload`] and (d) [the target's proof], + the pair-mul keystone;
-* piece (c) value-at-origin collapse (`genChain_zero_*`, `genPartProd_zero_*`, `genBlockSchur_zero`,
-  `genKcoup_zero`, `genSchurTilde_zero`, `genVDown_zero`, `genUNorm_zero`, `genNMix_zero`);
-* piece (c) smoothness helpers (`contDiffAt_ringInverse_entry`, `genChain_contDiffAt`,
-  `genPartProd_contDiffAt`, `genBlockSchur_contDiffAt`).
+`hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero`).
 
-Remaining (all inputs banked — bounded plumbing, no math wall):
-* the rest of piece (c) smoothness (`uNorm`/`vDown`/`Kcoup`/`schurTilde`/`Ring.inverse nMix`/
-  `movedZ`/`movedY`/`movedT`/`wHatAccum`/`hTermLC`/`deltaV0` entries `ContDiffAt`);
-* the piece (c) germ (`upEdit`, `movedZ − (C)₂₁`, `movedT − (C)₂₂` blocks, via the entry keystones);
-* piece (b), the `(★)` read-recovery linking `gaugeΔ`/`coreΔ` to `forcedDecode(movedC − C)` —
-  interior via `deepestChain_framedParamsPivot_blocks_of_frame_one`, boundary via the banked
-  `deepestChain_framedParamsPivot_firstLayer`/`_lastLayer` + `forcedDecodeLeft/Right_*Frame_mul`.
+Landed + axiom-clean: pieces (a) [`psiSplitDeltaGen_eq_payload`] and (d) [the target's proof], the
+pair-mul keystone, and **the whole of piece (c)** —
+* value-at-origin collapse (`genChain_zero_*`, `genPartProd_zero_*`, `gen{BlockSchur,Kcoup,SchurTilde,
+  VDown,UNorm,NMix}_zero`, `genPartProd_zero_eq_corM`, `genWHatAccum_zero`,
+  `genBlockSchurPartProd_sub_wHatAccum_zero`, `gen{DeltaV0,UpEdit,MovedY,MovedZ}_zero`);
+* smoothness (`contDiffAt_ringInverse_entry`, `gen{Chain,PartProd,BlockSchur,VDown,UNorm,Kcoup,NMix,
+  InvNMix,SchurTilde,InvC11,InvPartProd11,BlockSchurPartProd,UpEdit,MovedY,WHatAccum,HTermLC,DeltaV0,
+  MovedZ}_contDiffAt`);
+* the four `movedC(C q) Z0edit − C q` germ blocks strict-deriv `0` at the origin
+  (`hasStrictFDerivAt_gen{UpEdit,HTermLC,DeltaV0,MovedZsub,MovedTsub}_entry_zero`).
+
+Remaining = **piece (b) only** (bounded recovery plumbing, no math wall): the two `sorry` sub-lemmas.
+Each `gaugeΔ`/`coreΔ` entry equals `forcedDecode(frame_s)(movedC − C)`_block, reduced to a piece-(c)
+germ block — interior via `deepestChain_framedParamsPivot_blocks_of_frame_one` (needs `Pf s = 1 ∧
+Qf s = 1`), boundary via the banked `deepestChain_framedParamsPivot_firstLayer`/`_lastLayer` +
+`forcedDecodeLeft/Right_*Frame_mul` (★). The two sub-lemmas + the target will gain the `Pf`/`Qf`
+structural hypotheses of `psiSplitRawGen_deepestChain_hmove` (`hL2`, `hQf0`, `hPfL`, `hPunit`, `hQunit`,
+`hPtri`, `hP22`, `hQtri`, `hQ22`, `hInterior`).
 -/
 
 open Matrix Topology
