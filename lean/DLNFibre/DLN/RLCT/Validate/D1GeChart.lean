@@ -63,4 +63,55 @@ direction). -/
 @[simp] theorem schurChartRawGen_toBlocks₂₁_zero :
     (schurChartRawGen C L 0).toBlocks₂₁ = (partProd C L).toBlocks₂₁ := rfl
 
+/-! ## Rung 5 — recovering the product from the chart output -/
+
+/-- The ordered product of the `(2,2)` corners of a chain `Q`, `(Q 0)₂₂·…·(Q (k−1))₂₂`, of shape
+`(Fin (n 0)) × (Fin (n k))` (`= 1` at `k = 0`). At `Q = schurChartRawGen C L` this is `redProd C`
+(`blockDiagProd_schurChartRawGen`), i.e. the reduced core `blockSchur (partProd C L)`. -/
+noncomputable def blockDiagProd {r₀ : ℕ} {n : ℕ → ℕ}
+    (Q : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) :
+    (k : ℕ) → Matrix (Fin (n 0)) (Fin (n k)) ℝ
+  | 0 => 1
+  | k + 1 => blockDiagProd Q k * (Q k).toBlocks₂₂
+
+/-- **`recoverProductGen`** — rebuild the full product's block form from the chart output over
+`last + 1` layers: top row `(P_L)₁₁, (P_L)₁₂` from the last slot, lower-left `(P_L)₂₁` from slot 0,
+and the eliminated `(2,2)` corner as `(P_L)₂₁·(P_L)₁₁⁻¹·(P_L)₁₂ + ∏ R_s`. Parametrised by `last`,
+last slot index `= L − 1`) so the output width `Fin (n (last+1))` needs no `L−1` cast. General-`L`
+analogue of `recoverProduct`. -/
+noncomputable def recoverProductGen {r₀ : ℕ} {n : ℕ → ℕ}
+    (Q : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (last : ℕ) :
+    Matrix (Fin r₀ ⊕ Fin (n 0)) (Fin r₀ ⊕ Fin (n (last + 1))) ℝ :=
+  Matrix.fromBlocks (Q last).toBlocks₁₁ (Q last).toBlocks₁₂ (Q 0).toBlocks₂₁
+    ((Q 0).toBlocks₂₁ * (Q last).toBlocks₁₁⁻¹ * (Q last).toBlocks₁₂ + blockDiagProd Q (last + 1))
+
+/-- The `(2,2)`-corner fold of the chart output is the reduced-factor telescope `redProd C`. By
+on `k`, reading `(schurChartRawGen C L s)₂₂ = redFactorGen C s`. -/
+theorem blockDiagProd_schurChartRawGen {r₀ : ℕ} {n : ℕ → ℕ}
+    (C : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (L : ℕ) (k : ℕ) :
+    blockDiagProd (schurChartRawGen C L) k = redProd C k := by
+  induction k with
+  | zero => rfl
+  | succ k ih => rw [blockDiagProd, redProd, ih, schurChartRawGen_toBlocks₂₂]
+
+/-- **Rung 5 — the chart output rebuilds the product.** `recoverProductGen (schurChartRawGen C
+last = partProd C (last+1)` on the prefix-pivot domain: the three regular corners are the packed
+`(P_L)₁₁/₁₂/₂₁`, and the eliminated `(2,2)` corner is rebuilt as `(P_L)₂₁·(P_L)₁₁⁻¹·(P_L)₁₂ +
+blockSchur (partProd C L)` (the reduced core, `blockDiagProd_schurChartRawGen` + the asymmetric
+telescope `blockSchur_partProd_asym_fold`). Validates the packing. General-`L` analogue of
+`recoverProduct_schurChartRaw`. -/
+theorem recoverProductGen_schurChartRawGen {r₀ : ℕ} {n : ℕ → ℕ}
+    (C : (s : ℕ) → Matrix (Fin r₀ ⊕ Fin (n s)) (Fin r₀ ⊕ Fin (n (s + 1))) ℝ) (last : ℕ)
+    (hPart : ∀ k, k ≤ last + 1 → Invertible (partProd C k).toBlocks₁₁) :
+    recoverProductGen (schurChartRawGen C (last + 1)) last = partProd C (last + 1) := by
+  letI hpiv : Invertible (partProd C (last + 1)).toBlocks₁₁ := hPart (last + 1) le_rfl
+  conv_rhs => rw [← Matrix.fromBlocks_toBlocks (partProd C (last + 1))]
+  rw [recoverProductGen, schurChartRawGen_toBlocks₁₁, schurChartRawGen_toBlocks₁₂,
+    schurChartRawGen_toBlocks₂₁_zero, blockDiagProd_schurChartRawGen,
+    ← blockSchur_partProd_asym_fold C (last + 1) hPart, blockSchur]
+  congr 1
+  -- `(P_L)₂₁·(P_L)₁₁⁻¹·(P_L)₁₂ + ((P_L)₂₂ − (P_L)₂₁·(Ring.inverse (P_L)₁₁)·(P_L)₁₂) = (P_L)₂₂`.
+  rw [Ring.inverse_invertible, Matrix.invOf_eq_nonsing_inv (partProd C (last + 1)).toBlocks₁₁]
+  abel
+
 end DLNFibre.DLN.RLCT
