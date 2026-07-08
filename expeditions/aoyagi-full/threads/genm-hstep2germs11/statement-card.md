@@ -2,8 +2,16 @@
 
 **Status:** Producer 2 of 3 (the `hsub3reg` reg-preservation germ) **COMPLETE, sorry-free,
 axiom-clean** `[propext, Classical.choice, Quot.sound]` (forced `#print axioms hsub3reg_gen_germ`
-loses `sorryAx`). `hstep2` (`DeepestL2Wiring:1060`, L ≥ 3 arm) **LEFT UNTOUCHED** — the compose needs
-the diffeo triple (Producer 1) which is a multi-thread wall (see below).
+loses `sorryAx`). **Fidelity REVIEWED — SURVIVED** (reviewer thread: all 5 questions PASS +
+decorrelated Codex no-vacuity read; the `∀ᶠ` neighborhood is genuinely non-trivial, the bundle
+hypotheses are jointly realized by `deepestPoint_frame_pivot_triangular_exists` so not vacuous, and
+the corner value-lemmas are non-circular). `hstep2` (`DeepestL2Wiring:1060`, L ≥ 3 arm) **LEFT
+UNTOUCHED** — the compose needs the diffeo triple (Producer 1) which is a multi-thread wall (see below).
+
+**Reviewer follow-ups (both benign):** (i) the L≥3 compose must do the `hregval` rewrite (the germ is
+in `deepestEFull` form; `deepest_diffeo_bridge_gen_assembled` wants `regStraighten` form — unlike the
+L=2 assembled bridge which converts internally); (ii) wire the leaf module into the build root /
+`AxCheck` so it does not silently rot (nothing imports it, so the aggregate build does not re-check it).
 
 Branch: `genm-hstep2germs11` (pushed, @ `1b2da945`). Base: `origin/expedition/aoyagi-full` @ `a869dbf9`.
 
