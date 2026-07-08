@@ -140,9 +140,9 @@ def DecoratedBoxThresholdFinite (D : SJDecoration M) : Prop :=
 /-! ## Piece 7 base — the trivial decoration and the π=∅ recovery (`RouteMBoxThresholdFinite`) -/
 
 /-- **The trivial decoration at `π = ∅`.** No exceptional coordinates (`d = 0`, `jac` empty), the
-identity `ofMatrix` carrier at the full layer product `prod M A` (support `≡ 0`), integration domain the
-raw parameter box `paramsBoxM M 1`. The `ctx` reads the product entries as the active variables, so the
-carrier loss is exactly `frobSq (prod M A)`. -/
+identity `ofMatrix` carrier at the full layer product `prod M A` (support `≡ 0`), integration domain
+the raw parameter box `paramsBoxM M 1`. The `ctx` reads the product entries as the active variables,
+so the carrier loss is exactly `frobSq (prod M A)`. -/
 noncomputable def SJDecoration.trivial (M : Fin (L + 1) → ℕ) : SJDecoration M where
   d := 0
   ζ := Unit
@@ -157,9 +157,9 @@ noncomputable def SJDecoration.trivial (M : Fin (L + 1) → ℕ) : SJDecoration 
   ctx := fun A => ((), fun ik => prod M A ik.1 ik.2)
   dom := paramsBoxM M 1
 
-/-- **The trivial decoration's loss IS the product loss.** `decLoss (trivial M) u A = frobSq (prod M A)`
-for every `A` — the `ofMatrix` carrier at the product entries collapses (support `≡ 0`, so every
-generator monomial is `1`; the residuals read off the product entries). Via `loss_ofMatrix`. -/
+/-- **The trivial decoration's loss IS the product loss.** `decLoss (trivial M) u A =
+frobSq (prod M A)` for every `A` — the `ofMatrix` carrier at the product entries collapses (support
+`≡ 0`, so every generator monomial is `1`; the residuals read off the entries). Via `loss_ofMatrix`. -/
 theorem trivial_decLoss (M : Fin (L + 1) → ℕ) (u : Fin 0 → ℝ) (A : Params M) :
     (SJDecoration.trivial M).decLoss u A = frobSq (prod M A) := by
   unfold SJDecoration.decLoss SJDecoration.trivial
@@ -167,21 +167,21 @@ theorem trivial_decLoss (M : Fin (L + 1) → ℕ) (u : Fin 0 → ℝ) (A : Param
   rw [SJLinGenState.loss_ofMatrix (M 0) (M (Fin.last L)) u
         (fun ik => prod M A ik.1 ik.2)]
 
-/-- **The unit box in dimension `0` has full measure `1`** (the empty product of `Icc 0 1` lengths). -/
+/-- **The unit box in dimension `0` has full measure `1`** (empty product of `Icc 0 1` lengths). -/
 theorem volume_unitBox_zero : (volume : Measure (Fin 0 → ℝ)) (unitBox 0) = 1 := by
   rw [unitBox, volume_pi_pi]
   simp
 
-/-- **The π=∅ recovery (piece 7 base, the encoding validation).** The trivial decoration's integral IS
-the layer-product box integral: `(trivial M).integral c' = routeMLayerBoxIntegral M c' 1`. The inner
-`unitBox 0` integral collapses (empty Jacobian monomial `= 1`, full measure `1`), and the carrier loss is
-`frobSq (prod M A)` (`trivial_decLoss`) — so the decorated object LITERALLY reduces to the original
-target. -/
+/-- **The π=∅ recovery (piece 7 base, the encoding validation).** The trivial decoration's integral
+IS the layer-product box integral: `(trivial M).integral c' = routeMLayerBoxIntegral M c' 1`. The
+inner `unitBox 0` integral collapses (empty Jacobian monomial `= 1`, full measure `1`), and the
+carrier loss is `frobSq (prod M A)` (`trivial_decLoss`) — so the decorated object LITERALLY reduces
+to the original target. -/
 theorem trivial_integral_eq (M : Fin (L + 1) → ℕ) (c' : ℝ) :
     (SJDecoration.trivial M).integral c' = routeMLayerBoxIntegral M (c' : ℝ) 1 := by
   rw [SJDecoration.integral, routeMLayerBoxIntegral]
   refine setLIntegral_congr_fun (measurableSet_paramsBoxM M 1) (fun A _ => ?_)
-  -- inner: the integrand is constant in `u` (`d = 0`, empty Jacobian monomial), = `frobSq (prod M A)`.
+  -- inner: the integrand is constant in `u` (`d = 0`, empty monomial), = `frobSq (prod M A)`.
   have h1 : ∀ u : Fin (SJDecoration.trivial M).d → ℝ,
       ENNReal.ofReal ((∏ ℓ, |u ℓ| ^ ((SJDecoration.trivial M).jac ℓ))
           * ((SJDecoration.trivial M).decLoss u A) ^ (-c'))
@@ -192,8 +192,8 @@ theorem trivial_integral_eq (M : Fin (L + 1) → ℕ) (c' : ℝ) :
     show (SJDecoration.trivial M).d = 0 from rfl, volume_unitBox_zero, mul_one]
 
 /-- **The predicate recovers `RouteMBoxThresholdFinite` at `π = ∅`.** `DecoratedBoxThresholdFinite
-(trivial M) ↔ RouteMBoxThresholdFinite M` — the two thresholds coincide (`carrierThreshold M =
-½·minAdm M`) and the integrals coincide (`trivial_integral_eq`). This is the π=∅ consumer's foundation:
+(trivial M) ↔ RouteMBoxThresholdFinite M` — the thresholds coincide (`carrierThreshold M =
+½·minAdm M`) and the integrals coincide (`trivial_integral_eq`). The π=∅ consumer's foundation:
 the decorated recursion, once it lands `DecoratedBoxThresholdFinite (trivial M)`, delivers
 `RouteMBoxThresholdFinite M` with NO residual gap. -/
 theorem decoratedBoxThresholdFinite_trivial_iff (M : Fin (L + 1) → ℕ) :
@@ -209,18 +209,18 @@ theorem decoratedBoxThresholdFinite_trivial_iff (M : Fin (L + 1) → ℕ) :
 
 /-! ## Piece 5 sub-brick — the Case-2 radial attach at the decoration level (the CLEAR-FIRST radial)
 
-The single radial factor of one decorated peel, lifted to the decoration. This is the (b) attach-radial
-half of `decorated_peel_step` — the fresh fully-shared exceptional divisor `u₀`, attached AFTER the
-clear-first scalar Schur elimination (the (a) `rowMix R` at constant support, which carries the chart's
-analytic matrix `R` and is the deferred half). The generator-level `loss_radialStep` (banked) threads
-through the decoration cleanly: attaching the radial multiplies the carrier loss by `u₀²`. -/
+The single radial factor of one decorated peel, lifted to the decoration. This is the (b)
+attach-radial half of `decorated_peel_step` — the fresh fully-shared exceptional divisor `u₀`,
+attached AFTER the clear-first scalar Schur elimination (the (a) `rowMix R` at constant support,
+which carries the chart's analytic matrix `R` and is the deferred half). The generator-level
+`loss_radialStep` (banked) threads through: attaching the radial multiplies the loss by `u₀²`. -/
 
 /-- **The Case-2 radial attach on a decoration.** Prepend a fresh fully-shared exceptional divisor
-(`d ↦ d+1`, `carrier ↦ radialStep`, `jac ↦ Fin.cons j₀`); the deeper data (`ζ ν ι`, domain, `ctx`) is
-unchanged. The `radialStep` records the new divisor as shared by EVERY generator (order `1`) — the
-`corankStep` `u²` factor made visible per generator (`RouteMSJLinGen`). NOT the full `extend` (which
-additionally applies the clear-first `rowMix R` for the chart's Schur matrix `R`; that analytic half is
-the deferred mountain). -/
+(`d ↦ d+1`, `carrier ↦ radialStep`, `jac ↦ Fin.cons j₀`); the deeper data (`ζ ν ι`, domain, `ctx`)
+is unchanged. The `radialStep` records the new divisor as shared by EVERY generator (order `1`) —
+the `corankStep` `u²` factor made visible per generator (`RouteMSJLinGen`). NOT the full `extend`
+(which additionally applies the clear-first `rowMix R` for the chart's Schur matrix `R`; that
+analytic half is the deferred mountain). -/
 noncomputable def SJDecoration.radialAttach (D : SJDecoration M) (j₀ : ℕ) : SJDecoration M where
   d := D.d + 1
   ζ := D.ζ
@@ -236,28 +236,27 @@ noncomputable def SJDecoration.radialAttach (D : SJDecoration M) (j₀ : ℕ) : 
   dom := D.dom
 
 /-- **The radial attach multiplies the decorated loss by `u₀²`.** `(radialAttach D j₀).decLoss
-(u₀ ::: u) z = u₀² · D.decLoss u z` — the generator-level `loss_radialStep` lifted to the decoration.
-The fresh divisor is shared by all generators, so it factors cleanly out of the sum of squares; this is
-the passive-prefactor identity the peel step's regime lemmas consume (the `u₀²` that the exponent shift
-`c' ↦ c' − ½·pq` acts on). -/
+(u₀ ::: u) z = u₀² · D.decLoss u z` — the generator-level `loss_radialStep` lifted to the
+decoration. The fresh divisor is shared by all generators, so it factors cleanly out of the sum of
+squares; this is the passive-prefactor identity the peel step's regime lemmas consume (the `u₀²`
+the exponent shift `c' ↦ c' − ½·pq` acts on). -/
 theorem radialAttach_decLoss (D : SJDecoration M) (j₀ : ℕ) (u₀ : ℝ) (u : Fin D.d → ℝ) (z : D.Z) :
     (D.radialAttach j₀).decLoss (Fin.cons u₀ u) z = u₀ ^ 2 * D.decLoss u z := by
   letI := D.fν; letI := D.fι
   unfold SJDecoration.decLoss SJDecoration.radialAttach
   exact D.carrier.loss_radialStep u₀ u (D.ctx z).1 (D.ctx z).2
 
-/-- **The radial attach raises the exceptional count by one and records the fresh divisor as shared.**
-`(radialAttach D j₀).d = D.d + 1`, and the fresh divisor's shared-divisor exponent is `1` (it divides
-every generator to order `1`) — the DATA-A shared-divisor record that a scalar weight cannot express. -/
+/-- **The radial attach raises the exceptional count by one, recording the fresh shared divisor.**
+`(radialAttach D j₀).d = D.d + 1`, and the fresh divisor's shared-divisor exponent is `1` (it
+divides every generator to order `1`) — the DATA-A record a scalar weight cannot express. -/
 theorem radialAttach_d (D : SJDecoration M) (j₀ : ℕ) : (D.radialAttach j₀).d = D.d + 1 := rfl
 
 /-! ## Non-vacuity — a genuinely non-trivial (d = 1) decoration inhabitant -/
 
-/-- **Non-vacuity of the radial attach.** Starting from the trivial `(3,3,4)` decoration and attaching a
-single Case-2 radial with Jacobian exponent `3` (the `pq = 4` front block, `jac = pq − 1 = 3`), the
-resulting decoration has `d = 1` and its decorated loss is `u₀² · frobSq (prod M A)` — a genuinely
-non-trivial inhabitant exercising the radial machinery (not the degenerate `d = 0` case). Witnesses that
-the decoration + `radialAttach` fire on the primary STEP-0 anchor. -/
+/-- **Non-vacuity of the radial attach.** From the trivial `(3,3,4)` decoration, attaching a single
+Case-2 radial with Jacobian exponent `3` (the `pq = 4` front block, `jac = pq − 1 = 3`) gives a
+decoration with `d = 1` and decorated loss `u₀² · frobSq (prod M A)` — a genuinely non-trivial
+inhabitant exercising the radial machinery (not the degenerate `d = 0` case), on the STEP-0 anchor. -/
 example (u₀ : ℝ) (u : Fin 0 → ℝ) (A : Params (![3, 3, 4] : Fin 3 → ℕ)) :
     ((SJDecoration.trivial (![3, 3, 4] : Fin 3 → ℕ)).radialAttach 3).decLoss (Fin.cons u₀ u) A
       = u₀ ^ 2 * frobSq (prod (![3, 3, 4] : Fin 3 → ℕ) A) := by
