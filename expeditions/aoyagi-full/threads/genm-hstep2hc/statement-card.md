@@ -41,10 +41,20 @@ At `x₀`, `(paramsEquivFlat H).symm x₀ = deepestPoint`, and the basepoint val
   via `J = frontEmbed` (`pivotThresholdSplit_frontEmbed`) + `pivotFront_toBlocks₁₁_eq_chainCol` +
   `reindex_prod_eq_partProd`, and `prod deepestPoint = B`.
 
+**Bundled germs (drop-in for the `filter_upwards` assembly — the `∀ k` form at fixed `x`):**
+`eventually_all_isUnit_deepestChain_decode_toBlocks₁₁` (`∀ᶠ x, ∀ k, k < L → IsUnit …`) and
+`eventually_all_isUnit_partProd_deepestChain_decode_toBlocks₁₁` (`∀ᶠ x, ∀ k, k ≤ L → IsUnit …`), via
+`Finset.eventually_all` over `range L` / `range (L+1)`. (The per-`k` germs remain as the reviewed
+building blocks; the bundled forms remove the assembler's finite-intersection step.)
+
 **Supporting new lemmas (same file):** `deepestChain_toBlocks₁₁_eq_layer`,
 `deepestChain_toBlocks₁₂_eq_zero_of_cols_vanish`, `continuous_deepestChain_layer`,
 `continuous_partProd_deepestChain`, `partProd_deepestChain_deepestPoint_toBlocks₁₂_eq_zero`,
 `partProd_deepestChain_deepestPoint_toBlocks₁₁_isUnit`.
+
+**Fidelity review:** PASS on all three per-`k` germs (independent reviewer, line-by-line source match to
+the keystone `hLayer`/`hPart`/`hMid11inv`; `IsUnit ↔ Nonempty Invertible` conversion faithful; base,
+`hDA`/`J`/`hJfront` honest; non-vacuous). Card confirmed accurate.
 
 ## Piece 1 — `hC` (the core-side move readback) — WALL, precise sub-gap handed back
 
