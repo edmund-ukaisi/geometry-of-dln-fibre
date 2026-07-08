@@ -64,3 +64,28 @@ So **`hC ⟺ Claim-C` (`LHS = blockSchur(F' s)`) for all `s`.**
 **No wall** — the route is fully worked out and Codex-confirmed; the remainder is bounded reindex-readback
 plumbing (the statement card's original "step-6, est. 200–400 L, own focused tide"). NOT laundered into a
 sorry.
+
+## Update — boundary corner identity landed + the invertibility-threading finding
+
+- **Delivered (green, axiom-clean):** `psiFrame0_mul_deepestChain_deepestPoint_eq_corM` —
+  `psiFrame0 · deepestChain(deepestPoint) 0 = corM`. Via `deepestSplit_mp_basepoint` (`split w0 = 0`) +
+  `deepestChain_framed_layer0_eq` at `w0` + `deepestChain_corner_eq_corM` /
+  `framedParamsPivot_zero_eq_corner` (banked). (Imports added: `DeepestPsiHraw0Gen`, `DeepestSplitConcrete`.)
+  The last-layer analogue mirrors it via `deepestChain_framed_lastLayer_eq`.
+
+- **Boundary Claim-C route (fully de-risked):** for layer 0, `deepestChain_framedParamsPivot_firstLayer`
+  gives `F' 0 = corM + psiFrame0 · FBchain`; the corM identity + `fromBlocks_add` + reindex additivity +
+  `deepBlkY_layer0_zero`/`deepBlkT_layer0_zero` fold this to `F' 0 = psiFrame0 · N_0`, where
+  `N_0 = reduced-relabel(M_0^m)`. Then `blockSchur(F' 0) = blockSchur(psiFrame0·N_0) = blockSchur(N_0)`
+  (`blockSchur_lowerFrame_of_blocks`) `= reindex(cc,ss)(blockSchur M_0^m)` (`blockSchur_reindex_reduced`).
+  Symmetric at `L−1`.
+
+- **The finding (controller decision):** `blockSchur_lowerFrame_of_blocks` needs
+  `IsUnit (N_0.toBlocks₁₁) = IsUnit (deepBlkA_0 + gaugeReadX_moved 0)` — the **moved** synthetic pivot.
+  The keystone's `hLayer` is for the **decode** chain (a DIFFERENT gauge read), so it does not directly
+  supply it. It IS derivable: `(F' 0)₁₁ = P11·N_0₁₁` (from `F' 0 = psiFrame0·N_0`), and `(F' 0)₁₁ =
+  (movedC F 0)₁₁ = (F 0)₁₁ = P11·(D 0)₁₁` (hmove + `deepestChain_framed_layer0_eq`) is a unit; so
+  `N_0₁₁ = P11⁻¹·(F' 0)₁₁` is a unit. Either thread a moved-pivot-invertibility hyp (Producer-1
+  cutoff-ball-dischargeable) or derive via hmove inside. Both honest.
+
+Remainder after this: boundary Claim-C (2 layers) + the ∀s assembly. ~150 L.
