@@ -64,6 +64,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
 import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
 
 /-!
 # Axiom-hygiene check
@@ -618,6 +619,13 @@ open DLNFibre.DLN.RLCT
 -- = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`, no `cited_aoyagi_dln`).
 #print axioms lintegral_eq_sphereProd
 #print axioms lintegral_eq_polar
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer 3, the Schur→Score telescope (2026-07-08, `genm-hstep2tel`,
+-- reviewer-SURVIVED). `prod_deepestM_eq_schur_ldu_readback_gen` — the general-L mirror of the banked L=2
+-- `prod_deepestM_eq_schur_ldu_readback` (`prod (deepestM H r) C = ScoreIntegrand x` for the reduced-core
+-- reading back as the moved Schur cores). Feeds `hsub4core`; the compose (which also needs Producer 1)
+-- remains. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms prod_deepestM_eq_schur_ldu_readback_gen
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

@@ -914,3 +914,9 @@ import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
 -- pure route (Γ stays on the box), NOT the dead full-space Gram scaling. The anisotropic-corank ASSEMBLY
 -- (decorated_peel_step) + recursion + close-out remain; `sjJointResolution` UNTOUCHED (sole remaining R1-UPPER sorry).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
+-- D1 #120 `hstep2` — Producer 3, the Schur→Score telescope (thread `genm-hstep2tel`):
+-- `prod_deepestM_eq_schur_ldu_readback_gen` (general-L mirror of the banked L=2 `prod_deepestM_eq_schur_ldu_readback`
+-- — `prod (deepestM H r) C = ScoreIntegrand x` for the reduced-core tuple reading back as the moved Schur cores)
+-- + the reduced-core `Fin↔ℕ` fold bridge + frame-strip. Feeds `hsub4core`. `hstep2` UNTOUCHED — the compose
+-- (`hsub4core` germ, needs Producer 1 too) remains.
+import DLNFibre.DLN.RLCT.Validate.DeepestSchurScoreTelescopeGen
