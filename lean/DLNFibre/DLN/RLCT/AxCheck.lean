@@ -79,6 +79,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeCommonPivot
 import DLNFibre.DLN.RLCT.Validate.D1GeBlockProd
 import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
+import DLNFibre.DLN.RLCT.Validate.D1GeChart
 
 /-!
 # Axiom-hygiene check
@@ -777,3 +778,6 @@ open DLNFibre.DLN.RLCT
 -- remain. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms blockSchur_partProd_asym_fold
 #print axioms prefixPivotDomGen
+-- rungs 4–5: the chart MAP `schurChartRawGen` + its VALIDATION `recoverProductGen_schurChartRawGen` (the packing
+-- rebuilds the product). Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms recoverProductGen_schurChartRawGen

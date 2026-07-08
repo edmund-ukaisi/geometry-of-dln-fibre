@@ -27,10 +27,15 @@
 >   invertibility (`Invertible (partProd C k).toBlocks₁₁`), supplied by rung 1. NO per-layer pivot.
 > - **Cited.** none. Reuses banked `Core.schur_product_factor` (the asymmetric brick, reviewed),
 >   `partProd`/`blockSchur` (`DeepestSchurRecursion`), and pieces (i)/(ii).
-> - **Deferred.** The chart itself (rungs 4–8): `schurChartRawGen` (same-type packed chart map) +
->   readbacks, `recoverProductGen`, `schurChartRawInvGen` (rational two-sided inverse), the `ContDiff`
->   lemmas, and `schurChart_global_gen` + `schur_loss_germ_gen` (the `∃ Φ, ContDiff² ∧ HasFDerivAt ∧
->   fixes 0 ∧ germ` producer). These are the ~1000-line analytic bulk of piece (iii), NOT done here.
+> - **Rungs 4–5 DONE (follow-on, `lean/DLNFibre/DLN/RLCT/Validate/D1GeChart.lean` @ `c2569d13`).**
+>   `schurChartRawGen` (the same-type packed chart map, Codex-settled packing) + readbacks (all `rfl`);
+>   `blockDiagProd`, `recoverProductGen`, `recoverProductGen_schurChartRawGen` — the packing is
+>   VALIDATED (`recoverProductGen (schurChartRawGen C (last+1)) last = partProd C (last+1)`, via rung 3
+>   + the `blockSchur` rearrangement). All sorry-free, axiom-clean three.
+> - **Deferred (rungs 6–8).** `schurChartRawInvGen` (rational two-sided inverse — the algebra ceiling),
+>   the `ContDiff` lemmas, and `schurChart_global_gen` + `schur_loss_germ_gen` (the `∃ Φ, ContDiff² ∧
+>   HasFDerivAt ∧ fixes 0 ∧ germ` producer feeding `d1ge_hAtV_of_explicit_chart_genL`). The remaining
+>   analytic bulk of piece (iii).
 > - **Structure & ideas observed.** The asymmetric route (Codex-decomposed): iterate
 >   `schur_product_factor` on `(prefix P_s)·(layer v_s)`, where each step needs only the two prefix
 >   pivots. The telescope has NO interspersed unipotent corrections (contrast the symmetric `coreProd`
@@ -38,4 +43,5 @@
 >   product-pivot-relative rather than layer-relative.
 > - **Route.** Asymmetric telescope, prefix-pivots-only (Codex xhigh,
 >   `threads/genm-geleg1/codex/piece-iii-decomp-{prompt,answer}.md`).
-> - **Status.** sorry-free (rungs 1–3 of piece iii; pending reviewer + rungs 4–8).
+> - **Status.** sorry-free (rungs 1–5 of piece iii — telescope + chart map + packing + validation;
+>   pending reviewer + rungs 6–8).

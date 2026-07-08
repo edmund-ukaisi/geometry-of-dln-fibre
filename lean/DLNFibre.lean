@@ -1002,3 +1002,9 @@ import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 -- Discharges IN LEAN the load-bearing ≥-leg design risk: the general-L chart avoids hLayer/Cauchy-Binet.
 -- Remaining chart-data (iii) rungs 4–8 (chart map Φ + inverse + ContDiff + germ) + (iv) — a further session.
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
+-- `D1GeChart` — ≥-leg chart-data (iii) rungs 4–5: the corner-elimination chart MAP + its VALIDATION.
+-- `schurChartRawGen` (the same-type packed chart `BlockParamsGen→BlockParamsGen`, closed-form per-slot packing)
+-- + `recoverProductGen_schurChartRawGen` (the packing is PROVEN to rebuild the product: `recoverProductGen
+-- (schurChartRawGen C (last+1)) last = partProd C (last+1)`, via the rung-3 telescope). Chart defined + correctness
+-- confirmed in Lean. Remaining (iii) rungs 6–8 = inverse + ContDiff + the global germ producer.
+import DLNFibre.DLN.RLCT.Validate.D1GeChart

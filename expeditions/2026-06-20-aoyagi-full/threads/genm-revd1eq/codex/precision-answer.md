@@ -1,0 +1,7 @@
+1. **BORDERLINE**: conditionally honest in Lean because `hRValue` and `hD1` are explicit hypotheses, but the unqualified “learning coefficient” name reads like the headline theorem even though the global-minimum and core-value work are imported wholesale. It is not an outright statement-level overclaim, but a more precise name would include `_of_coreValue_of_deepestInf` or similar.
+
+2. Yes. `hD1` is an equality `⨅ = rlctAt deepestPoint`, while the hard D1 “≥-leg” is only the nontrivial inequality needed to prove that equality; the other inequality comes for free from `deepestPoint ∈ optimalSet`. The parenthetical formula helps, but calling the equality itself “the D1 ≥-leg” is a precision slip.
+
+3. Concrete intended front-pivot config: take `L = 2`, `H s = 2` for all `s : Fin 3`, `r = 1`, and `B = [[1, 0], [0, 0]]`. Then `r < H s`, `B.rank = 1`, the top one row has rank `1`, and the first column is a rank-`1` pivot column. What this does not witness by itself is Lean’s exact `hJfront`, because that says the arbitrary `.choose` from `deepestPoint_frame_pivot_exists` is the front embedding. So there is no obvious mathematical vacuity, but the `.choose` equality still needs a pinning/uniqueness lemma or a front-specific producer.
+
+4. Closing `hstep2` established the `L ≥ 3` front-pivot deepest-point gauge-chart RLCT equality from the true DLN loss to the split flat model “regular square shift plus absorbed reduced core,” before any R1 value evaluation or D1 infimum reduction.
