@@ -2198,3 +2198,19 @@ opaque-width `(3,3,3,4) t=(1,0,0)` shared-support closure de-risk; refuse-to-bui
 = the bounded general-`(L,S,J)` chart lemma's shared-support closure (the STEP-0 subject). (Operator: NO action
 — #58 de-escalated; recorded that the R1-UPPER close is now a ~12-20-tide native-recursion BUILD [honest ETA
 update], on an adjudicated-viable route with a verify-first gate, footprint-neutral fallback if it walls.)
+
+## 58 (further sharpened, 2026-07-08) — R1-UPPER monument revealed carrier-insufficiency a 2ND time; adjudication in flight (r1carrier).
+`sjbuild4` (building the decorated recursion) found CONCRETELY that the banked `SJDecoration` carrier cannot
+express the Z-block-peel/chain-descent the recursion needs — the SECOND build-time carrier-insufficiency after
+r1predicate's separable-form divergence. Honest read: the R1-UPPER from-scratch monument (the (S,J) integral-level
+double induction) is a genuine LARGE construction that keeps revealing required infrastructure — a dedicated
+multi-tide+ sub-expedition, NOT a few-tide close. It remains NOT a math wall (value certified via Aoyagi;
+STEP-0 shared-support gate passed; the S2-free terminal lower bound now banked). The build-vs-cite is STILL
+footprint-NEUTRAL (the cite fallback rests on the already-carried `cited_aoyagi_dln`), so per the mandate the
+DEFAULT stays (A) BUILD. Charged `r1carrier` to (A) pin the chain-descending carrier re-scope + (B) adjudicate,
+on `(3,3,4)`, whether the `peelZBlock` CoV is a BOUNDED composition of the banked regime atoms or GENUINELY-NEW
+res-of-sing (→ a real operator build-vs-cite). (Operator: NO action yet — the honest sizing is that R1-UPPER's
+box-finiteness BUILD is a substantial sub-expedition [the carrier + double induction], each build-attempt
+surfacing more carrier infra; if r1carrier's (B) returns "genuinely res-of-sing / beyond break-it-down Lean
+reach", I escalate the footprint-neutral build-vs-cite for your call. D1 #120 is UNAFFECTED — its algebraic
+mountain is DONE [full hmove proven]; only bounded analytic work remains.)
