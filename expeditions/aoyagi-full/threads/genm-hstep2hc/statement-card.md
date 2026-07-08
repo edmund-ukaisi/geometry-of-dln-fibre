@@ -62,20 +62,29 @@ the keystone `hLayer`/`hPart`/`hMid11inv`; `IsUnit ↔ Nonempty Invertible` conv
 `absorbedCoreConj_eq_blockSchur_synthetic` in `lean/DLNFibre/DLN/RLCT/Validate/DeepestHsub4coreHCGen.lean`
 — the generic reduction `coreRead pc s + schurCorrectionConj pg s = blockSchur(fromBlocks (deepBlkA+X)
 (deepBlkY+Y) (deepBlkZ+Z) coreRead)` (pure algebra, `nonsing_inv_eq_ringInverse`). Confirms `M_s`.
-**DELIVERED so far (green, 0 warnings, pushed):** step-A `absorbedCoreConj_eq_blockSchur_synthetic`
-AND **lemma-1** `deepestChain_toBlocks₁₂_eq_layer` / `…₂₁…` / `…₂₂…` (the off-diagonal/core analogues
-of the Piece-2 `…₁₁…` bridge, matching the framed-block reindex convention).
+**DELIVERED so far (green, 0 warnings, pushed):**
+- step-A `absorbedCoreConj_eq_blockSchur_synthetic`;
+- **lemma-1** `deepestChain_toBlocks₁₂/₂₁/₂₂_eq_layer` (off-diagonal/core bridge trio);
+- **lemma-2** `deepestPoint_interior_rows_vanish`, `deepBlkZ_interior_zero`, `deepBlkT_interior_zero`
+  (interior-vanishing helpers; rows-mirror of the banked cols version).
 
-**Remaining (all banked pieces, no new math, ~200-300 L) — precise lemma list + proof sketch:**
-2. interior-vanishing helpers `deepBlkZ_interior_zero` / `deepBlkT_interior_zero` (~10 L each; mirror the
-   banked `deepBlkY_interior_zero`; `deepBlkZ` via `deepestPoint_interior_eq_corM` + `if_neg` on row `≥ r`,
-   `deepBlkT` via `deepestPoint_interior_cols_vanish`).
-3. `deepestChain_framed_eq_decode_interior` — for interior `s` (`0<s`, `s+1<L`, `Pf s = Qf s = 1`),
-   `deepestChain(framedParamsPivot(split x)) s = deepestChain(decode x) s` (both chain-width, SAME type;
-   `← fromBlocks_toBlocks` + 4 block equalities: framed via `deepestChain_framedParamsPivot_blocks_of_frame_one`,
-   decode via lemma-1 + `reindex_decode_blocks_split`, matched by interior `deepBlkA=1`/`deepBlkY=Z=T=0`).
-4. `blockSchur_deepestChain_framed_eq_decode` (per-`s`): interior via (3); boundary (`s∈{0,L-1}`) via
-   `blockSchur_lowerFrame_left`/`_rightUpper_right` (banked) — framed layer = endpoint-frame · decode-layer.
+**Refined remaining structure (KEY insight — one lemma is reused twice):** the two "framed↔decode"
+steps both reduce to a single **frame-invisibility (FI)** lemma:
+> **lemma-FI** `blockSchur_reindex_decode_eq_framedChain`: for a flat point `w`,
+> `blockSchur (reindex (rThr)(rThr) (decode w) s) = blockSchur (deepestChain (framedParamsPivot (split w)) s)`
+> (modulo the lemma-1 `finCongr` width relabel). Interior `s`: the two layers are EQUAL (deepest-interior =
+> corM, via lemma-2 + `deepestChain_framedParamsPivot_blocks_of_frame_one`). Boundary `s∈{0,L-1}`: frame-
+> invisibility of the endpoint frame (`blockSchur_lowerFrame_left`/`_rightUpper_right`, banked; unpack
+> `framedParamsPivot` at layer 0 / last).
+
+Then:
+3. **step B** = FI at `w = wψ` (`split wψ = psiSplitRawGen q`) ▸ step-A ▸ banked `absorbedCoreConj_eq_schurCore`:
+   `absorbedCore(psiSplitRawGen q) s = blockSchur(framedChain(psiSplitRawGen q) s)`.
+4. **step 4a** = FI at `w = x`: `blockSchur(decodeChain x s) = blockSchur(framedChain(split x) s)` (base chains).
+5. **lemma-Kcoup** (the crux) `Kcoup(framedChain(split x)) s = Kcoup(decodeChain x) s` — `partProd(F) =
+   lowerFrame·partProd(D)` (`P11` cancels) + `Kcoup_zero` at k=0 + last-layer pivot.
+6. **step D** = `schurTilde F s = schurTilde D s` from 4a + 5 (Invariant B `blockSchur(movedC)=schurTilde`).
+7. **assemble hC** = step-B ▸ `psiSplitRawGen_deepestChain_hmove` ▸ step-D + width casts.
 5. `Kcoup_framed_eq_decode` (the crux; `partProd(F) = lowerFrame·partProd(D)` factoring so `P11` cancels,
    + `Kcoup_zero` at k=0, + last-layer pivot). Then `schurTilde F s = schurTilde D s` from (4)+(5).
 6. assemble hC = step-A ▸ (4)+(5)-via-`schurTilde`(Invariant B) ▸ `psiSplitRawGen_deepestChain_hmove`

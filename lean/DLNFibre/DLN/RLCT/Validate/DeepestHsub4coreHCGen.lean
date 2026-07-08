@@ -1,6 +1,8 @@
 import DLNFibre.DLN.RLCT.Validate.DeepestPsiSplitRawGenMove
 import DLNFibre.DLN.RLCT.Validate.DeepestLDUReadback
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
+import DLNFibre.DLN.RLCT.Validate.DeepestDeepBlkBoundaryGen
+import DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreInvGerm
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.DeepestHsub4coreHCGen` — the general-`L` `hC` core-side move readback
@@ -96,5 +98,51 @@ theorem deepestChain_toBlocks₂₂_eq_layer (H : Fin (L + 1) → ℕ) (r : ℕ)
     deepestChain, deepestChainLayer, dif_pos hk, deepestChainSplit,
     rThresholdSplit_symm_inr, finCongr_symm, finCongr_apply]
   congr 1
+
+/-! ## Interior-layer deepest-block vanishing (`deepBlkZ`, `deepBlkT`) -/
+
+/-- **Interior deepest layers vanish at rows `≥ r`** (rows-mirror of the banked cols version): the
+interior corner `diag(I_r, 0)` (`deepestPoint_interior_eq_corM`) is `0` at any row `≥ r`. -/
+theorem deepestPoint_interior_rows_vanish (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L)
+    (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) (hi : r ≤ (i : ℕ)) :
+    deepestPoint H r B hB hr hL s i j = 0 := by
+  rw [deepestPoint_interior_eq_corM H r B hB hr hL s hpos hlt]
+  simp only [Matrix.of_apply]
+  rw [if_neg]
+  rintro ⟨_, h⟩
+  omega
+
+/-- **`deepBlkZ_s = 0` at interior layers.** `toBlocks₂₁` reads rows `≥ r`, where the interior
+corner is `0` (`deepestPoint_interior_rows_vanish`). Mirror of `deepBlkY_interior_zero` on rows. -/
+theorem deepBlkZ_interior_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    deepBlkZ H r B hB hr hL s = 0 := by
+  funext i j
+  change (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inl j)) = 0
+  rw [rThresholdSplit_symm_inr]
+  exact deepestPoint_interior_rows_vanish H r B hB hr hL s hpos hlt _ _ (by simp)
+
+/-- **`deepBlkT_s = 0` at interior layers** (`(reindex deepest)_s.toBlocks₂₂ = 0`): `toBlocks₂₂`
+reads rows `≥ r`, killed by the interior corner (`deepestPoint_interior_rows_vanish`). -/
+theorem deepBlkT_interior_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (s : Fin L)
+    (hpos : 0 < (s : ℕ)) (hlt : (s : ℕ) + 1 < L) :
+    (Matrix.reindex (rThresholdSplit r (H s.castSucc) (hr s.castSucc))
+        (rThresholdSplit r (H s.succ) (hr s.succ))
+        (deepestPoint H r B hB hr hL s)).toBlocks₂₂ = 0 := by
+  funext i j
+  change (deepestPoint H r B hB hr hL s)
+      ((rThresholdSplit r (H s.castSucc) (hr s.castSucc)).symm (Sum.inr i))
+      ((rThresholdSplit r (H s.succ) (hr s.succ)).symm (Sum.inr j)) = 0
+  rw [rThresholdSplit_symm_inr]
+  exact deepestPoint_interior_rows_vanish H r B hB hr hL s hpos hlt _ _ (by simp)
 
 end DLNFibre.DLN.RLCT
