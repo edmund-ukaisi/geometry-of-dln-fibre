@@ -62,6 +62,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
+import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
 
 /-!
 # Axiom-hygiene check
@@ -600,6 +601,13 @@ open DLNFibre.DLN.RLCT
 -- germs5-9) DONE; the remaining `hstep2` gap is ANALYTIC (triple + IsUnit germs + telescope + compose).
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms psiSplitRawGen_deepestChain_hmove
+
+-- ★ D1 ∀-L #120 `hstep2` — Producer 2, the `hsub3reg` reg-preservation germ (2026-07-08, `genm-hstep2germs11`,
+-- reviewer-SURVIVED). `hsub3reg_gen_germ` — the `deepestEFull`-form of the bridge's `hsub3reg` hypothesis
+-- (`∀ᶠ x near wstar`), assembling the three base-chain eventual-unit germs with the banked full `hmove` +
+-- `deepestEFull_sq_sum_eq_of_chain_movedC`. The compose needs Producer 1 (diffeo triple, large) + Producer 3
+-- (telescope). Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
+#print axioms hsub3reg_gen_germ
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

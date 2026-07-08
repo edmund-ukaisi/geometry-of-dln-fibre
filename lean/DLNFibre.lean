@@ -901,3 +901,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryDecode
 -- `hstep2` UNTOUCHED — the remaining gap is ANALYTIC: the diffeo triple + IsUnit germs + Schur→Score
 -- telescope + compose.
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
+-- D1 #120 `hstep2` — Producer 2, the `hsub3reg` reg-preservation germ (thread `genm-hstep2germs11`):
+-- `hsub3reg_gen_germ` (`∀ᶠ x near wstar, ∑ deepestEFull(psiSplitRawGen(split x))² = ∑ deepestEFull(split x)²`)
+-- — assembles the three base-chain eventual-unit germs (hA/hP/hN, `∀k` collapsed to a finite range) with the
+-- banked `psiSplitRawGen_deepestChain_hmove` + `deepestEFull_sq_sum_eq_of_chain_movedC` + reusable infra
+-- (`eventually_isUnit_of_continuousAt_det`, base-chain/partProd `ContDiff`, corner lemmas). `hstep2` UNTOUCHED
+-- — the compose needs Producer 1 (the diffeo triple, large) + Producer 3 (the Schur→Score telescope).
+import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
