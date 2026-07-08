@@ -2286,3 +2286,21 @@ the SECOND decorrelated model. (Operator: no action required — flagging for aw
 decorrelation, a re-auth (`/design-login` / codex auth) would restore it. The controller continues to require an
 independent reviewer on every load-bearing tide regardless, so no gate is dropped — only the Codex cross-check is
 best-effort when auth is present.)
+
+## 62. R1-UPPER descent shift RE-SCOPED — pinned `ab`-shift unsound → rank-corrected `a·s` (sjdescent, 3 decorrelated lines). BOUNDED refinement, not a wall; #60 stands. (2026-07-08)
+`sjdescent` (STOP+report, 0 Lean) found the pinned `decorated_peel_step` descends the anisotropic corank block at
+shift `c'−ab/2` (`ab=peelCharge`) to the isotropic brick — UNSOUND: with `s:=rank Q_b`, `Γ↦Γ·Q_b` has kernel dim
+`a·(b−s)` carrying NO decay, so the achievable shift is `a·s/2`, not `ab/2` (bites on full measure on the `b>n`
+bottleneck charts). 3 decorrelated lines (hand + Codex `concern-correct` + exact-algebra + numeric). **NOT a
+flip of the bounded verdict (#60 stands):** the `(2,4,1) t=1` cross-check shows `minAdm = a·s + minAdm(redChain)`
+(rank-CORRECTED, equality) — so the SOUND route is a rank-stratified descent at `a·s/2` with rank-corrected
+charge, and the evidence suggests it sums to `½·minAdm`. The banked foundation (CoV, measurability, carrier,
+radial-attach) STANDS; only the descent SHAPE + the charge accounting (`ab`→`a·s`) re-scope. This is the 3rd
+descent-level subtlety (carrier-can't-peel #58→sjbuild4; atom-vs-pure #59/#60; now `ab`-vs-`a·s`) — each bounded,
+each refining the pure route; the honest ETA on R1-UPPER's descent is a genuine multi-tide grind (the descent
+keeps revealing accounting subtleties), NOT one crux tide. **Charged `r1rankcharge`** (pen-and-paper + Codex):
+adjudicate whether the rank-corrected `a·s` charge sums to `½·minAdm` ∀ the recursion (test (2,4,1)/(3,3,4)/
+(3,3,3,4)/(4,4,2,2)) + pin the rank-stratified descent primitive. R1-UPPER heavy descent-build HELD pending its
+verdict; D1 given both heavy slots meanwhile (its close is nearer). (Operator: NO action — a bounded re-scope,
+recorded for honesty; if `r1rankcharge` refutes the `a·s` closure [unlikely given the (2,4,1) equality], THAT
+would be a genuine gap I'd escalate. Else the descent re-scopes to rank-stratified + rebuilds, still cite-free.)
