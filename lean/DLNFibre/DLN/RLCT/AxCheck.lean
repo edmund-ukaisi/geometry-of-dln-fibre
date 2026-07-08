@@ -63,6 +63,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRowMix
 import DLNFibre.DLN.RLCT.Validate.RouteMSJMonomialLower
 import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
 import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
 
 /-!
 # Axiom-hygiene check
@@ -608,6 +609,15 @@ open DLNFibre.DLN.RLCT
 -- `deepestEFull_sq_sum_eq_of_chain_movedC`. The compose needs Producer 1 (diffeo triple, large) + Producer 3
 -- (telescope). Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`).
 #print axioms hsub3reg_gen_germ
+
+-- ★ R1-UPPER `decorated_peel_step` item 1 — the pure spherical blow-up CoV (2026-07-08, `genm-sjpeelstep`,
+-- reviewer-AUDIT-PASSED). `lintegral_eq_sphereProd` (MP `∫⁻` polar blow-up `Γ=r•ω`, via
+-- `measurePreserving_homeomorphUnitSphereProd`) + `lintegral_eq_polar` (iterated, exposing the `r^{N−1}`
+-- Jacobian — the `c'↦c'−N/2` shift). The PURE route (Γ on the box, NOT the dead full-space Gram scaling).
+-- The anisotropic-corank assembly + recursion + close-out remain. Cite-NOTHING: forced `#print axioms`
+-- = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`, no `cited_aoyagi_dln`).
+#print axioms lintegral_eq_sphereProd
+#print axioms lintegral_eq_polar
 
 -- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
 -- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +

@@ -908,3 +908,9 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHmoveGen
 -- (`eventually_isUnit_of_continuousAt_det`, base-chain/partProd `ContDiff`, corner lemmas). `hstep2` UNTOUCHED
 -- — the compose needs Producer 1 (the diffeo triple, large) + Producer 3 (the Schur→Score telescope).
 import DLNFibre.DLN.RLCT.Validate.DeepestChainUnitGerm
+-- R1-UPPER `decorated_peel_step` item 1 — the PURE spherical blow-up CoV (thread `genm-sjpeelstep`):
+-- `lintegral_eq_sphereProd` (the MP `∫⁻` polar blow-up `Γ=r•ω` via `measurePreserving_homeomorphUnitSphereProd`)
+-- + `lintegral_eq_polar` (iterated form exposing the `r^{N−1}` Jacobian = the `c'↦c'−N/2` shift shape). The
+-- pure route (Γ stays on the box), NOT the dead full-space Gram scaling. The anisotropic-corank ASSEMBLY
+-- (decorated_peel_step) + recursion + close-out remain; `sjJointResolution` UNTOUCHED (sole remaining R1-UPPER sorry).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
