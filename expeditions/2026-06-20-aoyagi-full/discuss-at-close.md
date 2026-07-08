@@ -2176,3 +2176,25 @@ the already-BUILT L=2 conj machinery — `hstep2germs5` in flight). (Operator: a
 build-vs-cite decision, recorded per the autonomous mandate; I default to BUILD + am adjudicating tractability
 first, not blocking — but if you want to pre-empt with "cite Aoyagi's principalisation for the corank-≥2
 stratum," that collapses the R1-UPPER long pole to a named interface.)
+
+## 58 — RESOLVED → (A) BUILD viable, footprint-neutral fallback; NO operator escalation needed (2026-07-08, r1decorated + decorrelated Codex, BUILD conf 0.72).
+The build-vs-cite adjudication returned decisively: **BUILD is viable, and even the CITE fallback adds NO
+new footprint** — so #58 is not a genuine cite-footprint operator call after all. UPDATE-690 CONFLATED two
+objects: (1) the **atom-route** product-Gram principalisation of `det(Q_b Q_bᵀ)` IS genuinely res-of-sing
+(Mathlib-lacking) — but it is an **AVOIDABLE trap**, only formed if you integrate the corank block out (the
+atom route sjcorankadj/#55 already said to retire); (2) the **native R-BLOWUP depth/arity recursion** never
+forms the Gram determinant and is `(A)` break-it-down buildable on the banked radial/chart engine. So
+sjcarrier9's exhausted "plain-IH measure route" WAS the atom route; the native route sidesteps it — reconciling
+sjcorankadj (native=bounded) with the wall-review/sjcarrier9 (atom=wall). Decorrelated Codex reached BUILD
+INDEPENDENTLY (same mechanism, same residual risk, which r1decorated then probed and found bounded).
+**Decorated contract pinned Lean-ready:** decorate by the radial-monomial `diag(b)` + support map (NOT the
+Gram-weight `W_π` — that is the atom-flavor trap); threshold collapses (3592/3592) to `Θ(M,π)=½·minAdm(remChain
+π)`; `sjJointResolution` = the `π=∅` consumer. **CITE fallback correction:** it rests on the ALREADY-CARRIED
+`RlctInterface.cited_aoyagi_dln` (the payoff's rlct=½·codim citation), so the axiom footprint is UNCHANGED
+either way — UPDATE-690's "add a 2nd interface" was wrong. **Decision (autonomous, per mandate): (A) BUILD the
+native arity/R-BLOWUP decorated recursion** (~12-20 tides, removes the finiteness's dependence on the cite —
+honors the from-scratch-cite-only-S2 mission) — charged `sjnative` with a VERIFY-FIRST STEP-0 gate (the
+opaque-width `(3,3,3,4) t=(1,0,0)` shared-support closure de-risk; refuse-to-build if it fails). Residual risk
+= the bounded general-`(L,S,J)` chart lemma's shared-support closure (the STEP-0 subject). (Operator: NO action
+— #58 de-escalated; recorded that the R1-UPPER close is now a ~12-20-tide native-recursion BUILD [honest ETA
+update], on an adjudicated-viable route with a verify-first gate, footprint-neutral fallback if it walls.)
