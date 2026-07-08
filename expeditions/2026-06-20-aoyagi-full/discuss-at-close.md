@@ -2384,3 +2384,18 @@ build it** (it owns the 7-step route + the analogue pointer; resume-not-duplicat
 Codex verdict) merged to the record. (Operator: NO action — a bounded sub-gap build, the anticipated framed-vs-decode
 reconciliation, now pinpointed to a single mirror-of-`regBlocks_movedC` lemma. The one thing I'd escalate: if the
 Kcoup invariance turns out to need math beyond the reg-side analogue — not expected.)
+
+## 67. ⚙ SUBSTRATE BUG: worktree-dir COLLISION between two teammates (genm-r1frontcharge-wt hijacked by genm-hderiv0b). Mitigated, no work lost — but operator should be aware. (2026-07-08)
+`r1frontcharge` reported (and I confirmed via the recurring "Shell cwd was reset to
+`/home/ubuntu/workspace/genm-r1frontcharge-wt`" notifications hitting the CONTROLLER shell) a worktree
+coordination bug: `r1frontcharge`'s assigned worktree dir `genm-r1frontcharge-wt` was hijacked mid-work by an
+external `git checkout genm-r1frontcharge → genm-hderiv0b` (reflog), and now holds branch `genm-hderiv0b` with
+`hderiv0b`'s UNCOMMITTED piece-(b) work (`M DeepestPsiHderiv0Gen.lean`). So TWO teammates' worktrees resolved to
+the SAME dir. `r1frontcharge` did NOT disturb hderiv0b's work — it VACATED to a fresh clean worktree
+`/home/ubuntu/workspace/r1fc-clean` and completed there (deliverable byte-identical + re-verified green + axiom-clean
+on `genm-r1frontcharge`). **Mitigation taken:** (i) nudged `hderiv0b` to commit+push its in-progress work to
+`origin/genm-hderiv0b` immediately (bank against clobber); (ii) controller will NOT clean/touch `genm-r1frontcharge-wt`
+(hderiv0b is live in it); (iii) all controller git ops use explicit `cd` to the canonical checkout, so the shell-cwd
+resets never affected canonical. **No work lost.** This is an Agent-Teams worktree-assignment/cwd coordination bug
+(two agents → one dir) — flagging for the operator in case it needs a substrate/config fix; it recurred as the
+persistent "Shell cwd was reset" notifications this session. Not blocking; the mission continues.
