@@ -6,7 +6,7 @@ worktrees and branches, and at scale — a single repo has held ~280 worktrees a
 opaque names hide *who owns what* and *what is safe to remove*. This policy keeps ownership and lifecycle
 legible from a name alone, and keeps cleanup safe.
 
-Companion to [`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline (the `origin` / `dev` / `master` flow
+Companion to [`../../CLAUDE.md`](../../CLAUDE.md) § Branch discipline (the `origin` / `dev` / `main` flow
 and the push/PR gates) and [`expedition.md`](expedition.md) § Isolation (worktree isolation + the
 sole-merger rule).
 
@@ -41,6 +41,14 @@ breaks git; the worst case is a name that is harder to grep:
   `…/t02-zeta`, `…/rev-fidelity`). Filesystem directories have no ref-collision problem, so grouping by
   directory is safe *here* and is the highest-leverage piece: ownership is the `<slug>` path segment
   (`git worktree list | grep "/<slug>/"`) and cleanup is exactly that set.
+  - *Who sits where (reconciling with [`expedition.md`](expedition.md) § Isolation):* true per-teammate
+    isolation via `isolation:"worktree"` needs the controller in the **main checkout**. When the main
+    checkout is occupied by another expedition (the usual case in a busy repo), the controller instead runs
+    in `<slug>/root`, and `isolation:"worktree"` spawns then **collapse onto it** — so thread worktrees under
+    `<slug>/` are either the shared root (run serially, one-builder-at-a-time) or ones the controller adds
+    **explicitly** (`git worktree add .claude/worktrees/<slug>/t02-zeta <branch>`), pointing the teammate at
+    that absolute path. This convention is a *naming/grouping* layer over whichever isolation regime applies;
+    it does not by itself create isolation.
 - **What we do NOT rename:** substrate-created scratch worktrees (`agent-<hash>`, the Agent-Teams runtime
   pool) are named by the harness, not the expedition — out of scope here. Discipline only what the
   expedition itself creates.
@@ -58,7 +66,9 @@ one thing cleanup actually lacked — *ownership derivable from the name* — wi
   pushed root is the authoritative store of the expedition's completed work: a thread worktree can then be
   lost without losing its work, and `origin/expedition/<slug>` always reflects what is done. The controller
   keeps the root synced to remote and pushes often — the worst case is then a stale worktree, never lost
-  work. (This is the day-to-day meaning of "`origin` is the bank", not only the close-out PR.)
+  work. (This is the day-to-day meaning of "`origin` is the bank", not only the close-out PR.) An **in-flight**
+  thread, not yet merged up, is banked the same way — by pushing *its own* branch
+  (`expedition/<slug>--tNN…`) to `origin`; no thread is ever the sole local copy of its work.
 - **At close — the `→ dev` PR is the final bank.** Because completed threads are already merged into the
   root, once the root's PR merges to `dev` its whole history is an ancestor of `dev` *by construction* —
   closeout needs no per-branch forensic audit.
@@ -73,10 +83,13 @@ motion — so most of the cleanup is a set of final commits on the root, done be
 
 **Before signalling "ready to merge"** (all on the expedition root):
 
-1. **Tidy sub-branches into the root.** Each landed thread is merged into `expedition/<slug>`; then reclaim
+1. **Tidy sub-branches into the root.** Each *landed* thread is merged into `expedition/<slug>`; then reclaim
    its now-redundant worktree (`git worktree remove` — plain, which *refuses* on uncommitted/untracked
    changes; `--force` only once the sole obstruction is confirmed to be the gitignored `.lake` symlink) and
-   delete its absorbed sub-branch **local + remote** (safe — its commits are in the root).
+   delete its absorbed sub-branch **local + remote** (safe — its commits are in the root). An *abandoned*
+   thread (a dead end, never merged) is handled explicitly — an owner decision to discard (remove its
+   worktree + delete its branch, since its commits are **not** in the root) or, if it has salvage value, to
+   leave its branch on `origin` as a recorded dead-end. Do not leave it as ambiguous "unmerged" cruft.
 2. **Fold close-out docs into the root** (synthesis, README/ROADMAP status, lessons) as the final
    cleanup commits, and **push the root to `origin`**. `origin/expedition/<slug>` now holds the complete,
    banked expedition.
