@@ -93,6 +93,34 @@ theorem hasStrictFDerivAt_matrix_mul_entry_zero_of_both_zero
     funext y; rw [Matrix.mul_apply, Finset.sum_apply]]
   simpa using hsum
 
+/-- `(A·B)_{ab}` strict-`fderiv`-`0` with a CONSTANT left factor `A` and a `B` whose relevant column
+strict-derives to `0` (each summand `A_{ak}·B_{kb}` is `const • g` with `D g = 0`). -/
+theorem hasStrictFDerivAt_const_matrix_mul_entry_zero
+    {m n p : Type*} [Fintype n]
+    (A : Matrix m n ℝ) {B : X → Matrix n p ℝ} {x : X} (a : m) (b : p)
+    (hB : ∀ k, HasStrictFDerivAt (fun y => B y k b) (0 : X →L[ℝ] ℝ) x) :
+    HasStrictFDerivAt (fun y => (A * B y) a b) (0 : X →L[ℝ] ℝ) x := by
+  have heq : (fun y => (A * B y) a b) = ∑ k : n, (fun y => A a k * B y k b) := by
+    funext y; rw [Matrix.mul_apply, Finset.sum_apply]
+  rw [heq]
+  have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset n))
+    (fun k _ => (hB k).const_mul (A a k))
+  simpa using hsum
+
+/-- `(A·B)_{ab}` strict-`fderiv`-`0` with a CONSTANT right factor `B` and an `A` whose relevant row
+strict-derives to `0`. -/
+theorem hasStrictFDerivAt_matrix_mul_const_entry_zero
+    {m n p : Type*} [Fintype n]
+    {A : X → Matrix m n ℝ} (B : Matrix n p ℝ) {x : X} (a : m) (b : p)
+    (hA : ∀ k, HasStrictFDerivAt (fun y => A y a k) (0 : X →L[ℝ] ℝ) x) :
+    HasStrictFDerivAt (fun y => (A y * B) a b) (0 : X →L[ℝ] ℝ) x := by
+  have heq : (fun y => (A y * B) a b) = ∑ k : n, (fun y => A y a k * B k b) := by
+    funext y; rw [Matrix.mul_apply, Finset.sum_apply]
+  rw [heq]
+  have hsum := HasStrictFDerivAt.sum (u := (Finset.univ : Finset n))
+    (fun k _ => (hA k).mul_const (B k b))
+  simpa using hsum
+
 end MatrixEntryDerivGen
 
 /-! ## Piece (a) — the payload lens
@@ -1049,22 +1077,149 @@ theorem hasStrictFDerivAt_genMovedTsub_entry_zero (H : Fin (L + 1) → ℕ) (r :
       (fun a b => by rw [genChain_zero_toBlocks₁₂ H r hr hL J hJfront Pf Qf k hk, Matrix.zero_apply])
   simpa using (ha.sub hb).sub hc
 
-/-- **Pieces (b)+(c), gauge slot.** The gauge read-delta has strict derivative `0` at the origin. -/
-theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+/-- **(c) germ, unified over the sum index.** Every entry of `movedC (C q) (Z0edit0 …) k − C q k` has
+strict derivative `0` at the origin (`k < L`): a `Sum` case split lands each of the four blocks on the
+corresponding block germ (`₁₁` is constant `0`, `₁₂ = upEdit`, `₂₁ = movedZ − (C)₂₁`, `₂₂ = movedT − (C)₂₂`). -/
+theorem hasStrictFDerivAt_genMovedCsub_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
-    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) (k : ℕ) (hk : k < L)
+    (a : Fin r ⊕ Fin (deepestChainWidth H k - r))
+    (b : Fin r ⊕ Fin (deepestChainWidth H (k + 1) - r)) :
+    HasStrictFDerivAt
+      (fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+          - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) a b)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  cases a with
+  | inl i =>
+    cases b with
+    | inl j =>
+      have heq : (fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+              (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+            - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) (Sum.inl i) (Sum.inl j))
+          = fun _ => (0 : ℝ) := by
+        funext q
+        rw [Matrix.sub_apply, movedC, Matrix.fromBlocks_apply₁₁]
+        simp only [Matrix.toBlocks₁₁, Matrix.of_apply, sub_self]
+      rw [heq]; exact hasStrictFDerivAt_const _ _
+    | inr j =>
+      have heq : (fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+              (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+            - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) (Sum.inl i) (Sum.inr j))
+          = fun q => upEdit (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) k i j := by
+        funext q
+        rw [Matrix.sub_apply, movedC, Matrix.fromBlocks_apply₁₂, movedY, Matrix.add_apply]
+        simp only [Matrix.toBlocks₁₂, Matrix.of_apply]
+        rw [add_sub_cancel_left]
+      rw [heq]
+      exact hasStrictFDerivAt_genUpEdit_entry_zero H r hr hL J hJfront Pf Qf k hk i j
+  | inr i =>
+    cases b with
+    | inl j =>
+      have heq : (fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+              (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+            - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) (Sum.inr i) (Sum.inl j))
+          = fun q => (movedZ (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+                (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+              - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₁) i j := by
+        funext q
+        rw [Matrix.sub_apply, movedC, Matrix.fromBlocks_apply₂₁, Matrix.sub_apply]
+        simp only [Matrix.toBlocks₂₁, Matrix.of_apply]
+      rw [heq]
+      exact hasStrictFDerivAt_genMovedZsub_entry_zero H r hr hL J hJfront Pf Qf k i j
+    | inr j =>
+      have heq : (fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+              (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+            - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) (Sum.inr i) (Sum.inr j))
+          = fun q => (movedT (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+                (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+              - (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k).toBlocks₂₂) i j := by
+        funext q
+        rw [Matrix.sub_apply, movedC, Matrix.fromBlocks_apply₂₂, Matrix.sub_apply]
+        simp only [Matrix.toBlocks₂₂, Matrix.of_apply]
+      rw [heq]
+      exact hasStrictFDerivAt_genMovedTsub_entry_zero H r hr hL J hJfront Pf Qf k hk i j
+
+/-- **The chain-delta entry germ.** Every entry of `deepestChain (fpp (psiSplitRawGen q))
+- deepestChain (fpp q)` at layer `k < L` has strict derivative `0` at the origin: `hmove` rewrites the
+moved image as `movedC (deepestChain (fpp q)) (Z0edit0 …)`, then the unified `movedC − C` germ closes it.
+This is the single building block the interior/boundary read-recovery both reduce to. -/
+theorem hasStrictFDerivAt_genChainDelta_entry_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL))) (hQunit : IsUnit (Qf (lastLayer hL)))
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1)
+    (k : ℕ) (hk : k < L)
+    (a : Fin r ⊕ Fin (deepestChainWidth H k - r))
+    (b : Fin r ⊕ Fin (deepestChainWidth H (k + 1) - r)) :
+    HasStrictFDerivAt
+      (fun q => (deepestChain H r hr
+              (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) k
+          - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) a b)
+      (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] ℝ) 0 := by
+  have heq : (fun q => (deepestChain H r hr
+              (framedParamsPivot H r hr hL J Pf Qf (psiSplitRawGen H r hr hL J Pf Qf q)) k
+          - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) a b)
+      = fun q => (movedC (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q))
+            (Z0edit0 (deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q)) L) k
+          - deepestChain H r hr (framedParamsPivot H r hr hL J Pf Qf q) k) a b := by
+    funext q
+    rw [congrFun (psiSplitRawGen_deepestChain_hmove H r hr hL hL2 J hJfront Pf Qf q hQf0 hPfL
+      hPunit hQunit hPtri hP22 hQtri hQ22 hInterior) k]
+  rw [heq]
+  exact hasStrictFDerivAt_genMovedCsub_entry_zero H r hr hL J hJfront Pf Qf k hk a b
+
+/-- **Pieces (b)+(c), gauge slot.** The gauge read-delta has strict derivative `0` at the origin. -/
+theorem hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL))) (hQunit : IsUnit (Qf (lastLayer hL)))
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1) :
     HasStrictFDerivAt (psiSplitGaugeDeltaGen H r hr hL J Pf Qf)
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (RegGaugeIdx H r → ℝ)) 0 := by
   sorry
 
 /-- **Pieces (b)+(c) for the core slot.** The encoded core read-delta has strict derivative `0`. -/
 theorem hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
-    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL))) (hQunit : IsUnit (Qf (lastLayer hL)))
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1) :
     HasStrictFDerivAt
       (fun q => paramsEquivFlatCLE (deepestM H r) (psiSplitCoreDeltaGen H r hr hL J Pf Qf q))
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (flatDim (deepestM H r)) → ℝ)) 0 := by
@@ -1077,10 +1232,21 @@ The deviation `q ↦ psiSplitRawGen q − q` has strict derivative `0` at `0`. P
 lens decomposes the delta into the two read-deltas, each with strict derivative `0`; compose through
 the fixed packing CLEs (`regGaugeSlotCLE.symm`, `paramsEquivFlatCLE`) and `prodMk`. -/
 theorem hasStrictFDerivAt_psiSplitDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : ℕ)
-    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
     (J : Fin r ↪ Fin (H (Fin.last L))) (hJfront : J = frontEmbed H r hr)
     (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
-    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) :
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hQf0 : Qf (firstLayer hL) = 1) (hPfL : Pf (lastLayer hL) = 1)
+    (hPunit : IsUnit (Pf (firstLayer hL))) (hQunit : IsUnit (Qf (lastLayer hL)))
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hP22 : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _)) (Pf (firstLayer hL))).toBlocks₂₂ = 1)
+    (hQtri : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hQ22 : (Matrix.reindex (rThresholdSplit r (H (lastLayer hL).succ) (hr _))
+        (rThresholdSplit r (H (lastLayer hL).succ) (hr _)) (Qf (lastLayer hL))).toBlocks₂₂ = 1)
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L → Pf s = 1 ∧ Qf s = 1) :
     HasStrictFDerivAt (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] DeepestSplit H r (deepestNGauge H r)) 0 := by
   have heq : (fun q => psiSplitRawGen H r hr hL J Pf Qf q - q)
@@ -1097,10 +1263,11 @@ theorem hasStrictFDerivAt_psiSplitDeltaGen_zero (H : Fin (L + 1) → ℕ) (r : �
     have hcle := ((regGaugeSlotCLE H r hr hL).symm.toContinuousLinearMap).hasStrictFDerivAt
       (x := psiSplitGaugeDeltaGen H r hr hL J Pf Qf 0)
     have hcomp := hcle.comp 0
-      (hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero H r hr hL J hJfront Pf Qf)
+      (hasStrictFDerivAt_psiSplitGaugeDeltaGen_zero H r hr hL hL2 J hJfront Pf Qf hQf0 hPfL
+        hPunit hQunit hPtri hP22 hQtri hQ22 hInterior)
     simpa using hcomp
-  have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero H r hr hL J hJfront
-    Pf Qf
+  have hcore := hasStrictFDerivAt_paramsEquivFlatCLE_psiSplitCoreDeltaGen_zero H r hr hL hL2 J
+    hJfront Pf Qf hQf0 hPfL hPunit hQunit hPtri hP22 hQtri hQ22 hInterior
   have h1 : HasStrictFDerivAt
       (fun q => ((regGaugeSlotCLE H r hr hL).symm (psiSplitGaugeDeltaGen H r hr hL J Pf Qf q)).1)
       (0 : DeepestSplit H r (deepestNGauge H r) →L[ℝ] (Fin (deepestNReg H r) → ℝ)) 0 := by
