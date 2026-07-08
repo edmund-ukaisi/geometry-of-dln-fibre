@@ -152,6 +152,10 @@ If dispatched into a role, read its role file and agent definition first.
   to directly.
 - Use a **feature branch** for any non-trivial unit of work; you can push here; don't commit to `dev` or `main` directly. One
   expedition runs on one branch (`expedition/<slug>`); PR at close behind signal-and-wait.
+- **Branch/worktree naming + close-out cleanup:** [`docs/policies/worktree-branch-hygiene.md`](docs/policies/worktree-branch-hygiene.md)
+  — the flat, slug-prefixed convention (`expedition/<slug>` root, `expedition/<slug>--<role><nn>-<topic>` siblings;
+  worktrees under `.claude/worktrees/<slug>/`), the "`origin` is the bank" invariant, and how the controller removes its
+  worktrees + deletes merged branches (local + remote) at close.
 - **Pushing feature/expedition branches to `origin` is pre-authorized** (operator standing instruction,
   2026-06-12) — push freely to bank and share work. **Opening a PR and posting PR review comments/replies
   via `gh` is controller-authorized** (operator standing instruction, 2026-07-01) — but **auto-open at most
