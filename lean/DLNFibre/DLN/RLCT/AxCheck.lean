@@ -56,6 +56,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestHsub3regGen
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedCharge
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
 
 /-!
 # Axiom-hygiene check
@@ -558,6 +559,18 @@ open DLNFibre.DLN.RLCT
 -- `Pf s = Qf s = 1` (triangular bundle), the framed chain-layer decodes to the four gauge/core reads on
 -- the reduced-width relabel. Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms deepestChain_framedParamsPivot_blocks_of_frame_one
+
+-- ★ R1-UPPER native decorated-recursion scaffold (2026-07-08, `genm-sjbuild2`, after the STEP-0
+-- terminal-bridge GATE PASS). `carrierThreshold_shift` (the ℝ soundness cast) + `trivial_integral_eq` +
+-- the π=∅ RECOVERY `decoratedBoxThresholdFinite_trivial_iff` (`DecoratedBoxThresholdFinite (trivial M) ↔
+-- RouteMBoxThresholdFinite M` — the predicate literally recovers the target, so `sjJointResolution` is its
+-- `π=∅` corollary) + the radial sub-brick `radialAttach_decLoss`. The `decorated_peel_step` chart-CoV +
+-- `decorated_base` + the well-founded recursion remain — `sjJointResolution` untouched. Cite-NOTHING:
+-- forced `#print axioms` = [propext, Classical.choice, Quot.sound] (no `sorryAx`, no `monomial_rlct`, no
+-- `cited_aoyagi_dln`).
+#print axioms carrierThreshold_shift
+#print axioms decoratedBoxThresholdFinite_trivial_iff
+#print axioms radialAttach_decLoss
 
 -- ★ D1 ∀-L #120 `hstep2` concrete-instantiation Item 1 (2026-07-08, `genm-hstep2germs4`). The `Fin`-side
 -- product bridge `reindex_prodAux_eq_partProd` (`reindex (prodAux H A k) = partProd (deepestChain …) k`,

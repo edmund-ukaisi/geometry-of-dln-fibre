@@ -859,3 +859,10 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFramedBoundaryMove
 -- `funext s; by_cases s<L`). `hstep2` UNTOUCHED — the `psiSplitRawGen` def + boundary `hmove` + telescope
 -- + compose remain.
 import DLNFibre.DLN.RLCT.Validate.DeepestFramedChainDecode
+-- R1-UPPER native decorated-recursion scaffold (thread `genm-sjbuild2`, after STEP-0 terminal-bridge GATE
+-- PASS): `carrierThreshold`(=½·minAdm) + the faithful `SJDecoration`/`DecoratedBoxThresholdFinite`
+-- (generator-carrier `SJLinGenState`, NOT the separable/Gram trap) + `carrierThreshold_shift` + the radial
+-- sub-brick `radialAttach_decLoss` + the π=∅ recovery `decoratedBoxThresholdFinite_trivial_iff` (the
+-- predicate LITERALLY recovers `RouteMBoxThresholdFinite`). The `decorated_peel_step` chart-CoV (the
+-- ~65-75% mountain) + `decorated_base` + the well-founded recursion remain; `sjJointResolution` UNTOUCHED.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecorated
