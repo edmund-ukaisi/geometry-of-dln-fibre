@@ -101,6 +101,14 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   when an editing tool inserts a confusable/variant codepoint. If a `∃ φ …` / `obtain ⟨φ, …⟩` line fails
   to parse despite looking right, rename the binder to ASCII (`phi`) or `ψ`; capital `Φ` (U+03A6) has not
   shown the problem. Cost two build cycles on `NoetherMonicPositioning.lean`.
+- **A combining-tilde `Q̃` (base char + U+0303) is NOT a valid identifier** (`unexpected token`) — the
+  same binder-codepoint hazard as `φ` above. Use an ASCII binder (`Qt`) for tilde'd matrices/variables.
+  (`genm-sjcarrier6`, the Schur-shear coordinate.)
+- **To put a banked `[Invertible]`-stated identity inside a `∫⁻`/pointwise-a.e. goal, convert the `⅟`
+  (invOf) form to the `⁻¹` (`nonsing_inv`) form** via `invOf_eq_nonsing_inv` (after `IsUnit.invertible`
+  to get the instance). A lemma stated with `⅟M` carries a typeclass `[Invertible M]` that a per-point
+  integrand can't supply; the `M⁻¹` form is a plain function, integrand-usable. (`frobSq_schur_split_inv`,
+  `genm-sjcarrier6`.)
 - **No off-the-shelf rank-normal-form / "equal rank ⟹ equivalent matrices" in v4.29.** Built at the
   linear-map level in `Core.FibreNormalForm` (`exists_conj`, `exists_baseChange_of_rank_eq`): for a
   rank-`r` `f : (Fin n → k) →ₗ (Fin m → k)`, restrict to `fU : U ≃ range f` (`U` a `ker`-complement,
