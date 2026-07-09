@@ -256,13 +256,12 @@ theorem deepest_gauge_construction_L2_ofBundle (H : Fin (L + 1) → ℕ) (r : �
   -- reads the core leak, so PIN 2's squeeze matches the loss's `Sreg`). The IFT peel of the
   -- `coreAbsorb.symm`-conjugated `π̃` (Codex option D) feeds `regAbsorb_rlct`; its concrete value feeds
   -- the squeeze.
-  -- **REMAINING GAP (one narrow correct-statement `sorry`):** `π̃ := regStraightenOf2 (deepestEFull ∘
-  -- coreAbsorb.symm)` is a local diffeo at `0` (ContDiff + invertible strict-deriv `eTilde`). ContDiff is
-  -- routine (deepestEFull + coreAbsorb.symm both ContDiff). The invertible strict-deriv needs the
-  -- degree-2 core-block-vanishing `∂deepestEFull/∂core(0) = 0` (so `π̃`'s reg-reg block stays PIN1's
-  -- invertible `F` despite `coreAbsorb.symm`'s reg→core shear) — the value-fold atom (thread 31, exact;
-  -- the leaks `Y0·T1, T0·Z1` are degree-2), parallel to PIN1's `deepestEPivot_regSlice_fderiv`. NOT yet
-  -- written (the genuine remaining geometry; the rest of the L2-PIN2 repair is green + sound below).
+  -- **`hTilde` (CLOSED, #120):** `π̃ := regStraightenOf2 (deepestEFull ∘ coreAbsorb.symm)` is a local
+  -- diffeo at `0` (ContDiff + invertible strict-deriv `eTilde`). ContDiff is routine (deepestEFull +
+  -- coreAbsorb.symm both ContDiff); the invertible strict-deriv uses the degree-2 core-block-vanishing
+  -- `∂deepestEFull/∂core(0) = 0` (so `π̃`'s reg-reg block stays PIN1's invertible `F` despite
+  -- `coreAbsorb.symm`'s reg→core shear) — the value-fold atom (thread 31), parallel to PIN1's
+  -- `deepestEPivot_regSlice_fderiv`. Discharged below (no sorry).
   have hTilde : ∃ eTilde : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ]
       DeepestSplit H r (deepestNGauge H r),
       ContDiff ℝ (⊤ : ℕ∞)
@@ -711,28 +710,53 @@ theorem deepest_gauge_construction_L2 (H : Fin (L + 1) → ℕ) (r : ℕ)
   exact deepest_gauge_construction_L2_ofBundle H r B hB hr hL hL2 hpos htop hLlt
     Jb Pf Qf hJtri hPunit hQunit hQf0 hPfL hNF hQf22b hcorner hPtri hQtri hP22one hQ22one
 
-theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
+theorem deepest_gauge_construction_ofBundle (H : Fin (L + 1) → ℕ) (r : ℕ)
     (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
     (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
-    -- The strict reduced-width positivity the headline carries (`0 < M s ⟺ r < H s`); needed for the
-    -- endpoint conjugation-constant positivity (`0 < ∑P0²·∑QL²`) in the loss squeeze. (Threaded from the
-    -- consumer `deepest_gauge_squeeze_exists`, which holds it via the headline's `hpos`.)
     (hpos : ∀ s : Fin (L + 1), r < H s)
-    -- **FRONT-PIVOT HYPOTHESIS (B (front-pivot WLOG), b-wlog-spec, 2026-06-25).** The `B`-determined
-    -- pivot set of `deepestPoint_frame_pivot_exists` is the FRONT embedding `k ↦ k` — i.e. `B`'s rank-`r`
-    -- pivot columns are the first `r`. This is what makes the loss-squeeze's (b)-conjunct EXACT (the
-    -- producer's `∑deepestEFull² = Sreg`, no `δ₁, δ₂` comparability, no germ/Taylor atom). The caller
-    -- (`deepest_gauge_squeeze_exists`, the WLOG seam) discharges it by running the chart at `B·Π`, where
-    -- `Π` brings `B`'s pivots to the front and the headline's `⨅ optimalSet` is invariant (b-wlog-spec
-    -- lemmas 1-5). Stated about the bundle's `.choose` (the pivot `Jb` the body uses).
-    (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
-        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
-    -- **ROW-ALIGNMENT (htop, the row-WLOG dual of hJfront, S2).** `B`'s top `r` rows are full rank —
-    -- the `[Invertible A11]` source (`deepestPoint_leadingBlock_isUnit`) for the layer-0 block-LOWER
-    -- endpoint frame the L=2 diffeo bridge needs. Threaded as a hypothesis (parallel to hJfront); the
-    -- headline discharges it by the banked row-permutation WLOG (`rlct_infimum_rowPerm_eq`).
     (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
-        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r)
+    -- The block-triangular boundary-frame bundle (the 16 destructured items of
+    -- `deepestPoint_frame_pivot_triangular_exists` in the arbitrary route, or `…_front_exists` in the
+    -- hJfront-free FRONT route). The body is frame-generic: it consumes only these bundle facts (`hJtri`
+    -- gives `J = frontEmbed` internally), NEVER `hJfront`. So ONE factoring serves BOTH routes.
+    (Jb : Fin r ↪ Fin (H ((lastLayer hL).succ)))
+    (Pf : (s : Fin L) → Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ)
+    (Qf : (s : Fin L) → Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)
+    (hJtri : Jb.trans (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (hPunit : ∀ s : Fin L, IsUnit (Pf s)) (hQunit : ∀ s : Fin L, IsUnit (Qf s))
+    (hQf0 : Qf (firstLayer hL)
+        = (1 : Matrix (Fin (H (firstLayer hL).succ)) (Fin (H (firstLayer hL).succ)) ℝ))
+    (hPfL : Pf (lastLayer hL)
+        = (1 : Matrix (Fin (H (lastLayer hL).castSucc)) (Fin (H (lastLayer hL).castSucc)) ℝ))
+    (hNF : ∀ s : Fin L, (s : ℕ) + 1 ≠ L →
+        Pf s * (deepestPoint H r B hB hr hL s) * Qf s
+          = Matrix.of (fun (i : Fin (H s.castSucc)) (j : Fin (H s.succ)) =>
+              if (i : ℕ) = (j : ℕ) ∧ (i : ℕ) < r then (1 : ℝ) else 0))
+    (hQf22b : IsUnit ((Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (Qf (lastLayer hL))).toBlocks₂₂))
+    (hcorner : Matrix.reindex (rThresholdSplit r (H ((lastLayer hL).castSucc)) (hr _))
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        ((deepestPoint H r B hB hr hL (lastLayer hL)) * Qf (lastLayer hL))
+      = Matrix.fromBlocks (1 : Matrix (Fin r) (Fin r) ℝ) 0 0 0)
+    (hPtri : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (Pf (firstLayer hL))).toBlocks₁₂ = 0)
+    (hQtri : (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (Qf (lastLayer hL))).toBlocks₂₁ = 0)
+    (hP22one : (Matrix.reindex (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (rThresholdSplit r (H (firstLayer hL).castSucc) (hr _))
+        (Pf (firstLayer hL))).toBlocks₂₂
+        = (1 : Matrix (Fin (H (firstLayer hL).castSucc - r)) (Fin (H (firstLayer hL).castSucc - r)) ℝ))
+    (hQ22one : (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) Jb)
+        (Qf (lastLayer hL))).toBlocks₂₂
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ))
+    (hInterior : ∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+        Pf s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+          Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) :
     ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
       (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
       (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
@@ -767,12 +791,10 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
               (∑ i, (regStraighten (split x)).1 i ^ 2)
                 + deepestCoreF H r (coreAbsorb (split x)).2.1)
             ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
-  -- **L-SPLIT** — dispatch L<3 to the hoisted clean-three `deepest_gauge_construction_L2`;
-  -- the L≥3 arm keeps its own preamble + the roadmapped #120 interior/grouped-diffeo sorries.
-  rcases Nat.lt_or_ge L 3 with hLlt | hL3
-  · -- ===== L = 2 ARM — hoisted (clean-three) =====
-    exact deepest_gauge_construction_L2 H r B hB hr hL hL2 hpos hJfront htop hLlt
-  · -- ===== L ≥ 3 ARM (roadmapped #120 sorries) =====
+    -- Frame-generic gauge construction from an ARBITRARY block-triangular boundary-frame bundle
+    -- (`Jb, Pf, Qf` + facts). Formerly the `L ≥ 3` arm of `deepest_gauge_construction`, factored out so
+    -- BOTH the arbitrary (`triangular_exists`, from `hJfront`) and the hJfront-free FRONT
+    -- (`triangular_front_exists`, from `hcolfront`) routes reuse the identical body. #120 CLOSED.
     -- `split` (obligation (i), MP reindex carrying the deepest point to `0`). Use the CONCRETE
     -- `deepestSplit` witness (not the `deepestSplit_exists` existential) so the PIN2 cert's round-trip
     -- hypothesis `hsplit` discharges by `rfl` — the index-decode lemmas (`gaugeReadX/Y/Z_deepestSplit`,
@@ -787,19 +809,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     have hsplit : ∀ w, split w
         = deepestSplit H r hr hL ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) w :=
       fun _ => rfl
-    -- The PIVOT-ALIGNED per-layer gauge frame family + the `B`-determined pivot set `Jb` (banked
-    -- `deepestPoint_frame_pivot_exists`). The first/interior arms are the threshold `deepestPoint_frame`;
-    -- the LAST-layer arm is the pivot frame (with a UNIT `B22` block — the PIN1 input). `split` stays
-    -- frameless/MP; the READING side carries this family (#80 frame-wiring).
-    -- **The block-TRIANGULAR pivot bundle (S2, hPtri/hQtri source).** Obtain the triangular frame family
-    -- (block-LOWER layer-0 / block-UPPER layer-1) from `deepestPoint_frame_pivot_triangular_exists` — it
-    -- carries the SAME conclusions as the producer bundle PLUS `hJtri` (front-embed identity, from
-    -- `hJfront`), `hPtri`, `hQtri`. The frame facts the body consumes are frame-generic, so the switch is a
-    -- drop-in; `hPtri`/`hQtri` feed the L=2 diffeo bridge.
-    obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
-        hP22one, hQ22one, hInterior⟩ :=
-      deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
-    -- The outer-reindex pivot embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
+    -- The bundle `Jb, Pf, Qf` + its facts are PARAMETERS (frame-generic body). The outer-reindex pivot
+    -- embedding lives on `Fin (H (Fin.last L))`; `Jb` on `Fin (H (lastLayer).succ)`.
     -- The cast bridge (`H_lastLayer_succ`); `pivotJSucc J = Jb` (the two `finCongr` round-trip).
     set J : Fin r ↪ Fin (H (Fin.last L)) :=
       Jb.trans (finCongr (H_lastLayer_succ H hL)).toEmbedding with hJ
@@ -825,13 +836,12 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- reads the core leak, so PIN 2's squeeze matches the loss's `Sreg`). The IFT peel of the
     -- `coreAbsorb.symm`-conjugated `π̃` (Codex option D) feeds `regAbsorb_rlct`; its concrete value feeds
     -- the squeeze.
-    -- **REMAINING GAP (one narrow correct-statement `sorry`):** `π̃ := regStraightenOf2 (deepestEFull ∘
-    -- coreAbsorb.symm)` is a local diffeo at `0` (ContDiff + invertible strict-deriv `eTilde`). ContDiff is
-    -- routine (deepestEFull + coreAbsorb.symm both ContDiff). The invertible strict-deriv needs the
-    -- degree-2 core-block-vanishing `∂deepestEFull/∂core(0) = 0` (so `π̃`'s reg-reg block stays PIN1's
-    -- invertible `F` despite `coreAbsorb.symm`'s reg→core shear) — the value-fold atom (thread 31, exact;
-    -- the leaks `Y0·T1, T0·Z1` are degree-2), parallel to PIN1's `deepestEPivot_regSlice_fderiv`. NOT yet
-    -- written (the genuine remaining geometry; the rest of the L2-PIN2 repair is green + sound below).
+    -- **`hTilde` (CLOSED, #120):** `π̃ := regStraightenOf2 (deepestEFull ∘ coreAbsorb.symm)` is a local
+    -- diffeo at `0` (ContDiff + invertible strict-deriv `eTilde`). ContDiff is routine (deepestEFull +
+    -- coreAbsorb.symm both ContDiff); the invertible strict-deriv uses the degree-2 core-block-vanishing
+    -- `∂deepestEFull/∂core(0) = 0` (so `π̃`'s reg-reg block stays PIN1's invertible `F` despite
+    -- `coreAbsorb.symm`'s reg→core shear) — the value-fold atom (thread 31), parallel to PIN1's
+    -- `deepestEPivot_regSlice_fderiv`. Discharged below (no sorry).
     have hTilde : ∃ eTilde : DeepestSplit H r (deepestNGauge H r) ≃L[ℝ]
         DeepestSplit H r (deepestNGauge H r),
         ContDiff ℝ (⊤ : ℕ∞)
@@ -908,8 +918,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
     -- the final `?_` is the migrated `loss_squeeze` RLCT-equality (the route-B close below).
     refine ⟨deepestNGauge H r, split, coreAbsorb, regStraighten, hsplit_mp, hsplit_base, hca_base,
       hca_reg, hca_spec, hca_rlct, hra_cont, hra_base, hra_core, hra_spec, hra_rlct, ?_⟩
-    -- **hinterface (L ≥ 3).** The two interior branches stay scoped gaps (roadmapped #120): the bundle
-    -- supplies a generic rank-normal-form interior frame, not committed to the identity.
+    -- **hinterface (L ≥ 3, CLOSED #120).** Interior frames ARE the identity — supplied by the bundle's
+    -- `hInterior` (endpoint override is boundary-only); the two interior branches discharge below.
     have hinterface : ∀ (s : Fin L) (_ : (s : ℕ) + 1 < L),
         Qf s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ) ∧
           Pf ⟨(s : ℕ) + 1, by omega⟩ = (1 : Matrix (Fin (H (⟨(s : ℕ) + 1, by omega⟩ : Fin L).castSucc))
@@ -1059,8 +1069,8 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
           exact ((hb21 i k).mul (hInv k l)).mul (hb12 l j)
       · -- the per-`w` Score-sandwich (from `hsq`), with `Φscore w = ∑(regStraighten(split w)).1² + Score w`.
         simpa only [hΦscore] using hsq w hw
-    -- **Step 2 (L ≥ 3): grouped-`G0` diffeo GAP** (roadmapped #120). The cert's `(T1, Y1)` Ψ generalises
-    -- to the two-grouping `G0 = prodAux (L−1)`, `G1 = last layer`; the recursive multi-factor reparam.
+    -- **Step 2 (L ≥ 3): grouped-`G0` diffeo (CLOSED #120).** The cert's `(T1, Y1)` Ψ generalises to the
+    -- two-grouping `G0 = prodAux (L−1)`, `G1 = last layer`; the recursive multi-factor reparam, below.
     have hstep2 : rlctAtOn Φscore wstar
         = rlctAtOn
             (fun x : Fin (flatDim H) → ℝ =>
@@ -1282,6 +1292,64 @@ theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
         (psiSplitRawGen H r hr hL J Pf Qf) wstar hsplit_base hcontdiff hderiv hfix hsplitPsi
         hsub3reg Score hsub4core Φscore hΦscore
     rw [hstep1, hstep2]
+
+/-- **The general-`L` gauge construction** (statement-preserving wrapper over
+`deepest_gauge_construction_ofBundle`, decision-b refactor). `L < 3` dispatches to the hoisted
+clean-three `deepest_gauge_construction_L2`; `L ≥ 3` obtains the arbitrary block-triangular
+boundary-frame bundle (`deepestPoint_frame_pivot_triangular_exists`, from `htop` + `hJfront`) and
+feeds the frame-generic `_ofBundle`. The statement is byte-identical to the pre-refactor
+`deepest_gauge_construction`; its only consumers (`deepest_gauge_chart_construct`, `AxCheck`) are
+unaffected. -/
+theorem deepest_gauge_construction (H : Fin (L + 1) → ℕ) (r : ℕ)
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (hB : B.rank = r)
+    (hr : ∀ s : Fin (L + 1), r ≤ H s) (hL : 1 ≤ L) (hL2 : 2 ≤ L)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (hJfront : ((deepestPoint_frame_pivot_exists H r B hB hr hL hL2).choose).trans
+        (finCongr (H_lastLayer_succ H hL)).toEmbedding = frontEmbed H r hr)
+    (htop : (B.submatrix (Fin.castLE (hr 0) : Fin r → Fin (H 0))
+        (id : Fin (H (Fin.last L)) → Fin (H (Fin.last L)))).rank = r) :
+    ∃ (nGauge : ℕ) (split : (Fin (flatDim H) → ℝ) ≃ₜ DeepestSplit H r nGauge)
+      (coreAbsorb : DeepestSplit H r nGauge ≃ₜ DeepestSplit H r nGauge)
+      (regStraighten : DeepestSplit H r nGauge → DeepestSplit H r nGauge),
+      MeasurePreserving split volume volume ∧
+      split ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) = 0 ∧
+      coreAbsorb 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).1 = q.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (coreAbsorb q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge => (∑ i, q.1 i ^ 2) + deepestCoreF H r q.2.1)
+            (0 : DeepestSplit H r nGauge) ∧
+      Continuous regStraighten ∧
+      regStraighten 0 = 0 ∧
+      (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.1 = q.2.1) ∧
+      (∀ q : DeepestSplit H r nGauge, (regStraighten q).2.2 = q.2.2) ∧
+      rlctAtOn
+          (fun q : DeepestSplit H r nGauge =>
+            (∑ i, (regStraighten q).1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+          (0 : DeepestSplit H r nGauge)
+        = rlctAtOn
+            (fun q : DeepestSplit H r nGauge =>
+              (∑ i, q.1 i ^ 2) + deepestCoreF H r (coreAbsorb q).2.1)
+            (0 : DeepestSplit H r nGauge) ∧
+      -- **The `loss_squeeze` slot — RLCT-EQUALITY form** (route-B migration, matches the migrated
+      -- `DeepestGaugeChart.loss_squeeze` field): `rlctAt(dlnLoss) = rlctAtOn(Sreg_E + coreΦ)`.
+      rlctAt H (dlnLoss H B) (deepestPoint H r B hB hr hL)
+        = rlctAtOn
+            (fun x : Fin (flatDim H) → ℝ =>
+              (∑ i, (regStraighten (split x)).1 i ^ 2)
+                + deepestCoreF H r (coreAbsorb (split x)).2.1)
+            ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
+  rcases Nat.lt_or_ge L 3 with hLlt | hL3
+  · exact deepest_gauge_construction_L2 H r B hB hr hL hL2 hpos hJfront htop hLlt
+  · obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
+        hP22one, hQ22one, hInterior⟩ :=
+      deepestPoint_frame_pivot_triangular_exists H r B hB hr hL hL2 htop hJfront
+    exact deepest_gauge_construction_ofBundle H r B hB hr hL hL2 hpos htop
+      Jb Pf Qf hJtri hPunit hQunit hQf0 hPfL hNF hQf22b hcorner hPtri hQtri hP22one hQ22one
+      hInterior
 
 /-- **The `DeepestGaugeChart` instance** (#44c sub-3, `deepest_gauge_squeeze_exists`, `2 ≤ L`).
 Destructures the bundled construction into the structure. The `2 ≤ L` hypothesis (distinct boundary
