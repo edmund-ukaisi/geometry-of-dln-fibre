@@ -98,7 +98,12 @@ ad-hoc check.
 
 Reading the output:
 * **clean** = `[propext, Classical.choice, Quot.sound]` — fully proven, no citation, no `sorry`.
-* `+ monomial_rlct` — the single permitted S2 citation (the bare weighted-monomial-integral fact).
+* `+ monomial_rlct` — **RETIRED (2026-07-09): the library is now S2-FREE.** The `monomial_rlct` axiom
+  is DELETED — its threshold conjunct is the proven `monomialThreshold_eq_iInf_axisRatio`, its analytic
+  order-multiplicity conjunct a deferred seam (`cards/theta-analytic-multiplicity-seam.md`). NO result
+  carries it any more. ⚠ Per-result comments BELOW that still read `[…, monomial_rlct]` / "cited S2
+  axiom" are SUPERSEDED (those results are now clean-three) — trust the emitted `#print axioms` output,
+  not the stale expectation prose; a full comment sweep is a minor batched follow-on.
 * `sorryAx` — an unproven rung underneath. **Expected** on `aoyagi_learning_coefficient` until the
   5 Skeleton rungs (L2 `product_reduction`, D1 `deepest_point_reduction`-≥, R1 `resolution_charts`,
   A1 ×2) are proven; it must **not** appear on any result below that claims to be proven.
@@ -834,11 +839,12 @@ open DLNFibre.DLN.RLCT
 #print axioms aoyagi_learning_coefficient_gen
 
 -- ★ UNCONDITIONAL general-L bounds (HeadlineGenBounds) — NO analytic gate; the ≤-lane rides the
--- proven-∀L achiever divergence, so these are clean-THREE and strictly cleaner than the hbox-gated
--- equality. (b) `aoyagi_learning_coefficient_gen_le` = `⨅ ≤ ofReal(aoyagiLambda)`; (c)
--- `aoyagi_deepest_reduction_gen` = `⨅ = nRegGen/2 + rlctAtOn(core)`; the ≤-half `r1_resolution_general_le`
--- (hbox-FREE) + its cover brick `routeM_rlctAtOn_le_iInf`. All MUST be [propext, Classical.choice,
--- Quot.sound] — no sorryAx, no monomial_rlct.
+-- proven-∀L achiever divergence, so these are clean-THREE and UNCONDITIONAL. The distinction from the
+-- gated equality `aoyagi_learning_coefficient_gen` is the DROPPED `(□)` hypothesis, NOT an axiom
+-- footprint (post-S2-retirement the equality is itself clean-three). (b) `aoyagi_learning_coefficient_gen_le`
+-- = `⨅ ≤ ofReal(aoyagiLambda)`; (c) `aoyagi_deepest_reduction_gen` = `⨅ = nRegGen/2 + rlctAtOn(core)`;
+-- the ≤-half `r1_resolution_general_le` (hbox-FREE) + its cover brick `routeM_rlctAtOn_le_iInf`. All
+-- MUST be [propext, Classical.choice, Quot.sound] — no sorryAx, no monomial_rlct.
 #print axioms routeM_rlctAtOn_le_iInf
 #print axioms r1_resolution_general_le
 #print axioms aoyagi_deepest_reduction_gen
