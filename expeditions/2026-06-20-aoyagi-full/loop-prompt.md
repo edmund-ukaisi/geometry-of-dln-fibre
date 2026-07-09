@@ -35,6 +35,18 @@ result, not the endpoint. Hold the strategic vision as a **feedback controller**
 break the general builds into pieces, dissolve them one by one — **let the sea rise inexorably**; adapt
 with the state. Charge the general builds; do not wait for further scope sign-off.
 
+## ★ STAGE 2 (operator, 2026-07-09) — DISCHARGE `(□)`
+**Stage 1 is DONE:** the fully-general Aoyagi learning coefficient is proven S2-FREE, clean-three, on
+`expedition/aoyagi-full` (draft PR #26 → dev). `aoyagi_learning_coefficient_gen` (general `L`, conditional
+on `(□) = RouteMBoxThresholdFinite (H−r)` — the box-finiteness half — ALONE) + the UNCONDITIONAL bounds
+`_gen_le` / `aoyagi_deepest_reduction_gen` + `_L2`. **Zero axiom declarations** (`monomial_rlct` retired).
+**Stage 2 deliverable: DISCHARGE `(□)`** → make `aoyagi_learning_coefficient_gen` UNCONDITIONAL, at which
+point the unsuffixed `aoyagi_learning_coefficient` (KEPT per operator, 2026-07-09) becomes the honest
+fully-general result. `(□)` = "∀ `c' < ½·minAdm(H−r)`, the layer-product box integral is finite" = the
+general-`L` R1-UPPER box-finiteness (`rlct ≥ ½·codim`), via the native `(S,J)` simultaneous rank-flag
+blow-up. ESTABLISHED math (Aoyagi) ⇒ BUILD from scratch, do NOT cite. Same expedition, same disposition
+(GO THE DISTANCE, ambitious, let the sea rise); just the new goal.
+
 ## Standing decisions (act without blocking)
 Explicit charts (not AG machinery); cite S2 only; `aoyagiλ` via minimisation; validate-small-first;
 build what Mathlib lacks; θ secondary; on a wall isolate a minimal named gap + report (never halt/hide);
@@ -58,27 +70,27 @@ adapt with state" reach — do NOT defer it. Reserve "roadmap + operator" for GE
 unargued extensions, not for large-but-standard builds. When I catch myself thinking "too big to start,"
 that is the cue to break it down and START, not to hold. Be ambitious.
 
-**Current critical path (A, re-grounded 2026-07-07 — L=2 headline DONE; #120 de-risked; NO research wall remains).**
-- **L=2 headline — ✅ DONE (UPDATE-646).** `aoyagi_learning_coefficient_L2` PROVEN sorry-free, unconditional,
-  cite-only-S2, controller-verified (clean-four `#print axioms` = `[propext, Classical.choice, Quot.sound,
-  monomial_rlct]`). The whole D1 + `Φ_expl` + S2 + value chain closes end-to-end at L=2 ∀ widths/ranks; the
-  `d1ge_L2_hAtV_explicit` crux is closed. This is the validated template the general-L legs lift from.
-- **General-L R1-UPPER = THE MOUNTAIN (the long pole).** `RouteMBoxThresholdFinite M` ∀L (= `rlct ≥ ½·codim`),
-  via the (S,J) integrated blow-up peel. Contract RE-SCOPED sorry-free (UPDATE-647: t=0 circularity killed +
-  per-`(t,ρ,κ)` signature + faithful integrand; cover + exact block identity + corank atom banked). TWO named
-  sorries: `sjBoundaryPeel` (cover+measure-plumbing, Codex-confirmed TRUE, sharp 5-step route — IN FLIGHT
-  `sjbpeel`) + `sjJointResolution` (per-`(t,ρ,κ)` finiteness — the DEEPEST remaining grind, consumes the block
-  identity + corank atom into the general-L recursion). Established math (Aoyagi's simultaneous rank-flag
-  blow-up) ⇒ BUILD, do NOT cite.
-- **D1 ∀-L ≥-leg — #120 RE-ADJUDICATED: NOT a wall (UPDATE-648, controller-verified).**
-  `deepest_gauge_squeeze_exists` is a bounded structural lift, provable AS WRITTEN via the IFT route
-  (`dΨ(0)=I` re-verified L=3 scalar/non-scalar + L=4; the L≥3 core-dependent `K_k` doesn't block it). Gap =
-  3 named sorries (`DeepestL2Wiring` 913/916 interior frames + 1058 `hstep2`) + a 4-sub-lemma runway (RLCT
-  bridge `rlctAtOn_comp_localDiffeo` ALREADY exists; loss-side sorry-free ∀L). Sub-lemma 1 (L-factor recursive
-  Schur LDU) IN FLIGHT `sjldu`. The cited-Aoyagi D1 fallback is NOT needed.
-- **General-L R1-LOWER:** bounded (interior monomial generalization). **Then** global assembly → the general
-  headline. **No flagged research wall remains** — the honest ETA is formalisation LABOR (the peel's
-  measure-plumbing + #120's dependent-width Schur-LDU cast-grind), not unresolved mathematics.
+**Current critical path (STAGE 2, re-grounded 2026-07-09 — DISCHARGE `(□)`; Stage 1 complete + S2-free).**
+- **THE GOAL:** prove `RouteMBoxThresholdFinite M` for every nondegenerate `M` (= the box-finiteness
+  half `(□)` at reduced widths `H−r`; = general-`L` R1-UPPER `rlct ≥ ½·codim`), via the native `(S,J)`
+  integrated blow-up peel. Discharging it makes `aoyagi_learning_coefficient_gen` UNCONDITIONAL and lets
+  the unsuffixed `aoyagi_learning_coefficient` (KEPT) be re-pointed to the honest fully-general result.
+- **Banked toward it:** the `(S,J)` branch-termination kernel (`remaining_lt_of_support_ssubset`, see
+  `reference-notes-sj-kernel.md`); the `gaugeAbsorption` crux (Ext-free orbit-surjectivity, on
+  `origin/genm-seambuild` @494652e8, gaugerev-PASS bedrock); the `RouteMSJResolution` deferred machinery
+  (named sorries `sjBoundaryPeel` = cover+measure-plumbing, `sjJointResolution` = per-`(t,ρ,κ)` finiteness)
+  + the banked charge-budget/subordination contract; `(□)` is ALREADY proven for `L=2` ∀M, `(r,r,p)` ∀r∀p,
+  and some `L≥3`.
+- **RULED OUT (don't re-explore):** the SEAM route (option A) — its CoV carries an unbounded
+  `|det(pivot)|^{−M2}` Jacobian (the det-blowup ≡ the transversality collapse; UPDATE-771, doubly-confirmed).
+  The native `(S,J)` chart-tree is the route; the `gaugeAbsorption` crux is a reusable ingredient of it.
+- **Open piece:** the multi-active-boundary staircase strata (paradigm `(3,3,3,3)`) — NO soft shortcut
+  (two-matrix machinery undershoots `½·minAdm` by 2×); needs Aoyagi's genuine simultaneous rank-flag
+  blow-up. ESTABLISHED math ⇒ LABOUR, not a research wall — break into pieces, build-first, and (per the
+  excise lesson) fire a fail-fast scope-report before sinking weeks. Grounded scoping: `r1upper-derisk.md`,
+  `r1upper-wall-review.md`, `threads/genm-seam/spec.md`, `addlongscope`.
+- **θ analytic-multiplicity seam** — a SEPARATE deferred direction (`cards/theta-analytic-multiplicity-seam.md`);
+  not Stage 2. `λ` (this expedition) is unaffected by it.
 
 **Speed / executive cadence (operator, 2026-07-06).** Be THOUGHTFUL about pace; match cadence to real
 progress. At this stage (much banked + de-risked; clarity high; the central hard builds R1-UPPER/Φ_expl

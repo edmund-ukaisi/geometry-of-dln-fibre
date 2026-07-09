@@ -2723,3 +2723,18 @@ All 4 **clean-three** `[propext, Classical.choice, Quot.sound]`. The `monomial_r
 **Reference-notes (BlowupBranchProgress (S,J) kernel + Case-2 map):** a de-risk asset for the DEFERRED `(□)`-discharge (point 5, maybe-never). LOW urgency — I'll capture it only if/when you greenlight the `(□)`-discharge as the next expedition; not worth archaeology now.
 
 **Net: the S2-free milestone is complete + audited + doc-clean; awaiting your `dev`-PR review/merge + the peel-stack naming call.**
+
+## 90. ✅ OPERATOR: Stage 2 LAUNCHED (discharge `(□)`); keep the unsuffixed name; draft PR opened. (2026-07-09)
+Operator returned + decided (all three surfaced items RESOLVED):
+- **Peel-stack naming → KEEP the unsuffixed `aoyagi_learning_coefficient`.** Rationale (operator): Stage 2
+  discharges `(□)` → makes `_gen` unconditional → the unsuffixed name then becomes the honest
+  fully-general result. So it stays (a sorried placeholder for now) rather than delete/re-point. No
+  peel-stack surgery.
+- **`dev` PR → OPENED AS DRAFT (#26)** (expedition/aoyagi-full → dev). Stage-1 milestone up for review;
+  merge remains operator's call.
+- **★ Stage 2 LAUNCHED — discharge `(□)`** (the native `(S,J)` blow-up box-finiteness → `_gen`
+  unconditional). Same expedition, new stage. Scaffold re-pointed: `loop-prompt.md` (Stage-2 mission +
+  critical-path), `priorities.md` (Stage-2 active goal). Controller confirmed home = MAIN checkout
+  (`geometry-of-dln-fibre`) on `expedition/aoyagi-full`, clean; stays there.
+- **Operator instruction:** committing this as Stage-2-launch prep, then **WAIT for the operator's GO**
+  before charging the first Stage-2 build.
