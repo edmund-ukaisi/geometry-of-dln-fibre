@@ -85,6 +85,8 @@ import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
 import DLNFibre.DLN.RLCT.Validate.D1GeSeam
 import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
+import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
 
 /-!
 # Axiom-hygiene check
@@ -819,3 +821,12 @@ open DLNFibre.DLN.RLCT
 -- hAtV bound `∃P, (nRegGen H r)/2 + rlctAtOn(dlnLoss(H−r)0)P ≤ rlctAt H (dlnLoss H B) v` (germ + seam +
 -- residual → d1ge_hAtV_of_qResid_chart_genL). Cite-NOTHING: `[propext, Classical.choice, Quot.sound]`.
 #print axioms d1ge_hAtV_explicit_close_gen
+-- ★ THE FULLY-GENERAL HEADLINE (HeadlineGenAssembly) + its front gauge chain (DeepestFrontGaugeGen) +
+-- the statement-preserving `_ofBundle` refactor (DeepestL2Wiring). `aoyagi_learning_coefficient_gen`:
+-- `⨅ rlctAt (dlnLoss B) = ofReal (aoyagiLambda H r)` for nondegenerate widths, CONDITIONAL on `hRValue`
+-- (the reduced-core RLCT value at `H−r` = the `#72` R1 gate). MUST be clean-three [propext,
+-- Classical.choice, Quot.sound] — no sorryAx (cleaner than the L2 headline; hRValue is a genuine
+-- non-vacuous hypothesis, NOT monomial_rlct/cited_aoyagi_dln). Unconditional once `#72` lands.
+#print axioms deepest_gauge_construction_ofBundle
+#print axioms deepest_regular_core_reduces_frontPivot_front
+#print axioms aoyagi_learning_coefficient_gen

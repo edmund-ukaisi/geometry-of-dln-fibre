@@ -1045,3 +1045,16 @@ import DLNFibre.DLN.RLCT.Validate.D1GeSeam
 -- → `d1ge_hAtV_of_qResid_chart_genL`. Direct port of L=2 `d1ge_L2_hAtV_explicit_close`. Feeds the
 -- controller's Part B (hDeepest + `d1ge_deepestPoint_via_explicit_core_genL_wired` → Skeleton:1177).
 import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose
+-- `DeepestFrontGaugeGen` — general-L hJfront-FREE front gauge chain: `deepest_gauge_construction_front`
+-- (obtains the FRONT bundle from `deepestPoint_frame_pivot_triangular_front_exists` — J = frontEmbed by
+-- construction — then `deepest_gauge_construction_ofBundle`) → `deepest_regular_core_reduces_frontPivot_front`
+-- (the hcolfront-based "=" reduction, the L≥3 analogue of the L2 `_front` re-arch) →
+-- `aoyagi_learning_coefficient_frontPivot_front` (the headline at a front-pivot `B`, consumes the D1 ≥-leg +
+-- hRValue). Discharges the "unprovable hJfront" from the WLOG's hcolfront.
+import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
+-- `HeadlineGenAssembly` — the FULLY-GENERAL HEADLINE `aoyagi_learning_coefficient_gen`: for nondegenerate
+-- widths (`r < H s`), `⨅ w ∈ optimalSet, rlctAt (dlnLoss B) w = ofReal (aoyagiLambda H r)`, CONDITIONAL on
+-- the single R1 resolution value `hRValue` (the reduced-core RLCT at `H−r` = the `#72` gate). WLOG → front-pivot
+-- `B'` → sorry-free D1 ≥-leg (`d1ge_hAtV_explicit_close_gen`) → front value side + `reg_shift_add_core_eq_aoyagiLambda`.
+-- Clean-three (no sorryAx/monomial_rlct/cited_aoyagi_dln); unconditional once `#72` lands.
+import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
