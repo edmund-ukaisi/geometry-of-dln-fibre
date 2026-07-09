@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
+import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
+import DLNFibre.DLN.RLCT.Foundations.CoreSplitMP
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual` — the D1 ≥-leg residual strand (piece iv), gen `L`
@@ -31,8 +33,8 @@ This file (foundation): the role-index types + the regular cardinality. Downstre
 slice value, and `e`/`hfact`/`hRne`.
 -/
 
-open Matrix
-open scoped Classical
+open Matrix MeasureTheory
+open scoped Classical ENNReal Topology BigOperators
 namespace DLNFibre.DLN.RLCT
 
 variable {L : ℕ}
@@ -163,5 +165,103 @@ theorem roleEquivGen_reg (ρ : RegIdxGen H r) :
     roleEquivGen ι hι hL (Sum.inl ρ) = regCoreEmbGen ι hι hL (Sum.inl ρ) := by
   simp only [roleEquivGen, Equiv.trans_apply, Equiv.sumAssoc_symm_apply_inl,
     Equiv.sumCongr_apply, Sum.map_inl, Equiv.ofInjective_apply, Equiv.Set.sumCompl_apply_inl]
+
+/-! ## Rung B — the flat index-equiv `e_idxGen` + the measure-preserving split `splitMPGen`
+
+Mirrors the L = 2 `e_idx`/`splitMP`. The reg slot ↦ `RegIdxGen`, core slot ↦ `CoreIdxGen`
+(`= FlatIdx (H−r)`, `paramsEquivFlat (H−r)`-ordered), spec slot ↦ `SpecIdxGen`; `roleEquivGen` puts
+them at the flat coordinates, then `Fintype.equivFin` reindexes to `Fin (flatDim H)`. -/
+
+/-- `Fin (nRegGen H r) ≃ RegIdxGen H r` (`card_RegIdxGen`; `r ≤ H 0`, `r ≤ H (last L)` by `hι`). -/
+noncomputable def regEquivFinGen : Fin (nRegGen H r) ≃ RegIdxGen H r :=
+  (Fintype.equivFinOfCardEq (card_RegIdxGen H r
+    (by simpa using Fintype.card_le_of_injective (ι 0) (hι 0))
+    (by simpa using Fintype.card_le_of_injective (ι (Fin.last L)) (hι (Fin.last L))))).symm
+
+/-- The spectator dimension (`= Fintype.card SpecIdxGen`; kept as a card for the equiv). -/
+noncomputable def specDimGen : ℕ := Fintype.card (SpecIdxGen ι hι hL)
+
+/-- **The flat index-equiv** `Fin nReg ⊕ (Fin (flatDim (H−r)) ⊕ Fin specDim) ≃ Fin (flatDim H)`,
+aligned to `blockFlatEquivGen` via `roleEquivGen`. -/
+noncomputable def e_idxGen :
+    Fin (nRegGen H r) ⊕ (Fin (flatDim (fun s => H s - r)) ⊕ Fin (specDimGen ι hι hL))
+      ≃ Fin (flatDim H) :=
+  (Equiv.sumCongr (regEquivFinGen ι hι)
+      (Equiv.sumCongr (Fintype.equivFin (CoreIdxGen H r)).symm
+        (Fintype.equivFin (SpecIdxGen ι hι hL)).symm)).trans
+    ((roleEquivGen ι hι hL).trans (Fintype.equivFin (FlatIdx H)))
+
+/-- **The measure-preserving flat block split** driven by `e_idxGen`. -/
+noncomputable def splitMPGen :
+    (Fin (flatDim H) → ℝ) ≃ᵐ
+      (Fin (nRegGen H r) → ℝ)
+        × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)) :=
+  splitOfPartition (e_idxGen ι hι hL)
+
+theorem measurePreserving_splitMPGen :
+    MeasurePreserving (splitMPGen ι hι hL) (volume : Measure (Fin (flatDim H) → ℝ)) volume :=
+  measurePreserving_splitOfPartition (e_idxGen ι hι hL)
+
+/-- Raw reg-block readback: `(splitMPGen x).1 i = x (e_idxGen (inl i))`. -/
+theorem splitMPGen_reg (x : Fin (flatDim H) → ℝ) (i : Fin (nRegGen H r)) :
+    (splitMPGen ι hι hL x).1 i = x (e_idxGen ι hι hL (Sum.inl i)) := rfl
+
+/-- Raw core-block readback: `(splitMPGen x).2.1 j = x (e_idxGen (inr (inl j)))`. -/
+theorem splitMPGen_core (x : Fin (flatDim H) → ℝ) (j : Fin (flatDim (fun s => H s - r))) :
+    (splitMPGen ι hι hL x).2.1 j = x (e_idxGen ι hι hL (Sum.inr (Sum.inl j))) := rfl
+
+/-- Raw spec-block readback: `(splitMPGen x).2.2 k = x (e_idxGen (inr (inr k)))`. -/
+theorem splitMPGen_spec (x : Fin (flatDim H) → ℝ) (k : Fin (specDimGen ι hι hL)) :
+    (splitMPGen ι hι hL x).2.2 k = x (e_idxGen ι hι hL (Sum.inr (Sum.inr k))) := rfl
+
+/-- `e_idxGen` on the core slot: `= equivFin ∘ roleEquivGen ∘ inr∘inl ∘ coreE.symm` (defeq). -/
+theorem e_idxGen_core (n : Fin (flatDim (fun s => H s - r))) :
+    e_idxGen ι hι hL (Sum.inr (Sum.inl n))
+      = Fintype.equivFin (FlatIdx H)
+          (roleEquivGen ι hι hL
+            (Sum.inr (Sum.inl ((Fintype.equivFin (CoreIdxGen H r)).symm n)))) := rfl
+
+/-- `e_idxGen` on the reg slot: `= equivFin ∘ roleEquivGen ∘ inl ∘ regEquivFinGen` (defeq). -/
+theorem e_idxGen_reg (i : Fin (nRegGen H r)) :
+    e_idxGen ι hι hL (Sum.inl i)
+      = Fintype.equivFin (FlatIdx H)
+          (roleEquivGen ι hι hL (Sum.inl (regEquivFinGen ι hι i))) := rfl
+
+/-! ## Rung C — the core-block readback (linchpin for `hfact`)
+
+The `splitMPGen` core block, decoded by `paramsEquivFlat (H − r)`, is exactly the per-layer `₂₂`
+corners of `blockFlatEquivGen x` — the reduced `(H − r)` Params (`coreParamsGen`). Mirrors the L = 2
+`paramsEquivFlat_symm_splitMP_core`, but the general-`L` layer split needs no `Fin.cases`. -/
+
+/-- General-`L` `paramsEquivFlatLinear.symm` agrees with `paramsEquivFlat.symm` as a function
+(the L = 2 `paramsEquivFlatLinear_symm_coe`, lifted to `Fin (L+1)`). -/
+theorem paramsEquivFlatLinear_symm_coe_gen (H : Fin (L + 1) → ℕ) :
+    ⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm := by
+  funext x; apply (paramsEquivFlat H).injective
+  rw [(paramsEquivFlat H).apply_symm_apply]
+  have hcoe : (paramsEquivFlat H) ((paramsEquivFlatLinear H).symm x)
+      = (paramsEquivFlatLinear H) ((paramsEquivFlatLinear H).symm x) := by
+    rw [paramsEquivFlatLinear_coe]
+  rw [hcoe, (paramsEquivFlatLinear H).apply_symm_apply]
+
+/-- The reduced-core parameter read off the per-layer `₂₂` corners of `blockFlatEquivGen x`. -/
+noncomputable def coreParamsGen (x : Fin (flatDim H) → ℝ) : Params (fun s => H s - r) :=
+  fun s => (blockFlatEquivGen H r ι hι x s).toBlocks₂₂
+
+/-- **Core-block readback.** `(paramsEquivFlat (H−r)).symm (splitMPGen x).2.1 = coreParamsGen x`. -/
+theorem paramsEquivFlat_symm_splitMPGen_core (x : Fin (flatDim H) → ℝ) :
+    (paramsEquivFlat (fun s => H s - r)).symm ((splitMPGen ι hι hL x).2.1)
+      = coreParamsGen ι hι x := by
+  funext s i j
+  rw [paramsEquivFlat_symm_entry, splitMPGen_core, e_idxGen_core, Equiv.symm_apply_apply,
+    roleEquivGen_core]
+  change x (Fintype.equivFin (FlatIdx H)
+      ⟨⟨s, sumSplit (ι s.castSucc) (hι _) (Sum.inr i)⟩,
+        sumSplit (ι s.succ) (hι _) (Sum.inr j)⟩) = _
+  rw [coreParamsGen, blockFlatEquivGen_apply]
+  simp only [Matrix.toBlocks₂₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe_gen]
+  exact (paramsEquivFlat_symm_entry H x s (sumSplit (ι s.castSucc) (hι _) (Sum.inr i))
+    (sumSplit (ι s.succ) (hι _) (Sum.inr j))).symm
 
 end DLNFibre.DLN.RLCT
