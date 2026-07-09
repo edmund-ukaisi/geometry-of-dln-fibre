@@ -1015,3 +1015,12 @@ import DLNFibre.DLN.RLCT.Validate.D1GeChart
 -- _entry` + the generic matrix-inv ContDiff). Rungs 1–7 of (iii) done; rung 8 (globalise via blockFlatEquivGen + the
 -- chain↔BlockParamsGen bridge → the ∃Φ producer) remains → then (iii) closes the ≥-leg interface.
 import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
+-- `D1GeGlobalize` — ≥-leg chart-data (iii) rung 8 (CLOSES (iii)): the ∃Φ producers `schurChart_global_gen`
+-- (global `ContDiff ℝ 2` chart `Φ` on flat space, fixes `0`, invertible derivative at `0` via
+-- `derivEquiv_of_left_inverse`; germ `Φ =ᶠ blockFlatEquivGen⁻¹∘(schurChartRawSelfGen(·+P₀) − …)`) +
+-- `schur_loss_germ_gen_at_pivot` (at optimal `v`: `lossFlatShift H B v =ᶠ schurReadoutF_gen … ∘ Φ`, the germ
+-- feeding `d1ge_hAtV_of_explicit_chart_genL`'s `hchart` after piece (iv) splits the readout). Self-contained:
+-- re-derives the block↔chain bridge (`blockToChainGen`/`chainToBlockGen` + `blockToChainGen∘blockFlatEquivGen =
+-- genChain`) inline (supersedes geleg1's un-integrated `D1GeChartGerm`) + the inverse-chart entrywise ContDiff
+-- (`contDiffAt_schurChartRawInvGen_entry`, needed by `derivEquiv_of_left_inverse`). Reviewer fidelity PASS.
+import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize

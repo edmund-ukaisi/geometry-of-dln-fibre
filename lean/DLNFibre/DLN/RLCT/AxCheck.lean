@@ -81,6 +81,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
 import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
+import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
 
 /-!
 # Axiom-hygiene check
@@ -793,3 +794,10 @@ open DLNFibre.DLN.RLCT
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms derivEquiv_of_left_inverse
 #print axioms contDiffAt_schurChartRawGen_entry
+-- rung 8 (CLOSES chart-data (iii)): the ∃Φ producers `schurChart_global_gen` (global ContDiff²
+-- chart Φ, fixes 0, invertible derivative at 0) + `schur_loss_germ_gen_at_pivot` (at optimal v:
+-- lossFlatShift =ᶠ schurReadoutF_gen ∘ Φ, the germ feeding `d1ge_hAtV_of_explicit_chart_genL`'s
+-- hchart). Self-contained (re-derives the block↔chain bridge + the inverse-chart ContDiff).
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms schurChart_global_gen
+#print axioms schur_loss_germ_gen_at_pivot
