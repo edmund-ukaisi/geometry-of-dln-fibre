@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMCoverLemmas
 import DLNFibre.DLN.RLCT.Validate.Case222CoverGETail
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222RouteMCover` — the `(2,2,2)` cover facts (fm3)
@@ -126,7 +127,7 @@ theorem routeM222_below_threshold_fin (c' : NNReal)
       exact ENNReal.ofReal_le_ofReal hge
     have hthr : monomialThreshold 8 unitK8 unitH8 ≤ ENNReal.ofReal (c' : ℝ) :=
       le_trans unitMonomialThreshold_le h32
-    have htop := monomialIntegrand_lintegral_box_eq_top 8 unitK8 unitH8 ⟨2, unitK8_binding⟩
+    have htop := monomialIntegrand_lintegral_box_eq_top' 8 unitK8 unitH8 ⟨2, unitK8_binding⟩
       (c' : ℝ) hthr hc'0 (show (0:ℝ) < 1 by norm_num)
     -- the atom's box `[0,1]^8` is `unitBox 8`; drop `|·|` (integrand ≥ 0)
     rw [routeM222_rhs_eq] at hB

@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.Case222Cover
 import DLNFibre.DLN.RLCT.Validate.Case222Lemma2
 import DLNFibre.DLN.RLCT.Foundations.S1G5Charts
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222Resolution` — the `(2,2,2)` concrete resolution cover
@@ -223,7 +224,7 @@ realises `3/2` via `monomialThreshold_le_regularSeq`). The `≤`-direction input
 `d = 8` monomial diverges (`monomialThreshold ≤ 3/2 < c'`). The spectator `k = 0` axes don't obstruct
 the upper bound (one binding axis suffices). -/
 theorem unitMonomialThreshold_le : monomialThreshold 8 unitK8 unitH8 ≤ 3 / 2 := by
-  have := monomialThreshold_le_regularSeq 8 unitK8 unitH8 3 (by norm_num) 2 (by rfl) (by rfl)
+  have := monomialThreshold_le_regularSeq' 8 unitK8 unitH8 3 (by norm_num) 2 (by rfl) (by rfl)
   rwa [show ((3 : ℕ) : ℝ≥0∞) / 2 = 3 / 2 by norm_num] at this
 
 /-- The binding axis `u2 = z1` has `unitK8 2 = 1 ≠ 0` — the singular-axis witness for
@@ -705,7 +706,7 @@ theorem leaf_box_div (c' : ℝ) (hc'0 : 0 < c')
   have hBne : ENNReal.ofReal (B ^ (-c')) ≠ 0 := by
     simp only [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact Real.rpow_pos_of_pos hB0 _
   rw [lintegral_const_mul _ hmonomeas',
-    monomialIntegrand_lintegral_box_eq_top 8 unitK8 unitH8 hk c' hc' hc'0 hε,
+    monomialIntegrand_lintegral_box_eq_top' 8 unitK8 unitH8 hk c' hc' hc'0 hε,
     ENNReal.mul_top hBne] at hlb
   exact top_le_iff.1 hlb
 

@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.ResolutionAtlas` — the R1.6 atlas obligation + the value consequence
@@ -22,8 +23,9 @@ atlas's `achiever` field — an explicit `Prop`, not a buried sorry.
 
 `IsResolutionAtlas.of_mult_and_achiever` builds the atlas from the underlying certified facts: the
 (K)+(A) uniform multiplicity bound `m₀·k ≤ h+1` (⟹ C≥) and the achiever's binding divisor
-`(k, h) = (1, m₀−1)` (⟹ C=∃) — showing the two clauses are honestly derived, not assumed. S2
-(`monomial_rlct`) enters only the per-chart bracket lemmas, never the value lemma's own proof.
+`(k, h) = (1, m₀−1)` (⟹ C=∃) — showing the two clauses are honestly derived, not assumed. The
+per-chart bracket lemmas are S2-free (the proven `monomialThreshold_eq_iInf_axisRatio`), so the
+value lemma carries no citation.
 
 **Scope: core-only** (`rlctAtOn(dlnLoss M 0) 0`, `M = H − r`). The regular `[−r²+r(H⁰+Hᴸ)]/2` shift is
 L2/Fubini (`product_reduction`), NOT here — `IsResolutionAtlas` carries no `nReg`.
@@ -97,7 +99,7 @@ axes `k j ≥ 1` use `axisRatio_ge_of_mult`; spectator `k j = 0` axes give `⊤`
 theorem monomialThreshold_ge_of_mult' (d : ℕ) (k h : Fin d → ℕ) (m : ℕ)
     (hmult : ∀ j, m * k j ≤ h j + 1) :
     (m : ℝ≥0∞) / 2 ≤ monomialThreshold d k h := by
-  rw [(monomial_rlct d k h).1]
+  rw [monomialThreshold_eq_iInf_axisRatio d k h]
   refine le_iInf (fun j => ?_)
   rcases Nat.eq_zero_or_pos (k j) with h0 | hpos
   · rw [h0, axisRatio_spectator]; exact le_top
@@ -108,7 +110,7 @@ axis `(k j₀, h j₀) = (1, m−1)` (upper) ⟹ threshold `= m/2`. -/
 theorem monomialThreshold_eq_half_of_binding (d : ℕ) (k h : Fin d → ℕ) (m : ℕ) (hm : 1 ≤ m)
     (hmult : ∀ j, m * k j ≤ h j + 1) (j₀ : Fin d) (hk0 : k j₀ = 1) (hh0 : h j₀ = m - 1) :
     monomialThreshold d k h = (m : ℝ≥0∞) / 2 :=
-  le_antisymm (monomialThreshold_le_regularSeq d k h m hm j₀ hk0 hh0)
+  le_antisymm (monomialThreshold_le_regularSeq' d k h m hm j₀ hk0 hh0)
     (monomialThreshold_ge_of_mult' d k h m hmult)
 
 /-! ## The atlas obligation — the (S-min) form (pp2 #134)
