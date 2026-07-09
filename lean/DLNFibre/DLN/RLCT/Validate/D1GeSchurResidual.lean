@@ -1,5 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
 import DLNFibre.DLN.RLCT.Validate.D1GeBlockModel
+import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
+import DLNFibre.DLN.RLCT.Validate.D1GeLegGenL
 import DLNFibre.DLN.RLCT.Foundations.CoreSplitMP
 
 /-!
@@ -262,18 +264,9 @@ theorem e_idxGen_reg (i : Fin (nRegGen H r)) :
 
 The `splitMPGen` core block, decoded by `paramsEquivFlat (H − r)`, is exactly the per-layer `₂₂`
 corners of `blockFlatEquivGen x` — the reduced `(H − r)` Params (`coreParamsGen`). Mirrors the L = 2
-`paramsEquivFlat_symm_splitMP_core`, but the general-`L` layer split needs no `Fin.cases`. -/
-
-/-- General-`L` `paramsEquivFlatLinear.symm` agrees with `paramsEquivFlat.symm` as a function
-(the L = 2 `paramsEquivFlatLinear_symm_coe`, lifted to `Fin (L+1)`). -/
-theorem paramsEquivFlatLinear_symm_coe_gen (H : Fin (L + 1) → ℕ) :
-    ⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm := by
-  funext x; apply (paramsEquivFlat H).injective
-  rw [(paramsEquivFlat H).apply_symm_apply]
-  have hcoe : (paramsEquivFlat H) ((paramsEquivFlatLinear H).symm x)
-      = (paramsEquivFlatLinear H) ((paramsEquivFlatLinear H).symm x) := by
-    rw [paramsEquivFlatLinear_coe]
-  rw [hcoe, (paramsEquivFlatLinear H).apply_symm_apply]
+`paramsEquivFlat_symm_splitMP_core`, but the general-`L` layer split needs no `Fin.cases`.
+(`paramsEquivFlatLinear_symm_coe_gen`, the `⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm`
+bridge, is banked in `D1GeGlobalize`.) -/
 
 /-- The reduced-core parameter read off the per-layer `₂₂` corners of `blockFlatEquivGen x`. -/
 noncomputable def coreParamsGen (x : Fin (flatDim H) → ℝ) : Params (fun s => H s - r) :=
@@ -473,5 +466,162 @@ theorem bChart_slice_reg_zero_gen
             Fin (H (lastLayer hL).succ - r)).symm b') from by simp,
       ← reg_entry_last₁₂_gen ι hι hL _ k _]
     exact reg_zero_of_slice_gen ι hι hL t (Sum.inr (k, Sum.inr _))
+
+/-! ## Rung F — the explicit `₂₂` Schur residual `qResidGen` and its global `ContDiff ℝ 1`
+
+The general-`L` port of the L = 2 `qResid` (`D1L2ExplChartClose2`). Built on geleg8's block↔chain
+bridge `blockToChainGen` and the reduced-factor telescope `blockDiagProd` (so it matches the ₂₂-part
+of the germ's `schurReadoutF_gen`, with the pivot inverse `⁻¹` replaced by the bump-globalised `G`).
+Widths are the `deepestChainWidth` chain widths; the endpoint cast to the DLN `H`-widths is deferred
+to the slice value (rung G). -/
+
+include ι hι in
+/-- The rank bound `r ≤ H v` at every vertex, from injectivity of the pivot family `ι`. -/
+theorem r_le_H_gen (v : Fin (L + 1)) : r ≤ H v := by
+  simpa using Fintype.card_le_of_injective (ι v) (hι v)
+
+/-- **The reduced-core shift** read off each layer's `₂₂` corner of the base chart value `C₀` (the
+general-`L` `coreShiftParam`). -/
+noncomputable def coreShiftParamGen (C₀ : BlockParamsGen H r) : Params (fun s => H s - r) :=
+  fun s => (C₀ s).toBlocks₂₂
+
+/-- The split flat coordinate type `reg × (core × spec)` (the domain of `qResidGen`). -/
+abbrev SplitCoordGen : Type :=
+  (Fin (nRegGen H r) → ℝ)
+    × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ))
+
+/-- **The block chart value** `blockFlatEquivGen (splitHomeoGen.symm py) + C₀` (gen-`L` `qBlock`);
+its `₂₂` Schur residual (with the bump-globalised inverse `G`) is `qResidGen`. -/
+noncomputable def qBlockGen (C₀ : BlockParamsGen H r) (py : SplitCoordGen ι hι hL) :
+    BlockParamsGen H r :=
+  blockFlatEquivGen H r ι hι ((splitHomeoGen ι hι hL).symm py) + C₀
+
+/-- **The chart value bridged to the `ℕ`-chain** via `blockToChainGen` — matches the ₂₂-form
+of the germ's `schurReadoutF_gen`. -/
+noncomputable def qChainGen (C₀ : BlockParamsGen H r) (py : SplitCoordGen ι hι hL) :
+    (s : ℕ) → Matrix (Fin r ⊕ Fin (deepestChainWidth H s - r))
+      (Fin r ⊕ Fin (deepestChainWidth H (s + 1) - r)) ℝ :=
+  blockToChainGen H r (r_le_H_gen ι hι) ι hι (qBlockGen ι hι hL C₀ py)
+
+/-- Each `qChainGen` entry is `C^∞` in `py` (a reindexed affine coord of the `C^∞` block chart).
+Mirrors geleg8's `contDiff_b2cg_entry` precomposed with the `C^∞` split inverse. -/
+theorem contDiff_qChainGen_entry (C₀ : BlockParamsGen H r) (s : ℕ)
+    (i : Fin r ⊕ Fin (deepestChainWidth H s - r))
+    (j : Fin r ⊕ Fin (deepestChainWidth H (s + 1) - r)) :
+    ContDiff ℝ (⊤ : ℕ∞) (fun py => qChainGen ι hι hL C₀ py s i j) :=
+  (contDiff_b2cg_entry H r (r_le_H_gen ι hι) ι hι C₀ s i j).comp
+    (contDiff_splitMPGen_symm ι hι hL)
+
+/-- Each entry of the telescope `blockDiagProd (qChainGen …) k` is `C^∞` (induction on
+`k`, `contDiff_qChainGen_entry` + entrywise matrix multiplication). -/
+theorem contDiff_blockDiagProd_qChainGen_entry (C₀ : BlockParamsGen H r) :
+    ∀ (k : ℕ) (i : Fin (deepestChainWidth H 0 - r)) (j : Fin (deepestChainWidth H k - r)),
+      ContDiff ℝ (⊤ : ℕ∞) (fun py => blockDiagProd (qChainGen ι hι hL C₀ py) k i j)
+  | 0, i, j => by simp only [blockDiagProd]; exact contDiff_const
+  | k + 1, i, j => by
+      change ContDiff ℝ (⊤ : ℕ∞) (fun py =>
+        (blockDiagProd (qChainGen ι hι hL C₀ py) k
+          * (qChainGen ι hι hL C₀ py k).toBlocks₂₂) i j)
+      exact SchurChartC2.contDiff_matrix_mul_entry
+        (fun a b => contDiff_blockDiagProd_qChainGen_entry C₀ k a b)
+        (fun a b => contDiff_qChainGen_entry ι hι hL C₀ k (Sum.inr a) (Sum.inr b)) i j
+
+/-- **The `₂₂` Schur residual MATRIX** (gen `L`, bump-globalised `G`): the ₂₂-part of the
+germ's `recoverProductGen`-readout, with the pivot inverse `⁻¹` swapped for `G`. In the chain widths
+(`deepestChainWidth`); the last slot is `L − 1`. -/
+noncomputable def qResidMatGen (C₀ : BlockParamsGen H r)
+    (Br022 : Matrix (Fin (deepestChainWidth H 0 - r))
+      (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (py : SplitCoordGen ι hι hL) :
+    Matrix (Fin (deepestChainWidth H 0 - r)) (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ :=
+  (qChainGen ι hι hL C₀ py 0).toBlocks₂₁
+      * G ((qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₁)
+      * (qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₂
+    + blockDiagProd (qChainGen ι hι hL C₀ py) (L - 1 + 1)
+    - Br022
+
+/-- **The explicit `₂₂` Schur residual `qResidGen`** (gen `L`): flattened `qResidMatGen`, as a
+`EuclideanSpace` vector. -/
+noncomputable def qResidGen (C₀ : BlockParamsGen H r)
+    (Br022 : Matrix (Fin (deepestChainWidth H 0 - r))
+      (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) :
+    SplitCoordGen ι hι hL
+      → EuclideanSpace ℝ
+          (Fin ((deepestChainWidth H 0 - r) * (deepestChainWidth H (L - 1 + 1) - r))) := fun py =>
+  (EuclideanSpace.equiv
+      (Fin ((deepestChainWidth H 0 - r) * (deepestChainWidth H (L - 1 + 1) - r))) ℝ).symm
+    (fun i => qResidMatGen ι hι hL C₀ Br022 G py
+      (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2)
+
+/-- Coordinate readback: `qResidGen i = qResidMatGen` at `finProdFinEquiv.symm i`. -/
+theorem qResid_apply_gen (C₀ : BlockParamsGen H r)
+    (Br022 : Matrix (Fin (deepestChainWidth H 0 - r))
+      (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) (py : SplitCoordGen ι hι hL) (i) :
+    (qResidGen ι hι hL C₀ Br022 G py) i
+      = qResidMatGen ι hι hL C₀ Br022 G py
+          (finProdFinEquiv.symm i).1 (finProdFinEquiv.symm i).2 := rfl
+
+/-- `∑ᵢ qResidGen² = ∑_{a,b} (qResidMatGen a b)²` (flatten reindex by `finProdFinEquiv`). -/
+theorem qResid_sq_sum_gen (C₀ : BlockParamsGen H r)
+    (Br022 : Matrix (Fin (deepestChainWidth H 0 - r))
+      (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) (py : SplitCoordGen ι hι hL) :
+    ∑ i, (qResidGen ι hι hL C₀ Br022 G py) i ^ 2
+      = ∑ a : Fin (deepestChainWidth H 0 - r), ∑ b : Fin (deepestChainWidth H (L - 1 + 1) - r),
+          (qResidMatGen ι hι hL C₀ Br022 G py a b) ^ 2 := by
+  simp_rw [qResid_apply_gen]
+  rw [Equiv.sum_comp finProdFinEquiv.symm
+    (fun p : Fin (deepestChainWidth H 0 - r) × Fin (deepestChainWidth H (L - 1 + 1) - r) =>
+      (qResidMatGen ι hι hL C₀ Br022 G py p.1 p.2) ^ 2), Fintype.sum_prod_type]
+
+/-- **`qResidGen` is globally `ContDiff ℝ 1`** (given `G` is `ContDiff ℝ 1`). The chain entries are
+`C^∞` in `py` (`qChainGen`); `G(pivot)` is the `C¹` `G` composed with the `C^∞` `₁₁` block; the two
+matrix products, the telescope `blockDiagProd`, and the constant `Br022` assemble entrywise. -/
+theorem contDiff_qResidGen (C₀ : BlockParamsGen H r)
+    (Br022 : Matrix (Fin (deepestChainWidth H 0 - r))
+      (Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) (hG : ContDiff ℝ 1 G) :
+    ContDiff ℝ 1 (qResidGen ι hι hL C₀ Br022 G) := by
+  have h1top : (1 : WithTop ℕ∞) ≤ ((⊤ : ℕ∞) : WithTop ℕ∞) := by exact_mod_cast le_top
+  refine contDiff_euclidean.mpr fun i => ?_
+  set a := (finProdFinEquiv.symm i).1 with ha
+  set b := (finProdFinEquiv.symm i).2 with hb
+  -- `G(pivot)` block entries are `C¹`.
+  have hGpiv : ∀ k k' : Fin r,
+      ContDiff ℝ 1 (fun py => (G ((qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₁)) k k') := by
+    intro k k'
+    have hM11 : ContDiff ℝ 1 (fun py => (qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₁) :=
+      contDiff_matrix_of_entries fun i' j' =>
+        (contDiff_qChainGen_entry ι hι hL C₀ (L - 1) (Sum.inl i') (Sum.inl j')).of_le h1top
+    exact contDiff_matrixEntry (hG.comp hM11) k k'
+  -- the Schur product, entrywise `C¹`.
+  have hSchur : ContDiff ℝ 1 (fun py =>
+      ((qChainGen ι hι hL C₀ py 0).toBlocks₂₁
+        * G ((qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₁)
+        * (qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₂) a b) := by
+    refine contDiff_matrix_mul_entry
+      (fun i' k' => contDiff_matrix_mul_entry
+        (fun a' k'' => (contDiff_qChainGen_entry ι hι hL C₀ 0 (Sum.inr a') (Sum.inl k'')).of_le
+          h1top) (fun k'' k''' => hGpiv k'' k''') i' k') ?_ a b
+    intro k' j'
+    exact (contDiff_qChainGen_entry ι hι hL C₀ (L - 1) (Sum.inl k') (Sum.inr j')).of_le h1top
+  -- the telescope entry, `C¹`.
+  have hTele : ContDiff ℝ 1
+      (fun py => blockDiagProd (qChainGen ι hι hL C₀ py) (L - 1 + 1) a b) :=
+    (contDiff_blockDiagProd_qChainGen_entry ι hι hL C₀ (L - 1 + 1) a b).of_le h1top
+  have hfun : (fun py => qResidGen ι hι hL C₀ Br022 G py i)
+      = fun py => ((qChainGen ι hι hL C₀ py 0).toBlocks₂₁
+            * G ((qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₁)
+            * (qChainGen ι hι hL C₀ py (L - 1)).toBlocks₁₂) a b
+          + blockDiagProd (qChainGen ι hι hL C₀ py) (L - 1 + 1) a b
+          - Br022 a b := by
+    funext py
+    change qResidMatGen ι hι hL C₀ Br022 G py a b = _
+    simp only [qResidMatGen, Matrix.sub_apply, Matrix.add_apply]
+  rw [hfun]
+  exact (hSchur.add hTele).sub contDiff_const
 
 end DLNFibre.DLN.RLCT
