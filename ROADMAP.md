@@ -187,6 +187,18 @@ $\operatorname{rlct}=C/2$ (Thm 8.6). The geometric codimension is Bundle 1/2 con
 $\operatorname{rlct}\le\tfrac12\operatorname{codim}$ is **Cited** (Aoyagi / Watanabe) — named as such, never
 folded into a theorem name. **Depends on:** Bundle 1 (the codimension value).
 
+**Deferred seam — the θ analytic-multiplicity (future expedition).** The `aoyagi-full` expedition
+proved the learning coefficient **value** $\lambda = $ `aoyagiLambda` (the four headlines, S2-free) but
+NOT the RLCT **multiplicity** $m = \theta$ — the pole ORDER at $-\lambda$, the paper's number of
+top-dimensional components $\theta = a(\ell-a)+1$. The earlier Lean placeholder (`aoyagiTheta_eq`, a
+bare `sorry`) resting on the `opaque monomialOrderAnalytic` + the `monomial_rlct.2` axiom conjunct was
+**excised** (Stage B, `genm-excise`) rather than sorry-carried — a placeholder on an opaque is not
+honest content (standing-decision-6). The `aoyagiTheta` *definition* survives; the geometric $\theta$
+lives combinatorially in Bundle 1 `(C,θ)`. What remains: bind the **analytic** pole-multiplicity of the
+DLN zeta at $-\lambda$ to that combinatorial $\theta$. Statement + kill-condition:
+[`cards/theta-analytic-multiplicity-seam.md`](expeditions/2026-06-20-aoyagi-full/cards/theta-analytic-multiplicity-seam.md).
+The value ($\lambda$) headline does not need it.
+
 ## Dependency sketch
 
 ```
