@@ -7,8 +7,8 @@
 > normal direction. (§2 seam chart, discuss-at-close #80 §2; the "one genuinely-new brick".)
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.SeamGauge.gaugeAbsorption`
->   (`lean/DLNFibre/DLN/RLCT/Validate/SeamGaugeAbsorption.lean` @ base `f3328ad2`; new file
->   uncommitted in worktree `genm-seam` — SHA to be pinned by the controller on integration)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/SeamGaugeAbsorption.lean` @ `d2bb1574`, branch
+>   `origin/genm-seambuild`; not yet wired into `DLNFibre.lean` — controller batch-integrates)
 > - **Gloss.** For any width data (thread type `r`, complement widths `m : ℕ → Type*`, ring `α`),
 >   any chain of complement maps `Ĉ : (s:ℕ) → Matrix (m s) (m (s+1)) α`, any length `L`, and any
 >   targets `tTL : ℕ → Matrix r r α`, `tTR : (s) → Matrix r (m (s+1)) α`, `tBL : (s) → Matrix (m s) r α`,
