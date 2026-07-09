@@ -265,8 +265,8 @@ theorem e_idxGen_reg (i : Fin (nRegGen H r)) :
 The `splitMPGen` core block, decoded by `paramsEquivFlat (H − r)`, is exactly the per-layer `₂₂`
 corners of `blockFlatEquivGen x` — the reduced `(H − r)` Params (`coreParamsGen`). Mirrors the L = 2
 `paramsEquivFlat_symm_splitMP_core`, but the general-`L` layer split needs no `Fin.cases`.
-(`paramsEquivFlatLinear_symm_coe_gen`, the `⇑(paramsEquivFlatLinear H).symm = ⇑(paramsEquivFlat H).symm`
-bridge, is banked in `D1GeGlobalize`.) -/
+(`paramsEquivFlatLinear_symm_coe_gen`, the linear↔measurable flatten-inverse coe agreement,
+is banked in `D1GeGlobalize`.) -/
 
 /-- The reduced-core parameter read off the per-layer `₂₂` corners of `blockFlatEquivGen x`. -/
 noncomputable def coreParamsGen (x : Fin (flatDim H) → ℝ) : Params (fun s => H s - r) :=
@@ -623,5 +623,284 @@ theorem contDiff_qResidGen (C₀ : BlockParamsGen H r)
     simp only [qResidMatGen, Matrix.sub_apply, Matrix.add_apply]
   rw [hfun]
   exact (hSchur.add hTele).sub contDiff_const
+
+/-! ## Rung G — the reduced-core telescope and the slice value `qResid_slice_value_gen`
+
+At the reg-slice (`p = 0`) the three regular corners of `blockFlatEquivGen x` vanish
+(`bChart_slice_reg_zero_gen`), so the Schur term reduces to `Br022` (via the corner facts +
+the Schur-zero `hschur`), leaving the reduced-core product `blockDiagProd`. The telescope identifies
+`blockDiagProd (blockToChainGen B) L` with the reduced-`(H−r)` product `prod (H−r) (₂₂ of B)` (up to
+the endpoint block reindex). Mirrors the L = 2 `qResid_slice_value`. -/
+
+/-- **The `inr`-restriction of an equiv fixing the `inl` summand.** If `e : ρ ⊕ β ≃ ρ ⊕ γ` fixes the
+left summand pointwise, its right summand maps bijectively to the right — the induced `β ≃ γ`. -/
+theorem apply_inr_of_fixInl {ρ β γ : Type*} (e : ρ ⊕ β ≃ ρ ⊕ γ)
+    (hfix : ∀ a, e (Sum.inl a) = Sum.inl a) (b : β) : ∃ c, e (Sum.inr b) = Sum.inr c := by
+  rcases h : e (Sum.inr b) with a | c
+  · exact absurd (e.injective (h.trans (hfix a).symm)) (by simp)
+  · exact ⟨c, rfl⟩
+
+/-- `e.symm` fixes `inl` whenever `e` does. -/
+theorem symm_fixInl {ρ β γ : Type*} (e : ρ ⊕ β ≃ ρ ⊕ γ)
+    (hfix : ∀ a, e (Sum.inl a) = Sum.inl a) (a : ρ) : e.symm (Sum.inl a) = Sum.inl a := by
+  conv_lhs => rw [← hfix a]
+  rw [e.symm_apply_apply]
+
+/-- **The induced right-block equiv** `β ≃ γ` of an `inl`-fixing `e : ρ ⊕ β ≃ ρ ⊕ γ`. -/
+noncomputable def rightEquivOfFixInl {ρ β γ : Type*} (e : ρ ⊕ β ≃ ρ ⊕ γ)
+    (hfix : ∀ a, e (Sum.inl a) = Sum.inl a) : β ≃ γ where
+  toFun b := (apply_inr_of_fixInl e hfix b).choose
+  invFun c := (apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose
+  left_inv b := by
+    have hf : e (Sum.inr b) = Sum.inr ((apply_inr_of_fixInl e hfix b).choose) :=
+      (apply_inr_of_fixInl e hfix b).choose_spec
+    have hg := (apply_inr_of_fixInl e.symm (symm_fixInl e hfix)
+      ((apply_inr_of_fixInl e hfix b).choose)).choose_spec
+    have hround : e.symm (Sum.inr ((apply_inr_of_fixInl e hfix b).choose)) = Sum.inr b := by
+      rw [← hf, e.symm_apply_apply]
+    exact Sum.inr_injective (hg.symm.trans hround)
+  right_inv c := by
+    have hg : e.symm (Sum.inr c)
+        = Sum.inr ((apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose) :=
+      (apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose_spec
+    have hf := (apply_inr_of_fixInl e hfix
+      ((apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose)).choose_spec
+    have hround : e (Sum.inr ((apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose))
+        = Sum.inr c := by
+      rw [← hg, e.apply_symm_apply]
+    exact Sum.inr_injective (hf.symm.trans hround)
+
+/-- `e (Sum.inr b) = Sum.inr (rightEquivOfFixInl e hfix b)`. -/
+theorem rightEquivOfFixInl_apply {ρ β γ : Type*} (e : ρ ⊕ β ≃ ρ ⊕ γ)
+    (hfix : ∀ a, e (Sum.inl a) = Sum.inl a) (b : β) :
+    e (Sum.inr b) = Sum.inr (rightEquivOfFixInl e hfix b) :=
+  (apply_inr_of_fixInl e hfix b).choose_spec
+
+/-- `e.symm (Sum.inr c) = Sum.inr ((rightEquivOfFixInl e hfix).symm c)`. -/
+theorem rightEquivOfFixInl_symm_apply {ρ β γ : Type*} (e : ρ ⊕ β ≃ ρ ⊕ γ)
+    (hfix : ∀ a, e (Sum.inl a) = Sum.inl a) (c : γ) :
+    e.symm (Sum.inr c) = Sum.inr ((rightEquivOfFixInl e hfix).symm c) :=
+  (apply_inr_of_fixInl e.symm (symm_fixInl e hfix) c).choose_spec
+
+/-- **Block-diagonal reindex preserves the `₂₂` corner.** For `eR`, `eC` fixing `inl`, the `₂₂`
+of a reindexed matrix is the `₂₂` block reindexed by the induced right-block equivs. -/
+theorem reindex_toBlocks₂₂_of_fixInl {ρ β γ β' γ' : Type*}
+    (eR : ρ ⊕ β ≃ ρ ⊕ β') (eC : ρ ⊕ γ ≃ ρ ⊕ γ')
+    (hR : ∀ a, eR (Sum.inl a) = Sum.inl a) (hC : ∀ a, eC (Sum.inl a) = Sum.inl a)
+    (M : Matrix (ρ ⊕ β) (ρ ⊕ γ) ℝ) :
+    (Matrix.reindex eR eC M).toBlocks₂₂
+      = Matrix.reindex (rightEquivOfFixInl eR hR) (rightEquivOfFixInl eC hC) M.toBlocks₂₂ := by
+  ext a b
+  simp only [Matrix.toBlocks₂₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    rightEquivOfFixInl_symm_apply eR hR, rightEquivOfFixInl_symm_apply eC hC]
+
+/-- Block-diagonal reindex: the `₁₁` (pivot × pivot) corner is unchanged. -/
+theorem reindex_toBlocks₁₁_of_fixInl {ρ β γ β' γ' : Type*}
+    (eR : ρ ⊕ β ≃ ρ ⊕ β') (eC : ρ ⊕ γ ≃ ρ ⊕ γ')
+    (hR : ∀ a, eR (Sum.inl a) = Sum.inl a) (hC : ∀ a, eC (Sum.inl a) = Sum.inl a)
+    (M : Matrix (ρ ⊕ β) (ρ ⊕ γ) ℝ) :
+    (Matrix.reindex eR eC M).toBlocks₁₁ = M.toBlocks₁₁ := by
+  ext a b
+  simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    symm_fixInl eR hR, symm_fixInl eC hC]
+
+/-- Block-diagonal reindex: the `₂₁` (nonpivot × pivot) corner reindexes on the row only. -/
+theorem reindex_toBlocks₂₁_of_fixInl {ρ β γ β' γ' : Type*}
+    (eR : ρ ⊕ β ≃ ρ ⊕ β') (eC : ρ ⊕ γ ≃ ρ ⊕ γ')
+    (hR : ∀ a, eR (Sum.inl a) = Sum.inl a) (hC : ∀ a, eC (Sum.inl a) = Sum.inl a)
+    (M : Matrix (ρ ⊕ β) (ρ ⊕ γ) ℝ) :
+    (Matrix.reindex eR eC M).toBlocks₂₁
+      = Matrix.reindex (rightEquivOfFixInl eR hR) (Equiv.refl ρ) M.toBlocks₂₁ := by
+  ext a k
+  simp only [Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    symm_fixInl eC hC, rightEquivOfFixInl_symm_apply eR hR, Equiv.refl_symm, Equiv.refl_apply]
+
+/-- Block-diagonal reindex: the `₁₂` (pivot × nonpivot) corner reindexes on the column only. -/
+theorem reindex_toBlocks₁₂_of_fixInl {ρ β γ β' γ' : Type*}
+    (eR : ρ ⊕ β ≃ ρ ⊕ β') (eC : ρ ⊕ γ ≃ ρ ⊕ γ')
+    (hR : ∀ a, eR (Sum.inl a) = Sum.inl a) (hC : ∀ a, eC (Sum.inl a) = Sum.inl a)
+    (M : Matrix (ρ ⊕ β) (ρ ⊕ γ) ℝ) :
+    (Matrix.reindex eR eC M).toBlocks₁₂
+      = Matrix.reindex (Equiv.refl ρ) (rightEquivOfFixInl eC hC) M.toBlocks₁₂ := by
+  ext k b
+  simp only [Matrix.toBlocks₁₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    symm_fixInl eR hR, rightEquivOfFixInl_symm_apply eC hC, Equiv.refl_symm, Equiv.refl_apply]
+
+/-- **The per-vertex block equiv** at vertex `k`,
+the common composite of `blockToChainGen`'s `rowEq`/`colEq` (`rowEq s = vertexEq s.castSucc`,
+`colEq s = vertexEq s.succ`). Unifies the two so the telescope's middle reindexes cancel. -/
+noncomputable def vertexEq (k : ℕ) (hk : k < L + 1) :
+    Fin r ⊕ Fin (H ⟨k, hk⟩ - r) ≃ Fin r ⊕ Fin (deepestChainWidth H k - r) :=
+  (sumSplit (ι ⟨k, hk⟩) (hι ⟨k, hk⟩)).trans
+    ((finCongr (H_eq_deepestChainWidth H k hk)).trans
+      (genChainSplit H r (r_le_H_gen ι hι) ι hι k))
+
+/-- `vertexEq` fixes the pivot (`inl`) summand: the pivot `ι ⟨k,·⟩` recasts to `genPivotN`, which
+`genChainSplit` sends back to `Sum.inl`. -/
+theorem vertexEq_inl (k : ℕ) (hk : k < L + 1) (a : Fin r) :
+    vertexEq ι hι k hk (Sum.inl a) = Sum.inl a := by
+  have hpiv : (finCongr (H_eq_deepestChainWidth H k hk)) (ι ⟨k, hk⟩ a)
+      = genPivotN H r (r_le_H_gen ι hι) ι k a := by
+    rw [genPivotN, dif_pos hk]; rfl
+  simp only [vertexEq, Equiv.trans_apply, sumSplit_inl]
+  rw [hpiv, genChainSplit, ← sumSplit_inl (genPivotN H r (r_le_H_gen ι hι) ι k)
+    (genPivotN_inj H r (r_le_H_gen ι hι) ι hι k) a, Equiv.symm_apply_apply]
+
+/-- **The induced right-block equiv at vertex `k`** `Fin (H ⟨k,·⟩ − r) ≃ Fin (dcw H k − r)`. -/
+noncomputable def vertexInr (k : ℕ) (hk : k < L + 1) :
+    Fin (H ⟨k, hk⟩ - r) ≃ Fin (deepestChainWidth H k - r) :=
+  rightEquivOfFixInl (vertexEq ι hι k hk) (vertexEq_inl ι hι k hk)
+
+/-- **The per-layer `₂₂` readback of `blockToChainGen`** (slot `s < L`): the `₂₂` corner is the
+block param's `₂₂` reindexed by the vertex right-block equivs `vertexInr s`, `vertexInr (s+1)`. -/
+theorem blockToChainGen_toBlocks₂₂ (B : BlockParamsGen H r) (s : ℕ) (hs : s < L) :
+    (blockToChainGen H r (r_le_H_gen ι hι) ι hι B s).toBlocks₂₂
+      = Matrix.reindex (vertexInr ι hι s (by omega)) (vertexInr ι hι (s + 1) (by omega))
+          ((B ⟨s, hs⟩).toBlocks₂₂) := by
+  rw [blockToChainGen, dif_pos hs]
+  exact reindex_toBlocks₂₂_of_fixInl (vertexEq ι hι s (by omega)) (vertexEq ι hι (s + 1) (by omega))
+    (vertexEq_inl ι hι s (by omega)) (vertexEq_inl ι hι (s + 1) (by omega)) (B ⟨s, hs⟩)
+
+/-- `blockToChainGen`'s `₂₁` corner (slot `s < L`): reindexed on the row only. -/
+theorem blockToChainGen_toBlocks₂₁ (B : BlockParamsGen H r) (s : ℕ) (hs : s < L) :
+    (blockToChainGen H r (r_le_H_gen ι hι) ι hι B s).toBlocks₂₁
+      = Matrix.reindex (vertexInr ι hι s (by omega)) (Equiv.refl (Fin r))
+          ((B ⟨s, hs⟩).toBlocks₂₁) := by
+  rw [blockToChainGen, dif_pos hs]
+  exact reindex_toBlocks₂₁_of_fixInl (vertexEq ι hι s (by omega)) (vertexEq ι hι (s + 1) (by omega))
+    (vertexEq_inl ι hι s (by omega)) (vertexEq_inl ι hι (s + 1) (by omega)) (B ⟨s, hs⟩)
+
+/-- `blockToChainGen`'s `₁₁` corner (slot `s < L`): unchanged (pivot × pivot). -/
+theorem blockToChainGen_toBlocks₁₁ (B : BlockParamsGen H r) (s : ℕ) (hs : s < L) :
+    (blockToChainGen H r (r_le_H_gen ι hι) ι hι B s).toBlocks₁₁ = (B ⟨s, hs⟩).toBlocks₁₁ := by
+  rw [blockToChainGen, dif_pos hs]
+  exact reindex_toBlocks₁₁_of_fixInl (vertexEq ι hι s (by omega)) (vertexEq ι hι (s + 1) (by omega))
+    (vertexEq_inl ι hι s (by omega)) (vertexEq_inl ι hι (s + 1) (by omega)) (B ⟨s, hs⟩)
+
+/-- `blockToChainGen`'s `₁₂` corner (slot `s < L`): reindexed on the column only. -/
+theorem blockToChainGen_toBlocks₁₂ (B : BlockParamsGen H r) (s : ℕ) (hs : s < L) :
+    (blockToChainGen H r (r_le_H_gen ι hι) ι hι B s).toBlocks₁₂
+      = Matrix.reindex (Equiv.refl (Fin r)) (vertexInr ι hι (s + 1) (by omega))
+          ((B ⟨s, hs⟩).toBlocks₁₂) := by
+  rw [blockToChainGen, dif_pos hs]
+  exact reindex_toBlocks₁₂_of_fixInl (vertexEq ι hι s (by omega)) (vertexEq ι hι (s + 1) (by omega))
+    (vertexEq_inl ι hι s (by omega)) (vertexEq_inl ι hι (s + 1) (by omega)) (B ⟨s, hs⟩)
+
+/-- **Generic reindexed-product cancel** (matching middle equiv). -/
+theorem reindex_mul_reindex {ρ σ τ ρ' μ τ' : Type*} [Fintype σ] [Fintype μ]
+    (eR : ρ ≃ ρ') (eMid : σ ≃ μ) (eC : τ ≃ τ')
+    (A : Matrix ρ σ ℝ) (Bm : Matrix σ τ ℝ) :
+    Matrix.reindex eR eMid A * Matrix.reindex eMid eC Bm = Matrix.reindex eR eC (A * Bm) := by
+  simp only [Matrix.reindex_apply]
+  exact Matrix.submatrix_mul_equiv A Bm eR.symm eMid.symm eC.symm
+
+/-- **The reduced-core telescope** (prefix form). `blockDiagProd (blockToChainGen B) k` is the
+reduced `(H−r)` product `prodAux (H−r) (₂₂ of B) k` reindexed by the endpoint vertex equivs.
+Induction on `k`; peels `blockDiagProd _ (k+1) = _ * (Q k)₂₂` (`blockToChainGen_toBlocks₂₂`) against
+`prodAux_succ`, the matching middle `vertexInr k` cancelling (`reindex_mul_reindex`). -/
+theorem blockDiagProd_blockToChainGen_prefix (B : BlockParamsGen H r) :
+    ∀ (k : ℕ) (hk : k < L + 1),
+      blockDiagProd (blockToChainGen H r (r_le_H_gen ι hι) ι hι B) k
+        = Matrix.reindex (vertexInr ι hι 0 (Nat.zero_lt_succ L)) (vertexInr ι hι k hk)
+            (prodAux (fun s => H s - r) (fun s => (B s).toBlocks₂₂) k hk)
+  | 0, hk => by
+      have hpr : vertexInr ι hι 0 (Nat.zero_lt_succ L) = vertexInr ι hι 0 hk := rfl
+      rw [show blockDiagProd (blockToChainGen H r (r_le_H_gen ι hι) ι hι B) 0
+            = (1 : Matrix (Fin (deepestChainWidth H 0 - r)) (Fin (deepestChainWidth H 0 - r)) ℝ)
+          from rfl,
+        show prodAux (fun s => H s - r) (fun s => (B s).toBlocks₂₂) 0 hk
+            = (1 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) 0)) ℝ) from rfl,
+        hpr, Matrix.reindex_apply]
+      exact (Matrix.submatrix_one_equiv (vertexInr ι hι 0 hk).symm).symm
+  | k + 1, hk => by
+      have hkL : k < L := Nat.lt_of_succ_lt_succ hk
+      have hk' : k < L + 1 := Nat.lt_of_succ_lt hk
+      rw [show blockDiagProd (blockToChainGen H r (r_le_H_gen ι hι) ι hι B) (k + 1)
+            = blockDiagProd (blockToChainGen H r (r_le_H_gen ι hι) ι hι B) k
+              * (blockToChainGen H r (r_le_H_gen ι hι) ι hι B k).toBlocks₂₂ from rfl,
+        blockDiagProd_blockToChainGen_prefix B k hk',
+        blockToChainGen_toBlocks₂₂ ι hι B k hkL, reindex_mul_reindex,
+        prodAux_succ (fun s => H s - r) (fun s => (B s).toBlocks₂₂) k hk rfl rfl]
+      rfl
+
+/-- **The slice value of `qResidMatGen`** at `p = 0`: the three regular corners of the chart
+vanish (`bChart_slice_reg_zero_gen`), so the chain's regular corners equal `C₀`'s (= `Br`'s, via
+`h11/h12/h21`); the Schur term becomes `Br₂₁·Br₁₁⁻¹·Br₁₂ = Br₂₂` (`hGeval`, `hschur`) and cancels
+`Br₂₂`, leaving the reduced-core telescope `prodAux (H−r) (coreParamsGen + coreShiftParamGen)`. The
+general-`L` port of `qResid_slice_value`. -/
+theorem qResid_slice_value_gen (C₀ : BlockParamsGen H r)
+    (Br : Matrix (Fin r ⊕ Fin (deepestChainWidth H 0 - r))
+      (Fin r ⊕ Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ)
+    (hGeval : G (Br.toBlocks₁₁) = (Br.toBlocks₁₁)⁻¹)
+    (h11 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ (L - 1)).toBlocks₁₁ = Br.toBlocks₁₁)
+    (h12 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ (L - 1)).toBlocks₁₂ = Br.toBlocks₁₂)
+    (h21 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ 0).toBlocks₂₁ = Br.toBlocks₂₁)
+    (hschur : Br.toBlocks₂₂ = Br.toBlocks₂₁ * (Br.toBlocks₁₁)⁻¹ * Br.toBlocks₁₂)
+    (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)) :
+    qResidMatGen ι hι hL C₀ Br.toBlocks₂₂ G ((0 : Fin (nRegGen H r) → ℝ), t)
+      = Matrix.reindex (vertexInr ι hι 0 (Nat.zero_lt_succ L))
+          (vertexInr ι hι (L - 1 + 1) (by omega))
+          (prodAux (fun s => H s - r)
+            (coreParamsGen ι hι
+                ((splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+              + coreShiftParamGen C₀) (L - 1 + 1) (by omega)) := by
+  classical
+  set x := (splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t) with hx
+  obtain ⟨hz21, hz11, hz12⟩ := bChart_slice_reg_zero_gen ι hι hL t
+  have hL0 : (0 : ℕ) < L := by omega
+  have hLm1 : L - 1 < L := by omega
+  have hqb : qBlockGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t)
+      = blockFlatEquivGen H r ι hι x + C₀ := rfl
+  -- the reg corners of the chart vanish at the slice (index-recast form).
+  have hbfe21 : (blockFlatEquivGen H r ι hι x ⟨0, hL0⟩).toBlocks₂₁ = 0 := hz21
+  have hbfe11 : (blockFlatEquivGen H r ι hι x ⟨L - 1, hLm1⟩).toBlocks₁₁ = 0 := hz11
+  have hbfe12 : (blockFlatEquivGen H r ι hι x ⟨L - 1, hLm1⟩).toBlocks₁₂ = 0 := hz12
+  -- `(qBlock ⟨·⟩)` reg corners equal `C₀`'s.
+  have hqb21 : (qBlockGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) ⟨0, hL0⟩).toBlocks₂₁
+      = (C₀ ⟨0, hL0⟩).toBlocks₂₁ := by
+    rw [hqb, Pi.add_apply]; ext a k
+    simp only [Matrix.toBlocks₂₁, Matrix.add_apply, Matrix.of_apply]
+    have := congrFun (congrFun hbfe21 a) k
+    simp only [Matrix.toBlocks₂₁, Matrix.of_apply, Matrix.zero_apply] at this
+    rw [this, zero_add]
+  have hqb11 : (qBlockGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) ⟨L - 1, hLm1⟩).toBlocks₁₁
+      = (C₀ ⟨L - 1, hLm1⟩).toBlocks₁₁ := by
+    rw [hqb, Pi.add_apply]; ext a k
+    simp only [Matrix.toBlocks₁₁, Matrix.add_apply, Matrix.of_apply]
+    have := congrFun (congrFun hbfe11 a) k
+    simp only [Matrix.toBlocks₁₁, Matrix.of_apply, Matrix.zero_apply] at this
+    rw [this, zero_add]
+  have hqb12 : (qBlockGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) ⟨L - 1, hLm1⟩).toBlocks₁₂
+      = (C₀ ⟨L - 1, hLm1⟩).toBlocks₁₂ := by
+    rw [hqb, Pi.add_apply]; ext a k
+    simp only [Matrix.toBlocks₁₂, Matrix.add_apply, Matrix.of_apply]
+    have := congrFun (congrFun hbfe12 a) k
+    simp only [Matrix.toBlocks₁₂, Matrix.of_apply, Matrix.zero_apply] at this
+    rw [this, zero_add]
+  -- transport to the chain's corners = `Br`'s corners.
+  have hQ21 : (qChainGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) 0).toBlocks₂₁
+      = Br.toBlocks₂₁ := by
+    rw [qChainGen, blockToChainGen_toBlocks₂₁ ι hι _ 0 hL0, hqb21,
+      ← blockToChainGen_toBlocks₂₁ ι hι C₀ 0 hL0, h21]
+  have hQ11 : (qChainGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) (L - 1)).toBlocks₁₁
+      = Br.toBlocks₁₁ := by
+    rw [qChainGen, blockToChainGen_toBlocks₁₁ ι hι _ (L - 1) hLm1, hqb11,
+      ← blockToChainGen_toBlocks₁₁ ι hι C₀ (L - 1) hLm1, h11]
+  have hQ12 : (qChainGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t) (L - 1)).toBlocks₁₂
+      = Br.toBlocks₁₂ := by
+    rw [qChainGen, blockToChainGen_toBlocks₁₂ ι hι _ (L - 1) hLm1, hqb12,
+      ← blockToChainGen_toBlocks₁₂ ι hι C₀ (L - 1) hLm1, h12]
+  -- the telescope of the reduced core.
+  have hTele : blockDiagProd (qChainGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t)) (L - 1 + 1)
+      = Matrix.reindex (vertexInr ι hι 0 (Nat.zero_lt_succ L))
+          (vertexInr ι hι (L - 1 + 1) (by omega))
+          (prodAux (fun s => H s - r) (coreParamsGen ι hι x + coreShiftParamGen C₀)
+            (L - 1 + 1) (by omega)) := by
+    rw [qChainGen, blockDiagProd_blockToChainGen_prefix ι hι
+      (qBlockGen ι hι hL C₀ ((0 : Fin (nRegGen H r) → ℝ), t)) (L - 1 + 1) (by omega)]
+    rfl
+  -- assemble: the Schur term cancels `Br₂₂`, leaving the telescope.
+  rw [qResidMatGen, hQ21, hQ11, hQ12, hGeval, ← hschur, hTele, add_sub_cancel_left]
 
 end DLNFibre.DLN.RLCT
