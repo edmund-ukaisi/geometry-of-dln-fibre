@@ -28,7 +28,7 @@ the API.
 - **`aoyagi_rrr_222` / `aoyagi_rrr_212`** are **fully sorry-free** concrete `L = 2` anchors at the
   deepest point of the `B = 0` fibre — re-exports of `case222_rlct` / `case212_rlct` cast against
   `rrrLambda`. They show the machinery reaches a *proven* RLCT value at `L = 2`: `(2,2,2) → 3/2`
-  (rests on the single cited S2 axiom `monomial_rlct`) and `(2,1,2) → 1` (S2-free, axiom-clean).
+  (now S2-FREE via the proven identity — the `monomial_rlct` axiom is retired) and `(2,1,2) → 1` (S2-free).
 - **The order `θ` (`rrrTheta`)** — the combinatorial value `a(ℓ − a) + 1` is landed **sorry-free**
   (the `L = 2` instance of `aoyagiTheta`, on given selector data). The **analytic binding** (that
   this value is `monomialOrderAnalytic` of the RRR loss) is **NOT stated** — it is the flagged open
@@ -101,8 +101,8 @@ deliverable's "as far as the machinery reaches": the RRR value is *proven* (not 
 these vectors. -/
 
 /-- **RRR sorry-free anchor `(2,2,2)`.** The local RLCT of the three-layer `(2,2,2)` loss at the
-deepest point of the `B = 0` fibre equals `rrrLambda (2,2,2) 0 = 3/2`. Sorry-free; rests on the
-single cited S2 axiom `monomial_rlct` (the `≤`-bound) per `case222_rlct`. -/
+deepest point of the `B = 0` fibre equals `rrrLambda (2,2,2) 0 = 3/2`. Sorry-free + S2-FREE (via the
+proven identity `monomialThreshold_eq_iInf_axisRatio`; the `monomial_rlct` axiom retired) per `case222_rlct`. -/
 theorem aoyagi_rrr_222 :
     rlctAt H222 (dlnLoss H222 0) deepest222 = ENNReal.ofReal (rrrLambda H222 0) := by
   rw [case222_rlct, rrrLambda]

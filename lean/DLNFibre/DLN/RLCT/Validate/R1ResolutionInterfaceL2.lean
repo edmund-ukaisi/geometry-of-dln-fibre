@@ -32,8 +32,8 @@ are the banked `routeM_rlctAtOn_eq_iInf` / `rlctAtOn_routeMCore_transport`.
 - **Sub-D** (assemble): `routeMLayerCover_of_atoms` → `IsRouteMCover`; `routeM_rlctAtOn_eq_iInf` +
   `rlctAtOn_routeMCore_transport` → the params-side `⨅`-form; the value lane closes it.
 
-Axioms: exactly `[propext, Classical.choice, Quot.sound, monomial_rlct]` — the box atoms cite the
-S2 `monomial_rlct`; NO new axioms, NO `sorryAx`.
+Axioms: `[propext, Classical.choice, Quot.sound]` — S2-FREE since the axiom retirement (2026-07-09;
+the box atoms route through the proven identity `monomialThreshold_eq_iInf_axisRatio`), NO `sorryAx`.
 -/
 
 open MeasureTheory

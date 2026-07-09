@@ -38,8 +38,8 @@ drop. The `Ubound` a.e.-positivity is PROVED (`Uval334 ≥ a² > 0` off the null
 reusable reshape measure-preservation `measurePreserving_pack334`
 (`measurePreserving_paramsPack_of_flatIdxEquiv` at the explicit slot bijection `fin21EquivFlatIdx334`,
 `Foundations/ParamsReshapeMP.lean`) + `continuousLinearMap_abs_det_eq_one_of_measurePreserving`. So
-`routeM334_box_diverges` is axiom-clean `[propext, Classical.choice, Quot.sound, monomial_rlct]` (no
-`sorryAx`; `monomial_rlct` the single cited S2 leaf). The SOUNDNESS-critical structural determinant
+`routeM334_box_diverges` is axiom-clean `[propext, Classical.choice, Quot.sound]` (no `sorryAx`;
+S2-FREE via the proven identity — the `monomial_rlct` axiom retired). The SOUNDNESS-critical structural determinant
 `|u 0|⁷·|u 1|²` (matching `leafH334`) is used genuinely throughout. No `native_decide`; the exact
 `F = u²·U`, the structural determinant, the factorization, and the threshold are PROVEN, not faked.
 
@@ -1267,7 +1267,7 @@ reusable reshape measure-preservation `measurePreserving_pack334`
 per-node measure-plumbing the `hfin` certificate flags as cost driver 2 — banked once, shared across all
 binding nodes). The SOUNDNESS-critical structural determinant `|u 0|⁷·|u 1|²` (matching `leafH334`) is
 used genuinely throughout. `routeM334_box_diverges` is axiom-clean:
-`[propext, Classical.choice, Quot.sound, monomial_rlct]` (the single cited S2 leaf). -/
+`[propext, Classical.choice, Quot.sound]` (S2-FREE — the `monomial_rlct` axiom retired). -/
 theorem routeM334_box_diverges (c' : NNReal) (hc' : (4 : ℝ≥0∞) ≤ (c' : ℝ≥0∞))
     (ε : ℝ) (hε : 0 < ε) :
     ∫⁻ x in cubeBox 21 ε,

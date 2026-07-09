@@ -14,8 +14,9 @@ leaves are WIRED: the R1 interface (`hR1_L2`) is landed, and the D1 `≥`-leg (`
 through the EXPLICIT-core producer `d1ge_L2_deepestPoint_via_explicit_core_genL`
 (`D1L2ExplicitCoreProducer`), which reduces the whole leg to the SINGLE crux `d1ge_L2_hAtV_explicit`
 (the Aoyagi Step-1 explicit block reduction — the sole remaining `sorry`, living in that module, NOT
-here). `aoyagi_learning_coefficient_L2` axioms = `[propext, sorryAx, Classical.choice, Quot.sound,
-monomial_rlct]` — `sorryAx` = the crux only; NO `hbox` (L = 2 closes unconditionally: the deepest
+here). **STATUS (2026-07-09): CLOSED — `aoyagi_learning_coefficient_L2` is clean-three `[propext,
+Classical.choice, Quot.sound]`** (the crux `d1ge_L2_hAtV_explicit` landed; the `monomial_rlct` S2 axiom
+is retired — the narrative below is HISTORICAL). NO `hbox` (L = 2 closes unconditionally: the deepest
 value uses the banked hbox-free R1, and the D1 leg dominates the core by Aoyagi Theorem 4, never
 computing an `M'`-degraded value).
 
@@ -59,8 +60,8 @@ exactly ONE named leaf:
      value (#44 + banked R1) + the Params-domain Aoyagi Theorem 4 (`core_zero_le_of_params`, PROVEN)
      + the crux `d1ge_L2_hAtV_explicit` (the explicit Schur block reduction, the sole `sorry`).
 
-When the crux `d1ge_L2_hAtV_explicit` lands, `aoyagi_learning_coefficient_L2` is sorry-free
-(clean-four `[propext, Classical.choice, Quot.sound, monomial_rlct]`).
+The crux `d1ge_L2_hAtV_explicit` LANDED, so `aoyagi_learning_coefficient_L2` is sorry-free +
+clean-three `[propext, Classical.choice, Quot.sound]` (the `monomial_rlct` S2 axiom retired, 2026-07-09).
 -/
 
 open MeasureTheory
