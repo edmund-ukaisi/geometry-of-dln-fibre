@@ -3,6 +3,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMLayerSplit
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
 import DLNFibre.DLN.RLCT.Foundations.ParamsFlatLinear
 import DLNFibre.DLN.RLCT.Foundations.ParamsReshapeMP
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `RouteMLayerCoverGEL2` — the `L = 2` achiever box-divergence (single weighted radial blow-up)
@@ -176,7 +177,7 @@ ratio `⊤`, so it does NOT lower the threshold). The `≤`-direction input: for
 leaf monomial diverges. -/
 theorem leafMonomialThreshold334_le :
     monomialThreshold 21 leafK334 leafH334 ≤ 4 := by
-  have h := monomialThreshold_le_regularSeq 21 leafK334 leafH334 8 (by norm_num) 0
+  have h := monomialThreshold_le_regularSeq' 21 leafK334 leafH334 8 (by norm_num) 0
     (by simp [leafK334]) (by simp [leafH334])
   have hcast : ((8 : ℕ) : ℝ≥0∞) / 2 = 4 := by
     rw [show ((8 : ℕ) : ℝ≥0∞) = (8 : ℝ≥0∞) by norm_num]
@@ -385,7 +386,7 @@ theorem leaf334_box_div (W : L2AchieverChart) (c' : ℝ) (hc'0 : 0 < c')
   have hBne : ENNReal.ofReal (B ^ (-c')) ≠ 0 := by
     simp only [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact Real.rpow_pos_of_pos hB0 _
   rw [lintegral_const_mul _ hmonomeas',
-    monomialIntegrand_lintegral_box_eq_top 21 leafK334 leafH334
+    monomialIntegrand_lintegral_box_eq_top' 21 leafK334 leafH334
       ⟨0, leafK334_binding⟩ c' hc' hc'0 hε,
     ENNReal.mul_top hBne] at hlb
   exact top_le_iff.1 hlb

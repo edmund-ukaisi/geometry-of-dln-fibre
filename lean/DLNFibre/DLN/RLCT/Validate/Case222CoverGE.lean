@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Validate.Case222Block
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.Case222CoverGE` — the `(2,2,2)` ≥-direction headline
@@ -85,7 +86,7 @@ theorem integrableOn_Icc_symm_of_even {f : ℝ → ℝ} (hev : ∀ x, f (-x) = f
 `axisRatio_ge_of_mult` (`m = 3`, `3·1 ≤ hⱼ+1`); spectator axes (`k = 0`) via `axisRatio_spectator`
 (`⊤`). This is the per-leaf finiteness input the `≥`-cover needs (the `≤`-work only had `≤`). -/
 theorem unitMonomialThreshold_ge : (3 : ℝ≥0∞) / 2 ≤ monomialThreshold 8 unitK8 unitH8 := by
-  rw [(monomial_rlct 8 unitK8 unitH8).1]
+  rw [monomialThreshold_eq_iInf_axisRatio 8 unitK8 unitH8]
   refine le_iInf (fun j => ?_)
   rcases Nat.eq_zero_or_pos (unitK8 j) with h0 | hpos
   · rw [h0, axisRatio_spectator]; exact le_top
@@ -113,7 +114,7 @@ def blockH8 : Fin 8 → ℕ := ![3, 2, 3, 0, 0, 0, 0, 0]
 leaf: the three binding axes (`(k,h) = (1,3),(1,2),(1,3)`) realise `2, 3/2, 2 ≥ 3/2` via
 `axisRatio_ge_of_mult` (`m = 3`); the five spectators give `⊤`. -/
 theorem blockMonomialThreshold_ge : (3 : ℝ≥0∞) / 2 ≤ monomialThreshold 8 blockK8 blockH8 := by
-  rw [(monomial_rlct 8 blockK8 blockH8).1]
+  rw [monomialThreshold_eq_iInf_axisRatio 8 blockK8 blockH8]
   refine le_iInf (fun j => ?_)
   rcases Nat.eq_zero_or_pos (blockK8 j) with h0 | hpos
   · rw [h0, axisRatio_spectator]; exact le_top

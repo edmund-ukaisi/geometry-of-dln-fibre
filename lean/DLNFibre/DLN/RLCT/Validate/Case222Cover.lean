@@ -146,42 +146,12 @@ theorem monomialIntegrand_eq_prod_rpow (d : ℕ) (k h : Fin d → ℕ) (c : ℝ)
     ← Real.rpow_mul (abs_nonneg _), ← Real.rpow_add (hu j)]
   congr 1; push_cast; ring
 
-/-- **Binding axis from the threshold.** If `c'` is at-or-above the monomial threshold (`= ⨅ axisRatio`
-by S2) and `c'` is finite, some axis `j₀` has `axisRatio (h j₀) (k j₀) ≤ c'` — the binding divisor.
-Since `axisRatio _ 0 = ⊤ > c'`, that axis has `k j₀ ≠ 0`, and its one-variable exponent
-`h j₀ − 2·k j₀·c' ≤ −1` (the divergence condition). The `≤`-direction's entry point: one diverging
-factor suffices. -/
-theorem exists_binding_axis (d : ℕ) (k h : Fin d → ℕ) (c' : ℝ) (hc'0 : 0 < c')
-    (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') :
-    ∃ j₀, k j₀ ≠ 0 ∧ (h j₀ : ℝ) - 2 * (k j₀ : ℝ) * c' ≤ -1 := by
-  rw [(monomial_rlct d k h).1] at hc'
-  have hlt : ENNReal.ofReal c' < ⊤ := ENNReal.ofReal_lt_top
-  rw [← Finset.inf_univ_eq_iInf, Finset.inf_le_iff hlt] at hc'
-  obtain ⟨j₀, -, hj₀⟩ := hc'
-  -- `axisRatio (h j₀) (k j₀) ≤ ofReal c' < ⊤` forces `k j₀ ≠ 0` (else `axisRatio = ⊤`, `/0`)
-  have hk0 : k j₀ ≠ 0 := by
-    intro hk
-    rw [axisRatio, hk] at hj₀
-    rw [Nat.cast_zero, mul_zero, ENNReal.div_zero (by positivity), top_le_iff] at hj₀
-    exact ENNReal.ofReal_ne_top hj₀
-  refine ⟨j₀, hk0, ?_⟩
-  -- convert `(h+1)/(2k) ≤ c'` (in ℝ≥0∞) to the real exponent bound `h − 2kc' ≤ −1`
-  unfold axisRatio at hj₀
-  have hbne0 : (2 * (k j₀ : ℝ≥0∞)) ≠ 0 := by
-    simp only [ne_eq, mul_eq_zero, not_or]; exact ⟨by norm_num, by exact_mod_cast hk0⟩
-  have hbnetop : (2 * (k j₀ : ℝ≥0∞)) ≠ ∞ := by finiteness
-  rw [ENNReal.div_le_iff_le_mul (Or.inl hbne0) (Or.inl hbnetop)] at hj₀
-  have h2k : (2 * (k j₀ : ℝ≥0∞)) = ENNReal.ofReal (2 * (k j₀ : ℝ)) := by
-    rw [ENNReal.ofReal_mul (by norm_num)]; congr 1
-    · simp [ENNReal.ofReal_ofNat]
-    · rw [ENNReal.ofReal_natCast]
-  rw [h2k, ← ENNReal.ofReal_mul hc'0.le] at hj₀
-  have hh1 : ((h j₀ : ℝ≥0∞) + 1) = ENNReal.ofReal ((h j₀ : ℝ) + 1) := by
-    rw [ENNReal.ofReal_add (by positivity) (by norm_num)]; congr 1
-    · rw [ENNReal.ofReal_natCast]
-    · simp
-  rw [hh1, ENNReal.ofReal_le_ofReal_iff (by positivity)] at hj₀
-  nlinarith [hj₀]
+/-! **DELETED (2026-07-09, S2 retirement):** `exists_binding_axis` +
+`monomialIntegrand_lintegral_box_eq_top` (the unprimed `monomial_rlct.1`-based binding-axis +
+box-divergence atoms). They are UPSTREAM of `monomialThreshold_eq_iInf_axisRatio` (can't reference it
+— circular import), so they were superseded by the S2-free primed forms `exists_binding_axis'` /
+`monomialIntegrand_lintegral_box_eq_top'` (`Validate/MonomialThresholdIdentity`), which every former
+consumer now uses. -/
 
 /-- **Rest-factor positivity.** The lintegral of a product of per-axis `rpow`s over the open box
 `(0,ε)^n` is strictly positive (the integrand is positive on the box, of positive measure). The
@@ -308,20 +278,9 @@ theorem monomialIntegrand_lintegral_box_eq_top_of_axis (d : ℕ) (k h : Fin d �
   -- lift `⊤` from the sub-box to the full box
   exact eq_top_mono (hIoo ▸ lintegral_mono_set hsub) rfl
 
-/-- **ε-uniform monomial box divergence (the `≤`-direction analytic atom).** For an exponent `c'`
-at-or-above the monomial threshold (`monomialThreshold d k h ≤ c'`, the singular case `∃ j, k j ≠ 0`),
-the lintegral of `|monomialIntegrand d k h c'|` over the box `[0, ε]^d` is `⊤` for *every* `ε > 0`.
-ε-uniformity is the crux that makes the divergence neighbourhood-independent (the input to
-`rlctAtOn_le_of_box_diverges`). The binding axis `j₀` (exponent `≤ −1`) is extracted via S2
-(`exists_binding_axis`); the analytic core is the S2-free
-`monomialIntegrand_lintegral_box_eq_top_of_axis`. -/
-theorem monomialIntegrand_lintegral_box_eq_top (d : ℕ) (k h : Fin d → ℕ) (hk : ∃ j, k j ≠ 0)
-    (c' : ℝ) (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') (hc'0 : 0 < c') {ε : ℝ}
-    (hε : 0 < ε) :
-    ∫⁻ u in Set.univ.pi (fun _ : Fin d => Set.Icc (0 : ℝ) ε),
-        ENNReal.ofReal (|monomialIntegrand d k h c' u|) = ⊤ := by
-  -- the binding axis (needs `d ≥ 1`, supplied by `hk`); the geometric core is S2-free
-  obtain ⟨j₀, hkj₀, hexp⟩ := exists_binding_axis d k h c' hc'0 hc'
-  exact monomialIntegrand_lintegral_box_eq_top_of_axis d k h c' j₀ hexp hε
+/-! (The unprimed S2 wrapper `monomialIntegrand_lintegral_box_eq_top` was DELETED here, 2026-07-09,
+S2 retirement — see the note above. The S2-free core `monomialIntegrand_lintegral_box_eq_top_of_axis`
+(above) + the primed `monomialIntegrand_lintegral_box_eq_top'` in
+`Validate/MonomialThresholdIdentity` replace it; every former consumer uses the primed form.) -/
 
 end DLNFibre.DLN.RLCT
