@@ -1,43 +1,58 @@
 # priorities.md — Aoyagi-Full taste ledger
 
 Controller proposes (VOI × directed-suspicion); operator edits directly (highest-authority signal).
-Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-06** (superseded the
-Rung-0b era content). Live integrative read: `synthesis.md`; operator-review items: `discuss-at-close.md`.
+Nothing unranked; "unclear-but-keep-going" is first-class. **Refreshed 2026-07-09** (post the S2-FREE
+MILESTONE — superseded the 2026-07-06 "R1-UPPER mountain / integration-debt" era). Live integrative
+read: `synthesis.md` (UPDATE-780 current); operator-review items: `discuss-at-close.md` (#88/#89).
+
+## ★ STATE ANCHOR — the mission's core is COMPLETE (S2-free)
+The fully-general Aoyagi learning coefficient is in honest Lean 4 + Mathlib, audited BEDROCK-OK
+(`decitesrev` + codex), on `expedition/aoyagi-full`, all clean-three `[propext, Classical.choice,
+Quot.sound]`, full lib green, **zero axiom declarations** (the `monomial_rlct` S2 axiom RETIRED):
+- `aoyagi_learning_coefficient_gen` — general L≥2, `⨅ rlctAt = ofReal(aoyagiLambda H r)`, conditional
+  on the box-finiteness half `(□) = RouteMBoxThresholdFinite (H−r)` ALONE.
+- `aoyagi_learning_coefficient_gen_le` (b) — `⨅ ≤ ofReal(aoyagiLambda)`, UNCONDITIONAL.
+- `aoyagi_deepest_reduction_gen` (c) — `⨅ = nRegGen/2 + rlctAtOn(core)`, UNCONDITIONAL.
+- `aoyagi_learning_coefficient_L2` — full RRR equality, UNCONDITIONAL.
+Honest scope: headlines cite nothing + zero axiom decls; NOT "opaque-free" (one pre-existing
+`rlctOrderAt` opaque — the analytic-order seam — survives OFF the headline closures).
 
 ## Now (ranked)
 
-1. **[LONG POLE · charge design-first] R1-UPPER = the mountain.** General-L box-finiteness
-   `RouteMBoxThresholdFinite M` (= `rlct ≥ ½·codim`). BUILT: L=2 ∀M, `(r,r,p)` ∀r∀p, some L≥3. The open
-   piece (multi-active-boundary staircases, paradigm `(3,3,3,3)`) has **no shortcut** (2 decorrelated
-   exact-algebra passes; two-matrix machinery undershoots `½·minAdm` by 2×). Needs Aoyagi's genuine
-   simultaneous rank-flag blow-up — ESTABLISHED math ⇒ **build, do NOT cite** (cite = `cited_aoyagi_dln`
-   = the pre-expedition state; R1-from-scratch IS the hero deliverable). Decomposed (a)/(b)/(c). This is
-   the highest executive-VOI: it determines whether the fully-general from-scratch headline is reachable.
-   **Action:** design pass on (a) [arity-recursive shifted-exponent layer-peel], Codex-decorrelated, then
-   formalise. `r1upper-derisk.md` + `r1upper-wall-review.md` are the grounded scoping.
-2. **[CONSOLIDATE] Integration debt → canonical.** The D1 route-A lineage (`genm-d1chart`, 4500 LoC,
-   clean-additive, refines the L=2 sorry to the `Φ_expl` crux) + `genm-dr0inj`'s
-   `RouteMInteriorDeepRank0GenAtom` (+824, sorry-free) are banked but NOT on canonical. Canonical must
-   reflect the true banked state (the "green ≠ integrated" confusion cost a tick). Green-gate via
-   `scripts/lb`, wire the aggregator (single-writer), push.
-3. **[MILESTONE · bounded] L=2 headline unconditional.** `Φ_expl` (`d1ge_L2_hAtV_explicit`) — ~500 LoC,
-   splitwit-verified bounded. Closes `aoyagi_learning_coefficient_L2` sorry-free (no hbox). Charge a
-   formaliser off the integrated D1 lineage.
-4. **[genuine open] #120** — the L≥3 grouped diffeo / `deepest_gauge_squeeze_exists`; gates the D1 ∀-L
-   ≥-leg lift. Re-assess (bounded vs wall) once the L=2 chart machinery is validated.
-5. **[park-at-risk] θ analytic seam** — combinatorial `θ=a(ℓ−a)+1` landable; the analytic
-   (pole-multiplicity) identity needs meromorphic continuation Mathlib lacks. Standing decision 6: land
-   combinatorial, flag the analytic seam. λ unaffected.
+1. **[OPERATOR-GATED] `dev` PR.** The S2-free milestone is ready for review + merge. Signaled
+   (discuss-at-close #88); controller does NOT open it. **Operator action.**
+2. **[OPERATOR TASTE-CALL] Peel-stack canonical naming.** The legacy unsuffixed
+   `aoyagi_learning_coefficient` (Skeleton:1725) is a sorried placeholder (4 sorries) SUPERSEDED by the
+   honest Validate headlines above. Options: (A) re-point to `_gen` [controller rec — = the paper's
+   Thm 2 equality, removes the 4 sorries, honest-conditional-on-`(□)`] / (B) delete / (C) park. Changes
+   what the top-level name advertises ⇒ operator taste-call (surfaced #89). Controller executes on pick.
+3. **[DEFERRED · operator scope-spend decision, now RIPE post-checkpoint] `(□)`-discharge.** The native
+   `(S,J)` blow-up box-finiteness build → discharges `(□)` → makes `_gen` UNCONDITIONAL (the FULLY
+   general equality). Large-spend research build (~15–35 tides est.; seam route ruled out UPDATE-771;
+   native crux `gaugeAbsorption` banked on `origin/genm-seambuild`; termination kernel in
+   `reference-notes-sj-kernel.md`). Close-plan point 5 deferred this as "a separate post-checkpoint
+   decision" — we are now post-checkpoint, so it is the operator's go/no-go. **Not charging autonomously**
+   (a real scope-spend call, per the ambition-calibration's "genuine research/large-spend" reservation).
+4. **[DEFERRED · roadmap] θ analytic-multiplicity seam.** Bind the analytic pole-order multiplicity of
+   the DLN zeta at `−λ` to `aoyagiTheta = a(ℓ−a)+1`. Excised placeholder-on-opaque removed (bedrock);
+   documented `cards/theta-analytic-multiplicity-seam.md` + ROADMAP Bundle 4. The honest combinatorial
+   θ lives in `Core (C,θ)`. Secondary (λ unaffected); a separate future expedition.
+5. **[NON-BLOCKING follow-on] stale-docstring residue.** The central retirement note (AxCheck:101) +
+   the prominent per-file footprints are swept; a full comment-only sweep of any remaining
+   `[…, monomial_rlct]` per-result prose is minor polish (trust the emitted `#print axioms`).
 
 ## Watching (suspicion / risks)
 
-- **R1-UPPER climbability.** The math is known, but if design (a)/(b) surface a *new* obstruction (not
-  labour), that is a real escalation point — build-first will reveal it early. Not expected, but watched.
-- **Speed/cadence** (operator 2026-07-06): consolidate + focus the 1–2 real builds; don't spin many
-  exploratory threads; honor the ≥20-min heartbeat; resist reflexive doc-churn.
-- **Branch hygiene** (fixed 2026-07-06): controller stays in the main checkout ON `expedition/aoyagi-full`;
-  never let WIP land on the local expedition branch. Build via `scripts/lb` (never bare `lake`).
-- Treadmill: every live file on the critical path to a named sorry; sorry-count trends down.
+- **`(□)`-discharge climbability** — IF the operator greenlights it: the math is Aoyagi's established
+  simultaneous rank-flag blow-up (⇒ labour, not a wall), but the seam route was ruled out (det-Jacobian
+  blow-up) and the native `(S,J)` chart-tree carrier is the deepest remaining grind. Build-first + a
+  fail-fast scope-report (as the excise tide did) before sinking weeks.
+- **Doc-truth** — synthesis (UPDATE-780) + this file now reflect the milestone; the `#print axioms`
+  emitter is the axiom-footprint ground truth (per-result docstrings can lag — centrally flagged).
+- **Branch hygiene** — controller stays in the main checkout ON `expedition/aoyagi-full`; build via
+  `scripts/lb` (never bare `lake`); PRs/dev-master operator-gated.
+- **Cadence** (operator 2026-07-06): fewer higher-signal ticks; honor the ≥20-min heartbeat; resist
+  reflexive doc-churn. At genuine hold (now): drift-glance + re-sleep, don't manufacture busywork.
 
 ## Operator notes
 
