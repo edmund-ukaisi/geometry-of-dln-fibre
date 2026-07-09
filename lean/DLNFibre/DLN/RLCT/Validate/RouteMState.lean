@@ -1,4 +1,5 @@
 import DLNFibre.DLN.RLCT.Skeleton
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 import Mathlib.Data.Prod.Lex
 
 /-!
@@ -59,7 +60,7 @@ def leafMonoData (d : ℕ) : MonoData := ⟨d, fun _ => 0, fun _ => 0⟩
 divisors above it. (Rests on `monomial_rlct`, the S2 cited threshold axiom.) -/
 theorem leafMonoData_threshold (d : ℕ) :
     monomialThreshold (leafMonoData d).d (leafMonoData d).k (leafMonoData d).h = ⊤ := by
-  rw [(monomial_rlct (leafMonoData d).d (leafMonoData d).k (leafMonoData d).h).1]
+  rw [monomialThreshold_eq_iInf_axisRatio (leafMonoData d).d (leafMonoData d).k (leafMonoData d).h]
   simp only [leafMonoData]
   exact le_antisymm le_top (le_iInf (fun j => by rw [axisRatio]; simp))
 
@@ -97,8 +98,9 @@ how the binding minimal-codim divisor controls the cover `⨅` (`achiever` / `th
 theorem monomialThreshold_appendDivisor (md : MonoData) (c : ℕ) (hc : 1 ≤ c) :
     monomialThreshold (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h
       = min ((c : ℝ≥0∞) / 2) (monomialThreshold md.d md.k md.h) := by
-  rw [(monomial_rlct (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h).1,
-    (monomial_rlct md.d md.k md.h).1]
+  rw [monomialThreshold_eq_iInf_axisRatio (md.appendDivisor c).d (md.appendDivisor c).k
+      (md.appendDivisor c).h,
+    monomialThreshold_eq_iInf_axisRatio md.d md.k md.h]
   simp only [MonoData.appendDivisor]
   rw [iInf_fin_succ_eq_min_last]
   congr 1

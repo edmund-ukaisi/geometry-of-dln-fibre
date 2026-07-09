@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerCoverGE
 import DLNFibre.DLN.RLCT.Validate.Case222Cover
 import DLNFibre.DLN.RLCT.Validate.Case222Resolution
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `NodeAchieverChart` — the reusable general-`M` achiever chart bundle + the M-agnostic assembly
@@ -114,7 +115,7 @@ monomial on `k = 0` axes has ratio `⊤`, so it does not lower the threshold). T
 theorem nodeChart_thresholdLe (M : Fin (L + 1) → ℕ) (W : NodeAchieverChart M) :
     monomialThreshold (routeMAmbient M) (nodeLeafK (routeMAmbient M) W.p) W.leafH
       ≤ (minAdm M : ℝ≥0∞) / 2 := by
-  exact monomialThreshold_le_regularSeq (routeMAmbient M)
+  exact monomialThreshold_le_regularSeq' (routeMAmbient M)
     (nodeLeafK (routeMAmbient M) W.p) W.leafH (minAdm M) W.hpos W.p
     (by simp [nodeLeafK]) W.leafH_pivot
 
@@ -160,7 +161,7 @@ theorem nodeLeaf_box_div (M : Fin (L + 1) → ℕ) (W : NodeAchieverChart M) (c'
   have hBne : ENNReal.ofReal (B ^ (-c')) ≠ 0 := by
     simp only [ne_eq, ENNReal.ofReal_eq_zero, not_le]; exact Real.rpow_pos_of_pos hB0 _
   rw [lintegral_const_mul _ hmonomeas',
-    monomialIntegrand_lintegral_box_eq_top N k W.leafH
+    monomialIntegrand_lintegral_box_eq_top' N k W.leafH
       ⟨W.p, nodeLeafK_binding N W.p⟩ c' hc' hc'0 hε,
     ENNReal.mul_top hBne] at hlb
   exact top_le_iff.1 hlb
