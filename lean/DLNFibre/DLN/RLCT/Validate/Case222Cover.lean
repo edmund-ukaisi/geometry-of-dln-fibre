@@ -272,21 +272,18 @@ private theorem prod_rpow_lintegral_Ioo_box_eq_top {n : ℕ} (ε : ℝ) (hε : 0
   rw [abs_rpow_lintegral_Ioo_eq_top _ ε hε hj₀,
     ENNReal.top_mul (ne_of_gt (prod_rpow_lintegral_Ioo_box_pos ε hε _))]
 
-/-- **ε-uniform monomial box divergence (the `≤`-direction analytic atom).** For an exponent `c'`
-at-or-above the monomial threshold (`monomialThreshold d k h ≤ c'`, the singular case `∃ j, k j ≠ 0`),
-the lintegral of `|monomialIntegrand d k h c'|` over the box `[0, ε]^d` is `⊤` for *every* `ε > 0`.
-ε-uniformity is the crux that makes the divergence neighbourhood-independent (the input to
-`rlctAtOn_le_of_box_diverges`). Proof: lower-bound by the open box `(0, ε)^d` (`lintegral_mono_set`),
-where the integrand factors as `∏_j |u_j|^{h_j − 2 k_j c'}` (`monomialIntegrand_eq_prod_rpow`); the
-binding axis `j₀` (`exists_binding_axis`, exponent `≤ −1`) forces `⊤`
+/-- **ε-uniform monomial box divergence FROM AN EXPLICIT AXIS (the S2-free geometric core).** Given
+an axis `j₀` whose one-variable exponent is `≤ −1` (`(h j₀ : ℝ) − 2 k_{j₀} c' ≤ −1`), the lintegral
+of `|monomialIntegrand d k h c'|` over `[0, ε]^d` is `⊤` for *every* `ε > 0`. This is the analytic
+heart of `monomialIntegrand_lintegral_box_eq_top` with the binding axis supplied directly rather than
+extracted via S2 (`exists_binding_axis`), so it is **S2-FREE** (no `monomial_rlct`). Proof:
+lower-bound by the open box `(0, ε)^d` (`lintegral_mono_set`), where the integrand factors as
+`∏_j |u_j|^{h_j − 2 k_j c'}` (`monomialIntegrand_eq_prod_rpow`); the axis `j₀` forces `⊤`
 (`prod_rpow_lintegral_Ioo_box_eq_top`). -/
-theorem monomialIntegrand_lintegral_box_eq_top (d : ℕ) (k h : Fin d → ℕ) (hk : ∃ j, k j ≠ 0)
-    (c' : ℝ) (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') (hc'0 : 0 < c') {ε : ℝ}
-    (hε : 0 < ε) :
+theorem monomialIntegrand_lintegral_box_eq_top_of_axis (d : ℕ) (k h : Fin d → ℕ) (c' : ℝ)
+    (j₀ : Fin d) (hexp : (h j₀ : ℝ) - 2 * (k j₀ : ℝ) * c' ≤ -1) {ε : ℝ} (hε : 0 < ε) :
     ∫⁻ u in Set.univ.pi (fun _ : Fin d => Set.Icc (0 : ℝ) ε),
         ENNReal.ofReal (|monomialIntegrand d k h c' u|) = ⊤ := by
-  -- the binding axis (needs `d ≥ 1`, supplied by `hk`)
-  obtain ⟨j₀, hkj₀, hexp⟩ := exists_binding_axis d k h c' hc'0 hc'
   -- `d = n + 1` (nonempty: `j₀ : Fin d`)
   obtain ⟨n, rfl⟩ : ∃ n, d = n + 1 := ⟨d - 1, (Nat.succ_pred_eq_of_pos j₀.pos).symm⟩
   set e : Fin (n + 1) → ℝ := fun j => (h j : ℝ) - 2 * (k j : ℝ) * c' with he
@@ -310,5 +307,21 @@ theorem monomialIntegrand_lintegral_box_eq_top (d : ℕ) (k h : Fin d → ℕ) (
     exact prod_rpow_lintegral_Ioo_box_eq_top ε hε e j₀ hexp
   -- lift `⊤` from the sub-box to the full box
   exact eq_top_mono (hIoo ▸ lintegral_mono_set hsub) rfl
+
+/-- **ε-uniform monomial box divergence (the `≤`-direction analytic atom).** For an exponent `c'`
+at-or-above the monomial threshold (`monomialThreshold d k h ≤ c'`, the singular case `∃ j, k j ≠ 0`),
+the lintegral of `|monomialIntegrand d k h c'|` over the box `[0, ε]^d` is `⊤` for *every* `ε > 0`.
+ε-uniformity is the crux that makes the divergence neighbourhood-independent (the input to
+`rlctAtOn_le_of_box_diverges`). The binding axis `j₀` (exponent `≤ −1`) is extracted via S2
+(`exists_binding_axis`); the analytic core is the S2-free
+`monomialIntegrand_lintegral_box_eq_top_of_axis`. -/
+theorem monomialIntegrand_lintegral_box_eq_top (d : ℕ) (k h : Fin d → ℕ) (hk : ∃ j, k j ≠ 0)
+    (c' : ℝ) (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') (hc'0 : 0 < c') {ε : ℝ}
+    (hε : 0 < ε) :
+    ∫⁻ u in Set.univ.pi (fun _ : Fin d => Set.Icc (0 : ℝ) ε),
+        ENNReal.ofReal (|monomialIntegrand d k h c' u|) = ⊤ := by
+  -- the binding axis (needs `d ≥ 1`, supplied by `hk`); the geometric core is S2-free
+  obtain ⟨j₀, hkj₀, hexp⟩ := exists_binding_axis d k h c' hc'0 hc'
+  exact monomialIntegrand_lintegral_box_eq_top_of_axis d k h c' j₀ hexp hε
 
 end DLNFibre.DLN.RLCT
