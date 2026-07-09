@@ -108,4 +108,57 @@ theorem monomialThreshold_eq_iInf_axisRatio (d : ℕ) (k h : Fin d → ℕ) :
   le_antisymm (monomialThreshold_le_iInf_axisRatio d k h)
     (iInf_axisRatio_le_monomialThreshold d k h)
 
+/-! ## S2-FREE drop-in replacements for the `Skeleton`/`Case222Cover` threshold atoms
+
+These reprove the `monomial_rlct.1`-using atoms (`monomialThreshold_le_axis`,
+`monomialThreshold_le_regularSeq`, `exists_binding_axis`, `monomialIntegrand_lintegral_box_eq_top`)
+from the PROVEN identity instead of the axiom. They live above the identity in the DAG (the atoms in
+`Skeleton`/`Case222Cover` cannot import it without a cycle), so the λ-path consumers re-point to
+these primed forms. Same statements as the originals. -/
+
+/-- **S2-FREE `monomialThreshold_le_axis`.** `monomialThreshold ≤ axisRatio (h j) (k j)` via the
+identity + `iInf_le`. -/
+theorem monomialThreshold_le_axis' (d : ℕ) (k h : Fin d → ℕ) (j : Fin d) :
+    monomialThreshold d k h ≤ axisRatio (h j) (k j) := by
+  rw [monomialThreshold_eq_iInf_axisRatio]; exact iInf_le _ j
+
+/-- **S2-FREE `monomialThreshold_le_regularSeq`.** A regular-sequence binding axis `(k_j, h_j) =
+(1, c−1)` makes the threshold `≤ c/2`. Identity route (`monomialThreshold_le_axis'` +
+`axisRatio_regularSeq`). -/
+theorem monomialThreshold_le_regularSeq' (d : ℕ) (k h : Fin d → ℕ) (c : ℕ) (hc : 1 ≤ c) (j : Fin d)
+    (hkj : k j = 1) (hhj : h j = c - 1) :
+    monomialThreshold d k h ≤ (c : ℝ≥0∞) / 2 := by
+  refine (monomialThreshold_le_axis' d k h j).trans ?_
+  rw [hkj, hhj, axisRatio_regularSeq c hc]
+
+/-- **S2-FREE `exists_binding_axis`.** If `c'` is at-or-above the monomial threshold and finite, some
+axis `j₀` has `k j₀ ≠ 0` and one-variable exponent `h_{j₀} − 2 k_{j₀} c' ≤ −1`. Mirrors
+`Case222Cover.exists_binding_axis` but discharges the threshold value from the PROVEN identity
+(`monomialThreshold_eq_iInf_axisRatio`) rather than `monomial_rlct.1`, and reuses the factored
+arithmetic (`exp_le_neg_one_of_axisRatio_le`). -/
+theorem exists_binding_axis' (d : ℕ) (k h : Fin d → ℕ) (c' : ℝ) (hc'0 : 0 < c')
+    (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') :
+    ∃ j₀, k j₀ ≠ 0 ∧ (h j₀ : ℝ) - 2 * (k j₀ : ℝ) * c' ≤ -1 := by
+  rw [monomialThreshold_eq_iInf_axisRatio] at hc'
+  have hlt : ENNReal.ofReal c' < ⊤ := ENNReal.ofReal_lt_top
+  rw [← Finset.inf_univ_eq_iInf, Finset.inf_le_iff hlt] at hc'
+  obtain ⟨j₀, -, hj₀⟩ := hc'
+  have hk0 : k j₀ ≠ 0 := by
+    intro hk
+    rw [hk, axisRatio_k_zero_eq_top, top_le_iff] at hj₀
+    exact ENNReal.ofReal_ne_top hj₀
+  exact ⟨j₀, hk0, exp_le_neg_one_of_axisRatio_le hc'0.le hk0 hj₀⟩
+
+/-- **S2-FREE `monomialIntegrand_lintegral_box_eq_top`.** The ε-uniform box divergence for `c'`
+at-or-above the threshold, S2-free: the binding axis is extracted via the proven `exists_binding_axis'`
+and fed to the S2-free geometric core `monomialIntegrand_lintegral_box_eq_top_of_axis`. Same
+signature as `Case222Cover.monomialIntegrand_lintegral_box_eq_top` (drop-in). -/
+theorem monomialIntegrand_lintegral_box_eq_top' (d : ℕ) (k h : Fin d → ℕ) (_hk : ∃ j, k j ≠ 0)
+    (c' : ℝ) (hc' : monomialThreshold d k h ≤ ENNReal.ofReal c') (hc'0 : 0 < c') {ε : ℝ}
+    (hε : 0 < ε) :
+    ∫⁻ u in Set.univ.pi (fun _ : Fin d => Set.Icc (0 : ℝ) ε),
+        ENNReal.ofReal (|monomialIntegrand d k h c' u|) = ⊤ := by
+  obtain ⟨j₀, _, hexp⟩ := exists_binding_axis' d k h c' hc'0 hc'
+  exact monomialIntegrand_lintegral_box_eq_top_of_axis d k h c' j₀ hexp hε
+
 end DLNFibre.DLN.RLCT

@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMLayerCover
 import DLNFibre.DLN.RLCT.Validate.RouteMBoxReduction
+import DLNFibre.DLN.RLCT.Validate.MonomialThresholdIdentity
 
 /-!
 # `RouteMLayerCoverHfin` — the `cover_le` UPPER leg (below-threshold finiteness), general `M`
@@ -97,7 +98,7 @@ theorem layerCover_leafSum_lt_top_imp_lt_half_minAdm (M : Fin (L + 1) → ℕ)
   -- so the achiever leaf's `unitBox` integral diverges.
   have htop : ∫⁻ y in unitBox (layerD M i₀),
       ENNReal.ofReal (monomialIntegrand (layerD M i₀) (layerK M i₀) (layerH M i₀) (c' : ℝ) y) = ⊤ := by
-    have hbox := monomialIntegrand_lintegral_box_eq_top (layerD M i₀) (layerK M i₀) (layerH M i₀)
+    have hbox := monomialIntegrand_lintegral_box_eq_top' (layerD M i₀) (layerK M i₀) (layerH M i₀)
       hk (c' : ℝ) hthr_le hc'0 (ε := 1) one_pos
     rw [show unitBox (layerD M i₀) = Set.univ.pi (fun _ => Set.Icc (0 : ℝ) 1) from rfl, ← hbox]
     refine setLIntegral_congr_fun (MeasurableSet.univ_pi (fun _ => measurableSet_Icc)) ?_
