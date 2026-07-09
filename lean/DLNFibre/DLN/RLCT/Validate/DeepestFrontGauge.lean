@@ -130,7 +130,12 @@ theorem deepestPoint_frame_pivot_front_exists (H : Fin (L + 1) → ℕ) (r : ℕ
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (frontJsucc H r hr hL))
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) (frontJsucc H r hr hL))
           (Q (lastLayer hL))).toBlocks₂₂
-        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) ∧
+      -- **hInterior** (matches the non-front `deepestPoint_frame_pivot_exists` bundle): strict-interior
+      -- frames ARE the identity (the last-layer pivot twist is endpoint-only).
+      (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+        P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+          Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) := by
   classical
   obtain ⟨QL, hQLunit, hB22, hcorner, hQUpper, hB22one⟩ :=
     exists_deepest_lastLayer_frontPivotFrame H r B hB hr hL hL2 hcolfront
@@ -140,7 +145,7 @@ theorem deepestPoint_frame_pivot_front_exists (H : Fin (L + 1) → ℕ) (r : ℕ
     with hQpiv
   have hQlast : Qpiv (lastLayer hL) = QL := by simp only [hQpiv, dif_pos rfl]
   refine ⟨fun s => (deepestPoint_frame H r B hB hr hL s).1, Qpiv,
-    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
+    ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_, ?_⟩
   · intro s; exact (deepestPoint_frame_invertible H r B hB hr hL s).1
   · intro s
     by_cases hs : s = lastLayer hL
@@ -161,6 +166,15 @@ theorem deepestPoint_frame_pivot_front_exists (H : Fin (L + 1) → ℕ) (r : ℕ
   · rw [hQlast]; exact hcorner
   · rw [hQlast]; exact hQUpper
   · rw [hQlast]; exact hB22one
+  · -- **hInterior**: interior frames are the identity (`deepestPoint_frame_interior_eq_one`); the
+    -- last-layer pivot twist (`Qpiv`'s `dif_pos` branch) is endpoint-only, so interior `Q = deepestPoint_frame`.
+    intro s hspos hslt
+    refine ⟨?_, ?_⟩
+    · exact (deepestPoint_frame_interior_eq_one H r B hB hr hL s hspos hslt).1
+    · have hsl : s ≠ lastLayer hL := by
+        intro h; have hv := congrArg Fin.val h; simp only [lastLayer] at hv; omega
+      simp only [hQpiv, dif_neg hsl]
+      exact (deepestPoint_frame_interior_eq_one H r B hB hr hL s hspos hslt).2
 
 /-- **The deepest-point FRONT block-triangular boundary-frame bundle** (genm-44l2, the `hJfront`-free
 analog of `deepestPoint_frame_pivot_triangular_exists`). Same OUTPUT signature as the arbitrary
@@ -209,10 +223,15 @@ theorem deepestPoint_frame_pivot_triangular_front_exists (H : Fin (L + 1) → �
       (Matrix.reindex (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (pivotThresholdSplit r (H ((lastLayer hL).succ)) (hr _) J)
           (Q (lastLayer hL))).toBlocks₂₂
-        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) := by
+        = (1 : Matrix (Fin (H ((lastLayer hL).succ) - r)) (Fin (H ((lastLayer hL).succ) - r)) ℝ) ∧
+      -- **hInterior** (matches the non-front `deepestPoint_frame_pivot_triangular_exists` bundle):
+      -- strict-interior frames ARE the identity (endpoint overrides are layer-0/last-layer only).
+      (∀ s : Fin L, 0 < (s : ℕ) → (s : ℕ) + 1 < L →
+        P s = (1 : Matrix (Fin (H s.castSucc)) (Fin (H s.castSucc)) ℝ) ∧
+          Q s = (1 : Matrix (Fin (H s.succ)) (Fin (H s.succ)) ℝ)) := by
   classical
   -- The FRONT pivot frame family (last-layer `J = frontJsucc`, from `hcolfront`).
-  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper, hQf22one⟩ :=
+  obtain ⟨P0, Q0, hPunit0, hQunit0, hQf0, hPfL, hNF0, hQf22, hcorner, hQUpper, hQf22one, hInt0⟩ :=
     deepestPoint_frame_pivot_front_exists H r B hB hr hL hL2 hcolfront
   -- The block-LOWER layer-0 frame (htop-conditional, banked, reused verbatim).
   obtain ⟨P0new, hP0new_unit, hP0new_tri, hP0new_nf, hP0new_22one⟩ :=
@@ -221,7 +240,7 @@ theorem deepestPoint_frame_pivot_triangular_front_exists (H : Fin (L + 1) → �
     intro h; have := congrArg Fin.val h; simp only [firstLayer, lastLayer] at this; omega
   refine ⟨frontJsucc H r hr hL, Function.update P0 (firstLayer hL) P0new, Q0,
     frontJsucc_trans_eq_frontEmbed H r hr hL, ?_, hQunit0, hQf0, ?_, ?_, hQf22,
-    hcorner, ?_, hQUpper, ?_, hQf22one⟩
+    hcorner, ?_, hQUpper, ?_, hQf22one, ?_⟩
   · intro s
     by_cases hs : s = firstLayer hL
     · subst hs; rw [Function.update_self]; exact hP0new_unit
@@ -235,6 +254,14 @@ theorem deepestPoint_frame_pivot_triangular_front_exists (H : Fin (L + 1) → �
     · rw [Function.update_of_ne hsf]; exact hNF0 s hs
   · rw [Function.update_self]; exact hP0new_tri
   · rw [Function.update_self]; exact hP0new_22one
+  · -- **hInterior**: interior `s ≠ firstLayer` (since `0 < s`), so `P s = P0 s = 1` (from the front
+    -- family's `hInt0`); `Q s = Q0 s = 1` (same). Endpoint override is layer-0 only.
+    intro s hspos hslt
+    have hsf : s ≠ firstLayer hL := by
+      intro h; have hv := congrArg Fin.val h; simp only [firstLayer] at hv; omega
+    refine ⟨?_, (hInt0 s hspos hslt).2⟩
+    rw [Function.update_of_ne hsf]
+    exact (hInt0 s hspos hslt).1
 
 /-! ## The `hJfront`-free L=2 chain (the headline-closeable value side)
 
@@ -291,7 +318,7 @@ theorem deepest_gauge_construction_L2_front (H : Fin (L + 1) → ℕ) (r : ℕ)
                 + deepestCoreF H r (coreAbsorb (split x)).2.1)
             ((paramsEquivFlat H) (deepestPoint H r B hB hr hL)) := by
   obtain ⟨Jb, Pf, Qf, hJtri, hPunit, hQunit, hQf0, hPfL, hNF, hQf22b, hcorner, hPtri, hQtri,
-      hP22one, hQ22one⟩ :=
+      hP22one, hQ22one, _⟩ :=
     deepestPoint_frame_pivot_triangular_front_exists H r B hB hr hL hL2 htop hcolfront
   exact deepest_gauge_construction_L2_ofBundle H r B hB hr hL hL2 hpos htop hLlt
     Jb Pf Qf hJtri hPunit hQunit hQf0 hPfL hNF hQf22b hcorner hPtri hQtri hP22one hQ22one
