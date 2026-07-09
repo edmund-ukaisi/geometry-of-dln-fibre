@@ -82,6 +82,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeSchurTelescope
 import DLNFibre.DLN.RLCT.Validate.D1GeChart
 import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
 import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
+import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
 
 /-!
 # Axiom-hygiene check
@@ -801,3 +802,10 @@ open DLNFibre.DLN.RLCT
 -- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
 #print axioms schurChart_global_gen
 #print axioms schur_loss_germ_gen_at_pivot
+-- piece (iv) RESIDUAL STRAND (D1GeSchurResidual, Rungs A–H): the ₂₂ Schur residual `qResidGen` +
+-- `contDiff_qResidGen` + the reduced-core telescope `qResid_slice_value_gen` + the conditional ≥-leg
+-- producer `d1ge_hAtV_of_qResid_chart_genL` (hchart-as-hypothesis, feeds d1ge_hAtV_of_explicit_chart_genL).
+-- Cite-NOTHING: forced `#print axioms` = [propext, Classical.choice, Quot.sound].
+#print axioms contDiff_qResidGen
+#print axioms qResid_slice_value_gen
+#print axioms d1ge_hAtV_of_qResid_chart_genL

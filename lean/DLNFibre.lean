@@ -1024,3 +1024,11 @@ import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
 -- genChain`) inline (supersedes geleg1's un-integrated `D1GeChartGerm`) + the inverse-chart entrywise ContDiff
 -- (`contDiffAt_schurChartRawInvGen_entry`, needed by `derivEquiv_of_left_inverse`). Reviewer fidelity PASS.
 import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
+-- `D1GeSchurResidual` — ≥-leg piece (iv), the RESIDUAL STRAND (Rungs A–H): the reindex/measure/coordinate
+-- foundation (`roleEquivGen`/`splitMPGen`/`splitHomeoGen`/reg-readbacks) + the ₂₂ Schur residual `qResidGen`
+-- (built on geleg8's `blockToChainGen`/`recoverProductGen`, so it matches `schurReadoutF_gen`'s ₂₂-form up to
+-- the `⁻¹↔G` swap) + `contDiff_qResidGen` + the reduced-core telescope `qResid_slice_value_gen`
+-- (`∑ qₑ² = prod (H−r) (coreParams + coreShift)`) + the conditional ≥-leg producer `d1ge_hAtV_of_qResid_chart_genL`
+-- (takes `hchart` in `qResidGen` terms as a HYPOTHESIS → feeds `d1ge_hAtV_of_explicit_chart_genL`). The seam
+-- `schurReadout_germ_eq_gen` (discharging `hchart`) + the final close are the controller's remaining step.
+import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
