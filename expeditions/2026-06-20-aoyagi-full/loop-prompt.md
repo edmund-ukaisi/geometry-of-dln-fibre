@@ -25,8 +25,10 @@ codex-consultation.md, lean/CLAUDE.md — so the taste/bedrock bar doesn't drift
 If warm and sure: read the delta — stage2-brief.md + priorities.md + the reporting thread's thread.md.
 
 ## Tick
-re-anchor to the quest → triage priorities.md (VOI × suspicion) → delegate (spawn/instruct threads;
-spawn reviewers/hardener) → integrate into synthesis.md + precision-check / supervise the formaliser
+re-anchor to the quest → triage priorities.md (VOI × suspicion) → delegate (**SELF-RECON sweep BEFORE a
+substantial build — map banked lemmas/staged-pieces/lessons/dead-routes so the spec names them, not
+blind; `.agent-team/roles/self-recon.md`**; spawn/instruct threads; spawn reviewers/hardener) →
+integrate into synthesis.md + precision-check / supervise the formaliser
 (name = content; the load-bearing step proved or named-open; push the real maths, don't pre-defer) +
 **goal-distance check** (is every live file on the critical path to a named sorry? sorry-count trending
 down?) + create/refactor an exposition at result-crystallisation → surface operator items →
