@@ -47,9 +47,9 @@ The stance:
 - **Write to figure out the truth, not to persuade.** Concise and fact-based.
 - **Elementary, precisely.** Build explanations up from precise but simple well-chunked objects, established locally in the
   document. "Elementary" does not mean imprecise or dumbed-down or toy analogies: every step stays
-  mathematically precise. Introduce the objects you use before you use them; prefer a chain of small exact
+  mathematically precise. Introduce the objects you use before you use them, localise context; prefer a chain of small exact
   statements over one dense one. Resist over-naming things to do chunking. Reach for an analogy only when it is exact and load-bearing. See
-  [`docs/policies/writing-style.md`](docs/policies/writing-style.md).
+  [`docs/policies/writing-style.md`](docs/policies/writing-style.md). This may be a good meta-cognitive skill to have when you are thinking precisely as well. 
 
 ## Writing and communication discipline (object-level focus)
 In writing or in communication, focus on object-level. Resist meta-level pull. 
