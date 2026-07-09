@@ -2571,3 +2571,27 @@ front-pivot is the clean route), NON-VACUITY (hyp set satisfiable; only hJfront 
   equality. **Operator: pick the naming convention for conditional assembly nodes; I'll rename + fix the docstring on
   your word (or at the full-headline consolidation).** Codex artefacts at `threads/genm-revd1eq/codex/`. The D1 "="
   MATH is bedrock-sound; this is purely a name-precision taste-call.
+
+## 74. ★★★ EXPEDITION CAPSTONE LANDED — the FULLY-GENERAL headline `aoyagi_learning_coefficient_gen` is PROVEN in honest Lean (clean-three), conditional on #72 ALONE. The entire result now reduces to the single R1 build-vs-cite decision. (2026-07-09)
+`aoyagi_learning_coefficient_gen` (HeadlineGenAssembly.lean, canonical @4687aed6): for general L≥2, nondegenerate
+widths (`r < H s`), `B.rank = r` — `(⨅ w ∈ optimalSet H B, rlctAt H (dlnLoss H B) w) = ENNReal.ofReal (aoyagiLambda H r)`,
+CONDITIONAL on the single hypothesis `hRValue` = `rlctAtOn(dlnLoss(H−r) 0)@0 = ofReal(lambdaCore(H−r))` (the reduced-core
+RLCT value at `M = H−r`). Forced `#print axioms` = **clean-three** `[propext, Classical.choice, Quot.sound]` — NO sorryAx,
+NO monomial_rlct, NO cited_aoyagi_dln. Full-aggregate green-gate 8793 jobs. **Cleaner than the L2 headline**
+(`aoyagi_learning_coefficient_L2`, whose D1 crux `d1ge_L2_hAtV_explicit` is still sorryAx) — the general ≥-leg routes
+through the sorry-free `d1ge_hAtV_explicit_close_gen`.
+- **What this means:** the ENTIRE fully-general Aoyagi learning-coefficient headline is done in honest Lean **modulo `hRValue`
+  alone**. Everything else is closed + clean-three: the network-free engine; the D1 "=" side (gauge construction; **#120
+  CLOSED** — re-confirmed clean-three ∀L, the old "keeps #120 sorries" comment was stale); the D1 ≥-leg (germ + seam +
+  residual + Part A, all landed clean-three); the WLOG (`headline_frontRowColPivot_exists`); the reg-core recombination
+  (`reg_shift_add_core_eq_aoyagiLambda`). L=2 is fully UNCONDITIONAL (its R1 is done).
+- **`hRValue` IS exactly #72** — the R1-LOWER resolution value at the reduced widths. Controller decorrelated fidelity/vacuity
+  check PASSED (it is the genuine, TRUE, non-vacuous, eventually-provable value — matches the L2 `hR1` shape; not laundered,
+  not `False`). geleg8's fidelity reviewer corroborating (verdict pending; will fold in).
+- **⇒ THE SOLE REMAINING GATE for the UNCONDITIONAL fully-general headline is #72** (the R1 sub-generic `addlongest`
+  build-vs-cite, this log's #72). When #72 lands (A: build `addlongest`, or B: cite it — discharging `hRValue` at general L),
+  `aoyagi_learning_coefficient_gen` becomes unconditional and the from-scratch cite-only-S2 mission is complete (or
+  cite-S2+addlongest under option B). **This is the decision that finishes the expedition.** Nothing else is open.
+- **Naming (ties to #73):** `aoyagi_learning_coefficient_gen` is the honest conditional node (hRValue explicit). Same
+  naming-convention question as #73 applies (scope-tag conditional assembly nodes?); deferred to the operator + a
+  consolidation pass, not renamed mid-flight.
