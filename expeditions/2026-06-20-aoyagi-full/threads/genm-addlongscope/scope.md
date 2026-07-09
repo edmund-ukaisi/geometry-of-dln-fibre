@@ -51,15 +51,96 @@ verdict is materially revised below.
   object under the native route — it is a sub-part of the same coordinate recursion. There is no separate
   small shortcut to hunt because there is no separate wall to shortcut.
 
-**One-line recommendation:** the re-aim is correct — this is **not** a genuine analytic wall. Aoyagi-natively
-the sub-generic strata are covered by his coordinate-blow-up recursion; the R1-UPPER leg is the **general-L
-Aoyagi recursion build** (large, bounded, cite-only-S2), whose honest cost is carrier-engineering labor, not
-a Mathlib-AG detour. The genuine operator dimension is a **labour-budget** call (build the multi-week native
-recursion vs. cite Aoyagi's Theorem 2 for these strata) — **not** a forced build-vs-cite over missing math.
+**One-line recommendation:** the re-aim is correct — this is **not** a genuine analytic wall. See **§0** for
+the Voight-shortened-algebra + analytic-transport sizing the operator's latest steer asks for; the controller
+drives the build, so this is a **size/tide** read, not a build-vs-cite call.
 
 ---
 
-## 1. The gap, stated Aoyagi-natively (no L&R, no `Core`, no `C/2`, no normal slices)
+## 0. REFINEMENT — Voight-shortened algebra + the analytic transport (the operator's latest steer)
+
+**Steer:** independence is *judicious* — light reuse of the in-tree Voight/Ext-codim backbone to shorten the
+**algebra** is fine; the **substance** is the **analytic RLCT-transport** for the sub-generic strata. Drop
+build-vs-cite; report SIZE. All claims below verified against the repo.
+
+### Q1 — is the algebra (normal-slice iso) reducible to the in-tree Voight/Ext-codim? How much is free?
+
+**Substantially free — a light wiring job, not a build.** The backbone is proved and sorry-free in `Core`:
+- `Core.CTheta.codimForm_update_corner` (`CTheta.lean:215`) — **the `addlongest` codim heart**, sorry-free:
+  the codim quadratic form never reads the `(0, N)` "longest-root" corner (proved by direct index bookkeeping,
+  no analysis). Plus `dropCorner` (`CTheta.lean:~228`, the explicit **rank-`r`→rank-`0` shift map**) and
+  `dminus d r = d − r` (the shifted dimension vector). This is exactly the codim-blindness that makes adding
+  longest roots free.
+- `Core.OrbitCodim` — **Voigt's lemma is PROVED in-engine** (`VoigtDischarge.codimRep_orbitRankLocus_eq_orbitLinearCodim`,
+  char 0 + alg-closed): `codim Ō_M = orbitLinearCodim M = dim Ext¹(M,M)`. So the codim equality **upgrades to
+  the normal-slice iso** (Ext-vanishing of the injective-projective longest-root module) essentially for free.
+
+**Caveat (the load-bearing distinction):** this delivers the iso of the normal slices **as varieties / the
+codim equality**. It does *not* by itself give that the **loss germ** corresponds under the iso — that is the
+analytic step (Q2), not the algebra.
+
+### Q2 — SIZE/RISK of the analytic transport. Bounded, or a hard gap? Does Aoyagi's own recursion give the shifted-chain RLCT?
+
+**The transport is a BOUNDED analytic build — NOT a hard gap — and its RLCT-invariance primitives already
+exist in-tree and are already used at L=2.** Three legs, all in hand:
+
+1. **Aoyagi's own recursion gives the shifted-chain RLCT — YES.** The shifted chain `(M₁−q,…,M_N−q)` is just a
+   DLN width vector; its RLCT is Aoyagi's Theorem 2 at shifted widths = the repo's `resolution_charts` /
+   `minAdm` / `lambdaCore` there. So the *target value* of the transport is Aoyagi-native and bounded. (It is
+   an **instance of the R1-UPPER recursion at smaller widths**, i.e. it closes by the descent — see the
+   induction-measure caveat below.)
+2. **The RLCT-through-iso primitives are BUILT** (`Skeleton.lean` / `Foundations/S1*`, all proved, used in the
+   L=2 D1 close `D1L2ExplChartClose2`):
+   - `rlct_unit_invariant` (S1.3 = **Aoyagi Lemma 1**, "RLCT depends only on the ideal");
+   - `rlct_germ_local` (S1.4, germ-locality);
+   - `rlctAtOn_comp_homeomorph` (`S1Fubini:54`, **RLCT invariant under an analytic iso / homeomorphism** — the
+     transport primitive);
+   - `rlctAtOn_congr_germ` (`S1ChartTransfer:28`);
+   - `rlct_additive_smooth_block` (S1.5) — `λ(Σxᵢ² + G²) = n/2 + λ(G²)`, **exactly the "identity-block ⟹
+     regular shift + shifted-chain core" split** the rank-shift produces (the `I_r` block gives regular
+     directions; the core is the shifted chain). This is the analytic realisation of the iso's
+     loss-compatibility.
+3. **The det coupling is NOT on this route** (last-round finding, decorrelated-Codex-confirmed): it is
+   manufactured only by the atom lane's "integrate-out-`Γ` via Gram CoV." The transport realises the
+   normal-slice iso as an explicit chart and reads Aoyagi's RLCT on the shifted chain — the determinant never
+   forms.
+
+**Hardest analytic sub-piece:** constructing the **explicit analytic iso / homeomorphism** (general-`L`) that
+carries the sub-generic-stratum **loss germ** to `(regular smooth block) + (shifted-chain core germ)` with a
+bounded/unit Jacobian, so `rlctAtOn_comp_homeomorph` + `rlct_additive_smooth_block` + `rlct_germ_local` fire.
+This is the **same class as the D1 general-`L` explicit chart** (the L=2 instance `D1L2ExplChartClose2` is
+DONE; the general-`L` is the D1 leg's known multi-tide build, #120). Bounded analytic labor, not a new theory.
+
+**Two honest caveats to verify before building:**
+- **Induction measure.** The shifted chain `(M−q)` is the **same length** as `M` (not arity-smaller — cert
+  §1a: "not any `redChain t M`"). So it does *not* close under a plain arity-IH; it closes under **Aoyagi's
+  well-founded descent** (running-min corank `M(S)` / the `T`-vector ordering). The transport therefore folds
+  the sub-generic strata **into** the main Aoyagi recursion (they stop being a *separate* target) rather than
+  eliminating that recursion. Hence Q2 leg 1's "closes by the descent," not "a trivial IH."
+- **Smooth vs general additivity.** `rlct_additive_smooth_block` is scoped to the **smooth/regular** block
+  (the general real-analytic disjoint additivity, Aoyagi App. C Lemma 2, is a flagged **roadmap** lemma — the
+  bare form is false, the general form needs Laplace/Tauberian). The rank-shift's identity-block directions
+  **are** regular (sum-of-squares), so the smooth form should suffice — as it did at L=2 — but this must be
+  checked for the general-`L` sub-generic chart, not assumed.
+
+### Size (the tide read)
+
+- **Algebra (normal-slice iso):** ~**1–2 tides** of wiring on the sorry-free Core Voight/corner-blindness
+  results (import + Ext-vanishing upgrade + loss-block bookkeeping). Not a build.
+- **Analytic transport (the substance):** ~**5–12 tides** — dominated by the general-`L` explicit iso-chart
+  (D1-class) + the per-stratum/per-`q` chart family + wiring the existing invariance/additivity primitives.
+- **Gated on** the shifted-chain RLCT being available from the main R1-UPPER recursion (`resolution_charts`,
+  the separate Aoyagi-native build) — the transport *plugs into* that, it does not replace it.
+
+**Effort tier:** the sub-generic transport is a **bounded analytic build (tier b), ~6–14 tides total**,
+materially smaller than a standalone Aoyagi carrier recursion because it **offloads the resolution to the
+shifted-chain instance** of the main recursion and **reuses proved RLCT-invariance primitives**. Residual
+risk = the general-`L` iso-chart (D1-class, real but bounded) + the two caveats — **not** a hard analytic gap,
+**not** a Mathlib-AG detour.
+
+---
+
+## 1. The gap, stated Aoyagi-natively (no `C/2`; light Voight reuse now permitted — §0)
 
 After Aoyagi's **Theorem 4** (deepest singular point, from the 2013 *Entropy* paper) sets the layer ranks
 `r(s) = r` WLOG, the object is the RLCT of
