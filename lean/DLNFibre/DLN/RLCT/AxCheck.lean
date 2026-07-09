@@ -420,15 +420,16 @@ open DLNFibre.DLN.RLCT
 -- Headline — sorryAx expected (5 rungs pending); tracked here so the day it goes clean is visible.
 #print axioms aoyagi_learning_coefficient
 
--- ★ L=2 HEADLINE — CLOSED (2026-07-07). `aoyagi_learning_coefficient_L2` is PROVEN sorry-free,
--- cite-only-S2: forced `#print axioms` = [propext, Classical.choice, Quot.sound, monomial_rlct] —
--- NO `sorryAx`, NO `hbox`. The former two open leaves (R1 resolution + D1 ∀-v ≥-leg) are BOTH
--- discharged from scratch: R1 via the explicit Φ_expl chart (`D1L2ExplChartClose2`, the whole
--- blockFlatEquiv → schurChartRaw → schurChart_global → germ → qₑ-slice chain); D1 via the
--- deepest-point + second-peel reduction. S2 (`monomial_rlct`) is cited only DOWNSTREAM. The first
--- complete cite-only-S2 anchor of the ladder (general L=2, ∀ widths/ranks); controller-verified
--- (full `DLNFibre` green + force-recompiled `#print axioms`). This line stays clean-four henceforth —
--- a regression that reintroduces `sorryAx` here is a broken headline.
+-- ★ L=2 HEADLINE — CLOSED (2026-07-07), S2-FREE since the Stage-A de-cite (2026-07-09).
+-- `aoyagi_learning_coefficient_L2` is PROVEN sorry-free, clean-THREE: forced `#print axioms` =
+-- [propext, Classical.choice, Quot.sound] — NO `sorryAx`, NO `monomial_rlct`, NO `hbox`. The two
+-- open leaves (R1 resolution + D1 ∀-v ≥-leg) were discharged from scratch: R1 via the explicit
+-- Φ_expl chart (`D1L2ExplChartClose2`, the whole blockFlatEquiv → schurChartRaw → schurChart_global
+-- → germ → qₑ-slice chain); D1 via the deepest-point + second-peel reduction. The S2 threshold
+-- conjunct (formerly `monomial_rlct.1`) is now the PROVEN identity `monomialThreshold_eq_iInf_axisRatio`
+-- on the λ-path. Controller-verified (full `DLNFibre` green + force-recompiled `#print axioms`).
+-- This line stays clean-THREE henceforth — a regression reintroducing `sorryAx` OR `monomial_rlct`
+-- here is a broken headline.
 #print axioms aoyagi_learning_coefficient_L2
 
 -- ★ D1 ∀-L runway, sub-lemma 1 (2026-07-07). `schur_product_ldu_rec` (the L-factor recursive

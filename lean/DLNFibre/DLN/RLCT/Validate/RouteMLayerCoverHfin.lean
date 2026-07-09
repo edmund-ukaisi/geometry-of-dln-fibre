@@ -29,13 +29,14 @@ requires `RouteMBoxThresholdFinite M`. This file therefore states `hfin` with `h
 RouteMBoxThresholdFinite M` as an **explicit hypothesis** (precision discipline: the upper leg is
 "assembled sorry-free MODULO the named `RouteMBoxThresholdFinite M`", not a hidden `sorry`).
 
-## What this banks (sorry-free, axioms = `[propext, Classical.choice, Quot.sound, monomial_rlct]`)
+## What this banks (sorry-free, axioms = `[propext, Classical.choice, Quot.sound]` — S2-free via the
+proven identity `monomialThreshold_eq_iInf_axisRatio`)
 
 1. `layerCover_leafSum_lt_top_imp_lt_half_minAdm` — the genuine **completeness / "no missing strata"**:
    leaf-sum finite at `c'` ⟹ `(c':ℝ) < ½·minAdm M` (for `1 ≤ minAdm M`). The achiever leaf
    (`data = foldDivisors [minAdm M]`, threshold `= ½·minAdm M`, with a binding axis `k 0 = 1 ≠ 0`)
    would have its `unitBox` integral `= ⊤` whenever `c' ≥ ½·minAdm M`
-   (`monomialIntegrand_lintegral_box_eq_top`, the `monomial_rlct`/S2 divergence), so the sum would be
+   (`monomialIntegrand_lintegral_box_eq_top'`, the S2-free box divergence), so the sum would be
    `⊤` — contrapositive. This is sub-lemma 1's real content; the chainRel-descent the SPEC feared is
    unnecessary (one banked achiever-leaf witness suffices).
 2. `routeMLayerCover_hfin` — the `hfin` atom: assemble (1) `⟹ c' < ½·minAdm M` then the banked
@@ -63,7 +64,8 @@ The contrapositive of the achiever-leaf divergence: the achiever leaf `i₀` car
 and a binding axis (`foldDivisors_singleton_k_ne_zero`). If `c' ≥ ½·minAdm M` then `c'` is at-or-above
 that leaf's threshold, so its `unitBox = [0,1]^d` integral is `⊤` (`monomialIntegrand_lintegral_box_eq_top`
 at `ε=1`; the integrand is `≥ 0`, so `ofReal = ofReal|·|`), forcing the sum to `⊤` — contradicting the
-hypothesis. The genuine cover-completeness content of the upper leg; rides the cited S2 `monomial_rlct`. -/
+hypothesis. The genuine cover-completeness content of the upper leg; S2-free via the proven identity
+(`monomialIntegrand_lintegral_box_eq_top'`), no `monomial_rlct`. -/
 theorem layerCover_leafSum_lt_top_imp_lt_half_minAdm (M : Fin (L + 1) → ℕ)
     (hpos : 1 ≤ minAdm M) (c' : NNReal)
     (hsum : (∑ i : (routeLayerAtlas M).ι, ∫⁻ y in unitBox (layerD M i),

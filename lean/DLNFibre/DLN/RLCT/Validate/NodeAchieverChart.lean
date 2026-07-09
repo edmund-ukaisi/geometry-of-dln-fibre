@@ -28,8 +28,9 @@ This banks the bundle + assembly infrastructure (the `(4,4,2,2)` instance lives 
 does NOT close the general-`M` atom (that needs a uniform `φ_M` for all `M`, designed separately); it
 banks the reusable shape and the assembly that consumes it.
 
-The single external citation is `monomial_rlct` (S2), reached via
-`monomialIntegrand_lintegral_box_eq_top` exactly as in the `(3,3,4)` assembly.
+The threshold input is now the PROVEN S2-free identity `monomialThreshold_eq_iInf_axisRatio`,
+reached via the S2-free `monomialIntegrand_lintegral_box_eq_top'` (the interior + clean achiever
+branches route through it; the smeared branch was already S2-free) — no `monomial_rlct`.
 -/
 
 open MeasureTheory

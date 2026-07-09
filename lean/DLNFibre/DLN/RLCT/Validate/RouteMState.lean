@@ -9,7 +9,8 @@ The complete FOUNDATION for the Route M dispatcher (`RouteMTree.lean`): the node
 the well-founded termination measure `lex(L, ΣM, ncDefect)`, the per-leaf monomial datum `MonoData`,
 and the leaf (unit) datum + its `monomialThreshold = ⊤` fact. Split out from the dispatcher so this
 committable bedrock banks independently of the (in-progress) `classify`/cover-fact bodies. Fully
-proven (no proof gaps); rests on `monomial_rlct` (the S2 cited threshold axiom) only.
+proven (no proof gaps); the value lane rests on the PROVEN S2-free identity
+`monomialThreshold_eq_iInf_axisRatio` (the discharged threshold conjunct), not the `monomial_rlct` axiom.
 -/
 
 open scoped BigOperators ENNReal
@@ -57,7 +58,8 @@ def leafMonoData (d : ℕ) : MonoData := ⟨d, fun _ => 0, fun _ => 0⟩
 /-- **The leaf threshold is `⊤`.** A unit leaf (`k ≡ 0`) imposes no monomial threshold:
 `monomialThreshold d 0 h = ⨅ⱼ axisRatio (h j) 0 = ⨅ⱼ ⊤ = ⊤` (every axis is a spectator, `axisRatio _ 0
 = ⊤`). So the leaf NEVER binds the cover `⨅` — the RLCT comes entirely from the accumulated pivot
-divisors above it. (Rests on `monomial_rlct`, the S2 cited threshold axiom.) -/
+divisors above it. (Rests on the PROVEN S2-free identity `monomialThreshold_eq_iInf_axisRatio`, not
+the `monomial_rlct` axiom.) -/
 theorem leafMonoData_threshold (d : ℕ) :
     monomialThreshold (leafMonoData d).d (leafMonoData d).k (leafMonoData d).h = ⊤ := by
   rw [monomialThreshold_eq_iInf_axisRatio (leafMonoData d).d (leafMonoData d).k (leafMonoData d).h]
@@ -70,7 +72,8 @@ A C1/C5 blow-up node ADDS one exceptional divisor to the accumulated chart datum
 `(k, h) = (1, card−1)` (the codim-`card` pivot stratum, `axisRatio = card/2`). On `MonoData` this is
 `appendDivisor` (snoc the new axis at the end). Its effect on the chart threshold is the `⨅`/`min`
 update `monomialThreshold (append) = min (card/2) (monomialThreshold old)` — the binding `⨅` takes
-the min with the new axis's ratio. Pure threshold combinatorics (via `monomial_rlct.1`), INDEPENDENT
+the min with the new axis's ratio. Pure threshold combinatorics (via the PROVEN identity
+`monomialThreshold_eq_iInf_axisRatio`), INDEPENDENT
 of how the recursion accumulates: the leaf-data semantics every division (A/B/C) shares. -/
 
 /-- `⨅` over `Fin (d+1)` splits as `min` of the last coordinate and the `⨅` over the `castSucc`
@@ -94,7 +97,7 @@ divisor `(1, c−1)` takes the chart threshold to the `min` of its old value and
 `⨅ axisRatio` over the snoc'd family splits (via `iInf_fin_succ_eq_min_last`) into the last axis
 (`axisRatio (c−1) 1 = c/2`, `axisRatio_regularSeq`) and the prefix (the old `⨅`). The `min`-fold is
 how the binding minimal-codim divisor controls the cover `⨅` (`achiever` / `threshold_ge`). Rests on
-`monomial_rlct` (S2). -/
+the PROVEN S2-free identity `monomialThreshold_eq_iInf_axisRatio`. -/
 theorem monomialThreshold_appendDivisor (md : MonoData) (c : ℕ) (hc : 1 ≤ c) :
     monomialThreshold (md.appendDivisor c).d (md.appendDivisor c).k (md.appendDivisor c).h
       = min ((c : ℝ≥0∞) / 2) (monomialThreshold md.d md.k md.h) := by
