@@ -87,6 +87,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeSeam
 import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
+import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds
 
 /-!
 # Axiom-hygiene check
@@ -831,3 +832,14 @@ open DLNFibre.DLN.RLCT
 #print axioms deepest_gauge_construction_ofBundle
 #print axioms deepest_regular_core_reduces_frontPivot_front
 #print axioms aoyagi_learning_coefficient_gen
+
+-- ★ UNCONDITIONAL general-L bounds (HeadlineGenBounds) — NO analytic gate; the ≤-lane rides the
+-- proven-∀L achiever divergence, so these are clean-THREE and strictly cleaner than the hbox-gated
+-- equality. (b) `aoyagi_learning_coefficient_gen_le` = `⨅ ≤ ofReal(aoyagiLambda)`; (c)
+-- `aoyagi_deepest_reduction_gen` = `⨅ = nRegGen/2 + rlctAtOn(core)`; the ≤-half `r1_resolution_general_le`
+-- (hbox-FREE) + its cover brick `routeM_rlctAtOn_le_iInf`. All MUST be [propext, Classical.choice,
+-- Quot.sound] — no sorryAx, no monomial_rlct.
+#print axioms routeM_rlctAtOn_le_iInf
+#print axioms r1_resolution_general_le
+#print axioms aoyagi_deepest_reduction_gen
+#print axioms aoyagi_learning_coefficient_gen_le

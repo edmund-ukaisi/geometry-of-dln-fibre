@@ -1058,3 +1058,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
 -- `B'` → sorry-free D1 ≥-leg (`d1ge_hAtV_explicit_close_gen`) → front value side + `reg_shift_add_core_eq_aoyagiLambda`.
 -- Clean-three (no sorryAx/monomial_rlct/cited_aoyagi_dln); unconditional once `#72` lands.
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
+-- `HeadlineGenBounds` — the UNCONDITIONAL general-L bounds: (b) `aoyagi_learning_coefficient_gen_le`
+-- (`⨅ ≤ ofReal(aoyagiLambda)`, no gate) + (c) `aoyagi_deepest_reduction_gen` (`⨅ = nRegGen/2 + core
+-- RLCT`) + the hbox-free ≤-half `r1_resolution_general_le`. All clean-three (cleaner than the equality).
+import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds
