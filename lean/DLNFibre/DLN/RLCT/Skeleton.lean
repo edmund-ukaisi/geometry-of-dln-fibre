@@ -95,62 +95,25 @@ noncomputable def monomialOrder (d : ℕ) (k h : Fin d → ℕ) : ℕ :=
   (Finset.univ.filter
     (fun j : Fin d => axisRatio (h j) (k j) = ⨅ j' : Fin d, axisRatio (h j') (k j'))).card
 
-/-- The *analytic* pole order of the weighted monomial integral (the multiplicity of the largest
-pole of its zeta function). Opaque placeholder — like `rlctOrderAt`, the direct analytic definition
-needs meromorphic continuation Mathlib lacks; its value is pinned by the S2 citation below. -/
-opaque monomialOrderAnalytic (d : ℕ) (k h : Fin d → ℕ) : ℕ
+/-! ## S2 RETIRED (2026-07-09) — formerly the single cited axiom `monomial_rlct` + the opaque
+`monomialOrderAnalytic`.
 
-/-! ## S2 — THE ONE CITED AXIOM (Aoyagi p.6 / Hironaka; design-spec §7.1) -/
+The threshold conjunct is now PROVEN, S2-free: `monomialThreshold_eq_iInf_axisRatio`
+(`Validate/MonomialThresholdIdentity.lean`, `= ⨅ⱼ axisRatio (h j) (k j)`), from the S1-cover
+divergence + the banked finiteness half. Every former `monomial_rlct.1` consumer routes through it
+(or the primed `_ge_of_mult'` / `_le_regularSeq'` / `exists_binding_axis'` / `box_eq_top'` drop-ins).
 
-/-- **S2 (cited).** The normal-crossing extraction of the RLCT value and pole order for a weighted
-monomial integral. The threshold of `∫ (∏ uⱼ^{hⱼ}) (∏ uⱼ^{2kⱼ})^{−c}` is `min_j (h_j+1)/(2k_j)`,
-and — **in the singular case `∃ j, kⱼ ≠ 0`** — the analytic pole order equals the number of axes
-attaining that minimum (per axis: `∫₀^ε u^{h−2kc} du < ∞ ⟺ c < (h+1)/(2k)`; the order is the
-binding-factor multiplicity). This is the **single permitted external citation** (Watanabe; Hironaka
-resolution). The cover, change-of-variables, properness, and bump-independence are **not** cited —
-they are proven on our side (S1, R1). The order half is the genuine analytic content (the
-meromorphic pole-order computation for a product of one-variable factors; Codex audit §4), which is
-why it equates the opaque `monomialOrderAnalytic` to the combinatorial `monomialOrder`.
+The analytic order-multiplicity conjunct — the opaque `monomialOrderAnalytic` equated to the
+combinatorial `monomialOrder` — is a DEFERRED analytic seam, EXCISED rather than carried as a
+placeholder-on-an-opaque (standing-decision-6). Statement + kill-condition:
+`expeditions/2026-06-20-aoyagi-full/cards/theta-analytic-multiplicity-seam.md`. The honest geometric
+`θ`-count lives combinatorially in `DLNFibre.Core` `(C, θ)`. -/
 
-The order-half is **scoped to `∃ j, kⱼ ≠ 0`** (Rung-0c FLAG 1): when all `kⱼ = 0` the integrand is a
-unit (`F ≢ 0` at the point — the non-singular `F(w*)≠0` chart), every `axisRatio = ⊤` ties, and the
-unconditional `monomialOrder = d` would be a stray claim about a regular point's pole order. The
-threshold-half is correct in that degenerate case too (`⨅ ⊤ = ⊤`, the locally-nonvanishing RLCT),
-so it stays unconditional; only the order-conjunct carries the singularity hypothesis. -/
-axiom monomial_rlct (d : ℕ) (k h : Fin d → ℕ) :
-    monomialThreshold d k h = (⨅ j : Fin d, axisRatio (h j) (k j))
-    ∧ ((∃ j : Fin d, k j ≠ 0) → monomialOrderAnalytic d k h = monomialOrder d k h)
-
-/-! ### R1.2 threshold-level divisor arithmetic (the lower/upper bracket; shape-independent).
-The per-axis seeds `axisRatio_regularSeq` / `axisRatio_ge_of_mult` lift through S2's threshold value
-`monomialThreshold = ⨅ axisRatio` to the chart threshold. These bracket a chart's threshold and are
-the arithmetic the R1 value-match assembly consumes: the lower bound (every divisor obeys the
-multiplicity bound ⟹ threshold `≥ m/2`) and the upper bound (one binding divisor realises `c/2`). -/
-
-/-- **R1.2 lower bound (multiplicity control at the threshold).** If every axis obeys the
-multiplicity bound `m·kⱼ ≤ hⱼ+1` (regular sequence: `kⱼ=1` ⟹ `m ≤ hⱼ+1`), the chart threshold is
-`≥ m/2`. Lifts `axisRatio_ge_of_mult` over the axes via S2 (`monomial_rlct.1` + `le_iInf`). With
-`m = min_t Mval` this is the per-chart half of `min over charts ≥ ½·min_t Mval`. -/
-theorem monomialThreshold_ge_of_mult (d : ℕ) (k h : Fin d → ℕ) (m : ℕ)
-    (hk : ∀ j, 1 ≤ k j) (hmult : ∀ j, m * k j ≤ h j + 1) :
-    (m : ℝ≥0∞) / 2 ≤ monomialThreshold d k h := by
-  rw [(monomial_rlct d k h).1]
-  exact le_iInf (fun j => axisRatio_ge_of_mult (h j) (k j) m (hk j) (hmult j))
-
-/-- **R1.2 upper bound (one axis bounds the threshold).** A single axis's ratio bounds the chart
-threshold above (`monomial_rlct.1` + `iInf_le`): the binding-divisor seed. -/
-theorem monomialThreshold_le_axis (d : ℕ) (k h : Fin d → ℕ) (j : Fin d) :
-    monomialThreshold d k h ≤ axisRatio (h j) (k j) := by
-  rw [(monomial_rlct d k h).1]; exact iInf_le _ j
-
-/-- **R1.2 binding divisor (upper bound `c/2`).** A regular-sequence binding axis `(kⱼ,hⱼ)=(1,c−1)`
-makes the chart threshold `≤ c/2` (the binding divisor over a codim-`c` stratum realises `½·c`).
-With `c = Mval(t)` at the minimizing stratum this is the upper half of the value-match. -/
-theorem monomialThreshold_le_regularSeq (d : ℕ) (k h : Fin d → ℕ) (c : ℕ) (hc : 1 ≤ c) (j : Fin d)
-    (hkj : k j = 1) (hhj : h j = c - 1) :
-    monomialThreshold d k h ≤ (c : ℝ≥0∞) / 2 := by
-  refine (monomialThreshold_le_axis d k h j).trans ?_
-  rw [hkj, hhj, axisRatio_regularSeq c hc]
+/-! ### R1.2 threshold bracket — the unprimed `monomial_rlct.1`-based lemmas
+(`monomialThreshold_ge_of_mult` / `_le_axis` / `_le_regularSeq`) were DELETED (2026-07-09), superseded
+by their S2-free primed forms (`_ge_of_mult'` in `Validate/ResolutionAtlas`; `_le_axis'` /
+`_le_regularSeq'` in `Validate/MonomialThresholdIdentity`), proven via
+`monomialThreshold_eq_iInf_axisRatio`. -/
 
 /-! ## S1 — RLCT invariance substrate (thread 05; design-spec §8)
 
@@ -1696,15 +1659,12 @@ theorem clean_eq_printed (ℓ : ℕ) (m : Fin (ℓ + 1) → ℕ) (hℓ : 0 < ℓ
   have hPQ : (P : ℚ) = (ℓ : ℚ) * (b : ℚ) + (a : ℚ) := by rw [hdm]; push_cast; ring
   rw [hPQ]; field_simp; ring
 
-/-- **A2 (Lemmas 4–5, the order count).** The combinatorial chart-count identity: for the
-resolution's weighted-monomial data `(d, k, h)` realising the deepest-point geometry, the
-chart-count order `monomialOrder d k h` equals `aoyagiTheta ℓ a = a(ℓ−a)+1` for the Def-3 data
-`(ℓ, a)` (design-spec §3, §9: θ is **not** the naive minimiser count). Stated existentially over the
-realising data; the **secondary**, seam-flagged deliverable (standing decision 6). Non-vacuous: it
-equates an explicit `monomialOrder` to `aoyagiTheta`. -/
-theorem aoyagiTheta_eq (M : Fin (L + 1) → ℕ) :
-    ∃ (ℓ a d : ℕ) (k h : Fin d → ℕ), monomialOrder d k h = aoyagiTheta ℓ a := by
-  sorry
+/-! **A2 (the θ order-count) — DEFERRED SEAM (2026-07-09).** The former `aoyagiTheta_eq` placeholder
+(a bare `sorry`: `∃ realising (d,k,h), monomialOrder d k h = aoyagiTheta ℓ a`) was EXCISED per
+standing-decision-6 — it rested on the now-retired opaque `monomialOrderAnalytic`, so it was a
+placeholder-on-an-opaque, not honest content. The `aoyagiTheta` definition survives; the analytic
+order-multiplicity binding is the deferred seam (`cards/theta-analytic-multiplicity-seam.md`); the
+honest geometric θ-count lives combinatorially in `DLNFibre.Core` `(C, θ)`. -/
 
 /-! ## T — the headline (the GOAL; design-spec §8) -/
 
