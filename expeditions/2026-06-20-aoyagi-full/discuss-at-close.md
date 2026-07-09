@@ -2710,3 +2710,16 @@ All 4 **clean-three** `[propext, Classical.choice, Quot.sound]`. The `monomial_r
 **REMAINING (non-blocking close-out, I'll do):** reference-notes (BlowupBranchProgress (S,J) kernel — de-risk asset for the DEFERRED (□)-discharge); park the legacy sorried peel-stack (`aoyagi_learning_coefficient`:1725 + `deepest_regular_core_normal_form`:1124 + :1172/:1228 — superseded by the honest Validate headlines); the stale-`monomial_rlct`-docstring comment-sweep (codex: co-locate the "λ proven / θ deferred" caveat at the headlines).
 
 **★ SIGNAL: this is ready for your `dev` PR review + merge (operator-gated — I do NOT open it).** DEFERRED (point 5 + roadmap): discharge `(□)` (native (S,J) box-finiteness) → makes `_gen` unconditional; the analytic-order/θ-multiplicity seam. Neither is needed for the λ headlines above.
+
+## 89. Close-out status + the peel-stack NAMING decision (surfaced for your call). (2026-07-09)
+**Done since #88:** the bedrock-audit's non-blocking doc-debt is swept — the stale `[…, monomial_rlct]`/"cited S2"/"clean-four" footprint docstrings fixed in HeadlineL2Assembly (crux-landed + S2-retired → clean-three), R1ResolutionInterfaceL2, RRR (×2), RouteMLayerCoverGEL2 (×2), + AxCheck central retirement note (#88). Canonical @24ba28b3, comment-only.
+
+**PEEL-STACK — a naming call I'm surfacing (earned taste-judgment, but the canonical name is yours to set).** The legacy `aoyagi_learning_coefficient` (Skeleton:1725, the UNSUFFIXED "canonical" name) is a `sorryAx` result (its rungs `deepest_point_reduction`, `deepest_regular_core_normal_form`:1124, + :1172/:1228 are sorried placeholders). It is SUPERSEDED by the honest Validate headlines (`_L2`/`_gen`/`_gen_le`/`aoyagi_deepest_reduction_gen`, all clean-three). Options:
+- **(A) RE-POINT** the unsuffixed `aoyagi_learning_coefficient` to the honest result — e.g. `:= aoyagi_learning_coefficient_gen_le` (unconditional bound) or `_gen` (conditional on `(□)`). Keeps the canonical name, makes it honest, removes the 4 sorries.
+- **(B) DELETE** it + its sorried rungs — removes the 4 sorries; the honest suffixed names stand alone (no unsuffixed "canonical" name).
+- **(C) PARK** — leave as-is, documented as superseded-legacy (keeps the 4 sorries in the tree).
+**My recommendation: (A) re-point to `_gen` (the equality, the paper's actual Theorem 2, conditional on `(□)`)** — it makes the canonical name mean the paper's headline honestly + removes the sorries, and the `(□)` gate is the one honest remaining hypothesis. But which name carries the "canonical" headline is a taste/scope call — flagging for your decision (I'll execute on your pick; not touching it unilaterally since it's the canonical name + the (A)-vs-(B) affects what the top-level result advertises).
+
+**Reference-notes (BlowupBranchProgress (S,J) kernel + Case-2 map):** a de-risk asset for the DEFERRED `(□)`-discharge (point 5, maybe-never). LOW urgency — I'll capture it only if/when you greenlight the `(□)`-discharge as the next expedition; not worth archaeology now.
+
+**Net: the S2-free milestone is complete + audited + doc-clean; awaiting your `dev`-PR review/merge + the peel-stack naming call.**
