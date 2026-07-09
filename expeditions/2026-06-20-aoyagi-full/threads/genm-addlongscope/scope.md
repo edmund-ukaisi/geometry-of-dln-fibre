@@ -242,5 +242,36 @@ Reserve (B) for a pure labour-budget decision by the operator.
   carrier design can be pinned from the worked example. This is the `witness`-seat probe that should precede
   any build — and it directly tests the §2 caveat.
 
-**Decorrelated Codex (high, neutral prompt):** consult fired on the Aoyagi-native question
-(`codex/aoyagi-prompt.md`); result folded into the addendum below on completion.
+**Decorrelated Codex (high, neutral prompt) — CORROBORATES the re-frame independently** (`codex/aoyagi-prompt.md`,
+`codex/aoyagi-answer.md`):
+- **`det(Q_bQ_bᵀ)` is a ROUTE ARTEFACT, not intrinsic.** "The rank-deficient intermediate strata are real,
+  and some bind. What is not intrinsic is the inverse Gram factor… In the native recursion, `Γ` is not
+  integrated out as a standalone Gaussian block; the product ideal is transformed directly, and the shared
+  divisors remain in the `b_i` ledger." It cited `RouteMSJFreedPeel.lean:25` (the freed-`Γ` route carries a
+  `Q_bQ_bᵀ` positive-definite hypothesis that "fails on bottleneck/rank-drop charts") as the direct evidence.
+- **The dense-torus / non-coordinate-center obstruction does NOT survive.** "It may be a correct obstruction
+  to principalising the Gram determinant of a matrix product. But that is not the same object as resolving
+  the zero locus of `‖∏C‖²`… If the witness is a positive-loss point, it is off `{∏C=0}`… any pole there
+  comes from the marginalised Gram density," i.e. self-inflicted by the Gram route.
+- **Gap classification: (a)**, "large but bounded, citing only the monomial normal-crossing integrability
+  endpoint." The `(c)` appearance is "a self-inflicted route wall, not an intrinsic DLN wall."
+- **Dominant difficulty: (i) the carrier data structure** — needs `S, J, M(S)`, residual block dims,
+  branch/rank-profile, and crucially a **per-generator support map** `support : Gen → Finset DivVar` with the
+  *sharing* identity (which `u` divides which generators). "A per-row multiplicity is too weak" — corroborated
+  by the repo's own `theory/aoyagi-2023-reproduction/verify-r1-diagb-334.md` (the `(3,3,4)` core binds at
+  `rlct = 4`; a threshold-only/per-row recursion returns `3` — undercount by 1 on a value-setting branch, so
+  the shared `diag(b)` support is **necessary**, not decorative).
+- **Size:** "6–12 person-weeks for a serious Aoyagi-native core recursion, more like 10–16 if the integral
+  plumbing and finite chart cover are included cleanly" — somewhat tighter than my ~15–35-tide read (the repo
+  already has substantial infrastructure); the ranges are compatible. **Top risk (agreed):** "building a
+  carrier that is still too weak and discovering late that another sharing relation is missing." Chart algebra
+  "large but more mechanical"; termination/covering "finite/lexicographic once the state is right."
+- **Practical call:** "If the goal is a fully from-scratch Lean RLCT proof, build Aoyagi-native. If the goal
+  is the DLN fibre theorem with controlled citation footprint, cite Aoyagi's exact RLCT. Do not spend effort
+  principalising `det(Q_bQ_bᵀ)` unless the project explicitly chooses the Gram route."
+
+**Net:** two independent lines (this scout reading Aoyagi's primary proof + a decorrelated Codex) agree the
+sub-generic "wall" is a route artefact, the gap is a bounded Aoyagi-native coordinate-chart build
+(~6–16 pw / ~15–35 tides), and the make-or-break is the shared-divisor carrier. The **first** (general,
+atom-lane) consult (`codex/answer.md`) is retained for provenance but its numbers were for the retracted
+object.
