@@ -1,8 +1,11 @@
 # Statement card — the UNCONDITIONAL general-`L` headline bounds (b)+(c)
 
-**Status:** sorry-free, **clean-three**, **UNCONDITIONAL** (no analytic gate). Built on branch
-`genm-headlines` off `expedition/aoyagi-full @42b1b5e6`, committed `@8a2b5776`. New module
-`lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenBounds.lean`. Awaiting fidelity review.
+**Status:** sorry-free + **reviewed FAITHFUL**, **clean-three**, **UNCONDITIONAL** (no analytic gate).
+Built on branch `genm-headlines` off `expedition/aoyagi-full @42b1b5e6`, committed `@8a2b5776`
+(precision fix `@278eb936`). New module `lean/DLNFibre/DLN/RLCT/Validate/HeadlineGenBounds.lean`.
+Decorrelated fidelity+soundness reviewer (with Codex xhigh on the `≤`-half extraction): VERDICT
+FAITHFUL on all four results — hbox-free confirmed, non-vacuous, axioms force-recompiled clean-three;
+its one report-only escalation (the stale `monomial_rlct` mis-attribution) is folded in above.
 
 These are the two general-`L` headline results the gated equality `aoyagi_learning_coefficient_gen`
 did NOT reach unconditionally: its sole open input `(□) = RouteMBoxThresholdFinite (H−r)` feeds only
