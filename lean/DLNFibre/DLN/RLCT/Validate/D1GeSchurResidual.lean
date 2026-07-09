@@ -144,27 +144,58 @@ theorem regCoreEmbGen_injective : Function.Injective (regCoreEmbGen ι hι hL) :
 /-- **The spectator index type**: the complement of the reg/core image (no interior enumeration). -/
 abbrev SpecIdxGen : Type := ↥(Set.range (regCoreEmbGen ι hι hL))ᶜ
 
-/-- **The role-partition index equiv** `RegIdxGen ⊕ (CoreIdxGen ⊕ SpecIdxGen) ≃ FlatIdx H`. The
-reg/core half is `regCoreEmbGen`'s range (via `Equiv.ofInjective`), the spec half its complement
-(`Equiv.Set.sumCompl`); reassociated by `Equiv.sumAssoc`. -/
+/-- **The explicit forward role → flat map.** REG/CORE via `regCoreEmbGen`, SPEC is the subtype
+value (a `FlatIdx H` outside the reg/core range). Kept explicit (not a `sumCompl` composition) so
+`roleEquivGen.symm` is a single `invFun` — the L = 2 `ofBijective` shape, whose whnf stays cheap
+(a `sumCompl.symm` would force a non-computing `Classical` range-membership decision). -/
+noncomputable def roleToFlatGen :
+    (RegIdxGen H r ⊕ (CoreIdxGen H r ⊕ SpecIdxGen ι hι hL)) → FlatIdx H
+  | Sum.inl ρ => regCoreEmbGen ι hι hL (Sum.inl ρ)
+  | Sum.inr (Sum.inl c) => regCoreEmbGen ι hι hL (Sum.inr c)
+  | Sum.inr (Sum.inr x) => x.1
+
+/-- `roleToFlatGen` is injective: REG/CORE inject via `regCoreEmbGen`; a SPEC value lies OUTSIDE
+the reg/core range (`x.2`), so it collides with neither arm nor another SPEC (subtype). -/
+theorem roleToFlatGen_injective : Function.Injective (roleToFlatGen ι hι hL) := by
+  have hinj := regCoreEmbGen_injective ι hι hL
+  rintro (ρ₁ | (c₁ | x₁)) (ρ₂ | (c₂ | x₂)) h <;>
+    simp only [roleToFlatGen] at h
+  · exact congrArg Sum.inl (Sum.inl_injective (hinj h))
+  · exact absurd (hinj h) (by simp)
+  · exact absurd ⟨_, h⟩ x₂.2
+  · exact absurd (hinj h) (by simp)
+  · exact congrArg (fun c => Sum.inr (Sum.inl c)) (Sum.inr_injective (hinj h))
+  · exact absurd ⟨_, h⟩ x₂.2
+  · exact absurd ⟨_, h.symm⟩ x₁.2
+  · exact absurd ⟨_, h.symm⟩ x₁.2
+  · exact congrArg (fun x => Sum.inr (Sum.inr x)) (Subtype.ext h)
+
+/-- The role partition and `FlatIdx H` have equal cardinality — via `card_congr` of the reg/core
+range ⊕ complement equiv (used for the `Nat` card only, so its `symm` is never whnf'd here). -/
+theorem card_roleGen :
+    Fintype.card (RegIdxGen H r ⊕ (CoreIdxGen H r ⊕ SpecIdxGen ι hι hL))
+      = Fintype.card (FlatIdx H) :=
+  Fintype.card_congr
+    ((Equiv.sumAssoc (RegIdxGen H r) (CoreIdxGen H r) (SpecIdxGen ι hι hL)).symm.trans
+      ((Equiv.sumCongr (Equiv.ofInjective _ (regCoreEmbGen_injective ι hι hL))
+          (Equiv.refl (SpecIdxGen ι hι hL))).trans
+        (Equiv.Set.sumCompl (Set.range (regCoreEmbGen ι hι hL)))))
+
+/-- **The role-partition index equiv** `RegIdxGen ⊕ (CoreIdxGen ⊕ SpecIdxGen) ≃ FlatIdx H`, from
+the explicit `roleToFlatGen` (injective + equal card) via `Equiv.ofBijective` (readbacks `rfl`). -/
 noncomputable def roleEquivGen :
     (RegIdxGen H r ⊕ (CoreIdxGen H r ⊕ SpecIdxGen ι hι hL)) ≃ FlatIdx H :=
-  (Equiv.sumAssoc (RegIdxGen H r) (CoreIdxGen H r) (SpecIdxGen ι hι hL)).symm.trans
-    ((Equiv.sumCongr (Equiv.ofInjective _ (regCoreEmbGen_injective ι hι hL))
-        (Equiv.refl (SpecIdxGen ι hι hL))).trans
-      (Equiv.Set.sumCompl (Set.range (regCoreEmbGen ι hι hL))))
+  Equiv.ofBijective (roleToFlatGen ι hι hL)
+    ((Fintype.bijective_iff_injective_and_card _).mpr
+      ⟨roleToFlatGen_injective ι hι hL, card_roleGen ι hι hL⟩)
 
 /-- Core readback: `roleEquivGen (inr (inl c)) = regCoreEmbGen (inr c)`. -/
 theorem roleEquivGen_core (c : CoreIdxGen H r) :
-    roleEquivGen ι hι hL (Sum.inr (Sum.inl c)) = regCoreEmbGen ι hι hL (Sum.inr c) := by
-  simp only [roleEquivGen, Equiv.trans_apply, Equiv.sumAssoc_symm_apply_inr_inl,
-    Equiv.sumCongr_apply, Sum.map_inl, Equiv.ofInjective_apply, Equiv.Set.sumCompl_apply_inl]
+    roleEquivGen ι hι hL (Sum.inr (Sum.inl c)) = regCoreEmbGen ι hι hL (Sum.inr c) := rfl
 
 /-- Reg readback: `roleEquivGen (inl ρ) = regCoreEmbGen (inl ρ)`. -/
 theorem roleEquivGen_reg (ρ : RegIdxGen H r) :
-    roleEquivGen ι hι hL (Sum.inl ρ) = regCoreEmbGen ι hι hL (Sum.inl ρ) := by
-  simp only [roleEquivGen, Equiv.trans_apply, Equiv.sumAssoc_symm_apply_inl,
-    Equiv.sumCongr_apply, Sum.map_inl, Equiv.ofInjective_apply, Equiv.Set.sumCompl_apply_inl]
+    roleEquivGen ι hι hL (Sum.inl ρ) = regCoreEmbGen ι hι hL (Sum.inl ρ) := rfl
 
 /-! ## Rung B — the flat index-equiv `e_idxGen` + the measure-preserving split `splitMPGen`
 
@@ -263,5 +294,92 @@ theorem paramsEquivFlat_symm_splitMPGen_core (x : Fin (flatDim H) → ℝ) :
     Equiv.symm_symm, paramsEquivFlatLinear_symm_coe_gen]
   exact (paramsEquivFlat_symm_entry H x s (sumSplit (ι s.castSucc) (hι _) (Sum.inr i))
     (sumSplit (ι s.succ) (hι _) (Sum.inr j))).symm
+
+/-! ## Rung D — the `Homeomorph` version of `splitMPGen` (with the `ContDiff` inverse)
+
+Mirrors L = 2 `splitHomeoL2`; usable by `rlctAtOn_comp_homeomorph` (which wants `≃ₜ`). -/
+
+/-- `splitMPGen.symm` reads coordinate `c` off the three blocks via `e_idxGen.symm`. -/
+theorem splitMPGen_symm_apply
+    (q : (Fin (nRegGen H r) → ℝ)
+      × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)))
+    (c : Fin (flatDim H)) :
+    (splitMPGen ι hι hL).symm q c
+      = Sum.elim q.1 (Sum.elim q.2.1 q.2.2) ((e_idxGen ι hι hL).symm c) := by
+  have h := splitOfPartition_symm_apply (e_idxGen ι hι hL) q ((e_idxGen ι hι hL).symm c)
+  rw [Equiv.apply_symm_apply] at h
+  exact h
+
+/-- `splitMPGen.symm` is `C^∞` (each output coordinate is a projection of one input block). -/
+theorem contDiff_splitMPGen_symm :
+    ContDiff ℝ (⊤ : ℕ∞) (⇑(splitMPGen ι hι hL).symm) := by
+  rw [contDiff_pi]
+  intro c
+  have hfun : (fun q => (splitMPGen ι hι hL).symm q c)
+      = fun q => Sum.elim q.1 (Sum.elim q.2.1 q.2.2) ((e_idxGen ι hι hL).symm c) :=
+    funext fun q => splitMPGen_symm_apply ι hι hL q c
+  rw [hfun]
+  rcases h : (e_idxGen ι hι hL).symm c with i | (j | k)
+  · simp only [Sum.elim_inl]
+    exact (contDiff_apply ℝ _ i).comp contDiff_fst
+  · simp only [Sum.elim_inr, Sum.elim_inl]
+    exact (contDiff_apply ℝ _ j).comp (contDiff_fst.comp contDiff_snd)
+  · simp only [Sum.elim_inr]
+    exact (contDiff_apply ℝ _ k).comp (contDiff_snd.comp contDiff_snd)
+
+/-- The forward `splitMPGen` is continuous (each block coordinate is a projection). -/
+theorem continuous_splitMPGen : Continuous (⇑(splitMPGen ι hι hL)) := by
+  have hc1 : Continuous fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).1 :=
+    continuous_pi fun i => by
+      have : (fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).1 i)
+          = fun w => w (e_idxGen ι hι hL (Sum.inl i)) :=
+        funext fun w => splitMPGen_reg ι hι hL w i
+      rw [this]; exact continuous_apply _
+  have hc2 : Continuous fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).2.1 :=
+    continuous_pi fun j => by
+      have : (fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).2.1 j)
+          = fun w => w (e_idxGen ι hι hL (Sum.inr (Sum.inl j))) :=
+        funext fun w => splitMPGen_core ι hι hL w j
+      rw [this]; exact continuous_apply _
+  have hc3 : Continuous fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).2.2 :=
+    continuous_pi fun k => by
+      have : (fun w : Fin (flatDim H) → ℝ => (splitMPGen ι hι hL w).2.2 k)
+          = fun w => w (e_idxGen ι hι hL (Sum.inr (Sum.inr k))) :=
+        funext fun w => splitMPGen_spec ι hι hL w k
+      rw [this]; exact continuous_apply _
+  exact hc1.prodMk (hc2.prodMk hc3)
+
+/-- **The `Homeomorph` version of `splitMPGen`** (same underlying equiv, so the readbacks / MP /
+measurable-embedding transfer definitionally), usable by `rlctAtOn_comp_homeomorph`. -/
+noncomputable def splitHomeoGen :
+    (Fin (flatDim H) → ℝ) ≃ₜ
+      (Fin (nRegGen H r) → ℝ)
+        × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)) where
+  toEquiv := (splitMPGen ι hι hL).toEquiv
+  continuous_toFun := continuous_splitMPGen ι hι hL
+  continuous_invFun := (contDiff_splitMPGen_symm ι hι hL).continuous
+
+@[simp] theorem splitHomeoGen_apply (w : Fin (flatDim H) → ℝ) :
+    splitHomeoGen ι hι hL w = splitMPGen ι hι hL w := rfl
+
+theorem measurePreserving_splitHomeoGen :
+    MeasurePreserving (splitHomeoGen ι hι hL)
+      (volume : Measure (Fin (flatDim H) → ℝ)) volume :=
+  measurePreserving_splitMPGen ι hι hL
+
+theorem measurableEmbedding_splitHomeoGen :
+    MeasurableEmbedding (splitHomeoGen ι hι hL) :=
+  (splitMPGen ι hι hL).measurableEmbedding
+
+/-- `splitHomeoGen` sends the flat origin to the split origin. -/
+theorem splitHomeoGen_zero :
+    splitHomeoGen ι hι hL (0 : Fin (flatDim H) → ℝ)
+      = (0 : (Fin (nRegGen H r) → ℝ)
+              × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ))) := by
+  apply Prod.ext
+  · funext i; exact splitMPGen_reg ι hι hL 0 i
+  · apply Prod.ext
+    · funext j; exact splitMPGen_core ι hι hL 0 j
+    · funext k; exact splitMPGen_spec ι hι hL 0 k
 
 end DLNFibre.DLN.RLCT
