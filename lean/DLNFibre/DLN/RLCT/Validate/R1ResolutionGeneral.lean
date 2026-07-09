@@ -47,8 +47,9 @@ positive by `hMid`). So `hNo` is no longer a hypothesis of `r1_resolution_genera
 - **Sub-D** (assemble): `routeMLayerCover_of_atoms` → `IsRouteMCover`; `routeM_rlctAtOn_eq_iInf` +
   `rlctAtOn_routeMCore_transport` → the params-side `⨅`-form; the value lane closes it.
 
-Axioms: exactly `[propext, Classical.choice, Quot.sound, monomial_rlct]` — no new axioms, no
-`sorryAx`.
+Axioms: exactly `[propext, Classical.choice, Quot.sound]` — S2-FREE since the Stage-A de-cite (the
+value lane routes through the proven identity `monomialThreshold_eq_iInf_axisRatio`, not
+`monomial_rlct`; verified AxCheck:349), no `sorryAx`.
 -/
 
 open MeasureTheory

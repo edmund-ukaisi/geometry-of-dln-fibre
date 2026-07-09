@@ -30,7 +30,8 @@ the consumer must ALIGN the chart boundary `k = p* - 1` with the `InteriorDrop` 
 — a `deepRank = 0` interior config need not drop tail columns from an arbitrary interior boundary).
 
 Axiom profile target: `routeMCore_box_diverges_eDeepRank0Gen` = `[propext, Classical.choice,
-Quot.sound, monomial_rlct]` (clean-three + the single S2 cited axiom).
+Quot.sound]` — S2-FREE since the Stage-A de-cite (the box divergence routes through the proven
+identity `monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`).
 -/
 
 open MeasureTheory

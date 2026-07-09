@@ -22,8 +22,9 @@ Both consumers have the identical conclusion shape
 typechecks iff both consumers faithfully match the slot.
 
 Axiom profile: inherits both atoms' footprint —
-`[propext, Classical.choice, Quot.sound, monomial_rlct]` (clean-three + the single permitted S2
-axiom `monomial_rlct`), no `sorryAx`.
+`[propext, Classical.choice, Quot.sound]` — S2-FREE since the Stage-A de-cite (the box-divergence
+atoms route through the proven identity `monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`),
+no `sorryAx`.
 -/
 
 open MeasureTheory

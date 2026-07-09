@@ -13,7 +13,7 @@ touch the old inductive; it re-points the value lane to the banked atlas, exposi
 family in EXACTLY the `(ι, d, k, h)`-tuple shape `routeM_rlctAtOn_eq_iInf`/`resolution_charts`
 consume.
 
-## What this banks (sorry-free, axioms = the single S2 `monomial_rlct`)
+## What this banks (sorry-free, S2-FREE since the Stage-A de-cite — the value lane routes through the proven identity `monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`)
 
 - `layerD`/`layerK`/`layerH` — the per-leaf `(d, k, h)` accessors of `routeLayerAtlas M`, the
   chart family in the bridge's tuple shape.

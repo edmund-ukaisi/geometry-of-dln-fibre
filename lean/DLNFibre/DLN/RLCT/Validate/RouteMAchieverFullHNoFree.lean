@@ -21,8 +21,8 @@ Neither branch cheats the case split: the InteriorDrop branch genuinely discharg
 atom; the ¬InteriorDrop branch genuinely supplies `hNo` via the combinatorial bridge.
 
 Axiom profile: inherits `routeMCore_box_diverges_achiever_full`'s footprint
-`[propext, Classical.choice, Quot.sound, monomial_rlct]` — the bridge is clean-three (S2-free), so
-`monomial_rlct` still enters only through the interior/value lane.
+`[propext, Classical.choice, Quot.sound]` — S2-FREE since the Stage-A de-cite (the interior/value
+lane routes through the proven identity `monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`).
 -/
 
 open MeasureTheory

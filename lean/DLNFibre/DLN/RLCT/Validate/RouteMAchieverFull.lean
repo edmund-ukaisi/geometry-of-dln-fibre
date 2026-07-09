@@ -27,10 +27,10 @@ the `NoInteriorBothDrop` stratum (the interior Aoyagi blocks vanish), and the R1
 provides it downstream (a hypothesis on `M`, or the general `¬InteriorDrop → NoInteriorBothDrop`
 bridge; the L = 2 leg threads it).
 
-Axiom profile: `[propext, Classical.choice, Quot.sound, monomial_rlct]`. The single permitted S2
-citation `monomial_rlct` enters through the interior slot (via `interiorLiveGen_hInterior`'s
-box-divergence atoms); the smeared slot is clean-three (S2-free, single-axis after shear), and the
-spine adds none of its own.
+Axiom profile: `[propext, Classical.choice, Quot.sound]` — S2-FREE since the Stage-A de-cite (the
+interior slot's box-divergence atoms, via `interiorLiveGen_hInterior`, now route through the proven
+identity `monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`); the smeared slot was already
+S2-free (single-axis after shear), and the spine adds none of its own.
 -/
 
 open MeasureTheory

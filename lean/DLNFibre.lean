@@ -1060,5 +1060,7 @@ import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
 -- `HeadlineGenBounds` — the UNCONDITIONAL general-L bounds: (b) `aoyagi_learning_coefficient_gen_le`
 -- (`⨅ ≤ ofReal(aoyagiLambda)`, no gate) + (c) `aoyagi_deepest_reduction_gen` (`⨅ = nRegGen/2 + core
--- RLCT`) + the hbox-free ≤-half `r1_resolution_general_le`. All clean-three (cleaner than the equality).
+-- RLCT`) + the hbox-free ≤-half `r1_resolution_general_le`. All clean-three. The distinction from the
+-- gated equality (`aoyagi_learning_coefficient_gen`) is the DROPPED `(□)` hypothesis (unconditional) —
+-- NOT an axiom footprint (the equality is itself clean-three post-Stage-A; it just needs `(□)`).
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds

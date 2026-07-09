@@ -37,9 +37,10 @@ Deliverables:
     (`∫⁻_{cubeBox N ε} |routeMCore M|^{−c'} = ⊤`, `c' ≥ ½·minAdm M`, every `ε > 0`), via the M-agnostic
     `routeMCore_box_diverges_of_nodeChart`. This is SHA_int, the R1-LOWER integration trigger.
 
-Axiom profile: the deliverables inherit the pieces' footprint — `[propext, Classical.choice, Quot.sound,
-monomial_rlct]` (the clean-three + the single S2 cited axiom `monomial_rlct` reached via
-`monomialIntegrand_lintegral_box_eq_top`), NO `sorryAx`.
+Axiom profile: the deliverables inherit the pieces' footprint — `[propext, Classical.choice,
+Quot.sound]` — S2-FREE since the Stage-A de-cite (the box divergence, formerly via
+`monomialIntegrand_lintegral_box_eq_top`, now routes through the proven identity
+`monomialThreshold_eq_iInf_axisRatio`, not `monomial_rlct`), NO `sorryAx`.
 -/
 
 open MeasureTheory
