@@ -97,11 +97,15 @@ theorem r1_resolution_general_le (M : Fin (L + 1) → ℕ) (hL : 1 ≤ L) (hMid 
   builds, `hbox`-independent), convert to the `cover_ge_div` shape
   (`routeM_coverGeDiv_of_boxDiverges`), feed `routeM_rlctAtOn_le_iInf`, then transport to params and
   value the `⨅` at `ofReal(lambdaCore M)` (`routeLayerAtlas_value_eq_lambdaCore`).
-- **Clean-three, notably WITHOUT `monomial_rlct`.** The full equality `r1_resolution_general` carries
-  `monomial_rlct` (its `≥`/finiteness lane computes the per-monomial RLCT value); the `≤`-lane never
-  touches it — it uses only that box-divergence forces `rlctAtOn ≤ threshold` (measure theory) and the
-  combinatorial `⨅ monomialThreshold = lambdaCore` (the QIP identity). So (b)/(c) are strictly cleaner
-  than the gated equality.
+- **The distinction from the gated equality is the DROPPED `(□)` hypothesis, NOT an axiom footprint.**
+  Both these bounds AND the gated equality (`r1_resolution_general` / `aoyagi_learning_coefficient_gen`)
+  are clean-three `[propext, Classical.choice, Quot.sound]` — force-recompiled verification, 2026-07-09
+  (the `monomial_rlct` mentions in several upstream R1 docstrings, incl. `R1ResolutionGeneral.lean:50`,
+  are STALE relics of the pre-S2-free footprint, not live proof terms; flagged to the controller for a
+  docstring sweep). The genuine win of (b)/(c) is that they carry NO `RouteMBoxThresholdFinite`
+  argument: the `≤`-lane uses only that box-divergence forces `rlctAtOn ≤ threshold` (measure theory)
+  and the combinatorial `⨅ monomialThreshold = lambdaCore` (the QIP identity), whereas the equality's
+  `≥`-lane needs the box-finiteness `(□)`.
 
 ## Kill-conditions
 - (c) dies if the deepest-point decomposition is wrong (checked: `deepest_regular_core_reduces_…`

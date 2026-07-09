@@ -19,10 +19,10 @@ proven-`∀L` achiever box-divergence (`routeMCore_box_diverges_achiever_full'`)
 The genuinely-new brick is `r1_resolution_general_le`: the `hbox`-free `≤` direction of
 `r1_resolution_general`, obtained by feeding the `hdiv` box-divergence (no `hfin`) through the
 `cover_ge_div` converter into `routeM_rlctAtOn_le_iInf` — the `≤` branch of
-`routeM_rlctAtOn_eq_iInf` extracted so it consumes the divergence field alone. All three are
-axiom-clean-three
-`[propext, Classical.choice, Quot.sound]`: the `≤` lane never touches the RLCT-value axiom
-`monomial_rlct` (which enters only the equality's `≥`/finiteness lane).
+`routeM_rlctAtOn_eq_iInf` extracted so it consumes the divergence field alone. All are
+axiom-clean-three `[propext, Classical.choice, Quot.sound]`. The distinction from the gated equality
+`aoyagi_learning_coefficient_gen` is the DROPPED box-finiteness hypothesis `(□)`, not an axiom
+footprint — the whole general-`L` R1 lane (equality included) is already clean-three.
 -/
 
 open MeasureTheory
