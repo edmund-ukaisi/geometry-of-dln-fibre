@@ -382,4 +382,96 @@ theorem splitHomeoGen_zero :
     · funext j; exact splitMPGen_core ι hι hL 0 j
     · funext k; exact splitMPGen_spec ι hι hL 0 k
 
+/-! ## Rung E — the regular-block readbacks + the slice-zero of the regular blocks
+
+Each regular flat coordinate decodes to the corresponding `blockFlatEquivGen` block entry (first
+layer's `₂₁`, last layer's `₁₁,₁₂`). At the reg-slice (`p = 0`) those coordinates vanish, so the
+three regular blocks of `blockFlatEquivGen` vanish — the input to `qResid_slice_value_gen`. -/
+
+/-- The first-layer `₂₁` regular role decodes to `(blockFlatEquivGen x firstLayer).toBlocks₂₁`. -/
+theorem reg_entry_first₂₁_gen (x : Fin (flatDim H) → ℝ) (a : Fin (H 0 - r)) (k : Fin r) :
+    x (Fintype.equivFin (FlatIdx H) (roleEquivGen ι hι hL (Sum.inl (Sum.inl (a, k)))))
+      = (blockFlatEquivGen H r ι hι x (firstLayer hL)).toBlocks₂₁ a k := by
+  rw [roleEquivGen_reg]
+  change x (Fintype.equivFin (FlatIdx H)
+      ⟨⟨firstLayer hL, sumSplit (ι (firstLayer hL).castSucc) (hι _) (Sum.inr a)⟩,
+        sumSplit (ι (firstLayer hL).succ) (hι _) (Sum.inl k)⟩) = _
+  rw [blockFlatEquivGen_apply]
+  simp only [Matrix.toBlocks₂₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe_gen]
+  exact (paramsEquivFlat_symm_entry H x (firstLayer hL)
+    (sumSplit (ι (firstLayer hL).castSucc) (hι _) (Sum.inr a))
+    (sumSplit (ι (firstLayer hL).succ) (hι _) (Sum.inl k))).symm
+
+/-- The last-layer `₁₁` regular role decodes to `(blockFlatEquivGen x lastLayer).toBlocks₁₁`. -/
+theorem reg_entry_last₁₁_gen (x : Fin (flatDim H) → ℝ) (k k' : Fin r) :
+    x (Fintype.equivFin (FlatIdx H) (roleEquivGen ι hι hL (Sum.inl (Sum.inr (k, Sum.inl k')))))
+      = (blockFlatEquivGen H r ι hι x (lastLayer hL)).toBlocks₁₁ k k' := by
+  rw [roleEquivGen_reg]
+  change x (Fintype.equivFin (FlatIdx H)
+      ⟨⟨lastLayer hL, sumSplit (ι (lastLayer hL).castSucc) (hι _) (Sum.inl k)⟩,
+        sumSplit (ι (lastLayer hL).succ) (hι _) (Sum.inl k')⟩) = _
+  rw [blockFlatEquivGen_apply]
+  simp only [Matrix.toBlocks₁₁, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe_gen]
+  exact (paramsEquivFlat_symm_entry H x (lastLayer hL)
+    (sumSplit (ι (lastLayer hL).castSucc) (hι _) (Sum.inl k))
+    (sumSplit (ι (lastLayer hL).succ) (hι _) (Sum.inl k'))).symm
+
+/-- The last-layer `₁₂` regular role decodes to `(blockFlatEquivGen x lastLayer).toBlocks₁₂` at the
+`finCongr`-cast column (the `H (Fin.last L) → H lastLayer.succ` width bridge). -/
+theorem reg_entry_last₁₂_gen (x : Fin (flatDim H) → ℝ) (k : Fin r) (b : Fin (H (Fin.last L) - r)) :
+    x (Fintype.equivFin (FlatIdx H) (roleEquivGen ι hι hL (Sum.inl (Sum.inr (k, Sum.inr b)))))
+      = (blockFlatEquivGen H r ι hι x (lastLayer hL)).toBlocks₁₂ k
+          (finCongr (by rw [H_lastLayer_succ H hL]) b) := by
+  rw [roleEquivGen_reg]
+  change x (Fintype.equivFin (FlatIdx H)
+      ⟨⟨lastLayer hL, sumSplit (ι (lastLayer hL).castSucc) (hι _) (Sum.inl k)⟩,
+        sumSplit (ι (lastLayer hL).succ) (hι _)
+          (Sum.map id (finCongr (by rw [H_lastLayer_succ H hL])) (Sum.inr b))⟩) = _
+  rw [blockFlatEquivGen_apply]
+  simp only [Matrix.toBlocks₁₂, Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.of_apply,
+    Equiv.symm_symm, paramsEquivFlatLinear_symm_coe_gen, Sum.map_inr]
+  exact (paramsEquivFlat_symm_entry H x (lastLayer hL)
+    (sumSplit (ι (lastLayer hL).castSucc) (hι _) (Sum.inl k))
+    (sumSplit (ι (lastLayer hL).succ) (hι _)
+      (Sum.inr (finCongr (by rw [H_lastLayer_succ H hL]) b)))).symm
+
+/-- A regular flat coordinate of `splitMPGen.symm ((0), t)` is `0` (its reg block is `0`). -/
+theorem reg_zero_of_slice_gen
+    (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ))
+    (ρ : RegIdxGen H r) :
+    (splitMPGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t)
+        (Fintype.equivFin (FlatIdx H) (roleEquivGen ι hι hL (Sum.inl ρ))) = 0 := by
+  have hround : splitMPGen ι hι hL ((splitMPGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+      = ((0 : Fin (nRegGen H r) → ℝ), t) := (splitMPGen ι hι hL).apply_symm_apply _
+  have hkey := splitMPGen_reg ι hι hL ((splitMPGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+    ((regEquivFinGen ι hι).symm ρ)
+  rw [e_idxGen_reg, Equiv.apply_symm_apply] at hkey
+  rw [← hkey, hround]
+  rfl
+
+/-- The three regular blocks of `blockFlatEquivGen (splitMPGen.symm ((0), t))` vanish. -/
+theorem bChart_slice_reg_zero_gen
+    (t : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)) :
+    (blockFlatEquivGen H r ι hι ((splitMPGen ι hι hL).symm
+        ((0 : Fin (nRegGen H r) → ℝ), t)) (firstLayer hL)).toBlocks₂₁ = 0
+    ∧ (blockFlatEquivGen H r ι hι ((splitMPGen ι hι hL).symm
+        ((0 : Fin (nRegGen H r) → ℝ), t)) (lastLayer hL)).toBlocks₁₁ = 0
+    ∧ (blockFlatEquivGen H r ι hι ((splitMPGen ι hι hL).symm
+        ((0 : Fin (nRegGen H r) → ℝ), t)) (lastLayer hL)).toBlocks₁₂ = 0 := by
+  refine ⟨?_, ?_, ?_⟩
+  · funext a k
+    rw [← reg_entry_first₂₁_gen ι hι hL _ a k]
+    exact reg_zero_of_slice_gen ι hι hL t (Sum.inl (a, k))
+  · funext k k'
+    rw [← reg_entry_last₁₁_gen ι hι hL _ k k']
+    exact reg_zero_of_slice_gen ι hι hL t (Sum.inr (k, Sum.inl k'))
+  · funext k b'
+    rw [show b' = finCongr (by rw [H_lastLayer_succ H hL])
+          ((finCongr (by rw [H_lastLayer_succ H hL]) : Fin (H (Fin.last L) - r) ≃
+            Fin (H (lastLayer hL).succ - r)).symm b') from by simp,
+      ← reg_entry_last₁₂_gen ι hι hL _ k _]
+    exact reg_zero_of_slice_gen ι hι hL t (Sum.inr (k, Sum.inr _))
+
 end DLNFibre.DLN.RLCT
