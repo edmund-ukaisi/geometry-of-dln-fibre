@@ -9,15 +9,20 @@ Run ONE tick per wake.
 
 ## Re-ground when you need to
 Fresh session / after compaction / unsure of state → read in full (grounding is cheap):
+- **expeditions/2026-06-20-aoyagi-full/stage2-brief.md  ← ★ THE BINDING STAGE-2 CHARTER — READ FIRST**
+  (GOAL = discharge `(□)`; strategy = Aoyagi §5 native `(S,J)`; det-inverse compass; Case-2 typo
+  correction; escalation bar. This is the current operative directive.)
 - docs/policies/expedition.md           ← full contract (tick, gates, recovery)
-- expeditions/2026-06-20-aoyagi-full/brief.md        ← quest, ladder, standing decisions, anti-treadmill contract
+- expeditions/2026-06-20-aoyagi-full/brief.md        ← Stage-1 quest, ladder, standing decisions (1–7), anti-treadmill
 - expeditions/2026-06-20-aoyagi-full/priorities.md   ← taste ledger / decision queue (operator's async channel)
 - expeditions/2026-06-20-aoyagi-full/synthesis.md    ← current integrative read
 - expeditions/2026-06-20-aoyagi-full/threads.md      ← thread-status ledger
 - expeditions/2026-06-20-aoyagi-full/lessons.md      ← directed-suspicion learnings
 - expeditions/2026-06-20-aoyagi-full/expositions/    ← any in-progress draft
-(CLAUDE.md auto-loaded. Read precision.md / bedrock.md / review.md / claims.md / lean/CLAUDE.md when their action arises.)
-If warm and sure: read only the delta — priorities.md + the reporting thread's thread.md.
+(CLAUDE.md auto-loaded — its Disposition is binding.) **PERIODICALLY (not only when stuck) reread the
+DISPOSITION + policy docs — CLAUDE.md §Disposition, bedrock.md, precision.md, review.md, claims.md,
+codex-consultation.md, lean/CLAUDE.md — so the taste/bedrock bar doesn't drift across compactions.**
+If warm and sure: read the delta — stage2-brief.md + priorities.md + the reporting thread's thread.md.
 
 ## Tick
 re-anchor to the quest → triage priorities.md (VOI × suspicion) → delegate (spawn/instruct threads;
