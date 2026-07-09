@@ -903,4 +903,120 @@ theorem qResid_slice_value_gen (C₀ : BlockParamsGen H r)
   -- assemble: the Schur term cancels `Br₂₂`, leaving the telescope.
   rw [qResidMatGen, hQ21, hQ11, hQ12, hGeval, ← hschur, hTele, add_sub_cancel_left]
 
+/-! ## Rung H — the conditional `≥`-leg producer from the explicit `qResidGen` chart
+
+Given the explicit-chart data (`C₀`, `Br`, the bump-globalised inverse `G`, the corner facts,
+and the chart-transfer `hchart` in `qResidGen` terms), the general-`L` D1 `≥`-leg producer
+conclusion holds. The germ `hchart` is a HYPOTHESIS (the controller discharges it via geleg8's
+`schurReadoutF_gen` seam). Everything else — the slice value (G), the core-translation reindex `e`,
+the Gram unit `u ≡ 1`, and the a.e.-nonvanishing `hRne` — is reconstructed and fed to the banked
+consumer `d1ge_hAtV_of_explicit_chart_genL`. General-`L` port of `d1ge_L2_hAtV_explicit_close`. -/
+theorem d1ge_hAtV_of_qResid_chart_genL
+    (B : Matrix (Fin (H 0)) (Fin (H (Fin.last L))) ℝ) (v : Params H)
+    (hpos : ∀ s : Fin (L + 1), r < H s)
+    (C₀ : BlockParamsGen H r)
+    (Br : Matrix (Fin r ⊕ Fin (deepestChainWidth H 0 - r))
+      (Fin r ⊕ Fin (deepestChainWidth H (L - 1 + 1) - r)) ℝ)
+    (G : Matrix (Fin r) (Fin r) ℝ → Matrix (Fin r) (Fin r) ℝ) (hGcd : ContDiff ℝ 1 G)
+    (hGeval : G (Br.toBlocks₁₁) = (Br.toBlocks₁₁)⁻¹)
+    (h11 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ (L - 1)).toBlocks₁₁ = Br.toBlocks₁₁)
+    (h12 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ (L - 1)).toBlocks₁₂ = Br.toBlocks₁₂)
+    (h21 : (blockToChainGen H r (r_le_H_gen ι hι) ι hι C₀ 0).toBlocks₂₁ = Br.toBlocks₂₁)
+    (hschur : Br.toBlocks₂₂ = Br.toBlocks₂₁ * (Br.toBlocks₁₁)⁻¹ * Br.toBlocks₁₂)
+    (hchart : rlctAt H (dlnLoss H B) v
+        = rlctAtOn (fun p : (Fin (nRegGen H r) → ℝ)
+            × ((Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)) =>
+              (∑ i, p.1 i ^ 2) + (∑ i, qResidGen ι hι hL C₀ Br.toBlocks₂₂ G p i ^ 2))
+          ((0 : Fin (nRegGen H r) → ℝ),
+            (0 : (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ)))) :
+    ∃ P : Params (fun s => H s - r),
+      (nRegGen H r : ℝ≥0∞) / 2
+          + rlctAtOn (fun A : Params (fun s => H s - r) =>
+              dlnLoss (fun s => H s - r)
+                (0 : Matrix (Fin ((fun s => H s - r) 0))
+                  (Fin ((fun s => H s - r) (Fin.last L))) ℝ) A)
+              P
+        ≤ rlctAt H (dlnLoss H B) v := by
+  classical
+  set Y := (Fin (flatDim (fun s => H s - r)) → ℝ) × (Fin (specDimGen ι hι hL) → ℝ) with hY
+  have hMpos : ∀ s, 1 ≤ H s - r := fun s => Nat.sub_pos_of_lt (hpos s)
+  set qₑ := qResidGen ι hι hL C₀ Br.toBlocks₂₂ G with hqe
+  have hq : ContDiff ℝ 1 qₑ := contDiff_qResidGen ι hι hL C₀ Br.toBlocks₂₂ G hGcd
+  set eshift := paramsEquivFlat (fun s => H s - r) (coreShiftParamGen C₀) with heshift
+  set e : Y ≃ₜ Y :=
+    (Homeomorph.addRight eshift).prodCongr (Homeomorph.refl (Fin (specDimGen ι hι hL) → ℝ))
+      with he_def
+  have he_mp : MeasurePreserving e (volume : Measure Y) volume := by
+    rw [he_def]
+    exact (measurePreserving_add_right volume eshift).prod (MeasurePreserving.id volume)
+  have he_emb : MeasurableEmbedding e := e.measurableEmbedding
+  -- the `e`-connection: `psymm (e t).1 = coreParamsGen (split.symm) + coreShiftParamGen C₀`.
+  have hEconn : ∀ t : Y, (paramsEquivFlat (fun s => H s - r)).symm (e t).1
+      = coreParamsGen ι hι ((splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+          + coreShiftParamGen C₀ := by
+    intro t
+    have hround : splitMPGen ι hι hL
+        ((splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+        = ((0 : Fin (nRegGen H r) → ℝ), t) := by
+      have := (splitHomeoGen ι hι hL).apply_symm_apply ((0 : Fin (nRegGen H r) → ℝ), t)
+      rw [splitHomeoGen_apply] at this; exact this
+    have hcp : coreParamsGen ι hι
+        ((splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+        = (paramsEquivFlat (fun s => H s - r)).symm t.1 := by
+      rw [← paramsEquivFlat_symm_splitMPGen_core, hround]
+    rw [hcp]
+    have hlin : ∀ y : Fin (flatDim (fun s => H s - r)) → ℝ,
+        (paramsEquivFlat (fun s => H s - r)).symm y
+          = (paramsEquivFlatLinear (fun s => H s - r)).symm y :=
+      fun y => by rw [paramsEquivFlatLinear_symm_coe_gen]
+    change (paramsEquivFlat (fun s => H s - r)).symm (t.1 + eshift)
+        = (paramsEquivFlat (fun s => H s - r)).symm t.1 + coreShiftParamGen C₀
+    rw [hlin (t.1 + eshift), hlin t.1, map_add, heshift, ← paramsEquivFlatLinear_coe,
+      (paramsEquivFlatLinear (fun s => H s - r)).symm_apply_apply]
+  -- the slice value in `dlnLoss` form (feeds `hfact` and `hRne`).
+  have hslicez : ∀ t : Y, (∑ i, qₑ ((0 : Fin (nRegGen H r) → ℝ), t) i ^ 2)
+      = dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm (e t).1) := by
+    intro t
+    obtain ⟨last, rfl⟩ : ∃ last, L = last + 1 := ⟨L - 1, by omega⟩
+    rw [hqe, qResid_sq_sum_gen,
+      qResid_slice_value_gen ι hι hL C₀ Br G hGeval h11 h12 h21 hschur t, hEconn t, dlnLoss,
+      sum_sq_reindex_gen (prod (fun s => H s - r)
+          (coreParamsGen ι hι ((splitHomeoGen ι hι hL).symm ((0 : Fin (nRegGen H r) → ℝ), t))
+            + coreShiftParamGen C₀))
+        (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last (last + 1)))) ℝ)
+        (vertexInr ι hι 0 (Nat.zero_lt_succ (last + 1)))
+        (vertexInr ι hι (last + 1) (by omega))]
+    simp only [Matrix.reindex_apply, Matrix.submatrix_apply, Matrix.sub_apply, Matrix.zero_apply,
+      sub_zero]
+    rfl
+  -- assemble the consumer inputs.
+  refine d1ge_hAtV_of_explicit_chart_genL H r B v qₑ hq (0 : Y) ?_ ?_ e he_mp he_emb
+    (fun _ => 1) measurable_const 1 1 (by norm_num)
+    ⟨Set.univ, Filter.univ_mem, fun _ _ => by norm_num⟩ (fun t => by rw [hslicez t, one_mul])
+  · -- hchart (the interface hypothesis, in `qₑ` terms)
+    exact hchart
+  · -- hRne (the slice is a.e. nonvanishing)
+    refine ⟨Set.univ, Filter.univ_mem, ?_⟩
+    rw [Measure.restrict_univ]
+    have hcore : ∀ᵐ w ∂(volume : Measure (Fin (flatDim (fun s => H s - r)) → ℝ)),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm w) ≠ 0 := by
+      obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness (fun s => H s - r) hMpos
+      have hP_ne : corePoly (fun s => H s - r) ≠ 0 := by
+        intro hP0'; apply hA
+        have := eval_corePoly (fun s => H s - r) ((paramsEquivFlat (fun s => H s - r)) A)
+        rw [hP0'] at this; simpa using this.symm
+      have hae := MvPolynomial.ae_eval_ne_zero (corePoly (fun s => H s - r)) hP_ne
+      exact hae.mono fun z hz => by rw [← eval_corePoly (fun s => H s - r) z]; exact hz
+    have hprodY : ∀ᵐ w ∂(volume : Measure Y),
+        dlnLoss (fun s => H s - r)
+          (0 : Matrix (Fin ((fun s => H s - r) 0)) (Fin ((fun s => H s - r) (Fin.last L))) ℝ)
+          ((paramsEquivFlat (fun s => H s - r)).symm w.1) ≠ 0 :=
+      Measure.quasiMeasurePreserving_fst.ae hcore
+    have hae_z := he_mp.quasiMeasurePreserving.ae hprodY
+    exact hae_z.mono fun z hz => by rw [hslicez z]; exact hz
+
 end DLNFibre.DLN.RLCT
