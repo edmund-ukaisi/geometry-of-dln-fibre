@@ -1038,3 +1038,10 @@ import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
 -- (dcw↔H `vertexInr` reindexes). Discharges `hchart` for `d1ge_hAtV_of_qResid_chart_genL`; feeds the controller's
 -- final close. Direct port of L=2 `schurReadout_germ_eq`.
 import DLNFibre.DLN.RLCT.Validate.D1GeSeam
+-- `D1GeHAtVClose` — ≥-leg final-close PART A: `d1ge_hAtV_explicit_close_gen` — at an optimal `v`
+-- (`prod H v = B`, `B.rank = r`, `r < H`), produces the hAtV bound `∃ P, (nRegGen H r)/2 +
+-- rlctAtOn (dlnLoss (H−r) 0) P ≤ rlctAt H (dlnLoss H B) v`. Assembles the ≥-leg blocks: common pivot →
+-- germ (`schur_loss_germ_gen_at_pivot`) + `dln_hchart_flat` → seam (`schurReadout_germ_eq_gen`) → hchart
+-- → `d1ge_hAtV_of_qResid_chart_genL`. Direct port of L=2 `d1ge_L2_hAtV_explicit_close`. Feeds the
+-- controller's Part B (hDeepest + `d1ge_deepestPoint_via_explicit_core_genL_wired` → Skeleton:1177).
+import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose

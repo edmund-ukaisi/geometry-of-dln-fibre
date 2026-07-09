@@ -84,6 +84,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
 import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
 import DLNFibre.DLN.RLCT.Validate.D1GeSeam
+import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose
 
 /-!
 # Axiom-hygiene check
@@ -814,3 +815,7 @@ open DLNFibre.DLN.RLCT
 -- `schurReadoutF_gen` with gfgh's residual `qResidGen` (⁻¹↔G swap + dcw↔H reg-split reindex). Discharges the
 -- `hchart` hypothesis of `d1ge_hAtV_of_qResid_chart_genL`. Cite-NOTHING: `[propext, Classical.choice, Quot.sound]`.
 #print axioms schurReadout_germ_eq_gen
+-- ≥-leg final-close PART A (D1GeHAtVClose): `d1ge_hAtV_explicit_close_gen` — at optimal v, produces the
+-- hAtV bound `∃P, (nRegGen H r)/2 + rlctAtOn(dlnLoss(H−r)0)P ≤ rlctAt H (dlnLoss H B) v` (germ + seam +
+-- residual → d1ge_hAtV_of_qResid_chart_genL). Cite-NOTHING: `[propext, Classical.choice, Quot.sound]`.
+#print axioms d1ge_hAtV_explicit_close_gen
