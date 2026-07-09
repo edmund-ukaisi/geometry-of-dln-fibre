@@ -83,6 +83,7 @@ import DLNFibre.DLN.RLCT.Validate.D1GeChart
 import DLNFibre.DLN.RLCT.Validate.D1GeChartGlobal
 import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
+import DLNFibre.DLN.RLCT.Validate.D1GeSeam
 
 /-!
 # Axiom-hygiene check
@@ -809,3 +810,7 @@ open DLNFibre.DLN.RLCT
 #print axioms contDiff_qResidGen
 #print axioms qResid_slice_value_gen
 #print axioms d1ge_hAtV_of_qResid_chart_genL
+-- ≥-leg SEAM (D1GeSeam): `schurReadout_germ_eq_gen` — the germ identity reconciling geleg8's germ readout
+-- `schurReadoutF_gen` with gfgh's residual `qResidGen` (⁻¹↔G swap + dcw↔H reg-split reindex). Discharges the
+-- `hchart` hypothesis of `d1ge_hAtV_of_qResid_chart_genL`. Cite-NOTHING: `[propext, Classical.choice, Quot.sound]`.
+#print axioms schurReadout_germ_eq_gen

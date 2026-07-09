@@ -1032,3 +1032,9 @@ import DLNFibre.DLN.RLCT.Validate.D1GeGlobalize
 -- (takes `hchart` in `qResidGen` terms as a HYPOTHESIS → feeds `d1ge_hAtV_of_explicit_chart_genL`). The seam
 -- `schurReadout_germ_eq_gen` (discharging `hchart`) + the final close are the controller's remaining step.
 import DLNFibre.DLN.RLCT.Validate.D1GeSchurResidual
+-- `D1GeSeam` — ≥-leg SEAM: `schurReadout_germ_eq_gen`, the germ identity `schurReadoutF_gen … C₀ Br =ᶠ[𝓝 0]
+-- (∑ (splitMPGen x).1²) + ∑ (qResidGen C₀ Br.toBlocks₂₂ G (splitMPGen x))²` reconciling geleg8's germ readout
+-- (D1GeGlobalize) with gfgh's residual (D1GeSchurResidual) — the `⁻¹↔G` swap (near-definitional) + the reg-split
+-- (dcw↔H `vertexInr` reindexes). Discharges `hchart` for `d1ge_hAtV_of_qResid_chart_genL`; feeds the controller's
+-- final close. Direct port of L=2 `schurReadout_germ_eq`.
+import DLNFibre.DLN.RLCT.Validate.D1GeSeam
