@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
+import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCarrier` — the FRONT-PEEL carrier (wiring W1)
@@ -96,10 +97,10 @@ theorem shiftedThreshold (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤
 
 /-! ## The front-peel cover (PROVED — routine measure theory) -/
 
-/-- **The tail product has rank `≤ tailMin M`.** Each tail width `M j.succ = tailChain M j` bounds the
-rank of the product: `prodAux_split_exists` factors `prod (tailChain M) A'` through position `j`
-(`prod = prodAux j * Y`), so `rank ≤ rank(prodAux j) ≤` the column count `tailChain M j` (`rank_le_width`).
-Taking the inf over `j` gives `tailMin M`. -/
+/-- **The tail product has rank `≤ tailMin M`.** Each tail width `M j.succ = tailChain M j` bounds
+the product's rank: `prodAux_split_exists` factors `prod (tailChain M) A'` through position `j`
+(`prod = prodAux j * Y`), so `rank ≤ rank(prodAux j) ≤` the column count `tailChain M j`
+(`rank_le_width`). Taking the inf over `j` gives `tailMin M`. -/
 theorem prod_tailChain_rank_le_tailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (A' : Params (tailChain M)) :
     (prod (tailChain M) A').rank ≤ tailMin M := by
   rw [tailMin, Finset.le_inf'_iff]
@@ -115,9 +116,9 @@ theorem prod_tailChain_rank_le_tailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (A' : P
 /-- **The front-split box integral is covered by the finite tail-rank stratification (PROVED).** For
 every `c'`, `routeMLayerBoxIntegral M c' 1 ≤ ∑_{q=0}^{tailMin M} frontStratumIntegral M q c'`. The
 banked front-split `routeMLayerBoxIntegral_front_split` rewrites to the tail-outer front-factor
-integral; the outer tail box partitions as `⋃_{q ≤ tailMin M} {rank(prod (tailChain M) A') = q}` (the
-tail product has rank `≤ tailMin M` everywhere, `prod_tailChain_rank_le_tailMin`); `lintegral_iUnion_le`
-+ `tsum_fintype` collapse the finite union to the `Finset.range (tailMin M + 1)` sum. -/
+integral; the outer tail box partitions as `⋃_{q ≤ tailMin M} {rank(prod (tailChain M) A') = q}`
+(rank `≤ tailMin M` everywhere, `prod_tailChain_rank_le_tailMin`); `lintegral_iUnion_le` +
+`tsum_fintype` collapse the finite union to the `Finset.range (tailMin M + 1)` sum. -/
 theorem outerRankCover (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
     routeMLayerBoxIntegral M c' 1
       ≤ ∑ q ∈ Finset.range (tailMin M + 1), frontStratumIntegral M q c' := by
@@ -154,6 +155,42 @@ theorem outerRankCover (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
     _ = ∑ q ∈ Finset.range (tailMin M + 1), frontStratumIntegral M q c' :=
         Fin.sum_univ_eq_sum_range (fun q => frontStratumIntegral M q c') (tailMin M + 1)
 
+/-! ## The additive endpoint (PROVED — regime A exponent shift + IH) -/
+
+/-- **The additive Morse-block + core endpoint, regime A (PROVED).** A `(m+1)`-dim Morse block `P`
+summed with a nonneg core `W z ≥ 0` (`> 0` a.e.), integrated over a finite-volume outer domain `Z`,
+is finite ABOVE the block threshold `(m+1)/2` provided the core integral at the SHIFTED exponent
+`c' − (m+1)/2` is finite. Per-`z` the banked `radial_morse_residual_power_le` peels the Morse block
+(charge `(m+1)/2`), leaving `Cresid · (W z)^{−(c'−(m+1)/2)}`; `lintegral_mono_ae` (using the a.e.
+positivity `hWpos`) + `lintegral_const_mul'` pull out the finite constant, and `hcore` (the reduced
+core finiteness — the strong IH in the front-peel application) closes it. This is the "sum-not-min"
+additive composition: the block charge `(m+1)/2` and the core budget ADD, not min. The complementary
+regime `c' < (m+1)/2` is the banked `radial_morse_dominates_absZ_lt_top` (no core needed); the
+measure-zero boundary `c' = (m+1)/2` is out of scope of both. -/
+theorem morseCore_residual_lt_top {Ω : Type*} [MeasurableSpace Ω] (μ : Measure Ω) (m : ℕ)
+    (c' : ℝ) (hc' : (m + 1 : ℝ) / 2 < c') (T : ℝ) (hT : 0 < T)
+    (W : Ω → ℝ) (Z : Set Ω) (hWpos : ∀ᵐ z ∂μ.restrict Z, 0 < W z)
+    (hcore : ∫⁻ z in Z, ENNReal.ofReal ((W z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ < ⊤) :
+    ∫⁻ z in Z, (∫⁻ P in morseBox (m + 1) T,
+        ENNReal.ofReal ((∑ i, (P i) ^ 2 + W z) ^ (-c')) ∂volume) ∂μ < ⊤ := by
+  calc ∫⁻ z in Z, (∫⁻ P in morseBox (m + 1) T,
+          ENNReal.ofReal ((∑ i, (P i) ^ 2 + W z) ^ (-c')) ∂volume) ∂μ
+      ≤ ∫⁻ z in Z, ENNReal.ofReal (Cresid (m + 1) c') *
+          ENNReal.ofReal ((W z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ := by
+        apply lintegral_mono_ae
+        filter_upwards [hWpos] with z hz
+        calc (∫⁻ P in morseBox (m + 1) T,
+                ENNReal.ofReal ((∑ i, (P i) ^ 2 + W z) ^ (-c')) ∂volume)
+            ≤ ENNReal.ofReal (Cresid (m + 1) c' * (W z) ^ (-(c' - (m + 1 : ℝ) / 2))) :=
+              radial_morse_residual_power_le m c' hc' T hT (W z) hz
+          _ = ENNReal.ofReal (Cresid (m + 1) c') *
+                ENNReal.ofReal ((W z) ^ (-(c' - (m + 1 : ℝ) / 2))) :=
+              ENNReal.ofReal_mul (Cresid_nonneg _ _)
+    _ = ENNReal.ofReal (Cresid (m + 1) c') *
+          ∫⁻ z in Z, ENNReal.ofReal ((W z) ^ (-(c' - (m + 1 : ℝ) / 2))) ∂μ :=
+        lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
+    _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hcore
+
 /-! ## THE CRUX — the normal-slice transfer (named sorry, vslice-fed) -/
 
 /-- **THE NAMED CRUX — the front-peel step on one tail-rank stratum.** On the stratum `{rank P = q}`
@@ -161,21 +198,27 @@ theorem outerRankCover (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
 box-finiteness of the SHIFTED chain `(fun i => M i.succ − q)` (the strong induction hypothesis) and
 the threshold `c' < ½·minAdm M`.
 
-Proof route (the single genuine analytic risk; vslice `(3,3,3,4)`-fed, then opaque-width lifted):
-* **The `A₀ ↦ A₀·U` shift.** Write `P = U·V` on `{rank P = q}`; `frobSq(A₀·P) = frobSq((A₀·U)·V)`
-  and `A₀ ↦ A₀·U` surjects onto `M₀ × q` (kernel dim `M₀·(M₁−q)`), an isotropic `M₀·q` Morse block
-  plus a bounded kernel box. Regime B (`c' < M₀·q/2`): finite directly. Regime A (`c' > M₀·q/2`):
-  shift the exponent to `c' − M₀·q/2` on the deeper tail-rank locus (banked corank bricks
-  `matBox_corank_dominates_absZ_lt_top` / `matBox_corank_residual_absZ_le`, block dim `M₀·q`).
-* **The normal-slice iso (paper `addlongest`).** The tail-rank locus `{rank P ≤ q}` has the same
-  singularity type as `Σ⁰` of the shifted chain, transferring the residual to
-  `routeMLayerBoxIntegral (fun i => M i.succ − q) (c' − M₀·q/2) 1`. The "sum-not-min" corner
-  composition (CRUX B, banked radial/sum machinery — `sumSqND_box_lt_top`,
-  `radial_morse_residual_power_le`, `lintegral_eq_polar`; AVOID the product/min tools) plus
-  bounded-below cores (CRUX A, the endpoint `terminal_monomial_mul_unit_lintegral_lt_top` consumes
-  them as `hunit`) live here.
-* **Close by the IH.** `shiftedThreshold` gives `c' − M₀·q/2 < ½·minAdm (shifted)`, so `hIH` at the
-  shifted exponent (a `NNReal` in regime A; regime B is finite unconditionally) finishes. -/
+Proof route — the width-general threaded normal-slice CoV (vslice `normalslice-cert.md`, #109,
+Codex-decorrelated; decomposition validated in `codex/normalslice-decomp-answer.md`). The remaining
+work is the opaque-width CoV construction; the analytic endpoints are banked/proven:
+* **The threaded shear CoV (the two HARD opaque-width walls).** Block each tail factor
+  `X_i = [[A_i,B_i],[C_i,D_i]]` (`A_i` `q×q`); thread right-to-left (`K_L=0`, `α_i=A_i+B_i K_{i+1}`,
+  `K_i=γ_i α_i⁻¹`, `Y_i=D_i−γ_i α_i⁻¹ B_i`). The block-shear identity
+  `M_i·X_i·M_{i+1}⁻¹ = [[α_i,B_i],[0,Y_i]]` (unit-triangular `M_i`, det 1) telescopes to
+  `rank P = q + rank(Y₁···Y_{L-1})`, so `{rank P ≤ q} ⟺ {prod (redTail M q) = 0}` and the reduced
+  product is the `prod` of the reduced chain `redTail M q = fun i => M i.succ − q`. `L=2` is banked
+  (`frobSq_schur_block_split`); the opaque-width lift + the threaded shear's measure-preservation
+  (Jacobian `±1`, `α_i⁻¹` only as unit coefficients — det-inverse compass holds) are the new bricks.
+* **The additive endpoint (PROVED here + banked).** After the CoV the loss is `‖R‖² + ‖Z‖²`
+  (disjoint blocks: `R` the `M₀·q` Morse block from `A₀`, `Z = prod (redTail M q)` reduced core),
+  so the charges ADD ("sum-not-min"). Regime A (`c' > M₀q/2`): `morseCore_residual_lt_top` (above)
+  peels the Morse block to the reduced-core integral at exponent `c'−M₀q/2`, finite by `hIH`. Regime
+  B (`c' < M₀q/2`): banked `radial_morse_dominates_absZ_lt_top`. The `hWpos` a.e.-positivity is
+  CRUX A (nondegenerate reduced chain ⟹ `prod (redTail M q) ≠ 0` a.e.; `_ae_pos` template).
+* **Close by the IH.** `shiftedThreshold` (proven) gives `c' − M₀·q/2 < ½·minAdm (redTail M q)`, so
+  the `hIH` box at the shifted exponent (a `NNReal` in regime A) is finite; the finite pivot-chart
+  cover over `α_i`-invertibility charts (`pivotLocus_eq_iUnion` + `pivotChartCover_matBox_le_sum`)
+  assembles the strata. Boundary `c' = M₀q/2` is the one measure-zero edge (log endpoint). -/
 theorem normalSlice_transfer (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
     (hIH : RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q)) :
