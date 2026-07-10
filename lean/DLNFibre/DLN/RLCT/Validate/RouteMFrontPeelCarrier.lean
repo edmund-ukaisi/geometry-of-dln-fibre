@@ -1,5 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
+import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCarrier` — the FRONT-PEEL carrier (wiring W1)
@@ -93,19 +94,65 @@ theorem shiftedThreshold (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤
     exact_mod_cast h
   linarith
 
-/-! ## The front-peel cover (named sorry — routine measure theory) -/
+/-! ## The front-peel cover (PROVED — routine measure theory) -/
 
-/-- **The front-split box integral is covered by the finite tail-rank stratification.** For every
-`c'`, `routeMLayerBoxIntegral M c' 1 ≤ ∑_{q=0}^{tailMin M} frontStratumIntegral M q c'`. Route:
-rewrite via the banked `routeMLayerBoxIntegral_front_split` to the tail-outer front-factor integral;
-the outer tail box partitions as `⋃_{q ≤ tailMin M} {rank(prod (tailChain M) A') = q}` (the tail
-product has rank `≤ tailMin M` everywhere), a finite cover; subadditivity of the lintegral over the
-finite union collapses to the `Finset.range (tailMin M + 1)` sum. Pure measure theory (mirrors
-`pivotChartCover_lintegral_le_sum`). -/
+/-- **The tail product has rank `≤ tailMin M`.** Each tail width `M j.succ = tailChain M j` bounds the
+rank of the product: `prodAux_split_exists` factors `prod (tailChain M) A'` through position `j`
+(`prod = prodAux j * Y`), so `rank ≤ rank(prodAux j) ≤` the column count `tailChain M j` (`rank_le_width`).
+Taking the inf over `j` gives `tailMin M`. -/
+theorem prod_tailChain_rank_le_tailMin (M : Fin (L + 1 + 1 + 1) → ℕ) (A' : Params (tailChain M)) :
+    (prod (tailChain M) A').rank ≤ tailMin M := by
+  rw [tailMin, Finset.le_inf'_iff]
+  intro j _
+  obtain ⟨Y, hY⟩ := prodAux_split_exists (tailChain M) A' (j : ℕ) j.isLt (L + 1)
+    (Nat.lt_succ_iff.mp j.isLt) (Nat.lt_succ_self (L + 1))
+  calc (prod (tailChain M) A').rank
+      = (prodAux (tailChain M) A' (L + 1) (Nat.lt_succ_self (L + 1))).rank := rfl
+    _ = (prodAux (tailChain M) A' (j : ℕ) j.isLt * Y).rank := by rw [hY]
+    _ ≤ (prodAux (tailChain M) A' (j : ℕ) j.isLt).rank := Matrix.rank_mul_le_left _ _
+    _ ≤ M j.succ := Matrix.rank_le_width _
+
+/-- **The front-split box integral is covered by the finite tail-rank stratification (PROVED).** For
+every `c'`, `routeMLayerBoxIntegral M c' 1 ≤ ∑_{q=0}^{tailMin M} frontStratumIntegral M q c'`. The
+banked front-split `routeMLayerBoxIntegral_front_split` rewrites to the tail-outer front-factor
+integral; the outer tail box partitions as `⋃_{q ≤ tailMin M} {rank(prod (tailChain M) A') = q}` (the
+tail product has rank `≤ tailMin M` everywhere, `prod_tailChain_rank_le_tailMin`); `lintegral_iUnion_le`
++ `tsum_fintype` collapse the finite union to the `Finset.range (tailMin M + 1)` sum. -/
 theorem outerRankCover (M : Fin (L + 1 + 1 + 1) → ℕ) (c' : ℝ) :
     routeMLayerBoxIntegral M c' 1
       ≤ ∑ q ∈ Finset.range (tailMin M + 1), frontStratumIntegral M q c' := by
-  sorry
+  have hcov : paramsBoxM (tailChain M) 1
+      = ⋃ i : Fin (tailMin M + 1),
+          (paramsBoxM (tailChain M) 1 ∩
+            {A' : Params (tailChain M) | (prod (tailChain M) A').rank = (i : ℕ)}) := by
+    apply Set.ext
+    intro A'
+    simp only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq]
+    constructor
+    · intro hA'
+      exact ⟨⟨(prod (tailChain M) A').rank,
+          Nat.lt_succ_of_le (prod_tailChain_rank_le_tailMin M A')⟩, hA', rfl⟩
+    · rintro ⟨_, hA', _⟩; exact hA'
+  rw [routeMLayerBoxIntegral_front_split M c', hcov]
+  calc ∫⁻ A' in (⋃ i : Fin (tailMin M + 1),
+            (paramsBoxM (tailChain M) 1 ∩
+              {A' : Params (tailChain M) | (prod (tailChain M) A').rank = (i : ℕ)})),
+          ∫⁻ A0 in matBox (M 0) (M 1) 1,
+            ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c'))
+      ≤ ∑' i : Fin (tailMin M + 1),
+          ∫⁻ A' in (paramsBoxM (tailChain M) 1 ∩
+              {A' : Params (tailChain M) | (prod (tailChain M) A').rank = (i : ℕ)}),
+            ∫⁻ A0 in matBox (M 0) (M 1) 1,
+              ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c')) :=
+        lintegral_iUnion_le _ _
+    _ = ∑ i : Fin (tailMin M + 1),
+          ∫⁻ A' in (paramsBoxM (tailChain M) 1 ∩
+              {A' : Params (tailChain M) | (prod (tailChain M) A').rank = (i : ℕ)}),
+            ∫⁻ A0 in matBox (M 0) (M 1) 1,
+              ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c')) :=
+        tsum_fintype _
+    _ = ∑ q ∈ Finset.range (tailMin M + 1), frontStratumIntegral M q c' :=
+        Fin.sum_univ_eq_sum_range (fun q => frontStratumIntegral M q c') (tailMin M + 1)
 
 /-! ## THE CRUX — the normal-slice transfer (named sorry, vslice-fed) -/
 
