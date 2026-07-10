@@ -323,3 +323,90 @@ alt-route sorries (all off-path).
   (r1substratum §C, recommended, no Schur) vs native-Schur+corner-blowup (vslice codex, matches the
   charter's `diag(b)` language)** — both reach `½·minAdm`; the consume-sets differ (front-peel uses
   corank bricks + `minAdm_eq_frontPeel`; Schur uses `RouteMSJChartAlgebra` + `SphereBlowup`).
+  **[UPDATE 2026-07-10: controller decided FRONT-PEEL W1; `normalSlice_transfer` = the crux. The
+  addendum below applies to both routes — the "sum-not-min" composition IS `normalSlice_transfer`.]**
+
+---
+
+## ADDENDUM (controller sharpening) — vslice-cert pipeline: per-step banked status + the 2 cruxes
+
+The vslice cert (`threads/genm-vslice/cert.md` §7) names the exact pipeline. Per-step banked status,
+verified against the live tree. **Both the chosen front-peel W1 route and the Schur+corner route share
+the terminal accounting (sum-not-min composition, bounded-below cores, monomial endpoint)** — the
+`normalSlice_transfer` crux IS the "sum-not-min" corner composition below.
+
+| # | pipeline step | banked lemma + `file:line` | status |
+|---|---|---|---|
+| 1 | front-split (peel `A₀`) | `routeMLayerBoxIntegral_front_split` `RouteMSJResolution.lean:461` | **CLOSED** clean-three |
+| 2 | pivot-chart cover of `A₀` | `pivotChartCover_matBox_le_sum` `RouteMSJResolution.lean:552` (+ `sjBoundaryPeel:688`, `pivotLocus_eq_iUnion` `RouteMSJPivotChart:307`) | **CLOSED** |
+| 3 | Schur block split *(Schur route only)* | `frobSq_schur_block_split` `RouteMSJChartAlgebra.lean:107` (+ `_toBlocks:121`, `topRows_eq_mul_QtildeP:77`, `botRows_eq_cross:88`) | **BANKED EXACT** |
+| 3′ | shear `D↦Γ` (affine, Jac 1) | `measurePreserving_shearSub` `RouteMSJPivotChart.lean:337` | **BANKED MP** |
+| 3″ | shear `A₁↦U·A₁` (unipotent, Jac 1) | `measurePreserving_coreShear` `Foundations/CoreShearMP.lean`; unit-triangular c.o.v. `schur_cov` `RouteMSJPivotChart:100` | **BANKED MP** |
+| 4b | radial `Γ=u₀·Γ̂` factor (Jac `\|u₀\|³`) | factor `corankStep` `RouteMSJCorankStep.lean:88` (`frobSq((u•M)·Q)=u²·frobSq(M·Q)`, Z-agnostic); measure peel `radial_morse_residual_power_le` `RadialResidualPower.lean:157` (+ `integral_core_ball_le:137`, `Cresid`) | **BANKED** |
+| 4b | unit-clear `Γ̂→diag(1,δ)`, absorb `R` (det-1, Z-indep) | `corankStep_prefactor` `RouteMSJCorankStep:105` / `schur_cov`; **general-widths lift = NEW brick (§8)** | **PART-BANKED** |
+| 4c | radial `v=u₁·v̄` (Jac `\|u₁\|²`) | `corankStep` + `radial_morse_residual_power_le` | **BANKED** |
+| 5 | **CORNER blow-up `u₁=u₀τ`** (accumulate Jac `3+2+1=6`) = `normalSlice_transfer` | finiteness LEG banked (CRUX B); the toric-corner CoV composition is NEW | **PART-BANKED (crux)** |
+| 6 | monomial endpoint | `terminal_monomial_mul_unit_lintegral_lt_top` `RouteMSJTerminal.lean:160` (+ `monomialIntegrand_integrable_of_lt`, `Case222Cover`); base `sjBase1_freeMatrix:912` | **BANKED** |
+| — | accounting `4+3+0=7=minAdm` | `Mval_decompose`/`sjChargeUpdate_accum:353`, `sjChargeBudget_le:203`, `minAdm_eq_frontPeel` (`RouteMFrontPeelCharge:158`), `minAdmRec_eq_minAdm`, `foldFamily_iInf_eq_half_minAdm` (`RouteMState`), `Mval M (tStar M)=minAdm M` (`RouteMAchieverPath:96`) | **BANKED** |
+
+**⟹ Everything is a banked call EXCEPT the two intertwined new pieces below.**
+
+### CRUX A — the relative corank-step invariant / bounded-below cores (vslice §8; = codim=7 ⟺ cores ≥ a>0)
+
+The controller's "codim=7 ⟺ cores bounded-below uniformly" brick **decomposes** — half banked, half the gap:
+
+- **codim=7 side: BANKED.** `minAdm(3,3,3,4)=7` (`by decide`; `minAdm_eq_frontPeel`/`minAdmRec_eq_minAdm`);
+  min over branches = minAdm (`sjChargeBudget_le`, `foldFamily_iInf_eq_half_minAdm`); sharing does NOT
+  collapse codim — term-by-term = paper Voight/Ext orbit codim (r1substratum, exact + decorrelated).
+  **The Core (C,θ) codim engine** (`Core.CTheta` `cCodim`/`codimForm`/`codimBil`, lean/CLAUDE.md θ findings)
+  is the QUIVER side and is **NOT wired to the RLCT-side `minAdm`/`Mval`** — the front-peel/vslice codim uses
+  `minAdm` directly. codim=7 is banked via `minAdm`, not via `cCodim`; don't reach for the (C,θ) engine here.
+- **bounded-below side: the GAP — but its Lean SHAPE is already the endpoint's hypothesis, and the supply
+  technique is banked.** `terminal_monomial_mul_unit_lintegral_lt_top` (`RouteMSJTerminal:160`) **takes
+  exactly the §8 bound as `hunit`:** `∀ᵐ u ∂(vol.restrict (unitBox d)), a ≤ |unit u| ∧ |unit u| ≤ b`,
+  `0<a`. So the endpoint CONSUMES "cores bounded below by `a>0` a.e."; the carrier must SUPPLY it for the
+  resolved cores `U₀=‖w₁A₂‖²+δ²‖w₂A₂‖²`, `U₁=a²‖v̄A₂‖²`. **Banked supply-technique** (nonzero-poly witness
+  ⟹ `0<U` a.e.): `Uval4422_ae_pos` (`RouteM4422:240`), `eDeepRank0Unit_ae_pos`
+  (`RouteMInteriorDeepRank0AePos`), `achieverUfun_ae_pos` (`RouteMAchieverVvalPoly:385`, via
+  `UPolyGen_ne_zero_of_witness`), `cleanUfun_ae_pos` (`RouteMBoundaryCleanU:328`) — all clean-three,
+  "genuine-polynomial ⟹ >0 a.e." **Residual gap:** `_ae_pos` gives `0<U` a.e.; `hunit` wants a UNIFORM
+  `a≤|U|` on the compact box. Bridge = continuity+compactness (positive min) OR route the `A₂`-rank-drop
+  locus (where `U→0`) as a separate higher-`Mval` branch (recursion; vslice §5 caveat). The
+  radial-factoring + prefactor-preservation half is banked (`RouteMSJCorankStep`, "the chart-lemma probe's
+  single-radial factoring and prefactor preservation"). **UN-banked residue** = (i) general-widths unit-clear
+  (`Case111`/`Case222` lift to opaque widths), (ii) the uniform bounded-below supply. **Bounded chart algebra
+  on a proven template, NOT a wall** (chart-lemma-probe, outer-construction-cert DATA `0/171`, RRR-(3,3,4)).
+
+### CRUX B — the SUM (not product) corner model: additive-block finiteness is BANKED
+
+Local model `G ≃ u₀²U₀ + u₁²U₁` (a **SUM** of two order-2 radial terms), NOT a product `(u₀u₁)²` (product
+toy → wrong `7/4`; sum is truth, Codex-corrected, vslice §5). **Banked SUM / additive-block finiteness
+(reuse these, NOT the product/min tools):**
+- `sumSqND_box_lt_top` `Foundations/S1RadialMorse.lean:67` — `∫_{[−T,T]^{m+1}} (∑ᵢxᵢ²)^{−c'}<⊤`,
+  `c'<(m+1)/2` (pure sum-of-squares Morse; API-pinned `RouteMSJResolution:975`, wrapper
+  `morseBox_sumSq_lt_top:900`).
+- `radial_morse_dominates_lt_top` `S1RadialMorse.lean:127` — `(∑xᵢ²+W(z))^{−c'}`, nonneg core `W` (the
+  additive-core version, Tonelli + monotone domination).
+- `radial_morse_residual_power_le` `RadialResidualPower.lean:157` — exponent-shift residual `c'↦c'−½(m+1)`
+  at the accumulated block dim: **after `u₁=u₀τ` the model is `u₀^{6}·(U₀+τ²U₁)`, a radial Morse residual at
+  effective dim `7`, threshold `7/2` — this lemma is the corner blow-up's finiteness endpoint.**
+- `lintegral_eq_polar`/`lintegral_eq_sphereProd` `RouteMSJSphereBlowup.lean:82/47` — polar/spherical blow-up
+  realising the corner CoV (`u₀²+u₁²=r²`). (This is `decorated_peel_step` item-1, landed UPDATE-708.)
+- additive `frobSq` splits: `frobSq_col_split` `RouteMSJStep3:69`, `frobSq_row_split`
+  `RouteMSJChartAlgebra:45`, `frobSq_blockDiag_split` `RouteMSJStep3:164`.
+
+**AVOID the product/min tools here:** `fibre_lintegral_mul_le` (exponent-preserving) + `product_min_rlct`
+give the boundary-wise **min** (`min(4/2,3/2)=3/2`, the undershoot); the corner is where codims ADD. The
+**only new work in CRUX B** = the toric-corner CoV chart (`u₁=u₀τ`, accumulate `3+2+1=6`); its finiteness
+endpoint is the banked radial/sum machinery above. `vslice_corner.py` is the exact target
+(`∫ u₀^{Mval−1−2c'}du₀ < ⊤ ⇔ c' < ½·Mval`).
+
+### Net for the build spec
+- **Un-banked = ONE composite brick** = {general-widths unit-clear (Case111/222 lift) + uniform
+  bounded-below supply for the resolved cores + the toric-corner/`normalSlice_transfer` CoV composition}.
+  Everything else in the §7 pipeline is a banked call; the endpoint
+  `terminal_monomial_mul_unit_lintegral_lt_top` is pre-shaped to consume the bounded-below cores as `hunit`.
+- **Order:** build the corner-blow-up (`normalSlice_transfer`) finiteness (CRUX B, mostly banked reuse via
+  `radial_morse_residual_power_le` + `lintegral_eq_polar`) on the `(3,3,3,4)` binding chart; then the
+  bounded-below supply (CRUX A) via the nonzero-poly `_ae_pos` template + compactness; then lift to opaque
+  widths. Single-writer on the carrier file; ≤2 heavy tides.
