@@ -104,7 +104,7 @@ theorem sjSlice_corner_two_block_lt_top (h0 h1 : ℕ)
   have he : ∀ j, (-1 : ℝ) < e j := by
     rw [Fin.forall_fin_two, he_def]
     refine ⟨?_, ?_⟩ <;>
-      simp only [Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons] <;>
+      simp only [Matrix.cons_val_zero, Matrix.cons_val_one] <;>
       linarith [hw0lt, hw1lt]
   -- the dominating separated-monomial integral is finite on the open box
   have hfin : ∫⁻ u in Set.univ.pi (fun _ : Fin 2 => Set.Ioo (0 : ℝ) 1),
@@ -130,7 +130,7 @@ theorem sjSlice_corner_two_block_lt_top (h0 h1 : ℕ)
     rw [← ENNReal.ofReal_mul (by positivity : (0 : ℝ) ≤ a ^ (-cc))]
     apply ENNReal.ofReal_le_ofReal
     rw [Fin.prod_univ_two]
-    simp only [he_def, Matrix.cons_val_zero, Matrix.cons_val_one, Matrix.head_cons]
+    simp only [he_def, Matrix.cons_val_zero, Matrix.cons_val_one]
     -- work with `X = |u 0|`, `Y = |u 1|` (both positive); `u 0 ^ 2 = X ^ 2`, etc.
     set X : ℝ := |u 0| with hX_def
     set Y : ℝ := |u 1| with hY_def
