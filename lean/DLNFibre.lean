@@ -1154,3 +1154,15 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactor
 -- `U↦v=U+P⁻¹B₁₂W` is a measure-preserving translation (`measurePreserving_add_right`), `assembleFront` the
 -- reconstruction by defeq. The shifted `v`-box then feeds the BALL endpoint. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotTranslate
+-- `RouteMSJTailSplit` — Stage-2 (S,J) CoV transport step (a): the A'0-vs-deeper Pi-split (thread
+-- `genm-covmount`). `eFrontTail` (Params(tailChain M) ≃ᵐ (A'0 layer)×(deeper layers) via piFinSuccAbove,
+-- MP) + `tailParams_pi_split` (∫_{A'∈paramsBoxM} f = ∫_{(A'0,deeper)∈matBox ×ˢ deeperBox} f(eFrontTail.symm)).
+-- Separates the A'0 layer so the pivot-rows→v translation integrates with the deep factor held constant
+-- (via sjDeepFactor_update_zero). Mirrors the banked eFront. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTailSplit
+-- `RouteMSJDeepFactorCore` — Stage-2 (S,J) CoV transport step (a) bridge (thread `genm-covmount`).
+-- `sjDeepFactorCore M rest` + `sjDeepFactor_eFrontTail_symm` (`sjDeepFactor M (eFrontTail.symm (U,rest))
+-- = sjDeepFactorCore M rest` for ANY `U`) — the A'0-independence of the deep factor in the SPLIT form,
+-- so after `tailParams_pi_split` the `A'0`-integral runs with the deep factor held constant. Completes
+-- transport step (a). clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore

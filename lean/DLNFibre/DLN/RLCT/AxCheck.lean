@@ -101,6 +101,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereLB
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactor
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotTranslate
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTailSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
 
 /-!
 # Axiom-hygiene check
@@ -931,3 +933,9 @@ open DLNFibre.DLN.RLCT
 -- `sjGoodChartLoss_pivotRows_translate_eq` (∫ over the pivot-rows box = ∫ over the shifted v-box, via the
 -- measure-preserving translation U↦v=U+P⁻¹B₁₂W + assembleFront reconstruction).
 #print axioms sjGoodChartLoss_pivotRows_translate_eq
+-- CoV transport step (a): the A'0-vs-deeper Pi-split (RouteMSJTailSplit, genm-covmount):
+-- `tailParams_pi_split` (∫ over paramsBoxM = ∫ over matBox(A'0) ×ˢ deeperBox via the MP eFrontTail).
+#print axioms tailParams_pi_split
+-- CoV transport step (a) bridge (RouteMSJDeepFactorCore, genm-covmount): `sjDeepFactor_eFrontTail_symm`
+-- (the deep factor is A'0-independent in the split form — held constant during the A'0-integral).
+#print axioms sjDeepFactor_eFrontTail_symm

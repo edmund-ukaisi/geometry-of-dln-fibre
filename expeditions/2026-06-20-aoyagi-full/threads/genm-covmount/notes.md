@@ -113,15 +113,18 @@ cleared (checkpoint 6). This is HEAVY interlocking infrastructure:
 - `eFrontTail` (Params (tailChain M) ≃ᵐ (A'0 layer)×(deeper), `piFinSuccAbove 0`), MP, apply,
   `eFrontTail_preimage_box`, `tailParams_pi_split`. The `A'0`-vs-deeper Pi-split. Mirrors banked `eFront`.
 
-1. **measure transport (the hard core), remaining sub-steps:** (a) DONE = `tailParams_pi_split` (ck8).
-   IMMEDIATE NEXT: the `sjDeepFactorCore` bridge — `sjDeepFactor M (eFrontTail.symm (U,rest))` is
-   independent of U (Codex §2). Route: `(eFrontTail).symm (U,rest) = update ((eFrontTail).symm (U',rest))
-   0 U` (needs `piFinSuccAbove.symm`/`insertNth 0`/`Fin.cons` apply lemmas at 0) + `sjDeepFactor_update_zero`
-   (ck6). Fiddly, NOT a missing API — deferred, not walled. (b) the `A'0` row-reindex (`blockSplitEquiv κ`,
-   MP — template `matReindexEquiv`, RouteMSJBlockReindex) + row-split into κ-pivot-rows × corank-rows(=W)
-   via `sumPiEquivProdPi` (`splitCols` template) so the leading-layer box becomes `matBox(pivot) ×ˢ
-   matBox(W)`; (c) DONE = `sjGoodChartLoss_pivotRows_translate_eq` (ck7). Then good-cover inverses → ball
-   endpoint.
+## Checkpoint 9 (DONE) — `RouteMSJDeepFactorCore.lean` (transport step a bridge)
+- `sjDeepFactorCore M rest` + `sjDeepFactor_eFrontTail_symm`: `sjDeepFactor M (eFrontTail.symm (U,rest))
+  = sjDeepFactorCore M rest` for ANY U (A'0-independence in the split form; extracts deeper layers=rest
+  via `eFrontTail.apply_symm_apply` + `Prod.snd`, `Atail` reads only those).
+
+1. **measure transport, remaining:** (a) DONE = `tailParams_pi_split` (ck8) + `sjDeepFactor_eFrontTail_symm`
+   (ck9). (c) DONE = `sjGoodChartLoss_pivotRows_translate_eq` (ck7). REMAINING (b): the `A'0` row-reindex
+   (`blockSplitEquiv κ`, MP — template `matReindexEquiv`, RouteMSJBlockReindex) + row-split into
+   κ-pivot-rows × corank-rows(=W) via `sumPiEquivProdPi` (`splitCols` template) so the leading-layer box
+   becomes `matBox(pivot) ×ˢ matBox(W)`. Then COMPOSE (a)+(b)+(c): ck8 splits off A'0, ck9 holds
+   sjDeepFactor = sjDeepFactorCore(rest), (b) splits A'0's rows, ck7 translates the pivot rows exposing v,
+   corank rows = W; supply good-cover inverses (P left-inv, W/A₂ right-inv) to the endpoint.
 2. **env integration** — `∫_{env∈EnvBox∩Good δ} inner ≤ BallBound δ · vol(EnvBox∩Good δ) < ⊤`; inner ≤
    a₀^{-c'}·cornerRadialConst (ck3+5) on good env. Needs the shifted (Γ,v)-box ⊆ fixed ball domination
    (Codex §3, cert §1c) to use the BALL endpoint (ck3/5) — the CUBE endpoint (ck4) is NOT enough (domain
