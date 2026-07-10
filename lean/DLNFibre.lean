@@ -1184,3 +1184,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
 -- `gammaPeelIntegral_lt_top_of_decoratedPeel` (discharges 803's goal, obsolete). SOLE remaining gap =
 -- `DecoratedPeelStep` (T2 rowMix hsh + T3 radial + T4 block-split). clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
+-- `RouteMSJDecoratedRadialFin` — Stage-2 decorated peel tile T3 (thread `genm-decbuild`): the radial
+-- peel preserves box-finiteness. `radialAttach_integral_lt_top` (parent decoration finite + `c'<(j₀+1)/2`
+-- ⟹ `(D.radialAttach j₀).integral c' < ⊤`, via banked `radialAttach_integral` factoring +
+-- `radialAttachFactor_lt_top`). A building block of `DecoratedPeelStep`'s proof (the radial (b) half);
+-- the remaining gap is the outer-descent CoV-Jacobian (peelcert pen-and-paper). clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin

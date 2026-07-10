@@ -106,6 +106,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
 
 /-!
 # Axiom-hygiene check
@@ -955,3 +956,6 @@ open DLNFibre.DLN.RLCT
 -- the sole remaining analytic gap is proving DecoratedPeelStep (T2/T3/T4).
 #print axioms routeMBoxThresholdFinite_of_decoratedPeel
 #print axioms gammaPeelIntegral_lt_top_of_decoratedPeel
+-- Decorated peel tile T3 (RouteMSJDecoratedRadialFin, genm-decbuild): the radial peel preserves
+-- box-finiteness. `radialAttach_integral_lt_top` (parent finite + c'<(j₀+1)/2 ⟹ attached finite).
+#print axioms radialAttach_integral_lt_top
