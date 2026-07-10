@@ -430,3 +430,33 @@ Codex `codex/piece8-prereq-answer.md`):
 **NEXT:** build the minimal prerequisite `posDef_gram_of_rank_full` (Cauchy-Binet-free), then piece 8
 (the single-det stratification + route {det>0}→Regime A). FINDING-1 reminder: the product-rank
 stratification of `Q_b(A')=W·Ad` (not a free matrix) is the genuine new structural content.
+
+---
+
+## PIECE-8 PREREQUISITE LANDED — posDef_gram_of_rank_full (Cauchy-Binet-FREE)
+
+Module `RouteMSJDecoratedPeelGram.lean`. Sorry-free, forced-#print-axioms clean-three:
+`posDef_gram_of_rank_full (Qb : Matrix (Fin b)(Fin q) ℝ) (hrank : Qb.rank = b) : (Qb * Qbᵀ).PosDef`.
+Proof (no Cauchy-Binet): Hermitian entrywise (real symmetric, mul_comm); quadratic form
+`x ⬝ᵥ (Qb Qbᵀ *ᵥ x) = ‖Qbᵀ x‖²` (via `← mulVec_mulVec, dotProduct_mulVec, ← mulVec_transpose`); `Qbᵀ`
+injective from full column rank (`rank_transpose` + rank-nullity `finrank_range_add_finrank_ker` +
+`Submodule.finrank_eq_zero`); strict positivity via `dotProduct_self_eq_zero` + `Finset.sum_nonneg`.
+This feeds Regime A's `(Q_b Q_bᵀ).PosDef` hypothesis on the good stratum {rank Q_b = b}. (Note:
+`posSemidef_self_mul_conjTranspose` needs `StarOrderedRing ℝ` — NOT in the PosDef/Rank import closure;
+proved IsHermitian entrywise instead to avoid the missing instance.)
+
+## PIECE-8 REMAINING (the stratification — the genuine new structural content, FINDING 1)
+
+Stratify the gammaPeelIntegral / freed-form A'-domain by the SINGLE determinant `det(Q_b Q_bᵀ)` where
+Q_b = Q̃.submatrix Sum.inr id (corank rows of the tail product prod(tailChain) A', = W·Ad in the piSplit
+frame — a PRODUCT of A', not a free matrix):
+- measurability of `{A' | 0 < det(Q_b(A') Q_b(A')ᵀ)}` (det of a product = polynomial in A', continuous).
+- `lintegral` additive split: `∫_{A'} = ∫_{det>0} + ∫_{det=0}`.
+- {det>0} = {rank Q_b = b}: Regime A applies (posDef_gram_of_rank_full → hG; + c'>ab/2 via binding-cut
+  exact minAdm=peelCharge+minAdm(redChain); + core positivity {B₀≠0}) → shift c''=c'−ab/2 → reduced =
+  prod(redChain) via absorption CoV (steps 1-6) → one-shorter IH.
+- {det=0} = {rank Q_b < b}: route to corner leaf {rank=b−1} + DeeperStrataResolution {rank≤b−2}
+  (cornrev-gated; do NOT special-case {B₀=0} in Regime A — route to the corner).
+CAVEAT (wtint adjudicating in parallel): the outer det(Q_bQ_bᵀ)^{−a/2} integration MIGHT need
+det≥minor² (Cauchy-Binet ≥-corollary) — flag the moment it's invoked; else absorbed by absorption-CoV +
+reduced IH. Substantial measure+product-algebra build — the next focused chunk.
