@@ -2738,3 +2738,11 @@ Operator returned + decided (all three surfaced items RESOLVED):
   (`geometry-of-dln-fibre`) on `expedition/aoyagi-full`, clean; stays there.
 - **Operator instruction:** committing this as Stage-2-launch prep, then **WAIT for the operator's GO**
   before charging the first Stage-2 build.
+
+## 91. ✅ Case-2 FRAMING REVERSAL — it never binds `(□)`; corrects the charter's typo read (a positive de-risk). (2026-07-10)
+Your Stage-2 charter's Case-2 section had us "build the prefix-min form; the printed paper has a typo; the corrected prefix-min form is the honest one." `vslice` + Codex xhigh PROVED that framing is off — in our favour:
+- **Case-2 NEVER binds `(□)`.** `minAdm(M) ≤ M(S)·M^{(S+1)} ≤ M^{(S)}·M^{(S+1)}` ∀S (0/35424 counterexamples, widths ≤6). Both the printed (actual-width) and prefix-min exponents are `≥ minAdm`, so neither is "wrong" for finiteness; Case-2 is subsumed by the `minAdm` accounting. **Coarse suffices — no sharp Case-2 machinery for `(□)`.**
+- The `(n_S−μ_S)(n_{S+1}−J)` discrepancy the pitfall note flagged is a HARMLESS overcount, not a bug.
+- **The REAL prior error** (now proven, matches lessons.md) was a DIFFERENT mixed form: prefix-min COLUMNS in `Mval` + actual-width PIVOT → NEGATIVE exponents (`(2,5,4,7)@S=3 → −2`) — the `+8.7K`-line treadmill. Flagged DO-NOT-REPRODUCE.
+- **θ caveat:** the sharp Case-2 form WOULD be load-bearing for the θ/multiplicity (tie-counting) side — but θ is the secondary deferred seam and `(□)`/`λ` doesn't need it.
+**Impact:** the width-general grind loses a whole branch (a real simplification). Fidelity card `cards/case2-fidelity.md`; relayed to `fpcarrier`. No action needed from you — flagging because it reverses a charter assumption you specifically called out.
