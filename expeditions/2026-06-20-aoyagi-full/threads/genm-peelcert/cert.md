@@ -361,3 +361,123 @@ non-binding guarantee (trivially, `minAdm=min_t value(t)`); the exact per-level 
   the `minAdm(a,1,D)=min(a,D)` leaf. (2) The bounded-box `Γ_∥`-Morse + bilinear-`(a,1,D)` corner module,
   front-load `(2,3,2)` (`b=2`, category II). (3) A reviewer on the general-`M` recursive corner (past
   3-width) — the one piece verified only via the trivial `min` linchpin, not a full exponent count.
+
+> ⚠️ **The reliance on `minAdm(M) ≤ corner-codim` as a CLOSURE argument is CORRECTED in
+> §DEEPER-STRATA below.** `cornrev` (`threads/genm-cornrev/review.md`) is right: that inequality is a
+> `min ≤ element` TAUTOLOGY, and a codim bound does NOT give RLCT `= ½·codim` (`x⁴+y⁶`: codim 2, RLCT
+> `5/12`). What §B=2 COVER actually closes is `b=1` + the TOP stratum `{rank Q_b=b−1}` (drop-by-one, any
+> width, the `(a,1,D)` bilinear leaf). The DEEPER strata `{rank Q_b≤b−2}` (`b≥2`) need a genuine
+> resolution — supplied below.
+
+---
+
+# §DEEPER-STRATA RESOLUTION (follow-up 2, controller task — the `{rank Q_b≤b−2}` gap `cornrev` found)
+
+**Charge:** resolve the deeper corank strata `{rank Q_b ≤ b−2}` (`b≥2`) — a determinantal variety of the
+PRODUCT `Q_b = Y·A_{≥2}` — with an actual nested blow-up establishing RLCT `= ½·codim` (normal-crossing)
+up to `c<½·minAdm(M)`, PLUS a well-founded descent monovariant. NOT a codim bound. **Exact algebra:**
+`/tmp/deepstrat_explore.py`, `/tmp/deepstrat_rlct.py`. **Decorrelated:** `codex/deepstrat-{prompt,answer}.md`
+(gpt-5.x, xhigh; BOTH conclusions withheld, linchpin framing NOT re-encoded — it independently produced
+the explicit blow-up, the RLCT arithmetic, and the descent-index verdict).
+
+## VERDICT: the deeper strata CLOSE by an explicit resolution — NOT a wall, NOT the linchpin
+
+For the smallest genuine cases the deepest corner `{Q_b=0}` has local RLCT **`= ½·minAdm(M) = ½·codim`**
+(normal-crossing), established by an EXPLICIT nested blow-up (not a codim inequality). The `cornrev` gap is
+real and now filled for the base case; the general case is Aoyagi's product-rank-flag machinery (a
+construction, decorrelated-confirmed, not a wall). The `x⁴+y⁶` trap is avoided because we resolve and read
+exponents, never infer finiteness from a codim `≤`.
+
+## The exact corner reformulation (global identity, residual-0)
+
+For `M=(2,3,3,2)`, `t=1` (`a=1,b=2,q=2`): with `R_pivot = P·(pivot rows of A₁) + B₁₂·Y` (`t×M₂`), `Y` the
+corank rows of `A₁` (`b×M₂`), `A₂` the deeper tail,
+
+> `freed = frobSq(W̃ · A₂)`,   `W̃ = [ R_pivot ; C′·R_pivot + Γ·Y ]`   (`(t+a)×M₂`),   EXACT (residual-0).
+
+So the corner loss IS the loss of the **`M₁`-removed chain** `(M₀, M₂, …, M_L)` (here `(2,3,2)`),
+**twisted** by the `Γ·Y` sub-product parametrization (itself the `(a,b,M₂)` product). The twist is NOT
+benign: it brings the RLCT down from `½·minAdm(M₀,M₂,…)` to the global `½·minAdm(M)`
+(`minAdm(remove-M₁) ≥ minAdm(M)`, `0/3875`, but the corner RLCT tracks `minAdm(M)`, verified below — do
+NOT read the `≥` as the answer, that is the linchpin trap again).
+
+## The explicit resolution of the deepest corner (Codex Q1, independently hand-verified)
+
+Reduce (bounded units, triangular clears absorbing `C′`) to `f ~ ‖x·A‖² + ‖(γ·Y)·A‖²` (`x`=top row,
+`A`=shared tail). Binding chart = the rank-one chart of `A`: `A ~ diag(1,z)`, `Y=(y,u)`, `γ≠0`, `p=γ·y`,
+`v=γ·u`:
+
+> `f ~ x₁² + p² + z²(x₂² + v²)`.
+
+Blow up the codim-3 center `(x₁,p,z)=0`; the `z`-chart `x₁=zX, p=zP` gives `f = z²(X²+P²+x₂²+v²)`,
+Jacobian order `k=2`, loss order `N=2`, RLCT candidate `(k+1)/N = 3/2`. **EXACT hand-integration
+confirms** (`/tmp/deepstrat_rlct.py`): `∫_{x₁,p}(A+·)^{−s} ~ A^{1−s}` (`s>1`), then `∫_z z^{2(1−s)}dz`
+binds at **`s<3/2`** (the `∫_{x₂,v}(x₂²+v²)^{1−s}` only needs `s<2`). So
+
+> `RLCT_corner = 3/2 = ½·codim{Y·A=0} = ½·3 = ½·minAdm(2,3,2,2)` — **EQUALS, does not fall below.**
+
+Other charts (rank-2, rank-0, `γ=0`) all give candidate `≥ 3/2` (Codex Q1, worked). MC of the reduced
+model destabilizes exactly at `s=3/2`, and the FULL `(2,3,3,2)` corner `{‖Q_b‖<0.2}` destabilizes exactly
+at `s=2 = ½·minAdm(2,3,3,2)` (`/tmp/deepstrat_rlct.py` (C)) — the corner is integrable for all
+`c<½·minAdm(M)`, binding AT (never below) the global threshold. (Consistent with RLCT being a min over the
+variety — but established constructively, not by citing the global value.)
+
+## The descent monovariant (Codex Q2, decorrelated — resolves `cornrev` §4)
+
+`cornrev` is right that **factor rank fails** (`Y`, `A₂` both full rank yet `Q_b=Y·A₂` drops — an
+interaction), and that raw product-rank blow-up is **not a smooth-center resolution**: `{Y·A=0}` has
+singular incidence pieces `{A=0}`, `{Y=0}`, `{rank A=rank Y=1, im A ⊆ ker Y}`. The correct monovariant:
+
+> **the PRODUCT rank of the unresolved tail block, strictly decreasing — well-founded AFTER replacing the
+> raw rank strata by their RESOLVED incidence transforms.** On each chart of the incidence-resolved
+> blow-up, the nonzero-product-rank block SPLITS OFF and the remaining corank tail has strictly smaller
+> product rank (Codex Q2). The index `r = rank(unresolved Q_b) ∈ {b, b−1, …, 0}` is bounded and strictly
+> decreases ⟹ well-founded.
+
+So the corner recursion IS the rank-flag resolution: resolve `{rank≤b−1}` (top, `(a,1,D)` leaf, banked),
+then on its exceptional charts resolve `{rank≤b−2}`, …, down to `{rank=0}` (the `M₁`-removed leaf). This
+is standard determinantal resolution (Room–Kempf–Weyman) ADAPTED to the product `Y·A_{≥2}` (the incidence
+centers are the adaptation). Product rank alone is NOT local coordinate data (cornrev/Codex agree); it IS
+the well-founded induction index on the resolved charts.
+
+## Scope / what remains (Codex Q3 — the honest boundary)
+
+- **CLOSED, exact + decorrelated:** `b=1` (any width); the top stratum `{rank=b−1}` (any width, the
+  `(a,1,D)` leaf); the deepest `{Q_b=0}` for `b=2` small cases `(2,3,2,2)`, `(2,3,3,2)` (explicit blow-up,
+  RLCT `= ½·minAdm = ½·codim`). The `2×2` deepest corner needs only elementary rank-1/rank-0 blow-ups.
+- **The genuinely-new general content (NOT a wall, a construction):** higher width / longer products need
+  **Aoyagi's product-rank-flag machinery** — resolved incidence centers, chartwise block splitting,
+  Jacobian bookkeeping, and the induction proving the remaining tail has strictly smaller product rank
+  (Codex Q3). This is the `~65-75%`-new Aoyagi §5 heart; the small-case resolution above is its base/template.
+- **NOT closed by, and must not be argued from:** the `minAdm(M) ≤ corner-codim` linchpin (tautology) or
+  `minAdm(remove-M₁) ≥ minAdm(M)` (`0/3875` but a codim `≥`, not an RLCT) — both are threshold accounting.
+  The RLCT `= ½·codim` is supplied ONLY by the explicit resolution reading exponents.
+
+## Updated Lean wiring (corrects §B=2 COVER items 9–10)
+
+- **9 (corrected).** Top stratum `{rank Q_b=b−1}`: bounded-box `Γ_∥` Morse (`a(b−1)`) + the `(a,1,D)`
+  bilinear leaf — CLOSES at any width (the drop-by-one case is unaffected by the product structure).
+- **9′ (new — the deeper strata `{rank Q_b≤b−2}`, `b≥2`).** The product-rank-flag resolution: nested
+  blow-up along `rank(Q_b) = b−1, b−2, …, 0` with incidence-center resolution; per-divisor Jacobian/loss
+  order reading RLCT `= ½·codim`; descent on the unresolved-tail product rank. Base template = the
+  `(2,3,2,2)` blow-up (`f ~ x₁²+p²+z²(x₂²+v²)`, RLCT `3/2`). General = Aoyagi §5 product-rank-flag import.
+- **10 (clarified via `cornrev`).** Category III (`b>q`): at the binding cut `b>q ⟹ a=0` (`0/860`,
+  `cornrev`), so the operative peel is trivial (empty `Γ`, `peelCharge=0`) — no divergent corner. Confirm
+  the driver's cover handles these but there is no divergence risk.
+
+## CLOSE (follow-up 2)
+
+- **Firmest.** The `{rank Q_b≤b−2}` deeper strata (the `cornrev` gap) CLOSE by an explicit nested blow-up:
+  for `b=2` small cases the deepest corner has RLCT `= ½·minAdm(M) = ½·codim` (normal-crossing), verified
+  by exact hand-integration + MC + a decorrelated Codex resolution. The `x⁴+y⁶` trap is avoided (we resolve,
+  not codim-bound). The descent monovariant is the unresolved-tail product rank, well-founded on the
+  incidence-resolved charts. The linchpin closure argument is retracted (tautology); the resolution replaces it.
+- **Most likely to break / watch.** The GENERAL (higher-`b`, longer-product) resolution is the Aoyagi §5
+  product-rank-flag machinery — I certified the `b=2` base template exactly; the general induction
+  (resolved incidence centers + strictly-decreasing tail product rank) is decorrelated-argued but not a
+  full per-width exponent count. If the incidence-resolution genuinely fails to keep RLCT `= ½·codim` at
+  some higher stratum, THAT would be a real escalation (none found; the result is MC-true at width 4).
+- **Next.** (1) Formaliser: the `(2,3,2,2)` blow-up as the base module (`f ~ x₁²+p²+z²(x₂²+v²)`, the codim-3
+  center blow-up); the top-stratum `(a,1,D)` leaf (unchanged). (2) A reviewer / the next pen-and-paper on
+  the general product-rank-flag induction (the incidence centers + the tail-rank monovariant past `b=2`) —
+  that is the last genuinely-new Aoyagi §5 piece.
