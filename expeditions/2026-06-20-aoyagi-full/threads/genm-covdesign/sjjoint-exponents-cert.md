@@ -35,6 +35,20 @@ which converges near `{rank Q_b ≤ q−1}` (codim `D`) iff the **sublevel/tube 
 the flag DIRECTLY — is the cheaper Lean lift. The front-peel/box-Morse route is retired (its content
 survives as the exponent targets below).
 
+**DECISIVE — triple-confirmed (2026-07-10, `sublevel-bridge-answer.md`).** A FRESH NEUTRAL Codex (xhigh,
+withholding BOTH the controller's and my lean) independently answers **(b) NO**: in Mathlib v4.29 there
+is no route from `Ideal.height(vanishingIdeal V) = D` to `volume{dist ≤ t} ≲ t^D` or `IntegrableOn
+f^{−α} (α<D)`. It grounds this in the repo — `codimRep` is *literally* `Ideal.height` (`OrbitCodim:117`);
+the only bridge is Krull/catenary (`NullstellensatzCodim:111`), which "stays algebraic — does not produce
+Hausdorff dimension, Minkowski content, Lebesgue tube estimates, or sublevel estimates";
+`PolynomialZeroSet` is a *null-set* theorem only, "not a tube-volume theorem." The missing statement
+`algebraic-height-D + semialgebraic geometry ⟹ Euclidean tube exponent D` is a from-scratch GMT build
+(coarea / Whitney stratification / Łojasiewicz+semialgebraic-dim / Hironaka normal-crossings). **This is
+WHY `(S,J)` wins: it CONSTRUCTS the normal-crossings resolution explicitly (Aoyagi-guided, one sorry),
+supplying exactly the regularity box-Morse would have to IMPORT as a black-box GMT theorem.** Three
+decorrelated passes (me, via the algebraic-vs-measure gap + `/tmp/sublevel.py`; `forkreview`; the neutral
+Codex) agree. **No more rounds — build `(S,J)`.**
+
 ---
 
 ## 2. THE EXPONENT BOOKKEEPING (the payoff of the refutation-detour — what the monomial resolution lands on)

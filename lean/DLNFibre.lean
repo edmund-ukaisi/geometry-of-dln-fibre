@@ -1064,3 +1064,11 @@ import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
 -- gated equality (`aoyagi_learning_coefficient_gen`) is the DROPPED `(□)` hypothesis (unconditional) —
 -- NOT an axiom footprint (the equality is itself clean-three post-Stage-A; it just needs `(□)`).
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds
+-- `RouteMSJSlice334` — Stage-2 (S,J) native-resolution FIRST vertical slice (thread `genm-sjslice`): the
+-- `(3,3,3,4)` corank-2 corner-blow-up crux + its WIDTH-GENERAL form `sjSlice_corner_two_block_lt_top`
+-- (two-block corner finite for `c' < ½·codim-sum`, via min-cut weighted AM-GM → banked `prod_rpow`),
+-- `minAdm![3,3,3,4]=7`, the charge-tied `_of_lt_half_minAdm`, + the `symmetric_undershoot` sharpness
+-- witness (min-cut weighting is necessary). Corner FINITENESS (sidesteps the CoV Jacobian); the §8 unit
+-- lower-bound carried as a hypothesis. All clean-three/0-sorry. Validates the (S,J) resolution SHAPE;
+-- the width-general residue = corner PRODUCTION (opaque-width CoV, deferred) + the §8 discharge.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSlice334
