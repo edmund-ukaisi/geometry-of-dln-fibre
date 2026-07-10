@@ -1223,3 +1223,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
 -- b=1 base case, via Tonelli factoring + the banked radial `sumSqND_box_lt_top`. Level-A finiteness
 -- (upper/rlct≥ leg; the value's ½codim upper is cited Watanabe). Feeds B6 assembly. clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
+-- `RouteMSJDescNat` — atom brick B5-desc-ℕ (thread `genm-b5desc-nat`): the ℕ-arithmetic of the (S,J)
+-- descent. Recon verdict: the min-tail→minAdm arithmetic is BANKED (minAdm_eq_frontPeel + the 0/1344
+-- saturation exists_binding_cut); one new lemma `frontPeel_binding_cut` (∃q≤tailMin M, minAdm M =
+-- frontCharge M q — the front-peel binding cut B5b selects). Anti-trap: tailMin−b+1 ≠ minAdm (documented).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDescNat

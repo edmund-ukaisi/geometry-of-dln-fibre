@@ -114,6 +114,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJProjRadial
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDescNat
 
 /-!
 # Axiom-hygiene check
@@ -989,3 +990,6 @@ open DLNFibre.DLN.RLCT
 -- c'<½·min(a+1,D+1)) + `frobSq_rmatMul_corank_one` (the fidelity link: frobSq(Γ·Q_b)=‖γ‖²‖z‖² at b=1).
 #print axioms freeBilinear_box_lt_top
 #print axioms frobSq_rmatMul_corank_one
+-- Atom brick B5-desc-ℕ (RouteMSJDescNat, genm-b5desc-nat): the front-peel binding cut (min-tail-width
+-- form) the (S,J) descent's additive accounting selects; the rest of the descent arithmetic is banked.
+#print axioms frontPeel_binding_cut
