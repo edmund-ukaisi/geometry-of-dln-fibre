@@ -24,8 +24,14 @@ Lean-ready shape), `threads/genm-vslice/cert.md` (the analytic mechanism + termi
      (`c < M₀q/2`: `< ⊤` directly). NO Schur, NO `Q_b`, every Jacobian `= 1` (the det-inverse compass).
    - **THE NAMED CRUX** `normalSlice_transfer` (state it, `sorry` it): `{rank P ≤ q}` recurses as the
      shifted `Σ⁰` of `(M₁−q,…,M_L−q)` (normal-slice iso), composing charges ADDITIVELY (the "sum-not-min"
-     = paper `addlongest`; vslice-validated at the corner). This is the one real analytic risk; the
+     = paper `addlongest` line 688; vslice-validated at the corner). This is the one real analytic risk; the
      width-general pen-and-paper witness is coming from `vslice` — state the lemma so its proof drops in.
+     **SCOPE SPLIT (recon, handoff-saving):** its FINITENESS endpoint is BANKED
+     (`radial_morse_residual_power_le` RadialResidualPower:157 at the accumulated block dim +
+     `lintegral_eq_polar` RouteMSJSphereBlowup:82) — the OPEN part is ONLY the CoV / singularity-type
+     IDENTITY (`{rank P≤q} ≅ shifted Σ⁰`, `addlongest:688`), NOT its integrability. Structure the
+     `normalSlice_transfer` statement so the (banked) finiteness leg is CONSUMED and the sorry sits on the
+     identity/CoV alone; the vslice witness targets the identity.
    - The arity strong-induction assembling the above into `RouteMBoxThresholdFinite M` — REUSE the shape
      of the banked `routeMBoxThresholdFinite_of_step` (`RouteMSJResolution.lean:863`; arity strictly
      drops, `q≥1` forces reduction → termination, NO extra `(S,J)` kernel needed) + the banked outer
