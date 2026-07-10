@@ -23,8 +23,15 @@ conditional on `(□) = RouteMBoxThresholdFinite (H−r)` ALONE) + the UNCONDITI
    sorries) + the charge-budget contract; `(□)` proven already for L=2 ∀M / `(r,r,p)` ∀r∀p / some L≥3.
    Open piece = multi-active-boundary staircases (`(3,3,3,3)`), no soft shortcut. **Approach:** design
    pass (Codex-decorrelated) → build-first with a FAIL-FAST scope-report before sinking weeks (the
-   excise-stall lesson). SEAM route RULED OUT (det-Jacobian blowup, UPDATE-771). **Awaiting operator GO
-   to launch the first build.**
+   excise-stall lesson). SEAM route RULED OUT (det-Jacobian blowup, UPDATE-771).
+   **★ STATUS (2026-07-10, GO given): CHARGING — route = FRONT-PEEL W1; the whole `(□)` discharge is
+   witnessed + wired down to ONE remaining sorry.** vslice cert (the composed `(S,J)` machine + the
+   width-general `normalSlice_transfer` identity) done; fpcarrier's front-peel carrier landed with 6
+   pieces axiom-clean (`RouteMFrontPeelCarrier`, `origin/genm-fpcarrier @1cc8db60`). **Sole remaining =
+   `normalSlice_transfer` (the opaque-width threaded-shear CoV, ~500–800 LoC, NOT a wall)** — being
+   closed by the finish-line tide `genm-threadedshear` (spec `threads/genm-threadedshear/spec.md`, live).
+   On closure → wire canonical (import + `sjJointResolution:803` one-liner) → `_gen` unconditional → mint
+   the unsuffixed `aoyagi_learning_coefficient` (#108). Live read: synthesis UPDATE-789.
 2. **[RESOLVED 2026-07-09] Peel-stack naming — KEEP the unsuffixed `aoyagi_learning_coefficient`.**
    Operator decision: keep it. It stays a sorried placeholder until Stage 2 discharges `(□)`, then it is
    re-pointed to the honest unconditional fully-general result. No action now.
