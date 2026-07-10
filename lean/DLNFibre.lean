@@ -1136,3 +1136,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
 -- `sjGoodMap_loss_matBox_lt_top`). This is the ENDPOINT end of the CoV (both ends now banked); the measure
 -- transport connecting it to `gammaPeelIntegral_sjGoodMap_eq` is the remaining labour. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
+-- `RouteMSJSphereLB` — Stage-2 (S,J) CoV mountain step 2: the §8 UNIFORM sphere lower bound (thread
+-- `genm-covmount`). Bridges the good-chart POINTWISE positivity (`sjGoodMap_loss_pos`) to the UNIFORM
+-- `a≤g` bound the corner endpoint needs, via the extreme-value theorem. `exists_uniform_sphere_lb`
+-- (continuous + pointwise-positive on the compact unit sphere ⟹ ∃ a>0 uniform lb) +
+-- `corner_block_lintegral_le_of_pos` / `corner_block_lt_top_of_pos` (the ball endpoint bound / finiteness
+-- from pointwise positivity ALONE — the shape the good-chart resolution produces). The vslice §8
+-- unit-boundedness gate, bounded + network-free. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereLB

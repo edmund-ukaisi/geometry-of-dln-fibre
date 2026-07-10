@@ -98,6 +98,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
 import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereLB
 
 /-!
 # Axiom-hygiene check
@@ -913,3 +914,9 @@ open DLNFibre.DLN.RLCT
 -- banked sjGoodMap_loss_matBox_lt_top). Both CoV ends now banked; measure transport connects them.
 #print axioms sjGoodChartLoss_assembleFront
 #print axioms sjGoodChartLoss_endpoint_lt_top
+-- CoV mountain step 2: the §8 uniform sphere lower bound (RouteMSJSphereLB, genm-covmount) — bridges
+-- good-chart pointwise positivity to the uniform a≤g the endpoint needs, via the extreme-value theorem.
+-- `exists_uniform_sphere_lb` (EVT: continuous + pointwise-positive on compact sphere ⟹ uniform lb) +
+-- `corner_block_lt_top_of_pos` (ball finiteness from pointwise positivity alone).
+#print axioms exists_uniform_sphere_lb
+#print axioms corner_block_lt_top_of_pos
