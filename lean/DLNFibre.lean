@@ -1128,3 +1128,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
 -- is a uniform constant, integrable over the finite-measure env box. Unblocks the env integration.
 -- clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
+-- `RouteMSJVExpose` — Stage-2 (S,J) CoV mountain: the endpoint with the boundary rows `v` EXPOSED
+-- (thread `genm-covmount`). `assembleFront` (rebuild the front factor from a FREE `v` + fixed corank `W`
+-- — the inverse of the depth reduction) + `sjGoodChartLoss_assembleFront` (the good-chart loss on the
+-- reconstruction IS the endpoint's sjGoodMap-loss at `(Γ,v)`) + `sjGoodChartLoss_endpoint_lt_top` (the
+-- terminal joint `(Γ,v)`-box finiteness with `v` free, below `c'<(a·b+t·h)/2`, via the banked endpoint
+-- `sjGoodMap_loss_matBox_lt_top`). This is the ENDPOINT end of the CoV (both ends now banked); the measure
+-- transport connecting it to `gammaPeelIntegral_sjGoodMap_eq` is the remaining labour. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose

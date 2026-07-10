@@ -97,6 +97,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
+import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
 
 /-!
 # Axiom-hygiene check
@@ -906,3 +907,9 @@ open DLNFibre.DLN.RLCT
 -- the constant `cornerRadialConst_lt_top`. Unblocks env integration over the bounded parameters.
 #print axioms cornerRadialConst_lt_top
 #print axioms corner_block_lintegral_le
+-- CoV mountain: the endpoint with `v` EXPOSED (RouteMSJVExpose, genm-covmount) — the endpoint END of the
+-- CoV. `sjGoodChartLoss_assembleFront` (loss on the reconstructed front factor = endpoint sjGoodMap-loss
+-- at (Γ,v)) + `sjGoodChartLoss_endpoint_lt_top` (terminal joint (Γ,v)-box finiteness with v free, via
+-- banked sjGoodMap_loss_matBox_lt_top). Both CoV ends now banked; measure transport connects them.
+#print axioms sjGoodChartLoss_assembleFront
+#print axioms sjGoodChartLoss_endpoint_lt_top

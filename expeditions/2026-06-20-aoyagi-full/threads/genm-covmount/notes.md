@@ -71,24 +71,38 @@ tides (genm-sjcarrier8/sjbuild3): the (S,J) descent is the genuine unbuilt conte
   finiteness with v EXPOSED — the target the v-exposure CoV lands on. Composes checkpoint 2 + banked
   endpoint.
 
+## Checkpoint 5 (DONE) — `RouteMSJSphereLB.lean` (step 2, §8 uniform lower bound)
+- `exists_uniform_sphere_lb`: continuous + pointwise-positive on unit sphere ⟹ `∃ a>0, ∀ ω, a ≤ g ω`
+  (extreme-value `IsCompact.exists_forall_le'`; sphere compact since EuclideanSpace proper).
+- `corner_block_lintegral_le_of_pos` / `corner_block_lt_top_of_pos`: the ball endpoint (explicit bound /
+  finiteness) from POINTWISE positivity alone (derives the uniform a). Composes checkpoint 3.
+
 ## PRECISE HANDOFF for the next tide (the remaining mountain)
 
-`sjJointResolution:803` still open. After `gammaPeelIntegral_sjGoodMap_eq`, need FINITENESS of
-`∫_{A'} ∫_x ∫_Γ (sjGoodChartLoss x Γ Ã₁(A') A₂(A'))^{-c'} < ⊤`. Remaining un-banked:
+5 checkpoints banked (~490 LoC, all clean-three). Both CoV ENDS + endpoint machinery are banked:
+- MEASURE-SIDE: `gammaPeelIntegral_sjGoodMap_eq` (= ∫∫∫ g_cc, v DETERMINED by A').
+- ENDPOINT: `sjGoodChartLoss_endpoint_lt_top` (∫_{(Γ,v)-box} g_cc^{-c'} < ⊤, v FREE via assembleFront);
+  `corner_block_lt_top_of_pos` (ball endpoint from pointwise positivity).
 
-1. **v-exposure CoV (measure-side)** — the LANDING (`sjGoodChartLoss_endpoint_lt_top`) is banked
-   (checkpoint 4). What remains: the MEASURE transport showing `∫_{(Ã₁)_p ∈ box} sjGoodChartLoss(v(Ã₁))
-   = ∫_{v ∈ box'} sjGoodChartLoss(assembleFront v W)`, i.e. the pivot rows `(Ã₁)_p ↦ v = (Ã₁)_p +
-   P⁻¹B₁₂W` translation (`measurePreserving_add_right`), plus splitting `paramsBoxM(tailChain M)` /
-   `A' 0`-box into pivot-rows × corank-rows × deeper (Pi-product Fubini — the fiddly measure plumbing).
-   `assembleFront` is the exact reconstruction the translation produces.
-2. **§8 uniform sphere lower bound `a ≥ a₀ > 0`** on the good cover (compactness + continuity min of
-   g_cc(ω) over the joint sphere × compact good env). Genuinely-new but "not a wall" (cert §3a). Feeds
-   `corner_block_lintegral_le` (checkpoint 3).
-3. **env integration** — `∫_{good env} (a₀^{-c'}·cornerRadialConst) dμ = const·μ(env) < ⊤`. Needs the
-   parametrized inner as a measurable fn of env (Tonelli/Fubini bookkeeping).
-4. **good/deeper cover split** — matBox∩pivotChart = good{|det pivot|≥δ} ∪ deeper; deeper NON-binding by
-   banked `sjChargeBudget_le`; the L-recursion over the rank flag (finite, nonincreasing).
+`sjJointResolution:803` still open. Remaining = the MEASURE TRANSPORT connecting the two ends + cover +
+recursion. This is HEAVY interlocking infrastructure (design pass / Codex consult recommended):
+
+1. **measure transport (the hard core)** — transport `∫_{A'∈paramsBoxM(tailChain M)} ∫_x ∫_Γ g_cc(v(A'))`
+   into `∫_{env} ∫_{(Γ,v)-box} g_cc(v)` with v free. Sub-steps: (a) second Pi-split isolating A'0 from
+   the deeper layers (template: `eFront`/`piFinSuccAbove` + `eFront_preimage_box`, RouteMSJResolution:371);
+   (b) A'0 row-split into κ-pivot-rows × complement-rows(=W) (template: `blockSplitD`/`splitCols`,
+   RouteMSJChartShear); (c) the pivot-rows→v translation (`measurePreserving_add_right`; `assembleFront`
+   is exactly the reconstruction it produces). BLOCKER TO CLEAN UP FIRST: `gammaPeelIntegral_sjGoodMap_eq`
+   carries the deep factor as `Classical.choose(sjTail_factor …)` — opaque. For the Pi-split, restate it
+   (or add a variant) with the EXPLICIT deep factor `reindex(prod (Mtail(tailChain M)) (Atail(tailChain M) A'))`
+   so its dependence on ONLY the deeper layers (not A'0) is manifest. Also needs the good-cover left/right
+   inverses (P bounded below ⟹ left-inv; W, A₂ generic ⟹ right-inv) supplied to
+   `sjGoodChartLoss_endpoint_lt_top`.
+2. **env integration** — `∫_{good env} (bound) dμ < ⊤`; the inner is ≤ a₀^{-c'}·cornerRadialConst
+   (checkpoints 3+5) uniformly on good env, so const·μ(env) < ⊤. Needs the shifted (Γ,v)-box ⊆ fixed
+   ball domination (cert §1c) to use the BALL endpoint (checkpoint 3/5) over the shear-image box.
+3. **good/deeper cover + L-recursion** — matBox∩pivotChart = good{|det pivot|≥δ} ∪ deeper; deeper
+   NON-binding by banked `sjChargeBudget_le`; L-recursion over the rank flag (finite, nonincreasing).
 
 The threshold bookkeeping: for the endpoint on `(Γ,v)` the dim is `(M0-t)(M1-t)+t·M2`; the charge
 accounting `sjChargeBudget_le` gives min-over-branches = minAdm. See `genm-covdesign/sjjoint-exponents-cert.md`.
