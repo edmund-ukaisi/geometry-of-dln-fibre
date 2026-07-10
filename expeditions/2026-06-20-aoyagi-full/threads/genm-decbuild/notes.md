@@ -196,3 +196,40 @@ measure statement**: can the FreedPeel Regime-A interface hyps (i)(ii)(iii) be s
 the outer tail `A'` via the fresh-block radial Schur factorization-with-Jacobian (the load-bearing
 sub-lemma), so the reduced chain and radial factor EXACTLY (no Hölder)? Front-load the `(2,2,1)` check.
 This is the ~65–75%-new heart — beyond a single formaliser tile; I formalise from the certificate.
+
+---
+
+## Route (b) LANDED — gap isolated to ONE named Lean statement `DecoratedPeelCoV` (working structure)
+
+Controller decision (2026-07-10): route (b), on MY branch only (NOT integrated to canonical — canonical
+stays at `(□)`-modulo-`DecoratedPeelStep`, sorry-free). Module `RouteMSJDecoratedPeelCoV.lean`.
+
+**The isolated gap** (my best formulation):
+
+    def DecoratedPeelCoV : Prop :=
+      ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ),
+        ∃ t : ℕ, t ≤ min (M 0) (M 1) ∧
+          (RouteMBoxThresholdFinite (redChain t M) →
+            DecoratedBoxThresholdFinite (SJDecoration.trivial M))
+
+Formulation rationale: `radialAttach`/`rowMix` GROW a decoration WITHIN a chain; the CHAIN reduction
+`M → redChain t M` (identifying the pivot block's product with the reduced chain's product) is the
+genuinely-new content, so the gap is stated as "∃ binding cut `t`: reduced-chain box-finiteness ⟹
+parent trivial-finiteness". The threshold shift `c'−½peelCharge < ½minAdm(redChain)`
+(`carrierThreshold_shift`, banked) lives INSIDE the CoV, so the clean full-threshold
+`RouteMBoxThresholdFinite (redChain t M)` is the exact IH input (no custom shifted predicate).
+
+**Status (forced #print axioms):**
+- `decoratedPeelCoV_imp_decoratedPeelStep : DecoratedPeelCoV → DecoratedPeelStep` — CLEAN-THREE
+  (sorry-free wiring). The IH covers `redChain t M` (one shorter); feeds the peel implication.
+- `decoratedPeelCoV : DecoratedPeelCoV := sorry` — the ONE named gap (`sorryAx`), the pen-and-paper's
+  target.
+- `routeMBoxThresholdFinite_decorated : ∀M, RouteMBoxThresholdFinite M` = `(□)` on-branch — `sorryAx`
+  (gated on the one gap), via the T0 driver.
+
+**The `sorry`'s content (pen-and-paper target, per the T4 charter + Codex):** the exact peel CoV — radial
+blow-up of the front factor `A₀` on the rank-`t` chart (monomial Jacobian) + fresh-block Schur `rowMix`
+(`R=A⁻¹B`, `hsh` free post-radial) + block-split identifying the pivot block's product with
+`redChain t M`'s product, Gram weight absorbed into the shared-divisor support — an EXACT monomial
+factoring (no Hölder), evading the binding-cut saturation. Witness on `(2,2,1)` (t=1, ½minAdm=1) then
+generalize; obstruction fallback = scoped no-go + sufficient conditions. I formalise from the cert.
