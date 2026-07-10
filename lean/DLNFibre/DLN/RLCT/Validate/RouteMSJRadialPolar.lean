@@ -1,4 +1,6 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereBlowup
+import Mathlib.Analysis.SpecialFunctions.Integrability.Basic
+import Mathlib.MeasureTheory.Integral.IntegrableOn
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar` — the radial-blow-up CoV weld (opaque width)
@@ -143,5 +145,101 @@ theorem lintegral_ball_radial_polar_factor {N : ℕ} [NeZero N] {R : ℝ}
         Set.indicator_of_notMem (show r ∉ Ioc (0 : ℝ) R from fun h => hrR h.2), mul_zero]
   rw [setLIntegral_congr_fun measurableSet_Ioi hstep, setLIntegral_indicator measurableSet_Ioc,
     Set.inter_eq_left.mpr Set.Ioc_subset_Ioi_self]
+
+/-! ## The corner-block finiteness (the L3/L4 landing) -/
+
+/-- **The 1-D radial power integral is finite below the pole.** `∫⁻ r in Ioc 0 R, ofReal (r^e) < ⊤`
+for every `e > -1` and any `R` — the singularity at `r = 0` is integrable exactly when `e > -1`
+(`R ≤ 0` gives the empty domain). Bridges Mathlib's `intervalIntegrable_rpow'` (`-1 < e`) through
+`IntegrableOn.setLIntegral_lt_top`. This is the exceptional-divisor radial integral the corner
+resolution lands on: `e = (N-1) - 2c'` (Jacobian power `N-1`, loss order `2`), finite iff
+`c' < N/2`. -/
+theorem lintegral_Ioc_rpow_lt_top {R e : ℝ} (he : -1 < e) :
+    ∫⁻ r in Ioc (0 : ℝ) R, ENNReal.ofReal (r ^ e) < ⊤ := by
+  by_cases hR : R ≤ 0
+  · rw [Set.Ioc_eq_empty (not_lt.mpr hR)]; simp
+  · exact ((intervalIntegrable_iff_integrableOn_Ioc_of_le (le_of_lt (not_le.mp hR))).mp
+      (intervalIntegral.intervalIntegrable_rpow' he)).setLIntegral_lt_top
+
+/-- **The corner-block finiteness (opaque width `N`, the L3/L4 landing).** For a measurable
+degree-2-homogeneous loss `g : EuclideanSpace ℝ (Fin N) → ℝ` (`g (r • x) = r²·g x`) whose value on
+the unit sphere is bounded below by `a > 0` (the vslice cert §8 unit-boundedness, carried as
+hypothesis), and any exponent `c' < N/2`, the box (here: any closed ball, the `matBox ⊆ closedBall`
+shape) integral of the loss power is finite:
+
+    ∫⁻ z in closedBall 0 R, ofReal ((g z) ^ (-c')) < ⊤.
+
+**The corner sum is a special case.** The vslice §5 corner model `gX(Γ) + gY(v)` (two blocks of
+dims `h₀+1`, `h₁+1` sharing the deep factor) is itself a single degree-2-homogeneous loss on the
+JOINT block `(Γ, v)` of dimension `N = (h₀+1) + (h₁+1) = h₀+h₁+2`, with `a ≤ (gX+gY)` on the joint
+sphere (from `a ≤ gX`, `a ≤ gY` on the respective spheres). So `c' < N/2 = (h₀+h₁+2)/2` reproduces
+the branch threshold where "the codimensions ADD" — the SUM threshold, not the min undershoot.
+
+Proof (the resolution compass, no det-inverse): the ball radial blow-up
+(`lintegral_ball_radial_polar_factor`) exposes the monomial Jacobian `r^{N-1}` and factors the loss
+`(r²·g ω)^{-c'}`; on the sphere `g ω ≥ a > 0`, so `(r²·g ω)^{-c'} ≤ a^{-c'}·r^{-2c'}` (rpow
+antitone), dominating the integrand by the separated monomial `a^{-c'}·r^{(N-1)-2c'}`; the radial
+integral is
+finite (`lintegral_Ioc_rpow_lt_top`, `(N-1)-2c' > -1 ⟺ c' < N/2`) and the sphere measure is finite
+(`IsFiniteMeasure`). -/
+theorem corner_block_lintegral_lt_top {N : ℕ} [NeZero N] {R : ℝ}
+    (g : EuclideanSpace ℝ (Fin N) → ℝ) (hg : Measurable g)
+    (hom : ∀ (r : ℝ) (x : EuclideanSpace ℝ (Fin N)), g (r • x) = r ^ 2 * g x)
+    (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c' < (N : ℝ) / 2) (a : ℝ) (ha : 0 < a)
+    (hlb : ∀ ω : sphere (0 : EuclideanSpace ℝ (Fin N)) 1, a ≤ g (ω : EuclideanSpace ℝ (Fin N))) :
+    ∫⁻ z in Metric.closedBall (0 : EuclideanSpace ℝ (Fin N)) R,
+        ENNReal.ofReal ((g z) ^ (-c')) < ⊤ := by
+  have hNpos : 1 ≤ N := Nat.one_le_iff_ne_zero.mpr (NeZero.ne N)
+  have hcast : ((N - 1 : ℕ) : ℝ) = (N : ℝ) - 1 := by
+    rw [Nat.cast_sub hNpos, Nat.cast_one]
+  set p : ℝ := ((N : ℝ) - 1) - 2 * c' with hp_def
+  have hp : -1 < p := by rw [hp_def]; linarith [hc']
+  have hφmeas : Measurable (fun t : ℝ => t ^ (-c')) := by fun_prop
+  rw [lintegral_ball_radial_polar_factor g hg hom (fun t => t ^ (-c')) hφmeas]
+  -- inner bound: for each sphere direction, dominate by the separated monomial
+  have key : ∀ ω : sphere (0 : EuclideanSpace ℝ (Fin N)) 1,
+      (∫⁻ r in Ioc (0 : ℝ) R,
+          ENNReal.ofReal (r ^ (N - 1))
+            * ENNReal.ofReal ((r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c')))
+        ≤ ENNReal.ofReal (a ^ (-c')) * ∫⁻ r in Ioc (0 : ℝ) R, ENNReal.ofReal (r ^ p) := by
+    intro ω
+    rw [← lintegral_const_mul' (ENNReal.ofReal (a ^ (-c'))) _ ENNReal.ofReal_ne_top]
+    refine setLIntegral_mono' measurableSet_Ioc (fun r hr => ?_)
+    have hr0 : 0 < r := hr.1
+    have hgω : a ≤ g (ω : EuclideanSpace ℝ (Fin N)) := hlb ω
+    -- the real-value domination `r^{N-1}·(r²·gω)^{-c'} ≤ a^{-c'}·r^p`
+    have hr2a : 0 < r ^ 2 * a := by positivity
+    have hr2ge : r ^ 2 * a ≤ r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N)) :=
+      mul_le_mul_of_nonneg_left hgω (by positivity)
+    have hanti : (r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c') ≤ (r ^ 2 * a) ^ (-c') :=
+      Real.rpow_le_rpow_of_nonpos hr2a hr2ge (neg_nonpos.mpr hc0)
+    have hsplit : (r ^ 2 * a) ^ (-c') = (r ^ 2 : ℝ) ^ (-c') * a ^ (-c') :=
+      Real.mul_rpow (by positivity) ha.le
+    have hpow : r ^ (N - 1) * (r ^ 2 : ℝ) ^ (-c') = r ^ p := by
+      rw [show (r : ℝ) ^ (N - 1) = r ^ (((N - 1 : ℕ) : ℝ)) from (Real.rpow_natCast r (N - 1)).symm,
+        show (r ^ 2 : ℝ) = r ^ ((2 : ℕ) : ℝ) from (Real.rpow_natCast r 2).symm,
+        ← Real.rpow_mul hr0.le, ← Real.rpow_add hr0]
+      congr 1
+      rw [hcast, hp_def]; push_cast; ring
+    have hreal : r ^ (N - 1) * (r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c')
+        ≤ a ^ (-c') * r ^ p := by
+      calc r ^ (N - 1) * (r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c')
+          ≤ r ^ (N - 1) * (r ^ 2 * a) ^ (-c') :=
+            mul_le_mul_of_nonneg_left hanti (by positivity)
+        _ = r ^ (N - 1) * ((r ^ 2 : ℝ) ^ (-c') * a ^ (-c')) := by rw [hsplit]
+        _ = a ^ (-c') * (r ^ (N - 1) * (r ^ 2 : ℝ) ^ (-c')) := by ring
+        _ = a ^ (-c') * r ^ p := by rw [hpow]
+    calc ENNReal.ofReal (r ^ (N - 1))
+            * ENNReal.ofReal ((r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c'))
+        = ENNReal.ofReal (r ^ (N - 1) * (r ^ 2 * g (ω : EuclideanSpace ℝ (Fin N))) ^ (-c')) :=
+          (ENNReal.ofReal_mul (by positivity)).symm
+      _ ≤ ENNReal.ofReal (a ^ (-c') * r ^ p) := ENNReal.ofReal_le_ofReal hreal
+      _ = ENNReal.ofReal (a ^ (-c')) * ENNReal.ofReal (r ^ p) :=
+          ENNReal.ofReal_mul (by positivity)
+  refine lt_of_le_of_lt (lintegral_mono key) ?_
+  rw [lintegral_const]
+  exact ENNReal.mul_lt_top
+    (ENNReal.mul_lt_top ENNReal.ofReal_lt_top (lintegral_Ioc_rpow_lt_top hp))
+    (measure_lt_top _ _)
 
 end DLNFibre.DLN.RLCT
