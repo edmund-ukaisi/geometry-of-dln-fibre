@@ -460,3 +460,36 @@ frame — a PRODUCT of A', not a free matrix):
 CAVEAT (wtint adjudicating in parallel): the outer det(Q_bQ_bᵀ)^{−a/2} integration MIGHT need
 det≥minor² (Cauchy-Binet ≥-corollary) — flag the moment it's invoked; else absorbed by absorption-CoV +
 reduced IH. Substantial measure+product-algebra build — the next focused chunk.
+
+---
+
+## PIECE-8 KEYSTONE LANDED + wtint WALL verdict (three-way routing NECESSARY)
+
+**wtint verdict = WALL (adversarial + decorrelated Codex):** the emitted Γ-peel Gram weight
+`det(Q_bQ_bᵀ)^{−a/2}` is NOT absorbed by the reduced-chain IH. Exact reason: `frobSq(B₀)=frobSq(B·A_{≥2})`
+is IDENTICALLY Y-independent (∂/∂Y≡0), while the Gram singularity lives entirely in Y (`Q_b=Y·A_{≥2}`);
+the IH controls ∫dB, says nothing about the ∫dY blow-up. So my earlier "Cauchy-Binet avoided" was right
+for ENTERING the stratum (PosDef) but WRONG for INTEGRATING the weight. wtint VALIDATES the cert's §B=2
+cover (which uses Cauchy-Binet).
+
+Consequences (now in the architecture):
+1. THREE-WAY (a,b,q) routing NECESSARY (a=M₀−t, b=M₁−t, q=M_last): `det^{−a/2}` integrable ⟺ a+b≤q (sharp,
+   det≍|z|² over the codim-(q−b+1) rank-drop stratum). Cat I (a+b≤q): whole-line Γ-peel OK. Cat II/III
+   (a+b>q, ~25% incl (2,2,1)): weight DIVERGES → whole-line Γ-peel FORBIDDEN → corner/Regime-B.
+2. Cat I needs `det(Q_bQ_bᵀ) ≥ minor_{S₀}²` (commissioned parallel tide `genm-cbmin`, Loewner route since
+   Cauchy-Binet absent) + order-1 vanishing on the rank-drop divisor + integrability (a<q−b+1). CONSUME
+   cbmin's lemma when it lands; the order-1 vanishing + integrability are MINE.
+3. SCOPE: the WALL is the top rank-drop stratum {rank=b−1} + emitted weight ONLY. The deeper {rank≤b−2}
+   atom (weaker a<q−b+r, non-binding) stays operator-gated. Keep weight-control SEPARATE from deeper-strata.
+
+**Landed (module `RouteMSJDecoratedPeelStrata.lean`, sorry-free, forced clean-three):**
+- `gammaPeelInner` + `gammaPeelIntegral_eq_inner` (rfl) — gammaPeelIntegral = ∫_{A'} inner.
+- `gammaPeelIntegral_stratify` — generic measurable split ∫_{box} = ∫_{box∩S} + ∫_{box\S}
+  (`lintegral_inter_add_diff`).
+- `gammaPeelIntegral_lt_top_of_strata` — finiteness from both strata (fences the deeper as a carried hyp).
+- `gammaPeelIntegral_lt_top_of_categoryRouting` — the three-way scaffold: `by_cases a+b≤q` → Cat I /
+  Cat II-III obligations. (Lean note: `le_or_lt` not in scope; use `by_cases` + `not_le.mp`.)
+
+**NEXT:** Cat I wiring (Regime A + weight-control consuming cbmin) + Cat II/III → corner/Regime-B + the
+{det>0}/{det=0} instantiation of the generic split (S = {0<det(Q_bQ_bᵀ)}, measurability via continuity of
+det∘product). The deeper {rank≤b−2} atom = a separate carried INTERFACE (RlctInterface-pattern, not sorry).
