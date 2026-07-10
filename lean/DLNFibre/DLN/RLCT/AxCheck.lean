@@ -103,6 +103,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactor
 import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotTranslate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTailSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
 
 /-!
 # Axiom-hygiene check
@@ -939,3 +941,9 @@ open DLNFibre.DLN.RLCT
 -- CoV transport step (a) bridge (RouteMSJDeepFactorCore, genm-covmount): `sjDeepFactor_eFrontTail_symm`
 -- (the deep factor is A'0-independent in the split form — held constant during the A'0-integral).
 #print axioms sjDeepFactor_eFrontTail_symm
+-- CoV transport step (b) + composition (RouteMSJRowSplit + RouteMSJTransport, genm-covfinish): the
+-- coordinate frame the decorated peel operates in. `rowSplit_lintegral_eq` (leading-layer box →
+-- κ-pivot-rows × corank rows) + `gammaPeelIntegral_piSplit_eq` (gammaPeelIntegral in the v-exposed
+-- Pi-split form, deep factor A'0-independent). Plumbing, not analytic content.
+#print axioms rowSplit_lintegral_eq
+#print axioms gammaPeelIntegral_piSplit_eq

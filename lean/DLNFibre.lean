@@ -1166,3 +1166,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTailSplit
 -- so after `tailParams_pi_split` the `A'0`-integral runs with the deep factor held constant. Completes
 -- transport step (a). clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
+-- `RouteMSJRowSplit` + `RouteMSJTransport` — Stage-2 (S,J) CoV transport, step (b) + composition (thread
+-- `genm-covfinish`). `rowSplitEquiv` (MP) + `rowSplit_lintegral_eq` split the leading-layer box into
+-- κ-pivot-rows × corank rows; `gammaPeelIntegral_piSplit_eq` composes steps (a)+(b) into the v-exposed
+-- Pi-split form (leading layer + deeper, deep factor A'0-independent). These are the coordinate FRAME the
+-- decorated peel operates in (decrecon-confirmed consumption) — integrated as plumbing, not analytic
+-- content. NB: the route to `(□)` is the DECORATED recursion (proves RouteMBoxThresholdFinite directly);
+-- these support it + the complementary good-branch. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
