@@ -1197,3 +1197,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
 -- source of the exponent α). The shared foundation BOTH the clean-A dominant-chart reduction and the
 -- degenerate corner consume. clean-three/0-sorry. (The measure-CoV wiring + decoratedPeelCoV remain on-branch.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore
+-- `RouteMSJDecoratedPeelMeas` — Stage-2 decorated peel: the absorption measure-CoV Jacobian (thread
+-- `genm-decbuild`). `lintegral_comp_mulLeftₚ` (`∫ g(K·Y) = ofReal(|det K|^c)⁻¹ · ∫ g Y` for `det K≠0`,
+-- c columns — the `|det P|^{−M₂}` pivot-gauge of the linear absorption CoV) + `mulLeftₚ`/`det_mulLeftₚ`.
+-- Built over the raw pi type (column-indexed) to sidestep the Matrix.module vs NormedSpace.toModule
+-- instance diamond (see lean/CLAUDE.md). The measure half of the absorption step. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelMeas

@@ -108,6 +108,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelMeas
 
 /-!
 # Axiom-hygiene check
@@ -965,3 +966,6 @@ open DLNFibre.DLN.RLCT
 -- homogeneity, source of α).
 #print axioms freedSchurLoss_absorption
 #print axioms freedSchurLoss_smul
+-- Decorated peel: the absorption measure-CoV Jacobian (RouteMSJDecoratedPeelMeas, genm-decbuild):
+-- `lintegral_comp_mulLeftₚ` (∫ g(K·Y) = ofReal(|det K|^c)⁻¹·∫ g Y, det K≠0 — the |det P|^{−M₂} gauge).
+#print axioms lintegral_comp_mulLeftₚ

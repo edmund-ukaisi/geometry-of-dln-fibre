@@ -129,6 +129,15 @@ Toolchain-generic notes that transfer at this pin. Accumulate new, DLN-specific 
   same-rank ⟹ same-fibre-codim headline genuinely needs `N ≥ 1` (`hN : (0 : Fin (N+1)) ≠ Fin.last N`)
   — for `N = 0` `mult` is the constant `1`, the end vertices coincide, the action only conjugates, and
   the claim is false.
+- **Matrix-space measure change-of-variables hits an instance DIAMOND: `Matrix.module` vs
+  `NormedSpace.toModule`.** The Haar CoV lemma `map_linearMap_addHaar_eq_smul_addHaar` needs the
+  `NormedSpace`-derived module instance, but a `LinearMap` built over `Matrix.module` (e.g.
+  `RouteMSchurFrameDet.mulLeftMat`) sits on the *other* diamond branch, so the CoV lemma won't unify.
+  **Workaround (recurs for any matrix-space measure CoV): transcribe the map over the RAW pi type**
+  (`Fin c → Fin t → ℝ`), column-indexed. Left-multiplication `Y ↦ K.mulVec (Y ·)` is per-column
+  block-diagonal, so `LinearMap.det` factors via `det_pi` to `(det K)^c` directly, and the Haar CoV
+  fires on the pi instance with no diamond. (Pattern: `RouteMSJDecoratedPeelMeas.mulLeftₚ` /
+  `lintegral_comp_mulLeftₚ`, transcribing `RouteMSJGammaAtom.rightMulₚ`; `genm-decbuild`, 2026-07-10.)
 
 ## θ-count discharge findings (`Core.CCodimCornerMono`, thread 06)
 - **The θ-count headline reduces to ONE combinatorial inequality**: the dimension-monotonicity of
