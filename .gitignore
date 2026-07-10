@@ -22,3 +22,6 @@ theory/aoyagi-2023-reproduction/pages/
 
 # Codex consult scratch (transient; load-bearing consults are homed in threads/NN/codex/).
 **/.codex-consult/
+
+# Codex consult raw run-logs (keep the distilled *-answer.md, not the multi-MB stream)
+expeditions/**/codex/*run*.log

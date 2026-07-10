@@ -1098,11 +1098,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 -- The banked §8 endpoint lives on the flat cube `[-1,1]ⁿ`; the good-chart resolved loss lives on a
 -- product of matrix boxes. This bridges them: a linear+measure-preserving flatten (`matFlatL`/`twoMatFlatL`,
 -- MP transferred from `eMatFlat`) carries the matrix-product box onto the flat cube, so
--- `sjGoodMap_loss_matBox_lt_top` (∫_{matBox×matBox} g_cc^{−c'} < ⊤ for c' < ½·(p*q+t*h)=½·codim-sum, via
--- `sjGoodMapₗ` linear + `sjGoodMap_loss_pos` + `corner_block_cube_lintegral_lt_top_of_pos`) + the abstract
--- `twoMatBox_injectiveLinear_lintegral_lt_top` are concrete callables. The '→endpoint' pipeline tail; the
--- CoV connecting `gammaPeelIntegral` to these (pointwise Schur assembly + refined cover + L-recursion) is
--- the remaining mountain. clean-three/0-sorry.
+-- `sjGoodMap_loss_matBox_lt_top` (∫_{matBox×matBox} g_cc^{−c'} < ⊤ for c' < ½·(p*q+t*h), via `sjGoodMapₗ`
+-- linear + `sjGoodMap_loss_pos` + `corner_block_cube_lintegral_lt_top_of_pos`) + the abstract
+-- `twoMatBox_injectiveLinear_lintegral_lt_top`. The '→endpoint' tail. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 -- `RouteMSJDepthReduce` — Stage-2 (S,J) CoV mountain GAP A (thread `genm-covmount`). The pointwise
 -- algebraic core of item 4: once both row-blocks of the tail product `Q̃` factor through a common deep
@@ -1144,3 +1142,15 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
 -- from pointwise positivity ALONE — the shape the good-chart resolution produces). The vslice §8
 -- unit-boundedness gate, bounded + network-free. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereLB
+-- `RouteMSJDeepFactor` — Stage-2 (S,J) CoV transport: the EXPLICIT deep factor (thread `genm-covmount`),
+-- clearing the `Classical.choose` blocker. `sjDeepFactor M A'` (= the front-peel remainder, a function of
+-- the DEEPER tail layers only) + `sjTail_factor_explicit` + `sjDeepFactor_update_zero` (overwriting `A' 0`
+-- leaves `sjDeepFactor` unchanged — the A'0-independence the A'0-vs-deeper Pi-split consumes) +
+-- `gammaPeelIntegral_sjGoodMap_eq'` (the measure-side entry, Classical.choose-free). clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactor
+-- `RouteMSJPivotTranslate` — Stage-2 (S,J) CoV transport step (c): the pivot-row translation (v-exposure
+-- atom, decorrelated-Codex-confirmed route A; thread `genm-covmount`). `sjGoodChartLoss_pivotRows_translate_eq`:
+-- `∫_{U∈matBox} loss(of(elim U W))^{−c'} = ∫_{v∈shifted-box} loss(assembleFront x v W)^{−c'}` — the map
+-- `U↦v=U+P⁻¹B₁₂W` is a measure-preserving translation (`measurePreserving_add_right`), `assembleFront` the
+-- reconstruction by defeq. The shifted `v`-box then feeds the BALL endpoint. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotTranslate

@@ -99,6 +99,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
 import DLNFibre.DLN.RLCT.Validate.RouteMSJVExpose
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSphereLB
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactor
+import DLNFibre.DLN.RLCT.Validate.RouteMSJPivotTranslate
 
 /-!
 # Axiom-hygiene check
@@ -920,3 +922,12 @@ open DLNFibre.DLN.RLCT
 -- `corner_block_lt_top_of_pos` (ball finiteness from pointwise positivity alone).
 #print axioms exists_uniform_sphere_lb
 #print axioms corner_block_lt_top_of_pos
+-- CoV transport: the explicit deep factor (RouteMSJDeepFactor, genm-covmount) — clears the Classical.choose
+-- blocker. `sjDeepFactor_update_zero` (A'0-independence, the load-bearing Pi-split fact) +
+-- `gammaPeelIntegral_sjGoodMap_eq'` (measure-side entry, Classical.choose-free).
+#print axioms sjDeepFactor_update_zero
+#print axioms gammaPeelIntegral_sjGoodMap_eq'
+-- CoV transport step (c): the pivot-row translation / v-exposure atom (RouteMSJPivotTranslate, genm-covmount):
+-- `sjGoodChartLoss_pivotRows_translate_eq` (∫ over the pivot-rows box = ∫ over the shifted v-box, via the
+-- measure-preserving translation U↦v=U+P⁻¹B₁₂W + assembleFront reconstruction).
+#print axioms sjGoodChartLoss_pivotRows_translate_eq

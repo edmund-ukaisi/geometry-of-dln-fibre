@@ -84,23 +84,48 @@ tides (genm-sjcarrier8/sjbuild3): the (S,J) descent is the genuine unbuilt conte
 - ENDPOINT: `sjGoodChartLoss_endpoint_lt_top` (∫_{(Γ,v)-box} g_cc^{-c'} < ⊤, v FREE via assembleFront);
   `corner_block_lt_top_of_pos` (ball endpoint from pointwise positivity).
 
-`sjJointResolution:803` still open. Remaining = the MEASURE TRANSPORT connecting the two ends + cover +
-recursion. This is HEAVY interlocking infrastructure (design pass / Codex consult recommended):
+## Checkpoint 6 (DONE) — `RouteMSJDeepFactor.lean` (transport prerequisite)
+- `sjDeepFactor M A'` (explicit deep factor, Classical.choose-free), `sjTail_factor_explicit`,
+  `sjDeepFactor_update_zero` (A'0-independence — key for the Pi-split), `gammaPeelIntegral_sjGoodMap_eq'`
+  (measure-side entry with explicit deep factor). Removes the Classical.choose motive blocker.
 
-1. **measure transport (the hard core)** — transport `∫_{A'∈paramsBoxM(tailChain M)} ∫_x ∫_Γ g_cc(v(A'))`
-   into `∫_{env} ∫_{(Γ,v)-box} g_cc(v)` with v free. Sub-steps: (a) second Pi-split isolating A'0 from
-   the deeper layers (template: `eFront`/`piFinSuccAbove` + `eFront_preimage_box`, RouteMSJResolution:371);
-   (b) A'0 row-split into κ-pivot-rows × complement-rows(=W) (template: `blockSplitD`/`splitCols`,
-   RouteMSJChartShear); (c) the pivot-rows→v translation (`measurePreserving_add_right`; `assembleFront`
-   is exactly the reconstruction it produces). BLOCKER TO CLEAN UP FIRST: `gammaPeelIntegral_sjGoodMap_eq`
-   carries the deep factor as `Classical.choose(sjTail_factor …)` — opaque. For the Pi-split, restate it
-   (or add a variant) with the EXPLICIT deep factor `reindex(prod (Mtail(tailChain M)) (Atail(tailChain M) A'))`
-   so its dependence on ONLY the deeper layers (not A'0) is manifest. Also needs the good-cover left/right
-   inverses (P bounded below ⟹ left-inv; W, A₂ generic ⟹ right-inv) supplied to
-   `sjGoodChartLoss_endpoint_lt_top`.
-2. **env integration** — `∫_{good env} (bound) dμ < ⊤`; the inner is ≤ a₀^{-c'}·cornerRadialConst
-   (checkpoints 3+5) uniformly on good env, so const·μ(env) < ⊤. Needs the shifted (Γ,v)-box ⊆ fixed
-   ball domination (cert §1c) to use the BALL endpoint (checkpoint 3/5) over the shear-image box.
+## Checkpoint 7 (DONE) — `RouteMSJPivotTranslate.lean` (transport step (c))
+- `sjGoodChartLoss_pivotRows_translate_eq`: the pivot-rows→v translation EQUALITY (v-exposure atom).
+  `∫_{U∈matBox} g_cc(of(elim U W)) = ∫_{v∈{v−P⁻¹B₁₂W∈matBox}} g_cc(assembleFront x v W)` via
+  `measurePreserving_add_right` + `setLIntegral_comp_preimage_emb` + defeq (assembleFront = of(elim(v−S)W)).
+
+## CODEX DESIGN (decorrelated, xhigh; `codex/transport-{prompt,answer}.md`)
+Route A (Pi-split → Fubini → row-split → pivot-translation) is CONFIRMED cheapest; verified the API
+pieces exist. "No mathematical wall in the transport itself — it is labour." Route B (single fiberwise
+shear on A'0) collapses back to A or uses a fragile det-1 equiv — not preferred. KEY CAVEAT (matches
+checkpoints 3+5): pointwise good=invertible is NOT enough for the env integral; need QUANTITATIVE δ-good
+data OR a uniform compactness sphere-lb (checkpoint 5 gives the per-point version). Env skeleton:
+`∫_{env∈EnvBox∩Good δ} inner ≤ ∫ BallBound δ = BallBound δ · vol(EnvBox∩Good δ) < ⊤`, with the shifted
+(Γ,v)-box ⊆ fixed ball domination feeding the BALL endpoint (NOT the cube).
+
+## PRECISE HANDOFF for the next tide (the remaining mountain)
+
+`sjJointResolution:803` still open. Remaining = the MEASURE TRANSPORT connecting the two ends + cover +
+recursion. Route A per Codex; steps (c)/translation banked (checkpoint 7), (Classical.choose blocker)
+cleared (checkpoint 6). This is HEAVY interlocking infrastructure:
+
+## Checkpoint 8 (DONE) — `RouteMSJTailSplit.lean` (transport step a)
+- `eFrontTail` (Params (tailChain M) ≃ᵐ (A'0 layer)×(deeper), `piFinSuccAbove 0`), MP, apply,
+  `eFrontTail_preimage_box`, `tailParams_pi_split`. The `A'0`-vs-deeper Pi-split. Mirrors banked `eFront`.
+
+1. **measure transport (the hard core), remaining sub-steps:** (a) DONE = `tailParams_pi_split` (ck8).
+   IMMEDIATE NEXT: the `sjDeepFactorCore` bridge — `sjDeepFactor M (eFrontTail.symm (U,rest))` is
+   independent of U (Codex §2). Route: `(eFrontTail).symm (U,rest) = update ((eFrontTail).symm (U',rest))
+   0 U` (needs `piFinSuccAbove.symm`/`insertNth 0`/`Fin.cons` apply lemmas at 0) + `sjDeepFactor_update_zero`
+   (ck6). Fiddly, NOT a missing API — deferred, not walled. (b) the `A'0` row-reindex (`blockSplitEquiv κ`,
+   MP — template `matReindexEquiv`, RouteMSJBlockReindex) + row-split into κ-pivot-rows × corank-rows(=W)
+   via `sumPiEquivProdPi` (`splitCols` template) so the leading-layer box becomes `matBox(pivot) ×ˢ
+   matBox(W)`; (c) DONE = `sjGoodChartLoss_pivotRows_translate_eq` (ck7). Then good-cover inverses → ball
+   endpoint.
+2. **env integration** — `∫_{env∈EnvBox∩Good δ} inner ≤ BallBound δ · vol(EnvBox∩Good δ) < ⊤`; inner ≤
+   a₀^{-c'}·cornerRadialConst (ck3+5) on good env. Needs the shifted (Γ,v)-box ⊆ fixed ball domination
+   (Codex §3, cert §1c) to use the BALL endpoint (ck3/5) — the CUBE endpoint (ck4) is NOT enough (domain
+   is a shifted box). Use QUANTITATIVE δ-good (|det P|≥δ, δ-minors of W, A₂), NOT bare invertibility.
 3. **good/deeper cover + L-recursion** — matBox∩pivotChart = good{|det pivot|≥δ} ∪ deeper; deeper
    NON-binding by banked `sjChargeBudget_le`; L-recursion over the rank flag (finite, nonincreasing).
 
