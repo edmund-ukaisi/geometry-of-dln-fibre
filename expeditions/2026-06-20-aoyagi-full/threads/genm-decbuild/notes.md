@@ -268,3 +268,32 @@ redChain)` via `trivial_decLoss`.
   3-width corner is certified exact; GENERAL-M corner recursion GATED on `cornrev` (hold general Phase-2
   corner until it clears the trivial-linchpin sufficiency). Front-load `(2,3,2)` for b=2 cat-II.
 - new Phase-2 pieces: (8) Cauchy-Binet cover, (9) corner leaf, (10) `b>q`.
+
+---
+
+## PHASE 1 measure-CoV — the absorption Jacobian landed (module `RouteMSJDecoratedPeelMeas.lean`)
+
+The standalone absorption-CoV measure lemma (controller sub-target (a)). Sorry-free + forced-#print
+clean-three:
+- `mulLeftₚ c K` : per-column left-mult `Y k ↦ K.mulVec (Y k)` on `Fin c → Fin t → ℝ`.
+- `det_mulLeftₚ : LinearMap.det (mulLeftₚ c K) = (det K)^c` (via `LinearMap.det_pi` + `det_toLin'`).
+- `lintegral_comp_mulLeftₚ : ∫⁻ Y, g (fun k ↦ K.mulVec (Y k)) = ofReal(|det K|^c)⁻¹ · ∫⁻ Y, g Y`
+  (for `det K ≠ 0`) — the |det P|^{−M₂} absorption Jacobian, `M₂ = c` columns.
+
+**Lean gotcha (add to lean/CLAUDE.md — recurs for any matrix-space measure CoV):** the banked
+`RouteMSchurFrameDet.mulLeftMat`/`det_mulLeft_matrixSpace` are over `Matrix.module`, but
+`map_linearMap_addHaar_eq_smul_addHaar` requires the `NormedSpace.toModule` on the space — an INSTANCE
+DIAMOND on `Matrix _ _ ℝ` that blocks feeding `mulLeftMat` to the Haar CoV. Work over the RAW pi type
+`Fin c → Fin t → ℝ` (as `RouteMSJGammaAtom.rightMulₚ` does), where `LinearMap.pi`'s module matches the
+Haar lemma. Left-mult is per-COLUMN-diagonal (not per-row), so index by columns (`Fin c → Fin t → ℝ`)
+and it becomes the `c`-fold diagonal of `K.mulVecLin`, det `(det K)^c` by `det_pi` (exactly the
+`rightMulₚ` transcription, with `mulVec`/`K` in place of `ᵥ*`/`Mᵀ`). Also: `hcomp` is unneeded — the
+integrand `fun k ↦ K.mulVec (Y k)` is DEFEQ to `mulLeftₚ c K Y`, so `show ∫⁻ Y, g (mulLeftₚ c K Y) = …`
+changes the goal by defeq; then `← lintegral_map` + Haar scaling + `smul_eq_mul` close it.
+
+### Remaining Phase-1 wiring (after the absorption Jacobian)
+Apply `lintegral_comp_mulLeftₚ` inside `gammaPeelIntegral`'s freed form (the absorption acts on the pivot
+rows `X` at fixed outer `x=(P,B₁₂,C)`, per column of `M₂`), with the shift `B₁₂·Y` handled by translation
+invariance; the freed rewrite is `freedSchurLoss_absorption`; then radial (banked `radialAttach_integral`)
+→ Γ-peel (banked FreedPeel Regime-A/B) → reduced = `frobSq(prod redChain)` (`trivial_decLoss`). The cat-I
+clean-A witness uses a chart with `a+b≤q` (NOT (2,2,1), which is cat-II/corner → Phase-2).
