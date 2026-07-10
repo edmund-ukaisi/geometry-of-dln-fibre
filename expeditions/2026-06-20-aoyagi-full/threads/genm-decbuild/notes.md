@@ -368,3 +368,32 @@ the LHS box integral (it's `∂volume.restrict box`); use `conv_rhs` to target t
 Steps 1-4 (piSplit_eq → freedSchurLoss on Ã₁·Ad → rowSplit exposes X → freedSchurLoss_absorption) +
 step 5 [DONE] + step 6 (B₀=B·Ad=prod(redChain)) + step 7 (radial + Γ-peel Regime-A/B → redChain IH).
 Then decoratedPeelCoV closes for CORE + b=1 + top-stratum MODULO DeeperStrataResolution (Phase-2 residual).
+
+---
+
+## CORE CLOSURE (cover reduction) LANDED + scope reconciliation
+
+`decoratedPeelCoV` is now PROVED (no longer `:= sorry`) via the banked pivot-chart cover — the gap moved
+to a PER-CHART residual `gammaPeelFromRedChain`. Structure in `RouteMSJDecoratedPeelCoV.lean`:
+- `decoratedPeelCoV_of_gammaPeel : GammaPeelFromRedChain → DecoratedPeelCoV` — SORRY-FREE, forced
+  clean-three. Proof: `trivial_integral_eq` (trivial integral = routeMLayerBoxIntegral) + banked
+  `sjBoundaryPeel` (cover over t∈Icc 1 (min M₀M₁)) + `ENNReal.sum_lt_top` (finite sum), each chart from
+  the residual. (`hc' : ↑c' < carrierThreshold M` is defeq `↑c' < ½minAdm M`, passed directly.)
+- `gammaPeelFromRedChain : GammaPeelFromRedChain := sorry` — the SINGLE gap now (per-chart finiteness
+  from reduced-chain finiteness). More granular than before (the cover reduction is proved).
+- `decoratedPeelCoV := decoratedPeelCoV_of_gammaPeel gammaPeelFromRedChain`; consumers unchanged.
+
+**SCOPE RECONCILIATION (honest — differs from the requested "top-stratum proved MODULO DeeperStrata").**
+The requested closure (top-stratum + b=1 PROVED, only deeper strata residual) requires SPLITTING the
+top stratum `{rank Q_b = b}` from the deeper `{rank Q_b ≤ b−2}` INSIDE `gammaPeelIntegral` — i.e. a
+rank-stratification of the tail corank block `Q_b`. That cover (Cauchy-Binet, Phase-2 piece 8) is
+UNBUILT (no banked `Q_b` rank cover; confirmed by rg). Without it I cannot carve out just the deeper
+strata, so the landable residual is the WHOLE per-chart finiteness `GammaPeelFromRedChain`. Its
+`{B₀ ≠ 0}` (core-positive) part is dischargeable by the built CoV pipeline once the corner cover lands
+(Regime-B `freedSchurLoss_inner_bounded_lt_top` applies on the FINITE freed-Γ box given core positivity
+`frobSq(P·Q̃ₚ)=frobSq(B₀)>0`); `{B₀=0}` is the genuine `DeeperStrataResolution`. So the true residual
+decomposes as: (corner cover — piece 8) + (good-strata CoV wiring, steps 1-7) + (DeeperStrataResolution).
+
+Forced #print axioms: `decoratedPeelCoV_of_gammaPeel` + `decoratedPeelCoV_imp_decoratedPeelStep`
+clean-three; `gammaPeelFromRedChain` + `decoratedPeelCoV` + `routeMBoxThresholdFinite_decorated` carry
+`sorryAx` (the one per-chart gap, by design).

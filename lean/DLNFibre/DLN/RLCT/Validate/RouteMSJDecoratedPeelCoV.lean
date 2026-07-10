@@ -4,48 +4,37 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCoV` — the peel CoV-Jacobian, isolated
 
 **Thread `genm-decbuild`, working structure (route (b), controller-directed 2026-07-10).** This
-module isolates the SOLE remaining analytic content of `(□)` to ONE named, sorry-carrying Lean
-statement, `DecoratedPeelCoV`, and wires the whole endgame modulo it: `DecoratedPeelCoV →
-DecoratedPeelStep → ∀M RouteMBoxThresholdFinite M` = `(□)`.
+module wires the whole R1-UPPER endgame `DecoratedPeelCoV → DecoratedPeelStep → ∀M
+RouteMBoxThresholdFinite M = (□)`, and reduces the sole analytic gap to a PER-CHART residual via the
+banked pivot-chart cover. It is the formaliser's WORKING structure — NOT for canonical integration
+(the controller keeps canonical at `(□)`-modulo-`DecoratedPeelStep`, the sorry-free conditional of
+`RouteMSJDecoratedRec`).
 
-**This module carries the ONE named `sorry` (`decoratedPeelCoV`).** It is the formaliser's WORKING
-structure — NOT for integration to canonical (the controller keeps canonical at
-`(□)`-modulo-`DecoratedPeelStep`, the clean sorry-free conditional of `RouteMSJDecoratedRec`). The
-`sorry` is the target of a decorrelated pen-and-paper (witness seat: exhibit the descent + exact
-Jacobian + reduced-loss = `redChain`-decoration on the `(2,2,1)` bottleneck, then generalize;
-obstruction fallback: a scoped no-go + sufficient conditions). The formaliser fills the `sorry` from
-the resulting certificate.
+## The structure
 
-## The isolated gap
+* **`DecoratedPeelCoV`** (`Prop`): for every `≥ 3`-width `M`, box-finiteness of EVERY reduced chain
+  `redChain t M` (all cuts `t`) implies box-finiteness of the trivial decoration on `M` below
+  `carrierThreshold M = ½·minAdm M`. (`∀ t` — the pivot cover sums over all cuts.)
+* **`decoratedPeelCoV_imp_decoratedPeelStep`** (sorry-free): `DecoratedPeelCoV → DecoratedPeelStep`,
+  the driver's IH supplying every `redChain t M`.
+* **`GammaPeelFromRedChain`** (`Prop`, the PER-CHART residual): from reduced-chain finiteness, each
+  `gammaPeelIntegral M t ρ κ c' < ⊤` below `½·minAdm M`.
+* **`decoratedPeelCoV_of_gammaPeel`** (sorry-free): `GammaPeelFromRedChain → DecoratedPeelCoV`, via
+  the banked cover `sjBoundaryPeel` + `trivial_integral_eq`. The cover reduction is PROVED.
+* **`gammaPeelFromRedChain := sorry`** — the SINGLE named gap (per-chart), consumed by
+  `decoratedPeelCoV`, `decoratedPeelStep_of_coV`, `routeMBoxThresholdFinite_decorated`.
 
-* **`DecoratedPeelCoV`** — the load-bearing single-peel change-of-variables, as a `Prop`. For every
-  `≥ 3`-width chain `M` there is a binding cut `t ≤ min(M₀,M₁)` such that: IF the REDUCED chain
-  `redChain t M` (one fewer layer) is box-finite (`RouteMBoxThresholdFinite`), THEN the trivial
-  decoration on `M` is box-finite below `carrierThreshold M = ½·minAdm M`.
+## The per-chart residual and the corner
 
-  The content packed into its proof (the `sorry`, the pen-and-paper's target) is the EXACT peel
-  change of variables: the radial blow-up of the front factor `A₀` on the rank-`t` chart (a monomial
-  Jacobian), the fresh-block Schur `rowMix` (`R = A⁻¹·B`, `hsh` free post-radial), and the
-  block-split IDENTIFYING the pivot block's product with `redChain t M`'s product. The threshold
-  shift `c' ↦ c' − ½·peelCharge M t` (which keeps `c'` below the reduced threshold, banked
-  `carrierThreshold_shift`) lives INSIDE the CoV, so the clean full-threshold box-finiteness of
-  `redChain t M` is the exact hypothesis the parent needs. The Gram weight
-  `det(Q_b Q_bᵀ)^{−(M₀−t)/2}` is ABSORBED into the carrier's shared-divisor support (never a
-  detached det-Gram field), so the peel is an EXACT monomial factoring — no Hölder split — evading
-  binding-cut saturation `minAdm M = peelCharge + minAdm(redChain t M)` that makes a black-box IH
-  bound infeasible.
+`GammaPeelFromRedChain` is discharged per chart by the built CoV pipeline (absorption,
+`lintegral_box_le_absorption`, radial, Γ-peel Regime-A/B, reduced-chain IH). Its `{B₀ ≠ 0}` part
+follows once the Q_b rank-stratification (corner cover, Phase-2 piece 8) lands; the irreducible
+`{B₀ = 0}` deeper corner strata (`{rank Q_b ≤ b−2}`, `b ≥ 2`) are the `DeeperStrataResolution`
+gap (cornrev: the linchpin `minAdm ≤ corner-codim` is a tautology — codim ≠ finiteness-½codim), the
+target of the peelcert deeper-strata resolution.
 
-* **`decoratedPeelCoV_imp_decoratedPeelStep`** — the wiring (sorry-free): `DecoratedPeelCoV →
-  DecoratedPeelStep`. The strong IH the arity recursion supplies covers `redChain t M` (one
-  shorter), which is exactly the hypothesis `DecoratedPeelCoV`'s implication consumes.
-
-* **`decoratedPeelCoV` / `routeMBoxThresholdFinite_decorated`** — the endgame gated on the one gap:
-  `decoratedPeelCoV : DecoratedPeelCoV := sorry` is the single named analytic hole; composing it
-  through the wiring + the T0 driver `routeMBoxThresholdFinite_of_decoratedPeel` gives `∀M,
-  RouteMBoxThresholdFinite M` = `(□)`, on-branch, gated on that one `sorry`.
-
-Axiom-clean for everything EXCEPT `decoratedPeelCoV` (and its consumers), which carry `sorryAx` —
-the one isolated gap, by design.
+Axiom-clean for everything EXCEPT `gammaPeelFromRedChain` (and consumers), which carry `sorryAx` —
+the one isolated per-chart gap, by design.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -76,12 +65,48 @@ theorem decoratedPeelCoV_imp_decoratedPeelStep (h : DecoratedPeelCoV) : Decorate
   intro L M hIH
   exact h M (fun t => hIH (redChain t M))
 
-/-- **The isolated analytic gap (pen-and-paper target).** `decoratedPeelCoV : DecoratedPeelCoV`
-— the single named `sorry`. Everything else in the R1-UPPER `(□)` chain is proved sorry-free modulo
-this one statement. NOT for integration to canonical (the controller keeps canonical at
-`(□)`-modulo-`DecoratedPeelStep`). -/
-theorem decoratedPeelCoV : DecoratedPeelCoV := by
+/-- **The per-chart peel residual (the gap after the cover reduction).** Given box-finiteness
+of every reduced chain `redChain t M`, each pivot-chart integral `gammaPeelIntegral M t ρ κ c'`
+is finite below `½·minAdm M`. This is the per-chart content the CoV pipeline delivers (absorption
+`freedSchurLoss_absorption` + Jacobian `lintegral_box_le_absorption` + radial + Γ-peel Regime-A/B +
+reduced-chain IH). Its `{B₀ ≠ 0}` part is dischargeable by the built CoV foundation once the Q_b
+rank-stratification (corner cover, Phase-2 piece 8) lands; the irreducible `{B₀ = 0}` deeper corner
+strata (`{rank Q_b ≤ b−2}`, `b ≥ 2`) are the genuine `DeeperStrataResolution` gap (cornrev: linchpin
+`minAdm ≤ corner-codim` is a tautology — codim ≠ finiteness-to-½codim). -/
+def GammaPeelFromRedChain : Prop :=
+  ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ),
+    (∀ t : ℕ, RouteMBoxThresholdFinite (redChain t M)) →
+    ∀ (t : ℕ), 1 ≤ t → t ≤ min (M 0) (M 1) →
+      ∀ (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : NNReal),
+        (c' : ℝ) < (minAdm M : ℝ) / 2 →
+        gammaPeelIntegral M t ρ κ (c' : ℝ) < ⊤
+
+/-- **The cover reduction — `GammaPeelFromRedChain → DecoratedPeelCoV` (sorry-free).** The banked
+pivot-chart cover `sjBoundaryPeel` bounds `routeMLayerBoxIntegral M` by the finite sum of per-chart
+peeled integrals over all cuts `t ∈ Icc 1 (min M₀ M₁)`; each is finite by the residual (using the
+reduced-chain finiteness), a finite sum of finite terms is finite. The trivial decoration's integral
+IS `routeMLayerBoxIntegral M` (`trivial_integral_eq`); `carrierThreshold M = ½·minAdm M`. -/
+theorem decoratedPeelCoV_of_gammaPeel (h : GammaPeelFromRedChain) : DecoratedPeelCoV := by
+  intro L M hred c' hc'
+  have hthr : (c' : ℝ) < (minAdm M : ℝ) / 2 := hc'
+  rw [trivial_integral_eq M (c' : ℝ)]
+  refine lt_of_le_of_lt (sjBoundaryPeel M c' hthr) ?_
+  refine ENNReal.sum_lt_top.mpr (fun t ht => ?_)
+  rw [Finset.mem_Icc] at ht
+  refine ENNReal.sum_lt_top.mpr (fun ρ _ => ?_)
+  refine ENNReal.sum_lt_top.mpr (fun κ _ => ?_)
+  exact h M hred t ht.1 ht.2 ρ κ c' hthr
+
+/-- **The per-chart residual (the isolated gap).** `gammaPeelFromRedChain : GammaPeelFromRedChain` —
+the single named `sorry`. The cover reduction above is PROVED, so the gap is now per-chart (more
+granular than `decoratedPeelCoV`). NOT for integration to canonical. -/
+theorem gammaPeelFromRedChain : GammaPeelFromRedChain := by
   sorry
+
+/-- **The peel CoV, on-branch (gated on the per-chart gap).** Composes the cover reduction with the
+per-chart residual. -/
+theorem decoratedPeelCoV : DecoratedPeelCoV :=
+  decoratedPeelCoV_of_gammaPeel gammaPeelFromRedChain
 
 /-- **The decorated single-peel step, on-branch (gated on one gap).** Composes `decoratedPeelCoV`
 through the wiring. -/
