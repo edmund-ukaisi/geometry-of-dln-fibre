@@ -2,6 +2,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJJointReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
+import DLNFibre.DLN.RLCT.Validate.RouteMSJThreadedShear
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCarrier` — the FRONT-PEEL carrier (wiring W1)
@@ -35,16 +36,22 @@ IH's threshold. Case-2 (Aoyagi's residual-block divisor) never binds `(□)`
   (the front-split integrand, outer domain restricted to `{rank P = q}`).
 * `shiftedThreshold` — PROVED. The charge accounting: `q ≤ tailMin M`, `c' < ½·minAdm M` ⟹
   `c' − M₀·q/2 < ½·minAdm (fun i => M i.succ − q)`. Pure arithmetic from `frontCharge_ge_minAdm`.
-* `outerRankCover` — NAMED SORRY (measure cover; correct statement). The front-split box integral is
-  bounded by the finite sum over `q = 0..tailMin M` of the stratum contributions.
-* `normalSlice_transfer` — **THE NAMED CRUX** (SORRY). On the `{rank P = q}` stratum, the
-  contribution is finite given box-finiteness of the SHIFTED chain (the IH). Bundles: the
-  `A₀ ↦ A₀·U` shift (regimes A/B), the normal-slice iso to the shifted `Σ⁰`, and the IH at the
-  shifted exponent.
-  Decomposes into CRUX B (the "sum-not-min" corner blow-up, mostly banked radial/sum machinery) and
-  CRUX A (bounded-below cores) — see the thread tide-plan.
-* `frontPeelStep_proof : SJStepHyp` — PROVED (modulo the two named sorries), composing
-  `outerRankCover` + `normalSlice_transfer`. The front-peel inductive step.
+* `outerRankCover` — PROVED. The front-split box integral is bounded by the finite sum over
+  `q = 0..tailMin M` of the stratum contributions.
+* `morse_reduced_box_lt_top` — PROVED (regime dispatch; borderline `c'=d/2` a named sorry). The
+  reduced-chain box with a `d`-dim isotropic Morse block is finite below `½·(d+minAdm R)`: `d=0` by
+  `hIH`, regime B by `radial_morse_dominates_absZ_lt_top`, regime A by `morseCore_residual_lt_top`.
+* `reducedMorseFront` / `reducedMorseFront_lt_top` — PROVED (radius 1). The per-chart CoV-image
+  endpoint (`d = M₀q`, `R = redTail M q`), finite below `½·minAdm M` via `morse_reduced_box_lt_top` +
+  `frontCharge_ge_minAdm`.
+* `NormalSliceChartData` / `normalSlice_transfer_of_data` — the interface (route A) + assembly
+  (route B, PROVED): the stratum contribution reduces to a finite chart family, each finite (the
+  above endpoint); a finite sum of finite terms is finite.
+* `normalSlice_transfer` — PROVED via the datum. On the `{rank P = q}` stratum the contribution is
+  finite given `hIH`. The residue is the datum constructor `normalSliceChartData` (NAMED SORRY, the
+  threaded-shear CoV at opaque widths, vslice `normalslice-cert.md` §2–4).
+* `frontPeelStep_proof : SJStepHyp` — PROVED (modulo the sorries), composing `outerRankCover` +
+  `normalSlice_transfer`. The front-peel inductive step.
 * `routeMBoxThresholdFinite_frontPeel` — PROVED (modulo the sorries): `RouteMBoxThresholdFinite M`
   ∀M, via `routeMBoxThresholdFinite_of_step frontPeelStep_proof sjBase1_freeMatrix`.
 * `sjJointResolution_frontPeel` — PROVED (modulo the sorries): the canonical `sjJointResolution`
@@ -52,9 +59,10 @@ IH's threshold. Case-2 (Aoyagi's residual-block divisor) never binds `(□)`
   front-peel box-finiteness (NOT through the spine — circular, per `RouteMSJJointReduce`'s header).
   The drop-in the controller wires to discharge the canonical `RouteMSJResolution.lean:803` sorry.
 
-**Branch discipline.** All gaps live on branch `genm-fpcarrier`; canonical stays 0-sorry/0-axiom.
-The two `sorry`s are `outerRankCover` (routine measure theory) and `normalSlice_transfer` (the
-single genuine analytic crux, vslice-fed).
+**Branch discipline.** All gaps live on branch `genm-threadedshear`; canonical stays 0-sorry/0-axiom.
+The three remaining `sorry`s are all TRUE statements: `normalSliceChartData` (the datum exists — the
+opaque-width threaded shear + loss split + finite pivot cover), `morse_reduced_box_lt_top`'s borderline
+`c' = d/2` (the log endpoint), and `reduced_frobSq_ae_pos` (the regime-A reduced-chain nondegeneracy).
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -191,6 +199,197 @@ theorem morseCore_residual_lt_top {Ω : Type*} [MeasurableSpace Ω] (μ : Measur
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hcore
 
+/-! ## The reduced-Morse-box endpoint (regime dispatch, PROVED modulo the borderline) -/
+
+/-- **The reduced-chain box with an isotropic Morse block is finite below the shifted threshold
+(PROVED — regime A/B dispatch, borderline isolated).** For a chain `R` with box finiteness `hIH`, a
+`d`-dimensional isotropic Morse block `X` summed with the reduced-chain squared loss
+`frobSq (prod R Y)`, integrated over `Y ∈ paramsBoxM R 1` and `X ∈ morseBox d 1`, is finite whenever
+`c' < ½·(d + minAdm R)` — the Codex "entry-point" endpoint. Three cases:
+* `d = 0` (no Morse block): the integrand is `frobSq(prod R Y)^{−c'}`, pulled out of the trivial
+  `X`-integral (`setLIntegral_const`, `morseBox` finite volume), leaving `routeMLayerBoxIntegral R c' 1`,
+  finite by `hIH` (`c' < ½·minAdm R`).
+* `c' < d/2` (regime B): the banked `radial_morse_dominates_absZ_lt_top` — the Morse block dominates,
+  `W ≥ 0`, `paramsBoxM R 1` finite volume; no core, no nondegeneracy needed.
+* `c' > d/2` (regime A): the banked `morseCore_residual_lt_top` peels the Morse block (charge `d/2`),
+  leaving the reduced core at the shifted exponent `c' − d/2 < ½·minAdm R`, finite by `hIH`; the a.e.
+  positivity `hWpos` (supplied only under the regime-A premise `d/2 < c'`, so honest even where the
+  reduced chain degenerates and regime A never fires).
+
+The borderline `c' = d/2` (the log endpoint, Codex restatement flag 1) is out of scope of both regime
+bricks; isolated as a NAMED sorry. -/
+theorem morse_reduced_box_lt_top (R : Fin (L + 1 + 1) → ℕ) (d : ℕ) (c' : NNReal)
+    (hIH : RouteMBoxThresholdFinite R)
+    (hc : (c' : ℝ) < ((d : ℝ) + (minAdm R : ℝ)) / 2)
+    (hWpos : (d : ℝ) / 2 < (c' : ℝ) →
+      ∀ᵐ Y ∂(volume.restrict (paramsBoxM R 1)), 0 < frobSq (prod R Y)) :
+    ∫⁻ Y in paramsBoxM R 1, (∫⁻ X in morseBox d 1,
+        ENNReal.ofReal ((∑ i, (X i) ^ 2 + frobSq (prod R Y)) ^ (-(c' : ℝ))) ∂volume) ∂volume < ⊤ := by
+  rcases Nat.eq_zero_or_pos d with hd0 | hdpos
+  · -- d = 0: the Morse block is empty; pull the constant `X`-integral out, close by `hIH`.
+    subst hd0
+    have hc0 : (c' : ℝ) < (minAdm R : ℝ) / 2 := by
+      rw [Nat.cast_zero, zero_add] at hc; exact hc
+    have hinner : ∀ Y : Params R,
+        (∫⁻ X in morseBox 0 1, ENNReal.ofReal ((∑ i, (X i) ^ 2 + frobSq (prod R Y)) ^ (-(c' : ℝ)))
+            ∂volume)
+          = ENNReal.ofReal ((frobSq (prod R Y)) ^ (-(c' : ℝ))) * volume (morseBox 0 1) := by
+      intro Y
+      rw [← setLIntegral_const (morseBox 0 1)
+        (ENNReal.ofReal ((frobSq (prod R Y)) ^ (-(c' : ℝ))))]
+      refine setLIntegral_congr_fun (morseBox_measurableSet 0 1) (fun X _ => ?_)
+      simp only [Finset.univ_eq_empty, Finset.sum_empty, zero_add]
+    calc ∫⁻ Y in paramsBoxM R 1, (∫⁻ X in morseBox 0 1,
+            ENNReal.ofReal ((∑ i, (X i) ^ 2 + frobSq (prod R Y)) ^ (-(c' : ℝ))) ∂volume) ∂volume
+        = ∫⁻ Y in paramsBoxM R 1,
+            ENNReal.ofReal ((frobSq (prod R Y)) ^ (-(c' : ℝ))) * volume (morseBox 0 1) ∂volume := by
+          exact lintegral_congr_ae (Filter.Eventually.of_forall (fun Y => hinner Y))
+      _ = (∫⁻ Y in paramsBoxM R 1, ENNReal.ofReal ((frobSq (prod R Y)) ^ (-(c' : ℝ))) ∂volume)
+            * volume (morseBox 0 1) := by
+          rw [lintegral_mul_const' _ _ (morseBox_volume_lt_top 0 1).ne]
+      _ < ⊤ := ENNReal.mul_lt_top (hIH c' hc0) (morseBox_volume_lt_top 0 1)
+  · -- d = m + 1.
+    obtain ⟨m, rfl⟩ := Nat.exists_eq_succ_of_ne_zero hdpos.ne'
+    rcases lt_trichotomy (c' : ℝ) ((m + 1 : ℝ) / 2) with hlt | heq | hgt
+    · -- regime B: the Morse block dominates (banked).
+      have := radial_morse_dominates_absZ_lt_top (m := m) (volume) (c' : ℝ) hlt c'.coe_nonneg
+        1 one_pos (fun Y => frobSq (prod R Y)) (fun Y => frobSq_nonneg _)
+        (paramsBoxM R 1) (paramsBoxM_volume_lt_top R 1)
+      exact this
+    · -- borderline c' = (m+1)/2: the log endpoint (Codex flag 1), out of scope of both bricks.
+      sorry
+    · -- regime A: peel the Morse block (banked `morseCore_residual_lt_top`), close the core by `hIH`.
+      have hshift : (c' : ℝ) - ((m : ℝ) + 1) / 2 < (minAdm R : ℝ) / 2 := by
+        have hh : ((↑(m + 1) : ℝ) + (minAdm R : ℝ)) / 2
+            = ((m : ℝ) + 1) / 2 + (minAdm R : ℝ) / 2 := by push_cast; ring
+        rw [hh] at hc; linarith
+      have hpos : (0 : ℝ) ≤ (c' : ℝ) - ((m : ℝ) + 1) / 2 := by linarith
+      set c'' : NNReal := ⟨(c' : ℝ) - ((m : ℝ) + 1) / 2, hpos⟩ with hc''
+      have hc''val : (c'' : ℝ) = (c' : ℝ) - ((m : ℝ) + 1) / 2 := rfl
+      have hcore : ∫⁻ Y in paramsBoxM R 1,
+          ENNReal.ofReal ((frobSq (prod R Y)) ^ (-((c' : ℝ) - ((m : ℝ) + 1) / 2))) ∂volume < ⊤ := by
+        have hlt2 : (c'' : ℝ) < (minAdm R : ℝ) / 2 := by rw [hc''val]; exact hshift
+        have hfin := hIH c'' hlt2
+        unfold routeMLayerBoxIntegral at hfin
+        rw [hc''val] at hfin
+        exact hfin
+      have hWp : ∀ᵐ Y ∂(volume.restrict (paramsBoxM R 1)), 0 < frobSq (prod R Y) := by
+        apply hWpos
+        show ((↑(m + 1) : ℝ)) / 2 < (c' : ℝ)
+        push_cast; exact hgt
+      exact morseCore_residual_lt_top (μ := volume) m (c' : ℝ) hgt 1 one_pos
+        (fun Y => frobSq (prod R Y)) (paramsBoxM R 1) hWp hcore
+
+/-- **The reduced chain is a.e.-nonvanishing on the regime-A stratum (NAMED SORRY — CRUX A).** Under
+the regime-A premise `M₀q/2 < c'` (with `c' < ½·minAdm M`), the reduced chain `redTail M q` is
+nondegenerate: `M₀q < minAdm M ≤ frontCharge q = M₀q + minAdm (redTail M q)` forces
+`minAdm (redTail M q) > 0`, so every tail width `> q` and the reduced product `prod (redTail M q) Y`
+is a genuine (not identically-zero) polynomial in `Y`, hence nonzero a.e. on the box (nonzero real
+polynomial ⟹ null zero-set; `_ae_pos` template `Uval4422_ae_pos`). The premise gate makes the
+statement honest where the reduced chain degenerates (`q = tailMin M`): there `M₀q/2 = ½·frontCharge ≥
+½·minAdm M > c'`, so regime A never fires and the implication is vacuous. -/
+theorem reduced_frobSq_ae_pos (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
+    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2) :
+    ((M 0 * q : ℕ) : ℝ) / 2 < (c' : ℝ) →
+      ∀ᵐ Y ∂(volume.restrict (paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ - q) 1)),
+        0 < frobSq (prod (fun i : Fin (L + 1 + 1) => M i.succ - q) Y) := by
+  sorry
+
+/-- **The reduced-chain Morse-block front integral** — the CoV image of one pivot chart's stratum
+contribution: the reduced chain `redTail M q` box integral with the front-peel Morse block of
+dimension `M₀·q`. -/
+noncomputable def reducedMorseFront (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (c' : ℝ) : ℝ≥0∞ :=
+  ∫⁻ Y in paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ - q) 1,
+    (∫⁻ X in morseBox (M 0 * q) 1,
+      ENNReal.ofReal ((∑ i, (X i) ^ 2
+        + frobSq (prod (fun i : Fin (L + 1 + 1) => M i.succ - q) Y)) ^ (-c')) ∂volume) ∂volume
+
+/-- **The reduced-Morse front integral is finite below the geometric threshold (PROVED, radius 1).**
+For `q ≤ tailMin M` and `c' < ½·minAdm M`, `reducedMorseFront M q c' < ⊤`, given the reduced-chain box
+finiteness `hIH`. Immediate from `morse_reduced_box_lt_top` (regime dispatch) at `R = redTail M q`,
+`d = M₀q`: the threshold `c' < ½·(M₀q + minAdm (redTail M q))` follows from `frontCharge_ge_minAdm`
+(`minAdm M ≤ M₀q + minAdm (redTail M q)`); the regime-A nondegeneracy is `reduced_frobSq_ae_pos`.
+This is the CoV image endpoint the datum constructor consumes; the radius-`1` box here is the core case
+— the threaded shear enlarges the reduced box (the coefficients `K_i = γ_i α_i⁻¹` are unbounded on the
+chart), so the constructor additionally needs the enlarged-radius domination (Codex flag 2, deferred). -/
+theorem reducedMorseFront_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
+    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (hIH : RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q)) :
+    reducedMorseFront M q (c' : ℝ) < ⊤ := by
+  unfold reducedMorseFront
+  refine morse_reduced_box_lt_top (fun i : Fin (L + 1 + 1) => M i.succ - q) (M 0 * q) c' hIH ?_ ?_
+  · have hfc := frontCharge_ge_minAdm M q hq
+    unfold frontCharge at hfc
+    have hcast : (minAdm M : ℝ)
+        ≤ ((M 0 * q : ℕ) : ℝ) + ((minAdm (fun i : Fin (L + 1 + 1) => M i.succ - q) : ℕ) : ℝ) := by
+      exact_mod_cast hfc
+    linarith
+  · exact reduced_frobSq_ae_pos M q hq c' hc'
+
+/-! ## The normal-slice chart datum — the interface (route A) + the assembly (route B)
+
+The crux is decomposed via the `NormalSliceChartData` interface pattern (Codex decomp
+`threads/genm-fpcarrier/codex/normalslice-decomp-answer.md`, §4 "cleanest decomposition"): the
+analytic assembly `normalSlice_transfer` reduces to a finite chart family whose per-chart finiteness
+is the interface field, so the only remaining content is the geometric construction of the datum
+(the threaded shear + loss split + finite pivot-chart cover, in the constructor). -/
+
+/-- **The normal-slice chart datum.** An abstract finite-chart witness that the tail-rank-`q` stratum
+contribution `frontStratumIntegral M q c'` reduces to a finite family of chart contributions, each
+finite below the geometric threshold `½·minAdm M` given the reduced-chain box finiteness (the strong
+induction hypothesis `RouteMBoxThresholdFinite (redTail M q)`).
+
+Constructing a `NormalSliceChartData M q` is exactly the threaded normal-slice change of variables
+(vslice `normalslice-cert.md` §2–4): the finite pivot-chart cover of the tail (`ι`), on each of which
+the block-shear CoV `M_1·P = [[α,B],[0,Z]]` (`α` invertible, `Z = prod (redTail M q) Y` the reduced
+product) turns the chart contribution into the disjoint Morse-block-plus-reduced-core integral
+`∫ ∫ (‖R‖² + frobSq Z)^{−c'}`, finite by the two banked radial-Morse endpoints (`morseCore_residual_lt_top`
+regime A + `radial_morse_dominates_absZ_lt_top` regime B) fed by the strong IH at the shifted exponent
+(`shiftedThreshold`). -/
+structure NormalSliceChartData (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) where
+  /-- The finite chart index (a pivot-chart selection of the tail). -/
+  ι : Type
+  /-- The chart index is finite. -/
+  [fintypeι : Fintype ι]
+  /-- The chart contribution to the stratum integral, at exponent `c'`. -/
+  chartInt : ι → ℝ → ℝ≥0∞
+  /-- The stratum contribution is dominated by the finite chart sum (the pivot-chart cover +
+  threaded-shear CoV, subadditive over the finite cover). -/
+  cover : ∀ c' : ℝ, frontStratumIntegral M q c' ≤ ∑ i, chartInt i c'
+  /-- Each chart contribution is finite below the geometric threshold, given the reduced-chain box
+  finiteness (the strong IH). Bundles the loss split + the regime-A/B radial-Morse endpoints. -/
+  chartFinite : ∀ c' : NNReal, (c' : ℝ) < (minAdm M : ℝ) / 2 →
+      RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q) →
+      ∀ i : ι, chartInt i (c' : ℝ) < ⊤
+
+attribute [instance] NormalSliceChartData.fintypeι
+
+/-- **The normal-slice transfer FROM the chart datum (route B, PROVED).** Given a
+`NormalSliceChartData M q`, the stratum contribution is finite: the finite chart cover dominates it
+(`cover`) and each chart is finite (`chartFinite`); a finite sum of finite terms is finite
+(`ENNReal.sum_lt_top`). The analytic assembly — no geometry — modulo the datum being inhabited. -/
+theorem normalSlice_transfer_of_data (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ)
+    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (hIH : RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q))
+    (χ : NormalSliceChartData M q) :
+    frontStratumIntegral M q (c' : ℝ) < ⊤ :=
+  lt_of_le_of_lt (χ.cover (c' : ℝ))
+    (ENNReal.sum_lt_top.mpr (fun i _ => χ.chartFinite c' hc' hIH i))
+
+/-- **The normal-slice chart datum EXISTS (the geometric construction, NAMED SORRY).** For an
+admissible tail-rank `q ≤ tailMin M`, the tail-rank-`q` stratum admits a normal-slice chart datum. This
+is the threaded normal-slice change of variables of vslice `normalslice-cert.md` §2–4 — the sole
+remaining geometric content of the front-peel: the finite pivot-chart cover of `{rank P ≥ q}`
+(`pivotLocus_eq_iUnion`), the opaque-width block-shear identity `M_i·X_i·M_{i+1}⁻¹ = [[α_i,B_i],[0,Y_i]]`
+(`L = 2` base banked as `frobSq_schur_block_split`; the rank output is banked as
+`RouteMSJThreadedShear.rank_eq_q_add_of_normalForm`), its measure-preservation (Jacobian `±1`), and the
+disjoint loss split `frobSq(A₀·P) ≃ ‖R‖² + frobSq (prod (redTail M q) Y)`. Isolated as the single
+geometric obligation; the analytic assembly above (`normalSlice_transfer_of_data`) and the reduced-Morse
+endpoints (`morseCore_residual_lt_top`, banked `radial_morse_dominates_absZ_lt_top`) are proven. -/
+noncomputable def normalSliceChartData (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M) :
+    NormalSliceChartData M q :=
+  sorry
+
 /-! ## THE CRUX — the normal-slice transfer (named sorry, vslice-fed) -/
 
 /-- **THE NAMED CRUX — the front-peel step on one tail-rank stratum.** On the stratum `{rank P = q}`
@@ -222,8 +421,8 @@ work is the opaque-width CoV construction; the analytic endpoints are banked/pro
 theorem normalSlice_transfer (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
     (hIH : RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q)) :
-    frontStratumIntegral M q (c' : ℝ) < ⊤ := by
-  sorry
+    frontStratumIntegral M q (c' : ℝ) < ⊤ :=
+  normalSlice_transfer_of_data M q c' hc' hIH (normalSliceChartData M q hq)
 
 /-! ## The front-peel inductive step + the W1 assembly -/
 
