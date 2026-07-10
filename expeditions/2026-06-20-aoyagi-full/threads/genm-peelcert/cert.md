@@ -236,3 +236,128 @@ residual Gram (item in §SCOPE). Everything else is banked.
   new module; front-load `b=1` (covered by `(2,2,1)`) then `b=2`. (3) A reviewer should check the
   `a<q−b+1` boundary against the actual `(t,ρ,κ)` charts that arise (whether any chart forces `a≥q−b+1`
   with `Q_b` genuinely degenerate — if so, that chart MUST use Regime B, never the peel).
+
+---
+
+# §B=2 COVER + REGIME-B ROUTING (follow-up 1, controller task — the last scoping of the ~65-75% heart)
+
+**Charge:** generalize the dominant-minor cover + Regime-B routing past `b=1`; front-load `b=2`;
+verify the `a<q−b+1` soundness against actual charts. **Exact algebra:** `/tmp/peelcert_routing.py`,
+`/tmp/peelcert_b2.py`, `/tmp/peelcert_corner.py`, `/tmp/peelcert_linchpin.py`, `/tmp/peelcert_bilinear.py`.
+**Decorrelated:** `codex/degen-{prompt,answer}.md` (gpt-5.x, xhigh; conclusion withheld — it independently
+derived the corner mechanism, the exact corner-codimension `= value(t+1)`, and the linchpin).
+
+## THE ROUTING VERDICT (exact — the soundness deliverable)
+
+For the peel at cut `t★`, with `a=M₀−t★`, `b=M₁−t★`, `q=M_last`, `Q_b` (`b×q`) the corank tail block,
+there are **three** routing categories (all determined by `(a,b,q)`, exact):
+
+| category | condition | routing |
+|---|---|---|
+| **(I) A-only** | `b≤q` and `a+b≤q` (`a<q−b+1`) | Regime A safe on the WHOLE chart — the whole-line `Γ`-peel's Gram `det(Q_bQ_bᵀ)^{−a/2}` is integrable even across the rank-drop locus. |
+| **(II) A + corner** | `b≤q` and `a+b>q` (`a≥q−b+1`) | Regime A on `{rank Q_b=b}` (dominant-minor cover) + the **degenerate-corner** treatment on `{rank Q_b<b}` (below). |
+| **(III) all-degenerate** | `b>q` | `{rank Q_b=b}` is EMPTY (`Q_b` can never have full row rank) — Regime A never applies; the whole chart is the degenerate-corner treatment. |
+
+Scan over `L=3..5`, widths `1..5`, at the binding cut (`b>0`): **A-only `1862`, needs-corner (II)+(III)
+`604`** (`≈25%`) — the corner branch is COMMON, not a rare edge. `b>q` (category III): `60/545`
+(`L≤4`). So the "clean CoV closes it" story genuinely requires the corner machinery. `(2,2,1)` is
+category II (`a+b=2>q=1`); `(2,3,2)` is category II (`a=1,b=2,q=2`, `a+b=3>2`).
+
+**Exact characterization:** category II/III (needs corner) ⟺ `a≥q−b+1` ⟺ `a+b>q` ⟺ `M₀+M₁−2t★>M_last`.
+The condition `a<q−b+1` I flagged in the base cert is exactly the Gram-integrability boundary (Codex Q2,
+`det(Q_bQ_bᵀ)^{−a/2}dQ_b ∼ r^{q−b−a}dr` near a rank-`(b−1)` point, integrable iff `a<q−b+1`). It FAILS
+for `≈25%` of charts (including `(2,2,1)`), so the corner treatment is load-bearing.
+
+## THE b=2 DOMINANT-MINOR COVER (exact)
+
+`{rank Q_b=b}` (`b×q`, full row rank) is covered by `(q choose b)` **dominant-`b`-minor charts**, one per
+`b`-column-subset `S`, chart-`S = {|det Q_b[:,S]| ≥ |det Q_b[:,S′]| ∀S′}`. Cauchy-Binet (verified
+residual-0, `b=2`, `q=2,3`): `det(Q_bQ_bᵀ) = Σ_{|S|=b} det(Q_b[:,S])²`, so on chart-`S`
+`det(Q_bQ_bᵀ) ≍ det(Q_b[:,S])²` (within a factor `(q choose b)`), and the dominant minor is bounded below
+by a fixed constant `δ>0` on `{|det Q_b[:,S]|≥δ}`. There the Gram is a smooth positive unit, Regime A is
+the clean factoring of the base cert, and the reduced factor is `routeMLayerBoxIntegral (redChain) c′′`
+(the one-shorter IH), finite for `c′<½·minAdm(M)`. **Measure-matching confirmed:** on each dominant chart
+the residual Gram is a unit, so the reduced integral IS the redChain box integral at `c′′` (the base
+cert's factoring, now on each chart of the cover).
+
+## THE DEGENERATE CORNER `{rank Q_b<b}` (Codex-confirmed, exact for 3-width)
+
+The whole-line `Γ`-peel is UNSAFE here (categories II/III): its Gram bound diverges (`a≥q−b+1`), the dyadic
+`|det Q_b|`-shell sum of that lossy bound diverges (`Σ 2^{n(a−1)}`, `a≥1`), and dropping the corank term
+(`freed^{−c′}≤‖B₀‖^{−2c′}`) reaches only `c′<1` — ALL three bounds are LOSSY (verified). But the TRUE
+integral over the corner IS finite up to `½·minAdm(M)` (MC: the `(2,3,2)` corner `{|det Y|<0.15}` is finite
+for `c′<2` and destabilizes at `c′→2`, `/tmp/peelcert_corner.py`). The correct mechanism (Codex Q1, exact
+for the rank-`(b−1)` corner of a 3-width chain):
+
+- On a chart with a rank-`(b−1)` minor of `Q_b` a unit, `Q_b ∼ diag(I_{b−1}, z)`, `z∈ℝ^{D}`, `D=q−b+1`.
+- Split `Γ = (Γ_∥, γ)`, `γ∈ℝ^{a}`. **Keep `Γ` in its BOUNDED box** (do NOT extend to `ℝ^{ab}`). The
+  `Γ_∥` directions are honest Morse directions — charge `a(b−1)`. (This is the `§CONCESSION` "box keeps the
+  collapsing direction `O(1)`" mechanism, now inside the tail.)
+- The residual is the **bounded-box bilinear** `‖B₀‖² + ‖C′B₀ + γ·z‖²`. The outer product `γ·z`
+  (`γ∈ℝ^a`, `z∈ℝ^D`) is EXACTLY the **2-layer chain `(a,1,D)`**: `minAdm(a,1,D)=min(a,D)` (verified
+  `0/25`), so its zeta threshold is `½·min(a,D)`. (MC confirms threshold `½·min(a,D)`,
+  `/tmp/peelcert_bilinear.py`.) **This is the `(S,J)` rank-flag recursion in action** — the corner of one
+  peel is itself a smaller zero-product/DLN problem.
+
+**The corner codimension is EXACT:**
+
+> `corner-codim = t★·q + a(b−1) + min(a, q−b+1) = value(t★+1)`  (the neighbouring admissible cut).
+
+Verified `0 violations`: (a) `corner-codim = value(t★+1)` when `a≥D` (`/tmp/peelcert_linchpin.py`, 546
+3-width charts, all cuts); (b) the **linchpin `minAdm(M) ≤ corner-codim`** (`0/546`); (c) at the binding
+cut `corner-codim ≥ minAdm(M)` (`0/146`) — **the corner NEVER binds before the full-rank region**; (d) in
+the safe regime `a<q−b+1`, `corner-codim = t★q+ab = value(t★) = minAdm(M)` (`0/151`). So the corner is
+integrable up to `½·minAdm(M)` (with equality iff safe), the full-rank Regime-A region is what binds.
+
+**"Deeper strata inside minAdm(redChain)" — confirmed, sharpened:** the corner `{rank Q_b=b−1}` has codim
+`= value(t★+1) ≥ minAdm(M)` (since `minAdm = min_t value(t)`). So each deeper corank stratum corresponds to
+the neighbouring cut `t★+1`, whose admissible value dominates `minAdm(M)` — the deeper strata are strictly
+non-binding. `tq = minAdm(redChain t★ M)` for 3-width (the leaf), so the corner budget is
+`minAdm(redChain) + a(b−1) + min(a,D)` — the redChain IH plus the corner's own Morse+bilinear charge.
+
+## Q3 — the corner is genuinely part of the SAME peel (a correction to "offload to other charts")
+
+Rank loss of `Q_b` is a **tail condition** (`Q_b = Y·A_{≥2}`), NOT an `A₀`-minor condition. Points with
+`Γ=0` and `rank Q_b<b` **need not lie in any `t★+1` `A₀`-pivot chart** (Codex Q3). So a single `t★`-peel
+CANNOT prove only the full-rank locus and offload the complement to other charts of the `A₀`-cover — it
+MUST close the corner itself, via the bounded-box + bilinear-recursion above. What IS true is that the
+corner's EXPONENT is governed by the neighbouring cut `t★+1`'s value (the linchpin), so it is non-binding.
+
+## GENERAL-`M` (past 3-width): the corner RECURSES
+
+For `L>0` (deeper tail) the corner treatment is recursive (Codex Q1 tail): the residual singular block is
+not `det(Q_bQ_bᵀ)^{−a/2}` but a **smaller zero-product problem** in the flat `Γ`-block + the deeper-tail
+normal variables — i.e. the corner spawns a sub-peel on `(a, 1, deeper)`, closed by the same machinery
+recursively. The 3-width case is the base (bilinear `(a,1,D)` leaf); the general case is the rank-flag
+recursion the `(S,J)` build already descends. The linchpin `minAdm(M) ≤ value(t★+1)` is the general
+non-binding guarantee (trivially, `minAdm=min_t value(t)`); the exact per-level corner-codim generalizes
+`t★q+a(b−1)+min(a,D)` layer by layer.
+
+## UPDATED LEAN WIRING (the corner adds to the base cert's list)
+
+8. **dominant-minor cover** — Cauchy-Binet `det(Q_bQ_bᵀ)=Σ_S det(Q_b[:,S])²` + the finite `(q choose b)`
+   dominant-chart partition of `{rank Q_b=b}`. NEW (measurable, `det` continuous).
+9. **corner (categories II/III)** — bounded-box `Γ_∥` Morse (banked corank-atom shape, restricted to the
+   box = Regime B `freedSchurLoss_inner_bounded_lt_top`) + the residual `(a,1,D)` bilinear closed by the
+   `minAdm(a,1,D)=min(a,D)` leaf (banked base `sjBase1_freeMatrix` / the free-matrix Morse). The linchpin
+   `minAdm(M) ≤ t★q+a(b−1)+min(a,q−b+1)` is a NEW ℕ-lemma (0/546, 3-width; general = the rank-flag
+   sub-additivity generalizing banked `minAdm_rrp_subadd`).
+10. **`b>q` charts (category III)** — no full-rank locus; the whole chart is the corner treatment (9).
+
+## CLOSE (follow-up 1)
+
+- **Firmest.** Routing is exact and three-way: A-only (`a+b≤q`), A+corner (`b≤q<a+b`), all-degenerate
+  (`b>q`); `≈25%` need the corner. The `b=2` dominant-minor cover is exact (Cauchy-Binet residual-0). The
+  degenerate corner is closed WITHIN the peel by bounded-box `Γ_∥` Morse + the residual `(a,1,D)` bilinear
+  recursion; its codim `= value(t★+1) ≥ minAdm(M)` (linchpin `0/546`), so the corner is non-binding and the
+  full-rank Regime-A region binds. All decorrelated-confirmed (Codex derived the corner mechanism + the
+  `value(t+1)` identity independently).
+- **Most likely to break / watch.** (i) The general-`M` (deeper-tail) corner recursion — I certified the
+  3-width base exactly; the recursive step (corner spawns a sub-peel) is the rank-flag recursion, verified
+  only via the linchpin `minAdm≤value(t+1)` (which is general and trivial from the `min`), not the full
+  per-level exponent count. (ii) The `b>q` charts are entirely degenerate — confirm the banked driver's
+  cover actually produces such charts and that Regime B closes them (no full-rank locus to lean on).
+- **Next.** (1) Formaliser: the corner ℕ-linchpin `minAdm(M) ≤ t★q+a(b−1)+min(a,q−b+1)` (new, 0/546) +
+  the `minAdm(a,1,D)=min(a,D)` leaf. (2) The bounded-box `Γ_∥`-Morse + bilinear-`(a,1,D)` corner module,
+  front-load `(2,3,2)` (`b=2`, category II). (3) A reviewer on the general-`M` recursive corner (past
+  3-width) — the one piece verified only via the trivial `min` linchpin, not a full exponent count.

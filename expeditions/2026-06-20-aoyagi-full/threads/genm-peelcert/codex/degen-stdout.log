@@ -1,0 +1,412 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f4d1c-cb28-7190-9d78-7d76ffa0944b
+--------
+user
+<task>
+Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+loss, chain of matrix widths). Now specifically about the DEGENERATE corner of one peel.
+
+RECAP. Chart with pivot cut t, a=M₀−t, b=M₁−t, q=M_last. Corank tail block Q_b (b×q). The freed loss is
+  freed = ‖B₀‖²_F + ‖C′·B₀ + Γ·Q_b‖²_F,   B₀ = reduced-chain product (t×q), Γ free (a×b).
+On the FULL-ROW-RANK locus {rank Q_b = b} I have an EXACT clean factoring: cover {rank Q_b=b} by
+dominant-b-minor charts (Cauchy-Binet det(Q_bQ_bᵀ)=Σ_{|S|=b} det(Q_b[:,S])²), and on each chart the
+whole-ℝ^{ab} Γ-Morse peel gives det(Q_bQ_bᵀ)^{−a/2}·‖B₀‖^{ab−2c′}, the Gram is a smooth positive unit
+(dominant minor bounded below by a fixed constant), and the integral is (radial monomial)×(reduced-chain
+box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+
+THE PROBLEM (the degenerate corner {rank Q_b < b}, e.g. near det Q_b=0 for square b=q):
+I have checked, exactly, that near {rank Q_b < b}:
+  (i) integrating Γ over ALL of ℝ^{ab} then estimating gives det(Q_bQ_bᵀ)^{−a/2} whose Q_b-integral
+      DIVERGES when a ≥ q−b+1 (near a rank-(b−1) point det(Q_bQ_bᵀ)∼|z|², z∈ℝ^{q−b+1}, so
+      ∼r^{q−b−a}dr; divergent for a≥q−b+1);
+  (ii) a dyadic-shell sum in |det Q_b| of that lossy bound also diverges (Σ 2^{n(a−1)}, a≥1);
+  (iii) bounding freed^{−c′} ≤ ‖B₀‖^{−2c′} (drop the corank term) and integrating over the tail box
+        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+finite for c′<2 and diverges only as c′→2. So the true integral over the degenerate corner IS finite up
+to ½·minAdm(M); the three bounds above are all LOSSY there.
+
+QUESTIONS (genuinely open — do not assume any particular resolution):
+(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+     In particular: is the right move (a) to KEEP Γ in its bounded box (not ℝ^{ab}) so the collapsing
+     corank direction stays O(1) — a "box keeps the flat direction bounded" mechanism — and integrate the
+     transverse directions with a codimension/Morse count; or (b) to recurse (the rank-(b−1) corner is a
+     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+(Q2) The codimension of {rank Q_b ≤ b−1} in the corank-tail space — call it D_deep. Is the correct
+     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+     corner exponent stays below D_deep? If so what are D_deep and the charge for a 3-width chain
+     (Q_b = the corank rows of A₁, b×M₂)?
+(Q3) Is the degenerate corner genuinely part of the SAME peel (must be closed here), or is it covered by a
+     DIFFERENT chart of the cover (a different dominant A₀-minor / different pivot cut t′) so that each
+     single peel only ever needs its own full-rank locus {rank Q_b=b}? Which is it, and why?
+</task>
+
+<output_contract>
+Answer Q1,Q2,Q3 in order. Give the mechanism + exponent count for Q1 concretely. Separate what you can
+argue exactly from heuristics. Under ~500 words. Do not pad or hedge.
+</output_contract>
+
+<grounding_rules>
+Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+Pen-and-paper math, not formalization.
+</grounding_rules>
+
+codex
+I’ll check the local notes for the exact notation around this peel, then I’ll answer the three questions directly with the exponent bookkeeping.
+exec
+/bin/bash -lc "sed -n '1,220p' CLAUDE.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ exited 2 in 0ms:
+sed: can't read CLAUDE.md: No such file or directory
+
+exec
+/bin/bash -lc "sed -n '1,220p' README.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ exited 2 in 0ms:
+sed: can't read README.md: No such file or directory
+
+exec
+/bin/bash -lc 'rg -n "freed|peel|minAdm|Q_b|corank|rank Q" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+./degen-prompt.md:2:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-prompt.md:3:loss, chain of matrix widths). Now specifically about the DEGENERATE corner of one peel.
+./degen-prompt.md:5:RECAP. Chart with pivot cut t, a=M₀−t, b=M₁−t, q=M_last. Corank tail block Q_b (b×q). The freed loss is
+./degen-prompt.md:6:  freed = ‖B₀‖²_F + ‖C′·B₀ + Γ·Q_b‖²_F,   B₀ = reduced-chain product (t×q), Γ free (a×b).
+./degen-prompt.md:7:On the FULL-ROW-RANK locus {rank Q_b = b} I have an EXACT clean factoring: cover {rank Q_b=b} by
+./degen-prompt.md:8:dominant-b-minor charts (Cauchy-Binet det(Q_bQ_bᵀ)=Σ_{|S|=b} det(Q_b[:,S])²), and on each chart the
+./degen-prompt.md:9:whole-ℝ^{ab} Γ-Morse peel gives det(Q_bQ_bᵀ)^{−a/2}·‖B₀‖^{ab−2c′}, the Gram is a smooth positive unit
+./degen-prompt.md:11:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-prompt.md:13:THE PROBLEM (the degenerate corner {rank Q_b < b}, e.g. near det Q_b=0 for square b=q):
+./degen-prompt.md:14:I have checked, exactly, that near {rank Q_b < b}:
+./degen-prompt.md:15:  (i) integrating Γ over ALL of ℝ^{ab} then estimating gives det(Q_bQ_bᵀ)^{−a/2} whose Q_b-integral
+./degen-prompt.md:16:      DIVERGES when a ≥ q−b+1 (near a rank-(b−1) point det(Q_bQ_bᵀ)∼|z|², z∈ℝ^{q−b+1}, so
+./degen-prompt.md:18:  (ii) a dyadic-shell sum in |det Q_b| of that lossy bound also diverges (Σ 2^{n(a−1)}, a≥1);
+./degen-prompt.md:19:  (iii) bounding freed^{−c′} ≤ ‖B₀‖^{−2c′} (drop the corank term) and integrating over the tail box
+./degen-prompt.md:20:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-prompt.md:21:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-prompt.md:23:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-prompt.md:26:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-prompt.md:28:     corank direction stays O(1) — a "box keeps the flat direction bounded" mechanism — and integrate the
+./degen-prompt.md:30:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-prompt.md:31:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-prompt.md:32:(Q2) The codimension of {rank Q_b ≤ b−1} in the corank-tail space — call it D_deep. Is the correct
+./degen-prompt.md:33:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-prompt.md:35:     (Q_b = the corank rows of A₁, b×M₂)?
+./degen-prompt.md:36:(Q3) Is the degenerate corner genuinely part of the SAME peel (must be closed here), or is it covered by a
+./degen-prompt.md:38:     single peel only ever needs its own full-rank locus {rank Q_b=b}? Which is it, and why?
+./degen-prompt.md:47:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-prompt.md:48:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./crux-prompt.md:7:"freed Schur loss" is the real-analytic function of blocks
+./crux-prompt.md:10:  Q̃  ((t+b)×q), split as Q_p = top t rows, Q_b = bottom b rows,
+./crux-prompt.md:12:defined by   Q̃ₚ := Q_p + P⁻¹ B₁₂ Q_b   (t×q)  and
+./crux-prompt.md:14:  freedSchurLoss = ‖P·Q̃ₚ‖²_F  +  ‖C·Q̃ₚ + Γ·Q_b‖²_F     (Frobenius squared).
+./crux-prompt.md:17:the tail matrices A₁,…,A_L, and Q_p,Q_b are its row blocks. The chart integral is
+./crux-prompt.md:20:     freedSchurLoss^(−c′)   dLebesgue.
+./crux-prompt.md:22:"peelCharge" := a·b. The "reduced chain" is redChain = (t, M₂, …, M_L): the first TWO widths
+./crux-prompt.md:24:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./crux-prompt.md:25:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./crux-prompt.md:26:c′ < minAdm(M)/2.
+./crux-prompt.md:29:1. freedSchurLoss is degree-2 homogeneous in the tail Q̃: freed(u·Q̃)=u²·freed(Q̃). (exact)
+./crux-prompt.md:31:     ∫_{ℝ^{ab}} freed^{−c′} dΓ = K(a,b,c′)·det(Q_b Q_bᵀ)^{−a/2}·‖P·Q̃ₚ‖_F^{ab−2c′}
+./crux-prompt.md:32:   with K a finite Beta/Gamma constant; here P·Q̃ₚ = P·Q_p + B₁₂·Q_b =: B₀ (t×q). (verified
+./crux-prompt.md:36:   c′′ := c′ − peelCharge/2.
+./crux-prompt.md:38:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./crux-prompt.md:43:     ×  (the reduced-chain box integral ∫ ‖prod(redChain)·Bnew‖_F^{−c′′} dBnew, c′′=c′−peelCharge/2)?
+./crux-prompt.md:47:(Q2) The factor det(Q_b Q_bᵀ)^{−a/2} from step 2 is singular where Q_b loses row rank. Does a
+./crux-prompt.md:48:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./crux-prompt.md:49:     bounded below) turn det(Q_b Q_bᵀ)^{−a/2}·dLebesgue into a NON-negative-power monomial times a
+./crux-prompt.md:52:     over all of ℝ^{ab} where Q_b is degenerate)? Be concrete about the b>1 case.
+./crux-prompt.md:53:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./crux-prompt.md:64:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./crux-stdout.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+./crux-stdout.log:21:"freed Schur loss" is the real-analytic function of blocks
+./crux-stdout.log:24:  Q̃  ((t+b)×q), split as Q_p = top t rows, Q_b = bottom b rows,
+./crux-stdout.log:26:defined by   Q̃ₚ := Q_p + P⁻¹ B₁₂ Q_b   (t×q)  and
+./crux-stdout.log:28:  freedSchurLoss = ‖P·Q̃ₚ‖²_F  +  ‖C·Q̃ₚ + Γ·Q_b‖²_F     (Frobenius squared).
+./crux-stdout.log:31:the tail matrices A₁,…,A_L, and Q_p,Q_b are its row blocks. The chart integral is
+./crux-stdout.log:34:     freedSchurLoss^(−c′)   dLebesgue.
+./crux-stdout.log:36:"peelCharge" := a·b. The "reduced chain" is redChain = (t, M₂, …, M_L): the first TWO widths
+./crux-stdout.log:38:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./crux-stdout.log:39:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./crux-stdout.log:40:c′ < minAdm(M)/2.
+./crux-stdout.log:43:1. freedSchurLoss is degree-2 homogeneous in the tail Q̃: freed(u·Q̃)=u²·freed(Q̃). (exact)
+./crux-stdout.log:45:     ∫_{ℝ^{ab}} freed^{−c′} dΓ = K(a,b,c′)·det(Q_b Q_bᵀ)^{−a/2}·‖P·Q̃ₚ‖_F^{ab−2c′}
+./crux-stdout.log:46:   with K a finite Beta/Gamma constant; here P·Q̃ₚ = P·Q_p + B₁₂·Q_b =: B₀ (t×q). (verified
+./crux-stdout.log:50:   c′′ := c′ − peelCharge/2.
+./crux-stdout.log:52:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./crux-stdout.log:57:     ×  (the reduced-chain box integral ∫ ‖prod(redChain)·Bnew‖_F^{−c′′} dBnew, c′′=c′−peelCharge/2)?
+./crux-stdout.log:61:(Q2) The factor det(Q_b Q_bᵀ)^{−a/2} from step 2 is singular where Q_b loses row rank. Does a
+./crux-stdout.log:62:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./crux-stdout.log:63:     bounded below) turn det(Q_b Q_bᵀ)^{−a/2}·dLebesgue into a NON-negative-power monomial times a
+./crux-stdout.log:66:     over all of ℝ^{ab} where Q_b is degenerate)? Be concrete about the b>1 case.
+./crux-stdout.log:67:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./crux-stdout.log:78:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./crux-stdout.log:85:I’ll treat the stated Γ integral as allowed, but I’m going to be careful about its rank hypothesis. The main issue is whether the tail variables can be separated into a single scale and angular variables without changing the box/domain and without carrying the lower block \(Q_b\).
+./crux-stdout.log:95:B_0=B A_2\cdots A_L,\qquad Q_b=Y A_2\cdots A_L,
+./crux-stdout.log:99:\mathrm{freed}= \|B A_{\ge2}\|^2+\|C'B A_{\ge2}+\Gamma Y A_{\ge2}\|^2 .
+./crux-stdout.log:108:dB\,dY=u^{M_1M_2-1}\,du\,d\mu,\qquad \mathrm{freed}=u^2(\cdots).
+./crux-stdout.log:115:If one also integrates \(\Gamma\) over all \(\mathbb R^{ab}\) and stays on the full-row-rank locus of \(Q_b\), the powers still combine to this same \(\alpha\):
+./crux-stdout.log:117:\det(Q_bQ_b^T)^{-a/2}\|B_0\|^{ab-2c'}
+./crux-stdout.log:123:\det(\widehat Q_b\widehat Q_b^T)^{-a/2},
+./crux-stdout.log:125:plus non-product box/cutoff domains. On a chart where a fixed \(b\times b\) minor of \(\widehat Q_b\) is bounded below, this determinant is a smooth positive unit, so the singular part is the reduced-chain zeta integral with
+./crux-stdout.log:135:\det(Q_bQ_b^T)\sim |z|^2.
+./crux-stdout.log:139:\det(Q_bQ_b^T)^{-a/2}dQ_b \sim |z|^{-a}\,dz
+./crux-stdout.log:142:This is a nonnegative monomial only if \(a\le q-b\); it is merely integrable if \(a<q-b+1\). Otherwise it diverges. Thus the all-\(\mathbb R^{ab}\) \(\Gamma\)-integration is unsafe near degenerate \(Q_b\); one must either restrict to full-rank charts or keep bounded \(\Gamma\) coupled with \(Q_b\).
+./crux-stdout.log:150:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./crux-stdout.log:161:B_0=B A_2\cdots A_L,\qquad Q_b=Y A_2\cdots A_L,
+./crux-stdout.log:165:\mathrm{freed}= \|B A_{\ge2}\|^2+\|C'B A_{\ge2}+\Gamma Y A_{\ge2}\|^2 .
+./crux-stdout.log:174:dB\,dY=u^{M_1M_2-1}\,du\,d\mu,\qquad \mathrm{freed}=u^2(\cdots).
+./crux-stdout.log:181:If one also integrates \(\Gamma\) over all \(\mathbb R^{ab}\) and stays on the full-row-rank locus of \(Q_b\), the powers still combine to this same \(\alpha\):
+./crux-stdout.log:183:\det(Q_bQ_b^T)^{-a/2}\|B_0\|^{ab-2c'}
+./crux-stdout.log:189:\det(\widehat Q_b\widehat Q_b^T)^{-a/2},
+./crux-stdout.log:191:plus non-product box/cutoff domains. On a chart where a fixed \(b\times b\) minor of \(\widehat Q_b\) is bounded below, this determinant is a smooth positive unit, so the singular part is the reduced-chain zeta integral with
+./crux-stdout.log:201:\det(Q_bQ_b^T)\sim |z|^2.
+./crux-stdout.log:205:\det(Q_bQ_b^T)^{-a/2}dQ_b \sim |z|^{-a}\,dz
+./crux-stdout.log:208:This is a nonnegative monomial only if \(a\le q-b\); it is merely integrable if \(a<q-b+1\). Otherwise it diverges. Thus the all-\(\mathbb R^{ab}\) \(\Gamma\)-integration is unsafe near degenerate \(Q_b\); one must either restrict to full-rank charts or keep bounded \(\Gamma\) coupled with \(Q_b\).
+./crux-stdout.log:216:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./degen-stdout.log:5:workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+./degen-stdout.log:16:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-stdout.log:17:loss, chain of matrix widths). Now specifically about the DEGENERATE corner of one peel.
+./degen-stdout.log:19:RECAP. Chart with pivot cut t, a=M₀−t, b=M₁−t, q=M_last. Corank tail block Q_b (b×q). The freed loss is
+./degen-stdout.log:20:  freed = ‖B₀‖²_F + ‖C′·B₀ + Γ·Q_b‖²_F,   B₀ = reduced-chain product (t×q), Γ free (a×b).
+./degen-stdout.log:21:On the FULL-ROW-RANK locus {rank Q_b = b} I have an EXACT clean factoring: cover {rank Q_b=b} by
+./degen-stdout.log:22:dominant-b-minor charts (Cauchy-Binet det(Q_bQ_bᵀ)=Σ_{|S|=b} det(Q_b[:,S])²), and on each chart the
+./degen-stdout.log:23:whole-ℝ^{ab} Γ-Morse peel gives det(Q_bQ_bᵀ)^{−a/2}·‖B₀‖^{ab−2c′}, the Gram is a smooth positive unit
+./degen-stdout.log:25:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-stdout.log:27:THE PROBLEM (the degenerate corner {rank Q_b < b}, e.g. near det Q_b=0 for square b=q):
+./degen-stdout.log:28:I have checked, exactly, that near {rank Q_b < b}:
+./degen-stdout.log:29:  (i) integrating Γ over ALL of ℝ^{ab} then estimating gives det(Q_bQ_bᵀ)^{−a/2} whose Q_b-integral
+./degen-stdout.log:30:      DIVERGES when a ≥ q−b+1 (near a rank-(b−1) point det(Q_bQ_bᵀ)∼|z|², z∈ℝ^{q−b+1}, so
+./degen-stdout.log:32:  (ii) a dyadic-shell sum in |det Q_b| of that lossy bound also diverges (Σ 2^{n(a−1)}, a≥1);
+./degen-stdout.log:33:  (iii) bounding freed^{−c′} ≤ ‖B₀‖^{−2c′} (drop the corank term) and integrating over the tail box
+./degen-stdout.log:34:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-stdout.log:35:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-stdout.log:37:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-stdout.log:40:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-stdout.log:42:     corank direction stays O(1) — a "box keeps the flat direction bounded" mechanism — and integrate the
+./degen-stdout.log:44:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-stdout.log:45:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-stdout.log:46:(Q2) The codimension of {rank Q_b ≤ b−1} in the corank-tail space — call it D_deep. Is the correct
+./degen-stdout.log:47:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-stdout.log:49:     (Q_b = the corank rows of A₁, b×M₂)?
+./degen-stdout.log:50:(Q3) Is the degenerate corner genuinely part of the SAME peel (must be closed here), or is it covered by a
+./degen-stdout.log:52:     single peel only ever needs its own full-rank locus {rank Q_b=b}? Which is it, and why?
+./degen-stdout.log:61:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-stdout.log:62:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./degen-stdout.log:67:I’ll check the local notes for the exact notation around this peel, then I’ll answer the three questions directly with the exponent bookkeeping.
+./crux-answer.md:9:B_0=B A_2\cdots A_L,\qquad Q_b=Y A_2\cdots A_L,
+./crux-answer.md:13:\mathrm{freed}= \|B A_{\ge2}\|^2+\|C'B A_{\ge2}+\Gamma Y A_{\ge2}\|^2 .
+./crux-answer.md:22:dB\,dY=u^{M_1M_2-1}\,du\,d\mu,\qquad \mathrm{freed}=u^2(\cdots).
+./crux-answer.md:29:If one also integrates \(\Gamma\) over all \(\mathbb R^{ab}\) and stays on the full-row-rank locus of \(Q_b\), the powers still combine to this same \(\alpha\):
+./crux-answer.md:31:\det(Q_bQ_b^T)^{-a/2}\|B_0\|^{ab-2c'}
+./crux-answer.md:37:\det(\widehat Q_b\widehat Q_b^T)^{-a/2},
+./crux-answer.md:39:plus non-product box/cutoff domains. On a chart where a fixed \(b\times b\) minor of \(\widehat Q_b\) is bounded below, this determinant is a smooth positive unit, so the singular part is the reduced-chain zeta integral with
+./crux-answer.md:49:\det(Q_bQ_b^T)\sim |z|^2.
+./crux-answer.md:53:\det(Q_bQ_b^T)^{-a/2}dQ_b \sim |z|^{-a}\,dz
+./crux-answer.md:56:This is a nonnegative monomial only if \(a\le q-b\); it is merely integrable if \(a<q-b+1\). Otherwise it diverges. Thus the all-\(\mathbb R^{ab}\) \(\Gamma\)-integration is unsafe near degenerate \(Q_b\); one must either restrict to full-rank charts or keep bounded \(\Gamma\) coupled with \(Q_b\).
+./crux-answer.md:64:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+
+codex
+The local thread has the prior “crux” answer and this degenerate prompt mirrored; I’m reading the prior answer mainly to avoid changing notation midstream.
+exec
+/bin/bash -lc "sed -n '1,120p' crux-answer.md" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+**Q1.** No global exact factorization of the stated chart integral into a 1D radial integral times the reduced-chain box integral.
+
+The exact useful CoV is: split \(A_1=\binom{X}{Y}\) with \(X\in\mathbb R^{t\times M_2}\), \(Y\in\mathbb R^{b\times M_2}\), and set
+\[
+B=P X+B_{12}Y,\qquad Y=Y .
+\]
+For fixed \(P,B_{12}\), the Jacobian is \(|\det P|^{-M_2}\). Then
+\[
+B_0=B A_2\cdots A_L,\qquad Q_b=Y A_2\cdots A_L,
+\]
+and, after \(C'=CP^{-1}\),
+\[
+\mathrm{freed}= \|B A_{\ge2}\|^2+\|C'B A_{\ge2}+\Gamma Y A_{\ge2}\|^2 .
+\]
+
+On a local polar/blow-up chart in the variables \((B,Y)\), dimension \(M_1M_2=(t+b)M_2\),
+\[
+B=u\widehat B,\qquad Y=u\widehat Y,
+\]
+so
+\[
+dB\,dY=u^{M_1M_2-1}\,du\,d\mu,\qquad \mathrm{freed}=u^2(\cdots).
+\]
+Thus the radial exponent is
+\[
+\alpha=M_1M_2-1-2c'.
+\]
+
+If one also integrates \(\Gamma\) over all \(\mathbb R^{ab}\) and stays on the full-row-rank locus of \(Q_b\), the powers still combine to this same \(\alpha\):
+\[
+\det(Q_bQ_b^T)^{-a/2}\|B_0\|^{ab-2c'}
+\sim u^{-ab}u^{ab-2c'}=u^{-2c'}.
+\]
+
+The obstruction to exact product factorization is the remaining angular factor
+\[
+\det(\widehat Q_b\widehat Q_b^T)^{-a/2},
+\]
+plus non-product box/cutoff domains. On a chart where a fixed \(b\times b\) minor of \(\widehat Q_b\) is bounded below, this determinant is a smooth positive unit, so the singular part is the reduced-chain zeta integral with
+\[
+c''=c'-ab/2.
+\]
+That is an exact local normal form up to smooth positive weights, not an exact equality of box integrals.
+
+**Q2.** No, not in general. On the full-rank minor chart the Gram factor is a unit and harmless. Near rank loss it leaves a real residual singularity.
+
+Concretely, near a rank \(b-1\) point, analytic row/column coordinates put the normal variables in \(z\in\mathbb R^{q-b+1}\) with
+\[
+\det(Q_bQ_b^T)\sim |z|^2.
+\]
+Hence
+\[
+\det(Q_bQ_b^T)^{-a/2}dQ_b \sim |z|^{-a}\,dz
+= r^{q-b-a}\,dr\,d\theta .
+\]
+This is a nonnegative monomial only if \(a\le q-b\); it is merely integrable if \(a<q-b+1\). Otherwise it diverges. Thus the all-\(\mathbb R^{ab}\) \(\Gamma\)-integration is unsafe near degenerate \(Q_b\); one must either restrict to full-rank charts or keep bounded \(\Gamma\) coupled with \(Q_b\).
+
+**Q3.** For the actual tail-variable radial blow-up above, convergence of the radial factor requires
+\[
+M_1M_2-1-2c'>-1
+\quad\Longleftrightarrow\quad
+c'<M_1M_2/2.
+\]
+Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+exec
+/bin/bash -lc "find .. -maxdepth 3 -name 'CLAUDE.md' -o -name 'README.md' -o -name 'AGENTS.md'" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+exec
+/bin/bash -lc 'ls -la' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+total 64
+drwxrwxr-x 2 ubuntu ubuntu  4096 Jul 10 17:39 .
+drwxrwxr-x 3 ubuntu ubuntu  4096 Jul 10 17:26 ..
+-rw-rw-r-- 1 ubuntu ubuntu  2597 Jul 10 17:20 crux-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu  4537 Jul 10 17:15 crux-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 10583 Jul 10 17:20 crux-stdout.log
+-rw-rw-r-- 1 ubuntu ubuntu  3835 Jul 10 17:39 degen-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 24679 Jul 10 17:39 degen-stdout.log
+
+codex
+**Q1.** The right mechanism is mixed: keep the collapsing \(\Gamma\)-directions in the bounded box, then recurse on the residual bilinear corner.
+
+Exact for the 3-width rank-\((b-1)\) corner: on a chart with a rank-\((b-1)\) minor of \(Q_b\) invertible,
+\[
+Q_b \sim \begin{pmatrix} I_{b-1}&0\\0&z\end{pmatrix},
+\qquad z\in\mathbb R^D,\quad D=q-b+1,
+\]
+and write \(\Gamma=(\Gamma_\parallel,\gamma)\), \(\gamma\in\mathbb R^a\). The \(\Gamma_\parallel\) directions are honest Morse directions and give charge \(a(b-1)\). What remains is the bounded-box bilinear model
+\[
+\|B_0\|^2+\|C'B_0+\gamma z\|^2 .
+\]
+The local zeta threshold of \(\gamma z\), with \(\gamma\in\mathbb R^a\), \(z\in\mathbb R^D\), is
+\[
+\frac12\min(a,D).
+\]
+Thus the corner has effective codimension
+\[
+tq+a(b-1)+\min(a,q-b+1)
+\]
+for a 3-width chain. Equivalently the bound is
+\[
+\int_{\Gamma,z}\mathrm{freed}^{-c'}\lesssim
+\|B_0\|^{-2c' + a(b-1)+\min(a,D)}
+\]
+up to harmless logs. This reaches \(c'<\frac12\minAdm(M)\) because
+\[
+\minAdm(M)\le tq+a(b-1)+\min(a,D).
+\]
+
+For longer chains, the same statement should be read recursively: the missing singular row is not estimated by \(\det(Q_bQ_b^T)^{-a/2}\); it is a smaller zero-product problem involving the flat \(\Gamma\)-block and the deeper tail normal variables.
+
+**Q2.** For 3 widths, \(Q_b\in\mathbb R^{b\times q}\), so
+\[
+D_{\mathrm{deep}}=\operatorname{codim}\{\operatorname{rank}Q_b\le b-1\}=q-b+1.
+\]
+The already-paid charge is
+\[
+tq+a(b-1).
+\]
+In the dangerous case \(a\ge D_{\mathrm{deep}}\),
+\[
+\minAdm(M)\le tq+a(b-1)+D_{\mathrm{deep}},
+\]
+which is exactly the candidate cut \(t+1\):
+\[
+(t+1)q+(a-1)(b-1)=tq+a(b-1)+q-b+1.
+\]
+Sharp form:
+\[
+\minAdm(M)\le tq+a(b-1)+\min(a,D_{\mathrm{deep}}).
+\]
+
+**Q3.** It is genuinely part of the same peel unless the global proof explicitly repartitions it after a further blow-up. Rank loss of \(Q_b\) is a tail condition, not an \(A_0\)-minor condition. Points with \(\Gamma=0\) and \(\operatorname{rank}Q_b<b\) need not lie in any \(t+1\) \(A_0\)-pivot chart. So a single \(t\)-peel cannot just prove the full-row-rank locus and ignore the complement. The exponent, however, is governed by the neighboring \(t+1\) admissible cut.
+tokens used
+44,994
+**Q1.** The right mechanism is mixed: keep the collapsing \(\Gamma\)-directions in the bounded box, then recurse on the residual bilinear corner.
+
+Exact for the 3-width rank-\((b-1)\) corner: on a chart with a rank-\((b-1)\) minor of \(Q_b\) invertible,
+\[
+Q_b \sim \begin{pmatrix} I_{b-1}&0\\0&z\end{pmatrix},
+\qquad z\in\mathbb R^D,\quad D=q-b+1,
+\]
+and write \(\Gamma=(\Gamma_\parallel,\gamma)\), \(\gamma\in\mathbb R^a\). The \(\Gamma_\parallel\) directions are honest Morse directions and give charge \(a(b-1)\). What remains is the bounded-box bilinear model
+\[
+\|B_0\|^2+\|C'B_0+\gamma z\|^2 .
+\]
+The local zeta threshold of \(\gamma z\), with \(\gamma\in\mathbb R^a\), \(z\in\mathbb R^D\), is
+\[
+\frac12\min(a,D).
+\]
+Thus the corner has effective codimension
+\[
+tq+a(b-1)+\min(a,q-b+1)
+\]
+for a 3-width chain. Equivalently the bound is
+\[
+\int_{\Gamma,z}\mathrm{freed}^{-c'}\lesssim
+\|B_0\|^{-2c' + a(b-1)+\min(a,D)}
+\]
+up to harmless logs. This reaches \(c'<\frac12\minAdm(M)\) because
+\[
+\minAdm(M)\le tq+a(b-1)+\min(a,D).
+\]
+
+For longer chains, the same statement should be read recursively: the missing singular row is not estimated by \(\det(Q_bQ_b^T)^{-a/2}\); it is a smaller zero-product problem involving the flat \(\Gamma\)-block and the deeper tail normal variables.
+
+**Q2.** For 3 widths, \(Q_b\in\mathbb R^{b\times q}\), so
+\[
+D_{\mathrm{deep}}=\operatorname{codim}\{\operatorname{rank}Q_b\le b-1\}=q-b+1.
+\]
+The already-paid charge is
+\[
+tq+a(b-1).
+\]
+In the dangerous case \(a\ge D_{\mathrm{deep}}\),
+\[
+\minAdm(M)\le tq+a(b-1)+D_{\mathrm{deep}},
+\]
+which is exactly the candidate cut \(t+1\):
+\[
+(t+1)q+(a-1)(b-1)=tq+a(b-1)+q-b+1.
+\]
+Sharp form:
+\[
+\minAdm(M)\le tq+a(b-1)+\min(a,D_{\mathrm{deep}}).
+\]
+
+**Q3.** It is genuinely part of the same peel unless the global proof explicitly repartitions it after a further blow-up. Rank loss of \(Q_b\) is a tail condition, not an \(A_0\)-minor condition. Points with \(\Gamma=0\) and \(\operatorname{rank}Q_b<b\) need not lie in any \(t+1\) \(A_0\)-pivot chart. So a single \(t\)-peel cannot just prove the full-row-rank locus and ignore the complement. The exponent, however, is governed by the neighboring \(t+1\) admissible cut.
+CODEX EXIT 0
