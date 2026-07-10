@@ -20,8 +20,9 @@ integral over `(Upiv, W, deeper, x, Γ)` of the good-chart loss on the reassembl
 `Matrix.of (Sum.elim Upiv W)`. The remaining step (c) — the pivot-row → free-`v` translation
 (`sjGoodChartLoss_pivotRows_translate_eq`) — exposes `v` once `Upiv` is brought innermost (a Tonelli
 reorder past `W, deeper, x, Γ`); that + the good-cover endpoint closes only the dimensionally
-cooperative "good" branch. The rank-deficient "deeper" branch is the unbuilt `(S,J)` recursion (see
-`RouteMSJRecursionContract`); `sjJointResolution` (`RouteMSJResolution`) stays its named sorry.
+cooperative "good" branch. The rank-deficient "deeper" branch is the unbuilt `(S,J)` recursion — the
+decorated `decorated_peel_step` + well-founded recursion of `RouteMSJDecorated` (contract in the thread
+notes `genm-covfinish/notes.md`); `sjJointResolution` (`RouteMSJResolution`) stays its named sorry.
 
 Axiom-clean `[propext, Classical.choice, Quot.sound]`.
 -/
