@@ -105,11 +105,22 @@ that is the cue to break it down and START, not to hold. Be ambitious.
 - **θ analytic-multiplicity seam** — a SEPARATE deferred direction (`cards/theta-analytic-multiplicity-seam.md`);
   not Stage 2. `λ` (this expedition) is unaffected by it.
 
-**Speed / executive cadence (operator, 2026-07-06).** Be THOUGHTFUL about pace; match cadence to real
-progress. At this stage (much banked + de-risked; clarity high; the central hard builds R1-UPPER/Φ_expl
-big) the move is CONSOLIDATE (integrate banked work to canonical — canonical must reflect the true state)
-+ FOCUS the 1–2 genuine builds, NOT spin many exploratory threads. Spend ticks thinking at the executive
-level; honor the ≥20-min idle heartbeat; resist reflexive doc-churn. Fewer, higher-signal ticks.
+**★ KEEP FULL CLIP — top-sustainable-speed (operator, 2026-07-10, BINDING).** Managing the pace IS
+executive function: keep the critical path SATURATED with builds. **After a landing (integration/brick),
+IMMEDIATELY commission the next critical-path build(s) — do NOT defer to "next tick" or leave the pipeline
+empty.** An empty queue after a landing is a controller STALL, not a rest; the ≥20-min idle heartbeat is for
+WAITING ON mid-flight builds, not for idling after a landing (there is almost always a next build: the next
+brick/slice, a self-recon to ground the next spec, a reviewer on the landing). **Pace adapts to the phase:**
+SLOW/verify-first in DESIGN (a consequential route decision earns the full decorrelated dialectic);
+FAST/full-clip in EXECUTION (route settled + builds clear → parallel tides, integrate + re-charge
+continuously). NOT reckless (the bedrock/precision/decorrelation gates — green-gate/AxCheck/vacuity — STILL
+hold; throughput is as HIGH as the discipline sustains, not higher). See `lessons.md` "Keep FULL CLIP".
+
+**Speed / executive cadence (operator, 2026-07-06) — SUBORDINATE to KEEP-FULL-CLIP above.** Be THOUGHTFUL
+about pace; match cadence to real progress. This guards against reflexive DOC-CHURN and exploratory-thread
+SPRAWL — NOT against keeping the genuine critical-path builds running (integrate banked work to canonical;
+FOCUS the 1–2 genuine builds; think at the executive level; resist reflexive doc-churn). Fewer, higher-signal
+ticks on the DOC/DECISION side; full-clip on the BUILD side.
 
 ## Flush before yielding
 Land new state in synthesis.md / priorities.md (thread progress in thread.md). **In-repo only — never
