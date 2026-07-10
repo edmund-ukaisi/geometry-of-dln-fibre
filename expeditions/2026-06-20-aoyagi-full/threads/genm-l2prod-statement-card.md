@@ -8,6 +8,14 @@ These are the LANDING (corner endpoint) + the §8-positivity CORE of the pinned 
 (jbassembly cert). They do NOT close `sjJointResolution` — the change-of-variables / resolution map
 connecting `gammaPeelIntegral` to the endpoint remains the mountain (see "Deferred").
 
+**Reviewed** (fidelity, `reviewer` + decorrelated Codex xhigh, @ `888ac3d6`): verdict SURVIVED — all
+four proved statements sound and faithful (§4a cross-coupled form; §8 positivity; the endpoint
+conclusion + `c'<n/2` threshold, no hidden weakening); injectivity hypotheses minimal-and-necessary
+(Codex gave singular counterexamples for dropping each). Two fixes applied post-review: the
+`RouteMSJGoodLoss` header now SCOPES `sjGoodMap` to the two-block §4a/L=3 binding branch (general
+opaque-width `E_T = ⊕Γᵢ` has more summands — reached by stacking into the general
+`..._of_injective`, deferred to the recursion); a non-vacuity `example` (identity blocks) added.
+
 ---
 
 > **Brick 1 — the §8 compactness gate.** A continuous `g : (Fin n → ℝ) → ℝ` strictly positive at
@@ -70,10 +78,13 @@ connecting `gammaPeelIntegral` to the endpoint remains the mountain (see "Deferr
 > - **Assumed.** `LP·P = 1`, `W·RW = 1`, `A₂·RA = 1` — i.e. pivot left-invertible, `W` and `A₂`
 >   full row rank (the good-chart hypotheses).
 > - **Cited.** none.
-> - **Deferred.** That the good chart (pivot bounded below via a refined `{|det pivot| ≥ δ·scale}`
+> - **Deferred.** (i) That the good chart (pivot bounded below via a refined `{|det pivot| ≥ δ·scale}`
 >   cover, deep factor generic) actually SUPPLIES these inverses is the refined-cover construction,
->   NOT proved here.
-> - **Status.** sorry-free, axiom clean-three.
+>   NOT proved here. (ii) `sjGoodMap` models the TWO-block corner (§4a / `(3,3,3,4)` / L=3 binding
+>   branch); general opaque-width `L ≥ 4` has `E_T = Γ₀ ⊕ Γ₁ ⊕ … ⊕ (terminal)` with more summands
+>   (jbassembly §1a) — reached by STACKING into the width-general `..._of_injective` (Brick 3), with
+>   the multi-block injectivity + the flatten of `E_T` to `Fin (Mval) → ℝ` deferred to the recursion.
+> - **Status.** sorry-free, axiom clean-three, reviewed (SURVIVED; two report-only fixes applied).
 
 ---
 

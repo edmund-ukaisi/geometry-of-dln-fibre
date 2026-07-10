@@ -25,10 +25,19 @@ This module isolates that injectivity, network-free (pure matrix algebra):
   This is the strict positivity that (via the compactness gate `exists_pos_lower_bound_on_sphere`)
   supplies the corner endpoint's uniform sphere lower bound.
 
-S2-FREE; axiom-clean `[propext, Classical.choice, Quot.sound]`. The joint block `(Γ, v)` has
-`dim = (M₀−t)(M₁−t) + t·(width) = Mval(branch)`; flattening to `Fin n → ℝ` and firing the endpoint
-`corner_block_cube_lintegral_lt_top_of_injective` (both this and the flatten deferred to the CoV
-assembly) is the good-chart leaf of `sjJointResolution`.
+S2-FREE; axiom-clean `[propext, Classical.choice, Quot.sound]`.
+
+**SCOPE.** `sjGoodMap` is the TWO-block corner model — the vslice §4a / jbassembly binding-branch
+form where the depth peel bottoms out after ONE Schur block `Γ` plus the terminal `v`-block (the
+`(3,3,3,4)` / `L = 3` slice). For a general opaque-width `L ≥ 4` branch the accumulated block is
+`E_T = Γ₀ ⊕ Γ₁ ⊕ … ⊕ (terminal)` with MORE than two summands (jbassembly §1a), whose loss
+`g_T = Σᵢ frobSq(Γᵢ·Uᵢ)` is a longer sum; `sjGoodMap`/`sjGoodMap_injective` do NOT model that
+multi-block case, and there `dim(Γ, v) ≠ Mval(branch)`. The general-`L` `E_T` is fed to the endpoint
+by STACKING all blocks into the (correctly width-general) squared-injective-linear loss of
+`corner_block_cube_lintegral_lt_top_of_injective`; the multi-block injectivity and the whole CoV
+(flatten of `E_T` to `Fin (Mval) → ℝ`, the resolution map from `gammaPeelIntegral`) are DEFERRED to
+the recursion assembly. This module banks only the two-block §8-positivity core + its endpoint
+admissibility.
 -/
 
 namespace DLNFibre.DLN.RLCT
@@ -130,5 +139,15 @@ theorem sjGoodMap_loss_pos
   rcases hne with h1 | h2
   · exact add_pos_of_pos_of_nonneg (frobSq_pos_of_ne_zero _ h1) (frobSq_nonneg _)
   · exact add_pos_of_nonneg_of_pos (frobSq_nonneg _) (frobSq_pos_of_ne_zero _ h2)
+
+/-- **Non-vacuity witness.** The injectivity/positivity hypotheses are jointly satisfiable — at
+equal block widths with identity pivot/resolved maps (`P = W = A₂ = 1`, so `LP = RW = RA = 1`),
+`sjGoodMap` is injective; `C` is unconstrained (the cross-coupling is a unit shear). So
+`sjGoodMap_injective` /
+`sjGoodMap_loss_pos` are not vacuously true. -/
+example {n : ℕ} (C : Matrix (Fin n) (Fin n) ℝ) :
+    Function.Injective (sjGoodMap (1 : Matrix (Fin n) (Fin n) ℝ) C
+      (1 : Matrix (Fin n) (Fin n) ℝ) (1 : Matrix (Fin n) (Fin n) ℝ)) :=
+  sjGoodMap_injective 1 1 (one_mul 1) C 1 1 (one_mul 1) 1 1 (one_mul 1)
 
 end DLNFibre.DLN.RLCT
