@@ -1,6 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart` — the good-chart endpoint in matrix coordinates
@@ -154,5 +155,171 @@ theorem measurePreserving_twoMatFlatL (p q r s : ℕ) :
     rfl
   have hcomp := hreindex.comp (hsum.comp hprod)
   rwa [← hcoe] at hcomp
+
+/-- The matrix-product box is the `twoMatFlatL`-preimage of the flat cube `[-1,1]^{p*q+r*s}`. -/
+theorem twoMatFlatL_box_preimage (p q r s : ℕ) :
+    matBox p q 1 ×ˢ matBox r s 1
+      = twoMatFlatL p q r s ⁻¹' Set.univ.pi (fun _ : Fin (p * q + r * s) => Set.Icc (-1 : ℝ) 1) := by
+  ext x
+  simp only [Set.mem_prod, matBox, Set.mem_setOf_eq, Set.mem_preimage, Set.mem_pi,
+    Set.mem_univ, true_implies]
+  constructor
+  · rintro ⟨h1, h2⟩ j
+    rw [twoMatFlatL_apply]
+    rcases (finSumFinEquiv (m := p * q) (n := r * s)).symm j with a | b
+    · rw [Sum.elim_inl, matFlatL_apply]; exact h1 _ _
+    · rw [Sum.elim_inr, matFlatL_apply]; exact h2 _ _
+  · intro h
+    refine ⟨fun i k => ?_, fun i k => ?_⟩
+    · have hj := h (finSumFinEquiv (Sum.inl (finProdFinEquiv (i, k))))
+      rw [twoMatFlatL_apply, Equiv.symm_apply_apply, Sum.elim_inl, matFlatL_apply,
+        Equiv.symm_apply_apply] at hj
+      exact hj
+    · have hj := h (finSumFinEquiv (Sum.inr (finProdFinEquiv (i, k))))
+      rw [twoMatFlatL_apply, Equiv.symm_apply_apply, Sum.elim_inr, matFlatL_apply,
+        Equiv.symm_apply_apply] at hj
+      exact hj
+
+/-! ## The good-chart cross-coupled loss endpoint (matrix coordinates)
+
+Packaging `sjGoodMap` (banked, `RouteMSJGoodLoss`) as an ℝ-linear map so its loss transports the
+degree-2 homogeneity and (via `sjGoodMap_loss_pos`) the sphere positivity through the flatten, then
+feeding the banked `corner_block_cube_lintegral_lt_top_of_pos`. -/
+
+section GoodChart
+variable {t p q h o : ℕ}
+
+/-- `frobSq` is continuous (a finite sum of squared coordinate evaluations). -/
+theorem continuous_frobSq {a b : Type*} [Fintype a] [Fintype b] :
+    Continuous (fun M : a → b → ℝ => frobSq M) := by
+  unfold frobSq
+  exact continuous_finset_sum _ (fun i _ => continuous_finset_sum _
+    (fun j _ => ((continuous_apply j).comp (continuous_apply i)).pow 2))
+
+/-- **The good-chart map `sjGoodMap` as an ℝ-linear map** (matrix multiplication is bilinear, so
+`(Γ, v) ↦ (P·v·A₂, (C·v + Γ·W)·A₂)` is linear). Its coe is `sjGoodMap`; this bundles the additivity
+and homogeneity needed to transport the loss. -/
+def sjGoodMapₗ (P : Matrix (Fin t) (Fin t) ℝ) (C : Matrix (Fin p) (Fin t) ℝ)
+    (W : Matrix (Fin q) (Fin h) ℝ) (A2 : Matrix (Fin h) (Fin o) ℝ) :
+    (Matrix (Fin p) (Fin q) ℝ × Matrix (Fin t) (Fin h) ℝ) →ₗ[ℝ]
+      (Matrix (Fin t) (Fin o) ℝ × Matrix (Fin p) (Fin o) ℝ) where
+  toFun := sjGoodMap P C W A2
+  map_add' x y := by
+    refine Prod.ext ?_ ?_
+    · show P * (x.2 + y.2) * A2 = P * x.2 * A2 + P * y.2 * A2
+      rw [Matrix.mul_add, Matrix.add_mul]
+    · show (C * (x.2 + y.2) + (x.1 + y.1) * W) * A2
+          = (C * x.2 + x.1 * W) * A2 + (C * y.2 + y.1 * W) * A2
+      simp only [Matrix.mul_add, Matrix.add_mul]; abel
+  map_smul' r x := by
+    refine Prod.ext ?_ ?_
+    · show P * (r • x.2) * A2 = r • (P * x.2 * A2)
+      rw [Matrix.mul_smul, Matrix.smul_mul]
+    · show (C * (r • x.2) + (r • x.1) * W) * A2 = r • ((C * x.2 + x.1 * W) * A2)
+      rw [Matrix.mul_smul, Matrix.smul_mul, ← smul_add, Matrix.smul_mul]
+
+@[simp] theorem sjGoodMapₗ_apply (P : Matrix (Fin t) (Fin t) ℝ) (C : Matrix (Fin p) (Fin t) ℝ)
+    (W : Matrix (Fin q) (Fin h) ℝ) (A2 : Matrix (Fin h) (Fin o) ℝ) (x) :
+    sjGoodMapₗ P C W A2 x = sjGoodMap P C W A2 x := rfl
+
+/-- **The good-chart cross-coupled loss is endpoint-admissible in matrix coordinates.** For the
+good-chart data (pivot `P` left-invertible, deep factor `A₂` and resolved map `W` right-invertible)
+and `c' < (p*q + t*h)/2`, the matrix-product-box integral of the resolved cross-coupled loss
+`g_cc(Γ, v) = frobSq(P·v·A₂) + frobSq((C·v + Γ·W)·A₂)` to the `−c'` power is finite. Flatten the joint
+block `(Γ, v)` to `Fin (p*q + t*h) → ℝ` (`twoMatFlatL`, measure-preserving + linear), transporting the
+box to the flat cube; the loss becomes a degree-2-homogeneous, continuous, sphere-positive
+(`sjGoodMap_loss_pos`) function, so the banked `corner_block_cube_lintegral_lt_top_of_pos` closes it.
+This is the good-chart `(S,J)` endpoint the change-of-variables feeds. -/
+theorem sjGoodMap_loss_matBox_lt_top [NeZero (p * q + t * h)]
+    (P : Matrix (Fin t) (Fin t) ℝ) (LP : Matrix (Fin t) (Fin t) ℝ) (hP : LP * P = 1)
+    (C : Matrix (Fin p) (Fin t) ℝ)
+    (W : Matrix (Fin q) (Fin h) ℝ) (RW : Matrix (Fin h) (Fin q) ℝ) (hW : W * RW = 1)
+    (A2 : Matrix (Fin h) (Fin o) ℝ) (RA : Matrix (Fin o) (Fin h) ℝ) (hA2 : A2 * RA = 1)
+    (c' : NNReal) (hc' : (c' : ℝ) < (p * q + t * h : ℝ) / 2) :
+    ∫⁻ x in matBox p q 1 ×ˢ matBox t h 1,
+        ENNReal.ofReal ((frobSq (sjGoodMap P C W A2 x).1
+          + frobSq (sjGoodMap P C W A2 x).2) ^ (-(c' : ℝ))) < ⊤ := by
+  classical
+  set F := twoMatFlatL p q t h with hFdef
+  -- the loss on matrix coordinates, and its flat-coordinate version `g = loss ∘ F.symm`
+  set loss : ((Fin p → Fin q → ℝ) × (Fin t → Fin h → ℝ)) → ℝ :=
+    fun x => frobSq (sjGoodMap P C W A2 x).1 + frobSq (sjGoodMap P C W A2 x).2 with hlossdef
+  set g : (Fin (p * q + t * h) → ℝ) → ℝ := fun z => loss (F.symm z) with hgdef
+  -- `sjGoodMap` is continuous (linear on finite-dim), hence `loss` and `g` are continuous
+  have hsjcont : Continuous (sjGoodMap P C W A2) := by
+    have : Continuous (sjGoodMapₗ P C W A2) := (sjGoodMapₗ P C W A2).continuous_of_finiteDimensional
+    simpa only [sjGoodMapₗ_apply] using this
+  have hlosscont : Continuous loss := by
+    rw [hlossdef]
+    exact (continuous_frobSq.comp (continuous_fst.comp hsjcont)).add
+      (continuous_frobSq.comp (continuous_snd.comp hsjcont))
+  have hFsymmcont : Continuous (F.symm : (Fin (p * q + t * h) → ℝ) → _) :=
+    F.symm.toLinearMap.continuous_of_finiteDimensional
+  have hgc : Continuous g := by rw [hgdef]; exact hlosscont.comp hFsymmcont
+  -- degree-2 homogeneity of `g` (from the linearity of `F.symm` and `sjGoodMap`, and `frobSq_smul`)
+  have hom : ∀ (r : ℝ) (z : Fin (p * q + t * h) → ℝ), g (r • z) = r ^ 2 * g z := by
+    intro r z
+    simp only [hgdef, hlossdef]
+    rw [map_smul]
+    have hs : sjGoodMap P C W A2 (r • F.symm z) = r • sjGoodMap P C W A2 (F.symm z) := by
+      have := (sjGoodMapₗ P C W A2).map_smul r (F.symm z)
+      simpa only [sjGoodMapₗ_apply, RingHom.id_apply] using this
+    rw [hs]
+    show frobSq (r • (sjGoodMap P C W A2 (F.symm z)).1)
+        + frobSq (r • (sjGoodMap P C W A2 (F.symm z)).2)
+      = r ^ 2 * (frobSq (sjGoodMap P C W A2 (F.symm z)).1
+        + frobSq (sjGoodMap P C W A2 (F.symm z)).2)
+    rw [frobSq_smul, frobSq_smul]; ring
+  -- sphere positivity of `g` (from injectivity of `F.symm` and the banked `sjGoodMap_loss_pos`)
+  have hpos : ∀ ω : Metric.sphere (0 : EuclideanSpace ℝ (Fin (p * q + t * h))) 1,
+      0 < g (WithLp.ofLp (ω : EuclideanSpace ℝ (Fin (p * q + t * h)))) := by
+    intro ω
+    simp only [hgdef, hlossdef]
+    have hωne : (ω : EuclideanSpace ℝ (Fin (p * q + t * h))) ≠ 0 := by
+      intro hω0
+      have hn := mem_sphere_zero_iff_norm.mp ω.2
+      rw [hω0, norm_zero] at hn
+      exact one_ne_zero hn.symm
+    have hne : (WithLp.ofLp (ω : EuclideanSpace ℝ (Fin (p * q + t * h))) : Fin _ → ℝ) ≠ 0 := by
+      rw [Ne, WithLp.ofLp_eq_zero]; exact hωne
+    have hxne : F.symm (WithLp.ofLp (ω : EuclideanSpace ℝ (Fin (p * q + t * h)))) ≠ 0 :=
+      fun hzero => hne (F.symm.injective (hzero.trans (map_zero F.symm).symm))
+    exact sjGoodMap_loss_pos P LP hP C W RW hW A2 RA hA2 _ hxne
+  -- transport the box integral to the flat cube via the measure-preserving flatten, then endpoint
+  set Fm := F.toContinuousLinearEquiv.toHomeomorph.toMeasurableEquiv with hFmdef
+  have hFmcoe : (Fm : ((Fin p → Fin q → ℝ) × (Fin t → Fin h → ℝ)) → (Fin (p * q + t * h) → ℝ))
+      = ⇑F := rfl
+  have hFmp : MeasurePreserving Fm
+      (volume : Measure ((Fin p → Fin q → ℝ) × (Fin t → Fin h → ℝ)))
+      (volume : Measure (Fin (p * q + t * h) → ℝ)) := by
+    refine ⟨Fm.measurable, ?_⟩
+    have := (measurePreserving_twoMatFlatL p q t h).map_eq
+    rwa [← hFmcoe] at this
+  have hbox : matBox p q 1 ×ˢ matBox t h 1
+      = Fm ⁻¹' Set.univ.pi (fun _ : Fin (p * q + t * h) => Set.Icc (-1 : ℝ) 1) := by
+    rw [hFmcoe]; exact twoMatFlatL_box_preimage p q t h
+  -- the integrand transports: `loss x = g (Fm x)` (since `Fm x = F x` and `F.symm (F x) = x`)
+  have hgFm : ∀ x, g (Fm x) = loss x := by
+    intro x
+    rw [hgdef]
+    simp only
+    rw [hFmcoe, F.symm_apply_apply]
+  have hmeas : MeasurableSet
+      (Fm ⁻¹' Set.univ.pi (fun _ : Fin (p * q + t * h) => Set.Icc (-1 : ℝ) 1)) :=
+    (MeasurableSet.univ_pi (fun _ => measurableSet_Icc)).preimage Fm.measurable
+  have hEqOn : Set.EqOn (fun x => ENNReal.ofReal ((loss x) ^ (-(c' : ℝ))))
+      (fun x => (fun z => ENNReal.ofReal ((g z) ^ (-(c' : ℝ)))) (Fm x))
+      (Fm ⁻¹' Set.univ.pi (fun _ : Fin (p * q + t * h) => Set.Icc (-1 : ℝ) 1)) := by
+    intro x _
+    show ENNReal.ofReal ((loss x) ^ (-(c' : ℝ))) = ENNReal.ofReal ((g (Fm x)) ^ (-(c' : ℝ)))
+    rw [hgFm]
+  rw [hbox, setLIntegral_congr_fun hmeas hEqOn,
+    hFmp.setLIntegral_comp_preimage_emb Fm.measurableEmbedding
+      (fun z => ENNReal.ofReal ((g z) ^ (-(c' : ℝ))))
+      (Set.univ.pi (fun _ : Fin (p * q + t * h) => Set.Icc (-1 : ℝ) 1))]
+  exact corner_block_cube_lintegral_lt_top_of_pos g hgc hom (c' : ℝ) c'.coe_nonneg
+    (by push_cast; exact hc') hpos
+
+end GoodChart
 
 end DLNFibre.DLN.RLCT
