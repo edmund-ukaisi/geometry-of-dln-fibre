@@ -1086,3 +1086,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar
 -- + `measurable_frobSq_rmatMul` (the `hg` discharge). Lets the Route-C corner endpoint apply to real
 -- frobSq losses. clean-three/0-sorry. The joint-block assembly producing `g` + §8 remain the deferred L2.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
+-- `RouteMSJCornerGate` + `RouteMSJGoodLoss` — Stage-2 (S,J) L2 §8-GATE side (thread `genm-l2prod`).
+-- `corner_block_cube_lintegral_lt_top_of_pos`: §8 as compactness positive-min (g continuous + >0 on
+-- the sphere). `_of_injective`: endpoint for a squared-injective-linear loss `∑ⱼ(Lz)ⱼ²`, collapsing
+-- §8+hom+meas to "L injective". `sjGoodMap_injective`/`sjGoodMap_loss_pos`: the resolved cross-coupled
+-- map is injective + `g_cc>0` off origin on the good chart (pivot left-inv + W,A₂ right-inv). 5 thms,
+-- clean-three/0-sorry — the §8 discharge; the CoV production consuming it is the remaining L2 mountain.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss

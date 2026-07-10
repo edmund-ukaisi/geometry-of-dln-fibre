@@ -88,6 +88,11 @@ import DLNFibre.DLN.RLCT.Validate.D1GeHAtVClose
 import DLNFibre.DLN.RLCT.Validate.DeepestFrontGaugeGen
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenAssembly
 import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds
+import DLNFibre.DLN.RLCT.Validate.RouteMSJSlice334
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 
 /-!
 # Axiom-hygiene check
@@ -849,3 +854,21 @@ open DLNFibre.DLN.RLCT
 #print axioms r1_resolution_general_le
 #print axioms aoyagi_deepest_reduction_gen
 #print axioms aoyagi_learning_coefficient_gen_le
+
+-- ★ STAGE-2 (S,J) L2 CORNER-FINITENESS + §8-GATE bricks (the `(□)`-discharge machinery so far).
+-- The RESOLVED-form endpoint (each blow-up chart's `gammaPeelIntegral` is finite below ½·minAdm) +
+-- the §8 positive-min gate; the CoV production that carries a general chart-tree onto them is the
+-- remaining L2 mountain. NOT yet load-bearing for a headline (that wiring is `sjJointResolution`), but
+-- force-checked here so the corner/gate bricks can't rot to `sorryAx` under a stale olean while the
+-- mountain is built on top of them. All MUST be [propext, Classical.choice, Quot.sound].
+-- Corner endpoint (RouteMSJRadialPolar / RouteMSJSlice334): opaque-`n` cube integral + (3,3,4).
+#print axioms corner_block_cube_lintegral_lt_top
+#print axioms sjSlice334_corner_lintegral_lt_top_of_lt_half_minAdm
+-- `hom`/`hg` discharge for a real frobSq loss (RouteMSJCornerLoss).
+#print axioms frobSq_rmatMul_smul
+-- §8 gate as compactness positive-min + the squared-injective-linear endpoint (RouteMSJCornerGate).
+#print axioms corner_block_cube_lintegral_lt_top_of_pos
+#print axioms corner_block_cube_lintegral_lt_top_of_injective
+-- Good-chart resolved map: injective + `g_cc>0` off origin (RouteMSJGoodLoss).
+#print axioms sjGoodMap_injective
+#print axioms sjGoodMap_loss_pos
