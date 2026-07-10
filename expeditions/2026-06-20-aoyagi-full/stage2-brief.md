@@ -5,6 +5,31 @@ Stage 2. Build-to-the-end charge; adapt autonomously inside the strategy; record
 ledger as I make them; surface ONLY genuine non-labour walls (decorrelated-confirmed, standing
 decision 7). The operator reads the ledger; no sign-off needed for tactical reroutes.
 
+## ★★★ OPERATOR DECISION — 2026-07-10 (BINDING; #97 → (A) BUILD). READ FIRST.
+The build-vs-cite gate is RESOLVED: **(A) BUILD the atom.** The "atom" = **Aoyagi §5's `(S,J)`
+determinantal-locus resolution** (the atomic RLCT = ½·codim; by crnrt's census it carries **86% of the
+corner + ALL deeper strata** — so building it IS the remaining expedition). The atom is now a
+**contract-to-discharge**, NOT a candidate cite: keep it fenced as an internal interface and build above
+it in no-regret order, but its status is "contract," and the discharge is committed.
+- **Target:** the **unsuffixed, UNCONDITIONAL** `aoyagi_learning_coefficient` (clean-three `#print
+  axioms`; the atom interface discharged, not carried as a cited hypothesis).
+- **The route-search is OVER.** Do NOT commission tides that look for routes AROUND the atom — cornrev's
+  decorrelated equivalence certificate (corner-mildness ≡ the main theorem; no strictly-easier
+  sub-problem; peeling regenerates the same class with no dropping invariant) proves any further shortcut
+  hunt is wasted. Redirect that adversarial capacity INTO the build: pre-verifying chart lemmas, censusing
+  chart types, red-teaming the induction measure (the wtint/catint/crnrt capacity that has paid off).
+- **This is LABOUR on established math, not a research wall.** Aoyagi §5 = four explicit steps (named
+  blow-up centers `{d_ij=0, u_{s,k}=0}`, monomial charts, `(S,J)` double induction, exponent bookkeeping;
+  NO Hironaka/Morse-Bott). Banked toward it: Theorem 4 (`DeepestMinRlct.deepest_le_of_homogeneous_core`),
+  `block_elimination`, `rlct_additive_smooth_block`, `monomial_rlct` (S2), the `(S,J)` termination kernel
+  (`reference-notes-sj-kernel.md`); and the **L=2 lower bound is a completed from-scratch instance of
+  exactly this resolution** (feasibility settled — what remains is the general `(S,J)` lift). The bar for
+  calling "wall" is now HIGH: surface only genuinely-MISSING mathematics (not hard labour) with a
+  decorrelated certificate, and keep building everything that stands either way.
+- **Execution:** decompose the `(S,J)` recursion into bankable bricks under the Cat-I discipline
+  (contract → build → review → bank); never fake-close; honest partials. Decomposition design pass =
+  `genm-sjdecomp` (the carrier skeleton / brick DAG). See `discuss-at-close.md` #97 + synthesis UPDATE-849.
+
 ## GOAL
 ∀ `M` nondegenerate, ∀ `c′ < minAdm M / 2` : `routeMLayerBoxIntegral M c′ 1 < ⊤`
 (= discharge `(□) = RouteMBoxThresholdFinite`). Then `aoyagi_learning_coefficient` (unsuffixed,
