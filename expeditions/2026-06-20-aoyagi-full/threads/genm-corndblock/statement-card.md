@@ -15,7 +15,7 @@ generalization of the banked TWO-block corner-blow-up crux
 > threshold where all `d` codimensions ADD).
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.sjSlice_corner_block_lt_top`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCornerBlock.lean` @ `<genm-corndblock-tip>`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCornerBlock.lean` @ `ebe28e51`)
 > - **Gloss.** `∀ d : ℕ, ∀ h : Fin d → ℕ, ∀ c' : ℝ≥0, (c':ℝ) < (∑ i, ((h i : ℝ)+1))/2 →
 >   ∀ U : Fin d → (Fin d → ℝ) → ℝ, ∀ a : ℝ, 0 < a → (∀ i, ∀ u ∈ unitBox d, a ≤ U i u) →
 >   ∫⁻ u in unitBox d, ENNReal.ofReal ((∑ i, u i ^ 2 * U i u) ^ (−(c':ℝ)) * (∏ i, |u i| ^ h i)) < ⊤`.
@@ -59,7 +59,7 @@ generalization of the banked TWO-block corner-blow-up crux
 >   theorem at `d=2`, `h = ![h₀,h₁]`, `U = ![U₀,U₁]` and rewrites (`Fin.sum_univ_two`,
 >   `Fin.prod_univ_two`) to reproduce the banked `sjSlice_corner_two_block_lt_top` statement verbatim
 >   (explicit two-term sum `u₀²·U₀ + u₁²·U₁`, two-factor Jacobian `|u₀|^{h₀}·|u₁|^{h₁}`, threshold
->   `(h₀+h₁+2)/2`) (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCornerBlock.lean` @ `<genm-corndblock-tip>`).
+>   `(h₀+h₁+2)/2`) (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJCornerBlock.lean` @ `ebe28e51`).
 > - **Proved.** `½·∑ᵢ(hᵢ+1)` at `d=2` is `(h₀+h₁+2)/2`; the general theorem subsumes the 2-block crux.
 > - **Non-vacuity.** An `example` with trivial units `Uᵢ=1` (`a=1`) and any `(d,h)` exhibits the concrete
 >   integral `∫⁻ (∑ᵢ uᵢ²)^{−c'}·∏ᵢ|uᵢ|^{hᵢ}`, finite below the threshold (hypotheses jointly satisfiable).
