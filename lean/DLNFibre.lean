@@ -1072,3 +1072,17 @@ import DLNFibre.DLN.RLCT.Validate.HeadlineGenBounds
 -- lower-bound carried as a hypothesis. All clean-three/0-sorry. Validates the (S,J) resolution SHAPE;
 -- the width-general residue = corner PRODUCTION (opaque-width CoV, deferred) + the §8 discharge.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSlice334
+-- `RouteMSJRadialPolar` — Stage-2 (S,J) ROUTE-C corner-finiteness ENDPOINT (thread `genm-covprod`): the
+-- reusable opaque-N radial blow-up CoV atoms (`lintegral_radial_polar_factor`/`_pi_`/`_ball_`, polar
+-- `r^{N-1}` Jacobian + degree-2-homog loss factored) + `corner_block_cube_lintegral_lt_top` — for a
+-- measurable 2-homogeneous loss `g` with the §8 unit-bound `a≤g` on the sphere and `c'<n/2`,
+-- `∫⁻_{[-1,1]^n} (g)^{-c'} < ⊤` (MATRIX/cube coords, what `gammaPeelIntegral` needs). The corner sum
+-- `gX(Γ)+gY(v)` is the special case `n=dim(Γ)+dim(v)=codim-SUM=minAdm` ⟹ `c'<½minAdm` = (□), sum-not-min
+-- via ONE joint polar (bypasses the min-cut AM-GM / radial reassembly). All clean-three/0-sorry. §8 +
+-- the L2 CoV production (producing `g`) are caller obligations (the deferred mountain, `genm-covprod`).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar
+-- `RouteMSJCornerLoss` — the L2 caller-obligation bridge (thread `genm-covprod`): `frobSq_rmatMul_smul`
+-- (the DLN loss `frobSq(rmatMul X A₂)` is 2-homogeneous — the `hom` discharge for `corner_block_cube`)
+-- + `measurable_frobSq_rmatMul` (the `hg` discharge). Lets the Route-C corner endpoint apply to real
+-- frobSq losses. clean-three/0-sorry. The joint-block assembly producing `g` + §8 remain the deferred L2.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
