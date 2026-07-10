@@ -1,6 +1,6 @@
 # Statement card — `genm-sjslice`: the `(3,3,3,4)` corank-2 corner-blow-up crux
 
-The FIRST vertical slice of the native `(S,J)` rank-flag resolution. Formalises the single load-bearing
+The FIRST vertical slice of the native `(S,J)` rank-flag resolution. Formalises the
 **crux** of the `(3,3,3,4)` corank-2 branch (vslice cert §5): the finiteness of the binding *corner*
 local model after the two radial blow-ups. Module `lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSlice334.lean`.
 All theorems clean-three `[propext, Classical.choice, Quot.sound]`, 0 `sorry` (force-recompiled
@@ -42,12 +42,12 @@ All theorems clean-three `[propext, Classical.choice, Quot.sound]`, 0 `sorry` (f
 >   min-undershoot); the true zero is the corner `u₀=u₁=0` where the codims ADD (`4+3=7`). The corner
 >   blow-up `u₁=u₀τ` accumulates Jacobian `3+2+1=6`, loss order 2, threshold `(6+1)/2 = 7/2`. Analytic
 >   realisation: weighted AM-GM at the min-cut direction is the Newton-polygon support function; the
->   *symmetric* weights (basic AM-GM) reproduce the `3/2`-undershoot, so the weighting is load-bearing.
+>   *symmetric* weights (basic AM-GM) reproduce the `min(4,3)=3` undershoot, so the weighting is necessary.
 > - **Route (formaliser).** Dominate rather than change variables: `Uᵢ ≥ a > 0` reduces to the pure
 >   radial `(u₀²+u₁²)^{−c'}`; weighted AM-GM (fixed min-cut weights, no case split) → separated rpow
 >   monomial → banked `prod_rpow_lintegral_Ioo_box_lt_top` (real-exponent open-box product) + the banked
 >   `restrict_unitBox_eq_open` boundary bridge. Avoids the explicit blow-up Jacobian (the deferred CoV).
-> - **Status.** sorry-free (reviewer fidelity check requested).
+> - **Status.** sorry-free + reviewed (fidelity reviewer + decorrelated Codex: SURVIVED, all checks PASS).
 
 > **Corollary (concrete `(3,3,3,4)` crux, and the charge tie).**
 >
@@ -62,7 +62,7 @@ All theorems clean-three `[propext, Classical.choice, Quot.sound]`, 0 `sorry` (f
 >   encodes "the codimensions add".
 > - **Deferred.** The full `gammaPeelIntegral ![3,3,3,4] … < ⊤` (the leaf `sjJointResolution` at this
 >   chain) — the CoV chain feeding the corner is the deferred mountain.
-> - **Status.** sorry-free (reviewer fidelity check requested).
+> - **Status.** sorry-free + reviewed (fidelity reviewer + decorrelated Codex: SURVIVED, all checks PASS).
 
 ---
 

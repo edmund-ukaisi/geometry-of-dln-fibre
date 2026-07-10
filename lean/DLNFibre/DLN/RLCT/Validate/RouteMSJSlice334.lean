@@ -6,7 +6,7 @@ import Mathlib.Analysis.MeanInequalities
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJSlice334` — the `(3,3,3,4)` corank-2 corner-blow-up crux
 
 **Thread `genm-sjslice`, Stage 2 (S,J) native resolution, FIRST vertical slice.** This module
-formalises the single load-bearing **crux** of the `(3,3,3,4)` corank-2 `(S,J)` resolution vertical
+formalises the **crux** of the `(3,3,3,4)` corank-2 `(S,J)` resolution vertical
 (pen-and-paper certificate `expeditions/2026-06-20-aoyagi-full/threads/genm-vslice/cert.md`, §5): the
 finiteness of the *binding corner* local model after the two radial blow-ups.
 
@@ -67,7 +67,13 @@ the two codimensions ADD. Proof: dominate by the separated monomial via weighted
 **min-cut weights** `w = ((h₀+1)/(h₀+h₁+2), (h₁+1)/(h₀+h₁+2))`, the unique direction where both axis
 constraints coincide at `(h₀+h₁+2)/2`; the dominator is box-integrable there
 (`prod_rpow_lintegral_Ioo_box_lt_top`). This is the analytic form of "the codimensions add on the
-terminal exceptional divisor". -/
+terminal exceptional divisor".
+
+Both lower bounds `a ≤ U₀` and `a ≤ U₁` are needed — the two corner charts (`u₁=u₀τ` needs `U₀>0`,
+`u₀=u₁σ` needs `U₁>0`, vslice cert §5). The pivot-degeneration direction (where `U₁ = a_pivot²‖v̄A₂‖²`
+collapses as the chart pivot `a_pivot→0`) is a *separate, non-binding* rank-profile stratum (cert §4a:
+threshold `≥ 9/2 > 7/2`), correctly outside this theorem's scope. (Note: the constant `a` here is the
+unit lower-bound, distinct from the cert's pivot scalar `a_pivot`.) -/
 theorem sjSlice_corner_two_block_lt_top (h0 h1 : ℕ)
     (c' : NNReal) (hc' : (c' : ℝ) < ((h0 : ℝ) + (h1 : ℝ) + 2) / 2)
     (U0 U1 : (Fin 2 → ℝ) → ℝ) (a : ℝ) (ha : 0 < a)
@@ -214,9 +220,9 @@ example (c' : NNReal) (hc' : (c' : ℝ) < 7 / 2) :
   sjSlice334_corner_lintegral_lt_top c' hc' (fun _ => 1) (fun _ => 1) 1 one_pos
     (fun _ _ => le_refl 1) (fun _ _ => le_refl 1)
 
-/-! ## The min-cut weighting is load-bearing — the symmetric bound undershoots -/
+/-! ## The min-cut weighting is necessary — the symmetric bound undershoots -/
 
-/-- **The symmetric-weight domination undershoots (why the min-cut weighting is load-bearing).** The
+/-- **The symmetric-weight domination undershoots (why the min-cut weighting is necessary).** The
 basic (symmetric-weight) AM-GM `u₀²+u₁² ≥ 2|u₀||u₁|` dominates the corner integrand by
 `2^{−c'}·|u₀|^{3−c'}·|u₁|^{2−c'}`, whose *binding* `u₁`-axis marginal `∫_{(0,1)} |u₁|^{2−c'}` DIVERGES
 (`= ⊤`) for every `c' ≥ 3` (exponent `2−c' ≤ −1`, banked `abs_rpow_lintegral_Ioo_eq_top`). So the
