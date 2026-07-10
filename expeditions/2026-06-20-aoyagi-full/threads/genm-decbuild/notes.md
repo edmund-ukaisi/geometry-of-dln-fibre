@@ -233,3 +233,38 @@ blow-up of the front factor `A₀` on the rank-`t` chart (monomial Jacobian) + f
 `redChain t M`'s product, Gram weight absorbed into the shared-divisor support — an EXACT monomial
 factoring (no Hölder), evading the binding-cut saturation. Witness on `(2,2,1)` (t=1, ½minAdm=1) then
 generalize; obstruction fallback = scoped no-go + sufficient conditions. I formalise from the cert.
+
+---
+
+## PHASE 1 — the certified CORE ALGEBRA landed (module `RouteMSJDecoratedPeelCore.lean`)
+
+From peelcert `cert.md`. Two transcribable, residual-0 algebraic identities, both sorry-free +
+forced-#print-axioms clean-three:
+
+- **`freedSchurLoss_absorption`** (cert (a)): on the invertible-pivot chart `IsUnit (of x.1.1)`,
+  `freedSchurLoss x Γ Q = frobSq(B₀) + frobSq(C'·B₀ + Γ·Q_b)` with `B₀ = P·Q̃ₚ`, `C' = C·P⁻¹`. The
+  pivot block is absorbed into the reduced leading product `B₀`. Content = `C·Q̃ₚ = C·P⁻¹·B₀`
+  (`nonsing_inv_mul_cancel_left`; note that lemma takes `A` explicit, then `B`, then `h`).
+- **`freedSchurLoss_smul`** (cert (b) radial homogeneity): `freedSchurLoss x Γ (c • Q) = c²·freedSchurLoss
+  x Γ Q`. The radial-blow-up `(B,Y)=u·(B̂,Ŷ) ⟹ ×u²` at the loss level (source of `α = M₁M₂−1−2c′`).
+  Reuses banked `frobSq_smul`.
+
+Lean note (add to lean/CLAUDE.md if recurs): `Matrix.mul_assoc` / `rw [nonsing_inv_mul_cancel_left]`
+fail to match via `rw` on these `Fin`-block products (dependent-HMul higher-order matching). Use a pure
+TERM: `(Matrix.mul_assoc L M N).trans (congrArg (fun M ↦ C * M) (nonsing_inv_mul_cancel_left A B h))`.
+
+### What remains in Phase 1 (the measure-theoretic CoV — the genuinely-new obligation)
+(a)+(b) are the INTEGRAND identities. Still to wire: the Lebesgue linear CoV `(X,Y)↦(B=PX+B₁₂Y,Y)` with
+Jacobian `|det P|^{−M₂}` (left-mult-by-P determinant = `(det P)^{M₂}` — needs a Mathlib
+det-of-left-mult lemma, assess), applied inside `gammaPeelIntegral`; then the radial via banked
+`radialAttach_integral`; the Γ-peel via banked FreedPeel Regime-A/B; the reduced-loss = `frobSq(prod
+redChain)` via `trivial_decLoss`.
+
+### Phase-2 heads-up absorbed (controller, extended cert §B=2)
+- degenerate-`Q_b` CORNER is LOAD-BEARING (~25% charts, incl (2,2,1),(2,3,2)) — NOT a rare edge.
+- three-way routing: (I) A-only `b≤q ∧ a+b≤q`; (II) A+corner `b≤q ∧ a+b>q`; (III) all-degen `b>q`.
+- **`(2,2,1)` is CATEGORY II** (a=b=1,q=1: a+b=2>q=1), so its full close routes through the CORNER leaf
+  (bounded-box Γ∥ Morse charge `a(b−1)` + residual `(a,1,D)` bilinear leaf via banked `sjBase1_freeMatrix`).
+  3-width corner is certified exact; GENERAL-M corner recursion GATED on `cornrev` (hold general Phase-2
+  corner until it clears the trivial-linchpin sufficiency). Front-load `(2,3,2)` for b=2 cat-II.
+- new Phase-2 pieces: (8) Cauchy-Binet cover, (9) corner leaf, (10) `b>q`.
