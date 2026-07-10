@@ -560,19 +560,73 @@ theorem normalSlice_transfer_of_data (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ)
   lt_of_le_of_lt (χ.cover (c' : ℝ))
     (ENNReal.sum_lt_top.mpr (fun i _ => χ.chartFinite c' hc' hIH i))
 
-/-- **The normal-slice chart datum EXISTS (the geometric construction, NAMED SORRY).** For an
-admissible tail-rank `q ≤ tailMin M`, the tail-rank-`q` stratum admits a normal-slice chart datum. This
-is the threaded normal-slice change of variables of vslice `normalslice-cert.md` §2–4 — the sole
-remaining geometric content of the front-peel: the finite pivot-chart cover of `{rank P ≥ q}`
-(`pivotLocus_eq_iUnion`), the opaque-width block-shear identity `M_i·X_i·M_{i+1}⁻¹ = [[α_i,B_i],[0,Y_i]]`
-(`L = 2` base banked as `frobSq_schur_block_split`; the rank output is banked as
-`RouteMSJThreadedShear.rank_eq_q_add_of_normalForm`), its measure-preservation (Jacobian `±1`), and the
-disjoint loss split `frobSq(A₀·P) ≃ ‖R‖² + frobSq (prod (redTail M q) Y)`. Isolated as the single
-geometric obligation; the analytic assembly above (`normalSlice_transfer_of_data`) and the reduced-Morse
-endpoints (`morseCore_residual_lt_top`, banked `radial_morse_dominates_absZ_lt_top`) are proven. -/
-noncomputable def normalSliceChartData (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M) :
-    NormalSliceChartData M q :=
+/-- **The per-pivot-chart stratum integral.** The front-split loss integrated over the tail box
+intersected with the chart `{A' | the (ρ,κ) q×q minor of the tail product `P` is a unit}` — one piece
+of the finite pivot-chart cover of the tail-rank-`q` stratum (`pivotLocus_eq_iUnion` at rank `q`). -/
+noncomputable def frontChartIntegral (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ)
+    (ρ : Fin q ↪ Fin (tailChain M 0)) (κ : Fin q ↪ Fin (tailChain M (Fin.last (L + 1))))
+    (c' : ℝ) : ℝ≥0∞ :=
+  ∫⁻ A' in paramsBoxM (tailChain M) 1 ∩
+      {A' : Params (tailChain M) |
+        IsUnit ((prod (tailChain M) A').submatrix (ρ : Fin q → Fin (tailChain M 0))
+          (κ : Fin q → Fin (tailChain M (Fin.last (L + 1)))))},
+    ∫⁻ A0 in matBox (M 0) (M 1) 1,
+      ENNReal.ofReal ((frobSq (rmatMul A0 (prod (tailChain M) A'))) ^ (-c'))
+
+/-- **Per-chart CoV finiteness (NAMED SORRY — the threaded normal-slice change of variables).** On the
+pivot chart where the `(ρ,κ)` `q×q` minor of the tail product `P` is a unit, the threaded shear (vslice
+`normalslice-cert.md` §2) conjugates `P` by unit-triangular block shears to `[[α, *],[0, Z]]` (`α =
+α_1···α_{L-1}` invertible, `Z = prod (redTail M q) Y` the reduced product; `blockShear_step` telescoped,
+rank read off by `RouteMSJThreadedShear.rank_eq_q_add_of_normalForm`). This CoV is measure-preserving
+(Jacobian `±1`, composed unit-triangular shears, `measurePreserving_shearSub`), and under it the loss
+splits disjointly `frobSq(A₀·P) ≃ ‖R‖² + frobSq Z` (`R` the `M₀·q` Morse block). The chart integral thus
+equals a `reducedMorseFront`-type integral at an enlarged radius `T > 1` (the shear coefficients
+`K_i = γ_iα_i⁻¹` are unbounded on the chart), absorbed by box-scaling homogeneity (the layer product is
+degree-`(L−1)` homogeneous ⟹ finiteness is radius-independent), finite below `½·minAdm M` via
+`reducedMorseFront_lt_top` (strong IH `hIH`). The sole remaining opaque-width obligation; everything
+above it (`cover`, `chartFinite`'s wiring, the reduced-Morse endpoints, CRUX A) is PROVED. -/
+theorem frontChartIntegral_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
+    (ρ : Fin q ↪ Fin (tailChain M 0)) (κ : Fin q ↪ Fin (tailChain M (Fin.last (L + 1))))
+    (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
+    (hIH : RouteMBoxThresholdFinite (fun i : Fin (L + 1 + 1) => M i.succ - q)) :
+    frontChartIntegral M q ρ κ (c' : ℝ) < ⊤ :=
   sorry
+
+/-- **The normal-slice chart datum (route A, `cover` PROVED; per-chart CoV isolated).** For an
+admissible tail-rank `q ≤ tailMin M`, the tail-rank-`q` stratum admits a normal-slice chart datum. The
+chart index is the finite pivot family `(ρ, κ)` of `q×q` row/col embeddings of the tail product; each
+chart's contribution is the front-split loss over the box intersected with `{(ρ,κ)-minor is a unit}`.
+The `cover` field is PROVED (the pivot-chart cover `pivotLocus_eq_iUnion` at rank `q` + subadditivity
+`lintegral_iUnion_le`); the per-chart finiteness is the isolated CoV obligation
+`frontChartIntegral_lt_top` (the threaded normal-slice change of variables). -/
+noncomputable def normalSliceChartData (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M) :
+    NormalSliceChartData M q where
+  ι := (Fin q ↪ Fin (tailChain M 0)) × (Fin q ↪ Fin (tailChain M (Fin.last (L + 1))))
+  fintypeι := inferInstance
+  chartInt := fun p c' => frontChartIntegral M q p.1 p.2 c'
+  cover := by
+    intro c'
+    have hcov : (paramsBoxM (tailChain M) 1 ∩
+          {A' : Params (tailChain M) | (prod (tailChain M) A').rank = q})
+        ⊆ ⋃ (p : (Fin q ↪ Fin (tailChain M 0)) × (Fin q ↪ Fin (tailChain M (Fin.last (L + 1))))),
+            (paramsBoxM (tailChain M) 1 ∩
+              {A' : Params (tailChain M) |
+                IsUnit ((prod (tailChain M) A').submatrix (p.1 : Fin q → Fin (tailChain M 0))
+                  (p.2 : Fin q → Fin (tailChain M (Fin.last (L + 1)))))}) := by
+      rintro A' ⟨hbox, hrank⟩
+      simp only [Set.mem_setOf_eq] at hrank
+      have hge : (prod (tailChain M) A') ∈ {A : Matrix _ _ ℝ | q ≤ A.rank} := by
+        simp only [Set.mem_setOf_eq]; omega
+      rw [pivotLocus_eq_iUnion q] at hge
+      simp only [Set.mem_iUnion, pivotChart, Set.mem_setOf_eq] at hge
+      obtain ⟨ρ, κ, hunit⟩ := hge
+      simp only [Set.mem_iUnion, Set.mem_inter_iff, Set.mem_setOf_eq]
+      exact ⟨(ρ, κ), hbox, hunit⟩
+    refine le_trans (lintegral_mono_set hcov) ?_
+    refine le_trans (lintegral_iUnion_le _ _) ?_
+    rw [tsum_fintype]
+    exact le_of_eq (Finset.sum_congr rfl (fun p _ => rfl))
+  chartFinite := fun c' hc' hIH p => frontChartIntegral_lt_top M q hq p.1 p.2 c' hc' hIH
 
 /-! ## THE CRUX — the normal-slice transfer (named sorry, vslice-fed) -/
 
