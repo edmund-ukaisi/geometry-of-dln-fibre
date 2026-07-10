@@ -297,3 +297,46 @@ rows `X` at fixed outer `x=(P,B₁₂,C)`, per column of `M₂`), with the shift
 invariance; the freed rewrite is `freedSchurLoss_absorption`; then radial (banked `radialAttach_integral`)
 → Γ-peel (banked FreedPeel Regime-A/B) → reduced = `frobSq(prod redChain)` (`trivial_decLoss`). The cat-I
 clean-A witness uses a chart with `a+b≤q` (NOT (2,2,1), which is cat-II/corner → Phase-2).
+
+---
+
+## WIRING PIPELINE — fully mapped over the BANKED frame (the remaining Phase-1 core)
+
+The freed-form absorption-application decomposes into a clear lemma sequence over banked pieces. Key
+banked bridges found this session:
+- `gammaPeelIntegral_piSplit_eq` (RouteMSJTransport): gammaPeel = ∫ over `p = (leading layer Ã₁ box,
+  deeper p.2)` × outerDom x × Γ of `sjGoodChartLoss x Γ (p.1.submatrix (blockSplitEquiv κ) id)
+  (sjDeepFactorCore M p.2)`. Ã₁ = the M₁×M₂ leading tail layer; `sjDeepFactorCore M p.2` = Ad = A_{≥2}
+  (M₂×q deeper product). This SEPARATES the leading layer (where the absorption acts) from the deeper.
+- `freedSchurLoss_eq_sjGoodChartLoss` (RouteMSJGoodCoords): `sjGoodChartLoss x Γ A1 A2 = freedSchurLoss
+  x Γ (A1 * A2)` (defeq). So the piSplit loss IS freedSchurLoss on Q̃ = Ã₁·Ad.
+- `rowSplit_lintegral_eq` (RouteMSJRowSplit): splits Ã₁'s box integral into pivot rows X (t×M₂) + corank
+  rows W ((M₁−t)×M₂).
+
+**The pipeline (each step a lemma; steps 1–4 are rewrites/banked, step 5 is the deep box-domain CoV):**
+1. `gammaPeelIntegral_piSplit_eq` → sjGoodChartLoss form.
+2. `freedSchurLoss_eq_sjGoodChartLoss` (symm) → `freedSchurLoss x Γ (Ã₁·Ad)`.
+3. `rowSplit_lintegral_eq` → expose Ã₁ = (X pivot rows ; W corank rows); X : t×M₂ is the absorption var.
+4. `freedSchurLoss_absorption` [DONE] → integrand = `frobSq(B₀) + frobSq(C'·B₀ + Γ·Q_b)`,
+   `B₀ = P·Q̃ₚ = (P·X + B₁₂·W)·Ad`, `Q_b = W·Ad`.
+5. **[the deep step]** absorption CoV `lintegral_comp_mulLeftₚ` [DONE] on the X-integral: X ↦ B = P·X
+   (+ shift B₁₂·W via translation-invariance), Jacobian `|det P|^{−M₂}`. NEEDS: box-domain handling
+   (X over a box, not full space — either enlarge to full space for the finiteness UPPER bound, or the
+   radial rescaling makes it full-space). This is the genuinely-deep measure step.
+6. `B₀ = B·Ad = prod(redChain (B, A₂..A_L))` — reduced-chain product identification (product-algebra;
+   `trivial_decLoss` / a leading-factor `prod` unfold). `frobSq(B₀)` = redChain product loss.
+7. radial (banked `radialAttach_integral` / `radialAttachFactor_lt_top`) + Γ-peel (banked FreedPeel
+   `freedSchurLoss_inner_peel_lt_top` Regime A `c'>ab/2` / `_inner_bounded_lt_top` Regime B) → finiteness
+   dominated by `routeMLayerBoxIntegral (redChain t M) c''`, `c'' = c'−ab/2` (< ½minAdm(redChain) via
+   `carrierThreshold_shift`). One-shorter IH closes it.
+
+**Foundation delivered this session (certified, integrating/integrated to canonical):**
+`freedSchurLoss_absorption` + `freedSchurLoss_smul` (PeelCore) + `mulLeftₚ`/`det_mulLeftₚ`/
+`lintegral_comp_mulLeftₚ` (PeelMeas). The remaining wiring executes steps 1–7; step 5 (box-domain CoV)
+is the deep measure step to start fresh.
+
+**Phase-2 residual (controller course-correction, cornrev):** deeper corner strata `{rank Q_b ≤ b−2}`
+(b≥2) are a GENUINE GAP (linchpin `minAdm ≤ corner-codim` is a tautology; codim ≠ finiteness-to-½codim).
+Isolate as a NAMED `DeeperStrataResolution` Prop; `decoratedPeelCoV = core + b=1 + top-stratum
+{rank Q_b=b−1} MODULO DeeperStrataResolution`. peelcert is producing that resolution; formalise it from
+the cert. Category III (b>q) ⟹ a=0 ⟹ empty Γ, no corner (trivial). NEVER fake-close deeper strata.
