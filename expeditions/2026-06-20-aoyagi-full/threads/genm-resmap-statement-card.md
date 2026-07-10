@@ -56,6 +56,23 @@ All results **sorry-free, axiom clean-three** `[propext, Classical.choice, Quot.
 
 ---
 
+> **Brick 4 — the pointwise CoV bridge `frobSq(A₀·Q) = g_cc`.** With `A₀ = fromBlocks P B C D`
+> (`[Invertible P]`) and the sheared/corank tail row-blocks factoring through the deep factor
+> (`Q̃_p = v·A₂`, `Q_b = W·A₂`), `frobSq(A₀·Q) = frobSq(sjGoodMap P C W A₂ (schurCompl P B C D, v))`-sum.
+> - **Lean:** `frobSq_schur_eq_sjGoodMap` (helper `schurSplitLoss_eq_sjGoodMap`).
+> - **Proved.** Composition of banked `frobSq_schur_block_split` + associativity. The factorization
+>   hyps `hp`/`hb` are the depth reduction (item A below).
+
+> **Brick 5 — the full inner-integral CoV (measure half).** The inner fibre of `gammaPeelIntegral`
+> equals the outer `(P,B₁₂,C)`-box integral of the inner shear-box `Γ`-integral of `freedSchurLoss`:
+>
+>     ∫_{A₀ ∈ matBox ∩ pivotChart ρ κ} frobSq(rmatMul A₀ Q)^{−c'}
+>       = ∫_{x ∈ outerDom} ∫_{Γ ∈ shear-box} (freedSchurLoss x Γ (Q.submatrix (blockSplitEquiv κ) id))^{−c'}.
+>
+> - **Lean:** `chartInner_eq_outerShearFree`.
+> - **Proved.** Composition of banked `chartInner_schurWeld_eq_of_emb` (reindex + Schur split) +
+>   `chartInner_schurShearFree_eq` (shear `D ↦ Γ`, Jacobian 1). Measure-side CoV entry, end-to-end banked.
+
 ## Not closed (the remaining mountain — the CoV, recon-map item 1, ~65–75% new)
 
 `sjJointResolution` (`RouteMSJResolution.lean:797/803`, `gammaPeelIntegral M t ρ κ c' < ⊤`) is
@@ -82,9 +99,21 @@ to a `g_cc`-box integral is the mountain. Its INGREDIENTS are largely banked; th
    `sjChargeBudget_le` (`RouteMSJResolution:203`).
 6. **The L-recursion over the rank flag** + deeper-branch termination (banked charge; flag well-founded).
 
-**Handoff:** the next tide builds the CoV assembly (items 1–6). Brick 3 is the terminal chart it lands
-on (with `n = dim E_T = Mval(branch)`). The one genuinely-new algebraic piece is item 4 (depth
-reduction); the measure plumbing (items 1–3, 5) is banked-ingredient assembly; item 6 is the recursion.
+**What is now banked (this tide):** the measure-side CoV entry (items 1–3) is `chartInner_eq_outerShearFree`
+(Brick 5); item 4's algebraic core is `frobSq_schur_eq_sjGoodMap` (Brick 4); the terminal endpoint is
+`sjGoodMap_loss_matBox_lt_top` (Brick 3) + the flatten (Brick 2).
+
+**Precise remaining gaps for the next tide:**
+- **(A) depth reduction** — from `Q̃ = (prod (tailChain M) A').submatrix (blockSplitEquiv κ) id`, factor the
+  sheared row-blocks as `Q̃_p = v·A₂`, `Q_b = W·A₂` (unfold `prod`, distribute row-blocks over the
+  two-block tail `A₁·A₂`), so `freedSchurLoss x Γ Q̃ = g_cc(Γ, v)` via Brick 4. Genuinely-new algebra.
+- **(B) nested finiteness** — bound `∫_{A'} ∫_{x ∈ outerDom} ∫_{Γ} (freedSchurLoss)^{−c'}` finite: on the
+  GOOD sub-cover (pivot `P` bounded below ⟹ left-inverse; `A₂`, `W` generic ⟹ right-inverses) the inner
+  `(Γ, v)`-integral is Brick 3; the outer `A'`/`x` integration is the sum-not-min accumulation
+  (`radial_morse_residual_power_le` / the charge `sjChargeBudget_le`).
+- **(C) refined cover + recursion** — split `outerDom`/`pivotChart` into good `{|det P| ≥ δ·scale}` ∪ deeper;
+  deeper non-binding by banked `sjChargeBudget_le`; the L-recursion over the rank flag (finite,
+  nonincreasing).
 
 ## Fidelity note
 

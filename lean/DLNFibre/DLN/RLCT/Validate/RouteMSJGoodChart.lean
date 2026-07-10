@@ -2,6 +2,8 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankStep
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartWeld
+import DLNFibre.DLN.RLCT.Validate.RouteMSJChartShear
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart` — the good-chart endpoint in matrix coordinates
@@ -366,5 +368,35 @@ example : True := by
   trivial
 
 end GoodChart
+
+/-! ## The full inner-integral change of variables (raw chart integral → freed Schur loss)
+
+Composing the two banked transports — the block-reindex + Schur split weld
+(`chartInner_schurWeld_eq_of_emb`) and the measure-preserving shear (`chartInner_schurShearFree_eq`) —
+carries the RAW inner front-factor chart integral (the inner fibre of `gammaPeelIntegral`) all the way to
+the outer `(P, B₁₂, C)`-integral of the inner freed-Schur-loss `Γ`-integral over the shear-image box.
+This is the measure half of the CoV entry, banked end-to-end. -/
+
+/-- **The inner chart integral equals the outer/inner freed-Schur-loss integral.** For a `t`-element
+`(ρ, κ)` pivot and a fixed tail product `Q`, the inner fibre of `gammaPeelIntegral`
+(`∫_{A₀ ∈ matBox ∩ pivotChart ρ κ} frobSq(A₀·Q)^{−c'}`) equals the outer integral over the
+`(P, B₁₂, C)`-box-with-invertible-pivot `outerDom` of the inner integral over the shear-image
+`Γ`-box of `(freedSchurLoss x Γ Q̃)^{−c'}`, `Q̃ = Q.submatrix (blockSplitEquiv κ) id`. Pure composition of
+`chartInner_schurWeld_eq_of_emb` (reindex + Schur split) and `chartInner_schurShearFree_eq` (the shear
+`D ↦ Γ`, Jacobian 1). The remaining CoV steps (identifying `freedSchurLoss` with the good-chart `g_cc`
+via the depth reduction `Q̃ₚ = v·A₂`, `Q_b = W·A₂`, and the nested finiteness against the endpoint
+`sjGoodMap_loss_matBox_lt_top` on the refined cover) are the un-banked mountain. -/
+theorem chartInner_eq_outerShearFree {p n q t : ℕ}
+    (ρ : Fin t ↪ Fin p) (κ : Fin t ↪ Fin n)
+    (Q : Matrix (Fin n) (Fin q) ℝ) (c' T : ℝ) :
+    ∫⁻ A₀ in matBox p n T ∩ pivotChart ρ κ,
+        ENNReal.ofReal ((frobSq (rmatMul A₀ Q)) ^ (-c'))
+      = ∫⁻ x in outerDom t (p - t) (n - t) T,
+          ∫⁻ Γ in {Γ : Fin (p - t) → Fin (n - t) → ℝ |
+              Γ + schurShift x ∈ genBox (Fin (p - t)) (Fin (n - t)) T},
+            ENNReal.ofReal
+              ((freedSchurLoss x Γ (Q.submatrix (blockSplitEquiv κ) id)) ^ (-c')) := by
+  rw [chartInner_schurWeld_eq_of_emb ρ κ Q c' T,
+    chartInner_schurShearFree_eq (Q.submatrix (blockSplitEquiv κ) id) c' T]
 
 end DLNFibre.DLN.RLCT
