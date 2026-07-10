@@ -1203,3 +1203,17 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore
 -- Built over the raw pi type (column-indexed) to sidestep the Matrix.module vs NormedSpace.toModule
 -- instance diamond (see lean/CLAUDE.md). The measure half of the absorption step. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelMeas
+-- `RouteMSJRadialInt` — Cat I abstract integrability (thread `genm-catclose`): the n-dim radial lemma
+-- `integrableOn_norm_rpow_neg_ball` (a<n ⟹ ‖x‖^{−a} integrable on the R-ball, EuclideanSpace/L2) + its
+-- `∫⁻ … < ⊤` shape. Via Mathlib `integrable_fun_norm_addHaar` + `integrableOn_Ioo_rpow_iff`. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialInt
+-- `RouteMSJProjRadial` — Cat I (thread `genm-catI-p2-proj`): `projection_rpow_lintegral_uniform` — the
+-- uniform-in-subspace projection radial bound (∃C<⊤ ∀U dim≥r, ∫⁻‖P_U w‖^{−a}≤C, a<r). p2rev-PASS.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJProjRadial
+-- `RouteMSJGramResidual` — Cat I (thread `genm-catI-integrability`): `det_gram_cons` — gram-native Schur
+-- recursion `det(gram(cons w u))=det(gram u)·‖(span u)ᗮ.starProjection w‖²` (unconditional). catIrev-PASS.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
+-- `RouteMSJQBoxCore` — Cat I KEYSTONE (thread `genm-catI-integrability`): `qbox_lintegral_lt_top`
+-- (∫⁻_{Q∈(ball)^b} det(gram Q)^{−a/2} < ⊤ for a<q−b+1) — the abstract free-Q determinantal integrability,
+-- the LEAF the native (S,J) recursion bottoms out on (operator (A) build). catIrev-PASS, clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore

@@ -109,6 +109,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelMeas
+import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialInt
+import DLNFibre.DLN.RLCT.Validate.RouteMSJProjRadial
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
+import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
 
 /-!
 # Axiom-hygiene check
@@ -971,3 +975,11 @@ open DLNFibre.DLN.RLCT
 -- + `lintegral_box_le_absorption` (step 5: box⊆univ enlargement + affine CoV, finiteness upper bound).
 #print axioms lintegral_comp_mulLeftₚ
 #print axioms lintegral_box_le_absorption
+-- Cat I abstract Q-box integrability core (RouteMSJ{RadialInt,ProjRadial,GramResidual,QBoxCore};
+-- threads genm-catclose / genm-catI-*): the LEAF the native (S,J) recursion bottoms out on (operator
+-- (A) build). `qbox_lintegral_lt_top` keystone + `det_gram_cons` (gram-native Schur) + P2 + radial.
+-- catIrev + p2rev PASS (both forced fresh-olean clean-three).
+#print axioms qbox_lintegral_lt_top
+#print axioms det_gram_cons
+#print axioms projection_rpow_lintegral_uniform
+#print axioms integrableOn_norm_rpow_neg_ball
