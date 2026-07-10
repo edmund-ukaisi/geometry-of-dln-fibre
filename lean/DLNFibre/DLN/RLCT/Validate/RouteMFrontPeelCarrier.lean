@@ -200,6 +200,106 @@ theorem morseCore_residual_lt_top {Ω : Type*} [MeasurableSpace Ω] (μ : Measur
         lintegral_const_mul' _ _ ENNReal.ofReal_ne_top
     _ < ⊤ := ENNReal.mul_lt_top ENNReal.ofReal_lt_top hcore
 
+/-! ## Nondegeneracy helpers (shared by the borderline endpoint and CRUX A) -/
+
+/-- **A chain with a zero width has `minAdm = 0`.** If some width `R i = 0`, the layer-peel recursion
+`minAdmRec` bottoms out at `0`: the pivot cut `t = min(R₀,R₁)` zeroes the leading block
+`(R₀−t)(R₁−t) = 0`, and the reduced chain `redChain t R` still carries a zero width (the original one,
+or `t = 0` when the zero sat in the leading pair), so the residual `minAdmRec (redChain t R)` is `0` by
+induction on arity. Used both for the degenerate front-peel branch `q = tailMin M` (a tail width
+reduces to `0`) and to derive nondegeneracy `minAdm R ≥ 1 ⟹ ∀ i, R i ≥ 1`. -/
+private theorem minAdmRec_eq_zero_of_width_zero :
+    ∀ {K : ℕ} (R : Fin (K + 1) → ℕ), (∃ i, R i = 0) → minAdmRec R = 0
+  | 0, _, _ => rfl
+  | 1, R, ⟨i, hi⟩ => by
+      rw [minAdmRec_leaf]; fin_cases i <;> simp_all
+  | (l + 1 + 1), R, ⟨i, hi⟩ => by
+      rw [minAdmRec_succ_succ]
+      apply Nat.le_zero.mp
+      refine le_trans (Finset.inf'_le _
+        (show min (R 0) (R 1) ∈ Finset.range (min (R 0) (R 1) + 1) from by
+          rw [Finset.mem_range]; omega)) ?_
+      have hblock : (R 0 - min (R 0) (R 1)) * (R 1 - min (R 0) (R 1)) = 0 := by
+        rcases le_total (R 0) (R 1) with h | h
+        · rw [min_eq_left h, Nat.sub_self, Nat.zero_mul]
+        · rw [min_eq_right h, Nat.sub_self, Nat.mul_zero]
+      rw [hblock, Nat.zero_add]
+      refine Nat.le_of_eq (minAdmRec_eq_zero_of_width_zero (redChain (min (R 0) (R 1)) R) ?_)
+      -- the reduced chain still carries a zero width.
+      by_cases ht0 : min (R 0) (R 1) = 0
+      · exact ⟨0, by rw [redChain_zero]; exact ht0⟩
+      · -- `t ≠ 0` ⟹ `R 0, R 1 ≥ 1`, so the zero index sits at position `≥ 2`, surviving `redChain`.
+        have hR0 : R 0 ≠ 0 := fun h => ht0 (by rw [h, Nat.zero_min])
+        have hR1 : R 1 ≠ 0 := fun h => ht0 (by rw [h, Nat.min_zero])
+        revert hi
+        refine Fin.cases ?_ (fun i' => ?_) i
+        · intro hi; exact absurd hi hR0
+        · refine Fin.cases ?_ (fun j => ?_) i'
+          · intro hi; rw [Fin.succ_zero_eq_one] at hi; exact absurd hi hR1
+          · intro hi; exact ⟨j.succ, by rw [redChain_succ]; exact hi⟩
+
+/-- **Nondegeneracy: `minAdm R ≥ 1 ⟹ every width `R i ≥ 1`.** Contrapositive of
+`minAdmRec_eq_zero_of_width_zero` (through `minAdmRec_eq_minAdm`): a zero width collapses `minAdm`
+to `0`. -/
+theorem all_one_le_of_one_le_minAdm {K : ℕ} (R : Fin (K + 1) → ℕ) (h : 1 ≤ minAdm R) :
+    ∀ i, 1 ≤ R i := by
+  intro i
+  by_contra hlt
+  have hi0 : R i = 0 := by omega
+  have hz : minAdm R = 0 := by
+    rw [← minAdmRec_eq_minAdm]; exact minAdmRec_eq_zero_of_width_zero R ⟨i, hi0⟩
+  omega
+
+/-- **The reduced product is a.e.-nonzero when every width is `≥ 1`.** For a chain `R` with all widths
+`≥ 1`, `frobSq (prod R Y) > 0` a.e. on the box: the reduced product is a genuine (not identically-zero)
+polynomial in `Y` (`corePoly R ≠ 0`, the `e₀₀` witness), whose real zero-set is Lebesgue-null
+(`MvPolynomial.ae_eval_ne_zero`), transported `Params ↔ flat` by the measure-preserving
+`paramsEquivFlat` and restricted to the box. -/
+theorem frobSq_prod_ae_pos {K : ℕ} (R : Fin (K + 1) → ℕ) (hall : ∀ i, 1 ≤ R i) :
+    ∀ᵐ Y ∂(volume.restrict (paramsBoxM R 1)), 0 < frobSq (prod R Y) := by
+  apply ae_restrict_of_ae
+  have hne : corePoly R ≠ 0 := by
+    obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness R hall
+    intro hP0
+    apply hA
+    have hev := eval_corePoly R ((paramsEquivFlat R) A)
+    rw [hP0] at hev
+    simpa using hev.symm
+  have hae : ∀ᵐ z : Fin (flatDim R) → ℝ, MvPolynomial.eval z (corePoly R) ≠ 0 :=
+    MvPolynomial.ae_eval_ne_zero (corePoly R) hne
+  have hmp := measurePreserving_paramsEquivFlat R
+  have hmeas : MeasurableSet {z : Fin (flatDim R) → ℝ | MvPolynomial.eval z (corePoly R) ≠ 0} :=
+    (MvPolynomial.measurableSet_zeroSet (corePoly R)).compl
+  have haeParams : ∀ᵐ Y : Params R, MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) ≠ 0 := by
+    rw [← hmp.map_eq] at hae
+    exact (ae_map_iff hmp.measurable.aemeasurable hmeas).1 hae
+  refine haeParams.mono (fun Y hY => ?_)
+  have hfe : MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) = frobSq (prod R Y) := by
+    rw [eval_corePoly R (paramsEquivFlat R Y), MeasurableEquiv.symm_apply_apply,
+      dlnLoss_zero_eq_frobSq]
+  rw [hfe] at hY
+  exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hY)
+
+/-- **AM-GM split at the log endpoint.** For `a, b > 0` and `0 ≤ s ≤ c'`,
+`(a + b)^{−c'} ≤ a^{−(c'−s)} · b^{−s}`: base-monotone `rpow` gives
+`a^{c'−s} b^s ≤ (a+b)^{c'−s}(a+b)^s = (a+b)^{c'}`, then take reciprocals. Splits the coupled
+Morse-block-plus-core integrand so the block charge `c'−s` (below the Morse threshold) and a small core
+residual `s` (below `½·minAdm R`) factor into a product of two finite integrals. -/
+theorem rpow_add_split_le (a b c' s : ℝ) (ha : 0 < a) (hb : 0 < b) (hs0 : 0 ≤ s) (hsc : s ≤ c') :
+    (a + b) ^ (-c') ≤ a ^ (-(c' - s)) * b ^ (-s) := by
+  have hab : 0 < a + b := by linarith
+  have hkey : a ^ (c' - s) * b ^ s ≤ (a + b) ^ c' := by
+    have h1 : a ^ (c' - s) ≤ (a + b) ^ (c' - s) :=
+      Real.rpow_le_rpow ha.le (by linarith) (by linarith)
+    have h2 : b ^ s ≤ (a + b) ^ s := Real.rpow_le_rpow hb.le (by linarith) hs0
+    calc a ^ (c' - s) * b ^ s
+        ≤ (a + b) ^ (c' - s) * (a + b) ^ s :=
+          mul_le_mul h1 h2 (Real.rpow_nonneg hb.le _) (Real.rpow_nonneg hab.le _)
+      _ = (a + b) ^ c' := by rw [← Real.rpow_add hab]; ring_nf
+  rw [Real.rpow_neg ha.le, Real.rpow_neg hb.le, Real.rpow_neg hab.le, ← mul_inv,
+    ← one_div, ← one_div]
+  exact one_div_le_one_div_of_le (by positivity) hkey
+
 /-! ## The reduced-Morse-box endpoint (regime dispatch, PROVED modulo the borderline) -/
 
 /-- **The reduced-chain box with an isotropic Morse block is finite below the shifted threshold
@@ -257,8 +357,70 @@ theorem morse_reduced_box_lt_top (R : Fin (L + 1 + 1) → ℕ) (d : ℕ) (c' : N
         1 one_pos (fun Y => frobSq (prod R Y)) (fun Y => frobSq_nonneg _)
         (paramsBoxM R 1) (paramsBoxM_volume_lt_top R 1)
       exact this
-    · -- borderline c' = (m+1)/2: the log endpoint (Codex flag 1), out of scope of both bricks.
-      sorry
+    · -- borderline `c' = (m+1)/2`: peel the Morse block at exponent `c'−s` (below the Morse threshold)
+      -- and leave a small core residual `s = 1/4` (below `½·minAdm R`); the extra reduced-chain codim
+      -- (`minAdm R ≥ 1`, forced by `hc` at the borderline) gives the room the pure-Morse peel lacks.
+      have hminR1 : 1 ≤ minAdm R := by
+        have h0 : (0 : ℝ) < (minAdm R : ℝ) := by rw [heq] at hc; push_cast at hc; linarith
+        have : 0 < minAdm R := by exact_mod_cast h0
+        omega
+      have hall : ∀ i, 1 ≤ R i := all_one_le_of_one_le_minAdm R hminR1
+      have hWpos : ∀ᵐ Y ∂(volume.restrict (paramsBoxM R 1)), 0 < frobSq (prod R Y) :=
+        frobSq_prod_ae_pos R hall
+      set s : ℝ := 1 / 4 with hs
+      have hs0 : (0 : ℝ) < s := by rw [hs]; norm_num
+      have hmR : (1 : ℝ) ≤ (minAdm R : ℝ) := by exact_mod_cast hminR1
+      have hmnn : (0 : ℝ) ≤ (m : ℝ) := Nat.cast_nonneg m
+      have hsc : s ≤ (c' : ℝ) := by rw [hs, heq]; linarith
+      have hsminAdm : s < (minAdm R : ℝ) / 2 := by rw [hs]; linarith
+      have hblockexp : (c' : ℝ) - s < ((m : ℝ) + 1) / 2 := by rw [hs, heq]; linarith
+      have hIHfin : routeMLayerBoxIntegral R s 1 < ⊤ := by
+        have hlt : ((⟨s, hs0.le⟩ : NNReal) : ℝ) < (minAdm R : ℝ) / 2 := hsminAdm
+        simpa using hIH ⟨s, hs0.le⟩ hlt
+      have hKfin : Kbound (m + 1) ((c' : ℝ) - s) 1 < ⊤ := Kbound_lt_top m 1 one_pos _ hblockexp
+      -- the Morse-block zero set `{X | ∑ Xᵢ² = 0} = {0}` is Lebesgue-null.
+      have hXae : ∀ᵐ X : Fin (m + 1) → ℝ, (∑ i, (X i) ^ 2) ≠ 0 := by
+        have hnull : volume {X : Fin (m + 1) → ℝ | ∑ i, (X i) ^ 2 = 0} = 0 := by
+          refine measure_mono_null ?_ (measure_singleton (0 : Fin (m + 1) → ℝ))
+          intro X hX
+          simp only [Set.mem_setOf_eq] at hX
+          simp only [Set.mem_singleton_iff]
+          funext i
+          exact pow_eq_zero_iff (by norm_num) |>.1
+            ((Finset.sum_eq_zero_iff_of_nonneg (fun j _ => sq_nonneg _)).1 hX i (Finset.mem_univ i))
+        rw [ae_iff]; simpa using hnull
+      calc ∫⁻ Y in paramsBoxM R 1, (∫⁻ X in morseBox (m + 1) 1,
+              ENNReal.ofReal ((∑ i, (X i) ^ 2 + frobSq (prod R Y)) ^ (-(c' : ℝ))) ∂volume) ∂volume
+          ≤ ∫⁻ Y in paramsBoxM R 1,
+              ENNReal.ofReal ((frobSq (prod R Y)) ^ (-s)) * Kbound (m + 1) ((c' : ℝ) - s) 1
+                ∂volume := by
+            refine lintegral_mono_ae ?_
+            filter_upwards [hWpos] with Y hWY
+            calc ∫⁻ X in morseBox (m + 1) 1,
+                    ENNReal.ofReal ((∑ i, (X i) ^ 2 + frobSq (prod R Y)) ^ (-(c' : ℝ))) ∂volume
+                ≤ ∫⁻ X in morseBox (m + 1) 1,
+                    ENNReal.ofReal ((frobSq (prod R Y)) ^ (-s)) *
+                      ENNReal.ofReal ((∑ i, (X i) ^ 2) ^ (-((c' : ℝ) - s))) ∂volume := by
+                  refine lintegral_mono_ae ((ae_restrict_of_ae hXae).mono (fun X hX => ?_))
+                  have hXpos : (0 : ℝ) < ∑ i, (X i) ^ 2 :=
+                    lt_of_le_of_ne (by positivity) (Ne.symm hX)
+                  rw [← ENNReal.ofReal_mul (Real.rpow_nonneg hWY.le _)]
+                  apply ENNReal.ofReal_le_ofReal
+                  rw [mul_comm]
+                  exact rpow_add_split_le (∑ i, (X i) ^ 2) (frobSq (prod R Y)) (c' : ℝ) s
+                    hXpos hWY hs0.le hsc
+                _ = ENNReal.ofReal ((frobSq (prod R Y)) ^ (-s)) *
+                      ∫⁻ X in morseBox (m + 1) 1,
+                        ENNReal.ofReal ((∑ i, (X i) ^ 2) ^ (-((c' : ℝ) - s))) ∂volume := by
+                  rw [lintegral_const_mul' _ _ ENNReal.ofReal_ne_top]
+                _ = ENNReal.ofReal ((frobSq (prod R Y)) ^ (-s)) * Kbound (m + 1) ((c' : ℝ) - s) 1 := by
+                  rw [Kbound]
+        _ = (∫⁻ Y in paramsBoxM R 1, ENNReal.ofReal ((frobSq (prod R Y)) ^ (-s)) ∂volume)
+              * Kbound (m + 1) ((c' : ℝ) - s) 1 := by
+            rw [lintegral_mul_const' _ _ hKfin.ne]
+        _ = routeMLayerBoxIntegral R s 1 * Kbound (m + 1) ((c' : ℝ) - s) 1 := by
+            rw [routeMLayerBoxIntegral]
+        _ < ⊤ := ENNReal.mul_lt_top hIHfin hKfin
     · -- regime A: peel the Morse block (banked `morseCore_residual_lt_top`), close the core by `hIH`.
       have hshift : (c' : ℝ) - ((m : ℝ) + 1) / 2 < (minAdm R : ℝ) / 2 := by
         have hh : ((↑(m + 1) : ℝ) + (minAdm R : ℝ)) / 2
@@ -281,43 +443,7 @@ theorem morse_reduced_box_lt_top (R : Fin (L + 1 + 1) → ℕ) (d : ℕ) (c' : N
       exact morseCore_residual_lt_top (μ := volume) m (c' : ℝ) hgt 1 one_pos
         (fun Y => frobSq (prod R Y)) (paramsBoxM R 1) hWp hcore
 
-/-- **A chain with a zero width has `minAdm = 0`.** If some width `R i = 0`, the layer-peel recursion
-`minAdmRec` bottoms out at `0`: the pivot cut `t = min(R₀,R₁)` zeroes the leading block
-`(R₀−t)(R₁−t) = 0`, and the reduced chain `redChain t R` still carries a zero width (the original one,
-or `t = 0` when the zero sat in the leading pair), so the residual `minAdmRec (redChain t R)` is `0` by
-induction on arity. Used for the degenerate front-peel branch `q = tailMin M` (a tail width reduces to
-`0`), where the reduced-chain codim vanishes and the front Morse block alone charges. -/
-private theorem minAdmRec_eq_zero_of_width_zero :
-    ∀ {K : ℕ} (R : Fin (K + 1) → ℕ), (∃ i, R i = 0) → minAdmRec R = 0
-  | 0, _, _ => rfl
-  | 1, R, ⟨i, hi⟩ => by
-      rw [minAdmRec_leaf]; fin_cases i <;> simp_all
-  | (l + 1 + 1), R, ⟨i, hi⟩ => by
-      rw [minAdmRec_succ_succ]
-      apply Nat.le_zero.mp
-      refine le_trans (Finset.inf'_le _
-        (show min (R 0) (R 1) ∈ Finset.range (min (R 0) (R 1) + 1) from by
-          rw [Finset.mem_range]; omega)) ?_
-      have hblock : (R 0 - min (R 0) (R 1)) * (R 1 - min (R 0) (R 1)) = 0 := by
-        rcases le_total (R 0) (R 1) with h | h
-        · rw [min_eq_left h, Nat.sub_self, Nat.zero_mul]
-        · rw [min_eq_right h, Nat.sub_self, Nat.mul_zero]
-      rw [hblock, Nat.zero_add]
-      refine Nat.le_of_eq (minAdmRec_eq_zero_of_width_zero (redChain (min (R 0) (R 1)) R) ?_)
-      -- the reduced chain still carries a zero width.
-      by_cases ht0 : min (R 0) (R 1) = 0
-      · exact ⟨0, by rw [redChain_zero]; exact ht0⟩
-      · -- `t ≠ 0` ⟹ `R 0, R 1 ≥ 1`, so the zero index sits at position `≥ 2`, surviving `redChain`.
-        have hR0 : R 0 ≠ 0 := fun h => ht0 (by rw [h, Nat.zero_min])
-        have hR1 : R 1 ≠ 0 := fun h => ht0 (by rw [h, Nat.min_zero])
-        revert hi
-        refine Fin.cases ?_ (fun i' => ?_) i
-        · intro hi; exact absurd hi hR0
-        · refine Fin.cases ?_ (fun j => ?_) i'
-          · intro hi; rw [Fin.succ_zero_eq_one] at hi; exact absurd hi hR1
-          · intro hi; exact ⟨j.succ, by rw [redChain_succ]; exact hi⟩
-
-/-- **The reduced chain is a.e.-nonvanishing on the regime-A stratum (NAMED SORRY — CRUX A).** Under
+/-- **The reduced chain is a.e.-nonvanishing on the regime-A stratum (CRUX A, PROVED).** Under
 the regime-A premise `M₀q/2 < c'` (with `c' < ½·minAdm M`), the reduced chain `redTail M q` is
 nondegenerate: `M₀q < minAdm M ≤ frontCharge q = M₀q + minAdm (redTail M q)` forces
 `minAdm (redTail M q) > 0`, so every tail width `> q` and the reduced product `prod (redTail M q) Y`
@@ -334,30 +460,8 @@ theorem reduced_frobSq_ae_pos (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : 
   set R : Fin (L + 1 + 1) → ℕ := fun i : Fin (L + 1 + 1) => M i.succ - q with hR
   by_cases hall : ∀ i, 1 ≤ R i
   · -- All reduced widths `≥ 1`: the reduced product is a genuine nonzero polynomial in `Y`, so
-    -- `frobSq (prod R Y) > 0` a.e. (nonzero real polynomial ⟹ null zero-set), via `corePoly`.
-    apply ae_restrict_of_ae
-    have hne : corePoly R ≠ 0 := by
-      obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness R hall
-      intro hP0
-      apply hA
-      have hev := eval_corePoly R ((paramsEquivFlat R) A)
-      rw [hP0] at hev
-      simpa using hev.symm
-    have hae : ∀ᵐ z : Fin (flatDim R) → ℝ, MvPolynomial.eval z (corePoly R) ≠ 0 :=
-      MvPolynomial.ae_eval_ne_zero (corePoly R) hne
-    have hmp := measurePreserving_paramsEquivFlat R
-    have hmeas : MeasurableSet {z : Fin (flatDim R) → ℝ | MvPolynomial.eval z (corePoly R) ≠ 0} :=
-      (MvPolynomial.measurableSet_zeroSet (corePoly R)).compl
-    have haeParams : ∀ᵐ Y : Params R,
-        MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) ≠ 0 := by
-      rw [← hmp.map_eq] at hae
-      exact (ae_map_iff hmp.measurable.aemeasurable hmeas).1 hae
-    refine haeParams.mono (fun Y hY => ?_)
-    have hfe : MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) = frobSq (prod R Y) := by
-      rw [eval_corePoly R (paramsEquivFlat R Y), MeasurableEquiv.symm_apply_apply,
-        dlnLoss_zero_eq_frobSq]
-    rw [hfe] at hY
-    exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hY)
+    -- `frobSq (prod R Y) > 0` a.e. (`frobSq_prod_ae_pos`, the `corePoly` a.e.-nonzero transport).
+    exact frobSq_prod_ae_pos R hall
   · -- Some reduced width is `0` (forces `q = tailMin M`): `minAdm R = 0`, so the regime-A premise
     -- `M₀q/2 < c'` contradicts `c' < ½·minAdm M ≤ M₀q/2` — the statement is vacuously true.
     exfalso
