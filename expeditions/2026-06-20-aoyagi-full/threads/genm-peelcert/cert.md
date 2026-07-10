@@ -481,3 +481,113 @@ the well-founded induction index on the resolved charts.
   center blow-up); the top-stratum `(a,1,D)` leaf (unchanged). (2) A reviewer / the next pen-and-paper on
   the general product-rank-flag induction (the incidence centers + the tail-rank monovariant past `b=2`) —
   that is the last genuinely-new Aoyagi §5 piece.
+
+> ⚠️ **The "flat-`(p,v)` integration" and the "descent reduces to arity-IH" hints above are SHARPENED and
+> partly CORRECTED in §TWIST-LEMMA below** (`cornrev` follow-up-2 audit + a fresh Codex): the bilinear
+> twist is threshold-preserving ONLY in balanced charts; in general it is a threshold-LOWERING power, and
+> the general "no stratum below `½·minAdm`" is the Aoyagi §5 import, NOT reducible to twist+arity-IH.
+
+---
+
+# §TWIST-LEMMA + GENERAL-INDUCTION SCOPE (follow-up 3, controller task — `cornrev`'s 3 audit holes)
+
+**Charge:** fill the three holes `cornrev` found in §DEEPER-STRATA (`threads/genm-cornrev/review.md`
+§FOLLOW-UP 2): (1) state+justify the twist-is-threshold-preserving lemma (the cert integrated the bilinear
+`p,v` FLAT with no argument); (2) a NON-degenerate validation (the base cases have
+`½·minAdm(rm-M₁)=½·minAdm(M)`); (3) complete the incidence-center list + PROVE (or scope) "no resolved
+stratum drops below `½·codim` at general width". **Exact algebra:** `/tmp/deepstrat_twist.py`,
+`/tmp/deepstrat_general.py`, `/tmp/deepstrat_regime.py`. **Decorrelated:** `codex/geninduct-{prompt,answer}.md`
+(gpt-5.x, xhigh; both conclusions withheld). `cornrev`'s audit: OUTCOME SOUND (RLCT `= ½·minAdm`, `x⁴+y⁶`
+refuted), 3 fillable holes — this closes (1)+(2) and honestly scopes (3).
+
+## (1) The twist lemma — CORRECTED: log ONLY in balanced charts, threshold-LOWERING power otherwise
+
+**My §DEEPER-STRATA framing "the bilinear twist is (always) threshold-preserving (log)" is WRONG in
+general and is corrected here.** For the pushforward of flat Lebesgue under the bilinear
+`Φ: (Γ,Y) ↦ ΓY` (`Γ` `a×b`, `Y` `b×q`), on a corank-`j` chart of `Γ` (collapsing block `E ∈ ℝ^{j×(b−a+j)}`,
+dimension `d_j = j(b−a+j)`, scaling `N_j = jq` output coordinates), the density model factor is
+`∫_{r≳|z|} r^{d_j−1−N_j} dr` (Codex Q1, exact), giving three regimes:
+
+> **`q < b−a+j` (`d_j>N_j`): bounded density. `q = b−a+j` (`d_j=N_j`): LOGARITHMIC density (threshold-
+> preserving). `q > b−a+j` (`d_j<N_j`): a genuine POWER `|z|^{−(N_j−d_j)} = |z|^{−j(q−b+a−j)}` — which
+> LOWERS the RLCT threshold.**
+
+So the twist is threshold-preserving ONLY in balanced charts (`q≤b−a+1` for all corank levels). The base
+case `a=1, b=q=2` is EXACTLY balanced (`q=b−a+1=2`), log — which is why the flat-`(p,v)` reading was valid
+THERE. In a power chart the twist genuinely lowers the RLCT, and (crucially) it lowers it TO
+`½·minAdm(M)`, never (observed) below. The `x⁴+y⁶` fear is that it lowers below `½·minAdm(M)`; it does not
+(verified), but that "lands AT, not below" is the Aoyagi §5 content, not a consequence of this lemma.
+
+**VERIFIED both ways** (`/tmp/deepstrat_twist.py`, `/tmp/deepstrat_regime.py`):
+- The native-flat RLCT of the base reduced model — computed in the TRUE variables `(x₁,x₂,γ,y,u,z)`, NO
+  `(p,v)` shortcut — is **`3/2`**, matching the flat-`(p,v)` reading. So in the balanced base case the
+  shortcut is justified (the pushforward density is log; the marginal slope rises `0.905→0.988` toward the
+  log signature, not a fixed power).
+- The regime boundary `q` vs `b−a+1`: `(2,3,2,2)` (`q=2=b−a+1`, balanced) → twist PRESERVES the flat-chain
+  RLCT (`½·minAdm(2,2,2)=1.5 = ½·minAdm(M)`); `(2,3,3,4)` (`q=4>b−a+1=2`, power) → twist LOWERS it
+  (`½·minAdm(2,3,4)=3.0 → 2.5`).
+
+## (2) NON-DEGENERATE validation — `(2,3,3,4)`, `t★=1` (the twist LOWERS, strict gap)
+
+The base cases `(2,3,2,2)`, `(2,3,3,2)` are measure-degenerate: `½·minAdm(remove-M₁)=½·minAdm(M)` (both
+balanced), so they cannot exercise the twist-lowering. `(2,3,3,4)`, `t★=1` has a STRICT gap:
+`½·minAdm(M)=2.5` vs `½·minAdm(remove-M₁=(2,3,4))=3.0`. The reduced corner model
+`f = frobSq([x; γY]·A₂)` (`x` `1×3`, `γY` the `(1,2,3)` sub-product, `A₂` `3×4`) — native-flat zeta MC —
+**destabilizes at `s≈2.5`, NOT `3.0`** (`/tmp/deepstrat_twist.py` (2)). So the twist genuinely lowers the
+corner RLCT to the global `½·minAdm(M)=2.5`. The mechanism: the product constraint on `W̃`'s bottom rows
+LOWERS the codim (`minAdm(2,3,4)=6 → minAdm(2,3,3,4)=5`) while PRESERVING `RLCT=½·codim` (normal-crossing).
+This is the non-degenerate confirmation `cornrev` asked for; `RLCT = ½·codim = ½·minAdm(M)`, lands AT.
+
+## (3) General induction — the proportionality center + the honest scope of "never below `½·minAdm`"
+
+- **(3a) The incidence-center list is completed.** Beyond `{A=0}`, `{Y=0}`, `{im A ⊆ ker Y}`, the
+  **proportionality locus** (two pivot/tail column-pairs becoming dependent, e.g. `(x₂,p₂)∥(x₃,p₃)`) is a
+  genuine determinantal rank-drop center that must be resolved for the normal-crossing / `RLCT=½·codim`
+  property (Codex Q3; it carries the `5/2` value on `(2,3,3,4)`). It may appear inside a flag/incidence
+  resolution rather than named separately, but it is NOT covered by the first three centers.
+
+- **(3b) "No resolved stratum drops below `½·codim` at general width" is the Aoyagi §5 IMPORT — NOT
+  reducible to (twist lemma) + (arity IH).** I attempted the clean reduction "corner = flat shorter DLN
+  chain, closed by arity IH"; it FAILS in general (Codex Q1/Q2, exact): the reduction holds only when the
+  bottom-block product map is DOMINANT and its pushforward is log-bounded (the balanced regime); in the
+  power regime (the generic, interesting case — e.g. `(2,3,3,4)`) the constrained `W̃` has a STRICTLY LOWER
+  RLCT than the flat chain, so the flat-chain arity IH does not deliver it. Q1+Q2 handle only
+  already-monomialized log-twist corners; they do NOT prove all product-rank centers are resolved, nor the
+  exceptional-divisor Jacobian inequalities `≥ ½·minAdm`. **That is exactly the Aoyagi §5 product-rank-flag
+  content:** the full center list (incl. proportionality), chartwise block splitting, Jacobian bookkeeping,
+  and the induction that every remaining tail is a shorter ADMISSIBLE chain with all divisor candidates
+  `≥ ½·minAdm`. This remains genuinely open (honestly scoped) — the last new content.
+
+- **NOT a wall.** The result is true (`RLCT=½·minAdm(M)`, lands AT not below): MC-true at width 4, cited
+  Aoyagi, and every tested corner ((2,3,2,2)→1.5, (2,3,3,4)→2.5) lands exactly at `½·minAdm(M)`. The
+  escalation trigger would be a resolved stratum with `RLCT < ½·minAdm(M)` — NONE found; the mechanism
+  (codim-lowering with `½·codim` preserved) is understood. But the general per-stratum normal-crossing
+  PROOF is the Aoyagi §5 import, not supplied here.
+
+## Corrections to the written cert (for decbuild + the reviewer)
+
+- §DEEPER-STRATA's implicit "twist is (always) threshold-preserving" ⟶ **corrected:** log iff balanced
+  (`q≤b−a+1`), threshold-lowering power otherwise; the base case is balanced (so its flat-`(p,v)` reading
+  is valid), general is not.
+- The base module for decbuild `(2,3,2,2)` (`f~x₁²+p²+z²(x₂²+v²)`, RLCT `3/2`) is DEGENERATE (balanced) —
+  the formalisation MUST also carry a power-regime case (`(2,3,3,4)`, RLCT `5/2`) to exercise the
+  twist-lowering, else the base module misrepresents the general mechanism. Obligation (1) — the log-density
+  justification of flat-`(p,v)` — applies ONLY to the balanced base; the power regime is resolved by the
+  blow-up directly (no flat-`(p,v)` shortcut).
+
+## CLOSE (follow-up 3)
+
+- **Firmest.** (1) The twist lemma is now correct and precise: bilinear pushforward density
+  `∫r^{d_j−1−N_j}dr`, `d_j=j(b−a+j)`, `N_j=jq` — log iff `q=b−a+j`, threshold-lowering power iff
+  `q>b−a+j`. The base case is balanced (log), justifying its flat reading; verified native-flat `= 3/2`.
+  (2) The non-degenerate `(2,3,3,4)` confirms the twist LOWERS RLCT to `½·minAdm(M)=2.5` (power regime),
+  `= ½·codim`, lands AT not below. My earlier "always log" framing is corrected.
+- **Most likely to break / watch.** (3b) the general "no stratum below `½·minAdm`" — I showed it is NOT
+  reducible to twist+arity-IH (the power regime breaks the clean reduction), so it is the Aoyagi §5 import.
+  If some higher stratum's divisor-Jacobian were `< ½·minAdm`, that is the real escalation — none found, but
+  the general per-stratum proof is not done.
+- **Next.** (1) decbuild: base module `(2,3,2,2)` (balanced, flat-`(p,v)` valid via the log lemma) PLUS a
+  power-regime module `(2,3,3,4)` (RLCT `5/2`, resolved by blow-up). (2) The general product-rank-flag
+  induction (center list incl. proportionality + divisor-Jacobian `≥½·minAdm`) = the imported Aoyagi §5
+  content; recommend a dedicated pen-and-paper/reviewer pass or a literature-grounded import of Aoyagi's
+  resolution rather than a from-scratch general proof.

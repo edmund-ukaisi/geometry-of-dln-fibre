@@ -1,0 +1,398 @@
+   Updating ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (HEAD)
+    Updated ssh://git@github.com/AI-Safety-Institute/aisi-inspect-tools (a7a172fe2776d600a7d10bed2bb6163e70433404)
+OpenAI Codex v0.142.5
+--------
+workdir: /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+model: gpt-5.5
+provider: openai-aisi
+approval: untrusted
+sandbox: read-only
+reasoning effort: xhigh
+reasoning summaries: none
+session id: 019f4d5d-701e-7872-9ae4-1415f0d72404
+--------
+user
+<task>
+Resolution-of-singularities / RLCT question about the GENERAL-width induction for the DLN product-rank-flag
+resolution (Aoyagi-style). Real matrices, Frobenius.
+
+CONTEXT. A "corner" loss arising in a DLN RLCT computation has the exact form
+   f = frobSq(W · A),   W = [ x ; γ·Y ]   (a matrix whose bottom rows are a BILINEAR sub-product γ·Y),
+with x a free block, A a free tail block, Y a free block, γ a free block. Integrated flat over all of
+x,γ,Y,A in a box. This is the loss of a shorter "flat" chain frobSq(W·A) but with W's bottom rows
+constrained to the image of the bilinear (γ,Y)↦γY.
+KNOWN (established, do not re-derive): for the smallest case the local RLCT of the deepest corner equals
+½·codim = ½·minAdm(M) (an explicit blow-up); the bilinear pushforward (γ,Y)↦γY has Jacobian |γ|² and gives
+a LOGARITHMIC density log(1/|·|), which changes only the multiplicity, not the RLCT threshold.
+
+QUESTIONS (genuinely open — do NOT assume it all works or that it walls):
+(Q1) Does the "bilinear pushforward is threshold-preserving (log density, not power)" statement GENERALIZE
+     to all the sub-products that arise in the nested resolution — i.e. for a general bilinear/multilinear
+     matrix product map Φ(γ,Y,…)↦(product), is the pushforward of flat Lebesgue always SUB-POWER (bounded
+     by a power of log(1/|·|)), never a genuine negative-power |·|^{−β} that would SHIFT the RLCT
+     threshold? Give the general Jacobian / density scaling, and state precisely when it is log vs when a
+     power could appear (dimension conditions).
+(Q2) Granting Q1, the corner loss f=frobSq(W·A) with the bilinear-constrained W: is its RLCT equal to the
+     RLCT of the FLAT lower-arity chain frobSq(W·A) (W free)? I.e. does the twist reduce the corner to a
+     strictly-shorter DLN chain whose RLCT is ½·its codim by an arity induction — so the WHOLE deeper-strata
+     resolution reduces to (twist-is-log) + (arity IH on shorter chains)? Or does the constraint on W lower
+     the RLCT below the flat chain's, requiring more than the arity IH?
+(Q3) The incidence centers to resolve {Y·A ≤ low rank} for a PRODUCT: beyond {A=0},{Y=0},{im A ⊆ ker Y},
+     is the PROPORTIONALITY locus (two pivot/tail column-pairs becoming parallel, e.g. (x₂,p₂)∥(x₃,p₃))
+     genuinely required as a blow-up center? And is there a PROOF (not "no evidence") that after resolving
+     ALL these centers, no stratum has RLCT < ½·codim at general width — or is that the genuine Aoyagi §5
+     content that must be imported? If it can be proven from (Q1)+(Q2)+arity-IH, sketch the proof; if it
+     genuinely walls, say what must be imported.
+</task>
+
+<output_contract>
+Answer Q1, Q2, Q3 in order. For Q1 give the general density scaling with the dimension condition for
+log-vs-power. For Q2 a clear yes/no with the reduction. For Q3: proof sketch OR precise import statement.
+Separate exact from heuristic. Under ~600 words. Do not pad.
+</output_contract>
+
+<grounding_rules>
+Real Frobenius. RLCT = smallest pole of ∫f^{−s}·(density). A smooth positive density or a log-power density
+gives the same threshold (poles at same location, log only raises pole ORDER/multiplicity); a genuine
+negative-power density |w|^{−β} shifts the threshold. minAdm = the DLN zero-product codim recursion
+minAdm(M)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…)]. Pen-and-paper math.
+
+codex
+I’ll ground this against the local notes/paper context before answering, especially because Q3 depends on whether the general-width resolution is already an imported result or something derivable from the two reductions.
+exec
+/bin/bash -lc "ls -la && find .. -maxdepth 3 -name CLAUDE.md -o -name README.md -o -name '*.md' | head -80" in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+total 108
+drwxrwxr-x 2 ubuntu ubuntu  4096 Jul 10 18:49 .
+drwxrwxr-x 3 ubuntu ubuntu  4096 Jul 10 18:22 ..
+-rw-rw-r-- 1 ubuntu ubuntu  2597 Jul 10 17:20 crux-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu  4537 Jul 10 17:15 crux-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 10583 Jul 10 17:20 crux-stdout.log
+-rw-rw-r-- 1 ubuntu ubuntu  2745 Jul 10 18:17 deepstrat-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu  4252 Jul 10 18:13 deepstrat-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 10581 Jul 10 18:17 deepstrat-stdout.log
+-rw-rw-r-- 1 ubuntu ubuntu  2200 Jul 10 17:43 degen-answer.md
+-rw-rw-r-- 1 ubuntu ubuntu  3835 Jul 10 17:39 degen-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu 29924 Jul 10 17:43 degen-stdout.log
+-rw-rw-r-- 1 ubuntu ubuntu  3424 Jul 10 18:49 geninduct-prompt.md
+-rw-rw-r-- 1 ubuntu ubuntu  4185 Jul 10 18:50 geninduct-stdout.log
+../cert.md
+../codex/degen-answer.md
+../codex/degen-prompt.md
+../codex/geninduct-prompt.md
+../codex/crux-answer.md
+../codex/deepstrat-prompt.md
+../codex/crux-prompt.md
+../codex/deepstrat-answer.md
+
+exec
+/bin/bash -lc 'pwd && rg -n "Aoyagi|proportional|parallel|incidence|RLCT|minAdm|resolution|§5|Section 5|bilinear|pushforward|Jacobian" -S .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+ succeeded in 0ms:
+/home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+./geninduct-stdout.log:16:Resolution-of-singularities / RLCT question about the GENERAL-width induction for the DLN product-rank-flag
+./geninduct-stdout.log:17:resolution (Aoyagi-style). Real matrices, Frobenius.
+./geninduct-stdout.log:19:CONTEXT. A "corner" loss arising in a DLN RLCT computation has the exact form
+./geninduct-stdout.log:23:constrained to the image of the bilinear (γ,Y)↦γY.
+./geninduct-stdout.log:24:KNOWN (established, do not re-derive): for the smallest case the local RLCT of the deepest corner equals
+./geninduct-stdout.log:25:½·codim = ½·minAdm(M) (an explicit blow-up); the bilinear pushforward (γ,Y)↦γY has Jacobian |γ|² and gives
+./geninduct-stdout.log:26:a LOGARITHMIC density log(1/|·|), which changes only the multiplicity, not the RLCT threshold.
+./geninduct-stdout.log:29:(Q1) Does the "bilinear pushforward is threshold-preserving (log density, not power)" statement GENERALIZE
+./geninduct-stdout.log:30:     to all the sub-products that arise in the nested resolution — i.e. for a general bilinear/multilinear
+./geninduct-stdout.log:31:     matrix product map Φ(γ,Y,…)↦(product), is the pushforward of flat Lebesgue always SUB-POWER (bounded
+./geninduct-stdout.log:32:     by a power of log(1/|·|)), never a genuine negative-power |·|^{−β} that would SHIFT the RLCT
+./geninduct-stdout.log:33:     threshold? Give the general Jacobian / density scaling, and state precisely when it is log vs when a
+./geninduct-stdout.log:35:(Q2) Granting Q1, the corner loss f=frobSq(W·A) with the bilinear-constrained W: is its RLCT equal to the
+./geninduct-stdout.log:36:     RLCT of the FLAT lower-arity chain frobSq(W·A) (W free)? I.e. does the twist reduce the corner to a
+./geninduct-stdout.log:37:     strictly-shorter DLN chain whose RLCT is ½·its codim by an arity induction — so the WHOLE deeper-strata
+./geninduct-stdout.log:38:     resolution reduces to (twist-is-log) + (arity IH on shorter chains)? Or does the constraint on W lower
+./geninduct-stdout.log:39:     the RLCT below the flat chain's, requiring more than the arity IH?
+./geninduct-stdout.log:40:(Q3) The incidence centers to resolve {Y·A ≤ low rank} for a PRODUCT: beyond {A=0},{Y=0},{im A ⊆ ker Y},
+./geninduct-stdout.log:41:     is the PROPORTIONALITY locus (two pivot/tail column-pairs becoming parallel, e.g. (x₂,p₂)∥(x₃,p₃))
+./geninduct-stdout.log:43:     ALL these centers, no stratum has RLCT < ½·codim at general width — or is that the genuine Aoyagi §5
+./geninduct-stdout.log:55:Real Frobenius. RLCT = smallest pole of ∫f^{−s}·(density). A smooth positive density or a log-power density
+./geninduct-stdout.log:57:negative-power density |w|^{−β} shifts the threshold. minAdm = the DLN zero-product codim recursion
+./geninduct-stdout.log:58:minAdm(M)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…)]. Pen-and-paper math.
+./geninduct-stdout.log:61:I’ll ground this against the local notes/paper context before answering, especially because Q3 depends on whether the general-width resolution is already an imported result or something derivable from the two reductions.
+./crux-prompt.md:2:Real-analysis / resolution-of-singularities question about a specific change-of-variables in
+./crux-prompt.md:3:an Aoyagi-style RLCT (real log canonical threshold) computation for deep linear networks.
+./crux-prompt.md:24:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./crux-prompt.md:25:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./crux-prompt.md:26:c′ < minAdm(M)/2.
+./crux-prompt.md:38:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./crux-prompt.md:44:     If yes: what is the exact change of variables and the exact Jacobian exponent α (in terms of
+./crux-prompt.md:48:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./crux-prompt.md:53:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./crux-prompt.md:58:Answer Q1, Q2, Q3 in that order. For Q1 give the exact CoV + Jacobian exponent α if it exists,
+./crux-prompt.md:64:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./geninduct-prompt.md:2:Resolution-of-singularities / RLCT question about the GENERAL-width induction for the DLN product-rank-flag
+./geninduct-prompt.md:3:resolution (Aoyagi-style). Real matrices, Frobenius.
+./geninduct-prompt.md:5:CONTEXT. A "corner" loss arising in a DLN RLCT computation has the exact form
+./geninduct-prompt.md:9:constrained to the image of the bilinear (γ,Y)↦γY.
+./geninduct-prompt.md:10:KNOWN (established, do not re-derive): for the smallest case the local RLCT of the deepest corner equals
+./geninduct-prompt.md:11:½·codim = ½·minAdm(M) (an explicit blow-up); the bilinear pushforward (γ,Y)↦γY has Jacobian |γ|² and gives
+./geninduct-prompt.md:12:a LOGARITHMIC density log(1/|·|), which changes only the multiplicity, not the RLCT threshold.
+./geninduct-prompt.md:15:(Q1) Does the "bilinear pushforward is threshold-preserving (log density, not power)" statement GENERALIZE
+./geninduct-prompt.md:16:     to all the sub-products that arise in the nested resolution — i.e. for a general bilinear/multilinear
+./geninduct-prompt.md:17:     matrix product map Φ(γ,Y,…)↦(product), is the pushforward of flat Lebesgue always SUB-POWER (bounded
+./geninduct-prompt.md:18:     by a power of log(1/|·|)), never a genuine negative-power |·|^{−β} that would SHIFT the RLCT
+./geninduct-prompt.md:19:     threshold? Give the general Jacobian / density scaling, and state precisely when it is log vs when a
+./geninduct-prompt.md:21:(Q2) Granting Q1, the corner loss f=frobSq(W·A) with the bilinear-constrained W: is its RLCT equal to the
+./geninduct-prompt.md:22:     RLCT of the FLAT lower-arity chain frobSq(W·A) (W free)? I.e. does the twist reduce the corner to a
+./geninduct-prompt.md:23:     strictly-shorter DLN chain whose RLCT is ½·its codim by an arity induction — so the WHOLE deeper-strata
+./geninduct-prompt.md:24:     resolution reduces to (twist-is-log) + (arity IH on shorter chains)? Or does the constraint on W lower
+./geninduct-prompt.md:25:     the RLCT below the flat chain's, requiring more than the arity IH?
+./geninduct-prompt.md:26:(Q3) The incidence centers to resolve {Y·A ≤ low rank} for a PRODUCT: beyond {A=0},{Y=0},{im A ⊆ ker Y},
+./geninduct-prompt.md:27:     is the PROPORTIONALITY locus (two pivot/tail column-pairs becoming parallel, e.g. (x₂,p₂)∥(x₃,p₃))
+./geninduct-prompt.md:29:     ALL these centers, no stratum has RLCT < ½·codim at general width — or is that the genuine Aoyagi §5
+./geninduct-prompt.md:41:Real Frobenius. RLCT = smallest pole of ∫f^{−s}·(density). A smooth positive density or a log-power density
+./geninduct-prompt.md:43:negative-power density |w|^{−β} shifts the threshold. minAdm = the DLN zero-product codim recursion
+./geninduct-prompt.md:44:minAdm(M)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…)]. Pen-and-paper math.
+./deepstrat-answer.md:3:\minAdm(1,2,2)=2,\qquad \minAdm(2,2,2)=3,
+./deepstrat-answer.md:7:\minAdm(2,3,2,2)=\min(6,4,3)=3,\qquad \tfrac12\minAdm(M)=\tfrac32.
+./deepstrat-answer.md:35:with Jacobian order \(k=2\) and loss order \(N=2\), giving
+./deepstrat-answer.md:41:Rank-two \(A\)-charts give quadratic control of \(x\) and \(\gamma Y\), hence candidate \(\ge2\). Rank-zero \(A\)-charts first have \(A=\rho\widehat A\), Jacobian order \(3\), loss order \(2\), candidate \(2\), and their exceptional rank-one subcharts reduce to the calculation above. The \(\gamma=0\) subcharts are no worse: resolving the scalar product \(\gamma\cdot y\) contributes the usual \(1/2\), combined with the two quadratic coordinates gives \(1+1/2=3/2\).
+./deepstrat-answer.md:43:Thus the deepest corner has local RLCT
+./deepstrat-answer.md:47:This equals \(\frac12\operatorname{codim}\{YA=0\}=\frac12\cdot3\), and equals, not falls below, \(\frac12\minAdm(M)=\frac32\).
+./deepstrat-answer.md:49:**Q2.** Literal blow-up along the raw loci \(\{\operatorname{rank}(YA)\le r\}\) is not a smooth-center resolution. Already for \(2\times2\), \(\{YA=0\}\) has the singular incidence pieces \(A=0\), \(Y=0\), and \(\operatorname{rank}A=\operatorname{rank}Y=1,\ \mathrm{im}(A)\subset\ker(Y)\).
+./deepstrat-answer.md:51:So product rank alone is not enough local coordinate data. It is, however, a well-founded induction index after replacing the raw rank strata by their resolved incidence/rank-flag transforms: each chart splits off the nonzero product-rank block and leaves a smaller corank tail. The index strictly decreases in the unresolved tail.
+./deepstrat-answer.md:53:**Q3.** For this \(2\times2\) deepest corner, the elementary rank-one/rank-zero blow-ups above suffice. In higher width or longer products, one must import Aoyagi’s product-rank-flag machinery: resolved incidence centers, chartwise block splitting, Jacobian bookkeeping, and the induction proving that the remaining tail has strictly smaller product rank.
+./degen-prompt.md:2:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-prompt.md:11:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-prompt.md:20:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-prompt.md:21:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-prompt.md:23:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-prompt.md:25:QUESTIONS (genuinely open — do not assume any particular resolution):
+./degen-prompt.md:26:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-prompt.md:30:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-prompt.md:31:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-prompt.md:33:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-prompt.md:47:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-prompt.md:48:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./crux-answer.md:7:For fixed \(P,B_{12}\), the Jacobian is \(|\det P|^{-M_2}\). Then
+./crux-answer.md:64:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./deepstrat-stdout.log:16:Resolution-of-singularities / RLCT question about the DEEPER rank strata of a product block in an
+./deepstrat-stdout.log:17:Aoyagi-style DLN (deep linear network) real-log-canonical-threshold computation.
+./deepstrat-stdout.log:25:We integrate ∫ freed^{−c′} over all these matrices in the box [−1,1]^·. The known result (cited Aoyagi;
+./deepstrat-stdout.log:26:Monte-Carlo confirmed): the whole integral is finite exactly for c′ < ½·minAdm(M), where minAdm is the
+./deepstrat-stdout.log:27:zero-product-locus codimension, minAdm(M)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…)].
+./deepstrat-stdout.log:33:  residual is a small bilinear model (a,1,D), D=q−b+1, with a clean Morse/zeta threshold. This CLOSES,
+./deepstrat-stdout.log:42:Q_b = Y·A₂ is a 2×2 product; the deepest stratum is {Q_b = 0} (rank 0). ½·minAdm(M) is a specific number
+./deepstrat-stdout.log:45:QUESTIONS (genuinely open — do NOT assume it works or that it walls; do NOT use any "codim ≥ minAdm ⇒
+./deepstrat-stdout.log:46:done" reasoning — a codim bound does NOT give RLCT=½codim, e.g. x⁴+y⁶ has codim 2 but RLCT 5/12):
+./deepstrat-stdout.log:48:     (nested) blow-up / monomialization of freed near {Q_b=0}, the per-divisor Jacobian weights and loss
+./deepstrat-stdout.log:49:     orders, and READ OFF the local RLCT. Is the local RLCT of the corner = ½·(its codimension)
+./deepstrat-stdout.log:50:     (normal-crossing / "as mild as its codim"), and is it ≥ ½·minAdm(M) (so the corner does not bind
+./deepstrat-stdout.log:56:(Q3) If this deeper-strata resolution genuinely requires the full Aoyagi §5 product-rank-flag machinery
+./deepstrat-stdout.log:61:Answer Q1 (the explicit resolution + RLCT arithmetic for (2,3,2,2)), Q2 (the descent valuation:
+./deepstrat-stdout.log:67:Real Frobenius norm. minAdm is the integer recursion above (black box with that recursion). RLCT of f at 0
+./deepstrat-stdout.log:76:\minAdm(1,2,2)=2,\qquad \minAdm(2,2,2)=3,
+./deepstrat-stdout.log:80:\minAdm(2,3,2,2)=\min(6,4,3)=3,\qquad \tfrac12\minAdm(M)=\tfrac32.
+./deepstrat-stdout.log:108:with Jacobian order \(k=2\) and loss order \(N=2\), giving
+./deepstrat-stdout.log:114:Rank-two \(A\)-charts give quadratic control of \(x\) and \(\gamma Y\), hence candidate \(\ge2\). Rank-zero \(A\)-charts first have \(A=\rho\widehat A\), Jacobian order \(3\), loss order \(2\), candidate \(2\), and their exceptional rank-one subcharts reduce to the calculation above. The \(\gamma=0\) subcharts are no worse: resolving the scalar product \(\gamma\cdot y\) contributes the usual \(1/2\), combined with the two quadratic coordinates gives \(1+1/2=3/2\).
+./deepstrat-stdout.log:116:Thus the deepest corner has local RLCT
+./deepstrat-stdout.log:120:This equals \(\frac12\operatorname{codim}\{YA=0\}=\frac12\cdot3\), and equals, not falls below, \(\frac12\minAdm(M)=\frac32\).
+./deepstrat-stdout.log:122:**Q2.** Literal blow-up along the raw loci \(\{\operatorname{rank}(YA)\le r\}\) is not a smooth-center resolution. Already for \(2\times2\), \(\{YA=0\}\) has the singular incidence pieces \(A=0\), \(Y=0\), and \(\operatorname{rank}A=\operatorname{rank}Y=1,\ \mathrm{im}(A)\subset\ker(Y)\).
+./deepstrat-stdout.log:124:So product rank alone is not enough local coordinate data. It is, however, a well-founded induction index after replacing the raw rank strata by their resolved incidence/rank-flag transforms: each chart splits off the nonzero product-rank block and leaves a smaller corank tail. The index strictly decreases in the unresolved tail.
+./deepstrat-stdout.log:126:**Q3.** For this \(2\times2\) deepest corner, the elementary rank-one/rank-zero blow-ups above suffice. In higher width or longer products, one must import Aoyagi’s product-rank-flag machinery: resolved incidence centers, chartwise block splitting, Jacobian bookkeeping, and the induction proving that the remaining tail has strictly smaller product rank.
+./deepstrat-stdout.log:131:\minAdm(1,2,2)=2,\qquad \minAdm(2,2,2)=3,
+./deepstrat-stdout.log:135:\minAdm(2,3,2,2)=\min(6,4,3)=3,\qquad \tfrac12\minAdm(M)=\tfrac32.
+./deepstrat-stdout.log:163:with Jacobian order \(k=2\) and loss order \(N=2\), giving
+./deepstrat-stdout.log:169:Rank-two \(A\)-charts give quadratic control of \(x\) and \(\gamma Y\), hence candidate \(\ge2\). Rank-zero \(A\)-charts first have \(A=\rho\widehat A\), Jacobian order \(3\), loss order \(2\), candidate \(2\), and their exceptional rank-one subcharts reduce to the calculation above. The \(\gamma=0\) subcharts are no worse: resolving the scalar product \(\gamma\cdot y\) contributes the usual \(1/2\), combined with the two quadratic coordinates gives \(1+1/2=3/2\).
+./deepstrat-stdout.log:171:Thus the deepest corner has local RLCT
+./deepstrat-stdout.log:175:This equals \(\frac12\operatorname{codim}\{YA=0\}=\frac12\cdot3\), and equals, not falls below, \(\frac12\minAdm(M)=\frac32\).
+./deepstrat-stdout.log:177:**Q2.** Literal blow-up along the raw loci \(\{\operatorname{rank}(YA)\le r\}\) is not a smooth-center resolution. Already for \(2\times2\), \(\{YA=0\}\) has the singular incidence pieces \(A=0\), \(Y=0\), and \(\operatorname{rank}A=\operatorname{rank}Y=1,\ \mathrm{im}(A)\subset\ker(Y)\).
+./deepstrat-stdout.log:179:So product rank alone is not enough local coordinate data. It is, however, a well-founded induction index after replacing the raw rank strata by their resolved incidence/rank-flag transforms: each chart splits off the nonzero product-rank block and leaves a smaller corank tail. The index strictly decreases in the unresolved tail.
+./deepstrat-stdout.log:181:**Q3.** For this \(2\times2\) deepest corner, the elementary rank-one/rank-zero blow-ups above suffice. In higher width or longer products, one must import Aoyagi’s product-rank-flag machinery: resolved incidence centers, chartwise block splitting, Jacobian bookkeeping, and the induction proving that the remaining tail has strictly smaller product rank.
+./degen-stdout.log:16:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-stdout.log:25:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-stdout.log:34:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-stdout.log:35:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-stdout.log:37:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-stdout.log:39:QUESTIONS (genuinely open — do not assume any particular resolution):
+./degen-stdout.log:40:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-stdout.log:44:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-stdout.log:45:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-stdout.log:47:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-stdout.log:61:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-stdout.log:62:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./degen-stdout.log:79:/bin/bash -lc 'rg -n "freed|peel|minAdm|Q_b|corank|rank Q" .' in /home/ubuntu/workspace/geometry-of-dln-fibre/expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/codex
+./degen-stdout.log:81:./degen-prompt.md:2:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-stdout.log:88:./degen-prompt.md:11:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-stdout.log:95:./degen-prompt.md:20:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-stdout.log:96:./degen-prompt.md:21:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-stdout.log:97:./degen-prompt.md:23:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-stdout.log:98:./degen-prompt.md:26:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-stdout.log:100:./degen-prompt.md:30:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-stdout.log:101:./degen-prompt.md:31:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-stdout.log:103:./degen-prompt.md:33:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-stdout.log:107:./degen-prompt.md:47:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-stdout.log:108:./degen-prompt.md:48:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./degen-stdout.log:116:./crux-prompt.md:24:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./degen-stdout.log:117:./crux-prompt.md:25:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./degen-stdout.log:118:./crux-prompt.md:26:c′ < minAdm(M)/2.
+./degen-stdout.log:123:./crux-prompt.md:38:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./degen-stdout.log:126:./crux-prompt.md:48:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./degen-stdout.log:129:./crux-prompt.md:53:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./degen-stdout.log:130:./crux-prompt.md:64:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./degen-stdout.log:139:./crux-stdout.log:38:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./degen-stdout.log:140:./crux-stdout.log:39:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./degen-stdout.log:141:./crux-stdout.log:40:c′ < minAdm(M)/2.
+./degen-stdout.log:146:./crux-stdout.log:52:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./degen-stdout.log:149:./crux-stdout.log:62:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./degen-stdout.log:152:./crux-stdout.log:67:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./degen-stdout.log:153:./crux-stdout.log:78:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./degen-stdout.log:165:./crux-stdout.log:150:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./degen-stdout.log:176:./crux-stdout.log:216:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./degen-stdout.log:178:./degen-stdout.log:16:Follow-up real-analysis question on the SAME Aoyagi-DLN RLCT change-of-variables as before (freed Schur
+./degen-stdout.log:185:./degen-stdout.log:25:box integral at c′′=c′−ab/2). This closes for c′ < ½·minAdm(M) via the reduced-chain IH.
+./degen-stdout.log:192:./degen-stdout.log:34:        converges only for c′<1 (B₀ is a low-rank linear image of the tail), NOT up to ½·minAdm(M).
+./degen-stdout.log:193:./degen-stdout.log:35:YET a direct Monte-Carlo of the full chart integral for M=(2,3,2), t=1 (a=1,b=q=2, ½·minAdm=2) is
+./degen-stdout.log:194:./degen-stdout.log:37:to ½·minAdm(M); the three bounds above are all LOSSY there.
+./degen-stdout.log:195:./degen-stdout.log:40:(Q1) What is the correct finite bound for the degenerate corner {rank Q_b < b} that reaches c′<½·minAdm(M)?
+./degen-stdout.log:197:./degen-stdout.log:44:     LOWER pivot cut / a deeper layer, closed by the reduced-chain recursion at its own minAdm); or (c)
+./degen-stdout.log:198:./degen-stdout.log:45:     something else? Give the mechanism and the exponent count that reaches ½·minAdm(M).
+./degen-stdout.log:200:./degen-stdout.log:47:     statement an inequality "minAdm(M) ≤ D_deep + (charge)" analogous to a rank-flag linchpin, so the
+./degen-stdout.log:204:./degen-stdout.log:61:Real Frobenius. "minAdm" is the DLN zero-product codimension recursion minAdm(M)=min_t[(M₀−t)(M₁−t)+
+./degen-stdout.log:205:./degen-stdout.log:62:minAdm(t,M₂,…)]; treat as a black-box integer with that recursion. Box = product of [−1,1] intervals.
+./degen-stdout.log:217:./crux-answer.md:64:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./degen-stdout.log:230:For fixed \(P,B_{12}\), the Jacobian is \(|\det P|^{-M_2}\). Then
+./degen-stdout.log:287:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./degen-stdout.log:304:**Q1.** The right mechanism is mixed: keep the collapsing \(\Gamma\)-directions in the bounded box, then recurse on the residual bilinear corner.
+./degen-stdout.log:311:and write \(\Gamma=(\Gamma_\parallel,\gamma)\), \(\gamma\in\mathbb R^a\). The \(\Gamma_\parallel\) directions are honest Morse directions and give charge \(a(b-1)\). What remains is the bounded-box bilinear model
+./degen-stdout.log:328:up to harmless logs. This reaches \(c'<\frac12\minAdm(M)\) because
+./degen-stdout.log:330:\minAdm(M)\le tq+a(b-1)+\min(a,D).
+./degen-stdout.log:345:\minAdm(M)\le tq+a(b-1)+D_{\mathrm{deep}},
+./degen-stdout.log:353:\minAdm(M)\le tq+a(b-1)+\min(a,D_{\mathrm{deep}}).
+./degen-stdout.log:359:**Q1.** The right mechanism is mixed: keep the collapsing \(\Gamma\)-directions in the bounded box, then recurse on the residual bilinear corner.
+./degen-stdout.log:366:and write \(\Gamma=(\Gamma_\parallel,\gamma)\), \(\gamma\in\mathbb R^a\). The \(\Gamma_\parallel\) directions are honest Morse directions and give charge \(a(b-1)\). What remains is the bounded-box bilinear model
+./degen-stdout.log:383:up to harmless logs. This reaches \(c'<\frac12\minAdm(M)\) because
+./degen-stdout.log:385:\minAdm(M)\le tq+a(b-1)+\min(a,D).
+./degen-stdout.log:400:\minAdm(M)\le tq+a(b-1)+D_{\mathrm{deep}},
+./degen-stdout.log:408:\minAdm(M)\le tq+a(b-1)+\min(a,D_{\mathrm{deep}}).
+./degen-answer.md:1:**Q1.** The right mechanism is mixed: keep the collapsing \(\Gamma\)-directions in the bounded box, then recurse on the residual bilinear corner.
+./degen-answer.md:8:and write \(\Gamma=(\Gamma_\parallel,\gamma)\), \(\gamma\in\mathbb R^a\). The \(\Gamma_\parallel\) directions are honest Morse directions and give charge \(a(b-1)\). What remains is the bounded-box bilinear model
+./degen-answer.md:25:up to harmless logs. This reaches \(c'<\frac12\minAdm(M)\) because
+./degen-answer.md:27:\minAdm(M)\le tq+a(b-1)+\min(a,D).
+./degen-answer.md:42:\minAdm(M)\le tq+a(b-1)+D_{\mathrm{deep}},
+./degen-answer.md:50:\minAdm(M)\le tq+a(b-1)+\min(a,D_{\mathrm{deep}}).
+./deepstrat-prompt.md:2:Resolution-of-singularities / RLCT question about the DEEPER rank strata of a product block in an
+./deepstrat-prompt.md:3:Aoyagi-style DLN (deep linear network) real-log-canonical-threshold computation.
+./deepstrat-prompt.md:11:We integrate ∫ freed^{−c′} over all these matrices in the box [−1,1]^·. The known result (cited Aoyagi;
+./deepstrat-prompt.md:12:Monte-Carlo confirmed): the whole integral is finite exactly for c′ < ½·minAdm(M), where minAdm is the
+./deepstrat-prompt.md:13:zero-product-locus codimension, minAdm(M)=min_t[(M₀−t)(M₁−t)+minAdm(t,M₂,…)].
+./deepstrat-prompt.md:19:  residual is a small bilinear model (a,1,D), D=q−b+1, with a clean Morse/zeta threshold. This CLOSES,
+./deepstrat-prompt.md:28:Q_b = Y·A₂ is a 2×2 product; the deepest stratum is {Q_b = 0} (rank 0). ½·minAdm(M) is a specific number
+./deepstrat-prompt.md:31:QUESTIONS (genuinely open — do NOT assume it works or that it walls; do NOT use any "codim ≥ minAdm ⇒
+./deepstrat-prompt.md:32:done" reasoning — a codim bound does NOT give RLCT=½codim, e.g. x⁴+y⁶ has codim 2 but RLCT 5/12):
+./deepstrat-prompt.md:34:     (nested) blow-up / monomialization of freed near {Q_b=0}, the per-divisor Jacobian weights and loss
+./deepstrat-prompt.md:35:     orders, and READ OFF the local RLCT. Is the local RLCT of the corner = ½·(its codimension)
+./deepstrat-prompt.md:36:     (normal-crossing / "as mild as its codim"), and is it ≥ ½·minAdm(M) (so the corner does not bind
+./deepstrat-prompt.md:42:(Q3) If this deeper-strata resolution genuinely requires the full Aoyagi §5 product-rank-flag machinery
+./deepstrat-prompt.md:47:Answer Q1 (the explicit resolution + RLCT arithmetic for (2,3,2,2)), Q2 (the descent valuation:
+./deepstrat-prompt.md:53:Real Frobenius norm. minAdm is the integer recursion above (black box with that recursion). RLCT of f at 0
+./crux-stdout.log:16:Real-analysis / resolution-of-singularities question about a specific change-of-variables in
+./crux-stdout.log:17:an Aoyagi-style RLCT (real log canonical threshold) computation for deep linear networks.
+./crux-stdout.log:38:exact combinatorial identity  minAdm(M) = min_t [ (M₀−t)(M₁−t) + minAdm(redChain_t) ], and at
+./crux-stdout.log:39:the binding cut t*  minAdm(M) = peelCharge + minAdm(redChain). Threshold of interest:
+./crux-stdout.log:40:c′ < minAdm(M)/2.
+./crux-stdout.log:52:   integral shows it is finite for c′<1 and diverges as c′→1 (=minAdm/2).
+./crux-stdout.log:58:     If yes: what is the exact change of variables and the exact Jacobian exponent α (in terms of
+./crux-stdout.log:62:     resolution (radial blow-up of the tail / a coordinate chart where a b×b minor of Q_b is
+./crux-stdout.log:67:(Q3) Is the radial factor's convergence threshold on c′ genuinely ABOVE minAdm(M)/2 (so the
+./crux-stdout.log:72:Answer Q1, Q2, Q3 in that order. For Q1 give the exact CoV + Jacobian exponent α if it exists,
+./crux-stdout.log:78:Frobenius norm, real matrices. "minAdm" is the DLN zero-product-locus codimension recursion given
+./crux-stdout.log:93:For fixed \(P,B_{12}\), the Jacobian is \(|\det P|^{-M_2}\). Then
+./crux-stdout.log:150:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+./crux-stdout.log:159:For fixed \(P,B_{12}\), the Jacobian is \(|\det P|^{-M_2}\). Then
+./crux-stdout.log:216:Since \(\mathrm{minAdm}(M)\le M_1M_2\), this radial factor cannot bind before \(\mathrm{minAdm}(M)/2\). It may bind simultaneously when equality holds, but otherwise the reduced-chain or Gram-degeneracy analysis is the binding issue.
+
+codex
+**Q1.** No, not in general. For
+\[
+\Phi:\Gamma\in\mathbb R^{a\times b},\quad Y\in\mathbb R^{b\times q}\mapsto Z=\Gamma Y\in\mathbb R^{a\times q},
+\]
+near a corank-\(j\) chart of \(\Gamma\),
+\[
+\Gamma\sim \begin{pmatrix}I&0\\0&E\end{pmatrix},\qquad
+E\in\mathbb R^{j\times(b-a+j)}.
+\]
+The collapsing block has dimension
+\[
+d_j=j(b-a+j),
+\]
+and scales \(N_j=jq\) output coordinates. Radially,
+\[
+dE\sim r^{d_j-1}dr,\qquad EY\sim r(\cdots),
+\]
+so the pushforward density has model factor
+\[
+\int_{r\gtrsim |z|} r^{d_j-1-N_j}\,dr.
+\]
+Thus:
+
+- \(d_j>N_j\), i.e. \(q<b-a+j\): bounded density.
+- \(d_j=N_j\), i.e. \(q=b-a+j\): logarithmic density.
+- \(d_j<N_j\), i.e. \(q>b-a+j\): genuine power
+  \[
+  |z|^{-(N_j-d_j)}=|z|^{-j(q-b+a-j)}.
+  \]
+
+So “bilinear pushforward is only logarithmic” is true only in balanced charts. For all corank strata to be sub-power one needs, in particular, \(q\le b-a+1\). The small case \(a=1,b=q=2\) is exactly logarithmic. Multilinear products inherit this chartwise: every multiplication step must satisfy the same dimension inequality; otherwise a power density can appear.
+
+**Q2.** Conditional yes. If the bottom-block product map is dominant onto the relevant \(W\)-coordinates and its pushforward is bounded above and below by log-powers times Lebesgue measure, then
+\[
+\int \|WA\|^{-2s}\,d\mu(W)\,dA
+\]
+has the same RLCT as the flat integral with \(W\) free. Logs change only pole order, not the threshold, and dominance gives positive mass near the flat critical charts. Under that hypothesis the corner reduces to the shorter flat DLN chain, so arity induction gives \(\frac12\minAdm\) for that shorter chain.
+
+Unconditionally, no: if Q1 is in a power regime, or the product map is not dominant, the constrained \(W\) need not have the flat-chain threshold.
+
+**Q3.** The proportionality locus is genuinely part of the product-rank resolution in general width, though it may be hidden inside a flag/incidence resolution rather than named separately. After only \(A=0\), \(Y=0\), and \(\operatorname{im}A\subset\ker Y\), residual minors can still vanish because two pivot/tail column-pairs become dependent; those are determinantal rank-drop loci and must be resolved for normal crossings.
+
+The statement that no resulting stratum has RLCT below \(\frac12\minAdm\) is not a consequence of Q1+Q2 alone. Q1+Q2 handle already-monomialized log-twist corners. They do not prove that all product-rank centers have been resolved, nor the exceptional-divisor Jacobian inequalities. That is precisely the Aoyagi §5 product-rank-flag content to import: the center list, chart splitting, Jacobian bookkeeping, and induction showing every remaining tail is a shorter admissible chain with divisor candidates \(\ge\frac12\minAdm\).
+tokens used
+31,238
+**Q1.** No, not in general. For
+\[
+\Phi:\Gamma\in\mathbb R^{a\times b},\quad Y\in\mathbb R^{b\times q}\mapsto Z=\Gamma Y\in\mathbb R^{a\times q},
+\]
+near a corank-\(j\) chart of \(\Gamma\),
+\[
+\Gamma\sim \begin{pmatrix}I&0\\0&E\end{pmatrix},\qquad
+E\in\mathbb R^{j\times(b-a+j)}.
+\]
+The collapsing block has dimension
+\[
+d_j=j(b-a+j),
+\]
+and scales \(N_j=jq\) output coordinates. Radially,
+\[
+dE\sim r^{d_j-1}dr,\qquad EY\sim r(\cdots),
+\]
+so the pushforward density has model factor
+\[
+\int_{r\gtrsim |z|} r^{d_j-1-N_j}\,dr.
+\]
+Thus:
+
+- \(d_j>N_j\), i.e. \(q<b-a+j\): bounded density.
+- \(d_j=N_j\), i.e. \(q=b-a+j\): logarithmic density.
+- \(d_j<N_j\), i.e. \(q>b-a+j\): genuine power
+  \[
+  |z|^{-(N_j-d_j)}=|z|^{-j(q-b+a-j)}.
+  \]
+
+So “bilinear pushforward is only logarithmic” is true only in balanced charts. For all corank strata to be sub-power one needs, in particular, \(q\le b-a+1\). The small case \(a=1,b=q=2\) is exactly logarithmic. Multilinear products inherit this chartwise: every multiplication step must satisfy the same dimension inequality; otherwise a power density can appear.
+
+**Q2.** Conditional yes. If the bottom-block product map is dominant onto the relevant \(W\)-coordinates and its pushforward is bounded above and below by log-powers times Lebesgue measure, then
+\[
+\int \|WA\|^{-2s}\,d\mu(W)\,dA
+\]
+has the same RLCT as the flat integral with \(W\) free. Logs change only pole order, not the threshold, and dominance gives positive mass near the flat critical charts. Under that hypothesis the corner reduces to the shorter flat DLN chain, so arity induction gives \(\frac12\minAdm\) for that shorter chain.
+
+Unconditionally, no: if Q1 is in a power regime, or the product map is not dominant, the constrained \(W\) need not have the flat-chain threshold.
+
+**Q3.** The proportionality locus is genuinely part of the product-rank resolution in general width, though it may be hidden inside a flag/incidence resolution rather than named separately. After only \(A=0\), \(Y=0\), and \(\operatorname{im}A\subset\ker Y\), residual minors can still vanish because two pivot/tail column-pairs become dependent; those are determinantal rank-drop loci and must be resolved for normal crossings.
+
+The statement that no resulting stratum has RLCT below \(\frac12\minAdm\) is not a consequence of Q1+Q2 alone. Q1+Q2 handle already-monomialized log-twist corners. They do not prove that all product-rank centers have been resolved, nor the exceptional-divisor Jacobian inequalities. That is precisely the Aoyagi §5 product-rank-flag content to import: the center list, chart splitting, Jacobian bookkeeping, and induction showing every remaining tail is a shorter admissible chain with divisor candidates \(\ge\frac12\minAdm\).
+CODEX EXIT 0
