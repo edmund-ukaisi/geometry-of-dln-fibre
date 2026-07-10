@@ -967,5 +967,7 @@ open DLNFibre.DLN.RLCT
 #print axioms freedSchurLoss_absorption
 #print axioms freedSchurLoss_smul
 -- Decorated peel: the absorption measure-CoV Jacobian (RouteMSJDecoratedPeelMeas, genm-decbuild):
--- `lintegral_comp_mulLeftₚ` (∫ g(K·Y) = ofReal(|det K|^c)⁻¹·∫ g Y, det K≠0 — the |det P|^{−M₂} gauge).
+-- `lintegral_comp_mulLeftₚ` (∫ g(K·Y) = ofReal(|det K|^c)⁻¹·∫ g Y, det K≠0 — the |det P|^{−M₂} gauge)
+-- + `lintegral_box_le_absorption` (step 5: box⊆univ enlargement + affine CoV, finiteness upper bound).
 #print axioms lintegral_comp_mulLeftₚ
+#print axioms lintegral_box_le_absorption

@@ -132,3 +132,91 @@ obligation is exactly those deeper strata for `b≥2`.
   `/tmp/cornrev_codex_prompt.md`, `/tmp/cornrev_codex_out.log`.
 - Target: `expeditions/2026-06-20-aoyagi-full/threads/genm-peelcert/cert.md`,
   `.../codex/degen-{prompt,answer}.md`, `.../codex/crux-answer.md`.
+
+---
+
+# FOLLOW-UP 2 — audit of peelcert's DEEPER-STRATA RESOLUTION (§DEEPER-STRATA)
+
+**Charge:** peelcert responded to the GAP above with an explicit blow-up (retracting the tautological
+linchpin). Adversarially audit the RESOLUTION. **Decorrelated:** own second Codex consult
+(`/tmp/cornrev2_codex_prompt.md`, gpt-5.x xhigh, BOTH conclusions withheld — asked the open pushforward /
+discriminating-case / well-foundedness questions, did NOT encode the "it resolves" framing).
+**Exact/numeric:** `/tmp/cornrev2_discriminate.py`, `/tmp/cornrev2_measure.py`, `/tmp/cornrev2_volscan.py`,
+`/tmp/cornrev2_logcheck.py`, `/tmp/cornrev2_mc2334.py`; reproduced peelcert's `/tmp/deepstrat_explore.py`
+(the `freed = frobSq(W̃·A₂)` identity is residual-0, independently rerun) and `/tmp/deepstrat_rlct.py`.
+
+## VERDICT: **SOUND IN OUTCOME / RESIDUAL GAP IN THE GENERAL ARGUMENT**
+
+The CRUX question — does the blow-up land RLCT **at** `½·codim = ½·minAdm(M)`, not **below** (the `x⁴+y⁶`
+fear) — resolves **FAVOURABLY**: the deeper-corner threshold is `= ½·minAdm(M)`, the `x⁴+y⁶` trap is
+genuinely avoided. This is a real advance over the retracted linchpin. What remains is **argument
+completeness for the general case**, plus one **load-bearing step missing from the certificate** and one
+**incomplete center-list** — scoped precisely below. Not a wall; not a claim-falsification (MC + cited
+Aoyagi + two decorrelated Codex reads all agree the result is true).
+
+## 1. The reduced-model RLCT arithmetic is CORRECT (independently reverified)
+
+`freed = frobSq(W̃·A₂)`, `W̃ = [R_pivot; C′R_pivot+ΓY]` is residual-0 (rerun). The reduced model
+`f ~ x₁²+p²+z²(x₂²+v²)` and its blow-up giving RLCT `3/2` are correct: I reverified the `z`-chart
+(`f=z²(X²+P²+x₂²+v²)`, Jac order 2, loss order 2 ⇒ `(k+1)/N=3/2`) AND the `x₁`,`p` charts (unit `≥1`, same
+`3/2`) — no chart gives worse. Volume-scan `V(ε)=P(f<ε)~ε^λ` gives `λ≈1.53` (flat model), matching `3/2`.
+
+## 2. CRUX — the measure "twist": I chased it hard; it is threshold-preserving (log, not power)
+
+`p,v` in the reduced model are the components of the **bilinear** `ΓY`, integrated by the certificate as
+**flat** `dp dv`. The true measure is the pushforward of flat `(Γ,Y)` through `(Γ,Y)↦ΓY`. This pushforward
+is genuinely **non-flat** — I measured `P(‖ΓY‖<r)` with slope `≈1.70 < 2` and a twist volume-scan
+`λ≈1.44 < 1.5`, which *looked* like the corner RLCT dropping below `½·minAdm(M)` (the `x⁴+y⁶` disaster).
+
+**It is not a drop.** My own decorrelated Codex (Q1, exact) gives the Jacobian of `(Γ,Y)↦(p,v)` as `|γ₁|²`
+(resp. `|γ₂|²`), and `|y|≤1` forces `|Γ|≥c|(p,v)|`, so the pushforward density is
+`ρ(p,v) ≍ log(1/|(p,v)|)` — **logarithmically** divergent, NOT a power. A log factor changes only the
+**multiplicity**, leaving the RLCT **threshold unchanged at `3/2`**. Confirmed numerically two ways
+(`/tmp/cornrev2_logcheck.py`): (i) the pushforward local slope **rises toward 2** and tracks
+`2−1/ln(1/r)` (the `r²·log` signature) almost exactly — so the `1.70` was a log, not a power; (ii)
+`V(ε)/ε^{1.5}` **grows** (log multiplicity) ⇒ true RLCT `=1.5`, and my `1.44` was a finite-`ε` log
+artifact. **So the certificate's flat-`(p,v)` RLCT reading gives the correct THRESHOLD.**
+
+→ **But this justification is ABSENT from the certificate.** It integrates `p,v` flat with no argument that
+the bilinear pushforward is threshold-preserving. That step (the `|γ|²`-Jacobian ⇒ log-density lemma) is
+load-bearing and must be stated/proved. FILLABLE — supplied here — but currently a hole in the written proof.
+
+## 3. The base cases are measure-DEGENERATE; the discriminating case confirms `= ½·minAdm(M)`
+
+`(2,3,2,2)`, `(2,3,3,2)` have `½·minAdm(remove-M₁) = ½·minAdm(M)` (both `3/2`, resp. `2`), so they
+**cannot** test the load-bearing claim that "the `ΓY` twist LOWERS the RLCT from `½·minAdm(remove-M₁)` to
+`½·minAdm(M)`." A genuine test needs a strict gap: `(2,3,3,4)`, `t★=1` has `½·minAdm(M)=2.5` vs
+`½·minAdm(remove-M₁=(2,3,4))=3.0` (`/tmp/cornrev2_discriminate.py`). My true-measure corner MC there is
+**uninformative** (`{‖Q_b‖<0.15}` on a `2×4` product has mass-fraction `≈0`). Codex Q2 (Newton-polytope
+weight upper bound `RLCT≤5/2` + a stratum lower bound `≥5/2` on the `(x₂,p₂)∥(x₃,p₃)` locus) gives
+`RLCT = 5/2 = ½·minAdm(2,3,3,4)` **exactly** — the twist genuinely lowers it to the global value, not below.
+So the mechanism IS validated on a non-degenerate case — **but only via Codex's analysis, not carried in the
+certificate** (whose base template is the degenerate `(2,3,2,2)`).
+
+## 4. Well-foundedness + general induction — genuine RESIDUAL GAP (honestly scoped)
+
+- **Termination:** the descent index `r = rank(unresolved Q_b) ∈ {b,…,0}` strictly decreases on the
+  incidence-resolved charts and is bounded ⇒ terminates. Codex Q3 (exact) supports this. OK.
+- **Incidence-center list is INCOMPLETE.** Codex Q3 finds an ADDITIONAL center beyond the certificate's
+  `{A=0},{Y=0},{im A⊆ker Y}`: the **proportionality locus `(x₂,p₂)∥(x₃,p₃)`** (the one carrying the `5/2`
+  value in `(2,3,3,4)`) must be added to the resolution for the normal-crossing / `RLCT=½·codim` property to
+  hold at that stratum. This is a concrete, actionable correction for decbuild.
+- **"No sub-`½codim` stratum" is HEURISTIC.** Codex Q3's general claim rests on "no evidence of a
+  `sub-½codim` stratum until simultaneous collapse of two successive pivots, which the product-rank
+  ordering forbids" — asserted, not proven. This matches the certificate's own honest scoping ("import
+  Aoyagi §5 product-rank-flag machinery… not a full per-width exponent count"). The general induction with a
+  per-stratum normal-crossing PROOF is not done.
+
+## Exact residual obligation for decbuild's DeeperStrataResolution
+
+1. **State + prove the twist-is-threshold-preserving lemma** (missing from the certificate): the bilinear
+   `(Γ,Y)↦ΓY` pushforward density is `≍ log(1/|·|)` (Jacobian `|γ|²`), so it changes only the multiplicity,
+   not the RLCT. The base-case `RLCT=3/2` reading is unjustified without it.
+2. **Carry a non-degenerate validation** (`½·minAdm(rm-M₁) > ½·minAdm(M)`, e.g. `(2,3,3,4) → 5/2`) — the
+   degenerate `(2,3,2,2)` base template does not exercise the twist-lowering mechanism.
+3. **Complete the incidence-center list** with the proportionality locus `(x₂,p₂)∥(x₃,p₃)` (Codex Q3) and
+   **prove** (not "no evidence") that no resolved stratum has `RLCT < ½·codim` at general width — the Aoyagi
+   §5 product-rank-flag induction. This is the genuinely-new content; it remains open (honestly scoped).
+
+**Safe to formalise now:** `b=1` + top stratum (unchanged); the `b=2` deepest-corner blow-up as the base
+module (RLCT `3/2`/`2`) **provided** obligation 1 (the twist lemma) is discharged as an explicit step.
