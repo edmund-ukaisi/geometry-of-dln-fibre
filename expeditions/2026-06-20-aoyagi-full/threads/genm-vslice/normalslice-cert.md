@@ -8,6 +8,17 @@ for general `M` / corank `q`, Lean-friendly. **Decorrelated:** `local-codex-cons
 withheld — it produced the explicit threaded normal form and corrected a codim error of mine (§5).
 **Exact-algebra:** `normalslice_verify.py`, `normalslice_threaded.py` (+ `normalslice_schur.py`).
 
+> **⚠ CORRECTION (2026-07-10, `genm-covdesign` cert + decorrelated Codex, exact-confirmed).** §3–4's claim
+> that the loss splits as `‖R‖² + ‖Z‖²` under a **unit** Jacobian is **WRONG for the loss/RLCT layer**. The
+> exact split is `frobSq(A₀·P) = ‖R̃·α‖² + ‖R̃·B + S̃·Z‖²` (α = the pivot block); cleaning to `‖R‖²` needs
+> `R = R̃·α`, Jacobian `|det α|^{−m₀}` — a **determinant INVERSE**. The unit-Jacobian claim is correct ONLY
+> for the **RANK identity** `rank P = q + rank Z` (§2 — what the landed `blockShear_step` /
+> `rank_eq_q_add_of_normalForm` proved, unaffected). The loss-split carries a real **codim-1 PIVOT CHARGE**
+> (threshold ½) that the front-peel `frontCharge q` omits; the per-chart finiteness needs it spent via
+> disjoint dyadic `|det α|`-shells (or Anderson). See `threads/genm-covdesign/cert.md`. This does NOT change
+> the RANK / additive-charge accounting result (§2, §4's `min_q = ½·minAdm`) — only the **mechanism** of the
+> per-chart loss finiteness, which was never formalised (it lived in the open `frontChartIntegral_lt_top`).
+
 ---
 
 ## VERDICT
