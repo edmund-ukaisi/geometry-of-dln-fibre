@@ -113,6 +113,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialInt
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProjRadial
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
 import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
 
 /-!
 # Axiom-hygiene check
@@ -983,3 +984,8 @@ open DLNFibre.DLN.RLCT
 #print axioms det_gram_cons
 #print axioms projection_rpow_lintegral_uniform
 #print axioms integrableOn_norm_rpow_neg_ball
+-- Atom brick B4 (RouteMSJFreeBilinear, genm-b4-freebilinear): the b=1 free-bilinear leaf of the (S,J)
+-- recursion. `freeBilinear_box_lt_top` (box integral of the rank-one outer-product loss < ⊤ for
+-- c'<½·min(a+1,D+1)) + `frobSq_rmatMul_corank_one` (the fidelity link: frobSq(Γ·Q_b)=‖γ‖²‖z‖² at b=1).
+#print axioms freeBilinear_box_lt_top
+#print axioms frobSq_rmatMul_corank_one

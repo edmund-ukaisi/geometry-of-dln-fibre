@@ -1217,3 +1217,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGramResidual
 -- (∫⁻_{Q∈(ball)^b} det(gram Q)^{−a/2} < ⊤ for a<q−b+1) — the abstract free-Q determinantal integrability,
 -- the LEAF the native (S,J) recursion bottoms out on (operator (A) build). catIrev-PASS, clean-three.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJQBoxCore
+-- `RouteMSJFreeBilinear` — atom brick B4 (thread `genm-b4-freebilinear`, carrier-skeleton `genm-sjdecomp`):
+-- the `b=1` free-bilinear leaf. `freeBilinear_box_lt_top` (∫⁻ over the box of the rank-one outer-product
+-- loss `frobSq(γ⊗z)^{−c'} = (‖γ‖²‖z‖²)^{−c'}` is `< ⊤` for c'<½·min(a+1,D+1)) — the (S,J) recursion's
+-- b=1 base case, via Tonelli factoring + the banked radial `sumSqND_box_lt_top`. Level-A finiteness
+-- (upper/rlct≥ leg; the value's ½codim upper is cited Watanabe). Feeds B6 assembly. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJFreeBilinear
