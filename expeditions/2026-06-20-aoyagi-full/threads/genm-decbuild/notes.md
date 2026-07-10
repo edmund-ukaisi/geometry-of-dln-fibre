@@ -340,3 +340,31 @@ is the deep measure step to start fresh.
 Isolate as a NAMED `DeeperStrataResolution` Prop; `decoratedPeelCoV = core + b=1 + top-stratum
 {rank Q_b=b−1} MODULO DeeperStrataResolution`. peelcert is producing that resolution; formalise it from
 the cert. Category III (b>q) ⟹ a=0 ⟹ empty Γ, no corner (trivial). NEVER fake-close deeper strata.
+
+---
+
+## Step 5 LANDED + DecoratedPeelCoV fidelity fix
+
+**Fidelity fix (DecoratedPeelCoV, PeelCoV module):** the pivot-chart cover `sjBoundaryPeel` sums over
+ALL cuts `t`, so the target needs box-finiteness of EVERY reduced chain `redChain t M`, not one binding
+cut. Revised `DecoratedPeelCoV` from `∃ t, (redChain t M finite → trivial M finite)` [unprovable — one
+cut can't bound the other charts] to `(∀ t, RouteMBoxThresholdFinite (redChain t M)) → DecoratedBox…
+(trivial M)`. Wiring `decoratedPeelCoV_imp_decoratedPeelStep` updated (`h M (fun t => hIH (redChain t M))`,
+hIH gives all one-shorter). Build green; the one sorry stays on `decoratedPeelCoV`.
+
+**Step 5 (PeelMeas `lintegral_box_le_absorption`), sorry-free + forced clean-three:** the box-domain
+absorption bound (controller's enlargement insight):
+`∫⁻ X in box, g (fun k ↦ P.mulVec (X k) + S k) ≤ ofReal(|det P|^c)⁻¹ · ∫⁻ B, g B`  (det P ≠ 0).
+Proof: box ⊆ univ (`conv_rhs => rw [← setLIntegral_univ]` then `lintegral_mono_set (subset_univ)`) →
+full-space affine CoV (`lintegral_comp_mulLeftₚ` on g' = g∘(·+S)) → translation invariance
+(`lintegral_add_right_eq_self g S`). No exact box CoV. This is the deep measure step; the enlargement
+sidesteps the box-image parallelepiped entirely (finiteness UPPER bound only).
+
+Lean notes: (i) full-space `∫⁻ X, g (… X k …)` needs `X`'s type ANNOTATED (`∫⁻ X : Fin c → Fin t → ℝ,`)
+— unannotated, X is a metavar and `X k` fails "function expected". (ii) `rw [← setLIntegral_univ]` hits
+the LHS box integral (it's `∂volume.restrict box`); use `conv_rhs` to target the RHS.
+
+### Remaining wiring (steps 1-4 rewrites, 6 product-algebra, 7 banked-finiteness)
+Steps 1-4 (piSplit_eq → freedSchurLoss on Ã₁·Ad → rowSplit exposes X → freedSchurLoss_absorption) +
+step 5 [DONE] + step 6 (B₀=B·Ad=prod(redChain)) + step 7 (radial + Γ-peel Regime-A/B → redChain IH).
+Then decoratedPeelCoV closes for CORE + b=1 + top-stratum MODULO DeeperStrataResolution (Phase-2 residual).

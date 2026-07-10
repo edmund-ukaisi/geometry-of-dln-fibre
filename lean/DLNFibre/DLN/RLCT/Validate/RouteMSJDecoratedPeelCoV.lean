@@ -56,25 +56,25 @@ open scoped ENNReal BigOperators
 variable {L : ℕ}
 
 /-- **The load-bearing single-peel change-of-variables (the isolated gap).** For every `≥ 3`-width
-chain `M` there is a binding cut `t ≤ min(M₀,M₁)` such that box-finiteness of the reduced chain
-`redChain t M` implies box-finiteness of the trivial decoration on `M` below `carrierThreshold M`.
-The content is the exact peel CoV (radial blow-up + monomial Jacobian + fresh-block Schur `rowMix`,
-block-split identifying the pivot block with `redChain t M`, Gram absorbed into the shared-divisor
-support, threshold shift `½·peelCharge` inside the CoV) — an EXACT factoring, no Hölder split. -/
+chain `M`, box-finiteness of EVERY reduced chain `redChain t M` (one fewer layer, all cuts `t`)
+implies box-finiteness of the trivial decoration on `M` below `carrierThreshold M`. The pivot-chart
+cover (`sjBoundaryPeel`) sums over ALL cuts `t`, so each chart reduces to its own `redChain t M`;
+the hypothesis quantifies over all `t`, not one binding cut. The content is the exact peel
+CoV (radial blow-up + monomial Jacobian + fresh-block Schur `rowMix`, block-split identifying the
+pivot block with `redChain t M`, Gram absorbed into the shared-divisor support, threshold shift
+`½·peelCharge` inside the CoV) — an EXACT factoring, no Hölder split. -/
 def DecoratedPeelCoV : Prop :=
   ∀ {L : ℕ} (M : Fin (L + 1 + 1 + 1) → ℕ),
-    ∃ t : ℕ, t ≤ min (M 0) (M 1) ∧
-      (RouteMBoxThresholdFinite (redChain t M) →
-        DecoratedBoxThresholdFinite (SJDecoration.trivial M))
+    (∀ t : ℕ, RouteMBoxThresholdFinite (redChain t M)) →
+    DecoratedBoxThresholdFinite (SJDecoration.trivial M)
 
 /-- **The wiring — `DecoratedPeelCoV → DecoratedPeelStep` (sorry-free).** For a `≥ 3`-width chain
 with box-finiteness of every one-shorter chain (the strong IH), the trivial decoration on `M` is
-box-finite: pick the binding cut `t` from `DecoratedPeelCoV`; the reduced chain `redChain t M` is
-one shorter, so the IH supplies its box-finiteness, which the peel implication consumes. -/
+box-finite: every reduced chain `redChain t M` is one shorter, so the IH gives its box-finiteness,
+which `DecoratedPeelCoV` consumes (over all cuts `t`). -/
 theorem decoratedPeelCoV_imp_decoratedPeelStep (h : DecoratedPeelCoV) : DecoratedPeelStep := by
   intro L M hIH
-  obtain ⟨t, _ht, himp⟩ := h M
-  exact himp (hIH (redChain t M))
+  exact h M (fun t => hIH (redChain t M))
 
 /-- **The isolated analytic gap (pen-and-paper target).** `decoratedPeelCoV : DecoratedPeelCoV`
 — the single named `sorry`. Everything else in the R1-UPPER `(□)` chain is proved sorry-free modulo

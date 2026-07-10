@@ -81,4 +81,27 @@ theorem lintegral_comp_mulLeftₚ (c : ℕ) {t : ℕ} (K : Matrix (Fin t) (Fin t
     lintegral_smul_measure, det_mulLeftₚ,
     show |((K.det) ^ c)⁻¹| = (|K.det| ^ c)⁻¹ from by rw [abs_inv, abs_pow], smul_eq_mul]
 
+/-- **The box-domain absorption bound (step 5, finiteness upper bound).** The box integral of the
+absorbed integrand `X ↦ g (P·X + S)` (per column, `S` = the shift `B₁₂·W`) is bounded by the
+reciprocal Jacobian `|det P|^{−c}` times the FULL-space integral of `g`: box ⊆ univ enlarges to full
+space, then the full-space affine CoV (`lintegral_comp_mulLeftₚ` + translation invariance
+`lintegral_add_right_eq_self`) supplies the `|det P|^{−c}` scaling. No exact box CoV is needed — for
+the finiteness upper bound the enlargement suffices. -/
+theorem lintegral_box_le_absorption (c : ℕ) {t : ℕ} (P : Matrix (Fin t) (Fin t) ℝ) (hP : P.det ≠ 0)
+    (S : Fin c → Fin t → ℝ) (box : Set (Fin c → Fin t → ℝ))
+    (g : (Fin c → Fin t → ℝ) → ℝ≥0∞) (hg : Measurable g) :
+    ∫⁻ X in box, g (fun k => P.mulVec (X k) + S k)
+      ≤ ENNReal.ofReal (|P.det| ^ c)⁻¹ * ∫⁻ B, g B := by
+  have hg' : Measurable (fun Y : Fin c → Fin t → ℝ => g (fun k => Y k + S k)) :=
+    hg.comp (by fun_prop)
+  calc ∫⁻ X in box, g (fun k => P.mulVec (X k) + S k)
+      ≤ ∫⁻ X : Fin c → Fin t → ℝ, g (fun k => P.mulVec (X k) + S k) := by
+        conv_rhs => rw [← setLIntegral_univ]
+        exact lintegral_mono_set (Set.subset_univ box)
+    _ = ENNReal.ofReal (|P.det| ^ c)⁻¹ * ∫⁻ Y : Fin c → Fin t → ℝ, g (fun k => Y k + S k) :=
+        lintegral_comp_mulLeftₚ c P hP (fun Y => g (fun k => Y k + S k)) hg'
+    _ = ENNReal.ofReal (|P.det| ^ c)⁻¹ * ∫⁻ B, g B := by
+        congr 1
+        exact lintegral_add_right_eq_self g S
+
 end DLNFibre.DLN.RLCT
