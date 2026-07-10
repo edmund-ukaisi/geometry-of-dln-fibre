@@ -1104,3 +1104,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 -- CoV connecting `gammaPeelIntegral` to these (pointwise Schur assembly + refined cover + L-recursion) is
 -- the remaining mountain. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
+-- `RouteMSJDepthReduce` — Stage-2 (S,J) CoV mountain GAP A (thread `genm-covmount`). The pointwise
+-- algebraic core of item 4: once both row-blocks of the tail product `Q̃` factor through a common deep
+-- factor `A₂` (the depth reduction), the freed Schur loss equals the good-chart `g_cc`.
+-- `freedSchurLoss_eq_sjGoodMap` (hyp form: `Q̃ₚ=v·A₂`, `Q_b=W·A₂` ⟹ `freedSchurLoss = g_cc`, via banked
+-- `schurSplitLoss_eq_sjGoodMap`) + `freedSchurLoss_eq_sjGoodMap_mul` (product form: from `Q̃=Ã₁·A₂` read
+-- off `W,v` via `submatrix_mul`). clean-three/0-sorry. Feeds the CoV assembly (gaps B/C) after the banked
+-- front-peel exposes `Ã₁`, `A₂`.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce

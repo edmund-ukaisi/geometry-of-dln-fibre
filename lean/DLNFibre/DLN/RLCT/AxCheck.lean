@@ -94,6 +94,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
 
 /-!
 # Axiom-hygiene check
@@ -887,3 +888,8 @@ open DLNFibre.DLN.RLCT
 -- finiteness on the refined cover) is the mountain feeding `sjJointResolution`.
 #print axioms frobSq_schur_eq_sjGoodMap
 #print axioms chartInner_eq_outerShearFree
+-- CoV mountain GAP A depth reduction (RouteMSJDepthReduce, genm-covmount): `freedSchurLoss = g_cc` once
+-- the tail row-blocks factor through the deep factor. `freedSchurLoss_eq_sjGoodMap` (hyp form) +
+-- `freedSchurLoss_eq_sjGoodMap_mul` (product form, reads `W,v` off `Q̃=Ã₁·A₂`).
+#print axioms freedSchurLoss_eq_sjGoodMap
+#print axioms freedSchurLoss_eq_sjGoodMap_mul
