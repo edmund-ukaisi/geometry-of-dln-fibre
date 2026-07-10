@@ -1120,3 +1120,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
 -- `gammaPeelIntegral = ∫∫∫ sjGoodChartLoss^{−c'}`). clean-three/0-sorry. The remaining un-banked content
 -- is the FINITENESS of this triple integral (v-exposure CoV + endpoint + env integration + L-recursion).
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
+-- `RouteMSJCornerBound` — Stage-2 (S,J) CoV mountain: the UNIFORM-in-parameters corner endpoint bound
+-- (thread `genm-covmount`). The banked `corner_block_lintegral_lt_top` gives only `< ⊤`, which does not
+-- integrate over the bounded environment (pivots + deep factor enter g_cc as bounded params). This extracts
+-- the EXPLICIT bound the polar blow-up already produces: `∫_{ball R} g^{−c'} ≤ a^{−c'}·cornerRadialConst N R c'`,
+-- the constant loss-free (finite for c'<N/2) — so on a good sub-cover (a≥a₀, R≤R₀) the inner endpoint value
+-- is a uniform constant, integrable over the finite-measure env box. Unblocks the env integration.
+-- clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound

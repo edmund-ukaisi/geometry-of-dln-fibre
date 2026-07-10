@@ -61,15 +61,27 @@ tides (genm-sjcarrier8/sjbuild3): the (S,J) descent is the genuine unbuilt conte
   with `a≥a₀` and `R≤R₀`, inner ≤ a₀^{-c'}·cornerRadialConst N R₀ c' = CONSTANT, integrable over the
   finite-measure env box.
 
+## Checkpoint 4 (DONE) — `RouteMSJVExpose.lean`
+- `assembleFront x v W`: rebuilds the front factor from a FREE `v` + fixed corank map `W` (corank rows
+  = W, pivot rows = v − P⁻¹B₁₂W; the inverse of the depth reduction).
+- `sjGoodChartLoss_assembleFront`: `sjGoodChartLoss x Γ (assembleFront x v W) A₂ = frobSq(sjGoodMap P C
+  W A₂ (Γ,v)).1 + frobSq(...).2` (v collapses via sub_add_cancel).
+- `sjGoodChartLoss_endpoint_lt_top`: good chart (P left-inv, W/A₂ right-inv), `c'<(a·b+t·h)/2`,
+  `∫_{(Γ,v)∈matBox×matBox} (sjGoodChartLoss x Γ (assembleFront x v W) A₂)^{-c'} < ⊤`. The TERMINAL chart
+  finiteness with v EXPOSED — the target the v-exposure CoV lands on. Composes checkpoint 2 + banked
+  endpoint.
+
 ## PRECISE HANDOFF for the next tide (the remaining mountain)
 
 `sjJointResolution:803` still open. After `gammaPeelIntegral_sjGoodMap_eq`, need FINITENESS of
 `∫_{A'} ∫_x ∫_Γ (sjGoodChartLoss x Γ Ã₁(A') A₂(A'))^{-c'} < ⊤`. Remaining un-banked:
 
-1. **v-exposure CoV** — for fixed (A₂, W=(Ã₁)_b, P, B₁₂, C), the pivot rows `(Ã₁)_p ↦ v = (Ã₁)_p +
-   P⁻¹B₁₂W` is a TRANSLATION (measure-preserving, `measurePreserving_add_right`). Splits `A' 0`-box into
-   pivot-rows × corank-rows, exposes v as a free box variable. After it, inner `∫_Γ∫_v sjGoodChartLoss^{-c'}`
-   = the endpoint `sjGoodMap_loss_matBox_lt_top` (needs P left-inv, W/A₂ right-inv).
+1. **v-exposure CoV (measure-side)** — the LANDING (`sjGoodChartLoss_endpoint_lt_top`) is banked
+   (checkpoint 4). What remains: the MEASURE transport showing `∫_{(Ã₁)_p ∈ box} sjGoodChartLoss(v(Ã₁))
+   = ∫_{v ∈ box'} sjGoodChartLoss(assembleFront v W)`, i.e. the pivot rows `(Ã₁)_p ↦ v = (Ã₁)_p +
+   P⁻¹B₁₂W` translation (`measurePreserving_add_right`), plus splitting `paramsBoxM(tailChain M)` /
+   `A' 0`-box into pivot-rows × corank-rows × deeper (Pi-product Fubini — the fiddly measure plumbing).
+   `assembleFront` is the exact reconstruction the translation produces.
 2. **§8 uniform sphere lower bound `a ≥ a₀ > 0`** on the good cover (compactness + continuity min of
    g_cc(ω) over the joint sphere × compact good env). Genuinely-new but "not a wall" (cert §3a). Feeds
    `corner_block_lintegral_le` (checkpoint 3).

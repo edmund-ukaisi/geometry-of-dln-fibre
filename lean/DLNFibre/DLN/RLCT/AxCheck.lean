@@ -96,6 +96,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
+import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerBound
 
 /-!
 # Axiom-hygiene check
@@ -899,3 +900,9 @@ open DLNFibre.DLN.RLCT
 -- `gammaPeelIntegral_sjGoodMap_eq` (the equality gammaPeelIntegral = ∫∫∫ sjGoodChartLoss^{−c'}).
 #print axioms sjTail_factor
 #print axioms gammaPeelIntegral_sjGoodMap_eq
+-- CoV mountain: the UNIFORM-in-params corner endpoint bound (RouteMSJCornerBound, genm-covmount):
+-- `corner_block_lintegral_le` (∫_{ball R} g^{−c'} ≤ a^{−c'}·cornerRadialConst, the g-dependence only
+-- through the sphere lower bound a — loss-free constant, uniform across an a-family) + the finiteness of
+-- the constant `cornerRadialConst_lt_top`. Unblocks env integration over the bounded parameters.
+#print axioms cornerRadialConst_lt_top
+#print axioms corner_block_lintegral_le
