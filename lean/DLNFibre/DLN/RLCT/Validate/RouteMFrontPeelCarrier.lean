@@ -3,6 +3,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCharge
 import DLNFibre.DLN.RLCT.Validate.RouteMFrontBottleneck
 import DLNFibre.DLN.RLCT.Validate.RadialResidualPower
 import DLNFibre.DLN.RLCT.Validate.RouteMSJThreadedShear
+import DLNFibre.DLN.RLCT.Validate.DeepestCoreNonvanishing
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMFrontPeelCarrier` — the FRONT-PEEL carrier (wiring W1)
@@ -280,6 +281,42 @@ theorem morse_reduced_box_lt_top (R : Fin (L + 1 + 1) → ℕ) (d : ℕ) (c' : N
       exact morseCore_residual_lt_top (μ := volume) m (c' : ℝ) hgt 1 one_pos
         (fun Y => frobSq (prod R Y)) (paramsBoxM R 1) hWp hcore
 
+/-- **A chain with a zero width has `minAdm = 0`.** If some width `R i = 0`, the layer-peel recursion
+`minAdmRec` bottoms out at `0`: the pivot cut `t = min(R₀,R₁)` zeroes the leading block
+`(R₀−t)(R₁−t) = 0`, and the reduced chain `redChain t R` still carries a zero width (the original one,
+or `t = 0` when the zero sat in the leading pair), so the residual `minAdmRec (redChain t R)` is `0` by
+induction on arity. Used for the degenerate front-peel branch `q = tailMin M` (a tail width reduces to
+`0`), where the reduced-chain codim vanishes and the front Morse block alone charges. -/
+private theorem minAdmRec_eq_zero_of_width_zero :
+    ∀ {K : ℕ} (R : Fin (K + 1) → ℕ), (∃ i, R i = 0) → minAdmRec R = 0
+  | 0, _, _ => rfl
+  | 1, R, ⟨i, hi⟩ => by
+      rw [minAdmRec_leaf]; fin_cases i <;> simp_all
+  | (l + 1 + 1), R, ⟨i, hi⟩ => by
+      rw [minAdmRec_succ_succ]
+      apply Nat.le_zero.mp
+      refine le_trans (Finset.inf'_le _
+        (show min (R 0) (R 1) ∈ Finset.range (min (R 0) (R 1) + 1) from by
+          rw [Finset.mem_range]; omega)) ?_
+      have hblock : (R 0 - min (R 0) (R 1)) * (R 1 - min (R 0) (R 1)) = 0 := by
+        rcases le_total (R 0) (R 1) with h | h
+        · rw [min_eq_left h, Nat.sub_self, Nat.zero_mul]
+        · rw [min_eq_right h, Nat.sub_self, Nat.mul_zero]
+      rw [hblock, Nat.zero_add]
+      refine Nat.le_of_eq (minAdmRec_eq_zero_of_width_zero (redChain (min (R 0) (R 1)) R) ?_)
+      -- the reduced chain still carries a zero width.
+      by_cases ht0 : min (R 0) (R 1) = 0
+      · exact ⟨0, by rw [redChain_zero]; exact ht0⟩
+      · -- `t ≠ 0` ⟹ `R 0, R 1 ≥ 1`, so the zero index sits at position `≥ 2`, surviving `redChain`.
+        have hR0 : R 0 ≠ 0 := fun h => ht0 (by rw [h, Nat.zero_min])
+        have hR1 : R 1 ≠ 0 := fun h => ht0 (by rw [h, Nat.min_zero])
+        revert hi
+        refine Fin.cases ?_ (fun i' => ?_) i
+        · intro hi; exact absurd hi hR0
+        · refine Fin.cases ?_ (fun j => ?_) i'
+          · intro hi; rw [Fin.succ_zero_eq_one] at hi; exact absurd hi hR1
+          · intro hi; exact ⟨j.succ, by rw [redChain_succ]; exact hi⟩
+
 /-- **The reduced chain is a.e.-nonvanishing on the regime-A stratum (NAMED SORRY — CRUX A).** Under
 the regime-A premise `M₀q/2 < c'` (with `c' < ½·minAdm M`), the reduced chain `redTail M q` is
 nondegenerate: `M₀q < minAdm M ≤ frontCharge q = M₀q + minAdm (redTail M q)` forces
@@ -293,7 +330,50 @@ theorem reduced_frobSq_ae_pos (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : 
     ((M 0 * q : ℕ) : ℝ) / 2 < (c' : ℝ) →
       ∀ᵐ Y ∂(volume.restrict (paramsBoxM (fun i : Fin (L + 1 + 1) => M i.succ - q) 1)),
         0 < frobSq (prod (fun i : Fin (L + 1 + 1) => M i.succ - q) Y) := by
-  sorry
+  intro hreg
+  set R : Fin (L + 1 + 1) → ℕ := fun i : Fin (L + 1 + 1) => M i.succ - q with hR
+  by_cases hall : ∀ i, 1 ≤ R i
+  · -- All reduced widths `≥ 1`: the reduced product is a genuine nonzero polynomial in `Y`, so
+    -- `frobSq (prod R Y) > 0` a.e. (nonzero real polynomial ⟹ null zero-set), via `corePoly`.
+    apply ae_restrict_of_ae
+    have hne : corePoly R ≠ 0 := by
+      obtain ⟨A, hA⟩ := dlnLoss_deepest_core_ne_zero_witness R hall
+      intro hP0
+      apply hA
+      have hev := eval_corePoly R ((paramsEquivFlat R) A)
+      rw [hP0] at hev
+      simpa using hev.symm
+    have hae : ∀ᵐ z : Fin (flatDim R) → ℝ, MvPolynomial.eval z (corePoly R) ≠ 0 :=
+      MvPolynomial.ae_eval_ne_zero (corePoly R) hne
+    have hmp := measurePreserving_paramsEquivFlat R
+    have hmeas : MeasurableSet {z : Fin (flatDim R) → ℝ | MvPolynomial.eval z (corePoly R) ≠ 0} :=
+      (MvPolynomial.measurableSet_zeroSet (corePoly R)).compl
+    have haeParams : ∀ᵐ Y : Params R,
+        MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) ≠ 0 := by
+      rw [← hmp.map_eq] at hae
+      exact (ae_map_iff hmp.measurable.aemeasurable hmeas).1 hae
+    refine haeParams.mono (fun Y hY => ?_)
+    have hfe : MvPolynomial.eval (paramsEquivFlat R Y) (corePoly R) = frobSq (prod R Y) := by
+      rw [eval_corePoly R (paramsEquivFlat R Y), MeasurableEquiv.symm_apply_apply,
+        dlnLoss_zero_eq_frobSq]
+    rw [hfe] at hY
+    exact lt_of_le_of_ne (frobSq_nonneg _) (Ne.symm hY)
+  · -- Some reduced width is `0` (forces `q = tailMin M`): `minAdm R = 0`, so the regime-A premise
+    -- `M₀q/2 < c'` contradicts `c' < ½·minAdm M ≤ M₀q/2` — the statement is vacuously true.
+    exfalso
+    push_neg at hall
+    obtain ⟨i₀, hi₀⟩ := hall
+    have hzero : ∃ i, R i = 0 := ⟨i₀, by omega⟩
+    have hminR : minAdm R = 0 := by
+      rw [← minAdmRec_eq_minAdm]; exact minAdmRec_eq_zero_of_width_zero R hzero
+    have hminLam : minAdm (fun i : Fin (L + 1 + 1) => M i.succ - q) = 0 := by
+      rw [hR] at hminR; exact hminR
+    have hfc := frontCharge_ge_minAdm M q hq
+    unfold frontCharge at hfc
+    rw [hminLam] at hfc
+    have hfc2 : minAdm M ≤ M 0 * q := by omega
+    have hcast : (minAdm M : ℝ) ≤ ((M 0 * q : ℕ) : ℝ) := by exact_mod_cast hfc2
+    linarith
 
 /-- **The reduced-chain Morse-block front integral** — the CoV image of one pivot chart's stratum
 contribution: the reduced chain `redTail M q` box integral with the front-peel Morse block of
