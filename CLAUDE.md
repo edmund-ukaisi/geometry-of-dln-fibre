@@ -82,6 +82,7 @@ Roles are documented under [`.agent-team/roles/`](.agent-team/roles/):
 - `controller` — this lead session: meta-planning, delegation, integration.
 - `scout` — explore / reconnaissance threads: map the terrain (Mathlib, the paper, possibility spaces), compute / derive / claims.
 - `pen-and-paper` — a specialised `scout`: design-space math adjudicating a truth-value (`witness` / `obstruction` seats), exact algebra, decorrelated Codex; hands a certificate to the formaliser. No Lean.
+- `self-recon` — read-only INTERNAL reconnaissance: before a substantial build, maps our OWN banked state — reusable lemmas/methods to **consume**, pieces **staged** for exactly this point, **lessons/pitfalls** that bite, and **dead/ruled-out** routes to avoid — so the tide spec names banked pieces, not blind. Distinct from `scout` (which maps external terrain — Mathlib/the paper). Deploy judiciously at a large build's start; auditing reusable code/math/lessons beats re-deriving. Output: a `recon-map.md`. The controller (holding the most context) judges usefulness vs distraction.
 - `formaliser` — formalisation (tide) threads.
 - `reviewer` — controller-spawned independent audit (soundness / fidelity).
 - `hardener` — independent principles / taste reviewer (precision, bedrock).
