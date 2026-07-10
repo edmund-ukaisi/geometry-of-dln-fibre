@@ -214,6 +214,20 @@ example (c' : NNReal) (hc' : (c' : ℝ) < 7 / 2) :
   sjSlice334_corner_lintegral_lt_top c' hc' (fun _ => 1) (fun _ => 1) 1 one_pos
     (fun _ _ => le_refl 1) (fun _ _ => le_refl 1)
 
+/-! ## The min-cut weighting is load-bearing — the symmetric bound undershoots -/
+
+/-- **The symmetric-weight domination undershoots (why the min-cut weighting is load-bearing).** The
+basic (symmetric-weight) AM-GM `u₀²+u₁² ≥ 2|u₀||u₁|` dominates the corner integrand by
+`2^{−c'}·|u₀|^{3−c'}·|u₁|^{2−c'}`, whose *binding* `u₁`-axis marginal `∫_{(0,1)} |u₁|^{2−c'}` DIVERGES
+(`= ⊤`) for every `c' ≥ 3` (exponent `2−c' ≤ −1`, banked `abs_rpow_lintegral_Ioo_eq_top`). So the
+symmetric bound certifies finiteness only below `3` — it undershoots the true branch threshold `7/2`,
+which the *min-cut*-weighted `sjSlice334_corner_lintegral_lt_top` reaches. This is the "min, not sum"
+undershoot of the two-matrix engine (vslice cert §5), made precise: symmetric weights cap the certified
+threshold at `min(h₀+1, h₁+1) = min(4, 3) = 3`, whereas the corner sum is `(h₀+h₁+2)/2 = 7/2`. -/
+theorem sjSlice334_symmetric_undershoot (c' : ℝ) (hc' : 3 ≤ c') :
+    ∫⁻ x in Set.Ioo (0 : ℝ) 1, ENNReal.ofReal (|x| ^ (2 - c')) = ⊤ :=
+  abs_rpow_lintegral_Ioo_eq_top (2 - c') 1 one_pos (by linarith)
+
 /-! ## Tie to the charge — the threshold `7/2` IS `½·minAdm(3,3,3,4)` -/
 
 /-- **The `(3,3,3,4)` charge is `7`.** `minAdm ![3,3,3,4] = 7`, the branch charge `[4,3,0]` summing to
