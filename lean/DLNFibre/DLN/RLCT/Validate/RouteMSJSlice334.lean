@@ -205,6 +205,15 @@ theorem sjSlice334_corner_lintegral_lt_top
           * (|u 0| ^ 3 * |u 1| ^ 2)) < ⊤ :=
   sjSlice_corner_two_block_lt_top 3 2 c' (by push_cast; linarith [hc']) U0 U1 a ha hU0 hU1
 
+/-- **Non-vacuity witness.** With the trivial units `U₀ = U₁ = 1` (`a = 1`), the corner crux is the
+concrete integral `∫⁻ (u₀²+u₁²)^{−c'}·|u₀|³|u₁|²` of the pen-and-paper `vslice_corner.py` — finite for
+`c' < 7/2`, confirming the hypotheses are jointly satisfiable (the finiteness is not vacuously true). -/
+example (c' : NNReal) (hc' : (c' : ℝ) < 7 / 2) :
+    ∫⁻ u in unitBox 2,
+        ENNReal.ofReal ((u 0 ^ 2 * 1 + u 1 ^ 2 * 1) ^ (-(c' : ℝ)) * (|u 0| ^ 3 * |u 1| ^ 2)) < ⊤ :=
+  sjSlice334_corner_lintegral_lt_top c' hc' (fun _ => 1) (fun _ => 1) 1 one_pos
+    (fun _ _ => le_refl 1) (fun _ _ => le_refl 1)
+
 /-! ## Tie to the charge — the threshold `7/2` IS `½·minAdm(3,3,3,4)` -/
 
 /-- **The `(3,3,3,4)` charge is `7`.** `minAdm ![3,3,3,4] = 7`, the branch charge `[4,3,0]` summing to
