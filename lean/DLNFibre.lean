@@ -1190,3 +1190,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 -- `radialAttachFactor_lt_top`). A building block of `DecoratedPeelStep`'s proof (the radial (b) half);
 -- the remaining gap is the outer-descent CoV-Jacobian (peelcert pen-and-paper). clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
+-- `RouteMSJDecoratedPeelCore` — Stage-2 decorated peel Phase-1 CORE algebra (thread `genm-decbuild`): the
+-- two pointwise cert identities the measure-CoV consumes. `freedSchurLoss_absorption` (on the `IsUnit P`
+-- pivot chart: `freedSchurLoss = frobSq(B₀)+frobSq(C′B₀+ΓQ_b)`, `B₀=P·Q̃ₚ`, `C′=C·P⁻¹` — the linear
+-- absorption) + `freedSchurLoss_smul` (`freedSchurLoss(c•Q)=c²·freedSchurLoss` — radial homogeneity, the
+-- source of the exponent α). The shared foundation BOTH the clean-A dominant-chart reduction and the
+-- degenerate corner consume. clean-three/0-sorry. (The measure-CoV wiring + decoratedPeelCoV remain on-branch.)
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore

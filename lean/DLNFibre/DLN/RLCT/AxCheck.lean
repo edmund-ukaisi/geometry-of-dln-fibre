@@ -107,6 +107,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRadialFin
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCore
 
 /-!
 # Axiom-hygiene check
@@ -959,3 +960,8 @@ open DLNFibre.DLN.RLCT
 -- Decorated peel tile T3 (RouteMSJDecoratedRadialFin, genm-decbuild): the radial peel preserves
 -- box-finiteness. `radialAttach_integral_lt_top` (parent finite + c'<(j₀+1)/2 ⟹ attached finite).
 #print axioms radialAttach_integral_lt_top
+-- Decorated peel Phase-1 core algebra (RouteMSJDecoratedPeelCore, genm-decbuild): the shared foundation.
+-- `freedSchurLoss_absorption` (linear absorption on the IsUnit-P chart) + `freedSchurLoss_smul` (radial
+-- homogeneity, source of α).
+#print axioms freedSchurLoss_absorption
+#print axioms freedSchurLoss_smul
