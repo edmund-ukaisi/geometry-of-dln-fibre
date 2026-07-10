@@ -105,6 +105,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTailSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
 
 /-!
 # Axiom-hygiene check
@@ -947,3 +948,10 @@ open DLNFibre.DLN.RLCT
 -- Pi-split form, deep factor A'0-independent). Plumbing, not analytic content.
 #print axioms rowSplit_lintegral_eq
 #print axioms gammaPeelIntegral_piSplit_eq
+-- ★ DECORATED RECURSION tile T0 (RouteMSJDecoratedRec, genm-decbuild): (□) PROVED MODULO the single
+-- Prop `DecoratedPeelStep`. `routeMBoxThresholdFinite_of_decoratedPeel` (DecoratedPeelStep → ∀M
+-- RouteMBoxThresholdFinite M = (□)) + `gammaPeelIntegral_lt_top_of_decoratedPeel` (discharges 803).
+-- Clean-three: these are conditional on the DecoratedPeelStep HYPOTHESIS (a real Prop arg, not sorryAx);
+-- the sole remaining analytic gap is proving DecoratedPeelStep (T2/T3/T4).
+#print axioms routeMBoxThresholdFinite_of_decoratedPeel
+#print axioms gammaPeelIntegral_lt_top_of_decoratedPeel

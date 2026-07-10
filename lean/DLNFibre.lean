@@ -1175,3 +1175,12 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDeepFactorCore
 -- these support it + the complementary good-branch. clean-three/0-sorry.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRowSplit
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransport
+-- `RouteMSJDecoratedRec` — Stage-2 (S,J) DECORATED RECURSION, tile T0 (thread `genm-decbuild`): the
+-- endgame re-architected so `(□)` is PROVED MODULO a single Prop. `DecoratedPeelStep` (the peel step:
+-- ≥3-width M, `(∀ one-shorter M', RouteMBoxThresholdFinite M') → DecoratedBoxThresholdFinite (trivial M)`)
+-- + `routeMBoxThresholdFinite_of_decoratedPeel` (`DecoratedPeelStep → ∀M, RouteMBoxThresholdFinite M` =
+-- `(□)`, via banked `routeMBoxThresholdFinite_of_step` + `sjBase1_freeMatrix` + `trivial_iff`;
+-- GAP2-driver/GAP3-terminal FOLD IN — single peel + one-shorter IH, no internal recursion) +
+-- `gammaPeelIntegral_lt_top_of_decoratedPeel` (discharges 803's goal, obsolete). SOLE remaining gap =
+-- `DecoratedPeelStep` (T2 rowMix hsh + T3 radial + T4 block-split). clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedRec
