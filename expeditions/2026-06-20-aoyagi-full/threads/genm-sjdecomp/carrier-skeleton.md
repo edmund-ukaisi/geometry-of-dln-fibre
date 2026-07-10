@@ -1,5 +1,7 @@
 # Carrier skeleton — Aoyagi §5 `(S,J)` determinantal-locus resolution, decomposed into bankable bricks
 
+> **⚠ LIVE-TREE CORRECTIONS (vsrecon 2026-07-10, verified vs `expedition/aoyagi-full` LIVE — supersede any conflicting "banked" ref below).** For the authoritative banked-vs-fresh map read `../genm-vsrecon/recon-map.md`. Three refs used as "banked" below are stale/absent: (1) `normalSlice_transfer` is NOT on canonical (on `genm-threadedshear` w/ 3 sorries) — the "#109 math-complete" is the CERT, not Lean; (2) `remaining_lt_of_support_ssubset` (the §5.2/5.3 "banked kernel") does NOT exist in Lean (design-note only) — the real termination carrier is `routeMBoxThresholdFinite_of_step` (RouteMSJResolution:863, arity induction); (3) `gammaPeelFromRedChain` is a conceptual name, no Lean def. Also §8-i's dyadic-shell framing is DROPPED (pivchg — see the §8-i annotation). The corner brick + both leaves + the descent ℕ-arithmetic ARE banked/landed on canonical (see recon-map (a)).
+
 **Seat:** scout (design pass, `genm-sjdecomp`). **Charge:** produce the statements-first brick DAG
 for the COMMITTED build of Aoyagi §5's `(S,J)` resolution — the atom that discharges `(□)` and mints
 the unconditional `aoyagi_learning_coefficient`. **NO Lean written; design + recon + one decorrelated
