@@ -493,3 +493,37 @@ Consequences (now in the architecture):
 **NEXT:** Cat I wiring (Regime A + weight-control consuming cbmin) + Cat II/III → corner/Regime-B + the
 {det>0}/{det=0} instantiation of the generic split (S = {0<det(Q_bQ_bᵀ)}, measurability via continuity of
 det∘product). The deeper {rank≤b−2} atom = a separate carried INTERFACE (RlctInterface-pattern, not sorry).
+
+---
+
+## {det>0} MEASURABLE INSTANTIATION LANDED (final chunk this session)
+
+Added to `RouteMSJDecoratedPeelStrata.lean` (sorry-free, forced-#print-axioms clean-three):
+- `corankGram M t κ A'` — the corank Gram `Q_b(A')·Q_b(A')ᵀ`, `Q_b(A') = ((prod (tailChain M) A').submatrix
+  (blockSplitEquiv κ) id).submatrix Sum.inr id` (b×b, b=M₁−t).
+- `measurableSet_corankGood` — `{A' | 0 < det(corankGram A')}` measurable (OPEN): `A' ↦ det(corankGram A')`
+  continuous (`continuous_prod` + `Continuous.matrix_submatrix/_mul/_transpose/_det` from
+  `Mathlib.Topology.Instances.Matrix`), preimage of `(0,∞)` via `isOpen_lt continuous_const`.
+- `gammaPeelIntegral_stratify_corank` — the split instantiated at `S = {0<det(Q_bQ_bᵀ)}`.
+- `gammaPeelIntegral_lt_top_of_corankStrata` — chart finiteness from the good stratum {det>0} + complement.
+
+Lean notes: (i) `blockSplitEquiv` lives in `RouteMSJBlockReindex` — import it. (ii) matrix continuity
+lemmas are `Continuous.matrix_{submatrix,mul,transpose,det}` in `Mathlib.Topology.Instances.Matrix`.
+(iii) the `ᵀ` postfix in a multi-line `A * (…)ᵀ` def body failed to attach (parser closed early) — used
+`.transpose` (method) instead. (iv) `continuous_prod (H) : Continuous (prod H)` is banked in
+`Foundations.LossContinuity`.
+
+## SESSION BOUNDARY / HANDOFF (genm-decbuild tip = <this commit>)
+
+Piece-8 keystone + prereq + {det>0} instantiation all landed clean-three (branch-only, NOT canonical —
+controller consolidates the coherent good-strata chunk at the honest ceiling). Everything above the
+operator-gated atoms is built; the atoms are carried hypotheses/interfaces (no bare sorries in reductions).
+
+REMAINING (for whoever continues on genm-decbuild tip):
+- Cat I weight-control: BLOCKED on `genm-cbmin` (det≥minor², Loewner) — consume its lemma + order-1
+  vanishing on the rank-drop divisor + integrability (a<q−b+1) → good-stratum {det>0} closure (Regime A).
+- Cat II/III → corner/Regime-B (bounded, {B₀≠0}) + the (a,1,D) leaf.
+- The deeper {rank≤b−2} atom = a separate RlctInterface-pattern carried hypothesis (operator-gated).
+- Wire the category routing (gammaPeelIntegral_lt_top_of_categoryRouting) + corank strata
+  (gammaPeelIntegral_lt_top_of_corankStrata) into gammaPeelFromRedChain to discharge the per-chart residual.
+- Then decoratedPeelCoV → DecoratedPeelStep → (□) unconditional (modulo the operator-gated deeper atom).

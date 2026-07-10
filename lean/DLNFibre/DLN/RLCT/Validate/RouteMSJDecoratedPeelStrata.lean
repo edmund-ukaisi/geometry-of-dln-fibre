@@ -1,4 +1,7 @@
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelCoV
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBlockReindex
+import Mathlib.Topology.Instances.Matrix
+import DLNFibre.DLN.RLCT.Foundations.LossContinuity
 
 /-!
 # `DLNFibre.DLN.RLCT.Validate.RouteMSJDecoratedPeelStrata` — the corner-cover split (piece 8)
@@ -101,5 +104,53 @@ theorem gammaPeelIntegral_lt_top_of_categoryRouting (M : Fin (L + 1 + 1 + 1) →
   by_cases h : (M 0 - t) + (M 1 - t) ≤ M (Fin.last (L + 1 + 1))
   · exact hCatI h
   · exact hCatHi (not_le.mp h)
+
+/-! ## The corank-rank stratum `{0 < det(Q_b Q_bᵀ)}` — measurable instantiation of the split -/
+
+/-- **The corank Gram** `Q_b(A') · Q_b(A')ᵀ` as a function of the tail params, `Q_b(A')` the corank
+rows of the reindexed tail product `prod(tailChain) A'` (`Sum.inr` of `blockSplitEquiv κ`). Its det
+is `> 0` exactly on the full-row-rank stratum `{rank Q_b = b}` (`b = M₁−t`). -/
+noncomputable def corankGram (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : Fin t ↪ Fin (M 1))
+    (A' : Params (tailChain M)) : Matrix (Fin (M 1 - t)) (Fin (M 1 - t)) ℝ :=
+  (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id) *
+    (((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id).transpose
+
+/-- **The good corank stratum is measurable** (open): `{A' | 0 < det(Q_b(A') Q_b(A')ᵀ)}` is the
+preimage of `(0, ∞)` under the continuous map `A' ↦ det(corankGram A')` — `prod(tailChain)` is
+continuous (`continuous_prod`); submatrix/mul/transpose/det continuous (`Continuous.matrix_*`). -/
+theorem measurableSet_corankGood (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ) (κ : Fin t ↪ Fin (M 1)) :
+    MeasurableSet {A' : Params (tailChain M) | 0 < (corankGram M t κ A').det} := by
+  have hp : Continuous (prod (tailChain M)) := continuous_prod (tailChain M)
+  have hQb : Continuous (fun A' : Params (tailChain M) =>
+      ((prod (tailChain M) A').submatrix (blockSplitEquiv κ) id).submatrix Sum.inr id) :=
+    (hp.matrix_submatrix (blockSplitEquiv κ) id).matrix_submatrix Sum.inr id
+  have hcont : Continuous (fun A' : Params (tailChain M) => (corankGram M t κ A').det) := by
+    unfold corankGram
+    exact (hQb.matrix_mul hQb.matrix_transpose).matrix_det
+  exact (isOpen_lt continuous_const hcont).measurableSet
+
+/-- **The corank-rank stratification split.** Instantiating `gammaPeelIntegral_stratify` at the good
+corank stratum `S = {0 < det(Q_b Q_bᵀ)}` (`= {rank Q_b = b}`): the chart integral splits into the
+good stratum (→ Regime A) plus its complement (→ corner / deeper atom). -/
+theorem gammaPeelIntegral_stratify_corank (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : ℝ) :
+    gammaPeelIntegral M t ρ κ c'
+      = (∫⁻ A' in paramsBoxM (tailChain M) 1 ∩ {A' | 0 < (corankGram M t κ A').det},
+          gammaPeelInner M t ρ κ c' A')
+        + (∫⁻ A' in paramsBoxM (tailChain M) 1 \ {A' | 0 < (corankGram M t κ A').det},
+          gammaPeelInner M t ρ κ c' A') :=
+  gammaPeelIntegral_stratify M t ρ κ c' _ (measurableSet_corankGood M t κ)
+
+/-- **Chart finiteness from the corank strata.** `gammaPeelIntegral < ⊤` from finiteness of the
+full-rank good stratum (`{0 < det}` → Regime A + weight-control) and its complement (`{det = 0}` →
+corner / deeper `{rank ≤ b−2}` atom). Instantiates `gammaPeelIntegral_lt_top_of_strata`. -/
+theorem gammaPeelIntegral_lt_top_of_corankStrata (M : Fin (L + 1 + 1 + 1) → ℕ) (t : ℕ)
+    (ρ : Fin t ↪ Fin (M 0)) (κ : Fin t ↪ Fin (M 1)) (c' : ℝ)
+    (hgood : (∫⁻ A' in paramsBoxM (tailChain M) 1 ∩ {A' | 0 < (corankGram M t κ A').det},
+        gammaPeelInner M t ρ κ c' A') < ⊤)
+    (hdeep : (∫⁻ A' in paramsBoxM (tailChain M) 1 \ {A' | 0 < (corankGram M t κ A').det},
+        gammaPeelInner M t ρ κ c' A') < ⊤) :
+    gammaPeelIntegral M t ρ κ c' < ⊤ :=
+  gammaPeelIntegral_lt_top_of_strata M t ρ κ c' _ (measurableSet_corankGood M t κ) hgood hdeep
 
 end DLNFibre.DLN.RLCT
