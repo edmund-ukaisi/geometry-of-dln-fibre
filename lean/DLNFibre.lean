@@ -1094,3 +1094,13 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
 -- clean-three/0-sorry — the §8 discharge; the CoV production consuming it is the remaining L2 mountain.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
+-- `RouteMSJGoodChart` — Stage-2 (S,J) L2 endpoint TRANSPORT to matrix coordinates (thread `genm-resmap`).
+-- The banked §8 endpoint lives on the flat cube `[-1,1]ⁿ`; the good-chart resolved loss lives on a
+-- product of matrix boxes. This bridges them: a linear+measure-preserving flatten (`matFlatL`/`twoMatFlatL`,
+-- MP transferred from `eMatFlat`) carries the matrix-product box onto the flat cube, so
+-- `sjGoodMap_loss_matBox_lt_top` (∫_{matBox×matBox} g_cc^{−c'} < ⊤ for c' < ½·(p*q+t*h)=½·codim-sum, via
+-- `sjGoodMapₗ` linear + `sjGoodMap_loss_pos` + `corner_block_cube_lintegral_lt_top_of_pos`) + the abstract
+-- `twoMatBox_injectiveLinear_lintegral_lt_top` are concrete callables. The '→endpoint' pipeline tail; the
+-- CoV connecting `gammaPeelIntegral` to these (pointwise Schur assembly + refined cover + L-recursion) is
+-- the remaining mountain. clean-three/0-sorry.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart

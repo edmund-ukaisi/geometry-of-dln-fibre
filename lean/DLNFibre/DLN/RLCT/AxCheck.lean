@@ -93,6 +93,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRadialPolar
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 
 /-!
 # Axiom-hygiene check
@@ -872,3 +873,17 @@ open DLNFibre.DLN.RLCT
 -- Good-chart resolved map: injective + `g_cc>0` off origin (RouteMSJGoodLoss).
 #print axioms sjGoodMap_injective
 #print axioms sjGoodMap_loss_pos
+-- Endpoint TRANSPORT to matrix coordinates (RouteMSJGoodChart, thread `genm-resmap`): the '→endpoint'
+-- pipeline tail as a concrete callable. `twoMatBox_injectiveLinear_lintegral_lt_top` (abstract transport
+-- along any MP flatten) + `sjGoodMap_loss_matBox_lt_top` (the good-chart g_cc box integral finite below
+-- ½·(p*q+t*h), via the linear+MP flatten `twoMatFlatL` → `corner_block_cube_lintegral_lt_top_of_pos`).
+#print axioms twoMatBox_injectiveLinear_lintegral_lt_top
+#print axioms sjGoodMap_loss_matBox_lt_top
+-- The CoV bridges welding the raw chart integrand to the endpoint (RouteMSJGoodChart, genm-resmap):
+-- `frobSq_schur_eq_sjGoodMap` (pointwise: `frobSq(A₀·Q) = g_cc` via `frobSq_schur_block_split` + the
+-- depth-reduction factorizations) + `chartInner_eq_outerShearFree` (the full inner-integral CoV, measure
+-- half: raw chart integral = outer ∫ inner freed-Schur-loss `Γ`-integral over the shear-image box, via
+-- banked weld + shear). The un-banked remainder (freedSchurLoss ↔ g_cc depth reduction + nested
+-- finiteness on the refined cover) is the mountain feeding `sjJointResolution`.
+#print axioms frobSq_schur_eq_sjGoodMap
+#print axioms chartInner_eq_outerShearFree
