@@ -15,7 +15,7 @@ All theorems clean-three `[propext, Classical.choice, Quot.sound]`, 0 `sorry` (f
 > (the branch threshold where the two codimensions ADD).
 >
 > - **Lean:** `DLNFibre.DLN.RLCT.sjSlice_corner_two_block_lt_top`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSlice334.lean` @ `e24a0f2d`)
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSlice334.lean` @ `767e8a87`)
 > - **Gloss.** `∀ h₀ h₁ : ℕ, ∀ c' : ℝ≥0, (c':ℝ) < (h₀+h₁+2)/2 → ∀ U₀ U₁ : (Fin 2 → ℝ) → ℝ, ∀ a : ℝ,
 >   0 < a → (∀ u ∈ unitBox 2, a ≤ U₀ u) → (∀ u ∈ unitBox 2, a ≤ U₁ u) →
 >   ∫⁻ u in unitBox 2, ENNReal.ofReal ((u 0 ^ 2 * U₀ u + u 1 ^ 2 * U₁ u) ^ (−(c':ℝ)) *
@@ -55,7 +55,7 @@ All theorems clean-three `[propext, Classical.choice, Quot.sound]`, 0 `sorry` (f
 >   (block dims 4,3), threshold `7/2`; `sjSlice334_minAdm_eq : minAdm ![3,3,3,4] = 7` (banked
 >   `minAdmRec_eq_minAdm` + `decide`); `sjSlice334_corner_lintegral_lt_top_of_lt_half_minAdm` — the same
 >   finiteness stated at the charge-tied threshold `c' < ½·minAdm ![3,3,3,4]`
->   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSlice334.lean` @ `e24a0f2d`).
+>   (`lean/DLNFibre/DLN/RLCT/Validate/RouteMSJSlice334.lean` @ `767e8a87`).
 > - **Proved.** `7/2 = ½·minAdm(3,3,3,4)` exactly; the concrete corner is finite below it — the concrete
 >   slice reproduces the pinned exponent bookkeeping (covdesign cert §2: threshold `½·minAdm`, strict
 >   below). The general threshold `(h₀+h₁+2)/2 = ½·((h₀+1)+(h₁+1))` = ½·(sum of block dims) faithfully
