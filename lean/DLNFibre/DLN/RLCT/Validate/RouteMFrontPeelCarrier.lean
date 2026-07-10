@@ -578,13 +578,21 @@ pivot chart where the `(ρ,κ)` `q×q` minor of the tail product `P` is a unit, 
 `normalslice-cert.md` §2) conjugates `P` by unit-triangular block shears to `[[α, *],[0, Z]]` (`α =
 α_1···α_{L-1}` invertible, `Z = prod (redTail M q) Y` the reduced product; `blockShear_step` telescoped,
 rank read off by `RouteMSJThreadedShear.rank_eq_q_add_of_normalForm`). This CoV is measure-preserving
-(Jacobian `±1`, composed unit-triangular shears, `measurePreserving_shearSub`), and under it the loss
-splits disjointly `frobSq(A₀·P) ≃ ‖R‖² + frobSq Z` (`R` the `M₀·q` Morse block). The chart integral thus
-equals a `reducedMorseFront`-type integral at an enlarged radius `T > 1` (the shear coefficients
-`K_i = γ_iα_i⁻¹` are unbounded on the chart), absorbed by box-scaling homogeneity (the layer product is
-degree-`(L−1)` homogeneous ⟹ finiteness is radius-independent), finite below `½·minAdm M` via
-`reducedMorseFront_lt_top` (strong IH `hIH`). The sole remaining opaque-width obligation; everything
-above it (`cover`, `chartFinite`'s wiring, the reduced-Morse endpoints, CRUX A) is PROVED. -/
+(Jacobian `±1`, composed unit-triangular shears, `measurePreserving_shearSub`; the `A₀`-integral takes
+its own shear `A₀ ↦ A₀·(S₀)⁻¹`), and under it the loss splits disjointly `frobSq(A₀·P) ≃ ‖R‖² + frobSq Z`
+(`R` the `M₀·q` Morse block). The chart integral then has the `reducedMorseFront` shape (Morse block
+`M₀q` + reduced-chain core), finite below `½·minAdm M` via `reducedMorseFront_lt_top` (strong IH `hIH`).
+
+CAVEAT (the tide's residual subtlety, codex-decorrelated `codex/cov-route-answer.md`, §2): the shear
+coefficients `K_i = γ_iα_i⁻¹` are UNBOUNDED on the open chart (blow up as the minor → singular), so the
+Schur-coordinate image of the bounded `A'`-chart is an UNBOUNDED `Y`-region. Fixed-radius box-scaling
+homogeneity (`prod (T•A) = T^N • prod A`, degree-`N` homogeneous) makes finiteness radius-INDEPENDENT for
+any FINITE box, but does NOT by itself cover the unbounded image; and `reducedMorseFront` is anisotropic
+(Morse block degree `2`, core degree `2N`), so a single isotropic `T` is not an exact scalar. Closing this
+needs either a bounded-image domain-control argument (a finite refinement of the pivot chart on which `α`
+is bounded away from singular) or an unbounded-domain finiteness variant of `reducedMorseFront_lt_top` —
+the genuine open content, isolated here. Everything ABOVE it (`cover`, `chartFinite`'s wiring, the
+reduced-Morse endpoints incl. the log borderline, CRUX A) is PROVED. -/
 theorem frontChartIntegral_lt_top (M : Fin (L + 1 + 1 + 1) → ℕ) (q : ℕ) (hq : q ≤ tailMin M)
     (ρ : Fin q ↪ Fin (tailChain M 0)) (κ : Fin q ↪ Fin (tailChain M (Fin.last (L + 1))))
     (c' : NNReal) (hc' : (c' : ℝ) < (minAdm M : ℝ) / 2)
