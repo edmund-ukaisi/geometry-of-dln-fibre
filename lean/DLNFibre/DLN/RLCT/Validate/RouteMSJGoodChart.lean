@@ -222,6 +222,40 @@ def sjGoodMapₗ (P : Matrix (Fin t) (Fin t) ℝ) (C : Matrix (Fin p) (Fin t) �
     (W : Matrix (Fin q) (Fin h) ℝ) (A2 : Matrix (Fin h) (Fin o) ℝ) (x) :
     sjGoodMapₗ P C W A2 x = sjGoodMap P C W A2 x := rfl
 
+/-- **The Schur-split loss equals `g_cc` once the sheared row-blocks factor through the deep factor.**
+If the shear coordinate `Q̃_p = v·A₂` and the corank rows `Q_b = W·A₂` (the depth reduction of the tail
+product, vslice §4a), then the exact Schur-split loss `frobSq(P·Q̃_p) + frobSq(C·Q̃_p + Γ·Q_b)` equals the
+good-chart cross-coupled loss `g_cc(Γ, v) = frobSq(sjGoodMap P C W A₂ (Γ, v))`. Pure matrix associativity
+(`P·(v·A₂) = P·v·A₂`, `C·(v·A₂) + Γ·(W·A₂) = (C·v + Γ·W)·A₂`). -/
+theorem schurSplitLoss_eq_sjGoodMap (P : Matrix (Fin t) (Fin t) ℝ) (C : Matrix (Fin p) (Fin t) ℝ)
+    (Γ : Matrix (Fin p) (Fin q) ℝ) (W : Matrix (Fin q) (Fin h) ℝ) (A2 : Matrix (Fin h) (Fin o) ℝ)
+    (v : Matrix (Fin t) (Fin h) ℝ) :
+    frobSq (P * (v * A2)) + frobSq (C * (v * A2) + Γ * (W * A2))
+      = frobSq (sjGoodMap P C W A2 (Γ, v)).1 + frobSq (sjGoodMap P C W A2 (Γ, v)).2 := by
+  have h1 : P * (v * A2) = P * v * A2 := (Matrix.mul_assoc P v A2).symm
+  have h2 : C * (v * A2) + Γ * (W * A2) = (C * v + Γ * W) * A2 := by
+    rw [Matrix.add_mul, Matrix.mul_assoc C v A2, Matrix.mul_assoc Γ W A2]
+  simp only [sjGoodMap]
+  rw [h1, h2]
+
+/-- **The exact pointwise CoV bridge (item 4): `frobSq(A₀·Q) = g_cc(Γ, v)` on the pivot chart.** With
+`A₀ = fromBlocks P B C D` (pivot `P` invertible) and the tail product `Q` whose sheared/corank row-blocks
+factor through the deep factor `A₂` — `Q̃_p := Q_p + P⁻¹·B·Q_b = v·A₂` and `Q_b = W·A₂` — the raw
+front-factor loss equals the resolved cross-coupled loss `g_cc(Γ, v)`, `Γ = schurCompl P B C D`. Composes
+the banked `frobSq_schur_block_split` with `schurSplitLoss_eq_sjGoodMap`. The factorization hypotheses
+`hp`, `hb` are the DEPTH REDUCTION the change-of-variables supplies from `prod (tailChain M) A'`. -/
+theorem frobSq_schur_eq_sjGoodMap (P : Matrix (Fin t) (Fin t) ℝ) [Invertible P]
+    (B : Matrix (Fin t) (Fin q) ℝ) (C : Matrix (Fin p) (Fin t) ℝ) (D : Matrix (Fin p) (Fin q) ℝ)
+    (Q : Matrix (Fin t ⊕ Fin q) (Fin o) ℝ)
+    (v : Matrix (Fin t) (Fin h) ℝ) (W : Matrix (Fin q) (Fin h) ℝ) (A2 : Matrix (Fin h) (Fin o) ℝ)
+    (hp : Q.submatrix Sum.inl id + ⅟P * B * Q.submatrix Sum.inr id = v * A2)
+    (hb : Q.submatrix Sum.inr id = W * A2) :
+    frobSq (fromBlocks P B C D * Q)
+      = frobSq (sjGoodMap P C W A2 (schurCompl P B C D, v)).1
+        + frobSq (sjGoodMap P C W A2 (schurCompl P B C D, v)).2 := by
+  rw [frobSq_schur_block_split P B C D Q, hp, hb]
+  exact schurSplitLoss_eq_sjGoodMap P C (schurCompl P B C D) W A2 v
+
 /-- **The good-chart cross-coupled loss is endpoint-admissible in matrix coordinates.** For the
 good-chart data (pivot `P` left-invertible, deep factor `A₂` and resolved map `W` right-invertible)
 and `c' < (p*q + t*h)/2`, the matrix-product-box integral of the resolved cross-coupled loss
@@ -319,6 +353,17 @@ theorem sjGoodMap_loss_matBox_lt_top [NeZero (p * q + t * h)]
       (Set.univ.pi (fun _ : Fin (p * q + t * h) => Set.Icc (-1 : ℝ) 1))]
   exact corner_block_cube_lintegral_lt_top_of_pos g hgc hom (c' : ℝ) c'.coe_nonneg
     (by push_cast; exact hc') hpos
+
+/-- **Non-vacuity witness.** At equal unit widths with identity pivot/resolved maps (`P = W = A₂ = 1`,
+so `LP = RW = RA = 1`, `C = 0`), the good-chart hypotheses of `sjGoodMap_loss_matBox_lt_top` are jointly
+satisfiable — so the theorem is not vacuously true. -/
+example : True := by
+  haveI : NeZero (1 * 1 + 1 * 1) := ⟨by norm_num⟩
+  have _ := sjGoodMap_loss_matBox_lt_top (1 : Matrix (Fin 1) (Fin 1) ℝ)
+    (1 : Matrix (Fin 1) (Fin 1) ℝ) (one_mul 1) (0 : Matrix (Fin 1) (Fin 1) ℝ)
+    (1 : Matrix (Fin 1) (Fin 1) ℝ) (1 : Matrix (Fin 1) (Fin 1) ℝ) (one_mul 1)
+    (1 : Matrix (Fin 1) (Fin 1) ℝ) (1 : Matrix (Fin 1) (Fin 1) ℝ) (one_mul 1) 0 (by norm_num)
+  trivial
 
 end GoodChart
 
