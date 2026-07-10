@@ -298,4 +298,23 @@ theorem corner_block_cube_lintegral_lt_top {n : ℕ} [NeZero n]
     _ < ⊤ := corner_block_lintegral_lt_top (fun y => g (WithLp.ofLp y)) (hg.comp hof)
         hom' c' hc0 hc' a ha hlb
 
-end DLNFibre.DLN.RLCT
+/-- **Non-vacuity witness.** The pure squared-norm loss `g z = ∑ᵢ (z i)²` (the `frobSq` of the
+flattened block) is degree-2-homogeneous, measurable, and equals `1` on the unit sphere, so the
+hypotheses of `corner_block_cube_lintegral_lt_top` are jointly satisfiable (at `a = 1`) — the corner
+finiteness is not vacuously true. -/
+example {n : ℕ} [NeZero n] (c' : ℝ) (hc0 : 0 ≤ c') (hc' : c' < (n : ℝ) / 2) :
+    ∫⁻ z in Set.univ.pi (fun _ : Fin n => Set.Icc (-1 : ℝ) 1),
+        ENNReal.ofReal ((∑ i, (z i) ^ 2) ^ (-c')) < ⊤ := by
+  refine corner_block_cube_lintegral_lt_top (fun z => ∑ i, (z i) ^ 2) (by fun_prop)
+    (fun r z => by simp only [Pi.smul_apply, smul_eq_mul, mul_pow]; rw [Finset.mul_sum]) c' hc0 hc'
+    1 one_pos (fun ω => ?_)
+  have hnorm : ‖(ω : EuclideanSpace ℝ (Fin n))‖ = 1 := mem_sphere_zero_iff_norm.mp ω.2
+  have hsq : (∑ i, ‖(ω : EuclideanSpace ℝ (Fin n)) i‖ ^ 2) = 1 := by
+    have h2 := EuclideanSpace.norm_eq (ω : EuclideanSpace ℝ (Fin n))
+    rw [hnorm] at h2
+    nlinarith [Real.sq_sqrt (by positivity :
+      (0 : ℝ) ≤ ∑ i, ‖(ω : EuclideanSpace ℝ (Fin n)) i‖ ^ 2), h2.symm]
+  have hcongr : (∑ i, (WithLp.ofLp (ω : EuclideanSpace ℝ (Fin n)) i) ^ 2)
+      = ∑ i, ‖(ω : EuclideanSpace ℝ (Fin n)) i‖ ^ 2 :=
+    Finset.sum_congr rfl (fun i _ => by rw [Real.norm_eq_abs, sq_abs])
+  exact le_of_eq (hcongr.trans hsq).symm
