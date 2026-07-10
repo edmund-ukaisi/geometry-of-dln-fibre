@@ -397,3 +397,36 @@ decomposes as: (corner cover — piece 8) + (good-strata CoV wiring, steps 1-7) 
 Forced #print axioms: `decoratedPeelCoV_of_gammaPeel` + `decoratedPeelCoV_imp_decoratedPeelStep`
 clean-three; `gammaPeelFromRedChain` + `decoratedPeelCoV` + `routeMBoxThresholdFinite_decorated` carry
 `sorryAx` (the one per-chart gap, by design).
+
+---
+
+## PIECE-8 DESIGN VERDICT (design pass, before building — Codex+cert+controller confirmed)
+
+**Cauchy-Binet is AVOIDED** for entering the good stratum. Design pass (rg + cert.md re-read + decorrelated
+Codex `codex/piece8-prereq-answer.md`):
+1. **Shift-source = Γ-peel (Regime A)**, NOT the radial (cert lines 106/113: Regime A emits
+   `c''=c'−ab/2` + Gram `det(Q_bQ_bᵀ)^{−a/2}`; radial = u-scale, α=M₁M₂−1−2c', non-binding). Confirmed by
+   Codex + controller.
+2. **Regime A's Gram machinery is BANKED** (`RouteMSJGramSqrt.exists_gram_normalizer` = CFC `CFC.sqrt`
+   route, `|det M|=(det G)^{−1/2}`; `RouteMSJCorankPeel`; `freedSchurLoss_inner_peel_lt_top`). Regime A
+   takes `(Q_b Q_bᵀ).PosDef` as a HYPOTHESIS.
+3. **Minimal prerequisite = `rank Q_b = b ⟹ (Q_b Q_bᵀ).PosDef`** — Cauchy-Binet-FREE, buildable ~40-60
+   lines: `posSemidef_self_mul_conjTranspose` (Gram PosSemidef, banked Mathlib) + `posDef_iff_dotProduct_
+   mulVec` (⟨IsHermitian, ∀x≠0 0<x⬝(GQx)=‖Q_bᵀx‖²⟩) + `Q_bᵀ` mulVec injective from full rank
+   (`rank_transpose_mul_self`/`rank_transpose`, rank-nullity: `(Q_b Q_bᵀ).rank = Q_b.rank = b`).
+4. **Stratum split = the SINGLE determinant** `det(Q_b Q_bᵀ)`: `{det>0}` = `{rank=b}` = `{Gram PosDef}`
+   (top, → Regime A); `{det=0}` = `{rank<b}` (deeper, → corner leaf `{rank=b−1}` + DeeperStrataResolution
+   `{rank≤b−2}`). No minor cover / Cauchy-Binet to DEFINE/measure the stratum — one polynomial condition.
+5. **CAVEAT (Codex's trap, downstream only):** Cauchy-Binet (the ≥-corollary `det(Q_bQ_bᵀ)≥minor²`) MIGHT
+   resurface ONLY if integrating the emitted `det(Q_bQ_bᵀ)^{−a/2}` weight over the OUTER domain needs a
+   quantitative minor lower bound (the cert's "smooth positive unit on the dominant-minor chart"). Entering
+   the stratum + supplying Regime A's PosDef needs only `det>0`. To be determined when wiring the outer
+   integration; the reduced-chain IH likely controls it via the absorption CoV (B₀=prod(redChain)).
+
+**Also noted:** the good-stratum wiring has more than the rank split — Regime A hyp (i) `c'>ab/2` and hyp
+(iii) core positivity `0<frobSq(B₀)` mean `{rank=b}` further needs `{B₀≠0}` + the `c'` vs `ab/2` regime;
+`{B₀=0}` needs the pure-corank handling. These are the wiring's internal structure (steps 7).
+
+**NEXT:** build the minimal prerequisite `posDef_gram_of_rank_full` (Cauchy-Binet-free), then piece 8
+(the single-det stratification + route {det>0}→Regime A). FINDING-1 reminder: the product-rank
+stratification of `Q_b(A')=W·Ad` (not a free matrix) is the genuine new structural content.
