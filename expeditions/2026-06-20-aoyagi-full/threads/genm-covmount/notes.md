@@ -42,7 +42,45 @@ CIRCULARITY WARNING: `sjJointResolution_of_boxThresholdFinite` (RouteMSJJointRed
 `RouteMBoxThresholdFinite M` of the SAME chain — circular, useless for the induction. Confirmed by prior
 tides (genm-sjcarrier8/sjbuild3): the (S,J) descent is the genuine unbuilt content.
 
-## Checkpoint 2 target
-`gammaPeelIntegral_sjGoodMap_eq` — unconditional integrand-level rewrite of gammaPeelIntegral into g_cc
-coords (composes schurShearFree_eq + prod_front_peel + submatrix_mul + Gap A). Then the finiteness is the
-remaining analytic mountain (pieces 1-3 above).
+## Checkpoint 2 (DONE) — `RouteMSJGoodCoords.lean`
+- `sjTail_factor`: `(prod(tailChain M) A').submatrix(blockSplitEquiv κ)id = Ã₁·A₂` (banked front-peel +
+  submatrix_mul). NOTE: `rw [submatrix_mul]` FAILS on the dependent-HMul product (CLAUDE.md friction);
+  use the fully-applied `(Matrix.submatrix_mul …).trans` form.
+- `sjGoodChartLoss` + `freedSchurLoss_eq_sjGoodChartLoss`: names the endpoint g_cc shape.
+- `gammaPeelIntegral_sjGoodMap_eq`: UNCONDITIONAL EQUALITY, gammaPeelIntegral entirely in g_cc coords.
+  (rw motive tip: don't `rw [choose_spec]` — its statement mentions the term being abstracted; isolate a
+  `have heq` at the loss level and `rw [heq]`.)
+
+## Checkpoint 3 (DONE) — `RouteMSJCornerBound.lean`
+- `cornerRadialConst N R c'` + `cornerRadialConst_lt_top` (loss-free finite constant, `c'<N/2`).
+- `corner_block_lintegral_le`: `∫_{ball R} g^{-c'} ≤ a^{-c'} · cornerRadialConst N R c'` — the EXPLICIT
+  uniform-in-parameters bound (mirror of banked `corner_block_lintegral_lt_top`, ending le_trans key +
+  lintegral_const instead of discarding to `<⊤`). Dependence on the loss is ONLY through the sphere lb `a`.
+- `corner_block_lt_top_of_bound`: consistency witness (re-derives the banked `<⊤`).
+  This unblocks the env integration (the cert's underspecified `domain control` step): on a good cover
+  with `a≥a₀` and `R≤R₀`, inner ≤ a₀^{-c'}·cornerRadialConst N R₀ c' = CONSTANT, integrable over the
+  finite-measure env box.
+
+## PRECISE HANDOFF for the next tide (the remaining mountain)
+
+`sjJointResolution:803` still open. After `gammaPeelIntegral_sjGoodMap_eq`, need FINITENESS of
+`∫_{A'} ∫_x ∫_Γ (sjGoodChartLoss x Γ Ã₁(A') A₂(A'))^{-c'} < ⊤`. Remaining un-banked:
+
+1. **v-exposure CoV** — for fixed (A₂, W=(Ã₁)_b, P, B₁₂, C), the pivot rows `(Ã₁)_p ↦ v = (Ã₁)_p +
+   P⁻¹B₁₂W` is a TRANSLATION (measure-preserving, `measurePreserving_add_right`). Splits `A' 0`-box into
+   pivot-rows × corank-rows, exposes v as a free box variable. After it, inner `∫_Γ∫_v sjGoodChartLoss^{-c'}`
+   = the endpoint `sjGoodMap_loss_matBox_lt_top` (needs P left-inv, W/A₂ right-inv).
+2. **§8 uniform sphere lower bound `a ≥ a₀ > 0`** on the good cover (compactness + continuity min of
+   g_cc(ω) over the joint sphere × compact good env). Genuinely-new but "not a wall" (cert §3a). Feeds
+   `corner_block_lintegral_le` (checkpoint 3).
+3. **env integration** — `∫_{good env} (a₀^{-c'}·cornerRadialConst) dμ = const·μ(env) < ⊤`. Needs the
+   parametrized inner as a measurable fn of env (Tonelli/Fubini bookkeeping).
+4. **good/deeper cover split** — matBox∩pivotChart = good{|det pivot|≥δ} ∪ deeper; deeper NON-binding by
+   banked `sjChargeBudget_le`; the L-recursion over the rank flag (finite, nonincreasing).
+
+The threshold bookkeeping: for the endpoint on `(Γ,v)` the dim is `(M0-t)(M1-t)+t·M2`; the charge
+accounting `sjChargeBudget_le` gives min-over-branches = minAdm. See `genm-covdesign/sjjoint-exponents-cert.md`.
+
+DEAD END confirmed: `sjJointResolution_of_boxThresholdFinite` (RouteMSJJointReduce) is circular.
+Corank-atom route (`freedSchurLoss_inner_peel_lt_top`, RouteMSJFreedPeel) has interface hyps that fail
+pointwise — same mountain. The endpoint route (this thread) is the live path.

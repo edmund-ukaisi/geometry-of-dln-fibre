@@ -95,6 +95,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCornerGate
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodLoss
 import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
 
 /-!
 # Axiom-hygiene check
@@ -893,3 +894,8 @@ open DLNFibre.DLN.RLCT
 -- `freedSchurLoss_eq_sjGoodMap_mul` (product form, reads `W,v` off `Q̃=Ã₁·A₂`).
 #print axioms freedSchurLoss_eq_sjGoodMap
 #print axioms freedSchurLoss_eq_sjGoodMap_mul
+-- CoV mountain GAP B integrand bridge (RouteMSJGoodCoords, genm-covmount): `gammaPeelIntegral` rewritten
+-- unconditionally into good-chart g_cc coordinates. `sjTail_factor` (tail product = Ã₁·A₂) +
+-- `gammaPeelIntegral_sjGoodMap_eq` (the equality gammaPeelIntegral = ∫∫∫ sjGoodChartLoss^{−c'}).
+#print axioms sjTail_factor
+#print axioms gammaPeelIntegral_sjGoodMap_eq

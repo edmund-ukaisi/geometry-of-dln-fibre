@@ -1112,3 +1112,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodChart
 -- off `W,v` via `submatrix_mul`). clean-three/0-sorry. Feeds the CoV assembly (gaps B/C) after the banked
 -- front-peel exposes `Ã₁`, `A₂`.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJDepthReduce
+-- `RouteMSJGoodCoords` — Stage-2 (S,J) CoV mountain GAP B integrand bridge (thread `genm-covmount`).
+-- Composes the banked measure-side entry `gammaPeelIntegral_schurShearFree_eq` + front-peel
+-- `prod_front_peel` + the gap-A depth reduction to rewrite `gammaPeelIntegral` — UNCONDITIONALLY, as an
+-- EQUALITY — into good-chart `g_cc` coordinates. `sjTail_factor` (tail product row-reindexed = `Ã₁·A₂`)
+-- + `sjGoodChartLoss` (names the endpoint g_cc shape) + `gammaPeelIntegral_sjGoodMap_eq` (the equality:
+-- `gammaPeelIntegral = ∫∫∫ sjGoodChartLoss^{−c'}`). clean-three/0-sorry. The remaining un-banked content
+-- is the FINITENESS of this triple integral (v-exposure CoV + endpoint + env integration + L-recursion).
+import DLNFibre.DLN.RLCT.Validate.RouteMSJGoodCoords
