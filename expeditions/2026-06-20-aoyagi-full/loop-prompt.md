@@ -77,7 +77,13 @@ adapt with state" reach — do NOT defer it. Reserve "roadmap + operator" for GE
 unargued extensions, not for large-but-standard builds. When I catch myself thinking "too big to start,"
 that is the cue to break it down and START, not to hold. Be ambitious.
 
-**Current critical path (STAGE 2, re-grounded 2026-07-09 — DISCHARGE `(□)`; Stage 1 complete + S2-free).**
+**Current critical path (STAGE 2, re-grounded 2026-07-10 — DISCHARGE `(□)`; Stage 1 complete + S2-free).**
+- **★ ROUTE (decided 2026-07-10, recon-map): FRONT-PEEL wiring W1.** `sjBoundaryPeel` is CLOSED; the SOLE
+  open leaf is `sjJointResolution:803`. Primitive = `A₀↦A₀·U` (`minAdm_eq_frontPeel` banked); prove
+  `RouteMBoxThresholdFinite` ∀M by front-peel arity strong-induction, close `sjJointResolution` as a
+  corollary (`sjJointResolution_of_boxThresholdFinite`, W1). CRUX = `normalSlice_transfer` (the Σ⁰/"sum-not-min"
+  additive composition, `addlongest`). AVOID Γ-atom/decorated/Schur/seam (dead). Detail:
+  `threads/genm-fpcarrier/spec.md` + `threads/genm-sjcarrier-recon/recon-map.md`.
 - **THE GOAL:** prove `RouteMBoxThresholdFinite M` for every nondegenerate `M` (= the box-finiteness
   half `(□)` at reduced widths `H−r`; = general-`L` R1-UPPER `rlct ≥ ½·codim`), via the native `(S,J)`
   integrated blow-up peel. Discharging it makes `aoyagi_learning_coefficient_gen` UNCONDITIONAL and lets
