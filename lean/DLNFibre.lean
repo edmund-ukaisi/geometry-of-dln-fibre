@@ -1315,3 +1315,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
 -- but NOT (T), so `pDivisorwise_not_imp_pSimultaneous` makes C1's (P)⇏(T) a THEOREM: applying the monomial
 -- terminal on divisorwise p=0 alone would wrongly accept the divergent x²+y² — forcing the intersection refinement.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
+-- `RouteMSJLeafRayleigh` — the route-A DecoratedBaseHyp CORE (genm-sj5-descent; controller decision + cover Q4):
+-- `frobSq_mul_ge` (`c·frobSq Γ ≤ frobSq(Γ·Z)` given `(Z·Zᵀ−c·I)` PSD = the units-on-chart interface, #144-supplied;
+-- exact Loewner via `trace(Γ(ZZᵀ−cI)Γᵀ)≥0`) + `frobSq_mul_rpow_le` (the value majorant `(frobSq ΓZ)^{−c'} ≤
+-- c^{−c'}(frobSq Γ)^{−c'}` a.e.). Reduces the width-2 leaf to the free-Γ Morse (finite < ½minAdm(base)),
+-- BYPASSING sjLoss_terminal + the (P)/(T) gap; LOCAL (Z fixed, Loewner-exact), distinct from the #140-killed route.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh

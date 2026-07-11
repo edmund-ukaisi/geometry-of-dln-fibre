@@ -129,6 +129,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJCorankQ
 import DLNFibre.DLN.RLCT.Validate.RouteMSJInnerDescent
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
+import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
 
 /-!
 # Axiom-hygiene check
@@ -1087,3 +1088,8 @@ open DLNFibre.DLN.RLCT
 -- (T⟹P) + the regression test `pDivisorwise_not_imp_pSimultaneous` (∃e, (P) ∧ ¬(T) — the x²+y² fresh-disjoint
 -- witness), making C1's (P)⇏(T) a theorem (guards the monomial terminal against divisorwise-p=0-alone acceptance).
 #print axioms pDivisorwise_not_imp_pSimultaneous
+-- route-A DecoratedBaseHyp core (RouteMSJLeafRayleigh, genm-sj5-descent): the Rayleigh matrix bound
+-- `frobSq_mul_ge` (c·frobSq Γ ≤ frobSq(Γ·Z) given (Z·Zᵀ−c·I) PSD, exact Loewner) + `frobSq_mul_rpow_le`
+-- (the value majorant) — reduces the leaf to the free-Γ Morse, bypassing sjLoss_terminal + the (P)/(T) gap.
+#print axioms frobSq_mul_ge
+#print axioms frobSq_mul_rpow_le
