@@ -94,8 +94,12 @@ v-block, weights `σ_{r−q+1}²,…,σ_r²`):
 
 **The assembly.** `∫_box g = Σ_q ∫_{cell_q} g < ∞` for `c' < 7/2`, since each `cell_q` binds at
 `½(D_q + d_q)` and `min_q ½(D_q + d_q) = ½·minAdm = 7/2` (the linchpin `minAdm = min_q[D_prod(q)+m(q−1)]`,
-banked #117; `(D_q,d_q) = (8,6),(4,3),(1,0)` for `q=1,2,3` → thresholds `7/2, 7/2, 4`; `q=1,2` bind, `q=3`
-slack). Both codim-1 AND codim-2 bind at exactly `7/2` — the deep cell is NOT a negligible correction.
+banked #117; indexed by COLLAPSE-COUNT `q`: `(D_q,d_q) = (1,6),(4,3),(8,0)` for `q=1,2,3` → thresholds
+`½(D_q+d_q) = (7/2, 7/2, 4)`; `q=1,2` bind, `q=3` slack). Both codim-1 AND codim-2 bind at exactly `7/2` —
+the deep cell is NOT a negligible correction. *(Correction 2026-07-11: `D_q` here is `codim{rank Q ≤ r−q} =
+minAdm(reduced by r−q) = (1,4,8)`, indexed by collapse-count `q`; the `D_prod = (8,4,1)` of #116/#127 is the
+SAME list indexed by corank-CUT — the two reverse. An earlier draft mispaired them as `(8,6),(4,3),(1,0)`,
+`½(8+6)=7≠7/2`; the thresholds and binding structure are unchanged.)*
 
 ---
 

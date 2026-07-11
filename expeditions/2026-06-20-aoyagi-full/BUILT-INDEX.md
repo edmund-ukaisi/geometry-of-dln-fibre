@@ -185,7 +185,14 @@ decoration, or the descent lands a strictly-shorter chain). The §5 lane proves 
          `RouteMSJTwoBlockRadial` (radial layer per extra collapse). SOUNDNESS: units-bounded-below `U_i>0` →
          where vanishing, recurse to `cell_{q+1}` (add-not-min, no RLCT-collapse — MUST be airtight; #131 designing).
        (3) SUM: `∫_box g = Σ_q ∫_{cell_q} < ⊤` for `c'<7/2` via linchpin `min_q ½(D_q+d_q)=½·minAdm` (#117;
-       (D,d)=(8,6),(4,3),(1,0) → 7/2,7/2,4; q=1,2 bind, q=3 slack). Then §5: g(Q) + banked recombine + tube (#127) = (□).
+       (D_q,d_q) by collapse-count q = (1,6),(4,3),(8,0) → thresholds 7/2,7/2,4; q=1,2 bind, q=3 slack —
+       #131 correction: the earlier (8,6),(4,3),(1,0) mispaired the corank-cut D=(8,4,1) with d). Then §5:
+       g(Q) + banked recombine + tube (#127) = (□).
+       **★ SOUNDNESS (#131, airtight):** the corank-q corner needs the ADDITIVE/indicator loss (NOT
+       `radialAttach` → MIN 3/2 collapse) AND the {U_i=0} locus integrated JOINTLY with the PROVED transverse
+       charge D_q (NOT a.e.-deletion → RLCT-collapse, Codex-exhibited z²(x²+y²)@λ=1/2). The 7/2 recovers iff
+       D_q≥4 = exactly #127's proved product-rank codim — so **#127 is load-bearing for SOUNDNESS**. The
+       route-S build's close is GATED on a decorrelated check of both conditions.
      **★ THE TWO LANES CONVERGE on this cover** — lane-1's #121 = exactly this g(Q). Build once, shared.
      ❌ **FALLBACK now DEMOTED** (the Γ-first corank-Gram, #128v2): superseded — the front-first rank-stratified
      cover is the resolved route (#130). corank-Gram bricks (RouteMSJCorankGram) stay untracked, off-route.
