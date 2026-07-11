@@ -1270,3 +1270,11 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
 -- fixed-slice hypothesis — an earlier false-premise "cover" was dropped). corner334-review PASS +
 -- controller-review. clean-three. (The Tonelli assembly + deeper stratum + admissible driver follow.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
+-- `RouteMSJOnePeel334` — the (□)-core ONE-PEEL level (thread `genm-onepeel334`): the (3,3,3,4) t=1
+-- one-peel finiteness in CLEAN COORDS (X∈ℝ⁸,Z∈ℝ⁴). `onePeel334_cleanCoords_lt_top` (∫∫ corner-slice
+-- over the deep boxes < ⊤ at 7/2=½minAdm) via weighted-AM-GM decoupling + Tonelli + banked Morse
+-- `sumSqND_box_lt_top` — the A₂-rank-drop complement RESCUED by codimension (d₀=8,d₁=4; non-binding),
+-- genuinely closed (only the null singleton dropped), NOT a deeper peel. Scope: clean-coords model
+-- (cert §2-faithful); the literal-A₂ casting (a det-M≠0 constant-Jacobian CoV — LOAD-BEARING, not
+-- benign) is a follow-on. vsastruct A₂-audit PASS + formaliser-reviewer + controller. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334

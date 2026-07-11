@@ -122,6 +122,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
 import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
 import DLNFibre.DLN.RLCT.Validate.RouteMSJFrontSpectral
 import DLNFibre.DLN.RLCT.Validate.RouteMSJCorner334
+import DLNFibre.DLN.RLCT.Validate.RouteMSJOnePeel334
 
 /-!
 # Axiom-hygiene check
@@ -1028,3 +1029,8 @@ open DLNFibre.DLN.RLCT
 -- corner334-review PASS + controller-review. Complement = joint/Tonelli obligation (deferred).
 #print axioms sjCorner334_sector_slice_lt_top
 #print axioms cornerSlice334_eq_top_of_unit1_zero
+-- (□)-core ONE-PEEL (RouteMSJOnePeel334, genm-onepeel334): the (3,3,3,4) clean-coords one-peel
+-- finiteness at 7/2 (AM-GM + Tonelli + banked Morse codim-rescue). vsastruct A₂-audit PASS.
+-- Clean-coords model (literal-A₂ casting = a det-M≠0 CoV, follow-on).
+#print axioms onePeel334_cleanCoords_lt_top
+#print axioms onePeelIntegral_lt_top
