@@ -40,11 +40,19 @@ equivalence cert). LABOUR on established math (Aoyagi §5); the bar for "wall" i
    - **DONE / banked (clean-three):** the spine (`DecoratedDescent` + driver); measure bedrock `RouteMSJInnerDescent`;
      `DecoratedBaseHyp` LOSS part = `corankLeaf_rpow_lt_top` (route A, `RouteMSJLeafFinite`+`_Rayleigh`, `∫(frobSq ΓZ)^{−c'}<⊤`
      at ½minAdm(base) given the `Z·Zᵀ≽c·I` units interface); invariant-(ii) `RouteMSJTransversality`; (P)/(T)-guard +
-     regression-test-2 `RouteMSJAdmEncoding`. Q_D no-obstruction CERTIFIED (#142); the invariant width-general CERTIFIED (#144).
-   - **NEXT (the build, genm-sj5-descent):** (α, native — #97 honored, NO cite): `minAdm_eq_backPeel` (`minAdm(t,·)=min_ρ[cCodim(·;ρ)+t·ρ]`,
-     finite-min reindex of the banked QIP) + incidence-arithmetic + banked convexity ⟹ `rank(Zdeep)≥b` + free-matrix corank
-     survival ⟹ `adm ⟹ ∀η∈Crit p_η=0` (unconditional) + the `adm` def (B1 valuation-clause / B2 reachable / 2 regression
-     tests) + wire corankLeaf into `DecoratedBaseHyp` (jac via Tonelli). [Mostly LANDING — bounded, native.]
+     regression-test-2 `RouteMSJAdmEncoding`; **the A₂ α-unlock `RouteMSJBackPeel`** (`minAdm_eq_backPeel` re-expressed as
+     the banked front-peel #117 + convexity ⟹ co-minimizing ρ≥b, @c90dcab5, cover PASS). Q_D CERTIFIED (#142); invariant
+     width-general CERTIFIED (#144).
+   - **★ adm-FORK RESOLVED → (B) valuation-predicate (UPDATE-936, cert §10/§10.1).** #144 peel-closes the VALUATION predicate
+     (not just the reachable set), so #3 (adm def) DECOUPLES from #5 (peelOp). **FINAL #3 adm def:**
+     `adm M D := genuineCarrier D ∧ (a=0 ∨ b=0 ∨ ∀η∈Crit D, ⨅_j ν_η(corankGen D j)=0)`, Crit incl. intersection rays (C1).
+     `genuineCarrier D := D.Z = paramsBox(deeperChain M)` (pins the EXACT deeper chain — controller SPINE check: SJDecoration
+     is NOT definitionally genuine, so this clause is LOAD-BEARING; an unpinned/free carrier gives the wrong rank-strata codim).
+   - **NEXT (the build, genm-sj5-desc2):** (α native, #97 honored, NO cite) #2-core `corank_survival_ae` (AG-free: banked
+     D1JointDiffRankExact factor → RankLocusClosed minor-cut → DeepestCoreNonvanishing null-set; free-A genericity, NOT
+     component-decomposition) + the units bridge (full-row-rank ⟹ ∃c>0 `Z·Zᵀ≽c·I`) — **`RouteMSJCorankSurvival.lean`
+     sorry-free but STAGED untracked, awaiting desc2 green report + green-gate + AxCheck (canonical-clean discipline)** →
+     #3 (adm def (B), spec'd above) → #4 wire corankLeaf into `DecoratedBaseHyp` (jac via Tonelli). [Bounded, native.]
    - **★ THE REMAINING SUBSTANTIAL CORE = `DecoratedStepHyp` (the decorated peel):** the coupled corner blow-up (route-S
      §5 sectors, corrected residual `H₁⁻³(H₁+H₂)⁻¹`) → charges-ADD to `sjLoss_terminal`, closing on the reduced-chain IH at
      the ½peelCharge-shifted threshold. ★ SOUNDNESS: the intersection/deficient-rank rays' `≥½minAdm` must be ESTABLISHED
