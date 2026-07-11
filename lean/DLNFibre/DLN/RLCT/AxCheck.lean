@@ -119,6 +119,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJDominantCover
 import DLNFibre.DLN.RLCT.Validate.RouteMSJSigMin
 import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
 
 /-!
 # Axiom-hygiene check
@@ -1009,3 +1010,7 @@ open DLNFibre.DLN.RLCT
 -- vslice LAYER 2 (RouteMSJProductTube, genm-vsdeep/vswire): the (b)-integrability core — the (3,3,3,4)
 -- deeper-strata σ-min product-tube majorant ∫⁻ σ_min(A₀·A₁)^{−α} < ⊤ (0≤α<1). Reviewer SURVIVED + Codex.
 #print axioms sjProductTube_params_lintegral_lt_top
+-- vslice (a) CRUX (RouteMSJTwoBlockRadial, genm-vsa): the coupled 2-block radial majorant (ε-form,
+-- σ-independent C on 0<σ≤B; + sharp form). Reviewer SURVIVED (σ-uniformity fix). The (a) analytic core.
+#print axioms twoBlock_radial_le
+#print axioms twoBlock_radial_scale_le

@@ -1248,3 +1248,9 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJRayleigh
 -- Tonelli-factorize on P=A₀·A₁ (both free). Reviewer SURVIVED + Codex. clean-three. ((a) front-first is a
 -- separate sub-tide; wire-in via setLIntegral_lt_top_of_detMinorCover once (a) lands.)
 import DLNFibre.DLN.RLCT.Validate.RouteMSJProductTube
+-- `RouteMSJTwoBlockRadial` — vslice (a) CRUX (thread `genm-vsa`): the coupled 2-block radial majorant.
+-- `twoBlock_radial_le` (ε-form: ∫⁻(κ²‖u‖²+σ²‖v‖²)^{−c'} ≤ σ^{−α'}·C, C σ-INDEPENDENT on 0<σ≤B, ∀α'∈
+-- (max(0,2c'−d_u),d_v) — covers the c'=3 log borderline) + `twoBlock_radial_scale_le` (sharp, all σ>0).
+-- Route: Haar dilation + JapaneseBracket + banked radial leaf. Reviewer SURVIVED (σ-uniformity fix on B).
+-- The genuinely-new custom analytic piece of (a); the front-first majorant's core. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJTwoBlockRadial
