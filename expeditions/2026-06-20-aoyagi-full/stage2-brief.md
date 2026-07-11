@@ -30,6 +30,40 @@ it in no-regret order, but its status is "contract," and the discharge is commit
   (contract → build → review → bank); never fake-close; honest partials. Decomposition design pass =
   `genm-sjdecomp` (the carrier skeleton / brick DAG). See `discuss-at-close.md` #97 + synthesis UPDATE-849.
 
+## ★★★ OPERATOR DIRECTIVE — 2026-07-11 (BINDING; the §5 lane, opened head-on). READ SECOND.
+There is a mathematical heart already in Aoyagi §5 — the **coupled diag(b) peel** (= `sjJointResolution:803`
+= `DecoratedPeelStep`, the SINGLE open obligation) over the corank≥2 / L≥3 strata — that the top-down
+decomposition has been building AROUND rather than tackling. **Open a DEDICATED STANDING LANE that proves
+`RouteMBoxThresholdFinite M` ∀M DIRECTLY via §5's recursion, starting now** (radial blow-ups + det-1 unit
+clears + absorption-by-renaming + diag(b) ledger; Case-2 typo note applies; `d1kc2` cert #296 already cleared
+∀-dimension-vector uniformity). This is NOT an "off-path build" (my recent lesson) — it is the (A)-atom
+itself, on the one spec that cannot move. Build it NOW; don't wait for the top-down decomposition to reach
+it — it yields a better-shaped proof, and stops the temptation to do locally-useful work while ignoring the
+hard part the paper already gives.
+- **TWO LANES run in parallel; first to (□) wins, both bank; the §5 lane must NOT wait on or align with the
+  native cover/σ_min frontier** (that continues as the other lane). Lane 1 = native cover/σ_min (top-down:
+  sjGoodMap inner slice + outer tail on the good∪deeper cover [split on s_{r−1}] + `twoBlock_radial` →
+  ProductTube + front-rank descent). Lane 2 = DIRECT §5 coupled diag(b) peel.
+- **The §5 lane's whole content = the ONE open obligation** (`sjJointResolution:803`), attacked DIRECTLY,
+  with the banked §5 scaffold as its LIBRARY — already banked SORRY-FREE in native clothes (VERIFIED
+  2026-07-11 @ef98d885): exponent ledger (`RouteMSJLedger`: SJSupport=M_{s,k}, sharedDivisorExp=T_{s,k},
+  `sjLoss_terminal_lintegral_lt_top`), terminal read-off (`RouteMSJTerminal`), Step-3 block-elimination
+  chart algebra (`RouteMSJChartAlgebra`), monomial finiteness (`RouteMSJMonomialLower`), polar blow-up CoV
+  (`RouteMSJSphereBlowup`), charge/termination gate (`RouteMSJDecoratedCharge`), spine+base+arity driver
+  (`RouteMSJResolution`). **FULL catalog: `BUILT-INDEX.md`.**
+- **PROJECT MANAGEMENT (binding, operator-emphasized twice):** carefully INDEX — in `BUILT-INDEX.md`, kept
+  honest — what is already built, because pieces WILL be needed here. Do not lose banked work; consume it,
+  don't re-derive. Re-verify file:line at build time.
+- **housekeeping (audit, VERIFIED 2026-07-11):** (1) `sjBoundaryPeel` is sorry-free; the RouteMSJResolution
+  docstrings claiming "two remaining sorries"/"sjBoundaryPeel (3, … WALL)" are STALE — fix them (only :803
+  remains). (2) `DecoratedPeelStep` ≡ `RouteMSJTerminal`'s scope caveat ≡ the "WALL" certs = ONE object (the
+  coupled diag(b) peel). (3) the old aoyagi-rlct termination kernel is REFERENCE-ONLY (superseded by the
+  banked driver `routeMBoxThresholdFinite_of_step`).
+- **NOTE (dps-instance-cert, load-bearing):** the peel is NOT provable as a plain-IH *single* peel (a
+  det-weighted 3-node integral handed to the plain 3-node box IH) — it is the decorated DOUBLE induction /
+  the descent onto a STRICTLY-SHORTER chain closed by the one-shorter IH (charges ADD not MIN along the
+  shared rank-drop divisor; use `exists_binding_cut`). Attack THAT directly.
+
 ## GOAL
 ∀ `M` nondegenerate, ∀ `c′ < minAdm M / 2` : `routeMLayerBoxIntegral M c′ 1 < ⊤`
 (= discharge `(□) = RouteMBoxThresholdFinite`). Then `aoyagi_learning_coefficient` (unsuffixed,

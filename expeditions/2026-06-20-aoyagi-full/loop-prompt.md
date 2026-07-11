@@ -14,10 +14,15 @@ If this session was compacted, or you're unsure of the current state: your **FIR
 **`expeditions/2026-06-20-aoyagi-full/stage2-brief.md`** — the binding charter. It carries the operator's
 **BINDING (A) BUILD decision (2026-07-10)**: build Aoyagi §5's `(S,J)` determinantal atom; target the
 **unsuffixed, UNCONDITIONAL** `aoyagi_learning_coefficient`; the route-search around the atom is CLOSED (no
-more shortcut hunts — redirect adversarial capacity INTO the build). Then read the latest `synthesis.md`
-UPDATE for the live critical path. **Do NOT act on any snapshot in THIS loop-prompt without refreshing from
-the charter first** — loop-prompt snapshots go stale across compactions; `stage2-brief.md` + the latest
-synthesis UPDATE are authoritative.
+more shortcut hunts — redirect adversarial capacity INTO the build); AND the **BINDING §5-LANE DIRECTIVE
+(2026-07-11)**: the (□)-atom is the ONE open obligation `sjJointResolution:803` ≡ `DecoratedPeelStep` (the
+coupled diag(b) peel over corank≥2/L≥3) — **TWO LANES run in parallel, first to (□) wins, both bank:**
+(1) native cover/σ_min frontier (top-down); (2) the DIRECT Aoyagi §5 coupled diag(b) peel (attacked
+head-on, NOT waited on). The §5 scaffold is banked SORRY-FREE — its durable catalog/library is
+**`BUILT-INDEX.md`** (KEEP IT HONEST; consume banked pieces, don't re-derive; re-verify file:line at build
+time). Then read the latest `synthesis.md` UPDATE for the live critical path. **Do NOT act on any snapshot
+in THIS loop-prompt without refreshing from the charter first** — loop-prompt snapshots go stale across
+compactions; `stage2-brief.md` (+ `BUILT-INDEX.md`) + the latest synthesis UPDATE are authoritative.
 
 ## Re-ground when you need to
 Fresh session / after compaction / unsure of state → read in full (grounding is cheap):
