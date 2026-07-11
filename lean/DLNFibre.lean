@@ -1327,3 +1327,10 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
 -- → c^{−c'}·(free-Γ Morse `frobSq_matBox_rpow_lt_top`, banked eMatFlat + sumSqND_box_lt_top). Route (A) by PROOF:
 -- no sjLoss_terminal, no (P)/(T) gap, local Loewner (distinct from #140-killed). Conditional only on the units interface.
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
+-- `RouteMSJBackPeel` — the A2 invariant α-UNLOCK (genm-sj5-desc2, #144 §8; cover fidelity-PASS §9): every
+-- front-peel co-minimizing deeper rank ρ of `redChain t M` at a nondegenerate binding cut satisfies
+-- ρ ≥ (M₀−t)+(M₁−t)−1 ≥ b (`minAdm_backPeel_cominimizer_ge`/`_corankWidth`/`exists_..._corankWidth`). NATIVE:
+-- the cert's `minAdm_eq_backPeel` IS the banked front-peel identity #117 on redChain (leading width = pivot t) —
+-- NO Core.CTheta build. Incidence (frontCharge bump +ρ) squeezed against banked convexity (RouteMSJTransversality).
+-- The COMBINATORIAL ρ≥b; the geometric bridge (ρ = codim-realizing rank stratum → rank(Zdeep)≥b) is piece #2. clean-three.
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel

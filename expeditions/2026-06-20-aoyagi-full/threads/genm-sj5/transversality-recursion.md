@@ -309,3 +309,34 @@ CORRECTS my earlier glib "higher codim → slack" (§5, §6-C1 phrasing): the in
 `≥ ½minAdm` is exactly what the decorated coupled resolution must establish (it is the descent's job, already
 planned), not a free consequence of codim. Piece (i)-the-transversality is elementary/native; the lower-rank
 descent is the (already-commissioned) decorated recursion.
+
+---
+
+## 9. AUDIT-LOG — piece #1 (`RouteMSJBackPeel.lean`, the α-unlock) — **PASS**
+
+genm-sj5-desc2 landed piece #1 GREEN, with a POSITIVE recalibration: `minAdm_eq_backPeel` is NOT a fresh
+`Core.CTheta` build — it is the banked FRONT-PEEL identity `minAdm_eq_frontPeel` (#117) read on `redChain t M`
+(leading width = the surviving pivot `t`), + the banked convexity `minAdm_redChain_succ_ge`. Fidelity audit vs
+§8 [decorrelated — arithmetic identification, verified `/tmp/prodD/backpeel_audit.py`, no new Codex]:
+- **Q1 identification FAITHFUL.** The rank-shift `cCodim(deeper;ρ) = minAdm(deeper−ρ)` [subtract `ρ` from each
+  deeper dim] holds 2034/2034; the front-peel-on-`redChain` form `minAdm(t,deeper) = min_ρ[t·ρ +
+  minAdm(deeper−ρ)]` = my §8 `min_ρ[cCodim(deeper;ρ)+tρ]` holds 23400/23400. "Leading width `= t`" is faithful
+  (`t` = the pivot rows; `t·ρ` = the pivot-in-leftker cost).
+- **Q2 combinatorial `ρ ≥ a+b−1 ≥ b` MATCHES §8.** Every co-minimizer (verified over the anchors; note the
+  co-minimizer is a SET, e.g. `ρ∈[2,3]` — the theorem must quantify over ALL, not just `min`) satisfies
+  `ρ ≥ a+b−1`, by the incidence `+ρ` bump squeezed against banked convexity. Matches §8 exactly.
+- **Q3 witness correct.** `(3,3,2,2) →_{t=2} (2,2,2)`, co-minimizer `ρ=1=b=a+b−1` — the TIGHT rank-drop witness
+  (corank JUST survives, `ρ=b`).
+- **★ the SPLIT / #2 geometric-bridge flag.** #1 proves the COMBINATORIAL `ρ≥b` only. The GEOMETRIC bridge
+  (co-minimizing `ρ` = the deeper rank on the codim-realizing stratum ⟹ `rank(Zdeep)≥b`) is #2. **It is SOUND
+  and NATIVE** (Codex native-answer Q3: `codim{A_piv·Zdeep=0} = min_r(δ_r + t·r)` over rank strata
+  `{rank Zdeep=r}`, `δ_r=codim` of the exact-rank stratum; the finite-min rearrangement identifies the
+  combinatorial `ρ` with the codim-realizing `r`), NOT irreducible-component decomposition. **But #2 is
+  SUBSTANTIVE, not a one-liner:** it must formalize (a) the incidence codim decomposition
+  `codim{A_piv·Zdeep=0}=min_r(δ_r+tr)` [elementary per-stratum linear algebra — each of `t` pivot rows in the
+  `(M₂−r)`-dim leftker = `tr` conditions — but real], (b) the free-`A_cor` survival `rank(A_cor·Zdeep)=min(b,r)`
+  a.e. [minor-cut null set], (c) the rearrangement. **Fidelity watch for #2:** it must use rank STRATA
+  (minor-cut `{rank Zdeep=r}`) + free-`A_cor` genericity, NOT "the irreducible components of `Z_red` + generic
+  rank on each" — the instant #2 reaches for components/generic-rank-on-a-component it re-imports the AG the
+  native route avoids. **VERDICT: #1 PASSES; integrate it. #2 is the fidelity-critical bridge — sound, native,
+  bounded, but substantive; audit it hardest when it lands.**

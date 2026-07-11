@@ -131,6 +131,7 @@ import DLNFibre.DLN.RLCT.Validate.RouteMSJTransversality
 import DLNFibre.DLN.RLCT.Validate.RouteMSJAdmEncoding
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafRayleigh
 import DLNFibre.DLN.RLCT.Validate.RouteMSJLeafFinite
+import DLNFibre.DLN.RLCT.Validate.RouteMSJBackPeel
 
 /-!
 # Axiom-hygiene check
@@ -1099,3 +1100,9 @@ open DLNFibre.DLN.RLCT
 -- majorant → free-Γ Morse. Route (A) by proof; no sjLoss_terminal / (P)/(T) gap.
 #print axioms frobSq_matBox_rpow_lt_top
 #print axioms corankLeaf_rpow_lt_top
+-- A2 invariant α-UNLOCK (RouteMSJBackPeel, genm-sj5-desc2; #144 §8, cover fidelity-PASS §9): every front-peel
+-- co-minimizing deeper rank ρ of redChain t M at a nondegenerate binding cut satisfies ρ ≥ (M₀−t)+(M₁−t)−1 ≥ b.
+-- NATIVE (banked front-peel #117 on redChain, NO Core.CTheta). The combinatorial ρ≥b; geometric bridge = #2.
+#print axioms minAdm_backPeel_cominimizer_ge
+#print axioms minAdm_backPeel_cominimizer_ge_corankWidth
+#print axioms exists_minAdm_backPeel_cominimizer_corankWidth
